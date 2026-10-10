@@ -32,7 +32,7 @@
     "gitBlob": "7d7792157a8ae02d761b216a49d2e83813d2f623",
     "bytes": 406394,
     "sha256": "284ce1fec13bd51b8c7e47a2f204f529227a14643bea546a83899a9f6630d383",
-    "definitionCount": 211
+    "definitionCount": 216
   },
   "limitations": [
     "Backend read/preview/apply/export callable; settings import UI not mounted. Existing ZIP restore remains unchanged.",
@@ -97,6 +97,7 @@
     "danmaku_stroke_width",
     "dark_theme_style_v1",
     "data_saver_mode",
+    "default_audio_quality",
     "default_playback_speed",
     "detailed_comment_time_enabled",
     "display_mode",
@@ -146,16 +147,18 @@
     "liquid_glass_progressive_blur_curve",
     "liquid_glass_progressive_blur_extent",
     "liquid_glass_progressive_blur_radius",
+    "liquid_glass_readability_mode",
     "liquid_glass_strength",
     "liquid_glass_style",
+    "long_press_speed",
     "long_press_speed_hint_hidden",
     "long_press_speed_lock_enabled",
     "md3_color_source",
     "md3_custom_color_hex",
-    "miuix_transition_blur_enabled",
     "navigation_icon_cross_scale_enabled",
     "pinch_to_change_grid_columns_enabled",
     "playback_completion_behavior",
+    "playback_speed_options",
     "progress_peak_danmaku_enabled",
     "remember_last_playback_speed",
     "resume_playback_prompt_enabled",
@@ -206,8 +209,6 @@
     "video_note_default_collapsed",
     "video_note_enabled",
     "video_second_codec_preference",
-    "video_shared_return_gesture_follow_enabled",
-    "video_shared_return_gesture_translation_enabled",
     "video_tag_size_preset",
     "wifi_default_quality"
   ],
@@ -246,7 +247,7 @@
       "key": "auto_portrait_fullscreen",
       "type": "Boolean",
       "section": "PLAYBACK",
-      "reason": "Android/device-specific behavior or combined Android system control"
+      "reason": "Retained Windows preference flow/settings UI exists, but its playback/navigation effect is not mounted in the actual Windows Root host."
     },
     {
       "key": "auto_rotate_enabled",
@@ -357,6 +358,18 @@
       "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
     },
     {
+      "key": "miuix_predictive_back_max_progress_percent",
+      "type": "Int",
+      "section": "APPEARANCE",
+      "reason": "Original predictive-back host is retained but not the mounted Windows navigation host; decoder presence alone is not a consumer."
+    },
+    {
+      "key": "miuix_transition_blur_enabled",
+      "type": "Boolean",
+      "section": "APPEARANCE",
+      "reason": "Original settings UI can persist this key, but its effect is not mounted in the current Windows navigation host. JSON import skips it and preserves any existing value."
+    },
+    {
       "key": "mobile_default_quality",
       "type": "Int",
       "section": "PLAYBACK",
@@ -459,6 +472,18 @@
       "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
     },
     {
+      "key": "video_shared_return_gesture_follow_enabled",
+      "type": "Boolean",
+      "section": "APPEARANCE",
+      "reason": "Original settings UI can persist this key, but its effect is not mounted in the current Windows navigation host. JSON import skips it and preserves any existing value."
+    },
+    {
+      "key": "video_shared_return_gesture_translation_enabled",
+      "type": "Boolean",
+      "section": "APPEARANCE",
+      "reason": "Original settings UI can persist this key, but its effect is not mounted in the current Windows navigation host. JSON import skips it and preserves any existing value."
+    },
+    {
       "key": "video_shared_transition_custom_duration_millis",
       "type": "Int",
       "section": "APPEARANCE",
@@ -474,7 +499,7 @@
       "key": "video_transition_realtime_blur_enabled",
       "type": "Boolean",
       "section": "APPEARANCE",
-      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+      "reason": "Retained Windows preference flow/settings UI exists, but its playback/navigation effect is not mounted in the actual Windows Root host."
     }
   ],
   "consumerSources": [
@@ -494,17 +519,20 @@
       "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
       "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
       "desktop/build/generated/home-page/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecode.kt",
-      "desktop/build/generated/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt"
+      "desktop/build/generated/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt"
     ],
     "playback": [
       "desktop/build/generated/whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt",
       "desktop/build/generated/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
       "desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/core/store/player/DesktopOriginalVideoPlayerSettings.kt",
-      "desktop/build/generated/original-video-fullscreen-pager/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt"
+      "desktop/build/generated/original-video-fullscreen-pager/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackSettings.kt"
     ],
     "gesture": [
       "desktop/build/generated/original-video-player-section-full/com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt",
-      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt"
+      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt",
+      "desktop/build/generated/original-offline-player/com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt"
     ],
     "danmaku": [
       "desktop/build/generated/original-danmaku-settings/com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt",
@@ -515,5 +543,74 @@
       "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
       "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt"
     ]
-  }
+  },
+  "windowsMappedDefinitionCount": 168,
+  "windowsUnmappedDefinitionCount": 48,
+  "importedPreferenceDefinitions": [
+    {
+      "symbol": "liquidGlassReadabilityModePreferencesKey",
+      "key": "liquid_glass_readability_mode",
+      "type": "Int",
+      "section": "APPEARANCE",
+      "keyDeclarationSource": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/home/LiquidGlassSettingsStore.kt",
+        "gitBlob": "219ca8e5d6ef25653f5c8b3bf3ff14550b98cddc",
+        "bytes": 1278,
+        "sha256": "aa216b2d5e50d68fa74bf0d8a1b250916628f11ddc6b0a739a27078bb64e4661"
+      },
+      "mappedForWindows": true
+    },
+    {
+      "symbol": "miuixPredictiveBackMaxProgressPercentPreferencesKey",
+      "key": "miuix_predictive_back_max_progress_percent",
+      "type": "Int",
+      "section": "APPEARANCE",
+      "keyDeclarationSource": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/navigation/NavigationSettingsStore.kt",
+        "gitBlob": "df0178bdbfc1f8f1d0231cd29cbb36997bb3b11b",
+        "bytes": 10748,
+        "sha256": "30eef40500b1dcfcb95a1290343e4bf403de8613b19b998b61395460a16acaae"
+      },
+      "mappedForWindows": false
+    },
+    {
+      "symbol": "playbackSpeedOptionsPreferenceKey",
+      "key": "playback_speed_options",
+      "type": "String",
+      "section": "PLAYBACK",
+      "keyDeclarationSource": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+        "gitBlob": "4b2178864251903c79e5d70b98e2f0a4e10dddac",
+        "bytes": 14123,
+        "sha256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed"
+      },
+      "mappedForWindows": true
+    },
+    {
+      "symbol": "defaultAudioQualityPreferenceKey",
+      "key": "default_audio_quality",
+      "type": "Int",
+      "section": "PLAYBACK",
+      "keyDeclarationSource": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+        "gitBlob": "4b2178864251903c79e5d70b98e2f0a4e10dddac",
+        "bytes": 14123,
+        "sha256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed"
+      },
+      "mappedForWindows": true
+    },
+    {
+      "symbol": "longPressSpeedPreferenceKey",
+      "key": "long_press_speed",
+      "type": "Float",
+      "section": "GESTURE",
+      "keyDeclarationSource": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+        "gitBlob": "4b2178864251903c79e5d70b98e2f0a4e10dddac",
+        "bytes": 14123,
+        "sha256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed"
+      },
+      "mappedForWindows": true
+    }
+  ]
 }

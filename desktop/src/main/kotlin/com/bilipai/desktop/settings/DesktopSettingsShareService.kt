@@ -138,7 +138,17 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
             DesktopOriginalPlaybackSettingsPreferences.setPlaybackCompletionBehavior(context,
                 PlaybackCompletionBehavior.fromValue(it.jsonPrimitive.int))
         }
+        values["playback_speed_options"]?.let {
+            // Reuse the original whole selections/cache recipe on every fresh CAS snapshot.
+            // Options are already staged in this same canonical journal, so the original
+            // reconciler sees imported options together with current default/last values.
+            val preferences = context.settingsDataStore.edit { fresh ->
+                DesktopOriginalVideoPlayerSettings.reconcilePlaybackSpeedSelections(fresh)
+            }
+            DesktopOriginalVideoPlayerSettings.syncPlaybackSpeedCache(context, preferences)
+        }
         values["default_playback_speed"]?.let { DesktopOriginalVideoPlayerSettings.setDefaultPlaybackSpeed(context, it.jsonPrimitive.float) }
+        values["long_press_speed"]?.let { DesktopOriginalVideoPlayerSettings.setLongPressSpeed(context, it.jsonPrimitive.float) }
         values["remember_last_playback_speed"]?.let { DesktopOriginalVideoPlayerSettings.setRememberLastPlaybackSpeed(context, it.jsonPrimitive.boolean) }
         values["stop_playback_on_exit"]?.let { DesktopOriginalPlaybackSettingsPreferences.setStopPlaybackOnExit(context, it.jsonPrimitive.boolean) }
         values["background_playback_enabled"]?.let { DesktopOriginalPlaybackSettingsPreferences.setBackgroundPlaybackEnabled(context, it.jsonPrimitive.boolean) }
@@ -147,6 +157,7 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
         values["video_codec_preference"]?.let { DesktopOriginalPlaybackSettingsPreferences.setVideoCodec(context, it.jsonPrimitive.content) }
         values["video_second_codec_preference"]?.let { DesktopOriginalPlaybackSettingsPreferences.setVideoSecondCodec(context, it.jsonPrimitive.content) }
         values["audio_quality_preference"]?.let { DesktopOriginalPortraitSettings.setAudioQuality(context, it.jsonPrimitive.int) }
+        values["default_audio_quality"]?.let { DesktopOriginalVideoPlayerSettings.setDefaultAudioQuality(context, it.jsonPrimitive.int) }
         values["comment_default_sort_mode"]?.let { DesktopOriginalTabletAudioSettings.setCommentDefaultSortMode(context, it.jsonPrimitive.int) }
         values["show_online_count"]?.let { DesktopOriginalHomeSettingsManager.setShowOnlineCount(context, it.jsonPrimitive.boolean) }
         values["video_note_enabled"]?.let { DesktopOriginalPlaybackSettingsPreferences.setVideoNoteEnabled(context, it.jsonPrimitive.boolean) }

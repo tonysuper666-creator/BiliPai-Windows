@@ -2,6 +2,7 @@ package com.bilipai.desktop.settings
 
 import com.android.purebilibili.core.store.DanmakuSettingsScope
 import com.android.purebilibili.core.theme.AppUiStyle
+import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings
 import com.bilipai.desktop.appearance.DesktopThemePrefs
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
@@ -11,6 +12,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -60,21 +62,33 @@ class DesktopSettingsShareServiceTest {
         assertArrayEquals(before, bytes(store))
         assertEquals(JsonPrimitive(true), store.preferences("settings")["hw_decode"])
         assertEquals(JsonPrimitive(true), store.preferences("player_settings_cache")["hw_decode_enabled"])
+        for (csv in listOf("1,NaN", "1,1e1000", "1,wrong")) {
+            val invalidCsv = service.readImportSession(raw(""""playback":{"playback_speed_options":"$csv"}"""))
+            assertEquals(listOf("playback_speed_options"), invalidCsv.preview.skippedKeys)
+            assertTrue(service.applyImport(invalidCsv).appliedKeys.isEmpty())
+            assertArrayEquals(before, bytes(store))
+        }
     }
 
     @Test fun validSubsetUsesOriginalMirrorSetterWithoutResettingOtherNamespaces(): Unit = runBlocking {
         val store = store(); seed(store)
+        val unmountedEffects = setOf("miuix_transition_blur_enabled", "video_shared_return_gesture_follow_enabled",
+            "video_shared_return_gesture_translation_enabled")
+        store.update("settings", unmountedEffects.associateWith { JsonPrimitive(true) })
         val accounts = store.preferences("accounts")
         val service = DesktopSettingsShareService(context(store))
         val session = service.readImportSession(raw("""
+            "appearance":{"miuix_transition_blur_enabled":false,"video_shared_return_gesture_follow_enabled":false,
+                          "video_shared_return_gesture_translation_enabled":false},
             "playback":{"hw_decode":false,"default_playback_speed":"2.0"},
             "gesture":{"haptic_feedback_enabled":false},
             "navigation":{"unknown_fixture_key":true}
         """.trimIndent()))
         val result = service.applyImport(session)
         assertEquals(listOf("hw_decode"), result.appliedKeys)
-        assertEquals(setOf("default_playback_speed", "haptic_feedback_enabled", "unknown_fixture_key"),
+        assertEquals(setOf("default_playback_speed", "haptic_feedback_enabled", "unknown_fixture_key") + unmountedEffects,
             result.skippedKeys.toSet())
+        for (key in unmountedEffects) assertEquals(JsonPrimitive(true), store.preferences("settings")[key])
         assertEquals(JsonPrimitive(false), store.preferences("settings")["hw_decode"])
         assertEquals(JsonPrimitive(false), store.preferences("player_settings_cache")["hw_decode_enabled"])
         assertEquals(JsonPrimitive("keep"), store.preferences("settings")["foreign"])
@@ -178,6 +192,45 @@ class DesktopSettingsShareServiceTest {
         assertArrayEquals(before, bytes(store))
         assertTrue(store.preferences("theme_cache").isEmpty())
         assertTrue(store.preferences("playback_speed_cache").isEmpty())
+    }
+
+    @Test fun importedSpeedOptionsReplayFreshSelectionsAndAllOriginalMirrorsAfterCasConflict(): Unit = runBlocking {
+        val store = store(); seed(store)
+        store.update("settings", mapOf("playback_speed_options" to JsonPrimitive("1,1.5,3"),
+            "default_playback_speed" to JsonPrimitive(1f), "last_playback_speed" to JsonPrimitive(1f)))
+        val permits = AtomicInteger()
+        val context = context(store, commit = { action ->
+            // A real write to the same Backing while the prepared import holds an old
+            // document revision forces its whole canonical/mirror recipe to replay.
+            if (permits.incrementAndGet() == 1) store.update("settings", mapOf(
+                "last_playback_speed" to JsonPrimitive(2.6f), "concurrent_fixture" to JsonPrimitive(true)))
+            action(); true
+        })
+        val service = DesktopSettingsShareService(context)
+        val session = service.readImportSession(raw("""
+            "appearance":{"liquid_glass_readability_mode":1},
+            "playback":{"playback_speed_options":"2,1.5,1.5","default_playback_speed":1.6,
+                        "default_audio_quality":30251},
+            "gesture":{"long_press_speed":3.333}
+        """.trimIndent()))
+        service.applyImport(session)
+        assertTrue(permits.get() >= 2)
+        assertEquals(listOf(1f, 1.5f, 2f), DesktopOriginalVideoPlayerSettings.getPlaybackSpeedOptions(context).first())
+        assertEquals(1.5f, DesktopOriginalVideoPlayerSettings.getDefaultPlaybackSpeed(context).first())
+        assertEquals(2f, DesktopOriginalVideoPlayerSettings.getLastPlaybackSpeed(context).first())
+        assertEquals(1.5f, DesktopOriginalVideoPlayerSettings.getPreferredPlaybackSpeedSync(context))
+        assertEquals(JsonPrimitive(1.5f), store.preferences("playback_speed_cache")["default_speed"])
+        assertEquals(JsonPrimitive(2f), store.preferences("playback_speed_cache")["last_speed"])
+        assertEquals(30251, DesktopOriginalVideoPlayerSettings.getCachedDefaultAudioQuality(context))
+        assertEquals(JsonPrimitive(30251), store.preferences("quality_settings")["default_audio_quality"])
+        assertEquals(3.33f, DesktopOriginalVideoPlayerSettings.getLongPressSpeed(context).first())
+        assertEquals(JsonPrimitive(1), store.preferences("settings")["liquid_glass_readability_mode"])
+        assertEquals(JsonPrimitive(true), store.preferences("settings")["concurrent_fixture"])
+        assertEquals(JsonPrimitive("keep"), store.preferences("settings")["foreign"])
+        assertEquals(JsonPrimitive("preserve"), store.preferences("accounts")["fixture_sentinel"])
+        val disk = Json.parseToJsonElement(Files.readString(store.root.resolve("plugin-settings.json"))).jsonObject
+        assertEquals(JsonPrimitive(2f), disk["playback_speed_cache"]!!.jsonObject["last_speed"])
+        assertEquals(JsonPrimitive(30251), disk["quality_settings"]!!.jsonObject["default_audio_quality"])
     }
 
     @Test fun importingBaselineDanmakuPreservesActualScopedOverrides(): Unit = runBlocking {

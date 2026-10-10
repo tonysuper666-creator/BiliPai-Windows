@@ -73,8 +73,7 @@ internal object DesktopSettingsShareWindowsCatalog {
             "bottom_bar_liquid_glass_enabled", "android_native_liquid_glass_enabled", "liquid_glass_enabled",
             "pinch_to_change_grid_columns_enabled", "home_hero_carousel_enabled", "home_hero_carousel_autoplay_enabled",
             "card_animation_enabled", "ui_entrance_animation_enabled", "card_transition_enabled",
-            "miuix_transition_blur_enabled", "video_shared_return_gesture_follow_enabled",
-            "video_shared_return_gesture_translation_enabled", "compact_video_stats_on_cover",
+            "compact_video_stats_on_cover",
             "home_up_badges_visible", "home_refresh_tip_visible", "home_refresh_undo_visible",
             "home_up_avatars_visible", "home_publish_time_visible", "full_video_card_content_visible",
             "video_card_long_press_action_enabled", "home_video_duration_badges_visible", "show_profile_edit_button")
@@ -100,6 +99,7 @@ internal object DesktopSettingsShareWindowsCatalog {
         ints(appearance, "bottom_bar_search_layout_mode", BottomBarSearchLayoutMode.entries.map { it.value }.toSet())
         ints(appearance, "liquid_glass_style", LiquidGlassStyle.entries.map { it.value }.toSet())
         ints(appearance, "liquid_glass_mode", LiquidGlassMode.entries.map { it.value }.toSet())
+        ints(appearance, "liquid_glass_readability_mode", LiquidGlassReadabilityMode.entries.map { it.value }.toSet())
         ints(appearance, "liquid_glass_advanced_preset", LiquidGlassAdvancedPreset.entries.map { it.value }.toSet())
         floats(appearance, "liquid_glass_strength", ::normalizeLiquidGlassStrength)
         floats(appearance, "liquid_glass_material_progress_v2", ::normalizeLiquidGlassProgress)
@@ -130,8 +130,18 @@ internal object DesktopSettingsShareWindowsCatalog {
             "show_online_count", "show_video_detail_comment_count")
         ints(playback, "playback_completion_behavior", PlaybackCompletionBehavior.entries.map { it.value }.toSet())
         floats(playback, "default_playback_speed", ::normalizePlaybackSpeed)
+        field("playback_speed_options", playback) { value ->
+            string(value)?.let { raw ->
+                // Empty CSV is the original explicit reset to its mandatory 1x option.
+                // Never turn malformed/nonfinite tokens into the original parser fallback.
+                val tokens = if (raw.isBlank()) emptyList() else raw.split(",")
+                if (tokens.any { token -> token.toFloatOrNull()?.let { it.isFinite() && it in 0.1f..8f } != true }) null
+                else JsonPrimitive(resolvePlaybackSpeedOptions(raw).joinToString(","))
+            }
+        }
         ints(playback, "comment_default_sort_mode", setOf(2, 3))
         ints(playback, "audio_quality_preference", setOf(AUDIO_QUALITY_AUTO, AUDIO_QUALITY_HI_RES, AUDIO_QUALITY_DOLBY))
+        ints(playback, "default_audio_quality", resolveDefaultAudioQualityOptions().map { it.value }.toSet())
         ints(playback, "wifi_default_quality", setOf(6, 16, 32, 64, 74, 80, 112, 116, 120, 125, 126, 127))
         names(playback, "video_codec_preference", setOf("avc1", "hev1", "av01"))
         names(playback, "video_second_codec_preference", setOf("avc1", "hev1", "av01"))
@@ -150,6 +160,7 @@ internal object DesktopSettingsShareWindowsCatalog {
         intRange(gesture, "seek_forward_seconds", 1..60)
         intRange(gesture, "seek_backward_seconds", 1..60)
         floats(gesture, "gesture_sensitivity") { it.coerceIn(0.5f, 2f) }
+        floats(gesture, "long_press_speed", ::normalizeLongPressSpeed)
         floats(gesture, "subtitle_vertical_offset_fraction", ::normalizeSubtitleVerticalOffsetFraction)
         floats(gesture, "subtitle_portrait_vertical_offset_fraction", ::normalizeSubtitleVerticalOffsetFraction)
 
