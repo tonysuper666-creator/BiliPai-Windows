@@ -23,7 +23,29 @@ internal class DesktopOriginalVideoContentBindings(
     private val feedbackPort: (String) -> Unit,
     private val shareTextPort: (String, String) -> Unit,
     private val todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,
+    private val sourceWatchLater: suspend (DesktopOriginalVideoAcceptedPublication, () -> Boolean, Long, Boolean) -> Result<Boolean>,
+    private val sourceBlockedUps: (DesktopOriginalVideoAcceptedPublication, () -> Boolean) -> DesktopHomeBlockedRequests,
 ) {
+    /** Stateless source view of the same account/store/settings/actions. The metadata lease
+     * is retained through transport, local write permits and final result/UI admission. */
+    fun forSource(expected: DesktopOriginalVideoAcceptedPublication, stillSourceOwned: () -> Boolean,
+        sourceAdmission: ((() -> Unit) -> Boolean)): DesktopOriginalVideoContentBindings {
+        fun current() = isCurrent() && stillSourceOwned()
+        fun commit(action: () -> Unit): Boolean {
+            var applied = false
+            return commitIfCurrent {
+                if (current()) sourceAdmission {
+                    if (current()) { action(); applied = true }
+                }
+            } && applied
+        }
+        return DesktopOriginalVideoContentBindings(context, homeSettings, recommendationContext,
+            sourceBlockedUps(expected, ::current), ::current, ::commit,
+            { aid, add -> sourceWatchLater(expected, ::current, aid, add) },
+            feedbackPort, shareTextPort, todayWatchFeedback.forSource(::current, sourceAdmission),
+            sourceWatchLater, sourceBlockedUps)
+    }
+
     fun requireCurrent() {
         if (!isCurrent()) throw CancellationException("Original video content owner retired")
         context.requireCurrent()

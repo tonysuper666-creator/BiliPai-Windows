@@ -120,6 +120,28 @@ internal class DesktopOriginalVideoRootFactory(
         return construction.requests.captureBinding(value.captureLoadState())
     }
 
+    /** Actual action Job over this accepted source and a permanently owned metadata lease.
+     * Native initialization and binding capture await outside Store/entry admissions. */
+    suspend fun captureSourceRequest(value: DesktopOriginalVideoOwnerAssembly,
+        expected: DesktopOriginalVideoAcceptedPublication,
+        stillSourceOwned: () -> Boolean): DesktopOriginalVideoRepositoryBinding {
+        val construction = checkNotNull(built.get()?.takeIf { it.assembly === value })
+        fun current() = stillSourceOwned() && isPresentationCurrent(value, expected) &&
+            value.native.isCurrent(expected)
+        currentCoroutineContext().ensureActive()
+        if (!current()) throw CancellationException("Original action source retired")
+        construction.ports.awaitNativeInitialization()
+        currentCoroutineContext().ensureActive()
+        if (!current()) throw CancellationException("Original action source retired")
+        return construction.requests.captureBinding(value.captureLoadState(), ::current,
+            sourceAdmission = { action ->
+                var applied = false
+                value.native.admitPlaybackDispatch(expected) {
+                    if (current()) { action(); applied = true }
+                } && applied
+            })
+    }
+
     fun sourceVersions(value: DesktopOriginalVideoOwnerAssembly): kotlinx.coroutines.flow.StateFlow<Long?> =
         checkNotNull(built.get()?.takeIf { it.assembly === value }).runtime.sourceVersions
 

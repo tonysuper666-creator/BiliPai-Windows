@@ -339,7 +339,19 @@ internal class DesktopOriginalVideoRootAssembler(
         val content = remember(owner) { DesktopOriginalVideoContentBindings(effect.settings, window.settings,
             window.root.environment.pluginContext, blocked, ::current, gate::commit,
             window.root.entry.requests.ports.actions::toggleWatchLater, resources.feedback,
-            { _, text -> window.gallery.shareText(text) }, factory.entryPorts(owner).todayWatchFeedback) }
+            { _, text -> window.gallery.shareText(text) }, factory.entryPorts(owner).todayWatchFeedback,
+            sourceWatchLater = { expected, stillSourceOwned, aid, add ->
+                val request = factory.captureSourceRequest(owner, expected, stillSourceOwned)
+                val protocol = com.android.purebilibili.data.repository.DesktopOriginalHomeActionProtocol(
+                    window.root.entry.requests.environment.forActionRequest(request))
+                val result = protocol.toggleWatchLater(aid, add)
+                currentCoroutineContext().ensureActive(); request.assertCurrent()
+                result
+            },
+            sourceBlockedUps = { expected, stillSourceOwned ->
+                DesktopOriginalPortraitBlockedUpsBinding(resources.community.blockedUpRepository,
+                    effect.settings) { factory.captureSourceRequest(owner, expected, stillSourceOwned) }
+            }) }
         val subtitle = remember(owner) { DesktopOriginalSubtitleModeBinding({ it === owner.playback && current() },
             { _, action -> gate.commit { if (current()) action() } }) }
         val fullscreen = remember(owner, section, windows) { DesktopOriginalVideoRootFullscreenPlatform(owner,

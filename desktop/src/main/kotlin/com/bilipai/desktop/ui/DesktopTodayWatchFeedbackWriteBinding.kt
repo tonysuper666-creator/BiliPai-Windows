@@ -19,6 +19,22 @@ internal class DesktopTodayWatchFeedbackWriteBinding(
     private val isCurrent: () -> Boolean,
     private val commitIfCurrent: ((() -> Unit) -> Boolean),
 ) {
+    /** Keep the actual Home gate before source admission. Only permit minting enters
+     * these monitors; original snapshot staging/fsync/rename remain outside them. */
+    fun forSource(stillSourceOwned: () -> Boolean,
+        sourceAdmission: ((() -> Unit) -> Boolean)): DesktopTodayWatchFeedbackWriteBinding {
+        fun current() = isCurrent() && stillSourceOwned()
+        fun commit(action: () -> Unit): Boolean {
+            var applied = false
+            return commitIfCurrent {
+                if (current()) sourceAdmission {
+                    if (current()) { action(); applied = true }
+                }
+            } && applied
+        }
+        return DesktopTodayWatchFeedbackWriteBinding(context, ::current, ::commit)
+    }
+
     private fun requireCurrent() {
         if (!isCurrent()) throw CancellationException("TodayWatch recommendation owner retired")
     }

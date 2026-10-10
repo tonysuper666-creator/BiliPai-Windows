@@ -809,7 +809,15 @@ internal class DesktopWindowsVideoActions(
                 related = {
                     collectionQueueSource?.let { source ->
                         if (success != null) DesktopWindowsVideoRelatedSection(assembly, success, source,
-                            platforms.content, ::interactionCurrent) { target, cardOwned ->
+                            platforms.content, ::interactionCurrent,
+                            sourceAdmission = { action ->
+                                var applied = false
+                                shell.factoryFor(assembly).withPresentationAdmission(assembly, source) {
+                                    if (interactionCurrent()) assembly.native.admitPlaybackDispatch(source) {
+                                        if (interactionCurrent()) { action(); applied = true }
+                                    }
+                                } && applied
+                            }) { target, cardOwned ->
                             latestActions.relatedNavigation(assembly, source, target, cardOwned)
                         }
                     }

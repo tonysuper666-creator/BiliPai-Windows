@@ -39,11 +39,23 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
 
     /** One extra same-owner request facet for original Portrait/Story effects.
      * Captures the ACTUAL calling coroutine Job and original playback state. */
-    suspend fun captureBinding(state: PlaybackSessionState): DesktopOriginalVideoRepositoryBinding {
+    suspend fun captureBinding(state: PlaybackSessionState,
+        stillSourceOwned: (() -> Boolean)? = null,
+        sourceAdmission: ((() -> Unit) -> Boolean)? = null): DesktopOriginalVideoRepositoryBinding {
         currentCoroutineContext().ensureActive()
-        if (!entryScope.isActive || !stillEntryOwned()) throw CancellationException("Original facet entry retired")
+        fun current() = stillEntryOwned() && (stillSourceOwned?.invoke() != false)
+        fun commit(action: () -> Unit): Boolean {
+            var applied = false
+            return commitIfEntryCurrent {
+                if (current()) {
+                    val apply = { if (current()) { action(); applied = true } }
+                    if (sourceAdmission == null) apply() else sourceAdmission(apply)
+                }
+            } && applied
+        }
+        if (!entryScope.isActive || !current()) throw CancellationException("Original facet source retired")
         return DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
-            entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
+            entryJob, ::current, ::commit, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
             isMobileData, token::available, token::refresh,

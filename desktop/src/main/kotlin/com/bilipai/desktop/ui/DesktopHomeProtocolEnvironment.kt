@@ -23,4 +23,24 @@ internal class DesktopHomeProtocolEnvironment(
     val buvid3: () -> String?,
     val awaitSessionRestored: suspend () -> Unit,
     val ensureBuvid3FromSpi: suspend () -> Unit,
-)
+) {
+    /** Only the existing original Action protocol consumes this stateless view. Its API
+     * and primary tokens belong to the actual caller's immutable source-bound request.
+     * Unused Home planning/message ports remain the existing Root references. */
+    fun forActionRequest(request: DesktopOriginalVideoRepositoryBinding): DesktopHomeProtocolEnvironment {
+        request.assertCurrent()
+        return DesktopHomeProtocolEnvironment(
+            api = request.primaryApi,
+            guestApi = request.environment.guestApi,
+            messageApi = messageApi,
+            parentScope = parentScope,
+            isCurrent = { runCatching { request.assertCurrent() }.isSuccess },
+            commitIfCurrent = request::admitCurrentMutation,
+            feedApiType = feedApiType, refreshCount = refreshCount, wbiKeys = wbiKeys,
+            accessToken = request::primaryAccessToken,
+            csrf = request::primaryCsrf,
+            buvid3 = buvid3, awaitSessionRestored = awaitSessionRestored,
+            ensureBuvid3FromSpi = request.environment.ensureBuvid,
+        )
+    }
+}

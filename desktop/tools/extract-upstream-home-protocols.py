@@ -107,7 +107,15 @@ internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopH
     msgMethods=[method(messagePath,message,n,general_adapt) for n in ['getUnreadCount','getFeedUnread']]
     write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeMessageProtocol.kt',imports+'\ninternal class DesktopOriginalHomeMessageProtocol(private val api:MessageApi) {\n'+'\n\n'.join(textwrap.indent(s,'    ') for s in msgMethods)+'\n}\n')
     actionPath,action=source('ActionRepository')
-    actionMethods=[method(actionPath,action,n,lambda s:general_adapt(s).replace('TokenManager.accessTokenCache','environment.accessToken()').replace('TokenManager.csrfCache','environment.csrf()')) for n in ['submitRecommendationFeedback','toggleWatchLater']]
+    def action_adapt(s):
+     s=general_adapt(s).replace('TokenManager.accessTokenCache','environment.accessToken()').replace('TokenManager.csrfCache','environment.csrf()')
+     if 'suspend fun toggleWatchLater(' in s:
+      s=exact_replace(s,'WatchLaterRefreshBus.notifyChanged()', '''if (!environment.commitIfCurrent {
+                        if (!environment.isCurrent()) throw CancellationException("Original watch-later source retired")
+                        WatchLaterRefreshBus.notifyChanged()
+                    }) throw CancellationException("Original watch-later notification retired")''')
+     return s
+    actionMethods=[method(actionPath,action,n,action_adapt) for n in ['submitRecommendationFeedback','toggleWatchLater']]
     write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol.kt',imports+'\nimport com.android.purebilibili.core.refresh.WatchLaterRefreshBus\n\ninternal class DesktopOriginalHomeActionProtocol(private val environment:DesktopHomeProtocolEnvironment) {\n    private val api get()=environment.api\n'+'\n\n'.join(textwrap.indent(s,'    ') for s in actionMethods)+'\n}\n')
     busPath=BASE+'core/refresh/WatchLaterRefreshBus.kt';bus=read(_desktop_canonical_source(REPO, busPath));pins[busPath]=sha(bus)
     # Standalone compile copy. Production inventory declares this sole source DIRECT, and the final
