@@ -112,6 +112,32 @@ internal class DesktopVeyraPrivateComponent(
             // Require the actual producer's artifact/source/build receipts; a source-only
             // proposal with null binary identity never qualifies as an installed engine.
             listOf("archiveSha256", "runtimeDescriptorSha256", "buildReceiptSha256", "sourceBundleSha256").forEach { provenance.digest(it) }
+            val companion = json["companionRuntime"] as? JsonObject
+            val mpvBuildReceiptHash = if (presentationProducer || companion != null) {
+                val record = requireNotNull(companion)
+                require(record["schema"]?.jsonPrimitive?.intOrNull == 1 &&
+                    record.text("kind") == "SOURCE_BUILT_VULKAN_LOADER" && record.text("path") == "vulkan-1.dll" &&
+                    record.text("architecture") == "windows-x64" && record.text("sourceDirectory") == "vulkan" &&
+                    record.text("sourceRemote") == "https://github.com/KhronosGroup/Vulkan-Loader.git")
+                require(record.text("sourceCommit")?.matches(Regex("[0-9a-f]{40}")) == true &&
+                    record.text("sourceTree")?.matches(Regex("[0-9a-f]{40}")) == true)
+                val loaderBytes = record["bytes"]?.jsonPrimitive?.longOrNull ?: error("Vulkan companion size absent")
+                require(loaderBytes in 1L..67108864L)
+                val loader = locked(relative(root, "mpv/vulkan-1.dll"))
+                require(loader.size() == loaderBytes && hash(loader) == record.digest("sha256"))
+                val license = record["license"] as? JsonObject ?: error("Vulkan companion license absent")
+                require(license.text("path") == "licenses/vulkan-loader-LICENSE.txt" && license.text("sourcePath") == "LICENSE.txt")
+                val licenseBytes = license["bytes"]?.jsonPrimitive?.longOrNull ?: error("Vulkan license size absent")
+                require(licenseBytes in 1L..1048576L)
+                val licenseChannel = locked(relative(root, "mpv/licenses/vulkan-loader-LICENSE.txt"))
+                require(licenseChannel.size() == licenseBytes && hash(licenseChannel) == license.digest("sha256"))
+                val receiptHash = json.digest("mpvBuildReceiptSha256")
+                val receiptBytes = readBounded(locked(relative(root, "mpv/licenses/build-receipt.json")), 1048576)
+                require(hash(receiptBytes) == receiptHash && provenance.digest("buildReceiptSha256") == receiptHash)
+                val build = Json.parseToJsonElement(receiptBytes.toString(Charsets.UTF_8).removePrefix("\uFEFF")) as JsonObject
+                require(build.digest("dllSha256") == mpvHash && build["companionRuntime"] == record && provenance["companionRuntime"] == record)
+                receiptHash
+            } else null
             val presentationNativeReceiptHash = if (presentationProducer) {
                 require(json.text("mpvNativeReceiptRelativePath") == "mpv/licenses/native-patch-receipt.json")
                 val expectedReceipt = json.digest("mpvNativeReceiptSha256")
@@ -149,6 +175,8 @@ internal class DesktopVeyraPrivateComponent(
                 checked.digest("sourcePatchHelperSha256") == PRESENTATION_HELPER_SHA256 &&
                 checked.digest("upstreamEditsSha256") == PRESENTATION_EDITS_SHA256 &&
                 checked.digest("mpvNativeReceiptSha256") == presentationNativeReceiptHash)
+            if (mpvBuildReceiptHash != null) require(checked.digest("mpvBuildReceiptSha256") == mpvBuildReceiptHash &&
+                checked["companionRuntime"] == companion)
             require(checked.digest("profileSha256") == trustedProfileSha256 && checked.digest("moduleBuildSha256") == coreHash && checked.digest("mpvDllSha256") == mpvHash)
             require(checked.digest("coreSourceSha256") == CORE_SOURCE_SHA256 && checked.digest("headerSha256") == CORE_HEADER_SHA256)
             require(checked["coreAbi"]?.jsonPrimitive?.intOrNull == 1 && checked["coreAbiWire"]?.jsonPrimitive?.intOrNull == 65536)
@@ -261,7 +289,7 @@ internal class DesktopVeyraPrivateComponent(
         private const val PRESENTATION_EDITS_SHA256 = "e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f"
         private const val PRESENTATION_HELPER_SHA256 = "748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf"
         private const val PRESENTATION_REGISTRATION_SHA256 = "95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042"
-        private const val VERIFIER_SOURCE_SHA256 = "b5a2e65a25c0ecfb0f894cc2ea248befc9453541526c7e864c146e3ee9dd9b5b"
+        private const val VERIFIER_SOURCE_SHA256 = "1983b1b0cf436a06e50cb01b70d37b43f575c0d6b29ca4b4bb611d144f9a6295"
     }
 }
 

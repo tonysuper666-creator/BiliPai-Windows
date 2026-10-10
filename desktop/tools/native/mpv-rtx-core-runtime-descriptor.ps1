@@ -1,4 +1,46 @@
 # Internal branch of the existing fetch-mpv.ps1 entry. No standalone fetch authority.
+function Assert-VulkanCompanion([object]$Record,[object]$Receipt,[object[]]$Rows) {
+    if($null-eq$Record-or($Record.schema-isnot[int]-and$Record.schema-isnot[long])-or$Record.schema-ne1-or
+       $Record.kind-cne'SOURCE_BUILT_VULKAN_LOADER'-or$Record.path-cne'vulkan-1.dll'-or
+       $Record.architecture-cne'windows-x64'-or$Record.sourceDirectory-cne'vulkan'-or
+       $Record.sourceRemote-cne'https://github.com/KhronosGroup/Vulkan-Loader.git'-or
+       $Record.sourceCommit-cnotmatch'\A[0-9a-f]{40}\z'-or$Record.sourceTree-cnotmatch'\A[0-9a-f]{40}\z'-or
+       $Record.sha256-cnotmatch'\A[0-9a-f]{64}\z'-or
+       ($Record.bytes-isnot[int]-and$Record.bytes-isnot[long])-or$Record.bytes-le0-or$Record.bytes-gt67108864){throw 'Audited Vulkan companion identity is invalid.'}
+    $license=$Record.license
+    if($null-eq$license-or$license.path-cne'licenses/vulkan-loader-LICENSE.txt'-or$license.sourcePath-cne'LICENSE.txt'-or
+       $license.sha256-cnotmatch'\A[0-9a-f]{64}\z'-or
+       ($license.bytes-isnot[int]-and$license.bytes-isnot[long])-or$license.bytes-le0-or$license.bytes-gt1048576){throw 'Audited Vulkan companion license is invalid.'}
+    $system='advapi32 avrt bcrypt bcryptprimitives crypt32 d3d11 d3d9 d3dcompiler_47 d3d12 dcomp dwrite dwmapi dxgi gdi32 imm32 iphlpapi kernel32 msvcrt normaliz ntdll ole32 oleaut32 opengl32 powrprof propsys psapi secur32 setupapi shell32 shlwapi ucrtbase user32 version winhttp wininet winmm winspool ws2_32 shcore uxtheme wldap32 avicap32 d2d1 cfgmgr32'.Split(' ')
+    $imports=@($Record.peImports)
+    if($imports.Count-lt1-or$imports.Count-gt128){throw 'Audited Vulkan companion import inventory is invalid.'}
+    foreach($entry in $imports){
+        if($entry.name-isnot[string]-or$entry.name-cnotmatch'\A[a-z0-9_.-]+\.dll\z'-or$entry.delayLoaded-isnot[bool]-or
+           ($system-cnotcontains$entry.name.Substring(0,$entry.name.Length-4)-and$entry.name-cnotmatch'\A(?:api-ms-win-|ext-ms-win-)[a-z0-9_.-]+\.dll\z')){throw 'Vulkan companion has an unsupported nested dependency.'}
+    }
+    if($null-ne$Receipt){
+        $actual=$Receipt.companionRuntime
+        if($null-eq$actual){throw 'Actual native receipt omitted the Vulkan companion.'}
+        foreach($key in @('schema','kind','path','architecture','sha256','bytes','sourceDirectory','sourceCommit','sourceTree','sourceRemote')){
+            if($actual.$key-cne$Record.$key){throw 'Actual native receipt companion identity differs.'}
+        }
+        foreach($key in @('path','sourcePath','sha256','bytes')){if($actual.license.$key-cne$license.$key){throw 'Actual native receipt companion license differs.'}}
+        $actualImports=@($actual.peImports)
+        if($actualImports.Count-ne$imports.Count){throw 'Actual native receipt companion imports differ.'}
+        for($i=0;$i-lt$imports.Count;$i++){if($actualImports[$i].name-cne$imports[$i].name-or$actualImports[$i].delayLoaded-cne$imports[$i].delayLoaded){throw 'Actual native receipt companion imports differ.'}}
+        $source=@($Receipt.actualDependencySources|Where-Object{$_.directory-ceq'vulkan'})
+        if($source.Count-ne1-or$source[0].commit-cne$Record.sourceCommit-or$source[0].tree-cne$Record.sourceTree-or
+           $source[0].remote-cne$Record.sourceRemote-or$source[0].postBuildWorkingTreeStatus-cne''){throw 'Vulkan companion source receipt differs.'}
+        $mpvImports=@($Receipt.peImports|Where-Object{$_.name-ceq'vulkan-1.dll'})
+        if($mpvImports.Count-ne1-or$mpvImports[0].delayLoaded-isnot[bool]-or$mpvImports[0].delayLoaded){throw 'Actual MPV receipt did not bind the regular Vulkan loader dependency.'}
+    }
+    if($null-ne$Rows-and$Rows.Count-gt0){
+        foreach($expected in @($Record,$license)){
+            $same=@($Rows|Where-Object{$_.path-ceq$expected.path})
+            if($same.Count-ne1-or$same[0].sha256-cne$expected.sha256-or$same[0].bytes-cne$expected.bytes){throw 'Vulkan companion ZIP inventory differs.'}
+        }
+    }
+}
 function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$Upstream,[object[]]$Registration) {
     if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
        $Manifest.tokenProtocol-ne2-or$Manifest.presentationProperty-cne'bilipai-rtx-presentation'-or
@@ -118,7 +160,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
     $paths = New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::OrdinalIgnoreCase)
     $totalBytes = 0L
     foreach ($row in $rows) {
-        if ($row.path -cnotmatch '^(libmpv-2\.dll|licenses/[a-zA-Z0-9_./-]+)$' -or
+        if ($row.path -cnotmatch '^(libmpv-2\.dll|vulkan-1\.dll|licenses/[a-zA-Z0-9_./-]+)$' -or
             ([string]$row.path).Split('/') -contains '..' -or ([string]$row.path).Contains('//') -or
             -not $paths.Add([string]$row.path) -or $row.sha256 -cnotmatch '^[0-9a-f]{64}$' -or
             [long]$row.bytes -le 0 -or [long]$row.bytes -gt 536870912) { throw 'Unsafe or ambiguous patched runtime ZIP inventory.' }
@@ -128,6 +170,8 @@ function Install-RtxCoreDescriptorMpvRuntime {
     foreach ($required in @('libmpv-2.dll', 'licenses/build-receipt.json', 'licenses/native-patch-receipt.json', 'licenses/SOURCES.json', 'licenses/NOTICES.md', 'licenses/bilipai-veyra-core-GPL3.txt', 'licenses/rtx-filter-source-manifest.json')) {
         if (-not $paths.Contains($required)) { throw "Patched runtime required entry is missing: $required" }
     }
+    $companionRequired=$presentation-or$runtime.PSObject.Properties['companionRuntime']-or$paths.Contains('vulkan-1.dll')
+    if($companionRequired){Assert-VulkanCompanion $runtime.companionRuntime $null $rows}
     $dllRow = $rows | Where-Object { $_.path -ceq 'libmpv-2.dll' }
     $buildRow = $rows | Where-Object { $_.path -ceq 'licenses/build-receipt.json' }
     if ($dllRow.sha256 -cne $runtime.artifact.dllSha256 -or $buildRow.sha256 -cne $runtime.buildReceiptSha256) { throw 'Patched runtime descriptor entry digests disagree.' }
@@ -175,6 +219,11 @@ function Install-RtxCoreDescriptorMpvRuntime {
                 if (-not (Test-Path -LiteralPath $file -PathType Leaf) -or
                     (Get-Item -LiteralPath $file).Length -ne [long]$row.bytes -or
                     (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() -cne $row.sha256) { $cacheMatches = $false; break }
+            }
+            if($cacheMatches-and$companionRequired){
+                $cachedBuild=Get-Content -LiteralPath (Join-Path $NativeRoot 'licenses/build-receipt.json') -Raw|ConvertFrom-Json
+                Assert-VulkanCompanion $runtime.companionRuntime $cachedBuild $rows
+                Assert-VulkanCompanion $cached.companionRuntime $cachedBuild $rows
             }
             if($cacheMatches-and$presentation){
                 $cachedNative=Get-Content -LiteralPath (Join-Path $NativeRoot 'licenses/native-patch-receipt.json') -Raw|ConvertFrom-Json
@@ -241,6 +290,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
             $actualProperty = $receipt.patchedRecipeSha256.PSObject.Properties[$property.Name]
             if (-not $actualProperty -or $actualProperty.Value -cne $property.Value) { throw 'Actual build receipt has a different selected recipe.' }
         }
+        if($companionRequired){Assert-VulkanCompanion $runtime.companionRuntime $receipt $rows}
         $nativeReceipt = Get-Content -LiteralPath (Join-Path $extractRoot 'licenses/native-patch-receipt.json') -Raw | ConvertFrom-Json
         if (-not$presentation-and($nativeReceipt.patchId -cne $runtime.variant -or $nativeReceipt.sourceCommit -cne $runtime.sourceCommit -or
             $nativeReceipt.patchSha256 -cne $runtime.nativePatchSha256 -or $nativeReceipt.patchedSourceSha256 -cne $runtime.patchedNativeSourceSha256)) { throw 'Native source receipt mismatch.' }
@@ -316,6 +366,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
             reproducible = $false
             nativeResolutionPpeVerified = $false
         }
+        if($companionRequired){$stamp['companionRuntime']=$receipt.companionRuntime}
         if($presentation){foreach($key in @('presentationProtocolVersion','presentationProperty','upstreamEditsSha256','sourcePatchHelperSha256')){$stamp[$key]=$expected[$key]}}
         $stamp | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $provenanceFile -Encoding utf8
         Write-Host 'Verified patched libmpv candidate staged; RTX core bridge effect remains unverified.'

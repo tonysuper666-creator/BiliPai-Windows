@@ -263,7 +263,8 @@ def pe_imports(data):
 SYSTEM_DLLS = set(('advapi32 avrt bcrypt bcryptprimitives crypt32 d3d11 d3d9 d3dcompiler_47 '
                   'd3d12 dcomp dwrite dwmapi dxgi gdi32 imm32 iphlpapi kernel32 msvcrt normaliz ntdll '
                   'ole32 oleaut32 opengl32 powrprof propsys psapi secur32 setupapi shell32 shlwapi '
-                  'ucrtbase user32 version winhttp wininet winmm winspool ws2_32').split())
+                  'ucrtbase user32 version winhttp wininet winmm winspool ws2_32 '
+                  'shcore uxtheme wldap32 avicap32 d2d1 cfgmgr32').split())
 
 
 def print_nested_build_failure_logs(workspace, workspace_identity, output, output_identity):
@@ -498,6 +499,40 @@ def dependency_inventory(sources):
         dirty = subprocess.check_output(['git', '-C', str(directory), 'status', '--porcelain'], text=True)
         result.append({'directory': directory.name, 'commit': head, 'remote': remote, 'postBuildWorkingTreeStatus': dirty})
     return result
+
+def checked_vulkan_companion(build, sources, inventory):
+    """One source-built loader from this invocation's real install prefix; no SDK/system copies."""
+    prefix = build / 'x86_64-w64-mingw32'
+    path = prefix / 'bin/vulkan-1.dll'
+    if path.is_symlink() or not path.is_file() or not 0 < path.stat().st_size <= 64 * 1024 * 1024:
+        raise RuntimeError('This build did not install one bounded regular Vulkan loader DLL')
+    data = path.read_bytes()
+    imports = pe_imports(data)
+    pe = struct.unpack_from('<I', data, 0x3c)[0]
+    if not (struct.unpack_from('<H', data, pe + 22)[0] & 0x2000) or not 0 < len(imports) <= 128:
+        raise RuntimeError('Vulkan companion is not a Windows x64 DLL with an import inventory')
+    if any(row['name'][:-4] not in SYSTEM_DLLS and not row['name'].startswith(('api-ms-win-', 'ext-ms-win-')) for row in imports):
+        raise RuntimeError('Vulkan companion has an unsupported nested dependency')
+    selected = [row for row in inventory if row['directory'] == 'vulkan']
+    if len(selected) != 1 or selected[0]['remote'] != 'https://github.com/KhronosGroup/Vulkan-Loader.git' or selected[0]['postBuildWorkingTreeStatus'] != '':
+        raise RuntimeError('Vulkan companion did not retain its exact public clean source checkout')
+    source = sources / 'vulkan'
+    tree = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD^{tree}'], text=True).strip()
+    if not re.fullmatch(r'[0-9a-f]{40}', selected[0]['commit']) or not re.fullmatch(r'[0-9a-f]{40}', tree):
+        raise RuntimeError('Vulkan companion source commit/tree is invalid')
+    selected[0]['tree'] = tree
+    license_path = source / 'LICENSE.txt'
+    if license_path.is_symlink() or not license_path.is_file() or not 0 < license_path.stat().st_size <= 1024 * 1024:
+        raise RuntimeError('Vulkan companion corresponding license is missing')
+    license_raw = license_path.read_bytes()
+    record = {'schema': 1, 'kind': 'SOURCE_BUILT_VULKAN_LOADER', 'path': 'vulkan-1.dll',
+              'architecture': 'windows-x64', 'sha256': sha(data), 'bytes': len(data), 'peImports': imports,
+              'sourceDirectory': 'vulkan', 'sourceCommit': selected[0]['commit'], 'sourceTree': tree,
+              'sourceRemote': selected[0]['remote'],
+              'license': {'path': 'licenses/vulkan-loader-LICENSE.txt', 'sourcePath': 'LICENSE.txt',
+                          'sha256': sha(license_raw), 'bytes': len(license_raw)}}
+    return record, data, license_raw
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -802,12 +837,18 @@ def main():
             raise RuntimeError('Expected exactly one actual mpv copy-package-dir DLL output')
         dll = candidates[0].read_bytes()
         imports = pe_imports(dll)
+        inventory = dependency_inventory(sources)
+        companion, companion_dll, companion_license = checked_vulkan_companion(build, sources, inventory)
+        loader_imports = [row for row in imports if row['name'] == companion['path']]
+        if len(loader_imports) != 1 or loader_imports[0]['delayLoaded']:
+            raise RuntimeError('MPV must import the one audited source-built Vulkan loader normally')
         unsupported = [row for row in imports if row['name'][:-4] not in SYSTEM_DLLS
                        and not row['name'].startswith(('api-ms-win-', 'ext-ms-win-'))
+                       and row['name'] != companion['path']
                        and not (row['delayLoaded'] and row['name'] in ('vapoursynth.dll', 'vsscript.dll'))]
         if unsupported:
-            # Existing desktop staging is one libmpv DLL. Do not silently ship a new,
-            # unproven companion dependency or download an SDK to satisfy it.
+            # Only the independently checked loader from this exact source build is bundled.
+            # No arbitrary companion, system DLL or SDK is substituted.
             raise RuntimeError('Native output requires unsupported companion DLLs: ' + json.dumps(unsupported))
         source_receipt = json.loads(candidates[0].with_name('bilipai-native-patch-receipt.json').read_text())
         expected = {'patchId': variant, 'sourceCommit': fixed['sourceCommit'],
@@ -850,7 +891,6 @@ def main():
         if presentation:
             curl_openssl_install_receipt, curl_openssl_materials = curl_openssl_module.validate_materials(
                 build / 'bilipai-curl-openssl-compat-source')
-        inventory = dependency_inventory(sources)
         if presentation:
             for dependency, commit in [('curl', curl_libssh_spec['curlCommit']), ('libssh', curl_libssh_spec['libsshCommit']),
                                        ('libaribcaption', fixed['libaribcaptionCommit'])]:
@@ -923,6 +963,7 @@ def main():
                    'ownrepoSourceCommit': os.environ.get('GITHUB_SHA'), 'containerImage': IMAGE,
                    'buildCommand': command, 'actualDependencySources': inventory, 'actualTools': tools,
                    'dllSha256': dll_sha, 'peImports': imports, 'sourceBundleSha256': bundle_sha,
+                   'companionRuntime': companion,
                    'sourceMaterialScope': 'Fixed archives, altered recipes, active dependency source worktrees excluding .git',
                    'floatingDependencies': True, 'reproducible': False,
                    'gpuOrDriverTested': False, 'nativeResolutionPpeVerified': False, 'rtxCoreBridgeVerified': False,
@@ -951,12 +992,14 @@ def main():
         catalog['originalBinaryBaseline'] = catalog.pop('binary')
         catalog['binary'] = {'variant': variant, 'dllSha256': dll_sha, 'sourceBundleSha256': bundle_sha,
                              'artifactIdentity': 'See the independently generated runtime-descriptor.json'}
-        entries = {'libmpv-2.dll': dll, 'licenses/build-receipt.json': receipt_bytes,
+        entries = {'libmpv-2.dll': dll, companion['path']: companion_dll,
+                   companion['license']['path']: companion_license, 'licenses/build-receipt.json': receipt_bytes,
                    'licenses/native-patch-receipt.json': (json.dumps(source_receipt, sort_keys=True, indent=2) + '\n').encode(),
                    'licenses/SOURCES.json': (json.dumps(catalog, sort_keys=True, indent=2) + '\n').encode(),
                    'licenses/NOTICES.md': ('This is a modified libmpv candidate: ' + variant + '\n'
                        'mpv ' + fixed['sourceCommit'] + ', native patch ' + fixed['nativePatchSha256'] + '\n'
-                       'License inventory retained from the fixed baseline. Actual source/build identity is in build-receipt.json.\n'
+                       'License inventory retained from the fixed baseline; the source-built Vulkan loader/license is also bundled.\n'
+                       'Actual Vulkan source commit/tree, loader SHA and system-only imports are in build-receipt.json.\n'
                        'Corresponding source materials SHA256: ' + bundle_sha + '\n'
                        'RTX core frame bridge and visible effect are unverified; no NVIDIA SDK/runtime is included.\n').encode()}
         gpl3 = ROOT / 'desktop/native/veyra-core/upstream/LICENSE'
@@ -992,7 +1035,7 @@ def main():
                           'archiveSha256': file_sha(artifact), 'dllSha256': dll_sha,
                           'downloadUrls': [], 'entries': [{'path': name, 'bytes': len(data), 'sha256': sha(data)}
                                                          for name, data in sorted(entries.items())]},
-                      'buildReceiptSha256': sha(receipt_bytes),
+                      'buildReceiptSha256': sha(receipt_bytes), 'companionRuntime': companion,
                       'sourceBundle': {'fileName': source_bundle.name, 'sha256': bundle_sha, 'downloadUrl': None},
                       'deliveryStatus': 'LOCAL_ARTIFACT_ONLY_NOT_RELEASED', 'nativeResolutionPpeVerified': False,
                       'rtxCoreBridgeVerified': False, 'closedSdkOrRuntimeIncluded': False, 'vfgImplemented': False}

@@ -24,6 +24,7 @@ $result = [ordered]@{
         coreAbi = $null; coreAbiWire = $null; runtimeFiles = @()
         producerVariant=$null; presentationProtocolVersion=0; filterSourceManifestSha256=$null
         sourcePatchHelperSha256=$null; upstreamEditsSha256=$null; mpvNativeReceiptSha256=$null
+        companionRuntime=$null; mpvBuildReceiptSha256=$null
     }
 }
 function Reject([string]$Code) { throw ('BV_CODE:' + $Code) }
@@ -138,6 +139,48 @@ function Read-SharedBuild([object]$Profile,[string]$Root,[string]$ReceiptHashFie
     if(@($receipt.module.exports).Count-ne8 -or
        (@($receipt.module.exports|Sort-Object)-join',')-cne(@($exports|Sort-Object)-join',')){Reject 'SHARED_ABI_EXPORTS_MISMATCH'}
     return [pscustomobject]@{Receipt=$receipt;Sha256=$locked.Sha256}
+}
+function Assert-VulkanCompanion([object]$Record,[object]$Receipt,[object[]]$Rows) {
+    if($null-eq$Record-or($Record.schema-isnot[int]-and$Record.schema-isnot[long])-or$Record.schema-ne1-or
+       $Record.kind-cne'SOURCE_BUILT_VULKAN_LOADER'-or$Record.path-cne'vulkan-1.dll'-or
+       $Record.architecture-cne'windows-x64'-or$Record.sourceDirectory-cne'vulkan'-or
+       $Record.sourceRemote-cne'https://github.com/KhronosGroup/Vulkan-Loader.git'-or
+       $Record.sourceCommit-cnotmatch'\A[0-9a-f]{40}\z'-or$Record.sourceTree-cnotmatch'\A[0-9a-f]{40}\z'-or
+       $Record.sha256-cnotmatch'\A[0-9a-f]{64}\z'-or
+       ($Record.bytes-isnot[int]-and$Record.bytes-isnot[long])-or$Record.bytes-le0-or$Record.bytes-gt67108864){throw 'Audited Vulkan companion identity is invalid.'}
+    $license=$Record.license
+    if($null-eq$license-or$license.path-cne'licenses/vulkan-loader-LICENSE.txt'-or$license.sourcePath-cne'LICENSE.txt'-or
+       $license.sha256-cnotmatch'\A[0-9a-f]{64}\z'-or
+       ($license.bytes-isnot[int]-and$license.bytes-isnot[long])-or$license.bytes-le0-or$license.bytes-gt1048576){throw 'Audited Vulkan companion license is invalid.'}
+    $system='advapi32 avrt bcrypt bcryptprimitives crypt32 d3d11 d3d9 d3dcompiler_47 d3d12 dcomp dwrite dwmapi dxgi gdi32 imm32 iphlpapi kernel32 msvcrt normaliz ntdll ole32 oleaut32 opengl32 powrprof propsys psapi secur32 setupapi shell32 shlwapi ucrtbase user32 version winhttp wininet winmm winspool ws2_32 shcore uxtheme wldap32 avicap32 d2d1 cfgmgr32'.Split(' ')
+    $imports=@($Record.peImports)
+    if($imports.Count-lt1-or$imports.Count-gt128){throw 'Audited Vulkan companion import inventory is invalid.'}
+    foreach($entry in $imports){
+        if($entry.name-isnot[string]-or$entry.name-cnotmatch'\A[a-z0-9_.-]+\.dll\z'-or$entry.delayLoaded-isnot[bool]-or
+           ($system-cnotcontains$entry.name.Substring(0,$entry.name.Length-4)-and$entry.name-cnotmatch'\A(?:api-ms-win-|ext-ms-win-)[a-z0-9_.-]+\.dll\z')){throw 'Vulkan companion has an unsupported nested dependency.'}
+    }
+    if($null-ne$Receipt){
+        $actual=$Receipt.companionRuntime
+        if($null-eq$actual){throw 'Actual native receipt omitted the Vulkan companion.'}
+        foreach($key in @('schema','kind','path','architecture','sha256','bytes','sourceDirectory','sourceCommit','sourceTree','sourceRemote')){
+            if($actual.$key-cne$Record.$key){throw 'Actual native receipt companion identity differs.'}
+        }
+        foreach($key in @('path','sourcePath','sha256','bytes')){if($actual.license.$key-cne$license.$key){throw 'Actual native receipt companion license differs.'}}
+        $actualImports=@($actual.peImports)
+        if($actualImports.Count-ne$imports.Count){throw 'Actual native receipt companion imports differ.'}
+        for($i=0;$i-lt$imports.Count;$i++){if($actualImports[$i].name-cne$imports[$i].name-or$actualImports[$i].delayLoaded-cne$imports[$i].delayLoaded){throw 'Actual native receipt companion imports differ.'}}
+        $source=@($Receipt.actualDependencySources|Where-Object{$_.directory-ceq'vulkan'})
+        if($source.Count-ne1-or$source[0].commit-cne$Record.sourceCommit-or$source[0].tree-cne$Record.sourceTree-or
+           $source[0].remote-cne$Record.sourceRemote-or$source[0].postBuildWorkingTreeStatus-cne''){throw 'Vulkan companion source receipt differs.'}
+        $mpvImports=@($Receipt.peImports|Where-Object{$_.name-ceq'vulkan-1.dll'})
+        if($mpvImports.Count-ne1-or$mpvImports[0].delayLoaded-isnot[bool]-or$mpvImports[0].delayLoaded){throw 'Actual MPV receipt did not bind the regular Vulkan loader dependency.'}
+    }
+    if($null-ne$Rows-and$Rows.Count-gt0){
+        foreach($expected in @($Record,$license)){
+            $same=@($Rows|Where-Object{$_.path-ceq$expected.path})
+            if($same.Count-ne1-or$same[0].sha256-cne$expected.sha256-or$same[0].bytes-cne$expected.bytes){throw 'Vulkan companion ZIP inventory differs.'}
+        }
+    }
 }
 function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$Upstream,[object[]]$Registration) {
     if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
@@ -305,6 +348,23 @@ try {
         Assert-X64Pe $mpv.Stream
         $result.checked.mpvDllSha256 = $mpv.Sha256
         if ($mpv.Sha256 -cne $mpvExpected) { Reject 'MPV_MODULE_BYTES_MISMATCH' }
+        if($presentation-or$profile.PSObject.Properties['companionRuntime']){
+            Require-Properties $profile @('companionRuntime','mpvBuildReceiptSha256') 'VULKAN_COMPANION_PROFILE_MISSING'
+            $mpvBuild=Open-Locked (Relative-Path $rootFull 'mpv/licenses/build-receipt.json')
+            Same-Hash $mpvBuild.Sha256 $profile.mpvBuildReceiptSha256 'MPV_BUILD_RECEIPT_TRUST_MISMATCH'
+            $mpvBuildReceipt=Read-LockedJson $mpvBuild 1048576
+            Same-Hash $mpvBuildReceipt.dllSha256 $mpv.Sha256 'MPV_BUILD_RECEIPT_MODULE_MISMATCH'
+            Assert-VulkanCompanion $profile.companionRuntime $mpvBuildReceipt $null
+            $loader=Open-Locked (Relative-Path $rootFull 'mpv/vulkan-1.dll')
+            Assert-X64Pe $loader.Stream
+            Same-Hash $loader.Sha256 $profile.companionRuntime.sha256 'VULKAN_COMPANION_BYTES_MISMATCH'
+            if($loader.Bytes-ne$profile.companionRuntime.bytes){Reject 'VULKAN_COMPANION_SIZE_MISMATCH'}
+            $loaderLicense=Open-Locked (Relative-Path $rootFull 'mpv/licenses/vulkan-loader-LICENSE.txt')
+            Same-Hash $loaderLicense.Sha256 $profile.companionRuntime.license.sha256 'VULKAN_COMPANION_LICENSE_MISMATCH'
+            if($loaderLicense.Bytes-ne$profile.companionRuntime.license.bytes){Reject 'VULKAN_COMPANION_LICENSE_SIZE_MISMATCH'}
+            $result.checked.companionRuntime=$profile.companionRuntime
+            $result.checked.mpvBuildReceiptSha256=$mpvBuild.Sha256
+        }
         if($presentation){
             $native=Open-Locked (Relative-Path $rootFull $profile.mpvNativeReceiptRelativePath)
             Same-Hash $native.Sha256 $profile.mpvNativeReceiptSha256 'MPV_NATIVE_RECEIPT_TRUST_MISMATCH'

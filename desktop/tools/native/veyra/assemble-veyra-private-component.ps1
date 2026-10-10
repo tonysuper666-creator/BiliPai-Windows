@@ -91,6 +91,48 @@ function Invoke-Verifier([string]$Script,[string]$Profile,[string]$Digest,[strin
         return $proof
     }finally{$child.Dispose()}
 }
+function Assert-VulkanCompanion([object]$Record,[object]$Receipt,[object[]]$Rows) {
+    if($null-eq$Record-or($Record.schema-isnot[int]-and$Record.schema-isnot[long])-or$Record.schema-ne1-or
+       $Record.kind-cne'SOURCE_BUILT_VULKAN_LOADER'-or$Record.path-cne'vulkan-1.dll'-or
+       $Record.architecture-cne'windows-x64'-or$Record.sourceDirectory-cne'vulkan'-or
+       $Record.sourceRemote-cne'https://github.com/KhronosGroup/Vulkan-Loader.git'-or
+       $Record.sourceCommit-cnotmatch'\A[0-9a-f]{40}\z'-or$Record.sourceTree-cnotmatch'\A[0-9a-f]{40}\z'-or
+       $Record.sha256-cnotmatch'\A[0-9a-f]{64}\z'-or
+       ($Record.bytes-isnot[int]-and$Record.bytes-isnot[long])-or$Record.bytes-le0-or$Record.bytes-gt67108864){throw 'Audited Vulkan companion identity is invalid.'}
+    $license=$Record.license
+    if($null-eq$license-or$license.path-cne'licenses/vulkan-loader-LICENSE.txt'-or$license.sourcePath-cne'LICENSE.txt'-or
+       $license.sha256-cnotmatch'\A[0-9a-f]{64}\z'-or
+       ($license.bytes-isnot[int]-and$license.bytes-isnot[long])-or$license.bytes-le0-or$license.bytes-gt1048576){throw 'Audited Vulkan companion license is invalid.'}
+    $system='advapi32 avrt bcrypt bcryptprimitives crypt32 d3d11 d3d9 d3dcompiler_47 d3d12 dcomp dwrite dwmapi dxgi gdi32 imm32 iphlpapi kernel32 msvcrt normaliz ntdll ole32 oleaut32 opengl32 powrprof propsys psapi secur32 setupapi shell32 shlwapi ucrtbase user32 version winhttp wininet winmm winspool ws2_32 shcore uxtheme wldap32 avicap32 d2d1 cfgmgr32'.Split(' ')
+    $imports=@($Record.peImports)
+    if($imports.Count-lt1-or$imports.Count-gt128){throw 'Audited Vulkan companion import inventory is invalid.'}
+    foreach($entry in $imports){
+        if($entry.name-isnot[string]-or$entry.name-cnotmatch'\A[a-z0-9_.-]+\.dll\z'-or$entry.delayLoaded-isnot[bool]-or
+           ($system-cnotcontains$entry.name.Substring(0,$entry.name.Length-4)-and$entry.name-cnotmatch'\A(?:api-ms-win-|ext-ms-win-)[a-z0-9_.-]+\.dll\z')){throw 'Vulkan companion has an unsupported nested dependency.'}
+    }
+    if($null-ne$Receipt){
+        $actual=$Receipt.companionRuntime
+        if($null-eq$actual){throw 'Actual native receipt omitted the Vulkan companion.'}
+        foreach($key in @('schema','kind','path','architecture','sha256','bytes','sourceDirectory','sourceCommit','sourceTree','sourceRemote')){
+            if($actual.$key-cne$Record.$key){throw 'Actual native receipt companion identity differs.'}
+        }
+        foreach($key in @('path','sourcePath','sha256','bytes')){if($actual.license.$key-cne$license.$key){throw 'Actual native receipt companion license differs.'}}
+        $actualImports=@($actual.peImports)
+        if($actualImports.Count-ne$imports.Count){throw 'Actual native receipt companion imports differ.'}
+        for($i=0;$i-lt$imports.Count;$i++){if($actualImports[$i].name-cne$imports[$i].name-or$actualImports[$i].delayLoaded-cne$imports[$i].delayLoaded){throw 'Actual native receipt companion imports differ.'}}
+        $source=@($Receipt.actualDependencySources|Where-Object{$_.directory-ceq'vulkan'})
+        if($source.Count-ne1-or$source[0].commit-cne$Record.sourceCommit-or$source[0].tree-cne$Record.sourceTree-or
+           $source[0].remote-cne$Record.sourceRemote-or$source[0].postBuildWorkingTreeStatus-cne''){throw 'Vulkan companion source receipt differs.'}
+        $mpvImports=@($Receipt.peImports|Where-Object{$_.name-ceq'vulkan-1.dll'})
+        if($mpvImports.Count-ne1-or$mpvImports[0].delayLoaded-isnot[bool]-or$mpvImports[0].delayLoaded){throw 'Actual MPV receipt did not bind the regular Vulkan loader dependency.'}
+    }
+    if($null-ne$Rows-and$Rows.Count-gt0){
+        foreach($expected in @($Record,$license)){
+            $same=@($Rows|Where-Object{$_.path-ceq$expected.path})
+            if($same.Count-ne1-or$same[0].sha256-cne$expected.sha256-or$same[0].bytes-cne$expected.bytes){throw 'Vulkan companion ZIP inventory differs.'}
+        }
+    }
+}
 function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$Upstream,[object[]]$Registration) {
     if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
        $Manifest.tokenProtocol-ne2-or$Manifest.presentationProperty-cne'bilipai-rtx-presentation'-or
@@ -127,7 +169,7 @@ try{
     $presentation=$ProducerVariant-ceq'bilipai-veyra-rtx-present-v1'
     $templateContract='tools/native/veyra/veyra-profile-template.json';$buildFolder='third-party/libmpv/build/rtx-core-v1';$manifestLeaf='bilipai-rtx-source-manifest.json'
     $contracts=[ordered]@{
-        'tools/native/veyra/verify-veyra-runtime.ps1'='b5a2e65a25c0ecfb0f894cc2ea248befc9453541526c7e864c146e3ee9dd9b5b'
+        'tools/native/veyra/verify-veyra-runtime.ps1'='1983b1b0cf436a06e50cb01b70d37b43f575c0d6b29ca4b4bb611d144f9a6295'
         'tools/native/veyra/veyra-profile-template.json'='b9d6201b7e33d3e042edaf0175683d6166a5e013dc85825c98ecc9e740cd2bbc'
         'third-party/libmpv/build/rtx-core-v1/fixed-inputs.json'='b1cfbd180bd2c0c00257f29176707cc965cd7f849a22271cae402259778bceb7'
         'third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json'='9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f'
@@ -191,7 +233,7 @@ try{
     $rowFiles=@{};$total=0L
     foreach($row in $rows){
         Fields $row @('path','sha256','bytes')
-        if($row.path-cnotmatch'\A(?:libmpv-2\.dll|licenses/[A-Za-z0-9_./-]+)\z'-or-not$seen.Add([string]$row.path)-or[long]$row.bytes-le0-or[long]$row.bytes-gt536870912){Reject 'MPV_INVENTORY_INVALID'}
+        if($row.path-cnotmatch'\A(?:libmpv-2\.dll|vulkan-1\.dll|licenses/[A-Za-z0-9_./-]+)\z'-or-not$seen.Add([string]$row.path)-or[long]$row.bytes-le0-or[long]$row.bytes-gt536870912){Reject 'MPV_INVENTORY_INVALID'}
         $file=Open-Locked (Relative $mpvRoot $row.path) (Hash-Value $row.sha256)
         if($file.Bytes-ne[long]$row.bytes){Reject 'MPV_STAGED_BYTES_MISMATCH'};$rowFiles[$row.path]=$file;$total+=$file.Bytes
     }
@@ -202,6 +244,11 @@ try{
     Equal-Hash $rowFiles['licenses/rtx-filter-source-manifest.json'].Sha256 $fixed.filterSourceManifestSha256
     Equal-Hash $rowFiles['licenses/bilipai-veyra-core-GPL3.txt'].Sha256 $fixed.bridgeGpl3LicenseSha256
     $mpvReceipt=Read-Json $rowFiles['licenses/build-receipt.json'];$nativeReceipt=Read-Json $rowFiles['licenses/native-patch-receipt.json']
+    $companionRequired=$presentation-or$descriptor.PSObject.Properties['companionRuntime']-or$seen.Contains('vulkan-1.dll')
+    if($companionRequired){
+        Assert-VulkanCompanion $descriptor.companionRuntime $mpvReceipt $rows
+        Assert-VulkanCompanion $provenance.companionRuntime $mpvReceipt $rows
+    }
     foreach($key in $fixedFields){if($mpvReceipt.$key-cne$descriptor.$key){Reject 'MPV_BUILD_RECEIPT_IDENTITY_MISMATCH'}}
     foreach($key in @('recipeArchiveSha256','containerImage')){if($mpvReceipt.$key-cne$descriptor.$key){Reject 'MPV_BUILD_RECEIPT_IDENTITY_MISMATCH'}}
     if($mpvReceipt.ffmpegCommit-cne$fixed.ffmpegCommit-or$provenance.ffmpegCommit-cne$fixed.ffmpegCommit){Reject 'FFMPEG_IDENTITY_MISMATCH'}
@@ -245,11 +292,19 @@ try{
     foreach($path in $runtimeFiles.Keys){Copy-Locked $runtimeFiles[$path] (Relative $stage $path)}
     $profile.projectId=$guid;$profile.moduleBuildSha256=$core.Sha256.ToUpperInvariant();$profile.mpvDllSha256=$rowFiles['libmpv-2.dll'].Sha256.ToUpperInvariant();$profile.nativeBuildReceiptSha256=$coreReceiptFile.Sha256.ToUpperInvariant()
     if($presentation){$profile.mpvNativeReceiptSha256=$rowFiles['licenses/native-patch-receipt.json'].Sha256.ToUpperInvariant()}
+    if($companionRequired){
+        $profile|Add-Member -MemberType NoteProperty -Name companionRuntime -Value $mpvReceipt.companionRuntime
+        $profile|Add-Member -MemberType NoteProperty -Name mpvBuildReceiptSha256 -Value $rowFiles['licenses/build-receipt.json'].Sha256.ToUpperInvariant()
+    }
     $profile.selection.boundStatus='MATERIALS_BOUND_NOT_LOADED';$profile.selection.reason='explicit-private-authenticated-build-pair-not-gpu-verified'
     $bytes=Json-Bytes $profile;$profileHash=Bytes-Hash $bytes;$profilePath=Relative $stage 'profile.json';Write-New $profilePath $bytes
     $proof=Invoke-Verifier $contractFiles['tools/native/veyra/verify-veyra-runtime.ps1'].Path $profilePath $profileHash $stage
     Equal-Hash $proof.checked.moduleBuildSha256 $core.Sha256;Equal-Hash $proof.checked.mpvDllSha256 $rowFiles['libmpv-2.dll'].Sha256;Equal-Hash $proof.checked.nativeBuildReceiptSha256 $coreReceiptFile.Sha256
     if($proof.checked.producerVariant-cne$fixed.variant){Reject 'VERIFIER_PRODUCER_MISMATCH'}
+    if($companionRequired){
+        Assert-VulkanCompanion $proof.checked.companionRuntime $mpvReceipt $rows
+        Equal-Hash $proof.checked.mpvBuildReceiptSha256 $rowFiles['licenses/build-receipt.json'].Sha256
+    }
     if($presentation-and$proof.checked.presentationProtocolVersion-ne2){Reject 'VERIFIER_PRESENTATION_PROTOCOL_MISMATCH'}
     $receipt=[ordered]@{schema=1;status='PACKAGE_VERIFIED_NOT_LOADED';profileSha256=$profileHash;moduleBuildSha256=$core.Sha256;nativeBuildReceiptSha256=$coreReceiptFile.Sha256;mpvDllSha256=$rowFiles['libmpv-2.dll'].Sha256;descriptorSha256=$descriptorFile.Sha256;mpvProvenanceSha256=$provenanceFile.Sha256;archiveSha256=$archive.Sha256;sourceBundleSha256=$sourceBundle.Sha256;sourceBundleCopied=$false;closedRuntimesPrivateOnly=$true;gpuVerified=$false;coreLoaded=$false;mpvLoaded=$false;verifierSha256=$contracts['tools/native/veyra/verify-veyra-runtime.ps1']}
     Write-New (Relative $stage 'component-assembly-receipt.json') (Json-Bytes $receipt)
