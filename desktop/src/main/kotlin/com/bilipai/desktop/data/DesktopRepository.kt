@@ -357,8 +357,11 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             client.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
                 DesktopSessionEpoch(authorization.receipt.accountEpoch, stillOwned, playbackAuthorization = authorization)).build())
         }
+    internal fun <T> ownedPlaybackService(type: Class<T>, authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean): T =
+        ownedPlaybackService(type, authorization, stillOwned, null)
+
     internal fun <T> ownedPlaybackService(type: Class<T>, authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean,
-        decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null): T =
+        decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)?): T =
         Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(ownedPlaybackCallFactory(authorization, stillOwned)
             .let { decorateCalls?.invoke(it) ?: it })
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
