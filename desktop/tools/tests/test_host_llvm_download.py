@@ -284,6 +284,48 @@ class HostSnapshotDownloadTest(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(m.DownloadError):
                 m.redirect_target(bad)
 
+    def test_observed_modern_own_release_asset_redirect(self):
+        # Fixed own API asset 627202407, observed 2026-10-10; live signed query is never retained.
+        path = '/github-production-release-asset/1396578755/2442269f-f08e-4632-b6d6-1d41465d1d3c'
+        host = 'release-assets.githubusercontent.com'
+        self.assertEqual(m.redirect_target('https://' + host + path + '?sig=OPAQUE'),
+            (host, path + '?sig=OPAQUE'))
+
+    def test_modern_redirect_keeps_observed_own_host_repo_and_uuid_shape(self):
+        path = '/github-production-release-asset/1396578755/2442269f-f08e-4632-b6d6-1d41465d1d3c'
+        host = 'release-assets.githubusercontent.com'
+        rejected = (
+            ('wrong own repository', host, path.replace('/1396578755/', '/1396578754/')),
+            ('uppercase uuid', host, path.replace('2442269f', '2442269F')),
+            ('malformed uuid', host, path[:-1]),
+            ('extra path segment', host, path + '/extra'),
+            ('different literal prefix', host, path.replace('release-asset/', 'release-assets/')),
+            ('other legacy allowlisted host', 'objects.githubusercontent.com', path),
+        )
+        for reason, target_host, target_path in rejected:
+            with self.subTest(reason=reason), self.assertRaisesRegex(m.DownloadError, 'ASSET_REDIRECT_DESTINATION_REJECTED'):
+                m.redirect_target('https://' + target_host + target_path)
+
+    def test_observed_modern_redirect_uses_same_single_hop_auth_free_transport(self):
+        payload = b'FIXED OWN SMALL JSON BYTES'
+        path = '/github-production-release-asset/1396578755/2442269f-f08e-4632-b6d6-1d41465d1d3c'
+        factory, requests = self.connections([
+            Response(302, headers={'Location': 'https://release-assets.githubusercontent.com' + path + '?sig=OPAQUE'}),
+            Response(200, payload, {'Content-Length': str(len(payload))})])
+        with patch.object(m.http.client, 'HTTPSConnection', factory):
+            destination = io.BytesIO()
+            total = hashlib.sha256()
+            m.stream_part(627202407, 'DOWNLOAD_ONLY_TOKEN', destination, len(payload), sha(payload), total)
+        self.assertEqual(destination.getvalue(), payload)
+        self.assertEqual(total.hexdigest(), sha(payload))
+        self.assertEqual(len(requests), 2)
+        self.assertEqual(requests[0][0:3], ('api.github.com', 'GET', m.BASE + '/releases/assets/627202407'))
+        self.assertEqual(requests[0][3]['Authorization'], 'Bearer DOWNLOAD_ONLY_TOKEN')
+        self.assertEqual(requests[1][0:3], ('release-assets.githubusercontent.com', 'GET', path + '?sig=OPAQUE'))
+        self.assertNotIn('Authorization', requests[1][3])
+        self.assertNotIn('Cookie', requests[1][3])
+        self.assertNotIn('DOWNLOAD_ONLY_TOKEN', repr(requests[1]))
+
     def connections(self, responses):
         requests = []
         class Connection:

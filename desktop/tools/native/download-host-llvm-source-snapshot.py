@@ -93,7 +93,9 @@ def redirect_target(location):
     if (parsed.scheme != 'https' or parsed.hostname not in REDIRECT_HOSTS
             or parsed.netloc != parsed.hostname or parsed.username is not None
             or parsed.password is not None or parsed.fragment
-            or not re.fullmatch(r'/github-production-release-asset-[A-Za-z0-9._/-]+', parsed.path)
+            or not (re.fullmatch(r'/github-production-release-asset-[A-Za-z0-9._/-]+', parsed.path)
+                or (parsed.hostname == 'release-assets.githubusercontent.com'
+                    and re.fullmatch(r'/github-production-release-asset/1396578755/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', parsed.path)))
             or any(part in ('', '.', '..') for part in parsed.path.split('/')[1:])):
         reject('ASSET_REDIRECT_DESTINATION_REJECTED')
     # This signed URL is retained in memory only and never logged or persisted.
