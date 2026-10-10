@@ -113,6 +113,24 @@ def offline_error_ui(previous,original):
  assert reverse==previous,'v029 failure UI inverse failed'
  return s,changes,fragments
 
+def offline_nvidia_enhancement_ui(previous):
+ """Actual original offline bottom row, same Root NVIDIA configuration/session and source token."""
+ s=previous;changes=[]
+ def replace(before,after,label):
+  nonlocal s
+  assert s.count(before)==1,label
+  index=s.index(before);changes.append({'index':index,'before':before,'after':after,'label':label})
+  s=s[:index]+after+s[index+len(before):]
+ replace('    val player = remember(bindings, file.absolutePath, task.id) {\n        bindings.control(task.id)\n    }','    val player = remember(bindings, file.absolutePath, task.id) {\n        bindings.control(task.id)\n    }\n    // This UI borrows the actual Windows Root session; it never creates another player/configuration.\n    val enhancementBinding = LocalDesktopWindowsVideoEnhancement.current\n    val enhancementState by enhancementBinding.state.collectAsState()\n    var enhancementMenuOpen by remember(bindings, player, actualSourceVersion) { mutableStateOf(false) }','same Root enhancement flow and source-keyed menu hold')
+ replace('    LaunchedEffect(showControls, isPlaying) {\n        if (showControls && isPlaying) {','    LaunchedEffect(showControls, isPlaying, enhancementMenuOpen) {\n        if (showControls && isPlaying && !enhancementMenuOpen) {','hold original offline auto-hide while existing enhancement menu is expanded')
+ replace('                    Spacer(modifier = Modifier.weight(1f))\n\n                    if (danmakuAvailable) {','                    Spacer(modifier = Modifier.weight(1f))\n\n                    if (!task.isAudioOnly) {\n                        DesktopVideoEnhancementCompactSlot(\n                            showStatus = false,\n                            menuEnabled = player.isOwned() && LocalDesktopDetailForeground.current &&\n                                playbackFailure == null && enhancementState.sourceVersion == player.sourceVersion,\n                            onMenuExpandedChanged = { enhancementMenuOpen = it },\n                        ) {\n                            DesktopVideoEnhancementControls(enhancementState, enhancementBinding.configuration,\n                                onToggle = { enhancementBinding.configuration.setAutomaticEnabled(it) },\n                                // CompactSlot mounts the existing modeless menu; this noncompact fallback is unused.\n                                onSettings = {})\n                        }\n                        Spacer(modifier = Modifier.width(8.dp))\n                    }\n\n                    if (danmakuAvailable) {','actual original bottom row compact NVIDIA menu')
+ reverse=s
+ for change in changes[::-1]:
+  i=change['index'];after=change['after'];assert reverse[i:i+len(after)]==after,change['label']
+  reverse=reverse[:i]+change['before']+reverse[i+len(after):]
+ assert reverse==previous,'Windows offline NVIDIA enhancement UI inverse failed'
+ return s,changes
+
 def generate(repo,output,standalone=False):
  repo=Path(repo).resolve();output=Path(output).resolve();manifest=json.loads(read(repo/'desktop/upstream-sources.json'))
  assert manifest['upstreamCommit']==COMMIT,'Fixed target changed'
@@ -136,6 +154,7 @@ def generate(repo,output,standalone=False):
  assert reverse==originals[path],'Full original UI inverse failed'
  error_sources=offline_error_sources(repo)
  s,error_delta,error_fragments=offline_error_ui(s,error_sources['OfflineVideoPlayerScreen.kt'])
+ s,enhancement_delta=offline_nvidia_enhancement_ui(s)
  assert 'ExoPlayer' not in s and 'import android.' not in s and 'MiniPlayerManager' not in s
  destination='com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt';write(output/destination,s)
  records.append({'path':path,'sha256LF':SOURCE_PINS[path],'output':destination,'outputSha256LF':sha(s),'fullFourDeclarationsRetained':True,'exactInversePass':True})
@@ -165,7 +184,7 @@ def generate(repo,output,standalone=False):
  body=LONG_PRESS_PREFIX+'object DesktopOriginalLongPressSpeedSettings {\n'+adapted+'\n}\n'
  destination='com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt';write(output/destination,body)
  records.append({'path':path,'sha256LF':SOURCE_PINS[path],'output':destination,'outputSha256LF':sha(body),'selectedMethods':['getLongPressSpeed'],'originalGetterSha256LF':sha(getter),'adaptedGetterSha256LF':sha(adapted),'exactInversePass':True,'canonicalKey':'long_press_speed','existingDefaultAndNormalizePolicyReused':True})
- write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'soleDirectReference':direct,'standalone':standalone,'exactUiDelta':UI_DELTA,'completeOriginalUiLines':len(originals[BASE+'feature/download/OfflineVideoPlayerScreen.kt'].splitlines()),'originalFourDeclarations':['GestureMode','OfflineVideoPlayerScreen','ProgressInfo','OfflineProgressBar'],'newPlayerOrStoreOrHTTP':False},ensure_ascii=False,indent=2))
+ write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'soleDirectReference':direct,'standalone':standalone,'exactUiDelta':UI_DELTA,'exactWindowsNvidiaEnhancementDelta':enhancement_delta,'completeOriginalUiLines':len(originals[BASE+'feature/download/OfflineVideoPlayerScreen.kt'].splitlines()),'originalFourDeclarations':['GestureMode','OfflineVideoPlayerScreen','ProgressInfo','OfflineProgressBar'],'newPlayerOrStoreOrHTTP':False},ensure_ascii=False,indent=2))
  return records
 if __name__=='__main__':
  cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);cli.add_argument('--standalone',action='store_true');args=cli.parse_args()
