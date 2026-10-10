@@ -312,7 +312,7 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
             var checks = 0
             try {
                 val source = f.accepted.nativeSource.source.copy(nativePublication = null,
-                    videoUrl = "https://fixture.invalid/pgc-120", quality = 120)
+                    videoUrl = "https://fixture.invalid/pgc-120")
                 val child = f.owner.publishBangumiQualityReplacement(f.accepted.request, source,
                     f.accepted.sourceVersion, caller, f.accepted, { true }, {
                         checks++; assertTrue(f.publication.held); parentCurrent
@@ -323,7 +323,7 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
                 assertEquals(1, checks) // Neither transport handoff nor initial ACK rechecks old intent.
                 assertSame(child, f.owner.current())
                 assertEquals("https://fixture.invalid/pgc-120", f.actor.native.loads.last()[1])
-                assertEquals(120, child.nativeSource.source.quality)
+                assertEquals(source, child.nativeSource.source.copy(nativePublication = null))
                 assertEquals(f.accepted.nativeSource.source.audioUrl, child.nativeSource.source.audioUrl)
                 assertEquals(f.accepted.nativeSource.source.authorizationReceipt, child.nativeSource.source.authorizationReceipt)
                 assertEquals(27.75, child.nativeSource.source.startPositionSeconds)
