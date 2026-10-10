@@ -1,7 +1,7 @@
 package com.bilipai.desktop.player
 
 /** Source values used by the app's authorized proxy; default logging deliberately contains no source or headers. */
-internal class OwnedPlaybackSourceSnapshot(val sourceVersion: Long, val source: PlaybackSource) {
+class OwnedPlaybackSourceSnapshot internal constructor(val sourceVersion: Long, val source: PlaybackSource) {
     override fun toString(): String = "OwnedPlaybackSourceSnapshot(sourceVersion=$sourceVersion)"
 }
 
