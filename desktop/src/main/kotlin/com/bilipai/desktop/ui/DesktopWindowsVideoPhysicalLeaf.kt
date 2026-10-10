@@ -267,7 +267,8 @@ internal class DesktopWindowsVideoActions(
     var audioTrackMenu by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoAudioSelection?>(null) }
     var interactionMode by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoInteraction?>(null) }
     var downloadSelection by remember(assembly, route) { mutableStateOf<DesktopWindowsVideoDownloadSelection?>(null) }
-    fun openDownloadSelection(value: VideoPlaybackUiState.Success) {
+    var batchDownloadSelection by remember(assembly, route) { mutableStateOf<DesktopWindowsVideoBatchDownloadSelection?>(null) }
+    fun openDownloadSelection(value: VideoPlaybackUiState.Success, batch: Boolean = false) {
         val expected = assembly.native.current() ?: return
         val pageJob = partScope.coroutineContext[kotlinx.coroutines.Job] ?: return
         fun stillCaptured(): Boolean = current() && rootEnvironment.owns() &&
@@ -279,10 +280,19 @@ internal class DesktopWindowsVideoActions(
             }
         if (value.info.bvid != expected.request.bvid || value.info.cid != expected.request.cid) return
         downloadSelection?.dismiss()
-        downloadSelection = DesktopWindowsVideoDownloadSelection.capture(value, pageJob, ::stillCaptured) { quality, options, owns ->
-            // The original VM owns the actual request Job, account receipt and task capture.
-            // No request or persistence is performed under native/Store admission locks.
-            assembly.playback.downloadWithQuality(quality, options, owns)
+        batchDownloadSelection?.dismiss()
+        downloadSelection = null
+        batchDownloadSelection = null
+        // The original VM owns the actual request Job, account receipt and task capture.
+        // No request or persistence is performed under native/Store admission locks.
+        if (batch) {
+            batchDownloadSelection = DesktopWindowsVideoBatchDownloadSelection.capture(value, pageJob, ::stillCaptured) { quality, options, candidates, owns ->
+                assembly.playback.downloadBatchWithQuality(quality, options, candidates, owns)
+            }
+        } else {
+            downloadSelection = DesktopWindowsVideoDownloadSelection.capture(value, pageJob, ::stillCaptured) { quality, options, owns ->
+                assembly.playback.downloadWithQuality(quality, options, owns)
+            }
         }
     }
     // SHARE alone retains its original draft tree across temporary owner hiding.
@@ -733,6 +743,9 @@ internal class DesktopWindowsVideoActions(
                                     if (desktopWindowsVideoCanChooseDownloadQuality(success)) openDownloadSelection(success)
                                     else if (current()) actions.download(assembly, success)
                                 }) { Text(if (desktopWindowsVideoCanChooseDownloadQuality(success)) "下载" else "下载当前画质") }
+                                if (com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(success.info).size > 1) {
+                                    TextButton(onClick = { openDownloadSelection(success, batch = true) }) { Text("批量缓存") }
+                                }
                                 TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.SHARE) }, enabled = interactionCurrent()) { Text("分享视频") }
                             }
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -941,6 +954,27 @@ internal class DesktopWindowsVideoActions(
             onDismiss = {
                 selected.dismiss()
                 if (downloadSelection === selected) downloadSelection = null
+            },
+        )
+    }
+
+    batchDownloadSelection?.takeIf { it.isCurrent() }?.let { selected ->
+        val downloadTasks by platforms.holder.downloads.tasks.collectAsState()
+        val downloadedIds = downloadTasks.values.filter { !it.isFailed && !it.isAudioOnly }
+            .map { "${it.bvid}#${it.cid}" }.toSet()
+        com.android.purebilibili.feature.download.BatchDownloadDialog(
+            title = selected.title,
+            candidates = selected.candidates,
+            qualityOptions = selected.qualityOptions,
+            currentQuality = selected.currentQuality,
+            downloadedIds = downloadedIds,
+            onConfirm = { quality, options, candidates ->
+                selected.select(quality, options, candidates)
+                if (batchDownloadSelection === selected) batchDownloadSelection = null
+            },
+            onDismiss = {
+                selected.dismiss()
+                if (batchDownloadSelection === selected) batchDownloadSelection = null
             },
         )
     }

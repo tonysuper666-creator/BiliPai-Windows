@@ -6,6 +6,7 @@ import com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderPro
 import com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol
 import com.android.purebilibili.feature.download.DownloadOptions
 import com.android.purebilibili.feature.download.DownloadTask
+import com.android.purebilibili.feature.download.resolveBatchDownloadCandidates
 import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
 import com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore
 import com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase
@@ -17,6 +18,7 @@ import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import java.lang.reflect.Proxy
 import java.nio.file.Files
 import kotlin.coroutines.CoroutineContext
@@ -48,6 +50,12 @@ class DesktopWindowsVideoDownloadSelectionTest {
         cachedDashAudios = listOf(DashAudio(id = 30280, baseUrl = "https://fixture.invalid/audio")),
     )
 
+    private fun batchSuccess() = success().copy(info = success().info.copy(pages = listOf(
+        Page(cid = 70, page = 1, part = "First", duration = 10),
+        Page(cid = 71, page = 2, part = "Second", duration = 20),
+        Page(cid = 72, page = 3, part = "Third", duration = 30),
+    )))
+
     private inner class Harness(dispatcher: CoroutineDispatcher = Dispatchers.Unconfined) : AutoCloseable {
         val folder = Files.createTempDirectory("original-download-selection-")
         val unexpected = mutableListOf<Throwable>()
@@ -62,13 +70,32 @@ class DesktopWindowsVideoDownloadSelectionTest {
         val queued = mutableListOf<DownloadTask>()
         var afterConstruction: () -> Unit = {}
         var beforeFinalAdmission: () -> Unit = {}
+        var afterAdmission: () -> Unit = {}
+        var beforeReply: () -> Unit = {}
+        val requested = mutableListOf<Pair<String, Long>>()
+        val capturedReplies = mutableListOf<PlayUrlData?>()
+        val existing = mutableMapOf<Long, DownloadTask>()
         fun publication() = DesktopOriginalVideoAcceptedPublication(
             PlaybackRequest.create("BVfixture", aid = 17, cid = 70),
             OwnedPlaybackSourceSnapshot(1, PlaybackSource("https://fixture.invalid/no-media")))
         fun owns() = entry && account == 1L
         fun clickCurrent() = owns() && pageJob.isActive && accepted === original
         fun commit(action: () -> Unit): Boolean = if (!owns()) false else { action(); true }
-        val repository = unused<DesktopOriginalVideoOwnerRepository>()
+        val repository = Proxy.newProxyInstance(DesktopOriginalVideoOwnerRepository::class.java.classLoader,
+            arrayOf(DesktopOriginalVideoOwnerRepository::class.java)) { _, method, args ->
+            when (method.name) {
+                "getPlayUrlData" -> {
+                    val bvid = args!![0] as String; val cid = args[1] as Long; val quality = args[2] as Int
+                    requested += bvid to cid
+                    beforeReply()
+                    PlayUrlData(quality = quality, acceptQuality = listOf(quality), dash = Dash(
+                        video = listOf(DashVideo(id = quality, baseUrl = "https://fixture.invalid/$bvid/$cid/video", codecs = "avc1.640028")),
+                        audio = listOf(DashAudio(id = 30280, baseUrl = "https://fixture.invalid/$bvid/$cid/audio"))))
+                }
+                "isAppApiCoolingDown" -> false
+                else -> error("No real repository execution: ${method.name}")
+            }
+        } as DesktopOriginalVideoOwnerRepository
         val media = unused<DesktopOriginalVideoMediaPort>()
         val actions = unused<DesktopOriginalVideoOwnerActions>()
         val invocations = DesktopOriginalVideoPlaybackInvocationPorts(scope, ::owns, {
@@ -89,7 +116,9 @@ class DesktopWindowsVideoDownloadSelectionTest {
         val downloads = object : DesktopOriginalVideoOwnerDownload {
             override val tasks = MutableStateFlow<Map<String, DownloadTask>>(emptyMap())
             override fun captureTask(task: DownloadTask, explicitReply: PlayUrlData?): DownloadTask {
-                assertNull(explicitReply) // These tests use the actual cached-track branch.
+                if (task.bvid == "BVfixture" && task.cid == 70L) assertNull(explicitReply)
+                else assertNotNull(explicitReply)
+                capturedReplies += explicitReply
                 currentThreadRequest()
                 constructed += task
                 afterConstruction()
@@ -103,9 +132,10 @@ class DesktopWindowsVideoDownloadSelectionTest {
                 beforeFinalAdmission()
                 if (!stillCaptured()) throw CancellationException("Retired at admission")
                 queued += task
+                afterAdmission()
                 return true
             }
-            override fun getVideoTask(bvid: String, cid: Long): DownloadTask? = null
+            override fun getVideoTask(bvid: String, cid: Long): DownloadTask? = existing[cid]?.takeIf { it.bvid == bvid }
             override suspend fun saveImageToGallery(context: DesktopOriginalPlayerSettingsContext, url: String, title: String) = error("No cover download")
         }
         private val api = unused<BilibiliApi>()
@@ -116,7 +146,14 @@ class DesktopWindowsVideoDownloadSelectionTest {
         private val settings = DesktopOriginalPlayerSettingsContext(context, ::owns, ::commit,
             largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false })
         private val useCase = DesktopOriginalVideoPlaybackUseCaseEnvironment(context, repository, actions,
-            unused<DesktopOriginalVideoProgressPort>(), unused<DesktopOriginalVideoPlaybackCapabilities>(), media,
+            unused<DesktopOriginalVideoProgressPort>(), object : DesktopOriginalVideoPlaybackCapabilities {
+                override fun isHevcSupported() = false
+                override fun isAv1Supported() = false
+                override fun isHdrSupported() = false
+                override fun isDolbyVisionSupported() = false
+                override fun isDolbyAtmosAudioSupported() = false
+                override fun isDolbySoftwareAudioDecoderRequired() = false
+            }, media,
             { error("No native volume effect") }, { emptyMap() }, {}, { false }, { _, _, _, _ -> }, ::owns)
         val vm = VideoPlaybackViewModel(DesktopOriginalVideoPlaybackOwnerEnvironment(scope, settings, invocations,
             repository, unused(), actions, useCase, interaction, unused(), unused(), unused(), plugins, downloads,
@@ -124,16 +161,24 @@ class DesktopWindowsVideoDownloadSelectionTest {
             DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit)))
         val session = VideoPlaybackViewModel::class.java.getDeclaredField("playbackSessionStore").apply { isAccessible = true }
             .get(vm) as PlaybackSessionStore
-        init {
+        fun installSuccess(value: VideoPlaybackUiState.Success) {
             @Suppress("UNCHECKED_CAST")
             val raw = VideoPlaybackViewModel::class.java.getDeclaredField("_uiState").apply { isAccessible = true }
                 .get(vm) as MutableStateFlow<VideoPlaybackUiState>
-            raw.value = success()
+            raw.value = value
+        }
+        init {
+            installSuccess(success())
             session.updateCurrentMedia("BVfixture", 70)
             session.setCurrentLoadRequestToken(12)
         }
         fun chooser() = assertNotNull(DesktopWindowsVideoDownloadSelection.capture(success(), pageJob, ::clickCurrent,
             vm::downloadWithQuality))
+        fun batchChooser(value: VideoPlaybackUiState.Success = batchSuccess()): DesktopWindowsVideoBatchDownloadSelection {
+            installSuccess(value)
+            return assertNotNull(DesktopWindowsVideoBatchDownloadSelection.capture(value, pageJob, ::clickCurrent,
+                vm::downloadBatchWithQuality))
+        }
         override fun close() {
             pageJob.cancel(); scope.cancel(); folder.toFile().deleteRecursively()
             assertTrue(unexpected.isEmpty(), unexpected.joinToString { it.toString() })
@@ -222,6 +267,173 @@ class DesktopWindowsVideoDownloadSelectionTest {
                 error("Progressive source must keep the existing current-source callback")
             })
         } finally { job.cancel() }
+    }
+
+
+    @Test fun actualBatchVmQueuesMultipleOriginalPartTasksWithSeparateReplyCaptures() {
+        Harness().use { h ->
+            val chooser = h.batchChooser()
+            assertEquals(listOf(70L, 71L, 72L), chooser.candidates.map { it.cid })
+            assertEquals(listOf(true, false, false), chooser.candidates.map { it.selected })
+            assertEquals(120, chooser.currentQuality)
+            assertTrue(chooser.select(80, DownloadOptions(includeDanmaku = false), chooser.candidates.map { it.copy(selected = true) }))
+            assertFalse(chooser.select(80, DownloadOptions(), chooser.candidates))
+            assertEquals(listOf(70L, 71L, 72L), h.queued.map { it.cid })
+            assertEquals(listOf("BVfixture" to 71L, "BVfixture" to 72L), h.requested)
+            assertNull(h.capturedReplies.first()); assertTrue(h.capturedReplies.drop(1).all { it != null })
+            assertEquals(listOf(1, 2, 3), h.queued.map { it.episodeSortIndex })
+            assertTrue(h.queued.all { it.groupKey == "bvid:BVfixture" && it.episodeCount == 3 && !it.options.includeDanmaku })
+            assertTrue(h.queued.zip(h.constructed).all { (queued, captured) -> queued === captured })
+        }
+    }
+
+    @Test fun collectionCandidatesUseOriginalSeasonPriorityAndExactOtherBvidReply() {
+        Harness().use { h ->
+            val value = batchSuccess().copy(info = batchSuccess().info.copy(ugc_season = UgcSeason(
+                id = 9, title = "Collection", sections = listOf(UgcSection(episodes = listOf(
+                    UgcEpisode(bvid = "BVfixture", cid = 70, title = "Current"),
+                    UgcEpisode(bvid = "BVother", cid = 81, title = "Other"),
+                ))))))
+            val chooser = h.batchChooser(value)
+            assertEquals(listOf("BVfixture", "BVother"), chooser.candidates.map { it.bvid })
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            assertEquals(listOf("BVother" to 81L), h.requested)
+            assertEquals(listOf("BVfixture" to 70L, "BVother" to 81L), h.queued.map { it.bvid to it.cid })
+            assertTrue(h.queued.all { it.groupKey == "ugc:9" && it.episodeCount == 2 })
+        }
+    }
+
+    @Test fun batchSourceReplacedBeforeDispatchCannotRequestOrConstructAnyPart() {
+        val dispatcher = PausedDispatcher()
+        Harness(dispatcher).use { h ->
+            val chooser = h.batchChooser()
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            h.accepted = h.publication(); dispatcher.drain()
+            assertTrue(h.requested.isEmpty()); assertTrue(h.constructed.isEmpty()); assertTrue(h.queued.isEmpty())
+        }
+    }
+
+    @Test fun batchCancelledPageDoesNotRetargetTheQueuedInvocation() {
+        val dispatcher = PausedDispatcher()
+        Harness(dispatcher).use { h ->
+            val chooser = h.batchChooser()
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            h.pageJob.cancel(); dispatcher.drain()
+            assertTrue(h.scope.isActive); assertTrue(h.requested.isEmpty()); assertTrue(h.queued.isEmpty())
+        }
+    }
+
+    @Test fun sourceRetirementAfterFirstBatchAdmissionPreservesOnlyTheAcceptedTask() {
+        Harness().use { h ->
+            val chooser = h.batchChooser()
+            h.afterAdmission = { h.accepted = h.publication() }
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            assertEquals(listOf(70L), h.queued.map { it.cid })
+            assertEquals(1, h.constructed.size); assertTrue(h.requested.isEmpty())
+        }
+    }
+
+    @Test fun explicitPartReplyCannotEnterQueueAfterItsPageRetires() {
+        Harness().use { h ->
+            val chooser = h.batchChooser()
+            h.beforeReply = { h.pageJob.cancel() }
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.filter { it.cid == 71L }.map { it.copy(selected = true) }))
+            assertEquals(listOf("BVfixture" to 71L), h.requested)
+            assertEquals(1, h.constructed.size); assertTrue(h.queued.isEmpty())
+        }
+    }
+
+    @Test fun existingBatchTaskIsSkippedAndLaterSelectedPartStillUsesOriginalProducer() {
+        Harness().use { h ->
+            val chooser = h.batchChooser()
+            h.existing[71] = DownloadTask(bvid = "BVfixture", cid = 71, title = "Existing", cover = "", ownerName = "", ownerFace = "",
+                duration = 0, quality = 80, qualityDesc = "1080P", videoUrl = "", audioUrl = "")
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            assertEquals(listOf(70L, 72L), h.queued.map { it.cid })
+            assertEquals(listOf("BVfixture" to 72L), h.requested)
+        }
+    }
+
+    @Test fun batchChooserRejectsForgedDuplicateAndEmptySelectionsWithoutConsumingIt() {
+        Harness().use { h ->
+            val chooser = h.batchChooser()
+            val part = chooser.candidates[1].copy(selected = true)
+            assertFalse(chooser.select(80, DownloadOptions(), listOf(part.copy(bvid = "BVforeign"))))
+            assertFalse(chooser.select(80, DownloadOptions(), listOf(part.copy(title = "Forged"))))
+            assertFalse(chooser.select(80, DownloadOptions(), listOf(part, part)))
+            assertFalse(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = false) }))
+            assertTrue(chooser.isCurrent()); assertTrue(h.constructed.isEmpty())
+            h.vm.downloadBatchWithQuality(80, DownloadOptions(), listOf(part.copy(cid = 999)), h::clickCurrent)
+            assertTrue(h.constructed.isEmpty()); assertTrue(h.requested.isEmpty())
+        }
+    }
+
+    @Test fun actualBatchMethodSnapshotsSelectedRosterBeforeAsyncDispatch() {
+        val dispatcher = PausedDispatcher()
+        Harness(dispatcher).use { h ->
+            h.installSuccess(batchSuccess())
+            val selected = resolveBatchDownloadCandidates(batchSuccess().info).map { it.copy(selected = true) }.toMutableList()
+            h.vm.downloadBatchWithQuality(80, DownloadOptions(), selected, h::clickCurrent)
+            selected.clear(); dispatcher.drain()
+            assertEquals(listOf(70L, 71L, 72L), h.queued.map { it.cid })
+        }
+    }
+
+    @Test fun delayedBatchSummaryRejectsReplacedSourceWithoutRemovingAcceptedTasks() {
+        val dispatcher = PausedDispatcher()
+        Harness(dispatcher).use { h ->
+            val chooser = h.batchChooser()
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            dispatcher.drain() // The real batch sender waits for a toastEvent receiver.
+            assertEquals(listOf(70L, 71L, 72L), h.queued.map { it.cid })
+            h.accepted = h.publication()
+            val messages = mutableListOf<String>()
+            val marker = "fresh-source-marker"
+            val collector = h.scope.launch { h.vm.toastEvent.collect {
+                messages += it.message
+                if (it.message == marker) cancel()
+            } }
+            h.vm.toast(marker)
+            dispatcher.drain()
+            assertTrue(collector.isCompleted); assertEquals(listOf(marker), messages)
+            assertEquals(3, h.queued.size)
+        }
+    }
+
+    @Test fun delayedBatchSummaryRejectsCancelledPageWhileEntryAndTasksRemainAlive() {
+        val dispatcher = PausedDispatcher()
+        Harness(dispatcher).use { h ->
+            val chooser = h.batchChooser()
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            dispatcher.drain()
+            assertEquals(3, h.queued.size); h.pageJob.cancel()
+            val messages = mutableListOf<String>()
+            val marker = "live-entry-marker"
+            val collector = h.scope.launch { h.vm.toastEvent.collect {
+                messages += it.message
+                if (it.message == marker) cancel()
+            } }
+            h.vm.toast(marker)
+            dispatcher.drain()
+            assertTrue(collector.isCompleted); assertTrue(h.scope.isActive)
+            assertEquals(listOf(marker), messages); assertEquals(3, h.queued.size)
+        }
+    }
+
+    @Test fun delayedHealthyBatchSummaryPreservesOriginalTextAfterSelectionIsConsumed() {
+        val dispatcher = PausedDispatcher()
+        Harness(dispatcher).use { h ->
+            val chooser = h.batchChooser()
+            assertTrue(chooser.select(80, DownloadOptions(), chooser.candidates.map { it.copy(selected = true) }))
+            dispatcher.drain()
+            assertFalse(chooser.isCurrent()); assertEquals(3, h.queued.size)
+            val messages = mutableListOf<String>()
+            val collector = h.scope.launch { h.vm.toastEvent.collect { messages += it.message } }
+            dispatcher.drain()
+            assertEquals(listOf("已加入 3 个任务"), messages)
+            assertEquals(3, h.queued.size)
+            collector.cancel(); dispatcher.drain()
+        }
     }
 
     @Test fun missingQualityLabelsPreserveOnlyTheKnownPlayingQuality() {

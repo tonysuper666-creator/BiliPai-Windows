@@ -325,7 +325,27 @@ def captured_original_download_task_delta(path,text):
  for old,new in reversed(edits):
   assert inverse.count(new)==1,'original video download selection inverse';inverse=inverse.replace(new,old,1)
  assert inverse==original,'complete original download selection inverse'
- return text[:begin]+body+text[end:]
+ text=text[:begin]+body+text[end:]
+ # Batch callers capture one exact original source before queuing. Each candidate
+ # still constructs and consumes its own existing single-use reply/task capture.
+ begin=text.index('    internal fun downloadBatchWithQuality(')
+ end=text.index('    // ========== Quality ==========',begin)
+ original=text[begin:end];body=original
+ edits=[('        candidates: List<com.android.purebilibili.feature.download.BatchDownloadCandidate>\n', '        candidates: List<com.android.purebilibili.feature.download.BatchDownloadCandidate>,\n        desktopStillCurrent: () -> Boolean = { true }\n'), ('        _showDownloadDialog.value = false\n', '        val targetBvid = currentBvid\n        val targetCid = currentCid\n        val expectedDownload = environment.plugins.capturePlaybackDispatch() ?: return\n        val stillCaptured = { desktopStillCurrent() &&\n            environment.plugins.isPlaybackDispatchCurrent(expectedDownload) &&\n            currentBvid == targetBvid && currentCid == targetCid }\n        if (current.info.bvid != targetBvid || current.info.cid != targetCid || !stillCaptured()) return\n        val availableCandidates = com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(current.info)\n            .associateBy { it.id }\n        val selectedCandidates = candidates.filter { it.selected }.toList()\n        if (selectedCandidates.isEmpty() || selectedCandidates.map { it.id }.distinct().size != selectedCandidates.size ||\n            selectedCandidates.any { candidate -> availableCandidates[candidate.id]?.let {\n                it.bvid == candidate.bvid && it.cid == candidate.cid } != true }) return\n        val capturedCandidates = selectedCandidates.map { availableCandidates.getValue(it.id).copy(selected = true) }\n        _showDownloadDialog.value = false\n'), ('        environment.invocations.launch {\n', '        environment.invocations.launch {\n            if (!stillCaptured()) throw kotlinx.coroutines.CancellationException("Original batch download selection retired")\n'), ('            candidates.filter { it.selected }.forEach { candidate ->\n', '            capturedCandidates.forEach { candidate ->\n                if (!stillCaptured()) throw kotlinx.coroutines.CancellationException("Original batch download selection retired")\n'), ('                if (task == null) {\n', '                if (!stillCaptured()) throw kotlinx.coroutines.CancellationException("Original batch download selection retired")\n                if (task == null) {\n'), ('                val added = environment.download.addTask(task)\n', '                val added = environment.download.addTask(task, stillCaptured)\n'), ('            toast(\n', '            if (!stillCaptured()) throw kotlinx.coroutines.CancellationException("Original batch download selection retired")\n            _desktopBatchDownloadToasts.send(stillCaptured to buildPlayerToastMessage(\n'), ('                        failedCount = failedCount\n                    )\n                )\n            )\n', '                        failedCount = failedCount\n                    )\n                )\n            ))\n')]
+ for old,new in edits:
+  assert body.count(old)==1,'original batch download source anchor';body=body.replace(old,new,1)
+ inverse=body
+ for old,new in reversed(edits):
+  assert inverse.count(new)==1,'original batch download inverse';inverse=inverse.replace(new,old,1)
+ assert inverse==original,'complete original batch download inverse'
+ text=text[:begin]+body+text[end:]
+ # Keep the original summary payload, but carry its source until final reception.
+ old='    private val _toastEvent = Channel<PlayerToastMessage>()\n'
+ new='    private val _desktopBatchDownloadToasts = Channel<Pair<() -> Boolean, PlayerToastMessage>>()\n'+old
+ assert text.count(old)==1,'original batch feedback channel anchor'
+ result=text.replace(old,new,1)
+ assert result.count(new)==1 and result.replace(new,old,1)==text,'complete batch feedback channel inverse'
+ return result
 
 def pending_playback_delta(path,text):
     if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return text
@@ -793,11 +813,14 @@ import kotlinx.coroutines.flow.filterNotNull
 ''','''    private val _toastEvent = Channel<PlayerToastMessage>()
     private val _desktopFollowGroupToasts = Channel<Triple<com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest, PlayerToastMessage, Boolean>>()
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
-    val toastEvent = kotlinx.coroutines.flow.merge<Triple<com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest?, PlayerToastMessage, Boolean>>(
-        _toastEvent.receiveAsFlow().map { Triple(null, it, false) }, _desktopFollowGroupToasts.receiveAsFlow())
-        .map { (request, message, completed) ->
-            if (request == null || desktopFollowGroupFeedbackCurrent(request, completed)) message else null
-        }.filterNotNull()
+    val toastEvent = kotlinx.coroutines.flow.merge<Pair<() -> Boolean, PlayerToastMessage>>(
+        kotlinx.coroutines.flow.merge<Triple<com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest?, PlayerToastMessage, Boolean>>(
+            _toastEvent.receiveAsFlow().map { Triple(null, it, false) }, _desktopFollowGroupToasts.receiveAsFlow())
+            .map { (request, message, completed) ->
+                Pair({ if (request == null || desktopFollowGroupFeedbackCurrent(request, completed)) true else false }, message)
+            },
+        _desktopBatchDownloadToasts.receiveAsFlow())
+        .map { (stillCurrent, message) -> if (stillCurrent()) message else null }.filterNotNull()
 ''')
  change('''    fun showFollowGroupDialogForUser(mid: Long) {
         if (mid <= 0L) return

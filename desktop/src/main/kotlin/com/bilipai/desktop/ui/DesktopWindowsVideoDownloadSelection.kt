@@ -56,3 +56,56 @@ internal class DesktopWindowsVideoDownloadSelection private constructor(
         }
     }
 }
+
+/** Original part/collection candidates, with the same foreground source lifetime.
+ * Selection changes only the original selected flags; task construction and
+ * single-use reply/account admission remain in the original VM and Binding. */
+internal class DesktopWindowsVideoBatchDownloadSelection private constructor(
+    val title: String,
+    val candidates: List<com.android.purebilibili.feature.download.BatchDownloadCandidate>,
+    val qualityOptions: List<Pair<Int, String>>,
+    val currentQuality: Int,
+    private val pageJob: Job,
+    private val stillCurrent: () -> Boolean,
+    private val download: (Int, DownloadOptions, List<com.android.purebilibili.feature.download.BatchDownloadCandidate>, () -> Boolean) -> Unit,
+) {
+    private var consumed = false
+    private fun ownsSource(): Boolean = pageJob.isActive && stillCurrent()
+    fun isCurrent(): Boolean = !consumed && ownsSource()
+    fun dismiss() { consumed = true }
+    fun select(quality: Int, options: DownloadOptions,
+        selection: List<com.android.purebilibili.feature.download.BatchDownloadCandidate>): Boolean {
+        if (!isCurrent() || qualityOptions.none { it.first == quality } ||
+            selection.map { it.id }.distinct().size != selection.size) return false
+        val originalById = candidates.associateBy { it.id }
+        if (selection.any { choice ->
+                val original = originalById[choice.id]
+                original == null || choice.copy(selected = original.selected) != original
+            }) return false
+        val chosen = selection.filter { it.selected }.map { originalById.getValue(it.id).copy(selected = true) }
+        if (chosen.isEmpty()) return false
+        consumed = true
+        download(quality, options, chosen, ::ownsSource)
+        return true
+    }
+
+    companion object {
+        fun capture(success: VideoPlaybackUiState.Success, pageJob: Job, stillCurrent: () -> Boolean,
+            download: (Int, DownloadOptions, List<com.android.purebilibili.feature.download.BatchDownloadCandidate>, () -> Boolean) -> Unit,
+        ): DesktopWindowsVideoBatchDownloadSelection? {
+            if (!pageJob.isActive || !stillCurrent() || success.isQualitySwitching ||
+                success.info.bvid.isBlank() || success.info.cid <= 0L) return null
+            val candidates = com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(success.info)
+            if (candidates.size <= 1) return null
+            val advertised = success.qualityIds.zip(success.qualityLabels)
+                .filter { it.first > 0 && it.second.isNotBlank() }
+                .distinctBy { it.first }.sortedByDescending { it.first }
+            val qualities = advertised.ifEmpty {
+                if (success.currentQuality > 0) listOf(success.currentQuality to "当前画质") else emptyList()
+            }
+            if (qualities.isEmpty()) return null
+            return DesktopWindowsVideoBatchDownloadSelection(success.info.title, candidates, qualities,
+                qualities.first().first, pageJob, stillCurrent, download)
+        }
+    }
+}
