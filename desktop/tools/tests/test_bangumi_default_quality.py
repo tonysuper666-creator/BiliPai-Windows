@@ -35,6 +35,7 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         baseline = baseline.replace(" body=bangumi_network_recovery_delta(recipe['output'],body)\n", "")
         baseline = baseline.replace(" body=bangumi_v034_quality_delta(recipe['output'],body)\n", "")
         baseline = baseline.replace(" body=bangumi_v034_authorization_delta(recipe['output'],body)\n", "")
+        baseline = baseline.replace(" body=bangumi_v034_course_download_delta(recipe['output'],body)\n", "")
         proof_line = next(line for line in baseline.splitlines(keepends=True)
             if line.startswith("(out/'pgc-default-quality-source-inventory.json')"))
         baseline = baseline.replace(proof_line, "")
@@ -65,6 +66,9 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         auth_node = next(node.value for node in ast.parse(script).body
             if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_V034_AUTHORIZATION_EDITS" for t in node.targets))
         cls.auth_edits = json.loads(ast.literal_eval(auth_node.args[0]))
+        course_node = next(node.value for node in ast.parse(script).body
+            if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_V034_COURSE_DOWNLOAD_EDITS" for t in node.targets))
+        cls.course_edits = json.loads(ast.literal_eval(course_node.args[0]))
         if BEFORE_OVERRIDE:
             if Path(BEFORE_OVERRIDE).read_text(encoding="utf8") != baseline:
                 raise AssertionError("Explicit baseline is not the fixed reconstructed historical producer")
@@ -96,6 +100,14 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         auth_proof = self.proof["beta2AuthorizationBodies"]
         self.assertEqual(1, len(auth_proof))
         self.assertTrue(auth_proof[0]["completeInverse"])
+        course_proof = self.proof["beta2CourseDownloadBodies"]
+        self.assertEqual(1, len(course_proof))
+        self.assertTrue(course_proof[0]["completeInverse"])
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), course_proof[0]["afterSha256LF"])
+        for edit in reversed(self.course_edits):
+            self.assertEqual(1, body.count(edit["after"]))
+            body = body.replace(edit["after"], edit["before"], 1)
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), course_proof[0]["beforeSha256LF"])
         self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), auth_proof[0]["afterSha256LF"])
         for edit in reversed(self.auth_edits):
             self.assertEqual(1, body.count(edit["after"]))
@@ -143,6 +155,8 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
 
     def test_original_manual_quality_and_drm_fallback_remain_complete(self):
         updated = self.updated
+        for edit in reversed(self.course_edits):
+            updated = updated.replace(edit["after"], edit["before"], 1)
         for edit in reversed(self.auth_edits):
             updated = updated.replace(edit["after"], edit["before"], 1)
         for edit in reversed(self.beta2_edits):
@@ -170,6 +184,26 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         self.assertEqual(pin["bytesRaw"], len(raw))
         self.assertEqual(pin["sha256Raw"], hashlib.sha256(raw).hexdigest())
         self.assertEqual(pin["gitBlob"], hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest())
+
+    def test_beta2_course_method_reuses_original_task_and_io_capture_boundary(self):
+        pin = self.proof["beta2CourseDownloadSource"]
+        raw = (BASE / pin["originalRawPath"]).read_bytes()
+        self.assertEqual(pin["bytesRaw"], len(raw))
+        self.assertEqual(pin["sha256Raw"], hashlib.sha256(raw).hexdigest())
+        self.assertEqual(pin["gitBlob"], hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest())
+        original = raw.decode("utf8").replace("\r\n", "\n")
+        start = original.index(pin["originalMethodStart"])
+        method = original[start:original.index(pin["originalMethodEnd"], start)]
+        self.assertEqual(pin["originalMethodBytesLF"], len(method.encode("utf8")))
+        self.assertEqual(pin["originalMethodSha256LF"], hashlib.sha256(method.encode("utf8")).hexdigest())
+        self.assertEqual({"rawVerified": True, "gitBlobVerified": True, "completeCourseDownloadMethodVerified": True},
+            self.proof["beta2CourseDownloadSourceProof"])
+        before_task = method.split("        val task = DownloadTask(", 1)[1].split("        viewModelScope.launch {", 1)[0]
+        after_task = self.updated.split("    fun downloadCurrentEpisode(context: Context) {", 1)[1].split("        val task = DownloadTask(", 1)[1].split("        val enqueue =", 1)[0]
+        self.assertEqual(before_task, after_task)
+        self.assertIn("val enqueue = try { environment.captureDownloadTask(task) }", self.updated)
+        self.assertIn("val added = try { enqueue() }", self.updated)
+        self.assertNotIn("environment.addDownloadTask(task)", self.updated)
 
 if __name__ == "__main__":
     unittest.main()

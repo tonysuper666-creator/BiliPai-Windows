@@ -145,6 +145,43 @@ def bangumi_v034_authorization_delta(path, body):
  PGC_V034_AUTHORIZATION_PROOFS.append({'path':path,'beforeSha256LF':sha(original),'afterSha256LF':sha(body),'completeInverse':True,'edits':PGC_V034_AUTHORIZATION_EDITS})
  return body
 
+# Complete beta2 course method; task construction and result remain upstream.
+# The required Root callback freezes source at click and supplies existing queue IO.
+PGC_V034_COURSE_DOWNLOAD_SOURCE = json.loads("{\"upstreamCommit\":\"b2091b1de636e499df80af7e700796b4f52b7f92\",\"originalRawPath\":\"desktop/upstream-slices/v034-bangumi-quality/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt\",\"bytesRaw\":61772,\"sha256Raw\":\"581a8c59113c9481e630efc63f2ea26cfe2fdda1e33af5aedd52643aa57cf933\",\"gitBlob\":\"7b2e37cd94e97f5a4a7d54e5935c86ca738101eb\",\"originalMethodStart\":\"    fun downloadCurrentEpisode(context: Context) {\",\"originalMethodEnd\":\"\\n    /**\",\"originalMethodSha256LF\":\"23387ce693d17f681afb2e42933e9d4628e78d0b424a694aa0c648b42b8c3669\",\"originalMethodBytesLF\":1777,\"completeOriginalMethod\":true}")
+PGC_V034_COURSE_DOWNLOAD_ADAPTATIONS = json.loads("[{\"before\":\"viewModelScope.launch\",\"after\":\"environment.launch\",\"count\":2},{\"before\":\"        environment.launch {\\n            val added = DownloadManager.addTask(task)\\n            _toastEvent.send(if (added) \\\"已加入课程下载\\\" else \\\"该集已在下载列表\\\")\\n        }\\n\",\"after\":\"        val enqueue = try { environment.captureDownloadTask(task) } catch (cancelled: kotlinx.coroutines.CancellationException) {\\n            throw cancelled\\n        } catch (failure: Exception) {\\n            environment.launch { _toastEvent.send(failure.message ?: \\\"当前集暂时无法下载\\\") }\\n            return\\n        }\\n        environment.launch {\\n            val added = try { enqueue() } catch (cancelled: kotlinx.coroutines.CancellationException) {\\n                throw cancelled\\n            } catch (failure: Exception) {\\n                _toastEvent.send(failure.message ?: \\\"当前集暂时无法下载\\\")\\n                return@launch\\n            }\\n            _toastEvent.send(if (added) \\\"已加入课程下载\\\" else \\\"该集已在下载列表\\\")\\n        }\\n\",\"count\":1}]")
+PGC_V034_COURSE_DOWNLOAD_EDITS = json.loads("[{\"name\":\"full original beta2 course download method with captured sameRoot enqueue\",\"before\":\"    fun downloadCurrentEpisode(context: Context) {\\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\\n        val videoUrl = state.playUrl.orEmpty()\\n        if (videoUrl.isBlank()) {\\n            environment.launch { _toastEvent.send(state.playbackErrorMessage ?: \\\"当前集暂时无法下载\\\") }\\n            return\\n        }\\n        val episode = state.currentEpisode\\n        val detail = state.seasonDetail\\n        val owner = detail.upInfo\\n        val qualityIndex = state.acceptQuality.indexOf(state.quality)\\n        val qualityDesc = state.acceptDescription.getOrNull(qualityIndex)\\n            ?: \\\"${state.quality}P\\\"\\n        val task = DownloadTask(\\n            aid = episode.aid,\\n            bvid = episode.bvid,\\n            cid = episode.cid,\\n            title = detail.title.ifBlank { episode.title },\\n            episodeLabel = episode.title.ifBlank { \\\"第${state.currentEpisodeIndex + 1}讲\\\" },\\n            groupKey = \\\"course:${detail.seasonId}\\\",\\n            groupTitle = detail.title,\\n            episodeSortIndex = state.currentEpisodeIndex,\\n            episodeCount = detail.episodes?.size ?: 1,\\n            cover = episode.cover.ifBlank { detail.cover },\\n            ownerName = owner?.uname.orEmpty(),\\n            ownerFace = owner?.avatar.orEmpty(),\\n            duration = (episode.duration / 1000L).coerceAtLeast(0L).coerceAtMost(Int.MAX_VALUE.toLong()).toInt(),\\n            quality = state.quality,\\n            qualityDesc = qualityDesc,\\n            videoUrl = videoUrl,\\n            audioUrl = state.audioUrl.orEmpty()\\n        )\\n        val added = try { environment.addDownloadTask(task) } catch (cancelled: kotlinx.coroutines.CancellationException) {\\n            throw cancelled\\n        } catch (failure: Exception) {\\n            environment.launch { _toastEvent.send(failure.message ?: \\\"当前集暂时无法下载\\\") }\\n            return\\n        }\\n        environment.launch {\\n            _toastEvent.send(if (added) \\\"已加入课程下载\\\" else \\\"该集已在下载列表\\\")\\n        }\\n    }\\n    \",\"after\":\"    fun downloadCurrentEpisode(context: Context) {\\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\\n        val videoUrl = state.playUrl.orEmpty()\\n        if (videoUrl.isBlank()) {\\n            environment.launch { _toastEvent.send(state.playbackErrorMessage ?: \\\"当前集暂时无法下载\\\") }\\n            return\\n        }\\n        val episode = state.currentEpisode\\n        val detail = state.seasonDetail\\n        val owner = detail.upInfo\\n        val qualityIndex = state.acceptQuality.indexOf(state.quality)\\n        val qualityDesc = state.acceptDescription.getOrNull(qualityIndex)\\n            ?: \\\"${state.quality}P\\\"\\n        val task = DownloadTask(\\n            aid = episode.aid,\\n            bvid = episode.bvid,\\n            cid = episode.cid,\\n            title = detail.title.ifBlank { episode.title },\\n            episodeLabel = episode.title.ifBlank { \\\"第${state.currentEpisodeIndex + 1}讲\\\" },\\n            groupKey = \\\"course:${detail.seasonId}\\\",\\n            groupTitle = detail.title,\\n            episodeSortIndex = state.currentEpisodeIndex,\\n            episodeCount = detail.episodes?.size ?: 1,\\n            cover = episode.cover.ifBlank { detail.cover },\\n            ownerName = owner?.uname.orEmpty(),\\n            ownerFace = owner?.avatar.orEmpty(),\\n            duration = (episode.duration / 1000L).coerceAtLeast(0L).coerceAtMost(Int.MAX_VALUE.toLong()).toInt(),\\n            quality = state.quality,\\n            qualityDesc = qualityDesc,\\n            videoUrl = videoUrl,\\n            audioUrl = state.audioUrl.orEmpty()\\n        )\\n        val enqueue = try { environment.captureDownloadTask(task) } catch (cancelled: kotlinx.coroutines.CancellationException) {\\n            throw cancelled\\n        } catch (failure: Exception) {\\n            environment.launch { _toastEvent.send(failure.message ?: \\\"当前集暂时无法下载\\\") }\\n            return\\n        }\\n        environment.launch {\\n            val added = try { enqueue() } catch (cancelled: kotlinx.coroutines.CancellationException) {\\n                throw cancelled\\n            } catch (failure: Exception) {\\n                _toastEvent.send(failure.message ?: \\\"当前集暂时无法下载\\\")\\n                return@launch\\n            }\\n            _toastEvent.send(if (added) \\\"已加入课程下载\\\" else \\\"该集已在下载列表\\\")\\n        }\\n    }\\n    \",\"count\":1}]")
+PGC_V034_COURSE_DOWNLOAD_PROOFS = []
+def verify_bangumi_v034_course_download_source():
+ pin=PGC_V034_COURSE_DOWNLOAD_SOURCE
+ source=(repo/pin['originalRawPath']).read_bytes()
+ assert len(source)==pin['bytesRaw'] and hashlib.sha256(source).hexdigest()==pin['sha256Raw'], 'complete beta2 PGC raw download source'
+ assert hashlib.sha1(b'blob '+str(len(source)).encode('ascii')+b'\0'+source).hexdigest()==pin['gitBlob'], 'complete beta2 PGC download Git blob'
+ original=source.decode('utf8').replace('\r\n','\n')
+ start=original.index(pin['originalMethodStart']);end=original.index(pin['originalMethodEnd'],start)
+ method=original[start:end]
+ assert len(method.encode('utf8'))==pin['originalMethodBytesLF'] and sha(method)==pin['originalMethodSha256LF'], 'complete beta2 course download method'
+ adapted=method
+ for edit in PGC_V034_COURSE_DOWNLOAD_ADAPTATIONS:
+  assert adapted.count(edit['before'])==edit['count'], 'complete beta2 course platform adaptation'
+  adapted=adapted.replace(edit['before'],edit['after'])
+ assert adapted==PGC_V034_COURSE_DOWNLOAD_EDITS[0]['after'], 'whole beta2 course method platform adaptations'
+ return {'rawVerified':True,'gitBlobVerified':True,'completeCourseDownloadMethodVerified':True}
+PGC_V034_COURSE_DOWNLOAD_SOURCE_PROOF = verify_bangumi_v034_course_download_source()
+def bangumi_v034_course_download_delta(path, body):
+ if path != 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt': return body
+ original=body;trace=[]
+ for edit in PGC_V034_COURSE_DOWNLOAD_EDITS:
+  before,after=edit['before'],edit['after']
+  assert body.count(before)==edit['count'], 'whole original course download seam'
+  at=body.index(before);body=body[:at]+after+body[at+len(before):];trace.append((at,before,after))
+ inverse=body
+ for at,before,after in reversed(trace):
+  assert inverse[at:at+len(after)]==after
+  inverse=inverse[:at]+before+inverse[at+len(after):]
+ assert inverse==original, 'complete PGC course download inverse'
+ PGC_V034_COURSE_DOWNLOAD_PROOFS.append({'path':path,'beforeSha256LF':sha(original),'afterSha256LF':sha(body),'completeInverse':True,'edits':PGC_V034_COURSE_DOWNLOAD_EDITS})
+ return body
+
 for recipe in RECIPES:
  raw=(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf8').replace('\r\n','\n');assert sha(raw)==recipe['originalSha256LF']
  body=raw
@@ -159,6 +196,7 @@ for recipe in RECIPES:
  body=bangumi_network_recovery_delta(recipe['output'],body)
  body=bangumi_v034_quality_delta(recipe['output'],body)
  body=bangumi_v034_authorization_delta(recipe['output'],body)
+ body=bangumi_v034_course_download_delta(recipe['output'],body)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
@@ -172,5 +210,5 @@ helper=media.function(raw,'signBangumiPlayUrlParams',parser);assert sha(helper)=
 assert helper in PREFIX
 target=out/'com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt';target.parent.mkdir(parents=True,exist_ok=True)
 target.write_text('// GENERATED complete original getBangumiPlayUrl; upstream '+PROTOCOL['upstreamCommit']+'; LF '+PROTOCOL['originalSourceSHA']+'\n'+PREFIX+body+'\n}\n',encoding='utf8')
-(out/'pgc-default-quality-source-inventory.json').write_text(json.dumps({'upstreamCommit':PROTOCOL['upstreamCommit'],'originalPinsUnchanged':True,'initialOnly':True,'fullBodies':PGC_DEFAULT_QUALITY_PROOFS,'beta2QualitySource':PGC_V034_QUALITY_SOURCE,'beta2QualitySourceProof':PGC_V034_QUALITY_SOURCE_PROOF,'beta2QualityBodies':PGC_V034_QUALITY_PROOFS,'beta2AuthorizationBodies':PGC_V034_AUTHORIZATION_PROOFS},ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
+(out/'pgc-default-quality-source-inventory.json').write_text(json.dumps({'upstreamCommit':PROTOCOL['upstreamCommit'],'originalPinsUnchanged':True,'initialOnly':True,'fullBodies':PGC_DEFAULT_QUALITY_PROOFS,'beta2QualitySource':PGC_V034_QUALITY_SOURCE,'beta2QualitySourceProof':PGC_V034_QUALITY_SOURCE_PROOF,'beta2QualityBodies':PGC_V034_QUALITY_PROOFS,'beta2AuthorizationBodies':PGC_V034_AUTHORIZATION_PROOFS,'beta2CourseDownloadSource':PGC_V034_COURSE_DOWNLOAD_SOURCE,'beta2CourseDownloadSourceProof':PGC_V034_COURSE_DOWNLOAD_SOURCE_PROOF,'beta2CourseDownloadBodies':PGC_V034_COURSE_DOWNLOAD_PROOFS},ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
 print('Complete original PGC body outputs:',len(RECIPES)+1,'; actual Root/native ports are required')

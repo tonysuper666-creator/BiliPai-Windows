@@ -264,7 +264,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 { root.runtime.plugins.value.filter { it.enabled }.map { it.plugin }.filterIsInstance<PlaybackCdnPlugin>().firstOrNull() },
                 owner.environment.plugins::rewritePlaybackCandidates,
                 { items, index, source -> assertOwned(); shell.playlist.setExternalPlaylist(items, index, source) },
-                ::enqueueCurrentTask, ports.applyPreferredVolume, { block -> native.launch(block) }, native::commit, ::owns, native::ownsPlaybackSource,
+                ::captureCurrentTask, ports.applyPreferredVolume, { block -> native.launch(block) }, native::commit, ::owns, native::ownsPlaybackSource,
                 owner.environment.network, ports.capabilities::isDolbyVisionSupported)
             val vm = BangumiPlayerViewModel(environment)
             stateOwner.set(vm)
@@ -372,12 +372,27 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             }
         }
 
-        private fun enqueueCurrentTask(task: DownloadTask): Boolean {
+        private fun captureCurrentTask(task: DownloadTask): suspend () -> Boolean {
             assertOwned()
             val state = success() ?: throw CancellationException("PGC download detail unavailable")
             val episode = state.currentEpisode
             val accepted = owner.native.current() ?: throw CancellationException("PGC download source unavailable")
             assertSubject(episode.bvid, episode.cid, episode.id, state.seasonDetail.seasonId)
+            val load = owner.captureLoadState()
+            val request = load.currentRequest ?: throw CancellationException("PGC download request unavailable")
+            val receipt = accepted.nativeSource.source.authorizationReceipt
+                ?: throw CancellationException("PGC download authorization unavailable")
+            fun sourceCurrent(): Boolean {
+                if (!owns() || !native.ownsPlaybackSource() || !owner.native.isCurrent(accepted)) return false
+                val actual = owner.captureLoadState()
+                val displayed = success() ?: return false
+                return actual.currentRequest === request &&
+                    actual.currentLoadRequestToken == load.currentLoadRequestToken &&
+                    actual.currentBvid == load.currentBvid && actual.currentCid == load.currentCid &&
+                    displayed.currentEpisode.id == episode.id && displayed.currentEpisode.cid == episode.cid &&
+                    displayed.seasonDetail.seasonId == state.seasonDetail.seasonId &&
+                    displayed.playUrl == task.videoUrl && displayed.audioUrl.orEmpty() == task.audioUrl
+            }
             require(task.bvid == episode.bvid && task.cid == episode.cid && task.aid == episode.aid &&
                 task.videoUrl == state.playUrl && task.audioUrl == state.audioUrl.orEmpty())
             val explicitDownloadRight = state.seasonDetail.rights?.allowDownload
@@ -393,10 +408,41 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 accepted.nativeSource.source.referer, null, 0L, true)
             val source = plan.retainedSource(accepted.nativeSource.source, task.videoUrl, task.audioUrl.takeIf(String::isNotBlank))
             val destination = resources.downloads.destinationFor(task.customSaveDir)
-            return resources.downloads.enqueueOriginal(task, source, destination, downloadAllowed,
-                state.seasonDetail.seasonId, episode.id, state.seasonDetail.seasonType == 10,
-                { owns() && native.ownsPlaybackSource() && owner.native.isCurrent(accepted) },
-                { action -> factory.withPresentationAdmission(owner, accepted, action) })
+            var captured = false
+            if (!factory.withPresentationAdmission(owner, accepted) {
+                    owner.native.admitPlaybackDispatch(accepted) {
+                        if (sourceCurrent()) captured = true
+                    }
+                } || !captured) throw CancellationException("PGC download click retired")
+            // No coroutine or IO was launched during click capture. This immutable
+            // view borrows the existing source and global queue; it owns neither.
+            return {
+                currentCoroutineContext().ensureActive()
+                val binding = (owner.invocations.requireRequestRepository() as DesktopOriginalVideoOwnerRequestRepository).binding
+                val caller = binding.capturedDownloadCallerJob()
+                binding.assertCurrent()
+                if (binding.receipt != receipt || !sourceCurrent())
+                    throw CancellationException("PGC download caller/source replaced")
+                fun requestCurrent() = caller.isActive && sourceCurrent()
+                withContext(Dispatchers.IO) {
+                    currentCoroutineContext().ensureActive(); caller.ensureActive(); binding.assertCurrent()
+                    if (!requestCurrent()) throw CancellationException("PGC download IO source retired")
+                    resources.downloads.enqueueOriginal(task, source, destination, downloadAllowed,
+                        state.seasonDetail.seasonId, episode.id, state.seasonDetail.seasonType == 10,
+                        ::requestCurrent,
+                        { action ->
+                            var applied = false
+                            factory.withPresentationAdmission(owner, accepted) {
+                                owner.native.admitPlaybackDispatch(accepted) {
+                                    caller.ensureActive(); binding.assertCurrent()
+                                    if (requestCurrent()) { action(); applied = true }
+                                }
+                            } && applied
+                        })
+                    // The real manager persists/schedules an admitted task before
+                    // returning; the original Entry does not own that global task.
+                }
+            }
         }
 
         override fun ensureMiniCallbacks(viewModel: BangumiPlayerViewModel, isCourse: Boolean) {

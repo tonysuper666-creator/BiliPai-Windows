@@ -110,7 +110,9 @@ internal class DesktopOriginalBangumiPlayerEnvironment(
     val enabledCdnPlugin: () -> PlaybackCdnPlugin?,
     private val rewriteCandidatesPort: suspend (PlaybackCdnPlugin, List<String>, List<String>) -> com.android.purebilibili.feature.plugin.PlaybackCdnRewriteResult,
     private val externalPlaylistPort: (List<PlaylistItem>, Int, ExternalPlaylistSource) -> Unit,
-    val addDownloadTask: (DownloadTask) -> Boolean,
+    /** Capture the original task and exact accepted source synchronously at click;
+     * the returned operation borrows the same global queue and performs IO outside admission. */
+    val captureDownloadTask: (DownloadTask) -> (suspend () -> Boolean),
     val applyPreferredVolume: (DesktopOriginalMpvSectionControl) -> Unit,
     val launch: (suspend CoroutineScope.() -> Unit) -> Job,
     val commitIfCurrent: (() -> Unit) -> Boolean,
