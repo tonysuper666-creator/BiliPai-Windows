@@ -12,7 +12,7 @@ import androidx.compose.ui.awt.LocalAwtWindow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.AppPopupSurface
-import com.android.purebilibili.core.ui.AppPopupSurfaceKind
+import com.android.purebilibili.core.ui.AppPopupSurfaceType
 import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.feature.settings.share.*
 import com.bilipai.desktop.backup.DesktopBackupUpdateHold
@@ -29,6 +29,7 @@ private enum class SettingsShareConfirmation { REPLACE, DELETE }
 /** Original adaptive preference/dialog components on the existing owned Windows dialog.
  * JSON preview is an immutable session. Saved actions retain that same record/raw pair;
  * the service rechecks it in each real Store CAS replay, not against mutable UI text. */
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 internal fun DesktopSettingsShareDialog(
     binding: DesktopSettingsShareBindings,
@@ -87,7 +88,8 @@ internal fun DesktopSettingsShareDialog(
         val busy = operation != null
         // DesktopWindowsPlayerDialog provides its own recorded background and scale.
         // The surface resolves the original material against this dialog's window only.
-        AppPopupSurface(kind = AppPopupSurfaceKind.DIALOG, modifier = Modifier.fillMaxSize()) {
+        AppPopupSurface(type = AppPopupSurfaceType.DIALOG, shape = MaterialTheme.shapes.extraLarge,
+            containerColor = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 12.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     AppText("设置共享", fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
