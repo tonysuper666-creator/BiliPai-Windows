@@ -36,11 +36,11 @@
   },
   "limitations": [
     "Backend read/preview/apply/export callable; settings import UI not mounted. Existing ZIP restore remains unchanged.",
-    "Android saved-profile management is not migrated.",
     "Original legacy danmaku share fields are baseline defaults; existing scoped portrait/landscape overrides stay authoritative.",
     "Original deviceDebug, Android system/rotation/haptics/brightness/PiP fields, local wallpaper paths and unknown fields are never written.",
     "Windows fonts/UI scale are useful consumers but absent from the fixed v0.3.3 sharing whitelist; app_font_size_preset/app_font_weight/app_ui_scale_preset remain gaps.",
-    "Structured dynamic tab visibility, bottom item colors and unverified useful keys remain visible as skipped; not claimed complete."
+    "Structured dynamic tab visibility, bottom item colors and unverified useful keys remain visible as skipped; not claimed complete.",
+    "Windows saved profiles are archived in the same Root document namespace, not Android filesDir. Backend save/list/preview/restore/explicit replace/delete is callable; UI and migration of Android profile directories are not mounted."
   ],
   "windowsMappedOriginalKeys": [
     "android_native_liquid_glass_enabled",
@@ -612,5 +612,32 @@
       },
       "mappedForWindows": true
     }
-  ]
+  ],
+  "savedProfileBackend": {
+    "namespace": "settings_saved_profiles_v1",
+    "format": "opaque original-style filename -> original SettingsShareProfile JSON string",
+    "namePolicy": "trim then take 80 characters; blank rejected",
+    "fileNamePolicy": "complete original sanitizer plus epoch milliseconds; collision suffix prevents implicit overwrite",
+    "ordering": "original exportedAtIso descending",
+    "countLimit": null,
+    "implicitSameNameOverwrite": false,
+    "explicitReplaceDelete": "verified captured raw identity, rechecked in whole-document CAS replay",
+    "saveSnapshot": "current canonical snapshot projected again on every whole-document CAS retry",
+    "restore": "archive raw comparison in original canonical recipe before all canonical/cache writes",
+    "originalGeneralProfileLimitAndDelete": "fixed v0.3.3 has no count cap, explicit general-profile overwrite or general-profile delete API",
+    "originalPolicySelection": {
+      "source": "app/src/main/java/com/android/purebilibili/feature/settings/share/SettingsShareService.kt",
+      "wholeFileSha256": "6b75c30811d2ac2708f8451e43913f5ba9c888b3a6f00fec079582c935c26f32",
+      "selection": "complete private sanitizeProfileFileName function",
+      "bytes": 169,
+      "sha256": "88419eb9512175f9fed50ba0cc46b5b8349943bad6519262d405296b054e72e7"
+    },
+    "differences": [
+      "single Root archive namespace instead of Android profile files; no second preference authority",
+      "atomic owner/caller permit and global backing CAS for archival mutations",
+      "explicit replace/delete require the captured real raw session",
+      "same-name/timestamp collisions append a suffix instead of silently replacing",
+      "damaged records are skipped without swallowing cancellation"
+    ]
+  }
 }
