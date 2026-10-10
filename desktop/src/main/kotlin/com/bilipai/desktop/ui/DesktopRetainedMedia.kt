@@ -60,8 +60,14 @@ class DesktopLivePageMemory(parent: CoroutineScope, player: MpvPlayer?) : Deskto
     internal var handledLiveEof: com.bilipai.desktop.player.PlayerNativeEof? = null
     init {
         onRetireSource = {
-            liveSourceSnapshot = null; recoveryPorts = null; handledLiveFailure = null; handledLiveEof = null
-            remainingLiveNativeReprepareAttempts = 0
+            fun retireSnapshot() {
+                liveSourceSnapshot = null; recoveryPorts = null; handledLiveFailure = null; handledLiveEof = null
+                remainingLiveNativeReprepareAttempts = 0
+            }
+            // Linearize the source receipt retirement with native admission. A foreign
+            // source already rejects this receipt, so it only needs local cleanup.
+            val expected = liveSourceSnapshot
+            if (expected == null || player?.admitSourceSnapshot(expected, ::retireSnapshot) != true) retireSnapshot()
             recoveryObserver?.cancel(); recoveryObserver = null
         }
     }

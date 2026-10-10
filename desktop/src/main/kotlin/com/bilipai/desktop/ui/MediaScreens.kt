@@ -158,11 +158,11 @@ fun LiveBrowserScreen(
                 val info = media.livePlaybackInfo(details, selectedQuality, audioOnly, requestEpoch, owned)
                 currentCoroutineContext().ensureActive()
                 desktopLiveAdmission(repository, requestEpoch, owned) {
-                    val version = initialized.loadVersioned(info.source.toNativePlayback())
+                    val ports = desktopLiveRecoveryPorts(repository, media, requestEpoch,
+                        { currentMiniLiveMode() }, { epoch, eof -> currentDismissMiniLive(epoch, eof) })
+                    val version = initialized.loadVersioned(memory.nativePlaybackSource(info, details.roomId, ports))
                     check(version == initialized.currentSourceVersion)
-                    memory.installLivePlayback(info, requireNotNull(initialized.currentSourceSnapshot()),
-                        desktopLiveRecoveryPorts(repository, media, requestEpoch,
-                            { currentMiniLiveMode() }, { epoch, eof -> currentDismissMiniLive(epoch, eof) }))
+                    memory.installLivePlayback(info, requireNotNull(initialized.currentSourceSnapshot()), ports)
                     loaded = true
                     connectChat()
                 }

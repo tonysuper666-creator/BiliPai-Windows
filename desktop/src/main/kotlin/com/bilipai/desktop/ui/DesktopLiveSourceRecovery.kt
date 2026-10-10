@@ -23,6 +23,8 @@ internal fun desktopLiveAdmission(repository: DesktopRepository, epoch: Long,
 
 /** Existing primary session and actual caller; network work is outside admission. */
 internal interface DesktopLiveRecoveryPorts {
+    // Production always supplies the original captured primary epoch; synthetic ports have no account authority.
+    val accountEpoch: Long? get() = null
     fun isAccountCurrent(): Boolean
     fun admit(action: () -> Unit): Boolean
     // Existing isolated fake ports keep their non-PiP behavior; production factory requires real Root callbacks.
@@ -33,6 +35,7 @@ internal interface DesktopLiveRecoveryPorts {
 
 internal fun desktopLiveRecoveryPorts(repository: DesktopRepository, media: DesktopMediaRepository,
     epoch: Long, miniLiveMode: () -> Boolean, dismissMini: (Long, PlayerNativeEof) -> Unit): DesktopLiveRecoveryPorts = object : DesktopLiveRecoveryPorts {
+    override val accountEpoch = epoch
     override fun isAccountCurrent() = repository.sessionEpoch == epoch
     override fun isMiniLiveMode() = miniLiveMode.invoke()
     override fun dismissMiniLive(eof: PlayerNativeEof) = dismissMini.invoke(epoch, eof)
@@ -40,6 +43,36 @@ internal fun desktopLiveRecoveryPorts(repository: DesktopRepository, media: Desk
         desktopLiveAdmission(repository, epoch, ::isAccountCurrent, action)
     override suspend fun reload(room: LiveRoomDetails, quality: Int, onlyAudio: Boolean, current: () -> Boolean) =
         media.livePlaybackInfo(room, quality, onlyAudio, epoch, current)
+}
+
+/** Same original account/Room owner, repeated on the actor before each native command.
+ * Initial load/install and recovery handoff stay inside their existing account admission.
+ * The publication is a source receipt; it never borrows the completed request Job. */
+internal fun DesktopLivePageMemory.nativePlaybackSource(info: LivePlaybackInfo,
+    roomId: Long, ports: DesktopLiveRecoveryPorts): com.bilipai.desktop.player.PlaybackSource {
+    val initialized = requireNotNull(player)
+    require(roomId > 0)
+    val publication = object : DesktopNativePlaybackPublication {
+        private fun current(expected: OwnedPlaybackSourceSnapshot) =
+            scope.isActive && stream === info && liveSourceSnapshot === expected &&
+                recoveryPorts === ports && sourceVersion == expected.sourceVersion &&
+                expected.source.nativePublication === this &&
+                expected.source.primaryAccountEpoch == ports.accountEpoch &&
+                room?.roomId == roomId && room?.isLive == true && room?.locked == false
+
+        override fun admit(command: () -> Unit): Boolean {
+            var accepted = false
+            ports.admit accountAdmission@{
+                val expected = liveSourceSnapshot ?: return@accountAdmission
+                if (!current(expected)) return@accountAdmission
+                initialized.admitSourceSnapshot(expected) {
+                    if (current(expected)) { command(); accepted = true }
+                }
+            }
+            return accepted
+        }
+    }
+    return info.source.toNativePlayback().copy(primaryAccountEpoch = ports.accountEpoch, nativePublication = publication)
 }
 
 internal fun DesktopLivePageMemory.installLivePlayback(info: LivePlaybackInfo,
@@ -106,7 +139,7 @@ internal class DesktopLiveSourceBinding(
                 if (cancelPending) memory.playJob?.takeIf { it !== caller }?.cancel()
                 // Live source replacement prepares at the live edge and retains
                 // the user's current play/pause intent, like original prepare().
-                if (player.recoverSource(source.sourceVersion, next.source.toNativePlayback(), positionSeconds = 0.0,
+                if (player.recoverSource(source.sourceVersion, memory.nativePlaybackSource(next, room.roomId, ports), positionSeconds = 0.0,
                     paused = if (eof == null) player.state.value.paused else !eof.playWhenReady, forceSoftwareDecoding = softwareFallback,
                     expectedFailureAttemptId = failure?.attemptId, expectedNativeEof = eof)) {
                     if (nativeReprepare) memory.remainingLiveNativeReprepareAttempts -= 1
