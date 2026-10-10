@@ -73,9 +73,13 @@ internal class DesktopWindowsVideoMetadataLease(private val stillOwned: () -> Bo
     creatorTeam: DesktopCreatorTeamBindings,
     stillOwned: () -> Boolean,
     onMember: (Long) -> Unit,
-    onHonor: (String) -> Unit,
+    onHonor: (String, () -> Boolean) -> Unit,
 ) {
-    key(assembly, sourceOwner) {
+    // A full original honor snapshot, without unrelated statistics or title churn.
+    // A closed lifetime remains closed even if an equal honor later reappears.
+    val honorSnapshot = info.honorReply?.let { it.copy(honor = it.honor.toList()) }
+    key(assembly, sourceOwner, honorSnapshot) {
+        val capturedHonors = remember { honorSnapshot }
         val latestOwned by rememberUpdatedState(stillOwned)
         val latestMember by rememberUpdatedState(onMember)
         val latestHonor by rememberUpdatedState(onHonor)
@@ -85,8 +89,9 @@ internal class DesktopWindowsVideoMetadataLease(private val stillOwned: () -> Bo
                 latestOwned() && assembly.owns() && assembly.native.isCurrent(sourceOwner) &&
                     (assembly.playback.captureDesktopPlaybackState() as?
                         com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success)?.let { current ->
-                        desktopWindowsVideoMetadataMatchesSource(current.info, sourceOwner.request,
-                            assembly.playback.captureDesktopLoadState(), loadToken)
+                        current.info.honorReply == capturedHonors &&
+                            desktopWindowsVideoMetadataMatchesSource(current.info, sourceOwner.request,
+                                assembly.playback.captureDesktopLoadState(), loadToken)
                     } == true
             }
         }
@@ -97,7 +102,7 @@ internal class DesktopWindowsVideoMetadataLease(private val stillOwned: () -> Bo
         }
         val argueMsgShown by declarationPreference.collectAsState(true)
         if (lease.isOwned()) {
-            DesktopOriginalVideoHonors(info, argueMsgShown) { if (lease.isOwned()) latestHonor(it) }
+            DesktopOriginalVideoHonors(info, argueMsgShown) { if (lease.isOwned()) latestHonor(it, lease::isOwned) }
             if (shouldShowCreatorTeamSection(info)) {
                 CompositionLocalProvider(LocalDesktopCreatorTeamBindings provides bindings) {
                     CreatorTeamSection(info.staff, info.owner.mid) { if (lease.isOwned()) latestMember(it) }

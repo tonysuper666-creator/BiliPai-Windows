@@ -2112,20 +2112,30 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
                                             onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
                                         openLink = { raw -> desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute()) },
-                                        honorLink = { assembly, source, url ->
-                                            if (!isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
-                                                messageRoutes.currentKey == entryKey && ordinaryVideo.slot.currentAssembly() === assembly && assembly.owns()) {
-                                                val internalTarget = com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(url) is
-                                                    com.android.purebilibili.core.util.BilibiliNavigationTarget.PopularFeed
-                                                var externalLinkAdmitted = false
-                                                ordinaryVideo.factoryFor(assembly).withPresentationAdmission(assembly, source) {
-                                                    messageRoutes.callbackFor(entryKey) {
-                                                        if (internalTarget) openVideoHonorLink(url)
-                                                        else externalLinkAdmitted = true
+                                        honorLink = { assembly, source, url, honorOwned ->
+                                            val factory = ordinaryVideo.factoryFor(assembly)
+                                            fun ownsHonor() = honorOwned() && !isClosing() && !activatingUpdate &&
+                                                active && hostVisible && hostDisplayable && messageRoutes.currentKey === entryKey &&
+                                                ordinaryVideo.slot.currentAssembly() === assembly && assembly.owns() &&
+                                                factory.isPresentationCurrent(assembly, source)
+                                            fun admitHonor(action: () -> Unit): Boolean {
+                                                if (!ownsHonor()) return false
+                                                var applied = false
+                                                return factory.withPresentationAdmission(assembly, source) {
+                                                    if (ownsHonor()) assembly.native.admitPlaybackDispatch(source) {
+                                                        if (ownsHonor()) { action(); applied = true }
                                                     }
-                                                }
-                                                // System browser I/O follows the accepted click outside the session/entry monitor.
-                                                if (externalLinkAdmitted) openVideoHonorLink(url)
+                                                } && applied
+                                            }
+                                            if (ownsHonor()) {
+                                                val target = com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(url)
+                                                // Existing Root checkpoints before the final captured metadata/native gate.
+                                                // Its original dispatcher preserves weekly number and original popular categories.
+                                                if (target != null) dispatchDesktopReadyNativeTarget(messageRoutes.root, messageRoutes, target,
+                                                    ::ownsHonor, ::admitHonor)
+                                                else if (url.startsWith("https://", ignoreCase = true) ||
+                                                    url.startsWith("http://", ignoreCase = true))
+                                                    messageRoutes.pushFromSource(BiliPaiNavKey.Web(url), ::ownsHonor, ::admitHonor)
                                             }
                                         },
                                         relatedNavigation = { assembly, source, target, cardOwned ->

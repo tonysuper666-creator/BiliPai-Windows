@@ -60,7 +60,7 @@ internal class DesktopWindowsVideoActions(
     val overlay: @Composable () -> Unit,
     val enhancement: @Composable () -> Unit,
     val openLink: (String) -> Unit,
-    val honorLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String) -> Unit,
+    val honorLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String, () -> Boolean) -> Unit,
     val descriptionLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String, () -> Boolean) -> Unit,
     val relatedNavigation: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, BiliPaiNavKey, () -> Boolean) -> Unit,
     val metadataNavigation: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, BiliPaiNavKey, () -> Boolean) -> Unit,
@@ -847,7 +847,9 @@ internal class DesktopWindowsVideoActions(
                             collectionQueueSource?.let { source ->
                                 DesktopWindowsVideoMetadataSection(assembly, success.info, source,
                                     platforms.holder.settingsContext, platforms.portrait.creatorTeam,
-                                    ::current, actions.user) { url -> latestActions.honorLink(assembly, source, url) }
+                                    ::current, actions.user) { url, honorOwned ->
+                                    latestActions.honorLink(assembly, source, url, honorOwned)
+                                }
                             }
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 TextButton(onClick = { engagementBinding?.like() }, enabled = engagementBinding?.isOwned() == true,
