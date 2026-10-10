@@ -24,7 +24,7 @@ class DesktopDownloadManager internal constructor(
     private val client: OkHttpClient,
     private val stateFile: Path,
     private val muxer: DownloadMuxer,
-    private val sourceResolver: (suspend (DownloadTask) -> PlaybackSource?)? = null,
+    private val sourceResolver: (suspend (DownloadTask) -> DesktopDownloadResolvedSource?)? = null,
     private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,
     private val publication: com.bilipai.desktop.player.DesktopPlaybackPublication,
     private val defaultDestination: () -> Path = Companion::defaultDownloadRoot,
@@ -331,12 +331,36 @@ class DesktopDownloadManager internal constructor(
             val downloading = setOf(DownloadStatus.DOWNLOADING)
             val merging = setOf(DownloadStatus.MERGING)
             if (publication.requiresAccountReceipt && task.authorizationReceipt == null) {
-                val refreshed = sourceResolver?.invoke(task) ?: throw CancellationException("Saved download requires fresh owned authorization")
+                val resolution = sourceResolver?.invoke(task) ?: throw CancellationException("Saved download requires fresh owned authorization")
+                val refreshed = resolution.source
+                currentCoroutineContext().ensureActive()
+                publication.admit(refreshed, owned(starting)) { Unit }
+                val restoredDirectory = ensureOwnedDirectory(task)
+                val restoredVideo = restoredDirectory.resolve("video.m4s")
+                val videoIdentityChanged = !task.item.isAudioOnly && task.progressiveSegments.isEmpty() &&
+                    refreshed.progressiveSegments.isEmpty() && mediaIdentity(task.item.videoUrl) != mediaIdentity(refreshed.videoUrl)
+                val oldVideoAsset = task.item.assets.firstOrNull { it.kind == DownloadAssetKind.VIDEO }
+                val completedVideoRetained = !videoIdentityChanged && !task.item.isAudioOnly && task.progressiveSegments.isEmpty() &&
+                    oldVideoAsset?.status == DownloadAssetStatus.COMPLETED && oldVideoAsset.totalBytes > 0L &&
+                    oldVideoAsset.downloadedBytes == oldVideoAsset.totalBytes && Files.isRegularFile(restoredVideo) &&
+                    Files.size(restoredVideo) == oldVideoAsset.totalBytes
                 currentCoroutineContext().ensureActive()
                 publication.admit(refreshed, owned(starting)) {
                     synchronized(lock) {
                         if (!queueOwnedLocked(starting)) throw CancellationException("下载任务已退役")
-                        updateLocked(id) { it.copy(item = it.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),
+                        // A changed restored video is cleared only with the final source and worker admission.
+                        if (videoIdentityChanged) clearAssetFiles(restoredVideo)
+                        updateLocked(id) { wrapper ->
+                            val videoReset = if (videoIdentityChanged) {
+                                val next = wrapper.item.withAssetState(DownloadAssetState(DownloadAssetKind.VIDEO, DownloadAssetStatus.PENDING))
+                                val downloaded = next.assets.sumOf { it.downloadedBytes }
+                                val total = next.assets.sumOf { it.totalBytes }
+                                wrapper.copy(item = next.copy(videoProgress = 0f, downloadedSize = downloaded,
+                                    progress = if (total > 0L) (downloaded.toDouble() / total * 0.9).coerceIn(0.0, 0.9).toFloat() else 0f))
+                            } else wrapper
+                            // A complete retained video is still the original file, even if a new parse advertises another track.
+                            val qualified = if (completedVideoRetained) videoReset else resolution.applyActualQuality(videoReset)
+                            qualified.copy(item = qualified.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),
                             audioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()),
                             referer = refreshed.referer, userAgent = refreshed.userAgent, authorizationReceipt = refreshed.authorizationReceipt,
                             cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
@@ -498,7 +522,8 @@ class DesktopDownloadManager internal constructor(
             context.ensureActive()
             // A retired choice is cancellation, never a request under the newly selected account.
             publication.admit(activeSource, owned) { Unit }
-            val refreshed = sourceResolver.invoke(task) ?: throw error
+            val resolution = sourceResolver.invoke(task) ?: throw error
+            val refreshed = resolution.source
             context.ensureActive()
             if (refreshed.authorizationReceipt != source.authorizationReceipt ||
                 refreshed.primaryAccountEpoch != source.primaryAccountEpoch)
@@ -514,7 +539,10 @@ class DesktopDownloadManager internal constructor(
             publication.admit(refreshed, owned) {
                 synchronized(lock) {
                     if (!owned()) throw CancellationException("下载任务已退役")
-                    updateLocked(id) { wrapper -> wrapper.copy(item = wrapper.item.copy(videoUrl = refreshed.videoUrl,
+                    updateLocked(id) { wrapper ->
+                    // Refreshing only audio cannot change the quality of the video already saved by this worker.
+                    val qualified = if (kind == DownloadAssetKind.VIDEO) resolution.applyActualQuality(wrapper) else wrapper
+                    qualified.copy(item = qualified.item.copy(videoUrl = refreshed.videoUrl,
                     audioUrl = refreshed.audioUrl.orEmpty()), authorizationReceipt = refreshed.authorizationReceipt,
                     referer = refreshed.referer, userAgent = refreshed.userAgent,
                     cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
@@ -594,7 +622,7 @@ class DesktopDownloadManager internal constructor(
 
     companion object {
         fun defaultDownloadRoot(): Path = Path.of(System.getProperty("user.home"), "Downloads", "BiliPai")
-        private fun defaultSourceResolver(repository: DesktopRepository): suspend (DownloadTask) -> PlaybackSource? = { task ->
+        internal fun defaultSourceResolver(repository: DesktopRepository): suspend (DownloadTask) -> DesktopDownloadResolvedSource? = { task ->
             val caller = currentCoroutineContext()[Job]
             val expectedReceipt = task.authorizationReceipt
             val owned = { caller?.isActive != false &&
@@ -629,9 +657,13 @@ class DesktopDownloadManager internal constructor(
                 if (it.authorizationReceipt != receipt) throw CancellationException("下载来源授权已退役")
                 val cookie = repository.capturePlaybackMediaCookieHeader(authorization, it.videoUrl, owned)
                 // The repository resolved fresh direct Bilibili URLs, not the old plugin route.
-                PlaybackSource(it.videoUrl, it.audioUrl, it.referer, userAgent = task.userAgent,
+                DesktopDownloadResolvedSource(PlaybackSource(it.videoUrl, it.audioUrl, it.referer, userAgent = task.userAgent,
                     cookieHeader = cookie, title = it.title, progressiveSegments = it.progressiveSegments,
-                    authorizationReceipt = receipt)
+                    authorizationReceipt = receipt), actualVideoQuality = it.quality.takeIf { quality ->
+                        // Repository already exposes the selected DASH track ID. Never infer it
+                        // from the request, advertised qualities or a progressive video container.
+                        !task.item.isAudioOnly && quality > 0 && !it.audioUrl.isNullOrBlank() && it.progressiveSegments.isEmpty()
+                    })
             }
         }
         private fun defaultDanmakuDownloader(repository: DesktopRepository): suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?> = { task, directory, update ->

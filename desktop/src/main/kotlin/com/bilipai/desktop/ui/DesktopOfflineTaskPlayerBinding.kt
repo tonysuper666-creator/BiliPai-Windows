@@ -55,7 +55,8 @@ class DesktopOfflineTaskPlayerBinding(
 
     private fun matches(current: DownloadTask?, captured: DownloadTask): Boolean = current != null &&
         current.id == captured.id && current.item.bvid == captured.item.bvid && current.item.cid == captured.item.cid &&
-        current.item.quality == captured.item.quality && current.item.isAudioOnly == captured.item.isAudioOnly &&
+        current.item.quality == captured.item.quality && current.resolvedVideoQuality == captured.resolvedVideoQuality &&
+        current.item.qualityDesc == captured.item.qualityDesc && current.item.isAudioOnly == captured.item.isAudioOnly &&
         current.status == captured.status && current.directory == captured.directory && current.outputFile == captured.outputFile
 
     internal fun selectedTask(taskId: String): DownloadTask? = manager.tasks.value.firstOrNull { it.id == taskId }

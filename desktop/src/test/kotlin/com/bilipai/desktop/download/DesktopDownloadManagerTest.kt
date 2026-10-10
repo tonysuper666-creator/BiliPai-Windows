@@ -184,7 +184,7 @@ class DesktopDownloadManagerTest {
             Files.write(output, "merged".toByteArray())
         }, sourceResolver = {
             refreshes++
-            PlaybackSource("https://cdn.example/video?token=current", "https://cdn.example/audio?token=current")
+            DesktopDownloadResolvedSource(PlaybackSource("https://cdn.example/video?token=current", "https://cdn.example/audio?token=current"))
         }, publication = localDownloadPublication())
         manager.enqueue(PlaybackSource("https://cdn.example/video?token=expired", "https://cdn.example/audio?token=expired"), root)
         withTimeout(5000) { while (manager.tasks.value.single().status !in setOf(DownloadStatus.COMPLETED, DownloadStatus.FAILED)) delay(10) }
