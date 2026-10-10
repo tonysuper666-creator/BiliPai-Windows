@@ -15,6 +15,7 @@ struct bv_mpv_config {
     uint64_t session, generation, configuration;
     uint32_t input_width, input_height, output_width, output_height;
     uint32_t effects, quality, peak_nits, timeout_ms;
+    uint32_t intensity_percent; /* application output fusion: exactly 50/75/100; not SDK Strength */
     void (*context_lock)(void *), (*context_unlock)(void *);
     void *context_lock_opaque;
 };

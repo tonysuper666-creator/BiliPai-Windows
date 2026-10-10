@@ -238,7 +238,7 @@ static bool same_config(const struct owner_generation *g,const struct bv_mpv_hdr
         a->generation==b->generation&&a->input_width==b->input_width&&
         a->input_height==b->input_height&&a->output_width==b->output_width&&
         a->output_height==b->output_height&&a->effects==b->effects&&
-        a->quality==b->quality&&a->peak_nits==b->peak_nits&&a->timeout_ms==b->timeout_ms&&
+        a->quality==b->quality&&a->intensity_percent==b->intensity_percent&&a->peak_nits==b->peak_nits&&a->timeout_ms==b->timeout_ms&&
         g->cfg.compile==p->compile&&g->cfg.texture_payload_budget_bytes==p->texture_payload_budget_bytes&&
         b->dll_path&&b->runtime_directory&&b->project_id&&b->engine_version&&
         !wcscmp(g->dll,b->dll_path)&&!wcscmp(g->runtime,b->runtime_directory)&&
@@ -270,7 +270,7 @@ HRESULT bv_mpv_hdr_vf_owner_prepare(struct bv_mpv_hdr_vf_owner *o,
     const struct bv_mpv_config *b=&cfg->bridge;
     if(bv_mpv_hdr_vf_owner_recovery_required(o)){hr=E_PENDING;goto done;}
     if(!owner||!current_epoch(decoder,im,&active)||
-       b->effects!=BV_VIDEO_SR||!b->session||!b->configuration||
+       b->effects!=BV_VIDEO_SR||b->intensity_percent!=100||!b->session||!b->configuration||
        b->configuration>INT64_MAX||b->generation<b->configuration||
        b->quality<1||b->quality>4||b->peak_nits<400||b->peak_nits>2000||
        b->timeout_ms<1||b->timeout_ms>5000||

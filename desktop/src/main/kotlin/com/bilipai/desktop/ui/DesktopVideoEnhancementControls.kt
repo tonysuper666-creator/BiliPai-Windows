@@ -17,6 +17,7 @@ import com.android.purebilibili.core.ui.components.AppTextButton
 import com.bilipai.desktop.player.DesktopVideoEnhancementState
 import com.bilipai.desktop.player.DesktopNvidiaVideoContent
 import com.bilipai.desktop.player.DesktopNvidiaVideoQuality
+import com.bilipai.desktop.player.DesktopNvidiaVideoIntensity
 import com.bilipai.desktop.player.NvidiaVideoBackend
 import com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +38,7 @@ fun DesktopVideoEnhancementSettingsDialog(configuration: DesktopVideoEnhancement
             Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 AppText("NVIDIA 自动增强", style = MaterialTheme.typography.titleLarge)
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
-                    DesktopVideoEnhancementSettingsContent(configuration)
+                    DesktopWindowsVideoEnhancementSettingsContent(configuration, showProcessingQuality = false)
                 }
                 AppTextButton(onClick = onDismiss, modifier = Modifier.align(androidx.compose.ui.Alignment.End)) {
                     AppText("完成")
@@ -65,6 +66,8 @@ internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementS
         state.unavailableReason != null -> "不可用"
         state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE &&
             state.srEnabledRequested && state.hdrConversionActive -> "增强 · HDR"
+        state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE && state.srEnabledRequested && state.hdrConversionActive -> "清晰度＋HDR"
+        state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE && state.srEnabledRequested -> "清晰度"
         state.active && state.driverVsrAccepted && state.hdrConversionActive -> "VSR · HDR"
         state.active && state.hdrConversionActive -> "HDR"
         state.active && state.driverVsrAccepted -> "VSR"
@@ -102,16 +105,17 @@ internal fun DesktopWindowsVideoEnhancementSettingsContent() {
 }
 
 @Composable
-internal fun DesktopWindowsVideoEnhancementSettingsContent(configuration: DesktopVideoEnhancementConfiguration) {
+internal fun DesktopWindowsVideoEnhancementSettingsContent(configuration: DesktopVideoEnhancementConfiguration,
+    showProcessingQuality: Boolean = true) {
     val binding = LocalDesktopWindowsVideoEnhancement.current
     check(binding.configuration === configuration) { "NVIDIA settings must use the actual Root configuration" }
     val state by binding.state.collectAsState()
-    DesktopWindowsVideoEnhancementBody(configuration, state, { configuration.setAutomaticEnabled(it) })
+    DesktopWindowsVideoEnhancementBody(configuration, state, { configuration.setAutomaticEnabled(it) }, showProcessingQuality)
 }
 
 @Composable
 private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhancementConfiguration,
-    state: DesktopVideoEnhancementState, onToggle: (Boolean) -> Unit) {
+    state: DesktopVideoEnhancementState, onToggle: (Boolean) -> Unit, showProcessingQuality: Boolean = false) {
     val preferences by configuration.preferences.collectAsState()
     val enabled = preferences.enabled
     val configurationError by configuration.error.collectAsState()
@@ -128,18 +132,29 @@ private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhanc
             actionError = null
             runCatching { configuration.setContent(content) }.onFailure { actionError = "保存增强内容失败，可重试" }
         }
-        DesktopWindowsSettingsChoice("处理质量", preferences.quality,
+        DesktopWindowsSettingsChoice("效果强度", preferences.intensity,
+            DesktopNvidiaVideoIntensity.entries.map { it to it.label }, enabled = enabled) { intensity ->
+            actionError = null
+            runCatching { configuration.setIntensity(intensity) }.onFailure { actionError = "保存效果强度失败，可重试" }
+        }
+        if (showProcessingQuality) DesktopWindowsSettingsChoice("处理质量", preferences.quality,
             DesktopNvidiaVideoQuality.entries.map { it to it.label }, enabled = enabled && preferences.srEnabled) { quality ->
             actionError = null
             runCatching { configuration.setQuality(quality) }.onFailure { actionError = "保存 NVIDIA 处理质量失败，可重试" }
         }
+        AppText("HDR 减弱也会减少亮度扩展。计算质量由完整应用设置中的处理质量决定。",
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         AppText("HDR 自动仅在 HDR 显示目标可用时转换 SDR；原生 HDR 保持原样。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         if (enabled && !preferences.srEnabled) AppText("仅 HDR 自动使用原尺寸转换，不使用清晰度处理质量。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        if (enabled && preferences.srEnabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE)) AppText(
+        if (showProcessingQuality && enabled && preferences.srEnabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE)) AppText(
             if (!state.veyraAvailable) "当前无法应用处理质量，选择已保存，可用时自动应用。"
             else "当前视频暂不支持质量调节，选择已保存，支持时自动应用。",
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (enabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE ||
+                state.error != null || state.unavailableReason != null)) AppText(
+            "当前效果强度未应用，选择已保存；可用时自动应用。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         AppText(state.statusText, style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant)

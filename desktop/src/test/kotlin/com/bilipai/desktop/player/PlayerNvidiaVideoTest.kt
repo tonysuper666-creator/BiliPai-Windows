@@ -3,6 +3,42 @@ package com.bilipai.desktop.player
 import kotlin.test.*
 
 class PlayerNvidiaVideoTest {
+    @Test fun sharedCoreForwardsQualityAndIntensityWithoutInventingDriverOptions() {
+        val hash = "a".repeat(64)
+        val identity = DesktopVeyraInstalledIdentity("fixture", hash, hash, "fixture", hash, hash, hash, hash)
+        val binding = DesktopVeyraVerifiedBinding(java.nio.file.Path.of("C:/fixture/mpv/libmpv-2.dll"),
+            java.nio.file.Path.of("C:/fixture/core/bilipai_veyra_core.dll"), java.nio.file.Path.of("C:/fixture/runtime"),
+            "00000000-0000-0000-0000-000000000001", hash, identity)
+        assertEquals(100, NvidiaVideoOptions().intensityPercent)
+        assertEquals(DesktopNvidiaVideoIntensity.FULL, DesktopNvidiaVideoPreferences().intensity)
+        val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", null, false)
+        val driverDefault = DesktopNvidiaVideoPreferences().optionsFor(decision, NvidiaVideoBackend.DRIVER)
+        for (quality in DesktopNvidiaVideoQuality.entries) for (intensity in DesktopNvidiaVideoIntensity.entries) {
+            val preferences = DesktopNvidiaVideoPreferences(quality = quality, intensity = intensity)
+            val core = preferences.optionsFor(decision, NvidiaVideoBackend.VEYRA_CORE).requireValid()
+            val arguments = binding.filterArguments(core, 17, 23)
+            assertEquals(quality.nativeLevel, core.qualityLevel)
+            assertEquals(intensity.nativePercent, core.intensityPercent)
+            assertEquals(2.0, core.scale); assertFalse(core.hdr)
+            assertTrue(arguments.contains(":session=17:generation=23:scale=2.0:"))
+            assertTrue(arguments.contains(":quality=${quality.nativeLevel}:"))
+            assertTrue(arguments.contains(":intensity=${intensity.nativePercent}:"))
+            val driver = preferences.optionsFor(decision, NvidiaVideoBackend.DRIVER).requireValid()
+            assertEquals(driverDefault, driver)
+            assertEquals(4, driver.qualityLevel); assertEquals(100, driver.intensityPercent)
+            assertFalse(driver.filterArguments().contains("quality="))
+            assertFalse(driver.filterArguments().contains("intensity="))
+            assertEquals("d3d11vpp=scale=2.0:scaling-mode=nvidia:nvidia-true-hdr=no", driver.filterArguments())
+        }
+        for (invalid in listOf(0, 49, 51, 74, 76, 99, 101)) assertFailsWith<IllegalArgumentException> {
+            binding.filterArguments(NvidiaVideoOptions(2.0, backend = NvidiaVideoBackend.VEYRA_CORE,
+                intensityPercent = invalid), 17, 23)
+        }
+        for (reduced in listOf(50, 75)) assertFailsWith<IllegalArgumentException> {
+            NvidiaVideoOptions(2.0, backend = NvidiaVideoBackend.DRIVER, intensityPercent = reduced).requireValid()
+        }
+    }
+
     @Test fun realSharedCoreArgumentsForwardEveryExposedQualityAndNeverInventADriverOption() {
         val hash = "a".repeat(64)
         val identity = DesktopVeyraInstalledIdentity("fixture", hash, hash, "fixture", hash, hash, hash, hash)

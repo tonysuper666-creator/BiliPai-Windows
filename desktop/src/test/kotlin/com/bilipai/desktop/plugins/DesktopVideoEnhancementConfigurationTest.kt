@@ -5,6 +5,7 @@ import com.bilipai.desktop.player.DesktopNvidiaVideoHdrMode
 import com.bilipai.desktop.player.DesktopNvidiaVideoContent
 import com.bilipai.desktop.player.DesktopNvidiaVideoPreferences
 import com.bilipai.desktop.player.DesktopNvidiaVideoQuality
+import com.bilipai.desktop.player.DesktopNvidiaVideoIntensity
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import org.junit.jupiter.api.io.TempDir
@@ -14,6 +15,45 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.test.*
 
 class DesktopVideoEnhancementConfigurationTest {
+    @Test fun `effect intensity persists with independent quality and frozen writes stay atomic`(): Unit = runBlocking {
+        val store = DesktopPluginStore(root)
+        val config = configuration(store)
+        try {
+            withTimeout(5000) {
+                config.setQuality(DesktopNvidiaVideoQuality.HIGH).await()
+                config.setHdrMode(DesktopNvidiaVideoHdrMode.OFF).await()
+                config.setAutomaticEnabled(false).await()
+            }
+            assertEquals(DesktopNvidiaVideoIntensity.FULL, config.preferences.value.intensity)
+            assertEquals(listOf(50, 75, 100), DesktopNvidiaVideoIntensity.entries.map { it.nativePercent })
+            for (intensity in DesktopNvidiaVideoIntensity.entries) {
+                withTimeout(5000) { config.setIntensity(intensity).await() }
+                val expected = config.preferences.value
+                assertEquals(intensity, expected.intensity)
+                assertEquals(DesktopNvidiaVideoQuality.HIGH, expected.quality)
+                assertEquals(DesktopNvidiaVideoHdrMode.OFF, expected.hdrMode)
+                assertFalse(expected.enabled)
+                val namespace = document()["windows_video_enhancement"]!!.jsonObject
+                assertEquals(intensity.nativePercent, namespace["effect_intensity_percent"]!!.jsonPrimitive.int)
+                assertEquals(3, namespace["quality_level"]!!.jsonPrimitive.int)
+                val coldRoot = Files.createDirectory(root.resolve("intensity-${intensity.nativePercent}-cold"))
+                Files.copy(root.resolve("plugin-settings.json"), coldRoot.resolve("plugin-settings.json"))
+                val cold = configuration(DesktopPluginStore(coldRoot))
+                withTimeout(5000) { cold.flushAndClose() }
+                assertEquals(expected, cold.preferences.value)
+            }
+            val before = config.preferences.value
+            val saved = document()
+            store.freezeWrites()
+            assertFailsWith<IllegalStateException> {
+                withTimeout(5000) { config.setIntensity(DesktopNvidiaVideoIntensity.GENTLE).await() }
+            }
+            assertEquals(before, config.preferences.value)
+            assertEquals(saved, document())
+            assertNotNull(config.error.value)
+        } finally { withTimeout(5000) { config.flushAndClose() } }
+    }
+
     @Test fun `quality and HDR writes merge in queue order and drain on retirement`(): Unit = runBlocking {
         val accepting = AtomicBoolean(true)
         val config = configuration(accepting = accepting::get)
@@ -47,7 +87,8 @@ class DesktopVideoEnhancementConfigurationTest {
 
     @Test fun `invalid quality or HDR stays disabled and is never overwritten`(): Unit = runBlocking {
         for ((index, field) in listOf("\"quality_level\":\"4\"", "\"quality_level\":0", "\"quality_level\":5",
-            "\"hdr_mode\":true", "\"hdr_mode\":\"unknown\"").withIndex()) {
+            "\"hdr_mode\":true", "\"hdr_mode\":\"unknown\"",
+            "\"effect_intensity_percent\":\"100\"", "\"effect_intensity_percent\":51", "\"effect_intensity_percent\":true").withIndex()) {
             val path = Files.createDirectory(root.resolve("invalid-$index"))
             val original = """{"windows_video_enhancement":{"migration_version":1,"enabled":true,$field}}"""
             Files.writeString(path.resolve("plugin-settings.json"), original)

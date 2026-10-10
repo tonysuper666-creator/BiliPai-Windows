@@ -45,10 +45,10 @@ struct bv_mpv_bridge {
     ID3D11Texture2D *input11, *output11, *present11, *source11;
     ID3D12Resource *input12, *output12;
     ID3D11RenderTargetView *input_rtv, *present_rtv;
-    ID3D11ShaderResourceView *output_srv, *source_srv[2];
+    ID3D11ShaderResourceView *output_srv, *source_srv[2], *input_srv;
     ID3D11VertexShader *vs;
-    ID3D11PixelShader *input_ps, *sr_ps, *hdr_ps;
-    ID3D11Buffer *constants;
+    ID3D11PixelShader *input_ps, *sr_ps, *hdr_ps, *sr_blend_ps, *hdr_blend_ps;
+    ID3D11Buffer *constants, *intensity_constants;
     ID3D11RasterizerState *raster;
     uint64_t luid, producer_value, consumer_value, consumer_done, sequence;
     uint32_t source_width, source_height;
@@ -85,8 +85,9 @@ static int absolute_path(const wchar_t *p) {
 }
 static void release_context(struct bv_mpv_bridge *p) {
     RELEASE(p->source_srv[0]);RELEASE(p->source_srv[1]);RELEASE(p->source11);
-    RELEASE(p->input_rtv);RELEASE(p->present_rtv);RELEASE(p->output_srv);
+    RELEASE(p->input_rtv);RELEASE(p->present_rtv);RELEASE(p->output_srv);RELEASE(p->input_srv);
     RELEASE(p->vs);RELEASE(p->input_ps);RELEASE(p->sr_ps);RELEASE(p->hdr_ps);
+    RELEASE(p->sr_blend_ps);RELEASE(p->hdr_blend_ps);RELEASE(p->intensity_constants);
     RELEASE(p->constants);RELEASE(p->raster);
     RELEASE(p->input12);RELEASE(p->output12);RELEASE(p->input11);RELEASE(p->output11);RELEASE(p->present11);
     RELEASE(p->producer12);RELEASE(p->consumer12);RELEASE(p->producer11);RELEASE(p->consumer11);
@@ -162,6 +163,8 @@ static HRESULT shared_fence(struct bv_mpv_bridge *p,ID3D11Fence **f11,ID3D12Fenc
  * Preserve signed scRGB through the gamut matrix; pq() clips destination nits. */
 static const char shader[]=
 "Texture2D<float4> src:register(t0);Texture2D<float2> uv:register(t1);"
+"Texture2D<float4> original:register(t2);"
+"cbuffer W:register(b1){uint intensityPercent;uint weightReserved0;uint weightReserved1;uint weightReserved2;}"
 "cbuffer K:register(b0){uint mode;uint limited;uint matrixId;uint gamma24;uint width;uint height;uint chroma;uint sampleDepth;}"
 "float4 vs(uint i:SV_VertexID):SV_Position{return float4(i==2?3:-1,i==1?3:-1,0,1);}"
 "float3 srgb(float3 c){c=max(c,0);return float3(c.r<=0.0031308?12.92*c.r:1.055*pow(c.r,1/2.4)-.055,c.g<=0.0031308?12.92*c.g:1.055*pow(c.g,1/2.4)-.055,c.b<=0.0031308?12.92*c.b:1.055*pow(c.b,1/2.4)-.055);}"
@@ -173,7 +176,12 @@ static const char shader[]=
 "}else if(limited)rgb=sampleDepth==10?(rgb*1023.0-64.0)/876.0:(rgb*255-16)/219;return float4(saturate(srgb(decodeTransfer(saturate(rgb)))),1);}"
 "float4 srPS(float4 p:SV_Position):SV_Target{return src.Load(int3(uint2(p.xy),0));}"
 "float3 pq(float3 n){float3 v=pow(saturate(n/10000),2610.0/16384);return pow((3424.0/4096+(2413.0/128)*v)/(1+(2392.0/128)*v),2523.0/32);}"
-"float4 hdrPS(float4 p:SV_Position):SV_Target{float3 x=src.Load(int3(uint2(p.xy),0)).rgb*80;float3 y=float3(dot(x,float3(.627404,.329283,.043313)),dot(x,float3(.069097,.919540,.011362)),dot(x,float3(.016391,.088013,.895595)));return float4(pq(y),1);}";
+"float4 hdrPS(float4 p:SV_Position):SV_Target{float3 x=src.Load(int3(uint2(p.xy),0)).rgb*80;float3 y=float3(dot(x,float3(.627404,.329283,.043313)),dot(x,float3(.069097,.919540,.011362)),dot(x,float3(.016391,.088013,.895595)));return float4(pq(y),1);}"
+"float3 intensityDecodeSrgb(float3 c){float3 lo=c/12.92;float3 hi=pow((c+.055)/1.055,2.4);return float3(c.r<=.04045?lo.r:hi.r,c.g<=.04045?lo.g:hi.g,c.b<=.04045?lo.b:hi.b);}"
+"float3 intensityOriginalLinear(float2 p){uint iw,ih,ow,oh;original.GetDimensions(iw,ih);src.GetDimensions(ow,oh);float2 q=p*float2(iw,ih)/float2(ow,oh)-.5;int2 a=int2(floor(q));float2 f=frac(q);int2 end=int2(iw-1,ih-1);float3 c00=intensityDecodeSrgb(original.Load(int3(clamp(a,0,end),0)).rgb);float3 c10=intensityDecodeSrgb(original.Load(int3(clamp(a+int2(1,0),0,end),0)).rgb);float3 c01=intensityDecodeSrgb(original.Load(int3(clamp(a+int2(0,1),0,end),0)).rgb);float3 c11=intensityDecodeSrgb(original.Load(int3(clamp(a+int2(1,1),0,end),0)).rgb);return lerp(lerp(c00,c10,f.x),lerp(c01,c11,f.x),f.y);}"
+"float3 intensityMix(float3 a,float3 b){return lerp(a,b,float(intensityPercent)/100);}"
+"float4 srBlendPS(float4 p:SV_Position):SV_Target{float3 enhanced=intensityDecodeSrgb(src.Load(int3(uint2(p.xy),0)).rgb);return float4(srgb(intensityMix(intensityOriginalLinear(p.xy),enhanced)),1);}"
+"float4 hdrBlendPS(float4 p:SV_Position):SV_Target{float3 x=intensityMix(intensityOriginalLinear(p.xy)*80,src.Load(int3(uint2(p.xy),0)).rgb*80);float3 y=float3(dot(x,float3(.627404,.329283,.043313)),dot(x,float3(.069097,.919540,.011362)),dot(x,float3(.016391,.088013,.895595)));return float4(pq(y),1);}";
 static HRESULT shader_create(struct bv_mpv_bridge *p) {
     ID3DBlob *b=NULL,*errors=NULL;HRESULT hr;
 #define BUILD(entry,target) hr=D3DCompile(shader,sizeof(shader)-1,"bilipai-rtx-candidate",NULL,NULL,entry,target,D3DCOMPILE_ENABLE_STRICTNESS,0,&b,&errors);RELEASE(errors);if(FAILED(hr)){RELEASE(b);return hr;}
@@ -181,6 +189,15 @@ static HRESULT shader_create(struct bv_mpv_bridge *p) {
     BUILD("inputPS","ps_5_0");hr=ID3D11Device_CreatePixelShader(p->device,ID3D10Blob_GetBufferPointer(b),ID3D10Blob_GetBufferSize(b),NULL,&p->input_ps);RELEASE(b);if(FAILED(hr))return hr;
     BUILD("srPS","ps_5_0");hr=ID3D11Device_CreatePixelShader(p->device,ID3D10Blob_GetBufferPointer(b),ID3D10Blob_GetBufferSize(b),NULL,&p->sr_ps);RELEASE(b);if(FAILED(hr))return hr;
     BUILD("hdrPS","ps_5_0");hr=ID3D11Device_CreatePixelShader(p->device,ID3D10Blob_GetBufferPointer(b),ID3D10Blob_GetBufferSize(b),NULL,&p->hdr_ps);RELEASE(b);if(FAILED(hr))return hr;
+    /* FULL keeps the exact old output entry points and creates no fusion resources. */
+    if(p->config.intensity_percent<100){
+        BUILD("srBlendPS","ps_5_0");hr=ID3D11Device_CreatePixelShader(p->device,ID3D10Blob_GetBufferPointer(b),ID3D10Blob_GetBufferSize(b),NULL,&p->sr_blend_ps);RELEASE(b);if(FAILED(hr))return hr;
+        BUILD("hdrBlendPS","ps_5_0");hr=ID3D11Device_CreatePixelShader(p->device,ID3D10Blob_GetBufferPointer(b),ID3D10Blob_GetBufferSize(b),NULL,&p->hdr_blend_ps);RELEASE(b);if(FAILED(hr))return hr;
+        uint32_t weight[4]={p->config.intensity_percent,0,0,0};
+        D3D11_BUFFER_DESC w={0};w.ByteWidth=16;w.Usage=D3D11_USAGE_IMMUTABLE;w.BindFlags=D3D11_BIND_CONSTANT_BUFFER;
+        D3D11_SUBRESOURCE_DATA initial={0};initial.pSysMem=weight;
+        hr=ID3D11Device_CreateBuffer(p->device,&w,&initial,&p->intensity_constants);if(FAILED(hr))return hr;
+    }
 #undef BUILD
     D3D11_BUFFER_DESC cb={0};cb.ByteWidth=32;cb.Usage=D3D11_USAGE_DEFAULT;cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;
     hr=ID3D11Device_CreateBuffer(p->device,&cb,NULL,&p->constants);if(FAILED(hr))return hr;
@@ -198,6 +215,21 @@ static void draw(struct bv_mpv_bridge *p,ID3D11RenderTargetView *target,ID3D11Pi
     ID3D11DeviceContext_OMSetBlendState(p->context,NULL,NULL,UINT_MAX);ID3D11DeviceContext_OMSetDepthStencilState(p->context,NULL,0);
     ID3D11DeviceContext_Draw(p->context,3,0);views[0]=views[1]=NULL;
     ID3D11DeviceContext_PSSetShaderResources(p->context,0,2,views);ID3D11DeviceContext_OMSetRenderTargets(p->context,0,NULL,NULL);
+}
+/* Same admitted frame/queue only. 80nit is an explicit SDR reference white,
+ * not Windows SDR-white measurement. HDR keeps signed scRGB until gamut/PQ.
+ * The consumer completion Signal remains AFTER this draw and the final copy. */
+static void draw_output(struct bv_mpv_bridge *p) {
+    if(p->config.intensity_percent==100){
+        draw(p,p->present_rtv,(p->config.effects&BV_VIDEO_HDR)?p->hdr_ps:p->sr_ps,p->config.output_width,p->config.output_height,p->output_srv,NULL);
+        return;
+    }
+    ID3D11DeviceContext_PSSetConstantBuffers(p->context,1,1,&p->intensity_constants);
+    ID3D11DeviceContext_PSSetShaderResources(p->context,2,1,&p->input_srv);
+    draw(p,p->present_rtv,(p->config.effects&BV_VIDEO_HDR)?p->hdr_blend_ps:p->sr_blend_ps,p->config.output_width,p->config.output_height,p->output_srv,NULL);
+    ID3D11ShaderResourceView *empty_view=NULL;ID3D11Buffer *empty_buffer=NULL;
+    ID3D11DeviceContext_PSSetShaderResources(p->context,2,1,&empty_view);
+    ID3D11DeviceContext_PSSetConstantBuffers(p->context,1,1,&empty_buffer);
 }
 static HRESULT source_views(struct bv_mpv_bridge *p,const D3D11_TEXTURE2D_DESC *src) {
     if(p->source11&&p->source_width==src->Width&&p->source_height==src->Height&&p->source_format==src->Format)return S_OK;
@@ -243,7 +275,7 @@ void bv_mpv_observe_pq_p010(ID3D11Device *device, ID3D11Texture2D *texture,
 }
 int bv_mpv_bridge_create(const struct bv_mpv_config *c,struct bv_mpv_bridge **out,bv_status_v1 *s) {
     *out=NULL;status_init(s);
-    if(!c||!c->device||!c->session||!c->configuration||c->configuration>INT64_MAX||c->generation<c->configuration||!absolute_path(c->dll_path)||!absolute_path(c->runtime_directory)||!c->project_id||!c->engine_version||!c->input_width||!c->input_height||!c->output_width||!c->output_height||(!c->context_lock!=!c->context_unlock))return fail(s,BV_INVALID,E_INVALIDARG,"invalid explicit bridge configuration");
+    if(!c||!c->device||!c->session||!c->configuration||c->configuration>INT64_MAX||c->generation<c->configuration||!absolute_path(c->dll_path)||!absolute_path(c->runtime_directory)||!c->project_id||!c->engine_version||!c->input_width||!c->input_height||!c->output_width||!c->output_height||(!c->context_lock!=!c->context_unlock)||(c->intensity_percent!=50&&c->intensity_percent!=75&&c->intensity_percent!=100))return fail(s,BV_INVALID,E_INVALIDARG,"invalid explicit bridge configuration");
     AcquireSRWLockExclusive(&retire_lock);
     if(quarantined&&destroy_core(quarantined,s)==BV_OK){release_context(quarantined);quarantined=NULL;}
     int blocked=quarantined!=NULL;ReleaseSRWLockExclusive(&retire_lock);
@@ -273,6 +305,7 @@ int bv_mpv_bridge_create(const struct bv_mpv_config *c,struct bv_mpv_bridge **ou
     hr=shared_texture(p,c->output_width,c->output_height,output,D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS,&p->output11,&p->output12);if(FAILED(hr))goto native_fail;
     hr=ID3D11Device_CreateRenderTargetView(p->device,(ID3D11Resource*)p->input11,NULL,&p->input_rtv);if(FAILED(hr))goto native_fail;
     hr=ID3D11Device_CreateShaderResourceView(p->device,(ID3D11Resource*)p->output11,NULL,&p->output_srv);if(FAILED(hr))goto native_fail;
+    if(c->intensity_percent<100){hr=ID3D11Device_CreateShaderResourceView(p->device,(ID3D11Resource*)p->input11,NULL,&p->input_srv);if(FAILED(hr))goto native_fail;}
     D3D11_TEXTURE2D_DESC d={0};d.Width=c->output_width;d.Height=c->output_height;d.ArraySize=d.MipLevels=d.SampleDesc.Count=1;
     d.Format=(c->effects&BV_VIDEO_HDR)?DXGI_FORMAT_R10G10B10A2_UNORM:DXGI_FORMAT_B8G8R8A8_UNORM;d.BindFlags=D3D11_BIND_RENDER_TARGET;
     hr=ID3D11Device_CreateTexture2D(p->device,&d,NULL,&p->present11);if(FAILED(hr))goto native_fail;
@@ -346,7 +379,7 @@ int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t s
     if(SUCCEEDED(hr))hr=ID3D11DeviceContext4_Wait(p->context4,p->consumer11,p->consumer_value);
     if(FAILED(hr)){p->failed=1;fail(s,BV_DEVICE_FAILURE,hr,"consumer fence handoff failed");leave_context(p,&previous);RETURN(BV_DEVICE_FAILURE);}
     p->held_output_lease=output_lease;p->release_output_lease=release_output_lease;output_lease=NULL;
-    draw(p,p->present_rtv,(p->config.effects&BV_VIDEO_HDR)?p->hdr_ps:p->sr_ps,p->config.output_width,p->config.output_height,p->output_srv,NULL);
+    draw_output(p);
     ID3D11DeviceContext_CopySubresourceRegion(p->context,(ID3D11Resource*)out,out_slice,0,0,0,(ID3D11Resource*)p->present11,0,NULL);
     p->consumer_done=++p->consumer_value;
     hr=ID3D11DeviceContext4_Signal(p->context4,p->consumer11,p->consumer_done);
@@ -451,7 +484,7 @@ int bv_mpv_bridge_process_proxy_sr(struct bv_mpv_bridge *p,
     if(!valid_lease)PROXY_RETURN(fail(s,BV_INVALID,E_INVALIDARG,"real retained host proxy lease required"));
     if(!p||p->failed||!p->core||p->proxy_sr_loan||p->held_input_lease||p->held_output_lease)
         PROXY_RETURN(fail(s,BV_BUSY,E_PENDING,"dedicated idle SR bridge required; outstanding owner retained"));
-    if(p->config.effects!=BV_VIDEO_SR||!d3d11_bilipai_default_owner_known(in->device_ref)||
+    if(p->config.effects!=BV_VIDEO_SR||p->config.intensity_percent!=100||!d3d11_bilipai_default_owner_known(in->device_ref)||
        (p->proxy_owner_ref&&(p->proxy_owner_ref->buffer!=in->device_ref->buffer||
         p->proxy_owner_ref->data!=in->device_ref->data||p->proxy_owner_ref->size!=in->device_ref->size))||
        (ID3D11Device_GetCreationFlags(p->device)&D3D11_CREATE_DEVICE_SINGLETHREADED))

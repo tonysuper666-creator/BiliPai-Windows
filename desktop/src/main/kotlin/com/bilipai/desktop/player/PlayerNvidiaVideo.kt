@@ -10,11 +10,16 @@ data class NvidiaVideoOptions(val scale: Double = 1.0, val hdr: Boolean = false,
     val nativeResolutionProcessing: Boolean = false,
     val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
     val qualityLevel: Int = 4,
-    val srEnabled: Boolean = true) {
+    val srEnabled: Boolean = true,
+    val intensityPercent: Int = 100) {
     internal fun requireValid(): NvidiaVideoOptions {
         require(scale.isFinite() && scale in 1.0..4.0) { "NVIDIA video scale must be between 1 and 4." }
         require(!nativeResolutionProcessing || scale == 1.0) { "Native-resolution processing requires unity scale." }
         require(qualityLevel in 1..4) { "NVIDIA video quality must be between 1 and 4." }
+        require(intensityPercent in setOf(50, 75, 100)) { "Video output intensity must be 50, 75 or 100 percent." }
+        require(backend == NvidiaVideoBackend.VEYRA_CORE || intensityPercent == 100) {
+            "The driver route cannot apply application output intensity."
+        }
         require(srEnabled || (backend == NvidiaVideoBackend.VEYRA_CORE && hdr && scale == 1.0 &&
             !nativeResolutionProcessing)) { "HDR-only requires the shared core, HDR and unity dimensions." }
         return this
@@ -70,6 +75,8 @@ data class NvidiaVideoState(
     /** Requested shared-core quality. Driver d3d11vpp has no quality option. */
     val requestedQualityLevel: Int = 4,
     val srEnabledRequested: Boolean = true,
+    /** Application output weight requested for this exact configuration, never native SDK Strength. */
+    val requestedIntensityPercent: Int = 100,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")

@@ -173,6 +173,72 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
 }
 
 class PlayerNvidiaActorWithdrawalTest {
+    @Test fun persistedIntensityChangesOnlyOwnedFilterAndLateSourceActionIsRejected() = runBlocking<Unit> {
+        val configuration = DesktopVideoEnhancementConfiguration(DesktopPluginStore(enhancementSettingsRoot),
+            dispatcher = Dispatchers.Default)
+        try {
+            withTimeout(3000) {
+                configuration.setAutomaticEnabled(true).await()
+                configuration.setQuality(DesktopNvidiaVideoQuality.STANDARD).await()
+                configuration.setHdrMode(DesktopNvidiaVideoHdrMode.OFF).await()
+                configuration.setIntensity(DesktopNvidiaVideoIntensity.FULL).await()
+            }
+            MpvPlayer().use { player ->
+                player.setVolume(23.0); player.setMuted(true); player.setSpeed(1.25)
+                val version = player.loadVersioned(PlaybackSource("file:///C:/intensity-owned-playing.avi"))
+                val source = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    // Memory-only metadata/binding; no SDK/GPU/DLL/window executes.
+                    actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                    DesktopVideoEnhancementSession(player, configuration.automaticEnabled, MutableStateFlow(true),
+                        MutableStateFlow(false), configuration::setAutomaticEnabled,
+                        enhancementPreferences = configuration.preferences).use { enhancement ->
+                        awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        val playback = player.state.value
+                        for (intensity in listOf(DesktopNvidiaVideoIntensity.GENTLE,
+                            DesktopNvidiaVideoIntensity.BALANCED, DesktopNvidiaVideoIntensity.FULL)) {
+                            val previous = player.nvidiaVideoState.value.configurationVersion
+                            withTimeout(3000) { configuration.setIntensity(intensity).await() }
+                            awaitSession { player.nvidiaVideoState.value.configurationVersion != previous &&
+                                player.nvidiaVideoState.value.requestedIntensityPercent == intensity.nativePercent && actor.hasQueuedNvidia() }
+                            while (actor.hasQueuedNvidia()) actor.apply()
+                            val request = player.nvidiaVideoState.value
+                            val add = actor.native.commands.last { it.take(2) == listOf("vf", "add") }
+                            assertTrue(add[2].contains(":quality=2:"))
+                            assertTrue(add[2].contains(":intensity=${intensity.nativePercent}:"))
+                            assertEquals(2, request.requestedQualityLevel)
+                            assertEquals(intensity.nativePercent, request.requestedIntensityPercent)
+                            assertEquals(playback, player.state.value); assertEquals(version, player.currentSourceVersion)
+                            assertTrue(player.ownsSourceSnapshot(source)); assertFalse(request.active)
+                            assertFalse(request.veyraSubmitted); assertFalse(enhancement.state.value.active)
+                            assertEquals(2, actor.native.filters.size)
+                            assertTrue(actor.native.filters.contains("scale" to "foreign-user-filter"))
+                            assertTrue(actor.native.commands.all { it.take(2) in listOf(listOf("vf", "add"), listOf("vf", "remove")) })
+                        }
+                        val previous = player.nvidiaVideoState.value.configurationVersion
+                        withTimeout(3000) { configuration.setIntensity(DesktopNvidiaVideoIntensity.GENTLE).await() }
+                        awaitSession { player.nvidiaVideoState.value.configurationVersion != previous &&
+                            player.nvidiaVideoState.value.requestedIntensityPercent == 50 && actor.hasQueuedNvidia() }
+                        val oldConfiguration = player.nvidiaVideoState.value.configurationVersion
+                        val late = actor.nextNvidia()
+                        val replacement = player.loadVersioned(PlaybackSource("file:///C:/intensity-replacement.avi"))
+                        enhancement.close()
+                        val retired = player.nvidiaVideoState.value
+                        val commands = actor.native.commands.toList(); val filters = actor.native.filters.toList()
+                        actor.apply(late)
+                        assertEquals(retired, player.nvidiaVideoState.value)
+                        assertEquals(commands, actor.native.commands); assertEquals(filters, actor.native.filters)
+                        assertEquals(replacement, player.currentSourceVersion); assertFalse(player.ownsSourceSnapshot(source))
+                        assertNull(player.setNvidiaVideoEnhancementIfSourceSnapshot(source,
+                            NvidiaVideoOptions(2.0, backend = NvidiaVideoBackend.VEYRA_CORE, qualityLevel = 2, intensityPercent = 50)))
+                        assertFalse(player.clearNvidiaVideoEnhancementIfConfigurationVersion(oldConfiguration))
+                    }
+                }
+            }
+        } finally { withTimeout(3000) { configuration.flushAndClose() } }
+    }
+
     @TempDir lateinit var enhancementSettingsRoot: Path
 
 

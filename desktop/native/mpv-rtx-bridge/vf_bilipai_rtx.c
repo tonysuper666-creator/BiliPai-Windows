@@ -52,7 +52,7 @@ struct opts {
     int64_t session, generation;
     int64_t native_pq_payload_budget;
     float scale;
-    int quality, peak, timeout;
+    int quality, peak, timeout, intensity;
     bool hdr, sr, native_pq_diagnostic, native_pq_output;
 };
 struct priv {
@@ -269,7 +269,7 @@ static struct mp_image *step_native_pq_diagnostic(struct mp_filter *vf,const str
         .session=(uint64_t)p->opts->session,.configuration=(uint64_t)p->opts->generation,
         .generation=p->generation,.input_width=source->w,.input_height=source->h,
         .output_width=output_width,.output_height=output_height,
-        .effects=BV_VIDEO_SR,.quality=p->opts->quality,.peak_nits=p->opts->peak,
+        .effects=BV_VIDEO_SR,.quality=p->opts->quality,.intensity_percent=100,.peak_nits=p->opts->peak,
         .timeout_ms=p->opts->timeout};
     // Native PQ uses fixed HDR-base/proxy/delta restoration, never TrueHDR bit2.
     // Actual owner_prepare overrides device/context fields from source AVHWowner.
@@ -424,7 +424,7 @@ static bool prepare_bridge(struct mp_filter *vf,const struct mp_image *format)
         log_failure(vf,BV_COLOR_UNSUPPORTED,"bridge-unavailable","unsupported frame color metadata");return false;
     }
     if(!isfinite(p->opts->scale)||p->opts->scale<1||p->opts->scale>4||
-       p->opts->quality<1||p->opts->quality>4||p->opts->peak<400||p->opts->peak>2000||
+       p->opts->quality<1||p->opts->quality>4||(p->opts->intensity!=50&&p->opts->intensity!=75&&p->opts->intensity!=100)||p->opts->peak<400||p->opts->peak>2000||
        p->opts->timeout<1||p->opts->timeout>5000||
        (!p->opts->sr&&(!p->opts->hdr||p->opts->scale!=1.0f))){
         log_failure(vf,BV_INVALID,"bridge-unavailable","invalid enhancement options");return false;
@@ -450,7 +450,7 @@ static bool prepare_bridge(struct mp_filter *vf,const struct mp_image *format)
     cfg.project_id=p->opts->project;cfg.engine_version="BiliPai-Veyra-Core-1";
     cfg.session=(uint64_t)p->opts->session;cfg.generation=p->generation;cfg.configuration=(uint64_t)p->opts->generation;
     cfg.input_width=p->params.w;cfg.input_height=p->params.h;cfg.output_width=p->out_params.w;cfg.output_height=p->out_params.h;
-    cfg.effects=(p->opts->sr?BV_VIDEO_SR:0)|(p->opts->hdr?BV_VIDEO_HDR:0);cfg.quality=p->opts->quality;cfg.peak_nits=p->opts->peak;cfg.timeout_ms=p->opts->timeout;
+    cfg.effects=(p->opts->sr?BV_VIDEO_SR:0)|(p->opts->hdr?BV_VIDEO_HDR:0);cfg.quality=p->opts->quality;cfg.intensity_percent=(uint32_t)p->opts->intensity;cfg.peak_nits=p->opts->peak;cfg.timeout_ms=p->opts->timeout;
     cfg.context_lock=p->d3d->lock;cfg.context_unlock=p->d3d->unlock;cfg.context_lock_opaque=p->d3d->lock_ctx;
     bv_status_v1 s;int rc=bv_mpv_bridge_create(&cfg,&p->bridge,&s);free(dll);free(runtime);
     if(rc!=BV_OK)log_failure(vf,rc,"bridge-unavailable",s.message);
@@ -587,7 +587,7 @@ fail:
 static const m_option_t fields[]={
     {"dll",OPT_STRING(dll)},{"runtime",OPT_STRING(runtime)},{"project",OPT_STRING(project)},
     {"session",OPT_INT64(session)},{"generation",OPT_INT64(generation)},
-    {"scale",OPT_FLOAT(scale)},{"quality",OPT_INT(quality)},{"hdr",OPT_BOOL(hdr)},{"sr",OPT_BOOL(sr)},
+    {"scale",OPT_FLOAT(scale)},{"quality",OPT_INT(quality)},{"intensity",OPT_INT(intensity)},{"hdr",OPT_BOOL(hdr)},{"sr",OPT_BOOL(sr)},
     {"peak",OPT_INT(peak)},{"timeout",OPT_INT(timeout)},
     // Internal explicit diagnostic only; no app/JVM/GUI emitter or renderer gate.
     {"native-pq-diagnostic",OPT_BOOL(native_pq_diagnostic)},
@@ -597,5 +597,5 @@ static const m_option_t fields[]={
 };
 const struct mp_user_filter_entry vf_bilipai_rtx={
     .desc={.name="bilipai-rtx",.description="BiliPai RTX Video GPU bridge candidate",.priv_size=sizeof(struct opts),
-        .priv_defaults=&(const struct opts){.scale=1,.quality=2,.peak=1000,.timeout=1000,.sr=true},.options=fields},.create=create,
+        .priv_defaults=&(const struct opts){.scale=1,.quality=2,.peak=1000,.timeout=1000,.sr=true,.intensity=100},.options=fields},.create=create,
 };

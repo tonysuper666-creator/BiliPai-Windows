@@ -28,23 +28,23 @@
   "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
   "sourceFiles": [
     {
-      "bytes": 32827,
+      "bytes": 33035,
       "fileName": "vf_bilipai_rtx.c",
-      "sha256": "f26823c80638f8ef5847f3ea95fc73235b0320bbf196128858c13557c763cef8",
+      "sha256": "9e6e9bb5910d227eccde9f55f2d4c7b590588c5d160d26dc994a73f93b30bb28",
       "sourcePath": "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
       "targetPath": "video/filter/vf_bilipai_rtx.c"
     },
     {
-      "bytes": 47853,
+      "bytes": 51640,
       "fileName": "bilipai_rtx_mpv_bridge.c",
-      "sha256": "33f3f47ccdb65a1857375fa6de7070041375b493548bc19017823a2b6022f832",
+      "sha256": "51b988ab9ce5a6ac5da1708e118675bf499a86c697417a55a61edd1493067014",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
     },
     {
-      "bytes": 9431,
+      "bytes": 9532,
       "fileName": "bilipai_rtx_mpv_bridge.h",
-      "sha256": "ae136fec26f40140858d4c47c955c9bb92feca7f96a46a5c10d6eeab3be346e2",
+      "sha256": "6c82888d4b1ab5175dd4a01d5ffbccfd0310e1fbee35b206bebdcd5ed1fe43bf",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.h"
     },
@@ -161,9 +161,9 @@
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_p010_chain.h"
     },
     {
-      "bytes": 29671,
+      "bytes": 29742,
       "fileName": "bilipai_hdr_vf_owner.c",
-      "sha256": "85267b84ad261e5582ecb99a8a6e8a8f393451844094c10da6846542ae19d95f",
+      "sha256": "06e00bd2d1f93cf1258b0ea267e4c3a5cd6d48e742bbd7ab56c69e1b174ee68e",
       "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_vf_owner.c",
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_vf_owner.c"
     },

@@ -202,7 +202,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             nativeResolutionPatchAvailable = previous.nativeResolutionPatchAvailable,
             nativeResolutionProcessingRequested = options.nativeResolutionProcessing,
             veyraAvailable = previous.veyraAvailable, backend = options.backend,
-            requestedQualityLevel = options.qualityLevel, srEnabledRequested = options.srEnabled)
+            requestedQualityLevel = options.qualityLevel, srEnabledRequested = options.srEnabled,
+            requestedIntensityPercent = options.intensityPercent)
         session?.commands?.offer(Action.NvidiaVideo(version, owner, playbackRevision, requestedSource, options))
         return version
     }
@@ -992,7 +993,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             nvidiaSourceVersion ?: sourceVersion, nvidiaOptions.scale, nvidiaOptions.hdr,
             pending = !closed.get() && requestedSource != null && nvidiaOptions.requiresFilter,
             nativeResolutionProcessingRequested = nvidiaOptions.nativeResolutionProcessing,
-            requestedQualityLevel = nvidiaOptions.qualityLevel, srEnabledRequested = nvidiaOptions.srEnabled) }
+            requestedQualityLevel = nvidiaOptions.qualityLevel, srEnabledRequested = nvidiaOptions.srEnabled,
+            requestedIntensityPercent = nvidiaOptions.intensityPercent) }
         mutableState.update { it.copy(ready = false, loading = false, activeVideoPanscan = null, nativePaused = null) }
     }
 

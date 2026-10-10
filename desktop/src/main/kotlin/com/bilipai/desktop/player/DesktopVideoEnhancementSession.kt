@@ -30,6 +30,7 @@ data class DesktopVideoEnhancementState(
     /** Actual selected processing route; saved shared-core quality is unavailable on DRIVER. */
     val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
     val srEnabledRequested: Boolean = true,
+    val requestedIntensityPercent: Int = 100,
 )
 
 /** Shared projection; the session admits the current source/configuration before calling it. */
@@ -48,7 +49,8 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
             error = native.error, unavailableReason = native.unavailableReason, statusText = status,
             driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = native.hdrConversionActive,
             nativeResolutionAttemptAccepted = false, veyraAvailable = native.veyraAvailable,
-            veyraSubmitted = native.veyraSubmitted, backend = native.backend, srEnabledRequested = native.srEnabledRequested)
+            veyraSubmitted = native.veyraSubmitted, backend = native.backend, srEnabledRequested = native.srEnabledRequested,
+            requestedIntensityPercent = native.requestedIntensityPercent)
     }
     val status = when {
         native.error != null -> "NVIDIA 增强异常：${native.error}"
@@ -76,7 +78,8 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
         driverVsrAccepted = native.driverVsrAccepted, driverHdrAccepted = native.driverHdrAccepted,
         hdrConversionActive = native.hdrConversionActive,
         nativeResolutionAttemptAccepted = native.nativeResolutionAttemptAccepted,
-        veyraAvailable = native.veyraAvailable, backend = native.backend, srEnabledRequested = native.srEnabledRequested)
+        veyraAvailable = native.veyraAvailable, backend = native.backend, srEnabledRequested = native.srEnabledRequested,
+            requestedIntensityPercent = native.requestedIntensityPercent)
 }
 
 /** One Windows NVIDIA session on the main native video actor. Every video kind

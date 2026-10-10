@@ -17,12 +17,18 @@ enum class DesktopNvidiaVideoContent(val label: String, val srEnabled: Boolean, 
     HDR_ONLY("仅 HDR 自动", false, DesktopNvidiaVideoHdrMode.AUTO),
 }
 
+/** Application GPU output fusion; NGX processing quality remains independent. */
+enum class DesktopNvidiaVideoIntensity(val nativePercent: Int, val label: String) {
+    GENTLE(50, "轻柔"), BALANCED(75, "均衡"), FULL(100, "完整")
+}
+
 /** One atomic preference snapshot feeds the existing owned video session. */
 data class DesktopNvidiaVideoPreferences(
     val enabled: Boolean = false,
     val quality: DesktopNvidiaVideoQuality = DesktopNvidiaVideoQuality.HIGHEST,
     val hdrMode: DesktopNvidiaVideoHdrMode = DesktopNvidiaVideoHdrMode.OFF,
     val srEnabled: Boolean = true,
+    val intensity: DesktopNvidiaVideoIntensity = DesktopNvidiaVideoIntensity.FULL,
 ) {
     val content: DesktopNvidiaVideoContent get() = when {
         !srEnabled -> DesktopNvidiaVideoContent.HDR_ONLY
@@ -37,4 +43,5 @@ internal fun DesktopNvidiaVideoPreferences.optionsFor(decision: DesktopNvidiaVid
     decision.hdr && hdrMode == DesktopNvidiaVideoHdrMode.AUTO,
     decision.nativeResolutionProcessing, backend,
     qualityLevel = if (backend == NvidiaVideoBackend.VEYRA_CORE && srEnabled) quality.nativeLevel else 4,
-    srEnabled = srEnabled)
+    srEnabled = srEnabled,
+    intensityPercent = if (backend == NvidiaVideoBackend.VEYRA_CORE) intensity.nativePercent else 100)

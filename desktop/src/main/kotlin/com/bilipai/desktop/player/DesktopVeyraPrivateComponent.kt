@@ -257,11 +257,11 @@ internal class DesktopVeyraPrivateComponent(
         private const val CORE_SOURCE_SHA256 = "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5"
         private const val CORE_HEADER_SHA256 = "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569"
         private const val FILTER_SOURCE_SHA256 = "9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f"
-        private const val PRESENTATION_SOURCE_SHA256 = "2abc080877f9e64ec2f5c509cd664181a2ec3e652543c98571a34da551a66c4c"
+        private const val PRESENTATION_SOURCE_SHA256 = "161658c7830ce53f7a99b056757c8ebc5b82c2fe82da9264b590175c77a5c9e5"
         private const val PRESENTATION_EDITS_SHA256 = "e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f"
-        private const val PRESENTATION_HELPER_SHA256 = "1f412a265ab2d18713f3d67662a20129aecfafdf935c9a612c5a11abe473ecc7"
+        private const val PRESENTATION_HELPER_SHA256 = "c4cc51aa081fd9457a56081aa51e79f70a29e0bf2493e645921d6d2c2bd27d92"
         private const val PRESENTATION_REGISTRATION_SHA256 = "95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042"
-        private const val VERIFIER_SOURCE_SHA256 = "6e4960f008aac8e4e406aef41d3f3b888b3d17edc104691159b2c601a5c71688"
+        private const val VERIFIER_SOURCE_SHA256 = "652b8c8b9a413aedb44aa0c8b1dcbe4a9b9012fe22d8e29b0d5c0e297cfcfc45"
     }
 }
 
@@ -290,6 +290,6 @@ internal class DesktopVeyraVerifiedBinding internal constructor(
         require(actualSourceVersion > 0 && configurationVersion > 0 && configurationVersion < Long.MAX_VALUE)
         fun quoted(value: String) = "%${value.toByteArray(Charsets.UTF_8).size}%$value"
         return "bilipai-rtx=dll=${quoted(corePath.toString())}:runtime=${quoted(runtimePath.toString())}:project=${quoted(projectId)}" +
-            ":session=$actualSourceVersion:generation=$configurationVersion:scale=${options.scale}:quality=${options.qualityLevel}:hdr=${if(options.hdr) "yes" else "no"}:sr=${if(options.srEnabled) "yes" else "no"}:peak=1000:timeout=1000"
+            ":session=$actualSourceVersion:generation=$configurationVersion:scale=${options.scale}:quality=${options.qualityLevel}:hdr=${if(options.hdr) "yes" else "no"}:sr=${if(options.srEnabled) "yes" else "no"}:intensity=${options.intensityPercent}:peak=1000:timeout=1000"
     }
 }

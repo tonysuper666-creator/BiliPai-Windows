@@ -195,9 +195,17 @@ class RtxHdrColorTest(unittest.TestCase):
 
     def test_historical_input_clamp_mutant_has_a_large_color_error(self):
         signed = "src.Load(int3(uint2(p.xy),0)).rgb*80"
-        self.assertEqual(self.shader_text.count(signed), 1)
-        mutant = ActualHdrShader(self.shader_text.replace(signed,
-            "max(src.Load(int3(uint2(p.xy),0)).rgb,0)*80", 1))
+        # The intensity path has its own signed-load regression. Keep this
+        # historical mutant confined to the unchanged full-output entry.
+        full_entry = re.search(r"float4 hdrPS\(float4 p:SV_Position\):SV_Target\{[^{}]*\}",
+            self.shader_text)
+        self.assertIsNotNone(full_entry)
+        self.assertEqual(full_entry[0].count(signed), 1)
+        mutated_entry = full_entry[0].replace(signed,
+            "max(src.Load(int3(uint2(p.xy),0)).rgb,0)*80", 1)
+        mutated_shader = (self.shader_text[:full_entry.start()] + mutated_entry +
+            self.shader_text[full_entry.end():])
+        mutant = ActualHdrShader(mutated_shader)
         rgb = (-0.2, 0.8, 0.1)
         expected = expected_2020_nits(rgb)
         decoded = tuple(decode_st2084(value) for value in mutant.evaluate(rgb))
