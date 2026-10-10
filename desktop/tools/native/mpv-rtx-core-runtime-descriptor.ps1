@@ -184,8 +184,8 @@ function Install-RtxCoreDescriptorMpvRuntime {
         $registrationPath=Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-present-v1/filter-registration-edits.json'
         if((Get-FileHash -LiteralPath $upstreamPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'-or
            (Get-FileHash -LiteralPath $registrationPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042'){throw 'Presentation full-file graph material changed.'}
-        $upstreamRecipe=@(Get-Content -LiteralPath $upstreamPath -Raw|ConvertFrom-Json)
-        $presentationRegistration=@(Get-Content -LiteralPath $registrationPath -Raw|ConvertFrom-Json)
+        $upstreamRecipe=Get-Content -LiteralPath $upstreamPath -Raw|ConvertFrom-Json
+        $presentationRegistration=Get-Content -LiteralPath $registrationPath -Raw|ConvertFrom-Json
         foreach($material in @(@{path='licenses/rtx-presentation-edits.json';sha256='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'},@{path='licenses/rtx-registration-edits.json';sha256='95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042'})){
             $same=@($rows|Where-Object{$_.path-ceq$material.path})
             if($same.Count-ne1-or$same[0].sha256-cne$material.sha256){throw 'Presentation artifact omitted complete source graph material.'}
