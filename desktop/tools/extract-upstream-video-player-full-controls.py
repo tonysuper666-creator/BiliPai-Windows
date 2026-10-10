@@ -58,6 +58,24 @@ def windows_nvidia_enhancement_leaf(source,record=False):
  if record:ADAPT.append(dict(label='windows-nvidia-only-enhancement-widget',before=original,after=replacement))
  return source[:start]+replacement+source[end:]
 
+def windows_native_audio_settings_ui(source,record=False):
+ s=source
+ for before,after,label in [('    // 关闭面板\n    onDismiss: () -> Unit\n', '    // 关闭面板\n    onDismiss: () -> Unit,\n    // Optional Windows view; original audio preferences keep their owner.\n    nativeAudioTrackContent: (@Composable () -> Unit)? = null,\n', 'same original settings API optional native track slot'), ('            item {\n                com.bilipai.desktop.ui.DesktopWindowsVideoEnhancementSettingsContent(showProcessingQuality = false)\n', '            if (nativeAudioTrackContent != null) {\n                item { nativeAudioTrackContent() }\n            }\n\n            item {\n                com.bilipai.desktop.ui.DesktopWindowsVideoEnhancementSettingsContent(showProcessingQuality = false)\n', 'same original drawer native track leaf')]:
+  assert s.count(before)==1,label
+  index=s.index(before)
+  if record:ADAPT.append(dict(label=label,before=before,after=after))
+  s=s[:index]+after+s[index+len(before):]
+ return s
+
+def windows_native_audio_overlay_ui(source,record=False):
+ s=source
+ for before,after,label in [('            VideoSettingsPanel(\n                sleepTimerMinutes = sleepTimerMinutes,', '            VideoSettingsPanel(\n                nativeAudioTrackContent = {\n                    com.bilipai.desktop.ui.DesktopWindowsNativeAudioTrackMenu(\n                        nativePlayer = player.nativePlayer,\n                        menuEnabled = player.isOwned() && com.bilipai.desktop.ui.LocalDesktopDetailForeground.current,\n                    )\n                },\n                sleepTimerMinutes = sleepTimerMinutes,', 'original overlay binds same owned player to settings leaf')]:
+  assert s.count(before)==1,label
+  index=s.index(before)
+  if record:ADAPT.append(dict(label=label,before=before,after=after))
+  s=s[:index]+after+s[index+len(before):]
+ return s
+
 def full_direct(rel,className=None):
  t=read(rel)
  if rel in EXISTING_DIRECT:
@@ -206,7 +224,9 @@ import kotlinx.coroutines.flow.combine
   t=t.replace('com.android.purebilibili.core.store.SettingsManager','com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings')
   t=t.replace('import android.content.res.Configuration\n','').replace('Configuration.ORIENTATION_LANDSCAPE','2')
   t=t.replace('configuration.orientation','(if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1)')
-  if rel=='feature/video/ui/components/VideoSettingsPanel.kt':t=windows_nvidia_enhancement_leaf(t,record=True)
+  if rel=='feature/video/ui/components/VideoSettingsPanel.kt':
+   t=windows_nvidia_enhancement_leaf(t,record=True)
+   t=windows_native_audio_settings_ui(t,record=True)
   emit(rel,t,rel,'complete-original-menu-sheet-global-context-adapt')
  rel='core/ui/components/PlaybackSpeedPreferenceControl.kt';t=read(rel)
  # formatPlaybackSpeed is already sole-owned by existing actual playback settings.
@@ -372,6 +392,7 @@ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
  copy=adapt(copy,'context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))','if (context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))) {','Real Windows clipboard acknowledgment gates original success feedback')
  copy=adapt(copy,'                        ).show()\n                    }','                        ).show()\n                        }\n                    }','Close real clipboard success branch without changing original feedback body')
  t=t[:copyA]+copy+t[copyB:]
+ t=windows_native_audio_overlay_ui(t,record=True)
  emit(rel,t,rel,'complete-original-overlay-all-menus-cast-reload-diagnostic-drawer-real-mpv-platform-adapt')
  rel='feature/video/screen/VideoDetailPlatformPolicy.kt';t=read(rel)
  emit('feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicy.kt','package com.android.purebilibili.feature.video.screen\n'+selector.declarations(parser,t,['shouldApplyStatusBarPaddingToVideoPlayerChrome','VideoDetailSystemBarsVisibilityPolicy','resolveVideoDetailSystemBarsVisibilityPolicy'])+'\n',rel,'complete-original-inset-policy')

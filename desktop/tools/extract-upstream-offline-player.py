@@ -131,6 +131,20 @@ def offline_nvidia_enhancement_ui(previous):
  assert reverse==previous,'Windows offline NVIDIA enhancement UI inverse failed'
  return s,changes
 
+def offline_native_audio_ui(source):
+ s=source;changes=[]
+ for before,after,label in [('    var enhancementMenuOpen by remember(bindings, player, actualSourceVersion) { mutableStateOf(false) }', '    var enhancementMenuOpen by remember(bindings, player, actualSourceVersion) { mutableStateOf(false) }\n    var nativeAudioMenuOpen by remember(bindings, player, actualSourceVersion) { mutableStateOf(false) }', 'same original source-keyed native audio menu hold'), ('    LaunchedEffect(showControls, isPlaying, enhancementMenuOpen) {\n        if (showControls && isPlaying && !enhancementMenuOpen) {', '    LaunchedEffect(showControls, isPlaying, enhancementMenuOpen, nativeAudioMenuOpen) {\n        if (showControls && isPlaying && !enhancementMenuOpen && !nativeAudioMenuOpen) {', 'hold original four-second auto-hide during native audio menu'), ('                    if (!task.isAudioOnly) {\n                        DesktopVideoEnhancementCompactSlot(', '                    DesktopWindowsNativeAudioTrackMenu(\n                        nativePlayer = player.nativePlayer,\n                        menuEnabled = player.isOwned() && LocalDesktopDetailForeground.current && playbackFailure == null,\n                        compact = true,\n                        onMenuExpandedChanged = { nativeAudioMenuOpen = it },\n                    )\n\n                    if (!task.isAudioOnly) {\n                        DesktopVideoEnhancementCompactSlot(', 'same offline bottom row compact native audio menu')]:
+  assert s.count(before)==1,label
+  index=s.index(before)
+  changes.append(dict(index=index,before=before,after=after,label=label))
+  s=s[:index]+after+s[index+len(before):]
+ reverse=s
+ for change in changes[::-1]:
+  index=change['index'];after=change['after'];assert reverse[index:index+len(after)]==after,change['label']
+  reverse=reverse[:index]+change['before']+reverse[index+len(after):]
+ assert reverse==source,'Native offline track UI inverse failed'
+ return s,changes
+
 def generate(repo,output,standalone=False):
  repo=Path(repo).resolve();output=Path(output).resolve();manifest=json.loads(read(repo/'desktop/upstream-sources.json'))
  assert manifest['upstreamCommit']==COMMIT,'Fixed target changed'
@@ -155,6 +169,7 @@ def generate(repo,output,standalone=False):
  error_sources=offline_error_sources(repo)
  s,error_delta,error_fragments=offline_error_ui(s,error_sources['OfflineVideoPlayerScreen.kt'])
  s,enhancement_delta=offline_nvidia_enhancement_ui(s)
+ s,native_audio_delta=offline_native_audio_ui(s)
  assert 'ExoPlayer' not in s and 'import android.' not in s and 'MiniPlayerManager' not in s
  destination='com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt';write(output/destination,s)
  records.append({'path':path,'sha256LF':SOURCE_PINS[path],'output':destination,'outputSha256LF':sha(s),'fullFourDeclarationsRetained':True,'exactInversePass':True})
@@ -184,7 +199,7 @@ def generate(repo,output,standalone=False):
  body=LONG_PRESS_PREFIX+'object DesktopOriginalLongPressSpeedSettings {\n'+adapted+'\n}\n'
  destination='com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt';write(output/destination,body)
  records.append({'path':path,'sha256LF':SOURCE_PINS[path],'output':destination,'outputSha256LF':sha(body),'selectedMethods':['getLongPressSpeed'],'originalGetterSha256LF':sha(getter),'adaptedGetterSha256LF':sha(adapted),'exactInversePass':True,'canonicalKey':'long_press_speed','existingDefaultAndNormalizePolicyReused':True})
- write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'soleDirectReference':direct,'standalone':standalone,'exactUiDelta':UI_DELTA,'exactWindowsNvidiaEnhancementDelta':enhancement_delta,'completeOriginalUiLines':len(originals[BASE+'feature/download/OfflineVideoPlayerScreen.kt'].splitlines()),'originalFourDeclarations':['GestureMode','OfflineVideoPlayerScreen','ProgressInfo','OfflineProgressBar'],'newPlayerOrStoreOrHTTP':False},ensure_ascii=False,indent=2))
+ write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'soleDirectReference':direct,'standalone':standalone,'exactUiDelta':UI_DELTA,'exactWindowsNvidiaEnhancementDelta':enhancement_delta,'exactWindowsNativeAudioTrackDelta':native_audio_delta,'completeOriginalUiLines':len(originals[BASE+'feature/download/OfflineVideoPlayerScreen.kt'].splitlines()),'originalFourDeclarations':['GestureMode','OfflineVideoPlayerScreen','ProgressInfo','OfflineProgressBar'],'newPlayerOrStoreOrHTTP':False},ensure_ascii=False,indent=2))
  return records
 if __name__=='__main__':
  cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);cli.add_argument('--standalone',action='store_true');args=cli.parse_args()
