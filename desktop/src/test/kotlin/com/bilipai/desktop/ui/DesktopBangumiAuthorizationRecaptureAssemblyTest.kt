@@ -122,13 +122,31 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
                 f.ui { f.vm.loadBangumiPlay(19, 41, resumePositionMs = 2_000L) }
                 val old = f.awaitRetirement()
                 val captureCount = f.mediaCaptures.size
+                val requestCount = f.requests.size
+                val capturedState = f.owner.captureLoadState()
+                val intentRevision = f.vm.desktopPlaybackIntentRevision
+                val capturedEpoch = f.repository.sessionEpoch
                 f.ui {
-                    if (changeAccount) f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-next"),
-                        AccountSummary(42, "Next", ""))
-                    else f.rootCurrent = false
-                    old.deliver(); old.deliver()
+                    if (changeAccount) {
+                        f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-next"), AccountSummary(42, "Next", ""))
+                        assertNotEquals(capturedEpoch, f.repository.sessionEpoch)
+                        assertEquals(42L, f.repository.account.value?.mid)
+                    } else {
+                        f.rootCurrent = false
+                        assertEquals(capturedEpoch, f.repository.sessionEpoch)
+                    }
+                    // Production Retirement already consumed its ticket while
+                    // current. This intentionally bypasses that queued gate and
+                    // directly replays the VM's owned callback after retirement:
+                    // the actual environment must reject it with CE.
+                    repeat(2) { assertFailsWith<CancellationException> { old.deliver() } }
+                    val current = f.owner.playback.captureDesktopLoadState()
+                    assertSame(capturedState.currentRequest, current.currentRequest)
+                    assertEquals(capturedState.currentLoadRequestToken, current.currentLoadRequestToken)
+                    assertEquals(intentRevision, f.vm.desktopPlaybackIntentRevision)
                 }
                 assertEquals(captureCount, f.mediaCaptures.size)
+                assertEquals(requestCount, f.requests.size)
                 assertTrue(f.playRequests.isEmpty())
                 assertTrue(f.plans.isEmpty())
                 assertFalse(f.native.owns())

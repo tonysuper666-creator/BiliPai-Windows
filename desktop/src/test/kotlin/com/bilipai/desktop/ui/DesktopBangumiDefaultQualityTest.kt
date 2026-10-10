@@ -61,11 +61,16 @@ class DesktopBangumiDefaultQualityTest {
 
     @Test fun autoHighestKeepsHdrHevcCapabilityAndDoesNotInferDolbyVision(): Unit = runBlocking {
         for ((hevc, expected) in listOf(false to 120, true to 125)) {
-            fixture(autoHighest = true, hdr = true, hevc = hevc) { f ->
+            // Like upstream MediaUtils, Root's HDR capability includes HEVC
+            // decoding support; it is not the display's bare HDR flag.
+            fixture(autoHighest = true, hdr = hevc, hevc = hevc) { f ->
                 f.reply = { Result.success(response(112, listOf(video(120), video(125), video(126)))) }
                 f.vm.loadBangumiPlay(19, 41)
                 f.awaitPlans(1)
-                assertEquals(expected, f.plans.single().videoTrack?.id)
+                val plan = f.plans.single()
+                assertEquals(expected, plan.videoTrack?.id)
+                assertEquals(if (hevc) 12 else 7, plan.videoTrack?.codecid)
+                assertEquals(expected, (f.vm.uiState.value as BangumiPlayerState.Success).quality)
             }
         }
     }
