@@ -15,6 +15,7 @@ import com.android.purebilibili.feature.video.viewmodel.*
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.RelatedLoadState
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.player.*
+import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import kotlinx.coroutines.*
