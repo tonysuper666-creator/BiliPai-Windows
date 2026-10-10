@@ -12,6 +12,11 @@ on:
           - bilipai-veyra-rtx-core-v1
           - bilipai-veyra-rtx-present-v1
           - retain-builder-only
+      trusted_host_llvm_record_id:
+        description: 'Optional exact independently reviewed own HOST LLVM record ID; an explicit failed request never falls back to cold build'
+        required: false
+        type: string
+        default: ''
       acknowledge_source_build:
         description: 'Build an unverified RTX frame-bridge candidate; no GPU/SDK runtime is run'
         required: true
@@ -39,6 +44,11 @@ jobs:
       - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
         with:
           persist-credentials: false
+      - name: Reject HOST reuse for builder-retention-only operation
+        if: inputs.trusted_host_llvm_record_id != ''
+        run: |
+          echo 'HOST reuse requires a native source build variant.' >&2
+          exit 1
       - name: Install registry transfer utility on the standard host
         run: |
           sudo apt-get update
@@ -61,6 +71,7 @@ jobs:
     timeout-minutes: 360
     env:
       BILIPAI_RTX_VARIANT: ${{ inputs.producer_variant }}
+      BILIPAI_HOST_LLVM_RECORD_ID: ${{ inputs.trusted_host_llvm_record_id }}
     container:
       # Exact linux/amd64 builder retained and authenticated in own workflow run 37928635585.
       # This is a new OCI environment; old HOST snapshot evidence cannot be relabelled or reused.
@@ -73,9 +84,20 @@ jobs:
       - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
         with:
           persist-credentials: false
+      - name: Download exact independently reviewed own HOST snapshot
+        if: inputs.trusted_host_llvm_record_id != ''
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 desktop/tools/native/download-host-llvm-source-snapshot.py --record-id "$BILIPAI_HOST_LLVM_RECORD_ID" --output "$RUNNER_TEMP/bilipai-host-llvm-input"
       - name: Build from fixed source and recipe inputs
         id: native_build
-        run: python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --variant "$BILIPAI_RTX_VARIANT" --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
+        run: |
+          unset GITHUB_TOKEN GH_TOKEN
+          if [ -n "$BILIPAI_HOST_LLVM_RECORD_ID" ]; then
+            python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --variant "$BILIPAI_RTX_VARIANT" --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate" --host-llvm-snapshot-dir "$RUNNER_TEMP/bilipai-host-llvm-input"
+          else
+            python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --variant "$BILIPAI_RTX_VARIANT" --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
+          fi
       # Root must create the immutable rtx-source-* tag before this manual dispatch.
       # Native candidates still require full success. Qualified HOST material may survive a downstream failure.
       - name: Save successful source candidate in an unpublished own-repository draft
