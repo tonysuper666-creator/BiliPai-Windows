@@ -28,7 +28,7 @@ internal class DesktopCastLocalTarget private constructor(
     private var retired = false
     private val streams = mutableSetOf<InputStream>()
 
-    fun <T> admit(action: () -> T): T = frame.admit {
+    fun <T> admit(action: () -> T): T = frame.admit<T> {
         var result: Any? = null
         var applied = false
         check(nativePublication.admit {
