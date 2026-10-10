@@ -75,6 +75,7 @@ internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementS
         state.active && state.hdrConversionActive -> "HDR"
         state.active && state.driverVsrAccepted -> "VSR"
         state.active -> "增强"
+        !state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE && state.veyraSubmitted -> "准备中"
         state.pending -> "处理中"
         else -> "原画"
     }
@@ -193,6 +194,7 @@ private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhanc
             val status = state.unavailableReason ?: when {
                 !enabled -> "已关闭，使用原画播放。"
                 state.error != null || configurationError != null -> "增强异常，详情见下方。"
+                !state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE && state.veyraSubmitted -> "正在准备增强画面。"
                 state.pending -> "正在准备增强。"
                 state.active -> "当前状态：$label。"
                 else -> "当前使用原画，满足条件后自动增强。"
