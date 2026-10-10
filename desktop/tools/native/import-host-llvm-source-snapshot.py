@@ -773,6 +773,70 @@ def prepare_import(plan, workspace, output, root, fixed, image, command):
     return path, file_sha(path)
 
 
+def require_matching_facet(facet, original, current):
+    if current == original:
+        return
+    try:
+        changes, total = [], [0]
+        missing = object()
+        def witness(value, visible):
+            if value is missing:
+                return {'present': False}
+            result = {'present': True, 'sha256': sha(encoded(value))}
+            if visible:
+                result['value'] = value
+            return result
+        def changed(path, before, after):
+            total[0] += 1
+            if len(changes) >= 64:
+                return
+            visible = (facet in ('restoredInstall', 'restoredSource') and len(path) == 2
+                and isinstance(path[0], int) and path[1] in
+                ('path', 'kind', 'mode', 'bytes', 'sha256', 'gitBlob', 'target'))
+            if facet == 'hostEnvironment':
+                visible = (len(path) == 1 and path[0] in ('system', 'architecture', 'pointerBits',
+                    'kernelRelease', 'kernelVersion', 'runnerImageProofAvailable', 'libc',
+                    'osReleaseSha256', 'cpuFlags')) or (len(path) == 2 and
+                    ((path[0] == 'runnerImage' and path[1] in ('ImageOS', 'ImageVersion')) or
+                     (path[0] == 'runner' and path[1] in ('RUNNER_OS', 'RUNNER_ARCH', 'RUNNER_ENVIRONMENT')))) or (
+                    len(path) == 3 and path[0] == 'tools' and path[1] in
+                    ('cmake', 'ninja', 'python3', 'clang', 'clang++', 'ld.lld') and
+                    path[2] in ('invocationPath', 'resolvedPath', 'sha256', 'version'))
+            elif facet == 'installedTools':
+                visible = (len(path) == 2 and path[0] in ('bin/clang', 'bin/ld.lld') and
+                    path[1] in ('invocationPath', 'resolvedPath', 'sha256')) or (
+                    len(path) == 3 and path[0] in ('bin/clang', 'bin/ld.lld') and
+                    path[1] == 'probes' and path[2] in ('--version', '-dumpmachine'))
+            changes.append({'field': path, 'original': witness(before, visible),
+                            'current': witness(after, visible)})
+        def walk(path, before, after):
+            if before == after:
+                return
+            if ((isinstance(before, dict) and (isinstance(after, dict) or after is missing))
+                    or (before is missing and isinstance(after, dict))):
+                before_fields = before if isinstance(before, dict) else {}
+                after_fields = after if isinstance(after, dict) else {}
+                for key in sorted(set(before_fields) | set(after_fields)):
+                    walk(path + [key], before_fields.get(key, missing), after_fields.get(key, missing))
+            elif facet in ('restoredInstall', 'restoredSource') and isinstance(before, list) and isinstance(after, list):
+                for index in range(max(len(before), len(after))):
+                    walk(path + [index], before[index] if index < len(before) else missing,
+                         after[index] if index < len(after) else missing)
+            else:
+                changed(path, before, after)
+        walk([], original, current)
+        record = {'schema': 1, 'kind': 'BILIPAI_HOST_LLVM_FACET_MISMATCH', 'facet': facet,
+                  'originalSha256': sha(encoded(original)), 'currentSha256': sha(encoded(current)),
+                  'changedFields': changes, 'changedFieldCount': total[0],
+                  'omittedChangedFields': total[0] - len(changes), 'buildEnvironmentValuesWithheld': True}
+        print('HOST LLVM facet rejection: ' + json.dumps(record, sort_keys=True, ensure_ascii=True),
+              file=sys.stderr)
+    except Exception:
+        # Diagnostic failure must never replace or bypass the strict rejection.
+        pass
+    fail('Actual restored trees or host/compiler witnesses differ (' + facet + ')')
+
+
 def validate_target(control_path, control_sha, workspace, source, install, root):
     control = json_file(control_path, digest(control_sha))
     if (control.get('schema') != 1 or control.get('kind') != 'BILIPAI_HOST_LLVM_IMPORT_CONTROL'
@@ -787,12 +851,13 @@ def validate_target(control_path, control_sha, workspace, source, install, root)
     if plan is None or plan['record']['id'] != control.get('recordId'):
         fail('Actual target lost original trusted snapshot')
     manifest, module = plan['manifest'], load_exporter(root)
-    if (module.pack_tree(None, owned(install, workspace, directory=True), 'host-install') != manifest['actualInstallEntries']
-            or module.pack_tree(None, owned(source, workspace, directory=True), 'actual-used-source-worktree', skip_git=True)
-               != subtree(manifest['actualCorrespondingSourceBundleEntries'], 'actual-used-source-worktree')
-            or host_environment() != plan['record']['originalHostEnvironment']
-            or installed_tools(install) != plan['record']['originalInstalledHostTools']):
-        fail('Actual restored trees or host/compiler witnesses differ')
+    require_matching_facet('restoredInstall', manifest['actualInstallEntries'],
+        module.pack_tree(None, owned(install, workspace, directory=True), 'host-install'))
+    require_matching_facet('restoredSource',
+        subtree(manifest['actualCorrespondingSourceBundleEntries'], 'actual-used-source-worktree'),
+        module.pack_tree(None, owned(source, workspace, directory=True), 'actual-used-source-worktree', skip_git=True))
+    require_matching_facet('hostEnvironment', plan['record']['originalHostEnvironment'], host_environment())
+    require_matching_facet('installedTools', plan['record']['originalInstalledHostTools'], installed_tools(install))
     cache = owned(workspace / 'build-x64/CMakeCache.txt', workspace)
     actual = {}
     for line in cache.read_text(encoding='utf-8').splitlines():

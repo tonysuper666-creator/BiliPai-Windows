@@ -21,7 +21,7 @@ from urllib.parse import quote, urlsplit
 
 REPOSITORY = 'tonysuper666-creator/BiliPai-Windows'
 BASE = '/repos/' + REPOSITORY
-IMPORTER_SHA256 = '3b4c06dcc272c40dd9564b4577d14182fd76786716745f35d3d2499aa868a8d6'
+IMPORTER_SHA256 = 'c8c72cffb482464b8fcca0abc481b1dad8d3a0e2a6c005dc7fdcc0d3ee9e8718'
 API_VERSION = '2026-03-10'
 API_JSON_LIMIT = 2 << 20
 PART_BYTES = 1 << 30
