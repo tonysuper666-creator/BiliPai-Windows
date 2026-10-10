@@ -114,12 +114,12 @@ class DesktopOriginalMpvSectionControl internal constructor(
         val created = synchronized(eventLock) {
             if (registrations.containsKey(listener)) return
             val job = eventScope.launch(start = kotlinx.coroutines.CoroutineStart.LAZY) {
+                val registrationJob = checkNotNull(currentCoroutineContext()[Job])
                 var previousVersion: Long? = null
                 var previousSource: OwnedPlaybackSourceSnapshot? = null
                 var previous: PlayerState? = null
                 combine(state, sourceVersions) { state, version -> state to version }.collect { (_, version) ->
                     val callbackContext = currentCoroutineContext()
-                    val registrationJob = checkNotNull(callbackContext[Job])
                     callbackContext.ensureActive()
                     if (version == null || !entryOwns() || acceptedSourceVersion() != version || !nativePlayer.ownsSourceVersion(version)) {
                         previousVersion = null
