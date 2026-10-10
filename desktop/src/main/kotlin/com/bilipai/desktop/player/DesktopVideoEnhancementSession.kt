@@ -29,6 +29,7 @@ data class DesktopVideoEnhancementState(
     val veyraSubmitted: Boolean = false,
     /** Actual selected processing route; saved shared-core quality is unavailable on DRIVER. */
     val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
+    val srEnabledRequested: Boolean = true,
 )
 
 /** Shared projection; the session admits the current source/configuration before calling it. */
@@ -47,7 +48,7 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
             error = native.error, unavailableReason = native.unavailableReason, statusText = status,
             driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = native.hdrConversionActive,
             nativeResolutionAttemptAccepted = false, veyraAvailable = native.veyraAvailable,
-            veyraSubmitted = native.veyraSubmitted, backend = native.backend)
+            veyraSubmitted = native.veyraSubmitted, backend = native.backend, srEnabledRequested = native.srEnabledRequested)
     }
     val status = when {
         native.error != null -> "NVIDIA 增强异常：${native.error}"
@@ -75,7 +76,7 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
         driverVsrAccepted = native.driverVsrAccepted, driverHdrAccepted = native.driverHdrAccepted,
         hdrConversionActive = native.hdrConversionActive,
         nativeResolutionAttemptAccepted = native.nativeResolutionAttemptAccepted,
-        veyraAvailable = native.veyraAvailable, backend = native.backend)
+        veyraAvailable = native.veyraAvailable, backend = native.backend, srEnabledRequested = native.srEnabledRequested)
 }
 
 /** One Windows NVIDIA session on the main native video actor. Every video kind
@@ -203,10 +204,21 @@ class DesktopVideoEnhancementSession(
             nativeIdentity.source != currentSource.source) {
             bypass(Anime4KBypassReason.NONE, "等待当前原生视频载入"); return@synchronized
         }
+        if (!input.settings.preferences.srEnabled &&
+            (nvidiaHdrTransfer(input.output.gamma) || input.output.dolbyVisionProfile != null)) {
+            bypass(Anime4KBypassReason.NONE, "原生 HDR / Dolby Vision 内容，保留原生输出")
+            return@synchronized
+        }
         val sharedCoreAvailable = input.target.veyraAvailable &&
             input.target.sourceVersion == currentSource.sourceVersion &&
             input.output.gamma in setOf("bt.1886", "srgb") && input.output.inputPrimaries == "bt.709" &&
             !nvidiaHdrTransfer(input.output.gamma) && input.output.dolbyVisionProfile == null
+        if (!input.settings.preferences.srEnabled && !sharedCoreAvailable) {
+            val message = "当前无法独立使用 HDR 增强，继续原画播放"
+            bypass(Anime4KBypassReason.NONE, message)
+            mutableState.update { it.copy(available = false, unavailableReason = message) }
+            return@synchronized
+        }
         val backend = if (sharedCoreAvailable) NvidiaVideoBackend.VEYRA_CORE else NvidiaVideoBackend.DRIVER
         val decision = resolveDesktopNvidiaVideoDecision(input.output.inputWidth, input.output.inputHeight,
             input.output.displayWidth, input.output.displayHeight, input.output.maximumTextureDimension,
@@ -216,12 +228,17 @@ class DesktopVideoEnhancementSession(
             nativeResolutionPatchAvailable = input.target.nativeResolutionPatchAvailable &&
                 input.target.sourceVersion == currentSource.sourceVersion,
             hdrMode = input.settings.preferences.hdrMode,
-            sharedCoreNativeResolutionAvailable = sharedCoreAvailable)
+            sharedCoreNativeResolutionAvailable = sharedCoreAvailable,
+            srEnabled = input.settings.preferences.srEnabled)
         if (!decision.needsProcessing) {
             val text = when (decision.kind) {
                 DesktopNvidiaVideoDecisionKind.WAITING_VIDEO -> "等待实际视频尺寸，原画输出"
                 DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT -> "等待 GPU 输出能力，原画输出"
-                else -> if (decision.sourceIsHdr) "原生 HDR / Dolby Vision 内容，保留原生输出" else "当前尺寸无需放大，原画直出"
+                else -> when {
+                    decision.sourceIsHdr -> "原生 HDR / Dolby Vision 内容，保留原生输出"
+                    !input.settings.preferences.srEnabled -> "HDR 显示目标或视频条件尚未就绪，原画播放"
+                    else -> "当前尺寸无需放大，原画直出"
+                }
             }
             bypass(Anime4KBypassReason.NONE, text); return@synchronized
         }

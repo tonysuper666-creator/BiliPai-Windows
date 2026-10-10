@@ -38,7 +38,9 @@ static inline bool mp_bilipai_token_valid(const struct mp_bilipai_frame_token *t
         ((t->effects == MP_BILIPAI_EFFECT_SR &&
           t->output_intent == MP_BILIPAI_OUTPUT_SDR_SRGB &&
           t->transport == MP_BILIPAI_SRGB_BGRA8 && !t->hdr_peak_nits) ||
-         (t->effects == (MP_BILIPAI_EFFECT_SR | MP_BILIPAI_EFFECT_HDR) &&
+         (((t->effects == (MP_BILIPAI_EFFECT_SR | MP_BILIPAI_EFFECT_HDR)) ||
+           (t->effects == MP_BILIPAI_EFFECT_HDR &&
+            t->width == t->input_width && t->height == t->input_height)) &&
           t->output_intent == MP_BILIPAI_OUTPUT_SDR_TO_HDR &&
           t->transport == MP_BILIPAI_HDR10_RGB10 &&
           t->hdr_peak_nits >= 400 && t->hdr_peak_nits <= 2000));

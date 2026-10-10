@@ -15,7 +15,7 @@ import com.android.purebilibili.core.ui.components.AppButtonDefaults
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
 import com.bilipai.desktop.player.DesktopVideoEnhancementState
-import com.bilipai.desktop.player.DesktopNvidiaVideoHdrMode
+import com.bilipai.desktop.player.DesktopNvidiaVideoContent
 import com.bilipai.desktop.player.DesktopNvidiaVideoQuality
 import com.bilipai.desktop.player.NvidiaVideoBackend
 import com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration
@@ -63,6 +63,8 @@ internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementS
         configurationError != null || state.error != null -> "异常"
         !enabled -> "关闭"
         state.unavailableReason != null -> "不可用"
+        state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE &&
+            state.srEnabledRequested && state.hdrConversionActive -> "增强 · HDR"
         state.active && state.driverVsrAccepted && state.hdrConversionActive -> "VSR · HDR"
         state.active && state.hdrConversionActive -> "HDR"
         state.active && state.driverVsrAccepted -> "VSR"
@@ -121,19 +123,21 @@ private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhanc
                 actionError = null
                 runCatching { onToggle(value) }.onFailure { actionError = "保存 NVIDIA 增强设置失败，请重试" }
             })
+        DesktopWindowsSettingsChoice("增强内容", preferences.content,
+            DesktopNvidiaVideoContent.entries.map { it to it.label }, enabled = enabled) { content ->
+            actionError = null
+            runCatching { configuration.setContent(content) }.onFailure { actionError = "保存增强内容失败，可重试" }
+        }
         DesktopWindowsSettingsChoice("处理质量", preferences.quality,
-            DesktopNvidiaVideoQuality.entries.map { it to it.label }, enabled = enabled) { quality ->
+            DesktopNvidiaVideoQuality.entries.map { it to it.label }, enabled = enabled && preferences.srEnabled) { quality ->
             actionError = null
             runCatching { configuration.setQuality(quality) }.onFailure { actionError = "保存 NVIDIA 处理质量失败，可重试" }
         }
-        DesktopWindowsSettingsChoice("SDR 转 HDR", preferences.hdrMode,
-            DesktopNvidiaVideoHdrMode.entries.map { it to it.label }, enabled = enabled) { hdrMode ->
-            actionError = null
-            runCatching { configuration.setHdrMode(hdrMode) }.onFailure { actionError = "保存 NVIDIA HDR 设置失败，可重试" }
-        }
         AppText("HDR 自动仅在 HDR 显示目标可用时转换 SDR；原生 HDR 保持原样。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        if (enabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE)) AppText(
+        if (enabled && !preferences.srEnabled) AppText("仅 HDR 自动使用原尺寸转换，不使用清晰度处理质量。",
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (enabled && preferences.srEnabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE)) AppText(
             if (!state.veyraAvailable) "当前无法应用处理质量，选择已保存，可用时自动应用。"
             else "当前视频暂不支持质量调节，选择已保存，支持时自动应用。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

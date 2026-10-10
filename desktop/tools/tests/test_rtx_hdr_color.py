@@ -214,6 +214,12 @@ class RtxHdrColorTest(unittest.TestCase):
         self.assertEqual(len(bridge), 1)
         self.assertEqual(bridge[0]["sha256"], digest(BRIDGE))
         self.assertEqual(bridge[0]["bytes"], len(source_bytes(BRIDGE)))
+        for path in ("desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
+            "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h"):
+            rows = [row for row in manifest["sourceFiles"] if row["sourcePath"] == path]
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["sha256"], digest(path))
+            self.assertEqual(rows[0]["bytes"], len(source_bytes(path)))
         self.assertEqual(named_python_constant(applier_path, "EXPECTED_MANIFEST_SHA256"), manifest_hash)
         fixed = json.loads(source_text(fixed_path))
         self.assertEqual(fixed["filterSourceManifestSha256"], manifest_hash)
@@ -221,12 +227,18 @@ class RtxHdrColorTest(unittest.TestCase):
         profile_path = "desktop/tools/native/veyra/veyra-presentation-profile-template.json"
         profile = json.loads(source_text(profile_path))
         self.assertEqual(profile["bridgeSourceSha256"].lower(), digest(BRIDGE))
+        vf_path = "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c"
+        self.assertEqual(profile["vfSourceSha256"].lower(), digest(vf_path))
         self.assertEqual(profile["filterSourceManifestSha256"].lower(), manifest_hash)
         self.assertEqual(profile["sourcePatchHelperSha256"].lower(), applier_hash)
         verifier_path = "desktop/tools/native/veyra/verify-veyra-runtime.ps1"
         self.assertEqual(source_bytes(verifier_path),
             source_bytes("desktop/resources/common/native/veyra-core/verify-veyra-runtime.ps1"))
         verifier_hash = digest(verifier_path)
+        # This is the presentation branch's actual fixed supplier pin, not the
+        # legacy non-presentation vfSourceSha256 stored in the initial $fixed map.
+        fixed_vf = re.findall(r"\$fixed\.vfSourceSha256='([0-9A-F]{64})'", source_text(verifier_path))
+        self.assertEqual(fixed_vf, [digest(vf_path).upper()])
         # Verify the actual processResources producer, not an unrelated Gradle literal.
         gradle = source_text("desktop/build.gradle.kts")
         tasks = re.findall(r'^val prepareVeyraRuntimeVerifier by tasks\.registering\(Copy::class\) \{\n(.*?)^\}',

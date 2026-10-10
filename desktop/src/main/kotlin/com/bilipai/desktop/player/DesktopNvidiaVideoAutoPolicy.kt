@@ -31,6 +31,7 @@ internal fun resolveDesktopNvidiaVideoDecision(
     nativeResolutionPatchAvailable: Boolean = false,
     hdrMode: DesktopNvidiaVideoHdrMode = DesktopNvidiaVideoHdrMode.OFF,
     sharedCoreNativeResolutionAvailable: Boolean = false,
+    srEnabled: Boolean = true,
 ): DesktopNvidiaVideoDecision {
     val transfer = inputTransfer?.lowercase()
     val sourceIsHdr = dolbyVisionProfile != null || transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -42,6 +43,21 @@ internal fun resolveDesktopNvidiaVideoDecision(
         !sourceIsHdr && nvidiaHdrTarget(targetTransfer, targetPrimaries)
     if (inputWidth <= 0 || inputHeight <= 0 || displayWidth <= 0 || displayHeight <= 0)
         return DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.WAITING_VIDEO, sourceIsHdr = sourceIsHdr)
+
+    // HDR-only preserves native HDR/DV; existing SR driver routing is unchanged.
+    if (!srEnabled && sourceIsHdr)
+        return DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.DIRECT, sourceIsHdr = true)
+    if (!srEnabled) {
+        if (!hdr || !sharedCoreNativeResolutionAvailable || transfer !in setOf("bt.1886", "srgb") ||
+            inputWidth % 2 != 0 || inputHeight % 2 != 0)
+            return DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.DIRECT)
+        if (maximumTextureDimension == null || maximumTextureDimension <= 0)
+            return DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT)
+        if (maximumTextureDimension < max(inputWidth, inputHeight))
+            return DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.DIRECT)
+        // The core's no-SR contract requires output extent exactly equal to input.
+        return DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.HDR, hdr = true)
+    }
 
     val requestedScale = max(1.0, max(displayWidth.toDouble() / inputWidth, displayHeight.toDouble() / inputHeight))
     // The Windows NVIDIA contract accepts at most 4x. The driver's observed texture

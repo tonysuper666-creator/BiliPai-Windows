@@ -79,6 +79,13 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         val output = field("mutableVideoOutput").get(player) as MutableStateFlow<PlayerVideoOutputState>
         output.value = output.value.copy(inputPrimaries = "bt.709")
     }
+    fun recordHdrDisplayTarget() {
+        recordOutput { it.copy(hdrDisplay = WindowsHdrDisplayState(known = true, hdrSupported = true,
+            hdrUserEnabled = true, hdrActive = true, hdrEnabled = true)) }
+        @Suppress("UNCHECKED_CAST")
+        val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
+        observed.value = observed.value.copy(targetTransfer = "pq", targetPrimaries = "bt.2020")
+    }
     fun recordDevice(vendor: Int?, context: String?) {
         @Suppress("UNCHECKED_CAST")
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
@@ -682,4 +689,97 @@ class PlayerNvidiaActorWithdrawalTest {
             }
         }
     }
+    @Test fun realSessionAndActorSwitchThreeContentsOnTheOwnedSource() = runBlocking<Unit> {
+        val automatic = MutableStateFlow(true)
+        val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(enabled = true,
+            quality = DesktopNvidiaVideoQuality.STANDARD))
+        MpvPlayer().use { player ->
+            player.setVolume(23.0); player.setMuted(true); player.setSpeed(1.25)
+            val version = player.loadVersioned(PlaybackSource("file:///C:/content-owned.avi", startPaused = true))
+            val source = assertNotNull(player.currentSourceSnapshot())
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding()); actor.recordHdrDisplayTarget()
+                val originalState = player.state.value
+                DesktopVideoEnhancementSession(player, automatic, MutableStateFlow(true), MutableStateFlow(false),
+                    { automatic.value = it; CompletableDeferred(Unit) }, enhancementPreferences = preferences).use { enhancement ->
+                    for (content in DesktopNvidiaVideoContent.entries) {
+                        preferences.value = preferences.value.copy(srEnabled = content.srEnabled, hdrMode = content.hdrMode)
+                        awaitSession { actor.hasQueuedNvidia() }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        val add = actor.native.commands.last { it.take(2) == listOf("vf", "add") }[2]
+                        assertTrue(add.contains(":session=$version:"))
+                        assertTrue(add.contains(if (content.srEnabled) ":scale=2.0:quality=2:" else ":scale=1.0:quality=4:"))
+                        assertTrue(add.contains(if (content.srEnabled) ":sr=yes:" else ":sr=no:"))
+                        assertTrue(add.contains(if (content.hdrMode == DesktopNvidiaVideoHdrMode.AUTO) ":hdr=yes:" else ":hdr=no:"))
+                        assertEquals(content.srEnabled, player.nvidiaVideoState.value.srEnabledRequested)
+                        assertFalse(player.nvidiaVideoState.value.active)
+                        assertFalse(player.nvidiaVideoState.value.driverVsrAccepted)
+                        assertFalse(player.nvidiaVideoState.value.veyraSubmitted)
+                        assertTrue(actor.native.filters.contains("scale" to "foreign-user-filter"))
+                        assertEquals(originalState, player.state.value)
+                        assertTrue(player.ownsSourceSnapshot(source))
+                    }
+                    preferences.value = preferences.value.copy(enabled = false)
+                    awaitSession { actor.hasQueuedNvidia() }
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
+                    assertEquals(originalState, player.state.value)
+                }
+            }
+        }
+    }
+
+    @Test fun hdrOnlySessionCannotFallBackToDriverWhenCoreIsUnavailable() = runBlocking<Unit> {
+        val automatic = MutableStateFlow(true)
+        val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(true, DesktopNvidiaVideoQuality.HIGHEST,
+            DesktopNvidiaVideoHdrMode.AUTO, false))
+        MpvPlayer().use { player ->
+            player.loadVersioned(PlaybackSource("file:///C:/hdr-only-no-core.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordHdrDisplayTarget()
+                DesktopVideoEnhancementSession(player, automatic, MutableStateFlow(true), MutableStateFlow(false),
+                    { automatic.value = it; CompletableDeferred(Unit) }, enhancementPreferences = preferences).use { enhancement ->
+                    awaitSession { enhancement.state.value.unavailableReason != null }
+                    assertFalse(enhancement.state.value.active)
+                    assertTrue(actor.native.commands.isEmpty())
+                    assertFalse(actor.hasQueuedNvidia())
+                    assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
+                }
+            }
+        }
+    }
+
+    @Test fun hdrOnlyActorPreservesSourceHdrDeviceColorTextureAndDisplayGates() {
+        for (case in listOf("binding", "source", "native-pq", "native-hlg", "dv", "transfer", "primaries",
+            "texture", "display", "viewport", "vendor", "context")) {
+            MpvPlayer().use { player ->
+                val version = player.loadVersioned(PlaybackSource("file:///C:/hdr-only-gates.avi"))
+                val source = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput()
+                    if (case != "binding") actor.recordVeyra(fixtureSharedCoreBinding())
+                    actor.recordHdrDisplayTarget()
+                    actor.recordOutput { it.copy(sourceVersion = if (case == "source") version + 1 else version,
+                        gamma = when (case) { "native-pq" -> "pq"; "native-hlg" -> "hlg"; "transfer" -> "linear"; else -> "bt.1886" },
+                        dolbyVisionProfile = if (case == "dv") 5 else null,
+                        inputPrimaries = if (case == "primaries") "bt.2020" else "bt.709",
+                        maximumTextureDimension = if (case == "texture") 320 else 16384,
+                        displayWidth = if (case == "viewport") 0 else 1280,
+                        hdrDisplay = if (case == "display") WindowsHdrDisplayState() else it.hdrDisplay) }
+                    if (case == "vendor") actor.recordDevice(0x1002, "d3d11")
+                    if (case == "context") actor.recordDevice(0x10de, "vulkan")
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(version,
+                        NvidiaVideoOptions(hdr = true, backend = NvidiaVideoBackend.VEYRA_CORE, srEnabled = false)))
+                    actor.apply()
+                    assertFalse(player.nvidiaVideoState.value.active, case)
+                    assertFalse(player.nvidiaVideoState.value.pending, case)
+                    assertTrue(player.nvidiaVideoState.value.error != null || player.nvidiaVideoState.value.unavailableReason != null, case)
+                    assertTrue(actor.native.commands.isEmpty(), case)
+                    assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters, case)
+                    assertTrue(player.ownsSourceSnapshot(source), case)
+                }
+            }
+        }
+    }
+
 }

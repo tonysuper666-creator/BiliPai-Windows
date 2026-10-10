@@ -146,10 +146,10 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
-       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'fe8d470abc0796a9608eccce7d9e5455175eda9f351925311a7a537b28eabcb7'-or
+       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'2abc080877f9e64ec2f5c509cd664181a2ec3e652543c98571a34da551a66c4c'-or
        $Native.coreAbiHeaderSha256-cne$Manifest.coreAbiHeaderSha256-or$Native.tokenProtocol-ne2-or
        $Native.presentationProperty-cne$Manifest.presentationProperty-or
-       $Native.sourcePatchHelperSha256-cne'9b22c439630e206b0eebee8825cafb95a1a2433918d8c7ac67ff97d37568b4cc'-or
+       $Native.sourcePatchHelperSha256-cne'1f412a265ab2d18713f3d67662a20129aecfafdf935c9a612c5a11abe473ecc7'-or
        $Native.nativeBinaryBuiltByThisProgram-cne$false-or$Native.gpuExecuted-cne$false-or
        $Native.displayProofRuntimeVerified-cne$false){throw 'Actual presentation native receipt identity mismatch.'}
     if(@($Native.filterSourceFiles).Count-ne21){throw 'Incomplete presentation private source inventory.'}
@@ -208,14 +208,14 @@ try {
     if($presentation){
         $fixed.producerVariant='bilipai-veyra-rtx-present-v1'
         $fixed.bridgeSourceSha256='33F3F47CCDB65A1857375FA6DE7070041375B493548BC19017823A2B6022F832'
-        $fixed.vfSourceSha256='A893700A1F8F622E5C159DEE6BA3191CCF18AE3913CF28BAAF37EF59ED53299B'
-        $manifestExpected='FE8D470ABC0796A9608ECCCE7D9E5455175EDA9F351925311A7A537B28EABCB7'
+        $fixed.vfSourceSha256='F26823C80638F8EF5847F3EA95FC73235B0320BBF196128858C13557C763CEF8'
+        $manifestExpected='2ABC080877F9E64EC2F5C509CD664181A2EC3E652543C98571A34DA551A66C4C'
         Require-Properties $profile @('presentationProtocolVersion','presentationProperty','upstreamEditsSha256',
             'sourcePatchHelperSha256','mpvNativeReceiptRelativePath','mpvNativeReceiptSha256') 'PRESENTATION_PROFILE_MISSING'
         if($profile.presentationProtocolVersion-isnot[int]-or$profile.presentationProtocolVersion-ne2-or$profile.presentationProperty-cne'bilipai-rtx-presentation'-or
            $profile.mpvNativeReceiptRelativePath-cne'mpv/licenses/native-patch-receipt.json'){Reject 'PRESENTATION_PROFILE_INVALID'}
         Same-Hash $profile.upstreamEditsSha256 'e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f' 'PRESENTATION_EDIT_IDENTITY_MISMATCH'
-        Same-Hash $profile.sourcePatchHelperSha256 '9b22c439630e206b0eebee8825cafb95a1a2433918d8c7ac67ff97d37568b4cc' 'PRESENTATION_HELPER_IDENTITY_MISMATCH'
+        Same-Hash $profile.sourcePatchHelperSha256 '1f412a265ab2d18713f3d67662a20129aecfafdf935c9a612c5a11abe473ecc7' 'PRESENTATION_HELPER_IDENTITY_MISMATCH'
     }
     foreach ($key in $fixed.Keys) {
         if ($profile.$key -isnot [string] -or $profile.$key -cne $fixed[$key]) { Reject 'PROFILE_SOURCE_IDENTITY_MISMATCH' }
@@ -316,7 +316,7 @@ try {
             Same-Hash $reg.Sha256 '95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042' 'MPV_PRESENTATION_REGISTRATION_MISMATCH'
             Assert-PresentationSource (Read-LockedJson $native 1048576) (Read-LockedJson $sm 1048576) @(Read-LockedJson $up 2097152) @(Read-LockedJson $reg 1048576)
             $result.checked.presentationProtocolVersion=2
-            $result.checked.sourcePatchHelperSha256='9b22c439630e206b0eebee8825cafb95a1a2433918d8c7ac67ff97d37568b4cc'
+            $result.checked.sourcePatchHelperSha256='1f412a265ab2d18713f3d67662a20129aecfafdf935c9a612c5a11abe473ecc7'
             $result.checked.upstreamEditsSha256='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'
             $result.checked.mpvNativeReceiptSha256=$native.Sha256
         }

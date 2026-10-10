@@ -152,4 +152,46 @@ class DesktopNvidiaVideoAutoPolicyTest {
             assertFalse(decision.needsProcessing)
         }
     }
+    @Test fun hdrOnlyPreservesNativeHdrAndDolbyVisionWithoutChangingExistingSrRouting() {
+        for ((transfer, dv) in listOf("pq" to null, "hlg" to null, "bt.1886" to 5)) {
+            val only = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384,
+                transfer, dv, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO,
+                sharedCoreNativeResolutionAvailable = true, srEnabled = false)
+            assertEquals(DesktopNvidiaVideoDecisionKind.DIRECT, only.kind)
+            assertEquals(1.0, only.scale)
+            assertFalse(only.needsProcessing)
+            assertTrue(only.sourceIsHdr)
+        }
+    }
+
+    @Test fun hdrOnlyNeverUpscalesOrRequestsNativeResolutionSr() {
+        for ((displayW, displayH) in listOf(3840 to 2160, 960 to 540)) {
+            val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, displayW, displayH, 16384,
+                "bt.1886", null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO,
+                sharedCoreNativeResolutionAvailable = true, srEnabled = false)
+            assertEquals(DesktopNvidiaVideoDecisionKind.HDR, decision.kind)
+            assertEquals(1.0, decision.scale)
+            assertTrue(decision.hdr)
+            assertFalse(decision.nativeResolutionProcessing)
+        }
+    }
+
+    @Test fun hdrOnlyRequiresQualifiedCoreKnownSdrHdrTargetAndInputTextureLimit() {
+        for (case in listOf("core", "source", "nativeHDR", "dv", "display", "target", "odd", "limit")) {
+            val decision = resolveDesktopNvidiaVideoDecision(if (case == "odd") 1919 else 1920, 1080,
+                3840, 2160, if (case == "limit") 1024 else 16384,
+                if (case == "source") "bt.709" else if (case == "nativeHDR") "pq" else "bt.1886",
+                if (case == "dv") 5 else null, case != "display", if (case == "target") "srgb" else "pq",
+                "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO,
+                sharedCoreNativeResolutionAvailable = case != "core", srEnabled = false)
+            assertFalse(decision.needsProcessing, case)
+            assertEquals(1.0, decision.scale, case)
+        }
+        val waiting = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null,
+            "srgb", null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO,
+            sharedCoreNativeResolutionAvailable = true, srEnabled = false)
+        assertEquals(DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT, waiting.kind)
+        assertFalse(waiting.needsProcessing)
+    }
+
 }

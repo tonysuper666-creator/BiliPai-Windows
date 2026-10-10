@@ -28,9 +28,9 @@
   "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
   "sourceFiles": [
     {
-      "bytes": 32715,
+      "bytes": 32827,
       "fileName": "vf_bilipai_rtx.c",
-      "sha256": "a893700a1f8f622e5c159dee6ba3191ccf18ae3913cf28baaf37ef59ed53299b",
+      "sha256": "f26823c80638f8ef5847f3ea95fc73235b0320bbf196128858c13557c763cef8",
       "sourcePath": "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
       "targetPath": "video/filter/vf_bilipai_rtx.c"
     },
@@ -56,9 +56,9 @@
       "targetPath": "video/filter/bilipai_veyra_core_v1.h"
     },
     {
-      "bytes": 4061,
+      "bytes": 4191,
       "fileName": "bilipai_rtx_frame_provenance.h",
-      "sha256": "b571c188323313981fe4c84d78e90c543ef4fee6ab75497eca406db400becc55",
+      "sha256": "c8e33dbb31feb14b034579b3432ded44fe7d05995f15ff473e57d1d4cf763184",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
       "targetPath": "video/bilipai_rtx_frame_provenance.h"
     },

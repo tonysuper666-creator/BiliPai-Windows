@@ -2,6 +2,7 @@ package com.bilipai.desktop.plugins
 
 import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
 import com.bilipai.desktop.player.DesktopNvidiaVideoHdrMode
+import com.bilipai.desktop.player.DesktopNvidiaVideoContent
 import com.bilipai.desktop.player.DesktopNvidiaVideoPreferences
 import com.bilipai.desktop.player.DesktopNvidiaVideoQuality
 import kotlinx.coroutines.*
@@ -149,4 +150,80 @@ class DesktopVideoEnhancementConfigurationTest {
         assertEquals(Json.parseToJsonElement(original), document())
         withTimeout(5000) { config.flushAndClose() }
     }
+    @Test fun oldHdrAutoMapsToCombinedContentWithoutRewritingDisk() = runBlocking<Unit> {
+        val original = """{"windows_video_enhancement":{"migration_version":1,"enabled":true,"hdr_mode":"auto","quality_level":3}}"""
+        Files.writeString(root.resolve("plugin-settings.json"), original)
+        val config = configuration()
+        withTimeout(5000) { config.flushAndClose() }
+        assertEquals(DesktopNvidiaVideoContent.CLARITY_AND_HDR, config.preferences.value.content)
+        assertTrue(config.preferences.value.srEnabled)
+        assertEquals(DesktopNvidiaVideoQuality.HIGH, config.preferences.value.quality)
+        assertEquals(Json.parseToJsonElement(original), document())
+    }
+
+    @Test fun contentWritesAreAtomicPreserveQualityAndDrainAtRetirement() = runBlocking<Unit> {
+        val accepting = AtomicBoolean(true)
+        val config = configuration(accepting = accepting::get)
+        val queued = listOf(config.setQuality(DesktopNvidiaVideoQuality.STANDARD),
+            config.setContent(DesktopNvidiaVideoContent.CLARITY_AND_HDR),
+            config.setContent(DesktopNvidiaVideoContent.HDR_ONLY))
+        accepting.set(false)
+        assertFailsWith<IllegalStateException> { config.setContent(DesktopNvidiaVideoContent.CLARITY) }
+        withTimeout(5000) { config.flushAndClose(); queued.forEach { it.await() } }
+        assertEquals(DesktopNvidiaVideoContent.HDR_ONLY, config.preferences.value.content)
+        assertFalse(config.preferences.value.srEnabled)
+        assertEquals(DesktopNvidiaVideoQuality.STANDARD, config.preferences.value.quality)
+        val saved = document()["windows_video_enhancement"]!!.jsonObject
+        assertFalse(saved["sr_enabled"]!!.jsonPrimitive.boolean)
+        assertEquals("auto", saved["hdr_mode"]!!.jsonPrimitive.content)
+        assertEquals(2, saved["quality_level"]!!.jsonPrimitive.int)
+        val cold = Files.createDirectory(root.resolve("content-cold"))
+        Files.copy(root.resolve("plugin-settings.json"), cold.resolve("plugin-settings.json"))
+        val reloaded = configuration(DesktopPluginStore(cold))
+        withTimeout(5000) { reloaded.flushAndClose() }
+        assertEquals(config.preferences.value, reloaded.preferences.value)
+    }
+
+    @Test fun legacyHdrOffNormalizesHdrOnlyToClarityInOneSavedSnapshot() = runBlocking<Unit> {
+        val config = configuration()
+        withTimeout(5000) {
+            config.setContent(DesktopNvidiaVideoContent.HDR_ONLY).await()
+            config.setHdrMode(DesktopNvidiaVideoHdrMode.OFF).await()
+            config.flushAndClose()
+        }
+        assertEquals(DesktopNvidiaVideoContent.CLARITY, config.preferences.value.content)
+        val saved = document()["windows_video_enhancement"]!!.jsonObject
+        assertTrue(saved["sr_enabled"]!!.jsonPrimitive.boolean)
+        assertEquals("off", saved["hdr_mode"]!!.jsonPrimitive.content)
+    }
+
+    @Test fun malformedSrOrEmptyEffectsNeverOverwriteTheSavedDocument() = runBlocking<Unit> {
+        for ((index, field) in listOf("\"sr_enabled\":\"false\",\"hdr_mode\":\"auto\"",
+            "\"sr_enabled\":0,\"hdr_mode\":\"auto\"",
+            "\"sr_enabled\":false,\"hdr_mode\":\"off\"").withIndex()) {
+            val path = Files.createDirectory(root.resolve("invalid-content-$index"))
+            val original = """{"windows_video_enhancement":{"migration_version":1,"enabled":true,$field}}"""
+            Files.writeString(path.resolve("plugin-settings.json"), original)
+            val config = configuration(DesktopPluginStore(path))
+            assertFailsWith<IllegalStateException> { withTimeout(5000) { config.setContent(DesktopNvidiaVideoContent.CLARITY).await() } }
+            assertFalse(config.preferences.value.enabled)
+            assertNotNull(config.error.value)
+            assertEquals(Json.parseToJsonElement(original), document(path))
+            withTimeout(5000) { config.flushAndClose() }
+        }
+    }
+
+    @Test fun frozenContentWriteCannotPublishHalfOfTheRequestedMode() = runBlocking<Unit> {
+        val store = DesktopPluginStore(root)
+        val config = configuration(store)
+        withTimeout(5000) { config.setContent(DesktopNvidiaVideoContent.CLARITY).await() }
+        val saved = document()
+        val before = config.preferences.value
+        store.freezeWrites()
+        assertFailsWith<IllegalStateException> { withTimeout(5000) { config.setContent(DesktopNvidiaVideoContent.HDR_ONLY).await() } }
+        assertEquals(before, config.preferences.value)
+        assertEquals(saved, document())
+        withTimeout(5000) { config.flushAndClose() }
+    }
+
 }

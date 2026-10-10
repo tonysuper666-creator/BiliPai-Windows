@@ -4,6 +4,7 @@ import com.android.purebilibili.feature.anime4k.Anime4KPreset
 import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
 import com.android.purebilibili.feature.anime4k.Anime4KConfig
 import com.bilipai.desktop.player.DesktopNvidiaVideoHdrMode
+import com.bilipai.desktop.player.DesktopNvidiaVideoContent
 import com.bilipai.desktop.player.DesktopNvidiaVideoPreferences
 import com.bilipai.desktop.player.DesktopNvidiaVideoQuality
 import kotlinx.coroutines.*
@@ -88,12 +89,20 @@ class DesktopVideoEnhancementConfiguration(
                 "NVIDIA HDR 设置无效"
             }
         }
-        return DesktopNvidiaVideoPreferences(enabled, quality, hdrMode)
+        // A missing SR key is the old two-option schema, including HDR AUTO.
+        val srValue = snapshot[srEnabledKey]
+        val srEnabled = if (srValue == null) true else checkNotNull(
+            (srValue as? JsonPrimitive)?.takeUnless { it.isString }?.booleanOrNull) {
+            "NVIDIA 增强内容设置无效"
+        }
+        check(srEnabled || hdrMode == DesktopNvidiaVideoHdrMode.AUTO) { "NVIDIA HDR 独立模式设置无效" }
+        return DesktopNvidiaVideoPreferences(enabled, quality, hdrMode, srEnabled)
     }
     private fun savedValues(preferences: DesktopNvidiaVideoPreferences) = mapOf(
         ENABLED_KEY to JsonPrimitive(preferences.enabled),
         QUALITY_KEY to JsonPrimitive(preferences.quality.nativeLevel),
         HDR_MODE_KEY to JsonPrimitive(preferences.hdrMode.storedValue),
+        SR_ENABLED_KEY to JsonPrimitive(preferences.srEnabled),
     )
     private val worker = scope.launch {
         try { serialize { ensureLoaded() } }
@@ -124,7 +133,12 @@ class DesktopVideoEnhancementConfiguration(
 
     fun setAutomaticEnabled(enabled: Boolean): Deferred<Unit> = setPreference { it.copy(enabled = enabled) }
     fun setQuality(quality: DesktopNvidiaVideoQuality): Deferred<Unit> = setPreference { it.copy(quality = quality) }
-    fun setHdrMode(hdrMode: DesktopNvidiaVideoHdrMode): Deferred<Unit> = setPreference { it.copy(hdrMode = hdrMode) }
+    fun setHdrMode(hdrMode: DesktopNvidiaVideoHdrMode): Deferred<Unit> = setPreference {
+        it.copy(hdrMode = hdrMode, srEnabled = it.srEnabled || hdrMode == DesktopNvidiaVideoHdrMode.OFF)
+    }
+    fun setContent(content: DesktopNvidiaVideoContent): Deferred<Unit> = setPreference {
+        it.copy(srEnabled = content.srEnabled, hdrMode = content.hdrMode)
+    }
     private fun setPreference(change: (DesktopNvidiaVideoPreferences) -> DesktopNvidiaVideoPreferences): Deferred<Unit> {
         check(!closed.get() && acceptChanges()) { "NVIDIA 增强设置已关闭" }
         val completion = CompletableDeferred<Unit>()
@@ -155,9 +169,11 @@ class DesktopVideoEnhancementConfiguration(
         const val MIGRATION_KEY = "migration_version"
         const val QUALITY_KEY = "quality_level"
         const val HDR_MODE_KEY = "hdr_mode"
+        const val SR_ENABLED_KEY = "sr_enabled"
         private val enabledKey = DesktopPreferenceKey(ENABLED_KEY) { it }
         private val migrationKey = DesktopPreferenceKey(MIGRATION_KEY) { it }
         private val qualityKey = DesktopPreferenceKey(QUALITY_KEY) { it }
         private val hdrModeKey = DesktopPreferenceKey(HDR_MODE_KEY) { it }
+        private val srEnabledKey = DesktopPreferenceKey(SR_ENABLED_KEY) { it }
     }
 }

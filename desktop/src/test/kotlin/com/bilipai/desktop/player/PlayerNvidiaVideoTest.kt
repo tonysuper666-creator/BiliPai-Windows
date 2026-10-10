@@ -169,4 +169,26 @@ class PlayerNvidiaVideoTest {
         assertNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
         assertFalse(player.nvidiaVideoState.value.pending)
     }
+    @Test fun hdrOnlyOptionsAreCoreUnityAndQualityIndependent() {
+        val decision = resolveDesktopNvidiaVideoDecision(640, 360, 1280, 720, 16384, "bt.1886",
+            null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO,
+            sharedCoreNativeResolutionAvailable = true, srEnabled = false)
+        val snapshots = DesktopNvidiaVideoQuality.entries.map { quality ->
+            DesktopNvidiaVideoPreferences(true, quality, DesktopNvidiaVideoHdrMode.AUTO, false)
+                .optionsFor(decision, NvidiaVideoBackend.VEYRA_CORE).requireValid()
+        }
+        assertEquals(1, snapshots.distinct().size)
+        val options = snapshots.first()
+        assertEquals(2, options.effectMask)
+        assertEquals(1.0, options.scale)
+        assertEquals(4, options.qualityLevel)
+        assertFalse(options.srEnabled)
+        assertFalse(options.nativeResolutionProcessing)
+        for (invalid in listOf(options.copy(scale = 2.0), options.copy(hdr = false),
+            options.copy(nativeResolutionProcessing = true), options.copy(backend = NvidiaVideoBackend.DRIVER))) {
+            assertFailsWith<IllegalArgumentException> { invalid.requireValid() }
+        }
+        assertFailsWith<IllegalArgumentException> { options.filterArguments() }
+    }
+
 }

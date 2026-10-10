@@ -9,15 +9,23 @@ enum class NvidiaVideoBackend { DRIVER, VEYRA_CORE }
 data class NvidiaVideoOptions(val scale: Double = 1.0, val hdr: Boolean = false,
     val nativeResolutionProcessing: Boolean = false,
     val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
-    val qualityLevel: Int = 4) {
+    val qualityLevel: Int = 4,
+    val srEnabled: Boolean = true) {
     internal fun requireValid(): NvidiaVideoOptions {
         require(scale.isFinite() && scale in 1.0..4.0) { "NVIDIA video scale must be between 1 and 4." }
         require(!nativeResolutionProcessing || scale == 1.0) { "Native-resolution processing requires unity scale." }
         require(qualityLevel in 1..4) { "NVIDIA video quality must be between 1 and 4." }
+        require(srEnabled || (backend == NvidiaVideoBackend.VEYRA_CORE && hdr && scale == 1.0 &&
+            !nativeResolutionProcessing)) { "HDR-only requires the shared core, HDR and unity dimensions." }
         return this
     }
     internal val requiresFilter: Boolean get() = scale > 1.0 || hdr || nativeResolutionProcessing
-    internal fun filterArguments(): String = "d3d11vpp=scale=$scale:scaling-mode=nvidia:nvidia-true-hdr=${if (hdr) "yes" else "no"}"
+    internal val effectMask: Int get() = (if (srEnabled) 1 else 0) or (if (hdr) 2 else 0)
+    internal fun filterArguments(): String {
+        requireValid()
+        require(srEnabled) { "The driver route cannot disable super resolution independently." }
+        return "d3d11vpp=scale=$scale:scaling-mode=nvidia:nvidia-true-hdr=${if (hdr) "yes" else "no"}"
+    }
 }
 
 /** Exact queued withdrawal identity; a receipt, not another native owner. */
@@ -61,6 +69,7 @@ data class NvidiaVideoState(
     val veyraSubmitted: Boolean = false,
     /** Requested shared-core quality. Driver d3d11vpp has no quality option. */
     val requestedQualityLevel: Int = 4,
+    val srEnabledRequested: Boolean = true,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -95,10 +104,10 @@ internal fun observeNvidiaVideo(previous: NvidiaVideoState, options: NvidiaVideo
         frame.outputWidth == scaled(frame.inputWidth) && frame.outputHeight == scaled(frame.inputHeight)
     val usable = previous.error == null && previous.unavailableReason == null
     val processed = frame.frameAfterConfiguration && frame.ownFilterPresent && dimensions && usable
-    val vsr = options.scale > 1.0 && previous.driverVsrAccepted && processed
+    val vsr = options.srEnabled && options.scale > 1.0 && previous.driverVsrAccepted && processed
     val hdr = options.hdr && previous.driverHdrAccepted && processed && nvidiaHdrTransfer(frame.outputTransfer)
     val hdrPresented = hdr && frame.displayHdrEnabled && nvidiaHdrTarget(frame.targetTransfer, frame.targetPrimaries)
-    val sameSizeAttempt = options.nativeResolutionProcessing && previous.nativeResolutionPatchAvailable &&
+    val sameSizeAttempt = options.srEnabled && options.nativeResolutionProcessing && previous.nativeResolutionPatchAvailable &&
         options.scale == 1.0 && previous.driverVsrAccepted && processed &&
         frame.inputWidth == frame.outputWidth && frame.inputHeight == frame.outputHeight
     val scalingReady = if (options.nativeResolutionProcessing) sameSizeAttempt else options.scale <= 1.0 || vsr

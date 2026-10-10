@@ -135,7 +135,9 @@ internal object MpvVeyraPresentationProperties {
                 frame.inputWidth > 0 && frame.inputHeight > 0 && frame.width > 0 && frame.height > 0 &&
                 frame.epoch > 0 && frame.presentCount in 1L..0xffffffffL && frame.adapterLuidHex != "0000000000000000")
             require((frame.effects == 1 && frame.outputIntent == 1 && frame.transport == 1 && frame.hdrPeakNits == 0 && !frame.hdrOutputProved) ||
-                (frame.effects == 3 && frame.outputIntent == 2 && frame.transport == 2 && frame.hdrPeakNits in 400..2000 && frame.hdrOutputProved))
+                ((frame.effects == 3 || (frame.effects == 2 &&
+                    frame.width == frame.inputWidth && frame.height == frame.inputHeight)) &&
+                    frame.outputIntent == 2 && frame.transport == 2 && frame.hdrPeakNits in 400..2000 && frame.hdrOutputProved))
         }
         return frame
     }
@@ -208,9 +210,11 @@ internal class VeyraPresentationTracker {
         val width = Math.rint(inputWidth * nativeScale).toInt(); val height = Math.rint(inputHeight * nativeScale).toInt()
         fun configured(frame: VeyraPresentedFrame): Boolean = frame.inputWidth == inputWidth && frame.inputHeight == inputHeight &&
             frame.width == width && frame.height == height && frame.sourceKind == 1 &&
-            frame.outputIntent == (if (options.hdr) 2 else 1) && frame.effects == (if (options.hdr) 3 else 1) &&
+            frame.outputIntent == (if (options.hdr) 2 else 1) && frame.effects == options.effectMask &&
             frame.transport == (if (options.hdr) 2 else 1) && frame.hdrPeakNits == (if (options.hdr) 1000 else 0)
-        if (inputWidth <= 0 || inputHeight <= 0 || !configured(queued) || !configured(displayed) ||
+        if ((!options.srEnabled && (options.backend != NvidiaVideoBackend.VEYRA_CORE || !options.hdr ||
+                options.scale != 1.0 || options.nativeResolutionProcessing)) ||
+            inputWidth <= 0 || inputHeight <= 0 || !configured(queued) || !configured(displayed) ||
             (options.hdr && (!displayed.hdrOutputProved || !queued.hdrOutputProved ||
                 !((displayed.dxgiFormat == 24 && displayed.dxgiColorSpace == 12) ||
                     (displayed.dxgiFormat == 10 && displayed.dxgiColorSpace == 1))))) return null

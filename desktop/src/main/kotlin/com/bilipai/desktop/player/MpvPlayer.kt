@@ -202,7 +202,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             nativeResolutionPatchAvailable = previous.nativeResolutionPatchAvailable,
             nativeResolutionProcessingRequested = options.nativeResolutionProcessing,
             veyraAvailable = previous.veyraAvailable, backend = options.backend,
-            requestedQualityLevel = options.qualityLevel)
+            requestedQualityLevel = options.qualityLevel, srEnabledRequested = options.srEnabled)
         session?.commands?.offer(Action.NvidiaVideo(version, owner, playbackRevision, requestedSource, options))
         return version
     }
@@ -992,7 +992,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             nvidiaSourceVersion ?: sourceVersion, nvidiaOptions.scale, nvidiaOptions.hdr,
             pending = !closed.get() && requestedSource != null && nvidiaOptions.requiresFilter,
             nativeResolutionProcessingRequested = nvidiaOptions.nativeResolutionProcessing,
-            requestedQualityLevel = nvidiaOptions.qualityLevel) }
+            requestedQualityLevel = nvidiaOptions.qualityLevel, srEnabledRequested = nvidiaOptions.srEnabled) }
         mutableState.update { it.copy(ready = false, loading = false, activeVideoPanscan = null, nativePaused = null) }
     }
 
@@ -1180,7 +1180,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
         private fun applyNvidiaVideo(native: MpvNative, handle: Pointer, action: Action.NvidiaVideo) {
             if (!nvidiaCurrent(action)) return
-            if (!action.options.requiresFilter) {
+            // Queued values are checked again before any bypass or native submission.
+            val requestedOptions = try { action.options.requireValid() } catch (_: IllegalArgumentException) {
+                failNvidia(native, handle, action, "增强内容配置无效，继续原画播放", unavailable = true); return
+            }
+            if (!requestedOptions.requiresFilter) {
                 removeNvidiaFilter(native, handle); pendingNvidiaAction = null
                 synchronized(lock) { if (nvidiaCurrent(action)) mutableNvidiaVideo.update { it.copy(pending = false, active = false, hdrConversionActive = false, nativeResolutionAttemptAccepted = false) } }
                 return
@@ -1206,7 +1210,16 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 failNvidia(native, handle, action, "增强尺寸超过实际 GPU 纹理上限，继续原画播放"); return
             }
             val nativeHdr = nvidiaHdrTransfer(input.gamma) || (input.dolbyVisionProfile ?: 0) > 0
-            val options = action.options.copy(hdr = action.options.hdr && !nativeHdr)
+            if (!requestedOptions.srEnabled && (nativeHdr || input.dolbyVisionProfile != null)) {
+                failNvidia(native, handle, action, "原生 HDR / Dolby Vision 内容，保留原生输出", unavailable = true); return
+            }
+            val options = requestedOptions.copy(hdr = requestedOptions.hdr && !nativeHdr)
+            if (!options.srEnabled && (options.backend != NvidiaVideoBackend.VEYRA_CORE ||
+                    !options.hdr || options.scale != 1.0 || options.nativeResolutionProcessing ||
+                    input.sourceVersion != activeSourceVersion || input.displayWidth <= 0 || input.displayHeight <= 0 ||
+                    input.inputWidth % 2 != 0 || input.inputHeight % 2 != 0)) {
+                failNvidia(native, handle, action, "独立 HDR 需要原尺寸共享核心，继续原画播放", unavailable = true); return
+            }
             val nativeResolutionViewportMatches = if (options.backend == NvidiaVideoBackend.VEYRA_CORE)
                 input.displayWidth > 0 && input.displayHeight > 0 &&
                     input.displayWidth <= input.inputWidth && input.displayHeight <= input.inputHeight
@@ -1291,7 +1304,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                                 message.sourceVersion == action.version && message.configurationVersion == action.configurationVersion)
                                 admitNvidia(action) { failNvidia(native, handle, action, "画质增强暂不可用，继续播放原画") }
                         }
-                        NvidiaNativeMessage.VsrAccepted -> if (action.options.backend == NvidiaVideoBackend.DRIVER && !admitNvidia(action) { mutableNvidiaVideo.update { it.copy(driverVsrAccepted = true) } })
+                        NvidiaNativeMessage.VsrAccepted -> if (action.options.backend == NvidiaVideoBackend.DRIVER && action.options.srEnabled && !admitNvidia(action) { mutableNvidiaVideo.update { it.copy(driverVsrAccepted = true) } })
                             failNvidia(native, handle, action, "当前视频已失去播放所有权，已停止增强")
                         NvidiaNativeMessage.HdrAccepted -> if (action.options.backend == NvidiaVideoBackend.DRIVER && !admitNvidia(action) { mutableNvidiaVideo.update { it.copy(driverHdrAccepted = true) } })
                             failNvidia(native, handle, action, "当前视频已失去播放所有权，已停止增强")
