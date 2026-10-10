@@ -2,6 +2,7 @@ package com.bilipai.desktop.update
 
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.*
 import kotlinx.serialization.json.*
 import java.nio.file.Files
@@ -86,6 +87,75 @@ class DesktopUpdateMonitoringTest {
         assertNull(monitor.state.value.compatible); assertNull(monitor.state.value.catalogError)
         assertFalse(monitor.state.value.checking)
         assertTrue("lastSuccessMs" in store.preferences("veyra_release_tracking"))
+    }
+
+    @Test fun `cancelled accepted catalog retries after throttle without refetching upstream`() = runBlocking {
+        val store = store(); val update = target()
+        var now = 1_000L; var upstreamCalls = 0; var catalogCalls = 0
+        // Verify a real signed offer; neither the accepted cache nor its retry flag is modelled here.
+        val keys = java.security.KeyPairGenerator.getInstance("Ed25519").generateKeyPair()
+        val payload = buildJsonObject {
+            put("schema", 1); put("repository", "tonysuper666-creator/BiliPai-Windows")
+            put("version", update.version); put("releaseId", update.releaseId); put("assetId", update.assetId)
+            put("assetName", update.assetName); put("size", update.size); put("downloadUrl", update.downloadUrl)
+            put("sha256", "c".repeat(64)); put("sourceRepository", "Likely7/Veyra-NRVideo")
+            put("sourceCommit", commit); put("adapterBuildId", "accepted-monitor-regression")
+            put("engineProtocolMajor", 1); put("compatibilityStatus", "VALIDATED_FULL_APPLICATION_BUNDLE")
+        }.toString().toByteArray(Charsets.UTF_8)
+        val signature = java.security.Signature.getInstance("Ed25519").apply {
+            initSign(keys.private); update(payload)
+        }.sign()
+        val envelope = buildJsonObject {
+            put("schema", 1); put("keyId", "monitor-regression-key")
+            put("payloadBase64", java.util.Base64.getEncoder().encodeToString(payload))
+            put("signatureBase64", java.util.Base64.getEncoder().encodeToString(signature))
+        }.toString()
+        val offer = VerifiedVeyraCompatibleOffer.verify(envelope,
+            mapOf("monitor-regression-key" to keys.public.encoded), "tonysuper666-creator/BiliPai-Windows", update)
+        val monitor = DesktopVeyraReleaseMonitor(fetch = { upstreamCalls++; release(it) },
+            store = store, owns = { true }, windowsState = { UpdateState.Available(update) },
+            compatibleCatalog = { assertEquals(update, it); catalogCalls++; offer }, nowMs = { now })
+        val accepted = CompletableDeferred<VerifiedVeyraCompatibleOffer>()
+        val request = async(start = CoroutineStart.LAZY) { monitor.check() }
+        // The real StateFlow publishes its cached offer before the final current() check.
+        // Unconfined observation cancels that actual caller inline at this publication boundary.
+        val observation = launch(Dispatchers.Unconfined, start = CoroutineStart.UNDISPATCHED) {
+            monitor.state.first { state ->
+                state.compatible?.let {
+                    accepted.complete(it)
+                    request.cancel()
+                    true
+                } ?: false
+            }
+        }
+        try {
+            request.start()
+            assertSame(offer, withTimeout(5_000L) { accepted.await() })
+            withTimeout(5_000L) { request.join() }
+            assertTrue(request.isCancelled)
+            assertFailsWith<CancellationException> { request.await() }
+            assertNull(monitor.state.value.compatible)
+            assertNull(monitor.state.value.catalogError); assertNull(monitor.state.value.error)
+            assertFalse(monitor.state.value.checking)
+            assertEquals(commit, monitor.state.value.latestPublished?.sourceCommit)
+            assertEquals(3, upstreamCalls); assertEquals(1, catalogCalls)
+            val evidence = store.preferences("veyra_release_tracking")
+            assertTrue("lastSuccessMs" in evidence)
+
+            now += DesktopVeyraReleaseMonitor.CATALOG_RETRY_MS - 1
+            monitor.check() // Non-force, still inside both the catalog and upstream debounce.
+            assertEquals(1, catalogCalls); assertEquals(3, upstreamCalls)
+            assertNull(monitor.state.value.compatible)
+            now++
+            monitor.check() // The same target must retry at the existing fifteen-minute boundary.
+            assertEquals(2, catalogCalls); assertEquals(3, upstreamCalls)
+            assertSame(offer, monitor.state.value.compatible)
+            assertNull(monitor.state.value.catalogError)
+            assertEquals(evidence, store.preferences("veyra_release_tracking"))
+        } finally {
+            observation.cancelAndJoin()
+            request.cancelAndJoin()
+        }
     }
 
     @Test fun `default enabled background check is cancelled on durable opt-out and resumes on opt-in`() = runTest {
