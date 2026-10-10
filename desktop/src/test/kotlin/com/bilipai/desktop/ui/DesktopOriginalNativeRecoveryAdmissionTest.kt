@@ -396,11 +396,20 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
             override fun getCachedPosition(bvid: String, cid: Long) = 0L
             override fun savePosition(bvid: String, cid: Long, positionMs: Long) = Unit
         }
+        private val api = unusedPgc<com.android.purebilibili.core.network.BilibiliApi>()
+        private val interaction = com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase(
+            com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol(
+                api, { error("No CSRF read") }, { error("No MID read") },
+                { error("No session read") }, { error("No token read") },
+                { error("No engagement action") }, { error("No follow action") },
+                com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol(
+                    api, { error("No folder MID") }, { error("No folder CSRF") },
+                    { error("No folder action") })), unusedPgc())
         val vm = com.android.purebilibili.feature.bangumi.BangumiPlayerViewModel(
             DesktopOriginalBangumiPlayerEnvironment(scope, control, context,
                 unusedPgc(), unusedPgc(), unusedPgc(),
-                com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase(unusedPgc(), unusedPgc()),
-                unusedPgc(), progress, unusedPgc(), unusedPgc(), MutableStateFlow(false),
+                interaction,
+                api, progress, unusedPgc(), unusedPgc(), MutableStateFlow(false),
                 { -1 }, { -1 }, { error("No preference write") },
                 { false }, { false }, { false }, { false }, { null },
                 { _, _, _ -> error("No CDN request") }, { _, _, _ -> error("No playlist mutation") },
