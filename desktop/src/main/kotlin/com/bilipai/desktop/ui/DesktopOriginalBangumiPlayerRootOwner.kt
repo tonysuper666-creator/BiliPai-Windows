@@ -133,6 +133,17 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 }
             } && applied
         }
+        override fun observePlaybackReady() {
+            if (!owns() || !native.ownsPlaybackSource()) return
+            val expected = owner.native.current() ?: return
+            factory.withPresentationAdmission(owner, expected) {
+                owner.native.admitPlaybackDispatch(expected) {
+                    val actual = player.state.value
+                    if (owns() && native.ownsPlaybackSource() && !actual.loading &&
+                        actual.failure == null && actual.error == null) recovery.ready()
+                }
+            }
+        }
         override fun observePlaybackFailure(error: DesktopOriginalNativePlaybackError) {
             if (isActualDrmFailure(error) || !owns()) return
             val failure = error.failure ?: return

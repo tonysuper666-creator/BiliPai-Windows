@@ -50,6 +50,9 @@ def main():
 '''
    after=before.replace('                }\n','                } else {\n                    platform.observePlaybackFailure(error)\n                }\n')
    assert body.count(before)==1;body=body.replace(before,after)
+   before='            override fun onPlaybackStateChanged(playbackState: Int) {\n'
+   after=before+'                if (playbackState == Player.STATE_READY) platform.observePlaybackReady()\n'
+   assert body.count(before)==1;body=body.replace(before,after)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')

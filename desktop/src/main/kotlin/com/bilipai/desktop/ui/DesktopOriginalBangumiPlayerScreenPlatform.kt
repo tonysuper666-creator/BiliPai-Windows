@@ -52,6 +52,7 @@ internal interface DesktopOriginalBangumiPlayerScreenPlatform {
     fun elapsedRealtimeMillis(): Long
     fun isActualDrmFailure(error: DesktopOriginalNativePlaybackError): Boolean
     fun observePlaybackFailure(error: DesktopOriginalNativePlaybackError)
+    fun observePlaybackReady()
 }
 
 internal val LocalDesktopOriginalBangumiPlayerScreenPlatform =
