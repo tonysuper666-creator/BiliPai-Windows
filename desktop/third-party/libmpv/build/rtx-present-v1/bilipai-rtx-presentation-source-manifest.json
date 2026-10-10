@@ -35,9 +35,9 @@
       "targetPath": "video/filter/vf_bilipai_rtx.c"
     },
     {
-      "bytes": 47780,
+      "bytes": 47853,
       "fileName": "bilipai_rtx_mpv_bridge.c",
-      "sha256": "d31eeb0bf355b28a4636c6715dc80697c8dd28c5cb9585f7367e279c1b98d2cf",
+      "sha256": "33f3f47ccdb65a1857375fa6de7070041375b493548bc19017823a2b6022f832",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
     },

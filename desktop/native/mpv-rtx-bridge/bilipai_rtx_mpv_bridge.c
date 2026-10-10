@@ -158,7 +158,8 @@ static HRESULT shared_fence(struct bv_mpv_bridge *p,ID3D11Fence **f11,ID3D12Fenc
  * BT601/709 RGB -> source transfer decode -> sRGB encode. P012 words are
  * left-shifted 4 bits; P016 words are not shifted. Depth is current-frame
  * AVHWFramesContext qualification, never guessed from their shared DXGI P016.
- * HDR output remains scRGB(1=80nit) -> BT2020/PQ. */
+ * HDR output remains scRGB(1=80nit) -> BT2020/PQ.
+ * Preserve signed scRGB through the gamut matrix; pq() clips destination nits. */
 static const char shader[]=
 "Texture2D<float4> src:register(t0);Texture2D<float2> uv:register(t1);"
 "cbuffer K:register(b0){uint mode;uint limited;uint matrixId;uint gamma24;uint width;uint height;uint chroma;uint sampleDepth;}"
@@ -172,7 +173,7 @@ static const char shader[]=
 "}else if(limited)rgb=sampleDepth==10?(rgb*1023.0-64.0)/876.0:(rgb*255-16)/219;return float4(saturate(srgb(decodeTransfer(saturate(rgb)))),1);}"
 "float4 srPS(float4 p:SV_Position):SV_Target{return src.Load(int3(uint2(p.xy),0));}"
 "float3 pq(float3 n){float3 v=pow(saturate(n/10000),2610.0/16384);return pow((3424.0/4096+(2413.0/128)*v)/(1+(2392.0/128)*v),2523.0/32);}"
-"float4 hdrPS(float4 p:SV_Position):SV_Target{float3 x=max(src.Load(int3(uint2(p.xy),0)).rgb,0)*80;float3 y=float3(dot(x,float3(.627404,.329283,.043313)),dot(x,float3(.069097,.919540,.011362)),dot(x,float3(.016391,.088013,.895595)));return float4(pq(y),1);}";
+"float4 hdrPS(float4 p:SV_Position):SV_Target{float3 x=src.Load(int3(uint2(p.xy),0)).rgb*80;float3 y=float3(dot(x,float3(.627404,.329283,.043313)),dot(x,float3(.069097,.919540,.011362)),dot(x,float3(.016391,.088013,.895595)));return float4(pq(y),1);}";
 static HRESULT shader_create(struct bv_mpv_bridge *p) {
     ID3DBlob *b=NULL,*errors=NULL;HRESULT hr;
 #define BUILD(entry,target) hr=D3DCompile(shader,sizeof(shader)-1,"bilipai-rtx-candidate",NULL,NULL,entry,target,D3DCOMPILE_ENABLE_STRICTNESS,0,&b,&errors);RELEASE(errors);if(FAILED(hr)){RELEASE(b);return hr;}
