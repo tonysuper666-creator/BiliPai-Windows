@@ -79,9 +79,19 @@ open class DesktopOriginalMpvOverlayControl internal constructor(
         set(value) { write { nativePlayer.setPaused(!value) } }
     val playerErrorMessage: String? get() = snapshot().error
     val mediaItemCount: Int get() = if (isOwned()) 1 else 0
+    // Lexical synchronous original UseCase writes may need a captured origin or
+    // accepted child. This is a borrowed gate, never a new source/command owner.
+    private val lexicalCommandAdmission = ThreadLocal<((() -> Unit) -> Boolean)?>()
+    internal fun withSourceCommandAdmission(admission: (() -> Unit) -> Boolean, action: () -> Unit) {
+        val previous = lexicalCommandAdmission.get()
+        lexicalCommandAdmission.set(admission)
+        try { action() }
+        finally { if (previous == null) lexicalCommandAdmission.remove() else lexicalCommandAdmission.set(previous) }
+    }
     protected fun write(block: () -> Unit) {
         if (!isOwned()) return
-        commitIfCurrent { if (isOwned()) block() }
+        val admission = lexicalCommandAdmission.get() ?: commitIfCurrent
+        admission { if (isOwned()) block() }
     }
     fun prepare() = write(ensurePreparedSource)
     fun play() = write { if (state.value.ended) resumeEndedSource() else nativePlayer.setPaused(false) }

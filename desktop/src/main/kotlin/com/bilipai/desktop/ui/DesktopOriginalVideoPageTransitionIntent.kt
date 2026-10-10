@@ -7,8 +7,8 @@ import kotlinx.coroutines.Job
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
 
-/** Immutable parameters of ONE original in-place switchPage launch. The existing
- * page generation and original full-load request are borrowed, never replaced.
+/** Immutable parameters of ONE original in-place CID transition. Page switches
+ * and interactive branches borrow the existing page generation/full-load request.
  * This is not a PlaybackRequest acceptance, error source, route or account. */
 internal class DesktopOriginalVideoPageTransitionIntent(
     val bvid: String,
@@ -23,13 +23,17 @@ internal class DesktopOriginalVideoPageTransitionIntent(
     private val isGenerationCurrent: () -> Boolean,
     private val currentPageGeneration: () -> Long,
     private val isPageSwitchPending: () -> Boolean,
+    /** An original interactive target is not a page index; only that path may
+     * supply -1. Default callers retain the original page-index validation. */
+    private val interactiveBranch: Boolean = false,
 ) : AbstractCoroutineContextElement(Key) {
     companion object Key : CoroutineContext.Key<DesktopOriginalVideoPageTransitionIntent>
     internal fun sameOriginalRequest(state: PlaybackSessionState): Boolean =
         sameOriginalRequestIdentity(state) && isGenerationCurrent()
     internal fun sameOriginalRequestIdentity(state: PlaybackSessionState): Boolean {
         val request = original.currentRequest ?: return false
-        return bvid.isNotBlank() && cid > 0L && pageIndex >= 0 && request.bvid == bvid &&
+        val targetKindValid = if (interactiveBranch) pageIndex == -1 else pageIndex >= 0
+        return bvid.isNotBlank() && cid > 0L && targetKindValid && request.bvid == bvid &&
             state.currentBvid == bvid && state.currentRequest === request &&
             state.currentLoadRequestToken == original.currentLoadRequestToken
     }
