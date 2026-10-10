@@ -72,7 +72,7 @@ internal class DesktopUnifiedPlaybackFacade(
                     effectiveQuality = success?.currentQuality ?: 0,
                     availableQualities = success?.qualityIds?.mapIndexed { i, id -> PlaybackQuality(id, success.qualityLabels.getOrNull(i) ?: id.toString()) }.orEmpty(),
                     related = success?.related?.map { related -> VideoCard(related.bvid, related.title, related.pic,
-                        related.owner.name, related.stat.view.toLong(), related.duration, authorMid = related.owner.mid) }.orEmpty(),
+                        related.owner.name, related.stat.view.toLong(), related.duration, preferredCid = related.cid, authorMid = related.owner.mid) }.orEmpty(),
                     error = if (recovery.status == PlaybackStatus.Failed) recovery.message
                         else if (recovery.status == PlaybackStatus.Recovering) null
                         else (playbackUi as? VideoPlaybackUiState.Error)?.takeUnless { it === ui.second.first }?.msg,
