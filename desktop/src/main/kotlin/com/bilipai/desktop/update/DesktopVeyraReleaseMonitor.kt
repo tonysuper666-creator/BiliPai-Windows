@@ -101,6 +101,8 @@ internal class DesktopVeyraReleaseMonitor(
             current()
             return offer
         } catch (cancelled: CancellationException) {
+            // A cancelled accepted lookup discards its cached offer; the same target must remain retryable.
+            catalogRetryPending = true
             if (owns()) mutable.update { it.copy(compatible = it.compatible?.takeUnless { value -> value.update == update }) }
             throw cancelled
         } catch (failure: Exception) {
