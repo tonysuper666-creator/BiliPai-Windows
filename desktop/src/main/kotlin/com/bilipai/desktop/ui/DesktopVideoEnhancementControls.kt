@@ -64,8 +64,6 @@ internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementS
         configurationError != null || state.error != null -> "异常"
         !enabled -> "关闭"
         state.unavailableReason != null -> "不可用"
-        state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE &&
-            state.srEnabledRequested && state.hdrConversionActive -> "增强 · HDR"
         state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE && state.srEnabledRequested && state.hdrConversionActive -> "清晰度＋HDR"
         state.active && state.backend == NvidiaVideoBackend.VEYRA_CORE && state.srEnabledRequested -> "清晰度"
         state.active && state.driverVsrAccepted && state.hdrConversionActive -> "VSR · HDR"
