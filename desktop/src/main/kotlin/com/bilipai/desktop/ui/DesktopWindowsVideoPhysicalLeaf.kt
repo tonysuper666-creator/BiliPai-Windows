@@ -295,6 +295,34 @@ internal class DesktopWindowsVideoActions(
             }
         }
     }
+    fun saveVideoResource(audioOnly: Boolean) {
+        val value = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return
+        val expected = assembly.native.current() ?: return
+        val pageJob = partScope.coroutineContext[kotlinx.coroutines.Job] ?: return
+        fun stillCaptured(): Boolean = pageJob.isActive && current() && !latestPip &&
+            rootEnvironment.owns() && rootEnvironment.currentKey() === route &&
+            assembly.native.isCurrent(expected) && shell.factoryFor(assembly).isPresentationCurrent(assembly, expected) &&
+            assembly.playback.captureDesktopPlaybackState().let {
+                it is VideoPlaybackUiState.Success && it.info.bvid == expected.request.bvid &&
+                    it.info.cid == expected.request.cid && !it.isQualitySwitching
+            }
+        if (value.info.bvid != expected.request.bvid || value.info.cid != expected.request.cid || !stillCaptured()) return
+        // Same original VM, immutable task/cover bytes and Root storage actor.
+        if (audioOnly) {
+            if (value.audioUrl.isNullOrBlank()) return
+            assembly.playback.downloadAudio(platforms.holder.settingsContext, ::stillCaptured,
+                com.android.purebilibili.feature.download.DownloadOptions(includeDanmaku = false))
+        } else {
+            if (value.info.pic.isBlank()) return
+            assembly.playback.saveCover(platforms.holder.settingsContext, ::stillCaptured) { action ->
+                // Same file gate as screenshots: native verification returns before disk IO.
+                shell.factoryFor(assembly).withPresentationAdmission(assembly, expected) {
+                    if (!stillCaptured()) throw CancellationException("Original cover page retired")
+                    action()
+                }
+            }
+        }
+    }
     // SHARE alone retains its original draft tree across temporary owner hiding.
     // The same Root, route, account authorization and accepted full source remain required.
     val retainedShareSource = assembly.native.current()?.takeIf { accepted ->
@@ -687,6 +715,10 @@ internal class DesktopWindowsVideoActions(
                     canOpenInteraction = interactionCurrent(),
                     onSendDanmaku = { openInteraction(DesktopWindowsVideoInteraction.DANMAKU) },
                     onShareVideo = { openInteraction(DesktopWindowsVideoInteraction.SHARE) },
+                    canDownloadAudio = interactionCurrent() && success?.let { !it.isQualitySwitching && !it.audioUrl.isNullOrBlank() } == true,
+                    canSaveCover = interactionCurrent() && success?.let { !it.isQualitySwitching && it.info.pic.isNotBlank() } == true,
+                    onDownloadAudio = { saveVideoResource(audioOnly = true) },
+                    onSaveCover = { saveVideoResource(audioOnly = false) },
                     chapters = chapters, chaptersSource = chaptersSource, onChapterSeek = ::seekChapter,
                     onPlayPause = { command { native.togglePause() } },
                     onPrevious = { navigateFromThisClick(false) }, onNext = { navigateFromThisClick(true) },
@@ -746,6 +778,10 @@ internal class DesktopWindowsVideoActions(
                                 if (com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(success.info).size > 1) {
                                     TextButton(onClick = { openDownloadSelection(success, batch = true) }) { Text("批量缓存") }
                                 }
+                                TextButton(onClick = { saveVideoResource(audioOnly = true) },
+                                    enabled = interactionCurrent() && !success.isQualitySwitching && !success.audioUrl.isNullOrBlank()) { Text("仅下载音频") }
+                                TextButton(onClick = { saveVideoResource(audioOnly = false) },
+                                    enabled = interactionCurrent() && !success.isQualitySwitching && success.info.pic.isNotBlank()) { Text("保存封面") }
                                 TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.SHARE) }, enabled = interactionCurrent()) { Text("分享视频") }
                             }
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {

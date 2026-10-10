@@ -74,6 +74,9 @@ class DesktopWindowsVideoDownloadSelectionTest {
         var beforeReply: () -> Unit = {}
         val requested = mutableListOf<Pair<String, Long>>()
         val capturedReplies = mutableListOf<PlayUrlData?>()
+        val savedCovers = mutableListOf<Pair<String, String>>()
+        var coverAdmissions = 0
+        var beforeCoverPublication: () -> Unit = {}
         val existing = mutableMapOf<Long, DownloadTask>()
         fun publication() = DesktopOriginalVideoAcceptedPublication(
             PlaybackRequest.create("BVfixture", aid = 17, cid = 70),
@@ -137,6 +140,18 @@ class DesktopWindowsVideoDownloadSelectionTest {
             }
             override fun getVideoTask(bvid: String, cid: Long): DownloadTask? = existing[cid]?.takeIf { it.bvid == bvid }
             override suspend fun saveImageToGallery(context: DesktopOriginalPlayerSettingsContext, url: String, title: String) = error("No cover download")
+            override suspend fun saveImageToGallery(context: DesktopOriginalPlayerSettingsContext, url: String, title: String,
+                stillCaptured: () -> Boolean, fileAdmission: ((() -> Unit) -> Boolean)?): Boolean {
+                currentThreadRequest()
+                if (!stillCaptured()) throw CancellationException("Cover click retired")
+                beforeCoverPublication()
+                val admission = assertNotNull(fileAdmission)
+                if (!admission {
+                    if (!stillCaptured()) throw CancellationException("Cover click retired at final publication")
+                    savedCovers += url to title
+                }) throw CancellationException("Cover file admission retired")
+                return true
+            }
         }
         private val api = unused<BilibiliApi>()
         private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(api,
@@ -172,6 +187,10 @@ class DesktopWindowsVideoDownloadSelectionTest {
             session.updateCurrentMedia("BVfixture", 70)
             session.setCurrentLoadRequestToken(12)
         }
+        fun audioClick() = vm.downloadAudio(settings, ::clickCurrent, DownloadOptions(includeDanmaku = false))
+        fun coverClick() = vm.saveCover(settings, ::clickCurrent) { action ->
+            if (!clickCurrent()) false else { action(); coverAdmissions++; true }
+        }
         fun chooser() = assertNotNull(DesktopWindowsVideoDownloadSelection.capture(success(), pageJob, ::clickCurrent,
             vm::downloadWithQuality))
         fun batchChooser(value: VideoPlaybackUiState.Success = batchSuccess()): DesktopWindowsVideoBatchDownloadSelection {
@@ -182,6 +201,69 @@ class DesktopWindowsVideoDownloadSelectionTest {
         override fun close() {
             pageJob.cancel(); scope.cancel(); folder.toFile().deleteRecursively()
             assertTrue(unexpected.isEmpty(), unexpected.joinToString { it.toString() })
+        }
+    }
+
+    @Test fun audioResourceUsesActualOriginalProducerAndImmutableAudioTask() {
+        Harness().use { h ->
+            h.audioClick()
+            val task = h.queued.single()
+            assertEquals("BVfixture", task.bvid); assertEquals(70L, task.cid)
+            assertEquals("https://fixture.invalid/audio", task.audioUrl)
+            assertEquals("", task.videoUrl); assertEquals(0, task.quality)
+            assertTrue(task.isAudioOnly); assertFalse(task.isVerticalVideo)
+            assertFalse(task.options.includeDanmaku)
+            assertTrue(h.requested.isEmpty()); assertTrue(h.constructed.isEmpty())
+        }
+    }
+
+    @Test fun queuedAudioResourceCannotOutlivePageAccountOrExactAcceptedSource() {
+        for (retire in listOf<(Harness) -> Unit>({ it.pageJob.cancel() }, { it.account = 2 }, { it.accepted = it.publication() })) {
+            val dispatcher = PausedDispatcher()
+            Harness(dispatcher).use { h ->
+                h.audioClick(); retire(h); dispatcher.drain()
+                assertTrue(h.queued.isEmpty()); assertTrue(h.requested.isEmpty())
+            }
+        }
+    }
+
+    @Test fun audioResourceChecksPageAgainAtExistingQueueAdmission() {
+        Harness().use { h ->
+            h.beforeFinalAdmission = { h.pageJob.cancel() }
+            h.audioClick()
+            assertTrue(h.queued.isEmpty())
+        }
+    }
+
+    @Test fun coverResourceUsesCapturedMetadataAndRootFileAdmission() {
+        Harness().use { h ->
+            h.installSuccess(success().copy(info = success().info.copy(pic = "https://fixture.invalid/cover.jpg", title = "Captured cover")))
+            h.coverClick()
+            assertEquals(listOf("https://fixture.invalid/cover.jpg" to "Captured cover"), h.savedCovers)
+            assertEquals(1, h.coverAdmissions)
+            assertTrue(h.queued.isEmpty()); assertTrue(h.requested.isEmpty())
+        }
+    }
+
+    @Test fun queuedCoverResourceCannotOutlivePageAccountOrExactAcceptedSource() {
+        for (retire in listOf<(Harness) -> Unit>({ it.pageJob.cancel() }, { it.account = 2 }, { it.accepted = it.publication() })) {
+            val dispatcher = PausedDispatcher()
+            Harness(dispatcher).use { h ->
+                h.installSuccess(success().copy(info = success().info.copy(pic = "https://fixture.invalid/cover.jpg")))
+                h.coverClick(); retire(h); dispatcher.drain()
+                assertTrue(h.savedCovers.isEmpty()); assertEquals(0, h.coverAdmissions)
+            }
+        }
+    }
+
+    @Test fun coverResourceRechecksCapturedOwnershipAtFinalFileAdmission() {
+        for (retire in listOf<(Harness) -> Unit>({ it.pageJob.cancel() }, { it.account = 2 }, { it.accepted = it.publication() })) {
+            Harness().use { h ->
+                h.installSuccess(success().copy(info = success().info.copy(pic = "https://fixture.invalid/cover.jpg")))
+                h.beforeCoverPublication = { retire(h) }
+                h.coverClick()
+                assertTrue(h.savedCovers.isEmpty()); assertEquals(0, h.coverAdmissions)
+            }
         }
     }
 

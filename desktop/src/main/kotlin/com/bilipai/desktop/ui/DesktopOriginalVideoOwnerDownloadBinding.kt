@@ -83,14 +83,24 @@ internal class DesktopOriginalVideoOwnerDownloadBinding(
     }
 
     override suspend fun saveImageToGallery(context: DesktopOriginalPlayerSettingsContext,
-        url: String, title: String): Boolean {
+        url: String, title: String): Boolean = saveImageToGallery(context, url, title, ::owns, null)
+
+    override suspend fun saveImageToGallery(context: DesktopOriginalPlayerSettingsContext,
+        url: String, title: String, stillCaptured: () -> Boolean,
+        fileAdmission: ((() -> Unit) -> Boolean)?): Boolean {
         currentCoroutineContext().ensureActive(); assertOwned()
         require(context === settings) { "Original cover save requires the same global settings entry view" }
         settings.requireCurrent()
         val caller = currentCoroutineContext()[Job] ?: error("Cover save caller Job is required")
-        val current = { caller.isActive && owns() }
+        val current = { caller.isActive && owns() && stillCaptured() }
         return try {
-            val saved = assets.saveVideoCoverToGallery(url, title, current, entryCommit)
+            val admission = fileAdmission ?: entryCommit
+            val saved = assets.saveVideoCoverToGallery(url, title, current) { action ->
+                admission {
+                    if (!current()) throw CancellationException("Original cover click retired before file publication")
+                    action()
+                }
+            }
             currentCoroutineContext().ensureActive(); assertOwned()
             saved
         } catch (cancelled: CancellationException) { throw cancelled }

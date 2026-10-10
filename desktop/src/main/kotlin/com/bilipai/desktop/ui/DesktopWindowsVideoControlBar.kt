@@ -56,6 +56,7 @@ internal fun DesktopWindowsVideoControlBar(
     canOpenCollection: Boolean, canOpenPlaybackQueue: Boolean,
     onOpenCollection: () -> Unit, onOpenPlaybackQueue: () -> Unit,
     canOpenInteraction: Boolean, onSendDanmaku: () -> Unit, onShareVideo: () -> Unit,
+    canDownloadAudio: Boolean, canSaveCover: Boolean, onDownloadAudio: () -> Unit, onSaveCover: () -> Unit,
     chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
     onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
     onPlayPause: () -> Unit, onPrevious: () -> Unit, onNext: () -> Unit,
@@ -215,6 +216,10 @@ internal fun DesktopWindowsVideoControlBar(
                                 onClick = { more = false; onSendDanmaku() })
                             DropdownMenuItem(text = { Text("分享视频") }, enabled = enabled && canOpenInteraction,
                                 onClick = { more = false; onShareVideo() })
+                            DropdownMenuItem(text = { Text("仅下载音频") }, enabled = enabled && canDownloadAudio,
+                                onClick = { more = false; onDownloadAudio() })
+                            DropdownMenuItem(text = { Text("保存封面") }, enabled = enabled && canSaveCover,
+                                onClick = { more = false; onSaveCover() })
                             DropdownMenuItem(text = { Text("简介、分P与播放设置") }, onClick = { onOpenIntroduction(); more = false })
                         }
                         if (!showEnhancementStatus && chapters != null && chaptersSource != null)

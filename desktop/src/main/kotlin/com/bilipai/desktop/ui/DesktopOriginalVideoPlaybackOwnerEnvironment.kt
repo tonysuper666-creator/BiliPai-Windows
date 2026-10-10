@@ -106,6 +106,9 @@ internal interface DesktopOriginalVideoOwnerDownload {
     fun captureTask(task:DownloadTask,explicitReply:PlayUrlData?):DownloadTask
     fun getVideoTask(bvid:String,cid:Long):DownloadTask?
     suspend fun saveImageToGallery(context:DesktopOriginalPlayerSettingsContext,url:String,title:String):Boolean
+    /** Original cover click; Root file admission verifies source before disk IO. */
+    suspend fun saveImageToGallery(context:DesktopOriginalPlayerSettingsContext,url:String,title:String,
+        stillCaptured:()->Boolean,fileAdmission:((()->Unit)->Boolean)?):Boolean
 }
 
 internal interface DesktopOriginalVideoOwnerNetwork {
