@@ -469,6 +469,20 @@ internal class DesktopWindowsVideoActions(
         latestBootstrapError == null && current() && feedbackPresentationCurrent() && latestOriginal ===
             assembly.playback.captureDesktopPlaybackState()
     }
+    // Reuse the same real failure/login/retry content in the finite details pane.
+    val failureContent: @Composable () -> Unit = {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(bootstrapError ?: playback.error.orEmpty(), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error)
+            TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") }
+            failureLogin?.let { intent ->
+                TextButton(onClick = {
+                    (rootEnvironment.commands as? DesktopOriginalRootRouteAssembly)
+                        ?.loginFromReadFailure(intent)
+                }) { Text("登录并返回") }
+            }
+        }
+    }
     val speedOptions by remember(platforms.holder.settingsContext) {
         DesktopOriginalVideoControlSettings.getPlaybackSpeedOptions(platforms.holder.settingsContext)
     }.collectAsState(emptyList())
@@ -749,17 +763,7 @@ internal class DesktopWindowsVideoActions(
                 }
                 if (playback.recovering && playback.recoveryMessage != null)
                     Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)
-                if (bootstrapError != null || playback.error != null) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Text(bootstrapError ?: playback.error.orEmpty(), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error)
-                    TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") }
-                    failureLogin?.let { intent ->
-                        TextButton(onClick = {
-                            (rootEnvironment.commands as? DesktopOriginalRootRouteAssembly)
-                                ?.loginFromReadFailure(intent)
-                        }) { Text("登录并返回") }
-                    }
-                }
+                if (bootstrapError != null || playback.error != null) failureContent()
                 if (chromeVisible) DesktopWindowsVideoControlBar(
                     state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
                     enabled = current() && success != null, fullscreen = fullscreen, detailsOpen = detailsOpen,
@@ -823,6 +827,8 @@ internal class DesktopWindowsVideoActions(
                 modifier = Modifier.width(detailsWidth).fillMaxHeight(), selectedTab = detailsTab,
                 onTabChange = { detailsTab = it }, onClose = { if (current()) detailsOpen = false },
                 current = ::current,
+                loading = original is VideoPlaybackUiState.Loading && bootstrapError == null && playback.error == null,
+                failureContent = if (success == null && (bootstrapError != null || playback.error != null)) failureContent else null,
                 related = {
                     collectionQueueSource?.let { source ->
                         if (success != null) DesktopWindowsVideoRelatedSection(assembly, success, source,

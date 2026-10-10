@@ -1,5 +1,8 @@
 # Pinned native dependency licenses are checked by SHA-256 as original bytes.
 # v0.2.5 catalog and raw upstream text pins retain their exact checkout bytes.
+
+desktop/third-party/video-detail-skeleton-v034/** -text
+desktop/third-party/dynamic-reaction-v034/** -text
 desktop/tools/v025-canonical-sources.json -text
 desktop/third-party/graaljs/artifacts.lock.json -text
 desktop/third-party/graaljs/runtime.lock.json -text

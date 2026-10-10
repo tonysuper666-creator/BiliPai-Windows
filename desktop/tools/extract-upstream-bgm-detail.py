@@ -14,6 +14,31 @@ SOURCES += [BASE+n+".kt" for n in ["feature/video/ui/section/VideoInfoSection","
 SOURCES += [BASE+n+".kt" for n in ["feature/comment/CommentDetailScreen","feature/comment/CommentDetailViewModel","feature/video/ui/components/CommentFraudDialog","feature/message/feed/MessageFeedCommon","data/repository/CommentRepository"]]
 SOURCES += [BASE+n+".kt" for n in ["feature/video/ui/components/CommentMentionInsertPolicy","feature/video/viewmodel/CommentPaginationPolicy","core/ui/LottieComponents"]]
 SOURCES += ["design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt"]
+SKELETON_SOURCE_INPUT = "desktop/third-party/video-detail-skeleton-v034/SkeletonComponents.kt"
+SKELETON_SOURCE_ORIGINAL = BASE + "feature/video/ui/components/SkeletonComponents.kt"
+SKELETON_SOURCE_COMMIT = "b2091b1de636e499df80af7e700796b4f52b7f92"
+SKELETON_SOURCE_SHA256 = "b634aede022821f1aa8e08eaa02fa0983240968b6de816ec504d49c8027a0849"
+SKELETON_SOURCE_GIT_BLOB = "54e29ba7c3eac09c3d6d9de64f14c1e31dd87c73"
+SKELETON_SOURCE_BYTES = 13566
+
+def advance_video_detail_skeleton_source(repo, original, identities):
+    source = _desktop_canonical_source(repo, SKELETON_SOURCE_INPUT)
+    raw = source.read_bytes()
+    actual_blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+    if len(raw) != SKELETON_SOURCE_BYTES or hashlib.sha256(raw).hexdigest() != SKELETON_SOURCE_SHA256 or actual_blob != SKELETON_SOURCE_GIT_BLOB:
+        raise ValueError("Complete fixed beta2 video detail skeleton source drift")
+    advanced = dict(original)
+    advanced[SKELETON_SOURCE_ORIGINAL] = raw.decode("utf8").replace("\r\n", "\n")
+    selected = [row for row in identities if row["requestedPath"] != SKELETON_SOURCE_ORIGINAL]
+    if len(selected) != len(identities) - 1:
+        raise ValueError("Original skeleton has no unique producer ownership")
+    selected.append(dict(path=SKELETON_SOURCE_INPUT, requestedPath=SKELETON_SOURCE_ORIGINAL,
+        pinnedCommit=SKELETON_SOURCE_COMMIT, pinnedTag="v0.3.4-beta.2",
+        pinnedGitBlob=SKELETON_SOURCE_GIT_BLOB, currentGitBlob=actual_blob,
+        sha256LfUtf8=hashlib.sha256(advanced[SKELETON_SOURCE_ORIGINAL].encode()).hexdigest(),
+        matchesPinnedCommit=True))
+    return advanced, selected
+
 def replace_once(text,old,new):
     assert text.count(old)==1,(old,text.count(old));return text.replace(old,new)
 
@@ -141,6 +166,7 @@ def comment_detail_root_entry_delta(relative,body):
 def generate(repo,output):
     shared=module(Path(__file__).with_name('extract-upstream-dynamic-reply-protocol.py'),'bgm_identity')
     original,identities=shared.load_pinned_sources(repo,SOURCES)
+    original,identities=advance_video_detail_skeleton_source(repo,original,identities)
     def emit(relative,body):
         body=comment_detail_root_entry_delta(relative,body)
         target=output/relative;v=str(target.absolute());safe=Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
@@ -549,7 +575,7 @@ import com.bilipai.desktop.audio.commitBgmDiscoveryState
     assert body.count(old)==1;body=body.replace(old,new)
     body=replace_once(body,'import androidx.compose.runtime.Composable\n','import androidx.compose.runtime.Composable\nimport androidx.compose.runtime.collectAsState\n')
     emit('com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt',body)
-    changes.append(dict(source=path,strategy='Full original skeleton renderer/body, animation and color policies; sole Home card settings owner replaces Android SettingsManager read.',originalSha256=hashlib.sha256(original[path].encode()).hexdigest(),generatedSha256=hashlib.sha256(body.encode()).hexdigest()))
+    changes.append(dict(source=path,sourceInput=SKELETON_SOURCE_INPUT,pinnedCommit=SKELETON_SOURCE_COMMIT,pinnedGitBlob=SKELETON_SOURCE_GIT_BLOB,strategy='Complete beta2 original skeleton including both bounded large-screen panes, animation and color policies; sole Home card settings owner replaces Android SettingsManager read.',originalSha256=hashlib.sha256(original[path].encode()).hexdigest(),generatedSha256=hashlib.sha256(body.encode()).hexdigest()))
     path=BASE+'feature/video/ui/components/RelatedVideoItem.kt';raw=original[path]
     constant=re.search(r'(?m)^internal const val RELATED_VIDEO_CARD_COVER_ASPECT_RATIO = .+$',raw);assert constant
     body='package com.android.purebilibili.feature.video.ui.components\n\n'+constant.group()+'\n'

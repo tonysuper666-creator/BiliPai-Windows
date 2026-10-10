@@ -1177,6 +1177,7 @@ val extractBgmDetail by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/bgm-detail").get().asFile.absolutePath)
     inputs.file("tools/v033_comment_refresh.py")
     inputs.dir("upstream-slices/v033-comment-refresh")
+    inputs.file("third-party/video-detail-skeleton-v034/SkeletonComponents.kt")
     inputs.files("tools/extract-upstream-bgm-detail.py", "tools/sync-upstream.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py", "tools/extract-upstream-plugins.py")
     inputs.file(sourceManifest)

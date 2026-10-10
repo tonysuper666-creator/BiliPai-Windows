@@ -6,6 +6,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import com.android.purebilibili.feature.video.ui.components.VideoDetailInfoPaneSkeleton
+import com.android.purebilibili.feature.video.ui.components.VideoDetailSecondaryPaneSkeleton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
@@ -23,6 +25,7 @@ internal fun DesktopWindowsVideoDetailsPanel(
     onTabChange: (DesktopWindowsVideoDetailsTab) -> Unit, onClose: () -> Unit,
     current: () -> Boolean, related: @Composable () -> Unit,
     introduction: @Composable () -> Unit, comments: @Composable () -> Unit,
+    loading: Boolean = false, failureContent: (@Composable () -> Unit)? = null,
 ) {
     DesktopWindowsPlayerSurface(modifier) {
         Column(Modifier.fillMaxSize().semantics { contentDescription = "视频详情面板" }) {
@@ -32,6 +35,16 @@ internal fun DesktopWindowsVideoDetailsPanel(
                     Icon(Icons.Default.Close, contentDescription = "关闭详情")
                 }
             }
+            if (loading && failureContent == null) {
+                Box(Modifier.fillMaxWidth().weight(1f)) {
+                    if (selectedTab == DesktopWindowsVideoDetailsTab.INTRODUCTION)
+                        VideoDetailInfoPaneSkeleton(Modifier.fillMaxSize())
+                    else VideoDetailSecondaryPaneSkeleton(
+                        showComments = selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            } else {
             TabRow(selectedTab.ordinal) {
                 DesktopWindowsVideoDetailsTab.entries.forEach { tab ->
                     Tab(selected = selectedTab == tab, onClick = { if (current()) onTabChange(tab) },
@@ -39,7 +52,9 @@ internal fun DesktopWindowsVideoDetailsPanel(
                 }
             }
             // Each original tab receives a finite sibling viewport and owns its own list.
-            when (selectedTab) {
+            if (failureContent != null)
+                Box(Modifier.fillMaxWidth().weight(1f).padding(12.dp)) { failureContent() }
+            else when (selectedTab) {
                 DesktopWindowsVideoDetailsTab.COMMENTS ->
                     Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp)) { comments() }
                 DesktopWindowsVideoDetailsTab.RELATED ->
@@ -49,6 +64,7 @@ internal fun DesktopWindowsVideoDetailsPanel(
                         verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         item { introduction() }
                     }
+            }
             }
         }
     }
