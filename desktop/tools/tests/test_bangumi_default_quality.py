@@ -32,6 +32,9 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         baseline = script[:start] + script[end:]
         baseline = baseline.replace(" body=bangumi_default_quality_delta(recipe['output'],body)\n", "")
         baseline = baseline.replace(" body=bangumi_initial_detail_login_delta(recipe['output'],body)\n", "")
+        baseline = baseline.replace(" body=bangumi_network_recovery_delta(recipe['output'],body)\n", "")
+        baseline = baseline.replace(" body=bangumi_v034_quality_delta(recipe['output'],body)\n", "")
+        baseline = baseline.replace(" body=bangumi_v034_authorization_delta(recipe['output'],body)\n", "")
         proof_line = next(line for line in baseline.splitlines(keepends=True)
             if line.startswith("(out/'pgc-default-quality-source-inventory.json')"))
         baseline = baseline.replace(proof_line, "")
@@ -54,6 +57,14 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         cls.baseline_producer.write_text(current_pre_quality, encoding="utf8", newline="\n")
         cls.login_edits = ast.literal_eval(next(node.value for node in ast.parse(script).body
             if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_INITIAL_DETAIL_LOGIN_EDITS" for t in node.targets)))
+        cls.network_edits = ast.literal_eval(next(node.value for node in ast.parse(script).body
+            if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_NETWORK_RECOVERY_EDITS" for t in node.targets)))
+        beta2_node = next(node.value for node in ast.parse(script).body
+            if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_V034_QUALITY_EDITS" for t in node.targets))
+        cls.beta2_edits = json.loads(ast.literal_eval(beta2_node.args[0]))
+        auth_node = next(node.value for node in ast.parse(script).body
+            if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_V034_AUTHORIZATION_EDITS" for t in node.targets))
+        cls.auth_edits = json.loads(ast.literal_eval(auth_node.args[0]))
         if BEFORE_OVERRIDE:
             if Path(BEFORE_OVERRIDE).read_text(encoding="utf8") != baseline:
                 raise AssertionError("Explicit baseline is not the fixed reconstructed historical producer")
@@ -79,6 +90,25 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         self.assertEqual(VM, proof[0]["path"])
         self.assertTrue(self.proof["originalPinsUnchanged"])
         self.assertTrue(self.proof["initialOnly"])
+        beta2_proof = self.proof["beta2QualityBodies"]
+        self.assertEqual(1, len(beta2_proof))
+        self.assertTrue(beta2_proof[0]["completeInverse"])
+        auth_proof = self.proof["beta2AuthorizationBodies"]
+        self.assertEqual(1, len(auth_proof))
+        self.assertTrue(auth_proof[0]["completeInverse"])
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), auth_proof[0]["afterSha256LF"])
+        for edit in reversed(self.auth_edits):
+            self.assertEqual(1, body.count(edit["after"]))
+            body = body.replace(edit["after"], edit["before"], 1)
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), auth_proof[0]["beforeSha256LF"])
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), beta2_proof[0]["afterSha256LF"])
+        for edit in reversed(self.beta2_edits):
+            self.assertEqual(1, body.count(edit["after"]))
+            body = body.replace(edit["after"], edit["before"], 1)
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), beta2_proof[0]["beforeSha256LF"])
+        for before, after in reversed(self.network_edits):
+            self.assertEqual(1, body.count(after))
+            body = body.replace(after, before, 1)
         for before, after in reversed(self.login_edits):
             self.assertEqual(1, body.count(after))
             body = body.replace(after, before, 1)
@@ -112,16 +142,34 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
             {path.relative_to(self.after) for path in self.after.rglob("*") if path.is_file()})
 
     def test_original_manual_quality_and_drm_fallback_remain_complete(self):
+        updated = self.updated
+        for edit in reversed(self.auth_edits):
+            updated = updated.replace(edit["after"], edit["before"], 1)
+        for edit in reversed(self.beta2_edits):
+            updated = updated.replace(edit["after"], edit["before"], 1)
+        for before, after in reversed(self.network_edits):
+            updated = updated.replace(after, before, 1)
         start = "    fun changeQuality(qualityId: Int) {"
         end = "    fun changeAudioQuality(audioQuality: Int) {"
         self.assertEqual(self.original.split(start, 1)[1].split(end, 1)[0],
-            self.updated.split(start, 1)[1].split(end, 1)[0])
+            updated.split(start, 1)[1].split(end, 1)[0])
         start = "        if (playUrlResult.getOrNull()?.isDrm == true && requestedQn > 80) {"
         end = "        playUrlResult.onSuccess { playData ->"
         self.assertEqual(self.original.split(start, 1)[1].split(end, 1)[0],
-            self.updated.split(start, 1)[1].split(end, 1)[0])
-        self.assertIn("if (autoHighestEnabled) requestedQn else playData.quality", self.updated)
+            updated.split(start, 1)[1].split(end, 1)[0])
+        self.assertIn("val targetQuality = if (requestedQn >= 127)", self.updated)
+        self.assertIn("isHevcSupported = environment.hevcSupported()", self.updated)
+        self.assertIn("storedQuality = storedQuality", self.updated)
+        self.assertEqual("b2091b1de636e499df80af7e700796b4f52b7f92", self.proof["beta2QualitySource"]["upstreamCommit"])
         self.assertIn("quality = selectedVideoQuality ?: playData.quality", self.updated)
+        self.assertEqual({"rawVerified": True, "gitBlobVerified": True,
+            "completeInitialMethodVerified": True, "completeDashSelectorVerified": True},
+            self.proof["beta2QualitySourceProof"])
+        pin = self.proof["beta2QualitySource"]
+        raw = (BASE / pin["originalRawPath"]).read_bytes()
+        self.assertEqual(pin["bytesRaw"], len(raw))
+        self.assertEqual(pin["sha256Raw"], hashlib.sha256(raw).hexdigest())
+        self.assertEqual(pin["gitBlob"], hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest())
 
 if __name__ == "__main__":
     unittest.main()

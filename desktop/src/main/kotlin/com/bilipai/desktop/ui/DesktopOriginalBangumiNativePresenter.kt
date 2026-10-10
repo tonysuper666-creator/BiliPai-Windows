@@ -4,6 +4,9 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.bangumi.BangumiPlayerState
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicBoolean
+import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
+import com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt
+import java.awt.EventQueue
 import kotlin.coroutines.CoroutineContext
 
 /** Required full PGC VM's producer lifetime on the installed original Assembly.
@@ -17,6 +20,9 @@ internal class DesktopOriginalBangumiNativePresenter(
     private val portrait: DesktopOriginalPortraitPlatformBinding,
     private val scope: CoroutineScope,
     private val currentState: () -> BangumiPlayerState.Success?,
+    private val captureEpisodeRequest: suspend (DesktopOriginalVideoOwnerAssembly, (DesktopPlaybackAuthorizationReceipt, PlaybackSessionState) -> Unit) -> DesktopOriginalVideoRepositoryBinding,
+    private val accountEpoch: () -> Long,
+    private val authorizationRevision: () -> Long,
 ) : DesktopOriginalBangumiNativePublication, DesktopOriginalBangumiSharedPlaybackPresenter {
     private val retired = AtomicBoolean(false)
     private val activated = AtomicBoolean(false)
@@ -92,14 +98,84 @@ internal class DesktopOriginalBangumiNativePresenter(
         val context = currentCoroutineContext(); context.ensureActive(); assertCurrent()
         return checkNotNull(context[callerKey]).actualLaunchCaller().also { it.ensureActive() }
     }
-    override suspend fun beginEpisode(detail: BangumiDetail, episode: BangumiEpisode) {
+    override suspend fun beginEpisode(detail: BangumiDetail, episode: BangumiEpisode) =
+        beginEpisode(detail, episode, null, null)
+
+    override suspend fun beginEpisodeWithAuthorizationRecapture(detail: BangumiDetail, episode: BangumiEpisode,
+        isIntentCurrent: () -> Boolean,
+        onRetired: (Job, () -> Boolean, (() -> Unit) -> Boolean) -> Unit) =
+        beginEpisode(detail, episode, isIntentCurrent, onRetired)
+
+    override fun launchAuthorizationRecapture(block: suspend CoroutineScope.() -> Unit): Job =
+        launch(block, start = CoroutineStart.LAZY)
+
+    private suspend fun beginEpisode(detail: BangumiDetail, episode: BangumiEpisode,
+        isIntentCurrent: (() -> Boolean)?,
+        onRetired: ((Job, () -> Boolean, (() -> Unit) -> Boolean) -> Unit)?) {
         currentCoroutineContext().ensureActive(); assertCurrent()
         check(currentCaller.get() === currentCoroutineContext()[Job]) { "PGC load requires its actual Root invocation job" }
-        // From this point the sole VM marker is mandatory, even during the
-        // short first-capture window or a competing ordinary takeover.
+        val launchCaller = captureInitialDetailLaunchCaller()
         activated.set(true)
         episodeRetirementCapture?.invoke(detail, episode)
-        portrait.captureBangumiPageRequest(this, detail, episode)
+        val baselineVersion = java.util.concurrent.atomic.AtomicLong(-1L)
+        val baselineSource = java.util.concurrent.atomic.AtomicReference<com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot?>()
+        val baselinePlaying = java.util.concurrent.atomic.AtomicReference<Boolean?>()
+        val baselineIntents = java.util.concurrent.atomic.AtomicReference<Pair<Long, Long>?>()
+        val capturedBinding = java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoRepositoryBinding?>()
+        fun sourceCurrent(): Boolean {
+            val actual = assembly.native.player.currentSourceSnapshot()
+            val expected = baselineSource.get()
+            return baselineVersion.get() >= 0L && baselineIntents.get()?.let(assembly.native.player::ownsPlaybackIntentSerials) == true &&
+                assembly.native.player.currentSourceVersion == baselineVersion.get() &&
+                (if (expected == null) actual == null else actual != null &&
+                    actual.sourceVersion == expected.sourceVersion && actual.source == expected.source) &&
+                !assembly.native.player.state.value.paused == baselinePlaying.get()
+        }
+        val request = if (onRetired == null || isIntentCurrent == null)
+            portrait.captureBangumiPageRequest(this, detail, episode)
+        else portrait.captureBangumiPageRequest(this, detail, episode) { value ->
+            captureEpisodeRequest(value) { receipt, capturedState ->
+                val metadataRevision = capturedBinding.get()?.authorizationRetirementRevision()
+                    ?: return@captureEpisodeRequest
+                // This notice is emitted only by the actual metadata mutation
+                // of this immutable Binding. Old Job completion/receipt.current
+                // is deliberately not the authority for its one-time consumption.
+                lateinit var retirement: DesktopOriginalVideoAuthorizationRetirement
+                fun current() = owns() && accountEpoch() == receipt.accountEpoch &&
+                    authorizationRevision() == metadataRevision && isIntentCurrent() && sourceCurrent()
+                fun admit(action: () -> Unit): Boolean {
+                    var applied = false
+                    return assembly.environment.commit {
+                        val intents = baselineIntents.get()
+                        if (intents != null) assembly.native.player.admitPlaybackIntentSerials(intents) {
+                            if (retirement.isCurrent()) {
+                                val apply = { if (retirement.isCurrent()) { action(); applied = true } }
+                                val snapshot = baselineSource.get()
+                                if (snapshot == null) apply()
+                                else assembly.native.player.admitSourceSnapshot(snapshot, apply)
+                            }
+                        }
+                    } && applied
+                }
+                retirement = DesktopOriginalVideoAuthorizationRetirement(this, receipt, capturedState,
+                    ::current, assembly::captureLoadState,
+                    { onRetired(launchCaller, retirement::isCurrent, ::admit) })
+                if (retirement.isCurrent()) EventQueue.invokeLater { retirement.recaptureIfCurrent() }
+            }.also { capturedBinding.set(it) }
+        }
+        // Freeze the original source/pause observation before nav/SPI may retire
+        // the receipt; Portrait removes its transient capture when this Job ends.
+        var frozen = false
+        if (!request.admitCurrentMutation {
+                val intents = assembly.native.player.capturePlaybackIntentSerials()
+                assembly.native.player.admitPlaybackIntentSerials(intents) {
+                    baselineIntents.set(intents)
+                    baselineVersion.set(assembly.native.player.currentSourceVersion)
+                    baselineSource.set(assembly.native.player.currentSourceSnapshot())
+                    baselinePlaying.set(!assembly.native.player.state.value.paused)
+                    frozen = true
+                }
+            } || !frozen) throw CancellationException("PGC authorization baseline retired")
         currentCoroutineContext().ensureActive(); assertCurrent()
     }
     /** Only a fresh actual quality Job borrows the current accepted source.
@@ -129,6 +205,10 @@ internal class DesktopOriginalBangumiNativePresenter(
                 } && applied
             }, action)
         } finally { recovery.publicationState = previous }
+    }
+    fun capturedPlaybackBindingOrNull(): DesktopOriginalVideoRepositoryBinding? {
+        assertCurrent()
+        return currentCaller.get()?.let { portrait.capturedBangumiRequestOrNull(this, it) }
     }
     fun capturedPlaybackBinding(): DesktopOriginalVideoRepositoryBinding {
         assertCurrent()

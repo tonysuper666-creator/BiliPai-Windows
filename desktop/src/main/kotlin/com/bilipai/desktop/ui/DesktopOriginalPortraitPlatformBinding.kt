@@ -151,10 +151,12 @@ internal class DesktopOriginalPortraitPlatformBinding(
         } || !applied) throw CancellationException("Portrait stop entry retired")
     }
 
-    override suspend fun capturePlaybackRequest(): DesktopOriginalVideoRepositoryBinding {
+    override suspend fun capturePlaybackRequest(): DesktopOriginalVideoRepositoryBinding = capturePlaybackRequest(captureRequest)
+
+    private suspend fun capturePlaybackRequest(capture: suspend (DesktopOriginalVideoOwnerAssembly) -> DesktopOriginalVideoRepositoryBinding): DesktopOriginalVideoRepositoryBinding {
         currentCoroutineContext().ensureActive(); assertOwned()
         val job = checkNotNull(currentCoroutineContext()[Job])
-        val request = captureRequest(assembly)
+        val request = capture(assembly)
         currentCoroutineContext().ensureActive(); assertOwned(); request.assertCurrent()
         var baseline: Long? = null
         if (!request.admitCurrentMutation { assertOwned(); baseline = assembly.native.player.currentSourceVersion })
@@ -323,12 +325,13 @@ internal class DesktopOriginalPortraitPlatformBinding(
     /** PGC starts the sole original Store, then captures the same request/byte
      * authority as Portrait. The capture map below remains the single map. */
     internal suspend fun captureBangumiPageRequest(presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
-        detail: BangumiDetail, episode: BangumiEpisode): DesktopOriginalVideoRepositoryBinding {
+        detail: BangumiDetail, episode: BangumiEpisode,
+        captureEpisodeRequest: suspend (DesktopOriginalVideoOwnerAssembly) -> DesktopOriginalVideoRepositoryBinding = captureRequest): DesktopOriginalVideoRepositoryBinding {
         currentCoroutineContext().ensureActive(); assertOwned()
         require(detail.seasonId > 0L && episode.id > 0L && episode.cid >= 0L && episode.aid >= 0L)
         val token = assembly.playback.beginDesktopPortraitLoad(PlaybackRequest.create(episode.bvid, episode.aid, episode.cid), presenter)
         clearCapturedPagePlayback(token, checkNotNull(currentCoroutineContext()[Job]))
-        val request = capturePlaybackRequest()
+        val request = capturePlaybackRequest(captureEpisodeRequest)
         val capture = captured(request)
         if (capture.requestToken != token || !assembly.playback.isDesktopBangumiPresenterCurrent(presenter))
             throw CancellationException("PGC episode replaced during request capture")
@@ -405,6 +408,8 @@ internal class DesktopOriginalPortraitPlatformBinding(
             }
         }
     }
+    internal fun capturedBangumiRequestOrNull(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job): DesktopOriginalVideoRepositoryBinding? =
+        findBangumiCapture(presenter, caller)?.first
     internal fun capturedBangumiRequest(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job): DesktopOriginalVideoRepositoryBinding =
         findBangumiCapture(presenter, caller)?.first ?: throw CancellationException("PGC load capture missing/finished")
     internal fun assertBangumiCallerCurrent(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job) {

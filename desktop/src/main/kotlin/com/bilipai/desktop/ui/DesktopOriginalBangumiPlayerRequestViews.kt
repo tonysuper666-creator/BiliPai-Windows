@@ -41,6 +41,10 @@ internal class DesktopOriginalBangumiPlayerRequestsView(
     }
     override suspend fun getBangumiPlayUrl(epId: Long, qn: Int, cid: Long, bvid: String?, seasonId: Long?, aid: Long, isCourse: Boolean) = owned {
         val binding = capturedPlaybackBinding().also { it.assertCurrent() }
+        // The same original visitor actor may retire THIS immutable receipt.
+        // Its post-begin PGC notification starts a fresh request, never retags it.
+        binding.environment.ensureBuvid()
+        currentCoroutineContext().ensureActive(); binding.assertCurrent()
         binding.bangumiPlayRequests().getBangumiPlayUrl(epId, qn, cid, bvid, seasonId, aid, isCourse)
             .also { binding.assertCurrent() }
     }
@@ -60,6 +64,8 @@ internal class DesktopOriginalBangumiPlayerAccountView(
     private val privacy: DesktopSearchPreferences,
     private val assertPresenterCurrent: () -> Unit,
     private val assertPgcSubject: (String, Long, Long, Long) -> Unit,
+    private val capturedPlaybackBinding: () -> DesktopOriginalVideoRepositoryBinding?,
+    private val requestRepository: (DesktopOriginalVideoRepositoryBinding) -> DesktopOriginalVideoOwnerRequestRepository,
 ) : DesktopOriginalBangumiPlayerAccount {
     private fun binding(): DesktopOriginalVideoRepositoryBinding {
         assertPresenterCurrent(); owner.environment.assertCurrent()
@@ -67,10 +73,23 @@ internal class DesktopOriginalBangumiPlayerAccountView(
             ?.binding?.also { it.assertCurrent() }
             ?: error("PGC requires the existing original invocation's captured Binding")
     }
-    override fun isPlaybackVip() = owner.invocations.repository.isPlaybackVip().also { assertPresenterCurrent() }
-    override fun isPlaybackLoggedIn() = owner.invocations.repository.isPlaybackLoggedIn().also { assertPresenterCurrent() }
-    override fun hasPlaybackSessionCookie() = binding().environment.hasPlaybackSessionCookie()
-    override fun playbackAccessToken() = binding().environment.playbackAccessToken()
+    /** Media/default quality reads borrow the post-begin request. Heartbeats
+     * below still use their own ordinary invocation and exact PGC subject. */
+    private fun playbackBinding(): DesktopOriginalVideoRepositoryBinding =
+        (capturedPlaybackBinding() ?: binding()).also { it.assertCurrent(); assertPresenterCurrent() }
+    override fun isPlaybackVip() = requestRepository(playbackBinding()).isPlaybackVip().also { assertPresenterCurrent() }
+    override fun isPlaybackLoggedIn() = requestRepository(playbackBinding()).isPlaybackLoggedIn().also { assertPresenterCurrent() }
+    override suspend fun refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn: Boolean, cachedIsVip: Boolean,
+        storedQuality: Int, autoHighestEnabled: Boolean): Boolean {
+        currentCoroutineContext().ensureActive()
+        val captured = playbackBinding()
+        val vip = requestRepository(captured).refreshVipStatusForPreferredQualityIfNeeded(
+            isLoggedIn, cachedIsVip, storedQuality, autoHighestEnabled)
+        currentCoroutineContext().ensureActive(); captured.assertCurrent(); assertPresenterCurrent()
+        return vip
+    }
+    override fun hasPlaybackSessionCookie() = playbackBinding().environment.hasPlaybackSessionCookie()
+    override fun playbackAccessToken() = playbackBinding().environment.playbackAccessToken()
     override fun hasPrimarySessionCookie() = owner.environment.account.hasSession.also { assertPresenterCurrent() }
     override suspend fun reportPlayHeartbeat(bvid: String, cid: Long, playedTime: Long, aid: Long,
         epid: Long, sid: Long, videoType: Int, subType: Int?): Boolean {

@@ -47,10 +47,10 @@ class DesktopBangumiDefaultQualityTest {
         }
     }
 
-    @Test fun explicitOffKeepsOriginalVipSdrAndHdrInitialPolicies(): Unit = runBlocking {
-        for ((hdr, expected) in listOf(false to 112, true to 125)) {
+    @Test fun explicitOffUsesStoredNetworkDefaultInsteadOfHdrOrVipHints(): Unit = runBlocking {
+        for ((hdr, expected) in listOf(false to 80, true to 80)) {
             fixture(autoHighest = false, hdr = hdr) { f ->
-                f.reply = { Result.success(response(expected, listOf(video(112), video(120), video(125)))) }
+                f.reply = { Result.success(response(expected, listOf(video(80), video(112), video(120), video(125)))) }
                 f.vm.loadBangumiPlay(19, 41)
                 f.awaitPlans(1)
                 assertEquals(listOf(expected), f.requests.toList())
@@ -186,6 +186,8 @@ class DesktopBangumiDefaultQualityTest {
             }, object : DesktopOriginalBangumiPlayerAccount {
                 override fun isPlaybackVip() = vip
                 override fun isPlaybackLoggedIn() = loggedIn
+                override suspend fun refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn: Boolean,
+                    cachedIsVip: Boolean, storedQuality: Int, autoHighestEnabled: Boolean) = cachedIsVip
                 override fun hasPlaybackSessionCookie() = loggedIn
                 override fun playbackAccessToken(): String? = null
                 override fun hasPrimarySessionCookie() = false
@@ -234,7 +236,11 @@ class DesktopBangumiDefaultQualityTest {
             { _, _, _ -> error("No CDN plugin") }, { _, _, _ -> check(active.get()) },
             { _: DownloadTask -> error("No download action") }, { check(it === section) },
             { block -> scope.launch(block = block).also { launchedRequests += it } }, { action -> if (active.get()) { action(); true } else false },
-            active::get, { false })
+            active::get, { false }, object : DesktopOriginalVideoOwnerNetwork {
+                override fun cdnNetwork() = error("No CDN observation")
+                override fun isMobileData() = false
+                override fun isWifi() = true
+            }, { false })
         val vm: BangumiPlayerViewModel = BangumiPlayerViewModel(environment)
         init {
             store.update("quality_settings", mapOf("auto_highest_quality" to JsonPrimitive(autoHighest)))

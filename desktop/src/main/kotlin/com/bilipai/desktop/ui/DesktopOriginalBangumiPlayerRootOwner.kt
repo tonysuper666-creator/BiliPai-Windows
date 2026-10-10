@@ -69,7 +69,9 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
         private val lastOwnedState = AtomicReference<Pair<BangumiPlayerState.Success, DesktopOriginalVideoAcceptedPublication>?>()
         private val native = DesktopOriginalBangumiNativePresenter(owner,
             { shell.slot.currentAssembly().takeIf { lifetimeOwns() } }, portrait, scope,
-            { stateOwner.get()?.uiState?.value as? BangumiPlayerState.Success })
+            { stateOwner.get()?.uiState?.value as? BangumiPlayerState.Success },
+            { value, retired -> factory.captureRequest(value, retired) }, { root.repository.sessionEpoch },
+            { root.repository.playbackAuthorizationRevision.value })
         override val player get() = owner.section
         override val section get() = this@DesktopOriginalBangumiPlayerRootOwner.section
         override val comments get() = owner.domains.comments
@@ -228,7 +230,8 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 }
             }
             val account = DesktopOriginalBangumiPlayerAccountView(owner, root.repository,
-                resources.community.searchPreferences, native::assertCurrent, ::assertSubject)
+                resources.community.searchPreferences, native::assertCurrent, ::assertSubject,
+                native::capturedPlaybackBindingOrNull, { binding -> factory.requestRepository(owner, binding) })
             val base = object : DesktopOriginalBangumiBaseRequests {
                 override suspend fun getSponsorSegments(bvid: String): List<SponsorSegment> {
                     currentCoroutineContext().ensureActive(); assertOwned()
@@ -261,7 +264,8 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 { root.runtime.plugins.value.filter { it.enabled }.map { it.plugin }.filterIsInstance<PlaybackCdnPlugin>().firstOrNull() },
                 owner.environment.plugins::rewritePlaybackCandidates,
                 { items, index, source -> assertOwned(); shell.playlist.setExternalPlaylist(items, index, source) },
-                ::enqueueCurrentTask, ports.applyPreferredVolume, { block -> native.launch(block) }, native::commit, ::owns, native::ownsPlaybackSource)
+                ::enqueueCurrentTask, ports.applyPreferredVolume, { block -> native.launch(block) }, native::commit, ::owns, native::ownsPlaybackSource,
+                owner.environment.network, ports.capabilities::isDolbyVisionSupported)
             val vm = BangumiPlayerViewModel(environment)
             stateOwner.set(vm)
             native.installRetirementCapture(::captureFinalHeartbeat) { _, nextEpisode ->

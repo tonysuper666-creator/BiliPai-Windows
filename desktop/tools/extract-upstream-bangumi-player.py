@@ -81,6 +81,70 @@ def bangumi_network_recovery_delta(path, body):
  assert inverse==original, 'complete PGC network recovery inverse'
  return body
 
+# Full beta2 default-quality method and DASH selector; only required same-Root
+# settings, account and native capability views replace Android platform access.
+PGC_V034_QUALITY_SOURCE = json.loads("{\"upstreamCommit\":\"b2091b1de636e499df80af7e700796b4f52b7f92\",\"originalPath\":\"app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt\",\"gitBlob\":\"7b2e37cd94e97f5a4a7d54e5935c86ca738101eb\",\"bytesLF\":61772,\"sha256LF\":\"581a8c59113c9481e630efc63f2ea26cfe2fdda1e33af5aedd52643aa57cf933\",\"originalInitialMethodSha256LF\":\"f78161d828c9f031687743ec9ec154342dcc7432ae74f36bbaf20964e9c69420\",\"originalDashSelectionBlockSha256LF\":\"dda8ef0c0e9c490fa61d7e6dbbe52b6c0cc44dd57559d0da98194d4a7ed03fc5\",\"originalRawPath\":\"desktop/upstream-slices/v034-bangumi-quality/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt\",\"bytesRaw\":61772,\"sha256Raw\":\"581a8c59113c9481e630efc63f2ea26cfe2fdda1e33af5aedd52643aa57cf933\"}")
+PGC_V034_QUALITY_EDITS = json.loads("[{\"before\":\"     * 番剧首次加载的请求画质：会员且设备支持 HDR/HEVC 时直接上探 HDR 档，\\n     * 与普通视频的自动最高画质行为对齐；无权限时服务端会自然降档返回。\\n\",\"after\":\"     * 与普通视频共用网络默认画质、自动最高画质及账号权限策略。\\n\"},{\"before\":\"    private fun resolveBangumiInitialQuality(autoHighestEnabled: Boolean): Int {\\n        val isVip = VideoRepository.isPlaybackVip()\\n        val isLoggedIn = VideoRepository.isPlaybackLoggedIn()\\n        if (autoHighestEnabled) return resolvePlaybackDefaultQualityId(\\n            storedQuality = 80, autoHighestEnabled = true, isLoggedIn = isLoggedIn, isVip = isVip\\n        )\\n        return when {\\n            isVip && environment.hdrSupported() && environment.hevcSupported() -> 125\\n            isVip -> 112\\n            isLoggedIn -> 80\\n            else -> 64\\n        }\\n    }\\n\",\"after\":\"    private suspend fun resolveBangumiInitialQuality(autoHighestEnabled: Boolean): Int {\\n        val isLoggedIn = VideoRepository.isPlaybackLoggedIn()\\n        val storedQuality = environment.defaultQualityId()\\n        val isVip = VideoRepository\\n            .refreshVipStatusForPreferredQualityIfNeeded(\\n                isLoggedIn = isLoggedIn,\\n                cachedIsVip = VideoRepository.isPlaybackVip(),\\n                storedQuality = storedQuality,\\n                autoHighestEnabled = autoHighestEnabled\\n            )\\n        return resolvePlaybackDefaultQualityId(\\n            storedQuality = storedQuality,\\n            autoHighestEnabled = autoHighestEnabled,\\n            isLoggedIn = isLoggedIn,\\n            isVip = isVip\\n        )\\n    }\\n\"},{\"before\":\"                // Auto-highest changes only the initial default. The original PGC\\n                // HDR request requires both HDR and HEVC; no Dolby Vision capability\\n                // is supplied by this presenter, so it must not infer DV support.\\n                val initialSelectionDash = if (autoHighestEnabled && desktopRecoveryState == null) dash.copy(video = dash.video.filter {\\n                    it.id != VideoQuality.DOLBY_VISION.code &&\\n                        (it.id != VideoQuality.HDR.code ||\\n                            (environment.hdrSupported() && environment.hevcSupported()))\\n                }) else dash\\n                val video = initialSelectionDash.getBestVideo(\\n                    if (autoHighestEnabled || desktopRecoveryState != null) requestedQn else playData.quality,\\n                    preferCodec = resolveBangumiPreferredCodec(isCourse)\\n                )\\n                if (autoHighestEnabled || desktopRecoveryState != null) selectedVideoQuality = video?.id\\n\",\"after\":\"                val targetQuality = if (requestedQn >= 127) {\\n                    dash.video.map { it.id }.filter { quality ->\\n                        when (quality) {\\n                            126 -> environment.dolbyVisionSupported()\\n                            125 -> environment.hdrSupported()\\n                            else -> true\\n                        }\\n                    }.maxOrNull() ?: playData.quality\\n                } else {\\n                    requestedQn\\n                }\\n                //  设备支持 HEVC 时优先 hev1（HDR/杜比视界轨道基本为 HEVC），否则回退 avc1 保证可解码\\n                val video = dash.getBestVideo(\\n                    targetQuality,\\n                    preferCodec = resolveBangumiPreferredCodec(isCourse),\\n                    isHevcSupported = environment.hevcSupported()\\n                )\\n                selectedVideoQuality = video?.id ?: playData.quality\\n\"}]")
+def verify_bangumi_v034_quality_source():
+ pin=PGC_V034_QUALITY_SOURCE
+ source=(repo/pin['originalRawPath']).read_bytes()
+ assert len(source)==pin['bytesRaw'] and hashlib.sha256(source).hexdigest()==pin['sha256Raw'], 'complete beta2 PGC raw source'
+ assert hashlib.sha1(b'blob '+str(len(source)).encode('ascii')+b'\0'+source).hexdigest()==pin['gitBlob'], 'complete beta2 PGC Git blob'
+ original=source.decode('utf8').replace('\r\n','\n')
+ assert len(original.encode('utf8'))==pin['bytesLF'] and sha(original)==pin['sha256LF'], 'complete beta2 PGC LF source'
+ start=original.index('    private suspend fun resolveBangumiInitialQuality()')
+ end=original.index('    }\n',start)+len('    }\n')
+ initial=original[start:end]
+ assert sha(initial)==pin['originalInitialMethodSha256LF'], 'complete beta2 initial quality method'
+ adapted=initial.replace('resolveBangumiInitialQuality(): Int','resolveBangumiInitialQuality(autoHighestEnabled: Boolean): Int')
+ adapted=adapted.replace('        val context = NetworkModule.appContext ?: return 64\n','')
+ adapted=adapted.replace('com.android.purebilibili.data.repository.VideoRepository','VideoRepository')
+ adapted=adapted.replace('NetworkUtils.getDefaultQualityId(context)','environment.defaultQualityId()')
+ adapted=adapted.replace('        val autoHighestEnabled = SettingsManager.getAutoHighestQualitySync(context)\n','')
+ assert adapted==PGC_V034_QUALITY_EDITS[1]['after'], 'complete beta2 method platform adaptations'
+ start=original.index('                val targetQuality = if (requestedQn >= 127)')
+ end=original.index('                val audio =',start)
+ selector=original[start:end]
+ assert sha(selector)==pin['originalDashSelectionBlockSha256LF'], 'complete beta2 DASH selector'
+ adapted=selector.replace('MediaUtils.isDolbyVisionSupported()','environment.dolbyVisionSupported()').replace('MediaUtils.isHdrSupported()','environment.hdrSupported()').replace('MediaUtils.isHevcSupported()','environment.hevcSupported()').replace('selectedQuality =','selectedVideoQuality =')
+ assert adapted==PGC_V034_QUALITY_EDITS[2]['after'], 'complete beta2 selector platform adaptations'
+ return {'rawVerified':True,'gitBlobVerified':True,'completeInitialMethodVerified':True,'completeDashSelectorVerified':True}
+PGC_V034_QUALITY_SOURCE_PROOF = verify_bangumi_v034_quality_source()
+PGC_V034_QUALITY_PROOFS = []
+def bangumi_v034_quality_delta(path, body):
+ if path != 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt': return body
+ original=body;trace=[]
+ for edit in PGC_V034_QUALITY_EDITS:
+  before,after=edit['before'],edit['after']
+  assert body.count(before)==1, 'complete beta2 PGC quality source seam'
+  at=body.index(before);body=body[:at]+after+body[at+len(before):];trace.append((at,before,after))
+ inverse=body
+ for at,before,after in reversed(trace):
+  assert inverse[at:at+len(after)]==after
+  inverse=inverse[:at]+before+inverse[at+len(after):]
+ assert inverse==original, 'complete beta2 PGC quality inverse'
+ PGC_V034_QUALITY_PROOFS.append({'path':path,'beforeSha256LF':sha(original),'afterSha256LF':sha(body),'completeInverse':True,'edits':PGC_V034_QUALITY_EDITS})
+ return body
+
+# Entry-local recapture for real SPI/VIP receipt retirement; original quality,
+# detail, playurl, DRM and media algorithms remain in their complete bodies.
+PGC_V034_AUTHORIZATION_EDITS = json.loads("[{\"before\":\"        desktopRecoveryPublication: ((BangumiPlayerState.Success, () -> Unit) -> Unit)? = null\\n\",\"after\":\"        desktopRecoveryPublication: ((BangumiPlayerState.Success, () -> Unit) -> Unit)? = null,\\n        desktopAuthorizationRecaptures: Int = 0\\n\"},{\"before\":\"        if (desktopRecoveryState == null) environment.native.beginEpisode(detail, episode)\\n        else environment.native.beginQualityReplacement(desktopRecoveryState)\\n\",\"after\":\"        if (desktopRecoveryState == null) {\\n            val revision = desktopPlaybackIntentRevision\\n            environment.native.beginEpisodeWithAuthorizationRecapture(detail, episode,\\n                isIntentCurrent = { desktopPlaybackIntentRevision == revision },\\n                onRetired = { failedLaunch, currentOrigin, admitOrigin ->\\n                    recaptureAuthorizationPlayback(detail, episode, episodeIndex, startPositionMs,\\n                        revision, desktopAuthorizationRecaptures, failedLaunch, currentOrigin, admitOrigin)\\n                })\\n        } else environment.native.beginQualityReplacement(desktopRecoveryState)\\n\"},{\"before\":\"    /** Reuse the original fetch/media lane, without cached-restore/default QN.\\n\",\"after\":\"    /** Only the exact metadata retirement notification may enter this lane.\\n     * A fresh Root invocation/receipt runs the complete original fetch again;\\n     * neither the retired Binding nor a generic cancellation is reused. */\\n    private fun recaptureAuthorizationPlayback(\\n        detail: BangumiDetail, episode: BangumiEpisode, episodeIndex: Int, positionMs: Long,\\n        revision: Long, recaptures: Int, failedLaunch: Job,\\n        currentOrigin: () -> Boolean, admitOrigin: (() -> Unit) -> Boolean,\\n    ) {\\n        environment.assertCurrent()\\n        fun originCurrent() = desktopPlaybackIntentRevision == revision &&\\n            playbackLoadJob === failedLaunch && currentOrigin()\\n        if (!originCurrent()) return\\n        if (recaptures >= 3) {\\n            admitOrigin {\\n                if (originCurrent()) _uiState.value = BangumiPlayerState.Error(\\\"账号播放权限连续变化，请重试\\\")\\n            }\\n            return\\n        }\\n        var next: Job? = null\\n        val created = environment.native.launchAuthorizationRecapture {\\n            // The old ticket is consumed at link. This child checks its own slot,\\n            // while beginEpisode performs a new exact Store/native capture.\\n            if (desktopPlaybackIntentRevision != revision || playbackLoadJob !== next ||\\n                !currentOrigin()) return@launchAuthorizationRecapture\\n            fetchPlayUrl(detail, episode, episodeIndex, positionMs.coerceAtLeast(0L),\\n                desktopAuthorizationRecaptures = recaptures + 1)\\n        }\\n        next = created\\n        var linked = false\\n        try {\\n            admitOrigin {\\n                if (originCurrent() && !created.isCancelled && !created.isCompleted) {\\n                    playbackLoadJob = created\\n                    linked = true\\n                }\\n            }\\n        } finally { if (!linked) created.cancel() }\\n        if (!linked) return\\n        failedLaunch.cancel()\\n        created.start()\\n    }\\n\\n    /** Reuse the original fetch/media lane, without cached-restore/default QN.\\n\"}]")
+PGC_V034_AUTHORIZATION_PROOFS = []
+def bangumi_v034_authorization_delta(path, body):
+ if path != 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt': return body
+ original=body;trace=[]
+ for edit in PGC_V034_AUTHORIZATION_EDITS:
+  before,after=edit['before'],edit['after']
+  assert body.count(before)==1, 'complete PGC authorization source seam'
+  at=body.index(before);body=body[:at]+after+body[at+len(before):];trace.append((at,before,after))
+ inverse=body
+ for at,before,after in reversed(trace):
+  assert inverse[at:at+len(after)]==after
+  inverse=inverse[:at]+before+inverse[at+len(after):]
+ assert inverse==original, 'complete PGC authorization inverse'
+ PGC_V034_AUTHORIZATION_PROOFS.append({'path':path,'beforeSha256LF':sha(original),'afterSha256LF':sha(body),'completeInverse':True,'edits':PGC_V034_AUTHORIZATION_EDITS})
+ return body
+
 for recipe in RECIPES:
  raw=(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf8').replace('\r\n','\n');assert sha(raw)==recipe['originalSha256LF']
  body=raw
@@ -93,6 +157,8 @@ for recipe in RECIPES:
  body=bangumi_default_quality_delta(recipe['output'],body)
  body=bangumi_initial_detail_login_delta(recipe['output'],body)
  body=bangumi_network_recovery_delta(recipe['output'],body)
+ body=bangumi_v034_quality_delta(recipe['output'],body)
+ body=bangumi_v034_authorization_delta(recipe['output'],body)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
@@ -106,5 +172,5 @@ helper=media.function(raw,'signBangumiPlayUrlParams',parser);assert sha(helper)=
 assert helper in PREFIX
 target=out/'com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt';target.parent.mkdir(parents=True,exist_ok=True)
 target.write_text('// GENERATED complete original getBangumiPlayUrl; upstream '+PROTOCOL['upstreamCommit']+'; LF '+PROTOCOL['originalSourceSHA']+'\n'+PREFIX+body+'\n}\n',encoding='utf8')
-(out/'pgc-default-quality-source-inventory.json').write_text(json.dumps({'upstreamCommit':PROTOCOL['upstreamCommit'],'originalPinsUnchanged':True,'initialOnly':True,'fullBodies':PGC_DEFAULT_QUALITY_PROOFS},ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
+(out/'pgc-default-quality-source-inventory.json').write_text(json.dumps({'upstreamCommit':PROTOCOL['upstreamCommit'],'originalPinsUnchanged':True,'initialOnly':True,'fullBodies':PGC_DEFAULT_QUALITY_PROOFS,'beta2QualitySource':PGC_V034_QUALITY_SOURCE,'beta2QualitySourceProof':PGC_V034_QUALITY_SOURCE_PROOF,'beta2QualityBodies':PGC_V034_QUALITY_PROOFS,'beta2AuthorizationBodies':PGC_V034_AUTHORIZATION_PROOFS},ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
 print('Complete original PGC body outputs:',len(RECIPES)+1,'; actual Root/native ports are required')

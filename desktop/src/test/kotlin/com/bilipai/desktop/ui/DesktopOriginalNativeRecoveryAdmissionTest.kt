@@ -417,7 +417,7 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
                 { error("No download") }, {},
                 { block -> scope.launch(start = CoroutineStart.LAZY, block = block) },
                 { action -> if (!f.entry) false else { action(); true } }, { f.entry },
-                { f.owner.isCurrent(f.accepted) }))
+                { f.owner.isCurrent(f.accepted) }, unusedPgc(), { false }))
         init {
             @Suppress("UNCHECKED_CAST")
             val owned = vm.javaClass.getDeclaredField("_uiState").apply { isAccessible = true }

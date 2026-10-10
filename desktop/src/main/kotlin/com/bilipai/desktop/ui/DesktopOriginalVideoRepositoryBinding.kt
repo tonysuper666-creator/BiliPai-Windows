@@ -45,6 +45,16 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     private val decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)?,
 ) : DesktopOriginalExternalPlaylistRequest {
     private val authorizationRetirementReported = java.util.concurrent.atomic.AtomicBoolean(false)
+    // Witness only: the original Store owns revision and credentials. Record
+    // the post-revision inside the real metadata mutation, never a later read.
+    private val metadataRetirementRevision = java.util.concurrent.atomic.AtomicReference<Long?>()
+    internal fun authorizationRetirementRevision(): Long? = metadataRetirementRevision.get()
+    private fun recordMetadataAuthorizationMutation(action: () -> Unit) {
+        val before = repository.playbackAuthorizationRevision.value
+        action()
+        val after = repository.playbackAuthorizationRevision.value
+        if (after != before) metadataRetirementRevision.compareAndSet(null, after)
+    }
     val receipt: DesktopPlaybackAuthorizationReceipt get() = authorization.receipt
     internal fun captureBootstrapAuthorization(): DesktopVideoBootstrapAuthorization = read {
         DesktopVideoBootstrapAuthorization(receipt, authorization.cookieJar != null, authorization.playbackAccount?.mid)
@@ -106,7 +116,9 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
         state = views.second,
         ensureBuvid = {
             currentCoroutineContext().ensureActive(); assertCurrent()
-            repository.ensureOwnedHomeSession(receipt.accountEpoch, ::current, buvidApi)
+            repository.ensureOwnedHomeSession(receipt.accountEpoch, ::current, buvidApi) { mutation ->
+                commitIfEntryCurrent { recordMetadataAuthorizationMutation(mutation) }
+            }
             currentCoroutineContext().ensureActive()
             // Real SPI bootstrap has completed. Its buvid3 may retire this immutable
             // authorization; enqueue a fresh same-request capture before preserving CE.
@@ -227,8 +239,10 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
 
     fun updatePrimaryVip(isVip: Boolean): Unit = read {
         if (capturedPrimaryMid == null) throw CancellationException("Primary VIP session absent")
-        repository.withProfileAccountAdmission(receipt.accountEpoch, capturedPrimaryMid,
-            ::entryCurrent, commitIfEntryCurrent) { saveProfileVipStatus(isVip) }
+        recordMetadataAuthorizationMutation {
+            repository.withProfileAccountAdmission(receipt.accountEpoch, capturedPrimaryMid,
+                ::entryCurrent, commitIfEntryCurrent) { saveProfileVipStatus(isVip) }
+        }
         // The existing Store may advance authorization revision for a changed VIP.
         // This view is NEVER retagged; subsequent use must reject that old receipt.
     }

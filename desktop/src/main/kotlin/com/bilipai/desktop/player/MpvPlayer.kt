@@ -397,6 +397,20 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         true
     }
 
+    /** Read the existing user-intent serials; no new counter or source authority.
+     * Callers enter Store -> entry before final short admission below. */
+    internal fun capturePlaybackIntentSerials(): Pair<Long, Long> = synchronized(lock) {
+        pauseIntentSerial to nextSeekId.get()
+    }
+    internal fun ownsPlaybackIntentSerials(expected: Pair<Long, Long>): Boolean = synchronized(lock) {
+        !closed.get() && expected.first == pauseIntentSerial && expected.second == nextSeekId.get()
+    }
+    internal fun admitPlaybackIntentSerials(expected: Pair<Long, Long>, action: () -> Unit): Boolean = synchronized(lock) {
+        if (!ownsPlaybackIntentSerials(expected)) return@synchronized false
+        action()
+        true
+    }
+
     /** Wait outside Store/entry locks, after cancelling and joining the old producer jobs.
      * The existing native actor acknowledges earlier commands without issuing a media command. */
     internal suspend fun drainSourceCommands(expectedSourceVersion: Long): Boolean {

@@ -30,6 +30,8 @@ internal interface DesktopOriginalBangumiPlayerRequests {
 internal interface DesktopOriginalBangumiPlayerAccount {
     fun isPlaybackVip(): Boolean
     fun isPlaybackLoggedIn(): Boolean
+    suspend fun refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn: Boolean, cachedIsVip: Boolean,
+        storedQuality: Int, autoHighestEnabled: Boolean): Boolean
     fun hasPlaybackSessionCookie(): Boolean
     fun playbackAccessToken(): String?
     fun hasPrimarySessionCookie(): Boolean
@@ -44,6 +46,14 @@ internal interface DesktopOriginalBangumiPlayerAccount {
  */
 internal interface DesktopOriginalBangumiNativePublication {
     suspend fun beginEpisode(detail: BangumiDetail, episode: BangumiEpisode)
+    /** Legacy test/ports keep their existing begin behavior. The real Root
+     * captures only this request's metadata retirement and a fresh LAZY launch. */
+    suspend fun beginEpisodeWithAuthorizationRecapture(detail: BangumiDetail, episode: BangumiEpisode,
+        isIntentCurrent: () -> Boolean,
+        onRetired: (Job, () -> Boolean, (() -> Unit) -> Boolean) -> Unit) = beginEpisode(detail, episode)
+    fun launchAuthorizationRecapture(block: suspend CoroutineScope.() -> Unit): Job {
+        throw CancellationException("PGC authorization recapture unavailable")
+    }
     /** Actual Root implements a same-episode replacement capture. Legacy port
      * implementations fail closed rather than silently stopping a usable source. */
     suspend fun beginQualityReplacement(state: BangumiPlayerState.Success) {
@@ -106,6 +116,8 @@ internal class DesktopOriginalBangumiPlayerEnvironment(
     val commitIfCurrent: (() -> Unit) -> Boolean,
     val owns: () -> Boolean,
     val ownsPlaybackSource: () -> Boolean,
+    val network: DesktopOriginalVideoOwnerNetwork,
+    val dolbyVisionSupported: () -> Boolean,
 ) {
     /** Read the existing Root quality mirror once per initial PGC request. */
     fun autoHighestQualityEnabled(): Boolean {
@@ -116,6 +128,13 @@ internal class DesktopOriginalBangumiPlayerEnvironment(
         settings.requireCurrent()
         assertCurrent()
         return enabled
+    }
+    /** Same network-dependent quality mirror as the ordinary original VM. */
+    fun defaultQualityId(): Int {
+        assertCurrent(); settings.requireCurrent()
+        val quality = network.getDefaultQualityId(settings)
+        settings.requireCurrent(); assertCurrent()
+        return quality
     }
     suspend fun rewriteCandidates(plugin: PlaybackCdnPlugin, videoUrls: List<String>, audioUrls: List<String>) =
         rewriteCandidatesPort(plugin, videoUrls, audioUrls)

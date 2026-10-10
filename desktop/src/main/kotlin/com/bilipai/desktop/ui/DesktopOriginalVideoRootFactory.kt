@@ -112,12 +112,29 @@ internal class DesktopOriginalVideoRootFactory(
 
     /** Required original Portrait/Story API facet. Never a completed Binding,
      * latest receipt or another Retrofit/client. Capture inside each actual Job. */
-    suspend fun captureRequest(value: DesktopOriginalVideoOwnerAssembly): DesktopOriginalVideoRepositoryBinding {
+    suspend fun captureRequest(value: DesktopOriginalVideoOwnerAssembly): DesktopOriginalVideoRepositoryBinding =
+        captureRequest(value, null)
+
+    /** Same Factory, with a PGC notification only for the post-begin request.
+     * Ordinary callers retain the existing authorization-retirement callback. */
+    internal suspend fun captureRequest(value: DesktopOriginalVideoOwnerAssembly,
+        onAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt, com.android.purebilibili.feature.video.playback.session.PlaybackSessionState) -> Unit)?): DesktopOriginalVideoRepositoryBinding {
         val construction = checkNotNull(built.get()?.takeIf { it.assembly === value })
         construction.ports.awaitNativeInitialization()
         currentCoroutineContext().ensureActive()
         if (!value.owns() || !construction.gate.owns()) throw CancellationException("Original request facet retired")
-        return construction.requests.captureBinding(value.captureLoadState())
+        return construction.requests.captureBinding(value.captureLoadState(), onAuthorizationRetired = onAuthorizationRetired)
+    }
+
+    /** Metadata composition over THIS already captured Binding; no client,
+     * credential capture, request token or second repository authority is made. */
+    internal fun requestRepository(value: DesktopOriginalVideoOwnerAssembly,
+        binding: DesktopOriginalVideoRepositoryBinding): DesktopOriginalVideoOwnerRequestRepository {
+        val construction = checkNotNull(built.get()?.takeIf { it.assembly === value })
+        if (!value.owns() || !construction.gate.owns()) throw CancellationException("Original metadata facet retired")
+        binding.assertCurrent()
+        return createDesktopOriginalVideoOwnerRequestRepository(repository, binding, subtitleAssets, privacy,
+            { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) })
     }
 
     /** Actual action Job over this accepted source and a permanently owned metadata lease.

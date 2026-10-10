@@ -42,7 +42,8 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
     suspend fun captureBinding(state: PlaybackSessionState,
         stillSourceOwned: (() -> Boolean)? = null,
         sourceAdmission: ((() -> Unit) -> Boolean)? = null,
-        decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null): DesktopOriginalVideoRepositoryBinding {
+        decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null,
+        onAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt, PlaybackSessionState) -> Unit)? = null): DesktopOriginalVideoRepositoryBinding {
         currentCoroutineContext().ensureActive()
         fun current() = stillEntryOwned() && (stillSourceOwned?.invoke() != false)
         fun commit(action: () -> Unit): Boolean {
@@ -60,7 +61,7 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
             isMobileData, token::available, token::refresh,
-            { receipt -> onPlaybackAuthorizationRetired(receipt, state) }, decorateCalls)
+            { receipt -> (onAuthorizationRetired ?: onPlaybackAuthorizationRetired)(receipt, state) }, decorateCalls)
     }
 
     suspend fun capture(state: PlaybackSessionState,
