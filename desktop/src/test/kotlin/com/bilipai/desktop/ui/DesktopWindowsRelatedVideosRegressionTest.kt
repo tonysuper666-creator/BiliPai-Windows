@@ -498,10 +498,23 @@ class DesktopWindowsRelatedVideosRegressionTest {
             val detail = CompletableDeferred<Result<Pair<ViewInfo, PlayUrlData>>>()
             f.preloadAnswer = { withContext(NonCancellable) { detail.await() } }
             f.answer = { Result.success(listOf(RelatedVideo(bvid = "BVrelated", cid = 80, title = "Related"))) }
-            f.start(); f.state(RelatedLoadState.READY); f.until { f.preloadDetails.size == 1 }
-            val relatedJob = f.captures.first().job
+            f.start(); val ready = f.state(RelatedLoadState.READY)
+            val captured = f.captures.single()
+            val relatedJob = captured.job
             withTimeout(3_000) { relatedJob.join() }
             assertTrue(relatedJob.isCompleted); assertFalse(relatedJob.isActive)
+            assertEquals(0, resolveRelatedPlayUrlPreloadCount(ready.related.size, isWifi = true))
+            assertTrue(f.preloadDetails.isEmpty()); assertTrue(f.preloadPlayUrls.isEmpty())
+            assertTrue(f.cacheReads.isEmpty()); assertEquals(1, f.captures.size)
+            // The original policy forbids automatic speculative requests.
+            // Invoke its real private preloader explicitly to verify reuse of
+            // the captured source after the related request has completed.
+            val preload = VideoPlaybackViewModel::class.java.getDeclaredMethod(
+                "preloadRelatedPlayUrls", List::class.java, DesktopOriginalVideoRelatedRequestSource::class.java)
+                .apply { isAccessible = true }
+            try { preload.invoke(f.vm, ready.related, captured.source) }
+            catch (error: InvocationTargetException) { throw error.targetException }
+            f.until { f.preloadDetails.size == 1 }
             assertSame(f.native.original, f.preloadDetails.single())
             assertTrue(f.captures.size >= 2)
             assertTrue(f.captures.all { it.source.expected === f.native.original })
