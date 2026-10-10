@@ -219,7 +219,8 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                             DesktopOriginalCdnRangeCapture(expected, owner.native::isCurrent)
                         else null // actual direct source or retired lease; no fake cache success
                     }, effects.analytics, effects.crash, comments, effects.danmaku,
-                    effects.background, owner::owns, owner::commit, todayWatchFeedback)
+                    effects.background, owner::owns, owner::commit, todayWatchFeedback,
+                    owner.native::current, owner.native::admitPlaybackDispatch)
                 owner.playback = VideoPlaybackViewModel(owner.environment)
                 owner.section = DesktopOriginalMpvSectionControl(player,
                     { owner.native.current()?.sourceVersion }, owner::owns,

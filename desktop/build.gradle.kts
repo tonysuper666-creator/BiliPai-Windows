@@ -1001,6 +1001,7 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-card.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-full-card").get().asFile.absolutePath)
+    inputs.file("third-party/dynamic-reaction-v034/DynamicReactionApi.kt")
     inputs.files("tools/extract-upstream-dynamic-card.py", "tools/extract-dynamic-message-share.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
         "tools/extract-upstream-api.py", "tools/extract-appearance-platform.py", "tools/sync-upstream.py")
@@ -3289,6 +3290,13 @@ val extractV032CatalogSlice by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/v032-catalog")) }
 tasks.named("compileKotlin") { dependsOn(extractV032CatalogSlice) }
+listOf("extractOriginalVideoStateCore", "extractOriginalVideoFullOwner", "extractV032CatalogSlice").forEach { name ->
+    tasks.named(name) {
+        inputs.file("tools/v034_related.py")
+        inputs.dir("upstream-slices/v034-related")
+    }
+}
+
 listOf("extractOriginalHomeProtocols", "extractOriginalVideoStateCore", "extractOriginalVideoDetailUnits").forEach { name ->
     tasks.named(name) {
         inputs.file("tools/v032_catalog.py")

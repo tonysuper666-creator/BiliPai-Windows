@@ -5,6 +5,8 @@ import hashlib,importlib.util,re
 BASE='app/src/main/java/com/android/purebilibili/'
 DIRECT=[BASE+'core/network/grpc/ProtoWire.kt',BASE+'feature/message/InboxUserInfoResolver.kt']
 PATHS=DIRECT+[BASE+'core/network/grpc/BiliGrpcClient.kt',BASE+'data/repository/MessageShareGrpcRepository.kt',BASE+'feature/message/InboxViewModel.kt',BASE+'feature/message/MessageUserInfoLoader.kt',BASE+'data/repository/MessageRepository.kt',BASE+'feature/dynamic/components/DynamicShareToMessageDialog.kt']
+REACTION_SOURCE='desktop/third-party/dynamic-reaction-v034/DynamicReactionApi.kt'
+REACTION_SOURCE_SHA256='4194ad045c112c06a1179f85f2d3f98e97796baba17b8f8b5298df145830c64a'
 def read(repo,p):return(_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n')
 def inventory(repo):return[dict(path=p,mode='direct'if p in DIRECT else'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest())for p in PATHS]
 def load(repo,name,path):
@@ -30,10 +32,20 @@ def generate(repo,out,standalone=False):
  s=s.replace('NetworkModule.okHttpClient.newCall(request).execute().use { response ->','return DesktopDynamicGrpcCalls.execute(client, request, stillOwned) { response ->')
  s=s.replace('val body = response.body.bytes()','val body = DesktopDynamicGrpcCalls.readBody(response.body)')
  s=s.replace('return ProtoWire.unframe(body)','ProtoWire.unframe(body)')
+ # Preserve the latest complete client's server error for the original
+ # ReactionList -101/-352/-403 policy; shared headers/transport stay unchanged.
+ s=host.substitute(s,'error("gRPC request failed: http=${response.code}, grpc=$grpcStatus")','error("请求失败：HTTP ${response.code}，gRPC $grpcStatus，${grpcMessage.orEmpty()}")')
  s=re.sub(r'\s*Logger\.w\(\s*"BiliGrpc",\s*"gRPC request failed:[^\n]+\n\s*\)', '',s)
  old='    '+fun(s,'resolveBuvid').replace('\n','\n    ')
  s=host.substitute(s,old,'internal fun resolveBuvid(): String {\n        check(stillOwned()) { "Dynamic share owner retired" }\n        return cookies()["buvid3"]?.takeIf(String::isNotBlank) ?: error("Visitor session is not initialized")\n    }')
  emit(p,s,'DesktopDynamicBiliGrpcClient.kt')
+ # Complete b209 source, with only the existing captured request injected.
+ reaction_original=read(repo,REACTION_SOURCE)
+ if hashlib.sha256(reaction_original.encode()).hexdigest()!=REACTION_SOURCE_SHA256:
+  raise ValueError('Fixed DynamicReactionApi source digest mismatch')
+ reaction_body=host.substitute(reaction_original,'object DynamicReactionApi {','internal class DesktopDynamicReactionApi(private val request: suspend (String, ByteArray) -> ByteArray) {')
+ reaction_body=host.substitute(reaction_body,'BiliGrpcClient.request("/bilibili.app.dynamic.v2.Dynamic/ReactionList", request)','this.request("/bilibili.app.dynamic.v2.Dynamic/ReactionList", request)')
+ files.append(host.write(out,REACTION_SOURCE,reaction_original,reaction_body,'DesktopDynamicReactionApi.kt'))
  p=BASE+'data/repository/MessageShareGrpcRepository.kt';s=read(repo,p)
  s=s.replace('import com.android.purebilibili.core.network.grpc.BiliGrpcClient','')
  s=s.replace('import com.android.purebilibili.core.store.TokenManager','')

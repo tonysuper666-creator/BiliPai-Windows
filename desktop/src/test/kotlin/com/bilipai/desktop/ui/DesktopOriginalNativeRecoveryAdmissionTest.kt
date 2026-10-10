@@ -22,6 +22,7 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
         override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?): PlayUrlData? = error("No HTTP")
         override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long, targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> = error("No HTTP")
         override suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> = error("No HTTP")
+        override suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = error("No HTTP")
         override suspend fun getPlayUrlData(bvid: String, cid: Long, qn: Int, audioLang: String?): PlayUrlData? = error("No HTTP")
         override suspend fun getPlaybackNavInfo(): Result<NavData> = error("No account")
         override fun isPlaybackLoggedIn() = false

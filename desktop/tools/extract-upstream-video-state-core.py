@@ -36,6 +36,9 @@ def emit(path,text,origin,mode):
  if path=='com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt':text=_typed_failure_protocol(text,edits)
  if path=='com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt':text=_typed_failure_usecase(text,edits)
  if edits:AUDITS[path.rsplit('/',1)[-1]+'.failure-recovery-inverse.json']=edits
+ from v034_related import apply_and_record as apply_related
+ text,relatedProof=apply_related(path,text,OUTPUT)
+ if relatedProof is not None:mode='fixed-v034-beta2-related-owned-delta'
  generated=STANDALONE or mode!='direct';OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=digest(text),generated=generated))
  if generated:
   target=wide(OUTPUT/path);target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')

@@ -173,7 +173,11 @@ class DesktopWindowsVideoDownloadSelectionTest {
         val vm = VideoPlaybackViewModel(DesktopOriginalVideoPlaybackOwnerEnvironment(scope, settings, invocations,
             repository, unused(), actions, useCase, interaction, unused(), unused(), unused(), plugins, downloads,
             unused(), unused(), { null }, unused(), unused(), unused(), unused(), MutableStateFlow(false), ::owns, ::commit,
-            DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit)))
+            DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit),
+            captureNativePublication = { accepted.takeIf { owns() } },
+            admitNativePublication = { expected, action ->
+                if (!owns() || accepted !== expected) false else { action(); true }
+            }))
         val session = VideoPlaybackViewModel::class.java.getDeclaredField("playbackSessionStore").apply { isAccessible = true }
             .get(vm) as PlaybackSessionStore
         fun installSuccess(value: VideoPlaybackUiState.Success) {

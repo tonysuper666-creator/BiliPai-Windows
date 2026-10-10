@@ -42,9 +42,11 @@ def apply_and_record(path,text,output):
 def generate(repo,output):
     manifest,source=fixed_sources()
     catalog=edits(source['VideoCatalogRepository.kt'],CATALOG_EDITS)
+    from v034_related import apply_and_record, related_response
+    catalog,_=apply_and_record('com/android/purebilibili/data/repository/DesktopOriginalVideoCatalogRepository.kt',catalog,output)
     outputs={'com/android/purebilibili/data/repository/DesktopOriginalVideoCatalogRepository.kt':catalog,
              'com/android/purebilibili/data/model/response/CreatorCardStats.kt':source['CreatorCardStats.kt'],
-             'com/android/purebilibili/data/model/response/RelatedResponse.kt':source['RelatedResponse.kt']}
+             'com/android/purebilibili/data/model/response/RelatedResponse.kt':related_response()}
     for path,text in outputs.items():
         p=wide(Path(output)/path);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(text.encode('utf8'))
     p=wide(Path(output)/'v032-catalog-source-proof.json')

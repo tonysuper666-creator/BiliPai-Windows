@@ -145,6 +145,7 @@ class DesktopWindowsVideoLoadErrorTest {
                 return Result.failure(failure)
             }
             override suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> = emptyList()
+            override suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = error("No related request during primary load")
             override suspend fun getPlayUrlData(bvid: String, cid: Long, qn: Int, audioLang: String?): PlayUrlData? = error("No playable metadata")
             override suspend fun getPlaybackNavInfo(): Result<NavData> = error("No account data")
             override fun isPlaybackLoggedIn() = false

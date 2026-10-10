@@ -43,6 +43,9 @@ open class DesktopOriginalMpvOverlayControl internal constructor(
         fun onRenderedFirstFrame() {}
         fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {}
         fun onSourceTransition(sourceVersion: Long) {}
+        /** Called only after the same transition callback returned and its real
+         * Store/entry/native admission exited. Suspended work must start here. */
+        fun onSourceTransitionAfterAdmission(sourceVersion: Long, source: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot) {}
         fun onPlayerError(error: DesktopOriginalNativePlaybackError) {}
         fun onSeekQueued(submission: DesktopOriginalNativeSeekSubmission) {}
     }

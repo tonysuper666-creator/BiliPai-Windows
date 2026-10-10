@@ -166,7 +166,9 @@ class DesktopOriginalVideoAuthorizationRecaptureViewModelTest {
             vm = VideoPlaybackViewModel(DesktopOriginalVideoPlaybackOwnerEnvironment(scope, settings, invocations,
                 view, unused(), actions, useCase, interaction, unused(), mini, unused(), plugins, unused(), network,
                 cache, { null }, unused(), unused(), unused(), unused(), MutableStateFlow(false), ::owns, ::commit,
-                DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit)))
+                DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit),
+                captureNativePublication = { null },
+                admitNativePublication = { _, _ -> error("No accepted native source in authorization-recapture fixture") }))
             vm.initWithContext(settings) // Original context/bootstrap observers complete capture before the load.
         }
         suspend fun ui(action: () -> Unit) = withContext(Dispatchers.Swing) { action() }

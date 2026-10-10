@@ -122,7 +122,9 @@ class DesktopWindowsSponsorSkipCommandTest {
             repository, unused(), unused(), useCase, interaction, unused(), unused(), unused(), plugins,
             unused(), unused(), unused(), { null }, unused(), unused(), unused(), unused(), MutableStateFlow(false),
             ::owned, { block -> if (!owned()) false else { block(); true } },
-            DesktopTodayWatchFeedbackWriteBinding(context, ::owned, { it(); true })))
+            DesktopTodayWatchFeedbackWriteBinding(context, ::owned, { it(); true }),
+            captureNativePublication = { accepted.takeIf { owned() && player.ownsSourceSnapshot(it.nativeSource) } },
+            admitNativePublication = ::admit))
         private val section = DesktopOriginalMpvSectionControl(player, { original.sourceVersion }, ::owned,
             { block -> admit(original, block) }, { false }, {}, {}, { target, _, _, _ -> logs += target }, scope,
             // No native event loop is fabricated. The real synchronous seek listener
