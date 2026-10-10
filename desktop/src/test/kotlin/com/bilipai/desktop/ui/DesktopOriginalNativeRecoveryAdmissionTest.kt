@@ -256,4 +256,207 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
             }
         }
     }
+
+    @Test fun pgcParentPauseIntentIsCheckedInsideTheActualNativeLock() {
+        Fixture().use { f ->
+            val held = java.util.concurrent.CountDownLatch(1)
+            val release = java.util.concurrent.CountDownLatch(1)
+            val finished = java.util.concurrent.CountDownLatch(1)
+            val checks = java.util.concurrent.atomic.AtomicInteger()
+            var observed: Throwable? = null
+            val holder = Thread {
+                f.player.admitSourceSnapshot(f.accepted.nativeSource) {
+                    held.countDown()
+                    check(release.await(5, java.util.concurrent.TimeUnit.SECONDS))
+                    f.player.setPaused(false) // Actual user play intent, on the same still-mounted parent.
+                }
+            }
+            f.beforeEntry = { holder.start(); check(held.await(5, java.util.concurrent.TimeUnit.SECONDS)) }
+            val caller = Job()
+            val loads = f.actor.native.loads.size
+            val replacement = f.accepted.nativeSource.source.copy(nativePublication = null,
+                videoUrl = "https://fixture.invalid/pgc-refreshed")
+            val accept = Thread {
+                try {
+                    f.owner.publishBangumiQualityReplacement(f.accepted.request, replacement,
+                        f.accepted.sourceVersion, caller, f.accepted, { true }, {
+                            checks.incrementAndGet()
+                            assertTrue(f.publication.held)
+                            f.player.state.value.paused
+                        })
+                } catch (failure: Throwable) { observed = failure }
+                finally { finished.countDown() }
+            }
+            try {
+                accept.start()
+                check(held.await(5, java.util.concurrent.TimeUnit.SECONDS))
+                assertEquals(0, checks.get()) // No parent predicate is consumed before that lock.
+                release.countDown()
+                check(finished.await(5, java.util.concurrent.TimeUnit.SECONDS))
+                assertIs<CancellationException>(observed)
+                assertEquals(1, checks.get())
+                assertSame(f.accepted, f.owner.current())
+                f.actor.drain()
+                assertEquals(loads, f.actor.native.loads.size)
+                assertFalse(f.player.state.value.paused)
+            } finally {
+                release.countDown(); holder.join(5_000); accept.join(5_000); caller.cancel()
+            }
+        }
+    }
+
+    @Test fun pgcAcceptedChildAckDoesNotBorrowTheConsumedParentIntent() {
+        Fixture().use { f ->
+            val caller = Job()
+            var parentCurrent = true
+            var checks = 0
+            try {
+                val source = f.accepted.nativeSource.source.copy(nativePublication = null,
+                    videoUrl = "https://fixture.invalid/pgc-120", quality = 120)
+                val child = f.owner.publishBangumiQualityReplacement(f.accepted.request, source,
+                    f.accepted.sourceVersion, caller, f.accepted, { true }, {
+                        checks++; assertTrue(f.publication.held); parentCurrent
+                    })
+                parentCurrent = false
+                assertTrue(caller.complete())
+                f.actor.drain(); f.actor.loaded()
+                assertEquals(1, checks) // Neither transport handoff nor initial ACK rechecks old intent.
+                assertSame(child, f.owner.current())
+                assertEquals("https://fixture.invalid/pgc-120", f.actor.native.loads.last()[1])
+                assertEquals(120, child.nativeSource.source.quality)
+                assertEquals(f.accepted.nativeSource.source.audioUrl, child.nativeSource.source.audioUrl)
+                assertEquals(f.accepted.nativeSource.source.authorizationReceipt, child.nativeSource.source.authorizationReceipt)
+                assertEquals(27.75, child.nativeSource.source.startPositionSeconds)
+                assertTrue(child.nativeSource.source.startPaused)
+            } finally { caller.cancel() }
+        }
+    }
+
+    @Test fun pgcEpisodeSourceAccountAndEntryRetirementCannotPublishAnOldRefresh() {
+        for (retirement in listOf("episode", "source", "account", "entry")) Fixture().use { f ->
+            val source = f.accepted.nativeSource.source.copy(nativePublication = null,
+                videoUrl = "https://fixture.invalid/late-pgc-refresh")
+            when (retirement) {
+                "episode" -> f.owner.publish(f.accepted.request.copy(cid = 99L),
+                    source.copy(videoUrl = "https://fixture.invalid/new-episode"),
+                    f.player.currentSourceVersion, f.caller) { true }
+                "source" -> assertTrue(f.player.recoverSource(f.accepted.sourceVersion,
+                    source.copy(videoUrl = "https://fixture.invalid/same-version-other-source")))
+                "account" -> f.publication.epoch++
+                "entry" -> f.entry = false
+            }
+            f.actor.drain()
+            val loads = f.actor.native.loads.size
+            val caller = Job()
+            try {
+                assertFailsWith<CancellationException>(retirement) {
+                    f.owner.publishBangumiQualityReplacement(f.accepted.request, source,
+                        f.accepted.sourceVersion, caller, f.accepted, { true })
+                }
+                f.actor.drain()
+                assertEquals(loads, f.actor.native.loads.size, retirement)
+            } finally { caller.cancel() }
+        }
+    }
+
+    private class PendingPgcDispatcher : CoroutineDispatcher() {
+        private val pending = java.util.ArrayDeque<Runnable>()
+        override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) { pending.addLast(block) }
+        fun drain() {
+            repeat(256) { (pending.pollFirst() ?: return).run() }
+            error("Unexpected unbounded PGC fixture dispatch")
+        }
+    }
+    private inline fun <reified T> unusedPgc(): T = java.lang.reflect.Proxy.newProxyInstance(
+        T::class.java.classLoader, arrayOf(T::class.java)
+    ) { _, method, _ -> error("Unexpected PGC ${T::class.java.simpleName}.${method.name}") } as T
+
+    /** Seed only the real VM's owned DTO flow. No load/retry/intent algorithm is
+     * reproduced, and no fixture reports a fake accepted playback result. Actual
+     * NativeOwner/ABI tests above cover publication; this exercises original VM
+     * synchronous manual intent and its real LAZY Job lane before any HTTP. */
+    private inner class PgcVmFixture(val f: Fixture) : AutoCloseable {
+        val dispatcher = PendingPgcDispatcher()
+        val scope = CoroutineScope(SupervisorJob() + dispatcher)
+        val root = java.nio.file.Files.createTempDirectory("bilipai-pgc-intent-")
+        val context = DesktopOriginalPlayerSettingsContext(DesktopPluginContext(DesktopPluginStore(root)),
+            { f.entry }, { action -> if (!f.entry) false else { action(); true } })
+        val control = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+            { action -> f.owner.current()?.let { f.owner.admitPlaybackDispatch(it, action) } ?: false },
+            { false }, {}, {}, { _, _, _, _ -> }, scope, MutableStateFlow<Long?>(null), { it(); true })
+        val state = com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success(
+            seasonDetail = BangumiDetail(seasonId = 17L),
+            currentEpisode = BangumiEpisode(id = 18L, bvid = f.accepted.request.bvid,
+                aid = f.accepted.request.aid, cid = f.accepted.request.cid),
+            currentEpisodeIndex = 0, playUrl = f.accepted.nativeSource.source.videoUrl,
+            audioUrl = f.accepted.nativeSource.source.audioUrl, quality = 80,
+            acceptQuality = listOf(80, 120), acceptDescription = listOf("1080P", "4K"),
+            requestedAudioQuality = -1)
+        private val progress = object : DesktopOriginalVideoProgressPort {
+            override fun getCachedPosition(bvid: String, cid: Long) = 0L
+            override fun savePosition(bvid: String, cid: Long, positionMs: Long) = Unit
+        }
+        val vm = com.android.purebilibili.feature.bangumi.BangumiPlayerViewModel(
+            DesktopOriginalBangumiPlayerEnvironment(scope, control, context,
+                unusedPgc(), unusedPgc(), unusedPgc(),
+                com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase(unusedPgc(), unusedPgc()),
+                unusedPgc(), progress, unusedPgc(), unusedPgc(), MutableStateFlow(false),
+                { -1 }, { -1 }, { error("No preference write") },
+                { false }, { false }, { false }, { false }, { null },
+                { _, _, _ -> error("No CDN request") }, { _, _, _ -> error("No playlist mutation") },
+                { error("No download") }, {},
+                { block -> scope.launch(start = CoroutineStart.LAZY, block = block) },
+                { action -> if (!f.entry) false else { action(); true } }, { f.entry },
+                { f.owner.isCurrent(f.accepted) }))
+        init {
+            @Suppress("UNCHECKED_CAST")
+            val owned = vm.javaClass.getDeclaredField("_uiState").apply { isAccessible = true }
+                .get(vm) as MutableStateFlow<com.android.purebilibili.feature.bangumi.BangumiPlayerState>
+            owned.value = state
+        }
+        override fun close() {
+            f.entry = false; vm.close(); scope.cancel(); dispatcher.drain()
+            java.nio.file.Files.walk(root).use { paths ->
+                paths.sorted(Comparator.reverseOrder()).forEach { java.nio.file.Files.deleteIfExists(it) }
+            }
+        }
+    }
+
+    @Test fun pgcPendingRetryCannotStartAfterTheActualVmManualQualityEntry() {
+        Fixture().use { f -> PgcVmFixture(f).use { h ->
+            val revision = h.vm.desktopPlaybackIntentRevision
+            val jobs = mutableListOf<Job>()
+            var failures = 0
+            assertTrue(h.vm.retryNetworkPlayback(h.state, revision, 27_750L,
+                { block -> h.scope.launch(start = CoroutineStart.LAZY, block = block).also(jobs::add) },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) },
+                { f.owner.isCurrent(f.accepted) },
+                { _, _ -> error("Stale retry must not prepare/accept media") }, { failures++ }))
+            assertEquals(1, jobs.size)
+            assertTrue(jobs.single().isActive)
+            h.vm.changeQuality(120) // Actual original synchronous UI entry, not a cloned predicate.
+            assertTrue(h.vm.desktopPlaybackIntentRevision > revision)
+            h.dispatcher.drain()
+            assertTrue(jobs.single().isCompleted)
+            assertEquals(0, failures) // Unexpected native/API invocation fails the unused real port.
+            assertSame(h.state, h.vm.uiState.value)
+            assertSame(f.accepted, f.owner.current())
+        } }
+    }
+
+    @Test fun pgcManualAudioEntryRejectsAnOldTicketBeforeLazyCreationAndNativeLink() {
+        Fixture().use { f -> PgcVmFixture(f).use { h ->
+            val revision = h.vm.desktopPlaybackIntentRevision
+            h.vm.changeAudioQuality(30251) // Actual preference intent; its queued HTTP job stays LAZY.
+            var launches = 0
+            var admissions = 0
+            assertFalse(h.vm.retryNetworkPlayback(h.state, revision, 27_750L,
+                { block -> launches++; h.scope.launch(start = CoroutineStart.LAZY, block = block) },
+                { action -> admissions++; f.owner.admitPlaybackDispatch(f.accepted, action) },
+                { f.owner.isCurrent(f.accepted) },
+                { _, _ -> error("Stale audio ticket must not publish") }, { error("No retry") }))
+            assertEquals(0, launches); assertEquals(0, admissions)
+            assertSame(h.state, h.vm.uiState.value)
+        } }
+    }
 }
