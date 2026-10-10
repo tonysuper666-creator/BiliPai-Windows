@@ -145,19 +145,13 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
         context: CoroutineContext = kotlin.coroutines.EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
         desktopFailure: DesktopOriginalNativeRecoveryTicket? = null,
-        /** Runs in this actual launch even when Factory capture fails before the
-         * VM body begins. Existing callers retain their original body/finally. */
-        desktopFinally: (() -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit,
     ): Job {
         assertCurrent()
         // Preserve original dispatchers/start modes. Capture happens in the actual
         // launched Job, not before launch or in a completed factory coroutine.
         val ownedContext = desktopFailure?.let { context + FailureElement(it) } ?: context
-        return entryScope.launch(ownedContext, start) {
-            try { withInvocation(block) }
-            finally { desktopFinally?.invoke() }
-        }
+        return entryScope.launch(ownedContext, start) { withInvocation(block) }
     }
 
     val repository: DesktopOriginalVideoLoadRepository = object : DesktopOriginalVideoLoadRepository {
@@ -185,27 +179,6 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
         assertCurrent()
         val request = activeThreadInvocation()
         return lexicalMedia.get() ?: currentThreadFailure.get()?.media() ?: request?.media ?: acceptedMedia().also { assertCurrent() }
-    }
-
-    /** Borrow the same request's actual media view. Original CPU/cache/disk
-     * preparation stays outside admission; only synchronous accept is gated.
-     * No second source, loader, actor or publication is created. */
-    internal fun withMediaSubmissionAdmission(
-        admission: (() -> Unit) -> Boolean,
-        action: () -> Unit,
-    ) {
-        val captured = activeMedia()
-        val gated = object : DesktopOriginalVideoMediaPort by captured {
-            override fun accept(source: PlaybackSource) {
-                var submitted = false
-                if (!admission { captured.accept(source); submitted = true } || !submitted)
-                    throw CancellationException("Original media submission source retired")
-            }
-        }
-        val previous = lexicalMedia.get()
-        lexicalMedia.set(gated)
-        try { action() }
-        finally { if (previous == null) lexicalMedia.remove() else lexicalMedia.set(previous) }
     }
 
     fun admitRecoveryAction(action: () -> Unit): Boolean {
