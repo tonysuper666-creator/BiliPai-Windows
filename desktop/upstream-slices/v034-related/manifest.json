@@ -98,7 +98,7 @@
     },
     "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt": {
       "beforeSha256LF": "78b7689109e0a1c144160a21849db52f7b84e29bcd04d19d4cf84c9c8567429d",
-      "afterSha256LF": "a0e30b1f98c05cfb0e4239949f694b5ca14e10ec00bd8dbfa12863a24f403fd7",
+      "afterSha256LF": "ec13d7dc23c76b7c54ac8c04aeae177693696e6a67bcffa28ba5a134602d154a",
       "edits": [
         {
           "before": "    private var activeLoadJob: Job? = null\n",
@@ -114,7 +114,7 @@
         },
         {
           "before": "                        updatePlaylist(result.info, result.related)\n",
-          "after": "                        updatePlaylist(result.info, (_uiState.value as? VideoPlaybackUiState.Success)\n                            ?.takeIf { it.info.bvid == result.info.bvid && it.info.cid == result.info.cid &&\n                                currentLoadRequestToken == requestToken }?.related ?: result.related)\n                        loadRelatedVideosAfterPlayback(result.info.bvid, requestToken)\n"
+          "after": "                        updatePlaylist(result.info, (_uiState.value as? VideoPlaybackUiState.Success)\n                            ?.takeIf { it.info.bvid == result.info.bvid && it.info.cid == result.info.cid &&\n                                currentLoadRequestToken == requestToken }?.related ?: result.related,\n                            desktopPostPreload = { })\n                        loadRelatedVideosAfterPlayback(result.info.bvid, requestToken)\n"
         },
         {
           "before": "    private fun scheduleDeferredPostLoadWork(\n",
@@ -146,7 +146,7 @@
         },
         {
           "before": "        if (!publishCurrent { updatePlaylist(result.info, result.related) }) return false\n",
-          "after": "        if (!publishCurrent { updatePlaylist(result.info, (_uiState.value as? VideoPlaybackUiState.Success)\n                ?.related ?: result.related) }) return false\n        loadRelatedVideosAfterPlayback(result.info.bvid, requestToken)\n"
+          "after": "        if (!publishCurrent { updatePlaylist(result.info, (_uiState.value as? VideoPlaybackUiState.Success)\n                ?.related ?: result.related, desktopPostPreload = { }) }) return false\n        loadRelatedVideosAfterPlayback(result.info.bvid, requestToken)\n"
         },
         {
           "before": "        activeLoadJob?.cancel()\n        playerInfoJob?.cancel()\n",

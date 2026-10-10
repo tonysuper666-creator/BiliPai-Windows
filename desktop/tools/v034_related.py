@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib,json,os
 COMMIT="b2091b1de636e499df80af7e700796b4f52b7f92"
-MANIFEST_SHA256="995303c4c2931cbc17711d5b2447db269b16c670e7cb1c296ee405a1846db550"
+MANIFEST_SHA256="41fd698cd0398c37bff54dad54e2ec20a3ea801a2b0c80d701a162b1df7dd8ff"
 _FIXED=None
 def wide(p):
  p=Path(p).resolve()
