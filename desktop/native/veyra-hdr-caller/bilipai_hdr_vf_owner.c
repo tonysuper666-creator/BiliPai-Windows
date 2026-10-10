@@ -517,6 +517,7 @@ static bool queued_output_record_matches(struct owner_generation *g,
     const struct bv_mpv_hdr_queued_output_record *q) {
     struct mp_bilipai_active_decoder active={0};
     const struct bv_mpv_config *b=&g->cfg.bridge;
+    const struct mp_bilipai_hdr_snapshot *raw=&source->params.bilipai_decoder_origin.frame_snapshot;
     if(!q||q->version!=BV_MPV_HDR_QUEUED_OUTPUT_RECORD_V1||
        !q->proxy_sr_accepted||!q->restore_copy_enqueued||!q->final_use_signal_enqueued||
        g->retiring||g->quarantined||g->diagnostic_revoke_pending||!g->diagnostic_in_flight||
@@ -527,7 +528,13 @@ static bool queued_output_record_matches(struct owner_generation *g,
        q->session!=b->session||q->configuration!=b->configuration||q->generation!=b->generation||
        q->sequence!=ticket->sequence||q->adapter_luid!=g->adapter_luid||
        q->pts_numerator!=ticket->pts_numerator||q->pts_denominator!=ticket->pts_denominator||
-       q->sr_effects!=BV_VIDEO_SR||q->input_width!=(uint32_t)source->w||
+       q->sr_effects!=BV_VIDEO_SR||
+       q->source_kind!=MP_BILIPAI_SOURCE_NATIVE_HDR||
+       q->output_intent!=MP_BILIPAI_OUTPUT_NATIVE_HDR_PRESERVE||
+       q->input_av_format!=raw->av_format||q->input_av_sw_format!=raw->av_sw_format||
+       q->input_av_matrix!=raw->av_matrix||q->input_av_transfer!=raw->av_transfer||
+       q->input_av_primaries!=raw->av_primaries||q->input_av_range!=raw->av_range||
+       q->input_av_chroma!=raw->av_chroma||q->input_width!=(uint32_t)source->w||
        q->input_height!=(uint32_t)source->h||q->width!=b->output_width||q->height!=b->output_height||
        !out||out->imgfmt!=IMGFMT_D3D11||out->params.imgfmt!=IMGFMT_D3D11||
        out->params.hw_subfmt!=IMGFMT_X2BGR10||!out->bufs[0]||
@@ -538,6 +545,8 @@ static bool queued_output_record_matches(struct owner_generation *g,
        out->w!=(int)q->width||out->h!=(int)q->height||out->params.w!=out->w||out->params.h!=out->h||
        out->params.repr.sys!=PL_COLOR_SYSTEM_RGB||out->params.repr.levels!=PL_COLOR_LEVELS_FULL||
        out->params.color.transfer!=PL_COLOR_TRC_PQ||out->params.color.primaries!=PL_COLOR_PRIM_BT_2020||
+       q->output_system!=out->params.repr.sys||q->output_levels!=out->params.repr.levels||
+       q->output_transfer!=out->params.color.transfer||q->output_primaries!=out->params.color.primaries||
        out->pts!=source->pts||!queued_output_has_zero_token(out)||
        out->params.crop.x0||out->params.crop.y0||out->params.crop.x1!=out->w||out->params.crop.y1!=out->h||
        out->bilipai_d3d11_ready||out->params.bilipai_decoder_current_reference||

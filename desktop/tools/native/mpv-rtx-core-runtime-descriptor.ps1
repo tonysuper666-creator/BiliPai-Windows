@@ -6,10 +6,10 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
-       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d'-or
+       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'bcf8e4be52de3a76906c22c6d7600224892eb3dcb09466d117d2094156502553'-or
        $Native.coreAbiHeaderSha256-cne$Manifest.coreAbiHeaderSha256-or$Native.tokenProtocol-ne2-or
        $Native.presentationProperty-cne$Manifest.presentationProperty-or
-       $Native.sourcePatchHelperSha256-cne'157c16b7b455d8e36e3741c8f57fbcf9b0c0520ac9662bb13098e6337be7655c'-or
+       $Native.sourcePatchHelperSha256-cne'd248e53a614c865d22237d0cf7516c960b221d798b4e59988357c8298b5b5dd0'-or
        $Native.nativeBinaryBuiltByThisProgram-cne$false-or$Native.gpuExecuted-cne$false-or
        $Native.displayProofRuntimeVerified-cne$false){throw 'Actual presentation native receipt identity mismatch.'}
     if(@($Native.filterSourceFiles).Count-ne21){throw 'Incomplete presentation private source inventory.'}
@@ -63,13 +63,13 @@ function Install-RtxCoreDescriptorMpvRuntime {
     if($presentation){
         $inputSubdirectory='rtx-present-v1';$manifestLeaf='bilipai-rtx-presentation-source-manifest.json'
         $expected.variant='bilipai-veyra-rtx-present-v1'
-        $expected.filterSourceManifestSha256='4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d'
+        $expected.filterSourceManifestSha256='bcf8e4be52de3a76906c22c6d7600224892eb3dcb09466d117d2094156502553'
         $expected.nativePatchSha256='e3bf1eada6100b98adf34d3f6a67685104f3cc7d986fa35cabb14fea1afa2bd7'
         $expected.patchedNativeSourceSha256='adef9a85fe5a3fadd3b10939fc198b003f1f9270fff5ad52bcea4f9f258c776c'
         $expected.presentationProtocolVersion=2
         $expected.presentationProperty='bilipai-rtx-presentation'
         $expected.upstreamEditsSha256='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'
-        $expected.sourcePatchHelperSha256='157c16b7b455d8e36e3741c8f57fbcf9b0c0520ac9662bb13098e6337be7655c'
+        $expected.sourcePatchHelperSha256='d248e53a614c865d22237d0cf7516c960b221d798b4e59988357c8298b5b5dd0'
     }
     if ($runtime.schema -ne 2) { throw 'Unsupported patched runtime descriptor schema.' }
     if ($runtime.closedSdkOrRuntimeIncluded -cne $false -or $runtime.vfgImplemented -cne $false -or $runtime.rtxCoreBridgeVerified -cne $false) { throw 'RTX candidate is source-only, excludes closed runtime/VFG and is not hardware-verified.' }

@@ -30,8 +30,11 @@ struct bv_mpv_hdr_chain_ticket {
  * NOT readiness, completion, display, authentication or PRIVATE2 authority.
  * Produced only by exact-current acquire AFTER actual SR receipt matching and
  * successful restore/Copy/final Signal enqueue. The real owner immediately
- * consumes it against its retained decoder epoch/pool/source/ticket, then clears
- * its stack copy before returning. Never retain/serialize it or stamp a token.
+ * consumes it against its retained decoder epoch/pool/source/ticket and the
+ * actual input/output colour tuples, then clears its stack copy before returning.
+ * source_kind/output_intent classify ONLY this queued diagnostic route; they
+ * never make this record a frame token or native-HDR preservation certificate.
+ * Never retain/serialize it or stamp a token.
  * Source, host, SR loan, output pool and final-use custody remain unchanged. */
 enum { BV_MPV_HDR_QUEUED_OUTPUT_RECORD_V1 = 1 };
 struct bv_mpv_hdr_queued_output_record {
@@ -41,6 +44,14 @@ struct bv_mpv_hdr_queued_output_record {
     int64_t pts_numerator;
     int32_t pts_denominator;
     uint32_t input_width, input_height, width, height, sr_effects, output_array_slice;
+    uint32_t source_kind, output_intent;
+    /* Exact retained decoder snapshot at the actual checked SR submission.
+     * AV and libplacebo numbering are separate; do not infer/retag either. */
+    int32_t input_av_format, input_av_sw_format, input_av_matrix, input_av_transfer;
+    int32_t input_av_primaries, input_av_range, input_av_chroma;
+    /* Read from the actual generated pool picture ONLY during queued acquire.
+     * No content peak, mastering-display inference or conversion strength. */
+    int32_t output_system, output_levels, output_transfer, output_primaries;
     bool proxy_sr_accepted, restore_copy_enqueued, final_use_signal_enqueued;
 };
 /* CPU-only invalidation on the chain's existing legal lane. No receipt/resource

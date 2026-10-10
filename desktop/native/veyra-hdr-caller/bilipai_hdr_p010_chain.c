@@ -340,6 +340,17 @@ HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *c,
         .input_width=(uint32_t)c->source->w,.input_height=(uint32_t)c->source->h,
         .width=sr.width,.height=sr.height,.sr_effects=sr.effects,
         .output_array_slice=(uint32_t)(uintptr_t)c->output->planes[1],
+        /* Classified only after the actual retained source qualified P010/PQ
+         * and the actual matched SR-only result; no config/peak/TrueHDR claim. */
+        .source_kind=MP_BILIPAI_SOURCE_NATIVE_HDR,
+        .output_intent=MP_BILIPAI_OUTPUT_NATIVE_HDR_PRESERVE,
+        .input_av_format=origin->frame_snapshot.av_format,
+        .input_av_sw_format=origin->frame_snapshot.av_sw_format,
+        .input_av_matrix=origin->frame_snapshot.av_matrix,
+        .input_av_transfer=origin->frame_snapshot.av_transfer,
+        .input_av_primaries=origin->frame_snapshot.av_primaries,
+        .input_av_range=origin->frame_snapshot.av_range,
+        .input_av_chroma=origin->frame_snapshot.av_chroma,
         .proxy_sr_accepted=true};
     /* Create every SRV/ref/fence/parameter outside BOTH locks. The source
      * frame already has queued work, so all later failures keep whole custody. */
@@ -491,6 +502,15 @@ HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *c,
        q->generation!=c->cfg.generation||q->sequence!=ticket->sequence||
        q->adapter_luid!=c->cfg.adapter_luid||q->pts_numerator!=ticket->pts_numerator||
        q->pts_denominator!=ticket->pts_denominator||q->sr_effects!=BV_VIDEO_SR||
+       q->source_kind!=MP_BILIPAI_SOURCE_NATIVE_HDR||
+       q->output_intent!=MP_BILIPAI_OUTPUT_NATIVE_HDR_PRESERVE||
+       q->input_av_format!=origin->frame_snapshot.av_format||
+       q->input_av_sw_format!=origin->frame_snapshot.av_sw_format||
+       q->input_av_matrix!=origin->frame_snapshot.av_matrix||
+       q->input_av_transfer!=origin->frame_snapshot.av_transfer||
+       q->input_av_primaries!=origin->frame_snapshot.av_primaries||
+       q->input_av_range!=origin->frame_snapshot.av_range||
+       q->input_av_chroma!=origin->frame_snapshot.av_chroma||
        q->input_width!=(uint32_t)c->source->w||q->input_height!=(uint32_t)c->source->h||
        q->width!=c->cfg.output_width||q->height!=c->cfg.output_height||
        q->output_array_slice!=(uint32_t)(uintptr_t)c->output->planes[1])
@@ -504,7 +524,14 @@ HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *c,
     struct mp_image *loan=mp_image_new_ref(c->output);
     if(!loan)return E_OUTOFMEMORY;
     c->output_loaned=true;
-    *record=c->queued_facts;record->version=BV_MPV_HDR_QUEUED_OUTPUT_RECORD_V1;
+    *record=c->queued_facts;
+    /* These are actual generated pool metadata, never the requested settings
+     * or raw source history. The real VF owner independently checks both tuples. */
+    record->output_system=loan->params.repr.sys;
+    record->output_levels=loan->params.repr.levels;
+    record->output_transfer=loan->params.color.transfer;
+    record->output_primaries=loan->params.color.primaries;
+    record->version=BV_MPV_HDR_QUEUED_OUTPUT_RECORD_V1;
     *out=loan;return S_OK; // no completion, current-HDR, token or display authority
 }
 HRESULT bv_mpv_hdr_chain_poll(struct bv_mpv_hdr_chain *c,
