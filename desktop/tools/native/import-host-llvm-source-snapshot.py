@@ -837,6 +837,56 @@ def require_matching_facet(facet, original, current):
     fail('Actual restored trees or host/compiler witnesses differ (' + facet + ')')
 
 
+def cpu_flag_profiles(value):
+    if not isinstance(value, list) or not 0 < len(value) <= 4096:
+        fail('CPU flag profiles must be a nonempty bounded list')
+    profiles = []
+    for row in value:
+        if (not isinstance(row, str) or not 0 < len(row) <= 16384
+                or not re.fullmatch(r'[a-z0-9_]+(?:[ \t]+[a-z0-9_]+)*', row)):
+            fail('CPU flag profile has invalid tokens')
+        tokens = row.split()
+        if len(tokens) > 1024 or len(set(tokens)) != len(tokens):
+            fail('CPU flag profile has duplicate or excessive tokens')
+        profiles.append(frozenset(tokens))
+    return profiles
+
+
+def host_environment_comparison(original, current):
+    if not isinstance(original, dict) or not isinstance(current, dict):
+        fail('Actual host environment must be an object')
+    # No other witness is relaxed: ABI, kernel, container tool bytes/version,
+    # runner image, and every captured build variable still match exactly.
+    require_matching_facet('hostEnvironment',
+        {key: value for key, value in original.items() if key != 'cpuFlags'},
+        {key: value for key, value in current.items() if key != 'cpuFlags'})
+    original_profiles = cpu_flag_profiles(original.get('cpuFlags'))
+    current_profiles = cpu_flag_profiles(current.get('cpuFlags'))
+    required = set().union(*original_profiles)
+    for profile in current_profiles:
+        if not required.issubset(profile):
+            fail('Current CPU profile lacks originally available flags: '
+                 + ','.join(sorted(required - profile)))
+    additions = [sorted(profile - required) for profile in current_profiles]
+    return {'rule': 'NON_CPU_EXACT_EACH_CURRENT_CPU_COVERS_ALL_ORIGINAL_FEATURES',
+            'original': original, 'current': current,
+            'originalSha256': sha(encoded(original)), 'currentSha256': sha(encoded(current)),
+            'originalCpuProfiles': [sorted(profile) for profile in original_profiles],
+            'currentCpuProfiles': [sorted(profile) for profile in current_profiles],
+            'requiredCpuFeatures': sorted(required), 'requiredCpuFeatureCount': len(required),
+            'addedCpuFeaturesByProfile': additions,
+            'addedCpuFeatureCounts': [len(features) for features in additions],
+            'cpuFlagsExactlyEqual': original['cpuFlags'] == current['cpuFlags']}
+
+
+def require_target_host_comparison(target, record):
+    comparison = target.get('hostEnvironmentComparison')
+    if (not isinstance(comparison, dict) or comparison != host_environment_comparison(
+            record['originalHostEnvironment'], comparison.get('current'))):
+        fail('CPU compatibility witness differs from actual target comparison')
+    return comparison
+
+
 def validate_target(control_path, control_sha, workspace, source, install, root):
     control = json_file(control_path, digest(control_sha))
     if (control.get('schema') != 1 or control.get('kind') != 'BILIPAI_HOST_LLVM_IMPORT_CONTROL'
@@ -856,7 +906,7 @@ def validate_target(control_path, control_sha, workspace, source, install, root)
     require_matching_facet('restoredSource',
         subtree(manifest['actualCorrespondingSourceBundleEntries'], 'actual-used-source-worktree'),
         module.pack_tree(None, owned(source, workspace, directory=True), 'actual-used-source-worktree', skip_git=True))
-    require_matching_facet('hostEnvironment', plan['record']['originalHostEnvironment'], host_environment())
+    host_comparison = host_environment_comparison(plan['record']['originalHostEnvironment'], host_environment())
     require_matching_facet('installedTools', plan['record']['originalInstalledHostTools'], installed_tools(install))
     cache = owned(workspace / 'build-x64/CMakeCache.txt', workspace)
     actual = {}
@@ -894,7 +944,8 @@ def validate_target(control_path, control_sha, workspace, source, install, root)
                'actualOuterCMakeCacheSha256': file_sha(cache), 'wholeTreesVerified': True,
                'actualTargetGraphSha256': sha(graph.stdout), 'actualTargetGraphCommand': graph_command,
                'llvmOpenmpNotReachableFromActualTargets': True,
-               'hostAndInstalledToolsMatched': True, 'hostCompilerVersionAndTargetProbesExecuted': True,
+               'hostAndInstalledToolsMatched': True, 'hostEnvironmentComparison': host_comparison,
+               'hostCompilerVersionAndTargetProbesExecuted': True,
                'freshLlvmCompileExecuted': False, 'copiedBuildStamps': False, 'gpuOrDriverTested': False}
     write_new(Path(control['validationReceipt']), receipt)
 
@@ -906,6 +957,7 @@ def finish_import(plan, output, control_sha, command):
             or target.get('controlSha256') != control_sha or target.get('currentContext') != context()
             or target.get('recordId') != plan['record']['id'] or target.get('freshLlvmCompileExecuted') is not False):
         fail('Real LLVM validation target receipt missing')
+    require_target_host_comparison(target, plan['record'])
     receipt = {'schema': 1, 'kind': 'BILIPAI_HOST_LLVM_IMPORT_RECEIPT', 'status': IMPORT_STATUS,
                'recordId': plan['record']['id'], 'catalogSha256': CATALOG_SHA256,
                'controlSha256': control_sha, 'targetValidationReceiptSha256': file_sha(path),
@@ -990,6 +1042,7 @@ def verify_delivery_import(directory, root, current, commit, tag):
             or any(item.get('freshLlvmCompileExecuted') is not False or item.get('gpuOrDriverTested') is not False for item in (receipt, target))
             or receipt.get('reproducible') is not False or receipt.get('accelerationMeasured') is not False):
         fail('Delivery import/current build/original snapshot closure differs')
+    require_target_host_comparison(target, record)
     digest(target.get('actualOuterCMakeCacheSha256'))
     digest(target.get('actualTargetGraphSha256'))
     return record
