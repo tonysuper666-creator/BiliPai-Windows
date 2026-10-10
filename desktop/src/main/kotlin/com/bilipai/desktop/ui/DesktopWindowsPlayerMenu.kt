@@ -29,7 +29,8 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindow
-import com.android.purebilibili.core.ui.components.AppSurface
+import com.android.purebilibili.core.ui.AppPopupSurface
+import com.android.purebilibili.core.ui.AppPopupSurfaceType
 import java.awt.Dialog
 import java.awt.Rectangle
 import java.awt.Toolkit
@@ -154,20 +155,23 @@ internal fun DesktopWindowsPlayerMenu(
         }
         CompositionLocalProvider(LocalDensity provides parentDensity) {
             com.bilipai.desktop.appearance.DesktopWindowsOwnedDisplayScaleInputScope(window, owner) {
-                AppSurface(modifier = modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onSurface) {
-                    val menuScroll = rememberScrollState()
-                    Box(Modifier.fillMaxSize()) {
-                        Column(Modifier.fillMaxSize().verticalScroll(menuScroll)
-                            .padding(top = 4.dp, bottom = 4.dp, end = 12.dp), content = content)
-                        if (menuScroll.maxValue > 0) VerticalScrollbar(
-                            adapter = rememberScrollbarAdapter(menuScroll),
-                            modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
-                                .padding(vertical = 4.dp, horizontal = 3.dp),
-                            style = defaultScrollbarStyle().copy(thickness = 4.dp,
-                                unhoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .28f),
-                                hoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .60f)),
-                        )
+                DesktopWindowsPopupMaterialHost(sourceOwner = window, owns = { window.isDisplayable }) {
+                    AppPopupSurface(type = AppPopupSurfaceType.MENU,
+                        modifier = modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
+                        containerColor = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onSurface) {
+                        val menuScroll = rememberScrollState()
+                        Box(Modifier.fillMaxSize()) {
+                            Column(Modifier.fillMaxSize().verticalScroll(menuScroll)
+                                .padding(top = 4.dp, bottom = 4.dp, end = 12.dp), content = content)
+                            if (menuScroll.maxValue > 0) VerticalScrollbar(
+                                adapter = rememberScrollbarAdapter(menuScroll),
+                                modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                                    .padding(vertical = 4.dp, horizontal = 3.dp),
+                                style = defaultScrollbarStyle().copy(thickness = 4.dp,
+                                    unhoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .28f),
+                                    hoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .60f)),
+                            )
+                        }
                     }
                 }
             }
