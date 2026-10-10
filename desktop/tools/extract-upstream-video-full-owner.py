@@ -301,6 +301,30 @@ def captured_original_download_task_delta(path,text):
  ('            options = options\n        )','            options = options\n        ), capturedDownloadReply)')]
  for old,new in edits:
   assert body.count(old)==1,old;body=body.replace(old,new,1)
+ text=text[:begin]+body+text[end:]
+ # The mounted Windows chooser reuses the original producer. Capture its exact
+ # target and existing plugin dispatch before the asynchronous request is queued.
+ begin=text.index('    fun downloadWithQuality(')
+ end=text.index('    internal fun downloadBatchWithQuality(',begin)
+ original=text[begin:end];body=original
+ edits=[('        options: com.android.purebilibili.feature.download.DownloadOptions = com.android.purebilibili.feature.download.DownloadOptions()\n',
+         '        options: com.android.purebilibili.feature.download.DownloadOptions = com.android.purebilibili.feature.download.DownloadOptions(),\n        desktopStillCurrent: () -> Boolean = { true }\n'),
+        ('        _showDownloadDialog.value = false\n',
+         '        val targetBvid = currentBvid\n        val targetCid = currentCid\n        val expectedDownload = environment.plugins.capturePlaybackDispatch() ?: return\n        val stillCaptured = { desktopStillCurrent() &&\n            environment.plugins.isPlaybackDispatchCurrent(expectedDownload) &&\n            currentBvid == targetBvid && currentCid == targetCid }\n        if (current.info.bvid != targetBvid || current.info.cid != targetCid || !stillCaptured()) return\n        _showDownloadDialog.value = false\n'),
+        ('        environment.invocations.launch {\n',
+         '        environment.invocations.launch {\n            if (!stillCaptured()) throw kotlinx.coroutines.CancellationException("Original video download selection retired")\n'),
+        ('                targetBvid = currentBvid,\n                targetCid = currentCid,\n',
+         '                targetBvid = targetBvid,\n                targetCid = targetCid,\n'),
+        ('            if (task == null) {\n',
+         '            if (!stillCaptured()) throw kotlinx.coroutines.CancellationException("Original video download selection retired")\n            if (task == null) {\n'),
+        ('            val added = environment.download.addTask(task)\n',
+         '            val added = environment.download.addTask(task, stillCaptured)\n')]
+ for old,new in edits:
+  assert body.count(old)==1,'original video download selection source anchor';body=body.replace(old,new,1)
+ inverse=body
+ for old,new in reversed(edits):
+  assert inverse.count(new)==1,'original video download selection inverse';inverse=inverse.replace(new,old,1)
+ assert inverse==original,'complete original download selection inverse'
  return text[:begin]+body+text[end:]
 
 def pending_playback_delta(path,text):

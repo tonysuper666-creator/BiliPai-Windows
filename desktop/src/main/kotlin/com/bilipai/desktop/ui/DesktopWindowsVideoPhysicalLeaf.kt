@@ -266,6 +266,25 @@ internal class DesktopWindowsVideoActions(
     var audioLanguageMenu by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoAudioSelection?>(null) }
     var audioTrackMenu by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoAudioSelection?>(null) }
     var interactionMode by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoInteraction?>(null) }
+    var downloadSelection by remember(assembly, route) { mutableStateOf<DesktopWindowsVideoDownloadSelection?>(null) }
+    fun openDownloadSelection(value: VideoPlaybackUiState.Success) {
+        val expected = assembly.native.current() ?: return
+        val pageJob = partScope.coroutineContext[kotlinx.coroutines.Job] ?: return
+        fun stillCaptured(): Boolean = current() && rootEnvironment.owns() &&
+            rootEnvironment.currentKey() === route && assembly.native.isCurrent(expected) &&
+            shell.factoryFor(assembly).isPresentationCurrent(assembly, expected) &&
+            assembly.playback.captureDesktopPlaybackState().let {
+                it is VideoPlaybackUiState.Success && it.info.bvid == expected.request.bvid &&
+                    it.info.cid == expected.request.cid && !it.isQualitySwitching
+            }
+        if (value.info.bvid != expected.request.bvid || value.info.cid != expected.request.cid) return
+        downloadSelection?.dismiss()
+        downloadSelection = DesktopWindowsVideoDownloadSelection.capture(value, pageJob, ::stillCaptured) { quality, options, owns ->
+            // The original VM owns the actual request Job, account receipt and task capture.
+            // No request or persistence is performed under native/Store admission locks.
+            assembly.playback.downloadWithQuality(quality, options, owns)
+        }
+    }
     // SHARE alone retains its original draft tree across temporary owner hiding.
     // The same Root, route, account authorization and accepted full source remain required.
     val retainedShareSource = assembly.native.current()?.takeIf { accepted ->
@@ -346,6 +365,9 @@ internal class DesktopWindowsVideoActions(
         latestBootstrapError == null && current() && feedbackPresentationCurrent() && latestOriginal ===
             assembly.playback.captureDesktopPlaybackState()
     }
+    val speedOptions by remember(platforms.holder.settingsContext) {
+        DesktopOriginalVideoControlSettings.getPlaybackSpeedOptions(platforms.holder.settingsContext)
+    }.collectAsState(emptyList())
     val completion by remember(platforms.holder.settingsContext) {
         DesktopOriginalVideoControlSettings.getPlaybackCompletionBehavior(platforms.holder.settingsContext)
     }.collectAsState(DesktopOriginalVideoControlSettings.getPlaybackCompletionBehaviorSync(platforms.holder.settingsContext))
@@ -646,6 +668,7 @@ internal class DesktopWindowsVideoActions(
                     onChromePointerInput = ::observeChromePointer,
                     hasPrevious = shell.playback.hasPrevious, hasNext = shell.playback.hasNext,
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
+                    speedOptions = speedOptions,
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),
                     selectedQuality = success?.currentQuality,
                     canOpenCollection = canOpenCollection, canOpenPlaybackQueue = canOpenPlaybackQueue,
@@ -706,7 +729,10 @@ internal class DesktopWindowsVideoActions(
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.openCoinDialog() }) { Text("投币") }
-                                TextButton(onClick = { if (current()) actions.download(assembly, success) }) { Text("下载当前画质") }
+                                TextButton(onClick = {
+                                    if (desktopWindowsVideoCanChooseDownloadQuality(success)) openDownloadSelection(success)
+                                    else if (current()) actions.download(assembly, success)
+                                }) { Text(if (desktopWindowsVideoCanChooseDownloadQuality(success)) "下载" else "下载当前画质") }
                                 TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.SHARE) }, enabled = interactionCurrent()) { Text("分享视频") }
                             }
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -901,6 +927,22 @@ internal class DesktopWindowsVideoActions(
                 collectionQueueSource, showCollection && canOpenCollection, showPlaybackQueue && canOpenPlaybackQueue,
                 ::collectionQueueCurrent, { showCollection = false }, { showPlaybackQueue = false }))
         }
+    }
+
+    downloadSelection?.takeIf { it.isCurrent() }?.let { selected ->
+        com.android.purebilibili.feature.download.DownloadQualityDialog(
+            title = selected.title,
+            qualityOptions = selected.qualityOptions,
+            currentQuality = selected.currentQuality,
+            onQualitySelected = { quality, options ->
+                selected.select(quality, options)
+                if (downloadSelection === selected) downloadSelection = null
+            },
+            onDismiss = {
+                selected.dismiss()
+                if (downloadSelection === selected) downloadSelection = null
+            },
+        )
     }
 
     // Consume only the original VM suggestion; its coordinator owns the threshold,

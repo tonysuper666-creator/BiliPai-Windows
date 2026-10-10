@@ -51,6 +51,7 @@ internal fun DesktopWindowsVideoControlBar(
     detailsOpen: Boolean, hasPrevious: Boolean, hasNext: Boolean, canPictureInPicture: Boolean,
     onInteractionHoldChanged: (DesktopWindowsFullscreenChromeInteraction) -> Unit,
     onChromePointerInput: () -> Unit,
+    speedOptions: List<Float>,
     qualities: List<Pair<Int, String>>, selectedQuality: Int?,
     canOpenCollection: Boolean, canOpenPlaybackQueue: Boolean,
     onOpenCollection: () -> Unit, onOpenPlaybackQueue: () -> Unit,
@@ -65,6 +66,9 @@ internal fun DesktopWindowsVideoControlBar(
     enhancement: @Composable () -> Unit,
 ) {
     val durationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
+    val menuSpeeds = remember(speedOptions, state.speed) {
+        resolveDesktopWindowsVideoSpeedOptions(speedOptions, state.speed.toFloat())
+    }
     val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
     val interactions = remember { MutableInteractionSource() }
     val hovered by interactions.collectIsHoveredAsState()
@@ -123,10 +127,10 @@ internal fun DesktopWindowsVideoControlBar(
                         }
                         Box {
                             TextButton(onClick = { speedMenu = true }, enabled = enabled,
-                                modifier = Modifier.semantics { contentDescription = "倍速" }) { Text("${state.speed}×") }
+                                modifier = Modifier.semantics { contentDescription = "倍速" }) { Text("${playbackSpeedLabel(state.speed)}×") }
                             DesktopWindowsPlayerMenu(speedMenu, onDismissRequest = { speedMenu = false }, preferredHeight = 256.dp) {
-                                listOf(.75, 1.0, 1.25, 1.5, 2.0).forEach { speed ->
-                                    DropdownMenuItem(text = { Text("${speed}×") }, onClick = { onSpeed(speed); speedMenu = false })
+                                menuSpeeds.forEach { speed ->
+                                    DropdownMenuItem(text = { Text("${speed}×") }, onClick = { onSpeed(speed.toDouble()); speedMenu = false })
                                 }
                             }
                         }
@@ -189,9 +193,9 @@ internal fun DesktopWindowsVideoControlBar(
                                 Slider(state.volume.toFloat().coerceIn(0f, 100f), { onVolume(it.toDouble()) },
                                     Modifier.width(200.dp).padding(horizontal = 12.dp), enabled = enabled && state.ready, valueRange = 0f..100f)
                                 HorizontalDivider()
-                                listOf(.75, 1.0, 1.25, 1.5, 2.0).forEach { speed ->
+                                menuSpeeds.forEach { speed ->
                                     DropdownMenuItem(text = { Text("倍速 ${speed}×") }, enabled = enabled,
-                                        onClick = { onSpeed(speed); more = false })
+                                        onClick = { onSpeed(speed.toDouble()); more = false })
                                 }
                                 HorizontalDivider()
                                 qualities.forEach { (id, label) -> DropdownMenuItem(text = { Text("画质 · $label") }, enabled = enabled,
