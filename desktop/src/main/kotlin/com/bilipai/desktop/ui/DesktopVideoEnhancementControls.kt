@@ -116,7 +116,7 @@ private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhanc
     var actionError by remember(configuration) { mutableStateOf<String?>(null) }
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         AppSwitchPreference(title = "NVIDIA 自动增强",
-            subtitle = "所有视频统一使用 NVIDIA 视频增强；按当前视频、显卡和显示器条件自动处理。",
+            subtitle = "按当前视频和显示尺寸增强清晰度，可选 SDR 转 HDR。播放时可直接调整。",
             checked = enabled, onCheckedChange = { value ->
                 actionError = null
                 runCatching { onToggle(value) }.onFailure { actionError = "保存 NVIDIA 增强设置失败，请重试" }
@@ -134,8 +134,8 @@ private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhanc
         AppText("HDR 自动仅在 HDR 显示目标可用时转换 SDR；原生 HDR 保持原样。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         if (enabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE)) AppText(
-            if (!state.veyraAvailable) "增强内核暂不可用，处理质量设置尚未应用。"
-            else "当前播放路径不支持质量调节；设置将在增强适用时生效。",
+            if (!state.veyraAvailable) "当前无法应用处理质量，选择已保存，可用时自动应用。"
+            else "当前视频暂不支持质量调节，选择已保存，支持时自动应用。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         AppText(state.statusText, style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant)

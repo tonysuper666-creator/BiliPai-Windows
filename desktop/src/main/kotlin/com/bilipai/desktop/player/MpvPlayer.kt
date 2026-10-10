@@ -1207,9 +1207,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             val nativeHdr = nvidiaHdrTransfer(input.gamma) || (input.dolbyVisionProfile ?: 0) > 0
             val options = action.options.copy(hdr = action.options.hdr && !nativeHdr)
+            val nativeResolutionViewportMatches = if (options.backend == NvidiaVideoBackend.VEYRA_CORE)
+                input.displayWidth > 0 && input.displayHeight > 0 &&
+                    input.displayWidth <= input.inputWidth && input.displayHeight <= input.inputHeight
+                else input.displayWidth == input.inputWidth && input.displayHeight == input.inputHeight
             if (options.nativeResolutionProcessing && (options.scale != 1.0 || nativeHdr ||
-                    input.sourceVersion != activeSourceVersion ||
-                    input.displayWidth != input.inputWidth || input.displayHeight != input.inputHeight ||
+                    input.sourceVersion != activeSourceVersion || !nativeResolutionViewportMatches ||
                     input.inputWidth % 2 != 0 || input.inputHeight % 2 != 0 || maximum <= 0 ||
                     input.gamma !in setOf("bt.1886", "bt.709", "srgb", "linear", "gamma1.8", "gamma2.0",
                         "gamma2.2", "gamma2.4", "gamma2.6", "gamma2.8", "prophoto", "st428"))) {

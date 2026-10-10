@@ -1742,10 +1742,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }) else null,
                             onSeekTo = if ((showVideo || section == DesktopSection.STORY) && playing.details != null) playback::seekTo else null,
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
-                        if (section != DesktopSection.STORY) DesktopVideoEnhancementControls(enhancementState,
-                            pluginRuntime.enhancementConfiguration,
-                            onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) },
-                            onSettings = { enhancementSettings = true })
+                        if (section != DesktopSection.STORY) DesktopVideoEnhancementCompactSlot {
+                            DesktopVideoEnhancementControls(enhancementState,
+                                pluginRuntime.enhancementConfiguration,
+                                onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) },
+                                onSettings = { enhancementSettings = true })
+                        }
                         }
                     }
 

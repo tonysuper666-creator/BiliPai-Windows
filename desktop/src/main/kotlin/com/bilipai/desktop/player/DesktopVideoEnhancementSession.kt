@@ -203,12 +203,20 @@ class DesktopVideoEnhancementSession(
             nativeIdentity.source != currentSource.source) {
             bypass(Anime4KBypassReason.NONE, "等待当前原生视频载入"); return@synchronized
         }
+        val sharedCoreAvailable = input.target.veyraAvailable &&
+            input.target.sourceVersion == currentSource.sourceVersion &&
+            input.output.gamma in setOf("bt.1886", "srgb") && input.output.inputPrimaries == "bt.709" &&
+            !nvidiaHdrTransfer(input.output.gamma) && input.output.dolbyVisionProfile == null
+        val backend = if (sharedCoreAvailable) NvidiaVideoBackend.VEYRA_CORE else NvidiaVideoBackend.DRIVER
         val decision = resolveDesktopNvidiaVideoDecision(input.output.inputWidth, input.output.inputHeight,
             input.output.displayWidth, input.output.displayHeight, input.output.maximumTextureDimension,
             input.output.gamma, input.output.dolbyVisionProfile, input.output.hdrDisplay.hdrEnabled,
-            input.target.transfer.takeIf { input.target.sourceVersion == source!!.sourceVersion },
-            input.target.primaries.takeIf { input.target.sourceVersion == source!!.sourceVersion },
-            (input.target.nativeResolutionPatchAvailable || (input.target.veyraAvailable && input.output.gamma in setOf("bt.1886", "srgb") && input.output.inputPrimaries == "bt.709" && !nvidiaHdrTransfer(input.output.gamma) && (input.output.dolbyVisionProfile ?: 0) <= 0)) && input.target.sourceVersion == currentSource.sourceVersion, hdrMode = input.settings.preferences.hdrMode)
+            input.target.transfer.takeIf { input.target.sourceVersion == currentSource.sourceVersion },
+            input.target.primaries.takeIf { input.target.sourceVersion == currentSource.sourceVersion },
+            nativeResolutionPatchAvailable = input.target.nativeResolutionPatchAvailable &&
+                input.target.sourceVersion == currentSource.sourceVersion,
+            hdrMode = input.settings.preferences.hdrMode,
+            sharedCoreNativeResolutionAvailable = sharedCoreAvailable)
         if (!decision.needsProcessing) {
             val text = when (decision.kind) {
                 DesktopNvidiaVideoDecisionKind.WAITING_VIDEO -> "等待实际视频尺寸，原画输出"
@@ -217,8 +225,6 @@ class DesktopVideoEnhancementSession(
             }
             bypass(Anime4KBypassReason.NONE, text); return@synchronized
         }
-        val backend = if (input.target.veyraAvailable && input.target.sourceVersion == currentSource.sourceVersion &&
-            input.output.gamma in setOf("bt.1886", "srgb") && input.output.inputPrimaries == "bt.709" && !decision.sourceIsHdr) NvidiaVideoBackend.VEYRA_CORE else NvidiaVideoBackend.DRIVER
         val request = Request(currentSource, epoch, input.settings.preferences.optionsFor(decision, backend), nativeIdentity)
         val previous = owned
         if (previous != null && previous.request.matches(request)) {

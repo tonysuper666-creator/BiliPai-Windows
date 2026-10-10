@@ -3,6 +3,73 @@ package com.bilipai.desktop.player
 import kotlin.test.*
 
 class DesktopNvidiaVideoAutoPolicyTest {
+
+    @Test fun sharedCoreProcessesFourAndEightKInputsAtNativeSizeBeforeRendererDownscale() {
+        for (dimensions in listOf(intArrayOf(3840, 2160, 1920, 1080),
+            intArrayOf(7680, 4320, 3840, 2160), intArrayOf(3840, 2160, 3840, 2160))) {
+            val decision = resolveDesktopNvidiaVideoDecision(dimensions[0], dimensions[1],
+                dimensions[2], dimensions[3], 16384, "bt.1886", null, false,
+                sharedCoreNativeResolutionAvailable = true)
+            assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, decision.kind)
+            assertEquals(1.0, decision.scale)
+            assertTrue(decision.nativeResolutionProcessing)
+            assertTrue(decision.needsProcessing)
+            assertFalse(decision.hdr)
+        }
+    }
+
+    @Test fun sharedCoreUnityHdrRemainsSeparateFromNativeSizeProcessing() {
+        for (mode in DesktopNvidiaVideoHdrMode.entries) {
+            val decision = resolveDesktopNvidiaVideoDecision(3840, 2160, 1920, 1080, 16384,
+                "srgb", null, true, "pq", "bt.2020", hdrMode = mode,
+                sharedCoreNativeResolutionAvailable = true)
+            assertEquals(1.0, decision.scale)
+            assertTrue(decision.nativeResolutionProcessing)
+            assertEquals(mode == DesktopNvidiaVideoHdrMode.AUTO, decision.hdr)
+            assertEquals(if (mode == DesktopNvidiaVideoHdrMode.AUTO)
+                DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION_AND_HDR
+                else DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, decision.kind)
+        }
+    }
+
+    @Test fun driverPatchRetainsItsExactRectangleGateWithoutSharedCoreCapability() {
+        val downscale = resolveDesktopNvidiaVideoDecision(3840, 2160, 1920, 1080, 16384,
+            "bt.1886", null, false, nativeResolutionPatchAvailable = true)
+        assertEquals(DesktopNvidiaVideoDecisionKind.DIRECT, downscale.kind)
+        assertFalse(downscale.needsProcessing)
+        val exact = resolveDesktopNvidiaVideoDecision(3840, 2160, 3840, 2160, 16384,
+            "bt.1886", null, false, nativeResolutionPatchAvailable = true)
+        assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, exact.kind)
+        assertFalse(resolveDesktopNvidiaVideoDecision(3840, 2160, 3840, 2160, 16384,
+            "bt.1886", null, false).needsProcessing)
+    }
+
+    @Test fun sharedCoreUnityStillRequiresEvenBoundedKnownSdrInputAndValidViewport() {
+        for ((transfer, dv) in listOf(null to null, "unknown" to null, "linear" to null,
+            "bt.709" to null, "pq" to null, "hlg" to null, "bt.1886" to 5,
+            "bt.1886" to 0)) {
+            val decision = resolveDesktopNvidiaVideoDecision(3840, 2160, 1920, 1080,
+                16384, transfer, dv, false, sharedCoreNativeResolutionAvailable = true)
+            assertFalse(decision.nativeResolutionProcessing, "$transfer/$dv")
+            assertFalse(decision.needsProcessing, "$transfer/$dv")
+        }
+        for ((width, height, limit) in listOf(Triple(3839, 2160, 16384), Triple(3840, 2159, 16384),
+            Triple(7680, 4320, 4096), Triple(3840, 2160, null), Triple(3840, 2160, 0))) {
+            val decision = resolveDesktopNvidiaVideoDecision(width, height, 1920, 1080,
+                limit, "srgb", null, false, sharedCoreNativeResolutionAvailable = true)
+            assertFalse(decision.nativeResolutionProcessing)
+            assertFalse(decision.needsProcessing)
+        }
+        for ((width, height) in listOf(0 to 1080, 1920 to 0, -1 to 1080)) {
+            val decision = resolveDesktopNvidiaVideoDecision(3840, 2160, width, height,
+                16384, "srgb", null, false, sharedCoreNativeResolutionAvailable = true)
+            assertEquals(DesktopNvidiaVideoDecisionKind.WAITING_VIDEO, decision.kind)
+            assertFalse(decision.needsProcessing)
+        }
+        assertFalse(resolveDesktopNvidiaVideoDecision(3840, 2160, 3841, 2160, 16384,
+            "srgb", null, false, sharedCoreNativeResolutionAvailable = true).nativeResolutionProcessing)
+    }
+
     @Test fun userHdrOffOnlyDisablesConversionAndKeepsTheBoundedUpscale() {
         val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 5120, 2880, 16384, "bt.1886", null,
             true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.OFF)

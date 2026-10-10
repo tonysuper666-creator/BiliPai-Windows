@@ -30,6 +30,7 @@ internal fun resolveDesktopNvidiaVideoDecision(
     targetPrimaries: String? = null,
     nativeResolutionPatchAvailable: Boolean = false,
     hdrMode: DesktopNvidiaVideoHdrMode = DesktopNvidiaVideoHdrMode.OFF,
+    sharedCoreNativeResolutionAvailable: Boolean = false,
 ): DesktopNvidiaVideoDecision {
     val transfer = inputTransfer?.lowercase()
     val sourceIsHdr = dolbyVisionProfile != null || transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -49,11 +50,14 @@ internal fun resolveDesktopNvidiaVideoDecision(
         min(4.0, min(requestedScale, min(maximumTextureDimension.toDouble() / inputWidth,
             maximumTextureDimension.toDouble() / inputHeight))).coerceAtLeast(1.0)
     } else 1.0
-    // First bounded candidate: known SDR and an exact even-sized native rectangle.
-    // Downscale, unknown dimensions/colour/limit and native HDR/DV keep prior behavior.
-    val nativeResolution = nativeResolutionPatchAvailable && knownSdr && !sourceIsHdr &&
-        scale == 1.0 && displayWidth == inputWidth && displayHeight == inputHeight &&
-        inputWidth % 2 == 0 && inputHeight % 2 == 0 &&
+    // The driver patch still requires an exact native rectangle. The verified shared
+    // core can process its qualified SDR input at 1x before the renderer downsizes it.
+    val nativeResolutionViewport = (nativeResolutionPatchAvailable &&
+        displayWidth == inputWidth && displayHeight == inputHeight) ||
+        (sharedCoreNativeResolutionAvailable && transfer in setOf("bt.1886", "srgb") &&
+            displayWidth <= inputWidth && displayHeight <= inputHeight)
+    val nativeResolution = nativeResolutionViewport && knownSdr && !sourceIsHdr &&
+        scale == 1.0 && inputWidth % 2 == 0 && inputHeight % 2 == 0 &&
         maximumTextureDimension != null && maximumTextureDimension >= max(inputWidth, inputHeight)
     val kind = when {
         scale > 1.0 && hdr -> DesktopNvidiaVideoDecisionKind.UPSCALE_AND_HDR

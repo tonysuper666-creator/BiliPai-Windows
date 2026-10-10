@@ -59,11 +59,22 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         assertTrue(player.isNativeTrackIdentityCurrent(identity))
     }
     fun hasQueuedNvidia() = queue.any { it.javaClass.simpleName == "NvidiaVideo" }
-    fun recordVeyra(binding: DesktopVeyraVerifiedBinding) {
+    fun recordOutput(transform: (PlayerVideoOutputState) -> PlayerVideoOutputState) {
+        @Suppress("UNCHECKED_CAST")
+        val output = field("mutableVideoOutput").get(player) as MutableStateFlow<PlayerVideoOutputState>
+        output.value = transform(output.value)
+    }
+    fun recordDriverNativePatch() {
+        type.getDeclaredField("nativeResolutionPatchAvailable").apply { isAccessible = true }.setBoolean(actor, true)
+        @Suppress("UNCHECKED_CAST")
+        val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
+        observed.value = observed.value.copy(nativeResolutionPatchAvailable = true)
+    }
+    fun recordVeyra(binding: DesktopVeyraVerifiedBinding, sourceVersion: Long = snapshot.sourceVersion) {
         type.getDeclaredField("veyraBinding").apply { isAccessible = true }.set(actor, binding)
         @Suppress("UNCHECKED_CAST")
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
-        observed.value = observed.value.copy(veyraAvailable = true)
+        observed.value = observed.value.copy(veyraAvailable = true, sourceVersion = sourceVersion)
         @Suppress("UNCHECKED_CAST")
         val output = field("mutableVideoOutput").get(player) as MutableStateFlow<PlayerVideoOutputState>
         output.value = output.value.copy(inputPrimaries = "bt.709")
@@ -156,6 +167,147 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
 
 class PlayerNvidiaActorWithdrawalTest {
     @TempDir lateinit var enhancementSettingsRoot: Path
+
+
+    private fun fixtureSharedCoreBinding(): DesktopVeyraVerifiedBinding {
+        val hash = "a".repeat(64)
+        val identity = DesktopVeyraInstalledIdentity("fixture", hash, hash, "fixture", hash, hash, hash, hash)
+        return DesktopVeyraVerifiedBinding(Path.of("C:/fixture/mpv/libmpv-2.dll"),
+            Path.of("C:/fixture/core/bilipai_veyra_core.dll"), Path.of("C:/fixture/runtime"),
+            "00000000-0000-0000-0000-000000000001", hash, identity)
+    }
+
+    @Test fun realSessionAndActorRequestNativeSizeCoreProcessingBeforeRendererDownscale() = runBlocking<Unit> {
+        for ((width, height) in listOf(3840 to 2160, 7680 to 4320)) {
+            val enabled = MutableStateFlow(true)
+            MpvPlayer().use { player ->
+                player.setVolume(23.0); player.setMuted(true); player.setSpeed(1.25)
+                val version = player.loadVersioned(PlaybackSource("file:///C:/core-unity-downscale.avi"))
+                val source = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    // Fixture metadata only: real session/actor logic, no DLL, SDK, GPU or HWND.
+                    actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                    actor.recordOutput { it.copy(inputWidth = width, inputHeight = height,
+                        displayWidth = width / 2, displayHeight = height / 2) }
+                    val playback = player.state.value
+                    DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                        enabled.value = it; CompletableDeferred(Unit)
+                    }).use { enhancement ->
+                        awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        val request = player.nvidiaVideoState.value
+                        val add = actor.native.commands.single { it.take(2) == listOf("vf", "add") }
+                        assertTrue(add[2].contains(":bilipai-rtx="))
+                        assertTrue(add[2].contains(":session=$version:generation=" + request.configurationVersion + ":scale=1.0:quality=4:hdr=no:"))
+                        assertEquals(NvidiaVideoBackend.VEYRA_CORE, request.backend)
+                        assertEquals(1.0, request.requestedScale)
+                        assertTrue(request.nativeResolutionProcessingRequested)
+                        assertTrue(request.pending); assertFalse(request.active); assertFalse(request.veyraSubmitted)
+                        assertFalse(enhancement.state.value.active)
+                        assertEquals(playback, player.state.value)
+                        assertTrue(player.ownsSourceSnapshot(source))
+                        assertEquals(width, player.videoOutput.value.inputWidth)
+                        assertEquals(width / 2, player.videoOutput.value.displayWidth)
+                        assertTrue(actor.native.filters.contains("scale" to "foreign-user-filter"))
+                        assertNotNull(enhancement.setCurrentVideoEnabled(false)).join()
+                        awaitSession { actor.hasQueuedNvidia() && !enhancement.state.value.requested }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
+                        assertEquals(playback, player.state.value)
+                        assertTrue(player.ownsSourceSnapshot(source))
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun realSessionCannotGrantSharedCoreUnityToAnAbsentRetiredOrUnsupportedCoreInput() = runBlocking<Unit> {
+        for (case in listOf("absent-binding", "retired-target", "primaries", "unknown-transfer", "native-pq", "dolby-vision")) {
+            val enabled = MutableStateFlow(true)
+            MpvPlayer().use { player ->
+                val version = player.loadVersioned(PlaybackSource("file:///C:/core-unity-ineligible.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput()
+                    if (case != "absent-binding") actor.recordVeyra(fixtureSharedCoreBinding(),
+                        if (case == "retired-target") version + 1 else version)
+                    actor.recordOutput { it.copy(inputWidth = 3840, inputHeight = 2160,
+                        displayWidth = 1920, displayHeight = 1080,
+                        inputPrimaries = if (case == "primaries") "bt.2020" else "bt.709",
+                        gamma = when (case) { "unknown-transfer" -> null; "native-pq" -> "pq"; else -> "bt.1886" },
+                        dolbyVisionProfile = if (case == "dolby-vision") 5 else null) }
+                    DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                        enabled.value = it; CompletableDeferred(Unit)
+                    }).use { enhancement ->
+                        awaitSession { enhancement.state.value.sourceVersion == version && enhancement.state.value.requested }
+                        assertFalse(enhancement.state.value.pending, case)
+                        assertFalse(enhancement.state.value.active, case)
+                        assertFalse(actor.hasQueuedNvidia(), case)
+                        assertTrue(actor.native.commands.isEmpty(), case)
+                        assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters, case)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun realActorPreservesEveryUnityAdmissionBoundaryWithSharedCoreDownscale() {
+        for (case in listOf("absent-binding", "source", "odd-width", "odd-height", "unknown-transfer",
+            "linear-transfer", "native-pq", "native-hlg", "dolby-vision", "primaries", "texture-limit",
+            "empty-viewport", "oversized-viewport", "wrong-vendor", "wrong-context")) {
+            MpvPlayer().use { player ->
+                val version = player.loadVersioned(PlaybackSource("file:///C:/core-unity-actor-gates.avi"))
+                val snapshot = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput()
+                    if (case != "absent-binding") actor.recordVeyra(fixtureSharedCoreBinding())
+                    actor.recordOutput { it.copy(sourceVersion = if (case == "source") version + 1 else version,
+                        inputWidth = if (case == "odd-width") 3839 else if (case == "texture-limit") 7680 else 3840,
+                        inputHeight = if (case == "odd-height") 2159 else 2160,
+                        displayWidth = if (case == "empty-viewport") 0 else if (case == "oversized-viewport") 3841 else 1920,
+                        displayHeight = 1080, maximumTextureDimension = if (case == "texture-limit") 4096 else 16384,
+                        inputPrimaries = if (case == "primaries") "bt.2020" else "bt.709",
+                        gamma = when (case) { "unknown-transfer" -> null; "linear-transfer" -> "linear";
+                            "native-pq" -> "pq"; "native-hlg" -> "hlg"; else -> "bt.1886" },
+                        dolbyVisionProfile = if (case == "dolby-vision") 5 else null) }
+                    if (case == "wrong-vendor") actor.recordDevice(0x1002, "d3d11")
+                    if (case == "wrong-context") actor.recordDevice(0x10de, "vulkan")
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(version,
+                        NvidiaVideoOptions(nativeResolutionProcessing = true, backend = NvidiaVideoBackend.VEYRA_CORE)))
+                    actor.apply()
+                    val rejected = player.nvidiaVideoState.value
+                    assertFalse(rejected.active, case); assertFalse(rejected.pending, case)
+                    assertTrue(rejected.error != null || rejected.unavailableReason != null, case)
+                    assertTrue(actor.native.commands.isEmpty(), case)
+                    assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters, case)
+                    assertTrue(player.ownsSourceSnapshot(snapshot), case)
+                }
+            }
+        }
+    }
+
+    @Test fun realDriverUnityAttemptRetainsItsExactViewportRequirement() {
+        for (exact in listOf(false, true)) {
+            MpvPlayer().use { player ->
+                val version = player.loadVersioned(PlaybackSource("file:///C:/driver-unity-viewport.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput(); actor.recordDriverNativePatch()
+                    actor.recordOutput { it.copy(inputWidth = 3840, inputHeight = 2160,
+                        displayWidth = if (exact) 3840 else 1920, displayHeight = if (exact) 2160 else 1080) }
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(version,
+                        NvidiaVideoOptions(nativeResolutionProcessing = true)))
+                    actor.apply()
+                    assertFalse(player.nvidiaVideoState.value.active)
+                    if (exact) {
+                        assertTrue(actor.native.commands.single()[2].contains(":d3d11vpp=scale=1.0:"))
+                        assertTrue(player.nvidiaVideoState.value.pending)
+                    } else {
+                        assertTrue(actor.native.commands.isEmpty())
+                        assertNotNull(player.nvidiaVideoState.value.unavailableReason)
+                    }
+                }
+            }
+        }
+    }
 
     @Test fun persistedQualityReplacesOnlyOwnedFilterOnTheSamePlayingSource() = runBlocking<Unit> {
         val configuration = DesktopVideoEnhancementConfiguration(DesktopPluginStore(enhancementSettingsRoot),
