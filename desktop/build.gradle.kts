@@ -24,6 +24,73 @@ val manifest = if (sourceManifest.exists()) {
 val sources = (manifest["sources"] as? List<*>)?.map { it as Map<*, *> } ?: emptyList()
 val originalResources = (manifest["resources"] as? List<*>)?.map { it as Map<*, *> } ?: emptyList()
 
+// Only these reviewed source recipes ignore the Windows package revision.
+// Keep every other manifest field. A changed recipe/helper restores the full
+// manifest input until the dependency closure is reviewed again.
+val revisionNeutralSourceRecipePins = mapOf(
+    "tools/extract-appearance-platform.py" to "964b59fd07d92c434b887f7ed2684866efbfdfb7268a2ff8a0341d31ff0ea3cb",
+    "tools/extract-upstream-api.py" to "c7571703fdaaa33f4fe6ae6fcd370d182efa4623e0dbd6e89d56544b447f313e",
+    "tools/extract-upstream-bgm-detail.py" to "f8f2b15659124d1b92b482e80df8f3bcf9bf2fa3e5651e7f0b02948ea1f1e956",
+    "tools/extract-upstream-dynamic-reply-protocol.py" to "a6343a91ea315e122048f54a0ce9c126ea2156970ec4325e8ee38df468fe431c",
+    "tools/extract-upstream-frosted-audio-renderer.py" to "3f8a55cc5ae3643be4774f78bc948668fe9ba3cc348903544d916bc35024497f",
+    "tools/extract-upstream-linked-dock.py" to "c27347c4f3a16569a4d588a06ce6dea2a8fcb2d885ac2a1dfd4d321f2dc3b5fb",
+    "tools/extract-upstream-media.py" to "2f159e26fb5bb61bb305e6dfbcf82f7b6647ee048029560a6b4d6fb1f842464f",
+    "tools/extract-upstream-plugins.py" to "b31780efa1cf86b3910c6e4fa978da5662d104bf6edb12fa24f05e885f80a3e2",
+    "tools/extract-upstream-special-danmaku.py" to "979060ce22a625c76651b24fee264268385ccb96de8956fb1447defca1dedc56",
+    "tools/extract-upstream-video-comment-ui.py" to "6537f13ea46e584244a6384c4b43b8df68fb7c3028b210f49bee34e6aafabb31",
+    "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
+    "tools/run-tool-tests.py" to "0ccdc350020d68fd5d7bf515cf16fcb45147dc9f2549d436ebda7f8936008403",
+    "tools/sync-upstream.py" to "e959c69937c38fd260fce3af4626018711a4087ab4ac0b25e1aaa5c531a274fa",
+    "tools/v025-canonical-sources.json" to "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc",
+    "tools/v025_source_paths.py" to "43ae1635c64aa3eb695dd3f3babdfaeacdf8899680e6823a44179163facb848f",
+    "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
+    "tools/v029_comment_composer.py" to "49321836c7e0b49dbdbd226872f85df8cb391feb8ac7dadd27b56e345bbbca52",
+    "tools/v029_comment_search.py" to "b80189f64014e373c136bc38e0fbb4171933203ba0cf2a2e76bf0053e17c1a9d",
+    "tools/v029_history_recap.py" to "95b585a371bda7716c5e20d37cce6dbee74b9979df6d1fb6b25030d5618b5d19",
+    "tools/v030_live_danmaku.py" to "90b1f24b74e989dc89594f4a528f2a3f58e5eaf1637d454d68368e6c646a1fb2",
+    "tools/v030_live_recovery.py" to "564c75e98483025029a6db9d9b1c0d5e3f99354686f6b46d329b63043562b020",
+    "tools/v030_live_stream.py" to "faecbca43af511ff72b1642b787f94a30fae2fef5b0cbc143465b80516cea4b5",
+    "tools/v030_video_dynamic_share.py" to "7ac67b4ed136152450b5fdd608cd61ae89cab273123d83e12fbe6fe54fbefd41",
+    "tools/v033_comment_refresh.py" to "4b00fcbaac4cf18efa427b0cd0aa1aa0fdf2622f1bef97a8b46fb8fbc5d1b70f",
+    "tools/v034_live_moderation.py" to "c5218c0eb94101941519e0e76a9da438374ed1e3dec7e79fdec36c67bb3a3be6",
+    "tools/v034_live_moderation_ui.py" to "5e2613f9410083f12287cbbd57980ecded6280e9a12add8e0c580b0b4aa89a3d",
+)
+// These import names come from the same reviewed closure. New local module,
+// package or extension forms must restore the full manifest input.
+val revisionNeutralSourceLocalImportRoots = setOf("v025_source_paths", "v029_brand_consumers", "v029_comment_composer", "v029_comment_search", "v029_history_recap", "v030_live_danmaku", "v030_live_recovery", "v030_live_stream", "v030_video_dynamic_share", "v033_comment_refresh", "v034_live_moderation", "v034_live_moderation_ui")
+val revisionNeutralSourceExternalImportRoots = setOf("__future__", "argparse", "datetime", "decimal", "difflib", "functools", "hashlib", "importlib", "json", "os", "pathlib", "re", "shutil", "subprocess", "sys", "textwrap", "unittest", "urllib", "xml")
+val revisionNeutralSourceImportRoots = revisionNeutralSourceLocalImportRoots + revisionNeutralSourceExternalImportRoots
+val revisionNeutralSourceImportShadowFiles = fileTree("tools") {
+    isCaseSensitive = false
+    revisionNeutralSourceImportRoots.forEach { module ->
+        include("$module.pyc", "$module*.pyd", "$module/**")
+    }
+    revisionNeutralSourceExternalImportRoots.forEach { module -> include("$module.py") }
+}
+val revisionNeutralSourceImportContextMatches =
+    revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
+// Pin the whole Gradle recipe, including canonical helpers and later wiring.
+// Mask exactly this self-digest assignment; raw build bytes remain task inputs.
+val revisionNeutralSourceGradleRecipeSha256 = "43bde7d1c537069eb62e0121c55d8b85fc39559c3e564b17a8a7fb113c8f3670"
+val revisionNeutralSourceGradleRecipeMatches = runCatching {
+    val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
+    val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
+    recipe.split(ownPin).size == 2 && MessageDigest.getInstance("SHA-256")
+        .digest(recipe.replace(ownPin, "val revisionNeutralSourceGradleRecipeSha256 = \"<reviewed-source-self-digest>\"").toByteArray(Charsets.UTF_8))
+        .joinToString("") { "%02x".format(it) } == revisionNeutralSourceGradleRecipeSha256
+}.getOrDefault(false)
+val revisionNeutralSourceRecipesMatch = revisionNeutralSourceGradleRecipeMatches && revisionNeutralSourceImportContextMatches && revisionNeutralSourceRecipePins.all { (relative, expected) ->
+    val input = file(relative)
+    input.isFile && !JvmFiles.isSymbolicLink(input.toPath()) && runCatching {
+        val normalized = input.readText(Charsets.UTF_8).replace("\r\n", "\n").toByteArray(Charsets.UTF_8)
+        MessageDigest.getInstance("SHA-256").digest(normalized).joinToString("") { "%02x".format(it) } == expected
+    }.getOrDefault(false)
+}
+val revisionNeutralSourceManifestInput = if (revisionNeutralSourceRecipesMatch) {
+    groovy.json.JsonOutput.toJson(manifest.filterKeys { it != "windowsRevision" })
+} else if (sourceManifest.exists()) sourceManifest.readText(Charsets.UTF_8) else ""
+
+
 // Build-time original source identities only; runtime owners are unchanged.
 val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
 val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
@@ -104,7 +171,11 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt"))
     }
     into(generatedUpstream)
-    inputs.file(sourceManifest)
+    inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
+    inputs.files(revisionNeutralSourceRecipePins.keys.map { file(it) })
+    inputs.file("build.gradle.kts")
+    inputs.property("upstreamSourceRecipeImportContext", revisionNeutralSourceImportContextMatches)
+    inputs.files(revisionNeutralSourceImportShadowFiles)
     inputs.files(sources.map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.map { canonicalOriginalSource(it["path"].toString()) })
     doFirst {
@@ -1201,7 +1272,11 @@ val extractBgmDetail by tasks.registering(Exec::class) {
     inputs.file("third-party/video-detail-skeleton-v034/SkeletonComponents.kt")
     inputs.files("tools/extract-upstream-bgm-detail.py", "tools/sync-upstream.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py", "tools/extract-upstream-plugins.py")
-    inputs.file(sourceManifest)
+    inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
+    inputs.files(revisionNeutralSourceRecipePins.keys.map { file(it) })
+    inputs.file("build.gradle.kts")
+    inputs.property("upstreamSourceRecipeImportContext", revisionNeutralSourceImportContextMatches)
+    inputs.files(revisionNeutralSourceImportShadowFiles)
     inputs.files(sources.filter { "stable-bgm-native-detail" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v029_brand_consumers.py")
@@ -1271,7 +1346,11 @@ val extractLinkedDock by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/linked-dock").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-linked-dock.py", "tools/sync-upstream.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-dynamic-reply-protocol.py")
-    inputs.file(sourceManifest)
+    inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
+    inputs.files(revisionNeutralSourceRecipePins.keys.map { file(it) })
+    inputs.file("build.gradle.kts")
+    inputs.property("upstreamSourceRecipeImportContext", revisionNeutralSourceImportContextMatches)
+    inputs.files(revisionNeutralSourceImportShadowFiles)
     inputs.files(sources.filter { "stable-linked-dock-search" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "stable-linked-dock-search" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -1287,7 +1366,11 @@ val extractFrostedAudioRenderer by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/frosted-audio-renderer").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-frosted-audio-renderer.py", "tools/sync-upstream.py")
-    inputs.file(sourceManifest)
+    inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
+    inputs.files(revisionNeutralSourceRecipePins.keys.map { file(it) })
+    inputs.file("build.gradle.kts")
+    inputs.property("upstreamSourceRecipeImportContext", revisionNeutralSourceImportContextMatches)
+    inputs.files(revisionNeutralSourceImportShadowFiles)
     inputs.files(sources.filter { "stable-frosted-audio-renderer" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/frosted-audio-renderer"))
@@ -1865,7 +1948,11 @@ val prepareOriginalPluginResources by tasks.registering(Sync::class) {
     from(canonicalOriginalSource("app/src/main/res/raw/cdn_region_catalog.json")) { into("plugin") }
     from(canonicalOriginalSource("app/src/main/assets/rovniced-skin-catalog.json"))
     into(layout.buildDirectory.dir("generated/plugin-resources"))
-    inputs.file(sourceManifest)
+    inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
+    inputs.files(revisionNeutralSourceRecipePins.keys.map { file(it) })
+    inputs.file("build.gradle.kts")
+    inputs.property("upstreamSourceRecipeImportContext", revisionNeutralSourceImportContextMatches)
+    inputs.files(revisionNeutralSourceImportShadowFiles)
     inputs.files(originalResources.map { canonicalOriginalSource(it["path"].toString()) })
 }
 sourceSets.named("main") { resources.srcDir(layout.buildDirectory.dir("generated/plugin-resources")) }
