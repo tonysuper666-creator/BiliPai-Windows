@@ -135,6 +135,13 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             assertSame(held.job, f.publicationRequestJob(child), "The held DEFAULT launch must be this actual native child's request Job")
             assertEquals(backupVideo(A), child.nativeSource.source.videoUrl)
             assertEquals(backupAudio(A), child.nativeSource.source.audioUrl)
+            assertEquals(1, (f.originalState().value as VideoPlaybackUiState.Success).currentCdnIndex)
+            // The original public uiState combines labels on viewModelScope;
+            // joining the CDN Job does not await that separate projection.
+            withTimeout(8_000) {
+                while (f.state().currentCdnIndex != 1 || f.state().playUrl != backupVideo(A) ||
+                    f.state().audioUrl != backupAudio(A)) delay(5)
+            }
             assertEquals(1, f.state().currentCdnIndex)
             assertEquals(latest.videoTags, f.state().videoTags)
             assertEquals(latest.related, f.state().related)
@@ -142,7 +149,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             assertSame(request.currentRequest, f.owner.captureLoadState().currentRequest)
             assertEquals(request.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
             val emission = f.cdnEmissions.first { it.source === child }
-            assertNull(emission.runtimeGeneration) // actual public UI publication precedes Main worker readiness
+            assertNull(emission.runtimeGeneration) // actual original _uiState commit precedes Main worker readiness
             assertEquals(1, emission.index)
             withTimeout(8_000) { while (f.runtimeBinding.generation(child) == null) delay(5) }
             assertTrue(f.owner.environment.plugins.isPlaybackDispatchCurrent(child))
@@ -359,10 +366,11 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                 owner.playback.initWithContext(DesktopOriginalPlayerSettingsContext(context, gate::owns, gate::commitEntry,
                     largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false }))
             }
-            // The real public StateFlow emission runs immediately in its emitter,
-            // before the separate Main Runtime worker can consume accepted events.
+            // Observe the actual original backing StateFlow without seeding,
+            // replacing or mutating it. Its synchronous commit is distinct from
+            // the original public combine(...).stateIn projection on Main.
             gate.scope.launch(Dispatchers.Unconfined) {
-                owner.playback.uiState.collect { state ->
+                originalState().collect { state ->
                     if (state is VideoPlaybackUiState.Success && state.currentCdnIndex == 1) {
                         owner.native.current()?.let { child -> cdnEmissions.add(CdnEmission(child, state.currentCdnIndex, runtimeBinding.generation(child))) }
                     }
@@ -371,6 +379,9 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             gate.scope.launch { owner.playback.toastEvent.collect { toasts.add(it.toString()) } }
         }
         fun state() = owner.playback.uiState.value as VideoPlaybackUiState.Success
+        @Suppress("UNCHECKED_CAST")
+        fun originalState(): StateFlow<VideoPlaybackUiState> = owner.playback.javaClass
+            .getDeclaredField("_uiState").apply { isAccessible = true }.get(owner.playback) as StateFlow<VideoPlaybackUiState>
         fun accepted() = checkNotNull(owner.native.current())
         fun publicationRequestJob(expected: DesktopOriginalVideoAcceptedPublication): Job {
             val initial = assertIs<DesktopOriginalVideoInitialPublication>(expected.nativeSource.source.nativePublication)
