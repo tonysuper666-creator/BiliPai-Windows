@@ -530,12 +530,12 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
     def load(self):
         return sync.adapted_compatibility_inputs(self.repo)
 
-    def test_actual_217_originals_load_with_separate_commits_and_nested_live_inputs(self):
+    def test_actual_218_originals_load_with_separate_commits_and_nested_live_inputs(self):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 217)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 210)
+        self.assertEqual(len(entries), 218)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 211)
         for filename in ("LiveInteractionSheets.kt", "LiveChatSection.kt"):
             rows = [item for item in entries if item["localPath"].endswith("/" + filename)]
             self.assertTrue(rows, filename)
@@ -630,10 +630,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 217)
+        self.assertEqual(len(self.load()), 218)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 217)
+        self.assertEqual(len(self.load()), 218)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -650,7 +650,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 217)
+                self.assertEqual(len(entries), 218)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

@@ -167,10 +167,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
     @Test fun actualNetworkRetryRefreshesUrlsWhileHealthySameRequestKeepsItsSource(): Unit = runBlocking {
         Fixture(refreshExpiredUrls = true).useSuspending { f ->
             f.load(A, 101, 104, audioLang = "en")
-            // The ABI reports loaded/codec state, not a physical first-frame receipt.
-            // Recovery Ready requires that separate evidence and is not fabricated here.
-            assertTrue(f.player.state.value.ready)
+            // The original VM's healthy gate reads this owned Section projection and error.
+            // FILE_LOADED/refresh provide actual ABI codec readbacks; core-startup ready is not run here.
+            assertEquals(DesktopOriginalPlaybackStates.STATE_READY, f.owner.section.playbackState)
             assertFalse(f.player.state.value.loading)
+            assertEquals("h264", f.player.state.value.videoCodec)
+            assertEquals("flac", f.player.state.value.audioCodec)
             val original = f.accepted(); val load = f.owner.captureLoadState(); val state = f.state()
             assertEquals("en", state.currentAudioLang)
             assertEquals(1, state.cdnCount, "This case must exercise network retry, not the prior CDN-switch policy")

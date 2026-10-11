@@ -51,6 +51,9 @@ class OriginalSubtitleAndDownloadSourceTest(unittest.TestCase):
             adapted_context = "val context = LocalDesktopOriginalVideoSectionPlatform.current.settingsContext"
             self.assertEqual(1, recovered.count(adapted_context))
             recovered = recovered.replace(adapted_context, "val context = LocalContext.current", 1)
+            adapted_setter = "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setSubtitleVerticalOffsetFraction"
+            self.assertEqual(1, recovered.count(adapted_setter))
+            recovered = recovered.replace(adapted_setter, "SettingsManager.setSubtitleVerticalOffsetFraction", 1)
             original = producer.source("feature/video/ui/section/VideoPlayerSection.kt")
             expected = body(producer, original, "private fun BoxScope.VideoSubtitleOverlayHost(")
             self.assertEqual(expected, recovered)
