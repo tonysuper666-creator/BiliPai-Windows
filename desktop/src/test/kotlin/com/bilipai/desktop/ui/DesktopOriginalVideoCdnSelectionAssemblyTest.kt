@@ -22,6 +22,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import java.awt.EventQueue
+import java.io.IOException
 import java.lang.reflect.Proxy
 import java.net.Proxy as NetworkProxy
 import java.nio.file.*
@@ -131,6 +132,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             assertFalse(held.job.isCancelled)
             val child = f.accepted()
             assertNotSame(before, child)
+            assertSame(held.job, f.publicationRequestJob(child), "The held DEFAULT launch must be this actual native child's request Job")
             assertEquals(backupVideo(A), child.nativeSource.source.videoUrl)
             assertEquals(backupAudio(A), child.nativeSource.source.audioUrl)
             assertEquals(1, f.state().currentCdnIndex)
@@ -163,22 +165,30 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
      * edits VM state, NativeOwner, an authorization receipt or Runtime generation. */
     private class OneDispatchHold : CoroutineDispatcher() {
         private val lock = Any()
-        private var armed = false
+        private var armedThread: Thread? = null
         private var held: HeldDispatch? = null
         override fun isDispatchNeeded(context: CoroutineContext) = true
         override fun dispatch(context: CoroutineContext, block: Runnable) {
             val intercepted = synchronized(lock) {
-                if (armed) { check(held == null); armed = false; held = HeldDispatch(context, block); true } else false
+                // The click synchronously starts DEFAULT on this EDT. An unrelated
+                // HTTP completion can dispatch concurrently and must never steal
+                // the test's delay or become the Job that the test later joins.
+                if (armedThread === Thread.currentThread() && context[Job]?.isActive == true) {
+                    check(held == null); armedThread = null; held = HeldDispatch(context, block); true
+                } else false
             }
             if (!intercepted) EventQueue.invokeLater(block)
         }
-        fun arm() = synchronized(lock) { check(!armed && held == null); armed = true }
+        fun arm() = synchronized(lock) {
+            check(EventQueue.isDispatchThread() && armedThread == null && held == null)
+            armedThread = Thread.currentThread()
+        }
         fun take(): HeldDispatch = synchronized(lock) { checkNotNull(held) }
         fun release(expected: HeldDispatch) {
             synchronized(lock) { check(held === expected); held = null }
             EventQueue.invokeLater(expected.runnable)
         }
-        fun drainOnClose() { val pending = synchronized(lock) { armed = false; held.also { held = null } }; pending?.let { EventQueue.invokeLater(it.runnable) } }
+        fun drainOnClose() { val pending = synchronized(lock) { armedThread = null; held.also { held = null } }; pending?.let { EventQueue.invokeLater(it.runnable) } }
     }
 
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
@@ -203,6 +213,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         val preparations = CopyOnWriteArrayList<DesktopOriginalMediaCachePreparation>()
         val cdnEmissions = CopyOnWriteArrayList<CdnEmission>()
         val toasts = CopyOnWriteArrayList<String>()
+        private val unexpectedRequests = CopyOnWriteArrayList<String>()
         val tagsEntered = CompletableDeferred<Unit>()
         val tagsRelease = CountDownLatch(if (holdTags) 1 else 0)
         var beforePreparation: ((DesktopOriginalMediaCachePreparation) -> Unit)? = null
@@ -265,8 +276,9 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             transport = repository.httpClient.newBuilder().proxy(NetworkProxy.NO_PROXY).retryOnConnectionFailure(false)
                 .addInterceptor { chain ->
                     val request = chain.request()
-                    check(request.url.isHttps && request.url.port == 443)
-                    check(request.url.host in setOf("api.bilibili.com", "www.bilibili.com"))
+                    if (!request.url.isHttps || request.url.port != 443) rejectRequest(request)
+                    if (request.url.host in setOf("media.invalid", "backup.invalid")) return@addInterceptor memoryMedia(request)
+                    if (request.url.host !in setOf("api.bilibili.com", "www.bilibili.com")) rejectRequest(request)
                     val bvid = request.url.queryParameter("bvid") ?: A
                     val body = when (request.url.encodedPath) {
                         "/" -> "memory bootstrap"
@@ -359,6 +371,39 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
         fun state() = owner.playback.uiState.value as VideoPlaybackUiState.Success
         fun accepted() = checkNotNull(owner.native.current())
+        fun publicationRequestJob(expected: DesktopOriginalVideoAcceptedPublication): Job {
+            val initial = assertIs<DesktopOriginalVideoInitialPublication>(expected.nativeSource.source.nativePublication)
+            // Read the exact immutable request Job of the actual production
+            // publication. No Job/source/state is replaced by this observation.
+            return DesktopOriginalVideoInitialPublication::class.java.getDeclaredField("requestJob")
+                .apply { isAccessible = true }.get(initial) as Job
+        }
+        private fun rejectRequest(request: Request): Nothing {
+            unexpectedRequests.add("${request.method} ${request.url.host}${request.url.encodedPath}")
+            throw IOException("Unrecognized memory fixture request")
+        }
+        private fun memoryMedia(request: Request): Response {
+            if (request.method !in setOf("HEAD", "GET") || request.url.encodedPath !in
+                listOf(A, B).flatMap { listOf("/$it-video.m4s", "/$it-audio.m4s") }) rejectRequest(request)
+            val content = ByteArray(4096) { (it % 251).toByte() }
+            val builder = Response.Builder().request(request).protocol(Protocol.HTTP_1_1).message("memory media")
+                .header("Accept-Ranges", "bytes").header("ETag", "\"synthetic-${request.url.encodedPath}\"")
+            val type = "application/octet-stream".toMediaType()
+            if (request.method == "HEAD") return builder.code(200).header("Content-Length", "${content.size}")
+                .body(ByteArray(0).toResponseBody(type)).build()
+            val range = request.header("Range")
+            if (range == null) return builder.code(200).header("Content-Length", "${content.size}")
+                .body(content.toResponseBody(type)).build()
+            val match = Regex("bytes=([0-9]+)-([0-9]*)").matchEntire(range) ?: rejectRequest(request)
+            val start = match.groupValues[1].toLongOrNull() ?: rejectRequest(request)
+            val requestedEnd = match.groupValues[2].takeIf(String::isNotEmpty)?.toLongOrNull() ?: (content.size - 1L)
+            if (start >= content.size || requestedEnd < start) return builder.code(416)
+                .header("Content-Range", "bytes */${content.size}").body(ByteArray(0).toResponseBody(type)).build()
+            val end = minOf(requestedEnd, content.size - 1L)
+            val bytes = content.copyOfRange(start.toInt(), end.toInt() + 1)
+            return builder.code(206).header("Content-Range", "bytes $start-$end/${content.size}")
+                .header("Content-Length", "${bytes.size}").body(bytes.toResponseBody(type)).build()
+        }
         suspend fun load(bvid: String, aid: Long, cid: Long) {
             ui { owner.playback.loadVideo(bvid, aid, cid = cid, autoPlay = false) }
             awaitLoaded(bvid)
@@ -395,6 +440,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             subtitles.close(); player.close()
             transport.dispatcher.executorService.shutdownNow(); transport.connectionPool.evictAll()
             assertTrue(failures.isEmpty(), failures.toString())
+            assertTrue(unexpectedRequests.isEmpty(), unexpectedRequests.toString())
             deleteCreatedDirectory(directory, "cdn-original-owner-")
         }
         suspend fun useSuspending(block: suspend (Fixture) -> Unit) {
