@@ -2787,11 +2787,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     onBack = ::closeBgm,
                                     onVideosClick = { commands.push(BiliPaiNavKey.BgmDetail(request.musicId,request.aid,request.cid,true)) },
                                     onVideoClick = { bvid, cid, cover -> openVideo(VideoCard(bvid, "", cover, "", 0, 0, preferredCid = cid)) },
-                                    onUserClick = ::openUser, onLinkClick = { raw ->
-                                        runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let {
-                                            runCatching { java.awt.Desktop.getDesktop().browse(it) }
-                                        }
-                                    }, onLogin = { openLogin() },
+                                    onUserClick = ::openUser, onLinkClick = messageLink, onLogin = { openLogin() },
                                     onMediaSearch = { _, title, _ -> commands.push(BiliPaiNavKey.Search(title)) })
                             }
                             section == DesktopSection.MUSIC -> {
