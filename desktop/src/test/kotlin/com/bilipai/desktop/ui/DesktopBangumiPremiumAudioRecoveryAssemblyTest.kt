@@ -52,10 +52,25 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
             f.ui {
                 assertTrue(f.native.canUseCachedPlayback(beforeState))
                 assertTrue(f.owner.section.mediaItemCount > 0)
-                f.vm.loadBangumiPlay(19, 41, resumePositionMs = 19_250L)
-                assertSame(before, f.accepted())
-                assertSame(beforeJob, f.playbackJob())
-                assertEquals(19_250L, f.owner.section.currentPosition)
+                val beforePosition = f.owner.section.currentPosition
+                val seeks = mutableListOf<DesktopOriginalNativeSeekSubmission>()
+                val listener = object : DesktopOriginalMpvOverlayControl.Listener {
+                    override fun onSeekQueued(submission: DesktopOriginalNativeSeekSubmission) { seeks += submission }
+                }
+                f.owner.section.addListener(listener)
+                try {
+                    f.vm.loadBangumiPlay(19, 41, resumePositionMs = 19_250L)
+                    assertSame(before, f.accepted())
+                    assertSame(beforeJob, f.playbackJob())
+                    val queued = seeks.single()
+                    assertEquals(before.nativeSource.sourceVersion, queued.sourceVersion)
+                    assertEquals(19_250L, queued.targetPositionMs)
+                    assertTrue(queued.operationId > 0L)
+                    // A queued native seek is not playback-restart acknowledgement.
+                    assertEquals(beforePosition, f.owner.section.currentPosition)
+                } finally {
+                    f.owner.section.removeListener(listener)
+                }
             }
             assertEquals(requests, f.playCalls.get())
             assertEquals(beforeState.currentEpisode, f.state().currentEpisode)
