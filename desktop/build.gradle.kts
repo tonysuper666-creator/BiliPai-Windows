@@ -2,6 +2,7 @@ import groovy.json.JsonSlurper
 import java.security.MessageDigest
 import java.nio.file.Paths as JvmPaths
 import java.nio.file.Files as JvmFiles
+import java.util.Locale as JvmLocale
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -62,7 +63,7 @@ val revisionNeutralSourceExternalImportRoots = setOf("__future__", "argparse", "
 val revisionNeutralSourceImportRoots = revisionNeutralSourceLocalImportRoots + revisionNeutralSourceExternalImportRoots
 val revisionNeutralSourceImportShadowFiles = fileTree("tools") {
     include(org.gradle.api.specs.Spec<org.gradle.api.file.FileTreeElement> { element ->
-        val path = element.relativePath.pathString.replace('\\', '/').lowercase(java.util.Locale.ROOT)
+        val path = element.relativePath.pathString.replace('\\', '/').lowercase(JvmLocale.ROOT)
         // Keep traversal open; only matching files become shadow inputs.
         element.isDirectory || revisionNeutralSourceImportRoots.any { module ->
             path == "$module.pyc" ||
@@ -75,7 +76,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "5dc457c79b46d7c5504eb679d0fc06352a0a72e9733d449ae9a9aab1f5bd6f80"
+val revisionNeutralSourceGradleRecipeSha256 = "6091cb28dc82127e8dafbe84c8144d0e2312e5d41995a0a4fc7631897debdc76"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
