@@ -42,6 +42,63 @@ import kotlinx.serialization.json.JsonObject
  * The presentation callback is CPU wiring of the exact Factory gate body, not
  * physical Entry/Factory/Runtime initialization. No decoder, seek ACK or hardware. */
 class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
+    @Test fun healthySameEpisodeRestoreKeepsTheAcceptedSourceWithoutAnotherPlayUrl(): Unit = runBlocking {
+        for (seasonType in listOf(1, 10)) Fixture(seasonType = seasonType).useSuspending { f ->
+            f.load()
+            val before = f.accepted()
+            val beforeState = f.state()
+            val beforeJob = f.playbackJob()
+            val requests = f.playCalls.get()
+            f.ui {
+                assertTrue(f.native.canUseCachedPlayback(beforeState))
+                assertTrue(f.owner.section.mediaItemCount > 0)
+                f.vm.loadBangumiPlay(19, 41, resumePositionMs = 19_250L)
+                assertSame(before, f.accepted())
+                assertSame(beforeJob, f.playbackJob())
+                assertEquals(19_250L, f.owner.section.currentPosition)
+            }
+            assertEquals(requests, f.playCalls.get())
+            assertEquals(beforeState.currentEpisode, f.state().currentEpisode)
+            assertEquals(beforeState.quality, f.state().quality)
+            assertEquals(beforeState.audioUrl, f.state().audioUrl)
+        }
+    }
+
+    @Test fun explicitReloadFetchesAnotherPlayUrlThroughTheOriginalPgcAndCoursePublishers(): Unit = runBlocking {
+        for (seasonType in listOf(1, 10)) Fixture(seasonType = seasonType).useSuspending { f ->
+            f.load()
+            val before = f.accepted()
+            val beforeState = f.state()
+            val preferences = f.preferences()
+            val requests = f.playCalls.get()
+            val initialQn = f.playQualities.last()
+            val caller = f.uiResult {
+                assertTrue(f.native.canUseCachedPlayback(beforeState))
+                assertTrue(f.owner.section.mediaItemCount > 0)
+                f.vm.retry()
+                f.playbackJob()
+            }
+            withTimeout(8_000) { caller.join() }
+            assertFalse(caller.isCancelled)
+            val after = f.accepted()
+            assertNotSame(before, after)
+            assertTrue(after.sourceVersion > before.sourceVersion)
+            assertEquals(requests + 1, f.playCalls.get())
+            assertEquals(initialQn, f.playQualities.last())
+            assertEquals(beforeState.currentEpisode, f.state().currentEpisode)
+            assertEquals(beforeState.quality, f.state().quality)
+            assertEquals(beforeState.audioUrl, f.state().audioUrl)
+            assertEquals(preferences, f.preferences())
+            assertTrue(f.preferenceWrites.isEmpty())
+            f.ui {
+                assertTrue(f.native.ownsPlaybackSource())
+                assertTrue(f.player.ownsSourceSnapshot(after.nativeSource))
+                assertEquals(0L, f.owner.section.currentPosition)
+                assertTrue(f.owner.section.playWhenReady)
+            }
+        }
+    }
+
     @Test fun actualAudioFailureAcceptsAacAndReleasedChildRetainsNormalControls(): Unit = runBlocking {
         Fixture().useSuspending { f ->
             f.load()
@@ -245,7 +302,7 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
 
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
-    private inner class Fixture(private val includeAac: Boolean = true) {
+    private inner class Fixture(private val includeAac: Boolean = true, private val seasonType: Int = 10) {
         val directory = Files.createTempDirectory("pgc-audio-real-owner-")
         private val createdAbsolute = directory.toAbsolutePath().normalize()
         private val createdReal = directory.toRealPath()
@@ -636,7 +693,7 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
             }
         }
         private fun seasonJson(): String {
-            return """{"code":0,"result":{"season_id":19,"season_type":10,"title":"Synthetic course","cover":"https://media.invalid/cover.jpg","up_info":{"mid":7,"uname":"Fixture UP","avatar":"https://media.invalid/face.jpg"},"section":[],"episodes":[{"id":41,"aid":101,"cid":104,"bvid":"BV1GJ411x7h7","title":"One","cover":"https://media.invalid/cover.jpg","duration":60000},{"id":42,"aid":102,"cid":105,"bvid":"BV17x411w7KC","title":"Two","duration":60000}],"user_status":{"vip":1,"follow":0,"follow_status":0}}}"""
+            return """{"code":0,"result":{"season_id":19,"season_type":$seasonType,"title":"Synthetic course","cover":"https://media.invalid/cover.jpg","up_info":{"mid":7,"uname":"Fixture UP","avatar":"https://media.invalid/face.jpg"},"section":[],"episodes":[{"id":41,"aid":101,"cid":104,"bvid":"BV1GJ411x7h7","title":"One","cover":"https://media.invalid/cover.jpg","duration":60000},{"id":42,"aid":102,"cid":105,"bvid":"BV17x411w7KC","title":"Two","duration":60000}],"user_status":{"vip":1,"follow":0,"follow_status":0}}}"""
         }
     }
     companion object {

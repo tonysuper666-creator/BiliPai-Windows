@@ -38,6 +38,7 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         baseline = baseline.replace(" body=bangumi_v034_course_download_delta(recipe['output'],body)\n", "")
         baseline = baseline.replace(" body=bangumi_premium_audio_delta(recipe['output'],body)\n", "")
         baseline = baseline.replace(" body=bangumi_codec_recovery_delta(recipe['output'],body)\n", "")
+        baseline = baseline.replace(" body=bangumi_explicit_reload_delta(recipe['output'],body)\n", "")
         proof_line = next(line for line in baseline.splitlines(keepends=True)
             if line.startswith("(out/'pgc-default-quality-source-inventory.json')"))
         baseline = baseline.replace(proof_line, "")
@@ -77,6 +78,8 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         codec_node = next(node.value for node in ast.parse(script).body
             if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_CODEC_RECOVERY_EDITS" for t in node.targets))
         cls.codec_edits = json.loads(ast.literal_eval(codec_node.args[0]))
+        cls.explicit_reload_edits = ast.literal_eval(next(node.value for node in ast.parse(script).body
+            if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "PGC_EXPLICIT_RELOAD_EDITS" for t in node.targets)))
         if BEFORE_OVERRIDE:
             if Path(BEFORE_OVERRIDE).read_text(encoding="utf8") != baseline:
                 raise AssertionError("Explicit baseline is not the fixed reconstructed historical producer")
@@ -117,6 +120,14 @@ class BangumiDefaultQualityGeneratorTest(unittest.TestCase):
         codec_proof = self.proof["codecRecoveryBodies"]
         self.assertEqual(1, len(codec_proof))
         self.assertTrue(codec_proof[0]["completeInverse"])
+        reload_proof = self.proof["explicitReloadBodies"]
+        self.assertEqual(1, len(reload_proof))
+        self.assertTrue(reload_proof[0]["completeInverse"])
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), reload_proof[0]["afterSha256LF"])
+        for edit in reversed(self.explicit_reload_edits):
+            self.assertEqual(edit["count"], body.count(edit["after"]))
+            body = body.replace(edit["after"], edit["before"], edit["count"])
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), reload_proof[0]["beforeSha256LF"])
         self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), codec_proof[0]["afterSha256LF"])
         for edit in reversed(self.codec_edits):
             self.assertEqual(edit["count"], body.count(edit["after"]))

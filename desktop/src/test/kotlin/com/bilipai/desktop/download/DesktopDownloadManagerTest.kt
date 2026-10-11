@@ -10,6 +10,15 @@ import com.android.purebilibili.feature.download.LocalDanmakuManifest
 import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.PlaybackSegment
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.job
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.long
+import java.io.IOException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
@@ -515,6 +524,247 @@ class DesktopDownloadManagerTest {
             assertTrue(requests.any { it.substringAfter(' ') == "/video" })
         } finally {
             closeOptionalAssetFixture(manager, client, listOf(oldRelease, newRelease), workers, activeRequests)
+        }
+    }
+
+    @Test fun `application exit waits for original cleanup and cold queue resumes with two slots and unchanged identities`(): Unit = runBlocking {
+        val root = Files.createTempDirectory("bilipai-exit-queue-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<String>()
+        val activeRequests = AtomicInteger()
+        val originalWorkers = CopyOnWriteArrayList<ExitOptionalWorker>()
+        val coldWorkers = CopyOnWriteArrayList<Job>()
+        val coldTasks = CopyOnWriteArrayList<DownloadTask>()
+        val coldRelease = CompletableDeferred<Unit>()
+        val coldEntered = CompletableDeferred<Unit>()
+        val client = optionalAssetMemoryClient(requests, activeRequests)
+        val muxer = DownloadMuxer { video, _, output ->
+            Files.write(output, Files.readAllBytes(requireNotNull(video)))
+        }
+        val manager = DesktopDownloadManager(client, state, muxer, danmakuDownloader = { task, directory, callback ->
+            holdExitOptionalWorker(task, directory, callback, originalWorkers)
+        }, publication = localDownloadPublication())
+        var restored: DesktopDownloadManager? = null
+        var shutdown: kotlinx.coroutines.Deferred<Unit>? = null
+        try {
+            fun add(cid: Long) = manager.enqueue(PlaybackSource("https://cdn.example/video-$cid", title = "exit-$cid"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = cid, includeCover = false))
+            val activeId = add(10L)
+            val pausedId = add(20L)
+            withTimeout(5_000) { while (originalWorkers.size != 2) delay(10) }
+            val activeWorker = originalWorkers.single { it.task.id == activeId }
+            val pausedWorker = originalWorkers.single { it.task.id == pausedId }
+            manager.pause(pausedId)
+            withTimeout(5_000) { pausedWorker.cleanupEntered.await() }
+            val queuedId = add(30L)
+            val lastQueuedId = add(40L)
+            val beforeExit = manager.tasks.value.associateBy { it.id }
+            assertEquals(DownloadStatus.DOWNLOADING, beforeExit.getValue(activeId).status)
+            assertEquals(DownloadStatus.PAUSED, beforeExit.getValue(pausedId).status)
+            assertEquals(DownloadStatus.QUEUED, beforeExit.getValue(queuedId).status)
+            assertEquals(DownloadStatus.QUEUED, beforeExit.getValue(lastQueuedId).status)
+            val partialBytes = originalWorkers.associate { worker ->
+                worker.task.id to Files.readAllBytes(worker.directory.resolve("exit-optional.pb.part"))
+            }
+            assertTrue(requests.isEmpty())
+            val invocation = async(start = CoroutineStart.UNDISPATCHED) { manager.shutdownForApplicationExit() }
+            shutdown = invocation
+            withTimeout(5_000) { activeWorker.cleanupEntered.await() }
+            assertFalse(invocation.isCompleted, "Shutdown must await the actual original NonCancellable cleanup")
+            assertFalse(activeWorker.job.isCompleted)
+            assertFalse(pausedWorker.job.isCompleted)
+            val closedTasks = manager.tasks.value.associateBy { it.id }
+            assertEquals(beforeExit.getValue(activeId).item.copy(status = DownloadStatus.QUEUED), closedTasks.getValue(activeId).item)
+            assertEquals(beforeExit.getValue(pausedId), closedTasks.getValue(pausedId))
+            assertEquals(beforeExit.getValue(queuedId), closedTasks.getValue(queuedId))
+            assertEquals(beforeExit.getValue(lastQueuedId), closedTasks.getValue(lastQueuedId))
+            val closedDisk = Files.readAllBytes(state)
+            val decodedItems = Json.decodeFromString<List<DownloadTask>>(closedDisk.decodeToString())
+            assertEquals(closedTasks, decodedItems.associateBy { it.id })
+            val encodedItems = Json.parseToJsonElement(closedDisk.decodeToString()).jsonArray
+            assertEquals(decodedItems.size, encodedItems.size)
+            decodedItems.zip(encodedItems).forEach { (task, encoded) ->
+                assertEquals(task.item.createdAt,
+                    encoded.jsonObject.getValue("item").jsonObject.getValue("createdAt").jsonPrimitive.long)
+            }
+            val obsolete = DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
+                totalBytes = 13L, downloadedBytes = 13L)
+            originalWorkers.forEach { worker ->
+                assertFailsWith<CancellationException> { worker.callback(obsolete) }
+                assertContentEquals(partialBytes.getValue(worker.task.id),
+                    Files.readAllBytes(worker.directory.resolve("exit-optional.pb.part")))
+            }
+            assertEquals(closedTasks, manager.tasks.value.associateBy { it.id })
+            assertContentEquals(closedDisk, Files.readAllBytes(state))
+            originalWorkers.forEach { it.cleanupRelease.complete(Unit) }
+            withTimeout(5_000) { invocation.await() }
+            assertTrue(originalWorkers.all { it.job.isCompleted && it.cleanupEnded.isCompleted })
+            manager.close(); manager.close()
+            assertContentEquals(closedDisk, Files.readAllBytes(state))
+            assertTrue(requests.isEmpty())
+
+            // New Manager, original scheduler and downloader. No old worker remains before construction.
+            val cold = DesktopDownloadManager(client, state, muxer, danmakuDownloader = { task, directory, callback ->
+                coldWorkers += DownloadDanmakuTransport.taskOwner().callerJob
+                coldTasks += task
+                if (coldTasks.size == 2) coldEntered.complete(Unit)
+                coldRelease.await()
+                val segment = directory.resolve("exit-optional.pb")
+                Files.write(segment, ByteArray(13) { 4 })
+                callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
+                    totalBytes = 13L, downloadedBytes = 13L, filePath = segment.toString(), segmentCount = 1))
+                listOf(segment.toString()) to null
+            }, publication = localDownloadPublication())
+            restored = cold
+            withTimeout(5_000) { coldEntered.await() }
+            assertEquals(setOf(activeId, queuedId), coldTasks.map { it.id }.toSet())
+            assertEquals(2, coldWorkers.size)
+            assertEquals(2, cold.tasks.value.count { it.status == DownloadStatus.DOWNLOADING })
+            assertEquals(DownloadStatus.QUEUED, cold.tasks.value.single { it.id == lastQueuedId }.status)
+            assertEquals(closedTasks.getValue(pausedId), cold.tasks.value.single { it.id == pausedId })
+            coldTasks.forEach { task ->
+                val saved = closedTasks.getValue(task.id)
+                assertEquals(saved.item.copy(status = DownloadStatus.DOWNLOADING, errorMessage = null), task.item)
+                assertEquals(saved.directory, task.directory)
+                assertEquals(saved.item.createdAt, task.item.createdAt)
+            }
+            originalWorkers.forEach { worker ->
+                assertContentEquals(partialBytes.getValue(worker.task.id),
+                    Files.readAllBytes(worker.directory.resolve("exit-optional.pb.part")))
+            }
+            assertTrue(requests.isEmpty(), "Cold queue is held before its first media byte")
+            coldRelease.complete(Unit)
+            val eligibleIds = setOf(activeId, queuedId, lastQueuedId)
+            val completed = withTimeout(5_000) { cold.tasks.first { tasks ->
+                tasks.filter { it.id in eligibleIds }.all { it.status in setOf(DownloadStatus.COMPLETED, DownloadStatus.FAILED) }
+            }.associateBy { it.id } }
+            withTimeout(5_000) { coldWorkers.toList().forEach { it.join() } }
+            eligibleIds.forEach { id ->
+                val task = completed.getValue(id)
+                assertEquals(DownloadStatus.COMPLETED, task.status, task.error)
+                assertEquals(closedTasks.getValue(id).item.createdAt, task.item.createdAt)
+                assertEquals(closedTasks.getValue(id).directory, task.directory)
+                assertContentEquals(ByteArray(20), Files.readAllBytes(Path.of(cold.offlinePlayback(id).videoUrl)))
+            }
+            assertEquals(3, coldWorkers.size)
+            assertEquals(closedTasks.getValue(pausedId), completed.getValue(pausedId))
+            assertTrue(requests.any { it == "GET /video-10" })
+            assertTrue(requests.any { it == "GET /video-30" })
+            assertTrue(requests.any { it == "GET /video-40" })
+            assertFalse(requests.any { it.endsWith(" /video-20") })
+        } finally {
+            originalWorkers.forEach { it.workRelease.complete(Unit); it.cleanupRelease.complete(Unit) }
+            coldRelease.complete(Unit)
+            try {
+                withContext(NonCancellable) {
+                    withTimeout(5_000) {
+                        shutdown?.await()
+                        manager.shutdownForApplicationExit()
+                        restored?.shutdownForApplicationExit()
+                        originalWorkers.toList().forEach { it.job.join() }
+                        coldWorkers.toList().forEach { it.join() }
+                        while (activeRequests.get() != 0) delay(10)
+                    }
+                }
+            } finally {
+                client.dispatcher.executorService.shutdownNow()
+                client.connectionPool.evictAll()
+            }
+        }
+    }
+
+    @Test fun `failed exit persistence still drains original worker before throwing and retry saves the same closed queue`(): Unit = runBlocking {
+        val root = Files.createTempDirectory("bilipai-exit-persist-failure-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<String>()
+        val activeRequests = AtomicInteger()
+        val workers = CopyOnWriteArrayList<ExitOptionalWorker>()
+        val client = optionalAssetMemoryClient(requests, activeRequests)
+        val manager = DesktopDownloadManager(client, state, DownloadMuxer { _, _, _ -> error("No media must run") },
+            danmakuDownloader = { task, directory, callback -> holdExitOptionalWorker(task, directory, callback, workers) },
+            publication = localDownloadPublication())
+        var attempt: kotlinx.coroutines.Deferred<Result<Unit>>? = null
+        val blockingChild = state.resolve("block")
+        try {
+            manager.enqueue(PlaybackSource("https://cdn.example/video"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = 10, includeCover = false))
+            withTimeout(5_000) { while (workers.size != 1) delay(10) }
+            val worker = workers.single()
+            val original = manager.tasks.value.single()
+            val partial = Files.readAllBytes(worker.directory.resolve("exit-optional.pb.part"))
+            // Actual filesystem refusal, not a mocked persistence or production seam.
+            Files.delete(state); Files.createDirectory(state); Files.writeString(blockingChild, "keep")
+            val invocation = async(start = CoroutineStart.UNDISPATCHED) {
+                runCatching { manager.shutdownForApplicationExit() }
+            }
+            attempt = invocation
+            withTimeout(5_000) { worker.cleanupEntered.await() }
+            assertFalse(invocation.isCompleted, "Even persistence failure must drain old cleanup before returning")
+            val closed = manager.tasks.value.single()
+            assertEquals(original.item.copy(status = DownloadStatus.QUEUED), closed.item)
+            worker.cleanupRelease.complete(Unit)
+            val failure = withTimeout(5_000) { invocation.await() }.exceptionOrNull()
+            assertTrue(failure is IOException, "Expected the actual refused state replacement, got $failure")
+            assertTrue(worker.job.isCompleted && worker.cleanupEnded.isCompleted)
+            assertContentEquals(partial, Files.readAllBytes(worker.directory.resolve("exit-optional.pb.part")))
+            assertTrue(requests.isEmpty())
+            Files.delete(blockingChild); Files.delete(state)
+            manager.shutdownForApplicationExit()
+            assertEquals(closed, manager.tasks.value.single())
+            val saved = Json.decodeFromString<List<DownloadTask>>(Files.readString(state)).single()
+            assertEquals(closed, saved)
+            assertEquals(original.item.createdAt, saved.item.createdAt)
+            assertEquals(1, workers.size)
+            val savedBytes = Files.readAllBytes(state)
+            manager.close()
+            assertContentEquals(savedBytes, Files.readAllBytes(state))
+        } finally {
+            workers.forEach { it.workRelease.complete(Unit); it.cleanupRelease.complete(Unit) }
+            try {
+                withContext(NonCancellable) {
+                    withTimeout(5_000) {
+                        attempt?.await()
+                        // A failed assertion before removing the blocker must still drain the real scope.
+                        runCatching { manager.shutdownForApplicationExit() }
+                        workers.toList().forEach { it.job.join() }
+                        while (activeRequests.get() != 0) delay(10)
+                    }
+                }
+            } finally {
+                client.dispatcher.executorService.shutdownNow()
+                client.connectionPool.evictAll()
+            }
+        }
+    }
+
+    private class ExitOptionalWorker(
+        val task: DownloadTask, val directory: Path, val job: Job,
+        val callback: (DownloadAssetState) -> Unit,
+    ) {
+        val workRelease = CompletableDeferred<Unit>()
+        val cleanupEntered = CompletableDeferred<Unit>()
+        val cleanupRelease = CompletableDeferred<Unit>()
+        val cleanupEnded = CompletableDeferred<Unit>()
+    }
+
+    /** The real optional transport invokes this fixture on its existing Manager worker Job. */
+    private suspend fun holdExitOptionalWorker(task: DownloadTask, directory: Path,
+        callback: (DownloadAssetState) -> Unit, workers: MutableList<ExitOptionalWorker>): Pair<List<String>, String?> {
+        val worker = ExitOptionalWorker(task, directory, DownloadDanmakuTransport.taskOwner().callerJob, callback)
+        val partial = directory.resolve("exit-optional.pb.part")
+        Files.write(partial, byteArrayOf(1, 2, 3, 4, 5))
+        callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.DOWNLOADING,
+            totalBytes = 13L, downloadedBytes = 5L, tempPath = partial.toString()))
+        workers += worker
+        try {
+            worker.workRelease.await()
+            return emptyList<String>() to null
+        } finally {
+            withContext(NonCancellable) {
+                worker.cleanupEntered.complete(Unit)
+                worker.cleanupRelease.await()
+                worker.cleanupEnded.complete(Unit)
+            }
         }
     }
 
