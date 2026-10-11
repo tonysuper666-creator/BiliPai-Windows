@@ -18,7 +18,8 @@ import urllib.parse
 import urllib.request
 
 UPSTREAM = "jay3-yy/BiliPai"
-SAFE_WORKFLOWS = {"windows-desktop.yml", "windows-upstream-sync.yml"}
+SAFE_WORKFLOWS = {"windows-desktop.yml", "windows-upstream-sync.yml",
+                  "windows-mpv-native-manual.yml", "windows-mpv-rtx-core-manual.yml"}
 # Bound configuration input before JSON decoding, independently of how many
 # explicitly pinned files Windows reuses. The current complete inventory is
 # under 0.5 MiB; this budget leaves room to grow without a stale file-count cap.

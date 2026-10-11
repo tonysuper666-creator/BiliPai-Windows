@@ -31,8 +31,11 @@ internal class DesktopWindowsNativeVideoSurface(val player: MpvPlayer) {
         val route: BiliPaiNavKey.VideoDetail,
         val assembly: DesktopOriginalVideoOwnerAssembly,
         val excludedPrior: DesktopOriginalVideoAcceptedPublication?,
-        var accepted: DesktopOriginalVideoAcceptedPublication? = null,
-    )
+    ) {
+        // The existing bounded UI receipt now recomposes its readers when the
+        // unchanged recordPresentedSource admits a different exact reference.
+        var accepted by mutableStateOf<DesktopOriginalVideoAcceptedPublication?>(null)
+    }
     // One bounded UI receipt, not another source or navigation authority. A new
     // same-value route is a different entry and must perform its normal open.
     private var presentation: Presentation? = null
@@ -67,6 +70,18 @@ internal class DesktopWindowsNativeVideoSurface(val player: MpvPlayer) {
             if (presentation === receipt && stillEntryOwned() && matchesOriginalSuccess(assembly, source))
                 receipt.accepted = source
         }
+    }
+
+    /** Composition-lane capture of the existing admitted UI receipt only. This
+     * never grants native/account/request ownership; the caller must still check
+     * those authorities and original current Success at every submission. */
+    fun capturePresentedSource(route: BiliPaiNavKey.VideoDetail,
+        assembly: DesktopOriginalVideoOwnerAssembly): DesktopOriginalVideoAcceptedPublication? {
+        check(EventQueue.isDispatchThread())
+        val receipt = presentation?.takeIf { it.route === route && it.assembly === assembly } ?: return null
+        val source = receipt.accepted ?: return null
+        if (source === receipt.excludedPrior || !matchesOriginalSuccess(assembly, source)) return null
+        return source
     }
 
     fun retainPresentedEntry(route: BiliPaiNavKey.VideoDetail,

@@ -2392,7 +2392,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             initialSearchScope = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.data.model.response.FavoriteSearchScope.CURRENT_FOLDER,
                                             initialSubscribed = entryKey == BiliPaiNavKey.FavoriteSubscribed,
                                             isSearchDestination = entryKey is BiliPaiNavKey.FavoriteSearch,
-                                            onOpenSearchDestination = { value -> commands.push(BiliPaiNavKey.FavoriteSearch(value,(entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.data.model.response.FavoriteSearchScope.CURRENT_FOLDER)) })
+                                            onOpenSearchDestination = if (detail == null) {
+                                                { value -> commands.push(BiliPaiNavKey.FavoriteSearch(value,(entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.data.model.response.FavoriteSearchScope.CURRENT_FOLDER)) }
+                                            } else null)
                                     }
                                     }
                                 }

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.semantics.Role
@@ -45,6 +46,14 @@ import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
 import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+import com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings
+import com.android.purebilibili.core.store.PlayerInteractionSettings
+import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio
+import com.android.purebilibili.feature.video.ui.components.resolveSafeVideoAspectRatio
+import com.android.purebilibili.feature.video.ui.components.resolveVideoViewportLayout
+import com.android.purebilibili.feature.video.ui.components.toVideoAspectRatio
+import com.android.purebilibili.feature.video.ui.components.toFullscreenAspectRatio
+import com.bilipai.desktop.player.DesktopNativeVideoViewportTransform
 import com.android.purebilibili.feature.video.viewmodel.resolvePlaybackCompletionRepeatMode
 import com.bilipai.desktop.data.VideoCard
 import com.bilipai.desktop.player.PlayerPreferences
@@ -591,6 +600,101 @@ internal class DesktopWindowsVideoActions(
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { if (current()) bootstrapError = failure.message ?: "播放器初始化失败" }
     }
+    val viewportSource = assembly.native.current()
+    // Capture this already-admitted UI receipt on the actual composition lane.
+    // Deferred preference predicates retain only its immutable source reference.
+    val presentedPictureSource = nativeSurface.capturePresentedSource(route, assembly)
+    val pictureFactory = shell.factoryFor(assembly)
+    val pictureSettings by remember(platforms.holder.settingsContext) {
+        DesktopOriginalPlayerSectionSettings.getPlayerInteractionSettings(platforms.holder.settingsContext)
+    }.collectAsState(PlayerInteractionSettings())
+    val isVerticalPicture = state.videoWidth > 0 && state.videoHeight > state.videoWidth
+    val pictureAspectRatio = resolveSafeVideoAspectRatio(
+        pictureSettings.fixedFullscreenAspectRatio.toVideoAspectRatio(), isVerticalPicture)
+    // Original flip intent is local to this mounted video owner, not a new global setting.
+    var pictureFlipHorizontal by remember(assembly) { mutableStateOf(false) }
+    var pictureFlipVertical by remember(assembly) { mutableStateOf(false) }
+    var picturePreferenceJob by remember(assembly) { mutableStateOf<kotlinx.coroutines.Job?>(null) }
+    // Returning from PiP/coverage must reapply even if the value itself is unchanged.
+    var submittedPictureViewport by remember(assembly, native, active, pipActive) {
+        mutableStateOf<Pair<DesktopOriginalVideoAcceptedPublication, DesktopNativeVideoViewportTransform>?>(null)
+    }
+    fun pictureCurrent(expected: DesktopOriginalVideoAcceptedPublication?): Boolean {
+        if (expected == null) return false
+        val value = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return false
+        val origin = expected.bootstrapOrigin
+        // Original part/next-video requests retain the SAME typed route while
+        // changing CID/BV. A presentation receipt never replaces their request proof.
+        val sameEntrySource = try {
+            when {
+                origin != null -> origin.seed.assembly === assembly &&
+                    origin.matchesResolvedRequest(expected.request) &&
+                    ((origin.seed.route === route && origin.seed.ownsEntry()) || expected === presentedPictureSource)
+                expected !== presentedPictureSource -> false
+                else -> {
+                    val load = assembly.captureLoadState()
+                    val page = expected.pageSubject
+                    if (page != null) page.sameOriginalRequestIdentity(load) && load.currentCid == expected.request.cid &&
+                        page.matchesResolvedRequest(expected.request)
+                    else {
+                        val request = load.currentRequest
+                        request != null && captureDesktopOriginalResolvedMediaRequest(load, request,
+                            load.currentLoadRequestToken).let { resolved ->
+                            resolved.bvid == expected.request.bvid && resolved.cid == expected.request.cid
+                        }
+                    }
+                }
+            }
+        } catch (_: CancellationException) { false }
+        val actual = native.state.value
+        return sameEntrySource && value.info.bvid == expected.request.bvid &&
+            value.info.cid == expected.request.cid && !value.isQualitySwitching &&
+            presentationVerified && current() && !latestPip &&
+            rootEnvironment.owns() && rootEnvironment.currentKey() === route &&
+            pictureFactory.isPresentationCurrent(assembly, expected) && assembly.native.isCurrent(expected) &&
+            actual.ready && !actual.loading && !actual.ended && !actual.audioOnly && actual.error == null &&
+            actual.videoCodec != null && actual.videoWidth > 0 && actual.videoHeight > 0
+    }
+    fun changePictureAspectRatio(ratio: VideoAspectRatio) {
+        val expected = viewportSource ?: return
+        if (!pictureCurrent(expected)) return
+        val actual = native.state.value
+        val safeRatio = resolveSafeVideoAspectRatio(ratio, actual.videoHeight > actual.videoWidth)
+        picturePreferenceJob?.cancel()
+        picturePreferenceJob = partScope.launch {
+            try {
+                DesktopOriginalPlaybackPreferenceOperation.run(platforms.holder.settingsContext, { pictureCurrent(expected) }) {
+                    DesktopOriginalPlayerSectionSettings.setFullscreenAspectRatio(
+                        platforms.holder.settingsContext, safeRatio.toFullscreenAspectRatio())
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) {
+                if (pictureCurrent(expected)) latestActions.notice(failure.message ?: "画面比例未能保存")
+            }
+        }
+    }
+    fun flipPicture(horizontal: Boolean) {
+        val expected = viewportSource ?: return
+        if (!pictureCurrent(expected)) return
+        assembly.native.admitPlaybackDispatch(expected) {
+            if (pictureCurrent(expected)) {
+                if (horizontal) pictureFlipHorizontal = !pictureFlipHorizontal
+                else pictureFlipVertical = !pictureFlipVertical
+            }
+        }
+    }
+    SideEffect {
+        val expected = viewportSource
+        val transform = DesktopNativeVideoViewportTransform(pictureAspectRatio.playerResizeMode,
+            1f, 0f, 0f, pictureFlipHorizontal, pictureFlipVertical)
+        if (expected != null && pictureCurrent(expected) &&
+            (submittedPictureViewport?.first !== expected || submittedPictureViewport?.second != transform)) {
+            assembly.native.admitPlaybackDispatch(expected) {
+                if (pictureCurrent(expected) && native.setOriginalVideoViewport(expected.nativeSource, transform))
+                    submittedPictureViewport = expected to transform
+            }
+        }
+    }
     CompositionLocalProvider(LocalDesktopOriginalVideoHolderPlatform provides platforms.holder,
         LocalDesktopCommentBindings provides platforms.holder.commentsPlatform) {
         // These are state-domain effects only. They bind the existing four VMs without mounting the phone screen.
@@ -775,43 +879,50 @@ internal class DesktopWindowsVideoActions(
                             maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
-                // Fill all remaining height; there is no phone-derived fraction or maximum 380dp video height.
-                var viewportSize by remember(native) { mutableStateOf(IntSize.Zero) }
-                Box(Modifier.fillMaxWidth().weight(1f).background(Color.Black).onSizeChanged { viewportSize = it }
-                    .onGloballyPositioned { coordinates ->
-                        // Store pixels only, never a LayoutCoordinates object.
-                        // Host-hidden still keeps the peer; outgoing entries may
-                        // not overwrite the current physical route's viewport.
-                        if (rootEnvironment.currentKey() === route && rootEnvironment.owns() &&
-                            shell.slot.currentAssembly() === assembly && assembly.owns() && !pipActive) {
-                            val origin = coordinates.positionInWindow()
-                            val rect = Rect(origin.x, origin.y, origin.x + coordinates.size.width, origin.y + coordinates.size.height)
-                            feedbackBounds.reportVideo(rect)
-                            nativeSurface.reportViewport(route, viewportLease, rect)
-                        }
-                    }
-                    .focusRequester(viewportFocus).onFocusChanged { if(current()) actions.focusChanged(it.hasFocus) }.focusable()) {
-                    if (active && !pipActive) {
-                        DesktopVideoCommandPopup(viewportSize, {
-                            Box(Modifier.fillMaxSize()) {
-                                actions.overlay()
-                                val positionMs = (state.positionSeconds * 1000.0).toLong()
-                                val primary = if (subtitleMode == SubtitleDisplayMode.PRIMARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
-                                    success?.subtitlePrimaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
-                                val secondary = if (subtitleMode == SubtitleDisplayMode.SECONDARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
-                                    success?.subtitleSecondaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
-                                if (current() && success?.subtitleOwnerBvid == success?.info?.bvid &&
-                                    success?.subtitleOwnerCid == success?.info?.cid && (primary != null || secondary != null))
-                                    Column(Modifier.align(Alignment.BottomCenter).padding(14.dp).background(Color.Black.copy(alpha=.65f)).padding(6.dp)) {
-                                        primary?.let { Text(it, color=Color.White, fontSize=20.sp) }
-                                        secondary?.let { Text(it, color=Color.White, fontSize=16.sp) }
-                                    }
-                                DesktopWindowsVideoInteractiveChoiceOverlay(assembly, interactiveChoicePanel, interactiveChoiceSource)
+                // One retained native slot; original fixed ratios letterbox the same viewport.
+                BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {
+                    val viewportLayout = resolveVideoViewportLayout(constraints.maxWidth, constraints.maxHeight, pictureAspectRatio)
+                    val density = LocalDensity.current
+                    val viewportWidth = with(density) { viewportLayout.width.toDp() }
+                    val viewportHeight = with(density) { viewportLayout.height.toDp() }
+                    var viewportSize by remember(native) { mutableStateOf(IntSize.Zero) }
+                    Box(Modifier.align(Alignment.Center).size(viewportWidth, viewportHeight)
+                        .background(Color.Black).onSizeChanged { viewportSize = it }
+                        .onGloballyPositioned { coordinates ->
+                            // Store pixels only, never a LayoutCoordinates object.
+                            // Host-hidden still keeps the peer; outgoing entries may
+                            // not overwrite the current physical route's viewport.
+                            if (rootEnvironment.currentKey() === route && rootEnvironment.owns() &&
+                                shell.slot.currentAssembly() === assembly && assembly.owns() && !pipActive) {
+                                val origin = coordinates.positionInWindow()
+                                val rect = Rect(origin.x, origin.y, origin.x + coordinates.size.width, origin.y + coordinates.size.height)
+                                feedbackBounds.reportVideo(rect)
+                                nativeSurface.reportViewport(route, viewportLease, rect)
                             }
-                        }, native.surface)
-                    } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
-                    if (presentationAlive && !pipActive) engagementBinding?.let { binding ->
-                        DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)
+                        }
+                        .focusRequester(viewportFocus).onFocusChanged { if(current()) actions.focusChanged(it.hasFocus) }.focusable()) {
+                        if (active && !pipActive) {
+                            DesktopVideoCommandPopup(viewportSize, {
+                                Box(Modifier.fillMaxSize()) {
+                                    actions.overlay()
+                                    val positionMs = (state.positionSeconds * 1000.0).toLong()
+                                    val primary = if (subtitleMode == SubtitleDisplayMode.PRIMARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
+                                        success?.subtitlePrimaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
+                                    val secondary = if (subtitleMode == SubtitleDisplayMode.SECONDARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
+                                        success?.subtitleSecondaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
+                                    if (current() && success?.subtitleOwnerBvid == success?.info?.bvid &&
+                                        success?.subtitleOwnerCid == success?.info?.cid && (primary != null || secondary != null))
+                                        Column(Modifier.align(Alignment.BottomCenter).padding(14.dp).background(Color.Black.copy(alpha=.65f)).padding(6.dp)) {
+                                            primary?.let { Text(it, color=Color.White, fontSize=20.sp) }
+                                            secondary?.let { Text(it, color=Color.White, fontSize=16.sp) }
+                                        }
+                                    DesktopWindowsVideoInteractiveChoiceOverlay(assembly, interactiveChoicePanel, interactiveChoiceSource)
+                                }
+                            }, native.surface)
+                        } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
+                        if (presentationAlive && !pipActive) engagementBinding?.let { binding ->
+                            DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)
+                        }
                     }
                 }
                 if (playback.recovering && playback.recoveryMessage != null)
@@ -996,6 +1107,14 @@ internal class DesktopWindowsVideoActions(
                             FilterChip(preferences.danmaku.enabled, onClick = { if (current()) actions.toggleDanmaku() }, label = { Text("弹幕") })
                             TextButton(onClick = { if (current()) actions.danmakuSettings() }) { Text("弹幕设置") }
                         }
+                        DesktopWindowsVideoViewportControls(
+                            ratio = pictureAspectRatio, flipHorizontal = pictureFlipHorizontal,
+                            flipVertical = pictureFlipVertical, enabled = pictureCurrent(viewportSource),
+                            isVerticalVideo = isVerticalPicture,
+                            onRatioSelected = ::changePictureAspectRatio,
+                            onFlipHorizontal = { flipPicture(horizontal = true) },
+                            onFlipVertical = { flipPicture(horizontal = false) },
+                        )
                         Text("视频编码", style = MaterialTheme.typography.labelLarge)
                         FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             listOf("hev1" to "HEVC", "av01" to "AV1", "avc1" to "H.264").forEach { (codec, label) ->
