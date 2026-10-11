@@ -64,7 +64,7 @@ class DesktopLiveModerationMenuUiTest {
         } finally { f.close(); owner.close() }
     }
 
-    @Test fun queuedActualMenuActionRejectsSourceAbaAndEqualReplacementRowAndDisposeRetiresCallback(): Unit = runBlocking {
+    @Test fun queuedSourceClickAndEmittedRowPredicateRejectStaleOwnershipWhileFreshRowsStayUsable(): Unit = runBlocking {
         val owner = SourceOwner()
         val item = LiveDanmakuItem("same message id and text", uid = 77, uname = "Fixture", idStr = "retained-id")
         val f = Scene(owner, item)
@@ -80,31 +80,45 @@ class DesktopLiveModerationMenuUiTest {
             assertEquals(original.source.videoUrl, returned.source.videoUrl)
             assertNotSame(original.source.nativePublication, returned.source.nativePublication)
             assertFalse(old.current())
-            // This is the actual composable's already-captured accessibility action,
-            // modelling a queued old click; no private handler or policy is invoked.
+            // Before any scene redraw, this public action's Modifier is still attached.
+            // The actual application admission must reject its now-retired source.
             report()
             f.pumpFor(100)
             assertTrue(f.actions.isEmpty())
             f.await { f.button("举报选中弹幕") == null }
+
             f.openMenu()
-            val shield = assertNotNull(assertNotNull(f.button("屏蔽发送者")).config[SemanticsActions.OnClick].action)
+            f.click(f.actionPoint("复制弹幕信息"))
+            f.await { f.actions.size == 1 }
+            val oldAction = f.actions.single()
+            assertSame(item, oldAction.item)
+            val oldRowCurrent = assertNotNull(oldAction.current)
+            assertTrue(oldRowCurrent())
+            val unchangedSource = checkNotNull(owner.memory.captureLiveSourceBinding())
+            assertTrue(unchangedSource.current())
+            f.await { f.button("复制弹幕信息") == null }
+            f.openMenu()
             val replacement = item.copy()
             assertEquals(item, replacement); assertNotSame(item, replacement)
             f.replace(replacement)
             f.pumpFor(100)
-            shield()
-            f.pumpFor(80)
-            assertTrue(f.actions.isEmpty(), "Equal id/text does not make an old retained object current")
             f.await { f.button("屏蔽发送者") == null }
+            // The old row really detached. Do not invoke its Modifier action.
+            // This predicate came from the actual, attached pointer-copy callback.
+            assertFalse(oldRowCurrent(), "Equal id/text must not revive an emitted old-row admission")
+            assertTrue(unchangedSource.current(), "Only row identity changed, not the source or global list lifetime")
+            assertEquals(1, f.actions.size)
+
             f.openMenu()
             f.click(f.actionPoint("复制弹幕信息"))
-            f.await { f.actions.size == 1 }
-            assertSame(replacement, f.actions.single().item)
-            val captured = assertNotNull(f.actions.single().current)
+            f.await { f.actions.size == 2 }
+            assertSame(replacement, f.actions.last().item)
+            val captured = assertNotNull(f.actions.last().current)
             assertTrue(captured())
+            assertFalse(oldRowCurrent())
             f.close()
-            assertFalse(captured(), "A completed list scope must retire the menu callback even if the source is unchanged")
-            assertTrue(checkNotNull(owner.memory.captureLiveSourceBinding()).current())
+            assertFalse(captured(), "A completed list scope must retire the callback even if the source is unchanged")
+            assertTrue(unchangedSource.current())
         } finally { f.close(); owner.close() }
     }
 
