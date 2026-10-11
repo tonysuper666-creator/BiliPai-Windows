@@ -517,7 +517,10 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                 actor.drain(); actor.loaded()
                 assertTrue(native.ownsPlaybackSource()); assertFalse(player.state.value.ready)
                 assertTrue(actor.native.loads.isNotEmpty())
-                assertEquals(accepted().nativeSource, player.currentSourceSnapshot())
+                val snapshot = checkNotNull(player.currentSourceSnapshot())
+                assertEquals(accepted().nativeSource.sourceVersion, snapshot.sourceVersion)
+                assertEquals(accepted().nativeSource.source, snapshot.source)
+                assertTrue(player.ownsSourceSnapshot(accepted().nativeSource))
             }
         }
         suspend fun awaitClick(): Click = withTimeout(8_000) { while (clicks.isEmpty()) delay(5); clicks.first() }
