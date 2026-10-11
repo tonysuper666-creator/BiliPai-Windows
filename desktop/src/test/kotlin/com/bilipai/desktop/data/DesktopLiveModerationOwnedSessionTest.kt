@@ -303,6 +303,9 @@ class DesktopLiveModerationOwnedSessionTest {
     @Test fun sevenOriginalMethodsUsePrimaryCookiesExactFormsAndSignedCanonicalShieldRead(): Unit = runBlocking {
         Fixture().useSuspending { f ->
             val chat = f.startCanonical(); val peer = ready(f, chat)
+            val initialRoomLookups = f.requests.filter { it.url.encodedPath == "/room/v1/Room/room_init" }
+            // Page alias resolution precedes the socket client's own fresh canonical-room validation.
+            assertEquals(listOf("9", "123"), initialRoomLookups.map { it.url.queryParameter("id") })
             chat.shieldUser(77); chat.unshieldUser(77); chat.addShieldKeyword("  blocked  ")
             chat.deleteShieldKeyword("blocked"); chat.setSilentRule("level", 19)
             peer.message(danmaku(99, "report ordinary", "123456789012"))
@@ -336,7 +339,8 @@ class DesktopLiveModerationOwnedSessionTest {
                 assertEquals("synthetic-live", cookies["SESSDATA"]); assertEquals("synthetic-csrf", cookies["bili_jct"])
                 assertFalse("synthetic-secondary" in cookies.values); assertFalse("secondary-csrf" in cookies.values)
             }
-            assertEquals(1, f.requests.count { it.url.encodedPath == "/room/v1/Room/room_init" })
+            // The seven moderation writes must not add another room lookup to the actual startup pair.
+            assertEquals(initialRoomLookups, f.requests.filter { it.url.encodedPath == "/room/v1/Room/room_init" })
             assertEquals(19, chat.shieldInfo.value.level); assertFalse(chat.state.value.moderating)
             val before = posts.size
             assertFailsWith<IllegalArgumentException> { chat.reportDanmaku(ordinary.copy(), reason) }
