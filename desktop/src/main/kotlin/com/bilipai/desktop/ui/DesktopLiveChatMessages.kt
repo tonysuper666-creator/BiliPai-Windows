@@ -27,6 +27,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+/** Only list display state; the existing Session still owns messages and sending.
+ * Its LiveChatPanel keeps this instance across interaction-tab changes. */
+internal class DesktopLiveChatMessageState {
+    val listState = LazyListState()
+    val timeline = DesktopLiveChatTimeline<LiveDanmakuItem>()
+    var follow by mutableStateOf(DesktopLiveChatFollowState())
+}
+
 /** The production live message list. Its caller owns the room session and reply/send state. */
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
@@ -36,13 +44,14 @@ internal fun DesktopLiveChatMessages(
     isLoggedIn: Boolean,
     onReply: (LiveDanmakuItem) -> Unit,
     modifier: Modifier = Modifier,
+    state: DesktopLiveChatMessageState = remember(sessionKey) { DesktopLiveChatMessageState() },
 ) {
     val scope = rememberCoroutineScope()
-    val listState = remember(sessionKey) { LazyListState() }
-    val timeline = remember(sessionKey) { DesktopLiveChatTimeline<LiveDanmakuItem>() }
+    val listState = state.listState
+    val timeline = state.timeline
     val rows = remember(sessionKey, messages) { timeline.update(messages) }
     val currentRows by rememberUpdatedState(rows)
-    var follow by remember(sessionKey) { mutableStateOf(DesktopLiveChatFollowState()) }
+    var follow by state::follow
     var pointerHeld by remember(sessionKey) { mutableStateOf(false) }
     var automaticScroll by remember(sessionKey) { mutableStateOf(false) }
     var followJob by remember(sessionKey) { mutableStateOf<Job?>(null) }

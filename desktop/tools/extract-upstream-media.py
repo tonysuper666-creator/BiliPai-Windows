@@ -184,6 +184,34 @@ def emit_live_vote(repo: Path, output: Path, parser) -> list[Path]:
     return [generated]
 
 
+def emit_live_vote_panel(repo: Path, output: Path) -> list[Path]:
+    """Whole fixed read-only panel; the sole platform seam is its list import."""
+    from v030_live_stream import safe
+    fixed_commit = "b2091b1de636e499df80af7e700796b4f52b7f92"
+    path = "app/src/main/java/com/android/purebilibili/feature/live/components/LiveVotePanel.kt"
+    raw = safe(repo / "desktop/upstream-slices/v034-live-vote" / path).read_bytes()
+    if len(raw) != 4637 or hashlib.sha256(raw).hexdigest() != "720707b0f2d25c6b927fa5647bf312768cd3e6b9673944dbd889b94164913e1b" or \
+            hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest() != "03bc1ed155377637cfc94d3f57eb6642e06ad89a":
+        raise ValueError("Fixed original live-vote panel source changed")
+    original = raw.decode("utf8")
+    old_import = "import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn\n"
+    new_import = "import androidx.compose.foundation.lazy.LazyColumn\n"
+    if original.count(old_import) != 1:
+        raise ValueError("Original live-vote panel platform import changed")
+    body = original.replace(old_import, new_import, 1)
+    if body.count(new_import) != 1 or body.replace(new_import, old_import, 1) != original:
+        raise ValueError("Whole original live-vote panel inverse failed")
+    header = "// GENERATED from fixed " + fixed_commit + " full " + path + "; do not edit.\n"
+    header += "// Original raw SHA-256: 720707b0f2d25c6b927fa5647bf312768cd3e6b9673944dbd889b94164913e1b\n"
+    source = header + body
+    if hashlib.sha256(source.encode()).hexdigest() != "ac7070225154d4f606fcdb0b95a9fa2a1693141a7f1ee130d7311c3f019e9b0b":
+        raise ValueError("Complete original live-vote panel generated output changed")
+    generated = safe(output / "com/android/purebilibili/feature/live/components/LiveVotePanel.kt")
+    generated.parent.mkdir(parents=True, exist_ok=True)
+    generated.write_text(source, encoding="utf8", newline="\n")
+    return [generated]
+
+
 def emit_live_chat_image(repo: Path, output: Path) -> list[Path]:
     """Exact fixed source RANGE, not a whole upstream composable; existing Coil owner only."""
     from v030_live_stream import safe
@@ -408,6 +436,7 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
     generated.extend(emit_recovery(repo, output))
     generated.extend(emit_live_chat_image(repo, output))
     generated.extend(emit_live_vote(repo, output, parser))
+    generated.extend(emit_live_vote_panel(repo, output))
     return generated
 
 

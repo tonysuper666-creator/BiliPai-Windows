@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.bilipai.desktop.data.*
+import com.android.purebilibili.feature.live.components.LiveVotePanel
 import com.bilipai.desktop.download.DesktopDownloadManager
 import com.bilipai.desktop.download.DownloadMetadata
 import com.bilipai.desktop.player.MpvPlayer
@@ -259,7 +260,11 @@ fun LiveBrowserScreen(
             MediaMessage(opening, error, false, "")
             Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 if (player != null && loaded && memory.ownsNativeSource) Box(Modifier.weight(3f).fillMaxHeight()) { playerContent(player) }
-                chat?.let { LiveChatPanel(it, account != null, Modifier.weight(1f).fillMaxHeight()) }
+                chat?.let { session ->
+                    key(session) {
+                        LiveChatPanel(session, account != null, Modifier.weight(1f).fillMaxHeight())
+                    }
+                }
             }
             MediaSelector(stream?.qualities.orEmpty().map { it.label }, stream?.qualities?.firstOrNull { it.id == stream?.source?.quality }?.label.orEmpty()) { label ->
                 stream?.qualities?.firstOrNull { it.label == label }?.let { playRoom(current.roomId, it.id) }
@@ -538,7 +543,10 @@ internal fun com.bilipai.desktop.data.PlaybackSource.toNativePlayback() = Native
 @Composable
 private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modifier: Modifier = Modifier) {
     val state by session.state.collectAsState()
+    val voteSnapshot by session.voteSnapshot.collectAsState()
+    var showVotes by remember(session) { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val chatMessageState = remember(session) { DesktopLiveChatMessageState() }
     val draft = remember(session) { DesktopLiveChatDraft() }
     val message = draft.message
     val reply = draft.reply
@@ -565,30 +573,40 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
     }
     Surface(modifier, shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.surfaceVariant) {
         Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(state.status, style = MaterialTheme.typography.labelMedium,
-                color = if (state.connected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-            DesktopLiveChatMessages(session, state.messages, isLoggedIn, { draft.selectReply(it) },
-                Modifier.weight(1f).fillMaxWidth())
-            state.error?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
-            Text(if (!isLoggedIn) "登录后可发送弹幕" else permission?.statusText ?: "正在读取弹幕权限", style = MaterialTheme.typography.labelSmall)
-            reply?.let { target -> Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("回复 ${target.uname}", Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                TextButton(onClick = { draft.selectReply(null) }) { Text("取消") }
-            } }
-            if (isLoggedIn && permission != null) {
-                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    permission.availableModes.forEach { option -> FilterChip(mode == option.mode, { mode = option.mode }, label = { Text(option.name) }) }
-                }
-                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    permission.availableColors.forEach { option -> FilterChip(color == option.color, { color = option.color }, label = { Text(option.name) }) }
-                }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(!showVotes, { showVotes = false }, label = { Text("聊天") })
+                FilterChip(showVotes, { showVotes = true }, label = { Text("投票") })
             }
-            OutlinedTextField(message, draft::editMessage, Modifier.fillMaxWidth(), enabled = isLoggedIn && permission?.canSend == true,
-                singleLine = true, label = { Text("发送直播弹幕") },
-                supportingText = { if (permission != null) Text("${message.length}/${permission.maxLength}") },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { send() }))
-            FilledTonalButton(onClick = ::send, enabled = canSend, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
-                Text(if (state.sending) "发送中" else "发送")
+            if (showVotes) {
+                LiveVotePanel(voteSnapshot, Modifier.weight(1f).fillMaxWidth())
+            } else {
+                Column(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(state.status, style = MaterialTheme.typography.labelMedium,
+                        color = if (state.connected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                    DesktopLiveChatMessages(session, state.messages, isLoggedIn, { draft.selectReply(it) },
+                        Modifier.weight(1f).fillMaxWidth(), state = chatMessageState)
+                    state.error?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
+                    Text(if (!isLoggedIn) "登录后可发送弹幕" else permission?.statusText ?: "正在读取弹幕权限", style = MaterialTheme.typography.labelSmall)
+                    reply?.let { target -> Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("回复 ${target.uname}", Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        TextButton(onClick = { draft.selectReply(null) }) { Text("取消") }
+                    } }
+                    if (isLoggedIn && permission != null) {
+                        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            permission.availableModes.forEach { option -> FilterChip(mode == option.mode, { mode = option.mode }, label = { Text(option.name) }) }
+                        }
+                        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            permission.availableColors.forEach { option -> FilterChip(color == option.color, { color = option.color }, label = { Text(option.name) }) }
+                        }
+                    }
+                    OutlinedTextField(message, draft::editMessage, Modifier.fillMaxWidth(), enabled = isLoggedIn && permission?.canSend == true,
+                        singleLine = true, label = { Text("发送直播弹幕") },
+                        supportingText = { if (permission != null) Text("${message.length}/${permission.maxLength}") },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { send() }))
+                    FilledTonalButton(onClick = ::send, enabled = canSend, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
+                        Text(if (state.sending) "发送中" else "发送")
+                    }
+                }
             }
         }
     }
