@@ -278,6 +278,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     val request = chain.request()
                     if (!request.url.isHttps || request.url.port != 443) rejectRequest(request)
                     if (request.url.host in setOf("media.invalid", "backup.invalid")) return@addInterceptor memoryMedia(request)
+                    if (request.url.host == "bvc.bilivideo.com") return@addInterceptor memoryPbp(request)
                     if (request.url.host !in setOf("api.bilibili.com", "www.bilibili.com")) rejectRequest(request)
                     val bvid = request.url.queryParameter("bvid") ?: A
                     val body = when (request.url.encodedPath) {
@@ -404,6 +405,19 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             return builder.code(206).header("Content-Range", "bytes $start-$end/${content.size}")
                 .header("Content-Length", "${bytes.size}").body(bytes.toResponseBody(type)).build()
         }
+        private fun memoryPbp(request: Request): Response {
+            val bvid = request.url.queryParameter("bvid")
+            val subject = when (bvid) { A -> "104" to "101"; B -> "105" to "102"; else -> rejectRequest(request) }
+            if (request.method != "GET" || request.url.encodedPath != "/pbp/data" ||
+                request.url.queryParameterNames != setOf("cid", "bvid", "aid") ||
+                request.url.queryParameter("cid") != subject.first || request.url.queryParameter("aid") != subject.second)
+                rejectRequest(request)
+            // Exact original API returns ResponseBody; its real metadata protocol
+            // invokes parsePbpProgressData on top-level step_sec/events.default.
+            val body = """{"code":0,"step_sec":5,"events":{"default":[0,1,3,1]}}"""
+            return Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("memory PBP")
+                .body(body.toResponseBody("application/json".toMediaType())).build()
+        }
         suspend fun load(bvid: String, aid: Long, cid: Long) {
             ui { owner.playback.loadVideo(bvid, aid, cid = cid, autoPlay = false) }
             awaitLoaded(bvid)
@@ -444,8 +458,17 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             deleteCreatedDirectory(directory, "cdn-original-owner-")
         }
         suspend fun useSuspending(block: suspend (Fixture) -> Unit) {
+            var primary: Throwable? = null
             try { initialize(); withTimeout(30_000) { block(this@Fixture) } }
-            finally { withContext(NonCancellable) { close() } }
+            catch (failure: Throwable) { primary = failure; throw failure }
+            finally {
+                try { withContext(NonCancellable) { close() } }
+                catch (cleanup: Throwable) {
+                    val failure = primary
+                    if (failure == null) throw cleanup
+                    if (failure !== cleanup) failure.addSuppressed(cleanup)
+                }
+            }
         }
     }
 
