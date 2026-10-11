@@ -4,6 +4,8 @@ import com.android.purebilibili.core.network.socket.DanmakuProtocol
 import com.android.purebilibili.core.network.socket.LiveDanmakuClient
 import com.android.purebilibili.data.repository.LiveDanmakuPermission
 import com.android.purebilibili.data.repository.LiveDanmakuSendRequest
+import com.android.purebilibili.data.repository.LiveVoteSnapshot
+import com.android.purebilibili.data.repository.applyOriginalDesktopLiveVoteUpdate
 import com.android.purebilibili.feature.live.LiveDanmakuItem
 import com.android.purebilibili.feature.live.LiveRealtimeAction
 import com.android.purebilibili.feature.live.resolveLiveRealtimeAction
@@ -33,6 +35,8 @@ class DesktopLiveSession(
     private val lifetimeLock = Any()
     private val mutableState = MutableStateFlow(LiveChatState())
     val state: StateFlow<LiveChatState> = mutableState.asStateFlow()
+    private val mutableVoteSnapshot = MutableStateFlow(LiveVoteSnapshot())
+    val voteSnapshot: StateFlow<LiveVoteSnapshot> = mutableVoteSnapshot.asStateFlow()
     private val mutableActions = MutableSharedFlow<LiveRealtimeAction>(extraBufferCapacity = 200, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     internal val actions: SharedFlow<LiveRealtimeAction> = mutableActions.asSharedFlow()
     private val startGuard = java.util.concurrent.atomic.AtomicBoolean(false)
@@ -73,6 +77,19 @@ class DesktopLiveSession(
         if (!startGuard.compareAndSet(false, true)) return
         scope.launch {
             try {
+                // This child is independent of history/config/socket startup. Hydration
+                // can only replace the exact initial object, never a newer realtime vote.
+                val initialVoteSnapshot = mutableVoteSnapshot.value
+                launch voteSnapshotLoad@ {
+                    try {
+                        val snapshot = media.liveVoteSnapshot(roomId, primaryEpoch, ::owned).getOrNull()
+                            ?: return@voteSnapshotLoad
+                        publish {
+                            if (mutableVoteSnapshot.value === initialVoteSnapshot) mutableVoteSnapshot.value = snapshot
+                        }
+                    } catch (cancelled: CancellationException) { throw cancelled
+                    } catch (_: Exception) { /* Original vote snapshot is optional. */ }
+                }
                 // History/config remain optional: live socket authentication uses
                 // its separately signed original API and the same current login.
                 try {
@@ -125,7 +142,9 @@ class DesktopLiveSession(
                 state.copy(messages = state.messages.filterNot { it.isSuperChat && it.superChatId in action.ids })
             }
             is LiveRealtimeAction.RecallDanmaku -> mutableState.update { state -> state.copy(messages = state.messages.filterNot { it.idStr == action.id }) }
-            is LiveRealtimeAction.UpdateVote -> append(action.announcement)
+            is LiveRealtimeAction.UpdateVote -> applyOriginalDesktopLiveVoteUpdate(mutableVoteSnapshot, action) {
+                append(it)
+            }
             else -> Unit
         }
         mutableActions.tryEmit(action)

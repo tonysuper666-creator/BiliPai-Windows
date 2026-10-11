@@ -91,6 +91,99 @@ def write(output: Path, relative: str, original_path: str, original: str, body: 
     return result
 
 
+def emit_live_vote(repo: Path, output: Path, parser) -> list[Path]:
+    """Complete fixed snapshot method and real state-merge body, one existing owner."""
+    from v030_live_stream import safe, whole_proof
+    fixed_commit = "b2091b1de636e499df80af7e700796b4f52b7f92"
+    archive = repo / "desktop/upstream-slices/v034-live-vote"
+    identities = {
+        "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt": ("0c69a011fa66f0c9829b066aa4fa149a865c996c", "554ca3c32522c88148144c4221879701657aab296519ea0da4162661039d4857", 56832),
+        "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt": ("605d846a97f2faaf5af468d5757d180caf1ba098", "e86a019aa43d9d5aca595ff6073bb0cf50d00436142bb5a0bda50655b2507e74", 63055),
+    }
+    fixed = {}
+    for path, (blob, digest, size) in identities.items():
+        raw = safe(archive / path).read_bytes()
+        if len(raw) != size or hashlib.sha256(raw).hexdigest() != digest or \
+                hashlib.sha1(b"blob " + str(size).encode() + b"\0" + raw).hexdigest() != blob:
+            raise ValueError("Fixed original live-vote source changed: " + path)
+        fixed[path] = raw.decode("utf8").replace("\r\n", "\n")
+    repository_path = "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt"
+    viewmodel_path = "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt"
+    original_repository = fixed[repository_path]
+    original_viewmodel = fixed[viewmodel_path]
+    snapshot_before = function(original_repository, "getLiveVoteSnapshot", parser)
+    if hashlib.sha256(snapshot_before.encode()).hexdigest() != "6ab5a616906704f9d83524897ed1fbf4b320008501a99194e581d00e2fd84b00":
+        raise ValueError("Complete original live-vote snapshot method changed")
+    header_before = "suspend fun getLiveVoteSnapshot(roomId: Long): Result<LiveVoteSnapshot>"
+    header_after = "internal suspend fun requestOriginalDesktopLiveVoteSnapshot(\n    canonicalRoomId: Long,\n    api: BilibiliApi,\n): Result<LiveVoteSnapshot>"
+    normalization_before = "val realRoomId = resolveRealRoomId(roomId)"
+    normalization_after = "val realRoomId = canonicalRoomId"
+    if snapshot_before.count(header_before) != 1 or snapshot_before.count(normalization_before) != 1:
+        raise ValueError("Original live-vote platform seams changed")
+    snapshot_after = snapshot_before.replace(header_before, header_after, 1).replace(normalization_before, normalization_after, 1)
+    snapshot_inverse = snapshot_after.replace(header_after, header_before, 1).replace(normalization_after, normalization_before, 1)
+    snapshot_original_range = textwrap.indent(snapshot_before, "    ")
+    snapshot_adapted_range = textwrap.indent(snapshot_after, "    ")
+    if snapshot_inverse != snapshot_before or original_repository.count(snapshot_original_range) != 1:
+        raise ValueError("Complete original live-vote snapshot inverse failed")
+    repository_projection = original_repository.replace(snapshot_original_range, snapshot_adapted_range, 1)
+    if repository_projection.replace(snapshot_adapted_range, textwrap.indent(snapshot_inverse, "    "), 1) != original_repository:
+        raise ValueError("Whole original live-vote repository inverse failed")
+    merge_range = "            is LiveRealtimeAction.UpdateVote -> {\n                val previous = _voteSnapshot.value\n                _voteSnapshot.value = previous.copy(\n                    current = action.vote,\n                    history = if (action.vote.isActive) previous.history else {\n                        listOf(action.vote) + previous.history.filterNot {\n                            it.interactionId > 0L && it.interactionId == action.vote.interactionId\n                        }\n                    }.take(10)\n                )\n                emitLiveChatItem(action.announcement)\n            }"
+    if original_viewmodel.count(merge_range) != 1:
+        raise ValueError("Complete original live-vote merge range changed")
+    # Only unwrap the original when-branch. Its entire state merge and announcement
+    # body stays byte-equal; the existing session supplies the same flow and sink.
+    merge_lines = merge_range.splitlines()
+    if merge_lines[0] != "            is LiveRealtimeAction.UpdateVote -> {" or merge_lines[-1] != "            }":
+        raise ValueError("Original live-vote merge branch changed")
+    merge_body = textwrap.dedent("\n".join(merge_lines[1:-1]))
+    if hashlib.sha256(merge_body.encode()).hexdigest() != "d7a914a449ee4c85373ce766df5097e3ee2b1c23e5ef2cd2d2f162811096baec":
+        raise ValueError("Complete original live-vote merge body changed")
+    merge_prefix = "internal fun applyOriginalDesktopLiveVoteUpdate(\n    _voteSnapshot: MutableStateFlow<LiveVoteSnapshot>,\n    action: LiveRealtimeAction.UpdateVote,\n    emitLiveChatItem: (LiveDanmakuItem) -> Unit,\n) {\n"
+    merge_after = merge_prefix + textwrap.indent(merge_body, "    ") + "\n}"
+    recovered_body = textwrap.dedent(merge_after[len(merge_prefix):-2])
+    recovered_range = merge_lines[0] + "\n" + textwrap.indent(recovered_body, "                ") + "\n" + merge_lines[-1]
+    if recovered_body != merge_body or recovered_range != merge_range or original_viewmodel.replace(merge_range, recovered_range, 1) != original_viewmodel:
+        raise ValueError("Whole original live-vote ViewModel extraction inverse failed")
+    # Existing canonical types/parsers and actual API must expose the exact reused
+    # source contracts. Their whole files are not relabelled as this new source epoch.
+    contracts = [
+        ("app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt", "internal fun parseLiveVotePanel(rawJson: String): LiveVoteInfo? {\n    val root = JSONObject(rawJson)\n    if (root.optInt(\"code\") != 0) return null\n    return root.optJSONObject(\"data\")?.optJSONObject(\"vote_info\")?.let(::parseLiveVoteInfo)\n}\n\ninternal fun parseLiveVoteHistory(rawJson: String): List<LiveVoteInfo> {\n    val root = JSONObject(rawJson)\n    if (root.optInt(\"code\") != 0) return emptyList()\n    val history = root.optJSONObject(\"data\")?.optJSONArray(\"history\") ?: return emptyList()\n    return buildList {\n        for (index in 0 until history.length()) {\n            history.optJSONObject(index)?.let(::parseLiveVoteInfo)?.let(::add)\n        }\n    }\n}\n\nprivate fun parseLiveVoteInfo(json: JSONObject): LiveVoteInfo? {\n    val question = json.optString(\"question\").trim()\n    if (question.isBlank()) return null\n    val optionsJson = json.optJSONArray(\"options\")\n    val options = buildList {\n        if (optionsJson != null) for (index in 0 until optionsJson.length()) {\n            val option = optionsJson.optJSONObject(index) ?: continue\n            val description = option.optString(\"desc\").trim()\n            if (description.isNotBlank()) {\n                add(\n                    LiveVoteOption(\n                        id = option.optInt(\"idx\"),\n                        description = description,\n                        percent = option.optDouble(\"percent\", 0.0).toFloat().coerceIn(0f, 1f)\n                    )\n                )\n            }\n        }\n    }\n    return LiveVoteInfo(\n        status = json.optInt(\"status\"),\n        question = question,\n        options = options,\n        durationMillis = json.optLong(\"duration\"),\n        remainingMillis = json.optLong(\"left_duration\"),\n        resultText = json.optString(\"result_text\"),\n        endTimeText = json.optString(\"etime_str\"),\n        interactionId = json.optLong(\"interaction_id\")\n    )\n}\n"),
+        ("app/src/main/java/com/android/purebilibili/data/repository/LiveInteractionModels.kt", "data class LiveVoteOption(val id: Int = 0, val description: String = \"\", val percent: Float = 0f)\n\ndata class LiveVoteInfo(\n    val status: Int = 0,\n    val question: String = \"\",\n    val options: List<LiveVoteOption> = emptyList(),\n    val durationMillis: Long = 0L,\n    val remainingMillis: Long = 0L,\n    val resultText: String = \"\",\n    val endTimeText: String = \"\",\n    val interactionId: Long = 0L\n) {\n    val isActive: Boolean get() = status == 4\n}\n\ndata class LiveVoteSnapshot(\n    val current: LiveVoteInfo? = null,\n    val history: List<LiveVoteInfo> = emptyList()\n)\n"),
+        ("app/src/main/java/com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt", "private fun parseVoteInteraction(data: JsonObject): LiveRealtimeAction {\n    val question = data.string(\"question\").ifBlank { return LiveRealtimeAction.Ignore }\n    val voteOptions = data.array(\"options\").orEmpty()\n        .mapNotNull { option ->\n            val obj = option.asObjectOrNull() ?: return@mapNotNull null\n            val desc = obj.string(\"desc\").ifBlank { return@mapNotNull null }\n            LiveVoteOption(\n                id = obj.int(\"idx\"),\n                description = desc,\n                percent = obj.float(\"percent\").coerceIn(0f, 1f)\n            )\n        }\n        .take(2)\n    if (voteOptions.isEmpty()) return LiveRealtimeAction.Ignore\n    val remainingSeconds = (data.long(\"left_duration\") / 1000L).coerceAtLeast(0L)\n    val suffix = if (remainingSeconds > 0L) \"｜剩余 ${remainingSeconds}s\" else \"\"\n    val optionSummary = voteOptions.joinToString(\" / \") {\n        \"${it.description} ${(it.percent * 100f).roundToInt()}%\"\n    }\n    val announcement = systemMessage(\"投票\", \"投票：$question｜$optionSummary$suffix\")\n    val chat = (announcement as? LiveRealtimeAction.EmitChat)?.item ?: return LiveRealtimeAction.Ignore\n    return LiveRealtimeAction.UpdateVote(\n        vote = LiveVoteInfo(\n            status = data.int(\"status\", 4),\n            question = question,\n            options = voteOptions,\n            durationMillis = data.long(\"duration\"),\n            remainingMillis = data.long(\"left_duration\"),\n            resultText = data.string(\"result_text\"),\n            endTimeText = data.string(\"etime_str\"),\n            interactionId = data.long(\"interaction_id\")\n        ),\n        announcement = chat\n    )\n}\n"),
+        ("core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt", "    @GET(\"https://api.live.bilibili.com/xlive/app-room/v1/dm/interaction/votePanel\")\n    suspend fun getLiveVotePanel(@Query(\"room_id\") roomId: Long): ResponseBody\n\n    @GET(\"https://api.live.bilibili.com/xlive/app-room/v1/dm/interaction/voteHistory\")\n    suspend fun getLiveVoteHistory(@Query(\"room_id\") roomId: Long): ResponseBody\n"),
+    ]
+    for path, contract in contracts:
+        if read(repo, path).count(contract) != 1:
+            raise ValueError("Existing live-vote source contract changed: " + path)
+    body = "package com.android.purebilibili.data.repository\n\n"
+    body += "import com.android.purebilibili.core.network.BilibiliApi\n"
+    body += "import com.android.purebilibili.feature.live.LiveDanmakuItem\n"
+    body += "import com.android.purebilibili.feature.live.LiveRealtimeAction\n"
+    body += "import kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Dispatchers\n"
+    body += "import kotlinx.coroutines.withContext\nimport kotlinx.coroutines.flow.MutableStateFlow\n\n"
+    body += "// This argument is the canonical room from the existing Windows liveRoom result.\n"
+    body += "// Room alias resolution remains with that existing owned initial room request.\n"
+    body += snapshot_after + "\n\n" + merge_after + "\n"
+    generated = safe(output / "com/android/purebilibili/data/repository/DesktopLiveVoteSnapshot.kt")
+    generated.parent.mkdir(parents=True, exist_ok=True)
+    header = "// GENERATED from fixed b209 whole LiveRepository.kt and LivePlayerViewModel.kt; do not edit.\n"
+    header += "// Repository raw SHA-256: " + identities[repository_path][1] + "\n"
+    header += "// ViewModel raw SHA-256: " + identities[viewmodel_path][1] + "\n"
+    if hashlib.sha256((header + body).encode()).hexdigest() != "062465cc3e445b911c095c8cf82ec2554d1105ecff39b1e40f84f90903e43520":
+        raise ValueError("Complete original live-vote generated output changed")
+    generated.write_text(header + body, encoding="utf8", newline="\n")
+    proof = dict(fixedUpstreamCommit=fixed_commit, completeRawInputs=identities,
+                 snapshotMethod=whole_proof(snapshot_before, snapshot_after),
+                 wholeRepository=whole_proof(original_repository, repository_projection),
+                 originalMergeRange=merge_range, generatedMergeMethod=merge_after,
+                 exactWholeViewModelExtractionInverse=True,
+                 outputSha256LF=hashlib.sha256((header + body).encode()).hexdigest())
+    safe(output / "v034-live-vote-source-proof.json").write_text(json.dumps(proof, ensure_ascii=True, indent=2) + "\n", encoding="utf8", newline="\n")
+    return [generated]
+
+
 def emit_live_chat_image(repo: Path, output: Path) -> list[Path]:
     """Exact fixed source RANGE, not a whole upstream composable; existing Coil owner only."""
     from v030_live_stream import safe
@@ -314,6 +407,7 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
     from v030_live_recovery import emit_recovery
     generated.extend(emit_recovery(repo, output))
     generated.extend(emit_live_chat_image(repo, output))
+    generated.extend(emit_live_vote(repo, output, parser))
     return generated
 
 

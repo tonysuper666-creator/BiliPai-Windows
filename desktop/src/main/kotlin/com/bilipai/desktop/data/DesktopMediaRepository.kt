@@ -22,6 +22,8 @@ import com.android.purebilibili.core.network.socket.LiveDanmakuClient
 import com.android.purebilibili.data.repository.LiveDanmakuPermission
 import com.android.purebilibili.data.repository.LiveDanmakuSendRequest
 import com.android.purebilibili.data.repository.LivePrefetchDanmaku
+import com.android.purebilibili.data.repository.LiveVoteSnapshot
+import com.android.purebilibili.data.repository.requestOriginalDesktopLiveVoteSnapshot
 import com.android.purebilibili.data.repository.parseLiveDanmakuPermission
 import com.android.purebilibili.data.repository.parseLiveDanmakuHistoryItems
 import com.android.purebilibili.data.repository.resolveDesktopLiveDanmakuHosts
@@ -37,6 +39,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.json.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
@@ -217,6 +220,29 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         ownedApi.getLiveDanmakuConfig(roomId).use {
             repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
             parseLiveDanmakuPermission(it.string())
+        }
+    }
+
+    /** Only the canonical room produced by the existing owned liveRoom request is accepted. */
+    internal suspend fun liveVoteSnapshot(canonicalRoomId: Long, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<LiveVoteSnapshot> = withContext(Dispatchers.IO) {
+        require(canonicalRoomId > 0)
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val current = { caller?.isActive == true && stillOwned() }
+        fun assertCurrent() = repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+        try {
+            assertCurrent()
+            repository.ensureOwnedHomeSession(expectedEpoch, current, repository.ownedHomeService(
+                com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", expectedEpoch, current))
+            val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+                "https://api.bilibili.com/", expectedEpoch, current)
+            val snapshot = requestOriginalDesktopLiveVoteSnapshot(canonicalRoomId, ownedApi)
+            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+            assertCurrent()
+            snapshot
+        } catch (retired: BiliApiException) {
+            if (retired.apiCode != -101 || (repository.sessionEpoch == expectedEpoch && current())) throw retired
+            throw CancellationException("直播投票会话或账号已切换").also { it.initCause(retired) }
         }
     }
 

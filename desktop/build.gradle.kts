@@ -165,6 +165,9 @@ val extractUpstreamMedia by tasks.registering(Exec::class) {
     inputs.file("tools/v030_live_danmaku.py")
     inputs.dir("upstream-slices/v030-live-danmaku")
     inputs.dir("upstream-slices/v030-live-chat-image")
+    inputs.files("upstream-slices/v034-live-vote/app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+        "upstream-slices/v034-live-vote/app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt")
+    inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
     inputs.file("tools/extract-upstream-special-danmaku.py")
     inputs.dir("upstream-slices/v029-special-danmaku")
     inputs.file("tools/sync-upstream.py")
