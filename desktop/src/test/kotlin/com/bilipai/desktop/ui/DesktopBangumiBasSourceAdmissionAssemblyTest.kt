@@ -169,7 +169,12 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                                 assertSame(load.currentRequest, actual.currentRequest)
                                 assertTrue(actual.currentLoadRequestToken > load.currentLoadRequestToken)
                                 assertEquals(before.request.cid, actual.currentRequest!!.cid)
-                                assertSame(before, f.owner.native.current())
+                                // The actual Portrait replacement synchronously stops the prior full source.
+                                assertNull(f.owner.native.current()); assertFalse(f.owner.native.isCurrent(before))
+                                assertNull(f.player.currentSourceSnapshot())
+                                assertTrue(f.player.currentSourceVersion > before.sourceVersion)
+                                assertFalse(f.player.ownsSourceSnapshot(before.nativeSource))
+                                assertSame(before, f.publications.last()) // Held playURL has not accepted a successor.
                             }
                             "episode" -> {
                                 assertEquals(42L, f.state().currentEpisode.id)
