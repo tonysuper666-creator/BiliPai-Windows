@@ -653,7 +653,10 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             assertEquals(segment.UUID, skip.state.segmentId)
             assertEquals(segment.endTimeMs, skip.state.skipToMs)
             assertEquals(42_500L, skip.state.skipToMs)
-            assertEquals(owner.playback.sponsorSkipUiState.value, skip.state)
+            @Suppress("UNCHECKED_CAST")
+            val original = owner.playback.javaClass.getDeclaredField("_sponsorSkipUiState")
+                .apply { isAccessible = true }.get(owner.playback) as StateFlow<com.android.purebilibili.feature.video.viewmodel.SponsorSkipUiState>
+            assertEquals(original.value, skip.state)
         }
         suspend fun submitHeld(code: Int, body: String): PendingSubmission {
             assertEquals(server.baseUrl, runtime.originalSponsorBlock.getCommunityServerBaseUrl())
