@@ -97,8 +97,8 @@
       ]
     },
     "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt": {
-      "beforeSha256LF": "78b7689109e0a1c144160a21849db52f7b84e29bcd04d19d4cf84c9c8567429d",
-      "afterSha256LF": "ec13d7dc23c76b7c54ac8c04aeae177693696e6a67bcffa28ba5a134602d154a",
+      "beforeSha256LF": "644cd8366790d5f1e41ca4b77e9faf3b3b78b1133c855b3305a0d44df85c17a0",
+      "afterSha256LF": "2a19a84ff1f3dabcee02316ab4e4ada08691e2b76909f6ad78e198ab084fb1d0",
       "edits": [
         {
           "before": "    private var activeLoadJob: Job? = null\n",

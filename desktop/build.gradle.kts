@@ -734,6 +734,15 @@ val extractOriginalBangumiPlayer by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/original-bangumi-player").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-bangumi-player.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
     inputs.file("upstream-slices/v034-bangumi-quality/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt")
+    // Complete policies read by the PGC codec-recovery producer.
+    inputs.files(
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicy.kt"),
+        canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/data/model/response/VideoResponse.kt"),
+        canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/util/SelectionUtils.kt"),
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt"),
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt"),
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"),
+        file("upstream-slices/v029-playback-recovery/PlayerErrorRecoveryPolicy.kt"))
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "original-bangumi-player-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })

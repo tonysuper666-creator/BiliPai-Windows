@@ -205,7 +205,7 @@ def retained_handoff_platform_delta(path, body):
  body=body.replace(before,after,1)
  anchor='    // Internal state\n'
  assert body.count(anchor)==1,'original SessionState projection anchor'
- projection='    internal fun captureDesktopLoadState(): com.android.purebilibili.feature.video.playback.session.PlaybackSessionState = playbackSessionState\n\n    // Synchronous original callbacks must read the state just published by this VM;\n    // uiState is an asynchronous sponsor-label display projection.\n    internal fun captureDesktopPlaybackState(): VideoPlaybackUiState = _uiState.value\n\n'
+ projection='    internal fun captureDesktopLoadState(): com.android.purebilibili.feature.video.playback.session.PlaybackSessionState = playbackSessionState\n\n    // Synchronous original callbacks must read the state just published by this VM;\n    // uiState is an asynchronous sponsor-label display projection.\n    internal fun captureDesktopPlaybackState(): VideoPlaybackUiState = _uiState.value\n\n    internal fun desktopBlockVideoCodec(codec: String) { playbackSessionStore.blockVideoCodec(codec) }\n\n'
  return body.replace(anchor,projection+anchor,1)
 
 
