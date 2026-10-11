@@ -402,7 +402,9 @@ class CanonicalCompatibilityTests(unittest.TestCase):
         self.catalog = sync.canonical_baseline(self.repo, self.manifest)
         self.entries = sync.compatibility_inputs(self.repo, self.manifest, self.catalog)
         self.tree = {"tree": [{"path": item["path"], "type": "blob", "mode": "100644",
-                               "sha": self.catalog["paths"][item["path"]]["blob"]} for item in self.entries]}
+                               "sha": sync.blob_oid(sync.normalized_source((self.repo / item["path"]).read_bytes()))
+                               if item["path"] == sync.BUILD_CONFIGURATION_PATH
+                               else self.catalog["paths"][item["path"]]["blob"]} for item in self.entries]}
 
     def report(self, changed=None):
         changed = changed or {}
@@ -478,6 +480,395 @@ class CanonicalCompatibilityTests(unittest.TestCase):
         self.assertEqual(report["sourceDownloads"], 1)
         self.assertTrue(report["autoBuildEligible"])
         self.assertEqual(report["changedReusedSources"], [])
+
+
+class VersionMetadataCompatibilityTests(unittest.TestCase):
+    """Whole canonical originals and a complete offline check_update report.
+
+    The temporary source-only fixture keeps every current canonical manifest
+    input and the actual trusted catalog/baseline. It deliberately has no
+    adapted desktop build; the separate real multi-version inventory tests
+    continue to cover those inputs. No generator/build/publish result is faked.
+    """
+
+    BASELINE_SHA256 = "683162c801ebca4ba7507dd217f255549b99a5ad787807b236e4de1231d2a3d6"
+    BASELINE_BLOB = "9d2a852b20f7d5016ec4b397cc2005d117f5b307"
+    ORIGINAL_BODY_SHA256 = "a522c22a39492ba84684c673fc7e55a35734b143c087929c0d0f2394c141d79b"
+    B209_COMMIT = "b2091b1de636e499df80af7e700796b4f52b7f92"
+    B209_SHA256 = "d633a056def7f81830143e5d9115ec848057c3f372bfc87ae0a9de5bde8d1bcf"
+    B209_BLOB = "c64da8400b47a3fbf5bebea0a6738a15075a9e70"
+
+    @staticmethod
+    def digest(contents, normalization="lf"):
+        if normalization == "lf":
+            contents = contents.replace(b"\r\n", b"\n")
+        return hashlib.sha256(contents).hexdigest()
+
+    @staticmethod
+    def blob(contents):
+        return hashlib.sha1(b"blob " + str(len(contents)).encode("ascii") + b"\0" + contents).hexdigest()
+
+    @classmethod
+    def setUpClass(cls):
+        cls.original_repo = Path(__file__).parents[3]
+        cls.catalog_bytes = (cls.original_repo / sync.CANONICAL_CATALOG_PATH).read_bytes()
+        cls.catalog = json.loads(cls.catalog_bytes)
+        cls.baseline = (cls.original_repo / sync.CANONICAL_BUILD_CONFIGURATION_PATH).read_bytes().replace(b"\r\n", b"\n")
+        if (hashlib.sha256(cls.catalog_bytes).hexdigest() != sync.CANONICAL_CATALOG_SHA256 or
+                cls.digest(cls.baseline) != cls.BASELINE_SHA256 or cls.blob(cls.baseline) != cls.BASELINE_BLOB):
+            raise AssertionError("The metadata fixture requires the actual complete trusted original and catalog.")
+        manifest = json.loads((cls.original_repo / "desktop/upstream-sources.json").read_bytes())
+        build_rows = [item for item in manifest["sources"] if item["path"] == sync.BUILD_CONFIGURATION_PATH]
+        if len(build_rows) != 1:
+            raise AssertionError("The real manifest must have exactly one original build input.")
+        # A later accepted production pin must not change the fixed first-release
+        # scenario. Only this fixture's build row is restored to the trusted v025.
+        build_rows[0]["sha256"] = cls.BASELINE_SHA256
+        manifest["upstreamTag"] = "v0.2.5"
+        manifest["upstreamCommit"] = sync.CANONICAL_BASELINE_COMMIT
+        cls.manifest_bytes = (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        cls.fixture_temp = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(cls.fixture_temp.cleanup)
+        cls.fixture_repo = Path(cls.fixture_temp.name)
+        for row in manifest["sources"] + manifest.get("resources", []):
+            destination = cls.fixture_repo / row["path"]
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes((cls.original_repo / row["path"]).read_bytes())
+        # A normal Windows checkout may use CRLF; reconstruct the complete
+        # upstream LF blob and verify both of its independently fixed identities.
+        cls.b209 = (Path(__file__).parent / "fixtures/upstream-version-metadata/b209-app-build.gradle.kts").read_bytes().replace(b"\r\n", b"\n")
+        if cls.digest(cls.b209, "raw") != cls.B209_SHA256 or cls.blob(cls.b209) != cls.B209_BLOB:
+            raise AssertionError("The retained b209 fixture must be the complete exact upstream blob.")
+
+    def setUp(self):
+        # Fail closed even if a future check accidentally bypasses the injected
+        # GitHub responses or tries to turn a metadata assertion into a build.
+        for owner, attribute in ((sync.urllib.request, "urlopen"), (sync, "run"), (sync, "git"),
+                                 (sync.subprocess, "run"), (sync.subprocess, "Popen"),
+                                 (sync, "sync_update"), (sync, "publication_check")):
+            blocked = patch.object(owner, attribute, side_effect=AssertionError(
+                f"Offline metadata regression cannot call {attribute}."))
+            mocked = blocked.start()
+            self.addCleanup(blocked.stop)
+            self.addCleanup(mocked.assert_not_called)
+        self.repo = self.fixture_repo
+        self.manifest_file = self.repo / "desktop/upstream-sources.json"
+        self.catalog_file = self.repo / sync.CANONICAL_CATALOG_PATH
+        self.baseline_file = self.repo / sync.CANONICAL_BUILD_CONFIGURATION_PATH
+        self.build_file = self.repo / sync.BUILD_CONFIGURATION_PATH
+        for destination, contents in ((self.manifest_file, self.manifest_bytes),
+                                      (self.catalog_file, self.catalog_bytes),
+                                      (self.baseline_file, self.baseline), (self.build_file, self.baseline)):
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(contents)
+        self.manifest = sync.read_manifest(self.repo)
+        self.assertGreater(len(self.manifest["sources"]) + len(self.manifest["resources"]), 1327)
+        self.assertFalse((self.repo / "desktop/build.gradle.kts").exists())
+        self.assertFalse((self.repo / sync.COMPATIBILITY_CATALOG_PATH).exists())
+        self.offline_api_calls = []
+        self.offline_blob_calls = []
+
+    def version(self, code, name):
+        self.assertEqual(self.baseline.count(b"versionCode = 427"), 1)
+        self.assertEqual(self.baseline.count(b'versionName = "0.2.5"'), 1)
+        return self.baseline.replace(b"versionCode = 427", f"versionCode = {code}".encode("ascii"), 1).replace(
+            b'versionName = "0.2.5"', f'versionName = "{name}"'.encode("ascii"), 1)
+
+    def accept_fixture_pin(self, code, name, *, commit=None, tag=None, crlf=False):
+        # This prepares a later local pin; it does not call sync_update or claim
+        # that a candidate was compiled, merged, published or installed.
+        contents = self.version(code, name)
+        if crlf:
+            contents = contents.replace(b"\n", b"\r\n")
+        self.build_file.write_bytes(contents)
+        row = next(item for item in self.manifest["sources"] if item["path"] == sync.BUILD_CONFIGURATION_PATH)
+        row["sha256"] = self.digest(contents)
+        if commit is not None:
+            self.manifest["upstreamCommit"] = commit
+        if tag is not None:
+            self.manifest["upstreamTag"] = tag
+        self.manifest_file.write_bytes((json.dumps(self.manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+        self.manifest = sync.read_manifest(self.repo)
+        return contents
+
+    def report(self, changed=None, *, commit=NEW, tag="v0.2.5-alpha.metadata-fixture", download_overrides=None):
+        changed = changed or {}
+        download_overrides = download_overrides or {}
+        rows = self.manifest["sources"] + self.manifest.get("resources", [])
+        tree = {"truncated": False, "tree": [
+            {"path": item["path"], "type": "blob", "mode": "100644",
+             "sha": self.blob(changed[item["path"]]) if item["path"] in changed else (
+                 self.blob(self.build_file.read_bytes().replace(b"\r\n", b"\n"))
+                 if item["path"] == sync.BUILD_CONFIGURATION_PATH
+                 else self.catalog["paths"][item["path"]]["blob"])}
+            for item in rows]}
+        release = {"id": 701, "tag_name": tag, "prerelease": True, "draft": False,
+                   "published_at": "2026-10-11T12:00:00Z",
+                   "html_url": f"https://github.com/{sync.UPSTREAM}/releases/tag/{tag}"}
+        self.offline_api_calls = []
+        self.offline_blob_calls = []
+
+        def api(endpoint):
+            self.offline_api_calls.append(endpoint)
+            if endpoint == "releases?per_page=100&page=1":
+                return [release]
+            if endpoint == f"git/ref/tags/{sync.urllib.parse.quote(tag, safe='')}":
+                return {"object": {"type": "commit", "sha": commit}}
+            if endpoint == f"git/trees/{commit}?recursive=1":
+                return tree
+            raise AssertionError(f"Unexpected offline GitHub endpoint: {endpoint}")
+
+        def fetch(request_commit, path):
+            self.assertEqual(request_commit, commit, "Every downloaded original must use the full resolved commit.")
+            self.assertIn(path, changed, "Only changed complete tree blobs may be requested.")
+            self.offline_blob_calls.append((request_commit, path))
+            return download_overrides.get(path, changed[path])
+
+        controls = (self.manifest_file, self.catalog_file, self.baseline_file, self.build_file)
+        before = {path: path.read_bytes() if path.exists() else None for path in controls}
+        manifest_before = json.dumps(self.manifest, sort_keys=True)
+        try:
+            with patch.object(sync, "request_json", side_effect=api), \
+                 patch.object(sync, "source_bytes", side_effect=fetch):
+                result = sync.check_update(self.repo, self.manifest)
+            self.assertEqual(self.offline_api_calls, [
+                "releases?per_page=100&page=1",
+                f"git/ref/tags/{sync.urllib.parse.quote(tag, safe='')}",
+                f"git/trees/{commit}?recursive=1"])
+            self.assertEqual(len(self.offline_blob_calls), len(changed))
+            self.assertEqual(len(set(self.offline_blob_calls)), len(changed))
+            return result
+        finally:
+            self.assertEqual(json.dumps(self.manifest, sort_keys=True), manifest_before)
+            self.assertEqual({path: path.read_bytes() if path.exists() else None for path in controls}, before,
+                             "Read-only checks must preserve the complete original, manifest and fixed catalog.")
+
+    def assert_complete_report(self, report, hashes, changed, *, ready, commit=NEW, tag="v0.2.5-alpha.metadata-fixture"):
+        rows = self.manifest["sources"] + self.manifest.get("resources", [])
+        expected_hashes = {item["path"]: self.digest(changed[item["path"]], item.get("hashNormalization", "lf"))
+                           if item["path"] in changed else item["sha256"] for item in rows}
+        self.assertEqual(hashes, expected_hashes)
+        self.assertEqual(report["upstreamRepository"], sync.UPSTREAM)
+        self.assertEqual(report["currentTag"], self.manifest["upstreamTag"])
+        self.assertEqual(report["currentCommit"], self.manifest["upstreamCommit"])
+        self.assertEqual(report["candidateTag"], tag)
+        self.assertEqual(report["candidateCommit"], commit)
+        self.assertEqual(report["candidateBranch"], f"windows/upstream-{tag}-{commit[:12]}")
+        self.assertEqual(report["releaseUrl"], f"https://github.com/{sync.UPSTREAM}/releases/tag/{tag}")
+        self.assertTrue(report["prerelease"])
+        self.assertEqual(report["status"], "updateAvailable")
+        self.assertEqual(report["featureCoverage"], self.manifest["featureCoverage"])
+        self.assertFalse(report["loginApiChanged"])
+        self.assertFalse(report["windowsApiContractChanged"])
+        self.assertFalse(report["networkBehaviorChanged"])
+        self.assertEqual(report["sensitiveReviewFailed"], [])
+        self.assertEqual(report["changedAdaptedInputs"], [])
+        self.assertEqual(report["sourceDownloads"], len(changed))
+        self.assertEqual(report["unchangedBlobInputs"], len(rows) - len(changed))
+        self.assertEqual(report["buildCompatibility"]["checkedInputCount"], len(rows))
+        self.assertEqual(report["buildCompatibility"]["checkedAdaptedInputCount"], 0)
+        self.assertIsNone(report["buildCompatibility"]["adaptedCatalogSha256"])
+        self.assertEqual(report["buildCompatibility"]["canonicalCatalogSha256"], sync.CANONICAL_CATALOG_SHA256)
+        self.assertEqual(report["buildCompatibility"]["canonicalBaselineCommit"], sync.CANONICAL_BASELINE_COMMIT)
+        self.assertEqual(report["buildCompatibility"]["status"], "ready" if ready else "manualAdaptationRequired")
+        self.assertEqual(report["autoBuildEligible"], ready)
+        self.assertEqual(report["autoPublishEligible"], ready and not report["manualReviewReasons"])
+        self.assertEqual(report["changedReusedSources"], [
+            item["path"] for item in self.manifest["sources"]
+            if item["path"] in changed and item["path"] != sync.BUILD_CONFIGURATION_PATH])
+        self.assertEqual(report["changedResources"], [
+            item["path"] for item in self.manifest.get("resources", []) if item["path"] in changed])
+        self.assertEqual(self.catalog_file.read_bytes(), self.catalog_bytes)
+
+    def assert_metadata(self, report, previous, incoming, old_code, new_code, old_name, new_name):
+        self.assertEqual(report["versionMetadataChanges"], [{
+            "path": sync.BUILD_CONFIGURATION_PATH,
+            "oldVersionCode": old_code, "newVersionCode": new_code,
+            "oldVersionName": old_name, "newVersionName": new_name,
+            "oldSha256": self.digest(previous), "newSha256": self.digest(incoming),
+            "oldBlob": self.blob(previous.replace(b"\r\n", b"\n")),
+            "newBlob": self.blob(incoming.replace(b"\r\n", b"\n")),
+            "canonicalConfigurationSha256": self.BASELINE_SHA256,
+            "unchangedOriginalBodySha256": self.ORIGINAL_BODY_SHA256,
+            "comparison": "wholeOriginalBytesExceptTwoSupportedVersionLiterals",
+        }])
+
+    def assert_build_manual(self, incoming, message):
+        changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
+        report, hashes = self.report(changed)
+        self.assert_complete_report(report, hashes, changed, ready=False)
+        self.assertEqual(report["versionMetadataChanges"], [])
+        self.assertEqual(len(report["buildCompatibility"]["reasons"]), 1)
+        reason = report["buildCompatibility"]["reasons"][0]
+        row = next(item for item in self.manifest["sources"] if item["path"] == sync.BUILD_CONFIGURATION_PATH)
+        self.assertEqual((reason["code"], reason["path"], reason["kind"], reason["hashNormalization"]),
+                         ("canonicalInputChanged", sync.BUILD_CONFIGURATION_PATH, "buildConfiguration", "lf"))
+        self.assertEqual(reason["oldSha256"], row["sha256"])
+        self.assertEqual(reason["newSha256"], self.digest(incoming))
+        self.assertIn(message, reason["message"])
+        return report, hashes
+
+    def test_first_literal_only_release_keeps_complete_report_and_fixed_catalog(self):
+        incoming = self.version(428, "0.2.5-alpha.1")
+        changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
+        report, hashes = self.report(changed)
+        self.assert_complete_report(report, hashes, changed, ready=True)
+        self.assert_metadata(report, self.baseline, incoming, 427, 428, "0.2.5", "0.2.5-alpha.1")
+        self.assertEqual(report["buildCompatibility"]["reasons"], [])
+        self.assertEqual(report["manualReviewReasons"], [])
+        self.assertEqual(report["changedReusedSources"], [])
+        self.assertEqual(report["changedResources"], [])
+
+    def test_accepted_pin_checks_the_next_release_and_current_build_blob(self):
+        previous = self.accept_fixture_pin(428, "0.2.5-alpha.1", commit="c" * 40, tag="v0.2.5-alpha.1")
+        incoming = self.version(429, "0.2.5-alpha.2")
+        changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
+        report, hashes = self.report(changed)
+        self.assert_complete_report(report, hashes, changed, ready=True)
+        self.assert_metadata(report, previous, incoming, 428, 429, "0.2.5-alpha.1", "0.2.5-alpha.2")
+        self.accept_fixture_pin(429, "0.2.5-alpha.2", commit="d" * 40, tag="v0.2.5-alpha.2")
+        report, hashes = self.report()
+        self.assert_complete_report(report, hashes, {}, ready=True)
+        self.assertEqual(report["versionMetadataChanges"], [])
+        self.assertEqual(report["sourceDownloads"], 0)
+        self.assertEqual(self.offline_blob_calls, [])
+
+    def test_higher_code_with_the_same_name_is_metadata_only(self):
+        incoming = self.version(428, "0.2.5")
+        changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
+        report, hashes = self.report(changed)
+        self.assert_complete_report(report, hashes, changed, ready=True)
+        self.assert_metadata(report, self.baseline, incoming, 427, 428, "0.2.5", "0.2.5")
+
+    def test_equal_code_name_change_or_accepted_version_rollback_stays_manual(self):
+        self.assert_build_manual(self.version(427, "0.2.6"), "monotonic versionCode")
+        self.accept_fixture_pin(429, "0.2.5-alpha.2", commit="c" * 40, tag="v0.2.5-alpha.2")
+        for code, name in ((428, "0.2.5-alpha.1"), (427, "0.2.5"), (429, "0.2.5-alpha.1")):
+            with self.subTest(code=code, name=name):
+                self.assert_build_manual(self.version(code, name), "monotonic versionCode")
+        # An incompatible already-local version is rejected before reading any
+        # candidate tree; matching a manifest hash is not a replacement for proof.
+        self.accept_fixture_pin(427, "0.2.6")
+        with self.assertRaisesRegex(sync.UpdateError, "monotonic versionCode"):
+            self.report({sync.BUILD_CONFIGURATION_PATH: self.version(430, "0.2.6")})
+        self.assertEqual(len(self.offline_api_calls), 2)
+        self.assertEqual(self.offline_blob_calls, [])
+
+    def test_duplicate_expression_and_unbounded_literals_never_get_metadata_admission(self):
+        valid = self.version(428, "0.2.5-alpha.1")
+        cases = {
+            "duplicateCode": (valid + b"\nversionCode = 429\n", "unique supported"),
+            "duplicateName": (valid + b'\nversionName = "0.2.5-alpha.2"\n', "unique supported"),
+            "codeExpression": (valid.replace(b"versionCode = 428", b"versionCode = 427 + 1", 1), "unique supported"),
+            "nameExpression": (valid.replace(b'"0.2.5-alpha.1"', b'"0.2.5" + "-alpha.1"', 1), "unique supported"),
+            "nameTemplate": (valid.replace(b'"0.2.5-alpha.1"', b'"0.2.5-$' + b'{suffix}"', 1), "unique supported"),
+            "leadingZero": (valid.replace(b"versionCode = 428", b"versionCode = 0428", 1), "unique supported"),
+            "zeroCode": (valid.replace(b"versionCode = 428", b"versionCode = 0", 1), "unique supported"),
+            "integerOverflow": (valid.replace(b"versionCode = 428", b"versionCode = 2147483648", 1), "supported bounds"),
+            "longInteger": (valid.replace(b"versionCode = 428", b"versionCode = " + b"9" * 10000, 1), "unique supported"),
+            "longName": (self.version(428, "0.2.5-" + "a" * 129), "supported bounds"),
+            "invalidUtf8": (valid + b"\n\xff\n", "valid UTF-8"),
+            "byteBudget": (valid + b"x" * sync.MAX_MANIFEST_BYTES, "bounded input budget"),
+        }
+        for label, (incoming, message) in cases.items():
+            with self.subTest(label=label):
+                self.assert_build_manual(incoming, message)
+
+    def test_comment_plugin_dependency_scope_and_other_body_bytes_stay_manual(self):
+        valid = self.version(428, "0.2.5-alpha.1")
+        replacements = {
+            "plugin": (b'id("com.android.application")', b'id("different.plugin")'),
+            "dependency": (b"implementation(libs.miuix.ui)", b"implementation(libs.miuix.preference)"),
+            "scope": (b"    defaultConfig {", b"    changedScope {"),
+            "literalIndentation": (b"        versionCode = 428", b"       versionCode = 428"),
+        }
+        cases = {"comment": valid + b"\n// changed upstream build comment\n",
+                 "otherBody": valid + b"\nval extraBuildValue = 1\n"}
+        for label, (before, after) in replacements.items():
+            self.assertEqual(valid.count(before), 1, f"{label} must change one actual original block.")
+            cases[label] = valid.replace(before, after, 1)
+        for label, incoming in cases.items():
+            with self.subTest(label=label):
+                self.assert_build_manual(incoming, "Non-version build configuration bytes changed")
+
+    def test_missing_damaged_baseline_or_untrusted_catalog_fails_before_the_candidate_tree(self):
+        cases = {"missing": None, "damaged": self.baseline + b"\n// altered retained original\n",
+                 "oversized": self.baseline + b"x" * sync.MAX_MANIFEST_BYTES}
+        for label, contents in cases.items():
+            with self.subTest(label=label):
+                if contents is None:
+                    self.baseline_file.unlink()
+                else:
+                    self.baseline_file.write_bytes(contents)
+                with self.assertRaises(sync.UpdateError):
+                    self.report({sync.BUILD_CONFIGURATION_PATH: self.version(428, "0.2.5-alpha.1")})
+                self.assertEqual(self.offline_api_calls, [
+                    "releases?per_page=100&page=1", "git/ref/tags/v0.2.5-alpha.metadata-fixture"])
+                self.assertEqual(self.offline_blob_calls, [])
+                self.baseline_file.write_bytes(self.baseline)
+        self.catalog_file.write_bytes(self.catalog_bytes + b"\n")
+        with self.assertRaisesRegex(sync.UpdateError, "Unknown canonical source catalog"):
+            self.report({sync.BUILD_CONFIGURATION_PATH: self.version(428, "0.2.5-alpha.1")})
+        self.assertEqual(len(self.offline_api_calls), 2)
+        self.assertEqual(self.offline_blob_calls, [])
+
+    def test_windows_crlf_whole_baseline_and_checkout_use_the_existing_lf_pin(self):
+        self.baseline_file.write_bytes(self.baseline.replace(b"\n", b"\r\n"))
+        previous = self.accept_fixture_pin(427, "0.2.5", crlf=True)
+        incoming = self.version(428, "0.2.5-alpha.1").replace(b"\n", b"\r\n")
+        changed = {sync.BUILD_CONFIGURATION_PATH: incoming}
+        report, hashes = self.report(changed)
+        self.assert_complete_report(report, hashes, changed, ready=True)
+        self.assert_metadata(report, previous, incoming, 427, 428, "0.2.5", "0.2.5-alpha.1")
+        detail = report["versionMetadataChanges"][0]
+        self.assertEqual(detail["oldBlob"], self.BASELINE_BLOB)
+        self.assertNotEqual(detail["newBlob"], self.blob(incoming),
+                            "The raw CRLF download is checked first, then the existing LF pin contract applies.")
+        self.assertEqual(self.offline_blob_calls, [(NEW, sync.BUILD_CONFIGURATION_PATH)])
+        self.assertEqual(self.baseline_file.read_bytes(), self.baseline.replace(b"\n", b"\r\n"))
+
+    def test_valid_metadata_does_not_admit_changed_other_source_or_raw_resource(self):
+        source = next(item for item in self.manifest["sources"] if item["path"] != sync.BUILD_CONFIGURATION_PATH)
+        resource = next(item for item in self.manifest["resources"]
+                        if item.get("hashNormalization") == "raw" and item["path"].endswith(".png"))
+        incoming = self.version(428, "0.2.5-alpha.1")
+        changed = {sync.BUILD_CONFIGURATION_PATH: incoming,
+                   source["path"]: (self.repo / source["path"]).read_bytes() + b"\n// changed upstream original\n",
+                   resource["path"]: (self.repo / resource["path"]).read_bytes() + b"\r\nchanged raw resource"}
+        report, hashes = self.report(changed)
+        self.assert_complete_report(report, hashes, changed, ready=False)
+        self.assert_metadata(report, self.baseline, incoming, 427, 428, "0.2.5", "0.2.5-alpha.1")
+        self.assertEqual({(reason["code"], reason["path"], reason["kind"])
+                          for reason in report["buildCompatibility"]["reasons"]},
+                         {("canonicalInputChanged", source["path"], "source"),
+                          ("canonicalInputChanged", resource["path"], "resource")})
+        self.assertEqual(len(report["buildCompatibility"]["reasons"]), 2)
+        self.assertEqual(hashes[resource["path"]], hashlib.sha256(changed[resource["path"]]).hexdigest())
+        self.assertNotEqual(hashes[resource["path"]], self.digest(changed[resource["path"]]))
+
+    def test_real_v025_to_b209_build_changes_remain_manual_and_blob_mismatch_is_fatal(self):
+        self.assertEqual(len(self.b209), 26211)
+        self.assertEqual(self.digest(self.b209, "raw"), self.B209_SHA256)
+        self.assertEqual(self.blob(self.b209), self.B209_BLOB)
+        self.assertIn(b"versionCode = 449", self.b209)
+        self.assertIn(b'versionName = "0.3.4-beta.2"', self.b209)
+        self.assertNotEqual(self.version(449, "0.3.4-beta.2"), self.b209,
+                            "The real 79-to-b209 delta contains changes beyond the two supported literals.")
+        changed = {sync.BUILD_CONFIGURATION_PATH: self.b209}
+        report, hashes = self.report(changed, commit=self.B209_COMMIT, tag="v0.3.4-beta.2")
+        self.assert_complete_report(report, hashes, changed, ready=False,
+                                    commit=self.B209_COMMIT, tag="v0.3.4-beta.2")
+        self.assertEqual(report["versionMetadataChanges"], [])
+        self.assertEqual(len(report["buildCompatibility"]["reasons"]), 1)
+        reason = report["buildCompatibility"]["reasons"][0]
+        self.assertEqual((reason["code"], reason["path"], reason["oldSha256"], reason["newSha256"]),
+                         ("canonicalInputChanged", sync.BUILD_CONFIGURATION_PATH, self.BASELINE_SHA256, self.B209_SHA256))
+        self.assertIn("Non-version build configuration bytes changed", reason["message"])
+        self.assertEqual(self.offline_blob_calls, [(self.B209_COMMIT, sync.BUILD_CONFIGURATION_PATH)])
+        with self.assertRaisesRegex(sync.UpdateError, "blob identity"):
+            self.report(changed, commit=self.B209_COMMIT, tag="v0.3.4-beta.2",
+                        download_overrides={sync.BUILD_CONFIGURATION_PATH: self.b209 + b"\ncorrupt download\n"})
+        self.assertEqual(self.offline_blob_calls, [(self.B209_COMMIT, sync.BUILD_CONFIGURATION_PATH)])
 
 
 class AdaptedCompatibilityInventoryTests(unittest.TestCase):
