@@ -14,6 +14,7 @@ import com.bilipai.desktop.download.DesktopDownloadManager
 import com.bilipai.desktop.download.DownloadMuxer
 import com.bilipai.desktop.download.DownloadTask as QueuedTask
 import com.bilipai.desktop.player.*
+import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.cache.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
@@ -133,12 +134,12 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                         "root" -> f.gate.retire()
                     }
                 }
-                if (change == "root") f.ui { assertFailsWith<CancellationException> { f.native.launch { op() } } }
+                if (change == "root") f.ui { assertFailsWith<CancellationException> { f.native.launch(block = { op() }) } }
                 else {
                     val failure = AtomicReference<Throwable?>()
-                    val job = f.uiResult { f.native.launch {
+                    val job = f.uiResult { f.native.launch(block = {
                         try { op() } catch (error: Throwable) { failure.set(error); throw error }
-                    } }
+                    }) }
                     withTimeout(8_000) { job.join() }
                     assertIs<CancellationException>(failure.get())
                 }
@@ -495,8 +496,19 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         fun accepted() = checkNotNull(owner.native.current())
         fun originalTask(): OriginalTask {
             val state = vm.uiState.value as BangumiPlayerState.Success
-            return OriginalTask(aid = state.currentEpisode.aid, bvid = state.currentEpisode.bvid, cid = state.currentEpisode.cid,
-                title = state.seasonDetail.title, videoUrl = state.playUrl!!, audioUrl = state.audioUrl.orEmpty(), quality = state.quality)
+            val episode = state.currentEpisode
+            val detail = state.seasonDetail
+            val qualityIndex = state.acceptQuality.indexOf(state.quality)
+            return OriginalTask(aid = episode.aid, bvid = episode.bvid, cid = episode.cid,
+                title = detail.title.ifBlank { episode.title },
+                episodeLabel = episode.title.ifBlank { "第${state.currentEpisodeIndex + 1}讲" },
+                groupKey = "course:${detail.seasonId}", groupTitle = detail.title,
+                episodeSortIndex = state.currentEpisodeIndex, episodeCount = detail.episodes?.size ?: 1,
+                cover = episode.cover.ifBlank { detail.cover },
+                ownerName = detail.upInfo?.uname.orEmpty(), ownerFace = detail.upInfo?.avatar.orEmpty(),
+                duration = (episode.duration / 1000L).coerceAtLeast(0L).coerceAtMost(Int.MAX_VALUE.toLong()).toInt(),
+                quality = state.quality, qualityDesc = state.acceptDescription.getOrNull(qualityIndex) ?: "${state.quality}P",
+                videoUrl = state.playUrl!!, audioUrl = state.audioUrl.orEmpty())
         }
         suspend fun load() {
             ui { vm.loadBangumiPlay(19, 41) }
