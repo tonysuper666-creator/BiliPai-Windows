@@ -55,6 +55,8 @@ internal class DesktopOriginalVideoShellOwner(
 
     private fun windows(value: DesktopOriginalVideoOwnerAssembly) =
         bound.get()?.windows?.get()?.takeIf { slot.currentAssembly() === value && value.owns() }
+    internal fun windowPlatformsFor(value: DesktopOriginalVideoOwnerAssembly): DesktopOriginalVideoRootWindowPlatforms? =
+        windows(value)
 
     val playback = DesktopUnifiedPlaybackFacade(scope, slot.assemblies, slot::currentAssembly,
         slot::requireAssembly, playlist, rootAlive, background, slot::retireAssembly,

@@ -1417,27 +1417,50 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val basAssembly by ordinaryVideo.slot.assemblies.collectAsState()
     val basSource = basAssembly?.native?.current()
-    DisposableEffect(danmaku, basAssembly, basSource, physicalDestination) {
+    val basPlatforms = basAssembly?.let(ordinaryVideo::windowPlatformsFor)
+    val basPgcEntry = basPlatforms?.bangumiPlayer?.entries?.collectAsState()?.value
+    val basPgcState = basPgcEntry?.viewModel?.uiState?.collectAsState()?.value
+    val basPgcSourceReady = basSource != null &&
+        basPgcState is com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success &&
+        basPgcEntry?.ownsBasSource(basSource) == true
+    val basPgcNavigationRevision = basPgcEntry?.basNavigationRevision
+    DisposableEffect(danmaku, basAssembly, basSource, basSource?.nativeSource?.source, physicalDestination,
+        basPgcEntry, basPgcSourceReady, basPgcNavigationRevision) {
         val assembly = basAssembly
         val expected = basSource
         val route = physicalDestination
         val factory = assembly?.let(ordinaryVideo::factoryFor)
+        val pgc = basPgcEntry?.takeIf {
+            (route is BiliPaiNavKey.BangumiPlayer && route == it.key) || it.isBasPresenterCurrent()
+        }
         fun owned() = imageSaveLifetime.isActive() && !isClosing() && !activatingUpdate &&
             assembly != null && expected != null && factory != null &&
             ordinaryVideo.slot.currentAssembly() === assembly && factory.isPresentationCurrent(assembly, expected) &&
             ((pip?.active?.value == true) || (hostVisible && hostDisplayable &&
                 physicalDestination == route && route is BiliPaiNavKey.VideoDetail))
         val binding = if (danmaku != null && assembly != null && expected != null && factory != null) {
-            val actions = DesktopWindowsBasActions(expected, assembly.native::current, ::owned,
-                admit = { action -> assembly.native.admitPlaybackDispatch(expected, action) },
-                originalSeek = assembly.playback::seekTo, originalPause = assembly.section::pause,
-                openExternal = { uri ->
+            if (pgc != null) pgc.acquireBasActions(expected,
+                presentationCurrent = {
+                    imageSaveLifetime.isActive() && !isClosing() && !activatingUpdate &&
+                        ordinaryVideo.slot.currentAssembly() === assembly &&
+                        ((pip?.active?.value == true) || (hostVisible && hostDisplayable &&
+                            physicalDestination == route && route is BiliPaiNavKey.BangumiPlayer && route == pgc.key))
+                }, openExternal = { uri ->
                     runCatching { java.awt.Desktop.getDesktop().browse(uri) }
                         .onFailure { error = "无法打开弹幕链接" }.isSuccess
                 })
-            danmaku.acquireBasActions(expected.nativeSource, expected.request.cid, ::owned,
-                admit = { action -> owned() && factory.withPresentationAdmission(assembly, expected, action) },
-                activate = actions::dispatch)
+            else {
+                val actions = DesktopWindowsBasActions(expected, assembly.native::current, ::owned,
+                    admit = { action -> assembly.native.admitPlaybackDispatch(expected, action) },
+                    originalSeek = assembly.playback::seekTo, originalPause = assembly.section::pause,
+                    openExternal = { uri ->
+                        runCatching { java.awt.Desktop.getDesktop().browse(uri) }
+                            .onFailure { error = "无法打开弹幕链接" }.isSuccess
+                    })
+                danmaku.acquireBasActions(expected.nativeSource, expected.request.cid, ::owned,
+                    admit = { action -> owned() && factory.withPresentationAdmission(assembly, expected, action) },
+                    activate = actions::dispatch)
+            }
         } else null
         onDispose { binding?.close() }
     }
