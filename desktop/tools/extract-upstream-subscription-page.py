@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Full pinned RSS UI/notes; same existing Root/runtime/Store is the Windows owner."""
 from v025_source_paths import canonical_source
+from v029_history_recap import load_raw as load_recap_raw
 from pathlib import Path
 import argparse,hashlib,json
 SOURCE_PINS = {'app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt': '584155a4eee5c2fca1bf529ceb5874e1bbccff449df389e02ee34c148bf3039f', 'app/src/main/java/com/android/purebilibili/feature/home/subscription/ArticleNoteEditorSheet.kt': 'c8621742676f66a9005c310bcb173a19b45586cdb8c5c83861f43b32e4de6322', 'app/src/main/java/com/android/purebilibili/feature/home/subscription/ArticleNoteDraftPolicy.kt': 'e6d5989f8ccebb4ca7974f910a0ac7e4a383a0faacd4d2b081dac024fe977d48', 'app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionArticleReadingPolicy.kt': '6d6e9fe62e184c209367bbfa49f03d53ced3d2df64d7f7051cab45e26cb45346', 'app/src/main/java/com/android/purebilibili/core/plugin/feed/ArticleNoteStore.kt': '8dd54d95931fd4a4ed21d6d825385df44507081f893b75ad4050a8dae9e5b1b1'}
@@ -23,15 +24,71 @@ def adapted(body,changes):
   inverse=inverse[:i]+row['before']+inverse[i+len(row['after']):]
  assert inverse==body,'Whole original inverse failed'
  return text
+def reading_progress(body):
+ # Full fixed recap source; this complete progress block is byte-identical in b209.
+ original=load_recap_raw('feature/home/subscription/SubscriptionFeedPage')
+ assert sha(original)=='df0b6a9fb178b1a1f124af594b5d5d8ccd216286db11eb75e6fe8c6168e6cf84'
+ first='    //  [阅读进展] 记录进度并在重开未读完的文章时自动续读。\n'
+ last='    val imageUrls = remember(blocks) {'
+ assert original.count(first)==1
+ block=original[original.index(first):original.index(last,original.index(first))]
+ assert sha(block)=='5dde96b74fb2c4bcc682197cdd8437e4f4ff242a4100c9ad264d02eccb9e2ae8'
+ original_block=block;ports=[]
+ def port(before,after,label):
+  nonlocal block
+  assert block.count(before)==1,label
+  at=block.index(before);block=block.replace(before,after,1)
+  ports.append(dict(index=at,before=before,after=after,label=label))
+ port('    val articleKey = feedItemKey(item)\n',
+  '    val readingIdentity = remember(platform, item, readingSession) {\n        com.bilipai.desktop.ui.DesktopSubscriptionArticleReadingIdentity(item, isReadingCurrent)\n    }\n    DisposableEffect(readingIdentity) { onDispose { readingIdentity.close() } }\n    val articleKey = feedItemKey(item)\n', 'same article/token lexical lifetime; dispose never writes')
+ port('    LaunchedEffect(articleKey) {\n',
+  '    LaunchedEffect(articleKey, readingSession) {\n        if (readingSession == null || !readingIdentity.isOwnedFor(item)) return@LaunchedEffect\n', 'old restore caller never adopts a reopened equal article')
+ port('runCatching { FeedReadingStore.readProgress(context, articleKey) }.getOrDefault(0)',
+  'runCatching { platform.readArticleProgress(item, readingIdentity) }\n            .onFailure { error -> platform.reportFailure(error) { Logger.w("SubscriptionFeed", "阅读进度读取失败: ${error.message}") } }\n            .getOrDefault(0)', 'same original reader, cancellation preserved')
+ port('            kotlinx.coroutines.delay(400)\n',
+  '            kotlinx.coroutines.delay(400)\n            if (!platform.isOwned() || !readingIdentity.isOwnedFor(item))\n                throw CancellationException("Subscription reading session retired")\n', 'same delayed article restore rechecks after waiting')
+ port('            android.widget.Toast.makeText(\n                context,\n                "已恢复到上次阅读位置 · ${savedPercent}%",\n                android.widget.Toast.LENGTH_SHORT,\n            ).show()',
+  '            platform.commitCallerUi {\n                if (readingIdentity.isOwnedFor(item)) platform.showFeedback("已恢复到上次阅读位置 · ${savedPercent}%")\n            }', 'existing owned Windows feedback after original scroll')
+ port('    LaunchedEffect(articleKey, readingBlocks.size) {\n        if (readingBlocks.isEmpty()) return@LaunchedEffect',
+  '    LaunchedEffect(articleKey, readingBlocks.size, readingSession) {\n        if (readingSession == null || !readingIdentity.isOwnedFor(item) || readingBlocks.isEmpty()) return@LaunchedEffect', 'sample collection uses this captured reading session')
+ port('runCatching { FeedReadingStore.recordProgress(context, articleKey, percent) }',
+  'runCatching { platform.recordArticleProgress(item, percent, readingIdentity) }\n                    .onFailure { error -> platform.reportFailure(error) { Logger.w("SubscriptionFeed", "阅读进度保存失败: ${error.message}") } }', 'original store update behind real final Root/caller/token admission')
+ inverse=block
+ for row in reversed(ports):
+  at=row['index'];assert inverse[at:at+len(row['after'])]==row['after'];inverse=inverse[:at]+row['before']+inverse[at+len(row['after']):]
+ assert inverse==original_block
+ changes=[]
+ def add(before,after,label):
+  nonlocal body
+  assert body.count(before)==1,(label,body.count(before));at=body.index(before)
+  body=body.replace(before,after,1);changes.append(dict(index=at,before=before,after=after,label=label))
+ add('import kotlinx.coroutines.flow.collectLatest\n','import kotlinx.coroutines.flow.collectLatest\nimport androidx.compose.runtime.snapshotFlow\nimport kotlinx.coroutines.flow.sample\n','original snapshotFlow/sample prerequisites')
+ add('    var opened by remember { mutableStateOf<ParsedFeedItem?>(null) }\n','    var opened by remember { mutableStateOf<ParsedFeedItem?>(null) }\n    var readingSession by remember { mutableStateOf<Any?>(null) }\n','only transient displayed-reader identity')
+ add('    PredictiveBackHandler(enabled = isArticleOpen) { progress ->\n','    PredictiveBackHandler(enabled = isArticleOpen) { progress ->\n        readingSession = null\n','predictive close retires samples immediately')
+ add('                    runCatching { transitionState.snapTo(currentOpened) }\n','                    runCatching { transitionState.snapTo(currentOpened) }\n                    if (readingSession == null && platform.isOwned() && opened === currentOpened &&\n                        transitionState.targetState === currentOpened) readingSession = Any()\n','only restored cancelled-back article gets a fresh identity after snap')
+ add('                SubscriptionArticleScreen(\n                    item = article,\n','                val capturedReadingSession = readingSession\n                SubscriptionArticleScreen(\n                    item = article,\n                    readingSession = capturedReadingSession,\n                    isReadingCurrent = { capturedReadingSession != null && readingSession === capturedReadingSession &&\n                        opened === article && transitionState.targetState === article },\n','exact current source and captured reading identity')
+ add('                    onBack = {\n                        scope.launch {\n                            transitionState.animateTo(\n','                    onBack = {\n                        readingSession = null\n                        scope.launch {\n                            transitionState.animateTo(\n','normal close retires before asynchronous transition')
+ add('                            opened = item\n','                            readingSession = Any()\n                            opened = item\n','each new open including A-close-A is a new identity')
+ add('onDispose { platform.articleOpenChanged(false, onArticleOpenChanged) }','onDispose { readingSession = null; platform.articleOpenChanged(false, onArticleOpenChanged) }','page retirement invalidates identity; no dispose progress write')
+ add('@OptIn(ExperimentalSharedTransitionApi::class)\n@Composable\nprivate fun SubscriptionArticleScreen(\n    item: ParsedFeedItem,\n','@OptIn(ExperimentalSharedTransitionApi::class, kotlinx.coroutines.FlowPreview::class)\n@Composable\nprivate fun SubscriptionArticleScreen(\n    item: ParsedFeedItem,\n    readingSession: Any?,\n    isReadingCurrent: () -> Boolean,\n','original FlowPreview and required exact reading-session ports')
+ add('    val readingBlocks = blocks\n','    val readingBlocks = blocks\n'+block,'complete original reading restore/percent/sample block')
+ return body,changes,dict(path='desktop/upstream-slices/v029-history-recap/app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt',upstreamCommit='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480',wholeSourceSha256=sha(original),selectedBlockSha256=sha(original_block),blockAdaptations=ports,completeSelectedBlockInverse=True,alsoIdenticalInReleasedCommit='b2091b1de636e499df80af7e700796b4f52b7f92')
+
 def generate(repo,output,standalone=False):
  repo=Path(repo);output=Path(output);rows=[];generated=[]
  for source,pin in SOURCE_PINS.items():
   original=safe(canonical_source(repo,source)).read_text(encoding='utf-8').replace('\r\n','\n');assert sha(original)==pin,source
   changes=PAGE_DELTA if source.endswith('/SubscriptionFeedPage.kt') else NOTE_DELTA if source.endswith('/ArticleNoteStore.kt') else []
-  body=adapted(original,changes);destination=output/('com/android/purebilibili/'+source.split('/com/android/purebilibili/',1)[1])
+  body=adapted(original,changes);reading_origin=None
+  if source.endswith('/SubscriptionFeedPage.kt'):
+   body,reading_changes,reading_origin=reading_progress(body)
+   changes=changes+reading_changes
+   assert adapted(original,changes)==body
+  destination=output/('com/android/purebilibili/'+source.split('/com/android/purebilibili/',1)[1])
   emitted=bool(changes) or standalone
   if emitted:write(destination,body);generated.append(destination)
   rows.append({'path':source,'sha256LF':pin,'fullFileSelected':True,'wholeOriginalInverse':True,'changes':changes,'generatedSha256LF':sha(body),'emittedByThisProducer':emitted,'soleProducer':'subscription' if changes else 'prepareUpstreamSources'})
+  if reading_origin is not None:rows[-1]['readingProgressOrigin']=reading_origin
  write(output/'subscription-page-producer-inventory.json',json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
  return generated
 if __name__=='__main__':

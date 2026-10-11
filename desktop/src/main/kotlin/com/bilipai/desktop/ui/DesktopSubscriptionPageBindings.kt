@@ -27,6 +27,19 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.intOrNull
 import java.util.concurrent.atomic.AtomicBoolean
 
+/** Transient identity of one displayed RSS article, never a second reading store.
+ * Closing this identity is permanent even if the same article is reopened. */
+internal class DesktopSubscriptionArticleReadingIdentity(
+    val item: ParsedFeedItem,
+    private val stillPresented: () -> Boolean,
+) : AutoCloseable {
+    private val closed = AtomicBoolean()
+    fun isOwnedFor(value: ParsedFeedItem): Boolean = !closed.get() &&
+        com.android.purebilibili.core.plugin.feed.feedItemKey(value) ==
+            com.android.purebilibili.core.plugin.feed.feedItemKey(item) && stillPresented()
+    override fun close() { closed.set(true) }
+}
+
 /** One retained Home owner, delegating all reading IO to the runtime's existing repository. */
 internal class DesktopSubscriptionPageBindings(
     val runtime: DesktopPluginRuntime,
@@ -69,6 +82,17 @@ internal class DesktopSubscriptionPageBindings(
     private suspend fun <T> owned(block: suspend () -> T): T =
         DesktopSubscriptionWriteAdmission.withOwned(::isOwned, commitIfCurrent, block)
 
+    private suspend fun <T> readingOwned(item: ParsedFeedItem,
+        identity: DesktopSubscriptionArticleReadingIdentity, block: suspend () -> T): T =
+        DesktopSubscriptionWriteAdmission.withOwned(
+            { isOwned() && identity.isOwnedFor(item) }, commitIfCurrent, block)
+
+    suspend fun readArticleProgress(item: ParsedFeedItem,
+        identity: DesktopSubscriptionArticleReadingIdentity): Int =
+        readingOwned(item, identity) { repository.readProgress(item) }
+    suspend fun recordArticleProgress(item: ParsedFeedItem, percent: Int,
+        identity: DesktopSubscriptionArticleReadingIdentity): Unit =
+        readingOwned(item, identity) { repository.recordProgress(item, percent) }
     suspend fun reload() = owned { repository.loadCached(); repository.refresh() }
     suspend fun setRead(item: ParsedFeedItem, read: Boolean) = owned { repository.setRead(item, read) }
     suspend fun saveFullBody(item: ParsedFeedItem, html: String) = owned { repository.saveFullBody(item, html) }

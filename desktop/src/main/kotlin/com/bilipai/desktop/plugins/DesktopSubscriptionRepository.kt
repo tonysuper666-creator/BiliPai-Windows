@@ -107,6 +107,15 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         else FeedReadingStore.setRead(context, feedItemKey(item), false)
         publishReading(FeedReadingStore.load(context))
     }
+    suspend fun readProgress(item: ParsedFeedItem): Int {
+        check(!stopped) { "订阅服务已停止" }
+        return FeedReadingStore.readProgress(context, feedItemKey(item))
+    }
+    suspend fun recordProgress(item: ParsedFeedItem, percent: Int): Unit = mutation.withLock {
+        check(!stopped) { "订阅服务已停止" }
+        FeedReadingStore.recordProgress(context, feedItemKey(item), percent)
+        publishReading(FeedReadingStore.load(context))
+    }
     suspend fun loadFullArticle(item: ParsedFeedItem): String {
         val key = feedItemKey(item)
         FeedReadingStore.load(context).fullBodies[key]?.let { return it }

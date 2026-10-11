@@ -859,6 +859,8 @@ val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-subscription-page").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-subscription-page.py", "tools/sync-upstream.py")
+    inputs.file("tools/v029_history_recap.py")
+    inputs.dir("upstream-slices/v029-history-recap")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-subscription-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
