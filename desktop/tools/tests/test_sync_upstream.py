@@ -530,12 +530,12 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
     def load(self):
         return sync.adapted_compatibility_inputs(self.repo)
 
-    def test_actual_218_originals_load_with_separate_commits_and_nested_live_inputs(self):
+    def test_actual_219_originals_load_with_separate_commits_and_nested_live_inputs(self):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 218)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 211)
+        self.assertEqual(len(entries), 219)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 212)
         for filename in ("LiveInteractionSheets.kt", "LiveChatSection.kt"):
             rows = [item for item in entries if item["localPath"].endswith("/" + filename)]
             self.assertTrue(rows, filename)
@@ -544,6 +544,22 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             for item in rows:
                 self.assertEqual(sync.source_digest(sync.adapted_local_input(self.repo, item),
                                                     item["hashNormalization"]), item["sha256"])
+        sponsor_rows = [item for item in entries if item["localPath"] ==
+                        "desktop/upstream-slices/v034-sponsor-ui/SponsorSkipUI.kt"]
+        self.assertEqual(sponsor_rows, [{
+            "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+            "localPath": "desktop/upstream-slices/v034-sponsor-ui/SponsorSkipUI.kt",
+            "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+            "blob": "ca6dc93eddbd2319adbbd13a245bcd97bb4e2e35",
+            "sha256": "bf4f74363fe6150a5429cb6f5c00c9071e8341805c76bc5cdee8dfbafb87b462",
+            "hashNormalization": "raw", "kind": "adaptedSource",
+            "features": ["v034-sponsor-original-ui"], "referenceOnly": False,
+        }])
+        raw = (self.repo / sponsor_rows[0]["localPath"]).read_bytes()
+        self.assertEqual(len(raw), 13343)
+        self.assertNotIn(b"\r\n", raw, "The retained b209 original is exact LF, not a checkout-normalized substitute")
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), sponsor_rows[0]["sha256"])
+        self.assertEqual(sync.blob_oid(raw), sponsor_rows[0]["blob"])
 
     def test_real_conflicting_baselines_share_one_incoming_download_and_keep_pins(self):
         # Restrict this request fixture to one actual conflicting path. It is
@@ -630,10 +646,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 218)
+        self.assertEqual(len(self.load()), 219)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 218)
+        self.assertEqual(len(self.load()), 219)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -650,7 +666,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 218)
+                self.assertEqual(len(entries), 219)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
