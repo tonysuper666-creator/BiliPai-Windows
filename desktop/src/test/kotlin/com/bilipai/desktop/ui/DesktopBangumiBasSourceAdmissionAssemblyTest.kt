@@ -137,6 +137,14 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                     f.load(); val before = f.accepted(); val load = f.owner.captureLoadState()
                     val registered = f.acquire(before); f.loadDocument(before); f.awaitEntered(entered)
                     val worker = f.uiResult { f.basJob() }
+                    val emptyBeforeMutation = f.uiResult {
+                        f.installation().also { installation ->
+                            if (installation != null) {
+                                assertTrue((f.reflect(installation, "raw") as List<*>).isEmpty())
+                                assertTrue((f.reflect(installation, "items") as List<*>).isEmpty())
+                            }
+                        }
+                    }
                     f.playGate = protocol
                     f.ui {
                         when (mutation) {
@@ -157,7 +165,8 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                         when (mutation) {
                             "request" -> {
                                 val actual = f.owner.captureLoadState()
-                                assertNotSame(load.currentRequest, actual.currentRequest)
+                                // beginLoadRequest advances tokens first; StateFlow retains an equal request value.
+                                assertSame(load.currentRequest, actual.currentRequest)
                                 assertTrue(actual.currentLoadRequestToken > load.currentLoadRequestToken)
                                 assertEquals(before.request.cid, actual.currentRequest!!.cid)
                                 assertSame(before, f.owner.native.current())
@@ -183,7 +192,10 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                     }
                     release.countDown(); f.drainBas(worker)
                     f.ui {
-                        assertNull(f.installation()); assertTrue(f.items().isEmpty())
+                        val installation = f.installation()
+                        assertTrue(installation == null || installation === emptyBeforeMutation, mutation)
+                        if (installation != null) assertTrue((f.reflect(installation, "raw") as List<*>).isEmpty(), mutation)
+                        assertFalse(f.installationCurrent(), mutation); assertTrue(f.items().isEmpty())
                         assertEquals(0, f.overlay.commentCount.value)
                         assertEquals(1, f.rawItems().size)
                     }
@@ -205,6 +217,14 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 f.load(); val before = f.accepted(); val registered = f.acquire(before)
                 f.loadDocument(before); f.awaitEntered(entered)
                 val worker = f.uiResult { f.basJob() }
+                val emptyBeforeClose = f.uiResult {
+                    f.installation().also { installation ->
+                        if (installation != null) {
+                            assertTrue((f.reflect(installation, "raw") as List<*>).isEmpty())
+                            assertTrue((f.reflect(installation, "items") as List<*>).isEmpty())
+                        }
+                    }
+                }
                 f.ui {
                     registered.close(); assertNull(f.actualBasBinding())
                     assertFalse(registered.owned()); assertTrue(f.bas.ownsBasSource(before))
@@ -213,11 +233,21 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 }
                 release.countDown(); f.drainBas(worker)
                 f.ui {
-                    assertNull(f.installation()); assertFalse(f.installationCurrent())
+                    val installation = f.installation()
+                    assertTrue(installation == null || installation === emptyBeforeClose)
+                    if (installation != null) assertTrue((f.reflect(installation, "raw") as List<*>).isEmpty())
+                    assertFalse(f.installationCurrent()); assertTrue(f.items().isEmpty())
                     assertEquals(1, f.rawItems().size); assertEquals(0, f.overlay.commentCount.value)
                 }
                 val fresh = f.acquire(before); f.awaitInstalled()
-                f.ui { assertTrue(fresh.owned()); assertEquals("actual PGC BAS", f.items().single().content) }
+                f.ui {
+                    assertTrue(fresh.owned()); assertTrue(f.installationCurrent())
+                    assertNotSame(emptyBeforeClose, f.installation())
+                    assertSame(f.rawItems().single(), f.items().single())
+                    assertEquals(before.nativeSource.source, f.installationSource().source)
+                    assertEquals("actual PGC BAS", f.items().single().content)
+                    assertFalse(registered.owned()); assertSame(fresh.actualBinding, f.actualBasBinding())
+                }
                 assertEquals(1, f.xmlCalls.get()); assertTrue(f.urls.isEmpty())
             } finally { release.countDown() }
         }
