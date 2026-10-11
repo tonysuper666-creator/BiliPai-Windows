@@ -49,7 +49,7 @@ internal class DesktopOriginalPortraitPlatformBinding(
     private val viewport: @Composable (DesktopOriginalVideoOwnerAssembly, DesktopOriginalMpvSectionControl, Modifier, Int, Boolean, Boolean, Boolean) -> Unit,
     private val danmakuSurface: @Composable (DesktopOriginalVideoOwnerAssembly, Modifier, Int, Int, Int) -> Unit,
     private val onPreparation: (DesktopOriginalMediaCachePreparation) -> Unit,
-    private val prepareAcceptedMedia: (DesktopOriginalVideoAcceptedPublication, DesktopOriginalBangumiNativeSourcePlan, () -> Boolean) -> DesktopOriginalVideoMediaPort,
+    private val prepareAcceptedMedia: (DesktopOriginalVideoAcceptedPublication, DesktopOriginalBangumiNativeSourcePlan, () -> Boolean, DesktopOriginalNativeRecoveryTicket?) -> DesktopOriginalVideoMediaPort,
 ) : DesktopOriginalPortraitPlatform {
     private fun owns() = currentAssembly() === assembly && assembly.owns()
     private fun assertOwned() { if (!owns()) throw CancellationException("Portrait Assembly retired") }
@@ -445,7 +445,10 @@ internal class DesktopOriginalPortraitPlatformBinding(
     internal fun publishBangumiSource(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job?,
         state: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success,
         videoUrl: String, audioUrl: String?, segments: List<String>?, seekToMs: Long,
-        referer: String, manifest: String?, playWhenReady: Boolean) {
+        referer: String, manifest: String?, playWhenReady: Boolean,
+        desktopFailure: DesktopOriginalNativeRecoveryTicket? = null,
+        recoveryCurrent: () -> Boolean = { true }, parentIntentCurrent: (() -> Boolean)? = null,
+        completeRecovery: (() -> Unit)? = null) {
         assertOwned(); caller?.ensureActive()
         val operation = caller?.let { findBangumiCapture(presenter, it) }
         val data = checkNotNull(state.cachedPlayData) { "PGC publication requires its actual full protocol response" }
@@ -484,21 +487,75 @@ internal class DesktopOriginalPortraitPlatformBinding(
         // binding or newly captured credentials. Same receipt is preserved by the
         // existing RootMediaFactory and NativeOwner.acceptedMedia final gate.
         if (!ownsBangumiPlayback(presenter, state)) throw CancellationException("PGC accepted source replaced")
-        val expected = checkNotNull(assembly.native.current())
+        val expected = desktopFailure?.source ?: checkNotNull(assembly.native.current())
+        if (!assembly.native.isCurrent(expected)) throw CancellationException("PGC cached recovery origin replaced")
         val token = assembly.captureLoadState().currentLoadRequestToken
-        val samePresenterAndRequest = {
-            ownsBangumiPlayback(presenter, state) && assembly.captureLoadState().currentLoadRequestToken == token &&
-                caller?.isCancelled != true
+        val handingOff = java.util.concurrent.atomic.AtomicBoolean(false)
+        val released = java.util.concurrent.atomic.AtomicBoolean(false)
+        val child = java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoAcceptedPublication?>()
+        val childIntents = java.util.concurrent.atomic.AtomicReference<Pair<Long, Long>?>()
+        val retainedPresenterCurrent = {
+            owns() && assembly.playback.isDesktopBangumiPresenterCurrent(presenter) &&
+                assembly.captureLoadState().currentLoadRequestToken == token
         }
-        val media = prepareAcceptedMedia(expected, plan, samePresenterAndRequest)
+        val samePresenterAndRequest = {
+            if (desktopFailure == null) ownsBangumiPlayback(presenter, state) &&
+                assembly.captureLoadState().currentLoadRequestToken == token && caller?.isCancelled != true
+            else retainedPresenterCurrent() && (released.get() ||
+                recoveryCurrent() && desktopFailure.caller?.isActive == true &&
+                (handingOff.get() || (childIntents.get()?.let(assembly.native.player::ownsPlaybackIntentSerials)
+                    ?: checkNotNull(parentIntentCurrent)())))
+        }
+        if (desktopFailure != null) requireNotNull(completeRecovery)
+        val recoveryPayload = if (desktopFailure != null) plan.payload(projection) else null
+        val media = prepareAcceptedMedia(expected, plan, samePresenterAndRequest, desktopFailure)
         media.withPlaybackIntent(seekToMs, playWhenReady) {
             if (!ownsBangumiPlayback(presenter, state) || assembly.native.current() !== expected)
                 throw CancellationException("PGC accepted preparation replaced")
             val source = plan.adaptiveSource()?.let { media.prepareAdaptiveDash(it, emptyMap()) }
                 ?: media.prepareLegacyDash(videoUrl, plan.audioUrl, emptyMap())
             require(source.referer == plan.referer && source.authorizationReceipt == expected.nativeSource.source.authorizationReceipt)
-            media.accept(source)
+            if (desktopFailure == null) media.accept(source)
+            else {
+                val recoveryMedia = media as DesktopOriginalNativeRecoveryMediaPort
+                var completed = false
+                // Preparation above is outside all gates. The real origin gate
+                // covers only its own accept -> intent witness -> short completion.
+                if (!assembly.native.admitPlaybackDispatch(expected) {
+                        if (!checkNotNull(parentIntentCurrent)() || !samePresenterAndRequest())
+                            throw CancellationException("PGC premium parent intent retired")
+                        handingOff.set(true)
+                        try {
+                            recoveryMedia.accept(source)
+                            val accepted = checkNotNull(assembly.native.current())
+                            if (accepted === expected || accepted.request != expected.request ||
+                                accepted.nativeSource.source.authorizationReceipt != expected.nativeSource.source.authorizationReceipt)
+                                throw CancellationException("PGC premium child subject changed")
+                            child.set(accepted)
+                            // recoverSource advances its own pause serial. Capture
+                            // only THIS successful transition while its lock is held.
+                            childIntents.set(assembly.native.player.capturePlaybackIntentSerials())
+                            handingOff.set(false)
+                            if (!recoveryMedia.admitRecoveryAction {
+                                    if (!samePresenterAndRequest() || assembly.native.current() !== child.get())
+                                        throw CancellationException("PGC premium child intent retired")
+                                    // PGC adoption returns after pure Subject/Mini
+                                    // publication; ordinary deferred producers are absent.
+                                    if (!assembly.playback.adoptDesktopPortraitLoad(token, checkNotNull(recoveryPayload),
+                                            { samePresenterAndRequest() && assembly.native.isCurrent(accepted) },
+                                            { mutation -> recoveryMedia.admitRecoveryAction(mutation) }, presenter))
+                                        throw CancellationException("PGC premium metadata adoption rejected")
+                                    checkNotNull(completeRecovery)()
+                                    // Persistent source no longer borrows this Job,
+                                    // manual intent or pause/seek completion witness.
+                                    released.set(true)
+                                    completed = true
+                                } || !completed) throw CancellationException("PGC premium completion rejected")
+                        } finally { handingOff.set(false) }
+                    } || !completed) throw CancellationException("PGC premium source acceptance rejected")
+            }
         }
+        if (desktopFailure != null) return
         val accepted = checkNotNull(assembly.native.current())
         if (accepted.request != expected.request || accepted.accountEpoch != expected.accountEpoch ||
             accepted.nativeSource.source.authorizationReceipt != expected.nativeSource.source.authorizationReceipt)

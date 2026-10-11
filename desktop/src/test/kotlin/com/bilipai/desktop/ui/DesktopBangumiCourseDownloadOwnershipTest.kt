@@ -408,8 +408,8 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                     recover = { _, _ -> error("No surface") }, share = { _, _ -> error("No share") },
                     feedback = { _, _ -> error("No feedback") }, surface = { _, _, _ -> error("No rendering") },
                     viewport = { _, _, _, _, _, _, _ -> error("No viewport") }, danmakuSurface = { _, _, _, _, _ -> error("No rendering") },
-                    onPreparation = {}, prepareAcceptedMedia = { expected, plan, current ->
-                        owner.native.acceptedMedia({ media.accepted(it, plan) }, current)
+                    onPreparation = {}, prepareAcceptedMedia = { expected, plan, current, failure ->
+                        owner.native.acceptedMedia({ media.accepted(it, plan) }, failure, current)
                     })
                 native = DesktopOriginalBangumiNativePresenter(owner, slot::currentAssembly, portrait, gate.scope,
                     { if (::vm.isInitialized) vm.uiState.value as? BangumiPlayerState.Success else null },

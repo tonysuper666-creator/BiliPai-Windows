@@ -14,6 +14,7 @@ import com.android.purebilibili.feature.video.player.PlaylistItem
 import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsApplySpec
 import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsVisibilityPolicy
 import com.android.purebilibili.feature.video.playback.audio.collectAudioStreamCandidates
+import com.android.purebilibili.feature.video.playback.audio.isPremiumAudioPlaybackFailure
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.refresh.HistoryRefreshBus
@@ -135,6 +136,76 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 }
             } && applied
         }
+        private fun isCurrentPremiumAudioFailure(state: BangumiPlayerState.Success,
+            expected: DesktopOriginalVideoAcceptedPublication,
+            failure: com.bilipai.desktop.player.PlayerFailure): Boolean {
+            val code = com.bilipai.desktop.player.desktopPremiumAudioFailureCode(failure) ?: return false
+            if (!isPremiumAudioPlaybackFailure(code, state.selectedAudioQuality, "mpv/audio-output", null)) return false
+            val dash = state.cachedDash ?: return false
+            if (state.cachedPlayData?.dash !== dash) return false
+            val hiRes = dash.flac?.audio ?: return false
+            val audio = state.audioUrl?.takeIf(String::isNotBlank) ?: return false
+            val video = state.playUrl?.takeIf(String::isNotBlank) ?: return false
+            val source = expected.nativeSource.source
+            return source.audioUrl == audio && source.videoUrl == video &&
+                (audio == hiRes.getValidUrl() || audio in hiRes.backupUrl.orEmpty()) &&
+                dash.video.any { video == it.getValidUrl() || video in it.backupUrl.orEmpty() }
+        }
+
+        private fun recoverPremiumAudio(state: BangumiPlayerState.Success,
+            expected: DesktopOriginalVideoAcceptedPublication,
+            failure: com.bilipai.desktop.player.PlayerFailure, revision: Long, identity: Any): Boolean {
+            var position = 0L
+            var playing = false
+            var token = -1L
+            var intents: Pair<Long, Long>? = null
+            if (!admitFailureSource(state, expected, failure, revision) {
+                    if (isCurrentPremiumAudioFailure(state, expected, failure)) {
+                        position = player.currentPosition.coerceAtLeast(0L)
+                        playing = player.playWhenReady
+                        token = owner.captureLoadState().currentLoadRequestToken
+                        intents = player.nativePlayer.capturePlaybackIntentSerials()
+                    }
+                }) return false
+            val capturedIntents = intents ?: return false
+            val receipt = expected.nativeSource.source.authorizationReceipt ?: return false
+            // Operation-only intent checks survive THIS accepted child, but never
+            // become the persistent publication predicate for later user controls.
+            fun operationCurrent(): Boolean {
+                val actual = success() ?: return false
+                val load = owner.captureLoadState()
+                return owns() && viewModel.desktopPlaybackIntentRevision == revision &&
+                    root.repository.sessionEpoch == receipt.accountEpoch &&
+                    root.repository.playbackAuthorizationRevision.value == receipt.revision &&
+                    load.currentLoadRequestToken == token && load.currentBvid == expected.request.bvid &&
+                    load.currentCid == expected.request.cid && actual.cachedPlayData === state.cachedPlayData &&
+                    actual.currentEpisode.id == state.currentEpisode.id &&
+                    actual.currentEpisode.cid == state.currentEpisode.cid &&
+                    actual.seasonDetail.seasonId == state.seasonDetail.seasonId &&
+                    actual.quality == state.quality && actual.requestedAudioQuality == state.requestedAudioQuality
+            }
+            fun parentCurrent() = operationCurrent() &&
+                failureSourceCurrent(state, expected, failure, revision) &&
+                player.nativePlayer.ownsPlaybackIntentSerials(capturedIntents)
+            val ticket = DesktopOriginalNativeRecoveryTicket(expected, failure.attemptId)
+            return viewModel.fallbackPremiumAudioPlayback(state, revision, position, playing,
+                launchLazy = { block -> native.launch(block, CoroutineStart.LAZY,
+                    expected, playing, ::parentCurrent, ticket, ::operationCurrent) },
+                admitOrigin = { mutation -> admitFailureSource(state, expected, failure, revision) {
+                    player.nativePlayer.admitPlaybackIntentSerials(capturedIntents) {
+                        if (parentCurrent()) mutation()
+                    }
+                } },
+                currentOrigin = ::parentCurrent,
+                publication = { pending, publish, complete ->
+                    native.withPremiumAudioRecoveryState(pending, publish) {
+                        complete()
+                        recovery.ready() // READY reports success; never resets original budgets.
+                    }
+                },
+                onFailure = { recovery.recoveryFailed(identity) })
+        }
+
         override fun observePlaybackReady() {
             if (!owns() || !native.ownsPlaybackSource()) return
             val expected = owner.native.current() ?: return
@@ -153,7 +224,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             val expected = owner.native.current() ?: return
             val revision = viewModel.desktopPlaybackIntentRevision
             queuePlaybackFailure(state, expected, failure, revision,
-                desktopOriginalNativeFailure(failure, premiumAudio = false), failure)
+                desktopOriginalNativeFailure(failure, premiumAudio = isCurrentPremiumAudioFailure(state, expected, failure)), failure)
         }
         private fun queuePlaybackFailure(state: BangumiPlayerState.Success,
             expected: DesktopOriginalVideoAcceptedPublication,
@@ -167,14 +238,17 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 }) return
             val episode = Triple(state.seasonDetail.seasonId, state.currentEpisode.id, state.currentEpisode.cid)
             if (recoveryEpisode != episode) { recovery.beginLoad(false); recoveryEpisode = episode }
-            // Classification is shared; this first slice implements only reliable network re-fetch.
-            // Decoder/audio/source/auth/restriction do not enter an invented fallback.
+            // Original shared policy: reliable network refresh and proven Hi-Res
+            // AO-init recovery; unrelated decoder/DRM/output errors keep their behavior.
             recovery.fail(DesktopOriginalPlaybackRecoveryTicket(identity,
-                evidence.copy(automaticRecovery = evidence.automaticRecovery && evidence.reason == PlaybackFailureReason.Network,
-                    decoder = false, premiumAudio = false), false, position, playing,
+                evidence.copy(automaticRecovery = evidence.automaticRecovery &&
+                    (evidence.reason == PlaybackFailureReason.Network || evidence.premiumAudio),
+                    decoder = false), false, position, playing,
                 { failureSourceCurrent(state, expected, failure, revision) },
                 { action, _, _ ->
-                    if (action != com.android.purebilibili.feature.video.state.PlayerErrorRecoveryAction.RETRY_NETWORK) false
+                    if (action == com.android.purebilibili.feature.video.state.PlayerErrorRecoveryAction.FALLBACK_PREMIUM_AUDIO)
+                        recoverPremiumAudio(state, expected, failure, revision, identity)
+                    else if (action != com.android.purebilibili.feature.video.state.PlayerErrorRecoveryAction.RETRY_NETWORK) false
                     else {
                         var retryPosition = 0L
                         var retryPlaying = false

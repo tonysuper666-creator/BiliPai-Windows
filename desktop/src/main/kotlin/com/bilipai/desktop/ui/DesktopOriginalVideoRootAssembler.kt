@@ -316,7 +316,7 @@ internal class DesktopOriginalVideoRootAssembler(
             { _, text -> window.gallery.shareText(text) }, { _, text -> resources.feedback(text) },
             rendering::Surface, rendering::Viewport, rendering::DanmakuSurface,
             { result -> if (result is DesktopOriginalMediaCachePreparation.Direct) diagnostic("Portrait byte transport selected direct origin") },
-            { expected, plan, isPresenterCurrent -> factory.acceptedMedia(owner, expected, plan, isPresenterCurrent) }) }
+            { expected, plan, isPresenterCurrent, failure -> factory.acceptedMedia(owner, expected, plan, isPresenterCurrent, failure) }) }
         val storage = remember(owner) { DesktopOriginalMusicStorageBinding(effect.settings) }
         val external = remember(owner) { DesktopOriginalExternalPlaylistBinding(effect.settings, resources.audioRepository) {
             factory.captureRequest(owner)

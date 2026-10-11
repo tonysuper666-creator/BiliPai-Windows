@@ -181,11 +181,12 @@ internal class DesktopOriginalVideoRootFactory(
      * No completed Binding or newly stamped signed URL is used. */
     internal fun acceptedMedia(value: DesktopOriginalVideoOwnerAssembly,
         expected: DesktopOriginalVideoAcceptedPublication, plan: DesktopOriginalBangumiNativeSourcePlan,
-        isPresenterCurrent: () -> Boolean): DesktopOriginalVideoMediaPort {
+        isPresenterCurrent: () -> Boolean,
+        desktopFailure: DesktopOriginalNativeRecoveryTicket? = null): DesktopOriginalVideoMediaPort {
         val construction = checkNotNull(built.get()?.takeIf { it.assembly === value })
         if (!construction.gate.owns() || value.native.current() !== expected)
             throw CancellationException("PGC accepted media replaced")
-        return value.native.acceptedMedia({ construction.media.accepted(it, plan) }, isPresenterCurrent)
+        return value.native.acceptedMedia({ construction.media.accepted(it, plan) }, desktopFailure, isPresenterCurrent)
     }
 
     /** Overlay's lock-order-safe predicate: only existing atomic references and

@@ -385,7 +385,7 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
                 share = { _, _ -> error("No sharing") }, feedback = { _, _ -> error("No feedback") },
                 surface = { _, _, _ -> error("No rendering") }, viewport = { _, _, _, _, _, _, _ -> error("No viewport") },
                 danmakuSurface = { _, _, _, _, _ -> error("No danmaku rendering") },
-                onPreparation = { error("No media preparation") }, prepareAcceptedMedia = { _, _, _ -> error("No accepted media") })
+                onPreparation = { error("No media preparation") }, prepareAcceptedMedia = { _, _, _, _ -> error("No accepted media") })
             native = DesktopOriginalBangumiNativePresenter(owner, { owner.takeIf { owns() } }, portrait, scope,
                 { if (::vm.isInitialized) vm.uiState.value as? BangumiPlayerState.Success else null },
                 captureEpisodeRequest = { _, notify ->

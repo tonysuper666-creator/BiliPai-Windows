@@ -30,8 +30,10 @@ internal class DesktopOriginalBangumiNativePresenter(
     // Coroutine-local view of the exact failed origin and its playback intent.
     // The existing Portrait capture/native owner still owns parent -> child acceptance.
     private class NetworkRecovery(val source: DesktopOriginalVideoAcceptedPublication,
-        val playWhenReady: Boolean, val parentCurrent: () -> Boolean) {
+        val playWhenReady: Boolean, val parentCurrent: () -> Boolean,
+        var failure: DesktopOriginalNativeRecoveryTicket?, val operationCurrent: () -> Boolean) {
         var publicationState: BangumiPlayerState.Success? = null // synchronous lexical view only
+        var completion: (() -> Unit)? = null // only the cached publisher own-child gate invokes it
     }
     private val currentRecovery = ThreadLocal<NetworkRecovery?>()
     private val callerKey = object : CoroutineContext.Key<CallerElement> {}
@@ -85,10 +87,15 @@ internal class DesktopOriginalBangumiNativePresenter(
      * binding is captured only after the sole Store starts its new request. */
     fun launch(block: suspend CoroutineScope.() -> Unit, start: CoroutineStart = CoroutineStart.DEFAULT,
         recoverySource: DesktopOriginalVideoAcceptedPublication? = null, recoveryPlayWhenReady: Boolean = true,
-        recoveryParentCurrent: () -> Boolean = { true }): Job {
+        recoveryParentCurrent: () -> Boolean = { true },
+        recoveryFailure: DesktopOriginalNativeRecoveryTicket? = null,
+        recoveryCurrent: () -> Boolean = { true }): Job {
         assertCurrent()
-        val recovery = recoverySource?.let { NetworkRecovery(it, recoveryPlayWhenReady, recoveryParentCurrent) }
+        val recovery = recoverySource?.let { NetworkRecovery(it, recoveryPlayWhenReady, recoveryParentCurrent,
+            recoveryFailure, recoveryCurrent) }
+        require(recoveryFailure == null || recoverySource === recoveryFailure.source)
         return scope.launch(CallerElement() + currentRecovery.asContextElement(recovery), start = start) {
+            recovery?.failure = recovery?.failure?.forCaller(captureInitialDetailLaunchCaller())
             assembly.invocations.withInvocation { assertCurrent(); block() }
         }
     }
@@ -206,6 +213,23 @@ internal class DesktopOriginalBangumiNativePresenter(
             }, action)
         } finally { recovery.publicationState = previous }
     }
+    /** This synchronous span borrows pending metadata only for cached preparation.
+     * Portrait consumes completion in the ACTUAL recovery media port's own-child
+     * short gate; the failed parent is never consulted after that acceptance. */
+    internal fun withPremiumAudioRecoveryState(state: BangumiPlayerState.Success,
+        publish: () -> Unit, complete: () -> Unit) {
+        assertCurrent()
+        val recovery = checkNotNull(currentRecovery.get())
+        checkNotNull(recovery.failure) { "PGC premium recovery requires its native failure ticket" }
+        val previous = recovery.completion
+        var completed = false
+        recovery.completion = { complete(); completed = true }
+        try {
+            withNetworkRecoveryState(state, publish)
+            if (!completed) throw CancellationException("PGC premium child completion rejected")
+        } finally { recovery.completion = previous }
+    }
+
     fun capturedPlaybackBindingOrNull(): DesktopOriginalVideoRepositoryBinding? {
         assertCurrent()
         return currentCaller.get()?.let { portrait.capturedBangumiRequestOrNull(this, it) }
@@ -227,7 +251,11 @@ internal class DesktopOriginalBangumiNativePresenter(
         resetPlayer: Boolean, referer: String, dashManifest: String?) {
         assertCurrent(); currentCaller.get()?.ensureActive()
         portrait.publishBangumiSource(this, currentCaller.get(), currentRecovery.get()?.publicationState ?: checkNotNull(currentState()), videoUrl, audioUrl,
-            null, seekToMs, referer, dashManifest, playWhenReady = currentRecovery.get()?.playWhenReady ?: true)
+            null, seekToMs, referer, dashManifest, playWhenReady = currentRecovery.get()?.playWhenReady ?: true,
+            desktopFailure = currentRecovery.get()?.failure,
+            recoveryCurrent = currentRecovery.get()?.operationCurrent ?: { true },
+            parentIntentCurrent = currentRecovery.get()?.takeIf { it.failure != null }?.parentCurrent,
+            completeRecovery = currentRecovery.get()?.completion)
     }
     override fun publishSegments(segmentUrls: List<String>, seekToMs: Long,
         resetPlayer: Boolean, referer: String) {
