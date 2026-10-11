@@ -206,9 +206,12 @@ internal class DesktopOriginalVideoRootFactory(
         expected: DesktopOriginalVideoAcceptedPublication, action: () -> Unit): Boolean {
         val construction = built.get()?.takeIf { it.assembly === value } ?: return false
         var applied = false
+        var enteredAdmission = false
+        var presentationRejected = false
         return try {
             repository.withPrimaryPlaybackAdmission(construction.gate.capturedEpoch,
-                { isPresentationCurrent(value, expected) }) {
+                { isPresentationCurrent(value, expected).also { if (!it) presentationRejected = true } }) {
+                enteredAdmission = true
                 construction.gate.commitEntry {
                     if (isPresentationCurrent(value, expected) && value.native.isCurrent(expected)) {
                         action() // No native lock remains held after isCurrent.
@@ -216,7 +219,13 @@ internal class DesktopOriginalVideoRootFactory(
                     }
                 } && applied
             }
-        } catch (_: CancellationException) { false }
+        } catch (_: CancellationException) {
+            false
+        } catch (rejected: BiliApiException) {
+            // Store retirement is rejection; an admitted callback failure must remain visible.
+            if (!enteredAdmission && rejected.apiCode == -101 &&
+                (repository.sessionEpoch != construction.gate.capturedEpoch || presentationRejected)) false else throw rejected
+        }
     }
 
     /** Capture the real PluginBridge token before admission retires. VM.close
