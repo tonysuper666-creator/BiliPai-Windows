@@ -8,6 +8,7 @@ import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
 import com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.data.*
+import com.bilipai.desktop.data.BiliApiException
 import com.bilipai.desktop.player.*
 import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.cache.*
@@ -51,6 +52,60 @@ import java.util.concurrent.TimeUnit
  * No copied owns/acquire algorithm, standalone permit, fabricated Success or navigation counter.
  * Physical Entry/Factory/Runtime/Compose/PiP/route/window, native DLL/GPU and seek ACK excluded. */
 class DesktopBangumiBasSourceAdmissionAssemblyTest {
+    @Test fun actualPresentationRetirementRejectsBeforeActionButAdmittedErrorsRemainVisible(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            f.load(); val before = f.accepted()
+            f.ui {
+                var calls = 0
+                assertTrue(f.withPresentationAdmission(before) { calls++ })
+                assertEquals(1, calls)
+                for (apiCode in listOf(-101, -412)) {
+                    val expected = BiliApiException(apiCode, "actual admitted callback failure")
+                    val propagated = assertFailsWith<BiliApiException> {
+                        f.withPresentationAdmission(before) { calls++; throw expected }
+                    }
+                    assertSame(expected, propagated)
+                }
+                assertEquals(3, calls); assertSame(before, f.owner.native.current())
+                val serials = f.player.capturePlaybackIntentSerials()
+                val epoch = f.repository.sessionEpoch
+                val revision = f.repository.playbackAuthorizationRevision.value
+                assertEquals(41L, f.sessions.activeAccountMid())
+                val admittedFailure = BiliApiException(-101, "callback retired its own actual receipt")
+                val propagatedAfterRetirement = assertFailsWith<BiliApiException> {
+                    f.withPresentationAdmission(before) {
+                        calls++
+                        assertTrue(f.sessions.setPlaybackAccountMid(42, epoch, f.gate::owns))
+                        throw admittedFailure
+                    }
+                }
+                assertSame(admittedFailure, propagatedAfterRetirement); assertEquals(4, calls)
+                assertEquals(epoch, f.repository.sessionEpoch)
+                assertTrue(f.repository.playbackAuthorizationRevision.value > revision)
+                assertFalse(f.repository.isPlaybackReceiptCurrent(checkNotNull(before.nativeSource.source.authorizationReceipt)))
+                assertFalse(f.withPresentationAdmission(before) { calls++ })
+                assertEquals(4, calls); assertNull(f.owner.native.current())
+                var physical = assertNotNull(f.player.currentSourceSnapshot())
+                assertEquals(before.sourceVersion, physical.sourceVersion)
+                assertEquals(before.nativeSource.source, physical.source)
+                assertEquals(serials, f.player.capturePlaybackIntentSerials())
+                // Actual generation changes: Store rejects before evaluating its presentation predicate.
+                assertTrue(f.sessions.activateAccount(42))
+                assertEquals(42L, f.sessions.activeAccountMid())
+                assertTrue(f.repository.sessionEpoch > epoch); assertFalse(f.gate.owns())
+                val actualSlot = f.reflect(f, "slot") as DesktopOriginalVideoRootOwnerSlot
+                assertSame(f.owner, actualSlot.assemblies.value); assertNull(actualSlot.currentAssembly())
+                assertFalse(f.withPresentationAdmission(before) { calls++ })
+                assertEquals(4, calls)
+                physical = assertNotNull(f.player.currentSourceSnapshot())
+                assertEquals(before.sourceVersion, physical.sourceVersion)
+                assertEquals(before.nativeSource.source, physical.source)
+                assertEquals(serials, f.player.capturePlaybackIntentSerials())
+            }
+            assertTrue(f.urls.isEmpty()); assertTrue(f.preferenceWrites.isEmpty())
+        }
+    }
+
     @Test fun actualLoadingRejectsFormalSceneUntilOriginalNextEpisodeSuccess(): Unit = runBlocking {
         Fixture().useSuspending { f ->
             f.load()
@@ -585,12 +640,15 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 repository.sessionEpochFlow.value == receipt.accountEpoch &&
                 repository.playbackAuthorizationRevision.value == receipt.revision
         }
-        private fun withPresentationAdmission(expected: DesktopOriginalVideoAcceptedPublication, action: () -> Unit): Boolean {
-            if (slot.currentAssembly() !== owner) return false
+        fun withPresentationAdmission(expected: DesktopOriginalVideoAcceptedPublication, action: () -> Unit): Boolean {
+            if (slot.assemblies.value !== owner) return false
             var applied = false
+            var enteredAdmission = false
+            var presentationRejected = false
             return try {
                 repository.withPrimaryPlaybackAdmission(gate.capturedEpoch,
-                    { isPresentationCurrent(expected) }) {
+                    { isPresentationCurrent(expected).also { if (!it) presentationRejected = true } }) {
+                    enteredAdmission = true
                     gate.commitEntry {
                         if (isPresentationCurrent(expected) && owner.native.isCurrent(expected)) {
                             action() // No native lock remains held after isCurrent.
@@ -598,7 +656,13 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                         }
                     } && applied
                 }
-            } catch (_: CancellationException) { false }
+            } catch (_: CancellationException) {
+                false
+            } catch (rejected: BiliApiException) {
+                // Store retirement is rejection; an admitted callback failure must remain visible.
+                if (!enteredAdmission && rejected.apiCode == -101 &&
+                    (repository.sessionEpoch != gate.capturedEpoch || presentationRejected)) false else throw rejected
+            }
         }
         fun accepted() = checkNotNull(owner.native.current())
         suspend fun load() {
