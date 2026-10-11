@@ -100,6 +100,11 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
     fun apply(action: Any = nextNvidia()) { perform.invoke(actor, native, Pointer(1L), action) }
     fun driverFailure() = nativeMessage("d3d11vpp", "Failed to enable NVIDIA RTX Super Resolution: fixture failure")
     fun filterFailure(label: String) = nativeMessage("vf", "Disabling filter $label because it has failed.\n", 20)
+    /** Fixed native23 wire event through the existing memory-only receiveEvent path, not a state setter. */
+    fun coreFailure(source: Long, configuration: Long, code: String = "6", stage: String = "process-bypass",
+        stream: Long = configuration, detail: String = "fixture-only detail") = nativeMessage("bilipai-rtx",
+        "RTX SDK failure session=$source config-generation=$configuration stream-generation=$stream code=$code stage=$stage; $detail")
+
     fun acceptedFrame() {
         native.processedOutput = true
         nativeMessage("d3d11vpp", "NVIDIA RTX Super Resolution enabled.")
@@ -173,6 +178,177 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
 }
 
 class PlayerNvidiaActorWithdrawalTest {
+    @Test fun admittedCoreFailuresReachRealSessionAndClearForConfigurationDisableAndNewSource() = runBlocking<Unit> {
+        for ((code, stage) in listOf("6" to "process-bypass", "0" to "bridge-unavailable",
+            Int.MIN_VALUE.toString() to "seek-reset-retired")) {
+            val enabled = MutableStateFlow(true)
+            val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(enabled = true,
+                hdrMode = DesktopNvidiaVideoHdrMode.OFF))
+            MpvPlayer().use { player ->
+                player.setVolume(23.0); player.setMuted(true); player.setSpeed(1.25)
+                val version = player.loadVersioned(PlaybackSource("file:///C:/core-diagnostic-owned.avi", startPaused = true))
+                val source = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                    val playback = player.state.value
+                    DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                        enabled.value = it; preferences.value = preferences.value.copy(enabled = it); CompletableDeferred(Unit)
+                    }, enhancementPreferences = preferences).use { enhancement ->
+                        awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        val configuration = player.nvidiaVideoState.value.configurationVersion
+                        assertEquals(NvidiaVideoBackend.VEYRA_CORE, player.nvidiaVideoState.value.backend)
+                        assertTrue(actor.native.filters.any { it.first == "bilipai-rtx" })
+                        actor.coreFailure(version, configuration, code, stage,
+                            detail = "fixture-only detail HRESULT=0x80004005 C:/fixture/private https://fixture.invalid/token")
+                        awaitSession { enhancement.state.value.error != null }
+                        val native = player.nvidiaVideoState.value
+                        val diagnostic = assertNotNull(native.failureDiagnostic)
+                        assertEquals(code.toInt(), diagnostic.code); assertEquals(stage, diagnostic.stage)
+                        assertEquals(diagnostic, enhancement.state.value.failureDiagnostic)
+                        val error = assertNotNull(enhancement.state.value.error)
+                        assertEquals(error, enhancement.state.value.statusText)
+                        assertFalse(error.contains("fixture-only")); assertFalse(error.contains("0x80004005"))
+                        assertFalse(error.contains("C:/fixture")); assertFalse(error.contains("https://"))
+                        if (code != "6") assertTrue(error.contains("未取得有效增强结果"), "Zero/unknown cannot be success")
+                        assertFalse(native.active); assertFalse(native.hdrConversionActive)
+                        assertFalse(native.pending); assertFalse(native.veyraSubmitted)
+                        assertNull(native.unavailableReason)
+                        assertFalse(enhancement.state.value.active); assertFalse(enhancement.state.value.pending)
+                        assertEquals("异常", desktopVideoEnhancementCompactLabel(enhancement.state.value, true, null))
+                        assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
+                        assertEquals(listOf("vf", "remove", "@bilipai-nvidia-$configuration"), actor.native.commands.last())
+                        assertEquals(playback, player.state.value); assertTrue(player.ownsSourceSnapshot(source))
+
+                        // A real configuration replacement must clear the diagnostic before another native result.
+                        preferences.value = preferences.value.copy(quality = DesktopNvidiaVideoQuality.STANDARD)
+                        awaitSession { player.nvidiaVideoState.value.configurationVersion != configuration && enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                        assertNull(player.nvidiaVideoState.value.failureDiagnostic)
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        awaitSession { enhancement.state.value.error == null && enhancement.state.value.failureDiagnostic == null }
+                        assertTrue(actor.native.filters.any { it.first == "bilipai-rtx" })
+
+                        // Disable follows the actual existing session preference/clear transaction.
+                        assertNotNull(enhancement.setCurrentVideoEnabled(false)).join()
+                        awaitSession { !enhancement.state.value.requested && actor.hasQueuedNvidia() }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        assertNull(player.nvidiaVideoState.value.failureDiagnostic)
+                        assertNull(enhancement.state.value.failureDiagnostic)
+                        assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
+                        assertEquals(playback, player.state.value)
+
+                        val replacement = player.loadVersioned(PlaybackSource("file:///C:/core-diagnostic-replacement.avi"))
+                        enhancement.bindVideoIdentity("replacement", replacement)
+                        awaitSession { enhancement.state.value.sourceVersion == replacement }
+                        assertNull(player.nvidiaVideoState.value.failureDiagnostic)
+                        assertNull(enhancement.state.value.failureDiagnostic)
+                        assertNull(enhancement.state.value.error)
+                        assertFalse(player.ownsSourceSnapshot(source))
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun coreFailureCannotCrossWireSourceConfigurationPublicationRevisionOrNativeSession() {
+        for (retirement in listOf("wire-source", "wire-configuration", "wire-stage", "wire-code", "wire-stream",
+            "source", "configuration", "revision", "account", "session", "backend")) {
+            val admitted = java.util.concurrent.atomic.AtomicBoolean(true)
+            MpvPlayer().use { player ->
+                val version = player.loadVersioned(PlaybackSource("file:///C:/core-failure-retirement.avi",
+                    nativePublication = DesktopNativePlaybackPublication { command ->
+                        if (admitted.get()) { command(); true } else false
+                    }))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                    val options = NvidiaVideoOptions(2.0, backend = if (retirement == "backend")
+                        NvidiaVideoBackend.DRIVER else NvidiaVideoBackend.VEYRA_CORE)
+                    val configuration = assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(version, options))
+                    actor.apply()
+                    when (retirement) {
+                        "source" -> player.loadVersioned(PlaybackSource("file:///C:/core-failure-successor.avi"))
+                        "configuration" -> {
+                            assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(version, options.copy(scale = 3.0)))
+                            actor.apply()
+                        }
+                        "revision" -> assertTrue(player.recoverSource(version, positionSeconds = 3.0, paused = false))
+                        "account" -> admitted.set(false)
+                        "session" -> actor.retireSession()
+                    }
+                    val successor = if (retirement == "session") NvidiaWithdrawalActor(player) else null
+                    try {
+                        // Session replacement can keep both public version numbers; receiver identity still matters.
+                        if (successor != null) {
+                            assertEquals(version, player.currentSourceVersion)
+                            assertEquals(configuration, player.nvidiaVideoState.value.configurationVersion)
+                        }
+                        val before = player.nvidiaVideoState.value
+                        val playback = player.state.value
+                        val commands = actor.native.commands.toList(); val filters = actor.native.filters.toList()
+                        val wireConfiguration = configuration + if (retirement == "wire-configuration") 1 else 0
+                        actor.coreFailure(version + if (retirement == "wire-source") 1 else 0, wireConfiguration,
+                            code = if (retirement == "wire-code") "2147483648" else "6",
+                            stage = if (retirement == "wire-stage") "unrecognized" else "process-bypass",
+                            stream = if (retirement == "wire-stream") configuration - 1 else wireConfiguration)
+                        assertEquals(before, player.nvidiaVideoState.value, retirement)
+                        assertEquals(playback, player.state.value, retirement)
+                        assertEquals(commands, actor.native.commands, retirement)
+                        assertEquals(filters, actor.native.filters, retirement)
+                        assertNull(player.nvidiaVideoState.value.failureDiagnostic, retirement)
+                        successor?.let { assertTrue(it.native.commands.isEmpty()) }
+                    } finally { successor?.close() }
+                }
+            }
+        }
+    }
+
+    @Test fun coreFailureWithRefusedWithdrawalKeepsPriorityAndCannotClaimRecoveredOutput() = runBlocking<Unit> {
+        val enabled = MutableStateFlow(true)
+        MpvPlayer().use { player ->
+            player.setVolume(17.0); player.setMuted(true); player.setSpeed(1.25)
+            val version = player.loadVersioned(PlaybackSource("file:///C:/core-diagnostic-refused-remove.avi", startPaused = true))
+            val source = assertNotNull(player.currentSourceSnapshot())
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                    enabled.value = it; CompletableDeferred(Unit)
+                }).use { enhancement ->
+                    awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    val configuration = player.nvidiaVideoState.value.configurationVersion
+                    val playback = player.state.value
+                    actor.native.rejectRemoval = true
+                    actor.coreFailure(version, configuration)
+                    awaitSession { enhancement.state.value.error != null }
+                    val native = player.nvidiaVideoState.value
+                    val diagnostic = assertNotNull(native.failureDiagnostic)
+                    assertEquals(6, diagnostic.code); assertEquals("process-bypass", diagnostic.stage)
+                    val error = assertNotNull(native.error)
+                    assertTrue(error.contains("无法撤回")); assertFalse(error.contains("继续播放原画"))
+                    assertEquals(error, enhancement.state.value.error)
+                    assertEquals(error, enhancement.state.value.statusText)
+                    assertEquals(diagnostic, enhancement.state.value.failureDiagnostic)
+                    assertNull(native.unavailableReason)
+                    assertEquals(2, actor.native.filters.size)
+                    assertTrue(actor.native.filters.contains("scale" to "foreign-user-filter"))
+                    assertTrue(actor.native.filters.any { it.second == "bilipai-nvidia-$configuration" })
+                    assertFalse(native.active); assertFalse(native.pending); assertFalse(native.veyraSubmitted)
+                    val commands = actor.native.commands.toList()
+                    actor.coreFailure(version, configuration, code = "9", stage = "seek-reset-retired")
+                    assertEquals(native, player.nvidiaVideoState.value, "A failed actor cannot accept later diagnostics")
+                    actor.acceptedFrame()
+                    awaitSession { enhancement.state.value.error == error }
+                    assertEquals(diagnostic, player.nvidiaVideoState.value.failureDiagnostic)
+                    assertFalse(player.nvidiaVideoState.value.active); assertFalse(enhancement.state.value.active)
+                    assertEquals(commands, actor.native.commands, "Late success cannot trigger native retry")
+                    assertEquals("异常", desktopVideoEnhancementCompactLabel(enhancement.state.value, true, null))
+                    assertEquals(playback, player.state.value); assertTrue(player.ownsSourceSnapshot(source))
+                }
+            }
+        }
+    }
+
+
     @Test fun persistedIntensityChangesOnlyOwnedFilterAndLateSourceActionIsRejected() = runBlocking<Unit> {
         val configuration = DesktopVideoEnhancementConfiguration(DesktopPluginStore(enhancementSettingsRoot),
             dispatcher = Dispatchers.Default)
