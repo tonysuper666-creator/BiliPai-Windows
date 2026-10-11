@@ -111,3 +111,56 @@ internal class DesktopWindowsVideoMetadataLease(private val stillOwned: () -> Bo
         }
     }
 }
+
+/** Read the complete original statistics from the same accepted full VM state.
+ * Clipboard IO executes after bounded source/account/native admission returns.
+ * A dismissed panel never borrows a successor load or an equal later route.
+ */
+@Composable internal fun DesktopWindowsVideoStatisticsSection(
+    assembly: DesktopOriginalVideoOwnerAssembly,
+    success: com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success,
+    sourceOwner: DesktopOriginalVideoAcceptedPublication,
+    settings: DesktopOriginalPlayerSettingsContext,
+    stillOwned: () -> Boolean,
+    sourceAdmission: ((() -> Unit) -> Boolean),
+    onNotice: (String) -> Unit,
+) {
+    val info = success.info
+    key(assembly, sourceOwner, info, success.onlineCount) {
+        val latestOwned by rememberUpdatedState(stillOwned)
+        val latestAdmission by rememberUpdatedState(sourceAdmission)
+        val latestNotice by rememberUpdatedState(onNotice)
+        val clipboard = com.bilipai.desktop.appearance.LocalDesktopTextClipboard.current
+        val loadToken = remember { assembly.playback.captureDesktopLoadState().currentLoadRequestToken }
+        val lease = remember {
+            DesktopWindowsVideoInteractionLease(
+                { latestOwned() && assembly.owns() && assembly.native.isCurrent(sourceOwner) &&
+                    (assembly.playback.captureDesktopPlaybackState() as?
+                        com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success)?.let { current ->
+                        current.info.stat == info.stat && current.info.pubdate == info.pubdate &&
+                            current.info.title == info.title && current.info.tname == info.tname &&
+                            current.onlineCount == success.onlineCount &&
+                            desktopWindowsVideoMetadataMatchesSource(current.info, sourceOwner.request,
+                                assembly.playback.captureDesktopLoadState(), loadToken)
+                    } == true },
+                { action -> latestAdmission(action) },
+            )
+        }
+        DisposableEffect(lease) { onDispose { lease.close() } }
+        val showOnlineCount by com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+            .getShowOnlineCount(settings).collectAsState(false)
+        if (lease.isOwned()) {
+            com.android.purebilibili.feature.video.ui.section.DesktopOriginalVideoStatisticsRow(
+                info = info,
+                onlineCount = success.onlineCount,
+                showOnlineCount = showOnlineCount,
+                onCopyBvid = {
+                    lease.effect {
+                        val copied = clipboard.copyText(info.bvid)
+                        if (lease.isOwned()) latestNotice(if (copied) "BV号 已复制" else "无法写入系统剪贴板，请稍后重试")
+                    }
+                },
+            )
+        }
+    }
+}

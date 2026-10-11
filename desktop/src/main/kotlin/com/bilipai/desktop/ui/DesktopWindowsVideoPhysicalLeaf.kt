@@ -1127,6 +1127,18 @@ internal class DesktopWindowsVideoActions(
                     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         if (success != null) {
                             Text(success.info.title, style = MaterialTheme.typography.titleMedium)
+                            collectionQueueSource?.let { source ->
+                                DesktopWindowsVideoStatisticsSection(assembly, success, source,
+                                    platforms.holder.settingsContext, ::interactionCurrent,
+                                    sourceAdmission = { action ->
+                                        var applied = false
+                                        shell.factoryFor(assembly).withPresentationAdmission(assembly, source) {
+                                            if (interactionCurrent()) assembly.native.admitPlaybackDispatch(source) {
+                                                if (interactionCurrent()) { action(); applied = true }
+                                            }
+                                        } && applied
+                                    }, onNotice = { latestActions.notice(it) })
+                            }
                             TextButton(onClick = { if (current()) actions.user(success.info.owner.mid) }) { Text(success.info.owner.name) }
                             collectionQueueSource?.let { source ->
                                 DesktopWindowsVideoMetadataSection(assembly, success.info, source,

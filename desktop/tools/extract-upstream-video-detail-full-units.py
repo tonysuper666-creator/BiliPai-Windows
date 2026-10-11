@@ -97,6 +97,27 @@ def remove_function(t,name):
     if start>=0 and not t[start+len('@Composable'):i].strip():return t[:start]+t[end:]
     return t[:i]+t[end:]
 
+def video_statistics_function(original):
+    # Whole original VideoTitleWithDesc remains emitted separately. This actual
+    # Windows mount selects only its complete stats/time/BV portion, which is also
+    # unchanged in fixed released b2091b1de636e499df80af7e700796b4f52b7f92.
+    body=func(original,'VideoTitleWithDesc')
+    time_a='    val publishTimeRowText = remember(info.pubdate, info.tname, info.title) {'
+    time_b='    val videoBadges = remember(info.isUpowerExclusive, info.isUpowerPreview, info.isCooperation) {'
+    stats_a='        // Stats row\n'
+    stats_b='        if (videoBadges.isNotEmpty()) {'
+    for anchor in [time_a,time_b,stats_a,stats_b]:
+        assert body.count(anchor)==1,('Original stats content anchor',anchor,body.count(anchor))
+    time=body[body.index(time_a):body.index(time_b)]
+    stats=body[body.index(stats_a):body.index(stats_b)]
+    for target in ['viewsModifier','danmakuModifier']:
+        start=stats.index('                if (metadataSharedEnabled) {')
+        end=stats.index('                Row(verticalAlignment = Alignment.CenterVertically, modifier = '+target+') {',start)
+        stats=adapt(stats,stats[start:end],'','Windows sibling stats outside Home shared-bounds: '+target)
+    stats=adapt(stats,'        trailingStatsContent?.invoke()\n','','Existing mounted AI/note actions remain sole owners')
+    stats=adapt(stats,'.copyOnClick(info.bvid, "BV号")','.clickable(onClick = onCopyBvid)','Source-admitted Windows clipboard callback replaces global Android copy modifier')
+    return '@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)\n@Composable\ninternal fun DesktopOriginalVideoStatisticsRow(\n    info: ViewInfo,\n    onlineCount: String,\n    showOnlineCount: Boolean,\n    onCopyBvid: () -> Unit,\n) {\n    // The existing Windows introduction is already expanded. Keep the complete\n    // original statistics/time/BV content without adding another collapse state.\n    val expanded = true\n    val animateLayout = false\n'+time+'    Column(modifier = Modifier.fillMaxWidth()) {\n'+stats+'    }\n}\n'
+
 def main():
     # Complete shared gesture renderers and policies, not a reduced offline alias.
     paths=['feature/video/ui/gesture/GestureLevelOverlay.kt','feature/video/ui/gesture/GestureLevelOverlayPolicy.kt','feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt','feature/video/ui/components/AnimatedGesturePercentText.kt','feature/video/ui/components/CircularGesturePercentText.kt','feature/video/ui/components/CircularGesturePercentMotionPolicy.kt']
@@ -137,6 +158,7 @@ def main():
         if name=='VideoTitleWithDesc':
             body=body.replace('SettingsManager\n        .getVideoArgueMsgShown(context)','com.android.purebilibili.core.store.DesktopOriginalVideoMetadataSettings\n        .getVideoArgueMsgShown(context)')
         bodies.append(body)
+    bodies.append(video_statistics_function(original))
     emit('com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt',header+pure+'\n\n'.join(bodies)+'\n',p,'full-ordinary-info-renderers-and-rich-description')
     p=BASE+'feature/video/ui/section/VideoInfoDisplayPolicy.kt';t=read(p)
     for name in ['resolveVideoHonorChipText','resolveVideoHonorJumpUrl','shouldShowCreatorTeamSection','resolveVideoDetailBadges','resolveCompactPublishTimeRowText']:
