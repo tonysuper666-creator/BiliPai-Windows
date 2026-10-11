@@ -340,7 +340,7 @@ class DesktopLiveVoteOwnedSessionTest {
             assertFalse(checkNotNull(final.current).isActive)
             until { chat.state.value.messages.count { it.uname == "投票" } == 14 }
             assertEquals(14, chat.state.value.messages.size)
-            assertTrue(chat.state.value.messages.all { it.isSystem && it.uname == "投票" })
+            assertTrue(chat.state.value.messages.all { it.uid == 0L && it.uname == "投票" && it.color == 0xFFB54A && it.mode == 1 })
             assertTrue(chat.state.value.messages.first().text.contains("active wire vote"))
             assertTrue(chat.state.value.messages.last().text.contains("same-id refreshed result"))
             until { f.actions.count { it is LiveRealtimeAction.UpdateVote } == 14 }
