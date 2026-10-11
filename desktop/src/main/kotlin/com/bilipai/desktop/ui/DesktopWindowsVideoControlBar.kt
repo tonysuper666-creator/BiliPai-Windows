@@ -19,8 +19,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.semantics.*
@@ -30,6 +35,8 @@ import androidx.compose.ui.unit.sp
 import com.android.purebilibili.feature.video.ui.overlay.normalizeViewPointSegments
 import com.android.purebilibili.feature.video.ui.overlay.findViewPointSegmentAt
 import com.android.purebilibili.core.util.FormatUtils
+import com.android.purebilibili.feature.video.progress.PbpRidgeDensity
+import com.android.purebilibili.feature.video.progress.PbpRidgeSample
 import com.bilipai.desktop.player.PlayerState
 import top.yukonga.miuix.kmp.basic.PlainTooltip as MiuixPlainTooltip
 import top.yukonga.miuix.kmp.basic.TooltipAnchorPosition
@@ -66,6 +73,7 @@ internal fun DesktopWindowsVideoControlBar(
     onFullscreen: () -> Unit, onDetails: () -> Unit, onOpenIntroduction: () -> Unit,
     sponsorSkip: @Composable () -> Unit,
     enhancement: @Composable () -> Unit,
+    pbpRidgeSamples: List<PbpRidgeSample> = emptyList(),
 ) {
     val durationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
     val menuSpeeds = remember(speedOptions, state.speed) {
@@ -83,7 +91,8 @@ internal fun DesktopWindowsVideoControlBar(
         .focusGroup().hoverable(interactions)) {
         Column(Modifier.padding(horizontal = 8.dp)) {
             DesktopWindowsThinSeek(state.positionSeconds, state.durationSeconds, sourceVersion,
-                enabled && state.durationSeconds > 0.0, chapters, chaptersSource, onChapterSeek, { scrubbing = it }, onSeek)
+                enabled && state.durationSeconds > 0.0, chapters, chaptersSource, onChapterSeek, { scrubbing = it }, onSeek,
+                pbpRidgeSamples)
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 val expanded = maxWidth >= 940.dp
                 val showEnhancementStatus = maxWidth >= 520.dp
@@ -276,7 +285,7 @@ private fun DesktopWindowsPlayerIconButton(
 private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVersion: Long,
     enabled: Boolean, chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
     onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
-    onScrubbingChanged: (Boolean) -> Unit, onSeek: (Double) -> Unit) {
+    onScrubbingChanged: (Boolean) -> Unit, onSeek: (Double) -> Unit, pbpRidgeSamples: List<PbpRidgeSample>) {
     val total = duration.takeIf { it.isFinite() && it > 0.0 } ?: 1.0
     val durationMs = if (duration.isFinite() && duration > 0.0) (duration * 1000.0).toLong() else 0L
     val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
@@ -289,7 +298,52 @@ private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVer
     val inactive = MaterialTheme.colorScheme.onSurface.copy(alpha = .16f)
     val active = MaterialTheme.colorScheme.primary
     Box(Modifier.fillMaxWidth().height(if (segments.isEmpty()) 24.dp else 44.dp)) {
-        Canvas(Modifier.fillMaxSize().semantics {
+        Canvas(Modifier.fillMaxSize().drawWithCache {
+            val trackHeightPx = 3.dp.toPx()
+            val centerY = if (segments.isEmpty()) size.height / 2f else 14.dp.toPx()
+            // The existing 24dp rail band remains above the chapter labels in the 44dp layout.
+            val ridgeHeight = (24.dp.toPx() * 0.42f).coerceAtMost(18.dp.toPx())
+            val ridgePoints = pbpRidgeSamples.map { sample ->
+                val intensity = when (sample.density) {
+                    PbpRidgeDensity.QUIET -> sample.intensity * 0.78f
+                    PbpRidgeDensity.NORMAL -> sample.intensity
+                    PbpRidgeDensity.HOT -> sample.intensity * 1.14f
+                }.coerceIn(0f, 1f)
+                Offset(size.width * sample.fraction.coerceIn(0f, 1f), centerY - ridgeHeight * intensity)
+            }
+            val ridgePath = Path().apply {
+                moveTo(0f, centerY)
+                ridgePoints.forEach { lineTo(it.x, it.y) }
+                lineTo(size.width, centerY)
+                close()
+            }
+            val ridgeLinePath = Path().apply {
+                ridgePoints.forEachIndexed { index, point ->
+                    if (index == 0) moveTo(point.x, point.y) else lineTo(point.x, point.y)
+                }
+            }
+            val hotSegments = (0 until (ridgePoints.size - 1).coerceAtLeast(0)).filter { index ->
+                pbpRidgeSamples[index].density == PbpRidgeDensity.HOT ||
+                    pbpRidgeSamples[index + 1].density == PbpRidgeDensity.HOT
+            }
+            val ridgeBrush = Brush.verticalGradient(
+                listOf(active.copy(alpha = 0.18f), active.copy(alpha = 0.03f)),
+                startY = centerY - ridgeHeight, endY = centerY
+            )
+            val ridgeGlow = Stroke(trackHeightPx * 2.8f, cap = StrokeCap.Round)
+            val ridgeStroke = Stroke(trackHeightPx * 0.9f, cap = StrokeCap.Round)
+            onDrawBehind {
+                if (ridgePoints.size >= 2 && size.width > 0f) {
+                    drawPath(ridgePath, ridgeBrush)
+                    drawPath(ridgeLinePath, active.copy(alpha = 0.14f), style = ridgeGlow)
+                    drawPath(ridgeLinePath, active.copy(alpha = 0.46f), style = ridgeStroke)
+                    hotSegments.forEach { index ->
+                        drawLine(active.copy(alpha = 0.68f), ridgePoints[index],
+                            ridgePoints[index + 1], trackHeightPx * 1.25f, StrokeCap.Round)
+                    }
+                }
+            }
+        }.semantics {
             contentDescription = "播放进度"
             progressBarRangeInfo = ProgressBarRangeInfo(value.toFloat(), 0f..total.toFloat())
             if (!enabled) disabled()

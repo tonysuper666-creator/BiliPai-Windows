@@ -49,6 +49,8 @@ import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
 import com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings
 import com.android.purebilibili.core.store.PlayerInteractionSettings
 import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio
+import com.android.purebilibili.feature.video.ui.components.SleepTimerOptions
+import com.android.purebilibili.feature.video.progress.buildPbpRidgeSamples
 import com.android.purebilibili.feature.video.ui.components.resolveSafeVideoAspectRatio
 import com.android.purebilibili.feature.video.ui.components.resolveVideoViewportLayout
 import com.android.purebilibili.feature.video.ui.components.toVideoAspectRatio
@@ -266,6 +268,11 @@ internal class DesktopWindowsVideoActions(
     val state by native.state.collectAsState()
     val playback by shell.playback.state.collectAsState()
     val manualSponsorSegment by assembly.playback.currentSponsorSegment.collectAsState()
+    val sleepTimerMinutes by assembly.playback.sleepTimerMinutes.collectAsState()
+    val pbpProgressData by assembly.playback.pbpProgressData.collectAsState()
+    val progressPeakEnabled by remember(platforms.holder.settingsContext) {
+        DesktopOriginalVideoControlSettings.getProgressPeakDanmakuEnabled(platforms.holder.settingsContext)
+    }.collectAsState(false)
     val original by assembly.playback.uiState.collectAsState()
     val latestOriginal by rememberUpdatedState(original)
     val subject by assembly.playback.subjectSnapshot.collectAsState()
@@ -619,7 +626,7 @@ internal class DesktopWindowsVideoActions(
     var submittedPictureViewport by remember(assembly, native, active, pipActive) {
         mutableStateOf<Pair<DesktopOriginalVideoAcceptedPublication, DesktopNativeVideoViewportTransform>?>(null)
     }
-    fun pictureCurrent(expected: DesktopOriginalVideoAcceptedPublication?): Boolean {
+    fun playbackToolsCurrent(expected: DesktopOriginalVideoAcceptedPublication?, requirePicture: Boolean = false): Boolean {
         if (expected == null) return false
         val value = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return false
         val origin = expected.bootstrapOrigin
@@ -652,8 +659,21 @@ internal class DesktopWindowsVideoActions(
             presentationVerified && current() && !latestPip &&
             rootEnvironment.owns() && rootEnvironment.currentKey() === route &&
             pictureFactory.isPresentationCurrent(assembly, expected) && assembly.native.isCurrent(expected) &&
-            actual.ready && !actual.loading && !actual.ended && !actual.audioOnly && actual.error == null &&
-            actual.videoCodec != null && actual.videoWidth > 0 && actual.videoHeight > 0
+            actual.ready && !actual.loading && !actual.ended && actual.error == null &&
+            (!requirePicture || (!actual.audioOnly && actual.videoCodec != null &&
+                actual.videoWidth > 0 && actual.videoHeight > 0))
+    }
+    fun pictureCurrent(expected: DesktopOriginalVideoAcceptedPublication?): Boolean =
+        playbackToolsCurrent(expected, requirePicture = true)
+    fun admitPlaybackTool(expected: DesktopOriginalVideoAcceptedPublication, action: () -> Unit): Boolean {
+        var applied = false
+        return pictureFactory.withPresentationAdmission(assembly, expected) {
+            if (playbackToolsCurrent(expected)) { action(); applied = true }
+        } && applied
+    }
+    val progressDurationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
+    val progressSamples = remember(pbpProgressData, progressDurationMs) {
+        pbpProgressData?.let { buildPbpRidgeSamples(it, progressDurationMs) }.orEmpty()
     }
     fun changePictureAspectRatio(ratio: VideoAspectRatio) {
         val expected = viewportSource ?: return
@@ -943,6 +963,7 @@ internal class DesktopWindowsVideoActions(
                     hasPrevious = shell.playback.hasPrevious, hasNext = shell.playback.hasNext,
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
                     speedOptions = speedOptions,
+                    pbpRidgeSamples = if (progressPeakEnabled && playbackToolsCurrent(collectionQueueSource)) progressSamples else emptyList(),
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),
                     selectedQuality = success?.currentQuality,
                     canOpenCollection = canOpenCollection, canOpenPlaybackQueue = canOpenPlaybackQueue,
@@ -1102,6 +1123,25 @@ internal class DesktopWindowsVideoActions(
                         } else Text("正在读取视频信息", style = MaterialTheme.typography.bodyMedium)
                         HorizontalDivider()
                         Text("播放设置", style = MaterialTheme.typography.titleSmall)
+                        collectionQueueSource?.let { source ->
+                            if (success != null) DesktopWindowsVideoTransportSection(
+                                success = success, sourceOwner = source, enabled = playbackToolsCurrent(source),
+                                stillOwned = { playbackToolsCurrent(source) },
+                                admit = { action -> admitPlaybackTool(source, action) },
+                                onSwitchCdnTo = { index ->
+                                    if (playbackToolsCurrent(source)) assembly.playback.switchCdnTo(index)
+                                },
+                                onProbeCdnCandidates = {
+                                    if (playbackToolsCurrent(source)) assembly.playback.probeCurrentCdnCandidates()
+                                }, modifier = Modifier.fillMaxWidth(),
+                            )
+                            if (playbackToolsCurrent(source)) {
+                                Text("定时暂停", style = MaterialTheme.typography.labelLarge)
+                                SleepTimerOptions(sleepTimerMinutes) { minutes ->
+                                    if (playbackToolsCurrent(source)) assembly.playback.setSleepTimer(minutes)
+                                }
+                            }
+                        }
                         FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             FilterChip(state.audioOnly, onClick = { if(command { native.setAudioOnly(!state.audioOnly) }) preferencesChanged(preferences.copy(audioOnly=!state.audioOnly)) }, label = { Text("仅音频") })
                             FilterChip(preferences.danmaku.enabled, onClick = { if (current()) actions.toggleDanmaku() }, label = { Text("弹幕") })

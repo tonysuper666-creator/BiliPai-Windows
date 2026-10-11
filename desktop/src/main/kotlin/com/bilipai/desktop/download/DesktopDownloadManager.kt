@@ -335,12 +335,38 @@ class DesktopDownloadManager internal constructor(
                 val refreshed = resolution.source
                 currentCoroutineContext().ensureActive()
                 publication.admit(refreshed, owned(starting)) { Unit }
+                val refreshedVideoUrl = requireMediaUrl(refreshed.videoUrl)
+                val refreshedAudioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()
+                val restoredSegments = refreshed.progressiveSegments.mapIndexed { index, part ->
+                    val url = requireMediaUrl(part.url)
+                    val old = task.progressiveSegments.getOrNull(index)
+                    // CDN/signature refreshes keep the same indexed asset and its resume counters.
+                    if (old != null && mediaIdentity(old.url) == mediaIdentity(url))
+                        old.copy(url = url, durationSeconds = part.durationSeconds)
+                    else DownloadProgressiveSegment(url, part.durationSeconds)
+                }
+                val oldVideoIdentity = task.item.videoUrl.takeIf { !task.item.isAudioOnly && task.progressiveSegments.isEmpty() }?.let(::mediaIdentity)
+                val newVideoIdentity = refreshedVideoUrl.takeIf { !task.item.isAudioOnly && restoredSegments.isEmpty() }?.let(::mediaIdentity)
+                val oldAudioIdentity = task.item.audioUrl.ifBlank { task.item.videoUrl }
+                    .takeIf { task.progressiveSegments.isEmpty() && (task.item.audioUrl.isNotBlank() || task.item.isAudioOnly) }?.let(::mediaIdentity)
+                val newAudioIdentity = refreshedAudioUrl.ifBlank { refreshedVideoUrl }
+                    .takeIf { restoredSegments.isEmpty() && (refreshedAudioUrl.isNotBlank() || task.item.isAudioOnly) }?.let(::mediaIdentity)
+                val videoIdentityChanged = oldVideoIdentity != newVideoIdentity
+                val audioIdentityChanged = oldAudioIdentity != newAudioIdentity
+                val changedSegmentIndices = (0 until maxOf(task.progressiveSegments.size, restoredSegments.size)).filter { index ->
+                    task.progressiveSegments.getOrNull(index)?.url?.let(::mediaIdentity) !=
+                        restoredSegments.getOrNull(index)?.url?.let(::mediaIdentity)
+                }
+                val segmentKind = if (task.item.isAudioOnly) DownloadAssetKind.AUDIO else DownloadAssetKind.VIDEO
+                val changedAssetKinds = buildSet {
+                    if (videoIdentityChanged) add(DownloadAssetKind.VIDEO)
+                    if (audioIdentityChanged) add(DownloadAssetKind.AUDIO)
+                    if (changedSegmentIndices.isNotEmpty()) add(segmentKind)
+                }
                 val restoredDirectory = ensureOwnedDirectory(task)
                 val restoredVideo = restoredDirectory.resolve("video.m4s")
-                val videoIdentityChanged = !task.item.isAudioOnly && task.progressiveSegments.isEmpty() &&
-                    refreshed.progressiveSegments.isEmpty() && mediaIdentity(task.item.videoUrl) != mediaIdentity(refreshed.videoUrl)
                 val oldVideoAsset = task.item.assets.firstOrNull { it.kind == DownloadAssetKind.VIDEO }
-                val completedVideoRetained = !videoIdentityChanged && !task.item.isAudioOnly && task.progressiveSegments.isEmpty() &&
+                val completedVideoRetained = oldVideoIdentity != null && !videoIdentityChanged &&
                     oldVideoAsset?.status == DownloadAssetStatus.COMPLETED && oldVideoAsset.totalBytes > 0L &&
                     oldVideoAsset.downloadedBytes == oldVideoAsset.totalBytes && Files.isRegularFile(restoredVideo) &&
                     Files.size(restoredVideo) == oldVideoAsset.totalBytes
@@ -348,23 +374,37 @@ class DesktopDownloadManager internal constructor(
                 publication.admit(refreshed, owned(starting)) {
                     synchronized(lock) {
                         if (!queueOwnedLocked(starting)) throw CancellationException("下载任务已退役")
-                        // A changed restored video is cleared only with the final source and worker admission.
+                        // Invalidate changed inputs before replacing their identities, under the final source/worker admission.
                         if (videoIdentityChanged) clearAssetFiles(restoredVideo)
+                        if (audioIdentityChanged) clearAssetFiles(restoredDirectory.resolve("audio.m4s"))
+                        changedSegmentIndices.forEach { index ->
+                            clearAssetFiles(restoredDirectory.resolve("segment-${(index + 1).toString().padStart(4, '0')}.media"))
+                        }
                         updateLocked(id) { wrapper ->
-                            val videoReset = if (videoIdentityChanged) {
-                                val next = wrapper.item.withAssetState(DownloadAssetState(DownloadAssetKind.VIDEO, DownloadAssetStatus.PENDING))
+                            val assetsReset = if (changedAssetKinds.isNotEmpty()) {
+                                val next = changedAssetKinds.fold(wrapper.item) { item, kind ->
+                                    val segmented = kind == segmentKind && restoredSegments.isNotEmpty()
+                                    val used = segmented || (if (kind == DownloadAssetKind.VIDEO) newVideoIdentity else newAudioIdentity) != null
+                                    item.withAssetState(DownloadAssetState(kind,
+                                        if (used) DownloadAssetStatus.PENDING else DownloadAssetStatus.SKIPPED,
+                                        totalBytes = if (segmented) restoredSegments.sumOf { it.totalBytes } else 0L,
+                                        downloadedBytes = if (segmented) restoredSegments.sumOf { it.downloadedBytes } else 0L,
+                                        segmentCount = if (segmented) restoredSegments.size else 0))
+                                }
                                 val downloaded = next.assets.sumOf { it.downloadedBytes }
                                 val total = next.assets.sumOf { it.totalBytes }
-                                wrapper.copy(item = next.copy(videoProgress = 0f, downloadedSize = downloaded,
+                                wrapper.copy(item = next.copy(
+                                    videoProgress = if (DownloadAssetKind.VIDEO in changedAssetKinds) 0f else next.videoProgress,
+                                    audioProgress = if (DownloadAssetKind.AUDIO in changedAssetKinds) 0f else next.audioProgress,
+                                    downloadedSize = downloaded,
                                     progress = if (total > 0L) (downloaded.toDouble() / total * 0.9).coerceIn(0.0, 0.9).toFloat() else 0f))
                             } else wrapper
                             // A complete retained video is still the original file, even if a new parse advertises another track.
-                            val qualified = if (completedVideoRetained) videoReset else resolution.applyActualQuality(videoReset)
-                            qualified.copy(item = qualified.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),
-                            audioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()),
+                            val qualified = if (completedVideoRetained) assetsReset else resolution.applyActualQuality(assetsReset)
+                            qualified.copy(item = qualified.item.copy(videoUrl = refreshedVideoUrl, audioUrl = refreshedAudioUrl),
                             referer = refreshed.referer, userAgent = refreshed.userAgent, authorizationReceipt = refreshed.authorizationReceipt,
                             cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
-                            progressiveSegments = refreshed.progressiveSegments.map { part -> DownloadProgressiveSegment(requireMediaUrl(part.url), part.durationSeconds) }) }
+                            progressiveSegments = restoredSegments) }
                         task = mutableTasks.value.first { it.id == id }
                         expectedTask = task
                     }
@@ -530,27 +570,62 @@ class DesktopDownloadManager internal constructor(
                 throw CancellationException("下载来源授权已退役")
             publication.admit(activeSource, owned) { Unit }
             publication.admit(refreshed, owned) { Unit }
-            if (progressiveIndex != null && refreshed.progressiveSegments.map { mediaIdentity(it.url) } != task.progressiveSegments.map { mediaIdentity(it.url) })
+            if (refreshed.progressiveSegments.map { mediaIdentity(it.url) } != task.progressiveSegments.map { mediaIdentity(it.url) })
                 throw IOException("原媒体分段已改变，请移除此任务后重新加入下载", error)
-            val nextUrl = if (progressiveIndex != null) refreshed.progressiveSegments[progressiveIndex].url
-                else if (kind == DownloadAssetKind.AUDIO) refreshed.audioUrl ?: refreshed.videoUrl else refreshed.videoUrl
+            val refreshedVideoUrl = requireMediaUrl(refreshed.videoUrl)
+            val refreshedAudioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()
+            val refreshedSegments = task.progressiveSegments.zip(refreshed.progressiveSegments).map { (old, part) ->
+                old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds)
+            }
+            if (progressiveIndex == null && kind == DownloadAssetKind.AUDIO && !task.item.isAudioOnly && refreshedAudioUrl.isBlank())
+                throw IOException("原音轨已不可用，请移除此任务后重新加入下载", error)
+            val nextUrl = if (progressiveIndex != null) refreshedSegments[progressiveIndex].url
+                else if (kind == DownloadAssetKind.AUDIO) refreshedAudioUrl.ifBlank { refreshedVideoUrl } else refreshedVideoUrl
             if (nextUrl == url) throw error
-            if (mediaIdentity(nextUrl) != mediaIdentity(url)) clearAssetFiles(output)
+            val currentIdentityChanged = mediaIdentity(nextUrl) != mediaIdentity(url)
+            // Audio runs after video: never pair a different audio asset with a different parsed video.
+            // A signature/CDN refresh of the same audio is still valid for the video already retained.
+            val retainVideo = progressiveIndex == null && kind == DownloadAssetKind.AUDIO && !task.item.isAudioOnly
+            if (retainVideo && currentIdentityChanged && mediaIdentity(refreshedVideoUrl) != mediaIdentity(task.item.videoUrl))
+                throw IOException("新音轨与已缓存视频不匹配，请移除此任务后重新加入下载", error)
+            val otherAudioChanged = progressiveIndex == null && kind == DownloadAssetKind.VIDEO &&
+                mediaIdentity(task.item.audioUrl) != mediaIdentity(refreshedAudioUrl)
+            context.ensureActive()
             publication.admit(refreshed, owned) {
                 synchronized(lock) {
                     if (!owned()) throw CancellationException("下载任务已退役")
+                    // Keep file invalidation and the corresponding URL/state replacement in one owned admission.
+                    if (currentIdentityChanged) clearAssetFiles(output)
+                    if (otherAudioChanged) clearAssetFiles(output.resolveSibling("audio.m4s"))
                     updateLocked(id) { wrapper ->
-                    // Refreshing only audio cannot change the quality of the video already saved by this worker.
-                    val qualified = if (kind == DownloadAssetKind.VIDEO) resolution.applyActualQuality(wrapper) else wrapper
-                    qualified.copy(item = qualified.item.copy(videoUrl = refreshed.videoUrl,
-                    audioUrl = refreshed.audioUrl.orEmpty()), authorizationReceipt = refreshed.authorizationReceipt,
-                    referer = refreshed.referer, userAgent = refreshed.userAgent,
-                    cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
-                    progressiveSegments = wrapper.progressiveSegments.zip(refreshed.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) }) } }
+                        var item = wrapper.item
+                        if (currentIdentityChanged) item = item.withAssetState(DownloadAssetState(kind, DownloadAssetStatus.PENDING))
+                        if (otherAudioChanged) item = item.withAssetState(DownloadAssetState(DownloadAssetKind.AUDIO,
+                            if (refreshedAudioUrl.isNotBlank()) DownloadAssetStatus.PENDING else DownloadAssetStatus.SKIPPED))
+                        if (currentIdentityChanged || otherAudioChanged) {
+                            val total = item.assets.sumOf { it.totalBytes }
+                            val downloaded = item.assets.sumOf { it.downloadedBytes }
+                            item = item.copy(
+                                videoProgress = if (currentIdentityChanged && kind == DownloadAssetKind.VIDEO) 0f else item.videoProgress,
+                                audioProgress = if (otherAudioChanged || (currentIdentityChanged && kind == DownloadAssetKind.AUDIO)) 0f else item.audioProgress,
+                                downloadedSize = downloaded,
+                                progress = if (total > 0L) (downloaded.toDouble() / total * 0.9).coerceIn(0.0, 0.9).toFloat() else 0f)
+                        }
+                        // Refreshing only audio cannot change the identity or quality of the video already saved.
+                        val reset = wrapper.copy(item = item)
+                        val qualified = if (kind == DownloadAssetKind.VIDEO) resolution.applyActualQuality(reset) else reset
+                        qualified.copy(item = qualified.item.copy(
+                            videoUrl = if (retainVideo) wrapper.item.videoUrl else refreshedVideoUrl,
+                            audioUrl = refreshedAudioUrl), authorizationReceipt = refreshed.authorizationReceipt,
+                            referer = refreshed.referer, userAgent = refreshed.userAgent,
+                            cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
+                            progressiveSegments = refreshedSegments)
+                    }
+                }
             }
             synchronized(lock) { persistLocked(force = true) }
-            activeSource = refreshed
-            download(requireMediaUrl(nextUrl))
+            activeSource = if (retainVideo) refreshed.copy(videoUrl = task.item.videoUrl) else refreshed
+            download(nextUrl)
         }
         reportProgress(result.downloadedBytes, result.totalBytes, true, result.segmentCount)
     }

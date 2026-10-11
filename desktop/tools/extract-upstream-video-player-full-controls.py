@@ -244,6 +244,8 @@ import kotlinx.coroutines.flow.combine
   if rel=='feature/video/ui/components/VideoSettingsPanel.kt':
    t=windows_nvidia_enhancement_leaf(t,record=True)
    t=windows_native_audio_settings_ui(t,record=True)
+   t=adapt(t,'private fun SleepTimerOptions(', 'internal fun SleepTimerOptions(',
+           'Same complete original sleep selector exposed to the Windows player')
   emit(rel,t,rel,'complete-original-menu-sheet-global-context-adapt')
  rel='core/ui/components/PlaybackSpeedPreferenceControl.kt';t=read(rel)
  # formatPlaybackSpeed is already sole-owned by existing actual playback settings.

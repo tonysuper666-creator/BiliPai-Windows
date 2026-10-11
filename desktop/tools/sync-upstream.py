@@ -30,6 +30,8 @@ MAX_RELEASE_PAGES = 100
 CANONICAL_CATALOG_SHA256 = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 CANONICAL_BASELINE_COMMIT = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 CANONICAL_CATALOG_PATH = "desktop/tools/v025-canonical-sources.json"
+COMPATIBILITY_CATALOG_PATH = "desktop/tools/compatibility-source-inputs.json"
+COMPATIBILITY_CATALOG_SHA256 = "68a6bc84263f59b4e791983ef962bf394b031d5063c1f628b644bdaef65d4b06"
 
 
 class UpdateError(RuntimeError):
@@ -188,6 +190,168 @@ def canonical_baseline(repo: Path, manifest: dict) -> dict | None:
     return catalog
 
 
+def owned_compatibility_path(repo: Path, value: object) -> Path:
+    if not isinstance(value, str) or not value or "\\" in value or ":" in value:
+        raise UpdateError("Adapted input paths must be repository-relative POSIX paths.")
+    name = PurePosixPath(value)
+    if (name.is_absolute() or str(name) != value or ".." in name.parts or "." in name.parts or
+            name.parts[0] != "desktop"):
+        raise UpdateError(f"Unsafe adapted input path: {value}")
+    local = repo
+    for component in name.parts:
+        local /= component
+        if local.is_symlink() or (os.name == "nt" and local.is_junction()):
+            raise UpdateError(f"Adapted input has a linked path component: {value}")
+    if not local.resolve().is_relative_to(repo.resolve()):
+        raise UpdateError(f"Adapted input escapes the repository: {value}")
+    return local
+
+
+def adapted_local_input(repo: Path, item: dict) -> bytes:
+    local = owned_compatibility_path(repo, item.get("localPath"))
+    try:
+        if not local.is_file():
+            raise UpdateError(f"Adapted source/resource is not a regular file: {item['localPath']}")
+        contents = local.read_bytes()
+    except OSError as error:
+        raise UpdateError(f"Cannot read adapted source/resource {item['localPath']}: {error}") from error
+    normalization = item["hashNormalization"]
+    if (source_digest(contents, normalization) != item["sha256"] or
+            blob_oid(normalized_input(contents, normalization)) != item["blob"]):
+        raise UpdateError(f"Adapted source/resource differs from its own fixed input: {item['localPath']}")
+    return contents
+
+
+def adapted_compatibility_inputs(repo: Path) -> list[dict]:
+    # Minimal offline inventory fixtures predate the desktop adaptation build.
+    # A real archive/build cannot silently fall back to that incomplete scope.
+    build_file = owned_compatibility_path(repo, "desktop/build.gradle.kts")
+    build = build_file.read_text(encoding="utf-8") if build_file.is_file() else ""
+    roots = {"desktop/upstream-slices/" + name for name in re.findall(r"[\"']upstream-slices/([^/\"']+)", build)}
+    standalone = {"desktop/" + name for name in re.findall(r"[\"'](third-party/[^\"']+\.(?:kt|java|kts))[\"']", build)}
+    third_party_roots = {"desktop/third-party/" + name for name in re.findall(r"[\"']third-party/([^/\"']+)", build)}
+    path = owned_compatibility_path(repo, COMPATIBILITY_CATALOG_PATH)
+    if not path.exists():
+        if roots or standalone or (repo / "desktop/upstream-slices").exists():
+            raise UpdateError("Adapted build inputs have no reviewed compatibility inventory; manual review is required.")
+        return []
+    try:
+        with path.open("rb") as source:
+            contents = source.read(MAX_MANIFEST_BYTES + 1)
+        if (len(contents) > MAX_MANIFEST_BYTES or
+                source_digest(contents) != COMPATIBILITY_CATALOG_SHA256):
+            raise UpdateError("Unknown adapted input inventory; manual review is required.")
+        inventory = json.loads(contents.decode("utf-8"))
+    except (OSError, ValueError) as error:
+        raise UpdateError(f"Cannot read adapted input inventory: {error}") from error
+    if (not isinstance(inventory, dict) or inventory.get("schemaVersion") != 1 or
+            inventory.get("upstreamRepository") != UPSTREAM or
+            not isinstance(inventory.get("archives"), list) or not inventory["archives"] or
+            not isinstance(inventory.get("inputs"), list) or not inventory["inputs"]):
+        raise UpdateError("Unknown adapted input inventory structure; manual review is required.")
+    for field, observed in (("buildInputRoots", roots), ("buildStandaloneInputs", standalone),
+                            ("buildThirdPartyRoots", third_party_roots)):
+        declared = inventory.get(field)
+        if (not isinstance(declared, list) or not all(isinstance(name, str) for name in declared) or
+                len(set(declared)) != len(declared) or set(declared) != observed):
+            raise UpdateError(f"Desktop build input coverage changed ({field}); review the compatibility inventory.")
+    directories, leaves = set(), {}
+    for archive in inventory["archives"]:
+        if not isinstance(archive, dict) or not isinstance(archive.get("files"), list):
+            raise UpdateError("Invalid adapted archive inventory.")
+        directory = archive.get("directory")
+        folder = owned_compatibility_path(repo, directory)
+        if (directory in directories or not folder.is_dir() or
+                not directory.startswith(("desktop/upstream-slices/", "desktop/third-party/"))):
+            raise UpdateError(f"Unknown or duplicate adapted archive: {directory}")
+        directories.add(directory)
+        expected = {}
+        for leaf in archive["files"]:
+            if (not isinstance(leaf, dict) or not isinstance(leaf.get("path"), str) or
+                    not leaf["path"].startswith(directory + "/") or leaf["path"] in leaves or
+                    not re.fullmatch(r"[0-9a-f]{64}", leaf.get("sha256", "")) or
+                    not re.fullmatch(r"[0-9a-f]{40}", leaf.get("blob", "")) or
+                    leaf.get("hashNormalization") not in {"raw", "lf"}):
+                raise UpdateError(f"Invalid adapted archive leaf: {directory}")
+            owned_compatibility_path(repo, leaf["path"])
+            leaves[leaf["path"]] = leaf["sha256"]
+            expected[leaf["path"]] = leaf
+        # Ignored local documentation is not shipped input and cannot be required
+        # by a fresh clone. Only these exact non-source document pins are optional.
+        optional_rows = archive.get("optionalLocalFiles", [])
+        if not isinstance(optional_rows, list):
+            raise UpdateError(f"Invalid optional local documentation: {directory}")
+        optional = {}
+        for leaf in optional_rows:
+            if (not isinstance(leaf, dict) or not isinstance(leaf.get("path"), str) or
+                    not leaf["path"].startswith(directory + "/") or
+                    not leaf["path"].endswith((".txt", ".md")) or
+                    leaf["path"] in leaves or leaf["path"] in optional or
+                    leaf.get("kind") != "referenceDocumentation" or
+                    not re.fullmatch(r"[0-9a-f]{64}", leaf.get("sha256", ""))):
+                raise UpdateError(f"Unknown optional local document: {directory}")
+            owned_compatibility_path(repo, leaf["path"])
+            optional[leaf["path"]] = leaf["sha256"]
+        observed = set()
+        for current, child_dirs, child_files in os.walk(folder, followlinks=False):
+            for name in child_dirs + child_files:
+                local = Path(current) / name
+                relative = local.relative_to(repo).as_posix()
+                owned_compatibility_path(repo, relative)
+                if name in child_files:
+                    if not local.is_file():
+                        raise UpdateError(f"Adapted archive leaf is not a regular file: {relative}")
+                    if relative in optional:
+                        if hashlib.sha256(local.read_bytes()).hexdigest() != optional[relative]:
+                            raise UpdateError(f"Optional local document bytes changed: {relative}")
+                        continue
+                    if relative not in expected:
+                        raise UpdateError(f"Unreviewed adapted archive leaf: {relative}")
+                    pin = expected[relative]
+                    compared = normalized_input(local.read_bytes(), pin["hashNormalization"])
+                    if (hashlib.sha256(compared).hexdigest() != pin["sha256"] or
+                            blob_oid(compared) != pin["blob"]):
+                        raise UpdateError(f"Adapted archive bytes changed: {relative}")
+                    observed.add(relative)
+        if observed != set(expected):
+            raise UpdateError(f"Incomplete adapted archive: {directory}")
+    slice_root = owned_compatibility_path(repo, "desktop/upstream-slices")
+    observed_roots = {entry.relative_to(repo).as_posix() for entry in slice_root.iterdir()}
+    expected_roots = {name for name in directories if name.startswith("desktop/upstream-slices/")}
+    if observed_roots != expected_roots or not roots.issubset(directories):
+        raise UpdateError("Unreviewed adapted source directory; update complete compatibility coverage.")
+    seen, covered, entries = set(), set(), []
+    for item in inventory["inputs"]:
+        if (not isinstance(item, dict) or not re.fullmatch(r"[0-9a-f]{40}", item.get("upstreamCommit", "")) or
+                not re.fullmatch(r"[0-9a-f]{40}", item.get("blob", "")) or
+                not re.fullmatch(r"[0-9a-f]{64}", item.get("sha256", "")) or
+                item.get("hashNormalization") not in {"lf", "raw"} or
+                item.get("kind") not in {"adaptedSource", "adaptedResource"} or
+                type(item.get("referenceOnly")) is not bool or not isinstance(item.get("features"), list) or
+                not all(isinstance(name, str) for name in item["features"])):
+            raise UpdateError("Invalid fixed adapted source/resource pin.")
+        source_path(item.get("path"))
+        identity = (item["upstreamCommit"], item["path"], item.get("localPath"))
+        if identity in seen or item.get("localPath") not in leaves:
+            raise UpdateError(f"Uninventoried or duplicate adapted source input: {item['path']}")
+        seen.add(identity)
+        covered.add(item["localPath"])
+        adapted_local_input(repo, item)
+        entries.append(item)
+    excluded_sources = inventory.get("nonBiliPaiArchiveInputs")
+    source_leaves = {name for name in leaves if name.endswith((".kt", ".kts", ".java", ".js", ".glsl"))}
+    if (not isinstance(excluded_sources, list) or not all(isinstance(name, str) for name in excluded_sources) or
+            len(set(excluded_sources)) != len(excluded_sources) or not set(excluded_sources).issubset(source_leaves) or
+            source_leaves - set(excluded_sources) != source_leaves.intersection(covered)):
+        raise UpdateError("Complete retained BiliPai source files are missing compatibility pins.")
+    excluded = inventory.get("nonBiliPaiStandaloneInputs")
+    if (not isinstance(excluded, list) or not all(isinstance(name, str) for name in excluded) or
+            len(set(excluded)) != len(excluded) or not set(excluded).issubset(standalone) or
+            standalone - set(excluded) != standalone.intersection(covered)):
+        raise UpdateError("Standalone BiliPai source inputs are not completely pinned.")
+    return entries
+
+
 def compatibility_inputs(repo: Path, manifest: dict, catalog: dict | None) -> list[dict]:
     entries = [{**item, "kind": kind} for kind, key in (("source", "sources"), ("resource", "resources"))
                for item in manifest.get(key, [])]
@@ -208,6 +372,8 @@ def compatibility_inputs(repo: Path, manifest: dict, catalog: dict | None) -> li
     # Verify local bytes even for callers that supplied an in-memory test inventory.
     for item in entries:
         local_input(repo, item)
+    # Each archive keeps its own commit/blob; v025 is not its baseline.
+    entries.extend(adapted_compatibility_inputs(repo))
     return entries
 
 
@@ -506,7 +672,10 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
         "status": "ready" if catalog is not None else "manualAdaptationRequired",
         "canonicalCatalogSha256": CANONICAL_CATALOG_SHA256 if catalog is not None else None,
         "canonicalBaselineCommit": catalog["upstreamCommit"] if catalog is not None else None,
-        "checkedInputCount": len(entries), "reasons": reasons,
+        "checkedInputCount": len(entries),
+        "checkedAdaptedInputCount": sum(item["kind"] in {"adaptedSource", "adaptedResource"} for item in entries),
+        "adaptedCatalogSha256": COMPATIBILITY_CATALOG_SHA256 if any(item["kind"] in {"adaptedSource", "adaptedResource"} for item in entries) else None,
+        "reasons": reasons,
     }
     report = {
         "upstreamRepository": UPSTREAM, "currentTag": manifest["upstreamTag"],
@@ -514,7 +683,8 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
         "candidateCommit": commit, "prerelease": bool(release.get("prerelease")),
         "releaseUrl": release.get("html_url"), "candidateBranch": branch_name(tag, commit),
         "status": "upToDate" if commit == manifest["upstreamCommit"] else "updateAvailable",
-        "changedReusedSources": [], "changedResources": [], "featuresNeedingReview": [],
+        "changedReusedSources": [], "changedResources": [], "changedAdaptedInputs": [],
+        "featuresNeedingReview": [],
         "featureCoverage": manifest.get("featureCoverage", {}), "loginApiChanged": False,
         "windowsApiContractChanged": False, "networkBehaviorChanged": False,
         "autoBuildEligible": not reasons, "buildCompatibility": compatibility,
@@ -526,9 +696,11 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
         return report, {}
     tree = release_tree(request_json(f"git/trees/{commit}?recursive=1"))
     hashes, features, review_reasons = {}, set(), []
+    incoming_contents = {}  # Download an incoming path once, compare all retained commits.
     for item in entries:
         path = item["path"]
-        previous = local_input(repo, item)
+        adapted = item["kind"] in {"adaptedSource", "adaptedResource"}
+        previous = adapted_local_input(repo, item) if adapted else local_input(repo, item)
         normalization = item.get("hashNormalization", "lf")
         incoming = tree.get(path)
         contents = None
@@ -541,28 +713,39 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
                 "message": "Pinned Windows input is missing or no longer a regular upstream file.",
             })
         else:
-            baseline_oid = catalog["paths"][path]["blob"] if catalog is not None else blob_oid(normalized_input(previous, normalization))
+            baseline_oid = item["blob"] if adapted else (
+                catalog["paths"][path]["blob"] if catalog is not None else blob_oid(normalized_input(previous, normalization)))
             if incoming["sha"] == baseline_oid:
                 new_hash = item["sha256"]
                 report["unchangedBlobInputs"] += 1
             else:
-                contents = source_bytes(commit, path)
-                report["sourceDownloads"] += 1
-                if blob_oid(contents) != incoming["sha"]:
-                    raise UpdateError(f"Fixed-commit source does not match its complete-tree blob identity: {path}")
+                if path not in incoming_contents:
+                    contents = source_bytes(commit, path)
+                    report["sourceDownloads"] += 1
+                    if blob_oid(contents) != incoming["sha"]:
+                        raise UpdateError(f"Fixed-commit source does not match its complete-tree blob identity: {path}")
+                    incoming_contents[path] = contents
+                contents = incoming_contents[path]
                 new_hash = source_digest(contents, normalization)
-            hashes[path] = new_hash
+            # Only the canonical manifest can be used by candidate pin-writing.
+            if not adapted:
+                hashes[path] = new_hash
             if new_hash != item["sha256"]:
                 reasons.append({
-                    "code": "canonicalInputChanged" if catalog is not None else "pinnedInputChanged",
+                    "code": "adaptedInputChanged" if adapted else ("canonicalInputChanged" if catalog is not None else "pinnedInputChanged"),
                     "path": path, "kind": item["kind"], "oldSha256": item["sha256"],
                     "newSha256": new_hash, "hashNormalization": normalization,
                     "message": "Review the canonical original and affected Windows adaptation; fixed pins were not rewritten.",
                 })
         if new_hash != item["sha256"]:
-            if item["kind"] == "source":
+            if adapted:
+                detail = {key: item[key] for key in ("path", "localPath", "upstreamCommit", "blob", "hashNormalization", "referenceOnly")}
+                detail.update({"oldSha256": item["sha256"], "newSha256": new_hash,
+                               "incomingBlob": incoming["sha"] if incoming is not None else None})
+                report["changedAdaptedInputs"].append(detail)
+            if item["kind"] in {"source", "adaptedSource"}:
                 report["changedReusedSources"].append(path)
-            elif item["kind"] == "resource":
+            elif item["kind"] in {"resource", "adaptedResource"}:
                 report["changedResources"].append(path)
             source_features = set(item.get("features", []))
             if item["kind"] == "source" and path.endswith("core/network/ApiClient.kt") and contents is not None:
@@ -584,6 +767,8 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
             if source_features.intersection({"login", "auth", "updates", "cookie", "qr-login"}) or (
                     not path.endswith("core/network/ApiClient.kt") and re.search(r"Login|Passport|Cookie|Session|NavModels", path, re.I)):
                 review_reasons.append(f"Authentication/update contract changed: {path}")
+    report["changedReusedSources"] = list(dict.fromkeys(report["changedReusedSources"]))
+    report["changedResources"] = list(dict.fromkeys(report["changedResources"]))
     report["featuresNeedingReview"] = sorted(features)
     report["manualReviewReasons"] = review_reasons
     compatibility["status"] = "manualAdaptationRequired" if reasons else "ready"
@@ -644,7 +829,7 @@ def sync_update(repo: Path, manifest: dict, report: dict, hashes: dict[str, str]
     if git(repo, "diff", "--name-only", manifest["upstreamCommit"], commit, "--", "desktop"):
         raise UpdateError("Upstream added a desktop directory. Reconcile ownership manually before building it.")
     upstream_paths = git(repo, "diff", "--name-only", manifest["upstreamCommit"], commit).splitlines()
-    reused_paths = {entry["path"] for entry in manifest["sources"] + manifest.get("resources", [])}
+    reused_paths = {entry["path"] for entry in compatibility_inputs(repo, manifest, canonical_baseline(repo, manifest))}
     report["upstreamChangedPaths"] = upstream_paths
     report["unportedChangedPaths"] = [path for path in upstream_paths if path not in reused_paths]
     base = git(repo, "rev-parse", "HEAD")
