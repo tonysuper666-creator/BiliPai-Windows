@@ -61,17 +61,21 @@ val revisionNeutralSourceLocalImportRoots = setOf("v025_source_paths", "v029_bra
 val revisionNeutralSourceExternalImportRoots = setOf("__future__", "argparse", "datetime", "decimal", "difflib", "functools", "hashlib", "importlib", "json", "os", "pathlib", "re", "shutil", "subprocess", "sys", "textwrap", "unittest", "urllib", "xml")
 val revisionNeutralSourceImportRoots = revisionNeutralSourceLocalImportRoots + revisionNeutralSourceExternalImportRoots
 val revisionNeutralSourceImportShadowFiles = fileTree("tools") {
-    isCaseSensitive = false
-    revisionNeutralSourceImportRoots.forEach { module ->
-        include("$module.pyc", "$module*.pyd", "$module/**")
-    }
-    revisionNeutralSourceExternalImportRoots.forEach { module -> include("$module.py") }
+    include(org.gradle.api.specs.Spec<org.gradle.api.file.FileTreeElement> { element ->
+        val path = element.relativePath.pathString.replace('\\', '/').lowercase(java.util.Locale.ROOT)
+        // Keep traversal open; only matching files become shadow inputs.
+        element.isDirectory || revisionNeutralSourceImportRoots.any { module ->
+            path == "$module.pyc" ||
+                (path.startsWith(module) && path.endsWith(".pyd") && '/' !in path) ||
+                path.startsWith("$module/")
+        } || revisionNeutralSourceExternalImportRoots.any { module -> path == "$module.py" }
+    })
 }
 val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "43bde7d1c537069eb62e0121c55d8b85fc39559c3e564b17a8a7fb113c8f3670"
+val revisionNeutralSourceGradleRecipeSha256 = "5dc457c79b46d7c5504eb679d0fc06352a0a72e9733d449ae9a9aab1f5bd6f80"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
