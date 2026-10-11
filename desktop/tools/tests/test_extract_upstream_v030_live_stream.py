@@ -90,7 +90,7 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             output = Path(temporary) / "main"
             tests = Path(temporary) / "tests"
             generated = media.generate(REPO, output, tests)
-            # The sole media output is 16 main files plus three complete socket
+            # The sole media output is 23 main files plus three complete socket
             # tests; the existing stream test is emitted separately as before.
             main_names = {
                 'com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt',
@@ -109,6 +109,13 @@ class V030LiveStreamSourceTests(unittest.TestCase):
                 'com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt',
                 'com/android/purebilibili/feature/live/DesktopLiveReloadBudget.kt',
                 'com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt',
+                'com/android/purebilibili/data/repository/DesktopLiveVoteSnapshot.kt',
+                'com/android/purebilibili/feature/live/components/LiveVotePanel.kt',
+                'com/android/purebilibili/data/repository/LiveInteractionModels.kt',
+                'com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt',
+                'com/android/purebilibili/feature/live/LiveDanmakuFilterPolicy.kt',
+                'com/android/purebilibili/data/repository/DesktopLiveModerationRequests.kt',
+                'com/android/purebilibili/feature/live/components/DesktopOriginalLiveModerationUi.kt',
             }
             socket_test_names = {
                 'com/android/purebilibili/core/network/socket/LiveDanmakuClientTest.kt',
@@ -120,7 +127,7 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             normal = lambda path: str(path).removeprefix("\\\\?\\").replace("\\", "/")
             expected = {normal(output / path) for path in main_names} | {normal(tests / path) for path in socket_test_names}
             actual = [normal(path) for path in generated]
-            self.assertEqual(16, len(main_names)); self.assertEqual(3, len(socket_test_names))
+            self.assertEqual(23, len(main_names)); self.assertEqual(3, len(socket_test_names))
             self.assertEqual(expected, set(actual))
             self.assertEqual(len(expected), len(actual))
             sources = live.fixed_sources()
@@ -143,6 +150,67 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             self.assertEqual(12, original_tests.count("@Test"))
             self.assertEqual(sources[live.TEST], live.replay(original_tests, test_proof["completeBody"]["indexedEdits"], True))
             self.assertNotIn("import androidx.media3", original_tests)
+
+            # New named outputs still restore the complete pinned original bodies.
+            import v034_live_moderation as moderation
+            parser = media.parser_for(REPO)
+            fixed = moderation.fixed_inputs(REPO)
+            fixed_hashes = {
+                'policy': 'b8209ccf31596fcf89dfe38024e6d3d9bf65e797577cefac05ac14cd440e2d4e',
+                'models': '3a546bd71fd792388ce7d969051a9bff4f0db2c3e301e9499e2f13d806247871',
+                'realtime': '002016da3e66429de054b92581e375db865b67d07fd6e1c6791b1d939696762d',
+                'api': '1ed0da47deb801a5a2f6f2a63e6bf2e9e8674bb861e573b45956f1bd5ed2febb',
+                'repo': '554ca3c32522c88148144c4221879701657aab296519ea0da4162661039d4857',
+                'vm': 'e86a019aa43d9d5aca595ff6073bb0cf50d00436142bb5a0bda50655b2507e74',
+            }
+            self.assertEqual(set(fixed_hashes), set(fixed))
+            for key, digest in fixed_hashes.items():
+                raw = live.safe(REPO / moderation.PINS[key]['archive']).read_bytes()
+                self.assertEqual(digest, live.sha(raw))
+                self.assertEqual(fixed[key], raw.decode('utf8').replace('\r\n', '\n'))
+            vote = (output / 'com/android/purebilibili/data/repository/DesktopLiveVoteSnapshot.kt').read_text(encoding='utf8')
+            vote_proof = json.loads((output / 'v034-live-vote-source-proof.json').read_bytes())
+            self.assertEqual('b2091b1de636e499df80af7e700796b4f52b7f92', vote_proof['fixedUpstreamCommit'])
+            self.assertEqual('062465cc3e445b911c095c8cf82ec2554d1105ecff39b1e40f84f90903e43520', live.sha(vote.encode()))
+            vote_method = media.function(vote, 'requestOriginalDesktopLiveVoteSnapshot', parser)
+            original_method = media.function(fixed['repo'], 'getLiveVoteSnapshot', parser)
+            self.assertEqual(original_method, live.replay(vote_method, vote_proof['snapshotMethod']['indexedEdits'], True))
+            projected = live.replay(fixed['repo'], vote_proof['wholeRepository']['indexedEdits'], False)
+            self.assertEqual(fixed['repo'], live.replay(projected, vote_proof['wholeRepository']['indexedEdits'], True))
+            self.assertIn(vote_proof['originalMergeRange'], fixed['vm'])
+            self.assertEqual(vote_proof['generatedMergeMethod'], media.function(vote, 'applyOriginalDesktopLiveVoteUpdate', parser))
+            self.assertIs(True, vote_proof['exactWholeViewModelExtractionInverse'])
+            proof = json.loads((output / 'v034-live-moderation-source-proof.json').read_bytes())
+            self.assertEqual('b2091b1de636e499df80af7e700796b4f52b7f92', proof['fixedCommit'])
+            self.assertEqual(['getLiveShieldInfo', 'setLiveSilentRule', 'addLiveShieldKeyword', 'deleteLiveShieldKeyword',
+                              'setLiveShieldUser', 'reportLiveDanmaku', 'reportSuperChat'],
+                             [row['name'] for row in proof['fullRequestMethods']])
+            requests = (output / 'com/android/purebilibili/data/repository/DesktopLiveModerationRequests.kt').read_text(encoding='utf8')
+            for row in proof['fullRequestMethods']:
+                emitted_name = row['mappings'][0][1].split('fun ', 1)[1].split('(', 1)[0]
+                actual_method = media.function(requests, emitted_name, parser)
+                self.assertEqual(row['adaptedSha256LF'], live.sha(actual_method.encode()))
+                inverse = actual_method
+                for old, new in reversed(row['mappings']):
+                    self.assertEqual(1, inverse.count(new)); inverse = inverse.replace(new, old, 1)
+                self.assertEqual(media.function(fixed['repo'], row['name'], parser), inverse)
+                self.assertEqual(row['originalSha256LF'], live.sha(inverse.encode()))
+            models = (output / 'com/android/purebilibili/data/repository/LiveInteractionModels.kt').read_text(encoding='utf8')
+            models = models[models.index('package '):]
+            for old, new in reversed(proof['schemaMappings']):
+                self.assertEqual(1, models.count(new)); models = models.replace(new, old, 1)
+            self.assertEqual(media.read(REPO, moderation.PINS['models']['path']), models)
+            realtime = (output / 'com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt').read_text(encoding='utf8')
+            realtime = realtime[realtime.index('package '):]
+            system = media.function(realtime, 'systemMessage', parser)
+            self.assertEqual(media.function(fixed['realtime'], 'systemMessage', parser), system)
+            original_realtime = media.read(REPO, moderation.PINS['realtime']['path'])
+            self.assertEqual(1, realtime.count(system))
+            self.assertEqual(original_realtime, realtime.replace(system, media.function(original_realtime, 'systemMessage', parser), 1))
+            filtered = (output / 'com/android/purebilibili/feature/live/LiveDanmakuFilterPolicy.kt').read_text(encoding='utf8')
+            self.assertEqual(fixed['policy'].strip() + '\n', filtered[filtered.index('package '):])
+            item = (output / 'com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt').read_text(encoding='utf8')
+            self.assertEqual(media.data_class(fixed['vm'], 'LiveDanmakuItem', parser), media.data_class(item, 'LiveDanmakuItem', parser))
 
     def test_exact_input_adaptation_drift_rejects(self):
         with tempfile.TemporaryDirectory() as temporary:
