@@ -228,7 +228,10 @@ class DesktopDownloadRefreshQualityTest {
             Files.write(directory.resolve("video.m4s.part"), ByteArray(10) { 120.toByte() })
             Files.write(directory.resolve("video.m4s.part.chunk0001"), ByteArray(5) { 120.toByte() })
         }
-        Files.writeString(root.resolve("state.json"), JsonArray(listOf(Json.encodeToJsonElement(DownloadTask.serializer(), saved))).toString())
+        val persisted = Json { encodeDefaults = true }.encodeToJsonElement(DownloadTask.serializer(), saved)
+        assertEquals(original.createdAt, persisted.jsonObject.getValue("item").jsonObject
+            .getValue("createdAt").jsonPrimitive.long)
+        Files.writeString(root.resolve("state.json"), JsonArray(listOf(persisted)).toString())
         return saved
     }
 
@@ -642,6 +645,64 @@ class DesktopDownloadRefreshQualityTest {
                     assertEquals(task.item.audioUrl, persisted.item.audioUrl)
                 }
             } finally { manager.close() }
+        }
+    }
+    @Test fun managerPersistenceExplicitlyStoresCreatedAtAndColdRestoresTheSameTaskIdentity() = runBlocking<Unit> {
+        val root = Files.createTempDirectory("bilipai-created-at-persistence-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<Request>()
+        val entered = CompletableDeferred<Job>()
+        val release = CompletableDeferred<Unit>()
+        val client = transport(requests)
+        val manager = DesktopDownloadManager(client, state, muxer, sourceResolver = {
+            entered.complete(currentCoroutineContext().job)
+            release.await()
+            DesktopDownloadResolvedSource(source("fresh"), 80)
+        }, publication = lease())
+        var restored: DesktopDownloadManager? = null
+        try {
+            val id = manager.enqueue(source("expired"), root, metadata)
+            val worker = withTimeout(5_000) { entered.await() }
+            val beforePause = manager.tasks.value.single()
+            val initialDisk = Json.parseToJsonElement(Files.readString(state)).jsonArray.single().jsonObject
+            assertEquals(beforePause.item.createdAt,
+                initialDisk.getValue("item").jsonObject.getValue("createdAt").jsonPrimitive.long)
+            assertEquals(0L, beforePause.item.aid)
+            assertEquals(0L, initialDisk.getValue("item").jsonObject.getValue("aid").jsonPrimitive.long)
+            manager.pause(id)
+            withTimeout(5_000) { worker.join() }
+            val paused = manager.tasks.value.single()
+            assertEquals(DownloadStatus.PAUSED, paused.status)
+            assertEquals(beforePause.item.createdAt, paused.item.createdAt)
+            val persistedBytes = Files.readAllBytes(state)
+            val persisted = Json.parseToJsonElement(persistedBytes.decodeToString()).jsonArray.single().jsonObject
+            assertEquals(paused.item.createdAt,
+                persisted.getValue("item").jsonObject.getValue("createdAt").jsonPrimitive.long)
+            assertTrue(requests.none { it.url.queryParameter("token") == "fresh" })
+            manager.close()
+
+            val coldManager = DesktopDownloadManager(client, state, muxer, publication = lease())
+            restored = coldManager
+            val cold = coldManager.tasks.value.single()
+            assertEquals(id, cold.id)
+            assertEquals(paused.directory, cold.directory)
+            assertEquals(paused.item, cold.item)
+            assertEquals(paused.resolvedVideoQuality, cold.resolvedVideoQuality)
+            assertEquals(paused.downloadedBytes, cold.downloadedBytes)
+            assertContentEquals(persistedBytes, Files.readAllBytes(state))
+            assertNull(cold.authorizationReceipt)
+        } finally {
+            release.complete(Unit)
+            try {
+                restored?.close()
+                manager.close()
+                withContext(NonCancellable) {
+                    if (entered.isCompleted) withTimeout(5_000) { entered.await().join() }
+                }
+            } finally {
+                client.dispatcher.executorService.shutdownNow()
+                client.connectionPool.evictAll()
+            }
         }
     }
 }

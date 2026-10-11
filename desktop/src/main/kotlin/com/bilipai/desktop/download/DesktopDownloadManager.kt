@@ -46,7 +46,7 @@ class DesktopDownloadManager internal constructor(
     internal fun destinationFor(explicit: String? = null): Path =
         com.bilipai.desktop.ui.resolveDesktopOriginalDownloadDestination(explicit, defaultDestination())
 
-    private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
+    private val json = Json { ignoreUnknownKeys = true; prettyPrint = true; encodeDefaults = true }
     private val serializer = ListSerializer(DownloadTask.serializer())
     private val lock = Any()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)

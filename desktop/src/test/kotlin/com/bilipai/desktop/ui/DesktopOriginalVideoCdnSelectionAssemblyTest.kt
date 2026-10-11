@@ -348,6 +348,11 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             override fun savePosition(bvid: String, cid: Long, positionMs: Long) { check(bvid in listOf(A, B)); check(cid in listOf(104L, 105L)) }
         }
         init {
+            // The original guest fetch deliberately omits audioLang. This case verifies
+            // the logged-in language-preserving route with private synthetic credentials.
+            if (refreshExpiredUrls) sessions.saveAccount(
+                mapOf("SESSDATA" to "synthetic-retry-session", "bili_jct" to "synthetic-retry-csrf"),
+                AccountSummary(41, "Retry fixture", "", isVip = false))
             sessions.saveSpiCookies(mapOf("buvid3" to "synthetic-visitor", "buvid4" to "synthetic-visitor4"), sessions.generation)
             epoch = repository.sessionEpoch
             store.update("quality_settings", mapOf("auto_highest_quality" to JsonPrimitive(false), "video_codec" to JsonPrimitive("avc1"),
@@ -365,7 +370,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     val body = when (request.url.encodedPath) {
                         "/" -> "memory bootstrap"
                         "/x/frontend/finger/spi" -> """{"code":0,"data":{"b_3":"synthetic-visitor","b_4":"synthetic-visitor4"}}"""
-                        "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":false,"vip":{"status":0},"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
+                        "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":${refreshExpiredUrls},"vip":{"status":0},"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
                         "/x/web-interface/view" -> viewJson(bvid)
                         "/x/player/wbi/playurl", "/x/player/playurl" -> {
                             val revision = synchronized(playRequests) { playRequests.add(request); playRequests.size }
