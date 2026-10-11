@@ -98,6 +98,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt"))
+        // The fixed b209 whole Sponsor UI has one section-full producer.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt"))
         // The fixed v029 special producer owns this one whole source now.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt"))
     }
@@ -2319,7 +2321,8 @@ val extractOriginalVideoStateCore by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-state-core")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoStateCore) }
-// Production omits --standalone. DIRECT10 are copied solely by prepareUpstreamSources.
+// Production omits --standalone. Retained DIRECT sources are copied solely by prepareUpstreamSources.
+// The b209 whole Sponsor UI is emitted once by the section-full producer below.
 // Install child Section's canonical native facade first/in same compile: this package references it.
 
 val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
@@ -2331,6 +2334,7 @@ val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
         "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.file("tools/v029_command_vote.py")
     inputs.dir("upstream-slices/v029-command-vote")
+    inputs.dir("upstream-slices/v034-sponsor-ui")
     inputs.files(sources.filter { "stable-video-player-section-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-player-section-full"))

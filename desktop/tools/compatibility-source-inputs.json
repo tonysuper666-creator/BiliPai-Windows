@@ -48,7 +48,8 @@
     "desktop/upstream-slices/v034-live-moderation",
     "desktop/upstream-slices/v034-live-moderation-ui",
     "desktop/upstream-slices/v034-live-vote",
-    "desktop/upstream-slices/v034-related"
+    "desktop/upstream-slices/v034-related",
+    "desktop/upstream-slices/v034-sponsor-ui"
   ],
   "archives": [
     {
@@ -1883,6 +1884,23 @@
           "sha256": "b634aede022821f1aa8e08eaa02fa0983240968b6de816ec504d49c8027a0849",
           "hashNormalization": "raw",
           "blob": "54e29ba7c3eac09c3d6d9de64f14c1e31dd87c73"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-sponsor-ui",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-sponsor-ui/manifest.json",
+          "sha256": "be51c84bac1fa043b40be2446a086b25df7e85eca1be8953872be5e34fa5d9a8",
+          "blob": "81ccfd493fa2e3c78a001a27a5b21649748c8535",
+          "hashNormalization": "raw"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-sponsor-ui/SponsorSkipUI.kt",
+          "sha256": "bf4f74363fe6150a5429cb6f5c00c9071e8341805c76bc5cdee8dfbafb87b462",
+          "blob": "ca6dc93eddbd2319adbbd13a245bcd97bb4e2e35",
+          "hashNormalization": "raw"
         }
       ]
     }
@@ -4723,6 +4741,19 @@
         "v029-bas-core"
       ],
       "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+      "localPath": "desktop/upstream-slices/v034-sponsor-ui/SponsorSkipUI.kt",
+      "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+      "blob": "ca6dc93eddbd2319adbbd13a245bcd97bb4e2e35",
+      "sha256": "bf4f74363fe6150a5429cb6f5c00c9071e8341805c76bc5cdee8dfbafb87b462",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-sponsor-original-ui"
+      ],
+      "referenceOnly": false
     }
   ],
   "buildStandaloneInputs": [

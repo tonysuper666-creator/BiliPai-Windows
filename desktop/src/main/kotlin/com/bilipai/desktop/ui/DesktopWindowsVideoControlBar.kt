@@ -73,6 +73,7 @@ internal fun DesktopWindowsVideoControlBar(
     onFullscreen: () -> Unit, onDetails: () -> Unit, onOpenIntroduction: () -> Unit,
     sponsorSkip: @Composable () -> Unit,
     enhancement: @Composable () -> Unit,
+    sponsorMoreActions: @Composable (() -> Unit) -> Unit = {},
     pbpRidgeSamples: List<PbpRidgeSample> = emptyList(),
     seekPreviewSource: DesktopOriginalVideoAcceptedPublication? = null,
     seekPreviewEnabled: Boolean = false,
@@ -238,6 +239,7 @@ internal fun DesktopWindowsVideoControlBar(
                             DropdownMenuItem(text = { Text(if (screenshotBusy) "截图中…" else "视频截图（S）") },
                                 enabled = enabled && canScreenshot && !screenshotBusy,
                                 onClick = { more = false; onScreenshot() })
+                            sponsorMoreActions { more = false }
                             DropdownMenuItem(text = { Text("简介、分P与播放设置") }, onClick = { onOpenIntroduction(); more = false })
                         }
                         if (!showEnhancementStatus && chapters != null && chaptersSource != null)

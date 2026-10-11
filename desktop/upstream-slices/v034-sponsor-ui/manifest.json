@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+  "release": "v0.3.4-beta.2",
+  "partial": true,
+  "sources": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+      "file": "SponsorSkipUI.kt",
+      "bytes": 13343,
+      "sha256": "bf4f74363fe6150a5429cb6f5c00c9071e8341805c76bc5cdee8dfbafb87b462",
+      "gitBlob": "ca6dc93eddbd2319adbbd13a245bcd97bb4e2e35"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt",
+      "mode": "direct-complete-original",
+      "source": "SponsorSkipUI.kt",
+      "sha256LF": "bf4f74363fe6150a5429cb6f5c00c9071e8341805c76bc5cdee8dfbafb87b462"
+    }
+  ]
+}

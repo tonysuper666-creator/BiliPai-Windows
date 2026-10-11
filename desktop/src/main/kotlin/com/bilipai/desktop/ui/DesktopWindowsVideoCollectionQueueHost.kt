@@ -145,6 +145,7 @@ internal fun desktopWindowsVideoQueueSelectionIsCurrent(
     snapshot: DesktopWindowsVideoQueueSnapshot,
     stillOwned: () -> Boolean,
     onSelect: (DesktopWindowsVideoQueueSnapshot, Int, PlaylistItem) -> Boolean,
+    playbackOrder: @Composable (stillOwned: () -> Boolean) -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (snapshot.state.playlist.isEmpty()) return
@@ -161,6 +162,7 @@ internal fun desktopWindowsVideoQueueSelectionIsCurrent(
                 val listMaxHeight = (maxHeight - 94.dp).coerceAtLeast(0.dp)
                 Column(Modifier.fillMaxSize()) {
                     Row(Modifier.fillMaxWidth().height(44.dp), horizontalArrangement = Arrangement.End) {
+                        Box(Modifier.weight(1f)) { playbackOrder(::owned) }
                         TextButton(onClick = ::dismiss) { Text("关闭播放队列") }
                     }
                     ExternalPlaylistQueueSheetContent(

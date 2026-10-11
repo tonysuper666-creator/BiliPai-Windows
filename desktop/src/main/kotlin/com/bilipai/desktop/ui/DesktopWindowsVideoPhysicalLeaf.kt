@@ -268,7 +268,7 @@ internal class DesktopWindowsVideoActions(
     }
     val state by native.state.collectAsState()
     val playback by shell.playback.state.collectAsState()
-    val manualSponsorSegment by assembly.playback.currentSponsorSegment.collectAsState()
+    val sponsorPresentation by assembly.playback.desktopSponsorPresentation.collectAsState()
     val sleepTimerMinutes by assembly.playback.sleepTimerMinutes.collectAsState()
     val pbpProgressData by assembly.playback.pbpProgressData.collectAsState()
     val progressPeakEnabled by remember(platforms.holder.settingsContext) {
@@ -668,6 +668,18 @@ internal class DesktopWindowsVideoActions(
             (!requirePicture || (!actual.audioOnly && actual.videoCodec != null &&
                 actual.videoWidth > 0 && actual.videoHeight > 0))
     }
+    var showSponsorSegment by remember(assembly, viewportSource) { mutableStateOf(false) }
+    fun sponsorCurrent(expected: DesktopOriginalVideoAcceptedPublication?): Boolean =
+        playbackToolsCurrent(expected) && expected != null &&
+            assembly.environment.plugins.isPlaybackDispatchCurrent(expected)
+    fun admitSponsorAction(expected: DesktopOriginalVideoAcceptedPublication, action: () -> Unit): Boolean {
+        var applied = false
+        return pictureFactory.withPresentationAdmission(assembly, expected) {
+            if (sponsorCurrent(expected)) assembly.native.admitPlaybackDispatch(expected) {
+                if (sponsorCurrent(expected)) { action(); applied = true }
+            }
+        } && applied
+    }
     fun pictureCurrent(expected: DesktopOriginalVideoAcceptedPublication?): Boolean =
         playbackToolsCurrent(expected, requirePicture = true)
     fun admitPlaybackTool(expected: DesktopOriginalVideoAcceptedPublication, action: () -> Unit): Boolean {
@@ -983,6 +995,9 @@ internal class DesktopWindowsVideoActions(
                                         }
                                     }
                                     DesktopWindowsVideoInteractiveChoiceOverlay(assembly, interactiveChoicePanel, interactiveChoiceSource)
+                                    DesktopWindowsSponsorCommunityOverlay(shell.playback, assembly, viewportSource,
+                                        sponsorPresentation, showSponsorSegment, ::sponsorCurrent, ::admitSponsorAction,
+                                        onCloseSegment = { showSponsorSegment = false })
                                     DesktopWindowsVideoSeekPreviewHost(
                                         preview = seekPreview, source = viewportSource, success = success,
                                         current = chromeVisible && pictureCurrent(viewportSource), viewportSize = viewportSize,
@@ -1063,9 +1078,25 @@ internal class DesktopWindowsVideoActions(
                         detailsTab = DesktopWindowsVideoDetailsTab.INTRODUCTION
                         detailsOpen = true
                     } },
+                    sponsorMoreActions = { dismiss ->
+                        DesktopWindowsSponsorMoreActions(assembly, viewportSource, sponsorPresentation,
+                            ::sponsorCurrent, ::admitSponsorAction,
+                            onOpenSegment = { showSponsorSegment = true }, dismissMenu = dismiss)
+                    },
                     sponsorSkip = {
+                        val skip = sponsorPresentation.skip?.takeIf { it.source === collectionQueueSource }
+                        val action = skip?.let { captured ->
+                            val segment = captured.segment ?: return@let null
+                            val state = captured.state
+                            val segmentId = state.segmentId ?: return@let null
+                            if (!state.visible || segmentId.isBlank() || segmentId != segment.UUID ||
+                                state.skipToMs <= 0L || state.skipToMs != segment.endTimeMs) return@let null
+                            com.android.purebilibili.core.plugin.SkipAction.ShowButton(
+                                state.skipToMs, state.label.orEmpty(), segmentId)
+                        }
                         DesktopWindowsSponsorSkipSection(shell.playback, assembly, collectionQueueSource,
-                            playback.manualSkip, manualSponsorSegment, ::interactionCurrent)
+                            action, skip?.segment, { interactionCurrent() &&
+                                assembly.playback.desktopSponsorPresentation.value.skip === skip })
                     },
                     enhancement = actions.enhancement,
                 )

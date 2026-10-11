@@ -52,6 +52,17 @@ import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences
             val snapshot=remember{DesktopWindowsVideoQueueSnapshot(sessionIdentity,presentation.sourceOwner,state())}
             DesktopWindowsVideoPlaybackQueueHost(snapshot,
                 {owned() && playlist.isSessionCurrent(session)},
+                playbackOrder={hostOwned->
+                    DesktopWindowsVideoPlaybackOrderControl(
+                        settings=presentation.assembly.environment.settings,
+                        sourceOwner=presentation.sourceOwner,
+                        stillOwned={hostOwned() && owned() && playlist.isSessionCurrent(session)},
+                        admit={action->owned() && currentAdmission {
+                            if(owned() && playlist.isSessionCurrent(session))action()
+                        }},
+                        feedback={if(owned())currentFeedback(it)},
+                    )
+                },
                 onSelect={expected,index,item->
                     var selected=false
                     if(owned())currentAdmission {

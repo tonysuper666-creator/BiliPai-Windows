@@ -257,15 +257,19 @@ class DesktopUpdater private constructor(
             validateUpdate(prepared.update)
             require(UpdateStorage.ownedStage(updateRoot, prepared.stagingDirectory, requireNotNull(repository)) != null &&
                 validStoredExecutable(prepared.executable.toString()) == prepared.executable) { "更新安装目录校验失败" }
+            val observed = readActiveInstallationSnapshot()
             mutableState.value = UpdateState.Launching
             attempt = launchInstallation(prepared.executable, emptyList())
             require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
             ensureOpenAndActive()
-            val previous = previousInstallation()
+            val previous = previousInstallation(observed.installation)
             ensureOpenAndActive()
             beginInstallationCommit()
-            writeActiveInstallation(ActiveInstallation(requireNotNull(repository), prepared.update.version, prepared.executable.toString(),
-                previous?.first, previous?.second?.toString()))
+            require(commitActiveInstallation(observed,
+                ActiveInstallation(requireNotNull(repository), prepared.update.version, prepared.executable.toString(),
+                    previous?.first, previous?.second?.toString()), upgrade = true)) {
+                "更新注册状态已改变、已有相同或更高版本，或注册事务暂不可用；当前版本继续运行"
+            }
             committed = true
             discard = true
             mutableState.value = UpdateState.Launched
@@ -422,11 +426,67 @@ class DesktopUpdater private constructor(
 
     private fun lastCheckTime(): Long = runCatching { Files.readString(updateRoot.resolve("last-check.txt")).trim().toLong() }.getOrDefault(0)
 
-    private fun readActiveInstallation(): ActiveInstallation? = runCatching {
+    private class ActiveInstallationSnapshot(val installation: ActiveInstallation?, val bytes: ByteArray?) {
+        fun matches(other: ActiveInstallationSnapshot): Boolean =
+            if (bytes == null) other.bytes == null else other.bytes?.contentEquals(bytes) == true
+    }
+
+    /** Absence is a snapshot; invalid/unreadable data is unknown, never an absent registry. */
+    private fun readActiveInstallationSnapshot(): ActiveInstallationSnapshot {
         val file = updateRoot.resolve("active-install.json")
-        if (!Files.isRegularFile(file, NOFOLLOW_LINKS) || Files.isSymbolicLink(file) || Files.size(file) > 64 * 1024) return@runCatching null
-        json.decodeFromString<ActiveInstallation>(Files.readString(file)).takeIf { it.repository == repository }
+        val attributes = try {
+            Files.readAttributes(file, java.nio.file.attribute.BasicFileAttributes::class.java, NOFOLLOW_LINKS)
+        } catch (_: java.nio.file.NoSuchFileException) {
+            return ActiveInstallationSnapshot(null, null)
+        }
+        require(attributes.isRegularFile && !attributes.isSymbolicLink && !attributes.isOther && attributes.size() <= 64 * 1024) {
+            "当前安装记录不是可确认的普通文件"
+        }
+        val canonical = UpdateStorage.existingPathWithoutLinks(file)
+        val bytes = Files.newInputStream(canonical, NOFOLLOW_LINKS).use { it.readNBytes(64 * 1024 + 1) }
+        require(bytes.size <= 64 * 1024) { "当前安装记录超过大小限制" }
+        // Preserve Files.readString's strict UTF-8 behavior while retaining exactly the bytes decoded.
+        val text = Charsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(bytes)).toString()
+        val installation = json.decodeFromString<ActiveInstallation>(text)
+        require(installation.repository == repository) { "当前安装记录不属于此 Windows 发布仓库" }
+        return ActiveInstallationSnapshot(installation, bytes)
+    }
+
+    private fun readActiveInstallation(): ActiveInstallation? = runCatching {
+        readActiveInstallationSnapshot().installation
     }.getOrNull()
+
+    /** Only healthy selected children reach this short commit. No startup await or prune holds its lock.
+     * Exact old bytes protect both forward upgrades and the specifically selected previous fallback. */
+    private fun commitActiveInstallation(
+        observed: ActiveInstallationSnapshot, installation: ActiveInstallation, upgrade: Boolean,
+        registeredExecutable: Path? = null,
+    ): Boolean {
+        val lease = UpdateStorage.tryLeaseActiveRegistry(updateRoot) ?: return false
+        return lease.use {
+            require(it.holds(UpdateStorage.verifiedRoot(updateRoot))) { "更新注册事务租约已失效" }
+            val fresh = readActiveInstallationSnapshot()
+            if (!observed.matches(fresh)) return@use false
+            require(installation.repository == repository)
+            if (upgrade) {
+                val target = requireNotNull(DesktopVersion.parse(installation.version))
+                val current = fresh.installation?.let { active -> requireNotNull(DesktopVersion.parse(active.version)) }
+                if (current != null && target <= current) return@use false
+            } else {
+                val active = requireNotNull(fresh.installation)
+                val sameActive = installation.version == active.version && installation.executablePath == active.executablePath
+                val selectedPrevious = installation.version == active.previousVersion && installation.executablePath == active.previousExecutablePath
+                require(sameActive || selectedPrevious) { "更新回退目标不属于捕获的安装记录" }
+                // Match original record fields first, then the exact canonical child that passed health.
+                require(validStoredExecutable(installation.executablePath) == requireNotNull(registeredExecutable)) {
+                    "更新启动目标与捕获的安装记录不一致"
+                }
+                if (sameActive) return@use true // Preserve that exact record and its previous/unknown fields.
+            }
+            writeActiveInstallation(installation)
+            true
+        }
+    }
 
     private fun writeActiveInstallation(installation: ActiveInstallation) {
         UpdateStorage.verifiedRoot(updateRoot)
@@ -450,10 +510,10 @@ class DesktopUpdater private constructor(
         executable.takeIf { stageForExecutable(it) != null }
     }.getOrNull()
 
-    private fun previousInstallation(): Pair<String, Path>? {
+    private fun previousInstallation(active: ActiveInstallation?): Pair<String, Path>? {
         val currentCommand = ProcessHandle.current().info().command().orElse(null)?.let(::validStoredExecutable)
         if (currentCommand != null) return requireNotNull(config).version to currentCommand
-        val active = readActiveInstallation() ?: return null
+        active ?: return null
         return validStoredExecutable(active.executablePath)?.let { active.version to it }
     }
 
@@ -497,17 +557,20 @@ class DesktopUpdater private constructor(
         if (closed || disabledReason != null || args.any { it in setOf("--update-health-file", "--update-health-token", "--backend-smoke", "--player-self-test") } || !mutex.tryLock()) return@withContext false
         try {
             ensureOpenAndActive()
-            val active = readActiveInstallation() ?: return@withContext false
+            val observed = runCatching { readActiveInstallationSnapshot() }.getOrNull() ?: return@withContext false
+            val active = observed.installation ?: return@withContext false
             val current = requireNotNull(installedVersion)
             if (DesktopVersion.parse(active.version)?.let { it > current } != true) return@withContext false
             val candidates = listOfNotNull(
-                validStoredExecutable(active.executablePath)?.let { active.version to it },
+                validStoredExecutable(active.executablePath)?.let { Triple(active.version, active.executablePath, it) },
                 active.previousVersion?.let { version ->
                     if (DesktopVersion.parse(version)?.let { it > current } != true) null
-                    else active.previousExecutablePath?.let(::validStoredExecutable)?.let { version to it }
+                    else active.previousExecutablePath?.let { recordedPath ->
+                        validStoredExecutable(recordedPath)?.let { Triple(version, recordedPath, it) }
+                    }
                 },
             )
-            for ((version, executable) in candidates) {
+            for ((version, recordedPath, executable) in candidates) {
                 val currentCommand = ProcessHandle.current().info().command().orElse(null)
                 if (currentCommand?.let { runCatching { UpdateStorage.existingPathWithoutLinks(Path.of(it)) == executable }.getOrDefault(false) } == true) continue
                 var lease: UpdateStorage.StageLease? = null
@@ -522,9 +585,10 @@ class DesktopUpdater private constructor(
                     if (StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = version)) {
                         ensureOpenAndActive()
                         beginInstallationCommit()
-                        if (version != active.version || executable.toString() != active.executablePath) {
-                            writeActiveInstallation(ActiveInstallation(requireNotNull(repository), version, executable.toString()))
-                        }
+                        val selected = if (version == active.version && recordedPath == active.executablePath) active
+                            else ActiveInstallation(requireNotNull(repository), version, recordedPath)
+                        if (!commitActiveInstallation(observed, selected, upgrade = false, registeredExecutable = executable))
+                            return@withContext false
                         committed = true
                         pruneInstallations()
                         return@withContext true

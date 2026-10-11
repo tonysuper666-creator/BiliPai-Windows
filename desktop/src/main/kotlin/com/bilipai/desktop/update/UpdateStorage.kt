@@ -7,6 +7,7 @@ import java.nio.channels.FileLock
 import java.nio.file.Files
 import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.nio.file.Path
+import java.nio.file.StandardOpenOption.CREATE
 import java.nio.file.StandardOpenOption.CREATE_NEW
 import java.nio.file.StandardOpenOption.WRITE
 import java.nio.file.attribute.BasicFileAttributes
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 internal object UpdateStorage {
     private const val OWNER_FILE = ".bilipai-updater.json"
     private const val LEASE_FILE = ".bilipai-updater.lock"
+    private const val ACTIVE_REGISTRY_LOCK_FILE = ".bilipai-active-install.lock"
     private const val OWNER = "BiliPai.Windows.Updater.v2"
     private const val LEGACY_OWNER = "BiliPai.Windows.Updater.v1"
     private val json = Json { ignoreUnknownKeys = true }
@@ -28,6 +30,43 @@ internal object UpdateStorage {
         override fun close() {
             if (!closed.compareAndSet(false, true)) return
             try { runCatching { lock.release() } } finally { runCatching { channel.close() } }
+        }
+    }
+
+    /** A short cross-process registry transaction; payload stages retain their independent leases.
+     * Keep this zero-byte lock file after release so another process cannot lock a replacement inode. */
+    class ActiveRegistryLease internal constructor(
+        val root: Path, private val channel: FileChannel, private val lock: FileLock,
+    ) : AutoCloseable {
+        private val closed = AtomicBoolean()
+        fun holds(root: Path): Boolean = !closed.get() && channel.isOpen && lock.isValid && this.root == root
+        override fun close() {
+            if (!closed.compareAndSet(false, true)) return
+            try { runCatching { lock.release() } } finally { runCatching { channel.close() } }
+        }
+    }
+
+    /** Busy or unknown registry custody never authorizes a write. No process wait holds this lease. */
+    fun tryLeaseActiveRegistry(root: Path): ActiveRegistryLease? {
+        var channel: FileChannel? = null
+        var lock: FileLock? = null
+        try {
+            val verified = verifiedRoot(root)
+            val file = verified.resolve(ACTIVE_REGISTRY_LOCK_FILE)
+            if (Files.exists(file, NOFOLLOW_LINKS)) {
+                require(existingPathWithoutLinks(file) == file && Files.isRegularFile(file, NOFOLLOW_LINKS) && Files.size(file) == 0L)
+            }
+            val opened = FileChannel.open(file, CREATE, WRITE, NOFOLLOW_LINKS)
+            channel = opened
+            val acquired = opened.tryLock() ?: return null
+            lock = acquired
+            require(existingPathWithoutLinks(file) == file && Files.isRegularFile(file, NOFOLLOW_LINKS) &&
+                Files.size(file) == 0L && opened.size() == 0L)
+            return ActiveRegistryLease(verified, opened, acquired).also { channel = null; lock = null }
+        } catch (_: Exception) {
+            return null
+        } finally {
+            try { lock?.let { runCatching { it.release() } } } finally { channel?.let { runCatching { it.close() } } }
         }
     }
 
