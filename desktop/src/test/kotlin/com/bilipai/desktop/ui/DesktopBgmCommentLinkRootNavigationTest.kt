@@ -216,7 +216,7 @@ class DesktopBgmCommentLinkRootNavigationTest {
             assertEquals(BiliPaiNavKey.CommentDetail(470L, 701L, 703L, 14,
                 "bilibili://music?music_id=MA47"), comment)
             assertEquals(listOf(BiliPaiNavKey.MainHost, f.source, comment), f.stack.toList())
-            assertEquals(listOf(f.source to comment), f.destinationCommits)
+            assertEquals(listOf<Pair<BiliPaiNavKey, BiliPaiNavKey>>(f.source to comment), f.destinationCommits)
             f.backToBgm()
             f.click("bilibili://browser/?url=https%3A%2F%2Fwww.bilibili.com%2Fh5%2Fcomment%2Fsub%3Foid%3D470%26pageType%3D14%26root%3D701%26comment_secondary_id%3D709")
             val nested = assertIs<BiliPaiNavKey.CommentDetail>(f.routes.currentKey)
