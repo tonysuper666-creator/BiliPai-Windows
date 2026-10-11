@@ -145,7 +145,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                 }
                 assertTrue(f.manager.tasks.value.isEmpty(), change)
                 assertTrue(f.trace.ingress.isEmpty(), change)
-                assertFalse(Files.exists(f.stateFile), change)
+                f.assertUnqueuedPersistence(change)
                 if (change == "request" || change == "episode") assertSame(before, f.owner.native.current())
             }
         }
@@ -163,7 +163,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
             assertSame(click.job, evidence.bindingCaller); assertNotSame(click.job, evidence.ioJob)
             assertTrue(evidence.directoryReady) // real marker preparation may precede rejection
             assertNull(evidence.queued); assertTrue(f.manager.tasks.value.isEmpty())
-            assertFalse(Files.exists(f.stateFile)); assertTrue(f.trace.workerJobs.isEmpty())
+            f.assertUnqueuedPersistence(); assertTrue(f.trace.workerJobs.isEmpty())
             assertTrue(f.native.ownsPlaybackSource())
         }
     }
@@ -210,7 +210,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                 f.ui { f.vm.downloadCurrentEpisode(f.settings) }
                 withTimeout(8_000) { while (f.toasts.none { "权限" in it }) delay(5) }
                 assertTrue(f.manager.tasks.value.isEmpty()); assertTrue(f.trace.ingress.isEmpty())
-                assertFalse(Files.exists(f.stateFile)); assertTrue(f.native.ownsPlaybackSource())
+                f.assertUnqueuedPersistence(); assertTrue(f.native.ownsPlaybackSource())
             }
         }
     }
@@ -244,6 +244,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         lateinit var settings: DesktopOriginalPlayerSettingsContext
         lateinit var manager: DesktopDownloadManager
         lateinit var trace: TracePublication
+        private lateinit var initialQueueState: ByteArray
         private lateinit var requests: DesktopOriginalVideoOwnerRequestFactory
         private val context = DesktopPluginContext(DesktopPluginStore(directory.resolve("settings")))
         val player = MpvPlayer()
@@ -427,6 +428,10 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                     assertContentEquals(mediaBytes, Files.readAllBytes(video)); assertContentEquals(mediaBytes, Files.readAllBytes(audio))
                     Files.write(output, byteArrayOf(0, 0, 0, 20) + "ftyp".toByteArray() + mediaBytes)
                 }, publication = trace, defaultDestination = { destination })
+                // The real manager initializes its persisted empty queue before any click.
+                assertTrue(manager.tasks.value.isEmpty())
+                initialQueueState = Files.readAllBytes(stateFile)
+                assertTrue(persisted().isEmpty())
                 val base = object : DesktopOriginalBangumiBaseRequests {
                     override suspend fun getSponsorSegments(bvid: String): List<SponsorSegment> = emptyList()
                     override fun findSegmentAtPosition(segments: List<SponsorSegment>, positionMs: Long): SponsorSegment? = null
@@ -534,6 +539,10 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         }
         fun persisted(): List<QueuedTask> = Json { ignoreUnknownKeys = true }.decodeFromString(
             ListSerializer(QueuedTask.serializer()), Files.readString(stateFile))
+        fun assertUnqueuedPersistence(message: String? = null) {
+            assertTrue(persisted().isEmpty(), message)
+            assertContentEquals(initialQueueState, Files.readAllBytes(stateFile), message)
+        }
         suspend fun ui(action: () -> Unit) = withContext(Dispatchers.Swing) { action() }
         suspend fun <T> uiResult(action: () -> T): T = withContext(Dispatchers.Swing) { action() }
         private fun storeLock() = DesktopSessionStore::class.java.getDeclaredField("lock").apply { isAccessible = true }.get(sessions)
@@ -571,7 +580,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                     assertFalse(Thread.holdsLock(storeLock())); assertFalse(Thread.holdsLock(entryLock()))
                     assertFalse(Thread.holdsLock(nativeLock()))
                     evidence.queued = manager.tasks.value.single()
-                    evidence.statePersistedBeforeManagerCommit = Files.exists(stateFile)
+                    evidence.statePersistedBeforeManagerCommit = persisted().any { it.id == item.id }
                     afterFinal?.invoke(evidence)
                 }
                 return result
