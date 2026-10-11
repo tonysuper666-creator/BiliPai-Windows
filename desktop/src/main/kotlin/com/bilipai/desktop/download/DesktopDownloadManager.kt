@@ -695,6 +695,25 @@ class DesktopDownloadManager internal constructor(
         Files.walk(directory).use { paths -> paths.sorted(Comparator.reverseOrder()).forEach { Files.deleteIfExists(it) } }
     }
 
+    /** Root awaits the original workers before exit or launching a replacement process. */
+    internal suspend fun shutdownForApplicationExit(): Unit = withContext(NonCancellable + Dispatchers.IO) {
+        try {
+            synchronized(lock) {
+                if (!closed) {
+                    closed = true
+                    mutableTasks.value = mutableTasks.value.map {
+                        if (isDownloadTaskActive(it.item)) it.copy(item = normalizeRestoredDownloadTask(it.item)) else it
+                    }
+                }
+                // A retry after a failed persistence writes the same closed queue again.
+                persistLocked(force = true)
+            }
+        } finally {
+            // Child cleanup and completion handlers need the queue lock; await outside it.
+            scope.coroutineContext[Job]!!.cancelAndJoin()
+        }
+    }
+
     override fun close() = synchronized(lock) {
         if (!closed) {
             closed = true

@@ -682,6 +682,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     SideEffect {
         registerShutdown?.invoke {
             withContext(NonCancellable) {
+                downloads.shutdownForApplicationExit()
                 storageOwnerRef.getAndSet(null)?.shutdownForRestore()
                 drainOriginalVideo()
                 homeRootRef.getAndSet(null)?.closeAndJoin()

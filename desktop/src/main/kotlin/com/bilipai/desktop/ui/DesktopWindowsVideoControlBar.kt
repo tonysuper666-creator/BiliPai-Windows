@@ -74,6 +74,9 @@ internal fun DesktopWindowsVideoControlBar(
     sponsorSkip: @Composable () -> Unit,
     enhancement: @Composable () -> Unit,
     pbpRidgeSamples: List<PbpRidgeSample> = emptyList(),
+    seekPreviewSource: DesktopOriginalVideoAcceptedPublication? = null,
+    seekPreviewEnabled: Boolean = false,
+    onSeekPreviewChanged: (DesktopOriginalVideoAcceptedPublication, DesktopWindowsVideoSeekPreview?) -> Unit = { _, _ -> },
 ) {
     val durationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
     val menuSpeeds = remember(speedOptions, state.speed) {
@@ -83,7 +86,7 @@ internal fun DesktopWindowsVideoControlBar(
     val interactions = remember { MutableInteractionSource() }
     val hovered by interactions.collectIsHoveredAsState()
     var focused by remember { mutableStateOf(false) }
-    var scrubbing by remember(sourceVersion, chapters, chaptersSource) { mutableStateOf(false) }
+    var scrubbing by remember(seekPreviewSource, sourceVersion, chapters, chaptersSource) { mutableStateOf(false) }
     val latestHold by rememberUpdatedState(onInteractionHoldChanged)
     DisposableEffect(Unit) { onDispose { latestHold(DesktopWindowsFullscreenChromeInteraction()) } }
     DesktopWindowsPlayerSurface(Modifier.fillMaxWidth().desktopWindowsChromePointerInput(onChromePointerInput)
@@ -92,7 +95,7 @@ internal fun DesktopWindowsVideoControlBar(
         Column(Modifier.padding(horizontal = 8.dp)) {
             DesktopWindowsThinSeek(state.positionSeconds, state.durationSeconds, sourceVersion,
                 enabled && state.durationSeconds > 0.0, chapters, chaptersSource, onChapterSeek, { scrubbing = it }, onSeek,
-                pbpRidgeSamples)
+                pbpRidgeSamples, seekPreviewSource, seekPreviewEnabled, onSeekPreviewChanged)
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 val expanded = maxWidth >= 940.dp
                 val showEnhancementStatus = maxWidth >= 520.dp
@@ -285,11 +288,29 @@ private fun DesktopWindowsPlayerIconButton(
 private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVersion: Long,
     enabled: Boolean, chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
     onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
-    onScrubbingChanged: (Boolean) -> Unit, onSeek: (Double) -> Unit, pbpRidgeSamples: List<PbpRidgeSample>) {
+    onScrubbingChanged: (Boolean) -> Unit, onSeek: (Double) -> Unit, pbpRidgeSamples: List<PbpRidgeSample>,
+    previewSource: DesktopOriginalVideoAcceptedPublication?, previewEnabled: Boolean,
+    onPreviewChanged: (DesktopOriginalVideoAcceptedPublication, DesktopWindowsVideoSeekPreview?) -> Unit) {
     val total = duration.takeIf { it.isFinite() && it > 0.0 } ?: 1.0
     val durationMs = if (duration.isFinite() && duration > 0.0) (duration * 1000.0).toLong() else 0L
     val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
-    var scrub by remember(sourceVersion, chapters, chaptersSource) { mutableStateOf<Double?>(null) }
+    var scrub by remember(previewSource, sourceVersion, chapters, chaptersSource) { mutableStateOf<Double?>(null) }
+    var hoverPreview by remember(previewSource, sourceVersion, chapters, chaptersSource) { mutableStateOf<Double?>(null) }
+    var keyboardPreview by remember(previewSource, sourceVersion, chapters, chaptersSource) { mutableStateOf<Double?>(null) }
+    val latestPreview by rememberUpdatedState(onPreviewChanged)
+    val previewPosition = if (enabled && previewEnabled) scrub ?: keyboardPreview ?: hoverPreview else null
+    val projectedPreview = remember(previewSource, previewPosition, total) {
+        if (previewSource != null && previewPosition != null) DesktopWindowsVideoSeekPreview(
+            previewSource, (previewPosition.coerceIn(0.0, total) * 1000.0).toLong(),
+            (previewPosition / total).toFloat().coerceIn(0f, 1f)) else null
+    }
+    DisposableEffect(previewSource) {
+        onDispose { previewSource?.let { latestPreview(it, null) } }
+    }
+    SideEffect { previewSource?.let { latestPreview(it, projectedPreview) } }
+    LaunchedEffect(enabled, previewEnabled) {
+        if (!enabled || !previewEnabled) { hoverPreview = null; keyboardPreview = null }
+    }
     val latestSeek by rememberUpdatedState(onSeek)
     val latestScrubbing by rememberUpdatedState(onScrubbingChanged)
     val latestChapterSeek by rememberUpdatedState(onChapterSeek)
@@ -357,15 +378,40 @@ private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVer
                     Key.MoveEnd -> total
                     else -> null
                 }
-                if (target == null) false else { latestSeek(target.coerceIn(0.0, total)); true }
+                if (target == null) false else {
+                    val selected = target.coerceIn(0.0, total)
+                    hoverPreview = null
+                    keyboardPreview = selected.takeIf { previewEnabled }
+                    latestSeek(selected); true
+                }
             }
-        }.focusable(enabled).pointerInput(enabled, total, sourceVersion, chapters, chaptersSource) {
+        }.onFocusChanged { if (!it.isFocused) keyboardPreview = null }
+            .focusable(enabled)
+            .pointerInput(enabled, previewEnabled, total, previewSource, sourceVersion) {
+                if (enabled && previewEnabled) awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        when (event.type) {
+                            PointerEventType.Exit -> hoverPreview = null
+                            PointerEventType.Enter, PointerEventType.Move -> if (!event.buttons.isPrimaryPressed) {
+                                event.changes.firstOrNull()?.position?.x?.let { x ->
+                                    keyboardPreview = null
+                                    hoverPreview = (x / size.width.coerceAtLeast(1)).coerceIn(0f, 1f) * total
+                                }
+                            }
+                            else -> Unit
+                        }
+                    }
+                }
+            }
+            .pointerInput(enabled, total, previewSource, sourceVersion, chapters, chaptersSource) {
             if (enabled) awaitEachGesture {
                 val down = awaitFirstDown(requireUnconsumed = false)
                 if (!currentEvent.buttons.isPrimaryPressed) return@awaitEachGesture
                 fun seconds(x: Float) = (x / size.width.coerceAtLeast(1)).coerceIn(0f, 1f) * total
                 val chapterClick = segments.isNotEmpty() && down.position.y >= size.height / 2f
                 var dragged = false
+                hoverPreview = null; keyboardPreview = null
                 scrub = seconds(down.position.x)
                 down.consume()
                 latestScrubbing(true)

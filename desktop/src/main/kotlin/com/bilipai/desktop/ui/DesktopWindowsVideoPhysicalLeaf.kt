@@ -612,6 +612,7 @@ internal class DesktopWindowsVideoActions(
         catch (failure: Exception) { if (current()) bootstrapError = failure.message ?: "播放器初始化失败" }
     }
     val viewportSource = assembly.native.current()
+    var seekPreview by remember(assembly, native, route) { mutableStateOf<DesktopWindowsVideoSeekPreview?>(null) }
     // Capture this already-admitted UI receipt on the actual composition lane.
     // Deferred preference predicates retain only its immutable source reference.
     val presentedPictureSource = nativeSurface.capturePresentedSource(route, assembly)
@@ -982,6 +983,13 @@ internal class DesktopWindowsVideoActions(
                                         }
                                     }
                                     DesktopWindowsVideoInteractiveChoiceOverlay(assembly, interactiveChoicePanel, interactiveChoiceSource)
+                                    DesktopWindowsVideoSeekPreviewHost(
+                                        preview = seekPreview, source = viewportSource, success = success,
+                                        current = chromeVisible && pictureCurrent(viewportSource), viewportSize = viewportSize,
+                                        currentPositionMs = (native.state.value.positionSeconds * 1000.0).toLong(),
+                                        durationMs = (native.state.value.durationSeconds * 1000.0).toLong(),
+                                        modifier = Modifier.align(Alignment.BottomStart),
+                                    )
                                 }
                             }, native.surface)
                         } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
@@ -1009,6 +1017,15 @@ internal class DesktopWindowsVideoActions(
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
                     speedOptions = speedOptions,
                     pbpRidgeSamples = if (progressPeakEnabled && playbackToolsCurrent(collectionQueueSource)) progressSamples else emptyList(),
+                    seekPreviewSource = viewportSource,
+                    seekPreviewEnabled = pictureCurrent(viewportSource),
+                    onSeekPreviewChanged = { expected, preview ->
+                        if (preview == null) {
+                            if (seekPreview?.source === expected) seekPreview = null
+                        } else if (expected === viewportSource && preview.source === expected && pictureCurrent(expected)) {
+                            seekPreview = preview
+                        }
+                    },
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),
                     selectedQuality = success?.currentQuality,
                     canOpenCollection = canOpenCollection, canOpenPlaybackQueue = canOpenPlaybackQueue,

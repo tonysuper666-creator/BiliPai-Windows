@@ -260,6 +260,27 @@ def bangumi_codec_recovery_delta(path, body):
  PGC_CODEC_RECOVERY_PROOFS.append({'path':path,'beforeSha256LF':sha(original),'afterSha256LF':sha(body),'completeInverse':True,'edits':PGC_CODEC_RECOVERY_EDITS})
  return body
 
+# Explicit user reload re-enters the complete original detail/playurl lane.
+# Ordinary same-episode route restoration and automatic NETWORK recovery are unchanged.
+PGC_EXPLICIT_RELOAD_EDITS = [{'name': 'trailing explicit reload parameter preserves all existing callers', 'count': 1, 'before': '        preferredAid: Long = 0L\n    ) {\n        desktopPlaybackIntentRevision++\n', 'after': '        preferredAid: Long = 0L,\n        desktopForceReload: Boolean = false\n    ) {\n        desktopPlaybackIntentRevision++\n'}, {'name': 'only explicit reload bypasses same-episode cached restore and seek', 'count': 1, 'before': '        if (seasonId == currentSeasonId && epId == currentEpId && cachedState != null &&\n            environment.native.canUseCachedPlayback(cachedState)) {\n', 'after': '        if (!desktopForceReload && seasonId == currentSeasonId && epId == currentEpId && cachedState != null &&\n            environment.native.canUseCachedPlayback(cachedState)) {\n'}, {'name': 'original explicit retry enters full existing load and fetch path', 'count': 1, 'before': '    fun retry() {\n        loadBangumiPlay(currentSeasonId, currentEpId, isCourse = isCourseMode)\n    }\n', 'after': '    fun retry() {\n        loadBangumiPlay(currentSeasonId, currentEpId, isCourse = isCourseMode, desktopForceReload = true)\n    }\n'}]
+PGC_EXPLICIT_RELOAD_PROOFS = []
+def bangumi_explicit_reload_delta(path, body):
+ if path != "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt": return body
+ original=body;trace=[]
+ assert sha(body)=="c3a66efe916348aaa98c405621e55b8dbb9c198d47dbd900c82f9ec9e178cb72", 'complete current PGC explicit reload input'
+ for edit in PGC_EXPLICIT_RELOAD_EDITS:
+  before,after=edit['before'],edit['after']
+  assert body.count(before)==edit['count'], 'counted PGC explicit reload seam: '+edit['name']
+  at=body.index(before);body=body[:at]+after+body[at+len(before):];trace.append((at,before,after))
+ assert sha(body)=="4bd0c01f9a4d6f597ac152561b30d6d925634e91dd28519aff272f89f1f006cf", 'complete PGC explicit reload output'
+ inverse=body
+ for at,before,after in reversed(trace):
+  assert inverse[at:at+len(after)]==after
+  inverse=inverse[:at]+before+inverse[at+len(after):]
+ assert inverse==original, 'complete PGC explicit reload inverse'
+ PGC_EXPLICIT_RELOAD_PROOFS.append({'path':path,'beforeSha256LF':sha(original),'afterSha256LF':sha(body),'completeInverse':True,'edits':PGC_EXPLICIT_RELOAD_EDITS})
+ return body
+
 for recipe in RECIPES:
  raw=(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf8').replace('\r\n','\n');assert sha(raw)==recipe['originalSha256LF']
  body=raw
@@ -277,6 +298,7 @@ for recipe in RECIPES:
  body=bangumi_v034_course_download_delta(recipe['output'],body)
  body=bangumi_premium_audio_delta(recipe['output'],body)
  body=bangumi_codec_recovery_delta(recipe['output'],body)
+ body=bangumi_explicit_reload_delta(recipe['output'],body)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
@@ -290,5 +312,5 @@ helper=media.function(raw,'signBangumiPlayUrlParams',parser);assert sha(helper)=
 assert helper in PREFIX
 target=out/'com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt';target.parent.mkdir(parents=True,exist_ok=True)
 target.write_text('// GENERATED complete original getBangumiPlayUrl; upstream '+PROTOCOL['upstreamCommit']+'; LF '+PROTOCOL['originalSourceSHA']+'\n'+PREFIX+body+'\n}\n',encoding='utf8')
-(out/'pgc-default-quality-source-inventory.json').write_text(json.dumps({'upstreamCommit':PROTOCOL['upstreamCommit'],'originalPinsUnchanged':True,'initialOnly':True,'fullBodies':PGC_DEFAULT_QUALITY_PROOFS,'beta2QualitySource':PGC_V034_QUALITY_SOURCE,'beta2QualitySourceProof':PGC_V034_QUALITY_SOURCE_PROOF,'beta2QualityBodies':PGC_V034_QUALITY_PROOFS,'beta2AuthorizationBodies':PGC_V034_AUTHORIZATION_PROOFS,'beta2CourseDownloadSource':PGC_V034_COURSE_DOWNLOAD_SOURCE,'beta2CourseDownloadSourceProof':PGC_V034_COURSE_DOWNLOAD_SOURCE_PROOF,'beta2CourseDownloadBodies':PGC_V034_COURSE_DOWNLOAD_PROOFS,'premiumAudioSource':PGC_PREMIUM_AUDIO_SOURCE,'premiumAudioSourceProof':PGC_PREMIUM_AUDIO_SOURCE_PROOF,'premiumAudioBodies':PGC_PREMIUM_AUDIO_PROOFS,'codecRecoverySource':PGC_CODEC_RECOVERY_SOURCE,'codecRecoverySourceProof':PGC_CODEC_RECOVERY_SOURCE_PROOF,'codecRecoveryBodies':PGC_CODEC_RECOVERY_PROOFS},ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
+(out/'pgc-default-quality-source-inventory.json').write_text(json.dumps({'upstreamCommit':PROTOCOL['upstreamCommit'],'originalPinsUnchanged':True,'initialOnly':True,'fullBodies':PGC_DEFAULT_QUALITY_PROOFS,'beta2QualitySource':PGC_V034_QUALITY_SOURCE,'beta2QualitySourceProof':PGC_V034_QUALITY_SOURCE_PROOF,'beta2QualityBodies':PGC_V034_QUALITY_PROOFS,'beta2AuthorizationBodies':PGC_V034_AUTHORIZATION_PROOFS,'beta2CourseDownloadSource':PGC_V034_COURSE_DOWNLOAD_SOURCE,'beta2CourseDownloadSourceProof':PGC_V034_COURSE_DOWNLOAD_SOURCE_PROOF,'beta2CourseDownloadBodies':PGC_V034_COURSE_DOWNLOAD_PROOFS,'premiumAudioSource':PGC_PREMIUM_AUDIO_SOURCE,'premiumAudioSourceProof':PGC_PREMIUM_AUDIO_SOURCE_PROOF,'premiumAudioBodies':PGC_PREMIUM_AUDIO_PROOFS,'codecRecoverySource':PGC_CODEC_RECOVERY_SOURCE,'codecRecoverySourceProof':PGC_CODEC_RECOVERY_SOURCE_PROOF,'codecRecoveryBodies':PGC_CODEC_RECOVERY_PROOFS,'explicitReloadBodies':PGC_EXPLICIT_RELOAD_PROOFS},ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
 print('Complete original PGC body outputs:',len(RECIPES)+1,'; actual Root/native ports are required')
