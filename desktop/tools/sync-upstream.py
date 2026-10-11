@@ -31,6 +31,8 @@ CANONICAL_CATALOG_SHA256 = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec138
 CANONICAL_BASELINE_COMMIT = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 CANONICAL_CATALOG_PATH = "desktop/tools/v025-canonical-sources.json"
 COMPATIBILITY_CATALOG_PATH = "desktop/tools/compatibility-source-inputs.json"
+BUILD_CONFIGURATION_PATH = "app/build.gradle.kts"
+CANONICAL_BUILD_CONFIGURATION_PATH = "desktop/tools/upstream-build-configuration-baseline-v025.gradle.kts"
 COMPATIBILITY_CATALOG_SHA256 = "f08e34c69af720e76eac858a3b1d17ae880bc3cbe4482c72b2ad776bc0db63fe"
 
 
@@ -352,6 +354,67 @@ def adapted_compatibility_inputs(repo: Path) -> list[dict]:
     return entries
 
 
+def build_configuration_version_literals(contents: bytes) -> tuple[int, str, bytes]:
+    """Project only unique bare version literals; never evaluate a Gradle script."""
+    if len(contents) > MAX_MANIFEST_BYTES:
+        raise UpdateError("Version/build configuration exceeds the bounded input budget.")
+    try:
+        text = normalized_source(contents).decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise UpdateError("Version/build configuration is not valid UTF-8; manual review required.") from error
+    codes = list(re.finditer(r"(?m)^[ \t]*versionCode[ \t]*=[ \t]*([1-9][0-9]{0,9})[ \t]*$", text))
+    names = list(re.finditer(
+        r'(?m)^[ \t]*versionName[ \t]*=[ \t]*("[0-9]+(?:\.[0-9]+){2}(?:-[A-Za-z0-9]+(?:[.-][A-Za-z0-9]+)*)?")[ \t]*$', text))
+    if len(codes) != 1 or len(names) != 1:
+        raise UpdateError("Expected unique supported bare versionCode/versionName literals; manual review required.")
+    code, name = int(codes[0].group(1)), names[0].group(1)[1:-1]
+    if code > 2_147_483_647 or len(name) > 128:
+        raise UpdateError("Version literals exceed the supported bounds; manual review required.")
+    # The projected remainder is compared with the whole trusted original below.
+    # DSL scope, comments, whitespace, imports, plugins and dependencies stay exact.
+    spans = sorted(((codes[0].start(1), codes[0].end(1), "<version-code-literal>"),
+                    (names[0].start(1), names[0].end(1), "<version-name-literal>")), reverse=True)
+    for start, end, marker in spans:
+        text = text[:start] + marker + text[end:]
+    return code, name, text.encode("utf-8")
+
+
+def canonical_build_configuration(repo: Path, catalog: dict) -> bytes:
+    """The full original survives source archives; its existing catalog pins remain authoritative."""
+    path = owned_compatibility_path(repo, CANONICAL_BUILD_CONFIGURATION_PATH)
+    if not path.is_file():
+        raise UpdateError("Whole pinned original version/build configuration is unavailable; manual review required.")
+    with path.open("rb") as source:
+        contents = source.read(MAX_MANIFEST_BYTES + 1)
+    pin = catalog["paths"][BUILD_CONFIGURATION_PATH]
+    canonical = normalized_input(contents, pin["hashNormalization"])
+    if (len(contents) > MAX_MANIFEST_BYTES or
+            hashlib.sha256(canonical).hexdigest() != pin["sha256"] or blob_oid(canonical) != pin["blob"]):
+        raise UpdateError("Whole original version/build configuration differs from its trusted canonical pin.")
+    return canonical
+
+
+def compare_build_version_metadata(repo: Path, catalog: dict, previous: bytes, incoming: bytes) -> dict:
+    """Accept only monotonic versionCode metadata after a full original-byte inverse comparison."""
+    original = canonical_build_configuration(repo, catalog)
+    baseline_code, baseline_name, baseline_body = build_configuration_version_literals(original)
+    old_code, old_name, old_body = build_configuration_version_literals(previous)
+    new_code, new_name, new_body = build_configuration_version_literals(incoming)
+    if old_body != baseline_body or new_body != baseline_body:
+        raise UpdateError("Non-version build configuration bytes changed; manual adaptation remains required.")
+    if (old_code < baseline_code or (old_code == baseline_code and old_name != baseline_name) or
+            new_code < old_code or (new_code == old_code and new_name != old_name)):
+        raise UpdateError("Version metadata does not preserve monotonic versionCode; manual review required.")
+    return {"path": BUILD_CONFIGURATION_PATH,
+            "oldVersionCode": old_code, "newVersionCode": new_code,
+            "oldVersionName": old_name, "newVersionName": new_name,
+            "oldSha256": source_digest(previous), "newSha256": source_digest(incoming),
+            "oldBlob": blob_oid(normalized_source(previous)), "newBlob": blob_oid(normalized_source(incoming)),
+            "canonicalConfigurationSha256": hashlib.sha256(original).hexdigest(),
+            "unchangedOriginalBodySha256": hashlib.sha256(baseline_body).hexdigest(),
+            "comparison": "wholeOriginalBytesExceptTwoSupportedVersionLiterals"}
+
+
 def compatibility_inputs(repo: Path, manifest: dict, catalog: dict | None) -> list[dict]:
     entries = [{**item, "kind": kind} for kind, key in (("source", "sources"), ("resource", "resources"))
                for item in manifest.get(key, [])]
@@ -366,8 +429,15 @@ def compatibility_inputs(repo: Path, manifest: dict, catalog: dict | None) -> li
                 item["kind"] = "buildConfiguration"
         for item in entries:
             pin = catalog["paths"].get(item["path"])
-            if (pin is None or pin["sha256"] != item["sha256"] or
-                    pin["hashNormalization"] != item.get("hashNormalization", "lf")):
+            if pin is None or pin["hashNormalization"] != item.get("hashNormalization", "lf"):
+                raise UpdateError(f"Inventory differs from the reviewed canonical baseline: {item['path']}")
+            if item["path"] == BUILD_CONFIGURATION_PATH:
+                # A previously accepted metadata-only candidate must remain checkable.
+                # Its manifest still pins its exact local bytes; every other byte keeps
+                # the same complete canonical original, rather than rewriting the catalog.
+                original = canonical_build_configuration(repo, catalog)
+                compare_build_version_metadata(repo, catalog, original, local_input(repo, item))
+            elif pin["sha256"] != item["sha256"]:
                 raise UpdateError(f"Inventory differs from the reviewed canonical baseline: {item['path']}")
     # Verify local bytes even for callers that supplied an in-memory test inventory.
     for item in entries:
@@ -684,6 +754,7 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
         "releaseUrl": release.get("html_url"), "candidateBranch": branch_name(tag, commit),
         "status": "upToDate" if commit == manifest["upstreamCommit"] else "updateAvailable",
         "changedReusedSources": [], "changedResources": [], "changedAdaptedInputs": [],
+        "versionMetadataChanges": [],
         "featuresNeedingReview": [],
         "featureCoverage": manifest.get("featureCoverage", {}), "loginApiChanged": False,
         "windowsApiContractChanged": False, "networkBehaviorChanged": False,
@@ -714,7 +785,8 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
             })
         else:
             baseline_oid = item["blob"] if adapted else (
-                catalog["paths"][path]["blob"] if catalog is not None else blob_oid(normalized_input(previous, normalization)))
+                catalog["paths"][path]["blob"] if catalog is not None and item["kind"] != "buildConfiguration"
+                else blob_oid(normalized_input(previous, normalization)))
             if incoming["sha"] == baseline_oid:
                 new_hash = item["sha256"]
                 report["unchangedBlobInputs"] += 1
@@ -731,12 +803,22 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
             if not adapted:
                 hashes[path] = new_hash
             if new_hash != item["sha256"]:
-                reasons.append({
-                    "code": "adaptedInputChanged" if adapted else ("canonicalInputChanged" if catalog is not None else "pinnedInputChanged"),
-                    "path": path, "kind": item["kind"], "oldSha256": item["sha256"],
-                    "newSha256": new_hash, "hashNormalization": normalization,
-                    "message": "Review the canonical original and affected Windows adaptation; fixed pins were not rewritten.",
-                })
+                metadata_only = False
+                metadata_rejection = None
+                if item["kind"] == "buildConfiguration" and path == BUILD_CONFIGURATION_PATH and catalog is not None:
+                    try:
+                        metadata = compare_build_version_metadata(repo, catalog, previous, contents)
+                        report["versionMetadataChanges"].append(metadata)
+                        metadata_only = True
+                    except UpdateError as error:
+                        metadata_rejection = str(error)
+                if not metadata_only:
+                    reasons.append({
+                        "code": "adaptedInputChanged" if adapted else ("canonicalInputChanged" if catalog is not None else "pinnedInputChanged"),
+                        "path": path, "kind": item["kind"], "oldSha256": item["sha256"],
+                        "newSha256": new_hash, "hashNormalization": normalization,
+                        "message": metadata_rejection or "Review the canonical original and affected Windows adaptation; fixed pins were not rewritten.",
+                    })
         if new_hash != item["sha256"]:
             if adapted:
                 detail = {key: item[key] for key in ("path", "localPath", "upstreamCommit", "blob", "hashNormalization", "referenceOnly")}
@@ -872,6 +954,7 @@ def sync_update(repo: Path, manifest: dict, report: dict, hashes: dict[str, str]
                 (candidate / "app/build.gradle.kts").read_bytes()) != hashes["app/build.gradle.kts"]:
             raise UpdateError("Merged build configuration is not the verified upstream input.")
         candidate_manifest["lastSourceReview"] = {
+            "versionMetadataChanges": report.get("versionMetadataChanges", []),
             "changedReusedSources": report["changedReusedSources"],
             "changedResources": report.get("changedResources", []),
             "featuresNeedingReview": report["featuresNeedingReview"],

@@ -1144,7 +1144,8 @@ internal class DesktopWindowsVideoActions(
                             }
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }
-                                TextButton(onClick = { if(current()) assembly.domains.engagement.openCoinDialog() }) { Text("投币") }
+                                TextButton(onClick = { engagementBinding?.openCoinDialog() },
+                                    enabled = engagementBinding?.isOwned() == true && engagement.coinCount < engagement.coinLimit) { Text("投币") }
                                 TextButton(onClick = {
                                     if (desktopWindowsVideoCanChooseDownloadQuality(success)) openDownloadSelection(success)
                                     else if (current()) actions.download(assembly, success)
@@ -1494,25 +1495,7 @@ internal class DesktopWindowsVideoActions(
                 }) { Text("稍后") } })
         }
     }
-    if(engagement.coinDialogVisible) {
-        val remainingCoins=(engagement.coinLimit-engagement.coinCount).coerceIn(0,engagement.coinLimit)
-        DesktopWindowsPlayerDialog(
-            title = "投币",
-            onDismissRequest = { if(current()) assembly.domains.engagement.setCoinDialogVisible(false) },
-            preferredHeightDp = 280,
-        ) {
-            AlertDialog(
-            onDismissRequest={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)},
-            title={Text("投币")}, text={Column {
-                Text(if(remainingCoins==0) "已达到该视频的投币上限" else "选择投币数量（还可投${remainingCoins}枚）")
-                if(engagement.isRepost) Text("转载视频最多可投1枚硬币")
-            }},
-            confirmButton={Row {(1..remainingCoins).forEach {count-> TextButton(onClick={if(current()) {
-                if (engagementBinding?.coin(count, false) == true) assembly.domains.engagement.setCoinDialogVisible(false)
-            }}) {Text("${count}枚")} }}},
-            dismissButton={TextButton(onClick={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)}) {Text("取消")}})
-        }
-    }
+    DesktopWindowsVideoCoinSection(engagementBinding)
 }
 
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)

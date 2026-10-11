@@ -16,7 +16,7 @@ internal class DesktopWindowsVideoEngagementBinding private constructor(
     val subject: VideoSubjectSnapshot,
     private val stillOwned: () -> Boolean,
     private val stillFeedbackOwned: () -> Boolean,
-    admission: (() -> Unit) -> Boolean,
+    private val admission: (() -> Unit) -> Boolean,
     private val feedbackSurvivesUiClose: Boolean,
 ) : AutoCloseable {
     constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication, engagement: VideoEngagementViewModel,
@@ -72,6 +72,41 @@ internal class DesktopWindowsVideoEngagementBinding private constructor(
         engagement.doCoinWithDesktopPresentation(count, alsoLike, presentation = presentation)
         return true
     }
+
+    /** Create no client or model copy: this request only scopes the original dialog. */
+    fun openCoinDialog(): Boolean {
+        val value = capture() ?: return false
+        if (!isOwned() || value.coinCount >= value.coinLimit) return false
+        val request = DesktopWindowsVideoCoinDialogRequest(sourceOwner, subject, presentation, admission)
+        try {
+            engagement.openCoinDialogWithDesktopRequest(request)
+        } finally {
+            if (state.value.desktopCoinDialogRequest !== request) request.close()
+        }
+        return state.value.desktopCoinDialogRequest === request && state.value.coinDialogVisible && request.isOwned()
+    }
+    fun dismissCoinDialog(request: DesktopWindowsVideoCoinDialogRequest): Boolean {
+        if (request.sourceOwner !== sourceOwner || request.subject != subject) return false
+        var dismissed = false
+        return request.admit {
+            val current = state.value
+            if (current.desktopCoinDialogRequest === request && current.coinDialogVisible &&
+                current.subject == subject) {
+                engagement.setCoinDialogVisible(false)
+                dismissed = true
+            }
+        } && dismissed
+    }
+    fun coin(request: DesktopWindowsVideoCoinDialogRequest, count: Int, alsoLike: Boolean): Boolean {
+        val value = capture() ?: return false
+        if (!isOwned() || request.sourceOwner !== sourceOwner || request.subject != subject ||
+            value.desktopCoinDialogRequest !== request || !value.coinDialogVisible ||
+            !request.isOwned() || count !in 1..(value.coinLimit - value.coinCount).coerceIn(0, value.coinLimit)) return false
+        // The original VM consumes this exact request at final admission. Its API
+        // and confirmed feedback retain the existing presentation after UI close.
+        engagement.doCoinWithDesktopPresentation(count, alsoLike, presentation = presentation, request = request)
+        return true
+    }
     fun feedback(kind: DesktopWindowsVideoFeedbackKind): DesktopWindowsVideoFeedbackOrigin? {
         var selected: DesktopWindowsVideoFeedbackOrigin? = null
         presentation.admitFeedback {
@@ -108,6 +143,65 @@ internal class DesktopWindowsVideoEngagementBinding private constructor(
     fun admit(action: () -> Unit): Boolean = presentation.admit(action)
     fun admitFeedback(action: () -> Unit): Boolean = presentation.admitFeedback { if (isFeedbackOwned()) action() } && isFeedbackOwned()
     override fun close() { alive.set(false); presentation.retireFeedbackIfInvalid() }
+}
+
+/** Public shell because the original UI state is public; all authority stays internal.
+ * Identity is the generation. No sourceVersion equivalence, API or independent state owner. */
+class DesktopWindowsVideoCoinDialogRequest internal constructor(
+    internal val sourceOwner: DesktopOriginalVideoAcceptedPublication,
+    internal val subject: VideoSubjectSnapshot,
+    private val presentation: DesktopOriginalVideoEngagementPresentation,
+    private val ownerAdmission: (() -> Unit) -> Boolean,
+) : AutoCloseable {
+    private val retired = AtomicBoolean(false)
+    internal val context get() = presentation.context
+    internal fun isOwned(): Boolean = !retired.get() && presentation.isOwned()
+    internal fun matchesPresentation(expected: DesktopOriginalVideoEngagementPresentation?): Boolean =
+        presentation === expected
+    internal fun admit(action: () -> Unit): Boolean {
+        if (!isOwned()) return false
+        var applied = false
+        return presentation.admit {
+            if (isOwned()) { action(); applied = true }
+        } && applied
+    }
+    /** Caller already holds existing Store -> entry admission; do not acquire a new lock. */
+    internal fun retireUnderAdmission() { retired.set(true) }
+    override fun close() {
+        // Even when a UI binding has closed, serialize retirement with a currently
+        // admitted publication through the existing owner gate. A retired source
+        // rejects that gate and cannot publish, so atomic retirement then suffices.
+        if (!ownerAdmission { retireUnderAdmission() }) retireUnderAdmission()
+    }
+}
+
+/** Whole fixed original UI in the existing owned native dialog. */
+@Composable
+internal fun DesktopWindowsVideoCoinSection(binding: DesktopWindowsVideoEngagementBinding?) {
+    val currentBinding = binding ?: return
+    val state by currentBinding.state.collectAsState()
+    val request = state.desktopCoinDialogRequest ?: return
+    if (!state.coinDialogVisible || request.sourceOwner !== currentBinding.sourceOwner ||
+        request.subject != currentBinding.subject || state.subject != currentBinding.subject ||
+        !currentBinding.isOwned() || !request.isOwned()) return
+    key(request) {
+        DisposableEffect(request) {
+            // An old disposal retires only its own token, never clears a successor.
+            onDispose { request.close() }
+        }
+        val dismiss = { currentBinding.dismissCoinDialog(request); Unit }
+        DesktopWindowsPlayerDialog("投币", dismiss, preferredHeightDp = 390,
+            presentationVisible = request.isOwned()) {
+            com.android.purebilibili.feature.video.ui.components.CoinDialog(
+                visible = state.coinDialogVisible,
+                currentCoinCount = state.coinCount,
+                userBalance = state.userCoinBalance,
+                maxCoins = state.coinLimit,
+                onDismiss = dismiss,
+                onConfirm = { count, alsoLike -> currentBinding.coin(request, count, alsoLike); Unit },
+            )
+        }
+    }
 }
 
 /** Full original group dialog, inside the existing fixed-size owned native
