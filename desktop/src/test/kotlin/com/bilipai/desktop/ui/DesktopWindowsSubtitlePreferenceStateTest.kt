@@ -150,6 +150,94 @@ class DesktopWindowsSubtitlePreferenceStateTest {
         }
     }
 
+    @Test fun largeTextKeepsSameOriginalSessionAndReturnsAfterRealEntryDisposal(): Unit = runBlocking {
+        withOwner { owner ->
+            val initial = originalSession()
+            val scene = Scene(owner, initial)
+            try {
+                scene.awaitLargeText(owner, false)
+                assertTrue(scene.setLargeText(owner, true))
+                scene.awaitLargeText(owner, true)
+                val refreshed = originalSession(hasSecondaryTrack = false, muted = true)
+                assertEquals(initial.key, refreshed.key)
+                scene.changeSession(refreshed)
+                scene.pump()
+                assertEquals(true, scene.readLargeText(owner))
+                scene.hide()
+                scene.await { scene.readLargeText(owner) == null }
+                assertFalse(scene.setLargeText(owner, false))
+                assertTrue(owner.owner.owns())
+                scene.show(owner, refreshed.copy())
+                scene.awaitLargeText(owner, true)
+                assertTrue(scene.setLargeText(owner, false))
+                scene.awaitLargeText(owner, false)
+                assertNull(owner.player.currentSourceSnapshot())
+            } finally { scene.close() }
+        }
+    }
+
+    @Test fun largeTextResetsOnMountedPartChangeAndRejectsAnotherSessionsSavedPayload(): Unit = runBlocking {
+        withOwner { owner ->
+            val initial = originalSession()
+            val scene = Scene(owner, initial)
+            try {
+                scene.awaitLargeText(owner, false)
+                assertTrue(scene.setLargeText(owner, true))
+                scene.awaitLargeText(owner, true)
+                val nextPart = originalSession(cid = 102L)
+                assertNotEquals(initial.key, nextPart.key)
+                scene.changeSession(nextPart)
+                scene.awaitLargeText(owner, false)
+                assertTrue(scene.setLargeText(owner, true))
+                scene.awaitLargeText(owner, true)
+                scene.hide()
+                scene.await { scene.readLargeText(owner) == null }
+                val nextLanguage = originalSession(cid = 102L, primaryLanguage = "ja-JP")
+                assertNotEquals(nextPart.key, nextLanguage.key)
+                // Same real owner and retained provider, but a different subtitle
+                // session must reject the old true payload during real restore.
+                scene.show(owner, nextLanguage)
+                scene.awaitLargeText(owner, false)
+                assertTrue(scene.setLargeText(owner, true))
+                scene.awaitLargeText(owner, true)
+            } finally { scene.close() }
+        }
+    }
+
+    @Test fun largeTextRejectsAnotherActualAssemblyInTheSameRetainedProvider(): Unit = runBlocking {
+        withOwner { previous ->
+            val session = originalSession()
+            val scene = Scene(previous, session)
+            try {
+                scene.awaitLargeText(previous, false)
+                assertTrue(scene.setLargeText(previous, true))
+                scene.awaitLargeText(previous, true)
+                scene.hide()
+                scene.await { scene.readLargeText(previous) == null }
+                previous.retire()
+                withOwner { replacement ->
+                    assertNotSame(previous.owner, replacement.owner)
+                    assertEquals(previous.epoch, replacement.epoch)
+                    assertNotEquals(previous.owner.subtitleSaveableOwnerKey, replacement.owner.subtitleSaveableOwnerKey)
+                    // Identical session and real provider reuse cannot restore
+                    // the previous Assembly's saved large-text preference.
+                    scene.show(replacement, session.copy())
+                    scene.awaitLargeText(replacement, false)
+                    assertNull(scene.readLargeText(previous))
+                    assertFalse(scene.setLargeText(previous, false))
+                    assertTrue(scene.setLargeText(replacement, true))
+                    scene.awaitLargeText(replacement, true)
+                    scene.hide()
+                    scene.await { scene.readLargeText(replacement) == null }
+                    scene.show(replacement, session.copy())
+                    scene.awaitLargeText(replacement, true)
+                    scene.hide()
+                    scene.await { scene.readLargeText(replacement) == null }
+                }
+            } finally { scene.close() }
+        }
+    }
+
     private fun originalSession(cid: Long = 101L, primaryLanguage: String = "zh-CN",
         hasSecondaryTrack: Boolean = true, preference: SubtitleAutoPreference = SubtitleAutoPreference.ON,
         muted: Boolean = false) = resolveSubtitlePreferenceSession(
@@ -170,6 +258,9 @@ class DesktopWindowsSubtitlePreferenceStateTest {
         private var session by mutableStateOf(initialSession)
         private var nanos = 0L
         private var closed = false
+        // Test-only references to actual public MutableState returned by the
+        // production helper, registered/disposed by the real composition.
+        private val largeTextStates = mutableMapOf<ActualOwner, MutableState<Boolean>>()
         private val bridge = edt {
             DesktopOriginalSubtitleModeBinding(
                 isCurrent = { vm -> activeOwner?.let { it.owner.playback === vm && it.owner.owns() } == true },
@@ -183,17 +274,30 @@ class DesktopWindowsSubtitlePreferenceStateTest {
                 val owner = activeOwner
                 if (owner != null) holder.SaveableStateProvider("same-retained-video-nav-entry") {
                     val mode = rememberDesktopWindowsSubtitleMode(owner.owner.subtitleSaveableOwnerKey, session)
+                    val largeText = rememberDesktopWindowsSubtitleLargeText(owner.owner.subtitleSaveableOwnerKey, session)
+                    DisposableEffect(owner.owner, largeText) {
+                        largeTextStates[owner] = largeText
+                        onDispose { if (largeTextStates[owner] === largeText) largeTextStates.remove(owner) }
+                    }
                     val latestMode by rememberUpdatedState(mode.value)
                     DisposableEffect(owner.owner, bridge) {
                         val registration = bridge.register(owner.owner.playback, { latestMode }, { mode.value = it })
                         onDispose { registration.close() }
                     }
-                    Text(mode.value.name)
+                    Text("${mode.value.name} · large=${largeText.value}")
                 }
             }
         }
         fun set(owner: ActualOwner, mode: SubtitleDisplayMode) = edt { bridge.set(owner.owner.playback, mode) }
         fun read(owner: ActualOwner) = edt { bridge.read(owner.owner.playback) }
+        fun readLargeText(owner: ActualOwner) = edt { largeTextStates[owner]?.value }
+        fun setLargeText(owner: ActualOwner, value: Boolean): Boolean = edt {
+            if (activeOwner !== owner) false else {
+                var changed = false
+                val admitted = owner.admit { largeTextStates[owner]?.let { it.value = value; changed = true } }
+                admitted && changed
+            }
+        }
         fun changeSession(value: SubtitlePreferenceSession) = edt { session = value }
         fun hide() = edt { activeOwner = null }
         fun show(owner: ActualOwner, value: SubtitlePreferenceSession) = edt { session = value; activeOwner = owner }
@@ -206,6 +310,7 @@ class DesktopWindowsSubtitlePreferenceStateTest {
             while (true) { render(); if (condition()) return@withTimeout; delay(12L) }
         }
         suspend fun awaitMode(owner: ActualOwner, expected: SubtitleDisplayMode) = await { read(owner) == expected }
+        suspend fun awaitLargeText(owner: ActualOwner, expected: Boolean) = await { readLargeText(owner) == expected }
         override fun close() = edt {
             if (!closed) {
                 closed = true

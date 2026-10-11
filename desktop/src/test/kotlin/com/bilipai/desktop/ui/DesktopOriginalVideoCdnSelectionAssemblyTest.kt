@@ -11,6 +11,8 @@ import com.bilipai.desktop.player.*
 import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.cache.*
 import com.bilipai.desktop.plugins.*
+import com.sun.jna.Memory
+import com.sun.jna.Pointer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.swing.Swing
@@ -162,6 +164,74 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
     }
 
+    @Test fun actualNetworkRetryRefreshesUrlsWhileHealthySameRequestKeepsItsSource(): Unit = runBlocking {
+        Fixture(refreshExpiredUrls = true).useSuspending { f ->
+            f.load(A, 101, 104, audioLang = "en")
+            // The ABI reports loaded/codec state, not a physical first-frame receipt.
+            // Recovery Ready requires that separate evidence and is not fabricated here.
+            assertTrue(f.player.state.value.ready)
+            assertFalse(f.player.state.value.loading)
+            val original = f.accepted(); val load = f.owner.captureLoadState(); val state = f.state()
+            assertEquals("en", state.currentAudioLang)
+            assertEquals(1, state.cdnCount, "This case must exercise network retry, not the prior CDN-switch policy")
+            assertEquals(1, f.playRequests.size)
+            assertEquals(retryVideo(1), original.nativeSource.source.videoUrl)
+            assertEquals(retryAudio(1), original.nativeSource.source.audioUrl)
+            f.ui {
+                assertNull(f.owner.section.playerError)
+                f.owner.playback.loadVideo(A, 101, cid = 104, audioLang = "en", autoPlay = false)
+            }
+            // The healthy same-subject path returns synchronously before starting a new request.
+            assertEquals(1, f.playRequests.size)
+            assertSame(original, f.accepted())
+            assertSame(load.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(load.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+
+            val failed = f.failExpiredNetwork()
+            assertEquals(original.sourceVersion, failed.sourceVersion)
+            withTimeout(8_000) {
+                while (f.playRequests.size < 2 || f.owner.native.current() === original ||
+                    (f.owner.playback.uiState.value as? VideoPlaybackUiState.Success)?.playUrl != retryVideo(2)) delay(5)
+            }
+            val replacement = f.accepted()
+            val retryJob = f.publicationRequestJob(replacement)
+            withTimeout(8_000) { retryJob.join() }
+            assertFalse(retryJob.isCancelled)
+            assertEquals(2, f.playRequests.size, "Exactly one fresh playurl request follows the terminal network failure")
+            for (request in f.playRequests) {
+                assertEquals("GET", request.method)
+                assertEquals(A, request.url.queryParameter("bvid"))
+                assertEquals("104", request.url.queryParameter("cid"))
+                assertEquals("en", request.url.queryParameter("cur_language"))
+            }
+            val retried = f.owner.captureLoadState()
+            assertNotSame(load.currentRequest, retried.currentRequest)
+            assertTrue(retried.currentLoadRequestToken > load.currentLoadRequestToken)
+            assertTrue(assertNotNull(retried.currentRequest).force)
+            assertEquals("en", retried.currentRequest?.audioLang)
+            assertNotSame(original, replacement)
+            assertTrue(replacement.sourceVersion > original.sourceVersion)
+            assertEquals(retryVideo(2), replacement.nativeSource.source.videoUrl)
+            assertEquals(retryAudio(2), replacement.nativeSource.source.audioUrl)
+            assertEquals("en", f.state().currentAudioLang)
+            assertEquals(state.selectedAudioQuality, f.state().selectedAudioQuality)
+            assertEquals(state.requestedAudioQuality, f.state().requestedAudioQuality)
+            assertEquals(27.75, replacement.nativeSource.source.startPositionSeconds)
+            assertTrue(replacement.nativeSource.source.startPaused)
+            withTimeout(8_000) { while (f.runtimeBinding.generation(replacement) == null) delay(5) }
+            f.ui {
+                f.actor.drain(); f.actor.loaded()
+                assertTrue(f.player.ownsSourceSnapshot(replacement.nativeSource))
+                assertEquals(replacement.nativeSource.source.nativeLoadUrl, f.actor.native.loads.last()[1])
+                @Suppress("UNCHECKED_CAST") val options = f.actor.native.loads.last()[4] as Map<String, String>
+                assertEquals("27.75", options["start"])
+                assertEquals("yes", options["pause"])
+                assertEquals(27_750L, f.owner.section.currentPosition)
+                assertFalse(f.owner.section.playWhenReady)
+            }
+        }
+    }
+
     private data class Capture(val state: PlaybackSessionState, val job: Job)
     private data class CdnEmission(val source: DesktopOriginalVideoAcceptedPublication, val index: Int, val runtimeGeneration: Long?)
     private data class HeldDispatch(val context: CoroutineContext, val runnable: Runnable) {
@@ -201,7 +271,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
 
-    private inner class Fixture(private val holdTags: Boolean = false) {
+    private inner class Fixture(private val holdTags: Boolean = false, private val refreshExpiredUrls: Boolean = false) {
         val directory = Files.createTempDirectory("cdn-original-owner-")
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
@@ -221,6 +291,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         val cdnEmissions = CopyOnWriteArrayList<CdnEmission>()
         val toasts = CopyOnWriteArrayList<String>()
         private val unexpectedRequests = CopyOnWriteArrayList<String>()
+        val playRequests = CopyOnWriteArrayList<Request>()
+        @Volatile private var firstUrlsExpired = false
         val tagsEntered = CompletableDeferred<Unit>()
         val tagsRelease = CountDownLatch(if (holdTags) 1 else 0)
         var beforePreparation: ((DesktopOriginalMediaCachePreparation) -> Unit)? = null
@@ -293,7 +365,13 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                         "/x/frontend/finger/spi" -> """{"code":0,"data":{"b_3":"synthetic-visitor","b_4":"synthetic-visitor4"}}"""
                         "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":false,"vip":{"status":0},"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
                         "/x/web-interface/view" -> viewJson(bvid)
-                        "/x/player/wbi/playurl", "/x/player/playurl" -> playJson(bvid)
+                        "/x/player/wbi/playurl", "/x/player/playurl" -> {
+                            val revision = synchronized(playRequests) { playRequests.add(request); playRequests.size }
+                            if (refreshExpiredUrls) {
+                                check(bvid == A && revision in 1..2)
+                                retryPlayJson(revision)
+                            } else playJson(bvid)
+                        }
                         "/x/web-interface/archive/related" -> """{"code":0,"data":[]}"""
                         "/x/tag/archive/tags" -> {
                             if (holdTags && bvid == A) { tagsEntered.complete(Unit); check(tagsRelease.await(8, TimeUnit.SECONDS)) }
@@ -397,6 +475,10 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         private fun memoryMedia(request: Request): Response {
             if (request.method !in setOf("HEAD", "GET") || request.url.encodedPath !in
                 listOf(A, B).flatMap { listOf("/$it-video.m4s", "/$it-audio.m4s") }) rejectRequest(request)
+            if (refreshExpiredUrls && firstUrlsExpired && request.url.queryParameter("retry_revision") == "1") {
+                return Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(403).message("expired fixture URL")
+                    .body(ByteArray(0).toResponseBody("application/octet-stream".toMediaType())).build()
+            }
             val content = ByteArray(4096) { (it % 251).toByte() }
             val builder = Response.Builder().request(request).protocol(Protocol.HTTP_1_1).message("memory media")
                 .header("Accept-Ranges", "bytes").header("ETag", "\"synthetic-${request.url.encodedPath}\"")
@@ -429,8 +511,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             return Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("memory PBP")
                 .body(body.toResponseBody("application/json".toMediaType())).build()
         }
-        suspend fun load(bvid: String, aid: Long, cid: Long) {
-            ui { owner.playback.loadVideo(bvid, aid, cid = cid, autoPlay = false) }
+        suspend fun load(bvid: String, aid: Long, cid: Long, audioLang: String? = null) {
+            ui { owner.playback.loadVideo(bvid, aid, cid = cid, audioLang = audioLang, autoPlay = false) }
             awaitLoaded(bvid)
             ui { actor.drain(); actor.loaded(); player.setPaused(true); actor.drain() }
             withTimeout(8_000) { while (runtimeBinding.generation(accepted()) == null) delay(5) }
@@ -441,6 +523,29 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         suspend fun awaitLoaded(bvid: String) = withTimeout(8_000) {
             while ((owner.playback.uiState.value as? VideoPlaybackUiState.Success)?.info?.bvid != bvid ||
                 owner.native.current()?.request?.bvid != bvid) delay(5)
+        }
+        /** Deliver actual log-message and end-file ABI input to the existing memory MPV actor.
+         * The real registered section listener and original recovery controller initiate retry;
+         * this helper never calls VM.retry, replaces a VM state or fabricates a source ticket. */
+        suspend fun failExpiredNetwork(): PlayerFailure = uiResult {
+            check(refreshExpiredUrls)
+            firstUrlsExpired = true
+            fun text(value: String): Memory = value.toByteArray(Charsets.UTF_8).let { bytes ->
+                Memory(bytes.size + 1L).apply { write(0, bytes, 0, bytes.size); setByte(bytes.size.toLong(), 0) }
+            }
+            text("ffmpeg").use { prefix -> text("error").use { level -> text("connection failed").use { message ->
+                Memory(32).use { data ->
+                    data.clear(); data.setPointer(0, prefix); data.setPointer(8, level); data.setPointer(16, message)
+                    data.setInt(24, 20)
+                    PremiumRecoveryActor::class.java.getDeclaredMethod("event", Integer.TYPE, Pointer::class.java)
+                        .apply { isAccessible = true }.invoke(actor, 2, data)
+                }
+            } } }
+            actor.fail(-13).also { failure ->
+                assertSame(failure, player.state.value.failure)
+                assertEquals(PlayerFailureKind.NETWORK, failure.kind)
+                assertEquals(-13, failure.nativeCode)
+            }
         }
         suspend fun holdCdnSwitch(): HeldDispatch = uiResult {
             assertTrue(owner.environment.plugins.isPlaybackDispatchCurrent(accepted()))
@@ -495,6 +600,9 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             return """{"code":0,"data":{"bvid":"$bvid","aid":$aid,"cid":$cid,"title":"Fixture $bvid","pic":"https://media.invalid/cover.jpg","duration":60,"owner":{"mid":51,"name":"Fixture","face":""},"pages":[{"cid":$cid,"page":1,"part":"Fixture","duration":60}]}}"""
         }
         private fun playJson(bvid: String): String = """{"code":0,"data":{"quality":64,"timelength":60000,"accept_quality":[64],"accept_description":["720P"],"dash":{"duration":60,"video":[{"id":64,"baseUrl":"${video(bvid)}","backupUrl":["${backupVideo(bvid)}"],"bandwidth":100000,"mime_type":"video/mp4","codecs":"avc1.640028","width":1280,"height":720,"frameRate":"30","codecid":7,"segment_base":{"initialization":"0-31","index_range":"32-63"}}],"audio":[{"id":30280,"baseUrl":"${audio(bvid)}","backupUrl":["${backupAudio(bvid)}"],"bandwidth":192000,"mime_type":"audio/mp4","codecs":"mp4a.40.2","segment_base":{"initialization":"0-31","index_range":"32-63"}}]}}}"""
+        private fun retryVideo(revision: Int) = "https://media.invalid/$A-video.m4s?retry_revision=$revision"
+        private fun retryAudio(revision: Int) = "https://media.invalid/$A-audio.m4s?retry_revision=$revision"
+        private fun retryPlayJson(revision: Int): String = """{"code":0,"data":{"quality":64,"timelength":60000,"cur_language":"en","accept_quality":[64],"accept_description":["720P"],"dash":{"duration":60,"video":[{"id":64,"baseUrl":"${retryVideo(revision)}","backupUrl":[],"bandwidth":100000,"mime_type":"video/mp4","codecs":"avc1.640028","width":1280,"height":720,"frameRate":"30","codecid":7,"segment_base":{"initialization":"0-31","index_range":"32-63"}}],"audio":[{"id":30280,"baseUrl":"${retryAudio(revision)}","backupUrl":[],"bandwidth":192000,"mime_type":"audio/mp4","codecs":"mp4a.40.2","segment_base":{"initialization":"0-31","index_range":"32-63"}}]}}}"""
         private fun deleteCreatedDirectory(directory: Path, prefix: String) {
             val absolute = directory.toAbsolutePath().normalize(); val real = directory.toRealPath()
             val temp = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()

@@ -3,12 +3,19 @@ package com.bilipai.desktop.download
 import com.android.purebilibili.feature.download.DownloadStatus
 import com.android.purebilibili.feature.download.DownloadAssetKind
 import com.android.purebilibili.feature.download.DownloadAssetStatus
+import com.android.purebilibili.feature.download.DownloadAssetState
 import com.android.purebilibili.feature.download.HttpDownloadAssetRequest
 import com.android.purebilibili.feature.download.ResumableAssetDownloader
 import com.android.purebilibili.feature.download.LocalDanmakuManifest
 import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.PlaybackSegment
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
@@ -19,10 +26,12 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.assertNull
@@ -286,6 +295,268 @@ class DesktopDownloadManagerTest {
             restored.savePlaybackPosition(id, 599_000L, 600_000L)
             assertEquals(0.0, restored.offlinePlayback(id).startPositionSeconds)
         } finally { restored.close() }
+    }
+
+    @Test fun `completed optional danmaku publishes aggregate bytes before any media request`(): Unit = runBlocking {
+        val root = Files.createTempDirectory("bilipai-optional-complete-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<String>()
+        val activeRequests = AtomicInteger()
+        val workers = CopyOnWriteArrayList<Job>()
+        val published = CompletableDeferred<DownloadTask>()
+        val release = CompletableDeferred<Unit>()
+        val client = optionalAssetMemoryClient(requests, activeRequests)
+        val muxer = DownloadMuxer { video, audio, output ->
+            Files.write(output, Files.readAllBytes(requireNotNull(video)) + Files.readAllBytes(requireNotNull(audio)))
+        }
+        lateinit var manager: DesktopDownloadManager
+        manager = DesktopDownloadManager(client, state, muxer,
+            danmakuDownloader = { _, directory, callback ->
+                workers += DownloadDanmakuTransport.taskOwner().callerJob
+                val segment = directory.resolve("optional.pb")
+                Files.write(segment, ByteArray(13))
+                callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
+                    totalBytes = 13L, downloadedBytes = 13L, filePath = segment.toString(), segmentCount = 1))
+                published.complete(manager.tasks.value.single())
+                release.await()
+                listOf(segment.toString()) to null
+            }, publication = localDownloadPublication())
+        try {
+            manager.enqueue(PlaybackSource("https://cdn.example/video", "https://cdn.example/audio"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = 99, cover = "https://cdn.example/cover"))
+            val beforeMedia = withTimeout(5_000) { published.await() }
+            assertEquals(DownloadStatus.DOWNLOADING, beforeMedia.status)
+            assertEquals(20L, beforeMedia.downloadedBytes)
+            assertEquals(20L, beforeMedia.totalBytes)
+            assertEquals(0.9f, beforeMedia.progress)
+            assertEquals(7L, beforeMedia.item.assets.single { it.kind == DownloadAssetKind.COVER }.downloadedBytes)
+            val danmaku = beforeMedia.item.assets.single { it.kind == DownloadAssetKind.DANMAKU }
+            assertEquals(DownloadAssetStatus.COMPLETED, danmaku.status)
+            assertEquals(13L, danmaku.downloadedBytes)
+            assertTrue(requests.isNotEmpty())
+            assertTrue(requests.all { it.substringAfter(' ') == "/cover" }, requests.toString())
+
+            release.complete(Unit)
+            val completed = awaitOptionalTaskCompletion(manager)
+            withTimeout(5_000) { workers.single().join() }
+            assertEquals(60L, completed.downloadedBytes)
+            assertEquals(60L, completed.totalBytes)
+            assertEquals(40L, completed.item.fileSize)
+            assertEquals(40L, Files.size(Path.of(requireNotNull(completed.outputFile))))
+            manager.close()
+            val restoredClient = optionalAssetMemoryClient(CopyOnWriteArrayList(), AtomicInteger())
+            val restored = DesktopDownloadManager(restoredClient, state, muxer, publication = localDownloadPublication())
+            try {
+                val cold = restored.tasks.value.single()
+                assertEquals(DownloadStatus.COMPLETED, cold.status)
+                assertEquals(60L, cold.downloadedBytes)
+                assertEquals(60L, cold.totalBytes)
+                assertEquals(DownloadAssetStatus.COMPLETED,
+                    cold.item.assets.single { it.kind == DownloadAssetKind.DANMAKU }.status)
+            } finally {
+                restored.close()
+                restoredClient.dispatcher.executorService.shutdownNow()
+                restoredClient.connectionPool.evictAll()
+            }
+        } finally {
+            closeOptionalAssetFixture(manager, client, listOf(release), workers, activeRequests)
+        }
+    }
+
+    @Test fun `failed and skipped optional danmaku replace their partial aggregate before media starts`(): Unit = runBlocking {
+        for (terminal in listOf(DownloadAssetStatus.FAILED, DownloadAssetStatus.SKIPPED)) {
+            val root = Files.createTempDirectory("bilipai-optional-${terminal.name.lowercase()}-")
+            val requests = CopyOnWriteArrayList<String>()
+            val activeRequests = AtomicInteger()
+            val workers = CopyOnWriteArrayList<Job>()
+            val partial = CompletableDeferred<DownloadTask>()
+            val published = CompletableDeferred<DownloadTask>()
+            val replacePartial = CompletableDeferred<Unit>()
+            val release = CompletableDeferred<Unit>()
+            val client = optionalAssetMemoryClient(requests, activeRequests)
+            lateinit var manager: DesktopDownloadManager
+            manager = DesktopDownloadManager(client, root.resolve("state.json"), DownloadMuxer { video, audio, output ->
+                Files.write(output, Files.readAllBytes(requireNotNull(video)) + Files.readAllBytes(requireNotNull(audio)))
+            }, danmakuDownloader = { _, directory, callback ->
+                workers += DownloadDanmakuTransport.taskOwner().callerJob
+                val segment = directory.resolve("optional.pb.part")
+                Files.write(segment, ByteArray(5))
+                callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.DOWNLOADING,
+                    totalBytes = 13L, downloadedBytes = 5L, tempPath = segment.toString()))
+                partial.complete(manager.tasks.value.single())
+                replacePartial.await()
+                Files.delete(segment)
+                callback(DownloadAssetState(DownloadAssetKind.DANMAKU, terminal,
+                    errorMessage = if (terminal == DownloadAssetStatus.FAILED) "fixture optional failure" else null))
+                published.complete(manager.tasks.value.single())
+                release.await()
+                emptyList<String>() to null
+            }, publication = localDownloadPublication())
+            try {
+                manager.enqueue(PlaybackSource("https://cdn.example/video", "https://cdn.example/audio"), root,
+                    DownloadMetadata(bvid = "BV1xx411c7mD", cid = 99, cover = "https://cdn.example/cover"))
+                val beforeReplacement = withTimeout(5_000) { partial.await() }
+                assertEquals(12L, beforeReplacement.downloadedBytes, terminal.name)
+                assertEquals(20L, beforeReplacement.totalBytes, terminal.name)
+                assertEquals(0.54f, beforeReplacement.progress, terminal.name)
+                assertEquals(DownloadAssetStatus.DOWNLOADING,
+                    beforeReplacement.item.assets.single { it.kind == DownloadAssetKind.DANMAKU }.status)
+                assertTrue(requests.isNotEmpty())
+                assertTrue(requests.all { it.substringAfter(' ') == "/cover" }, requests.toString())
+
+                replacePartial.complete(Unit)
+                val beforeMedia = withTimeout(5_000) { published.await() }
+                assertEquals(DownloadStatus.DOWNLOADING, beforeMedia.status)
+                assertEquals(7L, beforeMedia.downloadedBytes, terminal.name)
+                assertEquals(7L, beforeMedia.totalBytes, terminal.name)
+                assertEquals(0.9f, beforeMedia.progress, terminal.name)
+                val danmaku = beforeMedia.item.assets.single { it.kind == DownloadAssetKind.DANMAKU }
+                assertEquals(terminal, danmaku.status)
+                assertEquals(0L, danmaku.downloadedBytes)
+                assertEquals(0L, danmaku.totalBytes)
+                assertTrue(requests.all { it.substringAfter(' ') == "/cover" }, requests.toString())
+
+                release.complete(Unit)
+                val completed = awaitOptionalTaskCompletion(manager)
+                withTimeout(5_000) { workers.single().join() }
+                assertEquals(47L, completed.downloadedBytes, terminal.name)
+                assertEquals(47L, completed.totalBytes, terminal.name)
+                assertEquals(terminal, completed.item.assets.single { it.kind == DownloadAssetKind.DANMAKU }.status)
+                assertTrue(requests.any { it.substringAfter(' ') == "/video" })
+                assertTrue(requests.any { it.substringAfter(' ') == "/audio" })
+            } finally {
+                closeOptionalAssetFixture(manager, client, listOf(replacePartial, release), workers, activeRequests)
+            }
+        }
+    }
+
+    @Test fun `paused optional callback cannot publish into the resumed same id worker or persisted task`(): Unit = runBlocking {
+        val root = Files.createTempDirectory("bilipai-optional-retirement-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<String>()
+        val activeRequests = AtomicInteger()
+        val workers = CopyOnWriteArrayList<Job>()
+        val attempts = AtomicInteger()
+        val first = CompletableDeferred<Pair<Job, (DownloadAssetState) -> Unit>>()
+        val second = CompletableDeferred<Pair<Job, (DownloadAssetState) -> Unit>>()
+        val oldRelease = CompletableDeferred<Unit>()
+        val newRelease = CompletableDeferred<Unit>()
+        val client = optionalAssetMemoryClient(requests, activeRequests)
+        val manager = DesktopDownloadManager(client, state, DownloadMuxer { video, _, output ->
+            Files.write(output, Files.readAllBytes(requireNotNull(video)))
+        }, danmakuDownloader = { _, directory, callback ->
+            val worker = DownloadDanmakuTransport.taskOwner().callerJob
+            workers += worker
+            when (attempts.incrementAndGet()) {
+                1 -> {
+                    callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.DOWNLOADING,
+                        totalBytes = 13L, downloadedBytes = 5L))
+                    first.complete(worker to callback)
+                    // Hold this actual cancelled worker until the test permits its queue slot to retire.
+                    withContext(NonCancellable) { oldRelease.await() }
+                    emptyList<String>() to null
+                }
+                2 -> {
+                    callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.DOWNLOADING,
+                        totalBytes = 19L, downloadedBytes = 11L))
+                    second.complete(worker to callback)
+                    newRelease.await()
+                    val segment = directory.resolve("optional.pb")
+                    Files.write(segment, ByteArray(19))
+                    callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
+                        totalBytes = 19L, downloadedBytes = 19L, filePath = segment.toString(), segmentCount = 1))
+                    listOf(segment.toString()) to null
+                }
+                else -> error("Unexpected third fixture worker")
+            }
+        }, publication = localDownloadPublication())
+        try {
+            val id = manager.enqueue(PlaybackSource("https://cdn.example/video"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = 99, includeCover = false))
+            val (oldWorker, oldCallback) = withTimeout(5_000) { first.await() }
+            assertEquals(5L, manager.tasks.value.single().downloadedBytes)
+            assertTrue(requests.isEmpty())
+            manager.pause(id)
+            val paused = manager.tasks.value.single()
+            val pausedDisk = Files.readAllBytes(state)
+            assertEquals(DownloadStatus.PAUSED, paused.status)
+            val obsolete = DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
+                totalBytes = 13L, downloadedBytes = 13L)
+            assertFailsWith<CancellationException> { oldCallback(obsolete) }
+            assertEquals(paused, manager.tasks.value.single())
+            assertContentEquals(pausedDisk, Files.readAllBytes(state))
+            assertTrue(requests.isEmpty())
+
+            oldRelease.complete(Unit)
+            withTimeout(5_000) { oldWorker.join() }
+            manager.resume(id)
+            val (newWorker, _) = withTimeout(5_000) { second.await() }
+            assertFalse(oldWorker === newWorker)
+            val resumed = manager.tasks.value.single()
+            val resumedDisk = Files.readAllBytes(state)
+            assertEquals(id, resumed.id)
+            assertEquals(DownloadStatus.DOWNLOADING, resumed.status)
+            assertEquals(11L, resumed.downloadedBytes)
+            assertEquals(19L, resumed.totalBytes)
+            assertFailsWith<CancellationException> { oldCallback(obsolete) }
+            assertEquals(resumed, manager.tasks.value.single())
+            assertContentEquals(resumedDisk, Files.readAllBytes(state))
+            assertTrue(requests.isEmpty())
+
+            newRelease.complete(Unit)
+            val completed = awaitOptionalTaskCompletion(manager)
+            withTimeout(5_000) { newWorker.join() }
+            assertEquals(id, completed.id)
+            assertEquals(39L, completed.downloadedBytes)
+            assertEquals(39L, completed.totalBytes)
+            assertEquals(DownloadAssetStatus.COMPLETED,
+                completed.item.assets.single { it.kind == DownloadAssetKind.DANMAKU }.status)
+            assertEquals(2, attempts.get())
+            assertTrue(requests.any { it.substringAfter(' ') == "/video" })
+        } finally {
+            closeOptionalAssetFixture(manager, client, listOf(oldRelease, newRelease), workers, activeRequests)
+        }
+    }
+
+    /** All HTTP is intercepted before transport; use the existing original downloader memory fixture. */
+    private fun optionalAssetMemoryClient(requests: MutableList<String>, active: AtomicInteger): OkHttpClient {
+        val cover = memoryClient(ByteArray(7)).interceptors.single()
+        val media = memoryClient(ByteArray(20)).interceptors.single()
+        return OkHttpClient.Builder().addInterceptor { chain ->
+            requests += "${chain.request().method} ${chain.request().url.encodedPath}"
+            active.incrementAndGet()
+            try {
+                (if (chain.request().url.encodedPath == "/cover") cover else media).intercept(chain)
+            } finally { active.decrementAndGet() }
+        }.build()
+    }
+
+    private suspend fun awaitOptionalTaskCompletion(manager: DesktopDownloadManager): DownloadTask {
+        val result = withTimeout(5_000) { manager.tasks.first { tasks ->
+            tasks.single().status in setOf(DownloadStatus.COMPLETED, DownloadStatus.FAILED)
+        }.single() }
+        assertEquals(DownloadStatus.COMPLETED, result.status, result.error)
+        return result
+    }
+
+    private suspend fun closeOptionalAssetFixture(manager: DesktopDownloadManager, client: OkHttpClient,
+        releases: List<CompletableDeferred<Unit>>, workers: List<Job>, activeRequests: AtomicInteger) {
+        try {
+            manager.close()
+        } finally {
+            releases.forEach { it.complete(Unit) }
+            try {
+                withContext(NonCancellable) {
+                    withTimeout(5_000) {
+                        workers.toList().forEach { it.join() }
+                        while (activeRequests.get() != 0) delay(10)
+                    }
+                }
+            } finally {
+                client.dispatcher.executorService.shutdownNow()
+                client.connectionPool.evictAll()
+            }
+        }
     }
 }
 
