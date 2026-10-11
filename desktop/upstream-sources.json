@@ -13861,5 +13861,34 @@
     "manifestSHA256": "729fbf409519ab92a8cd089de45582d669e838db1dd94569e3b63ce780a06dde",
     "feature": "settings-and-personal-list-pinyin-matching",
     "sourceBaselineUnchanged": true
+  },
+  "v034LiveModerationUiSlice": {
+    "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+    "archive": "desktop/upstream-slices/v034-live-moderation-ui",
+    "helper": "desktop/tools/v034_live_moderation_ui.py",
+    "helperSha256": "5e2613f9410083f12287cbbd57980ecded6280e9a12add8e0c580b0b4aa89a3d",
+    "manifestSha256": "607fa24948679bd20713624055348ba193b0dbebcc7753cabbe40309818d228f",
+    "fullOriginalSources": [
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/live/components/LiveInteractionSheets.kt",
+        "archive": "desktop/upstream-slices/v034-live-moderation-ui/app/src/main/java/com/android/purebilibili/feature/live/components/LiveInteractionSheets.kt",
+        "rawBytes": 20629,
+        "rawSha256": "f3e4db4ebabd16ad9b79d7d6d2cd38e7c77384bc783c78dbe4fb6c25a6c853b4",
+        "gitBlob": "894fad12402fa866f355c9a049214e936b946bb9",
+        "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/b2091b1de636e499df80af7e700796b4f52b7f92/app/src/main/java/com/android/purebilibili/feature/live/components/LiveInteractionSheets.kt"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/live/components/LiveChatSection.kt",
+        "archive": "desktop/upstream-slices/v034-live-moderation-ui/app/src/main/java/com/android/purebilibili/feature/live/components/LiveChatSection.kt",
+        "rawBytes": 33653,
+        "rawSha256": "b7d6803bc68725a00a487535dad0fd699d32c4ffcb3012f3110fadc62c6a7b82",
+        "gitBlob": "639af3b4469f5d9ed79e19a8199ca7c9696571ca",
+        "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/b2091b1de636e499df80af7e700796b4f52b7f92/app/src/main/java/com/android/purebilibili/feature/live/components/LiveChatSection.kt"
+      }
+    ],
+    "completeOriginalMenuAndSheets": true,
+    "sameExistingSession": true,
+    "guiExecuted": false,
+    "accountRequestsExecuted": false
   }
 }

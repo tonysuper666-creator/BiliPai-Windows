@@ -85,6 +85,12 @@ class DesktopLiveSession(
         }
     }
 
+    /** Re-check the captured UI source inside the existing Session admission; no new owner. */
+    private fun publishCurrent(current: () -> Boolean, action: () -> Unit): Boolean {
+        var applied = false
+        return publish { if (current()) { action(); applied = true } } && applied
+    }
+
     fun start() {
         if (!owned()) { close(); return }
         if (!startGuard.compareAndSet(false, true)) return
@@ -209,15 +215,15 @@ class DesktopLiveSession(
     }
 
     /** The original server shield state belongs to this exact room/account Session. */
-    suspend fun refreshShieldInfo() {
+    suspend fun refreshShieldInfo(stillCurrent: () -> Boolean = { true }) {
         val caller = currentCoroutineContext()[Job]
-        val current = { caller?.isActive == true && owned() }
+        val current = { caller?.isActive == true && owned() && stillCurrent() }
         var generation = 0L
-        if (!publish { generation = ++shieldRequestGeneration })
+        if (!publishCurrent(current) { generation = ++shieldRequestGeneration })
             throw CancellationException("直播会话或账号已切换")
         val info = media.liveShieldInfo(roomId, primaryEpoch, current).getOrThrow()
         currentCoroutineContext().ensureActive()
-        if (!publish {
+        if (!publishCurrent(current) {
             if (shieldRequestGeneration == generation) {
                 mutableShieldInfo.value = info
                 danmakuFilter = LiveDanmakuFilterPolicy(info)
@@ -228,12 +234,12 @@ class DesktopLiveSession(
         }) throw CancellationException("直播会话或账号已切换")
     }
 
-    private suspend fun moderate(refresh: Boolean, operation: suspend (() -> Boolean) -> Unit) {
+    private suspend fun moderate(refresh: Boolean, stillCurrent: () -> Boolean, operation: suspend (() -> Boolean) -> Unit) {
         val caller = currentCoroutineContext()[Job]
-        val current = { caller?.isActive == true && owned() }
+        val current = { caller?.isActive == true && owned() && stillCurrent() }
         check(current()) { "直播弹幕会话已关闭" }
         check(moderationGuard.compareAndSet(false, true)) { "直播管理操作正在处理" }
-        if (!publish {
+        if (!publishCurrent(current) {
             if (refresh) ++shieldRequestGeneration
             mutableState.update { it.copy(moderating = true, error = null) }
         }) {
@@ -246,18 +252,18 @@ class DesktopLiveSession(
             if (!current()) throw CancellationException("直播会话或账号已切换")
             if (refresh) {
                 // A successful server write invalidates every older hydration/refresh.
-                if (!publish { ++shieldRequestGeneration }) throw CancellationException("直播会话或账号已切换")
-                try { refreshShieldInfo()
+                if (!publishCurrent(current) { ++shieldRequestGeneration }) throw CancellationException("直播会话或账号已切换")
+                try { refreshShieldInfo(current)
                 } catch (cancelled: CancellationException) { throw cancelled
                 } catch (error: Exception) {
                     // As in the original asynchronous refresh, read failure does not
                     // turn an accepted mutation into a failed write eligible for retry.
-                    publish { mutableState.update { it.copy(error = error.message ?: "刷新直播屏蔽设置失败") } }
+                    publishCurrent(current) { mutableState.update { it.copy(error = error.message ?: "刷新直播屏蔽设置失败") } }
                 }
             }
         } catch (cancelled: CancellationException) { throw cancelled
         } catch (error: Exception) {
-            publish { mutableState.update { it.copy(error = error.message ?: "直播管理操作失败") } }
+            publishCurrent(current) { mutableState.update { it.copy(error = error.message ?: "直播管理操作失败") } }
             throw error
         } finally {
             // Publish cleanup before a newly admitted operation can publish busy=true.
@@ -269,33 +275,33 @@ class DesktopLiveSession(
     }
 
     /** Explicit actions only; no automatic mutation is performed by start/refresh. */
-    suspend fun shieldUser(uid: Long) {
+    suspend fun shieldUser(uid: Long, stillCurrent: () -> Boolean = { true }) {
         require(uid > 0L)
-        moderate(true) { current -> media.setLiveShieldUser(roomId, uid, 1, primaryEpoch, current).getOrThrow() }
+        moderate(true, stillCurrent) { current -> media.setLiveShieldUser(roomId, uid, 1, primaryEpoch, current).getOrThrow() }
     }
 
-    suspend fun unshieldUser(uid: Long) {
+    suspend fun unshieldUser(uid: Long, stillCurrent: () -> Boolean = { true }) {
         require(uid > 0L)
-        moderate(true) { current -> media.setLiveShieldUser(roomId, uid, 0, primaryEpoch, current).getOrThrow() }
+        moderate(true, stillCurrent) { current -> media.setLiveShieldUser(roomId, uid, 0, primaryEpoch, current).getOrThrow() }
     }
 
-    suspend fun addShieldKeyword(keyword: String) {
-        moderate(true) { current -> media.addLiveShieldKeyword(keyword, primaryEpoch, current).getOrThrow() }
+    suspend fun addShieldKeyword(keyword: String, stillCurrent: () -> Boolean = { true }) {
+        moderate(true, stillCurrent) { current -> media.addLiveShieldKeyword(keyword, primaryEpoch, current).getOrThrow() }
     }
 
-    suspend fun deleteShieldKeyword(keyword: String) {
-        moderate(true) { current -> media.deleteLiveShieldKeyword(keyword, primaryEpoch, current).getOrThrow() }
+    suspend fun deleteShieldKeyword(keyword: String, stillCurrent: () -> Boolean = { true }) {
+        moderate(true, stillCurrent) { current -> media.deleteLiveShieldKeyword(keyword, primaryEpoch, current).getOrThrow() }
     }
 
-    suspend fun setSilentRule(type: String, level: Int) {
-        moderate(true) { current -> media.setLiveSilentRule(type, level, primaryEpoch, current).getOrThrow() }
+    suspend fun setSilentRule(type: String, level: Int, stillCurrent: () -> Boolean = { true }) {
+        moderate(true, stillCurrent) { current -> media.setLiveSilentRule(type, level, primaryEpoch, current).getOrThrow() }
     }
 
-    suspend fun reportDanmaku(item: LiveDanmakuItem, reason: LiveReportReason) {
+    suspend fun reportDanmaku(item: LiveDanmakuItem, reason: LiveReportReason, stillCurrent: () -> Boolean = { true }) {
         require(reason in DefaultLiveReportReasons)
-        moderate(false) { current ->
+        moderate(false, stillCurrent) { current ->
             var retained = false
-            if (!publish { retained = mutableState.value.messages.any { it === item } })
+            if (!publishCurrent(current) { retained = mutableState.value.messages.any { it === item } })
                 throw CancellationException("直播会话或账号已切换")
             require(retained && !item.isSelf && !item.isSystem) { "此弹幕已不属于当前直播消息" }
             if (item.isSuperChat) media.reportLiveSuperChat(LiveSuperChatReportRequest(

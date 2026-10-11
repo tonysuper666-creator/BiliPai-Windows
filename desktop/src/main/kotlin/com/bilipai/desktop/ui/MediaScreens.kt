@@ -34,6 +34,7 @@ import com.bilipai.desktop.player.ownedSource
 import com.bilipai.desktop.danmaku.DanmakuOverlay
 import com.bilipai.desktop.danmaku.DanmakuDocument
 import com.bilipai.desktop.player.PlaybackSource as NativePlaybackSource
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -52,6 +53,7 @@ fun LiveBrowserScreen(
     retained: DesktopRetainedMedia? = null,
     isMiniLiveMode: () -> Boolean,
     dismissMiniLive: (Long, com.bilipai.desktop.player.PlayerNativeEof) -> Unit,
+    onUserClick: (Long) -> Unit,
 ) {
     val currentMiniLiveMode by rememberUpdatedState(isMiniLiveMode)
     val currentDismissMiniLive by rememberUpdatedState(dismissMiniLive)
@@ -262,7 +264,12 @@ fun LiveBrowserScreen(
                 if (player != null && loaded && memory.ownsNativeSource) Box(Modifier.weight(3f).fillMaxHeight()) { playerContent(player) }
                 chat?.let { session ->
                     key(session) {
-                        LiveChatPanel(session, account != null, Modifier.weight(1f).fillMaxHeight())
+                        LiveChatPanel(session, account != null, Modifier.weight(1f).fillMaxHeight(),
+                            captureCurrent = {
+                                val binding = memory.captureLiveSourceBinding()
+                                if (binding == null || memory.chat !== session) null
+                                else ({ memory.scope.isActive && memory.chat === session && binding.current() })
+                            }, onUserClick = onUserClick)
                     }
                 }
             }
@@ -541,11 +548,48 @@ internal fun com.bilipai.desktop.data.PlaybackSource.toNativePlayback() = Native
     referer, cookieHeader = cookieHeader, title = title, progressiveSegments = progressiveSegments, authorizationReceipt = authorizationReceipt)
 
 @Composable
-private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modifier: Modifier = Modifier) {
+private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modifier: Modifier = Modifier,
+    captureCurrent: () -> (() -> Boolean)?, onUserClick: (Long) -> Unit) {
     val state by session.state.collectAsState()
     val voteSnapshot by session.voteSnapshot.collectAsState()
     var showVotes by remember(session) { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val shieldInfo by session.shieldInfo.collectAsState()
+    var moderationJob by remember(session) { mutableStateOf<Job?>(null) }
+    var moderationNotice by remember(session) { mutableStateOf<Pair<() -> Boolean, String>?>(null) }
+    var shieldSource by remember(session) { mutableStateOf<(() -> Boolean)?>(null) }
+    var reportTarget by remember(session) { mutableStateOf<Pair<com.android.purebilibili.feature.live.LiveDanmakuItem, () -> Boolean>?>(null) }
+    val clipboard = androidx.compose.ui.platform.LocalClipboardManager.current
+    val latestCapture by rememberUpdatedState(captureCurrent)
+    val latestUserClick by rememberUpdatedState(onUserClick)
+    fun captureSource(): (() -> Boolean)? {
+        val source = latestCapture() ?: return null
+        return { scope.isActive && source() }
+    }
+    fun retained(item: com.android.purebilibili.feature.live.LiveDanmakuItem) = session.state.value.messages.any { it === item }
+    fun runModeration(source: () -> Boolean, success: String? = null, requireLogin: Boolean = true,
+        operation: suspend (() -> Boolean) -> Unit) {
+        if (!scope.isActive || !source() || (requireLogin && !isLoggedIn) || state.moderating || moderationJob?.isActive == true) return
+        moderationNotice = null
+        val pending = scope.launch(start = CoroutineStart.LAZY) {
+            val caller = currentCoroutineContext().job
+            val current = { caller.isActive && scope.isActive && source() }
+            try {
+                operation(current)
+                currentCoroutineContext().ensureActive()
+                if (current()) moderationNotice = success?.let { source to it }
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (failure: Exception) {
+                if (current()) moderationNotice = source to (failure.message ?: "直播管理操作失败")
+            } finally {
+                if (moderationJob === caller) moderationJob = null
+            }
+        }
+        // Publish the observed handle before any synchronous completion/early failure.
+        moderationJob = pending
+        pending.start()
+    }
+    DisposableEffect(session) { onDispose { moderationJob?.cancel() } }
     val chatMessageState = remember(session) { DesktopLiveChatMessageState() }
     val draft = remember(session) { DesktopLiveChatDraft() }
     val message = draft.message
@@ -571,11 +615,43 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
             catch (_: Exception) { /* The session exposes the real API error below. */ }
         }
     }
+    shieldSource?.let { source ->
+        if (source()) {
+            com.android.purebilibili.feature.live.components.LiveDmBlockSheet(
+                shieldInfo = shieldInfo, isLoggedIn = isLoggedIn,
+                canEdit = !state.moderating && moderationJob?.isActive != true,
+                onAddKeyword = { keyword -> runModeration(source, "已添加屏蔽词") { session.addShieldKeyword(keyword, it) } },
+                onDeleteKeyword = { keyword -> runModeration(source, "已删除屏蔽词") { session.deleteShieldKeyword(keyword, it) } },
+                onUnblockUser = { user -> runModeration(source, "已解除屏蔽") { session.unshieldUser(user.uid, it) } },
+                onSetRule = { type, level -> runModeration(source, "已更新屏蔽规则") { session.setSilentRule(type, level, it) } },
+                onDismiss = { shieldSource = null },
+            )
+        }
+    }
+    reportTarget?.let { (item, source) ->
+        if (source() && retained(item) && !item.isSelf && !item.isSystem) {
+            com.android.purebilibili.feature.live.components.LiveReportDialog(item,
+                onDismiss = { reportTarget = null },
+                onReport = { reason ->
+                    reportTarget = null
+                    runModeration(source, "举报已提交") { current ->
+                        if (!retained(item)) throw CancellationException("此弹幕已不属于当前直播消息")
+                        session.reportDanmaku(item, reason, current)
+                    }
+                })
+        }
+    }
     Surface(modifier, shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.surfaceVariant) {
         Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 FilterChip(!showVotes, { showVotes = false }, label = { Text("聊天") })
                 FilterChip(showVotes, { showVotes = true }, label = { Text("投票") })
+                TextButton(onClick = {
+                    captureSource()?.let { source -> if (source()) {
+                        shieldSource = source
+                        runModeration(source, requireLogin = false) { session.refreshShieldInfo(it) }
+                    } }
+                }, enabled = captureSource()?.invoke() == true) { Text("屏蔽设置") }
             }
             if (showVotes) {
                 LiveVotePanel(voteSnapshot, Modifier.weight(1f).fillMaxWidth())
@@ -583,9 +659,31 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
                 Column(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(state.status, style = MaterialTheme.typography.labelMedium,
                         color = if (state.connected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-                    DesktopLiveChatMessages(session, state.messages, isLoggedIn, { draft.selectReply(it) },
-                        Modifier.weight(1f).fillMaxWidth(), state = chatMessageState)
+                    DesktopLiveChatMessages(session, state.messages, isLoggedIn, { item ->
+                        if (captureSource()?.invoke() == true && retained(item)) draft.selectReply(item)
+                    }, Modifier.weight(1f).fillMaxWidth(), state = chatMessageState,
+                        captureCurrent = { captureSource() }, onUserClick = { latestUserClick(it) },
+                        canReply = isLoggedIn && permission?.canSend == true,
+                        canModerate = isLoggedIn && !state.moderating && moderationJob?.isActive != true,
+                        onCopyInfo = { item, source -> if (source() && retained(item)) {
+                            clipboard.setText(androidx.compose.ui.text.AnnotatedString("uid=${item.uid}, uname=${item.uname}, text=${item.text}"))
+                            moderationNotice = source to "已复制弹幕信息"
+                        } },
+                        onBlockUser = { item, source -> if (retained(item) && !item.isSelf && !item.isSystem) {
+                            runModeration(source, "已屏蔽发送者") { current ->
+                                if (!retained(item)) throw CancellationException("此弹幕已不属于当前直播消息")
+                                if (item.uid > 0L) session.shieldUser(item.uid, current)
+                                else {
+                                    val keyword = item.uname.ifBlank { item.text }
+                                    if (keyword.isNotBlank()) session.addShieldKeyword(keyword, current)
+                                }
+                            }
+                        } },
+                        onReportDanmaku = { item, source ->
+                            if (source() && isLoggedIn && retained(item) && !item.isSelf && !item.isSystem) reportTarget = item to source
+                        })
                     state.error?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
+                    moderationNotice?.takeIf { it.first() }?.let { Text(it.second, style = MaterialTheme.typography.bodySmall) }
                     Text(if (!isLoggedIn) "登录后可发送弹幕" else permission?.statusText ?: "正在读取弹幕权限", style = MaterialTheme.typography.labelSmall)
                     reply?.let { target -> Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("回复 ${target.uname}", Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)

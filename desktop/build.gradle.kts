@@ -167,6 +167,8 @@ val extractUpstreamMedia by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v030-live-chat-image")
     inputs.file("tools/v034_live_moderation.py")
     inputs.dir("upstream-slices/v034-live-moderation")
+    inputs.file("tools/v034_live_moderation_ui.py")
+    inputs.dir("upstream-slices/v034-live-moderation-ui")
     inputs.files("upstream-slices/v034-live-vote/app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
         "upstream-slices/v034-live-vote/app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt",
         "upstream-slices/v034-live-vote/app/src/main/java/com/android/purebilibili/feature/live/components/LiveVotePanel.kt")

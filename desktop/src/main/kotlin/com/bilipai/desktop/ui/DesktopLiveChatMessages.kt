@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -21,7 +22,9 @@ import androidx.compose.ui.unit.dp
 import com.android.purebilibili.feature.live.LiveDanmakuItem
 import com.android.purebilibili.feature.live.shouldRenderLiveDanmakuImageEmoticon
 import com.android.purebilibili.feature.live.components.DesktopOriginalLiveChatImage
+import com.android.purebilibili.feature.live.components.DesktopOriginalLiveDanmakuUserMenu
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
@@ -45,6 +48,13 @@ internal fun DesktopLiveChatMessages(
     onReply: (LiveDanmakuItem) -> Unit,
     modifier: Modifier = Modifier,
     state: DesktopLiveChatMessageState = remember(sessionKey) { DesktopLiveChatMessageState() },
+    captureCurrent: (() -> (() -> Boolean)?)? = null,
+    onCopyInfo: (LiveDanmakuItem, () -> Boolean) -> Unit = { _, _ -> },
+    onUserClick: (Long) -> Unit = {},
+    onBlockUser: (LiveDanmakuItem, () -> Boolean) -> Unit = { _, _ -> },
+    onReportDanmaku: (LiveDanmakuItem, () -> Boolean) -> Unit = { _, _ -> },
+    canReply: Boolean = isLoggedIn,
+    canModerate: Boolean = isLoggedIn,
 ) {
     val scope = rememberCoroutineScope()
     val listState = state.listState
@@ -124,7 +134,28 @@ internal fun DesktopLiveChatMessages(
         LazyColumn(Modifier.fillMaxSize().then(chatInput), state = listState, verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(rows, key = { it.key }) { entry ->
                 val item = entry.item
-                Column(Modifier.fillMaxWidth().clickable(enabled = isLoggedIn && item.uid > 0) { onReply(item) }) {
+                var menuCurrent by remember(sessionKey, entry.key) { mutableStateOf<(() -> Boolean)?>(null) }
+                fun openMenu() {
+                    val source = captureCurrent?.invoke() ?: return
+                    if (source() && currentRows.any { it.item === item }) menuCurrent = source
+                }
+                val menuSource = menuCurrent
+                val admitted = { scope.isActive && menuSource?.invoke() == true && currentRows.any { it.item === item } }
+                Column(Modifier.fillMaxWidth()
+                    .onPointerEvent(PointerEventType.Press) { event -> if (event.buttons.isSecondaryPressed) openMenu() }
+                    .clickable(enabled = isLoggedIn && item.uid > 0) { onReply(item) }) {
+                    if (captureCurrent != null && !item.isSystem) Box(Modifier.align(Alignment.End)) {
+                        TextButton(onClick = ::openMenu) { Text("更多") }
+                        DesktopOriginalLiveDanmakuUserMenu(
+                            expanded = admitted(), item = item, onDismiss = { menuCurrent = null },
+                            canReply = canReply, canModerate = canModerate && !item.isSelf && !item.isSystem,
+                            onCopyInfo = { if (admitted()) onCopyInfo(item, admitted) },
+                            onUserClick = { if (admitted()) onUserClick(it) },
+                            onAtUser = { if (admitted() && canReply) onReply(it) },
+                            onBlockUser = { if (admitted()) onBlockUser(it, admitted) },
+                            onReportDanmaku = { if (admitted()) onReportDanmaku(it, admitted) },
+                        )
+                    }
                     Text(buildList {
                         if (item.isSuperChat) add("SC ${item.superChatPrice}")
                         if (item.medalName.isNotBlank()) add("${item.medalName} ${item.medalLevel}")

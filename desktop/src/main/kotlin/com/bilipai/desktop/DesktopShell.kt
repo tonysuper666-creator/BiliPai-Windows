@@ -2727,6 +2727,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
                                 onBack = { commands.back() })
                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia,
+                                onUserClick = ::openUser,
                                 isMiniLiveMode = { pip?.active?.value == true && retainedMedia.live.ownsNativeSource },
                                 dismissMiniLive = { epoch, eof ->
                                     val dismiss = {

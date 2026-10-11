@@ -419,6 +419,8 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
 
     from v034_live_moderation import emit as emit_live_moderation
     generated.extend(emit_live_moderation(repo, output, parser, read, function, data_class, write))
+    from v034_live_moderation_ui import emit as emit_live_moderation_ui
+    generated.extend(emit_live_moderation_ui(repo, output, write))
 
     path = BASE + "feature/bangumi/policy/BangumiFollowStatusPolicy.kt"
     source = read(repo, path)
