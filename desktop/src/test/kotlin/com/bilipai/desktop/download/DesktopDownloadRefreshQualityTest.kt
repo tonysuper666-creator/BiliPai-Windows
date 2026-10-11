@@ -382,4 +382,266 @@ class DesktopDownloadRefreshQualityTest {
             assertContentEquals(bytes + bytes, Files.readAllBytes(Path.of(manager.offlinePlayback(id).videoUrl)))
         } finally { manager.close() }
     }
+
+    private fun storeIdentityTask(root: Path, task: DownloadTask): DownloadTask {
+        val directory = Path.of(task.directory)
+        Files.createDirectories(directory)
+        Files.writeString(directory.resolve(".bilipai-download"), task.id)
+        Files.writeString(root.resolve("state.json"), JsonArray(listOf(Json.encodeToJsonElement(DownloadTask.serializer(), task))).toString())
+        return task
+    }
+
+    private fun identityItem(video: String, audio: String = "", audioOnly: Boolean = false) = OriginalTask(
+        bvid = metadata.bvid, cid = metadata.cid, title = "asset identity", cover = "", ownerName = "", ownerFace = "",
+        duration = 1, quality = 120, qualityDesc = "4K 超清", videoUrl = video, audioUrl = audio,
+        status = DownloadStatus.PAUSED, isAudioOnly = audioOnly,
+        options = com.android.purebilibili.feature.download.DownloadOptions(includeDanmaku = false))
+
+    private fun savedAudioInputs(root: Path, completeVideo: Boolean, completeAudio: Boolean): DownloadTask {
+        val video = savedVideo(root, completeVideo)
+        val amount = if (completeAudio) 45L else 10L
+        val audio = com.android.purebilibili.feature.download.DownloadAssetState(
+            com.android.purebilibili.feature.download.DownloadAssetKind.AUDIO,
+            if (completeAudio) com.android.purebilibili.feature.download.DownloadAssetStatus.COMPLETED
+                else com.android.purebilibili.feature.download.DownloadAssetStatus.DOWNLOADING,
+            totalBytes = 45L, downloadedBytes = amount)
+        val saved = storeIdentityTask(root, video.copy(item = video.item.copy(
+            audioUrl = "https://cdn.example/audio-old?token=expired",
+            assets = video.item.assets.filterNot { it.kind == audio.kind } + audio,
+            audioProgress = amount.toFloat() / 45f, downloadedSize = video.downloadedBytes + amount)))
+        val directory = Path.of(saved.directory)
+        if (completeAudio) Files.write(directory.resolve("audio.m4s"), ByteArray(45) { 9 })
+        Files.write(directory.resolve("audio.m4s.part"), ByteArray(10) { 9 })
+        Files.write(directory.resolve("audio.m4s.part.chunk0001"), ByteArray(5) { 9 })
+        return saved
+    }
+
+    private fun segmentInput(directory: Path, index: Int) =
+        directory.resolve("segment-${(index + 1).toString().padStart(4, '0')}.media")
+
+    @Test fun restoredChangedAudioIdentityDiscardsCompleteAndPartialBytesWithoutReplacingVideo() = runBlocking<Unit> {
+        for (completeAudio in listOf(true, false)) {
+            val root = Files.createTempDirectory("bilipai-audio-identity-")
+            val saved = savedAudioInputs(root, completeVideo = true, completeAudio = completeAudio)
+            val requests = CopyOnWriteArrayList<Request>()
+            val retainedVideo = ByteArray(45) { 120.toByte() }; val freshAudio = ByteArray(45) { 1 }
+            val repository = DesktopRepository(DesktopSessionStore.temporary())
+            val receipt = repository.capturePlaybackAuthorization(repository.sessionEpoch) { true }.receipt
+            val manager = DesktopDownloadManager(transport(requests) { freshAudio }, root.resolve("state.json"),
+                DownloadMuxer { video, audio, output ->
+                    assertContentEquals(retainedVideo, Files.readAllBytes(assertNotNull(video)))
+                    assertContentEquals(freshAudio, Files.readAllBytes(assertNotNull(audio)))
+                    Files.write(output, retainedVideo + freshAudio)
+                }, sourceResolver = {
+                    DesktopDownloadResolvedSource(PlaybackSource("https://other-cdn.example/video120?token=fresh",
+                        "https://other-cdn.example/audio-new?token=fresh", authorizationReceipt = receipt), 80)
+                }, publication = DesktopRepositoryPlaybackPublication(repository))
+            try {
+                manager.resume(saved.id); val task = completed(manager)
+                assertEquals(saved.id, task.id); assertEquals(saved.directory, task.directory)
+                assertEquals(120, task.resolvedVideoQuality); assertEquals("4K 超清", task.item.qualityDesc)
+                assertEquals(90L, task.downloadedBytes)
+                assertFalse(requests.any { it.method == "GET" && it.url.encodedPath == "/video120" })
+                val audioGets = requests.filter { it.method == "GET" && it.url.encodedPath == "/audio-new" }
+                assertEquals(1, audioGets.size); assertNull(audioGets.single().header("Range"))
+                assertFalse(requests.any { it.url.encodedPath == "/audio-old" })
+                assertFalse(Files.exists(Path.of(saved.directory).resolve("audio.m4s.part.chunk0001")))
+                assertContentEquals(retainedVideo + freshAudio, Files.readAllBytes(Path.of(manager.offlinePlayback(saved.id).videoUrl)))
+            } finally { manager.close() }
+        }
+    }
+
+    @Test fun restoredProgressiveIndexChangesInvalidateOnlyChangedAddedOrRemovedInputs() = runBlocking<Unit> {
+        for (adding in listOf(true, false)) {
+            val root = Files.createTempDirectory("bilipai-segment-identity-")
+            val oldNames = if (adding) listOf("keep", "old") else listOf("keep", "old", "removed")
+            val newNames = if (adding) listOf("keep", "new", "added") else listOf("keep", "new")
+            val parts = oldNames.mapIndexed { index, name -> DownloadProgressiveSegment(
+                "https://cdn.example/$name?token=expired", (index + 1).toDouble(), 45L, if (index == 0) 45L else 10L) }
+            val saved = storeIdentityTask(root, DownloadTask(identityItem(parts.first().url), root.toString(), progressiveSegments = parts))
+            val directory = Path.of(saved.directory); val kept = ByteArray(45) { 20 }; val fresh = ByteArray(45) { 70 }
+            Files.write(segmentInput(directory, 0), kept)
+            // Include an orphan at a newly added index and a formerly declared removed index.
+            for (index in 1..2) {
+                val file = segmentInput(directory, index)
+                Files.write(file, ByteArray(45) { 9 })
+                Files.write(file.resolveSibling(file.fileName.toString() + ".part"), ByteArray(10) { 9 })
+                Files.write(file.resolveSibling(file.fileName.toString() + ".part.chunk0001"), ByteArray(5) { 9 })
+            }
+            val requests = CopyOnWriteArrayList<Request>(); val preReadCounters = CopyOnWriteArrayList<List<Long>>()
+            val repository = DesktopRepository(DesktopSessionStore.temporary())
+            val receipt = repository.capturePlaybackAuthorization(repository.sessionEpoch) { true }.receipt
+            lateinit var manager: DesktopDownloadManager
+            val client = transport(requests) { request ->
+                if (request.method == "HEAD" && request.url.encodedPath == "/keep")
+                    preReadCounters += manager.tasks.value.single().progressiveSegments.map { it.downloadedBytes }
+                if (request.url.encodedPath == "/keep") kept else fresh
+            }
+            val mux = object : DownloadMuxer {
+                override suspend fun mux(video: Path?, audio: Path?, output: Path) = error("original segment concatenation required")
+                override suspend fun muxSegments(segments: List<Path>, output: Path, audioOnly: Boolean) {
+                    assertFalse(audioOnly); assertEquals(newNames.size, segments.size)
+                    segments.forEachIndexed { index, file -> assertContentEquals(if (index == 0) kept else fresh, Files.readAllBytes(file)) }
+                    Files.write(output, segments.fold(ByteArray(0)) { all, file -> all + Files.readAllBytes(file) })
+                }
+            }
+            manager = DesktopDownloadManager(client, root.resolve("state.json"), mux, sourceResolver = {
+                DesktopDownloadResolvedSource(PlaybackSource("https://other-cdn.example/keep?token=fresh", authorizationReceipt = receipt,
+                    progressiveSegments = newNames.mapIndexed { index, name -> PlaybackSegment(
+                        "https://other-cdn.example/$name?token=fresh", (index + 1).toDouble()) }))
+            }, publication = DesktopRepositoryPlaybackPublication(repository))
+            try {
+                manager.resume(saved.id); val task = completed(manager)
+                assertEquals(listOf(listOf(45L) + List(newNames.size - 1) { 0L }), preReadCounters.toList())
+                assertEquals(List(newNames.size) { 45L }, task.progressiveSegments.map { it.downloadedBytes })
+                assertEquals(newNames.map { "/$it" }, task.progressiveSegments.map { java.net.URI(it.url).rawPath })
+                assertFalse(requests.any { it.method == "GET" && it.url.encodedPath == "/keep" })
+                assertEquals(newNames.drop(1).map { "/$it" }, requests.filter { it.method == "GET" }.map { it.url.encodedPath })
+                assertTrue(requests.filter { it.method == "GET" }.all { it.header("Range") == null })
+                for (index in 1..2) {
+                    val file = segmentInput(directory, index)
+                    assertFalse(Files.exists(file.resolveSibling(file.fileName.toString() + ".part.chunk0001")))
+                }
+                if (!adding) assertFalse(Files.exists(segmentInput(directory, 2)))
+                val expected = newNames.indices.fold(ByteArray(0)) { all, index -> all + (if (index == 0) kept else fresh) }
+                assertContentEquals(expected, Files.readAllBytes(Path.of(manager.offlinePlayback(saved.id).videoUrl)))
+            } finally { manager.close() }
+        }
+    }
+
+    @Test fun restoredSamePathsAcrossCdnRefreshKeepRangeBytesAndSegmentCounters() = runBlocking<Unit> {
+        for (segmented in listOf(false, true)) {
+            val root = Files.createTempDirectory("bilipai-same-asset-resume-")
+            val oldUrl = "https://first-cdn.example/retained?token=expired"
+            val newUrl = "https://second-cdn.example/retained?token=fresh"
+            val saved = storeIdentityTask(root, DownloadTask(identityItem(oldUrl, audioOnly = !segmented), root.toString(),
+                progressiveSegments = if (segmented) listOf(DownloadProgressiveSegment(oldUrl, 1.0, 45L, 10L)) else emptyList()))
+            val directory = Path.of(saved.directory)
+            val input = if (segmented) segmentInput(directory, 0) else directory.resolve("audio.m4s")
+            Files.write(input.resolveSibling(input.fileName.toString() + ".part"), bytes.copyOf(10))
+            val requests = CopyOnWriteArrayList<Request>(); val preReadCounters = CopyOnWriteArrayList<List<Long>>()
+            val repository = DesktopRepository(DesktopSessionStore.temporary())
+            val receipt = repository.capturePlaybackAuthorization(repository.sessionEpoch) { true }.receipt
+            lateinit var manager: DesktopDownloadManager
+            val client = transport(requests) { request ->
+                if (request.method == "HEAD") preReadCounters += manager.tasks.value.single().progressiveSegments.map { it.downloadedBytes }
+                bytes
+            }
+            val mux = object : DownloadMuxer {
+                override suspend fun mux(video: Path?, audio: Path?, output: Path) {
+                    assertFalse(segmented); assertNull(video)
+                    assertContentEquals(bytes, Files.readAllBytes(assertNotNull(audio))); Files.write(output, bytes)
+                }
+                override suspend fun muxSegments(segments: List<Path>, output: Path, audioOnly: Boolean) {
+                    assertTrue(segmented); assertFalse(audioOnly); assertEquals(1, segments.size)
+                    assertContentEquals(bytes, Files.readAllBytes(segments.single())); Files.write(output, bytes)
+                }
+            }
+            manager = DesktopDownloadManager(client, root.resolve("state.json"), mux, sourceResolver = {
+                DesktopDownloadResolvedSource(PlaybackSource(newUrl, authorizationReceipt = receipt,
+                    progressiveSegments = if (segmented) listOf(PlaybackSegment(newUrl, 1.0)) else emptyList()))
+            }, publication = DesktopRepositoryPlaybackPublication(repository))
+            try {
+                manager.resume(saved.id); val task = completed(manager)
+                val get = requests.single { it.method == "GET" }
+                assertEquals("second-cdn.example", get.url.host); assertEquals("bytes=10-", get.header("Range"))
+                assertEquals(listOf(if (segmented) listOf(10L) else emptyList()), preReadCounters.toList())
+                assertEquals(if (segmented) listOf(45L) else emptyList(), task.progressiveSegments.map { it.downloadedBytes })
+                assertContentEquals(bytes, Files.readAllBytes(Path.of(manager.offlinePlayback(saved.id).videoUrl)))
+            } finally { manager.close() }
+        }
+    }
+
+    @Test fun videoWorkerRefreshDiscardsChangedCompanionAudioBeforeItsFirstRequest() = runBlocking<Unit> {
+        val root = Files.createTempDirectory("bilipai-worker-companion-")
+        val saved = savedAudioInputs(root, completeVideo = false, completeAudio = false)
+        val directory = Path.of(saved.directory); val requests = CopyOnWriteArrayList<Request>()
+        val freshVideo = ByteArray(45) { 80.toByte() }; val freshAudio = ByteArray(45) { 1 }
+        val beforeAudioProbe = CopyOnWriteArrayList<List<Boolean>>()
+        val repository = DesktopRepository(DesktopSessionStore.temporary())
+        val receipt = repository.capturePlaybackAuthorization(repository.sessionEpoch) { true }.receipt
+        var resolutions = 0
+        val client = transport(requests) { request ->
+            if (request.method == "HEAD" && request.url.encodedPath == "/audio-new")
+                beforeAudioProbe += listOf("audio.m4s", "audio.m4s.part", "audio.m4s.part.chunk0001").map { Files.exists(directory.resolve(it)) }
+            if (request.url.encodedPath.startsWith("/video")) freshVideo else freshAudio
+        }
+        val manager = DesktopDownloadManager(client, root.resolve("state.json"), DownloadMuxer { video, audio, output ->
+            assertContentEquals(freshVideo, Files.readAllBytes(assertNotNull(video)))
+            assertContentEquals(freshAudio, Files.readAllBytes(assertNotNull(audio))); Files.write(output, freshVideo + freshAudio)
+        }, sourceResolver = {
+            resolutions++
+            val pair = if (resolutions == 1) PlaybackSource(saved.item.videoUrl, saved.item.audioUrl, authorizationReceipt = receipt)
+                else PlaybackSource("https://cdn.example/video80?token=fresh", "https://cdn.example/audio-new?token=fresh", authorizationReceipt = receipt)
+            DesktopDownloadResolvedSource(pair, if (resolutions == 1) 120 else 80)
+        }, publication = DesktopRepositoryPlaybackPublication(repository))
+        try {
+            manager.resume(saved.id); val task = completed(manager)
+            assertEquals(2, resolutions); assertEquals(80, task.resolvedVideoQuality); assertEquals(90L, task.downloadedBytes)
+            assertEquals(listOf(listOf(false, false, false)), beforeAudioProbe.toList())
+            assertTrue(requests.any { it.method == "GET" && it.url.encodedPath == "/video120" && it.header("Range") == "bytes=10-" })
+            val audioGets = requests.filter { it.method == "GET" && it.url.encodedPath == "/audio-new" }
+            assertEquals(1, audioGets.size); assertNull(audioGets.single().header("Range"))
+            assertFalse(requests.any { it.url.encodedPath == "/audio-old" })
+            assertContentEquals(freshVideo + freshAudio, Files.readAllBytes(Path.of(manager.offlinePlayback(saved.id).videoUrl)))
+        } finally { manager.close() }
+    }
+
+    @Test fun audioWorkerAcceptsNewAudioOnlyForTheRetainedVideoAndRejectsOtherPairs() = runBlocking<Unit> {
+        for (matchingVideo in listOf(false, true)) {
+            val root = Files.createTempDirectory("bilipai-worker-pair-")
+            val saved = savedAudioInputs(root, completeVideo = true, completeAudio = false)
+            val directory = Path.of(saved.directory)
+            val retainedFiles = listOf("video.m4s", "audio.m4s.part", "audio.m4s.part.chunk0001")
+                .associateWith { Files.readAllBytes(directory.resolve(it)) }
+            val requests = CopyOnWriteArrayList<Request>(); val freshAudio = ByteArray(45) { 1 }
+            val repository = DesktopRepository(DesktopSessionStore.temporary())
+            val receipt = repository.capturePlaybackAuthorization(repository.sessionEpoch) { true }.receipt
+            val worker = CompletableDeferred<Job>()
+            var resolutions = 0; var muxCalls = 0
+            val manager = DesktopDownloadManager(transport(requests) { freshAudio }, root.resolve("state.json"),
+                DownloadMuxer { video, audio, output ->
+                    muxCalls++; assertTrue(matchingVideo)
+                    assertContentEquals(retainedFiles.getValue("video.m4s"), Files.readAllBytes(assertNotNull(video)))
+                    assertContentEquals(freshAudio, Files.readAllBytes(assertNotNull(audio)))
+                    Files.write(output, retainedFiles.getValue("video.m4s") + freshAudio)
+                }, sourceResolver = {
+                    if (!worker.isCompleted) worker.complete(currentCoroutineContext().job)
+                    resolutions++
+                    val video = if (resolutions == 1 || matchingVideo) "https://cdn.example/video120?token=fresh"
+                        else "https://cdn.example/video80?token=fresh"
+                    val audio = if (resolutions == 1) saved.item.audioUrl else "https://cdn.example/audio-new?token=fresh"
+                    DesktopDownloadResolvedSource(PlaybackSource(video, audio, authorizationReceipt = receipt), 80)
+                }, publication = DesktopRepositoryPlaybackPublication(repository))
+            try {
+                manager.resume(saved.id)
+                val task = withTimeout(5_000) { manager.tasks.first {
+                    it.singleOrNull()?.status in setOf(DownloadStatus.COMPLETED, DownloadStatus.FAILED)
+                }.single() }
+                withTimeout(5_000) { worker.await().join() }
+                assertEquals(2, resolutions); assertEquals(saved.id, task.id); assertEquals(saved.directory, task.directory)
+                assertEquals("https://cdn.example/video120?token=fresh", task.item.videoUrl)
+                assertEquals(120, task.resolvedVideoQuality); assertEquals("4K 超清", task.item.qualityDesc)
+                assertFalse(requests.any { it.method == "GET" && it.url.encodedPath.startsWith("/video") })
+                assertFalse(requests.any { it.url.encodedPath == "/video80" })
+                if (matchingVideo) {
+                    assertEquals(DownloadStatus.COMPLETED, task.status, task.error); assertEquals(1, muxCalls)
+                    val get = requests.single { it.method == "GET" && it.url.encodedPath == "/audio-new" }
+                    assertNull(get.header("Range"))
+                    assertFalse(Files.exists(directory.resolve("audio.m4s.part.chunk0001")))
+                    assertContentEquals(retainedFiles.getValue("video.m4s") + freshAudio,
+                        Files.readAllBytes(Path.of(manager.offlinePlayback(saved.id).videoUrl)))
+                } else {
+                    assertEquals(DownloadStatus.FAILED, task.status); assertEquals(0, muxCalls)
+                    assertTrue(task.error.orEmpty().contains("新音轨与已缓存视频不匹配"))
+                    assertEquals(saved.item.audioUrl, task.item.audioUrl); assertNull(task.outputFile)
+                    assertFalse(requests.any { it.url.encodedPath == "/audio-new" })
+                    retainedFiles.forEach { (name, expected) -> assertContentEquals(expected, Files.readAllBytes(directory.resolve(name))) }
+                    val persisted = Json.decodeFromString<List<DownloadTask>>(Files.readString(root.resolve("state.json"))).single()
+                    assertEquals(DownloadStatus.FAILED, persisted.status); assertEquals(task.item.videoUrl, persisted.item.videoUrl)
+                    assertEquals(task.item.audioUrl, persisted.item.audioUrl)
+                }
+            } finally { manager.close() }
+        }
+    }
 }

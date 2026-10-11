@@ -34,21 +34,48 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="original-interaction-owner-") as temp:
             output = Path(temp)
             actual_rows = owner.generate(REPO, output / "actual")
-            with patch.object(owner, "composer_source_lifetime_delta", side_effect=lambda path, body: body):
-                before_rows = owner.generate(REPO, output / "before")
             actual = (output / "actual" / VM).read_text(encoding="utf-8")
-            before = (output / "before" / VM).read_text(encoding="utf-8")
+            # Rebuild the exact pinned whole stage before composer adaptation.
+            # Removing an earlier delta from a full generation would invalidate
+            # the immutable beta2 related input; that pin is never mocked here.
+            recipe = next(row for row in owner.RECIPES if row["output"] == VM)
+            raw = original_raw.decode("utf-8").replace("\r\n", "\n")
+            lines = raw.splitlines(keepends=True)
+            parts = []
+            last = 0
+            for edit in recipe["edits"]:
+                start, end = edit["startLine"], edit["endLineExclusive"]
+                self.assertEqual(last, start)
+                span = "".join(lines[start:end])
+                self.assertEqual(edit["beforeSha256LF"], hashlib.sha256(span.encode()).hexdigest())
+                parts.append(span if edit["kind"] == "equal" else edit["after"])
+                last = end
+            self.assertEqual(len(lines), last)
+            before = "".join(parts)
+            self.assertEqual(recipe["outputSha256LF"], hashlib.sha256(before.encode()).hexdigest())
+            for adaptation in (
+                owner.retained_handoff_platform_delta, owner.captured_media_byte_consumer_delta,
+                owner.owned_video_today_watch_feedback_delta, owner.danmaku_submission_lifetime_delta,
+                owner.pending_playback_delta, owner.captured_original_download_task_delta,
+                owner.captured_audio_download_delta, owner.captured_video_resource_download_delta,
+                owner.story_portrait_adoption_delta, owner.bangumi_shared_owner_delta,
+                owner.owned_chapter_result_delta, owner.owned_bgm_result_delta,
+                owner.explicit_audio_start_position_delta,
+            ):
+                before = adaptation(VM, before)
 
             def restore_later_stages(body, rows):
                 row = next(item for item in rows if item["path"] == VM)
                 self.assertEqual(row["sha256LF"], hashlib.sha256(body.encode()).hexdigest())
                 # Actual reverse order includes final CDN and later typed-origin stages.
-                for field in ("postSameSendInverseEdits", "sameSendExpectedSourceInverseEdits", "postRecoveryInverseEdits", "failureRecoveryInverseEdits", "followGroupInverseEdits"):
+                for field in ("postRelatedInverseEdits", "relatedInverseEdits", "postSameSendInverseEdits", "sameSendExpectedSourceInverseEdits", "postRecoveryInverseEdits", "failureRecoveryInverseEdits", "followGroupInverseEdits"):
                     for edit in reversed(row[field]):
                         index = edit["offset"]
                         self.assertEqual(edit["after"], body[index:index + len(edit["after"])])
                         body = body[:index] + edit["before"] + body[index + len(edit["after"]):]
-                    checkpoint = {"postSameSendInverseEdits": "postSameSendBeforeSha256LF",
+                    checkpoint = {"postRelatedInverseEdits": "postRelatedBeforeSha256LF",
+                                  "relatedInverseEdits": "relatedBeforeSha256LF",
+                                  "postSameSendInverseEdits": "postSameSendBeforeSha256LF",
                                   "sameSendExpectedSourceInverseEdits": "sameSendExpectedSourceBeforeSha256LF",
                                   "postRecoveryInverseEdits": "failureRecoveryAfterSha256LF",
                                   "failureRecoveryInverseEdits": "failureRecoveryBeforeSha256LF"}.get(field)
@@ -57,7 +84,6 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
                 return body
 
             actual = restore_later_stages(actual, actual_rows)
-            before = restore_later_stages(before, before_rows)
             edits = []
             self.assertEqual(actual, owner.composer_source_lifetime_delta(VM, before, edits))
             self.assertEqual(5, len(edits))

@@ -27,6 +27,12 @@ def restore(body, rows):
 
 def restore_final_send_stage(body, row):
     assert hashlib.sha256(body.encode()).hexdigest() == row["sha256LF"]
+    for field, checkpoint in (
+        ("postRelatedInverseEdits", "postRelatedBeforeSha256LF"),
+        ("relatedInverseEdits", "relatedBeforeSha256LF"),
+    ):
+        body = restore(body, row[field])
+        assert hashlib.sha256(body.encode()).hexdigest() == row[checkpoint]
     body = restore(body, row["postSameSendInverseEdits"])
     assert hashlib.sha256(body.encode()).hexdigest() == row["postSameSendBeforeSha256LF"]
     body = restore(body, row["sameSendExpectedSourceInverseEdits"])
@@ -47,12 +53,8 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
         cls.output = Path(cls.private.name)
         with contextlib.redirect_stdout(io.StringIO()):
             cls.rows = cls.owner.generate(REPO, cls.output / "actual", True)
-            with mock.patch.object(cls.owner, "follow_group_source_lifetime_delta", lambda path, body, audit: body):
-                cls.baseline_rows = cls.owner.generate(REPO, cls.output / "baseline", True)
         cls.row = next(row for row in cls.rows if row["path"] == VM)
-        cls.baseline_row = next(row for row in cls.baseline_rows if row["path"] == VM)
         cls.actual = (cls.output / "actual" / VM).read_text(encoding="utf-8")
-        cls.baseline = (cls.output / "baseline" / VM).read_text(encoding="utf-8")
         cls.audit = json.loads((cls.output / "actual/original-video-follow-group-lifetime.json").read_text(encoding="utf-8"))
 
     @classmethod
@@ -62,8 +64,10 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
     def test_actual_sole_producer_consumes_delta_and_all_three_edits_restore_whole_stage(self):
         self.assertEqual(3, len(self.row["followGroupInverseEdits"]))
         body = restore(restore_final_send_stage(self.actual, self.row), self.row["failureRecoveryInverseEdits"])
-        baseline = restore(restore_final_send_stage(self.baseline, self.baseline_row), self.baseline_row["failureRecoveryInverseEdits"])
-        self.assertEqual(baseline, restore(body, self.row["followGroupInverseEdits"]))
+        baseline = restore(body, self.row["followGroupInverseEdits"])
+        replay = []
+        self.assertEqual(body, self.owner.follow_group_source_lifetime_delta(VM, baseline, replay))
+        self.assertEqual(self.row["followGroupInverseEdits"], replay)
         self.assertEqual(1, len(self.audit["audits"]))
         audit = self.audit["audits"][0]
         self.assertEqual(VM, audit["path"])
@@ -74,11 +78,14 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
 
     def test_original_business_protocol_and_ui_are_preserved_only_vm_lifetime_changes(self):
         actual = {row["path"]: row for row in self.rows}
-        before = {row["path"]: row for row in self.baseline_rows}
-        for path, row in before.items():
-            if path in (VM, "original-video-follow-group-lifetime.json"):
+        for path, row in actual.items():
+            if path == VM or not path.endswith(".kt"):
                 continue
-            self.assertEqual(row["sha256LF"], actual[path]["sha256LF"], path)
+            body = (self.output / "actual" / path).read_text(encoding="utf-8")
+            untouched = []
+            self.assertEqual(body, self.owner.follow_group_source_lifetime_delta(path, body, untouched), path)
+            self.assertEqual([], untouched, path)
+            self.assertEqual(row["sha256LF"], hashlib.sha256(body.encode()).hexdigest(), path)
         lifetime = self.row["followGroupInverseEdits"][-1]["after"]
         self.assertEqual(1, lifetime.count("environment.actions.getFollowGroupTags()"))
         self.assertEqual(1, lifetime.count("environment.actions.getUserFollowGroupIds(targetMid)"))

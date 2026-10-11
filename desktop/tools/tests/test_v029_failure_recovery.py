@@ -43,9 +43,6 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             cls.owner_rows = cls.owner.generate(REPO, cls.root / "owner", True)
             cls.core.generate(REPO, cls.root / "core", True)
-            with mock.patch.object(cls.core, "_typed_failure_usecase", lambda body, audit: body), \
-                 mock.patch.object(cls.core, "_typed_failure_protocol", lambda body, audit: body):
-                cls.core.generate(REPO, cls.root / "core-before", True)
         cls.audit = json.loads((cls.root / "core/original-video-state-core-selection.json").read_text(encoding="utf-8"))
 
     @classmethod
@@ -56,7 +53,14 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
         row = next(row for row in self.owner_rows if row["path"] == recovery.VM)
         actual = (self.root / "owner" / recovery.VM).read_text(encoding="utf-8")
         self.assertEqual(row["sha256LF"], hashlib.sha256(actual.encode()).hexdigest())
-        original_actual = restore(actual, row["postSameSendInverseEdits"])
+        original_actual = actual
+        for field, checkpoint in (
+            ("postRelatedInverseEdits", "postRelatedBeforeSha256LF"),
+            ("relatedInverseEdits", "relatedBeforeSha256LF"),
+        ):
+            original_actual = restore(original_actual, row[field])
+            self.assertEqual(row[checkpoint], hashlib.sha256(original_actual.encode()).hexdigest())
+        original_actual = restore(original_actual, row["postSameSendInverseEdits"])
         self.assertEqual(row["postSameSendBeforeSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
         original_actual = restore(original_actual, row["sameSendExpectedSourceInverseEdits"])
         self.assertEqual(row["sameSendExpectedSourceBeforeSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
@@ -82,8 +86,21 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
             ("DesktopOriginalVideoLoadProtocol.kt", "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt"),
         ]:
             actual = (self.root / "core" / path).read_text(encoding="utf-8")
-            baseline = (self.root / "core-before" / path).read_text(encoding="utf-8")
-            self.assertEqual(baseline, restore(actual, self.audit["audits"][filename + ".failure-recovery-inverse.json"]))
+            typed = actual
+            related_file = self.root / "core" / (filename + ".v034-related-inverse.json")
+            if related_file.exists():
+                related = json.loads(related_file.read_text(encoding="utf-8"))
+                self.assertEqual(related["afterSha256LF"], hashlib.sha256(typed.encode()).hexdigest())
+                typed = restore(typed, related["inverseEdits"])
+                self.assertEqual(related["beforeSha256LF"], hashlib.sha256(typed.encode()).hexdigest())
+            edits = self.audit["audits"][filename + ".failure-recovery-inverse.json"]
+            baseline = restore(typed, edits)
+            replay = []
+            delta = self.core._typed_failure_usecase if "UseCase" in filename else self.core._typed_failure_protocol
+            self.assertEqual(typed, delta(baseline, replay))
+            self.assertEqual(edits, replay)
+            # Earlier recovery is replayed at its real whole stage, before the
+            # fixed related adaptation; the immutable related input is not mocked.
             if "UseCase" in filename:
                 self.assertEqual(3, actual.count("desktopOriginalVideoLoadError(e)"))
                 self.assertEqual(1, actual.count("desktopOriginalVideoLoadCanRetry(e)"))

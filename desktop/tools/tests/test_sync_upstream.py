@@ -391,7 +391,12 @@ object AndroidOnlySingleton { val feature = "old" }
 
 
 class CanonicalCompatibilityTests(unittest.TestCase):
+    """Canonical v025 checks only; adapted multi-version coverage is tested below."""
+
     def setUp(self):
+        adapted = patch.object(sync, "adapted_compatibility_inputs", return_value=[])
+        adapted.start()
+        self.addCleanup(adapted.stop)
         self.repo = Path(__file__).parents[3]
         self.manifest = sync.read_manifest(self.repo)
         self.catalog = sync.canonical_baseline(self.repo, self.manifest)
@@ -417,7 +422,7 @@ class CanonicalCompatibilityTests(unittest.TestCase):
         self.assertEqual(downloaded.call_count, len(changed))
         return report, hashes
 
-    def test_current_complete_fixed_baseline_skips_downloads_and_allows_build_only(self):
+    def test_unchanged_canonical_scope_skips_downloads_and_allows_build_only(self):
         report, hashes = self.report()
         self.assertEqual(report["status"], "updateAvailable")
         self.assertTrue(report["autoBuildEligible"])
@@ -475,8 +480,209 @@ class CanonicalCompatibilityTests(unittest.TestCase):
         self.assertEqual(report["changedReusedSources"], [])
 
 
-class ApiClientRiskTests(unittest.TestCase):
+class AdaptedCompatibilityInventoryTests(unittest.TestCase):
+    """Real retained inputs and offline source trees; no network or build runs."""
+
+    # This ignored local note is optional in the real inventory. Keep its exact
+    # bytes in the test fixture so a fresh Linux checkout can exercise presence.
+    OPTIONAL_README = (
+        b'Fixed original source slice: BiliPai v0.2.9, commit a4b77f894d0a2dd26c0b9fc144b8adb88ac05480.\n'
+        b'The five complete pure Kotlin files and five original test files are copied without adaptations.\n'
+        b"The original module's Apache-2.0 license remains at danmaku-engine/LICENSE; the application retains\n"
+        b'its existing GPL-3.0 license. No Android library or new runtime dependency is added.\n'
+        b'\n'
+        b'Scope: genuine Mode9 BAS grammar, absolute-time scene timeline, independent XML/protobuf parsing,\n'
+        b'and retention in the existing bounded Desktop loader. Mode7 text-array parsing remains separate.\n'
+        b'Invalid Mode9 scripts are discarded and are never converted to ordinary scrolling text.\n'
+        b'Windows document admission retains the existing 16,384-character scene limit, plus bounded\n'
+        b'lexical work (4,096 tokens, nesting 64, 256 text/button/path tokens) and compiled object/transition caps.\n'
+        b'These Desktop input bounds do not modify the original parser or timeline files.\n'
+        b'\n'
+        b'NOT IMPLEMENTED BY THIS SLICE: Windows BAS scene painting, perspective/SVG/multi-object drawing,\n'
+        b'button hit-testing and target dispatch, special-file range/lifetime indexes, BAS plugin/filter bridge,\n'
+        b'or visible BAS playback in the actual native Canvas window. Pure parser tests do not prove any of those.\n'
+        b'The canonical baseline remains v0.2.5; this slice does not claim a complete v0.2.9 port.\n'
+    )
+
+    @classmethod
+    def setUpClass(cls):
+        cls.original_repo = Path(__file__).parents[3]
+        cls.inventory_bytes = (cls.original_repo / sync.COMPATIBILITY_CATALOG_PATH).read_bytes()
+        cls.inventory = json.loads(cls.inventory_bytes)
+
     def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.repo = Path(self.temp.name)
+        # This is a source-only clone-shaped fixture, without .git or ignored
+        # docs. Copy the actual catalog/build and all required published leaves.
+        for relative in ("desktop/build.gradle.kts", sync.COMPATIBILITY_CATALOG_PATH,
+                         sync.CANONICAL_CATALOG_PATH):
+            destination = self.repo / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes((self.original_repo / relative).read_bytes())
+        for archive in self.inventory["archives"]:
+            for leaf in archive["files"]:
+                destination = self.repo / leaf["path"]
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes((self.original_repo / leaf["path"]).read_bytes())
+
+    def load(self):
+        return sync.adapted_compatibility_inputs(self.repo)
+
+    def test_actual_217_originals_load_with_separate_commits_and_nested_live_inputs(self):
+        self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
+        entries = self.load()
+        self.assertEqual(entries, self.inventory["inputs"])
+        self.assertEqual(len(entries), 217)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 210)
+        for filename in ("LiveInteractionSheets.kt", "LiveChatSection.kt"):
+            rows = [item for item in entries if item["localPath"].endswith("/" + filename)]
+            self.assertTrue(rows, filename)
+            self.assertTrue(any(item["upstreamCommit"] == "b2091b1de636e499df80af7e700796b4f52b7f92"
+                                for item in rows), filename)
+            for item in rows:
+                self.assertEqual(sync.source_digest(sync.adapted_local_input(self.repo, item),
+                                                    item["hashNormalization"]), item["sha256"])
+
+    def test_real_conflicting_baselines_share_one_incoming_download_and_keep_pins(self):
+        # Restrict this request fixture to one actual conflicting path. It is
+        # deliberately not a claim that all retained versions can be unchanged.
+        all_entries = self.load()
+        path = "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+        adapted = [item for item in all_entries if item["path"] == path][:3]
+        self.assertEqual(len({item["sha256"] for item in adapted}), 3)
+        self.assertEqual(len({item["upstreamCommit"] for item in adapted}), 3)
+        manifest = sync.read_manifest(self.original_repo)
+        canonical = {**next(item for item in manifest["sources"] if item["path"] == path), "kind": "source"}
+        destination = self.repo / path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes((self.original_repo / path).read_bytes())
+        incoming = sync.adapted_local_input(self.repo, adapted[1])
+        entries = [canonical, *adapted]
+        frozen = json.dumps(entries, sort_keys=True)
+        fixture_tree = {"tree": [tree_blob(path, incoming)]}
+        with patch.object(sync, "compatibility_inputs", return_value=entries), \
+             patch.object(sync, "latest_release", return_value={"tag_name": "multi-pin-fixture", "prerelease": True}), \
+             patch.object(sync, "resolve_tag", return_value=NEW), \
+             patch.object(sync, "request_json", return_value=fixture_tree) as api, \
+             patch.object(sync, "source_bytes", return_value=incoming) as downloaded:
+            report, hashes = sync.check_update(self.repo, manifest)
+        api.assert_called_once_with(f"git/trees/{NEW}?recursive=1")
+        downloaded.assert_called_once_with(NEW, path)
+        self.assertEqual(report["sourceDownloads"], 1)
+        self.assertEqual(report["unchangedBlobInputs"], 1)
+        self.assertEqual(report["changedReusedSources"], [path])
+        self.assertEqual(len(report["changedAdaptedInputs"]), 2)
+        self.assertEqual({item["upstreamCommit"] for item in report["changedAdaptedInputs"]},
+                         {adapted[0]["upstreamCommit"], adapted[2]["upstreamCommit"]})
+        self.assertEqual(hashes, {path: sync.source_digest(incoming, canonical.get("hashNormalization", "lf"))})
+        self.assertEqual(json.dumps(entries, sort_keys=True), frozen)
+        self.assertEqual((self.repo / sync.COMPATIBILITY_CATALOG_PATH).read_bytes(), self.inventory_bytes)
+        self.assertEqual(report["buildCompatibility"]["status"], "manualAdaptationRequired")
+        self.assertFalse(report["autoBuildEligible"])
+        self.assertFalse(report["autoPublishEligible"])
+
+    def test_future_build_archive_or_standalone_input_requires_review(self):
+        build = self.repo / "desktop/build.gradle.kts"
+        original = build.read_bytes()
+        for statement in (b'\ninputs.dir("upstream-slices/v099-new-original")\n',
+                          b'\ninputs.file("third-party/new-original/Original.kt")\n'):
+            with self.subTest(statement=statement):
+                build.write_bytes(original + statement)
+                with self.assertRaisesRegex(sync.UpdateError, "build input coverage changed"):
+                    self.load()
+        build.write_bytes(original)
+        added = self.repo / "desktop/upstream-slices/v099-new-original"
+        added.mkdir()
+        with self.assertRaisesRegex(sync.UpdateError, "Unreviewed adapted source directory"):
+            self.load()
+
+    def test_future_source_or_metadata_leaf_is_not_silently_ignored(self):
+        folder = self.repo / "desktop/upstream-slices/v029-bas-core"
+        for filename in ("New.kt", "New.kts", "New.java", "New.glsl", "New.js",
+                         "additional-manifest.json", "provenance.json"):
+            with self.subTest(filename=filename):
+                new = folder / filename
+                new.write_bytes(b"unreviewed input")
+                try:
+                    with self.assertRaisesRegex(sync.UpdateError, "Unreviewed adapted archive leaf"):
+                        self.load()
+                finally:
+                    new.unlink()
+
+    def test_changed_manifest_and_missing_published_leaf_fail_closed(self):
+        manifest = self.repo / "desktop/upstream-slices/v034-live-moderation-ui/manifest.json"
+        original = manifest.read_bytes()
+        manifest.write_bytes(original + b"\n")
+        with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
+            self.load()
+        manifest.write_bytes(original)
+        leaf = self.repo / "desktop/upstream-slices/v029-bas-core/BasEasing.kt"
+        leaf.unlink()
+        with self.assertRaisesRegex(sync.UpdateError, "Incomplete adapted archive"):
+            self.load()
+
+    def test_optional_local_document_can_be_absent_or_exact_but_not_changed(self):
+        optional = [leaf for archive in self.inventory["archives"]
+                    for leaf in archive.get("optionalLocalFiles", [])]
+        self.assertEqual(len(optional), 1)
+        pin = optional[0]
+        document = self.repo / pin["path"]
+        self.assertFalse(document.exists())
+        self.assertEqual(len(self.load()), 217)
+        self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
+        document.write_bytes(self.OPTIONAL_README)
+        self.assertEqual(len(self.load()), 217)
+        document.write_bytes(self.OPTIONAL_README + b"changed local note")
+        with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
+            self.load()
+
+    def test_only_original_lf_input_and_catalog_allow_checkout_crlf(self):
+        catalog = self.repo / sync.COMPATIBILITY_CATALOG_PATH
+        catalog_lf = sync.normalized_source(catalog.read_bytes())
+        catalog.write_bytes(catalog_lf.replace(b"\n", b"\r\n"))
+        input_pin = next(item for item in self.inventory["inputs"]
+                         if item["localPath"].endswith("/DynamicReactionApi.kt"))
+        dynamic = self.repo / input_pin["localPath"]
+        original_lf = sync.normalized_source(dynamic.read_bytes())
+        for contents in (original_lf, original_lf.replace(b"\n", b"\r\n")):
+            with self.subTest(dynamicCRLF=b"\r\n" in contents):
+                dynamic.write_bytes(contents)
+                entries = self.load()
+                self.assertEqual(len(entries), 217)
+                self.assertIn(input_pin, entries)
+        dynamic.write_bytes(original_lf + b"\n// changed source\n")
+        with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
+            self.load()
+        dynamic.write_bytes(original_lf)
+        raw_pin = next(leaf for archive in self.inventory["archives"] for leaf in archive["files"]
+                       if leaf["path"].endswith("/BasEasing.kt"))
+        self.assertEqual(raw_pin["hashNormalization"], "raw")
+        raw = self.repo / raw_pin["path"]
+        original = raw.read_bytes()
+        self.assertNotIn(b"\r\n", original)
+        raw.write_bytes(original.replace(b"\n", b"\r\n"))
+        with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
+            self.load()
+
+    def test_missing_or_modified_inventory_never_falls_back_to_canonical_scope(self):
+        inventory = self.repo / sync.COMPATIBILITY_CATALOG_PATH
+        inventory.unlink()
+        with self.assertRaisesRegex(sync.UpdateError, "no reviewed compatibility inventory"):
+            self.load()
+        inventory.write_bytes(self.inventory_bytes + b" ")
+        with self.assertRaisesRegex(sync.UpdateError, "Unknown adapted input inventory"):
+            self.load()
+
+
+class ApiClientRiskTests(unittest.TestCase):
+    """Selected canonical API risk fixtures, not a synthetic all-adaptations release."""
+
+    def setUp(self):
+        adapted = patch.object(sync, "adapted_compatibility_inputs", return_value=[])
+        adapted.start()
+        self.addCleanup(adapted.stop)
         self.repo = Path(__file__).parents[3]
         original = canonical_source(self.repo, "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt")
         self.path = original.relative_to(self.repo).as_posix()
