@@ -40,6 +40,7 @@ import com.android.purebilibili.feature.video.screen.VideoDetailDomainEffects
 import com.android.purebilibili.feature.video.ui.components.CommentEmoteTextField
 import com.android.purebilibili.feature.video.ui.components.RichCommentText
 import com.android.purebilibili.feature.video.subtitle.*
+import com.android.purebilibili.feature.video.ui.section.resolveSubtitleLanguageLabel
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
@@ -513,8 +514,42 @@ internal class DesktopWindowsVideoActions(
     var subtitleOverride by rememberDesktopWindowsSubtitleMode(
         assembly.subtitleSaveableOwnerKey, subtitlePreferenceSession,
     )
-    val subtitleMode = subtitleOverride
-    val latestSubtitleMode by rememberUpdatedState(subtitleMode)
+    // Match the original Section: controls retain bound tracks while cues load,
+    // but the overlay falls back to cues that can actually be displayed.
+    val subtitlePrimaryAvailable = subtitleBelongsToCurrentVideo && success?.subtitlePrimaryCues?.isNotEmpty() == true
+    val subtitleSecondaryAvailable = subtitleBelongsToCurrentVideo && success?.subtitleSecondaryCues?.isNotEmpty() == true
+    val subtitleControlAvailability = resolveSubtitleControlAvailability(
+        primaryTrackBound = subtitleBelongsToCurrentVideo &&
+            (!success?.subtitlePrimaryTrackKey.isNullOrBlank() || !success?.subtitlePrimaryLanguage.isNullOrBlank()),
+        secondaryTrackBound = subtitleBelongsToCurrentVideo &&
+            (!success?.subtitleSecondaryTrackKey.isNullOrBlank() || !success?.subtitleSecondaryLanguage.isNullOrBlank()),
+        primaryCueAvailable = subtitlePrimaryAvailable,
+        secondaryCueAvailable = subtitleSecondaryAvailable,
+    )
+    val subtitleMode = normalizeSubtitleDisplayMode(
+        preferredMode = subtitleOverride,
+        hasPrimaryTrack = subtitlePrimaryAvailable,
+        hasSecondaryTrack = subtitleSecondaryAvailable,
+    )
+    val ownedSubtitleState = success?.takeIf { subtitleBelongsToCurrentVideo }
+    val subtitlePrimaryLabel = ownedSubtitleState?.subtitleTracks?.firstOrNull {
+        it.trackKey == ownedSubtitleState.subtitlePrimaryTrackKey
+    }?.let(::resolveSubtitleTrackDisplayLabel) ?: resolveSubtitleLanguageLabel(
+        languageCode = ownedSubtitleState?.subtitlePrimaryLanguage, fallbackLabel = "中文",
+    )
+    val subtitleSecondaryLabel = ownedSubtitleState?.subtitleTracks?.firstOrNull {
+        it.trackKey == ownedSubtitleState.subtitleSecondaryTrackKey
+    }?.let(::resolveSubtitleTrackDisplayLabel) ?: resolveSubtitleLanguageLabel(
+        languageCode = ownedSubtitleState?.subtitleSecondaryLanguage, fallbackLabel = "英文",
+    )
+    val subtitleDisplayOptions = resolveSubtitleDisplayOptions(
+        primaryLabel = subtitlePrimaryLabel,
+        secondaryLabel = subtitleSecondaryLabel,
+        hasPrimaryTrack = subtitleControlAvailability.primarySelectable,
+        hasSecondaryTrack = subtitleControlAvailability.secondarySelectable,
+    )
+    // This bridge still reads/writes the saved preference, never a transient fallback.
+    val latestSubtitleMode by rememberUpdatedState(subtitleOverride)
     DisposableEffect(assembly, platforms.subtitleMode) {
         val registration = platforms.subtitleMode.register(assembly.playback, { latestSubtitleMode }, { subtitleOverride = it })
         onDispose { registration.close() }
@@ -970,8 +1005,11 @@ internal class DesktopWindowsVideoActions(
                         }
                         Text("字幕显示", style = MaterialTheme.typography.labelLarge)
                         FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            SubtitleDisplayMode.entries.forEach { mode -> FilterChip(subtitleMode==mode,
-                                onClick={if(current()) subtitleOverride=mode}, label={Text(when(mode) {SubtitleDisplayMode.OFF->"字幕关闭";SubtitleDisplayMode.PRIMARY_ONLY->"主字幕";SubtitleDisplayMode.SECONDARY_ONLY->"副字幕";SubtitleDisplayMode.BILINGUAL->"双语字幕"})}) }
+                            subtitleDisplayOptions.forEach { option ->
+                                FilterChip(selected = subtitleMode == option.mode,
+                                    onClick = { if (current() && option.enabled) subtitleOverride = option.mode },
+                                    enabled = option.enabled, label = { Text(option.label) })
+                            }
                         }
                         success?.let { value ->
                             val languages = desktopWindowsAudioLanguageOptions(value)
