@@ -967,7 +967,7 @@ internal class DesktopWindowsVideoActions(
                                                 player = assembly.section, uiState = original,
                                                 bvid = success?.info?.bvid ?: route.bvid,
                                                 subtitleFeatureEnabled = isSubtitleFeatureEnabledForUser(),
-                                                subtitleOverlayEnabled = current() && subtitleMode != SubtitleDisplayMode.OFF,
+                                                subtitleOverlayEnabled = pictureCurrent(viewportSource) && subtitleMode != SubtitleDisplayMode.OFF,
                                                 subtitleDisplayMode = subtitleMode,
                                                 primaryTextSizeSp = subtitleSizes.primarySp, secondaryTextSizeSp = subtitleSizes.secondarySp,
                                                 initialVerticalOffsetFraction = pictureSettings.subtitleVerticalOffsetFraction,
