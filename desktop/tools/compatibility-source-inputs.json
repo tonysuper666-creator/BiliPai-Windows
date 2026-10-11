@@ -44,6 +44,7 @@
     "desktop/upstream-slices/v033-home-undo",
     "desktop/upstream-slices/v034-bangumi-quality",
     "desktop/upstream-slices/v034-brand-motion-ui",
+    "desktop/upstream-slices/v034-download-list",
     "desktop/upstream-slices/v034-live-moderation",
     "desktop/upstream-slices/v034-live-moderation-ui",
     "desktop/upstream-slices/v034-live-vote",
@@ -1713,6 +1714,17 @@
       ]
     },
     {
+      "directory": "desktop/upstream-slices/v034-download-list",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-download-list/app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+          "sha256": "ed473e3f3b0f9b2f38622e91cb1661865f4f19150e9e2a83dbc13329f5ea688c",
+          "hashNormalization": "raw",
+          "blob": "6cf06122597900e724ef3aeb4b3bcab03f6da710"
+        }
+      ]
+    },
+    {
       "directory": "desktop/upstream-slices/v034-live-moderation",
       "files": [
         {
@@ -2316,6 +2328,19 @@
       "kind": "adaptedSource",
       "features": [
         "v029-special-danmaku"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "localPath": "desktop/upstream-slices/v034-download-list/app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+      "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+      "blob": "6cf06122597900e724ef3aeb4b3bcab03f6da710",
+      "sha256": "ed473e3f3b0f9b2f38622e91cb1661865f4f19150e9e2a83dbc13329f5ea688c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-download-list-per-task-speed"
       ],
       "referenceOnly": false
     },

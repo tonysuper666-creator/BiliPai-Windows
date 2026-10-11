@@ -227,6 +227,21 @@ def render_section():
  t=t.replace('import com.android.purebilibili.feature.anime4k.isAnime4KGles3Available\n','')
  t=t.replace('import com.android.purebilibili.core.ui.AppShapes\n','import com.android.purebilibili.core.ui.AppShapes\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\n')
  t=t.replace('import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\n','import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\nimport kotlinx.coroutines.flow.map\n')
+ # Windows calls the complete original subtitle host in its existing foreground.
+ # Its optional writer retains the actual source admission across a drag/save;
+ # other original callers keep their existing settings path and gesture key.
+ t=exact(t,'private fun BoxScope.VideoSubtitleOverlayHost(', 'internal fun BoxScope.VideoSubtitleOverlayHost(', 'Expose the whole original subtitle host to the Windows physical leaf')
+ t=exact(t,'    bottomControlsHeightPx: Int\n) {\n    val keepSubtitleOverlayMounted', '    bottomControlsHeightPx: Int,\n    onVerticalOffsetCommitted: (suspend (Float) -> Unit)? = null\n) {\n    val keepSubtitleOverlayMounted', 'Optional captured Windows subtitle position writer; original callers retain their setter')
+ t=exact(t,'Modifier.pointerInput(playerViewportSize.height) {\n                        detectDragGestures(', 'Modifier.pointerInput(playerViewportSize.height,\n                        if (onVerticalOffsetCommitted != null) bvid else null, onVerticalOffsetCommitted) {\n                        detectDragGestures(', 'A Windows source replacement cancels the old subtitle drag before its writer can be reused')
+ t=exact(t,'''                                    com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setSubtitleVerticalOffsetFraction(
+                                        context,
+                                        subtitleVerticalOffsetFraction
+                                    )''', '''                                    val writer = onVerticalOffsetCommitted
+                                    if (writer != null) writer(subtitleVerticalOffsetFraction)
+                                    else com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.setSubtitleVerticalOffsetFraction(
+                                        context,
+                                        subtitleVerticalOffsetFraction
+                                    )''', 'Whole original drag saves through the captured Windows settings admission')
  t+='\n/** Lazy original diagnostic call shape on the existing local diagnostics bridge. */\nprivate fun Logger.d(tag: String, message: () -> String) { Logger.d(tag, message()) }\n'
  emit(rel,t)
 

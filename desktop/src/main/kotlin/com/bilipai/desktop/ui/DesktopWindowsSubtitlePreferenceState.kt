@@ -53,3 +53,23 @@ internal fun rememberDesktopWindowsSubtitleMode(
     }
     return mode
 }
+
+/** Original Section's per-subtitle-session large-text toggle in the same registry.
+ * Saved presentation state may return only to the retained assembly and session. */
+@Composable
+internal fun rememberDesktopWindowsSubtitleLargeText(
+    ownerSaveableKey: String,
+    session: SubtitlePreferenceSession,
+): MutableState<Boolean> {
+    val saver = remember(ownerSaveableKey, session.key) {
+        Saver<MutableState<Boolean>, List<String>>(
+            save = { listOf(ownerSaveableKey, session.key, it.value.toString()) },
+            restore = { saved ->
+                if (saved.size == 3 && saved[0] == ownerSaveableKey && saved[1] == session.key) {
+                    saved[2].toBooleanStrictOrNull()?.let { mutableStateOf(it) }
+                } else null
+            },
+        )
+    }
+    return rememberSaveable(ownerSaveableKey, session.key, saver = saver) { mutableStateOf(false) }
+}

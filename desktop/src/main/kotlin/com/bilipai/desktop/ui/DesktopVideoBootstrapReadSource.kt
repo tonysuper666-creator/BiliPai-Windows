@@ -19,7 +19,7 @@ private data class DesktopVideoBootstrapRetryIntent(
     val autoPlay: Boolean, val audioLang: String?,
 ) {
     fun matches(request: PlaybackRequest, fallbackResumeMs: Long): Boolean =
-        request.bvid == bvid && request.cid == cid && request.aid == 0L && !request.force &&
+        request.bvid == bvid && request.cid == cid && request.aid == 0L && request.force &&
         request.autoPlay == autoPlay && !request.ignoreSavedProgress &&
         request.audioLang == audioLang && request.videoCodecOverride == null &&
         fallbackResumeMs == this.fallbackResumeMs

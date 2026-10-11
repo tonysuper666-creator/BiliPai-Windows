@@ -486,6 +486,15 @@ class DesktopDownloadManager internal constructor(
         stillOwned: () -> Boolean, taskAdmission: ((() -> Unit) -> Boolean),
         publish: ((DownloadTask) -> DownloadTask) -> Unit) {
         val id = task.id
+        fun publishAssetState(state: DownloadAssetState) {
+            publish { wrapper ->
+                val next = wrapper.item.withAssetState(state)
+                val downloaded = next.assets.sumOf { it.downloadedBytes }
+                val total = next.assets.sumOf { it.totalBytes }
+                wrapper.copy(item = next.copy(downloadedSize = downloaded,
+                    progress = if (total > 0L) (downloaded.toDouble() / total * 0.9).coerceIn(0.0, 0.9).toFloat() else 0f))
+            }
+        }
         if (task.item.cover.isNotBlank() && task.item.assets.none { it.kind == DownloadAssetKind.COVER && it.status == DownloadAssetStatus.SKIPPED }) {
             val cover = directory.resolve("cover.jpg")
             try {
@@ -493,25 +502,25 @@ class DesktopDownloadManager internal constructor(
                 publish { it.copy(item = it.item.copy(localCoverPath = cover.toString())) }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {
-                publish { it.copy(item = it.item.withAssetState(DownloadAssetState(
-                    DownloadAssetKind.COVER, DownloadAssetStatus.FAILED, errorMessage = error.message))) }
+                publishAssetState(DownloadAssetState(
+                    DownloadAssetKind.COVER, DownloadAssetStatus.FAILED, errorMessage = error.message))
             }
-        } else publish { it.copy(item = it.item.withAssetState(DownloadAssetState(DownloadAssetKind.COVER, DownloadAssetStatus.SKIPPED))) }
+        } else publishAssetState(DownloadAssetState(DownloadAssetKind.COVER, DownloadAssetStatus.SKIPPED))
         if (task.item.options.includeDanmaku && task.item.cid > 0 && danmakuDownloader != null) {
             try {
                 val (segments, manifest) = DownloadDanmakuTransport.withTask(task.playbackSource(), publication,
                     callerJob, stillOwned, taskAdmission) {
                     danmakuDownloader.invoke(task, directory) { state ->
-                        publish { it.copy(item = it.item.withAssetState(state)) }
+                        publishAssetState(state)
                     }
                 }
                 publish { it.copy(item = it.item.copy(localDanmakuSegmentPaths = segments, localDanmakuMetadataPath = manifest)) }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {
-                publish { it.copy(item = it.item.withAssetState(DownloadAssetState(
-                    DownloadAssetKind.DANMAKU, DownloadAssetStatus.FAILED, errorMessage = error.message))) }
+                publishAssetState(DownloadAssetState(
+                    DownloadAssetKind.DANMAKU, DownloadAssetStatus.FAILED, errorMessage = error.message))
             }
-        } else publish { it.copy(item = it.item.withAssetState(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.SKIPPED))) }
+        } else publishAssetState(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.SKIPPED))
     }
 
     private suspend fun downloadAsset(id: String, url: String, output: Path, kind: DownloadAssetKind, progressiveIndex: Int? = null) {

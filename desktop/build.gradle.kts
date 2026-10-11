@@ -881,6 +881,7 @@ val extractOriginalDownloadList by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/original-download-list").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-download-list.py", "tools/sync-upstream.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+    inputs.file("upstream-slices/v034-download-list/app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-download-list-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })

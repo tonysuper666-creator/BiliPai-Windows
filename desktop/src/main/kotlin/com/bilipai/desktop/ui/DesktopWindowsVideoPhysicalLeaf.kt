@@ -42,6 +42,7 @@ import com.android.purebilibili.feature.video.ui.components.CommentEmoteTextFiel
 import com.android.purebilibili.feature.video.ui.components.RichCommentText
 import com.android.purebilibili.feature.video.subtitle.*
 import com.android.purebilibili.feature.video.ui.section.resolveSubtitleLanguageLabel
+import com.android.purebilibili.feature.video.ui.section.VideoSubtitleOverlayHost
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
@@ -530,6 +531,9 @@ internal class DesktopWindowsVideoActions(
     var subtitleOverride by rememberDesktopWindowsSubtitleMode(
         assembly.subtitleSaveableOwnerKey, subtitlePreferenceSession,
     )
+    var subtitleLargeTextByUser by rememberDesktopWindowsSubtitleLargeText(
+        assembly.subtitleSaveableOwnerKey, subtitlePreferenceSession,
+    )
     // Match the original Section: controls retain bound tracks while cues load,
     // but the overlay falls back to cues that can actually be displayed.
     val subtitlePrimaryAvailable = subtitleBelongsToCurrentVideo && success?.subtitlePrimaryCues?.isNotEmpty() == true
@@ -670,6 +674,36 @@ internal class DesktopWindowsVideoActions(
         return pictureFactory.withPresentationAdmission(assembly, expected) {
             if (playbackToolsCurrent(expected)) { action(); applied = true }
         } && applied
+    }
+    val subtitlePositionWriter: suspend (Float) -> Unit = remember(assembly, viewportSource, route, platforms.holder.settingsContext) {
+        val expected = viewportSource
+        val write: suspend (Float) -> Unit = { offset ->
+            try {
+                DesktopOriginalPlaybackPreferenceOperation.run(platforms.holder.settingsContext, { pictureCurrent(expected) }) {
+                    DesktopOriginalPlayerSectionSettings.setSubtitleVerticalOffsetFraction(
+                        platforms.holder.settingsContext, offset)
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) {
+                if (pictureCurrent(expected)) latestActions.notice(failure.message ?: "字幕位置未能保存")
+            }
+        }
+        write
+    }
+    fun changeSubtitlePositionLocked(locked: Boolean) {
+        val expected = viewportSource ?: return
+        if (!pictureCurrent(expected)) return
+        partScope.launch {
+            try {
+                DesktopOriginalPlaybackPreferenceOperation.run(platforms.holder.settingsContext, { pictureCurrent(expected) }) {
+                    DesktopOriginalPlayerSectionSettings.setSubtitlePositionLocked(
+                        platforms.holder.settingsContext, locked)
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) {
+                if (pictureCurrent(expected)) latestActions.notice(failure.message ?: "字幕锁定设置未能保存")
+            }
+        }
     }
     val progressDurationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
     val progressSamples = remember(pbpProgressData, progressDurationMs) {
@@ -925,17 +959,28 @@ internal class DesktopWindowsVideoActions(
                             DesktopVideoCommandPopup(viewportSize, {
                                 Box(Modifier.fillMaxSize()) {
                                     actions.overlay()
-                                    val positionMs = (state.positionSeconds * 1000.0).toLong()
-                                    val primary = if (subtitleMode == SubtitleDisplayMode.PRIMARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
-                                        success?.subtitlePrimaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
-                                    val secondary = if (subtitleMode == SubtitleDisplayMode.SECONDARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
-                                        success?.subtitleSecondaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
-                                    if (current() && success?.subtitleOwnerBvid == success?.info?.bvid &&
-                                        success?.subtitleOwnerCid == success?.info?.cid && (primary != null || secondary != null))
-                                        Column(Modifier.align(Alignment.BottomCenter).padding(14.dp).background(Color.Black.copy(alpha=.65f)).padding(6.dp)) {
-                                            primary?.let { Text(it, color=Color.White, fontSize=20.sp) }
-                                            secondary?.let { Text(it, color=Color.White, fontSize=16.sp) }
+                                    val subtitleSizes = resolveSubtitleTextSizeSpec(
+                                        playerWidthDp = viewportWidth.value.toInt(), largeTextEnabled = subtitleLargeTextByUser)
+                                    CompositionLocalProvider(LocalDesktopOriginalVideoSectionPlatform provides platforms.holder.section) {
+                                        key(assembly.subtitleSaveableOwnerKey, success?.info?.bvid, success?.info?.cid) {
+                                            VideoSubtitleOverlayHost(
+                                                player = assembly.section, uiState = original,
+                                                bvid = success?.info?.bvid ?: route.bvid,
+                                                subtitleFeatureEnabled = isSubtitleFeatureEnabledForUser(),
+                                                subtitleOverlayEnabled = current() && subtitleMode != SubtitleDisplayMode.OFF,
+                                                subtitleDisplayMode = subtitleMode,
+                                                primaryTextSizeSp = subtitleSizes.primarySp, secondaryTextSizeSp = subtitleSizes.secondarySp,
+                                                initialVerticalOffsetFraction = pictureSettings.subtitleVerticalOffsetFraction,
+                                                positionLocked = pictureSettings.subtitlePositionLocked,
+                                                isInPipMode = pipActive, isAudioOnly = state.audioOnly,
+                                                suppressSubtitleOverlay = !current(), isFullscreen = fullscreen,
+                                                // Windows chrome is a sibling outside this measured video viewport.
+                                                controlsVisible = false, endDrawerReservedWidth = 0.dp,
+                                                playerViewportSize = viewportSize, bottomControlsHeightPx = 0,
+                                                onVerticalOffsetCommitted = subtitlePositionWriter,
+                                            )
                                         }
+                                    }
                                     DesktopWindowsVideoInteractiveChoiceOverlay(assembly, interactiveChoicePanel, interactiveChoiceSource)
                                 }
                             }, native.surface)
@@ -1169,7 +1214,16 @@ internal class DesktopWindowsVideoActions(
                                     onClick = { if (current() && option.enabled) subtitleOverride = option.mode },
                                     enabled = option.enabled, label = { Text(option.label) })
                             }
+                            FilterChip(selected = subtitleLargeTextByUser, enabled = pictureCurrent(viewportSource),
+                                onClick = { viewportSource?.let { expected ->
+                                    admitPlaybackTool(expected) { subtitleLargeTextByUser = !subtitleLargeTextByUser }
+                                } }, label = { Text("放大字幕") })
+                            FilterChip(selected = pictureSettings.subtitlePositionLocked, enabled = pictureCurrent(viewportSource),
+                                onClick = { changeSubtitlePositionLocked(!pictureSettings.subtitlePositionLocked) },
+                                label = { Text("锁定位置") })
                         }
+                        if (!pictureSettings.subtitlePositionLocked && subtitleMode != SubtitleDisplayMode.OFF)
+                            Text("拖动视频上的字幕可调整位置", style = MaterialTheme.typography.bodySmall)
                         success?.let { value ->
                             val languages = desktopWindowsAudioLanguageOptions(value)
                             val audioTracks = desktopWindowsNativeAudioTracks(state)

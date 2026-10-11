@@ -1,10 +1,15 @@
-"""Complete fixed v0.2.3 download list; Windows owner/queue/path/Coil seams only."""
+"""Complete fixed v025 download list, with exact b209 per-task speed updates and Windows owner seams."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,subprocess,textwrap
 
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
+SPEED_COMMIT='b2091b1de636e499df80af7e700796b4f52b7f92'
+SPEED_SOURCE=BASE+'feature/download/DownloadListScreen.kt'
+SPEED_ARCHIVE='desktop/upstream-slices/v034-download-list/'+SPEED_SOURCE
+SPEED_SHA256='ed473e3f3b0f9b2f38622e91cb1661865f4f19150e9e2a83dbc13329f5ea688c'
+SPEED_BLOB='6cf06122597900e724ef3aeb4b3bcab03f6da710'
 SOURCE_PINS={
  BASE+'feature/download/DownloadListScreen.kt':'0c2f1aa19895a2fa0f566055f84f6e172fd6c9629ac34d064c3379e0588c2895',
  BASE+'feature/download/DownloadStoragePolicy.kt':'a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c',
@@ -33,6 +38,14 @@ def generate(repo,output,standalone=False):
    assert len(rows)==1 and rows[0]['sha256']==pin,'Sole fixed registry identity missing: '+path
    assert 'stable-download-list-original' in rows[0]['features'],'Required selected-source feature missing: '+path
   original[path]=s;write(output/'original-retained'/(path+'.txt'),s)
+ # Retain the complete later source independently; it never replaces the canonical v025 identity.
+ speed_raw=safe(repo/SPEED_ARCHIVE).read_bytes()
+ assert hashlib.sha256(speed_raw).hexdigest()==SPEED_SHA256,'Later download-list source changed'
+ assert hashlib.sha1(b'blob '+str(len(speed_raw)).encode()+b'\0'+speed_raw).hexdigest()==SPEED_BLOB,'Later download-list Git blob changed'
+ speed_original=speed_raw.decode('utf-8').replace('\r\n','\n')
+ speed_retained='original-retained/v034-download-list/'+SPEED_SOURCE+'.txt'
+ write(output/speed_retained,speed_original)
+ speed_selections=[]
  parser=load(repo/'desktop/tools/sync-upstream.py','download_list_parser')
  media=load(repo/'desktop/tools/extract-upstream-media.py','download_list_media')
  appearance=load(repo/'desktop/tools/extract-appearance-platform.py','download_list_declarations')
@@ -61,6 +74,29 @@ def generate(repo,output,standalone=False):
  if standalone:emit(direct,original[direct],directOutput,[],True)
  else:safe(output/directOutput).unlink(missing_ok=True)
  path=BASE+'feature/download/DownloadListScreen.kt';s=original[path];edits=[]
+ old_start='    // 下载速度：串行队列同时只有一个任务在下载，按已下载字节差值估算'
+ new_start='    // Keep one sampling loop alive across progress emissions and reset each task\'s baseline independently.'
+ end='\n    AppScaffold('
+ assert s.count(old_start)==1 and speed_original.count(new_start)==1
+ old_at=s.index(old_start);new_at=speed_original.index(new_start)
+ old_sampler=s[old_at:s.index(end,old_at)]
+ new_end=speed_original.index(end,new_at);new_sampler=speed_original[new_at:new_end]
+ s=edit(s,old_sampler,new_sampler,edits)
+ speed_selections.append({'purpose':'persistentPerTaskSpeedSampler','beforeSha256LF':sha(old_sampler),'afterSha256LF':sha(new_sampler),'sourceStart':new_at,'sourceEnd':new_end,'count':1})
+ old_lookup="""                            speedBytesPerSecond = if (task.status == DownloadStatus.DOWNLOADING) {
+                                activeDownloadSpeedBytesPerSecond
+                            } else {
+                                0L
+                            }"""
+ new_lookup="""                            speedBytesPerSecond = if (task.status == DownloadStatus.DOWNLOADING) {
+                                downloadSpeedsByTask[task.id] ?: 0L
+                            } else {
+                                0L
+                            }"""
+ assert speed_original.count(new_lookup)==1
+ lookup_at=speed_original.index(new_lookup)
+ s=edit(s,old_lookup,new_lookup,edits)
+ speed_selections.append({'purpose':'sameTaskRowSpeed','beforeSha256LF':sha(old_lookup),'afterSha256LF':sha(new_lookup),'sourceStart':lookup_at,'sourceEnd':lookup_at+len(new_lookup),'count':1})
  for a,b in [
   ('import android.widget.Toast\n',''),
   ('import com.android.purebilibili.core.ui.animation.jiggleOnDissolve','import com.bilipai.desktop.ui.jiggleOnDissolve'),
@@ -112,7 +148,7 @@ import kotlinx.coroutines.flow.map
 object DesktopOriginalDownloadListSettings {
 '''+textwrap.indent(body,'    ')+'\n}\n'
  emit(path,s,'com/android/purebilibili/core/store/DesktopOriginalDownloadListSettings.kt',[{'before':old,'after':new,'count':1}],False)
- write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'soleDirectReference':direct,'standalone':standalone,'exactDeltas':deltas,'selectedSettingsDeclarations':names,'selectedSettingsOriginalSha256LF':sha(originalBody),'selectedSettingsAdaptedSha256LF':sha(body),'selectedSettingsExactInversePass':True,'canonicalGetterBodiesUnchanged':True,'allThreeListDeclarationsRetained':['DownloadListScreen','formatDownloadStorageBytes','DownloadTaskItem'],'newHttpClient':False,'newTaskModelOrStore':False},ensure_ascii=False,indent=2))
+ write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'sourceUpdates':[{'fixedCommit':SPEED_COMMIT,'source':SPEED_SOURCE,'archive':SPEED_ARCHIVE,'rawSha256':SPEED_SHA256,'gitBlob':SPEED_BLOB,'originalSha256LF':sha(speed_original),'fullOriginalRetained':speed_retained,'selections':speed_selections}],'soleDirectReference':direct,'standalone':standalone,'exactDeltas':deltas,'selectedSettingsDeclarations':names,'selectedSettingsOriginalSha256LF':sha(originalBody),'selectedSettingsAdaptedSha256LF':sha(body),'selectedSettingsExactInversePass':True,'canonicalGetterBodiesUnchanged':True,'allThreeListDeclarationsRetained':['DownloadListScreen','formatDownloadStorageBytes','DownloadTaskItem'],'newHttpClient':False,'newTaskModelOrStore':False},ensure_ascii=False,indent=2))
  return records
 
 if __name__=='__main__':
