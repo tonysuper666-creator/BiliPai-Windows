@@ -492,10 +492,28 @@ internal class DesktopWindowsVideoActions(
     LaunchedEffect(assembly, completion, state.sourceTitle, active) {
         if (current() && assembly.section.isOwned()) assembly.section.repeatMode = resolvePlaybackCompletionRepeatMode(completion)
     }
-    var subtitleOverride by remember(assembly) { mutableStateOf<SubtitleDisplayMode?>(null) }
-    val subtitleMode = subtitleOverride ?: resolveSubtitleDisplayModeByAutoPreference(preferences.subtitleAutoPreference,
-        success?.subtitlePrimaryCues?.isNotEmpty() == true, success?.subtitleSecondaryCues?.isNotEmpty() == true,
-        success?.subtitlePrimaryLikelyAi == true, success?.subtitleSecondaryLikelyAi == true, state.muted)
+    // Reuse the original Holder's session policy: a part/language/preference change
+    // resets its manual override; native publication changes alone are not a new key.
+    val subtitleBelongsToCurrentVideo = success != null && success.info.cid > 0L &&
+        success.subtitleOwnerBvid == success.info.bvid && success.subtitleOwnerCid == success.info.cid
+    val subtitlePreferenceSession = resolveSubtitlePreferenceSession(
+        bvid = success?.info?.bvid ?: assembly.playback.captureDesktopLoadState().currentBvid,
+        cid = success?.info?.cid ?: 0L,
+        primaryLanguage = success?.subtitlePrimaryLanguage,
+        secondaryLanguage = success?.subtitleSecondaryLanguage,
+        primaryTrackLikelyAi = subtitleBelongsToCurrentVideo && success?.subtitlePrimaryLikelyAi == true,
+        secondaryTrackLikelyAi = subtitleBelongsToCurrentVideo && success?.subtitleSecondaryLikelyAi == true,
+        hasPrimaryTrack = subtitleBelongsToCurrentVideo &&
+            (!success?.subtitlePrimaryTrackKey.isNullOrBlank() || !success?.subtitlePrimaryLanguage.isNullOrBlank()),
+        hasSecondaryTrack = subtitleBelongsToCurrentVideo &&
+            (!success?.subtitleSecondaryTrackKey.isNullOrBlank() || !success?.subtitleSecondaryLanguage.isNullOrBlank()),
+        preference = preferences.subtitleAutoPreference,
+        isMuted = state.muted,
+    )
+    var subtitleOverride by rememberDesktopWindowsSubtitleMode(
+        assembly.subtitleSaveableOwnerKey, subtitlePreferenceSession,
+    )
+    val subtitleMode = subtitleOverride
     val latestSubtitleMode by rememberUpdatedState(subtitleMode)
     DisposableEffect(assembly, platforms.subtitleMode) {
         val registration = platforms.subtitleMode.register(assembly.playback, { latestSubtitleMode }, { subtitleOverride = it })

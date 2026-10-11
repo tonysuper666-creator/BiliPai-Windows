@@ -46,6 +46,9 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
 ) : AutoCloseable {
     private val closed = AtomicBoolean(false)
     private val entryJob = checkNotNull(entryScope.coroutineContext[Job])
+    // Display-state namespace only: retained with this assembly, never an admission token.
+    // A replacement owner must not consume a previous owner's saved manual subtitle mode.
+    internal val subtitleSaveableOwnerKey: String = java.util.UUID.randomUUID().toString()
     lateinit var native: DesktopOriginalVideoNativeOwner
         private set
     lateinit var invocations: DesktopOriginalVideoPlaybackInvocationPorts
