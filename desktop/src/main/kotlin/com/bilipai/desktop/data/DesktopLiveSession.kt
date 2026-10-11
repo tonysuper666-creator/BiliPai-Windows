@@ -5,8 +5,14 @@ import com.android.purebilibili.core.network.socket.LiveDanmakuClient
 import com.android.purebilibili.data.repository.LiveDanmakuPermission
 import com.android.purebilibili.data.repository.LiveDanmakuSendRequest
 import com.android.purebilibili.data.repository.LiveVoteSnapshot
+import com.android.purebilibili.data.repository.LiveShieldInfo
+import com.android.purebilibili.data.repository.LiveDanmakuReportRequest
+import com.android.purebilibili.data.repository.LiveSuperChatReportRequest
+import com.android.purebilibili.data.repository.LiveReportReason
+import com.android.purebilibili.data.repository.DefaultLiveReportReasons
 import com.android.purebilibili.data.repository.applyOriginalDesktopLiveVoteUpdate
 import com.android.purebilibili.feature.live.LiveDanmakuItem
+import com.android.purebilibili.feature.live.LiveDanmakuFilterPolicy
 import com.android.purebilibili.feature.live.LiveRealtimeAction
 import com.android.purebilibili.feature.live.resolveLiveRealtimeAction
 import kotlinx.coroutines.*
@@ -22,6 +28,7 @@ data class LiveChatState(
     val error: String? = null,
     val permission: LiveDanmakuPermission? = null,
     val sending: Boolean = false,
+    val moderating: Boolean = false,
 )
 
 /** One playback owns one original socket client; closing never leaves a reconnect job. */
@@ -37,6 +44,12 @@ class DesktopLiveSession(
     val state: StateFlow<LiveChatState> = mutableState.asStateFlow()
     private val mutableVoteSnapshot = MutableStateFlow(LiveVoteSnapshot())
     val voteSnapshot: StateFlow<LiveVoteSnapshot> = mutableVoteSnapshot.asStateFlow()
+    private val mutableShieldInfo = MutableStateFlow(LiveShieldInfo())
+    val shieldInfo: StateFlow<LiveShieldInfo> = mutableShieldInfo.asStateFlow()
+    // Read/write only inside existing publish/admission + lifetimeLock.
+    private var shieldRequestGeneration = 0L
+    private var danmakuFilter = LiveDanmakuFilterPolicy()
+    private val moderationGuard = java.util.concurrent.atomic.AtomicBoolean(false)
     private val mutableActions = MutableSharedFlow<LiveRealtimeAction>(extraBufferCapacity = 200, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     internal val actions: SharedFlow<LiveRealtimeAction> = mutableActions.asSharedFlow()
     private val startGuard = java.util.concurrent.atomic.AtomicBoolean(false)
@@ -90,6 +103,10 @@ class DesktopLiveSession(
                     } catch (cancelled: CancellationException) { throw cancelled
                     } catch (_: Exception) { /* Original vote snapshot is optional. */ }
                 }
+                // Original startup refresh precedes history/socket; failure stays optional.
+                try { refreshShieldInfo()
+                } catch (cancelled: CancellationException) { throw cancelled
+                } catch (_: Exception) { /* Optional original server shield hydration. */ }
                 // History/config remain optional: live socket authentication uses
                 // its separately signed original API and the same current login.
                 try {
@@ -101,7 +118,9 @@ class DesktopLiveSession(
                     val history = media.liveDanmakuHistory(roomId, primaryEpoch, ::owned).map { LiveDanmakuItem(text = it.text, uid = it.uid,
                         uname = it.uname, emoticonUrl = it.emoticonUrl, replyToName = it.replyToName, dmType = it.dmType,
                         idStr = it.idStr, reportTs = it.reportTs, reportSign = it.reportSign) }
-                    if (!publish { mutableState.update { it.copy(messages = history.takeLast(200)) } }) return@launch
+                    if (!publish { mutableState.update { it.copy(messages = history.filterNot { item ->
+                        danmakuFilter.blocks(item.uid, item.text)
+                    }.takeLast(200)) } }) return@launch
                 } catch (cancelled: CancellationException) { throw cancelled
                 } catch (_: Exception) { /* A failed history fetch cannot hide realtime messages. */ }
                 if (!owned()) return@launch
@@ -151,6 +170,8 @@ class DesktopLiveSession(
     }
 
     private fun append(item: LiveDanmakuItem): Boolean {
+        // Exact original scope: blocked ordinary chats never reach history OR overlay actions.
+        if (!item.isSelf && !item.isSystem && !item.isSuperChat && danmakuFilter.blocks(item.uid, item.text)) return false
         if (item.isSelf && item.text == lastSentText && System.currentTimeMillis() - lastSentAtMs in 0..5000) return false
         var appended = false
         mutableState.update { state ->
@@ -187,6 +208,108 @@ class DesktopLiveSession(
         } finally { sendGuard.set(false); publish { mutableState.update { it.copy(sending = false) } } }
     }
 
+    /** The original server shield state belongs to this exact room/account Session. */
+    suspend fun refreshShieldInfo() {
+        val caller = currentCoroutineContext()[Job]
+        val current = { caller?.isActive == true && owned() }
+        var generation = 0L
+        if (!publish { generation = ++shieldRequestGeneration })
+            throw CancellationException("直播会话或账号已切换")
+        val info = media.liveShieldInfo(roomId, primaryEpoch, current).getOrThrow()
+        currentCoroutineContext().ensureActive()
+        if (!publish {
+            if (shieldRequestGeneration == generation) {
+                mutableShieldInfo.value = info
+                danmakuFilter = LiveDanmakuFilterPolicy(info)
+                mutableState.update { state -> state.copy(messages = state.messages.filterNot { item ->
+                    !item.isSelf && !item.isSystem && !item.isSuperChat && danmakuFilter.blocks(item.uid, item.text)
+                }) }
+            }
+        }) throw CancellationException("直播会话或账号已切换")
+    }
+
+    private suspend fun moderate(refresh: Boolean, operation: suspend (() -> Boolean) -> Unit) {
+        val caller = currentCoroutineContext()[Job]
+        val current = { caller?.isActive == true && owned() }
+        check(current()) { "直播弹幕会话已关闭" }
+        check(moderationGuard.compareAndSet(false, true)) { "直播管理操作正在处理" }
+        if (!publish {
+            if (refresh) ++shieldRequestGeneration
+            mutableState.update { it.copy(moderating = true, error = null) }
+        }) {
+            moderationGuard.set(false)
+            throw CancellationException("直播会话或账号已切换")
+        }
+        try {
+            operation(current)
+            currentCoroutineContext().ensureActive()
+            if (!current()) throw CancellationException("直播会话或账号已切换")
+            if (refresh) {
+                // A successful server write invalidates every older hydration/refresh.
+                if (!publish { ++shieldRequestGeneration }) throw CancellationException("直播会话或账号已切换")
+                try { refreshShieldInfo()
+                } catch (cancelled: CancellationException) { throw cancelled
+                } catch (error: Exception) {
+                    // As in the original asynchronous refresh, read failure does not
+                    // turn an accepted mutation into a failed write eligible for retry.
+                    publish { mutableState.update { it.copy(error = error.message ?: "刷新直播屏蔽设置失败") } }
+                }
+            }
+        } catch (cancelled: CancellationException) { throw cancelled
+        } catch (error: Exception) {
+            publish { mutableState.update { it.copy(error = error.message ?: "直播管理操作失败") } }
+            throw error
+        } finally {
+            // Publish cleanup before a newly admitted operation can publish busy=true.
+            if (!publish {
+                moderationGuard.set(false)
+                mutableState.update { it.copy(moderating = false) }
+            }) moderationGuard.set(false)
+        }
+    }
+
+    /** Explicit actions only; no automatic mutation is performed by start/refresh. */
+    suspend fun shieldUser(uid: Long) {
+        require(uid > 0L)
+        moderate(true) { current -> media.setLiveShieldUser(roomId, uid, 1, primaryEpoch, current).getOrThrow() }
+    }
+
+    suspend fun unshieldUser(uid: Long) {
+        require(uid > 0L)
+        moderate(true) { current -> media.setLiveShieldUser(roomId, uid, 0, primaryEpoch, current).getOrThrow() }
+    }
+
+    suspend fun addShieldKeyword(keyword: String) {
+        moderate(true) { current -> media.addLiveShieldKeyword(keyword, primaryEpoch, current).getOrThrow() }
+    }
+
+    suspend fun deleteShieldKeyword(keyword: String) {
+        moderate(true) { current -> media.deleteLiveShieldKeyword(keyword, primaryEpoch, current).getOrThrow() }
+    }
+
+    suspend fun setSilentRule(type: String, level: Int) {
+        moderate(true) { current -> media.setLiveSilentRule(type, level, primaryEpoch, current).getOrThrow() }
+    }
+
+    suspend fun reportDanmaku(item: LiveDanmakuItem, reason: LiveReportReason) {
+        require(reason in DefaultLiveReportReasons)
+        moderate(false) { current ->
+            var retained = false
+            if (!publish { retained = mutableState.value.messages.any { it === item } })
+                throw CancellationException("直播会话或账号已切换")
+            require(retained && !item.isSelf && !item.isSystem) { "此弹幕已不属于当前直播消息" }
+            if (item.isSuperChat) media.reportLiveSuperChat(LiveSuperChatReportRequest(
+                roomId = roomId, uid = item.uid, uname = item.uname, message = item.text,
+                messageId = item.superChatId, token = item.superChatToken,
+                reportTime = item.superChatReportTs, reason = reason), primaryEpoch, current).getOrThrow()
+            else media.reportLiveDanmaku(LiveDanmakuReportRequest(
+                roomId = roomId, uid = item.uid, uname = item.uname, message = item.text,
+                dmid = item.idStr, reportTime = item.reportTs, sign = item.reportSign,
+                reason = reason, dmType = item.dmType), primaryEpoch, current).getOrThrow()
+        }
+    }
+
+
     override fun close() {
         val previous = synchronized(lifetimeLock) {
             if (!closed.compareAndSet(false, true)) return
@@ -194,6 +317,6 @@ class DesktopLiveSession(
         }
         // No lifetime/Store monitor encloses native/socket cancellation.
         previous?.disconnect(); scope.cancel()
-        mutableState.update { it.copy(connected = false, status = "弹幕连接已关闭", sending = false) }
+        mutableState.update { it.copy(connected = false, status = "弹幕连接已关闭", sending = false, moderating = false) }
     }
 }

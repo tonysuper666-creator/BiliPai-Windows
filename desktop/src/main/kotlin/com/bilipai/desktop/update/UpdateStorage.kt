@@ -2,24 +2,55 @@ package com.bilipai.desktop.update
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import java.nio.channels.FileChannel
+import java.nio.channels.FileLock
 import java.nio.file.Files
 import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.nio.file.Path
+import java.nio.file.StandardOpenOption.CREATE_NEW
+import java.nio.file.StandardOpenOption.WRITE
 import java.nio.file.attribute.BasicFileAttributes
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** Cleanup is restricted to marked, immediate children of the updater's verified root. */
 internal object UpdateStorage {
     private const val OWNER_FILE = ".bilipai-updater.json"
-    private const val OWNER = "BiliPai.Windows.Updater.v1"
+    private const val LEASE_FILE = ".bilipai-updater.lock"
+    private const val OWNER = "BiliPai.Windows.Updater.v2"
+    private const val LEGACY_OWNER = "BiliPai.Windows.Updater.v1"
     private val json = Json { ignoreUnknownKeys = true }
     private val stageName = Regex("^staged-[0-9]+-[A-Za-z0-9-]+$")
 
-    fun createStage(root: Path, repository: String, assetId: Long): Path {
+    /** The OS releases this lock on process death; neither timestamps nor PIDs grant ownership. */
+    class StageLease internal constructor(val stage: Path, private val channel: FileChannel, private val lock: FileLock) : AutoCloseable {
+        private val closed = AtomicBoolean()
+        fun holds(stage: Path): Boolean = !closed.get() && channel.isOpen && lock.isValid && this.stage == stage
+        override fun close() {
+            if (!closed.compareAndSet(false, true)) return
+            try { runCatching { lock.release() } } finally { runCatching { channel.close() } }
+        }
+    }
+
+    fun createStage(root: Path, repository: String, assetId: Long): Path =
+        createLeasedStage(root, repository, assetId).use { it.stage }
+
+    fun createLeasedStage(root: Path, repository: String, assetId: Long): StageLease {
         require(assetId > 0) { "更新资产标识无效" }
         val verified = verifiedRoot(root)
         val stage = Files.createTempDirectory(verified, "staged-$assetId-")
-        Files.writeString(stage.resolve(OWNER_FILE), json.encodeToString(OwnerMarker.serializer(), OwnerMarker(repository, OWNER)))
-        return stage
+        var lease: StageLease? = null
+        try {
+            // Until the lease exists, no ownership marker is published and cleanup ignores this directory.
+            val acquired = requireNotNull(openLease(stage, create = true)) { "更新安装目录无法取得独占租约" }
+            lease = acquired
+            Files.writeString(stage.resolve(OWNER_FILE), json.encodeToString(OwnerMarker.serializer(), OwnerMarker(repository, OWNER)), CREATE_NEW, WRITE)
+            return acquired
+        } catch (error: Throwable) {
+            lease?.close()
+            // Only this new, unpublished directory can be removed without an ownership marker.
+            runCatching { Files.deleteIfExists(stage.resolve(OWNER_FILE)); Files.deleteIfExists(stage.resolve(LEASE_FILE)); Files.delete(stage) }
+            throw error
+        }
     }
 
     fun verifiedRoot(root: Path): Path {
@@ -55,11 +86,51 @@ internal object UpdateStorage {
         val absoluteStage = existingPathWithoutLinks(stage)
         if (absoluteStage.parent != absoluteRoot || !stageName.matches(absoluteStage.fileName.toString())) return@runCatching null
         if (!Files.isDirectory(absoluteStage, NOFOLLOW_LINKS)) return@runCatching null
-        val marker = absoluteStage.resolve(OWNER_FILE)
-        if (!Files.isRegularFile(marker, NOFOLLOW_LINKS) || Files.isSymbolicLink(marker) || Files.size(marker) > 4096) return@runCatching null
-        val owner = json.decodeFromString<OwnerMarker>(Files.readString(marker))
-        absoluteStage.takeIf { owner.owner == OWNER && owner.repository == repository }
+        val owner = readOwner(absoluteStage) ?: return@runCatching null
+        absoluteStage.takeIf { owner.owner in setOf(OWNER, LEGACY_OWNER) && owner.repository == repository }
     }.getOrNull()
+
+    private fun readOwner(stage: Path): OwnerMarker? {
+        val marker = stage.resolve(OWNER_FILE)
+        if (!Files.isRegularFile(marker, NOFOLLOW_LINKS) || Files.isSymbolicLink(marker) || Files.size(marker) > 4096) return null
+        return json.decodeFromString<OwnerMarker>(Files.readString(marker))
+    }
+
+    /** A missing v2 lease file, a redirected path, and a busy/unknown lock are all left untouched. */
+    fun tryLeaseStage(root: Path, stage: Path, repository: String): StageLease? = runCatching {
+        val verified = ownedStage(root, stage, repository) ?: return@runCatching null
+        val owner = readOwner(verified) ?: return@runCatching null
+        val missing = !Files.exists(verified.resolve(LEASE_FILE), NOFOLLOW_LINKS)
+        if (missing && owner.owner != LEGACY_OWNER) return@runCatching null
+        val lease = openLease(verified, create = missing) ?: return@runCatching null
+        try {
+            require(ownedStage(root, verified, repository) == verified) { "更新安装目录所有者已改变" }
+            lease
+        } catch (error: Throwable) { lease.close(); throw error }
+    }.getOrNull()
+
+    private fun openLease(stage: Path, create: Boolean): StageLease? {
+        val file = stage.resolve(LEASE_FILE)
+        var channel: FileChannel? = null
+        var lock: FileLock? = null
+        try {
+            if (!create) {
+                require(existingPathWithoutLinks(file) == file && Files.isRegularFile(file, NOFOLLOW_LINKS) && Files.size(file) == 0L)
+            }
+            val opened = if (create) FileChannel.open(file, CREATE_NEW, WRITE, NOFOLLOW_LINKS)
+                else FileChannel.open(file, WRITE, NOFOLLOW_LINKS)
+            channel = opened
+            val acquired = opened.tryLock() ?: return null
+            lock = acquired
+            require(existingPathWithoutLinks(file) == file && Files.isRegularFile(file, NOFOLLOW_LINKS) && Files.size(file) == 0L)
+            return StageLease(stage, opened, acquired).also { channel = null; lock = null }
+        } catch (_: Exception) {
+            // Includes an overlapping JVM lock and a lock owned by another process.
+            return null
+        } finally {
+            try { lock?.let { runCatching { it.release() } } } finally { channel?.let { runCatching { it.close() } } }
+        }
+    }
 
     fun stageContaining(root: Path, path: Path, repository: String): Path? = runCatching {
         val absoluteRoot = existingPathWithoutLinks(root)
@@ -78,20 +149,53 @@ internal object UpdateStorage {
         absoluteRoot.resolve(relative.getName(0))
     }.getOrNull()
 
-    fun deleteOwnedStage(root: Path, stage: Path, repository: String): Boolean = runCatching {
-        val verified = ownedStage(root, stage, repository) ?: return@runCatching false
-        // Validate the complete deletion set before removing anything. Walk never follows links.
-        val paths = Files.walk(verified).use { stream -> stream.map(::existingPathWithoutLinks).toList() }
-        if (paths.any { !it.startsWith(verified) }) return@runCatching false
-        paths.sortedByDescending { it.nameCount }.forEach { Files.delete(it) }
-        true
-    }.getOrDefault(false)
+    fun deleteOwnedStage(root: Path, stage: Path, repository: String,
+        preserveAfterLease: (Path) -> Boolean = { false }): Boolean {
+        // A legacy owner never held an OS lease. It may still be waiting for playback, so it is not reclaimable.
+        val verified = runCatching {
+            ownedStage(root, stage, repository)?.takeIf { readOwner(it)?.owner == OWNER }
+        }.getOrNull() ?: return false
+        val lease = tryLeaseStage(root, verified, repository) ?: return false
+        try {
+            // A snapshot taken before lock acquisition may predate another owner's successful activation.
+            // Unknown/failing fresh admission is preserved, before the first payload deletion.
+            if (runCatching { preserveAfterLease(lease.stage) }.getOrDefault(true)) return false
+            return deleteLeasedStage(root, lease, repository)
+        } finally { lease.close() }
+    }
 
-    fun prune(root: Path, repository: String, preservedStages: Set<Path>) {
+    /** Incomplete downloads already own their lease and must not attempt to reacquire it. Consumes the lease. */
+    fun deleteLeasedStage(root: Path, lease: StageLease, repository: String): Boolean {
+        var unmarked = false
+        val removed = try {
+            runCatching {
+                val verified = ownedStage(root, lease.stage, repository) ?: return@runCatching false
+                require(lease.holds(verified)) { "更新安装目录租约已失效" }
+                require(readOwner(verified)?.owner == OWNER) { "旧版更新安装目录不参与自动清理" }
+                // Validate the complete deletion set before removing anything. Walk never follows links.
+                val paths = Files.walk(verified).use { stream -> stream.map(::existingPathWithoutLinks).toList() }
+                if (paths.any { !it.startsWith(verified) }) return@runCatching false
+                val marker = verified.resolve(OWNER_FILE)
+                val lock = verified.resolve(LEASE_FILE)
+                paths.filter { it != verified && it != marker && it != lock }
+                    .sortedByDescending { it.nameCount }.forEach { Files.delete(it) }
+                // Retire ownership while still locked. A waiting cleaner cannot reclaim the release/delete gap.
+                Files.delete(marker)
+                unmarked = true
+                true
+            }.getOrDefault(false)
+        } finally { lease.close() }
+        if (!unmarked) return removed
+        // Close our lock handle before removing the lock file. Once unmarked this stage cannot be newly claimed.
+        return runCatching { Files.delete(lease.stage.resolve(LEASE_FILE)); Files.delete(lease.stage); true }.getOrDefault(false)
+    }
+
+    fun prune(root: Path, repository: String, preservedStages: Set<Path>,
+        preserveAfterLease: (Path) -> Boolean = { false }) {
         val absolute = verifiedRoot(root)
         val preserved = preservedStages.map(::existingPathWithoutLinks).toSet()
         Files.list(absolute).use { children ->
-            children.forEach { child -> if (child !in preserved) deleteOwnedStage(absolute, child, repository) }
+            children.forEach { child -> if (child !in preserved) deleteOwnedStage(absolute, child, repository, preserveAfterLease) }
         }
     }
 

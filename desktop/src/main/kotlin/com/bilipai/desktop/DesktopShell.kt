@@ -784,6 +784,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var noteVideo by remember { mutableStateOf<VideoDetails?>(null) }
     var favorite by remember(playing.details?.bvid) { mutableStateOf(playing.details?.let { library.isFavorite(it.bvid) } ?: false) }
     val updater = remember { DesktopUpdater() }
+    DisposableEffect(updater) { onDispose { updater.close() } }
     val veyraMonitor = remember(repository, pluginStore, updater, scope, player) {
         val ownsMonitor = { scope.isActive && !latestDynamicIsClosing() }
         val publicReleaseHttp = com.bilipai.desktop.settings.DesktopOriginalAboutReleaseHttp(

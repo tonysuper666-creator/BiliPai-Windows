@@ -23,6 +23,17 @@ import com.android.purebilibili.data.repository.LiveDanmakuPermission
 import com.android.purebilibili.data.repository.LiveDanmakuSendRequest
 import com.android.purebilibili.data.repository.LivePrefetchDanmaku
 import com.android.purebilibili.data.repository.LiveVoteSnapshot
+import com.android.purebilibili.data.repository.LiveShieldInfo
+import com.android.purebilibili.data.repository.LiveShieldUser
+import com.android.purebilibili.data.repository.LiveDanmakuReportRequest
+import com.android.purebilibili.data.repository.LiveSuperChatReportRequest
+import com.android.purebilibili.data.repository.requestOriginalDesktopLiveShieldInfo
+import com.android.purebilibili.data.repository.requestOriginalDesktopLiveSilentRule
+import com.android.purebilibili.data.repository.requestOriginalDesktopAddLiveShieldKeyword
+import com.android.purebilibili.data.repository.requestOriginalDesktopDeleteLiveShieldKeyword
+import com.android.purebilibili.data.repository.requestOriginalDesktopLiveShieldUser
+import com.android.purebilibili.data.repository.requestOriginalDesktopReportLiveDanmaku
+import com.android.purebilibili.data.repository.requestOriginalDesktopReportLiveSuperChat
 import com.android.purebilibili.data.repository.requestOriginalDesktopLiveVoteSnapshot
 import com.android.purebilibili.data.repository.parseLiveDanmakuPermission
 import com.android.purebilibili.data.repository.parseLiveDanmakuHistoryItems
@@ -307,6 +318,80 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         assertCurrent()
         checkCode(response.code, response.message)
     }
+    /** Read/mutations reuse the exact primary owner and the existing one-shot Send transport. */
+    private suspend fun <T> liveModerationRequest(expectedEpoch: Long, stillOwned: () -> Boolean,
+        mutation: Boolean, operation: suspend (com.android.purebilibili.core.network.BilibiliApi, String,
+            suspend (Map<String, String>) -> Map<String, String>) -> Result<T>): Result<T> = withContext(Dispatchers.IO) {
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val current = { caller?.isActive == true && stillOwned() }
+        fun assertCurrent() = repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+        try {
+            assertCurrent()
+            if (mutation) repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { repository.requireAccount() }
+            repository.ensureOwnedHomeSession(expectedEpoch, current, repository.ownedHomeService(
+                com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", expectedEpoch, current))
+            val csrf = if (mutation) repository.withPrimaryPlaybackAdmission(expectedEpoch, current) {
+                repository.requireCsrf()
+            } else ""
+            val transport = if (mutation) desktopLiveSendTransport(repository.httpClient) else repository.httpClient
+            val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+                "https://api.bilibili.com/", expectedEpoch, current, transport = transport)
+            val result = operation(ownedApi, csrf) { params -> repository.signPrimaryLiveWebParams(params, expectedEpoch, current) }
+            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+            assertCurrent()
+            result
+        } catch (retired: BiliApiException) {
+            if (retired.apiCode != -101 || (repository.sessionEpoch == expectedEpoch && current())) throw retired
+            throw CancellationException("直播会话或账号已切换").also { it.initCause(retired) }
+        }
+    }
+
+    internal suspend fun liveShieldInfo(canonicalRoomId: Long, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<LiveShieldInfo> {
+        require(canonicalRoomId > 0L)
+        return liveModerationRequest(expectedEpoch, stillOwned, false) { ownedApi, _, signer ->
+            requestOriginalDesktopLiveShieldInfo(canonicalRoomId, ownedApi, signer)
+        }
+    }
+
+    internal suspend fun setLiveShieldUser(canonicalRoomId: Long, uid: Long, type: Int, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<LiveShieldUser> {
+        require(canonicalRoomId > 0L && uid > 0L && type in 0..1)
+        return liveModerationRequest(expectedEpoch, stillOwned, true) { ownedApi, csrf, _ ->
+            requestOriginalDesktopLiveShieldUser(canonicalRoomId, uid, type, ownedApi, csrf)
+        }
+    }
+
+    internal suspend fun addLiveShieldKeyword(keyword: String, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<Boolean> =
+        liveModerationRequest(expectedEpoch, stillOwned, true) { ownedApi, csrf, _ ->
+            requestOriginalDesktopAddLiveShieldKeyword(keyword, ownedApi, csrf)
+        }
+
+    internal suspend fun deleteLiveShieldKeyword(keyword: String, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<Boolean> =
+        liveModerationRequest(expectedEpoch, stillOwned, true) { ownedApi, csrf, _ ->
+            requestOriginalDesktopDeleteLiveShieldKeyword(keyword, ownedApi, csrf)
+        }
+
+    internal suspend fun setLiveSilentRule(type: String, level: Int, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<Boolean> =
+        liveModerationRequest(expectedEpoch, stillOwned, true) { ownedApi, csrf, _ ->
+            requestOriginalDesktopLiveSilentRule(type, level, ownedApi, csrf)
+        }
+
+    internal suspend fun reportLiveDanmaku(request: LiveDanmakuReportRequest, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<Boolean> =
+        liveModerationRequest(expectedEpoch, stillOwned, true) { ownedApi, csrf, _ ->
+            requestOriginalDesktopReportLiveDanmaku(request, ownedApi, csrf)
+        }
+
+    internal suspend fun reportLiveSuperChat(request: LiveSuperChatReportRequest, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Result<Boolean> =
+        liveModerationRequest(expectedEpoch, stillOwned, true) { ownedApi, csrf, _ ->
+            requestOriginalDesktopReportLiveSuperChat(request, ownedApi, csrf)
+        }
+
     suspend fun bangumiIndex(page: Int = 1, seasonType: Int = 1, filter: BangumiFilter = BangumiFilter()): MediaPage<BangumiCard> = withContext(Dispatchers.IO) {
         require(page > 0 && seasonType in setOf(1, 2, 3, 4, 5, 7))
         repository.ensureSession()

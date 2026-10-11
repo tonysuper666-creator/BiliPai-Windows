@@ -37,7 +37,7 @@ class DesktopUpdater private constructor(
     private val childLocalAppData: Path?,
     private val onProcessStarted: (Process) -> Unit,
     private val catalogLookupForTest: (suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer?)? = null,
-) {
+) : AutoCloseable {
     constructor() : this(loadBuildConfig(), defaultUpdateRoot(), defaultClient(), null, {})
 
     private val json = Json { ignoreUnknownKeys = true }
@@ -56,9 +56,52 @@ class DesktopUpdater private constructor(
     private val mutex = Mutex()
     private var retainedPrepared: PreparedUpdate? = null
     private var retainedArchiveSha256: String? = null
+    private var retainedLease: UpdateStorage.StageLease? = null
+    private val lifetime = Any()
+    @Volatile private var closed = false
+
+    /** Disposal marks the owner closed without waiting on a coroutine mutex or an IO operation. */
+    override fun close() {
+        synchronized(lifetime) { closed = true }
+        releaseClosedOwnerIfIdle()
+    }
+
+    private fun discardRetainedPrepared() {
+        retainedPrepared = null
+        retainedArchiveSha256 = null
+        retainedLease?.close()
+        retainedLease = null
+    }
+
+    private fun releaseClosedOwnerIfIdle() {
+        if (!closed || !mutex.tryLock()) return
+        try { discardRetainedPrepared() } finally { mutex.unlock() }
+    }
+
+    private fun finishOperation() {
+        mutex.unlock()
+        // A close that observed this operation busy must not miss the unlock/release boundary.
+        releaseClosedOwnerIfIdle()
+    }
+
+    private fun ensureOpen() {
+        if (closed) throw CancellationException("Windows updater owner is closed")
+    }
+
+    /** The exact healthy child may finish its registry commit once admitted. Close before this gate cancels;
+     * close afterwards permits that commit to finish. No IO or await holds the lifecycle monitor. */
+    private fun beginInstallationCommit() {
+        synchronized(lifetime) { ensureOpen() }
+    }
+
+    private suspend fun ensureOpenAndActive() {
+        currentCoroutineContext().ensureActive()
+        ensureOpen()
+    }
     private val veyraCatalog by lazy { DesktopVeyraCatalogResolver(::fetchCatalogText) }
 
     internal suspend fun resolveVeyraCatalog(update: WindowsUpdate): VerifiedVeyraCompatibleOffer? = withContext(Dispatchers.IO) {
+        ensureOpenAndActive()
         validateUpdate(update)
         val testLookup = catalogLookupForTest
         if (testLookup != null) testLookup(update)
@@ -72,23 +115,24 @@ class DesktopUpdater private constructor(
     internal suspend fun rejectVeyraCatalog(update: WindowsUpdate, failure: Exception) = withContext(Dispatchers.IO) {
         mutex.lock()
         try {
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             if ((state.value as? UpdateState.Available)?.update == update)
                 mutableState.value = UpdateState.Failed(failure.message ?: "Windows 兼容目录验证失败，当前版本继续运行")
-        } finally { mutex.unlock() }
+        } finally { finishOperation() }
     }
 
     /** Explicit UI checks bypass the six-hour background debounce. A prepared update is retained. */
     suspend fun check(force: Boolean = true): UpdateState = withContext(Dispatchers.IO) {
-        if (disabledReason != null || !mutex.tryLock()) return@withContext state.value
+        if (closed || disabledReason != null || !mutex.tryLock()) return@withContext state.value
         val previousState = state.value
         try {
+            ensureOpenAndActive()
             retainedPrepared?.let { return@withContext UpdateState.Prepared(it).also { result -> mutableState.value = result } }
             if (!force && !shouldCheck(lastCheckTime(), System.currentTimeMillis())) return@withContext state.value
             mutableState.value = UpdateState.Checking
             val releases = fetchReleases(requireNotNull(repository))
             val result = evaluateReleases(releases, requireNotNull(config), requireNotNull(installedVersion))
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             if (result !is UpdateState.Failed) {
                 UpdateStorage.verifiedRoot(updateRoot)
                 Files.writeString(updateRoot.resolve("last-check.txt"), System.currentTimeMillis().toString())
@@ -97,18 +141,18 @@ class DesktopUpdater private constructor(
             mutableState.value = result
             result
         } catch (cancelled: CancellationException) {
-            mutableState.value = previousState
+            if (!closed) mutableState.value = previousState
             throw cancelled
         } catch (error: Exception) {
             // A decode/validation error can arrive together with cancellation.
-            try { currentCoroutineContext().ensureActive() }
+            try { ensureOpenAndActive() }
             catch (cancelled: CancellationException) {
-                mutableState.value = previousState
+                if (!closed) mutableState.value = previousState
                 throw cancelled
             }
             UpdateState.Failed(error.message ?: "Windows 更新检查失败").also { mutableState.value = it }
         } finally {
-            mutex.unlock()
+            finishOperation()
         }
     }
 
@@ -134,10 +178,11 @@ class DesktopUpdater private constructor(
         prepareUpdateInternal(offer.update, offer)
 
     private suspend fun prepareUpdateInternal(update: WindowsUpdate, compatibleOffer: VerifiedVeyraCompatibleOffer?): PreparedUpdate? = withContext(Dispatchers.IO) {
-        if (disabledReason != null || !mutex.tryLock()) return@withContext null
-        var staging: Path? = null
+        if (closed || disabledReason != null || !mutex.tryLock()) return@withContext null
+        var lease: UpdateStorage.StageLease? = null
         var complete = false
         try {
+            ensureOpenAndActive()
             retainedPrepared?.let {
                 require(compatibleOffer == null || compatibleOffer.update == update &&
                     retainedArchiveSha256.equals(compatibleOffer.zipSha256, ignoreCase = true)) {
@@ -151,75 +196,97 @@ class DesktopUpdater private constructor(
             val offer = compatibleOffer ?: resolveVeyraCatalog(update)
             require(offer == null || offer.update == update) { "Windows 兼容目录目标已改变" }
             val compatibleSha256 = offer?.zipSha256
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             val settings = requireNotNull(config)
-            staging = UpdateStorage.createStage(updateRoot, requireNotNull(repository), update.assetId)
+            val acquired = UpdateStorage.createLeasedStage(updateRoot, requireNotNull(repository), update.assetId)
+            lease = acquired
+            val staging = acquired.stage
             val archive = staging.resolve("download.zip")
             mutableState.value = UpdateState.Downloading(0, update.size)
             val expectedHash = parseChecksum(fetchText(update.checksumUrl, 128 * 1024), update.assetName)
             compatibleSha256?.let { verifyChecksum(expectedHash, it) }
             val digest = download(update, archive)
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             mutableState.value = UpdateState.Verifying
             verifyChecksum(digest, expectedHash)
             val context = currentCoroutineContext()
             val executable = SafeUpdateZip.extract(archive, Files.createDirectory(staging.resolve("app")), settings.executable) {
-                context.ensureActive()
+                context.ensureActive(); ensureOpen()
             }
             Files.delete(archive)
             val prepared = PreparedUpdate(update, staging, executable)
-            retainedPrepared = prepared
-            retainedArchiveSha256 = digest.lowercase()
-            complete = true
-            mutableState.value = UpdateState.Prepared(prepared)
+            ensureOpenAndActive()
+            synchronized(lifetime) {
+                ensureOpen()
+                retainedPrepared = prepared
+                retainedArchiveSha256 = digest.lowercase()
+                retainedLease = acquired
+                complete = true
+                mutableState.value = UpdateState.Prepared(prepared)
+            }
             pruneInstallations()
             prepared
         } catch (cancelled: CancellationException) {
-            mutableState.value = UpdateState.Available(update)
+            if (!closed) mutableState.value = UpdateState.Available(update)
             throw cancelled
         } catch (error: Exception) {
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             mutableState.value = UpdateState.Failed(error.message ?: "Windows 更新准备失败，当前版本继续运行")
             null
         } finally {
-            if (!complete) staging?.let { UpdateStorage.deleteOwnedStage(updateRoot, it, requireNotNull(repository)) }
-            mutex.unlock()
+            try {
+                if (!complete) lease?.let { UpdateStorage.deleteLeasedStage(updateRoot, it, requireNotNull(repository)) }
+            } finally { finishOperation() }
         }
     }
 
     /** The UI calls this only after its atomic playback/task idle check. True permits the old app to exit. */
     suspend fun activatePreparedUpdate(prepared: PreparedUpdate): Boolean = withContext(Dispatchers.IO) {
-        if (disabledReason != null || !mutex.tryLock()) return@withContext false
+        if (closed || disabledReason != null || !mutex.tryLock()) return@withContext false
         var attempt: LaunchAttempt? = null
         var committed = false
+        val ownsPrepared = prepared === retainedPrepared
+        var discard = false
+        fun restoreAfterCancellation() {
+            if (!closed && ownsPrepared && !committed) mutableState.value = UpdateState.Prepared(prepared)
+        }
         try {
-            require(prepared === retainedPrepared) { "更新准备状态已失效，请重新检查更新" }
+            ensureOpenAndActive()
+            require(ownsPrepared) { "更新准备状态已失效，请重新检查更新" }
+            require(retainedLease?.holds(prepared.stagingDirectory) == true) { "更新安装目录租约已失效" }
             validateUpdate(prepared.update)
             require(UpdateStorage.ownedStage(updateRoot, prepared.stagingDirectory, requireNotNull(repository)) != null &&
                 validStoredExecutable(prepared.executable.toString()) == prepared.executable) { "更新安装目录校验失败" }
             mutableState.value = UpdateState.Launching
             attempt = launchInstallation(prepared.executable, emptyList())
             require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             val previous = previousInstallation()
+            ensureOpenAndActive()
+            beginInstallationCommit()
             writeActiveInstallation(ActiveInstallation(requireNotNull(repository), prepared.update.version, prepared.executable.toString(),
                 previous?.first, previous?.second?.toString()))
             committed = true
-            retainedPrepared = null
+            discard = true
             mutableState.value = UpdateState.Launched
             pruneInstallations()
             true
         } catch (cancelled: CancellationException) {
-            mutableState.value = UpdateState.Prepared(prepared)
+            restoreAfterCancellation()
             throw cancelled
         } catch (error: Exception) {
-            currentCoroutineContext().ensureActive()
-            retainedPrepared = null
+            try { ensureOpenAndActive() }
+            catch (cancelled: CancellationException) { restoreAfterCancellation(); throw cancelled }
+            discard = ownsPrepared
             mutableState.value = UpdateState.Failed(error.message ?: "Windows 更新启动失败，当前版本继续运行")
             false
         } finally {
-            if (!committed) attempt?.let { StartupHealth.terminate(it.process) }
-            mutex.unlock()
+            try {
+                if (!committed) attempt?.let { StartupHealth.terminate(it.process) }
+            } finally {
+                try { if (discard) discardRetainedPrepared() }
+                finally { finishOperation() }
+            }
         }
     }
 
@@ -233,11 +300,11 @@ class DesktopUpdater private constructor(
         val releases = mutableListOf<GitHubRelease>()
         val seenReleaseIds = mutableSetOf<Long>()
         for (page in 1..MAX_RELEASE_PAGES) {
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             val response = fetchText("https://api.github.com/repos/$repository/releases?per_page=$RELEASE_PAGE_SIZE&page=$page", 8 * 1024 * 1024)
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             val batch = json.decodeFromString<List<GitHubRelease>>(response)
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             require(batch.size <= RELEASE_PAGE_SIZE) { "Windows 发布列表第${page}页大小异常，无法确认更新" }
             batch.forEach { release ->
                 require(release.id > 0L && seenReleaseIds.add(release.id)) {
@@ -257,10 +324,10 @@ class DesktopUpdater private constructor(
             try { awaitCancellation() } finally { call.cancel() }
         }
         try {
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             call.execute().use(consume)
         } catch (error: Exception) {
-            currentCoroutineContext().ensureActive()
+            ensureOpenAndActive()
             throw error
         } finally {
             cancellation.cancel()
@@ -310,7 +377,7 @@ class DesktopUpdater private constructor(
                 Files.newOutputStream(destination).use { output ->
                     val buffer = ByteArray(64 * 1024)
                     while (true) {
-                        context.ensureActive()
+                        context.ensureActive(); ensureOpen()
                         val count = input.read(buffer)
                         if (count < 0) break
                         received += count
@@ -331,6 +398,7 @@ class DesktopUpdater private constructor(
     }
 
     private suspend fun launchInstallation(executable: Path, args: List<String>): LaunchAttempt {
+        ensureOpenAndActive()
         val stage = stageForExecutable(executable) ?: error("更新启动路径无效")
         val launchDirectory = Files.createDirectory(stage.resolve("launch-${UUID.randomUUID()}"))
         val token = UUID.randomUUID().toString()
@@ -389,62 +457,90 @@ class DesktopUpdater private constructor(
         return validStoredExecutable(active.executablePath)?.let { active.version to it }
     }
 
+    private fun preservedInstallationStages(): Set<Path> {
+        val trusted = requireNotNull(repository)
+        val activePath = updateRoot.resolve("active-install.json")
+        val recordPresent = try {
+            Files.readAttributes(activePath, java.nio.file.attribute.BasicFileAttributes::class.java, NOFOLLOW_LINKS)
+            true
+        } catch (_: java.nio.file.NoSuchFileException) { false }
+        val active = readActiveInstallation()
+        require(!recordPresent || active != null) { "当前安装记录无法确认，跳过更新目录清理" }
+        val preserved = mutableSetOf<Path>()
+        listOfNotNull(active?.executablePath, active?.previousExecutablePath).forEach { raw ->
+            validStoredExecutable(raw)?.let { stageForExecutable(it) }?.let(preserved::add)
+        }
+        retainedPrepared?.stagingDirectory?.let(preserved::add)
+        // Retain every installation with an observable running command, including an older window.
+        ProcessHandle.allProcesses().use { processes ->
+            processes.forEach { handle -> handle.info().command().orElse(null)?.let { raw ->
+                runCatching { UpdateStorage.stageContaining(updateRoot, Path.of(raw), trusted) }.getOrNull()?.let(preserved::add)
+            } }
+        }
+        return preserved
+    }
+
     private fun pruneInstallations() {
         // Cleanup is best effort and never changes an otherwise successful preparation or activation.
         runCatching {
             val trusted = requireNotNull(repository)
-            val active = readActiveInstallation()
-            val preserved = mutableSetOf<Path>()
-            listOfNotNull(active?.executablePath, active?.previousExecutablePath).forEach { raw ->
-                validStoredExecutable(raw)?.let { stageForExecutable(it) }?.let(preserved::add)
+            val preserved = preservedInstallationStages()
+            UpdateStorage.prune(updateRoot, trusted, preserved) { stage ->
+                // The candidate OS lease is held here. A successful activation writes its registry
+                // before releasing that same lease, so this fresh admission sees the completed commit.
+                stage in preservedInstallationStages()
             }
-            retainedPrepared?.stagingDirectory?.let(preserved::add)
-            // Retain every installation with an observable running command, including an older window.
-            ProcessHandle.allProcesses().use { processes ->
-                processes.forEach { handle -> handle.info().command().orElse(null)?.let { raw ->
-                    runCatching { UpdateStorage.stageContaining(updateRoot, Path.of(raw), trusted) }.getOrNull()?.let(preserved::add)
-                } }
-            }
-            UpdateStorage.prune(updateRoot, trusted, preserved)
         }
     }
 
-    internal suspend fun launchRegisteredInstall(args: Array<String>): Boolean {
-        if (disabledReason != null || args.any { it in setOf("--update-health-file", "--update-health-token", "--backend-smoke", "--player-self-test") }) return false
-        val active = readActiveInstallation() ?: return false
-        val current = requireNotNull(installedVersion)
-        if (DesktopVersion.parse(active.version)?.let { it > current } != true) return false
-        val candidates = listOfNotNull(
-            validStoredExecutable(active.executablePath)?.let { active.version to it },
-            active.previousVersion?.let { version ->
-                if (DesktopVersion.parse(version)?.let { it > current } != true) null
-                else active.previousExecutablePath?.let(::validStoredExecutable)?.let { version to it }
-            },
-        )
-        for ((version, executable) in candidates) {
-            val currentCommand = ProcessHandle.current().info().command().orElse(null)
-            if (currentCommand?.let { runCatching { UpdateStorage.existingPathWithoutLinks(Path.of(it)) == executable }.getOrDefault(false) } == true) continue
-            var attempt: LaunchAttempt? = null
-            var committed = false
-            try {
-                attempt = launchInstallation(executable, args.toList())
-                if (StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = version)) {
-                    currentCoroutineContext().ensureActive()
-                    if (version != active.version || executable.toString() != active.executablePath) {
-                        writeActiveInstallation(ActiveInstallation(requireNotNull(repository), version, executable.toString()))
+    internal suspend fun launchRegisteredInstall(args: Array<String>): Boolean = withContext(Dispatchers.IO) {
+        if (closed || disabledReason != null || args.any { it in setOf("--update-health-file", "--update-health-token", "--backend-smoke", "--player-self-test") } || !mutex.tryLock()) return@withContext false
+        try {
+            ensureOpenAndActive()
+            val active = readActiveInstallation() ?: return@withContext false
+            val current = requireNotNull(installedVersion)
+            if (DesktopVersion.parse(active.version)?.let { it > current } != true) return@withContext false
+            val candidates = listOfNotNull(
+                validStoredExecutable(active.executablePath)?.let { active.version to it },
+                active.previousVersion?.let { version ->
+                    if (DesktopVersion.parse(version)?.let { it > current } != true) null
+                    else active.previousExecutablePath?.let(::validStoredExecutable)?.let { version to it }
+                },
+            )
+            for ((version, executable) in candidates) {
+                val currentCommand = ProcessHandle.current().info().command().orElse(null)
+                if (currentCommand?.let { runCatching { UpdateStorage.existingPathWithoutLinks(Path.of(it)) == executable }.getOrDefault(false) } == true) continue
+                var lease: UpdateStorage.StageLease? = null
+                var attempt: LaunchAttempt? = null
+                var committed = false
+                try {
+                    ensureOpenAndActive()
+                    val stage = stageForExecutable(executable) ?: continue
+                    lease = UpdateStorage.tryLeaseStage(updateRoot, stage, requireNotNull(repository)) ?: continue
+                    require(validStoredExecutable(executable.toString()) == executable) { "更新启动目录已改变" }
+                    attempt = launchInstallation(executable, args.toList())
+                    if (StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = version)) {
+                        ensureOpenAndActive()
+                        beginInstallationCommit()
+                        if (version != active.version || executable.toString() != active.executablePath) {
+                            writeActiveInstallation(ActiveInstallation(requireNotNull(repository), version, executable.toString()))
+                        }
+                        committed = true
+                        pruneInstallations()
+                        return@withContext true
                     }
-                    committed = true
-                    pruneInstallations()
-                    return true
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (_: Exception) {
+                    ensureOpenAndActive()
+                    // A damaged active update falls back to its preceding healthy version or original launcher.
+                } finally {
+                    try { if (!committed) attempt?.let { StartupHealth.terminate(it.process) } }
+                    finally { lease?.close() }
                 }
-            } catch (cancelled: CancellationException) {
-                throw cancelled
-            } catch (_: Exception) {
-                currentCoroutineContext().ensureActive()
-                // A damaged active update falls back to its preceding healthy version or original launcher.
-            } finally { if (!committed) attempt?.let { StartupHealth.terminate(it.process) } }
-        }
-        return false
+            }
+            false
+        } finally { finishOperation() }
     }
 
     companion object {
@@ -492,7 +588,7 @@ class DesktopUpdater private constructor(
         }
         /** Call before creating the UI; true means a previously verified newer window is running. */
         fun launchInstalledUpdateIfNewer(args: Array<String>): Boolean = runBlocking {
-            withContext(Dispatchers.IO) { DesktopUpdater().launchRegisteredInstall(args) }
+            withContext(Dispatchers.IO) { DesktopUpdater().use { it.launchRegisteredInstall(args) } }
         }
         internal fun shouldCheck(previous: Long, now: Long): Boolean = previous <= 0 || now < previous || now - previous >= AUTO_CHECK_INTERVAL_MS
         internal fun validRepository(value: String): Boolean = Regex("^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$").matches(value)

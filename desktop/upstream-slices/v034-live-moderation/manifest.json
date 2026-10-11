@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+  "fullOriginalSources": {
+    "policy": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveDanmakuFilterPolicy.kt",
+      "rawBytes": 557,
+      "rawSha256": "b8209ccf31596fcf89dfe38024e6d3d9bf65e797577cefac05ac14cd440e2d4e",
+      "gitBlob": "63c1329382c851114aa0e0a12fcd81a1f5a6da48",
+      "archive": "desktop/upstream-slices/v034-live-moderation/app/src/main/java/com/android/purebilibili/feature/live/LiveDanmakuFilterPolicy.kt",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/b2091b1de636e499df80af7e700796b4f52b7f92/app/src/main/java/com/android/purebilibili/feature/live/LiveDanmakuFilterPolicy.kt"
+    },
+    "models": {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveInteractionModels.kt",
+      "rawBytes": 5600,
+      "rawSha256": "3a546bd71fd792388ce7d969051a9bff4f0db2c3e301e9499e2f13d806247871",
+      "gitBlob": "1521fb76d73ed05d0597d4076837b133d2ba40de",
+      "archive": "desktop/upstream-slices/v034-live-moderation/app/src/main/java/com/android/purebilibili/data/repository/LiveInteractionModels.kt",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/b2091b1de636e499df80af7e700796b4f52b7f92/app/src/main/java/com/android/purebilibili/data/repository/LiveInteractionModels.kt"
+    },
+    "realtime": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt",
+      "rawBytes": 16689,
+      "rawSha256": "002016da3e66429de054b92581e375db865b67d07fd6e1c6791b1d939696762d",
+      "gitBlob": "12d8955935a452379ec86dc9fe47a9376e2d1dbc",
+      "archive": "desktop/upstream-slices/v034-live-moderation/app/src/main/java/com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/b2091b1de636e499df80af7e700796b4f52b7f92/app/src/main/java/com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt"
+    },
+    "api": {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "rawBytes": 151172,
+      "rawSha256": "1ed0da47deb801a5a2f6f2a63e6bf2e9e8674bb861e573b45956f1bd5ed2febb",
+      "gitBlob": "76c1f1dcc3e99579b0684bc6f5d8d2e248697570",
+      "archive": "desktop/upstream-slices/v034-live-moderation/core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/b2091b1de636e499df80af7e700796b4f52b7f92/core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
+    },
+    "repo": {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "rawBytes": 56832,
+      "rawSha256": "554ca3c32522c88148144c4221879701657aab296519ea0da4162661039d4857",
+      "gitBlob": "0c69a011fa66f0c9829b066aa4fa149a865c996c",
+      "archive": "desktop/upstream-slices/v034-live-vote/app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt"
+    },
+    "vm": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt",
+      "rawBytes": 63055,
+      "rawSha256": "e86a019aa43d9d5aca595ff6073bb0cf50d00436142bb5a0bda50655b2507e74",
+      "gitBlob": "605d846a97f2faaf5af468d5757d180caf1ba098",
+      "archive": "desktop/upstream-slices/v034-live-vote/app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt"
+    }
+  },
+  "scope": "Live shield/filter/report; existing vote originals reused, unrelated emoji schema retained"
+}

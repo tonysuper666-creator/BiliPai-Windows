@@ -26,9 +26,9 @@ SOURCES = {
     BASE + "core/network/socket/DanmakuProtocol.kt": "policy-extract",
     BASE + "core/network/socket/LiveDanmakuConnectionHealthPolicy.kt": "policy-extract",
     BASE + "core/network/socket/LiveDanmakuClient.kt": "extracted",
-    BASE + "data/repository/LiveInteractionModels.kt": "direct",
+    BASE + "data/repository/LiveInteractionModels.kt": "extracted",
     BASE + "data/repository/LiveRepository.kt": "policy-extract",
-    BASE + "feature/live/LiveRealtimeMessagePolicy.kt": "direct",
+    BASE + "feature/live/LiveRealtimeMessagePolicy.kt": "extracted",
     BASE + "feature/live/LivePlayerViewModel.kt": "policy-extract",
     BASE + "feature/live/LiveSuperChatExpiryPolicy.kt": "direct",
     BASE + "feature/bangumi/policy/BangumiSeasonActionPolicy.kt": "direct",
@@ -417,10 +417,8 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
         body = body.replace(binding, "")
     generated.append(write(output, "com/android/purebilibili/data/repository/DesktopLivePolicies.kt", path, source, body))
 
-    path = BASE + "feature/live/LivePlayerViewModel.kt"
-    source = read(repo, path)
-    body = "package com.android.purebilibili.feature.live\n\n" + data_class(source, "LiveDanmakuItem", parser)
-    generated.append(write(output, "com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt", path, source, body))
+    from v034_live_moderation import emit as emit_live_moderation
+    generated.extend(emit_live_moderation(repo, output, parser, read, function, data_class, write))
 
     path = BASE + "feature/bangumi/policy/BangumiFollowStatusPolicy.kt"
     source = read(repo, path)
