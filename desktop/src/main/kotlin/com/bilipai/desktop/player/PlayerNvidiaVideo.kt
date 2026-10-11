@@ -39,6 +39,43 @@ internal data class NvidiaVideoClearReceipt(
     val source: OwnedPlaybackSourceSnapshot?,
 )
 
+/** Bounded native23 v1 code/stage, admitted by the existing current-source actor.
+ * No native detail text, device recovery, withdrawal or presentation is inferred. */
+data class NvidiaVideoFailureDiagnostic internal constructor(val code: Int, val stage: String) {
+    init { require(stage in setOf("bridge-unavailable", "process-bypass", "seek-reset-retired")) }
+    // Exact bv_code_v1 names from the fixed native23 header. Unknown values stay unknown.
+    private val codeName: String get() = when (code) {
+        0 -> "BV_OK"; 1 -> "BV_INVALID"; 2 -> "BV_ABI_MISMATCH"; 3 -> "BV_BUSY"
+        4 -> "BV_STALE"; 5 -> "BV_COLOR_UNSUPPORTED"; 6 -> "BV_DEVICE_FAILURE"
+        7 -> "BV_CORE_FAILURE"; 8 -> "BV_FEATURE_FAILURE"; 9 -> "BV_TIMEOUT"
+        10 -> "BV_RESET_REQUIRED"; 11 -> "BV_INTERNAL"; else -> "UNKNOWN"
+    }
+    internal val panelText: String get() = "诊断：$stage · $codeName ($code)"
+    internal val message: String get() {
+        val step = when (stage) {
+            "bridge-unavailable" -> "初始化失败"
+            "process-bypass" -> "处理当前帧失败"
+            else -> "跳转后重置失败"
+        }
+        val reason = when (code) {
+            1 -> "增强配置未被接受"
+            2 -> "增强组件接口不匹配"
+            3 -> "增强资源正被占用"
+            4 -> "增强帧身份校验未通过"
+            5 -> "当前视频色彩格式不支持增强"
+            6 -> "显卡处理链发生错误"
+            7 -> "增强核心初始化或状态异常"
+            8 -> "NVIDIA 增强功能创建、处理或释放失败"
+            9 -> "等待显卡处理超时"
+            10 -> "增强资源需要重建"
+            11 -> "增强帧准备或内部处理失败"
+            else -> "未取得有效增强结果"
+        }
+        val advice = if (code == 5) "可关闭增强。" else "可重新打开视频；如仍失败，请重启应用。"
+        return "NVIDIA 增强$step：$reason。$advice"
+    }
+}
+
 /** Observed driver acceptance and processed frames do not prove Tensor utilization. */
 data class NvidiaVideoState(
     val configurationVersion: Long = 0,
@@ -77,6 +114,7 @@ data class NvidiaVideoState(
     val srEnabledRequested: Boolean = true,
     /** Application output weight requested for this exact configuration, never native SDK Strength. */
     val requestedIntensityPercent: Int = 100,
+    val failureDiagnostic: NvidiaVideoFailureDiagnostic? = null,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")

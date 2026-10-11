@@ -1179,7 +1179,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             nvidiaFilterLabel = null
         }
         private fun failNvidia(native: MpvNative, handle: Pointer, action: Action.NvidiaVideo, message: String,
-            unavailable: Boolean = false) {
+            unavailable: Boolean = false, diagnostic: NvidiaVideoFailureDiagnostic? = null) {
             if (!nvidiaCurrent(action)) return
             pendingNvidiaAction = null
             var removed = false
@@ -1187,6 +1187,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             synchronized(lock) {
                 if (nvidiaCurrent(action)) mutableNvidiaVideo.update { it.copy(active = false, hdrConversionActive = false,
                     nativeResolutionAttemptAccepted = false, veyraSubmitted = false, pending = false, unavailableReason = message.takeIf { removed && unavailable },
+                    failureDiagnostic = diagnostic,
                     error = when {
                         !removed -> "无法撤回 NVIDIA 滤镜，请关闭增强或重新打开视频"
                         unavailable -> null
@@ -1318,7 +1319,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         is NvidiaNativeMessage.VeyraFailure -> {
                             if (action.options.backend == NvidiaVideoBackend.VEYRA_CORE &&
                                 message.sourceVersion == action.version && message.configurationVersion == action.configurationVersion)
-                                admitNvidia(action) { failNvidia(native, handle, action, "画质增强暂不可用，继续播放原画") }
+                                admitNvidia(action) {
+                                    val diagnostic = NvidiaVideoFailureDiagnostic(message.code, message.stage)
+                                    failNvidia(native, handle, action, diagnostic.message, diagnostic = diagnostic)
+                                }
                         }
                         NvidiaNativeMessage.VsrAccepted -> if (action.options.backend == NvidiaVideoBackend.DRIVER && action.options.srEnabled && !admitNvidia(action) { mutableNvidiaVideo.update { it.copy(driverVsrAccepted = true) } })
                             failNvidia(native, handle, action, "当前视频已失去播放所有权，已停止增强")

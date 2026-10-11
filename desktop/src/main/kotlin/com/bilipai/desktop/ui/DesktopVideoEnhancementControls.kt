@@ -207,6 +207,9 @@ private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhanc
         // Native status distinguishes accepted driver requests and actual output
         // conditions. The switch itself is never proof of VSR/Tensor/HDR activity.
         state.error?.let { AppText(it, color = MaterialTheme.colorScheme.error) }
+        state.failureDiagnostic?.takeIf { state.error != null }?.let {
+            AppText(it.panelText, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
         configurationError?.takeIf { it != state.error }?.let { AppText(it, color = MaterialTheme.colorScheme.error) }
         actionError?.let { AppText(it, color = MaterialTheme.colorScheme.error) }
     }

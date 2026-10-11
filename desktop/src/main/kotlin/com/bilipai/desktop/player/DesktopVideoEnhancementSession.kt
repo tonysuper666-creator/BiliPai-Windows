@@ -31,6 +31,7 @@ data class DesktopVideoEnhancementState(
     val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
     val srEnabledRequested: Boolean = true,
     val requestedIntensityPercent: Int = 100,
+    val failureDiagnostic: NvidiaVideoFailureDiagnostic? = null,
 )
 
 /** Shared projection; the session admits the current source/configuration before calling it. */
@@ -39,7 +40,7 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
         nvidiaHdrTarget(native.targetTransfer, native.targetPrimaries)
     if (native.backend == NvidiaVideoBackend.VEYRA_CORE) {
         val status = when {
-            native.error != null -> "画质增强暂不可用，继续播放原画"
+            native.error != null -> native.error
             native.unavailableReason != null || !native.veyraAvailable -> "画质增强暂不可用，继续播放原画"
             native.active -> "画质增强画面已显示"
             native.veyraSubmitted -> "已提交画面增强，等待画面反馈"
@@ -50,7 +51,7 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
             driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = native.hdrConversionActive,
             nativeResolutionAttemptAccepted = false, veyraAvailable = native.veyraAvailable,
             veyraSubmitted = native.veyraSubmitted, backend = native.backend, srEnabledRequested = native.srEnabledRequested,
-            requestedIntensityPercent = native.requestedIntensityPercent)
+            requestedIntensityPercent = native.requestedIntensityPercent, failureDiagnostic = native.failureDiagnostic)
     }
     val status = when {
         native.error != null -> "NVIDIA 增强异常：${native.error}"
@@ -79,7 +80,7 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
         hdrConversionActive = native.hdrConversionActive,
         nativeResolutionAttemptAccepted = native.nativeResolutionAttemptAccepted,
         veyraAvailable = native.veyraAvailable, backend = native.backend, srEnabledRequested = native.srEnabledRequested,
-            requestedIntensityPercent = native.requestedIntensityPercent)
+            requestedIntensityPercent = native.requestedIntensityPercent, failureDiagnostic = native.failureDiagnostic)
 }
 
 /** One Windows NVIDIA session on the main native video actor. Every video kind
@@ -281,7 +282,7 @@ class DesktopVideoEnhancementSession(
         clearing = null
         if (!closed.get() && current.reportedError != null) mutableState.update {
             if (it.sourceVersion == current.source.sourceVersion && it.error == current.reportedError)
-                it.copy(error = null, unavailableReason = null, statusText = "当前硬件增强配置已更换，等待当前输出")
+                it.copy(error = null, unavailableReason = null, failureDiagnostic = null, statusText = "当前硬件增强配置已更换，等待当前输出")
             else it
         }
     }
@@ -309,7 +310,7 @@ class DesktopVideoEnhancementSession(
     private fun observeNativeLocked(native: NvidiaVideoState, current: Owned) {
         if (owned !== current || !owns(current.request.source, current.request.epoch)) return
         if (native.configurationVersion != current.token || native.sourceVersion != current.request.source.sourceVersion) {
-            mutableState.update { it.copy(active = false, pending = false, error = null, unavailableReason = null,
+            mutableState.update { it.copy(active = false, pending = false, error = null, unavailableReason = null, failureDiagnostic = null,
                 driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = false, nativeResolutionAttemptAccepted = false,
                 statusText = "当前硬件增强配置已更换，等待当前输出") }
             return
