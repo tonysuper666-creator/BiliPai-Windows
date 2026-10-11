@@ -1275,9 +1275,26 @@ def generate(repo,output,standalone=False):
   post_same_send_before_sha=sha(body);post_same_send_edits=[]
   body=paused_original_cdn_resume_delta(recipe['output'],body,post_same_send_edits)
   body=interactive_choice_source_lifetime_delta(recipe['output'],body,post_same_send_edits)
-  body=owned_cdn_selection_source_lifetime_delta(recipe['output'],body,post_same_send_edits)
   from v034_related import apply_and_record as apply_related
+  related_before_sha=sha(body)
   body,relatedProof=apply_related(recipe['output'],body,output)
+  related_after_sha=sha(body)
+  post_related_before_sha=sha(body);post_related_edits=[]
+  body=owned_cdn_selection_source_lifetime_delta(recipe['output'],body,post_related_edits)
+  post_related_after_sha=sha(body)
+  # The Gradle producer is the actual whole-owner source gate. New platform
+  # edits must restore before the fixed beta2 related stage, without repinning it.
+  inverse=body
+  for stage,inverse_edits,before_sha,after_sha in (
+      ('postRelated',post_related_edits,post_related_before_sha,post_related_after_sha),
+      ('related',(relatedProof or {}).get('inverseEdits',[]),related_before_sha,related_after_sha),
+      ('postSameSend',post_same_send_edits,post_same_send_before_sha,related_before_sha)):
+   assert sha(inverse)==after_sha,recipe['output']+' '+stage+' whole after'
+   for edit in reversed(inverse_edits):
+    i=edit['offset']
+    assert inverse[i:i+len(edit['after'])]==edit['after'],recipe['output']+' '+stage+' exact inverse span'
+    inverse=inverse[:i]+edit['before']+inverse[i+len(edit['after']):]
+   assert sha(inverse)==before_sha,recipe['output']+' '+stage+' whole inverse'
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
@@ -1287,6 +1304,10 @@ def generate(repo,output,standalone=False):
                       failureRecoveryBeforeSha256LF=recovery_before_sha,failureRecoveryAfterSha256LF=recovery_after_sha,
                       postRecoveryInverseEdits=post_recovery_edits,postSameSendInverseEdits=post_same_send_edits,
                       postSameSendBeforeSha256LF=post_same_send_before_sha,
+                      relatedInverseEdits=(relatedProof or {}).get('inverseEdits',[]),
+                      relatedBeforeSha256LF=related_before_sha,relatedAfterSha256LF=related_after_sha,
+                      postRelatedInverseEdits=post_related_edits,
+                      postRelatedBeforeSha256LF=post_related_before_sha,postRelatedAfterSha256LF=post_related_after_sha,
                       sameSendExpectedSourceInverseEdits=same_send_edits,sameSendExpectedSourceBeforeSha256LF=same_send_before_sha))
  outputs.append(generate_original_video_action_status(repo,output))
  outputs.append(generate_original_video_progress(repo,output))
@@ -1295,7 +1316,7 @@ def generate(repo,output,standalone=False):
  metadata_path.parent.mkdir(parents=True,exist_ok=True)
  metadata_path.write_text(json.dumps(dict(schemaVersion=1,upstreamCommit=COMMIT,
      adaptation='Windows exact accepted source and dialog request lifetime; original group API and UI preserved',
-     inverseOrder='Restore postSameSendInverseEdits, then sameSendExpectedSourceInverseEdits, then postRecoveryInverseEdits, then failureRecoveryInverseEdits, then followGroupInverseEdits',
+     inverseOrder='Restore postRelatedInverseEdits, then relatedInverseEdits, then postSameSendInverseEdits, then sameSendExpectedSourceInverseEdits, then postRecoveryInverseEdits, then failureRecoveryInverseEdits, then followGroupInverseEdits',
      audits=follow_group_audits),ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
  outputs.append(dict(path=metadata_path.name,origin='Windows follow-group lifetime adaptation',
      sha256LF=sha(metadata_path.read_text(encoding='utf-8')),mode='metadata',generated=True))
