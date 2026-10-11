@@ -1,8 +1,13 @@
 @file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
@@ -181,6 +186,46 @@ class DesktopLiveChatMessagesUiTest {
         } finally { f.close(); images.close() }
     }
 
+    @Test fun wheelReadingAnchorAndFollowIntentSurviveChatTabRemountButResetForANewSession(): Unit = runBlocking {
+        val f = Scene(retainAcrossTabs = true)
+        try {
+            f.await { f.latestVisible() }
+            f.readOlderRows()
+            val retained = f.messageState()
+            val before = f.readingPosition()
+            assertFalse(retained.follow.following, "Real wheel input must stop automatic following")
+            assertTrue(before.index >= 12, "The chosen reading anchor must survive twelve ring evictions")
+            val anchor = f.visibleRows().last { it.bounds.bottom < Scene.HEIGHT - 1f }
+
+            f.click(assertNotNull(f.tabButton("投票")).boundsInRoot.center)
+            f.await { f.visibleRows().isEmpty() }
+            repeat(12) { f.append(); f.pumpFor(60) }
+            assertEquals(200, f.messages.size)
+            assertSame(retained, f.messageState(), "The hidden chat must retain its same-session display state")
+            assertFalse(retained.follow.following)
+
+            f.click(assertNotNull(f.tabButton("聊天")).boundsInRoot.center)
+            f.await { f.visibleRows().any { it.text == anchor.text } && f.returnButton() != null }
+            // Cross the real 300 ms follow batch deadline so an unwanted remount jump cannot pass early.
+            f.pumpFor(450)
+            val restored = assertNotNull(f.visibleRows().find { it.text == anchor.text }, "Tab return lost the reading anchor")
+            val after = f.readingPosition()
+            assertSame(retained, f.messageState())
+            assertEquals(before.key, after.key, "The actual LazyColumn must retain the original timeline occurrence key")
+            assertEquals(before.index - 12, after.index, "Ring eviction must relocate the retained item, not reset the list")
+            assertTrue(abs(after.offset - before.offset) <= 1, "Tab return changed the reading scroll offset")
+            assertTrue(abs(restored.bounds.top - anchor.bounds.top) <= 1f, "Tab return moved the visible reading anchor")
+            assertFalse(retained.follow.following)
+            assertFalse(f.latestVisible(), "Remount must not jump a reading user to the new tail")
+            assertNotNull(f.returnButton())
+
+            f.replaceRoom()
+            f.await { f.messageState() !== retained && f.latestVisible() }
+            assertTrue(f.messageState().follow.following, "A replacement session must still follow by default")
+            assertFalse(retained.follow.following, "A new session must not change the retired session's reading intent")
+        } finally { f.close() }
+    }
+
     private fun imageMessage(text: String, url: String) =
         LiveDanmakuItem(text, uid = 7L, uname = "Fixture", idStr = "same-image-id", emoticonUrl = url)
 
@@ -245,7 +290,9 @@ class DesktopLiveChatMessagesUiTest {
     }
 
     private data class VisibleRow(val text: String, val number: Int, val bounds: Rect)
-    private class Scene(initialMessages: List<LiveDanmakuItem>? = null) : AutoCloseable {
+    private data class ReadingPosition(val key: Any, val index: Int, val offset: Int)
+    private class Scene(initialMessages: List<LiveDanmakuItem>? = null,
+        private val retainAcrossTabs: Boolean = false) : AutoCloseable {
         companion object { const val HEIGHT = 380 }
         private var serial = 0
         private fun message(): LiveDanmakuItem {
@@ -257,6 +304,8 @@ class DesktopLiveChatMessagesUiTest {
         val lastSequence: Int get() = serial - 1
         var focused by mutableStateOf(true)
         private var roomKey by mutableStateOf<Any>(Any())
+        private var showVotes by mutableStateOf(false)
+        private var retainedMessageState: DesktopLiveChatMessageState? = null
         val replies = mutableListOf<LiveDanmakuItem>()
         private var nanos = 0L
         private var eventMillis = 0L
@@ -270,11 +319,46 @@ class DesktopLiveChatMessagesUiTest {
                 } }
                 CompositionLocalProvider(LocalWindowInfo provides focusWindow) {
                     MaterialTheme {
-                        DesktopLiveChatMessages(roomKey, messages, true, { replies += it }, Modifier.fillMaxSize())
+                        if (retainAcrossTabs) {
+                            key(roomKey) {
+                                val state = remember(roomKey) { DesktopLiveChatMessageState() }
+                                SideEffect { retainedMessageState = state }
+                                Column(Modifier.fillMaxSize()) {
+                                    // Use the production FilterChip controls and conditional message-list mount.
+                                    Row {
+                                        FilterChip(!showVotes, { showVotes = false }, label = { Text("聊天") })
+                                        FilterChip(showVotes, { showVotes = true }, label = { Text("投票") })
+                                    }
+                                    if (showVotes) {
+                                        Text("投票面板", Modifier.weight(1f).fillMaxWidth())
+                                    } else {
+                                        DesktopLiveChatMessages(roomKey, messages, true, { replies += it },
+                                            Modifier.weight(1f).fillMaxWidth(), state = state)
+                                    }
+                                }
+                            }
+                        } else {
+                            DesktopLiveChatMessages(roomKey, messages, true, { replies += it }, Modifier.fillMaxSize())
+                        }
                     }
                 }
             }
         }
+        fun messageState() = checkNotNull(retainedMessageState)
+        fun readingPosition(): ReadingPosition {
+            val list = messageState().listState
+            val first = list.layoutInfo.visibleItemsInfo.first { it.index == list.firstVisibleItemIndex }
+            return ReadingPosition(first.key, list.firstVisibleItemIndex, list.firstVisibleItemScrollOffset)
+        }
+        fun replaceRoom() {
+            roomKey = Any()
+            messages = List(200) { message() }
+        }
+        fun tabButton(label: String) = all().filter { node ->
+            node.config.getOrNull(SemanticsActions.OnClick) != null && nodes(node).any {
+                it.config.getOrNull(SemanticsProperties.Text)?.any { text -> text.text == label } == true
+            }
+        }.minByOrNull { it.boundsInRoot.width * it.boundsInRoot.height }
         fun append() { messages = (messages + message()).takeLast(200) }
         fun replaceImage(item: LiveDanmakuItem, newSession: Boolean = false) {
             if (newSession) roomKey = Any()
