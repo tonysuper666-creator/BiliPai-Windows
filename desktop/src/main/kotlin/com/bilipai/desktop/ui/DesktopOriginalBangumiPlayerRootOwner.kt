@@ -102,63 +102,19 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
         private fun assertOwned() { if (!owns()) throw CancellationException("Original PGC Root presenter replaced") }
         private fun success() = stateOwner.get()?.uiState?.value as? BangumiPlayerState.Success
 
-        internal val basNavigationRevision: Long
-            get() = (root.commands as DesktopOriginalRootRouteAssembly).sourceNavigationRevision
-        internal fun isBasPresenterCurrent(): Boolean = owner.playback.isDesktopBangumiPresenterCurrent(native)
-
-        // Called under Overlay.requestLock: only existing Entry/Flow/atomic facts,
-        // never native.current/ownsPlaybackSource or a Store/native admission.
-        internal fun ownsBasSource(expected: DesktopOriginalVideoAcceptedPublication): Boolean {
-            if (!isBasPresenterCurrent() || !owns() || !factory.isPresentationCurrent(owner, expected)) return false
-            val state = success() ?: return false
-            val episode = state.currentEpisode
-            val load = owner.playback.captureDesktopLoadState()
-            val request = load.currentRequest ?: return false
-            val referer = "https://www.bilibili.com/" +
-                (if (state.seasonDetail.seasonType == 10) "cheese" else "bangumi") + "/play/ep${episode.id}"
-            return expected.request.bvid == episode.bvid && expected.request.aid == episode.aid &&
-                expected.request.cid == episode.cid && request.bvid == episode.bvid &&
-                request.aid == episode.aid && request.cid == episode.cid &&
-                load.currentBvid == episode.bvid && load.currentCid == episode.cid &&
-                expected.nativeSource.source.videoUrl == state.playUrl &&
-                expected.nativeSource.source.audioUrl.orEmpty() == state.audioUrl.orEmpty() &&
-                expected.nativeSource.source.referer == referer
-        }
-
-        /** A view of the same global BAS registry, not another player/Entry/lease authority.
-         * Keep formal rejection when presentation/source is absent. Browser work is
-         * performed by the unchanged action mapper after its short native admission. */
+        private val basSource = DesktopOriginalBangumiBasSourceBinding(
+            owner, native, player, resources.overlay, ::success, ::owns,
+            { (root.commands as DesktopOriginalRootRouteAssembly).sourceNavigationRevision },
+            { expected -> factory.isPresentationCurrent(owner, expected) },
+            { expected, action -> factory.withPresentationAdmission(owner, expected, action) })
+        internal val basNavigationRevision: Long get() = basSource.basNavigationRevision
+        internal fun isBasPresenterCurrent(): Boolean = basSource.isBasPresenterCurrent()
+        internal fun ownsBasSource(expected: DesktopOriginalVideoAcceptedPublication): Boolean =
+            basSource.ownsBasSource(expected)
         internal fun acquireBasActions(expected: DesktopOriginalVideoAcceptedPublication,
-            presentationCurrent: () -> Boolean, openExternal: (URI) -> Boolean): AutoCloseable {
-            check(EventQueue.isDispatchThread())
-            val load = owner.playback.captureDesktopLoadState()
-            val request = load.currentRequest
-            val token = load.currentLoadRequestToken
-            val navigationRevision = basNavigationRevision
-            val closed = AtomicBoolean(false)
-            fun owned(): Boolean {
-                if (closed.get() || !presentationCurrent() || basNavigationRevision != navigationRevision ||
-                    !ownsBasSource(expected)) return false
-                val actual = owner.playback.captureDesktopLoadState()
-                return request != null && actual.currentRequest === request && actual.currentLoadRequestToken == token
-            }
-            val actions = DesktopWindowsBasActions(expected, owner.native::current, ::owned,
-                admit = { action -> owner.native.admitPlaybackDispatch(expected, action) },
-                originalSeek = owner.playback::seekTo, originalPause = player::pause,
-                openExternal = openExternal)
-            val binding = resources.overlay.acquireBasActions(expected.nativeSource, expected.request.cid, ::owned,
-                admit = { action ->
-                    var applied = false
-                    factory.withPresentationAdmission(owner, expected) {
-                        if (owned()) { action(); applied = true }
-                    } && applied
-                }, activate = actions::dispatch)
-            return AutoCloseable {
-                check(EventQueue.isDispatchThread())
-                closed.set(true)
-                binding.close()
-            }
-        }
+            presentationCurrent: () -> Boolean, openExternal: (URI) -> Boolean): AutoCloseable =
+            basSource.acquireBasActions(expected, presentationCurrent, openExternal)
+
         private fun assertSubject(bvid: String, cid: Long, epId: Long, seasonId: Long) {
             assertOwned()
             val state = success() ?: throw CancellationException("Original PGC subject absent")
