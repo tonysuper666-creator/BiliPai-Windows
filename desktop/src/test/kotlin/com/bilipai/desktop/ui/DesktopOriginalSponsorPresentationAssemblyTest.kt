@@ -72,7 +72,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
         originalProxySelector = ProxySelector.getDefault()
         val selector = object : ProxySelector() {
             override fun select(uri: URI): List<NetworkProxy> {
-                if (uri.scheme != "http" || uri.host != "127.0.0.1" || uri.port !in 1..65535 || uri.userInfo != null) {
+                if ((uri.scheme != "http" && uri.scheme != "socket") || uri.host != "127.0.0.1" || uri.port !in 1..65535 || uri.userInfo != null) {
                     rejectedPublicRequests.add("${uri.scheme}://${uri.host}:${uri.port}${uri.path}")
                     throw IOException("The original public client is restricted to loopback HTTP")
                 }
