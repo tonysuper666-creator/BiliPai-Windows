@@ -1,7 +1,10 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import com.android.purebilibili.feature.video.screen.AudioModeScreen
 import com.android.purebilibili.navigation3.BiliPaiNavKey
@@ -76,21 +79,13 @@ import kotlinx.coroutines.CancellationException
     val windowEnvironment = LocalDesktopOriginalVideoRootWindowEnvironment.current
     val latestActive by rememberUpdatedState(active)
     var audioSubjectRequested by remember(current, key) { mutableStateOf(false) }
-    var initialized by remember(current, platforms) { mutableStateOf(false) }
-    LaunchedEffect(current, platforms) {
-        platforms.awaitNativeInitialization()
-        if (!current.owns()) throw CancellationException("Original BV audio entry retired")
-        initialized = true
-    }
-    if (!initialized) {
-        platforms.InitialNativeSurface(Modifier.fillMaxSize())
-        return
-    }
     // Android leaves have a route-scoped VM. Windows retains the SAME original
     // VM. Seed explicit NativeMusic and different AudioMode subjects; matching
     // AudioMode keeps the original paused/resume/reuse semantics unchanged.
-    LaunchedEffect(current, platforms, key, initialized, active) {
-        if (!initialized || !active || audioSubjectRequested) return@LaunchedEffect
+    // Start the same real original request before native preparation. Its
+    // required suspend stage owns pending/fatal/cancellation and manual retry.
+    LaunchedEffect(current, platforms, key, active) {
+        if (!active || audioSubjectRequested) return@LaunchedEffect
         if (!latestActive || !windowEnvironment.owns() || windowEnvironment.currentKey() != key || !current.owns())
             throw CancellationException("Original audio route retired")
         // Both raw read ports already belong to this same sole full original VM.
@@ -117,7 +112,12 @@ import kotlinx.coroutines.CancellationException
         platforms.InitialNativeSurface(Modifier.fillMaxSize())
         return
     }
-    CompositionLocalProvider(
+    // BV audio has no visual player Surface in AudioModeScreen. Keep the SAME
+    // existing Section carrier mounted without covering loading/error UI; Root
+    // still owns its native lifetime and the real request must await preparation.
+    Box(Modifier.fillMaxSize()) {
+        platforms.InitialNativeSurface(Modifier.size(1.dp))
+        CompositionLocalProvider(
         LocalDesktopOriginalAudioModePlatform provides platforms.audio,
         LocalDesktopOriginalMusicUiPlatform provides platforms.music,
         LocalDesktopOriginalPlayerSettingsContext provides platforms.holder.settingsContext,
@@ -131,7 +131,8 @@ import kotlinx.coroutines.CancellationException
                     windowEnvironment.currentKey() === key && current.owns() },
                 manualAudioRetained = { windowEnvironment.owns() &&
                     windowEnvironment.commands.containsEntry(key) && current.owns() },
-                audioBootstrapWindow = windowEnvironment, audioBootstrapEntry = key)
+                audioBootstrapWindow = windowEnvironment, audioBootstrapEntry = key,
+                audioInitialLoadManagedByRoot = true)
         },
             engagementViewModel = current.domains.engagement,
             composerViewModel = platforms.audio.composer,
@@ -174,5 +175,6 @@ import kotlinx.coroutines.CancellationException
                     }) { com.android.purebilibili.core.ui.components.AppText("登录后重试") }
                 }
             })
+        }
     }
 }

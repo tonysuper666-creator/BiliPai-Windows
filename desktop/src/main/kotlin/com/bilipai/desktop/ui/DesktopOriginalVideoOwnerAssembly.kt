@@ -61,6 +61,8 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
         private set
     lateinit var environment: DesktopOriginalVideoPlaybackOwnerEnvironment
         private set
+    lateinit var nextWatch: DesktopOriginalVideoNextWatchBinding
+        private set
 
     fun owns(): Boolean = !closed.get() && entryJob.isActive &&
         repository.sessionEpoch == capturedEpoch && stillEntryOwned()
@@ -121,6 +123,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                 if (first == null) first = failure else first!!.addSuppressed(failure)
             }
         }
+        if (::nextWatch.isInitialized) clean(nextWatch::close)
         if (::playback.isInitialized) clean(playback::close)
         if (::invocations.isInitialized) clean(invocations::close)
         if (::domains.isInitialized) clean(domains::close)
@@ -255,6 +258,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                 // Original attach has no media loading side effect. Preferred volume
                 // is admitted only when an actual source belongs to this Section.
                 owner.playback.attachPlayer(owner.section)
+                owner.nextWatch = DesktopOriginalVideoNextWatchBinding(owner, entryScope, sourceVersions)
                 owner.assertOwned()
                 return owner
             } catch (failure: Throwable) {

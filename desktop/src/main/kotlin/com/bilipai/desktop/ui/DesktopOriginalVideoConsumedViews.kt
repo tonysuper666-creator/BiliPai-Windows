@@ -18,6 +18,9 @@ internal class DesktopOriginalVideoConsumedViews(
     private val manualAudioRetained: (() -> Boolean)? = null,
     private val audioBootstrapWindow: DesktopOriginalVideoRootWindowEnvironment? = null,
     private val audioBootstrapEntry: com.android.purebilibili.navigation3.BiliPaiNavKey? = null,
+    /** Initial audio route has already submitted its real request. This is only
+     * duplicate-UI-load suppression, never native preparation or media authority. */
+    private val audioInitialLoadManagedByRoot: Boolean = false,
 ) : DesktopOriginalPortraitPlaybackOwner, DesktopOriginalAudioVideoOwner {
     private val original = assembly.playback
     private fun assertOwned() {
@@ -75,6 +78,15 @@ internal class DesktopOriginalVideoConsumedViews(
         assertOwned()
         val window = audioBootstrapWindow
         val entry = audioBootstrapEntry
+        if (audioInitialLoadManagedByRoot) {
+            // AudioModeScreen has its own original initial-load effect. Root
+            // already seeded this exact entry before mounting the screen, so a
+            // fast fatal preparation error must not trigger another auto-load.
+            if (window == null || entry == null || manualAudioCurrent?.invoke() != true ||
+                manualAudioRetained?.invoke() != true)
+                throw CancellationException("Original Root-managed audio caller retired")
+            return
+        }
         if (window == null && entry == null) {
             original.loadVideo(bvid, cid = cid, autoPlay = autoPlay, fallbackResumePositionMs = fallbackResumePositionMs)
             return

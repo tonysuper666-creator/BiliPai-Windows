@@ -74,7 +74,8 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             override fun select(uri: URI): List<NetworkProxy> {
                 if ((uri.scheme != "http" && uri.scheme != "socket") || uri.host != "127.0.0.1" || uri.port !in 1..65535 || uri.userInfo != null) {
                     rejectedPublicRequests.add("${uri.scheme}://${uri.host}:${uri.port}${uri.path}")
-                    throw IOException("The original public client is restricted to loopback HTTP")
+                    // A fixture policy denial must escape OkHttp route retries; it is not a transport IOException.
+                    throw SecurityException("The original public client is restricted to loopback HTTP")
                 }
                 return listOf(NetworkProxy.NO_PROXY)
             }
@@ -96,6 +97,8 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             "home_feed_anonymizer", "adfilter", "subscription_feed", "today_watch", "cdn_region", "dlna_cast", "google_cast")
         store.update("plugin_prefs", ids.associate { "plugin_enabled_$it" to JsonPrimitive(false) })
         runtime = withContext(Dispatchers.Swing) { DesktopPluginRuntime(store) }
+        assertSame(runtime.context.applicationContext, PluginManager.getContext(),
+            "PluginManager belongs to a prior Runtime; run SponsorPresentation in a fresh test worker")
         withTimeout(8_000) { for (id in ids) PluginManager.awaitPluginReady(id) }
         assertTrue(runtime.plugins.value.none { it.enabled })
         } finally {

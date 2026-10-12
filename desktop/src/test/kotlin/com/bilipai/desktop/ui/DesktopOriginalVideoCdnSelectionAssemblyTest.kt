@@ -1,6 +1,8 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.plugin.PluginManager
+import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+import com.android.purebilibili.core.store.PlaybackCompletionBehavior
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
 import com.android.purebilibili.feature.video.player.*
@@ -291,6 +293,131 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
     }
 
+    @Test fun actualLastFiveSecondsOfferEnablesAndConsumesCapturedFacadeNext(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104)
+            f.setQueue(listOf(f.queueItem(A)))
+            val before = f.accepted(); val original = f.owner.captureLoadState()
+            assertEquals(listOf(B), f.state().related.map { it.bvid })
+            f.clock(114.999)
+            f.ui {
+                assertNull(f.owner.nextWatch.capture())
+                assertFalse(f.owner.environment.mini.onHasNextNavigationCallback?.invoke() == true)
+                assertFalse(f.facade.hasNext)
+            }
+            f.clock(115.0)
+            val five = f.awaitHint { it.remainingSeconds == 5 }
+            assertSame(before, five.accepted)
+            assertSame(original.currentRequest, five.originalRequest)
+            assertEquals(original.currentLoadRequestToken, five.requestToken)
+            assertEquals(A, five.target.sourceBvid); assertEquals(104L, five.target.sourceCid)
+            assertEquals(B, five.target.bvid); assertEquals(0L, five.target.cid)
+            assertNull(five.target.pageIndex); assertNull(five.target.playlistIndex)
+            assertEquals("推荐观看", five.target.label)
+            f.ui { assertTrue(f.facade.hasNext) }
+            f.clock(119.001)
+            f.awaitHint { it.remainingSeconds == 1 }
+            val click = f.uiResult { assertNotNull(f.facade.captureManualNavigation()) }
+            assertSame(before, click.accepted)
+            assertEquals(B, assertNotNull(click.nextWatchHint).target.bvid)
+            assertTrue(f.dispatchForward(click))
+            f.awaitLoaded(B)
+            val next = f.accepted()
+            assertNotSame(before, next)
+            assertEquals(B, next.request.bvid); assertEquals(105L, next.request.cid)
+            assertNotSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertTrue(f.owner.captureLoadState().currentLoadRequestToken > original.currentLoadRequestToken)
+            assertEquals(2, f.playRequests.size)
+            assertNull(next.bootstrapOrigin, "The fixture's real Unknown source must remain Unknown")
+        }
+    }
+
+    @Test fun capturedNoOfferDoesNotBorrowOfferFromLaterNativeClock(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A)))
+            f.clock(114.999)
+            val click = f.uiResult { assertNotNull(f.facade.captureManualNavigation()) }
+            assertNull(click.nextWatchHint)
+            val source = f.accepted(); val original = f.owner.captureLoadState()
+            f.clock(117.0); f.awaitHint { it.target.bvid == B }
+            assertFalse(f.dispatchForward(click), "A no-offer click retains its original callback path")
+            assertSame(source, f.accepted())
+            assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+            assertEquals(A, f.state().info.bvid); assertEquals(1, f.playRequests.size)
+        }
+    }
+
+    @Test fun staleCapturedOriginalTargetRejectsWithoutSelectingNewQueueCandidate(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104)
+            f.behavior(PlaybackCompletionBehavior.PLAY_IN_ORDER)
+            f.setQueue(listOf(f.queueItem(A), f.queueItem(B, "First queue target")))
+            f.clock(117.0)
+            val hint = f.awaitHint { it.target.playlistIndex == 1 && it.target.title == "First queue target" }
+            val click = f.uiResult { assertNotNull(f.facade.captureManualNavigation()) }
+            assertEquals(hint.target, assertNotNull(click.nextWatchHint).target)
+            val source = f.accepted(); val original = f.owner.captureLoadState()
+            f.setQueue(listOf(f.queueItem(A), f.queueItem(B, "Changed queue target")))
+            f.ui { assertNotEquals(hint.target, f.owner.playback.resolveNextWatchSuggestion()) }
+            assertFalse(f.dispatchForward(click))
+            assertSame(source, f.accepted()); assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+            assertEquals(0, f.realQueue.currentIndex.value); assertEquals(1, f.playRequests.size)
+            f.clock(117.1)
+            val fresh = f.awaitHint { it.target.title == "Changed queue target" }
+            assertNotEquals(hint.target, fresh.target)
+        }
+    }
+
+    @Test fun actualSameRequestNativeReplacementRejectsCapturedNextWatchSource(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A))); f.clock(117.0)
+            f.awaitHint { it.target.bvid == B }
+            val click = f.uiResult { assertNotNull(f.facade.captureManualNavigation()) }
+            val source = f.accepted(); val original = f.owner.captureLoadState()
+            val held = f.holdCdnSwitch(); f.release(held)
+            withTimeout(8_000) { held.job.join() }
+            assertFalse(held.job.isCancelled)
+            val replacement = f.accepted()
+            assertNotSame(source, replacement)
+            assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+            assertFalse(f.dispatchForward(click), "The retired accepted object cannot borrow its same-request successor")
+            assertSame(replacement, f.accepted()); assertEquals(A, f.state().info.bvid)
+            assertFalse(f.publications.any { it.request.bvid == B })
+            f.ui { f.actor.drain(); f.actor.loaded() }
+            f.clock(117.2)
+            val fresh = f.awaitHint { it.accepted === replacement }
+            assertNotSame(assertNotNull(click.nextWatchHint).accepted, fresh.accepted)
+        }
+    }
+
+    @Test fun originalOrderSleepAndRepeatPoliciesExcludeOrSelectActualOwnedOffer(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A)))
+            f.behavior(PlaybackCompletionBehavior.PLAY_IN_ORDER); f.clock(117.0)
+            f.ui {
+                assertNull(f.owner.playback.resolveNextWatchSuggestion(), "Order must not replace an exhausted queue with a recommendation")
+                assertNull(f.owner.nextWatch.capture())
+            }
+            f.setQueue(listOf(f.queueItem(A), f.queueItem(B, "Ordered next")))
+            f.clock(117.1)
+            val ordered = f.awaitHint { it.target.playlistIndex == 1 }
+            assertEquals(B, ordered.target.bvid); assertEquals(105L, ordered.target.cid)
+            assertEquals("Ordered next", ordered.target.title); assertEquals("接下来观看", ordered.target.label)
+            f.ui { f.owner.playback.setSleepTimer(1) }
+            withTimeout(8_000) { f.owner.nextWatch.state.first { it == null } }
+            f.ui { assertNull(f.owner.playback.resolveNextWatchSuggestion()); assertNull(f.owner.nextWatch.capture()) }
+            f.ui { f.owner.playback.setSleepTimer(null) }
+            f.behavior(PlaybackCompletionBehavior.REPEAT_ONE); f.clock(117.2)
+            f.ui { assertNull(f.owner.playback.resolveNextWatchSuggestion()); assertNull(f.owner.nextWatch.capture()) }
+            f.behavior(PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC)
+            f.setQueue(listOf(f.queueItem(A))); f.clock(120.0)
+            f.ui { assertNull(f.owner.nextWatch.capture(), "Zero remaining time is not the explicit last-five-second window") }
+        }
+    }
+
     private data class Capture(val state: PlaybackSessionState, val job: Job)
     private data class CdnEmission(val source: DesktopOriginalVideoAcceptedPublication, val index: Int, val runtimeGeneration: Long?)
     private data class HeldDispatch(val context: CoroutineContext, val runnable: Runnable) {
@@ -331,7 +458,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
 
     private inner class Fixture(private val holdTags: Boolean = false, private val refreshExpiredUrls: Boolean = false,
-        private val holdRelated: Boolean = false) {
+        private val holdRelated: Boolean = false, private val nextWatchMode: Boolean = false) {
         val directory = Files.createTempDirectory("cdn-original-owner-")
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
@@ -342,6 +469,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         private val slot = DesktopOriginalVideoRootOwnerSlot(repository, scope, parentJob::isActive)
         lateinit var gate: DesktopOriginalVideoRootGate
         lateinit var owner: DesktopOriginalVideoOwnerAssembly
+        lateinit var facade: DesktopUnifiedPlaybackFacade
+        private lateinit var settingsContext: DesktopOriginalPlayerSettingsContext
         lateinit var runtimeBinding: DesktopOriginalVideoRootRuntimeBinding
         lateinit var actor: PremiumRecoveryActor
         val player = MpvPlayer()
@@ -366,7 +495,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         private val epoch: Long
         private val playlist = MutableStateFlow<List<PlaylistItem>>(emptyList())
         private val index = MutableStateFlow(0)
-        private val queue = object : DesktopOriginalVideoOwnerPlaylist {
+        private val nextWatchQueue = if (nextWatchMode) DesktopOriginalVideoPlaylistBinding(
+            DesktopPluginStore(directory.resolve("next-watch-queue")), scope, parentJob::isActive,
+            { action -> if (parentJob.isActive) { action(); true } else false }, failures::add,
+        ) else null
+        val realQueue: DesktopOriginalVideoPlaylistBinding get() = checkNotNull(nextWatchQueue)
+        private val queue: DesktopOriginalVideoOwnerPlaylist = nextWatchQueue ?: object : DesktopOriginalVideoOwnerPlaylist {
             override val playlist get() = this@Fixture.playlist
             override val currentIndex get() = index
             override val playMode = MutableStateFlow(PlayMode.SEQUENTIAL)
@@ -446,7 +580,9 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                         "/x/web-interface/archive/related" -> {
                             relatedEntered.complete(Unit)
                             check(relatedRelease.await(12, TimeUnit.SECONDS))
-                            """{"code":0,"data":[]}"""
+                            if (nextWatchMode && bvid == A)
+                                """{"code":0,"data":[{"aid":102,"bvid":"$B","cid":105,"title":"Real related B","pic":"https://media.invalid/cover.jpg","duration":60,"owner":{"mid":52,"name":"Related UP","face":""}}]}"""
+                            else """{"code":0,"data":[]}"""
                         }
                         "/x/tag/archive/tags" -> {
                             if (holdTags && bvid == A) { tagsEntered.complete(Unit); check(tagsRelease.await(8, TimeUnit.SECONDS)) }
@@ -470,6 +606,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                 gate = actualGate
                 val settings = DesktopOriginalPlayerSettingsContext(context, gate::owns, gate::commitEntry,
                     largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false })
+                settingsContext = settings
                 val readbacks = DesktopOriginalVideoEntryReadbacks(repository, epoch, gate.scope, gate::owns, gate::commitEntry)
                 val operations = DesktopDynamicCardOperations(repository, epoch, gate::owns)
                 val comments = Proxy.newProxyInstance(DesktopVideoCommentRequests::class.java.classLoader,
@@ -522,6 +659,15 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                 owner = slot.requireAssembly()
                 owner.playback.initWithContext(DesktopOriginalPlayerSettingsContext(context, gate::owns, gate::commitEntry,
                     largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false }))
+            }
+            if (nextWatchMode) {
+                behavior(PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC)
+                facade = DesktopUnifiedPlaybackFacade(scope, slot.assemblies, slot::currentAssembly,
+                    slot::requireAssembly, realQueue, parentJob::isActive, MutableStateFlow(false),
+                    { error("No assembly retirement from this explicit NextWatch fixture") },
+                    { _, _ -> error("No cast") }, { _, _ -> error("No subtitle mode") },
+                    { _, _ -> error("No subtitle preference") }, { error("No cancellation UI") },
+                    { _, _, _ -> error("No queue-card resolution") }, { error("Unexpected facade error $it") })
             }
             // Observe the actual original backing StateFlow without seeding,
             // replacing or mutating it. Its synchronous commit is distinct from
@@ -590,6 +736,35 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             return Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("memory PBP")
                 .body(body.toResponseBody("application/json".toMediaType())).build()
         }
+        fun queueItem(bvid: String, title: String = "Queue $bvid") = PlaylistItem(
+            bvid, if (bvid == A) 104L else 105L, title, "https://media.invalid/cover.jpg", "Fixture UP", duration = 60L)
+        suspend fun setQueue(items: List<PlaylistItem>) = ui { realQueue.setPlaylist(items, 0) }
+        suspend fun behavior(value: PlaybackCompletionBehavior) {
+            check(nextWatchMode)
+            DesktopOriginalPlaybackPreferenceOperation.run(settingsContext, gate::owns) {
+                DesktopOriginalVideoControlSettings.setPlaybackCompletionBehavior(settingsContext, value)
+            }
+        }
+        /** Supply property-string readbacks to the existing memory ABI actor. This
+         * does not replace MPV state, a Native publication or the original VM. */
+        suspend fun clock(position: Double) = ui {
+            check(nextWatchMode && position.isFinite())
+            assertEquals(0, actor.native.mpv_set_property_string(Pointer(1L), "time-pos", position.toString()))
+            assertEquals(0, actor.native.mpv_set_property_string(Pointer(1L), "duration", "120.0"))
+            actor.drain(); actor.loaded()
+            assertEquals(position, player.state.value.positionSeconds)
+            assertEquals(120.0, player.state.value.durationSeconds)
+            assertEquals(DesktopOriginalPlaybackStates.STATE_READY, owner.section.playbackState)
+            assertTrue(player.ownsSourceSnapshot(accepted().nativeSource))
+            assertFalse(player.state.value.ready, "Memory ABI FILE_LOADED never claims real MPV core initialization")
+        }
+        suspend fun awaitHint(predicate: (DesktopOriginalVideoNextWatchHint) -> Boolean): DesktopOriginalVideoNextWatchHint =
+            withTimeout(8_000) { assertNotNull(owner.nextWatch.state.first { it != null && predicate(it) }) }
+        suspend fun dispatchForward(click: DesktopOriginalManualPlaybackClick): Boolean = scope.async {
+            val actualCaller = currentCoroutineContext().job
+            assertTrue(EventQueue.isDispatchThread()); assertTrue(actualCaller.isActive)
+            facade.navigateManual(click, forward = true, caller = actualCaller, uiCurrent = gate::owns)
+        }.await()
         suspend fun load(bvid: String, aid: Long, cid: Long, audioLang: String? = null) {
             ui { owner.playback.loadVideo(bvid, aid, cid = cid, audioLang = audioLang, autoPlay = false) }
             awaitLoaded(bvid)
@@ -642,7 +817,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         suspend fun <T> uiResult(action: () -> T): T = withContext(Dispatchers.Swing) { action() }
         suspend fun close() {
             tagsRelease.countDown(); relatedRelease.countDown(); dispatcher.drainOnClose()
-            slot.closeAndJoin(); parentJob.cancelAndJoin()
+            if (::facade.isInitialized) facade.close()
+            if (nextWatchMode && ::settingsContext.isInitialized && gate.owns())
+                behavior(PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC)
+            slot.closeAndJoin()
+            nextWatchQueue?.closeAndJoin()
+            parentJob.cancelAndJoin()
             if (::runtimeBinding.isInitialized) runtimeBinding.close()
             if (::actor.isInitialized) actor.close()
             if (::cache.isInitialized) cache.close()

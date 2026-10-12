@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "jay3-yy/BiliPai",
+  "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+  "baselineCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "sources": [
+    {
+      "file": "DynamicModels.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt",
+      "outputPath": "com/android/purebilibili/data/model/response/DynamicModels.kt",
+      "bytes": 52499,
+      "sha256": "6cbbc1937a07600d614ddaa91aecda52b9c988e6eda411b46fb95d0bb01241c2",
+      "gitBlob": "a95ffae4db6ecd49950ea90b99826045dc88f6f9",
+      "baselineSha256LF": "c8d19d401efb4e24ea687e333c3689a431e0f4a82a0e4e055d1eaae7b8ae6dbe",
+      "baselineGitBlobLF": "f9fa8249656c92037612839ad9ee12ad36b35900",
+      "originalEdits": [
+        {
+          "offsetBytes": 11903,
+          "before": "",
+          "after": "                        ?.takeIf { it.isNotBlank() }\n"
+        },
+        {
+          "offsetBytes": 12138,
+          "before": "",
+          "after": "                        ?.takeIf { it.isNotBlank() }\n"
+        }
+      ]
+    },
+    {
+      "file": "LyricsParser.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt",
+      "outputPath": "com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt",
+      "bytes": 6853,
+      "sha256": "97c5584402f15caf49b38a18cb50f6b993245d89c722a5381c772b1bfc71dd0a",
+      "gitBlob": "687858ef45529cb298e24a37127fe8a0b36a58ea",
+      "baselineSha256LF": "50d73073ad60865ce05d98b8bf931a891d1a1157d21c1886248d873e9445a73b",
+      "baselineGitBlobLF": "08a034fbd16baf333253ebdbc294b854efc9ebc7",
+      "originalEdits": [
+        {
+          "offsetBytes": 2384,
+          "before": "                        needsPhoneticAnnotation(it) && !isPseudoSecondaryLine(raw.text, it)\n",
+          "after": "                        needsPhoneticAnnotation(raw.text) && !isPseudoSecondaryLine(raw.text, it)\n"
+        }
+      ]
+    },
+    {
+      "file": "LyricsDisplayPolicy.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt",
+      "outputPath": "com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt",
+      "bytes": 4734,
+      "sha256": "cecab90e58b2e625f63a8ab34973a46b2c71b2e628265a9dd6e357535f6434db",
+      "gitBlob": "1adc41ba16418aa1557fa9a8789b7ff971225c88",
+      "baselineSha256LF": "593b4d32795a58d74a46b1754a2493227632e0d6a8660bdce21398166e9107a8",
+      "baselineGitBlobLF": "5f6e50cb98c7a75b90cd846f304e19ba5cfec668",
+      "originalEdits": [
+        {
+          "offsetBytes": 4557,
+          "before": "                needsPhoneticAnnotation(it) &&\n",
+          "after": "                needsPhoneticAnnotation(primaryText) &&\n"
+        }
+      ]
+    }
+  ],
+  "emission": "Three complete original sources emitted verbatim. No Windows source transformation."
+}

@@ -223,7 +223,9 @@ internal class DesktopUnifiedPlaybackFacade(
             selected!=null && selected.bvid==ui.info.bvid && (selected.cid<=0L || selected.cid==ui.info.cid) && !ui.isQualitySwitching
         }==true }
     val hasPrevious: Boolean get() = navigationOwner()?.environment?.mini?.onHasPreviousNavigationCallback?.invoke() == true
-    val hasNext: Boolean get() = navigationOwner()?.environment?.mini?.onHasNextNavigationCallback?.invoke() == true
+    val hasNext: Boolean get() = navigationOwner()?.let { a ->
+        a.nextWatch.capture() != null || a.environment.mini.onHasNextNavigationCallback?.invoke() == true
+    } == true
     fun previous() { navigationOwner()?.environment?.mini?.onNavigatePreviousCallback?.invoke() }
     fun next() { navigationOwner()?.environment?.mini?.onNavigateNextCallback?.invoke() }
     /** The UI captures this before launching its genuine per-click task. An
@@ -237,8 +239,10 @@ internal class DesktopUnifiedPlaybackFacade(
         val raw = a.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return null
         if (!a.native.isCurrent(accepted) || raw.info.bvid != accepted.request.bvid ||
             raw.info.cid != accepted.request.cid || raw.isQualitySwitching) return null
+        val hint = a.nextWatch.capture()
+        if (hint != null && hint.accepted !== accepted) return null
         return DesktopOriginalManualPlaybackClick(a, accepted,
-            a.environment.mini.onNavigateNextCallback, a.environment.mini.onNavigatePreviousCallback)
+            a.environment.mini.onNavigateNextCallback, a.environment.mini.onNavigatePreviousCallback, hint)
     }
     /** No VM/queue/checkpoint/cancellation runs in native/Store admission. The
      * complete original helper selects its target on this actual UI task. */
@@ -254,6 +258,17 @@ internal class DesktopUnifiedPlaybackFacade(
                 callback != null && actualCallback === callback && a.native.isCurrent(click.accepted) &&
                 raw.info.bvid == click.accepted.request.bvid && raw.info.cid == click.accepted.request.cid &&
                 !raw.isQualitySwitching
+        }
+        if (forward && caller.isActive) {
+            val hint = click.nextWatchHint
+            if (hint != null) {
+                if (hint.accepted !== click.accepted) return false
+                // Actual PhysicalLeaf next control reaches this captured click path.
+                // A rejected hint never falls through to another/latest target.
+                return a.nextWatch.play(hint, caller) {
+                    uiCurrent() && ownsRoot() && held() === a && pendingCardResolution.value == null
+                }
+            }
         }
         if (!caller.isActive || !current()) return false
         val origin = click.accepted.bootstrapOrigin

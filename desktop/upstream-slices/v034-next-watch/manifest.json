@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+  "sources": [
+    {
+      "file": "NextWatchSuggestion.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/playback/next/NextWatchSuggestion.kt",
+      "bytes": 1996,
+      "sha256": "3308a2fe6b22234ae900cbd2449d468c613b84ce0bcde974250339b272350c35",
+      "gitBlob": "48a819ae4bf973dcf7f2bfbdf31e13e13aa43985"
+    }
+  ],
+  "originalVmReference": {
+    "path": "desktop/upstream-slices/v034-metadata-related/VideoPlaybackViewModel.kt",
+    "bytes": 414370,
+    "sha256": "8a23ff5759f0f227110f7e7598330807a0898035b03da0a2492fae860a9f9c57",
+    "gitBlob": "0d139c54777fb09830c7e16202e23ed4bed148d1"
+  },
+  "originalVmMethodBlock": {
+    "offset": 102655,
+    "text": "    /** Read-only lookahead. Explicit order/loop behavior matches the existing end coordinator. */\n    internal fun resolveNextWatchSuggestion(): com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion? {\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return null\n        val context = appContext ?: return null\n        if (isPortraitPlaybackSessionActive || _isInAudioMode.value || _sleepTimerMinutes.value != null) return null\n        val behavior = SettingsManager.getPlaybackCompletionBehaviorSync(context)\n        if (behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.REPEAT_ONE) return null\n        val info = current.info\n        val external = PlaylistManager.isExternalPlaylist.value\n        fun suggestion(bvid: String, cid: Long, title: String, cover: String, label: String,\n                       page: Int? = null, queue: Int? = null) =\n            com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion(\n                info.bvid, info.cid, bvid, cid, title, cover, label, page, queue)\n        // Explicit playlist loop ignores the collection order, as executePlaybackEndAction does.\n        if ((!external || behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.PLAY_IN_ORDER) &&\n            behavior != com.android.purebilibili.core.store.PlaybackCompletionBehavior.LOOP_PLAYLIST) {\n            com.android.purebilibili.feature.video.playback.next.resolveCollectionNextWatch(info)?.let { return it }\n        }\n        if (external || behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.PLAY_IN_ORDER ||\n            behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.LOOP_PLAYLIST) {\n            val items = PlaylistManager.playlist.value\n            val index = resolveCurrentPlaylistIndex(items)\n            // Do not guess a future item before the queue has adopted this playback identity.\n            if (items.getOrNull(index)?.bvid != info.bvid) return null\n            val nextIndex = if (index < items.lastIndex) index + 1 else if (\n                behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.LOOP_PLAYLIST) 0 else -1\n            val next = items.getOrNull(nextIndex) ?: return null\n            if (next.isBangumi || next.bvid.isBlank() || (next.bvid == info.bvid && next.cid == info.cid)) return null\n            return suggestion(next.bvid, next.cid, next.title, next.cover, \"接下来观看\", queue = nextIndex)\n        }\n        // Ordinary single videos do not auto-play recommendations; this is an explicit click offer.\n        val feedback = com.android.purebilibili.core.store.TodayWatchFeedbackStore.getSnapshot(context)\n        val next = current.related.firstOrNull {\n            it.bvid.isNotBlank() && it.bvid != info.bvid && it.bvid !in feedback.dislikedBvids &&\n                it.owner.mid !in feedback.dislikedCreatorMids &&\n                feedback.dislikedKeywords.none { keyword -> keyword.isNotBlank() && it.title.contains(keyword, ignoreCase = true) }\n        } ?: return null\n        return suggestion(next.bvid, 0L, next.title, next.pic, \"推荐观看\")\n    }\n\n    internal fun playNextWatchSuggestion(target: com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion): Boolean {\n        if (resolveNextWatchSuggestion() != target) return false\n        if (target.pageIndex != null) {\n            switchPage(target.pageIndex, ignoreSavedProgress = true)\n        } else {\n            target.playlistIndex?.let { if (PlaylistManager.playAt(it) == null) return false }\n            markInPageInitiatedPlayback(target.bvid, target.cid)\n            loadVideo(target.bvid, cid = target.cid, autoPlay = true, ignoreSavedProgress = true)\n        }\n        return true\n    }\n\n",
+    "sha256LF": "2786534d7b911f0af74d6ee9393d3bae7509ae7931098119bf3840ab38a61a4d"
+  },
+  "methodAdapters": [
+    {
+      "before": "SettingsManager.getPlaybackCompletionBehaviorSync(context)",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getPlaybackCompletionBehaviorSync(context)",
+      "count": 1
+    },
+    {
+      "before": "PlaylistManager.",
+      "after": "environment.playlist.",
+      "count": 3
+    },
+    {
+      "before": "com.android.purebilibili.core.store.TodayWatchFeedbackStore.getSnapshot(context)",
+      "after": "environment.todayWatchFeedback.getSnapshot()",
+      "count": 1
+    },
+    {
+      "before": "internal fun playNextWatchSuggestion(target: com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion): Boolean {",
+      "after": "internal fun playNextWatchSuggestion(target: com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion,\n        desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null): Boolean {\n        if (desktopManualNavigation != null && !desktopManualNavigation.isCurrent()) return false",
+      "count": 1
+    },
+    {
+      "before": "loadVideo(target.bvid, cid = target.cid, autoPlay = true, ignoreSavedProgress = true)",
+      "after": "loadVideo(target.bvid, cid = target.cid, autoPlay = true, ignoreSavedProgress = true,\n                desktopManualNavigation = desktopManualNavigation)",
+      "count": 1
+    }
+  ],
+  "outputs": {
+    "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt": {
+      "path": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "beforeSha256LF": "5cbedfb927212025ab8447e3e17d8e027270d9988146f931bec58a24e87cd486",
+      "afterSha256LF": "288b6e6a3c68522713c70d0d51e9af1d393c1f569993524ca8a38e37f5cbf7db",
+      "edits": [
+        {
+          "offset": 130557,
+          "before": "    fun playNextRecommended(ignoreSavedProgress: Boolean = false, desktopContinuation: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackContinuation? = null, desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null): Boolean {",
+          "after": "    /** Read-only lookahead. Explicit order/loop behavior matches the existing end coordinator. */\n    internal fun resolveNextWatchSuggestion(): com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion? {\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return null\n        val context = appContext ?: return null\n        if (isPortraitPlaybackSessionActive || _isInAudioMode.value || _sleepTimerMinutes.value != null) return null\n        val behavior = com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getPlaybackCompletionBehaviorSync(context)\n        if (behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.REPEAT_ONE) return null\n        val info = current.info\n        val external = environment.playlist.isExternalPlaylist.value\n        fun suggestion(bvid: String, cid: Long, title: String, cover: String, label: String,\n                       page: Int? = null, queue: Int? = null) =\n            com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion(\n                info.bvid, info.cid, bvid, cid, title, cover, label, page, queue)\n        // Explicit playlist loop ignores the collection order, as executePlaybackEndAction does.\n        if ((!external || behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.PLAY_IN_ORDER) &&\n            behavior != com.android.purebilibili.core.store.PlaybackCompletionBehavior.LOOP_PLAYLIST) {\n            com.android.purebilibili.feature.video.playback.next.resolveCollectionNextWatch(info)?.let { return it }\n        }\n        if (external || behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.PLAY_IN_ORDER ||\n            behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.LOOP_PLAYLIST) {\n            val items = environment.playlist.playlist.value\n            val index = resolveCurrentPlaylistIndex(items)\n            // Do not guess a future item before the queue has adopted this playback identity.\n            if (items.getOrNull(index)?.bvid != info.bvid) return null\n            val nextIndex = if (index < items.lastIndex) index + 1 else if (\n                behavior == com.android.purebilibili.core.store.PlaybackCompletionBehavior.LOOP_PLAYLIST) 0 else -1\n            val next = items.getOrNull(nextIndex) ?: return null\n            if (next.isBangumi || next.bvid.isBlank() || (next.bvid == info.bvid && next.cid == info.cid)) return null\n            return suggestion(next.bvid, next.cid, next.title, next.cover, \"接下来观看\", queue = nextIndex)\n        }\n        // Ordinary single videos do not auto-play recommendations; this is an explicit click offer.\n        val feedback = environment.todayWatchFeedback.getSnapshot()\n        val next = current.related.firstOrNull {\n            it.bvid.isNotBlank() && it.bvid != info.bvid && it.bvid !in feedback.dislikedBvids &&\n                it.owner.mid !in feedback.dislikedCreatorMids &&\n                feedback.dislikedKeywords.none { keyword -> keyword.isNotBlank() && it.title.contains(keyword, ignoreCase = true) }\n        } ?: return null\n        return suggestion(next.bvid, 0L, next.title, next.pic, \"推荐观看\")\n    }\n\n    internal fun playNextWatchSuggestion(target: com.android.purebilibili.feature.video.playback.next.NextWatchSuggestion,\n        desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null): Boolean {\n        if (desktopManualNavigation != null && !desktopManualNavigation.isCurrent()) return false\n        if (resolveNextWatchSuggestion() != target) return false\n        if (target.pageIndex != null) {\n            switchPage(target.pageIndex, ignoreSavedProgress = true)\n        } else {\n            target.playlistIndex?.let { if (environment.playlist.playAt(it) == null) return false }\n            markInPageInitiatedPlayback(target.bvid, target.cid)\n            loadVideo(target.bvid, cid = target.cid, autoPlay = true, ignoreSavedProgress = true,\n                desktopManualNavigation = desktopManualNavigation)\n        }\n        return true\n    }\n\n    fun playNextRecommended(ignoreSavedProgress: Boolean = false, desktopContinuation: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackContinuation? = null, desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null): Boolean {"
+        }
+      ]
+    }
+  },
+  "scope": "Whole original next-window/collection policy and complete VM lookahead/click methods; Windows actual clock and native/request receipt ownership adapter"
+}

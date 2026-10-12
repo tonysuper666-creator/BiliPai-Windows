@@ -51,9 +51,11 @@
     "desktop/upstream-slices/v034-live-moderation-ui",
     "desktop/upstream-slices/v034-live-vote",
     "desktop/upstream-slices/v034-metadata-related",
+    "desktop/upstream-slices/v034-next-watch",
     "desktop/upstream-slices/v034-on-demand",
     "desktop/upstream-slices/v034-related",
-    "desktop/upstream-slices/v034-sponsor-ui"
+    "desktop/upstream-slices/v034-sponsor-ui",
+    "desktop/upstream-slices/v034-text-lyrics"
   ],
   "archives": [
     {
@@ -2021,6 +2023,52 @@
           "sha256": "8a23ff5759f0f227110f7e7598330807a0898035b03da0a2492fae860a9f9c57",
           "hashNormalization": "raw",
           "blob": "0d139c54777fb09830c7e16202e23ed4bed148d1"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-text-lyrics",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-text-lyrics/manifest.json",
+          "sha256": "6936fe243c306eef434c3cbd0be8e18d8a18113c6be5ccd0a8e04a811cccad66",
+          "hashNormalization": "raw",
+          "blob": "f06c6cd39fc95528af1e5e0ec95fadc2a531e612"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-text-lyrics/DynamicModels.kt",
+          "sha256": "6cbbc1937a07600d614ddaa91aecda52b9c988e6eda411b46fb95d0bb01241c2",
+          "hashNormalization": "raw",
+          "blob": "a95ffae4db6ecd49950ea90b99826045dc88f6f9"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-text-lyrics/LyricsParser.kt",
+          "sha256": "97c5584402f15caf49b38a18cb50f6b993245d89c722a5381c772b1bfc71dd0a",
+          "hashNormalization": "raw",
+          "blob": "687858ef45529cb298e24a37127fe8a0b36a58ea"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-text-lyrics/LyricsDisplayPolicy.kt",
+          "sha256": "cecab90e58b2e625f63a8ab34973a46b2c71b2e628265a9dd6e357535f6434db",
+          "hashNormalization": "raw",
+          "blob": "1adc41ba16418aa1557fa9a8789b7ff971225c88"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-next-watch",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-next-watch/manifest.json",
+          "sha256": "d428fe76e065c9f85c80d9e8c14157b6243e91bfc5b35152cccaa56ca41b4a72",
+          "hashNormalization": "raw",
+          "blob": "5fd64bbb6738676daffed20465702d961a905208"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-next-watch/NextWatchSuggestion.kt",
+          "sha256": "3308a2fe6b22234ae900cbd2449d468c613b84ce0bcde974250339b272350c35",
+          "hashNormalization": "raw",
+          "blob": "48a819ae4bf973dcf7f2bfbdf31e13e13aa43985"
         }
       ]
     }
@@ -5029,6 +5077,58 @@
       "kind": "adaptedSource",
       "features": [
         "v034-metadata-related"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt",
+      "localPath": "desktop/upstream-slices/v034-text-lyrics/DynamicModels.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "a95ffae4db6ecd49950ea90b99826045dc88f6f9",
+      "sha256": "6cbbc1937a07600d614ddaa91aecda52b9c988e6eda411b46fb95d0bb01241c2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-text-lyrics"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt",
+      "localPath": "desktop/upstream-slices/v034-text-lyrics/LyricsParser.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "687858ef45529cb298e24a37127fe8a0b36a58ea",
+      "sha256": "97c5584402f15caf49b38a18cb50f6b993245d89c722a5381c772b1bfc71dd0a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-text-lyrics"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt",
+      "localPath": "desktop/upstream-slices/v034-text-lyrics/LyricsDisplayPolicy.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "1adc41ba16418aa1557fa9a8789b7ff971225c88",
+      "sha256": "cecab90e58b2e625f63a8ab34973a46b2c71b2e628265a9dd6e357535f6434db",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-text-lyrics"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/next/NextWatchSuggestion.kt",
+      "localPath": "desktop/upstream-slices/v034-next-watch/NextWatchSuggestion.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "48a819ae4bf973dcf7f2bfbdf31e13e13aa43985",
+      "sha256": "3308a2fe6b22234ae900cbd2449d468c613b84ce0bcde974250339b272350c35",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-next-watch"
       ],
       "referenceOnly": false
     }

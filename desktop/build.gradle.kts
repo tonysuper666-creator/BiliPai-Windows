@@ -76,7 +76,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "6e82c911e8f458b6cf2503e69068947a85ceb59c6d58f046613f54a699bfb151"
+val revisionNeutralSourceGradleRecipeSha256 = "02ed42cf715d1bb03300007b0446b4ef42685e29ff948c9e6a7bca4b0b57e38b"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -174,6 +174,10 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt"))
         // The fixed v029 special producer owns this one whole source now.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt"))
+        // The pinned stable text/lyrics producer owns these three complete original sources.
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -3496,4 +3500,32 @@ listOf("extractOriginalVideoStateCore", "extractOriginalVideoFullOwner").forEach
 
 tasks.named("extractOriginalVideoStateCore") {
     inputs.file("tools/v034_playurl_failure.py")
+}
+
+// Source57 pure original rich-text fallback and primary-script lyric decisions.
+val extractOriginalTextLyrics by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-text-lyrics.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-text-lyrics").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-text-lyrics.py")
+    inputs.file("tools/v025_source_paths.py")
+    inputs.file("tools/v025-canonical-sources.json")
+    inputs.dir("upstream-slices/v034-text-lyrics")
+    inputs.files(listOf(
+        "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt",
+    ).map(::canonicalOriginalSource))
+    outputs.dir(layout.buildDirectory.dir("generated/original-text-lyrics"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-text-lyrics")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalTextLyrics) }
+
+// Extend the same full-owner producer with the pinned original next-watch policy.
+tasks.named("extractOriginalVideoFullOwner") {
+    inputs.file("tools/v034_next_watch.py")
+    inputs.dir("upstream-slices/v034-next-watch")
+    inputs.file("upstream-slices/v034-metadata-related/VideoPlaybackViewModel.kt")
 }

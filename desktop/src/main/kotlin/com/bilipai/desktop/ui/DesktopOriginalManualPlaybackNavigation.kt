@@ -16,6 +16,8 @@ internal class DesktopOriginalManualPlaybackClick(
     val accepted: DesktopOriginalVideoAcceptedPublication,
     val nextCallback: (() -> Boolean)?,
     val previousCallback: (() -> Boolean)?,
+    /** Captured before the real click Job launches, never read from a later clock. */
+    val nextWatchHint: DesktopOriginalVideoNextWatchHint? = null,
 )
 
 /** A manual UI action's immutable source metadata. This is deliberately separate

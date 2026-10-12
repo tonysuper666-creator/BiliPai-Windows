@@ -1330,11 +1330,15 @@ def generate(repo,output,standalone=False):
   body,detailProof=apply_detail(recipe['output'],body,output)
   from v034_metadata_related import apply_and_record as apply_metadata_related
   body,metadataRelatedProof=apply_metadata_related(recipe['output'],body,output)
+  from v034_next_watch import apply_and_record as apply_next_watch
+  body,nextWatchProof=apply_next_watch(recipe['output'],body,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
    target.write_text(body,encoding='utf-8',newline='\n')
   outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted,
+                      nextWatchInverseEdits=(nextWatchProof or {}).get('inverseEdits',[]),
+                      nextWatchSourceManifest=(nextWatchProof or {}).get('sourceManifest'),
                       metadataRelatedInverseEdits=(metadataRelatedProof or {}).get('inverseEdits',[]),
                       metadataRelatedSourceManifest=(metadataRelatedProof or {}).get('sourceManifest'),
                       detailInverseEdits=(detailProof or {}).get('inverseEdits',[]),
