@@ -60,7 +60,8 @@ class DesktopFavoriteRepositoryResultSemanticsTest {
                 assertEquals(code, failure.code)
                 assertEquals(message, failure.message)
             }
-            assertTrue(fixture.calls.all { it.first == "getFavoriteSeasonList" && it.second == listOf(41L, 3, 20) })
+            assertEquals(failureCases.size, fixture.calls.size)
+            assertTrue(fixture.calls.all { it.first == "getFavoriteSeasonList" && it.second == listOf<Any?>(41L, 3, 20) })
         } finally { fixture.close() }
     }
 
@@ -73,6 +74,7 @@ class DesktopFavoriteRepositoryResultSemanticsTest {
                 assertEquals(code, failure.code)
                 assertEquals(message, failure.message)
             }
+            assertEquals(failureCases.size, fixture.calls.size)
             assertTrue(fixture.calls.all { it.first == "batchDelFavResource" && it.second == listOf(23L, "91:2", "fixture-csrf") })
         } finally { fixture.close() }
     }
