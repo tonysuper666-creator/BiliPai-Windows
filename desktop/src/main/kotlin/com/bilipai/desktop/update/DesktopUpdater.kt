@@ -468,7 +468,7 @@ class DesktopUpdater private constructor(
         readActiveInstallationSnapshot(updateRoot, requireNotNull(repository), json)
 
     internal fun downloadHandoffTarget(prepared: PreparedUpdate): com.bilipai.desktop.download.DesktopDownloadQueueAuthority.CommitTarget {
-        check(prepared === retainedPrepared)
+        kotlin.check(prepared === retainedPrepared)
         return com.bilipai.desktop.download.DesktopDownloadQueueAuthority.CommitTarget(requireNotNull(repository),
             prepared.update.version, prepared.executable.toString(), updateRoot.resolve("active-install.json").toString())
     }
