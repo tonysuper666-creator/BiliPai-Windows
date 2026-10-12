@@ -20,6 +20,9 @@ def emit(p,s):
 parser=None
 records=[]
 def source(rel):
+ if rel=='data/repository/FavoriteRepository':
+  from v034_favorite_content_errors import selected_source
+  s,row=selected_source(rel);records.append(row);return s
  if rel in {'feature/list/ListViewModel','feature/list/CommonListScreen','feature/common/ListLoadError'}:
   from v029_brand_history import selected_source
   s,row=selected_source(rel);records.append(row);return s

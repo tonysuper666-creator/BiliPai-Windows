@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "upstreamTag": "v0.3.4-beta.2",
+  "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+      "gitBlob": "798b741f1111bc8a2b401899572bc32513c91542",
+      "bytes": 14069,
+      "sha256Bytes": "e08693a03a8b1579a719d0f2b168771710fd5596351c358c52e1701621c3e147",
+      "sha256LfUtf8": "e08693a03a8b1579a719d0f2b168771710fd5596351c358c52e1701621c3e147",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/b2091b1de636e499df80af7e700796b4f52b7f92/core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt"
+    }
+  ]
+}
