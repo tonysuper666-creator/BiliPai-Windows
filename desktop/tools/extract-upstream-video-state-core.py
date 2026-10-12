@@ -288,6 +288,10 @@ p.put(H/'supplement-adaptations.json',json.dumps(dict(before=before,after=body,o
  exec(code,globals().copy())
 
 def build_core():
+ from v034_metadata_related import source_text as metadata_source_text,source_rows as metadata_source_rows
+ for row in metadata_source_rows():SOURCES[row['path']]=row
+ emit('com/android/purebilibili/feature/video/viewmodel/RelatedVideoLoadScheduler.kt',metadata_source_text('RelatedVideoLoadScheduler.kt'),
+      'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/RelatedVideoLoadScheduler.kt','full-original-stable-related-scheduler')
  from v034_detail_bootstrap import source_text,source_rows
  for row in source_rows():SOURCES[row['path']]=row
  emit('com/android/purebilibili/feature/video/viewmodel/VideoDetailUiState.kt',source_text('VideoDetailUiState.kt'),

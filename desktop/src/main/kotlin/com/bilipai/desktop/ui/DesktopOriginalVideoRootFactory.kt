@@ -86,6 +86,17 @@ internal class DesktopOriginalVideoRootFactory(
                     ports.awaitNativeInitialization()
                     requests.capture(state, native)
                 },
+                captureMetadataBinding = { admission ->
+                    // Existing Factory, raw primary metadata only; no native wait,
+                    // accepted-source imitation or prepareRequestMedia invocation.
+                    admission.assertCurrent()
+                    val binding = requests.captureBinding(assembly().captureLoadState(),
+                        stillSourceOwned = admission::ownsSubject)
+                    binding.assertCurrent(); admission.assertCurrent()
+                    if (binding.receipt != admission.receipt)
+                        throw CancellationException("Readonly metadata retry receipt changed")
+                    binding
+                },
                 readbacks, media::accepted,
                 createPlugins = { native, invocations -> DesktopOriginalVideoOwnerPluginBridge(runtime, native,
                     invocations, runtimeBinding::generation, invocations::captureCurrentRequestAdmission,

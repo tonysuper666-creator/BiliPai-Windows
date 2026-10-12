@@ -107,7 +107,7 @@ class DesktopWindowsVideoDownloadSelectionTest {
             DesktopOriginalVideoPlaybackInvocation(repository, media) {
                 if (!entry || account != epoch || !caller.isActive) throw CancellationException("Captured request retired")
             }
-        }, unused<DesktopOriginalVideoPlaybackStatus>(), { media })
+        }, unused<DesktopOriginalVideoPlaybackStatus>(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
             arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, args ->
             when (method.name) {
@@ -177,7 +177,7 @@ class DesktopWindowsVideoDownloadSelectionTest {
             captureNativePublication = { accepted.takeIf { owns() } },
             admitNativePublication = { expected, action ->
                 if (!owns() || accepted !== expected) false else { action(); true }
-            }))
+            }, readRelatedPlaybackState = { null }))
         val session = VideoPlaybackViewModel::class.java.getDeclaredField("playbackSessionStore").apply { isAccessible = true }
             .get(vm) as PlaybackSessionStore
         fun installSuccess(value: VideoPlaybackUiState.Success) {

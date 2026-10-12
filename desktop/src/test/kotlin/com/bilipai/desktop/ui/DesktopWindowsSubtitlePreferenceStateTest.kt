@@ -376,6 +376,10 @@ class DesktopWindowsSubtitlePreferenceStateTest {
             val network = object : DesktopOriginalVideoOwnerNetwork {
                 override fun isMobileData() = false
                 override fun isWifi() = true
+                override fun relatedNetworkObservation() = DesktopOriginalVideoRelatedNetworkObservation(
+                    DesktopHomeNetworkObservation(true, 3, 71L, false, "cpu-memory-transport"),
+                    downstreamBandwidthKbps = null,
+                )
                 override fun cdnNetwork() = error("No subtitle fixture media transport")
             }
             val cache = object : DesktopOriginalVideoOwnerCache {
@@ -399,7 +403,7 @@ class DesktopWindowsSubtitlePreferenceStateTest {
             owner = DesktopOriginalVideoOwnerAssembly.create(context, settings, repository, epoch, scope,
                 ::owns, ::commit, player, DesktopRepositoryPlaybackPublication(repository), { false }, MutableStateFlow(null),
                 { error("No accepted native publication") }, { _, _ -> error("No accepted media byte admission") },
-                captureInvocation = { _, _ -> error("No subtitle presentation playback request") }, status = readbacks,
+                captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { _, _ -> error("No subtitle presentation playback request") }, status = readbacks,
                 prepareAcceptedMedia = { error("No accepted media") }, createPlugins = { _, _ -> plugins },
                 confirmFollow = { error("No follow mutation") }, feedback = { error("No UI feedback") },
                 readHasPrimarySession = readbacks::hasPrimarySession, readHasPrimaryAccessToken = readbacks::hasPrimaryAccessToken,

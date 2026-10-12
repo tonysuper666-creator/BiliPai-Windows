@@ -23,6 +23,9 @@ internal class DesktopOriginalVideoOwnerNetworkBinding(
         return com.bilipai.desktop.player.cache.DesktopCdnNetworkObservation(
             current.profilePresent && current.ianaInterfaceType == 71L, current.identityHash)
     }
+    override fun relatedNetworkObservation(): DesktopOriginalVideoRelatedNetworkObservation =
+        DesktopOriginalVideoRelatedNetworkObservation(observation(), downstreamBandwidthKbps = null)
+
     override fun isMobileData(): Boolean = observation().isMobileNetwork
 
     // Windows SDK shared/ipifcons.h IF_TYPE_IEEE80211 = 71 (IANA ifType).

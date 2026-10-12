@@ -98,7 +98,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
             DesktopOriginalVideoPlaybackInvocation(repository, media) {
                 if (!entry || account != epoch || !caller.isActive) throw CancellationException("Captured API caller retired")
             }
-        }, unused<DesktopOriginalVideoPlaybackStatus>(), { media })
+        }, unused<DesktopOriginalVideoPlaybackStatus>(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         private val api = unused<BilibiliApi>()
         private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(
             api, { "fixture-csrf" }, { 1L }, { "fixture-session" }, { null }, {}, {},
@@ -115,7 +115,8 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
             unused(), unused(), unused(), unused(), MutableStateFlow(false), ::entryCurrent, ::commit,
             DesktopTodayWatchFeedbackWriteBinding(context, ::entryCurrent, ::commit),
             captureNativePublication = { accepted.takeIf { entryCurrent() } },
-            admitNativePublication = ::admit))
+            admitNativePublication = ::admit,
+            readRelatedPlaybackState = { null }))
         fun open(mid: Long = 33): DesktopWindowsVideoFollowGroupRequest {
             vm.showFollowGroupDialogForUser(mid)
             return assertNotNull(vm.desktopFollowGroupRequest.value)

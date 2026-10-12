@@ -3486,3 +3486,10 @@ listOf("extractOriginalVideoStateCore", "extractOriginalVideoFullOwner").forEach
         inputs.dir("upstream-slices/v034-detail-bootstrap")
     }
 }
+// Source55 independent readonly related: producer/whole-source inputs.
+listOf("extractOriginalVideoStateCore", "extractOriginalVideoFullOwner").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.file("tools/v034_metadata_related.py")
+        inputs.dir("upstream-slices/v034-metadata-related")
+    }
+}

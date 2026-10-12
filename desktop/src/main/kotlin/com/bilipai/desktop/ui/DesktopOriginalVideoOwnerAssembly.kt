@@ -161,6 +161,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
             onAccepted: (DesktopOriginalVideoAcceptedPublication) -> Unit,
             mediaByteAdmission: (DesktopOriginalVideoAcceptedPublication, () -> Boolean) -> DesktopMediaByteAdmission,
             captureInvocation: suspend (PlaybackSessionState, DesktopOriginalVideoNativeOwner) -> DesktopOriginalVideoPlaybackInvocation,
+            captureMetadataBinding: suspend (DesktopOriginalVideoMetadataAdmission) -> DesktopOriginalVideoRepositoryBinding,
             status: DesktopOriginalVideoPlaybackStatus,
             prepareAcceptedMedia: (DesktopOriginalVideoAcceptedPublication) -> DesktopOriginalVideoMediaPort,
             createPlugins: (DesktopOriginalVideoNativeOwner, DesktopOriginalVideoPlaybackInvocationPorts) -> DesktopOriginalVideoOwnerPlugins,
@@ -194,6 +195,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                 owner.invocations = DesktopOriginalVideoPlaybackInvocationPorts(entryScope, owner::owns,
                     capture = { captureInvocation(owner.captureLoadState(), owner.native) }, status,
                     acceptedMedia = { owner.native.acceptedMedia(prepareAcceptedMedia) },
+                    captureMetadataBinding = captureMetadataBinding,
                     acceptedFailureMedia = { ticket -> owner.native.acceptedMedia(prepareAcceptedMedia, ticket) { true } })
                 val repositoryView = DesktopOriginalVideoOwnerRepositoryView(owner.invocations, readOwnedCooldown)
                 val account = DesktopOriginalVideoOwnerAccountView(owner.invocations, readHasPrimarySession,
@@ -223,7 +225,16 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                         else null // actual direct source or retired lease; no fake cache success
                     }, effects.analytics, effects.crash, comments, effects.danmaku,
                     effects.background, owner::owns, owner::commit, todayWatchFeedback,
-                    owner.native::current, owner.native::admitPlaybackDispatch)
+                    owner.native::current, owner.native::admitPlaybackDispatch,
+                    readRelatedPlaybackState = { expected ->
+                        var observed: com.bilipai.desktop.player.PlayerState? = null
+                        owner.native.admitPlaybackDispatch(expected) {
+                            // Actual per-source readback, not remembered previous media.
+                            if (owner.native.isCurrent(expected) && player.currentSourceVersion == expected.sourceVersion)
+                                observed = player.state.value
+                        }
+                        observed
+                    })
                 owner.playback = VideoPlaybackViewModel(owner.environment)
                 owner.section = DesktopOriginalMpvSectionControl(player,
                     { owner.native.current()?.sourceVersion }, owner::owns,

@@ -213,6 +213,30 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     /** Read-only caller identity; no new Job or request authority. */
     fun capturedDownloadCallerJob(): Job = read { requestJob }
 
+    /** Capture scalars/entry gates, not this request Binding or its HTTP/cache
+     * view. Presentation survives ordinary request completion but immediately
+     * retires on the original request/token, entry or immutable receipt change. */
+    internal fun captureMetadataAdmission(subjectCurrent: () -> Boolean): DesktopOriginalVideoMetadataAdmission = read {
+        val store = repository
+        val expected = receipt
+        val ownerJob = entryJob
+        val entryOwned = isEntryCurrent
+        val entryCommit = commitIfEntryCurrent
+        val primaryMid = capturedPrimaryMid
+        val current = { ownerJob.isActive && entryOwned() && subjectCurrent() }
+        DesktopOriginalVideoMetadataAdmission(expected, current) { action ->
+            var applied = false
+            store.withPlaybackReceiptAdmission(expected, current) {
+                if (!entryCommit {
+                    if (!current() || store.activeAccountMid() != primaryMid)
+                        throw CancellationException("Readonly metadata account/entry retired")
+                    action(); applied = true
+                }) throw CancellationException("Readonly metadata entry retired")
+            }
+            applied
+        }
+    }
+
     override fun admitCurrentMutation(action: () -> Unit): Boolean = try {
         read(action)
         true

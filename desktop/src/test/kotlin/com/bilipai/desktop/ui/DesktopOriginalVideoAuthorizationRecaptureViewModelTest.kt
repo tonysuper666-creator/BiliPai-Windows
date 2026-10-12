@@ -107,7 +107,8 @@ class DesktopOriginalVideoAuthorizationRecaptureViewModelTest {
             val raw = createDesktopOriginalVideoOwnerRequestRepository(repository, binding, subtitles, privacy,
                 { receipt, current -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, current) })
             DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent)
-        }, status, { media })
+        }, status, { media },
+            captureMetadataBinding = { error("Authorization recapture fixture does not invoke readonly related retry") })
         // No media has ever been accepted in this bounded protocol fixture.
         // The actual VM reads this port to distinguish ordinary/PGC startup;
         // absence must be explicit, while every unrelated plugin effect still fails.
@@ -147,6 +148,8 @@ class DesktopOriginalVideoAuthorizationRecaptureViewModelTest {
             override fun cdnNetwork() = error("No media preparation")
             override fun isMobileData() = false
             override fun isWifi() = true
+            override fun relatedNetworkObservation() = DesktopOriginalVideoRelatedNetworkObservation(
+                DesktopHomeNetworkObservation(true, 3, 6L, false, "fixture"), 10_000)
             override fun getDefaultQualityId(context: DesktopOriginalPlayerSettingsContext) = 64
         }
         private val cache = object : DesktopOriginalVideoOwnerCache {
@@ -168,7 +171,8 @@ class DesktopOriginalVideoAuthorizationRecaptureViewModelTest {
                 cache, { null }, unused(), unused(), unused(), unused(), MutableStateFlow(false), ::owns, ::commit,
                 DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit),
                 captureNativePublication = { null },
-                admitNativePublication = { _, _ -> error("No accepted native source in authorization-recapture fixture") }))
+                admitNativePublication = { _, _ -> error("No accepted native source in authorization-recapture fixture") },
+                readRelatedPlaybackState = { error("No native readback in authorization-recapture fixture") }))
             vm.initWithContext(settings) // Original context/bootstrap observers complete capture before the load.
         }
         suspend fun ui(action: () -> Unit) = withContext(Dispatchers.Swing) { action() }

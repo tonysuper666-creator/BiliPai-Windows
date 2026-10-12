@@ -94,6 +94,7 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
     private val capture: suspend () -> DesktopOriginalVideoPlaybackInvocation,
     private val status: DesktopOriginalVideoPlaybackStatus,
     private val acceptedMedia: () -> DesktopOriginalVideoMediaPort,
+    private val captureMetadataBinding: suspend (DesktopOriginalVideoMetadataAdmission) -> DesktopOriginalVideoRepositoryBinding,
     private val acceptedFailureMedia: ((DesktopOriginalNativeRecoveryTicket) -> DesktopOriginalVideoMediaPort)? = null,
 ) {
     private val closed = AtomicBoolean(false)
@@ -158,6 +159,46 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
         return (currentCoroutineContext()[invocationKey]?.invocation
             ?: error("Original playback network invocation is required"))
             .also(DesktopOriginalVideoPlaybackInvocation::assertCurrent)
+    }
+
+    /** Call once from the actual main-load body, before launching detail/URL
+     * children. This is the exact request's raw facet, never Factory recapture. */
+    internal suspend fun captureMetadataReadScope(subjectCurrent: () -> Boolean): DesktopOriginalVideoMetadataReadScope {
+        val invocation = activeInvocation()
+        val request = invocation.repository as? DesktopOriginalVideoOwnerRequestRepository
+            ?: error("Same captured ordinary-video repository is required")
+        val context = currentCoroutineContext()
+        val admission = request.binding.captureMetadataAdmission(subjectCurrent)
+        context.ensureActive(); invocation.assertCurrent(); admission.assertCurrent()
+        return DesktopOriginalVideoMetadataReadScope(context, request.binding.rawRepository,
+            request.binding::assertCurrent, admission)
+    }
+
+    /** Manual readonly retry gets a NEW actual caller Job + Binding from the
+     * installed Root factory, with the displayed entry's exact old receipt.
+     * No playback Invocation/media preparation or fake Success is constructed. */
+    internal fun launchMetadataRetry(admission: DesktopOriginalVideoMetadataAdmission,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        onFailure: (Exception) -> Unit,
+        block: suspend (DesktopOriginalVideoMetadataReadScope) -> Unit): Job {
+        assertCurrent(); admission.assertCurrent()
+        return entryScope.launch(start = start) {
+            try {
+                currentCoroutineContext().ensureActive(); assertCurrent(); admission.assertCurrent()
+                val binding = captureMetadataBinding(admission)
+                binding.assertCurrent(); admission.assertCurrent()
+                if (binding.receipt != admission.receipt)
+                    throw CancellationException("Readonly metadata retry receipt changed")
+                val scope = DesktopOriginalVideoMetadataReadScope(currentCoroutineContext(), binding.rawRepository,
+                    binding::assertCurrent, admission)
+                block(scope)
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) {
+                // Ordinary capture/capability failure must not cancel entryScope's
+                // actual parent. The caller maps it under its readonly entry gate.
+                admission.assertCurrent(); onFailure(failure)
+            }
+        }
     }
 
     suspend fun <T> withInvocation(block: suspend CoroutineScope.() -> T): T {

@@ -201,7 +201,8 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
             val ports = DesktopOriginalVideoPlaybackInvocationPorts(scope, { f.entry },
                 { DesktopOriginalVideoPlaybackInvocation(noNetwork, f.owner.acceptedMedia(f::prepare)) {} }, noNetwork,
                 { f.owner.acceptedMedia(f::prepare) },
-                { ticket -> captures += ticket; f.owner.acceptedMedia(f::prepare, ticket) { f.entry } })
+                captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") },
+                acceptedFailureMedia = { ticket -> captures += ticket; f.owner.acceptedMedia(f::prepare, ticket) { f.entry } })
             val versions = MutableStateFlow<Long?>(f.accepted.sourceVersion)
             val section = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
                 { action -> f.owner.current()?.let { f.owner.admitPlaybackDispatch(it, action) } ?: false },

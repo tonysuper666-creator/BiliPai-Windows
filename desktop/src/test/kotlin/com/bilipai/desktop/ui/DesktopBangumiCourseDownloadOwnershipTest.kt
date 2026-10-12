@@ -284,6 +284,10 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         private val network = object : DesktopOriginalVideoOwnerNetwork {
             override fun isMobileData() = false
             override fun isWifi() = true
+            override fun relatedNetworkObservation() = DesktopOriginalVideoRelatedNetworkObservation(
+                DesktopHomeNetworkObservation(true, 3, 71L, false, "cpu-memory-transport"),
+                downstreamBandwidthKbps = null,
+            )
             override fun cdnNetwork() = DesktopCdnNetworkObservation(true, "cpu-memory-transport")
         }
         init {
@@ -385,7 +389,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                 DesktopOriginalVideoOwnerAssembly.create(context, settings, repository, epoch, gate.scope,
                     gate::owns, gate::commitEntry, player, DesktopRepositoryPlaybackPublication(repository), { false }, versions,
                     { published.set(it); versions.value = it.sourceVersion }, media::admission,
-                    captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner) },
+                    captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner) },
                     status = readbacks, prepareAcceptedMedia = { media.accepted(it) },
                     createPlugins = { _, _ -> plugins }, confirmFollow = { error("No follow write") },
                     feedback = { error("No ordinary feedback") }, readHasPrimarySession = readbacks::hasPrimarySession,

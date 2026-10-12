@@ -323,7 +323,8 @@ class DesktopWindowsRelatedVideosRegressionTest {
                 if (!current() || !caller.isActive || !facet.stillOwned() || !native.owner.isCurrent(facet.expected))
                     throw CancellationException("Captured related request retired")
             }
-        }, status, { error("No media publication during related loading") })
+        }, status, { error("No media publication during related loading") },
+            captureMetadataBinding = { error("This accepted-Native fixture does not invoke readonly retry") })
         private val repository = DesktopOriginalVideoOwnerRepositoryView(invocations) { 0L }
         private val actions = unused<DesktopOriginalVideoOwnerActions>()
         private val playlist = object : DesktopOriginalVideoOwnerPlaylist {
@@ -344,6 +345,7 @@ class DesktopWindowsRelatedVideosRegressionTest {
             override fun cdnNetwork() = error("No CDN network")
             override fun isMobileData() = false
             override fun isWifi() = wifi
+            override fun relatedNetworkObservation() = error("No early metadata scheduling in accepted-Native fixture")
             override fun getDefaultQualityId(context: DesktopOriginalPlayerSettingsContext) = 80
         }
         private val cache = object : DesktopOriginalVideoOwnerCache {
@@ -379,7 +381,8 @@ class DesktopWindowsRelatedVideosRegressionTest {
             network, cache, { null }, unused(), unused(), unused(), unused(), MutableStateFlow(false), ::current, ::commit,
             DesktopTodayWatchFeedbackWriteBinding(context, ::current, ::commit),
             captureNativePublication = native.owner::current,
-            admitNativePublication = native.owner::admitPlaybackDispatch))
+            admitNativePublication = native.owner::admitPlaybackDispatch,
+            readRelatedPlaybackState = { error("No early metadata readback in accepted-Native fixture") }))
         val session = field("playbackSessionStore").get(vm) as PlaybackSessionStore
         val initial = VideoPlaybackUiState.Success(
             info = ViewInfo(bvid = "BVfixture", aid = 17, cid = 70, title = "Fixture"),

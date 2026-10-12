@@ -1328,11 +1328,15 @@ def generate(repo,output,standalone=False):
    assert sha(inverse)==before_sha,recipe['output']+' '+stage+' whole inverse'
   from v034_detail_bootstrap import apply_and_record as apply_detail
   body,detailProof=apply_detail(recipe['output'],body,output)
+  from v034_metadata_related import apply_and_record as apply_metadata_related
+  body,metadataRelatedProof=apply_metadata_related(recipe['output'],body,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
    target.write_text(body,encoding='utf-8',newline='\n')
   outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted,
+                      metadataRelatedInverseEdits=(metadataRelatedProof or {}).get('inverseEdits',[]),
+                      metadataRelatedSourceManifest=(metadataRelatedProof or {}).get('sourceManifest'),
                       detailInverseEdits=(detailProof or {}).get('inverseEdits',[]),
                       detailSourceManifest=(detailProof or {}).get('sourceManifest'),
                       failureRecoveryInverseEdits=recovery_edits,followGroupInverseEdits=follow_group_edits,

@@ -21,6 +21,7 @@ class DesktopOriginalVideoAuthorizationBootstrapTest {
         val repository = DesktopRepository(sessions)
         val entry = SupervisorJob()
         var owned = true
+        var beforeEntryCommit: (() -> Unit)? = null
         val requests = CopyOnWriteArrayList<Request>()
         val notices = CopyOnWriteArrayList<DesktopPlaybackAuthorizationReceipt>()
         var spi: () -> String = { """{"code":0,"data":{"b_3":"synthetic-visitor","b_4":"synthetic-visitor4"}}""" }
@@ -50,12 +51,36 @@ class DesktopOriginalVideoAuthorizationBootstrapTest {
                 }.build()
             DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible = true }.set(repository, transport)
         }
-        suspend fun capture(notify: ((DesktopPlaybackAuthorizationReceipt) -> Unit)? = { notices += it }): DesktopOriginalVideoRepositoryBinding = DesktopOriginalVideoRepositoryBinding.capture(
-            repository, repository.sessionEpoch, entry, { owned }, { action -> if (!owned) false else { action(); true } },
+        suspend fun capture(notify: ((DesktopPlaybackAuthorizationReceipt) -> Unit)? = { notices += it },
+            decorateCalls: ((Call.Factory) -> Call.Factory)? = null): DesktopOriginalVideoRepositoryBinding = DesktopOriginalVideoRepositoryBinding.capture(
+            repository, repository.sessionEpoch, entry, { owned }, { action ->
+                beforeEntryCommit?.invoke()
+                if (!owned) false else { action(); true }
+            },
             PlayerPreferences(), null, emptySet(), false, { true }, { false }, { false }, { false },
-            { _, _ -> false }, notify)
+            { _, _ -> false }, notify, decorateCalls)
         override fun close() { owned = false; entry.cancel(); transport.dispatcher.executorService.shutdownNow(); transport.connectionPool.evictAll() }
     }
+    private data class CompletedMetadataRequest(
+        val rawJob: Job,
+        val binding: DesktopOriginalVideoRepositoryBinding,
+        val presentation: DesktopOriginalVideoMetadataAdmission,
+    )
+    private suspend fun completedMetadata(f: Fixture,
+        subjectCurrent: () -> Boolean = { true }): CompletedMetadataRequest = coroutineScope {
+        // The real Binding captures this ordinary async Job, distinct from the live entry.
+        // Every captured API/Call.Factory is sealed for these presentation-only tests.
+        val request = async {
+            val binding = f.capture(notify = null, decorateCalls = {
+                Call.Factory { error("No API or media transport in readonly admission fixture") }
+            })
+            binding to binding.captureMetadataAdmission(subjectCurrent)
+        }
+        val (binding, presentation) = request.await()
+        assertTrue(request.isCompleted); assertFalse(request.isCancelled)
+        CompletedMetadataRequest(request, binding, presentation)
+    }
+
     private fun edt(action: () -> Unit) {
         var failure: Throwable? = null
         SwingUtilities.invokeAndWait { try { action() } catch (error: Throwable) { failure = error } }
@@ -145,6 +170,133 @@ class DesktopOriginalVideoAuthorizationBootstrapTest {
                 assertFalse(f.sessions.currentCookies().values.contains("old-visitor"))
             }
         }
+    }
+
+    @Test fun completedRawRequestKeepsReadonlyPresentationButDoesNotGrantMediaOrDownload(): Unit = runBlocking<Unit> {
+        withTimeout(5_000L) { Fixture().use { f ->
+            val witness = completedMetadata(f)
+            assertTrue(witness.rawJob.isCompleted)
+            assertTrue(f.entry.isActive)
+            assertTrue(f.repository.isPlaybackReceiptCurrent(witness.binding.receipt))
+            var displayed = ""
+            assertTrue(witness.presentation.admit { displayed = "Retained detail title" })
+            assertEquals("Retained detail title", displayed)
+            val source = com.bilipai.desktop.player.PlaybackSource("https://fixture.invalid/video.m4s")
+            assertFalse(witness.presentation.admit { witness.binding.authorized(source) })
+            assertNull(source.authorizationReceipt)
+            assertFalse(witness.presentation.admit { witness.binding.capturedDownloadCallerJob() })
+            assertFailsWith<CancellationException> { witness.binding.captureMediaCookieHeader(source.videoUrl) }
+            assertFailsWith<CancellationException> { witness.binding.primaryApi }
+            assertFailsWith<CancellationException> {
+                witness.binding.rawRepository.getInitialPlayUrlData("BV1GJ411x7h7", 22L, 64, null)
+            }
+            assertFailsWith<CancellationException> { witness.binding.captureMetadataAdmission { true } }
+            assertTrue(witness.presentation.isCurrent())
+            assertTrue(f.requests.isEmpty()); assertTrue(f.notices.isEmpty())
+        } }
+    }
+
+    @Test fun actualSubjectRequestIdentityAbaCannotReviveCompletedReadonlyPermission(): Unit = runBlocking<Unit> {
+        withTimeout(5_000L) { Fixture().use { f ->
+            val session = PlaybackSessionStore()
+            val request = PlaybackRequest.create("BV1GJ411x7h7", 7L, 22L)
+            session.beginLoadRequest(request)
+            val expected = session.state.value
+            val witness = completedMetadata(f) {
+                val current = session.state.value
+                current.currentLoadRequestToken == expected.currentLoadRequestToken &&
+                    current.currentRequest === expected.currentRequest
+            }
+            assertTrue(witness.presentation.isCurrent())
+            session.setCurrentRequest(request.copy(force = true))
+            var applied = 0
+            assertFalse(witness.presentation.admit { applied++ })
+            session.setCurrentRequest(request.copy())
+            assertEquals(expected.currentLoadRequestToken, session.state.value.currentLoadRequestToken)
+            assertEquals(expected.currentRequest, session.state.value.currentRequest)
+            assertFalse(witness.presentation.admit { applied++ })
+            assertEquals(0, applied)
+            assertTrue(f.repository.isPlaybackReceiptCurrent(witness.binding.receipt))
+            assertTrue(f.requests.isEmpty())
+        } }
+    }
+
+    @Test fun entryPredicateAndActualEntryJobRetirementBlockReadonlyActions(): Unit = runBlocking<Unit> {
+        withTimeout(5_000L) {
+            Fixture().use { f ->
+                val witness = completedMetadata(f)
+                assertTrue(witness.presentation.isCurrent())
+                f.owned = false
+                var applied = 0
+                assertFalse(witness.presentation.admit { applied++ })
+                assertEquals(0, applied)
+                assertTrue(f.repository.isPlaybackReceiptCurrent(witness.binding.receipt))
+            }
+            Fixture().use { f ->
+                val witness = completedMetadata(f)
+                f.entry.cancel()
+                assertTrue(f.owned)
+                var applied = 0
+                assertFalse(witness.presentation.admit { applied++ })
+                assertEquals(0, applied)
+                assertTrue(f.repository.isPlaybackReceiptCurrent(witness.binding.receipt))
+            }
+        }
+    }
+
+    @Test fun actualSameMidCredentialReplacementAndAbaRetireReadonlyReceipt(): Unit = runBlocking<Unit> {
+        withTimeout(5_000L) { Fixture().use { f ->
+            val witness = completedMetadata(f)
+            val receipt = witness.presentation.receipt
+            assertTrue(witness.presentation.isCurrent())
+            f.sessions.saveAccount(mapOf("SESSDATA" to "replacement", "bili_jct" to "synthetic-csrf"),
+                AccountSummary(41L, "Fixture", ""))
+            var applied = 0
+            assertFalse(witness.presentation.admit { applied++ })
+            f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-session", "bili_jct" to "synthetic-csrf"),
+                AccountSummary(41L, "Fixture", ""))
+            assertEquals(41L, f.repository.account.value?.mid)
+            assertFalse(f.repository.isPlaybackReceiptCurrent(receipt))
+            assertFalse(witness.presentation.admit { applied++ })
+            assertEquals(0, applied); assertTrue(f.requests.isEmpty())
+        } }
+    }
+
+    @Test fun actualSelectedPlaybackRevisionAbaRetiresReadonlyWithoutChangingPrimaryEpoch(): Unit = runBlocking<Unit> {
+        withTimeout(5_000L) { Fixture().use { f ->
+            f.sessions.saveAccount(mapOf("SESSDATA" to "secondary", "bili_jct" to "secondary-csrf"),
+                AccountSummary(42L, "Secondary", ""))
+            f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-session", "bili_jct" to "synthetic-csrf"),
+                AccountSummary(41L, "Fixture", ""))
+            assertTrue(f.sessions.setPlaybackAccountMid(42L, f.sessions.generation) { true })
+            val witness = completedMetadata(f)
+            val epoch = f.repository.sessionEpoch
+            assertTrue(witness.presentation.isCurrent())
+            assertTrue(f.sessions.setPlaybackAccountMid(null, epoch) { true })
+            assertEquals(epoch, f.repository.sessionEpoch)
+            assertEquals(41L, f.repository.account.value?.mid)
+            var applied = 0
+            assertFalse(witness.presentation.admit { applied++ })
+            assertTrue(f.sessions.setPlaybackAccountMid(42L, epoch) { true })
+            assertEquals(epoch, f.repository.sessionEpoch)
+            assertFalse(f.repository.isPlaybackReceiptCurrent(witness.presentation.receipt))
+            assertFalse(witness.presentation.admit { applied++ })
+            assertEquals(0, applied); assertTrue(f.requests.isEmpty())
+        } }
+    }
+
+    @Test fun cheapReadonlyPredicateCannotBypassFinalStoreThenEntryRecheck(): Unit = runBlocking<Unit> {
+        withTimeout(5_000L) { Fixture().use { f ->
+            val witness = completedMetadata(f)
+            var hooks = 0; var applied = 0
+            f.beforeEntryCommit = { hooks++; f.owned = false }
+            assertTrue(witness.presentation.ownsSubject())
+            assertTrue(f.repository.isPlaybackReceiptCurrent(witness.presentation.receipt))
+            assertFalse(witness.presentation.admit { applied++ })
+            assertEquals(1, hooks); assertEquals(0, applied)
+            assertFalse(witness.presentation.ownsSubject())
+            assertTrue(f.requests.isEmpty())
+        } }
     }
 
     @Test fun queuedNotificationSurvivesOwnLoadCompletionButRejectsSameValueRequestAba() = runBlocking<Unit> {

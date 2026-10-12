@@ -172,7 +172,7 @@ class DesktopOriginalInteractiveBranchAdmissionTest {
                 }
             }
             val ports = DesktopOriginalVideoPlaybackInvocationPorts(f.scope, { f.entry },
-                { error("No network invocation") }, unused(), { delegate })
+                { error("No network invocation") }, unused(), { delegate }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
             try {
                 val loads = f.actor.native.loads.size
                 ports.withMediaSubmissionAdmission(permission::commit) {
@@ -241,7 +241,7 @@ class DesktopOriginalInteractiveBranchAdmissionTest {
         var cleanup = 0
         val ports = DesktopOriginalVideoPlaybackInvocationPorts(scope, { true }, {
             captures++; throw CancellationException("Controlled Factory retirement")
-        }, unused(), { error("No accepted media") })
+        }, unused(), { error("No accepted media") }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         try {
             val job = ports.launch(start = CoroutineStart.LAZY, desktopFinally = { cleanup++ }) { bodies++ }
             assertEquals(0, captures)

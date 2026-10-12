@@ -115,6 +115,7 @@ internal interface DesktopOriginalVideoOwnerNetwork {
     fun cdnNetwork():com.bilipai.desktop.player.cache.DesktopCdnNetworkObservation
     fun isMobileData():Boolean
     fun isWifi():Boolean
+    fun relatedNetworkObservation():DesktopOriginalVideoRelatedNetworkObservation
     fun getDefaultQualityId(context:DesktopOriginalPlayerSettingsContext):Int {
         val prefs=context.getSharedPreferences("quality_settings",DesktopOriginalPlayerSettingsContext.MODE_PRIVATE)
         return if(isWifi()) prefs.getInt("wifi_quality",80) else prefs.getInt("mobile_quality",64)
@@ -227,6 +228,7 @@ internal class DesktopOriginalVideoPlaybackOwnerEnvironment(
     val todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,
     val captureNativePublication: () -> DesktopOriginalVideoAcceptedPublication?,
     val admitNativePublication: (DesktopOriginalVideoAcceptedPublication, () -> Unit) -> Boolean,
+    val readRelatedPlaybackState: (DesktopOriginalVideoAcceptedPublication) -> com.bilipai.desktop.player.PlayerState?,
 ) {
     fun assertCurrent() {
         if(!isCurrent() || !scope.isActive) throw CancellationException("Original video owner retired")

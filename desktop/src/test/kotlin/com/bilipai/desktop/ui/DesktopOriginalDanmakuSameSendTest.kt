@@ -49,7 +49,7 @@ class DesktopOriginalDanmakuSameSendTest {
             DesktopOriginalVideoPlaybackInvocation(repository,media) {
                 if(!entry||account!=epoch||!caller.isActive)throw CancellationException("Captured request retired")
             }
-        },unused<DesktopOriginalVideoPlaybackStatus>(),{media})
+        },unused<DesktopOriginalVideoPlaybackStatus>(),{media}, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         val danmaku=object:DesktopOriginalVideoOwnerDanmaku {
             override fun isDanmakuServerDisabled(cid:Long)=disabled
             override suspend fun sendDanmaku(aid:Long,cid:Long,message:String,progress:Long,color:Int,fontSize:Int,
@@ -79,7 +79,8 @@ class DesktopOriginalDanmakuSameSendTest {
             unused(),unused(),{null},unused(),unused(),unused(),danmaku,MutableStateFlow(false),::current,::commit,
             DesktopTodayWatchFeedbackWriteBinding(context,::current,::commit),
             captureNativePublication = { null },
-            admitNativePublication = { _, _ -> error("No related publication in same-send fixture") }))
+            admitNativePublication = { _, _ -> error("No related publication in same-send fixture") },
+            readRelatedPlaybackState = { null }))
         val session=VideoPlaybackViewModel::class.java.getDeclaredField("playbackSessionStore").apply {isAccessible=true}
             .get(vm) as PlaybackSessionStore
         init {

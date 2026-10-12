@@ -389,6 +389,10 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
         private val network = object : DesktopOriginalVideoOwnerNetwork {
             override fun isMobileData() = false
             override fun isWifi() = true
+            override fun relatedNetworkObservation() = DesktopOriginalVideoRelatedNetworkObservation(
+                DesktopHomeNetworkObservation(true, 3, 71L, false, "cpu-memory-transport"),
+                downstreamBandwidthKbps = null,
+            )
             override fun cdnNetwork() = DesktopCdnNetworkObservation(true, "cpu-memory-transport")
             override fun getDefaultQualityId(context: DesktopOriginalPlayerSettingsContext) = 64
         }
@@ -498,7 +502,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
                 DesktopOriginalVideoOwnerAssembly.create(context, settings, repository, epoch, gate.scope,
                     gate::owns, gate::commitEntry, player, DesktopRepositoryPlaybackPublication(repository), { false },
                     runtimeBinding.sourceVersions, { expected -> publications.add(expected); runtimeBinding.accepted(expected) },
-                    media::admission, captureInvocation = { state, native ->
+                    media::admission, captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, native ->
                         captures.add(Capture(state, currentCoroutineContext().job)); requests.capture(state, native)
                     }, status = readbacks, prepareAcceptedMedia = media::accepted,
                     createPlugins = { native, invocations -> DesktopOriginalVideoOwnerPluginBridge(runtime, native, invocations,

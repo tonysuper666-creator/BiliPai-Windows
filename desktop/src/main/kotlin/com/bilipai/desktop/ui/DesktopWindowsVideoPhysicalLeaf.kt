@@ -280,11 +280,12 @@ internal class DesktopWindowsVideoActions(
     val favoriteEvent by assembly.playback.favoriteFolderSaveEvent.collectAsState()
     val success = original as? VideoPlaybackUiState.Success
     val detail by assembly.playback.detailState.collectAsState()
+    val metadataAdmission by assembly.playback.desktopMetadataAdmission.collectAsState()
     val requestState = assembly.playback.captureDesktopLoadState()
     // This separate raw ViewInfo channel never becomes a playback Success.
     // All existing native/action/download variables below still use real success.
     val readonlyInfo = detail.info?.takeIf {
-        current() && detail.requestToken == requestState.currentLoadRequestToken &&
+        current() && metadataAdmission?.isCurrent() == true && detail.requestToken == requestState.currentLoadRequestToken &&
             detail.requestBvid == route.bvid && detail.requestCid == route.cid &&
             requestState.currentRequest?.bvid == detail.requestBvid &&
             requestState.currentRequest?.cid == detail.requestCid
@@ -500,7 +501,8 @@ internal class DesktopWindowsVideoActions(
     // Reuse the same real failure/login/retry content in the finite details pane.
     val failureContent: @Composable () -> Unit = {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(bootstrapError ?: playback.error.orEmpty(), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
+            Text(bootstrapError ?: (original as? VideoPlaybackUiState.Error)?.error?.toUserMessage() ?: playback.error.orEmpty(),
+                Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error)
             TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") }
             failureLogin?.let { intent ->
@@ -1115,11 +1117,12 @@ internal class DesktopWindowsVideoActions(
                 modifier = Modifier.width(detailsWidth).fillMaxHeight(), selectedTab = detailsTab,
                 onTabChange = { detailsTab = it }, onClose = { if (current()) detailsOpen = false },
                 current = ::current,
-                loading = original is VideoPlaybackUiState.Loading && bootstrapError == null && playback.error == null,
-                failureContent = if (success == null && (bootstrapError != null || playback.error != null)) failureContent else null,
+                loading = readonlyInfo == null && original is VideoPlaybackUiState.Loading && bootstrapError == null && playback.error == null,
+                failureContent = if (readonlyInfo == null && success == null &&
+                    (original is VideoPlaybackUiState.Error || bootstrapError != null || playback.error != null)) failureContent else null,
                 related = {
-                    collectionQueueSource?.let { source ->
-                        if (success != null) DesktopWindowsVideoRelatedSection(assembly, success, source,
+                    if (collectionQueueSource != null && success != null) collectionQueueSource.let { source ->
+                        DesktopWindowsVideoRelatedSection(assembly, success, source,
                             platforms.content, ::interactionCurrent,
                             sourceAdmission = { action ->
                                 var applied = false
@@ -1130,6 +1133,28 @@ internal class DesktopWindowsVideoActions(
                                 } && applied
                             }) { target, cardOwned ->
                             latestActions.relatedNavigation(assembly, source, target, cardOwned)
+                        }
+                    } else if (readonlyInfo != null) metadataAdmission?.let { permission ->
+                        fun readonlyCurrent(): Boolean = current() && rootEnvironment.owns() &&
+                            rootEnvironment.currentKey() === route && rootEnvironment.commands.containsEntry(route) &&
+                            assembly.playback.desktopMetadataAdmission.value === permission && permission.isCurrent()
+                        DesktopWindowsVideoReadonlyRelatedSection(assembly, detail, permission, ::readonlyCurrent) { target, cardOwned ->
+                            val stillCaptured = { readonlyCurrent() && cardOwned() }
+                            val admit: ((() -> Unit) -> Boolean) = { action ->
+                                var applied = false
+                                permission.admit {
+                                    if (stillCaptured()) { action(); applied = true }
+                                } && applied
+                            }
+                            // Existing Root resolver/return controller/physical stack
+                            // captures the destination afresh. No native success is forged.
+                            val commands = rootEnvironment.commands as? DesktopOriginalRootRouteAssembly
+                                ?: error("Actual Root route assembly is required for readonly related navigation")
+                            if (stillCaptured()) {
+                                if (target is BiliPaiNavKey.VideoDetail)
+                                    commands.videoFromSource(target, stillCaptured, admit)
+                                else commands.pushFromSource(target, stillCaptured, admit)
+                            }
                         }
                     }
                 },
@@ -1242,8 +1267,10 @@ internal class DesktopWindowsVideoActions(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant)
                             if (readonlyInfo.desc.isNotBlank()) Text(readonlyInfo.desc,
                                 style = MaterialTheme.typography.bodyMedium)
-                            // Existing failure/retry/login content remains separate;
-                            // readonly detail exposes no player or interaction action.
+                            // Playback failure/retry remains visible beside admitted
+                            // readonly metadata; it no longer replaces all detail tabs.
+                            if (original is VideoPlaybackUiState.Error || bootstrapError != null || playback.error != null)
+                                failureContent()
                         } else Text("正在读取视频信息", style = MaterialTheme.typography.bodyMedium)
                         HorizontalDivider()
                         Text("播放设置", style = MaterialTheme.typography.titleSmall)

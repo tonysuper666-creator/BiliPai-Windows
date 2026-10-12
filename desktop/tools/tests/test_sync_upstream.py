@@ -921,12 +921,26 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
     def load(self):
         return sync.adapted_compatibility_inputs(self.repo)
 
-    def test_actual_219_originals_load_with_separate_commits_and_nested_live_inputs(self):
+    def test_actual_231_originals_load_with_separate_commits_and_nested_live_inputs(self):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 219)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 212)
+        self.assertEqual(len(entries), 231)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 223)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 51)
+        self.assertEqual(len(self.inventory["archives"]), 55)
+        for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
+                            ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2)):
+            directory = "desktop/upstream-slices/" + root
+            with self.subTest(root=root):
+                self.assertIn(directory, self.inventory["buildInputRoots"])
+                archives = [row for row in self.inventory["archives"] if row["directory"] == directory]
+                self.assertEqual(len(archives), 1)
+                self.assertEqual(len(archives[0]["files"]), count + 1)  # complete sources + exact manifest
+                rows = [item for item in entries if item["localPath"].startswith(directory + "/")]
+                self.assertEqual(len(rows), count)
+                self.assertTrue(all(item["hashNormalization"] == "raw" and
+                                    item["referenceOnly"] is False for item in rows))
         for filename in ("LiveInteractionSheets.kt", "LiveChatSection.kt"):
             rows = [item for item in entries if item["localPath"].endswith("/" + filename)]
             self.assertTrue(rows, filename)
@@ -1030,6 +1044,28 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(sync.UpdateError, "Incomplete adapted archive"):
             self.load()
 
+    def test_new_v034_source_slices_reject_modified_or_missing_required_raw_sources(self):
+        leaves = (
+            "v034-favorite-content-errors/core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+            "v034-on-demand/OnDemandRequestCache.kt",
+            "v034-detail-bootstrap/VideoDetailUiState.kt",
+            "v034-metadata-related/RelatedVideoLoadScheduler.kt",
+        )
+        for leaf in leaves:
+            source = self.repo / "desktop/upstream-slices" / leaf
+            original = source.read_bytes()
+            with self.subTest(leaf=leaf):
+                try:
+                    source.write_bytes(original + b"\n// unreviewed source55 change\n")
+                    with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
+                        self.load()
+                    source.write_bytes(original)
+                    source.unlink()
+                    with self.assertRaisesRegex(sync.UpdateError, "Incomplete adapted archive"):
+                        self.load()
+                finally:
+                    source.write_bytes(original)
+
     def test_optional_local_document_can_be_absent_or_exact_but_not_changed(self):
         optional = [leaf for archive in self.inventory["archives"]
                     for leaf in archive.get("optionalLocalFiles", [])]
@@ -1037,10 +1073,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 219)
+        self.assertEqual(len(self.load()), 231)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 219)
+        self.assertEqual(len(self.load()), 231)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1057,7 +1093,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 219)
+                self.assertEqual(len(entries), 231)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

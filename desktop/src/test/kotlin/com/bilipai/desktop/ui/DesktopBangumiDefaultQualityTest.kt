@@ -245,6 +245,10 @@ class DesktopBangumiDefaultQualityTest {
                 override fun cdnNetwork() = error("No CDN observation")
                 override fun isMobileData() = false
                 override fun isWifi() = true
+                override fun relatedNetworkObservation() = DesktopOriginalVideoRelatedNetworkObservation(
+                    DesktopHomeNetworkObservation(true, 3, 71L, false, "cpu-memory-transport"),
+                    downstreamBandwidthKbps = null,
+                )
             }, { false })
         val vm: BangumiPlayerViewModel = BangumiPlayerViewModel(environment)
         init {

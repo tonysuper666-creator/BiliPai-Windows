@@ -92,6 +92,14 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
                                 if (relatedLoadState == VideoPlaybackUiState.RelatedLoadState.FAILED) "相关推荐加载失败" else "暂无相关推荐",
                                 modifier = Modifier.padding(16.dp),
                             )
+                            if (relatedLoadState == VideoPlaybackUiState.RelatedLoadState.FAILED) {
+                                assembly.playback.desktopMetadataAdmission.value?.let { admission ->
+                                    androidx.compose.material3.TextButton(onClick = {
+                                        if (lease.isOwned() && admission.isCurrent())
+                                            assembly.playback.retryDesktopMetadataRelated(admission)
+                                    }) { AppText("重试") }
+                                }
+                            }
                         }
                     }
                     itemsIndexed(relatedRows, key = { rowIndex, row ->
@@ -123,6 +131,77 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+/** Complete original grid/cards, readonly entry admission rather than a fake
+ * playback Success. Video/UP clicks stay usable after the HTTP request ends;
+ * mutations remain disabled until a separately real Native source exists. */
+@Composable internal fun DesktopWindowsVideoReadonlyRelatedSection(
+    assembly: DesktopOriginalVideoOwnerAssembly,
+    detail: com.android.purebilibili.feature.video.viewmodel.VideoDetailUiState,
+    admission: DesktopOriginalVideoMetadataAdmission,
+    stillOwned: () -> Boolean,
+    onNavigation: (BiliPaiNavKey, () -> Boolean) -> Unit,
+) {
+    val latestDetail by rememberUpdatedState(detail)
+    val latestOwned by rememberUpdatedState(stillOwned)
+    val latestNavigation by rememberUpdatedState(onNavigation)
+    val lease = remember(assembly, admission) {
+        DesktopWindowsVideoMetadataLease {
+            latestOwned() && admission.isCurrent() && assembly.owns() &&
+                assembly.playback.desktopMetadataAdmission.value === admission &&
+                assembly.playback.captureDesktopLoadState().currentLoadRequestToken == latestDetail.requestToken
+        }
+    }
+    DisposableEffect(lease) { onDispose { lease.close() } }
+    fun ownsCard(video: RelatedVideo): Boolean = lease.isOwned() &&
+        assembly.playback.detailState.value.related.any { it === video }
+    val rows = remember(detail.related) { chunkRelatedVideosForHomeStyleGrid(detail.related) }
+    val showUpBadge = LocalUpBadgeVisibility.current.showBadges
+    if (lease.isOwned()) CompositionLocalProvider(
+        LocalVideoCardSharedElementSourceRoute provides ("video/" + (detail.info?.bvid ?: detail.requestBvid)),
+    ) {
+        val cardLayout = rememberRelatedVideoCardLayout()
+        LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 8.dp)) {
+            item { RelatedVideosHeader() }
+            if (detail.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.LOADING) {
+                item(key = "video_related_loading") {
+                    Column { repeat(3) { com.android.purebilibili.core.ui.skeleton.MediaListRowSkeleton() } }
+                }
+            } else if (detail.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.FAILED) {
+                item(key = "video_related_failed") {
+                    Column(Modifier.padding(16.dp)) {
+                        AppText("相关推荐加载失败")
+                        androidx.compose.material3.TextButton(onClick = {
+                            if (lease.isOwned()) assembly.playback.retryDesktopMetadataRelated(admission)
+                        }) { AppText("重试") }
+                    }
+                }
+            } else if (detail.related.isEmpty()) {
+                item(key = "video_related_empty") { AppText("暂无相关推荐", modifier = Modifier.padding(16.dp)) }
+            }
+            itemsIndexed(rows, key = { rowIndex, row ->
+                val first = row.firstOrNull()
+                resolveIndexedVideoLazyKey(namespace = "video_related_row", index = rowIndex,
+                    bvid = first?.bvid.orEmpty(), aid = first?.aid ?: 0L, cid = first?.cid ?: 0L)
+            }) { _, row ->
+                RelatedVideoGridRow(videos = row, cardLayout = cardLayout,
+                    followingMids = emptySet(), showUpBadge = showUpBadge, showActions = false,
+                    onVideoClick = { video ->
+                        val clickOwned = { ownsCard(video) }
+                        if (clickOwned()) {
+                            val options = buildDesktopOriginalVideoNavigationOptions(targetCid = video.cid, coverUrl = video.pic)
+                            latestNavigation(BiliPaiNavKey.VideoDetail(video.bvid,
+                                options?.first ?: 0L, options?.second.orEmpty()), clickOwned)
+                        }
+                    }, onUpClick = { video ->
+                        val clickOwned = { ownsCard(video) }
+                        if (video.owner.mid > 0 && clickOwned())
+                            latestNavigation(BiliPaiNavKey.Space(video.owner.mid), clickOwned)
+                    })
             }
         }
     }

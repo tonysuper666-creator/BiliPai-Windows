@@ -289,6 +289,10 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
         private val network = object : DesktopOriginalVideoOwnerNetwork {
             override fun isMobileData() = false
             override fun isWifi() = true
+            override fun relatedNetworkObservation() = DesktopOriginalVideoRelatedNetworkObservation(
+                DesktopHomeNetworkObservation(true, 3, 71L, false, "cpu-memory-transport"),
+                downstreamBandwidthKbps = null,
+            )
             override fun cdnNetwork() = error("No media preparation or CDN transport")
         }
         private val noMedia = unused<DesktopOriginalVideoMediaPort>()
@@ -361,7 +365,7 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
             owner = DesktopOriginalVideoOwnerAssembly.create(context, settings, repository, epoch, scope,
                 ::owns, ::commit, player, DesktopRepositoryPlaybackPublication(repository), { false }, MutableStateFlow(null),
                 { error("No accepted native publication") }, { _, _ -> error("No accepted media byte admission") },
-                captureInvocation = { _, _ -> val binding = capture()
+                captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { _, _ -> val binding = capture()
                     DesktopOriginalVideoPlaybackInvocation(requestRepository(binding), noMedia, binding::assertCurrent) },
                 status = readbacks, prepareAcceptedMedia = { error("No accepted media") }, createPlugins = { _, _ -> plugins },
                 confirmFollow = { error("No follow write") }, feedback = { error("No UI feedback") },

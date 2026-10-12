@@ -44,10 +44,14 @@
     "desktop/upstream-slices/v033-home-undo",
     "desktop/upstream-slices/v034-bangumi-quality",
     "desktop/upstream-slices/v034-brand-motion-ui",
+    "desktop/upstream-slices/v034-detail-bootstrap",
     "desktop/upstream-slices/v034-download-list",
+    "desktop/upstream-slices/v034-favorite-content-errors",
     "desktop/upstream-slices/v034-live-moderation",
     "desktop/upstream-slices/v034-live-moderation-ui",
     "desktop/upstream-slices/v034-live-vote",
+    "desktop/upstream-slices/v034-metadata-related",
+    "desktop/upstream-slices/v034-on-demand",
     "desktop/upstream-slices/v034-related",
     "desktop/upstream-slices/v034-sponsor-ui"
   ],
@@ -1901,6 +1905,122 @@
           "sha256": "bf4f74363fe6150a5429cb6f5c00c9071e8341805c76bc5cdee8dfbafb87b462",
           "blob": "ca6dc93eddbd2319adbbd13a245bcd97bb4e2e35",
           "hashNormalization": "raw"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-favorite-content-errors",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-favorite-content-errors/core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+          "sha256": "e08693a03a8b1579a719d0f2b168771710fd5596351c358c52e1701621c3e147",
+          "hashNormalization": "raw",
+          "blob": "798b741f1111bc8a2b401899572bc32513c91542"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-favorite-content-errors/manifest.json",
+          "sha256": "e379f83cc71d40d7d3f8619e0ed7fdcd2d5495007eb0d2325da337375b2614f4",
+          "hashNormalization": "raw",
+          "blob": "a4f6e67e6e4ea89c770f0dcd5e175f6e439ff58c"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-on-demand",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-on-demand/manifest.json",
+          "sha256": "39667458272722950e2cbbabacdee2f127998051c8605001604ed361b3e44947",
+          "hashNormalization": "raw",
+          "blob": "90f12d3586e55e6cbd64c9255ab19901fd94d3c3"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-on-demand/OnDemandRequestCache.kt",
+          "sha256": "04fd3dcacb4867bcb64756874641fbcd80dd33767851ce269281c2878152d81c",
+          "hashNormalization": "raw",
+          "blob": "950207285c8685a0d37e67cb53387888a73ee6ff"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-on-demand/SharedContentRepository.kt",
+          "sha256": "a514fd37a613a2d93ceab6c6127b7ba2a219cc8d473fd9212c10d17a80ba9e54",
+          "hashNormalization": "raw",
+          "blob": "2249a1a941a66b10d82cd41aed4ee62dffa736bd"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-on-demand/VideoCatalogRepository.kt",
+          "sha256": "5c49d81104f2e8b21bed1ee5812629c716a4690b0cc69a7024fa597316105e9e",
+          "hashNormalization": "raw",
+          "blob": "4d5788da3a3d49b8824ae9bbd0b5261708a7fe22"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-on-demand/VideoRepository.kt",
+          "sha256": "f619bc06f9e34b52449f021276630df14a0625afbfe6c73e3d7b4bfed75c15df",
+          "hashNormalization": "raw",
+          "blob": "3dc00b66b2fce99d57597149f38e1414a137e312"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-on-demand/VideoRequestAccountScope.kt",
+          "sha256": "d9c21230306d9cbaeaaa92f0229fae444cb19788203a91800620daec5ec3fba4",
+          "hashNormalization": "raw",
+          "blob": "3a6c384e838587a837383aff08c45d2e10e4c4fd"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-detail-bootstrap",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-detail-bootstrap/manifest.json",
+          "sha256": "c8fe6e0b95235c8c6d95833051f9a29ef4acf37e181492bcc04bb3ed737b2a8f",
+          "hashNormalization": "raw",
+          "blob": "8654f181aeb4b34e1631972baa1f46125df7bc7e"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-detail-bootstrap/PlaybackLoader.kt",
+          "sha256": "2582b6eeb1ab4e655488b18389d9c01dc4c50a557b639ac3d914ae7991f5f385",
+          "hashNormalization": "raw",
+          "blob": "33f5251416f907af64f40be0b516e9ee0f67db53"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-detail-bootstrap/VideoDetailUiState.kt",
+          "sha256": "28082f6c0f79c4692aeadf3711a847656d2731abf4fe350a42be74c3121e5d4f",
+          "hashNormalization": "raw",
+          "blob": "db593e0722d10f3889337432e987b964cec8fe26"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-detail-bootstrap/VideoPlaybackUseCase.kt",
+          "sha256": "319e051a0ad431baade5f8ad2788a4a2d7ae9c301aa28129a74572137b4d7547",
+          "hashNormalization": "raw",
+          "blob": "19743f991097a22b6301443a8284d90ca25688ba"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-detail-bootstrap/VideoPlaybackViewModel.kt",
+          "sha256": "8a23ff5759f0f227110f7e7598330807a0898035b03da0a2492fae860a9f9c57",
+          "hashNormalization": "raw",
+          "blob": "0d139c54777fb09830c7e16202e23ed4bed148d1"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-metadata-related",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-metadata-related/manifest.json",
+          "sha256": "dc9166d74578fd9119f99c273c32d16036e9d77e9962f01cd849ee151150f619",
+          "hashNormalization": "raw",
+          "blob": "a89db25bd93fa809fe02cd44aada2952932fe6ad"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-metadata-related/RelatedVideoLoadScheduler.kt",
+          "sha256": "cf7d7277ff8cc550b90778a7c453ce523a73a437f1544ad70e50d9a0a8d9caca",
+          "hashNormalization": "raw",
+          "blob": "9c5b2baeb00e43b35be1db18311776080c855109"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-metadata-related/VideoPlaybackViewModel.kt",
+          "sha256": "8a23ff5759f0f227110f7e7598330807a0898035b03da0a2492fae860a9f9c57",
+          "hashNormalization": "raw",
+          "blob": "0d139c54777fb09830c7e16202e23ed4bed148d1"
         }
       ]
     }
@@ -4752,6 +4872,163 @@
       "kind": "adaptedSource",
       "features": [
         "v034-sponsor-original-ui"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "localPath": "desktop/upstream-slices/v034-favorite-content-errors/core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+      "blob": "798b741f1111bc8a2b401899572bc32513c91542",
+      "sha256": "e08693a03a8b1579a719d0f2b168771710fd5596351c358c52e1701621c3e147",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-favorite-content-errors"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/OnDemandRequestCache.kt",
+      "localPath": "desktop/upstream-slices/v034-on-demand/OnDemandRequestCache.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "950207285c8685a0d37e67cb53387888a73ee6ff",
+      "sha256": "04fd3dcacb4867bcb64756874641fbcd80dd33767851ce269281c2878152d81c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-on-demand"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/VideoRequestAccountScope.kt",
+      "localPath": "desktop/upstream-slices/v034-on-demand/VideoRequestAccountScope.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "3a6c384e838587a837383aff08c45d2e10e4c4fd",
+      "sha256": "d9c21230306d9cbaeaaa92f0229fae444cb19788203a91800620daec5ec3fba4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-on-demand",
+        "auth"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/SharedContentRepository.kt",
+      "localPath": "desktop/upstream-slices/v034-on-demand/SharedContentRepository.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "2249a1a941a66b10d82cd41aed4ee62dffa736bd",
+      "sha256": "a514fd37a613a2d93ceab6c6127b7ba2a219cc8d473fd9212c10d17a80ba9e54",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-on-demand"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/VideoCatalogRepository.kt",
+      "localPath": "desktop/upstream-slices/v034-on-demand/VideoCatalogRepository.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "4d5788da3a3d49b8824ae9bbd0b5261708a7fe22",
+      "sha256": "5c49d81104f2e8b21bed1ee5812629c716a4690b0cc69a7024fa597316105e9e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-on-demand"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "localPath": "desktop/upstream-slices/v034-on-demand/VideoRepository.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "3dc00b66b2fce99d57597149f38e1414a137e312",
+      "sha256": "f619bc06f9e34b52449f021276630df14a0625afbfe6c73e3d7b4bfed75c15df",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-on-demand"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "localPath": "desktop/upstream-slices/v034-detail-bootstrap/PlaybackLoader.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "33f5251416f907af64f40be0b516e9ee0f67db53",
+      "sha256": "2582b6eeb1ab4e655488b18389d9c01dc4c50a557b639ac3d914ae7991f5f385",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-detail-bootstrap"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+      "localPath": "desktop/upstream-slices/v034-detail-bootstrap/VideoPlaybackUseCase.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "19743f991097a22b6301443a8284d90ca25688ba",
+      "sha256": "319e051a0ad431baade5f8ad2788a4a2d7ae9c301aa28129a74572137b4d7547",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-detail-bootstrap"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "localPath": "desktop/upstream-slices/v034-detail-bootstrap/VideoPlaybackViewModel.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "0d139c54777fb09830c7e16202e23ed4bed148d1",
+      "sha256": "8a23ff5759f0f227110f7e7598330807a0898035b03da0a2492fae860a9f9c57",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-detail-bootstrap"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDetailUiState.kt",
+      "localPath": "desktop/upstream-slices/v034-detail-bootstrap/VideoDetailUiState.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "db593e0722d10f3889337432e987b964cec8fe26",
+      "sha256": "28082f6c0f79c4692aeadf3711a847656d2731abf4fe350a42be74c3121e5d4f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-detail-bootstrap"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/RelatedVideoLoadScheduler.kt",
+      "localPath": "desktop/upstream-slices/v034-metadata-related/RelatedVideoLoadScheduler.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "9c5b2baeb00e43b35be1db18311776080c855109",
+      "sha256": "cf7d7277ff8cc550b90778a7c453ce523a73a437f1544ad70e50d9a0a8d9caca",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-metadata-related"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "localPath": "desktop/upstream-slices/v034-metadata-related/VideoPlaybackViewModel.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "0d139c54777fb09830c7e16202e23ed4bed148d1",
+      "sha256": "8a23ff5759f0f227110f7e7598330807a0898035b03da0a2492fae860a9f9c57",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-metadata-related"
       ],
       "referenceOnly": false
     }

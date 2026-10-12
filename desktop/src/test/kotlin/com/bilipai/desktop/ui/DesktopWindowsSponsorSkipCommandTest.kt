@@ -108,7 +108,7 @@ class DesktopWindowsSponsorSkipCommandTest {
             DesktopOriginalVideoPlaybackInvocation(repository, media) {
                 if (!entry || account != epoch || !caller.isActive) throw CancellationException("Fixture entry retired")
             }
-        }, unused(), { media })
+        }, unused(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         private val api = unused<BilibiliApi>()
         private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(api,
             { "fixture-csrf" }, { 1L }, { "fixture-session" }, { null }, {}, {},
@@ -124,7 +124,11 @@ class DesktopWindowsSponsorSkipCommandTest {
             ::owned, { block -> if (!owned()) false else { block(); true } },
             DesktopTodayWatchFeedbackWriteBinding(context, ::owned, { it(); true }),
             captureNativePublication = { accepted.takeIf { owned() && player.ownsSourceSnapshot(it.nativeSource) } },
-            admitNativePublication = ::admit))
+            admitNativePublication = ::admit,
+            readRelatedPlaybackState = { expected ->
+                var observed: com.bilipai.desktop.player.PlayerState? = null
+                if (admit(expected) { observed = player.state.value }) observed else null
+            }))
         private val section = DesktopOriginalMpvSectionControl(player, { original.sourceVersion }, ::owned,
             { block -> admit(original, block) }, { false }, {}, {}, { target, _, _, _ -> logs += target }, scope,
             // No native event loop is fabricated. The real synchronous seek listener
