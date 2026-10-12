@@ -584,6 +584,24 @@ class DesktopDownloadManagerTest {
             assertEquals(beforeExit.getValue(pausedId), closedTasks.getValue(pausedId))
             assertEquals(beforeExit.getValue(queuedId), closedTasks.getValue(queuedId))
             assertEquals(beforeExit.getValue(lastQueuedId), closedTasks.getValue(lastQueuedId))
+            val frozenDisk = Files.readAllBytes(state)
+            val duringDrain = DesktopDownloadQueueAuthority.tryAcquire(state)
+            try {
+                assertNull(duringDrain.lease, "The actual queue lease remains held through worker cleanup")
+                assertTrue(duringDrain.busy)
+            } finally { duringDrain.lease?.close() }
+            val obsolete = DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
+                totalBytes = 13L, downloadedBytes = 13L)
+            originalWorkers.forEach { worker ->
+                assertFailsWith<CancellationException> { worker.callback(obsolete) }
+                assertContentEquals(partialBytes.getValue(worker.task.id),
+                    Files.readAllBytes(worker.directory.resolve("exit-optional.pb.part")))
+            }
+            assertEquals(closedTasks, manager.tasks.value.associateBy { it.id })
+            assertContentEquals(frozenDisk, Files.readAllBytes(state))
+            originalWorkers.forEach { it.cleanupRelease.complete(Unit) }
+            withTimeout(5_000) { invocation.await() }
+            assertTrue(originalWorkers.all { it.job.isCompleted && it.cleanupEnded.isCompleted })
             val closedDisk = Files.readAllBytes(state)
             val decodedItems = Json.decodeFromString<List<DownloadTask>>(closedDisk.decodeToString())
             assertEquals(closedTasks, decodedItems.associateBy { it.id })
@@ -593,18 +611,6 @@ class DesktopDownloadManagerTest {
                 assertEquals(task.item.createdAt,
                     encoded.jsonObject.getValue("item").jsonObject.getValue("createdAt").jsonPrimitive.long)
             }
-            val obsolete = DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
-                totalBytes = 13L, downloadedBytes = 13L)
-            originalWorkers.forEach { worker ->
-                assertFailsWith<CancellationException> { worker.callback(obsolete) }
-                assertContentEquals(partialBytes.getValue(worker.task.id),
-                    Files.readAllBytes(worker.directory.resolve("exit-optional.pb.part")))
-            }
-            assertEquals(closedTasks, manager.tasks.value.associateBy { it.id })
-            assertContentEquals(closedDisk, Files.readAllBytes(state))
-            originalWorkers.forEach { it.cleanupRelease.complete(Unit) }
-            withTimeout(5_000) { invocation.await() }
-            assertTrue(originalWorkers.all { it.job.isCompleted && it.cleanupEnded.isCompleted })
             manager.close(); manager.close()
             assertContentEquals(closedDisk, Files.readAllBytes(state))
             assertTrue(requests.isEmpty())
@@ -867,7 +873,19 @@ class DesktopDownloadManagerTest {
             child.savePlaybackPosition(id, 31_000, 120_000)
             val addedId = child.enqueue(PlaybackSource("https://cdn.example/new", title = "successor-only"), root,
                 DownloadMetadata(bvid = "BVsuccessor", cid = 20L, includeCover = false))
+            val addedWorker = withTimeout(5_000) {
+                while (childWorkers.none { it.task.id == addedId }) delay(5)
+                childWorkers.single { it.task.id == addedId }
+            }
             child.pause(addedId)
+            withTimeout(5_000) {
+                addedWorker.cleanupEntered.await()
+                val joined = async(start = CoroutineStart.UNDISPATCHED) { addedWorker.job.join() }
+                assertFalse(joined.isCompleted, "The canonical root Job is still held in real cleanup")
+                addedWorker.cleanupRelease.complete(Unit)
+                joined.await()
+            }
+            assertTrue(addedWorker.job.isCompleted && addedWorker.cleanupEnded.isCompleted)
             val changedDisk = Files.readAllBytes(state)
             assertEquals(31_000L, child.tasks.value.single { it.id == id }.item.lastPlaybackPositionMs)
             assertFalse(original.tasks.value.any { it.id == addedId })

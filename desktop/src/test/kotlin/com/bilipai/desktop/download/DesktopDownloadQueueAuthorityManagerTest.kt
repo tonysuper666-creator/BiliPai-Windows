@@ -38,7 +38,7 @@ class DesktopDownloadQueueAuthorityManagerTest {
             })
             return DesktopDownloadManager(client, state, DownloadMuxer { _, _, _ -> error("No fixture media may reach muxing") },
                 danmakuDownloader = { task, directory, _ ->
-                    val worker = Worker(task, directory, currentCoroutineContext().job)
+                    val worker = Worker(task, directory, DownloadDanmakuTransport.taskOwner().callerJob)
                     val originalPart = directory.resolve("ownership-fixture.pb.part")
                     val previous = workers.firstOrNull { it.task.id == task.id }
                     if (previous == null) {
@@ -168,7 +168,17 @@ class DesktopDownloadQueueAuthorityManagerTest {
             first.cleanupRelease.complete(Unit); original.awaitUpdateHandoff(ticket)
             val child = f.manager(transfer); f.worker(id, 2)
             child.savePlaybackPosition(id, 31_000, 120_000)
-            val added = f.enqueue(child, "BVsuccessor", 20L); child.pause(added)
+            val added = f.enqueue(child, "BVsuccessor", 20L)
+            val addedWorker = f.worker(added, 1)
+            child.pause(added)
+            withTimeout(5_000) {
+                addedWorker.cleanupEntered.await()
+                val joined = async(start = CoroutineStart.UNDISPATCHED) { addedWorker.job.join() }
+                assertFalse(joined.isCompleted, "The canonical root Job is still held in real cleanup")
+                addedWorker.cleanupRelease.complete(Unit)
+                joined.await()
+            }
+            assertTrue(addedWorker.job.isCompleted)
             val changed = Files.readAllBytes(f.state); val pending = Files.readAllBytes(f.marker)
             assertFailsWith<IllegalStateException> { original.rollbackUpdateHandoff(ticket) }
             assertFalse(original.acceptsMutations())
