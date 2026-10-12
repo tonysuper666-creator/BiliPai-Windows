@@ -39,13 +39,24 @@ internal class DesktopOriginalBangumiNativePresenter(
     private val callerKey = object : CoroutineContext.Key<CallerElement> {}
     private inner class CallerElement : ThreadContextElement<Job?> {
         private val launchedCaller = java.util.concurrent.atomic.AtomicReference<Job?>()
+        private val invocationCaller = java.util.concurrent.atomic.AtomicReference<Job?>()
         fun actualLaunchCaller(): Job = checkNotNull(launchedCaller.get())
+        fun bindInvocationCaller(caller: Job) {
+            caller.ensureActive()
+            check(invocationCaller.compareAndSet(null, caller)) {
+                "PGC invocation caller must be bound exactly once"
+            }
+            // Binding happens inside this launch's actual withInvocation body.
+            // Project it now as well as on later continuations.
+            currentCaller.set(caller)
+        }
         override val key: CoroutineContext.Key<*> get() = callerKey
         override fun updateThreadContext(context: CoroutineContext): Job? = currentCaller.get().also {
-            // First continuation of THIS scope.launch has its actual returned Job.
-            // Nested withInvocation/withContext keeps the same element, never replaces it.
+            // Freeze the actual returned scope.launch Job on its first continuation.
+            // Once its withInvocation body is bound, nested timeout/context children
+            // must not replace the caller used by the existing Portrait capture map.
             launchedCaller.compareAndSet(null, checkNotNull(context[Job]))
-            currentCaller.set(checkNotNull(context[Job]))
+            currentCaller.set(invocationCaller.get() ?: actualLaunchCaller())
         }
         override fun restoreThreadContext(context: CoroutineContext, oldState: Job?) {
             if (oldState == null) currentCaller.remove() else currentCaller.set(oldState)
@@ -94,9 +105,13 @@ internal class DesktopOriginalBangumiNativePresenter(
         val recovery = recoverySource?.let { NetworkRecovery(it, recoveryPlayWhenReady, recoveryParentCurrent,
             recoveryFailure, recoveryCurrent) }
         require(recoveryFailure == null || recoverySource === recoveryFailure.source)
-        return scope.launch(CallerElement() + currentRecovery.asContextElement(recovery), start = start) {
+        val callerElement = CallerElement()
+        return scope.launch(callerElement + currentRecovery.asContextElement(recovery), start = start) {
             recovery?.failure = recovery?.failure?.forCaller(captureInitialDetailLaunchCaller())
-            assembly.invocations.withInvocation { assertCurrent(); block() }
+            assembly.invocations.withInvocation {
+                callerElement.bindInvocationCaller(checkNotNull(currentCoroutineContext()[Job]))
+                assertCurrent(); block()
+            }
         }
     }
     /** Read-only identity of the original PGC launch. Not the nested body Job

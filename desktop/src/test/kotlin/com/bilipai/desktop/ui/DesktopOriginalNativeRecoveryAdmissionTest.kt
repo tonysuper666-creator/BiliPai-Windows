@@ -422,7 +422,16 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
                 { error("No download") }, {},
                 { block -> scope.launch(start = CoroutineStart.LAZY, block = block) },
                 { action -> if (!f.entry) false else { action(); true } }, { f.entry },
-                { f.owner.isCurrent(f.accepted) }, unusedPgc(), { false }))
+                { f.owner.isCurrent(f.accepted) }, unusedPgc(), { false },
+                publishReadOnlyDetail = { _, _, _, _, _, _ ->
+                    error("No initial readonly detail in the native recovery intent fixture")
+                },
+                prepareMedia = {
+                    error("No initial media preparation in the native recovery intent fixture")
+                },
+                captureLoadCaller = {
+                    error("No initial load caller in the native recovery intent fixture")
+                }))
         init {
             @Suppress("UNCHECKED_CAST")
             val owned = vm.javaClass.getDeclaredField("_uiState").apply { isAccessible = true }

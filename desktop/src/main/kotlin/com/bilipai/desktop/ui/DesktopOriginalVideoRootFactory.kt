@@ -138,6 +138,27 @@ internal class DesktopOriginalVideoRootFactory(
         return construction.requests.captureBinding(value.captureLoadState(), onAuthorizationRetired = onAuthorizationRetired)
     }
 
+    /** Initial PGC metadata capture after the original Store begins its episode.
+     * Preserve this exact request's authorization-retirement callback without
+     * waiting for native readiness or reading media capabilities. */
+    internal suspend fun capturePgcMetadataRequest(
+        value: DesktopOriginalVideoOwnerAssembly,
+        onAuthorizationRetired: (DesktopPlaybackAuthorizationReceipt,
+            com.android.purebilibili.feature.video.playback.session.PlaybackSessionState) -> Unit,
+    ): DesktopOriginalVideoRepositoryBinding {
+        val construction = checkNotNull(built.get()?.takeIf { it.assembly === value })
+        currentCoroutineContext().ensureActive()
+        if (!value.owns() || !construction.gate.owns())
+            throw CancellationException("Original PGC metadata facet retired")
+        return construction.requests.captureBinding(value.captureLoadState(),
+            onAuthorizationRetired = onAuthorizationRetired).also {
+            currentCoroutineContext().ensureActive()
+            if (!value.owns() || !construction.gate.owns())
+                throw CancellationException("Original PGC metadata facet retired")
+            it.assertCurrent()
+        }
+    }
+
     /** Metadata composition over THIS already captured Binding; no client,
      * credential capture, request token or second repository authority is made. */
     /** Metadata-only Story/Portrait facet inside the actual caller. The same

@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
+from v034_next_watch_ui import emit_original_ui as _emit_original_next_watch_ui
 from v025_playback_settings_platform import player_settings_body as _playback_player_settings_body, control_settings_body as _playback_control_settings_body
 import hashlib,importlib.util,json,re,subprocess,sys,zipfile
 from v025_source_paths import canonical_source as _desktop_canonical_source
@@ -428,4 +429,5 @@ def generate(repo,output,standalone=False):
  parser=module('controls_tokens',REPO/'desktop/tools/sync-upstream.py')
  selector=module('controls_decls',REPO/'desktop/tools/extract-appearance-platform.py')
  main()
+ _emit_original_next_watch_ui(REPO,OUTPUT)
 if __name__=='__main__':generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone' in sys.argv[3:])

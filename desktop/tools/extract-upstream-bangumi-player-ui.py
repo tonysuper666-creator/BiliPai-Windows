@@ -36,6 +36,13 @@ def windows_nvidia_bangumi_overlay_ui(source):
   s=s.replace(before,after,1)
  return s,edits
 
+def windows_bangumi_readonly_pending_ui(source):
+ s=source;edits=[{'before': '    val uiState by viewModel.uiState.collectAsStateWithLifecycle()', 'after': '    val uiState by viewModel.uiState.collectAsStateWithLifecycle()\n    val readOnlyDetail by platform.readOnlyDetail.collectAsStateWithLifecycle()', 'count': 1}, {'before': '                    is BangumiPlayerState.Loading -> {\n                        Box(\n                            modifier = Modifier.fillMaxSize(),\n                            contentAlignment = Alignment.Center\n                        ) {\n                            AdaptiveLoadingIndicator()\n                        }\n                    }', 'after': '                    is BangumiPlayerState.Loading -> {\n                        com.bilipai.desktop.ui.DesktopOriginalBangumiPendingContent(\n                            readOnlyDetail = readOnlyDetail, loading = true,\n                        ) {\n                            Box(\n                                modifier = Modifier.fillMaxSize(),\n                                contentAlignment = Alignment.Center\n                            ) {\n                                AdaptiveLoadingIndicator()\n                            }\n                        }\n                    }', 'count': 1}, {'before': '                    is BangumiPlayerState.Error -> {\n                        BangumiErrorContent(\n                            message = state.message,\n                            isVipRequired = state.isVipRequired,\n                            isLoginRequired = state.isLoginRequired,\n                            canRetry = state.canRetry,\n                            onRetry = { viewModel.retry() },\n                            onLogin = onNavigateToLogin\n                        )\n                    }', 'after': '                    is BangumiPlayerState.Error -> {\n                        com.bilipai.desktop.ui.DesktopOriginalBangumiPendingContent(\n                            readOnlyDetail = readOnlyDetail, loading = false,\n                        ) {\n                            BangumiErrorContent(\n                                message = state.message,\n                                isVipRequired = state.isVipRequired,\n                                isLoginRequired = state.isLoginRequired,\n                                canRetry = state.canRetry,\n                                onRetry = { viewModel.retry() },\n                                onLogin = onNavigateToLogin\n                            )\n                        }\n                    }', 'count': 1}]
+ for edit in edits:
+  assert s.count(edit['before'])==edit['count'],'same original PGC readonly Loading/Error anchor'
+  s=s.replace(edit['before'],edit['after'],edit['count'])
+ return s,edits
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
@@ -53,6 +60,8 @@ def main():
    before='            override fun onPlaybackStateChanged(playbackState: Int) {\n'
    after=before+'                if (playbackState == Player.STATE_READY) platform.observePlaybackReady()\n'
    assert body.count(before)==1;body=body.replace(before,after)
+   body,readonly_edits=windows_bangumi_readonly_pending_ui(body)
+   windows_edits.extend(readonly_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')

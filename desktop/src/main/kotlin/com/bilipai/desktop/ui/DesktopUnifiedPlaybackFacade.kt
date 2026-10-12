@@ -244,6 +244,16 @@ internal class DesktopUnifiedPlaybackFacade(
         return DesktopOriginalManualPlaybackClick(a, accepted,
             a.environment.mini.onNavigateNextCallback, a.environment.mini.onNavigatePreviousCallback, hint)
     }
+    /** The displayed card is the immutable target. Countdown copies may change,
+     * but a different target/publication/ref/token can never replace this click. */
+    internal fun captureNextWatchNavigation(displayed: DesktopOriginalVideoNextWatchHint): DesktopOriginalManualPlaybackClick? {
+        val click = captureManualNavigation(displayed.accepted) ?: return null
+        val now = click.nextWatchHint ?: return null
+        if (now.accepted !== displayed.accepted || now.originalRequest !== displayed.originalRequest ||
+            now.requestToken != displayed.requestToken || now.target != displayed.target) return null
+        return DesktopOriginalManualPlaybackClick(click.assembly, click.accepted,
+            click.nextCallback, click.previousCallback, displayed)
+    }
     /** No VM/queue/checkpoint/cancellation runs in native/Store admission. The
      * complete original helper selects its target on this actual UI task. */
     internal fun navigateManual(click: DesktopOriginalManualPlaybackClick, forward: Boolean,

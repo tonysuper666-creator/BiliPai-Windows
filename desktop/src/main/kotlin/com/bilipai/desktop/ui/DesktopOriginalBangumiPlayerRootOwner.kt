@@ -14,6 +14,7 @@ import com.android.purebilibili.feature.video.player.PlaylistItem
 import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsApplySpec
 import com.android.purebilibili.feature.video.screen.resolveVideoDetailSystemBarsVisibilityPolicy
 import com.android.purebilibili.feature.video.playback.audio.collectAudioStreamCandidates
+import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.refresh.HistoryRefreshBus
@@ -66,13 +67,18 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
         private val scopeJob = SupervisorJob(checkNotNull(gate.scope.coroutineContext[Job]))
         private val scope = CoroutineScope(gate.scope.coroutineContext + scopeJob)
         private val stateOwner = AtomicReference<BangumiPlayerViewModel?>()
+        private val mutableReadOnlyDetail = MutableStateFlow<DesktopOriginalBangumiReadOnlyDetail?>(null)
+        override val readOnlyDetail: StateFlow<DesktopOriginalBangumiReadOnlyDetail?> = mutableReadOnlyDetail.asStateFlow()
+        // Transient actual initial-HTTP witnesses keyed by THIS original launch.
+        // Completion removes the lookup; display keeps only admitted immutable DTO/receipts.
+        private val initialDetailSources = java.util.IdentityHashMap<Job, DesktopBangumiInitialDetailSource>()
         // Read-only actual original DTO + accepted publication pair; source facts
         // must match again before retirement captures position. Never an authority.
         private val lastOwnedState = AtomicReference<Pair<BangumiPlayerState.Success, DesktopOriginalVideoAcceptedPublication>?>()
         private val native = DesktopOriginalBangumiNativePresenter(owner,
             { shell.slot.currentAssembly().takeIf { lifetimeOwns() } }, portrait, scope,
             { stateOwner.get()?.uiState?.value as? BangumiPlayerState.Success },
-            { value, retired -> factory.captureRequest(value, retired) }, { root.repository.sessionEpoch },
+            { value, retired -> factory.capturePgcMetadataRequest(value, retired) }, { root.repository.sessionEpoch },
             { root.repository.playbackAuthorizationRevision.value })
         override val player get() = owner.section
         override val section get() = this@DesktopOriginalBangumiPlayerRootOwner.section
@@ -177,6 +183,69 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             evidence: DesktopOriginalPlaybackFailureEvidence, identity: Any) =
             premiumAudioRecovery.queuePlaybackFailure(state, expected, failure, revision, evidence, identity)
 
+        private suspend fun publishReadOnlyDetail(detail: BangumiDetail, episode: BangumiEpisode,
+            episodeIndex: Int, intentRevision: Long, postBegin: Boolean,
+            isLoadCurrent: (Job) -> Boolean) {
+            val context = currentCoroutineContext(); context.ensureActive(); native.assertCurrent()
+            val caller = checkNotNull(context[Job])
+            val launchCaller = native.captureInitialDetailLaunchCaller()
+            if (!isLoadCurrent(launchCaller)) throw CancellationException("PGC readonly load superseded")
+            require(detail.episodes?.getOrNull(episodeIndex) === episode) { "PGC readonly episode must be the original resolved DTO" }
+            val source = synchronized(initialDetailSources) { initialDetailSources[launchCaller] }
+            val primary = if (!postBegin) {
+                val actual = source?.takeIf { it.caller === caller && it.launchCaller === launchCaller }
+                    ?: throw CancellationException("PGC initial detail HTTP witness absent")
+                if (!actual.admit {}) throw CancellationException("PGC initial detail HTTP witness retired")
+                actual.primaryInstallation
+            } else {
+                source?.takeIf { it.launchCaller === launchCaller }?.primaryInstallation
+                    // Original switch/reload/authorization recovery may reuse the exact
+                    // already decoded season DTO. Borrow its primary read receipt only;
+                    // this NEW PGC Binding/caller/ref/token mints a new presentation gate.
+                    ?: mutableReadOnlyDetail.value?.takeIf { it.detail === detail }?.primaryInstallation
+                    ?: throw CancellationException("PGC resolved detail origin absent")
+            }
+            val binding = if (postBegin) native.capturedPlaybackBinding()
+                else (owner.invocations.requireRequestRepository() as DesktopOriginalVideoOwnerRequestRepository).binding
+            binding.assertCurrent()
+            // Freeze actual request scalars inside THIS live Binding's short gate.
+            // Final home/authorization/display admission happens outside that gate.
+            var snapshot: PlaybackSessionState? = null
+            if (!binding.admitCurrentMutation {
+                    context.ensureActive(); native.assertCurrent()
+                    if (isLoadCurrent(launchCaller)) snapshot = owner.captureLoadState()
+                }) throw CancellationException("PGC readonly Binding capture retired")
+            val original = checkNotNull(snapshot)
+            val request = original.currentRequest
+            val token = original.currentLoadRequestToken
+            if (postBegin && (request == null || request.bvid != episode.bvid ||
+                    request.aid != episode.aid || request.cid != episode.cid))
+                throw CancellationException("PGC readonly post-begin episode/ref mismatch")
+            val receipt = binding.receipt
+            fun current(): Boolean {
+                val actual = owner.captureLoadState()
+                return scopeJob.isActive && !caller.isCancelled && !launchCaller.isCancelled && owns() &&
+                    isLoadCurrent(launchCaller) && actual.currentRequest === request && actual.currentLoadRequestToken == token
+            }
+            val admission = DesktopOriginalVideoMetadataAdmission(receipt, ::current, { action ->
+                var applied = false
+                try {
+                    root.repository.withCurrentHomeNavRequest(primary, ::current) {
+                        root.repository.withPlaybackReceiptAdmission(receipt, ::current) {
+                            owner.environment.commit { if (current()) { action(); applied = true } }
+                        }
+                    }
+                } catch (_: CancellationException) { }
+                catch (_: com.bilipai.desktop.data.BiliApiException) { }
+                applied
+            })
+            val displayed = DesktopOriginalBangumiReadOnlyDetail(detail, episode, episodeIndex,
+                intentRevision, primary, admission)
+            if (!admission.admit { mutableReadOnlyDetail.value = displayed })
+                throw CancellationException("PGC readonly presentation retired")
+            context.ensureActive(); native.assertCurrent()
+        }
+
         internal fun initialize() {
             val ports = factory.entryPorts(owner)
             val aggregate = root.root.entry.embeddedPages as? DesktopOriginalHomeEmbeddedAggregate
@@ -196,8 +265,16 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                     native.assertCurrent()
                     val binding = (owner.invocations.requireRequestRepository() as? DesktopOriginalVideoOwnerRequestRepository)
                         ?.binding ?: error("PGC initial detail requires its actual Root invocation")
+                    val launchCaller = native.captureInitialDetailLaunchCaller()
                     DesktopBangumiInitialDetailSource.capture(root, owner, key,
-                        seasonId, epId, isCourse, native.captureInitialDetailLaunchCaller(), binding, ::owns)
+                        seasonId, epId, isCourse, launchCaller, binding, ::owns).also { source ->
+                        synchronized(initialDetailSources) { initialDetailSources[launchCaller] = source }
+                        launchCaller.invokeOnCompletion {
+                            synchronized(initialDetailSources) {
+                                if (initialDetailSources[launchCaller] === source) initialDetailSources.remove(launchCaller)
+                            }
+                        }
+                    }
                 }
             }
             val account = DesktopOriginalBangumiPlayerAccountView(owner, root.repository,
@@ -236,7 +313,14 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 owner.environment.plugins::rewritePlaybackCandidates,
                 { items, index, source -> assertOwned(); shell.playlist.setExternalPlaylist(items, index, source) },
                 ::captureCurrentTask, ports.applyPreferredVolume, { block -> native.launch(block) }, native::commit, ::owns, native::ownsPlaybackSource,
-                owner.environment.network, ports.capabilities::isDolbyVisionSupported)
+                owner.environment.network, ports.capabilities::isDolbyVisionSupported,
+                ::publishReadOnlyDetail, {
+                    currentCoroutineContext().ensureActive(); native.assertCurrent()
+                    val captured = native.capturedPlaybackBinding()
+                    // Same actual PGC Binding/caller; unchanged required 15s native stage.
+                    factory.requestRepository(owner, captured).awaitMediaPreparation()
+                    currentCoroutineContext().ensureActive(); captured.assertCurrent(); native.assertCurrent()
+                }, native::captureInitialDetailLaunchCaller)
             val vm = BangumiPlayerViewModel(environment)
             stateOwner.set(vm)
             native.installRetirementCapture(::captureFinalHeartbeat) { _, nextEpisode ->
@@ -409,6 +493,8 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 line.contains("drm", true) && (line.contains("unsupported", true) || line.contains("encrypted", true) || line.contains("decrypt", true))
             } == true
         override fun close() {
+            mutableReadOnlyDetail.value = null
+            synchronized(initialDetailSources) { initialDetailSources.clear() }
             recovery.close()
             native.onSharedPlaybackReplaced()
             clearMiniCallbacks()

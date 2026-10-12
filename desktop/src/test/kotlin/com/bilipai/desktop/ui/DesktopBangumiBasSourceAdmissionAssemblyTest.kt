@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.*
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.data.model.response.BangumiEpisode
 import com.android.purebilibili.data.repository.*
 import com.android.purebilibili.feature.bangumi.*
 import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
@@ -370,6 +371,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
         private val slot = DesktopOriginalVideoRootOwnerSlot(repository, parentScope, parentJob::isActive)
         lateinit var gate: DesktopOriginalVideoRootGate
         lateinit var owner: DesktopOriginalVideoOwnerAssembly
+        val readOnlyFacts = CopyOnWriteArrayList<Triple<BangumiDetail, BangumiEpisode, Int>>()
         lateinit var native: DesktopOriginalBangumiNativePresenter
         lateinit var media: DesktopOriginalVideoRootMediaFactory
         lateinit var vm: BangumiPlayerViewModel
@@ -613,7 +615,34 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                         native.launch(block = block, start = CoroutineStart.LAZY).also { job ->
                             launchedJobs.add(job); job.start()
                         }
-                    }, native::commit, native::owns, native::ownsPlaybackSource, network, { false })
+                    }, native::commit, native::owns, native::ownsPlaybackSource, network, { false },
+                    publishReadOnlyDetail = { detail, episode, index, _, postBegin, isLoadCurrent ->
+                        currentCoroutineContext().ensureActive(); native.assertCurrent()
+                        val launchCaller = native.captureInitialDetailLaunchCaller()
+                        if (!isLoadCurrent(launchCaller)) throw CancellationException("Fixture readonly PGC load replaced")
+                        require(detail.episodes?.getOrNull(index) === episode)
+                        val binding = if (postBegin) native.capturedPlaybackBinding()
+                            else (owner.invocations.requireRequestRepository() as DesktopOriginalVideoOwnerRequestRepository).binding
+                        binding.assertCurrent()
+                        if (!binding.admitCurrentMutation {
+                                native.assertCurrent()
+                                if (!isLoadCurrent(launchCaller)) throw CancellationException("Fixture readonly PGC load replaced")
+                                readOnlyFacts += Triple(detail, episode, index)
+                            }) throw CancellationException("Fixture readonly PGC admission retired")
+                    },
+                    prepareMedia = {
+                        // Existing fixed-capability headless fixture. Use the actual
+                        // captured PGC Binding and required raw stage, not fake NativeReady.
+                        currentCoroutineContext().ensureActive(); native.assertCurrent()
+                        val binding = native.capturedPlaybackBinding()
+                        requestRepository(binding).also { raw ->
+                            raw.installMediaPreparation {
+                                currentCoroutineContext().ensureActive(); native.assertCurrent(); binding.assertCurrent()
+                            }
+                        }.awaitMediaPreparation()
+                        currentCoroutineContext().ensureActive(); native.assertCurrent(); binding.assertCurrent()
+                    },
+                    captureLoadCaller = native::captureInitialDetailLaunchCaller)
                 vm = BangumiPlayerViewModel(environment)
                 vm.attachPlayer(owner.section)
                 val xmlSource = object : DesktopDanmakuSource {

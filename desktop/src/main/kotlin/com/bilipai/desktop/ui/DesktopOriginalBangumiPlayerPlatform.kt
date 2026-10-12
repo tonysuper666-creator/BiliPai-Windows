@@ -120,6 +120,10 @@ internal class DesktopOriginalBangumiPlayerEnvironment(
     val ownsPlaybackSource: () -> Boolean,
     val network: DesktopOriginalVideoOwnerNetwork,
     val dolbyVisionSupported: () -> Boolean,
+    val publishReadOnlyDetail: suspend (BangumiDetail, BangumiEpisode, Int, Long, Boolean,
+        (Job) -> Boolean) -> Unit,
+    val prepareMedia: suspend () -> Unit,
+    val captureLoadCaller: suspend () -> Job,
 ) {
     /** Read the existing Root quality mirror once per initial PGC request. */
     fun autoHighestQualityEnabled(): Boolean {

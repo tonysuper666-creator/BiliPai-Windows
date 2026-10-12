@@ -418,6 +418,120 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
     }
 
+    @Test fun displayedHintMatchesLaterCountdownAndActualNextUsesThatImmutableOffer(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A))); f.clock(115.0)
+            val displayed = f.awaitHint { it.remainingSeconds == 5 }
+            val source = f.accepted(); val original = f.owner.captureLoadState()
+            f.clock(119.001)
+            val currentTick = f.awaitHint { it.remainingSeconds == 1 }
+            assertNotSame(displayed, currentTick)
+            assertEquals(displayed.target, currentTick.target)
+            assertSame(displayed.accepted, currentTick.accepted)
+            assertSame(displayed.originalRequest, currentTick.originalRequest)
+            assertEquals(displayed.requestToken, currentTick.requestToken)
+            val click = f.uiResult { assertNotNull(f.facade.captureNextWatchNavigation(displayed)) }
+            assertSame(displayed, click.nextWatchHint, "The actual displayed immutable offer must remain the click target")
+            assertSame(source, click.accepted); assertSame(f.owner, click.assembly)
+            assertTrue(f.dispatchForward(click))
+            f.awaitLoaded(B)
+            val next = f.accepted()
+            assertNotSame(source, next); assertEquals(B, next.request.bvid); assertEquals(105L, next.request.cid)
+            assertEquals(displayed.target.bvid, next.request.bvid)
+            assertNotSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertTrue(f.owner.captureLoadState().currentLoadRequestToken > original.currentLoadRequestToken)
+            assertEquals(listOf(A, B), f.playRequests.map { it.url.queryParameter("bvid") })
+            assertNull(next.bootstrapOrigin, "The existing real Unknown-origin route is never backfilled")
+        }
+    }
+
+    @Test fun changedOriginalTargetBeforeMatchingCaptureCannotReplaceDisplayedCard(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104); f.behavior(PlaybackCompletionBehavior.PLAY_IN_ORDER)
+            f.setQueue(listOf(f.queueItem(A), f.queueItem(B, "Displayed target"))); f.clock(117.0)
+            val displayed = f.awaitHint { it.target.title == "Displayed target" }
+            val source = f.accepted(); val original = f.owner.captureLoadState()
+            f.setQueue(listOf(f.queueItem(A), f.queueItem(B, "Later unseen target"))); f.clock(117.1)
+            val latest = f.awaitHint { it.target.title == "Later unseen target" }
+            assertNotEquals(displayed.target, latest.target)
+            assertSame(displayed.accepted, latest.accepted)
+            assertSame(displayed.originalRequest, latest.originalRequest)
+            assertEquals(displayed.requestToken, latest.requestToken)
+            f.ui {
+                assertNull(f.facade.captureNextWatchNavigation(displayed))
+                val generic = assertNotNull(f.facade.captureManualNavigation())
+                assertEquals(latest.target, assertNotNull(generic.nextWatchHint).target,
+                    "Generic next retains its own current-offer semantics")
+            }
+            assertSame(source, f.accepted()); assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+            assertEquals(0, f.realQueue.currentIndex.value); assertEquals(1, f.playRequests.size)
+        }
+    }
+
+    @Test fun capturedDisplayedClickCannotRetargetAfterCaptureBeforeActualTaskLaunch(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104); f.behavior(PlaybackCompletionBehavior.PLAY_IN_ORDER)
+            f.setQueue(listOf(f.queueItem(A), f.queueItem(B, "Shown before launch"))); f.clock(117.0)
+            val displayed = f.awaitHint { it.target.title == "Shown before launch" }
+            // Exact UI ordering: synchronous capture precedes the real per-click
+            // child task. The displayed target changes before that task launches.
+            val click = f.uiResult { assertNotNull(f.facade.captureNextWatchNavigation(displayed)) }
+            assertSame(displayed, click.nextWatchHint)
+            val source = f.accepted(); val original = f.owner.captureLoadState()
+            f.setQueue(listOf(f.queueItem(A), f.queueItem(B, "Unseen after capture"))); f.clock(117.1)
+            f.awaitHint { it.target.title == "Unseen after capture" }
+            assertFalse(f.dispatchForward(click))
+            assertSame(source, f.accepted()); assertEquals(A, f.state().info.bvid)
+            assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+            assertEquals(0, f.realQueue.currentIndex.value); assertEquals(1, f.playRequests.size)
+            assertFalse(f.publications.any { it.request.bvid == B })
+        }
+    }
+
+    @Test fun displayedMatchingRejectsActualNativeChildAndNewOriginalRequestBeforeAcceptance(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A))); f.clock(117.0)
+            val displayed = f.awaitHint { it.target.bvid == B }
+            val original = f.owner.captureLoadState(); val source = f.accepted()
+            val held = f.holdCdnSwitch(); f.release(held)
+            withTimeout(8_000) { held.job.join() }
+            assertFalse(held.job.isCancelled)
+            val child = f.accepted()
+            assertNotSame(source, child)
+            assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+            f.ui { assertNull(f.facade.captureNextWatchNavigation(displayed)); f.actor.drain(); f.actor.loaded() }
+            f.clock(117.1)
+            val childDisplayed = f.awaitHint { it.accepted === child }
+            val childState = f.owner.captureLoadState()
+            var checkpointCalls = 0
+            f.beforePreparation = { preparation ->
+                if (preparation.source.videoUrl == video(A)) {
+                    f.assertOutsideAdmission(); checkpointCalls++
+                    assertSame(child, f.accepted(), "The previous native source is still real at this pre-accept boundary")
+                    val newRequest = f.owner.captureLoadState()
+                    assertNotSame(childState.currentRequest, newRequest.currentRequest)
+                    assertTrue(newRequest.currentLoadRequestToken > childState.currentLoadRequestToken)
+                    assertTrue(assertNotNull(newRequest.currentRequest).force)
+                    assertNull(f.facade.captureNextWatchNavigation(childDisplayed),
+                        "A pending real ref/token cannot borrow the displayed predecessor")
+                }
+            }
+            f.ui { f.owner.playback.loadVideo(A, 101, cid = 104, force = true, autoPlay = false) }
+            withTimeout(8_000) {
+                while (f.owner.native.current().let { it == null || it === child }) delay(5)
+            }
+            assertEquals(1, checkpointCalls)
+            val replacement = f.accepted()
+            assertNotSame(child, replacement); assertEquals(A, replacement.request.bvid)
+            assertTrue(f.owner.captureLoadState().currentLoadRequestToken > childState.currentLoadRequestToken)
+            f.ui { assertNull(f.facade.captureNextWatchNavigation(childDisplayed)) }
+            assertFalse(f.publications.any { it.request.bvid == B })
+        }
+    }
+
     private data class Capture(val state: PlaybackSessionState, val job: Job)
     private data class CdnEmission(val source: DesktopOriginalVideoAcceptedPublication, val index: Int, val runtimeGeneration: Long?)
     private data class HeldDispatch(val context: CoroutineContext, val runnable: Runnable) {

@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+  "sources": [
+    {
+      "file": "NextWatchOverlay.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+      "bytes": 7967,
+      "sha256": "a386d835a20fd1477704eeccc55b6d210f857288baa4016ab24069451a350977",
+      "gitBlob": "306ee95bf2ff6ade0c3bb22f8c8e326b3718e1a3",
+      "referenceOnly": false
+    },
+    {
+      "file": "SettingsManager.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "bytes": 408280,
+      "sha256": "d37b4c99bec79731ac4095fdc6977a05c94ac4633f8ec56813411ca7d7061120",
+      "gitBlob": "3fc7f91110bb3d11cefce4c670ca476ea37be586",
+      "referenceOnly": false
+    },
+    {
+      "file": "VideoPlayerSection.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "bytes": 319264,
+      "sha256": "c5fe80ccab6a44b1bcb5cc01fe1cd6c862b79fb929522ca3261adbf5d0a96ac8",
+      "gitBlob": "2bb0507c7e9be3e41c5603d60279fac7fab225f6",
+      "referenceOnly": true
+    }
+  ],
+  "outputs": {
+    "com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt": {
+      "source": "NextWatchOverlay.kt",
+      "beforeSha256": "a386d835a20fd1477704eeccc55b6d210f857288baa4016ab24069451a350977",
+      "afterSha256": "5b78ca9e7f69f0b3924eb6abbcb2a00ea645cd2d5f969c9b548e3eeb53e82eed",
+      "edits": [
+        {
+          "offset": 59,
+          "before": "import androidx.activity.compose.LocalActivity\n",
+          "after": ""
+        },
+        {
+          "offset": 582,
+          "before": "import androidx.compose.ui.platform.LocalContext\n",
+          "after": ""
+        },
+        {
+          "offset": 582,
+          "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle\n",
+          "after": ""
+        },
+        {
+          "offset": 582,
+          "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "after": ""
+        },
+        {
+          "offset": 859,
+          "before": "import androidx.lifecycle.Lifecycle\n",
+          "after": ""
+        },
+        {
+          "offset": 859,
+          "before": "import androidx.lifecycle.compose.LocalLifecycleOwner\n",
+          "after": ""
+        },
+        {
+          "offset": 859,
+          "before": "import androidx.media3.common.Player\n",
+          "after": ""
+        },
+        {
+          "offset": 1369,
+          "before": "import com.android.purebilibili.feature.video.playback.next.isNextWatchWindow\n",
+          "after": ""
+        },
+        {
+          "offset": 1369,
+          "before": "import com.android.purebilibili.feature.video.playback.next.nextWatchRemainingSeconds\n",
+          "after": ""
+        },
+        {
+          "offset": 1369,
+          "before": "import kotlinx.coroutines.delay\n",
+          "after": ""
+        },
+        {
+          "offset": 825,
+          "before": "import androidx.compose.ui.zIndex\n",
+          "after": "import androidx.compose.ui.zIndex\nimport com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext\nimport com.bilipai.desktop.ui.DesktopOriginalVideoNextWatchHint\nimport com.bilipai.desktop.ui.desktopCommandHitRegion\nimport com.bilipai.desktop.ui.desktopWindowsGlassSurfaceMaterial\nimport com.android.purebilibili.core.store.DesktopOriginalNextWatchHintSettings\nimport androidx.compose.ui.graphics.Color\n"
+        },
+        {
+          "offset": 1742,
+          "before": "/** Poll only while the player host is composed; no callback is tied to a countdown timer. */",
+          "after": "/** The original card over the existing owned native clock projection. No new\n * poll timer, request owner, playlist or media source is constructed here. */"
+        },
+        {
+          "offset": 1951,
+          "before": "    player: Player,\n    mediaKey: String,\n    eligible: Boolean,\n    resolve: () -> NextWatchSuggestion?,\n    play: (NextWatchSuggestion) -> Boolean,\n",
+          "after": "    settingsContext: DesktopOriginalPlayerSettingsContext,\n    mediaKey: String,\n    eligible: Boolean,\n    playing: Boolean,\n    hint: DesktopOriginalVideoNextWatchHint?,\n    resolve: () -> DesktopOriginalVideoNextWatchHint?,\n    play: (DesktopOriginalVideoNextWatchHint) -> Boolean,\n"
+        },
+        {
+          "offset": 2275,
+          "before": "    val context = LocalContext.current\n    val hintEnabled by remember(context) { SettingsManager.getNextWatchHintEnabled(context) }\n        .collectAsStateWithLifecycle(initialValue = true)\n",
+          "after": "    val hintEnabled by remember(settingsContext) { DesktopOriginalNextWatchHintSettings.getNextWatchHintEnabled(settingsContext) }\n        .collectAsState(initial = true)\n"
+        },
+        {
+          "offset": 2475,
+          "before": "    val activity = LocalActivity.current\n    val lifecycle = LocalLifecycleOwner.current.lifecycle\n",
+          "after": ""
+        },
+        {
+          "offset": 2631,
+          "before": "    var suggestion by remember(mediaKey) { mutableStateOf<NextWatchSuggestion?>(null) }",
+          "after": "    var suggestion by remember(mediaKey) { mutableStateOf<DesktopOriginalVideoNextWatchHint?>(null) }"
+        },
+        {
+          "offset": 2935,
+          "before": "    LaunchedEffect(player, mediaKey, eligible, lifecycle, activity) {\n        while (true) {\n            val duration = player.duration\n            val position = player.currentPosition\n            val seconds = nextWatchRemainingSeconds(duration, position)\n            val inWindow = eligible && !dismissed && activity?.isInPictureInPictureMode != true &&\n                lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED) &&\n                player.isPlaying && seconds != null\n            if (inWindow && seconds != null) remainingSeconds = seconds\n            if (suggestion != null && !isNextWatchWindow(duration, position)) {\n                dismissed = true\n            }\n            if (inWindow && suggestion == null) suggestion = latestResolve()\n            if (inWindow && suggestion != null && latestResolve() != suggestion) {\n                // Queue, mode or exclusions changed: retire this offer instead of swapping its card.\n                dismissed = true\n            }\n            visible = inWindow && !dismissed && suggestion != null\n            delay(200)\n        }\n    }\n",
+          "after": "    LaunchedEffect(mediaKey, hint, eligible, playing) {\n        val captured = latestResolve()\n        val seconds = hint?.remainingSeconds\n        val inWindow = eligible && !dismissed && playing && seconds != null\n        if (inWindow && seconds != null) remainingSeconds = seconds\n        if (suggestion != null && seconds == null) dismissed = true\n        if (inWindow && suggestion == null) suggestion = captured\n        val shown = suggestion\n        if (inWindow && shown != null && (captured == null || captured.target != shown.target ||\n                captured.accepted !== shown.accepted || captured.originalRequest !== shown.originalRequest ||\n                captured.requestToken != shown.requestToken)) {\n            // Queue, source, mode or exclusions changed: retire this displayed\n            // immutable offer instead of replacing its target during a click.\n            dismissed = true\n        }\n        visible = inWindow && !dismissed && suggestion != null\n    }\n"
+        },
+        {
+          "offset": 3922,
+          "before": "    val target = suggestion\n",
+          "after": "    val target = suggestion?.target\n"
+        },
+        {
+          "offset": 4972,
+          "before": "                        latestPlay(target)\n",
+          "after": "                        suggestion?.let { latestPlay(it) }\n"
+        },
+        {
+          "offset": 6099,
+          "before": "    AppSurface(modifier = modifier, shape = shape, color = container, tonalElevation = 3.dp) {",
+          "after": "    val material = desktopWindowsGlassSurfaceMaterial(modifier, shape, container)\n    AppSurface(modifier = material.modifier, shape = shape,\n        color = if (material.enabled) Color.Transparent else container,\n        tonalElevation = if (material.enabled) 0.dp else 3.dp) {"
+        },
+        {
+          "offset": 6473,
+          "before": "modifier = Modifier.weight(1f).clickable(onClick = onClick).padding(10.dp),",
+          "after": "modifier = Modifier.weight(1f).desktopCommandHitRegion(\"next-watch-open\").clickable(onClick = onClick).padding(10.dp),"
+        },
+        {
+          "offset": 7726,
+          "before": "Box(modifier = Modifier.size(48.dp).clickable(onClick = onDismiss),",
+          "after": "Box(modifier = Modifier.size(48.dp).desktopCommandHitRegion(\"next-watch-dismiss\").clickable(onClick = onDismiss),"
+        },
+        {
+          "offset": 3922,
+          "before": "    val target = suggestion?.target\n",
+          "after": "    val displayed = suggestion\n    val target = displayed?.target\n"
+        },
+        {
+          "offset": 5002,
+          "before": "                        suggestion?.let { latestPlay(it) }\n",
+          "after": "                        displayed?.let { latestPlay(it) }\n"
+        }
+      ]
+    },
+    "com/android/purebilibili/core/store/DesktopOriginalNextWatchHintSettings.kt": {
+      "source": "SettingsManager.kt",
+      "originalDeclarationRanges": [
+        {
+          "offset": 50888,
+          "text": "    private val KEY_NEXT_WATCH_HINT_ENABLED = booleanPreferencesKey(\"next_watch_hint_enabled\")\n"
+        },
+        {
+          "offset": 99193,
+          "text": "    fun getNextWatchHintEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data\n        .map { preferences -> preferences[KEY_NEXT_WATCH_HINT_ENABLED] ?: true }\n"
+        }
+      ],
+      "originalDeclarations": "    private val KEY_NEXT_WATCH_HINT_ENABLED = booleanPreferencesKey(\"next_watch_hint_enabled\")\n\n    fun getNextWatchHintEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data\n        .map { preferences -> preferences[KEY_NEXT_WATCH_HINT_ENABLED] ?: true }\n",
+      "declarationAdapters": [
+        {
+          "before": "booleanPreferencesKey",
+          "after": "playerBooleanPreferencesKey",
+          "count": 1
+        },
+        {
+          "before": "context: Context",
+          "after": "context: DesktopOriginalPlayerSettingsContext",
+          "count": 1
+        },
+        {
+          "before": "context.settingsDataStore.data",
+          "after": "DesktopOriginalPlayerSettingsDataStore(context).data",
+          "count": 1
+        }
+      ],
+      "output": "package com.android.purebilibili.core.store\n\nimport com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext\nimport com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsDataStore\nimport com.bilipai.desktop.ui.playerBooleanPreferencesKey\nimport kotlinx.coroutines.flow.Flow\nimport kotlinx.coroutines.flow.map\n\n/** Original key/getter over the existing Root Store; no independent preference cache. */\ninternal object DesktopOriginalNextWatchHintSettings {\n    private val KEY_NEXT_WATCH_HINT_ENABLED = playerBooleanPreferencesKey(\"next_watch_hint_enabled\")\n\n    fun getNextWatchHintEnabled(context: DesktopOriginalPlayerSettingsContext): Flow<Boolean> = DesktopOriginalPlayerSettingsDataStore(context).data\n        .map { preferences -> preferences[KEY_NEXT_WATCH_HINT_ENABLED] ?: true }\n}\n",
+      "afterSha256": "255ddf2f1b38c8156d72dd3b0150ed6e56a10cd5a9452b3c928b93850b0a9586"
+    }
+  },
+  "originalPlacement": {
+    "source": "VideoPlayerSection.kt",
+    "offset": 255259,
+    "text": "        NextWatchOverlay(\n            player = playerState.player,\n            mediaKey = \"$bvid:${(uiState as? VideoPlaybackUiState.Success)?.info?.cid}\",\n            eligible = uiState is VideoPlaybackUiState.Success && danmakuHostActive && !isInPipMode && !isAudioOnly && !isScreenLocked &&\n                !state.forceCoverOnly && !state.liveBackPreview && !suppressTransientOverlaysForTransition &&\n                !showControls && !isGestureVisible && !landscapeCommentPanelVisible && !danmakuComposerVisible,\n            resolve = actions.resolveNextWatch,\n            play = actions.playNextWatch,\n        )",
+    "sha256": "b590d9abde0d7bd2bbf802379f7aacb3aee30d0b4e07a5b137627f91550215d7"
+  },
+  "source57BackendReusedWithoutMutation": true,
+  "referenceOnlyNoOriginalSectionCompiled": true
+}

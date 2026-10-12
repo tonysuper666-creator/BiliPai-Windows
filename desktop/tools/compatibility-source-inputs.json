@@ -52,7 +52,9 @@
     "desktop/upstream-slices/v034-live-vote",
     "desktop/upstream-slices/v034-metadata-related",
     "desktop/upstream-slices/v034-next-watch",
+    "desktop/upstream-slices/v034-next-watch-ui",
     "desktop/upstream-slices/v034-on-demand",
+    "desktop/upstream-slices/v034-pgc-initial-detail",
     "desktop/upstream-slices/v034-related",
     "desktop/upstream-slices/v034-sponsor-ui",
     "desktop/upstream-slices/v034-text-lyrics"
@@ -2069,6 +2071,58 @@
           "sha256": "3308a2fe6b22234ae900cbd2449d468c613b84ce0bcde974250339b272350c35",
           "hashNormalization": "raw",
           "blob": "48a819ae4bf973dcf7f2bfbdf31e13e13aa43985"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-pgc-initial-detail",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-pgc-initial-detail/manifest.json",
+          "sha256": "bd4aff1432a9c6cf20e9bd1d55b958f9fc746c258001ef1d203f00d32f98b575",
+          "hashNormalization": "raw",
+          "blob": "5c36a6c74dee8c4e8b49bf3968a1aeec502d2f28"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-pgc-initial-detail/BasePlayerViewModel.kt",
+          "sha256": "40f38ceb1e9372ee3bd9edbbc833be8675588d5ac71aacd62aa9dbac66af761b",
+          "hashNormalization": "raw",
+          "blob": "1bd8571e5a9c2b9930cb147a8da512fb4e9c4c9e"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-pgc-initial-detail/BangumiPlayerViewModel.kt",
+          "sha256": "1e3835248ec24a971e58295b2a4e41acbc29975bfcc716bab2d0eeeade3c3d96",
+          "hashNormalization": "raw",
+          "blob": "f11c395760a44bbe0f3d0c3298c10e49fc51f488"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v034-next-watch-ui",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v034-next-watch-ui/NextWatchOverlay.kt",
+          "sha256": "a386d835a20fd1477704eeccc55b6d210f857288baa4016ab24069451a350977",
+          "hashNormalization": "raw",
+          "blob": "306ee95bf2ff6ade0c3bb22f8c8e326b3718e1a3"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-next-watch-ui/SettingsManager.kt",
+          "sha256": "d37b4c99bec79731ac4095fdc6977a05c94ac4633f8ec56813411ca7d7061120",
+          "hashNormalization": "raw",
+          "blob": "3fc7f91110bb3d11cefce4c670ca476ea37be586"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-next-watch-ui/VideoPlayerSection.kt",
+          "sha256": "c5fe80ccab6a44b1bcb5cc01fe1cd6c862b79fb929522ca3261adbf5d0a96ac8",
+          "hashNormalization": "raw",
+          "blob": "2bb0507c7e9be3e41c5603d60279fac7fab225f6"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-next-watch-ui/manifest.json",
+          "sha256": "dfd799f017c955faf0ccca24c177d3d84f000866e8556caa4cbbf8865f2fc236",
+          "hashNormalization": "raw",
+          "blob": "f67c57c6de9c1b6b27b6acad9b8f5bf2c80386d8"
         }
       ]
     }
@@ -5131,6 +5185,71 @@
         "v034-next-watch"
       ],
       "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/player/BasePlayerViewModel.kt",
+      "localPath": "desktop/upstream-slices/v034-pgc-initial-detail/BasePlayerViewModel.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "1bd8571e5a9c2b9930cb147a8da512fb4e9c4c9e",
+      "sha256": "40f38ceb1e9372ee3bd9edbbc833be8675588d5ac71aacd62aa9dbac66af761b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-pgc-initial-detail"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+      "localPath": "desktop/upstream-slices/v034-pgc-initial-detail/BangumiPlayerViewModel.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "f11c395760a44bbe0f3d0c3298c10e49fc51f488",
+      "sha256": "1e3835248ec24a971e58295b2a4e41acbc29975bfcc716bab2d0eeeade3c3d96",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-pgc-initial-detail"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
+      "localPath": "desktop/upstream-slices/v034-next-watch-ui/NextWatchOverlay.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "306ee95bf2ff6ade0c3bb22f8c8e326b3718e1a3",
+      "sha256": "a386d835a20fd1477704eeccc55b6d210f857288baa4016ab24069451a350977",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-next-watch-ui"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "localPath": "desktop/upstream-slices/v034-next-watch-ui/SettingsManager.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "3fc7f91110bb3d11cefce4c670ca476ea37be586",
+      "sha256": "d37b4c99bec79731ac4095fdc6977a05c94ac4633f8ec56813411ca7d7061120",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-next-watch-ui"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "localPath": "desktop/upstream-slices/v034-next-watch-ui/VideoPlayerSection.kt",
+      "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+      "blob": "2bb0507c7e9be3e41c5603d60279fac7fab225f6",
+      "sha256": "c5fe80ccab6a44b1bcb5cc01fe1cd6c862b79fb929522ca3261adbf5d0a96ac8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v034-next-watch-ui"
+      ],
+      "referenceOnly": true
     }
   ],
   "buildStandaloneInputs": [

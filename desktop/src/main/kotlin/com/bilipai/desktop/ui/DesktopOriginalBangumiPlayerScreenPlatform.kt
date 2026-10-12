@@ -41,6 +41,7 @@ internal interface DesktopOriginalBangumiPlayerScreenPlatform {
     val comments: VideoCommentViewModel
     val window: DesktopOriginalVideoHolderWindowPort
     val fullscreen: StateFlow<Boolean>
+    val readOnlyDetail: StateFlow<DesktopOriginalBangumiReadOnlyDetail?>
     val share: DesktopOriginalBangumiPlayerShare
     fun owns(): Boolean
     fun ensureMiniCallbacks(viewModel: BangumiPlayerViewModel, isCourse: Boolean)

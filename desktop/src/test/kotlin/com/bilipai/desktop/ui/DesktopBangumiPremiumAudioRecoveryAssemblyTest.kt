@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.*
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.data.model.response.BangumiEpisode
 import com.android.purebilibili.data.repository.*
 import com.android.purebilibili.feature.bangumi.*
 import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
@@ -315,8 +316,195 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
         }
     }
 
+    @Test fun readonlyDetailPrecedesTheActualRawPreparationAndMediaForPgcAndCourse(): Unit = runBlocking {
+        for (seasonType in listOf(1, 10)) Fixture(seasonType = seasonType).useSuspending { f ->
+            val stage = PreparationControl()
+            f.mediaPreparationControl = stage
+            val capabilityReads = f.capabilityReads.get()
+            val loadCalls = f.actor.native.loads.size
+            val caller = f.startInitial()
+            val prepared = withTimeout(8_000) { stage.entered.await() }
+            val reads = f.readOnlyObservations.toList()
+            assertEquals(listOf("readonly-pre", "readonly-post", "prepare"), f.initialTrace.toList())
+            assertEquals(listOf(false, true), reads.map { it.postBegin })
+            assertSame(reads[0].detail, reads[1].detail)
+            assertSame(reads[0].episode, reads[1].episode)
+            assertEquals(0, reads[0].index)
+            assertSame(reads[0].detail.episodes!![0], reads[0].episode)
+            assertSame(caller, reads[0].launchCaller)
+            assertSame(caller, reads[1].launchCaller)
+            assertSame(caller, prepared.launchCaller)
+            assertNotSame(caller, reads[1].bodyCaller)
+            assertNotSame(reads[0].binding, reads[1].binding)
+            assertTrue(reads[1].requestToken > reads[0].requestToken)
+            assertEquals(reads[1].episode.cid, reads[1].request!!.cid)
+            assertSame(reads[1].binding, prepared.binding)
+            assertFalse(reads[0].fact.isCurrent()) // Pre-begin witness is not retagged.
+            assertTrue(reads[1].fact.isCurrent())
+            assertSame(BangumiPlayerState.Loading, f.vm.uiState.value)
+            assertEquals(0, f.playCalls.get())
+            assertEquals(capabilityReads, f.capabilityReads.get())
+            assertEquals(loadCalls, f.actor.native.loads.size)
+            assertTrue(f.publications.isEmpty())
+            stage.succeed()
+            withTimeout(8_000) { caller.join() }
+            assertFalse(caller.isCancelled, f.loadCompletionFailure(caller))
+            assertIs<BangumiPlayerState.Success>(f.vm.uiState.value)
+            assertEquals(1, f.playCalls.get())
+            f.ui { f.actor.drain(); f.actor.loaded() }
+            assertTrue(f.native.ownsPlaybackSource())
+            assertSame(f.accepted(), f.publications.single())
+        }
+    }
+
+    @Test fun rawPreparationFailureKeepsReadonlyDetailAndManualRetryUsesFreshActualAuthority(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val failedStage = PreparationControl()
+            f.mediaPreparationControl = failedStage
+            val firstCaller = f.startInitial()
+            val firstStage = withTimeout(8_000) { failedStage.entered.await() }
+            val firstRead = f.readOnlyObservations.last()
+            failedStage.fail(IllegalStateException("synthetic native initialization failure"))
+            withTimeout(8_000) { firstCaller.join() }
+            assertFalse(firstCaller.isCancelled, f.loadCompletionFailure(firstCaller))
+            val failed = assertIs<BangumiPlayerState.Error>(f.vm.uiState.value)
+            assertEquals("Windows 播放器初始化失败，请手动重试", failed.message)
+            assertTrue(failed.canRetry)
+            assertTrue(firstRead.fact.isCurrent()) // Normal failed-load completion can retain the fact.
+            assertEquals(0, f.playCalls.get())
+            assertTrue(f.publications.isEmpty())
+            assertEquals(1, f.preparationObservations.size) // No automatic retry.
+            val nextStage = PreparationControl()
+            f.mediaPreparationControl = nextStage
+            val nextCaller = f.uiResult { f.vm.retry(); f.playbackJob() }
+            val retryStage = withTimeout(8_000) { nextStage.entered.await() }
+            val retryRead = f.readOnlyObservations.last()
+            assertNotSame(firstCaller, nextCaller)
+            assertSame(nextCaller, retryStage.launchCaller)
+            assertNotSame(firstStage.binding, retryStage.binding)
+            assertTrue(retryRead.intentRevision > firstRead.intentRevision)
+            assertTrue(retryRead.requestToken > firstRead.requestToken)
+            // Original StateFlow may retain the equal request reference. The new
+            // token/Binding/actual outer launch, not object allocation, is required.
+            assertEquals(firstRead.request, retryRead.request)
+            assertFalse(firstRead.fact.isCurrent())
+            assertTrue(retryRead.fact.isCurrent())
+            assertSame(BangumiPlayerState.Loading, f.vm.uiState.value)
+            assertEquals(0, f.playCalls.get())
+            nextStage.succeed()
+            withTimeout(8_000) { nextCaller.join() }
+            assertFalse(nextCaller.isCancelled)
+            assertIs<BangumiPlayerState.Success>(f.vm.uiState.value)
+            assertEquals(1, f.playCalls.get())
+            f.ui { f.actor.drain(); f.actor.loaded() }
+            assertTrue(f.native.ownsPlaybackSource())
+        }
+    }
+
+    @Test fun realRetirementDuringRawPreparationRejectsLateMediaAndOldError(): Unit = runBlocking {
+        for (mutation in listOf("account", "request", "entry", "caller")) {
+            Fixture().useSuspending { f ->
+                val stage = PreparationControl(holdAcrossCancellation = true)
+                f.mediaPreparationControl = stage
+                val caller = f.startInitial()
+                withTimeout(8_000) { stage.entered.await() }
+                val read = f.readOnlyObservations.last()
+                val originalState = f.vm.uiState.value
+                f.retireInitial(mutation, caller, read.episode)
+                stage.fail(IllegalStateException("late native initialization failure"))
+                withTimeout(8_000) { caller.join() }
+                assertSame(originalState, f.vm.uiState.value, mutation)
+                assertFalse(read.fact.isCurrent(), mutation)
+                assertEquals(0, f.playCalls.get(), mutation)
+                assertTrue(f.publications.isEmpty(), mutation)
+                assertNotNull(f.player.currentSourceSnapshot()) // Existing bootstrap was not replaced.
+            }
+        }
+    }
+
+    @Test fun newOriginalIntentWithoutCancellingTheLoadRejectsItsLatePreparationError(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val stage = PreparationControl()
+            f.mediaPreparationControl = stage
+            val caller = f.startInitial()
+            withTimeout(8_000) { stage.entered.await() }
+            val read = f.readOnlyObservations.last()
+            val originalState = f.vm.uiState.value
+            val oldIntent = f.vm.desktopPlaybackIntentRevision
+            val changed = f.uiResult { f.vm.changeAudioQuality(AUDIO_QUALITY_HI_RES); f.launchedJobs.last() }
+            withTimeout(8_000) { changed.join() }
+            assertTrue(f.vm.desktopPlaybackIntentRevision > oldIntent)
+            assertSame(caller, f.playbackJob())
+            assertTrue(caller.isActive) // Exercise intent guard independently of cancellation.
+            stage.fail(IllegalStateException("late failure after explicit user intent"))
+            withTimeout(8_000) { caller.join() }
+            assertFalse(caller.isCancelled)
+            assertSame(originalState, f.vm.uiState.value)
+            assertFalse(read.fact.isCurrent())
+            assertEquals(0, f.playCalls.get())
+            assertTrue(f.publications.isEmpty())
+            assertTrue(f.preferenceWrites.isEmpty())
+        }
+    }
+
+    @Test fun preAndPostBeginReadonlyCallbacksRejectActualLateAccountOrCallerRetirement(): Unit = runBlocking {
+        for (postBegin in listOf(false, true)) for (mutation in listOf("account", "caller")) {
+            Fixture().useSuspending { f ->
+                val pause = ReadOnlyControl(postBegin)
+                f.readOnlyControl = pause
+                val caller = f.startInitial()
+                val read = withTimeout(8_000) { pause.entered.await() }
+                assertEquals(postBegin, read.postBegin)
+                assertSame(caller, read.launchCaller)
+                assertSame(read.detail.episodes!![read.index], read.episode)
+                val beforeCount = f.readOnlyObservations.size
+                val originalState = f.vm.uiState.value
+                f.retireInitial(mutation, caller, read.episode)
+                pause.release.complete(Unit)
+                withTimeout(8_000) { caller.join() }
+                assertSame(originalState, f.vm.uiState.value)
+                assertEquals(beforeCount, f.readOnlyObservations.size)
+                assertEquals(if (postBegin) 1 else 0, beforeCount)
+                assertTrue(f.preparationObservations.isEmpty())
+                assertEquals(0, f.playCalls.get())
+                assertTrue(f.publications.isEmpty())
+            }
+        }
+    }
+
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
+    /** Observations of actual VM callbacks and immutable Bindings. The fact uses
+     * the real metadata admission helper; this CPU fixture does not instantiate
+     * physical RootEntry/Factory/navigation or verify a rendered header. */
+    private data class ReadOnlyObservation(
+        val detail: BangumiDetail,
+        val episode: BangumiEpisode,
+        val index: Int,
+        val intentRevision: Long,
+        val postBegin: Boolean,
+        val launchCaller: Job,
+        val bodyCaller: Job,
+        val binding: DesktopOriginalVideoRepositoryBinding,
+        val request: PlaybackRequest?,
+        val requestToken: Long,
+        val fact: DesktopOriginalBangumiReadOnlyDetail,
+    )
+    private data class PreparationObservation(
+        val launchCaller: Job,
+        val binding: DesktopOriginalVideoRepositoryBinding,
+    )
+    private class PreparationControl(val holdAcrossCancellation: Boolean = false) {
+        val entered = CompletableDeferred<PreparationObservation>()
+        val release = CompletableDeferred<Result<Unit>>()
+        fun succeed() { release.complete(Result.success(Unit)) }
+        fun fail(failure: Exception) { release.complete(Result.failure(failure)) }
+    }
+    private class ReadOnlyControl(val postBegin: Boolean) {
+        val entered = CompletableDeferred<ReadOnlyObservation>()
+        val release = CompletableDeferred<Unit>()
+    }
+
     private inner class Fixture(private val includeAac: Boolean = true, private val seasonType: Int = 10) {
         val directory = Files.createTempDirectory("pgc-audio-real-owner-")
         private val createdAbsolute = directory.toAbsolutePath().normalize()
@@ -331,6 +519,13 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
         private val slot = DesktopOriginalVideoRootOwnerSlot(repository, parentScope, parentJob::isActive)
         lateinit var gate: DesktopOriginalVideoRootGate
         lateinit var owner: DesktopOriginalVideoOwnerAssembly
+        val readOnlyFacts = CopyOnWriteArrayList<Triple<BangumiDetail, BangumiEpisode, Int>>()
+        val readOnlyObservations = CopyOnWriteArrayList<ReadOnlyObservation>()
+        val preparationObservations = CopyOnWriteArrayList<PreparationObservation>()
+        val initialTrace = CopyOnWriteArrayList<String>()
+        val capabilityReads = AtomicInteger()
+        var mediaPreparationControl: PreparationControl? = null
+        var readOnlyControl: ReadOnlyControl? = null
         lateinit var native: DesktopOriginalBangumiNativePresenter
         lateinit var media: DesktopOriginalVideoRootMediaFactory
         lateinit var vm: BangumiPlayerViewModel
@@ -345,6 +540,10 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
         val publications = CopyOnWriteArrayList<DesktopOriginalVideoAcceptedPublication>()
         val preferenceWrites = CopyOnWriteArrayList<Int>()
         val launchedJobs = CopyOnWriteArrayList<Job>()
+        private val loadCompletions = CopyOnWriteArrayList<Pair<Job, Throwable?>>()
+        fun loadCompletionFailure(job: Job): String =
+            loadCompletions.singleOrNull { it.first === job }?.second?.stackTraceToString()
+                ?: "No recorded failure: completed=${job.isCompleted}, cancelled=${job.isCancelled}"
         val playCalls = AtomicInteger()
         val playQualities = CopyOnWriteArrayList<Int>()
         var beforePreparation: ((DesktopOriginalNativeRecoveryTicket) -> Unit)? = null
@@ -368,12 +567,12 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
             }
         }
         private val capabilities = object : DesktopOriginalVideoPlaybackCapabilities {
-            override fun isHevcSupported() = false
-            override fun isAv1Supported() = false
-            override fun isHdrSupported() = false
-            override fun isDolbyVisionSupported() = false
-            override fun isDolbyAtmosAudioSupported() = false
-            override fun isDolbySoftwareAudioDecoderRequired() = false
+            override fun isHevcSupported(): Boolean { capabilityReads.incrementAndGet(); return false }
+            override fun isAv1Supported(): Boolean { capabilityReads.incrementAndGet(); return false }
+            override fun isHdrSupported(): Boolean { capabilityReads.incrementAndGet(); return false }
+            override fun isDolbyVisionSupported(): Boolean { capabilityReads.incrementAndGet(); return false }
+            override fun isDolbyAtmosAudioSupported(): Boolean { capabilityReads.incrementAndGet(); return false }
+            override fun isDolbySoftwareAudioDecoderRequired(): Boolean { capabilityReads.incrementAndGet(); return false }
         }
         private val network = object : DesktopOriginalVideoOwnerNetwork {
             override fun isMobileData() = false
@@ -552,13 +751,78 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
                     { settings.getSharedPreferences("quality_settings", 0).getInt("default_audio_quality", AUDIO_QUALITY_HI_RES) },
                     { settings.getSharedPreferences("quality_settings", 0).getInt("audio_quality", AUDIO_QUALITY_HI_RES) },
                     { value -> DesktopOriginalPortraitSettings.setAudioQuality(settings, value); preferenceWrites.add(value) },
-                    { false }, { false }, { false }, { false }, { null },
+                    capabilities::isHevcSupported, capabilities::isHdrSupported,
+                    capabilities::isDolbyAtmosAudioSupported, capabilities::isDolbySoftwareAudioDecoderRequired, { null },
                     { _, _, _ -> error("No CDN plugin") }, { _, _, _ -> check(gate.owns()) },
                     { error("No download effect") }, {}, { block ->
                         native.launch(block = block, start = CoroutineStart.LAZY).also { job ->
-                            launchedJobs.add(job); job.start()
+                            launchedJobs.add(job)
+                            job.invokeOnCompletion { cause -> loadCompletions += job to cause }
+                            job.start()
                         }
-                    }, native::commit, native::owns, native::ownsPlaybackSource, network, { false })
+                    }, native::commit, native::owns, native::ownsPlaybackSource, network, capabilities::isDolbyVisionSupported,
+                    publishReadOnlyDetail = { detail, episode, index, intent, postBegin, isLoadCurrent ->
+                        val bodyContext = currentCoroutineContext(); bodyContext.ensureActive(); native.assertCurrent()
+                        val launchCaller = native.captureInitialDetailLaunchCaller()
+                        val bodyCaller = checkNotNull(bodyContext[Job])
+                        if (!isLoadCurrent(launchCaller)) throw CancellationException("Fixture readonly PGC load replaced")
+                        require(detail.episodes?.getOrNull(index) === episode)
+                        val binding = if (postBegin) native.capturedPlaybackBinding()
+                            else (owner.invocations.requireRequestRepository() as DesktopOriginalVideoOwnerRequestRepository).binding
+                        binding.assertCurrent()
+                        val snapshot = owner.captureLoadState()
+                        val request = snapshot.currentRequest
+                        val requestToken = snapshot.currentLoadRequestToken
+                        val primary = repository.captureHomeNavRequest(epoch, 41L, gate::owns)
+                        val admission = binding.captureMetadataAdmission {
+                            val actual = owner.captureLoadState()
+                            !bodyCaller.isCancelled && !launchCaller.isCancelled &&
+                                isLoadCurrent(launchCaller) && actual.currentRequest === request &&
+                                actual.currentLoadRequestToken == requestToken
+                        }
+                        val fact = DesktopOriginalBangumiReadOnlyDetail(detail, episode, index, intent, primary, admission)
+                        val read = ReadOnlyObservation(detail, episode, index, intent, postBegin,
+                            launchCaller, bodyCaller, binding, request, requestToken, fact)
+                        // A late callback is held OUTSIDE every real short admission.
+                        val control = readOnlyControl?.takeIf { it.postBegin == postBegin }
+                        if (control != null) {
+                            control.entered.complete(read)
+                            withContext(NonCancellable) { control.release.await() }
+                        }
+                        bodyContext.ensureActive(); native.assertCurrent(); binding.assertCurrent()
+                        if (!binding.admitCurrentMutation {
+                                native.assertCurrent()
+                                if (!isLoadCurrent(launchCaller)) throw CancellationException("Fixture readonly PGC load replaced")
+                                readOnlyFacts += Triple(detail, episode, index)
+                                readOnlyObservations += read
+                                initialTrace += if (postBegin) "readonly-post" else "readonly-pre"
+                            }) throw CancellationException("Fixture readonly PGC admission retired")
+                    },
+                    prepareMedia = {
+                        // Actual required Raw 15s stage; the controlled CPU port
+                        // supplies neither NativeReady nor a fabricated Success.
+                        currentCoroutineContext().ensureActive(); native.assertCurrent()
+                        val binding = native.capturedPlaybackBinding()
+                        val launchCaller = native.captureInitialDetailLaunchCaller()
+                        requestRepository(binding).also { raw ->
+                            raw.installMediaPreparation {
+                                currentCoroutineContext().ensureActive(); native.assertCurrent(); binding.assertCurrent()
+                                val observation = PreparationObservation(launchCaller, binding)
+                                preparationObservations += observation
+                                initialTrace += "prepare"
+                                val control = mediaPreparationControl
+                                if (control != null) {
+                                    control.entered.complete(observation)
+                                    val completed = if (control.holdAcrossCancellation)
+                                        withContext(NonCancellable) { control.release.await() }
+                                    else control.release.await()
+                                    completed.getOrThrow()
+                                }
+                            }
+                        }.awaitMediaPreparation()
+                        currentCoroutineContext().ensureActive(); native.assertCurrent(); binding.assertCurrent()
+                    },
+                    captureLoadCaller = native::captureInitialDetailLaunchCaller)
                 vm = BangumiPlayerViewModel(environment)
                 vm.attachPlayer(owner.section)
                 recovery = DesktopOriginalPlaybackRecovery(gate.scope,
@@ -605,6 +869,26 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
                     } && applied
                 }
             } catch (_: CancellationException) { false }
+        }
+        suspend fun startInitial(): Job = uiResult { vm.loadBangumiPlay(19, 41); playbackJob() }
+        suspend fun retireInitial(mutation: String, caller: Job, episode: BangumiEpisode) = ui {
+            when (mutation) {
+                "account" -> {
+                    val revision = repository.playbackAuthorizationRevision.value
+                    assertTrue(sessions.setPlaybackAccountMid(42, repository.sessionEpoch, gate::owns))
+                    assertTrue(sessions.setPlaybackAccountMid(null, repository.sessionEpoch, gate::owns))
+                    assertTrue(repository.playbackAuthorizationRevision.value > revision)
+                }
+                "request" -> {
+                    val before = owner.captureLoadState()
+                    val token = owner.playback.beginDesktopPortraitLoad(
+                        PlaybackRequest.create(episode.bvid, episode.aid, episode.cid), native)
+                    assertTrue(token > before.currentLoadRequestToken)
+                }
+                "entry" -> gate.retire()
+                "caller" -> caller.cancel("Retire the exact actual initial PGC launch")
+                else -> error("Unknown retirement $mutation")
+            }
         }
         fun accepted() = checkNotNull(owner.native.current())
         suspend fun load() {
@@ -688,6 +972,9 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
         private fun entryLock() = DesktopOriginalVideoRootGate::class.java.getDeclaredField("lock").apply { isAccessible = true }.get(gate)
         private fun nativeLock() = MpvPlayer::class.java.getDeclaredField("lock").apply { isAccessible = true }.get(player)
         suspend fun close() {
+            // Assertion failure must not leave an owned NonCancellable test port held.
+            mediaPreparationControl?.release?.complete(Result.failure(CancellationException("Fixture closing")))
+            readOnlyControl?.release?.complete(Unit)
             if (::recovery.isInitialized) recovery.close()
             if (::vm.isInitialized) ui { try { vm.close() } catch (retired: CancellationException) { check(!gate.owns()) } }
             if (::actor.isInitialized) actor.close()

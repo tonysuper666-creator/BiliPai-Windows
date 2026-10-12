@@ -28,7 +28,7 @@ import kotlinx.coroutines.CancellationException
     val entry by pgc.entries.collectAsState()
     var initialized by remember(current, platforms, key) { mutableStateOf(false) }
     LaunchedEffect(current, platforms, key) {
-        platforms.awaitNativeInitialization()
+        // The actual PGC request fetches detail before its required real media preparation.
         if (!current.owns() || !routes.containsEntry(key)) throw CancellationException("Original PGC leaf retired")
         pgc.open(key)
         initialized = true

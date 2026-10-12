@@ -144,6 +144,7 @@ class DesktopBangumiDefaultQualityTest {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default +
             CoroutineExceptionHandler { _, failure -> uncaught += failure })
         val requests = CopyOnWriteArrayList<Int>()
+        val readOnlyFacts = CopyOnWriteArrayList<Triple<BangumiDetail, BangumiEpisode, Int>>()
         val plans = CopyOnWriteArrayList<DesktopOriginalBangumiNativeSourcePlan>()
         val qualityCaptures = CopyOnWriteArrayList<BangumiPlayerState.Success>()
         val resetPlayers = CopyOnWriteArrayList<Boolean>()
@@ -249,7 +250,37 @@ class DesktopBangumiDefaultQualityTest {
                     DesktopHomeNetworkObservation(true, 3, 71L, false, "cpu-memory-transport"),
                     downstreamBandwidthKbps = null,
                 )
-            }, { false })
+            }, { false },
+            publishReadOnlyDetail = { detail, episode, index, _, _, isLoadCurrent ->
+                currentCoroutineContext().ensureActive(); settings.requireCurrent()
+                check(active.get()); require(detail.episodes?.getOrNull(index) === episode)
+                // Await registration of this actual existing VM launch; never
+                // synthesize a Job or compare a nested body Job to the parent.
+                val actualLoad = withTimeout<Job>(4_000L) {
+                    while (true) {
+                        val candidate = launchedRequests.singleOrNull { it.isActive && isLoadCurrent(it) }
+                        if (candidate != null) return@withTimeout candidate
+                        yield()
+                    }
+                    error("Unreachable registered PGC launch")
+                }
+                if (!active.get() || !isLoadCurrent(actualLoad))
+                    throw CancellationException("CPU plan readonly load retired")
+                readOnlyFacts += Triple(detail, episode, index)
+            },
+            prepareMedia = {
+                // Existing CPU plan-only publisher and fixed supplied capabilities;
+                // no MPV/DLL/hardware readiness or accepted source is claimed.
+                currentCoroutineContext().ensureActive(); settings.requireCurrent()
+                check(active.get() && scope.isActive)
+            },
+            captureLoadCaller = {
+                // This CPU fixture launches directly in scope; this is its
+                // actual returned outer load Job, with no invocation wrapper.
+                currentCoroutineContext().ensureActive(); settings.requireCurrent()
+                check(active.get() && scope.isActive)
+                checkNotNull(currentCoroutineContext()[Job])
+            })
         val vm: BangumiPlayerViewModel = BangumiPlayerViewModel(environment)
         init {
             store.update("quality_settings", mapOf("auto_highest_quality" to JsonPrimitive(autoHighest)))

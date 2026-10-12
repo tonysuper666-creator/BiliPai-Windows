@@ -43,6 +43,8 @@ import com.android.purebilibili.feature.video.ui.components.RichCommentText
 import com.android.purebilibili.feature.video.subtitle.*
 import com.android.purebilibili.feature.video.ui.section.resolveSubtitleLanguageLabel
 import com.android.purebilibili.feature.video.ui.section.VideoSubtitleOverlayHost
+import com.android.purebilibili.feature.video.ui.overlay.NextWatchOverlay
+import kotlinx.coroutines.ensureActive
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
@@ -139,6 +141,20 @@ internal class DesktopWindowsVideoActions(
                 current() && rootEnvironment.owns() && rootEnvironment.currentKey() === route
             }
         }
+    }
+    fun navigateNextWatchFromThisClick(displayed: DesktopOriginalVideoNextWatchHint): Boolean {
+        if (!current() || !rootEnvironment.owns() || rootEnvironment.currentKey() !== route) return false
+        // Capture THIS displayed offer synchronously, before the actual click task.
+        val click = shell.playback.captureNextWatchNavigation(displayed) ?: return false
+        if (click.assembly !== assembly) return false
+        partScope.launch {
+            val caller = requireNotNull(kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job])
+            caller.ensureActive()
+            shell.playback.navigateManual(click, true, caller) {
+                current() && rootEnvironment.owns() && rootEnvironment.currentKey() === route
+            }
+        }
+        return true
     }
     fun feedbackPresentationCurrent(): Boolean = currentPresentationAlive && !latestPip &&
         rootEnvironment.owns() && rootEnvironment.currentKey() === route &&
@@ -267,6 +283,7 @@ internal class DesktopWindowsVideoActions(
         }
     }
     val state by native.state.collectAsState()
+    val nextWatchHint by assembly.nextWatch.state.collectAsState()
     val playback by shell.playback.state.collectAsState()
     val sponsorPresentation by assembly.playback.desktopSponsorPresentation.collectAsState()
     val sleepTimerMinutes by assembly.playback.sleepTimerMinutes.collectAsState()
@@ -1010,6 +1027,19 @@ internal class DesktopWindowsVideoActions(
                                     DesktopWindowsSponsorCommunityOverlay(shell.playback, assembly, viewportSource,
                                         sponsorPresentation, showSponsorSegment, ::sponsorCurrent, ::admitSponsorAction,
                                         onCloseSegment = { showSponsorSegment = false })
+                                    NextWatchOverlay(
+                                        settingsContext = platforms.holder.settingsContext,
+                                        mediaKey = "${success?.info?.bvid ?: route.bvid}:${success?.info?.cid ?: 0L}",
+                                        eligible = feedbackPresentationCurrent() && chromeWindowFocused && pictureCurrent(viewportSource) &&
+                                            success != null && !state.audioOnly && (!fullscreen || !chromeVisible) &&
+                                            !interactiveChoicePanel.visible && !showCollection && !showPlaybackQueue &&
+                                            !showSponsorSegment && seekPreview == null && !barInteraction.operationHeld,
+                                        playing = !(state.nativePaused ?: state.paused) && !state.loading && !state.pausedForCache &&
+                                            !state.ended && state.error == null && state.failure == null,
+                                        hint = nextWatchHint,
+                                        resolve = assembly.nextWatch::capture,
+                                        play = ::navigateNextWatchFromThisClick,
+                                    )
                                     DesktopWindowsVideoSeekPreviewHost(
                                         preview = seekPreview, source = viewportSource, success = success,
                                         current = chromeVisible && pictureCurrent(viewportSource), viewportSize = viewportSize,

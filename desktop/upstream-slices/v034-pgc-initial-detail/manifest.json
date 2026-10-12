@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+  "baselineCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "sources": [
+    {
+      "file": "BasePlayerViewModel.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/player/BasePlayerViewModel.kt",
+      "bytes": 14563,
+      "sha256": "40f38ceb1e9372ee3bd9edbbc833be8675588d5ac71aacd62aa9dbac66af761b",
+      "gitBlob": "1bd8571e5a9c2b9930cb147a8da512fb4e9c4c9e",
+      "referenceOnly": true
+    },
+    {
+      "file": "BangumiPlayerViewModel.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+      "bytes": 65157,
+      "sha256": "1e3835248ec24a971e58295b2a4e41acbc29975bfcc716bab2d0eeeade3c3d96",
+      "gitBlob": "f11c395760a44bbe0f3d0c3298c10e49fc51f488",
+      "referenceOnly": true
+    }
+  ],
+  "outputs": {
+    "com/android/purebilibili/core/player/DesktopOriginalBangumiBasePlayerViewModel.kt": {
+      "beforeSha256LF": "d378c86dbf7ce0ba9523def0a2f3db6f7d061e403f4bf29ace7a497df622598a",
+      "afterSha256LF": "597e0d25ab3e8f28610ee801090e14920454bea25a7da2157ae42e78fd67a1b1",
+      "edits": [
+        {
+          "name": "attach-has-no-early-native-volume",
+          "offsetBytes": 1581,
+          "before": "        attachedPlayer = player\n        environment.applyPreferredVolume(player)\n",
+          "after": "        attachedPlayer = player\n        // Binding/listeners may attach before native readiness. Real media\n        // publication reapplies preferred volume after required preparation.\n"
+        }
+      ]
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt": {
+      "beforeSha256LF": "4bd0c01f9a4d6f597ac152561b30d6d925634e91dd28519aff272f89f1f006cf",
+      "afterSha256LF": "9bb6aa950933daaac4ca636954d1808b84261f8801ae45f38841ca7d48b79577",
+      "edits": [
+        {
+          "name": "pgc-exact-overlay-1",
+          "offsetBytes": 1384,
+          "before": "",
+          "after": "import kotlinx.coroutines.ensureActive\n"
+        },
+        {
+          "name": "pgc-exact-overlay-2",
+          "offsetBytes": 11915,
+          "before": "",
+          "after": "        val desktopOpeningIntent = desktopPlaybackIntentRevision\n"
+        },
+        {
+          "name": "pgc-exact-overlay-3",
+          "offsetBytes": 15920,
+          "before": "",
+          "after": "            val desktopOpeningCaller = environment.captureLoadCaller()\n"
+        },
+        {
+          "name": "pgc-exact-overlay-4",
+          "offsetBytes": 16047,
+          "before": "",
+          "after": "            try {\n"
+        },
+        {
+          "name": "pgc-exact-overlay-5",
+          "offsetBytes": 17757,
+          "before": "",
+          "after": "                environment.publishReadOnlyDetail(detail, episode, episodeIndex,\n                    desktopOpeningIntent, false) { launch ->\n                    desktopPlaybackIntentRevision == desktopOpeningIntent && playbackLoadJob === launch\n                }\n"
+        },
+        {
+          "name": "pgc-exact-overlay-6",
+          "offsetBytes": 18570,
+          "before": "                    )\n",
+          "after": "                    ),\n                    desktopLoadIntent = desktopOpeningIntent\n"
+        },
+        {
+          "name": "pgc-exact-overlay-7",
+          "offsetBytes": 19681,
+          "before": "",
+          "after": "            }\n            } catch (cancelled: kotlinx.coroutines.CancellationException) {\n                throw cancelled\n            } catch (failure: Exception) {\n                kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                if (desktopPlaybackIntentRevision == desktopOpeningIntent && playbackLoadJob === desktopOpeningCaller) {\n                    environment.assertCurrent()\n                    _uiState.value = BangumiPlayerState.Error(failure.message ?: \"加载失败\", canRetry = true)\n                }\n"
+        },
+        {
+          "name": "pgc-exact-overlay-8",
+          "offsetBytes": 21887,
+          "before": "        desktopRecoveryVideoSelector: ((Dash, Int) -> DashVideo?)? = null\n",
+          "after": "        desktopRecoveryVideoSelector: ((Dash, Int) -> DashVideo?)? = null,\n        desktopLoadIntent: Long? = null\n"
+        },
+        {
+          "name": "pgc-exact-overlay-9",
+          "offsetBytes": 22181,
+          "before": "            val revision = desktopPlaybackIntentRevision\n            environment.native.beginEpisodeWithAuthorizationRecapture(detail, episode,\n                isIntentCurrent = { desktopPlaybackIntentRevision == revision },\n                onRetired = { failedLaunch, currentOrigin, admitOrigin ->\n                    recaptureAuthorizationPlayback(detail, episode, episodeIndex, startPositionMs,\n                        revision, desktopAuthorizationRecaptures, failedLaunch, currentOrigin, admitOrigin)\n                })\n",
+          "after": "            val revision = desktopLoadIntent ?: desktopPlaybackIntentRevision\n            val desktopMediaCaller = environment.captureLoadCaller()\n            try {\n                environment.native.beginEpisodeWithAuthorizationRecapture(detail, episode,\n                    isIntentCurrent = { desktopPlaybackIntentRevision == revision },\n                    onRetired = { failedLaunch, currentOrigin, admitOrigin ->\n                        recaptureAuthorizationPlayback(detail, episode, episodeIndex, startPositionMs,\n                            revision, desktopAuthorizationRecaptures, failedLaunch, currentOrigin, admitOrigin)\n                    })\n                // Fresh post-begin PGC admission; the pre-read witness is not retagged.\n                environment.publishReadOnlyDetail(detail, episode, episodeIndex, revision, true) { launch ->\n                    desktopPlaybackIntentRevision == revision && playbackLoadJob === launch\n                }\n                // Actual Root 15s preparation precedes every media capability/URL/cache/native use.\n                environment.prepareMedia()\n            } catch (cancelled: kotlinx.coroutines.CancellationException) {\n                throw cancelled\n            } catch (failure: Exception) {\n                kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                if (desktopLoadIntent != null && desktopPlaybackIntentRevision == desktopLoadIntent &&\n                    playbackLoadJob === desktopMediaCaller) {\n                    environment.assertCurrent()\n                    _uiState.value = BangumiPlayerState.Error(failure.message ?: \"播放器准备失败，请手动重试\", canRetry = true)\n                }\n                return\n            }\n"
+        },
+        {
+          "name": "pgc-exact-overlay-10",
+          "offsetBytes": 42326,
+          "before": "",
+          "after": "        val desktopEpisodeIntent = desktopPlaybackIntentRevision\n"
+        },
+        {
+          "name": "pgc-exact-overlay-11",
+          "offsetBytes": 43135,
+          "before": "            fetchPlayUrl(currentState.seasonDetail, episode, newIndex)\n",
+          "after": "            fetchPlayUrl(currentState.seasonDetail, episode, newIndex, desktopLoadIntent = desktopEpisodeIntent)\n"
+        },
+        {
+          "name": "pgc-exact-overlay-12",
+          "offsetBytes": 43386,
+          "before": "",
+          "after": "        val desktopReloadIntent = desktopPlaybackIntentRevision\n"
+        },
+        {
+          "name": "pgc-exact-overlay-13",
+          "offsetBytes": 43614,
+          "before": "            fetchPlayUrl(currentState.seasonDetail, currentState.currentEpisode, currentState.currentEpisodeIndex)\n",
+          "after": "            fetchPlayUrl(currentState.seasonDetail, currentState.currentEpisode, currentState.currentEpisodeIndex,\n                desktopLoadIntent = desktopReloadIntent)\n"
+        },
+        {
+          "name": "pgc-exact-overlay-14",
+          "offsetBytes": 72767,
+          "before": "                desktopAuthorizationRecaptures = recaptures + 1)\n",
+          "after": "                desktopAuthorizationRecaptures = recaptures + 1, desktopLoadIntent = revision)\n"
+        }
+      ]
+    }
+  },
+  "scope": "Two complete a69 provenance/reference sources only. Runtime remains the existing canonical79e plus previously retained Windows original-body adaptations; this finite PGC overlay adds no direct a69 method extraction."
+}
