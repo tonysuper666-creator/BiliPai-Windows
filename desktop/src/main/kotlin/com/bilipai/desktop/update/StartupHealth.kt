@@ -12,6 +12,27 @@ import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 
 internal object StartupHealth {
+    /** Direct child plus descendants actually observed from that launched child.
+     * This is bounded Java ProcessHandle evidence, not a Windows full-tree claim.
+     * Retain early observations if the direct parent dies before termination. */
+    internal class DescendantObservation(private val process: Process) {
+        private val seen = linkedMapOf<Long, ProcessHandle>()
+        private var observed = false
+        private var failed = false
+        init { observe() }
+        fun observe() {
+            if (!process.isAlive) return
+            try {
+                process.toHandle().descendants().use { children ->
+                    children.forEach { seen[it.pid()] = it }
+                }
+                observed = true
+            } catch (_: Exception) { failed = true }
+        }
+        fun targets(): List<ProcessHandle> = seen.values.toList()
+        fun canConfirm(): Boolean = observed && !failed
+    }
+
     suspend fun await(
         process: Process,
         healthFile: Path,
@@ -20,11 +41,13 @@ internal object StartupHealth {
         stabilityMs: Long = DesktopUpdater.STARTUP_STABILITY_MS,
         pollMs: Long = 100,
         expectedVersion: String? = null,
+        observation: DescendantObservation? = null,
     ): Boolean {
         val deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutMs)
         var acknowledgedAt: Long? = null
         while (System.nanoTime() < deadline) {
             currentCoroutineContext().ensureActive()
+            observation?.observe()
             // A marker left by a process that immediately crashed cannot activate that installation.
             if (!process.isAlive) return false
             val acknowledged = Files.isRegularFile(healthFile, NOFOLLOW_LINKS) && !Files.isSymbolicLink(healthFile) &&
@@ -47,9 +70,11 @@ internal object StartupHealth {
         return false
     }
 
-    suspend fun terminate(process: Process) = withContext(NonCancellable + Dispatchers.IO) {
+    suspend fun terminate(process: Process, observation: DescendantObservation = DescendantObservation(process)) =
+        withContext(NonCancellable + Dispatchers.IO) {
         // Only descendants observed from this directly launched process are eligible. Never scan by name or title.
-        val descendants = runCatching { process.toHandle().descendants().use { it.toList() } }.getOrDefault(emptyList())
+        observation.observe()
+        val descendants = observation.targets()
         descendants.asReversed().forEach { child -> runCatching { if (child.isAlive) child.destroy() } }
         if (process.isAlive) process.destroy()
         try {
@@ -67,6 +92,11 @@ internal object StartupHealth {
             descendants.forEach { child -> runCatching { if (child.isAlive) child.destroyForcibly() } }
             process.destroyForcibly()
             Thread.currentThread().interrupt()
+        }
+        // A best-effort signal is insufficient for reusing the same download files.
+        // Unknown observations or any remaining observed owner keep rollback frozen.
+        check(observation.canConfirm() && !process.isAlive && descendants.none { it.isAlive }) {
+            "更新子进程退役状态无法确认；当前下载队列保持冻结"
         }
     }
 }

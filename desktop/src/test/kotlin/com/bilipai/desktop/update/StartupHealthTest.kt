@@ -77,10 +77,58 @@ class StartupHealthTest {
         assertTrue(process.destroyed)
     }
 
-    private class ControlledProcess : Process() {
+    @Test
+    fun `unknown descendant enumeration cannot confirm retirement even after direct child stops`() = runBlocking {
+        val process = ControlledProcess(knownDescendants = false)
+        assertFailsWith<IllegalStateException> { StartupHealth.terminate(process) }
+        assertFalse(process.alive)
+        assertTrue(process.destroyed)
+    }
+
+    @Test
+    fun `observed descendant is retired when direct parent died before cleanup`() = runBlocking {
+        val child = ControlledProcess()
+        val parent = ControlledProcess(children = listOf(child))
+        val observed = StartupHealth.DescendantObservation(parent)
+        parent.alive = false
+        StartupHealth.terminate(parent, observed)
+        assertFalse(child.alive)
+        assertTrue(child.destroyed)
+    }
+
+    private class ControlledProcess(
+        private val knownDescendants: Boolean = true,
+        private val children: List<ControlledProcess> = emptyList(),
+    ) : Process() {
         @Volatile var alive = true
         @Volatile var destroyed = false
         override fun isAlive() = alive
+        private val handle = object : ProcessHandle {
+            override fun pid(): Long = System.identityHashCode(this@ControlledProcess).toLong()
+            override fun parent(): java.util.Optional<ProcessHandle> = java.util.Optional.empty()
+            override fun children(): java.util.stream.Stream<ProcessHandle> =
+                this@ControlledProcess.children.map { it.toHandle() }.stream()
+            override fun descendants(): java.util.stream.Stream<ProcessHandle> = children()
+            override fun info(): ProcessHandle.Info = object : ProcessHandle.Info {
+                override fun command(): java.util.Optional<String> = java.util.Optional.empty()
+                override fun commandLine(): java.util.Optional<String> = java.util.Optional.empty()
+                override fun arguments(): java.util.Optional<Array<String>> = java.util.Optional.empty()
+                override fun startInstant(): java.util.Optional<java.time.Instant> = java.util.Optional.empty()
+                override fun totalCpuDuration(): java.util.Optional<java.time.Duration> = java.util.Optional.empty()
+                override fun user(): java.util.Optional<String> = java.util.Optional.empty()
+            }
+            override fun onExit(): java.util.concurrent.CompletableFuture<ProcessHandle> =
+                java.util.concurrent.CompletableFuture<ProcessHandle>().also { if (!alive) it.complete(this) }
+            override fun supportsNormalTermination() = true
+            override fun destroy(): Boolean { this@ControlledProcess.destroy(); return true }
+            override fun destroyForcibly(): Boolean { this@ControlledProcess.destroyForcibly(); return true }
+            override fun isAlive() = alive
+            override fun compareTo(other: ProcessHandle): Int = pid().compareTo(other.pid())
+        }
+        override fun toHandle(): ProcessHandle {
+            check(knownDescendants) { "Controlled descendant enumeration refusal" }
+            return handle
+        }
         override fun getOutputStream(): OutputStream = OutputStream.nullOutputStream()
         override fun getInputStream(): InputStream = InputStream.nullInputStream()
         override fun getErrorStream(): InputStream = InputStream.nullInputStream()

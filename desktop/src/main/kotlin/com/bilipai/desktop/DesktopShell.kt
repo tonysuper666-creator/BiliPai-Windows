@@ -449,6 +449,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         storageSettingsContext.requireCurrent()
         resolveDesktopOriginalDownloadDestination(raw,DesktopDownloadManager.defaultDownloadRoot())
     } }
+    val downloadUpdateHandoffPending by downloads.updateHandoffPending.collectAsState()
     val danmaku = remember(player, repository, hostWindow) { player?.let { DanmakuOverlay(it, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(hostWindow) { "Danmaku requires the mounted Root window" } }, httpClient = repository.httpClient) } }
     val subtitleAssets = remember(repository) { DesktopSubtitleAssets(repository.httpClient) }
     val ordinaryVideo = remember(repository, pluginStore, scope) {
@@ -1340,7 +1341,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val castMediaFactory: suspend () -> com.bilipai.desktop.cast.DesktopCastMediaPublication? = { currentCastMedia() }
     fun prepareUpdate(update: WindowsUpdate, manual: Boolean) {
-        if (activatingUpdate || updateJob?.isActive == true) return
+        if (activatingUpdate || downloadUpdateHandoffPending || updateJob?.isActive == true) return
         if (manual) manuallyRequested = true
         updateJob = scope.launch(start = CoroutineStart.LAZY) {
             try {
@@ -1556,15 +1557,30 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         followDesktopAutomaticUpdateChecks(pluginStore, { scope.isActive && !latestDynamicIsClosing() },
             { updater.autoCheck() }, nextDelayMs = { updater.automaticCheckDelayMs() })
     }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, pluginJsonUpdateHold, pluginJsonUpdateActivity, messageUpdateRoot, messageUpdateActivity, activatingUpdate, updateJob) {
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, pluginJsonUpdateHold, pluginJsonUpdateActivity, messageUpdateRoot, messageUpdateActivity, downloadUpdateHandoffPending, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && !pluginJsonUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && !pluginJsonUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true && !downloadUpdateHandoffPending) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
-                    try { if (updater.activatePreparedUpdate(status.prepared)) onExit() }
-                    finally { activatingUpdate = false; manuallyRequested = false; updateJob = null }
+                    var downloadTicket: DesktopDownloadManager.UpdateHandoff? = null
+                    try {
+                        if (updater.activatePreparedUpdate(status.prepared,
+                            beforeLaunch = {
+                                // Capture before waiting so failure/cancel always retains
+                                // the exact ticket needed by afterFailedLaunch.
+                                downloadTicket = downloads.beginUpdateHandoff()
+                                downloads.awaitUpdateHandoff(checkNotNull(downloadTicket))
+                            },
+                            onCommitted = { downloadTicket?.let(downloads::commitUpdateHandoff) },
+                            afterFailedLaunch = {
+                                downloadTicket?.let { downloads.rollbackUpdateHandoff(it) }
+                            })) onExit()
+                    } catch (cancelled: CancellationException) { throw cancelled
+                    } catch (failure: Exception) {
+                        error = failure.message ?: "更新交接未完成；下载队列保持冻结，请关闭客户端后重新打开"
+                    } finally { activatingUpdate = false; manuallyRequested = false; updateJob = null }
                 }.also { it.start() }
             }
             else -> Unit
@@ -2752,7 +2768,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             entryKey == BiliPaiNavKey.DownloadList -> {
                                 val owner = requireNotNull(homeRootRef.get()?.retainer?.current()).entry.gate
                                 val binding = remember(owner) { DesktopOriginalDownloadListBindings(globalPluginContext,downloads,owner.scope,
-                                    owner::owns,owner::commit,::desktopDownloadNetworkAvailable,{error=it}) }
+                                    { owner.owns() && !activatingUpdate },
+                                    { action -> !activatingUpdate && owner.commit { if (!activatingUpdate) action() } },
+                                    ::desktopDownloadNetworkAvailable,{error=it}) }
                                 DesktopOriginalDownloadListHost(binding,{commands.back()},
                                     {bvid->commands.video(BiliPaiNavKey.VideoDetail(bvid,sourceRoute="download_list"))},
                                     {taskId->commands.push(BiliPaiNavKey.OfflineVideoPlayer(taskId))})
@@ -2883,7 +2901,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false },
-            veyraTracking = veyraTracking)
+            veyraTracking = veyraTracking, downloadHandoffPending = downloadUpdateHandoffPending)
     }
     }
     }
@@ -2940,7 +2958,7 @@ private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, 
 @Composable
 private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activating: Boolean, editActive: Boolean, playbackActive: Boolean,
     onAutomatic: (Boolean) -> Unit, onPrepare: (WindowsUpdate) -> Unit, onActivate: () -> Unit, onDismiss: () -> Unit,
-    veyraTracking: com.bilipai.desktop.update.VeyraTrackingState) {
+    veyraTracking: com.bilipai.desktop.update.VeyraTrackingState, downloadHandoffPending: Boolean = false) {
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Windows 更新") }, text = {
         Column(Modifier.width(380.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Text(when(val status = state) {
@@ -2951,7 +2969,7 @@ private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activati
                 is UpdateState.Available -> "新版本 ${status.update.version}，${status.update.size / 1024 / 1024} MB"
                 is UpdateState.Downloading -> "正在下载：${status.receivedBytes / 1024 / 1024} / ${status.totalBytes / 1024 / 1024} MB"
                 UpdateState.Verifying -> "正在校验更新包"
-                is UpdateState.Prepared -> if (editActive) "更新已下载，结束编辑后安装" else if (playbackActive) "更新已下载，关闭播放后安装" else "更新已下载，等待安装"
+                is UpdateState.Prepared -> if (downloadHandoffPending) "下载队列交接尚未解除，请关闭客户端后重新打开" else if (editActive) "更新已下载，结束编辑后安装" else if (playbackActive) "更新已下载，关闭播放后安装" else "更新已下载，等待安装"
                 UpdateState.Launching -> "正在启动新版本"
                 UpdateState.Launched -> "新版本已启动"
                 is UpdateState.Failed -> status.message
@@ -2965,12 +2983,12 @@ private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activati
                 veyraTracking.catalogError != null -> "视频增强更新：兼容目录验证失败"
                 else -> "视频增强更新：尚未检查"
             })
-            Row(verticalAlignment = Alignment.CenterVertically) { Text("自动更新，播放时延后", Modifier.weight(1f)); Switch(automatic, onAutomatic, enabled = !activating) }
+            Row(verticalAlignment = Alignment.CenterVertically) { Text("自动更新，播放时延后", Modifier.weight(1f)); Switch(automatic, onAutomatic, enabled = !activating && !downloadHandoffPending) }
         }
     }, confirmButton = {
         when(val status = state) {
-            is UpdateState.Available -> TextButton(onClick = { onPrepare(status.update) }, enabled = !activating) { Text("下载并更新") }
-            is UpdateState.Prepared -> TextButton(onClick = onActivate, enabled = !activating) { Text(if (editActive) "结束编辑后更新" else if (playbackActive) "关闭播放后更新" else "安装更新") }
+            is UpdateState.Available -> TextButton(onClick = { onPrepare(status.update) }, enabled = !activating && !downloadHandoffPending) { Text("下载并更新") }
+            is UpdateState.Prepared -> TextButton(onClick = onActivate, enabled = !activating && !downloadHandoffPending) { Text(if (editActive) "结束编辑后更新" else if (playbackActive) "关闭播放后更新" else "安装更新") }
             else -> TextButton(onClick = onDismiss) { Text("完成") }
         }
     })

@@ -37,6 +37,7 @@ class DesktopUpdater private constructor(
     private val childLocalAppData: Path?,
     private val onProcessStarted: (Process) -> Unit,
     private val catalogLookupForTest: (suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer?)? = null,
+    private val processFactoryForTest: ((ProcessBuilder) -> Process)? = null,
 ) : AutoCloseable {
     constructor() : this(loadBuildConfig(), defaultUpdateRoot(), defaultClient(), null, {})
 
@@ -59,6 +60,9 @@ class DesktopUpdater private constructor(
     private var retainedLease: UpdateStorage.StageLease? = null
     private val lifetime = Any()
     @Volatile private var closed = false
+    // Only one launch is possible under mutex. Unknown child retirement preserves
+    // its prepared/stage lease even if this updater owner is later disposed.
+    @Volatile private var childRetirementPending = false
 
     /** Disposal marks the owner closed without waiting on a coroutine mutex or an IO operation. */
     override fun close() {
@@ -67,6 +71,7 @@ class DesktopUpdater private constructor(
     }
 
     private fun discardRetainedPrepared() {
+        if (childRetirementPending) return
         retainedPrepared = null
         retainedArchiveSha256 = null
         retainedLease?.close()
@@ -74,7 +79,7 @@ class DesktopUpdater private constructor(
     }
 
     private fun releaseClosedOwnerIfIdle() {
-        if (!closed || !mutex.tryLock()) return
+        if (!closed || childRetirementPending || !mutex.tryLock()) return
         try { discardRetainedPrepared() } finally { mutex.unlock() }
     }
 
@@ -241,7 +246,12 @@ class DesktopUpdater private constructor(
     }
 
     /** The UI calls this only after its atomic playback/task idle check. True permits the old app to exit. */
-    suspend fun activatePreparedUpdate(prepared: PreparedUpdate): Boolean = withContext(Dispatchers.IO) {
+    suspend fun activatePreparedUpdate(
+        prepared: PreparedUpdate,
+        beforeLaunch: suspend () -> Unit = {},
+        onCommitted: () -> Unit = {},
+        afterFailedLaunch: suspend () -> Unit = {},
+    ): Boolean = withContext(Dispatchers.IO) {
         if (closed || disabledReason != null || !mutex.tryLock()) return@withContext false
         var attempt: LaunchAttempt? = null
         var committed = false
@@ -252,15 +262,20 @@ class DesktopUpdater private constructor(
         }
         try {
             ensureOpenAndActive()
+            require(!childRetirementPending) { "之前更新子进程的退役状态无法确认" }
             require(ownsPrepared) { "更新准备状态已失效，请重新检查更新" }
             require(retainedLease?.holds(prepared.stagingDirectory) == true) { "更新安装目录租约已失效" }
             validateUpdate(prepared.update)
             require(UpdateStorage.ownedStage(updateRoot, prepared.stagingDirectory, requireNotNull(repository)) != null &&
                 validStoredExecutable(prepared.executable.toString()) == prepared.executable) { "更新安装目录校验失败" }
             val observed = readActiveInstallationSnapshot()
+            // Root freezes and actually drains its existing download owner here.
+            // A prepared ZIP and one UI idle observation alone do not grant launch.
+            beforeLaunch()
+            ensureOpenAndActive()
             mutableState.value = UpdateState.Launching
             attempt = launchInstallation(prepared.executable, emptyList())
-            require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
+            require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version, observation = attempt.descendants)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
             ensureOpenAndActive()
             val previous = previousInstallation(observed.installation)
             ensureOpenAndActive()
@@ -271,6 +286,8 @@ class DesktopUpdater private constructor(
                 "更新注册状态已改变、已有相同或更高版本，或注册事务暂不可用；当前版本继续运行"
             }
             committed = true
+            childRetirementPending = false
+            onCommitted() // Contract: synchronous, nonthrowing memory retirement only.
             discard = true
             mutableState.value = UpdateState.Launched
             pruneInstallations()
@@ -286,9 +303,15 @@ class DesktopUpdater private constructor(
             false
         } finally {
             try {
-                if (!committed) attempt?.let { StartupHealth.terminate(it.process) }
+                if (!committed) withContext(kotlinx.coroutines.NonCancellable) {
+                    attempt?.let { StartupHealth.terminate(it.process, it.descendants); childRetirementPending = false }
+                    check(!childRetirementPending) { "更新子进程退役状态无法确认，不能恢复下载队列" }
+                    // Runs for ordinary failure AND cancellation, including a prelaunch
+                    // cancellation after Root already captured its unique transfer ticket.
+                    afterFailedLaunch()
+                }
             } finally {
-                try { if (discard) discardRetainedPrepared() }
+                try { if (discard && !childRetirementPending) discardRetainedPrepared() }
                 finally { finishOperation() }
             }
         }
@@ -403,6 +426,7 @@ class DesktopUpdater private constructor(
 
     private suspend fun launchInstallation(executable: Path, args: List<String>): LaunchAttempt {
         ensureOpenAndActive()
+        check(!childRetirementPending) { "之前更新子进程的退役状态无法确认" }
         val stage = stageForExecutable(executable) ?: error("更新启动路径无效")
         val launchDirectory = Files.createDirectory(stage.resolve("launch-${UUID.randomUUID()}"))
         val token = UUID.randomUUID().toString()
@@ -418,10 +442,16 @@ class DesktopUpdater private constructor(
                 listOf("BILIPAI_MPV_PATH", "JAVA_TOOL_OPTIONS", "_JAVA_OPTIONS", "JDK_JAVA_OPTIONS").forEach(::remove)
             }
         }
-        val process = builder.start()
+        val process = processFactoryForTest?.invoke(builder) ?: builder.start()
+        childRetirementPending = true
+        val observation = StartupHealth.DescendantObservation(process)
         try { onProcessStarted(process) }
-        catch (error: Throwable) { StartupHealth.terminate(process); throw error }
-        return LaunchAttempt(process, healthFile, token)
+        catch (error: Throwable) {
+            try { StartupHealth.terminate(process, observation); childRetirementPending = false }
+            catch (cleanup: Throwable) { error.addSuppressed(cleanup) }
+            throw error
+        }
+        return LaunchAttempt(process, healthFile, token, observation)
     }
 
     private fun lastCheckTime(): Long = runCatching { Files.readString(updateRoot.resolve("last-check.txt")).trim().toLong() }.getOrDefault(0)
@@ -582,7 +612,7 @@ class DesktopUpdater private constructor(
                     lease = UpdateStorage.tryLeaseStage(updateRoot, stage, requireNotNull(repository)) ?: continue
                     require(validStoredExecutable(executable.toString()) == executable) { "更新启动目录已改变" }
                     attempt = launchInstallation(executable, args.toList())
-                    if (StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = version)) {
+                    if (StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = version, observation = attempt.descendants)) {
                         ensureOpenAndActive()
                         beginInstallationCommit()
                         val selected = if (version == active.version && recordedPath == active.executablePath) active
@@ -590,17 +620,22 @@ class DesktopUpdater private constructor(
                         if (!commitActiveInstallation(observed, selected, upgrade = false, registeredExecutable = executable))
                             return@withContext false
                         committed = true
+                        childRetirementPending = false
                         pruneInstallations()
                         return@withContext true
                     }
                 } catch (cancelled: CancellationException) {
                     throw cancelled
-                } catch (_: Exception) {
+                } catch (error: Exception) {
+                    if (childRetirementPending && attempt == null) throw error
                     ensureOpenAndActive()
                     // A damaged active update falls back to its preceding healthy version or original launcher.
                 } finally {
-                    try { if (!committed) attempt?.let { StartupHealth.terminate(it.process) } }
-                    finally { lease?.close() }
+                    try { if (!committed) attempt?.let { StartupHealth.terminate(it.process, it.descendants); childRetirementPending = false } }
+                    finally {
+                        if (childRetirementPending) { retainedLease = lease; lease = null }
+                        else lease?.close()
+                    }
                 }
             }
             false
@@ -641,6 +676,7 @@ class DesktopUpdater private constructor(
             onProcessStarted: (Process) -> Unit,
             executable: String = "BiliPai Windows.exe",
             compatibleCatalog: suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer? = { null },
+            processFactory: ((ProcessBuilder) -> Process)? = null,
         ): DesktopUpdater {
             require(DesktopVersion.parse(currentVersion) != null && validRepository(repository))
             val childData = childLocalAppData.toAbsolutePath().normalize()
@@ -648,7 +684,7 @@ class DesktopUpdater private constructor(
                 "Integration update root must belong to the isolated child LOCALAPPDATA"
             }
             return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, executable = executable),
-                updateRoot, client, childData, onProcessStarted, compatibleCatalog)
+                updateRoot, client, childData, onProcessStarted, compatibleCatalog, processFactory)
         }
         /** Call before creating the UI; true means a previously verified newer window is running. */
         fun launchInstalledUpdateIfNewer(args: Array<String>): Boolean = runBlocking {
@@ -697,7 +733,8 @@ class DesktopUpdater private constructor(
         }
     }
 
-    private data class LaunchAttempt(val process: Process, val healthFile: Path, val token: String)
+    private data class LaunchAttempt(val process: Process, val healthFile: Path, val token: String,
+        val descendants: StartupHealth.DescendantObservation)
     @Serializable private data class UpdateConfig(
         val version: String,
         val upstreamTag: String = "",

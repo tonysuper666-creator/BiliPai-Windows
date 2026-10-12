@@ -176,24 +176,26 @@ internal class DesktopDownloadNotifications(
         mutableStatus.value = mutableStatus.value.copy(projection = projection, taskbarDispatches = dispatches, trayPresent = tray != null)
     }
 
+    private fun mutationAllowedOnEdt(): Boolean = ownedOnEdt() && manager.acceptsMutations()
+
     private fun menuOnEdt(): PopupMenu = PopupMenu().apply {
         add(MenuItem("打开离线缓存").apply { addActionListener { if (ownedOnEdt()) onOpenDownloads() } })
         addSeparator()
         add(MenuItem("全部暂停").apply {
-            isEnabled = manager.tasks.value.any { shouldPauseAllInclude(it.item) }
+            isEnabled = mutationAllowedOnEdt() && manager.tasks.value.any { shouldPauseAllInclude(it.item) }
             addActionListener { pauseAll() }
         })
         add(MenuItem("全部继续").apply {
-            isEnabled = manager.tasks.value.any { shouldContinueAllInclude(it.item) }
+            isEnabled = mutationAllowedOnEdt() && manager.tasks.value.any { shouldContinueAllInclude(it.item) }
             addActionListener { continueAll() }
         })
         for (task in manager.tasks.value.filter { it.status != DownloadStatus.COMPLETED }) {
             add(Menu((task.title.ifBlank { "下载中..." } + " ${((task.progress.coerceIn(0f, 1f)) * 100).toInt()}%").replace('\u0000', ' ').take(120)).apply {
                 val canPause = shouldPauseAllInclude(task.item)
                 add(MenuItem(if (canPause) "暂停" else if (task.status == DownloadStatus.FAILED) "重试" else "继续").apply {
-                    isEnabled = canPause || shouldContinueAllInclude(task.item)
+                    isEnabled = mutationAllowedOnEdt() && (canPause || shouldContinueAllInclude(task.item))
                     addActionListener {
-                        if (ownedOnEdt()) runCommand {
+                        if (mutationAllowedOnEdt()) runCommand {
                             val current = manager.tasks.value.firstOrNull { it.id == task.id } ?: return@runCommand
                             if (shouldPauseAllInclude(current.item)) manager.pause(current.id)
                             else if (shouldContinueAllInclude(current.item)) manager.resume(current.id)
@@ -207,15 +209,15 @@ internal class DesktopDownloadNotifications(
     // These are the actual tray action endpoints, also callable by an owned Root action.
     fun pauseAll() {
         check(SwingUtilities.isEventDispatchThread())
-        if (ownedOnEdt()) runCommand {
-            manager.tasks.value.filter { shouldPauseAllInclude(it.item) }.forEach { if (ownedOnEdt()) manager.pause(it.id) }
+        if (mutationAllowedOnEdt()) runCommand {
+            manager.tasks.value.filter { shouldPauseAllInclude(it.item) }.forEach { if (mutationAllowedOnEdt()) manager.pause(it.id) }
         }
     }
 
     fun continueAll() {
         check(SwingUtilities.isEventDispatchThread())
-        if (ownedOnEdt()) runCommand {
-            manager.tasks.value.filter { shouldContinueAllInclude(it.item) }.forEach { if (ownedOnEdt()) manager.resume(it.id) }
+        if (mutationAllowedOnEdt()) runCommand {
+            manager.tasks.value.filter { shouldContinueAllInclude(it.item) }.forEach { if (mutationAllowedOnEdt()) manager.resume(it.id) }
         }
     }
 
