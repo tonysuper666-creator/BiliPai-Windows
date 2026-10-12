@@ -12,6 +12,21 @@ BASE='app/src/main/java/com/android/purebilibili/'
 REPO=None;OUTPUT=None;STANDALONE=False;OUTPUTS=[];SOURCES={};AUDITS={};H=Path('/source-output')
 SHARED_PLAYBACK_SOURCE_RECIPES=[{'source': 'core-data/src/main/java/com/android/purebilibili/data/repository/SharedContentRepository.kt', 'sourceSha256LF': '6e141358cb554152ed172d1e63c54cb9fa760c1db10064cdb2d07696a9dd31c7', 'target': 'com/android/purebilibili/data/repository/DesktopOriginalSharedContentRequests.kt', 'mode': 'policy-extract', 'outputSha256LF': '2c5e31dd1bc108ba7ca4452758f0b432ba01b5ff6ef54b55af190d6b176c3411', 'edits': [{'start': 0, 'end': 2, 'beforeSha256LF': '9310be7f254ff7c1c0a7c0fb4016daf33b7185af0cc882075b73e676c8ebf2af', 'after': None}, {'start': 2, 'end': 4, 'beforeSha256LF': '7ec956eab4c83e0e0e6149ef47823fd7dde4e774aed23da4c5d78538e234c121', 'after': 'import com.android.purebilibili.core.network.BilibiliApi\n'}, {'start': 4, 'end': 23, 'beforeSha256LF': 'ebb337ad5a52eedd38daddd8f0be2e7159dd6a4c169272a92e25df9d77c1be45', 'after': None}, {'start': 23, 'end': 24, 'beforeSha256LF': '19cedba7627d0b67cb5c35f862ed82bede6b3fe77431218c76e62e8219ef25e0', 'after': 'internal class DesktopOriginalSharedContentRequests(private val api: () -> BilibiliApi) {\n'}, {'start': 24, 'end': 25, 'beforeSha256LF': 'bb9c2225b4a80b2769fdc2d268aba6bdace5eab6f56402e42d587857bac4ea47', 'after': None}, {'start': 25, 'end': 41, 'beforeSha256LF': 'adb28dd43d28167eee2e66aeae3028d11ea2c9a94f08a27a1ce0d0ec2538c035', 'after': '        api().getRecommendParams(signedParams)\n'}, {'start': 41, 'end': 44, 'beforeSha256LF': 'f5d7d843f2593dbca3f89f40c49f9dd7637db4facdc67cfbf8e568d2c9d2c6db', 'after': None}, {'start': 44, 'end': 46, 'beforeSha256LF': '1764c445d95b33de51334afe1790791fe7b80afaa470f50c87667c3881aac4db', 'after': '        val response = if (lookup.bvid.isNotEmpty()) api().getVideoInfo(lookup.bvid)\n        else api().getVideoInfoByAid(lookup.aid)\n'}, {'start': 46, 'end': 63, 'beforeSha256LF': 'ebb1c8ef464edd0418f227d508980485d307fe817e3cef4ce968784b0f950017', 'after': None}], 'fullOriginalInverse': True}, {'source': 'core-data/src/main/java/com/android/purebilibili/data/repository/PlaybackStreamDataSource.kt', 'sourceSha256LF': '26389490037506c2614c7f88df54ba68ff409ed098c603eae6887c3d2d701032', 'target': 'com/android/purebilibili/data/repository/DesktopOriginalPlaybackStreamDataSource.kt', 'mode': 'policy-extract', 'outputSha256LF': 'd9f116d53745848a4a312cf2f778b95eb6f89597ced83ba57f0939872dd304e0', 'edits': [{'start': 0, 'end': 3, 'beforeSha256LF': 'ed18b86fb5e3ee9583fa9e5f1a0184276288836976844405efc8e9d5584d26a8', 'after': None}, {'start': 3, 'end': 5, 'beforeSha256LF': '61d34647ac8bb18033f2e52a158537511446653b853829fdbfe1894f79345a80', 'after': 'import com.android.purebilibili.core.network.BilibiliApi\nimport com.android.purebilibili.core.network.DesktopTokenPlatform as TokenManager\n'}, {'start': 5, 'end': 27, 'beforeSha256LF': '863a0cbe311da83e791a03fbe9c05237fab402b88dde7a043652f89b434f7f9e', 'after': None}, {'start': 27, 'end': 28, 'beforeSha256LF': '2cc676804d06ad06eca980471018c5343dbeaa70111c34ee1146dcc4bca20153', 'after': 'internal class DesktopOriginalPlaybackStreamDataSource(private val api: () -> BilibiliApi) {\n'}, {'start': 28, 'end': 31, 'beforeSha256LF': 'd56a9a20acce16662ff4ea3b94e6dadf7f590931d2f5cf84ea615e8c56c57a90', 'after': None}, {'start': 31, 'end': 32, 'beforeSha256LF': 'caeb10e512bb9c6f5c680b7f41683d89cb6e0ce3c363340f578301a8cab4263f', 'after': '    ): PlayUrlResponse = api().getPlayUrlApp(\n'}, {'start': 32, 'end': 35, 'beforeSha256LF': 'bac9f9970a67128a07b006cde9375cf47445a0f85dc11eaa32abd26a87e8957f', 'after': None}], 'fullOriginalInverse': True}]
 
+# Exact whole original stable policy. Emitted by this existing producer so the
+# sole Windows playback cache uses original expiry without a second cache owner.
+PLAY_URL_CACHE_POLICY_COMMIT = 'a69d4181a073aa3207def3fca43318dcf7ab2c70'
+PLAY_URL_CACHE_POLICY_ORIGIN = 'app/src/main/java/com/android/purebilibili/core/cache/PlayUrlCachePolicy.kt'
+PLAY_URL_CACHE_POLICY_SHA256_LF = '962a7f704b1637a14ffa8177f4f8cc3c82d3d959ffdc846ad32293d633fc4533'
+PLAY_URL_CACHE_POLICY_SOURCE = 'package com.android.purebilibili.core.cache\n\nimport java.net.URI\n\ninternal fun resolvePlayUrlCacheExpiresAt(\n    timestampMs: Long,\n    maxAgeMs: Long,\n    urls: List<String>,\n    safetyMarginMs: Long = 30_000L\n): Long {\n    val deadlineMs = urls.mapNotNull { url ->\n        runCatching {\n            URI(url).rawQuery?.split(\'&\')?.firstNotNullOfOrNull { parameter ->\n                if (parameter.substringBefore(\'=\') != "deadline") return@firstNotNullOfOrNull null\n                parameter.substringAfter(\'=\', "").toLongOrNull()\n                    ?.takeIf { it in 1L..(Long.MAX_VALUE / 1000L) }\n                    ?.times(1000L)\n            }\n        }.getOrNull()\n    }.minOrNull()\n    val maxExpiresAtMs = timestampMs + maxAgeMs\n    return if (deadlineMs == null) maxExpiresAtMs\n    else minOf(maxExpiresAtMs, deadlineMs - safetyMarginMs)\n}\n'
+
+def generate_play_url_cache_policy():
+ body = PLAY_URL_CACHE_POLICY_SOURCE
+ assert digest(body) == PLAY_URL_CACHE_POLICY_SHA256_LF, 'Fixed original PlayUrlCachePolicy differs'
+ SOURCES[PLAY_URL_CACHE_POLICY_ORIGIN] = dict(path=PLAY_URL_CACHE_POLICY_ORIGIN,
+     sha256LF=PLAY_URL_CACHE_POLICY_SHA256_LF, commit=PLAY_URL_CACHE_POLICY_COMMIT)
+ emit('com/android/purebilibili/core/cache/PlayUrlCachePolicy.kt', body,
+     PLAY_URL_CACHE_POLICY_ORIGIN, 'full-original-fixed-v034-stable-cache-expiry-policy')
+
 def generate_shared_playback_sources(repo,output):
  rows=[]
  for r in SHARED_PLAYBACK_SOURCE_RECIPES:
@@ -19,6 +34,8 @@ def generate_shared_playback_sources(repo,output):
   for e in r['edits']:
    assert e['start']==cursor;cursor=e['end'];before=''.join(lines[e['start']:e['end']]);assert digest(before)==e['beforeSha256LF'];body.append(before if e['after']is None else e['after']);inverse.append(before)
   assert cursor==len(lines)and''.join(inverse)==raw;body=''.join(body);assert digest(body)==r['outputSha256LF'];emit(r['target'],body,r['source'],'selected-original-platform-adapt')
+ from v034_on_demand import generate_auxiliary
+ generate_auxiliary(repo,output,emit)
  return rows
 
 def wide(p):
@@ -39,6 +56,12 @@ def emit(path,text,origin,mode):
  from v034_related import apply_and_record as apply_related
  text,relatedProof=apply_related(path,text,OUTPUT)
  if relatedProof is not None:mode='fixed-v034-beta2-related-owned-delta'
+ from v034_detail_bootstrap import apply_and_record as apply_detail
+ text,detailProof=apply_detail(path,text,OUTPUT)
+ if detailProof is not None:mode='fixed-v034-stable-early-detail-owned-delta'
+ from v034_on_demand import apply_and_record as apply_on_demand
+ text,requestCacheProof=apply_on_demand(path,text,OUTPUT)
+ if requestCacheProof is not None:mode='fixed-stable-v034-owned-request-cache-delta'
  generated=STANDALONE or mode!='direct';OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=digest(text),generated=generated))
  if generated:
   target=wide(OUTPUT/path);target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')
@@ -265,6 +288,10 @@ p.put(H/'supplement-adaptations.json',json.dumps(dict(before=before,after=body,o
  exec(code,globals().copy())
 
 def build_core():
+ from v034_detail_bootstrap import source_text,source_rows
+ for row in source_rows():SOURCES[row['path']]=row
+ emit('com/android/purebilibili/feature/video/viewmodel/VideoDetailUiState.kt',source_text('VideoDetailUiState.kt'),
+      'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDetailUiState.kt','full-original-detail-read-model')
  for rel in CORE_DIRECT:emit('com/android/purebilibili/'+rel,original(BASE+rel),BASE+rel,'direct')
  rel='feature/video/viewmodel/PlaybackCompletionPolicy.kt'
  emit('com/android/purebilibili/'+rel,original(BASE+rel).replace('import androidx.media3.common.Player','import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player'),BASE+rel,'full-original-native-constant-alias')
@@ -282,7 +309,7 @@ def generate(repo,output,standalone=False):
  sel=mod('stateSelect',REPO/'desktop/tools/extract-upstream-video-detail-full-units.py');sel.parser=mod('stateTokens',REPO/'desktop/tools/sync-upstream.py')
  decls=mod('stateDecls',REPO/'desktop/tools/extract-appearance-platform.py')
  p=types.SimpleNamespace(BASE=BASE,REPO=REPO,lex=lex,original=original,declaration=declaration,digest=digest,put=put)
- build_models();build_core();build_usecase();build_raw_protocol();build_supplement();generate_shared_playback_sources(repo,output)
+ build_models();build_core();build_usecase();build_raw_protocol();build_supplement();generate_shared_playback_sources(repo,output);generate_play_url_cache_policy()
  target=wide(OUTPUT/'original-video-state-core-selection.json');target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text(json.dumps(dict(upstreamCommit=COMMIT,sourceOnly=True,fullVmHolderAccepted=False,sources=list(SOURCES.values()),outputs=OUTPUTS,audits=AUDITS),indent=2,ensure_ascii=False)+'\n',encoding='utf-8',newline='\n')
  return OUTPUTS

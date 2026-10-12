@@ -218,6 +218,9 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             override fun put(bvid: String, cid: Long, data: PlayUrlData, quality: Int) { admitted {
                 playbackCache.put(key(bvid, cid, quality), data, quality)
             } }
+            override fun invalidate(bvid: String, cid: Long) { admitted {
+                playbackCache.invalidateVideo(authorization.receipt.accountEpoch, bvid, cid)
+            } }
         }
         val protocolState = object : com.bilipai.desktop.ui.DesktopOriginalVideoProtocolState {
             override var appApiCooldownUntilMs: Long

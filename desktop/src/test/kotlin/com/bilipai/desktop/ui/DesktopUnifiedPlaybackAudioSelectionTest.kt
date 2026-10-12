@@ -39,7 +39,9 @@ class DesktopUnifiedPlaybackAudioSelectionTest {
             override suspend fun loadVideo(bvid: String, aid: Long, cid: Long, defaultQuality: Int,
                 audioQualityPreference: Int, videoCodecPreference: String, videoSecondCodecPreference: String,
                 audioLang: String?, playWhenReady: Boolean, isAv1SupportedOverride: Boolean?,
-                isHdrSupportedOverride: Boolean?, isDolbyVisionSupportedOverride: Boolean?, onProgress: (String) -> Unit): VideoLoadResult {
+                isHdrSupportedOverride: Boolean?, isDolbyVisionSupportedOverride: Boolean?, onProgress: (String) -> Unit,
+                onVideoInfo: (ViewInfo) -> Unit, videoInfoLoader: (suspend () -> Result<ViewInfo>)?,
+                playbackSpeedOverride: Float?): VideoLoadResult {
                 assertEquals("BVfixture", bvid); assertEquals(7L, aid)
                 calls += Triple(cid, audioLang, playWhenReady)
                 return VideoLoadResult.Error(VideoLoadError.ApiError(412, "synthetic"), canRetry = false)

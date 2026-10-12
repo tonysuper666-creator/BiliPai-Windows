@@ -8,5 +8,8 @@ internal interface DesktopOriginalVideoLoadPort {
  audioQualityPreference:Int=-1,videoCodecPreference:String="hev1",videoSecondCodecPreference:String="avc1",
  audioLang:String?=null,playWhenReady:Boolean=true,isAv1SupportedOverride:Boolean?=null,
  isHdrSupportedOverride:Boolean?=null,isDolbyVisionSupportedOverride:Boolean?=null,
- onProgress:(String)->Unit={}):VideoLoadResult
+ onProgress:(String)->Unit={},
+ onVideoInfo:(com.android.purebilibili.data.model.response.ViewInfo)->Unit={},
+ videoInfoLoader:(suspend ()->Result<com.android.purebilibili.data.model.response.ViewInfo>)?=null,
+ playbackSpeedOverride:Float?=null):VideoLoadResult
 }

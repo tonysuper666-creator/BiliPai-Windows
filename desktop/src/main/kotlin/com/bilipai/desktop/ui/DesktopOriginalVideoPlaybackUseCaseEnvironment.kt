@@ -13,6 +13,9 @@ import kotlinx.coroutines.CancellationException
  */
 internal interface DesktopOriginalVideoLoadRepository {
     suspend fun getVideoInfoOnly(bvid:String,aid:Long,requestedCid:Long):Result<ViewInfo>
+    fun cachedVideoCid(bvid:String,aid:Long):Long
+    suspend fun getCachedRelatedVideosResult(bvid:String):Result<List<RelatedVideo>>?
+    fun invalidateVideoLoadCaches(bvid:String,aid:Long,cid:Long)
     suspend fun getInitialPlayUrlData(bvid:String,cid:Long,targetQuality:Int,audioLang:String?):PlayUrlData?
     suspend fun getVideoDetails(bvid:String,aid:Long,requestedCid:Long,targetQuality:Int?,audioLang:String?):Result<Pair<ViewInfo,PlayUrlData>>
     suspend fun getRelatedVideos(bvid:String):List<RelatedVideo>

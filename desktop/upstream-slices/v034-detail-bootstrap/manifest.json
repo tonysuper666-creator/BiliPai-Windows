@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+  "scope": "Whole original loader/DTO plus selected original bootstrap and VM detail publication; existing accepted-native related chain retained; bootstrap-related scheduler/Holder pending.",
+  "sources": [
+    {
+      "file": "PlaybackLoader.kt",
+      "path": "desktop/upstream-slices/v034-detail-bootstrap/PlaybackLoader.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "bytes": 2393,
+      "sha256": "2582b6eeb1ab4e655488b18389d9c01dc4c50a557b639ac3d914ae7991f5f385",
+      "gitBlob": "33f5251416f907af64f40be0b516e9ee0f67db53"
+    },
+    {
+      "file": "VideoPlaybackUseCase.kt",
+      "path": "desktop/upstream-slices/v034-detail-bootstrap/VideoPlaybackUseCase.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+      "bytes": 61879,
+      "sha256": "319e051a0ad431baade5f8ad2788a4a2d7ae9c301aa28129a74572137b4d7547",
+      "gitBlob": "19743f991097a22b6301443a8284d90ca25688ba"
+    },
+    {
+      "file": "VideoPlaybackViewModel.kt",
+      "path": "desktop/upstream-slices/v034-detail-bootstrap/VideoPlaybackViewModel.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "bytes": 414370,
+      "sha256": "8a23ff5759f0f227110f7e7598330807a0898035b03da0a2492fae860a9f9c57",
+      "gitBlob": "0d139c54777fb09830c7e16202e23ed4bed148d1"
+    },
+    {
+      "file": "VideoDetailUiState.kt",
+      "path": "desktop/upstream-slices/v034-detail-bootstrap/VideoDetailUiState.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDetailUiState.kt",
+      "bytes": 1571,
+      "sha256": "28082f6c0f79c4692aeadf3711a847656d2731abf4fe350a42be74c3121e5d4f",
+      "gitBlob": "db593e0722d10f3889337432e987b964cec8fe26"
+    }
+  ],
+  "outputs": {
+    "com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt": {
+      "beforeSha256LF": "fd3f9e03a1c85ca47697a5807d1d94c95f379eecbd21db2ca8d295f58f763308",
+      "afterSha256LF": "22bfeacc1d6595e477c9ba45c4183c48dbbbfce1593283ad37933177d77518e0",
+      "edits": [
+        {
+          "label": "whole stable034 loader with required existing port alias",
+          "offset": 0,
+          "before": "package com.android.purebilibili.feature.video.playback.loader\n\nimport com.android.purebilibili.feature.video.usecase.VideoLoadResult\nimport com.bilipai.desktop.ui.DesktopOriginalVideoLoadPort as VideoPlaybackUseCase\n\ninternal data class PlaybackLoadConfig(\n    val defaultQuality: Int,\n    val audioQualityPreference: Int,\n    val videoCodecPreference: String,\n    val videoSecondCodecPreference: String,\n    val playWhenReady: Boolean,\n    val isAv1Supported: Boolean,\n    val isHdrSupported: Boolean,\n    val isDolbyVisionSupported: Boolean\n)\n\ninternal class PlaybackLoader(\n    private val loadVideo: suspend (PlaybackRequest, PlaybackLoadConfig) -> VideoLoadResult\n) {\n\n    suspend fun load(\n        request: PlaybackRequest,\n        cachedPositionMs: Long,\n        config: PlaybackLoadConfig\n    ): PlaybackLoadResult {\n        val result = loadVideo(request, config)\n        return PlaybackLoadResult.from(\n            request = request,\n            cachedPositionMs = cachedPositionMs,\n            result = result\n        )\n    }\n\n    companion object {\n        fun from(useCase: VideoPlaybackUseCase): PlaybackLoader {\n            return PlaybackLoader { request, config ->\n                useCase.loadVideo(\n                    bvid = request.bvid,\n                    aid = request.aid,\n                    cid = request.cid,\n                    defaultQuality = config.defaultQuality,\n                    audioQualityPreference = config.audioQualityPreference,\n                    videoCodecPreference = config.videoCodecPreference,\n                    videoSecondCodecPreference = config.videoSecondCodecPreference,\n                    audioLang = request.audioLang,\n                    playWhenReady = config.playWhenReady,\n                    isAv1SupportedOverride = config.isAv1Supported,\n                    isHdrSupportedOverride = config.isHdrSupported,\n                    isDolbyVisionSupportedOverride = config.isDolbyVisionSupported\n                )\n            }\n        }\n    }\n}\n",
+          "after": "package com.android.purebilibili.feature.video.playback.loader\n\nimport com.android.purebilibili.feature.video.usecase.VideoLoadResult\nimport com.bilipai.desktop.ui.DesktopOriginalVideoLoadPort as VideoPlaybackUseCase\nimport com.android.purebilibili.data.model.response.ViewInfo\n\ninternal data class PlaybackLoadConfig(\n    val defaultQuality: Int,\n    val audioQualityPreference: Int,\n    val videoCodecPreference: String,\n    val videoSecondCodecPreference: String,\n    val playWhenReady: Boolean,\n    val isAv1Supported: Boolean,\n    val isHdrSupported: Boolean,\n    val isDolbyVisionSupported: Boolean,\n    val onVideoInfo: (ViewInfo) -> Unit = {},\n    val videoInfoLoader: (suspend () -> Result<ViewInfo>)? = null,\n    val playbackSpeed: Float? = null\n)\n\ninternal class PlaybackLoader(\n    private val loadVideo: suspend (PlaybackRequest, PlaybackLoadConfig) -> VideoLoadResult\n) {\n\n    suspend fun load(\n        request: PlaybackRequest,\n        cachedPositionMs: Long,\n        config: PlaybackLoadConfig\n    ): PlaybackLoadResult {\n        val result = loadVideo(request, config)\n        return PlaybackLoadResult.from(\n            request = request,\n            cachedPositionMs = cachedPositionMs,\n            result = result\n        )\n    }\n\n    companion object {\n        fun from(useCase: VideoPlaybackUseCase): PlaybackLoader {\n            return PlaybackLoader { request, config ->\n                useCase.loadVideo(\n                    bvid = request.bvid,\n                    aid = request.aid,\n                    cid = request.cid,\n                    defaultQuality = config.defaultQuality,\n                    audioQualityPreference = config.audioQualityPreference,\n                    videoCodecPreference = config.videoCodecPreference,\n                    videoSecondCodecPreference = config.videoSecondCodecPreference,\n                    audioLang = request.audioLang,\n                    playWhenReady = config.playWhenReady,\n                    isAv1SupportedOverride = config.isAv1Supported,\n                    isHdrSupportedOverride = config.isHdrSupported,\n                    isDolbyVisionSupportedOverride = config.isDolbyVisionSupported,\n                    onVideoInfo = config.onVideoInfo,\n                    videoInfoLoader = config.videoInfoLoader,\n                    playbackSpeedOverride = config.playbackSpeed\n                )\n            }\n        }\n    }\n}\n"
+        }
+      ]
+    },
+    "com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt": {
+      "beforeSha256LF": "8b89f74aecfc1a9be313d2703d0f3229a8ff68aba9c42ad7cdebcd74ffd534d4",
+      "afterSha256LF": "1077d19b994913226c2a1b36fc18e0582bc1616b621ae8c529a5e6bfb4e5a818",
+      "edits": [
+        {
+          "label": "required original loader callback/inherited info/speed arguments",
+          "offset": 5574,
+          "before": "        onProgress: (String) -> Unit\n",
+          "after": "        onProgress: (String) -> Unit,\n        onVideoInfo: (ViewInfo) -> Unit,\n        videoInfoLoader: (suspend () -> Result<ViewInfo>)?,\n        playbackSpeedOverride: Float?\n"
+        },
+        {
+          "label": "complete stable034 bootstrap with existing emote/ownership ports and boxed ordinary URL failure consumed only after info callback",
+          "offset": 7196,
+          "before": "            //  [性能优化] 并行请求视频详情、相关推荐。\n            // 表情映射在首帧链路中跳过，避免自动播放起播被非关键请求阻塞。\n            val (detailResult, relatedVideos, emoteMap) = kotlinx.coroutines.coroutineScope {\n                val bootstrapMode = resolvePlaybackBootstrapMode(\n                    bvid = bvid,\n                    cid = cid\n                )\n                // 起播关键路径只等待 playinfo/播放地址，不等待相关推荐。\n                // 相关推荐由 ViewModel 在播放器 prepare 后异步拉取。\n                val emoteMap = if (com.android.purebilibili.data.repository.shouldFetchCommentEmoteMapOnVideoLoad()) {\n                    environment.emoteMap()\n                } else {\n                    emptyMap()\n                }\n\n                val mergedDetailResult = when (bootstrapMode) {\n                    PlaybackBootstrapMode.DETAIL_AND_PLAYURL_PARALLEL -> {\n                        val infoDeferred = async {\n                            VideoRepository.getVideoInfoOnly(\n                                bvid = bvid,\n                                aid = aid,\n                                requestedCid = cid\n                            )\n                        }\n                        val playUrlDeferred = async {\n                            VideoRepository.getInitialPlayUrlData(\n                                bvid = bvid,\n                                cid = cid,\n                                targetQuality = defaultQuality,\n                                audioLang = audioLang\n                            )\n                        }\n\n                        infoDeferred.await().fold(\n                            onSuccess = { info ->\n                                val playData = playUrlDeferred.await()\n                                if (playData == null) {\n                                    Result.failure(Exception(\"无法获取播放地址\"))\n                                } else {\n                                    Result.success(info to playData)\n                                }\n                            },\n                            onFailure = { error ->\n                                Result.failure(error)\n                            }\n                        )\n                    }\n\n                    PlaybackBootstrapMode.DETAIL_ONLY -> {\n                        VideoRepository.getVideoDetails(\n                            bvid = bvid,\n                            aid = aid,\n                            requestedCid = cid,\n                            targetQuality = defaultQuality,\n                            audioLang = audioLang\n                        )\n                    }\n                }\n\n                val relatedVideos = emptyList<RelatedVideo>()\n\n                Triple(mergedDetailResult, relatedVideos, emoteMap)\n            }\n            \n",
+          "after": "            // 起播链路仅获取播放所需信息和地址，相关推荐由 ViewModel 独立加载。\n            // 表情映射在首帧链路中跳过，避免自动播放起播被非关键请求阻塞。\n            val (detailResult, relatedVideos, emoteMap) = kotlinx.coroutines.coroutineScope {\n                val bootstrapCid = resolvePlaybackBootstrapCid(\n                    requestCid = cid,\n                    cachedCid = VideoRepository.cachedVideoCid(bvid, aid)\n                )\n                val bootstrapMode = resolvePlaybackBootstrapMode(\n                    bvid = bvid,\n                    cid = bootstrapCid\n                )\n                val emoteMap = if (com.android.purebilibili.data.repository.shouldFetchCommentEmoteMapOnVideoLoad()) {\n                    environment.emoteMap()\n                } else {\n                    emptyMap()\n                }\n\n                val mergedDetailResult = when (bootstrapMode) {\n                    PlaybackBootstrapMode.DETAIL_AND_PLAYURL_PARALLEL -> {\n                        val infoDeferred = async {\n                            videoInfoLoader?.invoke() ?: VideoRepository.getVideoInfoOnly(\n                                bvid = bvid,\n                                aid = aid,\n                                requestedCid = cid\n                            )\n                        }\n                        val playUrlDeferred = async<Result<PlayUrlData?>> {\n                            try {\n                                Result.success(VideoRepository.getInitialPlayUrlData(\n                                    bvid = bvid,\n                                    cid = bootstrapCid,\n                                    targetQuality = defaultQuality,\n                                    audioLang = audioLang\n                                ))\n                            } catch (cancelled: kotlinx.coroutines.CancellationException) {\n                                throw cancelled\n                            } catch (failure: Exception) {\n                                // An ordinary URL failure must wait for the original\n                                // metadata result/callback before caller classification.\n                                Result.failure(failure)\n                            }\n                        }\n\n                        infoDeferred.await().fold(\n                            onSuccess = { info ->\n                                environment.assertOwned()\n                                onVideoInfo(info)\n                                val playData = if (info.cid == bootstrapCid) {\n                                    playUrlDeferred.await().getOrThrow()\n                                } else {\n                                    playUrlDeferred.cancel()\n                                    VideoRepository.getInitialPlayUrlData(\n                                        bvid = info.bvid,\n                                        cid = info.cid,\n                                        targetQuality = defaultQuality,\n                                        audioLang = audioLang\n                                    )\n                                }\n                                if (playData == null) {\n                                    Result.failure(Exception(\"无法获取播放地址\"))\n                                } else {\n                                    Result.success(info to playData)\n                                }\n                            },\n                            onFailure = { error ->\n                                playUrlDeferred.cancel()\n                                Result.failure(error)\n                            }\n                        )\n                    }\n\n                    PlaybackBootstrapMode.DETAIL_ONLY -> {\n                        (videoInfoLoader?.invoke() ?: VideoRepository.getVideoInfoOnly(\n                            bvid = bvid,\n                            aid = aid,\n                            requestedCid = cid\n                        )).fold(\n                            onSuccess = { info ->\n                                environment.assertOwned()\n                                onVideoInfo(info)\n                                val playData = VideoRepository.getInitialPlayUrlData(\n                                    bvid = info.bvid,\n                                    cid = info.cid,\n                                    targetQuality = defaultQuality,\n                                    audioLang = audioLang\n                                )\n                                if (playData == null) Result.failure(Exception(\"无法获取播放地址\"))\n                                else Result.success(info to playData)\n                            },\n                            onFailure = { Result.failure(it) }\n                        )\n                    }\n                }\n\n                val relatedVideos = emptyList<RelatedVideo>()\n\n                Triple(mergedDetailResult, relatedVideos, emoteMap)\n            }\n            \n"
+        },
+        {
+          "label": "whole original resolvePlaybackBootstrapCid helper",
+          "offset": 2617,
+          "before": "internal fun shouldUseAdaptiveDashPlayback(",
+          "after": "internal fun resolvePlaybackBootstrapCid(requestCid: Long, cachedCid: Long): Long =\n    requestCid.takeIf { it > 0L } ?: cachedCid.coerceAtLeast(0L)\n\ninternal fun shouldUseAdaptiveDashPlayback("
+        },
+        {
+          "label": "original configured playback speed selection",
+          "offset": 15349,
+          "before": "                        playbackSpeed = exoPlayer?.playbackParameters?.speed ?: 1.0f,",
+          "after": "                        playbackSpeed = playbackSpeedOverride ?: exoPlayer?.playbackParameters?.speed ?: 1.0f,"
+        }
+      ]
+    },
+    "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt": {
+      "beforeSha256LF": "fadea83f12849317bdf321edd81cd1161294fa2673193dbc44da9a6a908b6dce",
+      "afterSha256LF": "094f05fbb01e27c96d7847db3e24c8d232b0716772db70106bdc55c638b53c73",
+      "edits": [
+        {
+          "label": "original owned detail StateFlow and guarded info publication only",
+          "offset": 36126,
+          "before": "    val subjectSnapshot = _subjectSnapshot.asStateFlow()\n",
+          "after": "    val subjectSnapshot = _subjectSnapshot.asStateFlow()\n    private val _detailState = MutableStateFlow(VideoDetailUiState())\n    val detailState = _detailState.asStateFlow()\n\n    private fun publishVideoDetailInfo(info: ViewInfo, requestBvid: String, requestToken: Long) {\n        environment.assertCurrent()\n        if (currentLoadRequestToken != requestToken || currentBvid != requestBvid) return\n        _detailState.update { state ->\n            if (state.requestToken == requestToken) {\n                state.copy(\n                    info = info,\n                    isLoggedIn = VideoRepository.isPlaybackLoggedIn(),\n                    isVip = VideoRepository.isPlaybackVip()\n                )\n            } else state\n        }\n        // Detail-only data cannot publish subject/action/native success. Related\n        // loading keeps the existing real accepted-publication chain in this slice.\n    }\n"
+        },
+        {
+          "label": "reset detail channel at exact original new request token",
+          "offset": 154812,
+          "before": "        val requestToken = loadRequestContext.requestToken\n        desktopVideoBootstrapLoadFailure.set(null)",
+          "after": "        val requestToken = loadRequestContext.requestToken\n        _detailState.value = VideoDetailUiState(\n            requestBvid = playbackRequest.bvid,\n            requestCid = playbackRequest.cid,\n            requestToken = requestToken\n        )\n        desktopVideoBootstrapLoadFailure.set(null)"
+        },
+        {
+          "label": "force invalidation and one original async info child inside actual invocation",
+          "offset": 156448,
+          "before": "            _uiState.value = VideoPlaybackUiState.Loading.Initial\n            \n                val isLoggedIn",
+          "after": "            _uiState.value = VideoPlaybackUiState.Loading.Initial\n            // The same captured invocation owns this original async detail child.\n            // It may publish readonly metadata before URL preparation completes.\n            if (playbackRequest.force) {\n                VideoRepository.invalidateVideoLoadCaches(playbackRequest.bvid, playbackRequest.aid, playbackRequest.cid)\n            }\n            val canStartDataLoad = PlaybackCooldownManager.getCooldownStatus(playbackRequest.bvid) is\n                com.android.purebilibili.core.cooldown.CooldownStatus.Ready\n            val videoInfoDeferred = async {\n                if (!canStartDataLoad) {\n                    return@async Result.failure<ViewInfo>(IllegalStateException(\"Playback request is in cooldown\"))\n                }\n                VideoRepository.getVideoInfoOnly(\n                    bvid = playbackRequest.bvid,\n                    aid = playbackRequest.aid,\n                    requestedCid = playbackRequest.cid\n                ).also { result ->\n                    result.onSuccess { info ->\n                        publishVideoDetailInfo(info, playbackRequest.bvid, requestToken)\n                    }\n                }\n            }\n            \n                val isLoggedIn"
+        },
+        {
+          "label": "exact stable loader callback config with existing Windows settings port",
+          "offset": 163526,
+          "before": "                val loadConfig = PlaybackLoadConfig(\n                    defaultQuality = finalQuality,\n                    audioQualityPreference = audioQualityPreference,\n                    videoCodecPreference = videoCodecPreference,\n                    videoSecondCodecPreference = videoSecondCodecPreference,\n                    playWhenReady = shouldAutoPlay,\n                    isAv1Supported = isAv1Supported,\n                    isHdrSupported = isHdrSupported,\n                    isDolbyVisionSupported = isDolbyVisionSupported\n                )",
+          "after": "                val loadConfig = PlaybackLoadConfig(\n                    defaultQuality = finalQuality,\n                    audioQualityPreference = audioQualityPreference,\n                    videoCodecPreference = videoCodecPreference,\n                    videoSecondCodecPreference = videoSecondCodecPreference,\n                    playWhenReady = shouldAutoPlay,\n                    isAv1Supported = isAv1Supported,\n                    isHdrSupported = isHdrSupported,\n                    isDolbyVisionSupported = isDolbyVisionSupported,\n                    onVideoInfo = { info ->\n                        publishVideoDetailInfo(info, playbackRequest.bvid, requestToken)\n                    },\n                    videoInfoLoader = { videoInfoDeferred.await() },\n                    playbackSpeed = exoPlayer?.playbackParameters?.speed\n                )"
+        },
+        {
+          "label": "mirror original related result only inside existing accepted native publication admission",
+          "offset": 393907,
+          "before": "                            _uiState.update { state ->\n                                if (state is VideoPlaybackUiState.Success && operationCurrent())\n                                    state.copy(related = related, relatedLoadState = loadState) else state\n                            }",
+          "after": "                            _detailState.update { state ->\n                                if (state.requestToken == requestToken && operationCurrent())\n                                    state.copy(related = related, relatedLoadState = loadState) else state\n                            }\n                            _uiState.update { state ->\n                                if (state is VideoPlaybackUiState.Success && operationCurrent())\n                                    state.copy(related = related, relatedLoadState = loadState) else state\n                            }"
+        }
+      ]
+    }
+  }
+}

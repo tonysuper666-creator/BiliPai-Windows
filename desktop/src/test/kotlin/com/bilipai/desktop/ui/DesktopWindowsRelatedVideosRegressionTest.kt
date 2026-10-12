@@ -49,13 +49,22 @@ class DesktopWindowsRelatedVideosRegressionTest {
         val info = ViewInfo(bvid = "BVfixture", aid = 17, cid = 70, title = "Fixture")
         var relatedCalls = 0
         var detailCalls = 0
+        private var cachedFixtureInfo: ViewInfo? = null
         val repository = object : DesktopOriginalVideoLoadRepository {
             override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> {
-                detailCalls++; return Result.success(info)
+                detailCalls++; cachedFixtureInfo = info; return Result.success(info)
             }
             override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?) = playData()
             override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long, targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> {
-                detailCalls++; return Result.success(info to playData())
+                detailCalls++; cachedFixtureInfo = info; return Result.success(info to playData())
+            }
+            override fun cachedVideoCid(bvid: String, aid: Long): Long = cachedFixtureInfo
+                ?.takeIf { it.bvid == bvid || (aid > 0L && it.aid == aid) }?.cid ?: 0L
+            // This fixture deliberately cannot load related data, so no related result is cached.
+            override suspend fun getCachedRelatedVideosResult(bvid: String): Result<List<RelatedVideo>>? = null
+            override fun invalidateVideoLoadCaches(bvid: String, aid: Long, cid: Long) {
+                if (cachedFixtureInfo?.let { it.bvid == bvid || (aid > 0L && it.aid == aid) } == true)
+                    cachedFixtureInfo = null
             }
             override suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> {
                 relatedCalls++; error("Related list must not enter the main playback load")

@@ -108,6 +108,23 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     // it is the main MID; only the transport CookieJar switches for a dedicated MID.
     private fun playbackAccount(): StoredAccountSession? = read { authorization.playbackAccount }
 
+    private val requestCaches = DesktopOriginalVideoRequestCaches(requestJob,
+        read { com.android.purebilibili.data.repository.buildVideoRequestAccountScope(listOf(
+            repository.ownedHomeCookie("SESSDATA", receipt.accountEpoch, ::entryCurrent),
+            capturedPrimaryMid?.toString(), receipt.accountEpoch.toString(), receipt.revision.toString(),
+        )) },
+        read {
+            val selected = authorization.playbackAccount
+            com.android.purebilibili.data.repository.buildVideoRequestAccountScope(listOf(
+                selected?.sessData ?: repository.ownedHomeCookie("SESSDATA", receipt.accountEpoch, ::entryCurrent),
+                selected?.mid?.toString() ?: capturedPrimaryMid?.toString(),
+                selected?.accessToken?.takeIf(String::isNotBlank) ?: repository.accessTokenCredentials().first,
+                selected?.accessTokenPlatform ?: repository.accessTokenCredentials().second,
+                (selected?.isVip ?: (repository.account.value?.isVip == true)).toString(),
+                receipt.accountEpoch.toString(), receipt.revision.toString(),
+            ))
+        }, views.first::invalidate, ::assertCurrent)
+
     val environment = DesktopOriginalVideoLoadProtocolEnvironment(
         api = capturedPrimaryApi,
         playbackApi = playbackApi,
@@ -156,6 +173,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
             // cancels this load; Root starts a NEW load rather than silently retagging it.
             refreshed
         },
+        requestCaches = requestCaches,
         stillOwned = ::current,
     )
     val protocol = DesktopOriginalVideoLoadProtocol(environment)

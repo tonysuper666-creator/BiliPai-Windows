@@ -199,6 +199,12 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
     }
 
     val repository: DesktopOriginalVideoLoadRepository = object : DesktopOriginalVideoLoadRepository {
+        override fun cachedVideoCid(bvid: String, aid: Long): Long =
+            requireRequestRepository().cachedVideoCid(bvid, aid)
+        override suspend fun getCachedRelatedVideosResult(bvid: String): Result<List<RelatedVideo>>? =
+            activeInvocation().repository.getCachedRelatedVideosResult(bvid)
+        override fun invalidateVideoLoadCaches(bvid: String, aid: Long, cid: Long) =
+            requireRequestRepository().invalidateVideoLoadCaches(bvid, aid, cid)
         override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> =
             activeInvocation().repository.getVideoInfoOnly(bvid, aid, requestedCid)
         override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?): PlayUrlData? =

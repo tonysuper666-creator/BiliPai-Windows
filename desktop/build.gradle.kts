@@ -3472,3 +3472,17 @@ val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalMessageNotifications) }
+
+// Source54 stable backend inputs: retained original producers own these overlays.
+listOf("extractOriginalVideoStateCore", "extractV032CatalogSlice").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.file("tools/v034_on_demand.py")
+        inputs.dir("upstream-slices/v034-on-demand")
+    }
+}
+listOf("extractOriginalVideoStateCore", "extractOriginalVideoFullOwner").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.file("tools/v034_detail_bootstrap.py")
+        inputs.dir("upstream-slices/v034-detail-bootstrap")
+    }
+}

@@ -44,6 +44,8 @@ def generate(repo,output):
     catalog=edits(source['VideoCatalogRepository.kt'],CATALOG_EDITS)
     from v034_related import apply_and_record, related_response
     catalog,_=apply_and_record('com/android/purebilibili/data/repository/DesktopOriginalVideoCatalogRepository.kt',catalog,output)
+    from v034_on_demand import apply_and_record as apply_on_demand
+    catalog,_=apply_on_demand('com/android/purebilibili/data/repository/DesktopOriginalVideoCatalogRepository.kt',catalog,output)
     outputs={'com/android/purebilibili/data/repository/DesktopOriginalVideoCatalogRepository.kt':catalog,
              'com/android/purebilibili/data/model/response/CreatorCardStats.kt':source['CreatorCardStats.kt'],
              'com/android/purebilibili/data/model/response/RelatedResponse.kt':related_response()}

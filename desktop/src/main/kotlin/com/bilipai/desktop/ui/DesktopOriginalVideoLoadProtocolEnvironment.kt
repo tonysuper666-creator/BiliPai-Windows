@@ -10,6 +10,7 @@ import kotlinx.coroutines.CancellationException
 internal interface DesktopOriginalVideoRawCache {
     fun get(bvid:String,cid:Long,requestedQuality:Int):PlayUrlData?
     fun put(bvid:String,cid:Long,data:PlayUrlData,quality:Int)
+    fun invalidate(bvid:String,cid:Long)
 }
 
 /** Mutable protocol diagnostics/cooldown/WBI state must be the existing Root request
@@ -44,6 +45,7 @@ internal class DesktopOriginalVideoLoadProtocolEnvironment(
     val isMobileData:()->Boolean,
     val canRefreshPrimaryToken:()->Boolean,
     val refreshPrimaryToken:suspend ()->Boolean,
+    val requestCaches:DesktopOriginalVideoRequestCaches,
     private val stillOwned:()->Boolean,
 ) {
     fun assertOwned() {

@@ -18,6 +18,9 @@ import kotlin.test.*
  * the existing memory-only ABI actor. No DLL/thread/HWND or HTTP is started. */
 class DesktopOriginalNativeRecoveryAdmissionTest {
     private val noNetwork = object : DesktopOriginalVideoLoadRepository, DesktopOriginalVideoPlaybackStatus {
+        override fun cachedVideoCid(bvid: String, aid: Long): Long = 0L
+        override suspend fun getCachedRelatedVideosResult(bvid: String): Result<List<RelatedVideo>>? = null
+        override fun invalidateVideoLoadCaches(bvid: String, aid: Long, cid: Long): Unit = error("No main load refresh")
         override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> = error("No HTTP")
         override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?): PlayUrlData? = error("No HTTP")
         override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long, targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> = error("No HTTP")

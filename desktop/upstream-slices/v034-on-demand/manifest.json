@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+  "sources": [
+    {
+      "file": "OnDemandRequestCache.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/repository/OnDemandRequestCache.kt",
+      "bytes": 3853,
+      "sha256": "04fd3dcacb4867bcb64756874641fbcd80dd33767851ce269281c2878152d81c",
+      "gitBlob": "950207285c8685a0d37e67cb53387888a73ee6ff"
+    },
+    {
+      "file": "VideoRequestAccountScope.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/repository/VideoRequestAccountScope.kt",
+      "bytes": 1348,
+      "sha256": "d9c21230306d9cbaeaaa92f0229fae444cb19788203a91800620daec5ec3fba4",
+      "gitBlob": "3a6c384e838587a837383aff08c45d2e10e4c4fd"
+    },
+    {
+      "file": "SharedContentRepository.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/repository/SharedContentRepository.kt",
+      "bytes": 4553,
+      "sha256": "a514fd37a613a2d93ceab6c6127b7ba2a219cc8d473fd9212c10d17a80ba9e54",
+      "gitBlob": "2249a1a941a66b10d82cd41aed4ee62dffa736bd"
+    },
+    {
+      "file": "VideoCatalogRepository.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/repository/VideoCatalogRepository.kt",
+      "bytes": 12905,
+      "sha256": "5c49d81104f2e8b21bed1ee5812629c716a4690b0cc69a7024fa597316105e9e",
+      "gitBlob": "4d5788da3a3d49b8824ae9bbd0b5261708a7fe22"
+    },
+    {
+      "file": "VideoRepository.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "bytes": 84798,
+      "sha256": "f619bc06f9e34b52449f021276630df14a0625afbfe6c73e3d7b4bfed75c15df",
+      "gitBlob": "3dc00b66b2fce99d57597149f38e1414a137e312"
+    }
+  ],
+  "outputs": {
+    "com/android/purebilibili/data/repository/DesktopOriginalSharedContentRequests.kt": {
+      "beforeSha256LF": "2c5e31dd1bc108ba7ca4452758f0b432ba01b5ff6ef54b55af190d6b176c3411",
+      "afterSha256LF": "4310c109c06b77fc5f0b3bcb46753d983f056bc6f49140624cdb70b06f97c7a6",
+      "edits": [
+        {
+          "before": "internal class DesktopOriginalSharedContentRequests(private val api: () -> BilibiliApi) {",
+          "after": "internal class DesktopOriginalSharedContentRequests(\n    private val requestCaches: com.bilipai.desktop.ui.DesktopOriginalVideoRequestCaches?,\n    private val api: () -> BilibiliApi,\n) {\n    constructor(api: () -> BilibiliApi) : this(null, api)",
+          "count": 1
+        },
+        {
+          "before": "        val response = if (lookup.bvid.isNotEmpty()) api().getVideoInfo(lookup.bvid)\n        else api().getVideoInfoByAid(lookup.aid)\n        if (response.code != 0) throw ContentRequestException(response.code, response.message)\n        val info = response.data ?: error(\"视频详情为空\")\n",
+          "after": "        val load: suspend () -> Result<ViewInfo> = {\n            dataRequest {\n                val response = if (lookup.bvid.isNotEmpty()) api().getVideoInfo(lookup.bvid)\n                else api().getVideoInfoByAid(lookup.aid)\n                if (response.code != 0) throw ContentRequestException(response.code, response.message)\n                response.data ?: error(\"视频详情为空\")\n            }\n        }\n        val info = (requestCaches?.detail(lookup.bvid, lookup.aid, load) ?: load()).getOrThrow()\n",
+          "count": 1
+        },
+        {
+          "before": "        info.copy(cid = cid)\n    }\n}\n",
+          "after": "        info.copy(cid = cid)\n    }\n\n    fun cachedDetailInfo(bvid: String, aid: Long = 0L): ViewInfo? {\n        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: return null\n        return requestCaches?.cachedDetail(lookup.bvid, lookup.aid)\n    }\n    fun cachedDetailCid(bvid: String, aid: Long = 0L): Long =\n        cachedDetailInfo(bvid, aid)?.cid?.coerceAtLeast(0L) ?: 0L\n    fun invalidateDetail(bvid: String, aid: Long = 0L) {\n        val lookup = resolveVideoInfoLookupInput(bvid, aid) ?: return\n        requestCaches?.invalidateDetail(lookup.bvid, lookup.aid)\n    }\n    fun clearDetailCache() { requestCaches?.clearDetail() }\n}\n",
+          "count": 1
+        },
+        {
+          "before": "        check(cid > 0) { \"未找到可播放的分 P\" }\n        info.copy(cid = cid)\n",
+          "after": "        check(cid > 0) { \"未找到可播放的分 P\" }\n        val resolved = info.copy(cid = cid)\n        requestCaches?.resolvedDetail(lookup.bvid, lookup.aid, info, resolved)\n        resolved\n",
+          "count": 1
+        }
+      ]
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoCatalogRepository.kt": {
+      "beforeSha256LF": "e3d14509dc91c7b8408f238aa612d6be0e7cabb42b3f6d3c934f4ffefb9c6de4",
+      "afterSha256LF": "8531be38c479c441971f37a8f9ee3944a4be8adae10454eea18f52d7183227c2",
+      "edits": [
+        {
+          "before": "    private val assertOwned: () -> Unit,\n",
+          "after": "    private val assertOwned: () -> Unit,\n    private val requestCaches: com.bilipai.desktop.ui.DesktopOriginalVideoRequestCaches?,\n",
+          "count": 1
+        },
+        {
+          "before": "    suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = withContext(Dispatchers.IO) {\n        currentCoroutineContext().ensureActive(); assertOwned()\n        try {\n            val response = api.getRelatedVideos(bvid)\n            currentCoroutineContext().ensureActive(); assertOwned()\n            if (response.code != 0 || response.data == null) {\n                Result.failure(IllegalStateException(\"相关推荐加载失败 (${response.code})\"))\n            } else {\n                Result.success(requireNotNull(response.data))\n            }\n        } catch (e: CancellationException) {\n            throw e\n        } catch (e: Exception) {\n            currentCoroutineContext().ensureActive(); assertOwned()\n            Result.failure(e)\n        }\n    }.also { currentCoroutineContext().ensureActive(); assertOwned() }\n\n",
+          "after": "    suspend fun getCachedRelatedVideosResult(bvid: String): Result<List<RelatedVideo>>? {\n        currentCoroutineContext().ensureActive(); assertOwned()\n        return requestCaches?.cachedRelated(bvid).also { currentCoroutineContext().ensureActive(); assertOwned() }\n    }\n\n    suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = withContext(Dispatchers.IO) {\n        currentCoroutineContext().ensureActive(); assertOwned()\n        suspend fun load(): Result<List<RelatedVideo>> = dataRequest {\n            val response = api.getRelatedVideos(bvid)\n            currentCoroutineContext().ensureActive(); assertOwned()\n            if (response.code != 0 || response.data == null) error(\"相关推荐加载失败 (${response.code})\")\n            requireNotNull(response.data)\n        }\n        val result = requestCaches?.related(bvid, ::load) ?: load()\n        currentCoroutineContext().ensureActive(); assertOwned()\n        result\n    }.also { currentCoroutineContext().ensureActive(); assertOwned() }\n\n    fun invalidateRelatedVideos(bvid: String) { assertOwned(); requestCaches?.invalidateRelated(bvid); assertOwned() }\n    fun clearRelatedVideosCache() { assertOwned(); requestCaches?.clearRelated(); assertOwned() }\n\n",
+          "count": 1
+        },
+        {
+          "before": "    /** 分区 latest 接口出现空数据或错误时，允许用排行榜兜底的一级分区集合。 */",
+          "after": "    constructor(api: BilibiliApi, assertOwned: () -> Unit) : this(api, assertOwned, null)\n\n    /** 分区 latest 接口出现空数据或错误时，允许用排行榜兜底的一级分区集合。 */",
+          "count": 1
+        }
+      ]
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt": {
+      "beforeSha256LF": "34257885a47a71a870efde0265ba8a4b71806423e76153f538591e410c5d06e2",
+      "afterSha256LF": "b6d3b64d045d70b4b1269d1ec09378d81bb32a7c59e41789326c13ffe898e6aa",
+      "edits": [
+        {
+          "before": "    private val VideoCatalogRepository = DesktopOriginalVideoCatalogRepository(environment.api, environment::assertOwned)\n",
+          "after": "    private val VideoCatalogRepository = DesktopOriginalVideoCatalogRepository(environment.api, environment::assertOwned, environment.requestCaches)\n",
+          "count": 1
+        },
+        {
+          "before": "    private val SharedContentRepository = DesktopOriginalSharedContentRequests { environment.api }\n",
+          "after": "    private val SharedContentRepository = DesktopOriginalSharedContentRequests(environment.requestCaches) { environment.api }\n",
+          "count": 1
+        },
+        {
+          "before": "    private val APP_API_COOLDOWN_MS = 120_000L\n",
+          "after": "    override fun cachedVideoCid(bvid: String, aid: Long): Long =\n        SharedContentRepository.cachedDetailCid(bvid, aid).also { environment.assertOwned() }\n    override suspend fun getCachedRelatedVideosResult(bvid: String): Result<List<RelatedVideo>>? =\n        VideoCatalogRepository.getCachedRelatedVideosResult(bvid).also { environment.assertOwned() }\n    override fun invalidateVideoLoadCaches(bvid: String, aid: Long, cid: Long) {\n        environment.assertOwned()\n        val cachedInfo = SharedContentRepository.cachedDetailInfo(bvid, aid)\n        val canonicalBvid = cachedInfo?.bvid?.takeIf { it.isNotBlank() } ?: bvid\n        val resolvedCid = cid.takeIf { it > 0L } ?: cachedInfo?.cid ?: 0L\n        SharedContentRepository.invalidateDetail(bvid, aid)\n        if (canonicalBvid != bvid) SharedContentRepository.invalidateDetail(canonicalBvid)\n        VideoCatalogRepository.invalidateRelatedVideos(canonicalBvid)\n        environment.cache.invalidate(canonicalBvid, resolvedCid)\n        environment.requestCaches.invalidateInitialPlayUrls(bvid, canonicalBvid, cid)\n        // Record only after exact synchronous invalidation, before new children.\n        val lookup = resolveVideoInfoLookupInput(bvid, aid)\n        if (lookup != null) environment.requestCaches.forceDetail(lookup.bvid, lookup.aid, cid,\n            canonicalBvid.takeIf { it.startsWith(\"BV\", ignoreCase = true) }.orEmpty(), resolvedCid)\n        environment.assertOwned()\n    }\n    private val APP_API_COOLDOWN_MS = 120_000L\n",
+          "count": 1
+        },
+        {
+          "before": "        if (!shouldSkipPlayUrlCache(isAutoHighestQuality, isVip, audioLang)) {\n            val cachedPlayData = environment.cache.get(\n                bvid = bvid,\n                cid = cid,\n                requestedQuality = startQuality\n            )\n            val cachedDashIds = cachedPlayData?.dash?.video?.map { it.id }.orEmpty()\n            if (\n                cachedPlayData != null &&\n                shouldAcceptCachedPlayUrlForAutoHighest(\n                    isAutoHighestQuality = isAutoHighestQuality,\n                    isVip = isVip,\n                    cachedDashVideoIds = cachedDashIds\n                )\n            ) {\n                environment.assertOwned()\n                return@withContext cachedPlayData\n            }\n        }\n\n        val fetchResult = fetchPlayUrlRecursive(\n            bvid = bvid,\n            cid = cid,\n            targetQn = startQuality,\n            audioLang = audioLang,\n            requestKind = PlayUrlRequestKind.INITIAL\n        ) ?: return@withContext null\n\n        val dashVideoIds = fetchResult.data.dash?.video?.map { it.id }?.distinct() ?: emptyList()\n        if (shouldCachePlayUrlResult(\n                source = fetchResult.source,\n                audioLang = audioLang,\n                requestedQuality = startQuality,\n                returnedQuality = fetchResult.data.quality,\n                dashVideoIds = dashVideoIds\n            )\n        ) {\n            environment.cache.put(\n                bvid = bvid,\n                cid = cid,\n                data = fetchResult.data,\n                quality = startQuality\n            )\n        }\n        fetchResult.data\n    }\n\n",
+          "after": "        environment.requestCaches.initialPlayUrl(bvid, cid, startQuality, isAutoHighestQuality, audioLang) {\n            if (!shouldSkipPlayUrlCache(isAutoHighestQuality, isVip, audioLang)) {\n                val cachedPlayData = environment.cache.get(\n                    bvid = bvid,\n                    cid = cid,\n                    requestedQuality = startQuality\n                )\n                val cachedDashIds = cachedPlayData?.dash?.video?.map { it.id }.orEmpty()\n                if (\n                    cachedPlayData != null &&\n                    shouldAcceptCachedPlayUrlForAutoHighest(\n                        isAutoHighestQuality = isAutoHighestQuality,\n                        isVip = isVip,\n                        cachedDashVideoIds = cachedDashIds\n                    )\n                ) {\n                    environment.assertOwned()\n                    return@initialPlayUrl cachedPlayData\n                }\n            }\n\n            val fetchResult = fetchPlayUrlRecursive(\n                bvid = bvid,\n                cid = cid,\n                targetQn = startQuality,\n                audioLang = audioLang,\n                requestKind = PlayUrlRequestKind.INITIAL\n            ) ?: return@initialPlayUrl null\n\n            val dashVideoIds = fetchResult.data.dash?.video?.map { it.id }?.distinct() ?: emptyList()\n            if (shouldCachePlayUrlResult(\n                    source = fetchResult.source,\n                    audioLang = audioLang,\n                    requestedQuality = startQuality,\n                    returnedQuality = fetchResult.data.quality,\n                    dashVideoIds = dashVideoIds\n                )\n            ) {\n                environment.cache.put(\n                    bvid = bvid,\n                    cid = cid,\n                    data = fetchResult.data,\n                    quality = startQuality\n                )\n            }\n            fetchResult.data\n        }.also { environment.assertOwned() }\n    }\n\n",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "auxiliary": {
+    "com/android/purebilibili/data/repository/OnDemandRequestCache.kt": {
+      "file": "OnDemandRequestCache.kt",
+      "mode": "whole-original"
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoRequestAccountScope.kt": {
+      "file": "VideoRequestAccountScope.kt",
+      "mode": "pure-account-scope-function",
+      "body": "package com.android.purebilibili.data.repository\n\nimport java.security.MessageDigest\n\ninternal fun buildVideoRequestAccountScope(parts: List<String?>): String {\n    val digest = MessageDigest.getInstance(\"SHA-256\")\n    parts.forEach { part ->\n        val bytes = part.orEmpty().toByteArray(Charsets.UTF_8)\n        digest.update(bytes.size.toString().toByteArray(Charsets.UTF_8))\n        digest.update(':'.code.toByte())\n        digest.update(bytes)\n    }\n    return digest.digest().joinToString(\"\") { byte -> \"%02x\".format(byte) }\n}\n"
+    }
+  },
+  "boundary": "Same live immutable Windows request Job/receipt only; no cross-entry or different-request API/data sharing. First full invocation context elements are retained, actual root requestJob is borrowed; every cache consumer result is re-admitted. Initial playback address merge uses separate selected playback credentials+permission/receipt hash and TTL0; no second address result cache. Forced refresh retires exact detail/related and matching bvid/cid in-flight initial requests, not only clearCompleted. Unknown AV forced refresh defers canonical playback invalidation until same-owner detail returns; existing old two-argument Catalog constructor remains exact no-cache for Home/creator callers. Ordinary initial request errors are Result inside borrowed Job children and are unboxed only by waiting caller. Deferred AV invalidation consumes original resolved positiveCID/canonicalBV after requestedCID policy, not raw serverfirstCID. AV raw force args normalize through the original lookup policy; pending force is consumed only by its original-policy resolved requestedCID, not another-P reader of the shared raw detail. All forced normalized BV/aid lookups, including canonicalBV cid0 or invalid positiveCID fallback, remain pending until original requestedCID resolution. Immediate known-target invalidation stays; different normalized lookup or another-P reader cannot consume pending force. Pending force is registered only after synchronous invalidations and records the immediately covered canonicalBV/CID. Matching resolved detail consumes without invalidating again when covered, preserving newly launched parallel INITIAL; unresolved/fallback actual targets still invalidate before their corrected/detail-only fetch."
+}

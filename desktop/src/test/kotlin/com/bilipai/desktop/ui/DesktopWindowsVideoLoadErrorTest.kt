@@ -135,14 +135,18 @@ class DesktopWindowsVideoLoadErrorTest {
         val detailCalls = AtomicInteger()
         val mediaCalls = AtomicInteger()
         private val repository = object : DesktopOriginalVideoLoadRepository {
-            override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> =
-                error("DETAIL_ONLY must not request a parallel info source")
-            override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?): PlayUrlData? =
-                error("DETAIL_ONLY must not request a parallel play source")
-            override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long, targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> {
+            override fun cachedVideoCid(bvid: String, aid: Long): Long = 0L
+            override suspend fun getCachedRelatedVideosResult(bvid: String): Result<List<RelatedVideo>>? = null
+            override fun invalidateVideoLoadCaches(bvid: String, aid: Long, cid: Long): Unit = error("No forced refresh in classification fixture")
+            override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> {
                 detailCalls.incrementAndGet()
                 if (throwFailure) throw failure
                 return Result.failure(failure)
+            }
+            override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int, audioLang: String?): PlayUrlData? =
+                error("Failed detail must not request a play source")
+            override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long, targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> {
+                error("The main load uses separate detail and playURL sources")
             }
             override suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> = emptyList()
             override suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = error("No related request during primary load")

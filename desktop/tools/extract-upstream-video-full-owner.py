@@ -1326,11 +1326,15 @@ def generate(repo,output,standalone=False):
     assert inverse[i:i+len(edit['after'])]==edit['after'],recipe['output']+' '+stage+' exact inverse span'
     inverse=inverse[:i]+edit['before']+inverse[i+len(edit['after']):]
    assert sha(inverse)==before_sha,recipe['output']+' '+stage+' whole inverse'
+  from v034_detail_bootstrap import apply_and_record as apply_detail
+  body,detailProof=apply_detail(recipe['output'],body,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
    target.write_text(body,encoding='utf-8',newline='\n')
   outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted,
+                      detailInverseEdits=(detailProof or {}).get('inverseEdits',[]),
+                      detailSourceManifest=(detailProof or {}).get('sourceManifest'),
                       failureRecoveryInverseEdits=recovery_edits,followGroupInverseEdits=follow_group_edits,
                       failureRecoveryBeforeSha256LF=recovery_before_sha,failureRecoveryAfterSha256LF=recovery_after_sha,
                       postRecoveryInverseEdits=post_recovery_edits,postSameSendInverseEdits=post_same_send_edits,

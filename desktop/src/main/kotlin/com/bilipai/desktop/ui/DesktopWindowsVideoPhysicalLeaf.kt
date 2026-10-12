@@ -279,6 +279,16 @@ internal class DesktopWindowsVideoActions(
     val subject by assembly.playback.subjectSnapshot.collectAsState()
     val favoriteEvent by assembly.playback.favoriteFolderSaveEvent.collectAsState()
     val success = original as? VideoPlaybackUiState.Success
+    val detail by assembly.playback.detailState.collectAsState()
+    val requestState = assembly.playback.captureDesktopLoadState()
+    // This separate raw ViewInfo channel never becomes a playback Success.
+    // All existing native/action/download variables below still use real success.
+    val readonlyInfo = detail.info?.takeIf {
+        current() && detail.requestToken == requestState.currentLoadRequestToken &&
+            detail.requestBvid == route.bvid && detail.requestCid == route.cid &&
+            requestState.currentRequest?.bvid == detail.requestBvid &&
+            requestState.currentRequest?.cid == detail.requestCid
+    }
     val interactiveChoicePanel by assembly.playback.interactiveChoicePanel.collectAsState()
     // Bind outside the original visible choice UI and the viewport carrier.
     // Owner minimization/choice hiding does not revoke an accepted child ACK.
@@ -942,7 +952,7 @@ internal class DesktopWindowsVideoActions(
                         IconButton(onClick = { if (current()) actions.back() }, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.ArrowBack, contentDescription = "返回")
                         }
-                        Text(success?.info?.title ?: "视频", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
+                        Text(success?.info?.title ?: readonlyInfo?.title ?: "视频", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
                             maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
@@ -1226,6 +1236,14 @@ internal class DesktopWindowsVideoActions(
                                     }
                                 }
                             }
+                        } else if (readonlyInfo != null) {
+                            Text(readonlyInfo.title, style = MaterialTheme.typography.titleMedium)
+                            Text(readonlyInfo.owner.name, style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            if (readonlyInfo.desc.isNotBlank()) Text(readonlyInfo.desc,
+                                style = MaterialTheme.typography.bodyMedium)
+                            // Existing failure/retry/login content remains separate;
+                            // readonly detail exposes no player or interaction action.
                         } else Text("正在读取视频信息", style = MaterialTheme.typography.bodyMedium)
                         HorizontalDivider()
                         Text("播放设置", style = MaterialTheme.typography.titleSmall)
