@@ -62,6 +62,9 @@ def emit(path,text,origin,mode):
  from v034_on_demand import apply_and_record as apply_on_demand
  text,requestCacheProof=apply_on_demand(path,text,OUTPUT)
  if requestCacheProof is not None:mode='fixed-stable-v034-owned-request-cache-delta'
+ from v034_playurl_failure import apply_and_record as apply_playurl_failure
+ text,playurlFailureProof=apply_playurl_failure(path,text,OUTPUT)
+ if playurlFailureProof is not None:mode='windows-actual-call-scoped-fallback-cause-adapter'
  generated=STANDALONE or mode!='direct';OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=digest(text),generated=generated))
  if generated:
   target=wide(OUTPUT/path);target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')

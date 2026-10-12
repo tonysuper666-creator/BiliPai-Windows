@@ -60,6 +60,26 @@ class DesktopOriginalVideoMetadataRelatedViewModelTest {
         val relatedFailures = AtomicInteger()
         @Volatile var relatedGate = CountDownLatch(0)
         val mediaCalls = AtomicInteger()
+        val capabilityReads = AtomicInteger()
+        val preparationCalls = AtomicInteger()
+        @Volatile var preparationEntered = CompletableDeferred<Unit>()
+        @Volatile var preparationGate = CompletableDeferred<Unit>().also { it.complete(Unit) }
+        @Volatile var preparationFailure: Exception? = null
+        fun holdNativePreparation() {
+            preparationEntered = CompletableDeferred()
+            preparationGate = CompletableDeferred()
+            preparationFailure = null
+        }
+        private suspend fun prepareFixtureNative() {
+            // Only this private fixed-capability fixture controls the OS port.
+            // The production raw owner still performs its real timeout/receipt
+            // admission and maps this port's ordinary failure into a typed cause.
+            val entered = preparationEntered
+            val gate = preparationGate
+            preparationCalls.incrementAndGet(); entered.complete(Unit)
+            gate.await()
+            preparationFailure?.let { throw it }
+        }
         val crashErrors = CopyOnWriteArrayList<String>()
         val captures = CopyOnWriteArrayList<InvocationCapture>()
         val playEntered = CompletableDeferred<PlayCapture>()
@@ -149,7 +169,11 @@ class DesktopOriginalVideoMetadataRelatedViewModelTest {
                 binding.primaryApi.getNavInfo()
                 error("Actual metadata HTTP412 must reject before Native selection")
             })
-            DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent)
+            // This private headless fixture supplies fixed capabilities; it
+            // does not initialize or assert readiness of a physical native core.
+            raw.installMediaPreparation(::prepareFixtureNative)
+            DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent,
+                mediaPreparation = raw::awaitMediaPreparation)
         }, status, { media }, captureMetadataBinding = { admission ->
             val state = vm.captureDesktopLoadState()
             val caller = currentCoroutineContext().job
@@ -175,12 +199,13 @@ class DesktopOriginalVideoMetadataRelatedViewModelTest {
             override fun savePosition(bvid: String, cid: Long, positionMs: Long) = error("No accepted media")
         }
         private val capabilities = object : DesktopOriginalVideoPlaybackCapabilities {
-            override fun isHevcSupported() = false
-            override fun isAv1Supported() = false
-            override fun isHdrSupported() = false
-            override fun isDolbyVisionSupported() = false
-            override fun isDolbyAtmosAudioSupported() = false
-            override fun isDolbySoftwareAudioDecoderRequired() = false
+            private fun available(value: Boolean): Boolean { capabilityReads.incrementAndGet(); return value }
+            override fun isHevcSupported() = available(false)
+            override fun isAv1Supported() = available(false)
+            override fun isHdrSupported() = available(false)
+            override fun isDolbyVisionSupported() = available(false)
+            override fun isDolbyAtmosAudioSupported() = available(false)
+            override fun isDolbySoftwareAudioDecoderRequired() = available(false)
         }
         private val mini = object : DesktopOriginalVideoOwnerMini {
             override var onNavigateNextCallback: (() -> Boolean)? = null
@@ -272,16 +297,39 @@ class DesktopOriginalVideoMetadataRelatedViewModelTest {
         suspend fun related(phase: VideoPlaybackUiState.RelatedLoadState) = withTimeout(5_000) {
             vm.detailState.first { it.relatedLoadState == phase && it.info != null }
         }
-        suspend fun finishMain(): InvocationCapture {
+        suspend fun finishMain(expectedCaptures: Int = 1): InvocationCapture {
             playRelease.countDown()
             val failed = withTimeout(5_000) { vm.uiState.first { it is VideoPlaybackUiState.Error } } as VideoPlaybackUiState.Error
             assertEquals(412, assertIs<VideoLoadError.ApiError>(failed.error).code)
             assertTrue(failed.canRetry)
             assertEquals(1, selectionApiCalls.get())
-            val captured = captures.single()
+            assertEquals(expectedCaptures, captures.size)
+            val captured = captures.last()
             withTimeout(5_000) { captured.job.join() }
             assertTrue(captured.job.isCompleted); assertFalse(captured.job.isCancelled)
             return captured
+        }
+        suspend fun failNativePreparation(cause: Exception): Pair<InvocationCapture, VideoPlaybackUiState.Error> {
+            preparationFailure = cause; preparationGate.complete(Unit)
+            val failed = withTimeout(5_000) { vm.uiState.first { it is VideoPlaybackUiState.Error } }
+                as VideoPlaybackUiState.Error
+            val marker = assertIs<DesktopOriginalVideoNativePreparationFailure>(
+                assertIs<VideoLoadError.UnknownError>(failed.error).throwable)
+            // Coroutine debug recovery may copy an exception while retaining the
+            // original in its cause chain. Keep exact original identity mandatory.
+            val causes = generateSequence(assertNotNull(marker.cause)) { it.cause }.take(16).toList()
+            assertTrue(causes.any { it === cause },
+                "Native preparation must retain the exact original failure in its bounded cause chain")
+            val captured = captures.single()
+            withTimeout(5_000) { captured.job.join() }
+            assertTrue(captured.job.isCompleted); assertFalse(captured.job.isCancelled)
+            ui {
+                assertSame(failed, vm.captureDesktopPlaybackState())
+                assertSame(captured.state.currentRequest, vm.captureDesktopLoadState().currentRequest)
+                assertEquals(captured.state.currentLoadRequestToken, vm.captureDesktopLoadState().currentLoadRequestToken)
+                assertEquals(1, captures.size, "Fatal local initialization must not start automatic recovery")
+            }
+            return captured to failed
         }
         override fun close() {
             entry = false; scope.cancel(); playRelease.countDown(); relatedGate.countDown(); subtitles.close()
@@ -359,6 +407,126 @@ class DesktopOriginalVideoMetadataRelatedViewModelTest {
             assertNull(h.vm.subjectSnapshot.value); assertEquals(0, h.mediaCalls.get())
             assertFalse(permission.admit { error("Retired metadata may not navigate") })
             assertTrue(h.uncaught.isEmpty())
+        } }
+    }
+
+    @Test fun actualVmStartsReadonlyDetailAndRelatedWhileNativePreparationIsPending(): Unit = runBlocking<Unit> {
+        withTimeout(12_000) { Harness().use { h ->
+            h.holdNativePreparation(); h.start()
+            withTimeout(5_000) { h.preparationEntered.await() }
+            val detail = h.related(VideoPlaybackUiState.RelatedLoadState.READY)
+            val permission = assertNotNull(h.vm.desktopMetadataAdmission.value)
+            assertEquals("Fixture", detail.info?.title)
+            assertEquals("BV17x411w7KC", detail.related.single().bvid)
+            assertTrue(permission.isCurrent()); assertNull(h.vm.subjectSnapshot.value)
+            assertIs<VideoPlaybackUiState.Loading>(h.vm.uiState.value)
+            assertEquals(1, h.preparationCalls.get())
+            assertEquals(0, h.capabilityReads.get())
+            assertEquals(0, h.mediaCalls.get())
+            assertFalse(h.playEntered.isCompleted, "The raw media query must remain behind actual preparation")
+            assertTrue(h.captures.single().job.isActive)
+            // Drain the genuinely blocked main request before closing the fixture.
+            withTimeout(5_000) { h.captures.single().job.cancelAndJoin() }
+            assertTrue(h.uncaught.isEmpty())
+        } }
+    }
+
+    @Test fun actualVmFatalNativePreparationKeepsReadonlyEntryWithoutAutomaticRecovery(): Unit = runBlocking<Unit> {
+        withTimeout(12_000) { Harness().use { h ->
+            h.holdNativePreparation(); h.start()
+            withTimeout(5_000) { h.preparationEntered.await() }
+            val detail = h.related(VideoPlaybackUiState.RelatedLoadState.READY)
+            val permission = assertNotNull(h.vm.desktopMetadataAdmission.value)
+            val (captured, failed) = h.failNativePreparation(IllegalStateException("controlled local native initialization failure"))
+            assertSame(permission, h.vm.desktopMetadataAdmission.value)
+            assertTrue(permission.isCurrent())
+            assertSame(detail.info, h.vm.detailState.value.info)
+            assertSame(detail.related.single(), h.vm.detailState.value.related.single())
+            assertTrue(failed.canRetry, "A real manual retry remains available")
+            val evidence = desktopOriginalApiFailure(failed.error)
+            assertEquals(PlaybackFailureReason.Source, evidence.reason)
+            assertFalse(evidence.automaticRecovery)
+            assertFalse(evidence.decoder); assertFalse(evidence.premiumAudio)
+            assertEquals(PlaybackStatus.Failed, h.vm.desktopPlaybackRecoveryState.value.status)
+            assertEquals(PlaybackFailureReason.Source, h.vm.desktopPlaybackRecoveryState.value.failure?.reason)
+            assertSame(captured.state.currentRequest, h.vm.captureDesktopLoadState().currentRequest)
+            assertEquals(0, h.capabilityReads.get()); assertEquals(0, h.mediaCalls.get())
+            assertFalse(h.playEntered.isCompleted); assertNull(h.vm.subjectSnapshot.value)
+            assertTrue(h.uncaught.isEmpty())
+        } }
+    }
+
+    @Test fun actualVmManualRetryAfterFatalPreparationCapturesFreshBindingAndWaitsAgain(): Unit = runBlocking<Unit> {
+        withTimeout(12_000) { Harness().use { h ->
+            h.holdNativePreparation(); h.start()
+            withTimeout(5_000) { h.preparationEntered.await() }
+            h.related(VideoPlaybackUiState.RelatedLoadState.READY)
+            val oldPermission = assertNotNull(h.vm.desktopMetadataAdmission.value)
+            val (initial, _) = h.failNativePreparation(IllegalStateException("controlled native failure before manual retry"))
+            h.holdNativePreparation()
+            h.ui { h.vm.retry() }
+            withTimeout(5_000) { h.preparationEntered.await() }
+            h.related(VideoPlaybackUiState.RelatedLoadState.READY)
+            val retry = h.captures.last()
+            val newPermission = assertNotNull(h.vm.desktopMetadataAdmission.value)
+            assertEquals(2, h.captures.size)
+            assertNotSame(initial.job, retry.job); assertEquals(initial.receipt, retry.receipt)
+            assertNotSame(initial.state.currentRequest, retry.state.currentRequest)
+            assertEquals(initial.state.currentLoadRequestToken + 1L, retry.state.currentLoadRequestToken)
+            assertNotSame(oldPermission, newPermission)
+            assertFalse(oldPermission.isCurrent()); assertTrue(newPermission.isCurrent())
+            assertEquals(0, h.capabilityReads.get()); assertEquals(0, h.mediaCalls.get())
+            assertFalse(h.playEntered.isCompleted)
+            h.preparationGate.complete(Unit)
+            // After the true fresh preparation, terminate at the existing real
+            // same-Binding API412 selection path; no native playback is invented.
+            val terminal = h.finishMain(expectedCaptures = 2)
+            assertSame(retry.job, terminal.job)
+            assertTrue(h.capabilityReads.get() > 0)
+            assertTrue(newPermission.isCurrent()); assertNull(h.vm.subjectSnapshot.value)
+            assertEquals(0, h.mediaCalls.get()); assertTrue(h.uncaught.isEmpty())
+        } }
+    }
+
+    @Test fun actualVmCancelledNativePreparationCannotResumeFromALateReadyGrant(): Unit = runBlocking<Unit> {
+        withTimeout(12_000) { Harness().use { h ->
+            h.holdNativePreparation(); h.start()
+            withTimeout(5_000) { h.preparationEntered.await() }
+            h.related(VideoPlaybackUiState.RelatedLoadState.READY)
+            val main = h.captures.single().job
+            withTimeout(5_000) { main.cancelAndJoin() }
+            assertTrue(main.isCancelled)
+            h.preparationGate.complete(Unit)
+            h.ui {
+                assertFalse(h.vm.captureDesktopPlaybackState() is VideoPlaybackUiState.Success)
+                assertNull(h.vm.subjectSnapshot.value)
+                assertFalse(h.playEntered.isCompleted)
+                assertEquals(0, h.capabilityReads.get()); assertEquals(0, h.mediaCalls.get())
+            }
+            assertEquals(1, h.captures.size)
+            assertTrue(h.uncaught.isEmpty())
+        } }
+    }
+
+    @Test fun actualVmRetiredEntryRejectsNativeGrantAndReadonlyActions(): Unit = runBlocking<Unit> {
+        withTimeout(12_000) { Harness().use { h ->
+            h.holdNativePreparation(); h.start()
+            withTimeout(5_000) { h.preparationEntered.await() }
+            val detail = h.related(VideoPlaybackUiState.RelatedLoadState.READY)
+            val permission = assertNotNull(h.vm.desktopMetadataAdmission.value)
+            val main = h.captures.single().job
+            h.entry = false
+            assertTrue(h.scope.isActive, "Retire the actual entry predicate without borrowing raw Job cancellation")
+            assertFalse(permission.isCurrent())
+            h.preparationGate.complete(Unit)
+            withTimeout(5_000) { main.join() }
+            assertTrue(main.isCancelled)
+            assertSame(detail.info, h.vm.detailState.value.info)
+            assertFalse(h.vm.uiState.value is VideoPlaybackUiState.Success)
+            assertFalse(permission.admit { error("Retired readonly permission may not navigate") })
+            assertFalse(h.playEntered.isCompleted)
+            assertEquals(0, h.capabilityReads.get()); assertEquals(0, h.mediaCalls.get())
+            assertNull(h.vm.subjectSnapshot.value); assertTrue(h.uncaught.isEmpty())
         } }
     }
 }

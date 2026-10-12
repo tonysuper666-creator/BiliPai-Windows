@@ -30,9 +30,10 @@ internal data class DesktopOriginalPlaybackFailureEvidence(
 internal suspend fun desktopOriginalBootstrapVideoLoadError(failure: Throwable, error: VideoLoadError): VideoLoadError =
     error.also { desktopVideoBootstrapObserveMappedFailure(failure, it) }
 
-/** Preserve a reliable API body code before BiliApiException's IOException base. */
+/** Body codes have explicit protocol provenance. Bare positive BiliApiException
+ * values may be transport statuses and retain the Windows HTTP/IO mapping. */
 internal fun desktopOriginalVideoLoadError(failure: Throwable): VideoLoadError =
-    desktopOriginalApiCode(failure)?.takeIf { it < 0 }?.let {
+    desktopOriginalApiCode(failure)?.let {
         VideoLoadError.ApiError(it, when (it) {
             -101 -> "请登录后重试"
             -404 -> "视频不存在或已被删除"
@@ -42,13 +43,13 @@ internal fun desktopOriginalVideoLoadError(failure: Throwable): VideoLoadError =
     } ?: desktopWindowsVideoLoadError(failure)
 
 internal fun desktopOriginalVideoLoadCanRetry(failure: Throwable): Boolean =
-    if (desktopOriginalApiCode(failure)?.let { it < 0 } == true)
+    if (desktopOriginalApiCode(failure) != null)
         desktopOriginalVideoLoadError(failure).isRetryable()
     else desktopWindowsVideoLoadCanRetry(failure)
 
 private fun desktopOriginalApiCode(failure: Throwable): Int? = when (failure) {
-    is BiliApiException -> failure.apiCode
-    is com.android.purebilibili.data.repository.ContentRequestException -> failure.code
+    is BiliApiException -> failure.apiCode.takeIf { it < 0 }
+    is com.android.purebilibili.data.repository.ContentRequestException -> failure.code.takeIf { it != 0 }
     else -> null
 }
 
@@ -72,8 +73,11 @@ internal fun desktopOriginalApiFailure(error: VideoLoadError): DesktopOriginalPl
             DesktopOriginalPlaybackFailureEvidence(PlaybackFailureReason.Restricted, 0, error.toUserMessage(), false)
         is VideoLoadError.RateLimited, is VideoLoadError.GlobalCooldown, VideoLoadError.WbiSignatureError ->
             DesktopOriginalPlaybackFailureEvidence(PlaybackFailureReason.Source, 0, error.toUserMessage(), false)
-        else -> DesktopOriginalPlaybackFailureEvidence(PlaybackFailureReason.Source, 0,
-            if (error is VideoLoadError.UnknownError) "视频加载失败，请重试" else error.toUserMessage(), true)
+        is VideoLoadError.UnknownError -> if (error.throwable is DesktopOriginalVideoNativePreparationFailure)
+            DesktopOriginalPlaybackFailureEvidence(PlaybackFailureReason.Source, 0,
+                error.throwable.message ?: "Windows 播放器初始化失败，请手动重试", false)
+            else DesktopOriginalPlaybackFailureEvidence(PlaybackFailureReason.Source, 0, "视频加载失败，请重试", true)
+        else -> DesktopOriginalPlaybackFailureEvidence(PlaybackFailureReason.Source, 0, error.toUserMessage(), true)
     }
 }
 

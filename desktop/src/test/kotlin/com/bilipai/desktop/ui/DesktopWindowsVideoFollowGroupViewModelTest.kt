@@ -95,9 +95,9 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
         val invocations = DesktopOriginalVideoPlaybackInvocationPorts(scope, ::entryCurrent, {
             val caller = currentCoroutineContext().job
             val epoch = account
-            DesktopOriginalVideoPlaybackInvocation(repository, media) {
+            DesktopOriginalVideoPlaybackInvocation(repository, media, assertCurrentPort = {
                 if (!entry || account != epoch || !caller.isActive) throw CancellationException("Captured API caller retired")
-            }
+            }, mediaPreparation = { error("No media preparation in follow-group fixture") })
         }, unused<DesktopOriginalVideoPlaybackStatus>(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         private val api = unused<BilibiliApi>()
         private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(

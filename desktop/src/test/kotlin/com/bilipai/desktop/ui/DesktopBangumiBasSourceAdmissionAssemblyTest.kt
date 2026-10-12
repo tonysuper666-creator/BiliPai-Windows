@@ -518,7 +518,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                         override fun get(bvid: String, cid: Long): PlayUrlData? = null
                         override fun invalidate(bvid: String, cid: Long) = error("No cache invalidation")
                     }, unused(), unused(), unused(), MutableStateFlow(false))
-                media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, {}, {})
+                media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, {})
                 requests = DesktopOriginalVideoOwnerRequestFactory(repository, DesktopLoginRepository(repository), epoch,
                     gate.scope, gate::owns, gate::commitEntry, { PlayerPreferences(defaultAudioQuality = audioPreference, lastSelectedAudioQuality = audioPreference) }, capabilities,
                     { true }, { false }, { false }, subtitles, privacy,
@@ -529,7 +529,11 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                         if (::bas.isInitialized) acceptedBasObservations.add(
                             AcceptedBasObservation(it, vm.uiState.value, bas.ownsBasSource(it)))
                     }, media::admission,
-                    captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner) },
+                    captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner, mediaPreparation = {
+                        // Fixed-capability headless fixture; no physical NativeReady claim.
+                        currentCoroutineContext().ensureActive()
+                        if (!gate.owns()) throw CancellationException("Fixture preparation entry retired")
+                    }) },
                     status = readbacks, prepareAcceptedMedia = { media.accepted(it) },
                     createPlugins = { _, _ -> plugins }, confirmFollow = { error("No follow write") },
                     feedback = { error("No ordinary feedback") }, readHasPrimarySession = readbacks::hasPrimarySession,

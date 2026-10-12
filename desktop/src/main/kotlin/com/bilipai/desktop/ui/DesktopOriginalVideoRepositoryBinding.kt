@@ -35,7 +35,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     preferences: PlayerPreferences,
     codecOverride: String?,
     blockedVideoCodecs: Set<String>,
-    av1Supported: Boolean,
+    av1Supported: () -> Boolean,
     auto1080pEnabled: () -> Boolean,
     directedTrafficEnabled: () -> Boolean,
     isMobileData: () -> Boolean,
@@ -85,9 +85,10 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
         .let { decorateCalls?.invoke(it) ?: it }
     private val preferenceSnapshot = preferences.normalized()
     private val blockedSnapshot = blockedVideoCodecs.toSet()
+    private val mediaAv1Supported by lazy(LazyThreadSafetyMode.SYNCHRONIZED) { av1Supported() }
     private val views = repository.originalVideoProtocolViews(authorization, ::entryCurrent, commitIfEntryCurrent) { bvid, cid, quality ->
         repository.originalVideoCacheKey(authorization, bvid, cid, quality, preferenceSnapshot, codecOverride,
-            blockedSnapshot, av1Supported)
+            blockedSnapshot, mediaAv1Supported)
     }
     private val capturedPrimaryApi = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/",
         receipt.accountEpoch, ::current, decorateCalls = decorateCalls)
@@ -318,6 +319,31 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
             codecOverride: String?,
             blockedVideoCodecs: Set<String>,
             av1Supported: Boolean,
+            auto1080pEnabled: () -> Boolean,
+            directedTrafficEnabled: () -> Boolean,
+            isMobileData: () -> Boolean,
+            canRefreshPrimaryToken: () -> Boolean,
+            refreshPrimaryToken: suspend (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
+            onPlaybackAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt) -> Unit)? = null,
+            decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null,
+        ): DesktopOriginalVideoRepositoryBinding =
+            captureDeferredMediaCapabilities(repository, expectedEpoch, entryJob,
+                isEntryCurrent, commitIfEntryCurrent, preferences, codecOverride, blockedVideoCodecs,
+                { av1Supported }, auto1080pEnabled, directedTrafficEnabled, isMobileData,
+                canRefreshPrimaryToken, refreshPrimaryToken, onPlaybackAuthorizationRetired, decorateCalls)
+
+        /** Metadata needs no decoder. This actual capability is evaluated once
+         * by the first media cache key, after the required preparation stage. */
+        suspend fun captureDeferredMediaCapabilities(
+            repository: DesktopRepository,
+            expectedEpoch: Long,
+            entryJob: Job,
+            isEntryCurrent: () -> Boolean,
+            commitIfEntryCurrent: ((() -> Unit) -> Boolean),
+            preferences: PlayerPreferences,
+            codecOverride: String?,
+            blockedVideoCodecs: Set<String>,
+            av1Supported: () -> Boolean,
             auto1080pEnabled: () -> Boolean,
             directedTrafficEnabled: () -> Boolean,
             isMobileData: () -> Boolean,

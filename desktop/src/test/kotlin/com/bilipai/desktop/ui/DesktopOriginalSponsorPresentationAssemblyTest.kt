@@ -493,7 +493,7 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
                     unused(), MutableStateFlow(false))
                 val media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, { preparation ->
                     preparations.add(preparation); beforePreparation?.invoke(preparation)
-                }, {})
+                })
                 val requests = DesktopOriginalVideoOwnerRequestFactory(repository, DesktopLoginRepository(repository), epoch,
                     gate.scope, gate::owns, gate::commitEntry, { PlayerPreferences() }, capabilities,
                     { true }, { false }, { false }, subtitles, privacy,
@@ -503,7 +503,11 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
                     gate::owns, gate::commitEntry, player, DesktopRepositoryPlaybackPublication(repository), { false },
                     runtimeBinding.sourceVersions, { expected -> publications.add(expected); runtimeBinding.accepted(expected) },
                     media::admission, captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, native ->
-                        captures.add(Capture(state, currentCoroutineContext().job)); requests.capture(state, native)
+                        captures.add(Capture(state, currentCoroutineContext().job)); requests.capture(state, native, mediaPreparation = {
+                            // Fixed-capability headless fixture; no physical NativeReady claim.
+                            currentCoroutineContext().ensureActive()
+                            if (!gate.owns()) throw CancellationException("Fixture preparation entry retired")
+                        })
                     }, status = readbacks, prepareAcceptedMedia = media::accepted,
                     createPlugins = { native, invocations -> DesktopOriginalVideoOwnerPluginBridge(runtime, native, invocations,
                         runtimeBinding::generation, invocations::captureCurrentRequestAdmission, runtimeBinding::calls) },

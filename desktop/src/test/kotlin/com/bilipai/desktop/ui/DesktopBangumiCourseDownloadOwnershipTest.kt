@@ -381,7 +381,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                         override fun get(bvid: String, cid: Long): PlayUrlData? = null
                         override fun invalidate(bvid: String, cid: Long) = error("No cache invalidation")
                     }, unused(), unused(), unused(), MutableStateFlow(false))
-                media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, {}, {})
+                media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, {})
                 requests = DesktopOriginalVideoOwnerRequestFactory(repository, DesktopLoginRepository(repository), epoch,
                     gate.scope, gate::owns, gate::commitEntry, { PlayerPreferences() }, capabilities,
                     { true }, { false }, { false }, subtitles, privacy,
@@ -389,7 +389,11 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                 DesktopOriginalVideoOwnerAssembly.create(context, settings, repository, epoch, gate.scope,
                     gate::owns, gate::commitEntry, player, DesktopRepositoryPlaybackPublication(repository), { false }, versions,
                     { published.set(it); versions.value = it.sourceVersion }, media::admission,
-                    captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner) },
+                    captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner, mediaPreparation = {
+                        // Fixed-capability headless fixture; no physical NativeReady claim.
+                        currentCoroutineContext().ensureActive()
+                        if (!gate.owns()) throw CancellationException("Fixture preparation entry retired")
+                    }) },
                     status = readbacks, prepareAcceptedMedia = { media.accepted(it) },
                     createPlugins = { _, _ -> plugins }, confirmFollow = { error("No follow write") },
                     feedback = { error("No ordinary feedback") }, readHasPrimarySession = readbacks::hasPrimarySession,
@@ -597,10 +601,11 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         suspend fun close() {
             releaseMedia.countDown()
             if (::manager.isInitialized) {
-                manager.close()
-                val actualScope = DesktopDownloadManager::class.java.getDeclaredField("scope").apply { isAccessible = true }
-                    .get(manager) as CoroutineScope
-                withTimeout(8_000) { actualScope.coroutineContext.job.join() }
+                // close() launches a separate retirement coroutine; joining only
+                // worker scope does not wait for its durable queue checkpoint.
+                // The actual suspend shutdown drains workers/directory ingress,
+                // persists and releases queue authority before contained deletion.
+                withTimeout(8_000) { manager.shutdownForApplicationExit() }
             }
             if (::vm.isInitialized) ui { try { vm.close() } catch (retired: CancellationException) { check(!gate.owns()) } }
             if (::actor.isInitialized) actor.close()

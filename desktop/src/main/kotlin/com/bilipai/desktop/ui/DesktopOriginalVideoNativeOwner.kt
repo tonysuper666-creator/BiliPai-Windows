@@ -75,6 +75,54 @@ internal class DesktopOrdinaryPlaybackHandoff(
     override fun toString() = "DesktopOrdinaryPlaybackHandoff(sourceVersion=${nativeSource.sourceVersion}, selectedPart=$selectedPart)"
 }
 
+/** Exact original ordinary-load identity recorded by Root at real media
+ * submission. This is display/pressure metadata, never route provenance or an
+ * admission capability. Caller activity is required only at submission; normal
+ * completion does not retire a genuinely accepted entry/source's subject. */
+internal class DesktopOriginalVideoFullLoadSubject private constructor(
+    private val owner: DesktopOriginalVideoNativeOwner,
+    private val originalRequest: PlaybackRequest,
+    private val requestToken: Long,
+    private val resolvedRequest: PlaybackRequest,
+    private val caller: Job,
+    val receipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt,
+) {
+    internal fun sameOriginalRequestIdentity(
+        state: com.android.purebilibili.feature.video.playback.session.PlaybackSessionState,
+    ): Boolean = state.currentRequest === originalRequest &&
+        state.currentLoadRequestToken == requestToken && state.currentBvid == originalRequest.bvid &&
+        state.currentCid == resolvedRequest.cid
+
+    internal fun matchesAccepted(owner: DesktopOriginalVideoNativeOwner, request: PlaybackRequest,
+        receipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt?): Boolean =
+        this.owner === owner && resolvedRequest == request && this.receipt == receipt
+
+    internal fun matchesSubmission(owner: DesktopOriginalVideoNativeOwner, request: PlaybackRequest,
+        receipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt, job: Job): Boolean =
+        matchesAccepted(owner, request, receipt) && caller === job && job.isActive
+
+    internal fun matchesPresentation(expected: DesktopOriginalVideoAcceptedPublication,
+        state: com.android.purebilibili.feature.video.playback.session.PlaybackSessionState,
+        receipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt): Boolean =
+        !caller.isCancelled && expected.fullLoadSubject === this &&
+            resolvedRequest == expected.request && this.receipt == receipt &&
+            expected.nativeSource.source.authorizationReceipt == receipt && sameOriginalRequestIdentity(state)
+
+    companion object {
+        internal fun capture(owner: DesktopOriginalVideoNativeOwner,
+            state: com.android.purebilibili.feature.video.playback.session.PlaybackSessionState,
+            originalRequest: PlaybackRequest, requestToken: Long, resolvedRequest: PlaybackRequest,
+            caller: Job, receipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt): DesktopOriginalVideoFullLoadSubject {
+            if (!caller.isActive || state.currentRequest !== originalRequest ||
+                state.currentLoadRequestToken != requestToken ||
+                captureDesktopOriginalResolvedMediaRequest(state, originalRequest, requestToken) != resolvedRequest)
+                throw CancellationException("Original full-load subject retired before submission")
+            return DesktopOriginalVideoFullLoadSubject(owner, originalRequest, requestToken, resolvedRequest, caller, receipt)
+        }
+    }
+    override fun toString() = "DesktopOriginalVideoFullLoadSubject(loadToken=$requestToken)"
+}
+
 /** Actual publication metadata for this owner. The source is an immutable MPV
  * snapshot and contains credentials; this object deliberately has safe logging.
  */
@@ -83,6 +131,7 @@ internal class DesktopOriginalVideoAcceptedPublication(
     val nativeSource: OwnedPlaybackSourceSnapshot,
     val bootstrapOrigin: DesktopVideoBootstrapAccepted? = null,
     val pageSubject: DesktopOriginalVideoPageTransitionIntent? = null,
+    val fullLoadSubject: DesktopOriginalVideoFullLoadSubject? = null,
 ) {
     val sourceVersion get() = nativeSource.sourceVersion
     val accountEpoch get() = checkNotNull(nativeSource.source.authorizationReceipt).accountEpoch
@@ -248,6 +297,15 @@ internal class DesktopOriginalVideoNativeOwner(
         publishWithPageSubject(request, source, expectedBaselineVersion, requestJob,
             bootstrapOrigin, null, null, isRequestCurrent)
 
+    /** Required only for Root's genuine ordinary full-load path. Bare publish,
+     * PGC and adopt cannot manufacture or inherit this independent identity. */
+    internal fun publishOrdinaryFullLoad(request: PlaybackRequest, source: PlaybackSource,
+        expectedBaselineVersion: Long, requestJob: Job, bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+        subject: DesktopOriginalVideoFullLoadSubject,
+        isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication =
+        publishCapturedSource(request, source, expectedBaselineVersion, requestJob,
+            bootstrapOrigin, null, null, isRequestCurrent, fullLoadSubject = subject)
+
     /** Only the exact previous native page is checked at submission. Existing
      * wrappers have no parent/page metadata; one original publication body remains. */
     internal fun publishWithPageSubject(request: PlaybackRequest, source: PlaybackSource,
@@ -280,15 +338,20 @@ internal class DesktopOriginalVideoNativeOwner(
         pageSubject: DesktopOriginalVideoPageTransitionIntent?,
         expectedPrevious: DesktopOriginalVideoAcceptedPublication?,
         isRequestCurrent: () -> Boolean,
-        isParentIntentCurrent: () -> Boolean = { true }): DesktopOriginalVideoAcceptedPublication {
+        isParentIntentCurrent: () -> Boolean = { true },
+        fullLoadSubject: DesktopOriginalVideoFullLoadSubject? = null): DesktopOriginalVideoAcceptedPublication {
         assertEntry()
         val receipt = checkNotNull(source.authorizationReceipt) { "Original ordinary playback receipt is required" }
         if (receipt.accountEpoch != currentEpoch()) throw CancellationException("Original playback account retired")
+        if (fullLoadSubject != null && (pageSubject != null || expectedPrevious != null ||
+                !fullLoadSubject.matchesSubmission(this, request, receipt, requestJob)))
+            throw CancellationException("Original full-load publication witness replaced")
         var result: DesktopOriginalVideoAcceptedPublication? = null
         publication.admit(source, { entryCurrent() && !requestJob.isCancelled && isRequestCurrent() }) {
             if (!withEntryAdmission {
                 assertEntry()
-                if (requestJob.isCancelled || !isRequestCurrent() || player.currentSourceVersion != expectedBaselineVersion)
+                if (requestJob.isCancelled || !isRequestCurrent() || player.currentSourceVersion != expectedBaselineVersion ||
+                    fullLoadSubject?.matchesSubmission(this, request, receipt, requestJob) == false)
                     throw CancellationException("Original playback request/native baseline retired")
                 fun acceptInitial() {
                     lateinit var next: DesktopOriginalVideoAcceptedPublication
@@ -298,7 +361,7 @@ internal class DesktopOriginalVideoNativeOwner(
                     val version = player.loadVersionedWithMuted(retained, currentUserMuted())
                     next = DesktopOriginalVideoAcceptedPublication(request,
                         checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) },
-                        bootstrapOrigin, pageSubject)
+                        bootstrapOrigin, pageSubject, fullLoadSubject)
                     accepted.set(next)
                     bindAcceptedTransport(next, null) { owns(next) && initial.isTransportCurrent() }
                     inheritedMute.set(null)
@@ -434,7 +497,9 @@ internal class DesktopOriginalVideoNativeOwner(
                         next = DesktopOriginalVideoAcceptedPublication(previous.request,
                             checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == previous.sourceVersion) },
                             previous.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(previous.request) },
-                            previous.pageSubject?.takeIf { it.matchesResolvedRequest(previous.request) })
+                            previous.pageSubject?.takeIf { it.matchesResolvedRequest(previous.request) },
+                            previous.fullLoadSubject?.takeIf { it.matchesAccepted(this@DesktopOriginalVideoNativeOwner,
+                                previous.request, previous.nativeSource.source.authorizationReceipt) })
                         accepted.set(next)
                         bindAcceptedTransport(next, previous) { owns(next) && isPresenterCurrent() }
                         inheritedMute.get()?.takeIf { it.lease === previous }?.let { mute ->
@@ -471,7 +536,9 @@ internal class DesktopOriginalVideoNativeOwner(
                     next = DesktopOriginalVideoAcceptedPublication(expected.request,
                         checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) },
                         expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) },
-                        expected.pageSubject?.takeIf { it.matchesResolvedRequest(expected.request) })
+                        expected.pageSubject?.takeIf { it.matchesResolvedRequest(expected.request) },
+                        expected.fullLoadSubject?.takeIf { it.matchesAccepted(this,
+                            expected.request, expected.nativeSource.source.authorizationReceipt) })
                     accepted.set(next)
                     inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->
                         inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
@@ -522,7 +589,9 @@ internal class DesktopOriginalVideoNativeOwner(
                         next = DesktopOriginalVideoAcceptedPublication(expected.request,
                             checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) },
                             expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) },
-                            expected.pageSubject?.takeIf { it.matchesResolvedRequest(expected.request) })
+                            expected.pageSubject?.takeIf { it.matchesResolvedRequest(expected.request) },
+                            expected.fullLoadSubject?.takeIf { it.matchesAccepted(this,
+                                expected.request, expected.nativeSource.source.authorizationReceipt) })
                         accepted.set(next)
                         inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->
                             inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))

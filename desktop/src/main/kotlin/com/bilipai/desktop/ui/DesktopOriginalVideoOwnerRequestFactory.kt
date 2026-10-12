@@ -56,16 +56,17 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             } && applied
         }
         if (!entryScope.isActive || !current()) throw CancellationException("Original facet source retired")
-        return DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
+        return DesktopOriginalVideoRepositoryBinding.captureDeferredMediaCapabilities(repository, capturedEpoch,
             entryJob, ::current, ::commit, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
-            capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
+            capabilities::isAv1Supported, auto1080pEnabled, directedTrafficEnabled,
             isMobileData, token::available, token::refresh,
             { receipt -> (onAuthorizationRetired ?: onPlaybackAuthorizationRetired)(receipt, state) }, decorateCalls)
     }
 
     suspend fun capture(state: PlaybackSessionState,
-        native: DesktopOriginalVideoNativeOwner): DesktopOriginalVideoPlaybackInvocation {
+        native: DesktopOriginalVideoNativeOwner,
+        mediaPreparation: suspend () -> Unit): DesktopOriginalVideoPlaybackInvocation {
         currentCoroutineContext().ensureActive()
         if (!entryScope.isActive || !stillEntryOwned()) throw CancellationException("Original load entry retired")
         val requestJob = checkNotNull(currentCoroutineContext()[Job])
@@ -78,10 +79,10 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
                 if (!relatedSource.stillOwned()) throw CancellationException("Original related source retired")
                 action()
             } }, decorateCalls = { delegate -> relatedSource.calls(delegate, native, requestJob) })
-        else DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
+        else DesktopOriginalVideoRepositoryBinding.captureDeferredMediaCapabilities(repository, capturedEpoch,
             entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
-            capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
+            capabilities::isAv1Supported, auto1080pEnabled, directedTrafficEnabled,
             isMobileData, token::available, token::refresh,
             { receipt -> onPlaybackAuthorizationRetired(receipt, state) })
         // This Factory borrows only a genuinely accepted page's immutable subject.
@@ -105,6 +106,7 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
         val raw = createDesktopOriginalVideoOwnerRequestRepositoryWithPageSuccessor(repository, binding,
             subtitleAssets, privacy, bootstrapOrigin, pageTransition, pageSuccessor,
             { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) })
+        raw.installMediaPreparation(mediaPreparation)
         var baseline: Long? = null
         if (!binding.admitCurrentMutation {
                 baseline = pageSuccessor?.let {
@@ -116,6 +118,7 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             throw CancellationException("Original media baseline capture retired")
         val media = prepareRequestMedia(raw, state, checkNotNull(baseline), requestJob, native)
         currentCoroutineContext().ensureActive(); binding.assertCurrent()
-        return DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent, bootstrap)
+        return DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent, bootstrap,
+            raw::awaitMediaPreparation)
     }
 }

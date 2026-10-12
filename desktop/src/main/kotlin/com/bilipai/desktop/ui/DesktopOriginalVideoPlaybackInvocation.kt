@@ -49,19 +49,37 @@ internal class DesktopOriginalVideoRelatedRequestSource(
     }
 }
 
+/** Actual local initialization failure, distinct from remote API/IO.
+ * Source is the only proved category before an initialized source exists. */
+internal class DesktopOriginalVideoNativePreparationFailure(
+    cause: Throwable,
+    timedOut: Boolean = false,
+) : IllegalStateException(
+    if (timedOut) "Windows 播放器准备超时，请手动重试" else "Windows 播放器初始化失败，请手动重试",
+    cause,
+)
+
 internal class DesktopOriginalVideoPlaybackInvocation private constructor(
     val repository: DesktopOriginalVideoLoadRepository,
     val media: DesktopOriginalVideoMediaPort,
     val bootstrapReadSource: DesktopVideoBootstrapReadSource?,
     private val assertCurrentPort: () -> Unit,
+    private val mediaPreparation: suspend () -> Unit,
 ) {
     constructor(repository: DesktopOriginalVideoLoadRepository, media: DesktopOriginalVideoMediaPort,
-        assertCurrentPort: () -> Unit) : this(repository, media, null, assertCurrentPort)
+        assertCurrentPort: () -> Unit, mediaPreparation: suspend () -> Unit) :
+        this(repository, media, null, assertCurrentPort, mediaPreparation)
     internal constructor(repository: DesktopOriginalVideoLoadRepository, media: DesktopOriginalVideoMediaPort,
-        assertCurrentPort: () -> Unit, bootstrapReadSource: DesktopVideoBootstrapReadSource?) :
-        this(repository, media, bootstrapReadSource, assertCurrentPort)
+        assertCurrentPort: () -> Unit, bootstrapReadSource: DesktopVideoBootstrapReadSource?,
+        mediaPreparation: suspend () -> Unit) :
+        this(repository, media, bootstrapReadSource, assertCurrentPort, mediaPreparation)
 
     fun assertCurrent() = assertCurrentPort()
+    internal suspend fun awaitMediaPreparation() {
+        currentCoroutineContext().ensureActive(); assertCurrent()
+        mediaPreparation()
+        currentCoroutineContext().ensureActive(); assertCurrent()
+    }
 }
 
 /** Required synchronous view of the actual current playback-account projection.
@@ -160,6 +178,9 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
             ?: error("Original playback network invocation is required"))
             .also(DesktopOriginalVideoPlaybackInvocation::assertCurrent)
     }
+
+    /** Genuine same-session wait outside short Store/entry/native admissions. */
+    internal suspend fun awaitMediaPreparation() = activeInvocation().awaitMediaPreparation()
 
     /** Call once from the actual main-load body, before launching detail/URL
      * children. This is the exact request's raw facet, never Factory recapture. */

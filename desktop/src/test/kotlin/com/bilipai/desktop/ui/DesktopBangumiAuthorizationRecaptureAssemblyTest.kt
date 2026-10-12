@@ -366,7 +366,8 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
                 ::owns, ::commit, player, DesktopRepositoryPlaybackPublication(repository), { false }, MutableStateFlow(null),
                 { error("No accepted native publication") }, { _, _ -> error("No accepted media byte admission") },
                 captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { _, _ -> val binding = capture()
-                    DesktopOriginalVideoPlaybackInvocation(requestRepository(binding), noMedia, binding::assertCurrent) },
+                    DesktopOriginalVideoPlaybackInvocation(requestRepository(binding), noMedia, binding::assertCurrent,
+                        mediaPreparation = { error("No ordinary media preparation in PGC metadata fixture") }) },
                 status = readbacks, prepareAcceptedMedia = { error("No accepted media") }, createPlugins = { _, _ -> plugins },
                 confirmFollow = { error("No follow write") }, feedback = { error("No UI feedback") },
                 readHasPrimarySession = readbacks::hasPrimarySession, readHasPrimaryAccessToken = readbacks::hasPrimaryAccessToken,

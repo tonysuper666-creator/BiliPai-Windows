@@ -106,7 +106,11 @@ class DesktopOriginalVideoAuthorizationRecaptureViewModelTest {
             captures += InvocationCapture(state, binding.receipt, callerJob)
             val raw = createDesktopOriginalVideoOwnerRequestRepository(repository, binding, subtitles, privacy,
                 { receipt, current -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, current) })
-            DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent)
+            // This private headless fixture supplies fixed capabilities; it
+            // does not initialize or assert readiness of a physical native core.
+            raw.installMediaPreparation { currentCoroutineContext().ensureActive() }
+            DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent,
+                mediaPreparation = raw::awaitMediaPreparation)
         }, status, { media },
             captureMetadataBinding = { error("Authorization recapture fixture does not invoke readonly related retry") })
         // No media has ever been accepted in this bounded protocol fixture.

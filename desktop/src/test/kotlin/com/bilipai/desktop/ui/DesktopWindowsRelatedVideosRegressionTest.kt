@@ -319,10 +319,10 @@ class DesktopWindowsRelatedVideosRegressionTest {
             val caller = currentCoroutineContext().job
             val facet = assertNotNull(currentCoroutineContext()[DesktopOriginalVideoRelatedRequestSource])
             captures += Capture(facet, caller)
-            DesktopOriginalVideoPlaybackInvocation(raw, media) {
+            DesktopOriginalVideoPlaybackInvocation(raw, media, assertCurrentPort = {
                 if (!current() || !caller.isActive || !facet.stillOwned() || !native.owner.isCurrent(facet.expected))
                     throw CancellationException("Captured related request retired")
-            }
+            }, mediaPreparation = { error("No media preparation during related-list read") })
         }, status, { error("No media publication during related loading") },
             captureMetadataBinding = { error("This accepted-Native fixture does not invoke readonly retry") })
         private val repository = DesktopOriginalVideoOwnerRepositoryView(invocations) { 0L }

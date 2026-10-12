@@ -234,6 +234,63 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
     }
 
+    @Test fun ordinaryFullLoadPresentationSurvivesCompletionButRejectsCancelledOriginalCaller(): Unit = runBlocking<Unit> {
+        Fixture().useSuspending { f ->
+            f.load(A, 101, 104)
+            val accepted = f.accepted()
+            val subject = assertNotNull(accepted.fullLoadSubject)
+            val receipt = assertNotNull(accepted.nativeSource.source.authorizationReceipt)
+            val original = f.owner.captureLoadState()
+            val caller = f.publicationRequestJob(accepted)
+            assertTrue(f.captures.any { it.job === caller })
+            withTimeout(8_000) { caller.join() }
+            f.ui {
+                assertTrue(caller.isCompleted); assertFalse(caller.isCancelled)
+                assertTrue(f.gate.owns()); assertTrue(f.owner.native.isCurrent(accepted))
+                assertSame(accepted, f.accepted())
+                assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+                assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+                assertTrue(subject.matchesPresentation(accepted, f.owner.captureLoadState(), receipt),
+                    "Normal completion must preserve the real accepted full-load presentation")
+            }
+        }
+        // A completed Job cannot later become cancelled. Use a second real load,
+        // held by its actual request-scope related read, to exercise cancellation.
+        Fixture(holdRelated = true).useSuspending { f ->
+            f.ui { f.owner.playback.loadVideo(A, 101, cid = 104, autoPlay = false) }
+            f.awaitLoaded(A)
+            f.ui { f.actor.drain(); f.actor.loaded(); f.player.setPaused(true); f.actor.drain() }
+            withTimeout(8_000) { f.relatedEntered.await() }
+            val accepted = f.accepted()
+            val subject = assertNotNull(accepted.fullLoadSubject)
+            val receipt = assertNotNull(accepted.nativeSource.source.authorizationReceipt)
+            val original = f.owner.captureLoadState()
+            val caller = f.publicationRequestJob(accepted)
+            assertNull(accepted.bootstrapOrigin); assertNull(accepted.pageSubject)
+            assertTrue(f.captures.any { it.job === caller })
+            assertTrue(caller.isActive); assertFalse(caller.isCompleted)
+            assertTrue(subject.matchesSubmission(f.owner.native, accepted.request, receipt, caller),
+                "The held caller must be the actual Root-captured original load Job")
+            assertTrue(subject.matchesPresentation(accepted, original, receipt))
+            caller.cancel(CancellationException("Cancel the actual accepted original load caller"))
+            f.relatedRelease.countDown()
+            withTimeout(8_000) { caller.join() }
+            f.ui {
+                assertTrue(caller.isCancelled)
+                assertTrue(f.gate.owns()); assertTrue(f.owner.native.isCurrent(accepted))
+                assertSame(accepted, f.accepted())
+                assertSame(original.currentRequest, f.owner.captureLoadState().currentRequest)
+                assertEquals(original.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+                assertSame(receipt, accepted.nativeSource.source.authorizationReceipt)
+                assertTrue(assertNotNull(accepted.nativeSource.source.nativePublication).admit {},
+                    "Real native ACK must retain its entry/source lease independently of the cancelled caller")
+                assertFalse(subject.matchesPresentation(accepted, f.owner.captureLoadState(), receipt),
+                    "The same ref/token/source/receipt cannot borrow a cancelled original caller")
+                assertFalse(subject.matchesSubmission(f.owner.native, accepted.request, receipt, caller))
+            }
+        }
+    }
+
     private data class Capture(val state: PlaybackSessionState, val job: Job)
     private data class CdnEmission(val source: DesktopOriginalVideoAcceptedPublication, val index: Int, val runtimeGeneration: Long?)
     private data class HeldDispatch(val context: CoroutineContext, val runnable: Runnable) {
@@ -273,7 +330,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
 
-    private inner class Fixture(private val holdTags: Boolean = false, private val refreshExpiredUrls: Boolean = false) {
+    private inner class Fixture(private val holdTags: Boolean = false, private val refreshExpiredUrls: Boolean = false,
+        private val holdRelated: Boolean = false) {
         val directory = Files.createTempDirectory("cdn-original-owner-")
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
@@ -297,6 +355,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         @Volatile private var firstUrlsExpired = false
         val tagsEntered = CompletableDeferred<Unit>()
         val tagsRelease = CountDownLatch(if (holdTags) 1 else 0)
+        val relatedEntered = CompletableDeferred<Unit>()
+        val relatedRelease = CountDownLatch(if (holdRelated) 1 else 0)
         var beforePreparation: ((DesktopOriginalMediaCachePreparation) -> Unit)? = null
         private val context = runtime.context
         private val privacy = DesktopSearchPreferences(directory.resolve("privacy"))
@@ -383,7 +443,11 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                                 retryPlayJson(revision)
                             } else playJson(bvid)
                         }
-                        "/x/web-interface/archive/related" -> """{"code":0,"data":[]}"""
+                        "/x/web-interface/archive/related" -> {
+                            relatedEntered.complete(Unit)
+                            check(relatedRelease.await(12, TimeUnit.SECONDS))
+                            """{"code":0,"data":[]}"""
+                        }
                         "/x/tag/archive/tags" -> {
                             if (holdTags && bvid == A) { tagsEntered.complete(Unit); check(tagsRelease.await(8, TimeUnit.SECONDS)) }
                             """{"code":0,"data":[{"tag_id":71,"tag_name":"Fresh metadata"}]}"""
@@ -426,7 +490,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     unused(), MutableStateFlow(false))
                 val media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, { preparation ->
                     preparations.add(preparation); beforePreparation?.invoke(preparation)
-                }, {})
+                })
                 val requests = DesktopOriginalVideoOwnerRequestFactory(repository, DesktopLoginRepository(repository), epoch,
                     gate.scope, gate::owns, gate::commitEntry, { PlayerPreferences() }, capabilities,
                     { true }, { false }, { false }, subtitles, privacy,
@@ -436,7 +500,11 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     gate::owns, gate::commitEntry, player, DesktopRepositoryPlaybackPublication(repository), { false },
                     runtimeBinding.sourceVersions, { expected -> publications.add(expected); runtimeBinding.accepted(expected) },
                     media::admission, captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, native ->
-                        captures.add(Capture(state, currentCoroutineContext().job)); requests.capture(state, native)
+                        captures.add(Capture(state, currentCoroutineContext().job)); requests.capture(state, native, mediaPreparation = {
+                            // Fixed-capability headless fixture; no physical NativeReady claim.
+                            currentCoroutineContext().ensureActive()
+                            if (!gate.owns()) throw CancellationException("Fixture preparation entry retired")
+                        })
                     }, status = readbacks, prepareAcceptedMedia = media::accepted,
                     createPlugins = { native, invocations -> DesktopOriginalVideoOwnerPluginBridge(runtime, native, invocations,
                         runtimeBinding::generation, invocations::captureCurrentRequestAdmission, runtimeBinding::calls) },
@@ -573,7 +641,7 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         suspend fun ui(action: () -> Unit) = withContext(Dispatchers.Swing) { action() }
         suspend fun <T> uiResult(action: () -> T): T = withContext(Dispatchers.Swing) { action() }
         suspend fun close() {
-            tagsRelease.countDown(); dispatcher.drainOnClose()
+            tagsRelease.countDown(); relatedRelease.countDown(); dispatcher.drainOnClose()
             slot.closeAndJoin(); parentJob.cancelAndJoin()
             if (::runtimeBinding.isInitialized) runtimeBinding.close()
             if (::actor.isInitialized) actor.close()

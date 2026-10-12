@@ -466,7 +466,7 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
                         override fun get(bvid: String, cid: Long): PlayUrlData? = null
                         override fun invalidate(bvid: String, cid: Long) = error("No cache invalidation")
                     }, unused(), unused(), unused(), MutableStateFlow(false))
-                media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, {}, {})
+                media = DesktopOriginalVideoRootMediaFactory(repository, cache, gate, { owner }, {})
                 requests = DesktopOriginalVideoOwnerRequestFactory(repository, DesktopLoginRepository(repository), epoch,
                     gate.scope, gate::owns, gate::commitEntry, { PlayerPreferences(defaultAudioQuality = AUDIO_QUALITY_HI_RES, lastSelectedAudioQuality = AUDIO_QUALITY_HI_RES) }, capabilities,
                     { true }, { false }, { false }, subtitles, privacy,
@@ -474,7 +474,11 @@ class DesktopBangumiPremiumAudioRecoveryAssemblyTest {
                 DesktopOriginalVideoOwnerAssembly.create(context, settings, repository, epoch, gate.scope,
                     gate::owns, gate::commitEntry, player, DesktopRepositoryPlaybackPublication(repository), { false }, versions,
                     { published.set(it); publications.add(it); versions.value = it.sourceVersion }, media::admission,
-                    captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner) },
+                    captureMetadataBinding = { error("No readonly metadata recapture in this fixture") }, captureInvocation = { state, nativeOwner -> requests.capture(state, nativeOwner, mediaPreparation = {
+                        // Fixed-capability headless fixture; no physical NativeReady claim.
+                        currentCoroutineContext().ensureActive()
+                        if (!gate.owns()) throw CancellationException("Fixture preparation entry retired")
+                    }) },
                     status = readbacks, prepareAcceptedMedia = { media.accepted(it) },
                     createPlugins = { _, _ -> plugins }, confirmFollow = { error("No follow write") },
                     feedback = { error("No ordinary feedback") }, readHasPrimarySession = readbacks::hasPrimarySession,

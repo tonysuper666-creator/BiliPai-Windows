@@ -105,9 +105,9 @@ class DesktopWindowsSponsorSkipCommandTest {
         private val invocations = DesktopOriginalVideoPlaybackInvocationPorts(scope, ::owned, {
             val caller = currentCoroutineContext().job
             val epoch = account
-            DesktopOriginalVideoPlaybackInvocation(repository, media) {
+            DesktopOriginalVideoPlaybackInvocation(repository, media, assertCurrentPort = {
                 if (!entry || account != epoch || !caller.isActive) throw CancellationException("Fixture entry retired")
-            }
+            }, mediaPreparation = { error("No media preparation in sponsor-command fixture") })
         }, unused(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         private val api = unused<BilibiliApi>()
         private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(api,

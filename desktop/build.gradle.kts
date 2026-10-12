@@ -3493,3 +3493,7 @@ listOf("extractOriginalVideoStateCore", "extractOriginalVideoFullOwner").forEach
         inputs.dir("upstream-slices/v034-metadata-related")
     }
 }
+
+tasks.named("extractOriginalVideoStateCore") {
+    inputs.file("tools/v034_playurl_failure.py")
+}

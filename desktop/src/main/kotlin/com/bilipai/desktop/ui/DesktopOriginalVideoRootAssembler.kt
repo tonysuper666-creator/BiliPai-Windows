@@ -299,7 +299,7 @@ internal class DesktopOriginalVideoRootAssembler(
                 { _, _, _ ->
                     val success = owner.playback.uiState.value as? VideoPlaybackUiState.Success
                     if (success != null) shell.mini.syncCurrentVideoInfo(success)
-                }, section::awaitNativeInitialization)
+                })
         }
         val portrait = remember(owner, section, rendering) { DesktopOriginalPortraitPlatformBinding(owner,
             shell.slot::currentAssembly, section, window.root.entry.requests.ports.video,

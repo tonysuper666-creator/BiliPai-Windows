@@ -104,9 +104,9 @@ class DesktopWindowsVideoDownloadSelectionTest {
         val invocations = DesktopOriginalVideoPlaybackInvocationPorts(scope, ::owns, {
             val caller = currentCoroutineContext().job
             val epoch = account
-            DesktopOriginalVideoPlaybackInvocation(repository, media) {
+            DesktopOriginalVideoPlaybackInvocation(repository, media, assertCurrentPort = {
                 if (!entry || account != epoch || !caller.isActive) throw CancellationException("Captured request retired")
-            }
+            }, mediaPreparation = { error("No media preparation in download-selection fixture") })
         }, unused<DesktopOriginalVideoPlaybackStatus>(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
             arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, args ->

@@ -46,9 +46,9 @@ class DesktopOriginalDanmakuSameSendTest {
         val actions=unused<DesktopOriginalVideoOwnerActions>()
         val invocations=DesktopOriginalVideoPlaybackInvocationPorts(scope,::current,{
             val caller=currentCoroutineContext().job;val epoch=account
-            DesktopOriginalVideoPlaybackInvocation(repository,media) {
+            DesktopOriginalVideoPlaybackInvocation(repository,media, assertCurrentPort = {
                 if(!entry||account!=epoch||!caller.isActive)throw CancellationException("Captured request retired")
-            }
+            }, mediaPreparation = { error("No media preparation in danmaku-send fixture") })
         },unused<DesktopOriginalVideoPlaybackStatus>(),{media}, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         val danmaku=object:DesktopOriginalVideoOwnerDanmaku {
             override fun isDanmakuServerDisabled(cid:Long)=disabled

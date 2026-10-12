@@ -44,7 +44,6 @@ internal class DesktopOriginalVideoRootHolderPlatform(
     private val setDiagnosticLogging: suspend (Boolean) -> Unit,
     private val danmakuClickListener: ((String, Long, String, Boolean) -> Unit) -> AutoCloseable,
     private val metadata: (String, String, String) -> Unit,
-    private val awaitNative: suspend () -> Unit,
 ) : DesktopOriginalVideoHolderPlatform {
     init { require(section.settingsContext === settingsContext) }
     private fun owns() = gate.owns() && assembly.owns()
@@ -94,15 +93,15 @@ internal class DesktopOriginalVideoRootHolderPlatform(
             val success = uiState as? VideoPlaybackUiState.Success ?: return@LaunchedEffect
             if (owns()) playerState.updateMediaMetadata(success.info.title, success.info.owner.name, success.info.pic)
         }
-        // Original VideoPlayerState.kt attach/load effect (1510–1589). The
-        // retained VM already owns its original Success; a second Mini cache is
-        // unnecessary. Native initialization is awaited again outside gates so
-        // a real detach cannot be hidden with an old decoder snapshot.
+        // Attach/load the same retained Section. Without an accepted source
+        // it exposes the original empty snapshot and cannot submit native writes.
+        // Primary metadata starts now; the actual request's required suspend
+        // preparation still gates capability/cache/media work.
         LaunchedEffect(assembly, bvid, cid, reuseFromMiniPlayerAtEntry, fallbackResumePositionMs,
             entryTransitionFinished, playbackSessionActive) {
             if (!playbackSessionActive || (!entryTransitionFinished && !reuseFromMiniPlayerAtEntry))
                 return@LaunchedEffect
-            awaitNative(); currentCoroutineContext().ensureActive(); requireCurrent()
+            currentCoroutineContext().ensureActive(); requireCurrent()
             assembly.playback.attachPlayer(assembly.section)
             if (!entryTransitionFinished) return@LaunchedEffect
             val autoPlay = !startPaused && DesktopOriginalPlayerSectionSettings.getClickToPlaySync(settingsContext)

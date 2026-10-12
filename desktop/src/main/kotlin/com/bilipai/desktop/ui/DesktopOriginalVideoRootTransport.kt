@@ -77,14 +77,13 @@ internal class DesktopOriginalVideoRootMediaFactory(
     private val gate: DesktopOriginalVideoRootGate,
     private val currentAssembly: () -> DesktopOriginalVideoOwnerAssembly,
     private val onPreparation: (DesktopOriginalMediaCachePreparation) -> Unit,
-    private val awaitNativeInitialization: suspend () -> Unit,
 ) {
     fun request(raw: DesktopOriginalVideoOwnerRequestRepository, state: PlaybackSessionState,
         nativeBaseline: Long, callerJob: Job, native: DesktopOriginalVideoNativeOwner): DesktopOriginalVideoMediaPort {
         val assembly = currentAssembly()
         val info = (assembly.playback.uiState.value as? VideoPlaybackUiState.Success)?.info
             ?.takeIf { it.bvid == state.currentRequest?.bvid }
-        val transport = DesktopOriginalVideoRootRequestTransport(raw, state, info, awaitNativeInitialization)
+        val transport = DesktopOriginalVideoRootRequestTransport(raw, state, info, raw::awaitMediaPreparation)
         // Original settings/background invocations may precede the first load.
         // Keep their captured Binding; require a subject only for media publication.
         val capturedRequest = state.currentRequest
@@ -129,9 +128,13 @@ internal class DesktopOriginalVideoRootMediaFactory(
                     val resolved = captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token)
                     if (bootstrapOrigin != null && (bootstrapOrigin.request !== request || bootstrapOrigin.requestToken != token))
                         throw CancellationException("Actual bootstrap request context replaced")
-                    native.publishWithBootstrapOrigin(resolved, source, nativeBaseline, callerJob, bootstrapOrigin) {
+                    val subject = DesktopOriginalVideoFullLoadSubject.capture(native,
+                        assembly.captureLoadState(), request, token, resolved, callerJob, raw.binding.receipt)
+                    native.publishOrdinaryFullLoad(resolved, source, nativeBaseline, callerJob, bootstrapOrigin, subject) {
                         !callerJob.isCancelled && gate.owns() && runCatching {
-                            captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token) == resolved
+                            val current = assembly.captureLoadState()
+                            subject.sameOriginalRequestIdentity(current) &&
+                                captureDesktopOriginalResolvedMediaRequest(current, request, token) == resolved
                         }.getOrDefault(false)
                     }
                 }

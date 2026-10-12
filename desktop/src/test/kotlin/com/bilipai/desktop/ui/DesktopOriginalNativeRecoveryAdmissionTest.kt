@@ -199,7 +199,8 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
             val captures = mutableListOf<DesktopOriginalNativeRecoveryTicket>()
             val ports = DesktopOriginalVideoPlaybackInvocationPorts(scope, { f.entry },
-                { DesktopOriginalVideoPlaybackInvocation(noNetwork, f.owner.acceptedMedia(f::prepare)) {} }, noNetwork,
+                { DesktopOriginalVideoPlaybackInvocation(noNetwork, f.owner.acceptedMedia(f::prepare), {},
+                    mediaPreparation = { check(f.owner.isCurrent(f.accepted)) }) }, noNetwork,
                 { f.owner.acceptedMedia(f::prepare) },
                 captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") },
                 acceptedFailureMedia = { ticket -> captures += ticket; f.owner.acceptedMedia(f::prepare, ticket) { f.entry } })

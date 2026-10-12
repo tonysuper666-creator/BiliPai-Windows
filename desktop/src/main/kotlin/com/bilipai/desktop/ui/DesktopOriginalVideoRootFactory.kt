@@ -63,7 +63,7 @@ internal class DesktopOriginalVideoRootFactory(
         val owner = AtomicReference<DesktopOriginalVideoOwnerAssembly?>()
         fun assembly() = checkNotNull(owner.get()) { "Original video construction has not completed" }
         val media = DesktopOriginalVideoRootMediaFactory(repository, mediaCache, gate, ::assembly,
-            onPreparation, ports.awaitNativeInitialization)
+            onPreparation)
         val runtimeBinding = DesktopOriginalVideoRootRuntimeBinding(repository, runtime, gate) { assembly().native }
         val readbacks = DesktopOriginalVideoEntryReadbacks(repository, gate.capturedEpoch,
             gate.scope, gate::owns, gate::commitEntry)
@@ -83,8 +83,9 @@ internal class DesktopOriginalVideoRootFactory(
                 player, DesktopRepositoryPlaybackPublication(repository), { preferences().muted },
                 runtimeBinding.sourceVersions, runtimeBinding::accepted, media::admission,
                 captureInvocation = { state, native ->
-                    ports.awaitNativeInitialization()
-                    requests.capture(state, native)
+                    // Primary metadata may run now. The same immutable request
+                    // waits for the real native core before media preparation.
+                    requests.capture(state, native, ports.awaitNativeInitialization)
                 },
                 captureMetadataBinding = { admission ->
                     // Existing Factory, raw primary metadata only; no native wait,
@@ -146,6 +147,7 @@ internal class DesktopOriginalVideoRootFactory(
         binding.assertCurrent()
         return createDesktopOriginalVideoOwnerRequestRepository(repository, binding, subtitleAssets, privacy,
             { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) })
+            .also { it.installMediaPreparation(construction.ports.awaitNativeInitialization) }
     }
 
     /** Actual action Job over this accepted source and a permanently owned metadata lease.

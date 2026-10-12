@@ -2,14 +2,12 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.fillMaxSize
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.video.screen.VideoDetailScreenStateHolder
 import com.android.purebilibili.data.model.response.BgmInfo
-import kotlinx.coroutines.CancellationException
 
 /** Same Root Window implementations, assembled over the one retained Assembly.
- * The bootstrap is the sole existing surface, before the original request starts.
+ * ShellMount owns the sole existing surface independently of readonly metadata.
  * No second Canvas, decoder, ownership token or guessed capability is created.
  */
 internal interface DesktopOriginalVideoRootWindowPlatforms {
@@ -80,16 +78,8 @@ internal class DesktopOriginalVideoHolderRouteActions(
     actions: DesktopOriginalVideoHolderRouteActions,
 ) {
     check(platforms.holder.settingsContext === platforms.holder.section.settingsContext)
-    var initialized by remember(assembly, platforms) { mutableStateOf(false) }
-    LaunchedEffect(assembly, platforms) {
-        platforms.awaitNativeInitialization()
-        if (!assembly.owns()) throw CancellationException("Original video initial surface retired")
-        initialized = true
-    }
-    if (!initialized) {
-        platforms.InitialNativeSurface(Modifier.fillMaxSize())
-        return
-    }
+    // Root already mounts its sole Windows surface. Readonly metadata/UI may
+    // start now; the same request's real stage still gates media preparation.
     CompositionLocalProvider(
         LocalDesktopOriginalVideoHolderPlatform provides platforms.holder,
         LocalDesktopOriginalVideoSectionPlatform provides platforms.holder.section,

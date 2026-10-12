@@ -16,6 +16,7 @@ import com.android.purebilibili.core.refresh.HistoryRefreshBus
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.withTimeoutOrNull
 
 /** One immutable invocation's protocol composition. Nothing here creates an HTTP
  * client, Store, cache, subtitle downloader, Job, or native player. Root constructs
@@ -37,6 +38,24 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
     DesktopOriginalVideoLoadRepository by binding.rawRepository {
     private var transportObserver: DesktopOriginalVideoTransportObserver? = null
     private var awaitNativeSelection: (suspend () -> Unit)? = null
+    private var mediaPreparation: (suspend () -> Unit)? = null
+    internal fun installMediaPreparation(value: suspend () -> Unit) {
+        binding.assertCurrent()
+        check(mediaPreparation == null) { "The captured request already has a media preparation port" }
+        mediaPreparation = value
+    }
+    internal suspend fun awaitMediaPreparation() {
+        currentCoroutineContext().ensureActive(); binding.assertCurrent()
+        val prepare = checkNotNull(mediaPreparation) { "Actual Root media preparation is required" }
+        val prepared = try {
+            withTimeoutOrNull(15_000L) { prepare(); true }
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: DesktopOriginalVideoNativePreparationFailure) { throw failure }
+        catch (failure: Exception) { throw DesktopOriginalVideoNativePreparationFailure(failure) }
+        if (prepared != true) throw DesktopOriginalVideoNativePreparationFailure(
+            IllegalStateException("Native initialization did not complete within 15 seconds"), timedOut = true)
+        currentCoroutineContext().ensureActive(); binding.assertCurrent()
+    }
     fun observeTransportMetadata(observer: DesktopOriginalVideoTransportObserver,
         beforeSelection: suspend () -> Unit) {
         check(transportObserver == null) { "The captured request already has a transport observer" }
@@ -51,7 +70,7 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
         data?.let { transportObserver?.playData(bvid, cid, it) }
         // The raw request has returned; selection is synchronous after this actual
         // same-session await. It is outside every Store/entry/native monitor.
-        awaitNativeSelection?.invoke()
+        if (data != null) awaitNativeSelection?.invoke()
         currentCoroutineContext().ensureActive(); binding.assertCurrent()
     }
     override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> =
@@ -60,15 +79,22 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
             result.getOrNull()?.let { observedInfo(it) }
         }
     override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long,
-        targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> =
-        binding.rawRepository.getVideoDetails(bvid, aid, requestedCid, targetQuality, audioLang).also { result ->
+        targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> {
+        awaitMediaPreparation()
+        return binding.rawRepository.getVideoDetails(bvid, aid, requestedCid, targetQuality, audioLang).also { result ->
             result.getOrNull()?.let { (info, data) -> observedInfo(info); observedPlay(info.bvid, info.cid, data) }
         }
+    }
     override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int,
-        audioLang: String?): PlayUrlData? = binding.rawRepository.getInitialPlayUrlData(bvid, cid, targetQuality, audioLang)
+        audioLang: String?): PlayUrlData? {
+        awaitMediaPreparation()
+        return binding.rawRepository.getInitialPlayUrlData(bvid, cid, targetQuality, audioLang)
             .also { observedPlay(bvid, cid, it) }
-    override suspend fun getPlayUrlData(bvid: String, cid: Long, qn: Int, audioLang: String?): PlayUrlData? =
-        binding.rawRepository.getPlayUrlData(bvid, cid, qn, audioLang).also { observedPlay(bvid, cid, it) }
+    }
+    override suspend fun getPlayUrlData(bvid: String, cid: Long, qn: Int, audioLang: String?): PlayUrlData? {
+        awaitMediaPreparation()
+        return binding.rawRepository.getPlayUrlData(bvid, cid, qn, audioLang).also { observedPlay(bvid, cid, it) }
+    }
 
     override val primaryApi get() = binding.primaryApi
     override val playbackCalls get() = binding.playbackCalls
@@ -93,11 +119,17 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
     }
 
     override suspend fun getPlayUrlDataForPlaybackTransition(bvid: String, cid: Long, qn: Int,
-        audioLang: String?): PlayUrlData? = binding.protocol.getPlayUrlDataForPlaybackTransition(bvid, cid, qn, audioLang)
+        audioLang: String?): PlayUrlData? {
+        awaitMediaPreparation()
+        return binding.protocol.getPlayUrlDataForPlaybackTransition(bvid, cid, qn, audioLang)
             .also { observedPlay(bvid, cid, it) }
+    }
     override suspend fun getExactPremiumPlayUrl(bvid: String, cid: Long, targetQn: Int,
-        audioLang: String?): PlayUrlData? = binding.protocol.getExactPremiumPlayUrl(bvid, cid, targetQn, audioLang)
+        audioLang: String?): PlayUrlData? {
+        awaitMediaPreparation()
+        return binding.protocol.getExactPremiumPlayUrl(bvid, cid, targetQn, audioLang)
             .also { observedPlay(bvid, cid, it) }
+    }
     override suspend fun refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn: Boolean, cachedIsVip: Boolean,
         storedQuality: Int, autoHighestEnabled: Boolean): Boolean =
         metadata.refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn, cachedIsVip, storedQuality, autoHighestEnabled)

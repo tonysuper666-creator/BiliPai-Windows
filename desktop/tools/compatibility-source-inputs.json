@@ -2006,9 +2006,9 @@
       "files": [
         {
           "path": "desktop/upstream-slices/v034-metadata-related/manifest.json",
-          "sha256": "dc9166d74578fd9119f99c273c32d16036e9d77e9962f01cd849ee151150f619",
+          "sha256": "1d7b0b08e4bbb576c9bc9d667e5bd0be081d46533e1f2ea1066e411c877f8ccb",
           "hashNormalization": "raw",
-          "blob": "a89db25bd93fa809fe02cd44aada2952932fe6ad"
+          "blob": "9406e43e3996b06e85ca4086d435c429a94739f6"
         },
         {
           "path": "desktop/upstream-slices/v034-metadata-related/RelatedVideoLoadScheduler.kt",
