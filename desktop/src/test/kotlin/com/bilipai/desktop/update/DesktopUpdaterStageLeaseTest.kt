@@ -249,8 +249,8 @@ class DesktopUpdaterStageLeaseTest {
             var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
             val rollback = AtomicInteger()
             assertFailsWith<CancellationException> {
-                updater.activatePreparedUpdate(prepared, beforeLaunch = {
-                    ticket = queue.beginUpdateHandoff()
+                updater.activatePreparedUpdate(prepared, beforeLaunch = { token ->
+                    ticket = queue.beginUpdateHandoff(token, updater.downloadHandoffTarget(prepared))
                     throw CancellationException("cancel after the exact ticket capture")
                 }, onCommitted = { error("Canceled transfer cannot commit") }, afterFailedLaunch = {
                     assertFalse(queue.acceptsMutations())
@@ -276,7 +276,7 @@ class DesktopUpdaterStageLeaseTest {
             var addedId: String? = null
             val updater = f.updater(processFactory = { builder ->
                 assertFalse(parent.acceptsMutations())
-                val successor = f.queue()
+                val successor = f.queue(commandHealthToken(builder))
                 child = successor
                 addedId = successor.enqueue(com.bilipai.desktop.player.PlaybackSource("https://cdn.example/child", title = "child-written"),
                     f.mediaRoot, com.bilipai.desktop.download.DownloadMetadata(bvid = "BVchild", cid = 20L,
@@ -289,8 +289,8 @@ class DesktopUpdaterStageLeaseTest {
             val prepared = f.prepare(updater)
             var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
             val rollback = AtomicInteger()
-            assertFalse(updater.activatePreparedUpdate(prepared, beforeLaunch = {
-                ticket = parent.beginUpdateHandoff()
+            assertFalse(updater.activatePreparedUpdate(prepared, beforeLaunch = { token ->
+                ticket = parent.beginUpdateHandoff(token, updater.downloadHandoffTarget(prepared))
                 parent.awaitUpdateHandoff(checkNotNull(ticket))
             }, onCommitted = { error("Wrong health version cannot reach registry commit") }, afterFailedLaunch = {
                 val process = checkNotNull(controlled)
@@ -325,8 +325,8 @@ class DesktopUpdaterStageLeaseTest {
             var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
             val rollback = AtomicInteger()
             val pending = async(start = CoroutineStart.LAZY) {
-                updater.activatePreparedUpdate(prepared, beforeLaunch = {
-                    ticket = queue.beginUpdateHandoff()
+                updater.activatePreparedUpdate(prepared, beforeLaunch = { token ->
+                    ticket = queue.beginUpdateHandoff(token, updater.downloadHandoffTarget(prepared))
                     queue.awaitUpdateHandoff(checkNotNull(ticket))
                 }, onCommitted = { error("Canceled child cannot commit") }, afterFailedLaunch = {
                     assertFalse(controlled.alive)
@@ -355,7 +355,7 @@ class DesktopUpdaterStageLeaseTest {
             var controlled: StartupHealthTest.ControlledProcess? = null
             val updater = f.updater(processFactory = { builder ->
                 assertFalse(parent.acceptsMutations())
-                val successor = f.queue()
+                val successor = f.queue(commandHealthToken(builder))
                 child = successor
                 val id = successor.enqueue(com.bilipai.desktop.player.PlaybackSource("https://cdn.example/child", title = "healthy-child"),
                     f.mediaRoot, com.bilipai.desktop.download.DownloadMetadata(bvid = "BVchild", cid = 20L,
@@ -369,8 +369,8 @@ class DesktopUpdaterStageLeaseTest {
             var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
             val committed = AtomicInteger()
             val rollback = AtomicInteger()
-            assertTrue(withTimeout(5_000) { updater.activatePreparedUpdate(prepared, beforeLaunch = {
-                ticket = parent.beginUpdateHandoff()
+            assertTrue(withTimeout(5_000) { updater.activatePreparedUpdate(prepared, beforeLaunch = { token ->
+                ticket = parent.beginUpdateHandoff(token, updater.downloadHandoffTarget(prepared))
                 parent.awaitUpdateHandoff(checkNotNull(ticket))
             }, onCommitted = {
                 assertTrue(checkNotNull(controlled).alive)
@@ -404,8 +404,8 @@ class DesktopUpdaterStageLeaseTest {
             val rollback = AtomicInteger()
             try {
                 assertFailsWith<IllegalStateException> {
-                    updater.activatePreparedUpdate(prepared, beforeLaunch = {
-                        ticket = queue.beginUpdateHandoff()
+                    updater.activatePreparedUpdate(prepared, beforeLaunch = { token ->
+                        ticket = queue.beginUpdateHandoff(token, updater.downloadHandoffTarget(prepared))
                         queue.awaitUpdateHandoff(checkNotNull(ticket))
                     }, onCommitted = { error("Unknown failed child cannot commit") },
                         afterFailedLaunch = { rollback.incrementAndGet() })
@@ -440,6 +440,13 @@ class DesktopUpdaterStageLeaseTest {
         }
     }
 
+    private fun commandHealthToken(builder: ProcessBuilder): String {
+        val command = builder.command()
+        val index = command.indexOf("--update-health-token")
+        assertTrue(index >= 0)
+        return command[index + 1].also { assertEquals(it, java.util.UUID.fromString(it).toString()) }
+    }
+
     private fun assertBusy(root: Path, stage: Path) {
         assertEquals(stage, UpdateStorage.ownedStage(root, stage, REPOSITORY))
         assertTrue(Files.isRegularFile(stage.resolve(".bilipai-updater.lock"), NOFOLLOW_LINKS))
@@ -464,7 +471,7 @@ class DesktopUpdaterStageLeaseTest {
         val launches = AtomicInteger()
         val requests = Collections.synchronizedList(mutableListOf<String>())
         private val owners = mutableListOf<DesktopUpdater>()
-        val queueFile: Path = localData.resolve("queue.json")
+        val queueFile: Path = localData.resolve("BiliPai/downloads.json")
         val mediaRoot: Path = localData.resolve("media")
         private val queueScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         private val queueGate = Any()
@@ -514,14 +521,14 @@ class DesktopUpdaterStageLeaseTest {
                 }
             } }).also(owners::add)
 
-        fun queue(): com.bilipai.desktop.download.DesktopDownloadManager {
+        fun queue(startupToken: String? = null): com.bilipai.desktop.download.DesktopDownloadManager {
             val owner = queueScope.coroutineContext.job
             val publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication({ owner.isActive }, { action ->
                 synchronized(queueGate) { if (!owner.isActive) false else { action(); true } }
             })
             return com.bilipai.desktop.download.DesktopDownloadManager(queueClient, queueFile,
                 com.bilipai.desktop.download.DownloadMuxer { _, _, _ -> error("Sealed media cannot reach muxing") },
-                publication = publication).also(queues::add)
+                publication = publication, startupHandoffToken = startupToken).also(queues::add)
         }
 
         fun health(builder: ProcessBuilder, version: String) {

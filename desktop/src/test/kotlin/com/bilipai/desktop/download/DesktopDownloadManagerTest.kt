@@ -301,6 +301,7 @@ class DesktopDownloadManagerTest {
         val id = manager.enqueue(PlaybackSource("https://cdn.example/video"), root, DownloadMetadata(includeDanmaku = false))
         withTimeout(5000) { while (manager.tasks.value.single().status != DownloadStatus.COMPLETED) delay(10) }
         manager.savePlaybackPosition(id, 61_250L, 600_000L)
+        manager.shutdownForApplicationExit()
         manager.close()
         val restored = DesktopDownloadManager(memoryClient(ByteArray(20)), state, muxer, publication = localDownloadPublication())
         try {
@@ -356,6 +357,7 @@ class DesktopDownloadManagerTest {
             assertEquals(60L, completed.totalBytes)
             assertEquals(40L, completed.item.fileSize)
             assertEquals(40L, Files.size(Path.of(requireNotNull(completed.outputFile))))
+            manager.shutdownForApplicationExit()
             manager.close()
             val restoredClient = optionalAssetMemoryClient(CopyOnWriteArrayList(), AtomicInteger())
             val restored = DesktopDownloadManager(restoredClient, state, muxer, publication = localDownloadPublication())
@@ -856,7 +858,7 @@ class DesktopDownloadManagerTest {
             assertTrue(first.job.isCompleted)
             val child = DesktopDownloadManager(client, state, muxer,
                 danmakuDownloader = { task, directory, callback -> holdExitOptionalWorker(task, directory, callback, childWorkers) },
-                publication = localDownloadPublication())
+                publication = localDownloadPublication(), startupHandoffToken = ticket.token)
             successor = child
             withTimeout(5_000) { while (childWorkers.size != 1) delay(5) }
             assertNotNull(child.tasks.value.single { it.id == id })
