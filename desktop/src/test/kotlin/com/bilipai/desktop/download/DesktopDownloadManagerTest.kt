@@ -72,6 +72,7 @@ class DesktopDownloadManagerTest {
         assertEquals(DownloadStatus.COMPLETED, task.status, task.error)
         assertEquals(76L, task.downloadedBytes); assertEquals(2, task.item.assets.first { it.kind == DownloadAssetKind.VIDEO }.segmentCount)
         assertContentEquals(one + two, Files.readAllBytes(Path.of(manager.offlinePlayback(id).videoUrl)))
+        manager.shutdownForApplicationExit() // Join real segment input cleanup before cold restart.
         assertFalse(Files.exists(Path.of(task.directory).resolve("segment-0001.media")))
         manager.close()
         val restored = DesktopDownloadManager(client, state, muxer, publication = localDownloadPublication())
@@ -147,6 +148,7 @@ class DesktopDownloadManagerTest {
         assertTrue(Files.isRegularFile(Path.of(source.videoUrl)))
         assertEquals("", source.referer)
         val directory = Path.of(manager.tasks.value.single().directory)
+        manager.shutdownForApplicationExit() // Join real input cleanup after the ready-output publication.
         assertFalse(Files.exists(directory.resolve("video.m4s")))
         assertFalse(Files.exists(directory.resolve("audio.m4s")))
         manager.close()
