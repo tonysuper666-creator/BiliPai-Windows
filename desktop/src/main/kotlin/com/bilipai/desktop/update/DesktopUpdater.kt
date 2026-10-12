@@ -38,6 +38,7 @@ class DesktopUpdater private constructor(
     private val onProcessStarted: (Process) -> Unit,
     private val catalogLookupForTest: (suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer?)? = null,
     private val processFactoryForTest: ((ProcessBuilder) -> Process)? = null,
+    private val knownRunningStagesForTest: (() -> Set<Path>)? = null,
 ) : AutoCloseable {
     constructor() : this(loadBuildConfig(), defaultUpdateRoot(), defaultClient(), null, {})
 
@@ -57,11 +58,12 @@ class DesktopUpdater private constructor(
     private val mutex = Mutex()
     private var retainedPrepared: PreparedUpdate? = null
     private var retainedArchiveSha256: String? = null
+    private var retainedReceipt: DesktopPreparedUpdateStorage.Receipt? = null
     private var retainedLease: UpdateStorage.StageLease? = null
     private val lifetime = Any()
     @Volatile private var closed = false
-    // Only one launch is possible under mutex. Unknown child retirement preserves
-    // its prepared/stage lease even if this updater owner is later disposed.
+    // Only one launch is possible under mutex. Unknown child retirement or queue
+    // rollback preserves its receipt/stage lease even if this owner is disposed.
     @Volatile private var childRetirementPending = false
 
     /** Disposal marks the owner closed without waiting on a coroutine mutex or an IO operation. */
@@ -74,6 +76,7 @@ class DesktopUpdater private constructor(
         if (childRetirementPending) return
         retainedPrepared = null
         retainedArchiveSha256 = null
+        retainedReceipt = null
         retainedLease?.close()
         retainedLease = null
     }
@@ -126,13 +129,145 @@ class DesktopUpdater private constructor(
         } finally { finishOperation() }
     }
 
+    /** Local READY recovery is independent of network/automatic-check preferences.
+     * The same owner mutex/OS lease is required; CLAIMED never grants recovery. */
+    internal suspend fun restorePreparedUpdate(): PreparedUpdate? = withContext(Dispatchers.IO) {
+        if (closed || disabledReason != null || !mutex.tryLock()) return@withContext null
+        try {
+            ensureOpenAndActive()
+            if (childRetirementPending) return@withContext null
+            retainedPrepared?.takeIf { retainedReceipt?.phase == DesktopPreparedUpdateStorage.Phase.READY }
+                ?.let { prepared ->
+                    mutableState.value = UpdateState.Prepared(prepared)
+                    return@withContext prepared
+                }
+            resumeReadyPrepared()
+        } finally { finishOperation() }
+    }
+
+    private class ReadyCandidate(val stage: Path, val receipt: DesktopPreparedUpdateStorage.Receipt,
+        val version: DesktopVersion)
+
+    /** The existing registry CAS cannot commit at/below its recorded version.
+     * Check that same numeric rule before rebuilding/downloading/launching; the
+     * later exact-byte CAS remains required for concurrent registry changes. */
+    private fun registryAllowsPreparedUpgrade(update: WindowsUpdate,
+        observed: ActiveInstallationSnapshot = readActiveInstallationSnapshot()): Boolean {
+        val registered = observed.installation ?: return true
+        val registeredVersion = requireNotNull(DesktopVersion.parse(registered.version)) {
+            "当前安装记录的版本无法确认"
+        }
+        return requireNotNull(DesktopVersion.parse(update.version)) > registeredVersion
+    }
+
+    private fun readyReceiptMatchesPolicy(receipt: DesktopPreparedUpdateStorage.Receipt,
+        desired: WindowsUpdate?, signedArchiveSha256: String?): Boolean = runCatching {
+        val settings = requireNotNull(config)
+        require(receipt.phase == DesktopPreparedUpdateStorage.Phase.READY &&
+            receipt.repository == repository && receipt.channel == settings.channel &&
+            receipt.executableName == settings.executable)
+        validateUpdate(receipt.update)
+        require(desired == null || receipt.update == desired)
+        signedArchiveSha256?.let { verifyChecksum(receipt.archiveSha256, it) }
+        true
+    }.getOrDefault(false)
+
+    /** No HTTP: select bounded, same-repository/current-channel READY facts,
+     * then reacquire their actual lease and reverify/rebuild only an unregistered,
+     * non-running stage. Unknown receipt/registry custody is left untouched. */
+    private suspend fun resumeReadyPrepared(desired: WindowsUpdate? = null,
+        signedArchiveSha256: String? = null): PreparedUpdate? {
+        ensureOpenAndActive()
+        val trusted = requireNotNull(repository)
+        val settings = requireNotNull(config)
+        val preserved = try { preservedInstallationStages() }
+        catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: Exception) { ensureOpenAndActive(); return null }
+        val children = try {
+            val root = UpdateStorage.verifiedRoot(updateRoot)
+            Files.list(root).use { it.limit(MAX_PREPARED_STAGE_ENTRIES + 1L).toList() }
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: Exception) { ensureOpenAndActive(); return null }
+        ensureOpenAndActive()
+        if (children.size > MAX_PREPARED_STAGE_ENTRIES) return null
+        val candidates = mutableListOf<ReadyCandidate>()
+        for (stage in children) {
+            ensureOpenAndActive()
+            if (stage in preserved) continue
+            val lease = UpdateStorage.tryLeaseStage(updateRoot, stage, trusted) ?: continue
+            try {
+                val receipt = DesktopPreparedUpdateStorage.read(updateRoot, lease, trusted) ?: continue
+                if (!readyReceiptMatchesPolicy(receipt, desired, signedArchiveSha256)) continue
+                candidates += ReadyCandidate(lease.stage, receipt, requireNotNull(DesktopVersion.parse(receipt.update.version)))
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { ensureOpenAndActive() /* malformed/unknown record: preserve */ }
+            finally { lease.close() }
+        }
+        val ordered = candidates.sortedWith(compareByDescending<ReadyCandidate> { it.version }
+            .thenByDescending { it.receipt.update.releaseId }.thenByDescending { it.receipt.update.assetId }
+            .thenBy { it.stage.fileName.toString() })
+        for (candidate in ordered) {
+            ensureOpenAndActive()
+            val lease = UpdateStorage.tryLeaseStage(updateRoot, candidate.stage, trusted) ?: continue
+            var receiptToInvalidate: DesktopPreparedUpdateStorage.Receipt? = null
+            var retained = false
+            try {
+                val ready = DesktopPreparedUpdateStorage.read(updateRoot, lease, trusted) ?: continue
+                if (!candidate.receipt.matches(ready) || !readyReceiptMatchesPolicy(ready, desired, signedArchiveSha256)) continue
+                if (lease.stage in preservedInstallationStages() || !registryAllowsPreparedUpgrade(ready.update)) continue
+                receiptToInvalidate = ready
+                val context = currentCoroutineContext()
+                val checkCancelled = { context.ensureActive(); ensureOpen() }
+                val archive = DesktopPreparedUpdateStorage.verifyArchive(updateRoot, lease, trusted, ready, checkCancelled)
+                val app = DesktopPreparedUpdateStorage.recreateAppDirectory(updateRoot, lease, trusted, ready, checkCancelled)
+                val executable = SafeUpdateZip.extract(archive, app, settings.executable, checkCancelled)
+                // The extracted tree is fresh, but recheck the retained ZIP and
+                // exact receipt again before publishing this owner's memory fact.
+                DesktopPreparedUpdateStorage.verifyArchive(updateRoot, lease, trusted, ready, checkCancelled)
+                receiptToInvalidate = null
+                require(DesktopPreparedUpdateStorage.read(updateRoot, lease, trusted)?.let(ready::matches) == true) {
+                    "更新准备记录在恢复期间已改变"
+                }
+                if (lease.stage in preservedInstallationStages() || !registryAllowsPreparedUpgrade(ready.update)) continue
+                val prepared = PreparedUpdate(ready.update, lease.stage, executable)
+                ensureOpenAndActive()
+                synchronized(lifetime) {
+                    context.ensureActive(); ensureOpen()
+                    retainedPrepared = prepared
+                    retainedArchiveSha256 = ready.archiveSha256
+                    retainedReceipt = ready
+                    retainedLease = lease
+                    retained = true
+                    mutableState.value = UpdateState.Prepared(prepared)
+                }
+                return prepared
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) {
+                ensureOpenAndActive()
+                // Only a fully decoded, policy-qualified READY may lose recovery
+                // eligibility after bad ZIP/extraction. Never delete its tree here.
+                val failed = receiptToInvalidate
+                if (failed != null) {
+                    val stillProtected = runCatching { preservedInstallationStages() }.getOrNull()
+                    if (stillProtected != null && lease.stage !in stillProtected)
+                        runCatching { DesktopPreparedUpdateStorage.retire(updateRoot, lease, trusted, failed) }
+                }
+            } finally { if (!retained) lease.close() }
+        }
+        ensureOpenAndActive()
+        return null
+    }
+
     /** Explicit UI checks bypass the six-hour background debounce. A prepared update is retained. */
     suspend fun check(force: Boolean = true): UpdateState = withContext(Dispatchers.IO) {
         if (closed || disabledReason != null || !mutex.tryLock()) return@withContext state.value
         val previousState = state.value
         try {
             ensureOpenAndActive()
-            retainedPrepared?.let { return@withContext UpdateState.Prepared(it).also { result -> mutableState.value = result } }
+            if (childRetirementPending) return@withContext state.value
+            retainedPrepared?.takeIf { retainedReceipt?.phase == DesktopPreparedUpdateStorage.Phase.READY }
+                ?.let { return@withContext UpdateState.Prepared(it).also { result -> mutableState.value = result } }
+            resumeReadyPrepared()?.let { return@withContext UpdateState.Prepared(it) }
             if (!force && !shouldCheck(lastCheckTime(), System.currentTimeMillis())) return@withContext state.value
             mutableState.value = UpdateState.Checking
             val releases = fetchReleases(requireNotNull(repository))
@@ -186,9 +321,12 @@ class DesktopUpdater private constructor(
         if (closed || disabledReason != null || !mutex.tryLock()) return@withContext null
         var lease: UpdateStorage.StageLease? = null
         var complete = false
+        var durableReady = false
         try {
             ensureOpenAndActive()
+            require(!childRetirementPending) { "之前更新子进程或下载回退的退役状态无法确认" }
             retainedPrepared?.let {
+                require(retainedReceipt?.phase == DesktopPreparedUpdateStorage.Phase.READY) { "更新准备记录已失效" }
                 require(compatibleOffer == null || compatibleOffer.update == update &&
                     retainedArchiveSha256.equals(compatibleOffer.zipSha256, ignoreCase = true)) {
                     "Prepared archive differs from the signed compatibility catalog"
@@ -196,12 +334,14 @@ class DesktopUpdater private constructor(
                 return@withContext it.takeIf { prepared -> prepared.update == update }
             }
             validateUpdate(update)
+            require(registryAllowsPreparedUpgrade(update)) { "已有相同或更高的已注册 Windows 版本，此更新无法提交" }
             require((state.value as? UpdateState.Available)?.update == update) { "Windows 更新目标已改变，请重新检查" }
             // Generic callers also resolve before any stage or Downloading state. Only absent means ordinary.
             val offer = compatibleOffer ?: resolveVeyraCatalog(update)
             require(offer == null || offer.update == update) { "Windows 兼容目录目标已改变" }
             val compatibleSha256 = offer?.zipSha256
             ensureOpenAndActive()
+            resumeReadyPrepared(update, compatibleSha256)?.let { return@withContext it }
             val settings = requireNotNull(config)
             val acquired = UpdateStorage.createLeasedStage(updateRoot, requireNotNull(repository), update.assetId)
             lease = acquired
@@ -218,13 +358,20 @@ class DesktopUpdater private constructor(
             val executable = SafeUpdateZip.extract(archive, Files.createDirectory(staging.resolve("app")), settings.executable) {
                 context.ensureActive(); ensureOpen()
             }
-            Files.delete(archive)
+            val receipt = DesktopPreparedUpdateStorage.writeReady(updateRoot, acquired, requireNotNull(repository),
+                settings.channel, update, digest, executable, settings.executable) {
+                context.ensureActive(); ensureOpen()
+            }
+            // writeReady returning means durable completion even if the owner
+            // cancels/closes before publishing this memory projection.
+            durableReady = true
             val prepared = PreparedUpdate(update, staging, executable)
             ensureOpenAndActive()
             synchronized(lifetime) {
-                ensureOpen()
+                context.ensureActive(); ensureOpen()
                 retainedPrepared = prepared
                 retainedArchiveSha256 = digest.lowercase()
+                retainedReceipt = receipt
                 retainedLease = acquired
                 complete = true
                 mutableState.value = UpdateState.Prepared(prepared)
@@ -240,7 +387,10 @@ class DesktopUpdater private constructor(
             null
         } finally {
             try {
-                if (!complete) lease?.let { UpdateStorage.deleteLeasedStage(updateRoot, it, requireNotNull(repository)) }
+                if (!complete) lease?.let {
+                    if (durableReady) it.close()
+                    else UpdateStorage.deleteLeasedStage(updateRoot, it, requireNotNull(repository))
+                }
             } finally { finishOperation() }
         }
     }
@@ -257,25 +407,39 @@ class DesktopUpdater private constructor(
         var committed = false
         val ownsPrepared = prepared === retainedPrepared
         var discard = false
-        fun restoreAfterCancellation() {
-            if (!closed && ownsPrepared && !committed) mutableState.value = UpdateState.Prepared(prepared)
-        }
+        var cancelledOperation = false
+        var processStartEntered = false
+        var claimed: DesktopPreparedUpdateStorage.Receipt? = null
         try {
             ensureOpenAndActive()
-            require(!childRetirementPending) { "之前更新子进程的退役状态无法确认" }
+            require(!childRetirementPending) { "之前更新子进程或下载回退的退役状态无法确认" }
             require(ownsPrepared) { "更新准备状态已失效，请重新检查更新" }
-            require(retainedLease?.holds(prepared.stagingDirectory) == true) { "更新安装目录租约已失效" }
+            val lease = requireNotNull(retainedLease) { "更新安装目录租约已失效" }
+            require(lease.holds(prepared.stagingDirectory)) { "更新安装目录租约已失效" }
+            val ready = requireNotNull(retainedReceipt) { "更新准备记录已失效" }
+            require(ready.phase == DesktopPreparedUpdateStorage.Phase.READY &&
+                ready.update == prepared.update && readyReceiptMatchesPolicy(ready, prepared.update, retainedArchiveSha256)) {
+                "更新准备记录与当前目标不一致"
+            }
             validateUpdate(prepared.update)
             require(UpdateStorage.ownedStage(updateRoot, prepared.stagingDirectory, requireNotNull(repository)) != null &&
                 validStoredExecutable(prepared.executable.toString()) == prepared.executable) { "更新安装目录校验失败" }
             val observed = readActiveInstallationSnapshot()
-            // Root freezes and actually drains its existing download owner here.
-            // A prepared ZIP and one UI idle observation alone do not grant launch.
+            require(registryAllowsPreparedUpgrade(prepared.update, observed)) { "已有相同或更高的已注册 Windows 版本，此更新无法提交" }
+            // Real Root freeze first. Cancellation/no-start recovery does not
+            // infer child or queue retirement from a stale UI idle observation.
             val launchToken = UUID.randomUUID().toString()
             beforeLaunch(launchToken)
             ensureOpenAndActive()
+            claimed = DesktopPreparedUpdateStorage.claim(updateRoot, lease, requireNotNull(repository), ready, launchToken)
+            retainedReceipt = claimed
             mutableState.value = UpdateState.Launching
-            attempt = launchInstallation(prepared.executable, emptyList(), launchToken)
+            attempt = launchInstallation(prepared.executable, emptyList(), launchToken) {
+                // Exactly before the real process factory/start call. A throw
+                // after entry without a returned Process is unknown custody.
+                processStartEntered = true
+                childRetirementPending = true
+            }
             require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version, observation = attempt.descendants)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
             ensureOpenAndActive()
             val previous = previousInstallation(observed.installation)
@@ -288,28 +452,65 @@ class DesktopUpdater private constructor(
             }
             committed = true
             childRetirementPending = false
-            onCommitted() // Contract: synchronous, nonthrowing memory retirement only.
             discard = true
+            // Registry commit is authoritative. Receipt cleanup cannot turn a
+            // healthy committed installation back into a failed update.
+            runCatching { DesktopPreparedUpdateStorage.retire(updateRoot, lease, requireNotNull(repository), requireNotNull(claimed)) }
+            onCommitted() // Contract: synchronous, nonthrowing memory retirement only.
             mutableState.value = UpdateState.Launched
             pruneInstallations()
             true
         } catch (cancelled: CancellationException) {
-            restoreAfterCancellation()
+            cancelledOperation = true
+            discard = false
             throw cancelled
         } catch (error: Exception) {
             try { ensureOpenAndActive() }
-            catch (cancelled: CancellationException) { restoreAfterCancellation(); throw cancelled }
+            catch (cancelled: CancellationException) {
+                cancelledOperation = true
+                discard = false
+                throw cancelled
+            }
             discard = ownsPrepared
             mutableState.value = UpdateState.Failed(error.message ?: "Windows 更新启动失败，当前版本继续运行")
             false
         } finally {
             try {
                 if (!committed) withContext(kotlinx.coroutines.NonCancellable) {
-                    attempt?.let { StartupHealth.terminate(it.process, it.descendants); childRetirementPending = false }
-                    check(!childRetirementPending) { "更新子进程退役状态无法确认，不能恢复下载队列" }
-                    // Runs for ordinary failure AND cancellation, including a prelaunch
-                    // cancellation after Root already captured its unique transfer ticket.
+                    if (attempt != null) {
+                        StartupHealth.terminate(checkNotNull(attempt).process, checkNotNull(attempt).descendants)
+                    } else if (processStartEntered) {
+                        childRetirementPending = true
+                        error("更新进程启动已进入但未返回句柄；退役状态无法确认，不能恢复下载队列")
+                    } else if (childRetirementPending && claimed == null) {
+                        error("之前更新子进程退役状态无法确认，不能恢复下载队列")
+                    }
+                    // No-start or actual successful termination is known, but
+                    // unknown queue rollback still preserves receipt and lease.
+                    childRetirementPending = true
                     afterFailedLaunch()
+                    if (ownsPrepared) {
+                        val lease = requireNotNull(retainedLease)
+                        val receipt = requireNotNull(retainedReceipt)
+                        if (cancelledOperation) {
+                            val restored = if (claimed != null)
+                                DesktopPreparedUpdateStorage.restoreReady(updateRoot, lease, requireNotNull(repository), checkNotNull(claimed))
+                            else {
+                                require(receipt.phase == DesktopPreparedUpdateStorage.Phase.READY &&
+                                    DesktopPreparedUpdateStorage.read(updateRoot, lease, requireNotNull(repository))?.let(receipt::matches) == true) {
+                                    "更新准备记录在取消期间已改变"
+                                }
+                                receipt
+                            }
+                            retainedReceipt = restored
+                            // Closed owners may safely restore disk READY after
+                            // confirmed rollback, but publish no new memory state.
+                            if (!closed) mutableState.value = UpdateState.Prepared(prepared)
+                        } else if (discard) {
+                            DesktopPreparedUpdateStorage.retire(updateRoot, lease, requireNotNull(repository), receipt)
+                        }
+                    }
+                    childRetirementPending = false
                 }
             } finally {
                 try { if (discard && !childRetirementPending) discardRetainedPrepared() }
@@ -425,7 +626,8 @@ class DesktopUpdater private constructor(
         }
     }
 
-    private suspend fun launchInstallation(executable: Path, args: List<String>, healthToken: String? = null): LaunchAttempt {
+    private suspend fun launchInstallation(executable: Path, args: List<String>, healthToken: String? = null,
+        beforeStart: () -> Unit = {}): LaunchAttempt {
         ensureOpenAndActive()
         check(!childRetirementPending) { "之前更新子进程的退役状态无法确认" }
         val stage = stageForExecutable(executable) ?: error("更新启动路径无效")
@@ -444,6 +646,8 @@ class DesktopUpdater private constructor(
                 listOf("BILIPAI_MPV_PATH", "JAVA_TOOL_OPTIONS", "_JAVA_OPTIONS", "JDK_JAVA_OPTIONS").forEach(::remove)
             }
         }
+        ensureOpenAndActive()
+        beforeStart()
         val process = processFactoryForTest?.invoke(builder) ?: builder.start()
         childRetirementPending = true
         val observation = StartupHealth.DescendantObservation(process)
@@ -552,11 +756,18 @@ class DesktopUpdater private constructor(
             validStoredExecutable(raw)?.let { stageForExecutable(it) }?.let(preserved::add)
         }
         retainedPrepared?.stagingDirectory?.let(preserved::add)
-        // Retain every installation with an observable running command, including an older window.
-        ProcessHandle.allProcesses().use { processes ->
-            processes.forEach { handle -> handle.info().command().orElse(null)?.let { raw ->
-                runCatching { UpdateStorage.stageContaining(updateRoot, Path.of(raw), trusted) }.getOrNull()?.let(preserved::add)
-            } }
+        val knownRunning = knownRunningStagesForTest
+        if (knownRunning != null) {
+            val observed = knownRunning()
+            require(observed.size <= MAX_PREPARED_STAGE_ENTRIES) { "测试运行安装目录列表超限" }
+            observed.forEach { stage -> UpdateStorage.ownedStage(updateRoot, stage, trusted)?.let(preserved::add) }
+        } else {
+            // Production retains the existing observable running-command policy.
+            ProcessHandle.allProcesses().use { processes ->
+                processes.forEach { handle -> handle.info().command().orElse(null)?.let { raw ->
+                    runCatching { UpdateStorage.stageContaining(updateRoot, Path.of(raw), trusted) }.getOrNull()?.let(preserved::add)
+                } }
+            }
         }
         return preserved
     }
@@ -671,6 +882,7 @@ class DesktopUpdater private constructor(
         const val STARTUP_TIMEOUT_MS = 30_000L
         internal const val STARTUP_STABILITY_MS = 1_500L
         internal const val AUTO_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000L
+        private const val MAX_PREPARED_STAGE_ENTRIES = 256
         private const val RELEASE_PAGE_SIZE = 100
         internal const val MAX_RELEASE_PAGES = 100
         private fun loadBuildConfig(): UpdateConfig? = runCatching {
@@ -701,14 +913,17 @@ class DesktopUpdater private constructor(
             executable: String = "BiliPai Windows.exe",
             compatibleCatalog: suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer? = { null },
             processFactory: ((ProcessBuilder) -> Process)? = null,
+            channel: String = "prerelease",
+            knownRunningStages: () -> Set<Path> = { emptySet() },
         ): DesktopUpdater {
             require(DesktopVersion.parse(currentVersion) != null && validRepository(repository))
             val childData = childLocalAppData.toAbsolutePath().normalize()
             require(updateRoot.toAbsolutePath().normalize() == childData.resolve("BiliPai/updates")) {
                 "Integration update root must belong to the isolated child LOCALAPPDATA"
             }
-            return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, executable = executable),
-                updateRoot, client, childData, onProcessStarted, compatibleCatalog, processFactory)
+            require(channel in setOf("stable", "prerelease"))
+            return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, channel = channel, executable = executable),
+                updateRoot, client, childData, onProcessStarted, compatibleCatalog, processFactory, knownRunningStages)
         }
         /** Call before creating the UI; true means a previously verified newer window is running. */
         fun launchInstalledUpdateIfNewer(args: Array<String>): Boolean = runBlocking {

@@ -166,7 +166,7 @@ class DesktopUpdateMonitoringTest {
             followDesktopAutomaticUpdateChecks(store, { true }, {
                 calls++
                 try { awaitCancellation() } finally { cancellations++ }
-            })
+            }, restorePrepared = {})
         }
         runCurrent(); assertEquals(1, calls)
         store.update("settings", mapOf("auto_check_app_update" to JsonPrimitive(false)))
@@ -179,7 +179,7 @@ class DesktopUpdateMonitoringTest {
 
     @Test fun `Windows own-release clock stays six hours and disabled interval does not check`() = runTest {
         val store = store(); var calls = 0
-        val job = backgroundScope.launch { followDesktopAutomaticUpdateChecks(store, { true }, { calls++ }) }
+        val job = backgroundScope.launch { followDesktopAutomaticUpdateChecks(store, { true }, { calls++ }, restorePrepared = {}) }
         runCurrent(); assertEquals(1, calls)
         advanceTimeBy(DesktopUpdater.AUTO_CHECK_INTERVAL_MS - 1); runCurrent(); assertEquals(1, calls)
         advanceTimeBy(1); runCurrent(); assertEquals(2, calls)
@@ -187,6 +187,119 @@ class DesktopUpdateMonitoringTest {
         runCurrent(); advanceTimeBy(DesktopUpdater.AUTO_CHECK_INTERVAL_MS * 2); runCurrent(); assertEquals(2, calls)
         assertEquals(10 * 60 * 60 * 1000L, DesktopVeyraReleaseMonitor.INTERVAL_MS)
         job.cancelAndJoin()
+    }
+
+    @Test fun `disabled network startup restores local state once without checking HTTP`(): Unit = runTest {
+        val pluginRoot = Files.createTempDirectory("bp-disabled-update-restore-")
+        DesktopPluginStore(pluginRoot).update("settings", mapOf("auto_check_app_update" to JsonPrimitive(false)))
+        val store = DesktopPluginStore(pluginRoot) // Read the actual durable opt-out in a fresh store.
+        val networkCalls = java.util.concurrent.atomic.AtomicInteger(0)
+        val updater = clockUpdater(Files.createTempDirectory("bp-disabled-update-http-"),
+            okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+                networkCalls.incrementAndGet()
+                ownResponse(chain, "[]")
+            }.build())
+        var restores = 0; var checks = 0
+        val job = backgroundScope.launch {
+            followDesktopAutomaticUpdateChecks(store, { true }, {
+                checks++
+                updater.autoCheck()
+                Unit
+            }, restorePrepared = { restores++ })
+        }
+        try {
+            runCurrent()
+            assertEquals(1, restores); assertEquals(0, checks); assertEquals(0, networkCalls.get())
+            advanceTimeBy(DesktopUpdater.AUTO_CHECK_INTERVAL_MS * 2); runCurrent()
+            assertEquals(1, restores); assertEquals(0, checks); assertEquals(0, networkCalls.get())
+            assertEquals(JsonPrimitive(false), store.preferences("settings")["auto_check_app_update"])
+        } finally { job.cancelAndJoin() }
+    }
+
+    @Test fun `local restoration finishes before the first check and toggles preserve one restore and six hour cadence`(): Unit = runTest {
+        val store = store()
+        val finishRestore = CompletableDeferred<Unit>()
+        val events = mutableListOf<String>()
+        val checkTimes = mutableListOf<Long>()
+        var restores = 0
+        val job = backgroundScope.launch {
+            followDesktopAutomaticUpdateChecks(store, { true }, {
+                events += "check"
+                checkTimes += testScheduler.currentTime
+            }, restorePrepared = {
+                restores++
+                events += "restore-entered"
+                finishRestore.await()
+                events += "restore-finished"
+            })
+        }
+        try {
+            runCurrent()
+            assertEquals(listOf("restore-entered"), events); assertTrue(checkTimes.isEmpty())
+            advanceTimeBy(123); runCurrent()
+            assertTrue(checkTimes.isEmpty())
+            finishRestore.complete(Unit); runCurrent()
+            assertEquals(listOf("restore-entered", "restore-finished", "check"), events)
+            assertEquals(listOf(123L), checkTimes)
+            advanceTimeBy(DesktopUpdater.AUTO_CHECK_INTERVAL_MS - 1); runCurrent()
+            assertEquals(1, checkTimes.size)
+            advanceTimeBy(1); runCurrent()
+            assertEquals(listOf(123L, 123L + DesktopUpdater.AUTO_CHECK_INTERVAL_MS), checkTimes)
+            store.update("settings", mapOf("auto_check_app_update" to JsonPrimitive(false)))
+            runCurrent(); advanceTimeBy(DesktopUpdater.AUTO_CHECK_INTERVAL_MS * 2); runCurrent()
+            assertEquals(2, checkTimes.size); assertEquals(1, restores)
+            store.update("settings", mapOf("auto_check_app_update" to JsonPrimitive(true)))
+            runCurrent()
+            assertEquals(3, checkTimes.size); assertEquals(testScheduler.currentTime, checkTimes.last())
+            assertEquals(1, restores)
+            store.update("settings", mapOf("auto_check_app_update" to JsonPrimitive(false))); runCurrent()
+            store.update("settings", mapOf("auto_check_app_update" to JsonPrimitive(true))); runCurrent()
+            assertEquals(4, checkTimes.size); assertEquals(1, restores)
+            assertEquals(1, events.count { it == "restore-finished" })
+        } finally { job.cancelAndJoin() }
+    }
+
+    @Test fun `cancelling the actual restore caller propagates cancellation before any network loop`(): Unit = runTest {
+        val store = store()
+        val entered = CompletableDeferred<Unit>()
+        var restores = 0; var restoreCancellations = 0; var checks = 0
+        val job = backgroundScope.async {
+            followDesktopAutomaticUpdateChecks(store, { true }, { checks++ }, restorePrepared = {
+                restores++
+                entered.complete(Unit)
+                try { awaitCancellation() } finally { restoreCancellations++ }
+            })
+        }
+        try {
+            runCurrent(); assertTrue(entered.isCompleted); assertEquals(0, checks)
+            job.cancel(); runCurrent()
+            assertFailsWith<CancellationException> { job.await() }
+            assertTrue(job.isCancelled); assertEquals(1, restoreCancellations)
+            store.update("settings", mapOf("auto_check_app_update" to JsonPrimitive(false))); runCurrent()
+            store.update("settings", mapOf("auto_check_app_update" to JsonPrimitive(true))); runCurrent()
+            advanceTimeBy(DesktopUpdater.AUTO_CHECK_INTERVAL_MS); runCurrent()
+            assertEquals(1, restores); assertEquals(0, checks)
+        } finally { job.cancelAndJoin() }
+    }
+
+    @Test fun `owner retirement before or at the end of local restoration prevents checking`(): Unit = runTest {
+        for (retiredBeforeRestore in listOf(true, false)) {
+            var owned = !retiredBeforeRestore
+            var restores = 0; var checks = 0
+            val job = backgroundScope.async {
+                followDesktopAutomaticUpdateChecks(store(), { owned }, { checks++ }, restorePrepared = {
+                    restores++
+                    owned = false
+                })
+            }
+            try {
+                runCurrent()
+                assertFailsWith<CancellationException> { job.await() }
+                assertTrue(job.isCancelled)
+                assertEquals(if (retiredBeforeRestore) 0 else 1, restores)
+                assertEquals(0, checks)
+            } finally { job.cancelAndJoin() }
+        }
     }
 
     private fun clockUpdater(root: java.nio.file.Path, client: okhttp3.OkHttpClient): DesktopUpdater =
@@ -223,7 +336,7 @@ class DesktopUpdateMonitoringTest {
                 calls++
                 // Model a successful check checkpoint after the skipped restart.
                 if (calls > 1) Files.writeString(checkpoint, now.toString())
-            }, nextDelayMs = { updater.automaticCheckDelayMs(now) })
+            }, restorePrepared = {}, nextDelayMs = { updater.automaticCheckDelayMs(now) })
         }
         runCurrent(); assertEquals(1, calls)
         advanceTimeBy(60 * 60 * 1000L - 1); now += 60 * 60 * 1000L - 1

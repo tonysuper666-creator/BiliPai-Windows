@@ -70,6 +70,13 @@ internal object UpdateStorage {
         }
     }
 
+    /** Only actual v2 ownership and a live OS lease permit prepared-state IO. */
+    internal fun requireLeasedStage(root: Path, lease: StageLease, repository: String): Path {
+        val stage = requireNotNull(ownedStage(root, lease.stage, repository)) { "更新安装目录所有者无法确认" }
+        require(lease.holds(stage) && readOwner(stage)?.owner == OWNER) { "更新安装目录 v2 租约已失效" }
+        return stage
+    }
+
     fun createStage(root: Path, repository: String, assetId: Long): Path =
         createLeasedStage(root, repository, assetId).use { it.stage }
 
@@ -196,6 +203,9 @@ internal object UpdateStorage {
         }.getOrNull() ?: return false
         val lease = tryLeaseStage(root, verified, repository) ?: return false
         try {
+            // READY/CLAIMED and unknown receipt custody are durable, not generic
+            // prune garbage. Explicit invalidation consumes its exact receipt first.
+            if (DesktopPreparedUpdateStorage.hasRecord(root, lease, repository)) return false
             // A snapshot taken before lock acquisition may predate another owner's successful activation.
             // Unknown/failing fresh admission is preserved, before the first payload deletion.
             if (runCatching { preserveAfterLease(lease.stage) }.getOrDefault(true)) return false

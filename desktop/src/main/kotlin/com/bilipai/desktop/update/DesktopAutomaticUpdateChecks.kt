@@ -12,16 +12,23 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 
-/** The original durable opt-out controls background checks only. collectLatest cancels
+/** The original durable opt-out controls background checks only. Local prepared-update
+ * restoration runs once per caller before collecting that preference. collectLatest cancels
  * the actual updater request; explicit manual check() does not go through this owner. */
 internal suspend fun followDesktopAutomaticUpdateChecks(
     store: DesktopPluginStore,
     owns: () -> Boolean,
     check: suspend () -> Unit,
+    restorePrepared: suspend () -> Unit,
     intervalMs: Long = DesktopUpdater.AUTO_CHECK_INTERVAL_MS,
     nextDelayMs: () -> Long = { intervalMs },
 ) {
     require(intervalMs > 0)
+    currentCoroutineContext().ensureActive()
+    if (!owns()) throw CancellationException("Windows prepared update restore owner retired")
+    restorePrepared()
+    currentCoroutineContext().ensureActive()
+    if (!owns()) throw CancellationException("Windows prepared update restore owner retired")
     store.snapshot("settings").map {
         it[DesktopPreferenceKey("auto_check_app_update") { raw ->
             (raw as? JsonPrimitive)?.takeUnless { value -> value.isString }?.booleanOrNull }] ?: true
