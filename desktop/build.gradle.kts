@@ -76,7 +76,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "2a5be15e0aaa24188105a99bb5777fc47079c59681795df84e7e7e605922d857"
+val revisionNeutralSourceGradleRecipeSha256 = "44bc808bb4891e2afd901ce5970dafa61690bc883d00bb4bc1345afceb4d799e"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -3543,4 +3543,9 @@ listOf("extractOriginalBangumiPlayer", "extractOriginalBangumiPlayerUi").forEach
 tasks.named("extractOriginalPlayerFullControls") {
     inputs.file("tools/v034_next_watch_ui.py")
     inputs.dir("upstream-slices/v034-next-watch-ui")
+}
+
+// Source62 reuses only the original audio-download method in the SAME PGC VM.
+tasks.named("extractOriginalBangumiPlayer") {
+    inputs.file("tools/v034_pgc_audio_download.py")
 }

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "a69d4181a073aa3207def3fca43318dcf7ab2c70",
+  "canonicalBaselineCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "scope": "Only the complete original downloadAudio method is reused; the existing retained VM and Source59 overlay remain authoritative.",
+  "partialReuse": true,
+  "source": {
+    "localPath": "desktop/upstream-slices/v034-pgc-initial-detail/BangumiPlayerViewModel.kt",
+    "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+    "bytesRaw": 65157,
+    "sha256Raw": "1e3835248ec24a971e58295b2a4e41acbc29975bfcc716bab2d0eeeade3c3d96",
+    "gitBlob": "f11c395760a44bbe0f3d0c3298c10e49fc51f488",
+    "referenceOnly": false,
+    "partialReuse": true
+  },
+  "originalMethod": {
+    "name": "downloadAudio",
+    "offsetBytesLF": 58697,
+    "bytesLF": 1543,
+    "sha256LF": "4a2f45aa35db9bb1ea23bcd12cfde316ec185fdac18c8067dac0278f7a5bab39",
+    "completeOriginalMethod": true
+  },
+  "methodAdaptations": [
+    {
+      "name": "guard displayed original state and intent",
+      "offsetBytes": 0,
+      "before": "    fun downloadAudio() {\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\n",
+      "after": "    internal fun downloadAudio(expectedState: BangumiPlayerState.Success, expectedIntentRevision: Long) {\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\n        if (state !== expectedState || desktopPlaybackIntentRevision != expectedIntentRevision) return\n",
+      "beforeWholeSha256": "4a2f45aa35db9bb1ea23bcd12cfde316ec185fdac18c8067dac0278f7a5bab39",
+      "afterWholeSha256": "06b9664947376cacc671afe3b4d3e209db8d5e4dd3cd43b66f92ed7f6fd74f63"
+    },
+    {
+      "name": "missing audio toast uses existing owned launch",
+      "offsetBytes": 383,
+      "before": "            viewModelScope.launch { _toastEvent.send(\"该剧集没有可下载的独立音频\") }",
+      "after": "            environment.launch { _toastEvent.send(\"该剧集没有可下载的独立音频\") }",
+      "beforeWholeSha256": "06b9664947376cacc671afe3b4d3e209db8d5e4dd3cd43b66f92ed7f6fd74f63",
+      "afterWholeSha256": "43d604d3a77ece6d2c135e1c5a6651dc75db674db1d3e3b53e9a7d8c3b11f2f2"
+    },
+    {
+      "name": "capture exact task before owned launch",
+      "offsetBytes": 1466,
+      "before": "        viewModelScope.launch {\n            val started = com.android.purebilibili.feature.download.DownloadManager.addTask(task)\n",
+      "after": "        val enqueue = try { environment.captureDownloadTask(task) } catch (cancelled: kotlinx.coroutines.CancellationException) {\n            throw cancelled\n        } catch (failure: Exception) {\n            environment.launch { _toastEvent.send(failure.message ?: \"当前音轨暂时无法下载\") }\n            return\n        }\n        environment.launch {\n            if (desktopPlaybackIntentRevision != expectedIntentRevision)\n                throw kotlinx.coroutines.CancellationException(\"PGC audio download intent replaced\")\n            val started = try { enqueue() } catch (cancelled: kotlinx.coroutines.CancellationException) {\n                throw cancelled\n            } catch (failure: Exception) {\n                _toastEvent.send(failure.message ?: \"当前音轨暂时无法下载\")\n                return@launch\n            }\n",
+      "beforeWholeSha256": "43d604d3a77ece6d2c135e1c5a6651dc75db674db1d3e3b53e9a7d8c3b11f2f2",
+      "afterWholeSha256": "181a7a4aa6622990ba066c01c80a2a0cda34db00ad47da962606421944d1d091"
+    }
+  ],
+  "adaptedMethodSha256LF": "181a7a4aa6622990ba066c01c80a2a0cda34db00ad47da962606421944d1d091",
+  "compatibilityWrapper": "    /** Original zero-argument entry; the physical menu passes its displayed state explicitly. */\n    fun downloadAudio() {\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\n        downloadAudio(state, desktopPlaybackIntentRevision)\n    }\n\n",
+  "output": "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt",
+  "beforeSha256LF": "9bb6aa950933daaac4ca636954d1808b84261f8801ae45f38841ca7d48b79577",
+  "afterSha256LF": "224636a0752bd36344b5dea0adb0b162dfa1ed32396fbc9ecc781d10dddcf995",
+  "edits": [
+    {
+      "name": "insert complete adapted original audio method",
+      "offsetBytes": 43803,
+      "before": "    /** Enqueue the currently loaded course episode in the existing offline manager. */\n",
+      "after": "    /** Original zero-argument entry; the physical menu passes its displayed state explicitly. */\n    fun downloadAudio() {\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\n        downloadAudio(state, desktopPlaybackIntentRevision)\n    }\n\n    internal fun downloadAudio(expectedState: BangumiPlayerState.Success, expectedIntentRevision: Long) {\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\n        if (state !== expectedState || desktopPlaybackIntentRevision != expectedIntentRevision) return\n        val audioUrl = state.audioUrl?.takeIf { it.isNotBlank() }\n        if (audioUrl == null) {\n            environment.launch { _toastEvent.send(\"该剧集没有可下载的独立音频\") }\n            return\n        }\n        val episode = state.currentEpisode\n        val task = com.android.purebilibili.feature.download.DownloadTask(\n            aid = episode.aid, bvid = episode.bvid.ifBlank { \"ep${episode.id}\" }, cid = episode.cid,\n            title = state.seasonDetail.title,\n            episodeLabel = listOf(episode.title, episode.longTitle).filter { it.isNotBlank() }.joinToString(\" \"),\n            groupKey = \"bangumi-audio:${state.seasonDetail.seasonId}\",\n            groupTitle = state.seasonDetail.title,\n            episodeSortIndex = state.currentEpisodeIndex,\n            episodeCount = state.seasonDetail.episodes.orEmpty().size.coerceAtLeast(1),\n            cover = episode.cover.ifBlank { state.seasonDetail.cover },\n            ownerName = state.seasonDetail.title, ownerFace = \"\",\n            duration = (episode.duration / 1000L).toInt(), quality = 0, qualityDesc = \"音频\",\n            videoUrl = \"\", audioUrl = audioUrl, isAudioOnly = true,\n        )\n        val enqueue = try { environment.captureDownloadTask(task) } catch (cancelled: kotlinx.coroutines.CancellationException) {\n            throw cancelled\n        } catch (failure: Exception) {\n            environment.launch { _toastEvent.send(failure.message ?: \"当前音轨暂时无法下载\") }\n            return\n        }\n        environment.launch {\n            if (desktopPlaybackIntentRevision != expectedIntentRevision)\n                throw kotlinx.coroutines.CancellationException(\"PGC audio download intent replaced\")\n            val started = try { enqueue() } catch (cancelled: kotlinx.coroutines.CancellationException) {\n                throw cancelled\n            } catch (failure: Exception) {\n                _toastEvent.send(failure.message ?: \"当前音轨暂时无法下载\")\n                return@launch\n            }\n            _toastEvent.send(if (started) \"已开始下载音频\" else \"该音频已在下载中或已完成\")\n        }\n    }\n\n    /** Enqueue the currently loaded course episode in the existing offline manager. */\n",
+      "beforeWholeSha256": "9bb6aa950933daaac4ca636954d1808b84261f8801ae45f38841ca7d48b79577",
+      "afterWholeSha256": "224636a0752bd36344b5dea0adb0b162dfa1ed32396fbc9ecc781d10dddcf995"
+    }
+  ]
+}

@@ -216,6 +216,172 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         }
     }
 
+    @Test fun displayedOriginalAudioClickQueuesOnlySelectedAudioAndRetainsCompleteTaskAndAcceptedSource(): Unit = runBlocking {
+        Fixture(seasonType = 1, downloadRight = 1, expectedAudioOnly = true).useSuspending { f ->
+            f.load()
+            val accepted = f.accepted()
+            val nativeSource = accepted.nativeSource.source
+            val load = f.owner.captureLoadState()
+            val displayed = f.vm.uiState.value as BangumiPlayerState.Success
+            val intent = f.vm.desktopPlaybackIntentRevision
+            f.ui { f.vm.downloadAudio(displayed, intent) }
+            val click = f.awaitClick()
+            f.awaitQueue()
+            val evidence = f.trace.ingress.single { it.ordinal == 2 }
+            assertTrue(click.onEdt); assertSame(click.job, evidence.bindingCaller)
+            assertNotSame(click.job, evidence.ioJob); assertTrue(evidence.ioThread)
+            assertTrue(evidence.directoryReady); assertFalse(evidence.statePersistedBeforeManagerCommit)
+            val queued = checkNotNull(evidence.queued)
+            assertEquals(click.task.copy(status = DownloadStatus.QUEUED, errorMessage = null), queued.item)
+            assertTrue(queued.item.isAudioOnly); assertEquals("", queued.item.videoUrl)
+            assertEquals(displayed.audioUrl, queued.item.audioUrl)
+            assertEquals(nativeSource.audioUrl, queued.item.audioUrl)
+            assertSame(nativeSource.authorizationReceipt, queued.authorizationReceipt)
+            assertEquals(nativeSource.cookieHeader, queued.cookieHeader)
+            assertEquals(nativeSource.streamHeaders, queued.streamHeaders)
+            assertEquals(nativeSource.userAgent, queued.userAgent)
+            assertEquals("https://www.bilibili.com/bangumi/play/ep41", queued.referer)
+            assertEquals(19L, queued.seasonId); assertEquals(41L, queued.episodeId); assertFalse(queued.isCourse)
+            assertTrue(queued.progressiveSegments.isEmpty())
+            assertEquals("Synthetic course", queued.item.title); assertEquals("One", queued.item.episodeLabel)
+            assertEquals("bangumi-audio:19", queued.item.groupKey); assertEquals("Synthetic course", queued.item.groupTitle)
+            assertEquals(0, queued.item.episodeSortIndex); assertEquals(2, queued.item.episodeCount)
+            assertEquals("https://media.invalid/cover.jpg", queued.item.cover)
+            assertEquals("Synthetic course", queued.item.ownerName); assertEquals("", queued.item.ownerFace)
+            assertEquals(60, queued.item.duration); assertEquals(0, queued.item.quality); assertEquals("音频", queued.item.qualityDesc)
+            assertEquals(f.destination.toAbsolutePath().normalize().toString(), queued.destinationRoot)
+            assertTrue(Files.isRegularFile(f.stateFile)); assertEquals(click.task.id, f.persisted().single().id)
+            assertSame(accepted, f.accepted()); assertSame(nativeSource, f.accepted().nativeSource.source)
+            assertSame(load.currentRequest, f.owner.captureLoadState().currentRequest)
+            assertEquals(load.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+            assertEquals(nativeSource, f.player.currentSourceSnapshot()!!.source)
+            f.releaseMedia.countDown(); f.awaitCompleted(); click.job.join()
+            assertFalse(click.job.isCancelled)
+            withTimeout(8_000) { while ("已开始下载音频" !in f.toasts) delay(5) }
+            val mux = f.muxObservations.single()
+            assertNull(mux.video); assertTrue(mux.audioExists)
+            assertTrue(Files.isRegularFile(mux.output)); assertTrue(mux.output.fileName.toString().endsWith(".m4a"))
+            assertTrue(f.mediaRequests.none { it.url.encodedPath == "/pgc-video.m4s" })
+            val audioRequests = f.mediaRequests.filter { it.url.encodedPath == "/pgc-audio.m4s" }
+            assertTrue(audioRequests.isNotEmpty())
+            for (request in audioRequests) {
+                assertEquals(nativeSource.referer, request.header("Referer"))
+                assertEquals(nativeSource.userAgent, request.header("User-Agent"))
+                assertEquals(nativeSource.cookieHeader, request.header("Cookie").orEmpty())
+                for ((name, header) in nativeSource.streamHeaders) assertEquals(header, request.header(name))
+            }
+            val cover = f.destination.resolve(QueuedTask.directoryName(click.task.id)).resolve("cover.jpg")
+            assertTrue(Files.isRegularFile(cover)); assertContentEquals(f.expectedMediaBytes(), Files.readAllBytes(cover))
+            assertEquals(DownloadStatus.COMPLETED, f.persisted().single().status)
+            assertSame(accepted, f.accepted()); assertSame(nativeSource, f.accepted().nativeSource.source)
+            assertEquals(nativeSource, f.player.currentSourceSnapshot()!!.source)
+        }
+    }
+
+    @Test fun actualAudioClickCapturedBeforeLaunchRejectsSourceIntentAccountAndRootRetirement(): Unit = runBlocking {
+        for (change in listOf("source", "intent", "account", "root")) {
+            Fixture(seasonType = 1, downloadRight = 1, expectedAudioOnly = true, holdCapturedClicks = true).useSuspending { f ->
+                f.load()
+                val displayed = f.vm.uiState.value as BangumiPlayerState.Success
+                val intent = f.vm.desktopPlaybackIntentRevision
+                f.ui { f.vm.downloadAudio(displayed, intent) }
+                val click = f.awaitClick()
+                assertFalse(click.job.isActive); assertTrue(f.trace.ingress.isEmpty())
+                val before = f.accepted()
+                f.ui {
+                    when (change) {
+                        "source" -> {
+                            val plan = desktopOriginalBangumiNativePlan(displayed.seasonDetail, displayed.currentEpisode,
+                                displayed.cachedPlayData!!, displayed.playUrl!!, displayed.audioUrl, null,
+                                before.nativeSource.source.referer, null, 0L, false)
+                            val media = f.owner.native.acceptedMedia({ f.media.accepted(it, plan) })
+                            media.withPlaybackIntent(0L, false) {
+                                media.accept(media.prepareLegacyDash(displayed.playUrl!!, displayed.audioUrl, emptyMap()))
+                            }
+                            assertNotSame(before, f.accepted())
+                        }
+                        "intent" -> {
+                            f.vm.reloadCurrentEpisode()
+                            assertTrue(f.vm.desktopPlaybackIntentRevision > intent)
+                        }
+                        "account" -> {
+                            val revision = f.repository.playbackAuthorizationRevision.value
+                            assertTrue(f.sessions.setPlaybackAccountMid(42, f.repository.sessionEpoch, f.gate::owns))
+                            assertTrue(f.sessions.setPlaybackAccountMid(null, f.repository.sessionEpoch, f.gate::owns))
+                            assertTrue(f.repository.playbackAuthorizationRevision.value > revision)
+                        }
+                        "root" -> f.gate.retire()
+                    }
+                    click.job.start()
+                }
+                withTimeout(8_000) { click.job.join() }
+                assertTrue(click.job.isCancelled, change)
+                assertTrue(f.manager.tasks.value.isEmpty(), change); assertTrue(f.trace.ingress.isEmpty(), change)
+                f.assertUnqueuedPersistence(change); assertTrue(f.trace.workerJobs.isEmpty(), change)
+                assertTrue(f.muxObservations.isEmpty(), change); assertTrue(f.mediaRequests.isEmpty(), change)
+            }
+        }
+    }
+
+    @Test fun actualSuccessfulPgcWithoutSplitAudioKeepsOriginalToastAndQueuesNothing(): Unit = runBlocking {
+        Fixture(seasonType = 1, downloadRight = 1, missingSplitAudio = true).useSuspending { f ->
+            f.load()
+            val displayed = f.vm.uiState.value as BangumiPlayerState.Success
+            assertNull(displayed.audioUrl); assertNull(f.accepted().nativeSource.source.audioUrl)
+            f.ui { f.vm.downloadAudio(displayed, f.vm.desktopPlaybackIntentRevision) }
+            withTimeout(8_000) { while ("该剧集没有可下载的独立音频" !in f.toasts) delay(5) }
+            assertTrue(f.clicks.isEmpty()); assertTrue(f.manager.tasks.value.isEmpty()); assertTrue(f.trace.ingress.isEmpty())
+            f.assertUnqueuedPersistence(); assertTrue(f.trace.workerJobs.isEmpty()); assertTrue(f.mediaRequests.isEmpty())
+        }
+    }
+
+    @Test fun blankOriginalBvStaysBlankInRealPlaybackAndUsesOnlyOriginalAudioTaskFallback(): Unit = runBlocking {
+        Fixture(seasonType = 1, downloadRight = 1, expectedAudioOnly = true, firstEpisodeBvid = "").useSuspending { f ->
+            f.load()
+            val displayed = f.vm.uiState.value as BangumiPlayerState.Success
+            val accepted = f.accepted()
+            assertEquals("", displayed.currentEpisode.bvid); assertEquals("", accepted.request.bvid)
+            assertEquals("", f.owner.captureLoadState().currentRequest!!.bvid)
+            f.ui { f.vm.downloadAudio(displayed, f.vm.desktopPlaybackIntentRevision) }
+            val click = f.awaitClick(); f.awaitQueue()
+            val queued = f.manager.tasks.value.single()
+            assertEquals("ep41", click.task.bvid); assertEquals("ep41", queued.item.bvid)
+            assertEquals(104L, queued.item.cid); assertEquals(101L, queued.item.aid)
+            assertEquals(19L, queued.seasonId); assertEquals(41L, queued.episodeId)
+            assertSame(accepted.nativeSource.source.authorizationReceipt, queued.authorizationReceipt)
+            assertSame(accepted, f.accepted()); assertEquals("", f.accepted().request.bvid)
+            assertEquals("", f.owner.captureLoadState().currentRequest!!.bvid)
+            f.releaseMedia.countDown(); f.awaitCompleted(); click.job.join()
+            assertFalse(click.job.isCancelled); assertNull(f.muxObservations.single().video)
+            assertTrue(f.mediaRequests.none { it.url.encodedPath == "/pgc-video.m4s" })
+        }
+    }
+
+    @Test fun staleDisplayedAudioMenuAndServerDownloadRightsCannotCaptureANewTask(): Unit = runBlocking {
+        Fixture(seasonType = 1, downloadRight = 1, expectedAudioOnly = true).useSuspending { f ->
+            f.load()
+            val oldDisplayed = f.vm.uiState.value as BangumiPlayerState.Success
+            val oldIntent = f.vm.desktopPlaybackIntentRevision
+            f.ui {
+                f.vm.switchEpisode(oldDisplayed.seasonDetail.episodes!![1])
+                assertTrue(f.vm.desktopPlaybackIntentRevision > oldIntent)
+                f.vm.downloadAudio(oldDisplayed, oldIntent)
+            }
+            assertTrue(f.clicks.isEmpty()); assertTrue(f.manager.tasks.value.isEmpty()); assertTrue(f.trace.ingress.isEmpty())
+            f.assertUnqueuedPersistence(); assertTrue(f.trace.workerJobs.isEmpty())
+        }
+        for ((seasonType, right) in listOf(1 to 0, 1 to null, 10 to 0)) {
+            Fixture(seasonType, right, expectedAudioOnly = true).useSuspending { f ->
+                f.load()
+                val displayed = f.vm.uiState.value as BangumiPlayerState.Success
+                f.ui { f.vm.downloadAudio(displayed, f.vm.desktopPlaybackIntentRevision) }
+                withTimeout(8_000) { while (f.toasts.none { "权限" in it }) delay(5) }
+                assertTrue(f.clicks.isEmpty()); assertTrue(f.manager.tasks.value.isEmpty()); assertTrue(f.trace.ingress.isEmpty())
+                f.assertUnqueuedPersistence(); assertTrue(f.trace.workerJobs.isEmpty()); assertTrue(f.mediaRequests.isEmpty())
+            }
+        }
+    }
+
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
     private data class Click(val task: OriginalTask, val onEdt: Boolean, val job: Job)
@@ -223,7 +389,10 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         val storeHeldOutside: Boolean, val entryHeldOutside: Boolean, val nativeHeldOutside: Boolean,
         val directoryReady: Boolean, var statePersistedBeforeManagerCommit: Boolean = false, var queued: QueuedTask? = null)
 
-    private inner class Fixture(private val seasonType: Int = 10, private val downloadRight: Int? = null) {
+    private data class MuxObservation(val video: Path?, val audio: Path, val audioExists: Boolean, val output: Path)
+    private inner class Fixture(private val seasonType: Int = 10, private val downloadRight: Int? = null,
+        private val expectedAudioOnly: Boolean = false, private val holdCapturedClicks: Boolean = false,
+        private val missingSplitAudio: Boolean = false, private val firstEpisodeBvid: String = "BV1GJ411x7h7") {
         val directory = Files.createTempDirectory("pgc-course-real-queue-")
         private val createdAbsolute = directory.toAbsolutePath().normalize()
         private val createdReal = directory.toRealPath()
@@ -263,6 +432,9 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         // RuntimeBinding.accepted's published-reference projection. No manufactured source.
         private val published = AtomicReference<DesktopOriginalVideoAcceptedPublication?>()
         val releaseMedia = CountDownLatch(1)
+        val mediaRequests = CopyOnWriteArrayList<Request>()
+        val muxObservations = CopyOnWriteArrayList<MuxObservation>()
+        fun expectedMediaBytes() = mediaBytes.copyOf()
         private val mediaBytes = ByteArray(96) { it.toByte() }
         private val transport: OkHttpClient
         private val epoch: Long
@@ -272,7 +444,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         private val progress = object : DesktopOriginalVideoProgressPort {
             override fun getCachedPosition(bvid: String, cid: Long) = 0L
             override fun savePosition(bvid: String, cid: Long, positionMs: Long) {
-                check(bvid in setOf("BV1GJ411x7h7", "BV17x411w7KC")); check(cid in setOf(104L, 105L))
+                check(bvid in setOf(firstEpisodeBvid, "BV17x411w7KC")); check(cid in setOf(104L, 105L))
             }
         }
         private val capabilities = object : DesktopOriginalVideoPlaybackCapabilities {
@@ -315,7 +487,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                                 "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":true,"mid":41,"vip":{"status":1},"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
                                 "/x/space/bangumi/follow/list" -> """{"code":0,"data":{"list":[],"total":0}}"""
                                 "/pgc/view/web/season" -> seasonJson()
-                                "/pgc/player/web/v2/playurl", "/pgc/player/web/playurl", "/pugv/player/web/playurl" -> playJson()
+                                "/pgc/player/web/v2/playurl", "/pgc/player/web/playurl", "/pugv/player/web/playurl" -> playJson(!missingSplitAudio)
                                 else -> error("Unexpected CPU protocol ${request.url.encodedPath}")
                             }
                             response(request, body)
@@ -323,6 +495,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                         "media.invalid" -> {
                             check(request.method in setOf("GET", "HEAD"))
                             check(request.url.encodedPath in setOf("/pgc-video.m4s", "/pgc-audio.m4s", "/cover.jpg"))
+                            mediaRequests.add(request)
                             assertFalse(Thread.holdsLock(storeLock())); assertFalse(Thread.holdsLock(entryLock()))
                             assertFalse(Thread.holdsLock(nativeLock()))
                             check(releaseMedia.await(12, TimeUnit.SECONDS)) { "CPU media fixture release timed out" }
@@ -449,8 +622,11 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                     ::assertSubject, native::capturedPlaybackBindingOrNull, ::requestRepository)
                 trace = TracePublication(DesktopRepositoryPlaybackPublication(repository))
                 manager = DesktopDownloadManager(transport, stateFile, DownloadMuxer { video, audio, output ->
-                    assertNotNull(video); assertNotNull(audio)
-                    assertContentEquals(mediaBytes, Files.readAllBytes(video)); assertContentEquals(mediaBytes, Files.readAllBytes(audio))
+                    if (expectedAudioOnly) assertNull(video) else assertNotNull(video)
+                    assertNotNull(audio)
+                    if (video != null) assertContentEquals(mediaBytes, Files.readAllBytes(video))
+                    assertContentEquals(mediaBytes, Files.readAllBytes(audio))
+                    muxObservations.add(MuxObservation(video, audio, Files.isRegularFile(audio), output))
                     Files.write(output, byteArrayOf(0, 0, 0, 20) + "ftyp".toByteArray() + mediaBytes)
                 }, publication = trace, defaultDestination = { destination })
                 // The real manager initializes its persisted empty queue before any click.
@@ -475,7 +651,7 @@ class DesktopBangumiCourseDownloadOwnershipTest {
                         val click = pendingClick.getAndSet(null)
                         native.launch(block, start = CoroutineStart.LAZY).also { job ->
                             if (click != null) clicks.add(Click(click.first, click.second, job))
-                            job.start()
+                            if (click == null || !holdCapturedClicks) job.start()
                         }
                     }, native::commit, native::owns, native::ownsPlaybackSource, network, { false },
                     publishReadOnlyDetail = { detail, episode, index, _, postBegin, isLoadCurrent ->
@@ -589,14 +765,19 @@ class DesktopBangumiCourseDownloadOwnershipTest {
             assertEquals(DownloadStatus.COMPLETED, manager.tasks.value.single().status, manager.tasks.value.single().error)
             while (persisted().single().status != DownloadStatus.COMPLETED) delay(5)
         }
-        fun persisted(): List<QueuedTask> = Json { ignoreUnknownKeys = true }.decodeFromString(
-            ListSerializer(QueuedTask.serializer()), Files.readString(stateFile))
+        fun persisted(): List<QueuedTask> = synchronized(managerLock()) {
+            // The CPU fixture is an external reader of the real queue JSON.
+            // Do not overlap its Windows file read with the Manager's atomic replacement.
+            Json { ignoreUnknownKeys = true }.decodeFromString(
+                ListSerializer(QueuedTask.serializer()), Files.readString(stateFile))
+        }
         fun assertUnqueuedPersistence(message: String? = null) {
             assertTrue(persisted().isEmpty(), message)
             assertContentEquals(initialQueueState, Files.readAllBytes(stateFile), message)
         }
         suspend fun ui(action: () -> Unit) = withContext(Dispatchers.Swing) { action() }
         suspend fun <T> uiResult(action: () -> T): T = withContext(Dispatchers.Swing) { action() }
+        private fun managerLock() = DesktopDownloadManager::class.java.getDeclaredField("lock").apply { isAccessible = true }.get(manager)
         private fun storeLock() = DesktopSessionStore::class.java.getDeclaredField("lock").apply { isAccessible = true }.get(sessions)
         private fun entryLock() = DesktopOriginalVideoRootGate::class.java.getDeclaredField("lock").apply { isAccessible = true }.get(gate)
         private fun nativeLock() = MpvPlayer::class.java.getDeclaredField("lock").apply { isAccessible = true }.get(player)
@@ -694,12 +875,17 @@ class DesktopBangumiCourseDownloadOwnershipTest {
         }
         private fun seasonJson(): String {
             val rights = downloadRight?.let { ""","rights":{"allow_download":$it}""" }.orEmpty()
-            return """{"code":0,"result":{"season_id":19,"season_type":$seasonType,"title":"Synthetic course","cover":"https://media.invalid/cover.jpg","up_info":{"mid":7,"uname":"Fixture UP","avatar":"https://media.invalid/face.jpg"},"section":[],"episodes":[{"id":41,"aid":101,"cid":104,"bvid":"BV1GJ411x7h7","title":"One","cover":"https://media.invalid/cover.jpg","duration":60000},{"id":42,"aid":102,"cid":105,"bvid":"BV17x411w7KC","title":"Two","duration":60000}],"user_status":{"vip":1,"follow":0,"follow_status":0}$rights}}"""
+            return """{"code":0,"result":{"season_id":19,"season_type":$seasonType,"title":"Synthetic course","cover":"https://media.invalid/cover.jpg","up_info":{"mid":7,"uname":"Fixture UP","avatar":"https://media.invalid/face.jpg"},"section":[],"episodes":[{"id":41,"aid":101,"cid":104,"bvid":"$firstEpisodeBvid","title":"One","cover":"https://media.invalid/cover.jpg","duration":60000},{"id":42,"aid":102,"cid":105,"bvid":"BV17x411w7KC","title":"Two","duration":60000}],"user_status":{"vip":1,"follow":0,"follow_status":0}$rights}}"""
         }
     }
     companion object {
         private fun response(request: Request, body: String) = Response.Builder().request(request).protocol(Protocol.HTTP_1_1)
             .code(200).message("memory").body(body.toResponseBody("application/json".toMediaType())).build()
-        private fun playJson() = """{"code":0,"result":{"quality":120,"timelength":60000,"accept_quality":[120,80],"accept_description":["4K","1080P"],"dash":{"duration":60,"video":[{"id":120,"baseUrl":"https://media.invalid/pgc-video.m4s?synthetic=1","bandwidth":120000,"mime_type":"video/mp4","codecs":"avc1.640033","width":3840,"height":2160,"frameRate":"30","codecid":7,"segment_base":{"initialization":"0-31","index_range":"32-63"}}],"audio":[{"id":30280,"baseUrl":"https://media.invalid/pgc-audio.m4s?synthetic=1","bandwidth":192000,"mime_type":"audio/mp4","codecs":"mp4a.40.2","segment_base":{"initialization":"0-31","index_range":"32-63"}}]}}}"""
+        private fun playJson(includeSplitAudio: Boolean = true): String {
+            val original = """{"code":0,"result":{"quality":120,"timelength":60000,"accept_quality":[120,80],"accept_description":["4K","1080P"],"dash":{"duration":60,"video":[{"id":120,"baseUrl":"https://media.invalid/pgc-video.m4s?synthetic=1","bandwidth":120000,"mime_type":"video/mp4","codecs":"avc1.640033","width":3840,"height":2160,"frameRate":"30","codecid":7,"segment_base":{"initialization":"0-31","index_range":"32-63"}}],"audio":[{"id":30280,"baseUrl":"https://media.invalid/pgc-audio.m4s?synthetic=1","bandwidth":192000,"mime_type":"audio/mp4","codecs":"mp4a.40.2","segment_base":{"initialization":"0-31","index_range":"32-63"}}]}}}"""
+            return if (includeSplitAudio) original else original.replace(
+                "\"audio\":[{\"id\":30280,\"baseUrl\":\"https://media.invalid/pgc-audio.m4s?synthetic=1\",\"bandwidth\":192000,\"mime_type\":\"audio/mp4\",\"codecs\":\"mp4a.40.2\",\"segment_base\":{\"initialization\":\"0-31\",\"index_range\":\"32-63\"}}]",
+                "\"audio\":[]")
+        }
     }
 }

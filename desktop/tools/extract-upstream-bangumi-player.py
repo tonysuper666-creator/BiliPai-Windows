@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v034_pgc_initial_detail import apply_and_record as apply_pgc_initial_detail
+from v034_pgc_audio_download import apply_and_record as apply_pgc_audio_download
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,sys
 sys.dont_write_bytecode=True
@@ -301,6 +302,7 @@ for recipe in RECIPES:
  body=bangumi_codec_recovery_delta(recipe['output'],body)
  body=bangumi_explicit_reload_delta(recipe['output'],body)
  body=apply_pgc_initial_detail(recipe['output'],body,out)
+ body=apply_pgc_audio_download(recipe['output'],body,out)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)

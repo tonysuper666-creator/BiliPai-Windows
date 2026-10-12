@@ -938,17 +938,37 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
                 self.assertIn(directory, self.inventory["buildInputRoots"])
                 archives = [row for row in self.inventory["archives"] if row["directory"] == directory]
                 self.assertEqual(len(archives), 1)
-                self.assertEqual(len(archives[0]["files"]), count + 1)  # complete sources + exact manifest
+                metadata_count = 2 if root == "v034-pgc-initial-detail" else 1
+                self.assertEqual(len(archives[0]["files"]), count + metadata_count)  # originals + exact manifests
                 rows = [item for item in entries if item["localPath"].startswith(directory + "/")]
                 self.assertEqual(len(rows), count)
                 self.assertTrue(all(item["hashNormalization"] == "raw" for item in rows))
-                expected_references = ({"BasePlayerViewModel.kt", "BangumiPlayerViewModel.kt"}
+                expected_references = ({"BasePlayerViewModel.kt"}
                                        if root == "v034-pgc-initial-detail" else
                                        {"VideoPlayerSection.kt"} if root == "v034-next-watch-ui" else set())
                 self.assertEqual({Path(item["localPath"]).name for item in rows if item["referenceOnly"]},
                                  expected_references)
                 self.assertTrue(all(item["referenceOnly"] is False for item in rows
                                     if Path(item["localPath"]).name not in expected_references))
+        audio_row = next(item for item in entries if item["localPath"] ==
+                         "desktop/upstream-slices/v034-pgc-initial-detail/BangumiPlayerViewModel.kt")
+        self.assertIs(audio_row["partialReuse"], True)
+        self.assertEqual(audio_row["reusedMethods"], ["downloadAudio"])
+        raw_vm = (self.repo / audio_row["localPath"]).read_bytes()
+        self.assertEqual(len(raw_vm), 65157, "The complete a69 VM remains retained; only one method is reused")
+        self.assertEqual(hashlib.sha256(raw_vm).hexdigest(), audio_row["sha256"])
+        self.assertEqual(sync.blob_oid(raw_vm), audio_row["blob"])
+        audio_manifest = json.loads((self.repo / "desktop/upstream-slices/v034-pgc-initial-detail/"
+                                     "audio-download-manifest.json").read_bytes())
+        self.assertEqual(audio_manifest["canonicalBaselineCommit"], "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40")
+        self.assertIs(audio_manifest["partialReuse"], True)
+        self.assertEqual(audio_manifest["source"]["localPath"], audio_row["localPath"])
+        self.assertIs(audio_manifest["source"]["referenceOnly"], False)
+        self.assertIs(audio_manifest["source"]["partialReuse"], True)
+        self.assertEqual(audio_manifest["originalMethod"]["name"], "downloadAudio")
+        self.assertIs(audio_manifest["originalMethod"]["completeOriginalMethod"], True)
+        self.assertIn('inputs.file("tools/v034_pgc_audio_download.py")',
+                      (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
         for filename in ("LiveInteractionSheets.kt", "LiveChatSection.kt"):
             rows = [item for item in entries if item["localPath"].endswith("/" + filename)]
             self.assertTrue(rows, filename)

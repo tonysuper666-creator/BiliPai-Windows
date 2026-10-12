@@ -26,7 +26,10 @@ internal fun captureDesktopOriginalBangumiDownloadTask(
     assertSubject(episode.bvid, episode.cid, episode.id, state.seasonDetail.seasonId)
     val load = owner.captureLoadState()
     val request = load.currentRequest ?: throw CancellationException("PGC download request unavailable")
-    val receipt = accepted.nativeSource.source.authorizationReceipt
+    val acceptedSource = accepted.nativeSource.source
+    val selectedVideoUrl = state.playUrl
+    val selectedAudioUrl = state.audioUrl.orEmpty()
+    val receipt = acceptedSource.authorizationReceipt
         ?: throw CancellationException("PGC download authorization unavailable")
     fun sourceCurrent(): Boolean {
         if (!owns() || !native.ownsPlaybackSource() || !owner.native.isCurrent(accepted)) return false
@@ -37,10 +40,17 @@ internal fun captureDesktopOriginalBangumiDownloadTask(
             actual.currentBvid == load.currentBvid && actual.currentCid == load.currentCid &&
             displayed.currentEpisode.id == episode.id && displayed.currentEpisode.cid == episode.cid &&
             displayed.seasonDetail.seasonId == state.seasonDetail.seasonId &&
-            displayed.playUrl == task.videoUrl && displayed.audioUrl.orEmpty() == task.audioUrl
+            displayed.playUrl == selectedVideoUrl && displayed.audioUrl.orEmpty() == selectedAudioUrl
     }
-    require(task.bvid == episode.bvid && task.cid == episode.cid && task.aid == episode.aid &&
-        task.videoUrl == state.playUrl && task.audioUrl == state.audioUrl.orEmpty())
+    val expectedTaskBvid = if (task.isAudioOnly) episode.bvid.ifBlank { "ep${episode.id}" } else episode.bvid
+    require(task.bvid == expectedTaskBvid && task.cid == episode.cid && task.aid == episode.aid)
+    if (task.isAudioOnly) {
+        require(task.videoUrl.isBlank() && task.audioUrl.isNotBlank() && task.audioUrl == selectedAudioUrl &&
+            accepted.request.bvid == episode.bvid && accepted.request.cid == episode.cid &&
+            acceptedSource.videoUrl == selectedVideoUrl && acceptedSource.audioUrl == task.audioUrl) {
+            "PGC audio task must retain this exact accepted episode and selected audio track"
+        }
+    } else require(task.videoUrl == selectedVideoUrl && task.audioUrl == selectedAudioUrl)
     val explicitDownloadRight = state.seasonDetail.rights?.allowDownload
     // PUGV's original mapper has no PGC allow_download field. Preserve
     // original course behavior only over this exact accepted URL/receipt,
@@ -49,10 +59,15 @@ internal fun captureDesktopOriginalBangumiDownloadTask(
         (explicitDownloadRight == null && state.seasonDetail.seasonType == 10)
     require(downloadAllowed) { "此媒体的服务器权限不允许下载" }
     val plan = desktopOriginalBangumiNativePlan(state.seasonDetail, episode, checkNotNull(state.cachedPlayData),
-        task.videoUrl, task.audioUrl.takeIf(String::isNotBlank),
-        accepted.nativeSource.source.progressiveSegments.takeIf { it.isNotEmpty() }?.map { it.url },
-        accepted.nativeSource.source.referer, null, 0L, true)
-    val source = plan.retainedSource(accepted.nativeSource.source, task.videoUrl, task.audioUrl.takeIf(String::isNotBlank))
+        checkNotNull(selectedVideoUrl), selectedAudioUrl.takeIf(String::isNotBlank),
+        acceptedSource.progressiveSegments.takeIf { it.isNotEmpty() }?.map { it.url },
+        acceptedSource.referer, null, 0L, true)
+    val retained = plan.retainedSource(acceptedSource, checkNotNull(selectedVideoUrl), selectedAudioUrl.takeIf(String::isNotBlank))
+    // Match the ordinary resolver's audio-only download projection. Receipt,
+    // Cookie and complete original headers stay captured; no playback is published.
+    val source = if (task.isAudioOnly) retained.copy(videoUrl = task.audioUrl, audioUrl = null,
+        title = task.title, progressiveSegments = emptyList(), nativePublication = null, nativeTransport = null)
+    else retained
     val destination = downloads.destinationFor(task.customSaveDir)
     var captured = false
     if (!withPresentationAdmission(accepted) {

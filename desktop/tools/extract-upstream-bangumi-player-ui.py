@@ -43,6 +43,24 @@ def windows_bangumi_readonly_pending_ui(source):
   s=s.replace(edit['before'],edit['after'],edit['count'])
  return s,edits
 
+def windows_bangumi_audio_download_ui(source, output):
+ s=source;edits=[]
+ if output == 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt':
+  edits=[{'label': 'freeze displayed original Success and intent at composition', 'before': '    val successState = uiState as? BangumiPlayerState.Success\n', 'after': '    val successState = uiState as? BangumiPlayerState.Success\n    val audioDownloadIntentRevision = viewModel.desktopPlaybackIntentRevision\n    val audioDownloadForeground = com.bilipai.desktop.ui.LocalDesktopDetailForeground.current\n', 'count': 1}, {'label': 'synchronous displayed-state click before original owned download capture', 'before': '                        onAudioQualityChange = viewModel::changeAudioQuality,\n                        onBack = if (isFullscreenMode) { { toggleOrientation() } } else onBack,', 'after': '                        onAudioQualityChange = viewModel::changeAudioQuality,\n                        onDownloadAudio = {\n                            val displayed = successState\n                            if (displayed != null && audioDownloadForeground &&\n                                platform.owns() && exoPlayer.isOwned()) {\n                                viewModel.downloadAudio(displayed, audioDownloadIntentRevision)\n                            }\n                        },\n                        onBack = if (isFullscreenMode) { { toggleOrientation() } } else onBack,', 'count': 1}]
+ elif output == 'com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerComponents.kt':
+  edits=[{'label': 'required audio download action through original player view', 'before': '    onReloadVideo: () -> Unit = {},\n    onShowMessage: (String) -> Unit = {}', 'after': '    onReloadVideo: () -> Unit = {},\n    onDownloadAudio: () -> Unit,\n    onShowMessage: (String) -> Unit = {}', 'count': 1}, {'label': 'same audio action reaches original overlay host', 'before': '            onReloadVideo = onReloadVideo,\n            anime4kEnabled = videoEnhancementEnabled,', 'after': '            onReloadVideo = onReloadVideo,\n            onDownloadAudio = onDownloadAudio,\n            anime4kEnabled = videoEnhancementEnabled,', 'count': 1}]
+ elif output == 'com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerOverlayHost.kt':
+  edits=[{'label': 'required audio download action on original overlay host', 'before': '    onFsrSharpnessChange: (Float) -> Unit,\n    onShowMessage: (String) -> Unit', 'after': '    onFsrSharpnessChange: (Float) -> Unit,\n    onDownloadAudio: () -> Unit,\n    onShowMessage: (String) -> Unit', 'count': 1}, {'label': 'replace unsupported toast with the real supplied original VM action', 'before': '            onDownloadAudio = {\n                onShowMessage("番剧暂不支持音频下载")\n            },', 'after': '            onDownloadAudio = onDownloadAudio,', 'count': 1}]
+ for edit in edits:
+  assert s.count(edit['before'])==edit['count'],edit['label']
+  s=s.replace(edit['before'],edit['after'],edit['count'])
+ inverse=s
+ for edit in reversed(edits):
+  assert inverse.count(edit['after'])==edit['count'],edit['label']+' inverse'
+  inverse=inverse.replace(edit['after'],edit['before'],edit['count'])
+ assert inverse==source,'complete current PGC audio UI inverse'
+ return s,edits
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
@@ -62,6 +80,8 @@ def main():
    assert body.count(before)==1;body=body.replace(before,after)
    body,readonly_edits=windows_bangumi_readonly_pending_ui(body)
    windows_edits.extend(readonly_edits)
+  body,audio_edits=windows_bangumi_audio_download_ui(body,r['output'])
+  windows_edits.extend(audio_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')

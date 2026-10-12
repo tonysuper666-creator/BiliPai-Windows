@@ -2094,6 +2094,12 @@
           "sha256": "1e3835248ec24a971e58295b2a4e41acbc29975bfcc716bab2d0eeeade3c3d96",
           "hashNormalization": "raw",
           "blob": "f11c395760a44bbe0f3d0c3298c10e49fc51f488"
+        },
+        {
+          "path": "desktop/upstream-slices/v034-pgc-initial-detail/audio-download-manifest.json",
+          "sha256": "443ed266166886cc0481b59e725daeda06caad9df28d3fcce0da5114f81161f4",
+          "hashNormalization": "raw",
+          "blob": "514a75cdad1104105f8dd3e285b7955a3f07239e"
         }
       ]
     },
@@ -5208,9 +5214,14 @@
       "hashNormalization": "raw",
       "kind": "adaptedSource",
       "features": [
-        "v034-pgc-initial-detail"
+        "v034-pgc-initial-detail",
+        "v034-pgc-audio-download"
       ],
-      "referenceOnly": true
+      "referenceOnly": false,
+      "partialReuse": true,
+      "reusedMethods": [
+        "downloadAudio"
+      ]
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/NextWatchOverlay.kt",
