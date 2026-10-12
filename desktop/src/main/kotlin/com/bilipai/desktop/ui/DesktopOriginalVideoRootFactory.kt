@@ -140,6 +140,24 @@ internal class DesktopOriginalVideoRootFactory(
 
     /** Metadata composition over THIS already captured Binding; no client,
      * credential capture, request token or second repository authority is made. */
+    /** Metadata-only Story/Portrait facet inside the actual caller. The same
+     * deferred-capability Binding/receipt is used; media needs its required real
+     * preparation through requestRepository, never this read-only capture. */
+    internal suspend fun captureMetadataRequest(
+        value: DesktopOriginalVideoOwnerAssembly,
+    ): DesktopOriginalVideoRepositoryBinding {
+        val construction = checkNotNull(built.get()?.takeIf { it.assembly === value })
+        currentCoroutineContext().ensureActive()
+        if (!value.owns() || !construction.gate.owns())
+            throw CancellationException("Original metadata request facet retired")
+        return construction.requests.captureBinding(value.captureLoadState()).also {
+            currentCoroutineContext().ensureActive()
+            if (!value.owns() || !construction.gate.owns())
+                throw CancellationException("Original metadata request facet retired")
+            it.assertCurrent()
+        }
+    }
+
     internal fun requestRepository(value: DesktopOriginalVideoOwnerAssembly,
         binding: DesktopOriginalVideoRepositoryBinding): DesktopOriginalVideoOwnerRequestRepository {
         val construction = checkNotNull(built.get()?.takeIf { it.assembly === value })

@@ -274,7 +274,7 @@ internal class DesktopOriginalVideoRootAssembler(
                 val accepted = value.native.current() ?: throw CancellationException("Original Mini source retired")
                 if (current()) resources.pip.open(window.window, accepted.nativeSource.source.title)
             }) }
-        val story = remember(owner) { DesktopOriginalVideoRootStoryFeedBinding(owner, factory::captureRequest) }
+        val story = remember(owner) { DesktopOriginalVideoRootStoryFeedBinding(owner, factory::captureMetadataRequest) }
         val holder = remember(owner, section, mini, rendering) {
             DesktopOriginalVideoRootHolderPlatform(owner, gate, section, effect.settings, window.settings,
                 favorite, account, effect.download, DesktopOriginalVideoConsumedViews(owner), commentPlatform,
@@ -316,7 +316,9 @@ internal class DesktopOriginalVideoRootAssembler(
             { _, text -> window.gallery.shareText(text) }, { _, text -> resources.feedback(text) },
             rendering::Surface, rendering::Viewport, rendering::DanmakuSurface,
             { result -> if (result is DesktopOriginalMediaCachePreparation.Direct) diagnostic("Portrait byte transport selected direct origin") },
-            { expected, plan, isPresenterCurrent, failure -> factory.acceptedMedia(owner, expected, plan, isPresenterCurrent, failure) }) }
+            { expected, plan, isPresenterCurrent, failure -> factory.acceptedMedia(owner, expected, plan, isPresenterCurrent, failure) },
+            captureMetadataRequest = factory::captureMetadataRequest,
+            createPageRequestRepository = factory::requestRepository) }
         val storage = remember(owner) { DesktopOriginalMusicStorageBinding(effect.settings) }
         val external = remember(owner) { DesktopOriginalExternalPlaylistBinding(effect.settings, resources.audioRepository) {
             factory.captureRequest(owner)

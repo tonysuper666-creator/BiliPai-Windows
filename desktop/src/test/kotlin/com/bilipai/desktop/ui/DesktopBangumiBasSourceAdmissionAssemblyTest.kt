@@ -548,6 +548,21 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 owner = slot.requireAssembly()
                 val portrait = DesktopOriginalPortraitPlatformBinding(owner, slot::currentAssembly, unused(), unused(), unused(), unused(),
                     captureRequest = { requests.captureBinding(it.captureLoadState()) },
+                    captureMetadataRequest = { value ->
+                        require(value === owner)
+                        requests.captureBinding(value.captureLoadState())
+                    },
+                    createPageRequestRepository = { value, binding ->
+                        require(value === owner)
+                        requestRepository(binding).also { raw ->
+                            raw.installMediaPreparation {
+                                // Same explicit fixed-capability headless port as
+                                // this fixture's ordinary Invocation; no physical readiness claim.
+                                currentCoroutineContext().ensureActive()
+                                if (!gate.owns()) throw CancellationException("Fixture preparation entry retired")
+                            }
+                        }
+                    },
                     creatorTeamFollowStateChanges = emptyFlow(), mediaCache = cache,
                     captureCookieHeader = { binding, url -> binding.captureMediaCookieHeader(url) },
                     favoriteQuickSaveDefaultFolder = flowOf(false), blockedUps = unused(), danmaku = unused(),

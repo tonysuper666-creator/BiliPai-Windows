@@ -382,6 +382,19 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
                 todayWatchFeedback = DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit))
             portrait = DesktopOriginalPortraitPlatformBinding(owner, { owner.takeIf { owns() } }, unused(), unused(), unused(), unused(),
                 captureRequest = { capture().also { mediaCaptures += MediaCapture(it.receipt, owner.captureLoadState(), currentCoroutineContext().job) } },
+                captureMetadataRequest = { value ->
+                    require(value === owner)
+                    capture() // Existing private receipt/actual caller capture; metadata grants no media.
+                },
+                createPageRequestRepository = { value, binding ->
+                    require(value === owner)
+                    requestRepository(binding).also { raw ->
+                        raw.installMediaPreparation {
+                            // This existing fixture supports metadata only.
+                            error("No ordinary media preparation in PGC metadata fixture")
+                        }
+                    }
+                },
                 creatorTeamFollowStateChanges = emptyFlow(), mediaCache = mediaCache,
                 captureCookieHeader = { _, _ -> error("No native source Cookie header") }, favoriteQuickSaveDefaultFolder = flowOf(false),
                 blockedUps = unused(), danmaku = unused(), currentCdnPlugin = { null },

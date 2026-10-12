@@ -104,6 +104,11 @@ internal interface DesktopOriginalPortraitPlatform {
      */
     suspend fun capturePlaybackRequest(): DesktopOriginalVideoRepositoryBinding
     suspend fun capturePageRequest(bvid: String, aid: Long, cid: Long): DesktopOriginalVideoRepositoryBinding
+    /** Same captured ordinary page request; readonly info is admitted before the
+     * REQUIRED real Root preparation stage. Callback grants no playback ability. */
+    suspend fun loadPageDetails(request: DesktopOriginalVideoRepositoryBinding,
+        bvid: String, aid: Long, requestedCid: Long, targetQuality: Int,
+        stillCurrentLoad: () -> Boolean, onVideoInfo: (ViewInfo) -> Unit): Result<Pair<ViewInfo, PlayUrlData>>
     fun currentMediaId(player: DesktopOriginalMpvSectionControl): String?
     fun clearPlaybackForReplacement(player: DesktopOriginalMpvSectionControl)
     fun releasePagerLease(player: DesktopOriginalMpvSectionControl)

@@ -50,6 +50,8 @@ internal class DesktopOriginalPortraitPlatformBinding(
     private val danmakuSurface: @Composable (DesktopOriginalVideoOwnerAssembly, Modifier, Int, Int, Int) -> Unit,
     private val onPreparation: (DesktopOriginalMediaCachePreparation) -> Unit,
     private val prepareAcceptedMedia: (DesktopOriginalVideoAcceptedPublication, DesktopOriginalBangumiNativeSourcePlan, () -> Boolean, DesktopOriginalNativeRecoveryTicket?) -> DesktopOriginalVideoMediaPort,
+    private val captureMetadataRequest: suspend (DesktopOriginalVideoOwnerAssembly) -> DesktopOriginalVideoRepositoryBinding,
+    private val createPageRequestRepository: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoRepositoryBinding) -> DesktopOriginalVideoOwnerRequestRepository,
 ) : DesktopOriginalPortraitPlatform {
     private fun owns() = currentAssembly() === assembly && assembly.owns()
     private fun assertOwned() { if (!owns()) throw CancellationException("Portrait Assembly retired") }
@@ -99,7 +101,8 @@ internal class DesktopOriginalPortraitPlatformBinding(
      * Each real Job removes its own records. Native ACK retains its fixed capture
      * independently, using isCancelled so ordinary successful completion is valid.
      */
-    private class Capture(val job: Job, val nativeBaseline: Long, val requestToken: Long) {
+    private class Capture(val job: Job, val nativeBaseline: Long, val requestToken: Long,
+        val originalRequest: PlaybackRequest?) {
         var prepared: Prepared? = null
         var bangumi: BangumiCapture? = null
     }
@@ -130,7 +133,8 @@ internal class DesktopOriginalPortraitPlatformBinding(
         // Preserve original progress flush before stopping; capture only AFTER
         // the real synchronous version retirement / same-actor Stop enqueue.
         clearCapturedPagePlayback(expectedToken, checkNotNull(currentCoroutineContext()[Job]))
-        val captured = capturePlaybackRequest()
+        // Same original request/token and caller, before any native wait.
+        val captured = capturePlaybackRequest(captureMetadataRequest)
         if (assembly.captureLoadState().currentLoadRequestToken != expectedToken ||
                 synchronized(captures) { captures[captured]?.requestToken } != expectedToken)
             throw CancellationException("Portrait page replaced during request capture")
@@ -161,13 +165,64 @@ internal class DesktopOriginalPortraitPlatformBinding(
         var baseline: Long? = null
         if (!request.admitCurrentMutation { assertOwned(); baseline = assembly.native.player.currentSourceVersion })
             throw CancellationException("Portrait native baseline admission retired")
-        val captured = Capture(job, checkNotNull(baseline), assembly.captureLoadState().currentLoadRequestToken)
+        val state = assembly.captureLoadState()
+        val captured = Capture(job, checkNotNull(baseline), state.currentLoadRequestToken, state.currentRequest)
         synchronized(captures) { check(captures.put(request, captured) == null) }
         job.invokeOnCompletion {
             val previous = synchronized(captures) { if (captures[request] === captured) captures.remove(request) else null }
             (previous?.prepared?.preparation as? DesktopOriginalMediaCachePreparation.Cached)?.discardUnaccepted()
         }
         currentCoroutineContext().ensureActive(); request.assertCurrent(); return request
+    }
+
+    /** Ordinary Story/Portrait page reads metadata with the SAME Binding first.
+     * The Root repository supplies the required real 15s preparation stage before
+     * codec/cache/address work. PGC and speculative preload keep their old facet. */
+    override suspend fun loadPageDetails(request: DesktopOriginalVideoRepositoryBinding,
+        bvid: String, aid: Long, requestedCid: Long, targetQuality: Int,
+        stillCurrentLoad: () -> Boolean, onVideoInfo: (ViewInfo) -> Unit): Result<Pair<ViewInfo, PlayUrlData>> {
+        val capture = captured(request)
+        fun current(): Boolean {
+            val state = assembly.captureLoadState()
+            val original = capture.originalRequest
+            return owns() && capture.job.isActive && original != null &&
+                state.currentRequest === original && state.currentLoadRequestToken == capture.requestToken &&
+                original.bvid == bvid && original.aid == aid && original.cid == requestedCid &&
+                stillCurrentLoad()
+        }
+        fun checkpoint() {
+            currentCoroutineContextForPage(capture, request)
+            if (!current()) throw CancellationException("Portrait page metadata/media request retired")
+        }
+        try {
+            checkpoint()
+            val raw = createPageRequestRepository(assembly, request)
+            val info = raw.getVideoInfoOnly(bvid, aid, requestedCid).getOrThrow()
+            checkpoint()
+            require(info.bvid == bvid && info.cid > 0L) { "Portrait detail resolved another video" }
+            if (!request.admitCurrentMutation {
+                    checkpoint()
+                    onVideoInfo(info) // Short original UI-only mutation; no media authority.
+                }) throw CancellationException("Portrait readonly detail admission retired")
+            checkpoint()
+            raw.awaitMediaPreparation()
+            checkpoint()
+            // Preserve the existing original portrait playURL/bootstrap protocol;
+            // its metadata cache is the same request, not a new request authority.
+            val result = request.protocol.getPortraitPlaybackDetails(
+                bvid = bvid, aid = aid, requestedCid = requestedCid, targetQuality = targetQuality)
+            (result.exceptionOrNull() as? CancellationException)?.let { throw it }
+            checkpoint()
+            return result
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) {
+            checkpoint()
+            return Result.failure(failure)
+        }
+    }
+
+    private fun currentCoroutineContextForPage(capture: Capture, request: DesktopOriginalVideoRepositoryBinding) {
+        capture.job.ensureActive(); assertOwned(); request.assertCurrent()
     }
 
     private fun captured(request: DesktopOriginalVideoRepositoryBinding): Capture {
@@ -189,11 +244,11 @@ internal class DesktopOriginalPortraitPlatformBinding(
             (it.exceptionOrNull() as? CancellationException)?.let { cancelled -> throw cancelled }
         }
         override suspend fun getWatchLaterList(): WatchLaterResponse = owned {
-            val request = captureRequest(assembly)
+            val request = captureMetadataRequest(assembly)
             request.primaryApi.getWatchLaterList().also { request.assertCurrent() }
         }
         override suspend fun getRelatedVideos(bvid: String) = owned {
-            val request = captureRequest(assembly)
+            val request = captureMetadataRequest(assembly)
             request.rawRepository.getRelatedVideos(bvid).also { request.assertCurrent() }
         }
         override suspend fun isVerticalVideo(bvid: String, aid: Long) = owned { homeVideo.isVerticalVideo(bvid, aid) }

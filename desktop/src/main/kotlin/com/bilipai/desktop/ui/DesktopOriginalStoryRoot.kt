@@ -73,13 +73,7 @@ internal class DesktopOriginalStoryFeedOwners(
         shell.slot.currentAssembly() === assembly && assembly.owns()
     val feeds = platforms.storyFeeds
     val feed = remember(feeds, key, active) { if (active) feeds.get(key) else feeds.find(key) } ?: return
-    var initialized by remember(assembly, platforms) { mutableStateOf(false) }
-    LaunchedEffect(assembly, platforms) {
-        platforms.awaitNativeInitialization(); if (!assembly.owns()) throw CancellationException("Story initial surface retired")
-        initialized = true
-    }
     CompositionLocalProvider(LocalDesktopOriginalVideoNativeCarrierActive provides active) {
-        if (!initialized) { platforms.InitialNativeSurface(Modifier.fillMaxSize()); return@CompositionLocalProvider }
         CompositionLocalProvider(
             LocalDesktopOriginalPortraitPlatform provides platforms.portrait,
             LocalDesktopOriginalVideoHolderPlatform provides platforms.holder,
