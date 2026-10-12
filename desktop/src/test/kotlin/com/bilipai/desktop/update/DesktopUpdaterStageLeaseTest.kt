@@ -10,6 +10,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.nio.channels.FileChannel
 import java.nio.file.Files
 import java.nio.file.LinkOption.NOFOLLOW_LINKS
@@ -239,6 +240,206 @@ class DesktopUpdaterStageLeaseTest {
         }
     }
 
+    @Test
+    fun beforeLaunchCancellationRestoresExactCapturedManagerWithoutStartingProcess() = runBlocking {
+        MemoryRelease().use { f ->
+            val updater = f.updater()
+            val prepared = f.prepare(updater)
+            val queue = f.queue()
+            var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
+            val rollback = AtomicInteger()
+            assertFailsWith<CancellationException> {
+                updater.activatePreparedUpdate(prepared, beforeLaunch = {
+                    ticket = queue.beginUpdateHandoff()
+                    throw CancellationException("cancel after the exact ticket capture")
+                }, onCommitted = { error("Canceled transfer cannot commit") }, afterFailedLaunch = {
+                    assertFalse(queue.acceptsMutations())
+                    assertTrue(queue.rollbackUpdateHandoff(checkNotNull(ticket)))
+                    rollback.incrementAndGet()
+                })
+            }
+            assertEquals(1, rollback.get())
+            assertTrue(queue.acceptsMutations())
+            assertSame(prepared, assertIs<UpdateState.Prepared>(updater.state.value).prepared)
+            assertBusy(f.root, prepared.stagingDirectory)
+            assertEquals(0, f.launches.get())
+            assertFalse(Files.exists(f.root.resolve("active-install.json")))
+        }
+    }
+
+    @Test
+    fun actualHealthFailureRetiresControlledChildThenRereadsItsRealQueueBeforeRollback() = runBlocking {
+        MemoryRelease().use { f ->
+            val parent = f.queue()
+            var child: com.bilipai.desktop.download.DesktopDownloadManager? = null
+            var controlled: StartupHealthTest.ControlledProcess? = null
+            var addedId: String? = null
+            val updater = f.updater(processFactory = { builder ->
+                assertFalse(parent.acceptsMutations())
+                val successor = f.queue()
+                child = successor
+                addedId = successor.enqueue(com.bilipai.desktop.player.PlaybackSource("https://cdn.example/child", title = "child-written"),
+                    f.mediaRoot, com.bilipai.desktop.download.DownloadMetadata(bvid = "BVchild", cid = 20L,
+                        includeCover = false, includeDanmaku = false))
+                successor.pause(checkNotNull(addedId))
+                f.health(builder, "0.0.0") // Actual token, deliberately wrong packaged version.
+                StartupHealthTest.ControlledProcess(onDestroy = { runBlocking { successor.shutdownForApplicationExit() } })
+                    .also { controlled = it }
+            })
+            val prepared = f.prepare(updater)
+            var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
+            val rollback = AtomicInteger()
+            assertFalse(updater.activatePreparedUpdate(prepared, beforeLaunch = {
+                ticket = parent.beginUpdateHandoff()
+                parent.awaitUpdateHandoff(checkNotNull(ticket))
+            }, onCommitted = { error("Wrong health version cannot reach registry commit") }, afterFailedLaunch = {
+                val process = checkNotNull(controlled)
+                assertFalse(process.alive)
+                assertTrue(process.destroyed)
+                assertFalse(checkNotNull(child).acceptsMutations(), "Controlled process teardown joined the actual child manager")
+                assertTrue(parent.rollbackUpdateHandoff(checkNotNull(ticket)))
+                rollback.incrementAndGet()
+            }))
+            assertEquals(1, rollback.get())
+            assertEquals(1, f.launches.get())
+            assertTrue(parent.acceptsMutations())
+            assertEquals("child-written", parent.tasks.value.single { it.id == addedId }.title)
+            assertEquals(com.android.purebilibili.feature.download.DownloadStatus.PAUSED,
+                parent.tasks.value.single { it.id == addedId }.status)
+            assertFalse(Files.exists(f.root.resolve("active-install.json")))
+            assertIs<UpdateState.Failed>(updater.state.value)
+        }
+    }
+
+    @Test
+    fun cancellationAfterActualControlledStartConfirmsRetirementAndRestoresPreparedOwner() = runBlocking {
+        MemoryRelease().use { f ->
+            val queue = f.queue()
+            val controlled = StartupHealthTest.ControlledProcess()
+            var activation: Deferred<Boolean>? = null
+            val updater = f.updater(processFactory = { builder ->
+                f.health(builder, "0.2.427.39")
+                controlled
+            }, afterStarted = { checkNotNull(activation).cancel() })
+            val prepared = f.prepare(updater)
+            var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
+            val rollback = AtomicInteger()
+            val pending = async(start = CoroutineStart.LAZY) {
+                updater.activatePreparedUpdate(prepared, beforeLaunch = {
+                    ticket = queue.beginUpdateHandoff()
+                    queue.awaitUpdateHandoff(checkNotNull(ticket))
+                }, onCommitted = { error("Canceled child cannot commit") }, afterFailedLaunch = {
+                    assertFalse(controlled.alive)
+                    assertTrue(controlled.destroyed)
+                    assertTrue(queue.rollbackUpdateHandoff(checkNotNull(ticket)))
+                    rollback.incrementAndGet()
+                })
+            }
+            activation = pending
+            pending.start()
+            assertFailsWith<CancellationException> { withTimeout(5_000) { pending.await() } }
+            assertEquals(1, rollback.get())
+            assertEquals(1, f.launches.get())
+            assertTrue(queue.acceptsMutations())
+            assertSame(prepared, assertIs<UpdateState.Prepared>(updater.state.value).prepared)
+            assertBusy(f.root, prepared.stagingDirectory)
+            assertFalse(Files.exists(f.root.resolve("active-install.json")))
+        }
+    }
+
+    @Test
+    fun healthyActualActivationCommitsBeforeOldQueueShutdownAndPreservesSuccessorDisk() = runBlocking {
+        MemoryRelease().use { f ->
+            val parent = f.queue()
+            var child: com.bilipai.desktop.download.DesktopDownloadManager? = null
+            var controlled: StartupHealthTest.ControlledProcess? = null
+            val updater = f.updater(processFactory = { builder ->
+                assertFalse(parent.acceptsMutations())
+                val successor = f.queue()
+                child = successor
+                val id = successor.enqueue(com.bilipai.desktop.player.PlaybackSource("https://cdn.example/child", title = "healthy-child"),
+                    f.mediaRoot, com.bilipai.desktop.download.DownloadMetadata(bvid = "BVchild", cid = 20L,
+                        includeCover = false, includeDanmaku = false))
+                successor.pause(id)
+                f.health(builder, "0.2.427.39")
+                StartupHealthTest.ControlledProcess(onDestroy = { runBlocking { successor.shutdownForApplicationExit() } })
+                    .also { controlled = it }
+            })
+            val prepared = f.prepare(updater)
+            var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
+            val committed = AtomicInteger()
+            val rollback = AtomicInteger()
+            assertTrue(withTimeout(5_000) { updater.activatePreparedUpdate(prepared, beforeLaunch = {
+                ticket = parent.beginUpdateHandoff()
+                parent.awaitUpdateHandoff(checkNotNull(ticket))
+            }, onCommitted = {
+                assertTrue(checkNotNull(controlled).alive)
+                assertTrue(Files.isRegularFile(f.root.resolve("active-install.json")))
+                parent.commitUpdateHandoff(checkNotNull(ticket))
+                committed.incrementAndGet()
+            }, afterFailedLaunch = { rollback.incrementAndGet() }) })
+            assertEquals(1, committed.get())
+            assertEquals(0, rollback.get())
+            assertIs<UpdateState.Launched>(updater.state.value)
+            val successorDisk = Files.readAllBytes(f.queueFile)
+            parent.shutdownForApplicationExit()
+            parent.close()
+            assertContentEquals(successorDisk, Files.readAllBytes(f.queueFile))
+            assertEquals("healthy-child", checkNotNull(child).tasks.value.single().title)
+            assertTrue(checkNotNull(controlled).alive)
+        }
+    }
+
+    @Test
+    fun unknownChildCustodyNeverRollsBackOrReleasesPreparedLeaseEvenAfterOwnerClose() = runBlocking {
+        MemoryRelease().use { f ->
+            val queue = f.queue()
+            val controlled = StartupHealthTest.ControlledProcess(knownDescendants = false)
+            val updater = f.updater(processFactory = { builder ->
+                f.health(builder, "0.0.0")
+                controlled
+            })
+            val prepared = f.prepare(updater)
+            var ticket: com.bilipai.desktop.download.DesktopDownloadManager.UpdateHandoff? = null
+            val rollback = AtomicInteger()
+            try {
+                assertFailsWith<IllegalStateException> {
+                    updater.activatePreparedUpdate(prepared, beforeLaunch = {
+                        ticket = queue.beginUpdateHandoff()
+                        queue.awaitUpdateHandoff(checkNotNull(ticket))
+                    }, onCommitted = { error("Unknown failed child cannot commit") },
+                        afterFailedLaunch = { rollback.incrementAndGet() })
+                }
+                assertFalse(controlled.alive) // Best-effort direct stop is distinct from custody confirmation.
+                assertEquals(0, rollback.get())
+                assertFalse(queue.acceptsMutations())
+                assertBusy(f.root, prepared.stagingDirectory)
+                val retryBeforeLaunch = AtomicInteger()
+                assertFailsWith<IllegalStateException> {
+                    updater.activatePreparedUpdate(prepared,
+                        beforeLaunch = { retryBeforeLaunch.incrementAndGet(); error("Unknown custody must reject before a new queue ticket") },
+                        onCommitted = { error("Unknown custody cannot commit") },
+                        afterFailedLaunch = { rollback.incrementAndGet() })
+                }
+                assertEquals(0, retryBeforeLaunch.get())
+                assertEquals(1, f.launches.get())
+                assertEquals(0, rollback.get())
+                assertFalse(queue.acceptsMutations())
+                assertBusy(f.root, prepared.stagingDirectory)
+                updater.close()
+                assertBusy(f.root, prepared.stagingDirectory)
+                assertTrue(Files.isRegularFile(prepared.executable))
+                assertFalse(Files.exists(f.root.resolve("active-install.json")))
+            } finally {
+                // Teardown only: this test owns the controlled memory Process and the
+                // fresh Temp lease. Never infer this release in production policy.
+                assertFalse(controlled.alive)
+                val field = DesktopUpdater::class.java.getDeclaredField("retainedLease").apply { isAccessible = true }
+                (field.get(updater) as? UpdateStorage.StageLease)?.close()
+            }
+        }
+    }
+
     private fun assertBusy(root: Path, stage: Path) {
         assertEquals(stage, UpdateStorage.ownedStage(root, stage, REPOSITORY))
         assertTrue(Files.isRegularFile(stage.resolve(".bilipai-updater.lock"), NOFOLLOW_LINKS))
@@ -263,6 +464,15 @@ class DesktopUpdaterStageLeaseTest {
         val launches = AtomicInteger()
         val requests = Collections.synchronizedList(mutableListOf<String>())
         private val owners = mutableListOf<DesktopUpdater>()
+        val queueFile: Path = localData.resolve("queue.json")
+        val mediaRoot: Path = localData.resolve("media")
+        private val queueScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        private val queueGate = Any()
+        private val queues = mutableListOf<com.bilipai.desktop.download.DesktopDownloadManager>()
+        private val processes = mutableListOf<StartupHealthTest.ControlledProcess>()
+        private val queueClient = OkHttpClient.Builder().addInterceptor {
+            throw IOException("Headless queue disallows media transport")
+        }.build()
         private val prefix = "https://github.com/$REPOSITORY/releases/download/windows-v0.2.427.39"
         private val zipUrl = "$prefix/BiliPai-Windows-lease.zip"
         val checksumUrl = "$zipUrl.sha256"
@@ -292,9 +502,42 @@ class DesktopUpdaterStageLeaseTest {
                 .body(body.toResponseBody()).build()
         }.build()
 
-        fun updater(): DesktopUpdater = DesktopUpdater.forIntegrationTest("0.2.427.38", REPOSITORY,
-            root, client, localData, { launches.incrementAndGet(); error("No test may launch a process") })
-            .also(owners::add)
+        fun updater(processFactory: ((ProcessBuilder) -> Process)? = null,
+            afterStarted: (Process) -> Unit = {}): DesktopUpdater =
+            DesktopUpdater.forIntegrationTest("0.2.427.38", REPOSITORY, root, client, localData, {
+                launches.incrementAndGet()
+                check(processFactory != null) { "No test may launch a process" }
+                afterStarted(it)
+            }, processFactory = processFactory?.let { factory -> { builder ->
+                factory(builder).also { process ->
+                    processes.add(assertIs<StartupHealthTest.ControlledProcess>(process))
+                }
+            } }).also(owners::add)
+
+        fun queue(): com.bilipai.desktop.download.DesktopDownloadManager {
+            val owner = queueScope.coroutineContext.job
+            val publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication({ owner.isActive }, { action ->
+                synchronized(queueGate) { if (!owner.isActive) false else { action(); true } }
+            })
+            return com.bilipai.desktop.download.DesktopDownloadManager(queueClient, queueFile,
+                com.bilipai.desktop.download.DownloadMuxer { _, _, _ -> error("Sealed media cannot reach muxing") },
+                publication = publication).also(queues::add)
+        }
+
+        fun health(builder: ProcessBuilder, version: String) {
+            val command = builder.command()
+            assertEquals(EXECUTABLE, Path.of(command.first()).fileName.toString())
+            assertEquals(localData.toString(), builder.environment()["LOCALAPPDATA"])
+            val markerIndex = command.indexOf("--update-health-file")
+            val tokenIndex = command.indexOf("--update-health-token")
+            assertTrue(markerIndex >= 0 && tokenIndex >= 0)
+            val marker = Path.of(command[markerIndex + 1]).toAbsolutePath().normalize()
+            assertTrue(marker.startsWith(root))
+            assertTrue(Files.isDirectory(marker.parent, NOFOLLOW_LINKS))
+            Files.writeString(marker.resolveSibling("startup-version.txt"), version,
+                java.nio.file.StandardOpenOption.CREATE_NEW)
+            Files.writeString(marker, command[tokenIndex + 1], java.nio.file.StandardOpenOption.CREATE_NEW)
+        }
 
         suspend fun prepare(updater: DesktopUpdater): PreparedUpdate =
             assertNotNull(updater.prepareUpdate(assertIs<UpdateState.Available>(updater.check()).update))
@@ -308,6 +551,13 @@ class DesktopUpdaterStageLeaseTest {
         }
 
         override fun close() {
+            runBlocking { withContext(NonCancellable) {
+                queues.asReversed().forEach { it.shutdownForApplicationExit() }
+                processes.asReversed().filter { it.alive }.forEach { it.destroy() }
+                queueScope.coroutineContext.job.cancelAndJoin()
+            } }
+            queueClient.dispatcher.executorService.shutdownNow()
+            queueClient.connectionPool.evictAll()
             owners.asReversed().forEach(DesktopUpdater::close)
             client.dispatcher.executorService.shutdownNow()
             client.connectionPool.evictAll()

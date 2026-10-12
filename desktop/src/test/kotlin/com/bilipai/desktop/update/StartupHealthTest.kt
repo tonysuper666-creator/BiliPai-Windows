@@ -96,9 +96,10 @@ class StartupHealthTest {
         assertTrue(child.destroyed)
     }
 
-    private class ControlledProcess(
+    internal class ControlledProcess(
         private val knownDescendants: Boolean = true,
         private val children: List<ControlledProcess> = emptyList(),
+        private val onDestroy: () -> Unit = {},
     ) : Process() {
         @Volatile var alive = true
         @Volatile var destroyed = false
@@ -135,7 +136,7 @@ class StartupHealthTest {
         override fun waitFor(): Int { alive = false; return 0 }
         override fun waitFor(timeout: Long, unit: TimeUnit): Boolean = !alive
         override fun exitValue(): Int { check(!alive); return 0 }
-        override fun destroy() { destroyed = true; alive = false }
+        override fun destroy() { onDestroy(); destroyed = true; alive = false }
         override fun destroyForcibly(): Process { destroy(); return this }
     }
 }

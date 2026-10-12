@@ -11,6 +11,8 @@ import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.PlaybackSegment
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.job
@@ -734,6 +736,199 @@ class DesktopDownloadManagerTest {
                 client.dispatcher.executorService.shutdownNow()
                 client.connectionPool.evictAll()
             }
+        }
+    }
+
+    @Test fun `runtime update freezes every mutation and drains active plus atomic removed work before its durable checkpoint`(): Unit = runBlocking {
+        val root = Files.createTempDirectory("bilipai-update-freeze-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<String>()
+        val activeRequests = AtomicInteger()
+        val workers = CopyOnWriteArrayList<ExitOptionalWorker>()
+        val client = optionalAssetMemoryClient(requests, activeRequests)
+        val manager = DesktopDownloadManager(client, state, DownloadMuxer { video, _, output ->
+            Files.write(output, Files.readAllBytes(requireNotNull(video)))
+        }, danmakuDownloader = { task, directory, callback -> holdExitOptionalWorker(task, directory, callback, workers) },
+            publication = localDownloadPublication())
+        var drain: kotlinx.coroutines.Deferred<Unit>? = null
+        try {
+            fun add(cid: Long) = manager.enqueue(PlaybackSource("https://cdn.example/video-$cid"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = cid, includeCover = false))
+            val activeId = add(10L)
+            val removedId = add(20L)
+            withTimeout(5_000) { while (workers.size != 2) delay(5) }
+            val activeWorker = workers.single { it.task.id == activeId }
+            val removedWorker = workers.single { it.task.id == removedId }
+            manager.remove(removedId, deleteFiles = true)
+            withTimeout(5_000) { removedWorker.cleanupEntered.await() }
+            val pausedId = add(30L)
+            manager.pause(pausedId)
+            val queuedId = add(40L)
+            val before = manager.tasks.value.associateBy { it.id }
+            val partial = Files.readAllBytes(activeWorker.directory.resolve("exit-optional.pb.part"))
+            val ticket = manager.beginUpdateHandoff()
+            assertFalse(manager.acceptsMutations())
+            assertTrue(ticket.workers.size >= 2, "The exact live worker AND remove retirement slot must be captured")
+            val diskAtFreeze = Files.readAllBytes(state)
+            val pathsAtFreeze = Files.list(root).use { it.toList().toSet() }
+            assertFailsWith<IllegalStateException> { manager.pause(activeId) }
+            assertFailsWith<IllegalStateException> { manager.resume(pausedId) }
+            assertFailsWith<IllegalStateException> { manager.remove(activeId, deleteFiles = true) }
+            assertFailsWith<IllegalStateException> { manager.savePlaybackPosition(activeId, 31_000, 120_000) }
+            val rejected = PlaybackSource("https://cdn.example/rejected")
+            assertFailsWith<IllegalStateException> {
+                manager.enqueue(rejected, root, DownloadMetadata(bvid = "BVrejected", cid = 99L))
+            }
+            assertFailsWith<IllegalStateException> {
+                manager.enqueueOriginal(before.getValue(activeId).item.copy(
+                    bvid = "BVrejected", cid = 99L, videoUrl = rejected.videoUrl), rejected, root,
+                    downloadAllowed = true, seasonId = 0, episodeId = 0, isCourse = false,
+                    stillOwned = { true }, entryAdmission = { error("Frozen enqueue must never reach entry admission") })
+            }
+            assertContentEquals(diskAtFreeze, Files.readAllBytes(state))
+            assertEquals(pathsAtFreeze, Files.list(root).use { it.toList().toSet() }, "No rejected enqueue creates an owned directory")
+            assertFailsWith<CancellationException> {
+                activeWorker.callback(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.COMPLETED,
+                    totalBytes = 13, downloadedBytes = 13))
+            }
+            val invocation = async(start = CoroutineStart.UNDISPATCHED) { manager.awaitUpdateHandoff(ticket) }
+            drain = invocation
+            withTimeout(5_000) { activeWorker.cleanupEntered.await() }
+            assertFalse(invocation.isCompleted)
+            assertTrue(Files.exists(removedWorker.directory), "ATOMIC deletion still waits for its old worker cleanup")
+            activeWorker.cleanupRelease.complete(Unit)
+            withTimeout(5_000) { activeWorker.job.join() }
+            assertFalse(invocation.isCompleted, "The separately admitted remove retirement must also finish")
+            removedWorker.cleanupRelease.complete(Unit)
+            withTimeout(5_000) { invocation.await() }
+            assertTrue(ticket.drained)
+            assertTrue(ticket.workers.all { it.isCompleted })
+            assertFalse(Files.exists(removedWorker.directory))
+            val checkpoint = manager.tasks.value.associateBy { it.id }
+            assertEquals(before.getValue(activeId).item.copy(status = DownloadStatus.QUEUED), checkpoint.getValue(activeId).item)
+            assertEquals(before.getValue(pausedId), checkpoint.getValue(pausedId))
+            assertEquals(before.getValue(queuedId), checkpoint.getValue(queuedId))
+            assertEquals(checkpoint, Json.decodeFromString<List<DownloadTask>>(Files.readString(state)).associateBy { it.id })
+            assertContentEquals(partial, Files.readAllBytes(activeWorker.directory.resolve("exit-optional.pb.part")))
+            assertTrue(requests.isEmpty(), "Held optional transport precedes the first media byte")
+            manager.commitUpdateHandoff(ticket)
+        } finally {
+            cleanupRuntimeHandoffManagers(listOf(manager), { workers.toList() }, client, activeRequests, drain)
+        }
+    }
+
+    @Test fun `failed successor strict reread restores changed disk into the same usable supervisor`(): Unit = runBlocking {
+        exerciseRuntimeHandoffWithSuccessor(commit = false)
+    }
+
+    @Test fun `committed parent shutdown never overwrites a running successors queue`(): Unit = runBlocking {
+        exerciseRuntimeHandoffWithSuccessor(commit = true)
+    }
+
+    private suspend fun exerciseRuntimeHandoffWithSuccessor(commit: Boolean) {
+        val root = Files.createTempDirectory("bilipai-update-successor-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<String>()
+        val activeRequests = AtomicInteger()
+        val oldWorkers = CopyOnWriteArrayList<ExitOptionalWorker>()
+        val childWorkers = CopyOnWriteArrayList<ExitOptionalWorker>()
+        val client = optionalAssetMemoryClient(requests, activeRequests)
+        val muxer = DownloadMuxer { video, _, output -> Files.write(output, Files.readAllBytes(requireNotNull(video))) }
+        val original = DesktopDownloadManager(client, state, muxer,
+            danmakuDownloader = { task, directory, callback -> holdExitOptionalWorker(task, directory, callback, oldWorkers) },
+            publication = localDownloadPublication())
+        var successor: DesktopDownloadManager? = null
+        try {
+            val id = original.enqueue(PlaybackSource("https://cdn.example/video", title = "original"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = 10L, includeCover = false))
+            withTimeout(5_000) { while (oldWorkers.size != 1) delay(5) }
+            val first = oldWorkers.single()
+            val partial = Files.readAllBytes(first.directory.resolve("exit-optional.pb.part"))
+            val ticket = original.beginUpdateHandoff()
+            val drain = kotlinx.coroutines.CoroutineScope(currentCoroutineContext()).async {
+                original.awaitUpdateHandoff(ticket)
+            }
+            withTimeout(5_000) { first.cleanupEntered.await() }
+            first.cleanupRelease.complete(Unit)
+            withTimeout(5_000) { drain.await() }
+            assertTrue(first.job.isCompleted)
+            val child = DesktopDownloadManager(client, state, muxer,
+                danmakuDownloader = { task, directory, callback -> holdExitOptionalWorker(task, directory, callback, childWorkers) },
+                publication = localDownloadPublication())
+            successor = child
+            withTimeout(5_000) { while (childWorkers.size != 1) delay(5) }
+            assertNotNull(child.tasks.value.single { it.id == id })
+            assertFalse(original.acceptsMutations())
+            assertContentEquals(partial, Files.readAllBytes(first.directory.resolve("exit-optional.pb.part")))
+            child.savePlaybackPosition(id, 31_000, 120_000)
+            val addedId = child.enqueue(PlaybackSource("https://cdn.example/new", title = "successor-only"), root,
+                DownloadMetadata(bvid = "BVsuccessor", cid = 20L, includeCover = false))
+            child.pause(addedId)
+            val changedDisk = Files.readAllBytes(state)
+            assertEquals(31_000L, child.tasks.value.single { it.id == id }.item.lastPlaybackPositionMs)
+            assertFalse(original.tasks.value.any { it.id == addedId })
+            if (commit) {
+                original.commitUpdateHandoff(ticket)
+                original.shutdownForApplicationExit()
+                original.close(); original.close()
+                assertContentEquals(changedDisk, Files.readAllBytes(state))
+                assertEquals(31_000L, child.tasks.value.single { it.id == id }.item.lastPlaybackPositionMs)
+                assertEquals(DownloadStatus.PAUSED, child.tasks.value.single { it.id == addedId }.status)
+                assertFalse(childWorkers.single { it.task.id == id }.job.isCompleted)
+            } else {
+                val childShutdown = kotlinx.coroutines.CoroutineScope(currentCoroutineContext()).async { child.shutdownForApplicationExit() }
+                withTimeout(5_000) { childWorkers.single { it.task.id == id }.cleanupEntered.await() }
+                val release = kotlinx.coroutines.CoroutineScope(currentCoroutineContext()).launch {
+                    while (currentCoroutineContext().job.isActive) {
+                        childWorkers.forEach { it.cleanupRelease.complete(Unit) }
+                        delay(5)
+                    }
+                }
+                try { withTimeout(5_000) { childShutdown.await() } }
+                finally { release.cancelAndJoin() }
+                assertTrue(childWorkers.all { it.job.isCompleted })
+                assertTrue(original.rollbackUpdateHandoff(ticket))
+                assertTrue(original.acceptsMutations())
+                withTimeout(5_000) { while (oldWorkers.size != 2) delay(5) }
+                val resumed = oldWorkers.last()
+                assertTrue(first.job.isCompleted)
+                assertTrue(resumed.job.isActive)
+                assertTrue(first.job !== resumed.job, "The canceled original Job must never be revived")
+                assertEquals(31_000L, original.tasks.value.single { it.id == id }.item.lastPlaybackPositionMs)
+                assertEquals("successor-only", original.tasks.value.single { it.id == addedId }.title)
+                assertEquals(DownloadStatus.PAUSED, original.tasks.value.single { it.id == addedId }.status)
+                assertContentEquals(partial, Files.readAllBytes(resumed.directory.resolve("exit-optional.pb.part")))
+            }
+        } finally {
+            cleanupRuntimeHandoffManagers(listOfNotNull(original, successor), { oldWorkers.toList() + childWorkers.toList() },
+                client, activeRequests)
+        }
+    }
+
+    /** Teardown releases late-entering original cleanup as well as known barriers.
+     * Every manager still uses its real exit join; no worker is discarded. */
+    private suspend fun cleanupRuntimeHandoffManagers(managers: List<DesktopDownloadManager>,
+        workers: () -> List<ExitOptionalWorker>, client: OkHttpClient, activeRequests: AtomicInteger,
+        drain: kotlinx.coroutines.Deferred<Unit>? = null) {
+        try {
+            withContext(NonCancellable) {
+                val release = kotlinx.coroutines.CoroutineScope(currentCoroutineContext()).launch(kotlinx.coroutines.Dispatchers.Default) {
+                    while (currentCoroutineContext().job.isActive) {
+                        workers().forEach { it.workRelease.complete(Unit); it.cleanupRelease.complete(Unit) }
+                        delay(5)
+                    }
+                }
+                try {
+                    withTimeout(5_000) {
+                        managers.forEach { it.shutdownForApplicationExit() }
+                        drain?.await()
+                        while (activeRequests.get() != 0) delay(5)
+                    }
+                } finally { release.cancelAndJoin() }
+            }
+        } finally {
+            client.dispatcher.executorService.shutdownNow()
+            client.connectionPool.evictAll()
         }
     }
 

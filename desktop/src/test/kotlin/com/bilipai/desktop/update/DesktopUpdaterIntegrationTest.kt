@@ -67,6 +67,13 @@ class DesktopUpdaterIntegrationTest {
         val report = System.getProperty("bilipai.updateTestReport")?.takeIf { it.isNotBlank() }
             ?.let { Path.of(it).toAbsolutePath().normalize().resolve("updater-smoke.json") } ?: caseRoot.resolve("updater-smoke.json")
         val launched = Collections.synchronizedList(mutableListOf<Process>())
+        // Capture while each direct parent is still alive, and retain the actual
+        // fixture observation for cleanup even after a forwarding parent exits.
+        val launchObservations = Collections.synchronizedMap(mutableMapOf<Process, StartupHealth.DescendantObservation>())
+        fun recordLaunch(process: Process) {
+            launchObservations[process] = StartupHealth.DescendantObservation(process)
+            launched.add(process)
+        }
         val observed = mutableMapOf<Long, ObservedChild>()
         val evidence = linkedMapOf<String, JsonElement>(
             "passed" to JsonPrimitive(false),
@@ -96,7 +103,7 @@ class DesktopUpdaterIntegrationTest {
             LoopbackFixture(config.repository).use { fixture ->
                 try {
                     fun updater() = DesktopUpdater.forIntegrationTest(baseline, config.repository, updateRoot,
-                        fixture.client, childData, { launched.add(it) }, config.executable)
+                        fixture.client, childData, ::recordLaunch, config.executable)
 
                     fixture.publish("healthy", config.version, packagePath)
                     val healthyUpdater = updater()
@@ -240,7 +247,7 @@ class DesktopUpdaterIntegrationTest {
 
                     if (previousPath != null && previousConfig != null) {
                         require(previousConfig.repository == config.repository)
-                        launched.toList().asReversed().forEach { StartupHealth.terminate(it) }
+                        launched.toList().asReversed().forEach { StartupHealth.terminate(it, checkNotNull(launchObservations[it])) }
                         val previousDirectory = Files.createDirectory(caseRoot.resolve("previous-launcher"))
                         val previousExecutable = SafeUpdateZip.extract(previousPath, previousDirectory, previousConfig.executable)
                         val beforeLaunchDirectories = launchDirectories(healthy.stagingDirectory)
@@ -249,9 +256,10 @@ class DesktopUpdaterIntegrationTest {
                             .redirectError(caseRoot.resolve("previous-error.log").toFile())
                         isolateChild(original, childData)
                         val originalProcess = original.start()
-                        launched.add(originalProcess)
+                        recordLaunch(originalProcess)
                         val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(45)
                         while (originalProcess.isAlive && System.nanoTime() < deadline) {
+                            checkNotNull(launchObservations[originalProcess]).observe()
                             observeOwnedDescendants(originalProcess, caseRoot, observed)
                             delay(25)
                         }
@@ -294,7 +302,7 @@ class DesktopUpdaterIntegrationTest {
             }
             withContext(NonCancellable) {
                 launched.toList().asReversed().forEach { process ->
-                    runCatching { StartupHealth.terminate(process) }.onFailure { if (failure == null) failure = it }
+                    runCatching { StartupHealth.terminate(process, checkNotNull(launchObservations[process])) }.onFailure { if (failure == null) failure = it }
                 }
                 observed.values.forEach { child -> stopObservedChild(child) }
             }
