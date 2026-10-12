@@ -254,6 +254,8 @@ fun main(args: Array<String>) {
                 danmakuPresentation = danmakuPresentation,
                 isFullscreen = { windowState.placement == WindowPlacement.Fullscreen },
                 setFullscreen = fullscreenControl::setFullscreen,
+                startupDownloadHandoffToken = healthToken,
+                requiresDownloadAuthorityForStartupHealth = healthPath != null && healthToken != null,
                 onRootContentFrame = { owner ->
                     if (!closing.get() && owner()) rootFrameOwner = owner
                 })

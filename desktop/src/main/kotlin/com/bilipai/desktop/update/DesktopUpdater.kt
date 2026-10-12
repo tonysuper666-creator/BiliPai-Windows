@@ -248,7 +248,7 @@ class DesktopUpdater private constructor(
     /** The UI calls this only after its atomic playback/task idle check. True permits the old app to exit. */
     suspend fun activatePreparedUpdate(
         prepared: PreparedUpdate,
-        beforeLaunch: suspend () -> Unit = {},
+        beforeLaunch: suspend (String) -> Unit = {},
         onCommitted: () -> Unit = {},
         afterFailedLaunch: suspend () -> Unit = {},
     ): Boolean = withContext(Dispatchers.IO) {
@@ -271,10 +271,11 @@ class DesktopUpdater private constructor(
             val observed = readActiveInstallationSnapshot()
             // Root freezes and actually drains its existing download owner here.
             // A prepared ZIP and one UI idle observation alone do not grant launch.
-            beforeLaunch()
+            val launchToken = UUID.randomUUID().toString()
+            beforeLaunch(launchToken)
             ensureOpenAndActive()
             mutableState.value = UpdateState.Launching
-            attempt = launchInstallation(prepared.executable, emptyList())
+            attempt = launchInstallation(prepared.executable, emptyList(), launchToken)
             require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version, observation = attempt.descendants)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
             ensureOpenAndActive()
             val previous = previousInstallation(observed.installation)
@@ -282,7 +283,7 @@ class DesktopUpdater private constructor(
             beginInstallationCommit()
             require(commitActiveInstallation(observed,
                 ActiveInstallation(requireNotNull(repository), prepared.update.version, prepared.executable.toString(),
-                    previous?.first, previous?.second?.toString()), upgrade = true)) {
+                    previous?.first, previous?.second?.toString(), launchToken), upgrade = true)) {
                 "更新注册状态已改变、已有相同或更高版本，或注册事务暂不可用；当前版本继续运行"
             }
             committed = true
@@ -424,12 +425,13 @@ class DesktopUpdater private constructor(
         }
     }
 
-    private suspend fun launchInstallation(executable: Path, args: List<String>): LaunchAttempt {
+    private suspend fun launchInstallation(executable: Path, args: List<String>, healthToken: String? = null): LaunchAttempt {
         ensureOpenAndActive()
         check(!childRetirementPending) { "之前更新子进程的退役状态无法确认" }
         val stage = stageForExecutable(executable) ?: error("更新启动路径无效")
         val launchDirectory = Files.createDirectory(stage.resolve("launch-${UUID.randomUUID()}"))
-        val token = UUID.randomUUID().toString()
+        val token = healthToken ?: UUID.randomUUID().toString()
+        require(UUID.fromString(token).toString() == token)
         val healthFile = launchDirectory.resolve("startup-health.txt")
         val builder = ProcessBuilder(listOf(executable.toString()) + args + listOf("--update-health-file", healthFile.toString(), "--update-health-token", token))
             .directory(executable.parent.toFile())
@@ -462,24 +464,13 @@ class DesktopUpdater private constructor(
     }
 
     /** Absence is a snapshot; invalid/unreadable data is unknown, never an absent registry. */
-    private fun readActiveInstallationSnapshot(): ActiveInstallationSnapshot {
-        val file = updateRoot.resolve("active-install.json")
-        val attributes = try {
-            Files.readAttributes(file, java.nio.file.attribute.BasicFileAttributes::class.java, NOFOLLOW_LINKS)
-        } catch (_: java.nio.file.NoSuchFileException) {
-            return ActiveInstallationSnapshot(null, null)
-        }
-        require(attributes.isRegularFile && !attributes.isSymbolicLink && !attributes.isOther && attributes.size() <= 64 * 1024) {
-            "当前安装记录不是可确认的普通文件"
-        }
-        val canonical = UpdateStorage.existingPathWithoutLinks(file)
-        val bytes = Files.newInputStream(canonical, NOFOLLOW_LINKS).use { it.readNBytes(64 * 1024 + 1) }
-        require(bytes.size <= 64 * 1024) { "当前安装记录超过大小限制" }
-        // Preserve Files.readString's strict UTF-8 behavior while retaining exactly the bytes decoded.
-        val text = Charsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(bytes)).toString()
-        val installation = json.decodeFromString<ActiveInstallation>(text)
-        require(installation.repository == repository) { "当前安装记录不属于此 Windows 发布仓库" }
-        return ActiveInstallationSnapshot(installation, bytes)
+    private fun readActiveInstallationSnapshot(): ActiveInstallationSnapshot =
+        readActiveInstallationSnapshot(updateRoot, requireNotNull(repository), json)
+
+    internal fun downloadHandoffTarget(prepared: PreparedUpdate): com.bilipai.desktop.download.DesktopDownloadQueueAuthority.CommitTarget {
+        check(prepared === retainedPrepared)
+        return com.bilipai.desktop.download.DesktopDownloadQueueAuthority.CommitTarget(requireNotNull(repository),
+            prepared.update.version, prepared.executable.toString(), updateRoot.resolve("active-install.json").toString())
     }
 
     private fun readActiveInstallation(): ActiveInstallation? = runCatching {
@@ -643,6 +634,39 @@ class DesktopUpdater private constructor(
     }
 
     companion object {
+        internal fun downloadHandoffCommitMatches(target: com.bilipai.desktop.download.DesktopDownloadQueueAuthority.CommitTarget,
+            token: String): Boolean = runCatching {
+            require(UUID.fromString(token).toString() == token && validRepository(target.repository))
+            val registry = Path.of(target.registryFile).toAbsolutePath().normalize()
+            require(registry.fileName.toString() == "active-install.json")
+            val snapshot = readActiveInstallationSnapshot(requireNotNull(registry.parent), target.repository,
+                Json { ignoreUnknownKeys = true })
+            val active = snapshot.installation ?: return@runCatching false
+            active.downloadHandoffToken == token && active.repository == target.repository &&
+                active.version == target.version && active.executablePath == target.executablePath
+        }.getOrDefault(false)
+
+        private fun readActiveInstallationSnapshot(updateRoot: Path, repository: String, json: Json): ActiveInstallationSnapshot {
+            val file = updateRoot.resolve("active-install.json")
+            val attributes = try {
+                Files.readAttributes(file, java.nio.file.attribute.BasicFileAttributes::class.java, NOFOLLOW_LINKS)
+            } catch (_: java.nio.file.NoSuchFileException) {
+                return ActiveInstallationSnapshot(null, null)
+            }
+            require(attributes.isRegularFile && !attributes.isSymbolicLink && !attributes.isOther && attributes.size() <= 64 * 1024) {
+                "当前安装记录不是可确认的普通文件"
+            }
+            val canonical = UpdateStorage.existingPathWithoutLinks(file)
+            val bytes = Files.newInputStream(canonical, NOFOLLOW_LINKS).use { it.readNBytes(64 * 1024 + 1) }
+            require(bytes.size <= 64 * 1024) { "当前安装记录超过大小限制" }
+            // Preserve Files.readString's strict UTF-8 behavior while retaining exactly the bytes decoded.
+            val text = Charsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(bytes)).toString()
+            val installation = json.decodeFromString<ActiveInstallation>(text)
+            require(installation.repository == repository) { "当前安装记录不属于此 Windows 发布仓库" }
+            return ActiveInstallationSnapshot(installation, bytes)
+        }
+
+
         const val MAX_DOWNLOAD_BYTES = 512L * 1024 * 1024
         const val STARTUP_TIMEOUT_MS = 30_000L
         internal const val STARTUP_STABILITY_MS = 1_500L
@@ -749,6 +773,7 @@ class DesktopUpdater private constructor(
         val executablePath: String,
         val previousVersion: String? = null,
         val previousExecutablePath: String? = null,
+        val downloadHandoffToken: String? = null,
     )
     @Serializable private data class GitHubRelease(
         val id: Long,

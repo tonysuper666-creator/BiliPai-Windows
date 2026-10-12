@@ -6,6 +6,8 @@ import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopMediaRepository
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,6 +32,7 @@ class DesktopDownloadManager internal constructor(
     private val publication: com.bilipai.desktop.player.DesktopPlaybackPublication,
     private val defaultDestination: () -> Path = Companion::defaultDownloadRoot,
     private val brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents? = null,
+    private val startupHandoffToken: String? = null,
 ) : AutoCloseable {
     constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
         defaultSourceResolver(repository), defaultDanmakuDownloader(repository), com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository))
@@ -43,6 +46,12 @@ class DesktopDownloadManager internal constructor(
         defaultSourceResolver(repository), defaultDanmakuDownloader(repository),
         com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository), defaultDestination, brandEvents)
 
+    constructor(repository: DesktopRepository, brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents,
+        startupHandoffToken: String?, defaultDestination: () -> Path) : this(repository.playbackHttpClient,
+        defaultStateFile(), WindowsFfmpegMuxer(), defaultSourceResolver(repository), defaultDanmakuDownloader(repository),
+        com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository), defaultDestination, brandEvents,
+        startupHandoffToken)
+
     /** Future admissions only. An explicit original task directory wins; queued roots never migrate. */
     internal fun destinationFor(explicit: String? = null): Path =
         com.bilipai.desktop.ui.resolveDesktopOriginalDownloadDestination(explicit, defaultDestination())
@@ -54,8 +63,22 @@ class DesktopDownloadManager internal constructor(
     private val jobs = mutableMapOf<String, Job>()
     private var lastPersistNanos = 0L
     private var closed = false
+    private val ownershipOperations = Mutex()
+    private val initialAuthority = DesktopDownloadQueueAuthority.tryAcquire(stateFile, startupHandoffToken)
+    private var queueAuthority = initialAuthority.lease
+    private val mutableAuthorityReason = MutableStateFlow(initialAuthority.reason)
+    internal val authorityReason: StateFlow<String?> = mutableAuthorityReason.asStateFlow()
+    private var closeRetirement: Job? = null
+    private val retirementScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    private fun queueAuthorityHeldLocked(): Boolean = queueAuthority?.holds(stateFile) == true
+    internal fun canPublishStartupHealth(token: String?): Boolean = synchronized(lock) {
+        !closed && updateHandoff == null && token != null && token == startupHandoffToken &&
+            queueAuthorityHeldLocked() && scope.coroutineContext[Job]?.isActive == true
+    }
     /** One exact runtime-update transfer, not another queue or download producer. */
-    internal class UpdateHandoff internal constructor(internal val workers: List<Job>) {
+    internal class UpdateHandoff internal constructor(internal val workers: List<Job>, internal val token: String,
+        internal val commitTarget: DesktopDownloadQueueAuthority.CommitTarget?) {
         internal var drained = false
         internal var committed = false
     }
@@ -67,19 +90,22 @@ class DesktopDownloadManager internal constructor(
     internal val updateHandoffPending: StateFlow<Boolean> = mutableUpdateHandoffPending.asStateFlow()
 
     internal fun acceptsMutations(): Boolean = synchronized(lock) {
-        !closed && updateHandoff == null && scope.coroutineContext[Job]?.isActive == true
+        !closed && updateHandoff == null && queueAuthorityHeldLocked() && scope.coroutineContext[Job]?.isActive == true
     }
     private fun assertMutationsAllowedLocked() {
         check(!closed) { "下载队列已关闭" }
+        check(queueAuthorityHeldLocked()) { mutableAuthorityReason.value ?: "下载队列没有操作系统所有权" }
         check(updateHandoff == null) { "下载队列正在交接更新，暂不能修改" }
     }
 
     /** Freeze every new queue mutation before waiting. Includes an already admitted
      * remove's ATOMIC/NonCancellable retirement job; joins never hold this lock. */
-    internal fun beginUpdateHandoff(): UpdateHandoff = synchronized(lock) {
+    internal fun beginUpdateHandoff(token: String = UUID.randomUUID().toString(),
+        commitTarget: DesktopDownloadQueueAuthority.CommitTarget? = null): UpdateHandoff = synchronized(lock) {
         assertMutationsAllowedLocked()
         check(scope.coroutineContext[Job]?.isActive == true)
-        UpdateHandoff(jobs.values.toList()).also {
+        require(UUID.fromString(token).toString() == token)
+        UpdateHandoff(jobs.values.toList(), token, commitTarget).also {
             updateHandoff = it
             mutableUpdateHandoffPending.value = true
         }
@@ -107,41 +133,63 @@ class DesktopDownloadManager internal constructor(
         }
     }
 
-    internal suspend fun awaitUpdateHandoff(ticket: UpdateHandoff) = withContext(NonCancellable + Dispatchers.IO) {
-        synchronized(lock) { check(updateHandoff === ticket && !ticket.committed) }
-        awaitRetiringHandoffWork(ticket)
-        synchronized(lock) {
-            check(updateHandoff === ticket && !ticket.committed)
-            check(directoryPreparations == 0 && ticket.workers.all { it.isCompleted } && jobs.values.all { it.isCompleted })
-            // Preserve user-paused/completed tasks and all IDs, directories, progress,
-            // options and assets. The original cold-queue policy owns normalization.
-            mutableTasks.value = mutableTasks.value.map {
-                it.copy(item = normalizeRestoredDownloadTask(it.item))
+    internal suspend fun awaitUpdateHandoff(ticket: UpdateHandoff): Unit = withContext(NonCancellable + Dispatchers.IO) {
+        ownershipOperations.withLock {
+            synchronized(lock) { check(!closed && updateHandoff === ticket && !ticket.committed) }
+            awaitRetiringHandoffWork(ticket)
+            val lease = synchronized(lock) {
+                check(!closed && updateHandoff === ticket && !ticket.committed)
+                check(directoryPreparations == 0 && ticket.workers.all { it.isCompleted } && jobs.values.all { it.isCompleted })
+                mutableTasks.value = mutableTasks.value.map { it.copy(item = normalizeRestoredDownloadTask(it.item)) }
+                persistLocked(force = true, handoffWrite = true, durable = true)
+                checkNotNull(queueAuthority).also { check(it.holds(stateFile)) }
             }
-            persistLocked(force = true, handoffWrite = true)
-            ticket.drained = true // Only the final successful durable write permits launch.
+            // Marker IO and OS release occur outside queue/Store monitors, after the real checkpoint.
+            lease.prepareTransfer(ticket.token, ticket.commitTarget)
+            synchronized(lock) {
+                check(!closed && updateHandoff === ticket && !ticket.committed && queueAuthority === lease)
+                ticket.drained = true
+            }
+            lease.close()
+            synchronized(lock) { if (queueAuthority === lease) queueAuthority = null }
         }
     }
 
-    /** Invoked only after the updater confirms no launched child remains. Keep the
-     * original supervisor alive; a failed successor may have advanced the same queue. */
+    /** Updater has already confirmed the actual launched child retired. Reacquire before any reread. */
     internal suspend fun rollbackUpdateHandoff(ticket: UpdateHandoff): Boolean = withContext(NonCancellable + Dispatchers.IO) {
-        if (synchronized(lock) { closed }) return@withContext false
-        synchronized(lock) { check(updateHandoff === ticket && !ticket.committed) }
-        awaitRetiringHandoffWork(ticket)
-        synchronized(lock) {
-            if (closed) return@synchronized false
-            check(updateHandoff === ticket && !ticket.committed)
-            check(directoryPreparations == 0 && ticket.workers.all { it.isCompleted } && jobs.values.all { it.isCompleted })
-            mutableTasks.value = if (ticket.drained) restore(strict = true) else mutableTasks.value.map {
-                it.copy(item = normalizeRestoredDownloadTask(it.item))
+        ownershipOperations.withLock {
+            synchronized(lock) { check(updateHandoff === ticket && !ticket.committed) }
+            awaitRetiringHandoffWork(ticket)
+            var lease = synchronized(lock) { queueAuthority?.takeIf { it.holds(stateFile) } }
+            if (lease == null) {
+                val attempt = DesktopDownloadQueueAuthority.tryAcquire(stateFile, recoveryToken = ticket.token)
+                lease = checkNotNull(attempt.lease) { attempt.reason ?: "下载队列无法重新取得所有权" }
+                synchronized(lock) { check(updateHandoff === ticket && !ticket.committed); queueAuthority = lease }
             }
-            // If persistence or strict reload fails, the exact ticket stays frozen.
-            persistLocked(force = true, handoffWrite = true)
-            updateHandoff = null
-            mutableUpdateHandoffPending.value = false
-            scheduleLocked()
-            true
+            val owned = checkNotNull(lease)
+            val pending = owned.hasPendingTransfer(ticket.token)
+            synchronized(lock) {
+                check(updateHandoff === ticket && !ticket.committed && queueAuthority === owned && owned.holds(stateFile))
+                check(directoryPreparations == 0 && ticket.workers.all { it.isCompleted } && jobs.values.all { it.isCompleted })
+                mutableTasks.value = if (ticket.drained || pending) restore(strict = true) else mutableTasks.value.map {
+                    it.copy(item = normalizeRestoredDownloadTask(it.item))
+                }
+                persistLocked(force = true, handoffWrite = true, durable = true)
+            }
+            if (pending) owned.finishRollback(ticket.token)
+            val reopen = synchronized(lock) {
+                check(updateHandoff === ticket && !ticket.committed && queueAuthority === owned)
+                updateHandoff = null
+                mutableUpdateHandoffPending.value = false
+                mutableAuthorityReason.value = null
+                if (!closed) scheduleLocked()
+                !closed
+            }
+            if (!reopen) {
+                owned.close()
+                synchronized(lock) { if (queueAuthority === owned) queueAuthority = null }
+            }
+            reopen
         }
     }
 
@@ -150,10 +198,44 @@ class DesktopDownloadManager internal constructor(
     internal fun commitUpdateHandoff(ticket: UpdateHandoff) = synchronized(lock) {
         if (updateHandoff === ticket && ticket.drained) ticket.committed = true
     }
-    private val mutableTasks = MutableStateFlow(restore())
+    private val mutableTasks = MutableStateFlow(if (queueAuthorityHeldLocked()) restore() else emptyList())
     val tasks: StateFlow<List<DownloadTask>> = mutableTasks.asStateFlow()
 
-    init { synchronized(lock) { scheduleLocked() } }
+    init {
+        try { synchronized(lock) { if (queueAuthorityHeldLocked()) scheduleLocked() } }
+        catch (failure: Exception) {
+            synchronized(lock) { closed = true; mutableAuthorityReason.value = failure.message ?: "下载初始化失败" }
+            scope.cancel()
+            startCloseRetirement()
+        }
+        if (initialAuthority.busy) scope.launch {
+            // Short retry allows a replaced in-process owner to finish close. No UI/Store lock waits.
+            repeat(50) {
+                delay(100)
+                if (synchronized(lock) { closed || updateHandoff != null || queueAuthorityHeldLocked() }) return@launch
+                val attempt = DesktopDownloadQueueAuthority.tryAcquire(stateFile, startupHandoffToken)
+                val lease = attempt.lease
+                if (lease != null) {
+                    val adopted = synchronized(lock) {
+                        if (closed || updateHandoff != null || queueAuthority != null) false else {
+                            queueAuthority = lease
+                            mutableTasks.value = restore()
+                            mutableAuthorityReason.value = null
+                            true
+                        }
+                    }
+                    if (!adopted) lease.close() else try { synchronized(lock) { scheduleLocked() } }
+                    catch (failure: Exception) {
+                        synchronized(lock) { closed = true; mutableAuthorityReason.value = failure.message ?: "下载初始化失败" }
+                        startCloseRetirement()
+                    }
+                    return@launch
+                }
+                mutableAuthorityReason.value = attempt.reason
+                if (!attempt.busy) return@launch
+            }
+        }
+    }
 
     fun enqueue(source: PlaybackSource, destination: Path = destinationFor(), metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String {
         synchronized(lock) { assertMutationsAllowedLocked() }
@@ -365,7 +447,7 @@ class DesktopDownloadManager internal constructor(
     }
 
     private fun scheduleLocked() {
-        if (closed || updateHandoff != null) return
+        if (closed || updateHandoff != null || !queueAuthorityHeldLocked()) return
         // A cancelled Windows job retains its file owner until its finally block
         // completes. Reserve that slot while the original policy selects work.
         val candidates = mutableTasks.value.map { task ->
@@ -373,6 +455,7 @@ class DesktopDownloadManager internal constructor(
                 task.item.copy(status = DownloadStatus.PENDING) else task.item
         }
         val retiringRemovedJobs = jobs.keys.count { id -> mutableTasks.value.none { it.id == id } }
+        val ready = mutableListOf<Job>()
         resolveNextQueuedDownloadTaskIds(candidates,
             maxConcurrent = (DEFAULT_MAX_CONCURRENT_DOWNLOADS - retiringRemovedJobs).coerceAtLeast(0)).forEach { id ->
             // Match original enqueueDownload: reserve PENDING under the queue
@@ -380,9 +463,10 @@ class DesktopDownloadManager internal constructor(
             updateLocked(id) { it.copy(item = it.item.copy(status = DownloadStatus.PENDING, errorMessage = null)) }
             val job = scope.launch(start = CoroutineStart.LAZY) { runTask(id) }
             installJobLocked(id, job)
-            job.start()
+            ready += job
         }
         persistLocked(force = true)
+        ready.forEach { it.start() }
     }
 
     private suspend fun runTask(id: String) {
@@ -391,7 +475,7 @@ class DesktopDownloadManager internal constructor(
         val activeStatuses = setOf(DownloadStatus.PENDING, DownloadStatus.DOWNLOADING, DownloadStatus.MERGING)
         fun queueOwnedLocked(statuses: Set<DownloadStatus>, requireActive: Boolean = true): Boolean {
             val expected = expectedTask ?: return false
-            return !closed && updateHandoff == null && (!requireActive || pendingJob.isActive) && jobs[id] === pendingJob &&
+            return !closed && updateHandoff == null && queueAuthorityHeldLocked() && (!requireActive || pendingJob.isActive) && jobs[id] === pendingJob &&
                 mutableTasks.value.any { it.id == id && it.item.createdAt == expected.item.createdAt &&
                     it.destinationRoot == expected.destinationRoot && it.authorizationReceipt == expected.authorizationReceipt &&
                     it.status in statuses }
@@ -424,7 +508,7 @@ class DesktopDownloadManager internal constructor(
         }
         try {
             var task = synchronized(lock) {
-                mutableTasks.value.firstOrNull { !closed && updateHandoff == null && jobs[id] === pendingJob &&
+                mutableTasks.value.firstOrNull { !closed && updateHandoff == null && queueAuthorityHeldLocked() && jobs[id] === pendingJob &&
                     it.id == id && it.status == DownloadStatus.PENDING }
             } ?: return
             expectedTask = task
@@ -516,18 +600,18 @@ class DesktopDownloadManager internal constructor(
             val brandSource = task.playbackSource()
             val brandCreatedAt = task.item.createdAt
             val brandOrigin = pendingJob.let { worker -> com.bilipai.desktop.ui.DesktopBrandSuccessOrigin(worker,
-                { synchronized(lock) { !closed && updateHandoff == null && mutableTasks.value.any {
+                { synchronized(lock) { !closed && updateHandoff == null && queueAuthorityHeldLocked() && mutableTasks.value.any {
                     it.id == id && it.item.createdAt == brandCreatedAt && it.authorizationReceipt == task.authorizationReceipt &&
                         it.status == DownloadStatus.COMPLETED
                 } } && publication.isCurrent(brandSource) },
                 { action ->
                     try {
-                        publication.admit(brandSource, { synchronized(lock) { !closed && updateHandoff == null && mutableTasks.value.any {
+                        publication.admit(brandSource, { synchronized(lock) { !closed && updateHandoff == null && queueAuthorityHeldLocked() && mutableTasks.value.any {
                             it.id == id && it.item.createdAt == brandCreatedAt && it.authorizationReceipt == task.authorizationReceipt &&
                                 it.status == DownloadStatus.COMPLETED
                         } } }) {
                             synchronized(lock) {
-                                if (!closed && updateHandoff == null && mutableTasks.value.any { it.id == id && it.item.createdAt == brandCreatedAt &&
+                                if (!closed && updateHandoff == null && queueAuthorityHeldLocked() && mutableTasks.value.any { it.id == id && it.item.createdAt == brandCreatedAt &&
                                     it.authorizationReceipt == task.authorizationReceipt && it.status == DownloadStatus.COMPLETED }) action()
                             }
                         }
@@ -630,7 +714,7 @@ class DesktopDownloadManager internal constructor(
         val task = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: throw CancellationException()
         val source = task.playbackSource()
         val callerJob = context[Job]
-        val owned = { callerJob?.isActive == true && synchronized(lock) { !closed && updateHandoff == null && jobs[id] === callerJob &&
+        val owned = { callerJob?.isActive == true && synchronized(lock) { !closed && updateHandoff == null && queueAuthorityHeldLocked() && jobs[id] === callerJob &&
             mutableTasks.value.any { it.id == id && it.status == DownloadStatus.DOWNLOADING && it.authorizationReceipt == task.authorizationReceipt } } }
         publication.admit(source, owned) { Unit }
         var activeSource = source
@@ -751,9 +835,13 @@ class DesktopDownloadManager internal constructor(
         mutableTasks.value = mutableTasks.value.map { if (it.id == id) change(it).let { next -> next.copy(item = sanitizeDownloadTask(next.item)) } else it }
     }
 
-    private fun persistLocked(force: Boolean, handoffWrite: Boolean = false) {
+    private fun persistLocked(force: Boolean, handoffWrite: Boolean = false, durable: Boolean = false) {
         // Old worker completions and normal close cannot publish into a successor's
         // queue. Only the explicit prelaunch/confirmed-rollback checkpoint can write.
+        if (!queueAuthorityHeldLocked()) {
+            check(!handoffWrite) { "下载交接检查点没有操作系统所有权" }
+            return
+        }
         if (updateHandoff != null && !handoffWrite) return
         val now = System.nanoTime()
         if (!force && now - lastPersistNanos < 300_000_000L) return
@@ -761,6 +849,7 @@ class DesktopDownloadManager internal constructor(
         val temporary = Files.createTempFile(stateFile.toAbsolutePath().parent, "downloads-", ".tmp")
         try {
             Files.writeString(temporary, json.encodeToString(serializer, mutableTasks.value))
+            if (durable) java.nio.channels.FileChannel.open(temporary, java.nio.file.StandardOpenOption.WRITE, java.nio.file.LinkOption.NOFOLLOW_LINKS).use { it.force(true) }
             try { Files.move(temporary, stateFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
             } catch (_: java.nio.file.AtomicMoveNotSupportedException) {
                 Files.move(temporary, stateFile, StandardCopyOption.REPLACE_EXISTING)
@@ -807,32 +896,51 @@ class DesktopDownloadManager internal constructor(
         Files.walk(directory).use { paths -> paths.sorted(Comparator.reverseOrder()).forEach { Files.deleteIfExists(it) } }
     }
 
-    /** Root awaits the original workers before exit or launching a replacement process. */
-    internal suspend fun shutdownForApplicationExit(): Unit = withContext(NonCancellable + Dispatchers.IO) {
-        try {
-            synchronized(lock) {
-                if (!closed) {
-                    closed = true
-                    mutableTasks.value = mutableTasks.value.map {
-                        if (isDownloadTaskActive(it.item)) it.copy(item = normalizeRestoredDownloadTask(it.item)) else it
-                    }
+    /** Freeze synchronously; actual joins, directory drain and lease release stay outside monitors. */
+    private fun markClosing() {
+        synchronized(lock) {
+            if (!closed) {
+                closed = true
+                mutableTasks.value = mutableTasks.value.map {
+                    if (isDownloadTaskActive(it.item)) it.copy(item = normalizeRestoredDownloadTask(it.item)) else it
                 }
-                // A retry after a failed persistence writes the same closed queue again.
-                persistLocked(force = true)
             }
-        } finally {
-            // Child cleanup and completion handlers need the queue lock; await outside it.
+        }
+        scope.cancel()
+    }
+
+    internal suspend fun shutdownForApplicationExit(): Unit = withContext(NonCancellable + Dispatchers.IO) {
+        markClosing()
+        ownershipOperations.withLock {
+            // Includes ATOMIC remove retirement and pre-admission directory IO outside scope.
             scope.coroutineContext[Job]!!.cancelAndJoin()
+            directoryPreparationCount.first { it == 0 }
+            val lease = synchronized(lock) {
+                val owned = queueAuthority?.takeIf { it.holds(stateFile) }
+                if (owned != null) persistLocked(force = true, durable = true)
+                owned
+            }
+            if (lease != null) {
+                lease.finishCleanExit()
+                lease.close()
+                synchronized(lock) { if (queueAuthority === lease) queueAuthority = null }
+            }
         }
     }
 
-    override fun close() = synchronized(lock) {
-        if (!closed) {
-            closed = true
-            mutableTasks.value = mutableTasks.value.map { if (isDownloadTaskActive(it.item)) it.copy(item = it.item.copy(status = DownloadStatus.PAUSED)) else it }
-            persistLocked(force = true)
-            scope.cancel()
+    private fun startCloseRetirement() {
+        val retirement = synchronized(lock) {
+            closeRetirement?.takeIf { !it.isCompleted } ?: retirementScope.launch(start = CoroutineStart.LAZY) {
+                try { shutdownForApplicationExit() }
+                catch (failure: Exception) { mutableAuthorityReason.value = failure.message ?: "下载退役尚未完成" }
+            }.also { closeRetirement = it }
         }
+        retirement.start()
+    }
+
+    override fun close() {
+        markClosing()
+        startCloseRetirement()
     }
 
     companion object {

@@ -142,7 +142,8 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
     diagnosticLifecycle: DesktopDiagnosticLifecycle? = null, diagnosticStartupError: String? = null,
     danmakuPresentation: DesktopDanmakuPresentationBinding,
     isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit,
-    onRootContentFrame: ((() -> Boolean) -> Unit) = {}) {
+    onRootContentFrame: ((() -> Boolean) -> Unit) = {},
+    startupDownloadHandoffToken: String? = null, requiresDownloadAuthorityForStartupHealth: Boolean = false) {
     val applicationImages = LocalDesktopApplicationImageLoader.current
     val pluginStore = remember(applicationPluginStore) {
         (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
@@ -193,7 +194,8 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
             isClosing = { rootClosing.get() || latestIsClosing() },
             diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,
             danmakuPresentation = danmakuPresentation, isFullscreen = isFullscreen, setFullscreen = setFullscreen,
-            onRootContentFrame = onRootContentFrame)
+            onRootContentFrame = onRootContentFrame, startupDownloadHandoffToken = startupDownloadHandoffToken,
+            requiresDownloadAuthorityForStartupHealth = requiresDownloadAuthorityForStartupHealth)
     }
     // Startup remains unobstructed. Existing diagnostic snapshots are available
     // through the user-opened diagnostic settings; no prompt marker is cleared here.
@@ -208,7 +210,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     diagnosticLifecycle: DesktopDiagnosticLifecycle?, diagnosticStartupError: String?,
     danmakuPresentation: DesktopDanmakuPresentationBinding,
     isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit,
-    onRootContentFrame: ((() -> Boolean) -> Unit)) {
+    onRootContentFrame: ((() -> Boolean) -> Unit), startupDownloadHandoffToken: String?,
+    requiresDownloadAuthorityForStartupHealth: Boolean) {
     val applicationImages = LocalDesktopApplicationImageLoader.current
     val diagnostics = diagnosticLifecycle?.diagnostics
     val account by repository.account.collectAsState()
@@ -444,12 +447,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         com.android.purebilibili.core.events.BrandSuccessEvents { !isClosing() }
     }
     DisposableEffect(brandSuccessEvents) { onDispose { brandSuccessEvents.close() } }
-    val downloads = remember(repository,storageSettingsContext,brandSuccessEvents) { DesktopDownloadManager(repository,brandSuccessEvents) {
+    val downloads = remember(repository,storageSettingsContext,brandSuccessEvents,startupDownloadHandoffToken) { DesktopDownloadManager(repository,brandSuccessEvents,startupDownloadHandoffToken) {
         val raw=(storageSettingsContext.pluginContext.store.preferences("settings")["download_path"] as? kotlinx.serialization.json.JsonPrimitive)?.takeIf { it.isString }?.content
         storageSettingsContext.requireCurrent()
         resolveDesktopOriginalDownloadDestination(raw,DesktopDownloadManager.defaultDownloadRoot())
     } }
     val downloadUpdateHandoffPending by downloads.updateHandoffPending.collectAsState()
+    val downloadAuthorityReason by downloads.authorityReason.collectAsState()
+    val downloadHealthOwners = remember(downloads, startupDownloadHandoffToken, requiresDownloadAuthorityForStartupHealth) {
+        java.util.concurrent.atomic.AtomicReference<Pair<() -> Boolean, () -> Boolean>?>()
+    }
     val danmaku = remember(player, repository, hostWindow) { player?.let { DanmakuOverlay(it, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(hostWindow) { "Danmaku requires the mounted Root window" } }, httpClient = repository.httpClient) } }
     val subtitleAssets = remember(repository) { DesktopSubtitleAssets(repository.httpClient) }
     val ordinaryVideo = remember(repository, pluginStore, scope) {
@@ -1341,7 +1348,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val castMediaFactory: suspend () -> com.bilipai.desktop.cast.DesktopCastMediaPublication? = { currentCastMedia() }
     fun prepareUpdate(update: WindowsUpdate, manual: Boolean) {
-        if (activatingUpdate || downloadUpdateHandoffPending || updateJob?.isActive == true) return
+        if (activatingUpdate || downloadUpdateHandoffPending || !downloads.acceptsMutations() || updateJob?.isActive == true) return
         if (manual) manuallyRequested = true
         updateJob = scope.launch(start = CoroutineStart.LAZY) {
             try {
@@ -1557,20 +1564,21 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         followDesktopAutomaticUpdateChecks(pluginStore, { scope.isActive && !latestDynamicIsClosing() },
             { updater.autoCheck() }, nextDelayMs = { updater.automaticCheckDelayMs() })
     }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, pluginJsonUpdateHold, pluginJsonUpdateActivity, messageUpdateRoot, messageUpdateActivity, downloadUpdateHandoffPending, activatingUpdate, updateJob) {
+    LaunchedEffect(downloadAuthorityReason) { downloadAuthorityReason?.let { error = it } }
+    LaunchedEffect(updateState, downloadAuthorityReason, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, pluginJsonUpdateHold, pluginJsonUpdateActivity, messageUpdateRoot, messageUpdateActivity, downloadUpdateHandoffPending, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && !pluginJsonUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true && !downloadUpdateHandoffPending) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && !pluginJsonUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true && !downloadUpdateHandoffPending && downloads.acceptsMutations()) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     var downloadTicket: DesktopDownloadManager.UpdateHandoff? = null
                     try {
                         if (updater.activatePreparedUpdate(status.prepared,
-                            beforeLaunch = {
+                            beforeLaunch = { token ->
                                 // Capture before waiting so failure/cancel always retains
                                 // the exact ticket needed by afterFailedLaunch.
-                                downloadTicket = downloads.beginUpdateHandoff()
+                                downloadTicket = downloads.beginUpdateHandoff(token, updater.downloadHandoffTarget(status.prepared))
                                 downloads.awaitUpdateHandoff(checkNotNull(downloadTicket))
                             },
                             onCommitted = { downloadTicket?.let(downloads::commitUpdateHandoff) },
@@ -1893,7 +1901,17 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     ordinaryVideo.playlist,
                     { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L },
                     originalBrowseCachedPosition)
-                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize(),onRootContentFrame) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages,spacePages ->
+                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize(),
+                    { rootOwner ->
+                        val previous = downloadHealthOwners.get()
+                        val wrapped: () -> Boolean = if (previous != null && previous.first === rootOwner) previous.second else {
+                            val owns: () -> Boolean = { rootOwner() && (!requiresDownloadAuthorityForStartupHealth ||
+                                downloads.canPublishStartupHealth(startupDownloadHandoffToken)) }
+                            downloadHealthOwners.set(rootOwner to owns)
+                            owns
+                        }
+                        onRootContentFrame(wrapped)
+                    }) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages,spacePages ->
                     SideEffect { messageUpdateRoot = messagePages }
                     val messageRoutes = commands as DesktopOriginalRootRouteAssembly
                     val messageLink: (String) -> Unit = { raw ->
@@ -2901,7 +2919,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false },
-            veyraTracking = veyraTracking, downloadHandoffPending = downloadUpdateHandoffPending)
+            veyraTracking = veyraTracking, downloadHandoffPending = downloadUpdateHandoffPending || downloadAuthorityReason != null)
     }
     }
     }
