@@ -268,7 +268,7 @@ class DesktopUpdaterStageLeaseTest {
     }
 
     @Test
-    fun actualHealthFailureRetiresControlledChildThenRereadsItsRealQueueBeforeRollback() = runBlocking {
+    fun actualHealthFailureRetiresControlledChildThenRereadsItsRealQueueBeforeRollback(): Unit = runBlocking {
         MemoryRelease().use { f ->
             val parent = f.queue()
             var child: com.bilipai.desktop.download.DesktopDownloadManager? = null
