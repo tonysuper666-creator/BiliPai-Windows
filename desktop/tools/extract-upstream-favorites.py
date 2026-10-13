@@ -1,4 +1,5 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v035_favorite_cover import selected_source as favorite_cover_source, additional_leaf_sources as favorite_cover_leaf_sources, apply_and_record as apply_favorite_cover
 from pathlib import Path
 import hashlib, importlib.util, json, re, subprocess
 HERE=Path(__file__).resolve().parent
@@ -13,13 +14,15 @@ def emit(p,s):
  relative=str(p).replace(chr(92),'/')
  row=records[-1]
  # The new recap raw is emitted only by this producer, even when a pure file is verbatim.
- mode='selected' if row.get('recapGeneratedAdaptation') else 'direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
+ mode='selected' if row.get('recapGeneratedAdaptation') or row.get('favoriteCoverGeneratedSource') else 'direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
  row.setdefault('outputs',[]).append(dict(path=relative,sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest(),mode=mode))
  if mode=='direct' and not STANDALONE:return
  p=OUT/p;safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_text(s,encoding='utf-8',newline='\n')
 parser=None
 records=[]
 def source(rel):
+ if rel=='feature/list/FavoriteFolderCardList':
+  s,row=favorite_cover_source(rel);records.append(row);return s
  if rel=='data/repository/FavoriteRepository':
   from v034_favorite_content_errors import selected_source
   s,row=selected_source(rel);records.append(row);return s
@@ -42,6 +45,8 @@ def output(rel,s,mode):
   from v029_brand_history import generated_audit
   originalRel={'feature/list/DesktopOriginalListViewModels':'feature/list/ListViewModel'}.get(rel,rel)
   records[-1]['historyGeneratedAdaptation']=generated_audit(originalRel,s)
+ s,coverAudit=apply_favorite_cover(rel,s,OUT)
+ if coverAudit is not None:records[-1]['windowsFavoriteCoverAdaptation']=coverAudit
  emit('com/android/purebilibili/'+rel+'.kt',s)
  records[-1].update(output='com/android/purebilibili/'+rel+'.kt',selection=mode,outputSha256=hashlib.sha256(s.encode()).hexdigest())
 def rmfun(s,name):
@@ -75,6 +80,9 @@ def drop_logs(s):
   start=s.rfind('\n',0,m.start())+1;assert not s[start:m.start()].strip()
   end=parser.balanced(mask,mask.index('(',m.start()));s=s[:start]+s[end:]
 def produce():
+ for rel,body,row in favorite_cover_leaf_sources():
+  records.append(row)
+  output(rel,body,'whole original v035 favorite cover cache/policy; fixed Root context/storage only')
  # Original models already installed are references; neither parallel DTO nor duplicate declaration.
  for rel in ['data/model/response/PersonalFavoriteModels','data/model/response/FavoriteModels']:
   s=source(rel);records[-1].update(selection='reference: installed original model')

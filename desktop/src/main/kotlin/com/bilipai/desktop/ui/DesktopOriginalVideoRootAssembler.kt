@@ -318,7 +318,8 @@ internal class DesktopOriginalVideoRootAssembler(
             { result -> if (result is DesktopOriginalMediaCachePreparation.Direct) diagnostic("Portrait byte transport selected direct origin") },
             { expected, plan, isPresenterCurrent, failure -> factory.acceptedMedia(owner, expected, plan, isPresenterCurrent, failure) },
             captureMetadataRequest = factory::captureMetadataRequest,
-            createPageRequestRepository = factory::requestRepository) }
+            createPageRequestRepository = factory::requestRepository,
+            storyFeed = story::getStoryFeed) }
         val storage = remember(owner) { DesktopOriginalMusicStorageBinding(effect.settings) }
         val external = remember(owner) { DesktopOriginalExternalPlaylistBinding(effect.settings, resources.audioRepository) {
             factory.captureRequest(owner)

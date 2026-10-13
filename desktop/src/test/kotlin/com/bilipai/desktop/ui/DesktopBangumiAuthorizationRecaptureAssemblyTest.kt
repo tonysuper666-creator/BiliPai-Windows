@@ -382,6 +382,7 @@ class DesktopBangumiAuthorizationRecaptureAssemblyTest {
                 interactionAnalytics = unused(), effects = effects,
                 todayWatchFeedback = DesktopTodayWatchFeedbackWriteBinding(context, ::owns, ::commit))
             portrait = DesktopOriginalPortraitPlatformBinding(owner, { owner.takeIf { owns() } }, unused(), unused(), unused(), unused(),
+                storyFeed = { _, _, _, _ -> error("Unexpected Story feed in DesktopBangumiAuthorizationRecaptureAssemblyTest fixture") },
                 captureRequest = { capture().also { mediaCaptures += MediaCapture(it.receipt, owner.captureLoadState(), currentCoroutineContext().job) } },
                 captureMetadataRequest = { value ->
                     require(value === owner)
