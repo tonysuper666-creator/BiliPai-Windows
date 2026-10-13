@@ -5069,7 +5069,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicy.kt",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "dynamic-editor-detail-parity",
         "v025-comment-parity"
@@ -11542,9 +11542,27 @@
         "parallel dynamic candidate loading",
         "comment first-screen skeleton consumers"
       ]
+    },
+    "v036CompleteVideoCommentCache": {
+      "upstreamTag": "v0.3.6",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "archive": "desktop/upstream-slices/v036-video-comment-cache",
+      "wholeOriginalVmSelected": true,
+      "originalPolicyUnits": 4,
+      "solePaginationProducerUpgraded": true,
+      "soleSortAliasProducerSelected": true,
+      "sharedCommentSortAndStateDeclarationsRetainedExactly": true,
+      "sharedCounterAndRouteBodiesRetainedExactly": true,
+      "cacheMaximumEntries": 12,
+      "pageSize": 30,
+      "viewerMidKeyUsesOwnedRequests": true,
+      "originalPolicyTests": 5,
+      "sourcePrepared": true,
+      "sourceQualified": false,
+      "fullStableParity": false
     }
   },
-  "windowsRevision": 72,
+  "windowsRevision": 73,
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",

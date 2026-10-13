@@ -925,16 +925,16 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 272)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 264)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 64)
-        self.assertEqual(len(self.inventory["archives"]), 68)
+        self.assertEqual(len(entries), 277)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 269)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 65)
+        self.assertEqual(len(self.inventory["archives"]), 69)
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
                             ("v034-pgc-initial-detail", 2), ("v034-next-watch-ui", 3),
                             ("v035-autoplay-continuation", 1), ("v035-favorite-cover", 5),
-                            ("v035-story", 6), ("v035-story-pager", 1), ("v035-dynamic-link", 7), ("v035-ambient", 4), ("v035-scrollable-lists", 1), ("v035-dynamic-preview", 5), ("v036-comment-route", 2)):
+                            ("v035-story", 6), ("v035-story-pager", 1), ("v035-dynamic-link", 7), ("v035-ambient", 4), ("v035-scrollable-lists", 1), ("v035-dynamic-preview", 5), ("v036-comment-route", 2), ("v036-video-comment-cache", 5)):
             directory = "desktop/upstream-slices/" + root
             with self.subTest(root=root):
                 self.assertIn(directory, self.inventory["buildInputRoots"])
@@ -1089,6 +1089,18 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             self.assertEqual(row["blob"], original["gitBlob"])
             self.assertFalse(row["referenceOnly"])
         self.assertIn('inputs.file("tools/v036_comment_route.py")', (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
+        cache_root = "desktop/upstream-slices/v036-video-comment-cache/"
+        cache_manifest = json.loads((self.repo / cache_root / "manifest.json").read_bytes())
+        self.assertEqual(cache_manifest["fixedUpstreamCommit"], "3608e0347ba3314ac74190d724d78598fdbad879")
+        cache_rows = {Path(row["localPath"]).name: row for row in entries if row["localPath"].startswith(cache_root)}
+        self.assertEqual(len(cache_rows), 5)
+        for original in cache_manifest["files"]:
+            row = cache_rows[original["filename"]]
+            self.assertEqual(row["path"], original["path"])
+            self.assertEqual(row["sha256"], original["sha256Bytes"])
+            self.assertEqual(row["blob"], original["gitBlob"])
+            self.assertFalse(row["referenceOnly"])
+        self.assertIn('inputs.file("tools/v036_video_comment_cache.py")', (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
         scrollable_root = "desktop/upstream-slices/v035-scrollable-lists/"
         scrollable_manifest = json.loads((self.repo / scrollable_root / "manifest.json").read_bytes())
         scrollable_raw = (self.repo / scrollable_root / "AppScrollableLists.kt").read_bytes()
@@ -1467,6 +1479,12 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             "v036-comment-route/CommentRepository.kt",
             "v036-comment-route/CommentReadRouteMemo.kt",
             "v036-comment-route/manifest.json",
+            "v036-video-comment-cache/CommentPaginationPolicy.kt",
+            "v036-video-comment-cache/manifest.json",
+            "v036-video-comment-cache/SubReplySortPolicy.kt",
+            "v036-video-comment-cache/VideoCommentLoadPolicy.kt",
+            "v036-video-comment-cache/VideoCommentPaginationPolicy.kt",
+            "v036-video-comment-cache/VideoCommentViewModel.kt",
         )
         for leaf in leaves:
             source = self.repo / "desktop/upstream-slices" / leaf
@@ -1490,10 +1508,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 272)
+        self.assertEqual(len(self.load()), 277)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 272)
+        self.assertEqual(len(self.load()), 277)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1510,7 +1528,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 272)
+                self.assertEqual(len(entries), 277)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

@@ -4,6 +4,7 @@ from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
 from v029_brand_consumers import empty_consumer
 import v029_comment_search as comment_search
+import v036_video_comment_cache as video_cache
 from v033_comment_refresh import apply_selected as apply_v033_comment_refresh
 BASE='app/src/main/java/com/android/purebilibili/'
 BGM=BASE+'feature/audio/bgm/'
@@ -247,16 +248,22 @@ def generate_ui(repo,output,original,shared,emit,changes):
         m=re.search(r'(?m)^[ \t]*(?:(?:internal|private|public|data|enum|suspend|inline)\s+)*(?:class|fun)\s+'+re.escape(name)+r'\b',mask);assert m,name
         if re.search(r'\bfun\b',m.group()):
             opening=mask.index('(',m.start());params=shared.balanced(mask,opening)
-            opening=mask.index('{',params);end=shared.balanced(mask,opening,'{','}')
+            opening=mask.index('{',params)
+            equals=mask.find('=',params,opening)
+            if equals>=0:
+                call=mask.index('(',equals)
+                end=shared.balanced(mask,call)
+            else:
+                end=shared.balanced(mask,opening,'{','}')
         else:
             opening=mask.index('(',m.start()) if name not in ['CommentSortMode'] else mask.index('{',m.start())
             end=shared.balanced(mask,opening,'{','}') if mask[opening]=='{' else shared.balanced(mask,opening)
             tail=mask[end:].lstrip();padding=len(mask[end:])-len(tail)
             if tail.startswith('{'):end=shared.balanced(mask,end+padding,'{','}')
         return text[:m.start()]+text[end:]
-    path=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';body, comment_selection = comment_search.select_full(repo,path,original[path]); comment_raw=body
-    body, v033_refresh_selection = apply_v033_comment_refresh(repo, path, body)
-    comment_selection['v033SubReplyRefresh'] = v033_refresh_selection
+    path=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';body, comment_selection = video_cache.select_vm(original[path]); comment_raw=body
+    video_cache.generate_cache(output)
+    comment_selection['originalSubReplyRefreshIncluded'] = True
     for name in ['CommentSortMode','SubReplyUiState','resolveSubReplyRemoteTotalCount','resolveSubReplyLoadedTotalCount','resolveRoutedCommentRootReply']:
         body=remove_declaration(body,name)
     body='\n'.join(l for l in body.splitlines() if not l.startswith('import android.') and not any(l==x for x in ['import androidx.lifecycle.ViewModel','import androidx.lifecycle.viewModelScope','import com.android.purebilibili.core.network.NetworkModule','import com.android.purebilibili.data.repository.CommentRepository','import com.android.purebilibili.data.repository.CommentFraudRepository']))+'\n'
@@ -278,6 +285,7 @@ def generate_ui(repo,output,original,shared,emit,changes):
             catch (failure: Exception) { ensureRequestOwned(); Result.failure(failure) }
         }'''+body[upload_end:]
     body=remove_declaration(body,'queryDisplayName').replace('List<Uri>','List<String>')
+    body=body.replace('com.android.purebilibili.core.util.Logger.', 'Logger.')
     body=shared.drop_logs(body)
     # Every original diagnostic Android Log call is standalone; remove only that call.
     while True:
@@ -293,7 +301,7 @@ def generate_ui(repo,output,original,shared,emit,changes):
     body, search_lifetime = comment_search.vm_delta(body)
     comment_selection['originalToPlatform'] = comment_search.whole_proof(comment_raw,body)
     comment_selection['searchLifetime'] = search_lifetime
-    changes.append(dict(source=path,v029CommentSearch=comment_selection))
+    changes.append(dict(source=path,v036VideoCommentCache=comment_selection))
     emit('com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt',body)
     retained(path,body,'Full original generic VM, including typed subjects, paging, subreply/conversation, send/pictures/sync, reactions, delete, original fraud hooks; sole editor/count-helper declarations omitted because already emitted once. Android lifecycle/Uri/currentMid/fraud persistence become required same-owner seams. No DynamicItem surrogate.')
     path=BASE+'feature/video/ui/components/CommentInputDialog.kt';body=original[path]
@@ -377,8 +385,14 @@ def generate_ui(repo,output,original,shared,emit,changes):
     emit('com/android/purebilibili/data/repository/DesktopOriginalCommentFraudRepository.kt',body)
     retained(path,body,'Complete original record merge/save/recheck/delete/export/import bodies; Android Room getDao/context replaced by required same-account Windows DAO, requests remain existing-owner callbacks; cancellation rethrows.')
     for suffix in ['feature/video/ui/components/CommentMentionInsertPolicy.kt','feature/video/viewmodel/CommentPaginationPolicy.kt']:
-        emit('com/android/purebilibili/'+suffix,original[BASE+suffix])
-        retained(BASE+suffix,original[BASE+suffix],'Full original pure helper file, LF-identical.')
+        if suffix == 'feature/video/viewmodel/CommentPaginationPolicy.kt':
+            source = video_cache.read_sources()['VideoCommentPaginationPolicy.kt']
+            emit('com/android/purebilibili/'+suffix,source)
+            changes.append(dict(source=BASE+suffix,v036OriginalPaginationDelegate=True,
+                fixedUpstreamCommit=video_cache.COMMIT,wholeOriginalBytes=True))
+        else:
+            emit('com/android/purebilibili/'+suffix,original[BASE+suffix])
+            retained(BASE+suffix,original[BASE+suffix],'Full original pure helper file, LF-identical.')
     path='design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt'
     emit('com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt',original[path])
     retained(path,original[path],'Full original Compose reveal motion file, LF-identical.')
