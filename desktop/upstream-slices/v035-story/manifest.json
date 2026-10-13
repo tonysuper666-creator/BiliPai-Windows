@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+  "scope": "Single retained Story full VM/Screen/DTO/policy; one feed method and one StoryApi declaration. External recommendation Pager gate is a required coherent peer dependency, not optional.",
+  "sources": [
+    {
+      "file": "StoryRepository.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "bytes": 5597,
+      "sha256": "eabfa1b745aef056823514b1fb6739dd76b8ca3ec176e56f78cb017e1e12c4e2",
+      "gitBlob": "04687c00a695ccd701df193551dcdb3a8781922d"
+    },
+    {
+      "file": "StoryFeedPolicy.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "bytes": 8285,
+      "sha256": "8bd1836d296695fe268ccff899399c81dd4f91e8103af1d63a3b1eb7d3e88f49",
+      "gitBlob": "c6ae3da6fe5fe675ab6d88f6dc7419efedcbe61c"
+    },
+    {
+      "file": "StoryViewModel.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "bytes": 3988,
+      "sha256": "dc0b9fafb7e0ad6c079e4577412b23633e68ab8a707e822247f087aeb3f85213",
+      "gitBlob": "918d74bc8625de13fff9c6a3ff9d705168395726"
+    },
+    {
+      "file": "StoryModels.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "bytes": 3098,
+      "sha256": "0c145928365add46c7d577cae7ba658b9fbe0e3ac9131e125dd4b9c1f641fc12",
+      "gitBlob": "f8d1088ec2f0e3f17730b394443fa3152f608444"
+    },
+    {
+      "file": "ApiClient.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "bytes": 151680,
+      "sha256": "3a8fcf044cb2d853d8d6a7487d7875bb73cbf3cf40a9526bcea111c861513e2f",
+      "gitBlob": "5a27be2226cfd650710915142c8ce31dd7d6399d"
+    },
+    {
+      "file": "StoryScreen.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "bytes": 7604,
+      "sha256": "61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2",
+      "gitBlob": "a7a73b1f6cb433f66992a8be2f0d07cbf39d01ea"
+    }
+  ],
+  "projections": {
+    "StoryViewModel.kt": {
+      "source": "StoryViewModel.kt",
+      "originalSha256LF": "dc0b9fafb7e0ad6c079e4577412b23633e68ab8a707e822247f087aeb3f85213",
+      "adaptedSha256LF": "fdef46c7e5e662891b62a40c508621187dfc521b1a6cee79133eb0109424ff12",
+      "adapters": [
+        {
+          "before": "import android.app.Application\n",
+          "after": "",
+          "offsetChars": 48
+        },
+        {
+          "before": "import androidx.lifecycle.AndroidViewModel\n",
+          "after": "",
+          "offsetChars": 48
+        },
+        {
+          "before": "import androidx.lifecycle.viewModelScope\n",
+          "after": "",
+          "offsetChars": 48
+        },
+        {
+          "before": "import com.android.purebilibili.data.repository.StoryRepository\n",
+          "after": "",
+          "offsetChars": 110
+        },
+        {
+          "before": "import com.android.purebilibili.data.repository.VideoRepository\n",
+          "after": "",
+          "offsetChars": 110
+        },
+        {
+          "before": "class StoryViewModel(application: Application) : AndroidViewModel(application) {",
+          "after": "internal class StoryViewModel(private val environment: com.bilipai.desktop.ui.DesktopOriginalStoryEnvironment) {\n    private val viewModelScope get() = environment.scope\n    private val VideoRepository get() = environment.requests\n    private fun <T> MutableStateFlow(initial: T): MutableStateFlow<T> =\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, environment::commit)",
+          "offsetChars": 700
+        },
+        {
+          "before": "    fun startFeed(bvid: String = \"\") {\n",
+          "after": "    fun startFeed(bvid: String = \"\") {\n        environment.assertCurrent()\n",
+          "offsetChars": 1537
+        },
+        {
+          "before": "    fun refresh() {\n",
+          "after": "    fun refresh() {\n        environment.assertCurrent()\n",
+          "offsetChars": 1781
+        },
+        {
+          "before": "    fun loadMoreStories() {\n",
+          "after": "    fun loadMoreStories() {\n        environment.assertCurrent()\n",
+          "offsetChars": 2052
+        },
+        {
+          "before": "        loadJob = viewModelScope.launch {\n",
+          "after": "        loadJob = viewModelScope.launch {\n            environment.assertCurrent()\n",
+          "offsetChars": 2272
+        },
+        {
+          "before": "StoryRepository.getStoryFeed(bvid = seedBvid, displayId = nextDisplayId)",
+          "after": "environment.requests.getStoryFeed(aid = 0L, bvid = seedBvid, pageSize = 20, displayId = nextDisplayId)",
+          "offsetChars": 2429
+        },
+        {
+          "before": "currentCoroutineContext().ensureActive()\n",
+          "after": "currentCoroutineContext().ensureActive()\n            environment.assertCurrent()\n",
+          "offsetChars": 2766
+        },
+        {
+          "before": "currentCoroutineContext().ensureActive()\n",
+          "after": "currentCoroutineContext().ensureActive()\n            environment.assertCurrent()\n",
+          "offsetChars": 3256
+        },
+        {
+          "before": "    fun updateCurrentIndex(index: Int) {\n",
+          "after": "    fun updateCurrentIndex(index: Int) {\n        environment.assertCurrent()\n",
+          "offsetChars": 4180
+        },
+        {
+          "offsetChars": 3240,
+          "before": "                currentCoroutineContext().ensureActive()\n            environment.assertCurrent()\n",
+          "after": "                currentCoroutineContext().ensureActive()\n                environment.assertCurrent()\n"
+        }
+      ],
+      "output": "com/android/purebilibili/feature/story/StoryUiState.kt",
+      "writerHeader": "// GENERATED from app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt; do not edit.\n// LF-normalized SHA-256: dc0b9fafb7e0ad6c079e4577412b23633e68ab8a707e822247f087aeb3f85213\n",
+      "emittedSha256": "300c963d5b2658bc323966b79563a4c289acfb541bf4d419ac56b5098822a9a4"
+    },
+    "StoryScreen.kt": {
+      "source": "StoryScreen.kt",
+      "originalSha256LF": "61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2",
+      "adaptedSha256LF": "88bd790887f0e6a8b2e43d81912c7ac4350428df3240fbb2471a327e17ae64ec",
+      "adapters": [
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext\n",
+          "after": "",
+          "offsetChars": 933
+        },
+        {
+          "before": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+          "after": "",
+          "offsetChars": 933
+        },
+        {
+          "before": "import androidx.media3.common.util.UnstableApi\n",
+          "after": "",
+          "offsetChars": 933
+        },
+        {
+          "before": "@UnstableApi\n",
+          "after": "",
+          "offsetChars": 1245
+        },
+        {
+          "before": "fun StoryScreen(",
+          "after": "internal fun StoryScreen(",
+          "offsetChars": 1257
+        },
+        {
+          "before": "viewModel: StoryViewModel = viewModel(),",
+          "after": "viewModel: StoryViewModel,",
+          "offsetChars": 1466
+        },
+        {
+          "before": "playerViewModel: VideoPlaybackViewModel = viewModel(),",
+          "after": "playerViewModel: VideoPlaybackViewModel,",
+          "offsetChars": 1497
+        },
+        {
+          "before": "engagementViewModel: VideoEngagementViewModel = viewModel(),",
+          "after": "engagementViewModel: VideoEngagementViewModel,",
+          "offsetChars": 1542
+        },
+        {
+          "before": "onVideoClick: (String, Long, String) -> Unit = { _, _, _ -> },",
+          "after": "onVideoClick: (String, Long, String) -> Unit,",
+          "offsetChars": 1647
+        },
+        {
+          "before": "onUserClick: (Long) -> Unit = {},",
+          "after": "onUserClick: (Long) -> Unit,",
+          "offsetChars": 1697
+        },
+        {
+          "before": "onSearchClick: () -> Unit = {},",
+          "after": "onSearchClick: () -> Unit,",
+          "offsetChars": 1730
+        },
+        {
+          "before": "onRotateToLandscape: () -> Unit = {}",
+          "after": "onRotateToLandscape: () -> Unit",
+          "offsetChars": 1761
+        },
+        {
+          "before": "    val context = LocalContext.current",
+          "after": "    val platform = com.bilipai.desktop.ui.LocalDesktopOriginalPortraitPlatform.current\n    val context = platform.section.settingsContext",
+          "offsetChars": 1958
+        },
+        {
+          "before": "com.android.purebilibili.core.store.SettingsManager",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings",
+          "offsetChars": 2202
+        },
+        {
+          "before": "engagementViewModel.initWithContext(context)",
+          "after": "engagementViewModel.initWithContext(context.pluginContext)",
+          "offsetChars": 2427
+        },
+        {
+          "before": "viewModel = playerViewModel,",
+          "after": "viewModel = com.bilipai.desktop.ui.LocalDesktopOriginalStoryPlaybackView.current,",
+          "offsetChars": 5902
+        }
+      ],
+      "output": "com/android/purebilibili/feature/story/StoryScreen.kt",
+      "writerHeader": "// GENERATED from app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt; do not edit.\n// LF-normalized SHA-256: 61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2\n",
+      "emittedSha256": "8dd077701762672df8baf59a3e64e097078765732cfae28e1dbd8ca9ee930de1"
+    },
+    "StoryFeedPolicy.kt": {
+      "source": "StoryFeedPolicy.kt",
+      "mode": "completeRaw",
+      "output": "com/android/purebilibili/feature/story/StoryFeedPolicy.kt",
+      "emittedSha256": "8bd1836d296695fe268ccff899399c81dd4f91e8103af1d63a3b1eb7d3e88f49"
+    },
+    "StoryModels.kt": {
+      "source": "StoryModels.kt",
+      "mode": "completeRaw",
+      "output": "com/android/purebilibili/data/model/response/StoryModels.kt",
+      "emittedSha256": "0c145928365add46c7d577cae7ba658b9fbe0e3ac9131e125dd4b9c1f641fc12"
+    },
+    "StoryRepository.kt": {
+      "source": "StoryRepository.kt",
+      "output": "com/android/purebilibili/data/repository/DesktopOriginalVideoStoryFeedProtocol.kt",
+      "originalMethod": "    suspend fun getStoryFeed(\n        aid: Long = 0,\n        bvid: String = \"\",\n        pageSize: Int = 20,\n        displayId: Int = 1\n    ): Result<List<StoryItem>> {\n        return try {\n            val response = NetworkModule.storyApi.getStoryFeed(\n                displayId = displayId,\n                ps = pageSize,\n                aid = aid,\n                bvid = bvid\n            )\n            \n            if (response.code == 0 && response.data != null) {\n                val checkedResponseData = requireNotNull(response.data)\n                val items = checkedResponseData.items ?: emptyList()\n                Logger.d(TAG, \" 获取故事流成功: ${items.size} 条视频\")\n                Result.success(items)\n            } else {\n                Logger.e(TAG, \" 获取故事流失败: code=${response.code}, msg=${response.message}\")\n                Result.failure(Exception(\"获取失败: ${response.message}\"))\n            }\n        } catch (e: CancellationException) {\n            throw e\n        } catch (e: Exception) {\n            Logger.e(TAG, \" 获取故事流异常\", e)\n            Result.failure(e)\n        }\n    }\n",
+      "originalMethodSha256LF": "3b0b2d26cfa05dd8a0dfeee79904bc1c2e06ce4b401366d5b28efa899687022c",
+      "adapters": [
+        {
+          "before": "        return try {\n",
+          "after": "        currentCoroutineContext().ensureActive(); assertOwned()\n        return try {\n",
+          "offsetChars": 168
+        },
+        {
+          "before": "NetworkModule.storyApi.getStoryFeed(",
+          "after": "api.getStoryFeed(",
+          "offsetChars": 280
+        },
+        {
+          "before": "Logger.e(TAG, \" 获取故事流失败: code=${response.code}, msg=${response.message}\")",
+          "after": "android.util.Log.e(TAG, \" 获取故事流失败: code=${response.code}, msg=${response.message}\")",
+          "offsetChars": 790
+        },
+        {
+          "before": "            if (response.code == 0 && response.data != null) {",
+          "after": "            currentCoroutineContext().ensureActive(); assertOwned()\n            if (response.code == 0 && response.data != null) {",
+          "offsetChars": 450
+        },
+        {
+          "before": "        } catch (e: Exception) {\n",
+          "after": "        } catch (e: Exception) {\n            currentCoroutineContext().ensureActive(); assertOwned()\n",
+          "offsetChars": 1092
+        }
+      ],
+      "adaptedMethodSha256LF": "e587d5e9f3155c224116b01ed8f398e83a0ee1cd5c775d94ec654910e4478e13",
+      "prefix": "package com.android.purebilibili.data.repository\n\nimport com.android.purebilibili.core.network.StoryApi\nimport com.android.purebilibili.data.model.response.StoryItem\nimport com.android.purebilibili.core.util.Logger\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive\n\n/** Complete v035 getStoryFeed through the SAME captured primary API and caller. */\ninternal class DesktopOriginalVideoStoryFeedProtocol(\n    private val api: StoryApi,\n    private val assertOwned: () -> Unit,\n) {\n    private val TAG = \"StoryRepository\"\n\n",
+      "suffix": "\n}\n",
+      "emittedSha256": "d1427882e3d12fa648da1065632ba455742b6b749089631ec092318c32f09295",
+      "originalOffsetChars": 812
+    },
+    "ApiClient.kt": {
+      "source": "ApiClient.kt",
+      "output": "com/android/purebilibili/core/network/DesktopUpstreamApi.kt",
+      "originalDeclaration": "interface StoryApi {\n    // 获取故事流 (竖屏短视频列表)\n    @GET(\"x/v2/feed/index/story\")\n    suspend fun getStoryFeed(\n        @Query(\"display_id\") displayId: Int = 1,\n        @Query(\"fnval\") fnval: Int = 4048,         // 视频格式参数\n        @Query(\"fnver\") fnver: Int = 0,\n        @Query(\"force_host\") forceHost: Int = 0,\n        @Query(\"fourk\") fourk: Int = 1,\n        @Query(\"qn\") qn: Int = 32,                  // 画质\n        @Query(\"ps\") ps: Int = 20,                  // 每页数量\n        @Query(\"aid\") aid: Long = 0,                // 可选，从此视频开始\n        @Query(\"bvid\") bvid: String = \"\"            // 可选，从此视频开始\n    ): StoryResponse\n}",
+      "originalDeclarationSha256LF": "bdc69a1636bc13781bee2f013c047085ffa7ca432e4815a9a2b54e5e70f98fdf",
+      "beforeDeclaration": "interface StoryApi {\r\n    // 获取故事流 (竖屏短视频列表)\r\n    @GET(\"x/v2/feed/index/story\")\r\n    suspend fun getStoryFeed(\r\n        @Query(\"fnval\") fnval: Int = 4048,         // 视频格式参数\r\n        @Query(\"fnver\") fnver: Int = 0,\r\n        @Query(\"force_host\") forceHost: Int = 0,\r\n        @Query(\"fourk\") fourk: Int = 1,\r\n        @Query(\"qn\") qn: Int = 32,                  // 画质\r\n        @Query(\"ps\") ps: Int = 20,                  // 每页数量\r\n        @Query(\"aid\") aid: Long = 0,                // 可选，从此视频开始\r\n        @Query(\"bvid\") bvid: String = \"\"            // 可选，从此视频开始\r\n    ): StoryResponse\r\n}",
+      "aggregateCurrentBeforeRawSha256": "8f57f0d6d15a425ad535d125f3ae183c3c2df0c49c9210ec95c585e6a71d83e3",
+      "aggregateExpectedRawSha256": "179519dc2fec6bffd04216f61246e87688188fcc51117f2e169928e5fc9b09a2",
+      "scope": "Only complete original StoryApi declaration; other full ApiClient source is reference only",
+      "originalOffsetChars": 65257
+    }
+  },
+  "pagerRequiredPorts": [
+    "recommendationsManagedExternally",
+    "recommendationLoadInProgress",
+    "recommendationLoadError",
+    "onLoadMoreRecommendations"
+  ],
+  "offsetSemantics": "All projection offsetChars are Python Unicode-character offsets. Raw tracked-file hunks separately use actual UTF-8 offsetBytes."
+}

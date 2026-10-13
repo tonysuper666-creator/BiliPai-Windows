@@ -925,15 +925,16 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 241)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 233)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 56)
-        self.assertEqual(len(self.inventory["archives"]), 60)
+        self.assertEqual(len(entries), 264)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 256)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 61)
+        self.assertEqual(len(self.inventory["archives"]), 65)
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
                             ("v034-pgc-initial-detail", 2), ("v034-next-watch-ui", 3),
-                            ("v035-autoplay-continuation", 1)):
+                            ("v035-autoplay-continuation", 1), ("v035-favorite-cover", 5),
+                            ("v035-story", 6), ("v035-story-pager", 1), ("v035-dynamic-link", 7), ("v035-ambient", 4)):
             directory = "desktop/upstream-slices/" + root
             with self.subTest(root=root):
                 self.assertIn(directory, self.inventory["buildInputRoots"])
@@ -946,11 +947,288 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
                 self.assertTrue(all(item["hashNormalization"] == "raw" for item in rows))
                 expected_references = ({"BasePlayerViewModel.kt"}
                                        if root == "v034-pgc-initial-detail" else
-                                       {"VideoPlayerSection.kt"} if root == "v034-next-watch-ui" else set())
+                                       {"VideoPlayerSection.kt"} if root == "v034-next-watch-ui" else
+                                       {"DynamicModels.kt"} if root == "v034-text-lyrics" else
+                                       {"DynamicComponents.kt", "ForwardedContent.kt"} if root == "v035-dynamic-link" else
+                                       {"README.md"} if root == "v035-ambient" else set())
                 self.assertEqual({Path(item["localPath"]).name for item in rows if item["referenceOnly"]},
                                  expected_references)
                 self.assertTrue(all(item["referenceOnly"] is False for item in rows
                                     if Path(item["localPath"]).name not in expected_references))
+        dynamic_root = "desktop/upstream-slices/v035-dynamic-link/"
+        dynamic_rows = {Path(item["localPath"]).name: item for item in entries
+                        if item["localPath"].startswith(dynamic_root)}
+        dynamic_names = {"DynamicModels.kt", "DynamicCard.kt", "DynamicComponents.kt", "ForwardedContent.kt",
+                         "DynamicLinkCard.kt", "DynamicLinkCardPolicy.kt", "PageAwareAsyncImage.kt"}
+        self.assertEqual(set(dynamic_rows), dynamic_names)
+        dynamic_manifest = json.loads((self.repo / dynamic_root / "manifest.json").read_bytes())
+        self.assertEqual(dynamic_manifest["upstreamCommit"], "46eaf277e83512061785be9759d1f07aba3c4839")
+        self.assertEqual(dynamic_manifest["canonicalBaselineCommit"], "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40")
+        dynamic_source_pins = {source["file"]: source for source in dynamic_manifest["sources"]}
+        self.assertEqual(set(dynamic_source_pins), dynamic_names)
+        dynamic_references = {"DynamicComponents.kt", "ForwardedContent.kt"}
+        whole_runtime_names = {"DynamicModels.kt", "DynamicLinkCard.kt", "DynamicLinkCardPolicy.kt", "PageAwareAsyncImage.kt"}
+        dynamic_raw_by_name = {}
+        for filename, row in dynamic_rows.items():
+            with self.subTest(dynamicLinkOriginal=filename):
+                pin = dynamic_source_pins[filename]
+                self.assertEqual(row["upstreamCommit"], dynamic_manifest["upstreamCommit"])
+                self.assertEqual(row["path"], pin["originalPath"])
+                self.assertEqual(row["referenceOnly"], filename in dynamic_references)
+                self.assertEqual(row["partialReuse"], filename == "DynamicCard.kt")
+                self.assertEqual(pin["referenceOnly"], row["referenceOnly"])
+                self.assertEqual(pin["partialReuse"], row["partialReuse"])
+                raw = (self.repo / row["localPath"]).read_bytes()
+                self.assertEqual(len(raw), pin["bytesRaw"])
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), row["sha256"])
+                self.assertEqual(sync.blob_oid(raw), row["blob"])
+                self.assertEqual(row["sha256"], pin["sha256Raw"])
+                self.assertEqual(row["blob"], pin["gitBlob"])
+                dynamic_raw_by_name[filename] = raw
+        self.assertEqual({filename for filename, row in dynamic_rows.items()
+                          if not row["referenceOnly"] and not row["partialReuse"]}, whole_runtime_names)
+        for filename in dynamic_references:
+            self.assertEqual(dynamic_rows[filename]["usedScope"],
+                             "Complete fixed original comparison/dependency evidence only; not emitted by this slice.")
+        for filename in whole_runtime_names - {"PageAwareAsyncImage.kt"}:
+            self.assertEqual(dynamic_rows[filename]["usedScope"], "Complete original file in the existing sole output owner.")
+        self.assertEqual(dynamic_rows["PageAwareAsyncImage.kt"]["usedScope"],
+                         "Complete original page-aware request/cache-key and static replay consumer with finite Windows Coil/context/Android-drawable adaptations.")
+        # The a69 DTO remains a validated full input, without claiming it as the
+        # effective runtime DTO. Both actual lyric originals remain effective.
+        lyrics_root = "desktop/upstream-slices/v034-text-lyrics/"
+        lyrics_rows = {Path(item["localPath"]).name: item for item in entries
+                       if item["localPath"].startswith(lyrics_root)}
+        self.assertEqual(set(lyrics_rows), {"DynamicModels.kt", "LyricsParser.kt", "LyricsDisplayPolicy.kt"})
+        historical_dto = lyrics_rows["DynamicModels.kt"]
+        self.assertEqual(historical_dto["upstreamCommit"], "a69d4181a073aa3207def3fca43318dcf7ab2c70")
+        self.assertIs(historical_dto["referenceOnly"], True)
+        self.assertEqual(historical_dto["usedScope"],
+                         "Historical full original validation input for the existing text/lyrics producer and complete inverse to the new pinned DTO; not an effective runtime DTO output.")
+        self.assertTrue(all(lyrics_rows[filename]["referenceOnly"] is False for filename in
+                            ("LyricsParser.kt", "LyricsDisplayPolicy.kt")))
+        historical_raw = (self.repo / historical_dto["localPath"]).read_bytes()
+        self.assertEqual(len(historical_raw), 52499)
+        self.assertEqual(hashlib.sha256(historical_raw).hexdigest(), historical_dto["sha256"])
+        self.assertEqual(sync.blob_oid(historical_raw), historical_dto["blob"])
+        dto_recipe = dynamic_manifest["dynamicModel"]
+        self.assertEqual(dto_recipe["previousCommit"], historical_dto["upstreamCommit"])
+        self.assertEqual(dto_recipe["previousSource"]["sha256"], historical_dto["sha256"])
+        self.assertEqual(dto_recipe["effectiveCommit"], dynamic_manifest["upstreamCommit"])
+        self.assertIs(dto_recipe["fullOriginal"], True)
+        self.assertEqual(dto_recipe["output"], "com/android/purebilibili/data/model/response/DynamicModels.kt")
+        self.assertEqual(len(dto_recipe["edits"]), 1)
+        replacement = dto_recipe["edits"][0]
+        self.assertEqual(replacement["offsetBytes"], 0)
+        self.assertEqual(replacement["before"].encode("utf-8"), historical_raw)
+        self.assertEqual(replacement["after"].encode("utf-8"), dynamic_raw_by_name["DynamicModels.kt"])
+        self.assertEqual(replacement["beforeWholeSha256"], historical_dto["sha256"])
+        self.assertEqual(replacement["afterWholeSha256"], dynamic_rows["DynamicModels.kt"]["sha256"])
+        dynamic_consumers = [
+            "complete-original-link-mapping-identity-dedup-and-target-dispatch",
+            "complete-original-opus-link-card-consumer",
+            "complete-original-feed-additional-link-card-consumer",
+            "complete-original-reserve-override-and-link-card-slot-closure",
+        ]
+        self.assertEqual(dynamic_rows["DynamicCard.kt"]["reusedConsumers"], dynamic_consumers)
+        self.assertEqual([consumer["name"] for consumer in dynamic_manifest["card"]["consumers"]], dynamic_consumers)
+        self.assertEqual(dynamic_rows["DynamicCard.kt"]["usedScope"],
+                         "Four complete original mapping/identity, opus/additional consumers and reserve-slot/override closure only; existing complete canonical Windows card remains sole owner.")
+        original_card = sync.normalized_source(dynamic_raw_by_name["DynamicCard.kt"])
+        for consumer in dynamic_manifest["card"]["consumers"]:
+            with self.subTest(dynamicCardConsumer=consumer["name"]):
+                start = consumer["offsetBytesLF"]
+                selected = original_card[start:start + consumer["bytesLF"]]
+                self.assertEqual(selected, consumer["original"].encode("utf-8"))
+                self.assertEqual(hashlib.sha256(selected).hexdigest(), consumer["sha256LF"])
+        self.assertEqual(dynamic_manifest["pageAware"]["source"], "PageAwareAsyncImage.kt")
+        self.assertEqual(dynamic_manifest["pageAware"]["beforeSha256LF"],
+                         dynamic_rows["PageAwareAsyncImage.kt"]["sha256"])
+        retired_dynamic_direct = [
+            "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAdditionalCardPolicy.kt",
+            "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicOpusLinkCard.kt",
+        ]
+        self.assertEqual(dynamic_manifest["retiredDirectSources"], retired_dynamic_direct)
+        actual_canonical_dynamic = sync.read_manifest(self.original_repo)
+        for original_path in retired_dynamic_direct:
+            old_row = next(source for source in actual_canonical_dynamic["sources"] if source["path"] == original_path)
+            self.assertEqual(old_row["mode"], "selected", "The sole dynamic producer owns each runtime declaration once")
+        self.assertIn('inputs.file("tools/v035_dynamic_link.py")',
+                      (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
+        ambient_root = "desktop/upstream-slices/v035-ambient/"
+        ambient_rows = {Path(item["localPath"]).name: item for item in entries
+                        if item["localPath"].startswith(ambient_root)}
+        self.assertEqual(set(ambient_rows), {"AmbientFramePolicy.kt", "AmbientFrameController.kt",
+                                           "AmbientPlayerBinding.kt", "README.md"})
+        ambient_manifest = json.loads((self.repo / ambient_root / "manifest.json").read_bytes())
+        self.assertEqual(ambient_manifest["upstreamCommit"], "46eaf277e83512061785be9759d1f07aba3c4839")
+        for item in ambient_manifest["entries"]:
+            with self.subTest(ambientOriginal=item["archiveFile"]):
+                raw = (self.repo / ambient_root / item["archiveFile"]).read_bytes()
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), item["rawSha256"])
+                self.assertEqual(sync.blob_oid(raw), item["gitBlob"])
+                self.assertEqual(ambient_rows[item["archiveFile"]]["referenceOnly"], item["referenceOnly"])
+                if item["referenceOnly"]:
+                    continue
+                lines = sync.normalized_source(raw).decode("utf-8").splitlines(keepends=True)
+                recipe = item["recipe"]
+                self.assertEqual(recipe["sourceSha256LF"], hashlib.sha256("".join(lines).encode()).hexdigest())
+                self.assertEqual(recipe["mode"], "policy-extract")
+                cursor = 0
+                generated = []
+                for edit in recipe["edits"]:
+                    self.assertEqual(edit["start"], cursor)
+                    original = "".join(lines[edit["start"]:edit["end"]])
+                    self.assertEqual(hashlib.sha256(original.encode()).hexdigest(), edit["beforeSha256LF"])
+                    generated.append(original if edit["after"] is None else edit["after"])
+                    cursor = edit["end"]
+                self.assertEqual(cursor, len(lines))
+                self.assertEqual(hashlib.sha256("".join(generated).encode()).hexdigest(), recipe["outputSha256LF"])
+                old_row = next(source for source in actual_canonical_dynamic["sources"] if source["path"] == item["path"])
+                self.assertEqual(old_row["mode"], "selected", "The sole ambient producer owns the complete latest declaration")
+        self.assertIn('inputs.file("tools/v035_ambient.py")',
+                      (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
+        story_root = "desktop/upstream-slices/v035-story/"
+        story_rows = {Path(item["localPath"]).name: item for item in entries
+                      if item["localPath"].startswith(story_root)}
+        story_names = {"StoryRepository.kt", "StoryFeedPolicy.kt", "StoryViewModel.kt",
+                       "StoryModels.kt", "ApiClient.kt", "StoryScreen.kt"}
+        self.assertEqual(set(story_rows), story_names)
+        story_manifest = json.loads((self.repo / story_root / "manifest.json").read_bytes())
+        self.assertEqual(story_manifest["upstreamCommit"], "46eaf277e83512061785be9759d1f07aba3c4839")
+        story_source_pins = {source["file"]: source for source in story_manifest["sources"]}
+        self.assertEqual(set(story_source_pins), story_names)
+        story_raw_by_name = {}
+        for filename, row in story_rows.items():
+            with self.subTest(storyOriginal=filename):
+                self.assertEqual(row["upstreamCommit"], story_manifest["upstreamCommit"])
+                self.assertIs(row["referenceOnly"], False)
+                self.assertEqual(row["partialReuse"], filename in {"StoryRepository.kt", "ApiClient.kt"})
+                raw = (self.repo / row["localPath"]).read_bytes()
+                pin = story_source_pins[filename]
+                self.assertEqual(row["path"], pin["originalPath"])
+                self.assertEqual(len(raw), pin["bytes"])
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), row["sha256"])
+                self.assertEqual(sync.blob_oid(raw), row["blob"])
+                self.assertEqual(row["sha256"], pin["sha256"])
+                self.assertEqual(row["blob"], pin["gitBlob"])
+                story_raw_by_name[filename] = raw
+        self.assertEqual(story_rows["StoryRepository.kt"]["reusedMethods"], ["getStoryFeed"])
+        self.assertEqual(story_rows["StoryRepository.kt"]["usedScope"], "complete getStoryFeed method only")
+        self.assertEqual(story_rows["ApiClient.kt"]["reusedDeclarations"], ["StoryApi"])
+        self.assertEqual(story_rows["ApiClient.kt"]["usedScope"], "complete StoryApi interface only")
+        for filename in story_names - {"StoryRepository.kt", "ApiClient.kt"}:
+            self.assertEqual(story_rows[filename]["usedScope"], "complete original file")
+            projection = story_manifest["projections"][filename]
+            self.assertEqual(projection["source"], filename)
+            if filename in {"StoryModels.kt", "StoryFeedPolicy.kt"}:
+                self.assertEqual(projection["mode"], "completeRaw")
+                self.assertEqual(projection["emittedSha256"], story_rows[filename]["sha256"])
+            else:
+                self.assertEqual(projection["originalSha256LF"], story_rows[filename]["sha256"])
+        # Method/declaration selections use original Unicode-character offsets;
+        # the Pager's complete consumer selections explicitly use byte offsets.
+        for filename, field, digest_field in (
+            ("StoryRepository.kt", "originalMethod", "originalMethodSha256LF"),
+            ("ApiClient.kt", "originalDeclaration", "originalDeclarationSha256LF"),
+        ):
+            projection = story_manifest["projections"][filename]
+            original = sync.normalized_source(story_raw_by_name[filename]).decode("utf-8")
+            selected = projection[field]
+            start = projection["originalOffsetChars"]
+            self.assertEqual(original[start:start + len(selected)], selected)
+            self.assertEqual(hashlib.sha256(selected.encode("utf-8")).hexdigest(), projection[digest_field])
+        required_pager_ports = ["recommendationsManagedExternally", "recommendationLoadInProgress",
+                                "recommendationLoadError", "onLoadMoreRecommendations"]
+        self.assertEqual(story_manifest["pagerRequiredPorts"], required_pager_ports)
+        pager_root = "desktop/upstream-slices/v035-story-pager/"
+        pager_row = next(item for item in entries if item["localPath"] == pager_root + "PortraitVideoPager.kt")
+        self.assertEqual(pager_row["upstreamCommit"], story_manifest["upstreamCommit"])
+        self.assertIs(pager_row["referenceOnly"], False)
+        self.assertIs(pager_row["partialReuse"], True)
+        pager_manifest = json.loads((self.repo / pager_root / "manifest.json").read_bytes())
+        self.assertEqual(pager_manifest["upstreamCommit"], story_manifest["upstreamCommit"])
+        self.assertEqual(pager_manifest["canonicalBaselineCommit"], "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40")
+        pager_raw = (self.repo / pager_row["localPath"]).read_bytes()
+        self.assertEqual(len(pager_raw), 206277, "Whole v035 Pager is retained; only nine consumers are reused")
+        self.assertEqual(len(pager_raw), pager_manifest["source"]["bytesRaw"])
+        self.assertEqual(hashlib.sha256(pager_raw).hexdigest(), pager_row["sha256"])
+        self.assertEqual(sync.blob_oid(pager_raw), pager_row["blob"])
+        self.assertEqual(pager_row["sha256"], pager_manifest["source"]["sha256Raw"])
+        self.assertEqual(pager_row["blob"], pager_manifest["source"]["gitBlob"])
+        pager_consumers = [
+            "four-original-external-owner-ports", "latest-original-loadmore-callback",
+            "original-applied-list-and-empty-batch-state",
+            "complete-original-parent-list-effect-preserves-external-order",
+            "original-watchlater-append-owner-guard", "original-discovery-owner-guard",
+            "original-private-home-tail-owner-guard",
+            "complete-original-external-near-tail-loading-error-empty-batch-consumer",
+            "complete-original-tail-error-and-three-empty-batch-retry-ui",
+        ]
+        self.assertEqual(pager_row["reusedConsumers"], pager_consumers)
+        self.assertEqual([consumer["name"] for consumer in pager_manifest["reusedConsumers"]], pager_consumers)
+        self.assertEqual(pager_row["usedScope"],
+                         "Nine complete original external-recommendation consumer slices; not a full v035 Pager upgrade.")
+        pager_lf = sync.normalized_source(pager_raw)
+        for consumer in pager_manifest["reusedConsumers"]:
+            with self.subTest(pagerConsumer=consumer["name"]):
+                start = consumer["offsetBytesLF"]
+                selected = pager_lf[start:start + consumer["bytesLF"]]
+                self.assertEqual(selected, consumer["original"].encode("utf-8"))
+                self.assertEqual(hashlib.sha256(selected).hexdigest(), consumer["sha256LF"])
+        build_source = (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8")
+        self.assertIn('inputs.file("tools/v035_story.py")', build_source)
+        self.assertIn('inputs.file("tools/v035_story_pager.py")', build_source)
+        story_canonical = sync.read_manifest(self.original_repo)
+        for original_path in (
+            "core-data/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt",
+            "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt",
+        ):
+            old_source = next(source for source in story_canonical["sources"] if source["path"] == original_path)
+            self.assertEqual(old_source["mode"], "selected", "The sole Story producer replaces the old direct declaration")
+        cover_root = "desktop/upstream-slices/v035-favorite-cover/"
+        cover_rows = {Path(item["localPath"]).name: item for item in entries
+                      if item["localPath"].startswith(cover_root)}
+        self.assertEqual(set(cover_rows), {"FavoriteFolderCoverCache.kt", "FavoriteFolderCoverPrefetchPolicy.kt",
+                                           "FavoriteFolderCardList.kt", "ListViewModel.kt", "CommonListScreen.kt"})
+        cover_manifest = json.loads((self.repo / cover_root / "manifest.json").read_bytes())
+        self.assertEqual(cover_manifest["upstreamCommit"], "46eaf277e83512061785be9759d1f07aba3c4839")
+        self.assertEqual(cover_manifest["canonicalBaselineCommit"], "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40")
+        cover_source_pins = {source["file"]: source for source in cover_manifest["sources"]}
+        cover_raw_by_name = {}
+        for filename, row in cover_rows.items():
+            with self.subTest(coverOriginal=filename):
+                self.assertEqual(row["upstreamCommit"], cover_manifest["upstreamCommit"])
+                self.assertIs(row["referenceOnly"], False)
+                self.assertEqual(row["partialReuse"], filename in {"ListViewModel.kt", "CommonListScreen.kt"})
+                raw = (self.repo / row["localPath"]).read_bytes()
+                self.assertEqual(len(raw), cover_source_pins[filename]["bytesRaw"])
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), row["sha256"])
+                self.assertEqual(sync.blob_oid(raw), row["blob"])
+                self.assertEqual(row["sha256"], cover_source_pins[filename]["sha256Raw"])
+                cover_raw_by_name[filename] = raw
+        cover_methods = ["fetchFolders", "applyCachedFavoriteFolderCovers", "ensureFavoriteFolderCovers",
+                         "fetchFavoriteFolderCovers", "applyFavoriteFolderCovers"]
+        self.assertEqual(cover_rows["ListViewModel.kt"]["reusedMethods"], cover_methods)
+        cover_method_pin = cover_manifest["partialVmReuse"]
+        self.assertEqual(cover_method_pin["methods"], cover_methods)
+        cover_method_raw = sync.normalized_source(cover_raw_by_name["ListViewModel.kt"])
+        start = cover_method_pin["offsetBytesLF"]
+        cover_method_raw = cover_method_raw[start:start + cover_method_pin["bytesLF"]]
+        self.assertEqual(hashlib.sha256(cover_method_raw).hexdigest(), cover_method_pin["sha256LF"])
+        self.assertEqual(cover_rows["CommonListScreen.kt"]["reusedSlice"], "complete original onPrefetchCovers callback only")
+        cover_callback_pin = cover_manifest["partialUiReuse"]
+        callback_raw = sync.normalized_source(cover_raw_by_name["CommonListScreen.kt"])
+        start = cover_callback_pin["offsetBytesLF"]
+        callback_raw = callback_raw[start:start + cover_callback_pin["bytesLF"]]
+        self.assertEqual(hashlib.sha256(callback_raw).hexdigest(), cover_callback_pin["sha256LF"])
+        self.assertIn('inputs.file("tools/v035_favorite_cover.py")',
+                      (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
+        canonical_manifest = sync.read_manifest(self.original_repo)
+        self.assertEqual(canonical_manifest["upstreamCommit"], "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40")
+        canonical_card = next(source for source in canonical_manifest["sources"] if source["path"] ==
+                              "app/src/main/java/com/android/purebilibili/feature/list/FavoriteFolderCardList.kt")
+        self.assertEqual(canonical_card["mode"], "selected", "The sole Favorites producer owns the v035 card declaration")
         autoplay_row = next(item for item in entries if item["localPath"] ==
                             "desktop/upstream-slices/v035-autoplay-continuation/VideoPlaybackViewModel.kt")
         self.assertIs(autoplay_row["referenceOnly"], False)
@@ -1107,6 +1385,34 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             "v034-next-watch-ui/SettingsManager.kt",
             "v034-next-watch-ui/VideoPlayerSection.kt",
             "v035-autoplay-continuation/VideoPlaybackViewModel.kt",
+            "v035-favorite-cover/FavoriteFolderCoverCache.kt",
+            "v035-favorite-cover/FavoriteFolderCoverPrefetchPolicy.kt",
+            "v035-favorite-cover/FavoriteFolderCardList.kt",
+            "v035-favorite-cover/ListViewModel.kt",
+            "v035-favorite-cover/CommonListScreen.kt",
+            "v035-favorite-cover/manifest.json",
+            "v035-story/StoryRepository.kt",
+            "v035-story/StoryFeedPolicy.kt",
+            "v035-story/StoryViewModel.kt",
+            "v035-story/StoryModels.kt",
+            "v035-story/ApiClient.kt",
+            "v035-story/StoryScreen.kt",
+            "v035-story/manifest.json",
+            "v035-story-pager/PortraitVideoPager.kt",
+            "v035-story-pager/manifest.json",
+            "v035-dynamic-link/DynamicModels.kt",
+            "v035-dynamic-link/DynamicCard.kt",
+            "v035-dynamic-link/DynamicComponents.kt",
+            "v035-dynamic-link/ForwardedContent.kt",
+            "v035-dynamic-link/DynamicLinkCard.kt",
+            "v035-dynamic-link/DynamicLinkCardPolicy.kt",
+            "v035-dynamic-link/PageAwareAsyncImage.kt",
+            "v035-dynamic-link/manifest.json",
+            "v035-ambient/AmbientFramePolicy.kt",
+            "v035-ambient/AmbientFrameController.kt",
+            "v035-ambient/AmbientPlayerBinding.kt",
+            "v035-ambient/README.md",
+            "v035-ambient/manifest.json",
         )
         for leaf in leaves:
             source = self.repo / "desktop/upstream-slices" / leaf
@@ -1130,10 +1436,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 241)
+        self.assertEqual(len(self.load()), 264)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 241)
+        self.assertEqual(len(self.load()), 264)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1150,7 +1456,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 241)
+                self.assertEqual(len(entries), 264)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

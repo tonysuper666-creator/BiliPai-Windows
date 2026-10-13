@@ -52,6 +52,7 @@ internal class DesktopOriginalPortraitPlatformBinding(
     private val prepareAcceptedMedia: (DesktopOriginalVideoAcceptedPublication, DesktopOriginalBangumiNativeSourcePlan, () -> Boolean, DesktopOriginalNativeRecoveryTicket?) -> DesktopOriginalVideoMediaPort,
     private val captureMetadataRequest: suspend (DesktopOriginalVideoOwnerAssembly) -> DesktopOriginalVideoRepositoryBinding,
     private val createPageRequestRepository: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoRepositoryBinding) -> DesktopOriginalVideoOwnerRequestRepository,
+    private val storyFeed: suspend (Long, String, Int, Int) -> Result<List<StoryItem>>,
 ) : DesktopOriginalPortraitPlatform {
     private fun owns() = currentAssembly() === assembly && assembly.owns()
     private fun assertOwned() { if (!owns()) throw CancellationException("Portrait Assembly retired") }
@@ -240,6 +241,10 @@ internal class DesktopOriginalPortraitPlatformBinding(
         // Existing Root services, tagged before Call.Factory.newCall. No Retrofit/client here.
         override val api get() = ownedPrimaryApi.also { assertOwned() }
         override val spaceApi get() = ownedSpaceApi.also { assertOwned() }
+        override suspend fun getStoryFeed(aid: Long, bvid: String, pageSize: Int, displayId: Int) =
+            owned { storyFeed(aid, bvid, pageSize, displayId) }.also {
+                (it.exceptionOrNull() as? CancellationException)?.let { cancelled -> throw cancelled }
+            }
         override suspend fun getHomeVideos(idx: Int) = owned { homeVideo.getHomeVideos(idx) }.also {
             (it.exceptionOrNull() as? CancellationException)?.let { cancelled -> throw cancelled }
         }

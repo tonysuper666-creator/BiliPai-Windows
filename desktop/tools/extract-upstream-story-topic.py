@@ -117,6 +117,7 @@ def generate(repo, output, standalone=False):
     helpers = host(repo); media = helpers.media_extractor(repo); parser = media.parser_for(repo)
     output.mkdir(parents=True, exist_ok=True); result = []
     for path in DIRECT:
+        if path == BASE + "feature/story/StoryFeedPolicy.kt": continue  # Sole v035 projection below owns this whole policy.
         source = read(repo, path); helpers.prune_old_direct(output, path, source)
         if standalone: result.append(helpers.write(output, path, source, source))
     for path in ADAPTED:
@@ -124,10 +125,12 @@ def generate(repo, output, standalone=False):
     for path in EXTRACT:
         source = read(repo, path)
         if path.endswith("StoryViewModel.kt"):
-            body = "package com.android.purebilibili.feature.story\nimport com.android.purebilibili.data.model.response.StoryItem\nimport android.util.Log as Logger\nimport kotlinx.coroutines.flow.*\nimport kotlinx.coroutines.launch\n\n" + media.data_class(source, "StoryUiState", parser) + "\n\n" + adapt_story_root_vm(source)
+            from v035_story import project_story
+            source, body = project_story("StoryViewModel.kt", output)
             name = "StoryUiState.kt"
         elif path.endswith("StoryScreen.kt"):
-            body = adapt_story_root_screen(source)
+            from v035_story import project_story
+            source, body = project_story("StoryScreen.kt", output)
             name = "StoryScreen.kt"
         elif path.endswith("TopicDetailViewModel.kt"):
             body = "package com.android.purebilibili.feature.search\nimport com.android.purebilibili.data.model.response.*\n\n" + media.data_class(source, "TopicDetailUiState", parser) + "\n\n" + media.function(source, "mergeDynamicItems", parser).replace("private fun", "internal fun", 1)
@@ -152,6 +155,8 @@ def generate(repo, output, standalone=False):
                 "import androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.text.*\nimport androidx.compose.ui.text.font.FontWeight\n")
             name = "DynamicTopicLinkPolicy.kt"
         result.append(helpers.write(output, path, source, body, name))
+    from v035_story import emit_story_models
+    result.extend(emit_story_models(output))
     return result
 
 def inventory(repo):

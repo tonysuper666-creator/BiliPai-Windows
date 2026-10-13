@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "jay3-yy/BiliPai",
+  "upstreamTag": "v0.3.5",
+  "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+  "producer": "desktop/tools/extract-upstream-video-ambient-windows.py",
+  "entries": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFramePolicy.kt",
+      "archiveFile": "AmbientFramePolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "gitBlob": "cfffa08df34729e7f103c728a5fbff79e00ef91d",
+      "rawSha256": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c",
+      "sha256LF": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c",
+      "bytes": 6035,
+      "mode": "completeRaw",
+      "referenceOnly": false,
+      "recipe": {
+        "source": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFramePolicy.kt",
+        "sourceSha256LF": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c",
+        "target": "com/android/purebilibili/feature/video/ambient/AmbientFramePolicy.kt",
+        "mode": "policy-extract",
+        "outputSha256LF": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c",
+        "edits": [
+          {
+            "start": 0,
+            "end": 129,
+            "beforeSha256LF": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c",
+            "after": null
+          }
+        ],
+        "fullOriginalInverse": true
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFrameController.kt",
+      "archiveFile": "AmbientFrameController.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "gitBlob": "a81cf4a576031b96eb2869c2e3765f31cbc18672",
+      "rawSha256": "a96766f88422c8aafeb60ecbda71147a0c28250aeeaa5650896fddc1bbad2fc8",
+      "sha256LF": "a96766f88422c8aafeb60ecbda71147a0c28250aeeaa5650896fddc1bbad2fc8",
+      "bytes": 12821,
+      "mode": "completeRaw",
+      "referenceOnly": false,
+      "recipe": {
+        "source": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFrameController.kt",
+        "sourceSha256LF": "a96766f88422c8aafeb60ecbda71147a0c28250aeeaa5650896fddc1bbad2fc8",
+        "target": "com/android/purebilibili/feature/video/ambient/AmbientFrameController.kt",
+        "mode": "policy-extract",
+        "outputSha256LF": "cb81643461cea9c7bd00156b5794f70e7ad0f3f2ab8a5236fda14776d000a016",
+        "edits": [
+          {
+            "start": 0,
+            "end": 2,
+            "beforeSha256LF": "87ea2e7aca86c7b17800b1209f4a96764fa5b88a448f3e615e9178e997366dad",
+            "after": null
+          },
+          {
+            "start": 2,
+            "end": 10,
+            "beforeSha256LF": "6d8f2793219447d5ac7cb6fec42f1397c92e9c8c7742092babdec13e65ae6252",
+            "after": "import com.bilipai.desktop.ui.DesktopAmbientBitmap as Bitmap\n"
+          },
+          {
+            "start": 10,
+            "end": 15,
+            "beforeSha256LF": "077aec380eb291e2df8663ed94256892238c184bfa04e89e6e9be705f2fcb93b",
+            "after": null
+          },
+          {
+            "start": 15,
+            "end": 17,
+            "beforeSha256LF": "4cb43f254460ae4a76618abe86055d23d7d5789cb21db68e9814eff740ed4295",
+            "after": "import com.bilipai.desktop.ui.asDesktopAmbientImageBitmap as asImageBitmap\nimport com.bilipai.desktop.ui.asDesktopAmbientBitmap as asAndroidBitmap\nimport com.bilipai.desktop.ui.desktopAmbientNowMs\n"
+          },
+          {
+            "start": 17,
+            "end": 36,
+            "beforeSha256LF": "3ad0237b971df15b321456039e720afb9ee749c48147b0b80de6e130da49d5be",
+            "after": null
+          },
+          {
+            "start": 36,
+            "end": 39,
+            "beforeSha256LF": "0c08a4b8ca834be05503f228814444fbae530e7ce87aecfd940613b338b3a238",
+            "after": "/** Capture and placement borrow the same existing Root source lease. */\ninternal class ViewAmbientFrameSource(\n    private val platform: com.bilipai.desktop.ui.DesktopOriginalVideoSectionPlatform,\n    private val lease: com.bilipai.desktop.ui.DesktopOriginalAmbientSourceLease,\n) : AmbientFrameSource {\n"
+          },
+          {
+            "start": 39,
+            "end": 40,
+            "beforeSha256LF": "b68684b8df999ebc218a2929a90cc86ffdbc1ae2210842f0be4a298ee286fe9e",
+            "after": null
+          },
+          {
+            "start": 40,
+            "end": 46,
+            "beforeSha256LF": "ea1de09f0ea6eb651bb34af237b646bac43b49e5a4fdce3114baa15199de828f",
+            "after": "        if (!lease.isCurrent()) throw kotlinx.coroutines.CancellationException(\"Ambient source retired\")\n        return platform.ambientViewportBoundsInWindow()\n"
+          },
+          {
+            "start": 46,
+            "end": 47,
+            "beforeSha256LF": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+            "after": null
+          },
+          {
+            "start": 47,
+            "end": 71,
+            "beforeSha256LF": "349759da84d607beb84c810017a5591e58d0b5cd0e5255477b9d35312b28c948",
+            "after": "    override suspend fun capture(width: Int, height: Int): Bitmap? {\n        if (!lease.isCurrent()) throw kotlinx.coroutines.CancellationException(\"Ambient source retired\")\n        val image = platform.captureAmbientFrame(width, height)\n        kotlinx.coroutines.currentCoroutineContext().ensureActive()\n        if (!lease.isCurrent()) throw kotlinx.coroutines.CancellationException(\"Ambient source retired\")\n        return image?.asAndroidBitmap()\n"
+          },
+          {
+            "start": 71,
+            "end": 72,
+            "beforeSha256LF": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+            "after": null
+          },
+          {
+            "start": 72,
+            "end": 73,
+            "beforeSha256LF": "e27b98e23faaac8a89ab879fe8e880b2b82aa8433f18a5d292dc58871b3af12d",
+            "after": "    override fun release() { /* The existing capture actor owns its scratch/native lifetime. */ }\n"
+          },
+          {
+            "start": 73,
+            "end": 113,
+            "beforeSha256LF": "a0dc0d505e6c7cef15f8ec03888e91bd7c29b19f1523e1724ad660330e0d9291",
+            "after": null
+          },
+          {
+            "start": 113,
+            "end": 114,
+            "beforeSha256LF": "54e4572966bd6bcf5d5fb38b95a3b63e34b6867d5fa758e2b7216b1f31627340",
+            "after": "    private val clock: () -> Long = { desktopAmbientNowMs() },\n"
+          },
+          {
+            "start": 114,
+            "end": 237,
+            "beforeSha256LF": "6af63603028b839afab62d57dccb759f8d2e6b6a9527116af61b90a2018993cd",
+            "after": null
+          }
+        ],
+        "fullOriginalInverse": true
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientPlayerBinding.kt",
+      "archiveFile": "AmbientPlayerBinding.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "gitBlob": "ee85e694f026c9dab51453365861f53157ca4558",
+      "rawSha256": "965951512c610dd2b385f544ac8757bbf39662d83414851ba36ff61a7e0f2c5d",
+      "sha256LF": "965951512c610dd2b385f544ac8757bbf39662d83414851ba36ff61a7e0f2c5d",
+      "bytes": 6366,
+      "mode": "completeRaw",
+      "referenceOnly": false,
+      "recipe": {
+        "source": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientPlayerBinding.kt",
+        "sourceSha256LF": "965951512c610dd2b385f544ac8757bbf39662d83414851ba36ff61a7e0f2c5d",
+        "target": "com/android/purebilibili/feature/video/ambient/AmbientPlayerBinding.kt",
+        "mode": "policy-extract",
+        "outputSha256LF": "172c5696c41f807c93137a7e341a1148d4bb713f83187fbb6bad36e0f2b6e5b3",
+        "edits": [
+          {
+            "start": 0,
+            "end": 2,
+            "beforeSha256LF": "87ea2e7aca86c7b17800b1209f4a96764fa5b88a448f3e615e9178e997366dad",
+            "after": null
+          },
+          {
+            "start": 2,
+            "end": 5,
+            "beforeSha256LF": "0c95563918f25a0f9ff175de44415b6f1f0f7ae3494054a8f4334e2bd2b6db49",
+            "after": ""
+          },
+          {
+            "start": 5,
+            "end": 6,
+            "beforeSha256LF": "53c006571e11448d18ed9be21680ca410385cc1f0a50f5de6d6528321aec5ba0",
+            "after": null
+          },
+          {
+            "start": 6,
+            "end": 8,
+            "beforeSha256LF": "d595a220c501d100e97b3ccfbf91c2ac7395635ca0c4021a6ad1b12534d67944",
+            "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\nimport com.bilipai.desktop.ui.DesktopOriginalPlayerViewportPort as PlayerView\n"
+          },
+          {
+            "start": 8,
+            "end": 10,
+            "beforeSha256LF": "94fefbe89608f2c96f487399ebc254ef3b75ac774f007818deb10a89ca632c86",
+            "after": null
+          },
+          {
+            "start": 10,
+            "end": 11,
+            "beforeSha256LF": "1f7ff1995a8995a8f9258b49a8d6c3ae13f41db160cca55c54f7c2f88b266615",
+            "after": "import com.android.purebilibili.core.store.DesktopOriginalVideoAmbientSettings as SettingsManager\n"
+          },
+          {
+            "start": 11,
+            "end": 12,
+            "beforeSha256LF": "5dd7659b9be092df665376578f842b6c1ea5941c610d30620d3afb8405b9185b",
+            "after": null
+          },
+          {
+            "start": 12,
+            "end": 13,
+            "beforeSha256LF": "fd13cbbd3ea84e40b123fd2e828296b35eed3c9af7a2db75c13bf809aa450ae8",
+            "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\nimport com.bilipai.desktop.ui.desktopAmbientNowMs\n"
+          },
+          {
+            "start": 13,
+            "end": 18,
+            "beforeSha256LF": "49ca1fdb37a1d7c644d8f100733f49510d67382a248a36b61522ec0d4fc3a477",
+            "after": null
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "beforeSha256LF": "63281c9d520164e13bf1cfee899fdf80bc6e314c6b3454913dad88125c2ff55f",
+            "after": ""
+          },
+          {
+            "start": 19,
+            "end": 45,
+            "beforeSha256LF": "646c3e0840c55f76ae955999116dd75366316b920731d3c0884e02dc7609eb6b",
+            "after": null
+          },
+          {
+            "start": 45,
+            "end": 46,
+            "beforeSha256LF": "cf4270200ed8b26b16708d42d8c5939a83ba7fcd9194ebc9c7c50eac5c90454d",
+            "after": "    val platform = LocalDesktopOriginalVideoSectionPlatform.current\n    val surface = playerView\n"
+          },
+          {
+            "start": 46,
+            "end": 50,
+            "beforeSha256LF": "0957ee868de03ef17ca6d26f26aedae1e4a755c258576f4190ba39e3a6dc43e6",
+            "after": null
+          },
+          {
+            "start": 50,
+            "end": 52,
+            "beforeSha256LF": "e611de3ecfcc32e1af9664da8ff4a848ba278be562dda8533f505d366c2c1565",
+            "after": "            override fun onSeekQueued(submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission) {\n                seekSettlesAt = desktopAmbientNowMs() + 200\n"
+          },
+          {
+            "start": 52,
+            "end": 63,
+            "beforeSha256LF": "4d1124671386ab289864079cf43609ca9764f83c2c67426899e5e1fa6af5e8b7",
+            "after": null
+          },
+          {
+            "start": 63,
+            "end": 67,
+            "beforeSha256LF": "cb6132195610d2a9cea24f86b9747263b1e0f1de152d83ebf7307554fe03f1c5",
+            "after": "        onDispose { player.removeListener(listener) }\n    }\n    DisposableEffect(player) {\n        val listener = object : Player.Listener {\n            override fun onSourceTransition(sourceVersion: Long) { surfaceGeneration++; refresh++ }\n"
+          },
+          {
+            "start": 67,
+            "end": 68,
+            "beforeSha256LF": "e6b04491469722e8363a94e4044538e013a2a217e36b1e568ba60acb7b4c8f2e",
+            "after": null
+          },
+          {
+            "start": 68,
+            "end": 73,
+            "beforeSha256LF": "9d1c5138b9d84442079b553f595bb98ead16e80aba42b1239b39a37dc3f34322",
+            "after": "        player.addListener(listener)\n        onDispose { player.removeListener(listener) }\n"
+          },
+          {
+            "start": 73,
+            "end": 74,
+            "beforeSha256LF": "4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+            "after": null
+          },
+          {
+            "start": 74,
+            "end": 81,
+            "beforeSha256LF": "477e95065190750413a38f4f72a60a7b17dfe17d4c050adf0578f9b65e78b192",
+            "after": "    val sourceLease = remember(player, identity, quality, surfaceGeneration) { platform.captureAmbientSourceLease() }\n"
+          },
+          {
+            "start": 81,
+            "end": 94,
+            "beforeSha256LF": "1c7b9ef3f906bc31e511bc15bfff4273a96c59545fdf9392b3e018eeb399acae",
+            "after": null
+          },
+          {
+            "start": 94,
+            "end": 95,
+            "beforeSha256LF": "ab88b14e9862dac9322debac46837f6cfc64b495119ab57f6d07583ff9c38ea5",
+            "after": "    val active = player.isOwned() && sourceLease?.isCurrent() == true && foreground && !excluded && !transitioning && firstFrameReady && (glowAllowed || statusBar)\n"
+          },
+          {
+            "start": 95,
+            "end": 97,
+            "beforeSha256LF": "d28e37aa66b3593f806265fd71d35a5880cc50d0fc0e487138aa6a61d6209419",
+            "after": null
+          },
+          {
+            "start": 97,
+            "end": 98,
+            "beforeSha256LF": "467d09cd833dd93bbce9537065176f290336e1f0b2bbbdad169babbdb4b9c228",
+            "after": "        AmbientRunPolicy(active && player.isOwned() && sourceLease?.isCurrent() == true && !moving && desktopAmbientNowMs() >= seekSettlesAt, glowAllowed, player.isOwned() && player.isPlaying,\n"
+          },
+          {
+            "start": 98,
+            "end": 100,
+            "beforeSha256LF": "1c94516c411f425afc6a1ebca7a8e01cec0fb87122f293c7dc17769dcbdb0fb8",
+            "after": null
+          },
+          {
+            "start": 100,
+            "end": 101,
+            "beforeSha256LF": "67dfe085ab136e587557fba8331d1738f9674b3213cb5dd23ccca27ad2427c34",
+            "after": ""
+          },
+          {
+            "start": 101,
+            "end": 104,
+            "beforeSha256LF": "608aac3428d4b4f0e0eb60f17ef28fd9f245b009038e425adc646dd8e08ecc5e",
+            "after": null
+          },
+          {
+            "start": 104,
+            "end": 114,
+            "beforeSha256LF": "33253ce2e10cc9021c26c85a4f47118522e5276f57c215e0dd01849184bdf25f",
+            "after": "        presentation.visibilityGate = { sourceLease?.isCurrent() == true && !transitioning && !navTransition.isRunning && kotlin.math.abs(navTransition.relativeDepth) <= 0.001f }\n        presentation.videoBoundsInWindow = { if (sourceLease?.isCurrent() == true) platform.ambientViewportBoundsInWindow() else null }\n"
+          },
+          {
+            "start": 114,
+            "end": 118,
+            "beforeSha256LF": "302dfd96161b8c12ff736241a9c28aaae22cdce482abd9f126be5fc3936ddcd5",
+            "after": null
+          },
+          {
+            "start": 118,
+            "end": 119,
+            "beforeSha256LF": "eb22d8c82aaab2a6965d651ace845e869495cae123883c4eea7d612bc13d79ed",
+            "after": "    LaunchedEffect(controller, surface, identity, quality, width, height, surfaceGeneration, sourceLease) {\n"
+          },
+          {
+            "start": 119,
+            "end": 122,
+            "beforeSha256LF": "3bfe1a24eebb06931493ce1fb09022c17f7c5a731d48d7fcfc4cf12852b2a753",
+            "after": null
+          },
+          {
+            "start": 122,
+            "end": 124,
+            "beforeSha256LF": "70872a617abc7a67a96d6178e82f4393f9295981b5b6f2dcb7df61c6750ca134",
+            "after": "        if (surface != null && sourceLease != null) {\n            controller.run(ViewAmbientFrameSource(platform, sourceLease), width, height) { latestPolicy.value() }\n"
+          },
+          {
+            "start": 124,
+            "end": 130,
+            "beforeSha256LF": "d2aec3e91b79c7178f7fd315939f2814382ca8addbde5c10f41e05a44aecefa5",
+            "after": null
+          }
+        ],
+        "fullOriginalInverse": true
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/README.md",
+      "archiveFile": "README.md",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "gitBlob": "8c383949fcc07c671e9d3261ccbb024cc0434797",
+      "rawSha256": "c4394d92c074c40b6d31ffe5f7593a2d6252f310de81e338bba1f7187bd1be17",
+      "bytes": 6179,
+      "mode": "reference-only-module-documentation",
+      "referenceOnly": true
+    }
+  ],
+  "retainedCanonicalCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "scope": "Whole latest original ambient policy/controller/binding, retaining existing Windows capture, bounds, source leases and settings. Unchanged shader/environment/layout/screenshot recipes remain canonical originals.",
+  "mainCompiled": false,
+  "actualUIExecuted": false,
+  "hardwareExecuted": false
+}

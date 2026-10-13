@@ -65,6 +65,7 @@ internal interface DesktopOriginalPortraitRequests {
     val api: com.android.purebilibili.core.network.BilibiliApi
     val spaceApi: com.android.purebilibili.core.network.SpaceApi
     suspend fun getHomeVideos(idx: Int): Result<List<VideoItem>>
+    suspend fun getStoryFeed(aid: Long, bvid: String, pageSize: Int, displayId: Int): Result<List<StoryItem>>
     suspend fun getWatchLaterList(): WatchLaterResponse
     suspend fun getRelatedVideos(bvid: String): List<RelatedVideo>
     suspend fun isVerticalVideo(bvid: String, aid: Long): Boolean
