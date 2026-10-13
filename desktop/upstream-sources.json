@@ -137,7 +137,7 @@
         "data-models",
         "stable-video-root-story-feed"
       ],
-      "mode": "direct"
+      "mode": "selected"
     },
     {
       "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
@@ -3368,7 +3368,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "story-topic"
       ],
@@ -4649,7 +4649,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAdditionalCardPolicy.kt",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "settings-dynamic-full-card-parity"
       ],
@@ -4724,7 +4724,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicOpusLinkCard.kt",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "settings-dynamic-full-card-parity"
       ],
@@ -6227,7 +6227,7 @@
       "features": [
         "stable-favorites"
       ],
-      "mode": "direct"
+      "mode": "selected"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCard.kt",
@@ -10855,7 +10855,7 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFrameController.kt",
       "sha256": "dbb6478a87d61d7e5e63e1bd428d6848ec679c16eb59e4fc53716bb4ab0746b0",
-      "mode": "policy-extract",
+      "mode": "selected",
       "features": [
         "desktop-v025-complete-player-parity"
       ]
@@ -10863,7 +10863,7 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFramePolicy.kt",
       "sha256": "b02b49c4fefcf01b6cb7fcdd535218e0551564aa04a82fc87de0447a5f67176d",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "desktop-v025-complete-player-parity"
       ]
@@ -10871,7 +10871,7 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientPlayerBinding.kt",
       "sha256": "473541acd44239620660267c32cbefcd78caf6e0deece1ad86e1caaf657f0435",
-      "mode": "policy-extract",
+      "mode": "selected",
       "features": [
         "desktop-v025-complete-player-parity"
       ]
@@ -11518,7 +11518,7 @@
     "topic": "original-detail-sort-pagination-participation-rich-link-keyword-and-back-route-integrated-offline-tested",
     "playback-settings": "original-codec-audio-subtitle-policy-integrated-native-hardware-and-pair-tested-account-subtitle-retry-pending"
   },
-  "windowsRevision": 63,
+  "windowsRevision": 70,
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",

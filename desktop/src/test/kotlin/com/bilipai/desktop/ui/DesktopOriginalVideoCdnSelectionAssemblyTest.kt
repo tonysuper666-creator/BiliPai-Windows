@@ -1221,7 +1221,10 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             check(absolute.fileName.toString().startsWith(prefix))
             fun validate(path: Path, attrs: BasicFileAttributes) {
                 val value = path.toAbsolutePath().normalize()
-                check(value.startsWith(absolute) && !attrs.isSymbolicLink && !attrs.isOther && path.toRealPath() == value)
+                check(value.startsWith(absolute) && !attrs.isSymbolicLink && !attrs.isOther)
+                // The runner's temporary parent may use a Windows short-path alias.
+                // Every child must still resolve to its exact location inside this real root.
+                check(path.toRealPath() == real.resolve(absolute.relativize(value)).normalize())
                 if (System.getProperty("os.name").startsWith("Windows"))
                     check((Files.getAttribute(path, "dos:attributes", LinkOption.NOFOLLOW_LINKS) as Int) and 0x400 == 0)
             }

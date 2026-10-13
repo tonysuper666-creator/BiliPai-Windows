@@ -31,6 +31,15 @@ class DesktopFavoriteEnvironment @JvmOverloads constructor(
     private val readAccessTokenPlatform: (() -> String)?,
     private val followStateChanged: ((FollowStateChange) -> Unit)? = null,
 ) {
+    private var mountedFavoriteCoverContext: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheContext? = null
+    internal fun mountFavoriteCoverContext(context: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheContext) {
+        assertOwned(); check(mountedFavoriteCoverContext == null)
+        mountedFavoriteCoverContext = context
+    }
+    internal val favoriteCoverContext get() = requireNotNull(mountedFavoriteCoverContext) {
+        "Favorite covers require the actual retained account/Root preference context"
+    }
+    internal val favoriteCoverCache by lazy { com.android.purebilibili.core.store.FavoriteFolderCoverCache(favoriteCoverContext) }
     private var historyReadCapture: ((Job, com.bilipai.desktop.ui.DesktopHistoryReadParameters) -> com.bilipai.desktop.ui.DesktopHistoryReadSource)? = null
     internal fun mountHistoryReadCapture(capture: (Job, com.bilipai.desktop.ui.DesktopHistoryReadParameters) -> com.bilipai.desktop.ui.DesktopHistoryReadSource) {
         assertOwned(); check(historyReadCapture == null)

@@ -158,6 +158,8 @@ def generate(repo: Path, output: Path) -> Path:
         wholeCanonicalInterfacesPreserved=True), indent=2)+"\n", encoding="utf8")
     from v030_live_stream import api_delta, emit_models as emit_live_models
     live_api_body = api_delta("\n\n".join(sections), repo, output)
+    from v035_story import adapt_story_api
+    live_api_body = adapt_story_api(live_api_body, output)
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),

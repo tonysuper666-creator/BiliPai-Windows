@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+  "canonicalBaselineCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "scope": "Complete original external-recommendation consumers only; canonical complete Pager, Source58 metadata/preparation and native source gates remain the sole runtime owner.",
+  "source": {
+    "file": "PortraitVideoPager.kt",
+    "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+    "bytesRaw": 206277,
+    "sha256Raw": "72a7bff755dbb50902f79fe4bc8cd6da22a54c6d43d8c4c63845ea19d2d6932e",
+    "gitBlob": "44477f1c5d2545e670d4e35e1ffb57466ad4ed60"
+  },
+  "reusedConsumers": [
+    {
+      "name": "four-original-external-owner-ports",
+      "offsetBytesLF": 15763,
+      "bytesLF": 199,
+      "sha256LF": "cb9b9d828a09dea1bd25e7e14e0579f2c30bbf4978dc0ef87971537672877f72",
+      "original": "    recommendationsManagedExternally: Boolean = false,\n    recommendationLoadInProgress: Boolean = false,\n    recommendationLoadError: String? = null,\n    onLoadMoreRecommendations: () -> Unit = {},\n",
+      "adapted": "    recommendationsManagedExternally: Boolean = false,\n    recommendationLoadInProgress: Boolean = false,\n    recommendationLoadError: String? = null,\n    onLoadMoreRecommendations: () -> Unit = {},\n",
+      "adaptedSha256LF": "cb9b9d828a09dea1bd25e7e14e0579f2c30bbf4978dc0ef87971537672877f72"
+    },
+    {
+      "name": "latest-original-loadmore-callback",
+      "offsetBytesLF": 22702,
+      "bytesLF": 89,
+      "sha256LF": "bb1bc44b5e2a07abc0b361145a3dc18141b6fcfa299eb1fd7d26e47207a630af",
+      "original": "    val latestLoadMoreRecommendations by rememberUpdatedState(onLoadMoreRecommendations)\n",
+      "adapted": "    val latestLoadMoreRecommendations by rememberUpdatedState(onLoadMoreRecommendations)\n",
+      "adaptedSha256LF": "bb1bc44b5e2a07abc0b361145a3dc18141b6fcfa299eb1fd7d26e47207a630af"
+    },
+    {
+      "name": "original-applied-list-and-empty-batch-state",
+      "offsetBytesLF": 29693,
+      "bytesLF": 240,
+      "sha256LF": "ca2e01cf723a3a4b0695c2f62d2a1f8c6b85e025207c6094736bcbf8689eb3f0",
+      "original": "    var appliedExternalRecommendations by remember(initialInfo.bvid) {\n        mutableStateOf<Pair<List<RelatedVideo>, Boolean>?>(null)\n    }\n    var emptyExternalRecommendationBatches by remember(initialInfo.bvid) { mutableIntStateOf(0) }\n",
+      "adapted": "    var appliedExternalRecommendations by remember(initialInfo.bvid) {\n        mutableStateOf<Pair<List<RelatedVideo>, Boolean>?>(null)\n    }\n    var emptyExternalRecommendationBatches by remember(initialInfo.bvid) { mutableIntStateOf(0) }\n",
+      "adaptedSha256LF": "ca2e01cf723a3a4b0695c2f62d2a1f8c6b85e025207c6094736bcbf8689eb3f0"
+    },
+    {
+      "name": "complete-original-parent-list-effect-preserves-external-order",
+      "offsetBytesLF": 30161,
+      "bytesLF": 2592,
+      "sha256LF": "3e85899222f5e78b1d0cda1998b0430eb5935ed08abad2bb7d9c1d2917fc4651",
+      "original": "    LaunchedEffect(initialInfo.bvid, recommendations, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        val filteredRecommendations = filterPortraitOnlyVerticalRecommendations(\n            recommendations = recommendations,\n            enabled = onlyVerticalRecommendations,\n        )\n        if (!seededInitialRecommendations) {\n            val seeded = if (recommendationsManagedExternally) {\n                filteredRecommendations.distinctBy { it.bvid }\n            } else shufflePortraitRecommendations(\n                seed = recommendationShuffleSeed,\n                recommendations = filteredRecommendations,\n                precedingOwnerMid = initialInfo.owner.mid\n            )\n            recommendationItems.clear()\n            recommendationItems.addAll(seeded)\n            pageItems.clear()\n            pageItems.add(initialInfo)\n            pageItems.addAll(seeded)\n            seededInitialRecommendations = true\n            if (recommendationsManagedExternally) {\n                appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n                emptyExternalRecommendationBatches = if (seeded.isEmpty()) 1 else 0\n            }\n            return@LaunchedEffect\n        }\n        val existingBvids = snapshotPortraitPageBvids(pageItems)\n        val appendItems = resolvePortraitExternalRecommendationAppendItems(\n            currentInitialBvid = initialInfo.bvid,\n            existingBvids = existingBvids,\n            externalRecommendations = filteredRecommendations\n        )\n        if (appendItems.isEmpty()) {\n            if (recommendationsManagedExternally) {\n                appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n                emptyExternalRecommendationBatches += 1\n            }\n            return@LaunchedEffect\n        }\n        val shuffledAppend = if (recommendationsManagedExternally) appendItems else shufflePortraitRecommendations(\n            seed = resolvePortraitRecommendationAppendSeed(\n                baseSeed = recommendationShuffleSeed,\n                currentBvid = initialInfo.bvid\n            ),\n            recommendations = appendItems,\n            precedingOwnerMid = pageItems.lastOrNull()?.let(::resolvePortraitPageOwnerMid) ?: 0L\n        )\n        recommendationItems.addAll(shuffledAppend)\n        pageItems.addAll(shuffledAppend)\n        if (recommendationsManagedExternally) {\n            appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n            emptyExternalRecommendationBatches = 0\n        }\n    }\n\n",
+      "adapted": "    LaunchedEffect(initialInfo.bvid, recommendations, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        val filteredRecommendations = filterPortraitOnlyVerticalRecommendations(\n            recommendations = recommendations,\n            enabled = onlyVerticalRecommendations,\n        isVerticalVideo = platform.requests::isVerticalVideo,\n)\n        if (!seededInitialRecommendations) {\n            val seeded = if (recommendationsManagedExternally) {\n                filteredRecommendations.distinctBy { it.bvid }\n            } else shufflePortraitRecommendations(\n                seed = recommendationShuffleSeed,\n                recommendations = filteredRecommendations,\n                precedingOwnerMid = initialInfo.owner.mid\n            )\n            recommendationItems.clear()\n            recommendationItems.addAll(seeded)\n            pageItems.clear()\n            pageItems.add(initialInfo)\n            pageItems.addAll(seeded)\n            seededInitialRecommendations = true\n            if (recommendationsManagedExternally) {\n                appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n                emptyExternalRecommendationBatches = if (seeded.isEmpty()) 1 else 0\n            }\n            return@LaunchedEffect\n        }\n        val existingBvids = snapshotPortraitPageBvids(pageItems)\n        val appendItems = resolvePortraitExternalRecommendationAppendItems(\n            currentInitialBvid = initialInfo.bvid,\n            existingBvids = existingBvids,\n            externalRecommendations = filteredRecommendations\n        )\n        if (appendItems.isEmpty()) {\n            if (recommendationsManagedExternally) {\n                appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n                emptyExternalRecommendationBatches += 1\n            }\n            return@LaunchedEffect\n        }\n        val shuffledAppend = if (recommendationsManagedExternally) appendItems else shufflePortraitRecommendations(\n            seed = resolvePortraitRecommendationAppendSeed(\n                baseSeed = recommendationShuffleSeed,\n                currentBvid = initialInfo.bvid\n            ),\n            recommendations = appendItems,\n            precedingOwnerMid = pageItems.lastOrNull()?.let(::resolvePortraitPageOwnerMid) ?: 0L\n        )\n        recommendationItems.addAll(shuffledAppend)\n        pageItems.addAll(shuffledAppend)\n        if (recommendationsManagedExternally) {\n            appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n            emptyExternalRecommendationBatches = 0\n        }\n    }\n\n",
+      "adaptedSha256LF": "0a3c3681a7c7844c1ab9502e17e4418b1ba97f4cc5d2fdd42bc550c3b798dda3"
+    },
+    {
+      "name": "original-watchlater-append-owner-guard",
+      "offsetBytesLF": 33474,
+      "bytesLF": 170,
+      "sha256LF": "ac472ddf861ca49d76a578819ba509983109686b6c1da7f588e76e5e73a15ed5",
+      "original": "    LaunchedEffect(watchLaterVideos, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        if (recommendationsManagedExternally) return@LaunchedEffect\n",
+      "adapted": "    LaunchedEffect(watchLaterVideos, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        if (recommendationsManagedExternally) return@LaunchedEffect\n",
+      "adaptedSha256LF": "ac472ddf861ca49d76a578819ba509983109686b6c1da7f588e76e5e73a15ed5"
+    },
+    {
+      "name": "original-discovery-owner-guard",
+      "offsetBytesLF": 34957,
+      "bytesLF": 170,
+      "sha256LF": "fe8115022af7878501d7124017c80f3f4f9305b4fb742fa9793dca068a6a203b",
+      "original": "    LaunchedEffect(initialInfo.bvid, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        if (recommendationsManagedExternally) return@LaunchedEffect\n",
+      "adapted": "    LaunchedEffect(initialInfo.bvid, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        if (recommendationsManagedExternally) return@LaunchedEffect\n",
+      "adaptedSha256LF": "fe8115022af7878501d7124017c80f3f4f9305b4fb742fa9793dca068a6a203b"
+    },
+    {
+      "name": "original-private-home-tail-owner-guard",
+      "offsetBytesLF": 78783,
+      "bytesLF": 57,
+      "sha256LF": "814909d145d3a8e6cd67ce903657d8498c085115561bb827a40957aea689bfd3",
+      "original": "                    !recommendationsManagedExternally &&\n",
+      "adapted": "                    !recommendationsManagedExternally &&\n",
+      "adaptedSha256LF": "814909d145d3a8e6cd67ce903657d8498c085115561bb827a40957aea689bfd3"
+    },
+    {
+      "name": "complete-original-external-near-tail-loading-error-empty-batch-consumer",
+      "offsetBytesLF": 84181,
+      "bytesLF": 1138,
+      "sha256LF": "e26f6bcc358c17c16b7954bdf64a44e7e0a41e8bf7d45d273e52189dae38b3c3",
+      "original": "    LaunchedEffect(\n        pagerState, recommendationsManagedExternally, recommendationLoadInProgress,\n        recommendationLoadError, onlyVerticalRecommendations, recommendations, emptyExternalRecommendationBatches\n    ) {\n        if (!recommendationsManagedExternally || recommendationLoadInProgress || recommendationLoadError != null ||\n            emptyExternalRecommendationBatches >= 3\n        ) {\n            return@LaunchedEffect\n        }\n        snapshotFlow {\n            if (pagerState.isScrollInProgress ||\n                appliedExternalRecommendations != (recommendations to onlyVerticalRecommendations)\n            ) null else (pagerState.currentPage to pageItems.size)\n        }.filterNotNull().collect { (page, count) ->\n            if (shouldLoadMorePortraitRecommendations(\n                    committedPage = page,\n                    totalItemsCount = count,\n                    isLoadingMoreRecommendations = false,\n                    prefetchThreshold = resolvePortraitRecommendationPrefetchThreshold(onlyVerticalRecommendations)\n                )\n            ) latestLoadMoreRecommendations()\n        }\n    }\n\n",
+      "adapted": "    LaunchedEffect(\n        pagerState, recommendationsManagedExternally, recommendationLoadInProgress,\n        recommendationLoadError, onlyVerticalRecommendations, recommendations, emptyExternalRecommendationBatches\n    ) {\n        if (!recommendationsManagedExternally || recommendationLoadInProgress || recommendationLoadError != null ||\n            emptyExternalRecommendationBatches >= 3\n        ) {\n            return@LaunchedEffect\n        }\n        snapshotFlow {\n            if (pagerState.isScrollInProgress ||\n                appliedExternalRecommendations != (recommendations to onlyVerticalRecommendations)\n            ) null else (pagerState.currentPage to pageItems.size)\n        }.filterNotNull().collect { (page, count) ->\n            if (shouldLoadMorePortraitRecommendations(\n                    committedPage = page,\n                    totalItemsCount = count,\n                    isLoadingMoreRecommendations = false,\n                    prefetchThreshold = resolvePortraitRecommendationPrefetchThreshold(onlyVerticalRecommendations)\n                )\n            ) latestLoadMoreRecommendations()\n        }\n    }\n\n",
+      "adaptedSha256LF": "e26f6bcc358c17c16b7954bdf64a44e7e0a41e8bf7d45d273e52189dae38b3c3"
+    },
+    {
+      "name": "complete-original-tail-error-and-three-empty-batch-retry-ui",
+      "offsetBytesLF": 99055,
+      "bytesLF": 666,
+      "sha256LF": "a83cae6e37b7cdf226722ff235de87c42470b6a1adb5c313c6c4b2cf12e1f839",
+      "original": "        if (recommendationsManagedExternally && pagerState.currentPage == pageItems.lastIndex &&\n            (recommendationLoadError != null || emptyExternalRecommendationBatches >= 3) &&\n            !recommendationLoadInProgress && !portraitCommentOverlayActive && !portraitUpPreviewActive\n        ) {\n            AppButton(\n                onClick = {\n                    emptyExternalRecommendationBatches = 0\n                    latestLoadMoreRecommendations()\n                },\n                modifier = Modifier.align(Alignment.TopCenter).padding(top = 96.dp)\n            ) {\n                AppText(\"加载更多推荐 · 重试\")\n            }\n        }\n\n",
+      "adapted": "        if (recommendationsManagedExternally && pagerState.currentPage == pageItems.lastIndex &&\n            (recommendationLoadError != null || emptyExternalRecommendationBatches >= 3) &&\n            !recommendationLoadInProgress && !portraitCommentOverlayActive && !portraitUpPreviewActive\n        ) {\n            AppButton(\n                onClick = {\n                    emptyExternalRecommendationBatches = 0\n                    latestLoadMoreRecommendations()\n                },\n                modifier = Modifier.align(Alignment.TopCenter).padding(top = 96.dp)\n            ) {\n                AppText(\"加载更多推荐 · 重试\")\n            }\n        }\n\n",
+      "adaptedSha256LF": "a83cae6e37b7cdf226722ff235de87c42470b6a1adb5c313c6c4b2cf12e1f839"
+    }
+  ],
+  "output": {
+    "path": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+    "beforeSha256LF": "aff1d99c9076b0195b39a43c2ef7a573089d6d7a4ee4d9af327d7f2c91ae75b9",
+    "afterSha256LF": "3ceff44381421f29c8392134ec980b747622af89334e85f518b2d6b3a2dc1ffc",
+    "edits": [
+      {
+        "name": "four-required-story-consumer-ports-with-original-compatible-defaults",
+        "offsetBytes": 13161,
+        "before": "    recommendations: List<RelatedVideo>,\n",
+        "after": "    recommendations: List<RelatedVideo>,\n    recommendationsManagedExternally: Boolean = false,\n    recommendationLoadInProgress: Boolean = false,\n    recommendationLoadError: String? = null,\n    onLoadMoreRecommendations: () -> Unit = {},\n",
+        "beforeWholeSha256": "aff1d99c9076b0195b39a43c2ef7a573089d6d7a4ee4d9af327d7f2c91ae75b9",
+        "afterWholeSha256": "3a8bd279583c627447b673da00555f06bbc2c2feaf69bca648013b1fab8eb560"
+      },
+      {
+        "name": "latest-callback-same-compose-owner",
+        "offsetBytes": 16231,
+        "before": "    val scope = rememberCoroutineScope()\n    val danmakuManager = platform.danmaku",
+        "after": "    val scope = rememberCoroutineScope()\n    val latestLoadMoreRecommendations by rememberUpdatedState(onLoadMoreRecommendations)\n    val danmakuManager = platform.danmaku",
+        "beforeWholeSha256": "3a8bd279583c627447b673da00555f06bbc2c2feaf69bca648013b1fab8eb560",
+        "afterWholeSha256": "e21cf4fd26beabdcec31ac3b9edc7e052863ffce79493cdc992982230d2eec71"
+      },
+      {
+        "name": "original-external-recommendation-state",
+        "offsetBytes": 23245,
+        "before": "    var lastLoadedCollectionInfo by remember(initialInfo.bvid) {",
+        "after": "    var appliedExternalRecommendations by remember(initialInfo.bvid) {\n        mutableStateOf<Pair<List<RelatedVideo>, Boolean>?>(null)\n    }\n    var emptyExternalRecommendationBatches by remember(initialInfo.bvid) { mutableIntStateOf(0) }\n    var lastLoadedCollectionInfo by remember(initialInfo.bvid) {",
+        "beforeWholeSha256": "e21cf4fd26beabdcec31ac3b9edc7e052863ffce79493cdc992982230d2eec71",
+        "afterWholeSha256": "a6aa255b61f1abc7e9879280f18a1e84eb7f70964753db0ec820e1e878652bd0"
+      },
+      {
+        "name": "complete-parent-recommendations-effect",
+        "offsetBytes": 23713,
+        "before": "    LaunchedEffect(initialInfo.bvid, recommendations, onlyVerticalRecommendations) {\n        val filteredRecommendations = filterPortraitOnlyVerticalRecommendations(\n            recommendations = recommendations,\n            enabled = onlyVerticalRecommendations,\n        isVerticalVideo = platform.requests::isVerticalVideo,\n)\n        if (!seededInitialRecommendations) {\n            val seeded = shufflePortraitRecommendations(\n                seed = recommendationShuffleSeed,\n                recommendations = filteredRecommendations,\n                precedingOwnerMid = initialInfo.owner.mid\n            )\n            recommendationItems.clear()\n            recommendationItems.addAll(seeded)\n            pageItems.clear()\n            pageItems.add(initialInfo)\n            pageItems.addAll(seeded)\n            seededInitialRecommendations = true\n            return@LaunchedEffect\n        }\n        val existingBvids = snapshotPortraitPageBvids(pageItems)\n        val appendItems = resolvePortraitExternalRecommendationAppendItems(\n            currentInitialBvid = initialInfo.bvid,\n            existingBvids = existingBvids,\n            externalRecommendations = filteredRecommendations\n        )\n        if (appendItems.isEmpty()) return@LaunchedEffect\n        val shuffledAppend = shufflePortraitRecommendations(\n            seed = resolvePortraitRecommendationAppendSeed(\n                baseSeed = recommendationShuffleSeed,\n                currentBvid = initialInfo.bvid\n            ),\n            recommendations = appendItems,\n            precedingOwnerMid = pageItems.lastOrNull()?.let(::resolvePortraitPageOwnerMid) ?: 0L\n        )\n        recommendationItems.addAll(shuffledAppend)\n        pageItems.addAll(shuffledAppend)\n    }\n\n",
+        "after": "    LaunchedEffect(initialInfo.bvid, recommendations, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        val filteredRecommendations = filterPortraitOnlyVerticalRecommendations(\n            recommendations = recommendations,\n            enabled = onlyVerticalRecommendations,\n        isVerticalVideo = platform.requests::isVerticalVideo,\n)\n        if (!seededInitialRecommendations) {\n            val seeded = if (recommendationsManagedExternally) {\n                filteredRecommendations.distinctBy { it.bvid }\n            } else shufflePortraitRecommendations(\n                seed = recommendationShuffleSeed,\n                recommendations = filteredRecommendations,\n                precedingOwnerMid = initialInfo.owner.mid\n            )\n            recommendationItems.clear()\n            recommendationItems.addAll(seeded)\n            pageItems.clear()\n            pageItems.add(initialInfo)\n            pageItems.addAll(seeded)\n            seededInitialRecommendations = true\n            if (recommendationsManagedExternally) {\n                appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n                emptyExternalRecommendationBatches = if (seeded.isEmpty()) 1 else 0\n            }\n            return@LaunchedEffect\n        }\n        val existingBvids = snapshotPortraitPageBvids(pageItems)\n        val appendItems = resolvePortraitExternalRecommendationAppendItems(\n            currentInitialBvid = initialInfo.bvid,\n            existingBvids = existingBvids,\n            externalRecommendations = filteredRecommendations\n        )\n        if (appendItems.isEmpty()) {\n            if (recommendationsManagedExternally) {\n                appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n                emptyExternalRecommendationBatches += 1\n            }\n            return@LaunchedEffect\n        }\n        val shuffledAppend = if (recommendationsManagedExternally) appendItems else shufflePortraitRecommendations(\n            seed = resolvePortraitRecommendationAppendSeed(\n                baseSeed = recommendationShuffleSeed,\n                currentBvid = initialInfo.bvid\n            ),\n            recommendations = appendItems,\n            precedingOwnerMid = pageItems.lastOrNull()?.let(::resolvePortraitPageOwnerMid) ?: 0L\n        )\n        recommendationItems.addAll(shuffledAppend)\n        pageItems.addAll(shuffledAppend)\n        if (recommendationsManagedExternally) {\n            appliedExternalRecommendations = recommendations to onlyVerticalRecommendations\n            emptyExternalRecommendationBatches = 0\n        }\n    }\n\n",
+        "beforeWholeSha256": "a6aa255b61f1abc7e9879280f18a1e84eb7f70964753db0ec820e1e878652bd0",
+        "afterWholeSha256": "5b378a5854f64da391d9cfdcc189fd30f214df568c6f1de280f9d16d4b89f4d1"
+      },
+      {
+        "name": "external-owner-prohibits-private-watchlater-append",
+        "offsetBytes": 27082,
+        "before": "    LaunchedEffect(watchLaterVideos, onlyVerticalRecommendations) {\n",
+        "after": "    LaunchedEffect(watchLaterVideos, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        if (recommendationsManagedExternally) return@LaunchedEffect\n",
+        "beforeWholeSha256": "5b378a5854f64da391d9cfdcc189fd30f214df568c6f1de280f9d16d4b89f4d1",
+        "afterWholeSha256": "70d55c4f6ea454652cde2a6334c4f9382e7241ea04f88661231ecc3162bf1fca"
+      },
+      {
+        "name": "external-owner-prohibits-private-discovery-fetch-and-append",
+        "offsetBytes": 28619,
+        "before": "    LaunchedEffect(initialInfo.bvid, onlyVerticalRecommendations) {\n",
+        "after": "    LaunchedEffect(initialInfo.bvid, onlyVerticalRecommendations, recommendationsManagedExternally) {\n        if (recommendationsManagedExternally) return@LaunchedEffect\n",
+        "beforeWholeSha256": "70d55c4f6ea454652cde2a6334c4f9382e7241ea04f88661231ecc3162bf1fca",
+        "afterWholeSha256": "b4f95f84d0f50a90ecca939d197e7f262ab86314c0242ba4bd34940d6fe6119a"
+      },
+      {
+        "name": "external-owner-prohibits-private-home-tail-fetch-and-append",
+        "offsetBytes": 64061,
+        "before": "                if (\n                    shouldLoadMorePortraitRecommendations(",
+        "after": "                if (\n                    !recommendationsManagedExternally &&\n                    shouldLoadMorePortraitRecommendations(",
+        "beforeWholeSha256": "b4f95f84d0f50a90ecca939d197e7f262ab86314c0242ba4bd34940d6fe6119a",
+        "afterWholeSha256": "b4d8a3393dab921a3a631d74b73c110118d60a49a77e1fbcc0b41a8c52bdb6e8"
+      },
+      {
+        "name": "original-external-near-tail-loadmore-effect",
+        "offsetBytes": 72392,
+        "before": "    LaunchedEffect(currentPlayingCid, currentPlayingAid, danmakuEnabled, danmakuSettingsLoaded, exoPlayer) {",
+        "after": "    LaunchedEffect(\n        pagerState, recommendationsManagedExternally, recommendationLoadInProgress,\n        recommendationLoadError, onlyVerticalRecommendations, recommendations, emptyExternalRecommendationBatches\n    ) {\n        if (!recommendationsManagedExternally || recommendationLoadInProgress || recommendationLoadError != null ||\n            emptyExternalRecommendationBatches >= 3\n        ) {\n            return@LaunchedEffect\n        }\n        snapshotFlow {\n            if (pagerState.isScrollInProgress ||\n                appliedExternalRecommendations != (recommendations to onlyVerticalRecommendations)\n            ) null else (pagerState.currentPage to pageItems.size)\n        }.filterNotNull().collect { (page, count) ->\n            if (shouldLoadMorePortraitRecommendations(\n                    committedPage = page,\n                    totalItemsCount = count,\n                    isLoadingMoreRecommendations = false,\n                    prefetchThreshold = resolvePortraitRecommendationPrefetchThreshold(onlyVerticalRecommendations)\n                )\n            ) latestLoadMoreRecommendations()\n        }\n    }\n\n    LaunchedEffect(currentPlayingCid, currentPlayingAid, danmakuEnabled, danmakuSettingsLoaded, exoPlayer) {",
+        "beforeWholeSha256": "b4d8a3393dab921a3a631d74b73c110118d60a49a77e1fbcc0b41a8c52bdb6e8",
+        "afterWholeSha256": "e2768238888f9a1ebc01f0311f262ba6e624debc2d0e2edb612e693e396b2c63"
+      },
+      {
+        "name": "existing-sole-surface-box-scope-for-original-retry-alignment",
+        "offsetBytes": 75442,
+        "before": "    platform.Surface(exoPlayer) {\n    VerticalPager(",
+        "after": "    platform.Surface(exoPlayer) {\n    Box(Modifier.fillMaxSize()) {\n    VerticalPager(",
+        "beforeWholeSha256": "e2768238888f9a1ebc01f0311f262ba6e624debc2d0e2edb612e693e396b2c63",
+        "afterWholeSha256": "1d89d71d53d7ff813a515056aff7bc6e62786cc403a26bfb9dd23d628cc04af6"
+      },
+      {
+        "name": "original-tail-retry-inside-existing-sole-surface",
+        "offsetBytes": 85217,
+        "before": "    }\n    com.android.purebilibili.feature.video.ui.components.CoinDialog(",
+        "after": "        if (recommendationsManagedExternally && pagerState.currentPage == pageItems.lastIndex &&\n            (recommendationLoadError != null || emptyExternalRecommendationBatches >= 3) &&\n            !recommendationLoadInProgress && !portraitCommentOverlayActive && !portraitUpPreviewActive\n        ) {\n            AppButton(\n                onClick = {\n                    emptyExternalRecommendationBatches = 0\n                    latestLoadMoreRecommendations()\n                },\n                modifier = Modifier.align(Alignment.TopCenter).padding(top = 96.dp)\n            ) {\n                AppText(\"加载更多推荐 · 重试\")\n            }\n        }\n\n    }\n    }\n    com.android.purebilibili.feature.video.ui.components.CoinDialog(",
+        "beforeWholeSha256": "1d89d71d53d7ff813a515056aff7bc6e62786cc403a26bfb9dd23d628cc04af6",
+        "afterWholeSha256": "3ceff44381421f29c8392134ec980b747622af89334e85f518b2d6b3a2dc1ffc"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "jay3-yy/BiliPai",
+  "upstreamTag": "v0.3.5",
+  "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+  "source": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppScrollableLists.kt",
+  "archiveFile": "AppScrollableLists.kt",
+  "rawSha256": "af0981b641026f514024d13ecaf572b8c483a4470254277ca1eea4f9ac46d25b",
+  "gitBlob": "404c68f0f6591705b00b94bc0ebf9f1a328f7dee",
+  "bytesRaw": 4638,
+  "output": "com/android/purebilibili/core/ui/components/AppScrollableLists.kt",
+  "mode": "whole-original-direct",
+  "adaptations": [],
+  "fullOriginalInverse": true,
+  "scope": "Complete original Compose AppLazyColumn/AppLazyVerticalGrid, retaining shared original list state and Miuix draggable scrollbars; fixes the genuine FavoriteFolderCardList import closure.",
+  "physicalUiQualified": false
+}

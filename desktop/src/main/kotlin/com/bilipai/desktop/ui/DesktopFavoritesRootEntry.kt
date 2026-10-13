@@ -24,14 +24,26 @@ internal class DesktopFavoritesRootEntry(
     readCsrf: () -> String?,
     feedback: (String) -> Unit,
     private val rootAlive: () -> Boolean,
+    private val admitCoverCache: (() -> Boolean, () -> Unit) -> Boolean,
 ) : AutoCloseable {
     private val alive = AtomicBoolean(true)
+    private val coverAdmission = Any()
     private val job = SupervisorJob(parentScope.coroutineContext[Job])
     val scope = CoroutineScope(parentScope.coroutineContext + job)
     val environment = DesktopFavoriteEnvironment(scope, api, spaceApi, dynamicApi, bangumiApi,
         stillOwned = ::isOwned, readCsrf = readCsrf, readMid = readMid, feedback = feedback,
         historyChanges = null, getCachedPosition = null, privacyModeEnabled = null,
-        watchLaterChanged = null, readAccessToken = null, readAccessTokenPlatform = null)
+        watchLaterChanged = null, readAccessToken = null, readAccessTokenPlatform = null).also { value ->
+            val context = DesktopFavoriteCoverCacheContext(globalStore, readMid(), readMid, ::isOwned) { current, action ->
+                admitCoverCache(current) {
+                    synchronized(coverAdmission) {
+                        if (!isOwned() || !current()) throw CancellationException("Favorite cover Entry retired")
+                        action()
+                    }
+                }
+            }
+            value.mountFavoriteCoverContext(context)
+        }
     val preferences = DesktopFavoritePreferences(globalStore)
     val viewModel = FavoriteViewModel(environment)
     val categories = FavoriteCategoryViewModel(environment)
@@ -57,7 +69,7 @@ internal class DesktopFavoritesRootEntry(
     }
 
     override fun close() {
-        if (!alive.getAndSet(false)) return
+        synchronized(coverAdmission) { if (!alive.getAndSet(false)) return }
         searchChannel.close(); scrollToTopChannel.close(); job.cancel()
         details.clear()
     }

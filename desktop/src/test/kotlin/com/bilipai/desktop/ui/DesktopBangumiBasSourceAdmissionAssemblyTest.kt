@@ -549,6 +549,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
             ui {
                 owner = slot.requireAssembly()
                 val portrait = DesktopOriginalPortraitPlatformBinding(owner, slot::currentAssembly, unused(), unused(), unused(), unused(),
+                    storyFeed = { _, _, _, _ -> error("Unexpected Story feed in DesktopBangumiBasSourceAdmissionAssemblyTest fixture") },
                     captureRequest = { requests.captureBinding(it.captureLoadState()) },
                     captureMetadataRequest = { value ->
                         require(value === owner)

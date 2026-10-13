@@ -71,7 +71,11 @@ def generate(repo: Path, output: Path) -> list[Path]:
             require(inverse[offset:offset + len(after)] == after, "Text/lyrics inverse changed: " + original)
             inverse = inverse[:offset] + before + inverse[offset + len(after):]
         require(inverse == baseline, "Text/lyrics whole inverse changed: " + original)
-        prepared.append((emitted, raw, row))
+        effective_row = dict(row, upstreamCommit=COMMIT)
+        if original == 'core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt':
+            from v035_dynamic_link import upgraded_dynamic_model
+            raw, effective_row = upgraded_dynamic_model(raw, effective_row)
+        prepared.append((emitted, raw, effective_row))
     # Validate every input before writing any source. Each output remains the raw Git source.
     generated = []
     for emitted, raw, row in prepared:
@@ -79,8 +83,9 @@ def generate(repo: Path, output: Path) -> list[Path]:
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_bytes(raw)
         generated.append(destination)
-    proof = {"schemaVersion": 1, "upstreamCommit": COMMIT,
+    proof = {"schemaVersion": 1, "validatedPreviousOriginalCommit": COMMIT,
              "baselineCommit": BASELINE_COMMIT, "manifestSha256": MANIFEST_SHA256,
+             "upstreamCommits": sorted({row["upstreamCommit"] for _, _, row in prepared}),
              "sources": [row for _, _, row in prepared]}
     receipt = wide(output / "original-text-lyrics-provenance.json")
     receipt.parent.mkdir(parents=True, exist_ok=True)

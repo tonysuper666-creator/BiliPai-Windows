@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+  "canonicalBaselineCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "sources": [
+    {
+      "file": "FavoriteFolderCoverCache.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/FavoriteFolderCoverCache.kt",
+      "bytesRaw": 6814,
+      "sha256Raw": "8e09a969ca9be583e2d4d5d974bf757d0fc7ac05fdd9f258fda2bb1e6c9f5352",
+      "gitBlob": "eab3f0712cda0d81d942c80f440880ccbe249fdd",
+      "partialReuse": false
+    },
+    {
+      "file": "FavoriteFolderCoverPrefetchPolicy.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteFolderCoverPrefetchPolicy.kt",
+      "bytesRaw": 2417,
+      "sha256Raw": "44c5aa059052068138131692cb5074f87ea4c9910df349920b27dff613a1055d",
+      "gitBlob": "4254dd3e1749cfbdacf6e78294ac186c22b35098",
+      "partialReuse": false
+    },
+    {
+      "file": "FavoriteFolderCardList.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteFolderCardList.kt",
+      "bytesRaw": 9719,
+      "sha256Raw": "f14aeef1cc3adf1b244c366d3e397c0460156f6e8e0e5cd8e65da25ce17caf88",
+      "gitBlob": "6e8a8ec6efeae29b3149a56e242751d1f33b2eae",
+      "partialReuse": false
+    },
+    {
+      "file": "ListViewModel.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "bytesRaw": 72529,
+      "sha256Raw": "8aaf7ab9082bec375877cc31bfd64f2f83aabdbc00569e248d2cc146730a09b4",
+      "gitBlob": "9099340dd2dbe03d8b7ef3921a1692ab67c1755b",
+      "partialReuse": true
+    },
+    {
+      "file": "CommonListScreen.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "bytesRaw": 180382,
+      "sha256Raw": "aa16a74e21d4be964bce88bd9608058e35d076d9e73e33074c4b54547589e4e7",
+      "gitBlob": "b4906188a2dd8148bdd04f6ec31361785c300e98",
+      "partialReuse": true
+    }
+  ],
+  "leafs": {
+    "core/store/FavoriteFolderCoverCache": {
+      "output": "com/android/purebilibili/core/store/FavoriteFolderCoverCache.kt",
+      "beforeSha256LF": "8e09a969ca9be583e2d4d5d974bf757d0fc7ac05fdd9f258fda2bb1e6c9f5352",
+      "afterSha256LF": "6ef026962f9c6262b0307bd44ee0d02cb502d52d2448f0a0eaecfac3485cf1c2",
+      "edits": [
+        {
+          "name": "borrow fixed Root request instead of Android context",
+          "offsetBytes": 45,
+          "before": "import android.content.Context\n",
+          "after": "import com.bilipai.desktop.ui.DesktopFavoriteCoverCacheContext\nimport com.bilipai.desktop.ui.DesktopFavoriteCoverCacheRequest\n",
+          "beforeWholeSha256": "8e09a969ca9be583e2d4d5d974bf757d0fc7ac05fdd9f258fda2bb1e6c9f5352",
+          "afterWholeSha256": "0a55b4621f97a7fc8d510fbb57bf76949ab3543f38936bbe63cad3a298877158"
+        },
+        {
+          "name": "original cache instance belongs to retained account Entry",
+          "offsetBytes": 1295,
+          "before": "object FavoriteFolderCoverCache {",
+          "after": "class FavoriteFolderCoverCache(private val contextOwner: DesktopFavoriteCoverCacheContext) {\n    companion object {",
+          "beforeWholeSha256": "0a55b4621f97a7fc8d510fbb57bf76949ab3543f38936bbe63cad3a298877158",
+          "afterWholeSha256": "2be44ba0b0dd426b68999a1f61e6ebb81a4ac82f515530e9ebca8e5c449b0c8a"
+        },
+        {
+          "name": "original constants remain companion fields",
+          "offsetBytes": 1679,
+          "before": "    const val DEFAULT_TTL_MS = 24L * 60L * 60L * 1000L\n",
+          "after": "    const val DEFAULT_TTL_MS = 24L * 60L * 60L * 1000L\n    }\n",
+          "beforeWholeSha256": "2be44ba0b0dd426b68999a1f61e6ebb81a4ac82f515530e9ebca8e5c449b0c8a",
+          "afterWholeSha256": "3a3965e5a52e8decb34af4581fb4ffec7bf0f03be3dc0176ea369457e5af5c56"
+        },
+        {
+          "name": "borrowed context signature",
+          "offsetBytes": 6379,
+          "before": "context: Context",
+          "after": "context: DesktopFavoriteCoverCacheRequest",
+          "beforeWholeSha256": "3a3965e5a52e8decb34af4581fb4ffec7bf0f03be3dc0176ea369457e5af5c56",
+          "afterWholeSha256": "4ab0db0e1f16525a269dfc96c20fd5d546d7bb7c609180b78f818906e60dadfb"
+        },
+        {
+          "name": "borrowed context signature",
+          "offsetBytes": 5509,
+          "before": "context: Context",
+          "after": "context: DesktopFavoriteCoverCacheRequest",
+          "beforeWholeSha256": "4ab0db0e1f16525a269dfc96c20fd5d546d7bb7c609180b78f818906e60dadfb",
+          "afterWholeSha256": "99c97a6b3ccb03c1a2fa01250102d131ab0c1a76761f2e84310f7e8e59b1ee06"
+        },
+        {
+          "name": "borrowed context signature",
+          "offsetBytes": 5318,
+          "before": "context: Context",
+          "after": "context: DesktopFavoriteCoverCacheRequest",
+          "beforeWholeSha256": "99c97a6b3ccb03c1a2fa01250102d131ab0c1a76761f2e84310f7e8e59b1ee06",
+          "afterWholeSha256": "13349e7ab8db271d11cf0982a5df21fa9ff32c2032ea9d478601f16df2c68400"
+        },
+        {
+          "name": "borrowed context signature",
+          "offsetBytes": 4344,
+          "before": "context: Context",
+          "after": "context: DesktopFavoriteCoverCacheRequest",
+          "beforeWholeSha256": "13349e7ab8db271d11cf0982a5df21fa9ff32c2032ea9d478601f16df2c68400",
+          "afterWholeSha256": "1b0dda1f83e0c2b018ceffea1325e2a3efaa96acf768633ea0dc45d39d376254"
+        },
+        {
+          "name": "borrowed context signature",
+          "offsetBytes": 3543,
+          "before": "context: Context",
+          "after": "context: DesktopFavoriteCoverCacheRequest",
+          "beforeWholeSha256": "1b0dda1f83e0c2b018ceffea1325e2a3efaa96acf768633ea0dc45d39d376254",
+          "afterWholeSha256": "63f5de1021f4655ae1e786549cf2a9cf9ae93c21dbec705e438dae96026f4fa0"
+        },
+        {
+          "name": "borrowed context signature",
+          "offsetBytes": 2824,
+          "before": "context: Context",
+          "after": "context: DesktopFavoriteCoverCacheRequest",
+          "beforeWholeSha256": "63f5de1021f4655ae1e786549cf2a9cf9ae93c21dbec705e438dae96026f4fa0",
+          "afterWholeSha256": "bbee92e85959da5cb7019544ff300529e47fd7d610a83ce4c4adc44bc2238805"
+        },
+        {
+          "name": "lookup validates original owner before even memory access",
+          "offsetBytes": 3043,
+          "before": "        if (lookups.isEmpty()) return@withContext emptyMap()\n",
+          "after": "        context.requireOwner(contextOwner)\n        if (lookups.isEmpty()) return@withContext emptyMap()\n",
+          "beforeWholeSha256": "bbee92e85959da5cb7019544ff300529e47fd7d610a83ce4c4adc44bc2238805",
+          "afterWholeSha256": "164ce24f8f6a3a18435c3d5850557f875c503c1a31befc06b7dadb60435ea454"
+        },
+        {
+          "name": "lookup current before returning cover values",
+          "offsetBytes": 3486,
+          "before": "        result\n    }\n\n    /** 写入",
+          "after": "        context.checkCurrent()\n        result\n    }\n\n    /** 写入",
+          "beforeWholeSha256": "164ce24f8f6a3a18435c3d5850557f875c503c1a31befc06b7dadb60435ea454",
+          "afterWholeSha256": "42cf68c67464656c6566b0150b9db581e91fb2312c4eae680c8059770bae66c3"
+        },
+        {
+          "name": "store current before accepting results",
+          "offsetBytes": 3807,
+          "before": "        val accepted = resolved.filter { it.mediaId > 0L && it.cover.isNotBlank() }\n",
+          "after": "        context.requireOwner(contextOwner)\n        val accepted = resolved.filter { it.mediaId > 0L && it.cover.isNotBlank() }\n",
+          "beforeWholeSha256": "42cf68c67464656c6566b0150b9db581e91fb2312c4eae680c8059770bae66c3",
+          "afterWholeSha256": "9aff613b07db580b86008f6c6dfcd83ee3f6bc85e5f52d83bdb9b5ee28c90462"
+        },
+        {
+          "name": "store current before original mirror snapshot",
+          "offsetBytes": 4014,
+          "before": "            val entries = snapshot(context).toMutableMap()\n",
+          "after": "            context.checkCurrent()\n            val entries = snapshot(context).toMutableMap()\n",
+          "beforeWholeSha256": "9aff613b07db580b86008f6c6dfcd83ee3f6bc85e5f52d83bdb9b5ee28c90462",
+          "afterWholeSha256": "8bc07f3940ef8455b724525909e2de9c44307c0af924c9d6947b02075825f6e2"
+        },
+        {
+          "name": "mirror publishes after successful same-Store commit",
+          "offsetBytes": 4418,
+          "before": "            memoryEntries = trimmed.toMutableMap()\n            persist(context, trimmed)\n",
+          "after": "            persist(context, trimmed)\n            context.checkCurrent()\n            memoryEntries = trimmed.toMutableMap()\n",
+          "beforeWholeSha256": "8bc07f3940ef8455b724525909e2de9c44307c0af924c9d6947b02075825f6e2",
+          "afterWholeSha256": "74414b82dc852afe69f1bb0c2d9a66936389e4dbf9c6a59de14f13de9c5497df"
+        },
+        {
+          "name": "clear uses same admitted payload key",
+          "offsetBytes": 4559,
+          "before": "    suspend fun clear(context: DesktopFavoriteCoverCacheRequest) = withContext(Dispatchers.IO) {\n        synchronized(lock) {\n            memoryEntries = null\n            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)\n                .edit()\n                .remove(KEY_PAYLOAD)\n                .apply()\n        }\n    }\n",
+          "after": "    suspend fun clear(context: DesktopFavoriteCoverCacheRequest) = withContext(Dispatchers.IO) {\n        context.requireOwner(contextOwner)\n        synchronized(lock) {\n            context.writePayload(PREFS_NAME, KEY_PAYLOAD, null)\n            context.checkCurrent()\n            memoryEntries = null\n        }\n    }\n",
+          "beforeWholeSha256": "74414b82dc852afe69f1bb0c2d9a66936389e4dbf9c6a59de14f13de9c5497df",
+          "afterWholeSha256": "938826b826fdf798f594353a217a11e56e564bec15590ecc4de224fe4262c745"
+        },
+        {
+          "name": "read original serialized payload from existing account namespace",
+          "offsetBytes": 5846,
+          "before": "        val raw = context\n            .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)\n            .getString(KEY_PAYLOAD, null)\n            .orEmpty()\n",
+          "after": "        val raw = context.readPayload(PREFS_NAME, KEY_PAYLOAD).orEmpty()\n",
+          "beforeWholeSha256": "938826b826fdf798f594353a217a11e56e564bec15590ecc4de224fe4262c745",
+          "afterWholeSha256": "2425d20c78d011b1d061b8c180ac62fca9c18d8927ad1efa457a664d74071e5a"
+        },
+        {
+          "name": "persist original serializer via genuine Root permit",
+          "offsetBytes": 7055,
+          "before": "        context\n            .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)\n            .edit()\n            .putString(KEY_PAYLOAD, raw)\n            .apply()\n",
+          "after": "        context.writePayload(PREFS_NAME, KEY_PAYLOAD, raw)\n",
+          "beforeWholeSha256": "2425d20c78d011b1d061b8c180ac62fca9c18d8927ad1efa457a664d74071e5a",
+          "afterWholeSha256": "6ef026962f9c6262b0307bd44ee0d02cb502d52d2448f0a0eaecfac3485cf1c2"
+        }
+      ]
+    },
+    "feature/list/FavoriteFolderCoverPrefetchPolicy": {
+      "output": "com/android/purebilibili/feature/list/FavoriteFolderCoverPrefetchPolicy.kt",
+      "beforeSha256LF": "44c5aa059052068138131692cb5074f87ea4c9910df349920b27dff613a1055d",
+      "afterSha256LF": "44c5aa059052068138131692cb5074f87ea4c9910df349920b27dff613a1055d",
+      "edits": []
+    },
+    "feature/list/FavoriteFolderCardList": {
+      "output": "com/android/purebilibili/feature/list/FavoriteFolderCardList.kt",
+      "beforeSha256LF": "f14aeef1cc3adf1b244c366d3e397c0460156f6e8e0e5cd8e65da25ce17caf88",
+      "afterSha256LF": "f14aeef1cc3adf1b244c366d3e397c0460156f6e8e0e5cd8e65da25ce17caf88",
+      "edits": []
+    }
+  },
+  "partialVmReuse": {
+    "offsetBytesLF": 45281,
+    "bytesLF": 6323,
+    "sha256LF": "983e0912018914f27f948f1a5b9fa30564992edd5db825681b9818791c93d0d1",
+    "adaptedSha256LF": "ccce48f88950c90d37433538ef2298c172dfa9ba35080eb341ce3aaf3c2b9bec",
+    "methods": [
+      "fetchFolders",
+      "applyCachedFavoriteFolderCovers",
+      "ensureFavoriteFolderCovers",
+      "fetchFavoriteFolderCovers",
+      "applyFavoriteFolderCovers"
+    ],
+    "edits": [
+      {
+        "name": "same existing owned repository",
+        "offsetBytes": 304,
+        "before": "com.android.purebilibili.data.repository.FavoriteRepository.getFavFolders(mid)",
+        "after": "environment.favorite.getFavFolders(mid)",
+        "beforeWholeSha256": "983e0912018914f27f948f1a5b9fa30564992edd5db825681b9818791c93d0d1",
+        "afterWholeSha256": "c6e28f4171d7b3d8b4f57afa545d43038bb1b48b4469fdc1cf60927720727591"
+      },
+      {
+        "name": "real catalog replacement retires previous batches",
+        "offsetBytes": 396,
+        "before": "                _folders.value = ownedFolders\n",
+        "after": "                desktopCoverCatalogGeneration++\n                _folders.value = ownedFolders\n",
+        "beforeWholeSha256": "c6e28f4171d7b3d8b4f57afa545d43038bb1b48b4469fdc1cf60927720727591",
+        "afterWholeSha256": "820069a06d18e7ace8942ce3b94d0b8e1e07e77c1458624b2072b99c65c15022"
+      },
+      {
+        "name": "cached lookup borrows actual request and catalog",
+        "offsetBytes": 1895,
+        "before": "        val covers = FavoriteFolderCoverCache.lookupAll(getApplication(), lookups)\n",
+        "after": "        val generation = desktopCoverCatalogGeneration\n        val context = environment.favoriteCoverContext.capture { desktopCoverCatalogGeneration == generation }\n        val covers = environment.favoriteCoverCache.lookupAll(context, lookups)\n",
+        "beforeWholeSha256": "820069a06d18e7ace8942ce3b94d0b8e1e07e77c1458624b2072b99c65c15022",
+        "afterWholeSha256": "25987cc98afefac5cb379d1f15f0229a11057a80e72a93e9406c71bc77ef085b"
+      },
+      {
+        "name": "cached UI application uses same request",
+        "offsetBytes": 2228,
+        "before": "        applyFavoriteFolderCovers(covers)\n",
+        "after": "        context.checkCurrent()\n        applyFavoriteFolderCovers(context, covers)\n",
+        "beforeWholeSha256": "25987cc98afefac5cb379d1f15f0229a11057a80e72a93e9406c71bc77ef085b",
+        "afterWholeSha256": "9973df017873bbb19c20e0cf6832e29d1f1d5182a408d46e18dea23a5615c04f"
+      },
+      {
+        "name": "freeze catalog before owned original launch",
+        "offsetBytes": 2748,
+        "before": "        if (candidates.isEmpty()) return\n        viewModelScope.launch {\n            coverPrefetchMutex.withLock {\n                val context = getApplication<Application>()\n",
+        "after": "        if (candidates.isEmpty()) return\n        environment.assertOwned()\n        val generation = desktopCoverCatalogGeneration\n        viewModelScope.launch {\n            val context = environment.favoriteCoverContext.capture { desktopCoverCatalogGeneration == generation }\n            coverPrefetchMutex.withLock {\n                context.checkCurrent()\n                val actualFolders = _folders.value.associateBy(::resolveFavoriteFolderMediaId)\n                val currentCandidates = candidates.mapNotNull { candidate ->\n                    actualFolders[resolveFavoriteFolderMediaId(candidate)]?.takeIf { it.media_count == candidate.media_count }\n                }\n",
+        "beforeWholeSha256": "9973df017873bbb19c20e0cf6832e29d1f1d5182a408d46e18dea23a5615c04f",
+        "afterWholeSha256": "90c9b3fcb60495b6e3d4037ba40392413c324a3d92a009e57c99db186402c9d3"
+      },
+      {
+        "name": "original policy receives actual current catalog",
+        "offsetBytes": 3493,
+        "before": "                    folders = candidates,",
+        "after": "                    folders = currentCandidates,",
+        "beforeWholeSha256": "90c9b3fcb60495b6e3d4037ba40392413c324a3d92a009e57c99db186402c9d3",
+        "afterWholeSha256": "160a99303ff40f44bfa524276430d8eb279e4241dc551d9f94a95d412f22d77d"
+      },
+      {
+        "name": "same original cache instance in prefetch",
+        "offsetBytes": 3790,
+        "before": "                val cached = FavoriteFolderCoverCache.lookupAll(\n",
+        "after": "                val cached = environment.favoriteCoverCache.lookupAll(\n",
+        "beforeWholeSha256": "160a99303ff40f44bfa524276430d8eb279e4241dc551d9f94a95d412f22d77d",
+        "afterWholeSha256": "988b343f7e4d6eef59b7d885fd9cfad2366c1b449e50bebddb8ba569e3688db1"
+      },
+      {
+        "name": "cached results stay on same request",
+        "offsetBytes": 4297,
+        "before": "                    applyFavoriteFolderCovers(cached)\n",
+        "after": "                    context.checkCurrent()\n                    applyFavoriteFolderCovers(context, cached)\n",
+        "beforeWholeSha256": "988b343f7e4d6eef59b7d885fd9cfad2366c1b449e50bebddb8ba569e3688db1",
+        "afterWholeSha256": "8a288f91d55e283284aae472fb9b5eb1af0e3d2d40c05520969712e07008f808"
+      },
+      {
+        "name": "network operation retains captured context",
+        "offsetBytes": 4866,
+        "before": "        context: Context,\n        targets: List<FavoriteFolderCoverTarget>,",
+        "after": "        context: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheRequest,\n        targets: List<FavoriteFolderCoverTarget>,",
+        "beforeWholeSha256": "8a288f91d55e283284aae472fb9b5eb1af0e3d2d40c05520969712e07008f808",
+        "afterWholeSha256": "10c196d3546c743f259852a01620a1087c4c1fc8489d39b043f50e8c9ebacb6c"
+      },
+      {
+        "name": "original fetch uses same bound repository",
+        "offsetBytes": 5319,
+        "before": "com.android.purebilibili.data.repository.FavoriteRepository.getFavoriteList(",
+        "after": "environment.favorite.getFavoriteList(",
+        "beforeWholeSha256": "10c196d3546c743f259852a01620a1087c4c1fc8489d39b043f50e8c9ebacb6c",
+        "afterWholeSha256": "fae11758f5bbb52685b2578723254bc35fe0547933fc6be9e849b0b1b8cb6aa6"
+      },
+      {
+        "name": "cache and final UI consume same captured request",
+        "offsetBytes": 6293,
+        "before": "        FavoriteFolderCoverCache.store(context, resolved)\n        applyFavoriteFolderCovers(resolved.associate { it.mediaId to it.cover })\n",
+        "after": "        context.checkCurrent()\n        environment.favoriteCoverCache.store(context, resolved)\n        applyFavoriteFolderCovers(context, resolved.associate { it.mediaId to it.cover })\n",
+        "beforeWholeSha256": "fae11758f5bbb52685b2578723254bc35fe0547933fc6be9e849b0b1b8cb6aa6",
+        "afterWholeSha256": "8c13194ad2d93192785c10bb66ebf2e256bf069dd6e54cd3f2fd99d337aa2bb2"
+      },
+      {
+        "name": "original CAS reducer inside actual Root admission",
+        "offsetBytes": 6590,
+        "before": "    private suspend fun applyFavoriteFolderCovers(coversByMediaId: Map<Long, String>) {\n        if (coversByMediaId.isEmpty()) return\n        // 用 CAS 更新，避免多个补封面批次并发回填时互相覆盖。\n        _folders.update { folders ->\n",
+        "after": "    private suspend fun applyFavoriteFolderCovers(context: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheRequest,\n        coversByMediaId: Map<Long, String>) {\n        if (coversByMediaId.isEmpty()) return\n        // 用 CAS 更新，避免多个补封面批次并发回填时互相覆盖。\n        context.admit {\n        _folders.update { folders ->\n",
+        "beforeWholeSha256": "8c13194ad2d93192785c10bb66ebf2e256bf069dd6e54cd3f2fd99d337aa2bb2",
+        "afterWholeSha256": "8b01a85950ef0e21d157e18075b9dc5b9fd5e02e7709d9da14574ff4959a7293"
+      },
+      {
+        "name": "close only new Root admission around unchanged map",
+        "offsetBytes": 7146,
+        "before": "                if (cover.isBlank()) folder else folder.copy(cover = cover)\n            }\n        }\n    }\n\n",
+        "after": "                if (cover.isBlank()) folder else folder.copy(cover = cover)\n            }\n        }\n        }\n    }\n\n",
+        "beforeWholeSha256": "8b01a85950ef0e21d157e18075b9dc5b9fd5e02e7709d9da14574ff4959a7293",
+        "afterWholeSha256": "ca07e5263f2981387482eac1573776e5ae7f3bb8fd0ae6b5f5106edb733c0cc3"
+      },
+      {
+        "name": "cached apply dedup uses current request admission",
+        "offsetBytes": 2178,
+        "before": "        coverResolvedMediaIds.addAll(covers.keys)\n        context.checkCurrent()\n",
+        "after": "        context.admit { coverResolvedMediaIds.addAll(covers.keys) }\n",
+        "beforeWholeSha256": "ca07e5263f2981387482eac1573776e5ae7f3bb8fd0ae6b5f5106edb733c0cc3",
+        "afterWholeSha256": "666416013f5e0bf678bcbd2089093661a5740c953feec85ffb5c9e424dde4a0b"
+      },
+      {
+        "name": "cached prefetch dedup uses current request admission",
+        "offsetBytes": 4222,
+        "before": "                    coverResolvedMediaIds.addAll(cached.keys)\n                    context.checkCurrent()\n",
+        "after": "                    context.admit { coverResolvedMediaIds.addAll(cached.keys) }\n",
+        "beforeWholeSha256": "666416013f5e0bf678bcbd2089093661a5740c953feec85ffb5c9e424dde4a0b",
+        "afterWholeSha256": "022d4b2972a9e5cfa71b420748332f8c06294a77fb40a7f73f7477ebf8e2486c"
+      },
+      {
+        "name": "network reservation dedup uses current request admission",
+        "offsetBytes": 4609,
+        "before": "                coverResolvedMediaIds.addAll(remaining.map { it.mediaId })\n",
+        "after": "                context.admit { coverResolvedMediaIds.addAll(remaining.map { it.mediaId }) }\n",
+        "beforeWholeSha256": "022d4b2972a9e5cfa71b420748332f8c06294a77fb40a7f73f7477ebf8e2486c",
+        "afterWholeSha256": "ccce48f88950c90d37433538ef2298c172dfa9ba35080eb341ce3aaf3c2b9bec"
+      }
+    ]
+  },
+  "outputs": {
+    "com/android/purebilibili/feature/list/DesktopOriginalListViewModels.kt": {
+      "beforeSha256LF": "fc50f70f93c79105e1cb8af9a1470faecacdbd17c9c7d31e3636eb5b556fd7a3",
+      "afterSha256LF": "3d2f67d35f65a97b195f7333c43802e852938b61b2662aa9d8f80d323279ad78",
+      "edits": [
+        {
+          "name": "original whole cache data types and folder model",
+          "offsetBytes": 163,
+          "before": "import com.android.purebilibili.data.model.response.VideoItem\n",
+          "after": "import com.android.purebilibili.data.model.response.VideoItem\nimport com.android.purebilibili.data.model.response.FavFolder\nimport com.android.purebilibili.core.store.FavoriteFolderCoverCache\n",
+          "beforeWholeSha256": "fc50f70f93c79105e1cb8af9a1470faecacdbd17c9c7d31e3636eb5b556fd7a3",
+          "afterWholeSha256": "3daddd446a6300fc655df8be297ce477ac2c890ac0137f4c91bd26bb5b6f1ecc"
+        },
+        {
+          "name": "original prefetch mutex set with retained Windows catalog qualifier",
+          "offsetBytes": 42032,
+          "before": "    private val folderLoadedOrders = mutableMapOf<Int, String>()\n",
+          "after": "    private val folderLoadedOrders = mutableMapOf<Int, String>()\n    private val coverPrefetchMutex = Mutex()\n    private val coverResolvedMediaIds: MutableSet<Long> = java.util.concurrent.ConcurrentHashMap.newKeySet<Long>()\n    @Volatile private var desktopCoverCatalogGeneration: Long = 0L\n",
+          "beforeWholeSha256": "3daddd446a6300fc655df8be297ce477ac2c890ac0137f4c91bd26bb5b6f1ecc",
+          "afterWholeSha256": "6ef1cec49249fe367de1c5567b639dbb7d0a75396cc94102417f5fcc0e13078c"
+        },
+        {
+          "name": "replace only old eager six-folder block with original five cover methods",
+          "offsetBytes": 48416,
+          "before": "    private suspend fun fetchFolders() {\n        folderCatalogMutex.withLock {\n            val mid = ensureCurrentUserMid()\n            check(mid > 0L) { \"请先登录\" }\n\n            if (_folders.value.isEmpty()) {\n                val ownedFolders = requestFavoriteFolderWithRetry {\n                    environment.favorite.getFavFolders(mid)\n                }\n                    .getOrThrow()\n                _folders.value = ownedFolders\n                allFolderIds = ownedFolders.map(::resolveFavoriteFolderMediaId)\n                loadFavoriteFolderPreviewCovers(ownedFolders)\n            }\n        }\n    }\n\n    /** Match the profile page behavior: use the first resource as a preview when the API omits folder.cover. */\n    private suspend fun loadFavoriteFolderPreviewCovers(folders: List<com.android.purebilibili.data.model.response.FavFolder>) {\n        val targets = folders.asSequence()\n            .take(6)\n            .filter { it.cover.isBlank() && it.media_count > 0 }\n            .mapNotNull { folder ->\n                resolveFavoriteFolderMediaId(folder).takeIf { it > 0L }?.let { mediaId ->\n                    folder.id to mediaId\n                }\n            }\n            .toList()\n        if (targets.isEmpty()) return\n\n        val semaphore = Semaphore(2)\n        val coversByFolderId = supervisorScope {\n            targets.map { (folderId, mediaId) ->\n                async {\n                    val cover = semaphore.withPermit {\n                        environment.favorite.getFavoriteList(\n                            mediaId = mediaId,\n                            pn = 1,\n                            ps = 1,\n                        ).getOrNull()?.medias\n                            ?.firstOrNull { it.cover.isNotBlank() }\n                            ?.cover\n                            .orEmpty()\n                    }\n                    folderId to cover\n                }\n            }.awaitAll()\n        }.filter { (_, cover) -> cover.isNotBlank() }.toMap()\n        if (coversByFolderId.isEmpty()) return\n\n        _folders.value = _folders.value.map { folder ->\n            val cover = coversByFolderId[folder.id]?.trim().orEmpty()\n            if (folder.cover.isBlank() && cover.isNotBlank()) folder.copy(cover = cover) else folder\n        }\n    }\n\n",
+          "after": "    private suspend fun fetchFolders() {\n        folderCatalogMutex.withLock {\n            val mid = ensureCurrentUserMid()\n            check(mid > 0L) { \"请先登录\" }\n\n            if (_folders.value.isEmpty()) {\n                val ownedFolders = requestFavoriteFolderWithRetry {\n                    environment.favorite.getFavFolders(mid)\n                }\n                    .getOrThrow()\n                desktopCoverCatalogGeneration++\n                _folders.value = ownedFolders\n                allFolderIds = ownedFolders.map(::resolveFavoriteFolderMediaId)\n                // 收藏夹列表刷新后封面会重新变为空，重置会话级去重集合并先用缓存回填。\n                coverResolvedMediaIds.clear()\n                applyCachedFavoriteFolderCovers(ownedFolders)\n                // 首屏先主动补齐一小批，避免卡片进入视口后才开始请求封面。\n                ensureFavoriteFolderCovers(\n                    ownedFolders.take(FAVORITE_FOLDER_COVER_INITIAL_WINDOW)\n                )\n            }\n        }\n    }\n\n    /**\n     * 进入收藏页时先用本地缓存补齐封面（不发起网络请求）。\n     *\n     * 未命中缓存的收藏夹保持空封面，交给列表滚动到可见前沿时按需补全，\n     * 避免打开页面就一次性发起大量 fav/resource/list 请求。\n     */\n    private suspend fun applyCachedFavoriteFolderCovers(folders: List<FavFolder>) {\n        if (folders.isEmpty()) return\n        val lookups = folders.mapNotNull { folder ->\n            val mediaId = resolveFavoriteFolderMediaId(folder)\n            if (mediaId <= 0L || folder.cover.isNotBlank() || folder.media_count <= 0) {\n                null\n            } else {\n                FavoriteFolderCoverCache.Lookup(mediaId = mediaId, mediaCount = folder.media_count)\n            }\n        }\n        if (lookups.isEmpty()) return\n        val generation = desktopCoverCatalogGeneration\n        val context = environment.favoriteCoverContext.capture { desktopCoverCatalogGeneration == generation }\n        val covers = environment.favoriteCoverCache.lookupAll(context, lookups)\n        if (covers.isEmpty()) return\n        context.admit { coverResolvedMediaIds.addAll(covers.keys) }\n        applyFavoriteFolderCovers(context, covers)\n    }\n\n    /**\n     * 按需补齐收藏夹封面：命中缓存直接填充，未命中的才发起 fav/resource/list 请求。\n     *\n     * 由收藏夹列表滚动到可见前沿时调用，[candidates] 为当前需要保证封面的收藏夹前缀。\n     * 缓存以 media_count 失效，因此命中缓存即代表封面仍是最新收藏的视频封面。\n     */\n    fun ensureFavoriteFolderCovers(candidates: List<FavFolder>) {\n        if (candidates.isEmpty()) return\n        environment.assertOwned()\n        val generation = desktopCoverCatalogGeneration\n        viewModelScope.launch {\n            val context = environment.favoriteCoverContext.capture { desktopCoverCatalogGeneration == generation }\n            coverPrefetchMutex.withLock {\n                context.checkCurrent()\n                val actualFolders = _folders.value.associateBy(::resolveFavoriteFolderMediaId)\n                val currentCandidates = candidates.mapNotNull { candidate ->\n                    actualFolders[resolveFavoriteFolderMediaId(candidate)]?.takeIf { it.media_count == candidate.media_count }\n                }\n                val pending = resolveFavoriteFolderCoverFetchTargets(\n                    folders = currentCandidates,\n                    alreadyResolved = coverResolvedMediaIds,\n                )\n                if (pending.isEmpty()) return@withLock\n\n                // 先吃缓存：命中的不占请求额度，也标记为已解析避免下次重复查询。\n                val cached = environment.favoriteCoverCache.lookupAll(\n                    context = context,\n                    lookups = pending.map { target ->\n                        FavoriteFolderCoverCache.Lookup(\n                            mediaId = target.mediaId,\n                            mediaCount = target.mediaCount,\n                        )\n                    },\n                )\n                if (cached.isNotEmpty()) {\n                    context.admit { coverResolvedMediaIds.addAll(cached.keys) }\n                    applyFavoriteFolderCovers(context, cached)\n                }\n\n                val remaining = pending.filter { it.mediaId !in cached }\n                if (remaining.isEmpty()) return@withLock\n                // 先登记再请求，避免滚动过程中同一收藏夹被重复发起。\n                context.admit { coverResolvedMediaIds.addAll(remaining.map { it.mediaId }) }\n                fetchFavoriteFolderCovers(context, remaining)\n            }\n        }\n    }\n\n    private suspend fun fetchFavoriteFolderCovers(\n        context: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheRequest,\n        targets: List<FavoriteFolderCoverTarget>,\n    ) {\n        if (targets.isEmpty()) return\n        val semaphore = Semaphore(FAVORITE_FOLDER_COVER_CONCURRENCY)\n        val resolved = supervisorScope {\n            targets.map { target ->\n                async {\n                    semaphore.withPermit {\n                        val cover = try {\n                            environment.favorite.getFavoriteList(\n                                mediaId = target.mediaId,\n                                pn = 1,\n                                ps = 1,\n                            ).getOrNull()?.medias\n                                ?.firstOrNull { it.cover.isNotBlank() }\n                                ?.cover\n                                .orEmpty()\n                        } catch (e: CancellationException) {\n                            throw e\n                        } catch (e: Exception) {\n                            \"\"\n                        }\n                        FavoriteFolderCoverCache.Resolved(\n                            mediaId = target.mediaId,\n                            mediaCount = target.mediaCount,\n                            cover = cover,\n                        )\n                    }\n                }\n            }.awaitAll()\n        }.filter { it.cover.isNotBlank() }\n        if (resolved.isEmpty()) return\n\n        context.checkCurrent()\n        environment.favoriteCoverCache.store(context, resolved)\n        applyFavoriteFolderCovers(context, resolved.associate { it.mediaId to it.cover })\n    }\n\n    /** 把封面回填到收藏夹列表，只补空白封面，避免覆盖接口已返回的值。 */\n    private suspend fun applyFavoriteFolderCovers(context: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheRequest,\n        coversByMediaId: Map<Long, String>) {\n        if (coversByMediaId.isEmpty()) return\n        // 用 CAS 更新，避免多个补封面批次并发回填时互相覆盖。\n        context.admit {\n        _folders.update { folders ->\n            folders.map { folder ->\n                if (folder.cover.isNotBlank()) return@map folder\n                val cover = coversByMediaId[resolveFavoriteFolderMediaId(folder)]?.trim().orEmpty()\n                if (cover.isBlank()) folder else folder.copy(cover = cover)\n            }\n        }\n        }\n    }\n\n",
+          "beforeWholeSha256": "6ef1cec49249fe367de1c5567b639dbb7d0a75396cc94102417f5fcc0e13078c",
+          "afterWholeSha256": "fe84ca4d1c73ac55922542a9c43c7d4f5b043ee3fff8ff88fc904cb63edfcad4"
+        },
+        {
+          "name": "real catalog clear retires old batches",
+          "offsetBytes": 68799,
+          "before": "                _folders.value = emptyList()\n",
+          "after": "                desktopCoverCatalogGeneration++\n                _folders.value = emptyList()\n",
+          "beforeWholeSha256": "fe84ca4d1c73ac55922542a9c43c7d4f5b043ee3fff8ff88fc904cb63edfcad4",
+          "afterWholeSha256": "3d2f67d35f65a97b195f7333c43802e852938b61b2662aa9d8f80d323279ad78"
+        }
+      ]
+    },
+    "com/android/purebilibili/feature/list/CommonListScreen.kt": {
+      "beforeSha256LF": "c650eb53836516fbb180b354af69a76a26d60f6af2c4b73dfb731ba208b094b2",
+      "afterSha256LF": "690adf83e4bb0496eca99180351066ab10cfc3e363178d43c5f03eb7b0df005d",
+      "edits": [
+        {
+          "name": "exact original callback gated by current actual Windows page",
+          "offsetBytes": 64501,
+          "before": "                        onSubscribedClick = {\n                            favoriteBrowseSection = FavoriteBrowseSection.SUBSCRIBED\n                            isFavoriteBatchMode = false\n                            selectedFavoriteResourceIds = emptySet()\n                            searchQuery = \"\"\n                        },\n                    )",
+          "after": "                        onSubscribedClick = {\n                            favoriteBrowseSection = FavoriteBrowseSection.SUBSCRIBED\n                            isFavoriteBatchMode = false\n                            selectedFavoriteResourceIds = emptySet()\n                            searchQuery = \"\"\n                        },\n                        onCoverPrefetch = { candidates ->\n                            if (isCurrentPage) favoriteViewModel.ensureFavoriteFolderCovers(candidates)\n                        },\n                    )",
+          "beforeWholeSha256": "c650eb53836516fbb180b354af69a76a26d60f6af2c4b73dfb731ba208b094b2",
+          "afterWholeSha256": "690adf83e4bb0496eca99180351066ab10cfc3e363178d43c5f03eb7b0df005d"
+        }
+      ]
+    }
+  },
+  "partialUiReuse": {
+    "offsetBytesLF": 66325,
+    "bytesLF": 170,
+    "sha256LF": "eae160396eb736abc123d40c2a01adbe121e9515ac42c06159902db9ef90dcf7",
+    "adaptedSha256LF": "93b230d00f4e0b815f6c9e81e819f134be11a18d520609148ac5ee6b0e67f604",
+    "edits": [
+      {
+        "name": "existing actual Windows page gates original callback",
+        "offsetBytes": 58,
+        "before": "                            favoriteViewModel.ensureFavoriteFolderCovers(candidates)",
+        "after": "                            if (isCurrentPage) favoriteViewModel.ensureFavoriteFolderCovers(candidates)",
+        "beforeWholeSha256": "eae160396eb736abc123d40c2a01adbe121e9515ac42c06159902db9ef90dcf7",
+        "afterWholeSha256": "93b230d00f4e0b815f6c9e81e819f134be11a18d520609148ac5ee6b0e67f604"
+      }
+    ]
+  }
+}

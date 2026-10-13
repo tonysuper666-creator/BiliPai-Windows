@@ -497,6 +497,7 @@ class DesktopBangumiVideoCodecRecoveryAssemblyTest {
             ui {
                 owner = slot.requireAssembly()
                 val portrait = DesktopOriginalPortraitPlatformBinding(owner, slot::currentAssembly, unused(), unused(), unused(), unused(),
+                    storyFeed = { _, _, _, _ -> error("Unexpected Story feed in DesktopBangumiVideoCodecRecoveryAssemblyTest fixture") },
                     captureRequest = { requests.captureBinding(it.captureLoadState()) },
                     captureMetadataRequest = { value ->
                         require(value === owner)

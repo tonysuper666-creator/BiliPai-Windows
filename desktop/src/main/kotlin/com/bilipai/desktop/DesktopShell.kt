@@ -1049,7 +1049,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         val entry = DesktopFavoritesRootEntry(capturedEpoch, { repository.sessionEpoch }, scope,
             community.favoriteApi, community.favoriteSpaceApi, community.favoriteDynamicApi, community.favoriteBangumiApi,
             pluginStore, { repository.account.value?.mid }, { repository.requireCsrf() }, { error = it },
-            rootAlive = { !isClosing() && !activatingUpdate })
+            rootAlive = { !isClosing() && !activatingUpdate },
+            admitCoverCache = { current, action ->
+                repository.withPrimaryPlaybackAdmission(capturedEpoch, current) {
+                    if (!current()) false else { action(); true }
+                }
+            })
         val queue = DesktopFavoriteQueueBridge(playback, listen, entry::isOwned,
             isSelectedTarget = { audio -> systemTargetAudio == audio },
             beforeOpen = { audio ->
