@@ -5061,7 +5061,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicy.kt",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "dynamic-editor-detail-parity"
       ],
@@ -11560,9 +11560,20 @@
       "sourcePrepared": true,
       "sourceQualified": false,
       "fullStableParity": false
+    },
+    "v036CompleteDynamicCommentCache": {
+      "upstreamTag": "v0.3.6",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "fullOriginalCommentStateAndConsumerRegionSelected": true,
+      "wholeDynamicViewModelPorted": false,
+      "originalParallelCandidatesAndBoundedCache": true,
+      "actualRepositoryAndPageCacheBinding": true,
+      "originalSingleCommentUiStateConsumedByMountedRootAndPanel": true,
+      "sourceQualified": false,
+      "fullStableParityQualified": false
     }
   },
-  "windowsRevision": 73,
+  "windowsRevision": 74,
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",

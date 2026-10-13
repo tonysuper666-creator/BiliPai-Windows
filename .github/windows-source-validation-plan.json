@@ -1,84 +1,94 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "12007b0b950278014b66cefa70cddd85db1900d8",
-  "windowsVersion": "0.2.427.73",
-  "createdAt": "2026-10-13T17:56:21.255264+00:00",
+  "baseHead": "e3e1914cb45ef26bd37ebc69b7c100ab2b3f1ff6",
+  "windowsVersion": "0.2.427.74",
+  "createdAt": "2026-10-13T18:55:48.911870+00:00",
   "sources": [
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "d95250914015a3206631e7ca51f24cb41eae53f3e226640a8f161906054fede6"
+      "sha256": "ea1ea148782bd9af65556350ffbb186f9034aa60593f4774ded3ecad986eac13"
     },
     {
-      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/viewmodel/DesktopVideoCommentCacheConsumptionTest.kt",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheStore.kt",
       "normalization": "lf",
-      "sha256": "ea4e7abb631da1c3b20400a55d6d4421ff73180bec4fa4464fa1dbf115b291a9"
+      "sha256": "42a5aafb9bfbcc49d200215c0a6ec3d47417f4367544369d59234c9d07cb1b0a"
     },
     {
-      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/viewmodel/VideoCommentLoadPolicyTest.kt",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
       "normalization": "lf",
-      "sha256": "15eaf4f76f6d88b0f6298d4f0f65958a0c843cad2712796acb7e5a39b6e97709"
+      "sha256": "a6d4ae0805335f9dbd460574d7bcde954426b42b8bb1a64500e543115ae92b67"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "normalization": "lf",
+      "sha256": "edbc7cbc0e6faf7c797ca3706557e3321f428bbbc0d9c7771b6ea24ed6f3add8"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicyTest.kt",
+      "normalization": "lf",
+      "sha256": "c788cdf76ded87671cbea6bbc5340bc1f0ba62e88a9a0898de3bcdf2e87fe2de"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheConsumptionTest.kt",
+      "normalization": "lf",
+      "sha256": "af05022e6fffa74564769ea738fdd4d099ef6192932c3424a8e9f0e08e1e6502"
     },
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "e012fa64316e0443716d75d0d4e1a0936536c8da2368e05a3125524b19c06ef0"
+      "sha256": "048ada5d7e98e2dd34c85a04491cd3bd02c911725051fba04021b073ee68d460"
     },
     {
-      "path": "desktop/tools/extract-upstream-bgm-detail.py",
+      "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
       "normalization": "lf",
-      "sha256": "965546d1db99f5d1b667d0f0fff0dbabcecaa51e835d0bab058af6820faa6be3"
+      "sha256": "ae448d8c3cf82ba4a9004f4d09f44c85b4de97c2d9acac8ab1b4c97de8338c78"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "normalization": "lf",
+      "sha256": "2033fd70c70ee3f5334fa276c1b3e68b9abb49a11eed151570879fc85479cd4f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "normalization": "lf",
+      "sha256": "b4440bd6cda3cdee2c4d14e185dd9652ab1b80780857ce626ad117ac4a472d70"
     },
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "4f2777086628182caf945f5c225a0e9f629eaf698823e2d4fef3b427086e303f"
+      "sha256": "5c042f56c1903210471eb051c3928561b3cb9d921e78ad50016b526160513694"
     },
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "72e8b3985a269353d2f4db61ec7052a42965fbece825accbdb1acd3a9ce832e7"
+      "sha256": "96f735d5aad7e33932e04752f9b407da6550e86bc34313d72df39b5cb10d0241"
     },
     {
-      "path": "desktop/tools/v036_video_comment_cache.py",
+      "path": "desktop/tools/v036_dynamic_comment_cache.py",
       "normalization": "lf",
-      "sha256": "81cb90c8236ea4ac0b04d1eec7a96aea46e6f2becb2ad24a4cdce8b6563683e2"
+      "sha256": "333352e763e10687dc1a3d7e65826dcb07158043f37ff6ea96bee91d92ae062e"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-cache/CommentPaginationPolicy.kt",
+      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/DynamicCommentLoadPolicy.kt",
       "normalization": "raw",
-      "sha256": "41b8436bb1e027f01880270bbabbfab0b883ae86f027dc8314fa14bb726d515d"
+      "sha256": "d549734ddf1afcf3f0112123fb95234cb487b151e4ddd6485dab6149a2bba3dc"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-cache/SubReplySortPolicy.kt",
+      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/DynamicViewModel.kt",
       "normalization": "raw",
-      "sha256": "f023f49f8f7b9a91308ba46dcf9a2d20be36131693b08f885bafa9e1d3591655"
+      "sha256": "1519d7f62101fe5eb077e1cefec4551ce9f80b89588979dc237e81dda4e156c2"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-cache/VideoCommentLoadPolicy.kt",
+      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/manifest.json",
       "normalization": "raw",
-      "sha256": "e4bc9991467171b415ad4a8d0ae0584b55b234a1f6666fc70bfe63ed20097961"
-    },
-    {
-      "path": "desktop/upstream-slices/v036-video-comment-cache/VideoCommentPaginationPolicy.kt",
-      "normalization": "raw",
-      "sha256": "8ee3360046b1b8a7e5c989c79d152c5c236edb01fad964430bce82388423b523"
-    },
-    {
-      "path": "desktop/upstream-slices/v036-video-comment-cache/VideoCommentViewModel.kt",
-      "normalization": "raw",
-      "sha256": "ffd867ca4aec758cc498370229b738703cea4abad7f7c32d92a0cea650880675"
-    },
-    {
-      "path": "desktop/upstream-slices/v036-video-comment-cache/manifest.json",
-      "normalization": "raw",
-      "sha256": "18c1f6fb5afb2d0b34beee73d22ce51159e9ced3cc5526bfa56aa81c9f2bd3bf"
+      "sha256": "29d51dc3e89ff4561f06b2c524199e11ea5cd3628c383b90b631118264ea8f61"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "ecb2412017089d6db4ba2b6fc2867858bbe2e2e6b9210c927fa5b76dfda7c6fc"
+      "sha256": "02df0f5d2568adec475aa08af5ccb3dbc8dd232efa3b3824fe2c3edf7c591a69"
     }
   ],
   "classes": {
@@ -94,9 +104,11 @@
     "com.android.purebilibili.data.repository.CommentReadRouteMemoTest": 4,
     "com.android.purebilibili.data.repository.DesktopCommentReadRouteConsumptionTest": 4,
     "com.android.purebilibili.feature.video.viewmodel.VideoCommentLoadPolicyTest": 5,
-    "com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentCacheConsumptionTest": 5
+    "com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentCacheConsumptionTest": 5,
+    "com.android.purebilibili.feature.dynamic.DynamicCommentLoadPolicyTest": 10,
+    "com.bilipai.desktop.data.DesktopDynamicCommentCacheConsumptionTest": 7
   },
-  "expectedTests": 92,
+  "expectedTests": 109,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,

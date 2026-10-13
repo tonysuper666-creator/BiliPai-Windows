@@ -486,10 +486,11 @@ import kotlinx.coroutines.ensureActive
 ) {
     val platform = LocalDesktopCommentBindings.current
     if (!platform.isOwned() || !session.isOwned()) return
-    val comments by session.comments.collectAsState()
-    val commentsLoading by session.commentsLoading.collectAsState()
-    val commentsLoadingMore by session.commentsLoadingMore.collectAsState()
-    val commentTotalCount by session.commentTotalCount.collectAsState()
+    val commentState by session.commentUiState.collectAsState()
+    val comments = commentState.comments
+    val commentsLoading = commentState.isLoading
+    val commentsLoadingMore = commentState.isLoadingMore
+    val commentTotalCount = commentState.totalCount
     val commentSortMode by session.dynamicCommentSortMode.collectAsState()
     val commentReplyTarget by session.commentReplyTarget.collectAsState()
     var showImagePreview by remember { mutableStateOf(false) }

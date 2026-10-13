@@ -1,0 +1,25 @@
+{
+  "fixedUpstreamTag": "v0.3.6",
+  "fixedUpstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "filename": "DynamicViewModel.kt",
+      "bytes": 116882,
+      "sha256Bytes": "1519d7f62101fe5eb077e1cefec4551ce9f80b89588979dc237e81dda4e156c2",
+      "gitBlob": "2d7b116b344e920e10c9f3c147f668e80dbf4576",
+      "role": "complete-comment-state-and-consumers-selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicy.kt",
+      "filename": "DynamicCommentLoadPolicy.kt",
+      "bytes": 8092,
+      "sha256Bytes": "d549734ddf1afcf3f0112123fb95234cb487b151e4ddd6485dab6149a2bba3dc",
+      "gitBlob": "26fe8aeed6cebc581eba8215dcfe896f81704bf4",
+      "role": "complete-original-pure-policy"
+    }
+  ],
+  "fullDynamicVmPorted": false,
+  "fullStableParity": false
+}
