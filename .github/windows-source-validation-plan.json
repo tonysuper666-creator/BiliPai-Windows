@@ -1,94 +1,94 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "e3e1914cb45ef26bd37ebc69b7c100ab2b3f1ff6",
-  "windowsVersion": "0.2.427.74",
-  "createdAt": "2026-10-13T19:18:55.031957+00:00",
+  "baseHead": "507584a14e4061b7a51ac4084cf3b561277e0147",
+  "windowsVersion": "0.2.427.75",
+  "createdAt": "2026-10-13T20:09:24.994625+00:00",
   "sources": [
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "ea1ea148782bd9af65556350ffbb186f9034aa60593f4774ded3ecad986eac13"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheStore.kt",
-      "normalization": "lf",
-      "sha256": "42a5aafb9bfbcc49d200215c0a6ec3d47417f4367544369d59234c9d07cb1b0a"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
-      "normalization": "lf",
-      "sha256": "a6d4ae0805335f9dbd460574d7bcde954426b42b8bb1a64500e543115ae92b67"
+      "sha256": "4dd24637e6b49d0be4dce789056e62169d277534e937d9e15ad29aec9490dad8"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
       "normalization": "lf",
-      "sha256": "edbc7cbc0e6faf7c797ca3706557e3321f428bbbc0d9c7771b6ea24ed6f3add8"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicyTest.kt",
-      "normalization": "lf",
-      "sha256": "c788cdf76ded87671cbea6bbc5340bc1f0ba62e88a9a0898de3bcdf2e87fe2de"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheConsumptionTest.kt",
-      "normalization": "lf",
-      "sha256": "04a38c6eda0c2654b30124ef0a908a02f7df796df97c93b9324bf0328bb8284d"
+      "sha256": "289fe1a473b97f4f72686a2320851b25abe4b5decefa7bd81e58a6bcc8149fb7"
     },
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "048ada5d7e98e2dd34c85a04491cd3bd02c911725051fba04021b073ee68d460"
+      "sha256": "0ee883e5954cec965406172a02039e4f44f7ea088d20a95fab90b408c38683cf"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
       "normalization": "lf",
-      "sha256": "ae448d8c3cf82ba4a9004f4d09f44c85b4de97c2d9acac8ab1b4c97de8338c78"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
-      "normalization": "lf",
-      "sha256": "2033fd70c70ee3f5334fa276c1b3e68b9abb49a11eed151570879fc85479cd4f"
+      "sha256": "b1c42ce0d7435813d9b003e72462e34ad64988eae436f6ea2a705c017bb4eafa"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-reply.py",
       "normalization": "lf",
-      "sha256": "b4440bd6cda3cdee2c4d14e185dd9652ab1b80780857ce626ad117ac4a472d70"
+      "sha256": "5c2cd18b95610abf057b7022747ab0758047b51b2223ca502d1e8e52d40f7c35"
     },
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "5c042f56c1903210471eb051c3928561b3cb9d921e78ad50016b526160513694"
+      "sha256": "41b14d4a1737fe6bab2849db414041ae2490188609eef51d5b3a7801b73a73f5"
     },
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "96f735d5aad7e33932e04752f9b407da6550e86bc34313d72df39b5cb10d0241"
+      "sha256": "8970968da9c46e9d83e14cc1879ed8d7ad4a2ba20dcb6613fd253446dd7b5330"
     },
     {
-      "path": "desktop/tools/v036_dynamic_comment_cache.py",
+      "path": "desktop/tools/v036_comment_viewport.py",
       "normalization": "lf",
-      "sha256": "333352e763e10687dc1a3d7e65826dcb07158043f37ff6ea96bee91d92ae062e"
+      "sha256": "42a81b0c17f35c97725aed4e8426f0f2f083dbd273f34ea7e40d9d97f2de8f25"
     },
     {
-      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/DynamicCommentLoadPolicy.kt",
-      "normalization": "raw",
-      "sha256": "d549734ddf1afcf3f0112123fb95234cb487b151e4ddd6485dab6149a2bba3dc"
+      "path": "desktop/tools/v036_reply_modifier.py",
+      "normalization": "lf",
+      "sha256": "3329371f68692517debc9e4264f662edc61c77afbd112e3669123e9a8a512741"
     },
     {
-      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/DynamicViewModel.kt",
+      "path": "desktop/upstream-slices/v036-comment-viewport/ContentLoadingSkeletons.kt",
       "normalization": "raw",
-      "sha256": "1519d7f62101fe5eb077e1cefec4551ce9f80b89588979dc237e81dda4e156c2"
+      "sha256": "a2e9366a7514dd80fe5ad2bed532c46610c22a901092c7b2d8b0968246e2ef28"
     },
     {
-      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/manifest.json",
+      "path": "desktop/upstream-slices/v036-comment-viewport/DynamicCommentSheet.kt",
       "normalization": "raw",
-      "sha256": "29d51dc3e89ff4561f06b2c524199e11ea5cd3628c383b90b631118264ea8f61"
+      "sha256": "adff166b03b65795d63ee776a4201469f80ea060f3b6ef6d41749326751f9e97"
+    },
+    {
+      "path": "desktop/upstream-slices/v036-comment-viewport/DynamicDetailScreen.kt",
+      "normalization": "raw",
+      "sha256": "c4c7691fdb5f4bf1a705bd97e3c1c72d4503972c55604744b88aa9fe989e25c4"
+    },
+    {
+      "path": "desktop/upstream-slices/v036-comment-viewport/manifest.json",
+      "normalization": "raw",
+      "sha256": "02ed993667a5daa4157e55b5699de36190d6ed673df5669dabeafaa5e06d0c10"
+    },
+    {
+      "path": "desktop/upstream-slices/v036-reply-modifier/ReplyComponents-v035.kt",
+      "normalization": "raw",
+      "sha256": "8a128369a6af9e8c09ed6996f5347c1de4028e7a57a5ec82123f24d5cfe352a8"
+    },
+    {
+      "path": "desktop/upstream-slices/v036-reply-modifier/ReplyComponents-v036.kt",
+      "normalization": "raw",
+      "sha256": "68d7f0d728dc7e8df94b890f226b19a59ab6d116006a87c1d45b8a2c80dde3b2"
+    },
+    {
+      "path": "desktop/upstream-slices/v036-reply-modifier/manifest.json",
+      "normalization": "raw",
+      "sha256": "00b356d5780f3e748b80049f2d9561033233f8cc93a3c5d2e019bed6bc40de4d"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "02df0f5d2568adec475aa08af5ccb3dbc8dd232efa3b3824fe2c3edf7c591a69"
+      "sha256": "3fde934402c30b2d114812c04a37ea43130d61aa7deb8a425ad3286577d5cd26"
     }
   ],
   "classes": {

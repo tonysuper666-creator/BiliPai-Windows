@@ -11571,9 +11571,21 @@
       "originalSingleCommentUiStateConsumedByMountedRootAndPanel": true,
       "sourceQualified": false,
       "fullStableParityQualified": false
+    },
+    "v036OriginalDynamicCommentViewport": {
+      "upstreamTag": "v0.3.6",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "originalStaticCommentSkeletonsSelected": true,
+      "originalLazyItemContentTypesRetained": true,
+      "actualWindowsWindowHeightConsumer": true,
+      "originalReusableLiquidComposerRetained": true,
+      "actualCurrentWindowOwnerAndRendererCapabilityRequired": true,
+      "wholeScreensPorted": false,
+      "sourceQualified": false,
+      "fullStableParityQualified": false
     }
   },
-  "windowsRevision": 74,
+  "windowsRevision": 75,
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",

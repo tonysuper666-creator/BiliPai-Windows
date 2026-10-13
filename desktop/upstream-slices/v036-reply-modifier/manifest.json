@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "previousUpstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+  "fixedUpstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "filename": "ReplyComponents-v035.kt",
+      "commit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "bytes": 132248,
+      "sha256Bytes": "8a128369a6af9e8c09ed6996f5347c1de4028e7a57a5ec82123f24d5cfe352a8",
+      "gitBlob": "3fdff5845a1c95289294d37e07febf31af4d0ebe"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "filename": "ReplyComponents-v036.kt",
+      "commit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "bytes": 132283,
+      "sha256Bytes": "68d7f0d728dc7e8df94b890f226b19a59ab6d116006a87c1d45b8a2c80dde3b2",
+      "gitBlob": "c0572526a30d0e175e14fc75652e3878debc8451"
+    }
+  ],
+  "onlyOriginalModifierParameterAndRootContainerDelta": true
+}

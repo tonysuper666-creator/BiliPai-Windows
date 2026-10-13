@@ -106,6 +106,7 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     }
 }
 
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community: DesktopCommunityRepository, navigation: CommunityNavigation) {
     val id=route.dynamicId
@@ -323,8 +324,13 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
         CompositionLocalProvider(LocalDesktopDynamicCardMutations provides detailMutations,
             LocalDesktopCommentBindings provides platform) {
             DesktopDetailWindow {
+                val material = LocalDesktopWindowsGlassMaterial.current
+                val currentWindow = androidx.compose.ui.awt.LocalAwtWindow.current
+                val detailGlassEnabled = com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled &&
+                    owned() && material != null && material.window === currentWindow &&
+                    material.renderer.supported && material.owns()
                 DesktopOriginalDynamicDetailLayout(id,uiState,replySession,defaultLayout,
-                    liquidGlassEnabled=false,currentMid=account?.mid,
+                    liquidGlassEnabled=detailGlassEnabled,currentMid=account?.mid,
                     openCommentRootRpid=route.rootReplyId,openCommentTargetRpid=route.targetReplyId,
                     onBack=navigation.onDynamicBack,onRetry={revision++},onUserClick=navigation.onUser,
                     onShowReactions=if(capturedReactionNavigation==null)null else ::showReactions) {layout,onCommentClick->
