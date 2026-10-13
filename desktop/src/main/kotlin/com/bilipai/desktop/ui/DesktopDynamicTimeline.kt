@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.store.DesktopDynamicSettings.DynamicFeedLayoutMode
 import com.android.purebilibili.core.ui.components.FeedVerticalStaggeredGrid
@@ -127,6 +129,9 @@ internal fun DesktopDynamicTimelineFeed(
     transform:(List<DynamicItem>)->List<DynamicItem> = {it},
     oldContentDividerLabel:String="以下是之前的动态",
     active:Boolean=true,
+    topPaddingExtra: Dp = 0.dp,
+    chromeScroll: DesktopDynamicFeedChromeScroll? = null,
+    chromeOverlay: @Composable BoxScope.() -> Unit = {},
     row:@Composable (DynamicItem)->Unit,
 ) {
     val scope=rememberCoroutineScope()
@@ -159,6 +164,11 @@ internal fun DesktopDynamicTimelineFeed(
             applyDesktopRootDynamicScroll(request, state.scroll) { scope.launch{if(latestActive.value)state.fetch(true, incremental)};Unit }
         }
     }
+    LaunchedEffect(state.scroll, chromeScroll) {
+        val target = chromeScroll ?: return@LaunchedEffect
+        snapshotFlow { state.scroll.firstVisibleItemIndex to state.scroll.firstVisibleItemScrollOffset }
+            .collect { (index, offset) -> target.publish(index, offset) }
+    }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
             Text("${displayed.size} 项",style=MaterialTheme.typography.labelLarge)
@@ -168,7 +178,7 @@ internal fun DesktopDynamicTimelineFeed(
         FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
             else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=state.scroll,
             modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),
-            contentPadding=PaddingValues(20.dp),
+            contentPadding=PaddingValues(start=20.dp, end=20.dp, bottom=20.dp, top=20.dp + topPaddingExtra),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),
             verticalItemSpacing=resolveDynamicTimelineVerticalSpacing(),
             prependItemKeys=if(shouldUseDynamicManualPrependAnchor(layout))keys else emptyList(),
@@ -184,6 +194,7 @@ internal fun DesktopDynamicTimelineFeed(
                 Text(if(state.page.items.isEmpty())"暂无内容"else"当前筛选隐藏了这一批内容",color=MaterialTheme.colorScheme.onSurfaceVariant)}
             if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={scope.launch{state.loadMore(incremental)}}){Text("加载更多")}}
         }
+        chromeOverlay()
     }
     }
 }

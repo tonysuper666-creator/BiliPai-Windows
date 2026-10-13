@@ -48,6 +48,10 @@ class DesktopDynamicDisplayModeTest {
         assertEquals(156, resolveDynamicListTopPaddingExtraDp(isHorizontalMode = true, shouldShowHorizontalUserList = true))
         assertEquals(60, resolveDynamicListTopPaddingExtraDp(isHorizontalMode = true, shouldShowHorizontalUserList = false))
         assertEquals(60, resolveDynamicListTopPaddingExtraDp(isHorizontalMode = false, shouldShowHorizontalUserList = true))
+        assertEquals(0, resolveWindowsDynamicListTopPaddingExtraDp(topBarOverlaysFeed = false, horizontalUserListOverlaysFeed = false))
+        assertEquals(60, resolveWindowsDynamicListTopPaddingExtraDp(topBarOverlaysFeed = true, horizontalUserListOverlaysFeed = false))
+        assertEquals(96, resolveWindowsDynamicListTopPaddingExtraDp(topBarOverlaysFeed = false, horizontalUserListOverlaysFeed = true))
+        assertEquals(156, resolveWindowsDynamicListTopPaddingExtraDp(topBarOverlaysFeed = true, horizontalUserListOverlaysFeed = true))
         assertEquals(0.70f, resolveDynamicSidebarFlingDampingFactor())
         assertTrue(shouldAnimateSidebarItemCascade(7, hasScrolled = false, initialEntranceActive = true))
         assertFalse(shouldAnimateSidebarItemCascade(8, hasScrolled = false, initialEntranceActive = true))
@@ -89,5 +93,69 @@ class DesktopDynamicDisplayModeTest {
         assertFalse(resolveDesktopShellSidebarExpanded(true, large, AppFoldPosture.Book))
         assertFalse(resolveDesktopShellSidebarExpanded(true, expanded, AppFoldPosture.None))
         assertFalse(resolveDesktopShellSidebarExpanded(false, large, AppFoldPosture.None))
+    }
+
+    @Test fun collapsePredicatesUseZeroToleranceAndIgnorePinnedTopBar() {
+        assertFalse(shouldCollapseDynamicTopBar(false, 3, 40, DynamicHeaderCollapseTriggerPx))
+        assertFalse(shouldCollapseDynamicTopBar(true, 0, 0, DynamicHeaderCollapseTriggerPx))
+        assertTrue(shouldCollapseDynamicTopBar(true, 0, 1, DynamicHeaderCollapseTriggerPx))
+        assertTrue(shouldCollapseDynamicTopBar(true, 1, 0, DynamicHeaderCollapseTriggerPx))
+        assertFalse(shouldCollapseDynamicHorizontalUserList(0, 0, DynamicHeaderCollapseTriggerPx))
+        assertTrue(shouldCollapseDynamicHorizontalUserList(0, 1, DynamicHeaderCollapseTriggerPx))
+        val scroll = DesktopDynamicFeedChromeScroll()
+        scroll.publish(0, 0)
+        scroll.publish(2, 12)
+        assertEquals(2, scroll.firstVisibleItemIndex)
+        assertEquals(12, scroll.firstVisibleItemScrollOffset)
+    }
+
+    @Test fun pageDirectionMirrorsSidebarAndDetailWithoutMovingTheLeftDefault() {
+        assertEquals(DesktopDynamicPageLayoutDirection.LEFT, DesktopDynamicPageLayoutDirection.fromValue(0))
+        assertEquals(DesktopDynamicPageLayoutDirection.LEFT, DesktopDynamicPageLayoutDirection.fromValue(9))
+        assertEquals(DesktopDynamicPageLayoutDirection.RIGHT, DesktopDynamicPageLayoutDirection.fromValue(1))
+        assertFalse(resolveDynamicSidebarOnRight(DesktopDynamicDisplayMode.SIDEBAR, DesktopDynamicPageLayoutDirection.LEFT))
+        assertTrue(resolveDynamicSidebarOnRight(DesktopDynamicDisplayMode.SIDEBAR, DesktopDynamicPageLayoutDirection.RIGHT))
+        assertTrue(resolveDynamicSidebarOnRight(DesktopDynamicDisplayMode.SIDEBAR_RIGHT, DesktopDynamicPageLayoutDirection.LEFT))
+        assertFalse(resolveDynamicSidebarOnRight(DesktopDynamicDisplayMode.SIDEBAR_RIGHT, DesktopDynamicPageLayoutDirection.RIGHT))
+        assertTrue(resolveDynamicSidebarOnRight(DesktopDynamicDisplayMode.DRAWER_RIGHT, DesktopDynamicPageLayoutDirection.LEFT))
+        assertFalse(resolveDynamicSidebarOnRight(DesktopDynamicDisplayMode.DRAWER_LEFT, DesktopDynamicPageLayoutDirection.LEFT))
+        assertTrue(resolveDynamicSidebarOnRight(DesktopDynamicDisplayMode.DRAWER_LEFT, DesktopDynamicPageLayoutDirection.RIGHT))
+        assertFalse(resolveDynamicDetailContentOnRight(DesktopDynamicPageLayoutDirection.LEFT))
+        assertTrue(resolveDynamicDetailContentOnRight(DesktopDynamicPageLayoutDirection.RIGHT))
+    }
+
+    @Test fun overflowGroupsKeepOriginalLabelsAndSelection() {
+        val chosen = mutableListOf<String>()
+        val groups = buildDynamicPageOverflowGroups(
+            displayMode = DesktopDynamicDisplayMode.HORIZONTAL,
+            previewTextVisible = true,
+            detailImageLayoutValue = 1,
+            topBarCollapseOnScroll = false,
+            pageLayoutDirection = DesktopDynamicPageLayoutDirection.RIGHT,
+            onDisplayMode = { chosen += it.name },
+            onPreviewText = { chosen += "preview:$it" },
+            onDetailLayout = { chosen += "layout:$it" },
+            onTopBarCollapse = { chosen += "collapse:$it" },
+            onDirection = { chosen += it.name },
+        )
+        assertEquals(
+            listOf("左侧竖条", "右侧竖条", "顶部横条", "左侧抽屉", "右侧抽屉"),
+            groups[0].map { it.label },
+        )
+        assertTrue(groups[0][2].selected)
+        assertEquals(listOf("左侧", "右侧"), groups[1].map { it.label })
+        assertTrue(groups[1][1].selected)
+        assertEquals(listOf("展开大图", "缩略图"), groups[2].map { it.label })
+        assertTrue(groups[2][1].selected)
+        assertEquals("动态图片默认显示文字", groups[3].single().label)
+        assertTrue(groups[3].single().selected)
+        assertEquals("浏览动态时收起顶部栏", groups[4].single().label)
+        assertFalse(groups[4].single().selected)
+        groups[0][4].onClick!!.invoke()
+        groups[3].single().onClick!!.invoke()
+        groups[2][0].onClick!!.invoke()
+        groups[4].single().onClick!!.invoke()
+        groups[1][0].onClick!!.invoke()
+        assertEquals(listOf("DRAWER_RIGHT", "preview:false", "layout:0", "collapse:true", "LEFT"), chosen)
     }
 }

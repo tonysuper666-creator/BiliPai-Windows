@@ -1,8 +1,12 @@
 package com.bilipai.desktop.ui
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.ui.components.AppWindowAction
 import com.android.purebilibili.core.ui.resolveGlobalWallpaperProtectiveColor
 import com.android.purebilibili.feature.dynamic.SidebarUser
 
@@ -11,6 +15,11 @@ import com.android.purebilibili.feature.dynamic.SidebarUser
 // DynamicTopBar.kt and DynamicSidebar.kt are not extractor inputs; these names stay in this module.
 
 internal const val DESKTOP_DYNAMIC_DISPLAY_MODE_KEY = "dynamic_display_mode"
+internal const val DYNAMIC_IMAGE_PREVIEW_TEXT_VISIBLE_KEY = "dynamic_image_preview_text_visible"
+internal const val DYNAMIC_DETAIL_IMAGE_LAYOUT_KEY = "dynamic_detail_image_layout"
+internal const val DYNAMIC_TOP_BAR_COLLAPSE_ON_SCROLL_KEY = "dynamic_top_bar_collapse_on_scroll"
+internal const val DYNAMIC_TOP_ACTIONS_COLLAPSED_KEY = "dynamic_top_actions_collapsed"
+internal const val DYNAMIC_PAGE_LAYOUT_DIRECTION_KEY = "dynamic_page_layout_direction"
 
 internal enum class DesktopDynamicDisplayMode {
     SIDEBAR,
@@ -93,6 +102,131 @@ internal fun resolveDynamicListTopPaddingExtraDp(
     isHorizontalMode && shouldShowHorizontalUserList -> DynamicHorizontalExpandedHeaderReservedHeightDp
     else -> DynamicTopBarReservedHeightDp
 }
+
+/**
+ * Windows places the tab strip and the horizontal UP list in the column until that chrome
+ * overlays the lazy grid. Reserve only the overlaying chrome, and keep the reserve stable
+ * while it hides so the staggered grid does not remeasure.
+ */
+internal fun resolveWindowsDynamicListTopPaddingExtraDp(
+    topBarOverlaysFeed: Boolean,
+    horizontalUserListOverlaysFeed: Boolean,
+): Int {
+    var extra = 0
+    if (topBarOverlaysFeed) extra += DynamicTopBarReservedHeightDp
+    if (horizontalUserListOverlaysFeed) extra += DynamicHorizontalUserListReservedHeightDp
+    return extra
+}
+
+/** Same zero tolerance DynamicScreen passes into the collapse predicates. */
+internal const val DynamicHeaderCollapseTriggerPx = 0
+
+internal fun shouldCollapseDynamicHorizontalUserList(
+    firstVisibleItemIndex: Int,
+    firstVisibleItemScrollOffset: Int,
+    topTolerancePx: Int = 8,
+): Boolean = firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > topTolerancePx
+
+/** Tab collapse is optional. The horizontal UP list still collapses on its own. */
+internal fun shouldCollapseDynamicTopBar(
+    collapseOnScrollEnabled: Boolean,
+    firstVisibleItemIndex: Int,
+    firstVisibleItemScrollOffset: Int,
+    topTolerancePx: Int = 8,
+): Boolean {
+    if (!collapseOnScrollEnabled) return false
+    return shouldCollapseDynamicHorizontalUserList(
+        firstVisibleItemIndex = firstVisibleItemIndex,
+        firstVisibleItemScrollOffset = firstVisibleItemScrollOffset,
+        topTolerancePx = topTolerancePx,
+    )
+}
+
+/** Scroll snapshot for collapsing chrome. Feeds publish it; they do not read it while composing cards. */
+internal class DesktopDynamicFeedChromeScroll {
+    var firstVisibleItemIndex by mutableIntStateOf(0)
+        private set
+    var firstVisibleItemScrollOffset by mutableIntStateOf(0)
+        private set
+
+    fun publish(index: Int, offset: Int) {
+        if (firstVisibleItemIndex != index) firstVisibleItemIndex = index
+        if (firstVisibleItemScrollOffset != offset) firstVisibleItemScrollOffset = offset
+    }
+}
+
+/** Original DynamicLayoutDirection. Unknown values stay on the left. */
+internal enum class DesktopDynamicPageLayoutDirection(val value: Int, val label: String) {
+    LEFT(0, "左侧"),
+    RIGHT(1, "右侧");
+
+    companion object {
+        fun fromValue(value: Int): DesktopDynamicPageLayoutDirection =
+            entries.find { it.value == value } ?: LEFT
+    }
+}
+
+/** RIGHT mirrors the mode's side. LEFT keeps SIDEBAR on the left and SIDEBAR_RIGHT on the right. */
+internal fun resolveDynamicSidebarOnRight(
+    mode: DesktopDynamicDisplayMode,
+    direction: DesktopDynamicPageLayoutDirection,
+): Boolean {
+    val base = mode.isRightAligned()
+    return if (direction == DesktopDynamicPageLayoutDirection.RIGHT) !base else base
+}
+
+/** Large-screen detail split. LEFT keeps the card on the left. */
+internal fun resolveDynamicDetailContentOnRight(direction: DesktopDynamicPageLayoutDirection): Boolean =
+    direction == DesktopDynamicPageLayoutDirection.RIGHT
+
+internal fun buildDynamicPageOverflowGroups(
+    displayMode: DesktopDynamicDisplayMode,
+    previewTextVisible: Boolean,
+    detailImageLayoutValue: Int,
+    topBarCollapseOnScroll: Boolean,
+    pageLayoutDirection: DesktopDynamicPageLayoutDirection,
+    onDisplayMode: (DesktopDynamicDisplayMode) -> Unit,
+    onPreviewText: (Boolean) -> Unit,
+    onDetailLayout: (Int) -> Unit,
+    onTopBarCollapse: (Boolean) -> Unit,
+    onDirection: (DesktopDynamicPageLayoutDirection) -> Unit,
+): List<List<AppWindowAction>> = listOf(
+    DesktopDynamicDisplayMode.entries.map { mode ->
+        AppWindowAction(
+            label = resolveDynamicDisplayModeLabel(mode),
+            selected = displayMode == mode,
+            onClick = { onDisplayMode(mode) },
+        )
+    },
+    DesktopDynamicPageLayoutDirection.entries.map { direction ->
+        AppWindowAction(
+            label = direction.label,
+            selected = pageLayoutDirection == direction,
+            onClick = { onDirection(direction) },
+        )
+    },
+    listOf(0 to "展开大图", 1 to "缩略图").map { (value, label) ->
+        AppWindowAction(
+            label = label,
+            selected = detailImageLayoutValue == value,
+            onClick = { onDetailLayout(value) },
+        )
+    },
+    listOf(
+        AppWindowAction(
+            label = "动态图片默认显示文字",
+            selected = previewTextVisible,
+            onClick = { onPreviewText(!previewTextVisible) },
+        ),
+    ),
+    listOf(
+        AppWindowAction(
+            label = "浏览动态时收起顶部栏",
+            selected = topBarCollapseOnScroll,
+            onClick = { onTopBarCollapse(!topBarCollapseOnScroll) },
+        ),
+    ),
+)
 
 internal const val DYNAMIC_SIDEBAR_MAX_CASCADE_ITEMS = 8
 internal const val DYNAMIC_SIDEBAR_INITIAL_AVATAR_PREFETCH_COUNT = 30

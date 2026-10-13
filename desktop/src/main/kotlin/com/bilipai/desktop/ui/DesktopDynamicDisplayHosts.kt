@@ -1,6 +1,13 @@
 package com.bilipai.desktop.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -58,17 +65,20 @@ internal fun DesktopDynamicModeFrame(
     header: @Composable () -> Unit,
     notices: @Composable () -> Unit,
     feed: @Composable () -> Unit,
+    pageLayoutDirection: DesktopDynamicPageLayoutDirection = DesktopDynamicPageLayoutDirection.LEFT,
+    topBarOverlaysFeed: Boolean = false,
+    userListOverlaysFeed: Boolean = false,
 ) {
     if (mode.isHorizontalUserList()) {
         Column(Modifier.fillMaxSize()) {
-            header()
-            if (showHorizontalUsers) horizontalUsers()
+            if (!topBarOverlaysFeed) header()
+            if (showHorizontalUsers && !userListOverlaysFeed) horizontalUsers()
             notices()
             Box(Modifier.weight(1f).fillMaxWidth()) { feed() }
         }
         return
     }
-    val sidebarOnRight = mode.isRightAligned()
+    val sidebarOnRight = resolveDynamicSidebarOnRight(mode, pageLayoutDirection)
     val showPanel = !mode.isDrawer() || sidebarExpanded
     Row(Modifier.fillMaxSize()) {
         if (!sidebarOnRight && showPanel) {
@@ -93,7 +103,7 @@ internal fun DesktopDynamicModeFrame(
         }
         Box(Modifier.weight(1f).fillMaxHeight()) {
             Column(Modifier.fillMaxSize()) {
-                header()
+                if (!topBarOverlaysFeed) header()
                 notices()
                 Box(Modifier.weight(1f).fillMaxWidth()) { feed() }
             }
@@ -142,6 +152,16 @@ internal fun DesktopDynamicTabStrip(
     onSelectLogicalTab: (Int) -> Unit,
     onDisplayModeChange: (DesktopDynamicDisplayMode) -> Unit,
     trailing: @Composable () -> Unit,
+    actionDockCollapsed: Boolean = false,
+    onActionDockCollapsedChange: (Boolean) -> Unit = {},
+    previewTextVisible: Boolean = true,
+    onPreviewTextVisibleChange: (Boolean) -> Unit = {},
+    detailImageLayoutValue: Int = 0,
+    onDetailImageLayoutChange: (Int) -> Unit = {},
+    topBarCollapseOnScroll: Boolean = false,
+    onTopBarCollapseOnScrollChange: (Boolean) -> Unit = {},
+    pageLayoutDirection: DesktopDynamicPageLayoutDirection = DesktopDynamicPageLayoutDirection.LEFT,
+    onPageLayoutDirectionChange: (DesktopDynamicPageLayoutDirection) -> Unit = {},
 ) {
     val liquid = LocalAppThemeConfig.current.liquidGlassEnabled
     val glass = LocalDesktopWindowsGlassMaterial.current
@@ -189,25 +209,81 @@ internal fun DesktopDynamicTabStrip(
                 )
             }
         }
-        AppWindowActionMenu(
-            groups = listOf(
-                DesktopDynamicDisplayMode.entries.map { mode ->
-                    AppWindowAction(
-                        label = resolveDynamicDisplayModeLabel(mode),
-                        selected = displayMode == mode,
-                        onClick = { onDisplayModeChange(mode) },
-                    )
-                },
-            ),
+        AnimatedVisibility(
+            visible = !actionDockCollapsed,
+            enter = expandHorizontally(expandFrom = Alignment.End) + fadeIn(),
+            exit = shrinkHorizontally(shrinkTowards = Alignment.End) + fadeOut(),
         ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AppWindowActionMenu(
+                    groups = buildDynamicPageOverflowGroups(
+                        displayMode = displayMode,
+                        previewTextVisible = previewTextVisible,
+                        detailImageLayoutValue = detailImageLayoutValue,
+                        topBarCollapseOnScroll = topBarCollapseOnScroll,
+                        pageLayoutDirection = pageLayoutDirection,
+                        onDisplayMode = onDisplayModeChange,
+                        onPreviewText = onPreviewTextVisibleChange,
+                        onDetailLayout = onDetailImageLayoutChange,
+                        onTopBarCollapse = onTopBarCollapseOnScrollChange,
+                        onDirection = onPageLayoutDirectionChange,
+                    ),
+                ) {
+                    AppIcon(
+                        imageVector = if (displayMode.isHorizontalUserList()) rememberAppGridLayoutIcon() else rememberAppListLayoutIcon(),
+                        contentDescription = "关注列表位置",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
+                    )
+                }
+                trailing()
+            }
+        }
+        AppIconButton(onClick = { onActionDockCollapsedChange(!actionDockCollapsed) }) {
             AppIcon(
-                imageVector = if (displayMode.isHorizontalUserList()) rememberAppGridLayoutIcon() else rememberAppListLayoutIcon(),
-                contentDescription = "关注列表位置",
+                imageVector = if (actionDockCollapsed) rememberAppChevronDownIcon() else rememberAppChevronUpIcon(),
+                contentDescription = if (actionDockCollapsed) "展开顶部操作" else "折叠顶部操作",
                 tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
             )
         }
-        trailing()
+    }
+}
+
+/** Overlay chrome. Reads the scroll snapshot here so the card grid does not recompose per pixel. */
+@Composable
+internal fun DesktopDynamicCollapsingChrome(
+    scroll: DesktopDynamicFeedChromeScroll,
+    showTopBar: Boolean,
+    showUserList: Boolean,
+    topBar: @Composable () -> Unit,
+    userList: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val index = scroll.firstVisibleItemIndex
+    val offset = scroll.firstVisibleItemScrollOffset
+    val topCollapsed = shouldCollapseDynamicTopBar(
+        collapseOnScrollEnabled = showTopBar,
+        firstVisibleItemIndex = index,
+        firstVisibleItemScrollOffset = offset,
+        topTolerancePx = DynamicHeaderCollapseTriggerPx,
+    )
+    val usersCollapsed = shouldCollapseDynamicHorizontalUserList(
+        firstVisibleItemIndex = index,
+        firstVisibleItemScrollOffset = offset,
+        topTolerancePx = DynamicHeaderCollapseTriggerPx,
+    )
+    Column(modifier.fillMaxWidth()) {
+        AnimatedVisibility(
+            visible = showTopBar && !topCollapsed,
+            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
+        ) { topBar() }
+        AnimatedVisibility(
+            visible = showUserList && !usersCollapsed,
+            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
+        ) { userList() }
     }
 }
 

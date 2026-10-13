@@ -64,6 +64,74 @@ def between(source,start,end):
     begin=source.index(start); finish=source.index(end,begin)
     return source[begin:finish].rstrip()+'\n'
 
+def _balanced_brace_end(source, open_index):
+    assert source[open_index] == '{'
+    depth = 0
+    i = open_index
+    limit = len(source)
+    while i < limit:
+        char = source[i]
+        if char in ('"', "'"):
+            quote = char
+            i += 1
+            while i < limit:
+                if source[i] == '\\':
+                    i += 2
+                    continue
+                if source[i] == quote:
+                    break
+                i += 1
+        elif char == '{':
+            depth += 1
+        elif char == '}':
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    raise AssertionError('unbalanced brace')
+
+def mirror_dynamic_detail_split(success):
+    """LEFT keeps card | comments. RIGHT swaps those two AppSplitLayout panes."""
+    assert success.count('AppSplitLayout(') == 1, 'expected one detail split'
+    assert success.count('primaryContent = {') == 1
+    assert success.count('secondaryContent = {') == 1
+    primary_mark = success.index('primaryContent = {')
+    primary_open = success.index('{', primary_mark)
+    primary_close = _balanced_brace_end(success, primary_open)
+    secondary_mark = success.index('secondaryContent = {')
+    secondary_open = success.index('{', secondary_mark)
+    secondary_close = _balanced_brace_end(success, secondary_open)
+    assert primary_close < secondary_mark
+    primary = success[primary_open:primary_close + 1]
+    secondary = success[secondary_open:secondary_close + 1]
+    assert primary.count('cardContent()') == 1 and 'commentContent()' not in primary
+    assert 'cardContent()' not in secondary and secondary.count('commentContent()') >= 1
+    split_at = success.index('AppSplitLayout(')
+    assert split_at < primary_mark
+    line_start = success.rfind('\n', 0, split_at) + 1
+    indent = success[line_start:split_at]
+    assert indent.strip() == ''
+    panes = (
+        indent + 'val desktopDetailCardPane: @Composable () -> Unit = ' + primary + '\n' +
+        indent + 'val desktopDetailCommentPane: @Composable () -> Unit = ' + secondary + '\n'
+    )
+    rewritten = (
+        success[:split_at] + panes + success[split_at:primary_mark] +
+        'primaryContent = if (contentOnRight) desktopDetailCommentPane else desktopDetailCardPane' +
+        success[primary_close + 1:secondary_mark] +
+        'secondaryContent = if (contentOnRight) desktopDetailCardPane else desktopDetailCommentPane' +
+        success[secondary_close + 1:]
+    )
+    assert rewritten.count('AppSplitLayout(') == 1
+    assert rewritten.count('contentOnRight') == 2
+    assert rewritten.count('desktopDetailCardPane') == 3
+    assert rewritten.count('desktopDetailCommentPane') == 3
+    assert rewritten.count('cardContent()') == success.count('cardContent()')
+    assert rewritten.count('commentContent()') == success.count('commentContent()')
+    assert 'primaryContent = if (contentOnRight) desktopDetailCommentPane else desktopDetailCardPane' in rewritten
+    assert 'secondaryContent = if (contentOnRight) desktopDetailCardPane else desktopDetailCommentPane' in rewritten
+    return rewritten
+
 def detail_layout():
     path=BASE+'feature/dynamic/DynamicDetailScreen.kt'; source=read(path)
     success=between(source,'                val commentTargetKey = remember(state.item)', '                DynamicSubReplyPreviewHost(')
@@ -107,6 +175,7 @@ def detail_layout():
     success=success.replace(blur_owner_before,
         '                val desktopSubReplyBlurEffects = remember(state.item.id_str) { DesktopDetailBlurEffectCache() }\n'+blur_owner_before,1)
     success=success.replace('Build.VERSION.SDK_INT >= Build.VERSION_CODES.S','desktopSubReplyBlurEffects.supported')
+    success=mirror_dynamic_detail_split(success)
     thread=between(source,'                DynamicSubReplyPreviewHost(', '                if (showImagePreview && previewImages.isNotEmpty())')
     thread=thread.replace('interactionViewModel','session')
     thread=thread.replace('com.android.purebilibili.core.store.TokenManager.midCache','currentMid')
@@ -165,6 +234,7 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
     onRetry: () -> Unit,
     onUserClick: (Long) -> Unit,
     onShowReactions: ((DynamicItem) -> Unit)? = null,
+    contentOnRight: Boolean = false,
     card: @Composable (DynamicDetailImageLayout, onCommentClick: () -> Unit) -> Unit,
 ) {
     key(dynamicId, session) {

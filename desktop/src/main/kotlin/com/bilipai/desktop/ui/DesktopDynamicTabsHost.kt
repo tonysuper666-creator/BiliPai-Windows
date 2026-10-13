@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.store.DesktopDynamicCardSettings
 import com.android.purebilibili.core.store.DesktopDynamicSettings.DynamicFeedLayoutMode
 import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.data.model.response.*
@@ -66,9 +70,57 @@ import kotlinx.coroutines.sync.withLock
     LaunchedEffect(users,allItems){users.updateTimeline(allItems)}
     val initialDisplayMode=remember(preferences){preferences.initialDisplayMode}
     val displayMode by preferences.displayMode.collectAsState(initialDisplayMode)
+    val chrome=remember(timelinePreferences){DesktopDynamicPageChromePreferences(timelinePreferences.context)}
+    val previewTextVisible by chrome.imagePreviewTextVisible.collectAsState(chrome.peekImagePreviewTextVisible())
+    val detailImageLayout by chrome.detailImageLayout.collectAsState(chrome.peekDetailImageLayout())
+    val collapseOnScroll by chrome.topBarCollapseOnScroll.collectAsState(chrome.peekTopBarCollapseOnScroll())
+    val actionsCollapsed by chrome.topActionsCollapsed.collectAsState(chrome.peekTopActionsCollapsed())
+    val pageDirection by chrome.pageLayoutDirection.collectAsState(chrome.peekPageLayoutDirection())
+    val chromeScroll=remember{DesktopDynamicFeedChromeScroll()}
     val listState=rememberLazyListState()
     val showHorizontalUsers=shouldShowDynamicHorizontalUserList(displayMode.isHorizontalUserList(),users.selectedLogicalTab,
         users.selectedLogicalTab==0&&showAllUsers)
+    val topBarOverlays=collapseOnScroll
+    val userListOverlays=showHorizontalUsers
+    val topPaddingExtra=resolveWindowsDynamicListTopPaddingExtraDp(topBarOverlays, userListOverlays).dp
+    val tabStrip: @Composable () -> Unit = {
+        DesktopDynamicTabStrip(users.visibleTabs,users.selectedLogicalTab,displayMode,
+            onSelectLogicalTab={write{users.selectTab(it)}},
+            onDisplayModeChange={write{preferences.setDisplayMode(it)}},
+            trailing=trailing,
+            actionDockCollapsed=actionsCollapsed,
+            onActionDockCollapsedChange={write{chrome.setTopActionsCollapsed(it)}},
+            previewTextVisible=previewTextVisible,
+            onPreviewTextVisibleChange={write{chrome.setImagePreviewTextVisible(it)}},
+            detailImageLayoutValue=detailImageLayout.value,
+            onDetailImageLayoutChange={value->
+                write{chrome.setDetailImageLayout(DesktopDynamicCardSettings.DynamicDetailImageLayout.fromValue(value))}
+            },
+            topBarCollapseOnScroll=collapseOnScroll,
+            onTopBarCollapseOnScrollChange={write{chrome.setTopBarCollapseOnScroll(it)}},
+            pageLayoutDirection=pageDirection,
+            onPageLayoutDirectionChange={write{chrome.setPageLayoutDirection(it)}},
+        )
+    }
+    val userRail: @Composable () -> Unit = {
+        HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
+            showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
+            onUserClick={users.selectUser(it,onOpenUser)},onToggleShowHidden=users::toggleShowHidden,
+            onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
+            onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
+    }
+    val gridOverlay: @Composable BoxScope.() -> Unit = {
+        if (topBarOverlays || userListOverlays) {
+            DesktopDynamicCollapsingChrome(
+                scroll=chromeScroll,
+                showTopBar=topBarOverlays,
+                showUserList=userListOverlays,
+                topBar=tabStrip,
+                userList=userRail,
+                modifier=Modifier.align(Alignment.TopCenter),
+            )
+        }
+    }
     DesktopDynamicModeFrame(
         mode=displayMode,
         sidebarExpanded=users.sidebarExpanded,
@@ -84,38 +136,40 @@ import kotlinx.coroutines.sync.withLock
         onToggleShowHidden=users::toggleShowHidden,
         onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
         onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}},
-        horizontalUsers={
-            HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
-                showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
-                onUserClick={users.selectUser(it,onOpenUser)},onToggleShowHidden=users::toggleShowHidden,
-                onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
-                onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
-        },
-        header={
-            DesktopDynamicTabStrip(users.visibleTabs,users.selectedLogicalTab,displayMode,
-                onSelectLogicalTab={write{users.selectTab(it)}},
-                onDisplayModeChange={write{preferences.setDisplayMode(it)}},
-                trailing=trailing)
-        },
+        horizontalUsers=userRail,
+        header=tabStrip,
         notices={
             settingError?.let{CommunityFailure(it,onLogin){settingError=null}}
             users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
         },
+        pageLayoutDirection=pageDirection,
+        topBarOverlaysFeed=topBarOverlays,
+        userListOverlaysFeed=userListOverlays,
         feed={
-            if(activeTimeline!=null) {
-                val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
-                DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
-                    oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,row=row)
-            } else if(users.selectedUid!=null) {
-                DesktopDynamicSelectedUserFeed(users,timelinePreferences,onOpenUser,onLogin,transform,active,row)
-            } else AppText("选择关注用户查看动态",Modifier.padding(20.dp),color=MaterialTheme.colorScheme.onSurfaceVariant)
+            val hasGrid=activeTimeline!=null||users.selectedUid!=null
+            Box(Modifier.fillMaxSize()) {
+                if(activeTimeline!=null) {
+                    val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
+                    DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
+                        oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,
+                        topPaddingExtra=topPaddingExtra,chromeScroll=chromeScroll,chromeOverlay=gridOverlay,row=row)
+                } else if(users.selectedUid!=null) {
+                    DesktopDynamicSelectedUserFeed(users,timelinePreferences,onOpenUser,onLogin,transform,active,
+                        topPaddingExtra=topPaddingExtra,chromeScroll=chromeScroll,chromeOverlay=gridOverlay,row=row)
+                } else AppText("选择关注用户查看动态",Modifier.padding(20.dp),color=MaterialTheme.colorScheme.onSurfaceVariant)
+                if(!hasGrid) gridOverlay()
+            }
         },
     )
 }
 
 @Composable private fun DesktopDynamicSelectedUserFeed(
     state:DesktopDynamicUsersState,preferences:DesktopDynamicTimelinePreferences,
-    onOpenUser:(Long)->Unit,onLogin:()->Unit,transform:(List<DynamicItem>)->List<DynamicItem>,active:Boolean,row:@Composable (DynamicItem)->Unit,
+    onOpenUser:(Long)->Unit,onLogin:()->Unit,transform:(List<DynamicItem>)->List<DynamicItem>,active:Boolean,
+    topPaddingExtra: Dp = 0.dp,
+    chromeScroll: DesktopDynamicFeedChromeScroll? = null,
+    chromeOverlay: @Composable BoxScope.() -> Unit = {},
+    row:@Composable (DynamicItem)->Unit,
 ) {
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
     val rows=transform(state.visibleItems())
@@ -139,19 +193,28 @@ import kotlinx.coroutines.sync.withLock
         }
     }
     LaunchedEffect(shouldLoadMore,state.selectedUid,state.filter,active){if(active&&shouldLoadMore)state.loadMoreUser()}
+    LaunchedEffect(grid, chromeScroll) {
+        val target = chromeScroll ?: return@LaunchedEffect
+        snapshotFlow { grid.firstVisibleItemIndex to grid.firstVisibleItemScrollOffset }
+            .collect { (index, offset) -> target.publish(index, offset) }
+    }
     Column(Modifier.fillMaxSize()) {
         DynamicSelectedUserFeedHeader(state.panelUsers().firstOrNull{it.uid==state.selectedUid}?.name.orEmpty(),
             state.filter,{state.filter=it},{state.selectedUid?.let(onOpenUser)})
         AppTextButton(enabled=!state.userLoading,onClick=state::refreshUser){AppText("刷新")}
+        Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
         FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
             else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=grid,
-            modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),contentPadding=PaddingValues(20.dp),
+            modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),
+            contentPadding=PaddingValues(start=20.dp, end=20.dp, bottom=20.dp, top=20.dp + topPaddingExtra),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),verticalItemSpacing=resolveDynamicTimelineVerticalSpacing()) {
             rows.forEach {item->item(key="dynamic_${dynamicFeedItemKey(item)}"){row(item)}}
             state.userError?.let{error->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(error,onLogin,state::refreshUser)}}
             if(state.userLoading)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
             if(!state.userLoading&&rows.isEmpty()&&state.userError==null)item(span=StaggeredGridItemSpan.FullLine){AppText("暂无内容")}
             if(!state.userLoading&&state.hasUserMore)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
+        }
+        chromeOverlay()
         }
     }
 }

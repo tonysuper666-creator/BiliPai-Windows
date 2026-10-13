@@ -186,6 +186,7 @@ internal object DesktopSettingsShareWindowsCatalog {
         booleans(navigation, "header_collapse_enabled", "show_pgc_timeline", "tablet_use_sidebar", "sidebar_expanded",
             "sidebar_account_switcher_enabled", "incremental_timeline_refresh", "dynamic_image_preview_text_visible",
             "dynamic_all_tab_horizontal_user_list_visible", "dynamic_top_bar_collapse_on_scroll")
+        ints(navigation, "dynamic_page_layout_direction", setOf(0, 1))
         ints(navigation, "home_top_layout_order", HomeTopLayoutOrder.entries.map { it.value }.toSet())
         ints(navigation, "home_header_collapse_mode", HomeHeaderCollapseMode.entries.map { it.value }.toSet())
         ints(navigation, "common_list_header_collapse_mode", CommonListHeaderCollapseMode.entries.map { it.value }.toSet())

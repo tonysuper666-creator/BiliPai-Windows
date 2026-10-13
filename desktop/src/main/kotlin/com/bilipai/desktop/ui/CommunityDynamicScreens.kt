@@ -15,6 +15,7 @@ import coil3.compose.AsyncImage
 import com.android.purebilibili.data.model.response.*
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences
+import com.bilipai.desktop.settings.DesktopDynamicPageChromePreferences
 import com.bilipai.desktop.settings.DesktopDynamicTabsPreferences
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -308,6 +309,8 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
         catch (failure: Exception) { if (failure is CancellationException) throw failure; if(owned())error = failure }
         finally { if(owned())loading = false }
     }
+    val pageChrome=remember(preferences){DesktopDynamicPageChromePreferences(preferences.context)}
+    val pageDirection by pageChrome.pageLayoutDirection.collectAsState(pageChrome.peekPageLayoutDirection())
     val defaultLayout by DesktopDynamicCardSettings.getDynamicDetailImageLayout(preferences.context).collectAsState(
         initial=DesktopDynamicCardSettings.peekDynamicDetailImageLayout(preferences.context))
     val uiState=error?.let{DesktopOriginalDynamicDetailUiState.Error(it.message.orEmpty())}
@@ -322,7 +325,8 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
                     liquidGlassEnabled=false,currentMid=account?.mid,
                     openCommentRootRpid=route.rootReplyId,openCommentTargetRpid=route.targetReplyId,
                     onBack=navigation.onDynamicBack,onRetry={revision++},onUserClick=navigation.onUser,
-                    onShowReactions=if(capturedReactionNavigation==null)null else ::showReactions) {layout,onCommentClick->
+                    onShowReactions=if(capturedReactionNavigation==null)null else ::showReactions,
+                    contentOnRight=resolveDynamicDetailContentOnRight(pageDirection)) {layout,onCommentClick->
                     data?.item?.let{CommunityDynamicCard(it,community,navigation,details=true,
                         detailImageLayoutOverride=layout,onDetailCommentClick=onCommentClick)}
                 }
