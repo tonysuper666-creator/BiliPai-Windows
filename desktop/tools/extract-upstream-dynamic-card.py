@@ -15,7 +15,10 @@ ADAPTED = [COMP+n+'.kt' for n in ['DynamicCard','DynamicCardClickPolicy','DrawGr
 PATHS = DIRECT+ADAPTED+SHARED+[BASE+'feature/dynamic/DynamicDeletePolicy.kt',BASE+'feature/dynamic/DynamicLayoutPolicy.kt',BASE+'feature/dynamic/model/LiveContentModels.kt',BASE+'core/store/SettingsManager.kt',BASE+'core/ui/common/TextSelectionPolicy.kt',BASE+'core/ui/common/TextSelectionBottomSheet.kt',BASE+'core/util/ModifierExt.kt',BASE+'data/repository/DynamicRepository.kt',BASE+'data/repository/DynamicVoteRepository.kt',BASE+'data/repository/SearchRepository.kt',BASE+'feature/dynamic/DynamicScreen.kt',COMP+'RepostDialog.kt',COMP+'DynamicEmoteCatalog.kt',COMP+'ImagePreviewDialog.kt',COMP+'LivePhotoPlayback.kt',COMP+'DynamicRichTextPolicy.kt']
 def module(repo,name,path):
  s=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
-def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):
+ from v035_dynamic_preview import updated_original
+ original=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
+ return updated_original(path,original)
 def messages(repo):
  path=Path(__file__).with_name('extract-dynamic-message-share.py');spec=importlib.util.spec_from_file_location('dynamic_message_share',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def inventory(repo):return [dict(path=p,mode='platform-adapter-reference' if p in SHARED+[BASE+'core/util/ModifierExt.kt'] else 'direct' if p in DIRECT else 'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]+messages(repo).inventory(repo)
@@ -30,7 +33,8 @@ def generate(repo,output,standalone=False,shared_closure=False):
    proof['canonicalLfSha256']=hashlib.sha256(read(repo,path).encode()).hexdigest()
    (output/'windows-comment-image-presentation.json').write_text(json.dumps(proof,ensure_ascii=True,indent=2)+'\n',encoding='utf8')
   from v035_dynamic_link import adapt_card_body
-  body=adapt_card_body(body,name,output)
+  if name != "DesktopOriginalDynamicCard.kt":
+   body=adapt_card_body(body,name,output)
   files.append(host.write(output,path,read(repo,path),body,name))
  def replace(source,old,new):return host.substitute(source,old,new)
  def fun(s,n):return media.function(s,n,parser)
@@ -88,6 +92,9 @@ def generate(repo,output,standalone=False,shared_closure=False):
  emit(p,'package com.android.purebilibili.feature.dynamic.components\n'+imports+'@Composable\ninternal fun DesktopOriginalDynamicReportDialog(reportAction:DynamicManageAction.Report,onDismiss:()->Unit,onResult:(String)->Unit,onReport:(action:DynamicManageAction.Report,reasonType:Int,reasonDesc:String,onComplete:(Boolean,String)->Unit)->Unit) {\n'+body+'\n}\n','DesktopOriginalDynamicReportDialog.kt')
  for p in ADAPTED:
   s=read(repo,p)
+  if p.endswith("/DynamicCard.kt"):
+   from v035_dynamic_preview import prepare_latest_card
+   s=prepare_latest_card(s)
   if p.endswith('DynamicInteractionPolicy.kt'):
    body=appearance.declarations(parser,s,['DynamicCommentTarget','DESKTOP_DYNAMIC_COMMENT_TYPES'])+'\n'+'\n'.join(fun(s,n)for n in ['toPositiveLongOrNull','resolveCommentTargetFromBasic','resolveDynamicCommentTarget','resolveDynamicCommentTargets'])
    emit(p,'package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.data.model.response.*\n'+body,'DesktopOriginalDynamicCommentTargetPolicy.kt')
@@ -302,6 +309,8 @@ object DesktopDynamicCardSettings {
  files+=messages(repo).generate(repo,output,standalone)
  from v035_dynamic_link import emit_link_sources
  files+=emit_link_sources(output)
+ from v035_dynamic_preview import emit_preview_core
+ files+=emit_preview_core(output)
  return files
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--standalone',action='store_true');a=p.parse_args();generate(a.repo,a.output,a.standalone)

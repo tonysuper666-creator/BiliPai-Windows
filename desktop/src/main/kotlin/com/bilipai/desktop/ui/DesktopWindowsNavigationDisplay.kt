@@ -22,6 +22,7 @@ import com.android.purebilibili.core.ui.LocalSharedTransitionEnabled
 import com.android.purebilibili.core.ui.LocalSharedTransitionScope
 import com.android.purebilibili.core.ui.transition.LocalClickToPlayEnabled
 import com.android.purebilibili.core.ui.transition.LocalDynamicImagePreviewTextVisible
+import com.android.purebilibili.core.ui.transition.LocalDynamicCommentPreviewVisible
 import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute
 import com.android.purebilibili.core.ui.transition.LocalVideoCardTransitionClock
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionClock
@@ -99,6 +100,8 @@ internal fun DesktopWindowsNavigationDisplay(
         .collectAsStateWithLifecycle(initialValue = DesktopOriginalNavigationHostSettings.getClickToPlaySync(environment.context))
     val dynamicImagePreviewTextVisible by com.android.purebilibili.core.store.DesktopDynamicCardSettings
         .getDynamicImagePreviewTextVisible(environment.context).collectAsStateWithLifecycle(initialValue = true)
+    val dynamicCommentPreviewVisible by com.android.purebilibili.core.store.home.DynamicSettingsStore
+        .observeCommentPreviewVisible(environment.context).collectAsStateWithLifecycle(initialValue = false)
     val globalWallpaperVisible = LocalGlobalWallpaperBackdropVisible.current
     val stackSnapshot = backStack.toList()
     CompositionLocalProvider(
@@ -130,6 +133,7 @@ internal fun DesktopWindowsNavigationDisplay(
                     LocalVideoCardTransitionClock provides videoCardClock,
                     LocalClickToPlayEnabled provides clickToPlayEnabled,
                     LocalDynamicImagePreviewTextVisible provides dynamicImagePreviewTextVisible,
+                    LocalDynamicCommentPreviewVisible provides dynamicCommentPreviewVisible,
                 ) {
                     Box(Modifier.fillMaxSize().background(androidx.compose.material3.MaterialTheme.colorScheme.background)) {
                         ProvideDesktopWindowsNavigationEntryExtras(environment.entryViewModels) { content(destination) }

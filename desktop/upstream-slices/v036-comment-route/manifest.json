@@ -1,0 +1,26 @@
+{
+  "fixedUpstreamTag": "v0.3.6",
+  "fixedUpstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "filename": "CommentRepository.kt",
+      "commit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "bytes": 77439,
+      "sha256Bytes": "b122acc8bd2b3efed20994c48a0a7833a9b528fccee4cbd64f13574951f23158",
+      "gitBlob": "b8a98a07706e026f379e209fe74e60f13bc86dcc",
+      "mode": "runtime-selected-read-members"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/CommentReadRouteMemo.kt",
+      "filename": "CommentReadRouteMemo.kt",
+      "commit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "bytes": 2188,
+      "sha256Bytes": "cd094150334c57f2cc8cf9fe146c5cc980e549bc6d55b91648034dcb269f6e02",
+      "gitBlob": "77774daa0ef3303628413a9a662efe4b0378b787",
+      "mode": "runtime-complete-original-file"
+    }
+  ],
+  "fullStableParity": false
+}
