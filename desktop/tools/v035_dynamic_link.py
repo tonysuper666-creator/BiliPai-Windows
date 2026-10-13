@@ -5,7 +5,7 @@ import json
 import os
 
 COMMIT = "46eaf277e83512061785be9759d1f07aba3c4839"
-MANIFEST_SHA256 = "001bb1bff726f2887f1cd6b1f27429d8720e640cd3dbcae06632c65f9b6aebee"
+MANIFEST_SHA256 = "746066d49ad0d28ea46aa81706c98e7faa3e49261092843695413630337f9503"
 
 def wide(path):
     path = Path(path).resolve()

@@ -3430,7 +3430,9 @@
         "story-topic",
         "settings-dynamic-full-card-parity"
       ],
-      "sha256": "7416e295832b385c793071a5d834dcba4b2a4a1385781385f400e2cac9248aef"
+      "sha256": "7416e295832b385c793071a5d834dcba4b2a4a1385781385f400e2cac9248aef",
+      "runtimeWholeOriginalOwner": "extract-upstream-dynamic-card.py/v035_dynamic_preview.py",
+      "runtimeWholeOriginalCommit": "46eaf277e83512061785be9759d1f07aba3c4839"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/AudioStreamModels.kt",
@@ -4288,11 +4290,13 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "home-full-card"
       ],
-      "sha256": "54755e4096482a7e534148788fe0fd0adfd87c07d3b6733682bb8cd5803fec7f"
+      "sha256": "54755e4096482a7e534148788fe0fd0adfd87c07d3b6733682bb8cd5803fec7f",
+      "runtimeWholeOriginalOwner": "extract-upstream-dynamic-card.py/v035_dynamic_preview.py",
+      "runtimeWholeOriginalCommit": "46eaf277e83512061785be9759d1f07aba3c4839"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardNativeSnapshot.kt",
@@ -4793,7 +4797,9 @@
       "features": [
         "settings-dynamic-full-card-parity"
       ],
-      "sha256": "72b0ffd85f3492b66d8a2cfc4663e2cd5c334a347f4e55f1490f2cf84d8a8d4b"
+      "sha256": "72b0ffd85f3492b66d8a2cfc4663e2cd5c334a347f4e55f1490f2cf84d8a8d4b",
+      "runtimeWholeOriginalOwner": "extract-upstream-dynamic-card.py/v035_dynamic_preview.py",
+      "runtimeWholeOriginalCommit": "46eaf277e83512061785be9759d1f07aba3c4839"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCardClickPolicy.kt",
@@ -11518,7 +11524,7 @@
     "topic": "original-detail-sort-pagination-participation-rich-link-keyword-and-back-route-integrated-offline-tested",
     "playback-settings": "original-codec-audio-subtitle-policy-integrated-native-hardware-and-pair-tested-account-subtitle-retry-pending"
   },
-  "windowsRevision": 70,
+  "windowsRevision": 71,
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",

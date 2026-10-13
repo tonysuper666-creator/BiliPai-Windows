@@ -1,0 +1,549 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/home/DynamicSettingsStore.kt",
+      "bytes": 1169,
+      "sha256": "149a3ba124cfdf3b2b9277213b415eebe59af13b91e1c8cd81331d0646266871",
+      "gitBlob": "c55499832ad4e34742dea5ce124bf3a9a7099990",
+      "archiveFile": "DynamicSettingsStore.kt",
+      "referenceOnly": false,
+      "adaptation": {
+        "path": "app/src/main/java/com/android/purebilibili/core/store/home/DynamicSettingsStore.kt",
+        "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+        "originalSha256": "149a3ba124cfdf3b2b9277213b415eebe59af13b91e1c8cd81331d0646266871",
+        "gitBlob": "c55499832ad4e34742dea5ce124bf3a9a7099990",
+        "adaptedSha256": "b362f352bad3cae9ab4faeca9997ed9962bc2ba7616033f970e84518f4341c9b",
+        "edits": [
+          {
+            "before": "import android.content.Context\n",
+            "after": "import com.bilipai.desktop.plugins.DesktopPluginContext as Context\nimport com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as WritableContext\n"
+          },
+          {
+            "before": "import androidx.datastore.preferences.core.Preferences\n",
+            "after": "import com.bilipai.desktop.plugins.DesktopPreferenceSnapshot as Preferences\n"
+          },
+          {
+            "before": "import androidx.datastore.preferences.core.booleanPreferencesKey\n",
+            "after": "import com.bilipai.desktop.plugins.booleanPreferencesKey\n"
+          },
+          {
+            "before": "import androidx.datastore.preferences.core.edit\n",
+            "after": ""
+          },
+          {
+            "before": "import com.android.purebilibili.core.store.settingsDataStore\n",
+            "after": "import com.bilipai.desktop.settings.dynamicSettingsDataStore as settingsDataStore\n"
+          },
+          {
+            "before": "suspend fun setCommentPreviewVisible(context: Context, visible: Boolean)",
+            "after": "suspend fun setCommentPreviewVisible(context: WritableContext, visible: Boolean)"
+          }
+        ],
+        "fullOriginalInverse": true
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt",
+      "bytes": 541,
+      "sha256": "3bce59a7a8fc38a7d36c1fb1cb06bc0f776fc99f92b5358bdc1f960067d8a468",
+      "gitBlob": "0f9b39245ce2ab475196b709c84eaf4ac9c7546e",
+      "archiveFile": "VideoCardSharedElementContext.kt",
+      "referenceOnly": false,
+      "adaptation": {
+        "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt",
+        "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+        "originalSha256": "3bce59a7a8fc38a7d36c1fb1cb06bc0f776fc99f92b5358bdc1f960067d8a468",
+        "gitBlob": "0f9b39245ce2ab475196b709c84eaf4ac9c7546e",
+        "adaptedSha256": "3bce59a7a8fc38a7d36c1fb1cb06bc0f776fc99f92b5358bdc1f960067d8a468",
+        "edits": [],
+        "fullOriginalInverse": true
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentPreviewPolicy.kt",
+      "bytes": 436,
+      "sha256": "3f0ec7754d50c4096bf73d0e2faed97d323c3d51d8257d0c13400156a11b13e6",
+      "gitBlob": "36f6e4e5a40ef55f81ca7490d4318b5af815e145",
+      "archiveFile": "DynamicCommentPreviewPolicy.kt",
+      "referenceOnly": false,
+      "adaptation": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentPreviewPolicy.kt",
+        "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+        "originalSha256": "3f0ec7754d50c4096bf73d0e2faed97d323c3d51d8257d0c13400156a11b13e6",
+        "gitBlob": "36f6e4e5a40ef55f81ca7490d4318b5af815e145",
+        "adaptedSha256": "3f0ec7754d50c4096bf73d0e2faed97d323c3d51d8257d0c13400156a11b13e6",
+        "edits": [],
+        "fullOriginalInverse": true
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicRichTextPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "sha256": "aeb71825af4c45f27207d9bb8d1a303f818936558a130992015f15fa4b438185",
+      "bytes": 38555,
+      "gitBlob": "b441b5aed0ea3d006e3c1323a075fd7860fb9cc8",
+      "archiveFile": "DynamicRichTextPolicy.kt",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/HomeFeedSettingsSection.kt",
+      "bytes": 5029,
+      "sha256": "d833c561976275e9c8903cee164a7cef6b1a1b623a9972c5fbd7e2b41910a5c2",
+      "gitBlob": "ddd85be3e2b9e7c5fad6450dcb464a0422711144",
+      "archiveFile": "HomeFeedSettingsSection.kt",
+      "referenceOnly": true
+    }
+  ],
+  "existingWholeCardArchive": "desktop/upstream-slices/v035-dynamic-link/DynamicCard.kt",
+  "existingWholeCardSha256": "ed3781efda386120e8fecb62ea091d5fe9e8e2b89b80f15f15fe63304d11b5e5",
+  "scope": "Whole latest DynamicCard plus whole RichText policy through existing sole producers; original complete preview store/policy/shared context and actual Root reader/page writer.",
+  "sourceMode": "whole-original-sources-with-recorded-Windows-platform-adaptations",
+  "wholeRuntimeUnits": [
+    {
+      "original": "2-DynamicCard.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "rawOriginalSha256": "ed3781efda386120e8fecb62ea091d5fe9e8e2b89b80f15f15fe63304d11b5e5",
+      "output": "com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCard.kt",
+      "outputSha256LF": "f3309593842cf418f600b530bf3e2a626e03d9268def0bf9ea4ec3047f502a19",
+      "completeOriginalInverse": true,
+      "windowsInverseEdits": [
+        {
+          "operation": "replace",
+          "originalLineStart": 22,
+          "originalLineEnd": 23,
+          "outputLineStart": 22,
+          "outputLineEnd": 23,
+          "before": "import com.android.purebilibili.core.ui.transition.LocalDynamicImagePreviewTextVisible\n",
+          "after": "import com.bilipai.desktop.ui.LocalDynamicImagePreviewTextVisible\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 31,
+          "originalLineEnd": 32,
+          "outputLineStart": 31,
+          "outputLineEnd": 32,
+          "before": "import androidx.compose.foundation.isSystemInDarkTheme\n",
+          "after": "import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 51,
+          "originalLineEnd": 52,
+          "outputLineStart": 51,
+          "outputLineEnd": 52,
+          "before": "import androidx.compose.ui.platform.LocalContext\n",
+          "after": "import coil3.compose.LocalPlatformContext as LocalContext\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 74,
+          "originalLineEnd": 76,
+          "outputLineStart": 74,
+          "outputLineEnd": 75,
+          "before": "import com.android.purebilibili.core.store.SettingsManager\nimport com.android.purebilibili.core.store.TokenManager\n",
+          "after": "\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 99,
+          "originalLineEnd": 101,
+          "outputLineStart": 98,
+          "outputLineEnd": 100,
+          "before": "import com.android.purebilibili.data.repository.SearchRepository\nimport com.android.purebilibili.core.store.SettingsManager.DynamicDetailImageLayout\n",
+          "after": "\nimport com.android.purebilibili.core.store.DesktopDynamicCardSettings.DynamicDetailImageLayout\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 114,
+          "originalLineEnd": 115,
+          "outputLineStart": 113,
+          "outputLineEnd": 114,
+          "before": "import com.android.purebilibili.data.repository.DynamicRepository\n",
+          "after": "import com.bilipai.desktop.ui.DesktopDynamicCardBindings as DynamicRepository\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 117,
+          "originalLineEnd": 118,
+          "outputLineStart": 116,
+          "outputLineEnd": 117,
+          "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle\n",
+          "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 161,
+          "originalLineEnd": 162,
+          "outputLineStart": 160,
+          "outputLineEnd": 161,
+          "before": "    val currentUserMid: Long? = TokenManager.midCache,\n",
+          "after": "    val currentUserMid: Long? = null /* Windows host supplies its captured account MID. */,\n"
+        },
+        {
+          "operation": "insert",
+          "originalLineStart": 182,
+          "originalLineEnd": 182,
+          "outputLineStart": 181,
+          "outputLineEnd": 182,
+          "before": "",
+          "after": "    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 616,
+          "originalLineEnd": 626,
+          "outputLineStart": 616,
+          "outputLineEnd": 617,
+          "before": "                                        val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE)\n                                            as android.content.ClipboardManager\n                                        clipboard.setPrimaryClip(\n                                            android.content.ClipData.newPlainText(\"动态链接\", dynamicUrl)\n                                        )\n                                        android.widget.Toast.makeText(\n                                            context,\n                                            \"已复制链接\",\n                                            android.widget.Toast.LENGTH_SHORT\n                                        ).show()\n",
+          "after": "                                        platform.copyText(dynamicUrl)\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 641,
+          "originalLineEnd": 650,
+          "outputLineStart": 632,
+          "outputLineEnd": 633,
+          "before": "                                        val shareIntent = android.content.Intent(\n                                            android.content.Intent.ACTION_SEND\n                                        ).apply {\n                                            this.type = \"text/plain\"\n                                            putExtra(android.content.Intent.EXTRA_TEXT, shareText)\n                                        }\n                                        context.startActivity(\n                                            android.content.Intent.createChooser(shareIntent, \"分享动态\")\n                                        )\n",
+          "after": "                                        platform.shareText(shareText)\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 744,
+          "originalLineEnd": 749,
+          "outputLineStart": 727,
+          "outputLineEnd": 728,
+          "before": "                                                android.widget.Toast.makeText(\n                                                    context,\n                                                    \"该动态暂不支持互动设置\",\n                                                    android.widget.Toast.LENGTH_SHORT\n                                                ).show()\n",
+          "after": "                                                platform.showFeedback(\"该动态暂不支持互动设置\")\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 755,
+          "originalLineEnd": 760,
+          "outputLineStart": 734,
+          "outputLineEnd": 735,
+          "before": "                                                        android.widget.Toast.makeText(\n                                                            context,\n                                                            \"获取互动设置失败\",\n                                                            android.widget.Toast.LENGTH_SHORT\n                                                        ).show()\n",
+          "after": "                                                        platform.showFeedback(\"获取互动设置失败\")\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 907,
+          "originalLineEnd": 913,
+          "outputLineStart": 882,
+          "outputLineEnd": 884,
+          "before": "                        val inAppIntent = android.content.Intent(\n                            android.content.Intent.ACTION_VIEW,\n                            android.net.Uri.parse(searchUrl)\n                        ).setPackage(context.packageName)\n                            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)\n                        runCatching { context.startActivity(inAppIntent) }\n",
+          "after": "                        val inAppIntent = searchUrl\n                        runCatching { platform.openLink(inAppIntent) }\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 1100,
+          "originalLineEnd": 1101,
+          "outputLineStart": 1071,
+          "outputLineEnd": 1072,
+          "before": "                sharedElementKey = com.android.purebilibili.core.ui.transition.videoPlayerSharedElementKey(archive.bvid)\n",
+          "after": "                sharedElementKey = com.bilipai.desktop.ui.dynamicVideoSharedElementKey(archive.bvid)\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 1115,
+          "originalLineEnd": 1116,
+          "outputLineStart": 1086,
+          "outputLineEnd": 1087,
+          "before": "                sharedElementKey = com.android.purebilibili.core.ui.transition.videoPlayerSharedElementKey(\n",
+          "after": "                sharedElementKey = com.bilipai.desktop.ui.dynamicVideoSharedElementKey(\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 1729,
+          "originalLineEnd": 1730,
+          "outputLineStart": 1700,
+          "outputLineEnd": 1701,
+          "before": "                    sharedElementKey = com.android.purebilibili.core.ui.transition.videoPlayerSharedElementKey(\n",
+          "after": "                    sharedElementKey = com.bilipai.desktop.ui.dynamicVideoSharedElementKey(\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2068,
+          "originalLineEnd": 2069,
+          "outputLineStart": 2039,
+          "outputLineEnd": 2040,
+          "before": "    val context = LocalContext.current\n",
+          "after": "    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2093,
+          "originalLineEnd": 2098,
+          "outputLineStart": 2064,
+          "outputLineEnd": 2065,
+          "before": "                        android.widget.Toast.makeText(\n                            context,\n                            error.message ?: \"预约操作失败\",\n                            android.widget.Toast.LENGTH_SHORT,\n                        ).show()\n",
+          "after": "                        platform.showFeedback(error.message ?: \"预约操作失败\")\n"
+        },
+        {
+          "operation": "insert",
+          "originalLineStart": 2295,
+          "originalLineEnd": 2295,
+          "outputLineStart": 2262,
+          "outputLineEnd": 2263,
+          "before": "",
+          "after": "    val platform = com.bilipai.desktop.ui.LocalDesktopDynamicCardBindings.current\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2298,
+          "originalLineEnd": 2300,
+          "outputLineStart": 2266,
+          "outputLineEnd": 2268,
+          "before": "    var catalogEmoteMap by remember { mutableStateOf(DynamicEmoteCatalog.snapshot()) }\n    val emoteCatalogSessionKey = DynamicEmoteCatalog.currentSessionKey()\n",
+          "after": "    var catalogEmoteMap by remember { mutableStateOf(platform.emotes.snapshot()) }\n    val emoteCatalogSessionKey = platform.emotes.currentSessionKey()\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2301,
+          "originalLineEnd": 2302,
+          "outputLineStart": 2269,
+          "outputLineEnd": 2270,
+          "before": "        catalogEmoteMap = DynamicEmoteCatalog.ensureLoaded()\n",
+          "after": "        catalogEmoteMap = platform.emotes.ensureLoaded()\n"
+        },
+        {
+          "operation": "insert",
+          "originalLineStart": 2312,
+          "originalLineEnd": 2312,
+          "outputLineStart": 2280,
+          "outputLineEnd": 2281,
+          "before": "",
+          "after": "            platform = platform,\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2411,
+          "originalLineEnd": 2412,
+          "outputLineStart": 2380,
+          "outputLineEnd": 2382,
+          "before": "    context: android.content.Context,\n",
+          "after": "    context: coil3.PlatformContext,\n    platform: com.bilipai.desktop.ui.DesktopDynamicCardPlatform,\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2432,
+          "originalLineEnd": 2433,
+          "outputLineStart": 2402,
+          "outputLineEnd": 2403,
+          "before": "            val matches = SearchRepository.searchUp(action.name).getOrNull()\n",
+          "after": "            val matches = platform.searchUp(action.name).getOrNull()\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2447,
+          "originalLineEnd": 2453,
+          "outputLineStart": 2417,
+          "outputLineEnd": 2419,
+          "before": "                    val inAppIntent = android.content.Intent(\n                        android.content.Intent.ACTION_VIEW,\n                        android.net.Uri.parse(searchUrl)\n                    ).setPackage(context.packageName)\n                        .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)\n                    val launched = runCatching { context.startActivity(inAppIntent) }.isSuccess\n",
+          "after": "                    val inAppIntent = searchUrl\n                    val launched = runCatching { platform.openLink(inAppIntent) }.isSuccess\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2454,
+          "originalLineEnd": 2455,
+          "outputLineStart": 2420,
+          "outputLineEnd": 2421,
+          "before": "                        openDynamicRichTextLinkExternally(context, searchUrl, uriHandler)\n",
+          "after": "                        openDynamicRichTextLinkExternally(context, searchUrl, uriHandler, platform)\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2473,
+          "originalLineEnd": 2479,
+          "outputLineStart": 2439,
+          "outputLineEnd": 2441,
+          "before": "                    val inAppIntent = android.content.Intent(\n                        android.content.Intent.ACTION_VIEW,\n                        android.net.Uri.parse(searchUrl)\n                    ).setPackage(context.packageName)\n                        .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)\n                    val launched = runCatching { context.startActivity(inAppIntent) }.isSuccess\n",
+          "after": "                    val inAppIntent = searchUrl\n                    val launched = runCatching { platform.openLink(inAppIntent) }.isSuccess\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2480,
+          "originalLineEnd": 2481,
+          "outputLineStart": 2442,
+          "outputLineEnd": 2443,
+          "before": "                        openDynamicRichTextLinkExternally(context, searchUrl, uriHandler)\n",
+          "after": "                        openDynamicRichTextLinkExternally(context, searchUrl, uriHandler, platform)\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2551,
+          "originalLineEnd": 2557,
+          "outputLineStart": 2513,
+          "outputLineEnd": 2515,
+          "before": "                                val inAppIntent = android.content.Intent(\n                                    android.content.Intent.ACTION_VIEW,\n                                    android.net.Uri.parse(searchUrl)\n                                ).setPackage(context.packageName)\n                                    .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)\n                                runCatching { context.startActivity(inAppIntent) }.isSuccess\n",
+          "after": "                                val inAppIntent = searchUrl\n                                runCatching { platform.openLink(inAppIntent) }.isSuccess\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2568,
+          "originalLineEnd": 2573,
+          "outputLineStart": 2526,
+          "outputLineEnd": 2527,
+          "before": "                            val inAppIntent = android.content.Intent(\n                                android.content.Intent.ACTION_VIEW,\n                                android.net.Uri.parse(rawUrl)\n                            ).setPackage(context.packageName)\n                                .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)\n",
+          "after": "                            val inAppIntent = rawUrl\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2574,
+          "originalLineEnd": 2575,
+          "outputLineStart": 2528,
+          "outputLineEnd": 2529,
+          "before": "                                context.startActivity(inAppIntent)\n",
+          "after": "                                platform.openLink(inAppIntent)\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2580,
+          "originalLineEnd": 2581,
+          "outputLineStart": 2534,
+          "outputLineEnd": 2535,
+          "before": "                                    uriHandler\n",
+          "after": "                                    uriHandler, platform\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2588,
+          "originalLineEnd": 2589,
+          "outputLineStart": 2542,
+          "outputLineEnd": 2543,
+          "before": "                                uriHandler\n",
+          "after": "                                uriHandler, platform\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 2600,
+          "originalLineEnd": 2629,
+          "outputLineStart": 2554,
+          "outputLineEnd": 2556,
+          "before": "private fun openDynamicRichTextLinkExternally(\n    context: android.content.Context,\n    url: String,\n    uriHandler: androidx.compose.ui.platform.UriHandler\n) {\n    val externalIntent = android.content.Intent(\n        android.content.Intent.ACTION_VIEW,\n        android.net.Uri.parse(url)\n    ).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)\n\n    val packageManager = context.packageManager\n    val externalPackage = packageManager.queryIntentActivities(\n        externalIntent,\n        android.content.pm.PackageManager.MATCH_DEFAULT_ONLY\n    ).firstOrNull { it.activityInfo?.packageName != context.packageName }\n        ?.activityInfo\n        ?.packageName\n\n    val launchedExternally = if (!externalPackage.isNullOrBlank()) {\n        runCatching {\n            context.startActivity(externalIntent.setPackage(externalPackage))\n        }.isSuccess\n    } else {\n        false\n    }\n\n    if (!launchedExternally) {\n        runCatching { uriHandler.openUri(url) }\n    }\n",
+          "after": "private fun openDynamicRichTextLinkExternally(context: coil3.PlatformContext, url: String, uriHandler: androidx.compose.ui.platform.UriHandler, platform: com.bilipai.desktop.ui.DesktopDynamicCardPlatform) {\n    if(platform.isOwned())platform.openLink(url)\n"
+        }
+      ],
+      "sharedFunctionsOwnedByExistingTopicProducer": []
+    },
+    {
+      "original": "6-DynamicRichTextPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "rawOriginalSha256": "aeb71825af4c45f27207d9bb8d1a303f818936558a130992015f15fa4b438185",
+      "output": "com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicRichText.kt",
+      "outputSha256LF": "cce0ac2cf599b30b02dcd10aff184bea2c14170437745d74b7705b62299d50a0",
+      "completeOriginalInverse": true,
+      "windowsInverseEdits": [
+        {
+          "operation": "delete",
+          "originalLineStart": 26,
+          "originalLineEnd": 32,
+          "outputLineStart": 26,
+          "outputLineEnd": 26,
+          "before": "internal const val DYNAMIC_RICH_TEXT_LINK_URL_PREFIX = \"URL:\"\ninternal const val DYNAMIC_RICH_TEXT_LINK_USER_PREFIX = \"USER:\"\ninternal const val DYNAMIC_RICH_TEXT_LINK_USER_NAME_PREFIX = \"USERNAME:\"\ninternal const val DYNAMIC_RICH_TEXT_LINK_VOTE_PREFIX = \"VOTE:\"\ninternal const val DYNAMIC_RICH_TEXT_LINK_TOPIC_ID_PREFIX = \"TOPIC:\"\ninternal const val DYNAMIC_RICH_TEXT_LINK_TOPIC_KEYWORD_PREFIX = \"TOPICKW:\"\n",
+          "after": ""
+        },
+        {
+          "operation": "delete",
+          "originalLineStart": 34,
+          "originalLineEnd": 42,
+          "outputLineStart": 28,
+          "outputLineEnd": 28,
+          "before": "private fun dynamicRichTextLinkAnnotation(\n    payload: String,\n    listener: LinkInteractionListener?,\n): LinkAnnotation = LinkAnnotation.Clickable(\n    tag = payload,\n    styles = null,\n    linkInteractionListener = listener,\n)\n",
+          "after": ""
+        },
+        {
+          "operation": "delete",
+          "originalLineStart": 44,
+          "originalLineEnd": 52,
+          "outputLineStart": 30,
+          "outputLineEnd": 30,
+          "before": "internal sealed interface DynamicRichTextLinkAction {\n    data class Url(val url: String) : DynamicRichTextLinkAction\n    data class User(val mid: Long) : DynamicRichTextLinkAction\n    data class UserName(val name: String) : DynamicRichTextLinkAction\n    data class Vote(val voteId: Long) : DynamicRichTextLinkAction\n    data class TopicId(val topicId: Long) : DynamicRichTextLinkAction\n    data class TopicKeyword(val keyword: String) : DynamicRichTextLinkAction\n}\n",
+          "after": ""
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 53,
+          "originalLineEnd": 80,
+          "outputLineStart": 31,
+          "outputLineEnd": 33,
+          "before": "internal fun resolveDynamicRichTextLinkAction(tag: String): DynamicRichTextLinkAction? {\n    return when {\n        tag.startsWith(DYNAMIC_RICH_TEXT_LINK_URL_PREFIX) ->\n            DynamicRichTextLinkAction.Url(tag.removePrefix(DYNAMIC_RICH_TEXT_LINK_URL_PREFIX))\n        tag.startsWith(DYNAMIC_RICH_TEXT_LINK_USER_PREFIX) ->\n            tag.removePrefix(DYNAMIC_RICH_TEXT_LINK_USER_PREFIX).toLongOrNull()\n                ?.takeIf { it > 0L }\n                ?.let(DynamicRichTextLinkAction::User)\n        tag.startsWith(DYNAMIC_RICH_TEXT_LINK_USER_NAME_PREFIX) ->\n            tag.removePrefix(DYNAMIC_RICH_TEXT_LINK_USER_NAME_PREFIX)\n                .takeIf { it.isNotBlank() }\n                ?.let(DynamicRichTextLinkAction::UserName)\n        tag.startsWith(DYNAMIC_RICH_TEXT_LINK_VOTE_PREFIX) ->\n            tag.removePrefix(DYNAMIC_RICH_TEXT_LINK_VOTE_PREFIX).toLongOrNull()\n                ?.takeIf { it > 0L }\n                ?.let(DynamicRichTextLinkAction::Vote)\n        tag.startsWith(DYNAMIC_RICH_TEXT_LINK_TOPIC_ID_PREFIX) ->\n            tag.removePrefix(DYNAMIC_RICH_TEXT_LINK_TOPIC_ID_PREFIX).toLongOrNull()\n                ?.takeIf { it > 0L }\n                ?.let(DynamicRichTextLinkAction::TopicId)\n        tag.startsWith(DYNAMIC_RICH_TEXT_LINK_TOPIC_KEYWORD_PREFIX) ->\n            tag.removePrefix(DYNAMIC_RICH_TEXT_LINK_TOPIC_KEYWORD_PREFIX)\n                .takeIf { it.isNotBlank() }\n                ?.let(DynamicRichTextLinkAction::TopicKeyword)\n        else -> null\n    }\n}\n",
+          "after": "\n\n"
+        },
+        {
+          "operation": "replace",
+          "originalLineStart": 407,
+          "originalLineEnd": 416,
+          "outputLineStart": 360,
+          "outputLineEnd": 361,
+          "before": "internal fun resolveDynamicRichTextNodeToken(node: RichTextNode): String {\n    val emojiText = node.emoji?.text\n    return when {\n        node.text.isNotBlank() -> node.text\n        node.orig_text.isNotBlank() -> node.orig_text\n        !emojiText.isNullOrBlank() -> emojiText\n        else -> \"\"\n    }\n}\n",
+          "after": "\n"
+        },
+        {
+          "operation": "delete",
+          "originalLineStart": 627,
+          "originalLineEnd": 633,
+          "outputLineStart": 572,
+          "outputLineEnd": 572,
+          "before": "internal fun resolveDynamicRichTextTopicId(node: RichTextNode): Long? {\n    node.rid\n        ?.trim()\n        ?.toLongOrNull()\n        ?.takeIf { it > 0L }\n        ?.let { return it }\n",
+          "after": ""
+        },
+        {
+          "operation": "delete",
+          "originalLineStart": 634,
+          "originalLineEnd": 641,
+          "outputLineStart": 573,
+          "outputLineEnd": 573,
+          "before": "    val jumpUrl = node.jump_url.orEmpty()\n    DYNAMIC_TOPIC_QUERY_ID_PATTERN.find(jumpUrl)\n        ?.groupValues\n        ?.getOrNull(1)\n        ?.toLongOrNull()\n        ?.takeIf { it > 0L }\n        ?.let { return it }\n",
+          "after": ""
+        },
+        {
+          "operation": "delete",
+          "originalLineStart": 642,
+          "originalLineEnd": 648,
+          "outputLineStart": 574,
+          "outputLineEnd": 574,
+          "before": "    return DYNAMIC_TOPIC_PATH_ID_PATTERN.find(jumpUrl)\n        ?.groupValues\n        ?.getOrNull(1)\n        ?.toLongOrNull()\n        ?.takeIf { it > 0L }\n}\n",
+          "after": ""
+        },
+        {
+          "operation": "delete",
+          "originalLineStart": 649,
+          "originalLineEnd": 653,
+          "outputLineStart": 575,
+          "outputLineEnd": 575,
+          "before": "private val DYNAMIC_TOPIC_QUERY_ID_PATTERN =\n    \"\"\"(?:[?&](?:topic_id|topicId)=)(\\d+)\"\"\".toRegex(RegexOption.IGNORE_CASE)\nprivate val DYNAMIC_TOPIC_PATH_ID_PATTERN =\n    \"\"\"(?:topic|topic-detail)/(\\d+)\"\"\".toRegex(RegexOption.IGNORE_CASE)\n",
+          "after": ""
+        },
+        {
+          "operation": "delete",
+          "originalLineStart": 654,
+          "originalLineEnd": 681,
+          "outputLineStart": 576,
+          "outputLineEnd": 576,
+          "before": "private fun AnnotatedString.Builder.appendDynamicRichTextTopic(\n    node: RichTextNode,\n    primaryColor: Color,\n    linkListener: LinkInteractionListener?,\n) {\n    val displayToken = resolveDynamicRichTextNodeToken(node)\n    val keyword = displayToken.trim().removePrefix(\"#\").removeSuffix(\"#\").trim()\n    val topicId = resolveDynamicRichTextTopicId(node)\n    // 带 topicId 优先跳话题详情；无 id 时回落关键词搜索。原生链接单一 tag\n    // 承载其中一种载荷，由 [resolveDynamicRichTextLinkAction] 解析。\n    val payload = when {\n        topicId != null -> DYNAMIC_RICH_TEXT_LINK_TOPIC_ID_PREFIX + topicId\n        keyword.isNotEmpty() -> DYNAMIC_RICH_TEXT_LINK_TOPIC_KEYWORD_PREFIX + keyword\n        else -> null\n    }\n    if (payload != null) {\n        withLink(dynamicRichTextLinkAnnotation(payload, linkListener)) {\n            withStyle(SpanStyle(color = primaryColor, fontWeight = FontWeight.SemiBold)) {\n                append(displayToken)\n            }\n        }\n    } else {\n        withStyle(SpanStyle(color = primaryColor, fontWeight = FontWeight.SemiBold)) {\n            append(displayToken)\n        }\n    }\n}\n",
+          "after": ""
+        }
+      ],
+      "sharedFunctionsOwnedByExistingTopicProducer": [
+        "appendDynamicRichTextTopic",
+        "dynamicRichTextLinkAnnotation",
+        "resolveDynamicRichTextLinkAction",
+        "resolveDynamicRichTextNodeToken",
+        "resolveDynamicRichTextTopicId"
+      ]
+    }
+  ],
+  "sharedTopicDeclarationsExactlyEqualToV035": {
+    "resolveDynamicRichTextTopicId": true,
+    "resolveDynamicRichTextLinkAction": true,
+    "resolveDynamicRichTextNodeToken": true,
+    "appendDynamicRichTextTopic": true,
+    "DYNAMIC_TOPIC_QUERY_ID_PATTERN": true,
+    "DYNAMIC_TOPIC_PATH_ID_PATTERN": true,
+    "DynamicRichTextLinkAction": true,
+    "LinkPrefixes": true,
+    "dynamicRichTextLinkAnnotation": true
+  }
+}

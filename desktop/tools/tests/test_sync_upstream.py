@@ -925,16 +925,16 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 265)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 257)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 62)
-        self.assertEqual(len(self.inventory["archives"]), 66)
+        self.assertEqual(len(entries), 270)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 262)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 63)
+        self.assertEqual(len(self.inventory["archives"]), 67)
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
                             ("v034-pgc-initial-detail", 2), ("v034-next-watch-ui", 3),
                             ("v035-autoplay-continuation", 1), ("v035-favorite-cover", 5),
-                            ("v035-story", 6), ("v035-story-pager", 1), ("v035-dynamic-link", 7), ("v035-ambient", 4), ("v035-scrollable-lists", 1)):
+                            ("v035-story", 6), ("v035-story-pager", 1), ("v035-dynamic-link", 7), ("v035-ambient", 4), ("v035-scrollable-lists", 1), ("v035-dynamic-preview", 5)):
             directory = "desktop/upstream-slices/" + root
             with self.subTest(root=root):
                 self.assertIn(directory, self.inventory["buildInputRoots"])
@@ -950,7 +950,8 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
                                        {"VideoPlayerSection.kt"} if root == "v034-next-watch-ui" else
                                        {"DynamicModels.kt"} if root == "v034-text-lyrics" else
                                        {"DynamicComponents.kt", "ForwardedContent.kt"} if root == "v035-dynamic-link" else
-                                       {"README.md"} if root == "v035-ambient" else set())
+                                       {"README.md"} if root == "v035-ambient" else
+                                       {"HomeFeedSettingsSection.kt"} if root == "v035-dynamic-preview" else set())
                 self.assertEqual({Path(item["localPath"]).name for item in rows if item["referenceOnly"]},
                                  expected_references)
                 self.assertTrue(all(item["referenceOnly"] is False for item in rows
@@ -967,7 +968,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         dynamic_source_pins = {source["file"]: source for source in dynamic_manifest["sources"]}
         self.assertEqual(set(dynamic_source_pins), dynamic_names)
         dynamic_references = {"DynamicComponents.kt", "ForwardedContent.kt"}
-        whole_runtime_names = {"DynamicModels.kt", "DynamicLinkCard.kt", "DynamicLinkCardPolicy.kt", "PageAwareAsyncImage.kt"}
+        whole_runtime_names = {"DynamicModels.kt", "DynamicCard.kt", "DynamicLinkCard.kt", "DynamicLinkCardPolicy.kt", "PageAwareAsyncImage.kt"}
         dynamic_raw_by_name = {}
         for filename, row in dynamic_rows.items():
             with self.subTest(dynamicLinkOriginal=filename):
@@ -975,7 +976,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
                 self.assertEqual(row["upstreamCommit"], dynamic_manifest["upstreamCommit"])
                 self.assertEqual(row["path"], pin["originalPath"])
                 self.assertEqual(row["referenceOnly"], filename in dynamic_references)
-                self.assertEqual(row["partialReuse"], filename == "DynamicCard.kt")
+                self.assertIs(row["partialReuse"], False)
                 self.assertEqual(pin["referenceOnly"], row["referenceOnly"])
                 self.assertEqual(pin["partialReuse"], row["partialReuse"])
                 raw = (self.repo / row["localPath"]).read_bytes()
@@ -990,7 +991,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         for filename in dynamic_references:
             self.assertEqual(dynamic_rows[filename]["usedScope"],
                              "Complete fixed original comparison/dependency evidence only; not emitted by this slice.")
-        for filename in whole_runtime_names - {"PageAwareAsyncImage.kt"}:
+        for filename in whole_runtime_names - {"PageAwareAsyncImage.kt", "DynamicCard.kt"}:
             self.assertEqual(dynamic_rows[filename]["usedScope"], "Complete original file in the existing sole output owner.")
         self.assertEqual(dynamic_rows["PageAwareAsyncImage.kt"]["usedScope"],
                          "Complete original page-aware request/cache-key and static replay consumer with finite Windows Coil/context/Android-drawable adaptations.")
@@ -1033,7 +1034,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(dynamic_rows["DynamicCard.kt"]["reusedConsumers"], dynamic_consumers)
         self.assertEqual([consumer["name"] for consumer in dynamic_manifest["card"]["consumers"]], dynamic_consumers)
         self.assertEqual(dynamic_rows["DynamicCard.kt"]["usedScope"],
-                         "Four complete original mapping/identity, opus/additional consumers and reserve-slot/override closure only; existing complete canonical Windows card remains sole owner.")
+                         "Complete original DynamicCard in the existing sole Windows producer, with recorded platform adaptations.")
         original_card = sync.normalized_source(dynamic_raw_by_name["DynamicCard.kt"])
         for consumer in dynamic_manifest["card"]["consumers"]:
             with self.subTest(dynamicCardConsumer=consumer["name"]):
@@ -1055,6 +1056,24 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             self.assertEqual(old_row["mode"], "selected", "The sole dynamic producer owns each runtime declaration once")
         self.assertIn('inputs.file("tools/v035_dynamic_link.py")',
                       (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
+        preview_root = "desktop/upstream-slices/v035-dynamic-preview/"
+        preview_manifest = json.loads((self.repo / preview_root / "manifest.json").read_bytes())
+        self.assertEqual(preview_manifest["upstreamCommit"], dynamic_manifest["upstreamCommit"])
+        self.assertTrue(dynamic_manifest["card"]["wholeOriginalActive"])
+        self.assertTrue(dynamic_manifest["card"]["body"]["historicalPartialBodyOnly"])
+        self.assertEqual(len(preview_manifest["wholeRuntimeUnits"]), 2)
+        self.assertTrue(all(preview_manifest["sharedTopicDeclarationsExactlyEqualToV035"].values()))
+        preview_originals = {row["archiveFile"]: row for row in preview_manifest["sources"]}
+        self.assertEqual(set(preview_originals), {"DynamicSettingsStore.kt", "VideoCardSharedElementContext.kt",
+            "DynamicCommentPreviewPolicy.kt", "DynamicRichTextPolicy.kt", "HomeFeedSettingsSection.kt"})
+        for filename, row in preview_originals.items():
+            raw = (self.repo / preview_root / filename).read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), row["sha256"])
+            self.assertEqual(sync.blob_oid(raw), row["gitBlob"])
+            self.assertNotIn("saved", row)
+        context_path = "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt"
+        self.assertEqual(next(row for row in actual_canonical_dynamic["sources"] if row["path"] == context_path)["mode"], "selected")
+        self.assertIn('inputs.file("tools/v035_dynamic_preview.py")', (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
         scrollable_root = "desktop/upstream-slices/v035-scrollable-lists/"
         scrollable_manifest = json.loads((self.repo / scrollable_root / "manifest.json").read_bytes())
         scrollable_raw = (self.repo / scrollable_root / "AppScrollableLists.kt").read_bytes()
@@ -1424,6 +1443,12 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             "v035-ambient/manifest.json",
             "v035-scrollable-lists/AppScrollableLists.kt",
             "v035-scrollable-lists/manifest.json",
+            "v035-dynamic-preview/DynamicSettingsStore.kt",
+            "v035-dynamic-preview/VideoCardSharedElementContext.kt",
+            "v035-dynamic-preview/DynamicCommentPreviewPolicy.kt",
+            "v035-dynamic-preview/DynamicRichTextPolicy.kt",
+            "v035-dynamic-preview/HomeFeedSettingsSection.kt",
+            "v035-dynamic-preview/manifest.json",
         )
         for leaf in leaves:
             source = self.repo / "desktop/upstream-slices" / leaf
@@ -1447,10 +1472,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 265)
+        self.assertEqual(len(self.load()), 270)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 265)
+        self.assertEqual(len(self.load()), 270)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1467,7 +1492,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 265)
+                self.assertEqual(len(entries), 270)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

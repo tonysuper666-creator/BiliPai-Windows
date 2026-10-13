@@ -16,6 +16,9 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
     context: DesktopOriginalPlayerSettingsContext, actions: DesktopOriginalHomeSettingsActions,
     environment: DesktopProfileEnvironment, onBack: () -> Unit) {
     val wallpaper = desktopWindowsSettingsValue(remember(context) { Preferences.getHomeWallpaperUri(context) })
+    val dynamicCommentPreview = desktopWindowsSettingsValue(remember(context) {
+        com.android.purebilibili.core.store.home.DynamicSettingsStore.observeCommentPreviewVisible(context.pluginContext)
+    })
     val wallpaperViewModel = remember(context, environment) { DesktopOriginalHomeWallpaperViewModel(environment, context) }
     val saveState by wallpaperViewModel.splashSaveState.collectAsState()
     val saving = saveState is WallpaperSaveState.Loading
@@ -84,6 +87,14 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
             }
             DesktopWindowsSettingsSwitch("卡片动态取色", state.homeCardDynamicTintEnabled) { value ->
                 actions.launch { Preferences.setHomeCardDynamicTintEnabled(context, value) }
+            }
+        }
+        DesktopWindowsSettingsGroup("动态") {
+            DesktopWindowsSettingsSwitch("显示动态评论预览", dynamicCommentPreview,
+                description = "在动态卡片中显示相关评论提示，点赞提示仍按原样显示。") { value ->
+                actions.launch {
+                    com.android.purebilibili.core.store.home.DynamicSettingsStore.setCommentPreviewVisible(context, value)
+                }
             }
         }
         DesktopWindowsSettingsGroup("导航") {
