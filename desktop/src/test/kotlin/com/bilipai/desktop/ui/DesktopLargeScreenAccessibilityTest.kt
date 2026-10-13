@@ -4,10 +4,13 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.AppChromeSizeTokens
 import com.android.purebilibili.feature.home.components.BottomNavItem
+import com.android.purebilibili.feature.settings.AppLanguage
 import com.android.purebilibili.navigation.AppSystemBackAction
 import com.android.purebilibili.navigation.resolveAppSystemBackAction
+import com.bilipai.desktop.appearance.DesktopStrings
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 
 class DesktopLargeScreenAccessibilityTest {
@@ -87,8 +90,9 @@ class DesktopLargeScreenAccessibilityTest {
     @Test fun iconOnlyChromeUsesOneDescriptionAndTheShared48DpTarget() {
         assertEquals(48.dp, AppChromeSizeTokens.MinimumTouchTarget)
         assertEquals(AppChromeSizeTokens.MinimumTouchTarget, desktopLargeScreenMinimumTarget())
-        assertEquals("搜索", DesktopShellSearchDescription)
         assertEquals("下载与离线", DesktopShellDownloadsDescription)
+        assertEquals("听视频", desktopShellNowPlayingExpandLabel(opensAudioMode = true))
+        assertEquals("视频详情页", desktopShellNowPlayingExpandLabel(opensAudioMode = false))
         assertEquals("收起关注列表", resolveDynamicSidebarHeaderDescription(expanded = true))
         assertEquals("展开关注列表", resolveDynamicSidebarHeaderDescription(expanded = false))
         assertEquals("隐藏已隐藏用户", resolveDynamicHiddenUsersDescription(showingHidden = true))
@@ -103,5 +107,25 @@ class DesktopLargeScreenAccessibilityTest {
         assertEquals("关注列表位置", resolveDynamicDisplayModeDescription())
         assertEquals("收起直播，2 人", resolveDynamicLiveFoldDescription(expanded = true, count = 2))
         assertEquals("展开直播，2 人", resolveDynamicLiveFoldDescription(expanded = false, count = 2))
+    }
+
+    @Test fun shellChromeCopyUsesTheThreeOriginalTables() {
+        val simplified = DesktopStrings.forLanguage(AppLanguage.SIMPLIFIED_CHINESE)
+        val traditional = DesktopStrings.forLanguage(AppLanguage.TRADITIONAL_CHINESE_TAIWAN)
+        val english = DesktopStrings.forLanguage(AppLanguage.ENGLISH)
+        assertEquals("搜索", simplified[DesktopShellSearchStringKey])
+        assertEquals("搜尋", traditional[DesktopShellSearchStringKey])
+        assertEquals("Search", english[DesktopShellSearchStringKey])
+        assertEquals("返回", simplified[DesktopShellBackStringKey])
+        assertEquals("返回", traditional[DesktopShellBackStringKey])
+        assertEquals("Back", english[DesktopShellBackStringKey])
+        assertEquals("重试", simplified[DesktopShellRetryStringKey])
+        assertEquals("重試", traditional[DesktopShellRetryStringKey])
+        assertEquals("Retry", english[DesktopShellRetryStringKey])
+        assertEquals("刷新", simplified[DesktopShellRefreshStringKey])
+        assertEquals("重新整理", traditional[DesktopShellRefreshStringKey])
+        assertEquals("Refresh", english[DesktopShellRefreshStringKey])
+        assertFalse(simplified.contains("shell_downloads"))
+        assertFalse(simplified.contains("now_playing_previous"))
     }
 }

@@ -8,9 +8,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
@@ -47,8 +44,17 @@ internal enum class DesktopLargeScreenEscapeAction {
     SYSTEM_BACK,
 }
 
-internal const val DesktopShellSearchDescription = "搜索"
+internal const val DesktopShellSearchStringKey = "common_search"
+internal const val DesktopShellBackStringKey = "common_back"
+internal const val DesktopShellRetryStringKey = "common_retry"
+internal const val DesktopShellRefreshStringKey = "common_refresh"
+
+/** No simplified/traditional/English entry exists for the offline destination. */
 internal const val DesktopShellDownloadsDescription = "下载与离线"
+
+/** Same destination words as the original independent now-playing bar. */
+internal fun desktopShellNowPlayingExpandLabel(opensAudioMode: Boolean): String =
+    if (opensAudioMode) "听视频" else "视频详情页"
 
 /** Sidebar arrows stay vertical. The bottom dock stays horizontal. Hidden chrome has no shell axis. */
 internal fun resolveDesktopLargeScreenFocusAxis(
@@ -224,26 +230,6 @@ internal fun Modifier.largeScreenControlTarget(
             this.selected = isSelected
         }
         .then(activation)
-}
-
-@Composable
-internal fun LargeScreenLabeledButton(
-    label: String,
-    filled: Boolean = false,
-    onClick: () -> Unit,
-) {
-    val interaction = remember { MutableInteractionSource() }
-    val modifier = Modifier
-        .appDesktopInteractionVisuals(interaction)
-        .defaultMinSize(
-            minWidth = desktopLargeScreenMinimumTarget(),
-            minHeight = desktopLargeScreenMinimumTarget(),
-        )
-    if (filled) {
-        Button(onClick = onClick, modifier = modifier, interactionSource = interaction) { Text(label) }
-    } else {
-        TextButton(onClick = onClick, modifier = modifier, interactionSource = interaction) { Text(label) }
-    }
 }
 
 internal fun desktopLargeScreenMinimumTarget() = AppChromeSizeTokens.MinimumTouchTarget

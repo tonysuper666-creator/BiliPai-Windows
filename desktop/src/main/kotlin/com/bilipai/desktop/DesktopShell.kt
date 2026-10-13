@@ -2,6 +2,8 @@ package com.bilipai.desktop
 
 import com.bilipai.desktop.ui.DesktopLargeScreenEscapeAction
 import com.bilipai.desktop.ui.DesktopLargeScreenEscapeHandlers
+import com.bilipai.desktop.ui.DesktopShellBackStringKey
+import com.bilipai.desktop.ui.DesktopShellRetryStringKey
 import com.bilipai.desktop.ui.LocalDesktopLargeScreenEscapeHandlers
 import com.bilipai.desktop.ui.resolveDesktopLargeScreenEscapeAction
 import com.bilipai.desktop.appearance.DesktopAppearanceSettings
@@ -1759,10 +1761,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (!appearanceReady) {
             Surface(Modifier.fillMaxSize()) {
                 Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    if (appearanceError == null) CircularProgressIndicator()
+                    if (appearanceError == null) com.android.purebilibili.core.ui.components.AppCircularProgressIndicator()
                     else {
-                        Text(requireNotNull(appearanceError), color = scheme.error)
-                        TextButton(onClick = { appearanceRetry++ }) { Text(strings["common_retry"]) }
+                        com.android.purebilibili.core.ui.components.AppText(requireNotNull(appearanceError), color = scheme.error)
+                        com.android.purebilibili.core.ui.components.AppTextButton(onClick = { appearanceRetry++ }) {
+                            com.android.purebilibili.core.ui.components.AppText(strings[DesktopShellRetryStringKey])
+                        }
                     }
                 }
             }
@@ -1833,7 +1837,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
 
             DesktopDetailWindow {
             val actualWindow = hostWindow
-            if(actualWindow==null) Text("原版导航需要实际应用窗口，尚未创建") else {
+            if(actualWindow==null) com.android.purebilibili.core.ui.components.AppText("原版导航需要实际应用窗口，尚未创建") else {
                 val ffprobe = com.bilipai.desktop.download.WindowsFfmpegMuxer.locateFfmpeg()?.resolveSibling("ffprobe.exe")
                     ?: java.nio.file.Path.of(requireNotNull(System.getProperty("compose.application.resources.dir")),"native","windows-x64","ffprobe.exe")
                 val originalBarVisible by com.android.purebilibili.feature.audio.player.AudioNowPlayingSession.barOverlayVisible.collectAsState()
@@ -1912,7 +1916,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     ordinaryVideo.playlist,
                     { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L },
                     originalBrowseCachedPosition)
-                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize(),
+                if(!storageStartupReady) com.android.purebilibili.core.ui.components.AppText("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize(),
                     { rootOwner ->
                         val previous = downloadHealthOwners.get()
                         val wrapped: () -> Boolean = if (previous != null && previous.first === rootOwner) previous.second else {
@@ -1988,7 +1992,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     Column(Modifier.fillMaxSize()) {
                         if(!pagerHosted && (entryKey is BiliPaiNavKey.Search || entryKey == BiliPaiNavKey.Settings))
                             com.android.purebilibili.core.ui.components.AppTextButton(onClick={commands.back()}) {
-                                com.android.purebilibili.core.ui.components.AppText("返回")
+                                com.android.purebilibili.core.ui.components.AppText(strings[DesktopShellBackStringKey])
                             }
                         Box(Modifier.weight(1f).fillMaxWidth()) {
                         when {
@@ -2017,7 +2021,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 DesktopOriginalBangumiPlayerPhysicalLeaf(entryKey, ordinaryVideo, messageRoutes, active,
                                     ::openVideoHonorLink, pendingOwner = {
                                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()
+                                            ordinaryVideoResourceError?.let { com.android.purebilibili.core.ui.components.AppText(it) } ?: com.android.purebilibili.core.ui.components.AppCircularProgressIndicator()
                                         }
                                     })
                             entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->
@@ -2381,14 +2385,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     { enabled -> enhancementHostStarted.value = enabled },
                                     pendingOwner = {
                                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()
+                                            ordinaryVideoResourceError?.let { com.android.purebilibili.core.ui.components.AppText(it) } ?: com.android.purebilibili.core.ui.components.AppCircularProgressIndicator()
                                         }
                                     })
                             section == DesktopSection.CLOUD_FAVORITES -> {
                                 val entry = ensureFavoritesEntry()
                                 val queue = favoritesQueueRef.get()
                                 if (entry == null || queue == null || !entry.isOwned()) {
-                                    TextButton(onClick = { if (!isClosing() && !activatingUpdate) ensureFavoritesEntry() }) { Text("重新打开收藏") }
+                                    com.android.purebilibili.core.ui.components.AppTextButton(onClick = { if (!isClosing() && !activatingUpdate) ensureFavoritesEntry() }) {
+                                        com.android.purebilibili.core.ui.components.AppText("重新打开收藏")
+                                    }
                                 } else {
                                     DesktopDetailWindow {
                                     val prefs = entry.preferences
@@ -2733,7 +2739,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         openDetail = { settingsNavigator.openDetail(it,null) },
                                         onFailure = { error=it.message ?: "存储设置处理失败" },
                                         onMessage = { imageSaveMessage=it })
-                                    imageSaveMessage?.let { Text(it,Modifier.padding(12.dp)) }
+                                    imageSaveMessage?.let { com.android.purebilibili.core.ui.components.AppText(it, Modifier.padding(12.dp)) }
                                 },
                                 imageSavePathContent = { openInitially ->
                                     DesktopImageSavePathSettings(imageSavePreferences, scope,
@@ -2741,7 +2747,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         stillOwned = imageSaveLifetime::isActive,
                                         onFailure = { error = it.message ?: "图片保存位置设置失败" },
                                         onMessage = { imageSaveMessage = it }, openInitially = openInitially)
-                                    imageSaveMessage?.let { Text(it, Modifier.padding(12.dp)) }
+                                    imageSaveMessage?.let { com.android.purebilibili.core.ui.components.AppText(it, Modifier.padding(12.dp)) }
                                 },
                                 systemContent = { aboutPage, requestDonate ->
                                     DesktopOriginalSystemAboutRootHost(messageRoutes, entryKey, aboutPage, settingsNavigator,
@@ -2751,13 +2757,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         onFailure = { error = it.message ?: "系统与关于操作失败" },
                                         onNotice = { error = it })
                                     diagnostics?.let { localDiagnostics ->
-                                        Text("本地诊断", style = MaterialTheme.typography.titleMedium)
+                                        com.android.purebilibili.core.ui.components.AppText("本地诊断", style = MaterialTheme.typography.titleMedium)
                                         DesktopDiagnosticSettingsSection(localDiagnostics,
                                             onLocalLogs = { showDiagnosticViewer = true },
                                             onFailure = { error = "诊断设置保存失败，请重试" },
                                             modifier = Modifier.fillMaxWidth())
                                     }
-                                    diagnosticStartupError?.let { Text(it, Modifier.padding(12.dp), color = scheme.error) }
+                                    diagnosticStartupError?.let { com.android.purebilibili.core.ui.components.AppText(it, Modifier.padding(12.dp), color = scheme.error) }
                                     com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
                                         onFailure = { error = it.message ?: "代理设置保存失败" })
                                 })
@@ -2766,7 +2772,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
                                 onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } })
                             section == DesktopSection.JS_CONTENT -> Column(Modifier.fillMaxSize()) {
-                                TextButton(onClick = { commands.back() }) { Text("返回插件") }
+                                com.android.purebilibili.core.ui.components.AppTextButton(onClick = { commands.back() }) {
+                                    com.android.purebilibili.core.ui.components.AppText(strings[DesktopShellBackStringKey])
+                                }
                                 Box(Modifier.weight(1f).fillMaxWidth()) {
                                     DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
                                         onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true }, onBack = { commands.back() })
@@ -2819,14 +2827,19 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 {video,list -> val cards=list.map{VideoCard(it.bvid,it.title,it.pic,it.owner.name,it.stat.view.toLong(),it.duration,preferredCid=it.cid)};
                                     openQueue(cards,cards.firstOrNull{it.bvid==video.bvid} ?: VideoCard(video.bvid,video.title,video.pic,video.owner.name,video.stat.view.toLong(),video.duration,preferredCid=video.cid))},isClosing=isClosing)
                             entryKey == BiliPaiNavKey.Login -> Column(Modifier.fillMaxSize()) {
-                                TextButton(onClick={commands.back()}) {Text("返回")}
+                                com.android.purebilibili.core.ui.components.AppTextButton(onClick={commands.back()}) {
+                                    com.android.purebilibili.core.ui.components.AppText(strings[DesktopShellBackStringKey])
+                                }
                                 val loginReturn = remember(messageRoutes) { messageRoutes.loginReturnBinding() }
                                 AdvancedLoginDialog(repository,loginUpdateHold,
                                     onDismiss={loginReturn?.cancel?.invoke(); commands.back()},
                                     onComplete={if(loginReturn==null) commands.back()}, loginReturn=loginReturn)
                             }
                             entryKey is BiliPaiNavKey.Web -> Column {
-                                Text(entryKey.title);TextButton(onClick={openDynamicWeb(entryKey.url,entryKey.title)}){Text("在浏览器打开")}
+                                com.android.purebilibili.core.ui.components.AppText(entryKey.title)
+                                com.android.purebilibili.core.ui.components.AppTextButton(onClick={openDynamicWeb(entryKey.url,entryKey.title)}) {
+                                    com.android.purebilibili.core.ui.components.AppText("在浏览器打开")
+                                }
                             }
                             section == DesktopSection.BGM -> bgmRequest?.let { request ->
                                 DesktopBgmDetailRootHost(request, repository, community, commentFraud,
@@ -2846,13 +2859,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         updateRootVolume = { fraction -> changePreferences(preferences.copy(volume = fraction.toDouble() * 100.0)) })
                                 else if (listen != null && source != null) DesktopNativeMusicDetailScreen(source, listen, preferences, ::changePreferences,
                                     ::closeMusic, ::openUser, ::openVideo, startPositionSeconds = musicStartPosition)
-                                else Text(playerError ?: "请从个人空间的音频栏目打开歌曲")
+                                else com.android.purebilibili.core.ui.components.AppText(playerError ?: "请从个人空间的音频栏目打开歌曲")
                             }
                             entryKey is BiliPaiNavKey.Story ->
                                 DesktopOriginalStoryPhysicalLeaf(entryKey, ordinaryVideo, commands, active && !activatingUpdate,
                                     pendingOwner = {
                                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()
+                                            ordinaryVideoResourceError?.let { com.android.purebilibili.core.ui.components.AppText(it) } ?: com.android.purebilibili.core.ui.components.AppCircularProgressIndicator()
                                         }
                                     })
                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
@@ -2879,8 +2892,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     defaultSearchHintEnabled = defaultSearchHintEnabled,
                                     initialCommentRootRpid=dynamicRoute?.rootReplyId?:0L,initialCommentTargetRpid=dynamicRoute?.targetReplyId?:0L,active=active)
                             else -> Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.Center,horizontalAlignment=Alignment.CenterHorizontally) {
-                                Text("该原版页面的平台闭包仍在接入中：${entryKey.toLegacyRoute()}")
-                                TextButton(onClick={commands.back()}) { Text("返回") }
+                                com.android.purebilibili.core.ui.components.AppText("该原版页面的平台闭包仍在接入中：${entryKey.toLegacyRoute()}")
+                                com.android.purebilibili.core.ui.components.AppTextButton(onClick={commands.back()}) {
+                                    com.android.purebilibili.core.ui.components.AppText(strings[DesktopShellBackStringKey])
+                                }
                             }
                         }
 

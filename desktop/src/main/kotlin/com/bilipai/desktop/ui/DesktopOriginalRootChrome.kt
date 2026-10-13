@@ -3,7 +3,6 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +16,8 @@ import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
 import com.android.purebilibili.core.util.LocalWindowSizeClass
+import com.android.purebilibili.feature.audio.screen.AudioNowPlayingBar
+import com.android.purebilibili.feature.audio.screen.AudioNowPlayingBarState
 import com.android.purebilibili.feature.home.components.BottomNavItem
 import com.android.purebilibili.feature.home.components.FrostedSideBar
 import com.android.purebilibili.navigation3.*
@@ -103,6 +104,10 @@ internal class DesktopOriginalRootChromeBindings(
         // The Home renderer still independently requires its OWN ready backdrop.
         // This publishes the real Windows shader capability gate, not feed pixels.
         val haze = if (homeSettings.isBottomBarBlurEnabled) pages.window.globalHaze() else null
+        val readyGlass = glassMaterial?.takeIf {
+            it.renderer.supported && it.sourceReady && it.owns() && it.window === LocalAwtWindow.current
+        }
+        val backdrop = readyGlass?.backdrop as? LayerBackdrop
         Box(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxSize()) {
             if (useSidebar) Column(
@@ -134,7 +139,7 @@ internal class DesktopOriginalRootChromeBindings(
                             minHeight = desktopLargeScreenMinimumTarget(),
                         ),
                     ) {
-                        AppIcon(rememberAppSearchIcon(), DesktopShellSearchDescription)
+                        AppIcon(rememberAppSearchIcon(), desktopHomeStringResource(DesktopShellSearchStringKey))
                     }
                     AppIconButton(
                         onClick = { if (routes.owns()) routes.push(BiliPaiNavKey.DownloadList) },
@@ -149,29 +154,42 @@ internal class DesktopOriginalRootChromeBindings(
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) { content() }
-                if (useSidebar && audioVisible && audio != null && snapshot != null) DesktopWindowsGlassSurface(Modifier.fillMaxWidth()) {
-                    Row(
-                        Modifier.fillMaxWidth().largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL)
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Text(snapshot.item.title, Modifier.weight(1f), maxLines = 1)
-                        LargeScreenLabeledButton("上一首") { audio.previous(snapshot) }
-                        LargeScreenLabeledButton(if (snapshot.isPlaying) "暂停" else "播放", filled = true) {
-                            audio.playPause(snapshot, navigation)
-                        }
-                        LargeScreenLabeledButton("下一首") { audio.next(snapshot) }
-                        LargeScreenLabeledButton("打开播放器") { audio.expand(snapshot, navigation) }
-                        LargeScreenLabeledButton("关闭") { audio.dismiss(snapshot, navigation) }
-                    }
+                if (useSidebar && audioVisible && audio != null && snapshot != null) {
+                    AudioNowPlayingBar(
+                        state = AudioNowPlayingBarState(
+                            bvid = snapshot.item.bvid,
+                            title = snapshot.item.title,
+                            artist = snapshot.item.owner,
+                            artistAvatarUrl = snapshot.item.ownerFace,
+                            coverUrl = snapshot.item.cover,
+                            isPlaying = snapshot.isPlaying,
+                            playbackSpeed = snapshot.playbackSpeed,
+                        ),
+                        sourceIsOwned = {
+                            routes.owns() && binding.owner.isOwned() && audio.ownsSnapshot(snapshot)
+                        },
+                        onExpand = { audio.expand(snapshot, navigation) },
+                        onPlayPause = { audio.playPause(snapshot, navigation) },
+                        onSkipNext = { audio.next(snapshot) },
+                        onSkipPrevious = { audio.previous(snapshot) },
+                        onDismiss = { audio.dismiss(snapshot, navigation) },
+                        expandDestinationLabel = desktopShellNowPlayingExpandLabel(navigation.opensAudioMode),
+                        sourceRoute = navigation.sourceRoute,
+                        handoff = navigation.handoff,
+                        glassEnabled = homeSettings.androidNativeLiquidGlassEnabled,
+                        blurEnabled = haze != null,
+                        hazeState = haze,
+                        miuixBackdrop = backdrop,
+                        liftAboveBottomBar = false,
+                        consumeNavigationBarsPadding = false,
+                        dockHosted = false,
+                        modifier = Modifier.fillMaxWidth()
+                            .largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL),
+                    )
                 }
             }
         }
         if (useBottomDock) {
-            val readyGlass = glassMaterial?.takeIf {
-                it.renderer.supported && it.sourceReady && it.owns() && it.window === LocalAwtWindow.current
-            }
-            val backdrop = readyGlass?.backdrop as? LayerBackdrop
             Box(
                 Modifier.align(Alignment.BottomCenter).zIndex(1f).fillMaxWidth()
                     .largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL),

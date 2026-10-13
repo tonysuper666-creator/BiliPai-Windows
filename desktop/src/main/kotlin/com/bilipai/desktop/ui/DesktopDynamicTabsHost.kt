@@ -203,7 +203,7 @@ import kotlinx.coroutines.sync.withLock
     Column(Modifier.fillMaxSize()) {
         DynamicSelectedUserFeedHeader(state.panelUsers().firstOrNull{it.uid==state.selectedUid}?.name.orEmpty(),
             state.filter,{state.filter=it},{state.selectedUid?.let(onOpenUser)})
-        AppTextButton(enabled=!state.userLoading,onClick=state::refreshUser){AppText("刷新")}
+        AppTextButton(enabled=!state.userLoading,onClick=state::refreshUser){AppText(desktopHomeStringResource(DesktopShellRefreshStringKey))}
         Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
         FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
             else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=grid,
