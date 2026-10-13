@@ -9,7 +9,7 @@ from pathlib import Path
 import argparse, hashlib, importlib.util, json
 BASE = 'app/src/main/java/com/android/purebilibili/'
 COMP = BASE+'feature/dynamic/components/'
-DIRECT = [COMP+n+'.kt' for n in ['DynamicArchiveBadgePolicy','DynamicAdditionalCardPolicy','DynamicMajorCardPolicy','DynamicCardFoldPolicy','DynamicTimePolicy','DrawGridLayoutPolicy','ImagePreviewSourceAnchor','ZoomableImage','ZoomableImageGesturePolicy','ZoomableImageScalePolicy','DynamicOpusLinkCard','ImagePreviewTransitionPolicy','ImagePreviewDecodePolicy','ImagePreviewFeedbackPolicy']]+[BASE+'feature/dynamic/DynamicStatusPalette.kt',BASE+'feature/dynamic/DynamicLikeCountPolicy.kt',BASE+'feature/dynamic/DynamicForwardCountPolicy.kt','design-system/src/main/java/com/android/purebilibili/core/ui/UserAvatarCornerMark.kt',BASE+'core/ui/VideoCardTitleVisibility.kt']
+DIRECT = [COMP+n+'.kt' for n in ['DynamicArchiveBadgePolicy','DynamicMajorCardPolicy','DynamicCardFoldPolicy','DynamicTimePolicy','DrawGridLayoutPolicy','ImagePreviewSourceAnchor','ZoomableImage','ZoomableImageGesturePolicy','ZoomableImageScalePolicy','ImagePreviewTransitionPolicy','ImagePreviewDecodePolicy','ImagePreviewFeedbackPolicy']]+[BASE+'feature/dynamic/DynamicStatusPalette.kt',BASE+'feature/dynamic/DynamicLikeCountPolicy.kt',BASE+'feature/dynamic/DynamicForwardCountPolicy.kt','design-system/src/main/java/com/android/purebilibili/core/ui/UserAvatarCornerMark.kt',BASE+'core/ui/VideoCardTitleVisibility.kt']
 SHARED=['design-system/src/main/java/com/android/purebilibili/core/ui/'+n+'.kt'for n in ['MediaContrastPalette','FeedContentTokens']]+[BASE+'feature/home/components/cards/'+n+'.kt'for n in ['HorizontalVideoCardStats','HorizontalVideoCardLayoutPolicy','VideoCardCoverOverlayTextPolicy']]
 ADAPTED = [COMP+n+'.kt' for n in ['DynamicCard','DynamicCardClickPolicy','DrawGrid','ForwardedContent','LiveCard','ActionButton','VideoCards','DynamicVoteDialog','DynamicMenuActionPolicy']]+[BASE+'feature/dynamic/DynamicInteractionPolicy.kt']
 PATHS = DIRECT+ADAPTED+SHARED+[BASE+'feature/dynamic/DynamicDeletePolicy.kt',BASE+'feature/dynamic/DynamicLayoutPolicy.kt',BASE+'feature/dynamic/model/LiveContentModels.kt',BASE+'core/store/SettingsManager.kt',BASE+'core/ui/common/TextSelectionPolicy.kt',BASE+'core/ui/common/TextSelectionBottomSheet.kt',BASE+'core/util/ModifierExt.kt',BASE+'data/repository/DynamicRepository.kt',BASE+'data/repository/DynamicVoteRepository.kt',BASE+'data/repository/SearchRepository.kt',BASE+'feature/dynamic/DynamicScreen.kt',COMP+'RepostDialog.kt',COMP+'DynamicEmoteCatalog.kt',COMP+'ImagePreviewDialog.kt',COMP+'LivePhotoPlayback.kt',COMP+'DynamicRichTextPolicy.kt']
@@ -29,6 +29,8 @@ def generate(repo,output,standalone=False,shared_closure=False):
    proof['canonicalPath']=path
    proof['canonicalLfSha256']=hashlib.sha256(read(repo,path).encode()).hexdigest()
    (output/'windows-comment-image-presentation.json').write_text(json.dumps(proof,ensure_ascii=True,indent=2)+'\n',encoding='utf8')
+  from v035_dynamic_link import adapt_card_body
+  body=adapt_card_body(body,name,output)
   files.append(host.write(output,path,read(repo,path),body,name))
  def replace(source,old,new):return host.substitute(source,old,new)
  def fun(s,n):return media.function(s,n,parser)
@@ -298,6 +300,8 @@ object DesktopDynamicCardSettings {
  body=appearance.declarations(parser,s,['resolveDynamicCardOuterPadding','resolveDynamicCardContentPadding','resolveDynamicActionButtonSlotWeight','resolveDynamicActionButtonSpacing','resolveDynamicActionButtonText','formatDynamicActionCount'])
  emit(p,'package com.android.purebilibili.feature.dynamic\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\n'+body,'DesktopOriginalDynamicCardLayout.kt')
  files+=messages(repo).generate(repo,output,standalone)
+ from v035_dynamic_link import emit_link_sources
+ files+=emit_link_sources(output)
  return files
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--standalone',action='store_true');a=p.parse_args();generate(a.repo,a.output,a.standalone)

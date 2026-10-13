@@ -3554,3 +3554,60 @@ tasks.named("extractOriginalVideoFullOwner") {
     inputs.file("tools/v035_autoplay_continuation.py")
     inputs.dir("upstream-slices/v035-autoplay-continuation")
 }
+
+// Source64 retains the sole Favorites producer and its imported helper dependencies.
+tasks.named("extractOriginalFavorites") {
+    inputs.file("tools/v035_favorite_cover.py")
+    inputs.dir("upstream-slices/v035-favorite-cover")
+}
+listOf("extractOriginalWatchLater", "extractOriginalFollowing").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.file("tools/v035_favorite_cover.py")
+    }
+}
+
+// Source65 Story remains in its existing sole VM/DTO/policy/API/feed owners.
+tasks.named("extractUpstreamStoryTopic") {
+    inputs.file("tools/v035_story.py")
+    inputs.dir("upstream-slices/v035-story")
+}
+tasks.named("extractUpstreamApi") {
+    inputs.file("tools/v035_story.py")
+    inputs.dir("upstream-slices/v035-story")
+}
+tasks.named("extractOriginalVideoRootStoryFeed") {
+    inputs.file("tools/v035_story.py")
+    inputs.dir("upstream-slices/v035-story")
+}
+
+tasks.named("extractOriginalVideoFullscreenPager") {
+    inputs.file("tools/v035_story_pager.py")
+    inputs.dir("upstream-slices/v035-story-pager")
+}
+
+tasks.named("extractUpstreamDynamicFullCard") {
+    inputs.file("tools/v035_dynamic_link.py")
+    inputs.dir("upstream-slices/v035-dynamic-link")
+}
+tasks.named("extractOriginalTextLyrics") {
+    inputs.file("tools/v035_dynamic_link.py")
+    inputs.dir("upstream-slices/v035-dynamic-link")
+}
+
+// Source68 retains the sole existing ambient producer and native capture lease.
+tasks.named("extractOriginalVideoAmbientWindows") {
+    inputs.file("tools/v035_ambient.py")
+    inputs.dir("upstream-slices/v035-ambient")
+}
+
+// Whole original list wrappers close the actual upstream Favorites renderer import.
+val extractOriginalScrollableLists by tasks.registering(Exec::class) {
+    workingDir = projectDir
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-scrollable-lists.py",
+        "--output", layout.buildDirectory.dir("generated/original-scrollable-lists").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-scrollable-lists.py")
+    inputs.dir("upstream-slices/v035-scrollable-lists")
+    outputs.dir(layout.buildDirectory.dir("generated/original-scrollable-lists"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-scrollable-lists")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalScrollableLists) }

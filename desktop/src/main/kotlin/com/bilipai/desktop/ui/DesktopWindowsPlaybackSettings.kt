@@ -35,11 +35,13 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
     val highest = desktopWindowsSettingsValue(remember(context) { Preferences.getAutoHighestQuality(context) })
     val audioQuality = desktopWindowsSettingsValue(remember(context) { PlayerSettings.getDefaultAudioQuality(context) })
     val subtitle = desktopWindowsSettingsValue(remember(context) { Preferences.getSubtitleAutoPreference(context) })
+    val playOnOpen = desktopWindowsSettingsValue(remember(context) { Preferences.getClickToPlay(context) })
     val backgroundPlayback = desktopWindowsSettingsValue(remember(context) { Preferences.getBackgroundPlaybackEnabled(context) })
     val resumePrompt = desktopWindowsSettingsValue(remember(context) { Preferences.getResumePlaybackPromptEnabled(context) })
     val completion = desktopWindowsSettingsValue(remember(context) { Preferences.getPlaybackCompletionBehavior(context) })
     val commentSort = desktopWindowsSettingsValue(remember(context) { DesktopOriginalReplySettings.getCommentDefaultSortMode(context.pluginContext) })
     val detailedCommentTime = desktopWindowsSettingsValue(remember(context) { Preferences.getDetailedCommentTimeEnabled(context) })
+    val commentDecorations = desktopWindowsSettingsValue(remember(context) { Preferences.getCommentMemberDecorationsEnabled(context) })
     val codecChoices = listOf("avc1" to "AVC / H.264", "hev1" to "HEVC / H.265", "av01" to "AV1")
     DesktopWindowsSettingsPane("播放与音频", onBack) {
         DesktopWindowsSettingsGroup("解码与画质", modifier = Modifier.desktopSettingsSearchFocusAnchor(
@@ -89,6 +91,13 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
         }
         DesktopWindowsSettingsGroup("播放行为", modifier = Modifier.desktopSettingsSearchFocusAnchor(
             SettingsSearchTarget.PLAYBACK, "windows_playback_behavior")) {
+            DesktopWindowsSettingsSwitch("进入视频自动播放", playOnOpen,
+                description = "关闭后，进入视频详情页需手动开始播放。") { enabled ->
+                writer.launch { Preferences.setClickToPlay(context, enabled) }
+            }
+            DesktopWindowsSettingsSwitch("自动跳过片头片尾", state.autoSkipOpEd,
+                description = "番剧提供跳过区间时，自动跳过片头和片尾。",
+                onChange = bindings::toggleAutoSkipOpEd)
             DesktopWindowsSettingsSwitch("后台播放", backgroundPlayback,
                 description = "最小化窗口后继续播放；听视频和小窗遵循各自的播放模式。") { enabled ->
                 writer.launch { Preferences.setBackgroundPlaybackEnabled(context, enabled) }
@@ -113,6 +122,10 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             DesktopWindowsSettingsSwitch("详细评论时间", detailedCommentTime,
                 description = "显示完整时间；关闭后沿用原有相对时间规则。") { enabled ->
                 writer.launch { Preferences.setDetailedCommentTimeEnabled(context, enabled) }
+            }
+            DesktopWindowsSettingsSwitch("评论区个性装扮", commentDecorations,
+                description = "显示粉丝牌、铭牌和装扮卡片。") { enabled ->
+                writer.launch { Preferences.setCommentMemberDecorationsEnabled(context, enabled) }
             }
         }
         DesktopWindowsSettingsGroup("音频", modifier = Modifier.desktopSettingsSearchFocusAnchor(

@@ -13,7 +13,10 @@ internal class DesktopOriginalVideoRootStoryFeedBinding(
     private val assembly: DesktopOriginalVideoOwnerAssembly,
     private val captureRequest: suspend (DesktopOriginalVideoOwnerAssembly) -> DesktopOriginalVideoRepositoryBinding,
 ) {
-    suspend fun getStoryFeed(aid: Long, bvid: String): Result<List<StoryItem>> {
+    suspend fun getStoryFeed(aid: Long, bvid: String): Result<List<StoryItem>> =
+        getStoryFeed(aid, bvid, pageSize = 20, displayId = 1)
+
+    suspend fun getStoryFeed(aid: Long, bvid: String, pageSize: Int, displayId: Int): Result<List<StoryItem>> {
         val caller = currentCoroutineContext()
         caller.ensureActive()
         if (!assembly.owns()) throw CancellationException("Original Story Holder owner retired")
@@ -25,6 +28,6 @@ internal class DesktopOriginalVideoRootStoryFeedBinding(
         }
         assertOwned()
         return DesktopOriginalVideoStoryFeedProtocol(binding.primaryStoryApi, ::assertOwned)
-            .getStoryFeed(aid, bvid).also { assertOwned() }
+            .getStoryFeed(aid, bvid, pageSize, displayId).also { assertOwned() }
     }
 }

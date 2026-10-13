@@ -140,6 +140,7 @@ internal class DesktopOriginalRootPageBindings(
             LocalSetBottomBarVisible provides pages.setBottomBarVisible,
             LocalVideoCardTransitionClock provides pages.transitionClock,
             LocalDesktopDynamicCardBindings provides aggregate.gallery,
+            com.android.purebilibili.core.ui.components.LocalPageImageLoadingAllowed provides (active && routes.owns()),
             LocalDesktopImagePreviewShareBindings provides aggregate.gallery.imageShare,
         ) {
             // This exists only inside a real page slot, after every Root initialization gate.

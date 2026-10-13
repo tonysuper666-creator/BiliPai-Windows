@@ -58,7 +58,13 @@
     "desktop/upstream-slices/v034-related",
     "desktop/upstream-slices/v034-sponsor-ui",
     "desktop/upstream-slices/v034-text-lyrics",
-    "desktop/upstream-slices/v035-autoplay-continuation"
+    "desktop/upstream-slices/v035-autoplay-continuation",
+    "desktop/upstream-slices/v035-favorite-cover",
+    "desktop/upstream-slices/v035-story",
+    "desktop/upstream-slices/v035-story-pager",
+    "desktop/upstream-slices/v035-dynamic-link",
+    "desktop/upstream-slices/v035-ambient",
+    "desktop/upstream-slices/v035-scrollable-lists"
   ],
   "archives": [
     {
@@ -2147,6 +2153,216 @@
           "sha256": "2e83f622e8e95b7706c5e9034229b17461cb1691c65ac1ca3fd6faada60b3bdd",
           "hashNormalization": "raw",
           "blob": "64e26597a11afdaca928f2037056219be4d1194c"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-favorite-cover",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCoverCache.kt",
+          "sha256": "8e09a969ca9be583e2d4d5d974bf757d0fc7ac05fdd9f258fda2bb1e6c9f5352",
+          "hashNormalization": "raw",
+          "blob": "eab3f0712cda0d81d942c80f440880ccbe249fdd"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCoverPrefetchPolicy.kt",
+          "sha256": "44c5aa059052068138131692cb5074f87ea4c9910df349920b27dff613a1055d",
+          "hashNormalization": "raw",
+          "blob": "4254dd3e1749cfbdacf6e78294ac186c22b35098"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCardList.kt",
+          "sha256": "f14aeef1cc3adf1b244c366d3e397c0460156f6e8e0e5cd8e65da25ce17caf88",
+          "hashNormalization": "raw",
+          "blob": "6e8a8ec6efeae29b3149a56e242751d1f33b2eae"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-favorite-cover/ListViewModel.kt",
+          "sha256": "8aaf7ab9082bec375877cc31bfd64f2f83aabdbc00569e248d2cc146730a09b4",
+          "hashNormalization": "raw",
+          "blob": "9099340dd2dbe03d8b7ef3921a1692ab67c1755b"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-favorite-cover/CommonListScreen.kt",
+          "sha256": "aa16a74e21d4be964bce88bd9608058e35d076d9e73e33074c4b54547589e4e7",
+          "hashNormalization": "raw",
+          "blob": "b4906188a2dd8148bdd04f6ec31361785c300e98"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-favorite-cover/manifest.json",
+          "sha256": "fb6ffae1aded48644cf1e36f9a309cb0717f9a67c588ac08100a5a9cbbe5b14c",
+          "hashNormalization": "raw",
+          "blob": "1239db5e06f5b0ab2959357f0b368bbee8a3a29d"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-story",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-story/ApiClient.kt",
+          "sha256": "3a8fcf044cb2d853d8d6a7487d7875bb73cbf3cf40a9526bcea111c861513e2f",
+          "hashNormalization": "raw",
+          "blob": "5a27be2226cfd650710915142c8ce31dd7d6399d"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-story/manifest.json",
+          "sha256": "d193f904ae5dae695eeabb12f38943c48b3a090d6ed6f2362b2a3b716509acd1",
+          "hashNormalization": "raw",
+          "blob": "b020869b1d9401fee1572cb017927aecf91a6353"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-story/StoryFeedPolicy.kt",
+          "sha256": "8bd1836d296695fe268ccff899399c81dd4f91e8103af1d63a3b1eb7d3e88f49",
+          "hashNormalization": "raw",
+          "blob": "c6ae3da6fe5fe675ab6d88f6dc7419efedcbe61c"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-story/StoryModels.kt",
+          "sha256": "0c145928365add46c7d577cae7ba658b9fbe0e3ac9131e125dd4b9c1f641fc12",
+          "hashNormalization": "raw",
+          "blob": "f8d1088ec2f0e3f17730b394443fa3152f608444"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-story/StoryRepository.kt",
+          "sha256": "eabfa1b745aef056823514b1fb6739dd76b8ca3ec176e56f78cb017e1e12c4e2",
+          "hashNormalization": "raw",
+          "blob": "04687c00a695ccd701df193551dcdb3a8781922d"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-story/StoryScreen.kt",
+          "sha256": "61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2",
+          "hashNormalization": "raw",
+          "blob": "a7a73b1f6cb433f66992a8be2f0d07cbf39d01ea"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-story/StoryViewModel.kt",
+          "sha256": "dc0b9fafb7e0ad6c079e4577412b23633e68ab8a707e822247f087aeb3f85213",
+          "hashNormalization": "raw",
+          "blob": "918d74bc8625de13fff9c6a3ff9d705168395726"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-story-pager",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-story-pager/PortraitVideoPager.kt",
+          "sha256": "72a7bff755dbb50902f79fe4bc8cd6da22a54c6d43d8c4c63845ea19d2d6932e",
+          "hashNormalization": "raw",
+          "blob": "44477f1c5d2545e670d4e35e1ffb57466ad4ed60"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-story-pager/manifest.json",
+          "sha256": "fe4fa6babb5a08d13e7d35e062e492dfd4b8d718bc7d2ce6580667ee84fffdb0",
+          "hashNormalization": "raw",
+          "blob": "39eee92f8398f36eefe0d0795430d42aaa46732b"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-dynamic-link",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/DynamicCard.kt",
+          "sha256": "ed3781efda386120e8fecb62ea091d5fe9e8e2b89b80f15f15fe63304d11b5e5",
+          "hashNormalization": "raw",
+          "blob": "789d5b38ed8a911a548480799822e276da1dc0df"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/DynamicComponents.kt",
+          "sha256": "617b73e26e0fb16ad7deec80c90972852e1a1affecce4380c250658348e73a78",
+          "hashNormalization": "raw",
+          "blob": "9335e10759a7cc64b482d8a16fd5df24b269d29c"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/DynamicLinkCard.kt",
+          "sha256": "b49587305ed4d7efffe143df39e8053c8dfd61e04019cbfb5566696862f0cd9f",
+          "hashNormalization": "raw",
+          "blob": "f82d93427d2f7e4378521eb410b2663df5683853"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/DynamicLinkCardPolicy.kt",
+          "sha256": "5783e6a0084ffe9916def97cd3a7736e97a917ff8030fab0037d62975f5c5a84",
+          "hashNormalization": "raw",
+          "blob": "aba5a6de1237dc4de7a18deae20b00454866950a"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/DynamicModels.kt",
+          "sha256": "bd23ac74c998a0d41c5baeff03e687199baa8396011cdb96cff94b9d3c2d496c",
+          "hashNormalization": "raw",
+          "blob": "f86a5f48482060ea7e9600365f420fd2ee275034"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/ForwardedContent.kt",
+          "sha256": "08ae88f2fb0a1ec6c393a79f13e07eae71d2b406e7aaf72d5440a1f2ac79b8fd",
+          "hashNormalization": "raw",
+          "blob": "eb2c0a9a35c178eb4dda517d5a4841d03d96ddd0"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/manifest.json",
+          "sha256": "001bb1bff726f2887f1cd6b1f27429d8720e640cd3dbcae06632c65f9b6aebee",
+          "hashNormalization": "raw",
+          "blob": "59d33b1477a33b72529739ffffe2c5a53a042ee8"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-link/PageAwareAsyncImage.kt",
+          "sha256": "1c83acf7547a4f08b900b4631ddaa7beb3c668f38c10209b3750de20e4cea1a9",
+          "hashNormalization": "raw",
+          "blob": "d1439704c5f421fcf3675036fe31dc1a531a1747"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-ambient",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-ambient/AmbientFrameController.kt",
+          "sha256": "a96766f88422c8aafeb60ecbda71147a0c28250aeeaa5650896fddc1bbad2fc8",
+          "hashNormalization": "raw",
+          "blob": "a81cf4a576031b96eb2869c2e3765f31cbc18672"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-ambient/AmbientFramePolicy.kt",
+          "sha256": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c",
+          "hashNormalization": "raw",
+          "blob": "cfffa08df34729e7f103c728a5fbff79e00ef91d"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-ambient/AmbientPlayerBinding.kt",
+          "sha256": "965951512c610dd2b385f544ac8757bbf39662d83414851ba36ff61a7e0f2c5d",
+          "hashNormalization": "raw",
+          "blob": "ee85e694f026c9dab51453365861f53157ca4558"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-ambient/README.md",
+          "sha256": "c4394d92c074c40b6d31ffe5f7593a2d6252f310de81e338bba1f7187bd1be17",
+          "hashNormalization": "raw",
+          "blob": "8c383949fcc07c671e9d3261ccbb024cc0434797"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-ambient/manifest.json",
+          "sha256": "a65ff067f2d406e5defb599ff7086517e50115439159e0cd593df8dc9a2208b7",
+          "hashNormalization": "raw",
+          "blob": "6df39523868a37f74653e7899e371a1bac5fe6d2"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-scrollable-lists",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-scrollable-lists/AppScrollableLists.kt",
+          "sha256": "af0981b641026f514024d13ecaf572b8c483a4470254277ca1eea4f9ac46d25b",
+          "hashNormalization": "raw",
+          "blob": "404c68f0f6591705b00b94bc0ebf9f1a328f7dee"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-scrollable-lists/manifest.json",
+          "sha256": "c30b46788b2676262fbac882d6bcd13a25752393fb15eeb037b34d5ead2bbef0",
+          "hashNormalization": "raw",
+          "blob": "d40190cec15642ebdac7906aa671cf7f845469bc"
         }
       ]
     }
@@ -5169,7 +5385,8 @@
       "features": [
         "v034-text-lyrics"
       ],
-      "referenceOnly": false
+      "referenceOnly": true,
+      "usedScope": "Historical full original validation input for the existing text/lyrics producer and complete inverse to the new pinned DTO; not an effective runtime DTO output."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt",
@@ -5302,6 +5519,382 @@
         "playNextPageOrRecommended",
         "switchPage"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/FavoriteFolderCoverCache.kt",
+      "localPath": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCoverCache.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "eab3f0712cda0d81d942c80f440880ccbe249fdd",
+      "sha256": "8e09a969ca9be583e2d4d5d974bf757d0fc7ac05fdd9f258fda2bb1e6c9f5352",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-favorite-cover"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteFolderCoverPrefetchPolicy.kt",
+      "localPath": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCoverPrefetchPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "4254dd3e1749cfbdacf6e78294ac186c22b35098",
+      "sha256": "44c5aa059052068138131692cb5074f87ea4c9910df349920b27dff613a1055d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-favorite-cover"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteFolderCardList.kt",
+      "localPath": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCardList.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "6e8a8ec6efeae29b3149a56e242751d1f33b2eae",
+      "sha256": "f14aeef1cc3adf1b244c366d3e397c0460156f6e8e0e5cd8e65da25ce17caf88",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-favorite-cover"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "localPath": "desktop/upstream-slices/v035-favorite-cover/ListViewModel.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "9099340dd2dbe03d8b7ef3921a1692ab67c1755b",
+      "sha256": "8aaf7ab9082bec375877cc31bfd64f2f83aabdbc00569e248d2cc146730a09b4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-favorite-cover"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "reusedMethods": [
+        "fetchFolders",
+        "applyCachedFavoriteFolderCovers",
+        "ensureFavoriteFolderCovers",
+        "fetchFavoriteFolderCovers",
+        "applyFavoriteFolderCovers"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "localPath": "desktop/upstream-slices/v035-favorite-cover/CommonListScreen.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "b4906188a2dd8148bdd04f6ec31361785c300e98",
+      "sha256": "aa16a74e21d4be964bce88bd9608058e35d076d9e73e33074c4b54547589e4e7",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-favorite-cover"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "reusedSlice": "complete original onPrefetchCovers callback only"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt",
+      "localPath": "desktop/upstream-slices/v035-story/StoryRepository.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "04687c00a695ccd701df193551dcdb3a8781922d",
+      "sha256": "eabfa1b745aef056823514b1fb6739dd76b8ca3ec176e56f78cb017e1e12c4e2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-story"
+      ],
+      "referenceOnly": false,
+      "usedScope": "complete getStoryFeed method only",
+      "partialReuse": true,
+      "reusedMethods": [
+        "getStoryFeed"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt",
+      "localPath": "desktop/upstream-slices/v035-story/StoryFeedPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "c6ae3da6fe5fe675ab6d88f6dc7419efedcbe61c",
+      "sha256": "8bd1836d296695fe268ccff899399c81dd4f91e8103af1d63a3b1eb7d3e88f49",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-story"
+      ],
+      "referenceOnly": false,
+      "usedScope": "complete original file",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+      "localPath": "desktop/upstream-slices/v035-story/StoryViewModel.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "918d74bc8625de13fff9c6a3ff9d705168395726",
+      "sha256": "dc0b9fafb7e0ad6c079e4577412b23633e68ab8a707e822247f087aeb3f85213",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-story"
+      ],
+      "referenceOnly": false,
+      "usedScope": "complete original file",
+      "partialReuse": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt",
+      "localPath": "desktop/upstream-slices/v035-story/StoryModels.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "f8d1088ec2f0e3f17730b394443fa3152f608444",
+      "sha256": "0c145928365add46c7d577cae7ba658b9fbe0e3ac9131e125dd4b9c1f641fc12",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-story"
+      ],
+      "referenceOnly": false,
+      "usedScope": "complete original file",
+      "partialReuse": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "localPath": "desktop/upstream-slices/v035-story/ApiClient.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "5a27be2226cfd650710915142c8ce31dd7d6399d",
+      "sha256": "3a8fcf044cb2d853d8d6a7487d7875bb73cbf3cf40a9526bcea111c861513e2f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-story"
+      ],
+      "referenceOnly": false,
+      "usedScope": "complete StoryApi interface only",
+      "partialReuse": true,
+      "reusedDeclarations": [
+        "StoryApi"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
+      "localPath": "desktop/upstream-slices/v035-story/StoryScreen.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "a7a73b1f6cb433f66992a8be2f0d07cbf39d01ea",
+      "sha256": "61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-story"
+      ],
+      "referenceOnly": false,
+      "usedScope": "complete original file",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "localPath": "desktop/upstream-slices/v035-story-pager/PortraitVideoPager.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "44477f1c5d2545e670d4e35e1ffb57466ad4ed60",
+      "sha256": "72a7bff755dbb50902f79fe4bc8cd6da22a54c6d43d8c4c63845ea19d2d6932e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-story-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "reusedConsumers": [
+        "four-original-external-owner-ports",
+        "latest-original-loadmore-callback",
+        "original-applied-list-and-empty-batch-state",
+        "complete-original-parent-list-effect-preserves-external-order",
+        "original-watchlater-append-owner-guard",
+        "original-discovery-owner-guard",
+        "original-private-home-tail-owner-guard",
+        "complete-original-external-near-tail-loading-error-empty-batch-consumer",
+        "complete-original-tail-error-and-three-empty-batch-retry-ui"
+      ],
+      "usedScope": "Nine complete original external-recommendation consumer slices; not a full v035 Pager upgrade."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-link/DynamicModels.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "f86a5f48482060ea7e9600365f420fd2ee275034",
+      "sha256": "bd23ac74c998a0d41c5baeff03e687199baa8396011cdb96cff94b9d3c2d496c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-dynamic-link"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file in the existing sole output owner."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-link/DynamicCard.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "789d5b38ed8a911a548480799822e276da1dc0df",
+      "sha256": "ed3781efda386120e8fecb62ea091d5fe9e8e2b89b80f15f15fe63304d11b5e5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-dynamic-link"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Four complete original mapping/identity, opus/additional consumers and reserve-slot/override closure only; existing complete canonical Windows card remains sole owner.",
+      "reusedConsumers": [
+        "complete-original-link-mapping-identity-dedup-and-target-dispatch",
+        "complete-original-opus-link-card-consumer",
+        "complete-original-feed-additional-link-card-consumer",
+        "complete-original-reserve-override-and-link-card-slot-closure"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicComponents.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-link/DynamicComponents.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "9335e10759a7cc64b482d8a16fd5df24b269d29c",
+      "sha256": "617b73e26e0fb16ad7deec80c90972852e1a1affecce4380c250658348e73a78",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-dynamic-link"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Complete fixed original comparison/dependency evidence only; not emitted by this slice."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ForwardedContent.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-link/ForwardedContent.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "eb2c0a9a35c178eb4dda517d5a4841d03d96ddd0",
+      "sha256": "08ae88f2fb0a1ec6c393a79f13e07eae71d2b406e7aaf72d5440a1f2ac79b8fd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-dynamic-link"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Complete fixed original comparison/dependency evidence only; not emitted by this slice."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicLinkCard.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-link/DynamicLinkCard.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "f82d93427d2f7e4378521eb410b2663df5683853",
+      "sha256": "b49587305ed4d7efffe143df39e8053c8dfd61e04019cbfb5566696862f0cd9f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-dynamic-link"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file in the existing sole output owner."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicLinkCardPolicy.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-link/DynamicLinkCardPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "aba5a6de1237dc4de7a18deae20b00454866950a",
+      "sha256": "5783e6a0084ffe9916def97cd3a7736e97a917ff8030fab0037d62975f5c5a84",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-dynamic-link"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file in the existing sole output owner."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/PageAwareAsyncImage.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-link/PageAwareAsyncImage.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "d1439704c5f421fcf3675036fe31dc1a531a1747",
+      "sha256": "1c83acf7547a4f08b900b4631ddaa7beb3c668f38c10209b3750de20e4cea1a9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-dynamic-link"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original page-aware request/cache-key and static replay consumer with finite Windows Coil/context/Android-drawable adaptations."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFramePolicy.kt",
+      "localPath": "desktop/upstream-slices/v035-ambient/AmbientFramePolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "cfffa08df34729e7f103c728a5fbff79e00ef91d",
+      "sha256": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-ambient"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFrameController.kt",
+      "localPath": "desktop/upstream-slices/v035-ambient/AmbientFrameController.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "a81cf4a576031b96eb2869c2e3765f31cbc18672",
+      "sha256": "a96766f88422c8aafeb60ecbda71147a0c28250aeeaa5650896fddc1bbad2fc8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-ambient"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientPlayerBinding.kt",
+      "localPath": "desktop/upstream-slices/v035-ambient/AmbientPlayerBinding.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "ee85e694f026c9dab51453365861f53157ca4558",
+      "sha256": "965951512c610dd2b385f544ac8757bbf39662d83414851ba36ff61a7e0f2c5d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-ambient"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ambient/README.md",
+      "localPath": "desktop/upstream-slices/v035-ambient/README.md",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "8c383949fcc07c671e9d3261ccbb024cc0434797",
+      "sha256": "c4394d92c074c40b6d31ffe5f7593a2d6252f310de81e338bba1f7187bd1be17",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-ambient"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppScrollableLists.kt",
+      "localPath": "desktop/upstream-slices/v035-scrollable-lists/AppScrollableLists.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "404c68f0f6591705b00b94bc0ebf9f1a328f7dee",
+      "sha256": "af0981b641026f514024d13ecaf572b8c483a4470254277ca1eea4f9ac46d25b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-complete-original-scrollable-lists"
+      ],
+      "referenceOnly": false
     }
   ],
   "buildStandaloneInputs": [
