@@ -925,14 +925,15 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 240)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 232)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 55)
-        self.assertEqual(len(self.inventory["archives"]), 59)
+        self.assertEqual(len(entries), 241)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 233)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 56)
+        self.assertEqual(len(self.inventory["archives"]), 60)
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
-                            ("v034-pgc-initial-detail", 2), ("v034-next-watch-ui", 3)):
+                            ("v034-pgc-initial-detail", 2), ("v034-next-watch-ui", 3),
+                            ("v035-autoplay-continuation", 1)):
             directory = "desktop/upstream-slices/" + root
             with self.subTest(root=root):
                 self.assertIn(directory, self.inventory["buildInputRoots"])
@@ -950,6 +951,24 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
                                  expected_references)
                 self.assertTrue(all(item["referenceOnly"] is False for item in rows
                                     if Path(item["localPath"]).name not in expected_references))
+        autoplay_row = next(item for item in entries if item["localPath"] ==
+                            "desktop/upstream-slices/v035-autoplay-continuation/VideoPlaybackViewModel.kt")
+        self.assertIs(autoplay_row["referenceOnly"], False)
+        self.assertIs(autoplay_row["partialReuse"], True)
+        reused_methods = ["onPlaybackStateChanged", "playNextRecommended", "playNextFromPlaylist",
+                          "playNextInOrder", "playNextPageOrSeason", "playNextPageOrRecommended", "switchPage"]
+        self.assertEqual(autoplay_row["reusedMethods"], reused_methods)
+        self.assertEqual(autoplay_row["upstreamCommit"], "46eaf277e83512061785be9759d1f07aba3c4839")
+        autoplay_raw = (self.repo / autoplay_row["localPath"]).read_bytes()
+        self.assertEqual(len(autoplay_raw), 415045, "The complete v035 VM is retained, not claimed as a full runtime VM")
+        self.assertEqual(hashlib.sha256(autoplay_raw).hexdigest(), autoplay_row["sha256"])
+        self.assertEqual(sync.blob_oid(autoplay_raw), autoplay_row["blob"])
+        autoplay_manifest = json.loads((self.repo / "desktop/upstream-slices/v035-autoplay-continuation/"
+                                        "manifest.json").read_bytes())
+        self.assertEqual([method["name"] for method in autoplay_manifest["originalMethods"]], reused_methods)
+        self.assertEqual(autoplay_manifest["originalVm"]["sha256"], autoplay_row["sha256"])
+        self.assertIn('inputs.file("tools/v035_autoplay_continuation.py")',
+                      (self.repo / "desktop/build.gradle.kts").read_text(encoding="utf-8"))
         audio_row = next(item for item in entries if item["localPath"] ==
                          "desktop/upstream-slices/v034-pgc-initial-detail/BangumiPlayerViewModel.kt")
         self.assertIs(audio_row["partialReuse"], True)
@@ -1087,6 +1106,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             "v034-next-watch-ui/NextWatchOverlay.kt",
             "v034-next-watch-ui/SettingsManager.kt",
             "v034-next-watch-ui/VideoPlayerSection.kt",
+            "v035-autoplay-continuation/VideoPlaybackViewModel.kt",
         )
         for leaf in leaves:
             source = self.repo / "desktop/upstream-slices" / leaf
@@ -1110,10 +1130,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 240)
+        self.assertEqual(len(self.load()), 241)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 240)
+        self.assertEqual(len(self.load()), 241)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1130,7 +1150,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 240)
+                self.assertEqual(len(entries), 241)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

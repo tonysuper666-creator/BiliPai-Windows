@@ -1332,11 +1332,15 @@ def generate(repo,output,standalone=False):
   body,metadataRelatedProof=apply_metadata_related(recipe['output'],body,output)
   from v034_next_watch import apply_and_record as apply_next_watch
   body,nextWatchProof=apply_next_watch(recipe['output'],body,output)
+  from v035_autoplay_continuation import apply_and_record as apply_autoplay_continuation
+  body,autoplayContinuationProof=apply_autoplay_continuation(recipe['output'],body,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
    target.write_text(body,encoding='utf-8',newline='\n')
   outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted,
+                      autoplayContinuationInverseEdits=(autoplayContinuationProof or {}).get('inverseEdits',[]),
+                      autoplayContinuationSourceManifest=(autoplayContinuationProof or {}).get('sourceManifest'),
                       nextWatchInverseEdits=(nextWatchProof or {}).get('inverseEdits',[]),
                       nextWatchSourceManifest=(nextWatchProof or {}).get('sourceManifest'),
                       metadataRelatedInverseEdits=(metadataRelatedProof or {}).get('inverseEdits',[]),

@@ -15,6 +15,7 @@ import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSo
 import com.android.purebilibili.data.model.response.RelatedVideo
 import com.android.purebilibili.feature.common.resolveIndexedVideoLazyKey
 import com.android.purebilibili.feature.video.screen.buildDesktopOriginalVideoNavigationOptions
+import com.android.purebilibili.feature.video.screen.resolveNavigationTargetCid
 import com.android.purebilibili.feature.video.ui.components.RelatedVideoGridRow
 import com.android.purebilibili.feature.video.ui.components.RelatedVideosHeader
 import com.android.purebilibili.feature.video.ui.components.chunkRelatedVideosForHomeStyleGrid
@@ -117,8 +118,11 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
                             onVideoClick = { video ->
                                 val clickOwned = { ownsCard(video) }
                                 if (clickOwned()) {
+                                    val targetCid = resolveNavigationTargetCid(
+                                        targetBvid = video.bvid, explicitCid = video.cid,
+                                        relatedVideos = success.related, ugcSeason = info.ugc_season)
                                     val options = buildDesktopOriginalVideoNavigationOptions(
-                                        targetCid = video.cid, coverUrl = video.pic)
+                                        targetCid = targetCid, coverUrl = video.pic)
                                     latestNavigation(BiliPaiNavKey.VideoDetail(video.bvid,
                                         options?.first ?: 0L, options?.second.orEmpty()), clickOwned)
                                 }
@@ -193,7 +197,10 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
                     onVideoClick = { video ->
                         val clickOwned = { ownsCard(video) }
                         if (clickOwned()) {
-                            val options = buildDesktopOriginalVideoNavigationOptions(targetCid = video.cid, coverUrl = video.pic)
+                            val targetCid = resolveNavigationTargetCid(
+                                targetBvid = video.bvid, explicitCid = video.cid,
+                                relatedVideos = detail.related, ugcSeason = detail.info?.ugc_season)
+                            val options = buildDesktopOriginalVideoNavigationOptions(targetCid = targetCid, coverUrl = video.pic)
                             latestNavigation(BiliPaiNavKey.VideoDetail(video.bvid,
                                 options?.first ?: 0L, options?.second.orEmpty()), clickOwned)
                         }

@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.plugin.PluginManager
 import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
+import com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings
 import com.android.purebilibili.core.store.PlaybackCompletionBehavior
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
@@ -532,6 +533,170 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
     }
 
+    /** Real native END_FILE -> registered original VM listener -> actual request,
+     * UseCase and NativeOwner. Bootstrap origin intentionally stays Unknown;
+     * these are not physical RootWindow/non-null-continuation tests. */
+    @Test fun actualEofPageContinuationUsesFalseAndTrueStartupPreference(): Unit = runBlocking<Unit> {
+        for (autoPlay in listOf(false, true)) {
+            Fixture(nextWatchMode = true, continuationTarget = ContinuationTarget.PAGES).useSuspending { f ->
+                f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A))); f.startupPreference(autoPlay)
+                val first = f.accepted(); val before = f.owner.captureLoadState()
+                assertFalse(assertNotNull(before.currentRequest).autoPlay ?: true)
+                assertNull(first.bootstrapOrigin)
+                f.startForNaturalEof(); val eof = f.emitNaturalEof()
+                assertEquals(first.sourceVersion, eof.sourceVersion); assertTrue(eof.playWhenReady)
+                f.awaitLoadedPart(A, 106); f.assertActualLoadIntent(paused = !autoPlay)
+                val next = f.accepted(); val after = f.owner.captureLoadState()
+                assertNotSame(first, next); assertEquals(106L, next.request.cid)
+                assertNotNull(next.pageSubject)
+                assertSame(before.currentRequest, after.currentRequest,
+                    "Original in-place P switch retains its real request reference")
+                assertEquals(before.currentLoadRequestToken, after.currentLoadRequestToken)
+                assertFalse(assertNotNull(after.currentRequest).autoPlay ?: true,
+                    "A new P startup intent must not silently rewrite the original full-load request")
+                assertEquals(2, f.playRequests.size)
+            }
+        }
+    }
+
+    @Test fun actualEofCollectionContinuationUsesFalseAndTrueStartupPreference(): Unit = runBlocking<Unit> {
+        for (autoPlay in listOf(false, true)) {
+            Fixture(nextWatchMode = true, continuationTarget = ContinuationTarget.COLLECTION).useSuspending { f ->
+                f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A))); f.startupPreference(autoPlay)
+                val first = f.accepted(); val before = f.owner.captureLoadState()
+                assertEquals(listOf(A, B), f.state().info.ugc_season?.sections?.flatMap { it.episodes }?.map { it.bvid })
+                f.startForNaturalEof(); f.emitNaturalEof()
+                f.awaitLoadedPart(B, 105); f.assertActualLoadIntent(paused = !autoPlay)
+                val next = f.accepted(); val after = f.owner.captureLoadState()
+                assertNotSame(first, next); assertNull(next.bootstrapOrigin)
+                assertNotSame(before.currentRequest, after.currentRequest)
+                assertTrue(after.currentLoadRequestToken > before.currentLoadRequestToken)
+                assertEquals(autoPlay, assertNotNull(after.currentRequest).autoPlay)
+                assertEquals(B, next.request.bvid); assertEquals(105L, next.request.cid)
+                assertEquals(2, f.playRequests.size)
+            }
+        }
+    }
+
+    @Test fun actualEofOrderedQueueUsesFalseAndTrueStartupPreference(): Unit = runBlocking<Unit> {
+        for (autoPlay in listOf(false, true)) {
+            Fixture(nextWatchMode = true, continuationTarget = ContinuationTarget.QUEUE).useSuspending { f ->
+                f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A), f.queueItem(B)))
+                f.behavior(PlaybackCompletionBehavior.PLAY_IN_ORDER); f.startupPreference(autoPlay)
+                val before = f.owner.captureLoadState()
+                f.startForNaturalEof(); f.emitNaturalEof()
+                f.awaitLoadedPart(B, 105); f.assertActualLoadIntent(paused = !autoPlay)
+                val after = f.owner.captureLoadState()
+                assertNotSame(before.currentRequest, after.currentRequest)
+                assertTrue(after.currentLoadRequestToken > before.currentLoadRequestToken)
+                assertEquals(autoPlay, assertNotNull(after.currentRequest).autoPlay)
+                assertEquals(1, f.realQueue.currentIndex.value); assertEquals(2, f.playRequests.size)
+            }
+        }
+    }
+
+    @Test fun actualEofPlaylistLoopFreezesDisabledStartupForTheWrappedTarget(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true, continuationTarget = ContinuationTarget.QUEUE).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(B), f.queueItem(A)))
+            f.ui { assertNotNull(f.realQueue.playAt(1)) }
+            f.behavior(PlaybackCompletionBehavior.LOOP_PLAYLIST); f.startupPreference(false)
+            val before = f.owner.captureLoadState()
+            f.startForNaturalEof(); f.emitNaturalEof()
+            f.awaitLoadedPart(B, 105); f.assertActualLoadIntent(paused = true)
+            val after = f.owner.captureLoadState()
+            assertNotSame(before.currentRequest, after.currentRequest)
+            assertTrue(after.currentLoadRequestToken > before.currentLoadRequestToken)
+            assertEquals(false, assertNotNull(after.currentRequest).autoPlay)
+            assertEquals(0, f.realQueue.currentIndex.value); assertEquals(2, f.playRequests.size)
+        }
+    }
+
+    @Test fun actualManualGenericQueueNextStartsDespiteDisabledStartupPreference(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true, continuationTarget = ContinuationTarget.QUEUE).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A), f.queueItem(B))); f.startupPreference(false)
+            f.clock(114.999)
+            val click = f.uiResult { assertTrue(f.facade.hasNext); assertNotNull(f.facade.captureManualNavigation()) }
+            assertNull(click.nextWatchHint, "Exercise the existing generic manual callback, not the card")
+            assertTrue(f.dispatchForward(click))
+            f.awaitLoadedPart(B, 105); f.assertActualLoadIntent(paused = false)
+            assertEquals(true, assertNotNull(f.owner.captureLoadState().currentRequest).autoPlay)
+            assertEquals(2, f.playRequests.size)
+        }
+    }
+
+    @Test fun actualManualNextWatchAndPageClickOverrideTheRetainedFalseLoadIntent(): Unit = runBlocking<Unit> {
+        for (target in listOf(ContinuationTarget.QUEUE, ContinuationTarget.PAGES)) {
+            Fixture(nextWatchMode = true, continuationTarget = target).useSuspending { f ->
+                f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A))); f.startupPreference(false)
+                val before = f.owner.captureLoadState()
+                assertEquals(false, assertNotNull(before.currentRequest).autoPlay)
+                f.clock(117.0)
+                val shown = f.awaitHint { it.target.bvid == if (target == ContinuationTarget.PAGES) A else B }
+                val click = f.uiResult { assertNotNull(f.facade.captureNextWatchNavigation(shown)) }
+                assertSame(shown, click.nextWatchHint)
+                assertTrue(f.dispatchForward(click))
+                f.awaitLoadedPart(if (target == ContinuationTarget.PAGES) A else B,
+                    if (target == ContinuationTarget.PAGES) 106L else 105L)
+                f.assertActualLoadIntent(paused = false)
+                if (target == ContinuationTarget.PAGES) {
+                    assertSame(before.currentRequest, f.owner.captureLoadState().currentRequest)
+                    assertEquals(before.currentLoadRequestToken, f.owner.captureLoadState().currentLoadRequestToken)
+                    assertEquals(false, assertNotNull(f.owner.captureLoadState().currentRequest).autoPlay)
+                    assertNotNull(f.accepted().pageSubject)
+                } else assertEquals(true, assertNotNull(f.owner.captureLoadState().currentRequest).autoPlay)
+                assertEquals(2, f.playRequests.size)
+            }
+        }
+    }
+
+    @Test fun realEntryAndAccountRetirementRejectTheExistingEofBridge(): Unit = runBlocking<Unit> {
+        for (retireAccount in listOf(false, true)) {
+            Fixture(nextWatchMode = true, continuationTarget = ContinuationTarget.QUEUE).useSuspending { f ->
+                f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A), f.queueItem(B)))
+                f.behavior(PlaybackCompletionBehavior.PLAY_IN_ORDER); f.startupPreference(true)
+                f.startForNaturalEof()
+                val before = f.accepted(); val requests = f.playRequests.size; val publications = f.publications.size
+                f.ui {
+                    if (retireAccount) f.sessions.saveAccount(
+                        mapOf("SESSDATA" to "synthetic-other-session", "bili_jct" to "synthetic-other-csrf"),
+                        AccountSummary(42, "Other fixture", "", isVip = false))
+                    else f.gate.retire()
+                    assertFalse(f.gate.owns()); assertFalse(f.owner.native.isCurrent(before))
+                    f.emitNaturalEofOnEdt()
+                }
+                f.drainEdtCallbacks()
+                assertEquals(requests, f.playRequests.size); assertEquals(publications, f.publications.size)
+                assertNull(f.owner.native.current())
+                assertTrue(f.player.state.value.ended)
+                assertEquals(before.sourceVersion, assertNotNull(f.player.state.value.nativeEof).sourceVersion)
+            }
+        }
+    }
+
+    @Test fun realNewRequestBeforeQueuedEofDispatchCannotAdvanceTheOldSource(): Unit = runBlocking<Unit> {
+        Fixture(nextWatchMode = true, continuationTarget = ContinuationTarget.PAGES).useSuspending { f ->
+            f.load(A, 101, 104); f.setQueue(listOf(f.queueItem(A))); f.startupPreference(true)
+            f.startForNaturalEof()
+            val before = f.accepted(); val oldRequest = f.owner.captureLoadState()
+            f.ui {
+                val oldEof = f.emitNaturalEofOnEdt(); assertEquals(before.sourceVersion, oldEof.sourceVersion)
+                // Both synchronous inputs precede the registered listener's real
+                // Main dispatch; no listener/VM state is replaced or hand-seeded.
+                f.owner.playback.loadVideo(B, cid = 105, autoPlay = false)
+            }
+            f.awaitLoadedPart(B, 105); f.assertActualLoadIntent(paused = true); f.drainEdtCallbacks()
+            val after = f.owner.captureLoadState()
+            assertNotSame(oldRequest.currentRequest, after.currentRequest)
+            assertTrue(after.currentLoadRequestToken > oldRequest.currentLoadRequestToken)
+            assertFalse(f.owner.native.isCurrent(before))
+            assertEquals(2, f.playRequests.size)
+            assertFalse(f.publications.any { it.request.bvid == A && it.request.cid == 106L })
+            assertEquals(105L, f.accepted().request.cid)
+        }
+    }
+
+    private enum class ContinuationTarget { PAGES, COLLECTION, QUEUE }
+
     private data class Capture(val state: PlaybackSessionState, val job: Job)
     private data class CdnEmission(val source: DesktopOriginalVideoAcceptedPublication, val index: Int, val runtimeGeneration: Long?)
     private data class HeldDispatch(val context: CoroutineContext, val runnable: Runnable) {
@@ -572,7 +737,10 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
 
     private inner class Fixture(private val holdTags: Boolean = false, private val refreshExpiredUrls: Boolean = false,
-        private val holdRelated: Boolean = false, private val nextWatchMode: Boolean = false) {
+        private val holdRelated: Boolean = false, private val nextWatchMode: Boolean = false,
+        private val continuationTarget: ContinuationTarget? = null) {
+        private val startupCacheBefore = store.preferences("auto_play_cache")
+        private val completionSettingBefore = store.preferences("settings")["playback_completion_behavior"]
         val directory = Files.createTempDirectory("cdn-original-owner-")
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
@@ -657,12 +825,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
         private val progress = object : DesktopOriginalVideoProgressPort {
             override fun getCachedPosition(bvid: String, cid: Long) = 0L
-            override fun savePosition(bvid: String, cid: Long, positionMs: Long) { check(bvid in listOf(A, B)); check(cid in listOf(104L, 105L)) }
+            override fun savePosition(bvid: String, cid: Long, positionMs: Long) { check(bvid in listOf(A, B)); check(cid in listOf(104L, 105L) || (continuationTarget == ContinuationTarget.PAGES && cid == 106L)) }
         }
         init {
             // The original guest fetch deliberately omits audioLang. This case verifies
             // the logged-in language-preserving route with private synthetic credentials.
-            if (refreshExpiredUrls) sessions.saveAccount(
+            if (refreshExpiredUrls || continuationTarget != null) sessions.saveAccount(
                 mapOf("SESSDATA" to "synthetic-retry-session", "bili_jct" to "synthetic-retry-csrf"),
                 AccountSummary(41, "Retry fixture", "", isVip = false))
             sessions.saveSpiCookies(mapOf("buvid3" to "synthetic-visitor", "buvid4" to "synthetic-visitor4"), sessions.generation)
@@ -682,8 +850,8 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
                     val body = when (request.url.encodedPath) {
                         "/" -> "memory bootstrap"
                         "/x/frontend/finger/spi" -> """{"code":0,"data":{"b_3":"synthetic-visitor","b_4":"synthetic-visitor4"}}"""
-                        "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":${refreshExpiredUrls},"vip":{"status":0},"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
-                        "/x/web-interface/view" -> viewJson(bvid)
+                        "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":${refreshExpiredUrls || continuationTarget != null},"vip":{"status":0},"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
+                        "/x/web-interface/view" -> continuationViewJson(bvid)
                         "/x/player/wbi/playurl", "/x/player/playurl" -> {
                             val revision = synchronized(playRequests) { playRequests.add(request); playRequests.size }
                             if (refreshExpiredUrls) {
@@ -839,10 +1007,14 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
         }
         private fun memoryPbp(request: Request): Response {
             val bvid = request.url.queryParameter("bvid")
-            val subject = when (bvid) { A -> "104" to "101"; B -> "105" to "102"; else -> rejectRequest(request) }
+            val subject = when (bvid) {
+                A -> (if (continuationTarget == ContinuationTarget.PAGES) setOf("104", "106") else setOf("104")) to "101"
+                B -> setOf("105") to "102"
+                else -> rejectRequest(request)
+            }
             if (request.method != "GET" || request.url.encodedPath != "/pbp/data" ||
                 request.url.queryParameterNames != setOf("cid", "bvid", "aid") ||
-                request.url.queryParameter("cid") != subject.first || request.url.queryParameter("aid") != subject.second)
+                request.url.queryParameter("cid") !in subject.first || request.url.queryParameter("aid") != subject.second)
                 rejectRequest(request)
             // Exact original API returns ResponseBody; its real metadata protocol
             // invokes parsePbpProgressData on top-level step_sec/events.default.
@@ -879,6 +1051,66 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             assertTrue(EventQueue.isDispatchThread()); assertTrue(actualCaller.isActive)
             facade.navigateManual(click, forward = true, caller = actualCaller, uiCurrent = gate::owns)
         }.await()
+        /** Only real temporary settings persistence is changed. EOF reads the
+         * same synchronous getter as production; no VM intent is hand-seeded. */
+        suspend fun startupPreference(autoPlay: Boolean) {
+            check(continuationTarget != null)
+            DesktopOriginalPlaybackPreferenceOperation.run(settingsContext, gate::owns) {
+                settingsContext.getSharedPreferences("auto_play_cache", DesktopOriginalPlayerSettingsContext.MODE_PRIVATE)
+                    .edit().putBoolean("click_to_play_enabled", autoPlay).putBoolean("auto_play_enabled", true).apply()
+                assertEquals(autoPlay, DesktopOriginalPlayerSectionSettings.getClickToPlaySync(settingsContext))
+            }
+        }
+        suspend fun startForNaturalEof() {
+            clock(119.5)
+            ui { player.setPaused(false); actor.drain(); actor.loaded(); assertTrue(owner.section.isPlaying) }
+            // Observe that the registered original VM has consumed the real
+            // onIsPlayingChanged event. This read never changes its private flag.
+            val started = owner.playback.javaClass.getDeclaredField("hasUserStartedPlayback").apply { isAccessible = true }
+            withTimeout(8_000) { while (!uiResult { started.getBoolean(owner.playback) }) delay(5) }
+        }
+        fun emitNaturalEofOnEdt(): PlayerNativeEof {
+            check(EventQueue.isDispatchThread())
+            Memory(24).use { end ->
+                end.clear(); end.setInt(0, 0); end.setInt(4, 0); end.setLong(8, 11)
+                PremiumRecoveryActor::class.java.getDeclaredMethod("event", Integer.TYPE, Pointer::class.java)
+                    .apply { isAccessible = true }.invoke(actor, 7, end)
+            }
+            assertTrue(player.state.value.ended); assertNull(player.state.value.failure)
+            return assertNotNull(player.state.value.nativeEof)
+        }
+        suspend fun emitNaturalEof(): PlayerNativeEof = uiResult { emitNaturalEofOnEdt() }
+        suspend fun drainEdtCallbacks() { ui {}; ui {} }
+        suspend fun awaitLoadedPart(bvid: String, cid: Long) = withTimeout(8_000) {
+            while ((owner.playback.uiState.value as? VideoPlaybackUiState.Success)?.info?.let { it.bvid == bvid && it.cid == cid } != true ||
+                owner.native.current()?.request?.let { it.bvid == bvid && it.cid == cid } != true) delay(5)
+        }
+        suspend fun assertActualLoadIntent(paused: Boolean) = ui {
+            val publication = accepted()
+            assertTrue(player.ownsSourceSnapshot(publication.nativeSource))
+            assertEquals(paused, publication.nativeSource.source.startPaused,
+                "Actual lexical UseCase/MediaIntent must stamp the accepted source")
+            assertEquals(paused, assertNotNull(player.currentSourceSnapshot()).source.startPaused)
+            actor.drain(); actor.loaded()
+            @Suppress("UNCHECKED_CAST")
+            val options = actor.native.loads.last()[4] as Map<String, String>
+            assertEquals(if (paused) "yes" else "no", options["pause"], "Real memory ABI Load options")
+            assertEquals(paused, player.state.value.paused); assertEquals(paused, player.state.value.nativePaused)
+            assertFalse(player.state.value.ready, "These events never claim actual MPV core/hardware initialization")
+        }
+        private fun continuationViewJson(bvid: String): String {
+            val base = viewJson(bvid)
+            if (bvid != A) return base
+            return when (continuationTarget) {
+                ContinuationTarget.PAGES -> base.replace(
+                    "\"pages\":[{\"cid\":104,\"page\":1,\"part\":\"Fixture\",\"duration\":60}]",
+                    "\"pages\":[{\"cid\":104,\"page\":1,\"part\":\"Fixture\",\"duration\":60},{\"cid\":106,\"page\":2,\"part\":\"Second real P\",\"duration\":60}]"
+                ).also { check(it != base) }
+                ContinuationTarget.COLLECTION -> base.dropLast(2) +
+                    ""","ugc_season":{"id":81,"title":"Fixture collection","sections":[{"id":82,"episodes":[{"id":91,"aid":101,"bvid":"$A","cid":104,"title":"Current collection episode"},{"id":92,"aid":102,"bvid":"$B","cid":105,"title":"Next collection episode"}]}]}}}"""
+                else -> base
+            }
+        }
         suspend fun load(bvid: String, aid: Long, cid: Long, audioLang: String? = null) {
             ui { owner.playback.loadVideo(bvid, aid, cid = cid, audioLang = audioLang, autoPlay = false) }
             awaitLoaded(bvid)
@@ -941,6 +1173,12 @@ class DesktopOriginalVideoCdnSelectionAssemblyTest {
             if (::actor.isInitialized) actor.close()
             if (::cache.isInitialized) cache.close()
             subtitles.close(); player.close()
+            if (continuationTarget != null) {
+                // Children have joined: restore only this fixture's real temporary preference changes,
+                // including when account/entry retirement rejected the owned setter during cleanup.
+                store.update("auto_play_cache", startupCacheBefore, clear = true)
+                store.update("settings", mapOf("playback_completion_behavior" to completionSettingBefore))
+            }
             transport.dispatcher.executorService.shutdownNow(); transport.connectionPool.evictAll()
             assertTrue(failures.isEmpty(), failures.toString())
             assertTrue(unexpectedRequests.isEmpty(), unexpectedRequests.toString())

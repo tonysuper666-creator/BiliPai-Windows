@@ -57,7 +57,8 @@
     "desktop/upstream-slices/v034-pgc-initial-detail",
     "desktop/upstream-slices/v034-related",
     "desktop/upstream-slices/v034-sponsor-ui",
-    "desktop/upstream-slices/v034-text-lyrics"
+    "desktop/upstream-slices/v034-text-lyrics",
+    "desktop/upstream-slices/v035-autoplay-continuation"
   ],
   "archives": [
     {
@@ -2129,6 +2130,23 @@
           "sha256": "dfd799f017c955faf0ccca24c177d3d84f000866e8556caa4cbbf8865f2fc236",
           "hashNormalization": "raw",
           "blob": "f67c57c6de9c1b6b27b6acad9b8f5bf2c80386d8"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-autoplay-continuation",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-autoplay-continuation/manifest.json",
+          "sha256": "aa04a168c57721ee14e3fe2a5525d0ddbc2eb13eb6d62a6c5984f877756f6798",
+          "hashNormalization": "raw",
+          "blob": "9ba21e8abfa49585d402ef0fa829a829e1b115ac"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-autoplay-continuation/VideoPlaybackViewModel.kt",
+          "sha256": "2e83f622e8e95b7706c5e9034229b17461cb1691c65ac1ca3fd6faada60b3bdd",
+          "hashNormalization": "raw",
+          "blob": "64e26597a11afdaca928f2037056219be4d1194c"
         }
       ]
     }
@@ -5261,6 +5279,29 @@
         "v034-next-watch-ui"
       ],
       "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "localPath": "desktop/upstream-slices/v035-autoplay-continuation/VideoPlaybackViewModel.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "64e26597a11afdaca928f2037056219be4d1194c",
+      "sha256": "2e83f622e8e95b7706c5e9034229b17461cb1691c65ac1ca3fd6faada60b3bdd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-autoplay-continuation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "reusedMethods": [
+        "onPlaybackStateChanged",
+        "playNextRecommended",
+        "playNextFromPlaylist",
+        "playNextInOrder",
+        "playNextPageOrSeason",
+        "playNextPageOrRecommended",
+        "switchPage"
+      ]
     }
   ],
   "buildStandaloneInputs": [

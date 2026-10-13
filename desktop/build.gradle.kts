@@ -3549,3 +3549,8 @@ tasks.named("extractOriginalPlayerFullControls") {
 tasks.named("extractOriginalBangumiPlayer") {
     inputs.file("tools/v034_pgc_audio_download.py")
 }
+
+tasks.named("extractOriginalVideoFullOwner") {
+    inputs.file("tools/v035_autoplay_continuation.py")
+    inputs.dir("upstream-slices/v035-autoplay-continuation")
+}
