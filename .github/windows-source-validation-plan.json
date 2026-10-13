@@ -1,94 +1,69 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "507584a14e4061b7a51ac4084cf3b561277e0147",
-  "windowsVersion": "0.2.427.75",
-  "createdAt": "2026-10-13T20:09:24.994625+00:00",
+  "baseHead": "52321b8c0778bf348e8a8dcb448c0cf0a84bc96c",
+  "windowsVersion": "0.2.427.76",
+  "createdAt": "2026-10-13T20:45:17.982684+00:00",
   "sources": [
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "4dd24637e6b49d0be4dce789056e62169d277534e937d9e15ad29aec9490dad8"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
-      "normalization": "lf",
-      "sha256": "289fe1a473b97f4f72686a2320851b25abe4b5decefa7bd81e58a6bcc8149fb7"
+      "sha256": "b39231d8c2f00321868515a815357bb36983be99b5417979d098cf806a910de2"
     },
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "0ee883e5954cec965406172a02039e4f44f7ea088d20a95fab90b408c38683cf"
+      "sha256": "d9af83f8572ac32f1711bf578be37948a95f01b59e68dbff7a87ca9124d41b33"
     },
     {
-      "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+      "path": "desktop/tools/extract-upstream-video-comment-ui.py",
       "normalization": "lf",
-      "sha256": "b1c42ce0d7435813d9b003e72462e34ad64988eae436f6ea2a705c017bb4eafa"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
-      "normalization": "lf",
-      "sha256": "5c2cd18b95610abf057b7022747ab0758047b51b2223ca502d1e8e52d40f7c35"
+      "sha256": "f06579800cf9bfc9a4f66cfd830ead1c3af2876ee3efea1ad7bff9ef31b5b0a5"
     },
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "41b14d4a1737fe6bab2849db414041ae2490188609eef51d5b3a7801b73a73f5"
+      "sha256": "c6b2f0f268e38abcbb0ec2ee5d0fc4609f7077f09e87541ef8472dda3c9090c9"
     },
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "8970968da9c46e9d83e14cc1879ed8d7ad4a2ba20dcb6613fd253446dd7b5330"
+      "sha256": "826b057ef8d6b7316add11694057c4532625ac734b2003d17b45ed0e501b4783"
     },
     {
-      "path": "desktop/tools/v036_comment_viewport.py",
+      "path": "desktop/tools/v036_video_comment_viewport.py",
       "normalization": "lf",
-      "sha256": "42a81b0c17f35c97725aed4e8426f0f2f083dbd273f34ea7e40d9d97f2de8f25"
+      "sha256": "16ed9271cbec2ae650d2ec436503afc8b80edc10d697f5dbc57ef405a130c7b1"
     },
     {
-      "path": "desktop/tools/v036_reply_modifier.py",
-      "normalization": "lf",
-      "sha256": "3329371f68692517debc9e4264f662edc61c77afbd112e3669123e9a8a512741"
-    },
-    {
-      "path": "desktop/upstream-slices/v036-comment-viewport/ContentLoadingSkeletons.kt",
+      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentRefreshContainer.kt",
       "normalization": "raw",
-      "sha256": "a2e9366a7514dd80fe5ad2bed532c46610c22a901092c7b2d8b0968246e2ef28"
+      "sha256": "38865ed5d0b7e162afaf69341cc320d5eb03b03bc848da688b686dce1edc8162"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-viewport/DynamicCommentSheet.kt",
+      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSheetHost.kt",
       "normalization": "raw",
-      "sha256": "adff166b03b65795d63ee776a4201469f80ea060f3b6ef6d41749326751f9e97"
+      "sha256": "e49e06b6dbc936399f689736207edaaa90deb47a1bc26e723519b9594b089445"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-viewport/DynamicDetailScreen.kt",
+      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSkeletonSlots.kt",
       "normalization": "raw",
-      "sha256": "c4c7691fdb5f4bf1a705bd97e3c1c72d4503972c55604744b88aa9fe989e25c4"
+      "sha256": "892db4df95aec372bd99153348f5aafa831b762f0eded68eca466d4777fbb02d"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-viewport/manifest.json",
+      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoContentSection.kt",
       "normalization": "raw",
-      "sha256": "02ed993667a5daa4157e55b5699de36190d6ed673df5669dabeafaa5e06d0c10"
+      "sha256": "c1732422eddf6a06676b77f3d53cee6a9af936a144b35c9f6d6a16c798b18786"
     },
     {
-      "path": "desktop/upstream-slices/v036-reply-modifier/ReplyComponents-v035.kt",
+      "path": "desktop/upstream-slices/v036-video-comment-viewport/manifest.json",
       "normalization": "raw",
-      "sha256": "8a128369a6af9e8c09ed6996f5347c1de4028e7a57a5ec82123f24d5cfe352a8"
-    },
-    {
-      "path": "desktop/upstream-slices/v036-reply-modifier/ReplyComponents-v036.kt",
-      "normalization": "raw",
-      "sha256": "68d7f0d728dc7e8df94b890f226b19a59ab6d116006a87c1d45b8a2c80dde3b2"
-    },
-    {
-      "path": "desktop/upstream-slices/v036-reply-modifier/manifest.json",
-      "normalization": "raw",
-      "sha256": "00b356d5780f3e748b80049f2d9561033233f8cc93a3c5d2e019bed6bc40de4d"
+      "sha256": "4244f31ce6fca7048f3c4e4c8ac031541cb6225622a1c13abe27a4f4be8828f7"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "3fde934402c30b2d114812c04a37ea43130d61aa7deb8a425ad3286577d5cd26"
+      "sha256": "8c04935db196847f7f6c44bc54921f383a4e2f87bab5bfd2cbd5459b54ded3ac"
     }
   ],
   "classes": {

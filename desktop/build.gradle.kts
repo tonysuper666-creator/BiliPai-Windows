@@ -1321,6 +1321,8 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-video-original-comments" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v036_video_comment_viewport.py")
+    inputs.dir("upstream-slices/v036-video-comment-viewport")
     outputs.dir(layout.buildDirectory.dir("generated/video-comment-ui"))
 }
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
