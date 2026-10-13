@@ -694,9 +694,10 @@ val extractUpstreamHomeCards by tasks.registering(Exec::class) {
 val extractOriginalHomePage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-page.py",
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-core-refresh.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-refresh-policy-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
     inputs.file("tools/v033_home_refresh_undo.py")
     inputs.dir("upstream-slices/v033-home-undo")
@@ -707,9 +708,14 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v029_brand_consumers.py")
     inputs.dir("upstream-slices/v029-brand-consumers")
+    inputs.files("tools/extract-upstream-home-core-refresh.py", "tools/v036_comment_refresh_dependencies.py")
+    inputs.dir("upstream-slices/v036-comment-refresh-dependencies")
+    outputs.dir(layout.buildDirectory.dir("generated/original-refresh-policy-tests"))
     outputs.dir(layout.buildDirectory.dir("generated/home-page"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalHomePage) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-refresh-policy-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalHomePage) }
 
 // Insert after the already-installed extractOriginalHomePage. Merge, do not replace build.gradle.
 val extractOriginalHomeViewModel by tasks.registering(Exec::class) {
@@ -1321,6 +1327,10 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-video-original-comments" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v036_video_comment_viewport.py")
+    inputs.dir("upstream-slices/v036-video-comment-viewport")
+    inputs.file("tools/v036_comment_refresh_dependencies.py")
+    inputs.dir("upstream-slices/v036-comment-refresh-dependencies")
     outputs.dir(layout.buildDirectory.dir("generated/video-comment-ui"))
 }
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }

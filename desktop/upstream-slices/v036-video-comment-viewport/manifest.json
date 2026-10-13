@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamTag": "v0.3.6",
+  "fixedUpstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSkeletonSlots.kt",
+      "filename": "VideoCommentSkeletonSlots.kt",
+      "bytes": 2991,
+      "sha256Bytes": "892db4df95aec372bd99153348f5aafa831b762f0eded68eca466d4777fbb02d",
+      "gitBlob": "dc30bace7697417f6abda3df22021cfae1f8986f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "filename": "VideoCommentSheetHost.kt",
+      "bytes": 53276,
+      "sha256Bytes": "e49e06b6dbc936399f689736207edaaa90deb47a1bc26e723519b9594b089445",
+      "gitBlob": "e2b2247a08dec1aff72faa35d0b107bdf4395e86"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentRefreshContainer.kt",
+      "filename": "VideoCommentRefreshContainer.kt",
+      "bytes": 904,
+      "sha256Bytes": "38865ed5d0b7e162afaf69341cc320d5eb03b03bc848da688b686dce1edc8162",
+      "gitBlob": "8bb326d9f2a85bece2bb43d0253536ce3a745091"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "filename": "VideoContentSection.kt",
+      "bytes": 102518,
+      "sha256Bytes": "c1732422eddf6a06676b77f3d53cee6a9af936a144b35c9f6d6a16c798b18786",
+      "gitBlob": "1a218758c5d7686d58034f7130f93454510c142f"
+    }
+  ],
+  "wholeScreensPorted": false
+}

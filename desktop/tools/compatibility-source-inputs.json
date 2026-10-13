@@ -70,7 +70,9 @@
     "desktop/upstream-slices/v036-video-comment-cache",
     "desktop/upstream-slices/v036-dynamic-comment-cache",
     "desktop/upstream-slices/v036-comment-viewport",
-    "desktop/upstream-slices/v036-reply-modifier"
+    "desktop/upstream-slices/v036-reply-modifier",
+    "desktop/upstream-slices/v036-video-comment-viewport",
+    "desktop/upstream-slices/v036-comment-refresh-dependencies"
   ],
   "archives": [
     {
@@ -2549,6 +2551,82 @@
           "sha256": "00b356d5780f3e748b80049f2d9561033233f8cc93a3c5d2e019bed6bc40de4d",
           "hashNormalization": "raw",
           "blob": "85b8fc35d541aaa32159109634769a808ae8010c"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v036-video-comment-viewport",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentRefreshContainer.kt",
+          "sha256": "38865ed5d0b7e162afaf69341cc320d5eb03b03bc848da688b686dce1edc8162",
+          "hashNormalization": "raw",
+          "blob": "8bb326d9f2a85bece2bb43d0253536ce3a745091"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSheetHost.kt",
+          "sha256": "e49e06b6dbc936399f689736207edaaa90deb47a1bc26e723519b9594b089445",
+          "hashNormalization": "raw",
+          "blob": "e2b2247a08dec1aff72faa35d0b107bdf4395e86"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSkeletonSlots.kt",
+          "sha256": "892db4df95aec372bd99153348f5aafa831b762f0eded68eca466d4777fbb02d",
+          "hashNormalization": "raw",
+          "blob": "dc30bace7697417f6abda3df22021cfae1f8986f"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoContentSection.kt",
+          "sha256": "c1732422eddf6a06676b77f3d53cee6a9af936a144b35c9f6d6a16c798b18786",
+          "hashNormalization": "raw",
+          "blob": "1a218758c5d7686d58034f7130f93454510c142f"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-video-comment-viewport/manifest.json",
+          "sha256": "4244f31ce6fca7048f3c4e4c8ac031541cb6225622a1c13abe27a4f4be8828f7",
+          "hashNormalization": "raw",
+          "blob": "ca566c66f2129be85a598c40bcfee7e42e80a6ad"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v036-comment-refresh-dependencies",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshBox.kt",
+          "sha256": "0e2dcc71d6dda0a1e0ff6df952a111540f13e83022d6470b2aea89f23afa62c1",
+          "hashNormalization": "raw",
+          "blob": "de1dd750c0fee15f718adb1d08ceb045c4ba4319"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshPolicy.kt",
+          "sha256": "b176222984174db4c73fe4009bbf1401328d38889258dc45b03e33e5878a011f",
+          "hashNormalization": "raw",
+          "blob": "16b1734d4be39f5a3e048cba012ac4d512a774b1"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshPolicyTest.kt",
+          "sha256": "34f0fb7c69f1d9f3fc376e8b50ae833e0ade4cd528b4546f239858ca24225bf6",
+          "hashNormalization": "raw",
+          "blob": "0bac89874ea8f4d53c1965e15e5975917206f35e"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/ComfortablePullToRefreshBox.kt",
+          "sha256": "1a6b2e1f989eadcaab4fe516351d4c09ab56db867fafa1e5b18644d2d320465d",
+          "hashNormalization": "raw",
+          "blob": "8f0ccd8c6abfe2dfebc6017e26f9fe646c6312a6"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/VideoContentDeferredLayout.kt",
+          "sha256": "891f3f44d01bc5bd7b0ee22a0eca1e95c29c6c64c1bd481e8fc887fee071772b",
+          "hashNormalization": "raw",
+          "blob": "b356c7bdb379129afb346768f3eebd13017a9d3a"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/manifest.json",
+          "sha256": "9c684c5a61d6a2847782f64ca660750a73ebd0c65593bd8d31ae5736974ece4c",
+          "hashNormalization": "raw",
+          "blob": "2c67ef88dffb86d4d4d7ad674b441e874dcf66d6"
         }
       ]
     }
@@ -6328,6 +6406,123 @@
         "v036-reply-modifier-delta"
       ],
       "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSkeletonSlots.kt",
+      "localPath": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSkeletonSlots.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "dc30bace7697417f6abda3df22021cfae1f8986f",
+      "sha256": "892db4df95aec372bd99153348f5aafa831b762f0eded68eca466d4777fbb02d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-video-comment-viewport"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "localPath": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSheetHost.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "e2b2247a08dec1aff72faa35d0b107bdf4395e86",
+      "sha256": "e49e06b6dbc936399f689736207edaaa90deb47a1bc26e723519b9594b089445",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-video-comment-viewport"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentRefreshContainer.kt",
+      "localPath": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentRefreshContainer.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "8bb326d9f2a85bece2bb43d0253536ce3a745091",
+      "sha256": "38865ed5d0b7e162afaf69341cc320d5eb03b03bc848da688b686dce1edc8162",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-video-comment-viewport"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "localPath": "desktop/upstream-slices/v036-video-comment-viewport/VideoContentSection.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "1a218758c5d7686d58034f7130f93454510c142f",
+      "sha256": "c1732422eddf6a06676b77f3d53cee6a9af936a144b35c9f6d6a16c798b18786",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-video-comment-viewport"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentDeferredLayout.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-refresh-dependencies/VideoContentDeferredLayout.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "b356c7bdb379129afb346768f3eebd13017a9d3a",
+      "sha256": "891f3f44d01bc5bd7b0ee22a0eca1e95c29c6c64c1bd481e8fc887fee071772b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-comment-refresh-dependencies"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshBox.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "de1dd750c0fee15f718adb1d08ceb045c4ba4319",
+      "sha256": "0e2dcc71d6dda0a1e0ff6df952a111540f13e83022d6470b2aea89f23afa62c1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-comment-refresh-dependencies"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptivePullToRefreshPolicy.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshPolicy.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "16b1734d4be39f5a3e048cba012ac4d512a774b1",
+      "sha256": "b176222984174db4c73fe4009bbf1401328d38889258dc45b03e33e5878a011f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-comment-refresh-dependencies"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AdaptivePullToRefreshPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshPolicyTest.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "0bac89874ea8f4d53c1965e15e5975917206f35e",
+      "sha256": "34f0fb7c69f1d9f3fc376e8b50ae833e0ade4cd528b4546f239858ca24225bf6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-comment-refresh-dependencies"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ComfortablePullToRefreshBox.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-refresh-dependencies/ComfortablePullToRefreshBox.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "8f0ccd8c6abfe2dfebc6017e26f9fe646c6312a6",
+      "sha256": "1a6b2e1f989eadcaab4fe516351d4c09ab56db867fafa1e5b18644d2d320465d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-comment-refresh-dependencies"
+      ],
+      "referenceOnly": false
     }
   ],
   "buildStandaloneInputs": [

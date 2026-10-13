@@ -3,6 +3,7 @@ from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
 import v029_comment_search as comment_search
+from v036_video_comment_viewport import fixed_sources, generate_slots
 PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 CONTENT=BASE+'feature/video/screen/VideoContentSection.kt'
@@ -28,7 +29,9 @@ def generate(repo,output):
         start=m.start();annotation=text.rfind('@Composable',0,start)
         if annotation>=0 and not text[annotation+len('@Composable'):start].strip():start=annotation
         return text[start:end]
-    tab=function(original[CONTENT],'VideoCommentTab').replace('com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(','com.bilipai.desktop.ui.DesktopReplyDissolvableContainer(')
+    selected_original=fixed_sources()[CONTENT]
+    tab=function(selected_original,'VideoCommentTab').replace('com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(','com.bilipai.desktop.ui.DesktopReplyDissolvableContainer(')
+    tab=tab.replace('LocalConfiguration.current.screenHeightDp', 'com.bilipai.desktop.appearance.DesktopWindowConfiguration.current.screenHeightDp')
     header='''package com.android.purebilibili.feature.video.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -43,6 +46,7 @@ import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.ui.components.*
 import com.android.purebilibili.feature.video.viewmodel.CommentSortMode
+import com.android.purebilibili.feature.video.viewmodel.resolveVideoCommentSkeletonSlotCount
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent
 '''
@@ -64,6 +68,12 @@ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextConte
     emit('feature/video/ui/components/CommentSearchSheet.kt',body,path,'Full original local loaded-raw-reply search/filter/highlight/sort/search result UI and helpers. Existing clipboard/feedback and Coil context platform seams only; upstream glassActive=false is retained verbatim.')
     path=BASE+'feature/video/viewmodel/VideoComposerDraftState.kt';body=original[path].replace('import android.net.Uri\n','').replace('List<Uri>','List<String>')
     emit('feature/video/viewmodel/VideoComposerDraftState.kt',body,path,'Full original draft schema/key; Android Uri only maps to selected opaque file URI Strings. Ephemeral same-video state, no persistence or second player.')
+    generate_slots(output)
+    from v036_comment_refresh_dependencies import generate_video_padding
+    generate_video_padding(output)
+    from v029_comment_search import whole_proof
+    proof=whole_proof(function(selected_original,'VideoCommentTab'),tab)
+    (output/'v036-video-comment-tab-proof.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     generate_composer(original,shared,emit,function)
     generate_input_and_fraud(repo,output,original,shared,emit,function)
     p=output/'video-comment-source-identities.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(dict(upstreamCommit=PIN,sources=identities,selections=selections),indent=2,ensure_ascii=False)+'\n',encoding='utf-8',newline='\n')
