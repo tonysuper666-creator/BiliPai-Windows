@@ -37,6 +37,7 @@ internal class DesktopDynamicUsersState(
     var followingsError by mutableStateOf<Throwable?>(null);private set
     var unread by mutableStateOf<Set<Long>>(emptySet());private set
     var showHidden by mutableStateOf(false);private set
+    var sidebarExpanded by mutableStateOf(true);private set
     var filter by mutableStateOf(DynamicUserContentFilter.ALL)
     var visibleTabs by mutableStateOf(resolveDynamicVisibleTabs(preferences.initialVisibleTabs,preferences.initialTabOrder));private set
     private var followings:List<FollowingUser> = emptyList()
@@ -203,6 +204,7 @@ internal class DesktopDynamicUsersState(
     fun updateTimeline(rows:List<DynamicItem>){publish { dynamics=rows;rebuild() }}
     fun updateUserPreferences(pinned:Set<Long>,hidden:Set<Long>){if(owned()){this.pinned=pinned;this.hidden=hidden;rebuild()}}
     fun toggleShowHidden(){if(owned()){showHidden=!showHidden;rebuild()}}
+    fun toggleSidebar(){if(owned())sidebarExpanded=!sidebarExpanded}
     private fun rebuild(){users=applyUserPreferences(resolveMergedFollowedUsers(extractUsersFromFollowings(followings),extractUsersFromLive(live),extractUsersFromDynamicItems(dynamics)),pinned,hidden,showHidden)}
     fun panelUsers()=resolveDynamicUpPanelUsers(users,selfUid,selfFace)
     fun visibleItems():List<DynamicItem> = filterSelectedUserDynamicItems(resolveSelectedUserVisibleItems(dynamics,userItems,selectedUid)

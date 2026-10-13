@@ -6,6 +6,9 @@ import com.android.purebilibili.feature.dynamic.*
 import com.android.purebilibili.feature.settings.DesktopDynamicTabsSettingsFields
 import com.bilipai.desktop.plugins.*
 import com.bilipai.desktop.data.DesktopDynamicCacheSession
+import com.bilipai.desktop.ui.DESKTOP_DYNAMIC_DISPLAY_MODE_KEY
+import com.bilipai.desktop.ui.DesktopDynamicDisplayMode
+import com.bilipai.desktop.ui.parseDesktopDynamicDisplayMode
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
@@ -33,6 +36,10 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
         array.mapNotNull{(it as? JsonPrimitive)?.takeIf{p->p.isString}?.content?.toLongOrNull()}.toSet()}
     val pinned by lazy {users.map{it[setKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS)].orEmpty()}}
     val hidden by lazy {users.map{it[setKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS)].orEmpty()}}
+    private val displayModeKey=DesktopPreferenceKey(DESKTOP_DYNAMIC_DISPLAY_MODE_KEY){value:JsonElement->
+        (value as? JsonPrimitive)?.takeIf{it.isString}?.content}
+    val displayMode by lazy {users.map{parseDesktopDynamicDisplayMode(it[displayModeKey])}}
+    val initialDisplayMode:DesktopDynamicDisplayMode get()=runBlocking{displayMode.first()}
     val initialPinned:Set<Long> get()=runBlocking{pinned.first()}
     val initialHidden:Set<Long> get()=runBlocking{hidden.first()}
     val initialAllTabUsers:Boolean get()=runBlocking{allTabUsers.first()}
@@ -44,6 +51,9 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
     }
     suspend fun setSelectedTab(value:Int)=writeUser {
         mapOf(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB to JsonPrimitive(resolveDynamicSelectedTab(value,5)))
+    }
+    suspend fun setDisplayMode(mode:DesktopDynamicDisplayMode)=writeUser {
+        mapOf(DESKTOP_DYNAMIC_DISPLAY_MODE_KEY to JsonPrimitive(mode.name))
     }
     suspend fun setVisibleTabs(value:Set<String>)=DesktopDynamicTabsSettings.setDynamicTabVisibleTabs(context,value)
     suspend fun setOrder(value:List<String>)=DesktopDynamicTabsSettings.setDynamicTabOrder(context,value)

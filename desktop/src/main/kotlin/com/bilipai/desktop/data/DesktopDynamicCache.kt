@@ -193,7 +193,8 @@ internal class DesktopDynamicCache(
             migrateOwnedLegacy(owner, caller, users, dynamicAccountStorageName(users, owner.mid),
                 listOf(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,
                     DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,
-                    DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB))
+                    DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB,
+                    com.bilipai.desktop.ui.DESKTOP_DYNAMIC_DISPLAY_MODE_KEY))
             store.requireObjectNamespace(name)
             store.preferences(name)
         } catch (cancelled: CancellationException) { throw cancelled }

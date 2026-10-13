@@ -126,4 +126,22 @@ private fun state(scope:CoroutineScope,prefs:DesktopDynamicTabsPreferences=prefs
         assertFailsWith<IllegalStateException>{p.toggleUserPreference("dynamic_pinned_users",81)}
         assertContentEquals(before,Files.readAllBytes(p.context.store.root.resolve("plugin-settings.json")))
     }
+    @Test fun displayModePersistsOriginalEnumNameWithoutReplacingOtherUserKeys():Unit=runBlocking {
+        val one=prefs()
+        assertEquals(DesktopDynamicDisplayMode.SIDEBAR,one.initialDisplayMode)
+        one.setSelectedTab(3)
+        one.setDisplayMode(DesktopDynamicDisplayMode.DRAWER_RIGHT)
+        assertEquals(DesktopDynamicDisplayMode.DRAWER_RIGHT,one.displayMode.first())
+        val disk=Json.parseToJsonElement(Files.readString(one.context.store.root.resolve("plugin-settings.json"))).jsonObject
+        val user=disk["dynamic_user_prefs_42"]!!.jsonObject
+        assertEquals("DRAWER_RIGHT",user[DESKTOP_DYNAMIC_DISPLAY_MODE_KEY]!!.jsonPrimitive.content)
+        assertEquals(3,user["dynamic_selected_tab"]!!.jsonPrimitive.int)
+        val restored=DesktopDynamicTabsPreferences(one.context,one.account)
+        assertEquals(DesktopDynamicDisplayMode.DRAWER_RIGHT,restored.initialDisplayMode)
+        val session=state(this,one)
+        assertTrue(session.sidebarExpanded)
+        session.toggleSidebar();assertFalse(session.sidebarExpanded)
+        session.toggleSidebar();assertTrue(session.sidebarExpanded)
+        session.close();session.toggleSidebar();assertTrue(session.sidebarExpanded)
+    }
 }

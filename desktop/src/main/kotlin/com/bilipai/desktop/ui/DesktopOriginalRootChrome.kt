@@ -1,21 +1,28 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bilipai.desktop.ui
 
-import androidx.compose.foundation.VerticalScrollbar
-import androidx.compose.foundation.defaultScrollbarStyle
-import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.LocalAwtWindow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.android.purebilibili.core.ui.*
+import com.android.purebilibili.core.ui.adaptive.MotionTier
+import com.android.purebilibili.core.ui.components.AppIcon
+import com.android.purebilibili.core.ui.components.AppIconButton
+import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
+import com.android.purebilibili.core.util.LocalWindowSizeClass
 import com.android.purebilibili.feature.home.components.BottomNavItem
+import com.android.purebilibili.feature.home.components.FrostedSideBar
 import com.android.purebilibili.navigation3.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import top.yukonga.miuix.kmp.blur.LayerBackdrop
 
 internal class DesktopOriginalRootChromeBindings(
     val owner:DesktopOriginalLinkedDockOwner,
@@ -33,8 +40,8 @@ internal class DesktopOriginalRootChromeBindings(
     val onSourceReady:(Boolean)->Unit,
 )
 
-/** Windows chrome uses a fixed sidebar and a separate audio row. No overlay dock,
- * captured page layer, phone navigation gesture or screen-width animation is mounted. */
+/** Large windows use the original side rail. Compact windows and Tabletop use the liquid bottom dock.
+ * Video destinations keep the chrome hidden. The profile drawer stays inside HomeScreen. */
 @Composable internal fun DesktopOriginalRootChrome(
     routes: DesktopOriginalRootRouteAssembly,
     pages: DesktopOriginalRootPageBindings,
@@ -54,18 +61,32 @@ internal class DesktopOriginalRootChromeBindings(
     val audioVisible = !video && audio != null && snapshot != null && audio.ownsSnapshot(snapshot) &&
         snapshot.active && visibility.sessionActive && !visibility.inPipMode
     val navigation = binding.nowPlayingNavigation()
+    val homeSettings by routes.root.environment.settings.homeSettings.collectAsState()
+    val navigationSettings by routes.root.environment.settings.navigation.collectAsState()
+    val wallpaperUri by routes.root.environment.settings.homeWallpaperUri.collectAsState()
+    val windowClass = LocalWindowSizeClass.current
+    val posture = LocalAppWindowAdaptiveInfo.current.posture
+    val placement = resolveDesktopShellNavigationPlacement(
+        video, windowClass, navigationSettings.tabletUseSidebar, posture)
+    val useSidebar = placement == DesktopShellNavigationPlacement.SIDEBAR
+    val useBottomDock = placement == DesktopShellNavigationPlacement.BOTTOM_DOCK
+    val bottomReserved = useBottomDock && pages.bottomBarVisible()
+    val bottomPadding = rememberAppBottomBarContentPadding(
+        navigationBarsBottom = binding.navigationBarsBottom(),
+        reserveBottomBar = bottomReserved,
+        isBottomBarFloating = homeSettings.isBottomBarFloating,
+        hasUiSkinDecoration = false,
+    )
     SideEffect {
         audio?.publishBarOverlayVisible(audioVisible)
     }
     DisposableEffect(audio) { onDispose { audio?.publishBarOverlayVisible(false) } }
     CompositionLocalProvider(
-        LocalBottomBarVisible provides false,
-        LocalBottomBarContentPadding provides 0.dp,
+        LocalBottomBarVisible provides bottomReserved,
+        LocalBottomBarContentPadding provides if (bottomReserved) bottomPadding else 0.dp,
         LocalSetBottomBarVisible provides pages.setBottomBarVisible,
         LocalGlobalWallpaperBackdropVisible provides false,
     ) {
-        val homeSettings by routes.root.environment.settings.homeSettings.collectAsState()
-        val wallpaperUri by routes.root.environment.settings.homeWallpaperUri.collectAsState()
         CompositionLocalProvider(LocalDesktopHomeMediaPorts provides routes.root.media) {
         DesktopWindowsGlassBackgroundHost(
             sourceOwner = routes.root, wallpaperUri = wallpaperUri, home = homeSettings,
@@ -81,38 +102,40 @@ internal class DesktopOriginalRootChromeBindings(
         DisposableEffect(binding.owner) { onDispose { binding.onSourceReady(false) } }
         // The Home renderer still independently requires its OWN ready backdrop.
         // This publishes the real Windows shader capability gate, not feed pixels.
+        val haze = if (homeSettings.isBottomBarBlurEnabled) pages.window.globalHaze() else null
+        Box(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxSize()) {
-            if (!video) DesktopWindowsGlassSurface(shape = androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) {
-                val sidebarScroll = rememberScrollState()
-                Box(Modifier.width(172.dp).fillMaxHeight()) {
-                    Column(Modifier.fillMaxSize().verticalScroll(sidebarScroll).padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("BiliPai", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(8.dp))
-                        TextButton(onClick = { if (routes.owns()) binding.actions.searchClick() }, modifier = Modifier.fillMaxWidth()) { Text("搜索") }
-                        HorizontalDivider(Modifier.padding(vertical = 6.dp))
-                        visibleItems.forEach { item ->
-                            val selected = key == BiliPaiNavKey.MainHost && item == currentItem || key.toLegacyRoute() == item.route
-                            if (selected) FilledTonalButton(onClick = { if (routes.owns()) onItemClick(item) }, modifier = Modifier.fillMaxWidth()) { Text(item.label) }
-                            else TextButton(onClick = { if (routes.owns()) onItemClick(item) }, modifier = Modifier.fillMaxWidth()) { Text(item.label) }
-                        }
-                        TextButton(onClick = { if (routes.owns()) routes.push(BiliPaiNavKey.DownloadList) }, modifier = Modifier.fillMaxWidth()) { Text("下载与离线") }
-                        binding.accountSwitcher?.let { switch ->
-                            HorizontalDivider(Modifier.padding(vertical = 6.dp))
-                            TextButton(onClick = { if (routes.owns()) switch() }, modifier = Modifier.fillMaxWidth()) { Text("切换账号") }
-                        }
+            if (useSidebar) Column(Modifier.fillMaxHeight()) {
+                FrostedSideBar(
+                    currentItem = currentItem,
+                    onItemClick = { if (routes.owns()) onItemClick(it) },
+                    modifier = Modifier.weight(1f),
+                    hazeState = haze,
+                    onHomeDoubleTap = { if (routes.owns()) binding.actions.homeDoubleTap() },
+                    onDynamicDoubleTap = { if (routes.owns()) binding.actions.dynamicDoubleTap() },
+                    visibleItems = visibleItems,
+                    itemColorIndices = navigationSettings.bottomBarItemColors,
+                    itemLabels = navigationSettings.bottomBarItemLabels,
+                    sidebarExpanded = resolveDesktopShellSidebarExpanded(
+                        navigationSettings.sidebarExpanded, windowClass, posture),
+                    onSidebarExpandedChange = { expanded ->
+                        binding.scope.launch { binding.preferences.setSidebarExpanded(expanded) }
+                    },
+                    onToggleSidebar = binding.actions.toggleSidebar,
+                    onAccountSwitchClick = binding.accountSwitcher,
+                )
+                DesktopWindowsGlassSurface(shape = androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) {
+                    AppIconButton(onClick = { if (routes.owns()) binding.actions.searchClick() }) {
+                        AppIcon(rememberAppSearchIcon(), "搜索")
                     }
-                    if (sidebarScroll.maxValue > 0) VerticalScrollbar(
-                        adapter = rememberScrollbarAdapter(sidebarScroll),
-                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight().padding(vertical = 12.dp, horizontal = 3.dp),
-                        style = defaultScrollbarStyle().copy(thickness = 4.dp,
-                            unhoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .28f),
-                            hoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .60f)),
-                    )
+                    AppIconButton(onClick = { if (routes.owns()) routes.push(BiliPaiNavKey.DownloadList) }) {
+                        AppIcon(rememberAppDownloadIcon(), "下载与离线")
+                    }
                 }
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) { content() }
-                if (audioVisible && audio != null && snapshot != null) DesktopWindowsGlassSurface(Modifier.fillMaxWidth()) {
+                if (useSidebar && audioVisible && audio != null && snapshot != null) DesktopWindowsGlassSurface(Modifier.fillMaxWidth()) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(snapshot.item.title, Modifier.weight(1f), maxLines = 1)
@@ -124,6 +147,47 @@ internal class DesktopOriginalRootChromeBindings(
                     }
                 }
             }
+        }
+        if (useBottomDock) {
+            val readyGlass = glassMaterial?.takeIf {
+                it.renderer.supported && it.sourceReady && it.owns() && it.window === LocalAwtWindow.current
+            }
+            val backdrop = readyGlass?.backdrop as? LayerBackdrop
+            Box(Modifier.align(Alignment.BottomCenter).zIndex(1f).fillMaxWidth()) {
+                DesktopOriginalFrostedAudioNavigation(
+                    preferenceContext = routes.root.environment.pluginContext,
+                    owner = binding.owner,
+                    navigation = DesktopOriginalFrostedNavigationState(
+                        currentItem = currentItem,
+                        visibleItems = visibleItems,
+                        itemColorIndices = navigationSettings.bottomBarItemColors,
+                        itemLabels = navigationSettings.bottomBarItemLabels,
+                        dynamicUnreadCount = binding.dynamicUnreadCount(),
+                        isFloating = homeSettings.isBottomBarFloating,
+                        isMainHost = key == BiliPaiNavKey.MainHost,
+                        isTopLevelDestination = key == BiliPaiNavKey.MainHost ||
+                            visibleItems.any { key.toLegacyRoute() == it.route },
+                        transitionRunning = false,
+                        forceLowBlurBudget = false,
+                        collapseLinkedDock = !pages.bottomBarVisible() ||
+                            (currentItem == BottomNavItem.DYNAMIC && pages.scrollOffset.floatValue > 50f),
+                        motionTier = MotionTier.Normal,
+                        indicatorPosition = null,
+                        pagerScrolling = { false },
+                        animateNowPlayingPresence = true,
+                        searchLaunchKey = binding.searchLaunchKey(),
+                    ),
+                    actions = binding.actions,
+                    audio = audio,
+                    nowPlayingVisibility = visibility,
+                    nowPlayingNavigation = navigation,
+                    hazeState = haze,
+                    backdrop = backdrop,
+                    skinDecoration = null,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
         }
         }
         }

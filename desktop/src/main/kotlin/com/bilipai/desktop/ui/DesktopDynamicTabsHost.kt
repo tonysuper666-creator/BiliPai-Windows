@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-/** Actual native-theme original controls; the Android sidebar/drawer/glass hosts remain separate. */
+/** Original five dynamic hosts. Liquid tabs follow the shell glass flag; the native row remains the off path. */
 @Composable internal fun DesktopDynamicTabsHost(
     users:DesktopDynamicUsersState,
     timelinePreferences:DesktopDynamicTimelinePreferences,
@@ -64,24 +64,44 @@ import kotlinx.coroutines.sync.withLock
     }
     val allItems=timeline("all").page.items
     LaunchedEffect(users,allItems){users.updateTimeline(allItems)}
+    val initialDisplayMode=remember(preferences){preferences.initialDisplayMode}
+    val displayMode by preferences.displayMode.collectAsState(initialDisplayMode)
     val listState=rememberLazyListState()
-    Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().padding(horizontal=20.dp)) {
-            AppNativeTabRow(options=users.visibleTabs.map{AppSegmentOption(it.logicalIndex,it.title)},
-                selectedValue=users.selectedLogicalTab,modifier=Modifier.weight(1f),onSelectionChange={write{users.selectTab(it)}})
-            trailing()
-        }
-        if(shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab,
-                users.selectedLogicalTab==0&&showAllUsers)) {
+    val showHorizontalUsers=shouldShowDynamicHorizontalUserList(displayMode.isHorizontalUserList(),users.selectedLogicalTab,
+        users.selectedLogicalTab==0&&showAllUsers)
+    DesktopDynamicModeFrame(
+        mode=displayMode,
+        sidebarExpanded=users.sidebarExpanded,
+        onToggleSidebar=users::toggleSidebar,
+        showHorizontalUsers=showHorizontalUsers,
+        panelUsers=users.panelUsers(),
+        selectedUid=users.selectedUid,
+        selfUid=users.selfUid,
+        showHidden=users.showHidden,
+        hiddenCount=users.hiddenCount,
+        unread=users.unread,
+        onUserClick={users.selectUser(it,onOpenUser)},
+        onToggleShowHidden=users::toggleShowHidden,
+        onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
+        onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}},
+        horizontalUsers={
             HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
                 showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
                 onUserClick={users.selectUser(it,onOpenUser)},onToggleShowHidden=users::toggleShowHidden,
                 onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
                 onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
-        }
-        settingError?.let{CommunityFailure(it,onLogin){settingError=null}}
-        users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
-        Box(Modifier.weight(1f)) {
+        },
+        header={
+            DesktopDynamicTabStrip(users.visibleTabs,users.selectedLogicalTab,displayMode,
+                onSelectLogicalTab={write{users.selectTab(it)}},
+                onDisplayModeChange={write{preferences.setDisplayMode(it)}},
+                trailing=trailing)
+        },
+        notices={
+            settingError?.let{CommunityFailure(it,onLogin){settingError=null}}
+            users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
+        },
+        feed={
             if(activeTimeline!=null) {
                 val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
                 DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
@@ -89,8 +109,8 @@ import kotlinx.coroutines.sync.withLock
             } else if(users.selectedUid!=null) {
                 DesktopDynamicSelectedUserFeed(users,timelinePreferences,onOpenUser,onLogin,transform,active,row)
             } else AppText("选择关注用户查看动态",Modifier.padding(20.dp),color=MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-    }
+        },
+    )
 }
 
 @Composable private fun DesktopDynamicSelectedUserFeed(
