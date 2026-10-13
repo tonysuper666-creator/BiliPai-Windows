@@ -12,6 +12,7 @@ from v029_reply_renderer import renderer as advance_reply_renderer
 from v032_comment_media import adapt as adapt_comment_media
 from v033_comment_refresh import apply_selected as apply_v033_comment_refresh
 from pathlib import Path
+from v036_comment_viewport import selected_source, skeleton_declarations
 import hashlib
 import importlib.util
 import json
@@ -39,7 +40,8 @@ SOURCES = [REPLY, SUB, SAVER, SHEET,
 
 
 def read(repo, path):
-    return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
+    canonical=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
+    return selected_source(path,canonical)
 
 
 def load(repo, name, path):
@@ -277,7 +279,16 @@ import com.google.zxing.qrcode.QRCodeWriter
 
     original = read(repo, SHEET)
     declarations = media.function(original, 'dynamicInlineCommentItems', parser) + '\n\n' + appearance.declarations(parser, original,
-        ['DynamicInlineCommentComposer', 'DynamicCommentComposer'])
+        ['DynamicInlineCommentComposer', 'DynamicCommentComposer', 'DYNAMIC_COMMENT_ITEM_CONTENT_TYPE',
+         'DYNAMIC_COMMENT_FADE_IN_MILLIS','DYNAMIC_COMMENT_FADE_OUT_MILLIS',
+         'DYNAMIC_COMMENT_PLACEMENT_DAMPING','DYNAMIC_COMMENT_PLACEMENT_STIFFNESS'])
+    declarations += '\n\n'+media.function(original,'dynamicCommentSkeletonItems',parser)
+    without_receiver=original.replace('internal fun LazyItemScope.dynamicCommentItemModifier()', 'internal fun dynamicCommentItemModifier()',1)
+    item_modifier=appearance.declarations(parser,without_receiver,['dynamicCommentItemModifier'])
+    item_modifier=item_modifier.replace('internal fun dynamicCommentItemModifier()', 'internal fun LazyItemScope.dynamicCommentItemModifier()',1)
+    assert item_modifier.strip() in original and '} else {' in item_modifier
+    declarations+='\n\n'+item_modifier
+
     # Android Uri is represented by the existing owner-selected file URI on Windows.
     declarations = declarations.replace('List<Uri>', 'List<String>')
     picker_begin = declarations.index('    val picker = rememberLauncherForActivityResult(')
@@ -299,21 +310,12 @@ import com.google.zxing.qrcode.QRCodeWriter
                                         '// Physical Windows keyboard; original focus and IME action are retained.')
     declarations = declarations.replace('                keyboardController?.show()\n', '')
     declarations = declarations.replace('            keyboardController?.hide()\n', '')
-    # The actual original native branch keeps its shape, height, focus, IME and
-    # field contents. Full reusable liquid dock rendering is separately pending.
-    start = declarations.index('        BottomBarMatchedReusableLiquidDock(')
-    native_body = declarations.index('            val fieldColor = if (liquidChromeActive)', start)
-    declarations = declarations[:start] + '''        Box(
-            modifier = Modifier.weight(1f).height(composerHeight).clip(dockShape).background(commentFieldContainerColor)
-        ) {
-            val liquidChromeActive = false // Actual Windows native fallback capability.
-''' + declarations[native_body:]
-    declarations = declarations.replace('    val composerLensIntensity = resolveFloatingDockGeometryScale(composerHeight.value)\n', '')
     emit(SHEET, '''package com.android.purebilibili.feature.dynamic.components
 import androidx.compose.runtime.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
@@ -337,10 +339,17 @@ import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.*
 import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.core.ui.skeleton.CommentListColumnSkeleton
+import com.android.purebilibili.core.ui.skeleton.CommentListItemSkeleton
+import com.android.purebilibili.feature.dynamic.DYNAMIC_COMMENT_SKELETON_MIN_SLOTS
+import com.android.purebilibili.core.ui.LocalAppThemeConfig
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import com.android.purebilibili.data.model.response.ReplyItem
 import com.android.purebilibili.feature.dynamic.*
 import com.android.purebilibili.feature.video.ui.components.*
 import com.android.purebilibili.feature.home.components.resolveSharedBottomBarCapsuleShape
+import com.android.purebilibili.feature.home.components.BottomBarMatchedReusableLiquidDock
+import com.android.purebilibili.feature.home.components.resolveFloatingDockGeometryScale
 import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
 import kotlinx.coroutines.delay
 ''' + declarations, 'DesktopOriginalDynamicInlineReplyUi.kt')
@@ -366,11 +375,7 @@ import com.android.purebilibili.core.ui.components.*
 
     path = BASE + 'core/ui/skeleton/ContentLoadingSkeletons.kt'
     original = read(repo, path)
-    body = appearance.declarations(parser, original,
-        ['rememberContentSkeletonPulse', 'rememberContentSkeletonBlockColor', 'ContentSkeletonBlock',
-         'CommentListItemSkeleton', 'CommentListColumnSkeleton',
-         'CONTENT_SKELETON_PULSE_DURATION_MILLIS', 'CONTENT_SKELETON_LIGHT_MIN_ALPHA',
-         'CONTENT_SKELETON_LIGHT_MAX_ALPHA', 'CONTENT_SKELETON_DARK_MIN_ALPHA', 'CONTENT_SKELETON_DARK_MAX_ALPHA'])
+    body = skeleton_declarations(parser,appearance)
     emit(path, '''package com.android.purebilibili.core.ui.skeleton
 import androidx.compose.runtime.*
 import androidx.compose.animation.core.*
@@ -444,6 +449,8 @@ import com.bilipai.desktop.ui.LocalDesktopCommentBindings
     end = original.index('                val floatingCommentComposer', begin)
     body = original[begin:end]
     body = body.replace('interactionViewModel', 'session').replace('state.item', 'item')
+    body = replace_once(body, 'onShowReactions = { reactionItem = item },',
+        'onShowReactions = onShowReactions?.let { show -> { show(item) } },')
     body = replace_once(body, 'session.postComment(item.id_str, message, images) {',
         'session.postComment(item.id_str, message, images, onSubmissionCancelled = { onResult(false) }) {')
     body = body.replace('com.android.purebilibili.core.store.TokenManager.midCache', 'currentMid')
@@ -482,6 +489,7 @@ import kotlinx.coroutines.ensureActive
     session: DesktopOriginalDynamicReplySession,
     currentMid: Long?,
     onUserClick: (Long) -> Unit,
+    onShowReactions: ((DynamicItem) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val platform = LocalDesktopCommentBindings.current
@@ -491,6 +499,8 @@ import kotlinx.coroutines.ensureActive
     val commentsLoading = commentState.isLoading
     val commentsLoadingMore = commentState.isLoadingMore
     val commentTotalCount = commentState.totalCount
+    val commentSkeletonSlotCount = com.android.purebilibili.feature.dynamic.resolveDynamicCommentSkeletonSlotCount(
+        com.bilipai.desktop.appearance.DesktopWindowConfiguration.current.screenHeightDp)
     val commentSortMode by session.dynamicCommentSortMode.collectAsState()
     val commentReplyTarget by session.commentReplyTarget.collectAsState()
     var showImagePreview by remember { mutableStateOf(false) }

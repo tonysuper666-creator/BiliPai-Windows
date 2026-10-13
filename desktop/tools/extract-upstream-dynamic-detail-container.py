@@ -3,6 +3,7 @@ Direct sources are emitted only in --standalone and copied once by the source re
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from v036_comment_viewport import selected_source
 import hashlib
 import importlib.util
 import json
@@ -32,7 +33,7 @@ def read(path):
     if STANDALONE:
         original = subprocess.run(['git','show',ORIGINAL_COMMIT+':'+path],cwd=REPO,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
         assert current == original, path
-    return current
+    return selected_source(path,current)
 
 def load(name,path):
     spec = importlib.util.spec_from_file_location(name,REPO/path)
@@ -80,9 +81,10 @@ def detail_layout():
                     }
                 }
 '''+success[last:]
-    reaction_header = '                            onSortModeChange = interactionViewModel::setDynamicCommentSortMode,'
-    assert success.count(reaction_header) == 1, 'Original reaction header mount changed'
-    success=success.replace(reaction_header,reaction_header + '\n                            onShowReactions = onShowReactions?.let { show -> { show(state.item) } },',1)
+    original_reaction='                            onShowReactions = { reactionItem = state.item },'
+    assert success.count(original_reaction)==1
+    success=success.replace(original_reaction,
+        '                            onShowReactions = onShowReactions?.let { show -> { show(state.item) } },',1)
     success=success.replace('interactionViewModel','session')
     success=success.replace('com.android.purebilibili.core.store.TokenManager.midCache','currentMid')
     success=success.replace('                        shouldLoadMoreDynamicDetailComments(',
@@ -95,18 +97,11 @@ def detail_layout():
     success=success.replace('session.postComment(state.item.id_str, message, images) {',
         'session.postComment(state.item.id_str, message, images, onSubmissionCancelled = { onResult(false) }) {', 1)
     assert 'android.widget.' not in success
-    blur_before = """                                    AndroidRenderEffect.createBlurEffect(
-                                        blurFrame.blurRadiusPx,
-                                        blurFrame.blurRadiusPx,
-                                        Shader.TileMode.CLAMP,
-                                    ).asComposeRenderEffect()"""
-    assert success.count(blur_before)==1,'Changed original covered subreply blur call'
-    success=success.replace(blur_before,'                                    desktopSubReplyBlurEffects.resolve(blurFrame.blurRadiusPx)',1)
-    blur_owner_before='                val coveredBlurProgress = if (subReplyState.visible) subReplyCoveredBlurProgress else 0f'
-    assert success.count(blur_owner_before)==1,'Changed original covered subreply owner'
-    success=success.replace(blur_owner_before,
-        '                val desktopSubReplyBlurEffects = remember(state.item.id_str) { DesktopDetailBlurEffectCache() }\n'+blur_owner_before,1)
-    success=success.replace('Build.VERSION.SDK_INT >= Build.VERSION_CODES.S','desktopSubReplyBlurEffects.supported')
+    cache_owner='                val coveredBlurEffectCache = remember { BlurRenderEffectCache() }'
+    assert success.count(cache_owner)==1
+    success=success.replace(cache_owner,
+        '                val coveredBlurEffectCache = remember(state.item.id_str) { DesktopDetailBlurEffectCache() }',1)
+    success=success.replace('Build.VERSION.SDK_INT >= Build.VERSION_CODES.S','coveredBlurEffectCache.supported')
     thread=between(source,'                DynamicSubReplyPreviewHost(', '                if (showImagePreview && previewImages.isNotEmpty())')
     thread=thread.replace('interactionViewModel','session')
     thread=thread.replace('com.android.purebilibili.core.store.TokenManager.midCache','currentMid')
@@ -187,6 +182,8 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
     val commentsRefreshError = commentState.refreshError
     val commentsLoadingMore = commentState.isLoadingMore
     val commentTotalCount = commentState.totalCount
+    val commentSkeletonSlotCount = com.android.purebilibili.feature.dynamic.resolveDynamicCommentSkeletonSlotCount(
+        com.bilipai.desktop.appearance.DesktopWindowConfiguration.current.screenHeightDp)
     val commentSortMode by session.dynamicCommentSortMode.collectAsState()
     val subReplyState by session.subReplyState.collectAsState()
     val commentReplyTarget by session.commentReplyTarget.collectAsState()

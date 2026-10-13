@@ -1,94 +1,74 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "e3e1914cb45ef26bd37ebc69b7c100ab2b3f1ff6",
-  "windowsVersion": "0.2.427.74",
-  "createdAt": "2026-10-13T19:18:55.031957+00:00",
+  "baseHead": "507584a14e4061b7a51ac4084cf3b561277e0147",
+  "windowsVersion": "0.2.427.75",
+  "createdAt": "2026-10-13T19:52:23.783448+00:00",
   "sources": [
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "ea1ea148782bd9af65556350ffbb186f9034aa60593f4774ded3ecad986eac13"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheStore.kt",
-      "normalization": "lf",
-      "sha256": "42a5aafb9bfbcc49d200215c0a6ec3d47417f4367544369d59234c9d07cb1b0a"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
-      "normalization": "lf",
-      "sha256": "a6d4ae0805335f9dbd460574d7bcde954426b42b8bb1a64500e543115ae92b67"
+      "sha256": "f388499d5236bab10d0f4bb4e28af9bdedbb140eefbf2614510756660ffda7ef"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
       "normalization": "lf",
-      "sha256": "edbc7cbc0e6faf7c797ca3706557e3321f428bbbc0d9c7771b6ea24ed6f3add8"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicyTest.kt",
-      "normalization": "lf",
-      "sha256": "c788cdf76ded87671cbea6bbc5340bc1f0ba62e88a9a0898de3bcdf2e87fe2de"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheConsumptionTest.kt",
-      "normalization": "lf",
-      "sha256": "04a38c6eda0c2654b30124ef0a908a02f7df796df97c93b9324bf0328bb8284d"
+      "sha256": "289fe1a473b97f4f72686a2320851b25abe4b5decefa7bd81e58a6bcc8149fb7"
     },
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "048ada5d7e98e2dd34c85a04491cd3bd02c911725051fba04021b073ee68d460"
+      "sha256": "58b42cbff13c02bb061f923fc162f03a6e90c12a68ef9d501509a4154f386bca"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
       "normalization": "lf",
-      "sha256": "ae448d8c3cf82ba4a9004f4d09f44c85b4de97c2d9acac8ab1b4c97de8338c78"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
-      "normalization": "lf",
-      "sha256": "2033fd70c70ee3f5334fa276c1b3e68b9abb49a11eed151570879fc85479cd4f"
+      "sha256": "b1c42ce0d7435813d9b003e72462e34ad64988eae436f6ea2a705c017bb4eafa"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-reply.py",
       "normalization": "lf",
-      "sha256": "b4440bd6cda3cdee2c4d14e185dd9652ab1b80780857ce626ad117ac4a472d70"
+      "sha256": "9f5cedee1a3c8c8b679f211e193187d36b22ffafc6c24654e3a0140ff1628696"
     },
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "5c042f56c1903210471eb051c3928561b3cb9d921e78ad50016b526160513694"
+      "sha256": "4acb3418209f24557589ee0e94482f868fa793880e674e1882accabf8bcc8a4b"
     },
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "96f735d5aad7e33932e04752f9b407da6550e86bc34313d72df39b5cb10d0241"
+      "sha256": "3d3511d9a2f1cfd152eb5cc28b299d5b8cfa69e726d4a9db783db4b93a59d4f4"
     },
     {
-      "path": "desktop/tools/v036_dynamic_comment_cache.py",
+      "path": "desktop/tools/v036_comment_viewport.py",
       "normalization": "lf",
-      "sha256": "333352e763e10687dc1a3d7e65826dcb07158043f37ff6ea96bee91d92ae062e"
+      "sha256": "42a81b0c17f35c97725aed4e8426f0f2f083dbd273f34ea7e40d9d97f2de8f25"
     },
     {
-      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/DynamicCommentLoadPolicy.kt",
+      "path": "desktop/upstream-slices/v036-comment-viewport/ContentLoadingSkeletons.kt",
       "normalization": "raw",
-      "sha256": "d549734ddf1afcf3f0112123fb95234cb487b151e4ddd6485dab6149a2bba3dc"
+      "sha256": "a2e9366a7514dd80fe5ad2bed532c46610c22a901092c7b2d8b0968246e2ef28"
     },
     {
-      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/DynamicViewModel.kt",
+      "path": "desktop/upstream-slices/v036-comment-viewport/DynamicCommentSheet.kt",
       "normalization": "raw",
-      "sha256": "1519d7f62101fe5eb077e1cefec4551ce9f80b89588979dc237e81dda4e156c2"
+      "sha256": "adff166b03b65795d63ee776a4201469f80ea060f3b6ef6d41749326751f9e97"
     },
     {
-      "path": "desktop/upstream-slices/v036-dynamic-comment-cache/manifest.json",
+      "path": "desktop/upstream-slices/v036-comment-viewport/DynamicDetailScreen.kt",
       "normalization": "raw",
-      "sha256": "29d51dc3e89ff4561f06b2c524199e11ea5cd3628c383b90b631118264ea8f61"
+      "sha256": "c4c7691fdb5f4bf1a705bd97e3c1c72d4503972c55604744b88aa9fe989e25c4"
+    },
+    {
+      "path": "desktop/upstream-slices/v036-comment-viewport/manifest.json",
+      "normalization": "raw",
+      "sha256": "02ed993667a5daa4157e55b5699de36190d6ed673df5669dabeafaa5e06d0c10"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "02df0f5d2568adec475aa08af5ccb3dbc8dd232efa3b3824fe2c3edf7c591a69"
+      "sha256": "3fde934402c30b2d114812c04a37ea43130d61aa7deb8a425ad3286577d5cd26"
     }
   ],
   "classes": {

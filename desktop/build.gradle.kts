@@ -1219,6 +1219,8 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
     inputs.file("tools/v021_comment_renderer.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v036_comment_viewport.py")
+    inputs.dir("upstream-slices/v036-comment-viewport")
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-reply"))
 }
 
@@ -1249,6 +1251,8 @@ val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
         "tools/sync-upstream.py")
     inputs.files(sources.filter { "dynamic-detail-container" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v036_comment_viewport.py")
+    inputs.dir("upstream-slices/v036-comment-viewport")
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-container"))
 }
 

@@ -68,7 +68,8 @@
     "desktop/upstream-slices/v035-dynamic-preview",
     "desktop/upstream-slices/v036-comment-route",
     "desktop/upstream-slices/v036-video-comment-cache",
-    "desktop/upstream-slices/v036-dynamic-comment-cache"
+    "desktop/upstream-slices/v036-dynamic-comment-cache",
+    "desktop/upstream-slices/v036-comment-viewport"
   ],
   "archives": [
     {
@@ -2495,6 +2496,35 @@
           "sha256": "29d51dc3e89ff4561f06b2c524199e11ea5cd3628c383b90b631118264ea8f61",
           "hashNormalization": "raw",
           "blob": "c51a4b0a0c9f94e909c732c1e4fb33d2525b6b64"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v036-comment-viewport",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v036-comment-viewport/ContentLoadingSkeletons.kt",
+          "sha256": "a2e9366a7514dd80fe5ad2bed532c46610c22a901092c7b2d8b0968246e2ef28",
+          "hashNormalization": "raw",
+          "blob": "d0c857546b415c14a90b10bc6df50570946b61c6"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-viewport/DynamicCommentSheet.kt",
+          "sha256": "adff166b03b65795d63ee776a4201469f80ea060f3b6ef6d41749326751f9e97",
+          "hashNormalization": "raw",
+          "blob": "abb16a3b41b8b4bd553d4ba40a6c7564f3275c23"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-viewport/DynamicDetailScreen.kt",
+          "sha256": "c4c7691fdb5f4bf1a705bd97e3c1c72d4503972c55604744b88aa9fe989e25c4",
+          "hashNormalization": "raw",
+          "blob": "f09f681b229721793c6e0a5b6158a1a7db027449"
+        },
+        {
+          "path": "desktop/upstream-slices/v036-comment-viewport/manifest.json",
+          "sha256": "02ed993667a5daa4157e55b5699de36190d6ed673df5669dabeafaa5e06d0c10",
+          "hashNormalization": "raw",
+          "blob": "a04fd21df676bc728ff279c128bbe82d7142b6c8"
         }
       ]
     }
@@ -6207,6 +6237,45 @@
       "kind": "adaptedSource",
       "features": [
         "v036-complete-dynamic-comment-cache"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-viewport/ContentLoadingSkeletons.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "d0c857546b415c14a90b10bc6df50570946b61c6",
+      "sha256": "a2e9366a7514dd80fe5ad2bed532c46610c22a901092c7b2d8b0968246e2ef28",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-dynamic-comment-viewport"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-viewport/DynamicDetailScreen.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "f09f681b229721793c6e0a5b6158a1a7db027449",
+      "sha256": "c4c7691fdb5f4bf1a705bd97e3c1c72d4503972c55604744b88aa9fe989e25c4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-dynamic-comment-viewport"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "localPath": "desktop/upstream-slices/v036-comment-viewport/DynamicCommentSheet.kt",
+      "upstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+      "blob": "abb16a3b41b8b4bd553d4ba40a6c7564f3275c23",
+      "sha256": "adff166b03b65795d63ee776a4201469f80ea060f3b6ef6d41749326751f9e97",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v036-original-dynamic-comment-viewport"
       ],
       "referenceOnly": false
     }

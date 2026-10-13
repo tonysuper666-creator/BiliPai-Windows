@@ -925,16 +925,16 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 279)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 271)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 66)
-        self.assertEqual(len(self.inventory["archives"]), 70)
+        self.assertEqual(len(entries), 282)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 274)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 67)
+        self.assertEqual(len(self.inventory["archives"]), 71)
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
                             ("v034-pgc-initial-detail", 2), ("v034-next-watch-ui", 3),
                             ("v035-autoplay-continuation", 1), ("v035-favorite-cover", 5),
-                            ("v035-story", 6), ("v035-story-pager", 1), ("v035-dynamic-link", 7), ("v035-ambient", 4), ("v035-scrollable-lists", 1), ("v035-dynamic-preview", 5), ("v036-comment-route", 2), ("v036-video-comment-cache", 5), ("v036-dynamic-comment-cache", 2)):
+                            ("v035-story", 6), ("v035-story-pager", 1), ("v035-dynamic-link", 7), ("v035-ambient", 4), ("v035-scrollable-lists", 1), ("v035-dynamic-preview", 5), ("v036-comment-route", 2), ("v036-video-comment-cache", 5), ("v036-dynamic-comment-cache", 2), ("v036-comment-viewport", 3)):
             directory = "desktop/upstream-slices/" + root
             with self.subTest(root=root):
                 self.assertIn(directory, self.inventory["buildInputRoots"])
@@ -1508,10 +1508,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 279)
+        self.assertEqual(len(self.load()), 282)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 279)
+        self.assertEqual(len(self.load()), 282)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1528,7 +1528,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 279)
+                self.assertEqual(len(entries), 282)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

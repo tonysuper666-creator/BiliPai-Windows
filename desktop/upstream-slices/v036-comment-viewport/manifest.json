@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamTag": "v0.3.6",
+  "fixedUpstreamCommit": "3608e0347ba3314ac74190d724d78598fdbad879",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "filename": "ContentLoadingSkeletons.kt",
+      "bytes": 24990,
+      "sha256Bytes": "a2e9366a7514dd80fe5ad2bed532c46610c22a901092c7b2d8b0968246e2ef28",
+      "gitBlob": "d0c857546b415c14a90b10bc6df50570946b61c6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "filename": "DynamicDetailScreen.kt",
+      "bytes": 49575,
+      "sha256Bytes": "c4c7691fdb5f4bf1a705bd97e3c1c72d4503972c55604744b88aa9fe989e25c4",
+      "gitBlob": "f09f681b229721793c6e0a5b6158a1a7db027449"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "filename": "DynamicCommentSheet.kt",
+      "bytes": 79680,
+      "sha256Bytes": "adff166b03b65795d63ee776a4201469f80ea060f3b6ef6d41749326751f9e97",
+      "gitBlob": "abb16a3b41b8b4bd553d4ba40a6c7564f3275c23"
+    }
+  ],
+  "wholeScreensPorted": false
+}
