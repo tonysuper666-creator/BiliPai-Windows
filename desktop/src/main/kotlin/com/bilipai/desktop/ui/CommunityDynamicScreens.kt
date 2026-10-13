@@ -225,7 +225,12 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
         csrfAvailable={!repository.authCookies()["bili_jct"].isNullOrBlank()},
         detailLoader={target->operations.getDynamicDetail(target,latestItem?.takeIf{it.id_str==target},
             onArticleViewed=history)},imageProvider=selectedCommentImages::read)}
-    val replySession=remember(alive){DesktopOriginalDynamicReplySession(id,pageScope,requests,
+    val commentCache=remember(alive){repository.dynamicCommentCacheStore.bind(::owned) { action ->
+        synchronized(exportOwnerLock) {
+            if (owned()) { action(); true } else false
+        }
+    }} ?: return
+    val replySession=remember(alive){DesktopOriginalDynamicReplySession(id,pageScope,requests,commentCache,
         seedItem={latestItem?.takeIf{it.id_str==id}},stillOwned=::owned)}
     val snackbar=remember(alive){SnackbarHostState()}
     val commentPickers=remember(alive,saveParent){DesktopDynamicEditorWindowsPickers(selectedCommentImages,::owned,
@@ -277,10 +282,10 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
             com.android.purebilibili.feature.dynamic.components.unfoldRelatedDynamicItems(it,target)}},
     )
     LaunchedEffect(replySession) {
-        combine(replySession.selectedCommentTarget,replySession.commentsLoading,replySession.commentTotalCount) {
-            target,isLoading,count->Triple(target,isLoading,count)
-        }.collect { (target,isLoading,count)->
-            if(target!=null&&!isLoading&&count>=0&&owned()&&replySession.isOwned()) {
+        replySession.commentUiState.collect { state ->
+            val target=replySession.selectedCommentTarget.value
+            val count=state.totalCount
+            if(target!=null&&state.dynamicId==id&&!state.isLoading&&count>=0&&owned()&&replySession.isOwned()) {
                 val current=data?:return@collect
                 val item=current.item?.takeIf{it.id_str==id}
                 val stat=item?.modules?.module_stat

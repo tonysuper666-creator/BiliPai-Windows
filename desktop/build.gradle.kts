@@ -1230,6 +1230,10 @@ val extractUpstreamDynamicDetail by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-detail").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-detail.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+    inputs.file("tools/v036_dynamic_comment_cache.py")
+    inputs.file("tools/v029_comment_search.py")
+    inputs.dir("upstream-slices/v036-dynamic-comment-cache")
+    inputs.file("upstream-slices/v036-video-comment-cache/VideoCommentViewModel.kt")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail"))
