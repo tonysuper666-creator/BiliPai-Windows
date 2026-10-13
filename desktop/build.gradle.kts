@@ -31,7 +31,8 @@ val originalResources = (manifest["resources"] as? List<*>)?.map { it as Map<*, 
 val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-appearance-platform.py" to "964b59fd07d92c434b887f7ed2684866efbfdfb7268a2ff8a0341d31ff0ea3cb",
     "tools/extract-upstream-api.py" to "c7571703fdaaa33f4fe6ae6fcd370d182efa4623e0dbd6e89d56544b447f313e",
-    "tools/extract-upstream-bgm-detail.py" to "f8f2b15659124d1b92b482e80df8f3bcf9bf2fa3e5651e7f0b02948ea1f1e956",
+    "tools/extract-upstream-bgm-detail.py" to "965546d1db99f5d1b667d0f0fff0dbabcecaa51e835d0bab058af6820faa6be3",
+    "tools/v036_video_comment_cache.py" to "4ec4ca12140767bc78cda0da8c8161cc2d8214ad1c1fcfd4ff23e63d08a9e646",
     "tools/extract-upstream-dynamic-reply-protocol.py" to "95ba70a1ea5366cf295620a8fe6f34492f2ba4d9152cb8549e3102de0c786377",
     "tools/v036_comment_route.py" to "3edce0c4518b1b6aa25c1be68a4db186af7fb33c563db5d6194a257277e48b60",
     "tools/extract-upstream-frosted-audio-renderer.py" to "3f8a55cc5ae3643be4774f78bc948668fe9ba3cc348903544d916bc35024497f",
@@ -42,7 +43,7 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-video-comment-ui.py" to "6537f13ea46e584244a6384c4b43b8df68fb7c3028b210f49bee34e6aafabb31",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
     "tools/run-tool-tests.py" to "0ccdc350020d68fd5d7bf515cf16fcb45147dc9f2549d436ebda7f8936008403",
-    "tools/sync-upstream.py" to "dac11a59e4ac89d08d4a32b39e1834a7722fdd1ac115e8bc0b77dc35e8c878a0",
+    "tools/sync-upstream.py" to "4f2777086628182caf945f5c225a0e9f629eaf698823e2d4fef3b427086e303f",
     "tools/v025-canonical-sources.json" to "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc",
     "tools/v025_source_paths.py" to "43ae1635c64aa3eb695dd3f3babdfaeacdf8899680e6823a44179163facb848f",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
@@ -3623,4 +3624,10 @@ tasks.named("extractUpstreamDynamicFullCard") {
 tasks.named("extractUpstreamDynamicReplyProtocol") {
     inputs.file("tools/v036_comment_route.py")
     inputs.dir("upstream-slices/v036-comment-route")
+}
+
+// Source73 retains the full v0.3.6 comment VM and its original shared cache/paging rules.
+tasks.named("extractBgmDetail") {
+    inputs.file("tools/v036_video_comment_cache.py")
+    inputs.dir("upstream-slices/v036-video-comment-cache")
 }
