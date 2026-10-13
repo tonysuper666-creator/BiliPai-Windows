@@ -105,7 +105,9 @@ internal class DesktopOriginalRootChromeBindings(
         val haze = if (homeSettings.isBottomBarBlurEnabled) pages.window.globalHaze() else null
         Box(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxSize()) {
-            if (useSidebar) Column(Modifier.fillMaxHeight()) {
+            if (useSidebar) Column(
+                Modifier.fillMaxHeight().largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.VERTICAL),
+            ) {
                 FrostedSideBar(
                     currentItem = currentItem,
                     onItemClick = { if (routes.owns()) onItemClick(it) },
@@ -125,25 +127,42 @@ internal class DesktopOriginalRootChromeBindings(
                     onAccountSwitchClick = binding.accountSwitcher,
                 )
                 DesktopWindowsGlassSurface(shape = androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) {
-                    AppIconButton(onClick = { if (routes.owns()) binding.actions.searchClick() }) {
-                        AppIcon(rememberAppSearchIcon(), "搜索")
+                    AppIconButton(
+                        onClick = { if (routes.owns()) binding.actions.searchClick() },
+                        modifier = Modifier.defaultMinSize(
+                            minWidth = desktopLargeScreenMinimumTarget(),
+                            minHeight = desktopLargeScreenMinimumTarget(),
+                        ),
+                    ) {
+                        AppIcon(rememberAppSearchIcon(), DesktopShellSearchDescription)
                     }
-                    AppIconButton(onClick = { if (routes.owns()) routes.push(BiliPaiNavKey.DownloadList) }) {
-                        AppIcon(rememberAppDownloadIcon(), "下载与离线")
+                    AppIconButton(
+                        onClick = { if (routes.owns()) routes.push(BiliPaiNavKey.DownloadList) },
+                        modifier = Modifier.defaultMinSize(
+                            minWidth = desktopLargeScreenMinimumTarget(),
+                            minHeight = desktopLargeScreenMinimumTarget(),
+                        ),
+                    ) {
+                        AppIcon(rememberAppDownloadIcon(), DesktopShellDownloadsDescription)
                     }
                 }
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) { content() }
                 if (useSidebar && audioVisible && audio != null && snapshot != null) DesktopWindowsGlassSurface(Modifier.fillMaxWidth()) {
-                    Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        Modifier.fillMaxWidth().largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL)
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         Text(snapshot.item.title, Modifier.weight(1f), maxLines = 1)
-                        TextButton(onClick = { audio.previous(snapshot) }) { Text("上一首") }
-                        Button(onClick = { audio.playPause(snapshot, navigation) }) { Text(if (snapshot.isPlaying) "暂停" else "播放") }
-                        TextButton(onClick = { audio.next(snapshot) }) { Text("下一首") }
-                        TextButton(onClick = { audio.expand(snapshot, navigation) }) { Text("打开播放器") }
-                        TextButton(onClick = { audio.dismiss(snapshot, navigation) }) { Text("关闭") }
+                        LargeScreenLabeledButton("上一首") { audio.previous(snapshot) }
+                        LargeScreenLabeledButton(if (snapshot.isPlaying) "暂停" else "播放", filled = true) {
+                            audio.playPause(snapshot, navigation)
+                        }
+                        LargeScreenLabeledButton("下一首") { audio.next(snapshot) }
+                        LargeScreenLabeledButton("打开播放器") { audio.expand(snapshot, navigation) }
+                        LargeScreenLabeledButton("关闭") { audio.dismiss(snapshot, navigation) }
                     }
                 }
             }
@@ -153,7 +172,10 @@ internal class DesktopOriginalRootChromeBindings(
                 it.renderer.supported && it.sourceReady && it.owns() && it.window === LocalAwtWindow.current
             }
             val backdrop = readyGlass?.backdrop as? LayerBackdrop
-            Box(Modifier.align(Alignment.BottomCenter).zIndex(1f).fillMaxWidth()) {
+            Box(
+                Modifier.align(Alignment.BottomCenter).zIndex(1f).fillMaxWidth()
+                    .largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL),
+            ) {
                 DesktopOriginalFrostedAudioNavigation(
                     preferenceContext = routes.root.environment.pluginContext,
                     owner = binding.owner,

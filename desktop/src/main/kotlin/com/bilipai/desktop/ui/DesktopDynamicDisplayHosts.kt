@@ -8,12 +8,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollScope
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -68,7 +68,14 @@ internal fun DesktopDynamicModeFrame(
     pageLayoutDirection: DesktopDynamicPageLayoutDirection = DesktopDynamicPageLayoutDirection.LEFT,
     topBarOverlaysFeed: Boolean = false,
     userListOverlaysFeed: Boolean = false,
+    escapeArmed: Boolean = true,
 ) {
+    val sidebarOnRight = resolveDynamicSidebarOnRight(mode, pageLayoutDirection)
+    BindDesktopDynamicDrawerEscape(
+        active = escapeArmed,
+        expanded = mode.isDrawer() && sidebarExpanded,
+        onClose = onToggleSidebar,
+    )
     if (mode.isHorizontalUserList()) {
         Column(Modifier.fillMaxSize()) {
             if (!topBarOverlaysFeed) header()
@@ -78,7 +85,6 @@ internal fun DesktopDynamicModeFrame(
         }
         return
     }
-    val sidebarOnRight = resolveDynamicSidebarOnRight(mode, pageLayoutDirection)
     val showPanel = !mode.isDrawer() || sidebarExpanded
     Row(Modifier.fillMaxSize()) {
         if (!sidebarOnRight && showPanel) {
@@ -108,15 +114,24 @@ internal fun DesktopDynamicModeFrame(
                 Box(Modifier.weight(1f).fillMaxWidth()) { feed() }
             }
             if (mode.isDrawer() && !sidebarExpanded) {
-                AppSmallFloatingActionButton(
-                    onClick = onToggleSidebar,
-                    modifier = Modifier
+                Box(
+                    Modifier
                         .align(if (sidebarOnRight) Alignment.CenterEnd else Alignment.CenterStart)
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .largeScreenControlTarget(
+                            contentDescription = resolveDynamicDrawerHandleDescription(sidebarOnRight),
+                            onClick = onToggleSidebar,
+                            shape = CircleShape,
+                        )
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center,
                 ) {
                     AppText(
                         text = if (sidebarOnRight) "‹" else "›",
+                        modifier = Modifier.clearAndSetSemantics { },
                         style = MaterialTheme.typography.headlineMedium,
+                        tapToCopyEnabled = false,
                     )
                 }
             }
@@ -169,7 +184,9 @@ internal fun DesktopDynamicTabStrip(
         liquid && glass.renderer.supported && glass.sourceReady && glass.owns()
     }
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = resolveDynamicTopBarHorizontalPadding()),
+        Modifier.fillMaxWidth()
+            .largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL)
+            .padding(horizontal = resolveDynamicTopBarHorizontalPadding()),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.weight(1f)) {
@@ -229,20 +246,31 @@ internal fun DesktopDynamicTabStrip(
                         onDirection = onPageLayoutDirectionChange,
                     ),
                 ) {
-                    AppIcon(
-                        imageVector = if (displayMode.isHorizontalUserList()) rememberAppGridLayoutIcon() else rememberAppListLayoutIcon(),
-                        contentDescription = "关注列表位置",
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
-                    )
+                    Box(
+                        Modifier.size(desktopLargeScreenMinimumTarget()),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        AppIcon(
+                            imageVector = if (displayMode.isHorizontalUserList()) rememberAppGridLayoutIcon() else rememberAppListLayoutIcon(),
+                            contentDescription = resolveDynamicDisplayModeDescription(),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
+                        )
+                    }
                 }
                 trailing()
             }
         }
-        AppIconButton(onClick = { onActionDockCollapsedChange(!actionDockCollapsed) }) {
+        AppIconButton(
+            onClick = { onActionDockCollapsedChange(!actionDockCollapsed) },
+            modifier = Modifier.defaultMinSize(
+                minWidth = desktopLargeScreenMinimumTarget(),
+                minHeight = desktopLargeScreenMinimumTarget(),
+            ),
+        ) {
             AppIcon(
                 imageVector = if (actionDockCollapsed) rememberAppChevronDownIcon() else rememberAppChevronUpIcon(),
-                contentDescription = if (actionDockCollapsed) "展开顶部操作" else "折叠顶部操作",
+                contentDescription = resolveDynamicActionDockDescription(actionDockCollapsed),
                 tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
             )
@@ -287,7 +315,6 @@ internal fun DesktopDynamicCollapsingChrome(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun DesktopDynamicSidebarPanel(
     users: List<SidebarUser>,
@@ -341,7 +368,7 @@ internal fun DesktopDynamicSidebarPanel(
         containerColor,
     )
     Box(
-        glass.modifier.clip(RectangleShape).then(
+        glass.modifier.largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.VERTICAL).clip(RectangleShape).then(
             if (glass.enabled) Modifier else Modifier.background(containerColor),
         ),
     ) {
@@ -356,14 +383,17 @@ internal fun DesktopDynamicSidebarPanel(
                 item(key = "hidden_toggle") {
                     Box(
                         Modifier.padding(bottom = AppSpacingTokens.Medium)
-                            .size(AppChromeSizeTokens.MinimumTouchTarget)
-                            .clip(CircleShape)
-                            .clickable(onClick = onToggleShowHidden),
+                            .largeScreenControlTarget(
+                                contentDescription = resolveDynamicHiddenUsersDescription(showHiddenUsers),
+                                onClick = onToggleShowHidden,
+                                shape = CircleShape,
+                            )
+                            .clip(CircleShape),
                         contentAlignment = Alignment.Center,
                     ) {
                         AppIcon(
                             imageVector = if (showHiddenUsers) rememberAppVisibilityOnIcon() else rememberAppVisibilityOffIcon(),
-                            contentDescription = if (showHiddenUsers) "隐藏已隐藏用户" else "显示隐藏用户",
+                            contentDescription = null,
                             tint = if (showHiddenUsers) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(AppSpacingTokens.Large + AppSpacingTokens.ExtraSmall),
                         )
@@ -374,7 +404,10 @@ internal fun DesktopDynamicSidebarPanel(
                 item(key = "live_fold") {
                     AppTextButton(
                         onClick = { showLiveUsers = !showLiveUsers },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = desktopLargeScreenMinimumTarget())
+                            .semantics {
+                                contentDescription = resolveDynamicLiveFoldDescription(showLiveUsers, liveUsers.size)
+                            },
                         contentPadding = PaddingValues(horizontal = AppSpacingTokens.None, vertical = AppSpacingTokens.ExtraSmall),
                     ) {
                         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -384,10 +417,11 @@ internal fun DesktopDynamicSidebarPanel(
                                 fontWeight = FontWeight.SemiBold,
                                 textAlign = TextAlign.Center,
                                 maxLines = 1,
+                                tapToCopyEnabled = false,
                             )
                             AppIcon(
                                 imageVector = if (showLiveUsers) rememberAppChevronUpIcon() else rememberAppChevronDownIcon(),
-                                contentDescription = if (showLiveUsers) "收起直播" else "展开直播",
+                                contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(AppSpacingTokens.Medium),
                             )
@@ -415,12 +449,17 @@ internal fun DesktopDynamicSidebarPanel(
         }
         Box(
             Modifier.fillMaxWidth().height(headerHeight).align(Alignment.TopCenter)
-                .background(headerColor).clickable(onClick = onHeaderClick),
+                .largeScreenControlTarget(
+                    contentDescription = resolveDynamicSidebarHeaderDescription(isExpanded),
+                    onClick = onHeaderClick,
+                    shape = RectangleShape,
+                )
+                .background(headerColor),
             contentAlignment = Alignment.Center,
         ) {
             AppIcon(
                 imageVector = rememberAppBackIcon(),
-                contentDescription = if (isExpanded) "收起关注列表" else "展开关注列表",
+                contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(AppSpacingTokens.ExtraLarge),
             )
@@ -435,7 +474,6 @@ internal fun DesktopDynamicSidebarPanel(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DesktopDynamicSidebarUserItem(
     user: SidebarUser,
@@ -453,7 +491,12 @@ private fun DesktopDynamicSidebarUserItem(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .combinedClickable(onClick = onClick, onLongClick = { if (allowManageMenu) showMenu = true })
+                .largeScreenControlTarget(
+                    contentDescription = resolveDynamicUserContentDescription(user.name, user.isHidden, user.isPinned),
+                    onClick = onClick,
+                    isSelected = isSelected,
+                    onLongClick = if (allowManageMenu) ({ showMenu = true }) else null,
+                )
                 .padding(AppSpacingTokens.ExtraSmall)
                 .alpha(if (user.isHidden) 0.5f else 1f),
         ) {
@@ -473,7 +516,7 @@ private fun DesktopDynamicSidebarUserItem(
                     if (face.isNotEmpty()) {
                         AsyncImage(
                             model = face,
-                            contentDescription = user.name,
+                            contentDescription = null,
                             modifier = Modifier.fillMaxSize().clip(CircleShape),
                             contentScale = ContentScale.Crop,
                         )
@@ -497,6 +540,7 @@ private fun DesktopDynamicSidebarUserItem(
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
                     fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                    tapToCopyEnabled = false,
                 )
             }
         }

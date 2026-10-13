@@ -107,7 +107,8 @@ import kotlinx.coroutines.sync.withLock
             showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
             onUserClick={users.selectUser(it,onOpenUser)},onToggleShowHidden=users::toggleShowHidden,
             onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
-            onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
+            onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}},
+            modifier=Modifier.largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL))
     }
     val gridOverlay: @Composable BoxScope.() -> Unit = {
         if (topBarOverlays || userListOverlays) {
@@ -145,6 +146,7 @@ import kotlinx.coroutines.sync.withLock
         pageLayoutDirection=pageDirection,
         topBarOverlaysFeed=topBarOverlays,
         userListOverlaysFeed=userListOverlays,
+        escapeArmed=active,
         feed={
             val hasGrid=activeTimeline!=null||users.selectedUid!=null
             Box(Modifier.fillMaxSize()) {

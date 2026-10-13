@@ -1,5 +1,9 @@
 package com.bilipai.desktop
 
+import com.bilipai.desktop.ui.DesktopLargeScreenEscapeAction
+import com.bilipai.desktop.ui.DesktopLargeScreenEscapeHandlers
+import com.bilipai.desktop.ui.LocalDesktopLargeScreenEscapeHandlers
+import com.bilipai.desktop.ui.resolveDesktopLargeScreenEscapeAction
 import com.bilipai.desktop.appearance.DesktopAppearanceSettings
 import com.bilipai.desktop.appearance.DesktopAppearanceTheme
 import com.bilipai.desktop.appearance.DesktopThemePrefs
@@ -1681,10 +1685,15 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     } ?: parentLiquidConfig
     val captureLiquidBackground = effectiveThemeConfig.liquidGlassEnabled &&
         liquidHomeSettings?.liquidGlassReadabilityMode == com.android.purebilibili.core.store.LiquidGlassReadabilityMode.ADAPTIVE
+    val largeScreenEscape = remember { DesktopLargeScreenEscapeHandlers() }
     val rootKeyHandler: (KeyEvent) -> Boolean = { event ->
             if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
             else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {
-                if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()
+                when (resolveDesktopLargeScreenEscapeAction(isFullscreen(), largeScreenEscape.dynamicDrawerExpanded)) {
+                    DesktopLargeScreenEscapeAction.EXIT_FULLSCREEN -> setOriginalFullscreen(false)
+                    DesktopLargeScreenEscapeAction.CLOSE_DYNAMIC_DRAWER -> largeScreenEscape.closeDynamicDrawer?.invoke()
+                    DesktopLargeScreenEscapeAction.SYSTEM_BACK -> homeRootRef.get()?.navigation?.requestBack()
+                }
                 true
             }
             else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {
@@ -1704,7 +1713,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
         onDispose { registration?.close() }
     }
-    CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+    CompositionLocalProvider(LocalDesktopLargeScreenEscapeHandlers provides largeScreenEscape,
+        LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
         LocalDesktopWindowsPlayerWindow provides hostWindow,
         LocalDesktopWindowsVideoEnhancement provides DesktopWindowsVideoEnhancementUiBinding(
             pluginRuntime.enhancementConfiguration, enhancement?.state ?: emptyEnhancement),
