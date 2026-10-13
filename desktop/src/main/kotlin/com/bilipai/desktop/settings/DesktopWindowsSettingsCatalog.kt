@@ -14,7 +14,7 @@ internal val desktopWindowsSettingsSearchEntries = listOf(
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放行为", "自动播放、片头片尾跳过、后台播放与续播", "播放", listOf("进入视频自动播放", "自动跳过片头片尾", "自动播放", "片头", "片尾", "跳过", "番剧", "后台", "最小化", "续播", "断点", "连播", "循环", "播完", "暂停"), "windows_playback_behavior"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "评论", "默认排序、详细评论时间和个性装扮", "播放", listOf("评论", "热度", "排序", "相对时间", "详细时间", "评论区个性装扮", "装扮", "粉丝牌", "铭牌"), "windows_playback_comments"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "默认音质", "后续播放的音轨质量偏好", "音频", listOf("音质", "音轨", "无损"), "windows_audio_output"),
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.HOME_FEED, "首页与推荐", "网格、卡片、轮播和本地背景", "首页", listOf("首页", "推荐", "网格", "标题", "轮播", "壁纸", "背景", "UP", "时间表")),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.HOME_FEED, "首页与推荐", "网格、卡片、轮播和本地背景", "首页", listOf("首页", "推荐", "网格", "标题", "轮播", "壁纸", "背景", "UP", "时间表", "动态评论预览", "动态", "评论预览")),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.APPEARANCE, "外观与显示", "主题、字体、语言和图标", "外观", listOf("外观", "主题", "字体", "语言", "图标", "颜色")),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.APPEARANCE, "Windows 窗口缩放", "系统 DPI 上的完整布局比例", "外观", listOf("缩放", "DPI", "放大", "缩小", "比例", "Ctrl", "4K", "5K"), "windows_display_scale"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PRIVACY_PERMISSION, "隐私与屏蔽", "搜索推荐、历史记录、屏蔽与发评反诈历史", "隐私", listOf("隐私", "历史", "搜索", "屏蔽", "黑名单", "反诈")),

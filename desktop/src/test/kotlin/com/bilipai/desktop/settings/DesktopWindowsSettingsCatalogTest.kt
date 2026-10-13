@@ -52,11 +52,28 @@ class DesktopWindowsSettingsCatalogTest {
 
     @Test fun desktopQueriesUseActualControllerAndKeepPlaybackBehaviorsAccessible() {
         val controller = controller()
-        for (query in listOf("后台", "续播", "断点", "循环", "评论", "排序", "详细时间", "字幕", "HEVC", "光纤")) {
+        for (query in listOf("后台", "续播", "断点", "循环", "排序", "详细时间", "字幕", "HEVC", "光纤")) {
             controller.setQuery(query)
             val results = controller.results.value
             assertTrue(results.isNotEmpty(), "Missing desktop control: $query")
             assertTrue(results.all { it.target == SettingsSearchTarget.PLAYBACK })
+        }
+        controller.setQuery("评论")
+        val comments = controller.results.value
+        assertEquals(setOf(SettingsSearchTarget.PLAYBACK, SettingsSearchTarget.HOME_FEED),
+            comments.map { it.target }.toSet())
+        assertEquals("windows_playback_comments",
+            comments.single { it.target == SettingsSearchTarget.PLAYBACK }.focusId)
+        for (query in listOf("动态评论预览", "评论预览")) {
+            controller.setQuery(query)
+            val preview = controller.results.value.single()
+            assertEquals(SettingsSearchTarget.HOME_FEED, preview.target)
+            assertNull(preview.focusId)
+            var destination: SettingsSearchResult? = null
+            controller.activate(preview, { fail("Dynamic preview must open the mounted home settings page") },
+                { destination = it })
+            assertEquals(preview, destination)
+            assertNull(SettingsSearchFocusController.request.value)
         }
         controller.setQuery("  wAsApI  输出 ")
         val audio = controller.results.value.single()
