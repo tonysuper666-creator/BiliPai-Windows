@@ -6,6 +6,10 @@ import com.android.purebilibili.feature.video.ui.pager.resolvePortraitMediaId
 import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
 import com.android.purebilibili.core.store.PlaybackCompletionBehavior
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.feature.story.StoryViewModel
+import com.android.purebilibili.core.store.DesktopFeedSettings
+import com.android.purebilibili.data.repository.DesktopOriginalHomeVideoProtocol
+import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
 import com.android.purebilibili.feature.video.player.*
 import com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
@@ -230,7 +234,138 @@ class DesktopOriginalPortraitMetadataPreparationTest {
         lateinit var result: Deferred<Result<Pair<ViewInfo, PlayUrlData>>>
     }
     private data class Capture(val state: PlaybackSessionState, val job: Job)
+    private data class StoryCapture(val binding: DesktopOriginalVideoRepositoryBinding, val caller: Job)
     private data class CdnEmission(val source: DesktopOriginalVideoAcceptedPublication, val index: Int, val runtimeGeneration: Long?)
+    /** Source65 follows the actual retained Story owner and original VM/protocol.
+     * These business tests do not mount the physical Root/Pager or claim nativeReady. */
+    @Test fun retainedStoryStartsAtEndpointSeedDisplayOneAndPreservesOriginalFilterDedupCursor(): Unit = runBlocking<Unit> {
+        Fixture(storyMode = true).useSuspending { f ->
+            f.storyBody = { request -> when (request.url.queryParameter("display_id")) {
+                "1" -> storyJson(storyItem(101, A), storyItem(102, B), """{"id":901,"goto":"bangumi","bvid":"filtered"}""")
+                "2" -> storyJson(storyItem(201, C, aid = 101), storyItem(202, B, aid = 202),
+                    storyItem(101, D, aid = 203), storyItem(103, C))
+                "3" -> storyJson(storyItem(103, C))
+                "4" -> storyJson(storyItem(104, D))
+                else -> error("Unexpected Story cursor")
+            } }
+            val vm = f.startStory("  $A  ")
+            f.awaitStory(vm) { it.uiState.value.items.size == 2 }
+            assertEquals(listOf(A, B), vm.uiState.value.items.map { it.bvid })
+            assertSame(vm, f.feedOwners.find(f.storyKey)); assertTrue(f.homeRequests.isEmpty())
+            val first = f.storyCaptures.single()
+            withTimeout(8_000) { first.caller.join() }
+            assertTrue(first.caller.isCompleted); assertFalse(first.caller.isCancelled)
+            assertFailsWith<CancellationException> { first.binding.assertCurrent() }
+            f.ui { vm.startFeed(A); vm.updateCurrentIndex(1); vm.loadMoreStories(); vm.loadMoreStories() }
+            f.awaitStory(vm) { it.uiState.value.items.size == 3 }
+            assertEquals(listOf(A, B, C), vm.uiState.value.items.map { it.bvid })
+            assertEquals(1, vm.uiState.value.currentIndex)
+            f.ui { vm.loadMoreStories() }
+            f.awaitStory(vm) { it.uiState.value.error != null }
+            assertEquals("暂时没有新的推荐视频", vm.uiState.value.error)
+            assertEquals(listOf(A, B, C), vm.uiState.value.items.map { it.bvid })
+            f.ui { vm.loadMoreStories() }
+            f.awaitStory(vm) { it.uiState.value.items.size == 4 }
+            assertEquals(listOf(A, B, C, D), vm.uiState.value.items.map { it.bvid })
+            assertEquals(listOf("1", "2", "3", "4"), f.storyRequests.map { it.url.queryParameter("display_id") })
+            assertTrue(f.storyRequests.all { it.url.queryParameter("bvid") == A && it.url.queryParameter("aid") == "0" && it.url.queryParameter("ps") == "20" })
+            assertEquals(1, vm.uiState.value.currentIndex); assertTrue(f.homeRequests.isEmpty())
+            f.assertStoryOnly()
+        }
+    }
+
+    @Test fun actualStoryEmptyAndApiErrorFallBackOnceToOriginalHomeCursorWithoutReshuffle(): Unit = runBlocking<Unit> {
+        for (firstBody in listOf(storyJson(), """{"code":-101,"message":"Controlled Story rejection"}""")) {
+            Fixture(storyMode = true).useSuspending { f ->
+                f.storyBody = { firstBody }
+                f.homeBody = { request -> when (request.url.queryParameter("fresh_idx")) {
+                    "0" -> homeJson(homeItem(101, A), homeItem(102, B))
+                    "1" -> homeJson(homeItem(102, B), homeItem(103, C))
+                    else -> error("Unexpected Home cursor")
+                } }
+                val vm = f.startStory(A)
+                f.awaitStory(vm) { it.uiState.value.items.size == 2 }
+                f.ui { vm.updateCurrentIndex(1); vm.loadMoreStories() }
+                f.awaitStory(vm) { it.uiState.value.items.size == 3 }
+                assertEquals(listOf(A, B, C), vm.uiState.value.items.map { it.bvid })
+                assertEquals(1, vm.uiState.value.currentIndex); assertNull(vm.uiState.value.error)
+                assertEquals(1, f.storyRequests.size)
+                assertEquals(listOf("0", "1"), f.homeRequests.map { it.url.queryParameter("fresh_idx") })
+                assertEquals(3, f.storyCaptures.size); f.assertStoryOnly()
+            }
+        }
+    }
+
+    @Test fun actualFallbackHttpFailureRemainsErrorAndManualLoadRetriesSameHomeCursor(): Unit = runBlocking<Unit> {
+        Fixture(storyMode = true).useSuspending { f ->
+            f.storyBody = { storyJson() }; f.homeStatus = 503
+            val vm = f.startStory(A)
+            f.awaitStory(vm) { !it.uiState.value.isLoading && it.uiState.value.error != null }
+            assertTrue(vm.uiState.value.items.isEmpty())
+            assertTrue(assertNotNull(vm.uiState.value.error).contains("503"))
+            assertEquals(listOf("0"), f.homeRequests.map { it.url.queryParameter("fresh_idx") })
+            f.homeStatus = 200; f.homeBody = { homeJson(homeItem(102, B)) }
+            f.ui { vm.loadMoreStories() }
+            f.awaitStory(vm) { it.uiState.value.items.singleOrNull()?.bvid == B }
+            assertNull(vm.uiState.value.error)
+            assertEquals(listOf("0", "0"), f.homeRequests.map { it.url.queryParameter("fresh_idx") })
+            assertEquals(1, f.storyRequests.size); f.assertStoryOnly()
+        }
+    }
+
+    @Test fun realStoryRefreshCancelsOldCallerAndCannotPublishItsLateResponse(): Unit = runBlocking<Unit> {
+        Fixture(storyMode = true).useSuspending { f ->
+            val release = f.storyGate(); val entered = CompletableDeferred<Unit>(); val returned = CompletableDeferred<Unit>()
+            f.storyBody = { request ->
+                if (f.storyRequests.indexOf(request) == 0) {
+                    entered.complete(Unit)
+                    try { check(release.await(8, TimeUnit.SECONDS)); storyJson(storyItem(101, A)) }
+                    finally { returned.complete(Unit) }
+                } else storyJson(storyItem(102, B))
+            }
+            val vm = f.startStory(A); withTimeout(8_000) { entered.await() }
+            val old = f.storyCaptures.single()
+            f.ui { vm.refresh() }
+            f.awaitStory(vm) { it.uiState.value.items.singleOrNull()?.bvid == B }
+            release.countDown(); withTimeout(8_000) { returned.await(); old.caller.join() }
+            f.ui { assertEquals(listOf(B), vm.uiState.value.items.map { it.bvid }) }
+            assertTrue(old.caller.isCancelled)
+            assertNotSame(old.binding, f.storyCaptures.last().binding)
+            assertNotSame(old.caller, f.storyCaptures.last().caller)
+            assertEquals(listOf("1", "1"), f.storyRequests.map { it.url.queryParameter("display_id") })
+            assertTrue(f.homeRequests.isEmpty()); assertNull(vm.uiState.value.error); f.assertStoryOnly()
+        }
+    }
+
+    @Test fun retiredStoryEntryAccountOrOriginalCallerCannotPublishLateFeedOrStartFallback(): Unit = runBlocking<Unit> {
+        for (retirement in listOf("entry", "account", "caller")) {
+            Fixture(storyMode = true).useSuspending { f ->
+                val release = f.storyGate(); val entered = CompletableDeferred<Unit>(); val returned = CompletableDeferred<Unit>()
+                f.storyBody = {
+                    entered.complete(Unit)
+                    try { check(release.await(8, TimeUnit.SECONDS)); storyJson(storyItem(101, A)) }
+                    finally { returned.complete(Unit) }
+                }
+                val vm = f.startStory(A); withTimeout(8_000) { entered.await() }
+                val capture = f.storyCaptures.single(); val before = vm.uiState.value
+                f.ui { when (retirement) {
+                    "entry" -> f.feedOwners.reconcile(emptySet())
+                    "account" -> f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-successor", "bili_jct" to "synthetic-successor-csrf"), AccountSummary(42, "Successor", ""))
+                    "caller" -> capture.caller.cancel("Retire actual original Story caller")
+                } }
+                release.countDown(); withTimeout(8_000) { returned.await(); capture.caller.join() }
+                f.ui { assertSame(before, vm.uiState.value, retirement) }
+                assertTrue(vm.uiState.value.items.isEmpty(), retirement)
+                assertFailsWith<CancellationException> { capture.binding.assertCurrent() }
+                assertTrue(f.homeRequests.isEmpty(), retirement); assertEquals(1, f.storyRequests.size)
+                if (retirement == "entry") { assertNull(f.feedOwners.find(f.storyKey)); assertTrue(f.gate.owns()) }
+                if (retirement == "account") assertFalse(f.gate.owns())
+                if (retirement == "caller") { assertSame(vm, f.feedOwners.find(f.storyKey)); assertTrue(f.gate.owns()); assertTrue(capture.caller.isCancelled) }
+                f.assertStoryOnly()
+            }
+        }
+    }
+
     private data class HeldDispatch(val context: CoroutineContext, val runnable: Runnable) {
         val job get() = checkNotNull(context[Job])
     }
@@ -269,7 +404,8 @@ class DesktopOriginalPortraitMetadataPreparationTest {
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
 
     private inner class Fixture(private val holdTags: Boolean = false, private val refreshExpiredUrls: Boolean = false,
-        private val holdRelated: Boolean = false, private val nextWatchMode: Boolean = false) {
+        private val holdRelated: Boolean = false, private val nextWatchMode: Boolean = false,
+        private val storyMode: Boolean = false) {
         val directory = Files.createTempDirectory("cdn-original-owner-")
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
@@ -302,6 +438,15 @@ class DesktopOriginalPortraitMetadataPreparationTest {
         val toasts = CopyOnWriteArrayList<String>()
         private val unexpectedRequests = CopyOnWriteArrayList<String>()
         val playRequests = CopyOnWriteArrayList<Request>()
+        val storyCaptures = CopyOnWriteArrayList<StoryCapture>()
+        val storyRequests = CopyOnWriteArrayList<Request>()
+        val homeRequests = CopyOnWriteArrayList<Request>()
+        private val storyResponseGates = CopyOnWriteArrayList<CountDownLatch>()
+        @Volatile var storyBody: (Request) -> String = { error("Unexpected Story feed response") }
+        @Volatile var homeBody: (Request) -> String = { error("Unexpected Story Home fallback") }
+        @Volatile var homeStatus = 200
+        lateinit var feedOwners: DesktopOriginalStoryFeedOwners
+        val storyKey = BiliPaiNavKey.Story(seedBvid = A, seedCid = 104L)
         @Volatile private var firstUrlsExpired = false
         val tagsEntered = CompletableDeferred<Unit>()
         val tagsRelease = CountDownLatch(if (holdTags) 1 else 0)
@@ -369,7 +514,7 @@ class DesktopOriginalPortraitMetadataPreparationTest {
         init {
             // The original guest fetch deliberately omits audioLang. This case verifies
             // the logged-in language-preserving route with private synthetic credentials.
-            if (refreshExpiredUrls) sessions.saveAccount(
+            if (refreshExpiredUrls || storyMode) sessions.saveAccount(
                 mapOf("SESSDATA" to "synthetic-retry-session", "bili_jct" to "synthetic-retry-csrf"),
                 AccountSummary(41, "Retry fixture", "", isVip = false))
             sessions.saveSpiCookies(mapOf("buvid3" to "synthetic-visitor", "buvid4" to "synthetic-visitor4"), sessions.generation)
@@ -384,6 +529,31 @@ class DesktopOriginalPortraitMetadataPreparationTest {
                     if (!request.url.isHttps || request.url.port != 443) rejectRequest(request)
                     if (request.url.host in setOf("media.invalid", "backup.invalid")) return@addInterceptor memoryMedia(request)
                     if (request.url.host == "bvc.bilivideo.com") return@addInterceptor memoryPbp(request)
+                    if (request.url.host == "app.bilibili.com") return@addInterceptor strictStoryResponse {
+                        if (!storyMode || request.method != "GET" || request.url.encodedPath != "/x/v2/feed/index/story") rejectRequest(request)
+                        check(request.url.queryParameterNames == setOf("display_id", "fnval", "fnver", "force_host", "fourk", "qn", "ps", "aid", "bvid"))
+                        check(request.url.queryParameter("display_id")!!.toInt() > 0)
+                        check(request.url.queryParameter("fnval") == "4048" && request.url.queryParameter("fnver") == "0" &&
+                            request.url.queryParameter("force_host") == "0" && request.url.queryParameter("fourk") == "1" && request.url.queryParameter("qn") == "32")
+                        check(request.url.queryParameter("ps") == "20" && request.url.queryParameter("aid") == "0")
+                        check(request.url.queryParameter("bvid") in setOf(A, B))
+                        check(request.header("Cookie").orEmpty().contains("SESSDATA=synthetic-retry-session"))
+                        storyRequests.add(request)
+                        Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("memory")
+                            .body(storyBody(request).toResponseBody("application/json".toMediaType())).build()
+                    }
+                    if (storyMode && request.url.host == "api.bilibili.com" && request.url.encodedPath == "/x/web-interface/wbi/index/top/feed/rcmd") return@addInterceptor strictStoryResponse {
+                        check(request.method == "GET")
+                        check(request.url.queryParameterNames == setOf("ps", "fresh_type", "fresh_idx", "feed_version", "y_num", "wts", "w_rid"))
+                        check(request.url.queryParameter("ps") == "20" && request.url.queryParameter("fresh_type") == "3")
+                        check(request.url.queryParameter("fresh_idx") == request.url.queryParameter("y_num"))
+                        check(request.url.queryParameter("fresh_idx")!!.toInt() >= 0)
+                        check(request.header("Cookie").orEmpty().contains("SESSDATA=synthetic-retry-session"))
+                        homeRequests.add(request)
+                        val status = homeStatus
+                        Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(status).message("memory")
+                            .body((if (status == 200) homeBody(request) else "Controlled Home HTTP failure").toResponseBody("application/json".toMediaType())).build()
+                    }
                     if (request.url.host !in setOf("api.bilibili.com", "www.bilibili.com")) rejectRequest(request)
                     val bvid = request.url.queryParameter("bvid") ?: A
                     val body = when (request.url.encodedPath) {
@@ -485,7 +655,8 @@ class DesktopOriginalPortraitMetadataPreparationTest {
                 owner = slot.requireAssembly()
                 owner.playback.initWithContext(DesktopOriginalPlayerSettingsContext(context, gate::owns, gate::commitEntry,
                     largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false }))
-                portrait = DesktopOriginalPortraitPlatformBinding(owner, slot::currentAssembly, unused(), unused(), unused(), unused(),
+                portrait = DesktopOriginalPortraitPlatformBinding(owner, slot::currentAssembly, unused(),
+                    if (storyMode) storyHomeRequests() else unused(), unused(), unused(),
                     captureRequest = { waitingFacetCalls++; error("Ordinary page cannot enter the native-waiting facet") },
                     creatorTeamFollowStateChanges = emptyFlow(), mediaCache = cache,
                     captureCookieHeader = { binding, url -> binding.captureMediaCookieHeader(url) },
@@ -512,7 +683,18 @@ class DesktopOriginalPortraitMetadataPreparationTest {
                                 currentCoroutineContext().ensureActive(); binding.assertCurrent()
                             }
                         }
+                    }, storyFeed = { aid, bvid, pageSize, displayId ->
+                        if (!storyMode) error("Unexpected Story feed in Portrait metadata fixture")
+                        val rootFeed = DesktopOriginalVideoRootStoryFeedBinding(owner) { value ->
+                            check(value === owner && slot.currentAssembly() === value && gate.owns())
+                            pageFactory.captureBinding(value.captureLoadState()).also { binding ->
+                                binding.assertCurrent()
+                                storyCaptures.add(StoryCapture(binding, currentCoroutineContext().job))
+                            }
+                        }
+                        rootFeed.getStoryFeed(aid, bvid, pageSize, displayId)
                     })
+                if (storyMode) feedOwners = DesktopOriginalStoryFeedOwners(owner, portrait)
             }
             if (nextWatchMode) {
                 behavior(PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC)
@@ -704,7 +886,51 @@ class DesktopOriginalPortraitMetadataPreparationTest {
         }
         suspend fun ui(action: () -> Unit) = withContext(Dispatchers.Swing) { action() }
         suspend fun <T> uiResult(action: () -> T): T = withContext(Dispatchers.Swing) { action() }
+        private fun strictStoryResponse(block: () -> Response): Response = try { block() }
+            catch (error: Throwable) { failures.add(error); throw error }
+        private fun storyHomeRequests(): DesktopHomeVideoRequests = object : DesktopHomeVideoRequests {
+            override suspend fun getHomeVideos(idx: Int): Result<List<VideoItem>> {
+                currentCoroutineContext().ensureActive(); check(storyMode && slot.currentAssembly() === owner && gate.owns())
+                val binding = pageFactory.captureBinding(owner.captureLoadState())
+                storyCaptures.add(StoryCapture(binding, currentCoroutineContext().job))
+                val environment = DesktopHomeProtocolEnvironment(binding.primaryApi, binding.environment.guestApi, unused(),
+                    gate.scope, { runCatching { binding.assertCurrent() }.isSuccess }, binding::admitCurrentMutation,
+                    { DesktopFeedSettings.FeedApiType.WEB }, { 20 },
+                    { Result.failure(IllegalStateException("Use actual sealed nav API for WBI keys")) },
+                    binding::primaryAccessToken, binding::primaryCsrf, {
+                        repository.ownedHomeCookie("buvid3", binding.receipt.accountEpoch) { runCatching { binding.assertCurrent() }.isSuccess }
+                    },
+                    { currentCoroutineContext().ensureActive(); binding.assertCurrent() }, binding.environment.ensureBuvid)
+                val protocol = DesktopOriginalHomeVideoProtocol(environment)
+                return try { protocol.getHomeVideos(idx).also { currentCoroutineContext().ensureActive(); binding.assertCurrent() } }
+                    finally { protocol.close() }
+            }
+            override suspend fun getPopularVideos(page: Int): Result<List<VideoItem>> = error("No Story popular request")
+            override suspend fun getRankingVideos(rid: Int, type: String): Result<List<VideoItem>> = error("No Story ranking request")
+            override suspend fun getWeeklyMustWatchVideos(): Result<List<VideoItem>> = error("No Story weekly request")
+            override suspend fun getPreciousVideos(): Result<List<VideoItem>> = error("No Story precious request")
+            override suspend fun getRegionVideos(tid: Int, page: Int): Result<List<VideoItem>> = error("No Story region request")
+            override suspend fun getNavInfo(): Result<DesktopHomeNavPublication> = error("No Story nav publication")
+            override suspend fun getPreviewVideoUrl(bvid: String, cid: Long): String? = error("No Story preview request")
+            override suspend fun isVerticalVideo(bvid: String, aid: Long): Boolean = error("No Story dimension request")
+        }
+        suspend fun startStory(seed: String): StoryViewModel = uiResult {
+            check(storyMode); feedOwners.get(storyKey).also { it.startFeed(seed) }
+        }
+        suspend fun awaitStory(vm: StoryViewModel, condition: (StoryViewModel) -> Boolean) = withTimeout(8_000) {
+            while (!uiResult { condition(vm) && !vm.uiState.value.isLoading }) {
+                assertTrue(failures.isEmpty(), failures.toString()); assertTrue(unexpectedRequests.isEmpty(), unexpectedRequests.toString()); delay(5)
+            }
+        }
+        fun storyGate() = CountDownLatch(1).also(storyResponseGates::add)
+        fun assertStoryOnly() {
+            assertTrue(playRequests.isEmpty()); assertTrue(preparationBindings.isEmpty()); assertTrue(preparations.isEmpty())
+            assertTrue(publications.isEmpty()); assertNull(owner.native.current())
+            assertFalse(player.state.value.ready, "Story feed success is not native core readiness")
+        }
         suspend fun close() {
+            storyResponseGates.forEach { it.countDown() }
+            if (::feedOwners.isInitialized) feedOwners.close()
             tagsRelease.countDown(); relatedRelease.countDown(); dispatcher.drainOnClose()
             if (::facade.isInitialized) facade.close()
             if (nextWatchMode && ::settingsContext.isInitialized && gate.owns())
@@ -739,6 +965,14 @@ class DesktopOriginalPortraitMetadataPreparationTest {
     companion object {
         private const val A = "BV1GJ411x7h7"
         private const val B = "BV17x411w7KC"
+        private const val C = "BV1xx411c7mD"
+        private const val D = "BV1xx411c7mE"
+        private fun storyItem(id: Long, bvid: String, aid: Long = id) =
+            """{"id":$id,"bvid":"$bvid","goto":"av","title":"Story $id","player_args":{"aid":$aid,"cid":${aid + 3},"bvid":"$bvid"}}"""
+        private fun storyJson(vararg items: String) = """{"code":0,"data":{"items":[${items.joinToString(",")}]}}"""
+        private fun homeItem(aid: Long, bvid: String) =
+            """{"id":$aid,"bvid":"$bvid","cid":${aid + 3},"goto":"av","title":"Home $aid","pic":"","duration":30,"owner":{"mid":51,"name":"Fixture","face":""},"stat":{"view":1,"danmaku":0}}"""
+        private fun homeJson(vararg items: String) = """{"code":0,"data":{"item":[${items.joinToString(",")}]}}"""
         private fun video(bvid: String) = "https://media.invalid/$bvid-video.m4s?synthetic=1"
         private fun backupVideo(bvid: String) = "https://backup.invalid/$bvid-video.m4s?synthetic=1"
         private fun audio(bvid: String) = "https://media.invalid/$bvid-audio.m4s?synthetic=1"
