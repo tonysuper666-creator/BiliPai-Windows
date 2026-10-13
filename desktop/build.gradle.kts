@@ -3611,3 +3611,9 @@ val extractOriginalScrollableLists by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-scrollable-lists")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalScrollableLists) }
+
+// Source71 retains the sole original dynamic producer and the Root settings journal.
+tasks.named("extractUpstreamDynamicFullCard") {
+    inputs.file("tools/v035_dynamic_preview.py")
+    inputs.dir("upstream-slices/v035-dynamic-preview")
+}

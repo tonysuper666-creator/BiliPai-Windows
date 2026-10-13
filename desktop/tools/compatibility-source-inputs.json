@@ -64,7 +64,8 @@
     "desktop/upstream-slices/v035-story-pager",
     "desktop/upstream-slices/v035-dynamic-link",
     "desktop/upstream-slices/v035-ambient",
-    "desktop/upstream-slices/v035-scrollable-lists"
+    "desktop/upstream-slices/v035-scrollable-lists",
+    "desktop/upstream-slices/v035-dynamic-preview"
   ],
   "archives": [
     {
@@ -2302,9 +2303,9 @@
         },
         {
           "path": "desktop/upstream-slices/v035-dynamic-link/manifest.json",
-          "sha256": "001bb1bff726f2887f1cd6b1f27429d8720e640cd3dbcae06632c65f9b6aebee",
+          "sha256": "2bb7053fed900a90f15ce3d57ebf86b9f208d97a65d77f59aab52c1b5ef8689b",
           "hashNormalization": "raw",
-          "blob": "59d33b1477a33b72529739ffffe2c5a53a042ee8"
+          "blob": "be5490dfe29a2e18a145bda543168b976401e178"
         },
         {
           "path": "desktop/upstream-slices/v035-dynamic-link/PageAwareAsyncImage.kt",
@@ -2363,6 +2364,47 @@
           "sha256": "c30b46788b2676262fbac882d6bcd13a25752393fb15eeb037b34d5ead2bbef0",
           "hashNormalization": "raw",
           "blob": "d40190cec15642ebdac7906aa671cf7f845469bc"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v035-dynamic-preview",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-preview/DynamicSettingsStore.kt",
+          "sha256": "149a3ba124cfdf3b2b9277213b415eebe59af13b91e1c8cd81331d0646266871",
+          "hashNormalization": "raw",
+          "blob": "c55499832ad4e34742dea5ce124bf3a9a7099990"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-preview/VideoCardSharedElementContext.kt",
+          "sha256": "3bce59a7a8fc38a7d36c1fb1cb06bc0f776fc99f92b5358bdc1f960067d8a468",
+          "hashNormalization": "raw",
+          "blob": "0f9b39245ce2ab475196b709c84eaf4ac9c7546e"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-preview/DynamicCommentPreviewPolicy.kt",
+          "sha256": "3f0ec7754d50c4096bf73d0e2faed97d323c3d51d8257d0c13400156a11b13e6",
+          "hashNormalization": "raw",
+          "blob": "36f6e4e5a40ef55f81ca7490d4318b5af815e145"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-preview/DynamicRichTextPolicy.kt",
+          "sha256": "aeb71825af4c45f27207d9bb8d1a303f818936558a130992015f15fa4b438185",
+          "hashNormalization": "raw",
+          "blob": "b441b5aed0ea3d006e3c1323a075fd7860fb9cc8"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-preview/HomeFeedSettingsSection.kt",
+          "sha256": "d833c561976275e9c8903cee164a7cef6b1a1b623a9972c5fbd7e2b41910a5c2",
+          "hashNormalization": "raw",
+          "blob": "ddd85be3e2b9e7c5fad6450dcb464a0422711144"
+        },
+        {
+          "path": "desktop/upstream-slices/v035-dynamic-preview/manifest.json",
+          "sha256": "338944574b1b6cc29b7c1c681cbb28b272402cb69036eacb7d8c15f2a9adfcdd",
+          "hashNormalization": "raw",
+          "blob": "0c1735c46bb344ddb1a0576876f5e2b257e2b111"
         }
       ]
     }
@@ -5747,8 +5789,8 @@
         "v035-dynamic-link"
       ],
       "referenceOnly": false,
-      "partialReuse": true,
-      "usedScope": "Four complete original mapping/identity, opus/additional consumers and reserve-slot/override closure only; existing complete canonical Windows card remains sole owner.",
+      "partialReuse": false,
+      "usedScope": "Complete original DynamicCard in the existing sole Windows producer, with recorded platform adaptations.",
       "reusedConsumers": [
         "complete-original-link-mapping-identity-dedup-and-target-dispatch",
         "complete-original-opus-link-card-consumer",
@@ -5782,9 +5824,9 @@
       "features": [
         "v035-dynamic-link"
       ],
-      "referenceOnly": true,
+      "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Complete fixed original comparison/dependency evidence only; not emitted by this slice."
+      "usedScope": "Complete original ForwardedContent in the existing sole Windows producer, with recorded platform adaptations."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicLinkCard.kt",
@@ -5895,6 +5937,71 @@
         "v035-complete-original-scrollable-lists"
       ],
       "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/home/DynamicSettingsStore.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-preview/DynamicSettingsStore.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "c55499832ad4e34742dea5ce124bf3a9a7099990",
+      "sha256": "149a3ba124cfdf3b2b9277213b415eebe59af13b91e1c8cd81331d0646266871",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-complete-dynamic-preview"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-preview/VideoCardSharedElementContext.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "0f9b39245ce2ab475196b709c84eaf4ac9c7546e",
+      "sha256": "3bce59a7a8fc38a7d36c1fb1cb06bc0f776fc99f92b5358bdc1f960067d8a468",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-complete-dynamic-preview"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentPreviewPolicy.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-preview/DynamicCommentPreviewPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "36f6e4e5a40ef55f81ca7490d4318b5af815e145",
+      "sha256": "3f0ec7754d50c4096bf73d0e2faed97d323c3d51d8257d0c13400156a11b13e6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-complete-dynamic-preview"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicRichTextPolicy.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-preview/DynamicRichTextPolicy.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "b441b5aed0ea3d006e3c1323a075fd7860fb9cc8",
+      "sha256": "aeb71825af4c45f27207d9bb8d1a303f818936558a130992015f15fa4b438185",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-complete-dynamic-preview"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/HomeFeedSettingsSection.kt",
+      "localPath": "desktop/upstream-slices/v035-dynamic-preview/HomeFeedSettingsSection.kt",
+      "upstreamCommit": "46eaf277e83512061785be9759d1f07aba3c4839",
+      "blob": "ddd85be3e2b9e7c5fad6450dcb464a0422711144",
+      "sha256": "d833c561976275e9c8903cee164a7cef6b1a1b623a9972c5fbd7e2b41910a5c2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v035-complete-dynamic-preview"
+      ],
+      "referenceOnly": true
     }
   ],
   "buildStandaloneInputs": [

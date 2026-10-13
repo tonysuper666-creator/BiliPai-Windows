@@ -1,379 +1,104 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "4cd3b844fb835259323a12ba2c4a1377a92718c7",
-  "windowsVersion": "0.2.427.70",
-  "createdAt": "2026-10-13T06:16:20.223316+00:00",
+  "baseHead": "aa20fe645778351ed3f498a483790e8eb14fe9dd",
+  "windowsVersion": "0.2.427.71",
+  "createdAt": "2026-10-13T07:47:40.394112+00:00",
   "sources": [
-    {
-      "path": ".github/workflows/windows-source-validation.yml",
-      "normalization": "lf",
-      "sha256": "e9cf5a21068671d2f76335e650fbd0d5862fa0c24839750ae890f92af9840421"
-    },
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "9e6e0ba31edfd0d6077b4604ea44879190c02a48e810d9b5f7ecf85395b29783"
-    },
-    {
-      "path": "desktop/gradle.properties",
-      "normalization": "lf",
-      "sha256": "b6d2c43e5ade1e878283d4fbb2df6359db27ff6016242cffff45a9a8408e6920"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
-      "normalization": "lf",
-      "sha256": "3d50fffd2a6a9373bd6d5c23289f12fe6b2b7108d29951d7750e255eec2647c9"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-      "normalization": "lf",
-      "sha256": "4dcd8cf10d65f031960c4f37c77b6deb7db67db4d17ff741def0e6e527312eab"
+      "sha256": "76732cced796bcf423bf1135a042322afca76752b043dd5d3c172c44778413da"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopWindowsSettingsCatalog.kt",
       "normalization": "lf",
-      "sha256": "6bfc77d65946c0b3e795da60550b0b9207ca8a10325000ad67b754ec915f181e"
+      "sha256": "7da24390fd4ef5bc9a115afc61d8e765795cc994beb432da0f74fe6442b14bb5"
     },
     {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverCacheContext.kt",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsHomeSettings.kt",
       "normalization": "lf",
-      "sha256": "d6b98aed6edf4de6af817bb02721f11ddc50701228926c9d005ccd9de7dbd3ae"
+      "sha256": "e317c9f7ce98327ff3133b1d21374f149fae222e8727ad631436d974638e5066"
     },
     {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsNavigationDisplay.kt",
       "normalization": "lf",
-      "sha256": "53171c6025e81efaf574e361ca03696e252c4ea8c155940dff54f1bb8840acc6"
+      "sha256": "a2c1086ee1b8461b92612031612ed6d32304131787e9ce57a480276b852ce518"
     },
     {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/dynamic/components/DynamicCommentPreviewPolicyTest.kt",
       "normalization": "lf",
-      "sha256": "b1d9d8ea03827feafd08fd35c902dc47b673b2d4d7bb90e7f9e5b9c23c0a838e"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
-      "normalization": "lf",
-      "sha256": "996ac34dda6bbd027a6fcb3b822127f67721fc262f828f7f046b10406f4c7c6f"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
-      "normalization": "lf",
-      "sha256": "87ed0e1b82acccf1495a7a7e7803023572f63503546cbfb595cb6633d4e3dd46"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
-      "normalization": "lf",
-      "sha256": "add8aef1fa3ce24ce092e102016fdc73391754e222adf5b5cf141e7fda966052"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootStoryFeedBinding.kt",
-      "normalization": "lf",
-      "sha256": "c3998d2ebca9e6c6649cb6ab2b15c3fb52fe6bfc0811be797b860c35549e17e0"
-    },
-    {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackSettings.kt",
-      "normalization": "lf",
-      "sha256": "c4e3e2c923ea1d9f1c85e0d865ba0dc8808960b8388d26f153ea92e929ceb588"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/dynamic/components/DynamicLinkCardPolicyTest.kt",
-      "normalization": "lf",
-      "sha256": "dd69122611fe81f2241a5f8fdb417dff2f4b3a8fa5b0f72a52c3ed4e9eeb0443"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ambient/AmbientFrameControllerTest.kt",
-      "normalization": "lf",
-      "sha256": "d2bd9928e2f575cbdfa4e87b52b2f0fb13492edf8356cf472d6d63c19deb87ba"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ambient/AmbientFramePolicyTest.kt",
-      "normalization": "lf",
-      "sha256": "018288dca73285a33024295db6749b4ab5efece4d65dc077bb51f01417adf110"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiAuthorizationRecaptureAssemblyTest.kt",
-      "normalization": "lf",
-      "sha256": "bc5bd12b53d4a5456d1abd818f3d032cd286949c058a8d9f27aeaeadc0d1deef"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiBasSourceAdmissionAssemblyTest.kt",
-      "normalization": "lf",
-      "sha256": "e4481ba0309c86be36e55d9b2e1638afd794d3b44f476eab69c96026e30e5843"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiCourseDownloadOwnershipTest.kt",
-      "normalization": "lf",
-      "sha256": "12af1af501f5dec7bbaa2695338da79cb14771ee97ae9864bbbe05b36da6bdab"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiPremiumAudioRecoveryAssemblyTest.kt",
-      "normalization": "lf",
-      "sha256": "394b973546985fbb19adff4832428b40a16847b5a802c74842717108341b8d77"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiVideoCodecRecoveryAssemblyTest.kt",
-      "normalization": "lf",
-      "sha256": "0d54853c8f6f11ced31cddc9dafb18e38e33162b9c4c61a5f3a37393d62ec3a5"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
-      "normalization": "lf",
-      "sha256": "83117fd1905f93c1808653706b3120ee489b3984df358bca723c59e5d46fae3a"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitMetadataPreparationTest.kt",
-      "normalization": "lf",
-      "sha256": "f7c4368045fd2896d42bc4094afcd43297daf14119a92968b0016288a7dce867"
-    },
-    {
-      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoCdnSelectionAssemblyTest.kt",
-      "normalization": "lf",
-      "sha256": "49f1f7168999b16edbfab48f345e4afd51f5f667d738750643ca1de70167878f"
+      "sha256": "a155fd9751adcfe2c03c1bc79f0c82ba5c8111f7c1fbd7e56aef2b24d3a62386"
     },
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "ea0966a01ef0933699b0275f2dbb8a407165f3b566344e94a550e3edbef4584e"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-api.py",
-      "normalization": "lf",
-      "sha256": "d821f1a2edef0eedc9770b6cf892f6f70f96e729901e99772cd371a3150dfdf2"
+      "sha256": "1c180c514b22a76790f7ceea317bff79acb692250d8616a672c62c942d4223f7"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-card.py",
       "normalization": "lf",
-      "sha256": "8bf74c1a90af2f4ba4d7f71e1055773c350373d2d0f8d25777ca5ffd2fb8ea71"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-favorites.py",
-      "normalization": "lf",
-      "sha256": "fae14b37782a469bec2a9ca91718caa7706bf5e999cb9f49409f2deeffa69ee9"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-scrollable-lists.py",
-      "normalization": "lf",
-      "sha256": "811699331b525b087aa40229059479719512305566b0b3c675f1475262aafff0"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-story-topic.py",
-      "normalization": "lf",
-      "sha256": "6f889a22d94865c92d81195f17c5a931d8fbc6800db4332d3138d857dd379d37"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-text-lyrics.py",
-      "normalization": "lf",
-      "sha256": "15747e16949bdb77a25ccec46049a20f7646b4f3cf1a77ea1a9e14a6ab1d9be1"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-video-ambient-windows.py",
-      "normalization": "lf",
-      "sha256": "eab90f58b2898d9700ac9eb2951adf9368fe74cb6ed99ac1b93a4365bc75d0f1"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
-      "normalization": "lf",
-      "sha256": "27935d8079c40ecc77a3e3110198c403c736aa3ff42676fc5004eafb3232a607"
-    },
-    {
-      "path": "desktop/tools/extract-upstream-video-root-story-feed.py",
-      "normalization": "lf",
-      "sha256": "fc1b14e38d637eceac05403a9eb543cd5aa21c38de041c470b8b787795372e0f"
+      "sha256": "6d33f7082f184f954ccb8579ea99240bfc8956c230ee9da90e16dc70cc477d85"
     },
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "7b6a8f6a624439c62968885749048ebbec78daaa36456eded289330344a4e657"
+      "sha256": "603a8a26c854b4d8d797c98b6285655d41a6916e428016544d333ee64e73c5c7"
     },
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "ee56a5ff31147eca41fc23e0fb308967499e74e2a9ec45ddd3f7c16a79e327c8"
-    },
-    {
-      "path": "desktop/tools/v035_ambient.py",
-      "normalization": "lf",
-      "sha256": "2f687d3d0f6887377ec329de9b8e1d34f0491ec653351d08946b685c4952f356"
+      "sha256": "b2a01884889ad4512ebec1a4fb6dfe25e1e70359e840b3767404292c25799a7a"
     },
     {
       "path": "desktop/tools/v035_dynamic_link.py",
       "normalization": "lf",
-      "sha256": "395428e015778c9c4881e24b71d1226464aef4faa6aa410516fdb47f242dd6c4"
+      "sha256": "ed42b417ce01bee624e47847699492076801bde722b138d18d3173da4f1f5216"
     },
     {
-      "path": "desktop/tools/v035_favorite_cover.py",
+      "path": "desktop/tools/v035_dynamic_preview.py",
       "normalization": "lf",
-      "sha256": "46093d61ce2ae7070763cab721cd25140f3f0b81baf12cd5d91032af9642e871"
-    },
-    {
-      "path": "desktop/tools/v035_story.py",
-      "normalization": "lf",
-      "sha256": "8962150b572975bfc630f6a929753eccfea406e4490fd46bc3b09b7e8bf83681"
-    },
-    {
-      "path": "desktop/tools/v035_story_pager.py",
-      "normalization": "lf",
-      "sha256": "d8f4f759156b095410a3d730eee464ddbf2cb426d8c23fc50d6332e164da6757"
-    },
-    {
-      "path": "desktop/tools/validate-source-cohort.py",
-      "normalization": "lf",
-      "sha256": "1e27bae07f4a3d6558b4bc47303f0df9ed9497ac19040a946bf894295d3a6799"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-ambient/AmbientFrameController.kt",
-      "normalization": "raw",
-      "sha256": "a96766f88422c8aafeb60ecbda71147a0c28250aeeaa5650896fddc1bbad2fc8"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-ambient/AmbientFramePolicy.kt",
-      "normalization": "raw",
-      "sha256": "e1724105eac256626ef21a18f2c1df969ceeb1855ec827bda2ca54858e31f28c"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-ambient/AmbientPlayerBinding.kt",
-      "normalization": "raw",
-      "sha256": "965951512c610dd2b385f544ac8757bbf39662d83414851ba36ff61a7e0f2c5d"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-ambient/README.md",
-      "normalization": "raw",
-      "sha256": "c4394d92c074c40b6d31ffe5f7593a2d6252f310de81e338bba1f7187bd1be17"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-ambient/manifest.json",
-      "normalization": "raw",
-      "sha256": "a65ff067f2d406e5defb599ff7086517e50115439159e0cd593df8dc9a2208b7"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-dynamic-link/DynamicCard.kt",
-      "normalization": "raw",
-      "sha256": "ed3781efda386120e8fecb62ea091d5fe9e8e2b89b80f15f15fe63304d11b5e5"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-dynamic-link/DynamicComponents.kt",
-      "normalization": "raw",
-      "sha256": "617b73e26e0fb16ad7deec80c90972852e1a1affecce4380c250658348e73a78"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-dynamic-link/DynamicLinkCard.kt",
-      "normalization": "raw",
-      "sha256": "b49587305ed4d7efffe143df39e8053c8dfd61e04019cbfb5566696862f0cd9f"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-dynamic-link/DynamicLinkCardPolicy.kt",
-      "normalization": "raw",
-      "sha256": "5783e6a0084ffe9916def97cd3a7736e97a917ff8030fab0037d62975f5c5a84"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-dynamic-link/DynamicModels.kt",
-      "normalization": "raw",
-      "sha256": "bd23ac74c998a0d41c5baeff03e687199baa8396011cdb96cff94b9d3c2d496c"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-dynamic-link/ForwardedContent.kt",
-      "normalization": "raw",
-      "sha256": "08ae88f2fb0a1ec6c393a79f13e07eae71d2b406e7aaf72d5440a1f2ac79b8fd"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-dynamic-link/PageAwareAsyncImage.kt",
-      "normalization": "raw",
-      "sha256": "1c83acf7547a4f08b900b4631ddaa7beb3c668f38c10209b3750de20e4cea1a9"
+      "sha256": "3f0386331f6d1bbc60b4233cf10e7a819fbe94ef2eed7dcf2e3982d7d52fd51f"
     },
     {
       "path": "desktop/upstream-slices/v035-dynamic-link/manifest.json",
       "normalization": "raw",
-      "sha256": "001bb1bff726f2887f1cd6b1f27429d8720e640cd3dbcae06632c65f9b6aebee"
+      "sha256": "2bb7053fed900a90f15ce3d57ebf86b9f208d97a65d77f59aab52c1b5ef8689b"
     },
     {
-      "path": "desktop/upstream-slices/v035-favorite-cover/CommonListScreen.kt",
+      "path": "desktop/upstream-slices/v035-dynamic-preview/DynamicCommentPreviewPolicy.kt",
       "normalization": "raw",
-      "sha256": "aa16a74e21d4be964bce88bd9608058e35d076d9e73e33074c4b54547589e4e7"
+      "sha256": "3f0ec7754d50c4096bf73d0e2faed97d323c3d51d8257d0c13400156a11b13e6"
     },
     {
-      "path": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCardList.kt",
+      "path": "desktop/upstream-slices/v035-dynamic-preview/DynamicRichTextPolicy.kt",
       "normalization": "raw",
-      "sha256": "f14aeef1cc3adf1b244c366d3e397c0460156f6e8e0e5cd8e65da25ce17caf88"
+      "sha256": "aeb71825af4c45f27207d9bb8d1a303f818936558a130992015f15fa4b438185"
     },
     {
-      "path": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCoverCache.kt",
+      "path": "desktop/upstream-slices/v035-dynamic-preview/DynamicSettingsStore.kt",
       "normalization": "raw",
-      "sha256": "8e09a969ca9be583e2d4d5d974bf757d0fc7ac05fdd9f258fda2bb1e6c9f5352"
+      "sha256": "149a3ba124cfdf3b2b9277213b415eebe59af13b91e1c8cd81331d0646266871"
     },
     {
-      "path": "desktop/upstream-slices/v035-favorite-cover/FavoriteFolderCoverPrefetchPolicy.kt",
+      "path": "desktop/upstream-slices/v035-dynamic-preview/HomeFeedSettingsSection.kt",
       "normalization": "raw",
-      "sha256": "44c5aa059052068138131692cb5074f87ea4c9910df349920b27dff613a1055d"
+      "sha256": "d833c561976275e9c8903cee164a7cef6b1a1b623a9972c5fbd7e2b41910a5c2"
     },
     {
-      "path": "desktop/upstream-slices/v035-favorite-cover/ListViewModel.kt",
+      "path": "desktop/upstream-slices/v035-dynamic-preview/VideoCardSharedElementContext.kt",
       "normalization": "raw",
-      "sha256": "8aaf7ab9082bec375877cc31bfd64f2f83aabdbc00569e248d2cc146730a09b4"
+      "sha256": "3bce59a7a8fc38a7d36c1fb1cb06bc0f776fc99f92b5358bdc1f960067d8a468"
     },
     {
-      "path": "desktop/upstream-slices/v035-favorite-cover/manifest.json",
+      "path": "desktop/upstream-slices/v035-dynamic-preview/manifest.json",
       "normalization": "raw",
-      "sha256": "fb6ffae1aded48644cf1e36f9a309cb0717f9a67c588ac08100a5a9cbbe5b14c"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-scrollable-lists/AppScrollableLists.kt",
-      "normalization": "raw",
-      "sha256": "af0981b641026f514024d13ecaf572b8c483a4470254277ca1eea4f9ac46d25b"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-scrollable-lists/manifest.json",
-      "normalization": "raw",
-      "sha256": "c30b46788b2676262fbac882d6bcd13a25752393fb15eeb037b34d5ead2bbef0"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story-pager/PortraitVideoPager.kt",
-      "normalization": "raw",
-      "sha256": "72a7bff755dbb50902f79fe4bc8cd6da22a54c6d43d8c4c63845ea19d2d6932e"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story-pager/manifest.json",
-      "normalization": "raw",
-      "sha256": "fe4fa6babb5a08d13e7d35e062e492dfd4b8d718bc7d2ce6580667ee84fffdb0"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story/ApiClient.kt",
-      "normalization": "raw",
-      "sha256": "3a8fcf044cb2d853d8d6a7487d7875bb73cbf3cf40a9526bcea111c861513e2f"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story/StoryFeedPolicy.kt",
-      "normalization": "raw",
-      "sha256": "8bd1836d296695fe268ccff899399c81dd4f91e8103af1d63a3b1eb7d3e88f49"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story/StoryModels.kt",
-      "normalization": "raw",
-      "sha256": "0c145928365add46c7d577cae7ba658b9fbe0e3ac9131e125dd4b9c1f641fc12"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story/StoryRepository.kt",
-      "normalization": "raw",
-      "sha256": "eabfa1b745aef056823514b1fb6739dd76b8ca3ec176e56f78cb017e1e12c4e2"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story/StoryScreen.kt",
-      "normalization": "raw",
-      "sha256": "61e0dd5ac17c57f9e897eb43ad5adb611f36754576d678e8d0b343c6729228a2"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story/StoryViewModel.kt",
-      "normalization": "raw",
-      "sha256": "dc0b9fafb7e0ad6c079e4577412b23633e68ab8a707e822247f087aeb3f85213"
-    },
-    {
-      "path": "desktop/upstream-slices/v035-story/manifest.json",
-      "normalization": "raw",
-      "sha256": "d193f904ae5dae695eeabb12f38943c48b3a090d6ed6f2362b2a3b716509acd1"
+      "sha256": "338944574b1b6cc29b7c1c681cbb28b272402cb69036eacb7d8c15f2a9adfcdd"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "316e0b0f99f89c48f77bce2abdbdc9a390ae0efb2221eb4829520596f37b590a"
+      "sha256": "6d1476cd694786e2be779ea745a615eef3d6244b0d4c86be622cfa2d9a349001"
     }
   ],
   "classes": {
@@ -384,9 +109,10 @@
     "com.android.purebilibili.feature.dynamic.components.DynamicLinkCardPolicyTest": 16,
     "com.bilipai.desktop.settings.DesktopWindowsSettingsCatalogTest": 5,
     "com.android.purebilibili.feature.video.ambient.AmbientFrameControllerTest": 2,
-    "com.android.purebilibili.feature.video.ambient.AmbientFramePolicyTest": 6
+    "com.android.purebilibili.feature.video.ambient.AmbientFramePolicyTest": 6,
+    "com.android.purebilibili.feature.dynamic.components.DynamicCommentPreviewPolicyTest": 5
   },
-  "expectedTests": 69,
+  "expectedTests": 74,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
