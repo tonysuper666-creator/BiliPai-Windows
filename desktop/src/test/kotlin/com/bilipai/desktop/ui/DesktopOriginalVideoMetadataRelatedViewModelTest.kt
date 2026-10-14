@@ -234,7 +234,7 @@ class DesktopOriginalVideoMetadataRelatedViewModelTest {
         private val settings = DesktopOriginalPlayerSettingsContext(context, ::owns, ::commit,
             largeScreenOrFoldableConfiguration = { false }, isDebugBuild = { false })
         private val api = unused<BilibiliApi>()
-        private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(api,
+        private val interaction = VideoInteractionUseCase(com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api,
             { "synthetic-csrf" }, { 41L }, { "synthetic-session" }, { null }, {}, {},
             DesktopOriginalFavoriteFolderProtocol(api, { 41L }, { "synthetic-csrf" }, {})), unused<DesktopOriginalVideoInteractionAnalytics>())
         private val useCase = DesktopOriginalVideoPlaybackUseCaseEnvironment(context, invocations.repository, actions,

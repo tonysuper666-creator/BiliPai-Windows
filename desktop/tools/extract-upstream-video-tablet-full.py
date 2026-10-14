@@ -60,6 +60,8 @@ def replace(t,before,after,label='Explicit Windows source seam',all=False):
 def between(t,start,end,after,label):
  a=t.index(start);b=t.index(end,a);return replace(t,t[a:b],after,label)
 def emit(rel,t,original):
+ from v037_player_known_presentation import apply as apply_known_presentation
+ t=apply_known_presentation(rel,t,REPO,LANE)
  t=validate_fresh_v025_comment_consumer("com/android/purebilibili/"+rel,t)
  if BASE+original in DIRECT and not args.standalone:return
  p=OUT/'com/android/purebilibili'/rel;write(p,t)

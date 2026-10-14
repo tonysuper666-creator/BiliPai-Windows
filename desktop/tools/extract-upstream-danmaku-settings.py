@@ -29,6 +29,21 @@ def hot_settings_originals(repo):
   if hashlib.sha256(normalized).hexdigest()!=row['sha256LF']:raise ValueError('Fixed hot-danmaku settings normalized identity changed: '+path)
   originals[path]=normalized.decode('utf-8')
  return originals,rows
+def latest_panel_original(repo):
+ from v037_tab_roles import COMMIT as commit,MANIFEST_SHA,PINS
+ root=repo/'desktop/upstream-slices/v037-explicit-tab-roles'
+ manifest_raw=(root/'manifest.json').read_bytes()
+ if hashlib.sha256(manifest_raw).hexdigest()!=MANIFEST_SHA:raise ValueError('Fixed latest danmaku panel manifest changed')
+ manifest=json.loads(manifest_raw)
+ if manifest.get('fixedUpstreamCommit')!=commit or manifest.get('files')!=PINS:raise ValueError('Fixed latest danmaku panel identity changed')
+ path=BASE+'feature/video/ui/components/DanmakuSettingsPanel.kt'
+ rows=[row for row in PINS if row['path']==path]
+ if len(rows)!=1:raise ValueError('Fixed latest danmaku panel input missing')
+ row=rows[0];raw=(root/row['filename']).read_bytes()
+ if len(raw)!=row['bytes'] or hashlib.sha256(raw).hexdigest()!=row['sha256Bytes']:raise ValueError('Fixed latest danmaku panel bytes changed')
+ if hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()!=row['gitBlob']:raise ValueError('Fixed latest danmaku panel blob changed')
+ text=raw.replace(b'\r\n',b'\n').decode('utf-8')
+ return text,dict(row,pinnedCommit=commit,sha256LF=sha(text),wholeOriginalPanelRetained=True)
 spec=importlib.util.spec_from_file_location('source_parser',HERE/'extract-upstream-danmaku-list-menu.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 def decl(s,name,indent=''):
  mask=parser.masked(s)
@@ -70,6 +85,9 @@ def generate(repo,output,standalone=False):
   s=subprocess.check_output(['git','show',COMMIT+':'+canonical_path],cwd=repo).decode().replace('\r\n','\n');assert canonical_file.read_text(encoding='utf-8').replace('\r\n','\n')==s,path
   sources[path]=s;ids.append(dict(path=canonical_path,previousPath=path,pinnedCommit=COMMIT,sha256LF=sha(s),gitBlob=subprocess.check_output(['git','rev-parse',COMMIT+':'+canonical_path],cwd=repo,text=True).strip()))
  def emit(path,s,origin,mode,patches=None,original=None):
+  from v037_tab_roles import apply as apply_tab_roles
+  patches=list(patches or [])
+  s=apply_tab_roles(origin,s,output,Path(path).name,edits=patches)
   write(output/path,s);row=dict(path=path,origin=origin,mode=mode,sha256LF=sha(s),adaptations=patches or [])
   if original is not None:
    reverse=s
@@ -79,17 +97,20 @@ def generate(repo,output,standalone=False):
   emitted.append(row)
  def adapt(s,a,b,rows):assert s.count(a)==1,(a,s.count(a));rows.append(dict(before=a,after=b));return s.replace(a,b)
  # Full original UI, all three sections and manager/import/cloud/add/delete branches.
- s=sources[paths[0]];patches=[]
- # Adopt only the two complete v027 settings clauses. Every other original v025
- # UI declaration and all Windows platform adaptations retain their existing owner.
+ panel_original,panel_identity=latest_panel_original(repo)
+ s=panel_original;patches=[]
+ s=adapt(s,'import com.android.purebilibili.core.store.SettingsManager\n','// Original settings use the required Root settings and hot-bar bindings.\n',patches)
+ s=adapt(s,'android.os.Build.VERSION.SDK_INT >= 33','com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()',patches)
+ # The whole v037 panel already includes both original hot-bar clauses. Retain
+ # the earlier raw clauses as provenance only; do not inject duplicate settings.
  hot_state_start=hot_ui.index('    val settingsContext = LocalContext.current\n')
  hot_state_end=hot_ui.index('    var showBlockManager by remember',hot_state_start)
  hot_state=hot_ui[hot_state_start:hot_state_end]
  hot_rows_start=hot_ui.index('                                DanmakuFilterSwitchRow(\n                                    label = "顶部计数弹幕",')
  hot_rows_end=hot_ui.index('                                DanmakuFilterSwitchRow(\n                                    label = "海量弹幕模式",',hot_rows_start)
  hot_rows=hot_ui[hot_rows_start:hot_rows_end]
- s=adapt(s,'    var showBlockManager by remember',hot_state+'    var showBlockManager by remember',patches)
- s=adapt(s,'                                DanmakuFilterSwitchRow(\n                                    label = "海量弹幕模式",',hot_rows+'                                DanmakuFilterSwitchRow(\n                                    label = "海量弹幕模式",',patches)
+ s=adapt(s,'fun applyDanmakuSliderPreview(','internal fun applyDanmakuSliderPreview(',patches)
+ s=adapt(s,'manager: com.android.purebilibili.feature.video.danmaku.DanmakuManager,','manager: com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTarget,',patches)
  s=adapt(s,'import androidx.compose.ui.Modifier\n','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.LocalDesktopDanmakuHotSettingsBindings\n',patches)
  s=adapt(s,'    val settingsContext = LocalContext.current\n','    val settingsContext = LocalDesktopDanmakuHotSettingsBindings.current\n',patches)
  for name,argument in [('getDanmakuHotBarEnabled',''),('getHotDanmakuExpandedMode',''),('setDanmakuHotBarEnabled',', enabled'),('setHotDanmakuExpandedMode',', enabled')]:
@@ -105,13 +126,13 @@ def generate(repo,output,standalone=False):
  s=adapt(s,'text = settingsScope.badgeLabel,','text = if (isFullscreenStyle) "全屏播放" else "窗口播放",',patches)
  s=adapt(s,'text = settingsScope.subtitle,','text = "开关、字号、行距和区域与全屏播放同步，其余样式独立",',patches)
  s=adapt(s,'text = "竖屏弹幕显示区域",','text = "窗口弹幕显示区域",',patches)
- s=adapt(s,'''                colors = AppSliderDefaults.colors(
+ s=adapt(s,'''                colors = if (liquidSlider) null else AppSliderDefaults.colors(
                     thumbColor = colors.sliderThumbColor,
                     activeTrackColor = colors.sliderActiveTrackColor,
                     inactiveTrackColor = colors.sliderInactiveTrackColor
                 ),
                 modifier = Modifier.fillMaxWidth()
-''','''                colors = AppSliderDefaults.colors(
+''','''                colors = if (liquidSlider) null else AppSliderDefaults.colors(
                     thumbColor = colors.sliderThumbColor,
                     activeTrackColor = colors.sliderActiveTrackColor,
                     inactiveTrackColor = colors.sliderInactiveTrackColor
@@ -133,13 +154,24 @@ def generate(repo,output,standalone=False):
                             android.widget.Toast.LENGTH_SHORT
                         ).show()''','''                        context.showFeedback(error.message?.takeIf(String::isNotBlank) ?: "云端规则同步失败")''')]
  for a,b in toast:s=adapt(s,a,b,patches)
- emit('com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt',s,paths[0],'selected-full-renderer',patches,sources[paths[0]])
+ emit('com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt',s,paths[0],'selected-full-renderer',patches,panel_original)
  for path in paths[2:5]:
   if standalone:emit(path.removeprefix(BASE),sources[path],path,'direct',[],sources[path])
  # Existing SettingsScope is owned by the installed list/menu producer: reference it.
  original=sources[paths[1]];models=[schema(original,n) for n in ['DanmakuPanelWidthMode','PortraitDanmakuDisplayAreaMode','DanmakuSettings']]
  models += [decl(original,n)[0] for n in ['normalizeDanmakuDisplayArea','normalizeDanmakuFontScale','normalizeDanmakuFullscreenPanelWidthMode','resolveDanmakuSettingsScope']]
  body='package com.android.purebilibili.core.store\nimport com.android.purebilibili.feature.video.danmaku.DANMAKU_DEFAULT_OPACITY\nimport kotlin.math.abs\n\n'+'\n\n'.join(models)+'\n'
+ from v037_player_closure import fixed_sources,COMMIT as area_commit
+ from v029_comment_search import whole_proof
+ current_manager=fixed_sources()[paths[1]]
+ old_area=decl(original,'normalizeDanmakuDisplayArea')[0]
+ current_area=decl(current_manager,'normalizeDanmakuDisplayArea')[0]
+ assert body.count(old_area)==1
+ previous_models=body
+ body=body.replace(old_area,current_area,1)
+ area_proof=whole_proof(previous_models,body)
+ area_proof.update(fixedCommit=area_commit,originalNormalizerSha256LF=sha(current_area),originalManagerSha256LF=sha(current_manager),selectedOriginalNormalizer=True,sourceQualified=False)
+ write(output/'v037-display-area-eight-step-source-proof.json',json.dumps(area_proof,indent=2)+'\n')
  emit('com/android/purebilibili/core/store/DesktopOriginalDanmakuSettingsModels.kt',body,paths[1],'selected-original-model-policy')
  original=sources[paths[5]];models=[schema(original,n) for n in ['DanmakuCloudFilterRule','DanmakuCloudFilterRules','DanmakuCloudSyncSettings','DanmakuCloudConfigPayload']]
  helpers=[re.search(r'(?m)^private fun Boolean\.toCloudFlag\(\)[^\n]+',original).group(0)]
@@ -301,7 +333,7 @@ internal class DesktopDanmakuCloudSyncBinding(
 }
 '''
  emit('com/bilipai/desktop/ui/DesktopOriginalDanmakuCloudSyncBinding.kt',body,paths[7],'selected-original-state-effects-bridge')
- save(output/'source-inventory.json',dict(pinnedCommit=COMMIT,sourceIdentities=ids,outputs=emitted,cloudProtocolMembers=contracts,settingsSetterMembers=setterrows,hotSettingsSlice=dict(pinnedCommit=HOT_SETTINGS_COMMIT,sourceIdentities=hot_source_ids,members=hot_members,uiClauses=[dict(sourceLine=hot_ui[:hot_state_start].count('\n')+1,originalSha256LF=sha(hot_state)),dict(sourceLine=hot_ui[:hot_rows_start].count('\n')+1,originalSha256LF=sha(hot_rows))]),existingReferences=['DanmakuSettingsScope (installed original-danmaku-list-menu producer)','DesktopDanmakuBlockPreferences (same installed body/Root global backing)','DanmakuKeywordFilterPolicy/Proto/models/Root Repository/Operations/Store/Session (reference, never re-emit)','Original AppThemeAdaptiveTabRow/full shared renderer (reference)']))
+ save(output/'source-inventory.json',dict(pinnedCommit=COMMIT,sourceIdentities=ids,outputs=emitted,cloudProtocolMembers=contracts,settingsSetterMembers=setterrows,panelSlice=panel_identity,hotSettingsSlice=dict(pinnedCommit=HOT_SETTINGS_COMMIT,sourceIdentities=hot_source_ids,members=hot_members,uiClauses=[dict(sourceLine=hot_ui[:hot_state_start].count('\n')+1,originalSha256LF=sha(hot_state)),dict(sourceLine=hot_ui[:hot_rows_start].count('\n')+1,originalSha256LF=sha(hot_rows))]),existingReferences=['DanmakuSettingsScope (installed original-danmaku-list-menu producer)','DesktopDanmakuBlockPreferences (same installed body/Root global backing)','DanmakuKeywordFilterPolicy/Proto/models/Root Repository/Operations/Store/Session (reference, never re-emit)','Original AppThemeAdaptiveTabRow/full shared renderer (reference)']))
  return emitted
 if __name__=='__main__':
  import argparse

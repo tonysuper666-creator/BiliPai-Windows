@@ -36,13 +36,15 @@ import java.util.concurrent.atomic.AtomicBoolean
     onDismissPool:()->Unit,
     enabledChangeVersion:Long,
     hotLink:DesktopWindowsHotDanmakuLink,
+    previewAdmission:((()->Unit)->Boolean),
 ) {
     val capturedEpoch=owner.operations.expectedEpoch
     val account by repository.account.collectAsState()
     val card=LocalDesktopDynamicCardBindings.current
-    key(owner,cid,sourceVersion,sourceLease,capturedEpoch,window) {
+    key(owner,cid,sourceVersion,sourceLease,capturedEpoch,window,overlay) {
         // Keep callbacks within this exact source lease; a successor must not refresh an old job's owner.
         val currentStillOwned by rememberUpdatedState(stillOwned)
+        val currentPreviewAdmission by rememberUpdatedState(previewAdmission)
         val currentPosition by rememberUpdatedState(currentPositionMs)
         val currentSeek by rememberUpdatedState(seekFromUser)
         val admissionLock=remember{Any()}
@@ -59,6 +61,13 @@ import java.util.concurrent.atomic.AtomicBoolean
         val blocks=remember{DesktopDanmakuBlockPreferences(globalStore,::admission)}
         val preferences=remember{DesktopOriginalDanmakuPreferences(globalStore,blocks,::admission)}
         val platform=remember(card,window){DesktopDanmakuWindowsPlatform(owner,pageScope,::owned,card,window)}
+        val previewTarget=remember(overlay) {
+            DesktopOriginalDanmakuSettingsPreviewTarget({overlay.currentSettings},overlay::applySettings) { change ->
+                owned() && currentPreviewAdmission {
+                    synchronized(admissionLock) { if(owned())change() }
+                }
+            }
+        }
         val actions=remember{object:DesktopDanmakuActions {
             override suspend fun getDanmakuThumbupState(cid:Long,dmid:Long)=owner.operations.getDanmakuThumbupState(cid,dmid)
             override suspend fun recallDanmaku(cid:Long,dmid:Long)=owner.operations.recallDanmaku(cid,dmid)
@@ -93,7 +102,7 @@ import java.util.concurrent.atomic.AtomicBoolean
                     currentPosition(),{if(owned())onDismissPool()},{preferences.currentSettings(settingsScope).blockRulesRaw},
                     upOwnerUserHash,isSending,{text->if(owned())onSendSame(text)})
                 if(showSettings)DesktopOriginalDanmakuSettingsHost(preferences,presentation,viewport,platform,
-                    syncEnabled,account!=null,cloudSync,{if(owned())onShowPool()},{if(owned())onDismissSettings()})
+                    syncEnabled,account!=null,cloudSync,previewTarget,{if(owned())onShowPool()},{if(owned())onDismissSettings()})
             }
         }
     }

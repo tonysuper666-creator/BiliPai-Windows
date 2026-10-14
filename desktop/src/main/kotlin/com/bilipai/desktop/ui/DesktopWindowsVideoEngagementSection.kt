@@ -105,7 +105,9 @@ internal class DesktopWindowsVideoEngagementBinding private constructor(
         // The original VM consumes this exact request at final admission. Its API
         // and confirmed feedback retain the existing presentation after UI close.
         engagement.doCoinWithDesktopPresentation(count, alsoLike, presentation = presentation, request = request)
-        return true
+        // The original model can reject "also like" while its state is unknown.
+        // Report acceptance only after its synchronous admission consumed this request.
+        return state.value.desktopCoinDialogRequest !== request && !request.isOwned()
     }
     fun feedback(kind: DesktopWindowsVideoFeedbackKind): DesktopWindowsVideoFeedbackOrigin? {
         var selected: DesktopWindowsVideoFeedbackOrigin? = null

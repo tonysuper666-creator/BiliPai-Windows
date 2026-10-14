@@ -82,10 +82,6 @@ def animation_source():
             'com.android.purebilibili.core.ui.LocalNavigationBackHandler(enabled = progress.isComplete)'),
         ('actual-renderer-capability','com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect(\n            Build.VERSION.SDK_INT\n        )',
             'desktopDetailRenderEffectsSupported()'),
-        ('unsupportedAndroidWindowBlur',
-            '        com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect(enabled = true)\n',
-            '        // Windows platform omission: Android FLAG_BLUR_BEHIND cannot sample across\n'
-            '        // this Compose dialog. Preserve the original dialog scrim/AppPopupSurface fallback.\n'),
     ]
     body,recipe=_adapt(raw[ANIMATION],pairs)
     return body,_proof(ANIMATION,body,recipe)

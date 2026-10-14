@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import com.android.purebilibili.core.store.DanmakuSettingsScope
 import com.android.purebilibili.feature.video.danmaku.DanmakuCloudSyncUiState
 import com.android.purebilibili.feature.video.ui.components.DanmakuSettingsPanel
+import com.android.purebilibili.feature.video.ui.components.applyDanmakuSliderPreview
 import com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
@@ -51,6 +52,7 @@ internal val LocalDesktopDanmakuHotSettingsBindings = staticCompositionLocalOf<D
     cloudSyncEnabled:Boolean,
     isLoggedIn:Boolean,
     cloudSync:DesktopDanmakuCloudSyncBinding,
+    previewTarget:DesktopOriginalDanmakuSliderPreviewTarget,
     onShowDanmakuPool:()->Unit,
     onDismiss:()->Unit,
 ) {
@@ -90,6 +92,7 @@ internal val LocalDesktopDanmakuHotSettingsBindings = staticCompositionLocalOf<D
                 cloudSyncEnabled=cloudSyncEnabled,blockRulesRaw=value.blockRulesRaw,
                 smartOcclusion=value.smartOcclusion,fullscreenWidthMode=value.fullscreenPanelWidthMode,
                 portraitDisplayAreaMode=value.portraitDisplayAreaMode,syncUiState=cloudSync.uiState,
+                onSliderPreview={parameter,next->if(platform.isOwned())applyDanmakuSliderPreview(previewTarget,parameter,next)},
                 onOpacityChange={update{preferences.setDanmakuOpacity(it,settingsScope)};cloudSync.queueChange{previous->previous.copy(opacity=it)}},
                 onFontScaleChange={update{preferences.setDanmakuFontScale(it,settingsScope)};cloudSync.queueChange{previous->previous.copy(fontScale=it)}},
                 onFontWeightChange={update{preferences.setDanmakuFontWeight(it,settingsScope)}},

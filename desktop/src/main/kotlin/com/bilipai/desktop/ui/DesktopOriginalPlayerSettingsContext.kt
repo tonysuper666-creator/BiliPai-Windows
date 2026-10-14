@@ -21,7 +21,8 @@ class DesktopOriginalPlayerSettingsContext internal constructor(
     private val commitIfCurrent: ((() -> Unit) -> Boolean),
     private val videoOverlayPlatform: DesktopOriginalVideoOverlayPlatform? = null,
     private val largeScreenOrFoldableConfiguration: (() -> Boolean)? = null,
-    private val isDebugBuild: (() -> Boolean)? = null
+    private val isDebugBuild: (() -> Boolean)? = null,
+    private val danmakuPreferences: com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences? = null
 ) {
     companion object { const val MODE_PRIVATE = 0 }
     internal val settingsDataStore get() = DesktopOriginalPlayerSettingsDataStore(this)
@@ -42,6 +43,15 @@ class DesktopOriginalPlayerSettingsContext internal constructor(
         // Original BuildConfig-derived default is a pure value, also read as collect initialValue.
         // Page retirement still guards every write permit, commit and native overlay below.
         return com.android.purebilibili.core.store.resolveDefaultPlayerDiagnosticLoggingEnabled(checkNotNull(isDebugBuild) { "Root actual build type is required" }.invoke())
+    }
+    internal fun getDanmakuHotBarEnabled(): kotlinx.coroutines.flow.Flow<Boolean> =
+        checkNotNull(danmakuPreferences) { "Root actual danmaku preferences are required" }.getDanmakuHotBarEnabled()
+    internal suspend fun setDanmakuHotBarEnabled(enabled: Boolean) {
+        currentCoroutineContext().ensureActive()
+        requireCurrent()
+        checkNotNull(danmakuPreferences) { "Root actual danmaku preferences are required" }.setDanmakuHotBarEnabled(enabled)
+        currentCoroutineContext().ensureActive()
+        requireCurrent()
     }
     internal fun isCurrentForOriginalWrite(): Boolean = isCurrent()
     internal fun requireCurrent() { if (!isCurrent()) throw CancellationException("Original player settings owner retired") }

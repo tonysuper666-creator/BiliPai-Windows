@@ -50,7 +50,8 @@ class DesktopWindowsCoinDialogRequestTest {
         }
     }
 
-    private class Harness(copyright: Int = 1, initialCoins: Int = 0, disliked: Boolean = false) {
+    private class Harness(copyright: Int = 1, initialCoins: Int = 0, disliked: Boolean = false,
+        likeStatusKnown: Boolean = true) {
         private val tempRoot = Paths.get(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
         val directory = Files.createTempDirectory(tempRoot, "coin-dialog-request-")
         val scheduler = TestCoroutineScheduler()
@@ -112,7 +113,7 @@ class DesktopWindowsCoinDialogRequestTest {
                 else -> error("Unexpected fixture API: ${method.name}")
             }
         } as BilibiliApi
-        private val protocol = DesktopOriginalVideoEngagementProtocol(api,
+        private val protocol = com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api,
             { "fixture-csrf" }, { 1L }, { null }, { null }, ::checkpoint,
             { error("Unexpected follow") },
             DesktopOriginalFavoriteFolderProtocol(api, { 1L }, { "fixture-csrf" }, ::checkpoint))
@@ -133,13 +134,18 @@ class DesktopWindowsCoinDialogRequestTest {
                 assertEquals(0, admissionDepth.get(), "Actual balance loader must stay outside admission")
                 balanceStarts.incrementAndGet()
                 originalBalance.load()
-            }, ::entryOwned, ::admitEntry))
+            }, ::entryOwned, ::admitEntry,
+            interactionSession = { directory },
+            cachedFollowStatusReader = protocol::cachedFollowStatus,
+            followStatusQuery = protocol::queryFollowStatus,
+        ))
         val binding: DesktopWindowsVideoEngagementBinding
         init {
             val info = Json.decodeFromString<ViewInfo>("""{"copyright":$copyright}""")
             val loaded = VideoPlaybackUiState.Success(info = info, playUrl = "", isLoggedIn = true,
                 coinCount = initialCoins)
-            vm.bindSubject(subject, loaded.toEngagementSeed().copy(isDisliked = disliked))
+            vm.bindSubject(subject, loaded.toEngagementSeed().copy(isDisliked = disliked,
+                likeStatusKnown = likeStatusKnown, followStatusKnown = true))
             binding = binding()
         }
         fun binding(expected: DesktopOriginalVideoAcceptedPublication = accepted): DesktopWindowsVideoEngagementBinding {
@@ -269,6 +275,21 @@ class DesktopWindowsCoinDialogRequestTest {
         }
     }
 
+    @Test fun unknownLikeStateRejectsAlsoLikeWithoutConsumingPlainCoinChoice(): Unit = runBlocking {
+        val h = Harness(likeStatusKnown = false)
+        try {
+            val request = h.request(); h.drain()
+            assertFalse(h.binding.coin(request, 1, true)); h.drain()
+            assertTrue(h.coinCalls.isEmpty())
+            assertSame(request, h.vm.uiState.value.desktopCoinDialogRequest)
+            assertTrue(request.isOwned()); assertTrue(h.vm.uiState.value.coinDialogVisible)
+            assertTrue(h.binding.coin(request, 1, false)); h.drain()
+            assertEquals(listOf(CoinCall(h.subject.aid, 1, 0, "fixture-csrf")), h.coinCalls.toList())
+            assertEquals(1, h.vm.uiState.value.coinCount)
+            assertFalse(request.isOwned()); assertNull(h.vm.uiState.value.desktopCoinDialogRequest)
+        } finally { h.close() }
+    }
+
     @Test fun fixtureAcceptedReplacementRejectsOldReadAndCoinEvenAtSameSourceVersion(): Unit = runBlocking {
         for (sameVersion in listOf(false, true)) for (pendingCoin in listOf(false, true)) {
             val h = Harness()
@@ -316,7 +337,7 @@ class DesktopWindowsCoinDialogRequestTest {
                 when (retirement) {
                     0 -> h.account = 2
                     1 -> h.entry = false
-                    2 -> h.vm.bindSubject(h.subject.copy(generation = 2), VideoEngagementSeed(isLoggedIn = true))
+                    2 -> h.vm.bindSubject(h.subject.copy(generation = 2), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
                     else -> h.scope.cancel()
                 }
                 read.complete(nav(99.0)); coin.complete(SimpleApiResponse()); h.drain()
@@ -359,7 +380,7 @@ class DesktopWindowsCoinDialogRequestTest {
                 when (retirement) {
                     0 -> h.accepted = DesktopOriginalVideoAcceptedPublication(h.source.request, h.source.nativeSource)
                     1 -> h.account = 2
-                    else -> h.vm.bindSubject(h.subject.copy(generation = 2), VideoEngagementSeed(isLoggedIn = true))
+                    else -> h.vm.bindSubject(h.subject.copy(generation = 2), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
                 }
                 val state = h.vm.uiState.value
                 assertNull(h.binding.feedback(DesktopWindowsVideoFeedbackKind.COIN))

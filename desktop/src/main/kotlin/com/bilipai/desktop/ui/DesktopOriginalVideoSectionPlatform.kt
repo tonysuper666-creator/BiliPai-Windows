@@ -4,12 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.android.purebilibili.core.store.DanmakuSettings
 import com.android.purebilibili.danmaku.engine.DanmakuItem
 import com.android.purebilibili.feature.anime4k.Anime4KConfig
 import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
 import com.android.purebilibili.feature.anime4k.Anime4KPreset
 import com.android.purebilibili.danmaku.parser.AdvancedDanmakuData
+import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
 import com.android.purebilibili.feature.video.danmaku.CommandDanmakuItem
 import com.android.purebilibili.feature.video.danmaku.DanmakuViewport
 import com.android.purebilibili.feature.video.ui.components.VideoViewportLayout
@@ -21,21 +23,13 @@ import kotlinx.coroutines.flow.StateFlow
  * client, parser, list/cache authority, tick/poll job or native window is created here.
  * Root must derive the pool from its source-version-tagged sole raw document.
  */
-internal interface DesktopOriginalSectionDanmakuPort {
+internal interface DesktopOriginalSectionDanmakuPort : DesktopOriginalDanmakuSliderPreviewTarget {
     var isEnabled: Boolean
-    var opacity: Float
-    var fontScale: Float
-    var fontWeight: Int
-    var speedFactor: Float
-    var displayArea: Float
-    var strokeWidth: Float
-    var lineHeight: Float
-    var scrollDurationSeconds: Float
-    var staticDurationSeconds: Float
     var scrollFixedVelocity: Boolean
     var staticDanmakuToScroll: Boolean
     var massiveMode: Boolean
     val advancedDanmakuFlow: StateFlow<List<AdvancedDanmakuData>>
+    val basDanmakuFlow: StateFlow<List<BasDanmaku>>
     val commandDanmakuFlow: StateFlow<List<CommandDanmakuItem>>
     fun updateSettings(settings: DanmakuSettings)
     fun clear()
@@ -44,6 +38,9 @@ internal interface DesktopOriginalSectionDanmakuPort {
     fun prepareForSeekScrub()
     fun cancelSeekScrub()
     fun getLoadedDanmakuList(): List<DanmakuItem>
+    fun getHotDanmakuList(): List<DanmakuItem>
+    fun reserveHotDanmakuBarHeight(heightPx: Float)
+    val upOwnerUserHash: String?
 }
 
 internal interface DesktopOriginalSectionVolumePort {
@@ -65,6 +62,11 @@ internal interface DesktopOriginalSectionEnhancementActions {
  */
 internal interface DesktopOriginalVideoSectionPlatform {
     @Composable fun RenderPlayerForeground(content: @Composable () -> Unit)
+    /** Bounded sampling from the same accepted native source, active only for visible glass. */
+    @Composable fun ObserveVideoBackdrop(enabled: Boolean)
+    val videoBackdropReady: Boolean
+    /** Records into the glass source's separate display list; never paints over native video. */
+    fun DrawScope.drawVideoBackdrop()
     val settingsContext: DesktopOriginalPlayerSettingsContext
     val viewport: DesktopOriginalPlayerViewportPort
     val viewportAttached: Boolean
@@ -81,6 +83,10 @@ internal interface DesktopOriginalVideoSectionPlatform {
     val enhancementActions: DesktopOriginalSectionEnhancementActions
     val danmaku: DesktopOriginalSectionDanmakuPort
     val danmakuPreferences: DesktopOriginalDanmakuPreferences
+    val nextWatchHint: StateFlow<DesktopOriginalVideoNextWatchHint?>
+    fun captureNextWatchHint(): DesktopOriginalVideoNextWatchHint?
+    fun playNextWatchHint(hint: DesktopOriginalVideoNextWatchHint, caller: kotlinx.coroutines.Job): Boolean
+    @Composable fun HotDanmakuScope(content: @Composable (DesktopHotDanmakuPlayer) -> Unit)
     val cloudSync: DesktopDanmakuCloudSyncBinding
     fun hasPlaylistNext(): Boolean
     fun setScreenshotAndOrientationLock(locked: Boolean): AutoCloseable
@@ -112,7 +118,7 @@ internal interface DesktopOriginalVideoSectionPlatform {
     /** Ordinary + advanced painting must remain the existing native Overlay actor.
      * Command buttons are the original Compose foreground in the sole shaped carrier.
      */
-    @Composable fun NativeDanmakuSurface(viewport: DanmakuViewport, modifier: Modifier)
+    @Composable fun NativeDanmakuSurface(viewport: DanmakuViewport, renderingPaused: Boolean, modifier: Modifier)
 }
 
 internal val LocalDesktopOriginalVideoSectionPlatform = staticCompositionLocalOf<DesktopOriginalVideoSectionPlatform> {

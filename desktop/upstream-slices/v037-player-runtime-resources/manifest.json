@@ -1,0 +1,19 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInputDiagnostics.kt",
+      "filename": "VideoInputDiagnostics.kt",
+      "bytes": 4092,
+      "sha256Bytes": "3575dad6c3ac52e3aa784cacba1d0ddda679fd27b7021ddf603ce1b5117eac34",
+      "gitBlob": "403890fea22f4ed0721d0a5878a6854664592a21"
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/ic_pili_tv_play.png",
+      "filename": "ic_pili_tv_play.png",
+      "bytes": 2367,
+      "sha256Bytes": "17e9e663fc2cf3c8f8d663a8d1836360dc12600fa4fb36e839849311b7af4551",
+      "gitBlob": "b5d0299c5861828310407147445d868a3cb1efd7"
+    }
+  ]
+}

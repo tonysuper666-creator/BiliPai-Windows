@@ -133,7 +133,7 @@ internal class DesktopOriginalVideoRootPortraitRendering(
         // videoWidth/videoHeight/resizeMode remain the original caller metadata.
         // Physical bounds are the actual Modifier slot; no guessed video-aspect box.
         if (owns() && !pip && borrowedDanmaku > 0 && viewport != null) {
-            section.NativeDanmakuSurface(viewport, bounds)
+            section.NativeDanmakuSurface(viewport, renderingPaused = false, modifier = bounds)
         } else Box(bounds)
     }
 }

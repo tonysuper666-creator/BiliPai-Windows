@@ -35,12 +35,12 @@ class BrandCacheClearProducerTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls): cls.temp.cleanup()
 
-    def test_actual_sole_cli_emits_complete_fixed_ui_with_five_counted_ports_and_full_inverse(self):
+    def test_actual_sole_cli_retains_original_modal_blur_with_four_counted_ports_and_full_inverse(self):
         relative='com/android/purebilibili/feature/settings/CacheClearAnimation.kt'
         text=(self.after/relative).read_text(encoding='utf-8')
         proofs=json.loads((self.after/'cache-clear-source-inventory.json').read_text(encoding='utf-8'))
         proof=proofs[0]
-        self.assertEqual(5,len(proof['countedAdaptations']))
+        self.assertEqual(4,len(proof['countedAdaptations']))
         self.assertEqual(self.raw[brand.ANIMATION],brand.reverse(text,proof['countedAdaptations']))
         self.assertTrue(proof['exactFullSourceInverse'])
         self.assertEqual(proof['generatedSha256LF'],brand.digest(text.encode()))
@@ -51,10 +51,8 @@ class BrandCacheClearProducerTest(unittest.TestCase):
         self.assertNotIn('androidx.activity.compose.BackHandler',text)
         self.assertNotIn('owner.clear',text)
         omissions=[row for row in proof['countedAdaptations'] if row['label']=='unsupportedAndroidWindowBlur']
-        self.assertEqual(1,len(omissions))
-        self.assertIn('ModalWindowBlurBehindEffect(enabled = true)',omissions[0]['before'])
-        self.assertIn('original dialog scrim/AppPopupSurface fallback',omissions[0]['after'])
-        self.assertNotIn('ModalWindowBlurBehindEffect',text)
+        self.assertEqual([],omissions)
+        self.assertIn('com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect(enabled = true)',text)
         self.assertIn('import com.bilipai.desktop.ui.DesktopWindowsPopupDialog as Dialog',text)
         self.assertNotIn('import androidx.compose.ui.window.Dialog\n',text)
         dialogs=[row for row in proof['countedAdaptations'] if row['label']=='same-root-owned-popup-dialog']

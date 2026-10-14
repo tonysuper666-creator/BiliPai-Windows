@@ -39,6 +39,11 @@ def fixed_sponsor_ui_source():
   SOURCES[local]=dict(text=text,upstreamCommit=manifest['upstreamCommit'],originalPath=item['originalPath'],sha256LF=sha(text),gitBlob=oid,localPath=local,sourceManifestSha256=SPONSOR_UI_MANIFEST_SHA256)
  return SOURCES[local]['text']
 def source(rel):
+ from v037_player_section_policy import RELATIVE_PATHS,fixed_original
+ if rel in RELATIVE_PATHS:
+  text,identity=fixed_original(REPO,rel)
+  SOURCES[identity['localPath']]=identity
+  return text
  if rel=='feature/video/ui/components/SponsorSkipUI.kt':return fixed_sponsor_ui_source()
  path=_desktop_canonical_relative(REPO,BASE+rel)
  if path not in SOURCES:
@@ -46,7 +51,8 @@ def source(rel):
   b=wide(p).read_bytes().replace(b'\r\n',b'\n');assert sha(b)==SOURCE_PINS[path]['sha256LF'],path
   blob=subprocess.check_output(['git','-c','core.longpaths=true','hash-object','--path='+_desktop_canonical_relative(REPO,path),str(_desktop_canonical_source(REPO,path))],cwd=REPO,text=True).strip();assert blob==SOURCE_PINS[path]['gitBlob'],path
   SOURCES[path]=dict(text=b.decode(),**SOURCE_PINS[path])
- return SOURCES[path]['text']
+ from v037_player_owner_state import selected_source
+ return selected_source(path,SOURCES[path]['text'])
 def original_subtitle_auto_setter_delta(path,text):
     if path != 'com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt':return text
     before='    fun getSubtitleAutoPreference(context: Context): Flow<SubtitleAutoPreference> ='
@@ -57,11 +63,16 @@ def original_subtitle_auto_setter_delta(path,text):
 
 def emit(rel,t):
  t=original_subtitle_auto_setter_delta('com/android/purebilibili/'+rel,t)
- direct=BASE+rel in DIRECT
+ from v037_player_section_policy import RELATIVE_PATHS,fixed_original
+ fixed_policy=rel in RELATIVE_PATHS
+ direct=BASE+rel in DIRECT and not fixed_policy and source(rel)==SOURCES[_desktop_canonical_relative(REPO,BASE+rel)]['text']
  fixed_sponsor=rel=='feature/video/ui/components/SponsorSkipUI.kt'
  entry=dict(path='com/android/purebilibili/'+rel,sha256LF=sha(t),mode='direct-complete-original'if direct or fixed_sponsor else'selected-platform',generated=STANDALONE or not direct)
  if fixed_sponsor:
   pin=SOURCES[SPONSOR_UI_ARCHIVE+'/SponsorSkipUI.kt']
+  entry['source']={key:pin[key] for key in ('upstreamCommit','originalPath','sha256LF','gitBlob','localPath','sourceManifestSha256')}
+ if fixed_policy:
+  _,pin=fixed_original(REPO,rel)
   entry['source']={key:pin[key] for key in ('upstreamCommit','originalPath','sha256LF','gitBlob','localPath','sourceManifestSha256')}
  OUTPUTS.append(entry)
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)
@@ -102,6 +113,10 @@ def render_section():
  t=exact(t,'(String, Bundle?) -> Unit = { _, _ -> }','(String, Long, String?) -> Unit = { _, _, _ -> }','Original related navigation Bundle maps exact CID/cover fields')
  emit(rel,t)
  rel='feature/video/ui/section/VideoPlayerSection.kt';t=source(rel)
+ t=exact(t,'import com.android.purebilibili.R\n','','Windows bundles the exact original bitmap; no Android resource identifier')
+ t=exact(t,'painterResource(R.drawable.ic_pili_tv_play)','painterResource("icons/ic_pili_tv_play.png")','Same pinned upstream manual-play bitmap from Windows classpath resources')
+ t=exact(t,'onRelatedVideoClick(dialogTargetBvid, null)','onRelatedVideoClick(dialogTargetBvid, 0L, null)','Original absent navigation Bundle maps existing unspecified-CID and cover tuple')
+ t=exact(t,'WindowInsets.navigationBarsIgnoringVisibility','WindowInsets.navigationBars','Windows measured navigation insets have no Android visibility-dependent navigation bar')
  t=between(t,'    val onRecallDanmaku = actions.onRecallDanmaku\n    val context = LocalContext.current','    val configuration = LocalConfiguration.current', '''    val onRecallDanmaku = actions.onRecallDanmaku
     val platform = LocalDesktopOriginalVideoSectionPlatform.current
     val context = platform.settingsContext
@@ -188,7 +203,7 @@ def render_section():
                         sizeModifier.onSizeChanged { measuredPlayerViewportSize = it }
                     },
                     layout = viewportLayout, resizeMode = targetResizeMode,
-                    revealAlpha = playerSurfaceAlpha, revealScale = playerSurfaceScale,
+                    revealAlpha = playerSurfaceAlpha.value, revealScale = playerSurfaceScale.value,
                     freeScale = scale, panX = panX, panY = panY,
                     flipHorizontal = isFlippedHorizontal, flipVertical = isFlippedVertical,
                     visible = shouldShowInlinePlayerView(isPortraitFullscreen, forceCoverDuringReturnAnimation, keepCoverForManualStart),
@@ -198,8 +213,14 @@ def render_section():
  # The native first-frame bridge supplies one real receipt, so remove redundant Media3 Events adapter.
  t=between(t,'            // 兼容性：同时也监听 Events','            override fun onPlaybackStateChanged', '', 'Duplicate Media3 Events first-frame path uses the one typed native receipt')
  t=exact(t,'if (playerState.player.isPlaying && playerState.player.currentPosition > 0)', 'if (playerState.player.firstVideoFrameReady)','Initial reveal requires real native frame, never old position/progress heuristic')
- t=between(t,'                AndroidView(\n                    factory = { ctx ->\n                        DanmakuRenderView(ctx)','                com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay(', '''                platform.NativeDanmakuSurface(viewport, Modifier.fillMaxSize())
-''','Sole native Overlay paints ordinary/advanced raw document; no parallel DanmakuRenderView/Advanced renderer')
+ reserve_start='                // Keep the classic controls footprint reserved, including in compact/hidden chrome.\n'
+ command_start='                com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay('
+ assert t.count(reserve_start)==t.count(command_start)==1
+ reserves=t[t.index(reserve_start):t.index(command_start,t.index(reserve_start))]
+ t=between(t,'                key(danmakuManager) {\n                    AndroidView(\n                        factory = { ctx ->\n                            DanmakuRenderView(ctx)',command_start, '''                key(danmakuManager) {
+                    platform.NativeDanmakuSurface(viewport, suppressTransientOverlaysForTransition, Modifier.fillMaxSize())
+                }
+'''+reserves,'Sole native Overlay paints ordinary/advanced/BAS raw document; preserve whole original command-controls reserve calculation')
  t=t.replace('com.android.purebilibili.data.repository.DanmakuRepository.submitGradeDanmaku(', 'platform.submitGradeDanmaku(').replace('com.android.purebilibili.data.repository.DynamicVoteRepository.submitVote(', 'platform.submitVote(')
  import v029_command_vote as command_vote
  command_edits=[];command_before=t
@@ -250,7 +271,9 @@ def render_section():
  t=t.replace('anime4kPlugin?.','platform.enhancementActions.')
  t=t.replace('val hasPlaylistNext = com.android.purebilibili.feature.video.player.PlaylistManager\n                .isExternalPlaylist.value &&\n                com.android.purebilibili.feature.video.player.PlaylistManager.hasNext()','val hasPlaylistNext = platform.hasPlaylistNext()')
  t=t.replace('import com.android.purebilibili.feature.video.player.MiniPlayerManager\n','')
- t=exact(t,'MiniPlayerManager.getInstance(context).isMiniMode','isInPipMode','The sole Root Mini binding is resources.pip.active, already supplied as isInPipMode; no second Mini state')
+ assert t.count('MiniPlayerManager.getInstance(context).isMiniMode')==2
+ for _ in range(2):
+  original='MiniPlayerManager.getInstance(context).isMiniMode';EDITS.append(dict(label='Both original capture/PiP reads use the same actual Root PiP state',before=original,after='isInPipMode'));t=t.replace(original,'isInPipMode',1)
  t=between(t,'                onAnime4kToggle = { enabled ->','                onVideoEnhancementAlgorithmChange =', '''                onAnime4kToggle = { enabled -> platform.setCurrentVideoEnhancementEnabled(enabled) },
 ''','One existing native enhancement session owns per-video override and guarded plugin enable')
  t=t.replace('anime4kAvailable = anime4kGlesAvailable,','anime4kAvailable = enhancementState.available,')
@@ -258,6 +281,11 @@ def render_section():
  t=t.replace('import com.android.purebilibili.feature.anime4k.isAnime4KGles3Available\n','')
  t=t.replace('import com.android.purebilibili.core.ui.AppShapes\n','import com.android.purebilibili.core.ui.AppShapes\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\n')
  t=t.replace('import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\n','import com.bilipai.desktop.ui.LocalDesktopOriginalVideoSectionPlatform\nimport kotlinx.coroutines.flow.map\n')
+ t=exact(t,'val playerPageBackdrop = rememberPlayerPageBackdrop()', 'val playerPageBackdrop = rememberPlayerPageBackdrop(videoRecording = { with(platform) { drawVideoBackdrop() } })', 'Actual same-native-source recording callback')
+ t=exact(t,'!isInPipMode\n    // 应用共享元素','!isInPipMode\n    platform.ObserveVideoBackdrop(capturePlayerPage)\n    // 应用共享元素','Sampling follows original host lifecycle and visible-glass policy')
+ t=exact(t,'playerViewRef?.videoSurfaceView is TextureView','platform.videoBackdropReady','Real retained-source frame capability replaces Android TextureView')
+ t=exact(t,'capturePlayerPage && playerPageBackdrop.video.isReady\n','capturePlayerPage && playerPageBackdrop.video.isReady && platform.videoBackdropReady\n','Gesture glass requires an actually current native frame')
+ t=exact(t,'hdr = navigationHdrSurfaceRequired,\n        anime4k = shouldUseAnime4kPipeline,','hdr = navigationHdrSurfaceRequired || enhancementState.hdrConversionActive,\n        anime4k = false,','Windows NVIDIA stays in the same native output, with actual HDR presentation excluded from SDR glass')
  # Windows calls the complete original subtitle host in its existing foreground.
  # Its optional writer retains the actual source admission across a drag/save;
  # other original callers keep their existing settings path and gesture key.
@@ -273,6 +301,15 @@ def render_section():
                                         context,
                                         subtitleVerticalOffsetFraction
                                     )''', 'Whole original drag saves through the captured Windows settings admission')
+ hot_start='                    HotDanmakuBar('
+ a=t.index(hot_start);mask=protocol.masked(t);opening=mask.index('(',a);end=protocol.balanced(mask,opening,'(',')')
+ hot=t[a:end]
+ assert hot.count('player = playerState.player,')==1 and hot.count('danmakuManager.getLoadedDanmakuList()')==1
+ mapped_hot=hot.replace('player = playerState.player,','player = hotPlayer,').replace('danmakuManager.getLoadedDanmakuList()','danmakuManager.getHotDanmakuList()')
+ wrapped='                    platform.HotDanmakuScope { hotPlayer ->\n'+'\n'.join('    '+line for line in mapped_hot.splitlines())+'\n                    }'
+ t=exact(t,hot,wrapped,'Whole original hot bar uses existing source-owned clock, plugin output and preference scope')
+ t=exact(t,'        NextWatchOverlay(\n            player = playerState.player,','        val nextWatchHint by platform.nextWatchHint.collectAsStateWithLifecycle()\n        NextWatchOverlay(\n            settingsContext = platform.settingsContext,\n            playing = playerState.player.isPlaying,\n            hint = nextWatchHint,','Existing owned next-watch binding supplies actual hint and native playing state')
+ t=exact(t,'            resolve = actions.resolveNextWatch,\n            play = actions.playNextWatch,','            resolve = platform::captureNextWatchHint,\n            play = { hint -> platform.playNextWatchHint(hint, checkNotNull(settingsScope.coroutineContext[kotlinx.coroutines.Job])) },','Use retained lookahead and captured original UI caller; never create another queue')
  t+='\n/** Lazy original diagnostic call shape on the existing local diagnostics bridge. */\nprivate fun Logger.d(tag: String, message: () -> String) { Logger.d(tag, message()) }\n'
  emit(rel,t)
 
@@ -307,19 +344,41 @@ def render_policy():
  tokens=parser.kotlin_tokens(t);depth=parens=brackets=0;starts=[]
  for i,(word,a,b)in enumerate(tokens):
   if depth==parens==brackets==0 and word in ['fun','val','var','class','object','interface']:
-   starts.append((tokens[i+1][0],t.rfind('\n',0,a)+1))
+    j=i+1
+    if word=='fun':
+     while tokens[j][0]!='(':j+=1
+     name=tokens[j-1][0]
+    else:name=tokens[j][0]
+    starts.append((name,t.rfind('\n',0,a)+1))
   depth+=(word=='{')-(word=='}');parens+=(word=='(')-(word==')');brackets+=(word=='[')-(word==']')
- chunks=[t[a:starts[i+1][1]if i+1<len(starts)else len(t)]for i,(name,a)in enumerate(starts)if name in POLICY_NAMES]
- assert len(chunks)==len(POLICY_NAMES)
+ members={name:t[a:starts[i+1][1]if i+1<len(starts)else len(t)]for i,(name,a)in enumerate(starts)}
+ from v037_player_section_policy import GESTURE_MOTION_NAMES
+ shared=set(GESTURE_MOTION_NAMES);assert shared<=set(members)
+ selected=set(POLICY_NAMES);assert selected<=set(members)
+ assert not selected&shared,'Gesture declarations belong to the existing detail-unit producer'
+ while True:
+  dependencies={word for name in selected for word,_,_ in parser.kotlin_tokens(members[name]) if word in members and word not in shared}
+  expanded=selected|dependencies
+  if expanded==selected:break
+  selected=expanded
+ chunks=[members[name]for name,_ in starts if name in selected]
  header=t[:t.index('\ninternal const val INITIAL_PLAYER_CONTROLS_VISIBLE')]
  header=re.sub(r'(?m)^@file:androidx.annotation.OptIn.*\n','',header)
  header=re.sub(r'(?m)^import (?:android\.|androidx.media3.ui.PlayerView).*$\n','',header)
  header=header.replace('import androidx.media3.common.Player','import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player').replace('import androidx.media3.common.PlaybackParameters','import com.bilipai.desktop.ui.DesktopOriginalPlaybackRate as PlaybackParameters')
- emit('feature/video/ui/section/DesktopOriginalVideoPlayerSectionPolicy.kt',header+'\n'+'\n'.join(chunks))
+ body=header+'\n'+'\n'.join(chunks)
+ android_texture_default='com.android.purebilibili.core.util.prefersTextureVideoSurface()'
+ assert body.count(android_texture_default)==1
+ body=body.replace(android_texture_default,'false /* Windows MPV uses the native HWND renderer, not Android TextureView compatibility. */',1)
+ from v029_comment_search import whole_proof
+ proof=whole_proof(t[:t.index('\ninternal const val INITIAL_PLAYER_CONTROLS_VISIBLE')]+'\n'+'\n'.join(chunks),body)
+ proof.update(fixedCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',originalDeclarationNames=sorted(selected),sharedOriginalDeclarations=list(GESTURE_MOTION_NAMES),sharedDeclarationOwner='extractOriginalVideoDetailUnits',unmodifiedOriginalDeclarationBodies=False,onlyPlatformDefaultAdapted='Android TextureView manufacturer compatibility does not apply to the Windows MPV HWND renderer',sourceQualified=False)
+ write(OUTPUT/'v037-player-section-policy-platform-proof.json',json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
+ emit('feature/video/ui/section/DesktopOriginalVideoPlayerSectionPolicy.kt',body)
 def render_dimension():
  t=source('feature/video/state/VideoPlayerState.kt');a=t.index('internal fun resolveApiDimensionIsVertical(');masked=protocol.masked(t);b=protocol.balanced(masked,masked.index('{',a),'{','}')
  emit('feature/video/state/DesktopOriginalApiDimensionPolicy.kt','package com.android.purebilibili.feature.video.state\n'+t[a:b]+'\n')
-def generate(repo,output,standalone=False):
+def generate(repo,output,standalone=False,test_output=None):
  global REPO,OUTPUT,STANDALONE,parser,selector,protocol,controls,c,SOURCES,OUTPUTS,EDITS
  REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone;SOURCES={};OUTPUTS=[];EDITS=[]
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'));assert manifest['upstreamCommit']==COMMIT
@@ -329,5 +388,11 @@ def generate(repo,output,standalone=False):
  parser=module('section_tokens',REPO/'desktop/tools/sync-upstream.py');selector=module('section_declarations',REPO/'desktop/tools/extract-appearance-platform.py');protocol=module('section_brackets',REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
  controls=SimpleNamespace(parser=parser);c=SimpleNamespace(parser=parser,selector=selector,member_closure=member_closure)
  render_section();render_settings();render_helpers();render_policy();render_dimension()
+ from v037_player_runtime_resources import emit as emit_runtime_resources
+ emit_runtime_resources(REPO,OUTPUT,OUTPUTS)
+ from v037_player_page_backdrop import emit_foundation
+ from v037_player_owner_state import PINS as owner_pins, MANIFEST_SHA as owner_manifest_sha
+ emit_foundation(REPO,OUTPUT,OUTPUTS,test_output)
+ write(OUTPUT/'v037-complete-player-section-source-readback.json',json.dumps(dict(upstreamCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',selectedOriginalSources=owner_pins,sourceManifestSHA256=owner_manifest_sha,outputs=OUTPUTS,sameNativePlayerBackdropBinding=True,androidTextureViewPredicateRemoved=True,mainCompiled=False,pixelsValidated=False),ensure_ascii=False,indent=2)+'\n')
  return OUTPUTS
-if __name__=='__main__':generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone'in sys.argv[3:])
+if __name__=='__main__':generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone'in sys.argv[3:],Path(sys.argv[sys.argv.index('--test-output')+1]) if '--test-output' in sys.argv else None)

@@ -110,7 +110,7 @@ class DesktopWindowsSponsorSkipCommandTest {
             }, mediaPreparation = { error("No media preparation in sponsor-command fixture") })
         }, unused(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         private val api = unused<BilibiliApi>()
-        private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(api,
+        private val interaction = VideoInteractionUseCase(com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api,
             { "fixture-csrf" }, { 1L }, { "fixture-session" }, { null }, {}, {},
             DesktopOriginalFavoriteFolderProtocol(api, { 1L }, { "fixture-csrf" }, {})), unused())
         private val settings = DesktopOriginalPlayerSettingsContext(context, ::owned,

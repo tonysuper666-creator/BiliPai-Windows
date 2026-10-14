@@ -1,5 +1,6 @@
 """Fixed-source repost coin propagation on real existing source producers; no API/JVM."""
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -50,7 +51,7 @@ class RepostCoinExtractionTest(unittest.TestCase):
             self.assertEqual(1, gradle.count('exclude(canonicalOriginalIdentity("' + identity + '"))'))
 
     def test_every_owned_delta_reverses_exactly_and_retains_protocol_guards(self):
-        expected = {"detail-full-units": {coin.VM, coin.USECASE, coin.PROTOCOL, coin.TRIPLE},
+        expected = {"detail-full-units": {coin.USECASE, coin.TRIPLE},
                     "state-core": {coin.SEED}, "detail-holder": {coin.COMMON}, "fullscreen-pager": {coin.PAGER}}
         for producer, paths in expected.items():
             output = self.output / producer
@@ -58,22 +59,78 @@ class RepostCoinExtractionTest(unittest.TestCase):
                              {p.name for p in coin.wide(output).glob("*.repost-coin-proof.json")})
             for path in paths:
                 proof = json.loads(read(output / (Path(path).name + ".repost-coin-proof.json")))
-                after = read(output / path); before = coin.undo(after, proof)
+                after = read(output / path)
+                if producer == "fullscreen-pager" and path == coin.PAGER:
+                    later = json.loads(read(output / "PortraitVideoPager.kt.v035-story-source.json"))["recipe"]
+                    self.assertEqual(later["afterSha256LF"], coin.sha(after))
+                    data = after.encode()
+                    for edit in reversed(later["edits"]):
+                        self.assertEqual(edit["afterWholeSha256"], hashlib.sha256(data).hexdigest())
+                        at = edit["offsetBytes"]; new = edit["after"].encode(); old = edit["before"].encode()
+                        self.assertEqual(new, data[at:at + len(new)])
+                        data = data[:at] + old + data[at + len(new):]
+                        self.assertEqual(edit["beforeWholeSha256"], hashlib.sha256(data).hexdigest())
+                    after = data.decode()
+                    self.assertEqual(later["beforeSha256LF"], coin.sha(after))
+                    later = json.loads(read(output / "PortraitVideoPager.kt.portrait-native-preparation-proof.json"))
+                    self.assertEqual(later["afterSha256LF"], coin.sha(after))
+                    for edit in reversed(later["indexedEdits"]):
+                        at = edit["afterOffset"]
+                        self.assertEqual(edit["after"], after[at:at + len(edit["after"])])
+                        after = after[:at] + edit["before"] + after[at + len(edit["after"]):]
+                    self.assertEqual(later["beforeSha256LF"], coin.sha(after))
+                if producer == "state-core" and path == coin.SEED:
+                    later = self.producers[producer].AUDITS["v037-original-known-state-seed-functions"]["wholePreviousRootInverse"]
+                    self.assertEqual(later["afterSha256LF"], coin.sha(after))
+                    for edit in reversed(later["indexedEdits"]):
+                        at = edit["afterOffset"]
+                        self.assertEqual(edit["after"], after[at:at + len(edit["after"])])
+                        after = after[:at] + edit["before"] + after[at + len(edit["after"]):]
+                    self.assertEqual(later["beforeSha256LF"], coin.sha(after))
+                self.assertEqual(proof["afterSha256LF"], coin.sha(after), (producer, path))
+                before = coin.undo(after, proof)
                 self.assertEqual((after, proof), coin.apply(path, before))
                 self.assertTrue(proof["fullPreviousOwnedInverse"])
                 if path in {coin.VM, coin.PROTOCOL}:
                     for unchanged in ("ensureActive()", "CancellationException"):
                         self.assertEqual(before.count(unchanged), after.count(unchanged))
         vm = read(self.output / "detail-full-units" / coin.VM)
+        latest = json.loads(read(self.output / "detail-full-units/v037-repost-contract-source-proof.json"))
+        from v037_player_interaction import selected_source_identity
+        identity = selected_source_identity(latest["originalPath"])
+        self.assertEqual("8b47769d22c0d5bc88ae5248cee4aa04ff10d62c", latest["fixedCommit"])
+        self.assertEqual(hashlib.sha256(identity["text"].encode()).hexdigest(), latest["originalSha256LF"])
+        self.assertEqual(hashlib.sha256(vm.encode()).hexdigest(), latest["generatedSha256LF"])
+        self.assertTrue(latest["wholeLatestOriginalRepostContractAlreadySelected"])
+        self.assertTrue(latest["previousSemanticDeltaNotReapplied"])
+        self.assertIn("val coinLimit: Int get() = if (isRepost) 1 else 2", identity["text"])
         self.assertIn("isInWatchLater = if (VideoEngagementField.WATCH_LATER in locallyModifiedFields) current.isInWatchLater else seed.isInWatchLater,", vm)
-        self.assertIn("if (count !in 1..(state.coinLimit - state.coinCount).coerceIn(0, state.coinLimit)) return", vm)
+        self.assertIn("count in 1..(current.coinLimit - current.coinCount).coerceIn(0, current.coinLimit)", vm)
         protocol = read(self.output / "detail-full-units" / coin.PROTOCOL)
+        from v037_player_interaction import fixed_sources
+        protocol_proof = json.loads(read(self.output / "detail-full-units/v037-original-interaction-protocol-proof.json"))
+        raw = fixed_sources()["ActionRepository.kt"]
+        interior = raw[raw.index("object ActionRepository {") + len("object ActionRepository {"):raw.rfind("}")]
+        original_methods = self.producers["detail-full-units"].selected(interior, protocol_proof["originalDeclarations"])
+        self.assertEqual(hashlib.sha256(original_methods.encode()).hexdigest(), protocol_proof["beforeSha256LF"])
+        methods = original_methods
+        for edit in reversed(protocol_proof["indexedEdits"]):
+            at = edit["beforeOffset"]
+            self.assertEqual(edit["before"], methods[at:at + len(edit["before"])])
+            methods = methods[:at] + edit["after"] + methods[at + len(edit["before"]):]
+        self.assertEqual(hashlib.sha256(methods.encode()).hexdigest(), protocol_proof["afterSha256LF"])
+        self.assertEqual(1, protocol.count(methods))
+        for edit in reversed(protocol_proof["indexedEdits"]):
+            at = edit["afterOffset"]
+            self.assertEqual(edit["after"], methods[at:at + len(edit["after"])])
+            methods = methods[:at] + edit["before"] + methods[at + len(edit["after"]):]
+        self.assertEqual(original_methods, methods)
         self.assertIn('34005 -> Result.failure(Exception("已投满该视频的硬币额度"))', protocol)
         self.assertNotIn("已投满2个硬币", protocol)
         self.assertEqual(1, protocol.count("api.coinVideo("))
         self.assertEqual(1, protocol.count("val coinResult = coinVideo(aid, coinCount, true)"))
-        self.assertIn("actions.doTripleAction(targetAid, state.coinLimit)", vm)
-        self.assertIn("attemptedCoinCount = state.coinLimit", vm)
+        self.assertIn("actions.doTripleAction(targetAid, actionState.coinLimit)", vm)
+        self.assertIn("attemptedCoinCount = actionState.coinLimit", vm)
 
     def test_existing_actual_member_gate_accepts_the_same_single_mutation_wrapper(self):
         spec = importlib.util.spec_from_file_location("repost_existing_member_gate", TOOLS / "verify-upstream-video-detail-full-units.py")
@@ -89,9 +146,10 @@ class RepostCoinExtractionTest(unittest.TestCase):
         with patch.object(coin, "MANIFEST_SHA256", "0" * 64):
             with self.assertRaises(AssertionError): coin.sources()
         output = self.output / "detail-full-units"
-        proof = json.loads(read(output / "VideoEngagementViewModel.kt.repost-coin-proof.json"))
-        after = read(output / coin.VM); before = coin.undo(after, proof)
-        with self.assertRaises(AssertionError): coin.apply(coin.VM, before.replace("actions.doTripleAction(targetAid)", "removedAction(targetAid)", 1))
+        proof = json.loads(read(output / "VideoInteractionUseCase.kt.repost-coin-proof.json"))
+        after = read(output / coin.USECASE); before = coin.undo(after, proof)
+        anchor = proof["edits"][0]["before"]
+        with self.assertRaises(AssertionError): coin.apply(coin.USECASE, before.replace(anchor, "removedOwnedAnchor", 1))
         with self.assertRaises(AssertionError): coin.undo(after + "\n", proof)
 
 

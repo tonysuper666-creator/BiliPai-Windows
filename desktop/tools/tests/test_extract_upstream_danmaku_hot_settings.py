@@ -34,8 +34,11 @@ class HotDanmakuSettingsExtractionTest(unittest.TestCase):
         for change in reversed(row["adaptations"]):
             self.assertEqual(text.count(change["after"]), 1)
             text = text.replace(change["after"], change["before"])
-        original = tool._desktop_canonical_source(REPO, row["origin"]).read_text(encoding="utf-8").replace("\r\n", "\n")
+        original, identity = tool.latest_panel_original(REPO)
         self.assertEqual(text, original)
+        self.assertEqual(proof["panelSlice"], identity)
+        self.assertIn("onSliderPreview: ((DanmakuSliderParameter, Float) -> Unit)?", text)
+        self.assertIn("onValueChangeFinished", text)
         self.assertTrue(row["reverseNormalizedOriginalByteEqual"])
         panel = (output / row["path"]).read_text(encoding="utf-8")
         self.assertIn('label = "顶部计数弹幕"', panel)
@@ -87,6 +90,17 @@ class HotDanmakuSettingsExtractionTest(unittest.TestCase):
         path.write_text(json.dumps(original), encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "input set changed"):
             tool.hot_settings_originals(repo)
+
+    def test_changed_latest_panel_is_rejected_before_generating_output(self):
+        repo = self.root / "latest-repo"
+        archive = Path("desktop/upstream-slices/v037-explicit-tab-roles")
+        shutil.copytree(REPO / archive, repo / archive)
+        original, _ = tool.latest_panel_original(repo)
+        self.assertIn("fun applyDanmakuSliderPreview", original)
+        path = repo / archive / "DanmakuSettingsPanel.kt"
+        path.write_bytes(path.read_bytes() + b"\n// changed\n")
+        with self.assertRaisesRegex(ValueError, "panel bytes changed"):
+            tool.latest_panel_original(repo)
 
 
 if __name__ == "__main__":

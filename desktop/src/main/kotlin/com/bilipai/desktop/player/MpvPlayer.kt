@@ -32,6 +32,7 @@ import javax.swing.JPanel
 class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false,
     private val veyraComponent: DesktopVeyraPrivateComponent? = null) : AutoCloseable {
     private var softwareTarget: MpvSoftwareTarget? = null
+    private var pendingBackdropCapture: Action.BackdropFrame? = null
     internal constructor(softwareTarget: MpvSoftwareTarget, useNullAudioOutput: Boolean = false) : this(useNullAudioOutput) {
         this.softwareTarget = softwareTarget
     }
@@ -1032,6 +1033,54 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         try { return withTimeout(15_000L){completion.await()} } finally {if(!completion.isCompleted)completion.cancel()}
     }
 
+    /** Read this retained source's native framebuffer; never an HWND/desktop screenshot.
+     * Native/driver support and enhanced-output provenance remain separate observations.
+     */
+    internal suspend fun captureBackdropForSource(
+        expected: OwnedPlaybackSourceSnapshot,
+        maximumWidth: Int = 480,
+        maximumHeight: Int = 270,
+        stillOwned: () -> Boolean,
+    ): MpvBackdropFrame {
+        require(maximumWidth in 1..960 && maximumHeight in 1..540)
+        // Await/finally retires the request on caller cancellation. A native read
+        // failure must not cancel the caller's parent through a child Deferred.
+        val completion = CompletableDeferred<MpvBackdropFrame>()
+        if (!stillOwned()) {
+            completion.cancel()
+            throw kotlinx.coroutines.CancellationException("Native backdrop owner retired")
+        }
+        val queued = synchronized(lock) {
+            val active = session
+            if (pendingBackdropCapture != null || !ownsSourceSnapshot(expected) ||
+                active == null || active.closing.get() || softwareTarget != null ||
+                !state.value.ready || state.value.loading || state.value.ended || state.value.audioOnly ||
+                state.value.videoCodec == null || state.value.error != null || state.value.failure != null) false
+            else {
+                val command = Action.BackdropFrame(expected, playbackRevision, nextSeekId.get(),
+                    maximumWidth, maximumHeight, stillOwned, completion)
+                pendingBackdropCapture = command
+                active.commands.offer(command).also { if (!it) pendingBackdropCapture = null }
+            }
+        }
+        if (!queued) {
+            completion.cancel()
+            throw kotlinx.coroutines.CancellationException("Native backdrop source unavailable or busy")
+        }
+        try { return withTimeout(2_000L) { completion.await() } }
+        finally { if (!completion.isCompleted) completion.cancel() }
+    }
+
+    /** Read-only stamp check for a recorded frame; never resolves a different source. */
+    internal fun isBackdropFrameCurrent(expected: OwnedPlaybackSourceSnapshot, frame: MpvBackdropFrame): Boolean = synchronized(lock) {
+        val active = session
+        ownsSourceSnapshot(expected) && active != null && !active.closing.get() &&
+            frame.sourceVersion == expected.sourceVersion && frame.playbackRevision == playbackRevision &&
+            frame.seekSerial == nextSeekId.get() && state.value.ready && !state.value.loading &&
+            !state.value.ended && !state.value.audioOnly && state.value.videoCodec != null &&
+            state.value.error == null && state.value.failure == null
+    }
+
     /** Failure-only CPU evidence; ordinary screenshots retain their existing path. */
     internal suspend fun captureSoftwareScreenshotForSource(expected: OwnedPlaybackSourceSnapshot,
         destination: Path): DesktopNativeSoftwareScreenshotReceipt {
@@ -1087,6 +1136,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             val admissionSource: PlaybackSource? = null) : Action
         data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null,
             val softwareDiagnostic: SoftwareScreenshotDiagnostic? = null) : Action
+        data class BackdropFrame(val owned: OwnedPlaybackSourceSnapshot, val revision: Long,
+            val seekSerial: Long, val maximumWidth: Int, val maximumHeight: Int,
+            val stillOwned: () -> Boolean, val completion: CompletableDeferred<MpvBackdropFrame>) : Action
         data class IdleCacheBarrier(val token: Any, val completion: CompletableDeferred<Boolean>) : Action
         data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
         data class WindowsAudioDevices(val completion: CompletableDeferred<DesktopWindowsAudioDeviceListState>) : Action
@@ -1611,6 +1663,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             if (action is Action.WindowsAudioReopen) action.completion.complete(false)
                             if (action is Action.WindowsAudioDevices) action.completion.complete(DesktopWindowsAudioDeviceListState(error = "原生播放器已退出"))
                             if (action is Action.Screenshot) action.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
+                            if (action is Action.BackdropFrame) {
+                                action.completion.cancel()
+                                synchronized(lock) { if (pendingBackdropCapture === action) pendingBackdropCapture = null }
+                            }
                             break
                         }
                         perform(native, handle, action)
@@ -1639,6 +1695,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     if (pending is Action.WindowsAudioReopen) pending.completion.complete(false)
                     if (pending is Action.WindowsAudioDevices) pending.completion.complete(DesktopWindowsAudioDeviceListState(error = "原生播放器已退出"))
                     if (pending is Action.Screenshot) pending.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
+                    if (pending is Action.BackdropFrame) pending.completion.cancel()
+                }
+                synchronized(lock) {
+                    pendingBackdropCapture?.completion?.cancel()
+                    pendingBackdropCapture = null
                 }
                 // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.
                 try { softwareRenderer?.close() }
@@ -1741,7 +1802,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             admitPresentation(token.source.source) { synchronized(lock) {
                 // A user seek/pause may arrive after the earlier command drain
                 // and native reads. Let this same worker execute it before capture.
-                if (session !== this || closing.get() || !presentationCurrent(token) || commands.isNotEmpty() ||
+                if (session !== this || closing.get() || !presentationCurrent(token) || commands.any { it !is Action.BackdropFrame } ||
                     seekTracker.hasPendingSeek || pause != state.value.paused || muteIntents.hasPending || muted != state.value.muted ||
                     !token.capture(position, pause, pauseIntentSerial)) return@synchronized
                 pendingPresentationCapture = null
@@ -1785,7 +1846,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             activeWindowsAudioSource != action.expected.source ||
                             windowsAudioOutputRevision != action.outputRevision || requestedWindowsAudioOutput != action.preferences ||
                             pauseIntentSerial != action.pauseSerial || nextSeekId.get() != action.seekSerial ||
-                            !fileLoaded || seekTracker.hasPendingSeek || commands.isNotEmpty() ||
+                            !fileLoaded || seekTracker.hasPendingSeek || commands.any { it !is Action.BackdropFrame } ||
                             !state.value.ready || state.value.loading || state.value.ended ||
                             state.value.error != null || state.value.failure != null) return@synchronized
                         val position = property(native, handle, "time-pos")?.toDoubleOrNull()
@@ -1816,7 +1877,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 
         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
             try {
-                if (action !is Action.PreparePresentation && action !is Action.WindowsAudioDevices && action !is Action.WindowsAudioReopen && action !is Action.AudioDiagnostic && action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedLifecyclePause && action !is Action.OwnedVideoViewport && action !is Action.OwnedTrackSelection && action !is Action.OwnedSubtitleVisibility && action !is Action.Subtitles &&
+                if (action !is Action.BackdropFrame && action !is Action.PreparePresentation && action !is Action.WindowsAudioDevices && action !is Action.WindowsAudioReopen && action !is Action.AudioDiagnostic && action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedLifecyclePause && action !is Action.OwnedVideoViewport && action !is Action.OwnedTrackSelection && action !is Action.OwnedSubtitleVisibility && action !is Action.Subtitles &&
                     !(action is Action.Seek && action.admissionSource != null)) publishState { it.copy(operationError = null) }
                 when (action) {
                     is Action.WindowsAudioReopen -> reopenWindowsAudioOutput(native, handle, action)
@@ -2054,6 +2115,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         if(!allowed) action.completion.cancel(kotlinx.coroutines.CancellationException("Screenshot source changed before capture"))
                         else saveScreenshot(native, handle, action)
                     }
+                    is Action.BackdropFrame -> {
+                        try { captureBackdrop(native, handle, action) }
+                        finally {
+                            synchronized(lock) { if (pendingBackdropCapture === action) pendingBackdropCapture = null }
+                        }
+                    }
                     is Action.IdleCacheBarrier -> {
                         pendingIdleCacheBarrier?.completion?.complete(false)
                         pendingIdleCacheBarrier = action
@@ -2087,6 +2154,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         if (session === this && !closing.get() && muteIntents.reject(failedMute))
                             mutableState.update { it.copy(operationError = diagnostics.sanitize(failure.message ?: "Mute control failed.")) }
                     }
+                    return
+                }
+                if (action is Action.BackdropFrame) {
+                    action.completion.completeExceptionally(failure)
                     return
                 }
                 if (action is Action.AudioDiagnostic) { action.completion.completeExceptionally(failure); return }
@@ -2248,6 +2319,47 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 }
             }
             lastTrackPoll = 0L
+        }
+
+        private fun captureBackdrop(native: MpvNative, handle: Pointer, action: Action.BackdropFrame) {
+            fun currentStamp(): Boolean = synchronized(lock) {
+                session === this && !closing.get() && pendingBackdropCapture === action &&
+                    action.completion.isActive && ownsSourceSnapshot(action.owned) &&
+                    playbackRevision == action.revision && activeRevision == action.revision &&
+                    activeSourceVersion == action.owned.sourceVersion && nextSeekId.get() == action.seekSerial &&
+                    fileLoaded && !seekTracker.hasPendingSeek && state.value.ready && !state.value.loading &&
+                    !state.value.ended && !state.value.audioOnly && state.value.videoCodec != null &&
+                    state.value.error == null && state.value.failure == null
+            }
+            // Caller/Root admission runs outside the player's monitor. The
+            // consumer also admits the completed frame before recording it.
+            fun current(): Boolean = action.completion.isActive && action.stillOwned() && currentStamp()
+            if (!current()) {
+                action.completion.cancel()
+                return
+            }
+            val frame = com.sun.jna.Memory(16).use { result ->
+                result.clear()
+                try {
+                    MpvNodes().use { arguments ->
+                        checkResult(native, native.mpv_command_node(handle,
+                            arguments.array(listOf("screenshot-raw", "window", "bgra")), result),
+                            "native backdrop frame")
+                    }
+                    if (!current()) null else copyMpvBackdropNode(result,
+                        action.owned.sourceVersion, action.revision, action.seekSerial,
+                        action.maximumWidth, action.maximumHeight, ::current)
+                } finally {
+                    native.mpv_free_node_contents(result)
+                }
+            }
+            if (!current()) { action.completion.cancel(); return }
+            synchronized(lock) {
+                if (!currentStamp()) action.completion.cancel()
+                else if (frame == null) action.completion.completeExceptionally(
+                    IllegalStateException("Native video output returned no supported backdrop raster"))
+                else action.completion.complete(frame)
+            }
         }
 
         private fun saveSoftwareScreenshot(native: MpvNative, handle: Pointer, action: Action.Screenshot,

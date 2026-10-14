@@ -1,0 +1,19 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppWindowBlurBehind.kt",
+      "filename": "AppWindowBlurBehind.kt",
+      "bytes": 6130,
+      "sha256Bytes": "7c8a0875951b3c27338ca4ea48327ac109ce6c4f2df003c9316fe77f6572c5f5",
+      "gitBlob": "0eecb8f80b279062454a715a5254716bdc31ee19"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt",
+      "filename": "AppSheetComponents.kt",
+      "bytes": 17722,
+      "sha256Bytes": "a8610387b35385aeb61f67959ea4c32d91721dba9b34d7c541047148df3bac92",
+      "gitBlob": "42624489b12087f8f9106246e2515153225f1868"
+    }
+  ]
+}
