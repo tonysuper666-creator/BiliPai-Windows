@@ -12,6 +12,7 @@ REPO = Path(__file__).resolve().parents[3]
 SOURCE_REPO = REPO
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v030_up_danmaku as selected
+import v038_danmaku_merge as selected_merge
 
 def load(name, filename):
     spec = importlib.util.spec_from_file_location(name, REPO / 'desktop/tools' / filename)
@@ -37,6 +38,25 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
 
     def read_pool(self, relative):
         return (self.output / 'pool' / relative).read_text(encoding='utf8')
+
+    def restore_later_owner_stages(self, body):
+        # Every subsequently mounted full-owner stage must be reversed before
+        # testing the earlier same-send guard at its actual byte offsets.
+        for filename in (
+            'v037-complete-known-state-owner-proof.json',
+            'original-v035-autoplay-continuation-inverse.json',
+            'original-v034-next-watch-inverse.json',
+            'VideoPlaybackViewModel.kt.v034-metadata-related-inverse.json',
+            'VideoPlaybackViewModel.kt.v034-detail-inverse.json',
+        ):
+            proof = json.loads((self.output / 'owner' / filename).read_bytes())
+            self.assertEqual(proof['afterSha256LF'], hashlib.sha256(body.encode()).hexdigest())
+            for edit in reversed(proof.get('indexedEdits', proof.get('inverseEdits', []))):
+                offset = edit.get('afterOffset', edit.get('offset'))
+                self.assertEqual(edit['after'], body[offset:offset+len(edit['after'])])
+                body = body[:offset] + edit['before'] + body[offset+len(edit['after']):]
+            self.assertEqual(proof['beforeSha256LF'], hashlib.sha256(body.encode()).hexdigest())
+        return body
 
     def test_six_fixed_blobs_and_manifest_match_exact_immutable_identity(self):
         self.assertEqual(6, len(self.pins))
@@ -82,8 +102,20 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
         for edit in reversed(row['adaptations']):
             self.assertEqual(1, body.count(edit['after']))
             body = body.replace(edit['after'], edit['before'])
-        original = self.originals['DanmakuModels.kt']
+        self.assertIn('target.mergedOriginalText = mergedOriginalText', body)
+        self.assertEqual(selected_merge.COMMIT, row['selectedUpstreamCommit'])
+        original = selected_merge.fixed_sources(REPO)[0]['DanmakuModels.kt']
         self.assertEqual(original[:original.index('\ndata class DanmakuWindow(')], body)
+
+    def test_actual_single_producer_emits_the_complete_v038_merger(self):
+        row = next(row for row in self.inventory['emitted'] if row['path'].endswith('/DanmakuMerger.kt'))
+        body = self.read_pool(row['path'])
+        self.assertEqual(selected_merge.COMMIT, row['selectedUpstreamCommit'])
+        self.assertEqual(row['sha256LF'], hashlib.sha256(body.encode()).hexdigest())
+        for edit in reversed(row['adaptations']):
+            self.assertEqual(1, body.count(edit['after']))
+            body = body.replace(edit['after'], edit['before'])
+        self.assertEqual(selected_merge.fixed_sources(REPO)[0]['DanmakuMerger.kt'], body)
 
     def test_both_whole_badge_functions_and_constants_restore_fixed_original(self):
         receipt = json.loads((self.output / 'pool/v030-up-badge-adaptation.json').read_bytes())
@@ -105,6 +137,7 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
         row = next(row for row in self.owner_inventory if row['path'].endswith('/VideoPlaybackViewModel.kt'))
         body = (self.output / 'owner' / row['path']).read_text(encoding='utf8')
         self.assertEqual(row['sha256LF'], hashlib.sha256(body.encode()).hexdigest())
+        body = self.restore_later_owner_stages(body)
         for field, checkpoint in (
             ('postRelatedInverseEdits', 'postRelatedBeforeSha256LF'),
             ('relatedInverseEdits', 'relatedBeforeSha256LF'),
@@ -134,7 +167,7 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
         final = (self.output / 'owner' / row['path']).read_text(encoding='utf8')
         with self.assertRaisesRegex(ValueError, 'guard anchor'):
             selected.same_send_expected_source_delta(row['path'], final, [])
-        original = final
+        original = self.restore_later_owner_stages(final)
         for field in ('postRelatedInverseEdits', 'relatedInverseEdits', 'postSameSendInverseEdits', 'sameSendExpectedSourceInverseEdits'):
             for edit in reversed(row[field]):
                 i = edit['offset']

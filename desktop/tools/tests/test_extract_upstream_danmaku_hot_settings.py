@@ -41,9 +41,9 @@ class HotDanmakuSettingsExtractionTest(unittest.TestCase):
         self.assertIn("onValueChangeFinished", text)
         self.assertTrue(row["reverseNormalizedOriginalByteEqual"])
         panel = (output / row["path"]).read_text(encoding="utf-8")
-        self.assertIn('label = "顶部计数弹幕"', panel)
-        self.assertIn('label = "计数弹幕扩展显示"', panel)
-        self.assertIn("if (hotDanmakuEnabled)", panel)
+        self.assertIn("valueRange = 1000f..15000f", panel)
+        self.assertIn("duplicateMergeWindowMs: Int = 15_000", panel)
+        self.assertNotIn("expandedHotDanmaku", panel)
         self.assertIn("LocalDesktopDanmakuHotSettingsBindings.current", panel)
         self.assertNotIn("SettingsManager.", panel)
 
@@ -93,13 +93,13 @@ class HotDanmakuSettingsExtractionTest(unittest.TestCase):
 
     def test_changed_latest_panel_is_rejected_before_generating_output(self):
         repo = self.root / "latest-repo"
-        archive = Path("desktop/upstream-slices/v037-explicit-tab-roles")
+        archive = Path("desktop/upstream-slices/v038-danmaku-merge")
         shutil.copytree(REPO / archive, repo / archive)
         original, _ = tool.latest_panel_original(repo)
         self.assertIn("fun applyDanmakuSliderPreview", original)
         path = repo / archive / "DanmakuSettingsPanel.kt"
         path.write_bytes(path.read_bytes() + b"\n// changed\n")
-        with self.assertRaisesRegex(ValueError, "panel bytes changed"):
+        with self.assertRaisesRegex(ValueError, "source bytes changed"):
             tool.latest_panel_original(repo)
 
 

@@ -152,16 +152,21 @@ def generate(repo:Path,output:Path,standalone=False):
   assert canonical_file.read_text(encoding='utf-8').replace('\r\n','\n')==blob,path
   source[path]=blob;identities.append(dict(path=canonical_path,previousPath=path,pinnedCommit=COMMIT,sha256LF=sha(blob),gitBlob=subprocess.check_output(['git','rev-parse',COMMIT+':'+canonical_path],cwd=repo,text=True).strip()))
  v029_source,v029_identities=fixed_v029_config_files(repo)
- full_config=v029_source['DanmakuConfig.kt'];config_identity=v029_identities[0]
- adapted_config,config_patches=adapt_complete_v029_config(full_config)
  from v030_up_danmaku import fixed_v030_up_files,original_up_badge_adapter,COMMIT as V030_UP_COMMIT
  v030_source,v030_identities=fixed_v030_up_files()
  source[PATHS[0]]=v030_source["DanmakuPoolSheet.kt"]
- source[PATHS[11]]=v030_source["DanmakuModels.kt"]
+ from v038_danmaku_merge import fixed_sources as fixed_merge_sources,merger_source,original_policy_test,COMMIT as V038_MERGE_COMMIT
+ v038_sources,v038_manifest=fixed_merge_sources(repo)
+ source[PATHS[11]]=v038_sources["DanmakuModels.kt"]
+ full_config=v038_sources['DanmakuConfig.kt']
+ config_identity=next(row for row in v038_manifest['files'] if row['filename']=='DanmakuConfig.kt')
+ adapted_config,config_patches=adapt_complete_v029_config(full_config)
+ identities.extend(dict(path=row["originalPath"],pinnedCommit=V038_MERGE_COMMIT,sha256Raw=row["sha256Bytes"],gitBlob=row["gitBlob"]) for row in v038_manifest["files"])
  identities.extend(dict(path=row["upstreamPath"],pinnedCommit=row["commit"],sha256Raw=row["sha256"],gitBlob=row["gitBlob"]) for row in v030_identities)
  def emit(path,text,origin,mode,patches=None,original=None):
   write(output/path,text);row=dict(path=path,origin=origin,mode=mode,sha256LF=sha(text),adaptations=patches or [])
-  if origin in [r['upstreamPath'] for r in v030_identities]:row['selectedUpstreamCommit']=V030_UP_COMMIT
+  if origin in [r['originalPath'] for r in v038_manifest['files']]:row['selectedUpstreamCommit']=V038_MERGE_COMMIT
+  elif origin in [r['upstreamPath'] for r in v030_identities]:row['selectedUpstreamCommit']=V030_UP_COMMIT
   if original is not None:
    reverse=text
    for p in reversed(patches or []):
@@ -204,6 +209,12 @@ def generate(repo:Path,output:Path,standalone=False):
  s=adapt(s,'import android.graphics.Typeface','import java.awt.Font as Typeface',rows)
  s=adapt(s,'import android.graphics.Path','// Android Path is outside this selected standard-item class.',rows)
  emit('com/android/purebilibili/danmaku/engine/DanmakuItem.kt',s,PATHS[11],'selected-complete-schema',rows,model)
+ merger,merger_proof=merger_source(repo)
+ emit('com/android/purebilibili/feature/video/danmaku/DanmakuMerger.kt',merger,v038_manifest['files'][0]['originalPath'],'full-original-v038-merger-platform-log',merger_proof['edits'],v038_sources['DanmakuMerger.kt'])
+ save(output/'v038-original-danmaku-merge-source-proof.json',dict(merger_proof,neutralItemEmissionOwner='extract-upstream-danmaku-list-menu.py',rendererBridgeMounted=False))
+ policy_test,policy_proof=original_policy_test(repo)
+ write(output/'policy-tests/com/android/purebilibili/feature/video/danmaku/DesktopV038DanmakuMergerPolicyTest.kt',policy_test)
+ save(output/'v038-original-danmaku-policy-test-source-proof.json',policy_proof)
  weighted=source[PATHS[4]]
  if standalone:emit('com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt',weighted,PATHS[4],'direct',[],weighted)
  parser=source[PATHS[3]];methods=[function(parser,n)[0] for n in ['createTextDataFromProto','formatDanmakuTextWithCount','createTextData','mapLayerType']]
@@ -224,8 +235,8 @@ import com.android.purebilibili.danmaku.parser.resolveBilibiliDanmakuFontScale
 
  # Full original neutral config and pure geometry/timing algorithms. Only actual Windows platform carriers change.
  identities.extend(v029_identities)
- emit('com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt',adapted_config,config_identity['path'],'fixed-v029-full-config-with-required-windows-platform',config_patches,full_config)
- emitted[-1]['upstreamCommit']=V029_CONFIG_COMMIT
+ emit('com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt',adapted_config,config_identity['originalPath'],'fixed-v038-full-config-with-required-windows-platform',config_patches,full_config)
+ emitted[-1]['upstreamCommit']=V038_MERGE_COMMIT
  # Full original constructor, preserving every default except the required real platform font carrier.
  models=source[PATHS[11]];start=models.index('data class DanmakuRenderConfig(')
  end=balanced(masked(models),models.index('(',start));raw=models[start:end];rows=[]
@@ -485,7 +496,7 @@ internal class DesktopOriginalDanmakuSession(private val environment:DesktopDanm
  imports='package com.android.purebilibili.feature.video.danmaku\n'+'\n'.join(constants)+'\n\n'
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt',imports+raw+'\n',PATHS[16],'selected-complete-original-refresh-interval-and-normalization')
 
- inventory=dict(upstreamCommit=COMMIT,ordinaryPoolUpstreamCommit=V030_UP_COMMIT,upBadgeFunctionUpstreamCommit=V030_UP_COMMIT,originalConfigUpstreamCommit=V029_CONFIG_COMMIT,retainedLegacyConfigUpstreamCommit=V027_CONFIG_COMMIT,sources=identities,emitted=emitted,standalone=standalone,
+ inventory=dict(upstreamCommit=COMMIT,ordinaryPoolUpstreamCommit=V030_UP_COMMIT,upBadgeFunctionUpstreamCommit=V030_UP_COMMIT,originalConfigUpstreamCommit=V038_MERGE_COMMIT,originalMergerUpstreamCommit=V038_MERGE_COMMIT,retainedLegacyConfigUpstreamCommit=V027_CONFIG_COMMIT,sources=identities,emitted=emitted,standalone=standalone,
   directReferences=[dict(path=PATHS[4],sha256LF=sha(weighted))],
   pending=['Actual Root smart SVG mask/native paint acceptance','Separate command-vote native acceptance (ordinary original layers are passive)','Portrait SCREEN_TOP placement and separate portrait-fullscreen renderer','Full original Android Live append-only queue/bitmap release closure','ByteDance collision/native engine parity and original special-mode renderer closure','Actual Root window/DPI/runtime acceptance for this source-only delta'],
   originalDefectAdaptation='DanmakuPoolItemRow ignored supplied onLongClick; only clickable->combinedClickable plus import changed.',

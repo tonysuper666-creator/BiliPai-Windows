@@ -30,20 +30,12 @@ def hot_settings_originals(repo):
   originals[path]=normalized.decode('utf-8')
  return originals,rows
 def latest_panel_original(repo):
- from v037_tab_roles import COMMIT as commit,MANIFEST_SHA,PINS
- root=repo/'desktop/upstream-slices/v037-explicit-tab-roles'
- manifest_raw=(root/'manifest.json').read_bytes()
- if hashlib.sha256(manifest_raw).hexdigest()!=MANIFEST_SHA:raise ValueError('Fixed latest danmaku panel manifest changed')
- manifest=json.loads(manifest_raw)
- if manifest.get('fixedUpstreamCommit')!=commit or manifest.get('files')!=PINS:raise ValueError('Fixed latest danmaku panel identity changed')
- path=BASE+'feature/video/ui/components/DanmakuSettingsPanel.kt'
- rows=[row for row in PINS if row['path']==path]
- if len(rows)!=1:raise ValueError('Fixed latest danmaku panel input missing')
- row=rows[0];raw=(root/row['filename']).read_bytes()
- if len(raw)!=row['bytes'] or hashlib.sha256(raw).hexdigest()!=row['sha256Bytes']:raise ValueError('Fixed latest danmaku panel bytes changed')
- if hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()!=row['gitBlob']:raise ValueError('Fixed latest danmaku panel blob changed')
- text=raw.replace(b'\r\n',b'\n').decode('utf-8')
+ from v038_danmaku_merge import fixed_sources,COMMIT as commit
+ sources,manifest=fixed_sources(repo)
+ row=next(row for row in manifest['files'] if row['filename']=='DanmakuSettingsPanel.kt')
+ text=sources['DanmakuSettingsPanel.kt']
  return text,dict(row,pinnedCommit=commit,sha256LF=sha(text),wholeOriginalPanelRetained=True)
+
 spec=importlib.util.spec_from_file_location('source_parser',HERE/'extract-upstream-danmaku-list-menu.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 def decl(s,name,indent=''):
  mask=parser.masked(s)
@@ -97,6 +89,17 @@ def generate(repo,output,standalone=False):
   emitted.append(row)
  def adapt(s,a,b,rows):assert s.count(a)==1,(a,s.count(a));rows.append(dict(before=a,after=b));return s.replace(a,b)
  # Full original UI, all three sections and manager/import/cloud/add/delete branches.
+ from v038_danmaku_merge import fixed_sources as fixed_merge_sources,COMMIT as V038_MERGE_COMMIT
+ merge_sources,merge_manifest=fixed_merge_sources(repo)
+ sources[paths[1]]=merge_sources['SettingsManager.kt']
+ ids.extend(dict(row,pinnedCommit=V038_MERGE_COMMIT) for row in merge_manifest['files'])
+ accent_original=merge_sources['AppContentColors.kt']
+ start=accent_original.index('    @Composable\n    @ReadOnlyComposable\n    fun accent(): Color')
+ end=accent_original.index('\n\n',start)
+ accent_function=accent_original[start:end]
+ color_body='package com.android.purebilibili.core.ui\nimport androidx.compose.runtime.Composable\nimport androidx.compose.runtime.ReadOnlyComposable\nimport androidx.compose.ui.graphics.Color\n\nobject AppContentColors {\n'+accent_function+'\n}\n'
+ emit('com/android/purebilibili/core/ui/AppContentColors.kt',color_body,'design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt','selected-complete-v038-native-accent-function')
+ save(output/'v038-original-danmaku-settings-source-proof.json',dict(upstreamCommit=V038_MERGE_COMMIT,settingsManagerSelectionOwner='extract-upstream-danmaku-settings.py',accentFunctionOriginalSha256LF=sha(accent_function),sourceQualified=False,mainCompiled=False))
  panel_original,panel_identity=latest_panel_original(repo)
  s=panel_original;patches=[]
  s=adapt(s,'import com.android.purebilibili.core.store.SettingsManager\n','// Original settings use the required Root settings and hot-bar bindings.\n',patches)
@@ -113,10 +116,9 @@ def generate(repo,output,standalone=False):
  s=adapt(s,'manager: com.android.purebilibili.feature.video.danmaku.DanmakuManager,','manager: com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTarget,',patches)
  s=adapt(s,'import androidx.compose.ui.Modifier\n','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.LocalDesktopDanmakuHotSettingsBindings\n',patches)
  s=adapt(s,'    val settingsContext = LocalContext.current\n','    val settingsContext = LocalDesktopDanmakuHotSettingsBindings.current\n',patches)
- for name,argument in [('getDanmakuHotBarEnabled',''),('getHotDanmakuExpandedMode',''),('setDanmakuHotBarEnabled',', enabled'),('setHotDanmakuExpandedMode',', enabled')]:
+ for name,argument in [('getDanmakuHotBarEnabled',''),('setDanmakuHotBarEnabled',', enabled')]:
   s=adapt(s,'SettingsManager.'+name+'(settingsContext'+argument+')','settingsContext.'+name+'('+argument.removeprefix(', ')+')',patches)
  s=adapt(s,'.collectAsStateWithLifecycle(initialValue = true)','.collectAsState(initial = true)',patches)
- s=adapt(s,'.collectAsStateWithLifecycle(initialValue = false)','.collectAsState(initial = false)',patches)
  s=adapt(s,'import androidx.activity.compose.rememberLauncherForActivityResult','import com.bilipai.desktop.ui.rememberDesktopDanmakuRuleImportLauncher as rememberLauncherForActivityResult',patches)
  s=adapt(s,'import androidx.activity.result.contract.ActivityResultContracts','import com.bilipai.desktop.ui.DesktopDanmakuOpenRuleDocument',patches)
  s=adapt(s,'import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.LocalDesktopDanmakuSettingsViewport as LocalConfiguration',patches)

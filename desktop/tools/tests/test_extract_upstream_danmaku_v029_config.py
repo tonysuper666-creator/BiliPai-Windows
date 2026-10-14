@@ -64,18 +64,20 @@ class CompleteV029DanmakuConfigTest(unittest.TestCase):
         self.assertEqual(expected, actual)
         self.assertEqual(actual.count('@Test'), 13)
 
-    def test_fresh_whole_producer_uses_actual_v029_config_and_complete_live_constructor(self):
+    def test_fresh_whole_producer_uses_actual_v038_config_and_complete_v029_live_constructor(self):
+        from v038_danmaku_merge import fixed_sources, COMMIT as V038_COMMIT
+        current_sources, _ = fixed_sources(REPO)
         sources, _ = tool.fixed_v029_config_files(REPO)
         with tempfile.TemporaryDirectory(prefix='bilipai-v029-font-generation-') as temp:
             output = Path(temp)
             inventory = tool.generate(REPO, output)
-            self.assertEqual(inventory['originalConfigUpstreamCommit'], tool.V029_CONFIG_COMMIT)
+            self.assertEqual(inventory['originalConfigUpstreamCommit'], V038_COMMIT)
             self.assertEqual(inventory['retainedLegacyConfigUpstreamCommit'], tool.V027_CONFIG_COMMIT)
             config_record = next(row for row in inventory['emitted'] if row['path'].endswith('/DanmakuConfig.kt'))
-            self.assertEqual(config_record['upstreamCommit'], tool.V029_CONFIG_COMMIT)
+            self.assertEqual(config_record['upstreamCommit'], V038_COMMIT)
             package = output / 'com/android/purebilibili/feature/video/danmaku'
             config = (package / 'DanmakuConfig.kt').read_text(encoding='utf-8')
-            self.assertEqual(config, tool.adapt_complete_v029_config(sources['DanmakuConfig.kt'])[0])
+            self.assertEqual(config, tool.adapt_complete_v029_config(current_sources['DanmakuConfig.kt'])[0])
             live = (package / 'DesktopOriginalLiveDanmakuRenderConfig.kt').read_text(encoding='utf-8')
             body = live[live.index('            val textSize = '):live.rindex('\n}')]
             for after, before in (
