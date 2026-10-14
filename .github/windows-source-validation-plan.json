@@ -1,19 +1,24 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "d4e49ad92e6e913f6d07ebc210e3251a751da1fa",
-  "windowsVersion": "0.2.427.91",
-  "createdAt": "2026-10-14T20:50:59.345574+00:00",
+  "baseHead": "b0d94eef25827bed3b793958bb8055c57fff4245",
+  "windowsVersion": "0.2.427.92",
+  "createdAt": "2026-10-14T21:25:02.840695+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "55b1488e6f0d7acb3dceb136740ae5349a4f60c49d08e78d8103dcd3ff84d8ea"
+      "sha256": "ee662327d0ca786c732cf07f1f6b6cbbb7f0ba156e05a30c124f6f853c28f16a"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
       "normalization": "lf",
       "sha256": "e2aca0eca175d196aa82d48062669e68fe0887da160a986a72381f292839ab05"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "normalization": "lf",
+      "sha256": "f9e73c36e47e4ec329f7bf2dcda2984210a3f4f41376519ec111b84ea71318d3"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
@@ -36,6 +41,16 @@
       "sha256": "46e70da832bf1a6b1a0a9388606386fba02b47311051055cd02ca880c1e32371"
     },
     {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "normalization": "lf",
+      "sha256": "fcd9065876e3815af5337c9f43579c5bbd53e6d66d3dbfd8efb51bd43c9b66f1"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "normalization": "lf",
+      "sha256": "fed6db98e75157fdfef5f9de3916a690808c506c10656747f90b504a1e95221f"
+    },
+    {
       "path": "design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt",
       "normalization": "lf",
       "sha256": "e3c7ce709da2d46bad78455ca51fcbe76361095a9498becdf75134d952dca7f3"
@@ -48,7 +63,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "135216fb574dfa004393891fdacfbf4d3aea39e4b3f6c4f13420e6f039d3c133"
+      "sha256": "f9921e3edbd0f620b23a7338353d23645e01376db9c789e8811e47ce72918541"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -236,6 +251,11 @@
       "sha256": "dbab29fdd2c2b16265d3606fb0ea0160c22647bc279cbff3877f72ac00a74710"
     },
     {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/data/repository/DesktopCommentReadRouteConsumptionTest.kt",
+      "normalization": "lf",
+      "sha256": "23dca1e25a84300fa1556dd7a8edd4340f55ee0242c4ca8be93c344d7bd5d6e4"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
       "normalization": "lf",
       "sha256": "498ee53e3327c58412fcabf532b9fc180b8d0e7311601dc75d1526d93e3960ce"
@@ -251,6 +271,11 @@
       "sha256": "3101150e4561c6bfc4a4a29428f7d97e76cd399fc201929703f7c0ed30ba9b4f"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopReplyMedalColorTest.kt",
+      "normalization": "lf",
+      "sha256": "79021ce7b4f292b92cfa37e74822b6bee4cbd96035dd58fa72761290d94a6092"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicyTest.kt",
       "normalization": "lf",
       "sha256": "6ed728e1357a8fe6b18cb1f9ed6e486c9105121fffe7018e61ee8ae86a6e4d4b"
@@ -264,6 +289,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputPolicyTest.kt",
       "normalization": "lf",
       "sha256": "a1d2eba7f62d62c861f7b19bff7022b2bcbdc9cbed11099465a0ea65e8ca0a58"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopChargedCommentProtocolTest.kt",
+      "normalization": "lf",
+      "sha256": "a287bd3a580e6812a026716ca2b097d155e84a7f3f6b5be3490f9607b5b69e22"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicAccountStorageTest.kt",
@@ -336,6 +366,11 @@
       "sha256": "ef35578a318466371ddf46e82bb7a94058a1057b21a9529e4adb9d298ad02dfe"
     },
     {
+      "path": "desktop/tools/extract-upstream-api.py",
+      "normalization": "lf",
+      "sha256": "6b6e0f1d3321a407c930af520b1da00445c29e5b3844d7b7351ddf153b6e4937"
+    },
+    {
       "path": "desktop/tools/extract-upstream-audio.py",
       "normalization": "lf",
       "sha256": "e3316865a53bae538de74dec6189847a06d11c56209ab5c7ba344f6aee84e7f4"
@@ -349,6 +384,16 @@
       "path": "desktop/tools/extract-upstream-danmaku-settings.py",
       "normalization": "lf",
       "sha256": "2970d04e3597e6a0e7843045020543ff7f09485833bf3b039c2bca88eac9487f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "normalization": "lf",
+      "sha256": "761c5b439fea0494168248b4b3b4291d7968f2250a2a30b76c6f8a26e5cb7f7e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "normalization": "lf",
+      "sha256": "795ec80c8111fd3669538cf4e1cfc4376542d20e8faeb985b68314862ab91d2f"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
@@ -441,6 +486,11 @@
       "sha256": "bb4ea0aa7f2599edd4ec8bae68996a8dfb7ff7ccd16d4e6ffa536327dbc1f4d8"
     },
     {
+      "path": "desktop/tools/tests/test_v029_comment_search.py",
+      "normalization": "lf",
+      "sha256": "320b94dedddcfb1653f54678bcaca7c1525e0c3a48da0c4c7ff920d9b15abc4d"
+    },
+    {
       "path": "desktop/tools/tests/test_v038_audio_library_source.py",
       "normalization": "lf",
       "sha256": "da3250d6514f2679d6be74dd5125a4b8b6f4acde67d33a1ef70dd1785d4cd8e3"
@@ -484,6 +534,11 @@
       "path": "desktop/tools/tests/test_v040_dynamic_pagination_source.py",
       "normalization": "lf",
       "sha256": "a345e8ad6f5f1205a2f3433e1f12d9c9381beeb15145e06ae257575c50d9243a"
+    },
+    {
+      "path": "desktop/tools/tests/test_v040_reply_medal_source.py",
+      "normalization": "lf",
+      "sha256": "8a30e1709c4414f119050f9cf433709949a7c56a58c58a7ff53473c4ac6dea07"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -554,6 +609,11 @@
       "path": "desktop/tools/v040_dynamic_pagination.py",
       "normalization": "lf",
       "sha256": "d13f5cc45ac7f08ee757d87e2770840a8c3b0671e62376752b64e0c24808cedb"
+    },
+    {
+      "path": "desktop/tools/v040_reply_medal.py",
+      "normalization": "lf",
+      "sha256": "ee494ba800a5bd6e20daea150fd1a845d997cddb6051e1b079d0c67291faeb18"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -756,18 +816,37 @@
       "sha256": "76a0a3fbb9b8c46a0003511b23a86039fc0cf1668e7c06441f9542902ee9a955"
     },
     {
+      "path": "desktop/upstream-slices/v040-reply-medal/CommentGrpcRepository.kt",
+      "normalization": "raw",
+      "sha256": "399f34d801a0faaa5392b3f2e18f51e62a6403d4bf468a2c59226322a318fd18"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-reply-medal/ReplyComponents.kt",
+      "normalization": "raw",
+      "sha256": "2ff30fc6b3bc79393334169ebbc0830f0c2e32988083905303e0c47990a2eac3"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-reply-medal/ResponseModels.kt",
+      "normalization": "raw",
+      "sha256": "a033f938ff2480cff4fda62472a740ea3bb844994f0aba364ceb9256f1a54cb2"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-reply-medal/manifest.json",
+      "normalization": "raw",
+      "sha256": "a8c5435e897a976f000cc9207b5a0fb773b791c96da92b29e139dfbadc295240"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "e780bd7d49e98ac3cf9ae74bde9568abd0fbfdd3f2ee4e7e4f443683ee558c5b"
+      "sha256": "73bff15bd844bf7ff7ba892e43442b9fc01e567d96e7d57033f2651c4c276fd0"
     }
   ],
   "classes": {
-    "com.bilipai.desktop.ui.DesktopDynamicFailedPaginationTest": 4,
-    "com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest": 15,
-    "com.bilipai.desktop.ui.DesktopDynamicTabsTest": 10,
-    "com.bilipai.desktop.ui.DesktopDynamicStartupTest": 9
+    "com.bilipai.desktop.data.DesktopReplyMedalColorTest": 4,
+    "com.bilipai.desktop.ui.DesktopChargedCommentProtocolTest": 4,
+    "com.android.purebilibili.data.repository.DesktopCommentReadRouteConsumptionTest": 4
   },
-  "expectedTests": 38,
+  "expectedTests": 12,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -777,16 +856,17 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicFailedPaginationTest.kt",
-    "desktop/tools/extract-upstream-dynamic-tabs.py",
-    "desktop/tools/tests/test_dynamic_tabs_sources.py",
-    "desktop/tools/tests/test_v040_dynamic_pagination_source.py",
-    "desktop/tools/v040_dynamic_pagination.py",
-    "desktop/upstream-slices/v040-dynamic-pagination/DynamicScreenStatePolicy.kt",
-    "desktop/upstream-slices/v040-dynamic-pagination/manifest.json",
+    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopReplyMedalColorTest.kt",
+    "desktop/tools/extract-upstream-api.py",
+    "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+    "desktop/tools/extract-upstream-dynamic-reply.py",
+    "desktop/tools/tests/test_v029_comment_search.py",
+    "desktop/tools/tests/test_v040_reply_medal_source.py",
+    "desktop/tools/v040_reply_medal.py",
+    "desktop/upstream-slices/v040-reply-medal/CommentGrpcRepository.kt",
+    "desktop/upstream-slices/v040-reply-medal/ReplyComponents.kt",
+    "desktop/upstream-slices/v040-reply-medal/ResponseModels.kt",
+    "desktop/upstream-slices/v040-reply-medal/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

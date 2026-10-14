@@ -245,7 +245,11 @@ def generate(repo: Path, output: Path) -> Path:
     target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
     generate_core_data_log(repo, output, parser)
     from v029_comment_search import emit_models
-    emit_models(repo, output)
+    model_target = emit_models(repo, output)
+    from v040_reply_medal import advance as advance_reply_medal
+    model_body,medal_model_proof=advance_reply_medal(repo,model_target.read_text(encoding='utf-8'),'model')
+    model_target.write_text(model_body,encoding='utf-8',newline='\n')
+    (output/'v040-reply-medal-model-proof.json').write_text(json.dumps(medal_model_proof,indent=2)+'\n',encoding='utf-8')
     emit_live_models(repo, output)
     from v030_video_dynamic_share import emit_models as emit_video_dynamic_models
     emit_video_dynamic_models(repo, output)

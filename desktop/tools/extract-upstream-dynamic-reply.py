@@ -226,6 +226,9 @@ def generate(repo, output):
     reply_body = adapt_comment_media(reply_body, 'reply-renderer', output)
     from v036_reply_modifier import apply as apply_original_reply_modifier
     reply_body,modifier_proof=apply_original_reply_modifier(reply_body)
+    from v040_reply_medal import advance as advance_reply_medal
+    reply_body,medal_renderer_proof=advance_reply_medal(repo,reply_body,'renderer')
+    (output/'v040-reply-medal-renderer-proof.json').write_text(json.dumps(medal_renderer_proof,indent=2)+'\n',encoding='utf-8')
     (output/'v036-reply-modifier-proof.json').write_text(json.dumps(modifier_proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     emit(REPLY, reply_body, 'DesktopOriginalReplyComponents.kt')
 

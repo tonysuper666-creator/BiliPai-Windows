@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "91",
+  "windowsRevision": "92",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14135,6 +14135,28 @@
     "sourceGenerationCasesPassed": 15,
     "actualOwnerRegressionCasesWritten": 3,
     "originalUpstreamRegressionCasesRetained": 1,
+    "mainCompiled": true,
+    "jvmTestsExecuted": true,
+    "runtimeExecuted": false,
+    "fullV040ParityClaimed": false,
+    "compilationSourceHead": "b0d94eef25827bed3b793958bb8055c57fff4245",
+    "compilationRunId": 38637407024,
+    "selectedJvmCasesPassed": 38
+  },
+  "v040ReplyMedalSlice": {
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "manifestPath": "desktop/upstream-slices/v040-reply-medal/manifest.json",
+    "manifestSHA256": "a8c5435e897a976f000cc9207b5a0fb773b791c96da92b29e139dfbadc295240",
+    "completeOriginalUnitsReused": 3,
+    "existingSoleModelDecoderAndRendererProducersRetained": true,
+    "actualSourceGenerationCasesPassed": 15,
+    "realDecoderAndSerializerCasesWritten": 4,
+    "protobufColorFields": [
+      20,
+      27
+    ],
+    "unsignedArgbSizedValuesRetained": true,
+    "oldMissingColorFallbackRetained": true,
     "mainCompiled": false,
     "jvmTestsExecuted": false,
     "runtimeExecuted": false,

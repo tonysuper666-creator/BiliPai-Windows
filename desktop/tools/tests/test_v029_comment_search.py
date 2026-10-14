@@ -63,29 +63,41 @@ class V029CommentSearchSourceTest(unittest.TestCase):
             wide(p).write_bytes(wide(p).read_bytes()+b' ')
             with self.assertRaisesRegex(ValueError,'manifest changed'): fixed.fixed_sources(repo)
 
-    def assert_original_inverse(self,path,generated,selection):
-        p=selection['originalToPlatform'];before=self.original[path];after=forward(before,p)
+    def assert_original_inverse(self,path,generated,selection,original=None):
+        p=selection['originalToPlatform'];before=self.original[path] if original is None else original;after=forward(before,p)
         self.assertEqual(before,inverse(after,p));self.assertEqual(digest(before.encode()),p['beforeSha256LF'])
         self.assertEqual(digest(after.encode()),p['afterSha256LF']);self.assertTrue(p['exactCompleteInverse'])
         self.assertTrue(generated.endswith(after))
 
     def test_full_original_vm_sheet_and_grpc_generate_with_exact_inverse(self):
         out=self.outputs['bgm-detail'];data=json.loads(read(out/'bgm-source-identities.json'))
-        selection=next(x['v029CommentSearch'] for x in data['sourceSelection'] if 'v029CommentSearch' in x)
-        self.assert_original_inverse(fixed.VM,read(out/'com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt'),selection)
+        selection=next(x['v036VideoCommentCache'] for x in data['sourceSelection'] if 'v036VideoCommentCache' in x)
+        from v036_video_comment_cache import read_sources
+        self.assertEqual('v0.3.6',selection['fixedUpstreamTag'])
+        self.assert_original_inverse(fixed.VM,read(out/'com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt'),selection,
+            original=read_sources()['VideoCommentViewModel.kt'])
         out=self.outputs['video-comment-ui'];self.assert_original_inverse(fixed.SEARCH,
             read(out/'com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt'),
             json.loads(read(out/'v029-comment-search-ui-source.json')))
-        out=self.outputs['dynamic-reply-protocol'];self.assert_original_inverse(fixed.GRPC,
+        out=self.outputs['dynamic-reply-protocol']
+        selection=json.loads(read(out/'v029-comment-grpc-source.json'))
+        from v040_reply_medal import advance
+        composite,medal_proof=advance(REPO,self.original[fixed.GRPC],'grpc')
+        self.assertEqual(medal_proof,selection['v040MedalColorSource'])
+        self.assert_original_inverse(fixed.GRPC,
             read(out/'generated/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.kt'),
-            json.loads(read(out/'v029-comment-grpc-source.json')))
+            selection,original=composite)
 
     def test_model_full_inverse_preserves_canonical_pin_and_field31_source(self):
         out=self.outputs['api'];body=read(out/'com/android/purebilibili/data/model/response/ResponseModels.kt')
         p=json.loads(read(out/'v029-comment-model-source-proof.json'))
         before=read(REPO/fixed.MODEL)
         self.assertEqual(fixed.CANONICAL_MODEL_SHA,digest(before.encode()))
-        self.assertEqual(before,fixed.reverse(body,p['countedAdaptations']))
+        medal=json.loads(read(out/'v040-reply-medal-model-proof.json'))
+        at=medal['offset'];self.assertEqual(medal['after'],body[at:at+len(medal['after'])])
+        self.assertEqual('415d01ec5bc3ac82521a9ac47bcc449b8e202460',medal['upstreamCommit'])
+        previous_model=body[:at]+medal['before']+body[at+len(medal['after']):]
+        self.assertEqual(before,fixed.reverse(previous_model,p['countedAdaptations']))
         marker='@Serializable\ndata class ReplyControl('
         self.assertEqual(self.original[fixed.MODEL][self.original[fixed.MODEL].index(marker):],body[body.index(marker):])
         with tempfile.TemporaryDirectory() as t:

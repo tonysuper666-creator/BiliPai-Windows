@@ -59,6 +59,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Existing timeline source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_dynamic_tabs_sources.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original tabs source ownership regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v040_reply_medal_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v029_comment_search.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v029_reply_renderer.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_dynamic_reply.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
       - name: Stage the existing pinned JDK
         shell: pwsh
         run: |

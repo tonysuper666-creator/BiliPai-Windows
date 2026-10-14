@@ -234,6 +234,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
 val extractUpstreamApi by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
+    inputs.file("tools/v040_reply_medal.py")
+    inputs.dir("upstream-slices/v040-reply-medal")
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-api.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/api").get().asFile.absolutePath)
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
@@ -1242,6 +1244,8 @@ val verifyUpstreamDynamicEditorProtocol by tasks.registering(Exec::class) {
 val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
+    inputs.file("tools/v040_reply_medal.py")
+    inputs.dir("upstream-slices/v040-reply-medal")
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-reply.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-reply").get().asFile.absolutePath)
@@ -1299,6 +1303,8 @@ val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
 val extractUpstreamDynamicReplyProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
+    inputs.file("tools/v040_reply_medal.py")
+    inputs.dir("upstream-slices/v040-reply-medal")
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-reply-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath)

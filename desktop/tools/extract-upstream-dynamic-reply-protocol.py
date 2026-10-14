@@ -294,6 +294,9 @@ def generate(repo: Path, output: Path):
     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt', '// GENERATED original full read policy; sole producer.\n// Original: ' + policy_path + '\n// Original LF SHA-256: ' + digest(policy) + '\n' + policy)
     grpc_path = paths[2]
     original_grpc, grpc_selection = comment_search.select_full(ROOT,grpc_path,sources[grpc_path])
+    from v040_reply_medal import advance as advance_reply_medal
+    original_grpc,medal_grpc_proof=advance_reply_medal(ROOT,original_grpc,'grpc')
+    grpc_selection['v040MedalColorSource']=medal_grpc_proof
     grpc = original_grpc.replace('import com.android.purebilibili.core.network.grpc.BiliGrpcClient\n', '')
     grpc = grpc.replace('internal object CommentGrpcRepository {', 'internal class DesktopDynamicCommentGrpc(\n    private val requestTransport: suspend (String, ByteArray) -> ByteArray,\n    private val assertOwner: () -> Unit,\n) {\n    private suspend fun request(path: String, message: ByteArray): ByteArray {\n        kotlinx.coroutines.currentCoroutineContext().ensureActive(); assertOwner()\n        return requestTransport(path, message).also { kotlinx.coroutines.currentCoroutineContext().ensureActive(); assertOwner() }\n    }\n    private inline fun <T> ownedCatching(block: () -> T): Result<T> = try {\n        assertOwner(); Result.success(block().also { assertOwner() })\n    } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled\n    } catch (failure: Exception) { assertOwner(); Result.failure(failure) }\n')
     grpc = grpc.replace('private const val PATH_', 'private val PATH_')
