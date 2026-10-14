@@ -53,13 +53,17 @@ class DesktopWindowsVideoFeedbackOriginTest {
         }
         val vm = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
             DesktopPluginContext(DesktopPluginStore(folder)), scope, actions, VideoCoinBalanceLoader { 0.0 },
-            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false }))
+            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false },
+            interactionSession = { folder },
+            cachedFollowStatusReader = { error("Foreign-owner follow lookup is not selected by this fixture") },
+            followStatusQuery = { error("Foreign-owner follow query is not selected by this fixture") },
+        ))
         fun binding(expected: DesktopOriginalVideoAcceptedPublication = source) = DesktopWindowsVideoEngagementBinding(
             expected, vm, subject, { currentSource(expected) }, { action -> admit(expected, action) })
         val ordinary: DesktopWindowsVideoEngagementBinding
         val command: DesktopWindowsCommandAttentionBinding
         init {
-            vm.bindSubject(subject, VideoEngagementSeed(isLoggedIn = true))
+            vm.bindSubject(subject, VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
             ordinary = binding()
             command = DesktopWindowsCommandAttentionBinding(source, vm, subject,
                 { currentSource(source) }, { action -> admit(source, action) })
