@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "166fe22fa2283b1071268ecbbf1edb58ab551ae1",
-  "windowsVersion": "0.2.427.88",
-  "createdAt": "2026-10-14T19:45:04.786532+00:00",
+  "baseHead": "7957cbfc3c5510e5e4f5193786def2c1611022f7",
+  "windowsVersion": "0.2.427.90",
+  "createdAt": "2026-10-14T20:27:07.743348+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "27bd779a004ba6143ee99fa4789baeec996cf0212f8cb3ce49d5a848db85ed81"
+      "sha256": "7c6290eeadf103b9031a88e5bfc1bfc32cd815c303226c2a7cbce4b640c6cf9e"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -16,9 +16,24 @@
       "sha256": "e2aca0eca175d196aa82d48062669e68fe0887da160a986a72381f292839ab05"
     },
     {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt",
+      "normalization": "lf",
+      "sha256": "e3c7ce709da2d46bad78455ca51fcbe76361095a9498becdf75134d952dca7f3"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt",
+      "normalization": "lf",
+      "sha256": "8f8ccb3410151a4f1156fd4807db71277bad3b353bc6b275b9bf25475bdae8cc"
+    },
+    {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "0819a8c67fc506ade0e8841626374c8ea0844db6c84cb9dd845750f9cb71f56a"
+      "sha256": "ae01437564ff44fbf0bab74a8b97c51d9c6d09e40e2da3f8d9570f2ce7a57398"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "normalization": "lf",
+      "sha256": "77f642873061d50460d75783e84f640f738a5e72f66da03bc1d20e5c69f5f58e"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
@@ -83,12 +98,52 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
       "normalization": "lf",
-      "sha256": "ffb4c3ccab54eb2aa2fb9c33e3c981b00288be17b8d0d5ef1328eb97ca5e5c36"
+      "sha256": "d24bd8def0d74dd93efa676e0c53d28b59b3ad12fd782e549183f2db3f5e9b2e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionHost.kt",
+      "normalization": "lf",
+      "sha256": "eeffcd8e8d34d36a62b0a7fd11ef92a6a59647a7e2781b9abd29f3becf513171"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoEntry.kt",
+      "normalization": "lf",
+      "sha256": "28a40cc3be4d161e875759744a4c00a3efa57074eb1d9dbd6a5d91fbf9399da0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoHost.kt",
+      "normalization": "lf",
+      "sha256": "7994fa481bb800c8d9146c352a63920a32023571fcc107b79ca1843f01c9473c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPhysicalLeaf.kt",
+      "normalization": "lf",
+      "sha256": "0beea103e788d41dc8ba2e39fa069038b73a68a2cd99a70da14c1fc69c0627ce"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaylistBinding.kt",
       "normalization": "lf",
       "sha256": "a597db63d74100dfcff37626889542b67ae1c98560229660b897fc692418153e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "b027274fd7424bcc52c836c40f09c682a5240c0a8b5606c276241bcef695ebb1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+      "normalization": "lf",
+      "sha256": "29966e2c35f6733fef2c0a2ba22f4035fda2b92a7c7af9737b0278aca55efb0e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadFailureLoginIntent.kt",
+      "normalization": "lf",
+      "sha256": "db90e5ab45f3bd757ca7e4ad3d5a7afa0fabda623b18d6ec7f96809db3e5937d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoBootstrapReadSource.kt",
+      "normalization": "lf",
+      "sha256": "7cf4fb77c8de2c211d2e206dff1e36e80fe87a71ed227d25a83bd180dc3edab1"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsMessageNotifications.kt",
@@ -168,12 +223,22 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
       "normalization": "lf",
-      "sha256": "6b71e08ec63ce7d0bb91eca22b022babf44e7bea07498d0375295f732a97aafb"
+      "sha256": "13f95cc2bd277c2a27d7e68868e1c600c3f4a83b03e15c4c0c1d8c76a2ea8cf9"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoAuthorizationBootstrapTest.kt",
+      "normalization": "lf",
+      "sha256": "7b38ab025880e50bb6a08fbad3e168936dfdef602b2e78fbc00e2d0e6a0e3b00"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementStatusReadTest.kt",
       "normalization": "lf",
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopVideoBootstrapRetryIntentTest.kt",
+      "normalization": "lf",
+      "sha256": "396b830b269b1a9ba18b93d4eb6945fb1e43b99058c24f67a3c0256ce118bfea"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterStageLeaseTest.kt",
@@ -208,12 +273,12 @@
     {
       "path": "desktop/tools/extract-upstream-danmaku-settings.py",
       "normalization": "lf",
-      "sha256": "6dbd7cd097ec9cee317da6dca873702a8140316f24038978062c7e4b8d91e4b9"
+      "sha256": "2970d04e3597e6a0e7843045020543ff7f09485833bf3b039c2bca88eac9487f"
     },
     {
       "path": "desktop/tools/extract-upstream-listen-video-root.py",
       "normalization": "lf",
-      "sha256": "6029cd6a47b1c473660a520fad298570b49cc7cb78f4f855ce9dc533a17e1250"
+      "sha256": "13eb364a763a91d47468cae6ef398d42c4a29c56d25da80a711773145fe6fb66"
     },
     {
       "path": "desktop/tools/extract-upstream-message-notifications.py",
@@ -303,7 +368,7 @@
     {
       "path": "desktop/tools/tests/test_v038_danmaku_merge_source.py",
       "normalization": "lf",
-      "sha256": "1919035bfaf46c33d64b3a8b0015611c8bc1ae9e22e2c218c9abf0d4f467888a"
+      "sha256": "618a5ba320c706c4d7dbaaadcb916ad29975f474a957b6eb81a9dd9ee2df3de1"
     },
     {
       "path": "desktop/tools/tests/test_v038_listen_collection_source.py",
@@ -311,9 +376,14 @@
       "sha256": "884919cfe388f8375dbec15cebd11f3685224f9857125b2ccfe0acb15479e5c0"
     },
     {
+      "path": "desktop/tools/tests/test_v038_listen_screen_source.py",
+      "normalization": "lf",
+      "sha256": "b7724e01ef317500265f9112ae14f209565a831af081334504729a510133bae9"
+    },
+    {
       "path": "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
       "normalization": "lf",
-      "sha256": "69b6845845e236fc376eb96cd7933aff23194af149778738f51a73029ae0144b"
+      "sha256": "f704ae64a44b613fa8856342d08d47c6cdbcaddc6bc6b64b68908c8082cbf1cc"
     },
     {
       "path": "desktop/tools/tests/test_v038_message_notifications_source.py",
@@ -363,12 +433,17 @@
     {
       "path": "desktop/tools/v038_danmaku_merge.py",
       "normalization": "lf",
-      "sha256": "161b4200541bb04a7981e58c980a0b87da1c3764decefd9ad1eb1edd148d39ac"
+      "sha256": "81db75d41f7320c5bcdf74b7b6ff8b4bd23bb5ee7e08ccccbaa1cf025be3fc4a"
     },
     {
       "path": "desktop/tools/v038_listen_collection.py",
       "normalization": "lf",
-      "sha256": "253263e2834de5bfcfa7311da2a083c820802bf48f90b35d0ba6be0466a476bf"
+      "sha256": "e53c6f6c09ab84c9fd3d76d2c57952858855841daa3ab1a1ad1713b56fdb0083"
+    },
+    {
+      "path": "desktop/tools/v038_listen_screen.py",
+      "normalization": "lf",
+      "sha256": "0991066c758e66b43b9d0cdc1c708b23da86408cc809095ca68ab8587529b1ea"
     },
     {
       "path": "desktop/tools/v038_listen_viewmodel.py",
@@ -476,6 +551,26 @@
       "sha256": "58cbb752b6ff1e6514cc8be5f45363da037f550016621115223f93f3285a6a56"
     },
     {
+      "path": "desktop/upstream-slices/v038-listen-screen/BiliPaiNavKey.kt",
+      "normalization": "raw",
+      "sha256": "67d8c9c33f503bfdf09714ec9dee239c00976765d510fe8b37145d0c888cca9e"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-listen-screen/ListenVideoCollectionPlayer.kt",
+      "normalization": "raw",
+      "sha256": "e5926d337f393201a179f7c5e1ee95b06392e5b08b71b547ad5c3bfcf5179033"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-listen-screen/ListenVideoScreen.kt",
+      "normalization": "raw",
+      "sha256": "d7488b4d58407fe36c57d06deec3b4797b3707211101a3b8f966b39bfe0ea3a4"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-listen-screen/manifest.json",
+      "normalization": "raw",
+      "sha256": "687f26307fe1e04ff051c12e11b8466ef06a92d7763fccbcb6a462af732793a1"
+    },
+    {
       "path": "desktop/upstream-slices/v038-listen-viewmodel/ListenVideoViewModel.kt",
       "normalization": "raw",
       "sha256": "aeda55b35e7c4480bcc871c58646a8fa4fc1ed2bfb0e80a5ff6a7af5ac88b829"
@@ -558,14 +653,16 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "cae2dab20331bec7f1bbc0bd720c6f983803ba474dfd7b15c69ea48638e69f71"
+      "sha256": "9a2a8f6129d7f860d87595aa675bb70a4be755396c14a911e5c12a8bfeed8758"
     }
   ],
   "classes": {
-    "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
-    "com.bilipai.desktop.update.StartupHealthTest": 8
+    "com.bilipai.desktop.ui.DesktopOriginalListenCollectionPlaylistAdmissionTest": 7,
+    "com.android.purebilibili.feature.audio.library.DesktopV038ListenVideoLibraryLoaderTest": 11,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoAuthorizationBootstrapTest": 12,
+    "com.bilipai.desktop.ui.DesktopVideoBootstrapRetryIntentTest": 1
   },
-  "expectedTests": 33,
+  "expectedTests": 31,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -573,8 +670,29 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterStageLeaseTest.kt",
+    ".github/workflows/windows-source-validation.yml",
+    "desktop/build.gradle.kts",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPhysicalLeaf.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadFailureLoginIntent.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoBootstrapReadSource.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
+    "desktop/tools/extract-upstream-danmaku-settings.py",
+    "desktop/tools/extract-upstream-listen-video-root.py",
+    "desktop/tools/tests/test_v038_danmaku_merge_source.py",
+    "desktop/tools/tests/test_v038_listen_screen_source.py",
+    "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
+    "desktop/tools/v038_danmaku_merge.py",
+    "desktop/tools/v038_listen_collection.py",
+    "desktop/tools/v038_listen_screen.py",
+    "desktop/upstream-slices/v038-listen-screen/BiliPaiNavKey.kt",
+    "desktop/upstream-slices/v038-listen-screen/ListenVideoCollectionPlayer.kt",
+    "desktop/upstream-slices/v038-listen-screen/ListenVideoScreen.kt",
+    "desktop/upstream-slices/v038-listen-screen/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

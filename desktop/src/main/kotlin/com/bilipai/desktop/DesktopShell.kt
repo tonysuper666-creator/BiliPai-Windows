@@ -2380,6 +2380,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,
                                     commands::back, ::openVideoHonorLink,
                                     { enabled -> enhancementHostStarted.value = enabled },
+                                    personalLists = personalLists, collectionPlaylist = services.originalSpacePlaylist,
                                     pendingOwner = {
                                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                             ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()

@@ -93,17 +93,14 @@ def generate(repo,output,standalone=False):
  merge_sources,merge_manifest=fixed_merge_sources(repo)
  sources[paths[1]]=merge_sources['SettingsManager.kt']
  ids.extend(dict(row,pinnedCommit=V038_MERGE_COMMIT) for row in merge_manifest['files'])
+ from v038_danmaku_merge import content_colors_source
  colors_original=merge_sources['AppContentColors.kt']
+ colors_body,colors_proof=content_colors_source(repo)
  required_colors=set(re.findall(r'AppContentColors\.(\w+)\(',merge_sources['DanmakuSettingsPanel.kt']))
- if required_colors!={'accent','error','onAccent'}:raise ValueError('Original panel content-color call closure changed')
- color_functions=[]
- for name in sorted(required_colors):
-  start=colors_original.index('    @Composable\n    @ReadOnlyComposable\n    fun '+name+'(): Color')
-  end=colors_original.index('\n\n',start)
-  color_functions.append(colors_original[start:end])
- colors_body='package com.android.purebilibili.core.ui\nimport androidx.compose.material3.MaterialTheme\nimport androidx.compose.runtime.Composable\nimport androidx.compose.runtime.ReadOnlyComposable\nimport androidx.compose.ui.graphics.Color\n\nobject AppContentColors {\n'+'\n\n'.join(color_functions)+'\n}\n'
- emit('com/android/purebilibili/core/ui/AppContentColors.kt',colors_body,'design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt','selected-complete-v038-native-panel-color-functions')
- save(output/'v038-original-danmaku-settings-source-proof.json',dict(upstreamCommit=V038_MERGE_COMMIT,settingsManagerSelectionOwner='extract-upstream-danmaku-settings.py',completeColorFunctions={name:sha(body) for name,body in zip(sorted(required_colors),color_functions)},panelColorReferenceClosureComplete=True,sourceQualified=False,mainCompiled=False))
+ declared_colors=set(re.findall(r'fun (\w+)\(\): Color',colors_body))
+ if not required_colors<=declared_colors:raise ValueError('Original panel content-color call closure changed')
+ emit('com/android/purebilibili/core/ui/AppContentColors.kt',colors_body,'design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt','complete-v038-original-shared-content-colors',original=colors_original)
+ save(output/'v038-original-danmaku-settings-source-proof.json',dict(upstreamCommit=V038_MERGE_COMMIT,settingsManagerSelectionOwner='extract-upstream-danmaku-settings.py',wholeOriginalContentColorsRetained=True,contentColorsProof=colors_proof,panelColorReferenceClosureComplete=True,sourceQualified=False,mainCompiled=False))
  panel_original,panel_identity=latest_panel_original(repo)
  s=panel_original;patches=[]
  s=adapt(s,'import com.android.purebilibili.core.store.SettingsManager\n','// Original settings use the required Root settings and hot-bar bindings.\n',patches)

@@ -54,7 +54,8 @@ def adapt(full):
         replace(line, '', 'remove Android/global authority: ' + line.strip())
     replace('import kotlinx.coroutines.launch\n',
             'import kotlinx.coroutines.launch\nimport kotlinx.coroutines.currentCoroutineContext\n'
-            'import com.bilipai.desktop.ui.DesktopOriginalListenVideoCollectionEnvironment\n',
+            'import com.bilipai.desktop.ui.DesktopOriginalListenVideoCollectionEnvironment\n'
+            'import com.bilipai.desktop.ui.DesktopOriginalListenCollectionPlaybackTarget\n',
             'existing Root destination environment')
     before = '''internal class ListenVideoCollectionViewModel(
     source: ListenVideoLibraryDataSource = BilibiliListenVideoLibraryDataSource(),
@@ -66,6 +67,9 @@ def adapt(full):
     private val viewModelScope get() = environment.scope
     private val loader = ListenVideoLibraryLoader(environment.dataSource)'''
     replace(before, after, 'same original Loader and existing Favorites source')
+    replace('    private var session: PlaylistSession? = null',
+            '    @Volatile private var session: PlaylistSession? = null',
+            'publish original session identity to actual bootstrap admission')
     for signature in ('fun open(mediaId: Long, seasonId: Long)', 'fun retry()', 'private fun load()'):
         replace('    ' + signature + ' {\n', '    ' + signature + ' {\n        environment.assertOwned()\n',
                 'admit original entry ' + signature)
@@ -106,6 +110,24 @@ def adapt(full):
     replace('        _state.update { it.copy(isLoading = true, error = null) }',
             '        environment.updateState(_state) { it.copy(isLoading = true, error = null) }',
             'original synchronous retry state admission')
+    desktop_target = '''
+    /** Read-only port over this original VM's private session and its actual selected item. */
+    internal fun captureDesktopPlaybackTarget(): DesktopOriginalListenCollectionPlaybackTarget? {
+        var target: DesktopOriginalListenCollectionPlaybackTarget? = null
+        environment.commit {
+            val first = _state.value.firstTrack ?: return@commit
+            val capturedSession = session ?: return@commit
+            if (!environment.playlist.isSessionCurrent(capturedSession)) return@commit
+            val selected = environment.playlist.getCurrentItem() ?: return@commit
+            target = environment.capturePlaybackTarget(capturedSession, selected) {
+                session == capturedSession && _state.value.firstTrack === first
+            }
+        }
+        return target
+    }
+'''
+    replace('\n}\n', desktop_target + '\n}\n',
+            'borrow actual original collection session and selected queue item for typed bootstrap')
     inverse = body
     for edit in reversed(edits):
         at = edit['offset']

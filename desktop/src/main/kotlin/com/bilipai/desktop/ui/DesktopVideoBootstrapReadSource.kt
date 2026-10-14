@@ -37,6 +37,7 @@ internal class DesktopVideoBootstrapSeed private constructor(
     private val partRequest: PlaybackRequest? = null,
     private val partResumeMs: Long = 0L,
     private val manualCallerStillOwned: (() -> Boolean)? = null,
+    private val collectionTarget: DesktopOriginalListenCollectionPlaybackTarget? = null,
 ) {
     /** Retained accepted-native origin only. Loading/error callers still use owns(). */
     internal fun ownsEntry(): Boolean = window.owns() && assembly.owns() && window.commands.containsEntry(route) &&
@@ -63,8 +64,10 @@ internal class DesktopVideoBootstrapSeed private constructor(
     private fun matchesInitialRequest(request: PlaybackRequest, fallbackResumeMs: Long): Boolean = when (val entry = route) {
         is BiliPaiNavKey.VideoDetail -> request.bvid == entry.bvid && request.cid == entry.cid &&
             fallbackResumeMs == entry.resumePositionMs.coerceAtLeast(0L)
-        is BiliPaiNavKey.AudioMode -> request.bvid == entry.sourceBvid && request.cid == entry.sourceCid &&
-            fallbackResumeMs == entry.sourceResumePositionMs
+        is BiliPaiNavKey.AudioMode -> if (entry.collectionMediaId > 0L || entry.collectionSeasonId > 0L)
+            collectionTarget?.matches(window, entry, request, fallbackResumeMs) == true
+            else request.bvid == entry.sourceBvid && request.cid == entry.sourceCid &&
+                fallbackResumeMs == entry.sourceResumePositionMs
         is BiliPaiNavKey.NativeMusic -> request.bvid == entry.bvid && request.cid == entry.cid &&
             fallbackResumeMs == 0L // The original NativeMusic key has no resume-position field.
         else -> false
@@ -134,17 +137,26 @@ internal class DesktopVideoBootstrapSeed private constructor(
             require(route is BiliPaiNavKey.AudioMode || route is BiliPaiNavKey.NativeMusic)
             return captureTyped(window, assembly, route)
         }
+        suspend fun captureCollection(window: DesktopOriginalVideoRootWindowEnvironment,
+            assembly: DesktopOriginalVideoOwnerAssembly, route: BiliPaiNavKey.AudioMode,
+            target: DesktopOriginalListenCollectionPlaybackTarget): DesktopVideoBootstrapSeed =
+            captureTyped(window, assembly, route, target)
         private suspend fun captureTyped(window: DesktopOriginalVideoRootWindowEnvironment,
-            assembly: DesktopOriginalVideoOwnerAssembly, route: BiliPaiNavKey): DesktopVideoBootstrapSeed {
+            assembly: DesktopOriginalVideoOwnerAssembly, route: BiliPaiNavKey,
+            collectionTarget: DesktopOriginalListenCollectionPlaybackTarget? = null): DesktopVideoBootstrapSeed {
             check(java.awt.EventQueue.isDispatchThread())
             val context = currentCoroutineContext(); context.ensureActive()
             val caller = requireNotNull(context[Job])
             if (!window.owns() || !assembly.owns() || window.currentKey() !== route || !window.commands.containsEntry(route))
                 throw CancellationException("Actual bootstrap entry retired")
+            if (collectionTarget != null && (route !is BiliPaiNavKey.AudioMode || !collectionTarget.isCurrent(window, route)))
+                throw CancellationException("Actual collection selection retired before bootstrap")
             val primary = window.repository.captureHomeNavRequest(window.root.capturedEpoch, window.root.entry.gate.mid) {
                 caller.isActive && window.owns() && assembly.owns()
             }
-            return DesktopVideoBootstrapSeed(window, assembly, route, caller, primary)
+            if (collectionTarget != null && (route !is BiliPaiNavKey.AudioMode || !collectionTarget.isCurrent(window, route)))
+                throw CancellationException("Actual collection selection retired during bootstrap capture")
+            return DesktopVideoBootstrapSeed(window, assembly, route, caller, primary, collectionTarget = collectionTarget)
         }
     }
 }

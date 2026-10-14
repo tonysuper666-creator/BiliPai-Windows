@@ -1,5 +1,6 @@
 from pathlib import Path
 import importlib.util
+import re
 import shutil
 import tempfile
 import unittest
@@ -19,6 +20,18 @@ def undo(body, proof):
 
 
 class V038DanmakuMergeSourceTest(unittest.TestCase):
+    def test_complete_shared_palette_covers_the_actual_latest_listen_and_panel_calls(self):
+        raw, _ = source.fixed_sources(REPO)
+        body, proof = source.content_colors_source(REPO)
+        self.assertEqual(raw["AppContentColors.kt"], body)
+        self.assertEqual([], proof["edits"])
+        screen = (REPO / "desktop/upstream-slices/v038-listen-screen/ListenVideoScreen.kt").read_text(encoding="utf-8")
+        calls = set(re.findall(r"AppContentColors\.(\w+)\(", screen + raw["DanmakuSettingsPanel.kt"]))
+        declarations = set(re.findall(r"fun (\w+)\(\): Color", body))
+        self.assertTrue(calls <= declarations, calls - declarations)
+        self.assertIn("fun ProvideAppContentColors", body)
+        self.assertIn("fun resolveReadableNeutralContent", body)
+
     def test_whole_original_merger_keeps_fixed_batch_start_likes_and_original_content(self):
         raw, _ = source.fixed_sources(REPO)
         body, proof = source.merger_source(REPO)

@@ -79,6 +79,13 @@ def merger_source(repo):
     ])
 
 
+def content_colors_source(repo):
+    # One shared producer must expose the complete original semantic palette.
+    # Restricting it to the panel's current calls breaks other real consumers.
+    sources, _ = fixed_sources(repo)
+    return adapt(sources["AppContentColors.kt"], [])
+
+
 def neutral_item_source(repo):
     sources, _ = fixed_sources(repo)
     whole = sources["DanmakuModels.kt"]

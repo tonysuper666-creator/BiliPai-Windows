@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.3.8",
+  "commit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "archiveFile": "BiliPaiNavKey.kt",
+      "gitBlob": "d97203ddd91865d74fcc4a8361ca7125779d37d6",
+      "sha256": "67d8c9c33f503bfdf09714ec9dee239c00976765d510fe8b37145d0c888cca9e",
+      "bytes": 14337
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoCollectionPlayer.kt",
+      "archiveFile": "ListenVideoCollectionPlayer.kt",
+      "gitBlob": "1b2e35d55d16ccb4ecce476d7f0cba00d1a57380",
+      "sha256": "e5926d337f393201a179f7c5e1ee95b06392e5b08b71b547ad5c3bfcf5179033",
+      "bytes": 3030
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt",
+      "archiveFile": "ListenVideoScreen.kt",
+      "gitBlob": "9da3d48ede131bf394c0f4530275c1ac34ca7935",
+      "sha256": "d7488b4d58407fe36c57d06deec3b4797b3707211101a3b8f966b39bfe0ea3a4",
+      "bytes": 33733
+    }
+  ]
+}

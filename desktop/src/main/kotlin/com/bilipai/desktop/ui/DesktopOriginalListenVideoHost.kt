@@ -65,6 +65,10 @@ internal val LocalDesktopOriginalListenVideoPage = staticCompositionLocalOf<Desk
                 }
             } },
             onLogin = { page.runUi { routes.push(BiliPaiNavKey.Login) } },
+            onPlayCollection = { mediaId, seasonId, title -> page.runUi {
+                routes.push(BiliPaiNavKey.AudioMode(collectionMediaId = mediaId,
+                    collectionSeasonId = seasonId, collectionTitle = title))
+            } },
             viewModel = entry.viewModel,
         )
     }
