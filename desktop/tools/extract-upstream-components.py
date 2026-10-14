@@ -7,6 +7,8 @@ import json
 import re
 from v040_liquid_value_controls import selected_component_source as _liquid_source, emit_components as _liquid_components, NEW_COMPONENT_DIRECT_PATHS as _liquid_direct
 
+from v040_chrome_actions import selected_component_source as _chrome_source, emit_components as _chrome_components, COMPONENT_DIRECT_PATHS as _chrome_direct
+
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
     "AppThemeConfig", "AppShapes", "AppSurfaceTokens", "AppSpacingTokens", "AppChromeSizeTokens",
@@ -72,25 +74,26 @@ def adapt(path, source, host):
     else: raise ValueError("No platform binding for " + path)
     return source
 
-def generate(repo, output, standalone=False):
+def generate(repo, output, standalone=False, test_output=None):
     host = helper(repo)
     output.mkdir(parents=True, exist_ok=True)
     result = []
     for path in DIRECT:
-        original = _liquid_source(repo, path, host.read(repo, path))
+        original = _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))
         if re.search(r"(?m)^import android\.", original): raise ValueError("Pure renderer acquired Android dependency: " + path)
         host.prune_old_direct(output, path, original)
-        if (standalone or path in _liquid_direct) and path not in REUSED:
+        if (standalone or path in _liquid_direct or path in _chrome_direct) and path not in REUSED:
             result.append(host.write(output, path, original, original))
     for path in ADAPTED:
-        original = _liquid_source(repo, path, host.read(repo, path))
+        original = _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))
         result.append(host.write(output, path, original, adapt(path, original, host)))
     for path in POLICIES:
-        original = _liquid_source(repo, path, host.read(repo, path))
+        original = _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))
         declaration = re.findall(r"(?m)^internal fun resolvePiliPlusScrollableUnderlineMinWidth\(\): Dp = [^\n]+", original)
         if len(declaration) != 1: raise ValueError("Original tab-width policy changed")
         body = "package com.android.purebilibili.core.ui.components\n\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\n\n" + declaration[0] + "\n"
         result.append(host.write(output, path, original, body, "AppScrollableUnderlinePolicy.kt"))
+    result.extend(_chrome_components(repo, output, test_output))
     extra = _liquid_components(repo, output)
     result.extend(output / row["path"] for row in extra)
     result.append(output / "com/android/purebilibili/core/ui/components/DesktopLiquidValueColorResources.kt")
@@ -106,7 +109,8 @@ if __name__ == "__main__":
     cli.add_argument("--repo", type=Path, required=True)
     cli.add_argument("--output", type=Path)
     cli.add_argument("--standalone", action="store_true")
+    cli.add_argument("--test-output", type=Path)
     cli.add_argument("--inventory", action="store_true")
     args = cli.parse_args()
     if args.inventory: print(json.dumps(inventory(args.repo.resolve()), indent=2))
-    if args.output: print("Generated", len(generate(args.repo.resolve(), args.output.resolve(), args.standalone)), "original component files")
+    if args.output: print("Generated", len(generate(args.repo.resolve(), args.output.resolve(), args.standalone, args.test_output.resolve() if args.test_output else None)), "original component files")

@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "97",
+  "windowsRevision": "99",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14205,13 +14205,39 @@
     "nativeBarOverflowHostIntegrationPending": true,
     "globalLiquidThemeColorPreferenceHostFollowupPending": true,
     "customPaletteArgumentsStillNeedLargeScreenOwnerCoordination": true,
-    "mainCompiled": false,
-    "jvmTestsExecuted": false,
+    "mainCompiled": true,
+    "jvmTestsExecuted": true,
     "pixelsValidated": false,
     "runtimeExecuted": false,
     "fullV040ParityClaimed": false,
     "completeOriginalLensShaderRetainedWithoutAdaptation": true,
     "existingPinnedMiuixWindowsSkiaBackendUsed": true,
-    "headlessNativeShaderCasesWritten": 2
+    "headlessNativeShaderCasesWritten": 2,
+    "compilationSourceHead": "de22734e7be9a1f72cfdfd5782a3b1780f5ac64f",
+    "compilationRunId": 38651905408,
+    "selectedJvmCasesPassed": 59,
+    "headlessNativeShaderCasesPassed": 2
+  },
+  "v040ChromeActionsSlice": {
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "manifestPath": "desktop/upstream-slices/v040-chrome-actions/manifest.json",
+    "manifestSHA256": "a78a770551ee2575467b55b47ac3b78133705289b2d4951c4b1181b9ca36f088",
+    "completeOriginalMainUnitsConnected": 17,
+    "rawOriginalSourceFilesRetained": 22,
+    "originalPolicyJvmCasesWritten": 17,
+    "sourceGenerationCasesPassed": 6,
+    "existingComponentRenderAndSharedDecorationOwnersRetained": true,
+    "existingWindowsClipboardAndRealSkiaPressBindingsRetained": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "nativeBarOverflowHostIntegrationPending": true,
+    "globalLiquidThemeColorPreferenceHostFollowupPending": true,
+    "customPaletteArgumentsStillNeedLargeScreenOwnerCoordination": true,
+    "pixelsValidated": false,
+    "runtimeExecuted": false,
+    "fullV040ParityClaimed": false,
+    "completeOriginalTextSearchHighlightDependencyRetained": true,
+    "originalTextHighlightJvmCasesWritten": 2,
+    "failedPreviousSourceHead": "437bab2e2c5c113759da74add2b7ef2f6c17428c"
   }
 }

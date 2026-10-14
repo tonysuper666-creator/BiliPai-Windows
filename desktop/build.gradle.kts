@@ -174,6 +174,17 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt"))
+        // Complete original action facades and renderers have one component producer.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIconButton.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimaryButton.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveRendererPolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3IconButton.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixActionPrimitives.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIconButton.kt"))
         // Original value-control facades and compact geometry use the existing component owner.
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSwitch.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt"))
@@ -493,18 +504,24 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("test") { kotlin.srcDir(generatedThemeRoleTests) }
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamAppearance) }
 
+val generatedChromeActionTests = layout.buildDirectory.dir("generated/original-chrome-action-tests")
 val extractUpstreamComponents by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-components.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/components").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-components.py", "tools/v040_liquid_value_controls.py")
+        "--output", layout.buildDirectory.dir("generated/components").get().asFile.absolutePath,
+        "--test-output", generatedChromeActionTests.get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-components.py", "tools/v040_liquid_value_controls.py", "tools/v040_chrome_actions.py")
+    inputs.dir("upstream-slices/v040-chrome-actions")
     inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.files(sources.filter { "component-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/components"))
+    outputs.dir(generatedChromeActionTests)
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(generatedChromeActionTests) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamComponents) }
 
 val extractUpstreamPreferences by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -2439,6 +2456,8 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
     inputs.file("tools/v037_player_foundations.py")
     inputs.dir("upstream-slices/v037-player-foundation-closure")
     inputs.files("tools/v037_player_chrome.py", "tools/v037_player_closure.py", "tools/v037_player_render.py", "tools/v037_player_shared_material.py")
+    inputs.file("tools/v040_chrome_actions.py")
+    inputs.dir("upstream-slices/v040-chrome-actions")
     inputs.dir("upstream-slices/v037-player-chrome")
     inputs.dir("upstream-slices/v037-player-closure")
     inputs.dir("upstream-slices/v037-player-render-closure")

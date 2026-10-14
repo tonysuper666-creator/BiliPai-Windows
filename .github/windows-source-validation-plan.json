@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "9cf9e4b11b17258f23def3170ffa5333bf00319c",
-  "windowsVersion": "0.2.427.97",
-  "createdAt": "2026-10-14T23:04:35.220705+00:00",
+  "baseHead": "de22734e7be9a1f72cfdfd5782a3b1780f5ac64f",
+  "windowsVersion": "0.2.427.99",
+  "createdAt": "2026-10-14T23:48:18.340692+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "c9cdcaf4ee75984d3516aa3442ac772052e087db9141c36fd851af4cf35bd00b"
+      "sha256": "d873bc5c9fa2f470b6e412213c840fa7369dfcc3580d3258c51750581c33250b"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -83,7 +83,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "c7c2482d6d00b8a61c2b6aeea6602e44a07127bd6fa207b806a4bee57f43a3e7"
+      "sha256": "90475dbcc54757feb79dfa30177bebe0cc2ec8876a73057f794b5bdd5c4ba11a"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -428,7 +428,7 @@
     {
       "path": "desktop/tools/extract-upstream-components.py",
       "normalization": "lf",
-      "sha256": "470d477fb3a6bf412f42abbcb9c6b52d8bee810740f82eda476e41644e677954"
+      "sha256": "dd4d784640b9cbe9d1bc26cf23eb00490eb6a48548c6c0b1d17bfd21be2b3297"
     },
     {
       "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
@@ -586,6 +586,11 @@
       "sha256": "0d4a1105968bb9b2fe0854825f022a9df2cd45f07c617dfce4094d4884308f18"
     },
     {
+      "path": "desktop/tools/tests/test_v040_chrome_actions_source.py",
+      "normalization": "lf",
+      "sha256": "54bdc474e9fcd1fbb8c1a3ee00c034f9b56b69c83eb5646b6863ec2743cd0ac0"
+    },
+    {
       "path": "desktop/tools/tests/test_v040_dynamic_pagination_source.py",
       "normalization": "lf",
       "sha256": "a345e8ad6f5f1205a2f3433e1f12d9c9381beeb15145e06ae257575c50d9243a"
@@ -636,6 +641,11 @@
       "sha256": "349545268f7c99ede2476792a5b4ac170ebb10b65e2e48520a2a271c906562bb"
     },
     {
+      "path": "desktop/tools/v037_player_render.py",
+      "normalization": "lf",
+      "sha256": "ace26caebfdb64df60f971251755e33b00f1bf9c67bd706f1ca38cfafb3ce441"
+    },
+    {
       "path": "desktop/tools/v037_shared_tabs_progress.py",
       "normalization": "lf",
       "sha256": "4192992208209e9d297e8a19744a470a5a8434d8a9833aaface72a59749e5bb8"
@@ -679,6 +689,11 @@
       "path": "desktop/tools/v038_player_interaction_retry.py",
       "normalization": "lf",
       "sha256": "9b29a475147daee4211c8db74d47f7f25b19cf2a1fbee141040ebedf7def6599"
+    },
+    {
+      "path": "desktop/tools/v040_chrome_actions.py",
+      "normalization": "lf",
+      "sha256": "4eb3cc8bdac2264d7fe372ba8a070dd54ba59112984ba6b8fa095d3dc9a53eac"
     },
     {
       "path": "desktop/tools/v040_dynamic_pagination.py",
@@ -891,6 +906,121 @@
       "sha256": "32358962a03ee93b3e2815f2e95476e34a7afb440d4ceb64ab2bd10bd0c8d70e"
     },
     {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppChromeSizeTokens.kt",
+      "normalization": "raw",
+      "sha256": "89c7d9a7f651741d5322391c8b03c005310fc4a7c5589eadaefb88853e072657"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppChromeSizeTokensTest.kt",
+      "normalization": "raw",
+      "sha256": "ddb629ca6feb528e202ae71230b1141ead3bb10d19782eab4c4f02b746a1702c"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppElasticIndication.kt",
+      "normalization": "raw",
+      "sha256": "29b225b0ad0969e37a86c83d02a3287bea9a4f694fe65e1bc380750968752759"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppElasticPress.kt",
+      "normalization": "raw",
+      "sha256": "c2655b0ccc618defcb08c2c2d2b9eb2cc1c8dd843c7368fd97872a5b54d3a69c"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppIcon.kt",
+      "normalization": "raw",
+      "sha256": "6e975a3a20ac6bc1cdf802d4a810755ed88716a0c1460d4650b5ac5531937827"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppIconButton.kt",
+      "normalization": "raw",
+      "sha256": "de08bf83ea026aefa5fd5a235fd74e0535db5311ac369fe4d53340f4335919ef"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppMaterial3IconButton.kt",
+      "normalization": "raw",
+      "sha256": "364bd6d032ca826bc07ee98a496374b24a9be278aafb0d5c5a5c1c1a2396cd48"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppMiuixActionPrimitives.kt",
+      "normalization": "raw",
+      "sha256": "f0af7b6ef218d6c52e5a0d755c0d9c4bea6db037b199d1241225ac057432e705"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppMiuixIconButton.kt",
+      "normalization": "raw",
+      "sha256": "fdf8965a75cfcc2cc0de93f1bbdcc136ac000290127ec8fa76762d172934e13b"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppPrimaryButton.kt",
+      "normalization": "raw",
+      "sha256": "22b86048cf19573a4651afefa468db675deaf9e92011651a5aed09036cdecf75"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveComponents.kt",
+      "normalization": "raw",
+      "sha256": "2643c2b4a92b831827ebc4b9157ea2abbbc6677244d31d11cd68c3927d0ae6ba"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveRendererPolicy.kt",
+      "normalization": "raw",
+      "sha256": "be1fd3db0007484ac9936a98c8dad4c6ff52c66af0e3af410f496475a0351ad2"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveRendererPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "19cdbae75d96a5161c484e94dd712f4696d1c1c69a36a06aa33e849f237b8204"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppTabIndicatorMotion.kt",
+      "normalization": "raw",
+      "sha256": "dfbcb8131f3ef3abeed0fdf94ae15c003294881f78897b58371da1ed2e076a85"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppText.kt",
+      "normalization": "raw",
+      "sha256": "147a05777f4ebab2e5c6e9186393eef76cf1a02b03b6cb10c13548d9399f17aa"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppTextSearchHighlight.kt",
+      "normalization": "raw",
+      "sha256": "dec631fc6fbeae00a0ed83b6f4d71afc0272cfc1740b6b1363c116c5acb2ab64"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppTextSearchHighlightTest.kt",
+      "normalization": "raw",
+      "sha256": "741cda90ca52843b90af7e8b385a6f2b9250a117b883d30a22950fd92ea71c25"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/AppTopBarIconDecoration.kt",
+      "normalization": "raw",
+      "sha256": "f232c8cd3ac5e0bb71c9e47ca425c9e6670ea4c95b801c7a2142d4783137e2b9"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/ButtonSlotColor.kt",
+      "normalization": "raw",
+      "sha256": "c6a3251f7c5061272d194557f489cad4465384d29311fa07a8f13c963ccb37fc"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/ButtonSlotColorTest.kt",
+      "normalization": "raw",
+      "sha256": "cf703a593ab5957e521a930ab04c142920443b68d2ae044f506fabd579e1de5e"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/ButtonVisualPolicy.kt",
+      "normalization": "raw",
+      "sha256": "fc70e9438211b4fc181d0bd99ab4f7da397658152f2d0950546ff6edaf68db37"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/ButtonVisualPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "fec626241d32605bac0d2a99d0e1099560f9318f3985b180132eee54966123d3"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-chrome-actions/manifest.json",
+      "normalization": "raw",
+      "sha256": "a78a770551ee2575467b55b47ac3b78133705289b2d4951c4b1181b9ca36f088"
+    },
+    {
       "path": "desktop/upstream-slices/v040-dynamic-pagination/DynamicScreenStatePolicy.kt",
       "normalization": "raw",
       "sha256": "cf08da0f4a2332cea17de66dbc772c9a0789295fe9af1ab57092bbefaa6fc597"
@@ -1068,7 +1198,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "1d0f7a46e6496674624506cdd523f535052f2301ad54ff8177d44fb20c21f17b"
+      "sha256": "f41513b7b4a357353592cfd503c30582486c144591141422d6c28d3af8921874"
     }
   ],
   "classes": {
@@ -1081,9 +1211,14 @@
     "com.android.purebilibili.core.ui.MatchedLiquidIndicatorGeometryTest": 4,
     "com.android.purebilibili.feature.settings.AppearanceMd3ColorPickerPolicyTest": 2,
     "com.bilipai.desktop.appearance.DesktopLiquidPointerMappingTest": 4,
-    "com.bilipai.desktop.appearance.DesktopLiquidLensSkiaTest": 2
+    "com.bilipai.desktop.appearance.DesktopLiquidLensSkiaTest": 2,
+    "com.android.purebilibili.core.ui.ButtonSlotColorTest": 3,
+    "com.android.purebilibili.core.ui.ButtonVisualPolicyTest": 5,
+    "com.android.purebilibili.core.ui.AppChromeSizeTokensTest": 1,
+    "com.android.purebilibili.core.ui.components.AppPrimitiveRendererPolicyTest": 6,
+    "com.android.purebilibili.core.ui.components.AppTextSearchHighlightTest": 2
   },
-  "expectedTests": 59,
+  "expectedTests": 76,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1093,40 +1228,33 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopLiquidLensSkiaTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopLiquidPointerMappingTest.kt",
-    "desktop/tools/extract-appearance-platform.py",
     "desktop/tools/extract-upstream-components.py",
-    "desktop/tools/tests/test_v040_liquid_controls_source.py",
-    "desktop/tools/tests/test_v040_theme_roles_source.py",
-    "desktop/tools/v037_player_foundations.py",
-    "desktop/tools/v037_shared_tabs_progress.py",
-    "desktop/tools/v040_liquid_value_controls.py",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppActionColors.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppChromeOverflow.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppColorPicker.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControlPolicy.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControls.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppMaterial3Switch.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppMiuixSlider.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppMiuixSwitch.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppSlider.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppSwitch.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppThemeConfig.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppearanceMd3ColorPickerPolicyTest.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/AppearanceSettingsScreen.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorMotion.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorMotionTest.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorVelocity.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorVelocityTest.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/LiquidLens.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/MatchedLiquidIndicatorGeometry.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/MatchedLiquidIndicatorGeometryTest.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/ThemeCustomColorPickerDialog.kt",
-    "desktop/upstream-slices/v040-liquid-value-controls/liquid_value_colors-dark.xml",
-    "desktop/upstream-slices/v040-liquid-value-controls/liquid_value_colors-light.xml",
-    "desktop/upstream-slices/v040-liquid-value-controls/manifest.json",
+    "desktop/tools/tests/test_v040_chrome_actions_source.py",
+    "desktop/tools/v037_player_render.py",
+    "desktop/tools/v040_chrome_actions.py",
+    "desktop/upstream-slices/v040-chrome-actions/AppChromeSizeTokens.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppChromeSizeTokensTest.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppElasticIndication.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppElasticPress.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppIcon.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppIconButton.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppMaterial3IconButton.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppMiuixActionPrimitives.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppMiuixIconButton.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppPrimaryButton.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveComponents.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveRendererPolicy.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveRendererPolicyTest.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppTabIndicatorMotion.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppText.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppTextSearchHighlight.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppTextSearchHighlightTest.kt",
+    "desktop/upstream-slices/v040-chrome-actions/AppTopBarIconDecoration.kt",
+    "desktop/upstream-slices/v040-chrome-actions/ButtonSlotColor.kt",
+    "desktop/upstream-slices/v040-chrome-actions/ButtonSlotColorTest.kt",
+    "desktop/upstream-slices/v040-chrome-actions/ButtonVisualPolicy.kt",
+    "desktop/upstream-slices/v040-chrome-actions/ButtonVisualPolicyTest.kt",
+    "desktop/upstream-slices/v040-chrome-actions/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }
