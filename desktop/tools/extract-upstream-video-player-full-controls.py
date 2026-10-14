@@ -61,6 +61,13 @@ def windows_nvidia_control_bar_ui(source,record=False):
   assert s.count(before)==1,label
   if record:ADAPT.append(dict(label=label,before=before,after=after))
   s=s.replace(before,after,1)
+ for before,after,label in [
+  ('if (anime4kAvailable) {','if (anime4kAvailable && windowsEnhancementContent == null) {','Windows compact entry replaces the legacy direct enhancement action'),
+  ('if (anime4kAvailable && !showDirectTools) {','if (anime4kAvailable && !showDirectTools && windowsEnhancementContent == null) {','Windows compact entry replaces the legacy more-menu enhancement action'),
+ ]:
+  assert s.count(before)==1,label
+  if record:ADAPT.append(dict(label=label,before=before,after=after))
+  s=s.replace(before,after,1)
  return s
 
 def windows_nvidia_overlay_compact_ui(source,record=False):

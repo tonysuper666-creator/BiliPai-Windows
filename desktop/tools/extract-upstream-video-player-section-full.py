@@ -310,6 +310,16 @@ def render_section():
  t=exact(t,hot,wrapped,'Whole original hot bar uses existing source-owned clock, plugin output and preference scope')
  t=exact(t,'        NextWatchOverlay(\n            player = playerState.player,','        val nextWatchHint by platform.nextWatchHint.collectAsStateWithLifecycle()\n        NextWatchOverlay(\n            settingsContext = platform.settingsContext,\n            playing = playerState.player.isPlaying,\n            hint = nextWatchHint,','Existing owned next-watch binding supplies actual hint and native playing state')
  t=exact(t,'            resolve = actions.resolveNextWatch,\n            play = actions.playNextWatch,','            resolve = platform::captureNextWatchHint,\n            play = { hint -> platform.playNextWatchHint(hint, checkNotNull(settingsScope.coroutineContext[kotlinx.coroutines.Job])) },','Use retained lookahead and captured original UI caller; never create another queue')
+ t=exact(t,'                VideoPlayerOverlay(state = overlayState, actions = overlayActions)',
+     '''                VideoPlayerOverlay(state = overlayState, actions = overlayActions,
+                   windowsEnhancementContent = { onMenuExpandedChange ->
+                       com.bilipai.desktop.ui.DesktopWindowsNvidiaPlayerSlot(
+                           menuEnabled = platform.viewport.playbackIdentity != null &&
+                               com.bilipai.desktop.ui.LocalDesktopDetailForeground.current,
+                           onMenuExpandedChanged = onMenuExpandedChange,
+                       )
+                   },
+               )''','Actual ordinary player forwards the existing Root NVIDIA session to the original bottom bar')
  t+='\n/** Lazy original diagnostic call shape on the existing local diagnostics bridge. */\nprivate fun Logger.d(tag: String, message: () -> String) { Logger.d(tag, message()) }\n'
  emit(rel,t)
 

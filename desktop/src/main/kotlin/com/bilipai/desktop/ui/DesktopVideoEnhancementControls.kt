@@ -83,7 +83,7 @@ internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementS
 
 @Composable
 fun DesktopVideoEnhancementControls(state: DesktopVideoEnhancementState,
-    configuration: DesktopVideoEnhancementConfiguration, onToggle: (Boolean) -> Unit, onSettings: () -> Unit) {
+    configuration: DesktopVideoEnhancementConfiguration, onToggle: (Boolean) -> Unit, onSettings: (() -> Unit)? = null) {
     if (LocalDesktopVideoEnhancementCompact.current) {
         val enabled by configuration.automaticEnabled.collectAsState()
         val configurationError by configuration.error.collectAsState()
@@ -125,7 +125,20 @@ fun DesktopVideoEnhancementControls(state: DesktopVideoEnhancementState,
         return
     }
     DesktopWindowsVideoEnhancementBody(configuration, state, onToggle)
-    AppTextButton(onClick = onSettings) { AppText("NVIDIA 增强详情") }
+    onSettings?.let { openSettings ->
+        AppTextButton(onClick = openSettings) { AppText("NVIDIA 增强详情") }
+    }
+}
+
+/** All original player bars use this same compact view of the existing Root enhancement session. */
+@Composable
+internal fun DesktopWindowsNvidiaPlayerSlot(menuEnabled: Boolean, onMenuExpandedChanged: (Boolean) -> Unit) {
+    val binding = LocalDesktopWindowsVideoEnhancement.current
+    val state by binding.state.collectAsState()
+    DesktopVideoEnhancementCompactSlot(showStatus = false, menuEnabled = menuEnabled,
+        onMenuExpandedChanged = onMenuExpandedChanged) {
+        DesktopVideoEnhancementControls(state, binding.configuration, binding.configuration::setAutomaticEnabled)
+    }
 }
 
 @Composable
