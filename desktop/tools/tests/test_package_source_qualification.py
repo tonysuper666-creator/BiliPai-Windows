@@ -74,6 +74,12 @@ class PackageSourceQualificationTest(unittest.TestCase):
                         log.replace(hashlib.sha256(json.dumps(self.payload).encode()).hexdigest(), "0" * 64, 1)]:
             with self.assertRaises(ValueError): gate.receipt_from_log(invalid)
 
+    def test_colored_console_output_outside_receipt_does_not_change_sealed_evidence(self):
+        log = "2026-10-14T11:00:00Z \x1b[36mcompile output\x1b[0m\n" + self.log()
+        proof = gate.verify(self.run, self.jobs, log, self.plan, self.sha)
+        self.assertEqual(2, proof["actualTests"])
+        self.assertTrue(proof["sourceQualified"])
+
 
 if __name__ == "__main__":
     unittest.main()

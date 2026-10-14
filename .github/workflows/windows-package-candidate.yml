@@ -59,7 +59,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Qualification job metadata unavailable.' }
           $jobs = @((Get-Content -LiteralPath "$evidence/jobs.json" -Raw | ConvertFrom-Json).jobs | Where-Object { $_.name -eq 'source-validation' })
           if ($jobs.Count -ne 1) { throw 'Exactly one qualification job is required.' }
-          gh api "repos/tonysuper666-creator/BiliPai-Windows/actions/jobs/$($jobs[0].id)/logs" > "$evidence/job.log"
+          gh api --allow-escape-sequences "repos/tonysuper666-creator/BiliPai-Windows/actions/jobs/$($jobs[0].id)/logs" > "$evidence/job.log"
           if ($LASTEXITCODE -ne 0) { throw 'Sealed qualification log unavailable.' }
           git checkout --detach $env:SOURCE_SHA
           if ($LASTEXITCODE -ne 0 -or (git rev-parse HEAD) -cne $env:SOURCE_SHA) { throw 'Source checkout mismatch.' }
