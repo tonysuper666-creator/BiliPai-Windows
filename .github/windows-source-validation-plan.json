@@ -1,19 +1,24 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "b0d94eef25827bed3b793958bb8055c57fff4245",
-  "windowsVersion": "0.2.427.92",
-  "createdAt": "2026-10-14T21:25:02.840695+00:00",
+  "baseHead": "d19a2abcf152a35b9a2b423f4d93cb477b4a8a6c",
+  "windowsVersion": "0.2.427.95",
+  "createdAt": "2026-10-14T22:24:50.071198+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "ee662327d0ca786c732cf07f1f6b6cbbb7f0ba156e05a30c124f6f853c28f16a"
+      "sha256": "e42498bb05bdf1cfcd3971393e0a1ac406d4d11f3985f54faa1db712f694aa5e"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
       "normalization": "lf",
       "sha256": "e2aca0eca175d196aa82d48062669e68fe0887da160a986a72381f292839ab05"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt",
+      "normalization": "lf",
+      "sha256": "0705822c1e6defc7439b49b29ec0b8a8be494cada5d02e0bb08be5c06d79f123"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
@@ -63,12 +68,17 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "f9921e3edbd0f620b23a7338353d23645e01376db9c789e8811e47ce72918541"
+      "sha256": "54183a0902d6295e3a99f6883aca22f4f6744f976104d5539c8ab21eecddbb12"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
       "normalization": "lf",
       "sha256": "77f642873061d50460d75783e84f640f738a5e72f66da03bc1d20e5c69f5f58e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
+      "normalization": "lf",
+      "sha256": "7449a36d8e61282eadf25123e52b8ae72246b59863486b5a265e8262305400db"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
@@ -251,9 +261,19 @@
       "sha256": "dbab29fdd2c2b16265d3606fb0ea0160c22647bc279cbff3877f72ac00a74710"
     },
     {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/theme/DesktopThemeRoleSpecContractTest.kt",
+      "normalization": "lf",
+      "sha256": "eb34ba84ccb23af2abf897c47cd7afa3a361483d619c9f12df660099263bc735"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/android/purebilibili/data/repository/DesktopCommentReadRouteConsumptionTest.kt",
       "normalization": "lf",
       "sha256": "23dca1e25a84300fa1556dd7a8edd4340f55ee0242c4ca8be93c344d7bd5d6e4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTest.kt",
+      "normalization": "lf",
+      "sha256": "0486750a919b205725108e2dfa65a082bfbfa4a513773f4720d191dc4220033e"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
@@ -359,6 +379,11 @@
       "path": "desktop/tools/build.ps1",
       "normalization": "lf",
       "sha256": "27515ea148a962d76ba0425b20a62811c2ce266878f25d5d9f47a19d7f5438c8"
+    },
+    {
+      "path": "desktop/tools/extract-appearance-platform.py",
+      "normalization": "lf",
+      "sha256": "20384ab4d519f12dd744ff864f8fbf89291ddfd001165d1081c0a33a024ad774"
     },
     {
       "path": "desktop/tools/extract-dynamic-message-share.py",
@@ -541,6 +566,11 @@
       "sha256": "8a30e1709c4414f119050f9cf433709949a7c56a58c58a7ff53473c4ac6dea07"
     },
     {
+      "path": "desktop/tools/tests/test_v040_theme_roles_source.py",
+      "normalization": "lf",
+      "sha256": "fa50e1654b975b6a2aee3d7dbb2cb3e7d1ac8b4aaa64abacdabd26650b6bfe50"
+    },
+    {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
       "normalization": "lf",
       "sha256": "f0ea38f3730fbda08fafc6140d7397e0d432023892b394e5dd00cdb1858ddadf"
@@ -614,6 +644,11 @@
       "path": "desktop/tools/v040_reply_medal.py",
       "normalization": "lf",
       "sha256": "ee494ba800a5bd6e20daea150fd1a845d997cddb6051e1b079d0c67291faeb18"
+    },
+    {
+      "path": "desktop/tools/v040_theme_roles.py",
+      "normalization": "lf",
+      "sha256": "b1bad5ee5e6ee4b46d7deac3cdd572c10a6f311f2ab4b60a0a3f6790845a8d35"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -836,17 +871,43 @@
       "sha256": "a8c5435e897a976f000cc9207b5a0fb773b791c96da92b29e139dfbadc295240"
     },
     {
+      "path": "desktop/upstream-slices/v040-theme-roles/ThemeContrastPolicy.kt",
+      "normalization": "raw",
+      "sha256": "6e5d3dea746bcbb34e7e3523d044901c350e1252216942539b836eb9b67c27bd"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-theme-roles/ThemeContrastPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "b89b4cfeb8b9bfb9a5b143300841bc205698f7758502a2ddd9c80d87a0d471cb"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-theme-roles/ThemeRoleOverridePolicy.kt",
+      "normalization": "raw",
+      "sha256": "adfefc29f8a2b33039919b29ccf673d4f21b52f5f4149dee68dd41ead06ac117"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-theme-roles/ThemeRoleOverridePolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "c06b8168d08bac4d07ad2ea7f58b83e3858d04529c82f381b112e27e8a0341d5"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-theme-roles/manifest.json",
+      "normalization": "raw",
+      "sha256": "978e9bb2961d155b0220f5c48b3e14e847dabc1df47c319bd51c24162872d344"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "73bff15bd844bf7ff7ba892e43442b9fc01e567d96e7d57033f2651c4c276fd0"
+      "sha256": "d0ea32e01b93cd37875f9be6593f0f469a30b7e7173b156fb84ee429a7407f03"
     }
   ],
   "classes": {
-    "com.bilipai.desktop.data.DesktopReplyMedalColorTest": 4,
-    "com.bilipai.desktop.ui.DesktopChargedCommentProtocolTest": 4,
-    "com.android.purebilibili.data.repository.DesktopCommentReadRouteConsumptionTest": 4
+    "com.android.purebilibili.core.theme.ThemeRoleOverridePolicyTest": 9,
+    "com.android.purebilibili.core.theme.ThemeContrastPolicyTest": 8,
+    "com.bilipai.desktop.appearance.DesktopAppearanceTest": 23,
+    "com.android.purebilibili.core.theme.DesktopThemeRoleSpecContractTest": 3
   },
-  "expectedTests": 12,
+  "expectedTests": 43,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -856,17 +917,16 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopReplyMedalColorTest.kt",
-    "desktop/tools/extract-upstream-api.py",
-    "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
-    "desktop/tools/extract-upstream-dynamic-reply.py",
-    "desktop/tools/tests/test_v029_comment_search.py",
-    "desktop/tools/tests/test_v040_reply_medal_source.py",
-    "desktop/tools/v040_reply_medal.py",
-    "desktop/upstream-slices/v040-reply-medal/CommentGrpcRepository.kt",
-    "desktop/upstream-slices/v040-reply-medal/ReplyComponents.kt",
-    "desktop/upstream-slices/v040-reply-medal/ResponseModels.kt",
-    "desktop/upstream-slices/v040-reply-medal/manifest.json",
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
+    "desktop/src/test/kotlin/com/android/purebilibili/core/theme/DesktopThemeRoleSpecContractTest.kt",
+    "desktop/tools/extract-appearance-platform.py",
+    "desktop/tools/tests/test_v040_theme_roles_source.py",
+    "desktop/tools/v040_theme_roles.py",
+    "desktop/upstream-slices/v040-theme-roles/ThemeContrastPolicy.kt",
+    "desktop/upstream-slices/v040-theme-roles/ThemeContrastPolicyTest.kt",
+    "desktop/upstream-slices/v040-theme-roles/ThemeRoleOverridePolicy.kt",
+    "desktop/upstream-slices/v040-theme-roles/ThemeRoleOverridePolicyTest.kt",
+    "desktop/upstream-slices/v040-theme-roles/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

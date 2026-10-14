@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "upstreamTag": "v0.4.0",
+  "fixedUpstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt",
+      "archiveFile": "ThemeRoleOverridePolicy.kt",
+      "bytes": 8168,
+      "sha256Bytes": "adfefc29f8a2b33039919b29ccf673d4f21b52f5f4149dee68dd41ead06ac117",
+      "gitBlob": "e7fe365276759eae6a49e44bec7c975c84127e69"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt",
+      "archiveFile": "ThemeContrastPolicy.kt",
+      "bytes": 7045,
+      "sha256Bytes": "6e5d3dea746bcbb34e7e3523d044901c350e1252216942539b836eb9b67c27bd",
+      "gitBlob": "f3a60df850d9624ba00e7a85d231ba9df0448cd6"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicyTest.kt",
+      "archiveFile": "ThemeRoleOverridePolicyTest.kt",
+      "bytes": 7308,
+      "sha256Bytes": "c06b8168d08bac4d07ad2ea7f58b83e3858d04529c82f381b112e27e8a0341d5",
+      "gitBlob": "2ff21871607b08a84d0d4b543d67e7de7c9fb268"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/ThemeContrastPolicyTest.kt",
+      "archiveFile": "ThemeContrastPolicyTest.kt",
+      "bytes": 6299,
+      "sha256Bytes": "b89b4cfeb8b9bfb9a5b143300841bc205698f7758502a2ddd9c80d87a0d471cb",
+      "gitBlob": "6414c517a699faee8c0db1c511fcef227c8b74bb"
+    }
+  ],
+  "sourceScope": "Complete original theme-role and contrast policies plus their complete original tests",
+  "mainCompiled": false,
+  "jvmTestsExecuted": false,
+  "pickerUiIntegrated": false,
+  "fullV040ParityClaimed": false
+}
