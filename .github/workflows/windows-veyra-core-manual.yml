@@ -16,7 +16,21 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 30
     steps:
+      - name: Set native source path and newline policy
+        shell: pwsh
+        run: |
+          git config --global core.longpaths true
+          git config --global core.autocrlf false
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /desktop/native/veyra-core/
+            /desktop/native/veyra-dlss-sr/
+            /desktop/tools/native/
+            /desktop/tools/tests/test_veyra_core_runtime_build.py
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
