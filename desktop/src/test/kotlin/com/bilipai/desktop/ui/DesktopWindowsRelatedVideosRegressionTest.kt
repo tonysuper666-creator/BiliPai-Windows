@@ -360,7 +360,7 @@ class DesktopWindowsRelatedVideosRegressionTest {
             override fun invalidate(bvid: String, cid: Long) = error("No main playback retry")
         }
         private val api = unused<BilibiliApi>()
-        private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(api,
+        private val interaction = VideoInteractionUseCase(com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api,
             { "fixture-csrf" }, { 7L }, { "fixture-session" }, { null }, {}, {},
             DesktopOriginalFavoriteFolderProtocol(api, { 7L }, { "fixture-csrf" }, {})),
             unused<DesktopOriginalVideoInteractionAnalytics>())

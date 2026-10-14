@@ -21,6 +21,8 @@ def generate(repo,out,standalone=False):
  for p,s in source.items():assert sha(s)==SOURCE_PINS[p],p
  parser=load(repo/'desktop/tools/sync-upstream.py','profile_parser');media=load(repo/'desktop/tools/extract-upstream-media.py','profile_selector');records=[]
  def emit(path,body,target=None):
+  from v037_tab_roles import apply as apply_tab_roles
+  body=apply_tab_roles(path,body,out,target)
   target=target or 'com/android/purebilibili/'+path.removeprefix(BASE)
   write(out/target,body);records.append(dict(source=path,output=target,originalSha256LF=sha(source[path]),preparedSha256LF=sha(body)))
  def replace_fun(s,name,body):

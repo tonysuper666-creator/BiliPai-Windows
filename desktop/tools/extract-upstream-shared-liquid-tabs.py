@@ -43,6 +43,15 @@ def lens_preflight_visibility_transforms():
  return [('private const val '+name+' =','internal const val '+name+' =') for name in LENS_PREFLIGHT_CONSTANTS]
 
 def desktop_glass_theme_transforms(path):
+ from v037_player_shared_material import fixed_sources
+ selected=fixed_sources().get(path)
+ if selected is not None and 'import androidx.compose.foundation.isSystemInDarkTheme\n' not in selected:
+  assert 'isSystemInDarkTheme(' not in selected,'Unknown original material theme contract'
+  theme_read='com.android.purebilibili.core.ui.isAppInDarkTheme()'
+  if theme_read in selected:
+   return [(theme_read,'com.bilipai.desktop.appearance.isDesktopInDarkTheme()',selected.count(theme_read))]
+  return []
+
  # Original shadows/readability scrims and reused containers follow the app palette.
  # Keep every original expression; only its required platform theme read changes.
  return [('import androidx.compose.foundation.isSystemInDarkTheme\n',
@@ -87,6 +96,13 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   if path==V027_LENS_PATH:source,identity=fixed_v027_lens(REPO)
   else:
    source=read(_desktop_canonical_source(REPO, path));original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).decode().replace('\r\n','\n');assert source==original,path
+  from v037_player_shared_material import selected_source,identity_for
+  override=identity_for(path)
+  from v037_shared_tabs_progress import selected_source as select_tabs, identity_for as tabs_identity
+  tab_override=tabs_identity(path)
+  if tab_override is not None:
+   source=select_tabs(path,source);identity=tab_override
+  if override is not None:source=selected_source(path,source);identity=override
   package=re.search(r'(?m)^package (\S+)',source).group(1)
   selected=[]
   if names is None:text=source
@@ -97,7 +113,10 @@ def generate(repo: Path, output: Path, standalone: bool = False):
     selected += [dict(name=name,sha256LF=sha(v),body=v) for v in values]
    text='package '+package+'\n'+imports+'\n\n'+'\n'.join(x['body'] for x in selected)
   adaptations=[]
-  for a,b in transforms:text=one(text,a,b);adaptations.append(dict(original=a,replacement=b))
+  for transform in transforms:
+   a,b=transform[:2];count=transform[2] if len(transform)==3 else 1
+   assert text.count(a)==count,(path,'Exact theme/platform symbol multiplicity',count,text.count(a))
+   text=text.replace(a,b);adaptations.append(dict(original=a,replacement=b,count=count))
   output=HERE/'generated'/package.replace('.','/')/Path(path).name
   write(output,'// OriginalSource: '+path+'\n// OriginalSHA256: '+sha(source)+'\n'+('// OriginalCommit: '+identity['pinnedCommit']+'\n' if identity else '')+text)
   record=dict(path=path,sha256LF=sha(source),output=str(output.relative_to(HERE)),mode='direct' if names is None else 'selected',declarations=[{k:v for k,v in x.items() if k!='body'} for x in selected],adaptations=adaptations)
@@ -108,6 +127,10 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   p=row['path'];t=desktop_glass_theme_transforms(p)
   if p.endswith('LiquidGlassAdaptiveReadability.kt'):continue
   s=fixed_v027_lens(REPO)[0] if p==V027_LENS_PATH else read(_desktop_canonical_source(REPO, p))
+  from v037_player_shared_material import selected_source
+  s=selected_source(p,s)
+  from v037_shared_tabs_progress import selected_source as select_tabs
+  s=select_tabs(p,s)
   if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()+desktop_glass_uniform_transforms()
   if p.endswith('AppLiquidAwareTabRow.kt'):
    t += [('import androidx.compose.ui.Modifier','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground'),('        modifier = modifier,\n        enabled = enabled,','        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,')]
@@ -128,8 +151,10 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   if p.endswith('BottomBarFloatingSegmentedControl.kt') or p.endswith('BottomBarLiquidSegmentedControl.kt'):
    t += [('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.settings.LocalDesktopLiquidTabSettings'),('import com.android.purebilibili.core.store.HomeSettings','import com.bilipai.desktop.settings.DesktopLiquidTabHomePreferences as HomeSettings'),('import com.android.purebilibili.core.store.SettingsManager\n',''),('val context = LocalContext.current','val context = LocalDesktopLiquidTabSettings.current'),('SettingsManager\n        .getHomeSettings(context)','context.homeSettings')]
   if p.endswith('miuix/DampedDragAnimation.kt'):t += [('import android.os.SystemClock\n',''),('SystemClock.uptimeMillis()','System.nanoTime() / 1_000_000L')]
-  if p.endswith('miuix/InteractiveHighlight.kt'):
+  if p.endswith('miuix/InteractiveHighlight.kt') and 'import android.graphics.RuntimeShader' in s:
    t += [('import android.annotation.SuppressLint\n',''),('import android.graphics.RuntimeShader','import top.yukonga.miuix.kmp.shader.RuntimeShader\nimport top.yukonga.miuix.kmp.shader.asBrush'),('@SuppressLint("NewApi")\n',''),('ShaderBrush(shader)','shader.asBrush()'),('InteractiveHighlightPalette.Content.copy(0.12f * progress).toArgb(),','Color(InteractiveHighlightPalette.Content.copy(0.12f * progress).toArgb()),')]
+  if p.endswith('miuix/InteractiveHighlight.kt') and 'import android.graphics.RuntimeShader' not in s:
+   assert 'com.android.purebilibili.core.ui.components.AppPressHighlight()' in s, 'Unknown fixed original shared highlight implementation'
   emit(p,selected_names,selected_imports,transforms=t)
  emit('design-system/src/main/java/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt',transforms=[('import android.os.SystemClock\n',''),('import kotlinx.coroutines.android.awaitFrame','import androidx.compose.runtime.withFrameNanos'),('awaitFrame()','withFrameNanos { it }'),('SystemClock.uptimeMillis()','System.nanoTime() / 1_000_000L')])
  emit(HOME+'BottomBarGlassMaterialPolicy.kt')

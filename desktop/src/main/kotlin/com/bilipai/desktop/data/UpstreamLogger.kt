@@ -3,5 +3,8 @@ package com.android.purebilibili.core.util
 object Logger {
     fun e(tag:String,message:String,cause:Throwable) = android.util.Log.e(tag,message,cause)
     fun d(tag:String,message:String) = android.util.Log.d(tag,message)
+    fun d(tag:String,message:() -> String) = d(tag,message())
+    fun areVerboseRuntimeLogsEnabled():Boolean =
+        com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.areVerboseRuntimeLogsEnabled()
     fun w(tag:String,message:String) = android.util.Log.w(tag,message)
 }

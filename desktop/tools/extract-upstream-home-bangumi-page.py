@@ -37,6 +37,9 @@ def main():
   s=(_desktop_canonical_source(root, path)).read_text(encoding='utf-8');assert sha(s)==pin,path;raw[path]=s
  rows=[]
  def emit(origin,s,name,changes=(),selected=None):
+  from v037_tab_roles import apply as apply_tab_roles
+  changes=list(changes)
+  s=apply_tab_roles(origin,s,out,name,edits=changes)
   package=re.search(r'(?m)^package (\S+)',raw[origin])[1]
   p=out/package.replace('.','/')/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
   rows.append(dict(origin=origin,path=p.relative_to(out).as_posix(),sha256LF=sha(s),adaptations=changes,selected=selected))

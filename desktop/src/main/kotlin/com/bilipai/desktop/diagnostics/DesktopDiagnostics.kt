@@ -295,6 +295,7 @@ internal object DesktopDiagnosticsBridge {
     private val active=AtomicReference<DesktopDiagnostics?>()
     fun install(consumer:DesktopDiagnostics) {check(active.compareAndSet(null,consumer)){"诊断记录器已安装"}}
     fun retire(consumer:DesktopDiagnostics) {active.compareAndSet(consumer,null)}
+    fun areVerboseRuntimeLogsEnabled():Boolean = active.get()?.enhancedEnabled?.value == true
     fun reportApiError(endpoint:String,httpCode:Int,errorMessage:String) {
         active.get()?.reportApiError(endpoint,httpCode,errorMessage)
     }

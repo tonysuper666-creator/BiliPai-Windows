@@ -1,0 +1,40 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
+      "filename": "PlayerControlGlass.kt",
+      "bytes": 7732,
+      "sha256Bytes": "369653f30e4d7db00118a8f5dc9b2357ca359666d927c2135e0944b64ea9bfbf",
+      "gitBlob": "ac8b2e578af3e7c824100d9a115af6739261df4c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayProgressState.kt",
+      "filename": "VideoPlayerOverlayProgressState.kt",
+      "bytes": 2575,
+      "sha256Bytes": "a46f7995e0b8e7b7a3535f8b23ca9a756f71d9acbf4cf6f8fe2b00702b858ce1",
+      "gitBlob": "1a1eb3d30634e9cd567806a48712a71d64934490"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerProgressContent.kt",
+      "filename": "VideoPlayerProgressContent.kt",
+      "bytes": 4585,
+      "sha256Bytes": "901ea2ae904e6119803f06ecc8a15eec6214dd2b82bf06adc8f19a13ffb78257",
+      "gitBlob": "b7b88eab009a01140ccfd6eec23f1140935581c0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerChromeLayout.kt",
+      "filename": "PlayerChromeLayout.kt",
+      "bytes": 293,
+      "sha256Bytes": "e43211fde64f48bc1c0b355db669034b9d38aee817d412f9adebe00027923ce8",
+      "gitBlob": "f9d85fca61c4c03ccbceeca2c534ef5e4bd80f45"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppElasticPress.kt",
+      "filename": "AppElasticPress.kt",
+      "bytes": 12675,
+      "sha256Bytes": "533cb5bb042a794000ef3afe9d3aa12bf76d1fb879e191dd934237129d04137f",
+      "gitBlob": "dd82a89a402b73f4ccb3ec16c7e7b16b7040dc48"
+    }
+  ]
+}

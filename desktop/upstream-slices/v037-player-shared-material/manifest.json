@@ -1,0 +1,40 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "filename": "FloatingDockChrome.kt",
+      "bytes": 19598,
+      "sha256Bytes": "a63c905461965acc4093921217e50eb007a075a851444d9f8fd9e7900a55dca8",
+      "gitBlob": "879224b839663db620bdbacff10604da90cf942e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "filename": "BottomBarMatchedLiquidChrome.kt",
+      "bytes": 25117,
+      "sha256Bytes": "6f5dbf1136a5795e4ec671461bc972227b63d0a0a869406252ef7db8cfb18522",
+      "gitBlob": "dae7554a3cbd13b30956b6edcac1dff61690c120"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppTopBarIconDecoration.kt",
+      "filename": "AppTopBarIconDecoration.kt",
+      "bytes": 878,
+      "sha256Bytes": "f232c8cd3ac5e0bb71c9e47ca425c9e6670ea4c95b801c7a2142d4783137e2b9",
+      "gitBlob": "c86b4f39854f305833d851d3c0012a6922a9ed2f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "filename": "BottomBar.kt",
+      "bytes": 218034,
+      "sha256Bytes": "a18376a4aad30a2ec7a2e044d96bb2ec86dca098f30dda860ebde794061433f1",
+      "gitBlob": "01dabfba5885b3335a2758f299f5b9e19d6c9676"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "filename": "InteractiveHighlight.kt",
+      "bytes": 3299,
+      "sha256Bytes": "a069a4065917180901a61b76208cc6e4cac38197edd6c96a9ef36eee0e62c7ed",
+      "gitBlob": "8a985da3ab4f7957e7fb2ef2ce15faff828c3c72"
+    }
+  ]
+}

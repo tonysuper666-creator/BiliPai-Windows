@@ -1334,6 +1334,8 @@ def generate(repo,output,standalone=False):
   body,nextWatchProof=apply_next_watch(recipe['output'],body,output)
   from v035_autoplay_continuation import apply_and_record as apply_autoplay_continuation
   body,autoplayContinuationProof=apply_autoplay_continuation(recipe['output'],body,output)
+  from v037_player_known_state import apply_owner as apply_known_state
+  body,knownStateProof=apply_known_state(recipe['output'],body,repo,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)

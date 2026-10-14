@@ -7,6 +7,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ThreadContextElement
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
 
@@ -18,7 +20,22 @@ internal class DesktopOriginalVideoEngagementEnvironment(
     val coinBalanceLoader: VideoCoinBalanceLoader,
     private val isCurrent: () -> Boolean,
     private val commitIfCurrent: ((() -> Unit) -> Boolean),
+    val interactionSession: () -> Any,
+    private val cachedFollowStatusReader: (Long) -> Boolean?,
+    private val followStatusQuery: suspend (Long) -> Result<Boolean>,
 ) {
+    fun cachedFollowStatus(mid: Long): Boolean? {
+        assertOwned()
+        return cachedFollowStatusReader(mid).also { assertOwned() }
+    }
+    suspend fun queryFollowStatus(mid: Long): Result<Boolean> {
+        currentCoroutineContext().ensureActive()
+        assertOwned()
+        val result = followStatusQuery(mid)
+        currentCoroutineContext().ensureActive()
+        assertOwned()
+        return result
+    }
     fun isOwned(): Boolean = isCurrent() && DesktopOriginalVideoEngagementPresentation.currentIsOwned()
     fun assertOwned() {
         if (!isOwned()) throw CancellationException("Original video engagement owner retired")
@@ -115,6 +132,15 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
             val events = presentation.brandEvents ?: return
             val origin = DesktopBrandSuccessOrigin(caller, presentation::isFeedbackOwned, presentation::admitFeedback)
             events.followChanged(origin, following)
+        }
+        fun confirmBrandFavorite() {
+            val request = active.get() ?: return
+            val caller = request.job ?: return
+            if (!request.started || !caller.isActive) return
+            val presentation = request.presentation
+            val events = presentation.brandEvents ?: return
+            val origin = DesktopBrandSuccessOrigin(caller, presentation::isFeedbackOwned, presentation::admitFeedback)
+            events.favoriteSaved(origin)
         }
         fun capture(): DesktopOriginalVideoEngagementPresentation? = active.get()?.presentation
         fun currentIsOwned(): Boolean = active.get()?.let {
