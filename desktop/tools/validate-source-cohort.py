@@ -28,6 +28,22 @@ def git(repo, *args):
     return subprocess.run(['git', '-c', 'core.autocrlf=false', '-C', str(repo), *args],
                           check=True, capture_output=True).stdout.decode().strip()
 
+def changed_source_paths(plan):
+    pinned = {row['path'] for row in plan['sources']}
+    # Older cohorts pinned only their changed sources. New cohorts may also
+    # pin unchanged dependencies/tests, while declaring every actual mutation.
+    declared = plan.get('changedPaths', sorted(pinned))
+    assert isinstance(declared, list) and declared, 'Empty or malformed change inventory'
+    assert all(isinstance(path, str) for path in declared), 'Non-string changed path'
+    assert len(declared) == len(set(declared)), 'Duplicate changed path'
+    assert set(declared) <= pinned and PLAN not in declared, 'Unpinned changed source'
+    return set(declared)
+
+def assert_change_inventory(changed, plan):
+    expected = changed_source_paths(plan) | {PLAN}
+    assert changed == expected, ('Frozen change inventory differs',
+                                sorted(changed - expected), sorted(expected - changed))
+
 def check(repo):
     plan = json.loads(read(repo / PLAN))
     assert plan['repository'] == REPOSITORY and plan['schemaVersion'] == 1
@@ -35,6 +51,7 @@ def check(repo):
     assert sum(plan['classes'].values()) == plan['expectedTests']
     paths = [row['path'] for row in plan['sources']]
     assert len(paths) == len(set(paths)) and PLAN not in paths
+    changed_source_paths(plan)
     for row in plan['sources']:
         path = Path(row['path'])
         assert not path.is_absolute() and '..' not in path.parts
@@ -69,7 +86,7 @@ def main():
     assert sha == os.environ['GITHUB_SHA']
     assert git(repo, 'rev-parse', 'HEAD^') == plan['baseHead']
     changed = set(git(repo, 'diff', '--name-only', plan['baseHead'], 'HEAD').splitlines())
-    assert changed == {row['path'] for row in plan['sources']} | {PLAN}
+    assert_change_inventory(changed, plan)
     headers = {'Accept': 'application/vnd.github+json', 'User-Agent': 'BiliPai-Windows-source-validation'}
     token = os.environ.get('GITHUB_TOKEN')
     if token: headers['Authorization'] = 'Bearer ' + token

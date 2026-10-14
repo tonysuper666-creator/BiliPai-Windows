@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+  "selection": "Complete original 60fps deadline policy and test cases; Android view preserved as platform event-loop reference",
+  "files": [
+    {
+      "filename": "RenderFrameCadence.kt",
+      "originalPath": "danmaku-engine/src/main/java/com/bytedance/danmaku/render/engine/RenderFrameCadence.kt",
+      "bytes": 839,
+      "sha256Bytes": "970f728c46e908b59ba1a4d13052bbac78052ae209b45e331775d870b0b66e07",
+      "gitBlob": "89b042d9021d1b99e5dfe6004ad5a7bcb63820a1"
+    },
+    {
+      "filename": "RenderFrameCadenceTest.kt",
+      "originalPath": "danmaku-engine/src/test/java/com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt",
+      "bytes": 1123,
+      "sha256Bytes": "321fb8987ee6d7832ca223999557b1eab17de0d23eeb800a525669608ee16739",
+      "gitBlob": "cc44c939ae45a7eb9043f9b01108d41f5e0d4c6d"
+    },
+    {
+      "filename": "DanmakuView.kt",
+      "originalPath": "danmaku-engine/src/main/java/com/bytedance/danmaku/render/engine/DanmakuView.kt",
+      "bytes": 5040,
+      "sha256Bytes": "e084e570bb835731c8503d782580582236a222d5375e76a9482ddce3898fd013",
+      "gitBlob": "55abc0be863e8c8379394bf1cb75da9a6ece0810"
+    }
+  ],
+  "rendererMounted": false,
+  "mainCompiled": false,
+  "hardwareExecuted": false
+}

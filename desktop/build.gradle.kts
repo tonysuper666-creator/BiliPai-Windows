@@ -1457,6 +1457,8 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuSettings) }
 
 val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_danmaku_cadence.py")
+    inputs.dir("upstream-slices/v038-danmaku-cadence")
     inputs.file("tools/v038_danmaku_merge.py")
     inputs.dir("upstream-slices/v038-danmaku-merge")
     inputs.file("tools/v030_up_danmaku.py")
@@ -2647,6 +2649,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalMediaByteCachePolicy) }
 
 
 val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_player_interaction_retry.py")
+    inputs.dir("upstream-slices/v038-player-interaction-retry")
     dependsOn(prepareUpstreamSources, extractOriginalVideoStateCore, extractOriginalPlayerFullControls,
         extractOriginalVideoFullscreenPager)
     workingDir(projectDir)
@@ -2665,6 +2669,10 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-full-owner")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoFullOwner) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalVideoFullOwner) }
+kotlin.sourceSets.named("test") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-interaction-retry-tests"))
+}
 // DIRECT10 are copied once by prepareUpstreamSources; production omits --standalone.
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
@@ -3573,6 +3581,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalAuMusicPage) }
 
 // Original read-only notification Poller/Policy/settings/state; actual retained Windows Root consumer.
 val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_message_notifications.py")
+    inputs.dir("upstream-slices/v038-message-notifications")
     dependsOn(prepareUpstreamSources, extractOriginalMessagePages, extractUpstreamDynamicFullCard)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-notifications.py",
@@ -3584,8 +3594,12 @@ val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-message-notifications"))
 }
-kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications")) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications/com")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalMessageNotifications) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalMessageNotifications) }
+kotlin.sourceSets.named("test") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications/policy-tests"))
+}
 
 // Source54 stable backend inputs: retained original producers own these overlays.
 listOf("extractOriginalVideoStateCore", "extractV032CatalogSlice").forEach { taskName ->

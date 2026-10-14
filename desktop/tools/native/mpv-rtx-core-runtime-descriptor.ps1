@@ -45,7 +45,14 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
        $Manifest.tokenProtocol-ne2-or$Manifest.presentationProperty-cne'bilipai-rtx-presentation'-or
        @($Manifest.sourceFiles).Count-ne21-or$Upstream.Count-ne24-or$Registration.Count-ne3){throw 'Presentation source manifest graph mismatch.'}
-    if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
+    # ConvertFrom-Json can return Int32 or Int64 for a JSON integer. Accept
+    # those exact integral types; strings, booleans and floating point values
+    # must not pass the numeric comparison below through coercion.
+    foreach($protocolValue in @($Native.schema,$Native.tokenProtocol)) {
+        if($protocolValue-isnot[int]-and$protocolValue-isnot[long]) {
+            throw 'Presentation receipt protocol must use integer values.'
+        }
+    }
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
        $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607'-or

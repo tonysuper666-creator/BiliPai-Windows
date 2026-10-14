@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+  "selection": "Complete original retry function and five original regressions; full original VM for exact deferred-state method selection",
+  "files": [
+    {
+      "filename": "VideoInteractionStatusRetry.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoInteractionStatusRetry.kt",
+      "bytes": 982,
+      "sha256Bytes": "410d5611cfa6a43d606a615c477c2f2193425ead32a949886a374f691b591edf",
+      "gitBlob": "3aa6430d123ea787debf94f0a7a9c8af30f387b7"
+    },
+    {
+      "filename": "VideoInteractionStatusRetryTest.kt",
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/video/viewmodel/VideoInteractionStatusRetryTest.kt",
+      "bytes": 2206,
+      "sha256Bytes": "b317bfbf2c67b50ca42302cbb818e3f803f7da63241477c49ec63220730fe7b7",
+      "gitBlob": "50d5679c1ecfda65cd41315da869825e0b8acbb3"
+    },
+    {
+      "filename": "VideoPlaybackViewModel.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "bytes": 419262,
+      "sha256Bytes": "e90d0c24fab903ec25aafa9dc0b4ad04e3a2ddf91384696b5239409bba8a9ba6",
+      "gitBlob": "02b18fb56d1dbd6dbb75584d9fbff877c1bbaa43"
+    }
+  ],
+  "rootMounted": false,
+  "mainCompiled": false,
+  "jvmExecuted": false,
+  "hardwareExecuted": false
+}
