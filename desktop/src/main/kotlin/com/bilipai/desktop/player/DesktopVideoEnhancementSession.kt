@@ -246,7 +246,10 @@ class DesktopVideoEnhancementSession(
             }
             bypass(Anime4KBypassReason.NONE, text); return@synchronized
         }
-        val request = Request(currentSource, epoch, input.settings.preferences.optionsFor(decision, backend), nativeIdentity)
+        val options = input.settings.preferences.optionsFor(decision, backend)
+        val stableOptions = options.copy(scale = nvidiaStableUpscale(options.scale,
+            input.output.inputWidth, input.output.inputHeight, input.output.maximumTextureDimension))
+        val request = Request(currentSource, epoch, stableOptions, nativeIdentity)
         val previous = owned
         if (previous != null && previous.request.matches(request)) {
             mutableState.update { it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled) }

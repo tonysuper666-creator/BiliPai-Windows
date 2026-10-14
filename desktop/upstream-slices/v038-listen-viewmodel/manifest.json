@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.3.8",
+  "commit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+  "files": [
+    {
+      "file": "ListenVideoViewModel.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/ListenVideoViewModel.kt",
+      "gitBlob": "b5947815ea07e659257e416c11bf7c34cbc93fea",
+      "sha256": "aeda55b35e7c4480bcc871c58646a8fa4fc1ed2bfb0e80a5ff6a7af5ac88b829",
+      "bytes": 14897
+    }
+  ]
+}

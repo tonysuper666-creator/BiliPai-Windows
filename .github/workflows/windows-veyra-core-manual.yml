@@ -31,6 +31,7 @@ jobs:
             /desktop/native/veyra-dlss-sr/
             /desktop/tools/native/
             /desktop/tools/tests/test_veyra_core_runtime_build.py
+            /desktop/tools/tests/test_veyra_core_build_evidence.py
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -39,6 +40,8 @@ jobs:
         run: |
           python -m unittest discover -s desktop/tools/tests -p test_veyra_core_runtime_build.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Native build input checks failed' }
+          python -m unittest discover -s desktop/tools/tests -p test_veyra_core_build_evidence.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Actual native evidence collector checks failed' }
       - name: Link the shared SR HDR and DLSS core without loading it
         shell: pwsh
         run: |

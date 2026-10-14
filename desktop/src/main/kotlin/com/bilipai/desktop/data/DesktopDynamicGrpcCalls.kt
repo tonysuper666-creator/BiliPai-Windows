@@ -24,7 +24,7 @@ internal class DesktopDynamicGrpcRequestSource(
  * The continuation remains cancellable throughout bounded body consumption. */
 internal object DesktopDynamicGrpcCalls {
     suspend fun <T> execute(
-        client: OkHttpClient,
+        client: Call.Factory,
         request: Request,
         stillOwned: () -> Boolean,
         decode: (Response) -> T,

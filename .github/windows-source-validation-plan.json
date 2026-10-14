@@ -1,14 +1,19 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "8cf8f7c311283606605fbb350936f862d251b855",
-  "windowsVersion": "0.2.427.80",
-  "createdAt": "2026-10-14T12:23:14.675972+00:00",
+  "baseHead": "7f38cc4ce016c10ae3b087b5e343703bd4bec21d",
+  "windowsVersion": "0.2.427.85",
+  "createdAt": "2026-10-14T17:56:30.156226+00:00",
   "sources": [
+    {
+      "path": ".github/workflows/windows-veyra-core-manual.yml",
+      "normalization": "lf",
+      "sha256": "e2aca0eca175d196aa82d48062669e68fe0887da160a986a72381f292839ab05"
+    },
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "7615ba3e82617a57ff90c618badee5f0f3f969ed1ce744dd0d8615f5c4b7e8d0"
+      "sha256": "c9963c43d981c735559ac435e11dee143de6b9bf9506a4600185ddfe3198bbc5"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
@@ -18,7 +23,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
       "normalization": "lf",
-      "sha256": "4270557eaa7dbf6b73ad76a88ecc8e627a58fe834dcc57a4b7fc3af34e8c07cf"
+      "sha256": "23760a0e9d7096cb0e492ee6dbfe1d6d23ccace5048126fedebc564c335ad041"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
@@ -31,19 +36,154 @@
       "sha256": "b9c48ed01aee5fa4503119a23455ecb6a87ec9f5208e0b8d6a5e9a0e370feb1a"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopDanmakuFramePlatform.kt",
+      "normalization": "lf",
+      "sha256": "02594eaacf9fb545ade450cb79756e1f1748156c5ee0c7f88f56ab71684199f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
+      "normalization": "lf",
+      "sha256": "9da84dc0a7746d2ac5162547815b4b18f9935908c2fba774decbf15475722745"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicy.kt",
+      "normalization": "lf",
+      "sha256": "ef138b42fefb297068bb2982832191d8e10937f250b26a6db21e41469d2c4392"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVeyraPrivateComponent.kt",
+      "normalization": "lf",
+      "sha256": "4a3c323e709a8b4d942590f2533243f69daf887a915a24c434d0a29268e15091"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
+      "normalization": "lf",
+      "sha256": "c5484d693fa1006b9612685a4af0cf98dfc1dc20a3e753edba1bb9f1473edb6e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
+      "normalization": "lf",
+      "sha256": "823549633528935e01dff9255eda6c55518e7db1db96698529766795e4815da4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
+      "normalization": "lf",
+      "sha256": "41277852f7f2e8e4a2641fadf16f73f7f6bf5b49d1e0d5cfe1d828266fd322c0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationRootConsumer.kt",
+      "normalization": "lf",
+      "sha256": "70d9d9ebd79b52dbf653d97c52c515cacc53a8048c8c98bdda8df97a2d38ed9e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsMessageNotifications.kt",
+      "normalization": "lf",
+      "sha256": "9f1d870b2d352e36f370cca2b0af4470b6f65e4bb7cdad856c108b544d4c39a4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
+      "normalization": "lf",
+      "sha256": "f3cf48059ad09ccd342f08877e0f09f776305f7cb8ce3a8101e528e46d771e24"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
+      "normalization": "lf",
+      "sha256": "498ee53e3327c58412fcabf532b9fc180b8d0e7311601dc75d1526d93e3960ce"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopV038DanmakuMergeBridgeTest.kt",
       "normalization": "lf",
       "sha256": "c003041ef573c4e83fff3c0df085d48fb93e4fef15ba68d79e57f4da2e98d3b6"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicReactionListTest.kt",
+      "normalization": "lf",
+      "sha256": "3101150e4561c6bfc4a4a29428f7d97e76cd399fc201929703f7c0ed30ba9b4f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicyTest.kt",
+      "normalization": "lf",
+      "sha256": "6ed728e1357a8fe6b18cb1f9ed6e486c9105121fffe7018e61ee8ae86a6e4d4b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSessionTest.kt",
+      "normalization": "lf",
+      "sha256": "edb9dd0c0e54238d37d976ddd900ce4426c5d988bbf02a25b60f0a729a536c64"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputPolicyTest.kt",
+      "normalization": "lf",
+      "sha256": "a1d2eba7f62d62c861f7b19bff7022b2bcbdc9cbed11099465a0ea65e8ca0a58"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntriesTest.kt",
+      "normalization": "lf",
+      "sha256": "b5312d408b9de241fc89460b425377f097dbbfe54061cb5c38eccaaf630cf041"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementStatusReadTest.kt",
+      "normalization": "lf",
+      "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
+    },
+    {
+      "path": "desktop/tools/extract-dynamic-message-share.py",
+      "normalization": "lf",
+      "sha256": "ef35578a318466371ddf46e82bb7a94058a1057b21a9529e4adb9d298ad02dfe"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-audio.py",
+      "normalization": "lf",
+      "sha256": "e3316865a53bae538de74dec6189847a06d11c56209ab5c7ba344f6aee84e7f4"
+    },
+    {
       "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
       "normalization": "lf",
-      "sha256": "a4bdae6a9b2f836e504e21f79bab1f5a18201c9b3ccc019719f7ec4d9948706e"
+      "sha256": "39bff5998de8bf61b2c8053b29cc5570d24ab3ee63e376ed54818c8776c549e6"
     },
     {
       "path": "desktop/tools/extract-upstream-danmaku-settings.py",
       "normalization": "lf",
       "sha256": "6dbd7cd097ec9cee317da6dca873702a8140316f24038978062c7e4b8d91e4b9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-listen-video-root.py",
+      "normalization": "lf",
+      "sha256": "2b1f6411deca80fa5fa992220eeae8d0d74bcf6b3e85589a52be6882b998320d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-message-notifications.py",
+      "normalization": "lf",
+      "sha256": "e0f37ac4dd207b748ae928802854792a3e5e74492f23296f577254075c3a029b"
+    },
+    {
+      "path": "desktop/tools/native/build-veyra-core-runtime.py",
+      "normalization": "lf",
+      "sha256": "18c41115b11be22ac2f2e2da5ad4fa8cde9fc825fc4ad9807c283d698882336a"
+    },
+    {
+      "path": "desktop/tools/native/mpv-rtx-core-runtime-descriptor.ps1",
+      "normalization": "lf",
+      "sha256": "bfac5cb6eb1d73eb09f4fd4ae41b6cef404c8731847376fb9473b9636b20f7ff"
+    },
+    {
+      "path": "desktop/tools/native/veyra-core-build-evidence.py",
+      "normalization": "lf",
+      "sha256": "5aa6ae15874ff2547f9785c3b161be9d6e298ea117a44a3bb10aa7ddd7c00f6d"
+    },
+    {
+      "path": "desktop/tools/native/veyra/assemble-veyra-private-component.ps1",
+      "normalization": "lf",
+      "sha256": "02cc0c21472d7eb5727685b9eaad52f123f362820a160dee10851e67d79437c1"
+    },
+    {
+      "path": "desktop/tools/native/veyra/verify-veyra-runtime.ps1",
+      "normalization": "lf",
+      "sha256": "20f29f481b3f4abeae6a01564af136bd3babdd2ec084fdb026f8cc5ca14359ae"
+    },
+    {
+      "path": "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
+      "normalization": "raw",
+      "sha256": "b65f8eb0be10f461e50b255267ea6512179e627f3bf27d98a4ef324e4651a879"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_danmaku_hot_settings.py",
@@ -61,14 +201,134 @@
       "sha256": "1f4598b816f60546ea71022f804d4c3f763ab68d12e11faa58a9b3ccda5907eb"
     },
     {
+      "path": "desktop/tools/tests/test_extract_upstream_video_interactions.py",
+      "normalization": "lf",
+      "sha256": "809f263a5b3257045f9318605439b051e4be9a4e8ec6c9867441f26c47391933"
+    },
+    {
+      "path": "desktop/tools/tests/test_mpv_rtx_installer_protocol.py",
+      "normalization": "lf",
+      "sha256": "3c7dad09b2bd9b110fff9fdbebfdbd68fcb92526288a6e68addd77d57b903b29"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_audio_library_source.py",
+      "normalization": "lf",
+      "sha256": "8e4003de4f10042cc30c33d1ff44b1b1047c21ce767c99e8a35d2fb3417b1b22"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_danmaku_cadence_source.py",
+      "normalization": "lf",
+      "sha256": "7810fcf2b8fc244d4dcfcbcffcf8c041f7a5a8b62ad44afdd45a09a300420946"
+    },
+    {
       "path": "desktop/tools/tests/test_v038_danmaku_merge_source.py",
       "normalization": "lf",
       "sha256": "1919035bfaf46c33d64b3a8b0015611c8bc1ae9e22e2c218c9abf0d4f467888a"
     },
     {
+      "path": "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
+      "normalization": "lf",
+      "sha256": "69b6845845e236fc376eb96cd7933aff23194af149778738f51a73029ae0144b"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_message_notifications_source.py",
+      "normalization": "lf",
+      "sha256": "ffe8756bf2cd6dc435f256cb3a0a8ba1bfdc3f40b4532425be8f811d77a30f21"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_player_interaction_retry_source.py",
+      "normalization": "lf",
+      "sha256": "0d4a1105968bb9b2fe0854825f022a9df2cd45f07c617dfce4094d4884308f18"
+    },
+    {
+      "path": "desktop/tools/tests/test_validate_source_cohort.py",
+      "normalization": "lf",
+      "sha256": "f0ea38f3730fbda08fafc6140d7397e0d432023892b394e5dd00cdb1858ddadf"
+    },
+    {
+      "path": "desktop/tools/tests/test_veyra_core_build_evidence.py",
+      "normalization": "lf",
+      "sha256": "657f1fcc23068b37ba19b6d057f9cf53cf68d584ea117ae80d6d2818dbe6eab8"
+    },
+    {
+      "path": "desktop/tools/update/prepare-veyra-compatible-catalog.py",
+      "normalization": "lf",
+      "sha256": "07b63182ba893d51ee2b1dcdd6da78b652f151b90d9bf8f97eccff3d76085e56"
+    },
+    {
+      "path": "desktop/tools/v037_player_known_state.py",
+      "normalization": "lf",
+      "sha256": "349545268f7c99ede2476792a5b4ac170ebb10b65e2e48520a2a271c906562bb"
+    },
+    {
+      "path": "desktop/tools/v038_audio_library.py",
+      "normalization": "lf",
+      "sha256": "7c03714e1aba2450cf13a0b3ddf8ad18b5637627fc00776d42bb32f12331895e"
+    },
+    {
+      "path": "desktop/tools/v038_danmaku_cadence.py",
+      "normalization": "lf",
+      "sha256": "57209af99e4cd2afc2ae9387de5ef29e803ebbc679b33da1438ca2e0610ffb3b"
+    },
+    {
       "path": "desktop/tools/v038_danmaku_merge.py",
       "normalization": "lf",
       "sha256": "161b4200541bb04a7981e58c980a0b87da1c3764decefd9ad1eb1edd148d39ac"
+    },
+    {
+      "path": "desktop/tools/v038_listen_viewmodel.py",
+      "normalization": "lf",
+      "sha256": "1be0f9bec2fe53bec8bb9971f20e2948c7beb88985bcfedbed75881bf2dda770"
+    },
+    {
+      "path": "desktop/tools/v038_message_notifications.py",
+      "normalization": "lf",
+      "sha256": "68feab4d5769e2dea2c7666999d12f502a00312265f4a69a21684c5b08f519b2"
+    },
+    {
+      "path": "desktop/tools/v038_player_interaction_retry.py",
+      "normalization": "lf",
+      "sha256": "9b29a475147daee4211c8db74d47f7f25b19cf2a1fbee141040ebedf7def6599"
+    },
+    {
+      "path": "desktop/tools/validate-source-cohort.py",
+      "normalization": "lf",
+      "sha256": "874ffe78b4746975b0561f71e7f85167c2c7af61fcb5fed7b1c3b92930e8a396"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryDataSource.kt",
+      "normalization": "raw",
+      "sha256": "98f1d47577991bab5f6fe721d141625ea1f044b1bbdd603220000a36800cfbf3"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryLoaderTest.kt",
+      "normalization": "raw",
+      "sha256": "c72ee99c2f0de779fc879d33492d127554f1144841bb7d0af2c9e80c30209954"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-audio-library/manifest.json",
+      "normalization": "raw",
+      "sha256": "b207e445a87518f319902da64f8f33723cb59a559327b453890ddc72487a1a6a"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/DanmakuView.kt",
+      "normalization": "raw",
+      "sha256": "e084e570bb835731c8503d782580582236a222d5375e76a9482ddce3898fd013"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadence.kt",
+      "normalization": "raw",
+      "sha256": "970f728c46e908b59ba1a4d13052bbac78052ae209b45e331775d870b0b66e07"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadenceTest.kt",
+      "normalization": "raw",
+      "sha256": "321fb8987ee6d7832ca223999557b1eab17de0d23eeb800a525669608ee16739"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/manifest.json",
+      "normalization": "raw",
+      "sha256": "7df7676c7168326195d8d4bc6a59feb11443bbaa00e3f660742cb26c70e37086"
     },
     {
       "path": "desktop/upstream-slices/v038-danmaku-merge/AppContentColors.kt",
@@ -111,22 +371,185 @@
       "sha256": "f60d288300586e608925ddafd4510211b5abf07b8b4f009a7b012dee043caa7d"
     },
     {
+      "path": "desktop/upstream-slices/v038-listen-viewmodel/ListenVideoViewModel.kt",
+      "normalization": "raw",
+      "sha256": "aeda55b35e7c4480bcc871c58646a8fa4fc1ed2bfb0e80a5ff6a7af5ac88b829"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-listen-viewmodel/manifest.json",
+      "normalization": "raw",
+      "sha256": "5c66e0b2b71cc227de942603acabfba404b64c174f51d0d3fe4832b3c38c137b"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/BiliGrpcClient.kt",
+      "normalization": "raw",
+      "sha256": "18e5ab7fae60cb0b62a0309076aeedd521d460e563d405676064e23f0b60ca01"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApi.kt",
+      "normalization": "raw",
+      "sha256": "e24f626ab2b47e121a3d5da9e26bd76d9f61af4957c0abf54a9b8de7072e8387"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApiTest.kt",
+      "normalization": "raw",
+      "sha256": "b2f936ddc5a37b5ee6bd4dffde9994ec2f369e017af2027ce9c0f63e886e2751"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationChecker.kt",
+      "normalization": "raw",
+      "sha256": "9dc20551f97ea39332247f9b651f53035952632cfd0caf0b880c24784b9f5991"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicy.kt",
+      "normalization": "raw",
+      "sha256": "1c6285307006b272dddd2fac14ba7c60142b77e7b00b50d268be5213aa3c9889"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "e4c74995bfc6d4de81d0a787a2d0bf10a03a1ede2a797548809cdeac66536d95"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationSettingsStore.kt",
+      "normalization": "raw",
+      "sha256": "b54bfb95eed322989cbed9544b0e442535a3a81586ada4bb4fd454ae43e0a54d"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationStateStore.kt",
+      "normalization": "raw",
+      "sha256": "302bb36a1a7260a74a590899b43dbdf59a958c3401f9a8ea42dd35e00a732357"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/ProtoWire.kt",
+      "normalization": "raw",
+      "sha256": "5c44c12bc3db870874a4e1ea9e01f39faf03425f3db2c95576c4bded93fab31e"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/manifest.json",
+      "normalization": "raw",
+      "sha256": "bf8f62448f5293bec2876476698ee5acceb9b7781ad245f73162c2490455f1a9"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetry.kt",
+      "normalization": "raw",
+      "sha256": "410d5611cfa6a43d606a615c477c2f2193425ead32a949886a374f691b591edf"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetryTest.kt",
+      "normalization": "raw",
+      "sha256": "b317bfbf2c67b50ca42302cbb818e3f803f7da63241477c49ec63220730fe7b7"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/VideoPlaybackViewModel.kt",
+      "normalization": "raw",
+      "sha256": "e90d0c24fab903ec25aafa9dc0b4ad04e3a2ddf91384696b5239409bba8a9ba6"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/manifest.json",
+      "normalization": "raw",
+      "sha256": "32358962a03ee93b3e2815f2e95476e34a7afb440d4ceb64ab2bd10bd0c8d70e"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "acf0d993a05d6ecb6dfa378c5bc00efdd23ee4741d823005fcebaee0b4691909"
+      "sha256": "a568f71a177eb72a5bcfaa5eac8cda74a87babd5be4a158e48ebd6bdeae9c1a8"
     }
   ],
   "classes": {
     "com.bilipai.desktop.danmaku.DesktopV038DanmakuMergeBridgeTest": 6,
     "com.android.purebilibili.feature.video.danmaku.DesktopV038DanmakuMergerPolicyTest": 6,
     "com.bilipai.desktop.danmaku.DesktopDanmakuDisplayAreaParityTest": 1,
-    "com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTest": 3
+    "com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTest": 3,
+    "com.bilipai.desktop.player.DesktopNvidiaVideoAutoPolicyTest": 19,
+    "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
+    "com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest": 4,
+    "com.bilipai.desktop.danmaku.DesktopOriginalDanmakuFrameRequestsTest": 8,
+    "com.bytedance.danmaku.render.engine.RenderFrameCadenceTest": 2,
+    "com.android.purebilibili.feature.message.notification.MessageNotificationPolicyTest": 32,
+    "com.android.purebilibili.core.network.grpc.DynamicPersonalFeedApiTest": 10,
+    "com.bilipai.desktop.ui.DesktopMessageNotificationEntriesTest": 4,
+    "com.bilipai.desktop.data.DesktopDynamicReactionListTest": 8,
+    "com.android.purebilibili.feature.video.viewmodel.VideoInteractionStatusRetryTest": 5,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoEngagementStatusReadTest": 3,
+    "com.android.purebilibili.feature.audio.library.DesktopV038ListenVideoLibraryLoaderTest": 11
   },
-  "expectedTests": 16,
+  "expectedTests": 133,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
   "hardwareExecuted": false,
   "publicationEnabled": false,
-  "cloudGradleHeapMaximum": "8g"
+  "cloudGradleHeapMaximum": "8g",
+  "changedPaths": [
+    ".github/workflows/windows-veyra-core-manual.yml",
+    "desktop/build.gradle.kts",
+    "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopDanmakuFramePlatform.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicy.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVeyraPrivateComponent.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationRootConsumer.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsMessageNotifications.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicyTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputPolicyTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntriesTest.kt",
+    "desktop/tools/extract-dynamic-message-share.py",
+    "desktop/tools/extract-upstream-audio.py",
+    "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "desktop/tools/extract-upstream-listen-video-root.py",
+    "desktop/tools/extract-upstream-message-notifications.py",
+    "desktop/tools/native/build-veyra-core-runtime.py",
+    "desktop/tools/native/mpv-rtx-core-runtime-descriptor.ps1",
+    "desktop/tools/native/veyra-core-build-evidence.py",
+    "desktop/tools/native/veyra/assemble-veyra-private-component.ps1",
+    "desktop/tools/native/veyra/verify-veyra-runtime.ps1",
+    "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
+    "desktop/tools/tests/test_extract_upstream_video_interactions.py",
+    "desktop/tools/tests/test_mpv_rtx_installer_protocol.py",
+    "desktop/tools/tests/test_v038_audio_library_source.py",
+    "desktop/tools/tests/test_v038_danmaku_cadence_source.py",
+    "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
+    "desktop/tools/tests/test_v038_message_notifications_source.py",
+    "desktop/tools/tests/test_v038_player_interaction_retry_source.py",
+    "desktop/tools/tests/test_validate_source_cohort.py",
+    "desktop/tools/tests/test_veyra_core_build_evidence.py",
+    "desktop/tools/update/prepare-veyra-compatible-catalog.py",
+    "desktop/tools/v037_player_known_state.py",
+    "desktop/tools/v038_audio_library.py",
+    "desktop/tools/v038_danmaku_cadence.py",
+    "desktop/tools/v038_listen_viewmodel.py",
+    "desktop/tools/v038_message_notifications.py",
+    "desktop/tools/v038_player_interaction_retry.py",
+    "desktop/tools/validate-source-cohort.py",
+    "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryDataSource.kt",
+    "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryLoaderTest.kt",
+    "desktop/upstream-slices/v038-audio-library/manifest.json",
+    "desktop/upstream-slices/v038-danmaku-cadence/DanmakuView.kt",
+    "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadence.kt",
+    "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadenceTest.kt",
+    "desktop/upstream-slices/v038-danmaku-cadence/manifest.json",
+    "desktop/upstream-slices/v038-listen-viewmodel/ListenVideoViewModel.kt",
+    "desktop/upstream-slices/v038-listen-viewmodel/manifest.json",
+    "desktop/upstream-slices/v038-message-notifications/BiliGrpcClient.kt",
+    "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApi.kt",
+    "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApiTest.kt",
+    "desktop/upstream-slices/v038-message-notifications/MessageNotificationChecker.kt",
+    "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicy.kt",
+    "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicyTest.kt",
+    "desktop/upstream-slices/v038-message-notifications/MessageNotificationSettingsStore.kt",
+    "desktop/upstream-slices/v038-message-notifications/MessageNotificationStateStore.kt",
+    "desktop/upstream-slices/v038-message-notifications/ProtoWire.kt",
+    "desktop/upstream-slices/v038-message-notifications/manifest.json",
+    "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetry.kt",
+    "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetryTest.kt",
+    "desktop/upstream-slices/v038-player-interaction-retry/VideoPlaybackViewModel.kt",
+    "desktop/upstream-slices/v038-player-interaction-retry/manifest.json",
+    "desktop/upstream-sources.json"
+  ]
 }

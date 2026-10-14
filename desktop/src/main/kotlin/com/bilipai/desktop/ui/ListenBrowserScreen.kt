@@ -85,7 +85,7 @@ internal fun ListenBrowserScreen(session: ListenAudioSession, preferences: Playe
         indexJob = scope.launch {
             indexing = true; error = null
             try {
-                val result = loader.indexFolders(targets) { done, total -> indexProgress = "索引收藏夹 $done / $total" }
+                val result = loader.indexFolders(targets, onFolderIndexed = { done, total -> indexProgress = "索引收藏夹 $done / $total" })
                 indexed = (if (onlyFailed) indexed + result.resources else result.resources).distinctBy { "${it.type}:${it.bvid}:${it.id}" }
                 failedFolders = result.failedFolderIds
                 albums = mapListenVideoAlbums(collected, indexed)

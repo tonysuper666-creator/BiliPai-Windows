@@ -194,4 +194,28 @@ class DesktopNvidiaVideoAutoPolicyTest {
         assertFalse(waiting.needsProcessing)
     }
 
+    @Test fun smallLayoutChangesShareAnUpperOutputBucketWithoutAnExtraUpscale() {
+        val values = listOf(2.01, 2.05, 2.12, 2.19, 2.24)
+        for (requested in values) {
+            val actual = nvidiaStableUpscale(requested, 1920, 1080, 16384)
+            assertEquals(2.25, actual)
+            assertTrue(actual >= requested)
+        }
+        assertEquals(2.5, nvidiaStableUpscale(2.26, 1920, 1080, 16384))
+    }
+
+    @Test fun scaleBucketsNeverExceedTheActualTextureCapOrFourTimesLimit() {
+        assertEquals(2.1, nvidiaStableUpscale(2.01, 1000, 600, 2100))
+        assertEquals(4.0, nvidiaStableUpscale(5.0, 1920, 1080, 16384))
+        assertEquals(1.0, nvidiaStableUpscale(1.05, 1920, 1080, 1000))
+    }
+
+    @Test fun nativeHdrOnlyAndUnknownGeometryAreNeverPromotedToAnUpscale() {
+        assertEquals(1.0, nvidiaStableUpscale(1.0, 1920, 1080, 16384))
+        assertEquals(1.0, nvidiaStableUpscale(Double.NaN, 1920, 1080, 16384))
+        assertEquals(1.0, nvidiaStableUpscale(Double.POSITIVE_INFINITY, 1920, 1080, 16384))
+        assertEquals(1.0, nvidiaStableUpscale(2.0, 0, 1080, 16384))
+        assertEquals(1.0, nvidiaStableUpscale(2.0, 1920, 1080, null))
+    }
+
 }

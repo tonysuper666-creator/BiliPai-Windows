@@ -13,6 +13,7 @@ import shutil
 import struct
 import subprocess
 import sys
+import time
 import urllib.request
 
 REPOSITORY = "tonysuper666-creator/BiliPai-Windows"
@@ -183,6 +184,8 @@ def main():
     repo, workspace, output = args.repo.resolve(), args.workspace.resolve(), args.output.resolve()
     if workspace == repo or output == repo or workspace == output:
         raise ValueError("Isolated SDK/build and output directories are required")
+    if args.execute_build and output.exists() and any(output.iterdir()):
+        raise ValueError("Preserve existing native output for inspection; a fresh output directory is required")
     closure, sdk, source_before = inputs(repo)
     stage_sdk(sdk, workspace / "sdk")
     sdk_before = {local.as_posix():sha(checked_file(workspace / "sdk" / local, pin)) for _,local,pin in sdk_entries(sdk)}
@@ -196,8 +199,11 @@ def main():
                   sourceBefore=source_before, sdkBefore=sdk_before, sdkManifestSha256=SDK_MANIFEST_SHA, sdkCommit=SDK_COMMIT,
                   configureCommand=configure, buildCommand=compile_command, nativeCoreLinked=False,
                   mpvFrameBridgeLinked=False, nvidiaFeatureRuntimeStaged=False, hardwareExecuted=False,
-                  releaseQualified=False, desktopReplaced=False, workerMaximum=1)
+                  releaseQualified=False, desktopReplaced=False, workerMaximum=1,
+                  runtimeInstallerReceiptProduced=False)
     if args.execute_build:
+        if build.exists() and any(build.iterdir()):
+            raise ValueError("Preserve nonempty native build directory for inspection; a fresh build is required")
         tools = {}
         for name in ("cl", "link", "cmake", "ninja"):
             actual = shutil.which(name)
@@ -210,9 +216,12 @@ def main():
             raise ValueError('Actual MSVC environment must target x64')
         # Preserve the reviewed commands and inputs even if configure/link fails.
         (output / "native-core-build-receipt.json").write_bytes((json.dumps(record, indent=2)+"\n").encode())
+        build_started = time.time()
         for label, command in [("configure", configure), ("build", compile_command)]:
             with (output / (label+".log")).open("wb") as log:
                 result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT)
+            record["actualConfigureExit" if label == "configure" else "actualBuildExit"] = result.returncode
+            (output / "native-core-build-receipt.json").write_bytes((json.dumps(record, indent=2)+"\n").encode())
             if result.returncode:
                 print((output / (label+".log")).read_text(encoding="utf-8", errors="replace")[-16000:])
                 raise RuntimeError("Native core " + label + " failed")
@@ -233,6 +242,31 @@ def main():
         shutil.copyfile(core / "upstream/LICENSE", output / "Veyra-GPL-3.0-LICENSE.txt")
         record.update(nativeCoreLinked=True,moduleFile=dll.name,moduleSha256=sha(raw),moduleBytes=len(raw),exports=exports,imports=imports,
                       sourceAfter=source_after,sdkAfter=sdk_after,sourceBeforeAfterUnchanged=True,sdkBeforeAfterUnchanged=True)
+        # Preserve compiler facts even if receipt qualification fails; never turn
+        # a linked DLL alone into an installer-compatible successful receipt.
+        (output / "native-core-build-receipt.json").write_bytes((json.dumps(record, indent=2)+"\n").encode())
+        evidence_spec = importlib.util.spec_from_file_location("veyra_core_evidence", repo / "desktop/tools/native/veyra-core-build-evidence.py")
+        evidence_module = importlib.util.module_from_spec(evidence_spec); evidence_spec.loader.exec_module(evidence_module)
+        for target in evidence_module.TARGETS:
+            retained = output / "compiler-evidence" / target
+            retained.mkdir(parents=True, exist_ok=True)
+            originals = list((build / "CMakeFiles" / (target+".dir")).rglob("*.obj")) + list((build / "dependencies" / target).glob("*.json"))
+            if len({p.name.casefold() for p in originals}) != len(originals):
+                raise ValueError("Ambiguous compiler evidence archive names")
+            for path in originals:
+                evidence_module.bounded_file(path)
+                shutil.copyfile(path, retained / path.name)
+        system_roots = sorted({str(Path(os.environ[name]).resolve()) for name in
+            ("VCToolsInstallDir", "WindowsSdkDir", "UniversalCRTSdkDir", "VCINSTALLDIR") if os.environ.get(name)})
+        receipt, proof = evidence_module.collect(repo, build, workspace / "sdk", record, closure, sdk,
+                                                build_started, [Path(p) for p in system_roots])
+        proof_bytes = (json.dumps(proof, indent=2)+"\n").encode()
+        (output / "native-core-object-evidence.json").write_bytes(proof_bytes)
+        receipt['buildProvenance']['compilerEvidenceSha256'] = sha(proof_bytes)
+        receipt_bytes = (json.dumps(receipt, indent=2)+"\n").encode()
+        (output / "veyra-native-build-receipt.json").write_bytes(receipt_bytes)
+        record.update(runtimeInstallerReceiptProduced=True, runtimeInstallerReceiptSha256=sha(receipt_bytes),
+                      actualCompilerEvidenceSha256=sha(proof_bytes), actualObjectCount=proof['actualObjectCount'])
     (output / "native-core-build-receipt.json").write_bytes((json.dumps(record, indent=2)+"\n").encode())
     print(json.dumps({key:record[key] for key in ("sourceSha","nativeCoreLinked","mpvFrameBridgeLinked","hardwareExecuted","workerMaximum")}))
 
