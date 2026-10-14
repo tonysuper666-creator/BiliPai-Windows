@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+  "tag": "v0.3.8",
+  "files": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuMerger.kt",
+      "filename": "DanmakuMerger.kt",
+      "gitBlob": "08193bae66d713359c226c43d328262a7dabffad",
+      "bytes": 4790,
+      "sha256Bytes": "f72b887e79acfbd268ba14e49ed28ab362260a67e6ff38f0f735175418985514",
+      "sha256LF": "f72b887e79acfbd268ba14e49ed28ab362260a67e6ff38f0f735175418985514"
+    },
+    {
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "filename": "DanmakuModels.kt",
+      "gitBlob": "807aa3f53fb51a2388a87d718a13ae50c629d4b0",
+      "bytes": 3639,
+      "sha256Bytes": "7529b545cd41e8784c755d50ace9218971817263f7d8c40f8a6e439d2f98ea0f",
+      "sha256LF": "7529b545cd41e8784c755d50ace9218971817263f7d8c40f8a6e439d2f98ea0f"
+    },
+    {
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/DanmakuMergerPolicyTest.kt",
+      "filename": "DanmakuMergerPolicyTest.kt",
+      "gitBlob": "e9fc8cd86064f3176fe9e59d0a71bc2924e88ba9",
+      "bytes": 4154,
+      "sha256Bytes": "663cc71fa565e7ef818fdec1dd7c653a3345fe63a86d9aaae8e00b8753eae563",
+      "sha256LF": "663cc71fa565e7ef818fdec1dd7c653a3345fe63a86d9aaae8e00b8753eae563"
+    },
+    {
+      "filename": "SettingsManager.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "bytes": 409271,
+      "sha256Bytes": "da70e7eb22ec483e99115882230ba409f401654f93b4a25d49e21edc350e3beb",
+      "gitBlob": "b9cfb558a29e1eed1b9ef715f08171ff94ba4c42"
+    },
+    {
+      "filename": "DanmakuSettingsPanel.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "bytes": 102962,
+      "sha256Bytes": "13701f428b5632c0ef06f5d3e7ed572ae9c71eb00c82ec9332be52f0a2b73d08",
+      "gitBlob": "2a7db2d79b8cbed9c59c383dadf74cb6e4546cc6"
+    },
+    {
+      "filename": "DanmakuConfig.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "bytes": 11125,
+      "sha256Bytes": "e98abd3942f5db84d74d1006955ad85b88b847beae46250b25d2556fc1a0efd7",
+      "gitBlob": "f70d0d4b427493bc105f5521bd962af5415bb2d7"
+    },
+    {
+      "filename": "AppContentColors.kt",
+      "originalPath": "design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt",
+      "bytes": 5012,
+      "sha256Bytes": "755543c78bd3ba7c2685362e1c98e77daefefb28a7e7ed6e338c4644b1d4e90f",
+      "gitBlob": "07c6dd210e0f98f2d1a0821690b4dc4154b06af9"
+    }
+  ],
+  "wholeOriginalSourcesRetained": true,
+  "windowsRuntimeQualified": false
+}

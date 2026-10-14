@@ -438,7 +438,7 @@ class DanmakuOverlay internal constructor(
         val (binding,comment)=selected
         if(!binding.owns() || synchronized(requestLock) {originalClickBindings.values.lastOrNull()?.token}!=binding.token ||
             !player.ownsSourceVersion(hit.sourceVersion))return false
-        val original=comment.originalLocalItem ?: comment.originalElement?.let {
+        val original=comment.originalRenderItem ?: comment.originalLocalItem ?: comment.originalElement?.let {
             com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser.createTextDataFromProto(it)
         } ?: if(comment.originalXmlAttributes!=null && comment.originalXmlContent!=null)
             com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser.createTextData(comment.originalXmlAttributes,comment.originalXmlContent)

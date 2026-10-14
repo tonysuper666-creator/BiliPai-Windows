@@ -1438,6 +1438,8 @@ val extractFrostedAudioRenderer by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractFrostedAudioRenderer) }
 
 val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_danmaku_merge.py")
+    inputs.dir("upstream-slices/v038-danmaku-merge")
     inputs.file("tools/v037_player_closure.py")
     inputs.dir("upstream-slices/v037-player-closure")
     dependsOn(prepareUpstreamSources)
@@ -1455,6 +1457,8 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuSettings) }
 
 val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_danmaku_merge.py")
+    inputs.dir("upstream-slices/v038-danmaku-merge")
     inputs.file("tools/v030_up_danmaku.py")
     inputs.dir("upstream-slices/v030-up-danmaku")
     dependsOn(prepareUpstreamSources)
@@ -1471,6 +1475,10 @@ val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/original-danmaku-list-menu"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
+kotlin.sourceSets.named("test") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-danmaku-list-menu/policy-tests"))
+}
 
 // Explicit fixed-v027 slice; the overall canonical baseline remains v025.
 val extractOriginalHotDanmaku by tasks.registering(Exec::class) {

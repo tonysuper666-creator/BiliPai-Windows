@@ -35,7 +35,7 @@ data class DanmakuSettings(
     val allowColorful: Boolean = true,
     val blockedKeywords: List<String> = emptyList(),
     val mergeDuplicates: Boolean = true,
-    val duplicateMergeWindowMs: Int = 500,
+    val duplicateMergeWindowMs: Int = 15_000,
     val duplicateMergeCountThreshold: Int = 2,
     val allowSpecial: Boolean = true,
     /** Same false default as upstream's interactive command preference. */
@@ -59,7 +59,7 @@ data class DanmakuSettings(
         lineHeight = finite(lineHeight, 1.6f, 1f, 3f),
         strokeWidth = finite(strokeWidth, 1.5f, 0f, 5f),
         blockedKeywords = blockedKeywords.map { it.trim().take(200) }.filter(String::isNotEmpty).distinct().take(300),
-        duplicateMergeWindowMs = duplicateMergeWindowMs.coerceIn(100, 3000),
+        duplicateMergeWindowMs = duplicateMergeWindowMs.coerceIn(1_000, 15_000),
         duplicateMergeCountThreshold = duplicateMergeCountThreshold.coerceIn(2, 10),
         blockedRules = com.android.purebilibili.feature.video.danmaku.parseDanmakuBlockRules(blockedRules.joinToString("\n")),
     )

@@ -1,43 +1,128 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "75522724c6ae196415d98105c3916694f6808ec4",
-  "windowsVersion": "0.2.427.79",
-  "createdAt": "2026-10-14T10:19:41.065652+00:00",
+  "baseHead": "8cf8f7c311283606605fbb350936f862d251b855",
+  "windowsVersion": "0.2.427.80",
+  "createdAt": "2026-10-14T12:23:14.675972+00:00",
   "sources": [
     {
-      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoEnhancementControls.kt",
+      "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "4dd53eba30864c3297199ddc4ae4718225dcf3e9af2a6d95d9f8570582c48a3e"
+      "sha256": "7615ba3e82617a57ff90c618badee5f0f3f969ed1ce744dd0d8615f5c4b7e8d0"
     },
     {
-      "path": "desktop/tools/extract-upstream-video-player-full-controls.py",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
       "normalization": "lf",
-      "sha256": "cb6662a1217643ef92879bdf1dac1a646c598f0cd943cc1d0cc2136676487664"
+      "sha256": "827a64d9b5cee2905afdb9c58fe0779e388e1d2d4752173101ca6da503db3621"
     },
     {
-      "path": "desktop/tools/extract-upstream-video-player-section-full.py",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
       "normalization": "lf",
-      "sha256": "091743777f19945c233a98810505a847b077bc50bd4a804c93d7456adaee65cc"
+      "sha256": "4270557eaa7dbf6b73ad76a88ecc8e627a58fe834dcc57a4b7fc3af34e8c07cf"
     },
     {
-      "path": "desktop/tools/tests/test_original_player_nvidia_slot.py",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
       "normalization": "lf",
-      "sha256": "46c363d2a6ac428a5577c8593eb971a03d84d621fc84ee55df1166ffff14ba39"
+      "sha256": "133246a56725187436811f7ba1bd6f5048e050a75df96e3cc32d036ad0dacb50"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "normalization": "lf",
+      "sha256": "b9c48ed01aee5fa4503119a23455ecb6a87ec9f5208e0b8d6a5e9a0e370feb1a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopV038DanmakuMergeBridgeTest.kt",
+      "normalization": "lf",
+      "sha256": "c003041ef573c4e83fff3c0df085d48fb93e4fef15ba68d79e57f4da2e98d3b6"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "normalization": "lf",
+      "sha256": "a4bdae6a9b2f836e504e21f79bab1f5a18201c9b3ccc019719f7ec4d9948706e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-settings.py",
+      "normalization": "lf",
+      "sha256": "6dbd7cd097ec9cee317da6dca873702a8140316f24038978062c7e4b8d91e4b9"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_danmaku_hot_settings.py",
+      "normalization": "lf",
+      "sha256": "747303685827dc4fb632c26abfa773e05898b8cfc4e8a3f4abb658163c5cb380"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_danmaku_v029_config.py",
+      "normalization": "lf",
+      "sha256": "c7e792043f9c64428ec23c2b4c81b3e11fef373115d8816a3cc49f95772792a0"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_up_danmaku.py",
+      "normalization": "lf",
+      "sha256": "1f4598b816f60546ea71022f804d4c3f763ab68d12e11faa58a9b3ccda5907eb"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_danmaku_merge_source.py",
+      "normalization": "lf",
+      "sha256": "1919035bfaf46c33d64b3a8b0015611c8bc1ae9e22e2c218c9abf0d4f467888a"
+    },
+    {
+      "path": "desktop/tools/v038_danmaku_merge.py",
+      "normalization": "lf",
+      "sha256": "161b4200541bb04a7981e58c980a0b87da1c3764decefd9ad1eb1edd148d39ac"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/AppContentColors.kt",
+      "normalization": "raw",
+      "sha256": "755543c78bd3ba7c2685362e1c98e77daefefb28a7e7ed6e338c4644b1d4e90f"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/DanmakuConfig.kt",
+      "normalization": "raw",
+      "sha256": "e98abd3942f5db84d74d1006955ad85b88b847beae46250b25d2556fc1a0efd7"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/DanmakuMerger.kt",
+      "normalization": "raw",
+      "sha256": "f72b887e79acfbd268ba14e49ed28ab362260a67e6ff38f0f735175418985514"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/DanmakuMergerPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "663cc71fa565e7ef818fdec1dd7c653a3345fe63a86d9aaae8e00b8753eae563"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/DanmakuModels.kt",
+      "normalization": "raw",
+      "sha256": "7529b545cd41e8784c755d50ace9218971817263f7d8c40f8a6e439d2f98ea0f"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/DanmakuSettingsPanel.kt",
+      "normalization": "raw",
+      "sha256": "13701f428b5632c0ef06f5d3e7ed572ae9c71eb00c82ec9332be52f0a2b73d08"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/SettingsManager.kt",
+      "normalization": "raw",
+      "sha256": "da70e7eb22ec483e99115882230ba409f401654f93b4a25d49e21edc350e3beb"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-merge/manifest.json",
+      "normalization": "raw",
+      "sha256": "f60d288300586e608925ddafd4510211b5abf07b8b4f009a7b012dee043caa7d"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "07ad334db05c4042e3051b27eee299ec4e77e6de88cd3e6c4504df8f5cb168f3"
+      "sha256": "acf0d993a05d6ecb6dfa378c5bc00efdd23ee4741d823005fcebaee0b4691909"
     }
   ],
   "classes": {
-    "com.bilipai.desktop.plugins.DesktopVideoEnhancementConfigurationTest": 16,
-    "com.bilipai.desktop.player.DesktopNvidiaVideoAutoPolicyTest": 16,
-    "com.bilipai.desktop.player.PlayerNvidiaVideoTest": 16,
-    "com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest": 4
+    "com.bilipai.desktop.danmaku.DesktopV038DanmakuMergeBridgeTest": 6,
+    "com.android.purebilibili.feature.video.danmaku.DesktopV038DanmakuMergerPolicyTest": 6,
+    "com.bilipai.desktop.danmaku.DesktopDanmakuDisplayAreaParityTest": 1,
+    "com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTest": 3
   },
-  "expectedTests": 52,
+  "expectedTests": 16,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,

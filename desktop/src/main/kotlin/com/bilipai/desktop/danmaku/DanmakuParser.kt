@@ -32,6 +32,8 @@ data class DanmakuComment(
     // Exact neutral original local item, not a fabricated server element or second list.
     val originalLocalItem: com.android.purebilibili.danmaku.engine.DanmakuItem? = null,
     val originalLocalInjectionPhase:Any? = null,
+    // Ephemeral original renderer metadata; this never marks a remote item as a local send.
+    val originalRenderItem: com.android.purebilibili.danmaku.engine.DanmakuItem? = null,
 )
 
 data class DanmakuDocument(val comments: List<DanmakuComment> = emptyList(), val advanced: List<AdvancedDanmakuData> = emptyList(), val serverDisabled: Boolean = false,
