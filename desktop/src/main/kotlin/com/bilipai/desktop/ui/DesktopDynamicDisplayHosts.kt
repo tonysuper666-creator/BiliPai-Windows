@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bilipai.desktop.ui
 
 import androidx.compose.animation.AnimatedVisibility
@@ -26,8 +28,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.LocalAwtWindow
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -38,11 +43,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.android.purebilibili.core.ui.*
+import com.android.purebilibili.core.ui.blur.BlurSurfaceType
+import com.android.purebilibili.core.ui.blur.unifiedBlur
 import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.feature.dynamic.*
 import com.android.purebilibili.feature.dynamic.components.DynamicUserLiveBadge
-import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl
-import com.android.purebilibili.feature.home.components.FloatingBottomBarGeometryMode
+import com.android.purebilibili.feature.home.components.HomeTopChromeRenderMode
 
 /** Five original dynamic hosts. Horizontal reuses HorizontalUserList; the other four use the sidebar geometry. */
 @Composable
@@ -178,44 +184,66 @@ internal fun DesktopDynamicTabStrip(
     pageLayoutDirection: DesktopDynamicPageLayoutDirection = DesktopDynamicPageLayoutDirection.LEFT,
     onPageLayoutDirectionChange: (DesktopDynamicPageLayoutDirection) -> Unit = {},
 ) {
-    val liquid = LocalAppThemeConfig.current.liquidGlassEnabled
+    val theme = LocalAppThemeConfig.current
     val glass = LocalDesktopWindowsGlassMaterial.current
-    val backdrop = glass?.backdrop?.takeIf {
-        liquid && glass.renderer.supported && glass.sourceReady && glass.owns()
-    }
+    val chrome = LocalDesktopLargeScreenChromeMaterial.current
+    val sameWindow = glass != null && glass.window === LocalAwtWindow.current
+    val decision = resolveDesktopLargeScreenGlass(
+        DesktopLargeScreenGlassRequest(
+            surface = DesktopLargeScreenGlassSurface.DYNAMIC_TAB_STRIP,
+            liquidGlassRequested = theme.liquidGlassEnabled,
+            headerBlurEnabled = theme.headerBlurEnabled,
+            bottomBarBlurEnabled = theme.bottomBarBlurEnabled,
+            progressiveTopBlurEnabled = theme.progressiveTopBlurEnabled,
+            blurIntensity = theme.blurIntensity,
+            windowsRendererSupported = sameWindow && glass?.renderer?.supported == true,
+            backdropReady = desktopWindowsBackdropReady(
+                rendererSupported = glass?.renderer?.supported == true,
+                sourceReady = glass?.sourceReady == true,
+                owns = glass?.owns() == true,
+                sameWindow = sameWindow,
+                hasBackdrop = glass?.backdrop != null,
+            ),
+            hazeAvailable = chrome?.haze != null,
+        ),
+    )
+    val backdrop = if (decision.passBackdrop) glass?.backdrop else null
+    val haze = if (decision.passHaze) chrome?.haze else null
+    val frosted = decision.renderMode == HomeTopChromeRenderMode.BLUR ||
+        decision.renderMode == HomeTopChromeRenderMode.LIQUID_GLASS_HAZE
     Row(
         Modifier.fillMaxWidth()
             .largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL)
             .padding(horizontal = resolveDynamicTopBarHorizontalPadding()),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.weight(1f)) {
-            if (liquid && tabs.isNotEmpty()) {
+        Box(
+            Modifier.weight(1f).then(
+                if (frosted) {
+                    Modifier.background(AppSurfaceTokens.cardContainer().copy(alpha = decision.backgroundAlpha))
+                        .then(if (haze != null) Modifier.unifiedBlur(haze, surfaceType = BlurSurfaceType.HEADER) else Modifier)
+                } else {
+                    Modifier
+                },
+            ),
+        ) {
+            if (decision.liquidGlassEffectsEnabled && backdrop != null && tabs.isNotEmpty()) {
                 val spec = resolveDynamicTopBarLiquidTabSpec()
-                val selectedIndex = tabs.indexOfFirst { it.logicalIndex == selectedLogicalTab }.coerceAtLeast(0)
-                BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
-                    val tabCount = tabs.size.coerceAtLeast(1)
-                    val tabItemWidth = ((maxWidth - AppSpacingTokens.ExtraSmall * 2) / tabCount).coerceIn(
-                        AppChromeSizeTokens.MinimumTouchTarget,
-                        resolveDynamicTopBarTabItemWidthDp().dp,
-                    )
-                    BottomBarLiquidSegmentedControl(
-                        items = tabs.map { it.title },
-                        selectedIndex = selectedIndex,
-                        onSelected = { index ->
-                            tabs.getOrNull(index)?.logicalIndex?.let(onSelectLogicalTab)
-                        },
-                        itemWidth = tabItemWidth,
-                        height = spec.heightDp.dp,
-                        indicatorHeight = spec.indicatorHeightDp.dp,
-                        labelFontSize = spec.labelFontSizeSp.sp,
-                        geometryMode = FloatingBottomBarGeometryMode.TopNavigation,
-                        liquidGlassEffectsEnabled = true,
-                        dragSelectionEnabled = tabs.size > 1,
-                        tapPressRefractionEnabled = true,
-                        miuixBackdrop = backdrop,
-                        modifier = Modifier.height(spec.heightDp.dp),
-                    )
+                val shape = RoundedCornerShape(spec.heightDp.dp / 2)
+                val shell = desktopWindowsGlassSurfaceMaterial(
+                    Modifier.fillMaxWidth().height(spec.heightDp.dp),
+                    shape,
+                    Color.Transparent,
+                )
+                CompositionLocalProvider(LocalImmersiveTopChromeActive provides shell.enabled) {
+                    Box(shell.modifier, contentAlignment = Alignment.CenterStart) {
+                        AppNativeTabRow(
+                            options = tabs.map { AppSegmentOption(it.logicalIndex, it.title) },
+                            selectedValue = selectedLogicalTab,
+                            modifier = Modifier.fillMaxWidth(),
+                            onSelectionChange = onSelectLogicalTab,
+                        )
+                    }
                 }
             } else {
                 AppNativeTabRow(

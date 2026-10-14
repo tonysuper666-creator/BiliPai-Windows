@@ -101,7 +101,7 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
         cacheFailure?.let{CommunityFailure(it,navigation.onLogin){cache.saveTimeline(timeline("all").page.items,mountedSource::withMountedPublication)}}
         DesktopDynamicTabsHost(users,preferences,navigation.onUser,navigation.onLogin,transform,::timeline,
             active=active,awaitPageActive=::awaitPageActive,
-            trailing={Button(onClick={editor.publish(DynamicPublishDraft(text=""))}){DesktopSkinDynamicPublishIcon(false);Text("发布动态")}}) {
+            trailing={DesktopSkinDynamicPublishButton { editor.publish(DynamicPublishDraft(text="")) }}) {
             CommunityDynamicCard(it,community,navigation)
         }
     }

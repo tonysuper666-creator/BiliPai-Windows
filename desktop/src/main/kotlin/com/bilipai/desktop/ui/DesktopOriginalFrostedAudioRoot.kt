@@ -125,6 +125,7 @@ internal fun DesktopOriginalFrostedAudioNavigation(
     hazeState: HazeState?,
     backdrop: LayerBackdrop?,
     skinDecoration: BottomBarUiSkinDecoration?,
+    windowsLiquidGlassEnabled: Boolean = true,
     modifier: Modifier,
 ) {
     if (!owner.isOwned()) return
@@ -137,7 +138,12 @@ internal fun DesktopOriginalFrostedAudioNavigation(
             labels, scoped -> FrostedPreferenceState(labels, scoped)
         }
     }.collectAsState(initial = null)
-    val actualHome = home ?: return
+    val loadedHome = home ?: return
+    val actualHome = if (windowsLiquidGlassEnabled) {
+        loadedHome
+    } else {
+        loadedHome.copy(androidNativeLiquidGlassEnabled = false)
+    }
     val actualExtra = extra ?: return
     val audioState = audio?.observeSnapshot()
     val item = audioState?.item
@@ -176,7 +182,7 @@ internal fun DesktopOriginalFrostedAudioNavigation(
                     expandDestinationLabel = if (nowPlayingNavigation.opensAudioMode) "听视频" else "视频详情页",
                     sourceRoute = nowPlayingNavigation.sourceRoute,
                     handoff = nowPlayingNavigation.handoff,
-                    glassEnabled = actualHome.androidNativeLiquidGlassEnabled,
+                    glassEnabled = actualHome.androidNativeLiquidGlassEnabled && backdrop != null,
                     blurEnabled = hazeState != null,
                     hazeState = hazeState,
                     miuixBackdrop = backdrop,

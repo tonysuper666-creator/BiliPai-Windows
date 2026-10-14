@@ -10,6 +10,7 @@ import androidx.compose.ui.awt.LocalAwtWindow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.android.purebilibili.core.plugin.skin.LocalUiSkinState
 import com.android.purebilibili.core.ui.*
 import com.android.purebilibili.core.ui.adaptive.MotionTier
 import com.android.purebilibili.core.ui.components.AppIcon
@@ -20,6 +21,7 @@ import com.android.purebilibili.feature.audio.screen.AudioNowPlayingBar
 import com.android.purebilibili.feature.audio.screen.AudioNowPlayingBarState
 import com.android.purebilibili.feature.home.components.BottomNavItem
 import com.android.purebilibili.feature.home.components.FrostedSideBar
+import com.android.purebilibili.feature.home.components.rememberBottomBarUiSkinDecoration
 import com.android.purebilibili.navigation3.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -72,11 +74,12 @@ internal class DesktopOriginalRootChromeBindings(
     val useSidebar = placement == DesktopShellNavigationPlacement.SIDEBAR
     val useBottomDock = placement == DesktopShellNavigationPlacement.BOTTOM_DOCK
     val bottomReserved = useBottomDock && pages.bottomBarVisible()
+    val bottomBarSkin = rememberBottomBarUiSkinDecoration(LocalUiSkinState.current)
     val bottomPadding = rememberAppBottomBarContentPadding(
         navigationBarsBottom = binding.navigationBarsBottom(),
         reserveBottomBar = bottomReserved,
         isBottomBarFloating = homeSettings.isBottomBarFloating,
-        hasUiSkinDecoration = false,
+        hasUiSkinDecoration = desktopLargeScreenReservesBottomSkinPadding(bottomBarSkin != null),
     )
     SideEffect {
         audio?.publishBarOverlayVisible(audioVisible)
@@ -103,11 +106,50 @@ internal class DesktopOriginalRootChromeBindings(
         DisposableEffect(binding.owner) { onDispose { binding.onSourceReady(false) } }
         // The Home renderer still independently requires its OWN ready backdrop.
         // This publishes the real Windows shader capability gate, not feed pixels.
-        val haze = if (homeSettings.isBottomBarBlurEnabled) pages.window.globalHaze() else null
-        val readyGlass = glassMaterial?.takeIf {
-            it.renderer.supported && it.sourceReady && it.owns() && it.window === LocalAwtWindow.current
-        }
-        val backdrop = readyGlass?.backdrop as? LayerBackdrop
+        val theme = LocalAppThemeConfig.current
+        val sameWindow = glassMaterial != null && glassMaterial.window === LocalAwtWindow.current
+        val backdropReady = desktopWindowsBackdropReady(
+            rendererSupported = glassMaterial?.renderer?.supported == true,
+            sourceReady = glassMaterial?.sourceReady == true,
+            owns = glassMaterial?.owns() == true,
+            sameWindow = sameWindow,
+            hasBackdrop = glassMaterial?.backdrop != null,
+        )
+        val captureHaze = shouldCaptureDesktopLargeScreenHaze(
+            liquidGlassRequested = theme.liquidGlassEnabled,
+            headerBlurEnabled = theme.headerBlurEnabled,
+            bottomBarBlurEnabled = theme.bottomBarBlurEnabled,
+            progressiveTopBlurEnabled = theme.progressiveTopBlurEnabled,
+        )
+        val haze = if (captureHaze) pages.window.globalHaze() else null
+        val glassRequest = DesktopLargeScreenGlassRequest(
+            surface = DesktopLargeScreenGlassSurface.DOCK,
+            liquidGlassRequested = theme.liquidGlassEnabled,
+            headerBlurEnabled = theme.headerBlurEnabled,
+            bottomBarBlurEnabled = theme.bottomBarBlurEnabled,
+            progressiveTopBlurEnabled = theme.progressiveTopBlurEnabled,
+            blurIntensity = theme.blurIntensity,
+            windowsRendererSupported = sameWindow && glassMaterial?.renderer?.supported == true,
+            backdropReady = backdropReady,
+            hazeAvailable = haze != null,
+            forceLowBlurBudget = false,
+            motionTier = MotionTier.Normal,
+        )
+        val dockGlass = resolveDesktopLargeScreenGlass(glassRequest)
+        val railGlass = resolveDesktopLargeScreenGlass(
+            glassRequest.copy(surface = DesktopLargeScreenGlassSurface.SIDE_RAIL),
+        )
+        val readyGlass = glassMaterial?.takeIf { backdropReady }
+        val backdrop = if (dockGlass.passBackdrop) readyGlass?.backdrop as? LayerBackdrop else null
+        val dockHaze = if (dockGlass.passHaze) haze else null
+        val railHaze = if (railGlass.passHaze) haze else null
+        CompositionLocalProvider(
+            LocalDesktopLargeScreenChromeMaterial provides DesktopLargeScreenChromeMaterial(
+                haze = haze,
+                backdropReady = backdropReady,
+                windowsRendererSupported = sameWindow && glassMaterial?.renderer?.supported == true,
+            ),
+        ) {
         Box(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxSize()) {
             if (useSidebar) Column(
@@ -117,7 +159,8 @@ internal class DesktopOriginalRootChromeBindings(
                     currentItem = currentItem,
                     onItemClick = { if (routes.owns()) onItemClick(it) },
                     modifier = Modifier.weight(1f),
-                    hazeState = haze,
+                    hazeState = railHaze,
+                    uiSkinDecoration = bottomBarSkin,
                     onHomeDoubleTap = { if (routes.owns()) binding.actions.homeDoubleTap() },
                     onDynamicDoubleTap = { if (routes.owns()) binding.actions.dynamicDoubleTap() },
                     visibleItems = visibleItems,
@@ -176,9 +219,9 @@ internal class DesktopOriginalRootChromeBindings(
                         expandDestinationLabel = desktopShellNowPlayingExpandLabel(navigation.opensAudioMode),
                         sourceRoute = navigation.sourceRoute,
                         handoff = navigation.handoff,
-                        glassEnabled = homeSettings.androidNativeLiquidGlassEnabled,
-                        blurEnabled = haze != null,
-                        hazeState = haze,
+                        glassEnabled = theme.liquidGlassEnabled && dockGlass.liquidGlassEffectsEnabled,
+                        blurEnabled = dockHaze != null,
+                        hazeState = dockHaze,
                         miuixBackdrop = backdrop,
                         liftAboveBottomBar = false,
                         consumeNavigationBarsPadding = false,
@@ -221,12 +264,14 @@ internal class DesktopOriginalRootChromeBindings(
                     audio = audio,
                     nowPlayingVisibility = visibility,
                     nowPlayingNavigation = navigation,
-                    hazeState = haze,
+                    hazeState = dockHaze,
                     backdrop = backdrop,
-                    skinDecoration = null,
+                    skinDecoration = bottomBarSkin,
+                    windowsLiquidGlassEnabled = theme.liquidGlassEnabled && !dockGlass.suppressLiquidGlassPreference,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
+        }
         }
         }
         }

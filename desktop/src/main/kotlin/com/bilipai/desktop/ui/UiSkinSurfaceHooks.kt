@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -10,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.ContentScale
@@ -17,6 +19,8 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.plugin.skin.*
+import com.android.purebilibili.core.ui.AppSpacingTokens
+import com.android.purebilibili.feature.home.components.rememberDynamicPublishSkinDecoration
 import com.android.purebilibili.feature.video.ui.overlay.resolveVideoProgressBarLayoutPolicy
 import kotlinx.coroutines.delay
 
@@ -87,6 +91,26 @@ internal fun DesktopSkinPlayerProgress(value: Float, duration: Float, bufferedFr
                     drawRect(active, size = Size(size.width * (value / duration).coerceIn(0f, 1f), size.height))
                 }
             })
+    }
+}
+
+/** Original dynamic publish decoration: illustrated icon, or the vertical shade when no icon asset exists. */
+@Composable
+internal fun DesktopSkinDynamicPublishButton(onClick: () -> Unit) {
+    val decoration = rememberDynamicPublishSkinDecoration(LocalUiSkinState.current)
+    Button(onClick = onClick) {
+        DesktopSkinDynamicPublishIcon(false)
+        if (decoration != null && decoration.iconPaths == null && decoration.hasShade) {
+            Box(
+                Modifier
+                    .size(AppSpacingTokens.DoubleExtraLarge)
+                    .background(
+                        Brush.verticalGradient(listOf(decoration.shadeTop, decoration.shadeBottom)),
+                        CircleShape,
+                    ),
+            )
+        }
+        Text("发布动态")
     }
 }
 
