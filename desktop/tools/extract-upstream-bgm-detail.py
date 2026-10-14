@@ -169,6 +169,11 @@ def generate(repo,output):
     original,identities=shared.load_pinned_sources(repo,SOURCES)
     original,identities=advance_video_detail_skeleton_source(repo,original,identities)
     def emit(relative,body):
+        from v037_tab_roles import apply as apply_tab_roles
+        if Path(relative).name=="CommentInputDialog.kt":
+            body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",body,output,Path(relative).name)
+        elif Path(relative).name=="DesktopOriginalCommentSortHeader.kt":
+            body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",body,output,Path(relative).name)
         body=comment_detail_root_entry_delta(relative,body)
         target=output/relative;v=str(target.absolute());safe=Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
         safe.parent.mkdir(parents=True,exist_ok=True);safe.write_text(body,encoding='utf-8',newline='\n');return target

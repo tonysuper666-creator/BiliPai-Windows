@@ -18,17 +18,17 @@ import kotlin.test.*
 /** Actual fixed policy/state/submission body -> Windows port -> result publication.
  * HTTP callbacks are controlled; no account, GUI or native audio/video operation. */
 class DesktopWindowsCommandVoteBindingTest {
-    private class Harness : AutoCloseable {
+    private class Harness(private val requestAid: Long = 17L) : AutoCloseable {
         val source = PlaybackSource("https://example.invalid/video")
         val lease = DesktopOriginalVideoAcceptedPublication(
-            PlaybackRequest.create("BVfixture", aid = 17, cid = 70), OwnedPlaybackSourceSnapshot(1, source))
+            PlaybackRequest.create("BVfixture", aid = requestAid, cid = 70), OwnedPlaybackSourceSnapshot(1, source))
         var accepted = lease
         var nativeSnapshot = OwnedPlaybackSourceSnapshot(1, source)
         var accountEpoch = 1L
         var foreground = true
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val state = CommandDanmakuOverlayState()
-        var playback: VideoPlaybackUiState = VideoPlaybackUiState.Success(
+        var playback: VideoPlaybackUiState? = VideoPlaybackUiState.Success(
             ViewInfo(bvid = "BVfixture", aid = 17, cid = 70), source.videoUrl)
         val messages = mutableListOf<String>()
         val votes = mutableListOf<Pair<Long, List<Int>>>()
@@ -39,14 +39,15 @@ class DesktopWindowsCommandVoteBindingTest {
         var summaryResult: suspend () -> Result<GradeDanmakuSummary> = { Result.success(GradeDanmakuSummary(2, 10.0, 8)) }
         fun sourceOwned() = accepted === lease && accountEpoch == 1L &&
             nativeSnapshot.sourceVersion == lease.sourceVersion && nativeSnapshot.source == lease.nativeSource.source
-        val port = DesktopWindowsCommandVoteBinding(lease, 17, 70,
+        val port = DesktopWindowsCommandVoteBinding(lease, requestAid, 70,
             current = { foreground && sourceOwned() }, cleanupCurrent = ::sourceOwned,
             admission = { action -> if (sourceOwned()) { action(); true } else false },
             readVote = { _, _ -> voteInfoResult() },
             writeVote = { _, id, indexes -> votes += id to indexes; voteResult() },
             writeGrade = { _, aid, cid, progress, id, score ->
                 grades += listOf(aid, cid, progress, id, score); gradeResult() },
-            readGrade = { _, _, _, _ -> summaryResult() }, onFeedback = messages::add)
+            readGrade = { _, _, _, _ -> summaryResult() }, onFeedback = messages::add,
+            readAid = { resolveDesktopCommandGradeAid(requestAid, "BVfixture", 70, playback) })
         fun submit(item: CommandDanmakuItem, option: VoteOption, index: Int = option.optionIndex ?: 1) {
             assertTrue(if (item.voteKind == VoteDanmakuKind.GRADE) state.beginGradeSubmission(item, option)
                 else state.beginVoteSubmission(item))
@@ -61,6 +62,38 @@ class DesktopWindowsCommandVoteBindingTest {
             extra = extra)))
     private fun vote() = command("""{"vote_id":99,"title":"choose","options":[{"idx":3,"desc":"third"}]}""")
     private fun grade() = command("""{"grade_id":3651137,"msg":"rate","mid_score":0,"count":76,"avg_score":9.8}""", true)
+
+    @Test fun bvCidOnlyLoadUsesAuthoritativeAidForGradeAndSummary() = runBlocking {
+        Harness(requestAid = 0L).use { h ->
+            val item = grade()
+            h.submit(item, assertNotNull(resolveGradeStarOptions(item.voteOptions)[3]))
+            h.drain()
+            assertEquals(listOf(listOf<Any>(17L, 70L, 5000L, "3651137", 8)), h.grades)
+            assertEquals(GradeDanmakuSummary(2, 10.0, 8), h.state.gradeSummary(item))
+        }
+    }
+
+    @Test fun unknownAidCannotBorrowMetadataFromAnotherVideoOrPart() = runBlocking {
+        Harness(requestAid = 0L).use { h ->
+            for (info in listOf(ViewInfo(bvid = "BVother", aid = 17, cid = 70),
+                ViewInfo(bvid = "BVfixture", aid = 17, cid = 71))) {
+                h.playback = VideoPlaybackUiState.Success(info, h.source.videoUrl)
+                assertTrue(h.port.submitGradeDanmaku(17, 70, 5000, "3651137", 8).isFailure)
+                assertTrue(h.port.getGradeDanmakuSummary(70, 17, "3651137").isFailure)
+            }
+            assertTrue(h.grades.isEmpty())
+        }
+    }
+
+    @Test fun aidPublishedAfterBindingCreationEnablesTheSameSource() = runBlocking {
+        Harness(requestAid = 0L).use { h ->
+            h.playback = null
+            assertTrue(h.port.submitGradeDanmaku(17, 70, 5000, "3651137", 8).isFailure)
+            h.playback = VideoPlaybackUiState.Success(ViewInfo(bvid = "BVfixture", aid = 17, cid = 70), h.source.videoUrl)
+            assertTrue(h.port.submitGradeDanmaku(17, 70, 5000, "3651137", 8).isSuccess)
+            assertEquals(1, h.grades.size)
+        }
+    }
 
     @Test fun sparseOneBasedMetadataReachesRealSubmissionAdapter() = runBlocking {
         Harness().use { h ->

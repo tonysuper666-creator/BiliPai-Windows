@@ -22,6 +22,8 @@ def generate(repo, output):
         assert hashlib.sha256(text.encode()).hexdigest() == pins[path], path
         return text
     def emit(path, body, name):
+        from v037_tab_roles import apply as apply_tab_roles
+        body=apply_tab_roles(path,body,output,name)
         original = read(path)
         package = re.search(r'(?m)^package (\S+)', body).group(1)
         dest = output/package.replace('.','/')/name

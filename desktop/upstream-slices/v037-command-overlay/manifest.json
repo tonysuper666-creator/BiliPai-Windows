@@ -1,0 +1,12 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "filename": "CommandDanmakuOverlay.kt",
+      "bytes": 43029,
+      "sha256Bytes": "af492775f32aa5449f8fab3d1e15363ca26848da527660f6e88f21710f8d8fb3",
+      "gitBlob": "73c3faa498764b2162a6c5b4d5b96e4c04532d88"
+    }
+  ]
+}

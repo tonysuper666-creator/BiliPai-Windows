@@ -42,7 +42,15 @@ class BrandCallerProducerTest(unittest.TestCase):
         body=(output/'com/android/purebilibili/feature/search/SearchScreen.kt').read_text(encoding='utf-8')
         audit=row['windowsBrandConsumerAdaptation'];self.assertEqual(audit['countedAdaptations'],8)
         self.assertTrue(row['inverseOriginalBodyExact']);self.assertTrue(audit['fullAdaptedBodyInverseExact'])
-        inverse=self.inverse(body,audit)
+        tab=row['windowsTabAbiAdaptation']
+        self.assertEqual(sha(body),tab['afterSha256LF'])
+        inverse=body
+        for edit in reversed(tab['indexedEdits']):
+            at=edit['afterOffset'];self.assertEqual(inverse[at:at+len(edit['after'])],edit['after'])
+            inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]
+        self.assertEqual(sha(inverse),tab['beforeSha256LF'])
+        self.assertEqual(sha(inverse),audit['afterSha256LfUtf8'])
+        inverse=self.inverse(inverse,audit)
         producer=load('search_brand_source_contract','extract-upstream-search-pages.py')
         spec=next(s for s in producer.SPEC if s['target']=='feature/search/SearchScreen.kt')
         self.assertEqual(sha(inverse),spec['outputSha256LF'])
@@ -57,15 +65,39 @@ class BrandCallerProducerTest(unittest.TestCase):
         output,rows=self.generated('extract-upstream-favorites.py','list')
         row=next(r for r in rows if r['path'].endswith('/CommonListScreen.kt'))
         body=(output/'com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf-8')
+        retainedBody=body
+        tabPath=output/'v037-explicit-tab-role-proofs/CommonListScreen.json'
+        if tabPath.exists():
+            tab=json.loads(tabPath.read_bytes())
+            self.assertEqual(sha(retainedBody),tab['afterSha256LF'])
+            for edit in reversed(tab['indexedEdits']):
+                at=edit['afterOffset'];self.assertEqual(retainedBody[at:at+len(edit['after'])],edit['after'])
+                retainedBody=retainedBody[:at]+edit['before']+retainedBody[at+len(edit['after']):]
+            self.assertEqual(sha(retainedBody),tab['beforeSha256LF'])
+        cover=row.get('windowsFavoriteCoverAdaptation')
+        coverPath=output/'CommonListScreen.v035-cover-source.json'
+        if cover is None and coverPath.exists():cover=json.loads(coverPath.read_bytes())
+        if cover:
+            recipe=cover['recipe']
+            retainedBytes=retainedBody.encode('utf-8')
+            self.assertEqual(sha(retainedBytes),recipe['afterSha256LF'])
+            for edit in reversed(recipe['edits']):
+                at=edit['offsetBytes'];after=edit['after'].encode('utf-8');before=edit['before'].encode('utf-8')
+                self.assertEqual(sha(retainedBytes),edit['afterWholeSha256'])
+                self.assertEqual(retainedBytes[at:at+len(after)],after)
+                retainedBytes=retainedBytes[:at]+before+retainedBytes[at+len(after):]
+                self.assertEqual(sha(retainedBytes),edit['beforeWholeSha256'])
+            self.assertEqual(sha(retainedBytes),recipe['beforeSha256LF'])
+            retainedBody=retainedBytes.decode('utf-8')
         if row.get('historyGeneratedAdaptation'):
             helper=load('history_brand_caller_source_contract','v029_brand_history.py')
-            audit=row['historyGeneratedAdaptation'];inverse=body
+            audit=row['historyGeneratedAdaptation'];inverse=retainedBody
             for edit in reversed(audit['edits']):
                 at=edit['index'];self.assertEqual(inverse[at:at+len(edit['after'])],edit['after'])
                 inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]
             raw=helper.load_raw('feature/list/CommonListScreen')
             self.assertEqual(inverse,raw)
-            self.assertEqual(sha(body),audit['generatedSha256LfUtf8'])
+            self.assertEqual(sha(retainedBody),audit['generatedSha256LfUtf8'])
             self.assertEqual(row['upstreamCommit'],helper.COMMIT)
             for unchanged in ['historyViewModel.retryHistory()', 'historyViewModel.loadMore(retry = true)', 'onRetryLoadMore:', 'loadMoreError:']:
                 self.assertEqual(body.count(unchanged),raw.count(unchanged))
@@ -78,7 +110,7 @@ class BrandCallerProducerTest(unittest.TestCase):
             self.assertIn('headerContent = recapHeader',body)
             return
         audit=row['windowsBrandConsumerAdaptation'];self.assertEqual(audit['countedAdaptations'],3)
-        inverse=self.inverse(body,audit)
+        inverse=self.inverse(retainedBody,audit)
         source_before=self.helper()._sources()['v025/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt']
         for edit in audit['edits']:self.assertEqual(source_before.count(edit['before']),1)
         for unchanged in ['LaunchedEffect(shouldLoadMore.value)', 'if (shouldLoadMore.value) onLoadMore()', 'headerContent:','onRetryLoadMore:','loadMoreError:']:

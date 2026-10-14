@@ -168,6 +168,27 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // Latest tabs use the same sole controls/dynamic producer split.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt"))
+        // Latest original theme configuration is emitted once by the full controls producer.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt"))
+        // Complete latest backdrop has one section producer; keep other original callers.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt"))
+        // Latest whole player policies have one existing controls producer.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt"))
         // These three complete fixed v031 sources have one producer in the existing detail output.
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt"))
@@ -850,12 +871,16 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileKotlin") { dependsOn(extractOriginalBangumiPlayer) }
 
 val extractOriginalBangumiPlayerUi by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_gesture_feedback.py")
+    inputs.dir("upstream-slices/v037-gesture-feedback")
     dependsOn(prepareUpstreamSources, extractOriginalBangumiPlayer, extractUpstreamMedia)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bangumi-player-ui.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-bangumi-player-ui").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-bangumi-player-ui.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
+    inputs.file("tools/v037_tab_roles.py")
+    inputs.dir("upstream-slices/v037-explicit-tab-roles")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "original-bangumi-player-ui" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -1413,6 +1438,8 @@ val extractFrostedAudioRenderer by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractFrostedAudioRenderer) }
 
 val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_player_closure.py")
+    inputs.dir("upstream-slices/v037-player-closure")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku-settings.py",
@@ -1524,6 +1551,10 @@ val extractCommentFraudProtocol by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractCommentFraudProtocol) }
 
 val extractSharedLiquidTabs by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_shared_tabs_progress.py")
+    inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
+    inputs.file("tools/v037_player_shared_material.py")
+    inputs.dir("upstream-slices/v037-player-shared-material")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-shared-liquid-tabs.py",
@@ -1586,6 +1617,8 @@ val extractStableVideoVotes by tasks.registering(Exec::class) {
     inputs.files("tools/extract-stable-video-votes.py", "tools/sync-upstream.py", sourceManifest)
     inputs.file("tools/v029_command_vote.py")
     inputs.file("tools/v030_command_link.py")
+    inputs.file("tools/v037_command_overlay.py")
+    inputs.dir("upstream-slices/v037-command-overlay")
     inputs.dir("upstream-slices/v029-command-vote")
     inputs.dir("upstream-slices/v030-command-link")
     inputs.files(
@@ -1618,6 +1651,8 @@ val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_shared_tabs_progress.py")
+    inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamComponents,
         extractUpstreamAppearance, extractUpstreamSettingsCategories)
     workingDir(projectDir)
@@ -2262,6 +2297,15 @@ sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/do
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
 
 val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_gesture_feedback.py")
+    inputs.dir("upstream-slices/v037-gesture-feedback")
+    inputs.file("tools/v037_player_section_policy.py")
+    inputs.dir("upstream-slices/v037-player-section-policy")
+    inputs.file("tools/v037_video_action_anchors.py")
+    inputs.dir("upstream-slices/v037-video-feedback-anchor")
+    inputs.file("tools/v037_video_coin_request.py")
+    inputs.file("tools/v037_player_interaction.py")
+    inputs.dir("upstream-slices/v037-player-interaction-seed")
     inputs.file("tools/v031_repost_coin.py")
     inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources)
@@ -2273,6 +2317,7 @@ val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
     inputs.file("tools/v029_video_feedback.py")
     inputs.file("tools/v029_video_feedback_origin.py")
     inputs.file("tools/v029_video_feedback_host.py")
+    inputs.files("tools/v037_video_feedback_adapter.py", "tools/v037_feedback_origin.py")
     inputs.dir("upstream-slices/v029-video-feedback")
     inputs.files(sources.filter { "stable-video-detail-full-units" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -2339,15 +2384,31 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileKotlin") { dependsOn(extractOriginalWatchLater) }
 
 val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_window_modal_blur.py")
+    inputs.dir("upstream-slices/v037-window-modal-blur")
+    inputs.file("tools/v037_shared_tabs_progress.py")
+    inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
+    inputs.file("tools/v037_player_foundations.py")
+    inputs.dir("upstream-slices/v037-player-foundation-closure")
+    inputs.files("tools/v037_player_chrome.py", "tools/v037_player_closure.py", "tools/v037_player_render.py", "tools/v037_player_shared_material.py")
+    inputs.dir("upstream-slices/v037-player-chrome")
+    inputs.dir("upstream-slices/v037-player-closure")
+    inputs.dir("upstream-slices/v037-player-render-closure")
+    inputs.dir("upstream-slices/v037-player-shared-material")
+
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalOfflinePlayer)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-player-full-controls.py",
-        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-full-controls").get().asFile.absolutePath)
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-full-controls").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-player-chrome-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-player-full-controls.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-player-full-controls" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-player-full-controls"))
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-player-chrome-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalPlayerFullControls) }
+
 val verifyOriginalPlayerFullControls by tasks.registering(Exec::class) {
     dependsOn(extractOriginalPlayerFullControls)
     workingDir(projectDir)
@@ -2402,6 +2463,8 @@ dependencies {
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc14")
 }
 val extractOriginalVideoContentFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v036_video_comment_viewport.py")
+    inputs.dir("upstream-slices/v036-video-comment-viewport")
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalPlayerFullControls)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-content-full.py",
@@ -2426,6 +2489,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoContentFull, verify
 
 // Append alongside existing original video producers; no new dependency or runtime artifact.
 val extractOriginalVideoStateCore by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_player_interaction.py")
+    inputs.dir("upstream-slices/v037-player-interaction-seed")
     inputs.file("tools/v031_repost_coin.py")
     inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalVideoContentFull)
@@ -2448,10 +2513,16 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoStateCore) }
 // Install child Section's canonical native facade first/in same compile: this package references it.
 
 val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
+    inputs.files("tools/v037_player_owner_state.py", "tools/v037_player_page_backdrop.py", "tools/v037_player_section_policy.py", "tools/v037_player_runtime_resources.py")
+    inputs.dir("upstream-slices/v037-player-runtime-resources")
+    inputs.dir("upstream-slices/v037-player-section-policy")
+    inputs.dir("upstream-slices/v037-player-owner-state")
+    inputs.dir("upstream-slices/v037-player-page-backdrop")
     dependsOn(prepareUpstreamSources, extractOriginalVideoStateCore, extractOriginalPlayerFullControls, extractOriginalVideoContentFull)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-player-section-full.py",
-        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-section-full").get().asFile.absolutePath)
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-section-full").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-player-page-backdrop-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-player-section-full.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.file("tools/v029_command_vote.py")
@@ -2462,6 +2533,8 @@ val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/original-video-player-section-full"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-player-section-full")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-player-page-backdrop-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalVideoPlayerSectionFull) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoPlayerSectionFull) }
 
 
@@ -2479,6 +2552,7 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileKotlin") { dependsOn(prepareUpstreamVideoCommentUrl) }
 
 val extractOriginalVideoTabletFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_player_known_presentation.py")
     dependsOn(prepareUpstreamSources, prepareUpstreamVideoCommentUrl, extractOriginalVideoStateCore,
         extractOriginalVideoPlayerSectionFull, extractOriginalVideoContentFull)
     workingDir(projectDir)
@@ -2497,6 +2571,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoTabletFull) }
 
 // Append source-only task wiring. Do not replace the existing build file.
 val extractOriginalVideoFullscreenPager by tasks.registering(Exec::class) {
+    inputs.file("tools/v037_gesture_feedback.py")
+    inputs.dir("upstream-slices/v037-gesture-feedback")
     inputs.file("tools/v031_repost_coin.py")
     inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources)
@@ -2570,6 +2646,8 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-full-owner").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-full-owner.py", sourceManifest)
+    inputs.files("tools/v037_player_known_state.py", "tools/v037_player_interaction.py")
+    inputs.dir("upstream-slices/v037-player-interaction-seed")
     inputs.file("tools/v030_up_danmaku.py")
     inputs.file("tools/v029_failure_recovery.py")
     inputs.dir("upstream-slices/v029-playback-recovery")
@@ -2582,6 +2660,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoFullOwner) }
 // DIRECT10 are copied once by prepareUpstreamSources; production omits --standalone.
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
+    inputs.dir("upstream-slices/v037-holder-comment-close")
+    inputs.file("tools/v037_player_known_presentation.py")
     inputs.file("tools/v032_video_return_state.py")
     inputs.dir("upstream-slices/v032-video-return-state")
     inputs.file("tools/v031_repost_coin.py")
@@ -3650,4 +3730,27 @@ tasks.named("extractUpstreamDynamicReplyProtocol") {
 tasks.named("extractBgmDetail") {
     inputs.file("tools/v036_video_comment_cache.py")
     inputs.dir("upstream-slices/v036-video-comment-cache")
+}
+
+// Original icon font is copied unchanged from the verified fixed v037 archive.
+tasks.named<Copy>("processResources") {
+    from("upstream-slices/v037-shared-tabs-progress-closure/piliplus_custom_icons.ttf") { into("fonts") }
+    from("upstream-slices/v037-player-runtime-resources/ic_pili_tv_play.png") { into("icons") }
+}
+
+// These sole producers project exact original tab roles before writing source.
+tasks.matching { it.name in setOf("extractBgmDetail", "extractCommentFraudProtocol", "extractImageSaveSettingsUi", "extractOriginalAicu", "extractOriginalBangumiPages", "extractOriginalDanmakuSettings", "extractOriginalFavorites", "extractOriginalFollowing", "extractOriginalLiveList", "extractOriginalLiveNavigation", "extractOriginalMessagePages", "extractOriginalProfileMain", "extractOriginalSpacePages", "extractOriginalSystemAbout", "extractOriginalWatchLater", "extractStableCollectionSheet", "extractUpstreamCrashPrompt", "extractUpstreamDiagnostics", "extractUpstreamDynamicDetail", "extractUpstreamDynamicEditor", "extractUpstreamDynamicFollow", "extractUpstreamDynamicFullCard", "extractUpstreamDynamicReply", "extractUpstreamDynamicSettings", "extractUpstreamDynamicTabs", "extractUpstreamHomeCards", "extractUpstreamJs", "extractUpstreamNetworkProxy", "extractUpstreamPackages", "extractUpstreamPlugins", "extractUpstreamPreferences", "extractUpstreamSettingsCategories", "extractUpstreamSettingsEntries", "extractUpstreamSettingsHome", "extractUpstreamSettingsPrivacy", "extractUpstreamSettingsSearch", "extractUpstreamSettingsStorageEntries", "extractUpstreamStoryTopic", "verifyUpstreamDynamicEditorProtocol") }.configureEach {
+    inputs.file("tools/v037_tab_roles.py")
+    inputs.dir("upstream-slices/v037-explicit-tab-roles")
+}
+
+tasks.matching { it.name in setOf("extractOriginalHomeBangumiPage", "extractOriginalSpacePages", "extractOriginalFavorites") }.configureEach {
+    inputs.file("tools/v037_tab_roles.py")
+    inputs.dir("upstream-slices/v037-explicit-tab-roles")
+}
+
+// Whole original v037 modal sheet shares the same sole source producer.
+tasks.named("extractUpstreamDynamicDetailContainer") {
+    inputs.file("tools/v037_window_modal_blur.py")
+    inputs.dir("upstream-slices/v037-window-modal-blur")
 }

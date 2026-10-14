@@ -118,6 +118,11 @@ def generate(repo,output,standalone=False):
   text=portrait_metadata_before_native_delta(spec['output'],text)
   from v035_story_pager import apply_and_record as apply_story_pager65
   text,_=apply_story_pager65(spec['output'],text,output)
+  from v037_gesture_feedback import legacy_caller_delta
+  text,gesture_proof=legacy_caller_delta(repo,spec['output'],text)
+  if gesture_proof is not None:
+   target=wide(output/(Path(spec['output']).name+'.v037-gesture-api-proof.json'))
+   target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps(gesture_proof,indent=2)+'\n',encoding='utf-8')
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')

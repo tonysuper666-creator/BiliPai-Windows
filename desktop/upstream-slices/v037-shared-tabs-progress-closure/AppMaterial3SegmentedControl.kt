@@ -1,0 +1,188 @@
+package com.android.purebilibili.core.ui.renderer.material3
+
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Text
+import androidx.compose.material3.Tab
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.ui.components.AppTabRowIndicatorPresentation
+import com.android.purebilibili.core.ui.components.AppSegmentOption
+import com.android.purebilibili.core.ui.components.AppSegmentedControlColors
+import com.android.purebilibili.core.ui.components.AppPrimaryScrollableTabRow
+import com.android.purebilibili.core.ui.components.AppPrimaryTabRow
+import com.android.purebilibili.core.ui.components.resolveAppSegmentedLabelFontSize
+import com.android.purebilibili.core.ui.components.resolveAppSegmentedSelectionIndex
+
+@Composable
+internal fun <T> AppMaterial3SegmentedControl(
+    options: List<AppSegmentOption<T>>,
+    selectedValue: T,
+    enabled: Boolean,
+    colors: AppSegmentedControlColors,
+    modifier: Modifier,
+    onSelectionChange: (T) -> Unit,
+) {
+    val longestLabelLength = remember(options) {
+        options.maxOfOrNull { it.label.length } ?: 0
+    }
+    val labelFontSize = resolveAppSegmentedLabelFontSize(
+        MaterialTheme.typography.labelLarge.fontSize, options.size, longestLabelLength
+    )
+    SingleChoiceSegmentedButtonRow(modifier = modifier.fillMaxWidth()) {
+        options.forEachIndexed { index, option ->
+            val selected = option.value == selectedValue
+            SegmentedButton(
+                selected = selected,
+                onClick = { onSelectionChange(option.value) },
+                enabled = enabled,
+                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = colors.activeContainerColor,
+                    activeContentColor = colors.activeContentColor,
+                    inactiveContainerColor = Color.Transparent,
+                    inactiveContentColor = colors.inactiveContentColor,
+                    disabledActiveContainerColor = colors.activeContainerColor.copy(alpha = 0.35f),
+                    disabledActiveContentColor = colors.activeContentColor.copy(alpha = 0.55f),
+                    disabledInactiveContainerColor = Color.Transparent,
+                    disabledInactiveContentColor = colors.inactiveContentColor.copy(alpha = 0.45f),
+                ),
+                border = SegmentedButtonDefaults.borderStroke(color = MaterialTheme.colorScheme.outline),
+                modifier = Modifier.weight(1f),
+                icon = {
+                    if (options.size <= 3) SegmentedButtonDefaults.Icon(active = selected)
+                },
+            ) {
+                Text(
+                    text = option.label,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.labelLarge.copy(fontSize = labelFontSize),
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+internal fun <T> AppMaterial3TabRow(
+    options: List<AppSegmentOption<T>>,
+    selectedValue: T,
+    enabled: Boolean,
+    scrollable: Boolean,
+    centerContent: Boolean = false,
+    minTabWidth: Dp,
+    modifier: Modifier,
+    allowLabelOverflow: Boolean = false,
+    indicatorPresentation: AppTabRowIndicatorPresentation = AppTabRowIndicatorPresentation.UNDERLINE,
+    indicatorPositionProvider: (() -> Float)? = null,
+    onSelectionChange: (T) -> Unit,
+) {
+    val selectedIndex = resolveAppSegmentedSelectionIndex(options, selectedValue)
+    // Tabs are navigation labels, so adding categories must not shrink their text.
+    // Use the same theme size for the pill, underline, and width measurement paths.
+    val labelStyle = MaterialTheme.typography.titleMedium
+    val labelFontSize = labelStyle.fontSize
+    if (indicatorPresentation == AppTabRowIndicatorPresentation.TONAL_PILL) {
+        AppTonalPillTabRow(
+            options = options,
+            selectedValue = selectedValue,
+            onSelectionChange = onSelectionChange,
+            modifier = if (centerContent) modifier.wrapContentWidth(Alignment.CenterHorizontally) else modifier,
+            enabled = enabled,
+            scrollable = scrollable,
+            labelFontSize = labelFontSize,
+            indicatorPositionProvider = indicatorPositionProvider,
+        )
+        return
+    }
+    val tabs: @Composable () -> Unit = {
+        options.forEach { option ->
+            val selected = option.value == selectedValue
+            // Keep Tab's `text =` slot so TabRow can subtract HorizontalTextPadding
+            // when sizing the underline. Overflow the 16.dp padding instead of
+            // ellipsizing 直播间 / UP主 / 默认排序 when many tabs share one row.
+            // TabRow's default contentColor is primary for every tab; pin the M3
+            // standard so only the selected label carries the theme color.
+            Tab(
+                selected = selected,
+                onClick = { onSelectionChange(option.value) },
+                enabled = enabled,
+                selectedContentColor = MaterialTheme.colorScheme.primary,
+                unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                text = {
+                    Text(
+                        text = option.label,
+                        modifier = Modifier.then(
+                            if (allowLabelOverflow) {
+                                Modifier.wrapContentWidth(
+                                    align = Alignment.CenterHorizontally,
+                                    unbounded = true,
+                                )
+                            } else {
+                                Modifier
+                            }
+                        ),
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = if (allowLabelOverflow) {
+                            TextOverflow.Visible
+                        } else {
+                            TextOverflow.Clip
+                        },
+                        style = labelStyle,
+                        fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+                    )
+                },
+            )
+        }
+    }
+    if (scrollable) {
+        val density = LocalDensity.current
+        val textMeasurer = rememberTextMeasurer()
+        val style = labelStyle.copy(
+            fontWeight = FontWeight.SemiBold,
+        )
+        val contentWidth = options.fold(0.dp) { width, option ->
+            width + maxOf(minTabWidth, with(density) {
+                textMeasurer.measure(option.label, style = style, maxLines = 1).size.width.toDp()
+            } + 32.dp)
+        }
+        BoxWithConstraints(modifier = modifier, contentAlignment = Alignment.Center) {
+            AppPrimaryScrollableTabRow(
+                selectedTabIndex = selectedIndex,
+                modifier = if (centerContent) Modifier.width(minOf(contentWidth, maxWidth)) else Modifier.fillMaxWidth(),
+                containerColor = Color.Transparent,
+                edgePadding = 0.dp,
+                minTabWidth = minTabWidth,
+                indicatorPositionProvider = indicatorPositionProvider,
+                tabs = tabs,
+            )
+        }
+    } else {
+        AppPrimaryTabRow(
+            selectedTabIndex = selectedIndex,
+            modifier = modifier.fillMaxWidth(),
+            containerColor = Color.Transparent,
+            indicatorPositionProvider = indicatorPositionProvider,
+            tabs = tabs,
+        )
+    }
+}

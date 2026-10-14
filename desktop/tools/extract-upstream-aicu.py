@@ -6,6 +6,9 @@ from v025_source_paths import canonical_source
 FEATURE = "desktop-full-original-aicu-root-parity"
 def digest(raw): return hashlib.sha256(raw).hexdigest()
 def emit(out,rel,text):
+ from v037_tab_roles import apply as apply_tab_roles
+ sourcePath="app/src/main/java/com/android/purebilibili/feature/aicu/AicuScreen.kt"
+ if Path(rel).name=="AicuScreen.kt":text=apply_tab_roles(sourcePath,text,out,Path(rel).name)
  p=out/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding="utf8",newline="\n")
 def generate(repo,out):
  spec=json.loads((Path(__file__).with_name("upstream-aicu-adaptations.json")).read_text(encoding="utf8"))

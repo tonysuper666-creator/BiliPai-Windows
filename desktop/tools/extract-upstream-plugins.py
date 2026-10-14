@@ -229,6 +229,8 @@ def prune_retired_renderer_outputs(repo: Path, output: Path) -> None:
 
 
 def write(output: Path, path: str, original: str, body: str, name: str | None = None) -> Path:
+    from v037_tab_roles import apply as apply_original_tab_roles
+    body = apply_original_tab_roles(path, body, output, name)
     target = output_target(output, path, body, name)
     target.parent.mkdir(parents=True, exist_ok=True)
     header = f"// GENERATED from {path}; do not edit.\n// LF-normalized SHA-256: {hashlib.sha256(original.encode()).hexdigest()}\n"

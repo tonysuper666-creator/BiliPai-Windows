@@ -89,6 +89,7 @@ class DesktopWindowsCommandLinkUiTest {
                             state, 1f, onFollowClick = { error("LINK cannot follow") },
                             onTripleClick = { error("LINK cannot triple") },
                             onVoteSubmit = { _, _, _ -> error("LINK cannot vote") },
+                            followStatusKnown = true, likeStatusKnown = true,
                             onLinkClick = { binding.open(it) })
                     }
                 }

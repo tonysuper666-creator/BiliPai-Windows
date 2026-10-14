@@ -29,6 +29,13 @@ internal interface DesktopOriginalVideoLoadRepository {
 }
 
 internal interface DesktopOriginalVideoInitialActions {
+    fun interactionSession(): Any
+    fun cachedLikeStatus(aid: Long): Boolean?
+    fun cachedFollowStatus(mid: Long): Boolean?
+    fun likeStatusVersion(aid: Long): Long
+    fun followStatusVersion(mid: Long): Long
+    suspend fun queryLikeStatus(aid: Long): Result<Boolean>
+    suspend fun queryFollowStatus(mid: Long): Result<Boolean>
     suspend fun checkFollowStatus(mid:Long):Boolean
     suspend fun checkFavoriteStatus(aid:Long):Boolean
     suspend fun checkLikeStatus(aid:Long):Boolean
