@@ -1,0 +1,46 @@
+name: Manual Windows Veyra shared core candidate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bilipai-veyra-core-candidate
+  cancel-in-progress: false
+
+jobs:
+  native-core:
+    if: github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify native build inputs and package inspection
+        shell: pwsh
+        run: |
+          python -m unittest discover -s desktop/tools/tests -p test_veyra_core_runtime_build.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Native build input checks failed' }
+      - name: Link the shared SR HDR and DLSS core without loading it
+        shell: pwsh
+        run: |
+          $vsWhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'
+          $vsInstall = & $vsWhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if ($LASTEXITCODE -ne 0 -or -not $vsInstall) { throw 'MSVC installation not found' }
+          $vsInstall = [IO.Path]::GetFullPath(($vsInstall | Select-Object -First 1))
+          Import-Module (Join-Path $vsInstall 'Common7/Tools/Microsoft.VisualStudio.DevShell.dll')
+          Enter-VsDevShell -VsInstallPath $vsInstall -SkipAutomaticLocation -DevCmdArguments '-arch=x64 -host_arch=x64'
+          python desktop/tools/native/build-veyra-core-runtime.py --repo $env:GITHUB_WORKSPACE --workspace "$env:RUNNER_TEMP/bilipai-veyra-core" --output "$env:GITHUB_WORKSPACE/desktop/build/veyra-core-native-candidate" --execute-build
+          if ($LASTEXITCODE -ne 0) { throw 'Shared core linking failed' }
+      - name: Preserve the native candidate and build receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiliPai-Veyra-shared-core-candidate-x64
+          path: desktop/build/veyra-core-native-candidate/
+          if-no-files-found: ignore
+          retention-days: 1
