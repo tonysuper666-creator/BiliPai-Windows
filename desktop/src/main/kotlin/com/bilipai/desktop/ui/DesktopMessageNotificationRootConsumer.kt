@@ -3,8 +3,12 @@ package com.bilipai.desktop.ui
 import androidx.compose.runtime.*
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.DynamicApi
+import com.android.purebilibili.core.network.MessageApi
+import com.android.purebilibili.core.network.grpc.DesktopDynamicBiliGrpcClient
+import com.android.purebilibili.core.network.grpc.DesktopDynamicPersonalFeedApi
 import com.android.purebilibili.feature.message.notification.*
 import com.bilipai.desktop.data.DesktopCommunityRepository
+import com.bilipai.desktop.data.DesktopDynamicGrpcRequestSource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -52,7 +56,9 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
                 admission.requests = community.originalMessagePages(admission).requests
                 while (currentCoroutineContext().isActive) {
                     actual.check()
+                    val activeKeys = notifications.activeMessageKeys()
                     var batch = emptyList<PendingMessageNotification>()
+                    var cancelledKeys = emptySet<String>()
                     var retry = false
                     try {
                     messageNotificationMutex.withLock {
@@ -67,7 +73,7 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
                             val source = DesktopOwnedMessageNotificationSource(actual, admission,
                                 requireNotNull(caller[Job]), ::sameSession)
                             result = MessageNotificationPoller(source, ::sameSession).check(settings,
-                                MessageNotificationStateStore.getState(actual, mid), mid)
+                                MessageNotificationStateStore.getState(actual, mid), mid, activeKeys)
                         }
                         currentCoroutineContext().ensureActive(); actual.check()
                         val value = requireNotNull(result)
@@ -75,13 +81,14 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
                         if (MessageNotificationSettingsStore.getSettings(actual).first() == settings && notifications.canPost()) {
                             MessageNotificationStateStore.putState(actual, mid, value.state)
                             batch = value.notifications
+                            cancelledKeys = value.cancelNotificationKeys
                         }
                     }
                     // Shell/OS delivery is outside Store/entry and state mutex. The actual
                     // settings coroutine and fixed same-account receipt are checked on EDT.
                     currentCoroutineContext().ensureActive(); actual.check()
                     if (MessageNotificationSettingsStore.getSettings(actual).first() == settings)
-                        notifications.postAll(batch)
+                        notifications.postAll(batch, cancelledKeys)
                     } catch (cancelled: CancellationException) { throw cancelled }
                     catch (_: IOException) { retry = true }
                     catch (failure: Exception) {
@@ -111,7 +118,7 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
 /** Exactly the original read-only source mappings, replacing Android singleton services by
  * the existing same-Root request admission and Repository's original Call.Factory. */
 private class DesktopOwnedMessageNotificationSource(
-    context: DesktopMessageNotificationContext,
+    private val context: DesktopMessageNotificationContext,
     private val owner: DesktopMessagePageAdmission,
     private val requestJob: Job,
     private val checkRequest: () -> Unit,
@@ -120,6 +127,22 @@ private class DesktopOwnedMessageNotificationSource(
         "https://api.bilibili.com/", context.epoch, { context.isCurrent() && owner.isOwned() && currentCallerActive() })
     private val api = context.repository.ownedHomeService(BilibiliApi::class.java,
         "https://api.bilibili.com/", context.epoch, { context.isCurrent() && owner.isOwned() && currentCallerActive() })
+    private val messages = context.repository.ownedHomeService(MessageApi::class.java,
+        "https://api.vc.bilibili.com/", context.epoch, ::owned)
+    private fun owned() = context.isCurrent() && owner.isOwned() && currentCallerActive()
+    private val grpc = DesktopDynamicBiliGrpcClient(
+        context.repository.ownedHomeCallFactory(context.epoch, ::owned),
+        {
+            checkRequest()
+            listOf("SESSDATA", "bili_jct", "buvid3").mapNotNull { name ->
+                context.repository.ownedHomeCookie(name, context.epoch, ::owned)?.let { name to it }
+            }.toMap()
+        },
+        { checkRequest(); context.mid },
+        { checkRequest(); context.repository.ownedHomeAccessToken(context.epoch, ::owned) },
+        ::owned,
+    )
+    private val personal = DesktopDynamicPersonalFeedApi(grpc::request)
     // Captured once in the real awaitRead body. Every child/HTTP call still uses this actual
     // executing request Job; it is not a lifecycle owner or a completed UI nav request.
     private fun currentCallerActive() = requestJob.isActive
@@ -132,22 +155,29 @@ private class DesktopOwnedMessageNotificationSource(
     }
     override suspend fun sessions() = read { owner.requests.getSessions(sessionType = 4, size = 20)
         .getOrThrow().session_list.orEmpty() }
-    override suspend fun replyIds() = read { owner.requests.getReplyFeed().getOrThrow().items.orEmpty().map { it.id } }
-    override suspend fun atIds() = read { owner.requests.getAtFeed().getOrThrow().items.orEmpty().map { it.id } }
-    override suspend fun likeIds() = read {
-        val data = owner.requests.getLikeFeed().getOrThrow()
-        (data.latest?.items.orEmpty() + data.total?.items.orEmpty()).map { it.id }.distinct()
+    override suspend fun sessionDetail(talkerId: Long, sessionType: Int) = read {
+        val response = messages.getSessionDetail(talkerId, sessionType)
+        check(response.code == 0) { "Session detail code ${response.code}" }
+        checkNotNull(response.data).also {
+            check(it.talker_id == talkerId && it.session_type == sessionType) { "会话详情标识不匹配" }
+        }
     }
+    override suspend fun feedUnread() = read { owner.requests.getFeedUnread().getOrThrow() }
     override suspend fun systemNotices() = read { owner.requests.getSystemNotices().getOrThrow() }
     override suspend fun dynamicUpdateCount(baseline: String) = read {
         val response = dynamic.getDynamicUpdateCount(type = "all", updateBaseline = baseline)
         check(response.code == 0) { "Dynamic update code ${response.code}" }
         checkNotNull(response.data).update_num
     }
-    override suspend fun dynamicFeed(baseline: String, offset: String) = read {
-        val response = dynamic.getDynamicFeed(type = "all", offset = offset, updateBaseline = baseline)
-        check(response.code == 0) { "Dynamic feed code ${response.code}" }
+    override suspend fun followings(selfMid: Long, page: Int) = read {
+        val response = api.getFollowings(vmid = selfMid, pn = page, ps = 50)
+        check(response.code == 0) { "Followings code ${response.code}" }
         checkNotNull(response.data)
+    }
+    override suspend fun personalDynamicFeed(hostUid: Long, offset: String, page: Int) = read {
+        withContext(DesktopDynamicGrpcRequestSource(::owned, context::admit)) {
+            personal.load(hostUid, offset, page)
+        }
     }
     override suspend fun followedLive(page: Int) = read {
         val response = api.getFollowedLive(page = page, pageSize = 10)

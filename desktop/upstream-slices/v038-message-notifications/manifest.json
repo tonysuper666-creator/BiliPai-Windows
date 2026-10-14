@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+  "canonicalBaselineCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "selection": "Complete v038 message notification policy, poller and state; personal-feed preload protocol and original tests; shared transport sources retained for sole-owner integration",
+  "files": [
+    {
+      "filename": "MessageNotificationChecker.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt",
+      "bytes": 22662,
+      "sha256Bytes": "9dc20551f97ea39332247f9b651f53035952632cfd0caf0b880c24784b9f5991",
+      "gitBlob": "511fc0ea0129b67b082333e2734f9731272fd5f1"
+    },
+    {
+      "filename": "MessageNotificationPolicy.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicy.kt",
+      "bytes": 6679,
+      "sha256Bytes": "1c6285307006b272dddd2fac14ba7c60142b77e7b00b50d268be5213aa3c9889",
+      "gitBlob": "c731f02aa2a1e5b95f9196b4b96493828200dda5"
+    },
+    {
+      "filename": "MessageNotificationStateStore.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationStateStore.kt",
+      "bytes": 2973,
+      "sha256Bytes": "302bb36a1a7260a74a590899b43dbdf59a958c3401f9a8ea42dd35e00a732357",
+      "gitBlob": "a2fafaf2793b4e571d64306d8cedfa886c2e7047"
+    },
+    {
+      "filename": "MessageNotificationPolicyTest.kt",
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicyTest.kt",
+      "bytes": 39073,
+      "sha256Bytes": "e4c74995bfc6d4de81d0a787a2d0bf10a03a1ede2a797548809cdeac66536d95",
+      "gitBlob": "78345ec02d165e84f7ed31d15f58dfb13150b6ef"
+    },
+    {
+      "filename": "MessageNotificationSettingsStore.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationSettingsStore.kt",
+      "bytes": 5665,
+      "sha256Bytes": "b54bfb95eed322989cbed9544b0e442535a3a81586ada4bb4fd454ae43e0a54d",
+      "gitBlob": "ccc50d07cf93148bc4f5810ad96194cdc1f05d2c"
+    },
+    {
+      "filename": "DynamicPersonalFeedApi.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/core/network/grpc/DynamicPersonalFeedApi.kt",
+      "bytes": 13470,
+      "sha256Bytes": "e24f626ab2b47e121a3d5da9e26bd76d9f61af4957c0abf54a9b8de7072e8387",
+      "gitBlob": "4a0f656b596850b5defb9da799b82572bfc807a5"
+    },
+    {
+      "filename": "DynamicPersonalFeedApiTest.kt",
+      "originalPath": "core-data/src/test/java/com/android/purebilibili/core/network/grpc/DynamicPersonalFeedApiTest.kt",
+      "bytes": 7570,
+      "sha256Bytes": "b2f936ddc5a37b5ee6bd4dffde9994ec2f369e017af2027ce9c0f63e886e2751",
+      "gitBlob": "b8c6e3c4cae32bfb8bf0c3541710530b38e2ab92"
+    },
+    {
+      "filename": "BiliGrpcClient.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/core/network/grpc/BiliGrpcClient.kt",
+      "bytes": 6377,
+      "sha256Bytes": "18e5ab7fae60cb0b62a0309076aeedd521d460e563d405676064e23f0b60ca01",
+      "gitBlob": "e6d49d15e9962926269b7daf2cdcd57ca7204617"
+    },
+    {
+      "filename": "ProtoWire.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/core/network/grpc/ProtoWire.kt",
+      "bytes": 12148,
+      "sha256Bytes": "5c44c12bc3db870874a4e1ea9e01f39faf03425f3db2c95576c4bded93fab31e",
+      "gitBlob": "01947331d4efafcdabf23afdb18e6118f082aaee"
+    }
+  ],
+  "rootMounted": false,
+  "mainCompiled": false,
+  "jvmTestsExecuted": false,
+  "applicationExecuted": false
+}

@@ -186,7 +186,11 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
        $Manifest.tokenProtocol-ne2-or$Manifest.presentationProperty-cne'bilipai-rtx-presentation'-or
        @($Manifest.sourceFiles).Count-ne21-or$Upstream.Count-ne24-or$Registration.Count-ne3){throw 'Presentation source manifest graph mismatch.'}
-    if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
+    foreach($protocolValue in @($Native.schema,$Native.tokenProtocol)) {
+        if($protocolValue-isnot[int]-and$protocolValue-isnot[long]) {
+            throw 'Presentation receipt protocol must use integer values.'
+        }
+    }
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
        $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607'-or
@@ -255,7 +259,7 @@ try {
         $manifestExpected='A1CDA53EF043749E006C88A84ABEE129BCCC7BFC649B011976CD421E75E5C607'
         Require-Properties $profile @('presentationProtocolVersion','presentationProperty','upstreamEditsSha256',
             'sourcePatchHelperSha256','mpvNativeReceiptRelativePath','mpvNativeReceiptSha256') 'PRESENTATION_PROFILE_MISSING'
-        if($profile.presentationProtocolVersion-isnot[int]-or$profile.presentationProtocolVersion-ne2-or$profile.presentationProperty-cne'bilipai-rtx-presentation'-or
+        if(($profile.presentationProtocolVersion-isnot[int]-and$profile.presentationProtocolVersion-isnot[long])-or$profile.presentationProtocolVersion-ne2-or$profile.presentationProperty-cne'bilipai-rtx-presentation'-or
            $profile.mpvNativeReceiptRelativePath-cne'mpv/licenses/native-patch-receipt.json'){Reject 'PRESENTATION_PROFILE_INVALID'}
         Same-Hash $profile.upstreamEditsSha256 'e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f' 'PRESENTATION_EDIT_IDENTITY_MISMATCH'
         Same-Hash $profile.sourcePatchHelperSha256 '748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf' 'PRESENTATION_HELPER_IDENTITY_MISMATCH'

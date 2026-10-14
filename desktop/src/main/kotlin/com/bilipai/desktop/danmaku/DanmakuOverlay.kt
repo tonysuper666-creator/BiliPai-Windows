@@ -52,7 +52,14 @@ import java.util.concurrent.ArrayBlockingQueue
 import javax.swing.JComponent
 import javax.swing.JWindow
 import javax.swing.SwingUtilities
-import javax.swing.Timer
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
+import java.awt.event.HierarchyBoundsAdapter
+import java.awt.event.HierarchyEvent
+import java.awt.event.HierarchyListener
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
+import java.beans.PropertyChangeListener
 
 /** A transparent mouse-through native window above mpv's child HWND. */
 class DanmakuOverlay internal constructor(
@@ -84,7 +91,7 @@ class DanmakuOverlay internal constructor(
     override val webMaskEnabled:Boolean get()=settings.smartOcclusionEnabled && !cacheMaintenance && !liveMode && !closed.get()
     override val webMaskTransport:DesktopDanmakuSource get()=source
     override fun webMaskPositionMs():Long=(player.state.value.positionSeconds*1000).toLong().coerceAtLeast(0L)
-    override fun invalidateWebMaskPaint(){SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}}
+    override fun invalidateWebMaskPaint(){SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()}}
     private var lastWebMaskRefreshNanos=Long.MIN_VALUE
     private var lastWebMaskPositionMs=Long.MIN_VALUE
     private val mutableError = MutableStateFlow<String?>(null)
@@ -117,7 +124,7 @@ class DanmakuOverlay internal constructor(
             val next=version to viewport
             if(originalSectionDanmakuViewport!=next) {
                 originalSectionDanmakuViewport=next
-                SwingUtilities.invokeLater {if(!closed.get() && player.ownsSourceVersion(version))panel.repaint()}
+                SwingUtilities.invokeLater {if(!closed.get() && player.ownsSourceVersion(version))requestRenderFrame()}
             }
             true
         }
@@ -129,7 +136,7 @@ class DanmakuOverlay internal constructor(
         SwingUtilities.invokeLater {
             if(!closed.get() && player.ownsSourceSnapshot(source)) {
                 originalPaintFrame=null;originalPointerHit=null;basPaintFrame=null;basInput.cancel()
-                panel.repaint()
+                requestRenderFrame()
             }
         }
         true
@@ -139,11 +146,11 @@ class DanmakuOverlay internal constructor(
     } == true
     fun setOriginalSectionViewport(version:Long,active:Boolean):Boolean = synchronized(requestLock) {
         if(closed.get() || !player.ownsSourceVersion(version)) false
-        else {originalSectionViewport=version to active;true}
+        else {originalSectionViewport=version to active;requestRenderFrame();true}
     }
     fun releaseOriginalSectionViewport(version:Long):Boolean = synchronized(requestLock) {
         if(originalSectionViewport?.first!=version) false
-        else {originalSectionViewport=null;originalSectionDanmakuViewport=null;originalSectionRenderingPaused=null;originalSeekScrub=null;true}
+        else {originalSectionViewport=null;originalSectionDanmakuViewport=null;originalSectionRenderingPaused=null;originalSeekScrub=null;requestRenderFrame();true}
     }
     /** Seek scrubbing suppresses displayed items only, retaining the raw CID document and loader. */
     fun seekOriginalSection(version:Long,positionMs:Long?,scrubbing:Boolean):Boolean = synchronized(requestLock) {
@@ -160,7 +167,7 @@ class DanmakuOverlay internal constructor(
                         if(!isOriginalSectionRenderingPaused())displayTime=anchoredPosition
                         sampleTimeNanos=System.nanoTime()
                     }
-                    panel.repaint()
+                    requestRenderFrame()
                 }
             }
             true
@@ -202,15 +209,15 @@ class DanmakuOverlay internal constructor(
         // It still belongs to the actual native source; painting uses document admission.
         if(closed.get() || liveMode || !player.ownsSourceVersion(sourceVersion))false else {
             hotReservation=HotReservation(sourceVersion,token,heightPx)
-            SwingUtilities.invokeLater {if(!closed.get())panel.repaint()};true
+            SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()};true
         }
     }
     internal fun updateHotBarReservation(sourceVersion:Long,token:Any,heightPx:Float):Boolean = synchronized(requestLock) {
         if(!originalDocumentOwned(sourceVersion) || hotReservation?.token!==token || hotReservation?.sourceVersion!=sourceVersion)false
-        else {hotReservation=HotReservation(sourceVersion,token,heightPx);SwingUtilities.invokeLater {if(!closed.get())panel.repaint()};true}
+        else {hotReservation=HotReservation(sourceVersion,token,heightPx);SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()};true}
     }
     internal fun releaseHotBarReservation(token:Any) = synchronized(requestLock) {
-        if(hotReservation?.token===token) {hotReservation=null;SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}}
+        if(hotReservation?.token===token) {hotReservation=null;SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()}}
     }
     /** Derived view of the sole raw document, with no second item/cache authority. */
     fun poolSourceFor(cid: Long, sourceVersion: Long): DanmakuPoolSourceSnapshot? = synchronized(requestLock) {
@@ -366,7 +373,7 @@ class DanmakuOverlay internal constructor(
                 currentOfflineDocumentOwned()}) {
                 vodBaseGeneration=version; vodBaseCount=it; updateVodCount()
             }
-            panel.repaint()
+            requestRenderFrame()
         }
     }
 
@@ -584,7 +591,7 @@ class DanmakuOverlay internal constructor(
                 }
                 if (installed) {
                     basPaintFrame = null; basInput.cancel(); basRenderer.clear()
-                    updateVodCount(); panel.repaint()
+                    updateVodCount(); requestRenderFrame()
                 }
             }
         }
@@ -768,9 +775,105 @@ class DanmakuOverlay internal constructor(
             } finally { context.dispose() }
         }
     }.apply { isOpaque = false }
-    private val timer = Timer(16) { tick() }
+    private val framePlatform = SwingDesktopDanmakuFramePlatform()
+    private val frameRequests = DesktopOriginalDanmakuFrameRequests(framePlatform, ::canRenderOverlay, ::tick)
+    private val frameInvalidationQueued = AtomicBoolean(false)
+    private var observedHost: Window? = null
+    private val geometryListener = object : ComponentAdapter() {
+        override fun componentMoved(event: ComponentEvent) = requestRenderFrame()
+        override fun componentResized(event: ComponentEvent) = requestRenderFrame()
+        override fun componentShown(event: ComponentEvent) = requestRenderFrame()
+        override fun componentHidden(event: ComponentEvent) = requestRenderFrame()
+    }
+    private val hierarchyListener = HierarchyListener { requestRenderFrame() }
+    private val ancestorGeometryListener = object : HierarchyBoundsAdapter() {
+        override fun ancestorMoved(event: HierarchyEvent) = requestRenderFrame()
+        override fun ancestorResized(event: HierarchyEvent) = requestRenderFrame()
+    }
+    private val hostListener = object : WindowAdapter() {
+        override fun windowGainedFocus(event: WindowEvent) = requestRenderFrame()
+        override fun windowLostFocus(event: WindowEvent) = requestRenderFrame()
+        override fun windowStateChanged(event: WindowEvent) = requestRenderFrame()
+        override fun windowClosing(event: WindowEvent) = requestRenderFrame()
+        override fun windowClosed(event: WindowEvent) = requestRenderFrame()
+    }
+    private val hostPropertyListener = PropertyChangeListener { event ->
+        if (event.propertyName in setOf("alwaysOnTop", "graphicsConfiguration")) requestRenderFrame()
+    }
 
-    init { SwingUtilities.invokeLater { if (!closed.get()) timer.start() } }
+    init {
+        requests.launch {
+            player.state.map { state ->
+                val paused = state.paused || state.nativePaused == true || state.loading || state.pausedForCache
+                listOf(state.ready, state.firstVideoFrameReady, state.videoCodec, state.error, state.ended,
+                    state.audioOnly, paused, state.speed, state.seekCompletedId,
+                    state.videoWidth, state.videoHeight, state.activeVideoPanscan,
+                    state.positionSeconds.takeIf { paused })
+            }.distinctUntilChanged().collectLatest { requestRenderFrame() }
+        }
+        SwingUtilities.invokeLater {
+            if (!closed.get()) {
+                player.surface.addComponentListener(geometryListener)
+                player.surface.addHierarchyListener(hierarchyListener)
+                player.surface.addHierarchyBoundsListener(ancestorGeometryListener)
+                requestRenderFrame()
+            }
+        }
+    }
+
+    private fun observeHost(next: Window?) {
+        check(SwingUtilities.isEventDispatchThread())
+        if (observedHost === next) return
+        observedHost?.let {
+            it.removeComponentListener(geometryListener)
+            it.removeWindowFocusListener(hostListener)
+            it.removeWindowListener(hostListener)
+            (it as? Frame)?.removeWindowStateListener(hostListener)
+            it.removePropertyChangeListener(hostPropertyListener)
+        }
+        observedHost = next
+        next?.let {
+            it.addComponentListener(geometryListener)
+            it.addWindowFocusListener(hostListener)
+            it.addWindowListener(hostListener)
+            (it as? Frame)?.addWindowStateListener(hostListener)
+            it.addPropertyChangeListener(hostPropertyListener)
+        }
+    }
+
+    private fun canRenderOverlay(): Boolean {
+        if (closed.get()) return false
+        val surface = player.surface
+        val host = SwingUtilities.getWindowAncestor(surface)
+        val state = player.state.value
+        val hasPaint = (enabled && (mutableCount.value > 0 || (liveMode && pendingLive.isNotEmpty()))) ||
+            eyeTint.visible || ownedViewportBrightness()?.second?.let { it < 1f } == true
+        return hasPaint && surface.isShowing && surface.width > 0 && surface.height > 0 &&
+            host != null && host.isVisible && (host !is Frame || host.extendedState and Frame.ICONIFIED == 0) &&
+            state.ready && state.firstVideoFrameReady && state.videoCodec != null && state.error == null &&
+            !state.ended && !state.audioOnly
+    }
+
+    /** All invalidations enter the same original request path, including parked seeks/live appends. */
+    private fun requestRenderFrame() {
+        if (closed.get()) return
+        // Queue even EDT publications: source/settings setters may still hold
+        // requestLock. Host listeners and player reads run after that write ends.
+        if (frameInvalidationQueued.compareAndSet(false, true)) SwingUtilities.invokeLater {
+            frameInvalidationQueued.set(false)
+            if (!closed.get()) {
+                observeHost(SwingUtilities.getWindowAncestor(player.surface))
+                validateWebMaskOwnership()
+                frameRequests.updateVisibilityScheduling()
+                if (!canRenderOverlay()) parkOverlay()
+            }
+        }
+    }
+
+    private fun parkOverlay() {
+        originalPaintFrame = null; originalPointerHit = null; basPaintFrame = null
+        basInput.cancel(); overlay?.isVisible = false; ownerWasActive = false
+    }
 
     fun applySettings(settings: DanmakuSettings) {
         val normalized = settings.normalized()
@@ -786,7 +889,7 @@ class DanmakuOverlay internal constructor(
             if (!closed.get()) {
                 scheduler.applySettings(this.settings)
                 measuredWidths.clear()
-                panel.repaint()
+                requestRenderFrame()
             }
         }
     }
@@ -794,14 +897,14 @@ class DanmakuOverlay internal constructor(
     fun setEyeProtection(dimAlpha: Float, warmAlpha: Float, warmArgb: Int = 0xffffc07a.toInt()) {
         eyeTint = DesktopEyeTint(dimAlpha.takeIf(Float::isFinite)?.coerceIn(0f, 1f) ?: 0f,
             warmAlpha.takeIf(Float::isFinite)?.coerceIn(0f, 1f) ?: 0f, warmArgb)
-        SwingUtilities.invokeLater { if (!closed.get()) panel.repaint() }
+        SwingUtilities.invokeLater { if (!closed.get()) requestRenderFrame() }
     }
 
     /** Video-viewport brightness, not Windows system/display brightness. Root writes on its owned UI actor. */
     fun setViewportBrightness(expectedSourceVersion:Long,brightness:Float):Boolean = synchronized(requestLock) {
         if(closed.get()||!brightness.isFinite()||!player.ownsSourceVersion(expectedSourceVersion))return@synchronized false
         viewportBrightness=expectedSourceVersion to brightness.coerceIn(0f,1f)
-        SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}
+        SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()}
         true
     }
     fun viewportBrightnessFor(expectedSourceVersion:Long):Float? = synchronized(requestLock) {
@@ -811,7 +914,7 @@ class DanmakuOverlay internal constructor(
     fun clearViewportBrightness(expectedSourceVersion:Long):Boolean = synchronized(requestLock) {
         if(closed.get()||!player.ownsSourceVersion(expectedSourceVersion)||viewportBrightness?.first!=expectedSourceVersion)return@synchronized false
         viewportBrightness=null
-        SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}
+        SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()}
         true
     }
 
@@ -824,7 +927,7 @@ class DanmakuOverlay internal constructor(
             if (!liveMode && !cacheMaintenance) rawDocument to generation.get() else null
         }
         vod?.let { (document, version) -> installDocument(document, version) }
-        SwingUtilities.invokeLater { if (!closed.get()) { liveRenderer.setProcessor(processor); panel.repaint() } }
+        SwingUtilities.invokeLater { if (!closed.get()) { liveRenderer.setProcessor(processor); requestRenderFrame() } }
     }
 
     suspend fun load(cid:Long,aid:Long=0L,durationSeconds:Double=0.0,expectedSourceVersion:Long?=null,maskSource:DesktopOwnedWebMaskSource?) =
@@ -855,20 +958,20 @@ class DanmakuOverlay internal constructor(
         mutableError.value = null; mutableFormat.value = null
         SwingUtilities.invokeLater {
             if (!closed.get() && version == generation.get() && liveMode) {
-                clearBasPresentation();liveRenderer.reset(); mutableCount.value = 0; panel.repaint()
+                clearBasPresentation();liveRenderer.reset(); mutableCount.value = 0; requestRenderFrame()
             }
         }
         return version
     }
 
     fun emitLive(item: LiveDanmakuItem, liveGeneration: Long = generation.get()) {
-        if (!closed.get() && liveMode && liveGeneration == generation.get()) pendingLive.offer(PendingLive(liveGeneration, item))
+        if (!closed.get() && liveMode && liveGeneration == generation.get() && pendingLive.offer(PendingLive(liveGeneration, item))) requestRenderFrame()
     }
 
     fun removeLiveSuperChats(ids: List<Long>, liveGeneration: Long = generation.get()) {
         SwingUtilities.invokeLater {
             if (!closed.get() && liveMode && liveGeneration == generation.get()) {
-                liveRenderer.removeSuperChats(ids); mutableCount.value = liveRenderer.size
+                liveRenderer.removeSuperChats(ids); mutableCount.value = liveRenderer.size; requestRenderFrame()
             }
         }
     }
@@ -1026,7 +1129,7 @@ class DanmakuOverlay internal constructor(
                         hotDocument?.takeIf {it.generation==version}?.let {hotDocument=it.copy(revision=documentRevision.get())}
                         if(originalInstalledGeneration==version)originalInstalledRevision=documentRevision.get()
                         if(vodBaseGeneration==version)vodBaseCount=(hotDocument?.comments?.size ?: rawDocument.comments.size)+advanced.size
-                        updateVodCount();panel.repaint()
+                        updateVodCount();requestRenderFrame()
                     }
                 }
             }
@@ -1064,7 +1167,7 @@ class DanmakuOverlay internal constructor(
                     scheduler=DanmakuScheduler(emptyList(),settings,liveAdmission=false)
                     advancedRenderer=AdvancedDanmakuRenderer(emptyList());styles=emptyMap();measuredWidths.clear()
                     clearBasPresentation()
-                    mutableCount.value=0;panel.repaint();painted.complete(Unit)
+                    mutableCount.value=0;requestRenderFrame();painted.complete(Unit)
                 } catch(failure:Throwable) { painted.completeExceptionally(failure) }
             }
             kotlinx.coroutines.withTimeout(3_000L) {painted.await()};checkRequest()
@@ -1095,7 +1198,7 @@ class DanmakuOverlay internal constructor(
             SwingUtilities.invokeLater {
                 if (!closed.get() && clearedGeneration == generation.get()) {
                     scheduler = DanmakuScheduler(emptyList(), settings, liveAdmission = false)
-                    advancedRenderer = AdvancedDanmakuRenderer(emptyList()); clearBasPresentation(); panel.repaint()
+                    advancedRenderer = AdvancedDanmakuRenderer(emptyList()); clearBasPresentation(); requestRenderFrame()
                 }
             }
         }
@@ -1168,7 +1271,7 @@ class DanmakuOverlay internal constructor(
                     if(synchronized(requestLock){current()}) {
                         vodBaseGeneration=version; vodBaseCount=installedComments.size+captured.raw.advanced.size; updateVodCount()
                     }
-                    panel.repaint()
+                    requestRenderFrame()
                 } else if(synchronized(requestLock){current()})install(processed,nextStyles)
             }
         }
@@ -1194,8 +1297,8 @@ class DanmakuOverlay internal constructor(
         }
     }
 
-    private fun tick() {
-        if (closed.get()) return
+    private fun tick(): Boolean {
+        if (!canRenderOverlay()) { parkOverlay(); return false }
         validateWebMaskOwnership()
         val maskPosition=webMaskPositionMs()
         val maskNow=System.nanoTime()
@@ -1219,11 +1322,7 @@ class DanmakuOverlay internal constructor(
         }
         val currentOwner = SwingUtilities.getWindowAncestor(surface)
         val playerState = player.state.value
-        val visible = ((enabled && mutableCount.value > 0) || eyeTint.visible || ownedViewportBrightness()?.second?.let {it<1f}==true) && surface.isShowing && surface.width > 0 && surface.height > 0 &&
-            currentOwner != null && currentOwner.isVisible &&
-            (currentOwner !is Frame || currentOwner.extendedState and Frame.ICONIFIED == 0) &&
-            playerState.ready && playerState.firstVideoFrameReady && playerState.videoCodec != null && playerState.error == null && !playerState.ended && !playerState.audioOnly
-        if (!visible) { originalPaintFrame=null;originalPointerHit=null;basPaintFrame=null;basInput.cancel();overlay?.isVisible = false; ownerWasActive = false; return }
+        if (!canRenderOverlay() || currentOwner == null) { parkOverlay(); return false }
         if (currentOwner != owner) {
             overlay?.dispose()
             owner = currentOwner
@@ -1231,7 +1330,7 @@ class DanmakuOverlay internal constructor(
                     .isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.PERPIXEL_TRANSLUCENT)) {
                 mutableError.value = "当前显示环境不支持透明弹幕窗口。"
                 enabled = false
-                return
+                return false
             }
             overlay = JWindow(currentOwner).apply {
                 focusableWindowState = false
@@ -1243,7 +1342,7 @@ class DanmakuOverlay internal constructor(
                 contentPane.add(panel)
             }
         }
-        val window = overlay ?: return
+        val window = overlay ?: return false
         val location = surface.locationOnScreen
         val geometryChanged=window.x != location.x || window.y != location.y || window.width != surface.width || window.height != surface.height
         if (geometryChanged)
@@ -1281,9 +1380,12 @@ class DanmakuOverlay internal constructor(
         presentationTimeReady=selectedTime!=null
         presentationTimeSource=if(selectedTime!=null)currentSource else null
         if(selectedTime!=null)displayTime=selectedTime
-        // Keep the existing timer for actual host geometry. A frozen presentation
-        // needs no perpetual glyph allocation/paint loop; changes invalidate it.
-        if(!paused || showing || geometryChanged)panel.repaint()
+        panel.repaint()
+        // A static tint/brightness and paused video need only event-driven paints.
+        // Realtime live items still expire/move on their own monotonic timeline.
+        return enabled && mutableCount.value > 0 && (liveMode ||
+            (!paused && !playerState.paused && playerState.nativePaused != true &&
+                !playerState.loading && !playerState.pausedForCache))
     }
 
     /** Fixture diagnostics describe geometry and native state, never user comments or source credentials. */
@@ -1297,7 +1399,7 @@ class DanmakuOverlay internal constructor(
             runCatching { "nativeExtendedStyle=0x${user32.GetWindowLongW(Native.getWindowPointer(nativeWindow), -20).toString(16)}" }.getOrElse { "nativeExtendedStyle=unavailable" }
         } ?: "nativeWindow=absent"
         return "surface=${surface.bounds}, showing=${surface.isShowing}, ancestor=${ancestor?.javaClass?.simpleName}, ancestorVisible=${ancestor?.isVisible}, ancestorFrameState=${(ancestor as? Frame)?.extendedState}, " +
-            "owner=${owner?.javaClass?.simpleName}, ownerActive=${owner?.isActive}, ownerTopmost=${owner?.isAlwaysOnTop}, timerRunning=${timer.isRunning}, enabled=$enabled, " +
+            "owner=${owner?.javaClass?.simpleName}, ownerActive=${owner?.isActive}, ownerTopmost=${owner?.isAlwaysOnTop}, timerRunning=${framePlatform.isRunning}, enabled=$enabled, " +
             "overlay=${window?.bounds}, showing=${window?.isShowing}, overlayTopmost=${window?.isAlwaysOnTop}, panel=${panel.bounds}, comments=${mutableCount.value}, " +
             "mediaTime=$displayTime, ready=${playerState.ready}, firstFrame=${playerState.firstVideoFrameReady}, nativePaused=${playerState.nativePaused}, " +
             "videoCodecPresent=${playerState.videoCodec != null}, ended=${playerState.ended}, audioOnly=${playerState.audioOnly}, errorPresent=${playerState.error != null}, $native"
@@ -1310,7 +1412,12 @@ class DanmakuOverlay internal constructor(
             SwingUtilities.invokeLater {
                 originalPaintFrame=null;originalPointerHit=null;basPaintFrame=null;basActionBinding=null
                 basInput.close();basRenderer.close();basInstallation=null
-                timer.stop(); overlay?.dispose(); overlay = null
+                frameRequests.cancelRenderFrames(); framePlatform.close()
+                player.surface.removeComponentListener(geometryListener)
+                player.surface.removeHierarchyListener(hierarchyListener)
+                player.surface.removeHierarchyBoundsListener(ancestorGeometryListener)
+                observeHost(null)
+                overlay?.dispose(); overlay = null
             }
         }
     }

@@ -14,6 +14,8 @@ internal data class DesktopWindowsAudioOutputPreferences(val exclusive: Boolean 
         requireValid()
         return linkedMapOf("audio-device" to effectiveDeviceId, "audio-exclusive" to if (exclusive) "yes" else "no",
             "audio-fallback-to-null" to "no", "audio-channels" to if (exclusive) "stereo" else "auto-safe",
+            // Pinned MPV otherwise deselects a failed AO and can continue a silent video.
+            "stop-playback-on-init-failure" to if (exclusive) "yes" else "no",
             "gapless-audio" to "weak")
     }
 }

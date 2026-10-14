@@ -1,0 +1,306 @@
+{
+  "appConsumerIntegrated": false,
+  "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+  "displayProofRuntimeVerified": false,
+  "filterName": "bilipai-rtx",
+  "filterSourceFiles": [
+    {
+      "bytes": 33035,
+      "fileName": "vf_bilipai_rtx.c",
+      "sha256": "9e6e9bb5910d227eccde9f55f2d4c7b590588c5d160d26dc994a73f93b30bb28",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
+      "targetPath": "video/filter/vf_bilipai_rtx.c"
+    },
+    {
+      "bytes": 51640,
+      "fileName": "bilipai_rtx_mpv_bridge.c",
+      "sha256": "51b988ab9ce5a6ac5da1708e118675bf499a86c697417a55a61edd1493067014",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
+      "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
+    },
+    {
+      "bytes": 9532,
+      "fileName": "bilipai_rtx_mpv_bridge.h",
+      "sha256": "6c82888d4b1ab5175dd4a01d5ffbccfd0310e1fbee35b206bebdcd5ed1fe43bf",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h",
+      "targetPath": "video/filter/bilipai_rtx_mpv_bridge.h"
+    },
+    {
+      "bytes": 5311,
+      "fileName": "bilipai_veyra_core_v1.h",
+      "sha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+      "sourcePath": "desktop/native/veyra-core/bilipai_veyra_core_v1.h",
+      "targetPath": "video/filter/bilipai_veyra_core_v1.h"
+    },
+    {
+      "bytes": 4191,
+      "fileName": "bilipai_rtx_frame_provenance.h",
+      "sha256": "c8e33dbb31feb14b034579b3432ded44fe7d05995f15ff473e57d1d4cf763184",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
+      "targetPath": "video/bilipai_rtx_frame_provenance.h"
+    },
+    {
+      "bytes": 46902,
+      "fileName": "bilipai_hdr_d3d11.c",
+      "sha256": "dfa4ec7f349405c853cafca1bf934a3c3b5e6c6126d2a2e324f2b098c91472ea",
+      "sourcePath": "desktop/native/veyra-hdr-d3d11/bilipai_hdr_d3d11.c",
+      "targetPath": "video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.c"
+    },
+    {
+      "bytes": 15505,
+      "fileName": "bilipai_hdr_d3d11.h",
+      "sha256": "16bc830fc18f3b0f6179b3a164048ab98d87259b09b6bac22c3baa54007707cb",
+      "sourcePath": "desktop/native/veyra-hdr-d3d11/bilipai_hdr_d3d11.h",
+      "targetPath": "video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.h"
+    },
+    {
+      "bytes": 16238,
+      "fileName": "bilipai_hdr_video_sr_sources.h",
+      "sha256": "ab68fe368080ce9904dd1b084abf8219ea12995d2a551bbf11aa25b88c2f2cdf",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/include/bilipai_hdr_video_sr_sources.h",
+      "targetPath": "video/filter/veyra-hdr-video-sr/include/bilipai_hdr_video_sr_sources.h"
+    },
+    {
+      "bytes": 7655,
+      "fileName": "bilipai_hdr_p010_sources.h",
+      "sha256": "b7eecdda6d733f4c9c198e21684fd2a429c70175d048edab17a53a0725f727c7",
+      "sourcePath": "desktop/native/veyra-hdr-p010-input/bilipai_hdr_p010_sources.h",
+      "targetPath": "video/filter/veyra-hdr-p010-input/bilipai_hdr_p010_sources.h"
+    },
+    {
+      "bytes": 3163,
+      "fileName": "bilipai_hdr_p010_bindings.h",
+      "sha256": "c5b68c7c9a35e7ab638d488e640d2b32330e641a3887f7cea49a9b17ff3d814a",
+      "sourcePath": "desktop/native/veyra-hdr-p010-input/bilipai_hdr_p010_bindings.h",
+      "targetPath": "video/filter/veyra-hdr-p010-input/bilipai_hdr_p010_bindings.h"
+    },
+    {
+      "bytes": 2744,
+      "fileName": "BiliPaiHdrColor.hlsli",
+      "sha256": "20a435b4230bc6c5468b95c267f2ee9c84c749959fb059c44009bc3a3fe1b163",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrColor.hlsli",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrColor.hlsli"
+    },
+    {
+      "bytes": 596,
+      "fileName": "BiliPaiHdrDecodePq.hlsl",
+      "sha256": "8925de233bf2952173bf70dc7872992b0e9252153d152f8cae37e7a9f7f1ce1f",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrDecodePq.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrDecodePq.hlsl"
+    },
+    {
+      "bytes": 622,
+      "fileName": "BiliPaiHdrProxyEncode.hlsl",
+      "sha256": "554b53a89a9e57b03628ce821abdc3e2bf87c63796b76f0784105e6b3b76fcf3",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrProxyEncode.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrProxyEncode.hlsl"
+    },
+    {
+      "bytes": 953,
+      "fileName": "BiliPaiHdrVideoSrRestore.hlsl",
+      "sha256": "ad2fbfc064d14fb9214dab4a303db7f26809e27cac58b749e9959cc0b29b9a16",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrVideoSrRestore.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrVideoSrRestore.hlsl"
+    },
+    {
+      "bytes": 622,
+      "fileName": "BiliPaiHdrEncodePq.hlsl",
+      "sha256": "e3a228bc5fc2ad9457b721223327d178f4a43518756789b27a550eeadeda533f",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrEncodePq.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrEncodePq.hlsl"
+    },
+    {
+      "bytes": 3947,
+      "fileName": "BiliPaiHdrP010ToBase.hlsl",
+      "sha256": "01c6bd26dc3ba52db6c3b1793b5ec55a9b68d8043499fbdb6b3d443f28b119b7",
+      "sourcePath": "desktop/native/veyra-hdr-p010-input/BiliPaiHdrP010ToBase.hlsl",
+      "targetPath": "video/filter/veyra-hdr-p010-input/BiliPaiHdrP010ToBase.hlsl"
+    },
+    {
+      "bytes": 35149,
+      "fileName": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/LICENSE",
+      "targetPath": "video/filter/veyra-hdr-video-sr/LICENSE"
+    },
+    {
+      "bytes": 34684,
+      "fileName": "bilipai_hdr_p010_chain.c",
+      "sha256": "40d4f4708860fcfe5a306e3e0cb916e235ca4639f9f3f40e3020f6ebd3870d1c",
+      "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_p010_chain.c",
+      "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_p010_chain.c"
+    },
+    {
+      "bytes": 10023,
+      "fileName": "bilipai_hdr_p010_chain.h",
+      "sha256": "d1a26f0b37f33686827d023221143ab49f8584cdaa0d18d121b520d92715f3ba",
+      "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_p010_chain.h",
+      "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_p010_chain.h"
+    },
+    {
+      "bytes": 36269,
+      "fileName": "bilipai_hdr_vf_owner.c",
+      "sha256": "ac7153d3bbc48562ccaafff473184ae5f7eab46f42dc6ab9cc851eb6e362432d",
+      "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_vf_owner.c",
+      "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_vf_owner.c"
+    },
+    {
+      "bytes": 7687,
+      "fileName": "bilipai_hdr_vf_owner.h",
+      "sha256": "e8367533b4447ae5cfc6e451a462691896db8849eb8479c0fe1714103194e143",
+      "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_vf_owner.h",
+      "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_vf_owner.h"
+    }
+  ],
+  "filterSourceManifestSha256": "a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607",
+  "gpuExecuted": false,
+  "nativeBinaryBuiltByThisProgram": false,
+  "patchId": "bilipai-veyra-rtx-present-v1",
+  "presentationProperty": "bilipai-rtx-presentation",
+  "schema": 3,
+  "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "sourceGraph": [
+    {
+      "afterSha256": "adef9a85fe5a3fadd3b10939fc198b003f1f9270fff5ad52bcea4f9f258c776c",
+      "beforeSha256": "9514d40109894e0bee4e4a2aa343a4e4e4d2368aee3729959180bf5f92d486c3",
+      "path": "video/filter/vf_d3d11vpp.c"
+    },
+    {
+      "afterSha256": "dc3c4ac3e5f6c4286399c1b502ac559a6afde12258a1a49b7ff5d3ac449035db",
+      "beforeSha256": "1b44a49ab3d0ba3bab75176bbeebb0c62e9445aeacea5c93ad34ac28ae0e6ed3",
+      "path": "filters/user_filters.h"
+    },
+    {
+      "afterSha256": "d9eca9dc4056464802bd1fd35b401405ae70a9aa618ccaac3de99ceef23fa262",
+      "beforeSha256": "405a36d4ed0ac4f3d2ee65c50ccb327cfcb910391ced6232749e517cf1ceea4a",
+      "path": "filters/user_filters.c"
+    },
+    {
+      "afterSha256": "cbbd78de8b89486a99ca3d00de749c06293e5f511bdf5d027fbce5f8ff5be68d",
+      "beforeSha256": "7b7e1059fbea9e6a46de8e5d8f7486af41850b4c1fcb77e9cd6b84525bccbbb3",
+      "path": "meson.build"
+    },
+    {
+      "afterSha256": "59b2ec20c855bbb26f571e456e59119241a02699bc045beacd6025d3dd21e4de",
+      "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
+      "path": "filters/f_output_chain.c"
+    },
+    {
+      "afterSha256": "239cde3ca70f9d0f80d919249c3267d0d519c0d9c44243803b2c9ccbdfc38d11",
+      "beforeSha256": "337b47f129f375a4e7b27ea568686eab01d2c1608197c717ca73cb8c02a4a6c3",
+      "path": "player/command.c"
+    },
+    {
+      "afterSha256": "08c08c3c3ca6439ecea83daab41728962e9759e10432517b3c6b256cff834e5f",
+      "beforeSha256": "99165df2282547cec1ec020338d472f594040a0d46d11c642a2828b778ed306c",
+      "path": "video/mp_image.c"
+    },
+    {
+      "afterSha256": "dad4d6d4ac7d5aba891d226ed15a9a421648cb9e4d28a6d6a967d8a030b9faf5",
+      "beforeSha256": "dd24eaacb29b8c16d450425db88904b33bc6ccc185e3b82e4689283f5fa1b92f",
+      "path": "video/mp_image.h"
+    },
+    {
+      "afterSha256": "a4c1bf4d35b8d99171801eada5b7b7b8f6a67ff1fa6c3ed5b2a56e00935fc3b1",
+      "beforeSha256": "8f0f70c2ac7cf3cd50e810f2d6b621751e38e4d8b428ceb62d2d07968c91981d",
+      "path": "video/out/d3d11/context.c"
+    },
+    {
+      "afterSha256": "17153e6a7f7237cc17bcfb1aae2605903ffe25df980e29e6952d53910f6364ce",
+      "beforeSha256": "3562ed486dcfec64be5218d102ba237788e849e21406d05a2e3f7bb4d03ea161",
+      "path": "video/out/gpu/context.h"
+    },
+    {
+      "afterSha256": "9ce33d1a8b92cde0898eb359976a1f8881dcbd5a20d601ec06afdb102be10b90",
+      "beforeSha256": "16d07d8fc34e15607b62d6bf667615660d6c9d065a5c0e267b1132354d74a3f0",
+      "path": "video/out/gpu/d3d11_helpers.c"
+    },
+    {
+      "afterSha256": "c65e01f61014cf9c1517e47e83daac8d57fe254c3351128f62476398a33875d1",
+      "beforeSha256": "6946a97728a45f2c77065dcd8e39d2580054a96b04bb7e49e576c0a6c6de9883",
+      "path": "video/out/gpu/d3d11_helpers.h"
+    },
+    {
+      "afterSha256": "5831c929b9447c124cd2cb3cb113a6025a9baadebd12da9630f1008f0ff60e5a",
+      "beforeSha256": "c3a2d28dadc406f8224002d01864119d27d0fe35454c62fe367beaa6f3a5355a",
+      "path": "video/out/gpu/video.c"
+    },
+    {
+      "afterSha256": "a3ddaf382c7f57db0d435300cd52c1cec33f65f51b03a6ea3c26fca68ab8ffa7",
+      "beforeSha256": "8db57ba5d371ca5708531c0e2398d6e7f99e0655119253285273e92b0c74028a",
+      "path": "video/out/gpu/video.h"
+    },
+    {
+      "afterSha256": "2278ad070df29ff54baa4573f3b59cb2f846234831e10e0040b0dceef57f92ee",
+      "beforeSha256": "8504b70c5ec07cb79f6fc4b5c7e332eb46376a97539feaaef2bfcd2e1adacbd1",
+      "path": "video/out/vo.c"
+    },
+    {
+      "afterSha256": "0fb1c65c4148baa414e610b6b5ae4063fef144b6f2f2de685c5260505cafc910",
+      "beforeSha256": "6a039da11ef851c361135c4f30d322d3b8fe1f78d349950dac737e42672fb753",
+      "path": "video/out/vo.h"
+    },
+    {
+      "afterSha256": "24628ac7dfc8690cb7c65d0519581c68df0063244246c89ac5de8b2a1a7d2436",
+      "beforeSha256": "c6db98db931e6ecbb357f3c46d0e101eb601ae1eb06aedb4785e29183c111337",
+      "path": "video/out/vo_gpu.c"
+    },
+    {
+      "afterSha256": "0bb3bd678838e9d81f804af2edeefda20624fe6040eecbaeec8b03f23a57fdcf",
+      "beforeSha256": "8c61e74c7cecf118660e1dfc573b55c68237fcc0921cd429c76881fcbf6d821e",
+      "path": "video/mp_image_pool.c"
+    },
+    {
+      "afterSha256": "374b379f5107efd88e5b63ed9ef215a0bbf0741fff351d9e6862680af942ec2e",
+      "beforeSha256": "ad92a020f4819a3f0b3909e257d7d591bfd7cdd914b7baf28738bfec7f98a3db",
+      "path": "video/sws_utils.c"
+    },
+    {
+      "afterSha256": "641065da0143451bed5cffb93acf57b43d888236635aef949e3d60894723742e",
+      "beforeSha256": "f9520ed4c127824dd444d450cb054c63b11a20f303e5476e0b7f6411fdf37866",
+      "path": "video/filter/vf_format.c"
+    },
+    {
+      "afterSha256": "b769aa9bab6ab3ef251d41cba83ec24e4e42b70c9bc435d4f88fd28d430a0361",
+      "beforeSha256": "f333a1730570d3a343b94654da4566b1e1cc7de44a537bcb1f7f3f328667ccce",
+      "path": "filters/f_decoder_wrapper.c"
+    },
+    {
+      "afterSha256": "ebaddbff5c5ca5a7c0e2909ce4fc78e345f76074c2e56b7527214021eec1aff0",
+      "beforeSha256": "4c042a000d24dc093a8ccc60bfeeffa8e231fc7404fec3cf4f52c2e20bc3178a",
+      "path": "video/decode/vd_lavc.c"
+    },
+    {
+      "afterSha256": "ac42505234ad56b1d7538488c29bda979c4accb76b4b075605a13648d07ffd52",
+      "beforeSha256": "2d133e104dac514e7f05beeeb78713755019a65c24bc984e2596559a124565dc",
+      "path": "filters/f_decoder_wrapper.h"
+    },
+    {
+      "afterSha256": "a19b8703d80e6398e4275ea2cf946150ff61903490143378f3c2ae9f335759df",
+      "beforeSha256": "493f064715ba083c1a4a71cbc10f655bd552ff34958d76ebfca8dae440ce979d",
+      "path": "filters/filter.h"
+    },
+    {
+      "afterSha256": "e57d8a5bbd0bf8ee5ce326bfd2ff37da0da253e7dc75eacca1317ca1ce635d7f",
+      "beforeSha256": "a7267c641bbe59f7513049187e9975ad4ea15c1da6946e05116b176865133827",
+      "path": "filters/f_output_chain.h"
+    },
+    {
+      "afterSha256": "06ff03a818840b043a24f38355724f9d52cfdac0ce37c4b021df181263cb5f07",
+      "beforeSha256": "3ccce2b694041ac12aab56fee803b06fba695ffb3f848f915e1acc7d2f5e632b",
+      "path": "player/video.c"
+    },
+    {
+      "afterSha256": "443f7e62777e9d3252e08750d446d76d783bcc3e66ed2cffde17cf8d40d13c18",
+      "beforeSha256": "eb191c341208444dfd6bd9df80b94c4ecd42efc1f4de0b472ce9226ed2573f15",
+      "path": "video/d3d.c"
+    },
+    {
+      "afterSha256": "4f763cda8d0249515ed4969e52a37410d48c3640c4008a51ea03bb7a478d5da7",
+      "beforeSha256": "db0b9de437ff81c8be401845e6cb275df2f2fc4beb9887541e75f379f3168d30",
+      "path": "video/d3d.h"
+    }
+  ],
+  "sourcePatchHelperSha256": "748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf",
+  "tokenProtocol": 2
+}

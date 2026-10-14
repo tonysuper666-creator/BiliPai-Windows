@@ -1,6 +1,7 @@
 """Keep the upstream JVM lyrics/library sources and extract their platform-neutral queue/loader code verbatim."""
 from __future__ import annotations
 from v025_source_paths import canonical_source as _desktop_canonical_source
+import v038_audio_library
 
 import argparse
 import hashlib
@@ -132,12 +133,18 @@ def generate(repo: Path, output: Path) -> list[Path]:
         original, "package com.android.purebilibili.feature.video.player\n\nimport kotlinx.serialization.Serializable\n\n" + queue))
 
     source = AUDIO + "library/ListenVideoLibraryDataSource.kt"
-    original = read_source(repo, source)
+    original = v038_audio_library.fixed_sources(repo)["ListenVideoLibraryDataSource.kt"]
     platform = section(original, "internal class BilibiliListenVideoLibraryDataSource", "internal class ListenVideoLibraryLoader")
     body = original.replace(platform, "").replace("import com.android.purebilibili.data.repository.FavoriteRepository\n", "")
     if "FavoriteRepository." in body or "android." in body.replace("com.android.purebilibili", "upstream"):
         raise ValueError("Upstream library loader gained a platform dependency")
     generated.append(write(output, "com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt", source, original, body))
+    proof = v038_audio_library.emit_loader_tests(repo, output)
+    proof.update(loaderSourceSHA256LF=hashlib.sha256(original.encode()).hexdigest(),
+                 completeLoaderAndInterfaceRetained=True, androidRepositoryClassRemoved=True,
+                 windowsTransportUnchanged=True, collectionPlayerUiMounted=False)
+    (output / "v038-audio-library-source-proof.json").write_text(
+        json.dumps(proof, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
 
     source = 'core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt'
     original = read_source(repo, source)
