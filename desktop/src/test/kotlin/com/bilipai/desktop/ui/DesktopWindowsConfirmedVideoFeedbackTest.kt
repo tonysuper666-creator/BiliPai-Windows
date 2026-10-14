@@ -52,8 +52,12 @@ class DesktopWindowsConfirmedVideoFeedbackTest {
         val presentation = DesktopOriginalVideoEngagementPresentation(::owned, ::admit)
         val vm = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
             DesktopPluginContext(DesktopPluginStore(folder)), scope, actions, VideoCoinBalanceLoader { 0.0 },
-            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false }))
-        init { vm.bindSubject(subject, VideoEngagementSeed(isLoggedIn = true)) }
+            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false },
+            interactionSession = { folder },
+            cachedFollowStatusReader = { error("Foreign-owner follow lookup is not selected by this fixture") },
+            followStatusQuery = { error("Foreign-owner follow query is not selected by this fixture") },
+        ))
+        init { vm.bindSubject(subject, VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true)) }
         suspend fun drain() = withTimeout(2_000) {
             while (scope.coroutineContext.job.children.any()) scope.coroutineContext.job.children.toList().joinAll()
         }

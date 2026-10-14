@@ -1,0 +1,75 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+      "filename": "VideoInteractionUseCase.kt",
+      "bytes": 7262,
+      "sha256Bytes": "2586051bc40d2cbd1544aab1d15217e0be0e9268ff8ce518a04c842dd49c20f5",
+      "gitBlob": "8ce07a22a86cf1fe54f9d2936c3a6a83a65c7743"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "filename": "VideoPlaybackViewModel.kt",
+      "bytes": 418581,
+      "sha256Bytes": "172898cc9e57ece032b9576d65fb4bc7ec930d17183fe58f34641955cb2fdf4f",
+      "gitBlob": "87e243e337893068d1f9ea4ebd23d272784a8b58"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "filename": "ActionRepository.kt",
+      "bytes": 43917,
+      "sha256Bytes": "beee46a48288a403cdeb60a951aac3a2d928fcae5d22406ce0e39b53ff2e9e68",
+      "gitBlob": "5a03e41346a4bdded3a433bd9fc934e94b0ba6ed"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/repository/VideoInteractionStatusCacheTest.kt",
+      "filename": "VideoInteractionStatusCacheTest.kt",
+      "bytes": 8809,
+      "sha256Bytes": "2f553949368d5f42000d6c37653a09d293a25e1ba578680f102bce977d08d034",
+      "gitBlob": "0ccc9bebe075afb84aec0e5243e3f1b7c53c8745"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/UserActionRepository.kt",
+      "filename": "UserActionRepository.kt",
+      "bytes": 3149,
+      "sha256Bytes": "4737610ba2a362948558d6ff1fc9d8ae5d47d7f1e4e1111b256e9d4d5aee4d48",
+      "gitBlob": "edbf0779b3ada53fdb8c55a25984f847b1e5af39"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+      "filename": "WatchLaterRepository.kt",
+      "bytes": 6373,
+      "sha256Bytes": "bddedacaff3f4ae5a402c2b72bbd5000209d0d6a820b9e2006591e6103dba8b5",
+      "gitBlob": "b3f80120dacebd16e3971d4d5ed67d0cc73733f7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+      "filename": "VideoPlaybackUseCase.kt",
+      "bytes": 61395,
+      "sha256Bytes": "132a6a420bf6a8ef156ad75274f19dbb4d812297fd6c377d54da0a681f9df0a2",
+      "gitBlob": "81b7875805ea84bad36f75aa9716357beaea8d76"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "filename": "VideoEngagementViewModel.kt",
+      "bytes": 33372,
+      "sha256Bytes": "76c8a05fe6ee2901a4b98a04c6ccb1f80c08c4ffd4440e6961219303a74de5b2",
+      "gitBlob": "f0c158f6b4ab1be491750be50020a63ba64748b0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "filename": "VideoActionSection.kt",
+      "bytes": 31922,
+      "sha256Bytes": "4e30673951232a393c49507cb6bd8eb75f7ee48e172b29d8eef9cc5196cd0b56",
+      "gitBlob": "43501fef3f48358e7db7059ad5aab6138a30b0a1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "filename": "VideoInfoSection.kt",
+      "bytes": 107433,
+      "sha256Bytes": "5de673e0919dca591289c2382fe03b9418922dc8bec89a54df314e74109dde69",
+      "gitBlob": "886094fffe3967289de919b140bcc58706ab4972"
+    }
+  ]
+}

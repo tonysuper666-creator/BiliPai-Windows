@@ -22,6 +22,8 @@ def generate(repo,output,standalone=False):
  parser=load(repo/'desktop/tools/sync-upstream.py','live_navigation_parser')
  media=load(repo/'desktop/tools/extract-upstream-media.py','live_navigation_selector')
  def emit(p,s,path=None,mode='selected'):
+  from v037_tab_roles import apply as apply_tab_roles
+  s=apply_tab_roles(p,s,output,path)
   raw=originals[p];dst=path or 'com/android/purebilibili/'+p.removeprefix(BASE)
   write(output/dst,s);records.append(dict(source=p,output=dst,mode=mode,originalSha256LF=sha(raw),preparedSha256LF=sha(s),adapted=raw!=s))
  def change(p,s,before,after,count=1):

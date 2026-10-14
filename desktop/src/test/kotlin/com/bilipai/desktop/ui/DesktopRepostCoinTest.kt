@@ -56,7 +56,7 @@ class DesktopRepostCoinTest {
             }
             response(method.name, args)
         } as BilibiliApi
-        private val protocol = DesktopOriginalVideoEngagementProtocol(api, { "fixture-csrf" }, { 1L }, { null }, { null },
+        private val protocol = com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api, { "fixture-csrf" }, { 1L }, { null }, { null },
             ::checkpoint, { error("Unexpected follow") },
             DesktopOriginalFavoriteFolderProtocol(api, { 1L }, { "fixture-csrf" }, ::checkpoint))
         private val analytics = object : DesktopOriginalVideoInteractionAnalytics {
@@ -69,7 +69,11 @@ class DesktopRepostCoinTest {
         val vm = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
             DesktopPluginContext(DesktopPluginStore(directory)), scope,
             DefaultVideoEngagementActions(VideoInteractionUseCase(protocol, analytics)), VideoCoinBalanceLoader { 10.0 },
-            ::lifetime, ::admit))
+            ::lifetime, ::admit,
+            interactionSession = { directory },
+            cachedFollowStatusReader = protocol::cachedFollowStatus,
+            followStatusQuery = protocol::queryFollowStatus,
+        ))
         val binding: DesktopWindowsVideoEngagementBinding
         init {
             val info = Json.decodeFromString<ViewInfo>("""{"copyright":$copyright}""")
@@ -93,9 +97,9 @@ class DesktopRepostCoinTest {
         val h = Harness()
         try {
             assertEquals(1, h.vm.uiState.value.coinLimit)
-            h.vm.sync(VideoEngagementSeed(isLoggedIn = true, isRepost = true, isInWatchLater = true))
+            h.vm.sync(VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true, isRepost = true, isInWatchLater = true))
             assertTrue(h.vm.uiState.value.isInWatchLater)
-            h.vm.sync(VideoEngagementSeed(isLoggedIn = true, isRepost = false, isInWatchLater = false))
+            h.vm.sync(VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true, isRepost = false, isInWatchLater = false))
             assertEquals(2, h.vm.uiState.value.coinLimit); assertFalse(h.vm.uiState.value.isInWatchLater)
             assertTrue(h.calls.isEmpty())
         } finally { h.close() }
@@ -168,7 +172,7 @@ class DesktopRepostCoinTest {
                 when (retirement) {
                     0 -> h.account = 2
                     1 -> h.accepted = DesktopOriginalVideoAcceptedPublication(h.source.request, h.source.nativeSource)
-                    else -> h.vm.bindSubject(h.subject.copy(generation = 2), VideoEngagementSeed(isLoggedIn = true))
+                    else -> h.vm.bindSubject(h.subject.copy(generation = 2), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
                 }
                 continuation.intercepted().resumeWith(Result.success(SimpleApiResponse())); h.drain()
                 assertEquals(listOf("coinVideo"), h.calls.toList()); assertEquals(0, h.vm.uiState.value.coinCount)

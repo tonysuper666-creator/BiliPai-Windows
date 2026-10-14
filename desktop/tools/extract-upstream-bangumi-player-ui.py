@@ -82,6 +82,8 @@ def main():
    windows_edits.extend(readonly_edits)
   body,audio_edits=windows_bangumi_audio_download_ui(body,r['output'])
   windows_edits.extend(audio_edits)
+  from v037_tab_roles import apply as apply_tab_roles
+  body=apply_tab_roles(r['originalPath'],body,a.output,Path(r['output']).name,edits=windows_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')

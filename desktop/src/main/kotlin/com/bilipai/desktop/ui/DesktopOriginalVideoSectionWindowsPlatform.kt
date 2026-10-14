@@ -9,6 +9,9 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.boundsInWindow
@@ -68,6 +71,7 @@ internal class DesktopOriginalVideoSectionWindowsResources(
     val recordDanmakuToggle: (Boolean) -> Unit,
     val reportUnsupported: (String) -> Unit,
     val imageShare: DesktopImagePreviewShareBindings,
+    val nextWatch: DesktopOriginalVideoNextWatchBinding,
 )
 
 /** Remember once with the same assembly/WindowPlatforms. The movable carrier keeps the native peer
@@ -91,7 +95,12 @@ internal fun rememberDesktopOriginalVideoSectionWindowsPlatform(
                 current.onNativeForegroundWindowAvailability,!pip)
         }
     }
-    return remember(resources, layout, carrier) { DesktopOriginalVideoSectionWindowsPlatform(resources, layout, carrier) }
+    val frameScope = rememberCoroutineScope()
+    val platform = remember(resources, layout, carrier, frameScope) {
+        DesktopOriginalVideoSectionWindowsPlatform(resources, layout, frameScope, carrier)
+    }
+    DisposableEffect(platform) { onDispose { platform.closeViewportLifecycle() } }
+    return platform
 }
 
 // The outer fullscreen foreground and its inner original Section share this exact
@@ -102,12 +111,15 @@ private val LocalDesktopOriginalSectionForegroundOwner = staticCompositionLocalO
 internal class DesktopOriginalVideoSectionWindowsPlatform(
     private val resources: DesktopOriginalVideoSectionWindowsResources,
     private val layout: DesktopOriginalNativeViewportState,
+    private val frameScope: CoroutineScope,
     private val carrier: @Composable (Modifier, @Composable () -> Unit) -> Unit,
 ) : DesktopOriginalVideoSectionPlatform {
     private var submittedViewport:Pair<DesktopOriginalVideoAcceptedPublication,DesktopNativeVideoViewportTransform>? = null
     private var viewportPublication:DesktopOriginalVideoAcceptedPublication? = null
     private var borrowedViewportToken: Any? = null // Same presentation admission; not a source authority.
     private var reportedNativeReveal=false
+    @Volatile private var backdropSamplerJob: Job? = null
+    private var backdropFrame by mutableStateOf<DesktopOriginalVideoBackdrop?>(null)
     private val player get() = resources.native.player
     private fun expected(): DesktopOriginalVideoAcceptedPublication = resources.native.current()
         ?: throw CancellationException("Original Section has no accepted source")
@@ -123,6 +135,85 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
     private suspend fun checkpoint(value: DesktopOriginalVideoAcceptedPublication) {
         currentCoroutineContext().ensureActive()
         if (!owns(value)) throw CancellationException("Original Section source retired")
+    }
+    private fun backdropOwnerCurrent(value: DesktopOriginalVideoAcceptedPublication): Boolean =
+        resources.entryScope.coroutineContext[Job]?.isActive == true && resources.isForegroundOwned() &&
+            !resources.isPipActive.value && resources.isPresentationCurrent(value)
+
+    private fun backdropCurrent(value: DesktopOriginalVideoBackdrop): Boolean =
+        backdropOwnerCurrent(value.publication) &&
+            player.isBackdropFrameCurrent(value.publication.nativeSource, value.frame)
+
+    override val videoBackdropReady: Boolean get() = backdropFrame?.let(::backdropCurrent) == true
+
+    override fun DrawScope.drawVideoBackdrop() {
+        val retained = backdropFrame?.takeIf(::backdropCurrent) ?: return
+        if (size.width <= 0f || size.height <= 0f) return
+        drawImage(retained.image,
+            dstSize = IntSize(size.width.roundToInt().coerceAtLeast(1), size.height.roundToInt().coerceAtLeast(1)),
+            filterQuality = FilterQuality.Low)
+    }
+
+    @Composable override fun ObserveVideoBackdrop(enabled: Boolean) {
+        val nativeState by player.state.collectAsState()
+        val pip by resources.isPipActive.collectAsState()
+        val publication = resources.native.current()
+        val active = enabled && !pip && publication != null && backdropOwnerCurrent(publication) &&
+            nativeState.ready && !nativeState.loading && !nativeState.ended && !nativeState.audioOnly &&
+            nativeState.videoCodec != null && nativeState.error == null && nativeState.failure == null
+        LaunchedEffect(this, publication, active) {
+            val samplingJob = currentCoroutineContext().job
+            backdropSamplerJob = null
+            backdropFrame = null
+            if (!active || publication == null) return@LaunchedEffect
+            backdropSamplerJob = samplingJob
+            val capturedOwner = { backdropSamplerJob === samplingJob && samplingJob.isActive && backdropOwnerCurrent(publication) }
+            try {
+                while (capturedOwner()) {
+                    currentCoroutineContext().ensureActive()
+                    val previous = backdropFrame
+                    if (previous != null && !backdropCurrent(previous)) backdropFrame = null
+                    val retained = backdropFrame
+                    // Keep a paused frame, with a slow refresh for resize/viewport changes.
+                    val refresh = retained == null || !player.state.value.paused ||
+                        System.nanoTime() - retained.frame.capturedAtNanos >= 2_000_000_000L
+                    var waitMillis = 125L // At most eight sequential requests per second.
+                    if (refresh) {
+                        try {
+                            val frame = player.captureBackdropForSource(publication.nativeSource, stillOwned = capturedOwner)
+                            currentCoroutineContext().ensureActive()
+                            if (!capturedOwner()) break
+                            if (!player.isBackdropFrameCurrent(publication.nativeSource, frame)) {
+                                backdropFrame = null
+                                delay(125L)
+                                continue
+                            }
+                            val image = desktopOriginalVideoBackdropImage(frame)
+                            if (!capturedOwner()) break
+                            resources.withPresentationAdmission(publication) {
+                                if (capturedOwner()) backdropFrame = DesktopOriginalVideoBackdrop(publication, frame, image)
+                            }
+                        } catch (failure: CancellationException) {
+                            currentCoroutineContext().ensureActive()
+                            if (!capturedOwner()) break
+                            backdropFrame = null
+                            waitMillis = 1_000L // Busy/unsupported output cannot spin or fail playback.
+                        } catch (_: Exception) {
+                            currentCoroutineContext().ensureActive()
+                            backdropFrame = null
+                            waitMillis = 1_000L
+                        }
+                    }
+                    delay(waitMillis)
+                }
+            } finally {
+                // A cancelled predecessor must not clear its successor's frame.
+                if (backdropSamplerJob === samplingJob) {
+                    backdropFrame = null
+                    backdropSamplerJob = null
+                }
+            }
+        }
     }
     @Composable fun InitialNativeSurface(modifier: Modifier) {
         if (LocalDesktopOriginalVideoNativeCarrierActive.current) carrier(modifier) {}
@@ -153,6 +244,36 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
     override val statusBarInsetPixels get() = 0 // Windows client area has no Android system status bar.
     override val danmakuReferencePixels get() = resources.overlay.maximumDisplayShortSidePx()
     override val danmakuPreferences get() = resources.preferences
+    override val nextWatchHint get() = resources.nextWatch.state
+    override fun captureNextWatchHint() = resources.nextWatch.capture()
+    override fun playNextWatchHint(hint:DesktopOriginalVideoNextWatchHint,caller:Job):Boolean =
+        resources.nextWatch.play(hint,caller) {owns(hint.accepted) && resources.isPresentationCurrent(hint.accepted)}
+
+    private var hotReservation: Pair<DesktopOriginalVideoAcceptedPublication,Any>? = null
+    @Composable override fun HotDanmakuScope(content:@Composable (DesktopHotDanmakuPlayer)->Unit) {
+        val lease=resources.native.current() ?: return
+        key(lease) {
+            val alive=remember {AtomicBoolean(true)}
+            fun current()=alive.get() && owns(lease) && resources.isPresentationCurrent(lease)
+            val token=remember {Any()}
+            val clock=remember {DesktopHotDanmakuNativeClock(
+                {(player.state.value.positionSeconds*1000.0).toLong().coerceAtLeast(0L)},::current,player.state.value)}
+            val bindings=remember {DesktopHotDanmakuBindings(resources.preferences.getHotDanmakuExpandedMode(),lease,::current)}
+            DisposableEffect(lease,token) {
+                if(current()) {
+                    hotReservation=lease to token
+                    resources.overlay.reserveHotBar(lease.sourceVersion,token,0f)
+                }
+                onDispose {
+                    alive.set(false)
+                    if(hotReservation?.second===token)hotReservation=null
+                    resources.overlay.releaseHotBarReservation(token)
+                }
+            }
+            LaunchedEffect(clock,player) {player.state.collect(clock::accept)}
+            CompositionLocalProvider(LocalDesktopHotDanmakuBindings provides bindings) {content(clock)}
+        }
+    }
     override val cloudSync get() = resources.cloudSync()
     override val enhancementConfig get() = resources.enhancementConfiguration.configState
     override val enhancementState get() = resources.enhancement.state
@@ -167,18 +288,96 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         override fun setStep(step: Int) { write { player.setVolume(step.coerceIn(0,100).toDouble()) } }
         override fun toggleMute() { write { player.toggleMuted() } }
     }
+    private val viewportObservers = linkedSetOf<DesktopOriginalViewportAttachmentObserver>()
+    private val viewportFrameJobs = java.util.IdentityHashMap<Runnable, Job>()
+    private var viewportWasAttached = false
+    private var viewportLifecycleClosed = false
+    private val viewportHierarchyListener = java.awt.event.HierarchyListener {
+        refreshViewportAttachment()
+    }
+
+    private fun refreshViewportAttachment() {
+        if (viewportLifecycleClosed) return
+        val attached = viewport.isAttached
+        if (viewportWasAttached == attached) return
+        viewportWasAttached = attached
+        viewportObservers.toList().forEach { observer ->
+            if (attached) observer.onViewportAttached(viewport)
+            else observer.onViewportDetached(viewport)
+        }
+    }
+
+    internal fun closeViewportLifecycle() {
+        viewportLifecycleClosed = true
+        viewport.refreshController?.cancel()
+        viewportFrameJobs.values.toList().forEach { it.cancel() }
+        viewportFrameJobs.clear()
+        viewportObservers.clear()
+        player.surface.removeHierarchyListener(viewportHierarchyListener)
+    }
+
     override val viewport = object : DesktopOriginalPlayerViewportPort {
         override var resizeMode: Int = 0
-        override val width get() = player.surface.width
-        override val height get() = player.surface.height
+            set(value) {
+                if (field == value) return
+                field = value
+                val accepted = resources.native.current() ?: return
+                val previous = submittedViewport?.takeIf { it.first === accepted }?.second ?: return
+                val transform = previous.copy(resizeMode = value)
+                write {
+                    if (it === accepted && player.setOriginalVideoViewport(it.nativeSource, transform)) {
+                        submittedViewport = it to transform
+                    }
+                }
+            }
+        override val width get() = (player.surface.width *
+            (player.surface.graphicsConfiguration?.defaultTransform?.scaleX ?: 1.0)).roundToInt()
+        override val height get() = (player.surface.height *
+            (player.surface.graphicsConfiguration?.defaultTransform?.scaleY ?: 1.0)).roundToInt()
+        override val isAttached get() = !viewportLifecycleClosed && layout.attached &&
+            player.surface.isDisplayable && resources.isForegroundOwned() && !resources.isPipActive.value
+        override val playbackIdentity get() = resources.native.current()?.takeIf(::owns)
+        override var refreshController: DesktopOriginalViewportRefreshCancellation? = null
+        override fun addAttachmentObserver(observer: DesktopOriginalViewportAttachmentObserver) {
+            if (viewportLifecycleClosed) return
+            if (viewportObservers.isEmpty()) player.surface.addHierarchyListener(viewportHierarchyListener)
+            viewportObservers.add(observer)
+            refreshViewportAttachment()
+        }
         override fun requestLayout() = post { player.surface.revalidate(); player.surface.doLayout() }
         override fun requestContentLayout() = requestLayout()
         override fun invalidate() = post { player.surface.repaint() }
-        override fun post(block: () -> Unit) { SwingUtilities.invokeLater { if(resources.isForegroundOwned() && !resources.isPipActive.value) block() } }
-        override fun postOnFrame(block: () -> Unit) {
-            post { Timer(16) { event -> (event.source as Timer).stop(); if(resources.isForegroundOwned()) block() }.apply { isRepeats=false; start() } }
+        override fun post(block: () -> Unit) {
+            val accepted = resources.native.current() ?: return
+            SwingUtilities.invokeLater {
+                if (!viewportLifecycleClosed && owns(accepted) && !resources.isPipActive.value) block()
+            }
+        }
+        override fun postOnFrame(block: () -> Unit) = postOnFrame(Runnable(block))
+        override fun postOnFrame(callback: Runnable) {
+            cancelFrameCallback(callback)
+            val accepted = resources.native.current()?.takeIf(::owns) ?: return
+            if (viewportLifecycleClosed) return
+            val job = frameScope.launch(start = CoroutineStart.LAZY) {
+                try {
+                    withFrameNanos { }
+                    ensureActive()
+                    if (viewportFrameJobs[callback] === coroutineContext[Job] &&
+                        !viewportLifecycleClosed && owns(accepted) && isAttached) {
+                        callback.run()
+                    }
+                } finally {
+                    if (viewportFrameJobs[callback] === coroutineContext[Job]) viewportFrameJobs.remove(callback)
+                }
+            }
+            viewportFrameJobs[callback] = job
+            job.start()
+        }
+        override fun cancelFrameCallback(callback: Runnable) {
+            viewportFrameJobs.remove(callback)?.cancel()
         }
     }
+
     override fun hasPlaylistNext() = resources.isForegroundOwned() && resources.hasPlaylistNext()
     override fun setScreenshotAndOrientationLock(locked: Boolean) = resources.acquireScreenshotOrientationLock(locked)
     override fun setViewportActive(active: Boolean) {
@@ -192,7 +391,7 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         // A normal Section disposer must not release a newer borrowed Pager view.
         if (borrowedViewportToken == null) {
             viewportPublication?.let { resources.overlay.releaseOriginalSectionViewport(it.sourceVersion) }
-            viewportPublication = null; layout.reset()
+            viewportPublication = null; layout.reset(); refreshViewportAttachment()
         }
     }
     override fun acquireViewportLease(): AutoCloseable {
@@ -211,7 +410,7 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
                 presentationWrite { current ->
                     if (current === fixed && viewportPublication === fixed && borrowedViewportToken === token) {
                         resources.overlay.releaseOriginalSectionViewport(current.sourceVersion)
-                        viewportPublication = null; borrowedViewportToken = null; layout.reset()
+                        viewportPublication = null; borrowedViewportToken = null; layout.reset(); refreshViewportAttachment()
                     }
                 }
             }
@@ -250,6 +449,7 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         override var staticDanmakuToScroll:Boolean get()=settings().staticDanmakuToScroll;set(value){update{it.copy(staticDanmakuToScroll=value)}}
         override var massiveMode:Boolean get()=settings().massiveMode;set(value){update{it.copy(massiveMode=value)}}
         override val advancedDanmakuFlow get()=resources.overlay.advancedItems
+        override val basDanmakuFlow get()=resources.overlay.basItems
         override val commandDanmakuFlow get()=resources.overlay.commandItems
         override fun updateSettings(settings:OriginalSettings) {update{projectOriginalDanmakuRendererSettings(it,settings)}}
         override fun clear(){presentationWrite{resources.overlay.seekOriginalSection(it.sourceVersion,(player.state.value.positionSeconds*1000).toLong(),false)}}
@@ -257,6 +457,18 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         override fun prepareForSeekScrub(){presentationWrite{resources.overlay.seekOriginalSection(it.sourceVersion,null,true)}}
         override fun cancelSeekScrub(){presentationWrite{resources.overlay.seekOriginalSection(it.sourceVersion,(player.state.value.positionSeconds*1000).toLong(),false)}}
         override fun getLoadedDanmakuList():List<DanmakuItem>{val value=expected();return resources.overlay.poolSourceFor(value.request.cid,value.sourceVersion)?.let(::originalDanmakuPoolItems).orEmpty()}
+        override fun getHotDanmakuList():List<DanmakuItem> {
+            val value=hotReservation?.first ?: return emptyList()
+            if(!owns(value) || !resources.isPresentationCurrent(value))return emptyList()
+            return resources.overlay.hotItemsFor(value.request.cid,value.sourceVersion)
+        }
+        override fun reserveHotDanmakuBarHeight(heightPx:Float) {
+            require(heightPx.isFinite() && heightPx>=0f)
+            val reservation=hotReservation ?: return
+            if(owns(reservation.first) && resources.isPresentationCurrent(reservation.first))
+                resources.overlay.updateHotBarReservation(reservation.first.sourceVersion,reservation.second,heightPx)
+        }
+        override val upOwnerUserHash get()=resources.overlay.originalUpOwnerUserHash()
         override suspend fun loadDanmaku(cid:Long,aid:Long,durationHintMs:Long,bvid:String){
             val value=expected();checkpoint(value);require(value.request.cid==cid && value.request.bvid==bvid)
             val mask=resources.maskSource(value)?.let {
@@ -340,6 +552,7 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         val value=resources.native.current()
         DisposableEffect(value,keepAwake) { val lease=resources.acquireKeepAwake(keepAwake);onDispose{lease.close()} }
         SideEffect {
+            refreshViewportAttachment()
             val transform=DesktopNativeVideoViewportTransform(resizeMode,freeScale,panX/layout.width.coerceAtLeast(1),panY/layout.height.coerceAtLeast(1),flipHorizontal,flipVertical)
             if(value!=null && owns(value) && !resources.isPipActive.value &&
                 (submittedViewport?.first!==value || submittedViewport?.second!=transform))write {
@@ -347,15 +560,19 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
                 }
             if((revealAlpha!=1f || revealScale!=1f) && !reportedNativeReveal){reportedNativeReveal=true;resources.reportUnsupported("HWND video does not support texture alpha/reveal-scale; original cover is retained")}
         }
-        Box(modifier.onGloballyPositioned { coordinates -> if(resources.isForegroundOwned() && !resources.isPipActive.value)this.layout.update(coordinates.boundsInRoot(),visible).also { this.layout.updateWindowBounds(coordinates.boundsInWindow()) } })
+        Box(modifier.onGloballyPositioned { coordinates -> if(resources.isForegroundOwned() && !resources.isPipActive.value)this.layout.update(coordinates.boundsInRoot(),visible).also { this.layout.updateWindowBounds(coordinates.boundsInWindow()); refreshViewportAttachment() } })
     }
-    @Composable override fun NativeDanmakuSurface(viewport:DanmakuViewport,modifier:Modifier) {
+    @Composable override fun NativeDanmakuSurface(viewport:DanmakuViewport,renderingPaused:Boolean,modifier:Modifier) {
         // The same native overlay reads actual Canvas/DPI/OSD geometry in its sole timer.
-        SideEffect {presentationWrite{resources.overlay.bindOriginalSectionDanmakuViewport(it.sourceVersion,viewport)}}
+        SideEffect {presentationWrite{
+            resources.overlay.bindOriginalSectionDanmakuViewport(it.sourceVersion,viewport)
+            resources.overlay.setOriginalSectionRenderingPaused(it.nativeSource,renderingPaused)
+        }}
         var coordinates by remember {mutableStateOf<androidx.compose.ui.layout.LayoutCoordinates?>(null)}
-        Box(modifier.onGloballyPositioned {coordinates=it}.pointerInput(resources.overlay,resources.native) {
+        Box(modifier.onGloballyPositioned {coordinates=it}.pointerInput(resources.overlay,resources.native,renderingPaused) {
             awaitEachGesture {
                 val down=awaitFirstDown(requireUnconsumed=true)
+                if(renderingPaused)return@awaitEachGesture
                 val publication=resources.native.current() ?: return@awaitEachGesture
                 val origin=coordinates?.takeIf {it.isAttached}?.localToWindow(androidx.compose.ui.geometry.Offset.Zero)
                     ?: return@awaitEachGesture

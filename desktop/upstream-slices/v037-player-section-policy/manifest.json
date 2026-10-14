@@ -1,0 +1,19 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "filename": "VideoPlayerSectionPolicy.kt",
+      "bytes": 64713,
+      "sha256Bytes": "afc0f14c47eea87fadf77d49fbca6f76b5c87252624e71fae5b70d7fad33de83",
+      "gitBlob": "500dc23af6aa9b6a79c0f344ea0855e92e3347a5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+      "filename": "VideoPlayerDanmakuLoadPolicy.kt",
+      "bytes": 1873,
+      "sha256Bytes": "056e56c4f25f75725c5a62a67f0fb8d3a7d19bf21282addf9e3733ae96b73d09",
+      "gitBlob": "3a6be6e513337d8e650a2c7bc6c72d990ad45a05"
+    }
+  ]
+}

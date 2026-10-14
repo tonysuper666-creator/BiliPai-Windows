@@ -164,7 +164,7 @@ class DesktopBangumiDefaultQualityTest {
         private val settings = DesktopOriginalPlayerSettingsContext(DesktopPluginContext(store), active::get,
             { action -> if (active.get()) { action(); true } else false })
         private val folder = DesktopOriginalFavoriteFolderProtocol(api, { null }, { null }) { check(active.get()) }
-        private val engagement = DesktopOriginalVideoEngagementProtocol(api, { null }, { null }, { null }, { null },
+        private val engagement = com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api, { null }, { null }, { null }, { null },
             { check(active.get()) }, { error("No follow action") }, folder)
         private val analytics = object : DesktopOriginalVideoInteractionAnalytics {
             override fun logLike(videoId: String, isLiked: Boolean) = error("No analytics")

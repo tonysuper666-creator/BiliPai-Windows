@@ -22,6 +22,16 @@ def module(name,path):
 SOURCE_PINS = {'app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt': {'sha256LF': '9269462327088da5a4103e451776a9bb70a1cd098bdb71b54ee73d9b43ce8edb', 'gitBlob': '06ca05617b78fe065421b206fbcd3a25d0ed8618'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt': {'sha256LF': 'bfd4b78900bf0a1b04847ccccb4a18b6d0d445be258f00dcd3ff6f1ce1d71771', 'gitBlob': '5b4eaef8315ed17122ea8de8d4b872a74abdb46f'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt': {'sha256LF': '24f95b99fbb5d8c8830acd31880ff651091c62195407a9ef85f9317f0f498a2a', 'gitBlob': 'dc40151ea62138e5797360e59c4271ee5701939d'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt': {'sha256LF': '512a6a361feb78e06487a1ce2711f078f4aca291a6e1645e6efa2225923659f7', 'gitBlob': 'ddbd93e59a1ea42bef236f420c901d23fe581eb8'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt': {'sha256LF': '964174cee6a0261a430094eb85af8008bf6d51555d11617da3053f4d3b5f5b78', 'gitBlob': 'f86b77fe3ef6250d0771b44f716b8e39c23089d1'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt': {'sha256LF': 'adfd21ce5b00af901c5a5857eba9427a195de8d7c812cd80745969f5d2b1f99c', 'gitBlob': '7e5e8366ea689e0bbf020c431db962d7868985d1'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt': {'sha256LF': '198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0', 'gitBlob': '1775313c3b78d802728b7ac9492a4ba8e27d07a0'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt': {'sha256LF': '799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a', 'gitBlob': '6b7c035b4afd4523f0a54fbf5f47c3e4234c2aae'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt': {'sha256LF': 'dff7b27b7f2bb8440faf8bdce9a9c1cdab91d0790b1106306fc6999d5bf9ca5d', 'gitBlob': 'ca0f4d62aff6111cd1945b8bb82245e1a0203202'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt': {'sha256LF': '84f95453d715ece786e29ee291570b52e6a40ae99336b77b53f065d68c7b5128', 'gitBlob': 'dd6ff4f3c33bfc4306ee60dc3f2b22298c0f3aef'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt': {'sha256LF': '28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785', 'gitBlob': 'e544093fce7111c8be8bb7bc54ad211f94004b00'}, 'design-system/src/main/java/com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt': {'sha256LF': '678594826a55c05d161be7f52bd3c4bbdab1af46346458c64bc7027d060f0042', 'gitBlob': '1e82f0ce4b054335593787f19a510e7da960e879'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt': {'sha256LF': 'f24f729482b9deac38a4fa17c8e60a15b8be49d08b6d641cdacdd87902b28e32', 'gitBlob': 'dfe434f8d2727796fc8bc31c70340c109da5b969'}, 'app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt': {'sha256LF': 'ffb0a934822dc39744a56ec031875e813f8e2a055ed857f5dfc1db4e1e5a5fa2', 'gitBlob': '24e6b81e179fb0f778b2212e8f9fa7554ab5c57e'}, 'app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt': {'sha256LF': 'acf05cba9a89666533378eef35a21609484a02ccd874a460c259c3f3363d1e64', 'gitBlob': 'cbebfced03ada9944da60520a77f227bc05a0e29'}, 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': {'sha256LF': '5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c', 'gitBlob': '5d24281dc2152c1e2113ab3476418f61261cd15a'}, 'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt': {'sha256LF': 'e266056182d40e924535401011071fc61fcfc59738e9263076717f49765c47fa', 'gitBlob': '3a287fd3974b1fbf1dbc6b2907f97b828250b882'}, 'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt': {'sha256LF': '73fcfd5af57e257658164b7adbd2b103c412686a91efa5b8db99d1f67a84f491', 'gitBlob': 'eb987f1b06e0a2339931c570ec2fd3754ae3fc14'}, 'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt': {'sha256LF': '62c0eae9b9447cfd615a5972ab8f58be906ca2a0cee184ccd57cf8b997ebbb1f', 'gitBlob': '32c9a2eaad4e1c329a496cb7f4b486f55673a299'}, 'app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt': {'sha256LF': '63c0826814274dc8df583105b3dc796498da6ab41d1bd2c50491b52ef68c74d6', 'gitBlob': 'fde1e2268a673569315dc32368b629893d2c57b2'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt': {'sha256LF': '15d803c80018a16b4ca0bb37bf7b89bab65bb18e102bcd2c84fca991833fe822', 'gitBlob': 'ab7dc02a955cc11439eeb774289e45410611aba3'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt': {'sha256LF': 'ac32f597609d7fa820d04d4fe6b3fc6071fe94a431c22ca4ae9d20e90d1605e4', 'gitBlob': '0873e5808de0201dea49acdd3156fbefc1318150'}, 'app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt': {'sha256LF': 'd6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f', 'gitBlob': '377e9680841ef3c1f2edcc2aca3605008099606a'}, 'app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt': {'sha256LF': 'b8a96390d286964518caea6849afaeba075f5d3e8ac1cdb23b73af17feac6ccc', 'gitBlob': 'b25cb99570d4e5ac71e02209ce24353e30acc0ff'}}
 SOURCES={};OUTPUTS=[];ADAPTATIONS=[]
 def read(path):
+    from v037_player_section_policy import RELATIVE_PATHS,fixed_original
+    if path==BASE+RELATIVE_PATHS[0]:
+        text,identity=fixed_original(REPO,RELATIVE_PATHS[0])
+        SOURCES[path]=identity
+        return text
+    from v037_gesture_feedback import SOURCE_PATHS,original
+    if path in SOURCE_PATHS:
+        text,identity=original(REPO,path)
+        SOURCES[path]=identity
+        return text
     if path not in SOURCES:
         selected=_desktop_canonical_source(REPO,path)
         assert not selected.is_symlink() and selected.resolve().is_relative_to(REPO.resolve()),path
@@ -32,7 +42,8 @@ def read(path):
         current=subprocess.check_output(['git','-c','core.longpaths=true','hash-object','--path='+_desktop_canonical_relative(REPO,path),str(_desktop_canonical_source(REPO,path))],cwd=REPO,text=True).strip()
         assert blob==current==pin['gitBlob'],path+' Git identity differs'
         SOURCES[path]=dict(text=raw.decode('utf-8'),**pin)
-    return SOURCES[path]['text']
+    from v037_player_interaction import selected_source
+    return selected_source(path,SOURCES[path]['text'])
 def adapt(t,a,b,label):
     assert t.count(a)==1,(label,t.count(a));ADAPTATIONS.append(dict(label=label,before=a,after=b));return t.replace(a,b,1)
 def confirmed_favorite_receipt_delta(path,t):
@@ -47,11 +58,16 @@ def emit(path,t,origin,mode):
     t=apply_v032_catalog(path,t,OUTPUT)
     t=confirmed_favorite_receipt_delta(path,t)
     from v029_video_feedback import apply_video_feedback, celebration_source, OUTPUT_ANIMATIONS, COMMIT as FEEDBACK_COMMIT
-    t,feedbackProof=apply_video_feedback(path,t,parser)
-    from v029_video_feedback_origin import apply_feedback_origin
+    from v037_video_feedback_adapter import apply_latest_feedback
+    t,feedbackProof=apply_latest_feedback(path,t,parser)
+    from v037_feedback_origin import apply_feedback_origin
     t,feedbackOriginProof=apply_feedback_origin(path,t)
     from v029_video_feedback_host import apply_feedback_lifetime
     t,feedbackLifetimeProof=apply_feedback_lifetime(path,t)
+    from v037_video_coin_request import apply as apply_coin_request
+    t,coinRequestProof=apply_coin_request(path,t,parser)
+    if coinRequestProof is not None:
+        save(OUTPUT/'v037-video-coin-request-boundary-proof.json',coinRequestProof)
     if feedbackLifetimeProof is not None:
         save(OUTPUT/'v029-video-feedback-lifetime-proof.json',feedbackLifetimeProof)
     if feedbackOriginProof is not None:
@@ -68,7 +84,11 @@ def emit(path,t,origin,mode):
         save(OUTPUT/'v029-video-feedback-motion-proof.json',motionProof)
         OUTPUTS.append(dict(path=OUTPUT_MOTION,origin=motionProof['origin'],mode='fixed-v029-complete-decoration-blocks-owned-window',fixedCommit=FEEDBACK_COMMIT,sha256LF=sha(motion),physicalLines=len(motion.splitlines()),generated=True))
     from v031_repost_coin import apply_and_record
-    t,repostProof=apply_and_record(path,t,OUTPUT)
+    if path=='com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt':
+        assert 'suspend fun doTripleAction(aid: Long, coinCount: Int): Result<TripleActionResult>' in t
+        assert 'val coinLimit: Int get() = if (isRepost) 1 else 2' in t
+        repostProof=dict(fixedCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',wholeLatestOriginalRepostContractAlreadySelected=True,previousSemanticDeltaNotReapplied=True)
+    else:t,repostProof=apply_and_record(path,t,OUTPUT)
     if repostProof is not None:mode="fixed-v031-repost-coin-owned-delta"
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
@@ -127,11 +147,19 @@ def main():
         if 'import android.os.Build\n' in t:
             t=t.replace('import android.os.Build\n','import com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\n')
             t=adapt(t,'Build.VERSION.SDK_INT >= Build.VERSION_CODES.S','desktopDetailRenderEffectsSupported()','Circular numeral actual desktop RenderEffect capability')
-        emit('com/android/purebilibili/'+rel,t,p,'full-source-platform-adapt' if t!=read(p) else 'direct')
+        from v037_gesture_feedback import SOURCE_PATHS,resource_delta
+        if p==SOURCE_PATHS[0]:
+            t,gesture_proof=resource_delta(REPO,t)
+            save(OUTPUT/'v037-gesture-feedback-resource-proof.json',gesture_proof)
+        emit('com/android/purebilibili/'+rel,t,p,'full-source-platform-adapt' if t!=read(p) or p in SOURCE_PATHS else 'direct')
+    from v037_player_section_policy import GESTURE_MOTION_NAMES
     p=BASE+'feature/video/ui/section/VideoPlayerSectionPolicy.kt';t=read(p)
-    emit('com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoGestureMotion.kt','package com.android.purebilibili.feature.video.ui.section\nimport com.android.purebilibili.feature.video.ui.components.GesturePercentMotionDefaults\n'+selected(t,['VideoGestureMode','VideoGestureMotionSpec','resolveVideoGestureMotionSpec'])+'\n',p,'selected-original-motion')
+    emit('com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoGestureMotion.kt','package com.android.purebilibili.feature.video.ui.section\nimport com.android.purebilibili.feature.video.ui.components.GesturePercentMotionDefaults\n'+selected(t,list(GESTURE_MOTION_NAMES))+'\n',p,'selected-original-motion')
     # Full action renderer: the already installed public TripleProgressIcon is referenced.
     p=BASE+'feature/video/ui/section/VideoActionSection.kt';t=read(p)
+    oldThemeRead='com.android.purebilibili.core.ui.isAppInDarkTheme()'
+    assert t.count(oldThemeRead)==1
+    t=t.replace(oldThemeRead,'com.bilipai.desktop.appearance.isDesktopInDarkTheme()',1)
     t=remove_function(t,'TripleProgressIcon')
     emit('com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoActionSection.kt',t,p,'full-renderer-reference-existing-TripleProgressIcon')
     # Information: all original ordinary info functions. Existing BGM/team/honor renderers are sole owners.
@@ -216,8 +244,10 @@ import kotlinx.coroutines.flow.*
     from v031_repost_coin import direct_outputs
     for output,text,origin in direct_outputs():
         emit(output,text,origin,"fixed-v031-complete-original-source")
+    from v037_player_interaction import extend_same_producer
+    extend_same_producer(globals())
     read(BASE+'core/util/AnalyticsHelper.kt') # Original event/default/privacy contract for the local diagnostics platform port.
-    save(OUTPUT/'source-bindings.json',dict(pinnedCommit=COMMIT,sourceIdentities=[dict(path=p,**{k:v for k,v in r.items() if k!='text'}) for p,r in SOURCES.items()],outputs=OUTPUTS,adaptations=ADAPTATIONS,scope='Complete original ordinary information/actions and shared gesture units. Full ordinary player overlays and page assembly are next, not yet claimed.',existingReferenceOwners=['metadata honor/team','BGM discovery full subtree','profile public TripleProgressIcon','Home resolveCompactPublishTimeRowText'],actualProductAcceptance=False))
+    save(OUTPUT/'source-bindings.json',dict(pinnedCommit=COMMIT,sourceIdentities=[dict(path=p,**{k:v for k,v in r.items() if k not in ('text','path')}) for p,r in SOURCES.items()],outputs=OUTPUTS,adaptations=ADAPTATIONS,scope='Complete original ordinary information/actions and shared gesture units. Full ordinary player overlays and page assembly are next, not yet claimed.',existingReferenceOwners=['metadata honor/team','BGM discovery full subtree','profile public TripleProgressIcon','Home resolveCompactPublishTimeRowText'],actualProductAcceptance=False))
     print(json.dumps(dict(sources=len(SOURCES),outputs=len(OUTPUTS)),ensure_ascii=False))
 def engagement():
     p=BASE+'feature/video/viewmodel/VideoSubjectSnapshot.kt';t=read(p)
@@ -237,9 +267,17 @@ def engagement():
     body=t[t.index('class VideoEngagementViewModel('):t.index('internal fun VideoPlaybackUiState.Success.toEngagementSeed')]
     before='''class VideoEngagementViewModel(
     private val actions: VideoEngagementActions = DefaultVideoEngagementActions(),
-    private val coinBalanceLoader: VideoCoinBalanceLoader = DefaultVideoCoinBalanceLoader
+    private val coinBalanceLoader: VideoCoinBalanceLoader = DefaultVideoCoinBalanceLoader,
+    private val tripleJumpEnabled: suspend (Context?) -> Boolean = { context ->
+        context != null && SettingsManager.getTripleJumpEnabled(context).first()
+    }
 ) : ViewModel() {'''
-    after='''internal class VideoEngagementViewModel(private val environment: DesktopOriginalVideoEngagementEnvironment) {
+    after='''internal class VideoEngagementViewModel(
+    private val environment: DesktopOriginalVideoEngagementEnvironment,
+    private val tripleJumpEnabled: suspend (Context?) -> Boolean = { context ->
+        context != null && SettingsManager.getTripleJumpEnabled(context).first()
+    },
+) {
     private val actions get() = environment.actions
     private val coinBalanceLoader get() = environment.coinBalanceLoader
     private val viewModelScope get() = environment.scope
@@ -251,6 +289,10 @@ def engagement():
     }
 '''
     body=adapt(body,before,after,'Full EngagementVM uses required existing entry scope/actions/current owner')
+    body=adapt(body,
+        'private fun interactionSession(): Any = TokenManager.accountIdentity.value to TokenManager.sessDataCache',
+        'private fun interactionSession(): Any = environment.interactionSession()',
+        'Latest original engagement revision/session guards use the actual existing Root account epoch and shared protocol')
     body=body.replace('private var appContext: Context? = null','private var appContext: Context? = environment.context')
     body=adapt(body,'private val _events = Channel<VideoEngagementEvent>(Channel.BUFFERED)','private val _events = Channel<Pair<Long?, VideoEngagementEvent>>(Channel.BUFFERED)','Original events retain transient subject generation in the existing channel')
     body=adapt(body,'val events = _events.receiveAsFlow()','val events = _events.receiveAsFlow().mapNotNull { (generation, event) ->\n        if (environment.isOwned() && _uiState.value.subject?.generation == generation) event else null\n    }','Reject queued old-subject events without changing original public event schema')
@@ -324,9 +366,10 @@ def engagement_presentation_delta(body):
             '        onResult: ((TripleActionResult) -> Unit)? = null,\n        presentation: DesktopOriginalVideoEngagementPresentation? = null'),
     ]:
         a,b=function_range(body,name);method=body[a:b]
-        assert method.count(old)==method.count('viewModelScope.launch {')==1,name
+        expected_launches=2 if name=='doTripleAction' else 1
+        assert method.count(old)==1 and method.count('viewModelScope.launch {')==expected_launches,name
         changed=method.replace(old,new,1).replace('viewModelScope.launch {',
-            'viewModelScope.launch(presentation?.context ?: EmptyCoroutineContext) {',1)
+            'viewModelScope.launch(presentation?.context ?: EmptyCoroutineContext) {',expected_launches)
         # Preserve both the original visual state and its modified-field receipt
         # in one bounded commit. Nothing in these ranges suspends or performs IO.
         start=changed.index('                    locallyModifiedFields =') if name=='toggleFollow' else changed.index('                    val visual =')
@@ -470,4 +513,8 @@ def generate(repo,output,standalone=False):
     media=module('video_full_functions',REPO/'desktop/tools/extract-upstream-media.py')
     selector=module('video_full_decls',REPO/'desktop/tools/extract-appearance-platform.py')
     main()
+    from v037_video_action_anchors import emit as emit_video_anchors
+    emit_video_anchors(OUTPUT,OUTPUTS)
+    save(OUTPUT/'v037-detail-complete-output-readback.json',dict(outputs=OUTPUTS,
+        mainCompiled=False,sourceQualified=False,pixelsValidated=False))
 if __name__=='__main__':generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone' in sys.argv[3:])

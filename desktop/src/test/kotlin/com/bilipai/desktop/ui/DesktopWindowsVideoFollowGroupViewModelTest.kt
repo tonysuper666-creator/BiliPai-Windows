@@ -60,6 +60,22 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
             finally { admissionDepth-- }
         }
         val actions = object : DesktopOriginalVideoOwnerActions {
+        // This existing fixture has no cached reply or mutation revision. Query
+        // values come from its controlled check implementations; no production defaults.
+        override fun interactionSession(): Any = this
+        override fun cachedLikeStatus(aid: Long): Boolean? = null
+        override fun cachedFollowStatus(mid: Long): Boolean? = null
+        override fun likeStatusVersion(aid: Long): Long = 0L
+        override fun followStatusVersion(mid: Long): Long = 0L
+        override suspend fun queryLikeStatus(aid: Long): Result<Boolean> = try {
+            Result.success(checkLikeStatus(aid))
+        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
+          catch (failed: Exception) { Result.failure(failed) }
+        override suspend fun queryFollowStatus(mid: Long): Result<Boolean> = try {
+            Result.success(checkFollowStatus(mid))
+        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
+          catch (failed: Exception) { Result.failure(failed) }
+
             override suspend fun getFollowGroupTags(): Result<List<RelationTagItem>> {
                 assertEquals(0, admissionDepth); return tags()
             }
@@ -100,7 +116,7 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
             }, mediaPreparation = { error("No media preparation in follow-group fixture") })
         }, unused<DesktopOriginalVideoPlaybackStatus>(), { media }, captureMetadataBinding = { error("Readonly metadata retry is outside this fixture") })
         private val api = unused<BilibiliApi>()
-        private val interaction = VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(
+        private val interaction = VideoInteractionUseCase(com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(
             api, { "fixture-csrf" }, { 1L }, { "fixture-session" }, { null }, {}, {},
             DesktopOriginalFavoriteFolderProtocol(api, { 1L }, { "fixture-csrf" }, {})),
             unused<DesktopOriginalVideoInteractionAnalytics>())

@@ -48,6 +48,12 @@ def generate(repo, out, include_screen=True):
                 while level:end+=1;level+=(tokens[end][0]=='(')-(tokens[end][0]==')')
                 value=edit(value,value[match.start():tokens[end][2]],'Unit',1)
         adapted = adapt(original,edit,discard_logs)
+        from v037_tab_roles import apply as apply_tab_roles
+        tabEdits=[]
+        projected=apply_tab_roles(path,adapted,out,output_name,edits=tabEdits)
+        for tabEdit in tabEdits:
+            adapted=edit(adapted,tabEdit['before'],tabEdit['after'],1)
+        assert adapted==projected
         reversed_source = adapted
         for step in reversed(steps):
             assert digest(reversed_source)==step['afterSha256']

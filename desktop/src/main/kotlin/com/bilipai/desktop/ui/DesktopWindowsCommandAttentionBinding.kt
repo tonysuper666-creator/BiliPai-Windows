@@ -50,7 +50,7 @@ internal class DesktopWindowsCommandAttentionBinding private constructor(
 
     fun follow(): Boolean {
         val captured = captureState() ?: return false
-        if (captured.isFollowing || !isOwned()) return false
+        if (!captured.followStatusKnown || captured.isFollowing || !isOwned()) return false
         // Original launch/HTTP is outside admission. The captured context checks
         // again at job start, every original protocol checkpoint and final commit.
         engagement.toggleFollow(subject.ownerMid, currentlyFollowing = false, presentation = presentation)
@@ -59,7 +59,7 @@ internal class DesktopWindowsCommandAttentionBinding private constructor(
 
     fun triple(): Boolean {
         val captured = captureState() ?: return false
-        if (!isOwned()) return false
+        if (!captured.likeStatusKnown || !isOwned()) return false
         engagement.doTripleAction(subject.aid, subject.bvid, captured.isLiked,
             captured.coinCount, captured.isFavorited, presentation = presentation)
         return true

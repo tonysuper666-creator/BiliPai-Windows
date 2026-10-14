@@ -211,6 +211,22 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
             try {
                 val context = DesktopPluginContext(DesktopPluginStore(root))
                 val actions = object : DesktopOriginalVideoInitialActions {
+        // This existing fixture has no cached reply or mutation revision. Query
+        // values come from its controlled check implementations; no production defaults.
+        override fun interactionSession(): Any = this
+        override fun cachedLikeStatus(aid: Long): Boolean? = null
+        override fun cachedFollowStatus(mid: Long): Boolean? = null
+        override fun likeStatusVersion(aid: Long): Long = 0L
+        override fun followStatusVersion(mid: Long): Long = 0L
+        override suspend fun queryLikeStatus(aid: Long): Result<Boolean> = try {
+            Result.success(checkLikeStatus(aid))
+        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
+          catch (failed: Exception) { Result.failure(failed) }
+        override suspend fun queryFollowStatus(mid: Long): Result<Boolean> = try {
+            Result.success(checkFollowStatus(mid))
+        } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
+          catch (failed: Exception) { Result.failure(failed) }
+
                     override suspend fun checkFollowStatus(mid: Long): Boolean = error("No account")
                     override suspend fun checkFavoriteStatus(aid: Long): Boolean = error("No account")
                     override suspend fun checkLikeStatus(aid: Long): Boolean = error("No account")
@@ -404,7 +420,7 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
         }
         private val api = unusedPgc<com.android.purebilibili.core.network.BilibiliApi>()
         private val interaction = com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase(
-            com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol(
+            com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(
                 api, { error("No CSRF read") }, { error("No MID read") },
                 { error("No session read") }, { error("No token read") },
                 { error("No engagement action") }, { error("No follow action") },

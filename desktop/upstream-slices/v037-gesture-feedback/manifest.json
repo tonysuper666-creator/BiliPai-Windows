@@ -1,0 +1,26 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
+      "filename": "GestureLevelOverlay.kt",
+      "bytes": 27647,
+      "sha256Bytes": "3d8e87b8571f4493eb2a9832ce221feb482890278fcde3c35bac7349a840cb05",
+      "gitBlob": "86c5d9b3bd4495a75d18c64790db5eff93545ee9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+      "filename": "GestureLevelOverlayPolicy.kt",
+      "bytes": 8791,
+      "sha256Bytes": "00a229d13620593a2d6468f0ecfc973bec5ccf86d0da2f0227b2e08f3d2024d2",
+      "gitBlob": "8e909382d847a21d5b756ccdaaac579b2d457650"
+    },
+    {
+      "path": "app/src/main/res/values/colors.xml",
+      "filename": "colors.xml",
+      "bytes": 860,
+      "sha256Bytes": "4c571973edde45f7d5a0422399ad909f67d9317c91393f0f7605dd0a2fc93391",
+      "gitBlob": "57128db92256ba0b6e76492f93af3453ad82bfce"
+    }
+  ]
+}

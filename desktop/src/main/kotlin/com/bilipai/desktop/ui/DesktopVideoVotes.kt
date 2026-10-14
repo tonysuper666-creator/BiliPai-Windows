@@ -182,6 +182,8 @@ internal fun DesktopVideoCommandVoteContent(
                 if (viewport != null && native.ready && current()) CommandDanmakuOverlay(
                     items = items, player = player, viewport = viewport, bottomInsetPx = 0,
                     state = commandState, fontScale = fontScale, isFollowing = attentionState?.isFollowing ?: false,
+                    followStatusKnown = attentionOwned && attentionState?.followStatusKnown == true,
+                    likeStatusKnown = attentionOwned && attentionState?.likeStatusKnown == true,
                     onFollowClick = { if (attentionOwned && current()) attention?.follow() },
                     onTripleClick = { if (attentionOwned && current()) attention?.triple() },
                     onLinkClick = { item -> link.open(item) },

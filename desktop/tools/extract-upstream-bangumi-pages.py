@@ -28,6 +28,8 @@ class Edit:
  def optional(self,before,after):
   if before in self.s:self.replace(before,after)
  def write(self,rel,name):
+  from v037_tab_roles import apply as apply_tab_roles
+  self.s=apply_tab_roles(rel,self.s,OUT,name,edits=self.changes)
   reverse=self.s
   for d in reversed(self.changes):
    assert reverse.count(d['after'])==d['count'],(name,d['after'],reverse.count(d['after']),d['count'])

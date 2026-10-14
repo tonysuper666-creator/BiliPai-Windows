@@ -47,6 +47,8 @@ def output(rel,s,mode):
   records[-1]['historyGeneratedAdaptation']=generated_audit(originalRel,s)
  s,coverAudit=apply_favorite_cover(rel,s,OUT)
  if coverAudit is not None:records[-1]['windowsFavoriteCoverAdaptation']=coverAudit
+ from v037_tab_roles import apply as apply_tab_roles
+ s=apply_tab_roles(BASE+rel+".kt",s,OUT,Path(rel).name)
  emit('com/android/purebilibili/'+rel+'.kt',s)
  records[-1].update(output='com/android/purebilibili/'+rel+'.kt',selection=mode,outputSha256=hashlib.sha256(s.encode()).hexdigest())
 def rmfun(s,name):

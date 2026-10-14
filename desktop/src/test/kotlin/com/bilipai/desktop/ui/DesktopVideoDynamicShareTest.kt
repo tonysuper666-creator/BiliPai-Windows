@@ -215,8 +215,12 @@ class DesktopVideoDynamicShareTest {
             val actions=Proxy.newProxyInstance(VideoEngagementActions::class.java.classLoader,arrayOf(VideoEngagementActions::class.java)) {_,method,_->error("Share feedback must not call ${method.name}")} as VideoEngagementActions
             val vm=VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
                 DesktopPluginContext(DesktopPluginStore(folder)),scope,actions,VideoCoinBalanceLoader{0.0},
-                {f.repository.sessionEpoch==f.epoch},{action->if(f.repository.sessionEpoch!=f.epoch)false else {action();true}}))
-            vm.bindSubject(f.subject,VideoEngagementSeed(isLoggedIn=true))
+                {f.repository.sessionEpoch==f.epoch},{action->if(f.repository.sessionEpoch!=f.epoch)false else {action();true}},
+            interactionSession = { folder },
+            cachedFollowStatusReader = { error("Foreign-owner follow lookup is not selected by this fixture") },
+            followStatusQuery = { error("Foreign-owner follow query is not selected by this fixture") },
+        ))
+            vm.bindSubject(f.subject,VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn=true))
             fun sourceOwned()=f.accepted===f.source&&f.repository.sessionEpoch==f.epoch
             fun sourceAdmit(action:()->Unit):Boolean {if(!sourceOwned())return false;f.repository.withPrimaryPlaybackAdmission(f.epoch,::sourceOwned){action()};return true}
             val presentation=DesktopOriginalVideoEngagementPresentation(f.source,f.subject,f::current,f::admit,::sourceOwned,::sourceAdmit)

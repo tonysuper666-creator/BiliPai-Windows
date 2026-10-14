@@ -21,16 +21,19 @@ PATHS=[BASE+p for p in ['core/store/SettingsManager.kt','feature/settings/ui/Set
 def module(repo,name,path):
  s=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
 def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
+def read_selected(repo,path):
+ from v037_shared_tabs_progress import selected_source
+ return selected_source(path,read(repo,path))
 def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p.endswith('DynamicUserLiveBadge.kt') else 'policy-extract',
  features=['settings-dynamic-tabs-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]
 def generate(repo,output,standalone=False):
  host=module(repo,'tabs_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  a=module(repo,'tabs_decl','desktop/tools/extract-appearance-platform.py');home=module(repo,'tabs_ui','desktop/tools/extract-upstream-settings-home.py')
  output.mkdir(parents=True,exist_ok=True);files=[]
- def emit(path,body,name):files.append(host.write(output,path,read(repo,path),body,name))
+ def emit(path,body,name):files.append(host.write(output,path,read_selected(repo,path),body,name))
  def functions(source,names):return '\n\n'.join(a.declarations(parser,source,[n]).rstrip()
   if n=='normalizeDynamicNotInterestedIds' else media.function(source,n,parser) for n in names)
- path=BASE+'core/store/SettingsManager.kt';s=read(repo,path)
+ path=BASE+'core/store/SettingsManager.kt';s=read_selected(repo,path)
  names=['KEY_DYNAMIC_TAB_VISIBLE_TABS','KEY_DYNAMIC_TAB_ORDER','KEY_DYNAMIC_ALL_TAB_HORIZONTAL_USER_LIST_VISIBLE','DEFAULT_DYNAMIC_TAB_VISIBLE','DEFAULT_DYNAMIC_TAB_ORDER']
  lines=[]
  for name in names:
@@ -49,7 +52,7 @@ import kotlinx.coroutines.flow.map
 object DesktopDynamicTabsSettings {
 '''+textwrap.indent('\n'.join(lines)+'\n\n'+functions(s,['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder','getDynamicAllTabHorizontalUserListVisible','setDynamicAllTabHorizontalUserListVisible']),'    ')+'\n}\n'
  emit(path,body,'DesktopDynamicTabsSettings.kt')
- path=BASE+'feature/settings/ui/SettingsSections.kt';s=read(repo,path);section=media.function(s,'FeedApiSection',parser)
+ path=BASE+'feature/settings/ui/SettingsSections.kt';s=read_selected(repo,path);section=media.function(s,'FeedApiSection',parser)
  marker=section.index('title = "“全部”页显示关注用户栏"');begin=section.rfind('        SettingSwitchItem(',0,marker);end=section.index('        SettingsAdaptiveDivider()',marker)
  switch=home.call(section[begin:end],'SettingSwitchItem',parser)
  marker=section.index('        FeedDynamicTabVisibilityItem(');end=section.index('        SettingsAdaptiveDivider()',marker)
@@ -80,7 +83,7 @@ import com.android.purebilibili.feature.dynamic.*
 ) {
 '''+prelude+'\n SettingsCardGroup {\n'+switch+'\n SettingsAdaptiveDivider()\n'+tabs+'\n }\n}\n\n@Composable\n'+media.function(s,'FeedDynamicTabVisibilityItem',parser)+'\n'
  emit(path,body,'DesktopOriginalDynamicTabsFields.kt')
- path=BASE+'feature/dynamic/DynamicViewModel.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/DynamicViewModel.kt';s=read_selected(repo,path)
  mapped=functions(s,['extractUsersFromFollowings','extractUsersFromLive','applyUserPreferences'])
  mapped=mapped.replace('private fun extractUsers','internal fun extractUsers')
  mapped=mapped.replace('private fun applyUserPreferences(users: List<SidebarUser>)','internal fun applyUserPreferences(users: List<SidebarUser>, pinned:Set<Long>, hidden:Set<Long>, showHidden:Boolean)')
@@ -93,12 +96,12 @@ import com.android.purebilibili.feature.dynamic.*
 import com.android.purebilibili.data.model.response.*
 private const val DYNAMIC_FOLLOWINGS_PAGE_SIZE = 50
 '''+media.data_class(s,'SidebarUser',parser)+'\n\n'+media.data_class(s,'DynamicStartupLoadPlan',parser)+'\n\ninternal object DesktopOriginalDynamicUserPreferenceKeys {\n'+textwrap.indent('\n'.join(keyLines),'    ')+'\n}\n\n'+functions(s,['resolveDynamicStartupLoadPlan','resolveDynamicFollowingsPageLimit','hasLoadedAllDynamicFollowings'])+'\n\n'+mapped,'DesktopOriginalDynamicUsers.kt')
- path=BASE+'data/repository/LiveRepository.kt';s=read(repo,path);method=media.function(s,'getFollowedLivePage',parser)
+ path=BASE+'data/repository/LiveRepository.kt';s=read_selected(repo,path);method=media.function(s,'getFollowedLivePage',parser)
  start=method.index('        val followedRooms =');end=method.index('        val pageInfo =',start)
  pure=textwrap.dedent(method[start:end]);assert 'followedRooms.map { it.toLiveRoom() }' in pure
  emit(path,'package com.android.purebilibili.data.repository\nimport com.android.purebilibili.data.model.response.*\n\n'+
   'internal fun desktopOriginalDynamicFollowedLiveUsers(resp:FollowedLiveResponse):List<LiveRoom> {\n'+textwrap.indent(pure,'    ')+'    return liveRooms.distinctBy { it.roomid }\n}\n','DesktopOriginalDynamicFollowedLiveUsers.kt')
- path=BASE+'feature/dynamic/DynamicScreenStatePolicy.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/DynamicScreenStatePolicy.kt';s=read_selected(repo,path)
  selected=['resolveDynamicUpPanelUsers','isDynamicUpPanelAllShortcut','isDynamicUpPanelShortcut','isDynamicUpPanelItemSelected',
  'resolveDynamicSelectedUserIdAfterClick','shouldUseSelectedUserDynamicFeed','resolveDynamicSelectedUserForTab','resolveDynamicTabAfterUserSelection',
  'resolveDynamicSelectedTab','resolveDynamicFeedRequestType','shouldShowDynamicHorizontalUserList','resolveHorizontalUserListVerticalPaddingDp',
@@ -108,18 +111,18 @@ import com.android.purebilibili.data.model.response.*
 import kotlin.math.max
 internal const val DYNAMIC_UP_PANEL_ALL_UID = -1L
 '''+functions(s,selected),'DesktopOriginalDynamicUserStatePolicy.kt')
- path=BASE+'feature/dynamic/DynamicUserRequestPolicy.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/DynamicUserRequestPolicy.kt';s=read_selected(repo,path)
  # The one presentation extension requires Android ViewModel state; callers reuse its item filter directly.
  extension=media.function(s,'withUserContentFilter',parser)
  body=s.replace(extension+'\n','')
  emit(path,body,'DesktopOriginalDynamicUserRequestPolicy.kt')
- path=BASE+'feature/dynamic/DynamicInteractionPolicy.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/DynamicInteractionPolicy.kt';s=read_selected(repo,path)
  emit(path,'package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.data.model.response.DynamicItem\n\n'+functions(s,
  ['shouldIncludeDynamicItemInVideoTab','shouldIncludeDynamicItemInPgcTab','shouldIncludeDynamicItemInArticleTab']),'DesktopOriginalDynamicUserItemFilter.kt')
- path=BASE+'feature/dynamic/DynamicLayoutPolicy.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/DynamicLayoutPolicy.kt';s=read_selected(repo,path)
  emit(path,'package com.android.purebilibili.feature.dynamic\nimport androidx.compose.ui.unit.*\n\n'+a.declarations(parser,s,
  ['resolveDynamicHorizontalUserListHorizontalPadding','resolveDynamicHorizontalUserListSpacing','shouldShowDynamicUserLiveBadge','resolveDynamicUserLiveBadgeLabel']),'DesktopOriginalDynamicUserLayout.kt')
- path=BASE+'data/repository/DynamicRepository.kt';s=read(repo,path)
+ path=BASE+'data/repository/DynamicRepository.kt';s=read_selected(repo,path)
  method=media.function(s,'getUserDynamicFeed',parser).replace('NetworkModule.dynamicApi.getUserDynamicFeed(','getPage(')
  method=method.replace('catch (e: Exception) {','catch (cancelled:kotlinx.coroutines.CancellationException) { throw cancelled } catch (e: Exception) {').replace('            e.printStackTrace()','            // Task boundary never prints URLs or raw response exceptions.')
  retry=media.function(s,'fetchDynamicFeedPageWithRetry',parser).replace('catch (error: Exception) {','catch (cancelled:kotlinx.coroutines.CancellationException) { throw cancelled } catch (error: Exception) {')
@@ -146,7 +149,7 @@ internal class DesktopOriginalDynamicUserRepository(
  }
 '''+textwrap.indent(method+'\n\n'+retry+'\n\n'+media.function(s,'buildSelectedUserDynamicFeedParams',parser),' ')+ '\n}\n\n'+registry
  emit(path,body,'DesktopOriginalDynamicUserRepository.kt')
- path=BASE+'feature/dynamic/DynamicScreen.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/DynamicScreen.kt';s=read_selected(repo,path)
  body='''package com.android.purebilibili.feature.dynamic
 import androidx.compose.runtime.*
 import androidx.compose.foundation.*
@@ -170,7 +173,7 @@ import coil3.compose.LocalPlatformContext as LocalContext
 @Composable
 '''+media.function(s,'HorizontalUserList',parser).replace('private fun','internal fun',1)+'\n\n@Composable\n'+media.function(s,'DynamicSelectedUserFeedHeader',parser).replace('private fun','internal fun',1)+'\n'
  emit(path,body,'DesktopOriginalDynamicUserControls.kt')
- path=BASE+'feature/dynamic/components/DynamicAdaptiveSegmentedControl.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/components/DynamicAdaptiveSegmentedControl.kt';s=read_selected(repo,path)
  # Only the exact original native renderer branch is available on this host. Its liquid branch stays explicitly missing.
  fun=media.function(s,'DynamicAdaptiveSegmentedControl',parser);start=fun.index('        val options = remember(items)');native=fun[start:fun.rfind('\n    }')]
  signature=fun[:fun.index('    val context = LocalContext.current')]
@@ -182,19 +185,20 @@ import com.android.purebilibili.core.ui.components.*
 import top.yukonga.miuix.kmp.blur.Backdrop
 @Composable
 '''+signature+native+'\n}\n','DesktopOriginalDynamicNativeSegmentedControl.kt')
- path=BASE+'feature/dynamic/components/DynamicUserLiveBadge.kt';s=read(repo,path)
+ path=BASE+'feature/dynamic/components/DynamicUserLiveBadge.kt';s=read_selected(repo,path)
  emit(path,s.replace('import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion','import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion'),'DynamicUserLiveBadge.kt')
- path=DS+'components/AppSegmentedControl.kt';s=read(repo,path)
+ path=DS+'components/AppSegmentedControl.kt';s=read_selected(repo,path)
  s=s.replace(media.data_class(s,'AppSegmentOption',parser),'').replace(a.declarations(parser,s,['resolvePiliPlusScrollableUnderlineMinWidth']),'')
  s=s.replace('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration as LocalConfiguration')
  s=s.replace('import androidx.compose.foundation.isSystemInDarkTheme','import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme')
  emit(path,s,'DesktopOriginalDynamicNativeTabs.kt')
- if standalone:
-  for path in DIRECT:
-   emit(path,read(repo,path),Path(path).name)
- path=DS+'renderer/material3/AppMaterial3TonalPillTabRow.kt';s=read(repo,path)
+ for path in DIRECT:
+  if path.endswith("/AppTonalPillTabPolicy.kt") or path.endswith("/AppSegmentedControlPolicy.kt"):continue
+  if standalone or read_selected(repo,path)!=read(repo,path):
+   emit(path,read_selected(repo,path),Path(path).name)
+ path=DS+'renderer/material3/AppMaterial3TonalPillTabRow.kt';s=read_selected(repo,path)
  emit(path,s.replace('androidx.compose.ui.platform.LocalConfiguration','com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration'),Path(path).name)
- path=DS+'AdaptiveChrome.kt';s=read(repo,path)
+ path=DS+'AdaptiveChrome.kt';s=read_selected(repo,path)
  line=next(line for line in s.splitlines() if line.startswith('val LocalImmersiveTopChromeActive ='))
  emit(path,'package com.android.purebilibili.core.ui\nimport androidx.compose.runtime.compositionLocalOf\n'+line+'\n','DesktopOriginalDynamicImmersiveChrome.kt')
  return files

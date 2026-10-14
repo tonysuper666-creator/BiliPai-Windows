@@ -21,6 +21,9 @@ def generate(repo,output,standalone=False):
   path=BASE+rel+'.kt';sourcePath=_desktop_canonical_source(R,path);path=sourcePath.relative_to(R).as_posix();s=read(sourcePath);b=subprocess.check_output(['git','show',P+':'+path],cwd=R).replace(b'\r\n',b'\n');assert s.encode()==b
   rows.append({'path':path,'commit':P,'sha256LfUtf8':hashlib.sha256(b).hexdigest()});return s
  def emit(rel,s,direct=False):
+  from v037_tab_roles import apply as apply_tab_roles
+  sourcePath="app/src/main/java/com/android/purebilibili/"+rel+".kt"
+  s=apply_tab_roles(sourcePath,s,OUT,Path(rel).name)
   path=OUT/'com/android/purebilibili'/(rel+'.kt')
   if not direct or STANDALONE:write(path,s)
   rows[-1]['output']={'path':path.relative_to(OUT).as_posix(),'sha256LfUtf8':hashlib.sha256(s.encode()).hexdigest(),'mode':'direct' if direct else 'selected'}

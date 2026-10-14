@@ -140,20 +140,27 @@ internal fun DesktopWindowsSectionCommandOverlay(
     items: List<CommandDanmakuItem>,
     player: MpvPlayer,
     viewport: DanmakuViewport,
+    bottomInsetPx: Int,
     state: CommandDanmakuOverlayState,
+    renderingPaused: Boolean,
     fontScale: Float,
     onFollowClick: () -> Unit,
     onTripleClick: () -> Unit,
+    onLinkClick: (CommandDanmakuItem) -> Unit,
     onVoteSubmit: (CommandDanmakuItem, VoteOption, Int) -> Unit,
+    followStatusKnown: Boolean,
+    likeStatusKnown: Boolean,
     isFollowing: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     if (commandPort == null) return
     CompositionLocalProvider(LocalDesktopWindowsCommandVotePlatform provides commandPort) {
         CommandDanmakuOverlay(
-            items = items, player = player, viewport = viewport, bottomInsetPx = 0,
+            items = items, player = player, viewport = viewport, bottomInsetPx = bottomInsetPx,
             state = state, fontScale = fontScale, onFollowClick = onFollowClick,
             onTripleClick = onTripleClick, onVoteSubmit = onVoteSubmit,
+            onLinkClick = onLinkClick, followStatusKnown = followStatusKnown,
+            likeStatusKnown = likeStatusKnown, renderingPaused = renderingPaused,
             isFollowing = isFollowing, modifier = modifier,
         )
     }
