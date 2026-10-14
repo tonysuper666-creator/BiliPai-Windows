@@ -59,6 +59,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Existing timeline source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_dynamic_tabs_sources.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original tabs source ownership regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete original theme-role source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_reply_medal_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v029_comment_search.py -v
