@@ -1,10 +1,15 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "7f38cc4ce016c10ae3b087b5e343703bd4bec21d",
-  "windowsVersion": "0.2.427.86",
-  "createdAt": "2026-10-14T18:36:31.746140+00:00",
+  "baseHead": "fb4db99599670e19d369a440e8de41b92ccfcc48",
+  "windowsVersion": "0.2.427.87",
+  "createdAt": "2026-10-14T19:27:58.366602+00:00",
   "sources": [
+    {
+      "path": ".github/workflows/windows-source-validation.yml",
+      "normalization": "lf",
+      "sha256": "27bd779a004ba6143ee99fa4789baeec996cf0212f8cb3ce49d5a848db85ed81"
+    },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
       "normalization": "lf",
@@ -13,7 +18,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "d00bae464c2ca3ddd5c8b9db1d597c61567acfd95783ddbacd79a4f42e8eea2d"
+      "sha256": "0819a8c67fc506ade0e8841626374c8ea0844db6c84cb9dd845750f9cb71f56a"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
@@ -76,6 +81,16 @@
       "sha256": "70d9d9ebd79b52dbf653d97c52c515cacc53a8048c8c98bdda8df97a2d38ed9e"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "ffb4c3ccab54eb2aa2fb9c33e3c981b00288be17b8d0d5ef1328eb97ca5e5c36"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaylistBinding.kt",
+      "normalization": "lf",
+      "sha256": "a597db63d74100dfcff37626889542b67ae1c98560229660b897fc692418153e"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsMessageNotifications.kt",
       "normalization": "lf",
       "sha256": "9f1d870b2d352e36f370cca2b0af4470b6f65e4bb7cdad856c108b544d4c39a4"
@@ -121,9 +136,19 @@
       "sha256": "b5312d408b9de241fc89460b425377f097dbbfe54061cb5c38eccaaf630cf041"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
+      "normalization": "lf",
+      "sha256": "6b71e08ec63ce7d0bb91eca22b022babf44e7bea07498d0375295f732a97aafb"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementStatusReadTest.kt",
       "normalization": "lf",
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
+    },
+    {
+      "path": "desktop/tools/build.ps1",
+      "normalization": "lf",
+      "sha256": "27515ea148a962d76ba0425b20a62811c2ce266878f25d5d9f47a19d7f5438c8"
     },
     {
       "path": "desktop/tools/extract-dynamic-message-share.py",
@@ -148,7 +173,7 @@
     {
       "path": "desktop/tools/extract-upstream-listen-video-root.py",
       "normalization": "lf",
-      "sha256": "2b1f6411deca80fa5fa992220eeae8d0d74bcf6b3e85589a52be6882b998320d"
+      "sha256": "6029cd6a47b1c473660a520fad298570b49cc7cb78f4f855ce9dc533a17e1250"
     },
     {
       "path": "desktop/tools/extract-upstream-message-notifications.py",
@@ -164,6 +189,11 @@
       "path": "desktop/tools/native/mpv-rtx-core-runtime-descriptor.ps1",
       "normalization": "lf",
       "sha256": "bfac5cb6eb1d73eb09f4fd4ae41b6cef404c8731847376fb9473b9636b20f7ff"
+    },
+    {
+      "path": "desktop/tools/native/stage-mpv-companion-resources.ps1",
+      "normalization": "lf",
+      "sha256": "2bce6d2153371c59bf6b0ffc42bfcedf860cca5bd57038334b33c41459b1cff6"
     },
     {
       "path": "desktop/tools/native/veyra-core-build-evidence.py",
@@ -211,6 +241,11 @@
       "sha256": "809f263a5b3257045f9318605439b051e4be9a4e8ec6c9867441f26c47391933"
     },
     {
+      "path": "desktop/tools/tests/test_mpv_companion_resource_staging.py",
+      "normalization": "lf",
+      "sha256": "80f483719ba98b731ecc17c2ff811c5e8dce02787b347f582ce03070bdceef07"
+    },
+    {
       "path": "desktop/tools/tests/test_mpv_rtx_installer_protocol.py",
       "normalization": "lf",
       "sha256": "bb4ea0aa7f2599edd4ec8bae68996a8dfb7ff7ccd16d4e6ffa536327dbc1f4d8"
@@ -229,6 +264,11 @@
       "path": "desktop/tools/tests/test_v038_danmaku_merge_source.py",
       "normalization": "lf",
       "sha256": "1919035bfaf46c33d64b3a8b0015611c8bc1ae9e22e2c218c9abf0d4f467888a"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_listen_collection_source.py",
+      "normalization": "lf",
+      "sha256": "884919cfe388f8375dbec15cebd11f3685224f9857125b2ccfe0acb15479e5c0"
     },
     {
       "path": "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
@@ -256,6 +296,11 @@
       "sha256": "886c010fc87de9b81bfd842e508cded4bf3ac10e9e2e42128a57f73f1df43995"
     },
     {
+      "path": "desktop/tools/tests/test_veyra_verifier_child_environment.py",
+      "normalization": "lf",
+      "sha256": "02ad6093fa8c2850ac6ecc141b921523231a5124b1f34b22eb5203269377c4f0"
+    },
+    {
       "path": "desktop/tools/update/prepare-veyra-compatible-catalog.py",
       "normalization": "lf",
       "sha256": "7c10fd658778581374fe53a8b5125f10107d51aac39b574ac5e53e3a26e6ad94"
@@ -279,6 +324,11 @@
       "path": "desktop/tools/v038_danmaku_merge.py",
       "normalization": "lf",
       "sha256": "161b4200541bb04a7981e58c980a0b87da1c3764decefd9ad1eb1edd148d39ac"
+    },
+    {
+      "path": "desktop/tools/v038_listen_collection.py",
+      "normalization": "lf",
+      "sha256": "253263e2834de5bfcfa7311da2a083c820802bf48f90b35d0ba6be0466a476bf"
     },
     {
       "path": "desktop/tools/v038_listen_viewmodel.py",
@@ -376,6 +426,16 @@
       "sha256": "f60d288300586e608925ddafd4510211b5abf07b8b4f009a7b012dee043caa7d"
     },
     {
+      "path": "desktop/upstream-slices/v038-listen-collection/ListenVideoCollectionViewModel.kt",
+      "normalization": "raw",
+      "sha256": "cfa6458c4778567b219ac6b49098c771c922b24f4ffae35aa3936a9876dadefb"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-listen-collection/manifest.json",
+      "normalization": "raw",
+      "sha256": "58cbb752b6ff1e6514cc8be5f45363da037f550016621115223f93f3285a6a56"
+    },
+    {
       "path": "desktop/upstream-slices/v038-listen-viewmodel/ListenVideoViewModel.kt",
       "normalization": "raw",
       "sha256": "aeda55b35e7c4480bcc871c58646a8fa4fc1ed2bfb0e80a5ff6a7af5ac88b829"
@@ -458,28 +518,14 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "12b110f8cc8f7a5ad14950ef3dda616ddf1eca700d7468e6762d59198dbcd77f"
+      "sha256": "f26d30ebb6b10e66f9a21c1ca7e1e7ff85cd8458ab00a3a83148600890a7ff3e"
     }
   ],
   "classes": {
-    "com.bilipai.desktop.danmaku.DesktopV038DanmakuMergeBridgeTest": 6,
-    "com.android.purebilibili.feature.video.danmaku.DesktopV038DanmakuMergerPolicyTest": 6,
-    "com.bilipai.desktop.danmaku.DesktopDanmakuDisplayAreaParityTest": 1,
-    "com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTest": 3,
-    "com.bilipai.desktop.player.DesktopNvidiaVideoAutoPolicyTest": 19,
-    "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
-    "com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest": 4,
-    "com.bilipai.desktop.danmaku.DesktopOriginalDanmakuFrameRequestsTest": 8,
-    "com.bytedance.danmaku.render.engine.RenderFrameCadenceTest": 2,
-    "com.android.purebilibili.feature.message.notification.MessageNotificationPolicyTest": 32,
-    "com.android.purebilibili.core.network.grpc.DynamicPersonalFeedApiTest": 10,
-    "com.bilipai.desktop.ui.DesktopMessageNotificationEntriesTest": 4,
-    "com.bilipai.desktop.data.DesktopDynamicReactionListTest": 8,
-    "com.android.purebilibili.feature.video.viewmodel.VideoInteractionStatusRetryTest": 5,
-    "com.bilipai.desktop.ui.DesktopOriginalVideoEngagementStatusReadTest": 3,
-    "com.android.purebilibili.feature.audio.library.DesktopV038ListenVideoLibraryLoaderTest": 11
+    "com.android.purebilibili.feature.audio.library.DesktopV038ListenVideoLibraryLoaderTest": 11,
+    "com.bilipai.desktop.ui.DesktopOriginalListenCollectionPlaylistAdmissionTest": 4
   },
-  "expectedTests": 133,
+  "expectedTests": 15,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -487,75 +533,20 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-veyra-core-manual.yml",
+    ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopDanmakuFramePlatform.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicy.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVeyraPrivateComponent.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationRootConsumer.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsMessageNotifications.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicyTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputPolicyTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntriesTest.kt",
-    "desktop/tools/extract-dynamic-message-share.py",
-    "desktop/tools/extract-upstream-audio.py",
-    "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaylistBinding.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
+    "desktop/tools/build.ps1",
     "desktop/tools/extract-upstream-listen-video-root.py",
-    "desktop/tools/extract-upstream-message-notifications.py",
-    "desktop/tools/native/build-veyra-core-runtime.py",
-    "desktop/tools/native/mpv-rtx-core-runtime-descriptor.ps1",
-    "desktop/tools/native/veyra-core-build-evidence.py",
-    "desktop/tools/native/veyra/README.md",
-    "desktop/tools/native/veyra/assemble-veyra-private-component.ps1",
-    "desktop/tools/native/veyra/verify-veyra-runtime.ps1",
-    "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
-    "desktop/tools/tests/test_extract_upstream_video_interactions.py",
-    "desktop/tools/tests/test_mpv_rtx_installer_protocol.py",
-    "desktop/tools/tests/test_v038_audio_library_source.py",
-    "desktop/tools/tests/test_v038_danmaku_cadence_source.py",
-    "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
-    "desktop/tools/tests/test_v038_message_notifications_source.py",
-    "desktop/tools/tests/test_v038_player_interaction_retry_source.py",
-    "desktop/tools/tests/test_validate_source_cohort.py",
-    "desktop/tools/tests/test_veyra_core_build_evidence.py",
-    "desktop/tools/update/prepare-veyra-compatible-catalog.py",
-    "desktop/tools/v037_player_known_state.py",
-    "desktop/tools/v038_audio_library.py",
-    "desktop/tools/v038_danmaku_cadence.py",
-    "desktop/tools/v038_listen_viewmodel.py",
-    "desktop/tools/v038_message_notifications.py",
-    "desktop/tools/v038_player_interaction_retry.py",
-    "desktop/tools/validate-source-cohort.py",
-    "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryDataSource.kt",
-    "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryLoaderTest.kt",
-    "desktop/upstream-slices/v038-audio-library/manifest.json",
-    "desktop/upstream-slices/v038-danmaku-cadence/DanmakuView.kt",
-    "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadence.kt",
-    "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadenceTest.kt",
-    "desktop/upstream-slices/v038-danmaku-cadence/manifest.json",
-    "desktop/upstream-slices/v038-listen-viewmodel/ListenVideoViewModel.kt",
-    "desktop/upstream-slices/v038-listen-viewmodel/manifest.json",
-    "desktop/upstream-slices/v038-message-notifications/BiliGrpcClient.kt",
-    "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApi.kt",
-    "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApiTest.kt",
-    "desktop/upstream-slices/v038-message-notifications/MessageNotificationChecker.kt",
-    "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicy.kt",
-    "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicyTest.kt",
-    "desktop/upstream-slices/v038-message-notifications/MessageNotificationSettingsStore.kt",
-    "desktop/upstream-slices/v038-message-notifications/MessageNotificationStateStore.kt",
-    "desktop/upstream-slices/v038-message-notifications/ProtoWire.kt",
-    "desktop/upstream-slices/v038-message-notifications/manifest.json",
-    "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetry.kt",
-    "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetryTest.kt",
-    "desktop/upstream-slices/v038-player-interaction-retry/VideoPlaybackViewModel.kt",
-    "desktop/upstream-slices/v038-player-interaction-retry/manifest.json",
+    "desktop/tools/native/stage-mpv-companion-resources.ps1",
+    "desktop/tools/tests/test_mpv_companion_resource_staging.py",
+    "desktop/tools/tests/test_v038_listen_collection_source.py",
+    "desktop/tools/tests/test_veyra_verifier_child_environment.py",
+    "desktop/tools/v038_listen_collection.py",
+    "desktop/upstream-slices/v038-listen-collection/ListenVideoCollectionViewModel.kt",
+    "desktop/upstream-slices/v038-listen-collection/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

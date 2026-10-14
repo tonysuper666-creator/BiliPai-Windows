@@ -3561,8 +3561,9 @@ val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-listen-video-root.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-listen-video-pages").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py", "tools/v038_audio_library.py", "tools/v038_listen_viewmodel.py")
+    inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py", "tools/v038_audio_library.py", "tools/v038_listen_viewmodel.py", "tools/v038_listen_collection.py")
     inputs.dir("upstream-slices/v038-listen-viewmodel")
+    inputs.dir("upstream-slices/v038-listen-collection")
     inputs.files(sources.filter { "original-listen-video-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-listen-video-pages"))

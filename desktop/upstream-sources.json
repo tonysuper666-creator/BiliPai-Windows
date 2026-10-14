@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "86",
+  "windowsRevision": "87",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14087,5 +14087,16 @@
     "sourceIdentityAndRuntimeSignatureChecksRetained": true,
     "hardwareExecuted": false,
     "mainCompiled": false
+  },
+  "v038ListenCollectionSlice": {
+    "upstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestPath": "desktop/upstream-slices/v038-listen-collection/manifest.json",
+    "manifestSHA256": "58cbb752b6ff1e6514cc8be5f45363da037f550016621115223f93f3285a6a56",
+    "completeOriginalCollectionViewModelReused": true,
+    "existingSoleProducerAndRootPlaylistRetained": true,
+    "collectionDestinationEnvironmentPrepared": true,
+    "collectionPlayerUiMounted": false,
+    "mainCompiled": false,
+    "runtimeExecuted": false
   }
 }

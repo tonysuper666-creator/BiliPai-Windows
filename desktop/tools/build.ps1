@@ -78,6 +78,9 @@ try {
         Copy-Item -LiteralPath $licenseSource -Destination $nativeResources -Recurse -Force
     }
     Copy-Item -LiteralPath (Join-Path $nativeSource 'provenance.json') -Destination $nativeResources -Force
+    . (Join-Path $PSScriptRoot 'native/stage-mpv-companion-resources.ps1')
+    $mpvProvenance = Get-Content -LiteralPath (Join-Path $nativeSource 'provenance.json') -Raw | ConvertFrom-Json
+    Copy-VerifiedMpvCompanionResources -NativeRoot $nativeSource -ResourceRoot $nativeResources -Provenance $mpvProvenance
 
     Push-Location $repoRoot
     try {

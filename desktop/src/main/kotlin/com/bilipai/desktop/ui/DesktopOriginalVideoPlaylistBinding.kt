@@ -57,6 +57,18 @@ internal class DesktopOriginalVideoPlaylistBinding(
     fun addAllToPlaylist(items: List<PlaylistItem>) = mutate { original.addAllToPlaylist(items) }
     fun addAllToPlaylistIfCurrent(items: List<PlaylistItem>, session: PlaylistSession): Boolean =
         mutate { original.addAllToPlaylistIfCurrent(items, session) }
+    /** Collection pagination captures its real caller before IO. Its admission
+     * belongs inside this existing Root mutation, alongside the original session check. */
+    fun setExternalPlaylistIfCallerCurrent(items: List<PlaylistItem>, startIndex: Int,
+        source: ExternalPlaylistSource, callerCurrent: () -> Boolean): PlaylistSession = mutate {
+        if (!callerCurrent()) throw CancellationException("Collection playlist caller retired")
+        original.setExternalPlaylist(items, startIndex, source)
+    }
+    fun addAllToPlaylistIfCallerCurrent(items: List<PlaylistItem>, session: PlaylistSession,
+        callerCurrent: () -> Boolean): Boolean = mutate {
+        if (!callerCurrent()) throw CancellationException("Collection playlist caller retired")
+        original.addAllToPlaylistIfCurrent(items, session)
+    }
     fun removeFromPlaylist(bvid: String) = mutate { original.removeFromPlaylist(bvid) }
     fun clearPlaylist() = mutate { original.clearPlaylist() }
     fun setPlayMode(mode: PlayMode) = mutate { original.setPlayMode(mode) }
