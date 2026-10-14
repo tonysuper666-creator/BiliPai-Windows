@@ -1,6 +1,7 @@
 # BiliPai private Veyra component verification
 
-This is the first SR/HDR backend candidate. NR, DLSS, and VFG remain pending.
+This is the SR/HDR shared-core candidate, with both v1 and v2 ABI surfaces.
+NR, real Optical Flow motion analysis, and VFG remain pending qualification.
 It verifies selected local component material. It does not load any feature DLL,
 initialize NGX, run GPU work, or prove that an enhanced frame reached the display.
 
@@ -8,7 +9,11 @@ The unselected template keeps projectId, moduleBuildSha256, and mpvDllSha256 nul
 A source tag update changes source-monitor information only. It never switches
 the selected installed engine or fills a binary identity from an older MPV DLL.
 The real MPV DLL must contain the registered bilipai-rtx filter from the fixed
-source manifest; that complete DLL has not yet been built or bound here.
+source manifest. The presentation-protocol-2 MPV was built in own-repository
+run 38574814418; the shared core and all eleven compiler objects were verified
+in run 38612094758. Their exact local component passed isolated assembly and
+independent full verification on 2026-10-14. It remains unselected and unloaded;
+these results do not prove GPU processing or presentation.
 
 ## Own application identity
 
@@ -52,6 +57,11 @@ rejections exit 2. Its schema is 1:
   headerSha256, coreAbi (1), coreAbiWire (65536), and runtimeFiles
 - each checked runtimeFiles item: relativePath, sha256, bytes, fileVersion,
   authenticodeStatus, signerSubject, signerThumbprint
+
+An unexpected verifier error may include a bounded diagnosticSourceLine integer.
+It contains no exception text, profile values, paths, or environment. Callers
+clear inherited PSModulePath before starting Windows PowerShell so that a
+PowerShell 7 parent cannot redirect its system security module discovery.
 
 RuntimeOnly is a diagnostics-only mode. It always returns engineStatus
 UNAVAILABLE even when both runtime files verify. Application binding must omit

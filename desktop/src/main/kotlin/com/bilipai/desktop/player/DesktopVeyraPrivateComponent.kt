@@ -239,6 +239,12 @@ internal class DesktopVeyraPrivateComponent(
             process = ProcessBuilder(shell.toString(), "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
                 "-File", script.toString(), "-ProfilePath", profile.toString(), "-TrustedProfileSha256", trustedProfileSha256,
                 "-RuntimeRoot", root.toString(), "-CoreModulePath", core.toString(), "-MpvModulePath", mpv.toString())
+                .apply {
+                    // Windows PowerShell must discover its own system modules,
+                    // including Microsoft.PowerShell.Security, when the app was
+                    // started from a PowerShell 7 terminal.
+                    environment().keys.removeIf { it.equals("PSModulePath", ignoreCase = true) }
+                }
                 .redirectOutput(output.toFile()).redirectError(ProcessBuilder.Redirect.DISCARD).start()
             require(process.waitFor(30, TimeUnit.SECONDS) && process.exitValue() == 0)
             require(Files.size(output) in 1..65536)
@@ -289,7 +295,7 @@ internal class DesktopVeyraPrivateComponent(
         private const val PRESENTATION_EDITS_SHA256 = "e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f"
         private const val PRESENTATION_HELPER_SHA256 = "748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf"
         private const val PRESENTATION_REGISTRATION_SHA256 = "95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042"
-        private const val VERIFIER_SOURCE_SHA256 = "1983b1b0cf436a06e50cb01b70d37b43f575c0d6b29ca4b4bb611d144f9a6295"
+        private const val VERIFIER_SOURCE_SHA256 = "a9266f62713049f16e4d929128aee93c1e7d976d61cc27e6e903f06dbb28fef6"
     }
 }
 

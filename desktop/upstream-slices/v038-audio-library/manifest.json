@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.3.8",
+  "commit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+  "files": [
+    {
+      "file": "ListenVideoLibraryDataSource.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/library/ListenVideoLibraryDataSource.kt",
+      "gitBlob": "fa784ec155882469585e92fda427c65fb9b4be38",
+      "sha256": "98f1d47577991bab5f6fe721d141625ea1f044b1bbdd603220000a36800cfbf3",
+      "bytes": 10638
+    },
+    {
+      "file": "ListenVideoLibraryLoaderTest.kt",
+      "path": "app/src/test/java/com/android/purebilibili/feature/audio/library/ListenVideoLibraryLoaderTest.kt",
+      "gitBlob": "da9c123fd7f5c3fa49320fe8299a5896f2778e51",
+      "sha256": "c72ee99c2f0de779fc879d33492d127554f1144841bb7d0af2c9e80c30209954",
+      "bytes": 18203
+    }
+  ]
+}

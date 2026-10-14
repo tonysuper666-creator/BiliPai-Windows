@@ -11474,7 +11474,7 @@
       "features": [
         "desktop-original-message-notification-root"
       ],
-      "mode": "direct"
+      "mode": "policy-extract"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationSettingsStore.kt",
@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "80",
+  "windowsRevision": "86",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14029,5 +14029,63 @@
     "sameExistingSession": true,
     "guiExecuted": false,
     "accountRequestsExecuted": false
+  },
+  "v038MessageNotificationSlice": {
+    "upstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestPath": "desktop/upstream-slices/v038-message-notifications/manifest.json",
+    "manifestSHA256": "bf8f62448f5293bec2876476698ee5acceb9b7781ad245f73162c2490455f1a9",
+    "wholePolicyPollerStateAndPersonalFeed": true,
+    "canonicalBaselineUnchanged": true,
+    "mainCompiled": false,
+    "runtimeExecuted": false,
+    "actualWindowsSourceConnected": true
+  },
+  "v038InteractionRetrySlice": {
+    "upstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestPath": "desktop/upstream-slices/v038-player-interaction-retry/manifest.json",
+    "manifestSHA256": "32358962a03ee93b3e2815f2e95476e34a7afb440d4ceb64ab2bd10bd0c8d70e",
+    "wholeOriginalRetryAndDeferredMethodsConnected": true,
+    "canonicalBaselineUnchanged": true,
+    "mainCompiled": false,
+    "runtimeExecuted": false
+  },
+  "v038AudioLibrarySlice": {
+    "upstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestPath": "desktop/upstream-slices/v038-audio-library/manifest.json",
+    "manifestSHA256": "b207e445a87518f319902da64f8f33723cb59a559327b453890ddc72487a1a6a",
+    "completeOriginalLoaderAndInterfaceReused": true,
+    "existingSoleAudioProducerRetained": true,
+    "originalPureLoaderTestCases": 11,
+    "originalVmTestCasesDeferred": 4,
+    "existingOwnedWindowsVmPreserved": true,
+    "legacyProgressCallbackNamed": false,
+    "collectionPlayerUiMounted": false,
+    "mainCompiled": false,
+    "runtimeExecuted": false,
+    "latestOriginalViewModelConnected": true
+  },
+  "v038ListenViewModelSlice": {
+    "upstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestPath": "desktop/upstream-slices/v038-listen-viewmodel/manifest.json",
+    "manifestSHA256": "5c66e0b2b71cc227de942603acabfba404b64c174f51d0d3fe4832b3c38c137b",
+    "completeOriginalViewModelReused": true,
+    "existingSoleProducerAndRootEnvironmentRetained": true,
+    "incrementalIndexCallbackConnected": true,
+    "originalBackgroundPauseResumeConnectedToPhysicalPage": true,
+    "originalAsyncJobsOwned": 4,
+    "originalViewModelTestCasesStillDeferred": 4,
+    "collectionPlayerUiMounted": false,
+    "mainCompiled": false,
+    "runtimeExecuted": false
+  },
+  "windowsNativeComponentContractRevision": {
+    "sharedCoreAbiExports": 8,
+    "presentationProtocolVersion": 2,
+    "verifierSHA256": "a9266f62713049f16e4d929128aee93c1e7d976d61cc27e6e903f06dbb28fef6",
+    "windowsPowerShellChildModulePathIsolated": true,
+    "integralJsonProtocolTypesSupported": true,
+    "sourceIdentityAndRuntimeSignatureChecksRetained": true,
+    "hardwareExecuted": false,
+    "mainCompiled": false
   }
 }

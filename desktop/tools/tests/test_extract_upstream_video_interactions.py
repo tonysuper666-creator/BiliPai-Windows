@@ -2,6 +2,7 @@
 from pathlib import Path
 import hashlib
 import importlib.util
+import json
 import re
 import sys
 import tempfile
@@ -67,6 +68,18 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
             def restore_later_stages(body, rows):
                 row = next(item for item in rows if item["path"] == VM)
                 self.assertEqual(row["sha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                known = json.loads((output/"actual/v037-complete-known-state-owner-proof.json").read_bytes())
+                self.assertEqual(known["afterSha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                for edit in reversed(known["indexedEdits"]):
+                    index = edit["afterOffset"]
+                    self.assertEqual(edit["after"], body[index:index+len(edit["after"])])
+                    body = body[:index]+edit["before"]+body[index+len(edit["after"]):]
+                self.assertEqual(known["beforeSha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                for field in ("autoplayContinuationInverseEdits", "nextWatchInverseEdits", "metadataRelatedInverseEdits", "detailInverseEdits"):
+                    for edit in reversed(row[field]):
+                        index = edit["offset"]
+                        self.assertEqual(edit["after"], body[index:index+len(edit["after"])])
+                        body = body[:index]+edit["before"]+body[index+len(edit["after"]):]
                 # Actual reverse order includes final CDN and later typed-origin stages.
                 for field in ("postRelatedInverseEdits", "relatedInverseEdits", "postSameSendInverseEdits", "sameSendExpectedSourceInverseEdits", "postRecoveryInverseEdits", "failureRecoveryInverseEdits", "followGroupInverseEdits"):
                     for edit in reversed(row[field]):
@@ -108,17 +121,19 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
             hashlib.sha256(original.encode()).hexdigest())
         with tempfile.TemporaryDirectory(prefix="original-interaction-controls-") as temp:
             controls.generate(REPO, Path(temp))
+            selected_original = controls.read("feature/video/ui/components/DanmakuSendDialog.kt")
             actual = (Path(temp) / "com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt").read_text(
                 encoding="utf-8")
-        # Restore the existing configuration leaf and the single new Dialog import.
-        inverse = actual.replace("import com.bilipai.desktop.ui.DesktopWindowsVideoInteractionDialog as Dialog\n",
-            "import androidx.compose.ui.window.Dialog\n", 1)
+        # Current full v037 composer uses the original modal sheet and Windows
+        # configuration carrier; recover the whole selected source, not v025 UI.
+        inverse = actual.replace("    com.bilipai.desktop.ui.DesktopWindowsVideoInteractionModalSheet(\n        sheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true),\n",
+            "    com.android.purebilibili.core.ui.AppModalBottomSheet(\n", 1)
         inverse = inverse.replace("import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
             "import androidx.compose.ui.platform.LocalConfiguration", 1)
-        original_without_android_flag = re.sub(r"(?m)^\s*decorFitsSystemWindows = false,?\s*\n", "", original)
+        original_without_android_flag = re.sub(r"(?m)^\s*decorFitsSystemWindows = false,?\s*\n", "", selected_original)
         self.assertEqual(original_without_android_flag, inverse)
         matching = [row for row in controls.ADAPT if row["label"] ==
-            "Whole original composer uses opt-in owned Windows native container"]
+            "Whole original v037 composer uses the same existing owned native modal container with original default sheet state"]
         self.assertEqual(1, len(matching))
 
     def test_all_three_share_bodies_restore_whole_previous_adaptation(self):

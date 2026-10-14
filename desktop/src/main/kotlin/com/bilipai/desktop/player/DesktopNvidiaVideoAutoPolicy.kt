@@ -2,6 +2,7 @@ package com.bilipai.desktop.player
 
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.ceil
 
 internal enum class DesktopNvidiaVideoDecisionKind { WAITING_VIDEO, WAITING_GPU_LIMIT, DIRECT, UPSCALE, HDR, UPSCALE_AND_HDR, NATIVE_RESOLUTION, NATIVE_RESOLUTION_AND_HDR }
 
@@ -86,4 +87,16 @@ internal fun resolveDesktopNvidiaVideoDecision(
         else -> DesktopNvidiaVideoDecisionKind.DIRECT
     }
     return DesktopNvidiaVideoDecision(kind, scale, hdr, sourceIsHdr, nativeResolution)
+}
+
+/** Process a stable upper size bucket, then let the existing renderer downsize.
+ * Small rectangle changes retain the native session without undersizing its
+ * requested output. Native/HDR-only 1x and the current GPU texture cap stay exact. */
+internal fun nvidiaStableUpscale(
+    requestedScale: Double, inputWidth: Int, inputHeight: Int, maximumTextureDimension: Int?,
+): Double {
+    if (!requestedScale.isFinite() || requestedScale <= 1.0) return 1.0
+    if (inputWidth <= 0 || inputHeight <= 0 || maximumTextureDimension == null || maximumTextureDimension <= 0) return 1.0
+    val cap = min(4.0, maximumTextureDimension.toDouble() / max(inputWidth, inputHeight)).coerceAtLeast(1.0)
+    return min(ceil(requestedScale * 4.0) / 4.0, cap)
 }

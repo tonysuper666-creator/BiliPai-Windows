@@ -295,11 +295,16 @@ val extractUpstreamAudio by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-audio.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/audio").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-audio.py")
+    inputs.file("tools/v038_audio_library.py")
+    inputs.dir("upstream-slices/v038-audio-library")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "listen-video" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/audio"))
+    outputs.dir(layout.buildDirectory.dir("generated/audio-library-original-tests"))
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/audio-library-original-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamAudio) }
 val extractUpstreamLogin by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -1457,6 +1462,8 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuSettings) }
 
 val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_danmaku_cadence.py")
+    inputs.dir("upstream-slices/v038-danmaku-cadence")
     inputs.file("tools/v038_danmaku_merge.py")
     inputs.dir("upstream-slices/v038-danmaku-merge")
     inputs.file("tools/v030_up_danmaku.py")
@@ -2054,7 +2061,7 @@ tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(pr
 // Only the hash-pinned read-only verifier is staged; native SDK/module/runtime files remain opt-in.
 val prepareVeyraRuntimeVerifier by tasks.registering(Copy::class) {
     val verifier = file("tools/native/veyra/verify-veyra-runtime.ps1")
-    val expected = "1983b1b0cf436a06e50cb01b70d37b43f575c0d6b29ca4b4bb611d144f9a6295"
+    val expected = "a9266f62713049f16e4d929128aee93c1e7d976d61cc27e6e903f06dbb28fef6"
     from(verifier)
     into("resources/common/native/veyra-core")
     inputs.property("verifierSha256", expected)
@@ -2647,6 +2654,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalMediaByteCachePolicy) }
 
 
 val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_player_interaction_retry.py")
+    inputs.dir("upstream-slices/v038-player-interaction-retry")
     dependsOn(prepareUpstreamSources, extractOriginalVideoStateCore, extractOriginalPlayerFullControls,
         extractOriginalVideoFullscreenPager)
     workingDir(projectDir)
@@ -2665,6 +2674,10 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-full-owner")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoFullOwner) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalVideoFullOwner) }
+kotlin.sourceSets.named("test") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-interaction-retry-tests"))
+}
 // DIRECT10 are copied once by prepareUpstreamSources; production omits --standalone.
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
@@ -3548,7 +3561,8 @@ val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-listen-video-root.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-listen-video-pages").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py")
+    inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py", "tools/v038_audio_library.py", "tools/v038_listen_viewmodel.py")
+    inputs.dir("upstream-slices/v038-listen-viewmodel")
     inputs.files(sources.filter { "original-listen-video-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-listen-video-pages"))
@@ -3573,6 +3587,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalAuMusicPage) }
 
 // Original read-only notification Poller/Policy/settings/state; actual retained Windows Root consumer.
 val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
+    inputs.file("tools/v038_message_notifications.py")
+    inputs.dir("upstream-slices/v038-message-notifications")
     dependsOn(prepareUpstreamSources, extractOriginalMessagePages, extractUpstreamDynamicFullCard)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-notifications.py",
@@ -3584,8 +3600,12 @@ val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-message-notifications"))
 }
-kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications")) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications/com")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalMessageNotifications) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalMessageNotifications) }
+kotlin.sourceSets.named("test") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications/policy-tests"))
+}
 
 // Source54 stable backend inputs: retained original producers own these overlays.
 listOf("extractOriginalVideoStateCore", "extractV032CatalogSlice").forEach { taskName ->

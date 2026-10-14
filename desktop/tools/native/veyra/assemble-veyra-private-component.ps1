@@ -75,7 +75,7 @@ function Invoke-Verifier([string]$Script,[string]$Profile,[string]$Digest,[strin
     $info=New-Object Diagnostics.ProcessStartInfo;$info.FileName=$exe;$info.UseShellExecute=$false;$info.CreateNoWindow=$true
     $info.RedirectStandardOutput=$true;$info.RedirectStandardError=$true
     $info.Arguments=($verifierArgs|ForEach-Object{if($_-match'["\r\n]'){Reject 'INVALID_CHILD_ARGUMENT'};'"'+$_+'"'})-join' '
-    foreach($key in @('GITHUB_TOKEN','GH_TOKEN','JAVA_TOOL_OPTIONS','_JAVA_OPTIONS','JDK_JAVA_OPTIONS')){[void]$info.EnvironmentVariables.Remove($key)}
+    foreach($key in @('GITHUB_TOKEN','GH_TOKEN','JAVA_TOOL_OPTIONS','_JAVA_OPTIONS','JDK_JAVA_OPTIONS','PSModulePath')){[void]$info.EnvironmentVariables.Remove($key)}
     $child=New-Object Diagnostics.Process;$child.StartInfo=$info
     try{
         if(-not$child.Start()){Reject 'VERIFIER_START_FAILED'}
@@ -84,7 +84,24 @@ function Invoke-Verifier([string]$Script,[string]$Profile,[string]$Digest,[strin
         $stdout=$child.StandardOutput.ReadToEndAsync();$stderr=$child.StandardError.ReadToEndAsync()
         if(-not$child.WaitForExit(30000)){try{$child.Kill()}catch{};Reject 'VERIFIER_TIMEOUT'}
         $text=$stdout.GetAwaiter().GetResult();[void]$stderr.GetAwaiter().GetResult()
-        if($child.ExitCode-ne0-or$text.Length-gt65536){Reject 'FULL_VERIFIER_REJECTED'}
+        if($text.Length-gt65536){Reject 'FULL_VERIFIER_REJECTED'}
+        if($child.ExitCode-ne0){
+            # Preserve only the pinned verifier's bounded diagnostic code. No
+            # native activation or admission decision is based on this field.
+            try{
+                $childFailure=$text|ConvertFrom-Json
+                if($childFailure.schema-eq1-and$childFailure.status-ceq'REJECTED'-and
+                   $childFailure.failureCode-is[string]-and$childFailure.failureCode-cmatch'\A[A-Z0-9_]{1,96}\z'){
+                    $result['verifierFailureCode']=$childFailure.failureCode
+                    if($childFailure.PSObject.Properties['diagnosticSourceLine']-and
+                       ($childFailure.diagnosticSourceLine-is[int]-or$childFailure.diagnosticSourceLine-is[long])-and
+                       $childFailure.diagnosticSourceLine-gt0-and$childFailure.diagnosticSourceLine-le10000){
+                        $result['verifierDiagnosticSourceLine']=$childFailure.diagnosticSourceLine
+                    }
+                }
+            }catch{}
+            Reject 'FULL_VERIFIER_REJECTED'
+        }
         $proof=$text|ConvertFrom-Json
         if($proof.schema-ne1-or$proof.status-cne'VERIFIED'-or$proof.engineStatus-cne'AVAILABLE'){Reject 'FULL_VERIFIER_REJECTED'}
         Equal-Hash $proof.checked.profileSha256 $Digest
@@ -137,7 +154,11 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
        $Manifest.tokenProtocol-ne2-or$Manifest.presentationProperty-cne'bilipai-rtx-presentation'-or
        @($Manifest.sourceFiles).Count-ne21-or$Upstream.Count-ne24-or$Registration.Count-ne3){throw 'Presentation source manifest graph mismatch.'}
-    if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
+    foreach($protocolValue in @($Native.schema,$Native.tokenProtocol)) {
+        if($protocolValue-isnot[int]-and$protocolValue-isnot[long]) {
+            throw 'Presentation receipt protocol must use integer values.'
+        }
+    }
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
        $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607'-or
@@ -169,7 +190,7 @@ try{
     $presentation=$ProducerVariant-ceq'bilipai-veyra-rtx-present-v1'
     $templateContract='tools/native/veyra/veyra-profile-template.json';$buildFolder='third-party/libmpv/build/rtx-core-v1';$manifestLeaf='bilipai-rtx-source-manifest.json'
     $contracts=[ordered]@{
-        'tools/native/veyra/verify-veyra-runtime.ps1'='1983b1b0cf436a06e50cb01b70d37b43f575c0d6b29ca4b4bb611d144f9a6295'
+        'tools/native/veyra/verify-veyra-runtime.ps1'='a9266f62713049f16e4d929128aee93c1e7d976d61cc27e6e903f06dbb28fef6'
         'tools/native/veyra/veyra-profile-template.json'='b9d6201b7e33d3e042edaf0175683d6166a5e013dc85825c98ecc9e740cd2bbc'
         'third-party/libmpv/build/rtx-core-v1/fixed-inputs.json'='b1cfbd180bd2c0c00257f29176707cc965cd7f849a22271cae402259778bceb7'
         'third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json'='9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f'
