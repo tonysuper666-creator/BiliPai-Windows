@@ -48,6 +48,7 @@ fun DesktopAppearanceSettings(
     var error by remember { mutableStateOf<String?>(null) }
     var busy by remember { mutableStateOf(true) }
     var requestedLanguage by remember { mutableStateOf<AppLanguage?>(null) }
+    var showCustomColorPicker by remember { mutableStateOf(false) }
     fun update(action: suspend () -> Unit) {
         if (busy) return
         busy = true
@@ -111,6 +112,8 @@ fun DesktopAppearanceSettings(
                 Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     AppOutlinedTextField(custom, { custom = it }, Modifier.weight(1f), singleLine = true,
                         isError = !isValidMd3CustomColorHex(custom), enabled = !busy, labelText = "#RRGGBB")
+                    DesktopAppearanceButton(strings.desktop("选色", "選色", "Choose color"),
+                        { showCustomColorPicker = true }, enabled = !busy)
                     DesktopAppearanceButton(strings["common_save"], { update { prefs.setCustomColor(custom) } },
                         enabled = !busy && isValidMd3CustomColorHex(custom))
                 }
@@ -169,6 +172,12 @@ fun DesktopAppearanceSettings(
             }
         }
     }
+    if (showCustomColorPicker && settings.md3ColorSource == Md3ColorSource.CUSTOM) {
+        ThemeCustomColorPickerDialog(initialHex = settings.md3CustomColorHex,
+            paletteStyle = settings.colorStyle, colorSpec = settings.colorSpec,
+            onDismiss = { showCustomColorPicker = false },
+            onConfirm = { selected -> showCustomColorPicker = false; update { prefs.setCustomColor(selected) } })
+    }
     requestedLanguage?.let { requested ->
         AppAlertDialog(onDismissRequest = { if (!busy) requestedLanguage = null },
             title = { DesktopAppearanceText(strings["app_language_restart_dialog_title"]) },
@@ -195,6 +204,7 @@ private fun RoleOverridesEditor(settings: DesktopThemeSettings, enabled: Boolean
     val strings = LocalDesktopStrings.current
     var draft by remember(settings.themeRoleOverrides) { mutableStateOf(settings.themeRoleOverrides) }
     val baseRoles = LocalBaseThemeRoleOverrides.current
+    var colorTarget by remember { mutableStateOf<ThemeRoleColorTarget?>(null) }
     val applicable = settings.uiStyle == AppUiStyle.MATERIAL3 && settings.md3ColorSource == Md3ColorSource.CUSTOM
     DesktopAppearanceCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -209,18 +219,32 @@ private fun RoleOverridesEditor(settings: DesktopThemeSettings, enabled: Boolean
                 for ((dark, roles) in listOf(false to draft.light, true to draft.dark)) {
                     DesktopAppearanceText(strings[if (dark) "theme_mode_dark" else "theme_mode_light"])
                     fun replace(value: ThemeModeRoleOverrides) { draft = if (dark) draft.copy(dark = value) else draft.copy(light = value) }
-                    for ((label, value, action) in listOf(
+                    for ((index, row) in listOf(
                         Triple(strings.desktop("背景", "背景", "Background"), roles.backgroundHex, { text: String -> replace(roles.copy(backgroundHex = text)) }),
                         Triple(strings.desktop("主要文字", "主要文字", "Primary text"), roles.primaryTextHex, { text: String -> replace(roles.copy(primaryTextHex = text)) }),
                         Triple(strings.desktop("次要文字", "次要文字", "Secondary text"), roles.secondaryTextHex, { text: String -> replace(roles.copy(secondaryTextHex = text)) }),
                         Triple(strings.desktop("控件强调色", "控制項強調色", "Control accent"), roles.controlAccentHex, { text: String -> replace(roles.copy(controlAccentHex = text)) }),
-                    )) AppOutlinedTextField(value, action, Modifier.fillMaxWidth(), labelText = label,
-                        singleLine = true, enabled = enabled && applicable, isError = !isValidMd3CustomColorHex(value))
+                    ).withIndex()) {
+                        val (label, value, action) = row
+                        val target = ThemeRoleColorTarget.entries[(if (dark) 4 else 0) + index]
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            AppOutlinedTextField(value, action, Modifier.weight(1f), labelText = label,
+                                singleLine = true, enabled = enabled && applicable, isError = !isValidMd3CustomColorHex(value))
+                            DesktopAppearanceButton(strings.desktop("选色", "選色", "Choose color"),
+                                { colorTarget = target }, enabled = enabled && applicable)
+                        }
+                    }
                 }
             }
             val valid = listOf(draft.light, draft.dark).all { roles -> listOf(roles.backgroundHex, roles.primaryTextHex, roles.secondaryTextHex, roles.controlAccentHex).all(::isValidMd3CustomColorHex) }
             DesktopAppearanceButton(strings["common_save"], { onSave(draft) }, enabled = enabled && applicable && valid)
         }
+    }
+    colorTarget?.takeIf { applicable }?.let { target ->
+        ThemeCustomColorPickerDialog(initialHex = target.read(draft), roleTarget = target,
+            paletteStyle = settings.colorStyle, colorSpec = settings.colorSpec,
+            onDismiss = { colorTarget = null },
+            onConfirm = { selected -> draft = target.write(draft, selected); colorTarget = null })
     }
 }
 

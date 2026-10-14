@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "95",
+  "windowsRevision": "96",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14182,8 +14182,32 @@
     "originalEnablePolicyConnectedToExistingEditor": true,
     "pickerUiIntegrated": false,
     "customPaletteArgumentsStillNeedLargeScreenOwnerCoordination": true,
+    "mainCompiled": true,
+    "jvmTestsExecuted": true,
+    "runtimeExecuted": false,
+    "fullV040ParityClaimed": false,
+    "compilationSourceHead": "9cf9e4b11b17258f23def3170ffa5333bf00319c",
+    "compilationRunId": 38647545652,
+    "selectedJvmCasesPassed": 43
+  },
+  "v040LiquidValueSlice": {
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "manifestPath": "desktop/upstream-slices/v040-liquid-value-controls/manifest.json",
+    "manifestSHA256": "f85aa683256dbccac4a31fcf1e707ebbf86786fa3a713b24ff99733a8c18cc7e",
+    "completeFixedOriginalMainUnitsConnected": 15,
+    "rawOriginalSourceFilesRetained": 22,
+    "originalLiquidJvmCasesWritten": 10,
+    "sourceGenerationCasesPassed": 9,
+    "actualExistingProducerFunctionsExecuted": 4,
+    "originalPickerConnectedToExistingSeedAndRoleEditors": true,
+    "existingHexAndRoleDraftPersistenceRetained": true,
+    "realWindowsViewportMonotonicClockEffectiveThemeAndSkiaCapabilityBound": true,
+    "nativeBarOverflowHostIntegrationPending": true,
+    "globalLiquidThemeColorPreferenceHostFollowupPending": true,
+    "customPaletteArgumentsStillNeedLargeScreenOwnerCoordination": true,
     "mainCompiled": false,
     "jvmTestsExecuted": false,
+    "pixelsValidated": false,
     "runtimeExecuted": false,
     "fullV040ParityClaimed": false
   }

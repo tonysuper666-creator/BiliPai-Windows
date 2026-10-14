@@ -174,6 +174,12 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt"))
+        // Original value-control facades and compact geometry use the existing component owner.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSwitch.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Switch.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt"))
         // Complete fixed theme roles and contrast have one existing appearance producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt"))
@@ -473,8 +479,9 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
         "--output", generatedAppearance.get().asFile.absolutePath,
         "--resource-output", generatedAppearanceResources.get().asFile.absolutePath,
         "--test-output", generatedThemeRoleTests.get().asFile.absolutePath)
-    inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py", "tools/v040_theme_roles.py")
+    inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py", "tools/v040_theme_roles.py", "tools/v040_liquid_value_controls.py")
     inputs.dir("upstream-slices/v040-theme-roles")
+    inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.files(sources.filter { "appearance-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "appearance-language" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -492,7 +499,8 @@ val extractUpstreamComponents by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-components.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/components").get().asFile.absolutePath)
-    inputs.file("tools/extract-upstream-components.py")
+    inputs.files("tools/extract-upstream-components.py", "tools/v040_liquid_value_controls.py")
+    inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.files(sources.filter { "component-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/components"))
@@ -1584,6 +1592,8 @@ tasks.named("compileKotlin") { dependsOn(extractCommentFraudProtocol) }
 
 val extractSharedLiquidTabs by tasks.registering(Exec::class) {
     inputs.file("tools/v037_shared_tabs_progress.py")
+    inputs.file("tools/v040_liquid_value_controls.py")
+    inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
     inputs.file("tools/v037_player_shared_material.py")
     inputs.dir("upstream-slices/v037-player-shared-material")
@@ -1684,6 +1694,8 @@ val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
 
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     inputs.file("tools/v037_shared_tabs_progress.py")
+    inputs.file("tools/v040_liquid_value_controls.py")
+    inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamComponents,
         extractUpstreamAppearance, extractUpstreamSettingsCategories)
@@ -2421,6 +2433,8 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
     inputs.file("tools/v037_window_modal_blur.py")
     inputs.dir("upstream-slices/v037-window-modal-blur")
     inputs.file("tools/v037_shared_tabs_progress.py")
+    inputs.file("tools/v040_liquid_value_controls.py")
+    inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
     inputs.file("tools/v037_player_foundations.py")
     inputs.dir("upstream-slices/v037-player-foundation-closure")

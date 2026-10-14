@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "d19a2abcf152a35b9a2b423f4d93cb477b4a8a6c",
-  "windowsVersion": "0.2.427.95",
-  "createdAt": "2026-10-14T22:24:50.071198+00:00",
+  "baseHead": "9cf9e4b11b17258f23def3170ffa5333bf00319c",
+  "windowsVersion": "0.2.427.96",
+  "createdAt": "2026-10-14T22:46:28.922342+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "e42498bb05bdf1cfcd3971393e0a1ac406d4d11f3985f54faa1db712f694aa5e"
+      "sha256": "c9cdcaf4ee75984d3516aa3442ac772052e087db9141c36fd851af4cf35bd00b"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -66,9 +66,24 @@
       "sha256": "8f8ccb3410151a4f1156fd4807db71277bad3b353bc6b275b9bf25475bdae8cc"
     },
     {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt",
+      "normalization": "lf",
+      "sha256": "a4e898029cd13992e964e4d811697f39a67706e53ad48c496143f42b230fdf34"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSlider.kt",
+      "normalization": "lf",
+      "sha256": "ea32a33d0287110bcb96da481b0d68167ebe76732649e1f8a6da39a52b52be44"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSwitch.kt",
+      "normalization": "lf",
+      "sha256": "db3dd216dc118f3ec6c708e387b24c1d9fb5786f0eeeb4b40d659b4df3128657"
+    },
+    {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "54183a0902d6295e3a99f6883aca22f4f6744f976104d5539c8ab21eecddbb12"
+      "sha256": "c7c2482d6d00b8a61c2b6aeea6602e44a07127bd6fa207b806a4bee57f43a3e7"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -78,7 +93,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
       "normalization": "lf",
-      "sha256": "7449a36d8e61282eadf25123e52b8ae72246b59863486b5a265e8262305400db"
+      "sha256": "403533ad19f6c807efdf9de7134df37949879cad1ac4ce00414758de21bf6bc6"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
@@ -276,6 +291,11 @@
       "sha256": "0486750a919b205725108e2dfa65a082bfbfa4a513773f4720d191dc4220033e"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopLiquidPointerMappingTest.kt",
+      "normalization": "lf",
+      "sha256": "c392db4e9319f56e2b23c14f752a766218b8c8e6e8cb81fec2461d5e251ab2ea"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
       "normalization": "lf",
       "sha256": "498ee53e3327c58412fcabf532b9fc180b8d0e7311601dc75d1526d93e3960ce"
@@ -383,7 +403,7 @@
     {
       "path": "desktop/tools/extract-appearance-platform.py",
       "normalization": "lf",
-      "sha256": "20384ab4d519f12dd744ff864f8fbf89291ddfd001165d1081c0a33a024ad774"
+      "sha256": "72ce0253f8987b0a208e6a575708bda677f78888ee590db7be05f779fa287c1b"
     },
     {
       "path": "desktop/tools/extract-dynamic-message-share.py",
@@ -399,6 +419,11 @@
       "path": "desktop/tools/extract-upstream-audio.py",
       "normalization": "lf",
       "sha256": "e3316865a53bae538de74dec6189847a06d11c56209ab5c7ba344f6aee84e7f4"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-components.py",
+      "normalization": "lf",
+      "sha256": "470d477fb3a6bf412f42abbcb9c6b52d8bee810740f82eda476e41644e677954"
     },
     {
       "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
@@ -561,6 +586,11 @@
       "sha256": "a345e8ad6f5f1205a2f3433e1f12d9c9381beeb15145e06ae257575c50d9243a"
     },
     {
+      "path": "desktop/tools/tests/test_v040_liquid_controls_source.py",
+      "normalization": "lf",
+      "sha256": "dbf32a5aa4845f94a11880aa8a5c8c644624899a0d89d48c512a79c3aa38863f"
+    },
+    {
       "path": "desktop/tools/tests/test_v040_reply_medal_source.py",
       "normalization": "lf",
       "sha256": "8a30e1709c4414f119050f9cf433709949a7c56a58c58a7ff53473c4ac6dea07"
@@ -568,7 +598,7 @@
     {
       "path": "desktop/tools/tests/test_v040_theme_roles_source.py",
       "normalization": "lf",
-      "sha256": "fa50e1654b975b6a2aee3d7dbb2cb3e7d1ac8b4aaa64abacdabd26650b6bfe50"
+      "sha256": "48ba4485abb7aec2ccbf17d30b220e6fb3e856076fb7580c8a611af28cff9a0c"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -591,9 +621,19 @@
       "sha256": "7c10fd658778581374fe53a8b5125f10107d51aac39b574ac5e53e3a26e6ad94"
     },
     {
+      "path": "desktop/tools/v037_player_foundations.py",
+      "normalization": "lf",
+      "sha256": "51e477ace4815d1711cb0aefaffcc01eecf1fe4a8a66560052da6f3b46b575dc"
+    },
+    {
       "path": "desktop/tools/v037_player_known_state.py",
       "normalization": "lf",
       "sha256": "349545268f7c99ede2476792a5b4ac170ebb10b65e2e48520a2a271c906562bb"
+    },
+    {
+      "path": "desktop/tools/v037_shared_tabs_progress.py",
+      "normalization": "lf",
+      "sha256": "4192992208209e9d297e8a19744a470a5a8434d8a9833aaface72a59749e5bb8"
     },
     {
       "path": "desktop/tools/v038_audio_library.py",
@@ -639,6 +679,11 @@
       "path": "desktop/tools/v040_dynamic_pagination.py",
       "normalization": "lf",
       "sha256": "d13f5cc45ac7f08ee757d87e2770840a8c3b0671e62376752b64e0c24808cedb"
+    },
+    {
+      "path": "desktop/tools/v040_liquid_value_controls.py",
+      "normalization": "lf",
+      "sha256": "671e656150bc04a3b576527b54bc3f3868d2a90a5f4729c3b5a34e5f26224b30"
     },
     {
       "path": "desktop/tools/v040_reply_medal.py",
@@ -851,6 +896,121 @@
       "sha256": "76a0a3fbb9b8c46a0003511b23a86039fc0cf1668e7c06441f9542902ee9a955"
     },
     {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppActionColors.kt",
+      "normalization": "raw",
+      "sha256": "5cf40e13bb9645a8171dc5e12f290996329f89172b246846ba5060d8dbdb9ef6"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppChromeOverflow.kt",
+      "normalization": "raw",
+      "sha256": "22ae777cba84a6ea058776b71f1aa47c1477f01cd6f9f9bac1eea44c33bdd718"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppColorPicker.kt",
+      "normalization": "raw",
+      "sha256": "f64643940c299391056d4e0e4aa6a9cd99413ccecbe17b0c8505bfcd4ff23d82"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControlPolicy.kt",
+      "normalization": "raw",
+      "sha256": "5684a3b80ce757e64bebb066a96d6ec8956383bb2fe1c463265e91fb7dd06f69"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControls.kt",
+      "normalization": "raw",
+      "sha256": "2b58d74fc5a54f154d95317c2f38aa5d768728ae9f38400e5adddb8a46c4c85d"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppMaterial3Switch.kt",
+      "normalization": "raw",
+      "sha256": "d087e16f3d37cee3c5f5f6ec11689a601d504bd2bc5393a687d8eb8c518bfd5c"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppMiuixSlider.kt",
+      "normalization": "raw",
+      "sha256": "bb3e2da67e1e5473ee84ce1e48b152423d3081801ad00cd73d25e96de0dc4688"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppMiuixSwitch.kt",
+      "normalization": "raw",
+      "sha256": "c0627e3a9f289d826edcf1fda72472ce96a24746fc6b91d0d5631e4d014a4208"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppSlider.kt",
+      "normalization": "raw",
+      "sha256": "3cbab74395f1e369655ca4f2ea7ccb378aea1a1168e158f8c1562ac4851c5a57"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppSwitch.kt",
+      "normalization": "raw",
+      "sha256": "f8762e68edbcfc4bb73557784ce67e710f2d9864fc7e883fae3581808f5dfcaf"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppThemeConfig.kt",
+      "normalization": "raw",
+      "sha256": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppearanceMd3ColorPickerPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "82654025d0f988081834797d5ec51d3f77d20e0c2f50f24512ae6b30a2d9c611"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/AppearanceSettingsScreen.kt",
+      "normalization": "raw",
+      "sha256": "c79f46a302978558e236f34d14871bb0f4a7fbbad85acf366b3649aaecbcc599"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorMotion.kt",
+      "normalization": "raw",
+      "sha256": "8151b8196ed1d22313b5bfaaff52aae92ab669248cfb830df02626bae44bd0f0"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorMotionTest.kt",
+      "normalization": "raw",
+      "sha256": "6781e650a6825be1eaedc5befefcd938f467ceb275eba5447fd396b95eb02f31"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorVelocity.kt",
+      "normalization": "raw",
+      "sha256": "a7f4e85a6018fbd7cdb7624da5f6ad20c4ad8e4715b091ae5e17710e367c208c"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorVelocityTest.kt",
+      "normalization": "raw",
+      "sha256": "bc1df30dbd18304aa63b7af7e91053d7168f44ab426be4ea4ea681e6a7def04b"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/MatchedLiquidIndicatorGeometry.kt",
+      "normalization": "raw",
+      "sha256": "888bc7225df42df639f26884a96ad2c264a437455034373664517a036796bdf8"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/MatchedLiquidIndicatorGeometryTest.kt",
+      "normalization": "raw",
+      "sha256": "18eef10ababd3d0777aa1286e8c3c32685997a272949545395d08a42b389c1fb"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/ThemeCustomColorPickerDialog.kt",
+      "normalization": "raw",
+      "sha256": "bfa8ef7cd8d0c5de4912bff071c0342c26a91aea623cf50509171d8a01ef9b57"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/liquid_value_colors-dark.xml",
+      "normalization": "raw",
+      "sha256": "10855d97534e26ffe383f2abbafe99925cee539fff3f00f2d6cb5eac3d331299"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/liquid_value_colors-light.xml",
+      "normalization": "raw",
+      "sha256": "13c5ef2c665cb3cd0ce3f4b18edf83e274969b5f26de4c4aedb4d597dad2b578"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-liquid-value-controls/manifest.json",
+      "normalization": "raw",
+      "sha256": "f85aa683256dbccac4a31fcf1e707ebbf86786fa3a713b24ff99733a8c18cc7e"
+    },
+    {
       "path": "desktop/upstream-slices/v040-reply-medal/CommentGrpcRepository.kt",
       "normalization": "raw",
       "sha256": "399f34d801a0faaa5392b3f2e18f51e62a6403d4bf468a2c59226322a318fd18"
@@ -898,16 +1058,21 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "d0ea32e01b93cd37875f9be6593f0f469a30b7e7173b156fb84ee429a7407f03"
+      "sha256": "4d5fb64716d31e97b27960cb97d5ce093b4bbe0bf42b9be3d5b7a3dfe29f9ac5"
     }
   ],
   "classes": {
     "com.android.purebilibili.core.theme.ThemeRoleOverridePolicyTest": 9,
     "com.android.purebilibili.core.theme.ThemeContrastPolicyTest": 8,
     "com.bilipai.desktop.appearance.DesktopAppearanceTest": 23,
-    "com.android.purebilibili.core.theme.DesktopThemeRoleSpecContractTest": 3
+    "com.android.purebilibili.core.theme.DesktopThemeRoleSpecContractTest": 3,
+    "com.android.purebilibili.core.ui.animation.LiquidIndicatorMotionTest": 2,
+    "com.android.purebilibili.core.ui.animation.LiquidIndicatorVelocityTest": 2,
+    "com.android.purebilibili.core.ui.MatchedLiquidIndicatorGeometryTest": 4,
+    "com.android.purebilibili.feature.settings.AppearanceMd3ColorPickerPolicyTest": 2,
+    "com.bilipai.desktop.appearance.DesktopLiquidPointerMappingTest": 4
   },
-  "expectedTests": 43,
+  "expectedTests": 57,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -918,15 +1083,37 @@
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
     "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
-    "desktop/src/test/kotlin/com/android/purebilibili/core/theme/DesktopThemeRoleSpecContractTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopLiquidPointerMappingTest.kt",
     "desktop/tools/extract-appearance-platform.py",
+    "desktop/tools/extract-upstream-components.py",
+    "desktop/tools/tests/test_v040_liquid_controls_source.py",
     "desktop/tools/tests/test_v040_theme_roles_source.py",
-    "desktop/tools/v040_theme_roles.py",
-    "desktop/upstream-slices/v040-theme-roles/ThemeContrastPolicy.kt",
-    "desktop/upstream-slices/v040-theme-roles/ThemeContrastPolicyTest.kt",
-    "desktop/upstream-slices/v040-theme-roles/ThemeRoleOverridePolicy.kt",
-    "desktop/upstream-slices/v040-theme-roles/ThemeRoleOverridePolicyTest.kt",
-    "desktop/upstream-slices/v040-theme-roles/manifest.json",
+    "desktop/tools/v037_player_foundations.py",
+    "desktop/tools/v037_shared_tabs_progress.py",
+    "desktop/tools/v040_liquid_value_controls.py",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppActionColors.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppChromeOverflow.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppColorPicker.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControlPolicy.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControls.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppMaterial3Switch.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppMiuixSlider.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppMiuixSwitch.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppSlider.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppSwitch.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppThemeConfig.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppearanceMd3ColorPickerPolicyTest.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/AppearanceSettingsScreen.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorMotion.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorMotionTest.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorVelocity.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/LiquidIndicatorVelocityTest.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/MatchedLiquidIndicatorGeometry.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/MatchedLiquidIndicatorGeometryTest.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/ThemeCustomColorPickerDialog.kt",
+    "desktop/upstream-slices/v040-liquid-value-controls/liquid_value_colors-dark.xml",
+    "desktop/upstream-slices/v040-liquid-value-controls/liquid_value_colors-light.xml",
+    "desktop/upstream-slices/v040-liquid-value-controls/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

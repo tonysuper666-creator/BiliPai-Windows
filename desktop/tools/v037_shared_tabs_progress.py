@@ -61,9 +61,12 @@ def emit_control_foundations(output,outputs,test_output=None):
   rel=row['path'].split('/main/java/',1)[1]
   assert not any(r['path']==rel for r in outputs)
   text=originals[row['path']]
+  from v040_liquid_value_controls import retained_original_override
+  effective_raw,effective_row,effective_commit,effective_manifest=retained_original_override(Path(__file__).resolve().parents[2],row['path'],text.encode(),row,COMMIT,MANIFEST_SHA)
+  text=effective_raw.decode('utf-8')
   if row['filename']=='AppLiquidValueControlPolicy.kt':
    assert text.count('import android.os.Build\n')==1 and text.count('Build.VERSION.SDK_INT >= 33')==1
    text=text.replace('import android.os.Build\n','').replace('Build.VERSION.SDK_INT >= 33','com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()')
   p=wide(Path(output)/rel);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(text.encode())
-  outputs.append(dict(path=rel,origin=row['path'],fixedCommit=COMMIT,mode='direct-complete-original',generated=True,sha256LF=sha(text.encode()),source=row,sourceManifestSHA256=MANIFEST_SHA))
+  outputs.append(dict(path=rel,origin=row['path'],fixedCommit=effective_commit,mode='full-original-Windows-Skia-capability-boundary' if row['filename']=='AppLiquidValueControlPolicy.kt' else 'direct-complete-original',generated=True,sha256LF=sha(text.encode()),source=effective_row,sourceManifestSHA256=effective_manifest))
 

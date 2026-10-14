@@ -52,6 +52,8 @@ def emit_foundations(output,outputs,test_output=None):
  sources=fixed_sources()
  for row in PINS:
   raw=sources[row['path']]
+  from v040_liquid_value_controls import retained_original_override
+  raw,effective_row,effective_commit,effective_manifest=retained_original_override(Path(__file__).resolve().parents[2],row['path'],raw,row,COMMIT,MANIFEST_SHA)
   if '/test/java/' in row['path']:
    if test_output is not None:
     rel=row['path'].split('/test/java/',1)[1]
@@ -63,11 +65,11 @@ def emit_foundations(output,outputs,test_output=None):
   raw=adapt_foundation(row['path'],raw)
   from v029_comment_search import whole_proof
   proof=whole_proof(original.decode('utf-8'),raw.decode('utf-8'))
-  proof.update(sourcePath=row['path'],fixedCommit=COMMIT,sourceQualified=False,pixelsValidated=False)
+  proof.update(sourcePath=row['path'],fixedCommit=effective_commit,sourceQualified=False,pixelsValidated=False)
   proof_path=wide(Path(output)/'v037-foundation-platform-proofs'/(row['filename']+'.json'))
   proof_path.parent.mkdir(parents=True,exist_ok=True);proof_path.write_bytes((json.dumps(proof,ensure_ascii=False,indent=2)+'\n').encode())
   p=wide(Path(output)/rel);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw)
-  outputs.append(dict(path=rel,origin=row['path'],fixedCommit=COMMIT,
+  outputs.append(dict(path=rel,origin=row['path'],fixedCommit=effective_commit,
    mode='full-original-Windows-platform-boundary' if raw!=original else 'direct-complete-original',sha256LF=sha(raw),generated=True,
-   source=row,sourceManifestSHA256=MANIFEST_SHA))
+   source=effective_row,sourceManifestSHA256=effective_manifest))
 
