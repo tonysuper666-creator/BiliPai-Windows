@@ -1,7 +1,7 @@
 """Whole original known-state refresh functions on the retained Windows owner."""
 from pathlib import Path
 import hashlib,json,importlib.util
-from v037_player_interaction import fixed_sources,COMMIT
+from v038_player_interaction_retry import fixed_sources,COMMIT,emit as emit_retry
 
 def load(name,path):
     spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
@@ -10,7 +10,7 @@ def apply_owner(path,text,repo,output):
     target='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt'
     if path!=target:return text,None
     from v029_comment_search import whole_proof
-    raw=fixed_sources()['VideoPlaybackViewModel.kt']
+    raw=fixed_sources(repo)['VideoPlaybackViewModel.kt']
     parser=load('known_state_original_tokens',Path(repo)/'desktop/tools/sync-upstream.py')
     selector=load('known_state_original_methods',Path(repo)/'desktop/tools/extract-upstream-video-detail-full-units.py')
     selector.parser=parser
@@ -58,5 +58,6 @@ def apply_owner(path,text,repo,output):
                  originalLoadResultKnownFlagsForwardedAtBothExistingPublications=True,
                  originalPostLoadRequestTokenForwarded=True,sourceQualified=False,mainCompiled=False)
     folder=Path(output);folder.mkdir(parents=True,exist_ok=True)
+    emit_retry(repo,folder)
     (folder/'v037-complete-known-state-owner-proof.json').write_bytes((json.dumps(proof,ensure_ascii=False,indent=2)+'\n').encode())
     return text,proof

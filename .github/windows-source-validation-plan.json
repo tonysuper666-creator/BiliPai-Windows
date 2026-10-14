@@ -1,14 +1,19 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "8cf8f7c311283606605fbb350936f862d251b855",
-  "windowsVersion": "0.2.427.80",
-  "createdAt": "2026-10-14T12:23:14.675972+00:00",
+  "baseHead": "7f38cc4ce016c10ae3b087b5e343703bd4bec21d",
+  "windowsVersion": "0.2.427.83",
+  "createdAt": "2026-10-14T16:49:12.057552+00:00",
   "sources": [
+    {
+      "path": ".github/workflows/windows-veyra-core-manual.yml",
+      "normalization": "lf",
+      "sha256": "e2aca0eca175d196aa82d48062669e68fe0887da160a986a72381f292839ab05"
+    },
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "7615ba3e82617a57ff90c618badee5f0f3f969ed1ce744dd0d8615f5c4b7e8d0"
+      "sha256": "0feaf01ab4b8a7d37d788f18f9a916dafcfeaa9abe8432d6b2b7a32a22e92083"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
@@ -18,7 +23,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
       "normalization": "lf",
-      "sha256": "4270557eaa7dbf6b73ad76a88ecc8e627a58fe834dcc57a4b7fc3af34e8c07cf"
+      "sha256": "23760a0e9d7096cb0e492ee6dbfe1d6d23ccace5048126fedebc564c335ad041"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
@@ -31,19 +36,114 @@
       "sha256": "b9c48ed01aee5fa4503119a23455ecb6a87ec9f5208e0b8d6a5e9a0e370feb1a"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopDanmakuFramePlatform.kt",
+      "normalization": "lf",
+      "sha256": "02594eaacf9fb545ade450cb79756e1f1748156c5ee0c7f88f56ab71684199f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
+      "normalization": "lf",
+      "sha256": "9da84dc0a7746d2ac5162547815b4b18f9935908c2fba774decbf15475722745"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicy.kt",
+      "normalization": "lf",
+      "sha256": "ef138b42fefb297068bb2982832191d8e10937f250b26a6db21e41469d2c4392"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
+      "normalization": "lf",
+      "sha256": "c5484d693fa1006b9612685a4af0cf98dfc1dc20a3e753edba1bb9f1473edb6e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
+      "normalization": "lf",
+      "sha256": "823549633528935e01dff9255eda6c55518e7db1db96698529766795e4815da4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
+      "normalization": "lf",
+      "sha256": "41277852f7f2e8e4a2641fadf16f73f7f6bf5b49d1e0d5cfe1d828266fd322c0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationRootConsumer.kt",
+      "normalization": "lf",
+      "sha256": "70d9d9ebd79b52dbf653d97c52c515cacc53a8048c8c98bdda8df97a2d38ed9e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsMessageNotifications.kt",
+      "normalization": "lf",
+      "sha256": "9f1d870b2d352e36f370cca2b0af4470b6f65e4bb7cdad856c108b544d4c39a4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
+      "normalization": "lf",
+      "sha256": "498ee53e3327c58412fcabf532b9fc180b8d0e7311601dc75d1526d93e3960ce"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopV038DanmakuMergeBridgeTest.kt",
       "normalization": "lf",
       "sha256": "c003041ef573c4e83fff3c0df085d48fb93e4fef15ba68d79e57f4da2e98d3b6"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicReactionListTest.kt",
+      "normalization": "lf",
+      "sha256": "3101150e4561c6bfc4a4a29428f7d97e76cd399fc201929703f7c0ed30ba9b4f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicyTest.kt",
+      "normalization": "lf",
+      "sha256": "6ed728e1357a8fe6b18cb1f9ed6e486c9105121fffe7018e61ee8ae86a6e4d4b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSessionTest.kt",
+      "normalization": "lf",
+      "sha256": "edb9dd0c0e54238d37d976ddd900ce4426c5d988bbf02a25b60f0a729a536c64"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputPolicyTest.kt",
+      "normalization": "lf",
+      "sha256": "a1d2eba7f62d62c861f7b19bff7022b2bcbdc9cbed11099465a0ea65e8ca0a58"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntriesTest.kt",
+      "normalization": "lf",
+      "sha256": "b5312d408b9de241fc89460b425377f097dbbfe54061cb5c38eccaaf630cf041"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementStatusReadTest.kt",
+      "normalization": "lf",
+      "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
+    },
+    {
+      "path": "desktop/tools/extract-dynamic-message-share.py",
+      "normalization": "lf",
+      "sha256": "ef35578a318466371ddf46e82bb7a94058a1057b21a9529e4adb9d298ad02dfe"
+    },
+    {
       "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
       "normalization": "lf",
-      "sha256": "a4bdae6a9b2f836e504e21f79bab1f5a18201c9b3ccc019719f7ec4d9948706e"
+      "sha256": "39bff5998de8bf61b2c8053b29cc5570d24ab3ee63e376ed54818c8776c549e6"
     },
     {
       "path": "desktop/tools/extract-upstream-danmaku-settings.py",
       "normalization": "lf",
       "sha256": "6dbd7cd097ec9cee317da6dca873702a8140316f24038978062c7e4b8d91e4b9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-message-notifications.py",
+      "normalization": "lf",
+      "sha256": "e0f37ac4dd207b748ae928802854792a3e5e74492f23296f577254075c3a029b"
+    },
+    {
+      "path": "desktop/tools/native/build-veyra-core-runtime.py",
+      "normalization": "lf",
+      "sha256": "18c41115b11be22ac2f2e2da5ad4fa8cde9fc825fc4ad9807c283d698882336a"
+    },
+    {
+      "path": "desktop/tools/native/veyra-core-build-evidence.py",
+      "normalization": "lf",
+      "sha256": "5aa6ae15874ff2547f9785c3b161be9d6e298ea117a44a3bb10aa7ddd7c00f6d"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_danmaku_hot_settings.py",
@@ -61,14 +161,79 @@
       "sha256": "1f4598b816f60546ea71022f804d4c3f763ab68d12e11faa58a9b3ccda5907eb"
     },
     {
+      "path": "desktop/tools/tests/test_extract_upstream_video_interactions.py",
+      "normalization": "lf",
+      "sha256": "809f263a5b3257045f9318605439b051e4be9a4e8ec6c9867441f26c47391933"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_danmaku_cadence_source.py",
+      "normalization": "lf",
+      "sha256": "7810fcf2b8fc244d4dcfcbcffcf8c041f7a5a8b62ad44afdd45a09a300420946"
+    },
+    {
       "path": "desktop/tools/tests/test_v038_danmaku_merge_source.py",
       "normalization": "lf",
       "sha256": "1919035bfaf46c33d64b3a8b0015611c8bc1ae9e22e2c218c9abf0d4f467888a"
     },
     {
+      "path": "desktop/tools/tests/test_v038_message_notifications_source.py",
+      "normalization": "lf",
+      "sha256": "8a47fb6327bfd7634774b1ec5f6ca591acf9d52d4975db91f4463e8765194cdd"
+    },
+    {
+      "path": "desktop/tools/tests/test_v038_player_interaction_retry_source.py",
+      "normalization": "lf",
+      "sha256": "0d4a1105968bb9b2fe0854825f022a9df2cd45f07c617dfce4094d4884308f18"
+    },
+    {
+      "path": "desktop/tools/tests/test_veyra_core_build_evidence.py",
+      "normalization": "lf",
+      "sha256": "657f1fcc23068b37ba19b6d057f9cf53cf68d584ea117ae80d6d2818dbe6eab8"
+    },
+    {
+      "path": "desktop/tools/v037_player_known_state.py",
+      "normalization": "lf",
+      "sha256": "349545268f7c99ede2476792a5b4ac170ebb10b65e2e48520a2a271c906562bb"
+    },
+    {
+      "path": "desktop/tools/v038_danmaku_cadence.py",
+      "normalization": "lf",
+      "sha256": "57209af99e4cd2afc2ae9387de5ef29e803ebbc679b33da1438ca2e0610ffb3b"
+    },
+    {
       "path": "desktop/tools/v038_danmaku_merge.py",
       "normalization": "lf",
       "sha256": "161b4200541bb04a7981e58c980a0b87da1c3764decefd9ad1eb1edd148d39ac"
+    },
+    {
+      "path": "desktop/tools/v038_message_notifications.py",
+      "normalization": "lf",
+      "sha256": "6db008222e49f03fcdeb8f0ff6818552fd35075f3b3a51a304ab9c078935edd4"
+    },
+    {
+      "path": "desktop/tools/v038_player_interaction_retry.py",
+      "normalization": "lf",
+      "sha256": "9b29a475147daee4211c8db74d47f7f25b19cf2a1fbee141040ebedf7def6599"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/DanmakuView.kt",
+      "normalization": "raw",
+      "sha256": "e084e570bb835731c8503d782580582236a222d5375e76a9482ddce3898fd013"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadence.kt",
+      "normalization": "raw",
+      "sha256": "970f728c46e908b59ba1a4d13052bbac78052ae209b45e331775d870b0b66e07"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/RenderFrameCadenceTest.kt",
+      "normalization": "raw",
+      "sha256": "321fb8987ee6d7832ca223999557b1eab17de0d23eeb800a525669608ee16739"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-danmaku-cadence/manifest.json",
+      "normalization": "raw",
+      "sha256": "7df7676c7168326195d8d4bc6a59feb11443bbaa00e3f660742cb26c70e37086"
     },
     {
       "path": "desktop/upstream-slices/v038-danmaku-merge/AppContentColors.kt",
@@ -111,18 +276,99 @@
       "sha256": "f60d288300586e608925ddafd4510211b5abf07b8b4f009a7b012dee043caa7d"
     },
     {
+      "path": "desktop/upstream-slices/v038-message-notifications/BiliGrpcClient.kt",
+      "normalization": "raw",
+      "sha256": "18e5ab7fae60cb0b62a0309076aeedd521d460e563d405676064e23f0b60ca01"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApi.kt",
+      "normalization": "raw",
+      "sha256": "e24f626ab2b47e121a3d5da9e26bd76d9f61af4957c0abf54a9b8de7072e8387"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/DynamicPersonalFeedApiTest.kt",
+      "normalization": "raw",
+      "sha256": "b2f936ddc5a37b5ee6bd4dffde9994ec2f369e017af2027ce9c0f63e886e2751"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationChecker.kt",
+      "normalization": "raw",
+      "sha256": "9dc20551f97ea39332247f9b651f53035952632cfd0caf0b880c24784b9f5991"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicy.kt",
+      "normalization": "raw",
+      "sha256": "1c6285307006b272dddd2fac14ba7c60142b77e7b00b50d268be5213aa3c9889"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "e4c74995bfc6d4de81d0a787a2d0bf10a03a1ede2a797548809cdeac66536d95"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationSettingsStore.kt",
+      "normalization": "raw",
+      "sha256": "b54bfb95eed322989cbed9544b0e442535a3a81586ada4bb4fd454ae43e0a54d"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/MessageNotificationStateStore.kt",
+      "normalization": "raw",
+      "sha256": "302bb36a1a7260a74a590899b43dbdf59a958c3401f9a8ea42dd35e00a732357"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/ProtoWire.kt",
+      "normalization": "raw",
+      "sha256": "5c44c12bc3db870874a4e1ea9e01f39faf03425f3db2c95576c4bded93fab31e"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-message-notifications/manifest.json",
+      "normalization": "raw",
+      "sha256": "bf8f62448f5293bec2876476698ee5acceb9b7781ad245f73162c2490455f1a9"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetry.kt",
+      "normalization": "raw",
+      "sha256": "410d5611cfa6a43d606a615c477c2f2193425ead32a949886a374f691b591edf"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/VideoInteractionStatusRetryTest.kt",
+      "normalization": "raw",
+      "sha256": "b317bfbf2c67b50ca42302cbb818e3f803f7da63241477c49ec63220730fe7b7"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/VideoPlaybackViewModel.kt",
+      "normalization": "raw",
+      "sha256": "e90d0c24fab903ec25aafa9dc0b4ad04e3a2ddf91384696b5239409bba8a9ba6"
+    },
+    {
+      "path": "desktop/upstream-slices/v038-player-interaction-retry/manifest.json",
+      "normalization": "raw",
+      "sha256": "32358962a03ee93b3e2815f2e95476e34a7afb440d4ceb64ab2bd10bd0c8d70e"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "acf0d993a05d6ecb6dfa378c5bc00efdd23ee4741d823005fcebaee0b4691909"
+      "sha256": "85ef715e307ef58bce70c998f145bdb0d3e8214581cdb58d8588a10f01a6e024"
     }
   ],
   "classes": {
     "com.bilipai.desktop.danmaku.DesktopV038DanmakuMergeBridgeTest": 6,
     "com.android.purebilibili.feature.video.danmaku.DesktopV038DanmakuMergerPolicyTest": 6,
     "com.bilipai.desktop.danmaku.DesktopDanmakuDisplayAreaParityTest": 1,
-    "com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTest": 3
+    "com.bilipai.desktop.ui.DesktopOriginalDanmakuSliderPreviewTest": 3,
+    "com.bilipai.desktop.player.DesktopNvidiaVideoAutoPolicyTest": 19,
+    "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
+    "com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest": 4,
+    "com.bilipai.desktop.danmaku.DesktopOriginalDanmakuFrameRequestsTest": 8,
+    "com.bytedance.danmaku.render.engine.RenderFrameCadenceTest": 2,
+    "com.android.purebilibili.feature.message.notification.MessageNotificationPolicyTest": 32,
+    "com.android.purebilibili.core.network.grpc.DynamicPersonalFeedApiTest": 10,
+    "com.bilipai.desktop.ui.DesktopMessageNotificationEntriesTest": 4,
+    "com.bilipai.desktop.data.DesktopDynamicReactionListTest": 8,
+    "com.android.purebilibili.feature.video.viewmodel.VideoInteractionStatusRetryTest": 5,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoEngagementStatusReadTest": 3
   },
-  "expectedTests": 16,
+  "expectedTests": 122,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,

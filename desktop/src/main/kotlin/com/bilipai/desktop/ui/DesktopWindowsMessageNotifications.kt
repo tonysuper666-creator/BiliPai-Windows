@@ -13,13 +13,14 @@ import javax.imageio.ImageIO
 /** Native Windows presentation over the same JDK Shell peer used by download progress.
  * No credentials, business dedup store or routing stack. Android channel IDs/groups/routes
  * remain on the original pending objects; Shell balloons have no per-item click ID or native
- * Android group summary. The tray menu retains this bounded batch's precise destinations. */
+ * Android group summary. The tray menu retains bounded current entries and their precise destinations. */
 internal class DesktopWindowsMessageNotifications(
     private val context: DesktopMessageNotificationContext,
     private val window: Window,
 ) : AutoCloseable {
     private val closed = AtomicBoolean()
     private var tray: TrayIcon? = null // EDT only; created solely after master is enabled.
+    private val entries = DesktopMessageNotificationEntries()
     private val hierarchy = HierarchyListener { event ->
         if (event.changeFlags and HierarchyEvent.DISPLAYABILITY_CHANGED.toLong() != 0L && !window.isDisplayable) close()
     }
@@ -39,10 +40,20 @@ internal class DesktopWindowsMessageNotifications(
         context.routes.push(legacyRouteToBiliPaiNavKey(route))
     }
 
-    suspend fun postAll(pending: List<PendingMessageNotification>) = withContext(Dispatchers.Main) {
+    /** These are this Root's menu entries; Windows balloons expose no active per-item IDs. */
+    suspend fun activeMessageKeys(): Set<String> = withContext(Dispatchers.Main) {
+        currentCoroutineContext().ensureActive()
+        if (canPost()) entries.keys() else emptySet()
+    }
+
+    suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String> = emptySet()) = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
-        if (pending.isEmpty() || !canPost()) return@withContext
+        if (!canPost()) return@withContext
+        if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
+        entries.apply(pending, cancelled)
+        val visible = entries.snapshot()
+        if (visible.isEmpty()) { removeTrayOnEdt(); return@withContext }
         val icon = tray ?: TrayIcon(requireNotNull(ImageIO.read(
             requireNotNull(javaClass.classLoader.getResource("app-icon.png")))), "BiliPai 消息").also {
             it.isImageAutoSize = true
@@ -55,7 +66,7 @@ internal class DesktopWindowsMessageNotifications(
             tray = it
         }
         val menu = PopupMenu()
-        for (item in pending) {
+        for (item in visible) {
             menu.add(MenuItem(item.title + " · " + item.text.take(60)).also { row ->
                 row.addActionListener { open(item.route) }
             })
@@ -75,6 +86,7 @@ internal class DesktopWindowsMessageNotifications(
         check(EventQueue.isDispatchThread())
         tray?.let { SystemTray.getSystemTray().remove(it) }
         tray = null
+        entries.clear()
     }
     override fun close() {
         if (!closed.compareAndSet(false, true)) return

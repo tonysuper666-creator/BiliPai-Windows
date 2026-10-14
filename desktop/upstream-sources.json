@@ -11474,7 +11474,7 @@
       "features": [
         "desktop-original-message-notification-root"
       ],
-      "mode": "direct"
+      "mode": "policy-extract"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationSettingsStore.kt",
@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "80",
+  "windowsRevision": "83",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14029,5 +14029,24 @@
     "sameExistingSession": true,
     "guiExecuted": false,
     "accountRequestsExecuted": false
+  },
+  "v038MessageNotificationSlice": {
+    "upstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestPath": "desktop/upstream-slices/v038-message-notifications/manifest.json",
+    "manifestSHA256": "bf8f62448f5293bec2876476698ee5acceb9b7781ad245f73162c2490455f1a9",
+    "wholePolicyPollerStateAndPersonalFeed": true,
+    "canonicalBaselineUnchanged": true,
+    "mainCompiled": false,
+    "runtimeExecuted": false,
+    "actualWindowsSourceConnected": true
+  },
+  "v038InteractionRetrySlice": {
+    "upstreamCommit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestPath": "desktop/upstream-slices/v038-player-interaction-retry/manifest.json",
+    "manifestSHA256": "32358962a03ee93b3e2815f2e95476e34a7afb440d4ceb64ab2bd10bd0c8d70e",
+    "wholeOriginalRetryAndDeferredMethodsConnected": true,
+    "canonicalBaselineUnchanged": true,
+    "mainCompiled": false,
+    "runtimeExecuted": false
   }
 }

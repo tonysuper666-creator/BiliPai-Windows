@@ -15,6 +15,7 @@ class DesktopWindowsAudioOutputPolicyTest {
         val options = DesktopWindowsAudioOutputPreferences().nativeOptions()
         assertEquals("auto", options["audio-device"]); assertEquals("no", options["audio-exclusive"])
         assertEquals("no", options["audio-fallback-to-null"])
+        assertEquals("no", options["stop-playback-on-init-failure"])
         for (key in listOf("volume", "mute", "speed", "af", "ao", "audio-samplerate", "audio-format")) assertFalse(key in options)
     }
     @Test fun `exclusive auto uses fixed official wasapi splitter and selected actual device stays exact`() {
@@ -23,6 +24,7 @@ class DesktopWindowsAudioOutputPolicyTest {
         assertEquals("wasapi/{private-synthetic-id}", exclusive.nativeOptions()["audio-device"])
         assertEquals("stereo", exclusive.nativeOptions()["audio-channels"])
         assertEquals("weak", exclusive.nativeOptions()["gapless-audio"])
+        assertEquals("yes", exclusive.nativeOptions()["stop-playback-on-init-failure"])
         assertFalse("ao" in exclusive.nativeOptions())
     }
     @Test fun `foreign output drivers and control bytes are rejected rather than falling back`() {
