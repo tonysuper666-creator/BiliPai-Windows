@@ -16,10 +16,12 @@ import com.bilipai.desktop.settings.LocalDesktopHomeCardPreferences
 /** Original Home grid mode/policy on the actual desktop viewport; no synthetic fold posture. */
 @Composable
 internal fun DesktopHomeCardGrid(state:LazyStaggeredGridState,modifier:Modifier=Modifier,
-    content:LazyStaggeredGridScope.(HomeFeedCardLayout)->Unit) {
+    useLowQualityCover:Boolean=false,
+    content:LazyStaggeredGridScope.(DesktopHomeGridCardFrame)->Unit) {
     val preferences=checkNotNull(LocalDesktopHomeCardPreferences.current){"Root shared Home card preferences are not mounted"}
     val settings by preferences.settings.collectAsState(preferences.initialSettings())
-    val windowWidthDp=(LocalWindowInfo.current.containerSize.width/LocalDensity.current.density).dp
+    val density=LocalDensity.current.density
+    val windowWidthDp=(LocalWindowInfo.current.containerSize.width/density).dp
     val widthClass=resolveWindowWidthSizeClass(windowWidthDp)
     BoxWithConstraints(modifier.fillMaxSize(),contentAlignment=Alignment.TopCenter) {
         // Desktop navigation occupies part of the window; use its real feed viewport, not hidden sidebar pixels.
@@ -28,10 +30,13 @@ internal fun DesktopHomeCardGrid(state:LazyStaggeredGridState,modifier:Modifier=
             fixedColumnCount=resolveHomeFeedStoredColumnCount(widthClass,settings.gridColumnCountCompact,settings.gridColumnCount),
             cardWidthPreset=settings.homeFeedCardWidthPreset,widthSizeClass=widthClass)
         val layout=resolveHomeFeedCardLayout(settings.homeFeedCardStyle,columns,widthClass)
+        val cardWidthDp=resolveDesktopHomeGridCardWidthDp(contentWidth.value,columns,layout.outerPaddingDp,layout.itemSpacingDp)
+        val frame=DesktopHomeGridCardFrame(layout,columns,cardWidthDp,
+            resolveHomeCoverRequestSpec(cardWidthDp,density,useLowQualityCover))
         FeedVerticalStaggeredGrid(columns=StaggeredGridCells.Fixed(columns),state=state,
             modifier=Modifier.width(contentWidth).fillMaxHeight(),
             contentPadding=PaddingValues(layout.outerPaddingDp.dp),
             verticalItemSpacing=layout.verticalItemSpacingDp.dp,
-            horizontalArrangement=Arrangement.spacedBy(layout.itemSpacingDp.dp),content={content(layout)})
+            horizontalArrangement=Arrangement.spacedBy(layout.itemSpacingDp.dp),content={content(frame)})
     }
 }

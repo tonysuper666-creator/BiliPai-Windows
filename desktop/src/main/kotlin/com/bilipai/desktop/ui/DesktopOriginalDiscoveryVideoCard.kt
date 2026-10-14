@@ -5,7 +5,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import com.android.purebilibili.core.store.DesktopHomeCardVisualSettings
 import com.android.purebilibili.core.ui.*
 import com.android.purebilibili.data.model.response.VideoItem
-import com.android.purebilibili.feature.home.HomeFeedCardLayout
 import com.android.purebilibili.feature.home.components.cards.ElegantVideoCard
 import com.android.purebilibili.feature.home.components.cards.LocalHomeCardDynamicTintEnabled
 import com.android.purebilibili.feature.home.components.cards.LocalHomeCardFrostedGlassEnabled
@@ -14,9 +13,10 @@ import com.bilipai.desktop.data.discoveryVideoCard
 
 /** Render the server item; the thin navigation card never becomes the display data source. */
 @Composable
-internal fun DesktopOriginalDiscoveryVideoCard(video:VideoItem,index:Int,layout:HomeFeedCardLayout,
-    settings:DesktopHomeCardVisualSettings,onVideo:(VideoCard)->Unit,onUser:(Long)->Unit,
-    onPreview:(VideoCard)->Unit,onNotInterested:()->Unit,onWatchLater:()->Unit) {
+internal fun DesktopOriginalDiscoveryVideoCard(video:VideoItem,index:Int,frame:DesktopHomeGridCardFrame,
+    settings:DesktopHomeCardVisualSettings,sampling:DesktopHomeGridSampling,onVideo:(VideoCard)->Unit,
+    onUser:(Long)->Unit,onPreview:(VideoCard)->Unit,onNotInterested:()->Unit,onWatchLater:()->Unit) {
+    val layout=frame.layout
     CompositionLocalProvider(
         LocalFullVideoCardContentVisible provides settings.showFullVideoCardContent,
         LocalVideoCardLongPressEnabled provides settings.videoCardLongPressActionEnabled,
@@ -27,14 +27,17 @@ internal fun DesktopOriginalDiscoveryVideoCard(video:VideoItem,index:Int,layout:
         ElegantVideoCard(video=video,index=index,isFollowing=video.isFollowed,
             animationEnabled=settings.cardAnimationEnabled,transitionEnabled=false,
             sharedElementSourceRoute="home",showPublishTime=settings.showHomePublishTime,
+            isDataSaverActive=sampling.isDataSaverActive,preferLowQualityCover=sampling.preferLowQualityCover,
+            coverRequestSpec=frame.coverRequestSpec,
             compactStatsOnCover=settings.compactVideoStatsOnCover || layout.compactStatsOnCover,
-            // Root has no wallpaper backdrop mounted. Original tint policy falls back to cover pixels.
-            wallpaperTintEnabled=false,
+            showCoverGlassBadges=sampling.showCoverGlassBadges,showInfoGlassBadges=sampling.showInfoGlassBadges,
+            badgeEffectMode=sampling.badgeEffectMode,infoGlassMode=sampling.infoGlassMode,
+            wallpaperTintEnabled=sampling.wallpaperTintEnabled,wallpaperEffectMode=sampling.wallpaperEffectMode,
             showUpBadge=settings.showHomeUpBadges,showUpAvatar=settings.showHomeUpAvatars,
             homeDurationStyle=settings.homeDurationStyle,coverAspectRatio=layout.coverAspectRatio,
             compactMetadata=layout.compactMetadata,titleMinLines=layout.titleMinLines,titleMaxLines=layout.titleMaxLines,
             showOnlineCount=settings.showOnlineCount,onDismiss=onNotInterested,onWatchLater=onWatchLater,
-            onLongClick={onPreview(discoveryVideoCard(it))},onUpClick=onUser,
+            onLongClick={onPreview(discoveryVideoCard(it))},onUpClick=onUser,cardWidthDp=frame.cardWidthDp,
             onClick={bvid,cid->onVideo(discoveryVideoCard(video).copy(bvid=bvid,preferredCid=cid))})
     }
 }

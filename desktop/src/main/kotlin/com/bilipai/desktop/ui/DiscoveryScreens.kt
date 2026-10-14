@@ -215,6 +215,9 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
     val rootPreferences = checkNotNull(LocalDesktopHomeCardPreferences.current) { "Root shared Home preferences are not mounted" }
     val visualPreferences = remember(rootPreferences.context) { DesktopHomeCardVisualPreferences(rootPreferences.context) }
     val visualSettings by visualPreferences.settings.collectAsState(visualPreferences.initialSettings())
+    val homeSettingsSnapshot by rootPreferences.context.store.snapshot("settings").collectAsState()
+    val dataSaverSnapshot by rootPreferences.context.store.snapshot("data_saver").collectAsState()
+    val sampling = resolveDesktopHomeGridSampling(homeSettingsSnapshot, dataSaverSnapshot, cellular = null)
     val metadata = remember(repository) { DesktopHomeCardMetadataRepository(repository) }
     val onlineStore = remember(metadata, cardEpoch) { VideoCardOnlineCountStore({ bvid, cid -> metadata.onlineCount(bvid, cid, cardEpoch) }) }
     var watchLaterBusy by remember(key, cardEpoch) { mutableStateOf(false) }
@@ -244,7 +247,7 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
         return resolvePagedFeedPageToFetch(false, true, previous, section == DiscoverySection.POPULAR || section == DiscoverySection.REGION)
     }
     CompositionLocalProvider(LocalDesktopVideoCardOnlineStore provides onlineStore) {
-    DesktopHomeCardGrid(state = scroll, modifier = Modifier.fillMaxSize()) { cardLayout ->
+    DesktopHomeCardGrid(state = scroll, modifier = Modifier.fillMaxSize(), useLowQualityCover = sampling.useLowQualityCover) { frame ->
         item(span = StaggeredGridItemSpan.FullLine) {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -278,7 +281,7 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
         itemsIndexed(visibleItems, key = { _, item -> item.bvid }) { index, item ->
             val card = discoveryVideoCard(item)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                DesktopOriginalDiscoveryVideoCard(item, index, cardLayout, visualSettings, onVideo, onUser, onPreview,
+                DesktopOriginalDiscoveryVideoCard(item, index, frame, visualSettings, sampling, onVideo, onUser, onPreview,
                     onNotInterested = { if (!feedbackBusy) feedbackVideo = item },
                     onWatchLater = {
                         if (!watchLaterBusy && repository.sessionEpoch == cardEpoch) {
