@@ -75,6 +75,8 @@ def generate(repo,output,resource_output=None,policy_only=False,test_output=None
         text=source if path in DIRECT else 'package '+package+'\n\n'+HEADERS[Path(path).name]+'\n'+declarations(parser,source,EXTRACTED[path])
         target=output/package.replace('.','/')/Path(path).name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')
     if test_output is not None: _theme_tests(repo, test_output)
+    from v040_liquid_value_controls import emit_picker
+    emit_picker(repo, output, test_output)
     for language,path in RESOURCES.items():
         target=(resource_output or output.parent/'resources')/'bilipai-strings'/language/'strings.xml';target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(repo/path,target)
 if __name__=='__main__':

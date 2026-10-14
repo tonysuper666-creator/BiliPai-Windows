@@ -86,7 +86,9 @@ class V040ThemeRolesSourceTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='bilipai-theme-role-owner-') as tmp:
             output = Path(tmp)/'main'
             producer().generate(REPO,output,resource_output=Path(tmp)/'resources',policy_only=True)
-            self.assertEqual(set(retained)|{p.split('/main/java/',1)[1] for p in source.MAIN_PATHS},
+            self.assertEqual(set(retained)|{p.split('/main/java/',1)[1] for p in source.MAIN_PATHS}|{
+                'com/android/purebilibili/feature/settings/ThemeCustomColorPickerDialog.kt',
+                'com/android/purebilibili/feature/settings/DesktopOriginalThemeColorPickerPolicy.kt'},
                 {p.relative_to(output).as_posix() for p in output.rglob('*.kt')})
             for path,digest in retained.items():
                 self.assertEqual(digest,hashlib.sha256((output/path).read_bytes()).hexdigest(),path)

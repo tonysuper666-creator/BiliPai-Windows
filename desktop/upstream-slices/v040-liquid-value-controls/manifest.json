@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "fixedUpstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+  "upstreamTag": "v0.4.0",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt",
+      "filename": "AppThemeConfig.kt",
+      "bytes": 4140,
+      "sha256Bytes": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9",
+      "gitBlob": "642d54150318f263d6e1913140ff50c696662b4d"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt",
+      "filename": "MatchedLiquidIndicatorGeometry.kt",
+      "bytes": 2416,
+      "sha256Bytes": "888bc7225df42df639f26884a96ad2c264a437455034373664517a036796bdf8",
+      "gitBlob": "ecfd8790e169c694ac4f08085de19a37daf8395c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSwitch.kt",
+      "filename": "AppSwitch.kt",
+      "bytes": 1574,
+      "sha256Bytes": "f8762e68edbcfc4bb73557784ce67e710f2d9864fc7e883fae3581808f5dfcaf",
+      "gitBlob": "278bcedb5c1db0a11ce4f62dbf6bb608e552d2a4"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSlider.kt",
+      "filename": "AppSlider.kt",
+      "bytes": 4201,
+      "sha256Bytes": "3cbab74395f1e369655ca4f2ea7ccb378aea1a1168e158f8c1562ac4851c5a57",
+      "gitBlob": "cefbea7050d7b7dc090c4469cbe335e097bb7ecc"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppColorPicker.kt",
+      "filename": "AppColorPicker.kt",
+      "bytes": 3618,
+      "sha256Bytes": "f64643940c299391056d4e0e4aa6a9cd99413ccecbe17b0c8505bfcd4ff23d82",
+      "gitBlob": "026fc86b1e66480287023e117b458c0774ca9628"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidValueControlPolicy.kt",
+      "filename": "AppLiquidValueControlPolicy.kt",
+      "bytes": 2980,
+      "sha256Bytes": "5684a3b80ce757e64bebb066a96d6ec8956383bb2fe1c463265e91fb7dd06f69",
+      "gitBlob": "c2ad73170ee2d67accbdc1ae1160a059950f29fa"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidValueControls.kt",
+      "filename": "AppLiquidValueControls.kt",
+      "bytes": 26575,
+      "sha256Bytes": "2b58d74fc5a54f154d95317c2f38aa5d768728ae9f38400e5adddb8a46c4c85d",
+      "gitBlob": "082d84b0b9c366194773446738532e2222c6cf98"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppChromeOverflow.kt",
+      "filename": "AppChromeOverflow.kt",
+      "bytes": 4735,
+      "sha256Bytes": "22ae777cba84a6ea058776b71f1aa47c1477f01cd6f9f9bac1eea44c33bdd718",
+      "gitBlob": "510821f3be9fc81e49a91702427d35219509d259"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/LiquidIndicatorMotion.kt",
+      "filename": "LiquidIndicatorMotion.kt",
+      "bytes": 1284,
+      "sha256Bytes": "8151b8196ed1d22313b5bfaaff52aae92ab669248cfb830df02626bae44bd0f0",
+      "gitBlob": "c7c68a6e2139e7944d15a31044b7aabac8f11421"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/LiquidIndicatorVelocity.kt",
+      "filename": "LiquidIndicatorVelocity.kt",
+      "bytes": 2511,
+      "sha256Bytes": "a7f4e85a6018fbd7cdb7624da5f6ad20c4ad8e4715b091ae5e17710e367c208c",
+      "gitBlob": "a02112c467ef9bea9642414824fd52420280e737"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemeCustomColorPickerDialog.kt",
+      "filename": "ThemeCustomColorPickerDialog.kt",
+      "bytes": 22686,
+      "sha256Bytes": "bfa8ef7cd8d0c5de4912bff071c0342c26a91aea623cf50509171d8a01ef9b57",
+      "gitBlob": "60d9e66831953ece3ce0d66d7c28fdfe7bffba71"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+      "filename": "AppearanceSettingsScreen.kt",
+      "bytes": 139202,
+      "sha256Bytes": "c79f46a302978558e236f34d14871bb0f4a7fbbad85acf366b3649aaecbcc599",
+      "gitBlob": "763f918ae3ba25642102cc82a04062357d16644e"
+    },
+    {
+      "path": "design-system/src/main/res/values/liquid_value_colors.xml",
+      "filename": "liquid_value_colors-light.xml",
+      "bytes": 325,
+      "sha256Bytes": "13c5ef2c665cb3cd0ce3f4b18edf83e274969b5f26de4c4aedb4d597dad2b578",
+      "gitBlob": "b965f6c624bf339c9d414a98a96a7376ced73567"
+    },
+    {
+      "path": "design-system/src/main/res/values-night/liquid_value_colors.xml",
+      "filename": "liquid_value_colors-dark.xml",
+      "bytes": 325,
+      "sha256Bytes": "10855d97534e26ffe383f2abbafe99925cee539fff3f00f2d6cb5eac3d331299",
+      "gitBlob": "19b1d68aa17b0387c0f329b602112274fae69c1d"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/animation/LiquidIndicatorMotionTest.kt",
+      "filename": "LiquidIndicatorMotionTest.kt",
+      "bytes": 813,
+      "sha256Bytes": "6781e650a6825be1eaedc5befefcd938f467ceb275eba5447fd396b95eb02f31",
+      "gitBlob": "92af232dd63147e74397ae715c6b88b334b784f3"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/animation/LiquidIndicatorVelocityTest.kt",
+      "filename": "LiquidIndicatorVelocityTest.kt",
+      "bytes": 1932,
+      "sha256Bytes": "bc1df30dbd18304aa63b7af7e91053d7168f44ab426be4ea4ea681e6a7def04b",
+      "gitBlob": "51b3dcf9c67d4f8ed2bdb0b61a55c024db60311e"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometryTest.kt",
+      "filename": "MatchedLiquidIndicatorGeometryTest.kt",
+      "bytes": 2027,
+      "sha256Bytes": "18eef10ababd3d0777aa1286e8c3c32685997a272949545395d08a42b389c1fb",
+      "gitBlob": "d2b3af2464690b3423f4662ae07ab19650447812"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/settings/AppearanceMd3ColorPickerPolicyTest.kt",
+      "filename": "AppearanceMd3ColorPickerPolicyTest.kt",
+      "bytes": 1206,
+      "sha256Bytes": "82654025d0f988081834797d5ec51d3f77d20e0c2f50f24512ae6b30a2d9c611",
+      "gitBlob": "f22c15df0dbe016cdb3d7fd45d1647913f336289"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppActionColors.kt",
+      "filename": "AppActionColors.kt",
+      "bytes": 2333,
+      "sha256Bytes": "5cf40e13bb9645a8171dc5e12f290996329f89172b246846ba5060d8dbdb9ef6",
+      "gitBlob": "d7f0c338414450002b7af634fbfa1d2653f5ed49"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Switch.kt",
+      "filename": "AppMaterial3Switch.kt",
+      "bytes": 1790,
+      "sha256Bytes": "d087e16f3d37cee3c5f5f6ec11689a601d504bd2bc5393a687d8eb8c518bfd5c",
+      "gitBlob": "a459609999254c7f2cddc1313f524a555f1e4b65"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt",
+      "filename": "AppMiuixSwitch.kt",
+      "bytes": 798,
+      "sha256Bytes": "c0627e3a9f289d826edcf1fda72472ce96a24746fc6b91d0d5631e4d014a4208",
+      "gitBlob": "d9f00421360651c113139ab6a7f43d4f614191a6"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt",
+      "filename": "AppMiuixSlider.kt",
+      "bytes": 1368,
+      "sha256Bytes": "bb3e2da67e1e5473ee84ce1e48b152423d3081801ad00cd73d25e96de0dc4688",
+      "gitBlob": "452762a6b08929e0ac1629113e12ef7e0c7ee13e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt",
+      "filename": "LiquidLens.kt",
+      "bytes": 8898,
+      "sha256Bytes": "f9a5863bf9e0cdd26dc05f8b0af08be07c291b425e327a682b0afb35b65df667",
+      "gitBlob": "b21ec83491f4b4fa7bd865f09690427b877a488d"
+    }
+  ],
+  "sourceScope": "Complete original liquid value controls, motion, compact geometry, theme picker, source role declarations, resource colors and tests; complete original LiquidLens refraction and chromatic dispersion via existing pinned miuix Windows Skia backend",
+  "mainCompiled": false,
+  "testsExecuted": false,
+  "pixelsValidated": false,
+  "rootThemeProviderFollowupPending": true,
+  "fullV040ParityClaimed": false
+}

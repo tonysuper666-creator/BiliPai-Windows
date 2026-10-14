@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import json
 import re
+from v040_liquid_value_controls import selected_component_source as _liquid_source, emit_components as _liquid_components, NEW_COMPONENT_DIRECT_PATHS as _liquid_direct
 
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
@@ -76,20 +77,23 @@ def generate(repo, output, standalone=False):
     output.mkdir(parents=True, exist_ok=True)
     result = []
     for path in DIRECT:
-        original = host.read(repo, path)
+        original = _liquid_source(repo, path, host.read(repo, path))
         if re.search(r"(?m)^import android\.", original): raise ValueError("Pure renderer acquired Android dependency: " + path)
         host.prune_old_direct(output, path, original)
-        if standalone and path not in REUSED:
+        if (standalone or path in _liquid_direct) and path not in REUSED:
             result.append(host.write(output, path, original, original))
     for path in ADAPTED:
-        original = host.read(repo, path)
+        original = _liquid_source(repo, path, host.read(repo, path))
         result.append(host.write(output, path, original, adapt(path, original, host)))
     for path in POLICIES:
-        original = host.read(repo, path)
+        original = _liquid_source(repo, path, host.read(repo, path))
         declaration = re.findall(r"(?m)^internal fun resolvePiliPlusScrollableUnderlineMinWidth\(\): Dp = [^\n]+", original)
         if len(declaration) != 1: raise ValueError("Original tab-width policy changed")
         body = "package com.android.purebilibili.core.ui.components\n\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\n\n" + declaration[0] + "\n"
         result.append(host.write(output, path, original, body, "AppScrollableUnderlinePolicy.kt"))
+    extra = _liquid_components(repo, output)
+    result.extend(output / row["path"] for row in extra)
+    result.append(output / "com/android/purebilibili/core/ui/components/DesktopLiquidValueColorResources.kt")
     return result
 
 def inventory(repo):
