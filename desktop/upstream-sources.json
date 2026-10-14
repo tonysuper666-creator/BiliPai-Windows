@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "97",
+  "windowsRevision": "98",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14205,13 +14205,36 @@
     "nativeBarOverflowHostIntegrationPending": true,
     "globalLiquidThemeColorPreferenceHostFollowupPending": true,
     "customPaletteArgumentsStillNeedLargeScreenOwnerCoordination": true,
-    "mainCompiled": false,
-    "jvmTestsExecuted": false,
+    "mainCompiled": true,
+    "jvmTestsExecuted": true,
     "pixelsValidated": false,
     "runtimeExecuted": false,
     "fullV040ParityClaimed": false,
     "completeOriginalLensShaderRetainedWithoutAdaptation": true,
     "existingPinnedMiuixWindowsSkiaBackendUsed": true,
-    "headlessNativeShaderCasesWritten": 2
+    "headlessNativeShaderCasesWritten": 2,
+    "compilationSourceHead": "de22734e7be9a1f72cfdfd5782a3b1780f5ac64f",
+    "compilationRunId": 38651905408,
+    "selectedJvmCasesPassed": 59,
+    "headlessNativeShaderCasesPassed": 2
+  },
+  "v040ChromeActionsSlice": {
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "manifestPath": "desktop/upstream-slices/v040-chrome-actions/manifest.json",
+    "manifestSHA256": "a5d026fc4ee115610ecef1406418895d8f43ad7718666fbdbec8eb13f48138dd",
+    "completeOriginalMainUnitsConnected": 16,
+    "rawOriginalSourceFilesRetained": 20,
+    "originalPolicyJvmCasesWritten": 15,
+    "sourceGenerationCasesPassed": 5,
+    "existingComponentRenderAndSharedDecorationOwnersRetained": true,
+    "existingWindowsClipboardAndRealSkiaPressBindingsRetained": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "nativeBarOverflowHostIntegrationPending": true,
+    "globalLiquidThemeColorPreferenceHostFollowupPending": true,
+    "customPaletteArgumentsStillNeedLargeScreenOwnerCoordination": true,
+    "pixelsValidated": false,
+    "runtimeExecuted": false,
+    "fullV040ParityClaimed": false
   }
 }

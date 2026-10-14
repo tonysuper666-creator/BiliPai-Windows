@@ -25,6 +25,8 @@ def generate_render_sources(output):
     outputs=[]
     for row in PINS:
         original=sources[row['path']]
+        from v040_chrome_actions import retained_render_source
+        original,effective_row,effective_commit=retained_render_source(Path(__file__).resolve().parents[2],row['path'],original,row,COMMIT)
         text=original
         if row['filename']=='VideoPlayerOverlayProgressState.kt':
             before='import androidx.media3.common.Player'
@@ -38,7 +40,7 @@ def generate_render_sources(output):
         target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf-8'))
         proof=whole_proof(original,text)
-        proof.update(upstreamCommit=COMMIT,sourcePath=row['path'],wholeOriginalSelected=True,
+        proof.update(upstreamCommit=effective_commit,sourcePath=row['path'],source=effective_row,wholeOriginalSelected=True,
                      sourceQualified=False,shaderCompiled=False,pixelsValidated=False)
         destination=output/'v037-render-source-proofs'/(row['filename']+'.json')
         destination.parent.mkdir(parents=True,exist_ok=True)
