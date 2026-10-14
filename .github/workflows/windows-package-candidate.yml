@@ -1,0 +1,106 @@
+name: Windows candidate package
+run-name: "Windows candidate | ${{ inputs.source_sha }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact source commit already qualified by Windows source validation
+        required: true
+        type: string
+      qualification_run_id:
+        description: Successful own-repository source validation run for the exact commit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: windows-candidate-package
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Enable Git long paths on the isolated runner
+        shell: pwsh
+        run: git config --global core.longpaths true
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Verify exact source qualification before packaging
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          QUALIFICATION_RUN: ${{ inputs.qualification_run_id }}
+        run: |
+          if ($env:SOURCE_SHA -cnotmatch '^[0-9a-f]{40}$' -or $env:QUALIFICATION_RUN -notmatch '^[1-9][0-9]{0,16}$') { throw 'Exact source and qualification run are required.' }
+          $evidence = Join-Path $env:RUNNER_TEMP 'bilipai-package-qualification'
+          New-Item -ItemType Directory -Path $evidence -Force | Out-Null
+          $guard = Join-Path $evidence 'verify-package-source-qualification.py'
+          Copy-Item -LiteralPath 'desktop/tools/verify-package-source-qualification.py' -Destination $guard
+          gh api "repos/tonysuper666-creator/BiliPai-Windows/actions/runs/$env:QUALIFICATION_RUN" > "$evidence/run.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Qualification run metadata unavailable.' }
+          gh api "repos/tonysuper666-creator/BiliPai-Windows/actions/runs/$env:QUALIFICATION_RUN/jobs?per_page=100" > "$evidence/jobs.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Qualification job metadata unavailable.' }
+          $jobs = @((Get-Content -LiteralPath "$evidence/jobs.json" -Raw | ConvertFrom-Json).jobs | Where-Object { $_.name -eq 'source-validation' })
+          if ($jobs.Count -ne 1) { throw 'Exactly one qualification job is required.' }
+          gh api "repos/tonysuper666-creator/BiliPai-Windows/actions/jobs/$($jobs[0].id)/logs" > "$evidence/job.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Sealed qualification log unavailable.' }
+          git checkout --detach $env:SOURCE_SHA
+          if ($LASTEXITCODE -ne 0 -or (git rev-parse HEAD) -cne $env:SOURCE_SHA) { throw 'Source checkout mismatch.' }
+          python $guard --run "$evidence/run.json" --jobs "$evidence/jobs.json" --log "$evidence/job.log" --plan .github/windows-source-validation-plan.json --source-sha $env:SOURCE_SHA --output "$evidence/source-qualification.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Exact source qualification rejected.' }
+      - name: Stage the reviewed Windows SDK
+        shell: pwsh
+        run: |
+          $root = Join-Path $env:RUNNER_TEMP 'bilipai-candidate-sdk'
+          $receipt = python desktop/tools/provision-native-diagnostic-sdk.py --repo "$env:GITHUB_WORKSPACE" --temp-root "$env:RUNNER_TEMP" --output "$root"
+          if ($LASTEXITCODE -ne 0) { throw 'Reviewed SDK staging failed.' }
+          $sdk = ($receipt -join "`n") | ConvertFrom-Json
+          if ($sdk.passed -ne $true -or $sdk.sdkInputsExact -ne $true -or [IO.Path]::GetFullPath($sdk.sdkRoot) -ne [IO.Path]::GetFullPath($root)) { throw 'SDK staging identity mismatch.' }
+          "BILIPAI_NATIVE_SHARE_SDK_ROOT=$root" >> $env:GITHUB_ENV
+      - name: Stage the reviewed MSVC tools
+        shell: pwsh
+        run: |
+          $root = Join-Path $env:RUNNER_TEMP 'bilipai-candidate-msvc'
+          $receipt = python desktop/tools/provision-native-diagnostic-msvc.py --repo "$env:GITHUB_WORKSPACE" --temp-root "$env:RUNNER_TEMP" --output "$root"
+          if ($LASTEXITCODE -ne 0) { throw 'Reviewed MSVC staging failed.' }
+          $vc = ($receipt -join "`n") | ConvertFrom-Json
+          if ($vc.passed -ne $true -or $vc.vcInputsExact -ne $true -or $vc.compilerBinSetExact -ne $true -or $vc.englishResourcesExact -ne $true -or [IO.Path]::GetFullPath($vc.vcRoot) -ne [IO.Path]::GetFullPath($root)) { throw 'MSVC staging identity mismatch.' }
+          "BILIPAI_NATIVE_SHARE_VC_ROOT=$root" >> $env:GITHUB_ENV
+      - name: Build candidate without launching or publishing the client
+        shell: pwsh
+        env:
+          BILIPAI_WINDOWS_RELEASE_REPOSITORY: tonysuper666-creator/BiliPai-Windows
+        run: |
+          $env:GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs="-Xmx8g -XX:MaxMetaspaceSize=1g -XX:ReservedCodeCacheSize=256m"'
+          & ./desktop/tools/build.ps1 -SkipTests
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate packaging failed.' }
+          git diff --exit-code
+          if ($LASTEXITCODE -ne 0) { throw 'Packaging modified committed source.' }
+          Copy-Item -LiteralPath "$env:RUNNER_TEMP/bilipai-package-qualification/source-qualification.json" -Destination 'desktop/build/distributions/source-qualification.json'
+      - name: Upload candidate and source evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiliPai-Windows-candidate-x64
+          path: |
+            desktop/build/distributions/*.zip
+            desktop/build/distributions/*.zip.sha256
+            desktop/build/distributions/source-qualification.json
+          if-no-files-found: error
+          retention-days: 1
