@@ -44,7 +44,19 @@ def digest(t):return hashlib.sha256(t.encode() if isinstance(t,str) else t).hexd
 def original(path):
  path=_desktop_canonical_relative(REPO,path)
  raw=wide(_desktop_canonical_source(REPO, path)).read_bytes().replace(b'\r\n',b'\n');assert digest(raw)==SOURCE_PINS[path],path+' differs from fixed stable source'
- SOURCES[path]=dict(path=path,sha256LF=digest(raw),commit=COMMIT);return raw.decode('utf-8')
+ SOURCES[path]=dict(path=path,sha256LF=digest(raw),commit=COMMIT)
+ canonical=raw.decode('utf-8')
+ if path==BASE+'feature/video/usecase/VideoPlaybackUseCase.kt':
+  from v037_player_interaction import fixed_sources
+  text=fixed_sources()['VideoPlaybackUseCase.kt']
+ elif path==BASE+'feature/video/viewmodel/VideoPlaybackViewModel.kt':
+  from v037_player_interaction import fixed_sources
+  text=fixed_sources()['VideoPlaybackViewModel.kt']
+ else:return canonical
+ SOURCES[path].update(canonicalCommit=COMMIT,canonicalSha256LF=digest(raw),
+  commit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',sha256LF=digest(text),
+  completeOriginalSelectedSource=True)
+ return text
 def emit(path,text,origin,mode):
  from v031_repost_coin import apply_and_record
  text,repostProof=apply_and_record(path,text,OUTPUT)
@@ -53,15 +65,44 @@ def emit(path,text,origin,mode):
  if path=='com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt':text=_typed_failure_protocol(text,edits)
  if path=='com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt':text=_typed_failure_usecase(text,edits)
  if edits:AUDITS[path.rsplit('/',1)[-1]+'.failure-recovery-inverse.json']=edits
- from v034_related import apply_and_record as apply_related
- text,relatedProof=apply_related(path,text,OUTPUT)
- if relatedProof is not None:mode='fixed-v034-beta2-related-owned-delta'
- from v034_detail_bootstrap import apply_and_record as apply_detail
- text,detailProof=apply_detail(path,text,OUTPUT)
- if detailProof is not None:mode='fixed-v034-stable-early-detail-owned-delta'
- from v034_on_demand import apply_and_record as apply_on_demand
- text,requestCacheProof=apply_on_demand(path,text,OUTPUT)
- if requestCacheProof is not None:mode='fixed-stable-v034-owned-request-cache-delta'
+ if path=='com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSuccessExtensions.kt':
+  from v037_player_interaction import fixed_sources
+  from v029_comment_search import whole_proof
+  fixed=fixed_sources()['VideoEngagementViewModel.kt'];before_seed=text;method_proofs=[]
+  for name in ['toEngagementSeed','withEngagementUiState']:
+   # These are Kotlin extension functions, so use the original exact tail
+   # boundaries rather than a selector that assumes regular member functions.
+   prefix='internal fun VideoPlaybackUiState.Success.'+name
+   start=fixed.index(prefix);end=fixed.find('\ninternal fun ',start+len(prefix))
+   original_method=fixed[start:] if end<0 else fixed[start:end]
+   ported=original_method.replace('!TokenManager.sessDataCache.isNullOrEmpty()','isLoggedIn').replace('TokenManager.isVipCache','isVip')
+   current_start=text.index(prefix);current_end=text.find('\ninternal fun ',current_start+len(prefix))
+   if current_end<0:current_end=len(text)
+   text=text[:current_start]+ported.rstrip()+'\n'+text[current_end:]
+   method_proofs.append(whole_proof(original_method,ported))
+  AUDITS['v037-original-known-state-seed-functions']=dict(wholePreviousRootInverse=whole_proof(before_seed,text),wholeOriginalMethodProjections=method_proofs,actualExistingSuccessSnapshotFieldsUsed=True,sourceQualified=False)
+
+ if path in {
+  'com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt',
+  'com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoLoadModels.kt',
+  'com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoPlaybackUiState.kt'}:
+  # The fixed complete v037 inputs already include the related/detail/cache
+  # algorithms. Keep Root's native/error boundaries; never apply old semantic deltas twice.
+  AUDITS[path.rsplit('/',1)[-1]+'.v037-selection.json']=dict(
+   completeOriginalSelectedSource=True,fixedCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',
+   canonicalSourcePinsPreserved=True,legacyV034SemanticDeltasNotReapplied=True,
+   sourceQualified=False,mainCompiled=False)
+  mode='fixed-v037-complete-original-existing-Root-platform-boundaries'
+ else:
+  from v034_related import apply_and_record as apply_related
+  text,relatedProof=apply_related(path,text,OUTPUT)
+  if relatedProof is not None:mode='fixed-v034-beta2-related-owned-delta'
+  from v034_detail_bootstrap import apply_and_record as apply_detail
+  text,detailProof=apply_detail(path,text,OUTPUT)
+  if detailProof is not None:mode='fixed-v034-stable-early-detail-owned-delta'
+  from v034_on_demand import apply_and_record as apply_on_demand
+  text,requestCacheProof=apply_on_demand(path,text,OUTPUT)
+  if requestCacheProof is not None:mode='fixed-stable-v034-owned-request-cache-delta'
  from v034_playurl_failure import apply_and_record as apply_playurl_failure
  text,playurlFailureProof=apply_playurl_failure(path,text,OUTPUT)
  if playurlFailureProof is not None:mode='windows-actual-call-scoped-fallback-cause-adapter'

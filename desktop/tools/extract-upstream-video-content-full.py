@@ -77,6 +77,9 @@ def read(rel):
   current=subprocess.check_output(['git','-c','core.longpaths=true','hash-object','--path='+_desktop_canonical_relative(REPO,path),str(_desktop_canonical_source(REPO,path))],cwd=REPO,text=True).strip()
   assert current==blob==pin['gitBlob'],path+' Git identity differs'
   SOURCES[path]=dict(text=raw.decode(),**pin)
+ if path=='app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt':
+  from v036_video_comment_viewport import fixed_sources
+  return fixed_sources()[path]
  return SOURCES[path]['text']
 def emit(rel,t,origin,mode):
  t=validate_fresh_v025_comment_consumer("com/android/purebilibili/"+rel,t)

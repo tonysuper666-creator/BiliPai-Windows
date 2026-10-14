@@ -9,6 +9,9 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.boundsInWindow
@@ -108,6 +111,7 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
     private var viewportPublication:DesktopOriginalVideoAcceptedPublication? = null
     private var borrowedViewportToken: Any? = null // Same presentation admission; not a source authority.
     private var reportedNativeReveal=false
+    private var backdropFrame by mutableStateOf<DesktopOriginalVideoBackdrop?>(null)
     private val player get() = resources.native.player
     private fun expected(): DesktopOriginalVideoAcceptedPublication = resources.native.current()
         ?: throw CancellationException("Original Section has no accepted source")
@@ -123,6 +127,80 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
     private suspend fun checkpoint(value: DesktopOriginalVideoAcceptedPublication) {
         currentCoroutineContext().ensureActive()
         if (!owns(value)) throw CancellationException("Original Section source retired")
+    }
+    private fun backdropOwnerCurrent(value: DesktopOriginalVideoAcceptedPublication): Boolean =
+        resources.entryScope.coroutineContext[Job]?.isActive == true && resources.isForegroundOwned() &&
+            !resources.isPipActive.value && resources.isPresentationCurrent(value)
+
+    private fun backdropCurrent(value: DesktopOriginalVideoBackdrop): Boolean =
+        backdropOwnerCurrent(value.publication) &&
+            player.isBackdropFrameCurrent(value.publication.nativeSource, value.frame)
+
+    override val videoBackdropReady: Boolean get() = backdropFrame?.let(::backdropCurrent) == true
+
+    override fun DrawScope.drawVideoBackdrop() {
+        val retained = backdropFrame?.takeIf(::backdropCurrent) ?: return
+        if (size.width <= 0f || size.height <= 0f) return
+        drawImage(retained.image,
+            dstSize = IntSize(size.width.roundToInt().coerceAtLeast(1), size.height.roundToInt().coerceAtLeast(1)),
+            filterQuality = FilterQuality.Low)
+    }
+
+    @Composable override fun ObserveVideoBackdrop(enabled: Boolean) {
+        val nativeState by player.state.collectAsState()
+        val pip by resources.isPipActive.collectAsState()
+        val publication = resources.native.current()
+        val active = enabled && !pip && publication != null && backdropOwnerCurrent(publication) &&
+            nativeState.ready && !nativeState.loading && !nativeState.ended && !nativeState.audioOnly &&
+            nativeState.videoCodec != null && nativeState.error == null && nativeState.failure == null
+        LaunchedEffect(this, publication, active) {
+            backdropFrame = null
+            if (!active || publication == null) return@LaunchedEffect
+            val samplingJob = currentCoroutineContext().job
+            val capturedOwner = { samplingJob.isActive && backdropOwnerCurrent(publication) }
+            try {
+                while (capturedOwner()) {
+                    currentCoroutineContext().ensureActive()
+                    val previous = backdropFrame
+                    if (previous != null && !backdropCurrent(previous)) backdropFrame = null
+                    val retained = backdropFrame
+                    // Keep a paused frame, with a slow refresh for resize/viewport changes.
+                    val refresh = retained == null || !player.state.value.paused ||
+                        System.nanoTime() - retained.frame.capturedAtNanos >= 2_000_000_000L
+                    var waitMillis = 125L // At most eight sequential requests per second.
+                    if (refresh) {
+                        try {
+                            val frame = player.captureBackdropForSource(publication.nativeSource, stillOwned = capturedOwner)
+                            currentCoroutineContext().ensureActive()
+                            if (!capturedOwner()) break
+                            if (!player.isBackdropFrameCurrent(publication.nativeSource, frame)) {
+                                backdropFrame = null
+                                delay(125L)
+                                continue
+                            }
+                            val image = desktopOriginalVideoBackdropImage(frame)
+                            if (!capturedOwner()) break
+                            resources.withPresentationAdmission(publication) {
+                                if (capturedOwner()) backdropFrame = DesktopOriginalVideoBackdrop(publication, frame, image)
+                            }
+                        } catch (failure: CancellationException) {
+                            currentCoroutineContext().ensureActive()
+                            if (!capturedOwner()) break
+                            backdropFrame = null
+                            waitMillis = 1_000L // Busy/unsupported output cannot spin or fail playback.
+                        } catch (_: Exception) {
+                            currentCoroutineContext().ensureActive()
+                            backdropFrame = null
+                            waitMillis = 1_000L
+                        }
+                    }
+                    delay(waitMillis)
+                }
+            } finally {
+                // This platform instance belongs to this composition/entry only.
+                backdropFrame = null
+            }
+        }
     }
     @Composable fun InitialNativeSurface(modifier: Modifier) {
         if (LocalDesktopOriginalVideoNativeCarrierActive.current) carrier(modifier) {}

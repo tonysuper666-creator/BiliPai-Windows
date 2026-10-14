@@ -57,7 +57,9 @@ class DesktopWindowsVideoFeedbackLifetimeTest {
         }
         val vm = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
             DesktopPluginContext(DesktopPluginStore(folder)), scope, actions, VideoCoinBalanceLoader { 0.0 },
-            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false }))
+            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false },
+            interactionSession = { folder },
+        ))
         val ordinary: DesktopWindowsVideoEngagementBinding
         val command: DesktopWindowsCommandAttentionBinding
         private val ownedBindings = mutableListOf<AutoCloseable>()
@@ -66,7 +68,7 @@ class DesktopWindowsVideoFeedbackLifetimeTest {
                 { interactive && lifetime(expected) }, { lifetime(expected) }, { action -> admit(expected, action) })
                 .also { ownedBindings += it }
         init {
-            vm.bindSubject(subject, VideoEngagementSeed(isLoggedIn = true))
+            vm.bindSubject(subject, VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
             ordinary = binding()
             command = DesktopWindowsCommandAttentionBinding(source, vm, subject,
                 { interactive && lifetime() }, { lifetime() },

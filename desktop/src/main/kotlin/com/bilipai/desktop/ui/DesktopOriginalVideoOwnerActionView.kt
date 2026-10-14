@@ -21,6 +21,8 @@ import java.lang.reflect.Proxy
 internal class DesktopOriginalVideoOwnerActionView(
     private val invocations: DesktopOriginalVideoPlaybackInvocationPorts,
     entryScope: CoroutineScope,
+    private val repository: com.bilipai.desktop.data.DesktopRepository,
+    private val capturedEpoch: Long,
     analytics: DesktopOriginalVideoInteractionAnalytics,
     private val confirmFollow: (FollowStateChange) -> Unit,
     feedback: (String) -> Unit,
@@ -52,11 +54,17 @@ internal class DesktopOriginalVideoOwnerActionView(
             val captured = request().binding
             if (!captured.admitCurrentMutation {
                     confirmFollow(change)
-                    DesktopOriginalVideoEngagementPresentation.confirmBrandFollow(change.isFollowing)
                 })
                 throw CancellationException("Original confirmed follow request retired")
         }, DesktopOriginalFavoriteFolderProtocol(api, { request().binding.primaryMid() },
-            { request().binding.primaryCsrf() }, { request().binding.assertCurrent() }))
+            { request().binding.primaryCsrf() }, { request().binding.assertCurrent() }),
+        repository.videoInteractionStatusCache, repository.videoFollowingSnapshotGuard,
+        { request().binding.assertCurrent(); capturedEpoch },
+        { block ->
+            val captured = request().binding
+            if (!captured.admitCurrentMutation(block))
+                throw CancellationException("Original interaction cache admission retired")
+        })
     val interactionUseCase = VideoInteractionUseCase(engagement, analytics)
 
     private suspend fun <T> owned(action: suspend () -> T): T {
@@ -65,9 +73,31 @@ internal class DesktopOriginalVideoOwnerActionView(
         captured.assertCurrent()
         return action().also { currentCoroutineContext().ensureActive(); captured.assertCurrent() }
     }
-    override suspend fun checkFollowStatus(mid: Long) = owned { creator.checkFollowStatus(mid) }
+    // Original account-cache reads also occur synchronously before a UI command
+    // launches. They need the real account/entry gate, while network operations
+    // continue to require that launch's captured repository and API.
+    private fun <T> interactionSnapshot(block: () -> T): T =
+        repository.withPrimaryPlaybackAdmission(capturedEpoch, {
+            runCatching { invocations.assertCurrent() }.isSuccess
+        }) { invocations.assertCurrent(); block() }
+    override fun interactionSession(): Any = interactionSnapshot { capturedEpoch }
+    override fun cachedLikeStatus(aid: Long) = interactionSnapshot {
+        repository.videoInteractionStatusCache.read(capturedEpoch, "like:$aid").first
+    }
+    override fun cachedFollowStatus(mid: Long) = interactionSnapshot {
+        repository.videoInteractionStatusCache.read(capturedEpoch, "follow:$mid").first
+    }
+    override fun likeStatusVersion(aid: Long) = interactionSnapshot {
+        repository.videoInteractionStatusCache.read(capturedEpoch, "like:$aid").second
+    }
+    override fun followStatusVersion(mid: Long) = interactionSnapshot {
+        repository.videoInteractionStatusCache.read(capturedEpoch, "follow:$mid").second
+    }
+    override suspend fun queryLikeStatus(aid: Long) = owned { engagement.queryLikeStatus(aid) }
+    override suspend fun queryFollowStatus(mid: Long) = owned { engagement.queryFollowStatus(mid) }
+    override suspend fun checkFollowStatus(mid: Long) = owned { engagement.checkFollowStatus(mid) }
     override suspend fun checkFavoriteStatus(aid: Long) = owned { status.checkFavoriteStatus(aid) }
-    override suspend fun checkLikeStatus(aid: Long) = owned { status.checkLikeStatus(aid) }
+    override suspend fun checkLikeStatus(aid: Long) = owned { engagement.checkLikeStatus(aid) }
     override suspend fun checkCoinStatus(aid: Long) = owned { status.checkCoinStatus(aid) }
     override suspend fun checkDislikeStatus(aid: Long) = owned { status.checkDislikeStatus(aid) }
     override suspend fun checkWatchLaterStatus(aid: Long) = owned { status.checkWatchLaterStatus(aid) }

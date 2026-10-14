@@ -32,7 +32,8 @@ def read(path):
         current=subprocess.check_output(['git','-c','core.longpaths=true','hash-object','--path='+_desktop_canonical_relative(REPO,path),str(_desktop_canonical_source(REPO,path))],cwd=REPO,text=True).strip()
         assert blob==current==pin['gitBlob'],path+' Git identity differs'
         SOURCES[path]=dict(text=raw.decode('utf-8'),**pin)
-    return SOURCES[path]['text']
+    from v037_player_interaction import selected_source
+    return selected_source(path,SOURCES[path]['text'])
 def adapt(t,a,b,label):
     assert t.count(a)==1,(label,t.count(a));ADAPTATIONS.append(dict(label=label,before=a,after=b));return t.replace(a,b,1)
 def confirmed_favorite_receipt_delta(path,t):
@@ -47,8 +48,9 @@ def emit(path,t,origin,mode):
     t=apply_v032_catalog(path,t,OUTPUT)
     t=confirmed_favorite_receipt_delta(path,t)
     from v029_video_feedback import apply_video_feedback, celebration_source, OUTPUT_ANIMATIONS, COMMIT as FEEDBACK_COMMIT
-    t,feedbackProof=apply_video_feedback(path,t,parser)
-    from v029_video_feedback_origin import apply_feedback_origin
+    from v037_video_feedback_adapter import apply_latest_feedback
+    t,feedbackProof=apply_latest_feedback(path,t,parser)
+    from v037_feedback_origin import apply_feedback_origin
     t,feedbackOriginProof=apply_feedback_origin(path,t)
     from v029_video_feedback_host import apply_feedback_lifetime
     t,feedbackLifetimeProof=apply_feedback_lifetime(path,t)
@@ -68,7 +70,11 @@ def emit(path,t,origin,mode):
         save(OUTPUT/'v029-video-feedback-motion-proof.json',motionProof)
         OUTPUTS.append(dict(path=OUTPUT_MOTION,origin=motionProof['origin'],mode='fixed-v029-complete-decoration-blocks-owned-window',fixedCommit=FEEDBACK_COMMIT,sha256LF=sha(motion),physicalLines=len(motion.splitlines()),generated=True))
     from v031_repost_coin import apply_and_record
-    t,repostProof=apply_and_record(path,t,OUTPUT)
+    if path=='com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt':
+        assert 'suspend fun doTripleAction(aid: Long, coinCount: Int): Result<TripleActionResult>' in t
+        assert 'val coinLimit: Int get() = if (isRepost) 1 else 2' in t
+        repostProof=dict(fixedCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',wholeLatestOriginalRepostContractAlreadySelected=True,previousSemanticDeltaNotReapplied=True)
+    else:t,repostProof=apply_and_record(path,t,OUTPUT)
     if repostProof is not None:mode="fixed-v031-repost-coin-owned-delta"
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
@@ -216,6 +222,8 @@ import kotlinx.coroutines.flow.*
     from v031_repost_coin import direct_outputs
     for output,text,origin in direct_outputs():
         emit(output,text,origin,"fixed-v031-complete-original-source")
+    from v037_player_interaction import extend_same_producer
+    extend_same_producer(globals())
     read(BASE+'core/util/AnalyticsHelper.kt') # Original event/default/privacy contract for the local diagnostics platform port.
     save(OUTPUT/'source-bindings.json',dict(pinnedCommit=COMMIT,sourceIdentities=[dict(path=p,**{k:v for k,v in r.items() if k!='text'}) for p,r in SOURCES.items()],outputs=OUTPUTS,adaptations=ADAPTATIONS,scope='Complete original ordinary information/actions and shared gesture units. Full ordinary player overlays and page assembly are next, not yet claimed.',existingReferenceOwners=['metadata honor/team','BGM discovery full subtree','profile public TripleProgressIcon','Home resolveCompactPublishTimeRowText'],actualProductAcceptance=False))
     print(json.dumps(dict(sources=len(SOURCES),outputs=len(OUTPUTS)),ensure_ascii=False))
@@ -237,9 +245,17 @@ def engagement():
     body=t[t.index('class VideoEngagementViewModel('):t.index('internal fun VideoPlaybackUiState.Success.toEngagementSeed')]
     before='''class VideoEngagementViewModel(
     private val actions: VideoEngagementActions = DefaultVideoEngagementActions(),
-    private val coinBalanceLoader: VideoCoinBalanceLoader = DefaultVideoCoinBalanceLoader
+    private val coinBalanceLoader: VideoCoinBalanceLoader = DefaultVideoCoinBalanceLoader,
+    private val tripleJumpEnabled: suspend (Context?) -> Boolean = { context ->
+        context != null && SettingsManager.getTripleJumpEnabled(context).first()
+    }
 ) : ViewModel() {'''
-    after='''internal class VideoEngagementViewModel(private val environment: DesktopOriginalVideoEngagementEnvironment) {
+    after='''internal class VideoEngagementViewModel(
+    private val environment: DesktopOriginalVideoEngagementEnvironment,
+    private val tripleJumpEnabled: suspend (Context?) -> Boolean = { context ->
+        context != null && SettingsManager.getTripleJumpEnabled(context).first()
+    },
+) {
     private val actions get() = environment.actions
     private val coinBalanceLoader get() = environment.coinBalanceLoader
     private val viewModelScope get() = environment.scope
@@ -251,6 +267,10 @@ def engagement():
     }
 '''
     body=adapt(body,before,after,'Full EngagementVM uses required existing entry scope/actions/current owner')
+    body=adapt(body,
+        'private fun interactionSession(): Any = TokenManager.accountIdentity.value to TokenManager.sessDataCache',
+        'private fun interactionSession(): Any = environment.interactionSession()',
+        'Latest original engagement revision/session guards use the actual existing Root account epoch and shared protocol')
     body=body.replace('private var appContext: Context? = null','private var appContext: Context? = environment.context')
     body=adapt(body,'private val _events = Channel<VideoEngagementEvent>(Channel.BUFFERED)','private val _events = Channel<Pair<Long?, VideoEngagementEvent>>(Channel.BUFFERED)','Original events retain transient subject generation in the existing channel')
     body=adapt(body,'val events = _events.receiveAsFlow()','val events = _events.receiveAsFlow().mapNotNull { (generation, event) ->\n        if (environment.isOwned() && _uiState.value.subject?.generation == generation) event else null\n    }','Reject queued old-subject events without changing original public event schema')
@@ -324,9 +344,10 @@ def engagement_presentation_delta(body):
             '        onResult: ((TripleActionResult) -> Unit)? = null,\n        presentation: DesktopOriginalVideoEngagementPresentation? = null'),
     ]:
         a,b=function_range(body,name);method=body[a:b]
-        assert method.count(old)==method.count('viewModelScope.launch {')==1,name
+        expected_launches=2 if name=='doTripleAction' else 1
+        assert method.count(old)==1 and method.count('viewModelScope.launch {')==expected_launches,name
         changed=method.replace(old,new,1).replace('viewModelScope.launch {',
-            'viewModelScope.launch(presentation?.context ?: EmptyCoroutineContext) {',1)
+            'viewModelScope.launch(presentation?.context ?: EmptyCoroutineContext) {',expected_launches)
         # Preserve both the original visual state and its modified-field receipt
         # in one bounded commit. Nothing in these ranges suspends or performs IO.
         start=changed.index('                    locallyModifiedFields =') if name=='toggleFollow' else changed.index('                    val visual =')

@@ -327,17 +327,24 @@ internal class DesktopDynamicCardOperations(
     internal fun originalVideoCoinBalanceLoader():com.android.purebilibili.feature.video.viewmodel.VideoCoinBalanceLoader =
         com.android.purebilibili.feature.video.viewmodel.originalVideoCoinBalanceLoader(api,
             { assertOwned(); !repository.authCookies()["SESSDATA"].isNullOrEmpty() }, ::assertOwned)
-    internal fun originalVideoEngagementActions(analytics:com.bilipai.desktop.ui.DesktopOriginalVideoInteractionAnalytics):com.android.purebilibili.feature.video.viewmodel.VideoEngagementActions {
+    private fun createOriginalVideoEngagementProtocol(): com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol {
         val owner = repository.dynamicCacheSessionGuard.dynamicCacheOwner()
-        val protocol = com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol(api,
+        return com.android.purebilibili.data.repository.DesktopOriginalVideoEngagementProtocol(api,
             { assertOwned(); repository.requireCsrf() },
             { assertOwned(); repository.account.value?.mid },
             { assertOwned(); repository.authCookies()["SESSDATA"] },
             { assertOwned(); repository.accessTokenCredentials().first }, ::assertOwned,
-            { change -> assertOwned(); repository.followStateEvents.confirm(checkNotNull(owner),change)
-                com.bilipai.desktop.ui.DesktopOriginalVideoEngagementPresentation.confirmBrandFollow(change.isFollowing) },
+            { change -> assertOwned(); repository.followStateEvents.confirm(checkNotNull(owner),change) },
             com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol(api,
-                { assertOwned(); repository.account.value?.mid }, { assertOwned(); repository.requireCsrf() }, ::assertOwned))
+                { assertOwned(); repository.account.value?.mid }, { assertOwned(); repository.requireCsrf() }, ::assertOwned),
+            repository.videoInteractionStatusCache, repository.videoFollowingSnapshotGuard,
+            { assertOwned(); expectedEpoch },
+            { block -> repository.withPrimaryPlaybackAdmission(expectedEpoch, ::isOwned, block) })
+    }
+    private val originalEngagementProtocol by lazy { createOriginalVideoEngagementProtocol() }
+    internal fun originalVideoInteractionStatus() = originalEngagementProtocol
+    internal fun originalVideoEngagementActions(analytics:com.bilipai.desktop.ui.DesktopOriginalVideoInteractionAnalytics):com.android.purebilibili.feature.video.viewmodel.VideoEngagementActions {
+        val protocol = originalEngagementProtocol
         val original = com.android.purebilibili.feature.video.viewmodel.originalVideoEngagementActions(
             com.android.purebilibili.feature.video.usecase.VideoInteractionUseCase(protocol,analytics))
         return object : com.android.purebilibili.feature.video.viewmodel.VideoEngagementActions {

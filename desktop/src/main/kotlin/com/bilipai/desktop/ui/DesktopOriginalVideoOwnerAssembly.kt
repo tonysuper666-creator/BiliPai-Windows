@@ -204,6 +204,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                 val account = DesktopOriginalVideoOwnerAccountView(owner.invocations, readHasPrimarySession,
                     readHasPrimaryAccessToken, readPrimaryMid)
                 val actions = DesktopOriginalVideoOwnerActionView(owner.invocations, entryScope,
+                    repository, capturedEpoch,
                     interactionAnalytics, confirmFollow, feedback)
                 val plugins = createPlugins(owner.native, owner.invocations)
                 val useCase = DesktopOriginalVideoPlaybackUseCaseEnvironment(context, repositoryView,

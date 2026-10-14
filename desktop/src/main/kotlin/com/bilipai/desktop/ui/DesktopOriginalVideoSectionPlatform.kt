@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.android.purebilibili.core.store.DanmakuSettings
 import com.android.purebilibili.danmaku.engine.DanmakuItem
 import com.android.purebilibili.feature.anime4k.Anime4KConfig
@@ -65,6 +66,11 @@ internal interface DesktopOriginalSectionEnhancementActions {
  */
 internal interface DesktopOriginalVideoSectionPlatform {
     @Composable fun RenderPlayerForeground(content: @Composable () -> Unit)
+    /** Bounded sampling from the same accepted native source, active only for visible glass. */
+    @Composable fun ObserveVideoBackdrop(enabled: Boolean)
+    val videoBackdropReady: Boolean
+    /** Records into the glass source's separate display list; never paints over native video. */
+    fun DrawScope.drawVideoBackdrop()
     val settingsContext: DesktopOriginalPlayerSettingsContext
     val viewport: DesktopOriginalPlayerViewportPort
     val viewportAttached: Boolean

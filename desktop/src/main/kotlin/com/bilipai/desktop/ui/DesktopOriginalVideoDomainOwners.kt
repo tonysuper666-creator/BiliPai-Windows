@@ -86,8 +86,10 @@ internal class DesktopOriginalVideoDomainOwners private constructor(
     private val coinBalance = root.operations.originalVideoCoinBalanceLoader()
     val engagement = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
         context, scope, root.operations.originalVideoEngagementActions(analytics),
-        VideoCoinBalanceLoader { request { coinBalance.load() } }, ::owned,
+        VideoCoinBalanceLoader { request { coinBalance.load() } },
+        ::owned,
         { block -> commit(block) },
+        interactionSession = root.operations.originalVideoInteractionStatus()::interactionSession,
     ))
     val comments = VideoCommentViewModel(scope, requests)
     val composer = VideoComposerViewModel(DesktopOriginalVideoComposerEnvironment(
