@@ -96,7 +96,8 @@ internal class DesktopVideoFailureLoginIntent private constructor(
                 is BiliPaiNavKey.VideoDetail -> entry.copy(bvid = accepted.request.bvid, cid = accepted.request.cid,
                     resumePositionMs = accepted.fallbackResumeMs)
                 is BiliPaiNavKey.AudioMode -> entry.copy(sourceBvid = accepted.request.bvid,
-                    sourceCid = accepted.request.cid, sourceResumePositionMs = accepted.fallbackResumeMs)
+                    sourceCid = accepted.request.cid, sourceResumePositionMs = accepted.fallbackResumeMs,
+                    collectionMediaId = 0L, collectionSeasonId = 0L, collectionTitle = "")
                 is BiliPaiNavKey.NativeMusic -> {
                     // The original key has no resume field: never discard a real nonzero read target.
                     if (accepted.fallbackResumeMs != 0L) return null

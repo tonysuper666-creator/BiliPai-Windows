@@ -201,6 +201,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt"))
+        // The existing Listen producer owns the original key file with the fixed AudioMode declaration.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -3561,9 +3563,11 @@ val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-listen-video-root.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-listen-video-pages").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py", "tools/v038_audio_library.py", "tools/v038_listen_viewmodel.py", "tools/v038_listen_collection.py")
+    inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py", "tools/v038_audio_library.py", "tools/v038_listen_viewmodel.py", "tools/v038_listen_collection.py", "tools/v038_listen_screen.py")
     inputs.dir("upstream-slices/v038-listen-viewmodel")
     inputs.dir("upstream-slices/v038-listen-collection")
+    inputs.dir("upstream-slices/v038-listen-screen")
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))
     inputs.files(sources.filter { "original-listen-video-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-listen-video-pages"))

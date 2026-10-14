@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.feature.video.player.ExternalPlaylistSource
 import com.android.purebilibili.feature.video.player.PlaylistItem
+import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import java.nio.file.Files
 import java.nio.file.Path
@@ -65,6 +66,65 @@ class DesktopOriginalListenCollectionPlaylistAdmissionTest {
             assertEquals(1, f.queue.currentIndex.value)
             assertEquals(b, f.queue.getCurrentItem())
             assertTrue(f.queue.isSessionCurrent(session))
+        }
+    }
+
+    @Test fun selectedItemReceiptTracksOriginalSessionSelectionAndGrowingPages(): Unit = runBlocking {
+        fixture { f ->
+            val a = item("BVa"); val b = item("BVb"); val c = item("BVc")
+            val session = f.queue.setExternalPlaylist(listOf(a, b), 0, ExternalPlaylistSource.FAVORITE)
+            val selectedA = assertNotNull(DesktopOriginalListenCollectionQueueSelection.capture(
+                f.queue, session, a, { true }, { true }))
+            val requestA = PlaybackRequest.create(a.bvid, cid = a.cid)
+            assertTrue(selectedA.matches(requestA, 0L))
+            for (different in listOf(requestA.copy(bvid = b.bvid), requestA.copy(cid = 999L), requestA.copy(aid = 7L)))
+                assertFalse(selectedA.matches(different, 0L))
+            assertFalse(selectedA.matches(requestA, 1L))
+            f.queue.playAt(1)
+            assertFalse(selectedA.isCurrent())
+            val selectedB = assertNotNull(DesktopOriginalListenCollectionQueueSelection.capture(
+                f.queue, session, b, { true }, { true }))
+            assertTrue(f.queue.addAllToPlaylistIfCurrent(listOf(a, b, c), session))
+            assertTrue(selectedB.isCurrent(), "An appended page must keep the current item receipt")
+            f.queue.setExternalPlaylist(listOf(b), 0, ExternalPlaylistSource.FAVORITE)
+            assertFalse(selectedB.isCurrent(), "Equal item content cannot authorize a replacement session")
+        }
+    }
+
+    @Test fun selectedItemReceiptRetiresWithItsActualCallerOrOriginalVmPublication(): Unit = runBlocking {
+        fixture { f ->
+            val item = item("BVa")
+            val session = f.queue.setExternalPlaylist(listOf(item), 0, ExternalPlaylistSource.FAVORITE)
+            val caller = Job()
+            var originalPublication = true
+            val receipt = assertNotNull(DesktopOriginalListenCollectionQueueSelection.capture(
+                f.queue, session, item, { caller.isActive }, { originalPublication }))
+            val before = f.queue.playlist.value
+            originalPublication = false
+            assertFalse(receipt.isCurrent())
+            assertNull(DesktopOriginalListenCollectionQueueSelection.capture(
+                f.queue, session, item, { caller.isActive }, { originalPublication }))
+            originalPublication = true
+            assertTrue(receipt.isCurrent())
+            caller.cancel()
+            assertFalse(receipt.isCurrent())
+            assertSame(before, f.queue.playlist.value, "Read-only receipt checks cannot change the real queue")
+        }
+    }
+
+    @Test fun resolvingOriginalSelectedCidRequiresAFreshItemReceipt(): Unit = runBlocking {
+        fixture { f ->
+            val unresolved = item("BVa").copy(cid = 0L)
+            val session = f.queue.setExternalPlaylist(listOf(unresolved), 0, ExternalPlaylistSource.FAVORITE)
+            val receipt = assertNotNull(DesktopOriginalListenCollectionQueueSelection.capture(
+                f.queue, session, unresolved, { true }, { true }))
+            assertTrue(receipt.matches(PlaybackRequest.create(unresolved.bvid, cid = 0L), 0L))
+            assertTrue(f.queue.resolveSelectedCidIfCurrent(session, unresolved.bvid, 0L, 104L))
+            assertFalse(receipt.isCurrent())
+            val resolved = assertNotNull(f.queue.getCurrentItem())
+            val fresh = assertNotNull(DesktopOriginalListenCollectionQueueSelection.capture(
+                f.queue, session, resolved, { true }, { true }))
+            assertTrue(fresh.matches(PlaybackRequest.create(resolved.bvid, cid = 104L), 0L))
         }
     }
 

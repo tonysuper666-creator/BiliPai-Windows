@@ -41,6 +41,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Verified MPV companion packaging regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v038_listen_collection_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original collection source adaptation regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v038_audio_library_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original audio library source adaptation regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v038_listen_viewmodel_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original Listen state machine source adaptation regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v038_listen_screen_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original Listen screen source adaptation regression failed.' }
       - name: Stage the existing pinned JDK
         shell: pwsh
         run: |

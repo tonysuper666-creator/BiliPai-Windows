@@ -43,6 +43,7 @@ internal class DesktopPersonalListsRoot(
     private val following = linkedMapOf<BiliPaiNavKey.Following,DesktopFollowingEntry>()
     private val entriesLock = Any()
     private var originalListen: DesktopOriginalListenVideoEntry? = null
+    private val listenCollections = java.util.IdentityHashMap<BiliPaiNavKey.AudioMode, DesktopOriginalListenVideoCollectionEntry>()
 
     fun owns(): Boolean = !closed.get() && job.isActive && gate.owns()
     private fun assertOwned() { if (!owns()) throw CancellationException("Personal list owner retired") }
@@ -103,6 +104,23 @@ internal class DesktopPersonalListsRoot(
             if (selected !== created) created.close()
             return selected ?: throw CancellationException("Personal Root retired during Listen creation")
         } catch (failure: Throwable) { created.close(); throw failure }
+    }
+
+    fun listenCollection(key: BiliPaiNavKey.AudioMode, playlist: DesktopOriginalVideoPlaylistBinding,
+        destinationRetained: () -> Boolean): DesktopOriginalListenVideoCollectionEntry {
+        assertOwned()
+        require(key.collectionMediaId > 0L || key.collectionSeasonId > 0L)
+        synchronized(entriesLock) { listenCollections[key] }?.let {
+            check(it.listen.playlist === playlist)
+            return it
+        }
+        val created = DesktopOriginalListenVideoCollectionEntry(this, key, listenVideo(playlist), destinationRetained)
+        val selected = synchronized(entriesLock) {
+            if (!owns() || !destinationRetained()) null
+            else listenCollections[key] ?: created.also { listenCollections[key] = it }
+        }
+        if (selected !== created) created.close()
+        return selected ?: throw CancellationException("Original collection destination retired during installation")
     }
 
     fun watchLater(key: BiliPaiNavKey): DesktopWatchLaterEntry {
@@ -187,6 +205,10 @@ internal class DesktopPersonalListsRoot(
         oldWatch.forEach(DesktopWatchLaterEntry::close)
         val oldFollowing=synchronized(entriesLock) {following.keys.filterNot(keep::contains).mapNotNull(following::remove)}
         oldFollowing.forEach(DesktopFollowingEntry::close)
+        val oldCollections = synchronized(entriesLock) {
+            listenCollections.keys.filter { key -> actualStack.none { it === key } }.mapNotNull(listenCollections::remove)
+        }
+        oldCollections.forEach(DesktopOriginalListenVideoCollectionEntry::close)
     }
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
@@ -198,6 +220,8 @@ internal class DesktopPersonalListsRoot(
         old.forEach(DesktopPersonalListEntry::close)
         val retiredListen = synchronized(entriesLock) { originalListen.also { originalListen = null } }
         retiredListen?.close()
+        val oldCollections = synchronized(entriesLock) { listenCollections.values.toList().also { listenCollections.clear() } }
+        oldCollections.forEach(DesktopOriginalListenVideoCollectionEntry::close)
         val oldWatch = synchronized(entriesLock) { watchLater.values.toList().also {watchLater.clear()} }
         oldWatch.forEach(DesktopWatchLaterEntry::close)
         val oldFollowing=synchronized(entriesLock) {following.values.toList().also {following.clear()}}

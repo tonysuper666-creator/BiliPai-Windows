@@ -80,18 +80,12 @@ class V038ListenViewModelSourceTest(unittest.TestCase):
             self.assertIn('currentCoroutineContext().ensureActive()', body)
             self.assertIn('if (!page.entry.owns()) return@LaunchedEffect', body)
             self.assertIn('onDispose {', body)
-            row = next(r for r in producer.RECIPES if r['originalPath']==receipt['source'])
-            body = body.split('\n',2)[2]
-            for edit in reversed(receipt['lifecycleAdaptation']['edits']):
+            import v038_listen_screen
+            for edit in reversed(receipt['edits']):
                 i = edit['offset']
                 self.assertEqual(edit['after'], body[i:i+len(edit['after'])])
                 body = body[:i]+edit['before']+body[i+len(edit['after']):]
-            self.assertEqual(row['adaptedSha256LF'], producer.sha(body))
-            for edit in reversed(row['edits']):
-                i = edit['offset']
-                self.assertEqual(edit['after'], body[i:i+len(edit['after'])])
-                body = body[:i]+edit['before']+body[i+len(edit['after']):]
-            self.assertEqual(producer.read(REPO,row['originalPath']), body)
+            self.assertEqual(v038_listen_screen.fixed_sources(REPO)['ListenVideoScreen.kt'], body)
 
 
 if __name__ == '__main__':

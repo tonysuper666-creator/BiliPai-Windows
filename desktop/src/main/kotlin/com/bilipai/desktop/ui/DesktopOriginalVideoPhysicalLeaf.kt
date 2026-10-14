@@ -22,6 +22,8 @@ import kotlinx.coroutines.CancellationException
     windowBack: () -> Unit,
     openBilibiliLink: (String) -> Unit,
     immersivePlaybackChanged: (Boolean) -> Unit,
+    personalLists: DesktopPersonalListsRoot,
+    collectionPlaylist: DesktopOriginalVideoPlaylistBinding,
     pendingOwner: @Composable () -> Unit,
 ) {
     require(key is BiliPaiNavKey.VideoDetail || key is BiliPaiNavKey.AudioMode || key is BiliPaiNavKey.NativeMusic)
@@ -39,8 +41,16 @@ import kotlinx.coroutines.CancellationException
         return
     }
     CompositionLocalProvider(LocalDesktopOriginalVideoNativeCarrierActive provides active) {
-        DesktopOriginalVideoPhysicalLeafContent(key, current, platforms, shell, commands, active,
-            windowBack, openBilibiliLink, immersivePlaybackChanged)
+        if (key is BiliPaiNavKey.AudioMode && (key.collectionMediaId > 0L || key.collectionSeasonId > 0L)) {
+            DesktopOriginalListenVideoCollectionHost(key, personalLists, collectionPlaylist,
+                LocalDesktopOriginalVideoRootWindowEnvironment.current, active, windowBack) { collection, back ->
+                DesktopOriginalVideoPhysicalLeafContent(key, current, platforms, shell, commands, active,
+                    back, openBilibiliLink, immersivePlaybackChanged, collection)
+            }
+        } else {
+            DesktopOriginalVideoPhysicalLeafContent(key, current, platforms, shell, commands, active,
+                windowBack, openBilibiliLink, immersivePlaybackChanged)
+        }
     }
 }
 
@@ -54,6 +64,7 @@ import kotlinx.coroutines.CancellationException
     windowBack: () -> Unit,
     openBilibiliLink: (String) -> Unit,
     immersivePlaybackChanged: (Boolean) -> Unit,
+    collection: DesktopOriginalListenVideoCollectionEntry? = null,
 ) {
     if (key is BiliPaiNavKey.VideoDetail) {
         val routeState = LocalDesktopOriginalRootVideoRouteState.current
@@ -64,30 +75,49 @@ import kotlinx.coroutines.CancellationException
                 openBilibiliLink, immersivePlaybackChanged))
         return
     }
-    val audioBvid = when (key) {
+    var collectionInitialTarget by remember(current, key, collection) {
+        mutableStateOf<DesktopOriginalListenCollectionPlaybackTarget?>(null)
+    }
+    val audioBvid = collectionInitialTarget?.bvid ?: when (key) {
         is BiliPaiNavKey.AudioMode -> key.sourceBvid
         is BiliPaiNavKey.NativeMusic -> key.bvid
         else -> error("Expected an original audio route")
     }
-    val audioCid = when (key) {
+    val audioCid = collectionInitialTarget?.cid ?: when (key) {
         is BiliPaiNavKey.AudioMode -> key.sourceCid
         is BiliPaiNavKey.NativeMusic -> key.cid
         else -> error("Expected an original audio route")
     }
     val audioResume = (key as? BiliPaiNavKey.AudioMode)?.sourceResumePositionMs ?: 0L
-    val musicTitle = (key as? BiliPaiNavKey.NativeMusic)?.title?.ifEmpty { "背景音乐" }
+    val musicTitle = collection?.key?.collectionTitle?.takeIf(String::isNotBlank) ?:
+        (key as? BiliPaiNavKey.NativeMusic)?.title?.ifEmpty { "背景音乐" }
     val windowEnvironment = LocalDesktopOriginalVideoRootWindowEnvironment.current
     val latestActive by rememberUpdatedState(active)
-    var audioSubjectRequested by remember(current, key) { mutableStateOf(false) }
+    var audioSubjectRequested by remember(current, key, collection) { mutableStateOf(false) }
+    var collectionQueueUnavailable by remember(current, key, collection) { mutableStateOf(false) }
     // Android leaves have a route-scoped VM. Windows retains the SAME original
     // VM. Seed explicit NativeMusic and different AudioMode subjects; matching
     // AudioMode keeps the original paused/resume/reuse semantics unchanged.
     // Start the same real original request before native preparation. Its
     // required suspend stage owns pending/fatal/cancellation and manual retry.
-    LaunchedEffect(current, platforms, key, active) {
+    LaunchedEffect(current, platforms, key, active, collection) {
         if (!active || audioSubjectRequested) return@LaunchedEffect
-        if (!latestActive || !windowEnvironment.owns() || windowEnvironment.currentKey() != key || !current.owns())
+        if (!latestActive || !windowEnvironment.owns() || windowEnvironment.currentKey() !== key || !current.owns())
             throw CancellationException("Original audio route retired")
+        if (collection != null && originalCollectionOwnsPlayback(key, current)) {
+            // Genuine accepted native/error provenance survives a covered page.
+            // Recomposition must not restart the first song after an automatic successor.
+            audioSubjectRequested = true
+            return@LaunchedEffect
+        }
+        val collectionTarget = collection?.viewModel?.captureDesktopPlaybackTarget()
+        if (collection != null && collectionTarget == null) {
+            collectionQueueUnavailable = true
+            return@LaunchedEffect
+        }
+        if (collectionTarget != null) collectionInitialTarget = collectionTarget
+        val requestedBvid = collectionTarget?.bvid ?: audioBvid
+        val requestedCid = collectionTarget?.cid ?: audioCid
         // Both raw read ports already belong to this same sole full original VM.
         // beginLoadRequest keeps the prior accepted currentCid, so Loading must
         // compare its currentRequest; a Ready page switch instead uses currentCid.
@@ -96,17 +126,23 @@ import kotlinx.coroutines.CancellationException
         val session = current.playback.captureDesktopLoadState()
         val targetBvid = if (loading) session.currentRequest?.bvid else session.currentBvid
         val targetCid = if (loading) session.currentRequest?.cid else session.currentCid
-        val sameSubject = targetBvid == audioBvid && (audioCid <= 0L || targetCid == audioCid)
-        val seed = key is BiliPaiNavKey.NativeMusic ||
+        val sameSubject = targetBvid == requestedBvid && (requestedCid <= 0L || targetCid == requestedCid)
+        val seed = collectionTarget != null || key is BiliPaiNavKey.NativeMusic ||
             (key is BiliPaiNavKey.AudioMode && audioBvid.isNotBlank() && !sameSubject)
         if (seed) {
-            val bootstrapSource = DesktopVideoBootstrapSeed.captureAudio(windowEnvironment, current, key)
+            val bootstrapSource = if (collectionTarget != null)
+                DesktopVideoBootstrapSeed.captureCollection(windowEnvironment, current, key as BiliPaiNavKey.AudioMode, collectionTarget)
+                else DesktopVideoBootstrapSeed.captureAudio(windowEnvironment, current, key)
             current.playback.attachPlayer(current.section)
-            current.playback.loadVideo(bvid = audioBvid, cid = audioCid, autoPlay = true,
+            current.playback.loadVideo(bvid = requestedBvid, cid = requestedCid, autoPlay = true,
                 fallbackResumePositionMs = audioResume,
-                force = loading, desktopBootstrapSource = bootstrapSource)
+                force = loading || collectionTarget != null, desktopBootstrapSource = bootstrapSource)
         }
         audioSubjectRequested = true
+    }
+    if (collectionQueueUnavailable) {
+        DesktopOriginalListenCollectionQueueChanged(windowBack)
+        return
     }
     if ((key is BiliPaiNavKey.NativeMusic || key is BiliPaiNavKey.AudioMode) && !audioSubjectRequested) {
         platforms.InitialNativeSurface(Modifier.fillMaxSize())
@@ -177,4 +213,24 @@ import kotlinx.coroutines.CancellationException
             })
         }
     }
+}
+
+/** Reuse requires actual original request/native provenance for the SAME key.
+ * A matching BV string or a surviving page object is insufficient. */
+private fun originalCollectionOwnsPlayback(key: BiliPaiNavKey,
+    assembly: DesktopOriginalVideoOwnerAssembly): Boolean {
+    val accepted = assembly.native.current()
+    val origin = accepted?.bootstrapOrigin
+    if (accepted != null && origin != null && origin.seed.route === key && origin.seed.assembly === assembly &&
+        origin.matchesResolvedRequest(accepted.request)) return true
+    val failed = assembly.playback.desktopBootstrapReadFailure() ?: return false
+    if (failed.source.accepted.seed.route !== key || failed.source.accepted.seed.assembly !== assembly) return false
+    var displayed = false
+    failed.source.admit(false) {
+        val actual = assembly.captureLoadState()
+        displayed = actual.currentRequest === failed.source.accepted.request &&
+            actual.currentLoadRequestToken == failed.source.accepted.requestToken &&
+            assembly.playback.captureDesktopPlaybackState() === failed.displayedError
+    }
+    return displayed
 }
