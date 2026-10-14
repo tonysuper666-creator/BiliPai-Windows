@@ -194,12 +194,16 @@ private fun <T> AppearanceChoice(title: String, value: T, options: List<AppSegme
 private fun RoleOverridesEditor(settings: DesktopThemeSettings, enabled: Boolean, onSave: (ThemeRoleOverrides) -> Unit) {
     val strings = LocalDesktopStrings.current
     var draft by remember(settings.themeRoleOverrides) { mutableStateOf(settings.themeRoleOverrides) }
+    val baseRoles = LocalBaseThemeRoleOverrides.current
     val applicable = settings.uiStyle == AppUiStyle.MATERIAL3 && settings.md3ColorSource == Md3ColorSource.CUSTOM
     DesktopAppearanceCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 DesktopAppearanceText(strings.desktop("自定义颜色角色", "自訂顏色角色", "Custom color roles"))
-                AppSwitch(draft.enabled, { draft = draft.copy(enabled = it) }, enabled = enabled && applicable)
+                AppSwitch(draft.enabled, { checked ->
+                    draft = if (checked) enableThemeRoleOverrides(draft, baseRoles, settings.md3CustomColorHex)
+                        else draft.copy(enabled = false)
+                }, enabled = enabled && applicable)
             }
             if (draft.enabled) {
                 for ((dark, roles) in listOf(false to draft.light, true to draft.dark)) {

@@ -174,6 +174,9 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt"))
+        // Complete fixed theme roles and contrast have one existing appearance producer.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt"))
         // Latest original theme configuration is emitted once by the full controls producer.
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt"))
         // Complete latest backdrop has one section producer; keep other original callers.
@@ -461,21 +464,27 @@ val extractUpstreamJs by tasks.registering(Exec::class) {
 
 val generatedAppearance = layout.buildDirectory.dir("generated/appearance")
 val generatedAppearanceResources = layout.buildDirectory.dir("generated/appearance-resources")
+val generatedThemeRoleTests = layout.buildDirectory.dir("generated/original-theme-role-tests")
 val extractUpstreamAppearance by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-appearance-platform.py",
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", generatedAppearance.get().asFile.absolutePath,
-        "--resource-output", generatedAppearanceResources.get().asFile.absolutePath)
-    inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py")
+        "--resource-output", generatedAppearanceResources.get().asFile.absolutePath,
+        "--test-output", generatedThemeRoleTests.get().asFile.absolutePath)
+    inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py", "tools/v040_theme_roles.py")
+    inputs.dir("upstream-slices/v040-theme-roles")
     inputs.files(sources.filter { "appearance-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "appearance-language" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(generatedAppearance)
     outputs.dir(generatedAppearanceResources)
+    outputs.dir(generatedThemeRoleTests)
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(generatedThemeRoleTests) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamAppearance) }
 
 val extractUpstreamComponents by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
