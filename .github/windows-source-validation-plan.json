@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "fb4db99599670e19d369a440e8de41b92ccfcc48",
-  "windowsVersion": "0.2.427.87",
-  "createdAt": "2026-10-14T19:27:58.366602+00:00",
+  "baseHead": "166fe22fa2283b1071268ecbbf1edb58ab551ae1",
+  "windowsVersion": "0.2.427.88",
+  "createdAt": "2026-10-14T19:45:04.786532+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -101,6 +101,36 @@
       "sha256": "f3cf48059ad09ccd342f08877e0f09f776305f7cb8ce3a8101e528e46d771e24"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopPreparedUpdateStorage.kt",
+      "normalization": "lf",
+      "sha256": "b9ec303c49ebfb1909104696c2a4ce72f06c5511ebe2c123cd7225f6251e81b8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt",
+      "normalization": "lf",
+      "sha256": "478870634dc23270e5b29063ac377e5b8776eddf7e70a907af4ecb7d28cdd0f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/SafeUpdateZip.kt",
+      "normalization": "lf",
+      "sha256": "9b6763584b10216f4376474b5b878d5c0b8ae9d1a76b6df31ecc1445a9712e46"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/StartupHealth.kt",
+      "normalization": "lf",
+      "sha256": "24a6ea8f0a723d6e8476b3a8daa8989614af2e3421421e00ef8bcbf10c4be9cc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/UpdateModels.kt",
+      "normalization": "lf",
+      "sha256": "750d9abc380cba5b0bd9df921dce828f18365b5f79dd11d5dfc0ddf9c4b683f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/UpdateStorage.kt",
+      "normalization": "lf",
+      "sha256": "dbab29fdd2c2b16265d3606fb0ea0160c22647bc279cbff3877f72ac00a74710"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
       "normalization": "lf",
       "sha256": "498ee53e3327c58412fcabf532b9fc180b8d0e7311601dc75d1526d93e3960ce"
@@ -144,6 +174,16 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementStatusReadTest.kt",
       "normalization": "lf",
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterStageLeaseTest.kt",
+      "normalization": "lf",
+      "sha256": "e898a56a07d142405acff9c1dda0109f5a6e1e1994ceff7f674eda09de75660d"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/StartupHealthTest.kt",
+      "normalization": "lf",
+      "sha256": "2955e61f3b177034c465e2e3d75fce8b9baabbf8677f5245810ef06591c138b5"
     },
     {
       "path": "desktop/tools/build.ps1",
@@ -518,14 +558,14 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "f26d30ebb6b10e66f9a21c1ca7e1e7ff85cd8458ab00a3a83148600890a7ff3e"
+      "sha256": "cae2dab20331bec7f1bbc0bd720c6f983803ba474dfd7b15c69ea48638e69f71"
     }
   ],
   "classes": {
-    "com.android.purebilibili.feature.audio.library.DesktopV038ListenVideoLibraryLoaderTest": 11,
-    "com.bilipai.desktop.ui.DesktopOriginalListenCollectionPlaylistAdmissionTest": 4
+    "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
+    "com.bilipai.desktop.update.StartupHealthTest": 8
   },
-  "expectedTests": 15,
+  "expectedTests": 33,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -533,20 +573,8 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
-    "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaylistBinding.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
-    "desktop/tools/build.ps1",
-    "desktop/tools/extract-upstream-listen-video-root.py",
-    "desktop/tools/native/stage-mpv-companion-resources.ps1",
-    "desktop/tools/tests/test_mpv_companion_resource_staging.py",
-    "desktop/tools/tests/test_v038_listen_collection_source.py",
-    "desktop/tools/tests/test_veyra_verifier_child_environment.py",
-    "desktop/tools/v038_listen_collection.py",
-    "desktop/upstream-slices/v038-listen-collection/ListenVideoCollectionViewModel.kt",
-    "desktop/upstream-slices/v038-listen-collection/manifest.json",
+    "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterStageLeaseTest.kt",
     "desktop/upstream-sources.json"
   ]
 }

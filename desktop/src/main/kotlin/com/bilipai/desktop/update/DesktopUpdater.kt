@@ -278,8 +278,10 @@ class DesktopUpdater private constructor(
                 Files.writeString(updateRoot.resolve("last-check.txt"), System.currentTimeMillis().toString())
                 pruneInstallations()
             }
-            mutableState.value = result
-            result
+            // Explicit checks (force) always report the newest release; only the automatic path honours the back-off.
+            val published = if (!force && result is UpdateState.Available) automaticRetryHold(result.update) ?: result else result
+            mutableState.value = published
+            published
         } catch (cancelled: CancellationException) {
             if (!closed) mutableState.value = previousState
             throw cancelled
@@ -409,6 +411,7 @@ class DesktopUpdater private constructor(
         var discard = false
         var cancelledOperation = false
         var processStartEntered = false
+        var healthFailed = false
         var claimed: DesktopPreparedUpdateStorage.Receipt? = null
         try {
             ensureOpenAndActive()
@@ -440,7 +443,9 @@ class DesktopUpdater private constructor(
                 processStartEntered = true
                 childRetirementPending = true
             }
-            require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version, observation = attempt.descendants)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
+            val healthy = StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version, observation = attempt.descendants)
+            healthFailed = !healthy
+            require(healthy) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
             ensureOpenAndActive()
             val previous = previousInstallation(observed.installation)
             ensureOpenAndActive()
@@ -453,6 +458,7 @@ class DesktopUpdater private constructor(
             committed = true
             childRetirementPending = false
             discard = true
+            forgetFailedActivation() // A healthy activation proves this machine can run the new build.
             // Registry commit is authoritative. Receipt cleanup cannot turn a
             // healthy committed installation back into a failed update.
             runCatching { DesktopPreparedUpdateStorage.retire(updateRoot, lease, requireNotNull(repository), requireNotNull(claimed)) }
@@ -471,6 +477,8 @@ class DesktopUpdater private constructor(
                 discard = false
                 throw cancelled
             }
+            // Only an unhealthy or unstartable child is remembered; registry races and IO errors stay retryable.
+            if (healthFailed || (processStartEntered && attempt == null)) rememberFailedActivation(prepared.update)
             discard = ownsPrepared
             mutableState.value = UpdateState.Failed(error.message ?: "Windows 更新启动失败，当前版本继续运行")
             false
@@ -717,7 +725,12 @@ class DesktopUpdater private constructor(
         UpdateStorage.verifiedRoot(updateRoot)
         val temporary = Files.createTempFile(updateRoot, "active-install-", ".tmp")
         try {
-            Files.writeString(temporary, json.encodeToString(ActiveInstallation.serializer(), installation))
+            // Same durability rule as the prepared receipt: the contents reach the disk before the rename publishes them.
+            java.nio.channels.FileChannel.open(temporary, java.nio.file.StandardOpenOption.WRITE).use { channel ->
+                val buffer = java.nio.ByteBuffer.wrap(json.encodeToString(ActiveInstallation.serializer(), installation).toByteArray(Charsets.UTF_8))
+                while (buffer.hasRemaining()) channel.write(buffer)
+                channel.force(true)
+            }
             try {
                 Files.move(temporary, updateRoot.resolve("active-install.json"), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
             } catch (_: java.nio.file.AtomicMoveNotSupportedException) {
@@ -725,6 +738,37 @@ class DesktopUpdater private constructor(
             }
         } finally { Files.deleteIfExists(temporary) }
     }
+
+    /** A new build that never became healthy fails identically on the next identical download, and the failed
+     * activation retires its receipt and stage. Remember the exact asset so the six-hour automatic check does not
+     * download, extract and launch it again. This is a retry back-off only, never a trust or health decision. */
+    private fun rememberFailedActivation(update: WindowsUpdate) {
+        runCatching {
+            UpdateStorage.verifiedRoot(updateRoot)
+            val temporary = Files.createTempFile(updateRoot, "failed-activation-", ".tmp")
+            try {
+                Files.writeString(temporary, json.encodeToString(FailedActivation.serializer(),
+                    FailedActivation(requireNotNull(repository), update.version, update.releaseId, update.assetId, System.currentTimeMillis())))
+                Files.move(temporary, updateRoot.resolve(FAILED_ACTIVATION_FILE),
+                    StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+            } finally { Files.deleteIfExists(temporary) }
+        }
+    }
+
+    private fun forgetFailedActivation() {
+        runCatching { Files.deleteIfExists(updateRoot.resolve(FAILED_ACTIVATION_FILE)) }
+    }
+
+    /** Unreadable, foreign or expired memory never blocks an update. Only an automatic check consults it. */
+    private fun automaticRetryHold(update: WindowsUpdate, nowMs: Long = System.currentTimeMillis()): UpdateState.Failed? = runCatching {
+        val file = updateRoot.resolve(FAILED_ACTIVATION_FILE)
+        if (!Files.isRegularFile(file, NOFOLLOW_LINKS) || Files.size(file) > 4096) return@runCatching null
+        val record = json.decodeFromString<FailedActivation>(Files.readString(file))
+        if (record.repository != repository || record.releaseId != update.releaseId || record.assetId != update.assetId)
+            return@runCatching null
+        if (nowMs - record.failedAtMs !in 0..AUTOMATIC_RETRY_HOLD_MS) return@runCatching null
+        UpdateState.Failed("Windows 版本 ${update.version} 上次启动检查未通过，已暂停自动重试；可手动检查更新后重试")
+    }.getOrNull()
 
     private fun stageForExecutable(executable: Path): Path? = config?.executable?.let {
         UpdateStorage.executableStage(updateRoot, executable, it)
@@ -808,6 +852,7 @@ class DesktopUpdater private constructor(
                 var lease: UpdateStorage.StageLease? = null
                 var attempt: LaunchAttempt? = null
                 var committed = false
+                var retirementUnconfirmed = false
                 try {
                     ensureOpenAndActive()
                     val stage = stageForExecutable(executable) ?: continue
@@ -833,12 +878,22 @@ class DesktopUpdater private constructor(
                     ensureOpenAndActive()
                     // A damaged active update falls back to its preceding healthy version or original launcher.
                 } finally {
-                    try { if (!committed) attempt?.let { StartupHealth.terminate(it.process, it.descendants); childRetirementPending = false } }
-                    finally {
+                    try {
+                        val launched = attempt
+                        if (!committed && launched != null) {
+                            // Startup owns no download queue. An unconfirmed child keeps its stage lease, but its failed
+                            // retirement must not escape as an uncaught exception from Main: fall back to this build.
+                            try { StartupHealth.terminate(launched.process, launched.descendants); childRetirementPending = false }
+                            catch (cancelled: CancellationException) { throw cancelled }
+                            catch (_: IllegalStateException) { retirementUnconfirmed = true }
+                        }
+                    } finally {
                         if (childRetirementPending) { retainedLease = lease; lease = null }
                         else lease?.close()
                     }
                 }
+                // That child may still own the stage; never stack another candidate on top of it.
+                if (retirementUnconfirmed) return@withContext false
             }
             false
         } finally { finishOperation() }
@@ -882,6 +937,9 @@ class DesktopUpdater private constructor(
         const val STARTUP_TIMEOUT_MS = 30_000L
         internal const val STARTUP_STABILITY_MS = 1_500L
         internal const val AUTO_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000L
+        /** An exact release asset whose new build never became healthy is not offered to AUTOMATIC checks for this long. */
+        internal const val AUTOMATIC_RETRY_HOLD_MS = 7L * 24 * 60 * 60 * 1000L
+        private const val FAILED_ACTIVATION_FILE = "failed-activation.json"
         private const val MAX_PREPARED_STAGE_ENTRIES = 256
         private const val RELEASE_PAGE_SIZE = 100
         internal const val MAX_RELEASE_PAGES = 100
@@ -989,6 +1047,13 @@ class DesktopUpdater private constructor(
         val previousVersion: String? = null,
         val previousExecutablePath: String? = null,
         val downloadHandoffToken: String? = null,
+    )
+    @Serializable private data class FailedActivation(
+        val repository: String,
+        val version: String,
+        val releaseId: Long,
+        val assetId: Long,
+        val failedAtMs: Long,
     )
     @Serializable private data class GitHubRelease(
         val id: Long,

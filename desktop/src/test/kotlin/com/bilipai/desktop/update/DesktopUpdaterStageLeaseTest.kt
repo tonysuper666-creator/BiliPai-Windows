@@ -475,6 +475,90 @@ class DesktopUpdaterStageLeaseTest {
 
 
     @Test
+    fun failedStartupHealthHoldsAutomaticRedownloadUntilManualCheckAndHealthyActivationClearsIt(): Unit = runBlocking<Unit> {
+        MemoryRelease().use { f ->
+            var packagedVersion = "0.0.0" // Actual token, deliberately wrong packaged version.
+            val updater = f.updater(processFactory = { builder ->
+                f.health(builder, packagedVersion)
+                StartupHealthTest.ControlledProcess()
+            })
+            val prepared = f.prepare(updater)
+            assertFalse(updater.activatePreparedUpdate(prepared))
+            assertIs<UpdateState.Failed>(updater.state.value)
+            assertEquals(1, f.launches.get())
+            val hold = f.root.resolve("failed-activation.json")
+            assertTrue(Files.isRegularFile(hold))
+            // A restarted owner whose six-hour deadline elapsed sees the same release asset but must not offer it again.
+            Files.writeString(f.root.resolve("last-check.txt"), "1")
+            val restarted = f.updater()
+            val automatic = assertIs<UpdateState.Failed>(restarted.autoCheck())
+            assertTrue(automatic.message.contains("windows-v0.2.427.39"), automatic.message)
+            assertEquals(1, f.requests.count { it.endsWith(".zip") }, "No second package download may be offered")
+            // An explicit user check bypasses the back-off; a healthy activation then clears it.
+            val offered = assertIs<UpdateState.Available>(updater.check()).update
+            packagedVersion = "0.2.427.39"
+            val retried = assertNotNull(updater.prepareUpdate(offered))
+            assertTrue(withTimeout(10_000) { updater.activatePreparedUpdate(retried) })
+            assertFalse(Files.exists(hold))
+            assertEquals(2, f.launches.get())
+        }
+    }
+
+    @Test
+    fun unconfirmedChildRetirementDuringRegisteredStartupFallsBackInsteadOfAbortingStartup(): Unit = runBlocking<Unit> {
+        MemoryRelease().use { f ->
+            val owner = f.updater()
+            val prepared = f.prepare(owner)
+            owner.close()
+            f.register(prepared.executable, prepared.executable) // Existing actual registry fixture, not a health claim.
+            // Dead on arrival with unenumerable descendants: its retirement can never be confirmed.
+            val child = StartupHealthTest.ControlledProcess(knownDescendants = false).also { it.alive = false }
+            val launcher = f.updater(processFactory = { child })
+            try {
+                assertFalse(launcher.launchRegisteredInstall(emptyArray()),
+                    "An unconfirmed unhealthy child must fall back to this build, not abort application startup")
+                assertEquals(1, f.launches.get())
+                assertBusy(f.root, prepared.stagingDirectory) // The possibly live child's stage stays leased.
+            } finally {
+                // Teardown only: this test owns the controlled memory Process and the fresh Temp lease.
+                val field = DesktopUpdater::class.java.getDeclaredField("retainedLease").apply { isAccessible = true }
+                (field.get(launcher) as? UpdateStorage.StageLease)?.close()
+            }
+        }
+    }
+
+    @Test
+    fun automaticFailureHoldIgnoresExpiredFutureForeignDifferentAndMalformedRecords(): Unit = runBlocking<Unit> {
+        val now = System.currentTimeMillis()
+        fun record(repository: String = REPOSITORY, releaseId: Long = 41L, assetId: Long = 42L,
+            failedAt: Long = now): String = buildJsonObject {
+            put("repository", repository)
+            put("version", "windows-v0.2.427.39")
+            put("releaseId", releaseId)
+            put("assetId", assetId)
+            put("failedAtMs", failedAt)
+        }.toString()
+        val cases = listOf(
+            "expired" to record(failedAt = now - 8L * 24 * 60 * 60 * 1000),
+            "future" to record(failedAt = now + 30L * 24 * 60 * 60 * 1000),
+            "foreign repository" to record(repository = "other/BiliPai-Windows"),
+            "different release" to record(releaseId = 40L),
+            "different asset" to record(assetId = 99L),
+            "malformed" to "{",
+            "oversized" to "x".repeat(4097),
+        )
+        for ((label, contents) in cases) {
+            MemoryRelease().use { f ->
+                Files.writeString(f.root.resolve("failed-activation.json"), contents)
+                val offered = assertIs<UpdateState.Available>(f.updater().autoCheck(), label)
+                assertEquals("windows-v0.2.427.39", offered.update.version, label)
+                assertEquals(0, f.launches.get(), label)
+                assertTrue(f.requests.none { it.endsWith(".zip") }, label)
+            }
+        }
+    }
+
+    @Test
     fun closedOwnerResumesVerifiedZipWithoutHttpAndRebuildsEditedExtraction(): Unit = runBlocking<Unit> {
         MemoryRelease().use { f ->
             val originalOwner = f.updater()
