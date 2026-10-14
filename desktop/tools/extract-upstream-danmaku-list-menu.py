@@ -215,6 +215,18 @@ def generate(repo:Path,output:Path,standalone=False):
  policy_test,policy_proof=original_policy_test(repo)
  write(output/'policy-tests/com/android/purebilibili/feature/video/danmaku/DesktopV038DanmakuMergerPolicyTest.kt',policy_test)
  save(output/'v038-original-danmaku-policy-test-source-proof.json',policy_proof)
+ from v038_danmaku_cadence import fixed_sources as fixed_cadence_sources,cadence_source,frame_request_source,original_policy_test as original_cadence_test,COMMIT as V038_CADENCE_COMMIT
+ cadence_sources,cadence_manifest=fixed_cadence_sources(repo)
+ identities.extend(dict(path=row['originalPath'],pinnedCommit=V038_CADENCE_COMMIT,sha256Raw=row['sha256Bytes'],gitBlob=row['gitBlob']) for row in cadence_manifest['files'])
+ cadence,cadence_proof=cadence_source(repo)
+ emit('com/bytedance/danmaku/render/engine/RenderFrameCadence.kt',cadence,cadence_manifest['files'][0]['originalPath'],'complete-original-v038-deadline-policy',cadence_proof['edits'])
+ emitted[-1]['selectedUpstreamCommit']=V038_CADENCE_COMMIT
+ frame_requests,frame_proof=frame_request_source(repo,function)
+ emit('com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequests.kt',frame_requests,cadence_manifest['files'][2]['originalPath'],'complete-original-v038-request-cancel-and-callback-members')
+ emitted[-1]['selectedUpstreamCommit']=V038_CADENCE_COMMIT
+ cadence_test,test_proof=original_cadence_test(repo)
+ write(output/'policy-tests/com/bytedance/danmaku/render/engine/RenderFrameCadenceTest.kt',cadence_test)
+ save(output/'v038-original-danmaku-cadence-source-proof.json',dict(deadline=cadence_proof,requests=frame_proof,originalTests=test_proof,windowsRendererMounted=False))
  weighted=source[PATHS[4]]
  if standalone:emit('com/android/purebilibili/feature/video/danmaku/WeightedTextData.kt',weighted,PATHS[4],'direct',[],weighted)
  parser=source[PATHS[3]];methods=[function(parser,n)[0] for n in ['createTextDataFromProto','formatDanmakuTextWithCount','createTextData','mapLayerType']]
