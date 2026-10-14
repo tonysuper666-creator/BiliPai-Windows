@@ -1,6 +1,6 @@
 {
   "containerImage": "ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239",
-  "helperSha256": "a117460dac80b3b85e9e312df2e943feffb718218e5ed909458c39b656d4343d",
+  "helperSha256": "f3a3c2bc84f72fd1473d79f0bca40d0c8a4616b42db34ad903e6c5959bda20a7",
   "helperSourcePath": "desktop/tools/native/export-host-llvm-source-snapshot.py",
   "recipeCommit": "cd1edc11dc6887a50f705717619d879f5a93a488",
   "recipeEdits": [

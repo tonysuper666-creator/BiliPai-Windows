@@ -590,7 +590,7 @@ def main():
         raise RuntimeError('Selected producer and fixed input variants differ')
     import_helper_path = ROOT / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
     import_helper_raw = import_helper_path.read_bytes()
-    if sha(import_helper_raw) != '360d6daaa2f07275de57b7160ef1f5350c492e52d6e1b1cce8c1f77eb606e4bb':
+    if sha(import_helper_raw) != '229a43dc8c7a282f9ed623203b4fd6b7fa60ad5f4c41ddbd9c99da9a54526fb7':
         raise RuntimeError('Reviewed shared importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import', import_helper_path)
     if import_spec is None or import_spec.loader is None:
@@ -599,7 +599,7 @@ def main():
     import_spec.loader.exec_module(import_module)
     sources, build, clang = workspace / 'sources', workspace / 'build-x64', workspace / 'clang-root'
     original_command = ['cmake', '-DTARGET_ARCH=x86_64-w64-mingw32', '-DCOMPILER_TOOLCHAIN=clang',
-                        '-DGCC_ARCH=x86-64', '-DMAKEJOBS=2', '-DCLANG_PACKAGES_LTO=ON',
+                        '-DGCC_ARCH=x86-64', '-DMAKEJOBS=1', '-DCLANG_PACKAGES_LTO=ON',
                         '-DCMAKE_INSTALL_PREFIX=' + str(clang),
                         '-DMINGW_INSTALL_PREFIX=' + str(build / 'x86_64-w64-mingw32'),
                         '-DSINGLE_SOURCE_LOCATION=' + str(sources),
@@ -671,7 +671,7 @@ def main():
         # Its source identity is not rewritten to pretend it is presentation MPV.
         snapshot_inputs_path = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'
         snapshot_inputs_raw = snapshot_inputs_path.read_bytes()
-        if sha(snapshot_inputs_raw) != '2d3e0d23fbea6c03e5cc06adee97479995bbef7932cd8d51ceb99aedb0c7a448':
+        if sha(snapshot_inputs_raw) != '0207e4bca5c956b24157298e2e90e711fb6438e9d60d2110bd0b4f5102483688':
             raise RuntimeError('Shared host LLVM lifecycle inputs changed')
         snapshot_inputs = json.loads(snapshot_inputs_raw)
         if (snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('scope') != 'HOST_LLVM_EXPORT_ONLY_NO_IMPORT'
@@ -783,7 +783,7 @@ def main():
             pending_environment = None
             if target == 'llvm' and import_plan is None:
                 pending_environment = import_module.capture_cold_environment()
-            target_command = ['ninja', '-C', str(build), '-j2', target]
+            target_command = ['ninja', '-C', str(build), '-j1', target]
             run(target_command, log)
             if target == 'llvm':
                 if import_plan is None:

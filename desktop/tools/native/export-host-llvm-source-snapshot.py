@@ -921,6 +921,8 @@ def capture_config(build_directory, source, workspace, output, stage):
 
 
 def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_inputs, container_image, build_command, log):
+    if [value for value in build_command if value.startswith('-DMAKEJOBS=')] != ['-DMAKEJOBS=1']:
+        raise RuntimeError('The current cold HOST snapshot requires the actual single-worker build')
     workspace = workspace.resolve(strict=True)
     output = output.resolve(strict=True)
     repository_root = repository_root.resolve(strict=True)
@@ -1055,7 +1057,7 @@ def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_input
         'ownrepoSourceCommit': producer_commit, 'ownrepoSourceTag': source_tag,
         'workflowRunId': int(run_id), 'workflowRunAttempt': int(run_attempt),
         'workflowJobName': os.environ.get('GITHUB_JOB'),
-        'actualInitialBuildCommand': build_command, 'actualHostTargetCommand': ['ninja', '-C', str(workspace / 'build-x64'), '-j2', 'llvm'],
+        'actualInitialBuildCommand': build_command, 'actualHostTargetCommand': ['ninja', '-C', str(workspace / 'build-x64'), '-j1', 'llvm'],
         'hostTargetExitCode': 0, 'buildLogPrefixBytes': stage_log.stat().st_size, 'buildLogPrefixSha256': file_sha(stage_log),
         'closedSdkOrRuntimeIncluded': False, 'hostCompilerOrNativeTestedByExporter': False,
         'toolchainImported': False, 'reproducible': False, 'gpuOrDriverTested': False}
