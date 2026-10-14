@@ -70,7 +70,7 @@ internal class DesktopDynamicTimelineState(
         fetchLocked(refresh,incrementalRefresh)
     }
     suspend fun loadMore(incrementalRefresh:Boolean):Boolean {
-        if(!page.hasMore||page.isLoading||busy)return false
+        if(!page.hasMore||page.isLoading||busy||error!=null||page.error!=null)return false
         return fetch(refresh=false,incrementalRefresh=incrementalRefresh)
     }
     private suspend fun fetchLocked(refresh:Boolean,incrementalRefresh:Boolean):Boolean {
@@ -146,7 +146,7 @@ internal fun DesktopDynamicTimelineFeed(
             shouldLoadMoreDynamicFeed(
                 furthestVisibleItemIndex=layoutInfo.visibleItemsInfo.maxOfOrNull{it.index},
                 totalItemsCount=layoutInfo.totalItemsCount,allowAutomaticLoadMore=allowAutomaticLoadMore,
-                isLoading=state.busy||state.page.isLoading,hasMore=state.page.hasMore)
+                isLoading=state.busy||state.page.isLoading,hasMore=state.page.hasMore,error=state.page.error)
         }
     }
     // Original ViewModel starts a separate owned request. Loading-state recomposition
@@ -182,7 +182,7 @@ internal fun DesktopDynamicTimelineFeed(
             if(state.busy)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
             if(!state.busy&&displayed.isEmpty()&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){
                 Text(if(state.page.items.isEmpty())"暂无内容"else"当前筛选隐藏了这一批内容",color=MaterialTheme.colorScheme.onSurfaceVariant)}
-            if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={scope.launch{state.loadMore(incremental)}}){Text("加载更多")}}
+            if(!state.busy&&state.initialized&&state.page.hasMore&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={scope.launch{state.loadMore(incremental)}}){Text("加载更多")}}
         }
     }
     }

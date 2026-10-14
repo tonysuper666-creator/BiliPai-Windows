@@ -1,0 +1,13 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "commit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "archiveFile": "DynamicScreenStatePolicy.kt",
+      "bytes": 26796,
+      "sha256": "cf08da0f4a2332cea17de66dbc772c9a0789295fe9af1ab57092bbefaa6fc597",
+      "gitBlob": "6e5fbd57926502b9f1c6c37c7766ecafa81dd645"
+    }
+  ]
+}

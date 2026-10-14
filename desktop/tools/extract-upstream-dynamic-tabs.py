@@ -23,7 +23,11 @@ def module(repo,name,path):
 def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def read_selected(repo,path):
  from v037_shared_tabs_progress import selected_source
- return selected_source(path,read(repo,path))
+ source=selected_source(path,read(repo,path))
+ if path.endswith('/DynamicScreenStatePolicy.kt'):
+  from v040_dynamic_pagination import compose_policy
+  source,_=compose_policy(repo,source)
+ return source
 def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p.endswith('DynamicUserLiveBadge.kt') else 'policy-extract',
  features=['settings-dynamic-tabs-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]
 def generate(repo,output,standalone=False):
@@ -102,6 +106,9 @@ private const val DYNAMIC_FOLLOWINGS_PAGE_SIZE = 50
  emit(path,'package com.android.purebilibili.data.repository\nimport com.android.purebilibili.data.model.response.*\n\n'+
   'internal fun desktopOriginalDynamicFollowedLiveUsers(resp:FollowedLiveResponse):List<LiveRoom> {\n'+textwrap.indent(pure,'    ')+'    return liveRooms.distinctBy { it.roomid }\n}\n','DesktopOriginalDynamicFollowedLiveUsers.kt')
  path=BASE+'feature/dynamic/DynamicScreenStatePolicy.kt';s=read_selected(repo,path)
+ from v040_dynamic_pagination import compose_policy
+ _,pagination_proof=compose_policy(repo,read(repo,path))
+ (output/'v040-original-dynamic-pagination-proof.json').write_text(json.dumps(pagination_proof,indent=2)+'\n',encoding='utf-8')
  selected=['resolveDynamicUpPanelUsers','isDynamicUpPanelAllShortcut','isDynamicUpPanelShortcut','isDynamicUpPanelItemSelected',
  'resolveDynamicSelectedUserIdAfterClick','shouldUseSelectedUserDynamicFeed','resolveDynamicSelectedUserForTab','resolveDynamicTabAfterUserSelection',
  'resolveDynamicSelectedTab','resolveDynamicFeedRequestType','shouldShowDynamicHorizontalUserList','resolveHorizontalUserListVerticalPaddingDp',

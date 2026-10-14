@@ -1673,6 +1673,8 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamComponents,
         extractUpstreamAppearance, extractUpstreamSettingsCategories)
     workingDir(projectDir)
+    inputs.file("tools/v040_dynamic_pagination.py")
+    inputs.dir("upstream-slices/v040-dynamic-pagination")
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-tabs.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/dynamic-tabs").get().asFile.absolutePath)

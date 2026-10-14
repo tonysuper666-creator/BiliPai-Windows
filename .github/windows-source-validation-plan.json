@@ -1,19 +1,39 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "7957cbfc3c5510e5e4f5193786def2c1611022f7",
-  "windowsVersion": "0.2.427.90",
-  "createdAt": "2026-10-14T20:27:07.743348+00:00",
+  "baseHead": "d4e49ad92e6e913f6d07ebc210e3251a751da1fa",
+  "windowsVersion": "0.2.427.91",
+  "createdAt": "2026-10-14T20:50:59.345574+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "7c6290eeadf103b9031a88e5bfc1bfc32cd815c303226c2a7cbce4b640c6cf9e"
+      "sha256": "55b1488e6f0d7acb3dceb136740ae5349a4f60c49d08e78d8103dcd3ff84d8ea"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
       "normalization": "lf",
       "sha256": "e2aca0eca175d196aa82d48062669e68fe0887da160a986a72381f292839ab05"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "normalization": "lf",
+      "sha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicInteractionPolicy.kt",
+      "normalization": "lf",
+      "sha256": "0322b2835924409fbb3716524d292c040cdcdec15769b19e272e52bd7839b6f7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "normalization": "lf",
+      "sha256": "49dec34dcbd22dd89f1468e18b87e99e309ff646badc836174b81065d39bff0c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
+      "normalization": "lf",
+      "sha256": "46e70da832bf1a6b1a0a9388606386fba02b47311051055cd02ca880c1e32371"
     },
     {
       "path": "design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt",
@@ -28,7 +48,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "ae01437564ff44fbf0bab74a8b97c51d9c6d09e40e2da3f8d9570f2ce7a57398"
+      "sha256": "135216fb574dfa004393891fdacfbf4d3aea39e4b3f6c4f13420e6f039d3c133"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -61,6 +81,11 @@
       "sha256": "02594eaacf9fb545ade450cb79756e1f1748156c5ee0c7f88f56ab71684199f0"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCache.kt",
+      "normalization": "lf",
+      "sha256": "3e621438a28f3b2506f744612a02c0a1ba62f6be1e79b2752c9c4185cc2b574f"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
       "normalization": "lf",
       "sha256": "9da84dc0a7746d2ac5162547815b4b18f9935908c2fba774decbf15475722745"
@@ -84,6 +109,31 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
       "normalization": "lf",
       "sha256": "823549633528935e01dff9255eda6c55518e7db1db96698529766795e4815da4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
+      "normalization": "lf",
+      "sha256": "cbb6855cecaa7789ac3e4de05955410f73ab888f5e8143c06399ab749627c75b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "normalization": "lf",
+      "sha256": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "normalization": "lf",
+      "sha256": "92c535c015c297ff46409132952fcc2899d38fb7f477b21ee913297d9674b463"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "normalization": "lf",
+      "sha256": "fe7b593ac37a6eddb584bbce3997d121b2e0fff79f02b6c2f33775046720cd22"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "normalization": "lf",
+      "sha256": "30ee2ddbd3ad71b24c9d7735b85225e91763041a271a079fc921ab6caaaac643"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
@@ -216,6 +266,31 @@
       "sha256": "a1d2eba7f62d62c861f7b19bff7022b2bcbdc9cbed11099465a0ea65e8ca0a58"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicAccountStorageTest.kt",
+      "normalization": "lf",
+      "sha256": "e469ce27c8c1178797c441396537c85b332edd180cd5f3681f9398e99e76bee5"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicFailedPaginationTest.kt",
+      "normalization": "lf",
+      "sha256": "fe2ea5d4e3ee9cf6711cfcee6f3f8ad137f0ae3e0024876acd60eb74d9ae73be"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicStartupTest.kt",
+      "normalization": "lf",
+      "sha256": "94c984ea42d5236004b966f2de28c5e10d760551b92edffdd2843daeb60e4e3b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsTest.kt",
+      "normalization": "lf",
+      "sha256": "fb3d747e7be004f046becb8fc3dc25583217f3e2721ca2574a6fbab8b6a5a291"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "normalization": "lf",
+      "sha256": "053e0284135c8cf62f0f075d8446f5d4bdc79808c6e3af665eab48ccfbaec1de"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntriesTest.kt",
       "normalization": "lf",
       "sha256": "b5312d408b9de241fc89460b425377f097dbbfe54061cb5c38eccaaf630cf041"
@@ -276,6 +351,11 @@
       "sha256": "2970d04e3597e6a0e7843045020543ff7f09485833bf3b039c2bca88eac9487f"
     },
     {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "normalization": "lf",
+      "sha256": "05bcb33e01164445858f4adcec95835972671faa4bc28a457908ee1353ba267f"
+    },
+    {
       "path": "desktop/tools/extract-upstream-listen-video-root.py",
       "normalization": "lf",
       "sha256": "13eb364a763a91d47468cae6ef398d42c4a29c56d25da80a711773145fe6fb66"
@@ -324,6 +404,11 @@
       "path": "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
       "normalization": "raw",
       "sha256": "b65f8eb0be10f461e50b255267ea6512179e627f3bf27d98a4ef324e4651a879"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "normalization": "lf",
+      "sha256": "1dd0b990f987178cb80689f5042b0ac1d3954f64f667d4d38a02aa2e1136749c"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_danmaku_hot_settings.py",
@@ -396,6 +481,11 @@
       "sha256": "0d4a1105968bb9b2fe0854825f022a9df2cd45f07c617dfce4094d4884308f18"
     },
     {
+      "path": "desktop/tools/tests/test_v040_dynamic_pagination_source.py",
+      "normalization": "lf",
+      "sha256": "a345e8ad6f5f1205a2f3433e1f12d9c9381beeb15145e06ae257575c50d9243a"
+    },
+    {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
       "normalization": "lf",
       "sha256": "f0ea38f3730fbda08fafc6140d7397e0d432023892b394e5dd00cdb1858ddadf"
@@ -459,6 +549,11 @@
       "path": "desktop/tools/v038_player_interaction_retry.py",
       "normalization": "lf",
       "sha256": "9b29a475147daee4211c8db74d47f7f25b19cf2a1fbee141040ebedf7def6599"
+    },
+    {
+      "path": "desktop/tools/v040_dynamic_pagination.py",
+      "normalization": "lf",
+      "sha256": "d13f5cc45ac7f08ee757d87e2770840a8c3b0671e62376752b64e0c24808cedb"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -651,18 +746,28 @@
       "sha256": "32358962a03ee93b3e2815f2e95476e34a7afb440d4ceb64ab2bd10bd0c8d70e"
     },
     {
+      "path": "desktop/upstream-slices/v040-dynamic-pagination/DynamicScreenStatePolicy.kt",
+      "normalization": "raw",
+      "sha256": "cf08da0f4a2332cea17de66dbc772c9a0789295fe9af1ab57092bbefaa6fc597"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-dynamic-pagination/manifest.json",
+      "normalization": "raw",
+      "sha256": "76a0a3fbb9b8c46a0003511b23a86039fc0cf1668e7c06441f9542902ee9a955"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "9a2a8f6129d7f860d87595aa675bb70a4be755396c14a911e5c12a8bfeed8758"
+      "sha256": "e780bd7d49e98ac3cf9ae74bde9568abd0fbfdd3f2ee4e7e4f443683ee558c5b"
     }
   ],
   "classes": {
-    "com.bilipai.desktop.ui.DesktopOriginalListenCollectionPlaylistAdmissionTest": 7,
-    "com.android.purebilibili.feature.audio.library.DesktopV038ListenVideoLibraryLoaderTest": 11,
-    "com.bilipai.desktop.ui.DesktopOriginalVideoAuthorizationBootstrapTest": 12,
-    "com.bilipai.desktop.ui.DesktopVideoBootstrapRetryIntentTest": 1
+    "com.bilipai.desktop.ui.DesktopDynamicFailedPaginationTest": 4,
+    "com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest": 15,
+    "com.bilipai.desktop.ui.DesktopDynamicTabsTest": 10,
+    "com.bilipai.desktop.ui.DesktopDynamicStartupTest": 9
   },
-  "expectedTests": 31,
+  "expectedTests": 38,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -672,27 +777,16 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPhysicalLeaf.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadFailureLoginIntent.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoBootstrapReadSource.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
-    "desktop/tools/extract-upstream-danmaku-settings.py",
-    "desktop/tools/extract-upstream-listen-video-root.py",
-    "desktop/tools/tests/test_v038_danmaku_merge_source.py",
-    "desktop/tools/tests/test_v038_listen_screen_source.py",
-    "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
-    "desktop/tools/v038_danmaku_merge.py",
-    "desktop/tools/v038_listen_collection.py",
-    "desktop/tools/v038_listen_screen.py",
-    "desktop/upstream-slices/v038-listen-screen/BiliPaiNavKey.kt",
-    "desktop/upstream-slices/v038-listen-screen/ListenVideoCollectionPlayer.kt",
-    "desktop/upstream-slices/v038-listen-screen/ListenVideoScreen.kt",
-    "desktop/upstream-slices/v038-listen-screen/manifest.json",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicFailedPaginationTest.kt",
+    "desktop/tools/extract-upstream-dynamic-tabs.py",
+    "desktop/tools/tests/test_dynamic_tabs_sources.py",
+    "desktop/tools/tests/test_v040_dynamic_pagination_source.py",
+    "desktop/tools/v040_dynamic_pagination.py",
+    "desktop/upstream-slices/v040-dynamic-pagination/DynamicScreenStatePolicy.kt",
+    "desktop/upstream-slices/v040-dynamic-pagination/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

@@ -19,14 +19,24 @@ class DynamicTabsSourcesTest(unittest.TestCase):
   self.assertEqual(20,len(g.inventory(REPO)))
   for row in g.inventory(REPO):
    original=g.read(REPO,row['path']);self.assertEqual(row['sha256'],hashlib.sha256(original.encode()).hexdigest())
-   self.assertTrue(any(('GENERATED from '+row['path']+';') in body.decode()and('LF-normalized SHA-256: '+row['sha256']) in body.decode()for body in before.values()),row['path'])
+   if Path(row['path']).name in {'AppTonalPillTabPolicy.kt','AppSegmentedControlPolicy.kt'}:
+    # The shared control producer owns these policies; tabs must not shadow it.
+    self.assertNotIn(Path(row['path']).name,{Path(p).name for p in before})
+    continue
+   selected_sha=hashlib.sha256(g.read_selected(REPO,row['path']).encode()).hexdigest()
+   self.assertTrue(any(('GENERATED from '+row['path']+';') in body.decode()and('LF-normalized SHA-256: '+selected_sha) in body.decode()for body in before.values()),row['path'])
   g.generate(REPO,self.output,standalone=True);self.assertEqual(before,{str(p.relative_to(self.output)):p.read_bytes()for p in self.output.rglob('*.kt')})
- def test_production_omits_full_direct_sources_owned_by_main_preparation(self):
+ def emitted_direct_sources(self):
+  # These two policies have their own existing shared-source producer.
+  return [p for p in g.DIRECT if Path(p).name not in {'AppTonalPillTabPolicy.kt','AppSegmentedControlPolicy.kt'}]
+ def test_production_only_overrides_direct_sources_with_a_reviewed_newer_original(self):
   with tempfile.TemporaryDirectory(prefix='bpd-tabs-production-') as temporary:
    output=Path(temporary);g.generate(REPO,output)
    production={p.name for p in output.rglob('*.kt')}
-   self.assertTrue({Path(p).name for p in g.DIRECT}.isdisjoint(production))
-   self.assertEqual(len(self.files)-len(g.DIRECT),len(production))
+   replacements={Path(p).name for p in self.emitted_direct_sources() if g.read_selected(REPO,p)!=g.read(REPO,p)}
+   unchanged={Path(p).name for p in self.emitted_direct_sources() if g.read_selected(REPO,p)==g.read(REPO,p)}
+   self.assertEqual(replacements,{Path(p).name for p in g.DIRECT}&production)
+   self.assertEqual(len(self.files)-len(unchanged),len(production))
  def test_startup_plan_and_followings_page_budget_are_original_declarations(self):
   original=g.read(REPO,g.BASE+'feature/dynamic/DynamicViewModel.kt')
   actual=self.generated('DesktopOriginalDynamicUsers.kt')
@@ -34,7 +44,7 @@ class DynamicTabsSourcesTest(unittest.TestCase):
   for name in ['resolveDynamicStartupLoadPlan','resolveDynamicFollowingsPageLimit','hasLoadedAllDynamicFollowings']:
    self.assertEqual(self.media.function(original,name,self.parser),self.media.function(actual,name,self.parser))
  def test_automatic_pagination_uses_the_original_furthest_lane_policy(self):
-  original=g.read(REPO,g.BASE+'feature/dynamic/DynamicScreenStatePolicy.kt')
+  original=(REPO/'desktop/upstream-slices/v040-dynamic-pagination/DynamicScreenStatePolicy.kt').read_text(encoding='utf-8')
   actual=self.generated('DesktopOriginalDynamicUserStatePolicy.kt')
   self.assertEqual(self.media.function(original,'shouldLoadMoreDynamicFeed',self.parser),self.media.function(actual,'shouldLoadMoreDynamicFeed',self.parser))
  def test_settings_getters_setters_and_original_controls_are_preserved(self):
@@ -45,16 +55,16 @@ class DynamicTabsSourcesTest(unittest.TestCase):
   self.assertEqual(self.media.function(source,'FeedDynamicTabVisibilityItem',self.parser),
    self.media.function(self.generated('DesktopOriginalDynamicTabsFields.kt'),'FeedDynamicTabVisibilityItem',self.parser))
  def test_native_component_body_is_original_with_only_platform_and_shared_declaration_binding(self):
-  source=g.read(REPO,g.DS+'components/AppSegmentedControl.kt')
+  source=g.read_selected(REPO,g.DS+'components/AppSegmentedControl.kt')
   a=g.module(REPO,'tabs_test_decl','desktop/tools/extract-appearance-platform.py')
   expected=source.replace(self.media.data_class(source,'AppSegmentOption',self.parser),'').replace(a.declarations(self.parser,source,['resolvePiliPlusScrollableUnderlineMinWidth']),'')
   expected=expected.replace('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration as LocalConfiguration')
   expected=expected.replace('import androidx.compose.foundation.isSystemInDarkTheme','import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme')
   actual=self.generated('DesktopOriginalDynamicNativeTabs.kt').split('\n',2)[2]
   self.assertEqual(expected.strip(),actual.strip())
-  for path in g.DIRECT:
+  for path in self.emitted_direct_sources():
    actual=self.generated(Path(path).name).split('\n',2)[2]
-   self.assertEqual(g.read(REPO,path).strip(),actual.strip())
+   self.assertEqual(g.read_selected(REPO,path).strip(),actual.strip())
  def test_user_fetch_retry_and_uid_cursor_changes_are_only_owned_transport_and_cancel_binding(self):
   source=g.read(REPO,g.BASE+'data/repository/DynamicRepository.kt');actual=self.generated('DesktopOriginalDynamicUserRepository.kt')
   expected=self.media.function(source,'getUserDynamicFeed',self.parser).replace('NetworkModule.dynamicApi.getUserDynamicFeed(','getPage(')

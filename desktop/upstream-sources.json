@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "90",
+  "windowsRevision": "91",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14114,10 +14114,30 @@
     "actualRetainedDestinationScopeSourceConnected": true,
     "actualInitialBootstrapSelectionSourceConnected": true,
     "sourceAdaptationTestsPassed": 21,
-    "mainCompiled": false,
+    "mainCompiled": true,
     "runtimeExecuted": false,
     "fullStableParityQualified": false,
     "completeSharedSemanticColorSourceConnected": true,
-    "playlistSessionUsesOriginalGenerationValueEquality": true
+    "playlistSessionUsesOriginalGenerationValueEquality": true,
+    "compilationSourceHead": "d4e49ad92e6e913f6d07ebc210e3251a751da1fa",
+    "compilationRunId": 38632199919,
+    "selectedJvmCasesPassed": 31
+  },
+  "v040DynamicPaginationSlice": {
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "manifestPath": "desktop/upstream-slices/v040-dynamic-pagination/manifest.json",
+    "manifestSHA256": "76a0a3fbb9b8c46a0003511b23a86039fc0cf1668e7c06441f9542902ee9a955",
+    "completeOriginalPaginationDecisionReused": true,
+    "canonicalPolicyRemainderPreserved": true,
+    "existingSoleProducerRetained": true,
+    "actualTimelineAndSelectedUserGuardsConnected": true,
+    "explicitRetryPreservesRowsAndFailedOffset": true,
+    "sourceGenerationCasesPassed": 15,
+    "actualOwnerRegressionCasesWritten": 3,
+    "originalUpstreamRegressionCasesRetained": 1,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "runtimeExecuted": false,
+    "fullV040ParityClaimed": false
   }
 }

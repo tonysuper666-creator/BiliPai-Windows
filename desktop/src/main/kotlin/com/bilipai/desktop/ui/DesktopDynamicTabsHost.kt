@@ -115,7 +115,7 @@ import kotlinx.coroutines.sync.withLock
             shouldLoadMoreDynamicFeed(
                 furthestVisibleItemIndex=layoutInfo.visibleItemsInfo.maxOfOrNull{it.index},
                 totalItemsCount=layoutInfo.totalItemsCount,allowAutomaticLoadMore=allowAutomaticLoadMore,
-                isLoading=state.userLoading,hasMore=state.hasUserMore)
+                isLoading=state.userLoading,hasMore=state.hasUserMore,error=state.userError?.let{it.message.orEmpty()})
         }
     }
     LaunchedEffect(shouldLoadMore,state.selectedUid,state.filter,active){if(active&&shouldLoadMore)state.loadMoreUser()}
@@ -128,10 +128,10 @@ import kotlinx.coroutines.sync.withLock
             modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),contentPadding=PaddingValues(20.dp),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),verticalItemSpacing=resolveDynamicTimelineVerticalSpacing()) {
             rows.forEach {item->item(key="dynamic_${dynamicFeedItemKey(item)}"){row(item)}}
-            state.userError?.let{error->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(error,onLogin,state::refreshUser)}}
+            state.userError?.let{error->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(error,onLogin,state::retryUser)}}
             if(state.userLoading)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
             if(!state.userLoading&&rows.isEmpty()&&state.userError==null)item(span=StaggeredGridItemSpan.FullLine){AppText("暂无内容")}
-            if(!state.userLoading&&state.hasUserMore)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
+            if(!state.userLoading&&state.hasUserMore&&state.userError==null)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
         }
     }
 }

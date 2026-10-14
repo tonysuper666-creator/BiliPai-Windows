@@ -239,7 +239,9 @@ internal class DesktopDynamicUsersState(
             loadUnreadUsers()
         }
     }
-    fun loadMoreUser()=requestUser(false)
+    fun loadMoreUser() { if(userError==null)requestUser(false) }
+    /** Explicit retry preserves the failed append offset and the visible rows. */
+    fun retryUser()=requestUser(userItems.isEmpty())
     private fun requestUser(refresh:Boolean){
         val uid=selectedUid?:return
         if(!owned()||userLoading||(!refresh&&!hasUserMore))return
