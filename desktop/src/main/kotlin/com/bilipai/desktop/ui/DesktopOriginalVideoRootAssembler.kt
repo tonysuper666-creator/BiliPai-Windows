@@ -114,7 +114,8 @@ internal class DesktopOriginalVideoRootAssembler(
         val settings = DesktopOriginalPlayerSettingsContext(window.runtime.context, ::current, gate::commit,
             overlay, { com.android.purebilibili.core.util.resolveLargeScreenOrFoldableConfiguration(
                 window.preferencesPlatform.deviceDefault.smallestConfigurationWidthDp, hasHingeAngleSensor = false) },
-            { DesktopOriginalWindowsBuildPolicy.debuggerAttached() })
+            { DesktopOriginalWindowsBuildPolicy.debuggerAttached() },
+            danmakuPreferences = resources.danmakuPreferences)
         val display = DesktopWindowsVideoDisplayCapabilities(window.window)
         val capabilities = DesktopOriginalMpvPlaybackCapabilities(resources.player, display.state, ::diagnostic)
         val resolver = DesktopOriginalVideoOwnerDownloadResolver(::assembly) { binding, url -> binding.captureMediaCookieHeader(url) }
@@ -236,7 +237,12 @@ internal class DesktopOriginalVideoRootAssembler(
                         { !caller.isCancelled && factory.isPresentationCurrent(owner, accepted) }, comments.emotes)
                 }, { enabled ->
                     if (current()) resources.diagnostics?.record("I", "Danmaku", "enabled=$enabled")
-                }, ::diagnostic, window.gallery.imageShare)
+                }, ::diagnostic, window.gallery.imageShare, owner.nextWatch,
+                owner.playback::captureDesktopPlaybackState, cloudPlatform, {
+                    val configuration by window.configuration.collectAsState()
+                    DesktopDanmakuSettingsViewport(configuration.screenWidthDp.coerceAtLeast(1),
+                        configuration.screenHeightDp.coerceAtLeast(1))
+                })
         }
         val section = rememberDesktopOriginalVideoSectionWindowsPlatform(sectionResources)
         val playlist = remember(owner) { DesktopOriginalVideoRootAudioPlaylist(shell.playlist, gate.scope) }

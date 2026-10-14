@@ -1,0 +1,12 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/LikeBurstAnchor.kt",
+      "filename": "LikeBurstAnchor.kt",
+      "bytes": 4365,
+      "sha256Bytes": "51a007f0af21c903cf842a2a876db916b859fe90c41e428a980a5b9d3f6960f8",
+      "gitBlob": "ff44257b1ca34b98dded82a93ae1383fe931718f"
+    }
+  ]
+}

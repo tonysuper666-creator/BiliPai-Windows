@@ -54,6 +54,8 @@ def generate(repo,out,standalone=False):
  spec=importlib.util.spec_from_file_location('message_host',repo/'desktop/tools/extract-upstream-plugins.py');host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host);media=host.media_extractor(repo)
  parser=media.parser_for(repo);files=[]
  def emit(path,s):
+  from v037_tab_roles import apply as apply_tab_roles
+  s=apply_tab_roles(BASE+path.removeprefix('com/android/purebilibili/'),s,out,path)
   dest=out/path;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(s,encoding='utf-8');files.append(str(dest))
  def function(s,n):
   matches=list(re.finditer(r'(?m)^[ \t]*(?:(?:internal|private|suspend)\s+)*fun\s+(?:[\w.]+\.)?'+re.escape(n)+r'\s*\(',s));assert len(matches)==1,(n,len(matches))

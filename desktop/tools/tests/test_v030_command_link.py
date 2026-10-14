@@ -8,6 +8,7 @@ TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v030_command_link as link
 import v029_command_vote as vote
+import v037_command_overlay as current
 
 class V030CommandLinkExtractionTest(unittest.TestCase):
     def test_fixed_raw_sources_and_full_overlay_inverse(self):
@@ -54,11 +55,11 @@ class V030CommandLinkExtractionTest(unittest.TestCase):
             overlays = list(output.rglob('DesktopOriginalCommandDanmakuOverlay.kt'))
             self.assertEqual(1, len(overlays))
             overlay = overlays[0].read_text(encoding='utf-8')
-            self.assertIn(link.COMMIT, overlay)
+            self.assertIn(current.COMMIT, overlay)
             self.assertIn('onLinkClick = onLinkClick', overlay)
             proof = json.loads((output / 'v029-command-vote-proof.json').read_text(encoding='utf-8'))
             self.assertEqual(vote.COMMIT, proof['upstreamCommit'])
-            self.assertEqual(link.COMMIT, proof['overlayUpstreamCommit'])
+            self.assertEqual(current.COMMIT, proof['overlayUpstreamCommit'])
             self.assertTrue(proof['overlayFullInverse'])
             self.assertTrue(proof['submissionFullInverse']); self.assertTrue(proof['gradeFullInverse'])
             links = json.loads((output / 'v030-command-link-proof.json').read_text(encoding='utf-8'))
@@ -71,5 +72,24 @@ class V030CommandLinkExtractionTest(unittest.TestCase):
             for path in (vote.POLICY, vote.STATE):
                 actual = (output / path.split('/java/', 1)[1]).read_text(encoding='utf-8')
                 self.assertEqual(vote.read(REPO, path), '\n'.join(actual.split('\n')[2:]))
+
+    def test_current_overlay_retains_all_original_known_state_and_pause_branches(self):
+        original, identity = current.fixed_original(REPO)
+        adapted = vote.adapt_overlay(original, edits := [])
+        self.assertEqual(original, vote.inverse(adapted, edits))
+        self.assertEqual(identity['gitBlob'], '73c3faa498764b2162a6c5b4d5b96e4c04532d88')
+        self.assertIn('if (renderingPaused) awaitDispose { }', adapted)
+        self.assertIn('if (action.shouldFollow && followStatusKnown) onFollowClick()', adapted)
+        self.assertIn('if (action.shouldTriple && likeStatusKnown) onTripleClick()', adapted)
+        self.assertIn('val containerHeight = if (isVote) viewport.heightPx else placementHeightPx', adapted)
+
+    def test_changed_current_overlay_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix='command-v037-pins-') as directory:
+            repo = Path(directory)
+            shutil.copytree(REPO / current.ARCHIVE, repo / current.ARCHIVE)
+            path = repo / current.ARCHIVE / current.PIN['filename']
+            path.write_bytes(path.read_bytes() + b'\n// drift\n')
+            with self.assertRaisesRegex(AssertionError, 'Fixed command overlay bytes changed'):
+                current.fixed_original(repo)
 
 if __name__ == '__main__': unittest.main()

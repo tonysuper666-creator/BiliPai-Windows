@@ -1,0 +1,146 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "wholeFilesRetainedForExactTabIntentProjectionOnly": true,
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuScreen.kt",
+      "filename": "AicuScreen.kt",
+      "bytes": 26149,
+      "sha256Bytes": "be5dfe52fc594a157cbaa72ce10fad0d06c0b8db7c2d4e67973ed5de02a9be09",
+      "gitBlob": "c5f0e2eaa649330330d3bef59a94f4599e5e66b3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "filename": "BangumiHubContent.kt",
+      "bytes": 53867,
+      "sha256Bytes": "2c26d89e25adac174bb032c54fc43290107b79403c2655d33386bdcfbbccb67a",
+      "gitBlob": "696bd3abfda48ce7e212bb535928b340da03153b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+      "filename": "BangumiScreen.kt",
+      "bytes": 20593,
+      "sha256Bytes": "89b5f900e1756870bdccfc70e54bff466cc707db2b10918b499801c5b703ee98",
+      "gitBlob": "249365c9d69b65763e1c1ce81b9183cc1b947a09"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "filename": "HomeBangumiTabPage.kt",
+      "bytes": 8371,
+      "sha256Bytes": "1d3cb4793ff7cc4488db558da67e1c12504889591a8411cdc1a2b2dc1ad06c80",
+      "gitBlob": "fcc5ed2a6c9e821984d7c1928021b98f9271056e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "filename": "CommonListScreen.kt",
+      "bytes": 181376,
+      "sha256Bytes": "a62053111463fa9a60dc57ba956b78737bccc2c7be84c15116f98d773da7ffaf",
+      "gitBlob": "9d0f8a53fd66804cd55ceed9e7d007dca53a9c17"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCategoryScreen.kt",
+      "filename": "FavoriteCategoryScreen.kt",
+      "bytes": 29884,
+      "sha256Bytes": "6e88ec32b9d3df0faa6f552c901109a8b6b82c1d1b8f997cf32c3c9336f9bdd6",
+      "gitBlob": "45dab3bdac05cc9f0cb1d32724b1f6391240951d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+      "filename": "LiveAreaScreen.kt",
+      "bytes": 16024,
+      "sha256Bytes": "c37c59e739b45fac6a1155261a8c6eae596a1594d93f6760786f34ecb456cdd9",
+      "gitBlob": "c922d2a22ccaaf8fdf76ef589c99d3cf1382bf45"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+      "filename": "LiveListScreen.kt",
+      "bytes": 46151,
+      "sha256Bytes": "c8ce605f6d15e95ac8a87cd261d9dcc00def6fa3e4e58a3c491527639f8a601a",
+      "gitBlob": "b78f7464868da1b758fde18c88cfb0e57725c38a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+      "filename": "LiveSearchScreen.kt",
+      "bytes": 16993,
+      "sha256Bytes": "16c9860eb068eb8d3acf2ee978037a7167524aa8d0276d96ba0f2bac00e41650",
+      "gitBlob": "ee16b12852858c61bb9b1377f74f39364cc5a110"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/InboxScreen.kt",
+      "filename": "InboxScreen.kt",
+      "bytes": 37741,
+      "sha256Bytes": "96c4c2cface8bff9a4ff7c1f2f825629ef69dc3484f2b0973fcad63be87b8ce6",
+      "gitBlob": "cfcb617c9c3fe1a14102d20d1fdce1c59060bd62"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "filename": "ProfileScreen.kt",
+      "bytes": 216566,
+      "sha256Bytes": "c9b401f3d67e1db9e8046867390380e839b439e21cece95bed4dae9ce2b14a4a",
+      "gitBlob": "88ea773cfb9c512ba23e2408c44dd7f20dbd33ef"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt",
+      "filename": "WallpaperAdjustmentSheet.kt",
+      "bytes": 22227,
+      "sha256Bytes": "3518c18afb90e77b880d7d158b2b18e26f32fb6a9992f93deeba6acb900dc555",
+      "gitBlob": "78c817da98bd4b02539b072ba8dd09bdd68fa9dd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "filename": "SpaceScreen.kt",
+      "bytes": 256266,
+      "sha256Bytes": "fb23a6a9a84bd2914a00d710522af759eeeb9e64b83f4031a751b3766632f735",
+      "gitBlob": "7460301847821a67c9dd07539ff04c70c3987cd9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSheet.kt",
+      "filename": "CollectionSheet.kt",
+      "bytes": 23826,
+      "sha256Bytes": "136aa0b8aef17140f35110a4f6bef35e8b849f059cff36df07406d61828cbeb4",
+      "gitBlob": "c367d75282643cdf303f47014ebd4c218be2dbc7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "filename": "CommentInputDialog.kt",
+      "bytes": 57679,
+      "sha256Bytes": "b83eb6d562ddd8fb37b7346cee5d71b6f3821ee57091792b6ca674722dcfa3d2",
+      "gitBlob": "aedc4c3dd348dfcc588dd6ca6bf11a47643a38e9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "filename": "DanmakuSettingsPanel.kt",
+      "bytes": 104546,
+      "sha256Bytes": "138e8b2593a061492cd380dfe0826793821ea68256e2307ddd0cbcaf0343791f",
+      "gitBlob": "25784081124e0f3857ab0edcbdc4c66f32147616"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "filename": "WatchLaterScreen.kt",
+      "bytes": 83479,
+      "sha256Bytes": "252bcf53557d44dc455978e14d19005a5dc7b26d26fc5f9fc562ad25617dea60",
+      "gitBlob": "656bf130c0322690554cac02ec608817ecf7be1e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "filename": "CommentSortFilterBar.kt",
+      "bytes": 10690,
+      "sha256Bytes": "612b11af5cb9926e424157ddddb62dc73e9045f18e93ddbc76bb0e567f496b3b",
+      "gitBlob": "b3571480c967a6fb566a6903889ab78f78074a6d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/js/BiliPaiJsPluginContentScreen.kt",
+      "filename": "BiliPaiJsPluginContentScreen.kt",
+      "bytes": 39194,
+      "sha256Bytes": "19764e7b18d58e91f3388c96910bd7bebe6caf4e327c17128b727ca1f2465237",
+      "gitBlob": "7ba2edf6f3b914373f9ab66e1bf8e0117613ff25"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "filename": "BangumiPlayerContent.kt",
+      "bytes": 45403,
+      "sha256Bytes": "be8c1a045f00b9fef5e50ac9354092f7a72eb91a7be0efa58b8710b7e6b962ef",
+      "gitBlob": "4be0ada0d06b73154227390ca654ad4221d80238"
+    }
+  ]
+}

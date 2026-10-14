@@ -70,7 +70,7 @@ class DesktopWindowsVideoEngagementBindingTest {
                 guestProtocolCheckpoints.incrementAndGet()
                 if (!owned()) throw CancellationException("Guest captured owner retired")
             }
-            val protocol = DesktopOriginalVideoEngagementProtocol(api,
+            val protocol = com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api,
                 { guestCsrfReads.incrementAndGet(); null }, { null }, { null }, { null }, ::checkpoint,
                 { error("Guest cannot confirm follow") },
                 DesktopOriginalFavoriteFolderProtocol(api, { null }, { null }, ::checkpoint))
@@ -85,10 +85,14 @@ class DesktopWindowsVideoEngagementBindingTest {
         }
         val vm = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
             DesktopPluginContext(DesktopPluginStore(folder)), scope, if (loggedIn) actions else guestActions(), VideoCoinBalanceLoader { 0.0 },
-            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false }))
+            { entry && account == 1 }, { action -> if (entry && account == 1) { action(); true } else false },
+            interactionSession = { folder },
+            cachedFollowStatusReader = { error("Foreign-owner follow lookup is not selected by this fixture") },
+            followStatusQuery = { error("Foreign-owner follow query is not selected by this fixture") },
+        ))
         val binding: DesktopWindowsVideoEngagementBinding
         init {
-            vm.bindSubject(subject, VideoEngagementSeed(isLoggedIn = loggedIn))
+            vm.bindSubject(subject, VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = loggedIn))
             binding = DesktopWindowsVideoEngagementBinding(source, vm, subject, ::owned, ::admit)
         }
         suspend fun drain() = withTimeout(2_000) {

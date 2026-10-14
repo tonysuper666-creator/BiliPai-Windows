@@ -33,6 +33,9 @@ def read(path):
     if STANDALONE:
         original = subprocess.run(['git','show',ORIGINAL_COMMIT+':'+path],cwd=REPO,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
         assert current == original, path
+    if path == DESIGN+'core/ui/AppSheetComponents.kt':
+        from v037_window_modal_blur import fixed_original
+        return fixed_original(REPO,'AppSheetComponents.kt')[0]
     return selected_source(path,current)
 
 def load(name,path):
@@ -218,23 +221,12 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
     emit(path,body,'DesktopOriginalDynamicDetailLayout.kt',note='Original screen success layout/top bar. Card action ownership remains the existing Main host. Modal and liquid material are separately declared closure dependencies.')
 
 def thread_container():
-    path=DESIGN+'core/ui/AppSheetComponents.kt';body=read(path)
-    body=body.replace('import androidx.compose.ui.platform.LocalConfiguration','import com.android.purebilibili.core.util.LocalWindowSizeClass\nimport com.bilipai.desktop.ui.DesktopCommentDialogNavigationHost')
-    for line in ['import androidx.compose.ui.platform.LocalView\n','import androidx.navigationevent.findViewTreeNavigationEventDispatcherOwner\n']:
-        body=body.replace(line,'')
-    begin=body.index('    val owner = LocalView.current.findViewTreeNavigationEventDispatcherOwner()')
-    end=body.index('\n}\n',begin)
-    body=body[:begin]+'''    DesktopCommentDialogNavigationHost {
-        val backState = rememberNavigationEventState(NavigationEventInfo.None)
-        NavigationBackHandler(state=backState,isBackEnabled=dismissOnBackPress,onBackCompleted=onDismissRequest)
-        content()
-    }'''+body[end:]
-    body=body.replace('val configuration = LocalConfiguration.current','val configuration = LocalWindowSizeClass.current')
-    body=body.replace('configuration.screenWidthDp','configuration.widthDp.value.toInt()')
-    body=body.replace('configuration.screenHeightDp','configuration.heightDp.value')
-    body=body.replace('                decorFitsSystemWindows = false,\n','')
-    body=body.replace('            decorFitsSystemWindows = false,\n','')
-    emit(path,body,'DesktopOriginalDetailAppSheetComponents.kt',note='Original two-style neutral M3 host/body/layout/motion. Android LocalView is a fresh task-owned desktop dialog navigation input; actual measured window metrics are used.')
+    from v037_window_modal_blur import adapt_sheet,fixed_original
+    path=DESIGN+'core/ui/AppSheetComponents.kt';original,identity=fixed_original(REPO,'AppSheetComponents.kt')
+    body,proof=adapt_sheet(original)
+    proof.update(identity)
+    write(OUTPUT/'v037-whole-app-sheet-platform-proof.json',json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
+    emit(path,body,'DesktopOriginalDetailAppSheetComponents.kt',note='Whole v037 modal with original Miuix/native material hosts, real Windows coordinates, original blur progress, and same owned navigation input. Android physical-hinge branches are excluded.')
     path=DESIGN+'core/ui/InteractiveOverlayProgressPolicy.kt'
     emit(path,read(path),mode='direct')
     path=BASE+'core/ui/CommentWindowNavigation.kt';body=read(path)

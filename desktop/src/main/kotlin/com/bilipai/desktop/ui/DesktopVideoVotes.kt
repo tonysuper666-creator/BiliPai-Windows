@@ -146,7 +146,12 @@ internal fun DesktopVideoCommandVoteContent(
             writeVote = { _, id, indexes -> operations.submitVote(id, indexes, "").map { Unit } },
             writeGrade = { _, aid, cid, progress, id, score -> operations.submitGradeDanmaku(aid, cid, progress, id, score) },
             readGrade = { _, cid, aid, id -> operations.getGradeDanmakuSummary(cid, aid, id) },
-            onFeedback = { feedback(it) })
+            onFeedback = { feedback(it) },
+            readAid = {
+                val request = (sourceLease as? DesktopOriginalVideoAcceptedPublication)?.request
+                if (request != null) resolveDesktopCommandGradeAid(request.aid, request.bvid,
+                    request.cid, capturedState()) else aid
+            })
     }
     DisposableEffect(alive) { onDispose { alive.set(false) } }
     val parent = LocalDesktopWindowsPlayerWindow.current
@@ -182,6 +187,8 @@ internal fun DesktopVideoCommandVoteContent(
                 if (viewport != null && native.ready && current()) CommandDanmakuOverlay(
                     items = items, player = player, viewport = viewport, bottomInsetPx = 0,
                     state = commandState, fontScale = fontScale, isFollowing = attentionState?.isFollowing ?: false,
+                    followStatusKnown = attentionOwned && attentionState?.followStatusKnown == true,
+                    likeStatusKnown = attentionOwned && attentionState?.likeStatusKnown == true,
                     onFollowClick = { if (attentionOwned && current()) attention?.follow() },
                     onTripleClick = { if (attentionOwned && current()) attention?.triple() },
                     onLinkClick = { item -> link.open(item) },

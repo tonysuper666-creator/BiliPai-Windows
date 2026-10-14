@@ -65,10 +65,14 @@ class DesktopWindowsCommandAttentionBindingTest {
         }
         val engagement = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
             DesktopPluginContext(DesktopPluginStore(root)), scope, actions, VideoCoinBalanceLoader { 0.0 },
-            { account == 1L && entry }, { block -> if (account == 1L && entry) { block(); true } else false }))
+            { account == 1L && entry }, { block -> if (account == 1L && entry) { block(); true } else false },
+            interactionSession = { root },
+            cachedFollowStatusReader = { error("Foreign-owner follow lookup is not selected by this fixture") },
+            followStatusQuery = { error("Foreign-owner follow query is not selected by this fixture") },
+        ))
         val binding: DesktopWindowsCommandAttentionBinding
         init {
-            engagement.bindSubject(subject, VideoEngagementSeed(isLoggedIn = true))
+            engagement.bindSubject(subject, VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
             binding = DesktopWindowsCommandAttentionBinding(lease, engagement, subject, ::owned, ::admit)
         }
         fun replacement() = DesktopOriginalVideoAcceptedPublication(lease.request, lease.nativeSource)
@@ -91,6 +95,20 @@ class DesktopWindowsCommandAttentionBindingTest {
             action.shouldFollow -> h.binding.follow()
             action.shouldTriple -> h.binding.triple()
             else -> false
+        }
+    }
+
+    @Test fun unknownEngagementCannotDispatchAttentionActionsAndKnownRefreshRestoresThem() = runBlocking {
+        Harness().use { h ->
+            h.engagement.bindSubject(h.subject, VideoEngagementSeed(isLoggedIn = true))
+            assertFalse(h.binding.follow())
+            assertFalse(h.binding.triple())
+            h.drain()
+            assertTrue(h.follows.isEmpty()); assertTrue(h.triples.isEmpty())
+            h.engagement.bindSubject(h.subject,
+                VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
+            assertTrue(h.binding.follow()); h.drain()
+            assertEquals(listOf(33L to false), h.follows)
         }
     }
 
@@ -162,7 +180,7 @@ class DesktopWindowsCommandAttentionBindingTest {
         Harness().use { h ->
             val result = CompletableDeferred<Result<TripleActionResult>>()
             h.tripleResult = { result.await() }; assertTrue(h.binding.triple())
-            h.engagement.bindSubject(h.subject.copy(cid = 71, generation = 2), VideoEngagementSeed())
+            h.engagement.bindSubject(h.subject.copy(cid = 71, generation = 2), VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, ))
             result.complete(Result.success(TripleActionResult(true, true, null, true))); h.drain()
             assertFalse(h.engagement.uiState.value.isLiked); assertEquals(0, h.engagement.uiState.value.coinCount)
         }
@@ -202,7 +220,7 @@ class DesktopWindowsCommandAttentionBindingTest {
         val api = Proxy.newProxyInstance(BilibiliApi::class.java.classLoader, arrayOf(BilibiliApi::class.java)) { _, method, args ->
             call(method.name, args.orEmpty().toList())
         } as BilibiliApi
-        return DesktopOriginalVideoEngagementProtocol(api, { "fixture-csrf" }, { 1L }, { "fixture-session" }, { null },
+        return com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api, { "fixture-csrf" }, { 1L }, { "fixture-session" }, { null },
             checkpoint, { confirm() }, DesktopOriginalFavoriteFolderProtocol(api, { 1L }, { "fixture-csrf" }, checkpoint))
     }
 

@@ -66,7 +66,7 @@ class DesktopOriginalDanmakuSameSendTest {
             override suspend fun reportDanmaku(cid:Long,dmid:Long,reason:Int,content:String)=error("Not report")
         }
         private val api=unused<BilibiliApi>()
-        private val interaction=VideoInteractionUseCase(DesktopOriginalVideoEngagementProtocol(
+        private val interaction=VideoInteractionUseCase(com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(
             api,{"fixture-csrf"},{1L},{"fixture-session"},{null},{},{},
             DesktopOriginalFavoriteFolderProtocol(api,{1L},{"fixture-csrf"},{})),unused<DesktopOriginalVideoInteractionAnalytics>())
         private val settings=DesktopOriginalPlayerSettingsContext(context,::current,::commit,

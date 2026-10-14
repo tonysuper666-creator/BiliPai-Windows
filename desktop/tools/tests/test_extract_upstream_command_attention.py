@@ -25,29 +25,34 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             units.generate(REPO, out)
             actual = units.wide(out / VM).read_text(encoding="utf-8")
             proof = json.loads((out / "engagement-presentation-proof.json").read_text(encoding="utf-8"))
-            self.assertEqual("79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40", proof["upstreamCommit"])
-            self.assertEqual("62c0eae9b9447cfd615a5972ab8f58be906ca2a0cee184ccd57cf8b997ebbb1f", proof["originalSourceSha256LF"])
+            import v037_player_interaction as interaction
+            self.assertEqual(interaction.COMMIT, proof["upstreamCommit"])
+            self.assertEqual(hashlib.sha256(interaction.fixed_sources()["VideoEngagementViewModel.kt"].encode()).hexdigest(), proof["originalSourceSha256LF"])
             self.assertTrue(proof["fullOwnedBodyInverse"])
-            import v031_repost_coin as repost
-            inverse = repost.undo(actual, json.loads((out / "VideoEngagementViewModel.kt.repost-coin-proof.json").read_bytes()))
-            # The same sole producer now applies confirmed feedback after the
-            # command permission stage. Undo each complete stage, checking its
-            # actual input/output digest, before checking the older recipe.
-            for name in ("v029-video-feedback-lifetime-proof.json", "v029-video-feedback-origin-proof.json", "v029-video-feedback-state-proof.json"):
+            inverse = actual
+            # Current original source already contains repost limits. Undo the
+            # actual Windows stages in reverse order, preserving the complete VM.
+            for name in ("v037-video-coin-request-boundary-proof.json", "v029-video-feedback-lifetime-proof.json", "v029-video-feedback-origin-proof.json", "v029-video-feedback-state-proof.json"):
                 later = json.loads((out / name).read_text(encoding="utf-8"))
                 self.assertEqual(later["afterSha256LF"], hashlib.sha256(inverse.encode()).hexdigest())
-                for edit in reversed(later["edits"]):
-                    self.assertEqual(1, inverse.count(edit["after"]), edit["label"])
-                    inverse = inverse.replace(edit["after"], edit["before"], 1)
+                if "indexedEdits" in later:
+                    for edit in reversed(later["indexedEdits"]):
+                        start = edit["afterOffset"]
+                        self.assertEqual(inverse[start:start + len(edit["after"])], edit["after"])
+                        inverse = inverse[:start] + edit["before"] + inverse[start + len(edit["after"]):]
+                else:
+                    for edit in reversed(later["edits"]):
+                        self.assertEqual(1, inverse.count(edit["after"]), edit["label"])
+                        inverse = inverse.replace(edit["after"], edit["before"], 1)
                 self.assertEqual(later["beforeSha256LF"], hashlib.sha256(inverse.encode()).hexdigest())
             for edit in reversed(proof["adaptations"]):
                 self.assertEqual(1, inverse.count(edit["after"]), edit["label"])
                 inverse = inverse.replace(edit["after"], edit["before"], 1)
             with patch.object(units, "engagement_presentation_delta", side_effect=lambda body: body), \
-                    patch("v029_video_feedback.apply_video_feedback", side_effect=lambda path, body, parser: (body, None)), \
-                    patch("v029_video_feedback_origin.apply_feedback_origin", side_effect=lambda path, body: (body, None)), \
+                    patch("v037_video_feedback_adapter.apply_latest_feedback", side_effect=lambda path, body, parser: (body, None)), \
+                    patch("v037_feedback_origin.apply_feedback_origin", side_effect=lambda path, body: (body, None)), \
                     patch("v029_video_feedback_host.apply_feedback_lifetime", side_effect=lambda path, body: (body, None)), \
-                    patch("v031_repost_coin.apply", side_effect=lambda path, body: (body, None)):
+                    patch("v037_video_coin_request.apply", side_effect=lambda path, body, parser: (body, None)):
                 units.generate(REPO, before)
             self.assertEqual(units.wide(before / VM).read_text(encoding="utf-8"), inverse)
             self.assertEqual((before / "video-operations-members.fragment").read_bytes(), (out / "video-operations-members.fragment").read_bytes())
@@ -75,11 +80,19 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             protocol = units.wide(out / PROTOCOL).read_text(encoding="utf-8")
             record = json.loads((out / "source-bindings.json").read_text(encoding="utf-8"))
             self.assertEqual(units.SOURCE_PINS.keys(), {row["path"] for row in record["sourceIdentities"]})
+            import v037_gesture_feedback as gesture
+            import v037_player_interaction as interaction
+            import v037_player_section_policy as section_policy
+            selected = {path: interaction.selected_source_identity(path) for path in interaction.SELECTED_SOURCE_FILES}
+            selected.update({path: gesture.original(REPO, path)[1] for path in gesture.SOURCE_PATHS})
+            text, identity = section_policy.fixed_original(REPO, section_policy.RELATIVE_PATHS[0])
+            selected[identity["originalPath"]] = identity
             for row in record["sourceIdentities"]:
-                self.assertEqual(units.SOURCE_PINS[row["path"]]["gitBlob"], row["gitBlob"])
-                self.assertEqual(units.SOURCE_PINS[row["path"]]["sha256LF"], row["sha256LF"])
+                expected = selected.get(row["path"], units.SOURCE_PINS[row["path"]])
+                self.assertEqual(expected["gitBlob"], row["gitBlob"])
+                self.assertEqual(expected["sha256LF"], row["sha256LF"])
             self.assertIn("DesktopOriginalVideoEngagementPresentation.assertCurrent()\n        ownerCheckpoint()", protocol)
-            names = ["val likeResult = likeVideo(aid, true)", "val coinResult = coinVideo(aid, coinCount, true)", "val favoriteResult = favoriteVideo(aid, true)"]
+            names = ["val likeResult = likeVideo(aid, true)", "val coinResult = coinVideo(aid, coinCount, true)", "val favoriteResult = favoriteVideo(aid, true, showSuccessFeedback = false).rethrowCancellation()"]
             self.assertEqual(sorted(protocol.index(name) for name in names), [protocol.index(name) for name in names])
             self.assertIn("DesktopOriginalVideoEngagementPresentation.commitCurrent { assertOwned(); confirmFollow", protocol)
             self.assertEqual(hashlib.sha256(protocol.encode()).hexdigest(), next(row["sha256LF"] for row in record["outputs"] if row["path"] == PROTOCOL))

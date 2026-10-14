@@ -1,5 +1,7 @@
 package com.bilipai.desktop
 
+import com.bilipai.desktop.ui.desktopOriginalModalContentBlur
+
 import com.bilipai.desktop.appearance.DesktopAppearanceSettings
 import com.bilipai.desktop.appearance.DesktopAppearanceTheme
 import com.bilipai.desktop.appearance.DesktopThemePrefs
@@ -1709,7 +1711,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
         onDispose { registration?.close() }
     }
+    val modalContentBlur = com.bilipai.desktop.ui.rememberDesktopOriginalWindowModalBlur(hostWindow)
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+        com.bilipai.desktop.ui.LocalDesktopOriginalModalContentBlurTarget provides modalContentBlur,
         LocalDesktopWindowsPlayerWindow provides hostWindow,
         LocalDesktopWindowsVideoEnhancement provides DesktopWindowsVideoEnhancementUiBinding(
             pluginRuntime.enhancementConfiguration, enhancement?.state ?: emptyEnhancement),
@@ -1767,7 +1771,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         Box(Modifier.fillMaxSize()) {
         // libmpv's audio worker needs a retained native host even when its screen is not visible.
         if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
-        Surface(Modifier.fillMaxSize().onGloballyPositioned { liquidBackgroundBounds = it.boundsInWindow() }
+        Surface(Modifier.fillMaxSize().desktopOriginalModalContentBlur(modalContentBlur).onGloballyPositioned { liquidBackgroundBounds = it.boundsInWindow() }
             .drawWithContent {
                 if (captureLiquidBackground) liquidEnvironment.recordBackground {
                     liquidBackground.record { this@drawWithContent.drawContent() }

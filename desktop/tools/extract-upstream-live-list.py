@@ -23,6 +23,8 @@ def generate(repo,output,standalone=False):
  parser=load(repo/'desktop/tools/sync-upstream.py','live_list_parser')
  media=load(repo/'desktop/tools/extract-upstream-media.py','live_list_selector')
  def emit(p,s,path=None):
+  from v037_tab_roles import apply as apply_tab_roles
+  s=apply_tab_roles(p,s,output,path)
   raw=originals[p];dst=path or p.removeprefix(BASE)
   if path is None:dst='com/android/purebilibili/'+dst
   write(output/dst,s);records.append(dict(source=p,output=dst,originalSha256LF=sha(raw),preparedSha256LF=sha(s),wholeOriginalFile=path is None,adapted=raw!=s))

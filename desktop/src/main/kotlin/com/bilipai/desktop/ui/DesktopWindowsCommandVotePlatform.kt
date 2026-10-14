@@ -11,6 +11,7 @@ import com.android.purebilibili.feature.video.danmaku.DanmakuViewport
 import com.android.purebilibili.feature.video.danmaku.VoteOption
 import com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay
 import com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlayState
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.player.MpvPlayer
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -41,6 +42,15 @@ internal val LocalDesktopWindowsCommandVotePlatform = staticCompositionLocalOf<D
     error("Command cards require their captured video source request/presentation adapter")
 }
 
+/** BV/CID-only loads publish AID later. Read only matching current original metadata. */
+internal fun resolveDesktopCommandGradeAid(
+    requestAid: Long, bvid: String, cid: Long, state: VideoPlaybackUiState?,
+): Long {
+    if (requestAid > 0L) return requestAid
+    val info = (state as? VideoPlaybackUiState.Success)?.info ?: return 0L
+    return info.aid.takeIf { it > 0L && info.bvid == bvid && info.cid == cid } ?: 0L
+}
+
 /** Every request uses the existing owned Operations. Gates contain no suspend, HTTP or native calls. */
 internal class DesktopWindowsCommandVoteBinding(
     override val sourceLease: Any,
@@ -54,6 +64,7 @@ internal class DesktopWindowsCommandVoteBinding(
     private val writeGrade: suspend (Job, Long, Long, Long, String, Int) -> Result<Unit>,
     private val readGrade: suspend (Job, Long, Long, String) -> Result<GradeDanmakuSummary>,
     private val onFeedback: (String) -> Unit,
+    private val readAid: () -> Long = { aid },
 ) : DesktopWindowsCommandVotePlatform {
     private val pendingLock = Any()
     private val pending = mutableMapOf<Any, Any>()
@@ -120,14 +131,14 @@ internal class DesktopWindowsCommandVoteBinding(
     override suspend fun submitGradeDanmaku(
         aid: Long, cid: Long, progress: Long, gradeId: String, gradeScore: Int,
     ): Result<Unit> = request { job ->
-        if (aid != this.aid || cid != this.cid || aid <= 0L || cid <= 0L ||
+        if (aid != readAid() || cid != this.cid || aid <= 0L || cid <= 0L ||
             (gradeId.toLongOrNull() ?: 0L) <= 0L || gradeScore !in setOf(2, 4, 6, 8, 10))
             Result.failure(IllegalArgumentException("缺少有效打分信息"))
         else writeGrade(job, aid, cid, progress, gradeId, gradeScore)
     }
 
     override suspend fun getGradeDanmakuSummary(cid: Long, aid: Long, gradeId: String): Result<GradeDanmakuSummary> = request { job ->
-        if (aid != this.aid || cid != this.cid || (gradeId.toLongOrNull() ?: 0L) <= 0L)
+        if (aid != readAid() || cid != this.cid || aid <= 0L || cid <= 0L || (gradeId.toLongOrNull() ?: 0L) <= 0L)
             Result.failure(IllegalArgumentException("缺少有效打分信息"))
         else readGrade(job, cid, aid, gradeId)
     }
@@ -140,20 +151,27 @@ internal fun DesktopWindowsSectionCommandOverlay(
     items: List<CommandDanmakuItem>,
     player: MpvPlayer,
     viewport: DanmakuViewport,
+    bottomInsetPx: Int,
     state: CommandDanmakuOverlayState,
+    renderingPaused: Boolean,
     fontScale: Float,
     onFollowClick: () -> Unit,
     onTripleClick: () -> Unit,
+    onLinkClick: (CommandDanmakuItem) -> Unit,
     onVoteSubmit: (CommandDanmakuItem, VoteOption, Int) -> Unit,
+    followStatusKnown: Boolean,
+    likeStatusKnown: Boolean,
     isFollowing: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     if (commandPort == null) return
     CompositionLocalProvider(LocalDesktopWindowsCommandVotePlatform provides commandPort) {
         CommandDanmakuOverlay(
-            items = items, player = player, viewport = viewport, bottomInsetPx = 0,
+            items = items, player = player, viewport = viewport, bottomInsetPx = bottomInsetPx,
             state = state, fontScale = fontScale, onFollowClick = onFollowClick,
             onTripleClick = onTripleClick, onVoteSubmit = onVoteSubmit,
+            onLinkClick = onLinkClick, followStatusKnown = followStatusKnown,
+            likeStatusKnown = likeStatusKnown, renderingPaused = renderingPaused,
             isFollowing = isFollowing, modifier = modifier,
         )
     }

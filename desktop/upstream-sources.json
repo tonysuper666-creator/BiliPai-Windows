@@ -8128,17 +8128,19 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt",
       "sha256": "9269462327088da5a4103e451776a9bb70a1cd098bdb71b54ee73d9b43ce8edb",
       "features": [
-        "stable-video-detail-full-units"
+        "stable-video-detail-full-units",
+        "v037-whole-gesture-feedback"
       ],
-      "mode": "policy-extract"
+      "mode": "selected"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
       "sha256": "bfd4b78900bf0a1b04847ccccb4a18b6d0d445be258f00dcd3ff6f1ce1d71771",
       "features": [
-        "stable-video-detail-full-units"
+        "stable-video-detail-full-units",
+        "v037-whole-gesture-feedback"
       ],
-      "mode": "direct"
+      "mode": "selected"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
@@ -9122,10 +9124,11 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
       "sha256": "883f579cb65942465f11b24bdbdc4a83155648ec82d99ca1d5cf286f025b126f",
-      "mode": "direct",
+      "mode": "selected",
       "features": [
         "stable-video-player-section-full",
-        "desktop-v025-complete-player-parity"
+        "desktop-v025-complete-player-parity",
+        "v037-full-player-section-policy"
       ]
     },
     {
@@ -10354,9 +10357,10 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
       "sha256": "8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba",
       "features": [
-        "desktop-full-original-search-root-parity"
+        "desktop-full-original-search-root-parity",
+        "stable-original-search-pages-root-parity"
       ],
-      "mode": "direct"
+      "mode": "policy-extract"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
@@ -11599,9 +11603,61 @@
       "wholeOriginalSharedRefreshClosureSelected": true,
       "enabledGestureGateAndMiuixCompositionRetentionPreserved": true,
       "originalRefreshPolicyTests": 4
+    },
+    "v037OriginalVideoInteractionState": {
+      "fixedCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+      "originalMethods": 22,
+      "originalCacheClasses": 2,
+      "originalCacheTests": 13,
+      "allLikeFollowCoinTripleMutationBodiesRetained": true,
+      "repositoryOwnsOneSharedCache": true,
+      "sameRootApiAndCredentialCallbacks": true,
+      "actualAccountEpochAdmission": true,
+      "currentDetailUsesSameProtocol": true,
+      "latestPlaybackKnownStateSeedBindingPending": false,
+      "fullStableParityQualified": false,
+      "sourceQualified": false,
+      "mainCompiled": false,
+      "hardwareExecuted": false,
+      "wholeOriginalPlaybackUseCaseSelected": true,
+      "wholeOriginalLoadResultAndUiStateSelected": true,
+      "wholeOriginalEngagementViewModelSelected": true,
+      "wholeOriginalDeferredAndEnsureFollowFunctionsSelected": true,
+      "originalKnownStatusFlagsForwardedAtBothCurrentPlaybackPublications": true,
+      "originalPostLoadRequestTokenRetained": true,
+      "allCurrentProductionReadAndMutationPortsBound": true,
+      "wholeOriginalActionRendererSelected": true,
+      "latestFullInfoUnitsSelected": true,
+      "actualContentKnownStatusArgumentsConnected": true
+    },
+    "v037OriginalPlayerControlsMaterial": {
+      "fixedCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+      "completeOriginalControlsAndMenusSelected": true,
+      "wholeOriginalSharedGlassShellSelected": true,
+      "wholeOriginalRenderFoundationSelected": true,
+      "originalShaderBodyPreserved": true,
+      "actualWindowsSkiaUniformAndShaderLifetimeUsed": true,
+      "canonicalDuplicatePoliciesExcluded": [
+        "app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt"
+      ],
+      "originalPolicyTestsPrepared": 43,
+      "nativeVideoBackdropStillPending": true,
+      "sourceQualified": false,
+      "mainCompiled": false,
+      "pixelsValidated": false,
+      "hardwareExecuted": false
     }
   },
-  "windowsRevision": 76,
+  "windowsRevision": 78,
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
