@@ -51,8 +51,8 @@ class DesktopBrandSuccessEngagementTest {
             assertEquals("modifyRelation", method.name); assertEquals(0, depth)
             response(args.orEmpty())
         } as BilibiliApi
-        private val protocol = DesktopOriginalVideoEngagementProtocol(api, { "fixture-csrf" }, { 1L }, { null }, { null }, ::checkpoint,
-            { change -> assertNotNull(DesktopOriginalVideoEngagementPresentation.capture()); changes += change; DesktopOriginalVideoEngagementPresentation.confirmBrandFollow(change.isFollowing) },
+        private val protocol = com.android.purebilibili.data.repository.createTestVideoEngagementProtocol(api, { "fixture-csrf" }, { 1L }, { null }, { null }, ::checkpoint,
+            { change -> assertNotNull(DesktopOriginalVideoEngagementPresentation.capture()); changes += change },
             DesktopOriginalFavoriteFolderProtocol(api, { 1L }, { "fixture-csrf" }, ::checkpoint))
         private val analytics = object : DesktopOriginalVideoInteractionAnalytics {
             override fun logFollow(userId: String, isFollowed: Boolean) {}
@@ -64,10 +64,12 @@ class DesktopBrandSuccessEngagementTest {
         val vm = VideoEngagementViewModel(DesktopOriginalVideoEngagementEnvironment(
             DesktopPluginContext(DesktopPluginStore(directory)), scope,
             DefaultVideoEngagementActions(VideoInteractionUseCase(protocol, analytics)), VideoCoinBalanceLoader { 0.0 },
-            ::lifetime, ::admit))
+            ::lifetime, ::admit,
+            interactionSession = { directory },
+        ))
         val binding: DesktopWindowsVideoEngagementBinding
         init {
-            vm.bindSubject(subject, VideoEngagementSeed(isLoggedIn = true))
+            vm.bindSubject(subject, VideoEngagementSeed(likeStatusKnown = true, followStatusKnown = true, isLoggedIn = true))
             binding = DesktopWindowsVideoEngagementBinding(source, vm, subject,
                 { interactive && lifetime() }, ::lifetime, ::admit).also { it.mountBrandFeedback(bus) }
         }

@@ -65,6 +65,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     internal val dynamicCacheSessionGuard: DesktopDynamicCacheSessionGuard get() = sessions
     internal val dynamicCommentCacheStore = DesktopDynamicCommentCacheStore(sessions)
     internal val followStateEvents = DesktopFollowStateEvents(sessions)
+    internal val videoInteractionStatusCache = com.android.purebilibili.data.repository.VideoInteractionStatusCache()
+    internal val videoFollowingSnapshotGuard = com.android.purebilibili.data.repository.FollowingSnapshotGuard()
     private val authMutex = Mutex()
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val client = OkHttpClient.Builder()

@@ -1,109 +1,589 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "52321b8c0778bf348e8a8dcb448c0cf0a84bc96c",
-  "windowsVersion": "0.2.427.76",
-  "createdAt": "2026-10-13T21:48:49.417377+00:00",
+  "baseHead": "6f972611b6c0968b715e73e5c2ffe052e8abe421",
+  "windowsVersion": "0.2.427.78",
+  "createdAt": "2026-10-14T01:21:27.497857+00:00",
   "sources": [
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "e822cee4277c38e1018a6586a7203c98b143d6847f50a5be4753bbaabdd5c095"
+      "sha256": "f6a1dfd22216d3eb2b6487c190b622534ee0ed89019e766945ee62f4ec5132d5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "normalization": "lf",
+      "sha256": "cefd5f4e02cca7bc858d1747eff55225a15f877fdeefe6db7c5c02c583ae662d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "normalization": "lf",
+      "sha256": "e08711f1842ac9325f906f4b4c90237f00747859ae4c3f69a1fde9d7bbc6bf50"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvBackdropFrame.kt",
+      "normalization": "lf",
+      "sha256": "14c95be6dcec27eb60bd0d411767c4178764b172489038e8b5cb99b5eeac13a6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "normalization": "lf",
+      "sha256": "50729d6ff54b5fb8c9e8efff395f119ef8a01ed0a9998edc5eb5ce97a65be20e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoBackdrop.kt",
+      "normalization": "lf",
+      "sha256": "77c1c170357dbde6e30418761ba76cf4e54c8136649723c46be048d79ee7b09e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoDomainOwners.kt",
+      "normalization": "lf",
+      "sha256": "e58cee067f391d0ad5278056071c43bff1356460cb8584fdd5b5e1f907b56d1a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementBindings.kt",
+      "normalization": "lf",
+      "sha256": "6e7fa6d080a2c450013b2fad9a3ca4847922ccf325cdfd5842fa9411339e36d4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "normalization": "lf",
+      "sha256": "901460f4a886bf6f900d384663e63f2dc75849b21657f374f518bd8eac0c5b91"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "normalization": "lf",
+      "sha256": "9b48ee6c5be83339e398c63741e3220b1df03347902ce71b1c9e4ec5bbab6f67"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "59225718545a100f70ce86d4328b60f005b9d2df49e52333d55d768968654672"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt",
+      "normalization": "lf",
+      "sha256": "6345edb3c03d6c3d1436fae70a58b3751e530005c6c6dbf4c445da361ed768bb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "normalization": "lf",
+      "sha256": "681d47a46af49dd82d025dc32b616c76c9bebc75ce62664fdc96938fae668eda"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/data/repository/DesktopOriginalVideoInteractionTestOwner.kt",
+      "normalization": "lf",
+      "sha256": "ac6eb6d0a314ef82ffc1967fa2c2c4719197cd1ae80e09e2ba333efbf481dc77"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/data/repository/VideoInteractionStatusCacheTest.kt",
+      "normalization": "lf",
+      "sha256": "2f553949368d5f42000d6c37653a09d293a25e1ba578680f102bce977d08d034"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvBackdropFrameTest.kt",
+      "normalization": "lf",
+      "sha256": "540667476b8f90e98d26b95c087c170232faacd7585db69861c84b61efafa909"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiDefaultQualityTest.kt",
+      "normalization": "lf",
+      "sha256": "68f16a6c6ca693b7f9e6f3c22457197005e3c6493464b192ae5a429a82e5a112"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBrandSuccessEngagementTest.kt",
+      "normalization": "lf",
+      "sha256": "9f6fd0688ccf3aefe688b9a9a1ccea9500c9b81092a528830867e8e0912d0a86"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSameSendTest.kt",
+      "normalization": "lf",
+      "sha256": "d9c9eb714d133e43f21c5113ca81c4fafecf88d81d756e8667a74666f41db6cb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalNativeRecoveryAdmissionTest.kt",
+      "normalization": "lf",
+      "sha256": "f12bd425a3b1f435c1401b460ed0c45f202e88ebbfc7eaa35a583940b3c39a5f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoAuthorizationRecaptureViewModelTest.kt",
+      "normalization": "lf",
+      "sha256": "3269fb897678d69cb707f413c2ab64bf2f13dc9368541505c0ca2f6db7a0cbc9"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoFallbackCauseViewModelTest.kt",
+      "normalization": "lf",
+      "sha256": "d289a96dd2e411f7c0bb014d464f1ff04836bc113c441a138f41f0ddb41538d5"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMetadataRelatedViewModelTest.kt",
+      "normalization": "lf",
+      "sha256": "e82700d47cd367bde5f728e147e5b9c05eaf173285892688dff3e938277f9408"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopRepostCoinTest.kt",
+      "normalization": "lf",
+      "sha256": "75d15cbaeed74900d6212315e4ce04d0e50f84bc3aaa9c47f22da1f00f2ce98c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopVideoDynamicShareTest.kt",
+      "normalization": "lf",
+      "sha256": "f4374a4ce58b6ee35aa8034dbf0c27126ba505b5800905daad84fa8c83720ae0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsCoinDialogRequestTest.kt",
+      "normalization": "lf",
+      "sha256": "017e2cf4b69496fd7e52a9c34e040d7362aaccc5706ae034fe18d7fb042cb7c2"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommandAttentionBindingTest.kt",
+      "normalization": "lf",
+      "sha256": "9e4b07250ff1596cb5b55a2cf89b69c5b2f71593d03a84272e7c570a9754c78b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsConfirmedVideoFeedbackTest.kt",
+      "normalization": "lf",
+      "sha256": "62070ccca82b49d45da2381b8600d0a62066ed7c2ea364e47b10c104d8e0d82d"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsRelatedVideosRegressionTest.kt",
+      "normalization": "lf",
+      "sha256": "01ffe156fcc2ea955a5387c3c32351de71297f70024f1852d1e0f2b8bf3d88eb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsSponsorSkipCommandTest.kt",
+      "normalization": "lf",
+      "sha256": "dc537234384efdb22f18eba7a023f71c156ff03109b83f0d99a66c1db439a4ce"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoDownloadSelectionTest.kt",
+      "normalization": "lf",
+      "sha256": "24d11fd9b9e92f34d74aae98df0c1ca8987e94b29800d850ba868917a07d9161"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoEngagementBindingTest.kt",
+      "normalization": "lf",
+      "sha256": "f575c7cef456ff3538c82d6eabb77e8af5a2fbdff41ecde9b22a2fd4d89f1580"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoFeedbackLifetimeTest.kt",
+      "normalization": "lf",
+      "sha256": "754af1f7f51723eb8ff8f03df30dd18218a9d58228e4c81ca4382d1348f0f412"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoFeedbackOriginTest.kt",
+      "normalization": "lf",
+      "sha256": "625f6a9f148e85d854ef0c0c2468bfd721785ec0ad4b903470b8d107369c86f8"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoFollowGroupViewModelTest.kt",
+      "normalization": "lf",
+      "sha256": "4de9bf119fead93d4918e54adf36c0e9b71ee79ce9ad9acba8912fb7af5d55d1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoLoadErrorTest.kt",
+      "normalization": "lf",
+      "sha256": "30856d97c7032416e5d3883a3d0a4515237ba5988fdd89655fccd0c830c33156"
     },
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "59cf00bf39b716f69b0b965c2a12f33ea06a1fc848fe9041d8fc14d6bd454a72"
+      "sha256": "6909b8ba4118c5aea30ff6bbae4b8e2f1c6933eb943afcfbaab3dc33301608ee"
     },
     {
-      "path": "desktop/tools/extract-upstream-home-core-refresh.py",
+      "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
       "normalization": "lf",
-      "sha256": "93c0b4c28ececa016725dd37ddd56bdd347c21529220ca51ec6191387d8f146c"
+      "sha256": "cb345706add2999a9c4f67f327c9fdacd434bf60aa85bd081ee127a4af4e7705"
     },
     {
-      "path": "desktop/tools/extract-upstream-video-comment-ui.py",
+      "path": "desktop/tools/extract-upstream-video-content-full.py",
       "normalization": "lf",
-      "sha256": "f6491f8002fe28bf5cd4be93e55f410b88b3acab387072f861542d566ef459ba"
+      "sha256": "e59400d85bc086db4803fafc3896c775b13816f4bd31dfa2d218e626fad3bd02"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-full-units.py",
+      "normalization": "lf",
+      "sha256": "bdd83b95d9317704a41ddd9f4f16dd78aa9faab9d20b9ca0265031b0909a76b3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "normalization": "lf",
+      "sha256": "1f3df73994eaaadc425e5465546adaa7050d292f72f6503ca33eecaeb03756d5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-full-controls.py",
+      "normalization": "lf",
+      "sha256": "8a12fcf13af766cc1208ffdbf85f1b9b3a1baceeeb92076bd65345991101cd52"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-section-full.py",
+      "normalization": "lf",
+      "sha256": "80c77a06e84ca82ae8fe8e03f9df6bb309e87041d88735fed85dbd665962303e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-state-core.py",
+      "normalization": "lf",
+      "sha256": "e347b4d76543312e7b6e0c8c6a8c738126d173537e4d69d74fe0027db98e1686"
     },
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "45c94a9bc1ee85b1e779d65a605eeb6e9f1b1c58279722dd05906332ea1eac40"
+      "sha256": "9bcbfe55ea45e2148967c5120cd2da9da6a6093ee2b8285a975dc4f4e95f154f"
     },
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "9a2666c8d4d9f74016d6d35b7362ea11fc451dc2465e0d615f9e5111a465a687"
+      "sha256": "0fcc1d549ec564eb885a183c0a5ecf27a1ab947aa2cb4b94836c8a1efbdd2c74"
     },
     {
-      "path": "desktop/tools/v036_comment_refresh_dependencies.py",
+      "path": "desktop/tools/v037_feedback_origin.py",
       "normalization": "lf",
-      "sha256": "4d3d36fd392f0f0c8361db8e36cb6e28ca2e1545136e951ceeb107ae207cb3d6"
+      "sha256": "ac6e6a483a8f48af3af1e31f20769b9f9af54ddb37caf3b3f29aa9963f19c3d1"
     },
     {
-      "path": "desktop/tools/v036_video_comment_viewport.py",
+      "path": "desktop/tools/v037_player_chrome.py",
       "normalization": "lf",
-      "sha256": "16ed9271cbec2ae650d2ec436503afc8b80edc10d697f5dbc57ef405a130c7b1"
+      "sha256": "994924a2fd0ce64bb2ac872eebb63ae9001d14a6c86f128d14274773691ca040"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshBox.kt",
-      "normalization": "raw",
-      "sha256": "0e2dcc71d6dda0a1e0ff6df952a111540f13e83022d6470b2aea89f23afa62c1"
+      "path": "desktop/tools/v037_player_closure.py",
+      "normalization": "lf",
+      "sha256": "c2c834b6b36b8e90820cd86b793dc99bcc72fa89f44d5a60d6b081e3cc2f807a"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshPolicy.kt",
-      "normalization": "raw",
-      "sha256": "b176222984174db4c73fe4009bbf1401328d38889258dc45b03e33e5878a011f"
+      "path": "desktop/tools/v037_player_interaction.py",
+      "normalization": "lf",
+      "sha256": "72efe48a5b1b2021643dfb4d77ec04a27f6235ae4d0d0f08f34869335083d564"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/AdaptivePullToRefreshPolicyTest.kt",
-      "normalization": "raw",
-      "sha256": "34f0fb7c69f1d9f3fc376e8b50ae833e0ade4cd528b4546f239858ca24225bf6"
+      "path": "desktop/tools/v037_player_known_state.py",
+      "normalization": "lf",
+      "sha256": "7782f77e1d7883459c6ee8733b4f1af4128c5ef2e0443f9d8ef24476ddc9192b"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/ComfortablePullToRefreshBox.kt",
-      "normalization": "raw",
-      "sha256": "1a6b2e1f989eadcaab4fe516351d4c09ab56db867fafa1e5b18644d2d320465d"
+      "path": "desktop/tools/v037_player_owner_state.py",
+      "normalization": "lf",
+      "sha256": "f8b3c4f248c8e4620d8fccbdcd44333d6d941a04eb5f41cbe9692762e4f122dd"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/VideoContentDeferredLayout.kt",
-      "normalization": "raw",
-      "sha256": "891f3f44d01bc5bd7b0ee22a0eca1e95c29c6c64c1bd481e8fc887fee071772b"
+      "path": "desktop/tools/v037_player_page_backdrop.py",
+      "normalization": "lf",
+      "sha256": "fc7d9958b28e68b9355d6ca751c1d320090c6cf97e491fb798ae0e1e09da3583"
     },
     {
-      "path": "desktop/upstream-slices/v036-comment-refresh-dependencies/manifest.json",
-      "normalization": "raw",
-      "sha256": "9c684c5a61d6a2847782f64ca660750a73ebd0c65593bd8d31ae5736974ece4c"
+      "path": "desktop/tools/v037_player_render.py",
+      "normalization": "lf",
+      "sha256": "ad35c4b954bdcc019f6433e83d5e913f17e289b26789bbcd26bee23f08252d7a"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentRefreshContainer.kt",
-      "normalization": "raw",
-      "sha256": "38865ed5d0b7e162afaf69341cc320d5eb03b03bc848da688b686dce1edc8162"
+      "path": "desktop/tools/v037_player_shared_material.py",
+      "normalization": "lf",
+      "sha256": "e5b6bfa7ca27b13c14e7b08535b582383af6090671d9a300cf8ed66e1836e4be"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSheetHost.kt",
-      "normalization": "raw",
-      "sha256": "e49e06b6dbc936399f689736207edaaa90deb47a1bc26e723519b9594b089445"
+      "path": "desktop/tools/v037_video_feedback_adapter.py",
+      "normalization": "lf",
+      "sha256": "b645a53d205dce6c7742208a579e9d3dabf1b74473b26fb0ee7ce9f05b8a1f91"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoCommentSkeletonSlots.kt",
-      "normalization": "raw",
-      "sha256": "892db4df95aec372bd99153348f5aafa831b762f0eded68eca466d4777fbb02d"
+      "path": "desktop/tools/verify-upstream-video-player-full-controls.py",
+      "normalization": "lf",
+      "sha256": "7c86db7cd44d3750fcb40e7df3fb9ad49e658446e25d3fb557196f658124fe89"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-viewport/VideoContentSection.kt",
+      "path": "desktop/upstream-slices/v037-player-chrome/BottomControlBar.kt",
       "normalization": "raw",
-      "sha256": "c1732422eddf6a06676b77f3d53cee6a9af936a144b35c9f6d6a16c798b18786"
+      "sha256": "d869e05e416286c340431cd06c66aff59350b6ee656c249763e15564ebf8d29c"
     },
     {
-      "path": "desktop/upstream-slices/v036-video-comment-viewport/manifest.json",
+      "path": "desktop/upstream-slices/v037-player-chrome/BottomControlBarLayoutPolicy.kt",
       "normalization": "raw",
-      "sha256": "4244f31ce6fca7048f3c4e4c8ac031541cb6225622a1c13abe27a4f4be8828f7"
+      "sha256": "e64ed514bae94db7f80150ce52b8bc52522556f4731bc7532c4624c9370febb4"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/BottomControlBarLayoutPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "9b905803dc1889a632e242504618b2ccb5c3dd8943f78c07ba5a4387f2809f65"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/BottomControlBarPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "cd8556b5989081bfa158d932c6f19164d9167a023b8004848a14cf28741475de"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/TopControlBar.kt",
+      "normalization": "raw",
+      "sha256": "ce2a77f51a5b7edeee80e1392f09148cf166705969d05c3e66b92ad8a243e21b"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/TopControlBarLayoutPolicy.kt",
+      "normalization": "raw",
+      "sha256": "caa69fb20cad28f3d923902edf640ce8fccd3a68846685980a6f7b783fdfe6d6"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/TopControlBarLayoutPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "ca5444e2483f61b11b08c9d55fd005e2a9ce8201d57e05996c4da32799c947bc"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/TopControlBarPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "89a8db4485f2b24d2a004cb9f1e10aaf60d309751d7feb72cdba1bc4507a06b9"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/VideoPlayerOverlayVisualPolicy.kt",
+      "normalization": "raw",
+      "sha256": "c016665dcb7720f4120cbdf589ec60e5fc80d711cec14abae8454b2d3c04e60b"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-chrome/manifest.json",
+      "normalization": "raw",
+      "sha256": "be70bab320f8213ae710a0df27a4693a069e79a2f6e3d8d77e2c0117c40a82c0"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/BiliSubtitlePolicy.kt",
+      "normalization": "raw",
+      "sha256": "7b7c7a0a44986e9f5427234d28806bb4397de2ada08ccc7e635828404fa2cf20"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/CommentThreadNavigationBlur.kt",
+      "normalization": "raw",
+      "sha256": "121a3405ae7168ad0679491f3f2ce02178059d29c09938f8f0ca25ed3eaa9d2a"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/DanmakuSendDialog.kt",
+      "normalization": "raw",
+      "sha256": "69b772d32a61e02091e9464e8177c4a206c881e40206da73d854afd5cad9d602"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/ImmersiveStatusBarBackdrop.kt",
+      "normalization": "raw",
+      "sha256": "64a82070fdc68b0bed69733a77c4a589ec2e36743b8b67de3e4fa754f8f09386"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/LandscapeDanmakuComposer.kt",
+      "normalization": "raw",
+      "sha256": "e1b06c6fbf75cb095828cdc3cf5f003fb103cc2539f1ff8b0149e68a916ed747"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/LandscapeSidePanel.kt",
+      "normalization": "raw",
+      "sha256": "f7865f21408545767fbeeed0930deb28d8df70da9bff07239d74de24f89b8a04"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/NativeDanmakuToggleButton.kt",
+      "normalization": "raw",
+      "sha256": "408fef181949d057f2e61b4984dfb7fd1d12f7d0c8554a04003f1e410c5be25d"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/PagesSelector.kt",
+      "normalization": "raw",
+      "sha256": "389d4e15914cb607ff54c04e1550e0bf488e4b2990ee57bd85a3ce4cb8ec71d2"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/PbpProgressPolicy.kt",
+      "normalization": "raw",
+      "sha256": "c757560a6adc62d089ab8fd22ee2c0cdcf49105640ac2b32fc0973dc2292dbc5"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/PlaybackButtonComponents.kt",
+      "normalization": "raw",
+      "sha256": "cfefb2bf5a940ce27561627b09ecaaa4f35fbe2bd617c11dca51a83108470723"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/PlayerMiuixListPopup.kt",
+      "normalization": "raw",
+      "sha256": "3d42bf0903082287ba1f78c0094260c0c01892f7d71e5ce9852fad5d91f0cb00"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/SettingsManager.kt",
+      "normalization": "raw",
+      "sha256": "0a020e089e60dc523ff538bb2b0acf4fc073d13366b81d294549e65ec5f08c86"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/VideoAspectRatio.kt",
+      "normalization": "raw",
+      "sha256": "d3b6aea37e33a28f9598fbd03410af0844b5c514aa937cf77568dbf40703b398"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/VideoDetailPlatformPolicy.kt",
+      "normalization": "raw",
+      "sha256": "1db79ab2f86edfcd1582a38b2dea3b26acebed676a761d594e5f003aef444cc8"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/VideoPlaybackUseCase.kt",
+      "normalization": "raw",
+      "sha256": "132a6a420bf6a8ef156ad75274f19dbb4d812297fd6c377d54da0a681f9df0a2"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/VideoPlayerOverlay.kt",
+      "normalization": "raw",
+      "sha256": "9b490143e3096efc3656df5c23eb7af10c54f52018bae1946ce71fc2053df97e"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/VideoPlayerOverlayContracts.kt",
+      "normalization": "raw",
+      "sha256": "89fd68782a25c33c4ce5f827f79e987bd47246f4b37ec9d096f3889ba0510c12"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/VideoSettingsPanel.kt",
+      "normalization": "raw",
+      "sha256": "78606812e70986e3d3e78cb4f683e28f0a87698d67074184f80f71f369f896e4"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-closure/manifest.json",
+      "normalization": "raw",
+      "sha256": "7faf3abc1d334d1d439f36c06286c4059841f76ebf1c79038c0c46f3da205246"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/ActionRepository.kt",
+      "normalization": "raw",
+      "sha256": "beee46a48288a403cdeb60a951aac3a2d928fcae5d22406ce0e39b53ff2e9e68"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/UserActionRepository.kt",
+      "normalization": "raw",
+      "sha256": "4737610ba2a362948558d6ff1fc9d8ae5d47d7f1e4e1111b256e9d4d5aee4d48"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/VideoActionSection.kt",
+      "normalization": "raw",
+      "sha256": "4e30673951232a393c49507cb6bd8eb75f7ee48e172b29d8eef9cc5196cd0b56"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/VideoEngagementViewModel.kt",
+      "normalization": "raw",
+      "sha256": "76c8a05fe6ee2901a4b98a04c6ccb1f80c08c4ffd4440e6961219303a74de5b2"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/VideoInfoSection.kt",
+      "normalization": "raw",
+      "sha256": "5de673e0919dca591289c2382fe03b9418922dc8bec89a54df314e74109dde69"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/VideoInteractionStatusCacheTest.kt",
+      "normalization": "raw",
+      "sha256": "2f553949368d5f42000d6c37653a09d293a25e1ba578680f102bce977d08d034"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/VideoInteractionUseCase.kt",
+      "normalization": "raw",
+      "sha256": "2586051bc40d2cbd1544aab1d15217e0be0e9268ff8ce518a04c842dd49c20f5"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/VideoPlaybackUseCase.kt",
+      "normalization": "raw",
+      "sha256": "132a6a420bf6a8ef156ad75274f19dbb4d812297fd6c377d54da0a681f9df0a2"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/VideoPlaybackViewModel.kt",
+      "normalization": "raw",
+      "sha256": "172898cc9e57ece032b9576d65fb4bc7ec930d17183fe58f34641955cb2fdf4f"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/WatchLaterRepository.kt",
+      "normalization": "raw",
+      "sha256": "bddedacaff3f4ae5a402c2b72bbd5000209d0d6a820b9e2006591e6103dba8b5"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-interaction-seed/manifest.json",
+      "normalization": "raw",
+      "sha256": "273e0f492c93c1437cbb2c56d1ce113398945e7c182f47ba68bf694c81dbf3af"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-owner-state/VideoEngagementViewModel.kt",
+      "normalization": "raw",
+      "sha256": "76c8a05fe6ee2901a4b98a04c6ccb1f80c08c4ffd4440e6961219303a74de5b2"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-owner-state/VideoPlayerSection.kt",
+      "normalization": "raw",
+      "sha256": "161cbcfe415ca6c5b0df477bda6fa66253a0c7f3f6dce12a17bf08fb971d1c9b"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-owner-state/VideoPlayerSectionContracts.kt",
+      "normalization": "raw",
+      "sha256": "6a3da30635b753ec8adbe2c7fdfe463483401c142a41ba7c5727cc7adfd0214a"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-owner-state/manifest.json",
+      "normalization": "raw",
+      "sha256": "e0d6f1455e4df8156ea7767efe17fbd660c87d14ae468a945998b6c2894a90b6"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-page-backdrop/ChromeBackdropSource.kt",
+      "normalization": "raw",
+      "sha256": "ae30c70ebbfc8b57d18b5b362ecd39547d42b638d90a9b2e21de5a6be63d2ae4"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-page-backdrop/PlayerPageBackdrop.kt",
+      "normalization": "raw",
+      "sha256": "f3598ff83615ded75f55efaed5f39fa3b95f5a45bd2098ecc29b05deee88e7ec"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-page-backdrop/PlayerPageBackdropPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "825e3c3c0e0e4b2c816ff656a2946b8f395dd96f53f67766dddb532e32eb992a"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-page-backdrop/manifest.json",
+      "normalization": "raw",
+      "sha256": "f9640476d95332a5e6d6a31afd010506779d8fedc4e0903d75b891f58087b914"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-render-closure/AppElasticPress.kt",
+      "normalization": "raw",
+      "sha256": "533cb5bb042a794000ef3afe9d3aa12bf76d1fb879e191dd934237129d04137f"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-render-closure/PlayerChromeLayout.kt",
+      "normalization": "raw",
+      "sha256": "e43211fde64f48bc1c0b355db669034b9d38aee817d412f9adebe00027923ce8"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-render-closure/PlayerControlGlass.kt",
+      "normalization": "raw",
+      "sha256": "369653f30e4d7db00118a8f5dc9b2357ca359666d927c2135e0944b64ea9bfbf"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-render-closure/VideoPlayerOverlayProgressState.kt",
+      "normalization": "raw",
+      "sha256": "a46f7995e0b8e7b7a3535f8b23ca9a756f71d9acbf4cf6f8fe2b00702b858ce1"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-render-closure/VideoPlayerProgressContent.kt",
+      "normalization": "raw",
+      "sha256": "901ea2ae904e6119803f06ecc8a15eec6214dd2b82bf06adc8f19a13ffb78257"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-render-closure/manifest.json",
+      "normalization": "raw",
+      "sha256": "b921ef87f1376bdf0900339f9ccb201a12bfc704a6786c821d0fbf91f73f8ae9"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-shared-material/AppTopBarIconDecoration.kt",
+      "normalization": "raw",
+      "sha256": "f232c8cd3ac5e0bb71c9e47ca425c9e6670ea4c95b801c7a2142d4783137e2b9"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-shared-material/BottomBarMatchedLiquidChrome.kt",
+      "normalization": "raw",
+      "sha256": "6f5dbf1136a5795e4ec671461bc972227b63d0a0a869406252ef7db8cfb18522"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-shared-material/FloatingDockChrome.kt",
+      "normalization": "raw",
+      "sha256": "a63c905461965acc4093921217e50eb007a075a851444d9f8fd9e7900a55dca8"
+    },
+    {
+      "path": "desktop/upstream-slices/v037-player-shared-material/manifest.json",
+      "normalization": "raw",
+      "sha256": "7b2adf98ed6fa6c4271e1b47c9b4b1c33ba698e1e7908c7fce2630fc88f0805c"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "859258713ad38a1b5963fb59756c59a76fa3ce41e3526f31065620c8ccc004d6"
+      "sha256": "dd2f3441c8c2485ea905f2cca4a0e88cba5aba29290d1491f6ecab9340b87175"
     }
   ],
   "classes": {
@@ -122,9 +602,36 @@
     "com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentCacheConsumptionTest": 5,
     "com.android.purebilibili.feature.dynamic.DynamicCommentLoadPolicyTest": 10,
     "com.bilipai.desktop.data.DesktopDynamicCommentCacheConsumptionTest": 7,
-    "com.android.purebilibili.core.ui.AdaptivePullToRefreshPolicyTest": 4
+    "com.android.purebilibili.core.ui.AdaptivePullToRefreshPolicyTest": 4,
+    "com.android.purebilibili.data.repository.VideoInteractionStatusCacheTest": 13,
+    "com.bilipai.desktop.player.MpvBackdropFrameTest": 7,
+    "com.bilipai.desktop.ui.DesktopBangumiDefaultQualityTest": 7,
+    "com.bilipai.desktop.ui.DesktopBrandSuccessEngagementTest": 4,
+    "com.bilipai.desktop.ui.DesktopOriginalDanmakuSameSendTest": 5,
+    "com.bilipai.desktop.ui.DesktopOriginalNativeRecoveryAdmissionTest": 11,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoAuthorizationRecaptureViewModelTest": 2,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoFallbackCauseViewModelTest": 3,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoMetadataRelatedViewModelTest": 8,
+    "com.bilipai.desktop.ui.DesktopRepostCoinTest": 6,
+    "com.bilipai.desktop.ui.DesktopVideoDynamicShareTest": 21,
+    "com.bilipai.desktop.ui.DesktopWindowsCoinDialogRequestTest": 9,
+    "com.bilipai.desktop.ui.DesktopWindowsCommandAttentionBindingTest": 12,
+    "com.bilipai.desktop.ui.DesktopWindowsConfirmedVideoFeedbackTest": 4,
+    "com.bilipai.desktop.ui.DesktopWindowsRelatedVideosRegressionTest": 10,
+    "com.bilipai.desktop.ui.DesktopWindowsSponsorSkipCommandTest": 6,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoDownloadSelectionTest": 27,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoEngagementBindingTest": 7,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackLifetimeTest": 11,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoFeedbackOriginTest": 7,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupViewModelTest": 8,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoLoadErrorTest": 6,
+    "com.android.purebilibili.feature.video.ui.overlay.BottomControlBarLayoutPolicyTest": 4,
+    "com.android.purebilibili.feature.video.ui.overlay.BottomControlBarPolicyTest": 19,
+    "com.android.purebilibili.feature.video.ui.overlay.TopControlBarLayoutPolicyTest": 5,
+    "com.android.purebilibili.feature.video.ui.overlay.TopControlBarPolicyTest": 15,
+    "com.android.purebilibili.feature.video.ui.section.PlayerPageBackdropPolicyTest": 3
   },
-  "expectedTests": 113,
+  "expectedTests": 353,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,

@@ -18,6 +18,7 @@ internal class DesktopOriginalVideoEngagementEnvironment(
     val coinBalanceLoader: VideoCoinBalanceLoader,
     private val isCurrent: () -> Boolean,
     private val commitIfCurrent: ((() -> Unit) -> Boolean),
+    val interactionSession: () -> Any,
 ) {
     fun isOwned(): Boolean = isCurrent() && DesktopOriginalVideoEngagementPresentation.currentIsOwned()
     fun assertOwned() {
@@ -115,6 +116,15 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
             val events = presentation.brandEvents ?: return
             val origin = DesktopBrandSuccessOrigin(caller, presentation::isFeedbackOwned, presentation::admitFeedback)
             events.followChanged(origin, following)
+        }
+        fun confirmBrandFavorite() {
+            val request = active.get() ?: return
+            val caller = request.job ?: return
+            if (!request.started || !caller.isActive) return
+            val presentation = request.presentation
+            val events = presentation.brandEvents ?: return
+            val origin = DesktopBrandSuccessOrigin(caller, presentation::isFeedbackOwned, presentation::admitFeedback)
+            events.favoriteSaved(origin)
         }
         fun capture(): DesktopOriginalVideoEngagementPresentation? = active.get()?.presentation
         fun currentIsOwned(): Boolean = active.get()?.let {

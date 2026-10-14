@@ -43,6 +43,12 @@ def lens_preflight_visibility_transforms():
  return [('private const val '+name+' =','internal const val '+name+' =') for name in LENS_PREFLIGHT_CONSTANTS]
 
 def desktop_glass_theme_transforms(path):
+ from v037_player_shared_material import fixed_sources
+ selected=fixed_sources().get(path)
+ if selected is not None and 'import androidx.compose.foundation.isSystemInDarkTheme\n' not in selected:
+  assert 'isSystemInDarkTheme(' not in selected,'Unknown original material theme contract'
+  return []
+
  # Original shadows/readability scrims and reused containers follow the app palette.
  # Keep every original expression; only its required platform theme read changes.
  return [('import androidx.compose.foundation.isSystemInDarkTheme\n',
@@ -87,6 +93,9 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   if path==V027_LENS_PATH:source,identity=fixed_v027_lens(REPO)
   else:
    source=read(_desktop_canonical_source(REPO, path));original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).decode().replace('\r\n','\n');assert source==original,path
+  from v037_player_shared_material import selected_source,identity_for
+  override=identity_for(path)
+  if override is not None:source=selected_source(path,source);identity=override
   package=re.search(r'(?m)^package (\S+)',source).group(1)
   selected=[]
   if names is None:text=source
@@ -108,6 +117,8 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   p=row['path'];t=desktop_glass_theme_transforms(p)
   if p.endswith('LiquidGlassAdaptiveReadability.kt'):continue
   s=fixed_v027_lens(REPO)[0] if p==V027_LENS_PATH else read(_desktop_canonical_source(REPO, p))
+  from v037_player_shared_material import selected_source
+  s=selected_source(p,s)
   if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()+desktop_glass_uniform_transforms()
   if p.endswith('AppLiquidAwareTabRow.kt'):
    t += [('import androidx.compose.ui.Modifier','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground'),('        modifier = modifier,\n        enabled = enabled,','        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,')]

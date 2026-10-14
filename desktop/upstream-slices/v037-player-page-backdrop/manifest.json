@@ -1,0 +1,26 @@
+{
+  "fixedUpstreamCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/PlayerPageBackdrop.kt",
+      "filename": "PlayerPageBackdrop.kt",
+      "bytes": 2184,
+      "sha256Bytes": "f3598ff83615ded75f55efaed5f39fa3b95f5a45bd2098ecc29b05deee88e7ec",
+      "gitBlob": "412d50de96fa4b6fe2c4557ebea61ad1af23fb33"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/section/PlayerPageBackdropPolicyTest.kt",
+      "filename": "PlayerPageBackdropPolicyTest.kt",
+      "bytes": 2092,
+      "sha256Bytes": "825e3c3c0e0e4b2c816ff656a2946b8f395dd96f53f67766dddb532e32eb992a",
+      "gitBlob": "3ff9b22771b2ed5b1843c3aef12c3dff3a46b4f8"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt",
+      "filename": "ChromeBackdropSource.kt",
+      "bytes": 2662,
+      "sha256Bytes": "ae30c70ebbfc8b57d18b5b362ecd39547d42b638d90a9b2e21de5a6be63d2ae4",
+      "gitBlob": "3365509b681d8f207d307cdc12226cfb34351edb"
+    }
+  ]
+}
