@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.serialization.json.*
 import java.util.concurrent.atomic.AtomicBoolean
 import com.android.purebilibili.core.store.DesktopDynamicCardSettings
+import com.android.purebilibili.core.util.LocalWindowSizeClass
 import com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicReplySession
 import com.bilipai.desktop.appearance.LocalDesktopTextClipboard
 
@@ -311,6 +312,8 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
     }
     val pageChrome=remember(preferences){DesktopDynamicPageChromePreferences(preferences.context)}
     val pageDirection by pageChrome.pageLayoutDirection.collectAsState(pageChrome.peekPageLayoutDirection())
+    val tabPreferences=remember(preferences){DesktopDynamicTabsPreferences(preferences.context)}
+    val displayMode by tabPreferences.displayMode.collectAsState(tabPreferences.initialDisplayMode)
     val defaultLayout by DesktopDynamicCardSettings.getDynamicDetailImageLayout(preferences.context).collectAsState(
         initial=DesktopDynamicCardSettings.peekDynamicDetailImageLayout(preferences.context))
     val uiState=error?.let{DesktopOriginalDynamicDetailUiState.Error(it.message.orEmpty())}
@@ -321,12 +324,17 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
         CompositionLocalProvider(LocalDesktopDynamicCardMutations provides detailMutations,
             LocalDesktopCommentBindings provides platform) {
             DesktopDetailWindow {
+                val directionEffects = resolveDynamicPageDirectionEffects(
+                    displayMode,
+                    pageDirection,
+                    LocalWindowSizeClass.current.shouldUseSplitLayout,
+                )
                 DesktopOriginalDynamicDetailLayout(id,uiState,replySession,defaultLayout,
                     liquidGlassEnabled=false,currentMid=account?.mid,
                     openCommentRootRpid=route.rootReplyId,openCommentTargetRpid=route.targetReplyId,
                     onBack=navigation.onDynamicBack,onRetry={revision++},onUserClick=navigation.onUser,
                     onShowReactions=if(capturedReactionNavigation==null)null else ::showReactions,
-                    contentOnRight=resolveDynamicDetailContentOnRight(pageDirection)) {layout,onCommentClick->
+                    contentOnRight=directionEffects.detailContentOnRight) {layout,onCommentClick->
                     data?.item?.let{CommunityDynamicCard(it,community,navigation,details=true,
                         detailImageLayoutOverride=layout,onDetailCommentClick=onCommentClick)}
                 }

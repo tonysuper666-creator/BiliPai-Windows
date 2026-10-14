@@ -8,6 +8,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.components.AppWindowAction
 import com.android.purebilibili.core.ui.resolveGlobalWallpaperProtectiveColor
+import com.android.purebilibili.data.model.response.DynamicItem
+import com.android.purebilibili.data.model.response.OpusContentBlock
+import com.android.purebilibili.data.model.response.OpusMajor
+import com.android.purebilibili.data.model.response.OpusPic
 import com.android.purebilibili.feature.dynamic.SidebarUser
 
 // Policies copied from the pinned originals (v0.2.5 79e8fa30):
@@ -175,9 +179,97 @@ internal fun resolveDynamicSidebarOnRight(
     return if (direction == DesktopDynamicPageLayoutDirection.RIGHT) !base else base
 }
 
-/** Large-screen detail split. LEFT keeps the card on the left. */
+/** Large-screen detail split. LEFT keeps the card on the left in every display mode. */
 internal fun resolveDynamicDetailContentOnRight(direction: DesktopDynamicPageLayoutDirection): Boolean =
     direction == DesktopDynamicPageLayoutDirection.RIGHT
+
+/**
+ * Direction beyond the sidebar/drawer edge.
+ * HORIZONTAL and a home/large-screen split (`WindowSizeClass.shouldUseSplitLayout`)
+ * also mirror the UP rail and move the tab-strip actions. Detail panes follow direction
+ * in those contexts and in sidebar/drawer.
+ */
+internal data class DynamicPageDirectionEffects(
+    val sidebarOnRight: Boolean,
+    val upRailReversed: Boolean,
+    val tabActionsOnStart: Boolean,
+    val detailContentOnRight: Boolean,
+)
+
+internal fun resolveDynamicPageDirectionEffects(
+    mode: DesktopDynamicDisplayMode,
+    direction: DesktopDynamicPageLayoutDirection,
+    homeLargeScreenSplit: Boolean,
+): DynamicPageDirectionEffects {
+    val mirrorFeedChrome = direction == DesktopDynamicPageLayoutDirection.RIGHT &&
+        (mode.isHorizontalUserList() || homeLargeScreenSplit)
+    return DynamicPageDirectionEffects(
+        sidebarOnRight = resolveDynamicSidebarOnRight(mode, direction),
+        upRailReversed = mirrorFeedChrome,
+        tabActionsOnStart = mirrorFeedChrome,
+        detailContentOnRight = resolveDynamicDetailContentOnRight(direction),
+    )
+}
+
+/** 0 展开大图 paints paragraph-width images. Any other value is the thumbnail grid. */
+internal enum class DesktopDynamicDetailImagePresentation {
+    EXPANDED_BODY,
+    THUMBNAIL_GRID,
+}
+
+internal fun resolveDynamicDetailImagePresentation(layoutValue: Int): DesktopDynamicDetailImagePresentation =
+    if (layoutValue == 0) {
+        DesktopDynamicDetailImagePresentation.EXPANDED_BODY
+    } else {
+        DesktopDynamicDetailImagePresentation.THUMBNAIL_GRID
+    }
+
+/** Same flip as upstream `toggleDynamicDetailImageLayout`. */
+internal fun nextDynamicDetailImageLayoutValue(current: Int): Int = if (current == 0) 1 else 0
+
+private fun opusAlreadyCarriesDetailImages(opus: OpusMajor): Boolean {
+    if (opus.pics.any { it.url.isNotBlank() }) return true
+    return opus.contentBlocks.any { block ->
+        block is OpusContentBlock.Image ||
+            (block is OpusContentBlock.Divider && !block.pic?.url.isNullOrBlank())
+    }
+}
+
+/**
+ * The pinned card paints `major.draw` with DrawGridV2 and ignores the detail image layout.
+ * Expanded detail projects those items into `opus.pics` so the existing opus fallback painter
+ * switches between full-width images and the thumbnail grid. Thumbnail, feed cards, and posts
+ * that already carry opus images stay on the original item.
+ */
+internal fun projectDynamicDetailImagesForLayout(
+    item: DynamicItem,
+    layoutValue: Int,
+    isDetail: Boolean,
+): DynamicItem {
+    if (!isDetail) return item
+    if (resolveDynamicDetailImagePresentation(layoutValue) != DesktopDynamicDetailImagePresentation.EXPANDED_BODY) {
+        return item
+    }
+    val content = item.modules.module_dynamic ?: return item
+    val major = content.major ?: return item
+    val opus = major.opus
+    if (opus != null && opusAlreadyCarriesDetailImages(opus)) return item
+    val pics = major.draw?.items.orEmpty().mapNotNull { draw ->
+        val source = draw.src.trim()
+        if (source.isEmpty()) {
+            null
+        } else {
+            OpusPic(url = source, width = draw.width, height = draw.height, live_url = draw.live_url)
+        }
+    }
+    if (pics.isEmpty()) return item
+    val projected = (opus ?: OpusMajor()).copy(pics = pics)
+    return item.copy(
+        modules = item.modules.copy(
+            module_dynamic = content.copy(major = major.copy(opus = projected)),
+        ),
+    )
+}
 
 internal fun buildDynamicPageOverflowGroups(
     displayMode: DesktopDynamicDisplayMode,

@@ -201,7 +201,10 @@ internal fun DesktopDynamicPageChromeSettings(
         onCheckedChange = { value -> write { preferences.setTopActionsCollapsed(value) } },
     )
     AppText("动态页布局方向", Modifier.padding(top = 12.dp))
-    AppText("左侧保持现有侧栏和详情分栏。右侧把侧栏换边，并把大屏详情卡片放到右侧。", Modifier.padding(bottom = 4.dp))
+    AppText(
+        "左侧保持现有侧栏、顶部 UP 顺序和详情分栏。右侧把侧栏和抽屉换边；在顶部横条或大屏分栏下镜像 UP 顺序、把顶栏操作放到起始侧，并把详情卡片放到右侧。",
+        Modifier.padding(bottom = 4.dp),
+    )
     AppNativeTabRow(
         options = DesktopDynamicPageLayoutDirection.entries.map { item -> AppSegmentOption(item, item.label) },
         selectedValue = direction,

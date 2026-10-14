@@ -8,8 +8,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.util.LocalWindowSizeClass
 import com.android.purebilibili.core.store.DesktopDynamicCardSettings
 import com.android.purebilibili.core.store.DesktopDynamicSettings.DynamicFeedLayoutMode
 import com.android.purebilibili.core.ui.components.*
@@ -76,6 +79,8 @@ import kotlinx.coroutines.sync.withLock
     val collapseOnScroll by chrome.topBarCollapseOnScroll.collectAsState(chrome.peekTopBarCollapseOnScroll())
     val actionsCollapsed by chrome.topActionsCollapsed.collectAsState(chrome.peekTopActionsCollapsed())
     val pageDirection by chrome.pageLayoutDirection.collectAsState(chrome.peekPageLayoutDirection())
+    val homeLargeScreenSplit = LocalWindowSizeClass.current.shouldUseSplitLayout
+    val directionEffects = resolveDynamicPageDirectionEffects(displayMode, pageDirection, homeLargeScreenSplit)
     val chromeScroll=remember{DesktopDynamicFeedChromeScroll()}
     val listState=rememberLazyListState()
     val showHorizontalUsers=shouldShowDynamicHorizontalUserList(displayMode.isHorizontalUserList(),users.selectedLogicalTab,
@@ -100,15 +105,23 @@ import kotlinx.coroutines.sync.withLock
             onTopBarCollapseOnScrollChange={write{chrome.setTopBarCollapseOnScroll(it)}},
             pageLayoutDirection=pageDirection,
             onPageLayoutDirectionChange={write{chrome.setPageLayoutDirection(it)}},
+            homeLargeScreenSplit=homeLargeScreenSplit,
         )
     }
     val userRail: @Composable () -> Unit = {
-        HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
-            showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
-            onUserClick={users.selectUser(it,onOpenUser)},onToggleShowHidden=users::toggleShowHidden,
-            onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
-            onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}},
-            modifier=Modifier.largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL))
+        val rail: @Composable () -> Unit = {
+            HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
+                showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
+                onUserClick={users.selectUser(it,onOpenUser)},onToggleShowHidden=users::toggleShowHidden,
+                onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
+                onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}},
+                modifier=Modifier.largeScreenFocusTraversal(DesktopLargeScreenFocusAxis.HORIZONTAL))
+        }
+        if (directionEffects.upRailReversed) {
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl, content = rail)
+        } else {
+            rail()
+        }
     }
     val gridOverlay: @Composable BoxScope.() -> Unit = {
         if (topBarOverlays || userListOverlays) {
@@ -144,6 +157,7 @@ import kotlinx.coroutines.sync.withLock
             users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
         },
         pageLayoutDirection=pageDirection,
+        homeLargeScreenSplit=homeLargeScreenSplit,
         topBarOverlaysFeed=topBarOverlays,
         userListOverlaysFeed=userListOverlays,
         escapeArmed=active,

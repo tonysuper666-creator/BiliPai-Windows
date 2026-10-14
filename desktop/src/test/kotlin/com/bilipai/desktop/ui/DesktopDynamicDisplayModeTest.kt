@@ -6,6 +6,15 @@ import com.android.purebilibili.core.util.AppFoldPosture
 import com.android.purebilibili.core.util.WindowHeightSizeClass
 import com.android.purebilibili.core.util.WindowSizeClass
 import com.android.purebilibili.core.util.WindowWidthSizeClass
+import com.android.purebilibili.data.model.response.DrawItem
+import com.android.purebilibili.data.model.response.DrawMajor
+import com.android.purebilibili.data.model.response.DynamicContentModule
+import com.android.purebilibili.data.model.response.DynamicItem
+import com.android.purebilibili.data.model.response.DynamicMajor
+import com.android.purebilibili.data.model.response.DynamicModules
+import com.android.purebilibili.data.model.response.OpusContentBlock
+import com.android.purebilibili.data.model.response.OpusMajor
+import com.android.purebilibili.data.model.response.OpusPic
 import com.android.purebilibili.feature.dynamic.SidebarUser
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -124,6 +133,70 @@ class DesktopDynamicDisplayModeTest {
         assertTrue(resolveDynamicDetailContentOnRight(DesktopDynamicPageLayoutDirection.RIGHT))
     }
 
+    @Test fun pageDirectionMirrorsHorizontalRailTabActionsAndHomeSplit() {
+        val left = DesktopDynamicPageLayoutDirection.LEFT
+        val right = DesktopDynamicPageLayoutDirection.RIGHT
+        val horizontalLeft = resolveDynamicPageDirectionEffects(DesktopDynamicDisplayMode.HORIZONTAL, left, false)
+        assertFalse(horizontalLeft.upRailReversed)
+        assertFalse(horizontalLeft.tabActionsOnStart)
+        assertFalse(horizontalLeft.detailContentOnRight)
+        val horizontalRight = resolveDynamicPageDirectionEffects(DesktopDynamicDisplayMode.HORIZONTAL, right, false)
+        assertTrue(horizontalRight.upRailReversed)
+        assertTrue(horizontalRight.tabActionsOnStart)
+        assertTrue(horizontalRight.detailContentOnRight)
+        val sidebarCompact = resolveDynamicPageDirectionEffects(DesktopDynamicDisplayMode.SIDEBAR, right, false)
+        assertTrue(sidebarCompact.sidebarOnRight)
+        assertFalse(sidebarCompact.upRailReversed)
+        assertFalse(sidebarCompact.tabActionsOnStart)
+        assertTrue(sidebarCompact.detailContentOnRight)
+        val sidebarSplit = resolveDynamicPageDirectionEffects(DesktopDynamicDisplayMode.SIDEBAR, right, true)
+        assertTrue(sidebarSplit.sidebarOnRight)
+        assertTrue(sidebarSplit.upRailReversed)
+        assertTrue(sidebarSplit.tabActionsOnStart)
+        assertTrue(sidebarSplit.detailContentOnRight)
+        val sidebarSplitLeft = resolveDynamicPageDirectionEffects(DesktopDynamicDisplayMode.SIDEBAR, left, true)
+        assertFalse(sidebarSplitLeft.sidebarOnRight)
+        assertFalse(sidebarSplitLeft.upRailReversed)
+        assertFalse(sidebarSplitLeft.tabActionsOnStart)
+        assertFalse(sidebarSplitLeft.detailContentOnRight)
+        val drawerSplit = resolveDynamicPageDirectionEffects(DesktopDynamicDisplayMode.DRAWER_LEFT, right, true)
+        assertTrue(drawerSplit.sidebarOnRight)
+        assertTrue(drawerSplit.upRailReversed)
+        assertTrue(drawerSplit.tabActionsOnStart)
+        assertTrue(drawerSplit.detailContentOnRight)
+        val horizontalSplit = resolveDynamicPageDirectionEffects(DesktopDynamicDisplayMode.HORIZONTAL, right, true)
+        assertEquals(horizontalRight, horizontalSplit)
+    }
+
+    @Test fun detailImageLayoutToggleProjectsDrawItemsOntoTheExpandedPainter() {
+        assertEquals(DesktopDynamicDetailImagePresentation.EXPANDED_BODY, resolveDynamicDetailImagePresentation(0))
+        assertEquals(DesktopDynamicDetailImagePresentation.THUMBNAIL_GRID, resolveDynamicDetailImagePresentation(1))
+        assertEquals(1, nextDynamicDetailImageLayoutValue(0))
+        assertEquals(0, nextDynamicDetailImageLayoutValue(1))
+        val draw = dynamicItem(
+            draw = listOf(DrawItem(src = " https://img.example/a.jpg ", width = 800, height = 600, live_url = "https://img.example/a.mp4")),
+        )
+        assertEquals(draw, projectDynamicDetailImagesForLayout(draw, layoutValue = 1, isDetail = true))
+        assertEquals(draw, projectDynamicDetailImagesForLayout(draw, layoutValue = 0, isDetail = false))
+        val expanded = projectDynamicDetailImagesForLayout(draw, layoutValue = 0, isDetail = true)
+        assertEquals(listOf("https://img.example/a.jpg"), expanded.modules.module_dynamic?.major?.opus?.pics?.map { it.url })
+        assertEquals(800, expanded.modules.module_dynamic?.major?.opus?.pics?.single()?.width)
+        assertEquals("https://img.example/a.mp4", expanded.modules.module_dynamic?.major?.opus?.pics?.single()?.live_url)
+        assertEquals(" https://img.example/a.jpg ", expanded.modules.module_dynamic?.major?.draw?.items?.single()?.src)
+        val blank = dynamicItem(draw = listOf(DrawItem(src = "  ")))
+        assertEquals(blank, projectDynamicDetailImagesForLayout(blank, layoutValue = 0, isDetail = true))
+        val opus = dynamicItem(
+            draw = listOf(DrawItem(src = "https://img.example/draw.jpg")),
+            opus = OpusMajor(pics = listOf(OpusPic(url = "https://img.example/opus.jpg"))),
+        )
+        assertEquals(opus, projectDynamicDetailImagesForLayout(opus, layoutValue = 0, isDetail = true))
+        val blocks = dynamicItem(
+            draw = listOf(DrawItem(src = "https://img.example/draw.jpg")),
+            opus = OpusMajor(contentBlocks = listOf(OpusContentBlock.Image(OpusPic(url = "https://img.example/block.jpg")))),
+        )
+        assertEquals(blocks, projectDynamicDetailImagesForLayout(blocks, layoutValue = 0, isDetail = true))
+    }
+
     @Test fun overflowGroupsKeepOriginalLabelsAndSelection() {
         val chosen = mutableListOf<String>()
         val groups = buildDynamicPageOverflowGroups(
@@ -159,3 +232,12 @@ class DesktopDynamicDisplayModeTest {
         assertEquals(listOf("DRAWER_RIGHT", "preview:false", "layout:0", "collapse:true", "LEFT"), chosen)
     }
 }
+
+private fun dynamicItem(draw: List<DrawItem>, opus: OpusMajor? = null): DynamicItem = DynamicItem(
+    id_str = "1",
+    modules = DynamicModules(
+        module_dynamic = DynamicContentModule(
+            major = DynamicMajor(draw = DrawMajor(items = draw), opus = opus),
+        ),
+    ),
+)

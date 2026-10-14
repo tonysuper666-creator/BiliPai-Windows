@@ -72,11 +72,13 @@ internal fun DesktopDynamicModeFrame(
     notices: @Composable () -> Unit,
     feed: @Composable () -> Unit,
     pageLayoutDirection: DesktopDynamicPageLayoutDirection = DesktopDynamicPageLayoutDirection.LEFT,
+    homeLargeScreenSplit: Boolean = false,
     topBarOverlaysFeed: Boolean = false,
     userListOverlaysFeed: Boolean = false,
     escapeArmed: Boolean = true,
 ) {
-    val sidebarOnRight = resolveDynamicSidebarOnRight(mode, pageLayoutDirection)
+    val directionEffects = resolveDynamicPageDirectionEffects(mode, pageLayoutDirection, homeLargeScreenSplit)
+    val sidebarOnRight = directionEffects.sidebarOnRight
     BindDesktopDynamicDrawerEscape(
         active = escapeArmed,
         expanded = mode.isDrawer() && sidebarExpanded,
@@ -111,6 +113,7 @@ internal fun DesktopDynamicModeFrame(
                 onToggleHidden = onToggleHidden,
                 onHeaderClick = onToggleSidebar,
                 alignDividerToStart = false,
+                reverseUpRail = directionEffects.upRailReversed,
             )
         }
         Box(Modifier.weight(1f).fillMaxHeight()) {
@@ -160,6 +163,7 @@ internal fun DesktopDynamicModeFrame(
                 onToggleHidden = onToggleHidden,
                 onHeaderClick = onToggleSidebar,
                 alignDividerToStart = true,
+                reverseUpRail = directionEffects.upRailReversed,
             )
         }
     }
@@ -183,7 +187,14 @@ internal fun DesktopDynamicTabStrip(
     onTopBarCollapseOnScrollChange: (Boolean) -> Unit = {},
     pageLayoutDirection: DesktopDynamicPageLayoutDirection = DesktopDynamicPageLayoutDirection.LEFT,
     onPageLayoutDirectionChange: (DesktopDynamicPageLayoutDirection) -> Unit = {},
+    homeLargeScreenSplit: Boolean = false,
 ) {
+    val actionsOnStart = resolveDynamicPageDirectionEffects(
+        displayMode,
+        pageLayoutDirection,
+        homeLargeScreenSplit,
+    ).tabActionsOnStart
+    val actionEdge = if (actionsOnStart) Alignment.Start else Alignment.End
     val theme = LocalAppThemeConfig.current
     val glass = LocalDesktopWindowsGlassMaterial.current
     val chrome = LocalDesktopLargeScreenChromeMaterial.current
@@ -217,6 +228,58 @@ internal fun DesktopDynamicTabStrip(
             .padding(horizontal = resolveDynamicTopBarHorizontalPadding()),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        val actionDock: @Composable () -> Unit = {
+            AnimatedVisibility(
+                visible = !actionDockCollapsed,
+                enter = expandHorizontally(expandFrom = actionEdge) + fadeIn(),
+                exit = shrinkHorizontally(shrinkTowards = actionEdge) + fadeOut(),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    AppWindowActionMenu(
+                        groups = buildDynamicPageOverflowGroups(
+                            displayMode = displayMode,
+                            previewTextVisible = previewTextVisible,
+                            detailImageLayoutValue = detailImageLayoutValue,
+                            topBarCollapseOnScroll = topBarCollapseOnScroll,
+                            pageLayoutDirection = pageLayoutDirection,
+                            onDisplayMode = onDisplayModeChange,
+                            onPreviewText = onPreviewTextVisibleChange,
+                            onDetailLayout = onDetailImageLayoutChange,
+                            onTopBarCollapse = onTopBarCollapseOnScrollChange,
+                            onDirection = onPageLayoutDirectionChange,
+                        ),
+                    ) {
+                        Box(
+                            Modifier.size(desktopLargeScreenMinimumTarget()),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            AppIcon(
+                                imageVector = if (displayMode.isHorizontalUserList()) rememberAppGridLayoutIcon() else rememberAppListLayoutIcon(),
+                                contentDescription = resolveDynamicDisplayModeDescription(),
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
+                            )
+                        }
+                    }
+                    trailing()
+                }
+            }
+            AppIconButton(
+                onClick = { onActionDockCollapsedChange(!actionDockCollapsed) },
+                modifier = Modifier.defaultMinSize(
+                    minWidth = desktopLargeScreenMinimumTarget(),
+                    minHeight = desktopLargeScreenMinimumTarget(),
+                ),
+            ) {
+                AppIcon(
+                    imageVector = if (actionDockCollapsed) rememberAppChevronDownIcon() else rememberAppChevronUpIcon(),
+                    contentDescription = resolveDynamicActionDockDescription(actionDockCollapsed),
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
+                )
+            }
+        }
+        if (actionsOnStart) actionDock()
         Box(
             Modifier.weight(1f).then(
                 if (frosted) {
@@ -254,55 +317,7 @@ internal fun DesktopDynamicTabStrip(
                 )
             }
         }
-        AnimatedVisibility(
-            visible = !actionDockCollapsed,
-            enter = expandHorizontally(expandFrom = Alignment.End) + fadeIn(),
-            exit = shrinkHorizontally(shrinkTowards = Alignment.End) + fadeOut(),
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AppWindowActionMenu(
-                    groups = buildDynamicPageOverflowGroups(
-                        displayMode = displayMode,
-                        previewTextVisible = previewTextVisible,
-                        detailImageLayoutValue = detailImageLayoutValue,
-                        topBarCollapseOnScroll = topBarCollapseOnScroll,
-                        pageLayoutDirection = pageLayoutDirection,
-                        onDisplayMode = onDisplayModeChange,
-                        onPreviewText = onPreviewTextVisibleChange,
-                        onDetailLayout = onDetailImageLayoutChange,
-                        onTopBarCollapse = onTopBarCollapseOnScrollChange,
-                        onDirection = onPageLayoutDirectionChange,
-                    ),
-                ) {
-                    Box(
-                        Modifier.size(desktopLargeScreenMinimumTarget()),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        AppIcon(
-                            imageVector = if (displayMode.isHorizontalUserList()) rememberAppGridLayoutIcon() else rememberAppListLayoutIcon(),
-                            contentDescription = resolveDynamicDisplayModeDescription(),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
-                        )
-                    }
-                }
-                trailing()
-            }
-        }
-        AppIconButton(
-            onClick = { onActionDockCollapsedChange(!actionDockCollapsed) },
-            modifier = Modifier.defaultMinSize(
-                minWidth = desktopLargeScreenMinimumTarget(),
-                minHeight = desktopLargeScreenMinimumTarget(),
-            ),
-        ) {
-            AppIcon(
-                imageVector = if (actionDockCollapsed) rememberAppChevronDownIcon() else rememberAppChevronUpIcon(),
-                contentDescription = resolveDynamicActionDockDescription(actionDockCollapsed),
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(AppSpacingTokens.ExtraLarge - AppSpacingTokens.Micro),
-            )
-        }
+        if (!actionsOnStart) actionDock()
     }
 }
 
@@ -358,6 +373,7 @@ internal fun DesktopDynamicSidebarPanel(
     onToggleHidden: (Long) -> Unit,
     onHeaderClick: () -> Unit,
     alignDividerToStart: Boolean,
+    reverseUpRail: Boolean = false,
 ) {
     val width by animateDpAsState(resolveDynamicSidebarWidth(isExpanded), label = "sidebarWidth")
     val wallpaperVisible = LocalGlobalWallpaperBackdropVisible.current
@@ -375,11 +391,12 @@ internal fun DesktopDynamicSidebarPanel(
         users.filter { !it.isLive && !isDynamicUpPanelShortcut(it.uid, selfUid) }
     }
     var showLiveUsers by remember { mutableStateOf(true) }
-    val visibleUsers = remember(liveUsers, shortcutUsers, restUsers, showLiveUsers) {
+    val visibleUsers = remember(liveUsers, shortcutUsers, restUsers, showLiveUsers, reverseUpRail) {
         buildList {
             if (showLiveUsers) addAll(liveUsers)
             addAll(shortcutUsers)
             addAll(restUsers)
+            if (reverseUpRail) reverse()
         }
     }
     var initialEntranceActive by remember { mutableStateOf(true) }

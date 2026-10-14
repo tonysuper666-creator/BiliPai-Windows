@@ -195,10 +195,14 @@ internal val LocalDesktopDynamicCardRepository=staticCompositionLocalOf<DesktopR
         onPrimaryClickOverride=navigation.onPrimaryClickOverride?.let{{value->guarded{latestNavigation.onPrimaryClickOverride?.invoke(value)}}},
     )
     val uriHandler=remember(platform){object:UriHandler{override fun openUri(uri:String)=platform.openLink(uri)}}
+    val renderedLayout = detailImageLayoutOverride ?: detailLayout
+    val renderedItem = projectDynamicDetailImagesForLayout(shown, renderedLayout.value, isDetail)
     key(alive){CompositionLocalProvider(LocalDesktopDynamicCardBindings provides platform,LocalDynamicImagePreviewTextVisible provides previewText,LocalUriHandler provides uriHandler){
-        DynamicCardV2(shown,SingletonImageLoader.get(LocalPlatformContext.current),DynamicCardActions(routes,interaction),
+        key(renderedLayout) {
+        DynamicCardV2(renderedItem,SingletonImageLoader.get(LocalPlatformContext.current),DynamicCardActions(routes,interaction),
             DynamicCardPresentation(isDetail=isDetail,currentUserMid=capturedMid,likeOverride=likeOverride,
-                detailImageLayout=detailImageLayoutOverride?:detailLayout))
+                detailImageLayout=renderedLayout))
+        }
         if(repost)RepostDialog(onDismiss={repost=false},onRepost={text,alsoComment,complete->
             if(owned())scope.launch{
                 try{
