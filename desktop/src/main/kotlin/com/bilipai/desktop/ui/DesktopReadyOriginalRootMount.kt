@@ -495,6 +495,7 @@ internal class DesktopReadyOriginalRootHandle(
             LocalVideoSharedTransitionSpeedSettings provides speedSettings,
             LocalVideoTransitionAdaptiveInfo provides adaptiveTransition,
             LocalDesktopRootDynamicScroll provides dynamicScroll) {
+        ProvideDesktopHomeCardChromeLocals(resolveDesktopHomeCardChromeLocals(currentHome)) {
         var returnPrefetched by remember(routes.currentKey) { mutableStateOf(false) }
         val prepareReturn = {
             if (routes.owns() && !returnPrefetched) {
@@ -526,6 +527,7 @@ internal class DesktopReadyOriginalRootHandle(
                 leafContent = { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages, spacePages) })
             BrandSuccessFeedbackHost(brandEvents)
             }
+        }
         }
         }
         }
