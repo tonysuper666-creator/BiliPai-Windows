@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "968f1804c5acf4032ec1d35a572c0ff019910c95",
-  "windowsVersion": "0.2.427.109",
-  "createdAt": "2026-10-15T04:19:21.452831+00:00",
+  "baseHead": "3b77af16fd1c887cc3d985b871694709dfeaf71c",
+  "windowsVersion": "0.2.427.110",
+  "createdAt": "2026-10-15T04:42:45.512307+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -236,6 +236,11 @@
       "sha256": "340e19742ac6019416715244ce5dedea131a0eb8cb2235d462ed7cbaf272a7a8"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+      "normalization": "lf",
+      "sha256": "29b6b114132757c34b043a8012b7c7b5a80d58457c5d32a0163ee6a3b2f01c4a"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
       "normalization": "lf",
       "sha256": "1ba79dfa109b7ada562d5717b0e3e8ffecc3e833ea6db4dd75a5545f22a17319"
@@ -454,6 +459,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
       "normalization": "lf",
       "sha256": "13f95cc2bd277c2a27d7e68868e1c600c3f4a83b03e15c4c0c1d8c76a2ea8cf9"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerInputLayerTest.kt",
+      "normalization": "lf",
+      "sha256": "2343b75ba09a94ae294d9c3e6a7d1e32840ad6d270dda8be2792d30134153889"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerTapGesturesTest.kt",
@@ -1468,7 +1478,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "5837b424d2a50b7f5eb67451319aeafd7752690f16848bd1d0c793e1969e667f"
+      "sha256": "ca3f5af20c4d5d3e649d7b81c3c24759cc013121ced54f89f82d9e21bcff95b5"
     }
   ],
   "classes": {
@@ -1480,9 +1490,10 @@
     "com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest": 3,
     "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4,
     "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8,
-    "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 11
+    "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 11,
+    "com.bilipai.desktop.ui.DesktopOriginalPlayerInputLayerTest": 4
   },
-  "expectedTests": 76,
+  "expectedTests": 80,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1490,10 +1501,8 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackSettingsRootHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBgmCommentLinkRootNavigationTest.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerInputLayerTest.kt",
     "desktop/upstream-sources.json"
   ]
 }

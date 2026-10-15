@@ -11,6 +11,20 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import com.bilipai.desktop.player.MpvPlayer
 
+/** Windows layered-window input also tests pixel alpha. The one-code-value
+ * backdrop keeps full-player gestures reachable after controls fade away.
+ * Card-only and decorative popups retain their existing click-through behavior.
+ * https://learn.microsoft.com/en-us/windows/win32/winmsg/window-features
+ */
+@Composable
+internal fun DesktopOriginalPlayerInputLayer(content: @Composable () -> Unit) {
+    Box(Modifier.fillMaxSize()
+        .background(Color.Black.copy(alpha = 1f / 255f))
+        .desktopCommandHitRegion("original-player-surface")) {
+        content()
+    }
+}
+
 /**
  * One existing MPV Canvas plus the existing same-window transparent foreground carrier.
  * The full actual player hit region lets the original Compose gesture body receive input.
@@ -72,9 +86,7 @@ internal fun DesktopOriginalPlayerSurface(
             // Every control supplied by the caller must reject native writes until it owns a non-null version.
             if (latestOwned() && (version == null || player.ownsSourceVersion(version))) {
                 key(player) {
-                    Box(Modifier.fillMaxSize().desktopCommandHitRegion("original-player-surface")) {
-                        latestForeground()
-                    }
+                    DesktopOriginalPlayerInputLayer { latestForeground() }
                 }
             }
         }
