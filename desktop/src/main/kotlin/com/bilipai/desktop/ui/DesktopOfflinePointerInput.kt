@@ -7,6 +7,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.*
 import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
+import com.bilipai.desktop.player.MpvRuntimeProbe
+import com.bilipai.desktop.player.MpvRuntimeProbeStage
 import com.android.purebilibili.feature.download.resolveOfflineSeekPositionFromTouch
 import com.android.purebilibili.feature.download.resolveOfflineSeekProgressFromTouch
 
@@ -117,11 +119,39 @@ internal class DesktopOfflineNativeInputBridge(
         onRevealControls()
         if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.TOGGLE && matches(captured)) onTogglePlayback()
     }
+    /** The actual Root Window invokes this only after Compose declined the key.
+     * In the pinned MPV, an embedded child HWND is disabled. Its own bindings
+     * cannot replace this host input path. Never take a consumed editor key. */
+    internal fun windowKeyInput(event: java.awt.event.KeyEvent): Boolean {
+        if (event.isConsumed) return false
+        if (event.id == java.awt.event.KeyEvent.KEY_PRESSED) keyPressed(event, false)
+        else if (event.id == java.awt.event.KeyEvent.KEY_RELEASED) keyReleased(event, false)
+        return event.isConsumed
+    }
+    private fun keyPressed(event: java.awt.event.KeyEvent, requireSurfaceFocus: Boolean) {
+        if (event.isConsumed || event.keyCode != java.awt.event.KeyEvent.VK_SPACE ||
+            event.isControlDown || event.isAltDown || event.isMetaDown || event.isShiftDown ||
+            requireSurfaceFocus && !canReceiveKey()) return
+        MpvRuntimeProbe.record(if (requireSurfaceFocus) MpvRuntimeProbeStage.AWT_SPACE else MpvRuntimeProbeStage.WINDOW_SPACE)
+        val captured = current() ?: return
+        // Suppress repeats until key-up, including across source replacement.
+        if (heldSpace != null) { event.consume(); return }
+        heldSpace = captured
+        onRevealControls()
+        if (matches(captured)) onTogglePlayback()
+        event.consume()
+    }
+    private fun keyReleased(event: java.awt.event.KeyEvent, requireSurfaceFocus: Boolean) {
+        if (event.keyCode != java.awt.event.KeyEvent.VK_SPACE) return
+        val captured = heldSpace; heldSpace = null
+        if (captured != null && (!requireSurfaceFocus || canReceiveKey()) && matches(captured)) event.consume()
+    }
     private val mouse = object : java.awt.event.MouseAdapter() {
         override fun mouseEntered(event: java.awt.event.MouseEvent) { reveal() }
         override fun mouseMoved(event: java.awt.event.MouseEvent) { reveal() }
         private fun reveal() { if (current() != null) onRevealControls() }
         override fun mousePressed(event: java.awt.event.MouseEvent) {
+            MpvRuntimeProbe.record(MpvRuntimeProbeStage.AWT_MOUSE, event.button.toLong(), 1)
             press = null
             if (event.isConsumed || event.button != java.awt.event.MouseEvent.BUTTON1 ||
                 event.isControlDown || event.isAltDown || event.isMetaDown) return
@@ -129,6 +159,7 @@ internal class DesktopOfflineNativeInputBridge(
             requestNativeFocus()
         }
         override fun mouseReleased(event: java.awt.event.MouseEvent) {
+            MpvRuntimeProbe.record(MpvRuntimeProbeStage.AWT_MOUSE, event.button.toLong(), 0)
             val captured = press; press = null
             if (!event.isConsumed && event.button == java.awt.event.MouseEvent.BUTTON1 &&
                 captured != null && matches(captured)) onRevealControls()
@@ -139,24 +170,10 @@ internal class DesktopOfflineNativeInputBridge(
     }
     private val key = object : java.awt.event.KeyAdapter() {
         override fun keyPressed(event: java.awt.event.KeyEvent) {
-            if (event.isConsumed || event.keyCode != java.awt.event.KeyEvent.VK_SPACE ||
-                event.isControlDown || event.isAltDown || event.isMetaDown || event.isShiftDown ||
-                !canReceiveKey()) return
-            val captured = current() ?: return
-            val held = heldSpace
-            // A held key stays suppressed across source replacement until key-up.
-            if (held != null) { event.consume(); return }
-            if (held == null) {
-                heldSpace = captured
-                onRevealControls()
-                if (matches(captured)) onTogglePlayback()
-            }
-            event.consume()
+            keyPressed(event, true)
         }
         override fun keyReleased(event: java.awt.event.KeyEvent) {
-            if (event.keyCode != java.awt.event.KeyEvent.VK_SPACE) return
-            val captured = heldSpace; heldSpace = null
-            if (captured != null && canReceiveKey() && matches(captured)) event.consume()
+            keyReleased(event, true)
         }
     }
     init {
@@ -196,21 +213,32 @@ internal fun DesktopOfflineNativeInput(
     val latestEnabled = rememberUpdatedState(enabled)
     val latestReveal = rememberUpdatedState(onRevealControls)
     val latestToggle = rememberUpdatedState(onTogglePlayback)
-    androidx.compose.runtime.DisposableEffect(player, native.surface) {
+    val windowKeyFallback = LocalDesktopWindowKeyFallback.current
+    androidx.compose.runtime.DisposableEffect(player, native.surface, windowKeyFallback) {
         val input = DesktopOfflineNativeInputBridge(native.surface,
             { if (latestEnabled.value && player.isOwned()) native.currentSourceSnapshot() else null },
             { latestEnabled.value && player.isOwned() && native.ownsSourceSnapshot(it) },
-            { latestReveal.value() }, { latestToggle.value() },
+            { MpvRuntimeProbe.record(MpvRuntimeProbeStage.ORIGINAL_REVEAL); latestReveal.value() }, { latestToggle.value() },
             canUseSurface = {
-                window != null && native.surface.isShowing &&
-                    javax.swing.SwingUtilities.getWindowAncestor(native.surface) === window &&
-                    java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === window
+                val showing = native.surface.isShowing
+                val attached = window != null && javax.swing.SwingUtilities.getWindowAncestor(native.surface) === window
+                val active = window != null && java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === window
+                MpvRuntimeProbe.record(MpvRuntimeProbeStage.SURFACE_ADMISSION, flags =
+                    (if (window != null) 1 else 0) or (if (showing) 2 else 0) or
+                    (if (attached) 4 else 0) or (if (active) 8 else 0))
+                showing && attached && active
             })
         val registration = native.observeNativeWindowInput { event ->
             native.admitNativeWindowInput(event) {
                 if (latestEnabled.value && player.isOwned()) input.nativeWindowInput(event.kind)
             }
         }
-        onDispose { registration.close(); input.close() }
+        // Root's callback remains registered independently. No process-wide key
+        // dispatcher or OS hook: this is after the Window's Compose scene.
+        val keyRegistration = windowKeyFallback?.registerLeaf { event ->
+            val nativeEvent = event.nativeKeyEvent as? java.awt.event.KeyEvent
+            nativeEvent != null && input.windowKeyInput(nativeEvent)
+        }
+        onDispose { keyRegistration?.close(); registration.close(); input.close() }
     }
 }

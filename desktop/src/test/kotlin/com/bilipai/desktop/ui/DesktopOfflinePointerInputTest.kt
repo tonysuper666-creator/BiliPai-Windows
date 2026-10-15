@@ -280,6 +280,34 @@ class DesktopOfflineNativeInputTest {
         assertEquals(0,f.focusRequests);assertEquals(0,f.reveals);assertEquals(0,f.toggles)
     }
 
+    @Test fun unconsumedRootWindowSpaceDoesNotRequireCanvasFocus() = fixture { f ->
+        f.focused = false
+        assertTrue(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        assertEquals(1, f.toggles); assertEquals(1, f.reveals)
+        assertEquals(0, f.focusRequests)
+        assertTrue(f.windowKey(java.awt.event.KeyEvent.KEY_RELEASED).isConsumed)
+    }
+    @Test fun windowFallbackPreservesConsumedEditorAndModifiedSpace() = fixture { f ->
+        assertTrue(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED, consumed = true).isConsumed)
+        assertFalse(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED, java.awt.event.InputEvent.CTRL_DOWN_MASK).isConsumed)
+        assertFalse(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED, java.awt.event.InputEvent.SHIFT_DOWN_MASK).isConsumed)
+        assertEquals(0, f.toggles); assertEquals(0, f.reveals)
+    }
+    @Test fun windowFallbackHeldSpaceCannotToggleAReplacementSource() = fixture { f ->
+        f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); f.replaceSource()
+        repeat(5) { assertTrue(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed) }
+        assertEquals(1, f.toggles)
+        f.windowKey(java.awt.event.KeyEvent.KEY_RELEASED)
+        f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(2, f.toggles)
+    }
+    @Test fun retiredForegroundAndDisposedWindowFallbackNeverAct() = fixture { f ->
+        f.active = false
+        assertFalse(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        f.active = true; f.closeBridge()
+        assertFalse(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        assertEquals(0, f.toggles); assertEquals(0, f.reveals)
+    }
+
     private class NativeFixture(initialCanvasEnabled: Boolean) : AutoCloseable {
         val native=MpvPlayer()
         val surface=native.surface
@@ -316,6 +344,12 @@ class DesktopOfflineNativeInputTest {
             return e
         }
         fun loseFocus() { val e=java.awt.event.FocusEvent(surface,java.awt.event.FocusEvent.FOCUS_LOST);surface.focusListeners.forEach{it.focusLost(e)} }
+        fun windowKey(id:Int,modifiers:Int=0,consumed:Boolean=false):java.awt.event.KeyEvent {
+            val event=java.awt.event.KeyEvent(surface,id,1L,modifiers,java.awt.event.KeyEvent.VK_SPACE,' ')
+            if(consumed)event.consume()
+            bridge.windowKeyInput(event)
+            return event
+        }
         fun closeBridge()=bridge.close()
         fun nativeInput(kind:com.bilipai.desktop.player.MpvNativeWindowInputKind)=bridge.nativeWindowInput(kind)
         override fun close(){bridge.close();native.close()}

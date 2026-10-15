@@ -1376,6 +1376,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
         }
         private fun receiveNvidiaMessage(native: MpvNative, handle: Pointer, prefix: String, text: String) {
+            if (MpvRuntimeProbe.enabled && text.trimStart().startsWith("RTX SDK accepted; GPU frame SUBMITTED"))
+                MpvRuntimeProbe.recordChanged(MpvRuntimeProbeStage.NVIDIA_SUBMITTED_MESSAGE,
+                    first = when (prefix) { "bilipai-rtx" -> 1L; "vf" -> 2L; else -> 3L },
+                    flags = if (parseNvidiaNativeMessage(prefix, text) is NvidiaNativeMessage.VeyraSubmitted) 1 else 0)
             when (val message = parseNvidiaNativeMessage(prefix, text)) {
                 is NvidiaNativeMessage.DeviceName -> { pendingGpuName = message.name }
                 is NvidiaNativeMessage.DeviceVendor -> synchronized(lock) {
@@ -1446,6 +1450,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             val entry = activeEntry
             // Native reads stay outside source/player gates. The same real action and entry are re-admitted below.
             val snapshot = MpvVeyraPresentationProperties.read(native, handle)
+            if (MpvRuntimeProbe.enabled) MpvRuntimeProbe.recordChanged(MpvRuntimeProbeStage.NVIDIA_PRESENTATION,
+                snapshot?.reason?.toLong() ?: -1L, snapshot?.statisticsHresult?.toLong() ?: 0L,
+                (if (snapshot != null) 1 else 0) or (if (snapshot?.queued?.valid == true) 2 else 0) or
+                    (if (snapshot?.displayed?.valid == true) 4 else 0) or (if (veyraReceipt != null) 8 else 0) or
+                    (if (binding.presentationQualification?.matches(binding) == true) 16 else 0) or
+                    (if (fileLoaded) 32 else 0) or (if (filterPresent) 64 else 0))
             val actuallyPaused = property(native, handle, "pause") == "yes"
             val now = System.nanoTime()
             if (!admitNvidia(action) {
@@ -2455,6 +2465,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             // mpv_event x64 ABI: int event, int error, uint64 userdata, void* data.
             when (event.getInt(0)) {
                 16 -> { // MPV_EVENT_CLIENT_MESSAGE from this actual native child input section.
+                    MpvRuntimeProbe.record(MpvRuntimeProbeStage.NATIVE_CLIENT_MESSAGE)
                     val lease = synchronized(lock) {
                         nativeWindowInputLease?.takeIf { session === this && !closing.get() && fileLoaded &&
                             sourceVersion == activeSourceVersion && playbackRevision == activeRevision &&

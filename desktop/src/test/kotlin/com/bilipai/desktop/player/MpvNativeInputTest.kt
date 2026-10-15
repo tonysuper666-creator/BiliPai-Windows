@@ -87,6 +87,26 @@ class MpvNativeInputTest {
             assertTrue(delivered.await(5,TimeUnit.SECONDS));assertTrue(onEdt.get())
         } finally {owner.close()}
     }
+    @Test fun runtimeProbeIsSilentUnlessExplicitlyEnabled() {
+        val lines=mutableListOf<String>(); val probe=MpvRuntimeProbeRecorder(false) {lines+=it}
+        repeat(20) {probe.record(MpvRuntimeProbeStage.AWT_MOUSE, it.toLong())}
+        probe.recordChanged(MpvRuntimeProbeStage.NVIDIA_PRESENTATION, flags=127)
+        assertTrue(lines.isEmpty())
+    }
+    @Test fun runtimeProbeBoundsRepeatedEventsAndKeepsIndependentStages() {
+        val lines=mutableListOf<String>(); val probe=MpvRuntimeProbeRecorder(true) {lines+=it}
+        repeat(10000) {probe.record(MpvRuntimeProbeStage.AWT_MOUSE, it.toLong())}
+        probe.record(MpvRuntimeProbeStage.WINDOW_SPACE)
+        assertEquals(9,lines.size)
+        assertTrue(lines.all {it.matches(Regex("BILIPAI_RUNTIME_PROBE stage=[A-Z_]+ first=-?[0-9]+ second=-?[0-9]+ flags=-?[0-9]+"))})
+    }
+    @Test fun repeatedPresentationPollsDoNotExhaustTransitionEvidence() {
+        val lines=mutableListOf<String>(); val probe=MpvRuntimeProbeRecorder(true) {lines+=it}
+        repeat(1000) {probe.recordChanged(MpvRuntimeProbeStage.NVIDIA_PRESENTATION, -1, 0, 32)}
+        probe.recordChanged(MpvRuntimeProbeStage.NVIDIA_PRESENTATION, 0, 0, 127)
+        assertEquals(2,lines.size); assertTrue(lines.last().endsWith("flags=127"))
+    }
+
     private class Message(token:String,word:String) : AutoCloseable {
         val data=Memory(16);val args=Memory(16);val name=Memory(128);val action=Memory(128)
         init {data.clear();args.clear();name.clear();action.clear();name.setString(0,token,"UTF-8");action.setString(0,word,"UTF-8")
