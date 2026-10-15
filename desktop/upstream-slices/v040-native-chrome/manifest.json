@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "fixedUpstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+  "upstreamTag": "v0.4.0",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveChrome.kt",
+      "filename": "AdaptiveChrome.kt",
+      "bytes": 24444,
+      "sha256Bytes": "f25c89a48b07e16a48d83c75eccdb398ee9b664b1bbd8a849095c05ab18d1c3f",
+      "gitBlob": "07519808caad7d9d86225412474ad0c8c02dcaae"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/GlobalWallpaperBackdrop.kt",
+      "filename": "GlobalWallpaperBackdrop.kt",
+      "bytes": 2040,
+      "sha256Bytes": "9453976a3550fdc68ef9c3d468d48500fa046389c930c4e34db6252f1d261344",
+      "gitBlob": "03e4c071cbaadc7e430866a8a14b5fc231fe3271"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveScaffoldPolicy.kt",
+      "filename": "AdaptiveScaffoldPolicy.kt",
+      "bytes": 650,
+      "sha256Bytes": "520d1a4ec22d77c9a7460cd647a37e35603eb85980c21bf63ddb9cb433a5769f",
+      "gitBlob": "dba16c09a6ac6e31e28576e6ea6760cc8439e93e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChromePolicy.kt",
+      "filename": "TopReadabilityChromePolicy.kt",
+      "bytes": 1864,
+      "sha256Bytes": "21687f91a4d37f999584d0390f40c19a8e321a98700f7a5ddf727a80a9ce655d",
+      "gitBlob": "a73d627ee10df5518dd77dbb927bf0e7cfde9dd4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/BiliPaiTopBarIconDecorator.kt",
+      "filename": "BiliPaiTopBarIconDecorator.kt",
+      "bytes": 2532,
+      "sha256Bytes": "dd38b5aa9a18f32849ba4ceac2d19e39ea3dcf6d25652d0bbd7b660b7b98e58f",
+      "gitBlob": "6f6c4fc3ef4c2a5f6d1ccec71de366c82f48549b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "filename": "BottomBarMatchedLiquidChrome.kt",
+      "bytes": 25181,
+      "sha256Bytes": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07",
+      "gitBlob": "5d529789a1f464866faa16f7a384046b21676142"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "filename": "FloatingDockChrome.kt",
+      "bytes": 20357,
+      "sha256Bytes": "26267c3c98904506bdb1ca6b16dfdbc21983e4ec8c91f9158e549cb6077d0903",
+      "gitBlob": "12c25df41a0cde6cde2d47c8b5d7bc6c36ebd903"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "filename": "FloatingBottomBarGeometry.kt",
+      "bytes": 15156,
+      "sha256Bytes": "aff3a0e24e17b710ddfdcac8746de18ea71330e691e18fbb5ef1fa70eb8c858a",
+      "gitBlob": "8913a67b7911d1ef63f5776afb0cd4c09819b961"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "filename": "Lens.kt",
+      "bytes": 662,
+      "sha256Bytes": "222ac588fe6ed2b0a168024a4233f4a1de0877db71ef0cf566677c0680f5f99a",
+      "gitBlob": "b88a318322d0fe44c9de828d339042310e27c8a3"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometryTest.kt",
+      "filename": "FloatingBottomBarGeometryTest.kt",
+      "bytes": 19590,
+      "sha256Bytes": "bbe0ada6979c29756a0d1d83b36f439c59ff225b4d6b3b33088a9c2a9fd92935",
+      "gitBlob": "5ebddfce0e309e20a2e03db403fe88573764652d"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AdaptiveScaffoldPolicyTest.kt",
+      "filename": "AdaptiveScaffoldPolicyTest.kt",
+      "bytes": 927,
+      "sha256Bytes": "ef17ef785c3b13d0713fa0a86b8c695e07b2df0fbb2cc07506cd34cd3d63bde2",
+      "gitBlob": "b777645595802821a7fe32032eafd58e8e2c5608"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/TopReadabilityChromePolicyTest.kt",
+      "filename": "TopReadabilityChromePolicyTest.kt",
+      "bytes": 2965,
+      "sha256Bytes": "7b33ba45fc0e17ec4bb8ddc0a0539fecaa5dc1976487a85d356e1c2c6eb8dfe9",
+      "gitBlob": "1473c524827819cf54c0e5be5b7210cce08471d6"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AppTopChromePolicyTest.kt",
+      "filename": "AppTopChromePolicyTest.kt",
+      "bytes": 720,
+      "sha256Bytes": "652ab84a09042406d96ed88356db9988a28337e1fe1030ac8f1d40f181fbabc3",
+      "gitBlob": "9bc32321b808816ee1a29d13766f017a9395c480"
+    }
+  ],
+  "sourceScope": "Complete adaptive top chrome, original circular dock decorator, shared lens wrapper and current optical geometry; original policy tests retained",
+  "mainCompiled": false,
+  "jvmTestsExecuted": false,
+  "pixelsValidated": false,
+  "sourceIntegrationApplied": false,
+  "fullV040ParityClaimed": false
+}

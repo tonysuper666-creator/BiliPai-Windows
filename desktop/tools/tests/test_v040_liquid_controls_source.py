@@ -110,9 +110,18 @@ class V040LiquidControlsSourceTest(unittest.TestCase):
         path = source.DS+'effect/LiquidLens.kt'
         original = source.fixed_sources(REPO)[path]
         target = self.root/'components'/path.split('/main/java/',1)[1]
-        self.assertEqual(original, target.read_bytes())
         selected, proof = source.adapt(path, original)
-        self.assertEqual([], proof['edits'])
+        self.assertEqual(selected.encode(), target.read_bytes())
+        self.assertEqual(5, len(proof['edits']))
+        restored = selected
+        for edit in reversed(proof['edits']):
+            at, after = edit['offset'], edit['after']
+            self.assertEqual(after, restored[at:at+len(after)])
+            restored = restored[:at]+edit['before']+restored[at+len(after):]
+        self.assertEqual(original.decode('utf-8'), restored)
+        self.assertEqual(re.findall(r'"""(.*?)"""', original.decode('utf-8'), re.S),
+            re.findall(r'"""(.*?)"""', selected, re.S))
+        self.assertIn('withDesktopWindowsGlassUniformCache {', selected)
         caller = (self.root/'components/com/android/purebilibili/core/ui/components/AppLiquidValueControls.kt').read_text('utf-8')
         self.assertIn('import com.android.purebilibili.core.ui.effect.lens', caller)
         self.assertIn('lens(', caller)

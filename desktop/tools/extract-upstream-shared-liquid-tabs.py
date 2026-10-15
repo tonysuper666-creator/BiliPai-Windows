@@ -70,6 +70,8 @@ def desktop_glass_uniform_transforms():
    '            setFloatUniform("chromaticAberration", chromaticAberration)\n        }\n        }\n    }\n}'),
  ]
 
+from v040_native_chrome import selected_source as _native_source, identity_for as _native_identity
+
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
  parser=load('liquid_selected_parser',REPO/'desktop/tools/sync-upstream.py')
@@ -103,6 +105,8 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   if tab_override is not None:
    source=select_tabs(path,source);identity=tab_override
   if override is not None:source=selected_source(path,source);identity=override
+  native_identity=_native_identity(REPO,path)
+  if native_identity is not None:source=_native_source(REPO,path,source);identity=native_identity
   package=re.search(r'(?m)^package (\S+)',source).group(1)
   selected=[]
   if names is None:text=source
@@ -131,7 +135,8 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   s=selected_source(p,s)
   from v037_shared_tabs_progress import selected_source as select_tabs
   s=select_tabs(p,s)
-  if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()+desktop_glass_uniform_transforms()
+  s=_native_source(REPO,p,s)
+  if p==V027_LENS_PATH and _native_identity(REPO,p) is None:t+=lens_preflight_visibility_transforms()+desktop_glass_uniform_transforms()
   if p.endswith('AppLiquidAwareTabRow.kt'):
    t += [('import androidx.compose.ui.Modifier','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground'),('        modifier = modifier,\n        enabled = enabled,','        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,')]
   selected_names=None;selected_imports=''
