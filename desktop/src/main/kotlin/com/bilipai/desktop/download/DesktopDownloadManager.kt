@@ -165,9 +165,27 @@ class DesktopDownloadManager internal constructor(
             awaitRetiringHandoffWork(ticket)
             var lease = synchronized(lock) { queueAuthority?.takeIf { it.holds(stateFile) } }
             if (lease == null) {
-                val attempt = DesktopDownloadQueueAuthority.tryAcquire(stateFile, recoveryToken = ticket.token)
-                lease = checkNotNull(attempt.lease) { attempt.reason ?: "下载队列无法重新取得所有权" }
-                synchronized(lock) { check(updateHandoff === ticket && !ticket.committed); queueAuthority = lease }
+                // A retired Windows process can leave its OS lock briefly unavailable.
+                // Retry contention only; a changed/invalid transfer is a terminal failure.
+                val deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(2)
+                var attempt = DesktopDownloadQueueAuthority.tryAcquire(stateFile, recoveryToken = ticket.token)
+                while (attempt.lease == null && attempt.busy && System.nanoTime() < deadline) {
+                    mutableAuthorityReason.value = attempt.reason
+                    delay(50)
+                    if (System.nanoTime() >= deadline) break
+                    attempt = DesktopDownloadQueueAuthority.tryAcquire(stateFile, recoveryToken = ticket.token)
+                }
+                if (attempt.lease == null) mutableAuthorityReason.value = attempt.reason
+                val recovered = checkNotNull(attempt.lease) { attempt.reason ?: "下载队列无法重新取得所有权" }
+                var adopted = false
+                try {
+                    synchronized(lock) {
+                        check(updateHandoff === ticket && !ticket.committed)
+                        queueAuthority = recovered
+                        adopted = true
+                    }
+                } finally { if (!adopted) recovered.close() }
+                lease = recovered
             }
             val owned = checkNotNull(lease)
             val pending = owned.hasPendingTransfer(ticket.token)

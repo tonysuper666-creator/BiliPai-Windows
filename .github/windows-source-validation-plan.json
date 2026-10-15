@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "95a529a638f427041d2b85ff7a5c0f3393516487",
-  "windowsVersion": "0.2.427.122",
-  "createdAt": "2026-10-15T17:08:25.851935+00:00",
+  "baseHead": "11bf32a71b733ac53cdb6e86863469ece7d40861",
+  "windowsVersion": "0.2.427.123",
+  "createdAt": "2026-10-15T17:52:18.972570+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -143,7 +143,12 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
       "normalization": "lf",
-      "sha256": "2aed48cc355e083ed0c925c23fa9eeee9aab7a37f2001776e48b68f29ed05e34"
+      "sha256": "d28ed299d7f0e1bc367cd7e860c4a6d8124c09017374ba24d8cbf7f5aa15b987"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadQueueAuthority.kt",
+      "normalization": "lf",
+      "sha256": "90b98e5977a0052f808df76daa8f71931c48ddb14b3481112f7b51f3564648e2"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
@@ -448,7 +453,12 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadQueueAuthorityManagerTest.kt",
       "normalization": "lf",
-      "sha256": "bb8b464e049b85ba04c2efcdcc90cbb2d554502edd8fde50d75576b3fcf1bffd"
+      "sha256": "b9e2c5bb7261adcef5f7955e15d14ab06817879a17ce3d506426de6453035c05"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadQueueAuthorityTest.kt",
+      "normalization": "lf",
+      "sha256": "fd5a06df07a6cc439bdf296fb22222f2a1162117f42a4f8f5e1f7b33b8b6a612"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicyTest.kt",
@@ -1678,7 +1688,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "1d44adeb51e5dee855be2d5edf2cf87bc809475972caf76add6cc013f5c52fb8"
+      "sha256": "1df39bbc28d4719fabe9d66b07721eae2d9f3182e279422f4b322cdf3c5d960b"
     }
   ],
   "classes": {
@@ -1700,9 +1710,12 @@
     "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
     "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 27,
     "com.bilipai.desktop.player.MpvNativeInputTest": 15,
-    "com.bilipai.desktop.ui.DesktopWindowKeyFallbackTest": 9
+    "com.bilipai.desktop.ui.DesktopWindowKeyFallbackTest": 9,
+    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityManagerTest": 9,
+    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityTest": 6,
+    "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25
   },
-  "expectedTests": 184,
+  "expectedTests": 224,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1710,7 +1723,9 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt"
+    "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadQueueAuthorityManagerTest.kt",
+    "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true
 }

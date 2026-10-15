@@ -5,9 +5,12 @@ import com.bilipai.desktop.player.DesktopLocalPlaybackPublication
 import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.update.DesktopUpdater
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.serialization.SerializationException
 import okhttp3.OkHttpClient
 import java.io.IOException
+import java.nio.channels.FileChannel
+import java.nio.file.StandardOpenOption.WRITE
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.UUID
@@ -193,6 +196,105 @@ class DesktopDownloadQueueAuthorityManagerTest {
             assertEquals(DownloadStatus.PAUSED, original.tasks.value.single { it.id == added }.status)
             assertTrue(first.job.isCompleted); assertTrue(first.job !== resumed.job)
             assertContentEquals(initialPart, Files.readAllBytes(resumed.directory.resolve("ownership-fixture.pb.part")))
+        } finally { f.close() }
+    }
+
+    @Test fun rollbackWaitsForRealBusyLeaseThenRestoresSuccessorCheckpointAndOriginalPart(): Unit = runBlocking {
+        val f = Fixture()
+        try {
+            val original = f.manager(); val id = f.enqueue(original); val first = f.worker(id, 1)
+            val part = Files.readAllBytes(first.directory.resolve("ownership-fixture.pb.part"))
+            val transfer = token(); val ticket = original.beginUpdateHandoff(transfer)
+            first.cleanupRelease.complete(Unit); original.awaitUpdateHandoff(ticket)
+            val child = f.manager(transfer); f.worker(id, 2)
+            child.savePlaybackPosition(id, 47_000, 120_000)
+            val checkpoint = Files.readAllBytes(f.state); val pending = Files.readAllBytes(f.marker)
+            val recovery = async { original.rollbackUpdateHandoff(ticket) }
+            withTimeout(5_000) { original.authorityReason.first { it != null } }
+            assertFalse(recovery.isCompleted); assertFalse(original.acceptsMutations())
+            assertTrue(original.updateHandoffPending.value)
+            assertFailsWith<IllegalStateException> { original.resume(id) }
+            assertContentEquals(checkpoint, Files.readAllBytes(f.state))
+            assertContentEquals(pending, Files.readAllBytes(f.marker))
+            f.drain(child)
+            assertTrue(withTimeout(5_000) { recovery.await() })
+            val resumed = f.worker(id, 3)
+            assertTrue(original.acceptsMutations()); assertFalse(original.updateHandoffPending.value)
+            assertNull(original.authorityReason.value); assertFalse(Files.exists(f.marker))
+            assertEquals(47_000L, original.tasks.value.single { it.id == id }.item.lastPlaybackPositionMs)
+            assertContentEquals(part, Files.readAllBytes(resumed.directory.resolve("ownership-fixture.pb.part")))
+        } finally { f.close() }
+    }
+
+    @Test fun rollbackBusyRetryCannotAdmitChangedTransferGeneration(): Unit = runBlocking {
+        val f = Fixture()
+        try {
+            val original = f.manager(); val transfer = token(); val ticket = original.beginUpdateHandoff(transfer)
+            original.awaitUpdateHandoff(ticket)
+            val checkpoint = Files.readAllBytes(f.state)
+            FileChannel.open(f.state.resolveSibling("downloads.json.bilipai-lock"), WRITE).use { channel ->
+                channel.lock().use { blockingLease ->
+                    val recovery = async { runCatching { original.rollbackUpdateHandoff(ticket) } }
+                    withTimeout(5_000) { original.authorityReason.first { it != null } }
+                    assertFalse(recovery.isCompleted); assertFalse(original.acceptsMutations())
+                    val before = Files.readString(f.marker); assertTrue(before.contains(transfer))
+                    Files.writeString(f.marker, before.replace(transfer, token()))
+                    val changed = Files.readAllBytes(f.marker)
+                    blockingLease.release()
+                    val failure = withTimeout(5_000) { recovery.await() }.exceptionOrNull()
+                    assertIs<IllegalStateException>(failure)
+                    assertEquals("下载交接代次已经改变", failure.message)
+                    assertFalse(original.acceptsMutations()); assertTrue(original.updateHandoffPending.value)
+                    assertContentEquals(checkpoint, Files.readAllBytes(f.state))
+                    assertContentEquals(changed, Files.readAllBytes(f.marker))
+                    assertTrue(f.workers.isEmpty())
+                }
+            }
+        } finally { f.close() }
+    }
+
+    @Test fun callerCancellationDuringBusyRollbackStillFinishesQueueRecovery(): Unit = runBlocking {
+        val f = Fixture()
+        try {
+            val original = f.manager(); val ticket = original.beginUpdateHandoff(token())
+            original.awaitUpdateHandoff(ticket)
+            FileChannel.open(f.state.resolveSibling("downloads.json.bilipai-lock"), WRITE).use { channel ->
+                channel.lock().use { blockingLease ->
+                    val recovery = async { original.rollbackUpdateHandoff(ticket) }
+                    withTimeout(5_000) { original.authorityReason.first { it != null } }
+                    recovery.cancel()
+                    assertFalse(recovery.isCompleted); assertFalse(original.acceptsMutations())
+                    blockingLease.release()
+                    withTimeout(5_000) { recovery.join() }
+                    assertTrue(recovery.isCancelled)
+                    assertTrue(original.acceptsMutations()); assertFalse(original.updateHandoffPending.value)
+                    assertFalse(Files.exists(f.marker)); assertNull(original.authorityReason.value)
+                }
+            }
+        } finally { f.close() }
+    }
+
+    @Test fun managerClosedDuringBusyRollbackReleasesRecoveredLeaseWithoutReopeningQueue(): Unit = runBlocking {
+        val f = Fixture()
+        try {
+            val original = f.manager(); val ticket = original.beginUpdateHandoff(token())
+            original.awaitUpdateHandoff(ticket)
+            val checkpoint = Files.readAllBytes(f.state)
+            FileChannel.open(f.state.resolveSibling("downloads.json.bilipai-lock"), WRITE).use { channel ->
+                channel.lock().use { blockingLease ->
+                    val recovery = async { original.rollbackUpdateHandoff(ticket) }
+                    withTimeout(5_000) { original.authorityReason.first { it != null } }
+                    original.close()
+                    assertFalse(original.acceptsMutations()); assertFalse(recovery.isCompleted)
+                    blockingLease.release()
+                    assertFalse(withTimeout(5_000) { recovery.await() })
+                    original.shutdownForApplicationExit()
+                    assertFalse(original.acceptsMutations()); assertFalse(original.updateHandoffPending.value)
+                    assertFalse(Files.exists(f.marker)); assertTrue(f.workers.isEmpty())
+                    assertContentEquals(checkpoint, Files.readAllBytes(f.state))
+                    checkNotNull(DesktopDownloadQueueAuthority.tryAcquire(f.state).lease).use { assertTrue(it.holds(f.state)) }
+                }
+            }
         } finally { f.close() }
     }
 
