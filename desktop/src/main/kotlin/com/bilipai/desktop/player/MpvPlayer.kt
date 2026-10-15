@@ -1456,6 +1456,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     (if (snapshot?.displayed?.valid == true) 4 else 0) or (if (veyraReceipt != null) 8 else 0) or
                     (if (binding.presentationQualification?.matches(binding) == true) 16 else 0) or
                     (if (fileLoaded) 32 else 0) or (if (filterPresent) 64 else 0))
+            if (MpvRuntimeProbe.enabled) {
+                val receipt = veyraReceipt
+                MpvRuntimeProbe.recordChanged(MpvRuntimeProbeStage.NVIDIA_OUTPUT_SIZE,
+                    outputWidth.toLong(), outputHeight.toLong())
+                MpvRuntimeProbe.recordChanged(MpvRuntimeProbeStage.NVIDIA_RECEIPT_SIZE,
+                    receipt?.width?.toLong() ?: 0L, receipt?.height?.toLong() ?: 0L)
+            }
             val actuallyPaused = property(native, handle, "pause") == "yes"
             val now = System.nanoTime()
             if (!admitNvidia(action) {

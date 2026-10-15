@@ -23,12 +23,13 @@ import kotlinx.coroutines.launch
 import java.awt.Window
 
 /** Defers the original request until this exact control window has finished showing. */
-private class DesktopOfflineFullscreenAdmission(
+internal class DesktopOfflineFullscreenAdmission(
     private val isOwned: () -> Boolean,
     private val currentFullscreen: () -> Boolean,
     private val setFullscreen: (Boolean) -> Unit,
     private val restoreChrome: () -> Unit,
 ) : DesktopOfflineWindowEffects {
+    override val fullscreen: Boolean get() = currentFullscreen()
     private var requested: Boolean? = null
     private var readyWindow: Any? = null
     fun windowAvailability(identity: Any, ready: Boolean) {
@@ -43,6 +44,8 @@ private class DesktopOfflineFullscreenAdmission(
     private fun deliverRequest() {
         val fullscreen = requested ?: return
         if (!isOwned() || (fullscreen && readyWindow == null)) return
+        // A delivered request must not undo a later Root Esc/F11 or window restore.
+        requested = null
         if (currentFullscreen() != fullscreen) setFullscreen(fullscreen)
     }
     override fun restoreCurrentRootChrome() { restoreChrome() }

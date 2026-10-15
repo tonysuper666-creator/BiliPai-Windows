@@ -153,6 +153,11 @@ def offline_desktop_pointer_ui(source):
   assert s.count(before)==1,label
   index=s.index(before);changes.append(dict(index=index,before=before,after=after,label=label))
   s=s[:index]+after+s[index+len(before):]
+ start=s.index('    var isFullscreen by remember(currentTaskId, task?.isAudioOnly, task?.isVerticalVideo) {')
+ end=s.index('    var showControls by remember',start)
+ phone_fullscreen=s[start:end]
+ assert sha(phone_fullscreen)=='d43132781715d3d7c2e3ee6c0345bb0f746eed42d1e79f029e3a315ae9aa24fd','Phone fullscreen recipe drift'
+ replace(phone_fullscreen,'    var isFullscreen by rememberDesktopOfflineFullscreen(bindings.window)\n','same authoritative Windows fullscreen state instead of a second phone flag')
  start=s.index('            // 🎛️ 拖拽手势：亮度/音量/进度\n')
  end=s.index('            // 🖱️ 点击/双击/长按手势\n',start)
  phone=s[start:end]
