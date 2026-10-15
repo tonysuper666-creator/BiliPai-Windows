@@ -241,12 +241,12 @@ def main():
         if status.get('variant') != variant or descriptor['artifact']['fileName'] != variant + '-x64.zip' or descriptor['sourceBundle']['fileName'] != variant + '-source-materials.tar.gz':
             raise DeliveryError('Selected source variant and actual output asset names differ')
         if variant == 'bilipai-veyra-rtx-present-v1':
-            expected_presentation = {'filterSourceManifestSha256': 'a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607', 'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': 'e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f', 'sourcePatchHelperSha256': '748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf'}
+            expected_presentation = {'filterSourceManifestSha256': '8f61b3035bd4dbc4690431d532d9fa6e48216a309c7ddec7664594a892049790', 'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': '7a9f37208757f87f7f591e544957a60a3bf141de743c1502a1af9ed99b0fd311', 'sourcePatchHelperSha256': '9b9b6d058f4b74f44cf837b1893825e1bf9e30eeaaf56e497f8bd915bcae3f61'}
             if any(receipt.get(key) != value or descriptor.get(key) != value for key, value in expected_presentation.items()) or len(receipt.get('sourceGraph', [])) != 28 or len(receipt.get('filterSourceFiles', [])) != 21:
                 raise DeliveryError('Future presentation delivery needs its actual complete source graph and protocol')
             # Compare every actual receipt target with whole-byte pinned source inputs.
             inputs = repository_root / 'desktop/third-party/libmpv/build/rtx-present-v1'
-            materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', 'a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607'), 'upstream': ('presentation-edits.json', 'e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'), 'registration': ('filter-registration-edits.json', '95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042')}
+            materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', '8f61b3035bd4dbc4690431d532d9fa6e48216a309c7ddec7664594a892049790'), 'upstream': ('presentation-edits.json', '7a9f37208757f87f7f591e544957a60a3bf141de743c1502a1af9ed99b0fd311'), 'registration': ('filter-registration-edits.json', '95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042')}
             measured = {}
             for label, (leaf, digest) in materials.items():
                 data = owned_file(inputs.resolve(strict=True), leaf).read_bytes()
@@ -275,7 +275,7 @@ def main():
     snapshot_inputs = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json').read_text(encoding='utf-8'))
     host_kind = 'BILIPAI_HOST_LLVM_SOURCE_SNAPSHOT'
     import_helper_path = repository_root / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
-    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != '229a43dc8c7a282f9ed623203b4fd6b7fa60ad5f4c41ddbd9c99da9a54526fb7':
+    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != '72a6dcb87098509c85d17c09bffde373c5b1aab53be0498f6338ad1acd37458e':
         raise DeliveryError('Shared reviewed importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import_delivery', import_helper_path)
     if import_spec is None or import_spec.loader is None:
