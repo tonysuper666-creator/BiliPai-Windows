@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "fixedUpstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+  "upstreamTag": "v0.4.0",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/PlayerGestureHandler.kt",
+      "filename": "PlayerGestureHandler.kt",
+      "bytes": 12642,
+      "sha256Bytes": "3d99846f7fa9aa0eb9424ef28e3086d9f5977abcdfc3f3851f1f41b59440cd76",
+      "gitBlob": "aae6e0835fbf97e6e457b9de0ece7439f5b8310c"
+    }
+  ],
+  "selectedWholeOriginalDeclaration": "PointerInputScope.detectPlayerTapGestures",
+  "wholeOriginalDeclarationSHA256LF": "ab9e53e2a92221c42b3d68dabbf980ee8e2ee69ed5ac5491e966c54474a92722",
+  "sourceScope": "One complete platform-independent current tap detector and its current call/long-press exclusion delta in the existing sole player section producer. Android drag, system brightness and AudioManager code are reference-only.",
+  "fullCurrentPlayerUiPorted": false
+}

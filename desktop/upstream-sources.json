@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "107",
+  "windowsRevision": "108",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14350,6 +14350,30 @@
     "pythonSourceChecksPassed": true,
     "mainCompiled": false,
     "jvmTestsExecuted": false,
-    "hardwareExecuted": false
+    "hardwareExecuted": false,
+    "wholeCurrentOriginalCallerBlocks": 2,
+    "wholeCurrentOriginalCoverContainerDeclaration": true
+  },
+  "v040PlayerTapSlice": {
+    "upstreamTag": "v0.4.0",
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "archive": "desktop/upstream-slices/v040-player-tap",
+    "manifestSHA256": "2e9b5c6f38d1a2a3dbc2cb3619163f98bb294aa29cace02dff70a957e387d792",
+    "wholeOriginalDeclaration": "PointerInputScope.detectPlayerTapGestures",
+    "wholeOriginalDeclarationSHA256LF": "ab9e53e2a92221c42b3d68dabbf980ee8e2ee69ed5ac5491e966c54474a92722",
+    "existingSoleProducer": "desktop/tools/extract-upstream-video-player-section-full.py",
+    "currentOriginalCallerEdits": 8,
+    "longPressTapCooldownRemovedFromActualCaller": true,
+    "existingLongPressAndNativeViewportOwnersRetained": true,
+    "androidSystemControlsImported": false,
+    "rawOriginalSourceFileKeptWhole": true,
+    "actualComposePointerEventTestClass": "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest",
+    "actualComposePointerEventCasesWritten": 8,
+    "sourceIntegrationApplied": true,
+    "sourceBoundaryCasesPassed": 4,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "windowsOsInputExecuted": false,
+    "fullCurrentPlayerUiPorted": false
   }
 }

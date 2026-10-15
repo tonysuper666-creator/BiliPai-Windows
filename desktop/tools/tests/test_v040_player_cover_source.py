@@ -52,10 +52,13 @@ class V040PlayerCoverSourceTest(unittest.TestCase):
                     after = cover.caller_block(current, protocol)
                     self.assertEqual(after, cover.caller_block(emitted, protocol))
                     proof = json.loads((actual / 'v040-player-cover-caller-proof.json').read_bytes())
-                    change = proof['indexedEdits'][0]
-                    self.assertEqual(1, restored.count(after))
-                    restored = restored.replace(after, change['before'], 1)
+                    for change in proof['indexedEdits']:
+                        self.assertEqual(1, restored.count(change['after']))
+                        restored = restored.replace(change['after'], change['before'], 1)
                     self.assertEqual(2, after.count('revealMotionSpec.surfaceRevealDurationMillis'))
+                    self.assertEqual(cover.cover_container_block(current, protocol),
+                        cover.cover_container_block(emitted, protocol))
+                    self.assertTrue(proof['fullCoverContainerDeclarationOriginal'])
                     self.assertIn('platform.NativeViewport(', emitted)
                     self.assertIn('RenderPlayerForeground {', emitted)
                     self.assertTrue(proof['androidUnderlayCapabilityNotMapped'])
@@ -100,7 +103,9 @@ class V040PlayerCoverSourceTest(unittest.TestCase):
         protocol = module('cover_caller_brackets', 'extract-upstream-dynamic-reply-protocol.py')
         old = (REPO / 'desktop/upstream-slices/v037-player-owner-state/VideoPlayerSection.kt').read_text(encoding='utf-8')
         block = cover.caller_block(old, protocol)
-        for changed in (old.replace(block, block.replace('remember(', 'remember( /* drift */', 1), 1), old + block):
+        container = cover.cover_container_block(old, protocol)
+        for changed in (old.replace(block, block.replace('remember(', 'remember( /* drift */', 1), 1), old + block,
+                        old.replace(container, container.replace('if (', 'if ( /* drift */', 1), 1), old + container):
             with self.assertRaises(ValueError):
                 cover.project_caller(REPO, changed, {}, protocol)
 

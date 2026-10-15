@@ -2591,6 +2591,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoStateCore) }
 // Install child Section's canonical native facade first/in same compile: this package references it.
 
 val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v040_player_tap.py")
+    inputs.dir("upstream-slices/v040-player-tap")
     inputs.file("tools/v040_player_cover.py")
     inputs.dir("upstream-slices/v040-player-cover")
     inputs.files("tools/v037_player_owner_state.py", "tools/v037_player_page_backdrop.py", "tools/v037_player_section_policy.py", "tools/v037_player_runtime_resources.py")

@@ -19,6 +19,8 @@ NEW_HASHES = {
 }
 OLD_CALLER_SHA256 = '296d6db182982949420f08ae8dcaa14bd7e604c5645830cd0d40ce7ac7ac9bfc'
 NEW_CALLER_SHA256 = 'b142dd2cf41fe0beada9158dbdc74bc78727d1544c59d547b882c6e176db4508'
+OLD_CONTAINER_SHA256 = 'b18475d37ee39760e5474342b7eae227345abf9851e193ab3b11d3f7c26e97f5'
+NEW_CONTAINER_SHA256 = 'c440bebf98392b4505c77185fecc87ab10484394b941f40550234ac7b91c6c74'
 ORIGINAL_TEST_NAMES = (
     'returnCoverPresentation_usesSharedBoundsDuringForcedReturn',
     'returnCoverPresentation_usesSharedBoundsForManualStart',
@@ -115,6 +117,23 @@ def caller_block(text, protocol):
     return text[start:end + (text[end:end + 1] == '\n')]
 
 
+def cover_container_block(text, protocol):
+    anchor = '            val coverContainerModifier = if ('
+    if text.count(anchor) != 1:
+        raise ValueError('Expected one original cover container declaration')
+    start = text.index(anchor)
+    masked = protocol.masked(text)
+    opening = masked.index('(', start)
+    after_parameters = protocol.balanced(masked, opening, '(', ')')
+    opening = masked.index('{', after_parameters)
+    end = protocol.balanced(masked, opening, '{', '}')
+    other = re.match(r'\s*else\s*\{', masked[end:])
+    if other is None:
+        raise ValueError('Original cover container else branch changed')
+    end = protocol.balanced(masked, end + other.end() - 1, '{', '}')
+    return text[start:end + (text[end:end + 1] == '\n')]
+
+
 def project_caller(repo, text, sources, protocol):
     current, identity = register_identity(repo, 'VideoPlayerSection.kt', sources)
     before = caller_block(text, protocol)
@@ -123,11 +142,26 @@ def project_caller(repo, text, sources, protocol):
         raise ValueError('Unreviewed player-cover caller drift')
     offset = text.index(before)
     result = text[:offset] + after + text[offset + len(before):]
-    if result[:offset] + before + result[offset + len(after):] != text:
+    edits = [dict(offset=offset, before=before, after=after)]
+    before_container = cover_container_block(result, protocol)
+    after_container = cover_container_block(current, protocol)
+    if sha(before_container) != OLD_CONTAINER_SHA256 or sha(after_container) != NEW_CONTAINER_SHA256:
+        raise ValueError('Unreviewed player-cover container drift')
+    offset = result.index(before_container)
+    result = result[:offset] + after_container + result[offset + len(before_container):]
+    edits.append(dict(offset=offset, before=before_container, after=after_container))
+    inverse = result
+    for edit in reversed(edits):
+        offset, after = edit['offset'], edit['after']
+        if inverse[offset:offset + len(after)] != after:
+            raise ValueError('Player-cover caller inverse boundary changed')
+        inverse = inverse[:offset] + edit['before'] + inverse[offset + len(after):]
+    if inverse != text:
         raise ValueError('Player-cover caller inverse failed')
     return result, dict(baseFixedCommit=BASE_COMMIT, selectedFixedCommit=COMMIT,
-        source=identity, indexedEdits=[dict(offset=offset, before=before, after=after)],
-        fullCallerBlockOriginal=True, allOtherOriginalSectionBytesPreserved=True,
+        source=identity, indexedEdits=edits,
+        fullCallerBlockOriginal=True, fullCoverContainerDeclarationOriginal=True,
+        allOtherOriginalSectionBytesPreserved=True,
         windowsForegroundPortalPreserved=True, androidUnderlayCapabilityNotMapped=True,
         fullV040PlayerParityClaimed=False)
 

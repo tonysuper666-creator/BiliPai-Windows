@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "e3670dd052771098554618a95145c94c666e82b2",
-  "windowsVersion": "0.2.427.107",
-  "createdAt": "2026-10-15T03:13:17.932062+00:00",
+  "baseHead": "aea5258a8cf8569dcf3c212e9e23c70ef0d65f41",
+  "windowsVersion": "0.2.427.108",
+  "createdAt": "2026-10-15T03:37:27.270064+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "665708e983d371127b7950fb76e3000bc26213a1949a80a7e241157674ec1a06"
+      "sha256": "7db2e07a872f6fee062fc9260d6612ce41eef225017538b38795bfd2e5106d93"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -83,7 +83,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "81fd999ed9ff88738fb3898bf5717634251b7e18c951f25d29b45b024f9966c6"
+      "sha256": "151f74fb66a632cb756e80bd673c71a6adc827196b16270709315e9ed8f24966"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -441,6 +441,11 @@
       "sha256": "13f95cc2bd277c2a27d7e68868e1c600c3f4a83b03e15c4c0c1d8c76a2ea8cf9"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerTapGesturesTest.kt",
+      "normalization": "lf",
+      "sha256": "5f2a4a6c8dff969ec660b4b9fcd54d304fe06d06c6d18d543f9e2988aa3ffbf2"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSubtitleCacheOwnershipTest.kt",
       "normalization": "lf",
       "sha256": "56030016b9bb7c665ad4dd63ba52352272e807b2fd35e12bb45c802d9098acf7"
@@ -558,7 +563,7 @@
     {
       "path": "desktop/tools/extract-upstream-video-player-section-full.py",
       "normalization": "lf",
-      "sha256": "92e6a7150a8c4c85d8afffb5698c975f9ca68c1bbadbe1e2371291e8da93d2cb"
+      "sha256": "705e2f3af079941c6eae51832eaf73990181b38e47cc6559e551733cd45d0a2a"
     },
     {
       "path": "desktop/tools/native/build-veyra-core-runtime.py",
@@ -703,7 +708,12 @@
     {
       "path": "desktop/tools/tests/test_v040_player_cover_source.py",
       "normalization": "lf",
-      "sha256": "df1edaf347571a2ae07c364fd768a41a6dc554a7680efb43cc93335daea398ba"
+      "sha256": "fb1a819c10acefeb47a4a46eb0b955a18de1b847d6d75a7c43dd31deea883b74"
+    },
+    {
+      "path": "desktop/tools/tests/test_v040_player_tap_source.py",
+      "normalization": "lf",
+      "sha256": "97ddf83ba75722ac1b6aeec5f97b352ad792540e737a9ed6943ad8c692295111"
     },
     {
       "path": "desktop/tools/tests/test_v040_reply_medal_source.py",
@@ -828,7 +838,12 @@
     {
       "path": "desktop/tools/v040_player_cover.py",
       "normalization": "lf",
-      "sha256": "f374d699e84ae42ca193b6c849e98efef9f6485b2cbb66788ad3dd5ca36afb9e"
+      "sha256": "9dee101a6679d37cf31b1c189ebefea1dcf893ccaf70fc7c90453c684ed89e05"
+    },
+    {
+      "path": "desktop/tools/v040_player_tap.py",
+      "normalization": "lf",
+      "sha256": "bf4731c40f5240a2718034e2bb5ddab72ad72cd4553f71eaf8021b9acaa44e9c"
     },
     {
       "path": "desktop/tools/v040_reply_medal.py",
@@ -1381,6 +1396,16 @@
       "sha256": "835d7ed7458ad40761e84452e95b5e3c8b9e6a78ee3d99829349950b3ebeefbc"
     },
     {
+      "path": "desktop/upstream-slices/v040-player-tap/PlayerGestureHandler.kt",
+      "normalization": "raw",
+      "sha256": "3d99846f7fa9aa0eb9424ef28e3086d9f5977abcdfc3f3851f1f41b59440cd76"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-player-tap/manifest.json",
+      "normalization": "raw",
+      "sha256": "2e9b5c6f38d1a2a3dbc2cb3619163f98bb294aa29cace02dff70a957e387d792"
+    },
+    {
       "path": "desktop/upstream-slices/v040-reply-medal/CommentGrpcRepository.kt",
       "normalization": "raw",
       "sha256": "399f34d801a0faaa5392b3f2e18f51e62a6403d4bf468a2c59226322a318fd18"
@@ -1428,7 +1453,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "d60d055d8af9ad9a5f13a9e68277114dfe43628dc465efe9c7e71aa0892c2be8"
+      "sha256": "ebb65e3f4c02d841874056329efceef85cf3ea01f040e4ede485483b3847d1dc"
     }
   ],
   "classes": {
@@ -1438,9 +1463,10 @@
     "com.bilipai.desktop.ui.DesktopHomeFrameBitmapTest": 2,
     "com.bilipai.desktop.ui.DesktopOriginalSubtitleCacheOwnershipTest": 4,
     "com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest": 3,
-    "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4
+    "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4,
+    "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8
   },
-  "expectedTests": 57,
+  "expectedTests": 65,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1450,15 +1476,14 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ui/section/DesktopV040PlayerCoverPolicyTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerTapGesturesTest.kt",
     "desktop/tools/extract-upstream-video-player-section-full.py",
     "desktop/tools/tests/test_v040_player_cover_source.py",
+    "desktop/tools/tests/test_v040_player_tap_source.py",
     "desktop/tools/v040_player_cover.py",
-    "desktop/upstream-slices/v040-player-cover/VideoDetailCoverContentScale.kt",
-    "desktop/upstream-slices/v040-player-cover/VideoPlayerSection.kt",
-    "desktop/upstream-slices/v040-player-cover/VideoPlayerSectionPolicy.kt",
-    "desktop/upstream-slices/v040-player-cover/VideoPlayerSectionPolicyTest.kt",
-    "desktop/upstream-slices/v040-player-cover/manifest.json",
+    "desktop/tools/v040_player_tap.py",
+    "desktop/upstream-slices/v040-player-tap/PlayerGestureHandler.kt",
+    "desktop/upstream-slices/v040-player-tap/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

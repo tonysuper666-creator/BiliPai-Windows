@@ -116,6 +116,9 @@ def render_section():
  from v040_player_cover import project_caller
  t,cover_caller_proof=project_caller(REPO,t,SOURCES,protocol)
  write(OUTPUT/'v040-player-cover-caller-proof.json',json.dumps(cover_caller_proof,ensure_ascii=False,indent=2)+'\n')
+ from v040_player_tap import project_caller as project_tap_caller
+ t,tap_caller_proof=project_tap_caller(REPO,t,SOURCES,protocol)
+ write(OUTPUT/'v040-player-tap-caller-proof.json',json.dumps(tap_caller_proof,ensure_ascii=False,indent=2)+'\n')
  t=exact(t,'import com.android.purebilibili.R\n','','Windows bundles the exact original bitmap; no Android resource identifier')
  t=exact(t,'painterResource(R.drawable.ic_pili_tv_play)','painterResource("icons/ic_pili_tv_play.png")','Same pinned upstream manual-play bitmap from Windows classpath resources')
  t=exact(t,'onRelatedVideoClick(dialogTargetBvid, null)','onRelatedVideoClick(dialogTargetBvid, 0L, null)','Original absent navigation Bundle maps existing unspecified-CID and cover tuple')
@@ -405,6 +408,8 @@ def generate(repo,output,standalone=False,test_output=None):
  parser=module('section_tokens',REPO/'desktop/tools/sync-upstream.py');selector=module('section_declarations',REPO/'desktop/tools/extract-appearance-platform.py');protocol=module('section_brackets',REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
  controls=SimpleNamespace(parser=parser);c=SimpleNamespace(parser=parser,selector=selector,member_closure=member_closure)
  render_section();render_settings();render_helpers();render_policy();render_dimension()
+ from v040_player_tap import emit as emit_tap_detector
+ emit_tap_detector(REPO,OUTPUT,OUTPUTS,SOURCES,protocol,write)
  from v037_player_runtime_resources import emit as emit_runtime_resources
  emit_runtime_resources(REPO,OUTPUT,OUTPUTS)
  from v037_player_page_backdrop import emit_foundation
@@ -413,6 +418,6 @@ def generate(repo,output,standalone=False,test_output=None):
  if test_output is not None:
   from v040_player_cover import emit_tests as emit_cover_tests
   emit_cover_tests(REPO,test_output,protocol)
- write(OUTPUT/'v037-complete-player-section-source-readback.json',json.dumps(dict(upstreamCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',selectedOriginalSources=owner_pins,sourceManifestSHA256=owner_manifest_sha,outputs=OUTPUTS,sameNativePlayerBackdropBinding=True,androidTextureViewPredicateRemoved=True,currentCoverCommit='415d01ec5bc3ac82521a9ac47bcc449b8e202460',currentCoverPolicyDeclarations=['resolveVideoPlayerCoverMotionSpec','resolveVideoPlayerEntryPresentationSpec'],currentCoverWholeCallerBlock=True,currentCoverSourceIdentities={k:{a:b for a,b in v.items()if a!='text'}for k,v in SOURCES.items()if '/v040-player-cover/'in k},fullV040PlayerParityClaimed=False,mainCompiled=False,pixelsValidated=False),ensure_ascii=False,indent=2)+'\n')
+ write(OUTPUT/'v037-complete-player-section-source-readback.json',json.dumps(dict(upstreamCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',selectedOriginalSources=owner_pins,sourceManifestSHA256=owner_manifest_sha,outputs=OUTPUTS,sameNativePlayerBackdropBinding=True,androidTextureViewPredicateRemoved=True,currentCoverCommit='415d01ec5bc3ac82521a9ac47bcc449b8e202460',currentCoverPolicyDeclarations=['resolveVideoPlayerCoverMotionSpec','resolveVideoPlayerEntryPresentationSpec'],currentCoverWholeCallerBlock=True,currentCoverWholeContainerDeclaration=True,currentTapCommit='415d01ec5bc3ac82521a9ac47bcc449b8e202460',currentTapSourceIdentities={k:{a:b for a,b in v.items()if a!='text'}for k,v in SOURCES.items()if '/v040-player-tap/'in k},currentCoverSourceIdentities={k:{a:b for a,b in v.items()if a!='text'}for k,v in SOURCES.items()if '/v040-player-cover/'in k},fullV040PlayerParityClaimed=False,mainCompiled=False,pixelsValidated=False),ensure_ascii=False,indent=2)+'\n')
  return OUTPUTS
 if __name__=='__main__':generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone'in sys.argv[3:],Path(sys.argv[sys.argv.index('--test-output')+1]) if '--test-output' in sys.argv else None)
