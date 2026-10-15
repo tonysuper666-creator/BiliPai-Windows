@@ -1,0 +1,74 @@
+name: Updater baseline read access probe
+on:
+  push:
+    branches: [desktop/updater-baseline-access-probe-147]
+permissions:
+  contents: read
+jobs:
+  verify-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify read-only CI access and the exact delivered archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: python
+        run: |
+          from pathlib import Path
+          import hashlib, json, os, urllib.error, urllib.parse, urllib.request
+          repository = 'tonysuper666-creator/BiliPai-Windows'
+          assert os.environ['GITHUB_REPOSITORY'] == repository
+          assert os.environ['GITHUB_REF'] == 'refs/heads/desktop/updater-baseline-access-probe-147'
+          headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+              'Accept': 'application/vnd.github+json', 'User-Agent': 'BiliPai-Windows-Updater-Baseline-Probe',
+              'X-GitHub-Api-Version': '2022-11-28'}
+          base = 'https://api.github.com/repos/' + repository
+          def api(path):
+              with urllib.request.urlopen(urllib.request.Request(base + path, headers=headers), timeout=30) as response:
+                  raw = response.read(1024 * 1024 + 1)
+                  assert len(raw) <= 1024 * 1024
+                  return json.loads(raw)
+          repo = api('')
+          assert repo['full_name'] == repository and repo['private'] is False
+          release = api('/releases/413553374')
+          assert release['id'] == 413553374 and release['draft'] is True and release['published_at'] is None
+          assert release['tag_name'] == 'updater-fixture-0.2.427.56-aa0a627f54bc'
+          assert release['target_commitish'] == 'aa0a627f54bc4bb9dca7f507615c30fc21b74ca6'
+          asset = next(a for a in release['assets'] if a['id'] == 643148932)
+          expected = 'f7d6e2125fc4f8ab94eb2419d13f915b68da7d5676191cb2392bff6143ece803'
+          assert asset['name'] == 'BiliPai-Windows-0.2.427.56-aa0a627f54bc-x64.zip'
+          assert asset['size'] == 395600303 and asset['state'] == 'uploaded' and asset['digest'] == 'sha256:' + expected
+          assert asset['url'] == base + '/releases/assets/643148932'
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, hdrs, newurl):
+                  return None
+          download_headers = dict(headers, Accept='application/octet-stream')
+          request = urllib.request.Request(asset['url'], headers=download_headers)
+          opener = urllib.request.build_opener(NoRedirect())
+          try:
+              response = opener.open(request, timeout=30)
+          except urllib.error.HTTPError as error:
+              assert error.code in (301, 302, 303, 307, 308)
+              target = urllib.parse.urlsplit(error.headers['Location'])
+              assert target.scheme == 'https' and target.hostname in {'release-assets.githubusercontent.com', 'objects.githubusercontent.com'}
+              assert target.port in (None, 443) and target.username is None and target.password is None
+              # The repository token is never forwarded to the asset-storage host.
+              response = urllib.request.urlopen(urllib.request.Request(target.geturl(), headers={
+                  'User-Agent': headers['User-Agent']}), timeout=30)
+          digest = hashlib.sha256()
+          count = 0
+          destination = Path(os.environ['RUNNER_TEMP']) / 'bilipai-updater56-exact-fixture.zip'
+          with response, destination.open('xb') as output:
+              assert response.status == 200
+              while block := response.read(1024 * 1024):
+                  count += len(block)
+                  assert count <= 395600303
+                  digest.update(block)
+                  output.write(block)
+          assert count == 395600303 and digest.hexdigest() == expected
+          result = dict(passed=True, repository=repository, readOnlyContentsPermission=True,
+              draftReadableByCiToken=True, exactDeliveredRuntimeDownloaded=True, bytes=count,
+              sha256=digest.hexdigest(), releaseId=release['id'], assetId=asset['id'],
+              applicationExecuted=False, jvmExecuted=False, packageBuilt=False,
+              releasePublished=False, desktopReplaced=False)
+          print('BILIPAI_UPDATER_BASELINE_PROBE_RESULT ' + json.dumps(result, sort_keys=True))
