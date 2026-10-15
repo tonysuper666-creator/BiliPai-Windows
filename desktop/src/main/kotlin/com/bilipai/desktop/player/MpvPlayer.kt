@@ -828,6 +828,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         } }
         return queued
     }
+    /** Cache takes this read-only snapshot while holding its own document monitor; no reverse callback is made here. */
+    internal fun retainedExternalSubtitlePaths(): Set<Path> = synchronized(lock) {
+        externalSubtitles.mapTo(linkedSetOf()) { it.path }
+    }
+
     /** Local SRT/ASS/VTT documents, including converted Bilibili subtitle JSON. */
     fun addSubtitle(file: Path, title: String = file.fileName.toString(), language: String = "", select: Boolean = true) {
         // Capture before local file validation. A source change during that IO cannot borrow the new source.

@@ -41,7 +41,12 @@ fun OnlineSubtitleDialog(bvid: String, cid: Long, community: DesktopCommunityRep
                             fun import(select: Boolean) {
                                 importing = track.trackKey
                                 scope.launch {
-                                    try { onImport(assets.import(track), track, select); error = null }
+                                    try {
+                                        assets.openDocuments().use { documents ->
+                                            onImport(documents.import(track), track, select)
+                                        }
+                                        error = null
+                                    }
                                     catch (cancelled: CancellationException) { throw cancelled }
                                     catch (failure: Exception) { error = failure.message ?: "字幕导入失败" }
                                     finally { importing = null }

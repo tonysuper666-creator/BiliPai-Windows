@@ -460,7 +460,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         java.util.concurrent.atomic.AtomicReference<Pair<() -> Boolean, () -> Boolean>?>()
     }
     val danmaku = remember(player, repository, hostWindow) { player?.let { DanmakuOverlay(it, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(hostWindow) { "Danmaku requires the mounted Root window" } }, httpClient = repository.httpClient) } }
-    val subtitleAssets = remember(repository) { DesktopSubtitleAssets(repository.httpClient) }
+    val subtitleAssets = remember(repository, player) {
+        DesktopSubtitleAssets(repository.httpClient) { player?.retainedExternalSubtitlePaths().orEmpty() }
+    }
     val ordinaryVideo = remember(repository, pluginStore, scope) {
         DesktopOriginalVideoShellOwner(repository, pluginStore, scope,
             rootAlive = { !isClosing() }, rootAdmission = imageSaveLifetime::withCommit,

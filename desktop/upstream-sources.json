@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "104",
+  "windowsRevision": "106",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14258,8 +14258,8 @@
     "originalSharedLensAndExistingWindowsUniformCacheUsed": true,
     "sharedLensShaderMathUnchanged": true,
     "globalWallpaperProviderStillPending": true,
-    "mainCompiled": false,
-    "jvmTestsExecuted": false,
+    "mainCompiled": true,
+    "jvmTestsExecuted": true,
     "pixelsValidated": false,
     "runtimeExecuted": false,
     "fullV040ParityClaimed": false,
@@ -14275,7 +14275,9 @@
     "generatedOriginalGeometryFixtureAssertionsCorrected": 2,
     "unchangedWholeOriginalProductionGeometry": true,
     "newWindowsGeometryContractCasesWritten": 2,
-    "downloadLateCleanupFixtureRepaired": true
+    "downloadLateCleanupFixtureRepaired": true,
+    "qualifiedSourceHead": "894b8c2ff24e558f24bffd8a0e2c7d85a652aaa4",
+    "qualifiedOriginalPolicyJvmCases": 37
   },
   "windowsDownloadPersistenceRepair": {
     "finding": "DL-1",
@@ -14289,5 +14291,33 @@
     "mainCompiled": false,
     "jvmTestsExecuted": false,
     "realDownloadsExecuted": false
+  },
+  "desktopOwnedSubtitleCache": {
+    "sourceOwner": "same DesktopSubtitleAssets and MpvPlayer retained source list",
+    "originalParsedPolicyReused": true,
+    "scopedImportOwners": true,
+    "activeNativePathsProtected": true,
+    "originalJsonRetainedWithSrt": true,
+    "maximumInactiveDocuments": 512,
+    "maximumEstimatedCueBytes": 33554432,
+    "maximumInactiveFileBytes": 67108864,
+    "failedDeletionOverflowFactor": 2,
+    "activeOwnersMayExceedInactiveBudgets": true,
+    "physicalRssLimitClaimed": false,
+    "regressionCasesWritten": 13,
+    "actualRootRepositoryCasesWritten": 4,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false
+  },
+  "desktopHomeFrameBitmap": {
+    "actualPinnedComposeRuntimeSHA256": "92fddd7609d77a803f7083b1b7dd5a651cba10be27c105361a5d0b3894932085",
+    "immutableBitmapRememberedPerPublishedFrame": true,
+    "intermediateRasterClosedAfterRealCopy": true,
+    "currentOwnerAndFirstFrameAdmissionPreserved": true,
+    "regressionCasesWritten": 2,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false
   }
 }

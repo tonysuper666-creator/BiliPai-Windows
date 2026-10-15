@@ -250,7 +250,7 @@ class DesktopSubtitleCancellationTest {
             val a=fixture.await("independent-cancel")
             val good=assets.import(fixture.track("independent-good"))
             quietCancellation(bad); fixture.assertCancelled(a); a.release(); Thread.sleep(150)
-            assertTrue(Files.isRegularFile(good)); assertEquals(1,fileCount(directory(assets)))
+            assertTrue(Files.isRegularFile(good)); assertEquals(2,fileCount(directory(assets)))
             assertTrue(Files.readString(good).contains("Local subtitle cue"))
         } }
     }
@@ -264,14 +264,14 @@ class DesktopSubtitleCancellationTest {
             quietCancellation(first); fixture.assertCancelled(a); b.release()
             val path=withTimeout(2_000) { second.await() }
             a.release(); Thread.sleep(150)
-            assertTrue(Files.isRegularFile(path)); assertEquals(path,assets.import(track)); assertEquals(1,fileCount(directory(assets)))
+            assertTrue(Files.isRegularFile(path)); assertEquals(path,assets.import(track)); assertEquals(2,fileCount(directory(assets)))
         } }
     }
     @Test fun malformedResponseFailsWithoutDamagingPreviouslySuccessfulTrack() = runBlocking<Unit> {
         SubtitleHttpFixture().use { fixture -> DesktopSubtitleAssets(fixture.client).use { assets ->
             val good=assets.import(fixture.track("before-malformed"))
             assertTrue(runCatching { assets.import(fixture.track("malformed",Mode.MALFORMED)) }.isFailure)
-            assertTrue(Files.isRegularFile(good)); assertEquals(1,fileCount(directory(assets)))
+            assertTrue(Files.isRegularFile(good)); assertEquals(2,fileCount(directory(assets)))
         } }
     }
     @Test fun declaredEightMiBLimitRemainsEnforcedWithoutCacheWrite() = runBlocking<Unit> {
@@ -424,7 +424,7 @@ class DesktopSubtitleSessionParityTest {
                 val chosen=h.player.installs.last()
                 assertEquals("en-US",chosen.primary?.track?.lan);assertNull(chosen.secondary)
                 assertEquals(10,h.assets.cues(requireNotNull(chosen.primary).file).size)
-                assertEquals(2,fileCount(directory(h.assets)),"Application cache must preserve unused legal native assets")
+                assertEquals(4,fileCount(directory(h.assets)),"Application cache must preserve unused legal native assets")
             }
         }
     }
@@ -472,7 +472,7 @@ class DesktopSubtitleSessionParityTest {
             SubtitleSessionFixture(f,listOf(metadataFor(primary))).use { h ->
                 h.afterCues={ h.epoch.incrementAndGet() }
                 withTimeout(5_000) { h.load().join() }
-                assertTrue(h.player.installs.isEmpty());assertEquals(1,fileCount(directory(h.assets)))
+                assertTrue(h.player.installs.isEmpty());assertEquals(2,fileCount(directory(h.assets)))
                 assertFalse(h.session.setDisplayMode(SubtitleDisplayMode.PRIMARY_ONLY))
             }
         }
@@ -517,7 +517,7 @@ class DesktopSubtitleSessionParityTest {
                 val pending=h.load();val request=f.awaitRaw("/x/player/wbi/v2",2)
                 h.epoch.incrementAndGet();h.session.onSessionChanged();withTimeout(2_000) { pending.join() };f.assertCancelled(request)
                 assertTrue(h.player.installs.isEmpty());assertEquals(2,h.metadataCalls.get())
-                assertEquals(1,fileCount(directory(h.assets)),"Successful imported documents remain application-owned")
+                assertEquals(2,fileCount(directory(h.assets)),"Successful imported documents remain application-owned")
             }
         }
     }
@@ -533,7 +533,7 @@ class DesktopSubtitleSessionParityTest {
                 request.release();withTimeout(2_000) { pending.join() }
                 assertTrue(h.player.installs.isEmpty())
                 assertEquals(1,f.requests.count { it.path=="/subtitle/guard-refresh-expired.json" },"No retry import after ownership/control changes")
-                assertEquals(1,fileCount(directory(h.assets)))
+                assertEquals(2,fileCount(directory(h.assets)))
             }
         }
     }
@@ -571,10 +571,264 @@ class DesktopSubtitleSessionParityTest {
                 invoke("execute",queuedRetirement)
                 assertEquals(listOf("sub-visibility" to "no","secondary-sub-visibility" to "no"),properties)
                 assertEquals(owner,player.currentSourceVersion)
-                assertEquals(1,fileCount(directory(assets)))
+                assertEquals(2,fileCount(directory(assets)))
             } finally {
                 session.close();invoke("close");player.close();assets.close()
             }
         }
+    }
+}
+
+/** Real loopback HTTP documents and the production import owners; no account, native player or window. */
+class DesktopSubtitleCacheLifetimeTest {
+    @Test fun failedOldDeletionsNeverDeleteTheNewestImportedDocument() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture ->
+            val denied = mutableSetOf<Path>()
+            DesktopSubtitleAssets(fixture.client, 2, 1_048_576, 1_048_576,
+                deleteFile = { if (it in denied) throw java.io.IOException("held old subtitle"); Files.deleteIfExists(it) }).use { assets ->
+                denied.add(assets.import(fixture.track("held-old-a")))
+                denied.add(assets.import(fixture.track("held-old-b")))
+                val third = assets.openDocuments().use { owner ->
+                    val path = owner.import(fixture.track("newest-c"))
+                    assertTrue(Files.isRegularFile(path))
+                    assertEquals("Local subtitle cue", owner.cues(path).single().content)
+                    path
+                }
+                val fourth = assets.import(fixture.track("newest-d"))
+                assertTrue(Files.isRegularFile(third))
+                assertTrue(Files.isRegularFile(fourth))
+                assertTrue(denied.all { Files.isRegularFile(it) })
+                assertEquals(4, assets.retainedDocumentCount())
+                assertTrue(assets.cachedCueDocumentCount() <= 2)
+            }
+        }
+    }
+
+    @Test fun currentNativePathsSurviveEvictionUntilTheirPlayerRetiresThem() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture ->
+            val native = mutableSetOf<Path>()
+            DesktopSubtitleAssets(fixture.client, 2, 1_048_576, 1_048_576, native::toSet).use { assets ->
+                val active = assets.openDocuments().use { owner ->
+                    owner.import(fixture.track("native-owned")).also { native.add(it) }
+                }
+                val srt = Files.readString(active)
+                repeat(6) { assets.import(fixture.track("native-other-$it")) }
+                assertEquals(srt, Files.readString(active))
+                assertTrue(Files.isRegularFile(active.resolveSibling(active.fileName.toString().removeSuffix(".srt") + ".json")))
+                native.clear()
+                assets.import(fixture.track("native-retired-trigger"))
+                assertFalse(Files.exists(active))
+            }
+        }
+    }
+
+    @Test fun actualUnmountedPlayerRetainsItsCachedSubtitleUntilTheSourceChanges() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture ->
+            val player = MpvPlayer()
+            try {
+                player.loadVersioned(PlaybackSource("https://fixture.invalid/cache-owner", referer = ""))
+                DesktopSubtitleAssets(fixture.client, 2, 1_048_576, 1_048_576,
+                    player::retainedExternalSubtitlePaths).use { assets ->
+                    val file = assets.openDocuments().use { owner ->
+                        owner.import(fixture.track("actual-player-owner")).also { player.addSubtitle(it) }
+                    }
+                    assertEquals(setOf(file.toAbsolutePath().normalize()), player.retainedExternalSubtitlePaths())
+                    repeat(5) { assets.import(fixture.track("actual-player-other-$it")) }
+                    assertTrue(Files.isRegularFile(file))
+                    player.loadVersioned(PlaybackSource("https://fixture.invalid/cache-next-source", referer = ""))
+                    assertTrue(player.retainedExternalSubtitlePaths().isEmpty())
+                    assets.import(fixture.track("actual-player-retired-trigger"))
+                    assertFalse(Files.exists(file))
+                }
+            } finally { player.close() }
+        }
+    }
+
+    @Test fun importOwnerKeepsAFileAndCuesUntilItsConsumerFinishes() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture -> DesktopSubtitleAssets(fixture.client, 2, 1_048_576, 1_048_576).use { assets ->
+            val owner = assets.openDocuments()
+            val first = owner.import(fixture.track("leased-first"))
+            try {
+                repeat(6) { assets.import(fixture.track("leased-other-$it")) }
+                assertTrue(Files.isRegularFile(first))
+                assertEquals("Local subtitle cue", owner.cues(first).single().content)
+                assertEquals(1, assets.activeDocumentOwners())
+            } finally { owner.close() }
+            assertEquals(0, assets.activeDocumentOwners())
+            assertFalse(Files.exists(first))
+        } }
+    }
+
+    @Test fun evictedCueObjectsReloadOriginalWordTimingsWithoutAnotherHttpRequest() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture -> DesktopSubtitleAssets(fixture.client, 2, 1, 1_048_576).use { assets ->
+            val body = """{"body":[{"from":0,"to":2,"content":"hello","words":[{"word":"he","start":0.1,"end":0.4},{"word":"llo","start":0.5,"end":1.3}]}]}"""
+            val track = fixture.track("word-timings", body = body)
+            val original = assets.openDocuments().use { owner ->
+                val file = owner.import(track)
+                owner.cues(file).also {
+                    assertEquals(listOf(100L, 500L), it.single().words.map { word -> word.startMs })
+                    assertEquals(listOf(400L, 1300L), it.single().words.map { word -> word.endMs })
+                }
+            }
+            assertEquals(0, assets.cachedCueDocumentCount())
+            assets.openDocuments().use { owner -> assertEquals(original, owner.cues(owner.import(track))) }
+            assertEquals(1, fixture.requests.size)
+        } }
+    }
+
+    @Test fun cancelledBodyImportClosesItsDocumentOwnerAndCannotWriteLateFiles() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture -> DesktopSubtitleAssets(fixture.client).use { assets ->
+            val track = fixture.track("owned-cancel", Mode.DELAY_BODY)
+            val job = async(Dispatchers.Default) { assets.openDocuments().use { it.import(track) } }
+            val request = fixture.await("owned-cancel")
+            assertEquals(1, assets.activeDocumentOwners())
+            quietCancellation(job)
+            fixture.assertCancelled(request)
+            assertEquals(0, assets.activeDocumentOwners())
+            assertNoLateFiles(directory(assets), request)
+        } }
+    }
+
+    @Test fun idleClearRejectsAnOpenConsumerAndClearsBothDocumentFilesAfterRelease() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture -> DesktopSubtitleAssets(fixture.client).use { assets ->
+            val owner = assets.openDocuments()
+            owner.import(fixture.track("clear-owner"))
+            assertFailsWith<IllegalArgumentException> { assets.clearIdle {} }
+            owner.close()
+            assertEquals(2, fileCount(directory(assets)))
+            assets.clearIdle {}
+            assertEquals(0, fileCount(directory(assets)))
+            assertEquals(0 to 0, assets.retainedDocumentCount() to assets.cachedCueDocumentCount())
+        } }
+    }
+
+    @Test fun automaticPairUsesTheProductionOwnedAdapterAndReleasesItAfterInstall() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture ->
+            val native = mutableSetOf<Path>()
+            DesktopSubtitleAssets(fixture.client, 1, 1_048_576, 1_048_576, native::toSet).use { assets ->
+                val primary = fixture.track("pair-primary").copy(lan = "zh-Hans")
+                val secondary = fixture.track("pair-secondary").copy(lan = "en-US")
+                val imported = ConcurrentHashMap<String, Path>()
+                val installs = AtomicInteger()
+                val data = object : DesktopAutomaticSubtitleDataSource {
+                    override suspend fun metadata(bvid: String, cid: Long) = metadataFor(primary, secondary)
+                    override suspend fun import(track: SubtitleTrackMeta): Path = error("Unscoped import used")
+                    override fun openDocuments(): DesktopAutomaticSubtitleDocuments {
+                        val owned = assets.openAutomaticDocuments()
+                        return object : DesktopAutomaticSubtitleDocuments by owned {
+                            override suspend fun import(track: SubtitleTrackMeta) = owned.import(track).also { imported[track.trackKey] = it }
+                        }
+                    }
+                }
+                val player = object : DesktopAutomaticSubtitlePlayer {
+                    override var controlVersion = 0L
+                    override fun owns(sourceVersion: Long) = sourceVersion == 7L
+                    override fun install(sourceVersion: Long, expectedControlVersion: Long,
+                        primary: DesktopOnlineSubtitleAsset?, secondary: DesktopOnlineSubtitleAsset?, mode: SubtitleDisplayMode): Boolean {
+                        assertEquals(2, imported.size)
+                        assertTrue(imported.values.all { Files.isRegularFile(it) })
+                        native.addAll(listOfNotNull(primary?.file, secondary?.file))
+                        controlVersion++; installs.incrementAndGet(); return true
+                    }
+                }
+                DesktopAutomaticSubtitles(data, player).use { session ->
+                    withTimeout(3_000L) { requireNotNull(session.load("BV-local", 7L, 7L, SubtitleAutoPreference.ON, false)).join() }
+                    assertEquals(1, installs.get())
+                    assertTrue(native.isNotEmpty())
+                    assertTrue(native.all { Files.isRegularFile(it) })
+                    assertEquals(0, assets.activeDocumentOwners())
+                }
+            }
+        }
+    }
+
+    @Test fun reuseMovesADocumentBehindOlderInactiveEntriesWithoutDownloadingAgain() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture -> DesktopSubtitleAssets(fixture.client, 2, 1_048_576, 1_048_576).use { assets ->
+            val track = fixture.track("reuse-first")
+            val first = assets.import(track)
+            val second = assets.import(fixture.track("reuse-second"))
+            assertEquals(first, assets.import(track))
+            assets.import(fixture.track("reuse-third"))
+            assertTrue(Files.isRegularFile(first))
+            assertFalse(Files.exists(second))
+            assertEquals(1, fixture.requests.count { it.path == "/subtitle/reuse-first.json" })
+        } }
+    }
+
+    @Test fun cleanupDenialHasABoundedOverflowAndCanRecoverOnTheNextImport() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture ->
+            var deny = true
+            DesktopSubtitleAssets(fixture.client, 2, 1_048_576, 1_048_576,
+                deleteFile = { if (deny) throw java.io.IOException("cleanup denied"); Files.deleteIfExists(it) }).use { assets ->
+                val existing = (0..3).map { assets.import(fixture.track("overflow-$it")) }
+                assertFailsWith<java.io.IOException> { assets.import(fixture.track("overflow-blocked")) }
+                assertEquals(4, assets.retainedDocumentCount())
+                assertTrue(existing.all { Files.isRegularFile(it) })
+                assertEquals(8, fileCount(directory(assets)))
+                deny = false
+                val recovered = assets.import(fixture.track("overflow-recovered"))
+                assertTrue(Files.isRegularFile(recovered))
+                assertTrue(assets.retainedDocumentCount() <= 2)
+            }
+        }
+    }
+
+    @Test fun activeNativeDocumentsCanExceedTheInactiveByteBudgetUntilRetirement() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture ->
+            val native = mutableSetOf<Path>()
+            DesktopSubtitleAssets(fixture.client, 512, 1_048_576, 512, native::toSet).use { assets ->
+                val body = """{"body":[{"from":0,"to":3,"content":"${"x".repeat(300)}"}]}"""
+                val active = assets.openDocuments().use { owner ->
+                    owner.import(fixture.track("byte-active", body = body)).also { native.add(it) }
+                }
+                assertTrue(assets.cacheSizes().first > 512)
+                assertTrue(Files.isRegularFile(active))
+                native.clear()
+                assets.import(fixture.track("byte-retired-trigger"))
+                assertFalse(Files.exists(active))
+                assertTrue(assets.cacheSizes().first <= 512)
+            }
+        }
+    }
+
+    @Test fun deniedCleanupAlsoRespectsTheByteOverflowLimitBeforeTheDocumentCountLimit() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture ->
+            val documentBytes = BiliSubtitleDocument.toSrt(JSON_BODY).toByteArray(Charsets.UTF_8).size.toLong() +
+                JSON_BODY.toByteArray(Charsets.UTF_8).size
+            var deny = true
+            DesktopSubtitleAssets(fixture.client, 512, 1_048_576, documentBytes + 8,
+                deleteFile = { if (deny) throw java.io.IOException("byte cleanup denied"); Files.deleteIfExists(it) }).use { assets ->
+                assets.import(fixture.track("byte-overflow-a"))
+                assets.import(fixture.track("byte-overflow-b"))
+                assertFailsWith<java.io.IOException> { assets.import(fixture.track("byte-overflow-blocked")) }
+                assertEquals(2, assets.retainedDocumentCount())
+                assertEquals(documentBytes * 2, assets.cacheSizes().first)
+                assertEquals(4, fileCount(directory(assets)))
+                deny = false
+            }
+        }
+    }
+
+    @Test fun cancellationAtTheIoReturnCannotOrphanTheDocumentOwner() = runBlocking<Unit> {
+        SubtitleHttpFixture().use { fixture -> DesktopSubtitleAssets(fixture.client).use { assets ->
+            val queued = ConcurrentLinkedQueue<Runnable>()
+            val heldDispatcher = object : CoroutineDispatcher() {
+                override fun dispatch(context: kotlin.coroutines.CoroutineContext, block: Runnable) { queued.add(block) }
+            }
+            val track = fixture.track("return-cancel")
+            val job = async(heldDispatcher, start = CoroutineStart.UNDISPATCHED) {
+                assets.openDocuments().use { it.import(track) }
+            }
+            withTimeout(3_000L) { while (queued.isEmpty()) delay(1) }
+            assertEquals(1, assets.activeDocumentOwners())
+            assertEquals(2, fileCount(directory(assets)))
+            job.cancel()
+            while (true) { val continuation = queued.poll() ?: break; continuation.run() }
+            withTimeout(3_000L) { job.join() }
+            assertTrue(job.isCancelled)
+            assertEquals(0, assets.activeDocumentOwners())
+            assets.openDocuments().use { owner -> assertTrue(owner.cues(owner.import(track)).isNotEmpty()) }
+            assertEquals(1, fixture.requests.size)
+        } }
     }
 }

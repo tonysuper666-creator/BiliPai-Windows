@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
@@ -122,6 +123,15 @@ internal class DesktopHomeMediaLease internal constructor(private val owner: Des
     }
 }
 
+/** One immutable bitmap per published CPU frame; unrelated playback state must not allocate another copy. */
+@Composable
+internal fun rememberDesktopHomeFrameBitmap(frame: MpvSoftwareFrame?): ImageBitmap? = remember(frame) {
+    frame?.let {
+        SkiaImage.makeRaster(ImageInfo(it.width, it.height, ColorType.BGRA_8888, ColorAlphaType.OPAQUE),
+            it.opaqueBgra, it.rowBytes).use { raster -> raster.toComposeImageBitmap() }
+    }
+}
+
 /** CPU render result is carried as a Compose image, so original alpha/clip/blur/Haze modifiers apply. */
 @Composable
 internal fun DesktopHomeMpvTexture(owner: DesktopHomeMediaLifetime, url: String, muted: Boolean,
@@ -147,16 +157,13 @@ internal fun DesktopHomeMpvTexture(owner: DesktopHomeMediaLifetime, url: String,
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
     val playing = playbackEnabled && lifecycleState.isAtLeast(minimumPlayingState)
     LaunchedEffect(own, playing) { own?.setPlaying(playing) }
-    val image = remember(frame) { frame?.let {
-        SkiaImage.makeRaster(ImageInfo(it.width, it.height, ColorType.BGRA_8888, ColorAlphaType.OPAQUE), it.opaqueBgra, it.rowBytes)
-    } }
-    DisposableEffect(image) { onDispose { image?.close() } }
+    val bitmap = rememberDesktopHomeFrameBitmap(frame)
     // This is a real successful libmpv CPU render receipt, not HWND presentation/onRenderedFirstFrame simulation.
-    LaunchedEffect(own, frame?.sourceVersion) { if (image != null) own?.commit { callback?.invoke() } }
+    LaunchedEffect(own, frame?.sourceVersion) { if (bitmap != null) own?.commit { callback?.invoke() } }
     var viewport by remember { mutableStateOf(androidx.compose.ui.unit.IntSize.Zero) }
     LaunchedEffect(own, viewport) { own?.resize(viewport.width, viewport.height) }
     Box(modifier.onSizeChanged { viewport = it }) {
-        if (image != null && own?.isCurrent() == true) Image(image.toComposeImageBitmap(), null, Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
+        if (bitmap != null && own?.isCurrent() == true) Image(bitmap, null, Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
     }
 }
 
