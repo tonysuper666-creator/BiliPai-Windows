@@ -77,7 +77,7 @@ internal class DesktopOfflineMpvControl(
     }
     var playWhenReady:Boolean
         get()=snapshot()?.let {!(it.nativePaused ?: it.paused)} ?: false
-        set(value){action{it.setPaused(!value)}}
+        set(value){if(value)play() else pause()}
     val playbackSpeed:Float get()=snapshot()?.speed?.toFloat() ?: 1f
     var volumePercent:Int
         get()=snapshot()?.volume?.toInt()?.coerceIn(0,100) ?: 0
@@ -90,8 +90,16 @@ internal class DesktopOfflineMpvControl(
         return accepted
     }
     private fun action(block:(MpvPlayer)->Unit){if(isOwned())bindings.backend.runPlayerAction{if(isOwned())block(it)}}
-    fun seekTo(positionMs:Long)=action{it.seekTo(positionMs.coerceAtLeast(0L)/1000.0)}
-    fun play()=action{it.setPaused(false)}
+    fun seekTo(positionMs:Long)=action {
+        val seconds=positionMs.coerceAtLeast(0L)/1000.0
+        // keep-open=no unloads the completed native stream. The original screen
+        // still owns this file; reload through the same existing recovery lane.
+        // Its original seek policy decides whether the following play() resumes.
+        if(it.state.value.ended) it.recoverSource(it.currentSourceVersion,
+            positionSeconds=seconds,paused=true)
+        else it.seekTo(seconds)
+    }
+    fun play()=action{if(it.state.value.ended)it.replay() else it.setPaused(false)}
     fun pause()=action{it.setPaused(true)}
     fun setPlaybackSpeed(speed:Float)=action{it.setSpeed(speed.toDouble())}
     suspend fun load(forceReload:Boolean=false,resumePositionMs:Long?=null,onEpisode:(String)->Unit):OfflinePlaybackFailure? {

@@ -109,6 +109,57 @@ class DesktopOriginalOfflineBindingsLifetimeTest {
         assertEquals(0, pipCloses)
     }
 
+    // Controlled EOF observation in the actual player's existing StateFlow.
+    // The private completed-file binding and publication are real; no decoder runs.
+    @Suppress("UNCHECKED_CAST")
+    private fun observeEof(player: MpvPlayer) {
+        val field=MpvPlayer::class.java.getDeclaredField("mutableState").apply {isAccessible=true}
+        val state=field.get(player) as kotlinx.coroutines.flow.MutableStateFlow<com.bilipai.desktop.player.PlayerState>
+        state.value=state.value.copy(loading=false,ended=true,paused=true,nativePaused=true,
+            positionSeconds=29.9,durationSeconds=30.0,error=null,failure=null)
+    }
+
+    @Test fun originalTimelineAfterEofReloadsTheSameLocalFileAtTheSelectedPausedPosition() = fixture { f ->
+        BindingScene(f).use { scene ->
+            val before=assertNotNull(f.player.currentSourceSnapshot())
+            observeEof(f.player)
+            scene.control.seekTo(12_500L)
+            val after=assertNotNull(f.player.currentSourceSnapshot())
+            assertEquals(before.sourceVersion,after.sourceVersion)
+            assertEquals(before.source.copy(startPositionSeconds=12.5,startPaused=true),after.source)
+            assertTrue(f.player.state.value.loading);assertFalse(f.player.state.value.ended)
+            assertTrue(f.player.state.value.paused);assertTrue(scene.control.isOwned())
+            assertTrue(assertNotNull(after.source.nativePublication).admit {})
+            scene.control.play();assertFalse(f.player.state.value.paused)
+        }
+    }
+
+    @Test fun originalPlayWhenReadyAfterEofReplaysItsSameNativePublicationFromZero() = fixture { f ->
+        BindingScene(f).use { scene ->
+            val before=assertNotNull(f.player.currentSourceSnapshot())
+            observeEof(f.player)
+            scene.control.playWhenReady=true
+            val after=assertNotNull(f.player.currentSourceSnapshot())
+            assertEquals(before.sourceVersion,after.sourceVersion)
+            assertEquals(before.source.copy(startPositionSeconds=0.0,startPaused=false),after.source)
+            assertFalse(f.player.state.value.ended);assertFalse(f.player.state.value.paused)
+            assertTrue(f.player.state.value.loading);assertTrue(scene.control.isOwned())
+            assertTrue(assertNotNull(after.source.nativePublication).admit {})
+        }
+    }
+
+    @Test fun retiredEntryCannotReloadAnEofFileThroughItsOldOriginalControl() = fixture { f ->
+        BindingScene(f).use { scene ->
+            observeEof(f.player)
+            val before=assertNotNull(f.player.currentSourceSnapshot())
+            f.gate.close()
+            scene.control.seekTo(5_000L);scene.control.play();scene.control.playWhenReady=true
+            val after=assertNotNull(f.player.currentSourceSnapshot())
+            assertEquals(before.sourceVersion,after.sourceVersion);assertEquals(before.source,after.source)
+            assertTrue(f.player.state.value.ended);assertFalse(f.player.state.value.loading)
+        }
+    }
+
     private class Ports(val name: String, kind: DesktopDanmakuPresentation) {
         val calls = mutableListOf<String>()
         val presentation = DesktopDanmakuPresentationBinding { kind }

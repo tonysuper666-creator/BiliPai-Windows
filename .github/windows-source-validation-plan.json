@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "a6f005147215453a6a9557d39ee514ee6f227ac3",
-  "windowsVersion": "0.2.427.115",
-  "createdAt": "2026-10-15T07:41:23.754202+00:00",
+  "baseHead": "f477e8a4bcd7a72b856a6ced1903e9d485ae1f4e",
+  "windowsVersion": "0.2.427.116",
+  "createdAt": "2026-10-15T08:05:39.392195+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -209,6 +209,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationRootConsumer.kt",
       "normalization": "lf",
       "sha256": "70d9d9ebd79b52dbf653d97c52c515cacc53a8048c8c98bdda8df97a2d38ed9e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineMpvControl.kt",
+      "normalization": "lf",
+      "sha256": "c296dcc5d2d8a58381cba0782e7998ad81ced94bfa933d53d3d567420b2d2ee1"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
@@ -498,7 +503,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineBindingsLifetimeTest.kt",
       "normalization": "lf",
-      "sha256": "f1ec095d5120610aded8aff0a97f107872ea9857997b2ee7de90af3bbb5d5520"
+      "sha256": "9f9fbe2195239f9fed29a6fd30d485fa5ba2c1f979a32a43513a9bfe3ac575a1"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerInputLayerTest.kt",
@@ -1548,7 +1553,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "de7ccd95e7ac99f66726967de2da7903a0a720861f81d85a48398bbe8d2d4532"
+      "sha256": "e124608b7203b1202da7eaaeb5cbff830364b2d0d2a0856125d3e0e6e3e1f050"
     }
   ],
   "classes": {
@@ -1562,7 +1567,7 @@
     "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8,
     "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 11,
     "com.bilipai.desktop.ui.DesktopOriginalPlayerInputLayerTest": 4,
-    "com.bilipai.desktop.ui.DesktopOriginalOfflineBindingsLifetimeTest": 4,
+    "com.bilipai.desktop.ui.DesktopOriginalOfflineBindingsLifetimeTest": 7,
     "com.bilipai.desktop.ui.DesktopOfflinePointerInputTest": 7,
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5,
     "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13,
@@ -1570,7 +1575,7 @@
     "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
     "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 10
   },
-  "expectedTests": 136,
+  "expectedTests": 139,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1578,10 +1583,8 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
-    "desktop/tools/extract-upstream-offline-player.py",
-    "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineMpvControl.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineBindingsLifetimeTest.kt",
     "desktop/upstream-sources.json"
   ]
 }
