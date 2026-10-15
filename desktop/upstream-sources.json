@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "127",
+  "windowsRevision": "129",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14472,5 +14472,27 @@
     "mainCompiled": false,
     "jvmTestsExecuted": false,
     "applicationExecuted": false
+  },
+  "v041PlayerCoverSlice": {
+    "upstreamTag": "v0.4.1",
+    "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+    "archive": "desktop/upstream-slices/v041-player-cover",
+    "manifestSHA256": "3f2e18b0ddc03a47219a91ad03869c5b2eefc495fbed82b8add36e743d4faec9",
+    "completeOriginalPolicyMembers": 44,
+    "completeOriginalRevealAndSettleEffects": true,
+    "originalTestsSelected": 31,
+    "previousThreeOriginalTestsProjectedToCurrent": true,
+    "nativeAlphaCapability": false,
+    "ordinaryBvUiConsumerImplemented": true,
+    "fullCurrentPlayerParityClaimed": false,
+    "sourceApplied": false,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false,
+    "wholeOriginalCoverImageAndManualPlaySubtree": true,
+    "wholeOriginalEffectsWithWindowsSourceGuards": true,
+    "nativeGeometryDraftRequired": true,
+    "sharedCardReturnConnected": false,
+    "roundedNativeCornersQualified": false
   }
 }

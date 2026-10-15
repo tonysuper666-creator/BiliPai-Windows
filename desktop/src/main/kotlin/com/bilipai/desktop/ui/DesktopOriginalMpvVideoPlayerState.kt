@@ -71,6 +71,9 @@ class DesktopOriginalMpvSectionControl internal constructor(
         if (acceptedSourceVersion() == null) return PlayerState()
         return super.snapshot()
     }
+
+    /** Read the existing owned snapshot inside the presenter's native admission. */
+    internal fun capturePresentationState(): PlayerState = snapshot()
     var playbackParameters: DesktopOriginalPlaybackRate
         get() = DesktopOriginalPlaybackRate(playbackSpeed)
         set(value) {

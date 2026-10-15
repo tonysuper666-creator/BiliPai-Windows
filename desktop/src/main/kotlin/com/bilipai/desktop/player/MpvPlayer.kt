@@ -229,18 +229,115 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         return version
     }
 
+    private val nativeCanvasRegion = DesktopNativeVideoCanvasRegion()
+    private var nativeCanvasPeer: DesktopNativeVideoCanvasPeer? = null
+    private var nativeCanvasPeerGeneration = 0L
+    private val nativeCanvasRegionClearDelivery = DesktopNativeVideoCanvasRegionClearDelivery(nativeCanvasRegion,
+        { action -> synchronized(lock) { action() } }, ::isNativeCanvasPeerCurrentLocked)
+
+    // Always called under the existing MPV lock. Never wait for EDT from a
+    // source/entry/worker lock: normal detach waits for that worker on EDT.
+    private fun retireNativeCanvasRegionLocked() {
+        nativeCanvasRegionClearDelivery.retireLocked()
+    }
+
+    private fun isNativeCanvasPeerCurrentLocked(peer: DesktopNativeVideoCanvasPeer): Boolean =
+        nativeCanvasPeer === peer && !peer.retired && canvas.isDisplayable &&
+            Pointer.nativeValue(Native.getComponentPointer(canvas)) == peer.handle
+
+    private fun isNativeCanvasLeaseCurrentLocked(lease: DesktopNativeVideoCanvasLease): Boolean =
+        ownsSourceSnapshot(lease.source) && playbackRevision == lease.playbackRevision &&
+            !presentationHandoffPending && !presentationDisposalPending &&
+            isNativeCanvasPeerCurrentLocked(lease.peer) &&
+            javax.swing.SwingUtilities.getWindowAncestor(canvas)?.let {
+                it.isDisplayable && Pointer.nativeValue(Native.getWindowPointer(it)) == lease.hostWindowHandle
+            } == true
+
+    internal fun captureNativeVideoCanvasLease(owner: Any, expected: OwnedPlaybackSourceSnapshot): DesktopNativeVideoCanvasLease? {
+        check(java.awt.EventQueue.isDispatchThread())
+        return synchronized(lock) {
+            val peer = nativeCanvasPeer ?: return@synchronized null
+            val host = javax.swing.SwingUtilities.getWindowAncestor(canvas)?.takeIf { it.isDisplayable }
+                ?: return@synchronized null
+            if (!ownsSourceSnapshot(expected) || presentationHandoffPending || presentationDisposalPending ||
+                !isNativeCanvasPeerCurrentLocked(peer)) null
+            else DesktopNativeVideoCanvasLease(owner, expected, playbackRevision, peer,
+                Pointer.nativeValue(Native.getWindowPointer(host)))
+        }
+    }
+
+    internal fun applyNativeVideoCanvasClip(lease: DesktopNativeVideoCanvasLease, clip: DesktopNativeVideoCanvasClip,
+        stillEntryOwned: () -> Boolean): Boolean {
+        check(java.awt.EventQueue.isDispatchThread())
+        var applied = false
+        // Same Store -> entry -> native lock order as normal native controls.
+        admitPresentation(lease.source.source) { synchronized(lock) {
+            if (isNativeCanvasLeaseCurrentLocked(lease) && stillEntryOwned()) {
+                val previous = nativeCanvasRegion.captureReceipt()
+                applied = nativeCanvasRegion.apply(lease.owner, lease.peer, clip, lease.hostWindowHandle,
+                    ::isNativeCanvasPeerCurrentLocked) {
+                    isNativeCanvasLeaseCurrentLocked(lease) && stillEntryOwned()
+                }
+                if (!applied && nativeCanvasRegion.captureReceipt() !== previous) retireNativeCanvasRegionLocked()
+            }
+        } }
+        return applied
+    }
+
+    /** Cleanup requires the exact installed owner and actual peer, never a now
+     * retired account/publication. It cannot erase a successor's region. */
+    internal fun releaseNativeVideoCanvasClip(owner: Any): Boolean {
+        check(java.awt.EventQueue.isDispatchThread())
+        return synchronized(lock) {
+            val receipt = nativeCanvasRegion.captureReceipt()?.takeIf { it.owner === owner }
+                ?: return@synchronized false
+            nativeCanvasRegion.release(receipt, ::isNativeCanvasPeerCurrentLocked)
+        }
+    }
+
+    internal fun captureNativeVideoCanvasClipForValidation(): Map<String, Any?> {
+        check(java.awt.EventQueue.isDispatchThread())
+        check(System.getProperty("bilipai.test.runtimeProbe") == "true")
+        return synchronized(lock) {
+            val peer = nativeCanvasPeer?.takeIf(::isNativeCanvasPeerCurrentLocked)
+                ?: return@synchronized mapOf("peerPresent" to false)
+            val receipt = nativeCanvasRegion.captureReceipt()
+            val (kind, rectangle) = nativeCanvasRegion.readback(peer)
+            fun pixels(value: DesktopNativeVideoCanvasPixels?) = value?.let { listOf(it.left, it.top, it.right, it.bottom) }
+            mapOf("peerPresent" to true, "hwnd" to peer.handle, "peerGeneration" to peer.generation,
+                "sourceVersion" to sourceVersion, "playbackRevision" to playbackRevision,
+                "installedOnCurrentPeer" to (receipt?.peer === peer), "requestedRectangle" to pixels(receipt?.pixels),
+                "nativeRegionKind" to kind, "nativeRegionRectangle" to pixels(rectangle),
+                "firstVideoFrameReady" to state.value.firstVideoFrameReady)
+        }
+    }
+
     private val canvas = object : Canvas() {
         override fun addNotify() {
             super.addNotify()
-            // Windows handles are cast to uint32_t, as required by mpv --wid.
-            attach(Pointer.nativeValue(Native.getComponentPointer(this)) and 0xffff_ffffL)
+            val handle = Pointer.nativeValue(Native.getComponentPointer(this))
+            synchronized(lock) {
+                check(nativeCanvasPeer == null) { "A native Canvas peer is already attached" }
+                nativeCanvasPeer = DesktopNativeVideoCanvasPeer(handle, ++nativeCanvasPeerGeneration)
+            }
+            // Retain the actual full pointer for Win32 regions; mpv's existing
+            // --wid ABI still receives its unchanged uint32_t conversion.
+            attach(handle and 0xffff_ffffL)
         }
 
         override fun removeNotify() {
-            val transfer = synchronized(lock) { presentationTransfer }
+            val (transfer, retiringPeer) = synchronized(lock) {
+                val peer = nativeCanvasPeer
+                nativeCanvasRegion.captureReceipt()?.takeIf { it.peer === peer }?.let {
+                    nativeCanvasRegion.release(it, ::isNativeCanvasPeerCurrentLocked)
+                }
+                presentationTransfer to peer
+            }
             detach()
             super.removeNotify()
             synchronized(lock) {
+                if (retiringPeer != null) nativeCanvasRegion.peerRetired(retiringPeer)
+                if (nativeCanvasPeer === retiringPeer) nativeCanvasPeer = null
                 if (transfer != null && presentationTransfer === transfer && !isDisplayable)
                     transfer.peerReleased()
             }
@@ -254,6 +351,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     val surface: JPanel = JPanel(BorderLayout()).apply {
         background = Color.BLACK
         add(canvas, BorderLayout.CENTER)
+        if (System.getProperty("bilipai.test.runtimeProbe") == "true") {
+            putClientProperty("bilipai.validation.nativeCanvasClipSnapshot",
+                java.util.function.Supplier { captureNativeVideoCanvasClipForValidation() })
+        }
     }
 
     fun load(source: PlaybackSource) = load(source, preserveSubtitles = false)
@@ -322,6 +423,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 return@synchronized
             val token = DesktopNativePresentationTransfer(expected, playbackRevision, requireNotNull(attachedWindowId),
                 { native.cacheTerminated.isCompleted && !native.thread.isAlive })
+            retireNativeCanvasRegionLocked()
             presentationTransfer = token; presentationHandoffPending = true
             if (native.commands.offer(Action.PreparePresentation(token))) result = token
             else { token.retire(); presentationTransfer = null; presentationHandoffPending = false }
@@ -379,6 +481,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             retirePresentationTransferLocked()
             presentationTransfer = null; presentationHandoffPending = false
+            retireNativeCanvasRegionLocked()
             presentationDisposalPending = true
             clearVeyraPresentationState()
             session?.let { it.closing.set(true); retiringCacheSessions.add(it) }
@@ -477,6 +580,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             startPaused = current.startPaused, nativePublication = null).immutableSnapshot()
         val identity = mediaIdentity(current)
         if (mediaIdentity(expectedSource) != identity || mediaIdentity(replacement) != identity) return@synchronized false
+        retireNativeCanvasRegionLocked()
         requestedSource = current.copy(nativePublication = replacement.nativePublication).immutableSnapshot()
         session?.transferWindowsAudioSource(current, requireNotNull(requestedSource))
         true
@@ -507,6 +611,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             check(idleCacheMaintenance==null) { "播放器缓存正在清理，请稍后重试" }
             // Validate and freeze caller-owned maps before transferring media ownership.
             val retainedSource = source.immutableSnapshot()
+            retireNativeCanvasRegionLocked()
             val previousTransport = requestedSource?.nativeTransport
             if (!preserveSubtitles) retainedSource.nativeTransport?.lease?.requireUnattached()
             terminalPresentation = null // Only an accepted explicit load/replay/recovery consumes terminal intent.
@@ -918,6 +1023,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
     fun stop() {
         synchronized(lock) {
+            retireNativeCanvasRegionLocked()
             terminalPresentation = null
             retirePresentationTransferLocked()
             requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication)
@@ -1041,7 +1147,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     override fun close() {
         if (closed.compareAndSet(false, true)) {
             softwareTarget?.close()
-            synchronized(lock) { terminalPresentation = null; retirePresentationTransferLocked(); requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication); requestedSource = null; externalSubtitles.clear() }
+            synchronized(lock) { retireNativeCanvasRegionLocked(); terminalPresentation = null; retirePresentationTransferLocked(); requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication); requestedSource = null; externalSubtitles.clear() }
             detach()
         }
     }
