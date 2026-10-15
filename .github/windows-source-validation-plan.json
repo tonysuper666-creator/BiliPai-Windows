@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "f477e8a4bcd7a72b856a6ced1903e9d485ae1f4e",
-  "windowsVersion": "0.2.427.116",
-  "createdAt": "2026-10-15T08:05:39.392195+00:00",
+  "baseHead": "f86f1a08e51ce8c3bf2387061cb8881548be70db",
+  "windowsVersion": "0.2.427.117",
+  "createdAt": "2026-10-15T09:02:51.630181+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -218,7 +218,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
       "normalization": "lf",
-      "sha256": "181f6feb0b282aa8134d7a02e262f752e7c1ab6bbb0c283be16937bccc173b0b"
+      "sha256": "375446b08ef3538eda9c493ec2053f5be50be54f63acfe0e727a6a439700c3da"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
@@ -493,7 +493,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
       "normalization": "lf",
-      "sha256": "f85d16f86b27d701046e34749f1e3233947fe5fb928145cc939ddd22bfdef99c"
+      "sha256": "b49a01713557b566a0624f98cc73cd7a2eae2d1707e977c27f4328c0a01471a9"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
@@ -1553,7 +1553,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "e124608b7203b1202da7eaaeb5cbff830364b2d0d2a0856125d3e0e6e3e1f050"
+      "sha256": "b43c5bf9cbacaf997b4818a7c317302390a3aae93effb730d0776cfc300fe483"
     }
   ],
   "classes": {
@@ -1573,9 +1573,9 @@
     "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13,
     "com.bilipai.desktop.ui.DesktopWindowsPlaybackAudioOutputTest": 6,
     "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
-    "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 10
+    "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 13
   },
-  "expectedTests": 139,
+  "expectedTests": 142,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1583,8 +1583,8 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineMpvControl.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineBindingsLifetimeTest.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
     "desktop/upstream-sources.json"
   ]
 }

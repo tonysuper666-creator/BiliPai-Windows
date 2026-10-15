@@ -233,10 +233,39 @@ class DesktopOfflineNativeInputTest {
         assertEquals(0,f.reveals); assertEquals(0,f.toggles)
     }
 
-    private class NativeFixture : AutoCloseable {
+    @Test fun renderCanvasDefersInputToTheExistingHostWithoutReplacingTheSource() = fixture { f ->
+        val source = assertNotNull(f.native.currentSourceSnapshot())
+        assertFalse(f.canvas.isEnabled)
+        assertSame(f.surface, f.canvas.parent)
+        f.hostClick()
+        assertEquals(1, f.reveals)
+        assertEquals(1, f.focusRequests)
+        assertTrue(f.native.ownsSourceSnapshot(source))
+        f.closeBridge()
+        assertTrue(f.canvas.isEnabled)
+    }
+    @Test fun releasePreservesAnOriginallyDisabledRenderCanvas() = fixture(initialCanvasEnabled = false) { f ->
+        assertFalse(f.canvas.isEnabled)
+        f.closeBridge()
+        assertFalse(f.canvas.isEnabled)
+        f.closeBridge()
+        assertFalse(f.canvas.isEnabled)
+    }
+    @Test fun heldSpaceCannotToggleASuccessorBeforeARealKeyRelease() = fixture { f ->
+        f.key(java.awt.event.KeyEvent.KEY_PRESSED)
+        assertEquals(1, f.toggles)
+        f.replaceSource()
+        repeat(3) { assertTrue(f.key(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed) }
+        assertEquals(1, f.toggles)
+        f.key(java.awt.event.KeyEvent.KEY_RELEASED)
+        f.key(java.awt.event.KeyEvent.KEY_PRESSED)
+        assertEquals(2, f.toggles)
+    }
+
+    private class NativeFixture(initialCanvasEnabled: Boolean) : AutoCloseable {
         val native=MpvPlayer()
         val surface=native.surface
-        val canvas=surface.components.filterIsInstance<java.awt.Canvas>().single()
+        val canvas=surface.components.filterIsInstance<java.awt.Canvas>().single().also { it.isEnabled = initialCanvasEnabled }
         val oldFocusable=surface.isFocusable
         val oldMouse=canvas.mouseListeners.size
         val oldKeys=canvas.keyListeners.size
@@ -253,6 +282,12 @@ class DesktopOfflineNativeInputTest {
             val e=java.awt.event.MouseEvent(canvas,id,1L,0,20,20,1,false,button)
             canvas.mouseListeners.forEach { if(id==java.awt.event.MouseEvent.MOUSE_PRESSED)it.mousePressed(e) else it.mouseReleased(e) }
         }
+        fun hostClick() {
+            for (id in listOf(java.awt.event.MouseEvent.MOUSE_PRESSED, java.awt.event.MouseEvent.MOUSE_RELEASED)) {
+                val e=java.awt.event.MouseEvent(surface,id,1L,0,20,20,1,false,java.awt.event.MouseEvent.BUTTON1)
+                surface.mouseListeners.forEach { if(id==java.awt.event.MouseEvent.MOUSE_PRESSED)it.mousePressed(e) else it.mouseReleased(e) }
+            }
+        }
         fun move() {
             val e=java.awt.event.MouseEvent(canvas,java.awt.event.MouseEvent.MOUSE_MOVED,1L,0,30,30,0,false)
             canvas.mouseMotionListeners.forEach {it.mouseMoved(e)}
@@ -266,7 +301,7 @@ class DesktopOfflineNativeInputTest {
         fun closeBridge()=bridge.close()
         override fun close(){bridge.close();native.close()}
     }
-    private fun fixture(block:(NativeFixture)->Unit) {
-        java.awt.EventQueue.invokeAndWait { NativeFixture().use(block) }
+    private fun fixture(initialCanvasEnabled: Boolean = true, block:(NativeFixture)->Unit) {
+        java.awt.EventQueue.invokeAndWait { NativeFixture(initialCanvasEnabled).use(block) }
     }
 }

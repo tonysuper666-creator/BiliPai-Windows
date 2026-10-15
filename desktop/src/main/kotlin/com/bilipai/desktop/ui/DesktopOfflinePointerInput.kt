@@ -97,6 +97,7 @@ internal class DesktopOfflineNativeInputBridge(
 ) : AutoCloseable {
     private val canvas = surface.components.filterIsInstance<java.awt.Canvas>().single()
     private val oldFocusable = surface.isFocusable
+    private val oldCanvasEnabled = canvas.isEnabled
     private var closed = false
     private var press: OwnedPlaybackSourceSnapshot? = null
     private var heldSpace: OwnedPlaybackSourceSnapshot? = null
@@ -133,7 +134,8 @@ internal class DesktopOfflineNativeInputBridge(
                 !canReceiveKey()) return
             val captured = current() ?: return
             val held = heldSpace
-            if (held != null && !matches(held)) { heldSpace = null; return }
+            // A held key stays suppressed across source replacement until key-up.
+            if (held != null) { event.consume(); return }
             if (held == null) {
                 heldSpace = captured
                 onRevealControls()
@@ -150,6 +152,13 @@ internal class DesktopOfflineNativeInputBridge(
     init {
         check(java.awt.EventQueue.isDispatchThread())
         surface.isFocusable = true
+        // MPV renders into its own child HWND below this Canvas. Windows sends
+        // child input directly to that peer instead of bubbling AWT events.
+        // Disabling only the render Canvas makes that subtree input-inert while
+        // its existing enabled host receives mouse/focus/key events; video and
+        // decoding continue on the same native session. No input hook is added.
+        // https://learn.microsoft.com/en-us/windows/win32/winmsg/window-features
+        canvas.isEnabled = false
         for (component in listOf(surface, canvas)) {
             component.addMouseListener(mouse); component.addMouseMotionListener(mouse)
             component.addKeyListener(key); component.addFocusListener(focus)
@@ -163,6 +172,7 @@ internal class DesktopOfflineNativeInputBridge(
             component.removeMouseListener(mouse); component.removeMouseMotionListener(mouse)
             component.removeKeyListener(key); component.removeFocusListener(focus)
         }
+        canvas.isEnabled = oldCanvasEnabled
         surface.isFocusable = oldFocusable
     }
 }
