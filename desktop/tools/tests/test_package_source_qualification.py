@@ -74,6 +74,34 @@ class PackageSourceQualificationTest(unittest.TestCase):
                         log.replace(hashlib.sha256(json.dumps(self.payload).encode()).hexdigest(), "0" * 64, 1)]:
             with self.assertRaises(ValueError): gate.receipt_from_log(invalid)
 
+    def harness_export(self):
+        self.plan["exportPackagedUpdaterHarness"] = True
+        self.payload["receipt"]["updaterHarnessExport"] = dict(schema=1, sourceSha=self.sha,
+            manifestSha256="e" * 64, payloadFiles=6, payloadBytes=12345,
+            applicationExecuted=False, updaterE2EExecuted=False)
+
+    def test_opted_export_is_bound_without_claiming_actual_updater_acceptance(self):
+        self.harness_export(); proof = self.verify()
+        self.assertEqual("e" * 64, proof["updaterHarnessExport"]["manifestSha256"])
+        self.assertFalse(proof["updaterHarnessExport"]["updaterE2EExecuted"])
+        self.assertFalse(proof["releaseQualified"])
+
+    def test_opted_export_cannot_be_missing_from_the_sealed_receipt(self):
+        self.plan["exportPackagedUpdaterHarness"] = True
+        with self.assertRaises(ValueError): self.verify()
+
+    def test_export_source_digest_bounds_and_claims_are_validated(self):
+        self.harness_export(); original = copy.deepcopy(self.payload["receipt"]["updaterHarnessExport"])
+        for change in [dict(sourceSha="f" * 40), dict(manifestSha256="bad"), dict(payloadFiles=True),
+                       dict(payloadFiles=1), dict(payloadBytes=65 * 1024 * 1024),
+                       dict(applicationExecuted=True), dict(updaterE2EExecuted=True)]:
+            self.payload["receipt"]["updaterHarnessExport"] = dict(original, **change)
+            with self.subTest(change=change), self.assertRaises(ValueError): self.verify()
+
+    def test_an_export_cannot_qualify_a_failed_source_run(self):
+        self.harness_export(); self.run["conclusion"] = "failure"
+        with self.assertRaises(ValueError): self.verify()
+
     def test_colored_console_output_outside_receipt_does_not_change_sealed_evidence(self):
         log = "2026-10-14T11:00:00Z \x1b[36mcompile output\x1b[0m\n" + self.log()
         proof = gate.verify(self.run, self.jobs, log, self.plan, self.sha)

@@ -1,6 +1,6 @@
 package com.bilipai.desktop.ui
 
-import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.*
 import java.awt.Canvas
 import java.awt.EventQueue
 import kotlin.test.*
@@ -61,7 +61,9 @@ class DesktopWindowKeyFallbackTest {
         fallback.register { error("Closed Root") }; fallback.registerLeaf { error("Closed player") }
         fallback.close(); assertFalse(fallback.preview(key()))
     }
-    private fun key() = KeyEvent(java.awt.event.KeyEvent(Canvas(), java.awt.event.KeyEvent.KEY_PRESSED,
-        1L, 0, java.awt.event.KeyEvent.VK_SPACE, ' '))
+    @OptIn(androidx.compose.ui.InternalComposeUiApi::class)
+    private fun key() = KeyEvent(Key.Spacebar, KeyEventType.KeyDown, ' '.code,
+        nativeEvent = java.awt.event.KeyEvent(Canvas(), java.awt.event.KeyEvent.KEY_PRESSED,
+            1L, 0, java.awt.event.KeyEvent.VK_SPACE, ' '))
     private fun edt(block: () -> Unit) { EventQueue.invokeAndWait(block) }
 }

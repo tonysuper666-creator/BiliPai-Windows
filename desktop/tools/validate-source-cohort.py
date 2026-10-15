@@ -5,7 +5,7 @@ The real main Gradle graph retains its reviewed native prerequisites. No cache/a
 upload, publication, deployment, separate native pipeline or GUI launch is owned here.
 """
 from pathlib import Path
-import argparse, base64, gzip, hashlib, json, os, re, subprocess, sys, time
+import argparse, base64, gzip, hashlib, importlib.util, json, os, re, subprocess, sys, time
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -114,6 +114,11 @@ def main():
                '-Porg.gradle.java.installations.paths=' + str(java_home),
                'compileKotlin', 'compileTestKotlin', 'test']
     for name in plan['classes']: command += ['--tests', name]
+    export_harness = plan.get('exportPackagedUpdaterHarness') is True
+    if export_harness:
+        command += ['--init-script', str(repo / 'desktop/tools/updater-harness-export.init.gradle'),
+            '-PpackagedUpdaterHarnessInputs=' + str(output / 'updater-harness-inputs.json'),
+            'writePackagedUpdaterHarnessInputs']
     started = time.time()
     result = subprocess.run(command, cwd=repo, env=environment)
     suites = []
@@ -136,6 +141,17 @@ def main():
             raw_xml[name] = raw.decode('utf-8')
         else: passed = False
         suites.append(row)
+    harness = None
+    if passed and export_harness:
+        helper = repo / 'desktop/tools/export-packaged-updater-harness.py'
+        spec = importlib.util.spec_from_file_location('qualified_updater_harness_export', helper)
+        exporter = importlib.util.module_from_spec(spec); spec.loader.exec_module(exporter)
+        manifest = exporter.export(repo, json.loads(read(output / 'updater-harness-inputs.json')),
+            output / 'updater-harness', sha, started)
+        harness = dict(schema=1, sourceSha=sha,
+            manifestSha256=exporter.digest(output / 'updater-harness/manifest.json'),
+            payloadFiles=len(manifest['payload']), payloadBytes=sum(row['bytes'] for row in manifest['payload']),
+            updaterE2EExecuted=False, applicationExecuted=False)
     after = {row['path']: source_digest(repo, row) for row in plan['sources']}
     passed &= before == after
     receipt = dict(passed=bool(passed), sourceSha=sha, baseHead=plan['baseHead'],
@@ -144,6 +160,7 @@ def main():
         expectedTests=plan['expectedTests'], standardRunner='windows-latest',
         cloudGradleHeapMaximum=CLOUD_GRADLE_HEAP, localGradleHeapMaximum='4g',
         applicationExecuted=False, hardwareExecuted=False, packageBuilt=False, published=False)
+    if harness is not None: receipt['updaterHarnessExport'] = harness
     (output / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
     payload = json.dumps(dict(receipt=receipt, rawXml=raw_xml), ensure_ascii=True).encode()
     encoded = base64.b64encode(gzip.compress(payload, mtime=0)).decode()
@@ -152,6 +169,9 @@ def main():
     print('BILIPAI_SOURCE_RECEIPT_END')
     print(json.dumps(dict(passed=bool(passed), sourceSha=sha, expectedTests=plan['expectedTests'],
                           actualTests=sum(row.get('tests', 0) for row in suites))))
+    if passed and harness is not None and os.environ.get('GITHUB_OUTPUT'):
+        with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as stream:
+            stream.write('updater_harness_exported=true\n')
     return 0 if passed else 1
 
 if __name__ == '__main__': sys.exit(main())

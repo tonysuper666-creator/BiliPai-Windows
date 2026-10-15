@@ -107,6 +107,31 @@ class MpvNativeInputTest {
         assertEquals(2,lines.size); assertTrue(lines.last().endsWith("flags=127"))
     }
 
+    @Test fun optedSynchronizationProbeReportsOnlyBoundedNumericModesAndFlags() {
+        val lines=mutableListOf<String>(); val probe=MpvRuntimeProbeRecorder(true) {lines+=it}
+        probe.nvidiaSynchronization("display-resample", "yes", "no", "12")
+        assertEquals(listOf("BILIPAI_RUNTIME_PROBE stage=NVIDIA_SYNCHRONIZATION first=1 second=12 flags=11"), lines)
+        probe.nvidiaSynchronization("audio", "no", "yes", "0")
+        assertTrue(lines.last().endsWith("first=0 second=0 flags=14"))
+        probe.nvidiaSynchronization("display-resample-vdrop", "yes", "no", "1")
+        assertTrue(lines.last().endsWith("first=7 second=1 flags=11"))
+        probe.nvidiaSynchronization("display-resample-desync", "yes", "no", "2")
+        assertTrue(lines.last().endsWith("first=8 second=2 flags=11"))
+    }
+    @Test fun unknownNativeSynchronizationStringsCannotLeakTextOrBecomeValidCounts() {
+        val lines=mutableListOf<String>(); val probe=MpvRuntimeProbeRecorder(true) {lines+=it}
+        for (count in listOf("-1", "2147483648", "9999999999999999999999999999", "https://example.invalid/account"))
+            probe.nvidiaSynchronization("untrusted\ntext", "unexpected", null, count)
+        assertEquals(listOf("BILIPAI_RUNTIME_PROBE stage=NVIDIA_SYNCHRONIZATION first=-1 second=-1 flags=0"), lines)
+    }
+    @Test fun synchronizationProbeRemainsSilentByDefaultAndBoundsChangingDropCounts() {
+        val lines=mutableListOf<String>(); val disabled=MpvRuntimeProbeRecorder(false) {lines+=it}
+        disabled.nvidiaSynchronization("display-resample", "yes", "yes", "1"); assertTrue(lines.isEmpty())
+        val enabled=MpvRuntimeProbeRecorder(true) {lines+=it}
+        repeat(1000) {enabled.nvidiaSynchronization("audio", "no", "no", it.toString())}
+        assertEquals(8,lines.size)
+    }
+
     private class Message(token:String,word:String) : AutoCloseable {
         val data=Memory(16);val args=Memory(16);val name=Memory(128);val action=Memory(128)
         init {data.clear();args.clear();name.clear();action.clear();name.setString(0,token,"UTF-8");action.setString(0,word,"UTF-8")

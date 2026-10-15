@@ -158,6 +158,8 @@ def offline_desktop_pointer_ui(source):
  phone_fullscreen=s[start:end]
  assert sha(phone_fullscreen)=='d43132781715d3d7c2e3ee6c0345bb0f746eed42d1e79f029e3a315ae9aa24fd','Phone fullscreen recipe drift'
  replace(phone_fullscreen,'    var isFullscreen by rememberDesktopOfflineFullscreen(bindings.window)\n','same authoritative Windows fullscreen state instead of a second phone flag')
+ replace('    var initialOrientationResolved by remember(currentTaskId) { mutableStateOf(false) }\n','','remove phone initial-orientation latch from Windows offline screen')
+ replace('            override fun onPlaybackStateChanged(playbackState: Int) {\n                if (initialOrientationResolved || task.isAudioOnly) return\n                if (task.isVerticalVideo) {\n                    initialOrientationResolved = true\n                    return\n                }\n                val videoSize = player.videoSize\n                if (videoSize.width > 0 && videoSize.height > 0) {\n                    isFullscreen = videoSize.width >= videoSize.height\n                    initialOrientationResolved = true\n                }\n            }\n','','do not turn the actual Windows window fullscreen when first video dimensions arrive')
  start=s.index('            // 🎛️ 拖拽手势：亮度/音量/进度\n')
  end=s.index('            // 🖱️ 点击/双击/长按手势\n',start)
  phone=s[start:end]

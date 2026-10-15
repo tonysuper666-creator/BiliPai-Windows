@@ -10,6 +10,7 @@ import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.Density
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
@@ -308,6 +309,63 @@ class DesktopOfflineNativeInputTest {
         assertEquals(0, f.toggles); assertEquals(0, f.reveals)
     }
 
+    @Test fun consumedWindowKeyReleaseRetiresTheRepeatGuardWithoutAnotherAction() = fixture { f ->
+        f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(1, f.toggles)
+        assertTrue(f.windowKey(java.awt.event.KeyEvent.KEY_RELEASED, consumed = true).isConsumed)
+        assertEquals(1, f.toggles)
+        f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(2, f.toggles)
+    }
+    @Test fun losingActualRootFocusRetiresAHeldPreviewPressWithoutToggling() = fixture { f ->
+        f.focused = false // preview owns the key without Canvas focus
+        f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(1, f.toggles)
+        f.active = false; f.releaseHeldInput(); assertEquals(1, f.toggles)
+        f.active = true; f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(2, f.toggles)
+    }
+    @Test fun focusLossAndConsumedReleaseDoNotActOnARetiredSourceOrClosedBridge() = fixture { f ->
+        f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); f.replaceSource()
+        f.windowKey(java.awt.event.KeyEvent.KEY_RELEASED, consumed = true)
+        f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(2, f.toggles)
+        f.closeBridge(); f.releaseHeldInput()
+        assertFalse(f.windowKey(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        assertEquals(2, f.toggles)
+    }
+
+    @Test fun actualComposeWrapperReachesTheOwnedLeafBeforeTheRetainedRootScene() = fixture { f ->
+        f.focused = false
+        val fallback = DesktopWindowKeyFallback()
+        fallback.register { error("The accepted native Space must not reach Root navigation") }
+        val registration = fallback.registerLeaf(f::composeWindowInput)
+        val event = f.composeEvent(java.awt.event.KeyEvent.KEY_PRESSED)
+        assertFalse(event.nativeKeyEvent is java.awt.event.KeyEvent)
+        assertTrue(fallback.preview(event)); assertEquals(1, f.toggles); assertEquals(1, f.reveals)
+        assertTrue(fallback.preview(f.composeEvent(java.awt.event.KeyEvent.KEY_RELEASED)))
+        registration.close(); fallback.close()
+    }
+    @OptIn(androidx.compose.ui.InternalComposeUiApi::class)
+    @Test fun modifiedOrOtherComposeKeysRemainAvailableToTheirOriginalRecipients() = fixture { f ->
+        for (mask in listOf(java.awt.event.InputEvent.CTRL_DOWN_MASK, java.awt.event.InputEvent.SHIFT_DOWN_MASK,
+            java.awt.event.InputEvent.ALT_DOWN_MASK, java.awt.event.InputEvent.META_DOWN_MASK))
+            assertFalse(f.composeWindowInput(f.composeEvent(java.awt.event.KeyEvent.KEY_PRESSED, mask)))
+        assertFalse(f.composeWindowInput(KeyEvent(Key.F11, KeyEventType.KeyDown)))
+        assertEquals(0, f.toggles); assertEquals(0, f.reveals)
+    }
+    @Test fun composeRepeatCannotToggleASuccessorUntilItsRealRelease() = fixture { f ->
+        assertTrue(f.composeWindowInput(f.composeEvent(java.awt.event.KeyEvent.KEY_PRESSED)))
+        f.replaceSource()
+        repeat(4) { assertTrue(f.composeWindowInput(f.composeEvent(java.awt.event.KeyEvent.KEY_PRESSED))) }
+        assertEquals(1, f.toggles)
+        f.composeWindowInput(f.composeEvent(java.awt.event.KeyEvent.KEY_RELEASED))
+        assertTrue(f.composeWindowInput(f.composeEvent(java.awt.event.KeyEvent.KEY_PRESSED)))
+        assertEquals(2, f.toggles)
+    }
+    @Test fun inactiveMenuOrRetiredEntryCannotReceiveComposeWindowPlaybackCommands() = fixture { f ->
+        f.active = false
+        assertFalse(f.composeWindowInput(f.composeEvent(java.awt.event.KeyEvent.KEY_PRESSED)))
+        f.active = true; f.closeBridge()
+        assertFalse(f.composeWindowInput(f.composeEvent(java.awt.event.KeyEvent.KEY_PRESSED)))
+        assertEquals(0, f.toggles); assertEquals(0, f.reveals)
+    }
+
     private class NativeFixture(initialCanvasEnabled: Boolean) : AutoCloseable {
         val native=MpvPlayer()
         val surface=native.surface
@@ -350,6 +408,17 @@ class DesktopOfflineNativeInputTest {
             bridge.windowKeyInput(event)
             return event
         }
+        @OptIn(androidx.compose.ui.InternalComposeUiApi::class)
+        fun composeEvent(id: Int, modifiers: Int = 0): KeyEvent = KeyEvent(Key.Spacebar,
+            if (id == java.awt.event.KeyEvent.KEY_PRESSED) KeyEventType.KeyDown else KeyEventType.KeyUp,
+            ' '.code,
+            isCtrlPressed = modifiers and java.awt.event.InputEvent.CTRL_DOWN_MASK != 0,
+            isShiftPressed = modifiers and java.awt.event.InputEvent.SHIFT_DOWN_MASK != 0,
+            isAltPressed = modifiers and java.awt.event.InputEvent.ALT_DOWN_MASK != 0,
+            isMetaPressed = modifiers and java.awt.event.InputEvent.META_DOWN_MASK != 0,
+            nativeEvent = java.awt.event.KeyEvent(surface, id, 1L, modifiers, java.awt.event.KeyEvent.VK_SPACE, ' '))
+        fun composeWindowInput(event: KeyEvent) = bridge.windowKeyInput(event)
+        fun releaseHeldInput()=bridge.releaseHeldInput()
         fun closeBridge()=bridge.close()
         fun nativeInput(kind:com.bilipai.desktop.player.MpvNativeWindowInputKind)=bridge.nativeWindowInput(kind)
         override fun close(){bridge.close();native.close()}

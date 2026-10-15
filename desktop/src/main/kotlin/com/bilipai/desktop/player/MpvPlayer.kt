@@ -1457,6 +1457,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     (if (binding.presentationQualification?.matches(binding) == true) 16 else 0) or
                     (if (fileLoaded) 32 else 0) or (if (filterPresent) 64 else 0))
             if (MpvRuntimeProbe.enabled) {
+                MpvRuntimeProbe.nvidiaSynchronization(property(native, handle, "video-sync"),
+                    property(native, handle, "display-sync-active"), property(native, handle, "interpolation"),
+                    property(native, handle, "frame-drop-count"))
                 val receipt = veyraReceipt
                 MpvRuntimeProbe.recordChanged(MpvRuntimeProbeStage.NVIDIA_OUTPUT_SIZE,
                     outputWidth.toLong(), outputHeight.toLong())

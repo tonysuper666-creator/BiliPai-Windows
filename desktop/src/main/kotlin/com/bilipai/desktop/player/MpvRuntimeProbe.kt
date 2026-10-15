@@ -10,6 +10,7 @@ internal enum class MpvRuntimeProbeStage {
     AWT_MOUSE, AWT_SPACE, WINDOW_SPACE, SURFACE_ADMISSION, ORIGINAL_REVEAL,
     NATIVE_CLIENT_MESSAGE, NVIDIA_SUBMITTED_MESSAGE, NVIDIA_PRESENTATION,
     WINDOW_PREVIEW, WINDOW_UNHANDLED, NVIDIA_RECEIPT_SIZE, NVIDIA_OUTPUT_SIZE,
+    NVIDIA_SYNCHRONIZATION,
 }
 
 internal class MpvRuntimeProbeRecorder(
@@ -19,6 +20,22 @@ internal class MpvRuntimeProbeRecorder(
     private val counts = AtomicIntegerArray(MpvRuntimeProbeStage.entries.size)
     private data class Values(val first: Long, val second: Long, val flags: Int)
     private val latest = AtomicReferenceArray<Values?>(MpvRuntimeProbeStage.entries.size)
+    /** Fixed numeric observations only; unknown native values never become log text. */
+    fun nvidiaSynchronization(mode: String?, active: String?, interpolation: String?, drops: String?) {
+        if (!enabled) return
+        val modeCode = when (mode) {
+            "audio" -> 0L; "display-resample" -> 1L; "display-tempo" -> 2L
+            "display-vdrop" -> 3L; "display-adrop" -> 4L; "display-desync" -> 5L
+            "desync" -> 6L; "display-resample-vdrop" -> 7L
+            "display-resample-desync" -> 8L; else -> -1L
+        }
+        val dropCount = drops?.toLongOrNull()?.takeIf { it in 0L..Int.MAX_VALUE.toLong() } ?: -1L
+        val flags = (if (active == "yes") 1 else 0) or
+            (if (active == "yes" || active == "no") 2 else 0) or
+            (if (interpolation == "yes") 4 else 0) or
+            (if (interpolation == "yes" || interpolation == "no") 8 else 0)
+        recordChanged(MpvRuntimeProbeStage.NVIDIA_SYNCHRONIZATION, modeCode, dropCount, flags)
+    }
     fun recordChanged(stage: MpvRuntimeProbeStage, first: Long = 0, second: Long = 0, flags: Int = 0) {
         if (!enabled) return
         val value = Values(first, second, flags)
@@ -40,6 +57,8 @@ internal object MpvRuntimeProbe {
     private val recorder = MpvRuntimeProbeRecorder(
         java.lang.Boolean.getBoolean("bilipai.test.runtimeProbe"), System.err::println)
     val enabled: Boolean get() = recorder.enabled
+    fun nvidiaSynchronization(mode: String?, active: String?, interpolation: String?, drops: String?) =
+        recorder.nvidiaSynchronization(mode, active, interpolation, drops)
     fun record(stage: MpvRuntimeProbeStage, first: Long = 0, second: Long = 0, flags: Int = 0) =
         recorder.record(stage, first, second, flags)
     fun recordChanged(stage: MpvRuntimeProbeStage, first: Long = 0, second: Long = 0, flags: Int = 0) =
