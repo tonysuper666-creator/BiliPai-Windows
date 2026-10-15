@@ -173,3 +173,100 @@ class DesktopOfflinePointerInputTest {
 
     private fun scene(block: (PointerScene) -> Unit) { PointerScene().use(block) }
 }
+
+
+/** Real existing AWT host/Canvas listeners and real native source receipts.
+ * No Window is created, no native runtime is attached and no media is decoded. */
+class DesktopOfflineNativeInputTest {
+    @Test fun nativeCanvasPrimaryReleaseRevealsAndFocusesTheSameHost() = fixture { f ->
+        f.press(); assertEquals(1, f.focusRequests); assertEquals(0, f.reveals)
+        f.release(); assertEquals(1, f.reveals); assertEquals(0, f.toggles)
+    }
+    @Test fun nativeMotionRevealsOriginalControlsWithoutTogglingPlayback() = fixture { f ->
+        f.move(); assertEquals(1, f.reveals); assertEquals(0, f.toggles)
+    }
+    @Test fun secondaryPressNeverCapturesFocusOrAControlAction() = fixture { f ->
+        f.press(java.awt.event.MouseEvent.BUTTON3); f.release(java.awt.event.MouseEvent.BUTTON3)
+        assertEquals(0, f.focusRequests); assertEquals(0, f.reveals)
+    }
+    @Test fun replacingActualNativeSourceBetweenPressAndReleaseRejectsTheOldClick() = fixture { f ->
+        f.press(); f.replaceSource(); f.release(); assertEquals(0, f.reveals)
+    }
+    @Test fun freshlyAllocatedEqualActualReceiptsDoNotRejectAValidClick() = fixture { f ->
+        val first=assertNotNull(f.native.currentSourceSnapshot())
+        f.press(); val next=assertNotNull(f.native.currentSourceSnapshot())
+        assertNotSame(first,next); assertEquals(first.source,next.source)
+        f.release(); assertEquals(1,f.reveals)
+    }
+    @Test fun unavailableOrRetiredForegroundNeverRevealsOrToggles() = fixture { f ->
+        f.active=false; f.move(); f.press(); f.release()
+        assertFalse(f.key(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        assertEquals(0,f.reveals); assertEquals(0,f.toggles); assertEquals(0,f.focusRequests)
+    }
+    @Test fun focusedSpaceAutoRepeatTogglesOnlyOnceUntilRelease() = fixture { f ->
+        assertTrue(f.key(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        assertTrue(f.key(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        assertEquals(1,f.toggles)
+        assertTrue(f.key(java.awt.event.KeyEvent.KEY_RELEASED).isConsumed)
+        f.key(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(2,f.toggles)
+    }
+    @Test fun editorFocusAndModifiedSpaceKeepTheirKeys() = fixture { f ->
+        f.focused=false
+        assertFalse(f.key(java.awt.event.KeyEvent.KEY_PRESSED).isConsumed)
+        f.focused=true
+        assertFalse(f.key(java.awt.event.KeyEvent.KEY_PRESSED,java.awt.event.InputEvent.CTRL_DOWN_MASK).isConsumed)
+        assertEquals(0,f.toggles)
+    }
+    @Test fun sourceRetirementAndFocusLossDropHeldInput() = fixture { f ->
+        f.press(); f.loseFocus(); f.release(); assertEquals(0,f.reveals)
+        f.key(java.awt.event.KeyEvent.KEY_PRESSED); f.replaceSource()
+        assertFalse(f.key(java.awt.event.KeyEvent.KEY_RELEASED).isConsumed)
+        assertEquals(1,f.toggles)
+        f.key(java.awt.event.KeyEvent.KEY_PRESSED); assertEquals(2,f.toggles)
+    }
+    @Test fun disposingTheOriginalEntryDetachesAllBorrowedListenersAndRestoresFocusability() = fixture { f ->
+        f.closeBridge()
+        assertEquals(f.oldMouse,f.canvas.mouseListeners.size)
+        assertEquals(f.oldKeys,f.canvas.keyListeners.size)
+        assertEquals(f.oldFocusable,f.surface.isFocusable)
+        f.press(); f.release(); f.key(java.awt.event.KeyEvent.KEY_PRESSED)
+        assertEquals(0,f.reveals); assertEquals(0,f.toggles)
+    }
+
+    private class NativeFixture : AutoCloseable {
+        val native=MpvPlayer()
+        val surface=native.surface
+        val canvas=surface.components.filterIsInstance<java.awt.Canvas>().single()
+        val oldFocusable=surface.isFocusable
+        val oldMouse=canvas.mouseListeners.size
+        val oldKeys=canvas.keyListeners.size
+        var active=true; var focused=true; var reveals=0; var toggles=0; var focusRequests=0
+        private var index=0
+        init { replaceSource() }
+        private val bridge=DesktopOfflineNativeInputBridge(surface,
+            {native.currentSourceSnapshot()}, native::ownsSourceSnapshot,
+            {reveals++},{toggles++},{active},{focused},{focusRequests++})
+        fun replaceSource() { index++; native.loadVersioned(PlaybackSource("file:///C:/synthetic-native-input-$index.media")) }
+        fun press(button:Int=java.awt.event.MouseEvent.BUTTON1)=mouse(java.awt.event.MouseEvent.MOUSE_PRESSED,button)
+        fun release(button:Int=java.awt.event.MouseEvent.BUTTON1)=mouse(java.awt.event.MouseEvent.MOUSE_RELEASED,button)
+        private fun mouse(id:Int,button:Int) {
+            val e=java.awt.event.MouseEvent(canvas,id,1L,0,20,20,1,false,button)
+            canvas.mouseListeners.forEach { if(id==java.awt.event.MouseEvent.MOUSE_PRESSED)it.mousePressed(e) else it.mouseReleased(e) }
+        }
+        fun move() {
+            val e=java.awt.event.MouseEvent(canvas,java.awt.event.MouseEvent.MOUSE_MOVED,1L,0,30,30,0,false)
+            canvas.mouseMotionListeners.forEach {it.mouseMoved(e)}
+        }
+        fun key(id:Int,modifiers:Int=0):java.awt.event.KeyEvent {
+            val e=java.awt.event.KeyEvent(surface,id,1L,modifiers,java.awt.event.KeyEvent.VK_SPACE,' ')
+            surface.keyListeners.forEach {if(id==java.awt.event.KeyEvent.KEY_PRESSED)it.keyPressed(e) else it.keyReleased(e)}
+            return e
+        }
+        fun loseFocus() { val e=java.awt.event.FocusEvent(surface,java.awt.event.FocusEvent.FOCUS_LOST);surface.focusListeners.forEach{it.focusLost(e)} }
+        fun closeBridge()=bridge.close()
+        override fun close(){bridge.close();native.close()}
+    }
+    private fun fixture(block:(NativeFixture)->Unit) {
+        java.awt.EventQueue.invokeAndWait { NativeFixture().use(block) }
+    }
+}

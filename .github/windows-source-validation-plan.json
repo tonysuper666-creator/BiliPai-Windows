@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "8cc32d47d18286b88affe11a4199c78b921828a2",
-  "windowsVersion": "0.2.427.114",
-  "createdAt": "2026-10-15T07:15:41.490995+00:00",
+  "baseHead": "a6f005147215453a6a9557d39ee514ee6f227ac3",
+  "windowsVersion": "0.2.427.115",
+  "createdAt": "2026-10-15T07:41:23.754202+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -213,7 +213,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
       "normalization": "lf",
-      "sha256": "d541cfe0ff87e2ce57ec70657f8d3974de8b47127bdee66673ee6ba2460053fe"
+      "sha256": "181f6feb0b282aa8134d7a02e262f752e7c1ab6bbb0c283be16937bccc173b0b"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
@@ -488,7 +488,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
       "normalization": "lf",
-      "sha256": "aa01dc5ef67ff651d8634faefcaeda2e4f2eb836a56d922bd409f31424d28a3d"
+      "sha256": "f85d16f86b27d701046e34749f1e3233947fe5fb928145cc939ddd22bfdef99c"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
@@ -643,7 +643,7 @@
     {
       "path": "desktop/tools/extract-upstream-offline-player.py",
       "normalization": "lf",
-      "sha256": "124878680834e3b4e729e6e6df72f79e852e03e848d345c4f42dd731744c028d"
+      "sha256": "d9059c592133a61708244659c32398c7038b01cc9301e52050f26c300c3f058c"
     },
     {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
@@ -713,7 +713,7 @@
     {
       "path": "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
       "normalization": "lf",
-      "sha256": "ff095290d2d1482940d153525ac4f80a8c8f9588e15c8f711e9716803910a0ec"
+      "sha256": "bc28726585628487af784185ea541811802684d816808b96eff3d81f1f5afeb9"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_up_danmaku.py",
@@ -1548,7 +1548,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "66f53fa0eee2ab11dc57f70f1f3b3bf2d7dd609ec80f22f75ee1ec80bad449c6"
+      "sha256": "de7ccd95e7ac99f66726967de2da7903a0a720861f81d85a48398bbe8d2d4532"
     }
   ],
   "classes": {
@@ -1567,9 +1567,10 @@
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5,
     "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13,
     "com.bilipai.desktop.ui.DesktopWindowsPlaybackAudioOutputTest": 6,
-    "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11
+    "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
+    "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 10
   },
-  "expectedTests": 126,
+  "expectedTests": 136,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,

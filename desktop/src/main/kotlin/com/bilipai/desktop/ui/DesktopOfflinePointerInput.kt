@@ -73,3 +73,124 @@ internal fun Modifier.desktopOfflineSeekPointerInput(
             { latestCommit.value(it) }, { latestCancel.value() })
     }
 }
+
+
+/** Native Canvas input can land below the transparent Compose foreground.
+ * Like the ordinary video leaf, listen only on this one existing host/Canvas;
+ * original controls retain their own pointer handlers and native source admission. */
+internal class DesktopOfflineNativeInputBridge(
+    private val surface: java.awt.Container,
+    private val currentSource: () -> OwnedPlaybackSourceSnapshot?,
+    private val ownsSource: (OwnedPlaybackSourceSnapshot) -> Boolean,
+    private val onRevealControls: () -> Unit,
+    private val onTogglePlayback: () -> Unit,
+    private val canUseSurface: () -> Boolean = {
+        val owner = javax.swing.SwingUtilities.getWindowAncestor(surface)
+        surface.isShowing && owner != null &&
+            java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === owner
+    },
+    private val canReceiveKey: () -> Boolean = {
+        val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner
+        focus === surface || focus != null && javax.swing.SwingUtilities.isDescendingFrom(focus, surface)
+    },
+    private val requestNativeFocus: () -> Unit = { surface.requestFocusInWindow(); Unit },
+) : AutoCloseable {
+    private val canvas = surface.components.filterIsInstance<java.awt.Canvas>().single()
+    private val oldFocusable = surface.isFocusable
+    private var closed = false
+    private var press: OwnedPlaybackSourceSnapshot? = null
+    private var heldSpace: OwnedPlaybackSourceSnapshot? = null
+    private fun current(): OwnedPlaybackSourceSnapshot? =
+        if (closed || !canUseSurface()) null else currentSource()?.takeIf(ownsSource)
+    private fun matches(receipt: OwnedPlaybackSourceSnapshot): Boolean {
+        val now = current() ?: return false
+        return now.sourceVersion == receipt.sourceVersion && now.source == receipt.source && ownsSource(receipt)
+    }
+    private val mouse = object : java.awt.event.MouseAdapter() {
+        override fun mouseEntered(event: java.awt.event.MouseEvent) { reveal() }
+        override fun mouseMoved(event: java.awt.event.MouseEvent) { reveal() }
+        private fun reveal() { if (current() != null) onRevealControls() }
+        override fun mousePressed(event: java.awt.event.MouseEvent) {
+            press = null
+            if (event.isConsumed || event.button != java.awt.event.MouseEvent.BUTTON1 ||
+                event.isControlDown || event.isAltDown || event.isMetaDown) return
+            press = current() ?: return
+            requestNativeFocus()
+        }
+        override fun mouseReleased(event: java.awt.event.MouseEvent) {
+            val captured = press; press = null
+            if (!event.isConsumed && event.button == java.awt.event.MouseEvent.BUTTON1 &&
+                captured != null && matches(captured)) onRevealControls()
+        }
+    }
+    private val focus = object : java.awt.event.FocusAdapter() {
+        override fun focusLost(event: java.awt.event.FocusEvent) { press = null; heldSpace = null }
+    }
+    private val key = object : java.awt.event.KeyAdapter() {
+        override fun keyPressed(event: java.awt.event.KeyEvent) {
+            if (event.isConsumed || event.keyCode != java.awt.event.KeyEvent.VK_SPACE ||
+                event.isControlDown || event.isAltDown || event.isMetaDown || event.isShiftDown ||
+                !canReceiveKey()) return
+            val captured = current() ?: return
+            val held = heldSpace
+            if (held != null && !matches(held)) { heldSpace = null; return }
+            if (held == null) {
+                heldSpace = captured
+                onRevealControls()
+                if (matches(captured)) onTogglePlayback()
+            }
+            event.consume()
+        }
+        override fun keyReleased(event: java.awt.event.KeyEvent) {
+            if (event.keyCode != java.awt.event.KeyEvent.VK_SPACE) return
+            val captured = heldSpace; heldSpace = null
+            if (captured != null && canReceiveKey() && matches(captured)) event.consume()
+        }
+    }
+    init {
+        check(java.awt.EventQueue.isDispatchThread())
+        surface.isFocusable = true
+        for (component in listOf(surface, canvas)) {
+            component.addMouseListener(mouse); component.addMouseMotionListener(mouse)
+            component.addKeyListener(key); component.addFocusListener(focus)
+        }
+    }
+    override fun close() {
+        check(java.awt.EventQueue.isDispatchThread())
+        if (closed) return
+        closed = true; press = null; heldSpace = null
+        for (component in listOf(surface, canvas)) {
+            component.removeMouseListener(mouse); component.removeMouseMotionListener(mouse)
+            component.removeKeyListener(key); component.removeFocusListener(focus)
+        }
+        surface.isFocusable = oldFocusable
+    }
+}
+
+/** Same Root native host and the original screen's actual state; no new player,
+ * Store, window, system-wide hook or alternate playback policy. */
+@Composable
+internal fun DesktopOfflineNativeInput(
+    player: DesktopOfflineMpvControl,
+    enabled: Boolean,
+    onRevealControls: () -> Unit,
+    onTogglePlayback: () -> Unit,
+) {
+    val native = player.nativePlayer
+    val window = LocalDesktopWindowsPlayerWindow.current
+    val latestEnabled = rememberUpdatedState(enabled)
+    val latestReveal = rememberUpdatedState(onRevealControls)
+    val latestToggle = rememberUpdatedState(onTogglePlayback)
+    androidx.compose.runtime.DisposableEffect(player, native.surface) {
+        val input = DesktopOfflineNativeInputBridge(native.surface,
+            { if (latestEnabled.value && player.isOwned()) native.currentSourceSnapshot() else null },
+            { latestEnabled.value && player.isOwned() && native.ownsSourceSnapshot(it) },
+            { latestReveal.value() }, { latestToggle.value() },
+            canUseSurface = {
+                window != null && native.surface.isShowing &&
+                    javax.swing.SwingUtilities.getWindowAncestor(native.surface) === window &&
+                    java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === window
+            })
+        onDispose { input.close() }
+    }
+}

@@ -126,7 +126,7 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
     def test_desktop_pointer_recipe_restores_the_exact_complete_input(self):
         source = self.desktop_input()
         output, changes = tool.offline_desktop_pointer_ui(source)
-        self.assertEqual(5, len(changes))
+        self.assertEqual(6, len(changes))
         for change in reversed(changes):
             index = change["index"]
             self.assertEqual(change["after"], output[index:index + len(change["after"])])
@@ -137,6 +137,9 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
         output, _ = tool.offline_desktop_pointer_ui(self.desktop_input())
         self.assertNotIn("detectDragGestures(", output)
         self.assertIn("onTap = { showControls = !showControls }", output)
+        self.assertIn("DesktopOfflineNativeInput(player,", output)
+        self.assertIn("onRevealControls = { showControls = true }", output)
+        self.assertIn("onTogglePlayback = { player.playWhenReady = !player.playWhenReady }", output)
         self.assertIn("onDoubleTap = { offset ->", output)
         self.assertIn("onLongPress = {", output)
         self.assertIn("val seekSource = player.nativePlayer.currentSourceSnapshot()", output)
