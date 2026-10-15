@@ -1,0 +1,42 @@
+{
+  "commit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+  "files": [
+    {
+      "archiveFile": "FeedDocumentParser.kt",
+      "bytes": 9795,
+      "gitBlob": "57669c25c28a31819ed7ea9a502ebc1dc9461e02",
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParser.kt",
+      "sha256": "a04c2c343528bf38bf41d04ff9f0a0656b4e1eb52c6b6ff4d4b5c77d65bafabf"
+    },
+    {
+      "archiveFile": "FeedHtmlParser.kt",
+      "bytes": 10255,
+      "gitBlob": "a9c038ff553612f758d059f484dc7b47c54e592e",
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+      "sha256": "1f3248f1d7a80719eecc78e03574408ecef6d123b139d5467f0498165279b523"
+    },
+    {
+      "archiveFile": "DynamicAuthorSearchPolicy.kt",
+      "bytes": 660,
+      "gitBlob": "f58f8e8981de09a6a5d656dfad7c1e24f3fe7150",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicAuthorSearchPolicy.kt",
+      "sha256": "a278bdf09ac6c1310732a5626ebc408049ce204091660b1edc6046234867e041"
+    },
+    {
+      "archiveFile": "FeedDocumentParserTest.kt",
+      "bytes": 17600,
+      "gitBlob": "e2c9e19453d705829d25488d8f338b19933e3f84",
+      "path": "app/src/test/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParserTest.kt",
+      "sha256": "dd512e8fe0858e3ed9baa8313712bbf38fcf6257e081a0d0b2a16f925958f196"
+    },
+    {
+      "archiveFile": "DynamicAuthorSearchPolicyTest.kt",
+      "bytes": 1178,
+      "gitBlob": "38044d60bfeb1668a743e31cf463327005445cab",
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/DynamicAuthorSearchPolicyTest.kt",
+      "sha256": "e3e7052fdc9fc21c2e80d3353e53b224c08f7025a48316712eb39dd4c5adb889"
+    }
+  ],
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.1"
+}

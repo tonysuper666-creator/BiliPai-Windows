@@ -27,7 +27,6 @@ DIRECT += [BASE + name + ".kt" for name in (
     "core/plugin/ExternalPluginInstallPolicy", "core/plugin/PluginEffectHintPolicy",
     "core/plugin/PluginEffectHintBus", "core/plugin/json/JsonRulePlugin",
     "core/plugin/feed/FeedModels", "core/plugin/feed/FeedArticleExtractor",
-    "core/plugin/feed/FeedHtmlParser", "core/plugin/feed/FeedDocumentParser",
     "core/plugin/feed/FeedImportParser", "core/plugin/feed/FeedLayoutAllocation",
     "feature/anime4k/Anime4KConfig", "feature/plugin/EyeProtectionPolicy",
     "feature/plugin/CdnRegionPolicy", "feature/plugin/CdnOptimizationPolicy",
@@ -38,6 +37,7 @@ EXTRACTED = [BASE + name + ".kt" for name in (
     "core/plugin/json/RuleEngine", "core/plugin/json/JsonPluginManager",
     "core/plugin/json/JsonPluginStatsNotificationPolicy", "core/plugin/feed/SubscriptionFeedStore",
     "core/plugin/feed/FeedFetcher", "core/plugin/feed/FeedTitleResolver", "core/plugin/feed/FeedConditionalStore",
+    "core/plugin/feed/FeedHtmlParser", "core/plugin/feed/FeedDocumentParser",
     "feature/plugin/EyeProtectionPlugin", "feature/plugin/DanmakuEnhancePlugin",
     "feature/plugin/SponsorBlockPlugin", "feature/plugin/SponsorBlockInsightPolicy",
     "feature/video/danmaku/DanmakuManager",
@@ -306,6 +306,16 @@ def generate(repo: Path, output: Path) -> list[Path]:
             raise ValueError(f"Direct plugin source gained Android dependency: {path}")
         # prepareUpstreamSources owns the sole verbatim copy of every direct source.
         prune_old_direct(output, path, source)
+
+    from v041_feed_images import MARKERS, compose_feed_source
+    feed_proofs = []
+    for path in MARKERS:
+        baseline = read(repo, path)
+        adapted, proof = compose_feed_source(repo, path, baseline)
+        generated.append(write(output, path, baseline, adapted))
+        feed_proofs.append(proof)
+    (output / "v041-feed-image-source-proof.json").write_text(
+        json.dumps(feed_proofs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     path = BASE + "core/plugin/json/RuleEngine.kt"
     source = read(repo, path)
@@ -631,6 +641,17 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
     generated.extend(enhancement.generate(repo, output, selector, parser, write, substitute))
     return generated
 
+def generate_feed_tests(repo: Path, output: Path) -> list[Path]:
+    from v041_feed_images import feed_image_regression_source
+    body, proof = feed_image_regression_source(repo)
+    target = output / 'com/android/purebilibili/core/plugin/feed/FeedDocumentParserTest.kt'
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(body, encoding='utf-8', newline='\n')
+    (output / 'v041-feed-original-tests-proof.json').write_text(
+        json.dumps(proof, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    return [target]
+
+
 def inventory(repo: Path) -> list[dict]:
     rows = [{"path": path, "role": "plugins", "mode": mode,
              "sha256": hashlib.sha256(read(repo, path).encode()).hexdigest()} for path, mode in SOURCES.items()]
@@ -649,6 +670,7 @@ if __name__ == "__main__":
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument("--repo", type=Path, required=True)
     cli.add_argument("--output", type=Path)
+    cli.add_argument("--test-output", type=Path)
     cli.add_argument("--inventory", action="store_true")
     cli.add_argument("--asset-inventory", action="store_true")
     args = cli.parse_args()
@@ -658,5 +680,9 @@ if __name__ == "__main__":
         print(json.dumps(inventory(args.repo.resolve()), ensure_ascii=False, indent=2))
     elif args.output:
         print(f"Generated {len(generate(args.repo.resolve(), args.output.resolve()))} original plugin source files")
+        if args.test_output:
+            if args.test_output.resolve().is_relative_to(args.output.resolve()):
+                cli.error("--test-output must be outside the generated main source root")
+            print(f"Generated {len(generate_feed_tests(args.repo.resolve(), args.test_output.resolve()))} original feed test source files")
     else:
         cli.error("--output or --inventory is required")

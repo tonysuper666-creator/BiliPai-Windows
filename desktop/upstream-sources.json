@@ -1394,7 +1394,7 @@
       "features": [
         "plugins"
       ],
-      "mode": "direct"
+      "mode": "extracted"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParser.kt",
@@ -1402,7 +1402,7 @@
       "features": [
         "plugins"
       ],
-      "mode": "direct"
+      "mode": "extracted"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedImportParser.kt",
@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "123",
+  "windowsRevision": "124",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14375,5 +14375,57 @@
     "jvmTestsExecuted": false,
     "windowsOsInputExecuted": false,
     "fullCurrentPlayerUiPorted": false
+  },
+  "v041FeedImageSlice": {
+    "upstreamTag": "v0.4.1",
+    "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+    "archive": "desktop/upstream-slices/v041-rss-dynamic",
+    "manifestSHA256": "e9bb35a0424c11b21a459f2433047202cc331dbeed7b9f2e3511ed9f1c2e7903",
+    "wholeOriginalFunctions": [
+      "Element.mediaImageUrl",
+      "parseFeedHtml"
+    ],
+    "existingSoleProducer": "desktop/tools/extract-upstream-plugins.py",
+    "canonicalV025InputsUnchanged": true,
+    "completeFunctionProofs": [
+      {
+        "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+        "source": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParser.kt",
+        "completeOriginalFunctionSHA256LF": "40ee53c53804f033ecc031c88a78969fdba307fd330930a542b2787c9eeed8c3",
+        "baselineFunctionSHA256LF": "6a91cf5f995e1810c5c4dc3695dadc3d538f995cbf0259830fef4ac9264efab2",
+        "baselineRemainderUnchanged": true,
+        "wholeFunctionRetained": true,
+        "actualWindowsProducerWired": false,
+        "mainCompiled": false,
+        "runtimeExecuted": false,
+        "wholeSelectedFileEqualsFrozenUpstream041": true,
+        "selectedSourceSha256LF": "a04c2c343528bf38bf41d04ff9f0a0656b4e1eb52c6b6ff4d4b5c77d65bafabf"
+      },
+      {
+        "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+        "source": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+        "completeOriginalFunctionSHA256LF": "93102cfc6020b184260fd71b901d1fee8bf9aaa1cb0d703d8172093e56c659e4",
+        "baselineFunctionSHA256LF": "6c9c14a6b21c7a52e58fc388b98499e1fa4932e5f6dce12a656a7954a5cb107e",
+        "baselineRemainderUnchanged": true,
+        "wholeFunctionRetained": true,
+        "actualWindowsProducerWired": false,
+        "mainCompiled": false,
+        "runtimeExecuted": false,
+        "wholeSelectedFileEqualsFrozenUpstream041": true,
+        "selectedSourceSha256LF": "1f3248f1d7a80719eecc78e03574408ecef6d123b139d5467f0498165279b523"
+      }
+    ],
+    "sourceIntegrationPrepared": true,
+    "sourceIntegrationApplied": false,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "runtimeExecuted": false,
+    "prepared": true,
+    "applied": false,
+    "originalFeedTestsArchived": 19,
+    "originalFeedTestsPrepared": 17,
+    "originalFeedTestsDeferred": 2,
+    "originalFeedTestsExecuted": false,
+    "dynamicAuthorSearchFeatureWired": false
   }
 }

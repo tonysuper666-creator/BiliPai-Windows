@@ -105,7 +105,8 @@
     "desktop/upstream-slices/v040-player-cover",
     "desktop/upstream-slices/v040-player-tap",
     "desktop/upstream-slices/v040-reply-medal",
-    "desktop/upstream-slices/v040-theme-roles"
+    "desktop/upstream-slices/v040-theme-roles",
+    "desktop/upstream-slices/v041-rss-dynamic"
   ],
   "archives": [
     {
@@ -4307,6 +4308,47 @@
           "sha256": "978e9bb2961d155b0220f5c48b3e14e847dabc1df47c319bd51c24162872d344",
           "hashNormalization": "raw",
           "blob": "b97403221a5f4f07fb7a631572d566450a086386"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v041-rss-dynamic",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicy.kt",
+          "sha256": "a278bdf09ac6c1310732a5626ebc408049ce204091660b1edc6046234867e041",
+          "hashNormalization": "raw",
+          "blob": "f58f8e8981de09a6a5d656dfad7c1e24f3fe7150"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicyTest.kt",
+          "sha256": "e3e7052fdc9fc21c2e80d3353e53b224c08f7025a48316712eb39dd4c5adb889",
+          "hashNormalization": "raw",
+          "blob": "38044d60bfeb1668a743e31cf463327005445cab"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParser.kt",
+          "sha256": "a04c2c343528bf38bf41d04ff9f0a0656b4e1eb52c6b6ff4d4b5c77d65bafabf",
+          "hashNormalization": "raw",
+          "blob": "57669c25c28a31819ed7ea9a502ebc1dc9461e02"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParserTest.kt",
+          "sha256": "dd512e8fe0858e3ed9baa8313712bbf38fcf6257e081a0d0b2a16f925958f196",
+          "hashNormalization": "raw",
+          "blob": "e2c9e19453d705829d25488d8f338b19933e3f84"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-rss-dynamic/FeedHtmlParser.kt",
+          "sha256": "1f3248f1d7a80719eecc78e03574408ecef6d123b139d5467f0498165279b523",
+          "hashNormalization": "raw",
+          "blob": "a9c038ff553612f758d059f484dc7b47c54e592e"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-rss-dynamic/manifest.json",
+          "sha256": "e9bb35a0424c11b21a459f2433047202cc331dbeed7b9f2e3511ed9f1c2e7903",
+          "hashNormalization": "raw",
+          "blob": "5d9d3b53a9a4fd62562e70d418bb6a0a1c0cf9bb"
         }
       ]
     }
@@ -10973,6 +11015,71 @@
         "v040-theme-roles-selected-original-inputs"
       ],
       "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParser.kt",
+      "localPath": "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParser.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "57669c25c28a31819ed7ea9a502ebc1dc9461e02",
+      "sha256": "a04c2c343528bf38bf41d04ff9f0a0656b4e1eb52c6b6ff4d4b5c77d65bafabf",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-feed-images-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+      "localPath": "desktop/upstream-slices/v041-rss-dynamic/FeedHtmlParser.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "a9c038ff553612f758d059f484dc7b47c54e592e",
+      "sha256": "1f3248f1d7a80719eecc78e03574408ecef6d123b139d5467f0498165279b523",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-feed-images-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicAuthorSearchPolicy.kt",
+      "localPath": "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicy.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "f58f8e8981de09a6a5d656dfad7c1e24f3fe7150",
+      "sha256": "a278bdf09ac6c1310732a5626ebc408049ce204091660b1edc6046234867e041",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-feed-images-retained-original-inputs"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParserTest.kt",
+      "localPath": "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParserTest.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "e2c9e19453d705829d25488d8f338b19933e3f84",
+      "sha256": "dd512e8fe0858e3ed9baa8313712bbf38fcf6257e081a0d0b2a16f925958f196",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-feed-images-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/DynamicAuthorSearchPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicyTest.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "38044d60bfeb1668a743e31cf463327005445cab",
+      "sha256": "e3e7052fdc9fc21c2e80d3353e53b224c08f7025a48316712eb39dd4c5adb889",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-feed-images-retained-original-inputs"
+      ],
+      "referenceOnly": true
     }
   ],
   "buildStandaloneInputs": [

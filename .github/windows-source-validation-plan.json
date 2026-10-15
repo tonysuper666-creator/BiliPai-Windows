@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "11bf32a71b733ac53cdb6e86863469ece7d40861",
-  "windowsVersion": "0.2.427.123",
-  "createdAt": "2026-10-15T17:52:18.972570+00:00",
+  "baseHead": "4de46f98ac6c6c84f2e77b18bfcaf77848ad4c85",
+  "windowsVersion": "0.2.427.124",
+  "createdAt": "2026-10-15T18:45:44.633517+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -13,7 +13,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "dd50072c202e43c327cf1ff767c3e69f85b712ca4664cc8b541fc7dbf5b4ecd0"
+      "sha256": "f8aab138f0471a1c7d01f23dcc9008b8cee2d5991645d0da7cb8df0e0ee6c6f1"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -88,7 +88,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "151f74fb66a632cb756e80bd673c71a6adc827196b16270709315e9ed8f24966"
+      "sha256": "e56a3a867fae264d43518a8f64018db56ff39275d7491b8b11023e68b08ab41a"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -638,7 +638,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "0025c1c989d7c0abb1660c944aae97cf01311b57f2e60bb47603efbce2db2f45"
+      "sha256": "6634fa71b6e12345568319dc77c8847e2b2ebad603eb3c7651f485e4f240ce3c"
     },
     {
       "path": "desktop/tools/export-packaged-updater-harness.py",
@@ -716,6 +716,11 @@
       "sha256": "a5ea0874e592db12f38fddd690f2e7c0a2f444800a11e1daa788b4707c35fe3c"
     },
     {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "normalization": "lf",
+      "sha256": "0b2b12f81d305463e27027488a8efe0a9b7687c908d71198888a18065add3215"
+    },
+    {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
       "normalization": "lf",
       "sha256": "8df8cb34e8188d1313e3825c67b0f018a0cc6d1012c160466fb3280adc8537fc"
@@ -773,7 +778,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "ac51f27e8872edaaaac1d216ce489a7b817d6e75ed805ae5ed331e173335c42f"
+      "sha256": "541c062800a2ca11b7ed3653a86d626d16912743a9417f02330e565685dfeccc"
     },
     {
       "path": "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
@@ -931,6 +936,11 @@
       "sha256": "48ba4485abb7aec2ccbf17d30b220e6fb3e856076fb7580c8a611af28cff9a0c"
     },
     {
+      "path": "desktop/tools/tests/test_v041_feed_images_source.py",
+      "normalization": "lf",
+      "sha256": "8e6821a9328973572cb0dceb5b62a5f3665b663c3686cc6b91f1c4206e6d9370"
+    },
+    {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
       "normalization": "lf",
       "sha256": "f0ea38f3730fbda08fafc6140d7397e0d432023892b394e5dd00cdb1858ddadf"
@@ -1074,6 +1084,11 @@
       "path": "desktop/tools/v040_theme_roles.py",
       "normalization": "lf",
       "sha256": "b1bad5ee5e6ee4b46d7deac3cdd572c10a6f311f2ab4b60a0a3f6790845a8d35"
+    },
+    {
+      "path": "desktop/tools/v041_feed_images.py",
+      "normalization": "lf",
+      "sha256": "ea2471ac0370f89e106376d13cd5181f59ad22950d716369227cc9768dc2a354"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -1686,9 +1701,39 @@
       "sha256": "978e9bb2961d155b0220f5c48b3e14e847dabc1df47c319bd51c24162872d344"
     },
     {
+      "path": "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicy.kt",
+      "normalization": "raw",
+      "sha256": "a278bdf09ac6c1310732a5626ebc408049ce204091660b1edc6046234867e041"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "e3e7052fdc9fc21c2e80d3353e53b224c08f7025a48316712eb39dd4c5adb889"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParser.kt",
+      "normalization": "raw",
+      "sha256": "a04c2c343528bf38bf41d04ff9f0a0656b4e1eb52c6b6ff4d4b5c77d65bafabf"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParserTest.kt",
+      "normalization": "raw",
+      "sha256": "dd512e8fe0858e3ed9baa8313712bbf38fcf6257e081a0d0b2a16f925958f196"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-rss-dynamic/FeedHtmlParser.kt",
+      "normalization": "raw",
+      "sha256": "1f3248f1d7a80719eecc78e03574408ecef6d123b139d5467f0498165279b523"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-rss-dynamic/manifest.json",
+      "normalization": "raw",
+      "sha256": "e9bb35a0424c11b21a459f2433047202cc331dbeed7b9f2e3511ed9f1c2e7903"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "1df39bbc28d4719fabe9d66b07721eae2d9f3182e279422f4b322cdf3c5d960b"
+      "sha256": "69b38ea48e13dd4557f78183253aa66e9a81d34362d097312fbca1f8377e2f76"
     }
   ],
   "classes": {
@@ -1713,9 +1758,10 @@
     "com.bilipai.desktop.ui.DesktopWindowKeyFallbackTest": 9,
     "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityManagerTest": 9,
     "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityTest": 6,
-    "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25
+    "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
+    "com.android.purebilibili.core.plugin.feed.FeedDocumentParserTest": 17
   },
-  "expectedTests": 224,
+  "expectedTests": 241,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1723,8 +1769,19 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadQueueAuthorityManagerTest.kt",
+    ".github/workflows/windows-source-validation.yml",
+    "desktop/build.gradle.kts",
+    "desktop/tools/compatibility-source-inputs.json",
+    "desktop/tools/extract-upstream-plugins.py",
+    "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_v041_feed_images_source.py",
+    "desktop/tools/v041_feed_images.py",
+    "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicy.kt",
+    "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicyTest.kt",
+    "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParser.kt",
+    "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParserTest.kt",
+    "desktop/upstream-slices/v041-rss-dynamic/FeedHtmlParser.kt",
+    "desktop/upstream-slices/v041-rss-dynamic/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true
