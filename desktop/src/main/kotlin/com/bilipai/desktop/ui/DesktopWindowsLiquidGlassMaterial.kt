@@ -28,8 +28,8 @@ import com.android.purebilibili.feature.home.resolveHomeWallpaperBackdropAppeara
 import com.android.purebilibili.feature.home.components.LocalLiquidGlassRenderConfig
 import com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell
 import com.android.purebilibili.feature.home.components.liquid.InnerShadow
-import com.android.purebilibili.feature.home.components.liquid.ROUNDED_RECT_REFRACTION_SHADER
-import com.android.purebilibili.feature.home.components.liquid.ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER
+import com.android.purebilibili.core.ui.effect.ROUNDED_RECT_REFRACTION_SHADER
+import com.android.purebilibili.core.ui.effect.ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER
 import com.android.purebilibili.feature.home.components.liquid.innerShadow
 import com.bilipai.desktop.appearance.isDesktopInDarkTheme
 import org.jetbrains.skia.RuntimeEffect
@@ -137,7 +137,9 @@ internal fun DesktopWindowsGlassBackgroundHost(
             showHomeWallpaper, isDataSaverActive, { lease.alive.get() && latestOwns() })
         CompositionLocalProvider(LocalDesktopWindowsGlassMaterial provides material,
             LocalDesktopWindowsGlassSourceConfiguration provides configuration,
-            LocalAppPopupSurfaceRenderer provides DesktopWindowsPopupSurfaceRenderer) {
+            LocalAppPopupSurfaceRenderer provides DesktopWindowsPopupSurfaceRenderer,
+            com.android.purebilibili.core.ui.components.LocalAppTopBarIconDecorator provides
+                com.android.purebilibili.core.ui.components.BiliPaiTopBarIconDecorator) {
             Box(Modifier.fillMaxSize()) {
                 HomeWallpaperBackdrop(sourceUri, appearance, color, isDataSaverActive,
                     playbackEnabled = false,

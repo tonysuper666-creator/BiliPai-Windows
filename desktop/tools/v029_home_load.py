@@ -304,6 +304,9 @@ def home_vm_delta(repo, body, audits=None):
 
 
 def home_page_delta(repo, name, body, audits=None):
+    if name == "HomeTopTabFloatingDock.kt":
+        from v040_native_chrome import advance_home_dock_width
+        return advance_home_dock_width(repo, body, audits)
     raw = sources(repo)
     d = Delta(body)
     if name == "HomeUiState.kt":
