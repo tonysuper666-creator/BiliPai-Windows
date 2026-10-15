@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.input.key.*
 import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
 import com.bilipai.desktop.player.MpvRuntimeProbe
 import com.bilipai.desktop.player.MpvRuntimeProbeStage
@@ -124,28 +125,55 @@ internal class DesktopOfflineNativeInputBridge(
      * focusable menu dialogs fail current()'s active-window admission. Consumed
      * text-input events and modified keys still keep their original behavior. */
     internal fun windowKeyInput(event: java.awt.event.KeyEvent): Boolean {
+        // A consumed key-up cannot command playback, but it still ends this
+        // physical press. Otherwise an editor/IME-consumed release leaves the
+        // repeat guard latched and suppresses the next real Space press.
+        if (event.id == java.awt.event.KeyEvent.KEY_RELEASED && event.keyCode == java.awt.event.KeyEvent.VK_SPACE) {
+            val alreadyConsumed = event.isConsumed
+            keyReleased(event, false)
+            return !alreadyConsumed && event.isConsumed
+        }
         if (event.isConsumed) return false
         if (event.id == java.awt.event.KeyEvent.KEY_PRESSED) keyPressed(event, false)
         else if (event.id == java.awt.event.KeyEvent.KEY_RELEASED) keyReleased(event, false)
         return event.isConsumed
+    }
+    /** Real Window events contain Compose's InternalKeyEvent wrapper. Use the
+     * public metadata rather than casting the wrapper to an AWT event. This
+     * offline page has no inline editor; focusable menus fail current(). */
+    internal fun windowKeyInput(event: KeyEvent): Boolean {
+        check(java.awt.EventQueue.isDispatchThread())
+        if (event.key != Key.Spacebar) return false
+        MpvRuntimeProbe.record(MpvRuntimeProbeStage.WINDOW_SPACE,
+            if (event.type == KeyEventType.KeyDown) 401L else if (event.type == KeyEventType.KeyUp) 402L else 0L)
+        if (event.type == KeyEventType.KeyUp) return releaseSpace(false)
+        if (event.type != KeyEventType.KeyDown || event.isCtrlPressed || event.isAltPressed ||
+            event.isMetaPressed || event.isShiftPressed) return false
+        return pressSpace()
+    }
+    private fun pressSpace(): Boolean {
+        val captured = current() ?: return false
+        // Suppress repeats until release, also across native source replacement.
+        if (heldSpace != null) return true
+        heldSpace = captured
+        onRevealControls()
+        if (matches(captured)) onTogglePlayback()
+        return true
+    }
+    private fun releaseSpace(requireSurfaceFocus: Boolean): Boolean {
+        val captured = heldSpace; heldSpace = null
+        return captured != null && (!requireSurfaceFocus || canReceiveKey()) && matches(captured)
     }
     private fun keyPressed(event: java.awt.event.KeyEvent, requireSurfaceFocus: Boolean) {
         if (event.isConsumed || event.keyCode != java.awt.event.KeyEvent.VK_SPACE ||
             event.isControlDown || event.isAltDown || event.isMetaDown || event.isShiftDown ||
             requireSurfaceFocus && !canReceiveKey()) return
         MpvRuntimeProbe.record(if (requireSurfaceFocus) MpvRuntimeProbeStage.AWT_SPACE else MpvRuntimeProbeStage.WINDOW_SPACE)
-        val captured = current() ?: return
-        // Suppress repeats until key-up, including across source replacement.
-        if (heldSpace != null) { event.consume(); return }
-        heldSpace = captured
-        onRevealControls()
-        if (matches(captured)) onTogglePlayback()
-        event.consume()
+        if (pressSpace()) event.consume()
     }
     private fun keyReleased(event: java.awt.event.KeyEvent, requireSurfaceFocus: Boolean) {
         if (event.keyCode != java.awt.event.KeyEvent.VK_SPACE) return
-        val captured = heldSpace; heldSpace = null
-        if (captured != null && (!requireSurfaceFocus || canReceiveKey()) && matches(captured)) event.consume()
+        if (releaseSpace(requireSurfaceFocus)) event.consume()
     }
     private val mouse = object : java.awt.event.MouseAdapter() {
         override fun mouseEntered(event: java.awt.event.MouseEvent) { reveal() }
@@ -166,8 +194,12 @@ internal class DesktopOfflineNativeInputBridge(
                 captured != null && matches(captured)) onRevealControls()
         }
     }
+    internal fun releaseHeldInput() {
+        check(java.awt.EventQueue.isDispatchThread())
+        press = null; heldSpace = null
+    }
     private val focus = object : java.awt.event.FocusAdapter() {
-        override fun focusLost(event: java.awt.event.FocusEvent) { press = null; heldSpace = null }
+        override fun focusLost(event: java.awt.event.FocusEvent) { releaseHeldInput() }
     }
     private val key = object : java.awt.event.KeyAdapter() {
         override fun keyPressed(event: java.awt.event.KeyEvent) {
@@ -215,7 +247,7 @@ internal fun DesktopOfflineNativeInput(
     val latestReveal = rememberUpdatedState(onRevealControls)
     val latestToggle = rememberUpdatedState(onTogglePlayback)
     val windowKeyFallback = LocalDesktopWindowKeyFallback.current
-    androidx.compose.runtime.DisposableEffect(player, native.surface, windowKeyFallback) {
+    androidx.compose.runtime.DisposableEffect(player, native.surface, windowKeyFallback, window) {
         val input = DesktopOfflineNativeInputBridge(native.surface,
             { if (latestEnabled.value && player.isOwned()) native.currentSourceSnapshot() else null },
             { latestEnabled.value && player.isOwned() && native.ownsSourceSnapshot(it) },
@@ -237,10 +269,16 @@ internal fun DesktopOfflineNativeInput(
         // The same owned offline action is offered before the retained Root
         // scene can consume Space. Its source/active-window/editor guards remain;
         // Root navigation still runs only after Compose declines a key.
-        val keyRegistration = windowKeyFallback?.registerLeaf { event ->
-            val nativeEvent = event.nativeKeyEvent as? java.awt.event.KeyEvent
-            nativeEvent != null && input.windowKeyInput(nativeEvent)
+        val keyRegistration = windowKeyFallback?.registerLeaf { event -> input.windowKeyInput(event) }
+        // Window preview does not require Canvas focus, so also retire a held
+        // press when the actual Root loses focus to another app or a menu.
+        val windowFocus = object : java.awt.event.WindowAdapter() {
+            override fun windowLostFocus(event: java.awt.event.WindowEvent) { input.releaseHeldInput() }
         }
-        onDispose { keyRegistration?.close(); registration.close(); input.close() }
+        window?.addWindowFocusListener(windowFocus)
+        onDispose {
+            window?.removeWindowFocusListener(windowFocus)
+            keyRegistration?.close(); registration.close(); input.close()
+        }
     }
 }

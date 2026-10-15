@@ -126,7 +126,7 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
     def test_desktop_pointer_recipe_restores_the_exact_complete_input(self):
         source = self.desktop_input()
         output, changes = tool.offline_desktop_pointer_ui(source)
-        self.assertEqual(7, len(changes))
+        self.assertEqual(9, len(changes))
         self.assertIn("var isFullscreen by rememberDesktopOfflineFullscreen(bindings.window)", output)
         self.assertNotIn("var isFullscreen by remember(currentTaskId", output)
         for change in reversed(changes):
@@ -134,6 +134,24 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
             self.assertEqual(change["after"], output[index:index + len(change["after"])])
             output = output[:index] + change["before"] + output[index + len(change["after"]):]
         self.assertEqual(source, output)
+
+    def test_first_video_dimensions_cannot_override_the_current_desktop_window_mode(self):
+        source = self.desktop_input()
+        self.assertIn("isFullscreen = videoSize.width >= videoSize.height", source)
+        output, _ = tool.offline_desktop_pointer_ui(source)
+        self.assertNotIn("initialOrientationResolved", output)
+        self.assertNotIn("isFullscreen = videoSize.width >= videoSize.height", output)
+        self.assertIn("fun toggleFullscreen()", output)
+        self.assertIn("isFullscreen = !isFullscreen", output)
+        self.assertIn("LaunchedEffect(bindings.window, isFullscreen)", output)
+        # Removing, changing or duplicating the exact platform callback must fail.
+        callback = next(change["before"] for change in tool.offline_desktop_pointer_ui(source)[1]
+                        if change["label"].startswith("do not turn the actual Windows window"))
+        for altered in (source.replace(callback, "", 1), source + callback,
+                        source.replace("isFullscreen = videoSize.width >= videoSize.height",
+                                       "isFullscreen = videoSize.width > videoSize.height", 1)):
+            with self.assertRaises(AssertionError):
+                tool.offline_desktop_pointer_ui(altered)
 
     def test_desktop_mouse_controls_keep_the_original_tap_and_seek_policies(self):
         output, _ = tool.offline_desktop_pointer_ui(self.desktop_input())

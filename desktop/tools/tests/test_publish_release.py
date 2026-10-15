@@ -306,7 +306,7 @@ def evaluate_workflow_guard(test, expression, values):
     # Preserve quoted outputs like 'true'; only convert unquoted boolean literals.
     expression = re.sub(r"(?<![A-Za-z0-9_'\".])(?:true|false)(?![A-Za-z0-9_'\".])",
                         lambda m: "True" if m.group() == "true" else "False", expression)
-    expression = re.sub(r"\b(?:needs|vars|github|inputs)\.[A-Za-z0-9_.]+",
+    expression = re.sub(r"\b(?:needs|vars|github|inputs|steps)\.[A-Za-z0-9_.]+",
                         lambda m: repr(values[m.group()]), expression)
     expression = " ".join(expression.replace("&&", " and ").replace("||", " or ").split())
     tree = ast.parse(expression, mode="eval")
@@ -427,7 +427,23 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 with self.subTest(name=name, job=job):
                     self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
                     self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
-        self.assertEqual(uploads, 13)
+        self.assertEqual(uploads, 14)
+
+    def test_updater_harness_upload_requires_the_completed_source_export_and_exact_scope(self):
+        body = self.jobs[("windows-source-validation.yml", "source-validation")]
+        steps = re.split(r"(?m)^      - ", body)
+        selected = [step for step in steps if "uses: actions/upload-artifact@" in step]
+        self.assertEqual(1, len(selected))
+        step = selected[0]
+        condition = re.search(r"(?m)^        if: (.+)$", step).group(1)
+        for value in ("true", "false", "", None):
+            self.assertEqual(value == "true", evaluate_workflow_guard(self, condition,
+                {"steps.source.outputs.updater_harness_exported": value}))
+        self.assertIn("name: windows-updater-harness-${{ github.sha }}", step)
+        self.assertIn("path: ${{ runner.temp }}/bilipai-source-validation/updater-harness", step)
+        self.assertRegex(step, r"(?m)^          if-no-files-found: error$")
+        self.assertRegex(step, r"(?m)^          retention-days: 1$")
+        self.assertIn("        id: source", body)
 
     def test_only_standard_runner_labels_and_readonly_default_permissions(self):
         for (name, job), body in self.jobs.items():
