@@ -146,6 +146,17 @@ def report_source_failure(error):
             pass
 
 
+def verify_host_delivery_lifecycle(import_module, manifest, descriptor, record,
+                                   workspace, fixed, receipt, repository_root, original_record=None):
+    command = manifest['actualInitialBuildCommand']
+    if receipt.get('hostLlvmSnapshotStatus') == import_module.IMPORT_STATUS:
+        if original_record is None:
+            raise DeliveryError('Imported HOST delivery lost its independently reviewed origin')
+        return import_module.lifecycle(manifest, descriptor, original_record, workspace, fixed, command)
+    return import_module.lifecycle_current_cold_export(manifest, descriptor, record, workspace,
+        fixed, command, receipt, repository_root)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, required=True)
@@ -275,7 +286,7 @@ def main():
     snapshot_inputs = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json').read_text(encoding='utf-8'))
     host_kind = 'BILIPAI_HOST_LLVM_SOURCE_SNAPSHOT'
     import_helper_path = repository_root / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
-    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != '72a6dcb87098509c85d17c09bffde373c5b1aab53be0498f6338ad1acd37458e':
+    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != 'e09e8156ae06a2f29977ad3d613421f28d304d06d0dcf4fe079e91403960c0c3':
         raise DeliveryError('Shared reviewed importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import_delivery', import_helper_path)
     if import_spec is None or import_spec.loader is None:
@@ -422,7 +433,8 @@ def main():
                       (host_descriptor_path, host_manifest_path, environment_path, *(path for _, path in host_bundles))}}
         workspace = Path(absolute_workspace)
         fixed = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/fixed-inputs.json').read_text(encoding='utf-8'))
-        import_module.lifecycle(host_manifest, host_descriptor, record, workspace, fixed, host_manifest['actualInitialBuildCommand'])
+        verify_host_delivery_lifecycle(import_module, host_manifest, host_descriptor, record,
+            workspace, fixed, receipt, repository_root, original_record if imported else None)
         for _, path in host_bundles:
             import_module.positive(path.stat().st_size, import_module.MAX_ARCHIVE)
         manifest, descriptor, environment = host_manifest, host_descriptor, environment_evidence

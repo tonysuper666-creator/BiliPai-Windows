@@ -428,6 +428,81 @@ def verify_used_tracked_source(root, bundle, manifest, used, canonical, actual_b
 
 
 def lifecycle(manifest, descriptor, record, workspace, fixed, command):
+    # Import admission still comes only from the independently reviewed identity.
+    return _lifecycle(manifest, descriptor, record, workspace, fixed, command,
+                      source_worker_maximum(record))
+
+
+def lifecycle_current_cold_export(manifest, descriptor, record, workspace, fixed,
+                                  command, receipt, repository_root):
+    """Validate this run's cold export; never admit it as a reusable import."""
+    current = context()
+    expected_keys = {'sourceCommit', 'sourceTag', 'workflowRunId', 'workflowRunAttempt',
+                     'actualSourceBuildBindingSha256', 'assets'}
+    if (set(record) != expected_keys
+            or any(record.get(key) != value for key, value in current.items())
+            or set(record.get('assets', {})) != set(ASSETS)
+            or receipt.get('schema') != 1
+            or receipt.get('kind') != 'BILIPAI_HOST_LLVM_BUILD_RECEIPT'
+            or receipt.get('state') != 'LOCAL_HOST_TARGET_SUCCEEDED_NATIVE_BUILD_NOT_ASSERTED'
+            or receipt.get('ownrepoSourceCommit') != current['sourceCommit']
+            or receipt.get('ownrepoSourceTag') != current['sourceTag']
+            or receipt.get('workflowRunId') != str(current['workflowRunId'])
+            or receipt.get('workflowRunAttempt') != str(current['workflowRunAttempt'])
+            or receipt.get('hostLlvmSnapshotStatus') != 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'
+            or receipt.get('hostLlvmToolchainImported') is not False
+            or receipt.get('hostLlvmFreshCompileExecuted') is not True
+            or receipt.get('hostLlvmImportReceiptSha256') is not None
+            or receipt.get('snapshotInputsSha256') != INPUTS_SHA256
+            or receipt.get('containerImage') != CONTAINER_IMAGE
+            or receipt.get('recipeCommit') != RECIPE_COMMIT
+            or receipt.get('recipeArchiveSha256') != RECIPE_ARCHIVE_SHA256
+            or receipt.get('hostLlvmActualRecipeSha256') != LLVM_RECIPE_SHA256
+            or receipt.get('hostLlvmSnapshotSourceBindingSha256') != record['actualSourceBuildBindingSha256']
+            or any(receipt.get(key) is not False for key in ('reuseReady', 'nativeBuildSucceeded',
+                'binaryProduced', 'gpuOrDriverTested', 'closedSdkOrRuntimeIncluded'))):
+        fail('Current cold export context/receipt differs')
+    for leaf, row in record['assets'].items():
+        if row.get('fileName') != leaf:
+            fail('Current cold export asset identity differs')
+        positive(row.get('bytes'))
+        digest(row.get('sha256'))
+    expected_command = ['cmake', '-DTARGET_ARCH=x86_64-w64-mingw32', '-DCOMPILER_TOOLCHAIN=clang',
+        '-DGCC_ARCH=x86-64', '-DMAKEJOBS=1', '-DCLANG_PACKAGES_LTO=ON',
+        '-DCMAKE_INSTALL_PREFIX=' + str(workspace / 'clang-root'),
+        '-DMINGW_INSTALL_PREFIX=' + str(workspace / 'build-x64/x86_64-w64-mingw32'),
+        '-DSINGLE_SOURCE_LOCATION=' + str(workspace / 'sources'),
+        '-DRUSTUP_LOCATION=' + str(workspace / 'rustup'), '-G', 'Ninja', '--fresh',
+        '-B', str(workspace / 'build-x64'), '-S', str(workspace / ('mpv-winbuild-cmake-' + RECIPE_COMMIT))]
+    recipes = [row for row in fixed.get('archives', []) if row.get('kind') == 'recipes']
+    if (fixed.get('recipeCommit') != RECIPE_COMMIT
+            or fixed.get('recipeArchivePrefix') != 'mpv-winbuild-cmake-' + RECIPE_COMMIT
+            or len(recipes) != 1 or recipes[0].get('sha256') != RECIPE_ARCHIVE_SHA256
+            or command != expected_command):
+        fail('Current cold export fixed one-worker recipe/command differs')
+    root = Path(repository_root).resolve(strict=True)
+    importer_path = owned(root / 'desktop/tools/native/import-host-llvm-source-snapshot.py', root)
+    producer_path = owned(root / 'desktop/tools/native/build-mpv-rtx-core-runtime.py', root)
+    if importer_path != Path(__file__).resolve():
+        fail('Current cold export verifier is outside the producing source')
+    child_env = {key: value for key, value in os.environ.items() if key not in ('GITHUB_TOKEN', 'GH_TOKEN')}
+    git_command = ['git', '-c', 'safe.directory=' + str(root), '-C', str(root)]
+    head = subprocess.run(git_command + ['rev-parse', 'HEAD'], env=child_env,
+                          check=True, capture_output=True).stdout.decode().strip()
+    if head != current['sourceCommit']:
+        fail('Current cold export checked-out source differs')
+    for path, key in ((producer_path, 'producerSourceSha256'),
+                      (importer_path, 'importCollectorSourceSha256')):
+        raw = subprocess.run(git_command + ['show', current['sourceCommit'] + ':' + path.relative_to(root).as_posix()],
+                             env=child_env, check=True, capture_output=True).stdout
+        if file_sha(path, root) != sha(raw) or receipt.get(key) != sha(raw):
+            fail('Current cold export producer/verifier differs from tagged source')
+    # This literal belongs to the current producer profile. It is not a caller
+    # override, a catalog insertion or permission to import this new snapshot.
+    return _lifecycle(manifest, descriptor, record, workspace, fixed, command, 1)
+
+
+def _lifecycle(manifest, descriptor, record, workspace, fixed, command, worker_maximum):
     origin = {'ownrepoSourceCommit': record['sourceCommit'], 'ownrepoSourceTag': record['sourceTag'],
               'workflowRunId': record['workflowRunId'], 'workflowRunAttempt': record['workflowRunAttempt']}
     for item in (manifest, descriptor):
@@ -467,7 +542,7 @@ def lifecycle(manifest, descriptor, record, workspace, fixed, command):
             or built.get('completeSourceLsTreeSha256') != manifest.get('completeSourceLsTreeSha256')
             or manifest.get('actualSourcePostBuildGitStatus') != ''
             or manifest.get('actualInitialBuildCommand') != command
-            or manifest.get('actualHostTargetCommand') != ['ninja', '-C', str(workspace / 'build-x64'), '-j' + str(source_worker_maximum(record)), 'llvm']
+            or manifest.get('actualHostTargetCommand') != ['ninja', '-C', str(workspace / 'build-x64'), '-j' + str(worker_maximum), 'llvm']
             or manifest.get('actualPatchedLlvmRecipeSha256') != LLVM_RECIPE_SHA256):
         fail('Actual prebuild/install/cleanup source identity is not exact')
     digest(built.get('completeSourceLsTreeSha256'))

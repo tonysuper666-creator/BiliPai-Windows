@@ -88,6 +88,9 @@ jobs:
       - name: Validate reviewed HOST LLVM reuse source contracts
         run: |
           python3 -B -m unittest discover -s desktop/tools/tests -p test_host_llvm_worker_contract.py -v
+          PYTHONPATH=desktop/tools/tests python3 -B -m unittest test_host_llvm_fresh_export.HostLlvmFreshExportTests -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_native_nested_failure_logs.py -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_native_cares_prefetch.py -v
           python3 -B -m unittest discover -s desktop/tools/tests -p test_host_llvm_link_validation.py -v
           python3 -B -m unittest discover -s desktop/tools/tests -p test_host_llvm_download.py -v
           python3 -B -m unittest discover -s desktop/tools/tests -p test_curl_openssl_source_compat.py -v
