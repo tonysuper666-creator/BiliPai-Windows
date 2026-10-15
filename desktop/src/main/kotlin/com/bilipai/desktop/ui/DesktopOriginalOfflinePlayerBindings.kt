@@ -90,13 +90,72 @@ internal class DesktopOfflineDanmakuControl(
     fun hide(){if(owned())bindings.backend.setDanmakuEnabled(false)}
 }
 
+/** Keep original screen/control identity tied to its actual Root entry and Store.
+ * Fullscreen/native-peer refresh may replace platform adapters while this same
+ * backend and source remain live. Forward to the latest adapters without
+ * disposing the original player or closing the borrowed backend. */
+@Composable
+internal fun rememberDesktopOriginalOfflinePlayerBindings(
+    context: DesktopPluginContext,
+    backend: DesktopOfflineTaskPlayerBinding,
+    entryScope: CoroutineScope,
+    preferences: DesktopOriginalDanmakuPreferences,
+    presentation: DesktopDanmakuPresentationBinding,
+    window: DesktopOfflineWindowEffects,
+    surface: DesktopOriginalOfflineSurface,
+    media: DesktopOfflineMediaEffects,
+    feedback: (String) -> Unit,
+): DesktopOriginalOfflinePlayerBindings {
+    val latestPresentation = rememberUpdatedState(presentation)
+    val latestWindow = rememberUpdatedState(window)
+    val latestSurface = rememberUpdatedState(surface)
+    val latestMedia = rememberUpdatedState(media)
+    val latestFeedback = rememberUpdatedState(feedback)
+    return remember(backend, entryScope, context, preferences) {
+        DesktopOriginalOfflinePlayerBindings(context, backend, entryScope, preferences,
+            DesktopDanmakuPresentationBinding { latestPresentation.value.currentPresentation() },
+            object : DesktopOfflineWindowEffects {
+                override fun applyFullscreen(fullscreen: Boolean) = latestWindow.value.applyFullscreen(fullscreen)
+                override fun restoreCurrentRootChrome() = latestWindow.value.restoreCurrentRootChrome()
+            },
+            object : DesktopOriginalOfflineSurface {
+                @Composable override fun Render(player: DesktopOfflineMpvControl, modifier: Modifier,
+                    foreground: @Composable () -> Unit) {
+                    latestSurface.value.Render(player, modifier, foreground)
+                }
+            },
+            object : DesktopOfflineMediaEffects {
+                override fun publish(payload: OfflineMiniPlayerPayload, player: DesktopOfflineMpvControl) =
+                    latestMedia.value.publish(payload, player)
+                override fun clearIfOwned(player: DesktopOfflineMpvControl) = latestMedia.value.clearIfOwned(player)
+            }, { latestFeedback.value(it) })
+    }
+}
+
+/** Navigation uses the visible entry's admission, not media readiness. A failed
+ * or already retired native source must never trap the user in its screen. The
+ * Root navigation command still enforces its own entry/account ownership. */
+internal fun desktopOfflineNavigateBack(isCurrentEntry: () -> Boolean, ownsNativeSource: () -> Boolean,
+    closePictureInPicture: () -> Unit, onBack: () -> Unit) {
+    if (!isCurrentEntry()) return
+    if (ownsNativeSource()) closePictureInPicture()
+    if (isCurrentEntry()) onBack()
+}
+
 @Composable internal fun DesktopOriginalOfflinePlayerHost(
     taskId:String,
     bindings:DesktopOriginalOfflinePlayerBindings,
     onBack:()->Unit,
 ) {
-    DisposableEffect(bindings){onDispose{bindings.backend.close()}}
-    CompositionLocalProvider(LocalDesktopOriginalOfflineBindings provides bindings) {
-        com.android.purebilibili.feature.download.OfflineVideoPlayerScreen(taskId,onBack)
+    DesktopOfflineBackendLifetime(bindings.backend) {
+        CompositionLocalProvider(LocalDesktopOriginalOfflineBindings provides bindings) {
+            com.android.purebilibili.feature.download.OfflineVideoPlayerScreen(taskId,onBack)
+        }
     }
+}
+
+@Composable
+internal fun DesktopOfflineBackendLifetime(backend: DesktopOfflineTaskPlayerBinding, content: @Composable () -> Unit) {
+    DisposableEffect(backend) { onDispose { backend.close() } }
+    content()
 }
