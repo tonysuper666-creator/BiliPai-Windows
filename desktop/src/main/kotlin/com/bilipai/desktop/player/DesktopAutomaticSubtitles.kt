@@ -21,11 +21,35 @@ internal data class DesktopOnlineSubtitleAsset(val file: Path, val track: Subtit
     }
 }
 
+/** One request's imported paths remain live until its install or cancellation finishes. */
+internal interface DesktopAutomaticSubtitleDocuments : AutoCloseable {
+    suspend fun import(track: SubtitleTrackMeta): Path
+    suspend fun cues(file: Path): List<SubtitleCue>? = null
+    override fun close() = Unit
+}
+
+internal fun DesktopSubtitleAssets.openAutomaticDocuments(): DesktopAutomaticSubtitleDocuments {
+    val owned = openDocuments()
+    return object : DesktopAutomaticSubtitleDocuments {
+        override suspend fun import(track: SubtitleTrackMeta) = owned.import(track)
+        override suspend fun cues(file: Path) = owned.cues(file)
+        override fun close() = owned.close()
+    }
+}
+
 internal interface DesktopAutomaticSubtitleDataSource {
     suspend fun metadata(bvid: String, cid: Long): PlayerInfoData
     suspend fun import(track: SubtitleTrackMeta): Path
     /** Windows retains the original parsed cues with the native asset; legacy fixture bindings may omit them. */
     suspend fun cues(file: Path): List<SubtitleCue>? = null
+    /** Existing pure fixtures keep the legacy protocol; the repository overrides this with real file ownership. */
+    fun openDocuments(): DesktopAutomaticSubtitleDocuments {
+        val source = this
+        return object : DesktopAutomaticSubtitleDocuments {
+            override suspend fun import(track: SubtitleTrackMeta) = source.import(track)
+            override suspend fun cues(file: Path) = source.cues(file)
+        }
+    }
 }
 
 internal class RepositoryAutomaticSubtitleDataSource(
@@ -35,6 +59,7 @@ internal class RepositoryAutomaticSubtitleDataSource(
     override suspend fun metadata(bvid: String, cid: Long) = community.playerMetadata(bvid, cid)
     override suspend fun import(track: SubtitleTrackMeta) = assets.import(track)
     override suspend fun cues(file: Path) = assets.cues(file)
+    override fun openDocuments() = assets.openAutomaticDocuments()
 }
 
 internal interface DesktopAutomaticSubtitlePlayer {
@@ -95,8 +120,10 @@ internal class DesktopAutomaticSubtitles(
         val capturedEpoch = epoch
         mutableState.value = mutableState.value.copy(loading = true, error = null)
         val next = scope.launch(start = CoroutineStart.LAZY) {
+            var importedDocuments: DesktopAutomaticSubtitleDocuments? = null
             try {
                 verifyCurrent(token, sourceVersion, capturedEpoch, control)
+                val documents = source.openDocuments().also { importedDocuments = it }
                 val metadata = source.metadata(bvid, cid)
                 verifyCurrent(token, sourceVersion, capturedEpoch, control)
                 var tracks = mapPlayerInfoSubtitleTracks(metadata.subtitle?.subtitles.orEmpty())
@@ -107,9 +134,9 @@ internal class DesktopAutomaticSubtitles(
                     if (track == null) return Result.success(null)
                     return try {
                         verifyCurrent(token, sourceVersion, capturedEpoch, control)
-                        val file = source.import(track)
+                        val file = documents.import(track)
                         verifyCurrent(token, sourceVersion, capturedEpoch, control)
-                        val cues = source.cues(file)
+                        val cues = documents.cues(file)
                         verifyCurrent(token, sourceVersion, capturedEpoch, control)
                         Result.success(Loaded(DesktopOnlineSubtitleAsset(file, track), cues))
                     } catch (cancelled: CancellationException) { throw cancelled }
@@ -189,8 +216,11 @@ internal class DesktopAutomaticSubtitles(
                     if (valid(token, sourceVersion, capturedEpoch)) mutableState.value = mutableState.value.copy(error = "字幕加载失败，请手动重试。")
                 }
             } finally {
-                synchronized(lock) {
-                    if (valid(token, sourceVersion, capturedEpoch)) mutableState.value = mutableState.value.copy(loading = false)
+                try { importedDocuments?.close() }
+                finally {
+                    synchronized(lock) {
+                        if (valid(token, sourceVersion, capturedEpoch)) mutableState.value = mutableState.value.copy(loading = false)
+                    }
                 }
             }
         }

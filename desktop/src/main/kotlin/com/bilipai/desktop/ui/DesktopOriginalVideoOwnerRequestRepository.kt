@@ -162,12 +162,14 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
         subtitleIdStr: String, subtitleLan: String): Result<List<SubtitleCue>> {
         currentCoroutineContext().ensureActive(); binding.assertCurrent()
         return try {
-            val file = subtitleAssets.import(SubtitleTrackMeta(
+            subtitleAssets.openDocuments().use { documents ->
+            val file = documents.import(SubtitleTrackMeta(
                 id = subtitleId, idStr = subtitleIdStr, lan = subtitleLan, lanDoc = subtitleLan,
                 subtitleUrl = subtitleUrl,
             ), playbackCalls)
             currentCoroutineContext().ensureActive(); binding.assertCurrent()
-            Result.success(subtitleAssets.cues(file))
+            Result.success(documents.cues(file))
+            }
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) {
             currentCoroutineContext().ensureActive(); binding.assertCurrent()

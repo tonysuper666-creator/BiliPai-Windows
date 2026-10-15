@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "59599b6a70cb2c0ccded36eeff0230b9942a41e9",
-  "windowsVersion": "0.2.427.104",
-  "createdAt": "2026-10-15T01:22:13.856814+00:00",
+  "baseHead": "894b8c2ff24e558f24bffd8a0e2c7d85a652aaa4",
+  "windowsVersion": "0.2.427.105",
+  "createdAt": "2026-10-15T01:42:10.465994+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -88,7 +88,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
       "normalization": "lf",
-      "sha256": "77f642873061d50460d75783e84f640f738a5e72f66da03bc1d20e5c69f5f58e"
+      "sha256": "54731f60aeb2ef8707a521fe440d4f33d55f9dd9c70bff75378377dea5f66f84"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
@@ -136,9 +136,19 @@
       "sha256": "2aed48cc355e083ed0c925c23fa9eeee9aab7a37f2001776e48b68f29ed05e34"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+      "normalization": "lf",
+      "sha256": "77c402b6d56bfec16ec492b0500477bdca6cf353851085b37458a0820ffa7aa4"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicy.kt",
       "normalization": "lf",
       "sha256": "ef138b42fefb297068bb2982832191d8e10937f250b26a6db21e41469d2c4392"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+      "normalization": "lf",
+      "sha256": "1f097efeade01b05ad1e67ae032c5bd512cfb38a8296c15953563dc267168a66"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVeyraPrivateComponent.kt",
@@ -154,6 +164,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
       "normalization": "lf",
       "sha256": "823549633528935e01dff9255eda6c55518e7db1db96698529766795e4815da4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "normalization": "lf",
+      "sha256": "e0e51a181a83e28cc9d1ca96bd85a4e74c0aebb8f2f0ab968e456541b98951ed"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
@@ -179,6 +194,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
       "normalization": "lf",
       "sha256": "30ee2ddbd3ad71b24c9d7735b85225e91763041a271a079fc921ab6caaaac643"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "normalization": "lf",
+      "sha256": "2ee08ca9a0182e3302163179d80998df7d95aaf6871747dc7d23a3fbbd1d4081"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
@@ -209,6 +229,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoHost.kt",
       "normalization": "lf",
       "sha256": "7994fa481bb800c8d9146c352a63920a32023571fcc107b79ca1843f01c9473c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+      "normalization": "lf",
+      "sha256": "51795846a1c30fc9ffd53f105ab04639d9aabfc17e9100beba5f923260441df9"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPhysicalLeaf.kt",
@@ -254,6 +279,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
       "normalization": "lf",
       "sha256": "f3cf48059ad09ccd342f08877e0f09f776305f7cb8ce3a8101e528e46d771e24"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/OnlineSubtitleDialog.kt",
+      "normalization": "lf",
+      "sha256": "b7fd0227ae6dac824f9c2ed9406ec88b14e0690457c104df26d3760e3600c7cf"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopPreparedUpdateStorage.kt",
@@ -346,6 +376,11 @@
       "sha256": "6ed728e1357a8fe6b18cb1f9ed6e486c9105121fffe7018e61ee8ae86a6e4d4b"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopSubtitleCancellationTest.kt",
+      "normalization": "lf",
+      "sha256": "fbb413a24dd07e48bb15bbbe96a39c1f68de3686cf076af7aabc3eb4adf88f8c"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSessionTest.kt",
       "normalization": "lf",
       "sha256": "edb9dd0c0e54238d37d976ddd900ce4426c5d988bbf02a25b60f0a729a536c64"
@@ -386,6 +421,11 @@
       "sha256": "053e0284135c8cf62f0f075d8446f5d4bdc79808c6e3af665eab48ccfbaec1de"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeFrameBitmapTest.kt",
+      "normalization": "lf",
+      "sha256": "0b87ed2c591cf100e32136574aceae06b63854a1af15a0f749ef0ff5f7dbf35e"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntriesTest.kt",
       "normalization": "lf",
       "sha256": "b5312d408b9de241fc89460b425377f097dbbfe54061cb5c38eccaaf630cf041"
@@ -394,6 +434,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
       "normalization": "lf",
       "sha256": "13f95cc2bd277c2a27d7e68868e1c600c3f4a83b03e15c4c0c1d8c76a2ea8cf9"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSubtitleCacheOwnershipTest.kt",
+      "normalization": "lf",
+      "sha256": "56030016b9bb7c665ad4dd63ba52352272e807b2fd35e12bb45c802d9098acf7"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoAuthorizationBootstrapTest.kt",
@@ -1338,35 +1383,17 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "a29d75b1a3c6b1af08b6dd6fda9ec91d7fae3c6218d972dd360c65c942289b4d"
+      "sha256": "3c0909fe8326a81f7ce3fc5b3269a43d6dacec449a4fd7649e4dd1149b3c8556"
     }
   ],
   "classes": {
-    "com.android.purebilibili.core.theme.ThemeRoleOverridePolicyTest": 9,
-    "com.android.purebilibili.core.theme.ThemeContrastPolicyTest": 8,
-    "com.bilipai.desktop.appearance.DesktopAppearanceTest": 23,
-    "com.android.purebilibili.core.theme.DesktopThemeRoleSpecContractTest": 3,
-    "com.android.purebilibili.core.ui.animation.LiquidIndicatorMotionTest": 2,
-    "com.android.purebilibili.core.ui.animation.LiquidIndicatorVelocityTest": 2,
-    "com.android.purebilibili.core.ui.MatchedLiquidIndicatorGeometryTest": 4,
-    "com.android.purebilibili.feature.settings.AppearanceMd3ColorPickerPolicyTest": 2,
-    "com.bilipai.desktop.appearance.DesktopLiquidPointerMappingTest": 4,
-    "com.bilipai.desktop.appearance.DesktopLiquidLensSkiaTest": 2,
-    "com.android.purebilibili.core.ui.ButtonSlotColorTest": 3,
-    "com.android.purebilibili.core.ui.ButtonVisualPolicyTest": 5,
-    "com.android.purebilibili.core.ui.AppChromeSizeTokensTest": 1,
-    "com.android.purebilibili.core.ui.components.AppPrimitiveRendererPolicyTest": 6,
-    "com.android.purebilibili.core.ui.components.AppTextSearchHighlightTest": 2,
-    "com.android.purebilibili.feature.home.components.FloatingBottomBarGeometryTest": 29,
-    "com.android.purebilibili.core.ui.AdaptiveScaffoldPolicyTest": 2,
-    "com.android.purebilibili.core.ui.TopReadabilityChromePolicyTest": 5,
-    "com.android.purebilibili.core.ui.AppTopChromePolicyTest": 1,
-    "com.bilipai.desktop.ui.DesktopWindowsSharedLensUniformCacheTest": 4,
-    "com.bilipai.desktop.download.DesktopDownloadManagerTest": 23,
-    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityManagerTest": 5,
-    "com.bilipai.desktop.ui.DesktopWindowsNativeDockGeometryContractTest": 2
+    "com.bilipai.desktop.player.DesktopSubtitleCancellationTest": 12,
+    "com.bilipai.desktop.player.DesktopSubtitleSessionParityTest": 19,
+    "com.bilipai.desktop.player.DesktopSubtitleCacheLifetimeTest": 13,
+    "com.bilipai.desktop.ui.DesktopHomeFrameBitmapTest": 2,
+    "com.bilipai.desktop.ui.DesktopOriginalSubtitleCacheOwnershipTest": 4
   },
-  "expectedTests": 147,
+  "expectedTests": 50,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1374,38 +1401,16 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
-    "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsLiquidGlassMaterial.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsNativeDockGeometryContractTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsSharedLensUniformCacheTest.kt",
-    "desktop/tools/extract-upstream-components.py",
-    "desktop/tools/extract-upstream-dynamic-detail-container.py",
-    "desktop/tools/extract-upstream-shared-liquid-tabs.py",
-    "desktop/tools/tests/test_v040_liquid_controls_source.py",
-    "desktop/tools/tests/test_v040_native_chrome_source.py",
-    "desktop/tools/v029_home_load.py",
-    "desktop/tools/v037_player_shared_material.py",
-    "desktop/tools/v040_liquid_value_controls.py",
-    "desktop/tools/v040_native_chrome.py",
-    "desktop/upstream-slices/v040-native-chrome/AdaptiveChrome.kt",
-    "desktop/upstream-slices/v040-native-chrome/AdaptiveScaffoldPolicy.kt",
-    "desktop/upstream-slices/v040-native-chrome/AdaptiveScaffoldPolicyTest.kt",
-    "desktop/upstream-slices/v040-native-chrome/AppTopChromePolicyTest.kt",
-    "desktop/upstream-slices/v040-native-chrome/BiliPaiTopBarIconDecorator.kt",
-    "desktop/upstream-slices/v040-native-chrome/BottomBar.kt",
-    "desktop/upstream-slices/v040-native-chrome/BottomBarMatchedLiquidChrome.kt",
-    "desktop/upstream-slices/v040-native-chrome/FloatingBottomBarGeometry.kt",
-    "desktop/upstream-slices/v040-native-chrome/FloatingBottomBarGeometryTest.kt",
-    "desktop/upstream-slices/v040-native-chrome/FloatingDockChrome.kt",
-    "desktop/upstream-slices/v040-native-chrome/GlobalWallpaperBackdrop.kt",
-    "desktop/upstream-slices/v040-native-chrome/HomeTopTabFloatingDock.kt",
-    "desktop/upstream-slices/v040-native-chrome/Lens.kt",
-    "desktop/upstream-slices/v040-native-chrome/TopReadabilityChromePolicy.kt",
-    "desktop/upstream-slices/v040-native-chrome/TopReadabilityChromePolicyTest.kt",
-    "desktop/upstream-slices/v040-native-chrome/manifest.json",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/OnlineSubtitleDialog.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopSubtitleCancellationTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeFrameBitmapTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSubtitleCacheOwnershipTest.kt",
     "desktop/upstream-sources.json"
   ]
 }
