@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "fixedUpstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+  "upstreamTag": "v0.4.0",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "filename": "VideoPlayerSectionPolicy.kt",
+      "bytes": 66860,
+      "sha256Bytes": "89fd1038c153ab84578da1db076d1fbb46d36f62385eda293e2c735abb759a00",
+      "gitBlob": "a29f4be5780b424c621a267abf57116cc4f34597"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicyTest.kt",
+      "filename": "VideoPlayerSectionPolicyTest.kt",
+      "bytes": 76207,
+      "sha256Bytes": "d03265c61999862678d7ec0f77e4da0357a9253cbb0e1f20b46f42fde4557829",
+      "gitBlob": "f9512ae42485240ba4f2edeb2bf42bbdf97422bd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScale.kt",
+      "filename": "VideoDetailCoverContentScale.kt",
+      "bytes": 839,
+      "sha256Bytes": "5760c0293557698a756ee0574f3c05c58dab0c6eadbe165d2aa90d0e88ff06a3",
+      "gitBlob": "3bd1f7d659550bdab3c89edb3c654d67ac82be2f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "filename": "VideoPlayerSection.kt",
+      "bytes": 324318,
+      "sha256Bytes": "50cc99d87134af7e8dbc64deb34e815780676f93724460a37cb5350825571154",
+      "gitBlob": "3d6ec9bfe79741cd01efe9775ca97358b4bbf07d"
+    }
+  ],
+  "sourceScope": "Two complete current cover policy declarations, the complete current remember/caller block and three complete current upstream tests through the existing sole player section producer. Remaining current policy, full UI and cover scale mapper are retained references, not a full current player port.",
+  "fullV040PlayerParityClaimed": false,
+  "windowsForegroundPortalPreserved": true
+}

@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "894b8c2ff24e558f24bffd8a0e2c7d85a652aaa4",
-  "windowsVersion": "0.2.427.106",
-  "createdAt": "2026-10-15T02:07:53.451974+00:00",
+  "baseHead": "e3670dd052771098554618a95145c94c666e82b2",
+  "windowsVersion": "0.2.427.107",
+  "createdAt": "2026-10-15T03:13:17.932062+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "9022557edb173f7bb225a7223e131d07342efd9d1bb7f8dd5a8453e68c63480c"
+      "sha256": "665708e983d371127b7950fb76e3000bc26213a1949a80a7e241157674ec1a06"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -83,7 +83,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "aa38a83cd17b43ea9fd5f54943e38a3c77240a936576a138921a7da10d6b6ff3"
+      "sha256": "81fd999ed9ff88738fb3898bf5717634251b7e18c951f25d29b45b024f9966c6"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -326,6 +326,11 @@
       "sha256": "23dca1e25a84300fa1556dd7a8edd4340f55ee0242c4ca8be93c344d7bd5d6e4"
     },
     {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ui/section/DesktopV040PlayerCoverPolicyTest.kt",
+      "normalization": "lf",
+      "sha256": "eb6e08c4df1ea83b9cdf0bb7d2def87f72c4cfd71439b7250d9a9195c8adec3e"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTest.kt",
       "normalization": "lf",
       "sha256": "0486750a919b205725108e2dfa65a082bfbfa4a513773f4720d191dc4220033e"
@@ -551,6 +556,11 @@
       "sha256": "8df8cb34e8188d1313e3825c67b0f018a0cc6d1012c160466fb3280adc8537fc"
     },
     {
+      "path": "desktop/tools/extract-upstream-video-player-section-full.py",
+      "normalization": "lf",
+      "sha256": "92e6a7150a8c4c85d8afffb5698c975f9ca68c1bbadbe1e2371291e8da93d2cb"
+    },
+    {
       "path": "desktop/tools/native/build-veyra-core-runtime.py",
       "normalization": "lf",
       "sha256": "18c41115b11be22ac2f2e2da5ad4fa8cde9fc825fc4ad9807c283d698882336a"
@@ -691,6 +701,11 @@
       "sha256": "7a3d9c68b175840183dcef7f086a2bef2284704e71ade55c392616e425d8db13"
     },
     {
+      "path": "desktop/tools/tests/test_v040_player_cover_source.py",
+      "normalization": "lf",
+      "sha256": "df1edaf347571a2ae07c364fd768a41a6dc554a7680efb43cc93335daea398ba"
+    },
+    {
       "path": "desktop/tools/tests/test_v040_reply_medal_source.py",
       "normalization": "lf",
       "sha256": "8a30e1709c4414f119050f9cf433709949a7c56a58c58a7ff53473c4ac6dea07"
@@ -809,6 +824,11 @@
       "path": "desktop/tools/v040_native_chrome.py",
       "normalization": "lf",
       "sha256": "a6b25aba3b33fdb300aa5c0b4e35e4081098ef662d861f57a410fbc6de3426df"
+    },
+    {
+      "path": "desktop/tools/v040_player_cover.py",
+      "normalization": "lf",
+      "sha256": "f374d699e84ae42ca193b6c849e98efef9f6485b2cbb66788ad3dd5ca36afb9e"
     },
     {
       "path": "desktop/tools/v040_reply_medal.py",
@@ -1336,6 +1356,31 @@
       "sha256": "4902117d0a601563b4a7a7f22fab47ef6d78177ceda2498432bdfb9f52132c48"
     },
     {
+      "path": "desktop/upstream-slices/v040-player-cover/VideoDetailCoverContentScale.kt",
+      "normalization": "raw",
+      "sha256": "5760c0293557698a756ee0574f3c05c58dab0c6eadbe165d2aa90d0e88ff06a3"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-player-cover/VideoPlayerSection.kt",
+      "normalization": "raw",
+      "sha256": "50cc99d87134af7e8dbc64deb34e815780676f93724460a37cb5350825571154"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-player-cover/VideoPlayerSectionPolicy.kt",
+      "normalization": "raw",
+      "sha256": "89fd1038c153ab84578da1db076d1fbb46d36f62385eda293e2c735abb759a00"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-player-cover/VideoPlayerSectionPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "d03265c61999862678d7ec0f77e4da0357a9253cbb0e1f20b46f42fde4557829"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-player-cover/manifest.json",
+      "normalization": "raw",
+      "sha256": "835d7ed7458ad40761e84452e95b5e3c8b9e6a78ee3d99829349950b3ebeefbc"
+    },
+    {
       "path": "desktop/upstream-slices/v040-reply-medal/CommentGrpcRepository.kt",
       "normalization": "raw",
       "sha256": "399f34d801a0faaa5392b3f2e18f51e62a6403d4bf468a2c59226322a318fd18"
@@ -1383,7 +1428,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "84f4d5fe070daec45f6e37541986827d03bb626d906ecc0bafa1b03a6b047a65"
+      "sha256": "d60d055d8af9ad9a5f13a9e68277114dfe43628dc465efe9c7e71aa0892c2be8"
     }
   ],
   "classes": {
@@ -1391,9 +1436,11 @@
     "com.bilipai.desktop.player.DesktopSubtitleSessionParityTest": 19,
     "com.bilipai.desktop.player.DesktopSubtitleCacheLifetimeTest": 13,
     "com.bilipai.desktop.ui.DesktopHomeFrameBitmapTest": 2,
-    "com.bilipai.desktop.ui.DesktopOriginalSubtitleCacheOwnershipTest": 4
+    "com.bilipai.desktop.ui.DesktopOriginalSubtitleCacheOwnershipTest": 4,
+    "com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest": 3,
+    "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4
   },
-  "expectedTests": 50,
+  "expectedTests": 57,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1401,16 +1448,17 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/OnlineSubtitleDialog.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopSubtitleCancellationTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeFrameBitmapTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSubtitleCacheOwnershipTest.kt",
+    ".github/workflows/windows-source-validation.yml",
+    "desktop/build.gradle.kts",
+    "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ui/section/DesktopV040PlayerCoverPolicyTest.kt",
+    "desktop/tools/extract-upstream-video-player-section-full.py",
+    "desktop/tools/tests/test_v040_player_cover_source.py",
+    "desktop/tools/v040_player_cover.py",
+    "desktop/upstream-slices/v040-player-cover/VideoDetailCoverContentScale.kt",
+    "desktop/upstream-slices/v040-player-cover/VideoPlayerSection.kt",
+    "desktop/upstream-slices/v040-player-cover/VideoPlayerSectionPolicy.kt",
+    "desktop/upstream-slices/v040-player-cover/VideoPlayerSectionPolicyTest.kt",
+    "desktop/upstream-slices/v040-player-cover/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

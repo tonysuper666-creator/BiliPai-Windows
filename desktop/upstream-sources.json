@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "106",
+  "windowsRevision": "107",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14319,5 +14319,37 @@
     "mainCompiled": false,
     "jvmTestsExecuted": false,
     "applicationExecuted": false
+  },
+  "v040PlayerCoverSlice": {
+    "upstreamTag": "v0.4.0",
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "basePolicyCommit": "8b47769d22c0d5bc88ae5248cee4aa04ff10d62c",
+    "archive": "desktop/upstream-slices/v040-player-cover",
+    "manifestSHA256": "835d7ed7458ad40761e84452e95b5e3c8b9e6a78ee3d99829349950b3ebeefbc",
+    "wholeOriginalPolicyDeclarations": [
+      "resolveVideoPlayerCoverMotionSpec",
+      "resolveVideoPlayerEntryPresentationSpec"
+    ],
+    "wholeOriginalCallerBlock": "VideoPlayerSection.kt::coverMotionSpec remember and duration argument",
+    "originalTestClass": "com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest",
+    "originalTestMethods": [
+      "returnCoverPresentation_usesSharedBoundsDuringForcedReturn",
+      "returnCoverPresentation_usesSharedBoundsForManualStart",
+      "returnCoverPresentation_doesNotUseSharedBoundsForNormalPlayback"
+    ],
+    "rootContractTestClass": "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest",
+    "windowsForegroundPortalPreserved": true,
+    "androidUnderlayCapabilityMapped": false,
+    "fullCurrentPolicyOrUiPorted": false,
+    "remainingCurrentPlayerWork": [
+      "gesture distance and long-press policy",
+      "full return geometry and detail cover scale mapper",
+      "pixels and Windows native foreground acceptance"
+    ],
+    "sourceIntegrationApplied": true,
+    "pythonSourceChecksPassed": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "hardwareExecuted": false
   }
 }

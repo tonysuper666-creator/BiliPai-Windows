@@ -113,6 +113,9 @@ def render_section():
  t=exact(t,'(String, Bundle?) -> Unit = { _, _ -> }','(String, Long, String?) -> Unit = { _, _, _ -> }','Original related navigation Bundle maps exact CID/cover fields')
  emit(rel,t)
  rel='feature/video/ui/section/VideoPlayerSection.kt';t=source(rel)
+ from v040_player_cover import project_caller
+ t,cover_caller_proof=project_caller(REPO,t,SOURCES,protocol)
+ write(OUTPUT/'v040-player-cover-caller-proof.json',json.dumps(cover_caller_proof,ensure_ascii=False,indent=2)+'\n')
  t=exact(t,'import com.android.purebilibili.R\n','','Windows bundles the exact original bitmap; no Android resource identifier')
  t=exact(t,'painterResource(R.drawable.ic_pili_tv_play)','painterResource("icons/ic_pili_tv_play.png")','Same pinned upstream manual-play bitmap from Windows classpath resources')
  t=exact(t,'onRelatedVideoClick(dialogTargetBvid, null)','onRelatedVideoClick(dialogTargetBvid, 0L, null)','Original absent navigation Bundle maps existing unspecified-CID and cover tuple')
@@ -362,6 +365,8 @@ def render_policy():
     starts.append((name,t.rfind('\n',0,a)+1))
   depth+=(word=='{')-(word=='}');parens+=(word=='(')-(word==')');brackets+=(word=='[')-(word==']')
  members={name:t[a:starts[i+1][1]if i+1<len(starts)else len(t)]for i,(name,a)in enumerate(starts)}
+ from v040_player_cover import project_members,COMMIT as cover_commit,NAMES as cover_names
+ members,cover_proof=project_members(REPO,members,SOURCES,protocol)
  from v037_player_section_policy import GESTURE_MOTION_NAMES
  shared=set(GESTURE_MOTION_NAMES);assert shared<=set(members)
  selected=set(POLICY_NAMES);assert selected<=set(members)
@@ -383,6 +388,8 @@ def render_policy():
  from v029_comment_search import whole_proof
  proof=whole_proof(t[:t.index('\ninternal const val INITIAL_PLAYER_CONTROLS_VISIBLE')]+'\n'+'\n'.join(chunks),body)
  proof.update(fixedCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',originalDeclarationNames=sorted(selected),sharedOriginalDeclarations=list(GESTURE_MOTION_NAMES),sharedDeclarationOwner='extractOriginalVideoDetailUnits',unmodifiedOriginalDeclarationBodies=False,onlyPlatformDefaultAdapted='Android TextureView manufacturer compatibility does not apply to the Windows MPV HWND renderer',sourceQualified=False)
+ proof.update(fixedCommit=None,baseFixedCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',
+  fixedCommitByDeclaration={name:cover_commit if name in cover_names else '8b47769d22c0d5bc88ae5248cee4aa04ff10d62c' for name in sorted(selected)},coverProjection=cover_proof)
  write(OUTPUT/'v037-player-section-policy-platform-proof.json',json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
  emit('feature/video/ui/section/DesktopOriginalVideoPlayerSectionPolicy.kt',body)
 def render_dimension():
@@ -403,6 +410,9 @@ def generate(repo,output,standalone=False,test_output=None):
  from v037_player_page_backdrop import emit_foundation
  from v037_player_owner_state import PINS as owner_pins, MANIFEST_SHA as owner_manifest_sha
  emit_foundation(REPO,OUTPUT,OUTPUTS,test_output)
- write(OUTPUT/'v037-complete-player-section-source-readback.json',json.dumps(dict(upstreamCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',selectedOriginalSources=owner_pins,sourceManifestSHA256=owner_manifest_sha,outputs=OUTPUTS,sameNativePlayerBackdropBinding=True,androidTextureViewPredicateRemoved=True,mainCompiled=False,pixelsValidated=False),ensure_ascii=False,indent=2)+'\n')
+ if test_output is not None:
+  from v040_player_cover import emit_tests as emit_cover_tests
+  emit_cover_tests(REPO,test_output,protocol)
+ write(OUTPUT/'v037-complete-player-section-source-readback.json',json.dumps(dict(upstreamCommit='8b47769d22c0d5bc88ae5248cee4aa04ff10d62c',selectedOriginalSources=owner_pins,sourceManifestSHA256=owner_manifest_sha,outputs=OUTPUTS,sameNativePlayerBackdropBinding=True,androidTextureViewPredicateRemoved=True,currentCoverCommit='415d01ec5bc3ac82521a9ac47bcc449b8e202460',currentCoverPolicyDeclarations=['resolveVideoPlayerCoverMotionSpec','resolveVideoPlayerEntryPresentationSpec'],currentCoverWholeCallerBlock=True,currentCoverSourceIdentities={k:{a:b for a,b in v.items()if a!='text'}for k,v in SOURCES.items()if '/v040-player-cover/'in k},fullV040PlayerParityClaimed=False,mainCompiled=False,pixelsValidated=False),ensure_ascii=False,indent=2)+'\n')
  return OUTPUTS
 if __name__=='__main__':generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone'in sys.argv[3:],Path(sys.argv[sys.argv.index('--test-output')+1]) if '--test-output' in sys.argv else None)
