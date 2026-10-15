@@ -70,6 +70,8 @@ def desktop_glass_uniform_transforms():
    '            setFloatUniform("chromaticAberration", chromaticAberration)\n        }\n        }\n    }\n}'),
  ]
 
+from v040_native_chrome import selected_source as _native_source, identity_for as _native_identity
+
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
  parser=load('liquid_selected_parser',REPO/'desktop/tools/sync-upstream.py')
@@ -91,18 +93,23 @@ def generate(repo: Path, output: Path, standalone: bool = False):
    depth+=(token=='{')-(token=='}');parens+=(token=='(')-(token==')');brackets+=(token=='[')-(token==']')
   return [(name,source[start:(starts[i+1][1] if i+1<len(starts) else len(source))].rstrip()+'\n') for i,(name,start) in enumerate(starts)]
  records=[]
- def emit(path,names=None,imports='',transforms=()):
+ def emit(path,names=None,imports='',transforms=(),baseline_only=False,output_name=None):
   identity=None
   if path==V027_LENS_PATH:source,identity=fixed_v027_lens(REPO)
   else:
    source=read(_desktop_canonical_source(REPO, path));original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).decode().replace('\r\n','\n');assert source==original,path
-  from v037_player_shared_material import selected_source,identity_for
-  override=identity_for(path)
-  from v037_shared_tabs_progress import selected_source as select_tabs, identity_for as tabs_identity
-  tab_override=tabs_identity(path)
-  if tab_override is not None:
-   source=select_tabs(path,source);identity=tab_override
-  if override is not None:source=selected_source(path,source);identity=override
+  if baseline_only:
+   identity=dict(pinnedCommit=COMMIT,originalPath=path,mode='complete-original-baseline-compatibility-declarations')
+  else:
+   from v037_player_shared_material import selected_source,identity_for
+   override=identity_for(path)
+   from v037_shared_tabs_progress import selected_source as select_tabs, identity_for as tabs_identity
+   tab_override=tabs_identity(path)
+   if tab_override is not None:
+    source=select_tabs(path,source);identity=tab_override
+   if override is not None:source=selected_source(path,source);identity=override
+   native_identity=_native_identity(REPO,path)
+   if native_identity is not None:source=_native_source(REPO,path,source);identity=native_identity
   package=re.search(r'(?m)^package (\S+)',source).group(1)
   selected=[]
   if names is None:text=source
@@ -117,12 +124,18 @@ def generate(repo: Path, output: Path, standalone: bool = False):
    a,b=transform[:2];count=transform[2] if len(transform)==3 else 1
    assert text.count(a)==count,(path,'Exact theme/platform symbol multiplicity',count,text.count(a))
    text=text.replace(a,b);adaptations.append(dict(original=a,replacement=b,count=count))
-  output=HERE/'generated'/package.replace('.','/')/Path(path).name
+  output=HERE/'generated'/package.replace('.','/')/(output_name or Path(path).name)
   write(output,'// OriginalSource: '+path+'\n// OriginalSHA256: '+sha(source)+'\n'+('// OriginalCommit: '+identity['pinnedCommit']+'\n' if identity else '')+text)
   record=dict(path=path,sha256LF=sha(source),output=str(output.relative_to(HERE)),mode='direct' if names is None else 'selected',declarations=[{k:v for k,v in x.items() if k!='body'} for x in selected],adaptations=adaptations)
   if identity:record['sourceIdentity']=identity
   records.append(record)
  inv={'sources': [{'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt'}]}
+ # Current v040 geometry removed the old overflow API, while existing complete v025/v037 callers retain it.
+ # Preserve all three original declarations instead of stubbing them or changing current optical geometry.
+ emit(HOME+'FloatingBottomBarGeometry.kt',
+  ['resolveCompactDockScaleOverflowDp','shouldReserveFloatingDockScaleOverflow','floatingDockScaleOverflow'],
+  imports='import androidx.compose.ui.Modifier\nimport androidx.compose.ui.layout.layout\nimport androidx.compose.ui.unit.Constraints\nimport androidx.compose.ui.unit.Dp',
+  baseline_only=True,output_name='DesktopOriginalLegacyDockOverflow.kt')
  for row in inv['sources']:
   p=row['path'];t=desktop_glass_theme_transforms(p)
   if p.endswith('LiquidGlassAdaptiveReadability.kt'):continue
@@ -131,7 +144,8 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   s=selected_source(p,s)
   from v037_shared_tabs_progress import selected_source as select_tabs
   s=select_tabs(p,s)
-  if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()+desktop_glass_uniform_transforms()
+  s=_native_source(REPO,p,s)
+  if p==V027_LENS_PATH and _native_identity(REPO,p) is None:t+=lens_preflight_visibility_transforms()+desktop_glass_uniform_transforms()
   if p.endswith('AppLiquidAwareTabRow.kt'):
    t += [('import androidx.compose.ui.Modifier','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground'),('        modifier = modifier,\n        enabled = enabled,','        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,')]
   selected_names=None;selected_imports=''

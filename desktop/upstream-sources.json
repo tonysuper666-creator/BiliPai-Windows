@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "99",
+  "windowsRevision": "102",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14228,8 +14228,8 @@
     "sourceGenerationCasesPassed": 6,
     "existingComponentRenderAndSharedDecorationOwnersRetained": true,
     "existingWindowsClipboardAndRealSkiaPressBindingsRetained": true,
-    "mainCompiled": false,
-    "jvmTestsExecuted": false,
+    "mainCompiled": true,
+    "jvmTestsExecuted": true,
     "nativeBarOverflowHostIntegrationPending": true,
     "globalLiquidThemeColorPreferenceHostFollowupPending": true,
     "customPaletteArgumentsStillNeedLargeScreenOwnerCoordination": true,
@@ -14238,6 +14238,48 @@
     "fullV040ParityClaimed": false,
     "completeOriginalTextSearchHighlightDependencyRetained": true,
     "originalTextHighlightJvmCasesWritten": 2,
-    "failedPreviousSourceHead": "437bab2e2c5c113759da74add2b7ef2f6c17428c"
+    "failedPreviousSourceHead": "437bab2e2c5c113759da74add2b7ef2f6c17428c",
+    "compilationSourceHead": "59599b6a70cb2c0ccded36eeff0230b9942a41e9",
+    "compilationRunId": 38656431047,
+    "selectedJvmCasesPassed": 76
+  },
+  "v040NativeChromeSlice": {
+    "upstreamCommit": "415d01ec5bc3ac82521a9ac47bcc449b8e202460",
+    "manifestPath": "desktop/upstream-slices/v040-native-chrome/manifest.json",
+    "manifestSHA256": "961af50829fc48de84d21ad1ad1a8289661898870244e91bb5067506cc9a57fd",
+    "rawOriginalFilesRetained": 14,
+    "wholeOriginalUnitsEmitted": 6,
+    "unchangedWholeOriginalPolicyUnitsRetained": 2,
+    "completeApplicableMaterialDeclarationGroupRetained": 2,
+    "originalPolicyJvmCasesWritten": 37,
+    "uniformCacheJvmCasesWritten": 4,
+    "sourceGenerationCasesPassed": 7,
+    "actualRootHostDecoratorProviderConnected": true,
+    "originalSharedLensAndExistingWindowsUniformCacheUsed": true,
+    "sharedLensShaderMathUnchanged": true,
+    "globalWallpaperProviderStillPending": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "pixelsValidated": false,
+    "runtimeExecuted": false,
+    "fullV040ParityClaimed": false,
+    "buildInputScopeRegressionAdded": true,
+    "failedPreviousSourceHead": "e7bd40875217bebe67d8f5ff12b448fa444c292c",
+    "baselineOverflowCompatibilityDeclarationsRetained": 3,
+    "baselineOverflowCompatibilityCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "nativeClosureCompilerRepairPrepared": true
+  },
+  "windowsDownloadPersistenceRepair": {
+    "finding": "DL-1",
+    "reviewModule": "claude-download-transactions-review",
+    "reviewedSourceHead": "de22734e7be9a1f72cfdfd5782a3b1780f5ac64f",
+    "patchSHA256": "4f87398a92c8221fec7dfcd60e1ed2f4b6d2c694117f5d7a27063e8d339ba234",
+    "ordinaryStateWritesBestEffort": true,
+    "exitAndUpdateHandoffCheckpointsRemainStrict": true,
+    "newRegressionJvmCasesWritten": 2,
+    "allManagerAndAuthorityCasesSelected": 28,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "realDownloadsExecuted": false
   }
 }
