@@ -62,6 +62,7 @@
     "versionSha256": "ddcd76798d2650c9808815cd7c2bfc991056cd8471bfbf156068dfac52f319dd"
   },
   "expectedPatchedRecipeSha256": {
+    "build-recipes/packages/c-ares.cmake": "f538cedd2317d3a581221e6fa8bb75940de324bdfab802c42614ac59a03567c1",
     "build-recipes/packages/curl.cmake": "b17133fb195d2c566db52b458116369dfdb588b836c561a97f8e6e24b687e7d7",
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
     "build-recipes/packages/libaribcaption.cmake": "dd4ce1fd21c4ee1444dd463677789deab238bff269fda5bafd3aba800f8865b6",
