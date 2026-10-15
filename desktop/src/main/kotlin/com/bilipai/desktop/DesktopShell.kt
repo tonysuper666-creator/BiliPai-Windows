@@ -553,6 +553,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var initialVideoConsumed by remember { mutableStateOf(initialVideo==null) }
     val musicOverlay = remember { MutableStateFlow(false) }
     fun rootRoutes() = homeRootRef.get()?.route?.get()?.takeIf { it.owns() }
+    fun rootSubscriptionBinding(): DesktopSubscriptionPageBindings? =
+        (homeRootRef.get()?.retainer?.current()?.entry?.embeddedPages as? DesktopOriginalHomeEmbeddedAggregate)
+            ?.subscription?.takeIf { it.isOwned() }
     var jsSettingsOrigin by remember { mutableStateOf(false) }
     var showVideo by remember { mutableStateOf(false) }
     var favoritesEntry by remember(repository, sessionEpoch) { mutableStateOf<DesktopFavoritesRootEntry?>(null) }
@@ -761,7 +764,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
     }
     var jsPluginId by remember { mutableStateOf("") }
-    var jsSubscriptionReader by remember { mutableStateOf(false) }
+    var jsSubscriptionReader by remember(repository, sessionEpoch) { mutableStateOf<DesktopSubscriptionPageBindings?>(null) }
     var castDialog by remember { mutableStateOf(false) }
     var dlnaDialog by remember { mutableStateOf(false) }
     var googleCastDialog by remember { mutableStateOf(false) }
@@ -2573,7 +2576,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { openLogin() },
                                 space = space, onResource = ::openResource, initialTitle = collectionTitle)
-                            section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, pluginJsonUpdateHold, ::openVideo, ::openQueue, ::openJsPlugin)
+                            section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, pluginJsonUpdateHold, ::openVideo, ::openQueue, ::openJsPlugin, subscriptionBinding = rootSubscriptionBinding())
                             section == DesktopSection.SETTINGS -> {
                                 val mountedSettingsPage = settingsNavigation.current
                                 val mountedSettingsHandle = homeRootRef.get()
@@ -2628,7 +2631,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 appearanceContent = { DesktopAppearanceSettings(appearance,
                                     onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
                                     onNavigateToIconSettings = { messageRoutes.callbackForContent(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } }) },
-                                pluginsContent = { PluginCenterScreen(pluginRuntime, pluginJsonUpdateHold, ::openVideo, ::openQueue, ::openJsPlugin) },
+                                pluginsContent = { PluginCenterScreen(pluginRuntime, pluginJsonUpdateHold, ::openVideo, ::openQueue, ::openJsPlugin, subscriptionBinding = rootSubscriptionBinding()) },
                                 playbackContent = { page, back ->
                                     DesktopOriginalPlaybackSettingsRootHost(messageRoutes, homeRootRef, entryKey, page,
                                         settingsNavigator, globalPluginContext, repository, services.imageLifetime,
@@ -2770,10 +2773,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
                                 onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } })
                             section == DesktopSection.JS_CONTENT -> Column(Modifier.fillMaxSize()) {
+                                val capturedFeedBinding = rootSubscriptionBinding()
                                 TextButton(onClick = { commands.back() }) { Text("返回插件") }
                                 Box(Modifier.weight(1f).fillMaxWidth()) {
                                     DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
-                                        onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true }, onBack = { commands.back() })
+                                        onPlayMedia = ::openJsMedia, onFeedModule = { _, _ ->
+                                            capturedFeedBinding?.takeIf { it.isOwned() && rootSubscriptionBinding() === it }
+                                                ?.let { captured -> captured.commitUi { jsSubscriptionReader = captured } }
+                                        }, onBack = { commands.back() })
                                 }
                             }
                             section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
@@ -2911,7 +2918,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 onDismiss = { showDiagnosticViewer = false },
                 chooseExportPath = { chooseDesktopDiagnosticExportFile(hostWindow) })
         }
-        if (jsSubscriptionReader) SubscriptionReaderDialog(pluginRuntime, refreshOnOpen = true) { jsSubscriptionReader = false }
+        jsSubscriptionReader?.takeIf { it.isOwned() }?.let { captured ->
+            SubscriptionReaderDialog(captured, refreshOnOpen = true) {
+                captured.commitUi { if (jsSubscriptionReader === captured) jsSubscriptionReader = null }
+            }
+        }
         if (castDialog) AlertDialog(onDismissRequest = { castDialog = false }, title = { Text("选择投屏方式") }, text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 OutlinedButton(onClick = { scope.launch {

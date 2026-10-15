@@ -18,9 +18,15 @@ PATHS=[BASE+p for p in ['core/store/SettingsManager.kt','feature/settings/ui/Set
  'feature/dynamic/DynamicScreen.kt','feature/dynamic/components/DynamicAdaptiveSegmentedControl.kt',
  'feature/dynamic/components/DynamicUserLiveBadge.kt']]+[DS+p for p in ['components/AppSegmentedControl.kt',
  'renderer/material3/AppMaterial3SegmentedControl.kt','renderer/miuix/AppMiuixSegmentedControl.kt']]+DIRECT[:3]+[DS+'AdaptiveChrome.kt',DS+'renderer/material3/AppMaterial3TonalPillTabRow.kt']
+from v041_dynamic_author_search import MAIN_PATHS as AUTHOR_SEARCH_PATHS
+PATHS += list(AUTHOR_SEARCH_PATHS)
+
 def module(repo,name,path):
  s=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
-def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):
+ from v041_dynamic_author_search import MAIN_PATHS,main_sources
+ if path in MAIN_PATHS:return main_sources(repo)[path]
+ return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def read_selected(repo,path):
  from v037_shared_tabs_progress import selected_source
  source=selected_source(path,read(repo,path))
@@ -28,8 +34,15 @@ def read_selected(repo,path):
   from v040_dynamic_pagination import compose_policy
   source,_=compose_policy(repo,source)
  return source
-def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p.endswith('DynamicUserLiveBadge.kt') else 'policy-extract',
+def inventory(repo):
+ from v041_dynamic_author_search import COMMIT
+ rows=[dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p.endswith('DynamicUserLiveBadge.kt') else 'policy-extract',
  features=['settings-dynamic-tabs-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]
+ for row in rows:
+  if row['path'] in AUTHOR_SEARCH_PATHS:
+   row.update(mode='extracted',upstreamCommit=COMMIT)
+   row['features'].append('v041-dynamic-author-search')
+ return rows
 def generate(repo,output,standalone=False):
  host=module(repo,'tabs_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  a=module(repo,'tabs_decl','desktop/tools/extract-appearance-platform.py');home=module(repo,'tabs_ui','desktop/tools/extract-upstream-settings-home.py')
@@ -208,8 +221,17 @@ import top.yukonga.miuix.kmp.blur.Backdrop
  path=DS+'AdaptiveChrome.kt';s=read_selected(repo,path)
  line=next(line for line in s.splitlines() if line.startswith('val LocalImmersiveTopChromeActive ='))
  emit(path,'package com.android.purebilibili.core.ui\nimport androidx.compose.runtime.compositionLocalOf\n'+line+'\n','DesktopOriginalDynamicImmersiveChrome.kt')
+ from v041_dynamic_author_search import generate_main as generate_author_search_main
+ files += generate_author_search_main(repo,output,host)
  return files
+
+def generate_tests(repo,output):
+ from v041_dynamic_author_search import generate_tests as generate_author_search_tests
+ host=module(repo,'author_search_test_host','desktop/tools/extract-upstream-plugins.py')
+ return generate_author_search_tests(repo,output,host)
+
 if __name__=='__main__':
- c=argparse.ArgumentParser(description=__doc__);c.add_argument('--repo',type=Path,required=True);c.add_argument('--output',type=Path);c.add_argument('--inventory',action='store_true');c.add_argument('--standalone',action='store_true');a=c.parse_args()
+ c=argparse.ArgumentParser(description=__doc__);c.add_argument('--repo',type=Path,required=True);c.add_argument('--output',type=Path);c.add_argument('--inventory',action='store_true');c.add_argument('--standalone',action='store_true');c.add_argument('--tests-output',type=Path);a=c.parse_args()
  if a.inventory:print(json.dumps(inventory(a.repo.resolve()),indent=2))
  if a.output:print('Generated',len(generate(a.repo.resolve(),a.output.resolve(),standalone=a.standalone)))
+ if a.tests_output:print('Generated tests',len(generate_tests(a.repo.resolve(),a.tests_output.resolve())))

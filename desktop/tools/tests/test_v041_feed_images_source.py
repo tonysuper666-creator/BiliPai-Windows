@@ -49,9 +49,10 @@ class V041FeedImagesSourceTest(unittest.TestCase):
             test_files = producer.generate_feed_tests(REPO, tests)
             self.assertEqual(test_files, producer.generate_feed_tests(REPO, tests))
             self.assertEqual(1, len(test_files))
-            selected_tests, _ = source.feed_image_regression_source(REPO)
+            from v041_feed_store import complete_original_feed_regression_source
+            selected_tests, _ = complete_original_feed_regression_source(REPO)
             self.assertEqual(selected_tests.encode('utf-8'), test_files[0].read_bytes())
-            self.assertEqual(17, test_files[0].read_text(encoding='utf-8').count('@Test'))
+            self.assertEqual(19, test_files[0].read_text(encoding='utf-8').count('@Test'))
             self.assertEqual([], list(main.rglob('*Test.kt')))
             self.assertEqual([], list(tests.rglob('DynamicAuthorSearchPolicyTest.kt')))
 

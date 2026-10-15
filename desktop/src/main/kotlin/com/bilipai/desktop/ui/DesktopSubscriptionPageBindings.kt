@@ -18,6 +18,7 @@ import kotlinx.serialization.json.booleanOrNull
 import com.android.purebilibili.core.plugin.feed.SubscriptionFeedStore
 import com.bilipai.desktop.plugins.*
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -46,11 +47,15 @@ internal class DesktopSubscriptionPageBindings(
     val gallery: DesktopDynamicCardPlatform,
     private val stillOwned: () -> Boolean,
     private val commitIfCurrent: ((() -> Unit) -> Boolean),
+    private val backgroundScope: CoroutineScope,
     private val clipboard: (String) -> Unit,
     private val feedback: (String) -> Unit,
     private val openExternal: (String) -> Unit,
 ) : AutoCloseable {
     private val closed = AtomicBoolean()
+    private val titles = DesktopSubscriptionTitleRefreshWorker(backgroundScope, ::isOwned, commitIfCurrent,
+        { repository.refreshMissingTitles() },
+        { DesktopPluginLog.w("SubscriptionFeed", "Background title refresh failed") })
     var articleOpen by mutableStateOf(false)
         private set
     private val repository get() = runtime.subscriptions
@@ -93,6 +98,25 @@ internal class DesktopSubscriptionPageBindings(
     suspend fun recordArticleProgress(item: ParsedFeedItem, percent: Int,
         identity: DesktopSubscriptionArticleReadingIdentity): Unit =
         readingOwned(item, identity) { repository.recordProgress(item, percent) }
+    /** Launched from the retained Home scope, never as a child of a completed import action.
+     * The child installs fresh request admission; Root retirement cancels and drains it. */
+    fun requestMissingTitles() {
+        titles.request()
+    }
+    suspend fun loadCached() = owned { repository.loadCached() }
+    suspend fun refresh() = owned { repository.refresh() }
+    suspend fun add(title: String, url: String) = owned { repository.add(title, url) }
+    suspend fun importOpml(text: String): Int {
+        val imported = owned { repository.importOpml(text) }
+        requestMissingTitles()
+        return imported
+    }
+    suspend fun exportOpml(): String = owned { repository.exportOpml() }
+    suspend fun setEnabled(id: String, value: Boolean) = owned { repository.setEnabled(id, value) }
+    suspend fun remove(id: String) = owned { repository.remove(id) }
+    suspend fun loadFullArticle(item: ParsedFeedItem,
+        identity: DesktopSubscriptionArticleReadingIdentity): String =
+        readingOwned(item, identity) { repository.loadFullArticle(item) }
     suspend fun reload() = owned { repository.loadCached(); repository.refresh() }
     suspend fun setRead(item: ParsedFeedItem, read: Boolean) = owned { repository.setRead(item, read) }
     suspend fun saveFullBody(item: ParsedFeedItem, html: String) = owned { repository.saveFullBody(item, html) }
@@ -113,8 +137,8 @@ internal class DesktopSubscriptionPageBindings(
     suspend fun setArticleWallpaperEnabled(value: Boolean) = setting("subscription_article_wallpaper_enabled", JsonPrimitive(value))
     fun showFeedback(message: String) = commitUi { feedback(message) }
     fun shareArticle(text: String) = commitUi { gallery.shareText(text) }
-    fun copyText(text: String) = commitUi {
-        try { clipboard(text); feedback("已复制正文") }
+    fun copyText(text: String, successMessage: String = "已复制正文") = commitUi {
+        try { clipboard(text); feedback(successMessage) }
         catch (cancelled: CancellationException) { throw cancelled }
         catch (error: Exception) { feedback(error.message ?: "正文复制失败") }
     }
@@ -123,7 +147,10 @@ internal class DesktopSubscriptionPageBindings(
         if (error is CancellationException) throw error
         commitUi(action)
     }
-    override fun close() { closed.set(true) }
+    override fun close() {
+        closed.set(true)
+        titles.close()
+    }
 }
 
 internal val LocalDesktopSubscriptionBindings = staticCompositionLocalOf<DesktopSubscriptionPageBindings> {

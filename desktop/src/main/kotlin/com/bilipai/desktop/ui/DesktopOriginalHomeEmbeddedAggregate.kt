@@ -167,7 +167,7 @@ internal class DesktopOriginalHomeEmbeddedAggregate private constructor(
                     override fun feedback(message: String) = images.showFeedback(message)
                 })
                 val subscribed = DesktopSubscriptionPageBindings(runtime, images, lifetime::owns,
-                    lifetime::commit, clipboard, feedback, externalLink)
+                    lifetime::commit, lifetime.scope, clipboard, feedback, externalLink)
                 subscription = subscribed
                 lifetime.assertOwned()
                 return DesktopOriginalHomeEmbeddedAggregate(runtime, sameSettings, lifetime, images,

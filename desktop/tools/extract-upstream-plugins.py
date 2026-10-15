@@ -47,6 +47,12 @@ DIRECT += ['network-core/src/main/java/com/android/purebilibili/core/network/pol
 EXTRACTED += ['app/src/main/java/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt', 'app/src/main/java/com/android/purebilibili/core/store/TodayWatchProfileStore.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KShaderRepository.kt', 'app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt']
 SOURCES = {**{path: "direct" for path in DIRECT}, **{path: "extracted" for path in EXTRACTED}}
 SOURCES[BASE + "feature/home/HomeUiState.kt"] = "policy-extract"
+# Complete v041 import/model declarations share the single original plugin producer.
+for _feed_leaf in ("FeedModels", "FeedImportParser"):
+    _feed_path = BASE + "core/plugin/feed/" + _feed_leaf + ".kt"
+    DIRECT.remove(_feed_path)
+    EXTRACTED.append(_feed_path)
+    SOURCES[_feed_path] = "extracted"
 # Keep the original v025 input for audit; only the explicitly pinned v029 Store is emitted.
 SOURCES[BASE + 'core/plugin/feed/FeedReadingStore.kt'] = 'reference-only'
 EXTRACTED.append(BASE + "feature/home/HomeViewModel.kt")
@@ -317,6 +323,13 @@ def generate(repo: Path, output: Path) -> list[Path]:
     (output / "v041-feed-image-source-proof.json").write_text(
         json.dumps(feed_proofs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    from v041_feed_store import compose_source as compose_complete_feed_source
+    for leaf in ("FeedModels", "FeedImportParser"):
+        path = BASE + "core/plugin/feed/" + leaf + ".kt"
+        baseline = read(repo, path)
+        adapted, _ = compose_complete_feed_source(repo, path, baseline)
+        generated.append(write(output, path, baseline, adapted))
+
     path = BASE + "core/plugin/json/RuleEngine.kt"
     source = read(repo, path)
     body = substitute(source, "android.graphics.Color.parseColor(it)", "com.bilipai.desktop.plugins.DesktopPluginColor.parseColor(it)")
@@ -363,11 +376,7 @@ def generate(repo: Path, output: Path) -> list[Path]:
 
     path = BASE + "core/plugin/feed/SubscriptionFeedStore.kt"
     source = read(repo, path)
-    body = substitute(source, "import android.content.Context\n", "")
-    if body.count("object SubscriptionFeedStore {") != 1:
-        raise ValueError("Original subscription model/store boundary changed")
-    body = body.split("object SubscriptionFeedStore {", 1)[0]
-    body = keep_imports(body, ("kotlinx.serialization.Serializable",))
+    body, _ = compose_complete_feed_source(repo, path, source)
     generated.append(write(output, path, source, body, "DesktopSavedSubscriptionFeed.kt"))
 
     path = BASE + "core/plugin/feed/FeedConditionalStore.kt"
@@ -383,6 +392,8 @@ def generate(repo: Path, output: Path) -> list[Path]:
         path = BASE + "core/plugin/feed/" + name + ".kt"
         source = read(repo, path)
         body = source
+        if name == "FeedTitleResolver":
+            body, _ = compose_complete_feed_source(repo, path, source)
         if name == "FeedFetcher":
             if hashlib.sha256(source.encode()).hexdigest() != "1ebb33f5f2f67c6659ddc1d4f2cf3a833f28ae69e933ef2c3892f9ff7448f2fd":
                 raise ValueError("Pinned original FeedFetcher cancellation seams changed")
@@ -497,8 +508,7 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
     selector = media_extractor(repo)
     generated = []
     # Existing source identities keep their canonical output names, so no duplicate DTO is created.
-    for name, target in [('SubscriptionFeedStore', 'DesktopSavedSubscriptionFeed.kt'),
-                         ('FeedConditionalStore', 'DesktopFeedConditionalValidators.kt'),
+    for name, target in [('FeedConditionalStore', 'DesktopFeedConditionalValidators.kt'),
                          ('FeedReadingStore', 'FeedReadingStore.kt')]:
         path = BASE + 'core/plugin/feed/' + name + '.kt'
         if name == 'FeedReadingStore':
@@ -507,7 +517,7 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
             generated.append(write(output, row['path'], original, body, target))
             continue
         original = read(repo, path)
-        body = platform_context(subscription_feed_identity_fix(original) if name == 'SubscriptionFeedStore' else original)
+        body = platform_context(original)
         if name == 'FeedConditionalStore':
             body = substitute(body, 'import android.util.AtomicFile', 'import com.bilipai.desktop.plugins.DesktopPluginAtomicFile as AtomicFile')
         generated.append(write(output, path, original, body, target))
@@ -520,6 +530,7 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
             body = body.split('data class HomeFeedAnonymizerInfoRow(', 1)[0]
         elif name == 'SubscriptionFeedPlugin':
             body = body.split('@Composable\nprivate fun SubscriptionFeedSettings', 1)[0]
+            body = substitute(body, 'import com.android.purebilibili.core.plugin.feed.resolveImportedSubscriptionTitles\n', '')
         body = keep_imports(body, ('com.android.purebilibili.core.plugin.',
             'com.android.purebilibili.plugin.sdk.', 'com.android.purebilibili.core.network.policy.',
             'com.android.purebilibili.core.util.Logger', 'com.android.purebilibili.feature.anime4k.',
@@ -642,7 +653,7 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
     return generated
 
 def generate_feed_tests(repo: Path, output: Path) -> list[Path]:
-    from v041_feed_images import feed_image_regression_source
+    from v041_feed_store import complete_original_feed_regression_source as feed_image_regression_source
     body, proof = feed_image_regression_source(repo)
     target = output / 'com/android/purebilibili/core/plugin/feed/FeedDocumentParserTest.kt'
     target.parent.mkdir(parents=True, exist_ok=True)

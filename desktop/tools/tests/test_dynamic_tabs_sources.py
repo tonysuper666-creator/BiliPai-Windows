@@ -16,7 +16,7 @@ class DynamicTabsSourcesTest(unittest.TestCase):
  def test_every_original_identity_header_and_determinism(self):
   before={str(p.relative_to(self.output)):p.read_bytes()for p in self.output.rglob('*.kt')}
   self.assertEqual(len(g.PATHS),len(set(g.PATHS)))
-  self.assertEqual(20,len(g.inventory(REPO)))
+  self.assertEqual(22,len(g.inventory(REPO)))
   for row in g.inventory(REPO):
    original=g.read(REPO,row['path']);self.assertEqual(row['sha256'],hashlib.sha256(original.encode()).hexdigest())
    if Path(row['path']).name in {'AppTonalPillTabPolicy.kt','AppSegmentedControlPolicy.kt'}:

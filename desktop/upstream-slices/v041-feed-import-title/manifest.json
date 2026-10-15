@@ -1,0 +1,42 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.1",
+  "commit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedImportParser.kt",
+      "archiveFile": "FeedImportParser.kt",
+      "bytes": 5248,
+      "sha256": "2d5bb2c35d5351f146053fe717014d879d8cde81fbc7372e9f10588740e25257",
+      "gitBlob": "42a7c286143bcfa362ca104c925a8f65b6caa413"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/SubscriptionFeedStore.kt",
+      "archiveFile": "SubscriptionFeedStore.kt",
+      "bytes": 7009,
+      "sha256": "dc594289c735aa8f9cb72a1d67d72e411d0784d15038399199cd39b04a3cae6a",
+      "gitBlob": "23e7cb636afb013397fb364f78a5322241082bd0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+      "archiveFile": "FeedTitleResolver.kt",
+      "bytes": 3478,
+      "sha256": "6790298d61f0570e30e4d277c6bf091baf71c5187188e5f53311117d516fa3a8",
+      "gitBlob": "aa453cb4e63d78f51c6ccd127c3ebc843aa6b55f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedModels.kt",
+      "archiveFile": "FeedModels.kt",
+      "bytes": 1870,
+      "sha256": "3c61ec903103b5109ec4c30542dbd0c3ae97504481f047188528368230c820fe",
+      "gitBlob": "a9e40372138df2f3a1ccb316c68ef470a5c9745b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+      "archiveFile": "FeedSourceCatalog.kt",
+      "bytes": 4074,
+      "sha256": "e5063972eb7f5ecaf1c68056e75fa57c84b15ad91f89ef5b1c21cfba370ef7ca",
+      "gitBlob": "4d652016426859fcc7087b3e5c2f179c8bdb012e"
+    }
+  ]
+}

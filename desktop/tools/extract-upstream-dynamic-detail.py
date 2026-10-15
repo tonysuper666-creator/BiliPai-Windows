@@ -80,7 +80,7 @@ internal class DesktopOriginalDynamicReplySession(
     }
 '''
     output.mkdir(parents=True,exist_ok=True)
-    selected_original=__import__('v036_dynamic_comment_cache').read_sources()['DynamicViewModel.kt']
+    selected_original=__import__('v041_dynamic_comment_identity').dynamic_view_model()
     emitted=[host.write(output,VM,selected_original,prefix+fields+body+'\n}\n','DesktopOriginalDynamicReplySession.kt')]
     emitted.append(generate_policy(output))
     import json

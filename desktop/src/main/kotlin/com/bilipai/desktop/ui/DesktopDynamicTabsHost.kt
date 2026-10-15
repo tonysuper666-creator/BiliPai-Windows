@@ -11,6 +11,8 @@ import com.android.purebilibili.core.store.DesktopDynamicSettings.DynamicFeedLay
 import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.dynamic.*
+import com.android.purebilibili.feature.dynamic.components.DynamicAuthorSearchDialog
+import com.android.purebilibili.core.ui.rememberAppSearchIcon
 import com.bilipai.desktop.settings.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -39,7 +41,8 @@ import kotlinx.coroutines.sync.withLock
     val showAllUsers by preferences.allTabUsers.collectAsState(preferences.initialAllTabUsers)
     val pinned by preferences.pinned.collectAsState(preferences.initialPinned)
     val hidden by preferences.hidden.collectAsState(preferences.initialHidden)
-    var settingError by remember{mutableStateOf<Throwable?>(null)}
+    var settingError by remember(users){mutableStateOf<Throwable?>(null)}
+    var showAuthorSearch by remember(users){mutableStateOf(false)}
     val writer=remember(users){Mutex()}
     fun write(block:suspend()->Unit){scope.launch{try{writer.withLock{block()}}catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){settingError=error}}}
     LaunchedEffect(users,visible,order){users.applyTabs(visible,order)}
@@ -69,6 +72,11 @@ import kotlinx.coroutines.sync.withLock
         Row(Modifier.fillMaxWidth().padding(horizontal=20.dp)) {
             AppNativeTabRow(options=users.visibleTabs.map{AppSegmentOption(it.logicalIndex,it.title)},
                 selectedValue=users.selectedLogicalTab,modifier=Modifier.weight(1f),onSelectionChange={write{users.selectTab(it)}})
+            AppIconButton(onClick={
+                if(active&&users.isCurrentOwner()){showAuthorSearch=true;users.prepareAuthorSearch()}
+            },enabled=active&&users.isCurrentOwner()){
+                AppIcon(rememberAppSearchIcon(),contentDescription="搜索 UP 主")
+            }
             trailing()
         }
         if(shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab,
@@ -90,6 +98,13 @@ import kotlinx.coroutines.sync.withLock
                 DesktopDynamicSelectedUserFeed(users,timelinePreferences,onOpenUser,onLogin,transform,active,row)
             } else AppText("选择关注用户查看动态",Modifier.padding(20.dp),color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
+    }
+    if(showAuthorSearch&&active&&users.isCurrentOwner())key(users){
+        DynamicAuthorSearchDialog(users=users.users,isLoading=users.authorSearchLoading,
+            onAuthorSelected={uid->if(users.isCurrentOwner()){
+                showAuthorSearch=false
+                write{users.selectAuthorSearchResult(uid)}
+            }},onDismiss={showAuthorSearch=false})
     }
 }
 

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.1",
+  "commit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "archiveFile": "DynamicViewModel.kt",
+      "bytes": 118402,
+      "sha256": "9b53a2d7ea025dab4d758808d536b90e13be433bcfc47e084cc1cc8de33c1f98",
+      "gitBlob": "a01d4e21ebc15c1b148070890c9787afa2f1a3a9",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "archiveFile": "DynamicCommentSheet.kt",
+      "bytes": 79980,
+      "sha256": "257078db07bce00bf80f8b691d80ffbf49d830b3df791c28d79ce9f675aeb1c4",
+      "gitBlob": "0cf709b58fd88252c74e382bb37485aa5a32d699",
+      "referenceOnly": false
+    }
+  ],
+  "scope": "Complete original dynamic comment state region and original inline comment UI. Whole DynamicViewModel and modal sheet are not ported by this slice."
+}

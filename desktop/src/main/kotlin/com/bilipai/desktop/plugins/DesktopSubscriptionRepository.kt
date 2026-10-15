@@ -37,7 +37,7 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         val extra = extraSources()
         val reading = FeedReadingStore.load(context)
         val builtinSources = if (builtinEnabled) sources.filter { it.enabled && isHttpFeedUrl(it.url) }
-            .map { FeedSource("builtin:${it.id}", it.title, it.url) } else emptyList()
+            .map { FeedSource("builtin:${it.id}", it.title, it.url, group = it.group) } else emptyList()
         val activeSources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }
         val enabledIds = activeSources.map { it.id }.toSet()
         if (!stopped && token == generation.get() && builtinEnabled == enabled() && extra.revision == extraSourceRevision())
@@ -51,7 +51,7 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         val builtinEnabled = enabled()
         val extra = extraSources()
         val builtinSources = if (builtinEnabled) feeds.filter { it.enabled && isHttpFeedUrl(it.url) }
-            .map { FeedSource("builtin:${it.id}", it.title, it.url) } else emptyList()
+            .map { FeedSource("builtin:${it.id}", it.title, it.url, group = it.group) } else emptyList()
         val sources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }
         val ids = sources.map { it.id }.toSet()
         val cache = FeedReadingStore.load(context)
@@ -83,16 +83,45 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         }
     }
 
-    suspend fun add(title: String, url: String): SavedSubscriptionFeed = mutate {
+    suspend fun add(title: String, url: String): SavedSubscriptionFeed = withContext(Dispatchers.IO) {
+        check(!stopped) { "订阅服务已停止" }
         val resolvedTitle = resolveSubscriptionTitle(url, title).getOrThrow()
-        SubscriptionFeedStore.add(context, resolvedTitle, url).getOrThrow()
+        kotlinx.coroutines.currentCoroutineContext().ensureActive()
+        mutate { SubscriptionFeedStore.add(context, resolvedTitle, url).getOrThrow() }
     }
-    suspend fun importOpml(text: String): Int = mutate {
+    suspend fun importOpml(text: String): Int = withContext(Dispatchers.IO) {
+        check(!stopped) { "订阅服务已停止" }
         val parsed = parseSubscriptionImport(resolveImportPayload(text))
         require(parsed.isNotEmpty()) { "没有有效的 RSS、Atom 或 OPML 订阅地址" }
-        val resolved = resolveImportedSubscriptionTitles(parsed)
-        require(resolved.isNotEmpty()) { "没有可识别的 RSS 或 Atom 地址" }
-        SubscriptionFeedStore.addAll(context, resolved)
+        kotlinx.coroutines.currentCoroutineContext().ensureActive()
+        // Persist and publish immediately. The retained Root schedules title completion separately.
+        mutate { SubscriptionFeedStore.addAll(context, parsed) }
+    }
+
+    /** The retained caller owns/drains this operation; this repository creates no detached Job. */
+    suspend fun refreshMissingTitles(): Unit = withContext(Dispatchers.IO) {
+        check(!stopped) { "订阅服务已停止" }
+        DesktopSubscriptionWriteAdmission.whileCurrent({ !stopped }) {
+            // Only the original resolver mutex/Semaphore spans the network batch.
+            refreshMissingSubscriptionTitles(context)
+            mutation.withLock {
+                check(!stopped) { "订阅服务已停止" }
+                val feeds = SubscriptionFeedStore.list(context)
+                val byIdentity = feeds.associateBy { "builtin:${it.id}" to it.url }
+                DesktopSubscriptionWriteAdmission.commitOrOriginal {
+                    if (!stopped) {
+                        val latest = _state.value
+                        val activeSources = latest.activeSources.mapNotNull { source ->
+                            if (!source.id.startsWith("builtin:")) source
+                            else byIdentity[source.id to source.url]?.takeIf { it.enabled }?.let {
+                                source.copy(title = it.title, group = it.group)
+                            }
+                        }
+                        _state.value = latest.copy(sources = feeds, activeSources = activeSources)
+                    }
+                }
+            }
+        }
     }
     suspend fun exportOpml(): String = withContext(Dispatchers.IO) { buildSubscriptionOpml(SubscriptionFeedStore.list(context)) }
     suspend fun setEnabled(id: String, enabled: Boolean) = mutate { SubscriptionFeedStore.setEnabled(context, id, enabled) }

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "4de46f98ac6c6c84f2e77b18bfcaf77848ad4c85",
-  "windowsVersion": "0.2.427.124",
-  "createdAt": "2026-10-15T18:57:46.177480+00:00",
+  "baseHead": "41e311738a215a77c4fd9af398a08580ee82660d",
+  "windowsVersion": "0.2.427.127",
+  "createdAt": "2026-10-15T20:41:04.427242+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -13,7 +13,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "f8aab138f0471a1c7d01f23dcc9008b8cee2d5991645d0da7cb8df0e0ee6c6f1"
+      "sha256": "d90f19f7fbeec6cfba2037531a044eacd94321d68dfc4f7a2c97890bada8ee9c"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -88,12 +88,12 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "e56a3a867fae264d43518a8f64018db56ff39275d7491b8b11023e68b08ab41a"
+      "sha256": "ec28f3505565caf16323db7c5a300d006f4a5a0e5ec99abef83767a849bce2e8"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
       "normalization": "lf",
-      "sha256": "7d6660779e339a7ea39c66a0d855013ae81e475abfdb0b38a35eb2a5baad1c34"
+      "sha256": "45034993320a19e802f1771edb18bf103bee959df18ad1959ec5bfbd3948bb17"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
@@ -134,6 +134,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCache.kt",
       "normalization": "lf",
       "sha256": "3e621438a28f3b2506f744612a02c0a1ba62f6be1e79b2752c9c4185cc2b574f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheStore.kt",
+      "normalization": "lf",
+      "sha256": "42a5aafb9bfbcc49d200215c0a6ec3d47417f4367544369d59234c9d07cb1b0a"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
@@ -196,6 +201,21 @@
       "sha256": "5a7b4e3a2164efe87c9ea04fdafdf4952d9cec24bab5c7254d6b50060247e6e0"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "normalization": "lf",
+      "sha256": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "normalization": "lf",
+      "sha256": "9411d68c0374d3c1293659eec3ee86dfc57ac549f9f75e25d0ea3227176b2c2d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "normalization": "lf",
+      "sha256": "7950ba5006ddda1f2a7f8b46c3476c552c438a6e440b12f3d70d8b8bb5af7d98"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
       "normalization": "lf",
       "sha256": "cbb6855cecaa7789ac3e4de05955410f73ab888f5e8143c06399ab749627c75b"
@@ -206,9 +226,14 @@
       "sha256": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "normalization": "lf",
+      "sha256": "f8e8701c4b37a76286c501ae092069404c96246559034401c3fa8b63a51a5588"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
       "normalization": "lf",
-      "sha256": "92c535c015c297ff46409132952fcc2899d38fb7f477b21ee913297d9674b463"
+      "sha256": "e2878f78dac6547c638ca331f094be1941d55c731632e1676e4caf8c7b9d5dde"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
@@ -218,7 +243,12 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
       "normalization": "lf",
-      "sha256": "30ee2ddbd3ad71b24c9d7735b85225e91763041a271a079fc921ab6caaaac643"
+      "sha256": "72f1355b2462d2c1618696865c7a39f79ba62d29f0a2d462e44d8a9a05b8f9e8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "normalization": "lf",
+      "sha256": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
@@ -249,6 +279,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
       "normalization": "lf",
       "sha256": "4874317e2770bb51633a9059146427610f5ec7b3525bb334947aaef0703de0a4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "normalization": "lf",
+      "sha256": "10c792d58c6435af82a3c96dd584250c41c0525ce32a3da671d495588716eb4b"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
@@ -326,6 +361,16 @@
       "sha256": "db90e5ab45f3bd757ca7e4ad3d5a7afa0fabda623b18d6ec7f96809db3e5937d"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "normalization": "lf",
+      "sha256": "ac5cbf9a8868f19293a366fca1dc696e8283d74ca8e2cac4ff4aed543c2011e6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionTitleRefreshWorker.kt",
+      "normalization": "lf",
+      "sha256": "35602816129c27824c5683959e96d92905c88e8fba2b08a34a57caa0c142c049"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoBootstrapReadSource.kt",
       "normalization": "lf",
       "sha256": "7cf4fb77c8de2c211d2e206dff1e36e80fe87a71ed227d25a83bd180dc3edab1"
@@ -364,6 +409,16 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/OnlineSubtitleDialog.kt",
       "normalization": "lf",
       "sha256": "b7fd0227ae6dac824f9c2ed9406ec88b14e0690457c104df26d3760e3600c7cf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+      "normalization": "lf",
+      "sha256": "022ac1be51f662fc856fc7d6398de6e7835e054ce6141c4767b804b0c4f1d993"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginScreens.kt",
+      "normalization": "lf",
+      "sha256": "551eb6e2740fb489b7d75be9c2e460705865358965169aad85ef19b847887652"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopPreparedUpdateStorage.kt",
@@ -436,6 +491,11 @@
       "sha256": "c003041ef573c4e83fff3c0df085d48fb93e4fef15ba68d79e57f4da2e98d3b6"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheConsumptionTest.kt",
+      "normalization": "lf",
+      "sha256": "a237ea7d898692e6b019d9de28fe16ebf151a58586378687ae4673d7e996369f"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicReactionListTest.kt",
       "normalization": "lf",
       "sha256": "3101150e4561c6bfc4a4a29428f7d97e76cd399fc201929703f7c0ed30ba9b4f"
@@ -486,6 +546,26 @@
       "sha256": "1bf196df4619b3586bedcb0ddfe8bddc32e7cfd6de5f3694e089192fabc80c15"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopJsSubscriptionTest.kt",
+      "normalization": "lf",
+      "sha256": "c687aa89eee6743f888a32380658d775a2bf9579ee44ce9fa9948596999cfe76"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginServicesTest.kt",
+      "normalization": "lf",
+      "sha256": "653fd38e31f8cad2a59422e64ea1cda19f86ad05e7685c542313029335dd6ee0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionIdentityTest.kt",
+      "normalization": "lf",
+      "sha256": "38085e3d0806fe115a3c512dcfb3e0cd83d8ab9ae115094a5bb3589183925b90"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionTitleRefreshTest.kt",
+      "normalization": "lf",
+      "sha256": "da30cb612b4f2ece131dcb01ae1111adae3f71a833f90984ef192535a303c750"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBgmCommentLinkRootNavigationTest.kt",
       "normalization": "lf",
       "sha256": "af86dc6d65a5c2c6098adbe7fd74a8a692dcbe5947a7b6e87e60128cb27c27b2"
@@ -499,6 +579,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicAccountStorageTest.kt",
       "normalization": "lf",
       "sha256": "e469ce27c8c1178797c441396537c85b332edd180cd5f3681f9398e99e76bee5"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicAuthorSearchTest.kt",
+      "normalization": "lf",
+      "sha256": "1182e4a45bc47e13add2735998e984124a37225091b985d1b1e1de1c3645cb68"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicFailedPaginationTest.kt",
@@ -576,6 +661,11 @@
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionReadingProgressRegressionTest.kt",
+      "normalization": "lf",
+      "sha256": "418f9c44d836ee51dc249fa90066bdcce628300a7550f95e62a1b08b53aa3094"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopVideoBootstrapRetryIntentTest.kt",
       "normalization": "lf",
       "sha256": "396b830b269b1a9ba18b93d4eb6945fb1e43b99058c24f67a3c0256ce118bfea"
@@ -638,7 +728,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "6634fa71b6e12345568319dc77c8847e2b2ebad603eb3c7651f485e4f240ce3c"
+      "sha256": "9731ec333159893421cddbf8d057f733eab5d6cf2f83275f07d299310f3ffbdf"
     },
     {
       "path": "desktop/tools/export-packaged-updater-harness.py",
@@ -686,6 +776,11 @@
       "sha256": "7c2cd9dd679949b848d22b2fefaaa2326d3afd30f333bd78953fcf4f6f88da6d"
     },
     {
+      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "normalization": "lf",
+      "sha256": "b27ed3a71ed45e7284bd8fe75cee1ea32803a8cfa811e018621edc96eae327ad"
+    },
+    {
       "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
       "normalization": "lf",
       "sha256": "761c5b439fea0494168248b4b3b4291d7968f2250a2a30b76c6f8a26e5cb7f7e"
@@ -693,12 +788,17 @@
     {
       "path": "desktop/tools/extract-upstream-dynamic-reply.py",
       "normalization": "lf",
-      "sha256": "795ec80c8111fd3669538cf4e1cfc4376542d20e8faeb985b68314862ab91d2f"
+      "sha256": "cc692a63f4f08fce15315bb60c4cb2814f5ee4960641aefaa1076492adac8023"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
       "normalization": "lf",
-      "sha256": "05bcb33e01164445858f4adcec95835972671faa4bc28a457908ee1353ba267f"
+      "sha256": "169146adc957de848ca7b4b3bd5c549d07547def5cc35d1fad52ea1e3ccbe218"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-js.py",
+      "normalization": "lf",
+      "sha256": "53ce169cd804b1da743422dc628221ea750c0509e2e0c79ce0526e2cf1facbba"
     },
     {
       "path": "desktop/tools/extract-upstream-listen-video-root.py",
@@ -718,7 +818,7 @@
     {
       "path": "desktop/tools/extract-upstream-plugins.py",
       "normalization": "lf",
-      "sha256": "0b2b12f81d305463e27027488a8efe0a9b7687c908d71198888a18065add3215"
+      "sha256": "f5b42e38342761ef993a0fef41b55634a0a2ea45574e4e3d63db43e63cb583d9"
     },
     {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
@@ -778,7 +878,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "541c062800a2ca11b7ed3653a86d626d16912743a9417f02330e565685dfeccc"
+      "sha256": "7b9ddc37399fdf36be4001e717376590c720037a41916456c7cd76e892d9925f"
     },
     {
       "path": "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
@@ -788,7 +888,7 @@
     {
       "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
       "normalization": "lf",
-      "sha256": "1dd0b990f987178cb80689f5042b0ac1d3954f64f667d4d38a02aa2e1136749c"
+      "sha256": "840224317dbd5aab629282608cd948fbd7d7f1f69a8655e6019c4855f2e42b55"
     },
     {
       "path": "desktop/tools/tests/test_export_packaged_updater_harness.py",
@@ -806,9 +906,19 @@
       "sha256": "c7e792043f9c64428ec23c2b4c81b3e11fef373115d8816a3cc49f95772792a0"
     },
     {
+      "path": "desktop/tools/tests/test_extract_upstream_js.py",
+      "normalization": "lf",
+      "sha256": "c58aea7e3457072a196a24a8257c0f9c1a5e160693087b3c9ebbc0a27ff765e0"
+    },
+    {
       "path": "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
       "normalization": "lf",
       "sha256": "9962af6e9ff72a47d9cd0890376ee3c9e105a6c9e34941dba079557c901d32e5"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_plugins.py",
+      "normalization": "lf",
+      "sha256": "fc96f95febdaab59873b6601e7e194e2669cd90e7570e3ca4deaf8b484f96747"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_up_danmaku.py",
@@ -848,7 +958,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "c6c00b45a742f0e56a074d170bcb7069a201f5c90afc7cadcad586b6d07ab389"
+      "sha256": "d689429316a27fdb6931a6185c694793c9142c5a5210982695288b3816335921"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_search.py",
@@ -936,9 +1046,24 @@
       "sha256": "48ba4485abb7aec2ccbf17d30b220e6fb3e856076fb7580c8a611af28cff9a0c"
     },
     {
+      "path": "desktop/tools/tests/test_v041_dynamic_author_search_source.py",
+      "normalization": "lf",
+      "sha256": "ec09b849ebc5ffe76ca5292162e123b84b2c18d585789781599506277c6a21d2"
+    },
+    {
+      "path": "desktop/tools/tests/test_v041_dynamic_comment_identity_source.py",
+      "normalization": "lf",
+      "sha256": "f5d35269e76ae8d692d0d546993a092d4ee67e5407147538530f0187afb1dae4"
+    },
+    {
       "path": "desktop/tools/tests/test_v041_feed_images_source.py",
       "normalization": "lf",
-      "sha256": "8e6821a9328973572cb0dceb5b62a5f3665b663c3686cc6b91f1c4206e6d9370"
+      "sha256": "f46d85d27e233c9b545655f6eec34ea906d45e344f8436f74a7c306b5b14ea76"
+    },
+    {
+      "path": "desktop/tools/tests/test_v041_feed_store_source.py",
+      "normalization": "lf",
+      "sha256": "968e2ccd09db6e54afef266ab71d6fb77c402c1bb89d3090dde2a44928e43def"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -979,6 +1104,11 @@
       "path": "desktop/tools/v029_home_load.py",
       "normalization": "lf",
       "sha256": "848ad33cd3697b46fd84595b695fc892b84c7d0313c2affc6b7d1c3eddcb4790"
+    },
+    {
+      "path": "desktop/tools/v036_dynamic_comment_cache.py",
+      "normalization": "lf",
+      "sha256": "8fcd3d55dc8870bccfae6c2b466a7aabe4b5b532914a509f1eb903260ea767e4"
     },
     {
       "path": "desktop/tools/v037_player_foundations.py",
@@ -1086,9 +1216,24 @@
       "sha256": "b1bad5ee5e6ee4b46d7deac3cdd572c10a6f311f2ab4b60a0a3f6790845a8d35"
     },
     {
+      "path": "desktop/tools/v041_dynamic_author_search.py",
+      "normalization": "lf",
+      "sha256": "19118ea2a493b1bd859c4e741213ceb72ad0bf726719122b2c01a96240cd5e4d"
+    },
+    {
+      "path": "desktop/tools/v041_dynamic_comment_identity.py",
+      "normalization": "lf",
+      "sha256": "a36eb426f89e380069995027b24e9ab05678b872ee440cd3199695a45e81d1e1"
+    },
+    {
       "path": "desktop/tools/v041_feed_images.py",
       "normalization": "lf",
       "sha256": "ea2471ac0370f89e106376d13cd5181f59ad22950d716369227cc9768dc2a354"
+    },
+    {
+      "path": "desktop/tools/v041_feed_store.py",
+      "normalization": "lf",
+      "sha256": "895ecc7a0b937aecdf321cdd2608186747c3eb97d218a9914b9aac9f0207b675"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -1701,6 +1846,71 @@
       "sha256": "978e9bb2961d155b0220f5c48b3e14e847dabc1df47c319bd51c24162872d344"
     },
     {
+      "path": "desktop/upstream-slices/v041-dynamic-author-search/DynamicAuthorSearchDialog.kt",
+      "normalization": "raw",
+      "sha256": "631a1f988d3b73b14c0de1bcb995cfa25d3b72d343e1252056088255b85342d9"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-dynamic-author-search/DynamicScreen.kt",
+      "normalization": "raw",
+      "sha256": "5da07ae647e245bb0d8f22eca7ba964c13f0befc149b867793736ace51ad8549"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-dynamic-author-search/DynamicViewModel.kt",
+      "normalization": "raw",
+      "sha256": "9b53a2d7ea025dab4d758808d536b90e13be433bcfc47e084cc1cc8de33c1f98"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-dynamic-author-search/manifest.json",
+      "normalization": "raw",
+      "sha256": "757b485c82bc63c61b7ebc8ca77eb735d3699f2e104b41a6fbd66f8cab407a17"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-dynamic-comment-identity/DynamicCommentSheet.kt",
+      "normalization": "raw",
+      "sha256": "257078db07bce00bf80f8b691d80ffbf49d830b3df791c28d79ce9f675aeb1c4"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-dynamic-comment-identity/DynamicViewModel.kt",
+      "normalization": "raw",
+      "sha256": "9b53a2d7ea025dab4d758808d536b90e13be433bcfc47e084cc1cc8de33c1f98"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-dynamic-comment-identity/manifest.json",
+      "normalization": "raw",
+      "sha256": "a6813ad26dd341def7b7d72b0006bd763cd4c2fea3128cdc4f56de18389ce64c"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-feed-import-title/FeedImportParser.kt",
+      "normalization": "raw",
+      "sha256": "2d5bb2c35d5351f146053fe717014d879d8cde81fbc7372e9f10588740e25257"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-feed-import-title/FeedModels.kt",
+      "normalization": "raw",
+      "sha256": "3c61ec903103b5109ec4c30542dbd0c3ae97504481f047188528368230c820fe"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-feed-import-title/FeedSourceCatalog.kt",
+      "normalization": "raw",
+      "sha256": "e5063972eb7f5ecaf1c68056e75fa57c84b15ad91f89ef5b1c21cfba370ef7ca"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-feed-import-title/FeedTitleResolver.kt",
+      "normalization": "raw",
+      "sha256": "6790298d61f0570e30e4d277c6bf091baf71c5187188e5f53311117d516fa3a8"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-feed-import-title/SubscriptionFeedStore.kt",
+      "normalization": "raw",
+      "sha256": "dc594289c735aa8f9cb72a1d67d72e411d0784d15038399199cd39b04a3cae6a"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-feed-import-title/manifest.json",
+      "normalization": "raw",
+      "sha256": "ad5739797bdb6b6b5f2c2af0568d612f9d7dbbf64ef769368bae40b2ace6acd8"
+    },
+    {
       "path": "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicy.kt",
       "normalization": "raw",
       "sha256": "a278bdf09ac6c1310732a5626ebc408049ce204091660b1edc6046234867e041"
@@ -1733,7 +1943,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "69b38ea48e13dd4557f78183253aa66e9a81d34362d097312fbca1f8377e2f76"
+      "sha256": "e8f305998326addd8e947e03a5237c4db255985be69178e56888394af675d405"
     }
   ],
   "classes": {
@@ -1759,9 +1969,21 @@
     "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityManagerTest": 9,
     "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityTest": 6,
     "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
-    "com.android.purebilibili.core.plugin.feed.FeedDocumentParserTest": 17
+    "com.android.purebilibili.core.plugin.feed.FeedDocumentParserTest": 19,
+    "com.bilipai.desktop.plugins.DesktopSubscriptionIdentityTest": 11,
+    "com.bilipai.desktop.plugins.DesktopSubscriptionTitleRefreshTest": 7,
+    "com.bilipai.desktop.plugins.DesktopPluginServicesTest": 5,
+    "com.bilipai.desktop.plugins.DesktopJsSubscriptionTest": 3,
+    "com.bilipai.desktop.ui.DesktopSubscriptionReadingProgressRegressionTest": 6,
+    "com.android.purebilibili.feature.dynamic.DynamicAuthorSearchPolicyTest": 3,
+    "com.bilipai.desktop.ui.DesktopDynamicAuthorSearchTest": 7,
+    "com.bilipai.desktop.ui.DesktopDynamicTabsTest": 10,
+    "com.bilipai.desktop.ui.DesktopDynamicStartupTest": 9,
+    "com.bilipai.desktop.ui.DesktopDynamicFailedPaginationTest": 4,
+    "com.bilipai.desktop.ui.DesktopDynamicAccountStorageTest": 12,
+    "com.bilipai.desktop.data.DesktopDynamicCommentCacheConsumptionTest": 11
   },
-  "expectedTests": 241,
+  "expectedTests": 331,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1771,18 +1993,51 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionTitleRefreshWorker.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginScreens.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicCommentCacheConsumptionTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionIdentityTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionTitleRefreshTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicAuthorSearchTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
+    "desktop/tools/extract-upstream-dynamic-detail.py",
+    "desktop/tools/extract-upstream-dynamic-reply.py",
+    "desktop/tools/extract-upstream-dynamic-tabs.py",
+    "desktop/tools/extract-upstream-js.py",
     "desktop/tools/extract-upstream-plugins.py",
     "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_dynamic_tabs_sources.py",
+    "desktop/tools/tests/test_extract_upstream_js.py",
+    "desktop/tools/tests/test_extract_upstream_plugins.py",
     "desktop/tools/tests/test_sync_upstream.py",
+    "desktop/tools/tests/test_v041_dynamic_author_search_source.py",
+    "desktop/tools/tests/test_v041_dynamic_comment_identity_source.py",
     "desktop/tools/tests/test_v041_feed_images_source.py",
-    "desktop/tools/v041_feed_images.py",
-    "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicy.kt",
-    "desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicyTest.kt",
-    "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParser.kt",
-    "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParserTest.kt",
-    "desktop/upstream-slices/v041-rss-dynamic/FeedHtmlParser.kt",
-    "desktop/upstream-slices/v041-rss-dynamic/manifest.json",
+    "desktop/tools/tests/test_v041_feed_store_source.py",
+    "desktop/tools/v036_dynamic_comment_cache.py",
+    "desktop/tools/v041_dynamic_author_search.py",
+    "desktop/tools/v041_dynamic_comment_identity.py",
+    "desktop/tools/v041_feed_store.py",
+    "desktop/upstream-slices/v041-dynamic-author-search/DynamicAuthorSearchDialog.kt",
+    "desktop/upstream-slices/v041-dynamic-author-search/DynamicScreen.kt",
+    "desktop/upstream-slices/v041-dynamic-author-search/DynamicViewModel.kt",
+    "desktop/upstream-slices/v041-dynamic-author-search/manifest.json",
+    "desktop/upstream-slices/v041-dynamic-comment-identity/DynamicCommentSheet.kt",
+    "desktop/upstream-slices/v041-dynamic-comment-identity/DynamicViewModel.kt",
+    "desktop/upstream-slices/v041-dynamic-comment-identity/manifest.json",
+    "desktop/upstream-slices/v041-feed-import-title/FeedImportParser.kt",
+    "desktop/upstream-slices/v041-feed-import-title/FeedModels.kt",
+    "desktop/upstream-slices/v041-feed-import-title/FeedSourceCatalog.kt",
+    "desktop/upstream-slices/v041-feed-import-title/FeedTitleResolver.kt",
+    "desktop/upstream-slices/v041-feed-import-title/SubscriptionFeedStore.kt",
+    "desktop/upstream-slices/v041-feed-import-title/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true

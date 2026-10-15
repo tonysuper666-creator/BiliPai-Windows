@@ -19,10 +19,11 @@ def read_sources():
         sources[row['filename']]=raw.decode('utf8')
     return sources
 def select_comment_region():
-    source=read_sources()['DynamicViewModel.kt']
+    from v041_dynamic_comment_identity import dynamic_view_model, COMMIT as identity_commit
+    source=dynamic_view_model()
     fields=source[source.index('    private val _selectedDynamic ='):source.index('    // 点赞状态缓存')]
     body=source[source.index('    private fun findDynamicById'):source.index('    fun likeDynamic(')]
-    return fields,body,dict(sourceCommit=COMMIT,completeOriginalCommentStateFields=True,
+    return fields,body,dict(sourceCommit=identity_commit,completeOriginalCommentStateFields=True,
         completeOriginalCommentConsumerRegion=True,wholeDynamicViewModelPorted=False,
         fieldsSHA256LF=digest(fields.encode()),bodySHA256LF=digest(body.encode()))
 def generate_policy(output):
@@ -44,7 +45,8 @@ def adapt_comment_region(repo, media, parser):
     fields+='    internal val selectedCommentTarget: StateFlow<DynamicCommentTarget?> = _selectedCommentTarget.asStateFlow()\n'
     fields+='    private val _commentConfirmationRevision = MutableStateFlow(0L)\n'
     fields+='    internal val commentConfirmationRevision: StateFlow<Long> = _commentConfirmationRevision.asStateFlow()\n'
-    source=read_sources()['DynamicViewModel.kt']
+    from v041_dynamic_comment_identity import dynamic_view_model
+    source=dynamic_view_model()
     def function(name):return textwrap.indent(media.function(source,name,parser).strip(),'    ')
     body=once(body,function('findDynamicById'),'''    private fun findDynamicById(dynamicId: String): DynamicItem? {
         if (dynamicId != subjectId || !isOwned()) return null

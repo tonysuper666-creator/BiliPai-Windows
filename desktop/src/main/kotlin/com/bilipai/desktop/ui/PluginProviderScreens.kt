@@ -29,19 +29,20 @@ import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.isActive
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
 @Composable
-internal fun DesktopAdditionalPluginSettings(id: String, runtime: DesktopPluginRuntime, onDismiss: () -> Unit,
+internal fun DesktopAdditionalPluginSettings(id: String, runtime: DesktopPluginRuntime, subscriptionBinding: DesktopSubscriptionPageBindings?, onDismiss: () -> Unit,
     onVideo: ((VideoCard) -> Unit)?, onPlayQueue: ((List<VideoCard>, VideoCard) -> Unit)?) {
     when (id) {
         HOME_FEED_ANONYMIZER_PLUGIN_ID -> HomeAnonymizerSettings(onDismiss)
         ADFILTER_PLUGIN_ID -> DesktopAdFilterSettings(runtime, onDismiss)
         CDN_REGION_PLUGIN_ID -> DesktopCdnSettings(runtime, onDismiss)
-        SubscriptionFeedPlugin.PLUGIN_ID -> SubscriptionReaderDialog(runtime, onDismiss = onDismiss)
+        SubscriptionFeedPlugin.PLUGIN_ID -> subscriptionBinding?.takeIf { it.isOwned() }?.let { SubscriptionReaderDialog(it, onDismiss = onDismiss) }
         TodayWatchPlugin.PLUGIN_ID -> DesktopTodayWatchSettings(runtime, onDismiss, onVideo, onPlayQueue)
     }
 }
@@ -205,107 +206,156 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
     }, confirmButton = { TextButton(onClick = onDismiss) { Text("关闭") } })
 }
 
-@Composable fun SubscriptionReaderDialog(runtime: DesktopPluginRuntime, refreshOnOpen: Boolean = false, onDismiss: () -> Unit) {
-    val repository = runtime.subscriptions
-    val jsRevision by runtime.jsPlugins.host.executionRevision.collectAsState()
-    val state by repository.state.collectAsState()
+@Composable internal fun SubscriptionReaderDialog(binding: DesktopSubscriptionPageBindings, refreshOnOpen: Boolean = false, onDismiss: () -> Unit) {
+    if (!binding.isOwned()) return
+    key(binding) { SubscriptionReaderContent(binding, refreshOnOpen, onDismiss) }
+}
+
+@Composable private fun SubscriptionReaderContent(binding: DesktopSubscriptionPageBindings, refreshOnOpen: Boolean, onDismiss: () -> Unit) {
+    val jsRevision by binding.runtime.jsPlugins.host.executionRevision.collectAsState()
+    val state by binding.state.collectAsState()
     val scope = rememberCoroutineScope()
     var busy by remember { mutableStateOf(false) }; var error by remember { mutableStateOf<String?>(null) }
     var title by remember { mutableStateOf("") }; var url by remember { mutableStateOf("") }
     var importText by remember { mutableStateOf<String?>(null) }; var showSources by remember { mutableStateOf(true) }
     var unreadOnly by remember { mutableStateOf(false) }; var article by remember { mutableStateOf<ParsedFeedItem?>(null) }
-    fun action(block: suspend () -> Unit) { if (busy) return; busy = true; error = null; scope.launch {
-        try { block() } catch (e: Exception) { if (e is CancellationException) throw e; error = e.message ?: "订阅操作失败" } finally { busy = false }
-    } }
-    LaunchedEffect(repository, refreshOnOpen, jsRevision) { repository.loadCached(); if (refreshOnOpen) action { repository.refresh() } }
-    AlertDialog(onDismissRequest = onDismiss, title = { Text("订阅与阅读") }, text = {
+    fun dismiss() = binding.commitUi(onDismiss)
+    fun action(block: suspend () -> Unit) {
+        if (busy || !binding.isOwned()) return
+        binding.commitUi { busy = true; error = null }
+        scope.launch {
+            try { block() }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { binding.commitCallerUi { error = failure.message ?: "订阅操作失败" } }
+            finally { if (scope.isActive) binding.commitUi { busy = false } }
+        }
+    }
+    LaunchedEffect(binding, refreshOnOpen, jsRevision) {
+        try {
+            binding.loadCached()
+            binding.requestMissingTitles()
+            if (refreshOnOpen) binding.refresh()
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) { binding.commitCallerUi { error = failure.message ?: "订阅加载失败" } }
+    }
+    AlertDialog(onDismissRequest = ::dismiss, title = { Text("订阅与阅读") }, text = {
         LazyColumn(Modifier.width(950.dp).heightIn(max = 680.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = { action { repository.refresh() } }, enabled = !busy && !state.loading) { Text("刷新订阅") }
-                    TextButton(onClick = { showSources = !showSources }) { Text(if (showSources) "收起订阅源" else "管理订阅源") }
-                    TextButton(onClick = { importText = "" }) { Text("导入 OPML") }
-                    TextButton(onClick = { action { Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(repository.exportOpml()), null) } }) { Text("复制 OPML") }
+                    Button(onClick = { action { binding.refresh() } }, enabled = !busy && !state.loading) { Text("刷新订阅") }
+                    TextButton(onClick = { binding.commitUi { showSources = !showSources } }) { Text(if (showSources) "收起订阅源" else "管理订阅源") }
+                    TextButton(onClick = { binding.commitUi { importText = "" } }) { Text("导入 OPML") }
+                    TextButton(onClick = { action {
+                        val text = binding.exportOpml()
+                        binding.commitCallerUi { binding.copyText(text, "已复制 OPML") }
+                    } }) { Text("复制 OPML") }
                 }
                 if (busy || state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
                 (state.errors + listOfNotNull(error)).forEach { Text(it, color = MaterialTheme.colorScheme.error) }
             }
             if (showSources) {
                 item {
-                    ProviderText("订阅名称（可选）", title) { title = it }
-                    ProviderText("RSS 或 Atom 地址", url) { url = it }
-                    TextButton(onClick = { action { repository.add(title, url); title = ""; url = "" } }, enabled = !busy && url.isNotBlank()) { Text("添加订阅") }
+                    ProviderText("订阅名称（可选）", title) { value -> binding.commitUi { title = value } }
+                    ProviderText("RSS 或 Atom 地址", url) { value -> binding.commitUi { url = value } }
+                    TextButton(onClick = { val name = title; val address = url; action {
+                        binding.add(name, address)
+                        binding.commitCallerUi { title = ""; url = "" }
+                    } }, enabled = !busy && url.isNotBlank()) { Text("添加订阅") }
                 }
-                items(state.sources, key = { "source:${it.id}" }) { source -> Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Column(Modifier.weight(1f)) { Text(source.title); Text(source.url, style = MaterialTheme.typography.bodySmall) }
-                    Switch(source.enabled, { value -> action { repository.setEnabled(source.id, value) } }, enabled = !busy)
-                    TextButton(onClick = { action { repository.remove(source.id) } }, enabled = !busy) { Text("删除") }
-                } }
+                items(state.sources, key = { "source:${it.id.length}:${it.id}${it.url}" }) { source ->
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(Modifier.weight(1f)) {
+                            Text(source.title)
+                            if (source.group.isNotBlank()) Text(source.group, style = MaterialTheme.typography.labelSmall)
+                            Text(source.url, style = MaterialTheme.typography.bodySmall)
+                        }
+                        Switch(source.enabled, { value -> action { binding.setEnabled(source.id, value) } }, enabled = !busy)
+                        TextButton(onClick = { action { binding.remove(source.id) } }, enabled = !busy) { Text("删除") }
+                    }
+                }
             }
-            item { ProviderSwitch("只看未读", unreadOnly) { unreadOnly = it }; Text("${state.reading.items.size} 篇缓存文章", style = MaterialTheme.typography.bodySmall) }
+            item { ProviderSwitch("只看未读", unreadOnly) { value -> binding.commitUi { unreadOnly = value } }; Text("${state.reading.items.size} 篇缓存文章", style = MaterialTheme.typography.bodySmall) }
             val articles = state.reading.items.filter { !unreadOnly || feedItemKey(it) !in state.reading.readKeys }
             items(articles, key = ::feedItemKey) { item ->
                 Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surfaceVariant,
-                    modifier = Modifier.fillMaxWidth().clickable { article = item; action { repository.setRead(item, true) } }) {
+                    modifier = Modifier.fillMaxWidth().clickable { binding.commitUi { article = item }; action { binding.setRead(item, true) } }) {
                     Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         Text(item.title, style = MaterialTheme.typography.titleMedium)
                         Text("${item.sourceTitle} · ${item.author} · ${if (feedItemKey(item) in state.reading.readKeys) "已读" else "未读"}", style = MaterialTheme.typography.bodySmall)
                         Text(feedPlainText(item.summary).take(250), maxLines = 3)
-                        TextButton(onClick = { action { repository.setRead(item, feedItemKey(item) !in state.reading.readKeys) } }) { Text("切换已读状态") }
+                        TextButton(onClick = { val read = feedItemKey(item) !in state.reading.readKeys; action { binding.setRead(item, read) } }) { Text("切换已读状态") }
                     }
                 }
             }
         }
-    }, confirmButton = { TextButton(onClick = onDismiss) { Text("关闭") } })
+    }, confirmButton = { TextButton(onClick = ::dismiss) { Text("关闭") } })
     importText?.let { initial ->
         var text by remember(initial) { mutableStateOf(initial) }
-        AlertDialog(onDismissRequest = { importText = null }, title = { Text("导入 OPML / 订阅列表") }, text = { OutlinedTextField(text, { text = it }, minLines = 10, maxLines = 18, modifier = Modifier.width(750.dp)) },
-            confirmButton = { TextButton(onClick = { action { repository.importOpml(text); importText = null } }, enabled = !busy && text.isNotBlank()) { Text("导入") } }, dismissButton = { TextButton(onClick = { importText = null }) { Text("取消") } })
+        AlertDialog(onDismissRequest = { binding.commitUi { importText = null } }, title = { Text("导入 OPML / 订阅列表") }, text = {
+            OutlinedTextField(text, { value -> binding.commitUi { text = value } }, minLines = 10, maxLines = 18, modifier = Modifier.width(750.dp))
+        }, confirmButton = { TextButton(onClick = { val requested = text; action {
+            binding.importOpml(requested)
+            binding.commitCallerUi { importText = null }
+        } }, enabled = !busy && text.isNotBlank()) { Text("导入") } }, dismissButton = {
+            TextButton(onClick = { binding.commitUi { importText = null } }) { Text("取消") }
+        })
     }
-    article?.let { item -> SubscriptionArticleDialog(runtime, item) { article = null } }
+    article?.let { item -> key(binding, item) { SubscriptionArticleDialog(binding, item) { binding.commitUi { article = null } } } }
 }
 
-@Composable private fun SubscriptionArticleDialog(runtime: DesktopPluginRuntime, item: ParsedFeedItem, onDismiss: () -> Unit) {
-    val reader by runtime.subscriptions.state.collectAsState()
+@Composable private fun SubscriptionArticleDialog(binding: DesktopSubscriptionPageBindings, item: ParsedFeedItem, onDismiss: () -> Unit) {
+    val reader by binding.state.collectAsState()
+    val identity = remember(binding, item) { DesktopSubscriptionArticleReadingIdentity(item, binding::isOwned) }
+    DisposableEffect(identity) { onDispose { identity.close() } }
     var full by remember(item) { mutableStateOf(reader.reading.fullBodies[feedItemKey(item)]) }
     var loading by remember(item) { mutableStateOf(false) }; var error by remember(item) { mutableStateOf<String?>(null) }
-    val scope = rememberCoroutineScope(); val uri = LocalUriHandler.current
+    val scope = rememberCoroutineScope()
     val html = full ?: item.htmlContent.ifBlank { item.summary }
     val blocks = remember(html, item.link) { parseFeedHtml(html, item.link) }
-    AlertDialog(onDismissRequest = onDismiss, title = { Text(item.title) }, text = {
+    fun dismiss() { identity.close(); binding.commitUi(onDismiss) }
+    fun openArticleUrl(url: String) = binding.commitUi {
+        if (identity.isOwnedFor(item)) binding.openExternalUrl(url)
+    }
+    AlertDialog(onDismissRequest = ::dismiss, title = { Text(item.title) }, text = {
         LazyColumn(Modifier.width(900.dp).heightIn(max = 680.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             item {
                 Text("${item.sourceTitle} · ${item.author}", style = MaterialTheme.typography.bodySmall)
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TextButton(onClick = { uri.openUri(item.link) }, enabled = isHttpFeedUrl(item.link)) { Text("打开原文") }
-                    TextButton(onClick = { loading = true; error = null; scope.launch {
-                        try { full = runtime.subscriptions.loadFullArticle(item) } catch (e: Exception) { if (e is CancellationException) throw e; error = e.message } finally { loading = false }
-                    } }, enabled = !loading) { Text("加载完整原文") }
+                    TextButton(onClick = { openArticleUrl(item.link) }, enabled = isHttpFeedUrl(item.link)) { Text("打开原文") }
+                    TextButton(onClick = {
+                        binding.commitUi { loading = true; error = null }
+                        scope.launch {
+                            try {
+                                val body = binding.loadFullArticle(item, identity)
+                                binding.commitCallerUi { if (identity.isOwnedFor(item)) full = body }
+                            } catch (cancelled: CancellationException) { throw cancelled }
+                            catch (failure: Exception) { binding.commitCallerUi { if (identity.isOwnedFor(item)) error = failure.message } }
+                            finally { if (scope.isActive) binding.commitUi { if (identity.isOwnedFor(item)) loading = false } }
+                        }
+                    }, enabled = !loading) { Text("加载完整原文") }
                 }
                 if (loading) LinearProgressIndicator(Modifier.fillMaxWidth())
                 error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             }
-            items(blocks) { block -> FeedBlockContent(block) }
+            items(blocks) { block -> FeedBlockContent(block, ::openArticleUrl) }
         }
-    }, confirmButton = { TextButton(onClick = onDismiss) { Text("关闭") } })
+    }, confirmButton = { TextButton(onClick = ::dismiss) { Text("关闭") } })
 }
 
-@Composable private fun FeedBlockContent(block: FeedBlock) {
-    val uri = LocalUriHandler.current
+@Composable private fun FeedBlockContent(block: FeedBlock, openExternal: (String) -> Unit) {
     when (block) {
-        is FeedBlock.Heading -> FeedInlineContent(block.inlines, heading = true)
-        is FeedBlock.Paragraph -> FeedInlineContent(block.inlines)
-        is FeedBlock.Quote -> Surface(color = MaterialTheme.colorScheme.surfaceVariant) { Box(Modifier.padding(12.dp)) { FeedInlineContent(block.inlines) } }
+        is FeedBlock.Heading -> FeedInlineContent(block.inlines, openExternal, heading = true)
+        is FeedBlock.Paragraph -> FeedInlineContent(block.inlines, openExternal)
+        is FeedBlock.Quote -> Surface(color = MaterialTheme.colorScheme.surfaceVariant) { Box(Modifier.padding(12.dp)) { FeedInlineContent(block.inlines, openExternal) } }
         is FeedBlock.Code -> SelectionContainer { Text(block.text, style = MaterialTheme.typography.bodySmall) }
-        is FeedBlock.BulletList -> block.items.forEach { Row { Text("• "); FeedInlineContent(it) } }
-        is FeedBlock.NumberedList -> block.items.forEachIndexed { index, line -> Row { Text("${index + 1}. "); FeedInlineContent(line) } }
+        is FeedBlock.BulletList -> block.items.forEach { Row { Text("• "); FeedInlineContent(it, openExternal) } }
+        is FeedBlock.NumberedList -> block.items.forEachIndexed { index, line -> Row { Text("${index + 1}. "); FeedInlineContent(line, openExternal) } }
         is FeedBlock.Image -> if (isHttpFeedUrl(block.url)) AsyncImage(block.url, block.alt, modifier = Modifier.fillMaxWidth().heightIn(max = 500.dp))
-        is FeedBlock.EmbeddedLink -> TextButton(onClick = { uri.openUri(block.url) }, enabled = isHttpFeedUrl(block.url)) { Text(block.title.ifBlank { block.url }) }
+        is FeedBlock.EmbeddedLink -> TextButton(onClick = { openExternal(block.url) }, enabled = isHttpFeedUrl(block.url)) { Text(block.title.ifBlank { block.url }) }
     }
 }
 
-@Composable private fun FeedInlineContent(inlines: List<FeedInline>, heading: Boolean = false) {
-    val uri = LocalUriHandler.current
+@Composable private fun FeedInlineContent(inlines: List<FeedInline>, openExternal: (String) -> Unit, heading: Boolean = false) {
     val builder = AnnotatedString.Builder()
     inlines.forEach { inline -> when (inline) {
         is FeedInline.Text -> { builder.pushStyle(SpanStyle(fontWeight = if (inline.bold) FontWeight.Bold else null, fontStyle = if (inline.italic) FontStyle.Italic else null)); builder.append(inline.text); builder.pop() }
@@ -313,7 +363,7 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
     } }
     SelectionContainer { Text(builder.toAnnotatedString(), style = if (heading) MaterialTheme.typography.titleLarge else MaterialTheme.typography.bodyLarge) }
     inlines.filterIsInstance<FeedInline.Link>().filter { isHttpFeedUrl(it.url) }.distinctBy { it.url }.forEach { link ->
-        TextButton(onClick = { uri.openUri(link.url) }) { Text(link.text.ifBlank { link.url }) }
+        TextButton(onClick = { openExternal(link.url) }) { Text(link.text.ifBlank { link.url }) }
     }
 }
 

@@ -20,6 +20,7 @@ import kotlin.test.*
 class DesktopDynamicCommentCacheConsumptionTest {
     private data class Read(val oid: Long, val type: Int, val page: Int, val size: Int, val mode: Int)
     private data class Submission(val root: Long, val parent: Long)
+    private data class ThreadRead(val oid: Long, val type: Int, val root: Long, val mode: Int, val offset: String?, val target: Long)
 
     private class Fixture : AutoCloseable {
         val root = Files.createTempDirectory("bp-dynamic-comment-consumer-")
@@ -42,6 +43,7 @@ class DesktopDynamicCommentCacheConsumptionTest {
         val reads = CopyOnWriteArrayList<Read>()
         val counts = CopyOnWriteArrayList<Pair<Long, Int>>()
         val submissions = CopyOnWriteArrayList<Submission>()
+        val threadReads = CopyOnWriteArrayList<ThreadRead>()
         val scope = CoroutineScope(SupervisorJob() + dispatcher +
             CoroutineExceptionHandler { _, failure -> failures += failure })
         fun owned() = alive.get() && scope.isActive && fixture.sessions.generation == epoch
@@ -51,6 +53,7 @@ class DesktopDynamicCommentCacheConsumptionTest {
         } })
         var read: suspend (Read) -> Result<ReplyData> = { Result.success(data(1, it.page)) }
         var count: suspend (Long, Int) -> Result<Int> = { _, _ -> Result.success(3) }
+        var threadRead: suspend (ThreadRead) -> Result<ReplyData> = { error("No thread read expected") }
         val requests = object : DesktopDynamicReplyRequests {
             override fun isOwned() = owned()
             override fun hasCsrf() = owned()
@@ -66,7 +69,11 @@ class DesktopDynamicCommentCacheConsumptionTest {
                 return read(request)
             }
             override suspend fun getSortedSubCommentsForSubject(oid: Long, type: Int, rootId: Long,
-                mode: Int, paginationOffset: String?, targetReplyId: Long) = error("No thread read expected")
+                mode: Int, paginationOffset: String?, targetReplyId: Long): Result<ReplyData> {
+                val request = ThreadRead(oid, type, rootId, mode, paginationOffset, targetReplyId)
+                threadReads += request
+                return threadRead(request)
+            }
             override suspend fun uploadCommentPicture(source: String, index: Int) = error("No image upload expected")
             override suspend fun addCommentForSubject(oid: Long, type: Int, message: String,
                 root: Long, parent: Long, pictures: List<ReplyPicture>): Result<ReplyItem?> {
@@ -206,6 +213,69 @@ class DesktopDynamicCommentCacheConsumptionTest {
         }
     }
 
+    @Test fun originalInlineThreadKeepsTheDynamicAuthorIdentityAfterRemoteRepliesLoad(): Unit = runBlocking {
+        Fixture().use { fixture -> Harness(fixture, item = authoredDynamic(707)).use { h ->
+            h.threadRead = { Result.success(ReplyData(cursor = ReplyCursor(isEnd = true))) }
+            h.vm.openCommentSheet(h.item)
+            h.vm.openSubReply(ReplyItem(rpid = 55, mid = 9001))
+            val state = h.vm.subReplyState.value
+            assertTrue(state.visible); assertFalse(state.isLoading)
+            assertEquals(707L, state.upMid)
+            assertEquals(55L, state.rootReply?.rpid)
+            assertEquals(9001L, state.rootReply?.mid)
+            assertEquals(55L, h.threadReads.single().root)
+        } }
+    }
+
+    @Test fun originalDeepLinkedThreadRestoresDynamicAuthorAndTargetReplyIdentity(): Unit = runBlocking {
+        Fixture().use { fixture -> Harness(fixture, item = authoredDynamic(808)).use { h ->
+            h.threadRead = { Result.success(ReplyData(root = ReplyItem(rpid = 55, mid = 9002),
+                replies = listOf(ReplyItem(rpid = 56, mid = 909)), cursor = ReplyCursor(isEnd = true))) }
+            h.vm.openCommentSheet(h.item)
+            assertTrue(h.vm.openSubReplyFromRoute(55, 56))
+            val state = h.vm.subReplyState.value
+            assertTrue(state.visible); assertFalse(state.isLoading)
+            assertEquals(808L, state.upMid); assertEquals(55L, state.rootReply?.rpid)
+            assertEquals(9002L, state.rootReply?.mid)
+            assertEquals(56L, state.targetReplyId); assertEquals(listOf(56L), state.items.map { it.rpid })
+            assertEquals(56L, h.threadReads.single().target)
+        } }
+    }
+
+    @Test fun missingDynamicAuthorNeverInventsAnUpIdentityFromTheReplyAuthor(): Unit = runBlocking {
+        Fixture().use { fixture -> Harness(fixture).use { h ->
+            h.threadRead = { Result.success(ReplyData(cursor = ReplyCursor(isEnd = true))) }
+            h.vm.openCommentSheet(h.item)
+            h.vm.openSubReply(ReplyItem(rpid = 55, mid = 999))
+            assertEquals(0L, h.vm.subReplyState.value.upMid)
+            assertEquals(999L, h.vm.subReplyState.value.rootReply?.mid)
+        } }
+    }
+
+    @Test fun credentialRetirementRejectsLateDeepLinkedAuthorIdentityPublication(): Unit = runBlocking {
+        Fixture().use { fixture ->
+            val dispatcher = QueueDispatcher()
+            Harness(fixture, item = authoredDynamic(707), dispatcher = dispatcher).use { h ->
+                val entered = CompletableDeferred<Unit>()
+                val release = CompletableDeferred<ReplyData>()
+                h.threadRead = { withContext(NonCancellable) { entered.complete(Unit); Result.success(release.await()) } }
+                h.vm.openCommentSheet(h.item)
+                dispatcher.drainUntil { !h.vm.commentUiState.value.isLoading }
+                assertTrue(h.vm.openSubReplyFromRoute(55, 56))
+                dispatcher.drainUntil { entered.isCompleted }
+                val before = h.vm.subReplyState.value
+                fixture.login("synthetic-thread-replacement-generation")
+                release.complete(ReplyData(root = ReplyItem(rpid = 55, mid = 707),
+                    replies = listOf(ReplyItem(rpid = 56, mid = 909)), cursor = ReplyCursor(isEnd = true)))
+                dispatcher.drain()
+                assertSame(before, h.vm.subReplyState.value)
+                assertFalse(h.vm.subReplyState.value.visible)
+                assertEquals(0L, h.vm.subReplyState.value.upMid)
+            }
+            dispatcher.drain()
+        }
+    }
+
     private class QueueDispatcher : CoroutineDispatcher() {
         private val queue = ConcurrentLinkedQueue<Runnable>()
         override fun dispatch(context: CoroutineContext, block: Runnable) { queue.add(block) }
@@ -242,6 +312,8 @@ class DesktopDynamicCommentCacheConsumptionTest {
     }
 
     companion object {
+        private fun authoredDynamic(mid: Long): DynamicItem = Json.decodeFromString(
+            """{"id_str":"1001","type":"DYNAMIC_TYPE_WORD","modules":{"module_author":{"mid":$mid,"name":"Fixture Author","face":""}}}""")
         private fun dynamic(opus: Boolean = false): DynamicItem = Json.decodeFromString(
             if (opus) """{"id_str":"1001","type":"DYNAMIC_TYPE_DRAW","basic":{"comment_id_str":"2001","comment_type":11},"modules":{"module_dynamic":{"major":{"type":"MAJOR_TYPE_OPUS"}}}}"""
             else """{"id_str":"1001","type":"DYNAMIC_TYPE_WORD","modules":{}}""")

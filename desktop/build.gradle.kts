@@ -348,6 +348,8 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
         "--test-output", layout.buildDirectory.dir("generated/v041-feed-original-tests").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-plugins.py")
     inputs.file("tools/v041_feed_images.py")
+    inputs.file("tools/v041_feed_store.py")
+    inputs.dir("upstream-slices/v041-feed-import-title")
     inputs.file("tools/v038_listen_viewmodel.py")
     inputs.dir("upstream-slices/v041-rss-dynamic")
     inputs.file("tools/v029_history_recap.py")
@@ -483,6 +485,8 @@ val extractUpstreamJs by tasks.registering(Exec::class) {
     inputs.files(sources.filter { "js-plugins" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/upstream-js-content-adaptations.json")
+    inputs.file("tools/v041_feed_store.py")
+    inputs.dir("upstream-slices/v041-feed-import-title")
     outputs.dir(layout.buildDirectory.dir("generated/js"))
 }
 
@@ -1288,6 +1292,8 @@ val verifyUpstreamDynamicEditorProtocol by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
+    inputs.file("tools/v041_dynamic_comment_identity.py")
+    inputs.dir("upstream-slices/v041-dynamic-comment-identity")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     inputs.file("tools/v040_reply_medal.py")
@@ -1315,6 +1321,8 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicDetail by tasks.registering(Exec::class) {
+    inputs.file("tools/v041_dynamic_comment_identity.py")
+    inputs.dir("upstream-slices/v041-dynamic-comment-identity")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-detail.py",
@@ -1726,6 +1734,10 @@ val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
+    inputs.file("tools/v041_dynamic_author_search.py")
+    inputs.file("tools/v041_feed_images.py")
+    inputs.dir("upstream-slices/v041-dynamic-author-search")
+    inputs.dir("upstream-slices/v041-rss-dynamic")
     inputs.file("tools/v037_shared_tabs_progress.py")
     inputs.file("tools/v040_liquid_value_controls.py")
     inputs.dir("upstream-slices/v040-liquid-value-controls")
@@ -1737,14 +1749,18 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v040-dynamic-pagination")
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-tabs.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/dynamic-tabs").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/dynamic-tabs").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/dynamic-author-search-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-tabs.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-dynamic-tabs-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-tabs"))
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-author-search-tests"))
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-author-search-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamDynamicTabs) }
 
 val extractOriginalDynamicAccountPolicy by tasks.registering(Exec::class) {
     workingDir(projectDir)

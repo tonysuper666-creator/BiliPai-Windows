@@ -40,6 +40,9 @@ SOURCES = [REPLY, SUB, SAVER, SHEET,
 
 
 def read(repo, path):
+    if path == SHEET:
+        from v041_dynamic_comment_identity import dynamic_comment_sheet
+        return dynamic_comment_sheet()
     canonical=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
     return selected_source(path,canonical)
 

@@ -1378,7 +1378,7 @@
       "features": [
         "plugins"
       ],
-      "mode": "direct"
+      "mode": "extracted"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt",
@@ -1410,7 +1410,7 @@
       "features": [
         "plugins"
       ],
-      "mode": "direct"
+      "mode": "extracted"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedLayoutAllocation.kt",
@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "124",
+  "windowsRevision": "127",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14427,5 +14427,50 @@
     "originalFeedTestsDeferred": 2,
     "originalFeedTestsExecuted": false,
     "dynamicAuthorSearchFeatureWired": false
+  },
+  "v041FeedImportTitleSlice": {
+    "repository": "jay3-yy/BiliPai",
+    "tag": "v0.4.1",
+    "commit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+    "archive": "desktop/upstream-slices/v041-feed-import-title",
+    "manifestSHA256": "ad5739797bdb6b6b5f2c2af0568d612f9d7dbbf64ef769368bae40b2ace6acd8",
+    "completeOriginalProductionFiles": 5,
+    "canonicalBaselineUnchanged": true,
+    "scope": "Complete import/model/store/title/catalog sources with exact reversible Windows ownership/storage adaptations.",
+    "repositoryLifecycleWired": false,
+    "emittedOriginalFeedCases": 19,
+    "adaptedOriginalExpectationCount": 1,
+    "mainCompiled": false,
+    "applicationExecuted": false
+  },
+  "v041DynamicAuthorSearchSlice": {
+    "upstreamTag": "v0.4.1",
+    "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+    "archive": "desktop/upstream-slices/v041-dynamic-author-search",
+    "manifestSHA256": "757b485c82bc63c61b7ebc8ca77eb735d3699f2e104b41a6fbd66f8cab407a17",
+    "wholeOriginalDialog": true,
+    "existingPolicyAndTestsArchive": "desktop/upstream-slices/v041-rss-dynamic",
+    "originalPolicyCases": 3,
+    "canonicalV025InputsUnchanged": true,
+    "wholeScreenAndViewModelRuntimePorted": false,
+    "windowsOwnedHostWiringPrepared": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false
+  },
+  "v041DynamicCommentIdentitySlice": {
+    "upstreamTag": "v0.4.1",
+    "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+    "archive": "desktop/upstream-slices/v041-dynamic-comment-identity",
+    "manifestSHA256": "a6813ad26dd341def7b7d72b0006bd763cd4c2fea3128cdc4f56de18389ce64c",
+    "completeOriginalCommentStateRegion": true,
+    "completeOriginalInlineCommentFunction": true,
+    "originalThreadConsumerUsesStateAuthorIdentity": true,
+    "wholeDynamicViewModelPorted": false,
+    "wholeModalSheetPorted": false,
+    "canonicalV025InputsUnchanged": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false
   }
 }

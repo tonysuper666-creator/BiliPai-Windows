@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.1",
+  "commit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAuthorSearchDialog.kt",
+      "archiveFile": "DynamicAuthorSearchDialog.kt",
+      "bytes": 6908,
+      "sha256": "631a1f988d3b73b14c0de1bcb995cfa25d3b72d343e1252056088255b85342d9",
+      "gitBlob": "c468cf6ea81595a0fb3a63486e4d96240ba9cd8e",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+      "archiveFile": "DynamicScreen.kt",
+      "bytes": 106496,
+      "sha256": "5da07ae647e245bb0d8f22eca7ba964c13f0befc149b867793736ace51ad8549",
+      "gitBlob": "9fd8051a6d0bc5e16684fd1eb0fd25f6d9951b43",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "archiveFile": "DynamicViewModel.kt",
+      "bytes": 118402,
+      "sha256": "9b53a2d7ea025dab4d758808d536b90e13be433bcfc47e084cc1cc8de33c1f98",
+      "gitBlob": "a01d4e21ebc15c1b148070890c9787afa2f1a3a9",
+      "referenceOnly": true
+    }
+  ],
+  "scope": "Whole original author search dialog; complete Screen/VM originals retained as reference for session-tab, selection and complete-followings preparation. Existing v041 policy and original tests are reused without duplicating their raw archive."
+}

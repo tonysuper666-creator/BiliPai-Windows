@@ -24,7 +24,7 @@ class DesktopSubscriptionIdentityTest {
         publishedEpochSec = 1L, summary = "Summary", htmlContent = "Body", imageUrl = null,
     )
 
-    @Test fun `distinct URLs with the same hash receive independent persisted identities`() {
+    @Test fun `distinct URLs with the same hash receive independent persisted identities`(): Unit = runBlocking {
         assertEquals(firstUrl.hashCode(), secondUrl.hashCode())
         val context = context()
         val first = SubscriptionFeedStore.add(context, "First", firstUrl).getOrThrow()
@@ -38,7 +38,7 @@ class DesktopSubscriptionIdentityTest {
         assertFalse(SubscriptionFeedStore.list(context).single { it.id == second.id }.enabled)
     }
 
-    @Test fun `batch import reserves each new identity and skips existing suffixes and duplicate URLs`() {
+    @Test fun `batch import reserves each new identity and skips existing suffixes and duplicate URLs`(): Unit = runBlocking {
         val context = context()
         val urls = listOf("AaAa", "AaBB", "BBAa", "BBBB").map { "https://example.invalid/$it" }
         assertEquals(1, urls.map(String::hashCode).distinct().size)
@@ -103,7 +103,7 @@ class DesktopSubscriptionIdentityTest {
         assertEquals("Second full body", repository.state.value.reading.fullBodies[feedItemKey(secondArticle)])
     }
 
-    @Test fun `new allocations do not renumber preexisting duplicate identities`() {
+    @Test fun `new allocations do not renumber preexisting duplicate identities`(): Unit = runBlocking {
         val context = context()
         val urls = listOf("AaAa", "AaBB", "BBAa").map { "https://example.invalid/$it" }
         assertEquals(1, urls.map(String::hashCode).distinct().size)
@@ -115,5 +115,112 @@ class DesktopSubscriptionIdentityTest {
         val added = SubscriptionFeedStore.add(context, "New", urls[2]).getOrThrow()
         assertEquals(legacy, SubscriptionFeedStore.list(context).take(legacy.size))
         assertEquals("$base-2", added.id)
+    }
+
+    @Test fun `readding a disabled grouped URL preserves its cold stored record identity`(): Unit = runBlocking {
+        val context = context()
+        val previous = SavedSubscriptionFeed("legacy-custom-id", "Before", firstUrl, false, "Research")
+        seed(context, listOf(previous))
+        val renamed = SubscriptionFeedStore.add(context, " After ", " $firstUrl ").getOrThrow()
+        assertEquals(previous.copy(title = "After"), renamed)
+        val cold = DesktopPluginContext(DesktopPluginStore(context.filesDir.toPath()))
+        assertEquals(listOf(renamed), SubscriptionFeedStore.list(cold))
+        assertEquals(listOf(renamed), SubscriptionFeedStore.listBlocking(cold))
+    }
+
+    @Test fun `legacy group default and nested OPML groups survive real store and export`(): Unit = runBlocking {
+        val context = context()
+        val file = File(context.filesDir, "plugin/subscription_feeds.json")
+        file.parentFile.mkdirs()
+        file.writeText("""[{"id":"legacy","title":"Legacy","url":"https://example.invalid/old"}]""")
+        val legacy = SubscriptionFeedStore.list(context).single()
+        assertEquals("", legacy.group)
+        assertTrue(legacy.enabled)
+        val imported = parseSubscriptionImport("""<opml><body>
+            <outline text="Outer"><outline text="A &amp; B">
+            <outline type="rss" title="Grouped" xmlUrl="https://example.invalid/grouped"/>
+            </outline></outline><outline title="Flat" xmlUrl="https://example.invalid/flat"/>
+            </body></opml>""")
+        assertEquals(2, SubscriptionFeedStore.addAll(context, imported))
+        val cold = DesktopPluginContext(DesktopPluginStore(context.filesDir.toPath()))
+        val saved = SubscriptionFeedStore.list(cold)
+        assertEquals(legacy, saved.first())
+        assertEquals("A & B", saved.single { it.url.endsWith("/grouped") }.group)
+        assertEquals("", saved.single { it.url.endsWith("/flat") }.group)
+        val roundTrip = parseSubscriptionImport(buildSubscriptionOpml(saved))
+        assertEquals(saved.associate { it.url to it.group }, roundTrip.associate { it.url to it.group })
+    }
+
+    @Test fun `background title commit checks the exact stored identity URL and placeholder`(): Unit = runBlocking {
+        val context = context()
+        val placeholder = SavedSubscriptionFeed("shared-id", firstUrl, firstUrl, false, "Kept")
+        seed(context, listOf(placeholder))
+        SubscriptionFeedStore.updateTitle(context, placeholder.id, firstUrl, firstUrl, "Resolved")
+        assertEquals(placeholder.copy(title = "Resolved"), SubscriptionFeedStore.list(context).single())
+        for (current in listOf(
+            listOf(placeholder.copy(title = "Manually renamed")),
+            listOf(placeholder.copy(url = secondUrl, title = secondUrl)),
+            listOf(placeholder.copy(id = "different-id")),
+            listOf(placeholder.copy(title = "")),
+            emptyList<SavedSubscriptionFeed>(),
+        )) {
+            seed(context, current)
+            val file = File(context.filesDir, "plugin/subscription_feeds.json")
+            val bytes = file.readBytes()
+            val revision = SubscriptionFeedStore.revision.value
+            SubscriptionFeedStore.updateTitle(context, placeholder.id, firstUrl, firstUrl, "Stale network result")
+            assertContentEquals(bytes, file.readBytes())
+            assertEquals(revision, SubscriptionFeedStore.revision.value)
+            assertEquals(current, SubscriptionFeedStore.list(context))
+        }
+    }
+
+    @Test fun `legacy duplicated IDs retain distinct URL metadata through title refresh`(): Unit = runBlocking {
+        val context = context()
+        val legacy = listOf(
+            SavedSubscriptionFeed("shared-legacy-id", "First", firstUrl, true, "A"),
+            SavedSubscriptionFeed("shared-legacy-id", "Second", secondUrl, true, "B"),
+        )
+        seed(context, legacy)
+        val repository = DesktopSubscriptionRepository(context) { true }
+        repository.loadCached()
+        val before = repository.state.value
+        repository.refreshMissingTitles()
+        assertEquals(before, repository.state.value)
+        assertEquals(listOf(firstUrl, secondUrl), repository.state.value.activeSources.map { it.url })
+        assertEquals(listOf("A", "B"), repository.state.value.activeSources.map { it.group })
+        assertEquals(legacy, SubscriptionFeedStore.list(context))
+    }
+
+    @Test fun `corrupt subscription bytes are preserved and cannot become a replacement empty list`(): Unit = runBlocking {
+        val context = context()
+        val file = File(context.filesDir, "plugin/subscription_feeds.json")
+        file.parentFile.mkdirs()
+        val corrupt = "{truncated-subscription-record".toByteArray()
+        file.writeBytes(corrupt)
+        val revision = SubscriptionFeedStore.revision.value
+        assertFailsWith<kotlinx.serialization.SerializationException> { SubscriptionFeedStore.list(context) }
+        assertFailsWith<kotlinx.serialization.SerializationException> { SubscriptionFeedStore.listBlocking(context) }
+        assertFailsWith<kotlinx.serialization.SerializationException> { SubscriptionFeedStore.add(context, "New", firstUrl) }
+        assertFailsWith<kotlinx.serialization.SerializationException> { SubscriptionFeedStore.addAll(context,
+            listOf(ImportedSubscription("New", firstUrl, "Group"))) }
+        assertContentEquals(corrupt, file.readBytes())
+        assertEquals(revision, SubscriptionFeedStore.revision.value)
+    }
+
+    @Test fun `rejected Root final admission leaves store bytes revision and temporary files unchanged`(): Unit = runBlocking {
+        val context = context()
+        seed(context, listOf(SavedSubscriptionFeed("existing", "Before", secondUrl, false, "Existing")))
+        val file = File(context.filesDir, "plugin/subscription_feeds.json")
+        val before = file.readBytes()
+        val revision = SubscriptionFeedStore.revision.value
+        assertFailsWith<kotlinx.coroutines.CancellationException> {
+            DesktopSubscriptionWriteAdmission.withOwned({ true }, { false }) {
+                SubscriptionFeedStore.add(context, "Rejected", firstUrl).getOrThrow()
+            }
+        }
+        assertContentEquals(before, file.readBytes())
+        assertEquals(revision, SubscriptionFeedStore.revision.value)
+        assertTrue(file.parentFile.listFiles().orEmpty().none { it.name.startsWith(".plugin-atomic-") })
     }
 }

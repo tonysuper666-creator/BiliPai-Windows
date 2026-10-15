@@ -26,8 +26,11 @@ internal class DesktopDynamicUsersState(
     private val startupDelay:suspend (Long)->Unit={delay(it)},
     private val commitIfCurrent:((()->Unit)->Boolean) = { block -> if(stillOwned()){block();true}else false },
 ) : DesktopDynamicCardItemsOwner {
+    private var configuredVisibleTabs = preferences.initialVisibleTabs
+    private var configuredTabOrder = preferences.initialTabOrder
+    private var authorSearchTabEnabled = false
     var selectedLogicalTab by mutableIntStateOf(resolveDynamicSelectedTabWithinVisibleTabs(preferences.selectedTab,
-        resolveDynamicVisibleTabs(preferences.initialVisibleTabs,preferences.initialTabOrder)));private set
+        resolveDynamicVisibleTabs(configuredVisibleTabs,configuredTabOrder)));private set
     var selectedUid by mutableStateOf<Long?>(null);private set
     var userItems by mutableStateOf<List<DynamicItem>>(emptyList());private set
     var userLoading by mutableStateOf(false);private set
@@ -49,7 +52,8 @@ internal class DesktopDynamicUsersState(
     private var userJob:Job?=null
     private var startupLoadsActivated=false
     internal var editorRefreshRevision=0L
-    private var isFollowingsLoading=false
+    private var isFollowingsLoading by mutableStateOf(false)
+    val authorSearchLoading:Boolean get()=isFollowingsLoading
     private var followingsFullyLoaded=false
     private var completeFollowingsLoadRequested=false
     private var lastFollowingsLoadMs=0L
@@ -98,7 +102,8 @@ internal class DesktopDynamicUsersState(
     }
     suspend fun applyTabs(visible:Set<String>,order:List<String>) {
         if(!owned())return
-        visibleTabs=resolveDynamicVisibleTabs(visible,order)
+        configuredVisibleTabs=visible;configuredTabOrder=order
+        visibleTabs=resolveDynamicVisibleTabs(if(authorSearchTabEnabled)visible+"up"else visible,order)
         val next=resolveDynamicSelectedTabWithinVisibleTabs(selectedLogicalTab,visibleTabs)
         if(next!=selectedLogicalTab)selectTab(next)
         else if(preferences.selectedTab!=next)preferences.setSelectedTab(next)
@@ -161,7 +166,8 @@ internal class DesktopDynamicUsersState(
             catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}
     }
     private suspend fun loadAllFollowings(force:Boolean,pageLimit:Int?){
-        if(!owned()||isFollowingsLoading)return
+        if(!owned())return
+        if(isFollowingsLoading){if(pageLimit==null)completeFollowingsLoadRequested=true;return}
         val now=nowMs()
         if(!force&&!shouldReloadFollowings(nowMs=now,lastLoadMs=lastFollowingsLoadMs))return
         val caller=currentCoroutineContext()[Job]
@@ -193,6 +199,24 @@ internal class DesktopDynamicUsersState(
             if(reload==1)launchOwned{loadAllFollowings(force=true,pageLimit=resolveDynamicFollowingsPageLimit(false))}
             else if(reload==2)launchOwned{loadAllFollowings(force=true,pageLimit=null)}
         }
+    }
+    fun prepareAuthorSearch() {
+        requestCompleteFollowingsLoad()
+    }
+    fun isCurrentOwner():Boolean=owned()
+    /** The original search selection reveals UP only for this page session, never settings. */
+    suspend fun selectAuthorSearchResult(uid:Long) {
+        if(uid<=0L)return
+        val caller=currentCoroutineContext()[Job]
+        currentCoroutineContext().ensureActive()
+        if(!publish(caller){
+            authorSearchTabEnabled=true
+            visibleTabs=resolveDynamicVisibleTabs(configuredVisibleTabs+"up",configuredTabOrder)
+            filter=DynamicUserContentFilter.ALL
+        })return
+        selectTab(4)
+        currentCoroutineContext().ensureActive()
+        if(owned())selectUser(uid)
     }
     private fun requestCompleteFollowingsLoad(){
         if(!owned()||followingsFullyLoaded)return

@@ -85,7 +85,11 @@ def generate(repo: Path, output: Path) -> list[Path]:
         host.prune_old_direct(output, path, host.read(repo, path))
     for path in EXTRACTED:
         original = host.read(repo, path)
-        body = host.platform_context(original)
+        if path.endswith("/FeedSourceCatalog.kt"):
+            from v041_feed_store import compose_source as compose_complete_feed_source
+            body, _ = compose_complete_feed_source(repo, path, original)
+        else:
+            body = host.platform_context(original)
         if path.endswith("InstallStore.kt"):
             body = host.substitute(body, "scriptFile.writeText(script, Charsets.UTF_8)",
                 "com.bilipai.desktop.plugins.writeDesktopPluginDocument(scriptFile, script)")

@@ -65,12 +65,20 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Shared original semantic color closure regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v041_feed_images_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v041 feed-image source/test generation regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_feed_store_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete v041 feed Store/import source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_plugins.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Actual original plugin source producer regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_js.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Actual original JS source producer regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_dynamic_pagination_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original dynamic pagination decision regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_dynamic_timeline_sources.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Existing timeline source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_dynamic_tabs_sources.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original tabs source ownership regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_dynamic_author_search_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Whole original v041 dynamic author-search source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original theme-role source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_liquid_controls_source.py -v
@@ -93,6 +101,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_dynamic_reply.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_dynamic_comment_identity_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw "Dynamic comment identity source regressions failed" }
       - name: Stage the existing pinned JDK
         shell: pwsh
         run: |

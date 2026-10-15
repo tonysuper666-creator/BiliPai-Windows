@@ -88,7 +88,9 @@ class JsSourceParityTest(unittest.TestCase):
 
     def test_feed_catalog_stays_original_and_checks_real_grants_before_host_fetch(self):
         host = EXTRACTOR.helper(ROOT)
-        expected = host.platform_context(host.read(ROOT, EXTRACTOR.EXTRACTED[1]))
+        from v041_feed_store import compose_source
+        expected, proof = compose_source(ROOT, EXTRACTOR.EXTRACTED[1], host.read(ROOT, EXTRACTOR.EXTRACTED[1]))
+        self.assertTrue(proof["completeOriginalInverse"])
         output = self.file("FeedSourceCatalog")
         self.assertTrue(output.endswith(expected.strip() + "\n"))
         self.assertIn("PluginCapability.FEED_SOURCE in installed.grantedCapabilities", output)
@@ -120,6 +122,10 @@ class JsSourceParityTest(unittest.TestCase):
         for edit in recipe["changes"]:
             self.assertEqual(expected.count(edit["before"]), edit["count"])
             expected = expected.replace(edit["before"], edit["after"], edit["count"])
+        from v037_tab_roles import apply as apply_original_tab_roles
+        role_edits = []
+        expected = apply_original_tab_roles(recipe["source"], expected, edits=role_edits)
+        self.assertEqual(1, len(role_edits))
         emitted = self.file("OriginalBiliPaiJsPluginContentScreen").split("\n", 2)[2]
         self.assertEqual(emitted, expected.strip() + "\n")
         # host.write strips boundary whitespace after the edits. Restore the
@@ -128,6 +134,9 @@ class JsSourceParityTest(unittest.TestCase):
         leading = len(expected) - len(expected.lstrip())
         trailing = expected[len(expected.rstrip()):]
         reconstructed = expected[:leading] + emitted[:-1] + trailing
+        for edit in reversed(role_edits):
+            self.assertEqual(1, reconstructed.count(edit["after"]))
+            reconstructed = reconstructed.replace(edit["after"], edit["before"], 1)
         for edit in reversed(recipe["changes"]):
             before, after = edit["before"], edit["after"]
             self.assertEqual(len(edit["beforePositions"]), edit["count"])

@@ -27,7 +27,8 @@ import java.awt.datatransfer.StringSelection
 @Composable
 internal fun PluginCenterScreen(runtime: DesktopPluginRuntime, jsonUpdateHold: DesktopPluginJsonEditorUpdateHold,
     onVideo: ((VideoCard) -> Unit)? = null,
-    onPlayQueue: ((List<VideoCard>, VideoCard) -> Unit)? = null, onOpenJsPlugin: (String) -> Unit = {}) {
+    onPlayQueue: ((List<VideoCard>, VideoCard) -> Unit)? = null, onOpenJsPlugin: (String) -> Unit = {},
+    subscriptionBinding: DesktopSubscriptionPageBindings?) {
     val plugins by runtime.plugins.collectAsState()
     val jsonPlugins by runtime.jsonPlugins.collectAsState()
     val stats by runtime.jsonFilterStats.collectAsState()
@@ -38,7 +39,7 @@ internal fun PluginCenterScreen(runtime: DesktopPluginRuntime, jsonUpdateHold: D
     val scope = rememberCoroutineScope()
     var busy by remember { mutableStateOf<String?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
-    var selected by remember { mutableStateOf<String?>(null) }
+    var selected by remember(subscriptionBinding) { mutableStateOf<String?>(null) }
     var packagesOpen by remember { mutableStateOf(false) }
     var jsOpen by remember { mutableStateOf(false) }
     var url by remember { mutableStateOf("") }
@@ -86,7 +87,8 @@ internal fun PluginCenterScreen(runtime: DesktopPluginRuntime, jsonUpdateHold: D
                     }
                     if (info.plugin.id != runtime.dlnaCast.id) {
                         TextButton(onClick = { selected = info.plugin.id },
-                            enabled = busy == null && (info.plugin.id != runtime.googleCast.id || info.enabled)) {
+                            enabled = busy == null && (info.plugin.id != runtime.googleCast.id || info.enabled) &&
+                                (info.plugin.id != com.android.purebilibili.feature.plugin.SubscriptionFeedPlugin.PLUGIN_ID || subscriptionBinding?.isOwned() == true)) {
                             Text(if (info.plugin.id == runtime.googleCast.id) "设备与遥控" else "设置")
                         }
                     }
@@ -150,7 +152,7 @@ internal fun PluginCenterScreen(runtime: DesktopPluginRuntime, jsonUpdateHold: D
         "eye_protection" -> EyePluginSettings(runtime, { selected = null })
         SPONSOR_BLOCK_PLUGIN_ID -> SponsorPluginSettings(runtime, { selected = null })
         runtime.googleCast.id -> DesktopGoogleCastDialog(runtime.context, runtime.googleCast, media = { null }, onDismiss = { selected = null })
-        else -> selected?.let { DesktopAdditionalPluginSettings(it, runtime, { selected = null }, onVideo, onPlayQueue) }
+        else -> selected?.let { DesktopAdditionalPluginSettings(it, runtime, subscriptionBinding, { selected = null }, onVideo, onPlayQueue) }
     }
     jsonEditor?.let { draft ->
         key(draft.instance) {
