@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "c83ce5ca00d89710e430e5442f0a792063eca18c",
+  "baseHead": "a37abd5d6c3ef1b0f80380cdf263258edf0e0680",
   "windowsVersion": "0.2.427.122",
-  "createdAt": "2026-10-15T15:49:24.077344+00:00",
+  "createdAt": "2026-10-15T16:36:52.853430+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -593,7 +593,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt",
       "normalization": "lf",
-      "sha256": "3a61b3a87db8761ad56fc58138f81d6032d05f2d1a6c2ac4b0d328af9060a150"
+      "sha256": "aa333ebde4d2b6030ef78d7a1241a6937e8622d92e7e89ca5d507457a28f64a4"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterStageLeaseTest.kt",
@@ -1710,10 +1710,7 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/tools/export-packaged-updater-harness.py",
-    "desktop/tools/tests/test_export_packaged_updater_harness.py",
-    "desktop/tools/tests/test_verify_updater_harness_export.py",
-    "desktop/tools/verify-updater-harness-export.py"
+    "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt"
   ],
   "exportPackagedUpdaterHarness": true
 }

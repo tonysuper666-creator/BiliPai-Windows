@@ -1,6 +1,10 @@
 package com.bilipai.desktop.update
 
 import com.sun.net.httpserver.HttpServer
+import com.bilipai.desktop.download.DesktopDownloadManager
+import com.bilipai.desktop.download.DesktopDownloadQueueAuthority
+import com.bilipai.desktop.download.DownloadMuxer
+import com.bilipai.desktop.player.DesktopLocalPlaybackPublication
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -95,10 +99,13 @@ class DesktopUpdaterIntegrationTest {
         try {
             require(Files.isRegularFile(packagePath, NOFOLLOW_LINKS))
             val config = readPackageConfig(packagePath)
-            val previousPath = System.getProperty("bilipai.updatePreviousPackage")?.takeIf { it.isNotBlank() }
-                ?.let { UpdateStorage.existingPathWithoutLinks(Path.of(it)) }
-            val previousConfig = previousPath?.let(::readPackageConfig)
-            val baseline = previousConfig?.version ?: precedingRevision(config.version)
+            val previousPath = UpdateStorage.existingPathWithoutLinks(Path.of(requireNotNull(
+                System.getProperty("bilipai.updatePreviousPackage")?.takeIf { it.isNotBlank() }) {
+                "Provide the actual previous package for rooted updater/rollback testing"
+            }))
+            val previousConfig = readPackageConfig(previousPath)
+            require(previousConfig.repository == config.repository && previousConfig.executable == config.executable)
+            val baseline = previousConfig.version
             require(requireNotNull(DesktopVersion.parse(baseline)) < requireNotNull(DesktopVersion.parse(config.version)))
             require(DesktopUpdater.validRepository(config.repository))
             evidence["windowsVersion"] = JsonPrimitive(config.version)
@@ -107,36 +114,66 @@ class DesktopUpdaterIntegrationTest {
             evidence["repository"] = JsonPrimitive(config.repository)
 
             LoopbackFixture(config.repository).use { fixture ->
+                var downloads: DesktopDownloadManager? = null
+                var damagedStageLease: UpdateStorage.StageLease? = null
+                val updaters = mutableListOf<DesktopUpdater>()
                 try {
-                    fun updater() = DesktopUpdater.forIntegrationTest(baseline, config.repository, updateRoot,
-                        fixture.client, childData, ::recordLaunch, config.executable,
-                        processFactory = { builder -> childEnvironment.configure(builder).start() })
+                    fun updater(installed: String = baseline) = DesktopUpdater.forIntegrationTest(installed,
+                        config.repository, updateRoot, fixture.client, childData, ::recordLaunch, config.executable,
+                        processFactory = { builder -> childEnvironment.configure(builder).start() }).also(updaters::add)
+                    suspend fun stop(process: Process) = StartupHealth.terminate(process, checkNotNull(launchObservations[process]))
+                    val queueFile = childData.resolve("BiliPai/downloads.json")
+                    fun releaseCommittedQueueTransfer() {
+                        val lease = assertNotNull(DesktopDownloadQueueAuthority.tryAcquire(queueFile).lease,
+                            "Retired committed child must leave recoverable download custody")
+                        lease.close()
+                    }
 
-                    fixture.publish("healthy", config.version, packagePath)
-                    val healthyUpdater = updater()
-                    val healthyUpdate = assertIs<UpdateState.Available>(healthyUpdater.check()).update
-                    val healthy = assertNotNull(healthyUpdater.prepareUpdate(healthyUpdate))
-                    assertIs<UpdateState.Prepared>(healthyUpdater.state.value)
-                    assertTrue(Files.isRegularFile(healthy.executable))
-                    assertTrue(launched.isEmpty(), "Preparation must not start the new EXE")
-                    assertFalse(Files.exists(activeFile), "Preparation must not register an installation")
-                    assertTrue(healthyUpdater.activatePreparedUpdate(healthy))
-                    val goodProcess = launched.last()
-                    fun assertHealthyInstanceAlive(stage: String) {
-                        assertTrue(goodProcess.isAlive, "Healthy EXE exited $stage: pid=${goodProcess.pid()}, " +
-                            "exitCode=${runCatching { goodProcess.exitValue() }.getOrNull()}")
+                    // Register a genuine older installation. Negative .122 candidates must be
+                    // newer than this registry; equal-version guards remain fully enabled.
+                    fixture.publish("baseline", baseline, previousPath)
+                    val baselineUpdater = updater(precedingRevision(baseline))
+                    val baselineUpdate = assertIs<UpdateState.Available>(baselineUpdater.check()).update
+                    val baselinePrepared = assertNotNull(baselineUpdater.prepareUpdate(baselineUpdate))
+                    assertTrue(baselineUpdater.activatePreparedUpdate(baselinePrepared))
+                    val baselineProcess = launched.last()
+                    assertTrue(baselineProcess.isAlive)
+                    val baselineRegistry = Files.readAllBytes(activeFile)
+                    evidence["baselineActivation"] = buildJsonObject {
+                        put("passed", true); put("actualPreviousZipSha256", sha256(previousPath))
+                        put("health", healthEvidence(baselinePrepared.stagingDirectory))
                     }
-                    assertHealthyInstanceAlive("after activation")
-                    val originalActive = Files.readAllBytes(activeFile)
-                    val originalRecord = json.parseToJsonElement(originalActive.toString(Charsets.UTF_8)).jsonObject
-                    assertEquals(healthyUpdate.version, originalRecord.getValue("version").jsonPrimitive.content)
-                    assertEquals(healthy.executable.toString(), originalRecord.getValue("executablePath").jsonPrimitive.content)
-                    evidence["successActivation"] = buildJsonObject {
-                        put("passed", true)
-                        put("processId", goodProcess.pid())
-                        put("executable", healthy.executable.toString())
-                        put("health", healthEvidence(healthy.stagingDirectory))
+                    // The fixture parent now plays the old Root's queue-owner role. A second
+                    // live EXE would retain the OS lease and confound every health rejection.
+                    stop(baselineProcess)
+                    assertFalse(baselineProcess.isAlive)
+                    releaseCommittedQueueTransfer()
+                    val queue = DesktopDownloadManager(fixture.client, queueFile,
+                        DownloadMuxer { _, _, _ -> error("Idle updater fixture must not mux media") },
+                        publication = DesktopLocalPlaybackPublication({ true }, { action -> action(); true }))
+                    downloads = queue
+                    assertTrue(queue.acceptsMutations())
+                    assertTrue(queue.tasks.value.isEmpty())
+                    var rollbacks = 0
+                    var commits = 0
+                    var lastLaunchToken: String? = null
+                    suspend fun activate(owner: DesktopUpdater, prepared: PreparedUpdate): Boolean {
+                        var ticket: DesktopDownloadManager.UpdateHandoff? = null
+                        val activated = owner.activatePreparedUpdate(prepared,
+                            beforeLaunch = { token ->
+                                lastLaunchToken = token
+                                ticket = queue.beginUpdateHandoff(token, owner.downloadHandoffTarget(prepared))
+                                queue.awaitUpdateHandoff(checkNotNull(ticket))
+                            },
+                            onCommitted = { ticket?.let { queue.commitUpdateHandoff(it); commits++ } },
+                            afterFailedLaunch = { ticket?.let {
+                                assertTrue(queue.rollbackUpdateHandoff(it)); rollbacks++
+                            } })
+                        assertNotNull(ticket, "Admitted activation must exercise the real Root queue handoff")
+                        assertEquals(!activated, queue.acceptsMutations())
+                        return activated
                     }
+                    fun assertBaselinePreserved() = assertContentEquals(baselineRegistry, Files.readAllBytes(activeFile))
 
                     fixture.publish("wrong-hash", config.version, packagePath, "00".repeat(32))
                     val hashUpdater = updater()
@@ -144,33 +181,33 @@ class DesktopUpdaterIntegrationTest {
                     val beforeHashProcesses = launched.size
                     val hashUpdate = assertIs<UpdateState.Available>(hashUpdater.check()).update
                     assertNull(hashUpdater.prepareUpdate(hashUpdate))
-                    assertIs<UpdateState.Failed>(hashUpdater.state.value)
+                    val hashFailure = assertIs<UpdateState.Failed>(hashUpdater.state.value)
+                    assertTrue(hashFailure.message.contains("SHA-256"))
+                    assertTrue(fixture.requestCount("/wrong-hash/package.sha256") > 0)
+                    assertTrue(fixture.requestCount("/wrong-hash/package.zip") > 0)
                     assertEquals(beforeHashProcesses, launched.size)
-                    assertContentEquals(originalActive, Files.readAllBytes(activeFile))
                     assertEquals(beforeHashStages, ownedStages(updateRoot, config.repository))
-                    assertHealthyInstanceAlive("after rejecting the wrong hash")
+                    assertBaselinePreserved()
+                    assertTrue(queue.acceptsMutations())
                     evidence["wrongHashRejected"] = JsonPrimitive(true)
 
-                    // This failure fixture deliberately advertises a different version from its real resource.
                     fixture.publish("version-mismatch", succeedingRevision(config.version), packagePath)
                     val versionUpdater = updater()
                     val versionUpdate = assertIs<UpdateState.Available>(versionUpdater.check()).update
                     val mismatched = assertNotNull(versionUpdater.prepareUpdate(versionUpdate))
-                    assertFalse(versionUpdater.activatePreparedUpdate(mismatched))
+                    assertFalse(activate(versionUpdater, mismatched))
                     assertFalse(launched.last().isAlive)
-                    assertContentEquals(originalActive, Files.readAllBytes(activeFile))
+                    assertBaselinePreserved()
+                    // A tokenless startup failure is not a version-mismatch test.
+                    assertLaunchHealth(mismatched.stagingDirectory, checkNotNull(lastLaunchToken), config.version)
                     evidence["versionMismatchRejected"] = buildJsonObject {
-                        put("passed", true)
-                        put("fixtureAdvertisedVersion", versionUpdate.version)
-                        put("actualPackageVersion", config.version)
-                        put("preparedSuccessfully", true)
-                        put("health", healthEvidence(mismatched.stagingDirectory))
+                        put("passed", true); put("fixtureAdvertisedVersion", versionUpdate.version)
+                        put("actualPackageVersion", config.version); put("healthyVersionMismatchObserved", true)
+                        put("startup", captureStartupEvidence(mismatched.stagingDirectory, caseRoot, "version-mismatch"))
                     }
                     fixture.publish("after-version-failure", config.version, packagePath)
-                    val recoveredVersion = assertIs<UpdateState.Available>(versionUpdater.check()).update
-                    assertTrue(recoveredVersion.assetName.contains("after-version-failure"))
+                    assertTrue(assertIs<UpdateState.Available>(versionUpdater.check()).update.assetName.contains("after-version-failure"))
 
-                    // Modify only a fixture copy; its ZIP hash is recalculated and native startup must fail.
                     val damagedZip = caseRoot.resolve("damaged-native-fixture.zip")
                     val damagedEntries = damageNativeLibrary(packagePath, damagedZip)
                     fixture.publish("damaged-native", config.version, damagedZip)
@@ -178,51 +215,27 @@ class DesktopUpdaterIntegrationTest {
                     val damagedUpdate = assertIs<UpdateState.Available>(damagedUpdater.check()).update
                     val damaged = assertNotNull(damagedUpdater.prepareUpdate(damagedUpdate))
                     val beforeDamageProcesses = launched.size
-                    assertFalse(damagedUpdater.activatePreparedUpdate(damaged))
-                    assertTrue(launched.size > beforeDamageProcesses, "The damaged fixture must reach actual EXE startup")
+                    assertFalse(activate(damagedUpdater, damaged))
+                    assertTrue(launched.size > beforeDamageProcesses)
                     assertFalse(launched.last().isAlive)
-                    assertContentEquals(originalActive, Files.readAllBytes(activeFile))
-                    assertHealthyInstanceAlive("after rejecting damaged native startup")
+                    assertBaselinePreserved()
+                    assertNoLaunchHealth(damaged.stagingDirectory)
                     evidence["damagedStartupRejected"] = buildJsonObject {
-                        put("passed", true)
-                        put("fixtureZipSha256", sha256(damagedZip))
+                        put("passed", true); put("fixtureZipSha256", sha256(damagedZip))
                         put("modifiedEntries", buildJsonArray { damagedEntries.forEach { add(JsonPrimitive(it)) } })
                         put("originalActiveBytesUnchanged", true)
-                        put("health", healthEvidence(damaged.stagingDirectory))
+                        put("startup", captureStartupEvidence(damaged.stagingDirectory, caseRoot, "damaged-native"))
                     }
-
-                    // Explicit fixture setup models a damaged registered active and its healthy previous install.
-                    // Both carry the actual version: fallback must also update a changed path at the same version.
-                    Files.writeString(activeFile, json.encodeToString(JsonObject.serializer(), buildJsonObject {
-                        put("repository", config.repository)
-                        put("version", healthyUpdate.version)
-                        put("executablePath", damaged.executable.toString())
-                        put("previousVersion", healthyUpdate.version)
-                        put("previousExecutablePath", healthy.executable.toString())
-                    }))
-                    val beforeFallbackProcesses = launched.size
-                    assertTrue(updater().launchRegisteredInstall(emptyArray()))
-                    val fallbackProcesses = launched.drop(beforeFallbackProcesses)
-                    assertEquals(2, fallbackProcesses.size)
-                    assertFalse(fallbackProcesses.first().isAlive)
-                    assertTrue(fallbackProcesses.last().isAlive)
-                    val fallbackRecord = json.parseToJsonElement(Files.readString(activeFile)).jsonObject
-                    assertEquals(healthy.executable.toString(), fallbackRecord.getValue("executablePath").jsonPrimitive.content)
-                    assertEquals(healthyUpdate.version, fallbackRecord.getValue("version").jsonPrimitive.content)
-                    evidence["registeredFallback"] = buildJsonObject {
-                        put("passed", true)
-                        put("registrySetupWasFixture", true)
-                        put("failedProcessId", fallbackProcesses.first().pid())
-                        put("healthyProcessId", fallbackProcesses.last().pid())
-                        put("activeExecutable", healthy.executable.toString())
-                    }
+                    // Failure retires its receipt. Hold the actual payload through pruning so
+                    // the later registered-install fixture can use this same real damaged EXE.
+                    damagedStageLease = assertNotNull(UpdateStorage.tryLeaseStage(updateRoot, damaged.stagingDirectory, config.repository))
+                    val beforeStaleActivation = launched.size
+                    assertFalse(damagedUpdater.activatePreparedUpdate(damaged))
+                    assertEquals(beforeStaleActivation, launched.size)
                     fixture.publish("after-damaged-failure", config.version, packagePath)
-                    val recoveredDamage = assertIs<UpdateState.Available>(damagedUpdater.check()).update
-                    assertTrue(recoveredDamage.assetName.contains("after-damaged-failure"))
+                    assertTrue(assertIs<UpdateState.Available>(damagedUpdater.check()).update.assetName.contains("after-damaged-failure"))
                     evidence["failedPreparedCandidateRevoked"] = JsonPrimitive(true)
 
-                    // Root composition must fail even though the EXE window and native player can start.
-                    // The former window-only ACK incorrectly accepted this authenticated fixture ZIP.
                     val damagedRootZip = caseRoot.resolve("damaged-root-fixture.zip")
                     val damagedRootEntries = damageRootWorkerCatalog(packagePath, damagedRootZip)
                     fixture.publish("damaged-root", config.version, damagedRootZip)
@@ -230,70 +243,108 @@ class DesktopUpdaterIntegrationTest {
                     val damagedRootUpdate = assertIs<UpdateState.Available>(damagedRootUpdater.check()).update
                     val damagedRoot = assertNotNull(damagedRootUpdater.prepareUpdate(damagedRootUpdate))
                     val beforeRootDamageProcesses = launched.size
-                    assertFalse(damagedRootUpdater.activatePreparedUpdate(damagedRoot))
-                    assertTrue(launched.size > beforeRootDamageProcesses, "The broken Root fixture must reach actual EXE startup")
+                    assertFalse(activate(damagedRootUpdater, damagedRoot))
+                    assertTrue(launched.size > beforeRootDamageProcesses)
                     assertFalse(launched.last().isAlive)
-                    assertContentEquals(originalActive, Files.readAllBytes(activeFile))
-                    assertHealthyInstanceAlive("after rejecting damaged Root startup")
-                    val failedRootLaunches = launchDirectories(damagedRoot.stagingDirectory)
-                    assertTrue(failedRootLaunches.isNotEmpty())
-                    failedRootLaunches.forEach { directory ->
-                        assertFalse(Files.exists(directory.resolve("startup-health.txt"), NOFOLLOW_LINKS),
-                            "A failed Root must never acknowledge startup")
-                        assertFalse(Files.exists(directory.resolve("startup-version.txt"), NOFOLLOW_LINKS),
-                            "Version publication must also wait for a real Root frame")
-                    }
+                    assertBaselinePreserved()
+                    assertNoLaunchHealth(damagedRoot.stagingDirectory)
                     evidence["damagedRootStartupRejected"] = buildJsonObject {
-                        put("passed", true)
-                        put("fixtureZipSha256", sha256(damagedRootZip))
+                        put("passed", true); put("fixtureZipSha256", sha256(damagedRootZip))
                         put("modifiedEntries", buildJsonArray { damagedRootEntries.forEach { add(JsonPrimitive(it)) } })
-                        put("originalActiveBytesUnchanged", true)
-                        put("rootHealthAcknowledged", false)
-                        put("health", healthEvidence(damagedRoot.stagingDirectory))
+                        put("originalActiveBytesUnchanged", true); put("rootHealthAcknowledged", false)
+                        put("startup", captureStartupEvidence(damagedRoot.stagingDirectory, caseRoot, "damaged-root"))
                     }
 
-                    if (previousPath != null && previousConfig != null) {
-                        require(previousConfig.repository == config.repository)
-                        launched.toList().asReversed().forEach { StartupHealth.terminate(it, checkNotNull(launchObservations[it])) }
-                        val previousDirectory = Files.createDirectory(caseRoot.resolve("previous-launcher"))
-                        val previousExecutable = SafeUpdateZip.extract(previousPath, previousDirectory, previousConfig.executable)
-                        val beforeLaunchDirectories = launchDirectories(healthy.stagingDirectory)
-                        val original = ProcessBuilder(previousExecutable.toString()).directory(previousExecutable.parent.toFile())
-                            .redirectOutput(caseRoot.resolve("previous-output.log").toFile())
-                            .redirectError(caseRoot.resolve("previous-error.log").toFile())
-                        childEnvironment.configure(original)
-                        val originalProcess = original.start()
-                        recordLaunch(originalProcess)
-                        val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(45)
-                        while (originalProcess.isAlive && System.nanoTime() < deadline) {
-                            checkNotNull(launchObservations[originalProcess]).observe()
-                            observeOwnedDescendants(originalProcess, caseRoot, observed)
-                            delay(25)
-                        }
-                        assertFalse(originalProcess.isAlive, "Actual previous EXE did not delegate and exit")
-                        assertEquals(0, originalProcess.exitValue())
-                        val forwarded = observed.values.filter { it.executable == healthy.executable && it.handle.isAlive }
-                        assertTrue(forwarded.isNotEmpty(), "No live new EXE was observed beneath the actual previous EXE")
-                        assertTrue((launchDirectories(healthy.stagingDirectory) - beforeLaunchDirectories).isNotEmpty())
-                        assertEquals(healthy.executable.toString(),
-                            json.parseToJsonElement(Files.readString(activeFile)).jsonObject.getValue("executablePath").jsonPrimitive.content)
-                        evidence["actualPreviousExeForwarding"] = buildJsonObject {
-                            put("tested", true)
-                            put("passed", true)
-                            put("previousVersion", previousConfig.version)
-                            put("previousZipSha256", sha256(previousPath))
-                            put("previousExecutable", previousExecutable.toString())
-                            put("originalProcessId", originalProcess.pid())
-                            put("newProcessIds", buildJsonArray { forwarded.forEach { add(JsonPrimitive(it.handle.pid())) } })
-                            put("shortcutTested", false)
-                        }
-                    } else {
-                        evidence["actualPreviousExeForwarding"] = buildJsonObject {
-                            put("tested", false)
-                            put("reason", "No actual previous package supplied; only the shared registry forwarding function was tested")
-                        }
+                    fixture.publish("healthy", config.version, packagePath)
+                    val healthyUpdater = updater()
+                    val healthyUpdate = assertIs<UpdateState.Available>(healthyUpdater.check()).update
+                    val healthy = assertNotNull(healthyUpdater.prepareUpdate(healthyUpdate))
+                    assertTrue(activate(healthyUpdater, healthy))
+                    val goodProcess = launched.last()
+                    assertTrue(goodProcess.isAlive)
+                    assertLaunchHealth(healthy.stagingDirectory, checkNotNull(lastLaunchToken), config.version)
+                    val registered = json.parseToJsonElement(Files.readString(activeFile)).jsonObject
+                    assertEquals(healthyUpdate.version, registered.getValue("version").jsonPrimitive.content)
+                    assertEquals(healthy.executable.toString(), registered.getValue("executablePath").jsonPrimitive.content)
+                    assertEquals(baselineUpdate.version, registered.getValue("previousVersion").jsonPrimitive.content)
+                    assertEquals(baselinePrepared.executable.toString(), registered.getValue("previousExecutablePath").jsonPrimitive.content)
+                    assertEquals(3, rollbacks); assertEquals(1, commits)
+                    evidence["successActivation"] = buildJsonObject {
+                        put("passed", true); put("processId", goodProcess.pid()); put("executable", healthy.executable.toString())
+                        put("previousVersion", baseline); put("health", healthEvidence(healthy.stagingDirectory))
                     }
-                } finally { evidence["fixtureHttp"] = fixture.evidence() }
+                    evidence["realDownloadHandoff"] = buildJsonObject {
+                        put("passed", true); put("failedTransfersRolledBack", rollbacks); put("healthyTransfersCommitted", commits)
+                        put("queueFile", queueFile.toString()); put("mediaTasksUsed", false)
+                    }
+                    queue.shutdownForApplicationExit(); downloads = null
+                    stop(goodProcess)
+                    // Clear committed custody using the real authority while its exact registry
+                    // proof still exists. Do not delete transfer files or forge a queue receipt.
+                    releaseCommittedQueueTransfer()
+
+                    // Both payloads really carry .122. Replace only the explicit fixture registry,
+                    // retaining the equal-version/different-path fallback regression.
+                    Files.writeString(activeFile, json.encodeToString(JsonObject.serializer(), buildJsonObject {
+                        put("repository", config.repository); put("version", healthyUpdate.version)
+                        put("executablePath", damaged.executable.toString()); put("previousVersion", healthyUpdate.version)
+                        put("previousExecutablePath", healthy.executable.toString())
+                    }))
+                    damagedStageLease?.close(); damagedStageLease = null
+                    val beforeFallbackProcesses = launched.size
+                    assertTrue(updater().launchRegisteredInstall(emptyArray()))
+                    val fallbackProcesses = launched.drop(beforeFallbackProcesses)
+                    assertEquals(2, fallbackProcesses.size)
+                    assertFalse(fallbackProcesses.first().isAlive); assertTrue(fallbackProcesses.last().isAlive)
+                    val fallbackRecord = json.parseToJsonElement(Files.readString(activeFile)).jsonObject
+                    assertEquals(healthy.executable.toString(), fallbackRecord.getValue("executablePath").jsonPrimitive.content)
+                    assertEquals(healthyUpdate.version, fallbackRecord.getValue("version").jsonPrimitive.content)
+                    evidence["registeredFallback"] = buildJsonObject {
+                        put("passed", true); put("registrySetupWasFixture", true); put("sameActualVersion", true)
+                        put("failedProcessId", fallbackProcesses.first().pid()); put("healthyProcessId", fallbackProcesses.last().pid())
+                        put("activeExecutable", healthy.executable.toString())
+                    }
+                    stop(fallbackProcesses.last())
+                    releaseCommittedQueueTransfer()
+
+                    val previousDirectory = Files.createDirectory(caseRoot.resolve("previous-launcher"))
+                    val previousExecutable = SafeUpdateZip.extract(previousPath, previousDirectory, previousConfig.executable)
+                    val beforeLaunchDirectories = launchDirectories(healthy.stagingDirectory)
+                    val original = ProcessBuilder(previousExecutable.toString()).directory(previousExecutable.parent.toFile())
+                        .redirectOutput(caseRoot.resolve("previous-output.log").toFile())
+                        .redirectError(caseRoot.resolve("previous-error.log").toFile())
+                    childEnvironment.configure(original)
+                    val originalProcess = original.start(); recordLaunch(originalProcess)
+                    val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(45)
+                    while (originalProcess.isAlive && System.nanoTime() < deadline) {
+                        checkNotNull(launchObservations[originalProcess]).observe()
+                        observeOwnedDescendants(originalProcess, caseRoot, observed); delay(25)
+                    }
+                    assertFalse(originalProcess.isAlive, "Actual previous EXE did not delegate and exit")
+                    assertEquals(0, originalProcess.exitValue())
+                    val forwarded = observed.values.filter { it.executable == healthy.executable && it.handle.isAlive }
+                    assertTrue(forwarded.isNotEmpty())
+                    val forwardedLaunches = launchDirectories(healthy.stagingDirectory) - beforeLaunchDirectories
+                    assertTrue(forwardedLaunches.isNotEmpty())
+                    forwardedLaunches.forEach { directory ->
+                        assertTrue(Files.isRegularFile(directory.resolve("startup-health.txt")))
+                        assertEquals(config.version, Files.readString(directory.resolve("startup-version.txt")).trim())
+                    }
+                    assertEquals(healthy.executable.toString(),
+                        json.parseToJsonElement(Files.readString(activeFile)).jsonObject.getValue("executablePath").jsonPrimitive.content)
+                    evidence["actualPreviousExeForwarding"] = buildJsonObject {
+                        put("tested", true); put("passed", true); put("previousVersion", previousConfig.version)
+                        put("previousZipSha256", sha256(previousPath)); put("previousExecutable", previousExecutable.toString())
+                        put("originalProcessId", originalProcess.pid())
+                        put("newProcessIds", buildJsonArray { forwarded.forEach { add(JsonPrimitive(it.handle.pid())) } })
+                        put("shortcutTested", false)
+                    }
+                } finally {
+                    downloads?.shutdownForApplicationExit()
+                    damagedStageLease?.close()
+                    updaters.asReversed().forEach { it.close() }
+                    evidence["fixtureHttp"] = fixture.evidence()
+                }
             }
             evidence["passed"] = JsonPrimitive(true)
         } catch (error: Throwable) {
@@ -423,6 +474,47 @@ class DesktopUpdaterIntegrationTest {
 
     private fun launchDirectories(stage: Path): Set<Path> = Files.list(stage).use { stream ->
         stream.filter { Files.isDirectory(it, NOFOLLOW_LINKS) && it.fileName.toString().startsWith("launch-") }.toList().toSet()
+    }
+
+    private fun assertLaunchHealth(stage: Path, token: String, actualVersion: String) {
+        val directories = launchDirectories(stage)
+        assertTrue(directories.isNotEmpty())
+        directories.forEach { directory ->
+            assertEquals(token, Files.readString(directory.resolve("startup-health.txt")).trim())
+            assertEquals(actualVersion, Files.readString(directory.resolve("startup-version.txt")).trim())
+        }
+    }
+
+    private fun assertNoLaunchHealth(stage: Path) {
+        val directories = launchDirectories(stage)
+        assertTrue(directories.isNotEmpty())
+        directories.forEach { directory ->
+            assertFalse(Files.exists(directory.resolve("startup-health.txt"), NOFOLLOW_LINKS))
+            assertFalse(Files.exists(directory.resolve("startup-version.txt"), NOFOLLOW_LINKS))
+        }
+    }
+
+    /** Preserve bounded owned-process evidence before the next check prunes a
+     * retired stage. This stays in the temporary fixture, never a cloud upload. */
+    private fun captureStartupEvidence(stage: Path, caseRoot: Path, label: String): JsonElement = buildJsonObject {
+        put("health", healthEvidence(stage))
+        put("logs", buildJsonArray {
+            launchDirectories(stage).forEach { directory ->
+                val destination = caseRoot.resolve("startup-evidence").resolve(label).resolve(directory.fileName)
+                Files.createDirectories(destination)
+                for (leaf in listOf("startup-output.log", "startup-error.log")) {
+                    val source = directory.resolve(leaf)
+                    if (!Files.isRegularFile(source, NOFOLLOW_LINKS)) continue
+                    val target = destination.resolve(leaf)
+                    val bytes = Files.newInputStream(source).use { it.readNBytes(2 * 1024 * 1024) }
+                    Files.write(target, bytes)
+                    add(buildJsonObject {
+                        put("path", target.toString()); put("sha256", sha256(target))
+                        put("bytes", bytes.size); put("truncated", Files.size(source) > bytes.size)
+                    })
+                }
+            }
+        })
     }
 
     private fun healthEvidence(stage: Path): JsonElement = buildJsonArray {
@@ -560,6 +652,8 @@ class DesktopUpdaterIntegrationTest {
             localRoutes[localPath] = route
             allowedUrls[url] = localPath
         }
+
+        fun requestCount(path: String): Long = localRoutes[path]?.requests?.get() ?: 0L
 
         fun evidence(): JsonElement = buildJsonObject {
             put("address", "127.0.0.1:${server.address.port}")
