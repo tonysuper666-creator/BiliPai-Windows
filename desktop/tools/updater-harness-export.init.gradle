@@ -1,0 +1,57 @@
+import groovy.json.JsonOutput
+import java.security.MessageDigest
+
+// Read the already-compiled test graph in the same temporary, serial Gradle JVM.
+// No GUI/native fixture is executed by this task.
+gradle.projectsEvaluated {
+    def target = gradle.rootProject
+    target.tasks.register('writePackagedUpdaterHarnessInputs') {
+        dependsOn target.tasks.named('testClasses')
+        outputs.upToDateWhen { false }
+        doLast {
+            def outputName = target.findProperty('packagedUpdaterHarnessInputs')
+            if (!outputName) throw new GradleException('A fresh harness input output is required')
+            def output = new File(outputName.toString())
+            if (output.exists() || !output.parentFile.isDirectory())
+                throw new GradleException('Harness inputs cannot overwrite an existing result')
+            def hash = { File file ->
+                def digest = MessageDigest.getInstance('SHA-256')
+                file.withInputStream { stream ->
+                    byte[] buffer = new byte[1024 * 1024]
+                    int count
+                    while ((count = stream.read(buffer)) != -1) digest.update(buffer, 0, count)
+                }
+                digest.digest().collect { String.format('%02x', it) }.join('')
+            }
+            def included = [
+                'org.jetbrains.kotlin:kotlin-test',
+                'org.jetbrains.kotlin:kotlin-test-junit5',
+                'org.junit.jupiter:junit-jupiter-api',
+                'org.junit.platform:junit-platform-commons',
+                'org.opentest4j:opentest4j',
+                'org.apiguardian:apiguardian-api',
+            ] as Set
+            def artifacts = target.configurations.getByName('testRuntimeClasspath')
+                .resolvedConfiguration.resolvedArtifacts.findAll {
+                    included.contains(it.moduleVersion.id.group + ':' + it.name)
+                }.collect {
+                    [group: it.moduleVersion.id.group, name: it.name, version: it.moduleVersion.id.version,
+                     file: it.file.absolutePath, sha256: hash(it.file)]
+                }
+            def repository = target.projectDir.parentFile
+            def revision = target.providers.exec {
+                commandLine 'git', '-C', repository.absolutePath, 'rev-parse', 'HEAD'
+            }.standardOutput.asText.get().trim()
+            def release = new File(System.getProperty('java.home'), 'release')
+            def inputs = [sourceSha: revision,
+                planSha256: hash(new File(repository, '.github/windows-source-validation-plan.json')),
+                classRoots: target.extensions.getByName('sourceSets').getByName('test').output.classesDirs.files.collect { it.absolutePath },
+                gradleUserHome: gradle.gradleUserHomeDir.absolutePath,
+                artifacts: artifacts,
+                jdk: [releaseSha256: hash(release), runtimeVersion: System.getProperty('java.runtime.version')],
+                compiler: [declaredKotlinJvmPlugin: '2.4.0', buildScriptSha256: hash(target.buildFile),
+                           gradleVersion: gradle.gradleVersion]]
+            output.setText(JsonOutput.prettyPrint(JsonOutput.toJson(inputs)) + '\n', 'UTF-8')
+        }
+    }
+}
