@@ -2581,7 +2581,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     active && mountedSettingsHandle != null && homeRootRef.get() === mountedSettingsHandle &&
                                         mountedSettingsHandle.isActive() && mountedSettingsHandle.route.get() === messageRoutes &&
                                         mountedSettingsHandle.retainer.root.value === messageRoutes.root &&
-                                        messageRoutes.owns() && messageRoutes.currentKey == entryKey &&
+                                        messageRoutes.owns() && messageRoutes.isCurrentContent(entryKey) &&
                                         settingsNavigator.state.value.current === mountedSettingsPage && services.imageLifetime.isActive() &&
                                         hostVisible && hostDisplayable && !isClosing() && !activatingUpdate
                                 }
@@ -2589,7 +2589,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     if (settingsPageBackOwns()) {
                                         if ((entryKey is BiliPaiNavKey.SettingsCategory && mountedSettingsPage is DesktopSettingsPage.Category) ||
                                             (entryKey == BiliPaiNavKey.SettingsSearch && mountedSettingsPage is DesktopSettingsPage.Search))
-                                            messageRoutes.callbackFor(entryKey) { commands.back() }
+                                            messageRoutes.callbackForContent(entryKey) { commands.back() }
                                         else messageRoutes.root.entry.gate.commit {
                                             if (settingsPageBackOwns()) settingsNavigator.pop()
                                         }
@@ -2605,15 +2605,15 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 historyWritesScope = scope, discovery = discovery, privacy = privacyBindings,
                                 onCategoryOpen = { category ->
                                     if (com.android.purebilibili.feature.settings.canonicalSettingsRootCategory(category) == SettingsRootCategory.SYSTEM_ABOUT)
-                                        messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.SettingsCategory(SettingsRootCategory.SYSTEM_ABOUT)) }
+                                        messageRoutes.callbackForContent(entryKey) { commands.push(BiliPaiNavKey.SettingsCategory(SettingsRootCategory.SYSTEM_ABOUT)) }
                                     else settingsNavigator.openCategory(category)
                                 },
-                                onOpenSearch = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.SettingsSearch) } },
+                                onOpenSearch = { messageRoutes.callbackForContent(entryKey) { commands.push(BiliPaiNavKey.SettingsSearch) } },
                                 onSearchResult = { result ->
                                     val ownerCategory = com.android.purebilibili.feature.settings.resolveSettingsRootCategoryForSearchTarget(result.target)
                                     if (ownerCategory == SettingsRootCategory.SYSTEM_ABOUT) {
                                         com.android.purebilibili.feature.settings.resolveSettingsSearchNavigation(result)?.let { target ->
-                                            messageRoutes.callbackFor(entryKey) { commands.push(target) }
+                                            messageRoutes.callbackForContent(entryKey) { commands.push(target) }
                                         }
                                     } else settingsNavigator.openSearchResult(result)
                                 },
@@ -2627,7 +2627,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 },
                                 appearanceContent = { DesktopAppearanceSettings(appearance,
                                     onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
-                                    onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } }) },
+                                    onNavigateToIconSettings = { messageRoutes.callbackForContent(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } }) },
                                 pluginsContent = { PluginCenterScreen(pluginRuntime, pluginJsonUpdateHold, ::openVideo, ::openQueue, ::openJsPlugin) },
                                 playbackContent = { page, back ->
                                     DesktopOriginalPlaybackSettingsRootHost(messageRoutes, homeRootRef, entryKey, page,

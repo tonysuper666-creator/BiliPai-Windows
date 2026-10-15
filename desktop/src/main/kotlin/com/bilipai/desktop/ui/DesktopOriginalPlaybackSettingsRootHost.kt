@@ -53,7 +53,7 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
     val current = {
         pageScope.isActive && activeNow && handleReference.get() === capturedHandle &&
             capturedHandle.isActive() && capturedHandle.route.get() === routes && routes.owns() &&
-            routes.currentKey == entryKey && navigator.state.value.current === page && imageLifetime.isActive()
+            routes.isCurrentContent(entryKey) && navigator.state.value.current === page && imageLifetime.isActive()
     }
     val commit = remember(routes, pageIdentity, capturedHandle, imageLifetime) {
         { action: () -> Unit ->
@@ -103,7 +103,7 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
     // The local settings Detail is inside an actual NavDisplay entry. Register its same
     // original Back callback with that entry's existing child dispatcher before physical pop.
     val ownedBack: () -> Unit = {
-        routes.callbackFor(entryKey) { if (current()) backNow() }
+        routes.callbackForContent(entryKey) { if (current()) backNow() }
     }
     val backState = androidx.navigationevent.compose.rememberNavigationEventState(androidx.navigationevent.NavigationEventInfo.None)
     androidx.navigationevent.compose.NavigationBackHandler(state = backState,

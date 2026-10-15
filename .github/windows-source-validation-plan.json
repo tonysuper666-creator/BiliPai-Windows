@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "aea5258a8cf8569dcf3c212e9e23c70ef0d65f41",
-  "windowsVersion": "0.2.427.108",
-  "createdAt": "2026-10-15T03:37:27.270064+00:00",
+  "baseHead": "968f1804c5acf4032ec1d35a572c0ff019910c95",
+  "windowsVersion": "0.2.427.109",
+  "createdAt": "2026-10-15T04:19:21.452831+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -88,7 +88,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
       "normalization": "lf",
-      "sha256": "54731f60aeb2ef8707a521fe440d4f33d55f9dd9c70bff75378377dea5f66f84"
+      "sha256": "7d6660779e339a7ea39c66a0d855013ae81e475abfdb0b38a35eb2a5baad1c34"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
@@ -229,6 +229,16 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoHost.kt",
       "normalization": "lf",
       "sha256": "7994fa481bb800c8d9146c352a63920a32023571fcc107b79ca1843f01c9473c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackSettingsRootHost.kt",
+      "normalization": "lf",
+      "sha256": "340e19742ac6019416715244ce5dedea131a0eb8cb2235d462ed7cbaf272a7a8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "normalization": "lf",
+      "sha256": "1ba79dfa109b7ada562d5717b0e3e8ffecc3e833ea6db4dd75a5545f22a17319"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
@@ -394,6 +404,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputPolicyTest.kt",
       "normalization": "lf",
       "sha256": "a1d2eba7f62d62c861f7b19bff7022b2bcbdc9cbed11099465a0ea65e8ca0a58"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBgmCommentLinkRootNavigationTest.kt",
+      "normalization": "lf",
+      "sha256": "af86dc6d65a5c2c6098adbe7fd74a8a692dcbe5947a7b6e87e60128cb27c27b2"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopChargedCommentProtocolTest.kt",
@@ -1453,7 +1468,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "ebb65e3f4c02d841874056329efceef85cf3ea01f040e4ede485483b3847d1dc"
+      "sha256": "5837b424d2a50b7f5eb67451319aeafd7752690f16848bd1d0c793e1969e667f"
     }
   ],
   "classes": {
@@ -1464,9 +1479,10 @@
     "com.bilipai.desktop.ui.DesktopOriginalSubtitleCacheOwnershipTest": 4,
     "com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest": 3,
     "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4,
-    "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8
+    "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8,
+    "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 11
   },
-  "expectedTests": 65,
+  "expectedTests": 76,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1474,16 +1490,10 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
-    "desktop/build.gradle.kts",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerTapGesturesTest.kt",
-    "desktop/tools/extract-upstream-video-player-section-full.py",
-    "desktop/tools/tests/test_v040_player_cover_source.py",
-    "desktop/tools/tests/test_v040_player_tap_source.py",
-    "desktop/tools/v040_player_cover.py",
-    "desktop/tools/v040_player_tap.py",
-    "desktop/upstream-slices/v040-player-tap/PlayerGestureHandler.kt",
-    "desktop/upstream-slices/v040-player-tap/manifest.json",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackSettingsRootHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBgmCommentLinkRootNavigationTest.kt",
     "desktop/upstream-sources.json"
   ]
 }

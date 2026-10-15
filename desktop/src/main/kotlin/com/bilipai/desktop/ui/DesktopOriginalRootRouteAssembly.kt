@@ -339,6 +339,16 @@ internal class DesktopOriginalRootRouteAssembly(
     fun callbackFor(key: BiliPaiNavKey, action: () -> Unit) {
         if (owns() && currentKey == key) action()
     }
+    /** Settings may be the selected original MainHost tab instead of a physical
+     * Settings stack entry. Borrow its live selection; an overlay, another tab,
+     * unbound host or retired Root never admits the old content. Physical entry
+     * callbacks deliberately keep callbackFor's stricter contract above. */
+    fun isCurrentContent(key: BiliPaiNavKey): Boolean = owns() &&
+        (currentKey == key || currentKey == BiliPaiNavKey.MainHost &&
+            mainHostDestination.get()?.invoke() == key)
+    fun callbackForContent(key: BiliPaiNavKey, action: () -> Unit) {
+        if (isCurrentContent(key)) action()
+    }
     private fun pruneCategoryOwners() {
         val present = stack.toSet()
         val retired = synchronized(categoryLock) {

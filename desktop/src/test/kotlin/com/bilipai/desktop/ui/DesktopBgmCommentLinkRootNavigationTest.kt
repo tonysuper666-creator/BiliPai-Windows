@@ -209,6 +209,101 @@ class DesktopBgmCommentLinkRootNavigationTest {
         }
     }
 
+    @Test fun selectedMainHostSettingsAdmitsContentWithoutBroadeningPhysicalEntryCallbacks() {
+        Fixture().use { f ->
+            edt {
+                f.stack.clear(); f.stack += BiliPaiNavKey.MainHost
+                val selected = AtomicReference<BiliPaiNavKey>(BiliPaiNavKey.Settings)
+                val destination: () -> BiliPaiNavKey = { selected.get() }
+                f.routes.bindMainHostDestination(destination)
+                var contentActions = 0
+                var physicalActions = 0
+                assertTrue(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+                f.routes.callbackForContent(BiliPaiNavKey.Settings) { contentActions++ }
+                f.routes.callbackFor(BiliPaiNavKey.Settings) { physicalActions++ }
+                assertEquals(1, contentActions)
+                assertEquals(0, physicalActions, "MainHost remains the sole physical stack entry")
+                assertEquals(listOf(BiliPaiNavKey.MainHost), f.stack.toList())
+                selected.set(BiliPaiNavKey.Home)
+                f.routes.callbackForContent(BiliPaiNavKey.Settings) { contentActions++ }
+                assertEquals(1, contentActions, "The outgoing Settings tab cannot act")
+                assertTrue(f.routes.isCurrentContent(BiliPaiNavKey.Home))
+                f.routes.unbindMainHostDestination(destination)
+            }
+        }
+    }
+
+    @Test fun physicalOverlayAndUnboundHostRejectSettingsWhileStaleUnbindKeepsSuccessorBinding() {
+        Fixture().use { f ->
+            edt {
+                f.stack.clear(); f.stack += BiliPaiNavKey.MainHost
+                val first: () -> BiliPaiNavKey = { BiliPaiNavKey.Settings }
+                val successor: () -> BiliPaiNavKey = { BiliPaiNavKey.Settings }
+                f.routes.bindMainHostDestination(first)
+                assertTrue(f.routes.push(BiliPaiNavKey.SettingsSearch))
+                assertFalse(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+                var actions = 0
+                f.routes.callbackForContent(BiliPaiNavKey.Settings) { actions++ }
+                f.routes.callbackForContent(BiliPaiNavKey.SettingsSearch) { actions++ }
+                assertEquals(1, actions, "Only the physical foreground search may act")
+                assertTrue(f.routes.back())
+                assertTrue(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+                f.routes.bindMainHostDestination(successor)
+                f.routes.unbindMainHostDestination(first)
+                assertTrue(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+                f.routes.unbindMainHostDestination(successor)
+                assertFalse(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+                f.routes.callbackForContent(BiliPaiNavKey.Settings) { actions++ }
+                assertEquals(1, actions)
+            }
+        }
+    }
+
+    @Test fun realPlaybackSettingsMigrationUsesSelectedTabAndRetiresItsExistingStorePermit() {
+        Fixture().use { f ->
+            val selected = AtomicReference<BiliPaiNavKey>(BiliPaiNavKey.Settings)
+            val destination: () -> BiliPaiNavKey = { selected.get() }
+            edt {
+                f.stack.clear(); f.stack += BiliPaiNavKey.MainHost
+                f.routes.bindMainHostDestination(destination)
+            }
+            val owns = { f.routes.isCurrentContent(BiliPaiNavKey.Settings) }
+            val context = DesktopOriginalPlayerSettingsContext(f.context, owns, { action ->
+                var applied = false
+                val accepted = f.entry.gate.commit { if (owns()) { action(); applied = true } }
+                accepted && applied
+            })
+            val hardware = DesktopOriginalHardwareDecodePreferences(f.context.store)
+            runBlocking { hardware.ensureMigrated(context, legacyWindowsFallback = false) }
+            assertFalse(hardware.current(legacyWindowsFallback = true))
+            val file = f.folder.resolve("global/plugin-settings.json")
+            val before = Files.readAllBytes(file)
+            edt { selected.set(BiliPaiNavKey.Home) }
+            assertFailsWith<CancellationException> {
+                runBlocking { hardware.ensureMigrated(context, legacyWindowsFallback = true) }
+            }
+            assertContentEquals(before, Files.readAllBytes(file), "Retired Settings cannot alter canonical or mirror preferences")
+            edt { f.routes.unbindMainHostDestination(destination) }
+        }
+    }
+
+    @Test fun accountReplacementRetiresMainHostSettingsAndItsContentCallback() {
+        Fixture().use { f ->
+            edt {
+                f.stack.clear(); f.stack += BiliPaiNavKey.MainHost
+                val destination: () -> BiliPaiNavKey = { BiliPaiNavKey.Settings }
+                f.routes.bindMainHostDestination(destination)
+                assertTrue(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+                f.replaceAccount()
+                assertFalse(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+                var calls = 0
+                f.routes.callbackForContent(BiliPaiNavKey.Settings) { calls++ }
+                assertEquals(0, calls)
+                f.routes.unbindMainHostDestination(destination)
+            }
+        }
+    }
+
     @Test fun nativePrimaryAndNestedCommentLinksKeepTheirWholeReplyDestinationsInTheActualStack() {
         Fixture().use { f ->
             f.click("bilibili://comment/detail/14/470/701?comment_id=703&enterUri=bilibili%3A%2F%2Fmusic%3Fmusic_id%3DMA47")
