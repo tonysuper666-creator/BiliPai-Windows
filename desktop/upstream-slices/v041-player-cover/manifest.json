@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "fixedUpstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+  "upstreamTag": "v0.4.1",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "filename": "VideoPlayerSectionPolicy.kt",
+      "bytes": 65629,
+      "sha256Bytes": "9d6e6a20c5b64b39d8ce505ec2d77e4edb1c130aeac45a7a51382b09eabb3f4c",
+      "gitBlob": "d241e40a04c9a93d5c46b52244a152db8c48c59a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "filename": "VideoPlayerSection.kt",
+      "bytes": 324200,
+      "sha256Bytes": "e3abcb97d1bff0772da6c057d97454feb8a7ceaaf63b791d753a0456f76ad017",
+      "gitBlob": "9d2dc5dfb6d628099464e4f92db702b8ff502b24"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScale.kt",
+      "filename": "VideoDetailCoverContentScale.kt",
+      "bytes": 361,
+      "sha256Bytes": "babfe29760a9df6b6029d56cfd694f3210bb72b6a37e9c08b52bf53a4e70d8a1",
+      "gitBlob": "6204666c8b9d8ceac76e69389848e6acaadf9d7b"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerCoverPolicyTest.kt",
+      "filename": "VideoPlayerCoverPolicyTest.kt",
+      "bytes": 27050,
+      "sha256Bytes": "c1f2ec6f1bbdc00fd16a86c728e41617875d27de2490d71f20d701068b20525f",
+      "gitBlob": "e90914ccdba9d077a225411265919653ed7089f9"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicyTest.kt",
+      "filename": "VideoPlayerSectionPolicyTest.kt",
+      "bytes": 76208,
+      "sha256Bytes": "5a6346620a3dad39eaba9aea48d063a2fc848493fb682ccca1ee60bb3c446b86",
+      "gitBlob": "ac205d630d627922c14d3f5646a028334e1bd078"
+    }
+  ],
+  "sourceScope": "Complete raw originals retained for selected cover declarations/tests and actual Windows ordinary-BV caller integration; whole current Android Section is a reference, not a claim of complete current player UI parity.",
+  "fullV041PlayerParityClaimed": false,
+  "windowsForegroundPortalPreserved": true
+}

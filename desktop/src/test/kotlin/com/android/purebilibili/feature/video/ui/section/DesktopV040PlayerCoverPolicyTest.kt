@@ -29,11 +29,14 @@ class DesktopV040PlayerCoverPolicyTest {
     }
 
     @Test
-    fun landscapeCoversFitNormalPlaybackAndPreserveSourceCropDuringReturn() {
+    fun horizontalInlineCoverCropsAndFullscreenFitsWhileReturnPreservesSourceCrop() {
         for (mode in VideoSharedTransitionTargetMode.entries) {
             val normal = resolveVideoPlayerEntryPresentationSpec(false, false, false, mode)
             val returning = resolveVideoPlayerEntryPresentationSpec(false, true, false, mode)
-            assertEquals(VideoPlayerCoverContentScaleMode.Fit, normal.coverContentScaleMode)
+            val fullscreen = mode == VideoSharedTransitionTargetMode.LandscapeFullscreen ||
+                mode == VideoSharedTransitionTargetMode.PortraitFullscreen
+            assertEquals(if (fullscreen) VideoPlayerCoverContentScaleMode.Fit else VideoPlayerCoverContentScaleMode.Crop,
+                normal.coverContentScaleMode)
             assertEquals(VideoPlayerCoverContentScaleMode.Crop, returning.coverContentScaleMode)
             assertFalse(returning.fillCoverViewport)
         }

@@ -109,6 +109,7 @@
     "desktop/upstream-slices/v041-dynamic-author-search",
     "desktop/upstream-slices/v041-dynamic-comment-identity",
     "desktop/upstream-slices/v041-feed-import-title",
+    "desktop/upstream-slices/v041-player-cover",
     "desktop/upstream-slices/v041-rss-dynamic"
   ],
   "archives": [
@@ -4404,6 +4405,47 @@
           "sha256": "ad5739797bdb6b6b5f2c2af0568d612f9d7dbbf64ef769368bae40b2ace6acd8",
           "hashNormalization": "raw",
           "blob": "29a07571213940eedc00395fe1003b61c2d83d43"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v041-player-cover",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v041-player-cover/VideoDetailCoverContentScale.kt",
+          "sha256": "babfe29760a9df6b6029d56cfd694f3210bb72b6a37e9c08b52bf53a4e70d8a1",
+          "hashNormalization": "raw",
+          "blob": "6204666c8b9d8ceac76e69389848e6acaadf9d7b"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-player-cover/VideoPlayerCoverPolicyTest.kt",
+          "sha256": "c1f2ec6f1bbdc00fd16a86c728e41617875d27de2490d71f20d701068b20525f",
+          "hashNormalization": "raw",
+          "blob": "e90914ccdba9d077a225411265919653ed7089f9"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-player-cover/VideoPlayerSection.kt",
+          "sha256": "e3abcb97d1bff0772da6c057d97454feb8a7ceaaf63b791d753a0456f76ad017",
+          "hashNormalization": "raw",
+          "blob": "9d2dc5dfb6d628099464e4f92db702b8ff502b24"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-player-cover/VideoPlayerSectionPolicy.kt",
+          "sha256": "9d6e6a20c5b64b39d8ce505ec2d77e4edb1c130aeac45a7a51382b09eabb3f4c",
+          "hashNormalization": "raw",
+          "blob": "d241e40a04c9a93d5c46b52244a152db8c48c59a"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-player-cover/VideoPlayerSectionPolicyTest.kt",
+          "sha256": "5a6346620a3dad39eaba9aea48d063a2fc848493fb682ccca1ee60bb3c446b86",
+          "hashNormalization": "raw",
+          "blob": "ac205d630d627922c14d3f5646a028334e1bd078"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-player-cover/manifest.json",
+          "sha256": "3f2e18b0ddc03a47219a91ad03869c5b2eefc495fbed82b8add36e743d4faec9",
+          "hashNormalization": "raw",
+          "blob": "415f36f161c65aa08aa6b9e15d2b28fc05dd683e"
         }
       ]
     },
@@ -11153,6 +11195,51 @@
       "referenceOnly": false
     },
     {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScale.kt",
+      "localPath": "desktop/upstream-slices/v041-player-cover/VideoDetailCoverContentScale.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "6204666c8b9d8ceac76e69389848e6acaadf9d7b",
+      "sha256": "babfe29760a9df6b6029d56cfd694f3210bb72b6a37e9c08b52bf53a4e70d8a1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-player-cover-selected-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete selected original cover declarations, caller regions and unchanged test methods; not the whole Android player UI."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "localPath": "desktop/upstream-slices/v041-player-cover/VideoPlayerSection.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "9d2dc5dfb6d628099464e4f92db702b8ff502b24",
+      "sha256": "e3abcb97d1bff0772da6c057d97454feb8a7ceaaf63b791d753a0456f76ad017",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-player-cover-selected-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete selected original cover declarations, caller regions and unchanged test methods; not the whole Android player UI."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+      "localPath": "desktop/upstream-slices/v041-player-cover/VideoPlayerSectionPolicy.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "d241e40a04c9a93d5c46b52244a152db8c48c59a",
+      "sha256": "9d6e6a20c5b64b39d8ce505ec2d77e4edb1c130aeac45a7a51382b09eabb3f4c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-player-cover-selected-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete selected original cover declarations, caller regions and unchanged test methods; not the whole Android player UI."
+    },
+    {
       "path": "app/src/test/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParserTest.kt",
       "localPath": "desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParserTest.kt",
       "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
@@ -11178,6 +11265,36 @@
         "v041-dynamic-author-search-retained-original-inputs"
       ],
       "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerCoverPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v041-player-cover/VideoPlayerCoverPolicyTest.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "e90914ccdba9d077a225411265919653ed7089f9",
+      "sha256": "c1f2ec6f1bbdc00fd16a86c728e41617875d27de2490d71f20d701068b20525f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-player-cover-selected-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete selected original cover declarations, caller regions and unchanged test methods; not the whole Android player UI."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v041-player-cover/VideoPlayerSectionPolicyTest.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "ac205d630d627922c14d3f5646a028334e1bd078",
+      "sha256": "5a6346620a3dad39eaba9aea48d063a2fc848493fb682ccca1ee60bb3c446b86",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-player-cover-selected-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete selected original cover declarations, caller regions and unchanged test methods; not the whole Android player UI."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",

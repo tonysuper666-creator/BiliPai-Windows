@@ -641,6 +641,11 @@ internal class DesktopWindowsVideoActions(
         catch (failure: Exception) { if (current()) bootstrapError = failure.message ?: "播放器初始化失败" }
     }
     val viewportSource = assembly.native.current()
+    SideEffect {
+        nativeSurface.bindViewportSource(route, viewportLease, assembly, viewportSource) {
+            samePhysicalEntry() && !latestPip
+        }
+    }
     var seekPreview by remember(assembly, native, route) { mutableStateOf<DesktopWindowsVideoSeekPreview?>(null) }
     // Capture this already-admitted UI receipt on the actual composition lane.
     // Deferred preference predicates retain only its immutable source reference.
@@ -697,6 +702,116 @@ internal class DesktopWindowsVideoActions(
             (!requirePicture || (!actual.audioOnly && actual.videoCodec != null &&
                 actual.videoWidth > 0 && actual.videoHeight > 0))
     }
+    // Cover inputs never borrow the previous video's loading CID or native frame.
+    val coverBootstrapVerified = presentationVerified
+    val coverLoadState = assembly.playback.captureDesktopLoadState()
+    val coverRequest = coverLoadState.currentRequest.takeIf { coverBootstrapVerified }
+    val coverRequestToken = if (coverBootstrapVerified) coverLoadState.currentLoadRequestToken else 0L
+    val coverBvid = coverRequest?.bvid ?: route.bvid
+    fun coverEntryCurrent(): Boolean = samePhysicalEntry() && !latestPip && rootEnvironment.owns() &&
+        presentationVerified == coverBootstrapVerified && currentPresentationAlive
+    fun coverRequestCurrent(): Boolean = try {
+        if (!coverEntryCurrent()) false
+        else if (!coverBootstrapVerified) true
+        else {
+            val load = assembly.captureLoadState()
+            load.currentRequest === coverRequest && load.currentLoadRequestToken == coverRequestToken &&
+                (coverRequest == null || load.currentBvid == coverRequest.bvid)
+        }
+    } catch (_: CancellationException) { false }
+    fun coverAcceptedCurrentOrThrow(expected: DesktopOriginalVideoAcceptedPublication): Boolean {
+        if (!coverBootstrapVerified || !coverRequestCurrent() ||
+            !pictureFactory.isPresentationCurrent(assembly, expected) || !assembly.native.isCurrent(expected)) return false
+        val value = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return false
+        if (value.info.bvid != expected.request.bvid || value.info.cid != expected.request.cid ||
+            value.info.bvid != coverBvid) return false
+        val load = assembly.captureLoadState()
+        val origin = expected.bootstrapOrigin
+        val page = expected.pageSubject
+        val full = expected.fullLoadSubject
+        return when {
+            origin != null -> origin.seed.assembly === assembly && origin.matchesResolvedRequest(expected.request) &&
+                ((origin.seed.route === route && origin.seed.ownsEntry()) || expected === presentedPictureSource)
+            page != null -> page.sameOriginalRequestIdentity(load) && load.currentCid == expected.request.cid &&
+                page.matchesResolvedRequest(expected.request)
+            full != null -> full.sameOriginalRequestIdentity(load)
+            expected === presentedPictureSource -> load.currentRequest?.let { request ->
+                captureDesktopOriginalResolvedMediaRequest(load, request, load.currentLoadRequestToken).let {
+                    it.bvid == expected.request.bvid && it.cid == expected.request.cid
+                }
+            } == true
+            else -> false
+        }
+    }
+    fun coverAcceptedCurrent(expected: DesktopOriginalVideoAcceptedPublication): Boolean = try {
+        coverAcceptedCurrentOrThrow(expected)
+    } catch (_: CancellationException) { false }
+    fun captureCoverRuntime(expected: DesktopOriginalVideoAcceptedPublication): DesktopWindowsVideoEntryCoverRuntime? {
+        var captured: DesktopWindowsVideoEntryCoverRuntime? = null
+        if (coverAcceptedCurrent(expected)) assembly.native.admitPlaybackDispatch(expected) {
+            if (coverAcceptedCurrent(expected)) {
+                val lease = native.captureNativeVideoCanvasLease(viewportLease, expected.nativeSource)
+                if (lease != null) captured = DesktopWindowsVideoEntryCoverRuntime(expected, lease,
+                    assembly.section.snapshot(), assembly.section.playWhenReady,
+                    assembly.section.isPlaying, assembly.section.currentPosition)
+            }
+        }
+        return captured
+    }
+    val coverRuntime = viewportSource?.let(::captureCoverRuntime)
+    fun currentCoverRuntime(captured: DesktopWindowsVideoEntryCoverRuntime?): DesktopWindowsVideoEntryCoverRuntime? {
+        if (captured == null) return null
+        return captureCoverRuntime(captured.source)?.takeIf {
+            it.lease.playbackRevision == captured.lease.playbackRevision &&
+                it.lease.peer === captured.lease.peer && it.lease.hostWindowHandle == captured.lease.hostWindowHandle
+        }
+    }
+    fun coverStillCurrent(): Boolean = coverRequestCurrent() &&
+        (coverRuntime == null || currentCoverRuntime(coverRuntime) != null)
+    fun coverCanReveal(): Boolean = currentCoverRuntime(coverRuntime)?.state?.firstVideoFrameReady == true
+    fun playFromEntryCover(): Boolean {
+        val captured = coverRuntime ?: return false
+        var played = false
+        return try {
+            pictureFactory.withPresentationAdmission(assembly, captured.source) {
+                // Native readback admission has returned; original control writes
+                // retain Store -> entry -> control/native lock order.
+                if (currentCoverRuntime(captured) != null) {
+                    com.android.purebilibili.feature.video.usecase.playPlayerFromUserAction(assembly.section)
+                    played = true
+                }
+            } && played
+        } catch (_: CancellationException) { false }
+    }
+    var coverDetailUrl = ""
+    var coverMetadataVertical = false
+    if (coverRequest != null && coverRequestCurrent()) {
+        metadataAdmission?.admit {
+            val currentDetail = assembly.playback.detailState.value
+            if (coverRequestCurrent() && currentDetail.requestToken == coverRequestToken &&
+                currentDetail.requestBvid == coverRequest.bvid && currentDetail.requestCid == coverRequest.cid) {
+                val info = currentDetail.info
+                if (info?.bvid == coverBvid) {
+                    coverDetailUrl = info.pic
+                    coverMetadataVertical = info.dimension?.let { it.width > 0 && it.height > it.width } == true
+                }
+            }
+        }
+    }
+    if (coverRuntime != null) {
+        val acceptedInfo = success?.info?.takeIf {
+            it.bvid == coverRuntime.source.request.bvid && it.cid == coverRuntime.source.request.cid
+        }
+        if (acceptedInfo != null) {
+            coverDetailUrl = acceptedInfo.pic
+            coverMetadataVertical = acceptedInfo.dimension?.let { it.width > 0 && it.height > it.width } == true
+        }
+    }
+    val coverContentKey = DesktopWindowsVideoEntryCoverIdentity(assembly, route, coverRequest, coverRequestToken,
+        coverRuntime?.source, coverRuntime?.lease?.playbackRevision, coverRuntime?.lease?.peer)
+    val coverAutoPlay by remember(platforms.holder.settingsContext) {
+        DesktopOriginalPlayerSectionSettings.getClickToPlay(platforms.holder.settingsContext)
+    }.collectAsState(DesktopOriginalPlayerSectionSettings.getClickToPlaySync(platforms.holder.settingsContext))
     var showSponsorSegment by remember(assembly, viewportSource) { mutableStateOf(false) }
     fun sponsorCurrent(expected: DesktopOriginalVideoAcceptedPublication?): Boolean =
         playbackToolsCurrent(expected) && expected != null &&
@@ -1000,6 +1115,24 @@ internal class DesktopWindowsVideoActions(
                         if (active && !pipActive) {
                             DesktopVideoCommandPopup(viewportSize, {
                                 Box(Modifier.fillMaxSize()) {
+                                    DesktopWindowsVideoEntryCover(
+                                        contentKey = coverContentKey, bvid = coverBvid,
+                                        entryCoverUrl = if (coverBvid == route.bvid) route.coverUrl else "",
+                                        detailCoverUrl = coverDetailUrl,
+                                        autoPlayOnOpenEnabled = coverAutoPlay,
+                                        firstVideoFrameReady = coverRuntime?.state?.firstVideoFrameReady == true,
+                                        observedPlayWhenReady = coverRuntime?.playWhenReady == true,
+                                        observedIsPlaying = coverRuntime?.isPlaying == true,
+                                        currentPositionMs = coverRuntime?.currentPositionMs ?: 0L,
+                                        hasMediaItem = coverRuntime != null,
+                                        isVerticalVideo = coverRuntime?.state?.let {
+                                            if (it.videoWidth > 0 && it.videoHeight > 0) it.videoHeight > it.videoWidth
+                                            else coverMetadataVertical
+                                        } ?: coverMetadataVertical,
+                                        isFullscreen = fullscreen,
+                                        stillCurrent = ::coverStillCurrent, canReveal = ::coverCanReveal,
+                                        onPlayFromCover = ::playFromEntryCover,
+                                    )
                                     actions.overlay()
                                     val subtitleSizes = resolveSubtitleTextSizeSpec(
                                         playerWidthDp = viewportWidth.value.toInt(), largeTextEnabled = subtitleLargeTextByUser)

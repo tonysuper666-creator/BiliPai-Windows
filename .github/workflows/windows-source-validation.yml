@@ -89,6 +89,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original native chrome and shared lens source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_player_cover_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original player cover policy, caller and source ownership regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_player_cover_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw "Current original player cover source regressions failed" }
           python -m unittest discover -s desktop/tools/tests -p test_v040_player_tap_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original player tap stream and caller source ownership regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_offline_error_v029.py -v

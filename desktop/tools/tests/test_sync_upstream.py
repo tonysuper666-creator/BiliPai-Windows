@@ -940,6 +940,11 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             'desktop/upstream-slices/v041-dynamic-author-search/DynamicViewModel.kt',
             'desktop/upstream-slices/v041-dynamic-comment-identity/DynamicViewModel.kt',
             'desktop/upstream-slices/v041-dynamic-comment-identity/DynamicCommentSheet.kt',
+            'desktop/upstream-slices/v041-player-cover/VideoPlayerSectionPolicy.kt',
+            'desktop/upstream-slices/v041-player-cover/VideoPlayerSection.kt',
+            'desktop/upstream-slices/v041-player-cover/VideoDetailCoverContentScale.kt',
+            'desktop/upstream-slices/v041-player-cover/VideoPlayerCoverPolicyTest.kt',
+            'desktop/upstream-slices/v041-player-cover/VideoPlayerSectionPolicyTest.kt',
         ):
             path = self.repo / relative
             original = path.read_bytes()
@@ -959,10 +964,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 521)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 510)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 107)
-        self.assertEqual(len(self.inventory["archives"]), 111)
+        self.assertEqual(len(entries), 526)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 515)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 108)
+        self.assertEqual(len(self.inventory["archives"]), 112)
         # These five exact v041 inputs extend the previous506-input inventory.
         # Whole author policy/tests now share the real dynamic-tabs UI producer.
         v041_root = "desktop/upstream-slices/v041-rss-dynamic/"
@@ -1017,6 +1022,20 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(len(identity_archives), 1)
         self.assertEqual({Path(leaf["path"]).name for leaf in identity_archives[0]["files"]},
                          set(identity_rows) | {"manifest.json"})
+        cover_root = "desktop/upstream-slices/v041-player-cover/"
+        cover_rows = {Path(item["localPath"]).name: item for item in entries
+                      if item["localPath"].startswith(cover_root)}
+        self.assertEqual(set(cover_rows), {"VideoPlayerSectionPolicy.kt", "VideoPlayerSection.kt",
+            "VideoDetailCoverContentScale.kt", "VideoPlayerCoverPolicyTest.kt", "VideoPlayerSectionPolicyTest.kt"})
+        self.assertTrue(all(item["upstreamCommit"] == "d18fb20e31adb11bbec9fae6dfce7d705d556217"
+                            and item["hashNormalization"] == "raw" and item["partialReuse"] is True
+                            for item in cover_rows.values()))
+        self.assertEqual({name for name, item in cover_rows.items() if item["referenceOnly"]},
+                         {"VideoDetailCoverContentScale.kt"})
+        cover_archives = [row for row in self.inventory["archives"] if row["directory"] == cover_root.rstrip("/")]
+        self.assertEqual(len(cover_archives), 1)
+        self.assertEqual({Path(leaf["path"]).name for leaf in cover_archives[0]["files"]},
+                         set(cover_rows) | {"manifest.json"})
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
@@ -1596,10 +1615,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 521)
+        self.assertEqual(len(self.load()), 526)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 521)
+        self.assertEqual(len(self.load()), 526)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1616,7 +1635,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 521)
+                self.assertEqual(len(entries), 526)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
