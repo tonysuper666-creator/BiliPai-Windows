@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "b6e54d397a016c7e95050dec28c54bdd448e298a",
-  "windowsVersion": "0.2.427.113",
-  "createdAt": "2026-10-15T06:37:06.585209+00:00",
+  "baseHead": "8cc32d47d18286b88affe11a4199c78b921828a2",
+  "windowsVersion": "0.2.427.114",
+  "createdAt": "2026-10-15T07:15:41.490995+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
@@ -213,7 +213,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
       "normalization": "lf",
-      "sha256": "af545bae2fc604fb28462eb591c8318711e1f71a804bca14eb40df7614fb828d"
+      "sha256": "d541cfe0ff87e2ce57ec70657f8d3974de8b47127bdee66673ee6ba2460053fe"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
@@ -488,7 +488,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
       "normalization": "lf",
-      "sha256": "e20edb88a1f0f3318e112f89ecd5d00c2ab5bdd66ec72cb88ccf5dbd3cf6bd27"
+      "sha256": "aa01dc5ef67ff651d8634faefcaeda2e4f2eb836a56d922bd409f31424d28a3d"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
@@ -643,7 +643,7 @@
     {
       "path": "desktop/tools/extract-upstream-offline-player.py",
       "normalization": "lf",
-      "sha256": "8c8752972dfb58c600ddc5542afb2c233e220d51fdbcbe3a054a663470518074"
+      "sha256": "124878680834e3b4e729e6e6df72f79e852e03e848d345c4f42dd731744c028d"
     },
     {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
@@ -713,7 +713,7 @@
     {
       "path": "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
       "normalization": "lf",
-      "sha256": "9a29a4d9adc2bc217d3c69beb085ef20c64b657f22d0ec6fbe5dd67a131c9f6b"
+      "sha256": "ff095290d2d1482940d153525ac4f80a8c8f9588e15c8f711e9716803910a0ec"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_up_danmaku.py",
@@ -1548,7 +1548,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "4655c7554135a09ee19f4fb64cc41591b38ca6c5f6f4d68ca09c55a400a4d69a"
+      "sha256": "66f53fa0eee2ab11dc57f70f1f3b3bf2d7dd609ec80f22f75ee1ec80bad449c6"
     }
   ],
   "classes": {
@@ -1563,13 +1563,13 @@
     "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 11,
     "com.bilipai.desktop.ui.DesktopOriginalPlayerInputLayerTest": 4,
     "com.bilipai.desktop.ui.DesktopOriginalOfflineBindingsLifetimeTest": 4,
-    "com.bilipai.desktop.ui.DesktopOfflinePointerInputTest": 6,
+    "com.bilipai.desktop.ui.DesktopOfflinePointerInputTest": 7,
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5,
     "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13,
     "com.bilipai.desktop.ui.DesktopWindowsPlaybackAudioOutputTest": 6,
     "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11
   },
-  "expectedTests": 125,
+  "expectedTests": 126,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1577,18 +1577,8 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
     "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflinePlayerBindings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineRootHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsNativeAudioTrackMenu.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackAudioOutput.kt",
     "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineBindingsLifetimeTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackAudioOutputTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/update/PackagedUpdaterChildEnvironment.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/update/PackagedUpdaterChildEnvironmentTest.kt",
     "desktop/tools/extract-upstream-offline-player.py",
     "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
     "desktop/upstream-sources.json"

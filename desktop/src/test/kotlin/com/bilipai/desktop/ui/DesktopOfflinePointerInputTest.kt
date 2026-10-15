@@ -11,13 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.Density
+import com.bilipai.desktop.player.MpvPlayer
+import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
+import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlin.test.*
 
 /** Actual production timeline modifier on a raster scene, with a competing
- * parent tap handler and real mouse events. No Window or native player is used. */
+ * parent tap handler, real mouse events and actual MPV source receipts.
+ * No Window or native session is attached; no media is opened or decoded. */
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
 class DesktopOfflinePointerInputTest {
     @Test fun primaryClickCommitsOnceWithoutTogglingTheParentControls() = scene { s ->
@@ -58,7 +62,7 @@ class DesktopOfflinePointerInputTest {
 
     @Test fun changingTheCapturedSourceCancelsRatherThanSeekingItsSuccessor() = scene { s ->
         s.press(10f)
-        s.source.value = 2
+        s.replaceSource(2)
         s.render()
         s.release(90f)
         assertTrue(s.commits.isEmpty())
@@ -66,6 +70,21 @@ class DesktopOfflinePointerInputTest {
         s.press(30f)
         s.release(30f)
         assertEquals(listOf<Pair<Int?, Long>>(2 to 13_500L), s.commits)
+    }
+
+    @Test fun repeatedActualSourceReceiptsDuringADragDoNotRetireTheGesture() = scene { s ->
+        s.press(10f)
+        repeat(6) { frame ->
+            s.refreshSourceReceipt()
+            s.render()
+            s.move(20f + frame * 8f)
+        }
+        assertTrue(s.commits.isEmpty())
+        assertEquals(0, s.cancels)
+        s.release(75f)
+        assertEquals(listOf<Pair<Int?, Long>>(1 to 33_750L), s.commits)
+        assertEquals(0, s.cancels)
+        assertEquals(0, s.parentTaps)
     }
 
     @Test fun secondaryMouseButtonDoesNotPreviewOrCommitASeek() = scene { s ->
@@ -91,7 +110,11 @@ class DesktopOfflinePointerInputTest {
         private val errors = mutableListOf<Throwable>()
         private val scope = CoroutineScope(SupervisorJob() + UnconfinedTestDispatcher(scheduler) +
             CoroutineExceptionHandler { _, error -> errors += error })
-        val source = mutableStateOf<Int?>(1)
+        private val native = MpvPlayer()
+        val source = mutableStateOf<OwnedPlaybackSourceSnapshot?>(run {
+            native.loadVersioned(PlaybackSource("file:///C:/synthetic-pointer-source-1.media"))
+            checkNotNull(native.currentSourceSnapshot())
+        })
         val duration = mutableLongStateOf(45_000L)
         val current = mutableStateOf(true)
         val commits = mutableListOf<Pair<Int?, Long>>()
@@ -104,7 +127,8 @@ class DesktopOfflinePointerInputTest {
                 detectTapGestures(onTap = { parentTaps++ })
             }) {
                 Box(Modifier.fillMaxSize().desktopOfflineSeekPointerInput(identity, duration.longValue,
-                    { current.value }, { previews += it }, { commits += identity to it }, { cancels++ }))
+                    { current.value && identity != null && native.ownsSourceSnapshot(identity) },
+                    { previews += it }, { commits += identity?.sourceVersion?.toInt() to it }, { cancels++ }))
             }
         }
         init { render() }
@@ -114,6 +138,19 @@ class DesktopOfflinePointerInputTest {
             scene.render(scheduler.currentTime * 1_000_000L).close()
             scheduler.runCurrent()
             assertTrue(errors.isEmpty(), "Unexpected Compose/pointer errors: $errors")
+        }
+        fun refreshSourceReceipt() {
+            val prior = assertNotNull(source.value)
+            val next = assertNotNull(native.currentSourceSnapshot())
+            assertNotSame(prior, next)
+            assertEquals(prior.sourceVersion, next.sourceVersion)
+            assertEquals(prior.source, next.source)
+            assertTrue(native.ownsSourceSnapshot(prior))
+            source.value = next
+        }
+        fun replaceSource(index: Int) {
+            native.loadVersioned(PlaybackSource("file:///C:/synthetic-pointer-source-$index.media"))
+            source.value = assertNotNull(native.currentSourceSnapshot())
         }
         fun press(x: Float) = event(PointerEventType.Press, x)
         fun move(x: Float) = event(PointerEventType.Move, x)
@@ -129,7 +166,7 @@ class DesktopOfflinePointerInputTest {
             render()
         }
         override fun close() {
-            try { scene.close() } finally { scope.cancel(); scheduler.runCurrent() }
+            try { scene.close() } finally { scope.cancel(); scheduler.runCurrent(); native.close() }
             assertTrue(errors.isEmpty(), "Unexpected close errors: $errors")
         }
     }

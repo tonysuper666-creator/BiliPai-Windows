@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.*
+import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
 import com.android.purebilibili.feature.download.resolveOfflineSeekPositionFromTouch
 import com.android.purebilibili.feature.download.resolveOfflineSeekProgressFromTouch
 
@@ -52,7 +53,7 @@ internal suspend fun PointerInputScope.detectDesktopOfflineSeekGestures(
  * A source replacement cancels an in-flight gesture instead of seeking its successor. */
 @Composable
 internal fun Modifier.desktopOfflineSeekPointerInput(
-    sourceIdentity: Any?,
+    sourceIdentity: OwnedPlaybackSourceSnapshot?,
     durationMs: Long,
     isCurrent: () -> Boolean,
     onPreview: (Float) -> Unit,
@@ -63,8 +64,11 @@ internal fun Modifier.desktopOfflineSeekPointerInput(
     val latestPreview = rememberUpdatedState(onPreview)
     val latestCommit = rememberUpdatedState(onCommit)
     val latestCancel = rememberUpdatedState(onCancel)
-    return pointerInput(sourceIdentity, durationMs) {
-        if (sourceIdentity != null) detectDesktopOfflineSeekGestures(durationMs,
+    // Reads allocate a fresh receipt wrapper even while the same media stays
+    // loaded. Key by its complete immutable value, retaining final source admission.
+    val sourceKey = sourceIdentity?.let { it.sourceVersion to it.source }
+    return pointerInput(sourceKey, durationMs) {
+        if (sourceKey != null) detectDesktopOfflineSeekGestures(durationMs,
             { latestCurrent.value() }, { latestPreview.value(it) },
             { latestCommit.value(it) }, { latestCancel.value() })
     }

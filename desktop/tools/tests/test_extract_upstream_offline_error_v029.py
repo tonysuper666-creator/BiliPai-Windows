@@ -141,6 +141,7 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
         self.assertIn("onLongPress = {", output)
         self.assertIn("val seekSource = player.nativePlayer.currentSourceSnapshot()", output)
         self.assertIn("player.nativePlayer.ownsSourceSnapshot(seekSource)", output)
+        self.assertIn("sourceIdentity: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot?", output)
         self.assertIn(".desktopOfflineSeekPointerInput(", output)
         self.assertIn("onCommit = { isDragging = false; onSeek(it) }", output)
         self.assertIn("onSeek = { seekToPosition(it) }", output)

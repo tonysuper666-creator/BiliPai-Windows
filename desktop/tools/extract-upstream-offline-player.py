@@ -160,7 +160,7 @@ def offline_desktop_pointer_ui(source):
  replace(phone,'            // Windows uses mouse controls; phone edge/brightness/volume drags do not own this viewport.\n','remove phone background drag recognizer from Windows viewport')
  replace('                OfflineProgressBar(\n','                val seekSource = player.nativePlayer.currentSourceSnapshot()\n                OfflineProgressBar(\n','capture exact native seek source')
  replace('                    onSeek = { seekToPosition(it) }','                    sourceIdentity = seekSource,\n                    isCurrent = { player.isOwned() && seekSource != null && player.nativePlayer.ownsSourceSnapshot(seekSource) },\n                    onSeek = { seekToPosition(it) }','retain exact source admission at timeline release')
- replace('    bufferedPosition: Long,\n    onSeek: (Long) -> Unit','    bufferedPosition: Long,\n    sourceIdentity: Any?,\n    isCurrent: () -> Boolean,\n    onSeek: (Long) -> Unit','source-keyed original progress UI')
+ replace('    bufferedPosition: Long,\n    onSeek: (Long) -> Unit','    bufferedPosition: Long,\n    sourceIdentity: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot?,\n    isCurrent: () -> Boolean,\n    onSeek: (Long) -> Unit','source-keyed original progress UI')
  start=s.index('            .pointerInput(duration) {',s.index('private fun OfflineProgressBar('))
  end=s.index(',\n        contentAlignment = Alignment.CenterStart',start)
  old=s[start:end]
