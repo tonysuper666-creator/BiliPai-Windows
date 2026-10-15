@@ -171,6 +171,7 @@ fun main(args: Array<String>) {
         DisposableEffect(windowKeyFallback) { onDispose { windowKeyFallback.close() } }
         Window(
             onCloseRequest = { closeApp() },
+            onPreviewKeyEvent = windowKeyFallback::preview,
             onKeyEvent = windowKeyFallback::dispatch,
             title = "BiliPai Windows",
             state = windowState

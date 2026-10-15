@@ -42,6 +42,25 @@ class DesktopWindowKeyFallbackTest {
         fallback.close(); root.close(); leaf.close(); assertFalse(fallback.dispatch(key()))
         assertFailsWith<IllegalStateException> { fallback.registerLeaf { true } }
     }
+    @Test fun previewNeverRunsRootNavigationWhenTheNativeLeafDeclines() = edt {
+        val fallback = DesktopWindowKeyFallback(); var roots = 0; var leaves = 0
+        fallback.register { roots++; true }
+        fallback.registerLeaf { leaves++; false }
+        assertFalse(fallback.preview(key())); assertEquals(0, roots); assertEquals(1, leaves)
+        assertTrue(fallback.dispatch(key())); assertEquals(1, roots); fallback.close()
+    }
+    @Test fun nativePreviewUsesTheSameCurrentRegistrationAfterPredecessorDisposal() = edt {
+        val fallback = DesktopWindowKeyFallback(); var calls = 0
+        val old = fallback.registerLeaf { error("Retired player preview") }
+        val next = fallback.registerLeaf { calls++; true }; old.close()
+        assertTrue(fallback.preview(key())); assertEquals(1, calls)
+        next.close(); assertFalse(fallback.preview(key())); fallback.close()
+    }
+    @Test fun closingTheWindowRetiresPreviewWithoutFallingThroughToRoot() = edt {
+        val fallback = DesktopWindowKeyFallback()
+        fallback.register { error("Closed Root") }; fallback.registerLeaf { error("Closed player") }
+        fallback.close(); assertFalse(fallback.preview(key()))
+    }
     private fun key() = KeyEvent(java.awt.event.KeyEvent(Canvas(), java.awt.event.KeyEvent.KEY_PRESSED,
         1L, 0, java.awt.event.KeyEvent.VK_SPACE, ' '))
     private fun edt(block: () -> Unit) { EventQueue.invokeAndWait(block) }

@@ -4,10 +4,10 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.input.key.KeyEvent
 import java.awt.EventQueue
 
-/** The actual Window's final key callback, after its Compose scene declines the event.
- * Registration is scoped to the ready Root; a disposed predecessor cannot clear a successor.
- * This supplies no navigation owner or input: the shared Root handler keeps those policies.
- */
+/** The actual Window's preview and final key callbacks. A visible native player
+ * supplies its own source/foreground admission before the retained Root scene
+ * can consume Space on an old focus target. Root navigation remains post-scene.
+ * A disposed predecessor cannot clear a successor; no global key hook is used. */
 internal class DesktopWindowKeyFallback : AutoCloseable {
     private class Registration(val handler: (KeyEvent) -> Boolean)
     private var current: Registration? = null
@@ -25,8 +25,8 @@ internal class DesktopWindowKeyFallback : AutoCloseable {
         }
     }
 
-    /** A visible native player may own a key after its Compose editors declined
-     * it. Keep the ready Root callback; disposal cannot remove a successor. */
+    /** The native leaf owns its complete keyboard policy, including consumed
+     * editor keys and current source admission. Root registration is independent. */
     fun registerLeaf(handler: (KeyEvent) -> Boolean): AutoCloseable {
         check(EventQueue.isDispatchThread())
         check(!closed) { "Window key fallback is retired" }
@@ -38,11 +38,28 @@ internal class DesktopWindowKeyFallback : AutoCloseable {
         }
     }
 
+    /** Only the explicitly registered native leaf may act before Compose.
+     * Never invoke Root navigation while a Compose editor can still own a key. */
+    fun preview(event: KeyEvent): Boolean {
+        check(EventQueue.isDispatchThread())
+        if (closed) return false
+        recordSpace(event, com.bilipai.desktop.player.MpvRuntimeProbeStage.WINDOW_PREVIEW)
+        return leaf?.handler?.invoke(event) ?: false
+    }
+
     fun dispatch(event: KeyEvent): Boolean {
         check(EventQueue.isDispatchThread())
         if (closed) return false
+        recordSpace(event, com.bilipai.desktop.player.MpvRuntimeProbeStage.WINDOW_UNHANDLED)
         if (leaf?.handler?.invoke(event) == true) return true
         return current?.handler?.invoke(event) ?: false
+    }
+
+    private fun recordSpace(event: KeyEvent, stage: com.bilipai.desktop.player.MpvRuntimeProbeStage) {
+        val raw = event.nativeKeyEvent as? java.awt.event.KeyEvent ?: return
+        if (raw.keyCode == java.awt.event.KeyEvent.VK_SPACE)
+            com.bilipai.desktop.player.MpvRuntimeProbe.record(stage, raw.id.toLong(),
+                flags = (if (raw.isConsumed) 1 else 0) or (if (leaf != null) 2 else 0))
     }
 
     override fun close() {

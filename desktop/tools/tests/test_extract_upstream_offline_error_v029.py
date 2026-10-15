@@ -126,7 +126,9 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
     def test_desktop_pointer_recipe_restores_the_exact_complete_input(self):
         source = self.desktop_input()
         output, changes = tool.offline_desktop_pointer_ui(source)
-        self.assertEqual(6, len(changes))
+        self.assertEqual(7, len(changes))
+        self.assertIn("var isFullscreen by rememberDesktopOfflineFullscreen(bindings.window)", output)
+        self.assertNotIn("var isFullscreen by remember(currentTaskId", output)
         for change in reversed(changes):
             index = change["index"]
             self.assertEqual(change["after"], output[index:index + len(change["after"])])
@@ -157,7 +159,8 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
         start = source.index("            // 🎛️ 拖拽手势：亮度/音量/进度\n")
         changed = source[:start] + source[start:].replace("detectDragGestures(", "detectDragGestures(/* drift */", 1)
         for invalid in (changed, source + "                OfflineProgressBar(\n",
-                        source.replace("private fun OfflineProgressBar(", "private fun UnknownProgressBar(", 1)):
+                        source.replace("private fun OfflineProgressBar(", "private fun UnknownProgressBar(", 1),
+                        source.replace("var isFullscreen by remember(currentTaskId", "var isFullscreen by remember(/* drift */ currentTaskId", 1)):
             with self.assertRaises((AssertionError, ValueError)):
                 tool.offline_desktop_pointer_ui(invalid)
 

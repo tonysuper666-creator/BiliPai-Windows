@@ -119,9 +119,10 @@ internal class DesktopOfflineNativeInputBridge(
         onRevealControls()
         if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.TOGGLE && matches(captured)) onTogglePlayback()
     }
-    /** The actual Root Window invokes this only after Compose declined the key.
-     * In the pinned MPV, an embedded child HWND is disabled. Its own bindings
-     * cannot replace this host input path. Never take a consumed editor key. */
+    /** The actual Root Window offers preview first, retaining the unhandled
+     * callback as a fallback. This offline page has no inline text editor; its
+     * focusable menu dialogs fail current()'s active-window admission. Consumed
+     * text-input events and modified keys still keep their original behavior. */
     internal fun windowKeyInput(event: java.awt.event.KeyEvent): Boolean {
         if (event.isConsumed) return false
         if (event.id == java.awt.event.KeyEvent.KEY_PRESSED) keyPressed(event, false)
@@ -233,8 +234,9 @@ internal fun DesktopOfflineNativeInput(
                 if (latestEnabled.value && player.isOwned()) input.nativeWindowInput(event.kind)
             }
         }
-        // Root's callback remains registered independently. No process-wide key
-        // dispatcher or OS hook: this is after the Window's Compose scene.
+        // The same owned offline action is offered before the retained Root
+        // scene can consume Space. Its source/active-window/editor guards remain;
+        // Root navigation still runs only after Compose declines a key.
         val keyRegistration = windowKeyFallback?.registerLeaf { event ->
             val nativeEvent = event.nativeKeyEvent as? java.awt.event.KeyEvent
             nativeEvent != null && input.windowKeyInput(nativeEvent)

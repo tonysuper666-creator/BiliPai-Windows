@@ -19,6 +19,7 @@ internal interface DesktopOriginalOfflineSurface {
 
 /** Actual window-placement/chrome lease; Android phone orientation/system bars are not emulated. */
 internal interface DesktopOfflineWindowEffects {
+    val fullscreen: Boolean
     fun applyFullscreen(fullscreen:Boolean)
     fun restoreCurrentRootChrome()
 }
@@ -115,6 +116,7 @@ internal fun rememberDesktopOriginalOfflinePlayerBindings(
         DesktopOriginalOfflinePlayerBindings(context, backend, entryScope, preferences,
             DesktopDanmakuPresentationBinding { latestPresentation.value.currentPresentation() },
             object : DesktopOfflineWindowEffects {
+                override val fullscreen: Boolean get() = latestWindow.value.fullscreen
                 override fun applyFullscreen(fullscreen: Boolean) = latestWindow.value.applyFullscreen(fullscreen)
                 override fun restoreCurrentRootChrome() = latestWindow.value.restoreCurrentRootChrome()
             },

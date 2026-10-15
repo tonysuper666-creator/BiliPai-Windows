@@ -160,11 +160,55 @@ class DesktopOriginalOfflineBindingsLifetimeTest {
         }
     }
 
+    @Test fun actualRootEscAndF11StateRecomposeTheOriginalFullscreenViewWithoutReload() = fixture { f ->
+        BindingScene(f).use { scene ->
+            val source = assertNotNull(f.player.currentSourceSnapshot())
+            val delegate = scene.fullscreen
+            assertFalse(scene.observedFullscreen)
+            scene.ports.value.fullscreenState.value = true; scene.render()
+            assertTrue(scene.observedFullscreen)
+            scene.ports.value.fullscreenState.value = false; scene.render()
+            assertFalse(scene.observedFullscreen); assertSame(delegate, scene.fullscreen)
+            val after = assertNotNull(f.player.currentSourceSnapshot())
+            assertEquals(source.sourceVersion, after.sourceVersion); assertEquals(source.source, after.source)
+            assertTrue(scene.control.isOwned())
+        }
+    }
+    @Test fun retainedFullscreenDelegateReadsAndWritesOnlyTheLatestRootWindowAdapter() = fixture { f ->
+        BindingScene(f).use { scene ->
+            val delegate = scene.fullscreen
+            var fullscreen by delegate
+            fullscreen = true; assertTrue(scene.ports.value.fullscreenState.value)
+            val old = scene.ports.value; old.calls.clear()
+            val next = Ports("next-fullscreen", DesktopDanmakuPresentation.INLINE)
+            scene.ports.value = next; scene.render()
+            assertSame(delegate, scene.fullscreen); assertFalse(fullscreen)
+            fullscreen = true
+            assertTrue(next.fullscreenState.value); assertTrue(old.calls.isEmpty())
+        }
+    }
+    @Test fun deliveredFullscreenRequestCannotUndoALaterRootEscapeOnWindowRestore() {
+        var actual = false; val changes = mutableListOf<Boolean>()
+        val mode = DesktopOfflineFullscreenAdmission({ true }, { actual }, { actual = it; changes += it }, { })
+        val firstWindow = Any(); mode.windowAvailability(firstWindow, true); mode.applyFullscreen(true)
+        assertTrue(actual); actual = false
+        mode.windowAvailability(firstWindow, false); mode.windowAvailability(Any(), true)
+        assertFalse(actual); assertEquals(listOf(true), changes)
+    }
+    @Test fun pendingFullscreenCannotMutateRootBeforeTheRealWindowOrAfterEntryRetirement() {
+        var owned = true; var actual = false
+        val mode = DesktopOfflineFullscreenAdmission({ owned }, { actual }, { actual = it }, { })
+        mode.applyFullscreen(true); assertFalse(actual)
+        owned = false; mode.windowAvailability(Any(), true); assertFalse(actual)
+    }
+
     private class Ports(val name: String, kind: DesktopDanmakuPresentation) {
         val calls = mutableListOf<String>()
         val presentation = DesktopDanmakuPresentationBinding { kind }
+        val fullscreenState = mutableStateOf(false)
         val window = object : DesktopOfflineWindowEffects {
-            override fun applyFullscreen(fullscreen: Boolean) { calls += "$name:fullscreen:$fullscreen" }
+            override val fullscreen: Boolean get() = fullscreenState.value
+            override fun applyFullscreen(fullscreen: Boolean) { fullscreenState.value = fullscreen; calls += "$name:fullscreen:$fullscreen" }
             override fun restoreCurrentRootChrome() { calls += "$name:chrome" }
         }
         val surface = object : DesktopOriginalOfflineSurface {
@@ -188,6 +232,8 @@ class DesktopOriginalOfflineBindingsLifetimeTest {
         val ports = mutableStateOf(Ports("initial", DesktopDanmakuPresentation.INLINE))
         lateinit var binding: DesktopOriginalOfflinePlayerBindings
         lateinit var control: DesktopOfflineMpvControl
+        lateinit var fullscreen: DesktopOfflineFullscreenValue
+        var observedFullscreen = false
         private var closed = false
         private val scene = ImageComposeScene(96, 64, Density(1f), coroutineContext = scope.coroutineContext) {
             val latest = ports.value
@@ -195,6 +241,8 @@ class DesktopOriginalOfflineBindingsLifetimeTest {
                 latest.presentation, latest.window, latest.surface, latest.media, latest.feedback)
             DesktopOfflineBackendLifetime(actual.backend) {
                 val originalControl = remember(actual, f.task.id) { actual.control(f.task.id) }
+                fullscreen = rememberDesktopOfflineFullscreen(actual.window)
+                observedFullscreen = fullscreen.value
                 binding = actual
                 control = originalControl
                 actual.surface.Render(originalControl, Modifier) { }

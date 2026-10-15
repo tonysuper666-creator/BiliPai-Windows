@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray
 internal enum class MpvRuntimeProbeStage {
     AWT_MOUSE, AWT_SPACE, WINDOW_SPACE, SURFACE_ADMISSION, ORIGINAL_REVEAL,
     NATIVE_CLIENT_MESSAGE, NVIDIA_SUBMITTED_MESSAGE, NVIDIA_PRESENTATION,
+    WINDOW_PREVIEW, WINDOW_UNHANDLED, NVIDIA_RECEIPT_SIZE, NVIDIA_OUTPUT_SIZE,
 }
 
 internal class MpvRuntimeProbeRecorder(
