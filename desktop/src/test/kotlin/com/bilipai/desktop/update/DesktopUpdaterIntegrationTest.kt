@@ -61,7 +61,8 @@ class DesktopUpdaterIntegrationTest {
         val packagePath = UpdateStorage.existingPathWithoutLinks(Path.of(requireNotNull(packageArgument)))
         val caseRoot = Files.createTempDirectory("bp-u-").toRealPath(NOFOLLOW_LINKS)
         Files.writeString(caseRoot.resolve(".bilipai-updater-e2e"), "BiliPai updater integration fixture")
-        val childData = Files.createDirectory(caseRoot.resolve("LocalAppData"))
+        val childEnvironment = PackagedUpdaterChildEnvironment(caseRoot)
+        val childData = childEnvironment.localData
         val updateRoot = UpdateStorage.verifiedRoot(childData.resolve("BiliPai/updates"))
         val activeFile = updateRoot.resolve("active-install.json")
         val report = System.getProperty("bilipai.updateTestReport")?.takeIf { it.isNotBlank() }
@@ -80,6 +81,11 @@ class DesktopUpdaterIntegrationTest {
             "evidenceType" to JsonPrimitive("isolated-packaged-updater"),
             "caseRoot" to JsonPrimitive(caseRoot.toString()),
             "isolatedLocalAppData" to JsonPrimitive(childData.toString()),
+            "isolatedRoamingAppData" to JsonPrimitive(childEnvironment.roamingData.toString()),
+            "isolatedUserHome" to JsonPrimitive(childEnvironment.home.toString()),
+            "isolatedJvmAndChildTemp" to JsonPrimitive(childEnvironment.temporary.toString()),
+            "childMaximumHeap" to JsonPrimitive("2g"),
+            "windowsKnownFoldersSandboxed" to JsonPrimitive(false),
             "updateRoot" to JsonPrimitive(updateRoot.toString()),
             "portableZip" to JsonPrimitive(packagePath.toString()),
             "realShortcutTested" to JsonPrimitive(false),
@@ -103,7 +109,8 @@ class DesktopUpdaterIntegrationTest {
             LoopbackFixture(config.repository).use { fixture ->
                 try {
                     fun updater() = DesktopUpdater.forIntegrationTest(baseline, config.repository, updateRoot,
-                        fixture.client, childData, ::recordLaunch, config.executable)
+                        fixture.client, childData, ::recordLaunch, config.executable,
+                        processFactory = { builder -> childEnvironment.configure(builder).start() })
 
                     fixture.publish("healthy", config.version, packagePath)
                     val healthyUpdater = updater()
@@ -254,7 +261,7 @@ class DesktopUpdaterIntegrationTest {
                         val original = ProcessBuilder(previousExecutable.toString()).directory(previousExecutable.parent.toFile())
                             .redirectOutput(caseRoot.resolve("previous-output.log").toFile())
                             .redirectError(caseRoot.resolve("previous-error.log").toFile())
-                        isolateChild(original, childData)
+                        childEnvironment.configure(original)
                         val originalProcess = original.start()
                         recordLaunch(originalProcess)
                         val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(45)
@@ -426,13 +433,6 @@ class DesktopUpdaterIntegrationTest {
                 val version = directory.resolve("startup-version.txt")
                 put("reportedVersion", if (Files.isRegularFile(version, NOFOLLOW_LINKS)) Files.readString(version).trim() else "")
             })
-        }
-    }
-
-    private fun isolateChild(builder: ProcessBuilder, localData: Path) {
-        builder.environment().apply {
-            this["LOCALAPPDATA"] = localData.toString()
-            listOf("BILIPAI_MPV_PATH", "JAVA_TOOL_OPTIONS", "_JAVA_OPTIONS", "JDK_JAVA_OPTIONS").forEach(::remove)
         }
     }
 

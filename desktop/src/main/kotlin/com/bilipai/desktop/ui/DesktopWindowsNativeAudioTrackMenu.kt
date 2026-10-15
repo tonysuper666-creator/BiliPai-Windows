@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -29,10 +30,14 @@ internal fun DesktopWindowsNativeAudioTrackMenu(
     onMenuExpandedChanged: (Boolean) -> Unit = {},
 ) {
     val state by nativePlayer.state.collectAsState()
+    val output by nativePlayer.windowsAudioOutput.collectAsState()
+    val controller = LocalDesktopWindowsAudioOutputController.current
+    val devices by controller.devices.collectAsState()
+    val observation = desktopWindowsPlaybackAudioOutputStatus(state, output)
     val identity = state.nativeTrackIdentity
     val tracks = desktopWindowsNativeAudioTracks(state)
     val owner = LocalDesktopWindowsPlayerWindow.current
-    val available = menuEnabled && identity != null && tracks.size > 1 &&
+    val available = menuEnabled && identity != null && tracks.isNotEmpty() &&
         state.ready && !state.loading && !state.ended && state.error == null && state.failure == null
     // Retire on source/recovery, selection, title/language or track-list changes.
     // Ordinary playback-position emissions never reopen an obsolete popup.
@@ -69,15 +74,17 @@ internal fun DesktopWindowsNativeAudioTrackMenu(
                 colors = ButtonDefaults.textButtonColors(contentColor = if (compact) Color.White else MaterialTheme.colorScheme.primary),
             ) {
                 val selected = tracks.firstOrNull { it.selected }
-                Text(if (compact) "音轨" else "音轨 · ${selected?.let(::desktopWindowsNativeAudioTrackLabel) ?: "未选择"}",
+                Text(if (compact) "音频" else "音频 · ${selected?.let(::desktopWindowsNativeAudioTrackLabel) ?: "未选择"}",
                     maxLines = 1, overflow = TextOverflow.Ellipsis,
                     style = if (compact) MaterialTheme.typography.labelMedium else MaterialTheme.typography.bodyMedium)
             }
         }
         DesktopWindowsPlayerMenu(expanded = expansion.value,
             onDismissRequest = { expansion.value = false },
-            preferredHeight = (48 * tracks.size + 8).coerceIn(104, 320).dp) {
-            tracks.forEach { track ->
+            preferredHeight = (220 + if (tracks.size > 1) 48 * tracks.size else 0).coerceAtMost(400).dp) {
+            DesktopWindowsPlaybackAudioOutputObservation(observation, devices.devices)
+            if (tracks.size > 1) HorizontalDivider()
+            if (tracks.size > 1) tracks.forEach { track ->
                 DropdownMenuItem(
                     text = { Text(desktopWindowsNativeAudioTrackLabel(track), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                     leadingIcon = { RadioButton(selected = track.selected, onClick = null) },

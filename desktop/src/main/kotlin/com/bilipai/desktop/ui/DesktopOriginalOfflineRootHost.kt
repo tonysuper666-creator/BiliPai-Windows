@@ -126,15 +126,13 @@ internal fun DesktopOriginalOfflineRootHost(
     val media = remember(systemMedia, pictureInPicture, backend) {
         DesktopOfflineRootMediaEffects(systemMedia, pictureInPicture, backend) { currentFeedback(it) }
     }
-    val bindings = remember(backend, entryScope, context, preferences, presentation, surface, windowEffects, media) {
-        DesktopOriginalOfflinePlayerBindings(context, backend, entryScope, preferences, presentation,
-            windowEffects, surface, media) { currentFeedback(it) }
-    }
+    val bindings = rememberDesktopOriginalOfflinePlayerBindings(context, backend, entryScope,
+        preferences, presentation, windowEffects, surface, media) { currentFeedback(it) }
     DesktopOriginalOfflinePlayerHost(taskId, bindings) {
-        if (backend.isOwned()) {
-            if (backend.ownsAcceptedSource()) pictureInPicture?.close()
-            onBack()
-        }
+        desktopOfflineNavigateBack(
+            { entryScope.isActive && foregroundActive },
+            { backend.isOwned() && backend.ownsAcceptedSource() },
+            { pictureInPicture?.close() }, onBack)
     }
 }
 
