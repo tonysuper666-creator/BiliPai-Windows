@@ -513,6 +513,8 @@ val extractUpstreamComponents by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/components").get().asFile.absolutePath,
         "--test-output", generatedChromeActionTests.get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-components.py", "tools/v040_liquid_value_controls.py", "tools/v040_chrome_actions.py")
+    inputs.file("tools/v040_native_chrome.py")
+    inputs.dir("upstream-slices/v040-native-chrome")
     inputs.dir("upstream-slices/v040-chrome-actions")
     inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.files(sources.filter { "component-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -1327,6 +1329,8 @@ val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-detail-container").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-detail-container.py", "tools/extract-appearance-platform.py",
         "tools/sync-upstream.py")
+    inputs.file("tools/v040_native_chrome.py")
+    inputs.dir("upstream-slices/v040-native-chrome")
     inputs.files(sources.filter { "dynamic-detail-container" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v036_comment_viewport.py")
@@ -1620,6 +1624,8 @@ val extractSharedLiquidTabs by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/shared-liquid-tabs").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-shared-liquid-tabs.py", "tools/sync-upstream.py")
+    inputs.file("tools/v040_native_chrome.py")
+    inputs.dir("upstream-slices/v040-native-chrome")
     inputs.dir("upstream-slices/v027-liquid-glass-lens")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-shared-liquid-tabs" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -2456,6 +2462,8 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
     inputs.file("tools/v037_player_foundations.py")
     inputs.dir("upstream-slices/v037-player-foundation-closure")
     inputs.files("tools/v037_player_chrome.py", "tools/v037_player_closure.py", "tools/v037_player_render.py", "tools/v037_player_shared_material.py")
+    inputs.file("tools/v040_native_chrome.py")
+    inputs.dir("upstream-slices/v040-native-chrome")
     inputs.file("tools/v040_chrome_actions.py")
     inputs.dir("upstream-slices/v040-chrome-actions")
     inputs.dir("upstream-slices/v037-player-chrome")

@@ -9,6 +9,8 @@ from v040_liquid_value_controls import selected_component_source as _liquid_sour
 
 from v040_chrome_actions import selected_component_source as _chrome_source, emit_components as _chrome_components, COMPONENT_DIRECT_PATHS as _chrome_direct
 
+from v040_native_chrome import emit_components as _native_chrome_components
+
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
     "AppThemeConfig", "AppShapes", "AppSurfaceTokens", "AppSpacingTokens", "AppChromeSizeTokens",
@@ -94,6 +96,7 @@ def generate(repo, output, standalone=False, test_output=None):
         body = "package com.android.purebilibili.core.ui.components\n\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\n\n" + declaration[0] + "\n"
         result.append(host.write(output, path, original, body, "AppScrollableUnderlinePolicy.kt"))
     result.extend(_chrome_components(repo, output, test_output))
+    result.extend(_native_chrome_components(repo, output, test_output))
     extra = _liquid_components(repo, output)
     result.extend(output / row["path"] for row in extra)
     result.append(output / "com/android/purebilibili/core/ui/components/DesktopLiquidValueColorResources.kt")

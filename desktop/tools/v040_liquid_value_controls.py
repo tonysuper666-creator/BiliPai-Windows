@@ -76,6 +76,16 @@ def adapt(path, raw):
         for name,count in [('liquid_switch_active',1),('liquid_slider_active',1),('liquid_value_inactive',2)]:
             before='colorResource(R.color.'+name+')'
             swap(before,'desktopLiquidValueColorResource("'+name+'")',count)
+    elif path.endswith('/effect/LiquidLens.kt'):
+        # Capability probing compiles these same two production values. The shader math is unchanged.
+        for name in ['ROUNDED_RECT_REFRACTION_SHADER','ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER']:
+            swap('private const val '+name+' =', 'internal const val '+name+' =')
+        swap('import top.yukonga.miuix.kmp.blur.runtimeShaderEffect\n',
+             'import top.yukonga.miuix.kmp.blur.runtimeShaderEffect\nimport com.bilipai.desktop.ui.withDesktopWindowsGlassUniformCache\n')
+        swap('        setFloatUniform("size", scaledSizeW, scaledSizeH)\n',
+             '        withDesktopWindowsGlassUniformCache {\n        setFloatUniform("size", scaledSizeW, scaledSizeH)\n')
+        swap('            setFloatUniform("chromaticEdgeBand", chromaticEdgeBand?.coerceAtLeast(0f)?.div(sf) ?: -1f)\n        }\n    }\n}',
+             '            setFloatUniform("chromaticEdgeBand", chromaticEdgeBand?.coerceAtLeast(0f)?.div(sf) ?: -1f)\n        }\n        }\n    }\n}')
     elif path==PICKER:
         swap('import android.os.SystemClock','import com.bilipai.desktop.appearance.DesktopMonotonicClock as SystemClock')
         swap('import android.os.Build\n','')

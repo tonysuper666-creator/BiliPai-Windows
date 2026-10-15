@@ -36,7 +36,8 @@ def read(path):
     if path == DESIGN+'core/ui/AppSheetComponents.kt':
         from v037_window_modal_blur import fixed_original
         return fixed_original(REPO,'AppSheetComponents.kt')[0]
-    return selected_source(path,current)
+    from v040_native_chrome import selected_source as select_native_chrome
+    return select_native_chrome(REPO,path,selected_source(path,current))
 
 def load(name,path):
     spec = importlib.util.spec_from_file_location(name,REPO/path)
@@ -255,12 +256,9 @@ def thread_container():
 
 def _generate_body():
     path=DESIGN+'core/ui/AdaptiveChrome.kt'
-    body=read(path)
-    body=body.replace('import androidx.compose.ui.platform.LocalConfiguration','import com.android.purebilibili.core.util.LocalWindowSizeClass')
-    for name in ['LocalGlobalWallpaperBackdropVisible','LocalImmersiveTopChromeActive']:
-        body,count=re.subn(r'(?m)^val '+name+r' = compositionLocalOf \{ false \}\n', '', body)
-        assert count==1,name
-    body=body.replace('LocalConfiguration.current.screenWidthDp < 600','LocalWindowSizeClass.current.widthDp < 600.dp')
+    from v040_native_chrome import adapt_adaptive
+    body,native_chrome_proof=adapt_adaptive(REPO)
+    write(OUTPUT/'v040-native-adaptive-chrome-proof.json',json.dumps(native_chrome_proof,ensure_ascii=False,indent=2)+'\n')
     emit(path,body,'DesktopOriginalDetailAdaptiveChrome.kt',note='Reuse the two existing Main locals; Android configuration width is measured desktop width.')
     for name in ['AdaptiveScaffoldPolicy.kt','TopReadabilityChromePolicy.kt']:
         path=DESIGN+'core/ui/'+name

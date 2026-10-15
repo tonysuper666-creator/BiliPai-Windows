@@ -19,9 +19,13 @@ def fixed_sources():
     return result
 
 def selected_source(path,canonical):
-    return fixed_sources().get(path,canonical)
+    from v040_native_chrome import selected_source as native_chrome_source
+    return native_chrome_source(Path(__file__).resolve().parents[2],path,fixed_sources().get(path,canonical))
 
 def identity_for(path):
+    from v040_native_chrome import identity_for as native_chrome_identity
+    newest=native_chrome_identity(Path(__file__).resolve().parents[2],path)
+    if newest is not None:return newest
     row=next((r for r in PINS if r['path']==path),None)
     if row is None:return None
     return dict(pinnedCommit=COMMIT,originalPath=path,
