@@ -63,6 +63,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original Listen screen source adaptation regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v038_danmaku_merge_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Shared original semantic color closure regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_feed_images_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original v041 feed-image source/test generation regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_dynamic_pagination_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original dynamic pagination decision regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_dynamic_timeline_sources.py -v

@@ -344,8 +344,12 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-plugins.py",
-        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath)
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/v041-feed-original-tests").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-plugins.py")
+    inputs.file("tools/v041_feed_images.py")
+    inputs.file("tools/v038_listen_viewmodel.py")
+    inputs.dir("upstream-slices/v041-rss-dynamic")
     inputs.file("tools/v029_history_recap.py")
     inputs.dir("upstream-slices/v029-history-recap")
     inputs.file("tools/extract-video-enhancement.py")
@@ -356,7 +360,10 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/plugins"))
+    outputs.dir(layout.buildDirectory.dir("generated/v041-feed-original-tests"))
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/v041-feed-original-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamPlugins) }
 val extractUpstreamDiscovery by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)

@@ -925,6 +925,11 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         for relative in (
             'desktop/upstream-slices/v038-listen-viewmodel/ListenVideoViewModel.kt',
             'desktop/upstream-slices/v040-player-tap/PlayerGestureHandler.kt',
+            'desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParser.kt',
+            'desktop/upstream-slices/v041-rss-dynamic/FeedHtmlParser.kt',
+            'desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicy.kt',
+            'desktop/upstream-slices/v041-rss-dynamic/FeedDocumentParserTest.kt',
+            'desktop/upstream-slices/v041-rss-dynamic/DynamicAuthorSearchPolicyTest.kt',
         ):
             path = self.repo / relative
             original = path.read_bytes()
@@ -944,10 +949,27 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 506)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 496)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 103)
-        self.assertEqual(len(self.inventory["archives"]), 107)
+        self.assertEqual(len(entries), 511)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 501)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 104)
+        self.assertEqual(len(self.inventory["archives"]), 108)
+        # These five exact v041 inputs extend the previous506-input inventory.
+        # Search policy/tests remain reference-only until their real UI is wired.
+        v041_root = "desktop/upstream-slices/v041-rss-dynamic/"
+        v041_rows = {Path(item["localPath"]).name: item for item in entries
+                     if item["localPath"].startswith(v041_root)}
+        self.assertEqual(set(v041_rows), {"FeedDocumentParser.kt", "FeedHtmlParser.kt",
+            "DynamicAuthorSearchPolicy.kt", "FeedDocumentParserTest.kt", "DynamicAuthorSearchPolicyTest.kt"})
+        self.assertEqual({item["upstreamCommit"] for item in v041_rows.values()},
+                         {"d18fb20e31adb11bbec9fae6dfce7d705d556217"})
+        self.assertTrue(all(item["hashNormalization"] == "raw" for item in v041_rows.values()))
+        self.assertEqual({name for name, item in v041_rows.items() if item["referenceOnly"]},
+                         {"DynamicAuthorSearchPolicy.kt", "DynamicAuthorSearchPolicyTest.kt"})
+        v041_archives = [row for row in self.inventory["archives"]
+                         if row["directory"] == v041_root.rstrip("/")]
+        self.assertEqual(len(v041_archives), 1)
+        self.assertEqual({Path(leaf["path"]).name for leaf in v041_archives[0]["files"]},
+                         set(v041_rows) | {"manifest.json"})
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
@@ -1527,10 +1549,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 506)
+        self.assertEqual(len(self.load()), 511)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 506)
+        self.assertEqual(len(self.load()), 511)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1547,7 +1569,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 506)
+                self.assertEqual(len(entries), 511)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
