@@ -685,6 +685,72 @@ class DesktopDownloadManagerTest {
         }
     }
 
+    @Test fun `refused ordinary state save never blocks enqueue scheduling or the transfer while the exit checkpoint still reports it`(): Unit = runBlocking {
+        val root = Files.createTempDirectory("bilipai-refused-save-")
+        val state = root.resolve("state.json")
+        val bytes = ByteArray(64) { it.toByte() }
+        val client = memoryClient(bytes)
+        val muxer = DownloadMuxer { _, _, output -> Files.write(output, byteArrayOf(0, 0, 0, 20) + "ftyp".toByteArray() + bytes) }
+        val manager = DesktopDownloadManager(client, state, muxer, publication = localDownloadPublication())
+        try {
+            // Actual filesystem refusal of every state replacement, the same technique as the exit-persistence test.
+            Files.deleteIfExists(state); Files.createDirectory(state); Files.writeString(state.resolve("block"), "keep")
+            val id = manager.enqueue(PlaybackSource("https://cdn.example/video", title = "refused-save"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = 10, includeCover = false, includeDanmaku = false))
+            withTimeout(5_000) {
+                while (manager.tasks.value.single { it.id == id }.status !in setOf(DownloadStatus.COMPLETED, DownloadStatus.FAILED)) delay(10)
+            }
+            val task = manager.tasks.value.single { it.id == id }
+            assertEquals(DownloadStatus.COMPLETED, task.status, task.error)
+            assertTrue(Files.isRegularFile(Path.of(manager.offlinePlayback(id).videoUrl)))
+            assertNotNull(manager.lastPersistFailure, "Refused ordinary saves are recorded, not thrown")
+            // The exit checkpoint is a durable promise: it still reports the refusal, and its retry saves the real queue.
+            val refusedExit = runCatching { manager.shutdownForApplicationExit() }.exceptionOrNull()
+            assertTrue(refusedExit is IOException, "Expected the actual refused state replacement, got $refusedExit")
+            Files.delete(state.resolve("block")); Files.delete(state)
+            manager.shutdownForApplicationExit()
+            assertNull(manager.lastPersistFailure)
+            assertEquals(DownloadStatus.COMPLETED, Json.decodeFromString<List<DownloadTask>>(Files.readString(state)).single().status)
+        } finally {
+            manager.close()
+            client.dispatcher.executorService.shutdownNow()
+            client.connectionPool.evictAll()
+        }
+    }
+
+    @Test fun `refused state save cannot strand a promoted queued task behind a never started worker`(): Unit = runBlocking {
+        val root = Files.createTempDirectory("bilipai-refused-promotion-")
+        val state = root.resolve("state.json")
+        val requests = CopyOnWriteArrayList<String>()
+        val activeRequests = AtomicInteger()
+        val workers = CopyOnWriteArrayList<ExitOptionalWorker>()
+        val client = optionalAssetMemoryClient(requests, activeRequests)
+        val manager = DesktopDownloadManager(client, state, DownloadMuxer { _, _, _ -> error("No media must run") },
+            danmakuDownloader = { task, directory, callback -> holdExitOptionalWorker(task, directory, callback, workers) },
+            publication = localDownloadPublication())
+        try {
+            fun add(cid: Long) = manager.enqueue(PlaybackSource("https://cdn.example/video-$cid", title = "promote-$cid"), root,
+                DownloadMetadata(bvid = "BV1xx411c7mD", cid = cid, includeCover = false))
+            val first = add(10L)
+            add(20L)
+            val queued = add(30L)
+            withTimeout(5_000) { while (workers.size != 2) delay(10) }
+            assertEquals(DownloadStatus.QUEUED, manager.tasks.value.single { it.id == queued }.status)
+            // Actual filesystem refusal while two workers hold both slots and one task waits.
+            Files.delete(state); Files.createDirectory(state); Files.writeString(state.resolve("block"), "keep")
+            val pauseFailure = runCatching { manager.pause(first) }.exceptionOrNull()
+            workers.single { it.task.id == first }.cleanupRelease.complete(Unit)
+            // The freed slot promotes the queued task. Its worker must really start although the state file is refused;
+            // before the fix its lazy job was installed, never started, and its slot was never returned.
+            withTimeout(5_000) { while (workers.size != 3) delay(10) }
+            assertEquals(DownloadStatus.DOWNLOADING, manager.tasks.value.single { it.id == queued }.status)
+            assertNull(pauseFailure, "A refused ordinary save must not turn a user pause into a failure")
+        } finally {
+            cleanupRuntimeHandoffManagers(listOf(manager), { workers.toList() }, client, activeRequests,
+                allowExitPersistenceFailure = true)
+        }
+    }
+
     @Test fun `failed exit persistence still drains original worker before throwing and retry saves the same closed queue`(): Unit = runBlocking {
         val root = Files.createTempDirectory("bilipai-exit-persist-failure-")
         val state = root.resolve("state.json")
@@ -931,7 +997,7 @@ class DesktopDownloadManagerTest {
      * Every manager still uses its real exit join; no worker is discarded. */
     private suspend fun cleanupRuntimeHandoffManagers(managers: List<DesktopDownloadManager>,
         workers: () -> List<ExitOptionalWorker>, client: OkHttpClient, activeRequests: AtomicInteger,
-        drain: kotlinx.coroutines.Deferred<Unit>? = null) {
+        drain: kotlinx.coroutines.Deferred<Unit>? = null, allowExitPersistenceFailure: Boolean = false) {
         try {
             withContext(NonCancellable) {
                 val release = kotlinx.coroutines.CoroutineScope(currentCoroutineContext()).launch(kotlinx.coroutines.Dispatchers.Default) {
@@ -942,7 +1008,10 @@ class DesktopDownloadManagerTest {
                 }
                 try {
                     withTimeout(5_000) {
-                        managers.forEach { it.shutdownForApplicationExit() }
+                        managers.forEach { manager ->
+                            try { manager.shutdownForApplicationExit() }
+                            catch (failure: IOException) { if (!allowExitPersistenceFailure) throw failure }
+                        }
                         drain?.await()
                         while (activeRequests.get() != 0) delay(5)
                     }

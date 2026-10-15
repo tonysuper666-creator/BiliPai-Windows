@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "de22734e7be9a1f72cfdfd5782a3b1780f5ac64f",
-  "windowsVersion": "0.2.427.99",
-  "createdAt": "2026-10-14T23:48:18.340692+00:00",
+  "baseHead": "59599b6a70cb2c0ccded36eeff0230b9942a41e9",
+  "windowsVersion": "0.2.427.104",
+  "createdAt": "2026-10-15T01:22:13.856814+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "d873bc5c9fa2f470b6e412213c840fa7369dfcc3580d3258c51750581c33250b"
+      "sha256": "9022557edb173f7bb225a7223e131d07342efd9d1bb7f8dd5a8453e68c63480c"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -83,7 +83,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "90475dbcc54757feb79dfa30177bebe0cc2ec8876a73057f794b5bdd5c4ba11a"
+      "sha256": "aa38a83cd17b43ea9fd5f54943e38a3c77240a936576a138921a7da10d6b6ff3"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -129,6 +129,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
       "normalization": "lf",
       "sha256": "9da84dc0a7746d2ac5162547815b4b18f9935908c2fba774decbf15475722745"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "normalization": "lf",
+      "sha256": "2aed48cc355e083ed0c925c23fa9eeee9aab7a37f2001776e48b68f29ed05e34"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicy.kt",
@@ -236,6 +241,11 @@
       "sha256": "7cf4fb77c8de2c211d2e206dff1e36e80fe87a71ed227d25a83bd180dc3edab1"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsLiquidGlassMaterial.kt",
+      "normalization": "lf",
+      "sha256": "325fc36c061c8a29ba9a974724025b402ac44b400435f2d29a8182cd641811ce"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsMessageNotifications.kt",
       "normalization": "lf",
       "sha256": "9f1d870b2d352e36f370cca2b0af4470b6f65e4bb7cdad856c108b544d4c39a4"
@@ -321,6 +331,16 @@
       "sha256": "79021ce7b4f292b92cfa37e74822b6bee4cbd96035dd58fa72761290d94a6092"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
+      "normalization": "lf",
+      "sha256": "258e4aeef37617406415faed913014bbd0fe1aab6df3c74bc3ed2363f4257712"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadQueueAuthorityManagerTest.kt",
+      "normalization": "lf",
+      "sha256": "bb8b464e049b85ba04c2efcdcc90cbb2d554502edd8fde50d75576b3fcf1bffd"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNvidiaVideoAutoPolicyTest.kt",
       "normalization": "lf",
       "sha256": "6ed728e1357a8fe6b18cb1f9ed6e486c9105121fffe7018e61ee8ae86a6e4d4b"
@@ -391,6 +411,16 @@
       "sha256": "396b830b269b1a9ba18b93d4eb6945fb1e43b99058c24f67a3c0256ce118bfea"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsNativeDockGeometryContractTest.kt",
+      "normalization": "lf",
+      "sha256": "956a3ca986aca8d4e806609cbd104f9950dad1b97555758196e929c5bf3b3c35"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsSharedLensUniformCacheTest.kt",
+      "normalization": "lf",
+      "sha256": "20097ba167ab3ab62e370918295e91c2a41d84a3bba9783689b46c58312fe38c"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterStageLeaseTest.kt",
       "normalization": "lf",
       "sha256": "e898a56a07d142405acff9c1dda0109f5a6e1e1994ceff7f674eda09de75660d"
@@ -428,7 +458,7 @@
     {
       "path": "desktop/tools/extract-upstream-components.py",
       "normalization": "lf",
-      "sha256": "dd4d784640b9cbe9d1bc26cf23eb00490eb6a48548c6c0b1d17bfd21be2b3297"
+      "sha256": "b8550fe569a69044f77dad54ff9ff5adbe511815bbecbb53b9c82d0c8b7b5f7b"
     },
     {
       "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
@@ -439,6 +469,11 @@
       "path": "desktop/tools/extract-upstream-danmaku-settings.py",
       "normalization": "lf",
       "sha256": "2970d04e3597e6a0e7843045020543ff7f09485833bf3b039c2bca88eac9487f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+      "normalization": "lf",
+      "sha256": "7c2cd9dd679949b848d22b2fefaaa2326d3afd30f333bd78953fcf4f6f88da6d"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
@@ -464,6 +499,11 @@
       "path": "desktop/tools/extract-upstream-message-notifications.py",
       "normalization": "lf",
       "sha256": "e0f37ac4dd207b748ae928802854792a3e5e74492f23296f577254075c3a029b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "normalization": "lf",
+      "sha256": "8df8cb34e8188d1313e3825c67b0f018a0cc6d1012c160466fb3280adc8537fc"
     },
     {
       "path": "desktop/tools/native/build-veyra-core-runtime.py",
@@ -598,7 +638,12 @@
     {
       "path": "desktop/tools/tests/test_v040_liquid_controls_source.py",
       "normalization": "lf",
-      "sha256": "15067d84a9157576cba11ee8730bf437fa04c6b133e900a5b2702e1ce03f2faf"
+      "sha256": "3a5cf13122ac73eec15bde2c0ac1c3e2faffa3c72e8cbd1bd9369f6cfd899867"
+    },
+    {
+      "path": "desktop/tools/tests/test_v040_native_chrome_source.py",
+      "normalization": "lf",
+      "sha256": "7a3d9c68b175840183dcef7f086a2bef2284704e71ade55c392616e425d8db13"
     },
     {
       "path": "desktop/tools/tests/test_v040_reply_medal_source.py",
@@ -631,6 +676,11 @@
       "sha256": "7c10fd658778581374fe53a8b5125f10107d51aac39b574ac5e53e3a26e6ad94"
     },
     {
+      "path": "desktop/tools/v029_home_load.py",
+      "normalization": "lf",
+      "sha256": "848ad33cd3697b46fd84595b695fc892b84c7d0313c2affc6b7d1c3eddcb4790"
+    },
+    {
       "path": "desktop/tools/v037_player_foundations.py",
       "normalization": "lf",
       "sha256": "51e477ace4815d1711cb0aefaffcc01eecf1fe4a8a66560052da6f3b46b575dc"
@@ -644,6 +694,11 @@
       "path": "desktop/tools/v037_player_render.py",
       "normalization": "lf",
       "sha256": "ace26caebfdb64df60f971251755e33b00f1bf9c67bd706f1ca38cfafb3ce441"
+    },
+    {
+      "path": "desktop/tools/v037_player_shared_material.py",
+      "normalization": "lf",
+      "sha256": "393e4f8d5499a082ce7df96a258526da54910f436b443547861c2fe1f0f98e87"
     },
     {
       "path": "desktop/tools/v037_shared_tabs_progress.py",
@@ -703,7 +758,12 @@
     {
       "path": "desktop/tools/v040_liquid_value_controls.py",
       "normalization": "lf",
-      "sha256": "4263aa7bc80e7aed8d57937045f701a8ff2491ff95e99fc0c34389e5b8a14aea"
+      "sha256": "c9f36a6e2c00f9c0b9f55817589e66ee2e0d0b2fec26725b16019cd5f403630e"
+    },
+    {
+      "path": "desktop/tools/v040_native_chrome.py",
+      "normalization": "lf",
+      "sha256": "a6b25aba3b33fdb300aa5c0b4e35e4081098ef662d861f57a410fbc6de3426df"
     },
     {
       "path": "desktop/tools/v040_reply_medal.py",
@@ -1151,6 +1211,86 @@
       "sha256": "eeae9081bc1a9bd2ab0fdf358f9561aac4d68578f106d13cf2a40fb5411a38c7"
     },
     {
+      "path": "desktop/upstream-slices/v040-native-chrome/AdaptiveChrome.kt",
+      "normalization": "raw",
+      "sha256": "f25c89a48b07e16a48d83c75eccdb398ee9b664b1bbd8a849095c05ab18d1c3f"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/AdaptiveScaffoldPolicy.kt",
+      "normalization": "raw",
+      "sha256": "520d1a4ec22d77c9a7460cd647a37e35603eb85980c21bf63ddb9cb433a5769f"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/AdaptiveScaffoldPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "ef17ef785c3b13d0713fa0a86b8c695e07b2df0fbb2cc07506cd34cd3d63bde2"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/AppTopChromePolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "652ab84a09042406d96ed88356db9988a28337e1fe1030ac8f1d40f181fbabc3"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/BiliPaiTopBarIconDecorator.kt",
+      "normalization": "raw",
+      "sha256": "dd38b5aa9a18f32849ba4ceac2d19e39ea3dcf6d25652d0bbd7b660b7b98e58f"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/BottomBar.kt",
+      "normalization": "raw",
+      "sha256": "14a240860576ed36459ef0dc217dcd017d4b88f926ac7a1061f73782eea377be"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/BottomBarMatchedLiquidChrome.kt",
+      "normalization": "raw",
+      "sha256": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/FloatingBottomBarGeometry.kt",
+      "normalization": "raw",
+      "sha256": "aff3a0e24e17b710ddfdcac8746de18ea71330e691e18fbb5ef1fa70eb8c858a"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/FloatingBottomBarGeometryTest.kt",
+      "normalization": "raw",
+      "sha256": "bbe0ada6979c29756a0d1d83b36f439c59ff225b4d6b3b33088a9c2a9fd92935"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/FloatingDockChrome.kt",
+      "normalization": "raw",
+      "sha256": "26267c3c98904506bdb1ca6b16dfdbc21983e4ec8c91f9158e549cb6077d0903"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/GlobalWallpaperBackdrop.kt",
+      "normalization": "raw",
+      "sha256": "9453976a3550fdc68ef9c3d468d48500fa046389c930c4e34db6252f1d261344"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/HomeTopTabFloatingDock.kt",
+      "normalization": "raw",
+      "sha256": "a3eea2c0dcce61c5dd3631a303d8eb1b23a9d92c3a0d75c38b732225fbb1d1d0"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/Lens.kt",
+      "normalization": "raw",
+      "sha256": "222ac588fe6ed2b0a168024a4233f4a1de0877db71ef0cf566677c0680f5f99a"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/TopReadabilityChromePolicy.kt",
+      "normalization": "raw",
+      "sha256": "21687f91a4d37f999584d0390f40c19a8e321a98700f7a5ddf727a80a9ce655d"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/TopReadabilityChromePolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "7b33ba45fc0e17ec4bb8ddc0a0539fecaa5dc1976487a85d356e1c2c6eb8dfe9"
+    },
+    {
+      "path": "desktop/upstream-slices/v040-native-chrome/manifest.json",
+      "normalization": "raw",
+      "sha256": "4902117d0a601563b4a7a7f22fab47ef6d78177ceda2498432bdfb9f52132c48"
+    },
+    {
       "path": "desktop/upstream-slices/v040-reply-medal/CommentGrpcRepository.kt",
       "normalization": "raw",
       "sha256": "399f34d801a0faaa5392b3f2e18f51e62a6403d4bf468a2c59226322a318fd18"
@@ -1198,7 +1338,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "f41513b7b4a357353592cfd503c30582486c144591141422d6c28d3af8921874"
+      "sha256": "a29d75b1a3c6b1af08b6dd6fda9ec91d7fae3c6218d972dd360c65c942289b4d"
     }
   ],
   "classes": {
@@ -1216,9 +1356,17 @@
     "com.android.purebilibili.core.ui.ButtonVisualPolicyTest": 5,
     "com.android.purebilibili.core.ui.AppChromeSizeTokensTest": 1,
     "com.android.purebilibili.core.ui.components.AppPrimitiveRendererPolicyTest": 6,
-    "com.android.purebilibili.core.ui.components.AppTextSearchHighlightTest": 2
+    "com.android.purebilibili.core.ui.components.AppTextSearchHighlightTest": 2,
+    "com.android.purebilibili.feature.home.components.FloatingBottomBarGeometryTest": 29,
+    "com.android.purebilibili.core.ui.AdaptiveScaffoldPolicyTest": 2,
+    "com.android.purebilibili.core.ui.TopReadabilityChromePolicyTest": 5,
+    "com.android.purebilibili.core.ui.AppTopChromePolicyTest": 1,
+    "com.bilipai.desktop.ui.DesktopWindowsSharedLensUniformCacheTest": 4,
+    "com.bilipai.desktop.download.DesktopDownloadManagerTest": 23,
+    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityManagerTest": 5,
+    "com.bilipai.desktop.ui.DesktopWindowsNativeDockGeometryContractTest": 2
   },
-  "expectedTests": 76,
+  "expectedTests": 147,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1228,33 +1376,36 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
+    "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsLiquidGlassMaterial.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsNativeDockGeometryContractTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsSharedLensUniformCacheTest.kt",
     "desktop/tools/extract-upstream-components.py",
-    "desktop/tools/tests/test_v040_chrome_actions_source.py",
-    "desktop/tools/v037_player_render.py",
-    "desktop/tools/v040_chrome_actions.py",
-    "desktop/upstream-slices/v040-chrome-actions/AppChromeSizeTokens.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppChromeSizeTokensTest.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppElasticIndication.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppElasticPress.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppIcon.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppIconButton.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppMaterial3IconButton.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppMiuixActionPrimitives.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppMiuixIconButton.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppPrimaryButton.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveComponents.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveRendererPolicy.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppPrimitiveRendererPolicyTest.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppTabIndicatorMotion.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppText.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppTextSearchHighlight.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppTextSearchHighlightTest.kt",
-    "desktop/upstream-slices/v040-chrome-actions/AppTopBarIconDecoration.kt",
-    "desktop/upstream-slices/v040-chrome-actions/ButtonSlotColor.kt",
-    "desktop/upstream-slices/v040-chrome-actions/ButtonSlotColorTest.kt",
-    "desktop/upstream-slices/v040-chrome-actions/ButtonVisualPolicy.kt",
-    "desktop/upstream-slices/v040-chrome-actions/ButtonVisualPolicyTest.kt",
-    "desktop/upstream-slices/v040-chrome-actions/manifest.json",
+    "desktop/tools/extract-upstream-dynamic-detail-container.py",
+    "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+    "desktop/tools/tests/test_v040_liquid_controls_source.py",
+    "desktop/tools/tests/test_v040_native_chrome_source.py",
+    "desktop/tools/v029_home_load.py",
+    "desktop/tools/v037_player_shared_material.py",
+    "desktop/tools/v040_liquid_value_controls.py",
+    "desktop/tools/v040_native_chrome.py",
+    "desktop/upstream-slices/v040-native-chrome/AdaptiveChrome.kt",
+    "desktop/upstream-slices/v040-native-chrome/AdaptiveScaffoldPolicy.kt",
+    "desktop/upstream-slices/v040-native-chrome/AdaptiveScaffoldPolicyTest.kt",
+    "desktop/upstream-slices/v040-native-chrome/AppTopChromePolicyTest.kt",
+    "desktop/upstream-slices/v040-native-chrome/BiliPaiTopBarIconDecorator.kt",
+    "desktop/upstream-slices/v040-native-chrome/BottomBar.kt",
+    "desktop/upstream-slices/v040-native-chrome/BottomBarMatchedLiquidChrome.kt",
+    "desktop/upstream-slices/v040-native-chrome/FloatingBottomBarGeometry.kt",
+    "desktop/upstream-slices/v040-native-chrome/FloatingBottomBarGeometryTest.kt",
+    "desktop/upstream-slices/v040-native-chrome/FloatingDockChrome.kt",
+    "desktop/upstream-slices/v040-native-chrome/GlobalWallpaperBackdrop.kt",
+    "desktop/upstream-slices/v040-native-chrome/HomeTopTabFloatingDock.kt",
+    "desktop/upstream-slices/v040-native-chrome/Lens.kt",
+    "desktop/upstream-slices/v040-native-chrome/TopReadabilityChromePolicy.kt",
+    "desktop/upstream-slices/v040-native-chrome/TopReadabilityChromePolicyTest.kt",
+    "desktop/upstream-slices/v040-native-chrome/manifest.json",
     "desktop/upstream-sources.json"
   ]
 }

@@ -62,6 +62,9 @@ class DesktopDownloadManager internal constructor(
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val jobs = mutableMapOf<String, Job>()
     private var lastPersistNanos = 0L
+    /** Most recent ordinary queue save the filesystem refused. The original saveTasks logs and ignores it; the next save retries. */
+    @Volatile internal var lastPersistFailure: IOException? = null
+        private set
     private var closed = false
     private val ownershipOperations = Mutex()
     private val initialAuthority = DesktopDownloadQueueAuthority.tryAcquire(stateFile, startupHandoffToken)
@@ -465,8 +468,9 @@ class DesktopDownloadManager internal constructor(
             installJobLocked(id, job)
             ready += job
         }
-        persistLocked(force = true)
-        ready.forEach { it.start() }
+        // Every job installed above must start whatever the save does: an unstarted lazy job would hold its slot,
+        // and its PENDING task, until the application restarts.
+        try { persistLocked(force = true) } finally { ready.forEach { it.start() } }
     }
 
     private suspend fun runTask(id: String) {
@@ -845,17 +849,27 @@ class DesktopDownloadManager internal constructor(
         if (updateHandoff != null && !handoffWrite) return
         val now = System.nanoTime()
         if (!force && now - lastPersistNanos < 300_000_000L) return
-        Files.createDirectories(stateFile.toAbsolutePath().parent)
-        val temporary = Files.createTempFile(stateFile.toAbsolutePath().parent, "downloads-", ".tmp")
         try {
-            Files.writeString(temporary, json.encodeToString(serializer, mutableTasks.value))
-            if (durable) java.nio.channels.FileChannel.open(temporary, java.nio.file.StandardOpenOption.WRITE, java.nio.file.LinkOption.NOFOLLOW_LINKS).use { it.force(true) }
-            try { Files.move(temporary, stateFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
-            } catch (_: java.nio.file.AtomicMoveNotSupportedException) {
-                Files.move(temporary, stateFile, StandardCopyOption.REPLACE_EXISTING)
-            }
+            Files.createDirectories(stateFile.toAbsolutePath().parent)
+            val temporary = Files.createTempFile(stateFile.toAbsolutePath().parent, "downloads-", ".tmp")
+            try {
+                Files.writeString(temporary, json.encodeToString(serializer, mutableTasks.value))
+                if (durable) java.nio.channels.FileChannel.open(temporary, java.nio.file.StandardOpenOption.WRITE, java.nio.file.LinkOption.NOFOLLOW_LINKS).use { it.force(true) }
+                try { Files.move(temporary, stateFile, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+                } catch (_: java.nio.file.AtomicMoveNotSupportedException) {
+                    Files.move(temporary, stateFile, StandardCopyOption.REPLACE_EXISTING)
+                }
+                lastPersistNanos = now
+            } finally { Files.deleteIfExists(temporary) }
+            lastPersistFailure = null
+        } catch (refused: IOException) {
+            // The original saveTasks logs and ignores a refused ordinary save, so enqueue, scheduling and a running transfer never
+            // depend on it (a full disk or a scanner holding downloads.json). Only the exit and update-handoff checkpoints are
+            // durable promises and must still report a refused write.
+            if (durable || handoffWrite) throw refused
+            lastPersistFailure = refused
             lastPersistNanos = now
-        } finally { Files.deleteIfExists(temporary) }
+        }
     }
 
     private fun restore(strict: Boolean = false): List<DownloadTask> {
