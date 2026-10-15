@@ -31,7 +31,7 @@ jobs:
           repo = api('')
           assert repo['full_name'] == repository and repo['private'] is False
           release = api('/releases/413553374')
-          assert release['id'] == 413553374 and release['draft'] is True and release['published_at'] is None
+          assert release['id'] == 413553374 and release['draft'] is False and release['published_at'] is not None
           assert release['tag_name'] == 'updater-fixture-0.2.427.56-aa0a627f54bc'
           assert release['target_commitish'] == 'aa0a627f54bc4bb9dca7f507615c30fc21b74ca6'
           asset = next(a for a in release['assets'] if a['id'] == 643148932)
@@ -67,7 +67,7 @@ jobs:
                   output.write(block)
           assert count == 395600303 and digest.hexdigest() == expected
           result = dict(passed=True, repository=repository, readOnlyContentsPermission=True,
-              draftReadableByCiToken=True, exactDeliveredRuntimeDownloaded=True, bytes=count,
+              publicFixtureReadableByCiToken=True, exactDeliveredRuntimeDownloaded=True, bytes=count,
               sha256=digest.hexdigest(), releaseId=release['id'], assetId=asset['id'],
               applicationExecuted=False, jvmExecuted=False, packageBuilt=False,
               releasePublished=False, desktopReplaced=False)
