@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.*
 import java.awt.EventQueue
 
 /** The actual Window's preview and final key callbacks. A visible native player
@@ -56,10 +56,10 @@ internal class DesktopWindowKeyFallback : AutoCloseable {
     }
 
     private fun recordSpace(event: KeyEvent, stage: com.bilipai.desktop.player.MpvRuntimeProbeStage) {
-        val raw = event.nativeKeyEvent as? java.awt.event.KeyEvent ?: return
-        if (raw.keyCode == java.awt.event.KeyEvent.VK_SPACE)
-            com.bilipai.desktop.player.MpvRuntimeProbe.record(stage, raw.id.toLong(),
-                flags = (if (raw.isConsumed) 1 else 0) or (if (leaf != null) 2 else 0))
+        if (event.key == Key.Spacebar)
+            com.bilipai.desktop.player.MpvRuntimeProbe.record(stage,
+                if (event.type == KeyEventType.KeyDown) 401L else if (event.type == KeyEventType.KeyUp) 402L else 0L,
+                flags = if (leaf != null) 2 else 0)
     }
 
     override fun close() {

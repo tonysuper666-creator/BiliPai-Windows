@@ -41,6 +41,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Verifier subprocess preflight failed.' }
           python desktop/tools/run-tool-tests.py --stage policies
           if ($LASTEXITCODE -ne 0) { throw 'Complete source inventory, updater and publication policy regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_package_source_qualification.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Source and harness qualification regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_validate_source_cohort.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen source inventory regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_export_packaged_updater_harness.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Updater harness export boundary regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_veyra_verifier_child_environment.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Actual verifier subprocess regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_mpv_companion_resource_staging.py -v
@@ -110,6 +116,7 @@ jobs:
           if ($vc.passed -ne $true -or $vc.vcInputsExact -ne $true -or $vc.compilerBinSetExact -ne $true -or $vc.englishResourcesExact -ne $true -or [IO.Path]::GetFullPath($vc.vcRoot) -ne [IO.Path]::GetFullPath($vcRoot)) { throw 'VC provisioning did not produce the exact isolated root.' }
           "BILIPAI_NATIVE_SHARE_VC_ROOT=$vcRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
       - name: Compile and validate the exact source cohort
+        id: source
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -119,3 +126,11 @@ jobs:
         run: |
           python desktop/tools/validate-source-cohort.py --run --repo "$env:GITHUB_WORKSPACE" --output "$env:RUNNER_TEMP/bilipai-source-validation"
           if ($LASTEXITCODE -ne 0) { throw 'Source cohort validation failed; see the exact receipt and test XML in this log.' }
+      - name: Export qualified updater fixture without running an EXE
+        if: steps.source.outputs.updater_harness_exported == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-updater-harness-${{ github.sha }}
+          path: ${{ runner.temp }}/bilipai-source-validation/updater-harness
+          if-no-files-found: error
+          retention-days: 1

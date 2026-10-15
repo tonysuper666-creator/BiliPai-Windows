@@ -84,10 +84,26 @@ def verify(run, jobs, log, plan, source_sha):
         actual[name] = int(suite.attrib["tests"])
         require(len(suite.findall("testcase")) == actual[name], "Raw XML testcase count mismatch")
     require(actual == plan["classes"], "Executed tests differ from qualification plan")
-    return dict(repository=REPOSITORY, sourceSha=source_sha, windowsVersion=plan["windowsVersion"],
+    export = None
+    if plan.get("exportPackagedUpdaterHarness") is True:
+        export = receipt.get("updaterHarnessExport")
+        require(isinstance(export, dict), "Required updater harness export is absent")
+        require(export.get("schema") == 1 and export.get("sourceSha") == source_sha,
+                "Updater harness source identity mismatch")
+        require(re.fullmatch(r"[0-9a-f]{64}", str(export.get("manifestSha256", ""))) is not None,
+                "Invalid updater harness manifest digest")
+        require(type(export.get("payloadFiles")) is int and 6 <= export["payloadFiles"] <= 7,
+                "Incomplete updater harness payload")
+        require(type(export.get("payloadBytes")) is int and 0 < export["payloadBytes"] <= 64 * 1024 * 1024,
+                "Updater harness exceeds bound")
+        require(export.get("applicationExecuted") is False and export.get("updaterE2EExecuted") is False,
+                "Export cannot substitute for actual updater acceptance")
+    proof = dict(repository=REPOSITORY, sourceSha=source_sha, windowsVersion=plan["windowsVersion"],
                 runId=run["id"], jobId=job["id"], actualTests=sum(actual.values()), suites=len(actual),
                 sourceQualified=True, sealedReceiptSHA256=digest, packageLaunchVerified=False,
                 hardwareVerified=False, releaseQualified=False, desktopReplaced=False)
+    if export is not None: proof["updaterHarnessExport"] = export
+    return proof
 
 
 def main():
