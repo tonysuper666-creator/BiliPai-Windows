@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "8ac6a3bac4847e621ffd921dd805e22bb9e75f78",
+  "baseHead": "c83ce5ca00d89710e430e5442f0a792063eca18c",
   "windowsVersion": "0.2.427.122",
-  "createdAt": "2026-10-15T14:39:41.259963+00:00",
+  "createdAt": "2026-10-15T15:49:24.077344+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -633,7 +633,7 @@
     {
       "path": "desktop/tools/export-packaged-updater-harness.py",
       "normalization": "lf",
-      "sha256": "79182cf0340a3db04349aad6ac90d9c17c6034e6e4fcd681044f882a8a281c64"
+      "sha256": "c3160f0a8acfa7bd9ebd67de39ce65807b41c68eb20dd35b45b08076e7da4f94"
     },
     {
       "path": "desktop/tools/extract-appearance-platform.py",
@@ -778,7 +778,7 @@
     {
       "path": "desktop/tools/tests/test_export_packaged_updater_harness.py",
       "normalization": "lf",
-      "sha256": "b93f5764b61f68e11d989c9f5827856b3f050c1496f49b9e663a88b93f7759dd"
+      "sha256": "4048e1863341bf9df9c320e14822193fabd1ae86b0280a67e84aa8c826f712d7"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_danmaku_hot_settings.py",
@@ -933,7 +933,7 @@
     {
       "path": "desktop/tools/tests/test_verify_updater_harness_export.py",
       "normalization": "lf",
-      "sha256": "8b0b5b17b7006f8760b50f1694190e22944544d790cd3dd1b162d19118a02563"
+      "sha256": "c7c79d12ac47a1b488820657baded7da3443e0fa2c75532f378273dd021b16e5"
     },
     {
       "path": "desktop/tools/tests/test_veyra_core_build_evidence.py",
@@ -1083,7 +1083,7 @@
     {
       "path": "desktop/tools/verify-updater-harness-export.py",
       "normalization": "lf",
-      "sha256": "7b9ffdbe461c23ca7eb163ed5784de64f9ee46ffd1549fbb8ecdfd7b460ddf5a"
+      "sha256": "0c3374aff0bb13915f033f724d12aa5b5bc21eab2ac3b82b440b46cda7ea8b40"
     },
     {
       "path": "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryDataSource.kt",
@@ -1710,27 +1710,10 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvRuntimeProbe.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowKeyFallback.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvNativeInputTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowKeyFallbackTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/update/PackagedUpdaterHarnessMain.kt",
     "desktop/tools/export-packaged-updater-harness.py",
-    "desktop/tools/extract-upstream-offline-player.py",
     "desktop/tools/tests/test_export_packaged_updater_harness.py",
-    "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
-    "desktop/tools/tests/test_package_source_qualification.py",
-    "desktop/tools/tests/test_publish_release.py",
     "desktop/tools/tests/test_verify_updater_harness_export.py",
-    "desktop/tools/updater-harness-export.init.gradle",
-    "desktop/tools/validate-source-cohort.py",
-    "desktop/tools/verify-package-source-qualification.py",
-    "desktop/tools/verify-updater-harness-export.py",
-    "desktop/upstream-sources.json"
+    "desktop/tools/verify-updater-harness-export.py"
   ],
   "exportPackagedUpdaterHarness": true
 }

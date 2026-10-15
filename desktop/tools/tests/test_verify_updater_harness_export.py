@@ -4,6 +4,7 @@ import copy
 import hashlib
 import importlib.util
 import json
+import struct
 import tempfile
 import unittest
 import zipfile
@@ -19,6 +20,14 @@ def load(name, path):
 
 tool = load('export_readback', TOOLS / 'verify-updater-harness-export.py')
 fixture = load('export_gate_fixture', TOOLS / 'tests/test_package_source_qualification.py')
+
+
+def marker_class(name, references=()):
+    pool = bytearray(); names = [name, *references]
+    for index, value in enumerate(names):
+        raw = value.encode(); pool.extend(b'\x01' + struct.pack('>H', len(raw)) + raw)
+        pool.extend(b'\x07' + struct.pack('>H', index * 2 + 1))
+    return b'\xca\xfe\xba\xbe' + struct.pack('>HHH', 0, 65, len(names) * 2 + 1) + pool + struct.pack('>HHH', 0x21, 2, 0)
 
 
 class UpdaterHarnessReadbackTest(unittest.TestCase):
@@ -44,7 +53,7 @@ class UpdaterHarnessReadbackTest(unittest.TestCase):
         with zipfile.ZipFile(self.root / 'updater-harness.jar', 'w') as archive:
             for row in sources:
                 name = row['path'].removeprefix('desktop/src/test/kotlin/').removesuffix('.kt') + '.class'
-                data = bytes.fromhex('cafebabe00000041')
+                data = marker_class(name.removesuffix('.class'))
                 archive.writestr(name, data)
                 self.manifest['classes'].append(dict(path=name, bytes=len(data), sha256=hashlib.sha256(data).hexdigest()))
         self.payload('updater-harness.jar')
@@ -152,3 +161,30 @@ class UpdaterHarnessReadbackTest(unittest.TestCase):
         path.write_text(path.read_text()[:-1] + ', "schema": 1}', encoding='utf-8')
         self.f.payload['receipt']['updaterHarnessExport']['manifestSha256'] = tool.digest(path)
         with self.assertRaises(ValueError): self.verify()
+
+    def replace_classes(self, entries):
+        self.manifest['classes'] = []
+        with zipfile.ZipFile(self.root / 'updater-harness.jar', 'w') as archive:
+            for name, raw in entries.items():
+                archive.writestr(name, raw)
+                self.manifest['classes'].append(dict(path=name, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest()))
+        self.payload('updater-harness.jar'); self.seal()
+
+    def test_resealed_export_still_requires_referenced_compiled_adapters(self):
+        with zipfile.ZipFile(self.root / 'updater-harness.jar') as archive:
+            entries = {name: archive.read(name) for name in archive.namelist()}
+        owner = 'com/bilipai/desktop/update/DesktopUpdaterIntegrationTest'
+        helper = owner + '$LoopbackFixture$special$$inlined$-addInterceptor$1'
+        entries[owner + '.class'] = marker_class(owner, [helper])
+        self.replace_classes(entries)
+        with self.assertRaisesRegex(ValueError, 'Missing compiled fixture class'): self.verify()
+        entries[helper + '.class'] = marker_class(helper)
+        self.replace_classes(entries)
+        self.assertEqual(4, self.verify()['testClasses'])
+
+    def test_resealed_wrong_internal_class_identity_is_rejected(self):
+        with zipfile.ZipFile(self.root / 'updater-harness.jar') as archive:
+            entries = {name: archive.read(name) for name in archive.namelist()}
+        entries[next(iter(entries))] = marker_class('foreign/OtherTest')
+        self.replace_classes(entries)
+        with self.assertRaisesRegex(ValueError, 'identity differs'): self.verify()

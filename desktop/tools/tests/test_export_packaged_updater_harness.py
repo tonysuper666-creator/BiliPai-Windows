@@ -7,6 +7,14 @@ spec = importlib.util.spec_from_file_location('updater_harness_export', TOOL)
 tool = importlib.util.module_from_spec(spec); spec.loader.exec_module(tool)
 
 
+def marker_class(internal_name, references=()):
+    pool = bytearray(); names = [internal_name, *references]
+    for index, name in enumerate(names):
+        raw = name.encode(); pool.extend(b'\x01' + struct.pack('>H', len(raw)) + raw)
+        pool.extend(b'\x07' + struct.pack('>H', index * 2 + 1))
+    return b'\xca\xfe\xba\xbe' + struct.pack('>HHH', 0, 65, len(names) * 2 + 1) + pool + struct.pack('>HHH', 0x21, 2, 0)
+
+
 class UpdaterHarnessExportTest(unittest.TestCase):
     """Only file collection/provenance is exercised. No JVM or EXE is started."""
     def setUp(self):
@@ -24,7 +32,7 @@ class UpdaterHarnessExportTest(unittest.TestCase):
         for name in tool.CLASS_BASES:
             path = self.class_root / tool.CLASS_PREFIX / (name + '.class'); path.parent.mkdir(parents=True, exist_ok=True)
             # Deliberately not executable bytecode: unit tests prove collection only.
-            path.write_bytes(b'\xca\xfe\xba\xbe' + struct.pack('>HH', 0, 65) + name.encode())
+            path.write_bytes(marker_class(tool.CLASS_PREFIX + name))
         self.gradle_home = self.root / 'gradle-home'; artifacts = []
         for group, name in sorted(tool.REQUIRED_LIBRARIES):
             path = self.gradle_home / 'caches/modules-2/files-2.1' / group / name / '1.0' / 'content' / (name + '.jar')
@@ -64,6 +72,33 @@ class UpdaterHarnessExportTest(unittest.TestCase):
         self.inputs['classRoots'] = [str(self.class_root.resolve())]
         result = self.export()
         self.assertEqual(3, len(result['classes']))
+
+    def test_real_kotlin_inline_adapter_name_is_collected_with_its_call_site(self):
+        name = 'DesktopUpdaterIntegrationTest$LoopbackFixture$special$$inlined$-addInterceptor$1'
+        owner = self.class_root / tool.CLASS_PREFIX / 'DesktopUpdaterIntegrationTest.class'
+        owner.write_bytes(marker_class(tool.CLASS_PREFIX + 'DesktopUpdaterIntegrationTest', [tool.CLASS_PREFIX + name]))
+        (owner.parent / (name + '.class')).write_bytes(marker_class(tool.CLASS_PREFIX + name))
+        result = self.export()
+        self.assertIn(tool.CLASS_PREFIX + name + '.class', {row['path'] for row in result['classes']})
+
+    def test_missing_referenced_inline_adapter_is_rejected_before_export(self):
+        owner = self.class_root / tool.CLASS_PREFIX / 'DesktopUpdaterIntegrationTest.class'
+        helper = tool.CLASS_PREFIX + 'DesktopUpdaterIntegrationTest$special$$inlined$-addInterceptor$1'
+        for reference in [helper, '[L' + helper + ';']:
+            owner.write_bytes(marker_class(tool.CLASS_PREFIX + 'DesktopUpdaterIntegrationTest', [reference]))
+            with self.assertRaisesRegex(ValueError, 'Missing compiled fixture class'): self.export()
+            self.assertFalse(self.output.exists())
+
+    def test_class_entry_identity_and_truncated_constant_pool_are_rejected(self):
+        owner = self.class_root / tool.CLASS_PREFIX / 'DesktopUpdaterIntegrationTest.class'
+        for raw in [marker_class(tool.CLASS_PREFIX + 'PackagedUpdaterHarnessMain'),
+                    marker_class(tool.CLASS_PREFIX + 'DesktopUpdaterIntegrationTest')[:13]]:
+            owner.write_bytes(raw); self.rejected()
+
+    def test_class_symbol_cannot_escape_the_selected_fixture_family(self):
+        for name in ['DesktopUpdaterIntegrationTest$../foreign.class',
+                     'DesktopUpdaterIntegrationTest$bad;name.class', 'OtherTest$-adapter.class']:
+            self.assertFalse(tool.class_name(Path(name)))
 
     def test_an_existing_parent_or_sibling_is_not_an_approved_test_class_root(self):
         for root in [self.class_root.parent, self.repo, self.gradle_home]:

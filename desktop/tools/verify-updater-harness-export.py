@@ -50,7 +50,7 @@ def unique(pairs):
 def class_name(name):
     return re.fullmatch(r'com/bilipai/desktop/update/(?:DesktopUpdaterIntegrationTest|'
                        r'PackagedUpdaterChildEnvironment|PackagedUpdaterHarnessMain)'
-                       r'(?:\$[A-Za-z0-9_$]+)?\.class', name) is not None
+                       r'(?:\$[A-Za-z0-9_$-]+)?\.class', name) is not None
 
 
 def verify(root, run, jobs, log, plan_bytes, source_sha):
@@ -132,6 +132,7 @@ def verify(root, run, jobs, log, plan_bytes, source_sha):
     require(sum(row['bytes'] for row in classes) <= 16 * 1024 * 1024, 'Oversized test classes')
     for name in ['DesktopUpdaterIntegrationTest', 'PackagedUpdaterChildEnvironment', 'PackagedUpdaterHarnessMain']:
         require('com/bilipai/desktop/update/' + name + '.class' in expected, 'Missing entry class')
+    compiled = {}
     with zipfile.ZipFile(root / 'updater-harness.jar') as archive:
         entries = archive.infolist()
         require(len(entries) == len(expected) and {item.filename for item in entries} == set(expected),
@@ -142,6 +143,11 @@ def verify(root, run, jobs, log, plan_bytes, source_sha):
             raw = archive.read(item)
             require(raw[:4] == b'\xca\xfe\xba\xbe' and 52 <= struct.unpack('>H', raw[6:8])[0] <= 65 and
                     hashlib.sha256(raw).hexdigest() == row['sha256'], 'Compiled class differs')
+            compiled[item.filename] = raw
+    spec = importlib.util.spec_from_file_location('updater_fixture_class_closure',
+                                                TOOLS / 'export-packaged-updater-harness.py')
+    closure = importlib.util.module_from_spec(spec); spec.loader.exec_module(closure)
+    closure.validate_fixture_class_closure(compiled)
     return dict(proof, harnessReadbackVerified=True, harnessManifestSha256=sealed['manifestSha256'],
                 harnessFiles=len(files), harnessBytes=total, testClasses=len(classes),
                 applicationExecuted=False, updaterE2EExecuted=False)

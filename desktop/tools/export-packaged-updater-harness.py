@@ -51,8 +51,66 @@ def regular_beneath(path, root):
 def class_name(path):
     if path.suffix != '.class':
         return False
-    return any(re.fullmatch(re.escape(name) + r'(?:\$[A-Za-z0-9_$]+)?\.class', path.name)
+    # Kotlin's inlined adapters include names such as $inlined$-addInterceptor$1.
+    return any(re.fullmatch(re.escape(name) + r'(?:\$[A-Za-z0-9_$-]+)?\.class', path.name)
                for name in CLASS_BASES)
+
+
+def fixture_class_references(raw):
+    """Read bounded JVM class symbols; never load or execute a compiled class."""
+    if len(raw) < 10 or raw[:4] != b'\xca\xfe\xba\xbe' or len(raw) > MAX_CLASS_BYTES:
+        raise ValueError('Invalid compiled class structure')
+    position = 10; pool = {}; index = 1
+    count = struct.unpack_from('>H', raw, 8)[0]
+    def take(size):
+        nonlocal position
+        if position + size > len(raw):
+            raise ValueError('Truncated compiled constant pool')
+        result = raw[position:position + size]; position += size
+        return result
+    while index < count:
+        tag = take(1)[0]
+        if tag == 1:
+            pool[index] = (tag, take(struct.unpack('>H', take(2))[0]))
+        elif tag == 7:
+            pool[index] = (tag, struct.unpack('>H', take(2))[0])
+        elif tag in (3, 4, 9, 10, 11, 12, 17, 18): take(4)
+        elif tag in (5, 6):
+            take(8); index += 1
+            if index >= count: raise ValueError('Invalid wide constant pool entry')
+        elif tag in (8, 16, 19, 20): take(2)
+        elif tag == 15: take(3)
+        else: raise ValueError('Unknown compiled constant pool tag')
+        index += 1
+    header = take(6)
+    names = {}
+    for slot, (tag, value) in pool.items():
+        if tag != 7: continue
+        symbol = pool.get(value)
+        if symbol is None or symbol[0] != 1:
+            raise ValueError('Invalid compiled class symbol')
+        names[slot] = symbol[1].decode('utf-8', errors='replace')
+    own = names.get(struct.unpack_from('>H', header, 2)[0])
+    if not own: raise ValueError('Missing compiled class identity')
+    return own, set(names.values())
+
+
+def validate_fixture_class_closure(classes):
+    for name, raw in classes.items():
+        own, references = fixture_class_references(raw)
+        if own + '.class' != name:
+            raise ValueError('Compiled class identity differs from its entry')
+        for reference in references:
+            if reference.startswith('['):
+                reference = reference.lstrip('[')
+                if reference.startswith('L') and reference.endswith(';'):
+                    reference = reference[1:-1]
+            # Own nested adapters must come from this exact test compilation.
+            if reference.startswith(CLASS_PREFIX):
+                leaf = reference.removeprefix(CLASS_PREFIX)
+                if any(leaf == base or leaf.startswith(base + '$') for base in CLASS_BASES):
+                    if not class_name(Path(leaf + '.class')) or reference + '.class' not in classes:
+                        raise ValueError('Missing compiled fixture class: ' + reference)
 
 
 def export(repo, inputs, destination, expected_source, compiled_after):
@@ -115,6 +173,7 @@ def export(repo, inputs, destination, expected_source, compiled_after):
     required = {CLASS_PREFIX + name + '.class' for name in CLASS_BASES}
     if not required <= classes.keys() or len(classes) > 512 or sum(len(raw) for _, raw in classes.values()) > MAX_CLASSES_BYTES:
         raise ValueError('Incomplete or oversized compiled harness')
+    validate_fixture_class_closure({name: raw for name, (_, raw) in classes.items()})
     cache = Path(inputs['gradleUserHome']).absolute() / 'caches/modules-2/files-2.1'
     libraries = {}; total = sum(len(raw) for _, raw in classes.values())
     for row in inputs['artifacts']:
