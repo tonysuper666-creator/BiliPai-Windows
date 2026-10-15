@@ -38,6 +38,26 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
     private val mutableState = MutableStateFlow(PlayerState())
     val state: StateFlow<PlayerState> = mutableState.asStateFlow()
+    private val nativeWindowInput = MpvNativeWindowInputDelivery()
+    internal fun observeNativeWindowInput(listener: (MpvNativeWindowInputEvent) -> Unit): AutoCloseable =
+        nativeWindowInput.register(listener)
+    /** Enter the same publication before the MPV lock, just like native controls.
+     * UI delivery can never turn a queued old click into a write to a new source.
+     */
+    internal fun admitNativeWindowInput(event: MpvNativeWindowInputEvent, action: () -> Unit): Boolean {
+        val expected = event.lease.source
+        val publication = expected.source.nativePublication ?: return false
+        var applied = false
+        publication.admit {
+            synchronized(lock) {
+                if (!closed.get() && session?.acceptsNativeWindowInput(event) == true &&
+                    playbackRevision == event.lease.playbackRevision && ownsSourceSnapshot(expected)) {
+                    action(); applied = true
+                }
+            }
+        }
+        return applied
+    }
     // Installation provenance, independent of a playing source, filter ACK or GPU effect.
     private val mutableVeyraInstalledIdentity = MutableStateFlow<DesktopVeyraInstalledIdentity?>(null)
     internal val veyraInstalledIdentity: StateFlow<DesktopVeyraInstalledIdentity?> = mutableVeyraInstalledIdentity.asStateFlow()
@@ -1179,6 +1199,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private var activeEntry: Long? = null
         private var expectedEntry: Long? = null
         private var fileLoaded = false
+        private var nativeWindowInputLease: MpvNativeWindowInputLease? = null
+        fun acceptsNativeWindowInput(event: MpvNativeWindowInputEvent): Boolean =
+            session === this && !closing.get() && fileLoaded && activeEntry != null &&
+                nativeWindowInputLease === event.lease && activeSourceVersion == event.lease.source.sourceVersion &&
+                activeRevision == event.lease.playbackRevision
         private var pendingPresentationCapture: DesktopNativePresentationTransfer? = null
         private var pendingPresentationSeek: Action.Seek? = null
         private var presentationLoadCursor: DesktopNativePresentationResume? = null
@@ -1601,8 +1626,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     "osc" to "no",
                     "osd-level" to "0",
                     "input-default-bindings" to "no",
-                    "input-vo-keyboard" to "no",
-                    "input-cursor" to "no",
+                    "input-vo-keyboard" to if (softwareTarget == null) "yes" else "no",
+                    "input-cursor" to if (softwareTarget == null) "yes" else "no",
                     "idle" to "yes",
                     "keep-open" to "no",
                     "wid" to windowId.toString(),
@@ -1902,6 +1927,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         activeEntry = null
                         expectedEntry = null
                         fileLoaded = false
+                        nativeWindowInputLease = null
                         tracks = emptyList()
                         activeSourceVersion = action.version
                         activeRevision = action.revision
@@ -1941,6 +1967,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         // loadfile synchronously installs the new playlist entry before its asynchronous events.
                         expectedEntry = property(native, handle, "playlist/0/id")?.toLongOrNull()
                         if (expectedEntry != null) {
+                            if (softwareTarget == null) {
+                                val lease = MpvNativeWindowInputLease(OwnedPlaybackSourceSnapshot(action.version, action.source), action.revision)
+                                checkResult(native, native.mpv_command(handle, StringArray(arrayOf("define-section", "bilipai-window", lease.bindings, "force"), "UTF-8")), "native-input-bindings")
+                                checkResult(native, native.mpv_command(handle, StringArray(arrayOf("enable-section", "bilipai-window"), "UTF-8")), "native-input-enable")
+                                nativeWindowInputLease = lease
+                            }
                             action.source.nativePublication?.onLoadCommandAccepted()
                             presentationLoadCursor?.let { cursor -> cursor.seekId?.let { seekTracker.submit(it, action.version, cursor.positionSeconds) } }
                         }
@@ -2422,6 +2454,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private fun receiveEvent(native: MpvNative, handle: Pointer, event: Pointer) {
             // mpv_event x64 ABI: int event, int error, uint64 userdata, void* data.
             when (event.getInt(0)) {
+                16 -> { // MPV_EVENT_CLIENT_MESSAGE from this actual native child input section.
+                    val lease = synchronized(lock) {
+                        nativeWindowInputLease?.takeIf { session === this && !closing.get() && fileLoaded &&
+                            sourceVersion == activeSourceVersion && playbackRevision == activeRevision &&
+                            ownsSourceSnapshot(it.source) && it.playbackRevision == activeRevision }
+                    } ?: return
+                    lease.decode(event.getPointer(16))?.let(nativeWindowInput::emit)
+                }
                 1 -> { // MPV_EVENT_SHUTDOWN
                     retireVeyraPresentation()
                     closing.set(true)

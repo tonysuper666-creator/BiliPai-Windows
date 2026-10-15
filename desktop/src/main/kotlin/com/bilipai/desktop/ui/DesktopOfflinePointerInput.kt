@@ -97,7 +97,6 @@ internal class DesktopOfflineNativeInputBridge(
 ) : AutoCloseable {
     private val canvas = surface.components.filterIsInstance<java.awt.Canvas>().single()
     private val oldFocusable = surface.isFocusable
-    private val oldCanvasEnabled = canvas.isEnabled
     private var closed = false
     private var press: OwnedPlaybackSourceSnapshot? = null
     private var heldSpace: OwnedPlaybackSourceSnapshot? = null
@@ -106,6 +105,17 @@ internal class DesktopOfflineNativeInputBridge(
     private fun matches(receipt: OwnedPlaybackSourceSnapshot): Boolean {
         val now = current() ?: return false
         return now.sourceVersion == receipt.sourceVersion && now.source == receipt.source && ownsSource(receipt)
+    }
+    /** MPV owns a real child HWND during playback; its input does not bubble to
+     * AWT Canvas listeners. Called on the EDT after the same native publication
+     * has admitted this exact load. The original screen still owns all actions.
+     */
+    internal fun nativeWindowInput(kind: com.bilipai.desktop.player.MpvNativeWindowInputKind) {
+        check(java.awt.EventQueue.isDispatchThread())
+        val captured = current() ?: return
+        if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.REVEAL) requestNativeFocus()
+        onRevealControls()
+        if (kind == com.bilipai.desktop.player.MpvNativeWindowInputKind.TOGGLE && matches(captured)) onTogglePlayback()
     }
     private val mouse = object : java.awt.event.MouseAdapter() {
         override fun mouseEntered(event: java.awt.event.MouseEvent) { reveal() }
@@ -152,13 +162,9 @@ internal class DesktopOfflineNativeInputBridge(
     init {
         check(java.awt.EventQueue.isDispatchThread())
         surface.isFocusable = true
-        // MPV renders into its own child HWND below this Canvas. Windows sends
-        // child input directly to that peer instead of bubbling AWT events.
-        // Disabling only the render Canvas makes that subtree input-inert while
-        // its existing enabled host receives mouse/focus/key events; video and
-        // decoding continue on the same native session. No input hook is added.
-        // https://learn.microsoft.com/en-us/windows/win32/winmsg/window-features
-        canvas.isEnabled = false
+        // Preserve the render Canvas input state. Its real MPV child forwards
+        // native input through the existing client event loop; AWT remains the
+        // fallback when that child has unloaded, including the EOF controls.
         for (component in listOf(surface, canvas)) {
             component.addMouseListener(mouse); component.addMouseMotionListener(mouse)
             component.addKeyListener(key); component.addFocusListener(focus)
@@ -172,7 +178,6 @@ internal class DesktopOfflineNativeInputBridge(
             component.removeMouseListener(mouse); component.removeMouseMotionListener(mouse)
             component.removeKeyListener(key); component.removeFocusListener(focus)
         }
-        canvas.isEnabled = oldCanvasEnabled
         surface.isFocusable = oldFocusable
     }
 }
@@ -201,6 +206,11 @@ internal fun DesktopOfflineNativeInput(
                     javax.swing.SwingUtilities.getWindowAncestor(native.surface) === window &&
                     java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === window
             })
-        onDispose { input.close() }
+        val registration = native.observeNativeWindowInput { event ->
+            native.admitNativeWindowInput(event) {
+                if (latestEnabled.value && player.isOwned()) input.nativeWindowInput(event.kind)
+            }
+        }
+        onDispose { registration.close(); input.close() }
     }
 }

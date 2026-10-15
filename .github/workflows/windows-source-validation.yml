@@ -39,6 +39,8 @@ jobs:
         run: |
           python -c "import shutil; assert shutil.which('pwsh') and shutil.which('powershell.exe'), 'Both real PowerShell hosts are required'"
           if ($LASTEXITCODE -ne 0) { throw 'Verifier subprocess preflight failed.' }
+          python desktop/tools/run-tool-tests.py --stage policies
+          if ($LASTEXITCODE -ne 0) { throw 'Complete source inventory, updater and publication policy regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_veyra_verifier_child_environment.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Actual verifier subprocess regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_mpv_companion_resource_staging.py -v

@@ -54,12 +54,13 @@ class UpdaterBaselineTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "expected regular ZIP"):
             baseline.verify(directory, dict(self.pin, filename=directory.name))
 
-    def test_workflow_fetches_exact_owned_artifact_and_verifies_before_build(self):
+    def test_workflow_fetches_fixed_delivered_fixture_and_verifies_before_build(self):
         workflow = (TOOLS.parents[1] / ".github/workflows/windows-desktop.yml").read_text(encoding="utf-8")
         windows = workflow.split("\n  windows:\n", 1)[1].split("\n  publish:", 1)[0]
-        self.assertIn("artifact-ids: " + str(baseline.BASELINE["artifactId"]), windows)
-        self.assertIn("run-id: " + str(baseline.BASELINE["runId"]), windows)
-        self.assertIn("repository: " + baseline.BASELINE["repository"], windows)
+        self.assertIn("python desktop/tools/fetch-updater-baseline.py", windows)
+        self.assertIn("GITHUB_TOKEN: ${{ github.token }}", windows)
+        self.assertNotIn("artifact-ids: 11417751452", windows)
+        self.assertEqual("tonysuper666-creator/BiliPai-Windows", baseline.BASELINE["repository"])
         self.assertIn(baseline.BASELINE["filename"], windows)
         self.assertLess(windows.index("verify-updater-baseline.py"), windows.index("Build tested portable Windows package"))
         self.assertIn("$parameters.PreviousUpdateTestPackage = $env:BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE", windows)

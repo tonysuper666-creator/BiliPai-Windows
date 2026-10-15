@@ -393,8 +393,10 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
 
     def test_all_server_jobs_require_own_public_repository(self):
         self.assertEqual(set(self.workflows), {"windows-desktop.yml", "windows-upstream-sync.yml",
-                                               "windows-mpv-native-manual.yml", "windows-mpv-rtx-core-manual.yml"})
-        self.assertEqual(len(self.jobs), 10)
+                                               "windows-mpv-native-manual.yml", "windows-mpv-rtx-core-manual.yml",
+                                               "windows-veyra-core-manual.yml", "windows-package-candidate.yml",
+                                               "windows-source-validation.yml"})
+        self.assertEqual(len(self.jobs), 13)
         self.assertIn(("windows-mpv-rtx-core-manual.yml", "retain-builder"), self.jobs)
         for name, job in self.jobs:
             with self.subTest(name=name, job=job):
@@ -402,6 +404,15 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 for repository in ("jay3-yy/BiliPai", "someone/BiliPai-Windows", "tonysuper666-creator/another-repo"):
                     self.assertFalse(self.admitted(name, job, **{"github.repository": repository}))
                 self.assertFalse(self.admitted(name, job, **{"github.event.repository.private": True}))
+
+    def test_shared_veyra_core_remains_manual_without_application_publication(self):
+        source = self.workflows['windows-veyra-core-manual.yml']
+        self.assertRegex(source, r'(?m)^  workflow_dispatch:$')
+        self.assertNotRegex(source, r'(?m)^  (push|pull_request|schedule|workflow_call):')
+        self.assertNotIn('contents: write', source)
+        self.assertNotIn('gh release', source)
+        self.assertNotIn('actions/create-release', source)
+        self.assertTrue(self.admitted('windows-veyra-core-manual.yml', 'native-core'))
 
     def test_every_upload_has_one_day_retention_and_original_missing_file_policy(self):
         uploads = 0
@@ -416,7 +427,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 with self.subTest(name=name, job=job):
                     self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
                     self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
-        self.assertEqual(uploads, 11)
+        self.assertEqual(uploads, 13)
 
     def test_only_standard_runner_labels_and_readonly_default_permissions(self):
         for (name, job), body in self.jobs.items():

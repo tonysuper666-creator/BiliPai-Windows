@@ -233,9 +233,9 @@ class DesktopOfflineNativeInputTest {
         assertEquals(0,f.reveals); assertEquals(0,f.toggles)
     }
 
-    @Test fun renderCanvasDefersInputToTheExistingHostWithoutReplacingTheSource() = fixture { f ->
+    @Test fun renderCanvasRetainsInputAndExistingHostFallbackWithoutReplacingTheSource() = fixture { f ->
         val source = assertNotNull(f.native.currentSourceSnapshot())
-        assertFalse(f.canvas.isEnabled)
+        assertTrue(f.canvas.isEnabled)
         assertSame(f.surface, f.canvas.parent)
         f.hostClick()
         assertEquals(1, f.reveals)
@@ -260,6 +260,24 @@ class DesktopOfflineNativeInputTest {
         f.key(java.awt.event.KeyEvent.KEY_RELEASED)
         f.key(java.awt.event.KeyEvent.KEY_PRESSED)
         assertEquals(2, f.toggles)
+    }
+    @Test fun admittedNativeChildClickRevealsAndFocusesTheOriginalHost() = fixture { f ->
+        f.nativeInput(com.bilipai.desktop.player.MpvNativeWindowInputKind.REVEAL)
+        assertEquals(1,f.focusRequests);assertEquals(1,f.reveals);assertEquals(0,f.toggles)
+        assertTrue(f.canvas.isEnabled)
+    }
+    @Test fun nativeMotionDoesNotStealEditorFocusAndNativeToggleUsesTheSameScreenAction() = fixture { f ->
+        f.nativeInput(com.bilipai.desktop.player.MpvNativeWindowInputKind.MOTION)
+        assertEquals(0,f.focusRequests);assertEquals(1,f.reveals);assertEquals(0,f.toggles)
+        f.nativeInput(com.bilipai.desktop.player.MpvNativeWindowInputKind.TOGGLE)
+        assertEquals(0,f.focusRequests);assertEquals(2,f.reveals);assertEquals(1,f.toggles)
+    }
+    @Test fun retiredOrDisposedOriginalForegroundRejectsQueuedNativeInput() = fixture { f ->
+        f.active=false
+        f.nativeInput(com.bilipai.desktop.player.MpvNativeWindowInputKind.TOGGLE)
+        f.active=true;f.closeBridge()
+        f.nativeInput(com.bilipai.desktop.player.MpvNativeWindowInputKind.REVEAL)
+        assertEquals(0,f.focusRequests);assertEquals(0,f.reveals);assertEquals(0,f.toggles)
     }
 
     private class NativeFixture(initialCanvasEnabled: Boolean) : AutoCloseable {
@@ -299,6 +317,7 @@ class DesktopOfflineNativeInputTest {
         }
         fun loseFocus() { val e=java.awt.event.FocusEvent(surface,java.awt.event.FocusEvent.FOCUS_LOST);surface.focusListeners.forEach{it.focusLost(e)} }
         fun closeBridge()=bridge.close()
+        fun nativeInput(kind:com.bilipai.desktop.player.MpvNativeWindowInputKind)=bridge.nativeWindowInput(kind)
         override fun close(){bridge.close();native.close()}
     }
     private fun fixture(initialCanvasEnabled: Boolean = true, block:(NativeFixture)->Unit) {

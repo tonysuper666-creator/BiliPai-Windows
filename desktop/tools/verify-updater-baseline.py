@@ -1,6 +1,6 @@
 """Verify the exact previously delivered ZIP before executing its updater fixture.
 
-The artifact is fetched by the existing GitHub Actions download action. This
+The fixed published test fixture is fetched with read-only CI permission. This
 verifier reads bytes only; extracting and starting the EXE remains the job of
 the existing isolated DesktopUpdaterIntegrationTest.
 """
@@ -11,17 +11,7 @@ import json
 import os
 import stat
 
-BASELINE = dict(
-    repository="tonysuper666-creator/BiliPai-Windows",
-    runId=37468979815,
-    artifactId=11417751452,
-    artifactName="BiliPai-Windows-x64",
-    sourceSha="a7c64818f82b4d593f90dc7735571d62cc15a8c3",
-    version="0.2.427.32",
-    filename="BiliPai-Windows-0.2.427.32-x64.zip",
-    bytes=377383802,
-    sha256="039ece08db7183d186946e1918d3c57dc9497febeb2aa3a29105da11fd55f326",
-)
+BASELINE = {'repository': 'tonysuper666-creator/BiliPai-Windows', 'provenance': 'archived-previously-delivered-local-build', 'releaseId': 413553374, 'assetId': 643148932, 'releaseTag': 'updater-fixture-0.2.427.56-aa0a627f54bc', 'sourceSha': 'aa0a627f54bc4bb9dca7f507615c30fc21b74ca6', 'version': '0.2.427.56', 'filename': 'BiliPai-Windows-0.2.427.56-aa0a627f54bc-x64.zip', 'bytes': 395600303, 'sha256': 'f7d6e2125fc4f8ab94eb2419d13f915b68da7d5676191cb2392bff6143ece803', 'sourceArchive': {'assetId': 643150522, 'filename': 'source.zip', 'bytes': 898458256, 'sha256': '1e04bcea0938f4daa1b6a25aaa89a6861df7d5ed87287674febd04d42457b64c'}}
 
 
 def existing_without_links(path):

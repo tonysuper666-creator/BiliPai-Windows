@@ -642,20 +642,20 @@ jobs:
           "BILIPAI_NATIVE_SHARE_VC_ROOT=$vcRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
       - name: Download the exact previously delivered updater baseline
         if: github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true
-        uses: actions/download-artifact@v4
-        with:
-          artifact-ids: 11417751452
-          run-id: 37468979815
-          repository: tonysuper666-creator/BiliPai-Windows
-          github-token: ${{ github.token }}
-          path: ${{ runner.temp }}/bilipai-previous-update-package
-          merge-multiple: true
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $baselineRoot = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package'
+          python desktop/tools/fetch-updater-baseline.py --output "$baselineRoot"
+          if ($LASTEXITCODE -ne 0) { throw 'The fixed delivered updater fixture could not be downloaded and verified.' }
       - name: Verify the previous ZIP before the existing isolated updater test
         if: github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.32-x64.zip'
+          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.56-aa0a627f54bc-x64.zip'
           python desktop/tools/verify-updater-baseline.py --package "$previousZip"
           if ($LASTEXITCODE -ne 0) { throw 'The actual previous EXE package could not be verified.' }
           "BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE=$previousZip" | Add-Content -LiteralPath $env:GITHUB_ENV
@@ -677,6 +677,13 @@ jobs:
           VERIFY_PREVIOUS_UPDATE: ${{ github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true }}
           MPV_NATIVE_CANDIDATE: ${{ steps.plan.outputs.mpv_candidate || 'false' }}
         run: |
+          # One temporary compile JVM on the owned public standard 16 GiB runner.
+          # Exit that 8 GiB compiler before tests and packaged child EXEs use the
+          # unchanged 4 GiB policy. No local build setting or daemon is changed.
+          $env:GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs="-Xmx8g -XX:MaxMetaspaceSize=1g -XX:ReservedCodeCacheSize=256m"'
+          & ./gradlew.bat -p desktop --no-daemon --console=plain --max-workers=1 compileKotlin compileTestKotlin
+          if ($LASTEXITCODE -ne 0) { throw 'Serial full-source compilation failed.' }
+          $env:GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g -XX:ReservedCodeCacheSize=256m"'
           $parameters = @{ NativeSmoke = $true; UpdaterSmoke = $true }
           if ($env:MPV_NATIVE_CANDIDATE -eq 'true') {
               if ($env:MAKE_RELEASE -eq 'true') { throw 'Native candidate validation cannot publish a release.' }

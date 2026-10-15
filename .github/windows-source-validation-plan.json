@@ -1,19 +1,24 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "f86f1a08e51ce8c3bf2387061cb8881548be70db",
-  "windowsVersion": "0.2.427.117",
-  "createdAt": "2026-10-15T09:02:51.630181+00:00",
+  "baseHead": "1edf0d5d70dc543267c6bdd94511b3b4785c28be",
+  "windowsVersion": "0.2.427.118",
+  "createdAt": "2026-10-15T10:10:25.660395+00:00",
   "sources": [
+    {
+      "path": ".github/workflows/windows-desktop.yml",
+      "normalization": "lf",
+      "sha256": "da5deb266d7c7d15adfdc001a70f925d1f28143c8a9ceefad6de61529ba5975f"
+    },
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "b324c9e280528b6520a83e7858f017e7ced93b2b7f4c4b194b12606b1d77e007"
+      "sha256": "2377db90d0c0c4030df0681e650f481f8dc3d466f37b65366be240fcd4b37c76"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
       "normalization": "lf",
-      "sha256": "e2aca0eca175d196aa82d48062669e68fe0887da160a986a72381f292839ab05"
+      "sha256": "cbf77a85b8f3e075d16adae4bda76b1a18f935aa20b26f314836cbade9d736f8"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt",
@@ -166,9 +171,14 @@
       "sha256": "823549633528935e01dff9255eda6c55518e7db1db96698529766795e4815da4"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNativeWindowInput.kt",
+      "normalization": "lf",
+      "sha256": "9d264dab396d5e34b5d96d6d35aa4131a20146d50a4a9dfef2b216f832611e02"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
       "normalization": "lf",
-      "sha256": "e0e51a181a83e28cc9d1ca96bd85a4e74c0aebb8f2f0ab968e456541b98951ed"
+      "sha256": "4666377021d45fe069612cb2b7a9830a8cc4e0116930c550ad6cff4c14318147"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
@@ -218,7 +228,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
       "normalization": "lf",
-      "sha256": "375446b08ef3538eda9c493ec2053f5be50be54f63acfe0e727a6a439700c3da"
+      "sha256": "e19b59b8ce5af769cc0d2ea5089b80db75f3456d65a7153851334c532a357863"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
@@ -441,6 +451,11 @@
       "sha256": "a1d2eba7f62d62c861f7b19bff7022b2bcbdc9cbed11099465a0ea65e8ca0a58"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvNativeInputTest.kt",
+      "normalization": "lf",
+      "sha256": "514c7b1857967ecccb93b03911b386039c1ccdeb2bb4434573d61edcb365aefc"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBgmCommentLinkRootNavigationTest.kt",
       "normalization": "lf",
       "sha256": "af86dc6d65a5c2c6098adbe7fd74a8a692dcbe5947a7b6e87e60128cb27c27b2"
@@ -493,7 +508,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
       "normalization": "lf",
-      "sha256": "b49a01713557b566a0624f98cc73cd7a2eae2d1707e977c27f4328c0a01471a9"
+      "sha256": "0c39b2f3d65bd5a012fdbeec2eb37cf87657211236320b6e7ba3af9904e4e70d"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
@@ -581,6 +596,11 @@
       "sha256": "27515ea148a962d76ba0425b20a62811c2ce266878f25d5d9f47a19d7f5438c8"
     },
     {
+      "path": "desktop/tools/compatibility-source-inputs.json",
+      "normalization": "lf",
+      "sha256": "0025c1c989d7c0abb1660c944aae97cf01311b57f2e60bb47603efbce2db2f45"
+    },
+    {
       "path": "desktop/tools/extract-appearance-platform.py",
       "normalization": "lf",
       "sha256": "72ce0253f8987b0a208e6a575708bda677f78888ee590db7be05f779fa287c1b"
@@ -661,6 +681,11 @@
       "sha256": "705e2f3af079941c6eae51832eaf73990181b38e47cc6559e551733cd45d0a2a"
     },
     {
+      "path": "desktop/tools/fetch-updater-baseline.py",
+      "normalization": "lf",
+      "sha256": "d6446b66adb05b0b3310c8d9149a3e89e89a3e8f0e4a7bb3fb4f2b157d5b4877"
+    },
+    {
       "path": "desktop/tools/native/build-veyra-core-runtime.py",
       "normalization": "lf",
       "sha256": "18c41115b11be22ac2f2e2da5ad4fa8cde9fc825fc4ad9807c283d698882336a"
@@ -694,6 +719,16 @@
       "path": "desktop/tools/native/veyra/verify-veyra-runtime.ps1",
       "normalization": "lf",
       "sha256": "a9266f62713049f16e4d929128aee93c1e7d976d61cc27e6e903f06dbb28fef6"
+    },
+    {
+      "path": "desktop/tools/run-tool-tests.py",
+      "normalization": "lf",
+      "sha256": "ddb0b64f8d8f3c091db1961f9f2bd36af3b0e5aea700390ea1f6df72ffc87300"
+    },
+    {
+      "path": "desktop/tools/sync-upstream.py",
+      "normalization": "lf",
+      "sha256": "ac51f27e8872edaaaac1d216ce489a7b817d6e75ed805ae5ed331e173335c42f"
     },
     {
       "path": "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
@@ -731,6 +766,11 @@
       "sha256": "809f263a5b3257045f9318605439b051e4be9a4e8ec6c9867441f26c47391933"
     },
     {
+      "path": "desktop/tools/tests/test_fetch_updater_baseline.py",
+      "normalization": "lf",
+      "sha256": "966f69d4ae5527c714c706dba3cb771da60bfc4306f235e5e7388fd0bfad3e34"
+    },
+    {
       "path": "desktop/tools/tests/test_mpv_companion_resource_staging.py",
       "normalization": "lf",
       "sha256": "80f483719ba98b731ecc17c2ff811c5e8dce02787b347f582ce03070bdceef07"
@@ -739,6 +779,16 @@
       "path": "desktop/tools/tests/test_mpv_rtx_installer_protocol.py",
       "normalization": "lf",
       "sha256": "bb4ea0aa7f2599edd4ec8bae68996a8dfb7ff7ccd16d4e6ffa536327dbc1f4d8"
+    },
+    {
+      "path": "desktop/tools/tests/test_publish_release.py",
+      "normalization": "lf",
+      "sha256": "72945750ef221dba7a6eb57285028fcec83013a1fbbcb23a7b558b6f30f490b1"
+    },
+    {
+      "path": "desktop/tools/tests/test_sync_upstream.py",
+      "normalization": "lf",
+      "sha256": "2bf7f22b6d1112748f8ca742bf4400b4dbb397c811b0f0480be69766a285477b"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_search.py",
@@ -829,6 +879,11 @@
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
       "normalization": "lf",
       "sha256": "f0ea38f3730fbda08fafc6140d7397e0d432023892b394e5dd00cdb1858ddadf"
+    },
+    {
+      "path": "desktop/tools/tests/test_verify_updater_baseline.py",
+      "normalization": "lf",
+      "sha256": "690280741eec89a14d3c79b57c81e5ff10b30227f1e68e96005513e9076e989d"
     },
     {
       "path": "desktop/tools/tests/test_veyra_core_build_evidence.py",
@@ -959,6 +1014,11 @@
       "path": "desktop/tools/validate-source-cohort.py",
       "normalization": "lf",
       "sha256": "874ffe78b4746975b0561f71e7f85167c2c7af61fcb5fed7b1c3b92930e8a396"
+    },
+    {
+      "path": "desktop/tools/verify-updater-baseline.py",
+      "normalization": "lf",
+      "sha256": "fbd714e4961701dc4d6e0c9e7cabf18aeacf7b744ab53a3fc95dfcd8c01cf550"
     },
     {
       "path": "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryDataSource.kt",
@@ -1553,7 +1613,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "b43c5bf9cbacaf997b4818a7c317302390a3aae93effb730d0776cfc300fe483"
+      "sha256": "6eac0f3460e50304a141f8728b66066763225f638d9610864378593bc5505eaa"
     }
   ],
   "classes": {
@@ -1573,9 +1633,10 @@
     "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13,
     "com.bilipai.desktop.ui.DesktopWindowsPlaybackAudioOutputTest": 6,
     "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
-    "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 13
+    "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 16,
+    "com.bilipai.desktop.player.MpvNativeInputTest": 9
   },
-  "expectedTests": 142,
+  "expectedTests": 154,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1583,8 +1644,23 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
+    ".github/workflows/windows-desktop.yml",
+    ".github/workflows/windows-source-validation.yml",
+    ".github/workflows/windows-veyra-core-manual.yml",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNativeWindowInput.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
     "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvNativeInputTest.kt",
     "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
+    "desktop/tools/compatibility-source-inputs.json",
+    "desktop/tools/fetch-updater-baseline.py",
+    "desktop/tools/run-tool-tests.py",
+    "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_fetch_updater_baseline.py",
+    "desktop/tools/tests/test_publish_release.py",
+    "desktop/tools/tests/test_sync_upstream.py",
+    "desktop/tools/tests/test_verify_updater_baseline.py",
+    "desktop/tools/verify-updater-baseline.py",
     "desktop/upstream-sources.json"
   ]
 }

@@ -921,14 +921,33 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
     def load(self):
         return sync.adapted_compatibility_inputs(self.repo)
 
+    def test_new_v038_and_v040_inputs_reject_changed_and_missing_originals(self):
+        for relative in (
+            'desktop/upstream-slices/v038-listen-viewmodel/ListenVideoViewModel.kt',
+            'desktop/upstream-slices/v040-player-tap/PlayerGestureHandler.kt',
+        ):
+            path = self.repo / relative
+            original = path.read_bytes()
+            with self.subTest(path=relative, mutation='changed'):
+                path.write_bytes(original + b'\n// tampered fixture\n')
+                with self.assertRaisesRegex(sync.UpdateError, 'Adapted archive bytes changed'):
+                    self.load()
+            path.write_bytes(original)
+            with self.subTest(path=relative, mutation='missing'):
+                path.unlink()
+                with self.assertRaisesRegex(sync.UpdateError, 'Incomplete adapted archive'):
+                    self.load()
+            path.write_bytes(original)
+        self.assertEqual(self.load(), self.inventory['inputs'])
+
     def test_actual_240_originals_load_with_separate_commits_and_nested_live_inputs(self):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 404)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 394)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 87)
-        self.assertEqual(len(self.inventory["archives"]), 91)
+        self.assertEqual(len(entries), 506)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 496)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 103)
+        self.assertEqual(len(self.inventory["archives"]), 107)
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
@@ -1508,10 +1527,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 404)
+        self.assertEqual(len(self.load()), 506)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 404)
+        self.assertEqual(len(self.load()), 506)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1528,7 +1547,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 404)
+                self.assertEqual(len(entries), 506)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
