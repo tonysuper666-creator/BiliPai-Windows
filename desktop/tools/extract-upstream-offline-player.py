@@ -145,6 +145,35 @@ def offline_native_audio_ui(source):
  assert reverse==source,'Native offline track UI inverse failed'
  return s,changes
 
+def offline_desktop_pointer_ui(source):
+ """Windows input over the same full original UI and policies; no phone volume/brightness drag owner."""
+ s=source;changes=[]
+ def replace(before,after,label):
+  nonlocal s
+  assert s.count(before)==1,label
+  index=s.index(before);changes.append(dict(index=index,before=before,after=after,label=label))
+  s=s[:index]+after+s[index+len(before):]
+ start=s.index('            // 🎛️ 拖拽手势：亮度/音量/进度\n')
+ end=s.index('            // 🖱️ 点击/双击/长按手势\n',start)
+ phone=s[start:end]
+ assert sha(phone)=='e320b9088f1659905c00893d6b331c2891c21180d936bed539b14dcf2a4260c9','Phone drag recipe drift'
+ replace(phone,'            // Windows uses mouse controls; phone edge/brightness/volume drags do not own this viewport.\n','remove phone background drag recognizer from Windows viewport')
+ replace('                OfflineProgressBar(\n','                val seekSource = player.nativePlayer.currentSourceSnapshot()\n                OfflineProgressBar(\n','capture exact native seek source')
+ replace('                    onSeek = { seekToPosition(it) }','                    sourceIdentity = seekSource,\n                    isCurrent = { player.isOwned() && seekSource != null && player.nativePlayer.ownsSourceSnapshot(seekSource) },\n                    onSeek = { seekToPosition(it) }','retain exact source admission at timeline release')
+ replace('    bufferedPosition: Long,\n    onSeek: (Long) -> Unit','    bufferedPosition: Long,\n    sourceIdentity: Any?,\n    isCurrent: () -> Boolean,\n    onSeek: (Long) -> Unit','source-keyed original progress UI')
+ start=s.index('            .pointerInput(duration) {',s.index('private fun OfflineProgressBar('))
+ end=s.index(',\n        contentAlignment = Alignment.CenterStart',start)
+ old=s[start:end]
+ assert sha(old)=='836baa1380ba7dd8dbcc44f7213ae86fe2fcb64db45b392759857ff25a7cb6e5','Timeline pointer recipe drift'
+ replacement='            .desktopOfflineSeekPointerInput(\n                sourceIdentity = sourceIdentity, durationMs = duration, isCurrent = isCurrent,\n                onPreview = { tempProgress = it; isDragging = true },\n                onCommit = { isDragging = false; onSeek(it) },\n                onCancel = { isDragging = false; tempProgress = progress },\n            )'
+ replace(old,replacement,'one mouse click and drag timeline owner with original seek mapping')
+ reverse=s
+ for change in changes[::-1]:
+  index=change['index'];after=change['after'];assert reverse[index:index+len(after)]==after,change['label']
+  reverse=reverse[:index]+change['before']+reverse[index+len(after):]
+ assert reverse==source,'Windows offline pointer adaptation inverse failed'
+ return s,changes
+
 def generate(repo,output,standalone=False):
  repo=Path(repo).resolve();output=Path(output).resolve();manifest=json.loads(read(repo/'desktop/upstream-sources.json'))
  assert manifest['upstreamCommit']==COMMIT,'Fixed target changed'
@@ -170,6 +199,7 @@ def generate(repo,output,standalone=False):
  s,error_delta,error_fragments=offline_error_ui(s,error_sources['OfflineVideoPlayerScreen.kt'])
  s,enhancement_delta=offline_nvidia_enhancement_ui(s)
  s,native_audio_delta=offline_native_audio_ui(s)
+ s,desktop_pointer_delta=offline_desktop_pointer_ui(s)
  assert 'ExoPlayer' not in s and 'import android.' not in s and 'MiniPlayerManager' not in s
  destination='com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt';write(output/destination,s)
  records.append({'path':path,'sha256LF':SOURCE_PINS[path],'output':destination,'outputSha256LF':sha(s),'fullFourDeclarationsRetained':True,'exactInversePass':True})
@@ -199,7 +229,7 @@ def generate(repo,output,standalone=False):
  body=LONG_PRESS_PREFIX+'object DesktopOriginalLongPressSpeedSettings {\n'+adapted+'\n}\n'
  destination='com/android/purebilibili/core/store/player/DesktopOriginalLongPressSpeedSettings.kt';write(output/destination,body)
  records.append({'path':path,'sha256LF':SOURCE_PINS[path],'output':destination,'outputSha256LF':sha(body),'selectedMethods':['getLongPressSpeed'],'originalGetterSha256LF':sha(getter),'adaptedGetterSha256LF':sha(adapted),'exactInversePass':True,'canonicalKey':'long_press_speed','existingDefaultAndNormalizePolicyReused':True})
- write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'soleDirectReference':direct,'standalone':standalone,'exactUiDelta':UI_DELTA,'exactWindowsNvidiaEnhancementDelta':enhancement_delta,'exactWindowsNativeAudioTrackDelta':native_audio_delta,'completeOriginalUiLines':len(originals[BASE+'feature/download/OfflineVideoPlayerScreen.kt'].splitlines()),'originalFourDeclarations':['GestureMode','OfflineVideoPlayerScreen','ProgressInfo','OfflineProgressBar'],'newPlayerOrStoreOrHTTP':False},ensure_ascii=False,indent=2))
+ write(output/'source-receipt.json',json.dumps({'fixedCommit':COMMIT,'sources':records,'soleDirectReference':direct,'standalone':standalone,'exactUiDelta':UI_DELTA,'exactWindowsNvidiaEnhancementDelta':enhancement_delta,'exactWindowsNativeAudioTrackDelta':native_audio_delta,'exactWindowsDesktopPointerDelta':desktop_pointer_delta,'desktopPointerInversePass':True,'completeOriginalUiLines':len(originals[BASE+'feature/download/OfflineVideoPlayerScreen.kt'].splitlines()),'originalFourDeclarations':['GestureMode','OfflineVideoPlayerScreen','ProgressInfo','OfflineProgressBar'],'newPlayerOrStoreOrHTTP':False},ensure_ascii=False,indent=2))
  return records
 if __name__=='__main__':
  cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);cli.add_argument('--standalone',action='store_true');args=cli.parse_args()

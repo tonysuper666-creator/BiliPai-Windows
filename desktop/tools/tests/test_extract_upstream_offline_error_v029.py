@@ -117,6 +117,46 @@ class FixedOfflineErrorPolicyTest(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 tool.offline_error_sources(repo)
 
+    def desktop_input(self):
+        source, _, _ = tool.offline_error_ui(self.previous, self.sources["OfflineVideoPlayerScreen.kt"])
+        source, _ = tool.offline_nvidia_enhancement_ui(source)
+        source, _ = tool.offline_native_audio_ui(source)
+        return source
+
+    def test_desktop_pointer_recipe_restores_the_exact_complete_input(self):
+        source = self.desktop_input()
+        output, changes = tool.offline_desktop_pointer_ui(source)
+        self.assertEqual(5, len(changes))
+        for change in reversed(changes):
+            index = change["index"]
+            self.assertEqual(change["after"], output[index:index + len(change["after"])])
+            output = output[:index] + change["before"] + output[index + len(change["after"]):]
+        self.assertEqual(source, output)
+
+    def test_desktop_mouse_controls_keep_the_original_tap_and_seek_policies(self):
+        output, _ = tool.offline_desktop_pointer_ui(self.desktop_input())
+        self.assertNotIn("detectDragGestures(", output)
+        self.assertIn("onTap = { showControls = !showControls }", output)
+        self.assertIn("onDoubleTap = { offset ->", output)
+        self.assertIn("onLongPress = {", output)
+        self.assertIn("val seekSource = player.nativePlayer.currentSourceSnapshot()", output)
+        self.assertIn("player.nativePlayer.ownsSourceSnapshot(seekSource)", output)
+        self.assertIn(".desktopOfflineSeekPointerInput(", output)
+        self.assertIn("onCommit = { isDragging = false; onSeek(it) }", output)
+        self.assertIn("onSeek = { seekToPosition(it) }", output)
+        helper = tool.read(REPO / "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt")
+        self.assertIn("onCommit(resolveOfflineSeekPositionFromTouch(", helper)
+        self.assertIn("onPreview(resolveOfflineSeekProgressFromTouch(", helper)
+
+    def test_desktop_pointer_recipe_rejects_drift_and_duplicate_callers(self):
+        source = self.desktop_input()
+        start = source.index("            // 🎛️ 拖拽手势：亮度/音量/进度\n")
+        changed = source[:start] + source[start:].replace("detectDragGestures(", "detectDragGestures(/* drift */", 1)
+        for invalid in (changed, source + "                OfflineProgressBar(\n",
+                        source.replace("private fun OfflineProgressBar(", "private fun UnknownProgressBar(", 1)):
+            with self.assertRaises((AssertionError, ValueError)):
+                tool.offline_desktop_pointer_ui(invalid)
+
 
 if __name__ == "__main__":
     unittest.main()

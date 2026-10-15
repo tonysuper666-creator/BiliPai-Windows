@@ -71,6 +71,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original player cover policy, caller and source ownership regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_player_tap_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original player tap stream and caller source ownership regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_offline_error_v029.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original offline policy and Windows mouse/source ownership adaptation regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_reply_medal_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v029_comment_search.py -v

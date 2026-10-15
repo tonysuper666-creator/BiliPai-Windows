@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "3b77af16fd1c887cc3d985b871694709dfeaf71c",
-  "windowsVersion": "0.2.427.110",
-  "createdAt": "2026-10-15T04:42:45.512307+00:00",
+  "baseHead": "b6e54d397a016c7e95050dec28c54bdd448e298a",
+  "windowsVersion": "0.2.427.111",
+  "createdAt": "2026-10-15T05:57:31.662688+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "7db2e07a872f6fee062fc9260d6612ce41eef225017538b38795bfd2e5106d93"
+      "sha256": "b324c9e280528b6520a83e7858f017e7ced93b2b7f4c4b194b12606b1d77e007"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -211,6 +211,11 @@
       "sha256": "70d9d9ebd79b52dbf653d97c52c515cacc53a8048c8c98bdda8df97a2d38ed9e"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
+      "normalization": "lf",
+      "sha256": "af545bae2fc604fb28462eb591c8318711e1f71a804bca14eb40df7614fb828d"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoCollectionEnvironment.kt",
       "normalization": "lf",
       "sha256": "d24bd8def0d74dd93efa676e0c53d28b59b3ad12fd782e549183f2db3f5e9b2e"
@@ -229,6 +234,16 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenVideoHost.kt",
       "normalization": "lf",
       "sha256": "7994fa481bb800c8d9146c352a63920a32023571fcc107b79ca1843f01c9473c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflinePlayerBindings.kt",
+      "normalization": "lf",
+      "sha256": "e18326e69cfdec233b971ab5301cd63b132cf54c3fd65fa73d8cc1cb858e94fe"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineRootHost.kt",
+      "normalization": "lf",
+      "sha256": "0b832ce5ba72eac1f200a7a56b448b3e5be94b54b4392609fc4d9b161ad9303f"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackSettingsRootHost.kt",
@@ -456,9 +471,24 @@
       "sha256": "b5312d408b9de241fc89460b425377f097dbbfe54061cb5c38eccaaf630cf041"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflineNativeSourcePublicationTest.kt",
+      "normalization": "lf",
+      "sha256": "3828daf98c1a3b59e13d5d978450111c13120435a4eb67f605cc4736d7cbea18"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
+      "normalization": "lf",
+      "sha256": "0da84f6143942ed44012a40fe8743e6f25cf8c03c4f896dc97633c95c1370a3c"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalListenCollectionPlaylistAdmissionTest.kt",
       "normalization": "lf",
       "sha256": "13f95cc2bd277c2a27d7e68868e1c600c3f4a83b03e15c4c0c1d8c76a2ea8cf9"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineBindingsLifetimeTest.kt",
+      "normalization": "lf",
+      "sha256": "5dedc32859a56d9e66a54884408cdb14f15f3ff735d7b5a6ebf8d6e334809cf8"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerInputLayerTest.kt",
@@ -501,9 +531,24 @@
       "sha256": "20097ba167ab3ab62e370918295e91c2a41d84a3bba9783689b46c58312fe38c"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt",
+      "normalization": "lf",
+      "sha256": "3a61b3a87db8761ad56fc58138f81d6032d05f2d1a6c2ac4b0d328af9060a150"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterStageLeaseTest.kt",
       "normalization": "lf",
       "sha256": "e898a56a07d142405acff9c1dda0109f5a6e1e1994ceff7f674eda09de75660d"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/PackagedUpdaterChildEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "f8981f626f947543426c7ec3c81c28363ee6b08c42735cb9f8463c08c3593d38"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/PackagedUpdaterChildEnvironmentTest.kt",
+      "normalization": "lf",
+      "sha256": "66d53fffa658262edc34c633966f2551aad9d8c96165a00a0590e382d46dba8b"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/StartupHealthTest.kt",
@@ -581,6 +626,11 @@
       "sha256": "e0f37ac4dd207b748ae928802854792a3e5e74492f23296f577254075c3a029b"
     },
     {
+      "path": "desktop/tools/extract-upstream-offline-player.py",
+      "normalization": "lf",
+      "sha256": "8c8752972dfb58c600ddc5542afb2c233e220d51fdbcbe3a054a663470518074"
+    },
+    {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
       "normalization": "lf",
       "sha256": "8df8cb34e8188d1313e3825c67b0f018a0cc6d1012c160466fb3280adc8537fc"
@@ -644,6 +694,11 @@
       "path": "desktop/tools/tests/test_extract_upstream_danmaku_v029_config.py",
       "normalization": "lf",
       "sha256": "c7e792043f9c64428ec23c2b4c81b3e11fef373115d8816a3cc49f95772792a0"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
+      "normalization": "lf",
+      "sha256": "9a29a4d9adc2bc217d3c69beb085ef20c64b657f22d0ec6fbe5dd67a131c9f6b"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_up_danmaku.py",
@@ -1478,7 +1533,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "ca3f5af20c4d5d3e649d7b81c3c24759cc013121ced54f89f82d9e21bcff95b5"
+      "sha256": "8178b21965002746736cd55294f925bf206737f28c80bb083a00d0b59f628213"
     }
   ],
   "classes": {
@@ -1491,9 +1546,13 @@
     "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4,
     "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8,
     "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 11,
-    "com.bilipai.desktop.ui.DesktopOriginalPlayerInputLayerTest": 4
+    "com.bilipai.desktop.ui.DesktopOriginalPlayerInputLayerTest": 4,
+    "com.bilipai.desktop.ui.DesktopOriginalOfflineBindingsLifetimeTest": 4,
+    "com.bilipai.desktop.ui.DesktopOfflinePointerInputTest": 6,
+    "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5,
+    "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13
   },
-  "expectedTests": 80,
+  "expectedTests": 108,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -1501,8 +1560,17 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerInputLayerTest.kt",
+    ".github/workflows/windows-source-validation.yml",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInput.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflinePlayerBindings.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineRootHost.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOfflinePointerInputTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineBindingsLifetimeTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/update/PackagedUpdaterChildEnvironment.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/update/PackagedUpdaterChildEnvironmentTest.kt",
+    "desktop/tools/extract-upstream-offline-player.py",
+    "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
     "desktop/upstream-sources.json"
   ]
 }
