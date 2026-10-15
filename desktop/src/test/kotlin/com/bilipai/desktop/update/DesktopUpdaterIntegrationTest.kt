@@ -6,6 +6,9 @@ import com.bilipai.desktop.download.DesktopDownloadQueueAuthority
 import com.bilipai.desktop.download.DownloadMuxer
 import com.bilipai.desktop.player.DesktopLocalPlaybackPublication
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -75,9 +78,31 @@ class DesktopUpdaterIntegrationTest {
         // Capture while each direct parent is still alive, and retain the actual
         // fixture observation for cleanup even after a forwarding parent exits.
         val launchObservations = Collections.synchronizedMap(mutableMapOf<Process, StartupHealth.DescendantObservation>())
+        val fixtureScope = this
+        val watchers = Collections.synchronizedMap(mutableMapOf<Process, Job>())
         fun recordLaunch(process: Process) {
-            launchObservations[process] = StartupHealth.DescendantObservation(process)
+            val observation = StartupHealth.DescendantObservation(process)
+            launchObservations[process] = observation
             launched.add(process)
+            watchers[process] = fixtureScope.launch {
+                while (process.isAlive) {
+                    observation.observe()
+                    delay(25)
+                }
+            }
+        }
+        suspend fun finishObservation(process: Process) {
+            watchers.remove(process)?.cancelAndJoin()
+        }
+        fun observedRetired(process: Process): Boolean {
+            val observation = checkNotNull(launchObservations[process])
+            return !process.isAlive && observation.canConfirm() && observation.targets().none { it.isAlive }
+        }
+        suspend fun stop(process: Process) {
+            // DescendantObservation is not thread-safe. Preserve its early actual
+            // handles, then stop sampling before termination reads that collection.
+            finishObservation(process)
+            StartupHealth.terminate(process, checkNotNull(launchObservations[process]))
         }
         val observed = mutableMapOf<Long, ObservedChild>()
         val evidence = linkedMapOf<String, JsonElement>(
@@ -121,12 +146,28 @@ class DesktopUpdaterIntegrationTest {
                     fun updater(installed: String = baseline) = DesktopUpdater.forIntegrationTest(installed,
                         config.repository, updateRoot, fixture.client, childData, ::recordLaunch, config.executable,
                         processFactory = { builder -> childEnvironment.configure(builder).start() }).also(updaters::add)
-                    suspend fun stop(process: Process) = StartupHealth.terminate(process, checkNotNull(launchObservations[process]))
                     val queueFile = childData.resolve("BiliPai/downloads.json")
-                    fun releaseCommittedQueueTransfer() {
-                        val lease = assertNotNull(DesktopDownloadQueueAuthority.tryAcquire(queueFile).lease,
-                            "Retired committed child must leave recoverable download custody")
-                        lease.close()
+                    var queueRecoveryChecks = 0
+                    suspend fun releaseCommittedQueueTransfer(retired: Process) {
+                        assertTrue(observedRetired(retired), "Owned child retirement must precede queue recovery")
+                        val attempts = mutableListOf<JsonObject>()
+                        val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(2)
+                        val recoveryIndex = ++queueRecoveryChecks
+                        while (true) {
+                            assertTrue(observedRetired(retired), "Do not recover while an observed owner remains alive")
+                            val attempt = DesktopDownloadQueueAuthority.tryAcquire(queueFile)
+                            attempts += buildJsonObject {
+                                put("busy", attempt.busy); put("acquired", attempt.lease != null)
+                                attempt.reason?.let { put("reason", it.take(512)) }
+                            }
+                            evidence["queueRecovery$recoveryIndex"] = buildJsonArray { attempts.forEach { add(it) } }
+                            attempt.lease?.let { it.close(); return }
+                            // A transient OS lock is retried only after observed retirement.
+                            // Malformed, pending or otherwise unknown custody fails immediately.
+                            assertTrue(attempt.busy && System.nanoTime() < deadline,
+                                "Retired committed child queue recovery failed: busy=${attempt.busy}; ${attempt.reason}")
+                            delay(50)
+                        }
                     }
 
                     // Register a genuine older installation. Negative .122 candidates must be
@@ -147,7 +188,7 @@ class DesktopUpdaterIntegrationTest {
                     // live EXE would retain the OS lease and confound every health rejection.
                     stop(baselineProcess)
                     assertFalse(baselineProcess.isAlive)
-                    releaseCommittedQueueTransfer()
+                    releaseCommittedQueueTransfer(baselineProcess)
                     val queue = DesktopDownloadManager(fixture.client, queueFile,
                         DownloadMuxer { _, _, _ -> error("Idle updater fixture must not mux media") },
                         publication = DesktopLocalPlaybackPublication({ true }, { action -> action(); true }))
@@ -171,6 +212,11 @@ class DesktopUpdaterIntegrationTest {
                             } })
                         assertNotNull(ticket, "Admitted activation must exercise the real Root queue handoff")
                         assertEquals(!activated, queue.acceptsMutations())
+                        if (!activated) {
+                            val failedProcess = launched.last()
+                            finishObservation(failedProcess)
+                            assertTrue(observedRetired(failedProcess), "Failed activation left an observed descendant alive")
+                        }
                         return activated
                     }
                     fun assertBaselinePreserved() = assertContentEquals(baselineRegistry, Files.readAllBytes(activeFile))
@@ -281,7 +327,7 @@ class DesktopUpdaterIntegrationTest {
                     stop(goodProcess)
                     // Clear committed custody using the real authority while its exact registry
                     // proof still exists. Do not delete transfer files or forge a queue receipt.
-                    releaseCommittedQueueTransfer()
+                    releaseCommittedQueueTransfer(goodProcess)
 
                     // Both payloads really carry .122. Replace only the explicit fixture registry,
                     // retaining the equal-version/different-path fallback regression.
@@ -305,7 +351,7 @@ class DesktopUpdaterIntegrationTest {
                         put("activeExecutable", healthy.executable.toString())
                     }
                     stop(fallbackProcesses.last())
-                    releaseCommittedQueueTransfer()
+                    releaseCommittedQueueTransfer(fallbackProcesses.last())
 
                     val previousDirectory = Files.createDirectory(caseRoot.resolve("previous-launcher"))
                     val previousExecutable = SafeUpdateZip.extract(previousPath, previousDirectory, previousConfig.executable)
@@ -360,11 +406,20 @@ class DesktopUpdaterIntegrationTest {
             }
             withContext(NonCancellable) {
                 launched.toList().asReversed().forEach { process ->
-                    runCatching { StartupHealth.terminate(process, checkNotNull(launchObservations[process])) }.onFailure { if (failure == null) failure = it }
+                    runCatching { stop(process) }.onFailure { if (failure == null) failure = it }
                 }
                 observed.values.forEach { child -> stopObservedChild(child) }
             }
-            val stopped = launched.none { it.isAlive } && observed.values.none { stillSameLiveChild(it) }
+            val directSnapshot = synchronized(launched) { launched.toList() }
+            val retainedObservations = synchronized(launchObservations) { launchObservations.values.toList() }
+            evidence["retainedDescendantsAfterCleanup"] = buildJsonArray {
+                retainedObservations.flatMap { it.targets() }.distinctBy { it.pid() }.forEach { child ->
+                    add(buildJsonObject { put("processId", child.pid()); put("alive", child.isAlive) })
+                }
+            }
+            val stopped = directSnapshot.none { it.isAlive } &&
+                retainedObservations.all { it.canConfirm() && it.targets().none { child -> child.isAlive } } &&
+                observed.values.none { stillSameLiveChild(it) }
             evidence["trackedProcessesStopped"] = JsonPrimitive(stopped)
             evidence["directProcessIds"] = buildJsonArray { launched.forEach { add(JsonPrimitive(it.pid())) } }
             if (!stopped || failure != null) evidence["passed"] = JsonPrimitive(false)
