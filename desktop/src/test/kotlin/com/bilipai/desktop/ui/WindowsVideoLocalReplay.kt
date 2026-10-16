@@ -61,6 +61,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val secondCid = 7008L
     private val base: String get() = "http://127.0.0.1:${server.address.port}"
     private var installed = false
+    val isInstalled: Boolean get() = installed
     init {
         require(!bgmInput || collectionInput) { "BGM replay needs the original two-part collection flow" }
         require(!commentSearchInput || (!bgmInput && !originalInteractionInput && !collectionInput &&

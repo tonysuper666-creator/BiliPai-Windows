@@ -586,7 +586,7 @@ object WindowsVideoActualRootUiFixture {
         val minimum = requireNotNull(sizes.values.minOrNull())
         return candidates.filter { sizes[it] == minimum }.single()
     }
-    private fun enterVideoThroughActualSearch(replay: WindowsVideoLocalReplay) {
+    private fun installOwnedLocalReplay(replay: WindowsVideoLocalReplay) {
         await("actual drawn desktop Home before local transport admission") { edt {
             val frame = pendingCurrent() ?: return@edt false
             frame.key == BiliPaiNavKey.Home && frame.pagerHosted && routes.currentKey == BiliPaiNavKey.MainHost
@@ -608,6 +608,9 @@ object WindowsVideoActualRootUiFixture {
                 owner.retainer.current()?.capturedEpoch == replay.commentComposerReplay.epoch()
             } else routes.owns() && owner.route.get() === routes
         }
+    }
+    private fun enterVideoThroughActualSearch(replay: WindowsVideoLocalReplay) {
+        installOwnedLocalReplay(replay)
         if (System.getProperty("bilipai.validation.composerInput") == "true") {
             val previousOwner = owner
             val previousRoutes = routes
@@ -6066,6 +6069,8 @@ object WindowsVideoActualRootUiFixture {
                         // External Computer Use owns every click/key/wheel in this mode.
                         // Readiness is not playback/UI/NVIDIA acceptance.
                         check(replay != null)
+                        installOwnedLocalReplay(replay)
+                        check(replay.isInstalled)
                         check(PlayerPreferencesStore().read().let { it.muted && it.volume == 0.0 })
                         Files.writeString(report.resolve("manual-ready.json"), buildJsonObject {
                             put("schema", 1); put("actualMainInvocations", 1)

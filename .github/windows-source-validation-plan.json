@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "daff05d71e513ec341f5c8debf6bd0e570a51d59",
-  "windowsVersion": "0.2.427.160",
-  "createdAt": "2026-10-16T19:43:30.718161+00:00",
+  "baseHead": "e3a868515b0c244af8240a10f1f650a89ca28a01",
+  "windowsVersion": "0.2.427.161",
+  "createdAt": "2026-10-16T20:35:24.963627+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "7bd8405290dd4cd04d9c4506033f079246acaa7d4bd46fe4659aeb7034d4ee0e"
+      "sha256": "067c1a99c0207e866f9ee171622f828de81c71376bc457bc1630280c9e6a2a52"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "8dce77a89ed41eee815e2f591240b8b59043ba9cde03888caa9e2945478b2947"
+      "sha256": "d7efb5940e042c17f5f761a27512847d17bd35507738bc466962e077acdbc9ef"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -399,6 +399,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
       "normalization": "lf",
       "sha256": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "normalization": "lf",
+      "sha256": "230e6c8cf7c65e807c96040a4c8cbeb4959acad41acc7d44adcc963ed0d30e37"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
@@ -991,6 +996,11 @@
       "sha256": "fd5a06df07a6cc439bdf296fb22222f2a1162117f42a4f8f5e1f7b33b8b6a612"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyRoutingTest.kt",
+      "normalization": "lf",
+      "sha256": "e2a96b2b804f2a8ea4a80446aee06f41261576c201bdec058d4d760b6a26848b"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopNativeVideoCanvasRegionTest.kt",
       "normalization": "lf",
       "sha256": "11e0b47922fb9ec4d991a452254d22fd7cf7bd5d424833f0fb5454040f367363"
@@ -1034,6 +1044,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginServicesTest.kt",
       "normalization": "lf",
       "sha256": "653fd38e31f8cad2a59422e64ea1cda19f86ad05e7685c542313029335dd6ee0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopStringSetPreferencesTest.kt",
+      "normalization": "lf",
+      "sha256": "6e58178e7a4a9344a2f126f9c05621e85a5201095d55f1c2c641b2fc6752b409"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionIdentityTest.kt",
@@ -1323,7 +1338,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt",
       "normalization": "lf",
-      "sha256": "7d813b43d0834109180a83a16cb31bc74a4c83060b18fe1c2729afdee26a9da6"
+      "sha256": "7f534ff885e961d0d3e2cd03adea67cf03887d459c48ebdf19f095ac48bddf05"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoDynamicShareReplay.kt",
@@ -1333,7 +1348,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoLocalReplay.kt",
       "normalization": "lf",
-      "sha256": "0de33cea72b7876e381be5e9e838c6047e1649567f5dd1bd8d69bac60767675b"
+      "sha256": "8e1ab22fd75d91aa05dc92dc801641d1b16ae913374a8988f1edab02bdcf5cab"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt",
@@ -1423,7 +1438,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "db1267db132e04ef30acc07ae3ec9bbff506b0d2a5440ca76f078b5c045f616d"
+      "sha256": "7eb7063648ddb422b4b2a34297df28c8733072cc5f58d3db3c5768399a06afb9"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1544,6 +1559,11 @@
       "path": "desktop/tools/extract-upstream-message-notifications.py",
       "normalization": "lf",
       "sha256": "e0f37ac4dd207b748ae928802854792a3e5e74492f23296f577254075c3a029b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-network-proxy.py",
+      "normalization": "lf",
+      "sha256": "e31e68495bc0e6895d686bb2068a8ec3f5d11ab3ca3b284985d91be2eae30159"
     },
     {
       "path": "desktop/tools/extract-upstream-offline-player.py",
@@ -1753,7 +1773,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "574a457114e848578479397b90d838216bcb4049169771a8c2dd3849add0ba00"
+      "sha256": "e7c9685654b5dd601ab5fe2632fa02f5de43e16e88e9cbbb37552af615a781de"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -1814,6 +1834,11 @@
       "path": "desktop/tools/tests/test_extract_upstream_js.py",
       "normalization": "lf",
       "sha256": "c58aea7e3457072a196a24a8257c0f9c1a5e160693087b3c9ebbc0a27ff765e0"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_network_proxy.py",
+      "normalization": "lf",
+      "sha256": "9c8fb2b901ed12e950ea3b1f9a63ae081cf7b0e7cdee950a8874ac0cbf1a04f6"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
@@ -1943,7 +1968,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "1b7ecb8e006cee7006d8021f98a283b75993ac17f800413b464b60d186aaa730"
+      "sha256": "ff1a8c79242ceb43bfb3e33dae71608cf4ff766b98bab4dca04126d8b67f3ccd"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2074,6 +2099,11 @@
       "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
       "normalization": "lf",
       "sha256": "33230024f7000ce4d35bbbd258e548d71ef91b9a19c5e9e53f17cf941e35ebac"
+    },
+    {
+      "path": "desktop/tools/tests/test_v042_network_proxy_source.py",
+      "normalization": "lf",
+      "sha256": "1f16667383716a36cf3b792a8885e52fa6576673ef8a33fa1ef7947db228f3fe"
     },
     {
       "path": "desktop/tools/tests/test_v042_optical_dependencies_source.py",
@@ -2329,6 +2359,11 @@
       "path": "desktop/tools/v042_follow_confirmation.py",
       "normalization": "lf",
       "sha256": "a4b6b54de977d0237541457cd65a0fa41f611551e632b88ed79ca80a9c1be85a"
+    },
+    {
+      "path": "desktop/tools/v042_network_proxy.py",
+      "normalization": "lf",
+      "sha256": "47e1b13611ac99a9ceb37e0f5d481153694bbe5c7eb921c653cd19e8b4f31867"
     },
     {
       "path": "desktop/tools/v042_optical_dependencies.py",
@@ -3266,6 +3301,36 @@
       "sha256": "9976d04fa221e8dbfd1bcc3b05f8d6647942d9d43e91b4dbc68b32b40c203f3e"
     },
     {
+      "path": "desktop/upstream-slices/v042-network-proxy/ApiClient.kt",
+      "normalization": "raw",
+      "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicy.kt",
+      "normalization": "raw",
+      "sha256": "9f8e846d3afa3437da624064913c2594736bfe714574dc4831365f03e433f1dc"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "652e48282a43fcd91132351af88fd45bf023326dc932adf8f61fc280628b5dea"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyStore.kt",
+      "normalization": "raw",
+      "sha256": "7be8c222779a3ba55d8c934c292ec8e143b51a043b212d5466d80edd60c3f179"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-network-proxy/SettingsSections.kt",
+      "normalization": "raw",
+      "sha256": "3a8ae2bbddbb5040390dff94da435410eafcdd92ade05b2df50e939e89d3e1b2"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-network-proxy/manifest.json",
+      "normalization": "raw",
+      "sha256": "f46dacaced3991c49d14bae9ab8803e6c6b296f45c8a38c63560012dd295bdff"
+    },
+    {
       "path": "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
       "normalization": "raw",
       "sha256": "473c085001722ee3fa1bd7d20729893ac43e267062f81a69a0f9889f59d64b68"
@@ -3658,7 +3723,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "0e341a0dbeeedde09d1b0ceb9661647b18d5c38465f1edd05bbfd955dde95e97"
+      "sha256": "cd83e7a720411f92b35bab463026d41d35b72e6f5fcf2b44650f20a5226085dc"
     }
   ],
   "classes": {
@@ -3747,9 +3812,12 @@
     "com.android.purebilibili.feature.search.SearchCardTargetRestoreTest": 3,
     "com.android.purebilibili.feature.search.SearchMotionBudgetPolicyTest": 18,
     "com.android.purebilibili.core.ui.AppTabTypographyTest": 2,
-    "com.android.purebilibili.core.ui.AppContentColorsTest": 5
+    "com.android.purebilibili.core.ui.AppContentColorsTest": 5,
+    "com.android.purebilibili.core.network.policy.NetworkProxyPolicyTest": 10,
+    "com.bilipai.desktop.plugins.DesktopStringSetPreferencesTest": 5,
+    "com.bilipai.desktop.network.DesktopNetworkProxyRoutingTest": 1
   },
-  "expectedTests": 779,
+  "expectedTests": 795,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -3759,73 +3827,24 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequestTest.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyRoutingTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopStringSetPreferencesTest.kt",
     "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoLocalReplay.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-upstream-components.py",
-    "desktop/tools/extract-upstream-danmaku-settings.py",
-    "desktop/tools/extract-upstream-dynamic-tabs.py",
-    "desktop/tools/extract-upstream-home-page.py",
-    "desktop/tools/extract-upstream-search-pages.py",
-    "desktop/tools/extract-upstream-shared-liquid-tabs.py",
-    "desktop/tools/extract-upstream-space-pages.py",
+    "desktop/tools/extract-upstream-network-proxy.py",
     "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_extract_upstream_brand_callers.py",
+    "desktop/tools/tests/test_extract_upstream_network_proxy.py",
     "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v040_liquid_controls_source.py",
-    "desktop/tools/tests/test_v040_native_chrome_source.py",
-    "desktop/tools/tests/test_v041_search_all_source.py",
-    "desktop/tools/tests/test_v042_optical_dependencies_source.py",
-    "desktop/tools/tests/test_v042_search_dependencies_source.py",
-    "desktop/tools/tests/test_v042_search_layout_source.py",
-    "desktop/tools/v037_player_foundations.py",
-    "desktop/tools/v037_player_page_backdrop.py",
-    "desktop/tools/v040_liquid_value_controls.py",
-    "desktop/tools/v042_optical_dependencies.py",
-    "desktop/tools/v042_search_dependencies.py",
-    "desktop/tools/v042_search_layout.py",
-    "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/AppSurfaceTokens.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/ChromeBackdropSource.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/DampedDragAnimation.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/DragGestureInspector.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlight.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightMotionSpec.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightPalette.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/LiquidDockViewport.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/LiquidIndicatorMotion.kt",
-    "desktop/upstream-slices/v042-optical-dependencies/manifest.json",
-    "desktop/upstream-slices/v042-search-dependencies/AppContentColors.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppContentColorsTest.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppElasticPress.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppLiquidAwareTabRow.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppMaterial3SegmentedControl.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppMiuixSegmentedControl.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppSegmentedControl.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppTabTypography.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppTabTypographyTest.kt",
-    "desktop/upstream-slices/v042-search-dependencies/AppThemeConfig.kt",
-    "desktop/upstream-slices/v042-search-dependencies/BottomBarMatchedLiquidChrome.kt",
-    "desktop/upstream-slices/v042-search-dependencies/BottomBarScrollHidePolicy.kt",
-    "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBar.kt",
-    "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBarGeometry.kt",
-    "desktop/upstream-slices/v042-search-dependencies/FloatingDockChrome.kt",
-    "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicy.kt",
-    "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicyTest.kt",
-    "desktop/upstream-slices/v042-search-dependencies/TopBar.kt",
-    "desktop/upstream-slices/v042-search-dependencies/manifest.json",
-    "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
-    "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
-    "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
-    "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
-    "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
-    "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
-    "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
-    "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
-    "desktop/upstream-slices/v042-search-layout/manifest.json",
+    "desktop/tools/tests/test_v042_network_proxy_source.py",
+    "desktop/tools/v042_network_proxy.py",
+    "desktop/upstream-slices/v042-network-proxy/ApiClient.kt",
+    "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicy.kt",
+    "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicyTest.kt",
+    "desktop/upstream-slices/v042-network-proxy/NetworkProxyStore.kt",
+    "desktop/upstream-slices/v042-network-proxy/SettingsSections.kt",
+    "desktop/upstream-slices/v042-network-proxy/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,
