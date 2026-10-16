@@ -16,7 +16,7 @@ import textwrap
 
 METHODS = {
     "BilibiliApi": ["getNavInfo", "getRecommendParams", "getPopularVideos", "getVideoInfo", "getVideoInfoByAid", "getPlayUrl", "getPlayUrlLegacy", "getRelatedVideos", "getReplyListLegacy", "getFavFolders", "getFavoriteList", "getHistoryList", "getWatchLaterPage"],
-    "SearchApi": ["search"],
+    "SearchApi": ["search", "searchAll"],
     "PassportApi": ["validateCookieSession", "generateQrCode", "pollQrCode"],
     "BuvidApi": ["getSpi"],
     "DynamicApi": ["getDynamicFeed"],
@@ -160,6 +160,8 @@ def generate(repo: Path, output: Path) -> Path:
     live_api_body = api_delta("\n\n".join(sections), repo, output)
     from v035_story import adapt_story_api
     live_api_body = adapt_story_api(live_api_body, output)
+    from v041_search_all import advance_api
+    live_api_body = advance_api(repo, live_api_body, output)
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),

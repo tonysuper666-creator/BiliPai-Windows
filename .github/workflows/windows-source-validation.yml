@@ -143,6 +143,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original v041 personal video status source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_profile_agreement_owner_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original profile agreement ownership regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_search_all_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete original comprehensive-search source and ownership regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_fixed_java_toolchain.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Actual fixed Java toolchain and build evidence regressions failed.' }
       - name: Stage the existing pinned JDK

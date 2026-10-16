@@ -112,7 +112,8 @@
     "desktop/upstream-slices/v041-player-cover",
     "desktop/upstream-slices/v041-rss-dynamic",
     "desktop/upstream-slices/v041-video-status-labels",
-    "desktop/upstream-slices/v041-video-status-personal-consumers"
+    "desktop/upstream-slices/v041-video-status-personal-consumers",
+    "desktop/upstream-slices/v041-search-all"
   ],
   "archives": [
     {
@@ -4587,9 +4588,9 @@
         },
         {
           "path": "desktop/upstream-slices/v041-video-status-labels/manifest.json",
-          "sha256": "a7d3af6952c9744c1e58f4d65511aaad96f760eb72425989163f6f557356df66",
+          "sha256": "e13914083ff47f1ba60181bda99cd71f6b019a71488b8bf2ff323c9c54f3b9d3",
           "hashNormalization": "raw",
-          "blob": "6f01107b745df04ade17e210bed028abba9f8dba"
+          "blob": "7dc40afa4b0bc4ec206a553f8f364aa5b20c311f"
         }
       ]
     },
@@ -4619,6 +4620,59 @@
           "sha256": "b6b08bd10ab5212007618803a176f0898efa68c392a2a8205804f7ba606b5ae5",
           "hashNormalization": "raw",
           "blob": "af86354fca16a16463b7f5989966d1ba06eb843f"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v041-search-all",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v041-search-all/ApiClient.kt",
+          "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+          "hashNormalization": "raw",
+          "blob": "3e901a8fbd3991e376047d67a22decbd3a174099"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/manifest.json",
+          "sha256": "bdbc6b5337f19bfcd8897a65c608804d492c0908bd64bb1ffbd68d331eb3ec1c",
+          "hashNormalization": "raw",
+          "blob": "7626752f853f18e59240f38b8c8aaa0cc43b2a51"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchEmptyStatePolicy.kt",
+          "sha256": "3f42b89a3c3d1512b483ff980d3e29edbb6b2bf7c1a39e4261ae2518a2d53a0b",
+          "hashNormalization": "raw",
+          "blob": "72fb8aa3935310c48bcf9d7b8f283864de388a1a"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchLoadPolicy.kt",
+          "sha256": "680976b2c41780defcebef4b1c1078e0e626f2fd6071c874e837508324e50119",
+          "hashNormalization": "raw",
+          "blob": "0d24d3abe2c905ebce16dc15050573c97d1304c9"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchRepository.kt",
+          "sha256": "9a669b0f7ccd36a5d9a0e878f8c8330e3b46138ab49192035d16ffd306c8fe10",
+          "hashNormalization": "raw",
+          "blob": "4d9ab28aaae5d6b344841f5969f602cccf333183"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchScreen.kt",
+          "sha256": "c742e3cbc6b6902e056c17b27874a5240b0aa9ca3d535c60f53369016ebb5a0d",
+          "hashNormalization": "raw",
+          "blob": "aaf2b036d6b1eadc21bc387e0b90fa18e73348c9"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchVideoFilterSheet.kt",
+          "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+          "hashNormalization": "raw",
+          "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchViewModel.kt",
+          "sha256": "dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8",
+          "hashNormalization": "raw",
+          "blob": "f0ba713c6087b00e287f637456e23c6ff275b4fc"
         }
       ]
     }
@@ -11610,9 +11664,9 @@
       "features": [
         "v041-video-status-labels-retained-original-inputs"
       ],
-      "referenceOnly": true,
-      "partialReuse": true,
-      "usedScope": "Exact-once SearchVideoItem label field and toVideoItem hunks only; the nine other v0.4.1 hunks (search-all models, SearchUpItem serializers, area_name, SearchType.ALL) are pinned as deferred."
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete exact v041 model, including the comprehensive-search schema and enum; sole status-model producer"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
@@ -11813,6 +11867,111 @@
       "referenceOnly": true,
       "partialReuse": true,
       "usedScope": "Exact original status badge import and cover overlay blocks inside the retained whole Windows producer; full v041 card typography/layout is tracked separately."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "localPath": "desktop/upstream-slices/v041-search-all/SearchRepository.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "4d9ab28aaae5d6b344841f5969f602cccf333183",
+      "sha256": "9a669b0f7ccd36a5d9a0e878f8c8330e3b46138ab49192035d16ffd306c8fe10",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-comprehensive-search-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source through the existing sole Windows producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+      "localPath": "desktop/upstream-slices/v041-search-all/SearchViewModel.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "f0ba713c6087b00e287f637456e23c6ff275b4fc",
+      "sha256": "dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-comprehensive-search-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source through the existing sole Windows producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "localPath": "desktop/upstream-slices/v041-search-all/SearchScreen.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "aaf2b036d6b1eadc21bc387e0b90fa18e73348c9",
+      "sha256": "c742e3cbc6b6902e056c17b27874a5240b0aa9ca3d535c60f53369016ebb5a0d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-comprehensive-search-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Exact original ALL rendering blocks within retained screen"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt",
+      "localPath": "desktop/upstream-slices/v041-search-all/SearchLoadPolicy.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "0d24d3abe2c905ebce16dc15050573c97d1304c9",
+      "sha256": "680976b2c41780defcebef4b1c1078e0e626f2fd6071c874e837508324e50119",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-comprehensive-search-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source through the existing sole Windows producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt",
+      "localPath": "desktop/upstream-slices/v041-search-all/SearchEmptyStatePolicy.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "72fb8aa3935310c48bcf9d7b8f283864de388a1a",
+      "sha256": "3f42b89a3c3d1512b483ff980d3e29edbb6b2bf7c1a39e4261ae2518a2d53a0b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-comprehensive-search-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source through the existing sole Windows producer"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "localPath": "desktop/upstream-slices/v041-search-all/ApiClient.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "3e901a8fbd3991e376047d67a22decbd3a174099",
+      "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-comprehensive-search-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Exact original complete SearchApi interface"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "localPath": "desktop/upstream-slices/v041-search-all/SearchVideoFilterSheet.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea",
+      "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-comprehensive-search-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Original showLayoutToggle parameter and visibility contract in the existing combined Windows filter bar"
     }
   ],
   "buildStandaloneInputs": [
