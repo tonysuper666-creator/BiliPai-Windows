@@ -113,7 +113,9 @@
     "desktop/upstream-slices/v041-rss-dynamic",
     "desktop/upstream-slices/v041-video-status-labels",
     "desktop/upstream-slices/v041-video-status-personal-consumers",
-    "desktop/upstream-slices/v041-search-all"
+    "desktop/upstream-slices/v041-search-all",
+    "desktop/upstream-slices/v042-player-readability",
+    "desktop/upstream-slices/v042-follow-confirmation"
   ],
   "archives": [
     {
@@ -4673,6 +4675,52 @@
           "sha256": "dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8",
           "hashNormalization": "raw",
           "blob": "f0ba713c6087b00e287f637456e23c6ff275b4fc"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-player-readability",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-player-readability/TopControlBar.kt",
+          "sha256": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
+          "hashNormalization": "raw",
+          "blob": "c379ad9700cdf4997015c96be5331a096caad637"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-player-readability/PortraitSubtitleOverlay.kt",
+          "sha256": "f3460f158ee6ff37842d6de2be0df29143656f36905c645878d8e4742663c89e",
+          "hashNormalization": "raw",
+          "blob": "cf8fc4c477aab5164633e58bbc1eba8f1e1ddfae"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-player-readability/manifest.json",
+          "sha256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8",
+          "hashNormalization": "raw",
+          "blob": "296c37bd75b1f7112cfe06983cc0358121af39d9"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-follow-confirmation",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-follow-confirmation/ActionRepository.kt",
+          "sha256": "c302740f2babaf87de20682bae44714461a07cf5a20d97ebfca9d96f158d38d4",
+          "hashNormalization": "raw",
+          "blob": "eb6671b5641ebfcffed05e2f6229b33ffa093037"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-follow-confirmation/manifest.json",
+          "sha256": "9976d04fa221e8dbfd1bcc3b05f8d6647942d9d43e91b4dbc68b32b40c203f3e",
+          "hashNormalization": "raw",
+          "blob": "b1c4fac751e3f586ef82f8345d050a6c25ff41af"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-follow-confirmation/VideoInteractionStatusCacheTest.kt",
+          "sha256": "d5c477f16e102c893f7ba8877fde22ac58066973fc9133abfe7af0aa82a4b054",
+          "hashNormalization": "raw",
+          "blob": "936471b0f2d133de3f842d110c0b8439b25faf4a"
         }
       ]
     }
@@ -11972,6 +12020,66 @@
       "referenceOnly": true,
       "partialReuse": true,
       "usedScope": "Original showLayoutToggle parameter and visibility contract in the existing combined Windows filter bar"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "localPath": "desktop/upstream-slices/v042-player-readability/TopControlBar.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "c379ad9700cdf4997015c96be5331a096caad637",
+      "sha256": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-player-readability-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Original PlayerTitleInfoDock and original subtitle-panel scroll modifier; baseline interfaces, layout and player ownership preserved"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "localPath": "desktop/upstream-slices/v042-player-readability/PortraitSubtitleOverlay.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "cf8fc4c477aab5164633e58bbc1eba8f1e1ddfae",
+      "sha256": "f3460f158ee6ff37842d6de2be0df29143656f36905c645878d8e4742663c89e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-player-readability-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Original PlayerTitleInfoDock and original subtitle-panel scroll modifier; baseline interfaces, layout and player ownership preserved"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "localPath": "desktop/upstream-slices/v042-follow-confirmation/ActionRepository.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "eb6671b5641ebfcffed05e2f6229b33ffa093037",
+      "sha256": "c302740f2babaf87de20682bae44714461a07cf5a20d97ebfca9d96f158d38d4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-confirmed-follow-query-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole original v042 VideoInteractionStatusCache, queryFollowStatus and all fifteen original cache tests; thirty-minute value freshness is independent from the one-minute pending-operation timeout"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/repository/VideoInteractionStatusCacheTest.kt",
+      "localPath": "desktop/upstream-slices/v042-follow-confirmation/VideoInteractionStatusCacheTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "936471b0f2d133de3f842d110c0b8439b25faf4a",
+      "sha256": "d5c477f16e102c893f7ba8877fde22ac58066973fc9133abfe7af0aa82a4b054",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-interaction-cache-tests"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "All fifteen original test methods; JUnit imports map to the existing kotlin.test framework"
     }
   ],
   "buildStandaloneInputs": [

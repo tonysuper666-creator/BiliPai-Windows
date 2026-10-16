@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamTag": "v0.4.2",
+  "fixedUpstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "filename": "ActionRepository.kt",
+      "bytes": 45228,
+      "sha256Bytes": "c302740f2babaf87de20682bae44714461a07cf5a20d97ebfca9d96f158d38d4",
+      "gitBlob": "eb6671b5641ebfcffed05e2f6229b33ffa093037",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/repository/VideoInteractionStatusCacheTest.kt",
+      "filename": "VideoInteractionStatusCacheTest.kt",
+      "bytes": 9793,
+      "sha256Bytes": "d5c477f16e102c893f7ba8877fde22ac58066973fc9133abfe7af0aa82a4b054",
+      "gitBlob": "936471b0f2d133de3f842d110c0b8439b25faf4a",
+      "partialReuse": false
+    }
+  ],
+  "scope": "Whole original v042 VideoInteractionStatusCache, queryFollowStatus and all fifteen original cache tests; thirty-minute value freshness is independent from the one-minute pending-operation timeout"
+}

@@ -2408,6 +2408,8 @@ sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/do
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
 
 val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_follow_confirmation.py")
+    inputs.dir("upstream-slices/v042-follow-confirmation")
     inputs.file("tools/v037_gesture_feedback.py")
     inputs.dir("upstream-slices/v037-gesture-feedback")
     inputs.file("tools/v037_player_section_policy.py")
@@ -3950,4 +3952,10 @@ tasks.matching { it.name in setOf("extractOriginalHomeBangumiPage", "extractOrig
 tasks.named("extractUpstreamDynamicDetailContainer") {
     inputs.file("tools/v037_window_modal_blur.py")
     inputs.dir("upstream-slices/v037-window-modal-blur")
+}
+
+// Both existing player producers consume the same fixed v042 UI corrections.
+tasks.matching { it.name in setOf("extractOriginalPlayerFullControls", "extractOriginalVideoFullscreenPager") }.configureEach {
+    inputs.file("tools/v042_player_readability.py")
+    inputs.dir("upstream-slices/v042-player-readability")
 }

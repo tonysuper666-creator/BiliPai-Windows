@@ -191,6 +191,8 @@ def main():
 }'''
  ADAPT.append(dict(label='Android sticky battery broadcast maps required actual Windows power query',before=old,after=new));t=t[:a]+new+t[b:]
  t=t.replace('import com.android.purebilibili.core.ui.components.AppText\n','import com.android.purebilibili.core.ui.components.AppText\nimport com.bilipai.desktop.ui.DesktopOriginalPlayerControlsPlatform\nimport com.bilipai.desktop.ui.LocalDesktopOriginalPlayerControlsPlatform\n',1)
+ from v042_player_readability import apply_and_record as apply_player_readability
+ t=apply_player_readability(REPO,rel,t,OUTPUT)
  emit(rel,t,rel,'complete-original-top-controls-status-platform-adapt')
  for rel,model in [('feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt','BottomControlBarLayoutPolicy'),('feature/video/ui/overlay/TopControlBarLayoutPolicy.kt','TopControlBarLayoutPolicy'),('feature/video/ui/overlay/SubtitleControlModel.kt','SubtitleControlUiState'),('feature/video/subtitle/BiliSubtitlePolicy.kt','SubtitleTrackOption'),('feature/video/progress/PbpProgressPolicy.kt','PbpRidgeSample'),('feature/anime4k/Anime4KConfig.kt','Anime4KConfig'),('feature/video/ui/components/NativeDanmakuToggleButton.kt','NativeDanmakuToggleButtonKt')]:
   full_direct(rel,model)

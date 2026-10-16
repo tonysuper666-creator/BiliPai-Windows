@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "147",
+  "windowsRevision": "149",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14577,5 +14577,47 @@
     "jvmTestsExecuted": false,
     "applicationExecuted": false,
     "allFilterLayoutVisibilityMatchesOriginalContract": true
+  },
+  "v042PlayerReadabilitySlice": {
+    "upstreamTag": "v0.4.2",
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-player-readability",
+    "manifestSHA256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8",
+    "completeOriginalSourcesRetained": true,
+    "partialReuse": true,
+    "fullCurrentPlayerParityClaimed": false,
+    "sourceApplied": true,
+    "mainCompiled": false,
+    "applicationExecuted": false,
+    "pixelsValidated": false,
+    "actualSoleProducersExecuted": 2,
+    "fullInputInverseRecovered": true,
+    "strictAdaptedInputsVerified": 553
+  },
+  "v042FollowConfirmationSlice": {
+    "upstreamTag": "v0.4.2",
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-follow-confirmation",
+    "manifestSHA256": "9976d04fa221e8dbfd1bcc3b05f8d6647942d9d43e91b4dbc68b32b40c203f3e",
+    "partialReuse": true,
+    "completeOriginalMethods": [
+      "queryFollowStatus",
+      "confirmedOperationValue"
+    ],
+    "scope": "Whole original v042 VideoInteractionStatusCache, queryFollowStatus and all fifteen original cache tests; thirty-minute value freshness is independent from the one-minute pending-operation timeout",
+    "sourceApplied": true,
+    "mainCompiled": false,
+    "applicationExecuted": false,
+    "wholeLatestReleaseParityQualified": false,
+    "actualSoleProducerExecuted": true,
+    "strictAdaptedInputsVerified": 552,
+    "regressionCasesWritten": 6,
+    "regressionCasesExecuted": 0,
+    "wholeOriginalCacheClass": true,
+    "originalCacheTestsSelected": 15,
+    "defaultKnownValueTtlMs": 1800000,
+    "defaultPendingOperationTtlMs": 60000,
+    "wholeOriginalCacheSHA256": "73da174536eb8ad34a7f9563d347acdb94c77ef30ce0c89e3d3b232319737a9d",
+    "defaultLifetimeRegressionCasesWritten": 2
   }
 }
