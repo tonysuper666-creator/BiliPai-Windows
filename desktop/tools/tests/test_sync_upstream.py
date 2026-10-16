@@ -979,11 +979,16 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 589)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 578)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 115)
-        self.assertEqual(len(self.inventory["archives"]), 119)
+        self.assertEqual(len(entries), 597)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 586)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 116)
+        self.assertEqual(len(self.inventory["archives"]), 120)
         for root, names in {
+            "desktop/upstream-slices/v042-search-layout/": {
+                "SearchScreen.kt", "SearchVideoFilterSheet.kt", "SearchResultContainerTransition.kt",
+                "SharedCardContainerHost.kt", "BottomBarLiquidSegmentedControl.kt",
+                "BottomBarFloatingSegmentedControl.kt", "SearchTabLabelPolicyTest.kt", "SearchCardTargetRestoreTest.kt",
+            },
             "desktop/upstream-slices/v042-player-readability/":
                 {"TopControlBar.kt", "PortraitSubtitleOverlay.kt"},
             "desktop/upstream-slices/v042-follow-confirmation/":
@@ -1685,10 +1690,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 589)
+        self.assertEqual(len(self.load()), 597)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 589)
+        self.assertEqual(len(self.load()), 597)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1705,7 +1710,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 589)
+                self.assertEqual(len(entries), 597)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
