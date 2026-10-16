@@ -104,6 +104,9 @@ def emit(path,t,origin,mode):
     else:
         t,repostProof=apply_and_record(path,t,OUTPUT)
         if repostProof is not None:mode="fixed-v031-repost-coin-owned-delta"
+    from v042_owner_follow import apply as apply_owner_follow
+    t,owner_follow_proof=apply_owner_follow(path,t,globals())
+    if owner_follow_proof is not None:mode='mixed-original-v037-v042-engagement-owned-projection'
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
 def function_range(t,name):

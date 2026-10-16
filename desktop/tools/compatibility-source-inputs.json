@@ -115,7 +115,8 @@
     "desktop/upstream-slices/v041-video-status-personal-consumers",
     "desktop/upstream-slices/v041-search-all",
     "desktop/upstream-slices/v042-player-readability",
-    "desktop/upstream-slices/v042-follow-confirmation"
+    "desktop/upstream-slices/v042-follow-confirmation",
+    "desktop/upstream-slices/v042-owner-follow"
   ],
   "archives": [
     {
@@ -4721,6 +4722,41 @@
           "sha256": "d5c477f16e102c893f7ba8877fde22ac58066973fc9133abfe7af0aa82a4b054",
           "hashNormalization": "raw",
           "blob": "936471b0f2d133de3f842d110c0b8439b25faf4a"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-owner-follow",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
+          "sha256": "3f92360b36c18eb4bc66d08db1154cbb8ee1dbbc6cbdd1c8eb59b2d18d00dd19",
+          "hashNormalization": "raw",
+          "blob": "f8a9a52649af26a0ac260e34a4c936040e8be7a0"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
+          "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+          "hashNormalization": "raw",
+          "blob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/manifest.json",
+          "sha256": "3254fb262d038dac0443c0ba7bd2f31319d5071b4ffaa603734cd2f670c2d061",
+          "hashNormalization": "raw",
+          "blob": "1bd190d835017bb30835d20467031d3133ceded8"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
+          "sha256": "00429be9b3e159a2a6e5b5eff465d0349b0c1ce749b810673dd14b8a09a7d286",
+          "hashNormalization": "raw",
+          "blob": "e9f1eb6e5189cda374b2ad216efd0c082e2c1cb7"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
+          "sha256": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0",
+          "hashNormalization": "raw",
+          "blob": "eba104633b5be816f348a89a483861a20096c346"
         }
       ]
     }
@@ -12080,6 +12116,66 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "All fifteen original test methods; JUnit imports map to the existing kotlin.test framework"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "f8a9a52649af26a0ac260e34a4c936040e8be7a0",
+      "sha256": "3f92360b36c18eb4bc66d08db1154cbb8ee1dbbc6cbdd1c8eb59b2d18d00dd19",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original changeFollow/followOwner/toggleFollow methods, submitting field and follow-only policy. Windows retains its existing data/source/account owner and supplies only lifecycle and request ports. UI caller enablement remains separately tracked."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324",
+      "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original changeFollow/followOwner/toggleFollow methods, submitting field and follow-only policy. Windows retains its existing data/source/account owner and supplies only lifecycle and request ports. UI caller enablement remains separately tracked."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "e9f1eb6e5189cda374b2ad216efd0c082e2c1cb7",
+      "sha256": "00429be9b3e159a2a6e5b5eff465d0349b0c1ce749b810673dd14b8a09a7d286",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original UP preview sheet; exact selected confirmed-owner status and guarded follow callback from original portrait pager. Existing Windows request ports retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "eba104633b5be816f348a89a483861a20096c346",
+      "sha256": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole original UP preview sheet; exact selected confirmed-owner status and guarded follow callback from original portrait pager. Existing Windows request ports retained."
     }
   ],
   "buildStandaloneInputs": [
