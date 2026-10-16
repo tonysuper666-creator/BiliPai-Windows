@@ -573,6 +573,16 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         self.assertFalse(self.admitted(name, "detect", **{"github.event_name": "schedule", "vars.BILIPAI_WINDOWS_AUTO_SYNC": "false"}))
         self.assertTrue(self.admitted(name, "detect", **{"github.event_name": "schedule"}))
 
+    def test_source_test_failures_cannot_be_masked_by_a_later_command(self):
+        lines = self.workflows["windows-source-validation.yml"].splitlines()
+        commands = [index for index, line in enumerate(lines) if line.lstrip().startswith((
+            "python -m unittest ", "python desktop/tools/run-tool-tests.py "))]
+        self.assertGreater(len(commands), 50, "The complete source preflight must be inspected")
+        for index in commands:
+            with self.subTest(command=lines[index].strip()):
+                following = next((line.strip() for line in lines[index + 1:] if line.strip()), "")
+                self.assertRegex(following, r"^if \(\$LASTEXITCODE -ne 0\) \{ throw .+ \}$")
+
     def test_candidate_and_publish_retain_original_required_outputs(self):
         self.assertFalse(self.admitted("windows-upstream-sync.yml", "candidate", **{"needs.detect.outputs.update_needed": "false"}))
         self.assertFalse(self.admitted("windows-desktop.yml", "publish", **{"needs.windows.outputs.release": "false"}))

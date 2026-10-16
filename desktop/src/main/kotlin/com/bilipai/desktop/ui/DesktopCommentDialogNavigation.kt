@@ -42,6 +42,8 @@ internal val LocalDesktopCommentDialogOwner = staticCompositionLocalOf<DesktopCo
     LaunchedEffect(focus) { focus.requestFocus() }
     CompositionLocalProvider(LocalDesktopCommentDialogOwner provides owner,
         LocalNavigationEventDispatcherOwner provides owner) {
-        Box(Modifier.fillMaxSize().onPreviewKeyEvent(owner::onKey).focusRequester(focus).focusable()) { content() }
+        com.bilipai.desktop.appearance.DesktopPlatformClipboardScope {
+            Box(Modifier.fillMaxSize().onPreviewKeyEvent(owner::onKey).focusRequester(focus).focusable()) { content() }
+        }
     }
 }

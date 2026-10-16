@@ -355,6 +355,7 @@ class DesktopPluginContext(val store: DesktopPluginStore) {
 
 class DesktopPluginPreferences(private val store: DesktopPluginStore, private val name: String) {
     val all: Map<String, Any> get() = store.preferences(name).mapNotNull { (key, value) ->
+        if (value is JsonArray) return@mapNotNull decodeStringSet(value)?.let { key to it }
         val primitive = value as? JsonPrimitive ?: return@mapNotNull null
         val decoded: Any = if (primitive.isString) primitive.content else primitive.booleanOrNull ?: primitive.intOrNull ?: return@mapNotNull null
         key to decoded
@@ -362,6 +363,14 @@ class DesktopPluginPreferences(private val store: DesktopPluginStore, private va
     fun getBoolean(key: String, fallback: Boolean) = (store.preferences(name)[key] as? JsonPrimitive)?.booleanOrNull ?: fallback
     fun getInt(key: String, fallback: Int) = (store.preferences(name)[key] as? JsonPrimitive)?.intOrNull ?: fallback
     fun getString(key: String, fallback: String?): String? = (store.preferences(name)[key] as? JsonPrimitive)?.takeIf { it.isString }?.content ?: fallback
+    fun getStringSet(key: String, fallback: Set<String>?): Set<String>? =
+        decodeStringSet(store.preferences(name)[key]) ?: fallback?.toSet()
+    private fun decodeStringSet(value: JsonElement?): Set<String>? {
+        val array = value as? JsonArray ?: return null
+        return array.map { element ->
+            (element as? JsonPrimitive)?.takeIf { it.isString }?.content ?: return null
+        }.toSet()
+    }
     fun edit() = Editor(store, name)
     class Editor(private val store: DesktopPluginStore, private val name: String) {
         private val values = linkedMapOf<String, JsonElement?>()
@@ -369,6 +378,9 @@ class DesktopPluginPreferences(private val store: DesktopPluginStore, private va
         fun putBoolean(key: String, value: Boolean) = apply { values[key] = JsonPrimitive(value) }
         fun putInt(key: String, value: Int) = apply { values[key] = JsonPrimitive(value) }
         fun putString(key: String, value: String?) = apply { values[key] = value?.let { JsonPrimitive(it) } }
+        fun putStringSet(key: String, value: Set<String>?) = apply {
+            values[key] = value?.let { JsonArray(it.map { item -> JsonPrimitive(item) }) }
+        }
         fun remove(key: String) = apply { values[key] = null }
         fun clear() = apply { clear = true }
         fun apply() { store.update(name, values, clear) }

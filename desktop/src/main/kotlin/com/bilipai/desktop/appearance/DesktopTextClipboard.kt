@@ -30,6 +30,7 @@ object WindowsTextClipboard : DesktopTextClipboard {
         failure.value = "无法写入系统剪贴板，请稍后重试"
         false
     }
+    internal fun reportFailure(message: String) { failure.value = message }
     fun clearFailure() { failure.value = null }
 }
 

@@ -30,7 +30,7 @@ class NetworkProxyExtractionTest(unittest.TestCase):
         source = self.files['NetworkProxyStore.kt']
         self.assertEqual(source[source.index('package '):], tool.read(REPO, tool.STORE).replace(
             'import android.content.Context', 'import com.bilipai.desktop.plugins.DesktopPluginContext as Context'))
-        self.assertNotIn('NetworkProxyPolicy.kt', self.files)
+        self.assertEqual(self.files['NetworkProxyPolicy.kt'].split('\n', 2)[2], tool.read(REPO, tool.POLICY).strip()+'\n')
         inventory = {item['path']: item for item in tool.inventory(REPO)}
         self.assertEqual(inventory[tool.POLICY]['mode'], 'direct')
         self.assertEqual(inventory[tool.POLICY]['sha256'], hashlib.sha256(tool.read(REPO, tool.POLICY).encode()).hexdigest())
@@ -71,7 +71,7 @@ class NetworkProxyExtractionTest(unittest.TestCase):
         before = {path.name: path.read_bytes() for path in self.output.rglob('*.kt')}
         after = {path.name: path.read_bytes() for path in tool.generate(REPO, self.output)}
         self.assertEqual(before, after)
-        self.assertEqual(set(after), {'NetworkProxyStore.kt', 'DesktopNetworkProxyPlatform.kt',
+        self.assertEqual(set(after), {'NetworkProxyStore.kt', 'NetworkProxyPolicy.kt', 'DesktopNetworkProxyPlatform.kt',
                                      'SettingsNetworkProxyFields.kt', 'DesktopProxySettingsVectors.kt'})
         resources = tool.resources(REPO)
         self.assertEqual(len(resources), 2)

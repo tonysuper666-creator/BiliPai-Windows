@@ -168,6 +168,8 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // Current host-aware HTTP proxy policy has one existing proxy producer.
+        exclude(canonicalOriginalIdentity("network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt"))
         // Current semantic surface tokens have one original component producer.
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt"))
         // Current whole Search policy is emitted with the complete Search page.
@@ -729,11 +731,14 @@ val extractUpstreamBlockedListUi by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_network_proxy.py")
+    inputs.dir("upstream-slices/v042-network-proxy")
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-network-proxy.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/network-proxy").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/network-proxy").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/network-proxy-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-network-proxy.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
@@ -742,7 +747,10 @@ val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
     inputs.files(originalResources.filter { "settings-network-proxy-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/network-proxy"))
+    outputs.dir(layout.buildDirectory.dir("generated/network-proxy-tests"))
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/network-proxy-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamNetworkProxy) }
 
 val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)

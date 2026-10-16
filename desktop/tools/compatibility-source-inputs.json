@@ -115,6 +115,7 @@
     "desktop/upstream-slices/v041-video-status-labels",
     "desktop/upstream-slices/v041-video-status-personal-consumers",
     "desktop/upstream-slices/v042-follow-confirmation",
+    "desktop/upstream-slices/v042-network-proxy",
     "desktop/upstream-slices/v042-optical-dependencies",
     "desktop/upstream-slices/v042-owner-follow",
     "desktop/upstream-slices/v042-player-readability",
@@ -5201,6 +5202,47 @@
           "sha256": "8a5366fac0da15189d06ef8c5bb7824c84cb3987cfb0b5833809d3c69277215f",
           "hashNormalization": "raw",
           "blob": "a602fa13e0a4279fb3612fb2271c3ef813ff8725"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-network-proxy",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/ApiClient.kt",
+          "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+          "hashNormalization": "raw",
+          "blob": "3e901a8fbd3991e376047d67a22decbd3a174099"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicy.kt",
+          "sha256": "9f8e846d3afa3437da624064913c2594736bfe714574dc4831365f03e433f1dc",
+          "hashNormalization": "raw",
+          "blob": "cab3a0df85fb139ace4da5c112859d58095c9c1a"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicyTest.kt",
+          "sha256": "652e48282a43fcd91132351af88fd45bf023326dc932adf8f61fc280628b5dea",
+          "hashNormalization": "raw",
+          "blob": "7ef5263ae7510bfab18e09496a0240c0a1c5baa6"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyStore.kt",
+          "sha256": "7be8c222779a3ba55d8c934c292ec8e143b51a043b212d5466d80edd60c3f179",
+          "hashNormalization": "raw",
+          "blob": "ace5e5150dc34bdd8af796e672990b7ace5f5a5c"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/SettingsSections.kt",
+          "sha256": "3a8ae2bbddbb5040390dff94da435410eafcdd92ade05b2df50e939e89d3e1b2",
+          "hashNormalization": "raw",
+          "blob": "ff8ea08cb4daeb65fc0a3b14aa0dbaac1da2ac9e"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/manifest.json",
+          "sha256": "f46dacaced3991c49d14bae9ab8803e6c6b296f45c8a38c63560012dd295bdff",
+          "hashNormalization": "raw",
+          "blob": "a522f3aabb227711c079d45a874b45e6de386cb0"
         }
       ]
     }
@@ -13610,6 +13652,81 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+      "localPath": "desktop/upstream-slices/v042-network-proxy/NetworkProxyStore.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "ace5e5150dc34bdd8af796e672990b7ace5f5a5c",
+      "sha256": "7be8c222779a3ba55d8c934c292ec8e143b51a043b212d5466d80edd60c3f179",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-domain-proxy-routing"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current proxy store/policy or original test; API selects the two original proxy functions and Settings selects original proxy controls plus whole native dialog. Existing Windows owner, client and atomic preference backing retained."
+    },
+    {
+      "path": "network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "cab3a0df85fb139ace4da5c112859d58095c9c1a",
+      "sha256": "9f8e846d3afa3437da624064913c2594736bfe714574dc4831365f03e433f1dc",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-domain-proxy-routing"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current proxy store/policy or original test; API selects the two original proxy functions and Settings selects original proxy controls plus whole native dialog. Existing Windows owner, client and atomic preference backing retained."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "localPath": "desktop/upstream-slices/v042-network-proxy/ApiClient.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "3e901a8fbd3991e376047d67a22decbd3a174099",
+      "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-domain-proxy-routing"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole current proxy store/policy or original test; API selects the two original proxy functions and Settings selects original proxy controls plus whole native dialog. Existing Windows owner, client and atomic preference backing retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "localPath": "desktop/upstream-slices/v042-network-proxy/SettingsSections.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "ff8ea08cb4daeb65fc0a3b14aa0dbaac1da2ac9e",
+      "sha256": "3a8ae2bbddbb5040390dff94da435410eafcdd92ade05b2df50e939e89d3e1b2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-domain-proxy-routing"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole current proxy store/policy or original test; API selects the two original proxy functions and Settings selects original proxy controls plus whole native dialog. Existing Windows owner, client and atomic preference backing retained."
+    },
+    {
+      "path": "network-core/src/test/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "7ef5263ae7510bfab18e09496a0240c0a1c5baa6",
+      "sha256": "652e48282a43fcd91132351af88fd45bf023326dc932adf8f61fc280628b5dea",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-domain-proxy-routing"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current proxy store/policy or original test; API selects the two original proxy functions and Settings selects original proxy controls plus whole native dialog. Existing Windows owner, client and atomic preference backing retained."
     }
   ],
   "buildStandaloneInputs": [

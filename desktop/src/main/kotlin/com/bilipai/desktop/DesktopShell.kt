@@ -752,6 +752,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (preferenceWriteFailed) error = "播放设置保存失败，请检查本地存储空间和写入权限"
     }
     val clipboardFailure by WindowsTextClipboard.lastFailure.collectAsState()
+    LaunchedEffect(clipboardFailure) {
+        clipboardFailure?.let { message ->
+            if (!isClosing()) error = message
+            WindowsTextClipboard.clearFailure()
+        }
+    }
     var loginDialog by remember { mutableStateOf(false) }
     var modalLoginReturn by remember { mutableStateOf<DesktopLoginReturnBinding?>(null) }
     fun openLogin() {

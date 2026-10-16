@@ -1,0 +1,41 @@
+{
+  "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+      "filename": "NetworkProxyStore.kt",
+      "bytes": 3195,
+      "sha256Bytes": "7be8c222779a3ba55d8c934c292ec8e143b51a043b212d5466d80edd60c3f179",
+      "gitBlob": "ace5e5150dc34bdd8af796e672990b7ace5f5a5c"
+    },
+    {
+      "path": "network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt",
+      "filename": "NetworkProxyPolicy.kt",
+      "bytes": 4990,
+      "sha256Bytes": "9f8e846d3afa3437da624064913c2594736bfe714574dc4831365f03e433f1dc",
+      "gitBlob": "cab3a0df85fb139ace4da5c112859d58095c9c1a"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "filename": "ApiClient.kt",
+      "bytes": 154196,
+      "sha256Bytes": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+      "gitBlob": "3e901a8fbd3991e376047d67a22decbd3a174099"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "filename": "SettingsSections.kt",
+      "bytes": 111057,
+      "sha256Bytes": "3a8ae2bbddbb5040390dff94da435410eafcdd92ade05b2df50e939e89d3e1b2",
+      "gitBlob": "ff8ea08cb4daeb65fc0a3b14aa0dbaac1da2ac9e"
+    },
+    {
+      "path": "network-core/src/test/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicyTest.kt",
+      "filename": "NetworkProxyPolicyTest.kt",
+      "bytes": 3838,
+      "sha256Bytes": "652e48282a43fcd91132351af88fd45bf023326dc932adf8f61fc280628b5dea",
+      "gitBlob": "7ef5263ae7510bfab18e09496a0240c0a1c5baa6"
+    }
+  ]
+}
