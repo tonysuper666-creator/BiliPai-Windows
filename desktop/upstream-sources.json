@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "149",
+  "windowsRevision": "155",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14619,5 +14619,37 @@
     "defaultPendingOperationTtlMs": 60000,
     "wholeOriginalCacheSHA256": "73da174536eb8ad34a7f9563d347acdb94c77ef30ce0c89e3d3b232319737a9d",
     "defaultLifetimeRegressionCasesWritten": 2
+  },
+  "v042OwnerFollowSlice": {
+    "upstreamTag": "v0.4.2",
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-owner-follow",
+    "manifestSHA256": "3254fb262d038dac0443c0ba7bd2f31319d5071b4ffaa603734cd2f670c2d061",
+    "partialReuse": true,
+    "sourceApplied": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false,
+    "unknownFollowOwnerUiEnablementPending": false,
+    "uiScope": "Whole original UP preview and selected current-owner status/callback; ordinary detail-header behavior tracked separately",
+    "fullOriginalPortraitPagerParity": false,
+    "ordinaryDetailHeaderUnchanged": true
+  },
+  "v042SeedPaletteSlice": {
+    "upstreamTag": "v0.4.2",
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-seed-palette",
+    "manifestSHA256": "99c0843df74232e08f93bec0210ffc373e7ed78cdc94455c32aeefc346737955",
+    "partialReuse": true,
+    "sourceApplied": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false,
+    "wallpaperExtractionImplemented": false,
+    "originalTestClassesPorted": 8,
+    "originalTestCasesPorted": 32,
+    "newWindowsPreferenceCasesWritten": 5,
+    "WindowsPreferencesConnected": true,
+    "fullStableParityQualified": false
   }
 }

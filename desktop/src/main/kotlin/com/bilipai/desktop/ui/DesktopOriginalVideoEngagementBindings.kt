@@ -2,6 +2,8 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.feature.video.viewmodel.VideoCoinBalanceLoader
 import com.android.purebilibili.feature.video.viewmodel.VideoEngagementActions
+import com.android.purebilibili.feature.video.viewmodel.VideoEngagementUiState
+import com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -9,6 +11,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.ThreadContextElement
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
 
@@ -45,6 +49,24 @@ internal class DesktopOriginalVideoEngagementEnvironment(
         DesktopOriginalVideoEngagementPresentation.commitCurrent {
             if (!commitIfCurrent { assertOwned(); block() })
                 throw CancellationException("Original video engagement admission retired")
+        }
+    }
+
+    /** Release only this subject's transient submitting flag. A retired source
+     * cannot publish business results; cancellation may still finish its own
+     * bookkeeping while the original data entry and account remain current. */
+    internal fun completeFollowSubmission(
+        state: MutableStateFlow<VideoEngagementUiState>,
+        subject: VideoSubjectSnapshot?,
+        finishedLastRequest: () -> Boolean,
+    ) {
+        if (!isCurrent()) return
+        commitIfCurrent {
+            if (isCurrent() && state.value.subject == subject && finishedLastRequest()) {
+                state.update { current ->
+                    if (current.subject == subject) current.copy(isFollowSubmitting = false) else current
+                }
+            }
         }
     }
 }

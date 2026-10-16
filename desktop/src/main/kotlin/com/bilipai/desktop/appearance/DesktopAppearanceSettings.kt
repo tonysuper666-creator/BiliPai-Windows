@@ -118,13 +118,21 @@ fun DesktopAppearanceSettings(
                         enabled = !busy && isValidMd3CustomColorHex(custom))
                 }
             }
-            AppearanceChoice(strings.desktop("调色板风格", "調色盤風格", "Palette style"), settings.colorStyle,
-                resolveColorStyleOptions(), !busy && settings.uiStyle == AppUiStyle.MATERIAL3) { update { prefs.setColorStyle(it) } }
-            AppearanceChoice(strings.desktop("颜色规范", "顏色規範", "Color specification"), settings.colorSpec,
-                resolveColorSpecOptions(), !busy && settings.uiStyle == AppUiStyle.MATERIAL3) { update { prefs.setColorSpec(it) } }
-            if (settings.uiStyle == AppUiStyle.MIUIX) DesktopAppearanceText(
-                strings.desktop("高级调色配置会保留，切换到 Material 3 后生效。", "進階調色設定會保留，切換到 Material 3 後生效。", "Advanced palette settings are retained and apply in Material 3."),
-                Modifier.padding(16.dp), style = MaterialTheme.typography.bodySmall)
+            AppearanceChoice(strings.desktop("配色预设", "配色預設", "Color preset"), settings.seedPaletteStyle,
+                resolveSeedPaletteStyleOptions(), !busy) { update { prefs.setSeedPaletteStyle(it) } }
+            DesktopAppearanceText(resolveSeedPaletteStyleDescription(settings.seedPaletteStyle),
+                Modifier.padding(horizontal = 16.dp, vertical = 4.dp), style = MaterialTheme.typography.bodySmall)
+            if (!settings.seedPaletteStyle.enabled) {
+                AppearanceChoice(strings.desktop("调色板风格", "調色盤風格", "Palette style"), settings.colorStyle,
+                    resolveColorStyleOptions(), !busy) { update { prefs.setColorStyle(it) } }
+                AppearanceChoice(strings.desktop("对比度", "對比度", "Contrast"), settings.colorContrast,
+                    resolveColorContrastOptions(), !busy) { update { prefs.setColorContrast(it) } }
+            }
+            if (shouldShowColorSpecControl(settings.seedPaletteStyle)) {
+                AppearanceChoice(strings.desktop("颜色规范", "顏色規範", "Color specification"),
+                    resolveSelectedColorSpec(settings.colorSpec, settings.colorStyle, settings.seedPaletteStyle),
+                    resolveColorSpecOptions(settings.colorStyle, settings.seedPaletteStyle), !busy) { update { prefs.setColorSpec(it) } }
+            }
         }
         DesktopAppearanceCard(Modifier.fillMaxWidth().desktopSettingsSearchFocusAnchor(SettingsSearchTarget.APPEARANCE, SettingsSearchFocusIds.APPEARANCE_DISPLAY)) {
             AppearanceChoice(strings.desktop("字体大小", "字體大小", "Font size"), settings.appFontSizePreset,
@@ -139,7 +147,9 @@ fun DesktopAppearanceSettings(
         DesktopWindowsDisplayScaleSettings()
         DesktopAppearanceButton(strings["icon_settings_title"], onNavigateToIconSettings,
             modifier = Modifier.fillMaxWidth(), enabled = !busy)
-        RoleOverridesEditor(settings, !busy) { update { prefs.setRoleOverrides(it) } }
+        if (!settings.seedPaletteStyle.enabled) {
+            RoleOverridesEditor(settings, !busy) { update { prefs.setRoleOverrides(it) } }
+        }
         DesktopAppearanceCard(Modifier.fillMaxWidth()) {
             AppearanceChoice(strings.desktop("图标样式", "圖示樣式", "Icon style"), settings.appIconStyle,
                 listOf(AppSegmentOption(AppIconStyle.AUTO, strings["theme_mode_follow_system"]),

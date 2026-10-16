@@ -115,7 +115,9 @@
     "desktop/upstream-slices/v041-video-status-personal-consumers",
     "desktop/upstream-slices/v041-search-all",
     "desktop/upstream-slices/v042-player-readability",
-    "desktop/upstream-slices/v042-follow-confirmation"
+    "desktop/upstream-slices/v042-follow-confirmation",
+    "desktop/upstream-slices/v042-owner-follow",
+    "desktop/upstream-slices/v042-seed-palette"
   ],
   "archives": [
     {
@@ -4721,6 +4723,232 @@
           "sha256": "d5c477f16e102c893f7ba8877fde22ac58066973fc9133abfe7af0aa82a4b054",
           "hashNormalization": "raw",
           "blob": "936471b0f2d133de3f842d110c0b8439b25faf4a"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-owner-follow",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
+          "sha256": "3f92360b36c18eb4bc66d08db1154cbb8ee1dbbc6cbdd1c8eb59b2d18d00dd19",
+          "hashNormalization": "raw",
+          "blob": "f8a9a52649af26a0ac260e34a4c936040e8be7a0"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
+          "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+          "hashNormalization": "raw",
+          "blob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/manifest.json",
+          "sha256": "3254fb262d038dac0443c0ba7bd2f31319d5071b4ffaa603734cd2f670c2d061",
+          "hashNormalization": "raw",
+          "blob": "1bd190d835017bb30835d20467031d3133ceded8"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
+          "sha256": "00429be9b3e159a2a6e5b5eff465d0349b0c1ce749b810673dd14b8a09a7d286",
+          "hashNormalization": "raw",
+          "blob": "e9f1eb6e5189cda374b2ad216efd0c082e2c1cb7"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
+          "sha256": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0",
+          "hashNormalization": "raw",
+          "blob": "eba104633b5be816f348a89a483861a20096c346"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-seed-palette",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicy.kt",
+          "sha256": "a7e9a555c3e0253bc66d04830f6e1fcab722f14d977dc68e5dcda5b9b91cd4db",
+          "hashNormalization": "raw",
+          "blob": "8590c993f4bc12ecf8c990216cbc86ddd389a63b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
+          "sha256": "c7302e1a55ee98d5a76827974b616381f7e66bb2929ac2c00cee9f12e8d97b3a",
+          "hashNormalization": "raw",
+          "blob": "399f95c8b03164ff036b4e6d3a384037abfc6c30"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
+          "sha256": "95d83b506a847f671f88ca2d7907b827252f962aea0425e7f784ddfb6af2a127",
+          "hashNormalization": "raw",
+          "blob": "f799bd55e1b39ea90b46792759b37971b02ff1f5"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedPresetColors.kt",
+          "sha256": "12b33992cf6fbbecbd97f4c7a293bd2884cfd37fad09e5a25c1d6fc96e00a4f1",
+          "hashNormalization": "raw",
+          "blob": "34f8af6ef6d700859f6e7a34d070a147f5990d3d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicy.kt",
+          "sha256": "bf18b55cf931095099cb38f5b256c5a696e4943f3d7ccf5f946ff99be81d9e00",
+          "hashNormalization": "raw",
+          "blob": "361f5e536c46f13763c309ed13ba715ea2c4bde5"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
+          "sha256": "18ed7d8af19bf5a8b93d91017498dcccbb89a465e248e0180c58f7684e64b215",
+          "hashNormalization": "raw",
+          "blob": "55114310f2532e06f1f31ef836db1e0cebf63681"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
+          "sha256": "c4a50d7bc1b3a8c2167485182deb92bf8311f629e3d6c72685e752c5d6378c1f",
+          "hashNormalization": "raw",
+          "blob": "ece8fcba79ffe17f3c5de95de37368566e91a239"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/Theme.kt",
+          "sha256": "cc61bf46f5afd356c331345fd01323b2a7198676872f07ce389603c68b3fca3b",
+          "hashNormalization": "raw",
+          "blob": "02f14227eb595164ba359573ba07571d9f424082"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreview.kt",
+          "sha256": "5045f306e7f6dbfa34e9fccfa5c3ec11cf625c3be7a1e57bf15de92f9f5b7909",
+          "hashNormalization": "raw",
+          "blob": "620433309b31b55ace332a1d34e652c74f737ed0"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicy.kt",
+          "sha256": "70a57ed5dc08adb69a49f7722ab7bc04072cf5912ca9a09a8f3fef0d8ab9e44b",
+          "hashNormalization": "raw",
+          "blob": "b9cd9143cc6fb8a090c43f6c51c1f5711107891b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicy.kt",
+          "sha256": "6981daaac6279f5a68c4518cfbdf6dcf43d9d5d495e00e1f3c5826d6330a04a6",
+          "hashNormalization": "raw",
+          "blob": "10be1928fa1cfa6e9609bcf73dda38da63ab14bd"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/ThemeColorTransition.kt",
+          "sha256": "0471c078ac1668726b115a2489d22cfe80dbff7d01b4279c1a8c07d383904fdd",
+          "hashNormalization": "raw",
+          "blob": "929631a8a2b1ab90276849e6e0273f1c38cf634a"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/ThemeRoleOverridePolicy.kt",
+          "sha256": "59def61deecf53391770aaebb5296b7c20ed4c285576e32d86ae0f98fb37447e",
+          "hashNormalization": "raw",
+          "blob": "1c0c2d3595913c37650b6e0ecf508964595cb37e"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorScheme.kt",
+          "sha256": "72630a43323481bc9e84e0fff710f1ed814b6336676a6effcaec8d365aebe811",
+          "hashNormalization": "raw",
+          "blob": "ec85520a03db72e5dc1eb9906b8f91551eb2b71c"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/ThemePreferencePolicy.kt",
+          "sha256": "89c581b63ca61b4b9769b7bb823ab601fa5fbbf8c245df5dfe028051ae554c1c",
+          "hashNormalization": "raw",
+          "blob": "8b199b39851edf01ae78e853ebc88300da1f73bf"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverrides.kt",
+          "sha256": "98b5674f8155ba4c0c4a3e86e6c041f069c2500a092f48efe8f57ff994f7645c",
+          "hashNormalization": "raw",
+          "blob": "a2114d6ac41bea354cbfb08b6d85575d37975054"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicyTest.kt",
+          "sha256": "644cd90cc1cab7ca7b90243cd990d3537da33f7390d27003e4053647cff01443",
+          "hashNormalization": "raw",
+          "blob": "1179d9c33e3781cbe049efda65117f5f709c9e19"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedColorSchemeTest.kt",
+          "sha256": "7e1dc2c29b7c543f566317d55729814cf9ea340d5398712325bdeec67843632e",
+          "hashNormalization": "raw",
+          "blob": "5be0203e0556359f258b004da7b96126a1cca0a6"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicyTest.kt",
+          "sha256": "1334289a19feae04198f76f8b71388bd7ce07fc2812673d0ce5f9b647803bfb4",
+          "hashNormalization": "raw",
+          "blob": "e8dbace99728de4caa2c791bb634c4794f0c9512"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreviewTest.kt",
+          "sha256": "f11787b0a90b72ae987c4d6b045cccd9a3190491422a925d855d65b48851d96e",
+          "hashNormalization": "raw",
+          "blob": "4de1e98d82f0e052c0d381e9880423bb5ec92764"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicyTest.kt",
+          "sha256": "4fdb2a5555493d065a8137ba3858e9293fc360c6c59718c791a7c073a1accd13",
+          "hashNormalization": "raw",
+          "blob": "53f80082c04c5e2f707ad0f0c3894ca12c181401"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicyTest.kt",
+          "sha256": "137964e9fa2d9ac0f2430716f21b403fbf3fd74b0dfbd9fd4514819fcf6dd783",
+          "hashNormalization": "raw",
+          "blob": "9d5798086187e1515189467819123d5dfc30ba4e"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorSchemeTest.kt",
+          "sha256": "8fef45a2acc69051c2271abd2f6789c232dd76ae9e35134df61efd7b1b92284e",
+          "hashNormalization": "raw",
+          "blob": "a2664a6db62cb413768dd3153734c8de598b30ab"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/flex_seed_scheme.LICENSE",
+          "sha256": "fa0a357cd6a579d86ec7da0133cb143cf50cdfcf60fd3d8f2ff5a9cc9f711fe8",
+          "hashNormalization": "raw",
+          "blob": "30d5ad463f911a0c86d3d1d388975bc77587c0c5"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/material_color_utilities.LICENSE",
+          "sha256": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426",
+          "hashNormalization": "raw",
+          "blob": "3879bcb2002e2b2e38a953e1149c14cef55ca555"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/manifest.json",
+          "sha256": "99c0843df74232e08f93bec0210ffc373e7ed78cdc94455c32aeefc346737955",
+          "hashNormalization": "raw",
+          "blob": "e9858ede034bae9690bd51842dc1d11d97f2dda5"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/PlaybackNotificationColorPolicy.kt",
+          "sha256": "9def8c9109c5d7e3d8f7b901f32efd195713a5703ea019917e548acf4f2feda9",
+          "hashNormalization": "raw",
+          "blob": "84f3e4978ea7f0d920569c7d01bfc90655f8345d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/AppearanceThemeSegmentPolicy.kt",
+          "sha256": "5798874d27c99d9b89ad64e7b2661bbf976f59054c9753067f01eb55e8bc9bb1",
+          "hashNormalization": "raw",
+          "blob": "2350ee8b5ee19c872ae55d298b686a26b9d31d37"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SettingsManager.kt",
+          "sha256": "a24f3f4df8a683f280e7e35ea9efdc41eb52d694780326da4764c35d49f50e70",
+          "hashNormalization": "raw",
+          "blob": "b33461ebc84a31cd67136fe53140f2f59c932ca9"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
+          "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
+          "hashNormalization": "raw",
+          "blob": "cffa54dff05865eeae76846ba1e1717840f866f9"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-seed-palette/SeedPaletteSettingsPolicyTest.kt",
+          "sha256": "36065e01d77ca02afa6a35e588e0dc76d5f55d8a327904c32ea49de26f4ce11d",
+          "hashNormalization": "raw",
+          "blob": "2bd5feeffca3b25e4b700145e392abd36a077cb6"
         }
       ]
     }
@@ -12080,6 +12308,516 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "All fifteen original test methods; JUnit imports map to the existing kotlin.test framework"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "f8a9a52649af26a0ac260e34a4c936040e8be7a0",
+      "sha256": "3f92360b36c18eb4bc66d08db1154cbb8ee1dbbc6cbdd1c8eb59b2d18d00dd19",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original changeFollow/followOwner/toggleFollow methods, submitting field and follow-only policy. Windows retains its existing data/source/account owner and supplies only lifecycle and request ports. UI caller enablement remains separately tracked."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324",
+      "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original changeFollow/followOwner/toggleFollow methods, submitting field and follow-only policy. Windows retains its existing data/source/account owner and supplies only lifecycle and request ports. UI caller enablement remains separately tracked."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "e9f1eb6e5189cda374b2ad216efd0c082e2c1cb7",
+      "sha256": "00429be9b3e159a2a6e5b5eff465d0349b0c1ce749b810673dd14b8a09a7d286",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original UP preview sheet; exact selected confirmed-owner status and guarded follow callback from original portrait pager. Existing Windows request ports retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "localPath": "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "eba104633b5be816f348a89a483861a20096c346",
+      "sha256": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-owner-follow-whole-original-methods"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole original UP preview sheet; exact selected confirmed-owner status and guarded follow callback from original portrait pager. Existing Windows request ports retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/PaletteSpecPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "8590c993f4bc12ecf8c990216cbc86ddd389a63b",
+      "sha256": "a7e9a555c3e0253bc66d04830f6e1fcab722f14d977dc68e5dcda5b9b91cd4db",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedColorScheme.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "399f95c8b03164ff036b4e6d3a384037abfc6c30",
+      "sha256": "c7302e1a55ee98d5a76827974b616381f7e66bb2929ac2c00cee9f12e8d97b3a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedPaletteStyle.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "f799bd55e1b39ea90b46792759b37971b02ff1f5",
+      "sha256": "95d83b506a847f671f88ca2d7907b827252f962aea0425e7f784ddfb6af2a127",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedPresetColors.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedPresetColors.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "34f8af6ef6d700859f6e7a34d070a147f5990d3d",
+      "sha256": "12b33992cf6fbbecbd97f4c7a293bd2884cfd37fad09e5a25c1d6fc96e00a4f1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedTextContrastPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "361f5e536c46f13763c309ed13ba715ea2c4bde5",
+      "sha256": "bf18b55cf931095099cb38f5b256c5a696e4943f3d7ccf5f946ff99be81d9e00",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedToneResolver.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "55114310f2532e06f1f31ef836db1e0cebf63681",
+      "sha256": "18ed7d8af19bf5a8b93d91017498dcccbb89a465e248e0180c58f7684e64b215",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedTones.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "ece8fcba79ffe17f3c5de95de37368566e91a239",
+      "sha256": "c4a50d7bc1b3a8c2167485182deb92bf8311f629e3d6c72685e752c5d6378c1f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/Theme.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/Theme.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "02f14227eb595164ba359573ba07571d9f424082",
+      "sha256": "cc61bf46f5afd356c331345fd01323b2a7198676872f07ce389603c68b3fca3b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemePresetPalettePreview.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreview.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "620433309b31b55ace332a1d34e652c74f737ed0",
+      "sha256": "5045f306e7f6dbfa34e9fccfa5c3ec11cf625c3be7a1e57bf15de92f9f5b7909",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "b9cd9143cc6fb8a090c43f6c51c1f5711107891b",
+      "sha256": "70a57ed5dc08adb69a49f7722ab7bc04072cf5912ca9a09a8f3fef0d8ab9e44b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/WallpaperPaletteOverridePolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "10be1928fa1cfa6e9609bcf73dda38da63ab14bd",
+      "sha256": "6981daaac6279f5a68c4518cfbdf6dcf43d9d5d495e00e1f3c5826d6330a04a6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeColorTransition.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/ThemeColorTransition.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "929631a8a2b1ab90276849e6e0273f1c38cf634a",
+      "sha256": "0471c078ac1668726b115a2489d22cfe80dbff7d01b4279c1a8c07d383904fdd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/ThemeRoleOverridePolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "1c0c2d3595913c37650b6e0ecf508964595cb37e",
+      "sha256": "59def61deecf53391770aaebb5296b7c20ed4c285576e32d86ae0f98fb37447e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/LiquidAccentColorScheme.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorScheme.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "ec85520a03db72e5dc1eb9906b8f91551eb2b71c",
+      "sha256": "72630a43323481bc9e84e0fff710f1ed814b6336676a6effcaec8d365aebe811",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemePreferencePolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/ThemePreferencePolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "8b199b39851edf01ae78e853ebc88300da1f73bf",
+      "sha256": "89c581b63ca61b4b9769b7bb823ab601fa5fbbf8c245df5dfe028051ae554c1c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/WallpaperPaletteOverrides.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverrides.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "a2114d6ac41bea354cbfb08b6d85575d37975054",
+      "sha256": "98b5674f8155ba4c0c4a3e86e6c041f069c2500a092f48efe8f57ff994f7645c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/PaletteSpecPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "1179d9c33e3781cbe049efda65117f5f709c9e19",
+      "sha256": "644cd90cc1cab7ca7b90243cd990d3537da33f7390d27003e4053647cff01443",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedColorSchemeTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "5be0203e0556359f258b004da7b96126a1cca0a6",
+      "sha256": "7e1dc2c29b7c543f566317d55729814cf9ea340d5398712325bdeec67843632e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/SeedTextContrastPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "e8dbace99728de4caa2c791bb634c4794f0c9512",
+      "sha256": "1334289a19feae04198f76f8b71388bd7ce07fc2812673d0ce5f9b647803bfb4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/ThemePresetPalettePreviewTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreviewTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "4de1e98d82f0e052c0d381e9880423bb5ec92764",
+      "sha256": "f11787b0a90b72ae987c4d6b045cccd9a3190491422a925d855d65b48851d96e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "53f80082c04c5e2f707ad0f0c3894ca12c181401",
+      "sha256": "4fdb2a5555493d065a8137ba3858e9293fc360c6c59718c791a7c073a1accd13",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/WallpaperPaletteOverridePolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "9d5798086187e1515189467819123d5dfc30ba4e",
+      "sha256": "137964e9fa2d9ac0f2430716f21b403fbf3fd74b0dfbd9fd4514819fcf6dd783",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/LiquidAccentColorSchemeTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorSchemeTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "a2664a6db62cb413768dd3153734c8de598b30ab",
+      "sha256": "8fef45a2acc69051c2271abd2f6789c232dd76ae9e35134df61efd7b1b92284e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/assets/licenses/flex_seed_scheme.LICENSE",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/flex_seed_scheme.LICENSE",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "30d5ad463f911a0c86d3d1d388975bc77587c0c5",
+      "sha256": "fa0a357cd6a579d86ec7da0133cb143cf50cdfcf60fd3d8f2ff5a9cc9f711fe8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/assets/licenses/material_color_utilities.LICENSE",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/material_color_utilities.LICENSE",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "3879bcb2002e2b2e38a953e1149c14cef55ca555",
+      "sha256": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original seed palette, contrast, preview and shared endpoint policies and seven whole test classes; selected original Theme declarations, added liquid accent helper and store data types. Windows keeps its existing preference store and original wallpaper fallback. System wallpaper extraction and actual visual acceptance remain separate."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaybackNotificationColorPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/PlaybackNotificationColorPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "84f3e4978ea7f0d920569c7d01bfc90655f8345d",
+      "sha256": "9def8c9109c5d7e3d8f7b901f32efd195713a5703ea019917e548acf4f2feda9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete selected original accent resolver and seed/contrast settings policies. Notification settings parameter uses the existing Windows preference type; no Android notification or context boundary is emitted."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceThemeSegmentPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/AppearanceThemeSegmentPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "2350ee8b5ee19c872ae55d298b686a26b9d31d37",
+      "sha256": "5798874d27c99d9b89ad64e7b2661bbf976f59054c9753067f01eb55e8bc9bb1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete selected original accent resolver and seed/contrast settings policies. Notification settings parameter uses the existing Windows preference type; no Android notification or context boundary is emitted."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SettingsManager.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "b33461ebc84a31cd67136fe53140f2f59c932ca9",
+      "sha256": "a24f3f4df8a683f280e7e35ea9efdc41eb52d694780326da4764c35d49f50e70",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Original seed/contrast preference keys, complete AppSegmentOption declaration and whole settings-policy test class; retained Windows store and native preference widgets."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "cffa54dff05865eeae76846ba1e1717840f866f9",
+      "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Original seed/contrast preference keys, complete AppSegmentOption declaration and whole settings-policy test class; retained Windows store and native preference widgets."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/settings/SeedPaletteSettingsPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-seed-palette/SeedPaletteSettingsPolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "2bd5feeffca3b25e4b700145e392abd36a077cb6",
+      "sha256": "36065e01d77ca02afa6a35e588e0dc76d5f55d8a327904c32ea49de26f4ce11d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-seed-palette-and-endpoint"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Original seed/contrast preference keys, complete AppSegmentOption declaration and whole settings-policy test class; retained Windows store and native preference widgets."
     }
   ],
   "buildStandaloneInputs": [
