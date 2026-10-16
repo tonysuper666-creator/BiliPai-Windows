@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "6ae85500b7f7474f055f937d424c215f48bbb4fe",
-  "windowsVersion": "0.2.427.164",
-  "createdAt": "2026-10-16T22:53:40.385848+00:00",
+  "baseHead": "92f4388bb8f64efeec7fab5a0ba72e14107bb6f2",
+  "windowsVersion": "0.2.427.165",
+  "createdAt": "2026-10-16T23:28:37.020285+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "a41270c2f3dfec660e7f8e3302e7db5017e453448c7c575c3a99395dd84f1b1f"
+      "sha256": "673b2fdc2f0c8807eea0740f45705660981e38ea83c891c740502d4b4206304f"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "d7efb5940e042c17f5f761a27512847d17bd35507738bc466962e077acdbc9ef"
+      "sha256": "44a5aef0ce4cd6efd368f28093a1975a25b265d78aa79cfd5b259df85b5bcb8c"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -1453,12 +1453,12 @@
     {
       "path": "desktop/tools/bind-original-root-ui-candidate.py",
       "normalization": "lf",
-      "sha256": "748dd112725ed2310ed4689880e1aaa68d26cabfe53ebec944565795f18af283"
+      "sha256": "526df8a5c6e442c276502e36013554230790d4bba0eeff74481835337381f1dd"
     },
     {
       "path": "desktop/tools/build.ps1",
       "normalization": "lf",
-      "sha256": "d11fe4515a3f9934fb78c2454fa7565d87cfbf3fba5d3d14dda8832fc5d8229f"
+      "sha256": "246015429fe9091692e49b3ac9b9314b5f89c06ec1daf34f0e9977d965f76902"
     },
     {
       "path": "desktop/tools/canonicalize-candidate-classpath.py",
@@ -1468,7 +1468,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "7eb7063648ddb422b4b2a34297df28c8733072cc5f58d3db3c5768399a06afb9"
+      "sha256": "81e34b73fc8f87bab06e56576ce054b366c70b702399f2ab8a1b1c281e4b0d83"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1673,7 +1673,7 @@
     {
       "path": "desktop/tools/extract-v041-video-status-labels.py",
       "normalization": "lf",
-      "sha256": "c97328398b5ba1ca5d55234d6248185baa1aed9400282ef3f8ded81cbc46de8f"
+      "sha256": "4780a2a2928906cc0e37dd3c63b5a774a84e24d9f671412c93d08045720bd2db"
     },
     {
       "path": "desktop/tools/extract-v041-video-status-personal.py",
@@ -1778,17 +1778,17 @@
     {
       "path": "desktop/tools/original_root_ui_packaged_native.py",
       "normalization": "lf",
-      "sha256": "01af73b89239e4c69425810fa376d0b5d10d7a1d85897984ca14980878227603"
+      "sha256": "a88705edca3063b9d814e4b0097dc3ee0e20156beb0e18895a43a843c1975d7a"
     },
     {
       "path": "desktop/tools/original_root_ui_runtime_binding.py",
       "normalization": "lf",
-      "sha256": "5a12b15d9d361b74a44abca9ea5d75630542313e1559f5d6025c78d1b020cd34"
+      "sha256": "aa7b2f452c292d94cb063454704e4b5d954231d0ed9f0d3785fb728a1e60258e"
     },
     {
       "path": "desktop/tools/original_root_ui_runtime_image.py",
       "normalization": "lf",
-      "sha256": "7a1ba8fc08f545b9fd33f483510923077b2806efba049ea1c9d9ca377baf2f35"
+      "sha256": "47f8a23161f3ae0c64e6118a2bc59fbc662c6e3ff72432d1b1e22913b9608c73"
     },
     {
       "path": "desktop/tools/prepare-js-worker.py",
@@ -1798,12 +1798,12 @@
     {
       "path": "desktop/tools/run-tool-tests.py",
       "normalization": "lf",
-      "sha256": "ddb0b64f8d8f3c091db1961f9f2bd36af3b0e5aea700390ea1f6df72ffc87300"
+      "sha256": "3b22081ec03e76d595109ed203f1cdb568547ae682d1337c3b1133b25c291d7c"
     },
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "e7c9685654b5dd601ab5fe2632fa02f5de43e16e88e9cbbb37552af615a781de"
+      "sha256": "29655f7a4117c3febc13594f0f51054fee9f281ae865a0e8fdb239d943b8b85e"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -1988,7 +1988,7 @@
     {
       "path": "desktop/tools/tests/test_publish_release.py",
       "normalization": "lf",
-      "sha256": "690e747f3ea15e3ec6f47ac4a4a9a3b3c8a87024e9dd99d1c662a8b354859e14"
+      "sha256": "c1941e9b51a0f06f85d0335d253b78ff2ece22cd361b285e14ad09c1b750a579"
     },
     {
       "path": "desktop/tools/tests/test_rtx_hdr_color.py",
@@ -1996,9 +1996,19 @@
       "sha256": "01959211b1e8de119dcb3edcea36a7f000691ed4423e0c98be21cf99fa07bee7"
     },
     {
+      "path": "desktop/tools/tests/test_same_workspace_candidate.py",
+      "normalization": "lf",
+      "sha256": "6ce30193d18ded08097ab43cd194e64a71c3613f12a0df7ef6b2ec95c31bcdc9"
+    },
+    {
+      "path": "desktop/tools/tests/test_same_workspace_terminal_admission.py",
+      "normalization": "lf",
+      "sha256": "3ba86d72c7c50c87c533ab9d5be9ed106cd85b1b394bc62d2473acdffb5ac22f"
+    },
+    {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "ff1a8c79242ceb43bfb3e33dae71608cf4ff766b98bab4dca04126d8b67f3ccd"
+      "sha256": "5817a65a04e584fa884dfff80aab41ae4a68a463181082777736c264293008ce"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2123,7 +2133,7 @@
     {
       "path": "desktop/tools/tests/test_v041_video_status_labels_source.py",
       "normalization": "lf",
-      "sha256": "f0b8cf99d8fced67b46437fd92ac8dee9791f639d4ac5a70cb9061d9e71913ed"
+      "sha256": "6f48a81f5a0d23bde38cbe369cafb3457817e92f267d09ac847abae12298c63d"
     },
     {
       "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
@@ -2154,6 +2164,11 @@
       "path": "desktop/tools/tests/test_v042_seed_palette_source.py",
       "normalization": "lf",
       "sha256": "46e08b8d4c1426036011ceba51510d9b4ae7beb558c6d35b73e682c7f2517af0"
+    },
+    {
+      "path": "desktop/tools/tests/test_v043_search_up_author_source.py",
+      "normalization": "lf",
+      "sha256": "31462fc50c0945210c5f297e18956e5fc30ab751f1a1a2f3487dbfa088e41bc4"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -2378,7 +2393,7 @@
     {
       "path": "desktop/tools/v041_video_status_labels.py",
       "normalization": "lf",
-      "sha256": "4b33b3af4bb2d537a704be338fee8f77b7412b457d0eecfa448a3dff76b40129"
+      "sha256": "a8a4d096bf7ccbfeba358c158bed6f524262522ec208690ac8de7896d5a1fc9e"
     },
     {
       "path": "desktop/tools/v041_video_status_personal_consumers.py",
@@ -2426,6 +2441,11 @@
       "sha256": "9dfa428c2d8c46a492f93a898dbc57d965d0e3487e8e6aadc93eecbbd39ad904"
     },
     {
+      "path": "desktop/tools/v043_search_up_author.py",
+      "normalization": "lf",
+      "sha256": "25eb025b455077038932d264dc79c194ae4e5152643ab170d42b3f6bda178731"
+    },
+    {
       "path": "desktop/tools/validate-source-cohort.py",
       "normalization": "lf",
       "sha256": "bf0de7fb28aa4b2e284fbc007bfb1e15d83b66507e7045a9ae36a3c794f46128"
@@ -2439,6 +2459,11 @@
       "path": "desktop/tools/verify-package-source-qualification.py",
       "normalization": "lf",
       "sha256": "ec956e3f867b9b4e794949d9e569fe2dd3d3b4c0b9d44682244996d211eed198"
+    },
+    {
+      "path": "desktop/tools/verify-same-workspace-candidate.py",
+      "normalization": "lf",
+      "sha256": "64c82ffddfb4db8720f7ca8aed2aad2e1cdd9464c4490ccfd6441ccc136d3975"
     },
     {
       "path": "desktop/tools/verify-updater-baseline.py",
@@ -3751,9 +3776,24 @@
       "sha256": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426"
     },
     {
+      "path": "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
+      "normalization": "raw",
+      "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
+      "normalization": "raw",
+      "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-search-up-author/manifest.json",
+      "normalization": "raw",
+      "sha256": "529056aad8f8510e991f88606924d3da3c54745bcad711df545be39a199146f8"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "c08b9d9ec94751dfff800d4d136b9d15d14ebe9a6d0c2247b63d29c0750309aa"
+      "sha256": "8fb6e1e82538e4bd0fda682dda7d587def6fb0a1cc171120d0533fb497653c4a"
     }
   ],
   "classes": {
@@ -3847,9 +3887,10 @@
     "com.bilipai.desktop.plugins.DesktopStringSetPreferencesTest": 5,
     "com.bilipai.desktop.network.DesktopNetworkProxyRoutingTest": 2,
     "com.bilipai.desktop.appearance.DesktopPlatformClipboardTest": 10,
-    "com.bilipai.desktop.ui.DesktopWindowsVideoKeyInputTest": 15
+    "com.bilipai.desktop.ui.DesktopWindowsVideoKeyInputTest": 15,
+    "com.android.purebilibili.data.model.response.SearchUpItemTest": 2
   },
-  "expectedTests": 821,
+  "expectedTests": 823,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -3857,10 +3898,29 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoKeyInput.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoKeyInputTest.kt",
+    ".github/workflows/windows-source-validation.yml",
+    "desktop/build.gradle.kts",
+    "desktop/tools/bind-original-root-ui-candidate.py",
+    "desktop/tools/build.ps1",
+    "desktop/tools/compatibility-source-inputs.json",
+    "desktop/tools/extract-v041-video-status-labels.py",
+    "desktop/tools/original_root_ui_packaged_native.py",
+    "desktop/tools/original_root_ui_runtime_binding.py",
+    "desktop/tools/original_root_ui_runtime_image.py",
+    "desktop/tools/run-tool-tests.py",
+    "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_publish_release.py",
+    "desktop/tools/tests/test_same_workspace_candidate.py",
+    "desktop/tools/tests/test_same_workspace_terminal_admission.py",
+    "desktop/tools/tests/test_sync_upstream.py",
+    "desktop/tools/tests/test_v041_video_status_labels_source.py",
+    "desktop/tools/tests/test_v043_search_up_author_source.py",
+    "desktop/tools/v041_video_status_labels.py",
+    "desktop/tools/v043_search_up_author.py",
+    "desktop/tools/verify-same-workspace-candidate.py",
+    "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
+    "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
+    "desktop/upstream-slices/v043-search-up-author/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

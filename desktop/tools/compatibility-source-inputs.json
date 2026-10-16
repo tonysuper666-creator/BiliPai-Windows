@@ -121,7 +121,8 @@
     "desktop/upstream-slices/v042-player-readability",
     "desktop/upstream-slices/v042-search-dependencies",
     "desktop/upstream-slices/v042-search-layout",
-    "desktop/upstream-slices/v042-seed-palette"
+    "desktop/upstream-slices/v042-seed-palette",
+    "desktop/upstream-slices/v043-search-up-author"
   ],
   "archives": [
     {
@@ -5243,6 +5244,29 @@
           "sha256": "f46dacaced3991c49d14bae9ab8803e6c6b296f45c8a38c63560012dd295bdff",
           "hashNormalization": "raw",
           "blob": "a522f3aabb227711c079d45a874b45e6de386cb0"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-search-up-author",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/manifest.json",
+          "sha256": "529056aad8f8510e991f88606924d3da3c54745bcad711df545be39a199146f8",
+          "hashNormalization": "raw",
+          "blob": "cd3c0092bee34c5fcb15e353c8ed097ac8f1fb69"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
+          "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36",
+          "hashNormalization": "raw",
+          "blob": "3d00eacbd42fba08e6e44b95a6537c9418c91fe8"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
+          "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8",
+          "hashNormalization": "raw",
+          "blob": "4841a3eea267be36a7829931ef7d59641d1e041e"
         }
       ]
     }
@@ -13727,6 +13751,36 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole current proxy store/policy or original test; API selects the two original proxy functions and Settings selects original proxy controls plus whole native dialog. Existing Windows owner, client and atomic preference backing retained."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt",
+      "localPath": "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "3d00eacbd42fba08e6e44b95a6537c9418c91fe8",
+      "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-search-up-author-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete whole v043 SearchModels via the existing sole status-model producer"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/SearchUpItemTest.kt",
+      "localPath": "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "4841a3eea267be36a7829931ef7d59641d1e041e",
+      "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-search-up-author-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Two complete original UP-search author inheritance/preservation tests; only JUnit imports adapted"
     }
   ],
   "buildStandaloneInputs": [

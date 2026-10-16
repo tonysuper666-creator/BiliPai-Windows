@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Sole producer of the v0.4.1 video status label models, VideoStatusBadges and original tests.
 
-Emits VideoStatusLabels, VideoStatusBadges, ListModels, SpaceModels, SearchModels (hooks SM1/SM2) and
+Emits VideoStatusLabels, VideoStatusBadges, ListModels, SpaceModels, SearchModels (hooks SM1/SM2 and the
+complete v043 UP-author follow-up) and
 FavoriteModels (hook FM1) under --output, and the two original status-label tests with their
-test-only durationSeconds/asVideoItem support under --tests-output. Every pin, exact-once anchor and
+test-only durationSeconds/asVideoItem support plus both original UP-search tests under --tests-output. Every pin, exact-once anchor and
 inverse replay (including the consumer hooks applied by the card/screen generators) is verified
 before any file is written; the proof receipt lands beside the main sources.
 """

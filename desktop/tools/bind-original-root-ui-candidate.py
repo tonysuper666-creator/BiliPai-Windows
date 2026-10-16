@@ -30,13 +30,14 @@ def main():
             jobs=json_bytes(bounded_bytes(args.package_jobs, 16 * 1024 * 1024)),
             log=bounded_bytes(args.package_log, 32 * 1024 * 1024).decode('utf-8'),
             toolchainRaw=bounded_bytes(args.candidate_toolchain, 65536))
+    plan_raw = bounded_bytes(args.plan, 4 * 1024 * 1024)
     proof = bind(args.export, args.candidate, json_bytes(bounded_bytes(args.run, 16 * 1024 * 1024)),
         json_bytes(bounded_bytes(args.jobs, 16 * 1024 * 1024)), bounded_bytes(args.log, 32 * 1024 * 1024).decode('utf-8'),
-        bounded_bytes(args.plan, 4 * 1024 * 1024), args.source_sha, args.qualified_native_jar, package)
+        plan_raw, args.source_sha, args.qualified_native_jar, package)
     if args.runtime_image:
         from original_root_ui_runtime_image import provision_runtime, java_argument_path
         image = provision_runtime(proof, args.candidate_zip, package['run'], package['jobs'], package['log'],
-            package['toolchainRaw'], args.fixed_jdk_archive, args.runtime_image)
+            package['toolchainRaw'], args.fixed_jdk_archive, args.runtime_image, source_plan_raw=plan_raw)
         proof.update(runtimeImage=image, javaExecutable=image['javaExecutable'],
             classpath=[java_argument_path(path) for path in proof['classpath']],
             systemProperties={key: java_argument_path(value) for key, value in proof['systemProperties'].items()},

@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "164",
+  "windowsRevision": "165",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14537,7 +14537,8 @@
     "applicationExecuted": false,
     "favoriteModelsWholeRawSource": true,
     "watchLaterPositionalConstructorMigrated": true,
-    "searchModelsWholeRawSource": true
+    "searchModelsWholeRawSource": true,
+    "searchModelsFollowupSlice": "v043SearchUpAuthorSlice"
   },
   "v041VideoStatusPersonalConsumersSlice": {
     "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
@@ -14706,5 +14707,24 @@
     "sourceQualified": false,
     "mainCompiled": false,
     "uiRuntimeVerified": false
+  },
+  "v043SearchUpAuthorSlice": {
+    "upstreamTag": "v0.4.3",
+    "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+    "archive": "desktop/upstream-slices/v043-search-up-author",
+    "manifestSHA256": "529056aad8f8510e991f88606924d3da3c54745bcad711df545be39a199146f8",
+    "soleProducer": "desktop/tools/extract-v041-video-status-labels.py",
+    "hookModule": "desktop/tools/v043_search_up_author.py",
+    "predecessorSlice": "v041VideoStatusLabelsSlice",
+    "predecessorSearchModelsSHA256": "121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30",
+    "archivedFiles": 2,
+    "completeOriginalModel": true,
+    "originalTestCases": 2,
+    "onlyReviewedMethodDelta": true,
+    "completeOriginalInverse": true,
+    "fullV043ParityClaimed": false,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false
   }
 }

@@ -416,6 +416,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
 
     def test_every_upload_has_one_day_retention_and_original_missing_file_policy(self):
         uploads = 0
+        provisional_uploads = 0
         for (name, job), body in self.jobs.items():
             starts = list(re.finditer(r"(?m)^      - ", body))
             for index, start in enumerate(starts):
@@ -424,10 +425,15 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 if "uses: actions/upload-artifact@" not in step:
                     continue
                 uploads += 1
+                if 'name: BiliPai-Windows-same-workspace-candidate-x64' in step:
+                    provisional_uploads += 1
+                    self.assertIn("if: steps.same_workspace_candidate.outcome == 'success'", step)
+                    self.assertIn('if-no-files-found: error', step)
                 with self.subTest(name=name, job=job):
                     self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
                     self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
-        self.assertEqual(uploads, 15)
+        self.assertEqual(uploads - provisional_uploads, 15)
+        self.assertEqual(provisional_uploads, 1)
 
     def test_updater_harness_upload_requires_the_completed_source_export_and_exact_scope(self):
         body = self.jobs[("windows-source-validation.yml", "source-validation")]

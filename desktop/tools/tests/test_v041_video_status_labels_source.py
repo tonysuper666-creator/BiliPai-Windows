@@ -17,6 +17,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v041_video_status_labels as source
+import v043_search_up_author as search_up_followup
 from v025_source_paths import canonical_source
 
 MODEL_DIR = 'com/android/purebilibili/data/model/response/'
@@ -34,11 +35,12 @@ GOLDEN_MAIN = {
     LABELS_PATH: 'e5cba87c8ee8440d02b87c777ca545ab5d43408ce3f1d2f0d309b5cb13ef60d0',
     MODEL_DIR + 'ListModels.kt': '3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1',
     MODEL_DIR + 'SpaceModels.kt': '3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b',
-    SEARCH_PATH: '121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30',
+    SEARCH_PATH: '941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36',
     FAVORITE_PATH: '3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534',
-    'v041-video-status-labels-proof.json': '45fd0fb75f3e2d3af858647805c75fdc1a1238dbf121b7daa5f2407b336ce5ca',
+    'v041-video-status-labels-proof.json': '062d62a1efa34ce3658c2458f08e94ba5b7259ea6ca9b9db37c9cbd1442c990b',
 }
 GOLDEN_TESTS = {
+    MODEL_DIR + 'SearchUpItemTest.kt': '1b5ba1f311cfe57f899cf2c7e6efa69c17d9c3d7b419cf8317c67f0c48c378a4',
     MODEL_DIR + 'VideoStatusLabelsTest.kt': '5802d3ae505a73ab3eb79f31fcbd4ce961a8778f1ff0a39923e9ebad02765b92',
     MODEL_DIR + 'VideoCooperationMetadataTest.kt': '7ad0dffa6f6ab350b14bd18eb294d3ec8d15cd55e4d3a99bdcc31cf3b6e2337f',
     SUPPORT_PATH: '053873ee6ce6df0dd201c4c911724f61fc068f8987db7a80690eb6f49192840b',
@@ -102,7 +104,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
 
     # ------------------------------------------------------------------ real producer
     def test_actual_producer_cli_emits_only_the_pinned_files_and_is_deterministic(self):
-        self.assertEqual(dict(commit=source.COMMIT, hooks=21, mainSources=6, testSources=3,
+        self.assertEqual(dict(commit=source.COMMIT, hooks=21, mainSources=6, testSources=4,
                               proofSha256=GOLDEN_MAIN['v041-video-status-labels-proof.json']), self.summary)
         self.assertEqual(set(GOLDEN_MAIN), set(self.main))
         self.assertEqual(set(GOLDEN_TESTS), set(self.tests))
@@ -116,10 +118,11 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
             self.assertEqual(self.main, tree(elsewhere / 'main'))
             self.assertEqual(self.tests, tree(elsewhere / 'tests'))
 
-    def test_six_whole_sources_are_byte_identical_to_the_pinned_v041_archive(self):
+    def test_six_whole_sources_are_byte_identical_to_their_pinned_archives(self):
         for name in ('VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt', 'SearchModels.kt', 'FavoriteModels.kt'):
             with self.subTest(name=name):
-                archived = (REPO / source.ARCHIVE / name).read_bytes()
+                archive = search_up_followup.ARCHIVE if name == 'SearchModels.kt' else source.ARCHIVE
+                archived = (REPO / archive / name).read_bytes()
                 emitted = [raw for path, raw in self.main.items() if path.endswith('/' + name)]
                 self.assertEqual([archived], emitted)
 
@@ -216,11 +219,11 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertIn('including 0', proof['decodeParity']['chargingPay'])
 
     # ------------------------------------------------------------------ hook-edited models
-    def test_search_models_are_whole_v041_with_comprehensive_schema_and_flexible_up_fields(self):
+    def test_search_models_keep_v041_schema_and_the_whole_v043_author_followup(self):
         emitted = self.emitted(SEARCH_PATH)
-        self.assertEqual(self.latest[source.SEARCH_MODELS], emitted)
+        self.assertEqual(search_up_followup.verified_raw(REPO)['SearchModels.kt'].decode('utf-8'), emitted)
         receipt = json.loads(self.main[source.PROOF_NAME])['mainSources'][SEARCH_PATH]
-        self.assertEqual('whole-v041-replacement', receipt['mode'])
+        self.assertEqual('whole-v043-search-up-author-replacement', receipt['mode'])
         self.assertTrue(receipt['identicalToArchive'])
         self.assertEqual([], receipt['deferredUpstreamHunks'])
         self.assertEqual(9, len(receipt['appliedPostHookUpstreamHunks']))
@@ -271,6 +274,12 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                 edits = self.edits(path, baseline)
                 text = source.apply(path, baseline)
                 emitted = self.emitted(MODEL_DIR + Path(path).name)
+                if path == source.SEARCH_MODELS:
+                    # Prove the full v043 -> v041 -> v025 inverse chain, retaining
+                    # the same nine reviewed v041 hunks and their original hooks.
+                    self.assertEqual(search_up_followup.verified_raw(REPO)['SearchModels.kt'].decode('utf-8'), emitted)
+                    emitted = emitted.encode('utf-8').replace(search_up_followup.AFTER, search_up_followup.BEFORE, 1).decode('utf-8')
+                    self.assertEqual(search_up_followup.BASE_SHA256, sha(emitted.encode('utf-8')))
                 self.assertEqual(self.latest[path], emitted)
                 remainder = source.reviewed_delta(path, source.REVIEWED_POST_HOOK_DELTAS, text, emitted)
                 self.assertEqual(count, len(remainder))
@@ -542,7 +551,8 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
     def test_no_other_generator_names_the_four_replaced_model_files(self):
         # prepareUpstreamSources excludes these four canonical files for everyone, so a second producer (or a hook of
         # another module) for the same file would emit a duplicate declaration or silently drop this slice's hunks.
-        own = {'v041_video_status_labels.py', 'extract-v041-video-status-labels.py'}
+        # The follow-up helper returns verified bytes to this same producer; it never writes output.
+        own = {'v041_video_status_labels.py', 'extract-v041-video-status-labels.py', 'v043_search_up_author.py'}
         names = [Path(path).name for path in REPLACED_MODELS]
         self.assertEqual(['ListModels.kt', 'SpaceModels.kt', 'SearchModels.kt', 'FavoriteModels.kt'], names)
         for tool in sorted((REPO / 'desktop/tools').glob('*.py')):
@@ -559,7 +569,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                 roots |= {alias.name.split('.')[0] for alias in node.names}
             elif isinstance(node, ast.ImportFrom):
                 roots.add(node.module.split('.')[0])
-        self.assertEqual({'collections', 'pathlib', 'hashlib', 'json', 'os', 're', 'v025_source_paths'}, roots)
+        self.assertEqual({'collections', 'pathlib', 'hashlib', 'json', 'os', 're', 'v025_source_paths', 'v043_search_up_author'}, roots)
         cli = ast.parse((REPO / 'desktop/tools/extract-v041-video-status-labels.py').read_text(encoding='utf-8'))
         cli_roots = set()
         for node in ast.walk(cli):

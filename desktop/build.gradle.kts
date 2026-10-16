@@ -1209,6 +1209,7 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-full-card").get().asFile.absolutePath)
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.file("tools/v033_home_refresh_undo.py")
     inputs.dir("upstream-slices/v033-home-undo")
@@ -1904,6 +1905,7 @@ val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath)
     inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -2522,6 +2524,7 @@ val extractOriginalWatchLater by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-watchlater.py", "tools/extract-upstream-favorites.py",
         "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-personal-watchlater" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -3010,6 +3013,7 @@ val extractOriginalSpacePages by tasks.registering(Exec::class) {
         "--out", layout.buildDirectory.dir("generated/original-space-pages").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-space-pages.py", "tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.files(layout.buildDirectory.file("generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt"),
         layout.buildDirectory.file("generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt"),
@@ -3031,9 +3035,10 @@ val extractOriginalVideoStatusLabels by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/v041-video-status-labels").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/v041-video-status-label-tests").get().asFile.absolutePath)
-    inputs.files("tools/extract-v041-video-status-labels.py", "tools/v041_video_status_labels.py",
+    inputs.files("tools/extract-v041-video-status-labels.py", "tools/v041_video_status_labels.py", "tools/v043_search_up_author.py",
         "tools/v025_source_paths.py", "tools/v025-canonical-sources.json")
     inputs.dir("upstream-slices/v041-video-status-labels")
+    inputs.dir("upstream-slices/v043-search-up-author")
     inputs.files(listOf(
         "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt",
         "core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt",

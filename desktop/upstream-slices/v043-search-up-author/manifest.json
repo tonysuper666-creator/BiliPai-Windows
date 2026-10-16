@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.3",
+  "commit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt",
+      "archiveFile": "SearchModels.kt",
+      "bytes": 21022,
+      "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36",
+      "gitBlob": "3d00eacbd42fba08e6e44b95a6537c9418c91fe8",
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/SearchUpItemTest.kt",
+      "archiveFile": "SearchUpItemTest.kt",
+      "bytes": 992,
+      "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8",
+      "gitBlob": "4841a3eea267be36a7829931ef7d59641d1e041e",
+      "referenceOnly": false
+    }
+  ],
+  "scope": "Whole original SearchModels plus its two original UP-author tests; 8-line cleanupFields follow-up over the retained v041 model. Full v043 parity is not claimed."
+}
