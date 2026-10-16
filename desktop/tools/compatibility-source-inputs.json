@@ -111,12 +111,15 @@
     "desktop/upstream-slices/v041-feed-import-title",
     "desktop/upstream-slices/v041-player-cover",
     "desktop/upstream-slices/v041-rss-dynamic",
+    "desktop/upstream-slices/v041-search-all",
     "desktop/upstream-slices/v041-video-status-labels",
     "desktop/upstream-slices/v041-video-status-personal-consumers",
-    "desktop/upstream-slices/v041-search-all",
-    "desktop/upstream-slices/v042-player-readability",
     "desktop/upstream-slices/v042-follow-confirmation",
+    "desktop/upstream-slices/v042-optical-dependencies",
     "desktop/upstream-slices/v042-owner-follow",
+    "desktop/upstream-slices/v042-player-readability",
+    "desktop/upstream-slices/v042-search-dependencies",
+    "desktop/upstream-slices/v042-search-layout",
     "desktop/upstream-slices/v042-seed-palette"
   ],
   "archives": [
@@ -4949,6 +4952,255 @@
           "sha256": "36065e01d77ca02afa6a35e588e0dc76d5f55d8a327904c32ea49de26f4ce11d",
           "hashNormalization": "raw",
           "blob": "2bd5feeffca3b25e4b700145e392abd36a077cb6"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-search-layout",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
+          "sha256": "8cc3aa4295970325562c41d23bb8d4c85848d8ee389269455f76e626db4f09b6",
+          "hashNormalization": "raw",
+          "blob": "2c62399e04b88a724f1782d573efc136742b0ac6"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
+          "sha256": "c9d49e481a6cd5b68b3771cb30fdf92213b9078c39c07d92bab884424d545426",
+          "hashNormalization": "raw",
+          "blob": "6a94df2efda712978f23465b3daf6f0cbc4a61ce"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/manifest.json",
+          "sha256": "e2ee6a1fe8ba14bfe6f677e224f98c9be6076690b62b7385b1b936eceeb00c69",
+          "hashNormalization": "raw",
+          "blob": "0d1c2ac7555306a71faf5f87f60bd351e230c34b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
+          "sha256": "28a94e2c75e3bcda0360746613f000cf662e8ea292f6888a40a6b0617000ef9b",
+          "hashNormalization": "raw",
+          "blob": "2af6083ff5f937c0598d016ef4dfc5abc58d1707"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
+          "sha256": "a9a25bdb412e09cd5acc9c2deb629a6e68d30549b1129d1c70db2a1f6508f20f",
+          "hashNormalization": "raw",
+          "blob": "9da10fbf6790c99b4b52f02ea60e1384a4d218a6"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
+          "sha256": "ab85a1517d3dea690e5ae04380fc51f262d139db60904adee08871b1b2f1c7ba",
+          "hashNormalization": "raw",
+          "blob": "b8855a6aecf1b68f99f4356abdcc9bcdf55edc98"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
+          "sha256": "0888e9831bb090e6ee50b9c3151de3c04f463d3b622b169350fe2af253ec1864",
+          "hashNormalization": "raw",
+          "blob": "9327fb5ad9b3f35b4c6c4a533866e9f71a53072a"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
+          "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+          "hashNormalization": "raw",
+          "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
+          "sha256": "8c8e0f664baa911b2b38bf3a710a8041a03fea8f0f993705c82af1e721ff97b0",
+          "hashNormalization": "raw",
+          "blob": "af7993f2c9bb79b50bcab70daef61fd8fa6b92b8"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-search-dependencies",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColors.kt",
+          "sha256": "e42a157c4c178d4fe37afa339e6f1f2597eb8d0bccdf58a8a2c6feba2085dca7",
+          "hashNormalization": "raw",
+          "blob": "42055ad666e11bdf09bdd95111a7dbed14eb5b4c"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColorsTest.kt",
+          "sha256": "a88c57b6b9eeb2a854e55ffbb273a19d9d2d96a754488ada246ae8c2bd7d851d",
+          "hashNormalization": "raw",
+          "blob": "f7df0145034bb2961bcfa83675cc1f7e629450c1"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppElasticPress.kt",
+          "sha256": "c2655b0ccc618defcb08c2c2d2b9eb2cc1c8dd843c7368fd97872a5b54d3a69c",
+          "hashNormalization": "raw",
+          "blob": "d1aecdfc4a0df5a6dc61cf89bba0005d59539d9d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppLiquidAwareTabRow.kt",
+          "sha256": "31a81d116fb3a1917cc2ccbd9a3826bdfe85bbce867945e9297e08fe88979a58",
+          "hashNormalization": "raw",
+          "blob": "f8bd897b2d0f401fcae06339748b4854c6440603"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppMaterial3SegmentedControl.kt",
+          "sha256": "7c9bc6cebb88075f1144bf2e0d2bd3b403ae7b6295404da5459cea4aac450c4e",
+          "hashNormalization": "raw",
+          "blob": "ab9e6dfa6739dff40da46aa289ad0ba0b689b7f2"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppMiuixSegmentedControl.kt",
+          "sha256": "0fe235d240a5244c9b4a73689114c36300682e4f7abeb08f46f6cea788d47771",
+          "hashNormalization": "raw",
+          "blob": "9cd6b2bd55a0e0783953898ac0ab3a69cafaddd7"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppSegmentedControl.kt",
+          "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
+          "hashNormalization": "raw",
+          "blob": "cffa54dff05865eeae76846ba1e1717840f866f9"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypography.kt",
+          "sha256": "e38a7f839d4d09de502645b4654a8edcb0aa610b329c5aa05b5d0879e1461fec",
+          "hashNormalization": "raw",
+          "blob": "b6f3db6adbc6b703ea5a56d945cb8cf8be77e036"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypographyTest.kt",
+          "sha256": "d7d861f723ffe033a8198eb894dd1a71ef634404b84650b8170581571c836182",
+          "hashNormalization": "raw",
+          "blob": "dfff960035136f799517ef5736f27e4f59b501b3"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppThemeConfig.kt",
+          "sha256": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9",
+          "hashNormalization": "raw",
+          "blob": "642d54150318f263d6e1913140ff50c696662b4d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarMatchedLiquidChrome.kt",
+          "sha256": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07",
+          "hashNormalization": "raw",
+          "blob": "5d529789a1f464866faa16f7a384046b21676142"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarScrollHidePolicy.kt",
+          "sha256": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c",
+          "hashNormalization": "raw",
+          "blob": "05d5e45e64a8cc1b07c8f85ff61bc14b3e5f3ce8"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBar.kt",
+          "sha256": "bfaf9c74065bcebf473daecbce89362325bf8b7881fd1ba52dbfabb892666c14",
+          "hashNormalization": "raw",
+          "blob": "ce6408476740dbe262083e030c785cc9a51536c5"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBarGeometry.kt",
+          "sha256": "ca25bb7be973d7e6ccdca4c08eada51d25a5daf0ed8c83aa3c079cc0bc3fdaf9",
+          "hashNormalization": "raw",
+          "blob": "1b942844fbae6766696e532c8afd06288037cddb"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingDockChrome.kt",
+          "sha256": "89bfe07642dca9c4424454edd782ffa0763a2802c2bf93b4f8c8046ae450cf36",
+          "hashNormalization": "raw",
+          "blob": "c7e144e4938d412eaba7d8267bcec43176f33647"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicy.kt",
+          "sha256": "6e7b5c635b0bb1da2058db0093610e0a04d252434fa3fd60df3fd2f427133004",
+          "hashNormalization": "raw",
+          "blob": "5a7cc315aa8dad4770fd2c93d21f44945a1f6a40"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicyTest.kt",
+          "sha256": "621f7d46d98ad451aa211c60bfafa806ef4aa3ddbe48f10bfe1df37df7d0ec54",
+          "hashNormalization": "raw",
+          "blob": "53ff9935848d17d83e3a5478be21da498b3a15e4"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/TopBar.kt",
+          "sha256": "d7303c23e7a6a7527b2cc549dcaabd3b61b68cf84cffb2aebe4787edde290d46",
+          "hashNormalization": "raw",
+          "blob": "9f43697383e97ab14e72311b9482cad5cbf9fcc9"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/manifest.json",
+          "sha256": "137aaa9f5504fc45fc634677c0be23ebc9e063ea02319c9fc40b864cfa0c288a",
+          "hashNormalization": "raw",
+          "blob": "7a48db9eddd9af9140127422e4f4cfb4c2f2e68e"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-optical-dependencies",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
+          "sha256": "473c085001722ee3fa1bd7d20729893ac43e267062f81a69a0f9889f59d64b68",
+          "hashNormalization": "raw",
+          "blob": "29d9701ebf830f849f644823bb012d8736f4961b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/AppSurfaceTokens.kt",
+          "sha256": "6840c3e54a12395f05dcb2383bca75c1d5aaa5bf726ca9ae540a06c875996d2e",
+          "hashNormalization": "raw",
+          "blob": "7075c2e9b4cb7493c3d09194147d2f23bf699ca0"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/ChromeBackdropSource.kt",
+          "sha256": "8fec86cc6e246995e3de2f3f2ad32611305ebd868c7335b16456796db288e5cb",
+          "hashNormalization": "raw",
+          "blob": "61c71f9cc0b4c4410850481d668dcb58bb835779"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/DampedDragAnimation.kt",
+          "sha256": "4b2121b5ee8c35cf976a6d598c3858ab5642fac3ed3814aacb2387239485f9e2",
+          "hashNormalization": "raw",
+          "blob": "97e7e726e9573bca98a221a45a89b0549258e72d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/DragGestureInspector.kt",
+          "sha256": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
+          "hashNormalization": "raw",
+          "blob": "2ee387b0ba27487fc940654593b67cdb2b9b7a29"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlight.kt",
+          "sha256": "11e23f1e9916328cc52ba097e6a5ee4f8b5211453bfe212d75ca97e66fcdfa72",
+          "hashNormalization": "raw",
+          "blob": "160f477d2128364ab2f76e8d8ab629cb82d47410"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightMotionSpec.kt",
+          "sha256": "709cf92c99645039e3e9d3fd063a4576592bc97fa5ca59962b624a11645cedd8",
+          "hashNormalization": "raw",
+          "blob": "f47def4151a843ca4ef98701f75e3475706b49bc"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightPalette.kt",
+          "sha256": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
+          "hashNormalization": "raw",
+          "blob": "bbacc71a500f2eadb9ea94f09c9ca69fa8302e1b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidDockViewport.kt",
+          "sha256": "87fbc89232311cd32c0aa8e90dd858f216b18d8cb9400bdeea38dffc1502c3dd",
+          "hashNormalization": "raw",
+          "blob": "29ab2a5b756834ad5f436e01b25ad4ffbdb81897"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidIndicatorMotion.kt",
+          "sha256": "d544ca9fca04aea84dada69b1d62c65c216c4eaa3befa22e52b9d4afe17e54fa",
+          "hashNormalization": "raw",
+          "blob": "825fb6915dac5a5fb38bf0554002064b3062ea9b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/manifest.json",
+          "sha256": "8a5366fac0da15189d06ef8c5bb7824c84cb3987cfb0b5833809d3c69277215f",
+          "hashNormalization": "raw",
+          "blob": "a602fa13e0a4279fb3612fb2271c3ef813ff8725"
         }
       ]
     }
@@ -12818,6 +13070,546 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Original seed/contrast preference keys, complete AppSegmentOption declaration and whole settings-policy test class; retained Windows store and native preference widgets."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "b8855a6aecf1b68f99f4356abdcc9bcdf55edc98",
+      "sha256": "ab85a1517d3dea690e5ae04380fc51f262d139db60904adee08871b1b2f1c7ba",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea",
+      "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultContainerTransition.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "9da10fbf6790c99b4b52f02ea60e1384a4d218a6",
+      "sha256": "a9a25bdb412e09cd5acc9c2deb629a6e68d30549b1129d1c70db2a1f6508f20f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/SharedCardContainerHost.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "af7993f2c9bb79b50bcab70daef61fd8fa6b92b8",
+      "sha256": "8c8e0f664baa911b2b38bf3a710a8041a03fea8f0f993705c82af1e721ff97b0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "6a94df2efda712978f23465b3daf6f0cbc4a61ce",
+      "sha256": "c9d49e481a6cd5b68b3771cb30fdf92213b9078c39c07d92bab884424d545426",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "2c62399e04b88a724f1782d573efc136742b0ac6",
+      "sha256": "8cc3aa4295970325562c41d23bb8d4c85848d8ee389269455f76e626db4f09b6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchTabLabelPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "9327fb5ad9b3f35b4c6c4a533866e9f71a53072a",
+      "sha256": "0888e9831bb090e6ee50b9c3151de3c04f463d3b622b169350fe2af253ec1864",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchCardTargetRestoreTest.kt",
+      "localPath": "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "2af6083ff5f937c0598d016ef4dfc5abc58d1707",
+      "sha256": "28a94e2c75e3bcda0360746613f000cf662e8ea292f6888a40a6b0617000ef9b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-layout-and-shared-glass"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Search/filter, both segmented controls, shared-card foundations and six whole original policy cases; existing Windows lifecycle, storage, HTTP and NavigationEvent boundaries."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/BottomBarScrollHidePolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "05d5e45e64a8cc1b07c8f85ff61bc14b3e5f3ce8",
+      "sha256": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole original declarations on the existing sole desktop producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppLiquidAwareTabRow.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "f8bd897b2d0f401fcae06339748b4854c6440603",
+      "sha256": "31a81d116fb3a1917cc2ccbd9a3826bdfe85bbce867945e9297e08fe88979a58",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBar.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "ce6408476740dbe262083e030c785cc9a51536c5",
+      "sha256": "bfaf9c74065bcebf473daecbce89362325bf8b7881fd1ba52dbfabb892666c14",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBarGeometry.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "1b942844fbae6766696e532c8afd06288037cddb",
+      "sha256": "ca25bb7be973d7e6ccdca4c08eada51d25a5daf0ed8c83aa3c079cc0bc3fdaf9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/BottomBarMatchedLiquidChrome.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "5d529789a1f464866faa16f7a384046b21676142",
+      "sha256": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/FloatingDockChrome.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "c7e144e4938d412eaba7d8267bcec43176f33647",
+      "sha256": "89bfe07642dca9c4424454edd782ffa0763a2802c2bf93b4f8c8046ae450cf36",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopBar.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/TopBar.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "9f43697383e97ab14e72311b9482cad5cbf9fcc9",
+      "sha256": "d7303c23e7a6a7527b2cc549dcaabd3b61b68cf84cffb2aebe4787edde290d46",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole original declarations on the existing sole desktop producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicy.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "5a7cc315aa8dad4770fd2c93d21f44945a1f6a40",
+      "sha256": "6e7b5c635b0bb1da2058db0093610e0a04d252434fa3fd60df3fd2f427133004",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppTabTypography.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppTabTypography.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "b6f3db6adbc6b703ea5a56d945cb8cf8be77e036",
+      "sha256": "e38a7f839d4d09de502645b4654a8edcb0aa610b329c5aa05b5d0879e1461fec",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppThemeConfig.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "642d54150318f263d6e1913140ff50c696662b4d",
+      "sha256": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppContentColors.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "42055ad666e11bdf09bdd95111a7dbed14eb5b4c",
+      "sha256": "e42a157c4c178d4fe37afa339e6f1f2597eb8d0bccdf58a8a2c6feba2085dca7",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppSegmentedControl.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "cffa54dff05865eeae76846ba1e1717840f866f9",
+      "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppElasticPress.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppElasticPress.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "d1aecdfc4a0df5a6dc61cf89bba0005d59539d9d",
+      "sha256": "c2655b0ccc618defcb08c2c2d2b9eb2cc1c8dd843c7368fd97872a5b54d3a69c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "53ff9935848d17d83e3a5478be21da498b3a15e4",
+      "sha256": "621f7d46d98ad451aa211c60bfafa806ef4aa3ddbe48f10bfe1df37df7d0ec54",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AppTabTypographyTest.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppTabTypographyTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "dfff960035136f799517ef5736f27e4f59b501b3",
+      "sha256": "d7d861f723ffe033a8198eb894dd1a71ef634404b84650b8170581571c836182",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AppContentColorsTest.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppContentColorsTest.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "f7df0145034bb2961bcfa83675cc1f7e629450c1",
+      "sha256": "a88c57b6b9eeb2a854e55ffbb273a19d9d2d96a754488ada246ae8c2bd7d851d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original dependency or original policy test; AppElasticPress matches the already emitted v040 original byte for byte."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppMaterial3SegmentedControl.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "ab9e6dfa6739dff40da46aa289ad0ba0b689b7f2",
+      "sha256": "7c9bc6cebb88075f1144bf2e0d2bd3b403ae7b6295404da5459cea4aac450c4e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original renderer consumed by the existing native-tabs producer; actual width, height, typography and padding APIs."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt",
+      "localPath": "desktop/upstream-slices/v042-search-dependencies/AppMiuixSegmentedControl.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "9cd6b2bd55a0e0783953898ac0ab3a69cafaddd7",
+      "sha256": "0fe235d240a5244c9b4a73689114c36300682e4f7abeb08f46f6cea788d47771",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-complete-search-shared-glass-dependencies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original renderer consumed by the existing native-tabs producer; actual width, height, typography and padding APIs."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/AppSurfaceTokens.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "7075c2e9b4cb7493c3d09194147d2f23bf699ca0",
+      "sha256": "6840c3e54a12395f05dcb2383bca75c1d5aaa5bf726ca9ae540a06c875996d2e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3TonalPillTabRow.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "29d9701ebf830f849f644823bb012d8736f4961b",
+      "sha256": "473c085001722ee3fa1bd7d20729893ac43e267062f81a69a0f9889f59d64b68",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/ChromeBackdropSource.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "61c71f9cc0b4c4410850481d668dcb58bb835779",
+      "sha256": "8fec86cc6e246995e3de2f3f2ad32611305ebd868c7335b16456796db288e5cb",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/LiquidDockViewport.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "29ab2a5b756834ad5f436e01b25ad4ffbdb81897",
+      "sha256": "87fbc89232311cd32c0aa8e90dd858f216b18d8cb9400bdeea38dffc1502c3dd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/DampedDragAnimation.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "97e7e726e9573bca98a221a45a89b0549258e72d",
+      "sha256": "4b2121b5ee8c35cf976a6d598c3858ab5642fac3ed3814aacb2387239485f9e2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/DragGestureInspector.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "2ee387b0ba27487fc940654593b67cdb2b9b7a29",
+      "sha256": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlight.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "160f477d2128364ab2f76e8d8ab629cb82d47410",
+      "sha256": "11e23f1e9916328cc52ba097e6a5ee4f8b5211453bfe212d75ca97e66fcdfa72",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightPalette.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "bbacc71a500f2eadb9ea94f09c9ca69fa8302e1b",
+      "sha256": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightMotionSpec.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "f47def4151a843ca4ef98701f75e3475706b49bc",
+      "sha256": "709cf92c99645039e3e9d3fd063a4576592bc97fa5ca59962b624a11645cedd8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/LiquidIndicatorMotion.kt",
+      "localPath": "desktop/upstream-slices/v042-optical-dependencies/LiquidIndicatorMotion.kt",
+      "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+      "blob": "825fb6915dac5a5fb38bf0554002064b3062ea9b",
+      "sha256": "d544ca9fca04aea84dada69b1d62c65c216c4eaa3befa22e52b9d4afe17e54fa",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v042-current-optical-dependency-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole current original on the existing sole Windows source producer; native recording and monotonic-clock boundaries retain inverse proofs."
     }
   ],
   "buildStandaloneInputs": [

@@ -127,9 +127,9 @@ internal val LocalDesktopOriginalSearchEnvironment = staticCompositionLocalOf<De
 internal val LocalDesktopOriginalSearchActive = staticCompositionLocalOf { false }
 
 /** Common NavigationEvent dispatcher already belongs to the actual Window/Root. */
-@Composable internal fun DesktopOriginalSearchBackHandler(onBack: () -> Unit) {
+@Composable internal fun DesktopOriginalSearchBackHandler(enabled: Boolean = true, onBack: () -> Unit) {
     val state = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)
-    NavigationBackHandler(state = state, isBackEnabled = LocalDesktopOriginalSearchActive.current, onBackCompleted = onBack)
+    NavigationBackHandler(state = state, isBackEnabled = enabled && LocalDesktopOriginalSearchActive.current, onBackCompleted = onBack)
 }
 
 /** Original leaf getters use existing decoded Home settings, same navigation getters and

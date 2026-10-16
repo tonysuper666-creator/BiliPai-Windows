@@ -1,0 +1,133 @@
+{
+  "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicy.kt",
+      "filename": "BottomBarScrollHidePolicy.kt",
+      "bytes": 7504,
+      "sha256Bytes": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c",
+      "gitBlob": "05d5e45e64a8cc1b07c8f85ff61bc14b3e5f3ce8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "filename": "AppLiquidAwareTabRow.kt",
+      "bytes": 16614,
+      "sha256Bytes": "31a81d116fb3a1917cc2ccbd9a3826bdfe85bbce867945e9297e08fe88979a58",
+      "gitBlob": "f8bd897b2d0f401fcae06339748b4854c6440603"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "filename": "FloatingBottomBar.kt",
+      "bytes": 74681,
+      "sha256Bytes": "bfaf9c74065bcebf473daecbce89362325bf8b7881fd1ba52dbfabb892666c14",
+      "gitBlob": "ce6408476740dbe262083e030c785cc9a51536c5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "filename": "FloatingBottomBarGeometry.kt",
+      "bytes": 17463,
+      "sha256Bytes": "ca25bb7be973d7e6ccdca4c08eada51d25a5daf0ed8c83aa3c079cc0bc3fdaf9",
+      "gitBlob": "1b942844fbae6766696e532c8afd06288037cddb"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "filename": "BottomBarMatchedLiquidChrome.kt",
+      "bytes": 25181,
+      "sha256Bytes": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07",
+      "gitBlob": "5d529789a1f464866faa16f7a384046b21676142"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "filename": "FloatingDockChrome.kt",
+      "bytes": 20667,
+      "sha256Bytes": "89bfe07642dca9c4424454edd782ffa0763a2802c2bf93b4f8c8046ae450cf36",
+      "gitBlob": "c7e144e4938d412eaba7d8267bcec43176f33647"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopBar.kt",
+      "filename": "TopBar.kt",
+      "bytes": 152614,
+      "sha256Bytes": "d7303c23e7a6a7527b2cc549dcaabd3b61b68cf84cffb2aebe4787edde290d46",
+      "gitBlob": "9f43697383e97ab14e72311b9482cad5cbf9fcc9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+      "filename": "SearchMotionBudgetPolicy.kt",
+      "bytes": 4863,
+      "sha256Bytes": "6e7b5c635b0bb1da2058db0093610e0a04d252434fa3fd60df3fd2f427133004",
+      "gitBlob": "5a7cc315aa8dad4770fd2c93d21f44945a1f6a40"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppTabTypography.kt",
+      "filename": "AppTabTypography.kt",
+      "bytes": 1287,
+      "sha256Bytes": "e38a7f839d4d09de502645b4654a8edcb0aa610b329c5aa05b5d0879e1461fec",
+      "gitBlob": "b6f3db6adbc6b703ea5a56d945cb8cf8be77e036"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt",
+      "filename": "AppThemeConfig.kt",
+      "bytes": 4140,
+      "sha256Bytes": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9",
+      "gitBlob": "642d54150318f263d6e1913140ff50c696662b4d"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt",
+      "filename": "AppContentColors.kt",
+      "bytes": 5615,
+      "sha256Bytes": "e42a157c4c178d4fe37afa339e6f1f2597eb8d0bccdf58a8a2c6feba2085dca7",
+      "gitBlob": "42055ad666e11bdf09bdd95111a7dbed14eb5b4c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt",
+      "filename": "AppSegmentedControl.kt",
+      "bytes": 23263,
+      "sha256Bytes": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
+      "gitBlob": "cffa54dff05865eeae76846ba1e1717840f866f9"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppElasticPress.kt",
+      "filename": "AppElasticPress.kt",
+      "bytes": 12857,
+      "sha256Bytes": "c2655b0ccc618defcb08c2c2d2b9eb2cc1c8dd843c7368fd97872a5b54d3a69c",
+      "gitBlob": "d1aecdfc4a0df5a6dc61cf89bba0005d59539d9d"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt",
+      "filename": "SearchMotionBudgetPolicyTest.kt",
+      "bytes": 11321,
+      "sha256Bytes": "621f7d46d98ad451aa211c60bfafa806ef4aa3ddbe48f10bfe1df37df7d0ec54",
+      "gitBlob": "53ff9935848d17d83e3a5478be21da498b3a15e4"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AppTabTypographyTest.kt",
+      "filename": "AppTabTypographyTest.kt",
+      "bytes": 1155,
+      "sha256Bytes": "d7d861f723ffe033a8198eb894dd1a71ef634404b84650b8170581571c836182",
+      "gitBlob": "dfff960035136f799517ef5736f27e4f59b501b3"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AppContentColorsTest.kt",
+      "filename": "AppContentColorsTest.kt",
+      "bytes": 3094,
+      "sha256Bytes": "a88c57b6b9eeb2a854e55ffbb273a19d9d2d96a754488ada246ae8c2bd7d851d",
+      "gitBlob": "f7df0145034bb2961bcfa83675cc1f7e629450c1"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt",
+      "filename": "AppMaterial3SegmentedControl.kt",
+      "bytes": 11982,
+      "sha256Bytes": "7c9bc6cebb88075f1144bf2e0d2bd3b403ae7b6295404da5459cea4aac450c4e",
+      "gitBlob": "ab9e6dfa6739dff40da46aa289ad0ba0b689b7f2"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt",
+      "filename": "AppMiuixSegmentedControl.kt",
+      "bytes": 29292,
+      "sha256Bytes": "0fe235d240a5244c9b4a73689114c36300682e4f7abeb08f46f6cea788d47771",
+      "gitBlob": "9cd6b2bd55a0e0783953898ac0ab3a69cafaddd7"
+    }
+  ],
+  "scope": "Complete current Search and shared-glass dependency originals; TopBar and scroll-hide policy declarations retain their existing sole desktop owners."
+}

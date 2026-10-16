@@ -166,11 +166,13 @@ import com.android.purebilibili.core.store.ThemeRoleOverrides
 def emit_components(repo,output):
     sources=fixed_sources(repo); result=[]
     for path in NEW_COMPONENT_PATHS:
-        text,proof=adapt(path,sources[path])
+        from v042_optical_dependencies import selected_source, source_record, MANIFEST_SHA256 as optical_manifest, MOTION
+        original=selected_source(repo,path,sources[path].decode("utf8")).encode("utf8")
+        text,proof=adapt(path,original)
         relative=path.split('/main/java/',1)[1];target=Path(output)/relative
         target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')
-        result.append(dict(path=relative,origin=path,fixedCommit=COMMIT,source=row_for(path),
-            sourceManifestSHA256=MANIFEST_SHA256,sha256LF=sha(text.encode()),mode='full-original-Windows-resource-boundary',generated=True))
+        result.append(dict(path=relative,origin=path,fixedCommit=(source_record(repo,path)["upstreamCommit"] if path == MOTION else COMMIT),source=(source_record(repo,path) if path == MOTION else row_for(path)),
+            sourceManifestSHA256=(optical_manifest if path == MOTION else MANIFEST_SHA256),sha256LF=sha(text.encode()),mode='full-original-Windows-resource-boundary',generated=True))
         target=Path(output)/'v040-liquid-value-platform-proofs'/(Path(path).name+'.json')
         target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     target=Path(output)/'com/android/purebilibili/core/ui/components/DesktopLiquidValueColorResources.kt'

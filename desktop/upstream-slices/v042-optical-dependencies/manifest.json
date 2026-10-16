@@ -1,0 +1,76 @@
+{
+  "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt",
+      "filename": "AppSurfaceTokens.kt",
+      "bytes": 8803,
+      "sha256Bytes": "6840c3e54a12395f05dcb2383bca75c1d5aaa5bf726ca9ae540a06c875996d2e",
+      "gitBlob": "7075c2e9b4cb7493c3d09194147d2f23bf699ca0"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3TonalPillTabRow.kt",
+      "filename": "AppMaterial3TonalPillTabRow.kt",
+      "bytes": 10476,
+      "sha256Bytes": "473c085001722ee3fa1bd7d20729893ac43e267062f81a69a0f9889f59d64b68",
+      "gitBlob": "29d9701ebf830f849f644823bb012d8736f4961b"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt",
+      "filename": "ChromeBackdropSource.kt",
+      "bytes": 3842,
+      "sha256Bytes": "8fec86cc6e246995e3de2f3f2ad32611305ebd868c7335b16456796db288e5cb",
+      "gitBlob": "61c71f9cc0b4c4410850481d668dcb58bb835779"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "filename": "LiquidDockViewport.kt",
+      "bytes": 3631,
+      "sha256Bytes": "87fbc89232311cd32c0aa8e90dd858f216b18d8cb9400bdeea38dffc1502c3dd",
+      "gitBlob": "29ab2a5b756834ad5f436e01b25ad4ffbdb81897"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "filename": "DampedDragAnimation.kt",
+      "bytes": 12715,
+      "sha256Bytes": "4b2121b5ee8c35cf976a6d598c3858ab5642fac3ed3814aacb2387239485f9e2",
+      "gitBlob": "97e7e726e9573bca98a221a45a89b0549258e72d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "filename": "DragGestureInspector.kt",
+      "bytes": 3441,
+      "sha256Bytes": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
+      "gitBlob": "2ee387b0ba27487fc940654593b67cdb2b9b7a29"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "filename": "InteractiveHighlight.kt",
+      "bytes": 3778,
+      "sha256Bytes": "11e23f1e9916328cc52ba097e6a5ee4f8b5211453bfe212d75ca97e66fcdfa72",
+      "gitBlob": "160f477d2128364ab2f76e8d8ab629cb82d47410"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "filename": "InteractiveHighlightPalette.kt",
+      "bytes": 185,
+      "sha256Bytes": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
+      "gitBlob": "bbacc71a500f2eadb9ea94f09c9ca69fa8302e1b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "filename": "InteractiveHighlightMotionSpec.kt",
+      "bytes": 515,
+      "sha256Bytes": "709cf92c99645039e3e9d3fd063a4576592bc97fa5ca59962b624a11645cedd8",
+      "gitBlob": "f47def4151a843ca4ef98701f75e3475706b49bc"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/LiquidIndicatorMotion.kt",
+      "filename": "LiquidIndicatorMotion.kt",
+      "bytes": 1665,
+      "sha256Bytes": "d544ca9fca04aea84dada69b1d62c65c216c4eaa3befa22e52b9d4afe17e54fa",
+      "gitBlob": "825fb6915dac5a5fb38bf0554002064b3062ea9b"
+    }
+  ]
+}

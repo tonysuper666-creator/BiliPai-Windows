@@ -10,6 +10,7 @@ from v040_liquid_value_controls import selected_component_source as _liquid_sour
 from v040_chrome_actions import selected_component_source as _chrome_source, emit_components as _chrome_components, COMPONENT_DIRECT_PATHS as _chrome_direct
 
 from v040_native_chrome import emit_components as _native_chrome_components
+from v042_optical_dependencies import selected_source as _optical_source, SURFACE as _optical_surface
 
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
@@ -81,16 +82,16 @@ def generate(repo, output, standalone=False, test_output=None):
     output.mkdir(parents=True, exist_ok=True)
     result = []
     for path in DIRECT:
-        original = _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))
+        original = _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path))))
         if re.search(r"(?m)^import android\.", original): raise ValueError("Pure renderer acquired Android dependency: " + path)
         host.prune_old_direct(output, path, original)
-        if (standalone or path in _liquid_direct or path in _chrome_direct) and path not in REUSED:
+        if (standalone or path in _liquid_direct or path in _chrome_direct or path == _optical_surface) and path not in REUSED:
             result.append(host.write(output, path, original, original))
     for path in ADAPTED:
-        original = _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))
+        original = _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path))))
         result.append(host.write(output, path, original, adapt(path, original, host)))
     for path in POLICIES:
-        original = _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))
+        original = _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path))))
         declaration = re.findall(r"(?m)^internal fun resolvePiliPlusScrollableUnderlineMinWidth\(\): Dp = [^\n]+", original)
         if len(declaration) != 1: raise ValueError("Original tab-width policy changed")
         body = "package com.android.purebilibili.core.ui.components\n\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\n\n" + declaration[0] + "\n"

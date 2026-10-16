@@ -54,6 +54,12 @@ def generate(repo, out, include_screen=True):
         for tabEdit in tabEdits:
             adapted=edit(adapted,tabEdit['before'],tabEdit['after'],1)
         assert adapted==projected
+        if path.endswith("/SpaceScreen.kt"):
+            # The original caller already explicitly requests CONTENT and an
+            # unlimited item width. Current AppNativeTabRow uses that same enum
+            # directly, so its former duplicate boolean is obsolete.
+            assert 'miuixNonGlassItemWidthMode = MiuixNonGlassTabItemWidthMode.CONTENT,' in adapted
+            adapted=edit(adapted,"            contentSizedMiuixNonGlassItems = true,\n","",1)
         reversed_source = adapted
         for step in reversed(steps):
             assert digest(reversed_source)==step['afterSha256']

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "ea3b67f1d5fb59a7e76591a1c352f7c3e428014b",
-  "windowsVersion": "0.2.427.155",
-  "createdAt": "2026-10-16T15:55:58.715576+00:00",
+  "baseHead": "daff05d71e513ec341f5c8debf6bd0e570a51d59",
+  "windowsVersion": "0.2.427.160",
+  "createdAt": "2026-10-16T19:43:30.718161+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "5a1726f5664ee4db03451a6939a29e9c8bd28f9aa82cb6c8338e85053020f1a0"
+      "sha256": "7bd8405290dd4cd04d9c4506033f079246acaa7d4bd46fe4659aeb7034d4ee0e"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -64,6 +64,11 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
       "normalization": "lf",
       "sha256": "46e70da832bf1a6b1a0a9388606386fba02b47311051055cd02ca880c1e32371"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt",
+      "normalization": "lf",
+      "sha256": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
@@ -113,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "e62f60bc5989929d0fb74435a76114da8e66874cfde4be85bae23fa9142630ca"
+      "sha256": "8dce77a89ed41eee815e2f591240b8b59043ba9cde03888caa9e2945478b2947"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -606,6 +611,16 @@
       "sha256": "e2c6b8849916028011e7a298a871fa463390499f13eec33fb9063fe9a84510a5"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "10463a69ddec44553c0e792f967a5ae3792c902f5656a1776bc2d25920c758d5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
+      "normalization": "lf",
+      "sha256": "b896409278fe3a2db0e6d307403472a77bc821bc0e2ffa0241acfd4aab36a59e"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSystemAboutRootHost.kt",
       "normalization": "lf",
       "sha256": "de779248053bbfedfd96b17beed366326c01e24c25a7ce41d522854917b55868"
@@ -656,6 +671,11 @@
       "sha256": "b027274fd7424bcc52c836c40f09c682a5240c0a8b5606c276241bcef695ebb1"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalArticleResolver.kt",
+      "normalization": "lf",
+      "sha256": "272904bf46d66683b1ce15167df5ac0c3e756e655f19265bd81eb93909dec10a"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
       "normalization": "lf",
       "sha256": "29966e2c35f6733fef2c0a2ba22f4035fda2b92a7c7af9737b0278aca55efb0e"
@@ -681,9 +701,19 @@
       "sha256": "1bf0000c47769886f0ca3f346320643f259a581044c1102a08f3cd7e696c5230"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequest.kt",
+      "normalization": "lf",
+      "sha256": "19baf42cb964e7eed27e23dc60a7095352a03fc98ec919c00e230cf93c82a0df"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
       "normalization": "lf",
       "sha256": "ac5cbf9a8868f19293a366fca1dc696e8283d74ca8e2cac4ff4aed543c2011e6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "normalization": "lf",
+      "sha256": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionTitleRefreshWorker.kt",
@@ -1171,6 +1201,11 @@
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequestTest.kt",
+      "normalization": "lf",
+      "sha256": "3df7fd98a9714f14fcb7e597dc3efddcc3b2c2961934c69b59a2efd78498e0a0"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionReadingProgressRegressionTest.kt",
       "normalization": "lf",
       "sha256": "418f9c44d836ee51dc249fa90066bdcce628300a7550f95e62a1b08b53aa3094"
@@ -1288,7 +1323,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt",
       "normalization": "lf",
-      "sha256": "be0e3bbfde97350410fb691859243207d1e21f0a3ad74a9e2a4dc9c3e21e80d7"
+      "sha256": "7d813b43d0834109180a83a16cb31bc74a4c83060b18fe1c2729afdee26a9da6"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoDynamicShareReplay.kt",
@@ -1388,7 +1423,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "576bbcf1f3574c588d554bcb7313f71c1be84b215726337b89ccc7ee5bd8b908"
+      "sha256": "db1267db132e04ef30acc07ae3ec9bbff506b0d2a5440ca76f078b5c045f616d"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1443,7 +1478,7 @@
     {
       "path": "desktop/tools/extract-upstream-components.py",
       "normalization": "lf",
-      "sha256": "b8550fe569a69044f77dad54ff9ff5adbe511815bbecbb53b9c82d0c8b7b5f7b"
+      "sha256": "53a6c4c243fd2d3529a338086b2082f8eb27ca4f6d3f90b052cbab08c72dd549"
     },
     {
       "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
@@ -1453,7 +1488,7 @@
     {
       "path": "desktop/tools/extract-upstream-danmaku-settings.py",
       "normalization": "lf",
-      "sha256": "2970d04e3597e6a0e7843045020543ff7f09485833bf3b039c2bca88eac9487f"
+      "sha256": "7c77c14a747b90b0c56d12b5faf941c44abc4a26c02eb69a7bce95c8862443f3"
     },
     {
       "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
@@ -1478,7 +1513,7 @@
     {
       "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
       "normalization": "lf",
-      "sha256": "169146adc957de848ca7b4b3bd5c549d07547def5cc35d1fad52ea1e3ccbe218"
+      "sha256": "fa7dfddd24a82d7e63d46cdda1c99adb7ad02cfa44b3a60bead39712490a018f"
     },
     {
       "path": "desktop/tools/extract-upstream-favorites.py",
@@ -1489,6 +1524,11 @@
       "path": "desktop/tools/extract-upstream-home-full-card.py",
       "normalization": "lf",
       "sha256": "544c18559c6e9fad9f9af5bf5207ec499dd519b0b2ce859b874962ca3fd6be2d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-page.py",
+      "normalization": "lf",
+      "sha256": "ae039a55bff8127779c8130bd44a5bc05e1b348c3f654eb945d50658c6319ec4"
     },
     {
       "path": "desktop/tools/extract-upstream-js.py",
@@ -1523,17 +1563,17 @@
     {
       "path": "desktop/tools/extract-upstream-search-pages.py",
       "normalization": "lf",
-      "sha256": "ae46bbebae1bdb17d0ca408d1fdccee14aadb656b368575778c3d5e6580e7046"
+      "sha256": "3d7253abb2077171dccae7df92c0e2ccf68a743ab86fd53bedf5f60a22ec1152"
     },
     {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
       "normalization": "lf",
-      "sha256": "8df8cb34e8188d1313e3825c67b0f018a0cc6d1012c160466fb3280adc8537fc"
+      "sha256": "ed4cd4313c9d10261d5f6dfbbc069e3f0bfa3b76df3ac298f6e28b8b5bdce36a"
     },
     {
       "path": "desktop/tools/extract-upstream-space-pages.py",
       "normalization": "lf",
-      "sha256": "875bdb5587cf79d979817f620751f5f8ca9b63c6501e6717b4fadf7e19bf93f1"
+      "sha256": "acac31f87e931ce62d6348b8e772b640ff80ed28762e1ee35b108e30e4ce386b"
     },
     {
       "path": "desktop/tools/extract-upstream-system-about.py",
@@ -1713,7 +1753,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "6ce812e739bb00a91874a6f246fdd5613367754e338e7fb8e9b187af7afa9ca0"
+      "sha256": "574a457114e848578479397b90d838216bcb4049169771a8c2dd3849add0ba00"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -1749,6 +1789,11 @@
       "path": "desktop/tools/tests/test_export_packaged_updater_harness.py",
       "normalization": "lf",
       "sha256": "4048e1863341bf9df9c320e14822193fabd1ae86b0280a67e84aa8c826f712d7"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_brand_callers.py",
+      "normalization": "lf",
+      "sha256": "af26c12cbe063e14dee18a419a55883dc6daaeae1fe1bf8f0528e64f4ae2c720"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_command_attention.py",
@@ -1898,7 +1943,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "a936e388f43313f7101967448cc412f8f1675180e5b4b07543d8ebf429930d70"
+      "sha256": "1b7ecb8e006cee7006d8021f98a283b75993ac17f800413b464b60d186aaa730"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -1963,12 +2008,12 @@
     {
       "path": "desktop/tools/tests/test_v040_liquid_controls_source.py",
       "normalization": "lf",
-      "sha256": "de94761b8055dbe13cfc637ce69fa0cc775a73827157f9e46da06be410b73937"
+      "sha256": "ac3268644a12c2834c93bcc32df280f20c4e7f5c15effe828c0d9793b3d45345"
     },
     {
       "path": "desktop/tools/tests/test_v040_native_chrome_source.py",
       "normalization": "lf",
-      "sha256": "7a3d9c68b175840183dcef7f086a2bef2284704e71ade55c392616e425d8db13"
+      "sha256": "6cdd6541df84be3e45b3b07c223db031e6879dc0936b0a790989e6b45c345d86"
     },
     {
       "path": "desktop/tools/tests/test_v040_player_cover_source.py",
@@ -2018,7 +2063,7 @@
     {
       "path": "desktop/tools/tests/test_v041_search_all_source.py",
       "normalization": "lf",
-      "sha256": "df689602f9e8c6c9d5d31e243997d99451a1e441a4d364c8ff391d7bef3333e7"
+      "sha256": "57945b541db8b51bcf0da0076313c385632d4358dd48fd0709c96688d570c98c"
     },
     {
       "path": "desktop/tools/tests/test_v041_video_status_labels_source.py",
@@ -2029,6 +2074,21 @@
       "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
       "normalization": "lf",
       "sha256": "33230024f7000ce4d35bbbd258e548d71ef91b9a19c5e9e53f17cf941e35ebac"
+    },
+    {
+      "path": "desktop/tools/tests/test_v042_optical_dependencies_source.py",
+      "normalization": "lf",
+      "sha256": "7e6dcc75982f00acd24a04226c14b159266b96ed55b84238d283bf2073189269"
+    },
+    {
+      "path": "desktop/tools/tests/test_v042_search_dependencies_source.py",
+      "normalization": "lf",
+      "sha256": "5c2d8610217ddff69f84bc42b407d6ec3e52b7b11febc5621d71264db62e7f58"
+    },
+    {
+      "path": "desktop/tools/tests/test_v042_search_layout_source.py",
+      "normalization": "lf",
+      "sha256": "203da44cbe1d10df0aeb9744a61c3ba4f828b05bed84001125962cbc32518b85"
     },
     {
       "path": "desktop/tools/tests/test_v042_seed_palette_source.py",
@@ -2108,7 +2168,7 @@
     {
       "path": "desktop/tools/v037_player_foundations.py",
       "normalization": "lf",
-      "sha256": "51e477ace4815d1711cb0aefaffcc01eecf1fe4a8a66560052da6f3b46b575dc"
+      "sha256": "5808f4f109896cfc7f7aaa05fa5252e33bf79faad25509f9741accb605323736"
     },
     {
       "path": "desktop/tools/v037_player_interaction.py",
@@ -2119,6 +2179,11 @@
       "path": "desktop/tools/v037_player_known_state.py",
       "normalization": "lf",
       "sha256": "349545268f7c99ede2476792a5b4ac170ebb10b65e2e48520a2a271c906562bb"
+    },
+    {
+      "path": "desktop/tools/v037_player_page_backdrop.py",
+      "normalization": "lf",
+      "sha256": "b45108a4f78b2ce67a6849698a10f43133e60803d1728574547c251a6d9c7597"
     },
     {
       "path": "desktop/tools/v037_player_render.py",
@@ -2193,7 +2258,7 @@
     {
       "path": "desktop/tools/v040_liquid_value_controls.py",
       "normalization": "lf",
-      "sha256": "c9f36a6e2c00f9c0b9f55817589e66ee2e0d0b2fec26725b16019cd5f403630e"
+      "sha256": "343cca102ef30ce785154ad6605287cd70809bcffed700e4ec2af978a0163fd6"
     },
     {
       "path": "desktop/tools/v040_native_chrome.py",
@@ -2266,6 +2331,11 @@
       "sha256": "a4b6b54de977d0237541457cd65a0fa41f611551e632b88ed79ca80a9c1be85a"
     },
     {
+      "path": "desktop/tools/v042_optical_dependencies.py",
+      "normalization": "lf",
+      "sha256": "201996c57dc477f209bfe6d13f63b24cdd056539cd5eaad425d65baeb44700d2"
+    },
+    {
       "path": "desktop/tools/v042_owner_follow.py",
       "normalization": "lf",
       "sha256": "68c38b442161e72fa0c799d6b5953ff73895ffea8db795a4459a9c1b9367fdd4"
@@ -2274,6 +2344,16 @@
       "path": "desktop/tools/v042_player_readability.py",
       "normalization": "lf",
       "sha256": "4241ba15c2de24f95733395c389ee54c5d8a61905d7a96556fac4037364cfefb"
+    },
+    {
+      "path": "desktop/tools/v042_search_dependencies.py",
+      "normalization": "lf",
+      "sha256": "ab42e64d9b04ecd57a48bc19b9d3c5707a3ab615a3d4fa9c4e4c1cc7b9a42124"
+    },
+    {
+      "path": "desktop/tools/v042_search_layout.py",
+      "normalization": "lf",
+      "sha256": "1c39702ab2504acca39c5ce22625dc3c664430b56c4a8ed364e9a6df7dceefab"
     },
     {
       "path": "desktop/tools/v042_seed_palette.py",
@@ -3186,6 +3266,61 @@
       "sha256": "9976d04fa221e8dbfd1bcc3b05f8d6647942d9d43e91b4dbc68b32b40c203f3e"
     },
     {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
+      "normalization": "raw",
+      "sha256": "473c085001722ee3fa1bd7d20729893ac43e267062f81a69a0f9889f59d64b68"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/AppSurfaceTokens.kt",
+      "normalization": "raw",
+      "sha256": "6840c3e54a12395f05dcb2383bca75c1d5aaa5bf726ca9ae540a06c875996d2e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/ChromeBackdropSource.kt",
+      "normalization": "raw",
+      "sha256": "8fec86cc6e246995e3de2f3f2ad32611305ebd868c7335b16456796db288e5cb"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/DampedDragAnimation.kt",
+      "normalization": "raw",
+      "sha256": "4b2121b5ee8c35cf976a6d598c3858ab5642fac3ed3814aacb2387239485f9e2"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/DragGestureInspector.kt",
+      "normalization": "raw",
+      "sha256": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlight.kt",
+      "normalization": "raw",
+      "sha256": "11e23f1e9916328cc52ba097e6a5ee4f8b5211453bfe212d75ca97e66fcdfa72"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightMotionSpec.kt",
+      "normalization": "raw",
+      "sha256": "709cf92c99645039e3e9d3fd063a4576592bc97fa5ca59962b624a11645cedd8"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightPalette.kt",
+      "normalization": "raw",
+      "sha256": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidDockViewport.kt",
+      "normalization": "raw",
+      "sha256": "87fbc89232311cd32c0aa8e90dd858f216b18d8cb9400bdeea38dffc1502c3dd"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidIndicatorMotion.kt",
+      "normalization": "raw",
+      "sha256": "d544ca9fca04aea84dada69b1d62c65c216c4eaa3befa22e52b9d4afe17e54fa"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-optical-dependencies/manifest.json",
+      "normalization": "raw",
+      "sha256": "8a5366fac0da15189d06ef8c5bb7824c84cb3987cfb0b5833809d3c69277215f"
+    },
+    {
       "path": "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
       "normalization": "raw",
       "sha256": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0"
@@ -3224,6 +3359,146 @@
       "path": "desktop/upstream-slices/v042-player-readability/manifest.json",
       "normalization": "raw",
       "sha256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColors.kt",
+      "normalization": "raw",
+      "sha256": "e42a157c4c178d4fe37afa339e6f1f2597eb8d0bccdf58a8a2c6feba2085dca7"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColorsTest.kt",
+      "normalization": "raw",
+      "sha256": "a88c57b6b9eeb2a854e55ffbb273a19d9d2d96a754488ada246ae8c2bd7d851d"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppElasticPress.kt",
+      "normalization": "raw",
+      "sha256": "c2655b0ccc618defcb08c2c2d2b9eb2cc1c8dd843c7368fd97872a5b54d3a69c"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppLiquidAwareTabRow.kt",
+      "normalization": "raw",
+      "sha256": "31a81d116fb3a1917cc2ccbd9a3826bdfe85bbce867945e9297e08fe88979a58"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppMaterial3SegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "7c9bc6cebb88075f1144bf2e0d2bd3b403ae7b6295404da5459cea4aac450c4e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppMiuixSegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "0fe235d240a5244c9b4a73689114c36300682e4f7abeb08f46f6cea788d47771"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppSegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypography.kt",
+      "normalization": "raw",
+      "sha256": "e38a7f839d4d09de502645b4654a8edcb0aa610b329c5aa05b5d0879e1461fec"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypographyTest.kt",
+      "normalization": "raw",
+      "sha256": "d7d861f723ffe033a8198eb894dd1a71ef634404b84650b8170581571c836182"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/AppThemeConfig.kt",
+      "normalization": "raw",
+      "sha256": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarMatchedLiquidChrome.kt",
+      "normalization": "raw",
+      "sha256": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarScrollHidePolicy.kt",
+      "normalization": "raw",
+      "sha256": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBar.kt",
+      "normalization": "raw",
+      "sha256": "bfaf9c74065bcebf473daecbce89362325bf8b7881fd1ba52dbfabb892666c14"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBarGeometry.kt",
+      "normalization": "raw",
+      "sha256": "ca25bb7be973d7e6ccdca4c08eada51d25a5daf0ed8c83aa3c079cc0bc3fdaf9"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/FloatingDockChrome.kt",
+      "normalization": "raw",
+      "sha256": "89bfe07642dca9c4424454edd782ffa0763a2802c2bf93b4f8c8046ae450cf36"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicy.kt",
+      "normalization": "raw",
+      "sha256": "6e7b5c635b0bb1da2058db0093610e0a04d252434fa3fd60df3fd2f427133004"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "621f7d46d98ad451aa211c60bfafa806ef4aa3ddbe48f10bfe1df37df7d0ec54"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/TopBar.kt",
+      "normalization": "raw",
+      "sha256": "d7303c23e7a6a7527b2cc549dcaabd3b61b68cf84cffb2aebe4787edde290d46"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-dependencies/manifest.json",
+      "normalization": "raw",
+      "sha256": "137aaa9f5504fc45fc634677c0be23ebc9e063ea02319c9fc40b864cfa0c288a"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "8cc3aa4295970325562c41d23bb8d4c85848d8ee389269455f76e626db4f09b6"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "c9d49e481a6cd5b68b3771cb30fdf92213b9078c39c07d92bab884424d545426"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
+      "normalization": "raw",
+      "sha256": "28a94e2c75e3bcda0360746613f000cf662e8ea292f6888a40a6b0617000ef9b"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
+      "normalization": "raw",
+      "sha256": "a9a25bdb412e09cd5acc9c2deb629a6e68d30549b1129d1c70db2a1f6508f20f"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
+      "normalization": "raw",
+      "sha256": "ab85a1517d3dea690e5ae04380fc51f262d139db60904adee08871b1b2f1c7ba"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "0888e9831bb090e6ee50b9c3151de3c04f463d3b622b169350fe2af253ec1864"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
+      "normalization": "raw",
+      "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
+      "normalization": "raw",
+      "sha256": "8c8e0f664baa911b2b38bf3a710a8041a03fea8f0f993705c82af1e721ff97b0"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/manifest.json",
+      "normalization": "raw",
+      "sha256": "e2ee6a1fe8ba14bfe6f677e224f98c9be6076690b62b7385b1b936eceeb00c69"
     },
     {
       "path": "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
@@ -3383,7 +3658,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "0555e25a38807208d65e6859f429c282017d9f77e744164e66ddffa5349bf8e3"
+      "sha256": "0e341a0dbeeedde09d1b0ceb9661647b18d5c38465f1edd05bbfd955dde95e97"
     }
   ],
   "classes": {
@@ -3466,9 +3741,15 @@
     "com.android.purebilibili.core.theme.LiquidAccentColorSchemeTest": 3,
     "com.android.purebilibili.feature.settings.SeedPaletteSettingsPolicyTest": 3,
     "com.bilipai.desktop.appearance.DesktopSeedPalettePreferencesTest": 5,
-    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4
+    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4,
+    "com.bilipai.desktop.ui.DesktopSearchArticleOpenRequestTest": 11,
+    "com.android.purebilibili.feature.search.SearchTabLabelPolicyTest": 3,
+    "com.android.purebilibili.feature.search.SearchCardTargetRestoreTest": 3,
+    "com.android.purebilibili.feature.search.SearchMotionBudgetPolicyTest": 18,
+    "com.android.purebilibili.core.ui.AppTabTypographyTest": 2,
+    "com.android.purebilibili.core.ui.AppContentColorsTest": 5
   },
-  "expectedTests": 737,
+  "expectedTests": 779,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -3478,65 +3759,73 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementBindings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommandAttentionBinding.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopPaletteAssertions.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopPaletteAssertionsTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopSeedPalettePreferencesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsOwnerFollowRetryTest.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequestTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-appearance-platform.py",
-    "desktop/tools/extract-upstream-video-detail-full-units.py",
-    "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+    "desktop/tools/extract-upstream-components.py",
+    "desktop/tools/extract-upstream-danmaku-settings.py",
+    "desktop/tools/extract-upstream-dynamic-tabs.py",
+    "desktop/tools/extract-upstream-home-page.py",
+    "desktop/tools/extract-upstream-search-pages.py",
+    "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+    "desktop/tools/extract-upstream-space-pages.py",
     "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_comment_selection_consumer_closure.py",
-    "desktop/tools/tests/test_extract_upstream_command_attention.py",
-    "desktop/tools/tests/test_extract_upstream_owner_follow.py",
+    "desktop/tools/tests/test_extract_upstream_brand_callers.py",
     "desktop/tools/tests/test_sync_upstream.py",
     "desktop/tools/tests/test_v040_liquid_controls_source.py",
-    "desktop/tools/tests/test_v040_theme_roles_source.py",
-    "desktop/tools/tests/test_v042_seed_palette_source.py",
-    "desktop/tools/v042_owner_follow.py",
-    "desktop/tools/v042_seed_palette.py",
-    "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
-    "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
-    "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
-    "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
-    "desktop/upstream-slices/v042-owner-follow/manifest.json",
-    "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppearanceThemeSegmentPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorScheme.kt",
-    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorSchemeTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/PlaybackNotificationColorPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedColorSchemeTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPaletteSettingsPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPresetColors.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
-    "desktop/upstream-slices/v042-seed-palette/SettingsManager.kt",
-    "desktop/upstream-slices/v042-seed-palette/Theme.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemeColorTransition.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePreferencePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreview.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreviewTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemeRoleOverridePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverrides.kt",
-    "desktop/upstream-slices/v042-seed-palette/flex_seed_scheme.LICENSE",
-    "desktop/upstream-slices/v042-seed-palette/manifest.json",
-    "desktop/upstream-slices/v042-seed-palette/material_color_utilities.LICENSE",
+    "desktop/tools/tests/test_v040_native_chrome_source.py",
+    "desktop/tools/tests/test_v041_search_all_source.py",
+    "desktop/tools/tests/test_v042_optical_dependencies_source.py",
+    "desktop/tools/tests/test_v042_search_dependencies_source.py",
+    "desktop/tools/tests/test_v042_search_layout_source.py",
+    "desktop/tools/v037_player_foundations.py",
+    "desktop/tools/v037_player_page_backdrop.py",
+    "desktop/tools/v040_liquid_value_controls.py",
+    "desktop/tools/v042_optical_dependencies.py",
+    "desktop/tools/v042_search_dependencies.py",
+    "desktop/tools/v042_search_layout.py",
+    "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/AppSurfaceTokens.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/ChromeBackdropSource.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/DampedDragAnimation.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/DragGestureInspector.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlight.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightMotionSpec.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightPalette.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/LiquidDockViewport.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/LiquidIndicatorMotion.kt",
+    "desktop/upstream-slices/v042-optical-dependencies/manifest.json",
+    "desktop/upstream-slices/v042-search-dependencies/AppContentColors.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppContentColorsTest.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppElasticPress.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppLiquidAwareTabRow.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppMaterial3SegmentedControl.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppMiuixSegmentedControl.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppSegmentedControl.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppTabTypography.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppTabTypographyTest.kt",
+    "desktop/upstream-slices/v042-search-dependencies/AppThemeConfig.kt",
+    "desktop/upstream-slices/v042-search-dependencies/BottomBarMatchedLiquidChrome.kt",
+    "desktop/upstream-slices/v042-search-dependencies/BottomBarScrollHidePolicy.kt",
+    "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBar.kt",
+    "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBarGeometry.kt",
+    "desktop/upstream-slices/v042-search-dependencies/FloatingDockChrome.kt",
+    "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicy.kt",
+    "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicyTest.kt",
+    "desktop/upstream-slices/v042-search-dependencies/TopBar.kt",
+    "desktop/upstream-slices/v042-search-dependencies/manifest.json",
+    "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
+    "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
+    "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
+    "desktop/upstream-slices/v042-search-layout/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

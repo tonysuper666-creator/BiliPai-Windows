@@ -93,14 +93,13 @@ def generate(repo,output,standalone=False):
  merge_sources,merge_manifest=fixed_merge_sources(repo)
  sources[paths[1]]=merge_sources['SettingsManager.kt']
  ids.extend(dict(row,pinnedCommit=V038_MERGE_COMMIT) for row in merge_manifest['files'])
- from v038_danmaku_merge import content_colors_source
- colors_original=merge_sources['AppContentColors.kt']
- colors_body,colors_proof=content_colors_source(repo)
+ from v042_search_dependencies import content_colors_source, COMMIT as CURRENT_COLORS_COMMIT
+ colors_body,colors_original,colors_proof=content_colors_source(repo)
  required_colors=set(re.findall(r'AppContentColors\.(\w+)\(',merge_sources['DanmakuSettingsPanel.kt']))
  declared_colors=set(re.findall(r'fun (\w+)\(\): Color',colors_body))
  if not required_colors<=declared_colors:raise ValueError('Original panel content-color call closure changed')
- emit('com/android/purebilibili/core/ui/AppContentColors.kt',colors_body,'design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt','complete-v038-original-shared-content-colors',original=colors_original)
- save(output/'v038-original-danmaku-settings-source-proof.json',dict(upstreamCommit=V038_MERGE_COMMIT,settingsManagerSelectionOwner='extract-upstream-danmaku-settings.py',wholeOriginalContentColorsRetained=True,contentColorsProof=colors_proof,panelColorReferenceClosureComplete=True,sourceQualified=False,mainCompiled=False))
+ emit('com/android/purebilibili/core/ui/AppContentColors.kt',colors_body,'design-system/src/main/java/com/android/purebilibili/core/ui/AppContentColors.kt','complete-v042-original-shared-content-colors',original=colors_original.decode('utf-8'))
+ save(output/'v038-original-danmaku-settings-source-proof.json',dict(upstreamCommit=V038_MERGE_COMMIT,contentColorsCommit=CURRENT_COLORS_COMMIT,settingsManagerSelectionOwner='extract-upstream-danmaku-settings.py',wholeOriginalContentColorsRetained=True,contentColorsProof=colors_proof,panelColorReferenceClosureComplete=True,sourceQualified=False,mainCompiled=False))
  panel_original,panel_identity=latest_panel_original(repo)
  s=panel_original;patches=[]
  s=adapt(s,'import com.android.purebilibili.core.store.SettingsManager\n','// Original settings use the required Root settings and hot-bar bindings.\n',patches)

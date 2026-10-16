@@ -6018,7 +6018,9 @@ object WindowsVideoActualRootUiFixture {
     }
     @JvmStatic fun main(args: Array<String>) {
         require(args.size in 4..5 && Regex("BV[0-9A-Za-z]{10}").matches(args[3]))
-        require(args.size == 4 || args[4] == "replay")
+        require(args.size == 4 || args[4] in setOf("replay", "manual-replay"))
+        val manualReplay = args.size == 5 && args[4] == "manual-replay"
+        val manualReady = AtomicBoolean(false)
         require(!java.lang.Boolean.getBoolean("bilipai.validation.requireNvidiaPresentation") ||
             System.getProperty("bilipai.validation.nvidiaInput") == "true") {
             "Positive NVIDIA presentation mode requires the actual NVIDIA control workflow"
@@ -6059,6 +6061,25 @@ object WindowsVideoActualRootUiFixture {
                     check(first.key != BiliPaiNavKey.Onboarding) { "Windows startup still mounted the mobile agreement gate" }
                     actions.awaitActualHealth(health)
                     writeActualMainRuntimeEvidence("start", "FIRST_DRAWN_ROOT_AND_ACTUAL_HEALTH")
+                    if (manualReplay) {
+                        // Prepare only the actual Main, private guest store and loopback API/media.
+                        // External Computer Use owns every click/key/wheel in this mode.
+                        // Readiness is not playback/UI/NVIDIA acceptance.
+                        check(replay != null)
+                        check(PlayerPreferencesStore().read().let { it.muted && it.volume == 0.0 })
+                        Files.writeString(report.resolve("manual-ready.json"), buildJsonObject {
+                            put("schema", 1); put("actualMainInvocations", 1)
+                            put("actualWindowIdentity", ownedWindowIdentity)
+                            put("requestedBvid", video); put("apiReplayInjected", true)
+                            put("fixturePrivateSilentPreferenceSeed", true)
+                            put("realAccountUsed", false); put("automaticInputExecuted", false)
+                            put("allPreExitAssertionsPassed", false)
+                            put("nvidiaEnhancementVerified", false); put("wasapiExclusiveVerified", false)
+                            put("validationScope", "PRIVATE_LOOPBACK_MANUAL_UI_READINESS_ONLY")
+                        }.toString(), CREATE_NEW, WRITE)
+                        manualReady.set(true)
+                        return@Thread
+                    }
                     if (System.getProperty("bilipai.validation.commentSearchInput") == "true" ||
                         System.getProperty("bilipai.validation.composerInput") == "true" ||
                         System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") {
@@ -6238,7 +6259,9 @@ object WindowsVideoActualRootUiFixture {
             val mainArguments = if (replayMode) arrayOf("--update-health-file", health.toString(), "--update-health-token", args[2])
                 else arrayOf("--video=$video", "--update-health-file", health.toString(), "--update-health-token", args[2])
             com.bilipai.desktop.main(mainArguments)
-            check(completed.get()) { "Actual Main returned before Windows video assertions" }
+            check(if (manualReplay) manualReady.get() else completed.get()) {
+                "Actual Main returned before its requested readiness/assertions"
+            }
         }
     }
 }

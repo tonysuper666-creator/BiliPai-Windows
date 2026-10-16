@@ -30,6 +30,15 @@ def emit_foundation(repo,output,outputs,test_output=None):
     p=wide(Path(test_output)/rel);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(sources[row['filename']].encode())
    continue
   original=sources[row['filename']];text=original;edits=[]
+  if row['filename']=='ChromeBackdropSource.kt':
+   from v042_optical_dependencies import backdrop_source, source_record, CHROME
+   original,text=backdrop_source(repo)
+   from v029_comment_search import whole_proof
+   rel=row['path'].split('/main/java/',1)[1]
+   p=wide(Path(output)/rel);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(text.encode())
+   entry=dict(path=rel,mode='complete-current-original-platform-recording',generated=True,sha256LF=digest(text.encode()),source=source_record(repo,CHROME),wholeOriginalInverse=True)
+   outputs.append(entry);records.append(dict(entry,originalToPlatform=whole_proof(original,text)))
+   continue
   def exact(before,after,label):
    nonlocal text
    assert text.count(before)==1,(row['filename'],label,text.count(before))

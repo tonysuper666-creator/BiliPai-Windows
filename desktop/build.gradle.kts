@@ -168,6 +168,10 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // Current semantic surface tokens have one original component producer.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt"))
+        // Current whole Search policy is emitted with the complete Search page.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt"))
         // Latest tabs use the same sole controls/dynamic producer split.
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt"))
@@ -532,6 +536,8 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamAppearance) }
 
 val generatedChromeActionTests = layout.buildDirectory.dir("generated/original-chrome-action-tests")
 val extractUpstreamComponents by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_optical_dependencies.py")
+    inputs.dir("upstream-slices/v042-optical-dependencies")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-components.py",
@@ -791,6 +797,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-refresh-policy-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
+    inputs.file("tools/v042_search_dependencies.py")
+    inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.file("tools/v040_native_chrome.py")
     inputs.file("tools/extract-upstream-frosted-audio-renderer.py")
     inputs.dir("upstream-slices/v040-native-chrome")
@@ -1534,6 +1542,8 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-danmaku-settings").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-danmaku-settings.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py")
+    inputs.file("tools/v042_search_dependencies.py")
+    inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.dir("upstream-slices/v027-danmaku-hot-settings")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-danmaku-settings-panel" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -1647,6 +1657,12 @@ val extractCommentFraudProtocol by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractCommentFraudProtocol) }
 
 val extractSharedLiquidTabs by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_optical_dependencies.py")
+    inputs.dir("upstream-slices/v042-optical-dependencies")
+    inputs.file("tools/v042_search_layout.py")
+    inputs.file("tools/v042_search_dependencies.py")
+    inputs.dir("upstream-slices/v042-search-dependencies")
+    inputs.dir("upstream-slices/v042-search-layout")
     inputs.file("tools/v037_shared_tabs_progress.py")
     inputs.file("tools/v040_liquid_value_controls.py")
     inputs.dir("upstream-slices/v040-liquid-value-controls")
@@ -1751,6 +1767,8 @@ val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_optical_dependencies.py")
+    inputs.dir("upstream-slices/v042-optical-dependencies")
     inputs.file("tools/v041_dynamic_author_search.py")
     inputs.file("tools/v041_feed_images.py")
     inputs.dir("upstream-slices/v041-dynamic-author-search")
@@ -1771,6 +1789,8 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-tabs.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
+    inputs.file("tools/v042_search_dependencies.py")
+    inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.files(sources.filter { "settings-dynamic-tabs-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-tabs"))
@@ -2504,6 +2524,8 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileKotlin") { dependsOn(extractOriginalWatchLater) }
 
 val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_optical_dependencies.py")
+    inputs.dir("upstream-slices/v042-optical-dependencies")
     inputs.file("tools/v037_window_modal_blur.py")
     inputs.dir("upstream-slices/v037-window-modal-blur")
     inputs.file("tools/v037_shared_tabs_progress.py")
@@ -2511,6 +2533,8 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
     inputs.file("tools/v037_player_foundations.py")
+    inputs.file("tools/v042_search_dependencies.py")
+    inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.dir("upstream-slices/v037-player-foundation-closure")
     inputs.files("tools/v037_player_chrome.py", "tools/v037_player_closure.py", "tools/v037_player_render.py", "tools/v037_player_shared_material.py")
     inputs.file("tools/v040_native_chrome.py")
@@ -2925,7 +2949,12 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-search-pages.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/original-search-pages").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/original-search-pages").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-search-tests").get().asFile.absolutePath)
+    inputs.file("tools/v042_search_layout.py")
+    inputs.file("tools/v042_search_dependencies.py")
+    inputs.dir("upstream-slices/v042-search-dependencies")
+    inputs.dir("upstream-slices/v042-search-layout")
     inputs.file("tools/extract-upstream-search-pages.py")
     inputs.file("tools/v041_search_all.py")
     inputs.dir("upstream-slices/v041-search-all")
@@ -2935,8 +2964,11 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     inputs.file("tools/v029_brand_callers.py")
     inputs.dir("upstream-slices/v029-brand-callers")
     outputs.dir(layout.buildDirectory.dir("generated/original-search-pages"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-search-tests"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-pages")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalSearchPages) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalSearchPages) }
 
 // Full original message seven pages. DIRECT4 are copied once by prepareUpstreamSources;
