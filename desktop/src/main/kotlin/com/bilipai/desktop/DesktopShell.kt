@@ -1229,6 +1229,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         rootRoutes()?.push(BiliPaiNavKey.BangumiPlayer(id,epId,(progress.coerceAtLeast(0.0)*1000L).toLong(),course))
     }
     fun openBangumi(id: Long) { showSeason(id) }
+    // Upstream: a season-only favorite or dynamic card opens BangumiDetail; a concrete episode (or course) plays.
+    fun showBangumiCard(seasonId: Long, epId: Long) {
+        desktopBangumiOpenKey(seasonId, epId, seasonOnlyOpensDetail = true)?.let { rootRoutes()?.push(it) }
+    }
     fun openCollection(mid: Long, id: Long, type: String) { rootRoutes()?.push(BiliPaiNavKey.SeasonSeriesDetail(type,id,mid)) }
     fun openDynamicWeb(url: String, title: String) {
         runCatching { java.net.URI(imageUrl(url)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
@@ -1739,7 +1743,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopDynamicCardMutations provides dynamicCardRegistry.bindings,
         LocalDesktopDynamicCardNavigation provides com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions(
             onVideoClick = { openVideo(VideoCard(it, "", "", "", 0, 0)) }, onUserClick = ::openUser,
-            onBangumiClick = { sid, eid -> showSeason(sid, eid) }, onMusicClick = ::openMusic,
+            onBangumiClick = { sid, eid -> showBangumiCard(sid, eid) }, onMusicClick = ::openMusic,
             onLiveClick = { room, _, _ -> openLive(room) },
             onCollectionClick = { id, mid, title, url ->
                 navigateOriginalDynamicCollection(id, mid, title, url, onFavorite = { type, mediaId, ownerMid, folderTitle ->
@@ -2425,7 +2429,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             onCollectionClick = { if (entry.isOwned()) commands.push(BiliPaiNavKey.SeasonSeriesDetail(it.type,it.id,it.mid,it.title,it.ownerName)) },
                                             onFolderClick = { mediaId, ownerMid, title, ownerName ->
                                                 if (entry.isOwned()) commands.push(BiliPaiNavKey.SeasonSeriesDetail("favorite",mediaId,ownerMid,title,ownerName)) },
-                                            onBangumi = { if (entry.isOwned()) openBangumi(it) },
+                                            onBangumi = { if (entry.isOwned()) showBangumiCard(it, 0) },
                                             onArticle = { id, _ -> if (entry.isOwned()) openArticle(id) },
                                             onTopic = { if (entry.isOwned()) openTopic(it) },
                                             onCourse = { if (entry.isOwned()) showSeason(it, course = true) },

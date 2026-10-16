@@ -53,6 +53,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Actual verifier subprocess regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_mpv_companion_resource_staging.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Verified MPV companion packaging regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_mpv_rtx_installer_protocol.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Current and retired NVIDIA presentation source admission regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_native_cares_recipe.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Explicit c-ares source branch selection regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v038_listen_collection_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original collection source adaptation regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v038_audio_library_source.py -v
@@ -105,6 +109,30 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Shared reply medal and retained source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v041_dynamic_comment_identity_source.py -v
           if ($LASTEXITCODE -ne 0) { throw "Dynamic comment identity source regressions failed" }
+      - name: Validate retained original PGC Screen mount source
+        shell: pwsh
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          PYTHONIOENCODING: utf-8
+        run: |
+          python -m unittest discover -s desktop/tools/tests -p test_windows_pgc_screen_mount.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete original PGC Screen mount source regressions failed.' }
+      - name: Check offline original Root UI harness export boundaries
+        shell: pwsh
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          PYTHONIOENCODING: utf-8
+        run: |
+          python -m unittest discover -s desktop/tools/tests -p test_original_root_ui_class_closure.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original Root UI class closure regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_original_root_ui_candidate_classpath.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Actual candidate classpath binding regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_export_original_root_ui_harness.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original Root UI export admission regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_verify_original_root_ui_export.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original Root UI export readback regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_fixed_java_toolchain.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Actual fixed Java toolchain and build evidence regressions failed.' }
       - name: Stage the existing pinned JDK
         shell: pwsh
         run: |
@@ -142,11 +170,27 @@ jobs:
         run: |
           python desktop/tools/validate-source-cohort.py --run --repo "$env:GITHUB_WORKSPACE" --output "$env:RUNNER_TEMP/bilipai-source-validation"
           if ($LASTEXITCODE -ne 0) { throw 'Source cohort validation failed; see the exact receipt and test XML in this log.' }
+      - name: Validate NVIDIA source pins and actual verifier resource after Gradle
+        shell: pwsh
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+          PYTHONIOENCODING: utf-8
+        run: |
+          python -m unittest discover -s desktop/tools/tests -p test_rtx_hdr_color.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'NVIDIA complete source pin and generated verifier resource regression failed.' }
       - name: Export qualified updater fixture without running an EXE
         if: steps.source.outputs.updater_harness_exported == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: windows-updater-harness-${{ github.sha }}
           path: ${{ runner.temp }}/bilipai-source-validation/updater-harness
+          if-no-files-found: error
+          retention-days: 1
+      - name: Export qualified original Root UI fixture without running an EXE
+        if: steps.source.outputs.original_root_ui_harness_exported == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-original-root-ui-harness-${{ github.sha }}
+          path: ${{ runner.temp }}/bilipai-source-validation/original-root-ui-harness
           if-no-files-found: error
           retention-days: 1

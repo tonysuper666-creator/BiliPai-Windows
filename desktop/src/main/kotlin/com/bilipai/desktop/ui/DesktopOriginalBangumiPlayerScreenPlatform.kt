@@ -44,6 +44,8 @@ internal interface DesktopOriginalBangumiPlayerScreenPlatform {
     val readOnlyDetail: StateFlow<DesktopOriginalBangumiReadOnlyDetail?>
     val share: DesktopOriginalBangumiPlayerShare
     fun owns(): Boolean
+    /** Retained Windows Entry overrides this; other existing screen hosts keep the original effect. */
+    fun runInitialScreenLoad(viewModel: BangumiPlayerViewModel, action: () -> Unit) { action() }
     fun ensureMiniCallbacks(viewModel: BangumiPlayerViewModel, isCourse: Boolean)
     fun acquireDanmakuPlayer(player: DesktopOriginalMpvSectionControl): AutoCloseable
     fun acquirePlaybackHandoff(seasonId: Long, epId: Long, position: () -> Long): AutoCloseable

@@ -88,6 +88,7 @@ def main():
   body,gesture_proof=legacy_caller_delta(a.repo,r['output'],body)
   if gesture_proof is not None:
    write(a.output,Path(r['output']).name+'.v037-gesture-api-proof.json',json.dumps(gesture_proof,indent=2)+'\n')
+  from windows_pgc_screen_mount import apply_and_record as apply_screen_mount;body=apply_screen_mount(r['output'],body,a.output,edits=windows_edits)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')

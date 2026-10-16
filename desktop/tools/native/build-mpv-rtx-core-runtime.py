@@ -202,6 +202,110 @@ def run(command, log):
                 process.wait()
             process.stdout.close()
 
+CARES_DOWNLOAD_STAMP = 'packages/c-ares-prefix/src/c-ares-stamp/c-ares-download'
+
+def prefetch_cares_source(build, sources, output, log):
+    """Run only the configured independent download step before the HOST build.
+
+    This observes the recipe's floating dependency; it does not pin its HEAD or
+    admit a cached compiler. Do not fall back to a global nested download target.
+    """
+    graph_path = build / 'build.ninja'
+    if not graph_path.is_file() or graph_path.is_symlink():
+        raise RuntimeError('Configured c-ares download graph is unavailable')
+    graph_raw = graph_path.read_bytes()
+    graph = graph_raw.decode('utf-8')
+    # Ninja continuations end in an odd number of dollars. An escaped dollar
+    # followed by a newline must not join two otherwise independent statements.
+    statements, pending, continuation = [], '', False
+    for line in graph.splitlines():
+        if continuation:
+            line = line.lstrip(' \t')
+        trailing = len(line) - len(line.rstrip('$'))
+        if trailing % 2:
+            pending += line[:-1]
+            continuation = True
+        else:
+            statements.append(pending + line)
+            pending = ''
+            continuation = False
+    if continuation:
+        raise RuntimeError('Configured Ninja graph has an unfinished continuation')
+    def build_definition(line):
+        if not line.startswith('build '):
+            return None
+        # Split only real Ninja output separators, respecting literal escapes
+        # and keeping variable aliases distinct from the exact relative output.
+        tokens, current, index = [], '', 6
+        while index < len(line):
+            char = line[index]
+            if char == '$':
+                if index + 1 >= len(line):
+                    raise RuntimeError('Malformed Ninja output escape')
+                next_char = line[index + 1]
+                if next_char in ' :$':
+                    current += next_char
+                    index += 2
+                    continue
+                variable = re.match(r'\$(?:\{[^}]+\}|[A-Za-z0-9_.-]+)', line[index:])
+                if not variable:
+                    raise RuntimeError('Malformed Ninja output variable')
+                current += variable.group(0)
+                index += len(variable.group(0))
+                continue
+            if char == ':':
+                if current:
+                    tokens.append(current)
+                rule = line[index + 1:].strip().split()
+                return tokens, rule[0] if rule else ''
+            if char in ' \t|':
+                if current:
+                    tokens.append(current)
+                    current = ''
+            else:
+                current += char
+            index += 1
+        return None
+    definitions = []
+    for line in statements:
+        definition = build_definition(line)
+        if definition and CARES_DOWNLOAD_STAMP in definition[0]:
+            definitions.append(definition[1])
+    if definitions != ['CUSTOM_COMMAND']:
+        raise RuntimeError('Configured exact c-ares download stamp is missing or ambiguous')
+    graph_sha = sha(graph_raw)
+    command = ['ninja', '-C', str(build), '-j1', CARES_DOWNLOAD_STAMP]
+    run(command, log)
+    source = sources / 'c-ares'
+    if not source.is_dir() or source.is_symlink() or not (source / '.git').exists():
+        raise RuntimeError('Downloaded c-ares source worktree is unavailable')
+    def git(*args):
+        return subprocess.check_output(['git', '-C', str(source), *args], text=True).strip()
+    commit, tree = git('rev-parse', '--verify', 'HEAD^{commit}'), git('rev-parse', '--verify', 'HEAD^{tree}')
+    remote = git('remote', 'get-url', 'origin')
+    if not re.fullmatch(r'[0-9a-f]{40}', commit) or not re.fullmatch(r'[0-9a-f]{40}', tree):
+        raise RuntimeError('Downloaded c-ares Git identity is invalid')
+    if remote != 'https://github.com/c-ares/c-ares.git':
+        raise RuntimeError('Downloaded c-ares origin differs from the fixed recipe')
+    status = git('status', '--porcelain', '--untracked-files=all')
+    if status:
+        raise RuntimeError('Downloaded c-ares worktree is not clean before compilation')
+    receipt = {'schema': 1, 'kind': 'BILIPAI_CARES_DOWNLOAD_PREFLIGHT',
+               'state': 'EXACT_DOWNLOAD_TARGET_EXITED_ZERO_BEFORE_HOST_BUILD',
+               'command': command, 'configuredBuildGraphSha256': graph_sha,
+               'actualSourceDirectory': str(source), 'sourceCommit': commit,
+               'sourceTree': tree, 'sourceRemote': remote,
+               'sourceWorkingTreeClean': True, 'floatingDependency': True,
+               'reproducible': False, 'hostCompilerBuilt': False,
+               'nativeBuildSucceeded': False, 'gpuOrDriverTested': False}
+    write_json(output / 'c-ares-download-preflight.json', receipt)
+    # Retain the useful public identity in the real job log even if a later
+    # native dependency fails before any complete artifact can be uploaded.
+    print('CARES download preflight: commit=' + commit + ' tree=' + tree
+          + ' origin=' + remote + ' graphSHA256=' + graph_sha, flush=True)
+    return receipt
+
+
 def pe_imports(data):
     """Read actual PE x64 normal/delay imports without loading the DLL."""
     if data[:2] != b'MZ':
@@ -379,7 +483,7 @@ def print_nested_build_failure_logs(workspace, workspace_identity, output, outpu
         if not stat.S_ISREG(log_stat.st_mode) or log_stat.st_nlink != 1:
             return {'state': 'UNSAFE_DIAGNOSTIC_LOG', 'files': 0, 'bytes': 0}
         os.lseek(log_fd, max(0, log_stat.st_size - file_limit), os.SEEK_SET)
-        markers = re.findall(rb'([A-Za-z0-9][A-Za-z0-9._-]{0,63})-prefix/src/\1-stamp/\1-(?:build|configure|install|bilipai-capture-host-(?:prebuild|config))', os.read(log_fd, file_limit))
+        markers = re.findall(rb'([A-Za-z0-9][A-Za-z0-9._-]{0,63})-prefix/src/\1-stamp/\1-(?:download|update|patch|build|configure|install|bilipai-capture-host-(?:prebuild|config))', os.read(log_fd, file_limit))
         failed_name = markers[-1].decode('ascii') if markers else None
         candidates, seen, partial = [], set(), False
         for location in (('build-x64', 'packages'), ('build-x64', 'toolchain'), ('build-x64', 'toolchain', 'llvm')):
@@ -409,7 +513,7 @@ def print_nested_build_failure_logs(workspace, workspace_identity, output, outpu
                                 if index >= 256 or scanned >= 512:
                                     partial = True
                                     break
-                                if re.fullmatch(re.escape(name) + r'-(?:build|configure|install|bilipai-capture-host-(?:prebuild|config))-[A-Za-z0-9._-]{1,64}\.log', entry.name):
+                                if re.fullmatch(re.escape(name) + r'-(?:download|update|patch|build|configure|install|bilipai-capture-host-(?:prebuild|config))-[A-Za-z0-9._-]{1,64}\.log', entry.name):
                                     kind = 0 if entry.name.endswith('-err.log') else 1
                                     add_candidate((*stamp_parts, entry.name), name, kind)
                     finally:
@@ -551,7 +655,7 @@ def main():
     # Reject an incompatible legacy/current source selection before creating output,
     # downloading source or invoking any build tool. Never relabel new source as 9c0.
     selected_manifest_raw = (inputs / manifest_leaf).read_bytes()
-    selected_manifest_sha = ('a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607'
+    selected_manifest_sha = ('8f61b3035bd4dbc4690431d532d9fa6e48216a309c7ddec7664594a892049790'
                              if presentation else '9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f')
     if sha(selected_manifest_raw) != selected_manifest_sha:
         raise RuntimeError('The selected complete source manifest differs from its reviewed identity')
@@ -583,14 +687,14 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != '9ef656f3594d60baaae7f3efe4b922eb9599d87c7fb42d5d6e4b1410148f08a7':
+    if presentation and sha(fixed_raw) != 'b95925745b72a671f660e7678860f8d6df0fe3ef970aada653a251a7ef5a1e0a':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:
         raise RuntimeError('Selected producer and fixed input variants differ')
     import_helper_path = ROOT / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
     import_helper_raw = import_helper_path.read_bytes()
-    if sha(import_helper_raw) != '229a43dc8c7a282f9ed623203b4fd6b7fa60ad5f4c41ddbd9c99da9a54526fb7':
+    if sha(import_helper_raw) != 'e09e8156ae06a2f29977ad3d613421f28d304d06d0dcf4fe079e91403960c0c3':
         raise RuntimeError('Reviewed shared importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import', import_helper_path)
     if import_spec is None or import_spec.loader is None:
@@ -628,7 +732,7 @@ def main():
         downloaded = {row['kind']: download(row, archives) for row in fixed['archives']}
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
         recipe_raw = (inputs / 'recipe-edits.json').read_bytes()
-        if presentation and sha(recipe_raw) != 'ac32910bd88fb5d4b726f16429bacc921b058201faf252956a3677d0bc991a58':
+        if presentation and sha(recipe_raw) != 'fde0f9c8bca71a4a543bd3932a65ed3676193ddeb76e582de0e9963d96c6ef00':
             raise RuntimeError('Complete presentation build recipe edits changed')
         edits = json.loads(recipe_raw)
         apply_recipes(recipes, edits['targets'])
@@ -748,7 +852,7 @@ def main():
             if manifest.get('schema') != 2 or type(manifest.get('tokenProtocol')) is not int or manifest.get('tokenProtocol') != 2 or manifest.get('presentationProperty') != 'bilipai-rtx-presentation' or len(manifest['sourceFiles']) != 21:
                 raise RuntimeError('Presentation source protocol/private inventory differs')
             upstream_raw = (inputs / 'presentation-edits.json').read_bytes()
-            if sha(upstream_raw) != manifest['upstreamEditsSha256'] or sha(upstream_raw) != 'e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f':
+            if sha(upstream_raw) != manifest['upstreamEditsSha256'] or sha(upstream_raw) != '7a9f37208757f87f7f591e544957a60a3bf141de743c1502a1af9ed99b0fd311':
                 raise RuntimeError('Presentation complete upstream edit graph changed')
             upstream_rows = json.loads(upstream_raw)
             if len(upstream_rows) != 24:
@@ -776,6 +880,10 @@ def main():
                             '-DBILIPAI_HOST_LLVM_IMPORT_REPOSITORY_ROOT=' + str(ROOT),
                             '-DBILIPAI_HOST_LLVM_IMPORT_VALIDATION_RECEIPT=' + str(output / 'host-llvm-import-target-validation.json')]
         run(command, log)
+        # Fail fast on the real independent download stamp before
+        # spending hours compiling LLVM. Keep the generated graph and
+        # actual floating Git identity; never invoke global download.
+        prefetch_cares_source(build, sources, output, log)
         # Actual cold-build targets from the fixed cd1 README and toolchain recipes.
         # Never call the vendor 'update' target, which moves dependency HEADs.
         for target in ['llvm', 'rustup', 'llvm-clang', 'mpv']:
@@ -865,7 +973,7 @@ def main():
             expected_graph = [{'path': nvidia['sourcePath'], 'beforeSha256': nvidia['originalSha256'], 'afterSha256': nvidia['patchedSha256']}] + expected_registration + [{'path': row['path'], 'beforeSha256': row['beforeSha256'], 'afterSha256': row['afterSha256']} for row in upstream_rows]
             if len(expected_graph) != 28 or len({row['path'] for row in expected_graph}) != 28 or source_receipt.get('sourceGraph') != expected_graph:
                 raise RuntimeError('Actual presentation complete-file graph does not match all twenty-eight fixed targets')
-            if type(source_receipt.get('tokenProtocol')) is not int or source_receipt.get('tokenProtocol') != 2 or source_receipt.get('presentationProperty') != 'bilipai-rtx-presentation' or source_receipt.get('sourcePatchHelperSha256') != '748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf' or source_receipt.get('gpuExecuted') is not False or source_receipt.get('displayProofRuntimeVerified') is not False:
+            if type(source_receipt.get('tokenProtocol')) is not int or source_receipt.get('tokenProtocol') != 2 or source_receipt.get('presentationProperty') != 'bilipai-rtx-presentation' or source_receipt.get('sourcePatchHelperSha256') != '9b9b6d058f4b74f44cf837b1893825e1bf9e30eeaaf56e497f8bd915bcae3f61' or source_receipt.get('gpuExecuted') is not False or source_receipt.get('displayProofRuntimeVerified') is not False:
                 raise RuntimeError('Actual presentation source receipt protocol differs')
             if b'bilipai-rtx-presentation' not in dll:
                 raise RuntimeError('Actual PE lacks the registered presentation property identity')
