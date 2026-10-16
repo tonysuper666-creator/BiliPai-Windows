@@ -5,6 +5,8 @@ import com.android.purebilibili.core.store.HomeHeaderBlurMode
 import com.android.purebilibili.core.store.resolveHomeHeaderBlurModePreference
 import com.android.purebilibili.core.store.ThemeModeRoleOverrides
 import com.android.purebilibili.core.store.ThemeRoleOverrides
+import com.android.purebilibili.core.store.WallpaperPaletteOverrides
+import com.android.purebilibili.core.store.WallpaperPaletteRole
 import com.android.purebilibili.core.store.parseThemeSelectionString
 import com.android.purebilibili.core.theme.*
 import com.android.purebilibili.core.ui.AppIconStyle
@@ -14,6 +16,7 @@ import com.android.purebilibili.core.ui.resolveAppListItemStylePreference
 import com.android.purebilibili.feature.settings.*
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.materialkolor.PaletteStyle
+import com.materialkolor.Contrast
 import com.materialkolor.dynamiccolor.ColorSpec
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -34,6 +37,9 @@ data class DesktopThemeSettings(
     val themeRoleOverrides: ThemeRoleOverrides = ThemeRoleOverrides(),
     val colorStyle: PaletteStyle = PaletteStyle.TonalSpot,
     val colorSpec: ColorSpec.SpecVersion = ColorSpec.SpecVersion.SPEC_2025,
+    val colorContrast: Contrast = Contrast.Default,
+    val seedPaletteStyle: SeedPaletteStyle = SeedPaletteStyle.Standard,
+    val wallpaperPaletteOverrides: WallpaperPaletteOverrides = WallpaperPaletteOverrides(),
     val themeColorIndex: Int = 0,
     val appFontSizePreset: AppFontSizePreset = AppFontSizePreset.DEFAULT,
     val appFontWeightPreset: AppFontWeightPreset = AppFontWeightPreset.FOLLOW_THEME,
@@ -137,6 +143,8 @@ class DesktopThemePrefs(
     ))
     suspend fun setColorStyle(style: PaletteStyle) = save("theme_color_style", JsonPrimitive(style.name))
     suspend fun setColorSpec(spec: ColorSpec.SpecVersion) = save("theme_color_spec", JsonPrimitive(spec.name))
+    suspend fun setColorContrast(contrast: Contrast) = save("theme_color_contrast", JsonPrimitive(contrast.name))
+    suspend fun setSeedPaletteStyle(style: SeedPaletteStyle) = save("seed_palette_style", JsonPrimitive(style.name))
     suspend fun setThemeColorIndex(index: Int) = save("theme_color_index", JsonPrimitive(normalizeThemeColorIndex(index)))
     suspend fun setFontSize(preset: AppFontSizePreset) = save("app_font_size_preset", JsonPrimitive(preset.value))
     suspend fun setFontWeight(preset: AppFontWeightPreset) = save("app_font_weight", JsonPrimitive(preset.value))
@@ -193,6 +201,18 @@ internal fun decodeDesktopThemeSettings(
         themeRoleOverrides = ThemeRoleOverrides(values.boolean("theme_role_overrides_enabled") ?: false, roles("light", defaults.light), roles("dark", defaults.dark)),
         colorStyle = resolvePaletteStylePreference(values.string("theme_color_style")),
         colorSpec = resolveColorSpecPreference(values.string("theme_color_spec")),
+        colorContrast = resolveColorContrastPreference(values.string("theme_color_contrast")),
+        seedPaletteStyle = SeedPaletteStyle.fromStored(values.string("seed_palette_style")),
+        wallpaperPaletteOverrides = WallpaperPaletteOverrides(
+            light = WallpaperPaletteRole.entries.mapNotNull { role ->
+                values.string("wallpaper_palette_light_${role.name.lowercase()}")
+                    ?.takeIf(::isValidMd3CustomColorHex)?.let { role to normalizeMd3CustomColorHex(it) }
+            }.toMap(),
+            dark = WallpaperPaletteRole.entries.mapNotNull { role ->
+                values.string("wallpaper_palette_dark_${role.name.lowercase()}")
+                    ?.takeIf(::isValidMd3CustomColorHex)?.let { role to normalizeMd3CustomColorHex(it) }
+            }.toMap(),
+        ),
         themeColorIndex = normalizeThemeColorIndex(values.int("theme_color_index") ?: 0),
         appFontSizePreset = AppFontSizePreset.fromValue(values.int("app_font_size_preset") ?: AppFontSizePreset.DEFAULT.value),
         appFontWeightPreset = AppFontWeightPreset.fromValue(values.int("app_font_weight") ?: AppFontWeightPreset.FOLLOW_THEME.value),

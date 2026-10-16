@@ -1,6 +1,7 @@
 from pathlib import Path
 import hashlib
 import importlib.util
+import json
 import shutil
 import sys
 import tempfile
@@ -10,6 +11,23 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v040_theme_roles as source
 from v025_source_paths import canonical_source
+
+
+def before_seed_palette(output, relative):
+    proof = json.loads((output/'v042-seed-palette-proof.json').read_bytes())
+    current = (output/relative).read_bytes()
+    writes = [row for row in proof['writes'] if row['path'] == relative]
+    if not writes:
+        return current
+    if len(writes) != 1 or writes[0]['before'] is None:
+        raise AssertionError('Unexpected prior theme owner projection')
+    row = writes[0]
+    if hashlib.sha256(current).hexdigest() != row['afterSHA256']:
+        raise AssertionError('Changed physical seed palette output')
+    before = row['before'].encode()
+    if hashlib.sha256(before).hexdigest() != row['beforeSHA256']:
+        raise AssertionError('Changed complete prior theme owner')
+    return before
 
 
 def producer():
@@ -54,7 +72,8 @@ class V040ThemeRolesSourceTest(unittest.TestCase):
                 relative = path.split('/test/java/' if is_test else '/main/java/', 1)[1]
                 target = (tests if is_test else output)/relative
                 selected, proof = source.selected_test_source(path, raw) if is_test else (raw, None)
-                self.assertEqual(selected, target.read_bytes(), path)
+                actual = target.read_bytes() if is_test else before_seed_palette(output, relative)
+                self.assertEqual(selected, actual, path)
                 if proof is not None:
                     restored = selected.decode('utf-8')
                     for edit in reversed(proof['edits']):
@@ -86,12 +105,14 @@ class V040ThemeRolesSourceTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='bilipai-theme-role-owner-') as tmp:
             output = Path(tmp)/'main'
             producer().generate(REPO,output,resource_output=Path(tmp)/'resources',policy_only=True)
+            proof = json.loads((output/'v042-seed-palette-proof.json').read_bytes())
+            added = {row['path'] for row in proof['writes'] if row['before'] is None}
             self.assertEqual(set(retained)|{p.split('/main/java/',1)[1] for p in source.MAIN_PATHS}|{
                 'com/android/purebilibili/feature/settings/ThemeCustomColorPickerDialog.kt',
-                'com/android/purebilibili/feature/settings/DesktopOriginalThemeColorPickerPolicy.kt'},
+                'com/android/purebilibili/feature/settings/DesktopOriginalThemeColorPickerPolicy.kt'}|added,
                 {p.relative_to(output).as_posix() for p in output.rglob('*.kt')})
             for path,digest in retained.items():
-                self.assertEqual(digest,hashlib.sha256((output/path).read_bytes()).hexdigest(),path)
+                self.assertEqual(digest,hashlib.sha256(before_seed_palette(output,path)).hexdigest(),path)
 
     def test_changed_original_archives_and_canonical_input_are_rejected(self):
         for leaf in ('manifest.json',*(r['archiveFile'] for r in source.PINS)):

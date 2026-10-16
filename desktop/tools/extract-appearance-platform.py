@@ -70,13 +70,18 @@ def inventory(repo):
 def generate(repo,output,resource_output=None,policy_only=False,test_output=None):
     spec=importlib.util.spec_from_file_location('appearance_parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
     output.mkdir(parents=True,exist_ok=True)
+    original_outputs=set()
     for path in (list(_theme_main_paths) if policy_only else DIRECT)+list(EXTRACTED):
         source=_theme_source(repo, path).decode('utf-8').replace('\r\n','\n');package=re.search(r'(?m)^package (\S+)',source).group(1)
         text=source if path in DIRECT else 'package '+package+'\n\n'+HEADERS[Path(path).name]+'\n'+declarations(parser,source,EXTRACTED[path])
         target=output/package.replace('.','/')/Path(path).name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')
+        original_outputs.add(target.relative_to(output).as_posix())
     if test_output is not None: _theme_tests(repo, test_output)
     from v040_liquid_value_controls import emit_picker
     emit_picker(repo, output, test_output)
+    from v042_seed_palette import emit as emit_seed_palette
+    emit_seed_palette(repo, output, resource_output or output.parent/'resources', test_output,
+        parser, declarations, EXTRACTED, HEADERS, original_outputs)
     for language,path in RESOURCES.items():
         target=(resource_output or output.parent/'resources')/'bilipai-strings'/language/'strings.xml';target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(repo/path,target)
 if __name__=='__main__':

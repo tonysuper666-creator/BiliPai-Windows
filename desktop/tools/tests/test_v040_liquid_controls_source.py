@@ -1,5 +1,6 @@
 from pathlib import Path
 import importlib.util
+import json
 import re
 import shutil
 import sys
@@ -102,7 +103,19 @@ class V040LiquidControlsSourceTest(unittest.TestCase):
             self.assertEqual(raw,target.read_bytes(),path)
             cases+=raw.count(b'@Test')
         self.assertEqual(10,cases)
-        self.assertEqual(27,sum(p.read_bytes().count(b'@Test') for p in (self.root/'tests').rglob('*.kt')))
+        seed_proof=json.loads((self.root/'appearance/v042-seed-palette-proof.json').read_bytes())
+        seed_names={row['filename'] for row in seed_proof['wholeOriginalTestProofs']}
+        self.assertEqual({
+            'PaletteSpecPolicyTest.kt','SeedColorSchemeTest.kt','SeedTextContrastPolicyTest.kt',
+            'ThemePresetPalettePreviewTest.kt','AppThemeEndpointPolicyTest.kt',
+            'WallpaperPaletteOverridePolicyTest.kt','LiquidAccentColorSchemeTest.kt',
+            'SeedPaletteSettingsPolicyTest.kt',
+        },seed_names)
+        all_tests=list((self.root/'tests').rglob('*.kt'))
+        seed_tests=[p for p in all_tests if p.name in seed_names]
+        self.assertEqual(8,len(seed_tests))
+        self.assertEqual(32,sum(p.read_bytes().count(b'@Test') for p in seed_tests))
+        self.assertEqual(27,sum(p.read_bytes().count(b'@Test') for p in all_tests if p.name not in seed_names))
         velocity=(self.root/'components/com/android/purebilibili/core/ui/animation/LiquidIndicatorVelocity.kt').read_bytes()
         self.assertEqual(fixed[source.DS+'animation/LiquidIndicatorVelocity.kt'],velocity)
 

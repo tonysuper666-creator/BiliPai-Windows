@@ -52,20 +52,34 @@ internal fun buildDesktopAppearancePalette(settings: DesktopThemeSettings, syste
         seed, dark, dark && state.useAmoledDarkTheme, settings.colorStyle, settings.colorSpec, settings.uiStyle,
         // No Android Monet service exists on Windows. Use the original non-S fallback seed.
         dynamicBaseScheme = null,
+        colorContrast = settings.colorContrast,
+        seedPaletteStyle = settings.seedPaletteStyle,
     )
     val lightBase = base(false); val darkBase = base(true)
     val roles = resolveEffectiveThemeRoleOverrides(settings.md3ColorSource, settings.themeRoleOverrides, settings.uiStyle)
-    val light = applyThemeRoleOverrides(lightBase, roles, false)
-    val dark = applyThemeRoleOverrides(darkBase, roles, true)
-    val native = shouldUseNativeMiuixPalette(settings.uiStyle)
-    val miuixLight = if (native) resolveNativeMiuixColors(light, false)
-        else resolveMiuixColorsFromMaterialBridge(createMiuixMaterialBridge(light), false)
-    val miuixDark = if (native) resolveNativeMiuixColors(dark, true)
-        else resolveMiuixColorsFromMaterialBridge(createMiuixMaterialBridge(dark), true)
-    val material = if (state.useDarkTheme) dark else light
+        .let { if (settings.seedPaletteStyle.enabled) it.copy(enabled = false) else it }
+    fun endpoint(base: ColorScheme, dark: Boolean): AppThemePalette {
+        val overridden = applyThemeRoleOverrides(base, roles, dark)
+        val original = if (settings.seedPaletteStyle.enabled) overridden else alignLiquidAccentColorScheme(
+            scheme = overridden,
+            accent = resolveLiquidControlAccentColor(settings.md3ColorSource, seed, overridden.primary,
+                roles.enabled, if (dark) roles.dark.controlAccentHex else roles.light.controlAccentHex),
+            liquidGlassEnabled = settings.liquidGlassEnabled,
+            source = settings.md3ColorSource,
+        )
+        return resolveAppThemeEndpointPalette(
+            base = original, uiStyle = settings.uiStyle, source = settings.md3ColorSource,
+            darkTheme = dark, amoledDarkTheme = dark && state.useAmoledDarkTheme,
+            wallpaperOverrides = settings.wallpaperPaletteOverrides, customSeed = seed,
+            roleOverrides = roles, liquidGlassEnabled = settings.liquidGlassEnabled,
+            preserveGeneratedPalette = settings.seedPaletteStyle.enabled,
+        )
+    }
+    val light = endpoint(lightBase, false)
+    val dark = endpoint(darkBase, true)
     return DesktopAppearancePalette(
-        if (native) alignMaterialSurfacesWithMiuix(material, if (state.useDarkTheme) miuixDark else miuixLight) else material,
-        miuixLight, miuixDark, themeRoleOverridesFromSchemes(lightBase, darkBase), state.useDarkTheme, state.useAmoledDarkTheme,
+        if (state.useDarkTheme) dark.material else light.material,
+        light.miuix, dark.miuix, themeRoleOverridesFromSchemes(lightBase, darkBase), state.useDarkTheme, state.useAmoledDarkTheme,
     )
 }
 

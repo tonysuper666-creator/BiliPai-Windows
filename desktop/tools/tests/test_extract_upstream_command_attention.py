@@ -30,6 +30,14 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             self.assertEqual(hashlib.sha256(interaction.fixed_sources()["VideoEngagementViewModel.kt"].encode()).hexdigest(), proof["originalSourceSha256LF"])
             self.assertTrue(proof["fullOwnedBodyInverse"])
             inverse = actual
+            owner = json.loads((out / "v042-owner-follow-projection-proof.json").read_text(encoding="utf-8"))
+            self.assertEqual(owner["outputSHA256"], hashlib.sha256(inverse.encode()).hexdigest())
+            self.assertTrue(owner["wholeOriginalMethodInverseRecovered"])
+            for edit in reversed(owner["edits"]):
+                start = edit["offset"]
+                self.assertEqual(inverse[start:start + len(edit["after"])], edit["after"])
+                inverse = inverse[:start] + edit["before"] + inverse[start + len(edit["after"]):]
+            self.assertEqual(owner["inputSHA256"], hashlib.sha256(inverse.encode()).hexdigest())
             # Current original source already contains repost limits. Undo the
             # actual Windows stages in reverse order, preserving the complete VM.
             for name in ("v037-video-coin-request-boundary-proof.json", "v029-video-feedback-lifetime-proof.json", "v029-video-feedback-origin-proof.json", "v029-video-feedback-state-proof.json"):
@@ -52,7 +60,8 @@ class CommandAttentionExtractionTest(unittest.TestCase):
                     patch("v037_video_feedback_adapter.apply_latest_feedback", side_effect=lambda path, body, parser: (body, None)), \
                     patch("v037_feedback_origin.apply_feedback_origin", side_effect=lambda path, body: (body, None)), \
                     patch("v029_video_feedback_host.apply_feedback_lifetime", side_effect=lambda path, body: (body, None)), \
-                    patch("v037_video_coin_request.apply", side_effect=lambda path, body, parser: (body, None)):
+                    patch("v037_video_coin_request.apply", side_effect=lambda path, body, parser: (body, None)), \
+                    patch("v042_owner_follow.apply", side_effect=lambda path, body, globals: (body, None)):
                 units.generate(REPO, before)
             self.assertEqual(units.wide(before / VM).read_text(encoding="utf-8"), inverse)
             self.assertEqual((before / "video-operations-members.fragment").read_bytes(), (out / "video-operations-members.fragment").read_bytes())
