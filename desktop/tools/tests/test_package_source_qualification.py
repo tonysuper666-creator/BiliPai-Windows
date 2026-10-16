@@ -102,6 +102,41 @@ class PackageSourceQualificationTest(unittest.TestCase):
         self.harness_export(); self.run["conclusion"] = "failure"
         with self.assertRaises(ValueError): self.verify()
 
+    def ui_export(self):
+        self.plan['exportOriginalRootUiHarness'] = True
+        self.payload['receipt']['originalRootUiHarnessExport'] = dict(schema=1, sourceSha=self.sha,
+            manifestSha256='f' * 64, payloadFiles=5, payloadBytes=54321,
+            productionRuntimeBindingRequired=True, productionClassesExported=False,
+            applicationExecuted=False, hardwareExecuted=False)
+
+    def test_ui_only_export_retains_separate_runtime_and_hardware_requirements(self):
+        self.ui_export(); proof = self.verify()
+        self.assertTrue(proof['originalRootUiHarnessExport']['productionRuntimeBindingRequired'])
+        self.assertNotIn('updaterHarnessExport', proof)
+        self.assertFalse(proof['hardwareVerified'])
+
+    def test_updater_and_ui_exports_have_independent_manifests_and_limits(self):
+        self.harness_export(); self.ui_export(); proof = self.verify()
+        self.assertEqual(proof['updaterHarnessExport']['manifestSha256'], 'e' * 64)
+        self.assertEqual(proof['originalRootUiHarnessExport']['manifestSha256'], 'f' * 64)
+        self.payload['receipt']['updaterHarnessExport']['payloadFiles'] = 8
+        with self.assertRaisesRegex(ValueError, 'updater harness payload'): self.verify()
+
+    def test_opted_ui_export_cannot_be_missing(self):
+        self.plan['exportOriginalRootUiHarness'] = True
+        with self.assertRaisesRegex(ValueError, 'UI harness export is absent'): self.verify()
+
+    def test_ui_export_identity_bounds_and_runtime_claims_are_checked(self):
+        self.ui_export()
+        original = copy.deepcopy(self.payload['receipt']['originalRootUiHarnessExport'])
+        for change in [dict(schema=True), dict(sourceSha='0' * 40), dict(manifestSha256='bad'),
+                       dict(payloadFiles=True), dict(payloadFiles=3), dict(payloadFiles=37),
+                       dict(payloadBytes=False), dict(payloadBytes=129 * 1024 * 1024),
+                       dict(productionRuntimeBindingRequired=False), dict(productionClassesExported=True),
+                       dict(applicationExecuted=True), dict(hardwareExecuted=True)]:
+            self.payload['receipt']['originalRootUiHarnessExport'] = dict(original, **change)
+            with self.subTest(change=change), self.assertRaises(ValueError): self.verify()
+
     def test_colored_console_output_outside_receipt_does_not_change_sealed_evidence(self):
         log = "2026-10-14T11:00:00Z \x1b[36mcompile output\x1b[0m\n" + self.log()
         proof = gate.verify(self.run, self.jobs, log, self.plan, self.sha)

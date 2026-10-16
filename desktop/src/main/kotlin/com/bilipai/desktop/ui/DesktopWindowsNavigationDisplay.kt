@@ -26,6 +26,8 @@ import com.android.purebilibili.core.ui.transition.LocalDynamicCommentPreviewVis
 import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute
 import com.android.purebilibili.core.ui.transition.LocalVideoCardTransitionClock
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionClock
+import com.android.purebilibili.core.ui.transition.VideoCardTransitionSettleState
+import com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionExposure
 import com.android.purebilibili.navigation3.*
 import top.yukonga.miuix.kmp.nav.core.NavBackStack
 import top.yukonga.miuix.kmp.nav.core.NavDisplay
@@ -62,6 +64,40 @@ internal fun completeDesktopWindowsNavigationBack(
     if (returningFromRelated) relatedVideoReturned()
 }
 
+/** The current Windows host completes related pops without a morph driver.
+ * A saved user preference is not evidence that an animation is running. Supply
+ * its actual clock exposure while letting the original nonanimated policy
+ * restore the previous source in this one genuine back-completion callback.
+ */
+internal fun completeDesktopWindowsRelatedVideoReturn(
+    owner: DesktopHomeReturnNavigationOwner,
+    clock: VideoCardTransitionClock,
+): Boolean = owner.onRelatedReturnExposure(
+    animated = false,
+    exposure = resolveVideoCardTransitionExposure(clock.phase,
+        clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
+        clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress),
+)
+
+/** Settle the original clock only from the actual committed Windows stack.
+ * This host has zero-duration navigation and no shared morph driver. Preserve an
+ * armed source while its video (or a child above it) is present, and release it
+ * when the real pop exposes Home. No timer or fabricated back target is used.
+ */
+internal fun settleDesktopWindowsCommittedNavigationClock(
+    clock: VideoCardTransitionClock,
+    committedStack: List<BiliPaiNavKey>,
+) {
+    if (committedStack.any { it is BiliPaiNavKey.VideoDetail }) {
+        clock.endGesture()
+        clock.endGestureRestore()
+        clock.clearSharedMorphProgress()
+        clock.markHeld()
+    } else {
+        clock.markIdle()
+    }
+}
+
 /** Same live typed stack and pinned per-entry lifecycle/VM/saveable/back owners.
  * Only the Windows presentation changes: no phone morph, captured depth layer,
  * blur, gesture slide, SharedTransitionLayout or LookaheadScope is introduced.
@@ -84,12 +120,17 @@ internal fun DesktopWindowsNavigationDisplay(
     val latestPrepare by rememberUpdatedState(onPrepareVideoCardSharedReturn)
     val latestRelatedReturn by rememberUpdatedState(onRelatedVideoDetailReturned)
     val latestRestorePrevious by rememberUpdatedState(restorePreviousVideoSourceOnDetailReturn)
-    val performBack = remember(environment, backStack) {
+    val performBack = remember(environment, backStack, videoCardClock) {
         {
-            if (environment.isCurrent()) completeDesktopWindowsNavigationBack(
-                backStack.lastOrNull(), latestRestorePrevious,
-                latestPrepare, latestBack, latestRelatedReturn,
-            )
+            if (environment.isCurrent()) {
+                completeDesktopWindowsNavigationBack(
+                    backStack.lastOrNull(), latestRestorePrevious,
+                    latestPrepare, latestBack, latestRelatedReturn,
+                )
+                if (environment.isCurrent()) {
+                    settleDesktopWindowsCommittedNavigationClock(videoCardClock, backStack.toList())
+                }
+            }
         }
     }
     DisposableEffect(programmaticBackDispatcher, performBack) {
@@ -104,6 +145,15 @@ internal fun DesktopWindowsNavigationDisplay(
         .observeCommentPreviewVisible(environment.context).collectAsStateWithLifecycle(initialValue = false)
     val globalWallpaperVisible = LocalGlobalWallpaperBackdropVisible.current
     val stackSnapshot = backStack.toList()
+    val clockPhase = videoCardClock.phase
+    SideEffect {
+        // The click may pre-arm this same clock even if navigation is rejected.
+        // Observe its phase, and never settle an obsolete composition's stack.
+        if (environment.isCurrent() && backStack.toList() == stackSnapshot &&
+            videoCardClock.phase == clockPhase) {
+            settleDesktopWindowsCommittedNavigationClock(videoCardClock, stackSnapshot)
+        }
+    }
     CompositionLocalProvider(
         LocalSharedTransitionScope provides null,
         LocalAnimatedVisibilityScope provides null,

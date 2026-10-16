@@ -746,8 +746,8 @@
     "path": "video/mp_image.h"
   },
   {
-    "afterBytes": 36441,
-    "afterSha256": "a4c1bf4d35b8d99171801eada5b7b7b8f6a67ff1fa6c3ed5b2a56e00935fc3b1",
+    "afterBytes": 37520,
+    "afterSha256": "a303c888d8cdede01fdf987eb082b096b3132f5b3f69f5fd8c02d0b22d668946",
     "beforeBytes": 20109,
     "beforeSha256": "8f0f70c2ac7cf3cd50e810f2d6b621751e38e4d8b428ceb62d2d07968c91981d",
     "edits": [
@@ -930,6 +930,41 @@
         "count": 1,
         "new": "    p->bilipai_feedback.version = 2;",
         "old": "    p->bilipai_feedback.version = 1;"
+      },
+      {
+        "count": 1,
+        "new": "    unsigned bilipai_ring_next;\n    unsigned bilipai_diag_quota, bilipai_diag_last_gate;\n",
+        "old": "    unsigned bilipai_ring_next;\n"
+      },
+      {
+        "count": 1,
+        "new": "// A zero gate means only that the existing output predicate passed. It\n// never acknowledges queue/display/source authority or relaxes a proof check.\nstatic void bilipai_gate_note(struct ra_swapchain *sw, unsigned gate)\n{\n    struct priv *p = sw->priv;\n    if (p->bilipai_diag_quota < 32 &&\n        (!p->bilipai_diag_quota || gate != p->bilipai_diag_last_gate)) {\n        p->bilipai_diag_last_gate = gate;\n        ++p->bilipai_diag_quota;\n        MP_VERBOSE(sw->ctx, \"BILIPAI_RTX_PRESENT_GATE %u\\n\", gate);\n    }\n}\nstatic bool bilipai_gate_reject(struct ra_swapchain *sw, unsigned gate)\n{\n    bilipai_gate_note(sw, gate);\n    return false;\n}\nstatic bool bilipai_output(struct ra_swapchain *sw,\n",
+        "old": "static bool bilipai_output(struct ra_swapchain *sw,\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (!r->fresh) return bilipai_gate_reject(sw, 1);\n    if (!mp_bilipai_token_valid(&r->token)) return bilipai_gate_reject(sw, 2);\n    if (!p->bilipai_color_configured) return bilipai_gate_reject(sw, 3);\n    if (!p->bilipai_adapter_luid) return bilipai_gate_reject(sw, 4);\n    if (r->token.adapter_luid != p->bilipai_adapter_luid) return bilipai_gate_reject(sw, 5);\n    if (r->target_transfer != p->swapchain_csp.transfer) return bilipai_gate_reject(sw, 6);\n    if (r->target_primaries != p->swapchain_csp.primaries) return bilipai_gate_reject(sw, 7);\n    if (r->framebuffer_transfer != p->swapchain_csp.transfer) return bilipai_gate_reject(sw, 8);\n    if (r->framebuffer_primaries != p->swapchain_csp.primaries) return bilipai_gate_reject(sw, 9);\n    if (IDXGISwapChain_GetDesc(p->swapchain, &desc) != S_OK) return bilipai_gate_reject(sw, 10);\n",
+        "old": "    if (!r->fresh || !mp_bilipai_token_valid(&r->token) ||\n        !p->bilipai_color_configured || !p->bilipai_adapter_luid ||\n        r->token.adapter_luid != p->bilipai_adapter_luid ||\n        r->target_transfer != p->swapchain_csp.transfer ||\n        r->target_primaries != p->swapchain_csp.primaries ||\n        r->framebuffer_transfer != p->swapchain_csp.transfer ||\n        r->framebuffer_primaries != p->swapchain_csp.primaries ||\n        IDXGISwapChain_GetDesc(p->swapchain, &desc) != S_OK)\n        return false;\n"
+      },
+      {
+        "count": 1,
+        "new": "        if (!hdr_proved) return bilipai_gate_reject(sw, 11);",
+        "old": "        if (!hdr_proved) return false;"
+      },
+      {
+        "count": 1,
+        "new": "    bilipai_gate_note(sw, 0);\n    *out = (struct mp_bilipai_present_receipt){\n",
+        "old": "    *out = (struct mp_bilipai_present_receipt){\n"
+      },
+      {
+        "count": 1,
+        "new": "    unsigned bilipai_diag_quota, bilipai_diag_seen_gates;",
+        "old": "    unsigned bilipai_diag_quota, bilipai_diag_last_gate;"
+      },
+      {
+        "count": 1,
+        "new": "    if (gate <= 11 && p->bilipai_diag_quota < 32 &&\n        !(p->bilipai_diag_seen_gates & (1u << gate))) {\n        p->bilipai_diag_seen_gates |= 1u << gate;\n        ++p->bilipai_diag_quota;\n        MP_VERBOSE(sw->ctx, \"BILIPAI_RTX_PRESENT_GATE %u\\n\", gate);\n    }",
+        "old": "    if (p->bilipai_diag_quota < 32 &&\n        (!p->bilipai_diag_quota || gate != p->bilipai_diag_last_gate)) {\n        p->bilipai_diag_last_gate = gate;\n        ++p->bilipai_diag_quota;\n        MP_VERBOSE(sw->ctx, \"BILIPAI_RTX_PRESENT_GATE %u\\n\", gate);\n    }"
       }
     ],
     "path": "video/out/d3d11/context.c"
@@ -992,8 +1027,8 @@
     "path": "video/out/gpu/d3d11_helpers.h"
   },
   {
-    "afterBytes": 163630,
-    "afterSha256": "5831c929b9447c124cd2cb3cb113a6025a9baadebd12da9630f1008f0ff60e5a",
+    "afterBytes": 165253,
+    "afterSha256": "70995b2f27cc9036c817082807603fb426e379df8da5b2c37cbc02d807cc08c3",
     "beforeBytes": 162322,
     "beforeSha256": "c3a2d28dadc406f8224002d01864119d27d0fe35454c62fe367beaa6f3a5355a",
     "edits": [
@@ -1026,6 +1061,51 @@
         "count": 1,
         "new": "                    (!p->opts.user_shaders || !p->opts.user_shaders[0]);",
         "old": "                    !p->opts.user_shaders;"
+      },
+      {
+        "count": 1,
+        "new": "    struct mp_bilipai_render_receipt bilipai_receipt;\n    unsigned bilipai_diag_quota, bilipai_diag_last_mask;\n",
+        "old": "    struct mp_bilipai_render_receipt bilipai_receipt;\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool bilipai_fresh_draw = false;\n    bool bilipai_diag_new = false, bilipai_diag_interpolation = false;\n    bool bilipai_diag_cache_render = false, bilipai_diag_cache_blit = false;\n",
+        "old": "    bool bilipai_fresh_draw = false;\n"
+      },
+      {
+        "count": 1,
+        "new": "        bilipai_diag_interpolation = interpolate;\n        if (interpolate) {\n            gl_video_interpolate_frame(p, frame, fbo, flags);",
+        "old": "        if (interpolate) {\n            gl_video_interpolate_frame(p, frame, fbo, flags);"
+      },
+      {
+        "count": 1,
+        "new": "            bilipai_diag_new = is_new;\n            if (is_new || !p->output_tex_valid) {",
+        "old": "            if (is_new || !p->output_tex_valid) {"
+      },
+      {
+        "count": 1,
+        "new": "                pass_draw_to_screen(p, dest_fbo, flags);\n                bilipai_diag_cache_render = r;\n                bilipai_fresh_draw",
+        "old": "                pass_draw_to_screen(p, dest_fbo, flags);\n                bilipai_fresh_draw"
+      },
+      {
+        "count": 1,
+        "new": "                p->ra->fns->blit(p->ra, fbo->tex, p->output_tex, &dst, &src);\n                bilipai_diag_cache_blit = true;",
+        "old": "                p->ra->fns->blit(p->ra, fbo->tex, p->output_tex, &dst, &src);"
+      },
+      {
+        "count": 1,
+        "new": "    // Fixed numbers only, bounded independently of frame rate. This is not\n    // presentation proof; ordinary clients discard these verbose messages.\n    unsigned bilipai_diag_mask =\n        (frame->current ? 1u : 0u) | (bilipai_diag_new ? 2u : 0u) |\n        (frame->repeat ? 4u : 0u) | (frame->redraw ? 8u : 0u) |\n        (frame->still ? 16u : 0u) | (bilipai_diag_interpolation ? 32u : 0u) |\n        (bilipai_diag_cache_render ? 64u : 0u) | (bilipai_diag_cache_blit ? 128u : 0u) |\n        (p->broken_frame ? 256u : 0u) | (p->hwdec_overlay ? 512u : 0u) |\n        (frame->current && mp_image_bilipai_token_matches(frame->current) ? 1024u : 0u) |\n        (frame->frame_id && p->image.id == frame->frame_id ? 2048u : 0u) |\n        (p->bilipai_receipt.fresh ? 4096u : 0u) |\n        (p->opts.user_shaders && p->opts.user_shaders[0] ? 8192u : 0u) |\n        (frame->current && mp_bilipai_token_valid(&frame->current->bilipai_rtx) ? 16384u : 0u);\n    if (p->bilipai_diag_quota < 32 &&\n        (!p->bilipai_diag_quota || bilipai_diag_mask != p->bilipai_diag_last_mask)) {\n        p->bilipai_diag_last_mask = bilipai_diag_mask;\n        ++p->bilipai_diag_quota;\n        MP_VERBOSE(p, \"BILIPAI_RTX_RENDER_FLAGS %u\\n\", bilipai_diag_mask);\n    }\n    p->frames_rendered++;\n    pass_report_performance(p);",
+        "old": "    p->frames_rendered++;\n    pass_report_performance(p);"
+      },
+      {
+        "count": 1,
+        "new": "    unsigned bilipai_diag_quota;\n    unsigned bilipai_diag_seen_masks[32];",
+        "old": "    unsigned bilipai_diag_quota, bilipai_diag_last_mask;"
+      },
+      {
+        "count": 1,
+        "new": "    if (p->bilipai_diag_quota < 32) {\n        bool bilipai_diag_seen = false;\n        for (unsigned n = 0; n < p->bilipai_diag_quota; ++n)\n            bilipai_diag_seen |= p->bilipai_diag_seen_masks[n] == bilipai_diag_mask;\n        if (!bilipai_diag_seen) {\n            p->bilipai_diag_seen_masks[p->bilipai_diag_quota++] = bilipai_diag_mask;\n            MP_VERBOSE(p, \"BILIPAI_RTX_RENDER_FLAGS %u\\n\", bilipai_diag_mask);\n        }\n    }",
+        "old": "    if (p->bilipai_diag_quota < 32 &&\n        (!p->bilipai_diag_quota || bilipai_diag_mask != p->bilipai_diag_last_mask)) {\n        p->bilipai_diag_last_mask = bilipai_diag_mask;\n        ++p->bilipai_diag_quota;\n        MP_VERBOSE(p, \"BILIPAI_RTX_RENDER_FLAGS %u\\n\", bilipai_diag_mask);\n    }"
       }
     ],
     "path": "video/out/gpu/video.c"

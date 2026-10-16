@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "129",
+  "windowsRevision": "134",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14083,7 +14083,7 @@
   "windowsNativeComponentContractRevision": {
     "sharedCoreAbiExports": 8,
     "presentationProtocolVersion": 2,
-    "verifierSHA256": "a9266f62713049f16e4d929128aee93c1e7d976d61cc27e6e903f06dbb28fef6",
+    "verifierSHA256": "ee94c3957f23d53eff885f8aadbabe6882517167436a9290bb562e48b517ff8f",
     "windowsPowerShellChildModulePathIsolated": true,
     "integralJsonProtocolTypesSupported": true,
     "sourceIdentityAndRuntimeSignatureChecksRetained": true,

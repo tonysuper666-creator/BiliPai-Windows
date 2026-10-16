@@ -20,7 +20,7 @@
     }
   ],
   "bridgeGpl3LicenseSha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
-  "buildPatchHelperSha256": "748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf",
+  "buildPatchHelperSha256": "9b9b6d058f4b74f44cf837b1893825e1bf9e30eeaaf56e497f8bd915bcae3f61",
   "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
   "curlLibsshCompatibility": {
     "afterBytes": 8929,
@@ -62,6 +62,7 @@
     "versionSha256": "ddcd76798d2650c9808815cd7c2bfc991056cd8471bfbf156068dfac52f319dd"
   },
   "expectedPatchedRecipeSha256": {
+    "build-recipes/packages/c-ares.cmake": "f538cedd2317d3a581221e6fa8bb75940de324bdfab802c42614ac59a03567c1",
     "build-recipes/packages/curl.cmake": "b17133fb195d2c566db52b458116369dfdb588b836c561a97f8e6e24b687e7d7",
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
     "build-recipes/packages/libaribcaption.cmake": "dd4ce1fd21c4ee1444dd463677789deab238bff269fda5bafd3aba800f8865b6",
@@ -73,7 +74,7 @@
   },
   "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
   "filterName": "bilipai-rtx",
-  "filterSourceManifestSha256": "a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607",
+  "filterSourceManifestSha256": "8f61b3035bd4dbc4690431d532d9fa6e48216a309c7ddec7664594a892049790",
   "libaribcaptionCommit": "94e0b1dcabcd0df218929493c15bdbcac876939a",
   "libvplCompatibility": {
     "afterBytes": 1224,
@@ -97,6 +98,6 @@
   "schema": 3,
   "sharedHostInputsPath": "desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json",
   "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
-  "upstreamEditsSha256": "e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f",
+  "upstreamEditsSha256": "7a9f37208757f87f7f591e544957a60a3bf141de743c1502a1af9ed99b0fd311",
   "variant": "bilipai-veyra-rtx-present-v1"
 }

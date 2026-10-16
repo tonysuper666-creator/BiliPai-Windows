@@ -4,6 +4,7 @@ param(
     [string]$SevenZipPath,
     [switch]$Installer,
     [switch]$SkipTests,
+    [switch]$FixedJavaToolchain,
     [switch]$ReleaseGate,
     [switch]$NativeSmoke,
     [switch]$NativeMuxSmoke,
@@ -52,6 +53,13 @@ if (-not $JavaHome -or -not (Test-Path -LiteralPath (Join-Path $JavaHome 'bin/ja
     throw 'JDK 21 is required. Pass -JavaHome <portable JDK directory> or set JAVA_HOME for this process.'
 }
 $JavaHome = [IO.Path]::GetFullPath($JavaHome)
+$toolchainArguments = @()
+$fixedToolchain = $null
+if ($FixedJavaToolchain) {
+    . (Join-Path $PSScriptRoot 'fixed-java-toolchain.ps1')
+    $fixedToolchain = Get-BiliPaiFixedJavaToolchain -JavaHome $JavaHome
+    $toolchainArguments = @($fixedToolchain.gradleArguments)
+}
 $originalJavaHome, $originalPath = $env:JAVA_HOME, $env:PATH
 try {
     $env:JAVA_HOME = $JavaHome
@@ -85,6 +93,7 @@ try {
     Push-Location $repoRoot
     try {
         $gradleArguments = @('-p', 'desktop', '--console=plain')
+        $gradleArguments += $toolchainArguments
         if (-not $SkipTests) { $gradleArguments += 'test' }
         if ($ReleaseGate) { $gradleArguments += 'backendSmoke' }
         $gradleArguments += 'createDistributable'
@@ -112,7 +121,7 @@ try {
         $packagedFfprobe = Join-Path $packagedNativeRoot 'ffprobe.exe'
         Push-Location $repoRoot
         try {
-            & (Join-Path $repoRoot 'gradlew.bat') -p desktop --console=plain nativeMuxSmoke `
+            & (Join-Path $repoRoot 'gradlew.bat') @toolchainArguments -p desktop --console=plain nativeMuxSmoke `
                 "-PnativeMuxFfmpeg=$packagedFfmpeg" "-PnativeMuxFfprobe=$packagedFfprobe" "-PnativeMuxReport=$muxReportPath"
             if ($LASTEXITCODE -ne 0) { throw "Packaged native download mux test failed ($LASTEXITCODE)." }
         } finally { Pop-Location }
@@ -241,6 +250,7 @@ try {
         New-Item -ItemType Directory -Path $updaterSmokeRoot -Force | Out-Null
         $updaterSmokeArguments = @('-p', 'desktop', '--console=plain', 'updaterSmoke',
             "-PupdateTestPackage=$archive", "-PupdateTestReport=$updaterSmokeRoot")
+        $updaterSmokeArguments += $toolchainArguments
         if ($PreviousUpdateTestPackage) { $updaterSmokeArguments += "-PupdatePreviousPackage=$PreviousUpdateTestPackage" }
         Push-Location $repoRoot
         try {
@@ -282,6 +292,14 @@ try {
             verifiedAtUtc = [DateTime]::UtcNow.ToString('o')
         }
         $releaseGateReport | ConvertTo-Json | Set-Content -LiteralPath $gatePath -Encoding utf8
+    }
+    if ($FixedJavaToolchain) {
+        $toolchainSourceSha = & git -C $repoRoot rev-parse HEAD
+        if ($LASTEXITCODE -ne 0) { throw 'Candidate source identity is unavailable.' }
+        $toolchainEvidenceSha = Write-BiliPaiCandidateToolchainEvidence -Toolchain $fixedToolchain `
+            -SourceSha $toolchainSourceSha -WindowsVersion $windowsVersion -Archive $archive `
+            -ApplicationRoot $executable.DirectoryName -Output (Join-Path $outputRoot 'candidate-toolchain.json')
+        Write-Host "BILIPAI_CANDIDATE_TOOLCHAIN_SHA256 $toolchainEvidenceSha"
     }
     Write-Host "Portable Windows package: $archive"
     Write-Host "SHA-256 checksum: $archive.sha256"
