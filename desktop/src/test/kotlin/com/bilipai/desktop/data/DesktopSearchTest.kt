@@ -21,7 +21,7 @@ class DesktopSearchTest {
     @Test fun videoDefaultsOmitUnsetZoneAndPublishBoundsButRetainOriginalIdentity() {
         val params = desktopVideoSearchParams("视频", SearchOrder.TOTALRANK, SearchDuration.ALL, 0, 1, null, null)
         assertEquals("totalrank", params["order"]); assertEquals("0", params["duration"])
-        assertEquals("20", params["page_size"]); assertEquals("pc", params["platform"]); assertEquals("1430654", params["web_location"])
+        assertEquals("30", params["page_size"]); assertEquals("pc", params["platform"]); assertEquals("1430654", params["web_location"])
         assertFalse("tids" in params); assertFalse("pubtime_begin_s" in params); assertFalse("pubtime_end_s" in params)
         val filtered = desktopVideoSearchParams("q", SearchOrder.DM, SearchDuration.OVER_60MIN, 234, 2, 10, 20)
         assertEquals("dm", filtered["order"]); assertEquals("4", filtered["duration"]); assertEquals("234", filtered["tids"])
@@ -66,13 +66,13 @@ class DesktopSearchTest {
         assertEquals(listOf(SearchDuration.ALL), resolveSearchDurationRequests(setOf(SearchDuration.ALL, SearchDuration.UNDER_10MIN)))
     }
 
-    @Test fun mergedDurationsKeepFirstOriginalRecordAndContinueAfterShortNonemptyPage() {
+    @Test fun mergedDurationsKeepFirstOriginalRecordAndHonorServerLastPage() {
         val first = SearchVideoItem(bvid = "BV1", title = "first", mid = 5, author = "up", pubdate = 123)
         val second = SearchVideoItem(bvid = "BV2", title = "second", mid = 6)
         val pages = listOf(SearchTypeData(page = 1, numPages = 1, result = listOf(first)),
             SearchTypeData(page = 1, numPages = 1, result = listOf(first.copy(title = "duplicate"), second)))
         val result = mergeDesktopSearchVideoPages(pages, 2)
-        assertEquals(listOf(first, second), result.first.result); assertEquals(2, result.first.page); assertEquals(3, result.second)
+        assertEquals(listOf(first, second), result.first.result); assertEquals(2, result.first.page); assertNull(result.second)
         assertEquals(5L, result.first.result!!.first().mid); assertEquals(123L, result.first.result!!.first().pubdate)
         assertNull(mergeDesktopSearchVideoPages(listOf(SearchTypeData(page = 2, result = emptyList())), 2).second)
     }

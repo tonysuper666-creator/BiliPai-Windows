@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "143",
+  "windowsRevision": "146",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14499,7 +14499,7 @@
     "upstreamTag": "v0.4.1",
     "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
     "archive": "desktop/upstream-slices/v041-video-status-labels",
-    "manifestSHA256": "a7d3af6952c9744c1e58f4d65511aaad96f760eb72425989163f6f557356df66",
+    "manifestSHA256": "e13914083ff47f1ba60181bda99cd71f6b019a71488b8bf2ff323c9c54f3b9d3",
     "soleProducer": "desktop/tools/extract-v041-video-status-labels.py",
     "hookModule": "desktop/tools/v041_video_status_labels.py",
     "archivedFiles": 15,
@@ -14508,11 +14508,10 @@
       "VideoStatusBadges.kt",
       "ListModels.kt",
       "SpaceModels.kt",
-      "FavoriteModels.kt"
-    ],
-    "hookEditedCanonicalModels": [
+      "FavoriteModels.kt",
       "SearchModels.kt"
     ],
+    "hookEditedCanonicalModels": [],
     "anchoredHooks": 21,
     "modelHooks": 3,
     "wiredConsumerHooks": 18,
@@ -14526,7 +14525,7 @@
     ],
     "entriesPendingHeldHomeCardHooks": [],
     "originalTestCases": 11,
-    "deferredUpstreamModelHunks": 9,
+    "deferredUpstreamModelHunks": 0,
     "canonicalV025InputsUnchanged": true,
     "subscribeLabelInV041": false,
     "pinnedChipInSharedPolicy": false,
@@ -14537,7 +14536,8 @@
     "jvmTestsExecuted": false,
     "applicationExecuted": false,
     "favoriteModelsWholeRawSource": true,
-    "watchLaterPositionalConstructorMigrated": true
+    "watchLaterPositionalConstructorMigrated": true,
+    "searchModelsWholeRawSource": true
   },
   "v041VideoStatusPersonalConsumersSlice": {
     "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
@@ -14561,5 +14561,21 @@
     "mainCompiled": false,
     "jvmTestsExecuted": false,
     "applicationExecuted": false
+  },
+  "v041ComprehensiveSearchSlice": {
+    "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+    "sourceManifest": "desktop/upstream-slices/v041-search-all/manifest.json",
+    "sourceManifestSHA256": "bdbc6b5337f19bfcd8897a65c608804d492c0908bd64bb1ffbd68d331eb3ec1c",
+    "sourceFiles": 7,
+    "soleExistingPageProducer": "desktop/tools/extract-upstream-search-pages.py",
+    "wholeRepositoryAndViewModel": true,
+    "wholeSearchModels": true,
+    "wholeSearchApiInterface": true,
+    "screenAdoption": "Exact original ALL branches, cards, filters and page policies; unrelated v041 material changes are still pending",
+    "canonicalSourcesUnchanged": true,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false,
+    "allFilterLayoutVisibilityMatchesOriginalContract": true
   }
 }

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "jay3-yy/BiliPai",
+  "upstreamTag": "v0.4.1",
+  "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+  "hashNormalization": "raw",
+  "scope": "Full original comprehensive-search repository and state owner; finite original ALL page blocks and exact selected SearchApi contract. Unrelated v041 SearchScreen material changes remain separately unqualified. The original showLayoutToggle contract is adopted in the retained combined Windows filter bar.",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "filename": "SearchRepository.kt",
+      "bytes": 33438,
+      "sha256": "9a669b0f7ccd36a5d9a0e878f8c8330e3b46138ab49192035d16ffd306c8fe10",
+      "gitBlob": "4d9ab28aaae5d6b344841f5969f602cccf333183",
+      "canonicalSha256LF": "4cec15c48b162a5987ae84ab962ed5e0958e89c33126f7c1f1fdbec322880ed0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+      "filename": "SearchViewModel.kt",
+      "bytes": 77392,
+      "sha256": "dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8",
+      "gitBlob": "f0ba713c6087b00e287f637456e23c6ff275b4fc",
+      "canonicalSha256LF": "4047d582671222148c28c7a8abb0feb294185e605a1208109dcb15ed8c79a600"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "filename": "SearchScreen.kt",
+      "bytes": 251347,
+      "sha256": "c742e3cbc6b6902e056c17b27874a5240b0aa9ca3d535c60f53369016ebb5a0d",
+      "gitBlob": "aaf2b036d6b1eadc21bc387e0b90fa18e73348c9",
+      "canonicalSha256LF": "d5e95624fa21466c605516bb7b517c8265349a32795c9e9da65344f9ed9dd603"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt",
+      "filename": "SearchLoadPolicy.kt",
+      "bytes": 4111,
+      "sha256": "680976b2c41780defcebef4b1c1078e0e626f2fd6071c874e837508324e50119",
+      "gitBlob": "0d24d3abe2c905ebce16dc15050573c97d1304c9",
+      "canonicalSha256LF": "d3b0aaec1af0db1ff075c53746d23d8c05d125ad9569cdb0aa190efbf27bd557"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt",
+      "filename": "SearchEmptyStatePolicy.kt",
+      "bytes": 1562,
+      "sha256": "3f42b89a3c3d1512b483ff980d3e29edbb6b2bf7c1a39e4261ae2518a2d53a0b",
+      "gitBlob": "72fb8aa3935310c48bcf9d7b8f283864de388a1a",
+      "canonicalSha256LF": "a6284ad871eab020fb9e4b3210a8e2abebfa7d54dd246653cdfedc771526c012"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "filename": "ApiClient.kt",
+      "bytes": 154196,
+      "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+      "gitBlob": "3e901a8fbd3991e376047d67a22decbd3a174099",
+      "canonicalSha256LF": "dbd4762470843e5d3776e2aa5ed830df4d4c8571980e70cf12cdc37bc4c92060"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "filename": "SearchVideoFilterSheet.kt",
+      "bytes": 19558,
+      "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+      "gitBlob": "a53ec028ebe0ce48cd1824ec10203046175203ea",
+      "canonicalSha256LF": "8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba"
+    }
+  ]
+}

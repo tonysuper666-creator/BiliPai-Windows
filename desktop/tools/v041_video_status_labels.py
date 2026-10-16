@@ -21,7 +21,7 @@ from v025_source_paths import canonical_source
 COMMIT = 'd18fb20e31adb11bbec9fae6dfce7d705d556217'
 BASELINE_COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 ARCHIVE = 'desktop/upstream-slices/v041-video-status-labels'
-MANIFEST_SHA256 = 'a7d3af6952c9744c1e58f4d65511aaad96f760eb72425989163f6f557356df66'
+MANIFEST_SHA256 = 'e13914083ff47f1ba60181bda99cd71f6b019a71488b8bf2ff323c9c54f3b9d3'
 CORE = 'core-data/src/main/java/com/android/purebilibili/'
 APP = 'app/src/main/java/com/android/purebilibili/'
 MODELS = CORE + 'data/model/response/'
@@ -55,7 +55,7 @@ PINS = [
     {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/VideoStatusBadges.kt', 'archiveFile': 'VideoStatusBadges.kt', 'bytes': 1023, 'sha256': '83cf025c274e340e8877986784ffb1d9bbb88a168ef6b81c830344a601cf854b', 'gitBlob': '68e9bc71e5109897d0b8083c64f0c8135508e546', 'referenceOnly': False},
     {'path': 'core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt', 'archiveFile': 'ListModels.kt', 'bytes': 24435, 'sha256': '3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1', 'gitBlob': 'c0db297c727a424c0f59dc57b06a6126cff6dbaa', 'referenceOnly': False},
     {'path': 'core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt', 'archiveFile': 'SpaceModels.kt', 'bytes': 30291, 'sha256': '3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b', 'gitBlob': '48f8347e406193fb6d5061c9f0a335d75a70b1e0', 'referenceOnly': False},
-    {'path': 'core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt', 'archiveFile': 'SearchModels.kt', 'bytes': 20659, 'sha256': '121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30', 'gitBlob': 'bfa90f39597c1639b37b7b255baf4f7975043dce', 'referenceOnly': True},
+    {'path': 'core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt', 'archiveFile': 'SearchModels.kt', 'bytes': 20659, 'sha256': '121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30', 'gitBlob': 'bfa90f39597c1639b37b7b255baf4f7975043dce', 'referenceOnly': False},
     {'path': 'core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt', 'archiveFile': 'FavoriteModels.kt', 'bytes': 6056, 'sha256': '3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534', 'gitBlob': '8e8ce0f0dc335748c66904076c1d7c809c2f3ea7', 'referenceOnly': False},
     {'path': 'core-data/src/main/java/com/android/purebilibili/data/repository/UserContentRepository.kt', 'archiveFile': 'UserContentRepository.kt', 'bytes': 3918, 'sha256': 'b95f08c8f693d0ce7a089a52df4f9884c564ae968393ece23488c09732eca3dd', 'gitBlob': '8301c8b661f897772bcc56df10bd35d026fb39a4', 'referenceOnly': True},
     {'path': 'core-data/src/test/java/com/android/purebilibili/data/model/response/VideoStatusLabelsTest.kt', 'archiveFile': 'VideoStatusLabelsTest.kt', 'bytes': 2638, 'sha256': '321d1502204a020546396f474f5cef38c35e78793db184f3a73a4c8fd1090c7c', 'gitBlob': '1bf5b2e40dcb517ae61c9a128e001ab98d75f1e1', 'referenceOnly': False},
@@ -154,10 +154,7 @@ PARITY_NEEDLES = {
 LABEL_VOCABULARY = ('互动', '付费', '充电', '充电专属', '合作', '课堂', '课程')
 
 # Deferred upstream text: present in v0.4.1, absent from the emitted replacement.
-ABSENT_FROM_EMITTED = {
-    SEARCH_MODELS: ('ALL("all"', 'SearchAllResponse', 'SearchAllData', 'SearchAllResultCategory', 'val res: List<SearchVideoItem>'),
-
-}
+ABSENT_FROM_EMITTED = {}
 
 Hook = namedtuple('Hook', 'id path name consumer before after')
 HOOKS = (
@@ -677,20 +674,14 @@ def emit_models(repo):
         text = apply(path, before, edits=edits)
         need(revert(text, edits) == before, 'Hook inverse failed: ' + path)
         remainder = reviewed_delta(path, REVIEWED_POST_HOOK_DELTAS, text, sources[path])
-        if path == FAVORITE_MODELS:
-            # All original fields, including ps, now come from the exact v041 blob.
-            # The reviewed FM1 + remainder chain still restores the whole v025 input.
-            data = raw[path]
-            emitted[path] = (data, dict(
-                mode='whole-v041-replacement', hooks=[edit['id'] for edit in edits],
-                baselineSha256LF=sha(before), sha256=sha(data), bytes=len(data),
-                identicalToArchive=True, inverseRestoresBaseline=True,
-                appliedPostHookUpstreamHunks=remainder, deferredUpstreamHunks=[]))
-        else:
-            data = text.encode('utf-8')
-            emitted[path] = (data, dict(
-                mode='canonical-with-hooks', hooks=[edit['id'] for edit in edits], baselineSha256LF=sha(before),
-                sha256=sha(data), bytes=len(data), inverseRestoresBaseline=True, deferredUpstreamHunks=remainder))
+        # Full original fields now include search/all/v2 and WatchLaterData.ps.
+        # The reviewed hook + remainder chain restores each whole v025 input.
+        data = raw[path]
+        emitted[path] = (data, dict(
+            mode='whole-v041-replacement', hooks=[edit['id'] for edit in edits],
+            baselineSha256LF=sha(before), sha256=sha(data), bytes=len(data),
+            identicalToArchive=True, inverseRestoresBaseline=True,
+            appliedPostHookUpstreamHunks=remainder, deferredUpstreamHunks=[]))
     for path, (data, receipt) in emitted.items():
         text, latest = data.decode('utf-8'), sources[path]
         needles = {}

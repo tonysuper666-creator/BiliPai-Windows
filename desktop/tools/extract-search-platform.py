@@ -30,7 +30,8 @@ def generate(repo: Path, output: Path) -> None:
     parser = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(parser)
     relative = BASE + "data/repository/SearchRepository.kt"
-    source = (_desktop_canonical_source(repo, relative)).read_text(encoding="utf-8")
+    from v041_search_all import fixed_sources, REPOSITORY
+    source = fixed_sources(repo)[0][REPOSITORY]
     tokens = parser.kotlin_tokens(source)
 
     def declaration(kind: str, name: str) -> str:

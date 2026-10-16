@@ -92,12 +92,17 @@ try {
 
     Push-Location $repoRoot
     try {
+        $runtimeEvidenceRoot = Join-Path $desktopRoot ('build/reports/candidate-runtime-' + [Guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $runtimeEvidenceRoot -Force | Out-Null
+        $runtimeModel = Join-Path $runtimeEvidenceRoot 'runtime-model.json'
         $gradleArguments = @('-p', 'desktop', '--console=plain')
+        $gradleArguments += @('--init-script', (Join-Path $PSScriptRoot 'original-root-ui-harness.init.gradle'),
+            "-PcandidateProductionRuntimeModel=$runtimeModel")
         $gradleArguments += $toolchainArguments
         if (-not $SkipTests) { $gradleArguments += 'test' }
         if ($ReleaseGate) { $gradleArguments += 'backendSmoke' }
         $gradleArguments += 'createDistributable'
-        if ($Installer) { $gradleArguments += 'packageMsi' }
+        $gradleArguments += 'writeCandidateProductionRuntimeModel'
         & (Join-Path $repoRoot 'gradlew.bat') @gradleArguments
         if ($LASTEXITCODE -ne 0) { throw "Windows Gradle build failed ($LASTEXITCODE)." }
         if (-not $SkipTests) {
@@ -112,6 +117,21 @@ try {
     $appRoot = Join-Path $desktopRoot 'build/compose/binaries/main/app'
     $executable = Get-ChildItem -LiteralPath $appRoot -Filter 'BiliPai Windows.exe' -File -Recurse | Select-Object -First 1
     if (-not $executable) { throw 'createDistributable did not produce a native Windows launcher.' }
+    $pythonExecutable = if ($env:PYTHON_EXECUTABLE) { $env:PYTHON_EXECUTABLE } else { 'python' }
+    $runtimeSourceSha = & git -C $repoRoot rev-parse HEAD
+    if ($LASTEXITCODE -ne 0) { throw 'Candidate runtime source identity is unavailable.' }
+    & $pythonExecutable (Join-Path $PSScriptRoot 'canonicalize-candidate-classpath.py') `
+        --candidate $executable.DirectoryName --model $runtimeModel --source-sha $runtimeSourceSha `
+        --output (Join-Path $runtimeEvidenceRoot 'classpath-binding.json')
+    if ($LASTEXITCODE -ne 0) { throw 'Production candidate classpath binding failed.' }
+    if ($Installer) {
+        # A separate task invocation packages the corrected app image.
+        Push-Location $repoRoot
+        try {
+            & (Join-Path $repoRoot 'gradlew.bat') @toolchainArguments -p desktop --console=plain packageMsi -x createDistributable
+            if ($LASTEXITCODE -ne 0) { throw 'Windows MSI packaging failed.' }
+        } finally { Pop-Location }
+    }
     if ($ReleaseGate -or $NativeMuxSmoke) {
         $packagedNativeRoot = Join-Path $executable.DirectoryName 'app/resources/native/windows-x64'
         $muxSmokeRoot = Join-Path $desktopRoot ('build/reports/native-mux-' + [Guid]::NewGuid().ToString('N'))
@@ -231,6 +251,9 @@ try {
     $versionLabel = [regex]::Replace($manifest.upstreamTag, '[^A-Za-z0-9._-]', '-')
     $outputRoot = Join-Path $desktopRoot 'build/distributions'
     New-Item -ItemType Directory -Path $outputRoot -Force | Out-Null
+    Copy-Item -LiteralPath $runtimeModel -Destination (Join-Path $outputRoot 'candidate-runtime-model.json') -Force
+    Copy-Item -LiteralPath (Join-Path $runtimeEvidenceRoot 'classpath-binding.json') `
+        -Destination (Join-Path $outputRoot 'candidate-classpath.json') -Force
     $buildInfoPath = Join-Path $desktopRoot 'build/resources/main/windows-update.json'
     $windowsVersion = if (Test-Path -LiteralPath $buildInfoPath) {
         $buildInfo = Get-Content -LiteralPath $buildInfoPath -Raw | ConvertFrom-Json

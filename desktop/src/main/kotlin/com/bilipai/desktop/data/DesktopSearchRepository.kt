@@ -1,10 +1,15 @@
 package com.bilipai.desktop.data
 
 import com.android.purebilibili.core.network.SearchApi
+import com.android.purebilibili.core.network.BilibiliApi
+import com.android.purebilibili.core.network.BuvidApi
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -18,6 +23,25 @@ class DesktopSearchRepository(private val repository: DesktopRepository) {
         .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }.asConverterFactory("application/json".toMediaType()))
         .build()
     private val api = web.create(SearchApi::class.java)
+
+    suspend fun all(keyword: String, page: Int = 1, filters: DesktopSearchFilters = DesktopSearchFilters()): TypedSearchPage = withContext(Dispatchers.IO) {
+        require(keyword.isNotBlank() && page > 0)
+        val caller = currentCoroutineContext()
+        val epoch = repository.sessionEpoch
+        val current = { caller.isActive && repository.sessionEpoch == epoch }
+        caller.ensureActive()
+        repository.ensureOwnedHomeSession(epoch, current,
+            repository.ownedHomeService(BuvidApi::class.java, "https://api.bilibili.com/", epoch, current))
+        val nav = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/", epoch, current)
+        val request = DesktopOriginalSearchRepository(
+            repository.ownedHomeService(SearchApi::class.java, "https://api.bilibili.com/", epoch, current),
+            nav, { repository.homeWbiKeys(epoch, current, nav) }, current,
+            { repository.ownedHomeAccessTokenIdentity(epoch, current) })
+        originalAllSearchPage(request, keyword.trim(), page, filters).also {
+            caller.ensureActive()
+            if (!current()) throw CancellationException("综合搜索账号已切换")
+        }
+    }
 
     suspend fun defaultHint(): String = read {
         val current = optional { api.getDefaultSearch(repository.signWebParams(emptyMap())) }
@@ -72,6 +96,26 @@ class DesktopSearchRepository(private val repository: DesktopRepository) {
         if (repository.sessionEpoch != epoch) throw BiliApiException(-101, "账号已切换，请重新加载")
         result
     }
+}
+
+internal suspend fun originalAllSearchPage(request: DesktopOriginalSearchRepository, keyword: String, page: Int,
+    filters: DesktopSearchFilters): TypedSearchPage {
+    val data = request.searchAllPage(keyword = keyword, page = page, order = filters.videoOrder,
+        durations = filters.durations, tids = filters.videoTid, pubBegin = filters.pubBegin, pubEnd = filters.pubEnd).getOrThrow()
+    val next = if (data.pageInfo.hasMore && data.pageInfo.currentPage < Int.MAX_VALUE) data.pageInfo.currentPage + 1 else null
+    return TypedSearchPage(SearchType.ALL, CommunitySearchResult.All(data), next)
+}
+
+internal fun allSearchWireFilters(values: Map<String, String>): DesktopSearchFilters {
+    require(values.keys.all { it in setOf("order", "duration", "tids", "pubtime_begin_s", "pubtime_end_s") })
+    val order = values["order"]?.let { raw -> SearchOrder.entries.firstOrNull { it.value == raw }
+        ?: throw IllegalArgumentException("不支持的综合搜索排序") } ?: SearchOrder.TOTALRANK
+    val duration = values["duration"]?.let { raw -> SearchDuration.entries.firstOrNull { it.value.toString() == raw }
+        ?: throw IllegalArgumentException("不支持的综合搜索时长") }
+    return DesktopSearchFilters(videoOrder = order,
+        durations = duration?.takeUnless { it == SearchDuration.ALL }?.let(::setOf) ?: emptySet(),
+        videoTid = values["tids"]?.toInt() ?: 0,
+        pubBegin = values["pubtime_begin_s"]?.toLong(), pubEnd = values["pubtime_end_s"]?.toLong())
 }
 
 private suspend fun <T> optional(block: suspend () -> T): T? = try { block() }

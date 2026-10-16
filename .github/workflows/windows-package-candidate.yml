@@ -27,9 +27,12 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
-      - name: Enable Git long paths on the isolated runner
+      - name: Set checkout path and newline policy
         shell: pwsh
-        run: git config --global core.longpaths true
+        run: |
+          git config --global core.longpaths true
+          git config --global core.autocrlf false
+          git config --global core.eol lf
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -107,5 +110,7 @@ jobs:
             desktop/build/distributions/*.zip.sha256
             desktop/build/distributions/source-qualification.json
             desktop/build/distributions/candidate-toolchain.json
+            desktop/build/distributions/candidate-runtime-model.json
+            desktop/build/distributions/candidate-classpath.json
           if-no-files-found: error
           retention-days: 1

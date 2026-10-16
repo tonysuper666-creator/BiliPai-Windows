@@ -42,7 +42,7 @@
       "bytes": 20659,
       "sha256": "121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30",
       "gitBlob": "bfa90f39597c1639b37b7b255baf4f7975043dce",
-      "referenceOnly": true
+      "referenceOnly": false
     },
     {
       "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",

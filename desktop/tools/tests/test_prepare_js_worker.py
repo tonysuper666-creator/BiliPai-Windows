@@ -262,4 +262,75 @@ class WorkerXSumNoticeTest(unittest.TestCase):
             self.assertFalse((output / "notices/graaljs-XSum-LICENSE").exists())
 
 
+class WorkerTextProvenanceTest(unittest.TestCase):
+    def inputs(self, root, ending):
+        root.mkdir(parents=True, exist_ok=True)
+        source = root / "DesktopJsPluginWorker.java"
+        recipe = root / "prepare-js-worker.py"
+        source.write_bytes(b"class Worker {\n  int value() { return 1; }\n}\n".replace(b"\n", ending))
+        recipe.write_bytes(b"def build():\n    return 'same recipe'\n".replace(b"\n", ending))
+        locks = [root / name for name in ("maven.json", "notices.json", "runtime.json")]
+        for path in locks: path.write_bytes(b'{"fixed": true}\n')
+        notices = {"sources": [{"file": "licenses/fixed-NOTICE", "sha256": "b" * 64}]}
+        receipt = worker.source_inputs(source, *locks, notices,
+            {"file": "notices/jdk-NOTICE", "sha256": "c" * 64}, recipe_path=recipe)
+        return receipt, source, recipe, locks
+
+    def catalog_and_generated(self, root, inputs):
+        output = root / "output"; output.mkdir()
+        worker.write_json(output / "provenance.json", {"owner": worker.OWNER,
+            "workerSourceSha256": inputs["workerSourceSha256"], "inputs": inputs})
+        worker.write_json(output / "classpath.json", {"resources": [
+            worker.record(output, output / "provenance.json", "notice")]})
+        generated = root / "generated/WorkerHash.kt"
+        worker.generated_hash(generated, output)
+        return (output / "classpath.json").read_bytes(), generated.read_bytes()
+
+    def test_actual_provenance_catalog_and_generated_constant_match_across_checkout_line_endings(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first, *_ = self.inputs(root / "lf", b"\n")
+            second, *_ = self.inputs(root / "crlf", b"\r\n")
+            self.assertEqual(first, second)
+            self.assertEqual((3, "lf", worker.JDK_SHA256),
+                (first["version"], first["textHashNormalization"], first["jdkArchiveSha256"]))
+            self.assertEqual(self.catalog_and_generated(root / "lf", first),
+                             self.catalog_and_generated(root / "crlf", second))
+
+    def test_actual_java_or_recipe_content_change_still_changes_the_receipt(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            original, source, recipe, locks = self.inputs(root, b"\n")
+            args = [source, *locks, {"sources": [{"file": "licenses/fixed-NOTICE", "sha256": "b" * 64}]},
+                    {"file": "notices/jdk-NOTICE", "sha256": "c" * 64}]
+            source.write_bytes(source.read_bytes().replace(b"return 1", b"return 2"))
+            changed = worker.source_inputs(*args, recipe_path=recipe)
+            self.assertNotEqual(original["workerSourceSha256"], changed["workerSourceSha256"])
+            recipe.write_bytes(recipe.read_bytes().replace(b"same recipe", b"changed recipe"))
+            changed = worker.source_inputs(*args, recipe_path=recipe)
+            self.assertNotEqual(original["prepareToolSha256"], changed["prepareToolSha256"])
+
+    def test_closed_lock_file_identity_is_still_byte_exact(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first, *_ = self.inputs(root / "lf", b"\n")
+            second, source, recipe, locks = self.inputs(root / "crlf", b"\r\n")
+            locks[0].write_bytes(locks[0].read_bytes().replace(b"\n", b"\r\n"))
+            second = worker.source_inputs(source, *locks,
+                {"sources": [{"file": "licenses/fixed-NOTICE", "sha256": "b" * 64}]},
+                {"file": "notices/jdk-NOTICE", "sha256": "c" * 64}, recipe_path=recipe)
+            self.assertEqual(first["workerSourceSha256"], second["workerSourceSha256"])
+            self.assertNotEqual(first["mavenLockSha256"], second["mavenLockSha256"])
+
+    def test_old_cache_cannot_omit_the_new_text_identity_contract(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            inputs, lock, runtime_lock, _ = WorkerResourcesTest().cache_fixture(root)
+            expected = dict(inputs, version=3, textHashNormalization="lf")
+            previous = (root / "provenance.json").read_bytes()
+            with self.assertRaisesRegex(ValueError, "provenance differs"):
+                worker.verify_existing(root, expected, lock, runtime_lock)
+            self.assertEqual(previous, (root / "provenance.json").read_bytes())
+
+
 if __name__ == "__main__": unittest.main()

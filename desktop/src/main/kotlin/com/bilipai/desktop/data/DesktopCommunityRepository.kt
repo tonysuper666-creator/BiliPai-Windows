@@ -389,10 +389,15 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
         require(keyword.isNotBlank() && page > 0)
         require(filters.keys.all { it in COMMUNITY_SEARCH_FILTERS }) { "不支持的搜索筛选参数" }
     }) {
-        val params = repository.signWebParams(communitySearchParams(keyword.trim(), type, page, filters))
+        val params = if (type == SearchType.ALL) emptyMap() else repository.signWebParams(communitySearchParams(keyword.trim(), type, page, filters))
         val result: CommunitySearchResult
         val next: Int?
         when (type) {
+            SearchType.ALL -> {
+                val aggregate = search.all(keyword, page, allSearchWireFilters(filters))
+                result = aggregate.result
+                next = aggregate.nextPage
+            }
             SearchType.VIDEO -> {
                 val r = searchApi.search(params); val d = verified(r.code, r.message, r.data, "视频搜索")
                 result = CommunitySearchResult.Videos(d)

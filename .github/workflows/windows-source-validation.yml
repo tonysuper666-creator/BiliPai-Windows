@@ -23,6 +23,7 @@ jobs:
         run: |
           git config --global core.longpaths true
           git config --global core.autocrlf false
+          git config --global core.eol lf
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -127,6 +128,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original Root UI class closure regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_original_root_ui_candidate_classpath.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Actual candidate classpath binding regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_original_root_ui_runtime_binding.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Production classes, resources and native projection binding regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_candidate_production_classpath.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Gradle host classpath correction regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_package_checkout_consistency.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Source and package checkout byte consistency regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_prepare_js_worker.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'JS worker provenance and binary identity regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_export_original_root_ui_harness.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original Root UI export admission regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_verify_original_root_ui_export.py -v
@@ -143,6 +152,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original v041 personal video status source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_profile_agreement_owner_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original profile agreement ownership regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_search_all_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete original comprehensive-search source and ownership regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_fixed_java_toolchain.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Actual fixed Java toolchain and build evidence regressions failed.' }
       - name: Stage the existing pinned JDK

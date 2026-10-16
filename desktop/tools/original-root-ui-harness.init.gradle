@@ -5,10 +5,57 @@ import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 
+def runtimeHash(File file) {
+    if (!file.isFile()) throw new GradleException('Missing runtime-model file')
+    def digest = MessageDigest.getInstance('SHA-256')
+    file.withInputStream { stream ->
+        byte[] buffer = new byte[1024 * 1024]
+        int count
+        while ((count = stream.read(buffer)) != -1) digest.update(buffer, 0, count)
+    }
+    digest.digest().collect { String.format('%02x', it) }.join('')
+}
+
+def runtimeArtifacts(target, String configuration) {
+    target.configurations.getByName(configuration).resolvedConfiguration.resolvedArtifacts.collect {
+        [group: it.moduleVersion.id.group, name: it.name, version: it.moduleVersion.id.version,
+         classifier: it.classifier ?: '', type: it.type,
+         file: it.file.canonicalPath, bytes: it.file.length(), sha256: runtimeHash(it.file)]
+    }.sort { a, b -> a.file <=> b.file }
+}
+
 // Future source qualification only: snapshot the existing actual-Main task after
 // its real prerequisites. This task never executes the JavaExec or changes it.
 gradle.projectsEvaluated {
     def target = gradle.rootProject
+    // Packaging snapshots the same actual main runtime without compiling tests
+    // or executing any JavaExec. jpackage's recursive JAR discovery is not a
+    // substitute for Gradle's resolved production classpath.
+    target.tasks.register('writeCandidateProductionRuntimeModel') {
+        dependsOn('classes')
+        outputs.upToDateWhen { false }
+        doLast {
+            def name = target.findProperty('candidateProductionRuntimeModel')
+            if (!name) throw new GradleException('A fresh candidate runtime model path is required')
+            def output = new File(name.toString())
+            if (output.exists() || !output.parentFile.isDirectory())
+                throw new GradleException('Candidate runtime model cannot overwrite a result')
+            def main = target.extensions.getByName('sourceSets').getByName('main')
+            def paths = main.runtimeClasspath.files.collect { it.canonicalPath }
+            if (paths.isEmpty() || paths.size() > 512 || paths.size() != paths.toSet().size())
+                throw new GradleException('Invalid production runtime inventory')
+            def source = target.providers.exec {
+                commandLine 'git', '-C', target.projectDir.parentFile.absolutePath, 'rev-parse', 'HEAD'
+            }.standardOutput.asText.get().trim()
+            def model = [schema: 1, sourceSha: source,
+                mainRuntimeClasspath: paths,
+                mainClassRoots: main.output.classesDirs.files.collect { it.canonicalPath },
+                mainArtifacts: runtimeArtifacts(target, 'runtimeClasspath'),
+                javaExecExecuted: false, applicationExecuted: false, hardwareExecuted: false]
+            Files.writeString(output.toPath(), JsonOutput.prettyPrint(JsonOutput.toJson(model)) + '\n',
+                StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE)
+        }
+    }
     def original = target.tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)
     target.tasks.register('writeOriginalRootUiHarnessInputs') {
         dependsOn(original.get().taskDependencies.getDependencies(original.get()))
@@ -22,16 +69,7 @@ gradle.projectsEvaluated {
             def ui = original.get()
             if (ui.mainClass.get() != 'com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture')
                 throw new GradleException('The actual original UI main changed')
-            def hash = { File file ->
-                if (!file.isFile()) throw new GradleException('Missing runtime-model file')
-                def digest = MessageDigest.getInstance('SHA-256')
-                file.withInputStream { stream ->
-                    byte[] buffer = new byte[1024 * 1024]
-                    int count
-                    while ((count = stream.read(buffer)) != -1) digest.update(buffer, 0, count)
-                }
-                digest.digest().collect { String.format('%02x', it) }.join('')
-            }
+            def hash = { File file -> runtimeHash(file) }
             def repository = target.projectDir.parentFile.canonicalFile
             def sources = target.extensions.getByName('sourceSets')
             def main = sources.getByName('main')
@@ -42,13 +80,7 @@ gradle.projectsEvaluated {
                 throw new GradleException('Original UI classpath is empty or duplicated')
             if (testPaths != test.runtimeClasspath.files.collect { it.canonicalPath })
                 throw new GradleException('Original UI no longer uses the complete normal test runtime')
-            def artifacts = { String configuration ->
-                target.configurations.getByName(configuration).resolvedConfiguration.resolvedArtifacts.collect {
-                    [group: it.moduleVersion.id.group, name: it.name, version: it.moduleVersion.id.version,
-                     classifier: it.classifier ?: '', type: it.type,
-                     file: it.file.canonicalPath, bytes: it.file.length(), sha256: hash(it.file)]
-                }.sort { a, b -> a.file <=> b.file }
-            }
+            def artifacts = { String configuration -> runtimeArtifacts(target, configuration) }
             def knownOutputs = [:]
             test.output.classesDirs.files.each { knownOutputs[it.canonicalPath] = 'testClasses' }
             main.output.classesDirs.files.each { knownOutputs[it.canonicalPath] = 'mainClasses' }

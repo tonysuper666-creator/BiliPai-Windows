@@ -34,7 +34,7 @@ internal data class CommunitySearchRow(val key: String, val title: String, val d
 private class CommunitySearchState(initialQuery: String) {
     var draft by mutableStateOf(initialQuery)
     var submitted by mutableStateOf(initialQuery.trim())
-    var type by mutableStateOf(SearchType.VIDEO)
+    var type by mutableStateOf(SearchType.ALL)
     var filters by mutableStateOf(DesktopSearchFilters())
     var hot by mutableStateOf<SearchTrendingBundle?>(null)
     var defaultTerm by mutableStateOf("")
@@ -199,8 +199,11 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
                 }
             } }
         } else CommunityFeed<CommunitySearchRow, Int>(listOf(epoch, submitted, type, filters.requestKey(type)), 1, load = { page ->
-            val result = if (type == SearchType.VIDEO) search.videos(submitted, page, filters.videoOrder, filters.durations, filters.videoTid, filters.pubBegin, filters.pubEnd)
-                else community.typedSearch(submitted, type, page, filters.parameters(type))
+            val result = when (type) {
+                SearchType.ALL -> search.all(submitted, page, filters)
+                SearchType.VIDEO -> search.videos(submitted, page, filters.videoOrder, filters.durations, filters.videoTid, filters.pubBegin, filters.pubEnd)
+                else -> community.typedSearch(submitted, type, page, filters.parameters(type))
+            }
             CommunityBatch(communitySearchRows(result.result), result.nextPage)
         }, identity = { it.key }, onLogin = navigation.onLogin, transform = transform) { item ->
             val video = item.video
@@ -232,7 +235,7 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
     var dates by remember { mutableStateOf(false) }
     Column(Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         when (type) {
-            SearchType.VIDEO -> {
+            SearchType.ALL, SearchType.VIDEO -> {
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     resolveSearchVideoOrderOptions().forEach { value -> FilterChip(filters.videoOrder == value, { onChange(filters.copy(videoOrder = value)) }, label = { Text(resolveSearchOrderChipLabel(value)) }) }
                     TextButton(onClick = { onExpanded(!expanded) }) { Text(if (expanded) "收起筛选" else "时长 / 分区 / 发布时间") }
@@ -290,11 +293,14 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
 private fun searchDateLabel(value: Long?): String = value?.let { Instant.ofEpochSecond(it).atZone(ZoneOffset.UTC).toLocalDate().toString() } ?: "未选择"
 
 internal fun communitySearchRows(result: CommunitySearchResult): List<CommunitySearchRow> = when (result) {
+    is CommunitySearchResult.All -> {
+        val data = result.data
+        communitySearchRows(CommunitySearchResult.Users(SearchUpData(result = data.ups))) +
+            communitySearchRows(CommunitySearchResult.Media(BangumiSearchData(result = data.bangumi))) +
+            data.videos.map(::communityVideoSearchRow)
+    }
     is CommunitySearchResult.Videos -> result.data.result.orEmpty().map { raw ->
-        val item = raw.toVideoItem()
-        CommunitySearchRow("video:${item.bvid}", item.title, "", item.pic,
-            rawVideo = item, video = VideoCard(item.bvid, item.title, item.pic, item.owner.name, item.stat.view.toLong(), item.duration,
-                publishedAt = item.pubdate, authorMid = item.owner.mid), blockedOwnerMid = item.owner.mid)
+        communityVideoSearchRow(raw.toVideoItem())
     }
     is CommunitySearchResult.Users -> result.data.result.orEmpty().map { raw -> val item = raw.cleanupFields()
         CommunitySearchRow("user:${item.mid}", item.uname, "${item.fans} 粉丝 · ${item.videos} 个视频\n${item.usign}", item.upic, user = item.mid, blockedOwnerMid = item.mid) }
@@ -316,6 +322,10 @@ internal fun communitySearchRows(result: CommunitySearchResult): List<CommunityS
     is CommunitySearchResult.Photos -> result.data.result.orEmpty().map { raw -> val item = raw.cleanupFields()
         CommunitySearchRow("photo:${item.id}", item.title, "${item.uname} · ${item.count} 张 · ${item.view} 浏览", item.cover, user = item.mid) }
 }
+
+private fun communityVideoSearchRow(item: VideoItem) = CommunitySearchRow("video:${item.bvid}", item.title, "", item.pic,
+    rawVideo = item, video = VideoCard(item.bvid, item.title, item.pic, item.owner.name, item.stat.view.toLong(), item.duration,
+        publishedAt = item.pubdate, authorMid = item.owner.mid), blockedOwnerMid = item.owner.mid)
 
 @Composable
 internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepository, social: DesktopSocialRepository,

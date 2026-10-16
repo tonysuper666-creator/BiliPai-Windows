@@ -228,6 +228,9 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt"))
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt"))
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt"))
+        // The existing full Search producer owns the complete v041 policies.
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -266,6 +269,8 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
     inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/network/CoreNetworkRuntime.kt"))
     inputs.file("tools/extract-upstream-api.py")
+    inputs.file("tools/v041_search_all.py")
+    inputs.dir("upstream-slices/v041-search-all")
     inputs.file("tools/v030_video_dynamic_share.py")
     inputs.dir("upstream-slices/v030-video-dynamic-share")
     inputs.file("tools/v030_live_stream.py")
@@ -409,6 +414,8 @@ val extractUpstreamSearch by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-search-platform.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/search").get().asFile.absolutePath)
     inputs.files("tools/extract-search-platform.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.file("tools/v041_search_all.py")
+    inputs.dir("upstream-slices/v041-search-all")
     inputs.files(sources.filter { "search-native" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/search"))
@@ -2911,6 +2918,8 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-search-pages").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-search-pages.py")
+    inputs.file("tools/v041_search_all.py")
+    inputs.dir("upstream-slices/v041-search-all")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "desktop-full-original-search-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })

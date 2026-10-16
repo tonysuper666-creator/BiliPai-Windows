@@ -32,5 +32,5 @@ data class DesktopSearchFilters(
         SearchType.PHOTO -> mapOf("order" to photoOrder.value, "category_id" to photoCategory.value.toString())
         else -> emptyMap()
     }
-    internal fun requestKey(type: SearchType): Any = if (type == SearchType.VIDEO) listOf(videoOrder, durations, videoTid, pubType, pubBegin, pubEnd) else parameters(type)
+    internal fun requestKey(type: SearchType): Any = if (type == SearchType.VIDEO || type == SearchType.ALL) listOf(videoOrder, durations, videoTid, pubType, pubBegin, pubEnd) else parameters(type)
 }

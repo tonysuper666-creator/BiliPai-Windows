@@ -51,6 +51,7 @@ fun dynamicCommentTarget(item: DynamicItem): CommunityCommentTarget? {
 }
 
 sealed interface CommunitySearchResult {
+    data class All(val data: com.android.purebilibili.data.repository.SearchAllResults) : CommunitySearchResult
     data class Videos(val data: SearchTypeData) : CommunitySearchResult
     data class Users(val data: SearchUpData) : CommunitySearchResult
     data class Media(val data: BangumiSearchData) : CommunitySearchResult

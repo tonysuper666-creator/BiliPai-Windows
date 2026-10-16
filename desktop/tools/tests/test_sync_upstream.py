@@ -979,10 +979,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 544)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 533)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 110)
-        self.assertEqual(len(self.inventory["archives"]), 114)
+        self.assertEqual(len(entries), 551)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 540)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 111)
+        self.assertEqual(len(self.inventory["archives"]), 115)
         # These five exact v041 inputs extend the previous506-input inventory.
         # Whole author policy/tests now share the real dynamic-tabs UI producer.
         v041_root = "desktop/upstream-slices/v041-rss-dynamic/"
@@ -1062,9 +1062,9 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertTrue(all(item["upstreamCommit"] == "d18fb20e31adb11bbec9fae6dfce7d705d556217"
                             and item["hashNormalization"] == "raw" and item["kind"] == "adaptedSource"
                             for item in status_rows.values()))
-        # Seven whole sources are emitted from the archive; eight are containment or hunk sources only.
+        # Eight whole sources are emitted from the archive; seven are containment or hunk sources only.
         self.assertEqual({name for name, item in status_rows.items() if not item["referenceOnly"]},
-                         {"VideoStatusLabels.kt", "VideoStatusBadges.kt", "ListModels.kt", "SpaceModels.kt", "FavoriteModels.kt",
+                         {"VideoStatusLabels.kt", "VideoStatusBadges.kt", "ListModels.kt", "SpaceModels.kt", "SearchModels.kt", "FavoriteModels.kt",
                           "VideoStatusLabelsTest.kt", "VideoCooperationMetadataTest.kt"})
         self.assertTrue(all(item["partialReuse"] is True and item["usedScope"]
                             for item in status_rows.values() if item["referenceOnly"]))
@@ -1652,10 +1652,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 544)
+        self.assertEqual(len(self.load()), 551)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 544)
+        self.assertEqual(len(self.load()), 551)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1672,7 +1672,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 544)
+                self.assertEqual(len(entries), 551)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):
