@@ -63,6 +63,39 @@ class SourceCohortChangeInventoryTest(unittest.TestCase):
     def test_legacy_cohort_still_requires_every_pinned_path_to_change(self):
         cohort.assert_change_inventory({'changed.kt', 'retained-test.kt', cohort.PLAN}, self.plan())
 
+    def test_export_flags_append_only_input_capture_tasks_to_one_command(self):
+        for updater in (False, True):
+            for ui in (False, True):
+                with self.subTest(updater=updater, ui=ui):
+                    args = cohort.harness_input_arguments(dict(exportPackagedUpdaterHarness=updater,
+                        exportOriginalRootUiHarness=ui), Path('repo'), Path('output'))
+                    self.assertEqual(args.count('--init-script'), int(updater) + int(ui))
+                    self.assertEqual('writePackagedUpdaterHarnessInputs' in args, updater)
+                    self.assertEqual('writeOriginalRootUiHarnessInputs' in args, ui)
+                    self.assertNotIn('windowsVideoLocalReplayUiSmoke', args)
+
+    def test_truthy_strings_cannot_enable_harness_exports(self):
+        self.assertEqual([], cohort.harness_input_arguments(dict(exportPackagedUpdaterHarness='true',
+            exportOriginalRootUiHarness=1), Path('repo'), Path('output')))
+
+    def test_export_flags_are_published_independently_without_overwrite(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for updater in (None, {}):
+                for ui in (None, {}):
+                    path = Path(tmp) / ('flags-' + str(updater is not None) + '-' + str(ui is not None))
+                    path.write_text('existing=value\n', encoding='utf-8')
+                    cohort.write_harness_flags(path, True, updater, ui)
+                    expected = 'existing=value\n'
+                    if updater is not None: expected += 'updater_harness_exported=true\n'
+                    if ui is not None: expected += 'original_root_ui_harness_exported=true\n'
+                    self.assertEqual(path.read_text(), expected)
+
+    def test_failed_source_validation_never_publishes_either_export(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'flags'
+            cohort.write_harness_flags(path, False, {}, {})
+            self.assertFalse(path.exists())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -74,7 +74,7 @@ jobs:
       BILIPAI_HOST_LLVM_RECORD_ID: ${{ inputs.trusted_host_llvm_record_id }}
     container:
       # Exact linux/amd64 builder retained and authenticated in own workflow run 37928635585.
-      # This is a new OCI environment; old HOST snapshot evidence cannot be relabelled or reused.
+      # HOST reuse requires an exact source-owned record and matching actual host/tool evidence.
       image: ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239
       options: --env ImageOS --env ImageVersion
       credentials:
@@ -85,6 +85,16 @@ jobs:
       - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
         with:
           persist-credentials: false
+      - name: Validate reviewed HOST LLVM reuse source contracts
+        run: |
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_host_llvm_worker_contract.py -v
+          PYTHONPATH=desktop/tools/tests python3 -B -m unittest test_host_llvm_fresh_export.HostLlvmFreshExportTests -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_native_nested_failure_logs.py -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_native_cares_prefetch.py -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_native_cares_recipe.py -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_host_llvm_link_validation.py -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_host_llvm_download.py -v
+          python3 -B -m unittest discover -s desktop/tools/tests -p test_curl_openssl_source_compat.py -v
       - name: Download exact independently reviewed own HOST snapshot
         if: inputs.trusted_host_llvm_record_id != ''
         env:

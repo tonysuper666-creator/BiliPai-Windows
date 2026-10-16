@@ -152,7 +152,7 @@
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_vf_owner.h"
     }
   ],
-  "filterSourceManifestSha256": "a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607",
+  "filterSourceManifestSha256": "8f61b3035bd4dbc4690431d532d9fa6e48216a309c7ddec7664594a892049790",
   "gpuExecuted": false,
   "nativeBinaryBuiltByThisProgram": false,
   "patchId": "bilipai-veyra-rtx-present-v1",
@@ -201,7 +201,7 @@
       "path": "video/mp_image.h"
     },
     {
-      "afterSha256": "a4c1bf4d35b8d99171801eada5b7b7b8f6a67ff1fa6c3ed5b2a56e00935fc3b1",
+      "afterSha256": "a303c888d8cdede01fdf987eb082b096b3132f5b3f69f5fd8c02d0b22d668946",
       "beforeSha256": "8f0f70c2ac7cf3cd50e810f2d6b621751e38e4d8b428ceb62d2d07968c91981d",
       "path": "video/out/d3d11/context.c"
     },
@@ -221,7 +221,7 @@
       "path": "video/out/gpu/d3d11_helpers.h"
     },
     {
-      "afterSha256": "5831c929b9447c124cd2cb3cb113a6025a9baadebd12da9630f1008f0ff60e5a",
+      "afterSha256": "70995b2f27cc9036c817082807603fb426e379df8da5b2c37cbc02d807cc08c3",
       "beforeSha256": "c3a2d28dadc406f8224002d01864119d27d0fe35454c62fe367beaa6f3a5355a",
       "path": "video/out/gpu/video.c"
     },
@@ -301,6 +301,6 @@
       "path": "video/d3d.h"
     }
   ],
-  "sourcePatchHelperSha256": "748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf",
+  "sourcePatchHelperSha256": "9b9b6d058f4b74f44cf837b1893825e1bf9e30eeaaf56e497f8bd915bcae3f61",
   "tokenProtocol": 2
 }
