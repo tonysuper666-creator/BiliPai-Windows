@@ -3,6 +3,8 @@ package com.bilipai.desktop.ui
 import androidx.compose.ui.geometry.Offset
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionClock
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionExposure
+import com.android.purebilibili.core.ui.transition.VideoCardTransitionSettleState
+import com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionExposure
 import com.android.purebilibili.core.util.CardPositionManager
 import com.android.purebilibili.navigation.isVideoCardReturnTargetRoute
 import com.android.purebilibili.navigation.isVideoDetailRoute
@@ -179,6 +181,17 @@ internal class DesktopHomeReturnNavigationOwner(
         }
         return returned
     }
+
+    /** The actual Windows Root has already popped the child entry. Its frozen visual can
+     * continue flying independently; restore the parent's real source now, before a second
+     * back/child initialization can replace the pending related-return state. The clock still
+     * reports its genuine current flight exposure; no fake Idle or second timeline is created. */
+    fun completeRelatedReturnAfterWindowsPop(): Boolean = onRelatedReturnExposure(
+        animated = false,
+        exposure = resolveVideoCardTransitionExposure(clock.phase,
+            clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
+            clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress),
+    )
 
     /** Actual navigation/clock exposure, never an elapsed timer or pretend immediate idle. */
     fun onRelatedReturnExposure(animated: Boolean, exposure: VideoCardTransitionExposure): Boolean = mutate {

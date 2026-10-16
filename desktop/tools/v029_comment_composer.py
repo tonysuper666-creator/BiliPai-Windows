@@ -133,7 +133,7 @@ def domain_delta(repo, output, path, body):
                     clearCommentMentionSearch()''', '''                    // A dismissed A send may complete while B is being edited.
                     // Preserve the original mutation/receipt, retire only A's UI.
                     dispatchCommentUi(stamp) {
-                        if (_composerDrafts.value.comments[sentDraftKey] == sentDraft) {
+                        if (sameCommentDraftSubmissionContent(_composerDrafts.value.comments[sentDraftKey], sentDraft)) {
                             _commentInput.value = ""
                             _composerDrafts.update { state -> state.copy(comments = state.comments - sentDraftKey) }
                             hideCommentInputDialog()
@@ -200,8 +200,8 @@ def domain_delta(repo, output, path, body):
     }
     fun dismissCommentComposer(stamp: com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp): Boolean =
         dispatchCommentUi(stamp) { hideCommentInputDialog(); _commentStamp.value = null }
-    fun changeCommentDraft(stamp: com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp, text: String, images: List<String>, sync: Boolean): Boolean =
-        dispatchCommentUi(stamp) { updateCommentDraft(text, images.toList(), sync) }
+    fun changeCommentDraft(stamp: com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp, text: String, images: List<String>, sync: Boolean, selectionStart: Int = -1, selectionEnd: Int = -1): Boolean =
+        dispatchCommentUi(stamp) { updateCommentDraft(text, images.toList(), sync, selectionStart, selectionEnd) }
     fun searchCommentMentions(stamp: com.bilipai.desktop.ui.DesktopOriginalVideoCommentComposerStamp, query: String): Boolean =
         dispatchCommentUi(stamp) {
             searchCommentMentionUsers(query)
@@ -233,7 +233,7 @@ def domain_delta(repo, output, path, body):
     body=replace(body,'        _uiState.value = _uiState.value.copy(commentDraft = text)','''        _uiState.value = _uiState.value.copy(commentDraft = text)
         ensureComposerDraftVideo()
         val draft = _composerDrafts.value.comments[commentComposerDraftKey(_replyingToComment.value?.rpid)] ?: CommentComposerDraft()
-        updateCommentDraft(text, draft.imageUris, draft.syncToDynamic)''')
+        updateCommentDraft(text, draft.imageUris, draft.syncToDynamic, draft.selectionStart, draft.selectionEnd)''')
     body=replace(body,'        mentionSearchJob?.cancel()\n        _events.close()','        mentionSearchJob?.cancel()\n        commentEmoteJob?.cancel()\n        commentMentionSearchJob?.cancel()\n        _commentSentEvent.close()\n        _events.close()')
     pos=body.rfind('\n}')
     body=body[:pos]+additions+'\n'+members+body[pos:]
@@ -264,7 +264,7 @@ def overlay_delta(repo,output,body):
     overload=overload.replace('visible = showCommentInput,','visible = showCommentInput && composer.commentStamp.value === stamp && stamp.presentation.isCurrent(),')
     overload=overload.replace('dismiss = composer::hideCommentInputDialog,','dismiss = { composer.dismissCommentComposer(stamp); Unit },')
     overload=overload.replace('searchMentions = composer::searchCommentMentionUsers,','searchMentions = { query -> composer.searchCommentMentions(stamp, query); Unit },')
-    overload=overload.replace('updateDraft = composer::updateCommentDraft,','updateDraft = { text, images, sync -> composer.changeCommentDraft(stamp, text, images, sync); Unit },')
+    overload=overload.replace('updateDraft = { text, images, sync, selectionStart, selectionEnd -> composer.updateCommentDraft(text, images, sync, selectionStart, selectionEnd); Unit },','updateDraft = { text, images, sync, selectionStart, selectionEnd -> composer.changeCommentDraft(stamp, text, images, sync, selectionStart, selectionEnd); Unit },')
     overload=overload.replace('composer.sendComment(message, imageUris, syncToDynamic)','composer.submitComment(stamp, message, imageUris, syncToDynamic)')
     body=body[:end]+'\n'+overload+body[end:]
     save(output,'v029-domain-comment-input-source',dict(upstreamCommit=COMMIT,rawSources=PINS,
@@ -338,10 +338,58 @@ def dialog_delta(repo,output,canonical,body):
     if canonical.replace('\r\n','\n') != sources[DIALOG]: raise ValueError('Complete original input dialog changed between fixed025 and fixed029')
     before=body
     body=replace(body,'import androidx.compose.ui.window.Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n')
+    # A reopened dialog composition re-seeds from the draft; carry the recorded
+    # UTF-16 caret/selection so close/reopen restores it instead of end-of-text.
+    # The production dialog is emitted once by the bgm-detail extractor, whose
+    # pre-transform already maps Uri to String and rewrites the picker block;
+    # these anchors match the bgm-preprocessed body this extractor receives.
+    body=replace(body,'    onDraftChange: (String, List<String>, Boolean) -> Unit = { _, _, _ -> },','    onDraftChange: (String, List<String>, Boolean, Int, Int) -> Unit = { _, _, _, _, _ -> },')
+    body=replace(body,'    initialSyncToDynamic: Boolean = false,','    initialSyncToDynamic: Boolean = false,\n    initialSelectionStart: Int = -1,\n    initialSelectionEnd: Int = -1,')
+    body=replace(body,'''internal fun commentDraftTextFieldValue(text: String): TextFieldValue {
+    return TextFieldValue(
+        text = text,
+        selection = TextRange(text.length)
+    )
+}''','''internal fun commentDraftTextFieldValue(
+    text: String,
+    selectionStart: Int = -1,
+    selectionEnd: Int = -1
+): TextFieldValue {
+    val length = text.length
+    if (selectionStart < 0 || selectionEnd < 0) return TextFieldValue(text = text, selection = TextRange(length))
+    val start = selectionStart.coerceIn(0, length)
+    val end = selectionEnd.coerceIn(0, length)
+    return TextFieldValue(text = text, selection = TextRange(start, end))
+}''')
+    body=replace(body,'        textFieldValue = commentDraftTextFieldValue(initialText)','        textFieldValue = commentDraftTextFieldValue(initialText, initialSelectionStart, initialSelectionEnd)')
+    body=replace(body,'        onDraftChange(nextValue.text, selectedImageUris, isForwardToDynamic)','        onDraftChange(nextValue.text, selectedImageUris, isForwardToDynamic, nextValue.selection.start, nextValue.selection.end)')
+    body=replace(body,'''                                                    onDraftChange(
+                                                        textFieldValue.text,
+                                                        selectedImageUris,
+                                                        isForwardToDynamic
+                                                    )''','''                                                    onDraftChange(
+                                                        textFieldValue.text,
+                                                        selectedImageUris,
+                                                        isForwardToDynamic,
+                                                        textFieldValue.selection.start,
+                                                        textFieldValue.selection.end
+                                                    )''')
+    body=replace(body,'                                                onDraftChange(textFieldValue.text, selectedImageUris, isForwardToDynamic)','                                                onDraftChange(textFieldValue.text, selectedImageUris, isForwardToDynamic, textFieldValue.selection.start, textFieldValue.selection.end)')
+    body=replace(body,'''                                            onDraftChange(
+                                                textFieldValue.text,
+                                                selectedImageUris,
+                                                isForwardToDynamic
+                                            )''','''                                            onDraftChange(
+                                                textFieldValue.text,
+                                                selectedImageUris,
+                                                isForwardToDynamic,
+                                                textFieldValue.selection.start,
+                                                textFieldValue.selection.end
+                                            )''')
     # The original mention insertion only updated local editor state. Publish
     # through the same caller-owned draft port before an immediate dismissal.
     mention='                                    textFieldValue = TextFieldValue(nextText, nextSelection)\n'
-    body=replace(body,mention,mention+'                                    onDraftChange(nextText, selectedImageUris, isForwardToDynamic)\n')
+    body=replace(body,mention,mention+'                                    onDraftChange(nextText, selectedImageUris, isForwardToDynamic, nextSelection.start, nextSelection.end)\n')
     # Only the owned Windows native client consumes its actual available height.
     body=replace(body,'import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\nimport com.bilipai.desktop.ui.desktopCommentComposerSurfaceHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerColumnHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerInputHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerClientHeightDp\n')
     body=replace(body,'            val availablePanelHeightDp = configuration.heightDp.value.toInt() -\n','            val availablePanelHeightDp = desktopCommentComposerClientHeightDp(configuration.heightDp.value.toInt()) -\n')

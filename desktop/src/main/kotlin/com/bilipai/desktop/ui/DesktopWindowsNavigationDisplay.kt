@@ -49,19 +49,20 @@ internal val DesktopWindowsInstantNavigationTransition = navGraphicsTransition(
     scrim = { 0f },
 ) { /* Native desktop surfaces keep their actual client coordinates. */ }
 
-/** Original nonanimated back sequence: the real Root owns every mutation and restoration. */
+/** Real Root back sequence; related restoration follows a physical pop, never deferred acceptance. */
 internal fun completeDesktopWindowsNavigationBack(
     leavingKey: BiliPaiNavKey?,
     restorePreviousVideoSource: Boolean,
     prepareVideoReturn: () -> Boolean,
     back: () -> Unit,
     relatedVideoReturned: () -> Unit,
+    backCommitted: () -> Boolean = { true },
 ) {
     if (leavingKey is BiliPaiNavKey.VideoDetail) prepareVideoReturn()
     val returningFromRelated = (leavingKey as? BiliPaiNavKey.VideoDetail)?.sourceRoute
         ?.substringBefore('?')?.startsWith("video/") == true || restorePreviousVideoSource
     back()
-    if (returningFromRelated) relatedVideoReturned()
+    if (returningFromRelated && backCommitted()) relatedVideoReturned()
 }
 
 /** The current Windows host completes related pops without a morph driver.
@@ -80,7 +81,7 @@ internal fun completeDesktopWindowsRelatedVideoReturn(
 )
 
 /** Settle the original clock only from the actual committed Windows stack.
- * This host has zero-duration navigation and no shared morph driver. Preserve an
+ * The zero-duration NavDisplay calls this only when no Root visual driver owns the clock. Preserve an
  * armed source while its video (or a child above it) is present, and release it
  * when the real pop exposes Home. No timer or fabricated back target is used.
  */
@@ -120,14 +121,18 @@ internal fun DesktopWindowsNavigationDisplay(
     val latestPrepare by rememberUpdatedState(onPrepareVideoCardSharedReturn)
     val latestRelatedReturn by rememberUpdatedState(onRelatedVideoDetailReturned)
     val latestRestorePrevious by rememberUpdatedState(restorePreviousVideoSourceOnDetailReturn)
+    val returnDriver = LocalDesktopWindowsVideoReturnDriver.current
+    val latestReturnDriver by rememberUpdatedState(returnDriver)
     val performBack = remember(environment, backStack, videoCardClock) {
         {
             if (environment.isCurrent()) {
+                val leaving = backStack.lastOrNull()
                 completeDesktopWindowsNavigationBack(
-                    backStack.lastOrNull(), latestRestorePrevious,
+                    leaving, latestRestorePrevious,
                     latestPrepare, latestBack, latestRelatedReturn,
+                    backCommitted = { backStack.lastOrNull() !== leaving },
                 )
-                if (environment.isCurrent()) {
+                if (environment.isCurrent() && !latestReturnDriver()) {
                     settleDesktopWindowsCommittedNavigationClock(videoCardClock, backStack.toList())
                 }
             }
@@ -149,7 +154,7 @@ internal fun DesktopWindowsNavigationDisplay(
     SideEffect {
         // The click may pre-arm this same clock even if navigation is rejected.
         // Observe its phase, and never settle an obsolete composition's stack.
-        if (environment.isCurrent() && backStack.toList() == stackSnapshot &&
+        if (environment.isCurrent() && !returnDriver() && backStack.toList() == stackSnapshot &&
             videoCardClock.phase == clockPhase) {
             settleDesktopWindowsCommittedNavigationClock(videoCardClock, stackSnapshot)
         }

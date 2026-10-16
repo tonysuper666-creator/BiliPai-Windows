@@ -2776,6 +2776,7 @@ val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v037-holder-comment-close")
     inputs.file("tools/v037_player_known_presentation.py")
     inputs.file("tools/v032_video_return_state.py")
+    inputs.file("tools/windows_video_return_frozen_inputs.py")
     inputs.dir("upstream-slices/v032-video-return-state")
     inputs.file("tools/v031_repost_coin.py")
     inputs.dir("upstream-slices/v031-repost-coin")

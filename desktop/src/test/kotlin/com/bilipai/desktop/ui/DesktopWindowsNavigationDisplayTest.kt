@@ -147,4 +147,54 @@ class DesktopWindowsNavigationDisplayTest {
             }
         }
     }
+    @Test fun `a deferred or rejected related back never restores a source before the physical pop`() {
+        val calls = mutableListOf<String>()
+        val child = BiliPaiNavKey.VideoDetail("BVchild", sourceRoute = "video/BVparent")
+        completeDesktopWindowsNavigationBack(child, false,
+            { calls += "prepare"; true }, { calls += "accepted-for-preparation" },
+            { fail("related source restored before its real pop") }, backCommitted = { false })
+        assertEquals(listOf("prepare", "accepted-for-preparation"), calls)
+    }
+
+    @Test fun `second back during a related card flight uses the already restored parent source`() {
+        synchronized(CardPositionManager) {
+            val previousGlobal = CardPositionManager.lastClickedVideoSourceKey
+            val clock = VideoCardTransitionClock()
+            val stack = mutableListOf<BiliPaiNavKey>(BiliPaiNavKey.MainHost)
+            val owner = DesktopHomeReturnNavigationOwner(
+                stillOwned = { true }, commitIfCurrent = { it(); true },
+                admitRootNavigation = { it(); true }, hostOriginInRoot = { Offset.Zero },
+                monotonicMillis = { 234L }, clock = clock, sharedCardTransitionEnabled = { true },
+                relatedCardTransitionEnabled = { true }, reduceMotion = { false })
+            try {
+                val parent = BiliPaiNavKey.VideoDetail("BVparent", sourceRoute = "home")
+                val child = BiliPaiNavKey.VideoDetail("BVchild", sourceRoute = "video/BVparent")
+                assertTrue(owner.enterVideo(parent.bvid, "home", null, stack.last(), false, setOf("home")) { _, _ -> stack += parent })
+                val parentSession = assertNotNull(owner.session.value.transitionSession)
+                assertTrue(owner.enterVideo(child.bvid, "video/BVparent", null, stack.last(), true, setOf("home")) { _, _ -> stack += child })
+                val capturedChild = assertNotNull(owner.session.value.transitionSession)
+                // Actual clock state stays in flight while the real pop exposes its parent.
+                clock.bindNavigationDriver { .6f }
+                clock.followNavigationDriver(com.android.purebilibili.core.ui.transition.VideoCardTransitionSettleState.AutoReturn)
+                assertTrue(owner.returnFromVideo(child, parent, true) { stack.removeAt(stack.lastIndex) })
+                assertTrue(owner.completeRelatedReturnAfterWindowsPop())
+                assertSame(parentSession, owner.session.value.transitionSession)
+                assertEquals("BVchild", capturedChild.bvid)
+                assertEquals(VideoCardTransitionBackgroundPhase.RETURNING, clock.phase)
+                assertEquals(.6f, clock.depthProgress())
+                // No animation-end callback has run; a second genuine back must use Home.
+                assertTrue(owner.returnFromVideo(parent, BiliPaiNavKey.MainHost, false) { stack.removeAt(stack.lastIndex) })
+                assertEquals(BiliPaiNavKey.MainHost, stack.single())
+                assertEquals("home", owner.session.value.lastVideoSourceRoute)
+                assertSame(parentSession, owner.session.value.transitionSession)
+                assertTrue(owner.session.value.previousTransitionSessions.isEmpty())
+                assertTrue(owner.session.value.previousVideoSources.isEmpty())
+            } finally {
+                clock.bindNavigationDriver(null)
+                owner.close()
+                CardPositionManager.restoreVideoSourceKey(previousGlobal)
+            }
+        }
+    }
+
 }
