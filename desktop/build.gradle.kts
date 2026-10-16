@@ -1647,6 +1647,8 @@ val extractCommentFraudProtocol by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractCommentFraudProtocol) }
 
 val extractSharedLiquidTabs by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_search_layout.py")
+    inputs.dir("upstream-slices/v042-search-layout")
     inputs.file("tools/v037_shared_tabs_progress.py")
     inputs.file("tools/v040_liquid_value_controls.py")
     inputs.dir("upstream-slices/v040-liquid-value-controls")
@@ -2925,7 +2927,10 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-search-pages.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/original-search-pages").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/original-search-pages").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-search-tests").get().asFile.absolutePath)
+    inputs.file("tools/v042_search_layout.py")
+    inputs.dir("upstream-slices/v042-search-layout")
     inputs.file("tools/extract-upstream-search-pages.py")
     inputs.file("tools/v041_search_all.py")
     inputs.dir("upstream-slices/v041-search-all")
@@ -2935,8 +2940,11 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     inputs.file("tools/v029_brand_callers.py")
     inputs.dir("upstream-slices/v029-brand-callers")
     outputs.dir(layout.buildDirectory.dir("generated/original-search-pages"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-search-tests"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-pages")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalSearchPages) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalSearchPages) }
 
 // Full original message seven pages. DIRECT4 are copied once by prepareUpstreamSources;

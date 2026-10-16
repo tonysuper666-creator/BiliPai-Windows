@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "ea3b67f1d5fb59a7e76591a1c352f7c3e428014b",
-  "windowsVersion": "0.2.427.155",
-  "createdAt": "2026-10-16T15:55:58.715576+00:00",
+  "baseHead": "daff05d71e513ec341f5c8debf6bd0e570a51d59",
+  "windowsVersion": "0.2.427.157",
+  "createdAt": "2026-10-16T17:40:40.474875+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "5a1726f5664ee4db03451a6939a29e9c8bd28f9aa82cb6c8338e85053020f1a0"
+      "sha256": "f54928ed8030c2699a46a6d87453e4ab789ce3006e4f68cfe47f4a5ee5840a12"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -64,6 +64,11 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
       "normalization": "lf",
       "sha256": "46e70da832bf1a6b1a0a9388606386fba02b47311051055cd02ca880c1e32371"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt",
+      "normalization": "lf",
+      "sha256": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
@@ -113,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "e62f60bc5989929d0fb74435a76114da8e66874cfde4be85bae23fa9142630ca"
+      "sha256": "59c7fa70f16e894c61348677e39625857c84b67ba202ce2655a08350e780b0a2"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -606,6 +611,16 @@
       "sha256": "e2c6b8849916028011e7a298a871fa463390499f13eec33fb9063fe9a84510a5"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "e96bedbd86c69b136724931043b6775edc0808ece2f4457af8887c3e664d5350"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
+      "normalization": "lf",
+      "sha256": "b896409278fe3a2db0e6d307403472a77bc821bc0e2ffa0241acfd4aab36a59e"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSystemAboutRootHost.kt",
       "normalization": "lf",
       "sha256": "de779248053bbfedfd96b17beed366326c01e24c25a7ce41d522854917b55868"
@@ -656,6 +671,11 @@
       "sha256": "b027274fd7424bcc52c836c40f09c682a5240c0a8b5606c276241bcef695ebb1"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalArticleResolver.kt",
+      "normalization": "lf",
+      "sha256": "272904bf46d66683b1ce15167df5ac0c3e756e655f19265bd81eb93909dec10a"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
       "normalization": "lf",
       "sha256": "29966e2c35f6733fef2c0a2ba22f4035fda2b92a7c7af9737b0278aca55efb0e"
@@ -681,9 +701,19 @@
       "sha256": "1bf0000c47769886f0ca3f346320643f259a581044c1102a08f3cd7e696c5230"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequest.kt",
+      "normalization": "lf",
+      "sha256": "19baf42cb964e7eed27e23dc60a7095352a03fc98ec919c00e230cf93c82a0df"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
       "normalization": "lf",
       "sha256": "ac5cbf9a8868f19293a366fca1dc696e8283d74ca8e2cac4ff4aed543c2011e6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "normalization": "lf",
+      "sha256": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionTitleRefreshWorker.kt",
@@ -1171,6 +1201,11 @@
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequestTest.kt",
+      "normalization": "lf",
+      "sha256": "3df7fd98a9714f14fcb7e597dc3efddcc3b2c2961934c69b59a2efd78498e0a0"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionReadingProgressRegressionTest.kt",
       "normalization": "lf",
       "sha256": "418f9c44d836ee51dc249fa90066bdcce628300a7550f95e62a1b08b53aa3094"
@@ -1523,12 +1558,12 @@
     {
       "path": "desktop/tools/extract-upstream-search-pages.py",
       "normalization": "lf",
-      "sha256": "ae46bbebae1bdb17d0ca408d1fdccee14aadb656b368575778c3d5e6580e7046"
+      "sha256": "739b60312c707e6e2c05545b6dc0d907d4225f729957279060125214c41028d6"
     },
     {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
       "normalization": "lf",
-      "sha256": "8df8cb34e8188d1313e3825c67b0f018a0cc6d1012c160466fb3280adc8537fc"
+      "sha256": "947e6768950274f1c05973ca55afc6edb581f90cf59bca6bc4f73ce59e8759dc"
     },
     {
       "path": "desktop/tools/extract-upstream-space-pages.py",
@@ -1749,6 +1784,11 @@
       "path": "desktop/tools/tests/test_export_packaged_updater_harness.py",
       "normalization": "lf",
       "sha256": "4048e1863341bf9df9c320e14822193fabd1ae86b0280a67e84aa8c826f712d7"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_brand_callers.py",
+      "normalization": "lf",
+      "sha256": "af26c12cbe063e14dee18a419a55883dc6daaeae1fe1bf8f0528e64f4ae2c720"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_command_attention.py",
@@ -2018,7 +2058,7 @@
     {
       "path": "desktop/tools/tests/test_v041_search_all_source.py",
       "normalization": "lf",
-      "sha256": "df689602f9e8c6c9d5d31e243997d99451a1e441a4d364c8ff391d7bef3333e7"
+      "sha256": "57945b541db8b51bcf0da0076313c385632d4358dd48fd0709c96688d570c98c"
     },
     {
       "path": "desktop/tools/tests/test_v041_video_status_labels_source.py",
@@ -2029,6 +2069,11 @@
       "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
       "normalization": "lf",
       "sha256": "33230024f7000ce4d35bbbd258e548d71ef91b9a19c5e9e53f17cf941e35ebac"
+    },
+    {
+      "path": "desktop/tools/tests/test_v042_search_layout_source.py",
+      "normalization": "lf",
+      "sha256": "8c93a42f5a3ed7bdd3fbc913b4539792e06c4b7ae44d252f96ca8fb52ff1f7ba"
     },
     {
       "path": "desktop/tools/tests/test_v042_seed_palette_source.py",
@@ -2274,6 +2319,11 @@
       "path": "desktop/tools/v042_player_readability.py",
       "normalization": "lf",
       "sha256": "4241ba15c2de24f95733395c389ee54c5d8a61905d7a96556fac4037364cfefb"
+    },
+    {
+      "path": "desktop/tools/v042_search_layout.py",
+      "normalization": "lf",
+      "sha256": "62202417d369bcc20e4b6452bcc52f525c04ba3d8ee0cc96a535ba0a09353ae6"
     },
     {
       "path": "desktop/tools/v042_seed_palette.py",
@@ -3226,6 +3276,51 @@
       "sha256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8"
     },
     {
+      "path": "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "8cc3aa4295970325562c41d23bb8d4c85848d8ee389269455f76e626db4f09b6"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "c9d49e481a6cd5b68b3771cb30fdf92213b9078c39c07d92bab884424d545426"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
+      "normalization": "raw",
+      "sha256": "28a94e2c75e3bcda0360746613f000cf662e8ea292f6888a40a6b0617000ef9b"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
+      "normalization": "raw",
+      "sha256": "a9a25bdb412e09cd5acc9c2deb629a6e68d30549b1129d1c70db2a1f6508f20f"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
+      "normalization": "raw",
+      "sha256": "ab85a1517d3dea690e5ae04380fc51f262d139db60904adee08871b1b2f1c7ba"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "0888e9831bb090e6ee50b9c3151de3c04f463d3b622b169350fe2af253ec1864"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
+      "normalization": "raw",
+      "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
+      "normalization": "raw",
+      "sha256": "8c8e0f664baa911b2b38bf3a710a8041a03fea8f0f993705c82af1e721ff97b0"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-search-layout/manifest.json",
+      "normalization": "raw",
+      "sha256": "e2ee6a1fe8ba14bfe6f677e224f98c9be6076690b62b7385b1b936eceeb00c69"
+    },
+    {
       "path": "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
       "normalization": "raw",
       "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a"
@@ -3383,7 +3478,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "0555e25a38807208d65e6859f429c282017d9f77e744164e66ddffa5349bf8e3"
+      "sha256": "e470176cd15606569a60d8d397339756c1ee3698b548a67dfb173a510fca565f"
     }
   ],
   "classes": {
@@ -3466,9 +3561,12 @@
     "com.android.purebilibili.core.theme.LiquidAccentColorSchemeTest": 3,
     "com.android.purebilibili.feature.settings.SeedPaletteSettingsPolicyTest": 3,
     "com.bilipai.desktop.appearance.DesktopSeedPalettePreferencesTest": 5,
-    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4
+    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4,
+    "com.bilipai.desktop.ui.DesktopSearchArticleOpenRequestTest": 11,
+    "com.android.purebilibili.feature.search.SearchTabLabelPolicyTest": 3,
+    "com.android.purebilibili.feature.search.SearchCardTargetRestoreTest": 3
   },
-  "expectedTests": 737,
+  "expectedTests": 754,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -3478,65 +3576,24 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementBindings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommandAttentionBinding.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopPaletteAssertions.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopPaletteAssertionsTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopSeedPalettePreferencesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsOwnerFollowRetryTest.kt",
-    "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-appearance-platform.py",
-    "desktop/tools/extract-upstream-video-detail-full-units.py",
-    "desktop/tools/extract-upstream-video-fullscreen-pager.py",
-    "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_comment_selection_consumer_closure.py",
-    "desktop/tools/tests/test_extract_upstream_command_attention.py",
-    "desktop/tools/tests/test_extract_upstream_owner_follow.py",
-    "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v040_liquid_controls_source.py",
-    "desktop/tools/tests/test_v040_theme_roles_source.py",
-    "desktop/tools/tests/test_v042_seed_palette_source.py",
-    "desktop/tools/v042_owner_follow.py",
-    "desktop/tools/v042_seed_palette.py",
-    "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
-    "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
-    "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
-    "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
-    "desktop/upstream-slices/v042-owner-follow/manifest.json",
-    "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppearanceThemeSegmentPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorScheme.kt",
-    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorSchemeTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/PlaybackNotificationColorPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedColorSchemeTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPaletteSettingsPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPresetColors.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
-    "desktop/upstream-slices/v042-seed-palette/SettingsManager.kt",
-    "desktop/upstream-slices/v042-seed-palette/Theme.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemeColorTransition.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePreferencePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreview.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreviewTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemeRoleOverridePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverrides.kt",
-    "desktop/upstream-slices/v042-seed-palette/flex_seed_scheme.LICENSE",
-    "desktop/upstream-slices/v042-seed-palette/manifest.json",
-    "desktop/upstream-slices/v042-seed-palette/material_color_utilities.LICENSE",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequestTest.kt",
+    "desktop/tools/extract-upstream-search-pages.py",
+    "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+    "desktop/tools/tests/test_extract_upstream_brand_callers.py",
+    "desktop/tools/tests/test_v041_search_all_source.py",
+    "desktop/tools/tests/test_v042_search_layout_source.py",
+    "desktop/tools/v042_search_layout.py",
+    "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
+    "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
+    "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
+    "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
+    "desktop/upstream-slices/v042-search-layout/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

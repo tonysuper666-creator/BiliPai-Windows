@@ -9,24 +9,26 @@ SPEC.append({'path': 'app/src/main/java/com/android/purebilibili/feature/search/
 SPEC.append({'path': 'app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt', 'target': 'feature/search/SearchVideoFilterSheet.kt', 'inputSha256LF': '8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba', 'outputSha256LF': '8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba', 'operations': []})
 
 def wide(p):return Path('\\\\?\\'+os.path.abspath(p))
-def current_tab_abi(source):
+def current_tab_abi(source,already_current=False):
  from v029_comment_search import whole_proof
  before=source
  argument=re.compile(r'(?m)^[ \t]*viewportWidthPx = viewportWidthPx,\n(?=[ \t]*contentPaddingPx =)')
- assert len(argument.findall(source))==1,'Unknown original search selection-scroll argument'
+ assert len(argument.findall(source)) in ((0,1) if already_current else (1,)),'Unknown original search selection-scroll argument'
  source=argument.sub('',source)
  if 'BottomSheetHost.MIUIX_OVERLAY' in source:
   assert source.count('BottomSheetHost.MIUIX_OVERLAY')==1
   source=source.replace('BottomSheetHost.MIUIX_OVERLAY','BottomSheetHost.MIUIX_WINDOW',1)
  return source,whole_proof(before,source)
 
-def generate(repo,out):
+def generate(repo,out,test_output=None):
  rows=[]
  for item in SPEC:
   original=wide(_desktop_canonical_source(repo, item['path'])).read_text(encoding='utf8').replace('\r\n','\n')
   assert hashlib.sha256(original.encode()).hexdigest()==item['inputSha256LF'],item['path']
   from v041_search_all import adapt_page
-  adopted=adapt_page(repo,item,original)
+  from v042_search_layout import adapt_page as adapt_current_page
+  adopted=adapt_current_page(repo,item,original)
+  if adopted is None:adopted=adapt_page(repo,item,original)
   searchAllAudit=None
   if adopted is not None:
    source,searchAllAudit=adopted
@@ -41,14 +43,20 @@ def generate(repo,out):
    assert inverse==original
   brandCallerAudit=None
   if item['target']=='feature/search/SearchScreen.kt':
-   source,brandCallerAudit=adapt_brand_callers(source,'search')
+   if searchAllAudit is not None and searchAllAudit.get('completeCurrentOriginalScreen'):
+    # Current complete upstream already owns its Maid viewport, retry and empty states.
+    digest=hashlib.sha256(source.encode()).hexdigest()
+    brandCallerAudit=dict(upstreamCommit=searchAllAudit['upstreamCommit'],beforeSha256LfUtf8=digest,afterSha256LfUtf8=digest,edits=[],countedAdaptations=0,fullAdaptedBodyInverseExact=True,alreadyPresentInWholeOriginal=True)
+   else:source,brandCallerAudit=adapt_brand_callers(source,'search')
   tabAbiAudit=None
   if item['target'] in ['feature/search/SearchScreen.kt','feature/search/SearchVideoFilterSheet.kt']:
-   source,tabAbiAudit=current_tab_abi(source)
+   source,tabAbiAudit=current_tab_abi(source,already_current=searchAllAudit is not None and searchAllAudit.get('upstreamCommit')=='5c34a82418b33bf88acea01784bb3c6b179d6491')
   target=out/'com/android/purebilibili'/item['target'];wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(source,encoding='utf8',newline='\n')
   rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=hashlib.sha256(source.encode()).hexdigest(),inverseOriginalBodyExact=True,windowsBrandConsumerAdaptation=brandCallerAudit,windowsTabAbiAdaptation=tabAbiAudit,comprehensiveSearchAdaptation=searchAllAudit))
  from v041_search_all import emit_policies
  emit_policies(repo,out)
+ from v042_search_layout import emit_foundations
+ emit_foundations(repo,out,test_output)
  # BackToTop is adapted through the existing Root global preferences owner; no second Store.
  backToTopSource=wide(_desktop_canonical_source(repo, 'app/src/main/java/com/android/purebilibili/core/store/BackToTopSettingsStore.kt')).read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(backToTopSource.encode()).hexdigest()=='7cfc48da9652fa33262fb1ce4458b84ea442a0e34733f846836b21a9dc73c97e'
  managerSource=wide(_desktop_canonical_source(repo, 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt')).read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(managerSource.encode()).hexdigest()=='5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c'
@@ -59,6 +67,6 @@ def generate(repo,out):
  target=out/'com/android/purebilibili/core/ui/skeleton/DesktopOriginalSearchTrendingSkeleton.kt';wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(skeletonSource,encoding='utf8',newline='\n')
  return rows
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--audit',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve())
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--audit',type=Path);p.add_argument('--test-output',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve(),a.test_output.resolve() if a.test_output else None)
  if a.audit:wide(a.audit.parent).mkdir(parents=True,exist_ok=True);wide(a.audit).write_text(json.dumps(rows,indent=2)+'\n',encoding='utf8')
  print('Generated complete original Search',len(rows),'source bodies; inverse PASS')
