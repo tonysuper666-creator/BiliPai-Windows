@@ -36,6 +36,9 @@ internal class DesktopOriginalRootRouteAssembly(
     private val scope = CoroutineScope(root.entry.gate.scope.coroutineContext + routeJob)
     private val closed = AtomicBoolean(false)
     private val navigationRevision = java.util.concurrent.atomic.AtomicLong(0L)
+    private val videoReturnHandoff = DesktopWindowsVideoReturnHandoff()
+    fun bindVideoReturn(callback: (DesktopWindowsVideoReturnRequest) -> Boolean) = videoReturnHandoff.bind(callback)
+    fun unbindVideoReturn(callback: (DesktopWindowsVideoReturnRequest) -> Boolean) = videoReturnHandoff.unbind(callback)
     internal val sourceNavigationRevision: Long get() = navigationRevision.get()
     private val sessionKeys = DesktopOriginalRootSessionKeys()
     private val videoRequest = AtomicReference<Job?>(null)
@@ -87,6 +90,7 @@ internal class DesktopOriginalRootRouteAssembly(
         if (next == stack.toList()) return
         // A pending click cannot survive a real navigation away and return to an equal key.
         videoRequest.getAndSet(null)?.cancel()
+        videoReturnHandoff.retirePending()
         val old = currentKey
         val destination = next.lastOrNull() ?: BiliPaiNavKey.MainHost
         val removed = resolveRemovedNavigation3SaveableStateKeys(stack.toList(), next)
@@ -208,17 +212,29 @@ internal class DesktopOriginalRootRouteAssembly(
         }
         return admitted && replaced
     }
-    override fun homeFromVideo(current: BiliPaiNavKey.VideoDetail): Boolean {
-        if (currentKey != current) return false
-        val accepted = root.returns.returnFromVideo(current, BiliPaiNavKey.MainHost, false) {
-            if (owns() && currentKey == current) {
-                mainHostNavigation.get()?.invoke(BiliPaiNavKey.Home)
-                replaceStack(popBiliPaiNavKeyToRoot(stack.toList()))
+    /** Preparation may suspend in the actual visual host, never inside Root/Store admission.
+     * Its closure comes back through the same original return checkpoint and physical stack.
+     * Identity plus revision rejects even an equal route after navigation away and back. */
+    private fun returnVideo(current: BiliPaiNavKey.VideoDetail, target: BiliPaiNavKey?,
+        related: Boolean, performBack: () -> Unit): Boolean {
+        check(EventQueue.isDispatchThread()) { "Actual Root return must run on its Window EDT" }
+        val revision = sourceNavigationRevision
+        fun currentEntry() = owns() && currentKey === current && sourceNavigationRevision == revision
+        if (!currentEntry()) return false
+        return videoReturnHandoff.request(current, target, ::currentEntry) {
+            var committed = false
+            val accepted = root.returns.returnFromVideo(current, target, related) {
+                if (currentEntry()) { performBack(); committed = true }
             }
+            if (committed) pruneCategoryOwners()
+            accepted && committed
         }
-        if (accepted) pruneCategoryOwners()
-        return accepted
     }
+    override fun homeFromVideo(current: BiliPaiNavKey.VideoDetail): Boolean =
+        returnVideo(current, BiliPaiNavKey.MainHost, false) {
+            mainHostNavigation.get()?.invoke(BiliPaiNavKey.Home)
+            replaceStack(popBiliPaiNavKeyToRoot(stack.toList()))
+        }
     override fun markVideoReturning(current: BiliPaiNavKey.VideoDetail): Boolean =
         currentKey == current && root.returns.prepareReturnBeforeBack(current, previousKey)
     override fun clearVideoReturning(): Boolean = root.returns.consumeReturning()
@@ -294,12 +310,9 @@ internal class DesktopOriginalRootRouteAssembly(
         val before = currentKey
         val target = previousKey
         if (before is BiliPaiNavKey.VideoDetail) {
-            val accepted = root.returns.returnFromVideo(before, target,
-                isRelatedDetailPop = target is BiliPaiNavKey.VideoDetail) {
-                if (owns()) replaceStack(BiliPaiNavBackStackController(stack.toList()).pop().backStack)
+            return returnVideo(before, target, related = target is BiliPaiNavKey.VideoDetail) {
+                replaceStack(BiliPaiNavBackStackController(stack.toList()).pop().backStack)
             }
-            if (accepted) pruneCategoryOwners()
-            return accepted
         }
         return admitted { replaceStack(BiliPaiNavBackStackController(stack.toList()).pop().backStack) }
     }
@@ -358,6 +371,9 @@ internal class DesktopOriginalRootRouteAssembly(
     }
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
+        // closed invalidates every ticket synchronously; bounded EDT cleanup never joins a gate.
+        if (EventQueue.isDispatchThread()) videoReturnHandoff.retirePending()
+        else EventQueue.invokeLater { videoReturnHandoff.retirePending() }
         mainHostNavigation.set(null)
         mainHostDestination.set(null)
         mainHostBackAction.set(null)

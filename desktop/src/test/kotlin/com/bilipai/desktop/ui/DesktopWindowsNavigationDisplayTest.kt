@@ -147,4 +147,13 @@ class DesktopWindowsNavigationDisplayTest {
             }
         }
     }
+    @Test fun `a deferred or rejected related back never restores a source before the physical pop`() {
+        val calls = mutableListOf<String>()
+        val child = BiliPaiNavKey.VideoDetail("BVchild", sourceRoute = "video/BVparent")
+        completeDesktopWindowsNavigationBack(child, false,
+            { calls += "prepare"; true }, { calls += "accepted-for-preparation" },
+            { fail("related source restored before its real pop") }, backCommitted = { false })
+        assertEquals(listOf("prepare", "accepted-for-preparation"), calls)
+    }
+
 }
