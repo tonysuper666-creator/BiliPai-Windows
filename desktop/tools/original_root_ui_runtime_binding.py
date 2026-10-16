@@ -84,14 +84,19 @@ def verify_main_output(main, ledger):
     return dict(classes=len(classes), metadataAndResources=len(rows))
 
 
-def verify_application_resources(root, ledger):
+def verify_application_resources(root, ledger, native_resources=None):
     resources = jars.paths.checked_path(root / 'app/resources')
     actual = {}
     for path in resources.rglob('*'):
         jars.paths.checked_path(path)
         if path.is_file():
             actual[path.relative_to(resources).as_posix()] = path
-    expected = ledger['applicationResources']
+    expected = dict(ledger['applicationResources'])
+    if native_resources is not None:
+        require(not (set(expected) & set(native_resources)) and
+            all(name.startswith('native/windows-x64/') for name in native_resources),
+            'Package-only native resources overlap the compiled source resource ledger')
+        expected.update(native_resources)
     require(set(actual) == set(expected), 'Production application resource inventory differs')
     for name, pin in expected.items():
         relative(name)
@@ -204,26 +209,63 @@ def production_library_bindings(root, inventory, model, qualified_native, *, exc
             source_order.append(relative_path)
     require(set(source_order) == {row['path'] for row in inventory['jars'] if row not in resource_jars},
             'Resolved production runtime does not cover every packaged host JAR')
-    return dict(orderedClasspath=source_order, nativeProjection=projection, excludedResourceJars=resource_jars)
+    return dict(orderedClasspath=source_order, artifactBindings=bindings,
+        nativeProjection=projection, excludedResourceJars=resource_jars)
 
 
-def _verify_production(root, model, ledger, fixture_classes, qualified_native):
+def _verify_production(root, model, ledger, fixture_classes, qualified_native, native_resources=None):
     root = jars.paths.checked_path(root)
     inventory = jars.inventory(root)
     jars.require_no_fixture_shadow(inventory['productionClassNames'], fixture_classes)
     main = root / 'app' / inventory['mainJar']
     main_output = verify_main_output(main, ledger)
-    resources = verify_application_resources(root, ledger)
+    resources = verify_application_resources(root, ledger, native_resources)
     libraries = production_library_bindings(root, inventory, model, qualified_native)
     source_order = libraries['orderedClasspath']
     order = verify_classpath_order(root, source_order, inventory['model']['orderedClasspath'])
     return dict(mainJar=inventory['mainJar'], productionJars=inventory['jars'],
         productionClassNames=inventory['productionClassNames'], orderedProductionClasspath=inventory['model']['orderedClasspath'],
         cfgSHA256=inventory['cfgSHA256'], mainOutput=main_output, applicationResources=resources,
+        artifactBindings=libraries['artifactBindings'],
         nativeProjection=libraries['nativeProjection'], classpathOrder=order, bundledJavaExecutableExists=inventory['bundledJavaExecutableExists'])
 
 
-def bind(export, candidate, run, jobs, log, plan_raw, source_sha, qualified_native=None):
+def actual_test_classpath(export, candidate, model, manifest, bound):
+    """Project the captured JavaExec order onto the byte-bound packaged image."""
+    keys = ('group', 'name', 'version', 'classifier', 'type', 'bytes', 'sha256')
+    identity = lambda row: tuple(row.get(key) for key in keys)
+    production = {row['file']: row for row in model['mainArtifacts']}
+    source_artifacts = {row['file']: row for row in model['testArtifacts']}
+    require(len(source_artifacts) == len(model['testArtifacts']), 'Duplicate test runtime artifact path')
+    libraries = {path: str(candidate / 'app' / name) for path, name in bound['artifactBindings'].items()}
+    extras = [row for row in model['testArtifacts'] if row['file'] not in production]
+    for dependency in manifest['dependencies']:
+        matches = [row for row in extras if identity(row) == identity(dependency)]
+        require(len(matches) == 1, 'Exported test dependency has no unique captured artifact')
+        artifact = matches[0]; extras.remove(artifact)
+        libraries[artifact['file']] = str(export / relative(dependency['path']))
+    require(not extras, 'Captured test runtime contains an unexported dependency')
+    fixture = str(export / 'ui-fixture.jar'); main = str(candidate / 'app' / bound['mainJar'])
+    ordered = []
+    for row in model['classpath']:
+        if row['role'] in ('testClasses', 'testResources'):
+            path = fixture
+        elif row['role'] in ('mainClasses', 'mainResources'):
+            path = main
+        else:
+            require(row['role'] in ('mainLibrary', 'testLibrary') and row['path'] in libraries and
+                row['path'] in source_artifacts, 'Unbound actual JavaExec runtime path')
+            artifact = source_artifacts[row['path']]
+            verify_pin({key: artifact[key] for key in ('bytes', 'sha256')}, row,
+                       'Captured JavaExec dependency identity differs')
+            path = libraries[row['path']]
+        if path not in ordered: ordered.append(path)
+    require(set(ordered) == {fixture, main, *libraries.values()},
+            'Captured JavaExec does not cover the complete bound fixture runtime')
+    return ordered
+
+
+def bind(export, candidate, run, jobs, log, plan_raw, source_sha, qualified_native=None, package=None):
     # Reuse the existing sealed-receipt/export verifier, then reauthenticate every
     # JSON payload used below against that same manifest snapshot.
     export = jars.paths.checked_path(export)
@@ -231,7 +273,7 @@ def bind(export, candidate, run, jobs, log, plan_raw, source_sha, qualified_nati
     script = Path(__file__).with_name('verify-original-root-ui-harness-export.py')
     spec = importlib.util.spec_from_file_location('runtime_binding_export_guard', script)
     verifier = importlib.util.module_from_spec(spec); spec.loader.exec_module(verifier)
-    proof = verifier.verify_export(export, run, jobs, log, plan_raw, source_sha)
+    proof = verifier.verify_export(export, run, jobs, log, plan_raw, source_sha)['proof']
     raw = jars.bounded_bytes(export / 'manifest.json', MAX_JSON)
     require(hashlib.sha256(raw).hexdigest() == proof['uiManifestSHA256'], 'UI manifest changed after authentication')
     manifest = json_bytes(raw)
@@ -243,27 +285,40 @@ def bind(export, candidate, run, jobs, log, plan_raw, source_sha, qualified_nati
         snapshots[name] = json_bytes(data)
     model = snapshots['runtime-model.json']; ledger = snapshots['production-ledger.json']
     require(model['sourceSha'] == source_sha and model['planSha256'] == manifest['planSha256'], 'Runtime model belongs to another source')
-    bound = _verify_production(candidate, model, ledger, {row['path'][:-6] for row in manifest['classes']}, qualified_native)
+    require(set(model['systemProperties']) == {'bilipai.js.workerResources', 'compose.application.resources.dir', 'file.encoding'} and
+        model['systemProperties']['file.encoding'] == 'UTF-8', 'The actual UI runtime property contract changed')
+    native_proof = None
+    if package is not None:
+        from original_root_ui_packaged_native import bind_packaged_native
+        native_proof = bind_packaged_native(package['sourceRepo'], source_sha, manifest['windowsVersion'], package,
+            ledger['applicationResources'])
+    bound = _verify_production(candidate, model, ledger, {row['path'][:-6] for row in manifest['classes']},
+        qualified_native, None if native_proof is None else native_proof['resources'])
     require(jars.read_windows_version(candidate / 'app' / bound['mainJar']) == manifest['windowsVersion'],
             'Candidate version differs from its qualified UI export')
     fixture = jars.class_entries(export / 'ui-fixture.jar')
     jars.require_no_fixture_shadow(bound['productionClassNames'], {row['name'] for row in fixture.values()})
-    classpath = [str(export / 'ui-fixture.jar')]
     for row in manifest['dependencies']:
         path = export / relative(row['path'])
         names = {value['name'] for value in jars.class_entries(path).values()}
         jars.require_no_fixture_shadow(bound['productionClassNames'], names)
-        classpath.append(str(path))
-    classpath += [str(candidate / 'app' / name) for name in bound['orderedProductionClasspath']]
+    classpath = actual_test_classpath(export, candidate, model, manifest, bound)
     for row in bound['productionJars']:
         verify_pin(jars.file_digest(candidate / 'app' / row['path']), row, 'Production JAR changed during binding')
     # A command is deliberately not emitted until the JDK/production-image layer
     # is bound. The production graph proof alone cannot authorize a Java launch.
     return dict(sourceSha=source_sha, windowsVersion=manifest['windowsVersion'],
         sealedReceiptSHA256=proof['sealedReceiptSHA256'], candidateRoot=str(candidate),
+        qualifiedJdkReleaseSHA256=model['jdk']['releaseSha256'], uiManifestSHA256=proof['uiManifestSHA256'],
         productionClasspathAndResourcesBound=True, candidateRuntimeBound=False, actualJdkBound=False,
         classpath=classpath, mainClass=manifest['mainClass'], cfgSHA256=bound['cfgSHA256'],
+        actualGradleTestClasspathOrderBound=True,
         productionJars=bound['productionJars'], mainOutput=bound['mainOutput'],
+        systemProperties={'file.encoding': 'UTF-8',
+            'bilipai.js.workerResources': str(candidate / 'app/resources/js-engine'),
+            'compose.application.resources.dir': str(candidate / 'app/resources'),
+            'skiko.library.path': str(candidate / 'app')},
         applicationResourceFiles=bound['applicationResources'], nativeProjection=bound['nativeProjection'],
+        packagedNativeResources=native_proof,
         classpathOrder=bound['classpathOrder'], imageLaunchReady=False,
         applicationExecuted=False, uiRuntimeVerified=False, hardwareVerified=False, desktopReplaced=False)

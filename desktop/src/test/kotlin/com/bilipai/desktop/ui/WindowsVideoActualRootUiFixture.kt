@@ -4,6 +4,8 @@ import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.window.WindowPlacement
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.bilipai.desktop.player.MpvPlayer
+import com.bilipai.desktop.player.NvidiaVideoBackend
+import com.bilipai.desktop.player.NvidiaVideoState
 import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
 import com.bilipai.desktop.player.PlayerPreferences
 import com.bilipai.desktop.player.PlayerPreferencesStore
@@ -2440,11 +2442,13 @@ object WindowsVideoActualRootUiFixture {
             sameNative(); val state = actualPlayer.nvidiaVideoState.value
             state.sourceVersion == accepted.sourceVersion && state.gpuVendorId == 0x10de && !state.gpuName.isNullOrBlank()
         }
-        val state = actualPlayer.nvidiaVideoState.value
+        val identifiedGpu = actualPlayer.nvidiaVideoState.value
         await("actual main-session GPU name rendered through its UI StateFlow") { edt {
             current(); descendants(nvidiaSurface().accessibleContext)
-                .any { it.accessibleName.orEmpty().contains(requireNotNull(state.gpuName)) }
+                .any { it.accessibleName.orEmpty().contains(requireNotNull(identifiedGpu.gpuName)) }
         } }
+        val requirePresentation = java.lang.Boolean.getBoolean("bilipai.validation.requireNvidiaPresentation")
+        val state = actualPlayer.nvidiaVideoState.value
         record("nvidia-main-native-output", mapOf("actualMainPlayerIdentity" to JsonPrimitive(System.identityHashCode(actualPlayer)),
             "actualHardwareDecoder" to JsonPrimitive(actualPlayer.state.value.hardwareDecoder),
             "sourceVersion" to JsonPrimitive(state.sourceVersion), "configurationVersion" to JsonPrimitive(state.configurationVersion),
@@ -2459,6 +2463,8 @@ object WindowsVideoActualRootUiFixture {
             "hdrDisplayEnabled" to JsonPrimitive(actualPlayer.videoOutput.value.hdrDisplay.hdrEnabled),
             "hdrConversionActive" to JsonPrimitive(state.hdrConversionActive),
             "vsrPositiveRequiredByThisUiTest" to JsonPrimitive(false), "hdrPositiveRequiredByThisUiTest" to JsonPrimitive(false),
+            "nativePresentationCheckDeferredUntilDialogCloses" to JsonPrimitive(requirePresentation),
+            "nativeBackend" to JsonPrimitive(state.backend.name), "nativeVeyraSubmitted" to JsonPrimitive(state.veyraSubmitted),
             "configurationSharedAcrossSettingsAndControls" to JsonPrimitive(true)))
         actions.capture("nvidia-main-native-output", edt { current() })
         edt { captureOwnedExtraSurface("nvidia-main-native-output-dialog", nvidiaSurface()) }
@@ -2485,6 +2491,47 @@ object WindowsVideoActualRootUiFixture {
             "sameNativeSource" to JsonPrimitive(true), "actualDurableValue" to JsonPrimitive(true),
             "actualMainSceneInputLayersRestored" to JsonPrimitive(true),
             "actualMainSceneLayerCountRestored" to JsonPrimitive(edt { actualMainSceneLayers().size })))
+        if (requirePresentation) {
+            // The settings dialog can cover the video. Require a displayed
+            // frame after its actual retirement, with the owned Main visible.
+            // Shared-core active is published only after the existing native
+            // tracker accepts the current receipt and matching displayed token.
+            val positionAfterDialogClose = actualPlayer.state.value.positionSeconds
+            fun currentPresentedFrame(native: NvidiaVideoState): Boolean =
+                native.sourceVersion == accepted.sourceVersion && native.configurationVersion > 0 &&
+                    native.gpuVendorId == 0x10de && native.backend == NvidiaVideoBackend.VEYRA_CORE &&
+                    native.srEnabledRequested && native.veyraSubmitted && native.active && !native.pending &&
+                    native.error == null && native.unavailableReason == null && playing() &&
+                    (native.requestedScale > 1.0 || native.nativeResolutionProcessingRequested)
+            await("current owned NVIDIA SR frame displayed in the uncovered Main video") {
+                sameNative()
+                actualPlayer.state.value.positionSeconds >= positionAfterDialogClose + 1.25 &&
+                    currentPresentedFrame(actualPlayer.nvidiaVideoState.value) && edt {
+                    current(); nvidiaDialogSurface() == null && window().isShowing && window().isFocused
+                }
+            }
+            val shown = actualPlayer.nvidiaVideoState.value
+            sameNative()
+            check(currentPresentedFrame(shown) && edt {
+                current(); nvidiaDialogSurface() == null && window().isShowing && window().isFocused
+            }) { "Current NVIDIA displayed-frame proof retired before capture" }
+            record("nvidia-main-presented-output", mapOf(
+                "actualMainPlayerIdentity" to JsonPrimitive(System.identityHashCode(actualPlayer)),
+                "sourceVersion" to JsonPrimitive(shown.sourceVersion), "configurationVersion" to JsonPrimitive(shown.configurationVersion),
+                "nativeBackend" to JsonPrimitive(shown.backend.name), "nativeVeyraSubmitted" to JsonPrimitive(shown.veyraSubmitted),
+                "gpuName" to JsonPrimitive(shown.gpuName), "gpuVendorId" to JsonPrimitive(shown.gpuVendorId),
+                "active" to JsonPrimitive(shown.active), "pending" to JsonPrimitive(shown.pending),
+                "inputWidth" to JsonPrimitive(shown.inputWidth), "inputHeight" to JsonPrimitive(shown.inputHeight),
+                "outputWidth" to JsonPrimitive(shown.outputWidth), "outputHeight" to JsonPrimitive(shown.outputHeight),
+                "requestedQualityLevel" to JsonPrimitive(shown.requestedQualityLevel),
+                "requestedIntensityPercent" to JsonPrimitive(shown.requestedIntensityPercent),
+                "playbackPositionAtDialogClose" to JsonPrimitive(positionAfterDialogClose),
+                "playbackPositionAtPresentation" to JsonPrimitive(actualPlayer.state.value.positionSeconds),
+                "currentNativeDisplayedFrameProofRequired" to JsonPrimitive(true),
+                "vsrPositiveRequiredByThisUiTest" to JsonPrimitive(true), "hdrPositiveRequiredByThisUiTest" to JsonPrimitive(false),
+                "settingsDialogClosed" to JsonPrimitive(true), "ownedMainFocused" to JsonPrimitive(true)))
+            actions.capture("nvidia-main-presented-output", edt { current() })
+        }
     }
 
     private fun boundCommentSearchWindow() {
@@ -5972,6 +6019,10 @@ object WindowsVideoActualRootUiFixture {
     @JvmStatic fun main(args: Array<String>) {
         require(args.size in 4..5 && Regex("BV[0-9A-Za-z]{10}").matches(args[3]))
         require(args.size == 4 || args[4] == "replay")
+        require(!java.lang.Boolean.getBoolean("bilipai.validation.requireNvidiaPresentation") ||
+            System.getProperty("bilipai.validation.nvidiaInput") == "true") {
+            "Positive NVIDIA presentation mode requires the actual NVIDIA control workflow"
+        }
         val replayMode = args.size == 5
         video = args[3]; report = Path.of(args[0]).toRealPath()
         Files.list(report).use { require(it.findAny().isEmpty) }

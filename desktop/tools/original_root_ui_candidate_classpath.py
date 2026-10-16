@@ -106,9 +106,9 @@ def parse_cfg(raw):
     return dict(mainClass=mains[0], orderedClasspath=classes, javaOptions=options)
 
 
-def zip_directory(stream, size):
+def zip_directory(stream, size, maximum=MAX_JAR):
     """Bound central-directory allocation *before* ZipFile parses it."""
-    if not 22 <= size <= MAX_JAR:
+    if not 22 <= size <= maximum:
         raise ValueError('Invalid candidate JAR size')
     stream.seek(max(0, size - 65557))
     tail = stream.read(65557)

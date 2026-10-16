@@ -8,6 +8,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import original_root_ui_runtime_binding as binding
+import test_verify_original_root_ui_export as source_fixtures
 
 
 def pin(data):
@@ -142,6 +143,64 @@ class RuntimeBindingTest(unittest.TestCase):
             with self.subTest(path=path), self.assertRaises(ValueError): binding.relative(path)
         with self.assertRaisesRegex(ValueError, 'Duplicate binding JSON key'):
             binding.json_bytes(b'{"source":"a","source":"b"}')
+
+    def test_captured_gradle_test_order_keeps_intermixed_test_libraries_in_place(self):
+        root = self.fixture.root
+        def artifact(file, name, byte):
+            return dict(file=file, group='test', name=name, version='1', classifier='', type='jar', **pin(byte))
+        a = artifact('ci/a.jar', 'main-a', b'a'); b = artifact('ci/b.jar', 'main-b', b'b')
+        x = artifact('ci/x.jar', 'test-x', b'x'); y = artifact('ci/y.jar', 'test-y', b'y')
+        model = dict(mainArtifacts=[a, b], testArtifacts=[a, b, x, y], classpath=[
+            dict(path='test/classes', role='testClasses'), dict(path='main/classes', role='mainClasses'),
+            dict(a, path=a['file'], role='mainLibrary'), dict(x, path=x['file'], role='testLibrary'),
+            dict(b, path=b['file'], role='mainLibrary'), dict(y, path=y['file'], role='testLibrary')])
+        manifest = dict(dependencies=[dict(y, path='lib/y.jar'), dict(x, path='lib/x.jar')])
+        bound = dict(mainJar='main.jar', artifactBindings={a['file']:'a.jar', b['file']:'b.jar'})
+        actual = binding.actual_test_classpath(root/'export', root/'candidate', model, manifest, bound)
+        self.assertEqual(['ui-fixture.jar','main.jar','a.jar','x.jar','b.jar','y.jar'], [Path(p).name for p in actual])
+
+    def test_javaexec_library_missing_from_captured_artifacts_is_rejected(self):
+        model = dict(mainArtifacts=[],testArtifacts=[],classpath=[dict(path='ci/unknown.jar',role='testLibrary')])
+        with self.assertRaisesRegex(ValueError, 'Unbound actual JavaExec runtime path'):
+            binding.actual_test_classpath(self.fixture.root,self.fixture.root,model,dict(dependencies=[]),
+                dict(mainJar='main.jar',artifactBindings={}))
+
+    def test_unexported_test_dependency_cannot_be_silently_dropped(self):
+        model = dict(mainArtifacts=[],testArtifacts=[dict(file='ci/extra.jar')],classpath=[])
+        with self.assertRaisesRegex(ValueError, 'unexported dependency'):
+            binding.actual_test_classpath(self.fixture.root,self.fixture.root,model,dict(dependencies=[]),
+                dict(mainJar='main.jar',artifactBindings={}))
+
+
+class PublicRuntimeBindingTest(unittest.TestCase):
+    """Actual exporter + actual receipt reader + public binder, using byte fixtures."""
+    def setUp(self):
+        self.source = source_fixtures.UiExportReadbackTests()
+        self.source.setUp()
+        self.addCleanup(self.source.doCleanups)
+        root = self.source.f.root / 'candidate'; root.mkdir()
+        self.candidate = Fixture(root)
+
+    def bind(self):
+        source = self.source
+        return binding.bind(source.root, self.candidate.root, source.run, source.jobs,
+            source.log(), source.plan_raw, source.f.sha, self.candidate.native)
+
+    def test_real_export_envelope_reaches_candidate_byte_admission(self):
+        # Source/export authentication succeeds. A different candidate must fail
+        # at its compiled bytes, rather than at an incorrectly unwrapped proof.
+        with self.assertRaisesRegex(ValueError, 'main class bytes differ'):
+            self.bind()
+
+    def test_public_entry_rejects_failed_source_before_candidate_admission(self):
+        self.source.run['conclusion'] = 'failure'
+        with self.assertRaisesRegex(ValueError, 'run is not successful'):
+            self.bind()
+
+    def test_public_entry_rejects_a_resealed_receipt_with_wrong_export_digest(self):
+        self.source.payload['receipt']['originalRootUiHarnessExport']['manifestSha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'not the sealed CI result'):
+            self.bind()
 
 
 if __name__ == '__main__':

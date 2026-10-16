@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "38512320c49783396cba3fefe674067e0cd9691f",
-  "windowsVersion": "0.2.427.146",
-  "createdAt": "2026-10-16T10:50:34.303051+00:00",
+  "baseHead": "eaa4c484eb6bd50f8cf1e7825f46d8cf3390585c",
+  "windowsVersion": "0.2.427.147",
+  "createdAt": "2026-10-16T12:20:43.482006+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "22c95433d4bb5dea69f5d9443a34b72131e4e54128afc22fbbd43edda3541253"
+      "sha256": "d5f8442f57cd7cf140f2c1614a7742eb2fe0e1ecc8c29a5df2f7bcb746558e3c"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -1233,7 +1233,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt",
       "normalization": "lf",
-      "sha256": "760931851b304c2b55299aadec027b3053406a2d3709ab7e9b7ad6a117708f49"
+      "sha256": "be0e3bbfde97350410fb691859243207d1e21f0a3ad74a9e2a4dc9c3e21e80d7"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoDynamicShareReplay.kt",
@@ -1318,7 +1318,7 @@
     {
       "path": "desktop/tools/bind-original-root-ui-candidate.py",
       "normalization": "lf",
-      "sha256": "1d455afcf36bd29780df466cf532624f9901db8ead4f35d99e25a6312e484d40"
+      "sha256": "748dd112725ed2310ed4689880e1aaa68d26cabfe53ebec944565795f18af283"
     },
     {
       "path": "desktop/tools/build.ps1",
@@ -1613,7 +1613,7 @@
     {
       "path": "desktop/tools/original_root_ui_candidate_classpath.py",
       "normalization": "lf",
-      "sha256": "ce3583d36130cc5613402a25053052756d628bed092b3927d90e284cae90d65b"
+      "sha256": "09ab00e125295ff3ec239277bb2e06860c3b5376672e694e86b29ce33dba59f7"
     },
     {
       "path": "desktop/tools/original_root_ui_class_closure.py",
@@ -1621,9 +1621,19 @@
       "sha256": "4f1ea57da2714cd42c5784f70f5b3a45c46eee52de5edac31265b2b4becb80e1"
     },
     {
+      "path": "desktop/tools/original_root_ui_packaged_native.py",
+      "normalization": "lf",
+      "sha256": "01af73b89239e4c69425810fa376d0b5d10d7a1d85897984ca14980878227603"
+    },
+    {
       "path": "desktop/tools/original_root_ui_runtime_binding.py",
       "normalization": "lf",
-      "sha256": "dd42f43dc4cdd0d0188f159ec72861b22ac41e01a0b923809421ba69781d5bdf"
+      "sha256": "5a12b15d9d361b74a44abca9ea5d75630542313e1559f5d6025c78d1b020cd34"
+    },
+    {
+      "path": "desktop/tools/original_root_ui_runtime_image.py",
+      "normalization": "lf",
+      "sha256": "7a1ba8fc08f545b9fd33f483510923077b2806efba049ea1c9d9ca377baf2f35"
     },
     {
       "path": "desktop/tools/prepare-js-worker.py",
@@ -1766,9 +1776,19 @@
       "sha256": "5762b9f1d3e25fb9cfad48c4972637fbd592550b1f9474db1637742dd91f6a1a"
     },
     {
+      "path": "desktop/tools/tests/test_original_root_ui_packaged_native.py",
+      "normalization": "lf",
+      "sha256": "f9b44ed3f639b9e935978d55e2c89d6ec98db46772f520048e74ef9e619cacfe"
+    },
+    {
       "path": "desktop/tools/tests/test_original_root_ui_runtime_binding.py",
       "normalization": "lf",
-      "sha256": "9917a2ded30c2d5857ecd535e6c257df48425589e2bc57500163ea6297696d9b"
+      "sha256": "599a01a86c54e86e9b5286a8194e647bc262682c00b8bdb084d96ba9b1fc2108"
+    },
+    {
+      "path": "desktop/tools/tests/test_original_root_ui_runtime_image.py",
+      "normalization": "lf",
+      "sha256": "1ca1069b067d2059ceae1a53082e0f92e9223aad5ce0eba224053349f6a304d2"
     },
     {
       "path": "desktop/tools/tests/test_package_checkout_consistency.py",
@@ -3048,7 +3068,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "f6292036773aa4f961fd6a411d4e42433e594652ed8c4696beffd1983ac49e21"
+      "sha256": "d1b24909d39c6e8bfe102abd7b2b3bf25c3e048c557ed042473ef1c78a8a190c"
     }
   ],
   "classes": {
@@ -3127,46 +3147,16 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-package-candidate.yml",
     ".github/workflows/windows-source-validation.yml",
-    "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityModels.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchFilters.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchRepository.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchAllTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt",
     "desktop/tools/bind-original-root-ui-candidate.py",
-    "desktop/tools/build.ps1",
-    "desktop/tools/canonicalize-candidate-classpath.py",
-    "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-search-platform.py",
-    "desktop/tools/extract-upstream-api.py",
-    "desktop/tools/extract-upstream-search-pages.py",
-    "desktop/tools/original-root-ui-harness.init.gradle",
+    "desktop/tools/original_root_ui_candidate_classpath.py",
+    "desktop/tools/original_root_ui_packaged_native.py",
     "desktop/tools/original_root_ui_runtime_binding.py",
-    "desktop/tools/prepare-js-worker.py",
-    "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_candidate_production_classpath.py",
+    "desktop/tools/original_root_ui_runtime_image.py",
+    "desktop/tools/tests/test_original_root_ui_packaged_native.py",
     "desktop/tools/tests/test_original_root_ui_runtime_binding.py",
-    "desktop/tools/tests/test_package_checkout_consistency.py",
-    "desktop/tools/tests/test_prepare_js_worker.py",
-    "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v041_search_all_source.py",
-    "desktop/tools/tests/test_v041_video_status_labels_source.py",
-    "desktop/tools/v041_search_all.py",
-    "desktop/tools/v041_video_status_labels.py",
-    "desktop/upstream-slices/v041-search-all/ApiClient.kt",
-    "desktop/upstream-slices/v041-search-all/SearchEmptyStatePolicy.kt",
-    "desktop/upstream-slices/v041-search-all/SearchLoadPolicy.kt",
-    "desktop/upstream-slices/v041-search-all/SearchRepository.kt",
-    "desktop/upstream-slices/v041-search-all/SearchScreen.kt",
-    "desktop/upstream-slices/v041-search-all/SearchVideoFilterSheet.kt",
-    "desktop/upstream-slices/v041-search-all/SearchViewModel.kt",
-    "desktop/upstream-slices/v041-search-all/manifest.json",
-    "desktop/upstream-slices/v041-video-status-labels/manifest.json",
+    "desktop/tools/tests/test_original_root_ui_runtime_image.py",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,
