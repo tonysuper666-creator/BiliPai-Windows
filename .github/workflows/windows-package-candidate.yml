@@ -37,10 +37,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
       - name: Verify exact source qualification before packaging
         shell: pwsh
         env:
@@ -65,6 +61,14 @@ jobs:
           if ($LASTEXITCODE -ne 0 -or (git rev-parse HEAD) -cne $env:SOURCE_SHA) { throw 'Source checkout mismatch.' }
           python $guard --run "$evidence/run.json" --jobs "$evidence/jobs.json" --log "$evidence/job.log" --plan .github/windows-source-validation-plan.json --source-sha $env:SOURCE_SHA --output "$evidence/source-qualification.json"
           if ($LASTEXITCODE -ne 0) { throw 'Exact source qualification rejected.' }
+      - name: Stage the same fixed JDK as source qualification
+        shell: pwsh
+        run: |
+          $jdkArchive = Join-Path $env:RUNNER_TEMP 'bilipai-fixed-jdk.zip'
+          $jdkHome = Join-Path $env:RUNNER_TEMP 'bilipai-fixed-jdk'
+          python desktop/tools/fetch-js-worker-jdk.py --archive "$jdkArchive" --output "$jdkHome"
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned JDK verification failed.' }
+          "JAVA_HOME=$jdkHome" | Add-Content -LiteralPath $env:GITHUB_ENV
       - name: Stage the reviewed Windows SDK
         shell: pwsh
         run: |
@@ -89,7 +93,7 @@ jobs:
           BILIPAI_WINDOWS_RELEASE_REPOSITORY: tonysuper666-creator/BiliPai-Windows
         run: |
           $env:GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs="-Xmx8g -XX:MaxMetaspaceSize=1g -XX:ReservedCodeCacheSize=256m"'
-          & ./desktop/tools/build.ps1 -SkipTests
+          & ./desktop/tools/build.ps1 -SkipTests -FixedJavaToolchain -JavaHome $env:JAVA_HOME
           if ($LASTEXITCODE -ne 0) { throw 'Candidate packaging failed.' }
           git diff --exit-code
           if ($LASTEXITCODE -ne 0) { throw 'Packaging modified committed source.' }
@@ -102,5 +106,6 @@ jobs:
             desktop/build/distributions/*.zip
             desktop/build/distributions/*.zip.sha256
             desktop/build/distributions/source-qualification.json
+            desktop/build/distributions/candidate-toolchain.json
           if-no-files-found: error
           retention-days: 1

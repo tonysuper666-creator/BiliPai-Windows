@@ -12,7 +12,10 @@ import com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference
 import com.android.purebilibili.feature.video.viewmodel.normalizeCodecFamilyKey
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.coroutines.CancellationException
 import java.nio.file.Files
+import java.nio.file.LinkOption
+import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import kotlin.random.Random
@@ -68,15 +71,50 @@ data class PlayerPreferences(
     }
 }
 
+/** A runtime fallback is usable without being evidence that legacy data was absent.
+ * Startup may seed canonical preferences only from Loaded or a genuinely Missing
+ * file. Unavailable is retryable on the next read and must never consume a one-time
+ * migration marker. No exception message, file path or preference contents escape. */
+internal sealed interface PlayerPreferencesReadResult {
+    val preferences: PlayerPreferences
+    val migrationSeed: PlayerPreferences?
+        get() = when (this) {
+            is Loaded, Missing -> preferences
+            Unavailable -> null
+        }
+
+    data class Loaded(override val preferences: PlayerPreferences) : PlayerPreferencesReadResult
+    data object Missing : PlayerPreferencesReadResult {
+        override val preferences = PlayerPreferences()
+    }
+    data object Unavailable : PlayerPreferencesReadResult {
+        override val preferences = PlayerPreferences()
+    }
+}
+
 /** Separate from the library file so player preferences survive library migrations. */
 class PlayerPreferencesStore(private val file: Path = defaultFile()) {
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
 
     @Synchronized
-    fun read(): PlayerPreferences = runCatching {
-        require(Files.isRegularFile(file) && Files.size(file) <= 1_048_576)
-        json.decodeFromString<PlayerPreferences>(Files.readString(file)).normalized()
-    }.getOrDefault(PlayerPreferences())
+    fun read(): PlayerPreferences = readForMigration().preferences
+
+    @Synchronized
+    internal fun readForMigration(): PlayerPreferencesReadResult = try {
+        // size throws for a missing file; isRegularFile alone hides both missing
+        // files and I/O failures behind false and cannot authorize migration.
+        val size = Files.size(file)
+        require(Files.isRegularFile(file) && size <= 1_048_576)
+        PlayerPreferencesReadResult.Loaded(
+            json.decodeFromString<PlayerPreferences>(Files.readString(file)).normalized())
+    } catch (_: NoSuchFileException) {
+        if (Files.notExists(file, LinkOption.NOFOLLOW_LINKS)) PlayerPreferencesReadResult.Missing
+        else PlayerPreferencesReadResult.Unavailable
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (_: Exception) {
+        PlayerPreferencesReadResult.Unavailable
+    }
 
     @Synchronized
     fun save(preferences: PlayerPreferences) {

@@ -427,12 +427,13 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 with self.subTest(name=name, job=job):
                     self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
                     self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
-        self.assertEqual(uploads, 14)
+        self.assertEqual(uploads, 15)
 
     def test_updater_harness_upload_requires_the_completed_source_export_and_exact_scope(self):
         body = self.jobs[("windows-source-validation.yml", "source-validation")]
         steps = re.split(r"(?m)^      - ", body)
-        selected = [step for step in steps if "uses: actions/upload-artifact@" in step]
+        selected = [step for step in steps if "uses: actions/upload-artifact@" in step and
+                    "name: windows-updater-harness-${{ github.sha }}" in step]
         self.assertEqual(1, len(selected))
         step = selected[0]
         condition = re.search(r"(?m)^        if: (.+)$", step).group(1)
@@ -444,6 +445,25 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         self.assertRegex(step, r"(?m)^          if-no-files-found: error$")
         self.assertRegex(step, r"(?m)^          retention-days: 1$")
         self.assertIn("        id: source", body)
+
+    def test_original_root_ui_upload_has_its_own_completed_export_and_exact_scope(self):
+        body = self.jobs[("windows-source-validation.yml", "source-validation")]
+        steps = re.split(r"(?m)^      - ", body)
+        selected = [step for step in steps if "uses: actions/upload-artifact@" in step and
+                    "name: windows-original-root-ui-harness-${{ github.sha }}" in step]
+        self.assertEqual(1, len(selected))
+        step = selected[0]
+        condition = re.search(r"(?m)^        if: (.+)$", step).group(1)
+        for value in ("true", "false", "", None):
+            self.assertEqual(value == "true", evaluate_workflow_guard(self, condition,
+                {"steps.source.outputs.original_root_ui_harness_exported": value,
+                 "steps.source.outputs.updater_harness_exported": "true"}))
+        self.assertFalse(evaluate_workflow_guard(self, condition,
+            {"steps.source.outputs.original_root_ui_harness_exported": "false",
+             "steps.source.outputs.updater_harness_exported": "true"}))
+        self.assertIn("path: ${{ runner.temp }}/bilipai-source-validation/original-root-ui-harness", step)
+        self.assertRegex(step, r"(?m)^          if-no-files-found: error$")
+        self.assertRegex(step, r"(?m)^          retention-days: 1$")
 
     def test_only_standard_runner_labels_and_readonly_default_permissions(self):
         for (name, job), body in self.jobs.items():

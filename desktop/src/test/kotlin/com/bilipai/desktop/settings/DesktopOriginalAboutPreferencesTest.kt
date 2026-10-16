@@ -1,7 +1,12 @@
 package com.bilipai.desktop.settings
 
+import com.android.purebilibili.core.store.DesktopOriginalSearchPreferenceMethods
+import com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings
 import com.android.purebilibili.feature.settings.*
 import com.bilipai.desktop.plugins.*
+import com.bilipai.desktop.ui.DesktopOriginalHomePreferences
+import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext
+import com.bilipai.desktop.ui.decodeDesktopOriginalHomeSettings
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.*
@@ -18,9 +23,47 @@ class DesktopOriginalAboutPreferencesTest {
         val context = DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("bp-about-defaults-")))
         val prefs = DesktopOriginalAboutPreferences(context, { true }, { it(); true })
         assertTrue(prefs.autoCheck.first())
-        assertTrue(prefs.easterEgg.first())
+        assertFalse(prefs.easterEgg.first())
+        assertFalse(prefs.initialEasterEgg)
         assertEquals(DesktopOriginalAboutSettings.AppUpdateChannel.STABLE, prefs.channel.first())
         assertFalse(Files.exists(context.store.root.resolve("plugin-settings.json")))
+    }
+    /** The switch must show what the search/video sync reader and Home's decoded settings really do on a fresh store. */
+    @Test fun easterEggDefaultMatchesEveryOriginalReaderOnFreshStore(): Unit = runBlocking {
+        val context = DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("bp-about-egg-default-")))
+        val prefs = DesktopOriginalAboutPreferences(context, { true }, { it(); true })
+        val reader = DesktopOriginalPlayerSettingsContext(context, { true }, { it(); true })
+        val shown = prefs.easterEgg.first()
+        assertEquals(DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(reader), shown)
+        assertEquals(DesktopOriginalVideoOwnerSettings.isEasterEggEnabledSync(reader), shown)
+        assertEquals(decodeDesktopOriginalHomeSettings(context.store.snapshot("settings").value).easterEggEnabled, shown)
+        prefs.setEasterEgg(true)
+        assertTrue(DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(reader))
+        assertTrue(DesktopOriginalVideoOwnerSettings.isEasterEggEnabledSync(reader))
+        assertTrue(decodeDesktopOriginalHomeSettings(context.store.snapshot("settings").value).easterEggEnabled)
+        assertTrue(prefs.easterEgg.first())
+    }
+    /** Home's 关闭彩蛋 dialog writes the same two keys through its own port; the About 趣味彩蛋 switch must undo it. */
+    @Test fun easterEggSwitchReEnablesWhatHomeDisabled(): Unit = runBlocking {
+        val context = DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("bp-about-egg-home-")))
+        val prefs = DesktopOriginalAboutPreferences(context, { true }, { it(); true })
+        val reader = DesktopOriginalPlayerSettingsContext(context, { true }, { it(); true })
+        val homeScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        try {
+            val home = DesktopOriginalHomePreferences.create(context.store, homeScope, false) { false }
+            prefs.setEasterEgg(true)
+            assertTrue(DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(reader))
+            home.setEasterEggEnabled(false)
+            assertFalse(prefs.easterEgg.first())
+            assertFalse(prefs.initialEasterEgg)
+            assertFalse(DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(reader))
+            assertFalse(DesktopOriginalVideoOwnerSettings.isEasterEggEnabledSync(reader))
+            prefs.setEasterEgg(true)
+            assertTrue(prefs.easterEgg.first())
+            assertTrue(DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(reader))
+            assertTrue(DesktopOriginalVideoOwnerSettings.isEasterEggEnabledSync(reader))
+            assertTrue(decodeDesktopOriginalHomeSettings(context.store.snapshot("settings").value).easterEggEnabled)
+        } finally { homeScope.cancel() }
     }
     @Test fun originalKeysAndEasterMirrorSurviveFreshStore(): Unit = runBlocking {
         val root = Files.createTempDirectory("bp-about-cold-")

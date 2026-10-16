@@ -343,6 +343,111 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
         }
     }
 
+    // These cases use the production mount marker and real generated VM/Assembly.
+    // Fixture.initialize already attaches its real player. Actual Entry/Compose
+    // remounts are excluded; the complete Screen producer has a separate byte test.
+    @Test fun screenRemountKeepsTheActualPendingNewEpisodeInsteadOfReplayingTheOldRoute(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val mount = DesktopBangumiPgcScreenMount()
+            f.ui { assertTrue(mount.runInitialLoad { f.vm.loadBangumiPlay(19, 41) }) }
+            f.awaitEpisode(41)
+            val old = f.accepted(); val protocol = ProtocolGate()
+            f.detailGate = protocol
+            try {
+                f.ui { f.vm.loadBangumiPlay(19, 42) }
+                f.awaitEntered(protocol.entered)
+                val pending = f.playbackJob()
+                f.ui {
+                    val revision = f.vm.desktopPlaybackIntentRevision
+                    assertSame(BangumiPlayerState.Loading, f.vm.uiState.value)
+                    assertEquals(42L, f.reflect(f.vm, "currentEpId"))
+                    assertFalse(mount.runInitialLoad { f.vm.loadBangumiPlay(19, 41) })
+                    assertEquals(revision, f.vm.desktopPlaybackIntentRevision)
+                    assertSame(pending, f.playbackJob()); assertFalse(pending.isCancelled)
+                    assertSame(old, f.owner.native.current())
+                }
+                protocol.release.countDown()
+                f.awaitEpisode(42)
+                f.ui { assertEquals(42L, f.state().currentEpisode.id) }
+            } finally { protocol.release.countDown() }
+        }
+    }
+
+    @Test fun screenRemountKeepsTheActualErrorAndDirectEpisodeRetryStillWorks(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val mount = DesktopBangumiPgcScreenMount()
+            f.ui { assertTrue(mount.runInitialLoad { f.vm.loadBangumiPlay(19, 41) }) }
+            f.awaitEpisode(41)
+            f.detailFailure = true
+            f.ui { f.vm.loadBangumiPlay(19, 42) }
+            withTimeout(8_000) { f.playbackJob().join() }
+            f.ui {
+                val failure = assertIs<BangumiPlayerState.Error>(f.vm.uiState.value)
+                val revision = f.vm.desktopPlaybackIntentRevision
+                val completed = f.playbackJob()
+                assertEquals(42L, f.reflect(f.vm, "currentEpId"))
+                assertFalse(mount.runInitialLoad { f.vm.loadBangumiPlay(19, 41) })
+                assertSame(failure, f.vm.uiState.value)
+                assertEquals(revision, f.vm.desktopPlaybackIntentRevision)
+                assertSame(completed, f.playbackJob())
+            }
+            f.detailFailure = false
+            // The actual Error button command retains current episode 42 and forces reload.
+            f.ui { f.vm.retry() }
+            f.awaitEpisode(42)
+        }
+    }
+
+    @Test fun repeatedScreenMountKeepsActualPublicationAndPendingSeekWithoutReload(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val mount = DesktopBangumiPgcScreenMount()
+            f.ui { assertTrue(mount.runInitialLoad { f.vm.loadBangumiPlay(19, 41) }) }
+            f.awaitEpisode(41)
+            f.ui {
+                f.owner.section.seekTo(12_345L)
+                val publication = f.accepted(); val state = f.state()
+                val serials = f.player.capturePlaybackIntentSerials()
+                val queued = f.lastQueuedSeek(); val job = f.playbackJob()
+                val revision = f.vm.desktopPlaybackIntentRevision; val calls = f.playCalls.get()
+                repeat(3) {
+                    // Same retained Entry may cover/uncover its Screen or change presentation.
+                    assertFalse(mount.runInitialLoad { f.vm.loadBangumiPlay(19, 41, 0) })
+                }
+                assertSame(publication, f.accepted()); assertSame(state, f.state())
+                assertSame(queued, f.lastQueuedSeek()); assertSame(job, f.playbackJob())
+                assertEquals(serials, f.player.capturePlaybackIntentSerials())
+                assertEquals(revision, f.vm.desktopPlaybackIntentRevision)
+                assertEquals(calls, f.playCalls.get())
+            }
+        }
+    }
+
+    @Test fun failedSynchronousMountPropagatesCancellationAndOnlyThatEntryCanRetry(): Unit = runBlocking {
+        Fixture().useSuspending { f ->
+            val mount = DesktopBangumiPgcScreenMount()
+            f.ui {
+                val cancellation = CancellationException("synthetic synchronous Screen cancellation")
+                val propagated = assertFailsWith<CancellationException> {
+                    mount.runInitialLoad {
+                        assertFalse(mount.runInitialLoad { error("reentrant mount must not run") })
+                        throw cancellation
+                    }
+                }
+                assertSame(cancellation, propagated)
+                assertTrue(mount.runInitialLoad { f.vm.loadBangumiPlay(19, 41) })
+                assertFalse(mount.runInitialLoad { error("completed Entry must not replay") })
+                // Marker history belongs to its instance; no process-global session bit.
+                var otherEntryCalls = 0
+                val otherEntry = DesktopBangumiPgcScreenMount()
+                assertTrue(otherEntry.runInitialLoad { otherEntryCalls++ })
+                assertEquals(1, otherEntryCalls)
+                assertFalse(otherEntry.runInitialLoad { otherEntryCalls++ })
+                assertEquals(1, otherEntryCalls)
+            }
+            f.awaitEpisode(41)
+        }
+    }
+
     private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
         arrayOf(T::class.java)) { _, method, _ -> error("Unexpected ${T::class.java.simpleName}.${method.name}") } as T
     private class ProtocolGate {
@@ -358,10 +463,11 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
     }
     private inner class Fixture(private val hevcSupported: Boolean = false, private val hiRes: Boolean = true,
         private val basProcessor: DesktopBasPluginProcessor? = null) {
-        val directory = Files.createTempDirectory("pgc-bas-real-owner-")
+        // Resolve a Windows short TMP alias once; traversal remains canonical and rejects links.
+        val directory = Files.createTempDirectory("pgc-bas-real-owner-").toRealPath()
         private val createdAbsolute = directory.toAbsolutePath().normalize()
         private val createdReal = directory.toRealPath()
-        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toAbsolutePath().normalize()
+        private val tempAbsolute = Path.of(System.getProperty("java.io.tmpdir")).toRealPath()
         private val tempReal = tempAbsolute.toRealPath()
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
@@ -389,6 +495,7 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
         val urls = CopyOnWriteArrayList<URI>()
         val xmlCalls = AtomicInteger()
         @Volatile var detailGate: ProtocolGate? = null
+        @Volatile var detailFailure = false
         @Volatile var playGate: ProtocolGate? = null
         val preparations = CopyOnWriteArrayList<DesktopOriginalNativeRecoveryTicket>()
         val publications = CopyOnWriteArrayList<DesktopOriginalVideoAcceptedPublication>()
@@ -457,17 +564,29 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                                 "/x/frontend/finger/spi" -> """{"code":0,"data":{"b_3":"synthetic-visitor","b_4":"synthetic-visitor4"}}"""
                                 "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":true,"mid":41,"vip":{"status":1},"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/fedcba9876543210fedcba9876543210.png"}}}"""
                                 "/x/space/bangumi/follow/list" -> """{"code":0,"data":{"list":[],"total":0}}"""
-                                "/pgc/view/web/season" -> { detailGate?.hold(); seasonJson() }
+                                "/pugv/view/web/season" -> {
+                                    val episode = request.url.queryParameter("ep_id")
+                                    val season = request.url.queryParameter("season_id")
+                                    if (!((episode in listOf("41", "42") && season == null) ||
+                                        (episode == null && season == "19")))
+                                        unexpectedCpuRequest("Unexpected course detail query")
+                                    detailGate?.hold()
+                                    if (detailFailure) """{"code":-404,"message":"synthetic missing course"}""" else courseJson()
+                                }
+                                "/pgc/view/web/season" -> {
+                                    detailGate?.hold()
+                                    if (detailFailure) """{"code":-404,"message":"synthetic missing episode"}""" else seasonJson()
+                                }
                                 "/pgc/player/web/v2/playurl", "/pgc/player/web/playurl", "/pugv/player/web/playurl" -> {
                                     playCalls.incrementAndGet()
                                     playQualities.add(checkNotNull(request.url.queryParameter("qn")).toInt())
                                     playGate?.hold(); playJson(replyMode)
                                 }
-                                else -> error("Unexpected CPU protocol ${request.url.encodedPath}")
+                                else -> unexpectedCpuRequest("Unexpected CPU protocol ${request.url.encodedPath}")
                             }
                             response(request, body)
                         }
-                        else -> error("Unexpected CPU origin ${request.url.host}")
+                        else -> unexpectedCpuRequest("Unexpected CPU origin ${request.url.host}")
                     }
                 }.build()
             DesktopRepository::class.java.getDeclaredField("client").apply { isAccessible = true }.set(repository, transport)
@@ -905,8 +1024,17 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
             deleteOnlyCreatedDirectory()
         }
         suspend fun useSuspending(block: suspend (Fixture) -> Unit) {
+            var primaryFailure: Throwable? = null
             try { initialize(); withTimeout(30_000) { block(this@Fixture) } }
-            finally { withContext(NonCancellable) { close() } }
+            catch (failure: Throwable) { primaryFailure = failure; throw failure }
+            finally {
+                try { withContext(NonCancellable) { close() } }
+                catch (cleanupFailure: Throwable) {
+                    val primary = primaryFailure
+                    if (primary == null) throw cleanupFailure
+                    if (cleanupFailure !== primary) primary.addSuppressed(cleanupFailure)
+                }
+            }
         }
         private fun deleteOnlyCreatedDirectory() {
             check(directory.toAbsolutePath().normalize() == createdAbsolute)
@@ -934,6 +1062,16 @@ class DesktopBangumiBasSourceAdmissionAssemblyTest {
                 validate(path, Files.readAttributes(path, BasicFileAttributes::class.java, LinkOption.NOFOLLOW_LINKS))
                 Files.delete(path)
             }
+        }
+        // An unknown request is an actual test failure, and uses OkHttp's IOException path
+        // rather than escaping its dispatcher as an unrelated uncaught RuntimeException.
+        private fun unexpectedCpuRequest(message: String): Nothing {
+            val failure = IllegalStateException(message)
+            failures += failure
+            throw java.io.IOException(message, failure)
+        }
+        private fun courseJson(): String {
+            return """{"code":0,"data":{"season_id":19,"title":"Synthetic course","cover":"https://media.invalid/cover.jpg","ep_count":2,"up_info":{"mid":7,"uname":"Fixture UP","avatar":"https://media.invalid/face.jpg"},"episodes":[{"id":41,"aid":101,"cid":104,"title":"One","cover":"https://media.invalid/cover.jpg","duration":60,"playable":true,"episode_can_view":true},{"id":42,"aid":102,"cid":105,"title":"Two","duration":60,"playable":true,"episode_can_view":true}],"user_status":{"payed":1,"favored":0}}}"""
         }
         private fun seasonJson(): String {
             return """{"code":0,"result":{"season_id":19,"season_type":10,"title":"Synthetic course","cover":"https://media.invalid/cover.jpg","up_info":{"mid":7,"uname":"Fixture UP","avatar":"https://media.invalid/face.jpg"},"section":[],"episodes":[{"id":41,"aid":101,"cid":104,"bvid":"BV1GJ411x7h7","title":"One","cover":"https://media.invalid/cover.jpg","duration":60000},{"id":42,"aid":102,"cid":105,"bvid":"BV17x411w7KC","title":"Two","duration":60000}],"user_status":{"vip":1,"follow":0,"follow_status":0}}}"""

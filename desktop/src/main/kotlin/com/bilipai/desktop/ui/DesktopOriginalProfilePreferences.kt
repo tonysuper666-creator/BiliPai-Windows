@@ -6,23 +6,30 @@ import com.android.purebilibili.core.store.encodeSplashWallpaperHistory
 import com.android.purebilibili.core.ui.wallpaper.ProfileWallpaperTransform
 import com.android.purebilibili.core.ui.wallpaper.sanitizeProfileWallpaperTransform
 import com.android.purebilibili.feature.settings.AppThemeMode
+import com.bilipai.desktop.data.DesktopSearchPreferences
 import com.bilipai.desktop.plugins.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.json.*
 
-/** Windows storage seam for original Profile/Splash/Privacy/Triple keys in SettingsManager.
- * No new backing/store/namespace is created: constructor MUST receive the actual Root store.
+/** Windows storage seam for original Profile/Splash/Triple keys in SettingsManager.
+ * No new backing/store/namespace is created: constructor MUST receive the actual Root store
+ * and the Root's DesktopSearchPreferences.
+ * Privacy mode is not a Root-store key on Windows: its one authority is the search store that
+ * DesktopLibrary, the heartbeat/article reporters and settings-search history read and that
+ * Settings > 隐私 writes. A Root settings.privacy_mode_enabled / privacy_mode.enabled copy left
+ * by an older build is deliberately neither adopted nor rewritten.
  * Same entry/epoch admission encloses every original read-dependent mutation and sync cache.
  * Theme delegates the required existing Root original theme setter (including dark-style
  * migration, theme_cache and live theme update), rather than writing a partial new theme model. */
 internal class DesktopOriginalProfilePreferences(
     private val store: DesktopPluginStore,
+    private val searchPreferences: DesktopSearchPreferences,
     private val owns: () -> Boolean,
     private val withOwnedAdmission: ((() -> Unit) -> Boolean),
     private val setActualOriginalTheme: suspend (AppThemeMode) -> Unit,
 ) : DesktopProfilePreferences {
-    init { for (name in listOf("settings", "privacy_mode", "splash_prefs")) store.requireObjectNamespace(name) }
+    init { for (name in listOf("settings", "splash_prefs")) store.requireObjectNamespace(name) }
     private val values = store.snapshot("settings")
     private fun fkey(name: String) = DesktopPreferenceKey(name) { (it as? JsonPrimitive)?.floatOrNull }
     private fun <T> read(block: (DesktopPreferenceSnapshot) -> T): Flow<T> = values.map(block).distinctUntilChanged()
@@ -33,12 +40,10 @@ internal class DesktopOriginalProfilePreferences(
         currentCoroutineContext().ensureActive(); ensureOwned()
     }
     private suspend fun write(key: String, value: JsonElement?) = edit { store.update("settings", mapOf(key to value)) }
-    override fun getPrivacyModeEnabled() = read { it[booleanPreferencesKey("privacy_mode_enabled")] ?: false }
-    override fun isPrivacyModeEnabledSync() = store.snapshot("privacy_mode").value[booleanPreferencesKey("enabled")] ?: false
-    override suspend fun setPrivacyModeEnabled(enabled: Boolean) = edit {
-        store.update("settings", mapOf("privacy_mode_enabled" to JsonPrimitive(enabled)))
-        store.update("privacy_mode", mapOf("enabled" to JsonPrimitive(enabled)))
-    }
+    override fun getPrivacyModeEnabled(): Flow<Boolean> = searchPreferences.privacyMode
+    // ProfileScreen evaluates this on recomposition: read the facade's StateFlow, not its locked file read.
+    override fun isPrivacyModeEnabledSync() = searchPreferences.privacyMode.value
+    override suspend fun setPrivacyModeEnabled(enabled: Boolean) = edit { searchPreferences.setPrivacyModeNow(enabled) }
     override suspend fun setThemeMode(mode: AppThemeMode) {
         currentCoroutineContext().ensureActive(); ensureOwned(); setActualOriginalTheme(mode)
         currentCoroutineContext().ensureActive(); ensureOwned()

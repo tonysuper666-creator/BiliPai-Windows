@@ -4,6 +4,7 @@ import com.android.purebilibili.core.store.DesktopOriginalHomeSettingsManager
 import com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
 import com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings
 import com.android.purebilibili.core.store.DesktopOriginalPortraitSettings
+import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
 import com.android.purebilibili.core.store.PlaybackCompletionBehavior
 import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings
 import com.android.purebilibili.feature.settings.share.*
@@ -66,7 +67,7 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
         require(decoded.app == "BiliPai") { "This is not a BiliPai settings-share file" }
         val profile = decoded.copy(sections = normalizeThemeSelectionForImport(decoded.sections))
         // Keep the original flatten order: later sections win when the same key is repeated.
-        val accepted = DesktopSettingsShareWindowsCatalog.normalize(flattenSettingsShareSections(profile.sections))
+        val accepted = acceptedForImport(flattenSettingsShareSections(profile.sections))
         val preview = resolveSettingsShareImportPreview(profile,
             DesktopSettingsShareWindowsCatalog.definitions.filter { it.storageKey in accepted })
         return SettingsShareImportSession(profile, preview, rawJson)
@@ -76,7 +77,7 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
     fun inspectImport(session: SettingsShareImportSession): DesktopSettingsShareInspection {
         val verified = verifySession(session)
         val raw = flattenSettingsShareSections(verified.profile.sections)
-        val accepted = DesktopSettingsShareWindowsCatalog.normalize(raw)
+        val accepted = acceptedForImport(raw)
         return DesktopSettingsShareInspection(verified,
             raw.keys.filterNot(accepted::containsKey).associateWith { key ->
                 if (key in DesktopSettingsShareWindowsCatalog.fields) "invalid type or value" else "not mapped for Windows"
@@ -91,7 +92,8 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
 
     private suspend fun applyVerifiedImport(verified: SettingsShareImportSession,
         checkSavedProfile: (() -> Unit)? = null): SettingsShareApplyResult {
-        val accepted = DesktopSettingsShareWindowsCatalog.normalize(flattenSettingsShareSections(verified.profile.sections))
+        val offered = flattenSettingsShareSections(verified.profile.sections)
+        val accepted = acceptedForImport(offered)
         if (accepted.isEmpty()) {
             checkSavedProfile?.invoke()
             return SettingsShareApplyResult(emptyList(), verified.preview.skippedKeys)
@@ -123,6 +125,19 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
             applyOriginalMirrorSetters(accepted)
         }
         return SettingsShareApplyResult(accepted.keys.sorted(), verified.preview.skippedKeys)
+    }
+
+    /** The allowlisted values of a profile, with one rule for the merged Windows quality option: only IEEE 802.11
+     * reads wifi_quality and every other adapter reads mobile_quality, so a profile that carries a Wi-Fi key sets
+     * both from it (see [applyOriginalMirrorSetters]) and never lets its own mobile key, an Android cellular
+     * quality, lower the desktop default. The mobile key is applied only by a profile with no Wi-Fi key at all;
+     * beside a rejected Wi-Fi value it is rejected with it. Export keeps both keys.
+     */
+    private fun acceptedForImport(offered: Map<String, JsonElement>): Map<String, JsonElement> {
+        val accepted = DesktopSettingsShareWindowsCatalog.normalize(offered)
+        return if ("wifi_default_quality" in offered && "wifi_default_quality" !in accepted) {
+            accepted - "mobile_default_quality"
+        } else accepted
     }
 
     /** Export only the vetted canonical Windows subset. No device, account, path or cache block is exported. */
@@ -312,7 +327,21 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
         values["stop_playback_on_exit"]?.let { DesktopOriginalPlaybackSettingsPreferences.setStopPlaybackOnExit(context, it.jsonPrimitive.boolean) }
         values["background_playback_enabled"]?.let { DesktopOriginalPlaybackSettingsPreferences.setBackgroundPlaybackEnabled(context, it.jsonPrimitive.boolean) }
         values["auto_highest_quality"]?.let { DesktopOriginalPlaybackSettingsPreferences.setAutoHighestQuality(context, it.jsonPrimitive.boolean) }
-        values["wifi_default_quality"]?.let { DesktopOriginalPlaybackSettingsPreferences.setWifiQuality(context, it.jsonPrimitive.int) }
+        values["wifi_default_quality"]?.let {
+            DesktopOriginalPlaybackSettingsPreferences.setWifiQuality(context, it.jsonPrimitive.int)
+            // Only IEEE 802.11 reads wifi_quality; Ethernet reads mobile_quality, and the pane writes both.
+            // The merged option follows the Wi-Fi key whatever the profile's mobile key says (see acceptedForImport),
+            // which also covers profiles that predate the mobile key (earlier Windows exports and saved profiles).
+            DesktopOriginalPlaybackSettingsPreferences.setMobileQuality(context, it.jsonPrimitive.int)
+        }
+        // A lone mobile key (no Wi-Fi key offered) is the only way the mobile value is applied on its own.
+        if ("wifi_default_quality" !in values) {
+            values["mobile_default_quality"]?.let { DesktopOriginalPlaybackSettingsPreferences.setMobileQuality(context, it.jsonPrimitive.int) }
+        }
+        values["click_to_play"]?.let { DesktopOriginalPlaybackSettingsPreferences.setClickToPlay(context, it.jsonPrimitive.boolean) }
+        // The original setters keep the long_press_speed_lock_cache mirror in step; the player section seeds its first frame from it.
+        values["long_press_speed_lock_enabled"]?.let { DesktopOriginalVideoControlSettings.setLongPressSpeedLockEnabled(context, it.jsonPrimitive.boolean) }
+        values["long_press_speed_hint_hidden"]?.let { DesktopOriginalPlaybackSettingsPreferences.setLongPressSpeedHintHidden(context, it.jsonPrimitive.boolean) }
         values["video_codec_preference"]?.let { DesktopOriginalPlaybackSettingsPreferences.setVideoCodec(context, it.jsonPrimitive.content) }
         values["video_second_codec_preference"]?.let { DesktopOriginalPlaybackSettingsPreferences.setVideoSecondCodec(context, it.jsonPrimitive.content) }
         values["audio_quality_preference"]?.let { DesktopOriginalPortraitSettings.setAudioQuality(context, it.jsonPrimitive.int) }

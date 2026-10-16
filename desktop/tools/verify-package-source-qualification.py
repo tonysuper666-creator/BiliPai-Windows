@@ -98,11 +98,28 @@ def verify(run, jobs, log, plan, source_sha):
                 "Updater harness exceeds bound")
         require(export.get("applicationExecuted") is False and export.get("updaterE2EExecuted") is False,
                 "Export cannot substitute for actual updater acceptance")
+    ui_export = None
+    if plan.get("exportOriginalRootUiHarness") is True:
+        ui_export = receipt.get("originalRootUiHarnessExport")
+        require(isinstance(ui_export, dict), "Required original Root UI harness export is absent")
+        require(type(ui_export.get("schema")) is int and ui_export["schema"] == 1 and
+                ui_export.get("sourceSha") == source_sha, "Original Root UI harness source identity mismatch")
+        require(re.fullmatch(r"[0-9a-f]{64}", str(ui_export.get("manifestSha256", ""))) is not None,
+                "Invalid original Root UI harness manifest digest")
+        require(type(ui_export.get("payloadFiles")) is int and 4 <= ui_export["payloadFiles"] <= 36,
+                "Incomplete original Root UI harness payload")
+        require(type(ui_export.get("payloadBytes")) is int and 0 < ui_export["payloadBytes"] <= 128 * 1024 * 1024,
+                "Original Root UI harness exceeds bound")
+        require(ui_export.get("productionRuntimeBindingRequired") is True and
+                all(ui_export.get(key) is False for key in
+                    ("productionClassesExported", "applicationExecuted", "hardwareExecuted")),
+                "UI export cannot substitute for actual candidate acceptance")
     proof = dict(repository=REPOSITORY, sourceSha=source_sha, windowsVersion=plan["windowsVersion"],
                 runId=run["id"], jobId=job["id"], actualTests=sum(actual.values()), suites=len(actual),
                 sourceQualified=True, sealedReceiptSHA256=digest, packageLaunchVerified=False,
                 hardwareVerified=False, releaseQualified=False, desktopReplaced=False)
     if export is not None: proof["updaterHarnessExport"] = export
+    if ui_export is not None: proof["originalRootUiHarnessExport"] = ui_export
     return proof
 
 

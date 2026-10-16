@@ -1,7 +1,7 @@
 {
   "activation": "EXPLICIT_LOCAL_MATERIAL_ONLY",
   "kind": "BILIPAI_HOST_LLVM_IMPORT_TRUST",
-  "reason": "Exact own draft run38045803195 material bytes, full canonical/used source, original environment and real source/config lifecycle independently verified; every import still requires matching actual host/tools and the existing real LLVM validation target.",
+  "reason": "Exact own draft material from run38045803195 and one-worker run38574814418 independently verified. Each import still requires its exact original command plus current Linux host/tools, restored trees and the real LLVM validation target.",
   "records": [
     {
       "actualSourceBuildBindingSha256": "6f4b892bd2b1ffbee724e38ecbbdbfff0b77989e2486b80613dad367cb5fa2b7",
@@ -204,6 +204,209 @@
       "sourceTag": "rtx-source-20261010-313d94cb-17-d3d11-misc",
       "workflowRunAttempt": 1,
       "workflowRunId": 38045803195
+    },
+    {
+      "actualSourceBuildBindingSha256": "90e8e48d23881d1826f93549ebfb315dcf5cc77660908c76063c077f1e7f7f9a",
+      "assets": {
+        "host-llvm-corresponding-source.tar.gz": {
+          "bytes": 351146625,
+          "downloadParts": [
+            {
+              "bytes": 351146625,
+              "name": "host-llvm-corresponding-source.tar.gz",
+              "offset": 0,
+              "ownDraftAssetId": 641030122,
+              "sha256": "0258ff2eadf9dc6acd43a7bdc663278eceb078daae872150750d95604c7aff2b"
+            }
+          ],
+          "fileName": "host-llvm-corresponding-source.tar.gz",
+          "ownDraftAssetIds": [
+            641030122
+          ],
+          "sha256": "0258ff2eadf9dc6acd43a7bdc663278eceb078daae872150750d95604c7aff2b"
+        },
+        "host-llvm-install.tar.gz": {
+          "bytes": 40627604,
+          "downloadParts": [
+            {
+              "bytes": 40627604,
+              "name": "host-llvm-install.tar.gz",
+              "offset": 0,
+              "ownDraftAssetId": 641029974,
+              "sha256": "67a815d8aba28c3b6e8714fc78e5e7f522884dd2e0d7a87cfc71aa4d1f8256da"
+            }
+          ],
+          "fileName": "host-llvm-install.tar.gz",
+          "ownDraftAssetIds": [
+            641029974
+          ],
+          "sha256": "67a815d8aba28c3b6e8714fc78e5e7f522884dd2e0d7a87cfc71aa4d1f8256da"
+        },
+        "host-llvm-original-environment.json": {
+          "bytes": 5662,
+          "downloadParts": [
+            {
+              "bytes": 5662,
+              "name": "host-llvm-original-environment.json",
+              "offset": 0,
+              "ownDraftAssetId": 641028790,
+              "sha256": "286927af7d669e08a4ac45f2cac5f181a5a821edc41290b73fef7b3c1241facb"
+            }
+          ],
+          "fileName": "host-llvm-original-environment.json",
+          "ownDraftAssetIds": [
+            641028790
+          ],
+          "sha256": "286927af7d669e08a4ac45f2cac5f181a5a821edc41290b73fef7b3c1241facb"
+        },
+        "host-llvm-snapshot-manifest.json": {
+          "bytes": 56371673,
+          "downloadParts": [
+            {
+              "bytes": 56371673,
+              "name": "host-llvm-snapshot-manifest.json",
+              "offset": 0,
+              "ownDraftAssetId": 641028632,
+              "sha256": "2ac6a8010e6f75bb3cd562652972a08d420ea861e85de74a901daa0ddc86548f"
+            }
+          ],
+          "fileName": "host-llvm-snapshot-manifest.json",
+          "ownDraftAssetIds": [
+            641028632
+          ],
+          "sha256": "2ac6a8010e6f75bb3cd562652972a08d420ea861e85de74a901daa0ddc86548f"
+        },
+        "host-llvm-source-snapshot-descriptor.json": {
+          "bytes": 5780,
+          "downloadParts": [
+            {
+              "bytes": 5780,
+              "name": "host-llvm-source-snapshot-descriptor.json",
+              "offset": 0,
+              "ownDraftAssetId": 641028608,
+              "sha256": "f1f82faf1e0ac38a8bfff1d73ffc5dc396ccea03d8e7bfa8bcc14242cd6dd879"
+            }
+          ],
+          "fileName": "host-llvm-source-snapshot-descriptor.json",
+          "ownDraftAssetIds": [
+            641028608
+          ],
+          "sha256": "f1f82faf1e0ac38a8bfff1d73ffc5dc396ccea03d8e7bfa8bcc14242cd6dd879"
+        }
+      },
+      "draft": true,
+      "id": "host-llvm-run38574814418-7f38cc4c-one-worker",
+      "independentReviewSha256": "ed02c7c054539f25001ac3ccd7386b968efa5ac6e707bf748550cc04e87e2a47",
+      "originalHostEnvironment": {
+        "architecture": "x86_64",
+        "buildEnvironment": {
+          "AR": "",
+          "AS": "",
+          "CC": "",
+          "CFLAGS": "",
+          "CMAKE_PREFIX_PATH": "",
+          "CMAKE_TOOLCHAIN_FILE": "",
+          "CPATH": "",
+          "CPLUS_INCLUDE_PATH": "",
+          "CXX": "",
+          "CXXFLAGS": "",
+          "C_INCLUDE_PATH": "",
+          "LDFLAGS": "",
+          "LD_LIBRARY_PATH": "",
+          "LD_PRELOAD": "",
+          "LIBRARY_PATH": "",
+          "MAKEFLAGS": "",
+          "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "RANLIB": ""
+        },
+        "cpuFlags": [
+          "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves vnmi avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid fsrm arch_capabilities"
+        ],
+        "kernelRelease": "6.17.0-1022-azure",
+        "kernelVersion": "#22-Ubuntu SMP Mon Jul 27 17:24:03 UTC 2026",
+        "libc": [
+          "glibc",
+          "2.44"
+        ],
+        "osReleaseSha256": "71ff7a6e248d9a0718344c957ec709cb6f0b18631682fa404d7cff2af3ff341d",
+        "pointerBits": 64,
+        "runner": {
+          "RUNNER_ARCH": "X64",
+          "RUNNER_ENVIRONMENT": "github-hosted",
+          "RUNNER_OS": "Linux"
+        },
+        "runnerImage": {
+          "ImageOS": "ubuntu24",
+          "ImageVersion": "20261004.327.1"
+        },
+        "runnerImageProofAvailable": true,
+        "system": "Linux",
+        "tools": {
+          "clang": {
+            "invocationPath": "/usr/sbin/clang",
+            "resolvedPath": "/usr/bin/clang-23",
+            "sha256": "939a882527432ec23b094c289e7f170bf2d6ec282e74dde75e31b08602fa3eae",
+            "version": "clang version 23.1.1\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin"
+          },
+          "clang++": {
+            "invocationPath": "/usr/sbin/clang++",
+            "resolvedPath": "/usr/bin/clang++",
+            "sha256": "3d9ccf167693aa81f7e99dee0ff87691edda3f2d65d1f127f25f6c46bb8e8744",
+            "version": "clang version 23.1.1\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin"
+          },
+          "cmake": {
+            "invocationPath": "/usr/sbin/cmake",
+            "resolvedPath": "/usr/bin/cmake",
+            "sha256": "0cd9542a4bfd68434b7b6e1fc8933a100184a4fa2bd985731f1d71f825951f7f",
+            "version": "cmake version 4.4.4\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake)."
+          },
+          "ld.lld": {
+            "invocationPath": "/usr/sbin/ld.lld",
+            "resolvedPath": "/usr/bin/ld.lld",
+            "sha256": "57b6c64db534793f05918a6e935c900e9938bd64d0ac95933285930b568387ea",
+            "version": "LLD 23.1.1 (compatible with GNU linkers)"
+          },
+          "ninja": {
+            "invocationPath": "/usr/sbin/ninja",
+            "resolvedPath": "/usr/bin/ninja",
+            "sha256": "386e7381e7664302b9add6890de5f09a37513bb8c1d034210ac757332898f5ab",
+            "version": "1.13.2"
+          },
+          "python3": {
+            "invocationPath": "/usr/sbin/python3",
+            "resolvedPath": "/usr/bin/python3.14",
+            "sha256": "d78f9cf7178ecff09963551399855543c297f37ac207e626228bfe43cb26a70c",
+            "version": "Python 3.14.7"
+          }
+        }
+      },
+      "originalInstalledHostTools": {
+        "bin/clang": {
+          "invocationPath": "/__w/_temp/bilipai-mpv-rtx-core/clang-root/bin/clang",
+          "probes": {
+            "--version": "clang version 22.1.8 (https://github.com/llvm/llvm-project.git ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /__w/_temp/bilipai-mpv-rtx-core/clang-root/bin",
+            "-dumpmachine": "x86_64-unknown-linux-gnu"
+          },
+          "resolvedPath": "/__w/_temp/bilipai-mpv-rtx-core/clang-root/bin/llvm",
+          "sha256": "b81f1b3b795ecf2fa3334098d83325ff1762db0f0ebc1cb5fa7f90bc0ddf40bb"
+        },
+        "bin/ld.lld": {
+          "invocationPath": "/__w/_temp/bilipai-mpv-rtx-core/clang-root/bin/ld.lld",
+          "probes": {
+            "--version": "LLD 22.1.8 (https://github.com/llvm/llvm-project.git ca7933e47d3a3451d81e72ac174dcb5aa28b59d1) (compatible with GNU linkers)"
+          },
+          "resolvedPath": "/__w/_temp/bilipai-mpv-rtx-core/clang-root/bin/llvm",
+          "sha256": "b81f1b3b795ecf2fa3334098d83325ff1762db0f0ebc1cb5fa7f90bc0ddf40bb"
+        }
+      },
+      "ownDraftReleaseId": 412963734,
+      "published": false,
+      "repository": "tonysuper666-creator/BiliPai-Windows",
+      "sourceCommit": "7f38cc4ce016c10ae3b087b5e343703bd4bec21d",
+      "sourceTag": "rtx-source-20261014-7f38cc4c-present-one-worker",
+      "workerMaximum": 1,
+      "workflowRunAttempt": 1,
+      "workflowRunId": 38574814418
     }
   ],
   "repository": "tonysuper666-creator/BiliPai-Windows",

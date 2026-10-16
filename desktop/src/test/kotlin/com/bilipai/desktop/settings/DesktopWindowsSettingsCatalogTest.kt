@@ -9,10 +9,12 @@ import kotlin.test.*
 
 /** Tests the installed Windows controller/catalog and navigation contracts, not labels. */
 class DesktopWindowsSettingsCatalogTest {
+    // Keyed on what DesktopSettingsTree mounts: MESSAGE_NOTIFICATION is a Detail page opened from the privacy category.
     private val mountedTargets = setOf(SettingsSearchTarget.PLAYBACK, SettingsSearchTarget.HOME_FEED,
         SettingsSearchTarget.APPEARANCE, SettingsSearchTarget.PRIVACY_PERMISSION,
+        SettingsSearchTarget.MESSAGE_NOTIFICATION,
         SettingsSearchTarget.DATA_BACKUP, SettingsSearchTarget.PLUGINS, SettingsSearchTarget.DIAGNOSTICS)
-    private val removedTargets = setOf(SettingsSearchTarget.PERMISSION, SettingsSearchTarget.MESSAGE_NOTIFICATION,
+    private val removedTargets = setOf(SettingsSearchTarget.PERMISSION,
         SettingsSearchTarget.FULLSCREEN_GESTURE, SettingsSearchTarget.BOTTOM_BAR, SettingsSearchTarget.NAVIGATION,
         SettingsSearchTarget.ANIMATION, SettingsSearchTarget.REPLAY_ONBOARDING)
 
@@ -103,6 +105,61 @@ class DesktopWindowsSettingsCatalogTest {
         for (query in listOf("Anime4K", "FSR", "CNN")) {
             controller.setQuery(query)
             assertTrue(controller.results.value.isEmpty(), "Obsolete algorithm remains searchable: $query")
+        }
+    }
+
+    @Test fun mountedMessageNotificationDetailIsSearchableAndOpensThroughTheRealNavigator() {
+        val controller = controller()
+        try {
+            for (query in listOf("通知", "消息通知", "私信", "@我", "点赞", "开播提醒", "检查频率")) {
+                controller.setQuery(query)
+                val result = controller.results.value.single()
+                assertEquals(SettingsSearchTarget.MESSAGE_NOTIFICATION, result.target, query)
+                assertNull(result.focusId, query)
+                var category: SettingsRootCategory? = null
+                var detail: SettingsSearchResult? = null
+                controller.activate(result, { category = it }, { detail = it })
+                assertNull(category, query)
+                assertEquals(result, detail, query)
+                assertNull(SettingsSearchFocusController.request.value, query)
+                // DesktopSettingsTree renders exactly this Detail page with DesktopMessageNotificationSettingsContent.
+                val navigator = DesktopSettingsNavigator()
+                navigator.openSearchResult(result)
+                assertEquals(DesktopSettingsPage.Detail(SettingsSearchTarget.MESSAGE_NOTIFICATION, null),
+                    navigator.state.value.current, query)
+            }
+            // The mounted page has no Android permission, battery or resident-service control to find.
+            for (query in listOf("通知权限", "权限", "电池", "常驻服务")) {
+                controller.setQuery(query)
+                assertTrue(controller.results.value.isEmpty(), "Removed notification control is searchable: $query")
+            }
+        } finally {
+            SettingsSearchFocusController.request.value?.let { SettingsSearchFocusController.clear(it.token) }
+        }
+    }
+
+    @Test fun mountedControlsWithoutTheirOwnRowAreReachableByTheirLabels() {
+        val controller = controller()
+        val labels = mapOf(
+            SettingsSearchTarget.PRIVACY_PERMISSION to listOf("无痕", "不新增", "我的回顾", "默认搜索词"),
+            SettingsSearchTarget.DATA_BACKUP to listOf("下载位置", "图片保存位置", "清除缓存", "自动清理缓存", "缓存容量上限", "设置分享"),
+            SettingsSearchTarget.APPEARANCE to listOf("图标样式", "列表样式", "点击文字复制", "入场动画", "女仆"),
+            SettingsSearchTarget.DIAGNOSTICS to listOf("自动检查更新", "彩蛋"))
+        for ((target, queries) in labels) {
+            for (query in queries) {
+                controller.setQuery(query)
+                assertEquals(setOf(target), controller.results.value.map { it.target }.toSet(), query)
+            }
+        }
+    }
+
+    @Test fun autoContinueGateSwitchesReachThePlaybackBehaviorGroup() {
+        val controller = controller()
+        for (query in listOf("自动播放下一个", "列表连续播放", "收藏夹")) {
+            controller.setQuery(query)
+            val result = controller.results.value.single()
+            assertEquals(SettingsSearchTarget.PLAYBACK, result.target, query)
+            assertEquals("windows_playback_behavior", result.focusId, query)
         }
     }
 

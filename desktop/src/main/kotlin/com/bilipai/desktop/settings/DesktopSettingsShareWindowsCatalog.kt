@@ -22,7 +22,10 @@ import com.materialkolor.dynamiccolor.ColorSpec
 import kotlinx.serialization.json.*
 
 /** A format allowlist over existing Windows consumers, never a second preference store.
- * Section/type identities are the fixed v0.3.3 SettingsManager share definitions.
+ * Section/type identities are the fixed v0.3.3 SettingsManager share definitions, except
+ * maid_lottie_animation_enabled and dynamic_comment_preview_visible: neither literal exists in v0.3.3.
+ * The first is declared in the v0.3.4 slice SettingsManager (desktop/upstream-slices/v034-next-watch-ui);
+ * the second is declared in DynamicSettingsStore since v0.3.4 and only shared by that slice's SettingsManager.
  * Legacy danmaku keys remain baseline values; explicit portrait/landscape overrides win.
  */
 internal object DesktopSettingsShareWindowsCatalog {
@@ -142,7 +145,10 @@ internal object DesktopSettingsShareWindowsCatalog {
         ints(playback, "comment_default_sort_mode", setOf(2, 3))
         ints(playback, "audio_quality_preference", setOf(AUDIO_QUALITY_AUTO, AUDIO_QUALITY_HI_RES, AUDIO_QUALITY_DOLBY))
         ints(playback, "default_audio_quality", resolveDefaultAudioQualityOptions().map { it.value }.toSet())
-        ints(playback, "wifi_default_quality", setOf(6, 16, 32, 64, 74, 80, 112, 116, 120, 125, 126, 127))
+        // Both network keys travel: only IEEE 802.11 reads wifi_quality, Ethernet reads mobile_quality.
+        val qualityIds = setOf(6, 16, 32, 64, 74, 80, 112, 116, 120, 125, 126, 127)
+        ints(playback, "wifi_default_quality", qualityIds)
+        ints(playback, "mobile_default_quality", qualityIds)
         names(playback, "video_codec_preference", setOf("avc1", "hev1", "av01"))
         names(playback, "video_second_codec_preference", setOf("avc1", "hev1", "av01"))
         ints(playback, "data_saver_mode", DesktopOriginalPlaybackSettingsPreferences.DataSaverMode.entries.map { it.value }.toSet())
@@ -185,7 +191,8 @@ internal object DesktopSettingsShareWindowsCatalog {
         val navigation = SettingsShareSection.NAVIGATION
         booleans(navigation, "header_collapse_enabled", "show_pgc_timeline", "tablet_use_sidebar", "sidebar_expanded",
             "sidebar_account_switcher_enabled", "incremental_timeline_refresh", "dynamic_image_preview_text_visible",
-            "dynamic_all_tab_horizontal_user_list_visible", "dynamic_top_bar_collapse_on_scroll")
+            "dynamic_all_tab_horizontal_user_list_visible", "dynamic_top_bar_collapse_on_scroll",
+            "dynamic_comment_preview_visible")
         ints(navigation, "home_top_layout_order", HomeTopLayoutOrder.entries.map { it.value }.toSet())
         ints(navigation, "home_header_collapse_mode", HomeHeaderCollapseMode.entries.map { it.value }.toSet())
         ints(navigation, "common_list_header_collapse_mode", CommonListHeaderCollapseMode.entries.map { it.value }.toSet())

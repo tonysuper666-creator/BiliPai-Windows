@@ -35,12 +35,35 @@ fun playbackModeLabel(mode: PlaybackMode): String = when (mode) {
 
 fun playbackSpeedLabel(speed: Double): String = String.format(Locale.ROOT, "%.2f", speed).trimEnd('0').trimEnd('.')
 
-/** Audio selection can finish while this dialog's editable draft remains open. */
-internal fun resolvePlaybackSettingsDraftSave(draft: PlayerPreferences, latest: PlayerPreferences): PlayerPreferences =
-    draft.copy(
-        lastSelectedAudioQuality = latest.lastSelectedAudioQuality,
-        speed = if (draft.rememberLastSpeed) draft.speed else draft.defaultSpeed,
+/** Merge only edits made since this dialog opened. Canonical updates and runtime audio/speed
+ * can arrive while its draft is open; an untouched control must not write its stale value back.
+ * An explicit restore is an intent even when the opened value happened to equal the defaults. */
+internal fun resolvePlaybackSettingsDraftSave(draft: PlayerPreferences, latest: PlayerPreferences,
+    initial: PlayerPreferences = latest, restoreDefaults: Boolean = false): PlayerPreferences {
+    val edited = draft.normalized()
+    val opened = initial.normalized()
+    val current = latest.normalized()
+    fun <T> pick(value: T, before: T, now: T): T = if (restoreDefaults || value != before) value else now
+    val merged = current.copy(
+        volume = pick(edited.volume, opened.volume, current.volume),
+        muted = pick(edited.muted, opened.muted, current.muted),
+        audioOnly = pick(edited.audioOnly, opened.audioOnly, current.audioOnly),
+        playbackMode = pick(edited.playbackMode, opened.playbackMode, current.playbackMode),
+        speed = pick(edited.speed, opened.speed, current.speed),
+        speedOptions = pick(edited.speedOptions, opened.speedOptions, current.speedOptions),
+        defaultSpeed = pick(edited.defaultSpeed, opened.defaultSpeed, current.defaultSpeed),
+        rememberLastSpeed = pick(edited.rememberLastSpeed, opened.rememberLastSpeed, current.rememberLastSpeed),
+        hardwareDecodeEnabled = pick(edited.hardwareDecodeEnabled, opened.hardwareDecodeEnabled, current.hardwareDecodeEnabled),
+        videoCodecPreference = pick(edited.videoCodecPreference, opened.videoCodecPreference, current.videoCodecPreference),
+        videoSecondCodecPreference = pick(edited.videoSecondCodecPreference, opened.videoSecondCodecPreference, current.videoSecondCodecPreference),
+        defaultAudioQuality = pick(edited.defaultAudioQuality, opened.defaultAudioQuality, current.defaultAudioQuality),
+        subtitleAutoPreference = pick(edited.subtitleAutoPreference, opened.subtitleAutoPreference, current.subtitleAutoPreference),
     ).normalized()
+    val speedEdited = restoreDefaults || edited.speed != opened.speed || edited.defaultSpeed != opened.defaultSpeed ||
+        edited.rememberLastSpeed != opened.rememberLastSpeed || edited.speedOptions != opened.speedOptions
+    return merged.copy(speed = if (!speedEdited) current.speed
+        else if (merged.rememberLastSpeed) merged.speed else merged.defaultSpeed).normalized()
+}
 
 internal val LocalDesktopDetailedCommentTimeContext = staticCompositionLocalOf<DesktopPluginContext> {
     error("Root same global comment settings context is required")
@@ -55,6 +78,7 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
     val initialDraft = remember { preferences }
     var draft by remember { mutableStateOf(preferences) }
     var hardwareDecodeDraftChanged by remember { mutableStateOf(false) }
+    var restorePlaybackDefaults by remember { mutableStateOf(false) }
     var newSpeed by remember { mutableStateOf("") }
     var speedError by remember { mutableStateOf<String?>(null) }
     AlertDialog(onDismissRequest = onDismiss, title = { Text("播放设置") }, text = {
@@ -132,11 +156,11 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
             }
             speedError?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
             PlayerSwitch("仅播放音频", draft.audioOnly) { draft = draft.copy(audioOnly = it) }
-            TextButton(onClick = { hardwareDecodeDraftChanged = true; draft = PlayerPreferences(danmaku = draft.danmaku) }) { Text("恢复播放默认设置") }
+            TextButton(onClick = { restorePlaybackDefaults = true; hardwareDecodeDraftChanged = true; draft = PlayerPreferences(danmaku = draft.danmaku) }) { Text("恢复播放默认设置") }
         }
     }, confirmButton = { Button(onClick = {
-        val saved = resolvePlaybackSettingsDraftSave(draft, latestPreferences)
-        val speedIntent = draft.speed != initialDraft.speed || draft.defaultSpeed != initialDraft.defaultSpeed ||
+        val saved = resolvePlaybackSettingsDraftSave(draft, latestPreferences, initialDraft, restorePlaybackDefaults)
+        val speedIntent = restorePlaybackDefaults || draft.speed != initialDraft.speed || draft.defaultSpeed != initialDraft.defaultSpeed ||
             draft.rememberLastSpeed != initialDraft.rememberLastSpeed || draft.speedOptions != initialDraft.speedOptions
         onPreferencesChange(saved.copy(
             speed = if (speedIntent) saved.speed else latestPreferences.speed,

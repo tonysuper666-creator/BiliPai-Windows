@@ -11,8 +11,23 @@ import com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings
 import com.android.purebilibili.core.store.PlaybackCompletionBehavior
 import com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings as PlayerSettings
 import com.android.purebilibili.feature.settings.resolveDefaultAudioQualityOptions
+import com.android.purebilibili.feature.settings.resolveDefaultPlaybackQualityOptions
+import com.android.purebilibili.feature.video.controller.QualityManager
 import com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference
 import com.bilipai.desktop.settings.DesktopOriginalPlaybackSettingsBindings
+
+/** The default-quality chips Windows offers. Settings import accepts more ids (6, 74, 116, 125, 126, 127). */
+internal val desktopWindowsDefaultQualityChoices =
+    listOf(16 to "360P", 32 to "480P", 64 to "720P", 80 to "1080P", 112 to "1080P+", 120 to "4K")
+
+/** Read-only caption for a stored default quality that no chip represents, else null. Labels come from the
+ * original settings table first, then the original play-url QualityManager table; no table is invented here. */
+internal fun desktopWindowsOffListQualityCaption(quality: Int?): String? {
+    if (quality == null || desktopWindowsDefaultQualityChoices.any { it.first == quality }) return null
+    val label = resolveDefaultPlaybackQualityOptions().firstOrNull { it.value == quality }?.label
+        ?: QualityManager().getQualityLabel(quality)
+    return "当前保存的默认画质为 ${label}（${quality}），不在上方选项中；选择上方画质后将统一替换。"
+}
 
 /** Windows presentation over the existing canonical recipes, page permit and mirror bridge.
  * No Android gestures, system permissions, sensors, portrait modes or copied preference store.
@@ -39,6 +54,8 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
     val backgroundPlayback = desktopWindowsSettingsValue(remember(context) { Preferences.getBackgroundPlaybackEnabled(context) })
     val resumePrompt = desktopWindowsSettingsValue(remember(context) { Preferences.getResumePlaybackPromptEnabled(context) })
     val completion = desktopWindowsSettingsValue(remember(context) { Preferences.getPlaybackCompletionBehavior(context) })
+    val autoPlayNext = desktopWindowsSettingsValue(remember(context) { Preferences.getAutoPlay(context) })
+    val playlistAutoContinue = desktopWindowsSettingsValue(remember(context) { Preferences.getExternalPlaylistAutoContinue(context) })
     val commentSort = desktopWindowsSettingsValue(remember(context) { DesktopOriginalReplySettings.getCommentDefaultSortMode(context.pluginContext) })
     val detailedCommentTime = desktopWindowsSettingsValue(remember(context) { Preferences.getDetailedCommentTimeEnabled(context) })
     val commentDecorations = desktopWindowsSettingsValue(remember(context) { Preferences.getCommentMemberDecorationsEnabled(context) })
@@ -59,8 +76,7 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
                 writer.launch { Preferences.setAutoHighestQuality(context, enabled) }
             }
             if (highest == false) {
-            DesktopWindowsSettingsChoice("默认画质", quality,
-                listOf(16 to "360P", 32 to "480P", 64 to "720P", 80 to "1080P", 112 to "1080P+", 120 to "4K"),
+            DesktopWindowsSettingsChoice("默认画质", quality, desktopWindowsDefaultQualityChoices,
                 enabled = highest == false && qualityReady, allowUnselected = qualityReady) { value ->
                 // The one original operation journal publishes both network keys and their
                 // original quality_settings mirrors together. Ethernet is not Wi-Fi.
@@ -71,6 +87,7 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             }
             if (qualityReady && quality == null) Text("旧网络画质偏好不同；选择后统一应用到 Windows 网络。",
                 style = MaterialTheme.typography.bodySmall)
+            desktopWindowsOffListQualityCaption(quality)?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
             }
             Text("实际画质与编码取决于视频和账号权限。", style = MaterialTheme.typography.bodySmall)
         }
@@ -105,6 +122,15 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             DesktopWindowsSettingsSwitch("历史续播提示", resumePrompt,
                 description = "发现历史播放进度时提示继续播放。") { enabled ->
                 writer.launch { Preferences.setResumePlaybackPromptEnabled(context, enabled) }
+            }
+            // The two real gates of 自动连播 (PlaybackCompletionPolicy); both default on and are read from the auto_play_cache mirror.
+            DesktopWindowsSettingsSwitch("自动播放下一个", autoPlayNext,
+                description = "分P/合集自动播放下一集，普通单视频播完暂停；“视频播完后”为“自动连播”时生效。") { enabled ->
+                writer.launch { Preferences.setAutoPlay(context, enabled) }
+            }
+            DesktopWindowsSettingsSwitch("列表/收藏夹连续播放", playlistAutoContinue,
+                description = "控制收藏夹、稍后再看、合集等列表播放完后是否继续下一条；“视频播完后”为“自动连播”时生效。") { enabled ->
+                writer.launch { Preferences.setExternalPlaylistAutoContinue(context, enabled) }
             }
             DesktopWindowsSettingsChoice("视频播完后", completion,
                 PlaybackCompletionBehavior.entries.map { it to it.label }) { value ->

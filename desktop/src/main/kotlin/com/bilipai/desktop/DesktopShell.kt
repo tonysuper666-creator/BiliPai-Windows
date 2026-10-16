@@ -224,8 +224,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val preferenceWriter = remember(preferenceStore) { DesktopPlayerPreferencesWriter(preferenceStore::save) }
     val preferenceWriteFailed by preferenceWriter.failed.collectAsState()
     val originalHardwareDecodePreferences = remember(pluginStore) { DesktopOriginalHardwareDecodePreferences(pluginStore) }
-    val legacyHardwareDecodeFallback = remember(preferenceStore) { preferenceStore.read().hardwareDecodeEnabled }
-    var preferences by remember { mutableStateOf(preferenceStore.read().let { it.copy(speed = it.preferredSpeed,
+    val originalPlaybackPreferences = remember(pluginStore) { DesktopOriginalPlaybackPreferenceProjection(pluginStore) }
+    val legacyPlaybackRead = remember(preferenceStore) { preferenceStore.readForMigration() }
+    val legacyPlaybackSnapshot = legacyPlaybackRead.preferences
+    val legacyHardwareDecodeFallback = legacyPlaybackSnapshot.hardwareDecodeEnabled
+    var preferences by remember { mutableStateOf(originalPlaybackPreferences.current(legacyPlaybackSnapshot).let { it.copy(speed = it.preferredSpeed,
         hardwareDecodeEnabled = originalHardwareDecodePreferences.current(legacyHardwareDecodeFallback)) }) }
     val latestPreferences by rememberUpdatedState(preferences)
     val scope = rememberCoroutineScope()
@@ -489,7 +492,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         check(ordinaryVideoResourceJob.compareAndSet(null, creatorJob))
         try {
             val resources = withContext(Dispatchers.IO) {
-                com.bilipai.desktop.ui.ensureDesktopWindowsPlaybackDefaults(storageSettingsContext)
+                com.bilipai.desktop.ui.ensureDesktopWindowsPlaybackDefaults(storageSettingsContext, legacyPlaybackRead.migrationSeed)
                 val created = DesktopOriginalVideoAppResources.create(globalPluginContext, repository, scope,
                     DesktopLibrary.directoryForAccount(null).resolve("video-media-bytes")) {
                     ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(it))
@@ -728,13 +731,15 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var feedLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val rootFeedback = remember { SnackbarHostState() }
-    LaunchedEffect(originalHardwareDecodePreferences, storageSettingsContext) {
-        try { originalHardwareDecodePreferences.ensureMigrated(storageSettingsContext, legacyHardwareDecodeFallback) }
+    LaunchedEffect(originalHardwareDecodePreferences, storageSettingsContext, legacyPlaybackRead) {
+        val legacySeed = legacyPlaybackRead.migrationSeed ?: return@LaunchedEffect
+        try { originalHardwareDecodePreferences.ensureMigrated(storageSettingsContext, legacySeed.hardwareDecodeEnabled) }
         catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { if (imageSaveLifetime.isActive()) error = failure.message ?: "硬件解码设置迁移失败" }
     }
-    LaunchedEffect(originalDanmakuPreferences) {
-        try { originalDanmakuPreferences.importLegacyWindowsDanmakuIfAbsent(preferenceStore.read().danmaku) }
+    LaunchedEffect(originalDanmakuPreferences, legacyPlaybackRead) {
+        val legacySeed = legacyPlaybackRead.migrationSeed ?: return@LaunchedEffect
+        try { originalDanmakuPreferences.importLegacyWindowsDanmakuIfAbsent(legacySeed.danmaku) }
         catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { error = failure.message ?: "旧弹幕设置迁移失败" }
     }
@@ -993,11 +998,17 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         val previous = preferences
         val hardwareIntent = next.hardwareDecodeEnabled != previous.hardwareDecodeEnabled
         val speedIntent = forceSpeed || next.normalized().speed != previous.normalized().speed
-        if (hardwareIntent || speedIntent) scope.launch(Dispatchers.IO) {
+        // The facade persists codec/subtitle only while it owns a live ordinary-video assembly.
+        val facadeBridges = ordinaryVideo.slot.currentAssembly()?.owns() == true && scope.isActive && !isClosing()
+        val playbackIntent = originalPlaybackPreferences.needsWrite(previous, next, includeFacadeBridged = !facadeBridges)
+        if (hardwareIntent || speedIntent || playbackIntent) scope.launch(Dispatchers.IO) {
             try {
                 DesktopOriginalPlaybackPreferenceOperation.run(storageSettingsContext, imageSaveLifetime::isActive) {
                     if (hardwareIntent) com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
                         .setHwDecode(storageSettingsContext, next.hardwareDecodeEnabled)
+                    // Original menu edits reconcile speed options before the explicit last speed.
+                    if (playbackIntent) originalPlaybackPreferences.writeChanged(storageSettingsContext, previous, next,
+                        includeFacadeBridged = !facadeBridges)
                     if (speedIntent) com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings
                         .setLastPlaybackSpeed(storageSettingsContext, next.normalized().speed.toFloat())
                 }
@@ -1229,6 +1240,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         rootRoutes()?.push(BiliPaiNavKey.BangumiPlayer(id,epId,(progress.coerceAtLeast(0.0)*1000L).toLong(),course))
     }
     fun openBangumi(id: Long) { showSeason(id) }
+    // Upstream: a season-only favorite or dynamic card opens BangumiDetail; a concrete episode (or course) plays.
+    fun showBangumiCard(seasonId: Long, epId: Long) {
+        desktopBangumiOpenKey(seasonId, epId, seasonOnlyOpensDetail = true)?.let { rootRoutes()?.push(it) }
+    }
     fun openCollection(mid: Long, id: Long, type: String) { rootRoutes()?.push(BiliPaiNavKey.SeasonSeriesDetail(type,id,mid)) }
     fun openDynamicWeb(url: String, title: String) {
         runCatching { java.net.URI(imageUrl(url)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
@@ -1422,6 +1437,19 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             player?.setHardwareDecodingEnabled(enabled)
             listen?.onOriginalHardwareDecodeChanged(enabled)
             playback.onPlaybackPreferencesChanged(previous, preferences)
+        }
+    }
+    // Canonical changes update state without replaying native facade commands or changing live speed.
+    LaunchedEffect(originalPlaybackPreferences, legacyPlaybackSnapshot, listen) {
+        var applied: DesktopOriginalPlaybackPreferenceSnapshot? = null
+        originalPlaybackPreferences.changes(legacyPlaybackSnapshot).collect { values ->
+            if (!imageSaveLifetime.isActive() || isClosing()) return@collect
+            val updated = values.applyTo(preferences, since = applied)
+            applied = values
+            if (updated != preferences) {
+                preferences = updated
+                listen?.updatePreferences(updated)
+            }
         }
     }
     LaunchedEffect(danmaku, rendererDanmakuSettings) { danmaku?.applySettings(rendererDanmakuSettings) }
@@ -1739,7 +1767,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopDynamicCardMutations provides dynamicCardRegistry.bindings,
         LocalDesktopDynamicCardNavigation provides com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions(
             onVideoClick = { openVideo(VideoCard(it, "", "", "", 0, 0)) }, onUserClick = ::openUser,
-            onBangumiClick = { sid, eid -> showSeason(sid, eid) }, onMusicClick = ::openMusic,
+            onBangumiClick = { sid, eid -> showBangumiCard(sid, eid) }, onMusicClick = ::openMusic,
             onLiveClick = { room, _, _ -> openLive(room) },
             onCollectionClick = { id, mid, title, url ->
                 navigateOriginalDynamicCollection(id, mid, title, url, onFavorite = { type, mediaId, ownerMid, folderTitle ->
@@ -2425,7 +2453,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             onCollectionClick = { if (entry.isOwned()) commands.push(BiliPaiNavKey.SeasonSeriesDetail(it.type,it.id,it.mid,it.title,it.ownerName)) },
                                             onFolderClick = { mediaId, ownerMid, title, ownerName ->
                                                 if (entry.isOwned()) commands.push(BiliPaiNavKey.SeasonSeriesDetail("favorite",mediaId,ownerMid,title,ownerName)) },
-                                            onBangumi = { if (entry.isOwned()) openBangumi(it) },
+                                            onBangumi = { if (entry.isOwned()) showBangumiCard(it, 0) },
                                             onArticle = { id, _ -> if (entry.isOwned()) openArticle(id) },
                                             onTopic = { if (entry.isOwned()) openTopic(it) },
                                             onCourse = { if (entry.isOwned()) showSeason(it, course = true) },

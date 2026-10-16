@@ -109,6 +109,58 @@ class PlaybackSettingsDraftMemoryTest {
         assertEquals(AUDIO_QUALITY_DOLBY, draft.lastSelectedAudioQuality)
     }
 
+    @Test fun `an unrelated draft edit preserves newer canonical and runtime choices`() {
+        val opened = PlayerPreferences()
+        val draft = opened.copy(playbackMode = PlaybackMode.REPEAT_ONE)
+        val latest = opened.copy(videoCodecPreference = "av01", videoSecondCodecPreference = "hev1",
+            defaultAudioQuality = AUDIO_QUALITY_HI_RES, subtitleAutoPreference = com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference.ON,
+            defaultSpeed = 2.0, rememberLastSpeed = false, speed = 1.75, volume = 35.0, muted = true,
+            lastSelectedAudioQuality = AUDIO_QUALITY_DOLBY).normalized()
+        val saved = resolvePlaybackSettingsDraftSave(draft, latest, opened)
+        assertEquals(latest.copy(playbackMode = PlaybackMode.REPEAT_ONE), saved)
+    }
+
+    @Test fun `explicit dialog edits win while untouched controls follow latest preferences`() {
+        val opened = PlayerPreferences()
+        val draft = opened.copy(defaultAudioQuality = AUDIO_QUALITY_DOLBY, videoCodecPreference = "av01")
+        val latest = opened.copy(defaultAudioQuality = AUDIO_QUALITY_HI_RES, videoSecondCodecPreference = "hev1",
+            subtitleAutoPreference = com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference.ON,
+            lastSelectedAudioQuality = AUDIO_QUALITY_HI_RES)
+        val saved = resolvePlaybackSettingsDraftSave(draft, latest, opened)
+        assertEquals(AUDIO_QUALITY_DOLBY, saved.defaultAudioQuality)
+        assertEquals("av01", saved.videoCodecPreference)
+        assertEquals("hev1", saved.videoSecondCodecPreference)
+        assertEquals(latest.subtitleAutoPreference, saved.subtitleAutoPreference)
+        assertEquals(AUDIO_QUALITY_HI_RES, saved.lastSelectedAudioQuality)
+    }
+
+    @Test fun `editing default speed preserves newer live speed until remember is explicitly disabled`() {
+        val opened = PlayerPreferences()
+        val latest = opened.copy(speed = 2.0)
+        val draft = opened.copy(defaultSpeed = 1.5)
+        val remembered = resolvePlaybackSettingsDraftSave(draft, latest, opened)
+        assertEquals(1.5, remembered.defaultSpeed)
+        assertEquals(2.0, remembered.speed)
+        val defaulted = resolvePlaybackSettingsDraftSave(draft.copy(rememberLastSpeed = false), latest, opened)
+        assertEquals(1.5, defaulted.speed)
+        assertFalse(defaulted.rememberLastSpeed)
+    }
+
+    @Test fun `explicit restore resets controls even when the opened values were already defaults`() {
+        val opened = PlayerPreferences()
+        val latest = opened.copy(videoCodecPreference = "av01", defaultAudioQuality = AUDIO_QUALITY_HI_RES,
+            defaultSpeed = 2.0, rememberLastSpeed = false, speed = 2.5, volume = 10.0,
+            lastSelectedAudioQuality = AUDIO_QUALITY_DOLBY)
+        val restored = resolvePlaybackSettingsDraftSave(PlayerPreferences(), latest, opened, restoreDefaults = true)
+        assertEquals(opened.videoCodecPreference, restored.videoCodecPreference)
+        assertEquals(opened.defaultAudioQuality, restored.defaultAudioQuality)
+        assertEquals(opened.defaultSpeed, restored.defaultSpeed)
+        assertEquals(opened.rememberLastSpeed, restored.rememberLastSpeed)
+        assertEquals(opened.speed, restored.speed)
+        assertEquals(opened.volume, restored.volume)
+        assertEquals(AUDIO_QUALITY_DOLBY, restored.lastSelectedAudioQuality)
+    }
+
     private fun await(controller: DesktopPlaybackController, predicate: (DesktopPlaybackState) -> Boolean) =
         runBlocking { withTimeout(3_000) { controller.state.first { predicate(it) } } }
     private fun onSwing(action: () -> Unit) {

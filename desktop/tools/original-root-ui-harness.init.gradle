@@ -1,0 +1,130 @@
+import groovy.json.JsonOutput
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption
+import java.security.MessageDigest
+
+// Future source qualification only: snapshot the existing actual-Main task after
+// its real prerequisites. This task never executes the JavaExec or changes it.
+gradle.projectsEvaluated {
+    def target = gradle.rootProject
+    def original = target.tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)
+    target.tasks.register('writeOriginalRootUiHarnessInputs') {
+        dependsOn(original.get().taskDependencies.getDependencies(original.get()))
+        outputs.upToDateWhen { false }
+        doLast {
+            def outputName = target.findProperty('originalRootUiHarnessInputs')
+            if (!outputName) throw new GradleException('A fresh original UI input path is required')
+            def output = new File(outputName.toString())
+            if (output.exists() || !output.parentFile.isDirectory())
+                throw new GradleException('Original UI inputs cannot overwrite an existing result')
+            def ui = original.get()
+            if (ui.mainClass.get() != 'com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture')
+                throw new GradleException('The actual original UI main changed')
+            def hash = { File file ->
+                if (!file.isFile()) throw new GradleException('Missing runtime-model file')
+                def digest = MessageDigest.getInstance('SHA-256')
+                file.withInputStream { stream ->
+                    byte[] buffer = new byte[1024 * 1024]
+                    int count
+                    while ((count = stream.read(buffer)) != -1) digest.update(buffer, 0, count)
+                }
+                digest.digest().collect { String.format('%02x', it) }.join('')
+            }
+            def repository = target.projectDir.parentFile.canonicalFile
+            def sources = target.extensions.getByName('sourceSets')
+            def main = sources.getByName('main')
+            def test = sources.getByName('test')
+            def mainPaths = main.runtimeClasspath.files.collect { it.canonicalPath }
+            def testPaths = ui.classpath.files.collect { it.canonicalPath }
+            if (testPaths.isEmpty() || testPaths.size() != testPaths.toSet().size())
+                throw new GradleException('Original UI classpath is empty or duplicated')
+            if (testPaths != test.runtimeClasspath.files.collect { it.canonicalPath })
+                throw new GradleException('Original UI no longer uses the complete normal test runtime')
+            def artifacts = { String configuration ->
+                target.configurations.getByName(configuration).resolvedConfiguration.resolvedArtifacts.collect {
+                    [group: it.moduleVersion.id.group, name: it.name, version: it.moduleVersion.id.version,
+                     classifier: it.classifier ?: '', type: it.type,
+                     file: it.file.canonicalPath, bytes: it.file.length(), sha256: hash(it.file)]
+                }.sort { a, b -> a.file <=> b.file }
+            }
+            def knownOutputs = [:]
+            test.output.classesDirs.files.each { knownOutputs[it.canonicalPath] = 'testClasses' }
+            main.output.classesDirs.files.each { knownOutputs[it.canonicalPath] = 'mainClasses' }
+            if (test.output.resourcesDir != null) knownOutputs[test.output.resourcesDir.canonicalPath] = 'testResources'
+            if (main.output.resourcesDir != null) knownOutputs[main.output.resourcesDir.canonicalPath] = 'mainResources'
+            def classpath = ui.classpath.files.collect { File entry ->
+                def path = entry.canonicalPath
+                def role = knownOutputs[path] ?: (mainPaths.contains(path) ? 'mainLibrary' : 'testLibrary')
+                def kind = entry.isFile() ? 'file' : entry.isDirectory() ? 'directory' : 'missing'
+                if (kind == 'missing' && !knownOutputs.containsKey(path))
+                    throw new GradleException('A runtime library is missing')
+                [path: path, role: role, kind: kind] +
+                    (kind == 'file' ? [bytes: entry.length(), sha256: hash(entry)] : [:])
+            }
+            def kotlin = target.extensions.getByName('kotlin')
+            def testInputs = (kotlin.sourceSets.getByName('test').kotlin.files + test.allJava.files)
+                .findAll { it.isFile() && (it.name.endsWith('.kt') || it.name.endsWith('.java')) }
+            if (testInputs.isEmpty() || testInputs.size() > 4096 ||
+                testInputs.sum { it.length() } > 32 * 1024 * 1024)
+                throw new GradleException('Test source inventory exceeds its declared bound')
+            def testSources = testInputs
+                .collect { File file ->
+                    def source = file.canonicalFile
+                    def beforeSize = source.length()
+                    if (!source.toPath().startsWith(repository.toPath()) || beforeSize > 2 * 1024 * 1024)
+                        throw new GradleException('Test input escaped the bounded project source graph')
+                    byte[] originalBytes
+                    source.withInputStream { stream -> originalBytes = stream.readNBytes(2 * 1024 * 1024 + 1) }
+                    if (originalBytes.length != beforeSize || originalBytes.length > 2 * 1024 * 1024)
+                        throw new GradleException('Test input changed during bounded readback')
+                    def decoder = StandardCharsets.UTF_8.newDecoder()
+                    def raw = decoder.decode(ByteBuffer.wrap(originalBytes)).toString()
+                        .replace('\r\n', '\n').getBytes('UTF-8')
+                    def digest = MessageDigest.getInstance('SHA-256').digest(raw)
+                    [path: repository.toPath().relativize(source.toPath()).toString().replace('\\', '/'),
+                     bytesLf: raw.length, normalization: 'lf',
+                     sha256: digest.collect { String.format('%02x', it) }.join('')]
+                }.sort { a, b -> a.path <=> b.path }
+            if (testSources.isEmpty() || testSources.size() > 4096 ||
+                testSources.sum { it.bytesLf } > 32 * 1024 * 1024)
+                throw new GradleException('Test source snapshot exceeds its declared bound')
+            // JavaForkOptions.systemProperties contains mutable properties only. Gradle stores
+            // file.encoding separately, and exposes it through the public encoding model + JVM args.
+            def allowedProperties = ['compose.application.resources.dir', 'bilipai.js.workerResources'] as Set
+            if (ui.systemProperties.keySet() != allowedProperties)
+                throw new GradleException('Original UI mutable system properties need explicit review: ' +
+                    ui.systemProperties.keySet().collect { it.toString() }.sort())
+            def encoding = ui.defaultCharacterEncoding
+            if (encoding != 'UTF-8' || ui.allJvmArgs.findAll { it.startsWith('-Dfile.encoding=') } != ['-Dfile.encoding=UTF-8'])
+                throw new GradleException('Original UI character encoding changed')
+            def properties = ui.systemProperties.collectEntries { key, value -> [(key.toString()): value.toString()] }
+            properties['file.encoding'] = encoding
+            def resources = new File(properties['compose.application.resources.dir']).canonicalFile
+            if (resources != new File(target.projectDir, 'resources/common').canonicalFile)
+                throw new GradleException('Original UI application-resource model changed')
+            def javaExecutable = ui.javaLauncher.get().executablePath.asFile.canonicalFile
+            def release = new File(javaExecutable.parentFile.parentFile, 'release')
+            def revision = target.providers.exec {
+                commandLine 'git', '-C', repository.absolutePath, 'rev-parse', 'HEAD'
+            }.standardOutput.asText.get().trim()
+            def result = [schema: 1, sourceSha: revision,
+                planSha256: hash(new File(repository, '.github/windows-source-validation-plan.json')),
+                task: ui.name, mainClass: ui.mainClass.get(),
+                classpath: classpath, mainRuntimeClasspath: mainPaths,
+                testClassRoots: test.output.classesDirs.files.collect { it.canonicalPath },
+                mainClassRoots: main.output.classesDirs.files.collect { it.canonicalPath },
+                testSources: testSources,
+                mainArtifacts: artifacts('runtimeClasspath'), testArtifacts: artifacts('testRuntimeClasspath'),
+                gradleUserHome: gradle.gradleUserHomeDir.canonicalPath,
+                systemProperties: properties, jvmArgs: ui.allJvmArgs,
+                jdk: [executable: javaExecutable.absolutePath, releaseSha256: hash(release)],
+                compiler: [declaredKotlinJvmPlugin: '2.4.0', buildScriptSha256: hash(target.buildFile),
+                           gradleVersion: gradle.gradleVersion],
+                javaExecExecuted: false, applicationExecuted: false, hardwareExecuted: false]
+            Files.writeString(output.toPath(), JsonOutput.prettyPrint(JsonOutput.toJson(result)) + '\n',
+                StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE)
+        }
+    }
+}

@@ -232,6 +232,25 @@
       "staticForwardEqualsFinal": true,
       "staticInverseEqualsCompleteFixedOriginal": true,
       "targetPath": "build-recipes/packages/subrandr.cmake"
+    },
+    {
+      "afterBytes": 952,
+      "afterSha256Bytes": "f538cedd2317d3a581221e6fa8bb75940de324bdfab802c42614ac59a03567c1",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/c-ares.cmake",
+      "beforeBytes": 938,
+      "beforeSha256Bytes": "ff158ffb4add510160a78eef6473625d965ebf4bd57b0fc1e23275fcb48c6013",
+      "identity": "explicit-cares-main-shallow-clone",
+      "rawEdits": [
+        {
+          "count": 1,
+          "new": "    GIT_CLONE_FLAGS \"--depth=1 --filter=tree:0 --branch=main\"\n",
+          "offsetBytesAtSequentialStage": 117,
+          "old": "    GIT_CLONE_FLAGS \"--depth=1 --filter=tree:0\"\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/c-ares.cmake"
     }
   ]
 }

@@ -24,9 +24,10 @@ internal class DesktopOriginalAboutPreferences(
         it[DesktopPreferenceKey(name) { raw -> (raw as? JsonPrimitive)?.takeUnless { it.isString }?.booleanOrNull }] ?: fallback
     }.distinctUntilChanged()
     val autoCheck = boolean("auto_check_app_update", true)
-    val easterEgg = boolean("easter_egg_enabled", true)
+    // Original default is off: getEasterEggEnabled, isEasterEggEnabledSync and HomeSettings all fall back to false.
+    val easterEgg = boolean("easter_egg_enabled", false)
     val initialAutoCheck get() = settings.value[DesktopPreferenceKey("auto_check_app_update") { raw -> (raw as? JsonPrimitive)?.takeUnless { it.isString }?.booleanOrNull }] ?: true
-    val initialEasterEgg get() = settings.value[DesktopPreferenceKey("easter_egg_enabled") { raw -> (raw as? JsonPrimitive)?.takeUnless { it.isString }?.booleanOrNull }] ?: true
+    val initialEasterEgg get() = settings.value[DesktopPreferenceKey("easter_egg_enabled") { raw -> (raw as? JsonPrimitive)?.takeUnless { it.isString }?.booleanOrNull }] ?: false
     val initialChannel get() = DesktopOriginalAboutSettings.AppUpdateChannel.fromValue(settings.value[DesktopPreferenceKey("app_update_channel") { raw -> (raw as? JsonPrimitive)?.takeUnless { it.isString }?.intOrNull }] ?: 0)
     val channel = settings.map {
         DesktopOriginalAboutSettings.AppUpdateChannel.fromValue(

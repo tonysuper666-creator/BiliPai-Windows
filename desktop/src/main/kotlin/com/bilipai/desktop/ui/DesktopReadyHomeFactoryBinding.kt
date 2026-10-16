@@ -123,7 +123,7 @@ internal class DesktopReadyHomeFactoryBinding(
             repository.ownedHomeCallFactory(gate.epoch, gate::owns), profileMetadata,
             (root.entry.embeddedPages as DesktopOriginalHomeEmbeddedAggregate).gallery.imageAssets,
             clipboard, chrome, DesktopOriginalProfileMedia(root.mediaLifetime, feedback), analytics,
-            { text -> gate.commit { feedback(text) } }, ::diagnostic)
+            { text -> gate.commit { feedback(text) } }, ::diagnostic, community.searchPreferences)
     }
 
     /** HOME picker borrows existing Profile protocols; all platform effects are page-owned.
@@ -147,7 +147,8 @@ internal class DesktopReadyHomeFactoryBinding(
             profileConfiguration, desktopDetailRenderEffectsSupported(), applicationIcon, actualWindow,
             repository.ownedHomeCallFactory(gate.epoch, ::owned), profileMetadata,
             (root.entry.embeddedPages as DesktopOriginalHomeEmbeddedAggregate).gallery.imageAssets,
-            clipboard, chrome, base.media, base.analytics, { text -> commit { feedback(text) } }, ::diagnostic)
+            clipboard, chrome, base.media, base.analytics, { text -> commit { feedback(text) } }, ::diagnostic,
+            community.searchPreferences)
         // Whole original SplashWallpaperPickerSheet(target=HOME) calls only this setter.
         // Replace the legacy Profile store writer with the same original preference final publisher.
         val preferences = object : DesktopProfilePreferences by environment.preferences {

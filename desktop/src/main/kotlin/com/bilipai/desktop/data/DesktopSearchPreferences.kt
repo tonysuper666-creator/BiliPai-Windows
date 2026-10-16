@@ -163,10 +163,13 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
     suspend fun clear(mid: Long?) = withContext(Dispatchers.IO) { synchronized(lock) {
         checkWritesOpen(); dao(mid).clearNow()
     } }
-    suspend fun setPrivacyMode(enabled: Boolean) = withContext(Dispatchers.IO) { synchronized(lock) {
+    /** Blocking body of [setPrivacyMode], also the Profile switch's write: its owner already
+     * holds its own admission, so only the order is shared (checkWritesOpen, file, StateFlow). */
+    internal fun setPrivacyModeNow(enabled: Boolean): Unit = synchronized(lock) {
         checkWritesOpen()
         privacy.edit().putBoolean("enabled", enabled).apply(); _privacyMode.value = enabled
-    } }
+    }
+    suspend fun setPrivacyMode(enabled: Boolean) = withContext(Dispatchers.IO) { setPrivacyModeNow(enabled) }
     suspend fun setSuggestionsEnabled(enabled: Boolean) = withContext(Dispatchers.IO) { synchronized(lock) {
         checkWritesOpen()
         suggestions.edit().putBoolean("search_suggestions_enabled", enabled).apply(); _suggestionsEnabled.value = enabled

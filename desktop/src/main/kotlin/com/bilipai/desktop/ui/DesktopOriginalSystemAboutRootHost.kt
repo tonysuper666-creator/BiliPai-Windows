@@ -106,11 +106,19 @@ import java.util.concurrent.atomic.AtomicReference
         CompositionLocalProvider(LocalDesktopOriginalAboutBindings provides bindings, LocalUriHandler provides uriHandler) {
             DesktopWindowsSettingsGroup("更新与关于") {
                 androidx.compose.material3.Text("BiliPai Windows · 上游基线 v0.2.5")
+                DesktopWindowsSettingsSwitch("自动检查更新", autoCheck,
+                    description = "后台定期检查，关闭后仅手动检查；自动下载安装见更新窗口") { value ->
+                    bindings.update { preferences.setAutoCheck(value) }
+                }
                 androidx.compose.material3.OutlinedButton(onClick = { if (current()) windowsUpdateNow() }) {
                     androidx.compose.material3.Text("检查 Windows 更新")
                 }
                 androidx.compose.material3.TextButton(onClick = { uriHandler.openUri(OFFICIAL_GITHUB_URL) }) {
                     androidx.compose.material3.Text("上游源码与更新日志")
+                }
+                DesktopWindowsSettingsSwitch("趣味彩蛋", easterEgg,
+                    description = "刷新、搜索、点赞和投币时显示趣味提示，关闭后使用普通提示") { value ->
+                    bindings.update { preferences.setEasterEgg(value) }
                 }
             }
             DesktopWindowsSettingsGroup("帮助与许可") {
