@@ -979,15 +979,29 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 555)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 544)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 113)
-        self.assertEqual(len(self.inventory["archives"]), 117)
+        self.assertEqual(len(entries), 589)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 578)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 115)
+        self.assertEqual(len(self.inventory["archives"]), 119)
         for root, names in {
             "desktop/upstream-slices/v042-player-readability/":
                 {"TopControlBar.kt", "PortraitSubtitleOverlay.kt"},
             "desktop/upstream-slices/v042-follow-confirmation/":
                 {"ActionRepository.kt", "VideoInteractionStatusCacheTest.kt"},
+            "desktop/upstream-slices/v042-owner-follow/":
+                {"VideoEngagementViewModel.kt", "VideoActionFeedbackPolicy.kt", "UpPreviewSheet.kt", "PortraitVideoPager.kt"},
+            "desktop/upstream-slices/v042-seed-palette/": {
+                "PaletteSpecPolicy.kt", "SeedColorScheme.kt", "SeedPaletteStyle.kt", "SeedPresetColors.kt",
+                "SeedTextContrastPolicy.kt", "SeedToneResolver.kt", "SeedTones.kt", "Theme.kt",
+                "ThemePresetPalettePreview.kt", "AppThemeEndpointPolicy.kt", "WallpaperPaletteOverridePolicy.kt",
+                "ThemeColorTransition.kt", "ThemeRoleOverridePolicy.kt", "LiquidAccentColorScheme.kt",
+                "ThemePreferencePolicy.kt", "WallpaperPaletteOverrides.kt", "SettingsManager.kt",
+                "PlaybackNotificationColorPolicy.kt", "AppearanceThemeSegmentPolicy.kt", "AppSegmentedControl.kt",
+                "PaletteSpecPolicyTest.kt", "SeedColorSchemeTest.kt", "SeedTextContrastPolicyTest.kt",
+                "ThemePresetPalettePreviewTest.kt", "AppThemeEndpointPolicyTest.kt", "WallpaperPaletteOverridePolicyTest.kt",
+                "LiquidAccentColorSchemeTest.kt", "SeedPaletteSettingsPolicyTest.kt",
+                "flex_seed_scheme.LICENSE", "material_color_utilities.LICENSE",
+            },
         }.items():
             with self.subTest(v042Root=root):
                 rows = {Path(item["localPath"]).name: item for item in entries
@@ -1671,10 +1685,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 555)
+        self.assertEqual(len(self.load()), 589)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 555)
+        self.assertEqual(len(self.load()), 589)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1691,7 +1705,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 555)
+                self.assertEqual(len(entries), 589)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

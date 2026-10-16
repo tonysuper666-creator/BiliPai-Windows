@@ -193,6 +193,7 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt"))
         // Complete fixed theme roles and contrast have one existing appearance producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/settings/ThemePreferencePolicy.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt"))
         // Latest original theme configuration is emitted once by the full controls producer.
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt"))
@@ -515,6 +516,8 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
         "--test-output", generatedThemeRoleTests.get().asFile.absolutePath)
     inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py", "tools/v040_theme_roles.py", "tools/v040_liquid_value_controls.py")
     inputs.dir("upstream-slices/v040-theme-roles")
+    inputs.file("tools/v042_seed_palette.py")
+    inputs.dir("upstream-slices/v042-seed-palette")
     inputs.dir("upstream-slices/v040-liquid-value-controls")
     inputs.files(sources.filter { "appearance-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -2408,6 +2411,8 @@ sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/do
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
 
 val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_owner_follow.py")
+    inputs.dir("upstream-slices/v042-owner-follow")
     inputs.file("tools/v042_follow_confirmation.py")
     inputs.dir("upstream-slices/v042-follow-confirmation")
     inputs.file("tools/v037_gesture_feedback.py")
@@ -2698,6 +2703,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoTabletFull) }
 
 // Append source-only task wiring. Do not replace the existing build file.
 val extractOriginalVideoFullscreenPager by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_owner_follow.py")
+    inputs.dir("upstream-slices/v042-owner-follow")
     inputs.file("tools/v037_gesture_feedback.py")
     inputs.dir("upstream-slices/v037-gesture-feedback")
     inputs.file("tools/v031_repost_coin.py")

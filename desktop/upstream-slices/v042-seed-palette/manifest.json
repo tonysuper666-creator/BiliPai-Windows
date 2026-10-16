@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamTag": "v0.4.2",
+  "fixedUpstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/PaletteSpecPolicy.kt",
+      "filename": "PaletteSpecPolicy.kt",
+      "bytes": 1174,
+      "sha256Bytes": "a7e9a555c3e0253bc66d04830f6e1fcab722f14d977dc68e5dcda5b9b91cd4db",
+      "gitBlob": "8590c993f4bc12ecf8c990216cbc86ddd389a63b",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedColorScheme.kt",
+      "filename": "SeedColorScheme.kt",
+      "bytes": 15195,
+      "sha256Bytes": "c7302e1a55ee98d5a76827974b616381f7e66bb2929ac2c00cee9f12e8d97b3a",
+      "gitBlob": "399f95c8b03164ff036b4e6d3a384037abfc6c30",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedPaletteStyle.kt",
+      "filename": "SeedPaletteStyle.kt",
+      "bytes": 1495,
+      "sha256Bytes": "95d83b506a847f671f88ca2d7907b827252f962aea0425e7f784ddfb6af2a127",
+      "gitBlob": "f799bd55e1b39ea90b46792759b37971b02ff1f5",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedPresetColors.kt",
+      "filename": "SeedPresetColors.kt",
+      "bytes": 874,
+      "sha256Bytes": "12b33992cf6fbbecbd97f4c7a293bd2884cfd37fad09e5a25c1d6fc96e00a4f1",
+      "gitBlob": "34f8af6ef6d700859f6e7a34d070a147f5990d3d",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedTextContrastPolicy.kt",
+      "filename": "SeedTextContrastPolicy.kt",
+      "bytes": 5107,
+      "sha256Bytes": "bf18b55cf931095099cb38f5b256c5a696e4943f3d7ccf5f946ff99be81d9e00",
+      "gitBlob": "361f5e536c46f13763c309ed13ba715ea2c4bde5",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedToneResolver.kt",
+      "filename": "SeedToneResolver.kt",
+      "bytes": 4819,
+      "sha256Bytes": "18ed7d8af19bf5a8b93d91017498dcccbb89a465e248e0180c58f7684e64b215",
+      "gitBlob": "55114310f2532e06f1f31ef836db1e0cebf63681",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/SeedTones.kt",
+      "filename": "SeedTones.kt",
+      "bytes": 18142,
+      "sha256Bytes": "c4a50d7bc1b3a8c2167485182deb92bf8311f629e3d6c72685e752c5d6378c1f",
+      "gitBlob": "ece8fcba79ffe17f3c5de95de37368566e91a239",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/Theme.kt",
+      "filename": "Theme.kt",
+      "bytes": 49110,
+      "sha256Bytes": "cc61bf46f5afd356c331345fd01323b2a7198676872f07ce389603c68b3fca3b",
+      "gitBlob": "02f14227eb595164ba359573ba07571d9f424082",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemePresetPalettePreview.kt",
+      "filename": "ThemePresetPalettePreview.kt",
+      "bytes": 4828,
+      "sha256Bytes": "5045f306e7f6dbfa34e9fccfa5c3ec11cf625c3be7a1e57bf15de92f9f5b7909",
+      "gitBlob": "620433309b31b55ace332a1d34e652c74f737ed0",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicy.kt",
+      "filename": "AppThemeEndpointPolicy.kt",
+      "bytes": 4914,
+      "sha256Bytes": "70a57ed5dc08adb69a49f7722ab7bc04072cf5912ca9a09a8f3fef0d8ab9e44b",
+      "gitBlob": "b9cd9143cc6fb8a090c43f6c51c1f5711107891b",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/WallpaperPaletteOverridePolicy.kt",
+      "filename": "WallpaperPaletteOverridePolicy.kt",
+      "bytes": 2572,
+      "sha256Bytes": "6981daaac6279f5a68c4518cfbdf6dcf43d9d5d495e00e1f3c5826d6330a04a6",
+      "gitBlob": "10be1928fa1cfa6e9609bcf73dda38da63ab14bd",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeColorTransition.kt",
+      "filename": "ThemeColorTransition.kt",
+      "bytes": 12890,
+      "sha256Bytes": "0471c078ac1668726b115a2489d22cfe80dbff7d01b4279c1a8c07d383904fdd",
+      "gitBlob": "929631a8a2b1ab90276849e6e0273f1c38cf634a",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt",
+      "filename": "ThemeRoleOverridePolicy.kt",
+      "bytes": 8295,
+      "sha256Bytes": "59def61deecf53391770aaebb5296b7c20ed4c285576e32d86ae0f98fb37447e",
+      "gitBlob": "1c0c2d3595913c37650b6e0ecf508964595cb37e",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/LiquidAccentColorScheme.kt",
+      "filename": "LiquidAccentColorScheme.kt",
+      "bytes": 2550,
+      "sha256Bytes": "72630a43323481bc9e84e0fff710f1ed814b6336676a6effcaec8d365aebe811",
+      "gitBlob": "ec85520a03db72e5dc1eb9906b8f91551eb2b71c",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemePreferencePolicy.kt",
+      "filename": "ThemePreferencePolicy.kt",
+      "bytes": 3052,
+      "sha256Bytes": "89c581b63ca61b4b9769b7bb823ab601fa5fbbf8c245df5dfe028051ae554c1c",
+      "gitBlob": "8b199b39851edf01ae78e853ebc88300da1f73bf",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/WallpaperPaletteOverrides.kt",
+      "filename": "WallpaperPaletteOverrides.kt",
+      "bytes": 1513,
+      "sha256Bytes": "98b5674f8155ba4c0c4a3e86e6c041f069c2500a092f48efe8f57ff994f7645c",
+      "gitBlob": "a2114d6ac41bea354cbfb08b6d85575d37975054",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/PaletteSpecPolicyTest.kt",
+      "filename": "PaletteSpecPolicyTest.kt",
+      "bytes": 3164,
+      "sha256Bytes": "644cd90cc1cab7ca7b90243cd990d3537da33f7390d27003e4053647cff01443",
+      "gitBlob": "1179d9c33e3781cbe049efda65117f5f709c9e19",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/SeedColorSchemeTest.kt",
+      "filename": "SeedColorSchemeTest.kt",
+      "bytes": 5813,
+      "sha256Bytes": "7e1dc2c29b7c543f566317d55729814cf9ea340d5398712325bdeec67843632e",
+      "gitBlob": "5be0203e0556359f258b004da7b96126a1cca0a6",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/SeedTextContrastPolicyTest.kt",
+      "filename": "SeedTextContrastPolicyTest.kt",
+      "bytes": 7095,
+      "sha256Bytes": "1334289a19feae04198f76f8b71388bd7ce07fc2812673d0ce5f9b647803bfb4",
+      "gitBlob": "e8dbace99728de4caa2c791bb634c4794f0c9512",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/ThemePresetPalettePreviewTest.kt",
+      "filename": "ThemePresetPalettePreviewTest.kt",
+      "bytes": 3042,
+      "sha256Bytes": "f11787b0a90b72ae987c4d6b045cccd9a3190491422a925d855d65b48851d96e",
+      "gitBlob": "4de1e98d82f0e052c0d381e9880423bb5ec92764",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicyTest.kt",
+      "filename": "AppThemeEndpointPolicyTest.kt",
+      "bytes": 5877,
+      "sha256Bytes": "4fdb2a5555493d065a8137ba3858e9293fc360c6c59718c791a7c073a1accd13",
+      "gitBlob": "53f80082c04c5e2f707ad0f0c3894ca12c181401",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/WallpaperPaletteOverridePolicyTest.kt",
+      "filename": "WallpaperPaletteOverridePolicyTest.kt",
+      "bytes": 4598,
+      "sha256Bytes": "137964e9fa2d9ac0f2430716f21b403fbf3fd74b0dfbd9fd4514819fcf6dd783",
+      "gitBlob": "9d5798086187e1515189467819123d5dfc30ba4e",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/LiquidAccentColorSchemeTest.kt",
+      "filename": "LiquidAccentColorSchemeTest.kt",
+      "bytes": 3195,
+      "sha256Bytes": "8fef45a2acc69051c2271abd2f6789c232dd76ae9e35134df61efd7b1b92284e",
+      "gitBlob": "a2664a6db62cb413768dd3153734c8de598b30ab",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/assets/licenses/flex_seed_scheme.LICENSE",
+      "filename": "flex_seed_scheme.LICENSE",
+      "bytes": 1574,
+      "sha256Bytes": "fa0a357cd6a579d86ec7da0133cb143cf50cdfcf60fd3d8f2ff5a9cc9f711fe8",
+      "gitBlob": "30d5ad463f911a0c86d3d1d388975bc77587c0c5",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/assets/licenses/material_color_utilities.LICENSE",
+      "filename": "material_color_utilities.LICENSE",
+      "bytes": 10756,
+      "sha256Bytes": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426",
+      "gitBlob": "3879bcb2002e2b2e38a953e1149c14cef55ca555",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaybackNotificationColorPolicy.kt",
+      "filename": "PlaybackNotificationColorPolicy.kt",
+      "bytes": 6159,
+      "sha256Bytes": "9def8c9109c5d7e3d8f7b901f32efd195713a5703ea019917e548acf4f2feda9",
+      "gitBlob": "84f3e4978ea7f0d920569c7d01bfc90655f8345d",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceThemeSegmentPolicy.kt",
+      "filename": "AppearanceThemeSegmentPolicy.kt",
+      "bytes": 11700,
+      "sha256Bytes": "5798874d27c99d9b89ad64e7b2661bbf976f59054c9753067f01eb55e8bc9bb1",
+      "gitBlob": "2350ee8b5ee19c872ae55d298b686a26b9d31d37",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "filename": "SettingsManager.kt",
+      "bytes": 419437,
+      "sha256Bytes": "a24f3f4df8a683f280e7e35ea9efdc41eb52d694780326da4764c35d49f50e70",
+      "gitBlob": "b33461ebc84a31cd67136fe53140f2f59c932ca9",
+      "partialReuse": true
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt",
+      "filename": "AppSegmentedControl.kt",
+      "bytes": 23263,
+      "sha256Bytes": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
+      "gitBlob": "cffa54dff05865eeae76846ba1e1717840f866f9",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/settings/SeedPaletteSettingsPolicyTest.kt",
+      "filename": "SeedPaletteSettingsPolicyTest.kt",
+      "bytes": 2832,
+      "sha256Bytes": "36065e01d77ca02afa6a35e588e0dc76d5f55d8a327904c32ea49de26f4ce11d",
+      "gitBlob": "2bd5feeffca3b25e4b700145e392abd36a077cb6",
+      "partialReuse": false
+    }
+  ],
+  "scope": "Complete original seed palette, contrast, preview, shared endpoint and transition policies, eight whole original test classes. Selected original Theme/option/store declarations and pure notification accent policy use existing Windows settings. Windows wallpaper fallback remains unchanged; actual system wallpaper extraction and visual acceptance remain separate."
+}

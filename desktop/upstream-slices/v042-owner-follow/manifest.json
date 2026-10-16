@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamTag": "v0.4.2",
+  "fixedUpstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "filename": "VideoEngagementViewModel.kt",
+      "bytes": 38630,
+      "sha256Bytes": "3f92360b36c18eb4bc66d08db1154cbb8ee1dbbc6cbdd1c8eb59b2d18d00dd19",
+      "gitBlob": "f8a9a52649af26a0ac260e34a4c936040e8be7a0",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "filename": "VideoActionFeedbackPolicy.kt",
+      "bytes": 3081,
+      "sha256Bytes": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+      "gitBlob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt",
+      "filename": "UpPreviewSheet.kt",
+      "bytes": 27386,
+      "sha256Bytes": "00429be9b3e159a2a6e5b5eff465d0349b0c1ce749b810673dd14b8a09a7d286",
+      "gitBlob": "e9f1eb6e5189cda374b2ad216efd0c082e2c1cb7",
+      "partialReuse": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "filename": "PortraitVideoPager.kt",
+      "bytes": 211066,
+      "sha256Bytes": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0",
+      "gitBlob": "eba104633b5be816f348a89a483861a20096c346",
+      "partialReuse": true
+    }
+  ],
+  "scope": "Whole original follow workflow, follow-only policy and UP preview sheet. Portrait pager retains its existing Windows implementation with selected original current-owner status and guarded follow callback. Full v042 pager parity is not claimed."
+}

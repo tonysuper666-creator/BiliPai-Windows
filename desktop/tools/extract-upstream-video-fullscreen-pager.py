@@ -132,6 +132,8 @@ def generate(repo,output,standalone=False):
   text=legacy_comment_selection_delta(spec['output'],text,output)
   from v042_player_readability import apply_and_record as apply_player_readability
   text=apply_player_readability(repo,spec['output'],text,output)
+  from v042_owner_follow import apply_ui as apply_owner_follow_ui
+  text=apply_owner_follow_ui(repo,spec['output'],text,output,spec)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')

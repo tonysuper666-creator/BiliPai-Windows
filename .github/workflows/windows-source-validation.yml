@@ -42,6 +42,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Verifier subprocess preflight failed.' }
           python desktop/tools/run-tool-tests.py --stage policies
           if ($LASTEXITCODE -ne 0) { throw 'Complete source inventory, updater and publication policy regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_command_attention.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original whole engagement and follow projection regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_owner_follow.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original UP preview retry and current-owner caller regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_package_source_qualification.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Source and harness qualification regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_validate_source_cohort.py -v
@@ -84,6 +88,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original tabs source ownership regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v041_dynamic_author_search_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Whole original v041 dynamic author-search source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v042_seed_palette_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Whole original seed palette and shared endpoint source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original theme-role source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_liquid_controls_source.py -v

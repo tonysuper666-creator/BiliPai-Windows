@@ -114,6 +114,15 @@ class CommentSelectionConsumerClosureTest(unittest.TestCase):
             with self.subTest(path=path):
                 proof = json.loads((self.output / ("v029-comment-selection-" + Path(path).stem + ".json")).read_text(encoding="utf-8"))
                 current = self.source(path)
+                if path == PORTRAIT:
+                    follow = json.loads((self.output / 'PortraitVideoPager.kt.v042-owner-follow-ui-proof.json').read_bytes())
+                    self.assertTrue(follow['wholePreviousInputInverseRecovered'])
+                    self.assertEqual(follow['outputSHA256'], hashlib.sha256(current.encode()).hexdigest())
+                    for edit in reversed(follow['edits']):
+                        offset = edit['offset']
+                        self.assertEqual(edit['after'], current[offset:offset + len(edit['after'])])
+                        current = current[:offset] + edit['before'] + current[offset + len(edit['after']):]
+                    self.assertEqual(follow['inputSHA256'], hashlib.sha256(current.encode()).hexdigest())
                 self.assertTrue(proof["exactCompleteInverse"])
                 self.assertEqual(hashlib.sha256(current.encode()).hexdigest(), proof["afterSha256LF"])
                 for edit in reversed(proof["inverseEdits"]):

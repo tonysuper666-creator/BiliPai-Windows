@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "671da16eef8fa804a553c49576768d33fb3fcf27",
-  "windowsVersion": "0.2.427.149",
-  "createdAt": "2026-10-16T13:10:59.059781+00:00",
+  "baseHead": "ea3b67f1d5fb59a7e76591a1c352f7c3e428014b",
+  "windowsVersion": "0.2.427.154",
+  "createdAt": "2026-10-16T15:12:39.972326+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "d5f8442f57cd7cf140f2c1614a7742eb2fe0e1ecc8c29a5df2f7bcb746558e3c"
+      "sha256": "5a1726f5664ee4db03451a6939a29e9c8bd28f9aa82cb6c8338e85053020f1a0"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -113,7 +113,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "41c62a8043a5f98708403ec15270ad52f99d315cf4e7e64a6feb3d3f4dfe781e"
+      "sha256": "e62f60bc5989929d0fb74435a76114da8e66874cfde4be85bae23fa9142630ca"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -233,7 +233,17 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
       "normalization": "lf",
-      "sha256": "403533ad19f6c807efdf9de7134df37949879cad1ac4ce00414758de21bf6bc6"
+      "sha256": "44734df250cc3e58a46be42f5c3637c2ba16a91f1e01a27186184957ba56ac5e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "normalization": "lf",
+      "sha256": "e07ddec6bea58f757c9bbb63609d475f92aab13b095a5187c579b351ff0a80a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "normalization": "lf",
+      "sha256": "3ae86ba7aebda4a7750be89fd2ec7f344f4197e6855f0866a972b0b00da26983"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
@@ -606,6 +616,11 @@
       "sha256": "ec130ac26d86af489aee5b439a9fb46f5674e4578d85af45d059bac48df8ca08"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementBindings.kt",
+      "normalization": "lf",
+      "sha256": "88c417c7fadc6df7fe5df628d252cad1705840f787b6f0bc8518e8687dc8299f"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMetadataAdmission.kt",
       "normalization": "lf",
       "sha256": "95e0399458e8c67564132e035437459c8924bcb843deafe5de789aa0fd7d458f"
@@ -684,6 +699,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowKeyFallback.kt",
       "normalization": "lf",
       "sha256": "f6dc3fe8fd83ac58483ed7c742511c73e621964ee8714397bc2bddec10870bb0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommandAttentionBinding.kt",
+      "normalization": "lf",
+      "sha256": "f92ec2a8346e19a349f6b36bd003e055835b80619d79be8085bf664b3c93a6e2"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsLiquidGlassMaterial.kt",
@@ -859,6 +879,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopLiquidPointerMappingTest.kt",
       "normalization": "lf",
       "sha256": "c392db4e9319f56e2b23c14f752a766218b8c8e6e8cb81fec2461d5e251ab2ea"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopSeedPalettePreferencesTest.kt",
+      "normalization": "lf",
+      "sha256": "3a01b09dc13afd13cf84ebd3ec8e2a6a7bca9253047882eaba391982107dc1be"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
@@ -1166,6 +1191,11 @@
       "sha256": "ab2399220847aad35d686d7ed3877e65bdc43040ae647de4aed91ee51c896800"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsOwnerFollowRetryTest.kt",
+      "normalization": "lf",
+      "sha256": "e1924caa94cc850374df1724081ea03d993a7fdf4020fcf823bdf7c86b28e2d2"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackAudioOutputTest.kt",
       "normalization": "lf",
       "sha256": "a37184580d06503e73bfc2adc80660473e02adcb08e2d52d3e1793a063c5ba3a"
@@ -1348,7 +1378,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "1a8ce23a63330bdee561b7f3df8db590c5932f9f596d8805db1f8ea9e7ddc8c6"
+      "sha256": "576bbcf1f3574c588d554bcb7313f71c1be84b215726337b89ccc7ee5bd8b908"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1363,7 +1393,7 @@
     {
       "path": "desktop/tools/extract-appearance-platform.py",
       "normalization": "lf",
-      "sha256": "72ce0253f8987b0a208e6a575708bda677f78888ee590db7be05f779fa287c1b"
+      "sha256": "6508a3cbce91fa9acdc86638b1bacf40d35af2242f2e870b69d16a53e9cedb2a"
     },
     {
       "path": "desktop/tools/extract-dynamic-message-share.py",
@@ -1506,6 +1536,11 @@
       "sha256": "e0675af46ad84dee06b3e29349bfbc465caf2b3b0a6c28ec5b954c3fa8fe96c9"
     },
     {
+      "path": "desktop/tools/extract-upstream-video-detail-full-units.py",
+      "normalization": "lf",
+      "sha256": "4a15bd9ae6f3788c59da3f1531e6f37d86293f42c1b1e23598664786b8ab6f5a"
+    },
+    {
       "path": "desktop/tools/extract-upstream-video-detail-holder.py",
       "normalization": "lf",
       "sha256": "7c24c5288853aa020c0ad0e4bd17cd6e4d31d3be5a3e15642fbef8842a1b3bf2"
@@ -1518,7 +1553,7 @@
     {
       "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
       "normalization": "lf",
-      "sha256": "1d61700d398b2e2a3f9812c03ca5749f7fc44ec848f97c73c60f15f300dc421e"
+      "sha256": "334c5d688f98c6165a6510bad437a95187f5bd9a697b8ff4446c1d28f699222a"
     },
     {
       "path": "desktop/tools/extract-upstream-video-player-full-controls.py",
@@ -1668,7 +1703,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "d31be65547fe034f9a1ca0589d9897e10a5a171bc78d6b48d57ae44dca77c54f"
+      "sha256": "6ce812e739bb00a91874a6f246fdd5613367754e338e7fb8e9b187af7afa9ca0"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -1688,7 +1723,7 @@
     {
       "path": "desktop/tools/tests/test_comment_selection_consumer_closure.py",
       "normalization": "lf",
-      "sha256": "7ee190c8e361042f7f95afb424c65cbeaada57af5595e937386d15fff8511991"
+      "sha256": "3a875e3f3910c310e216c084e0e7276fbe49abd753b01e1b941a858872620d5a"
     },
     {
       "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
@@ -1704,6 +1739,11 @@
       "path": "desktop/tools/tests/test_export_packaged_updater_harness.py",
       "normalization": "lf",
       "sha256": "4048e1863341bf9df9c320e14822193fabd1ae86b0280a67e84aa8c826f712d7"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_command_attention.py",
+      "normalization": "lf",
+      "sha256": "b633641ff96b64ab6e507fef03681cc111d6fff9d23041947298e362f7a04af6"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_danmaku_hot_settings.py",
@@ -1724,6 +1764,11 @@
       "path": "desktop/tools/tests/test_extract_upstream_offline_error_v029.py",
       "normalization": "lf",
       "sha256": "9962af6e9ff72a47d9cd0890376ee3c9e105a6c9e34941dba079557c901d32e5"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_owner_follow.py",
+      "normalization": "lf",
+      "sha256": "02449abbd29b1e328df96e207ea9a660ab8246753b7aa90549cdb27da01b6930"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_plugins.py",
@@ -1843,7 +1888,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "96bb800d80560b63b9cfc3cae41527fcaaaa5b1cbdf1d0ac3e3c39ae84f5bbad"
+      "sha256": "a936e388f43313f7101967448cc412f8f1675180e5b4b07543d8ebf429930d70"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -1908,7 +1953,7 @@
     {
       "path": "desktop/tools/tests/test_v040_liquid_controls_source.py",
       "normalization": "lf",
-      "sha256": "3a5cf13122ac73eec15bde2c0ac1c3e2faffa3c72e8cbd1bd9369f6cfd899867"
+      "sha256": "de94761b8055dbe13cfc637ce69fa0cc775a73827157f9e46da06be410b73937"
     },
     {
       "path": "desktop/tools/tests/test_v040_native_chrome_source.py",
@@ -1933,7 +1978,7 @@
     {
       "path": "desktop/tools/tests/test_v040_theme_roles_source.py",
       "normalization": "lf",
-      "sha256": "48ba4485abb7aec2ccbf17d30b220e6fb3e856076fb7580c8a611af28cff9a0c"
+      "sha256": "283ed808b5c52c7beed550a42fea77a3944b6b88e175019dc7cfe567b8a05410"
     },
     {
       "path": "desktop/tools/tests/test_v041_dynamic_author_search_source.py",
@@ -1974,6 +2019,11 @@
       "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
       "normalization": "lf",
       "sha256": "33230024f7000ce4d35bbbd258e548d71ef91b9a19c5e9e53f17cf941e35ebac"
+    },
+    {
+      "path": "desktop/tools/tests/test_v042_seed_palette_source.py",
+      "normalization": "lf",
+      "sha256": "d21e3d748ac8a96227066f5d37bc0905d0c632fe3298e0e1ec1e7cc0e70ae35e"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -2206,9 +2256,19 @@
       "sha256": "a4b6b54de977d0237541457cd65a0fa41f611551e632b88ed79ca80a9c1be85a"
     },
     {
+      "path": "desktop/tools/v042_owner_follow.py",
+      "normalization": "lf",
+      "sha256": "68c38b442161e72fa0c799d6b5953ff73895ffea8db795a4459a9c1b9367fdd4"
+    },
+    {
       "path": "desktop/tools/v042_player_readability.py",
       "normalization": "lf",
       "sha256": "4241ba15c2de24f95733395c389ee54c5d8a61905d7a96556fac4037364cfefb"
+    },
+    {
+      "path": "desktop/tools/v042_seed_palette.py",
+      "normalization": "lf",
+      "sha256": "d9c6393fca0cecc7cffe4436835aca0a3a90fd0eafc651f8e0bc9ee0c9c1bcf2"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -3116,6 +3176,31 @@
       "sha256": "9976d04fa221e8dbfd1bcc3b05f8d6647942d9d43e91b4dbc68b32b40c203f3e"
     },
     {
+      "path": "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
+      "normalization": "raw",
+      "sha256": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
+      "normalization": "raw",
+      "sha256": "00429be9b3e159a2a6e5b5eff465d0349b0c1ce749b810673dd14b8a09a7d286"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
+      "normalization": "raw",
+      "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
+      "normalization": "raw",
+      "sha256": "3f92360b36c18eb4bc66d08db1154cbb8ee1dbbc6cbdd1c8eb59b2d18d00dd19"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-owner-follow/manifest.json",
+      "normalization": "raw",
+      "sha256": "3254fb262d038dac0443c0ba7bd2f31319d5071b4ffaa603734cd2f670c2d061"
+    },
+    {
       "path": "desktop/upstream-slices/v042-player-readability/PortraitSubtitleOverlay.kt",
       "normalization": "raw",
       "sha256": "f3460f158ee6ff37842d6de2be0df29143656f36905c645878d8e4742663c89e"
@@ -3131,9 +3216,164 @@
       "sha256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8"
     },
     {
+      "path": "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicy.kt",
+      "normalization": "raw",
+      "sha256": "70a57ed5dc08adb69a49f7722ab7bc04072cf5912ca9a09a8f3fef0d8ab9e44b"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "4fdb2a5555493d065a8137ba3858e9293fc360c6c59718c791a7c073a1accd13"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/AppearanceThemeSegmentPolicy.kt",
+      "normalization": "raw",
+      "sha256": "5798874d27c99d9b89ad64e7b2661bbf976f59054c9753067f01eb55e8bc9bb1"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorScheme.kt",
+      "normalization": "raw",
+      "sha256": "72630a43323481bc9e84e0fff710f1ed814b6336676a6effcaec8d365aebe811"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorSchemeTest.kt",
+      "normalization": "raw",
+      "sha256": "8fef45a2acc69051c2271abd2f6789c232dd76ae9e35134df61efd7b1b92284e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicy.kt",
+      "normalization": "raw",
+      "sha256": "a7e9a555c3e0253bc66d04830f6e1fcab722f14d977dc68e5dcda5b9b91cd4db"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "644cd90cc1cab7ca7b90243cd990d3537da33f7390d27003e4053647cff01443"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/PlaybackNotificationColorPolicy.kt",
+      "normalization": "raw",
+      "sha256": "9def8c9109c5d7e3d8f7b901f32efd195713a5703ea019917e548acf4f2feda9"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
+      "normalization": "raw",
+      "sha256": "c7302e1a55ee98d5a76827974b616381f7e66bb2929ac2c00cee9f12e8d97b3a"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedColorSchemeTest.kt",
+      "normalization": "raw",
+      "sha256": "7e1dc2c29b7c543f566317d55729814cf9ea340d5398712325bdeec67843632e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedPaletteSettingsPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "36065e01d77ca02afa6a35e588e0dc76d5f55d8a327904c32ea49de26f4ce11d"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
+      "normalization": "raw",
+      "sha256": "95d83b506a847f671f88ca2d7907b827252f962aea0425e7f784ddfb6af2a127"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedPresetColors.kt",
+      "normalization": "raw",
+      "sha256": "12b33992cf6fbbecbd97f4c7a293bd2884cfd37fad09e5a25c1d6fc96e00a4f1"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicy.kt",
+      "normalization": "raw",
+      "sha256": "bf18b55cf931095099cb38f5b256c5a696e4943f3d7ccf5f946ff99be81d9e00"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "1334289a19feae04198f76f8b71388bd7ce07fc2812673d0ce5f9b647803bfb4"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
+      "normalization": "raw",
+      "sha256": "18ed7d8af19bf5a8b93d91017498dcccbb89a465e248e0180c58f7684e64b215"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
+      "normalization": "raw",
+      "sha256": "c4a50d7bc1b3a8c2167485182deb92bf8311f629e3d6c72685e752c5d6378c1f"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/SettingsManager.kt",
+      "normalization": "raw",
+      "sha256": "a24f3f4df8a683f280e7e35ea9efdc41eb52d694780326da4764c35d49f50e70"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/Theme.kt",
+      "normalization": "raw",
+      "sha256": "cc61bf46f5afd356c331345fd01323b2a7198676872f07ce389603c68b3fca3b"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/ThemeColorTransition.kt",
+      "normalization": "raw",
+      "sha256": "0471c078ac1668726b115a2489d22cfe80dbff7d01b4279c1a8c07d383904fdd"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/ThemePreferencePolicy.kt",
+      "normalization": "raw",
+      "sha256": "89c581b63ca61b4b9769b7bb823ab601fa5fbbf8c245df5dfe028051ae554c1c"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreview.kt",
+      "normalization": "raw",
+      "sha256": "5045f306e7f6dbfa34e9fccfa5c3ec11cf625c3be7a1e57bf15de92f9f5b7909"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreviewTest.kt",
+      "normalization": "raw",
+      "sha256": "f11787b0a90b72ae987c4d6b045cccd9a3190491422a925d855d65b48851d96e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/ThemeRoleOverridePolicy.kt",
+      "normalization": "raw",
+      "sha256": "59def61deecf53391770aaebb5296b7c20ed4c285576e32d86ae0f98fb37447e"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicy.kt",
+      "normalization": "raw",
+      "sha256": "6981daaac6279f5a68c4518cfbdf6dcf43d9d5d495e00e1f3c5826d6330a04a6"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "137964e9fa2d9ac0f2430716f21b403fbf3fd74b0dfbd9fd4514819fcf6dd783"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverrides.kt",
+      "normalization": "raw",
+      "sha256": "98b5674f8155ba4c0c4a3e86e6c041f069c2500a092f48efe8f57ff994f7645c"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/flex_seed_scheme.LICENSE",
+      "normalization": "raw",
+      "sha256": "fa0a357cd6a579d86ec7da0133cb143cf50cdfcf60fd3d8f2ff5a9cc9f711fe8"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/manifest.json",
+      "normalization": "raw",
+      "sha256": "99c0843df74232e08f93bec0210ffc373e7ed78cdc94455c32aeefc346737955"
+    },
+    {
+      "path": "desktop/upstream-slices/v042-seed-palette/material_color_utilities.LICENSE",
+      "normalization": "raw",
+      "sha256": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "334b6d6816e1394372b19bdb57cd0c718ffa3d74f791cdf21592b01bba69a461"
+      "sha256": "000402fecec13427d2b717f5077d44d1f78d4d635ccafd0e03548377cab4b98b"
     }
   ],
   "classes": {
@@ -3205,9 +3445,19 @@
     "com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest": 14,
     "com.android.purebilibili.data.repository.DesktopFollowConfirmationReadTest": 6,
     "com.android.purebilibili.data.repository.VideoInteractionStatusCacheTest": 15,
-    "com.android.purebilibili.data.repository.DesktopInteractionCacheLifetimeTest": 2
+    "com.android.purebilibili.data.repository.DesktopInteractionCacheLifetimeTest": 2,
+    "com.bilipai.desktop.ui.DesktopWindowsOwnerFollowRetryTest": 11,
+    "com.android.purebilibili.core.theme.PaletteSpecPolicyTest": 2,
+    "com.android.purebilibili.core.theme.SeedColorSchemeTest": 7,
+    "com.android.purebilibili.core.theme.SeedTextContrastPolicyTest": 5,
+    "com.android.purebilibili.core.theme.ThemePresetPalettePreviewTest": 5,
+    "com.android.purebilibili.core.theme.AppThemeEndpointPolicyTest": 3,
+    "com.android.purebilibili.core.theme.WallpaperPaletteOverridePolicyTest": 4,
+    "com.android.purebilibili.core.theme.LiquidAccentColorSchemeTest": 3,
+    "com.android.purebilibili.feature.settings.SeedPaletteSettingsPolicyTest": 3,
+    "com.bilipai.desktop.appearance.DesktopSeedPalettePreferencesTest": 5
   },
-  "expectedTests": 685,
+  "expectedTests": 733,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -3215,24 +3465,65 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
+    ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/test/kotlin/com/android/purebilibili/data/repository/DesktopFollowConfirmationReadTest.kt",
-    "desktop/src/test/kotlin/com/android/purebilibili/data/repository/DesktopInteractionCacheLifetimeTest.kt",
-    "desktop/src/test/kotlin/com/android/purebilibili/data/repository/VideoInteractionStatusCacheTest.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementBindings.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommandAttentionBinding.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopSeedPalettePreferencesTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsOwnerFollowRetryTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
+    "desktop/tools/extract-appearance-platform.py",
+    "desktop/tools/extract-upstream-video-detail-full-units.py",
     "desktop/tools/extract-upstream-video-fullscreen-pager.py",
-    "desktop/tools/extract-upstream-video-player-full-controls.py",
     "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_comment_selection_consumer_closure.py",
+    "desktop/tools/tests/test_extract_upstream_command_attention.py",
+    "desktop/tools/tests/test_extract_upstream_owner_follow.py",
     "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/v037_player_interaction.py",
-    "desktop/tools/v042_follow_confirmation.py",
-    "desktop/tools/v042_player_readability.py",
-    "desktop/upstream-slices/v042-follow-confirmation/ActionRepository.kt",
-    "desktop/upstream-slices/v042-follow-confirmation/VideoInteractionStatusCacheTest.kt",
-    "desktop/upstream-slices/v042-follow-confirmation/manifest.json",
-    "desktop/upstream-slices/v042-player-readability/PortraitSubtitleOverlay.kt",
-    "desktop/upstream-slices/v042-player-readability/TopControlBar.kt",
-    "desktop/upstream-slices/v042-player-readability/manifest.json",
+    "desktop/tools/tests/test_v040_liquid_controls_source.py",
+    "desktop/tools/tests/test_v040_theme_roles_source.py",
+    "desktop/tools/tests/test_v042_seed_palette_source.py",
+    "desktop/tools/v042_owner_follow.py",
+    "desktop/tools/v042_seed_palette.py",
+    "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
+    "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
+    "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
+    "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
+    "desktop/upstream-slices/v042-owner-follow/manifest.json",
+    "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
+    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicyTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/AppearanceThemeSegmentPolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorScheme.kt",
+    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorSchemeTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicyTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/PlaybackNotificationColorPolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedColorSchemeTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedPaletteSettingsPolicyTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedPresetColors.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicyTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
+    "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
+    "desktop/upstream-slices/v042-seed-palette/SettingsManager.kt",
+    "desktop/upstream-slices/v042-seed-palette/Theme.kt",
+    "desktop/upstream-slices/v042-seed-palette/ThemeColorTransition.kt",
+    "desktop/upstream-slices/v042-seed-palette/ThemePreferencePolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreview.kt",
+    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreviewTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/ThemeRoleOverridePolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicy.kt",
+    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicyTest.kt",
+    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverrides.kt",
+    "desktop/upstream-slices/v042-seed-palette/flex_seed_scheme.LICENSE",
+    "desktop/upstream-slices/v042-seed-palette/manifest.json",
+    "desktop/upstream-slices/v042-seed-palette/material_color_utilities.LICENSE",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,
