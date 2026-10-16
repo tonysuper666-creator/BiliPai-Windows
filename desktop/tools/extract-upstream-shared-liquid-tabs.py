@@ -70,7 +70,14 @@ def desktop_glass_uniform_transforms():
    '            setFloatUniform("chromaticAberration", chromaticAberration)\n        }\n        }\n    }\n}'),
  ]
 
-from v040_native_chrome import selected_source as _native_source, identity_for as _native_identity
+from v040_native_chrome import selected_source as _previous_native_source, identity_for as _previous_native_identity
+from v042_search_layout import selected_shared_source, shared_identity
+
+def _native_source(repo,path,previous):
+ return selected_shared_source(repo,path,_previous_native_source(repo,path,previous))
+
+def _native_identity(repo,path):
+ return shared_identity(repo,path) or _previous_native_identity(repo,path)
 
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
@@ -122,12 +129,15 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   adaptations=[]
   for transform in transforms:
    a,b=transform[:2];count=transform[2] if len(transform)==3 else 1
-   assert text.count(a)==count,(path,'Exact theme/platform symbol multiplicity',count,text.count(a))
+   assert text.count(a)==count,(path,'Exact theme/platform symbol multiplicity',count,text.count(a),a[:160])
    text=text.replace(a,b);adaptations.append(dict(original=a,replacement=b,count=count))
   output=HERE/'generated'/package.replace('.','/')/(output_name or Path(path).name)
   write(output,'// OriginalSource: '+path+'\n// OriginalSHA256: '+sha(source)+'\n'+('// OriginalCommit: '+identity['pinnedCommit']+'\n' if identity else '')+text)
   record=dict(path=path,sha256LF=sha(source),output=str(output.relative_to(HERE)),mode='direct' if names is None else 'selected',declarations=[{k:v for k,v in x.items() if k!='body'} for x in selected],adaptations=adaptations)
   if identity:record['sourceIdentity']=identity
+  if shared_identity(REPO,path) is not None:
+   from v029_comment_search import whole_proof
+   record['wholeOriginalToPlatform']=whole_proof(source,text)
   records.append(record)
  inv={'sources': [{'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt'}]}
  # Current v040 geometry removed the old overflow API, while existing complete v025/v037 callers retain it.
@@ -161,7 +171,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   if 'import android.os.Build\n' in s:t.append(('import android.os.Build\n','import com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\n'))
   if p.endswith('BottomBarLiquidSegmentedControl.kt'):
    t += [('import com.android.purebilibili.core.ui.blur.shouldAllowHomeChromeLiquidGlass\n',''),('    sdkInt: Int = Build.VERSION.SDK_INT,\n','    renderEffectsSupported: Boolean = desktopDetailRenderEffectsSupported(),\n'),('!shouldAllowHomeChromeLiquidGlass(sdkInt)','!renderEffectsSupported')]
-  if p.endswith('FloatingBottomBar.kt'):
+  if p.endswith('FloatingBottomBar.kt') and shared_identity(REPO,p) is None:
    t.append(('Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU','top.yukonga.miuix.kmp.blur.isRuntimeShaderSupported()'))
    t.append(('''                    radius = { size ->
                         resolveDockInteractiveHighlightRadiusPx(
@@ -172,7 +182,8 @@ def generate(repo: Path, output: Path, standalone: bool = False):
 ''','''                    // The fixed v037 highlight computes its radius internally.
 '''))
   if p.endswith('BottomBarFloatingSegmentedControl.kt') or p.endswith('BottomBarLiquidSegmentedControl.kt'):
-   t += [('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.settings.LocalDesktopLiquidTabSettings'),('import com.android.purebilibili.core.store.HomeSettings','import com.bilipai.desktop.settings.DesktopLiquidTabHomePreferences as HomeSettings'),('import com.android.purebilibili.core.store.SettingsManager\n',''),('val context = LocalContext.current','val context = LocalDesktopLiquidTabSettings.current'),('SettingsManager\n        .getHomeSettings(context)','context.homeSettings')]
+   settings_read='SettingsManager\n'+('            ' if p.endswith('BottomBarLiquidSegmentedControl.kt') else '        ')+'.getHomeSettings(context)'
+   t += [('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.settings.LocalDesktopLiquidTabSettings'),('import com.android.purebilibili.core.store.HomeSettings','import com.bilipai.desktop.settings.DesktopLiquidTabHomePreferences as HomeSettings'),('import com.android.purebilibili.core.store.SettingsManager\n',''),('val context = LocalContext.current','val context = LocalDesktopLiquidTabSettings.current'),(settings_read,'context.homeSettings')]
   if p.endswith('miuix/DampedDragAnimation.kt'):t += [('import android.os.SystemClock\n',''),('SystemClock.uptimeMillis()','System.nanoTime() / 1_000_000L')]
   if p.endswith('miuix/InteractiveHighlight.kt') and 'import android.graphics.RuntimeShader' in s:
    t += [('import android.annotation.SuppressLint\n',''),('import android.graphics.RuntimeShader','import top.yukonga.miuix.kmp.shader.RuntimeShader\nimport top.yukonga.miuix.kmp.shader.asBrush'),('@SuppressLint("NewApi")\n',''),('ShaderBrush(shader)','shader.asBrush()'),('InteractiveHighlightPalette.Content.copy(0.12f * progress).toArgb(),','Color(InteractiveHighlightPalette.Content.copy(0.12f * progress).toArgb()),')]

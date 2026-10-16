@@ -1,0 +1,63 @@
+{
+  "upstreamRepository": "jay3-yy/BiliPai",
+  "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "filename": "SearchScreen.kt",
+      "bytes": 246151,
+      "sha256": "ab85a1517d3dea690e5ae04380fc51f262d139db60904adee08871b1b2f1c7ba",
+      "gitBlob": "b8855a6aecf1b68f99f4356abdcc9bcdf55edc98"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "filename": "SearchVideoFilterSheet.kt",
+      "bytes": 19558,
+      "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+      "gitBlob": "a53ec028ebe0ce48cd1824ec10203046175203ea"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultContainerTransition.kt",
+      "filename": "SearchResultContainerTransition.kt",
+      "bytes": 5915,
+      "sha256": "a9a25bdb412e09cd5acc9c2deb629a6e68d30549b1129d1c70db2a1f6508f20f",
+      "gitBlob": "9da10fbf6790c99b4b52f02ea60e1384a4d218a6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/SharedCardContainerHost.kt",
+      "filename": "SharedCardContainerHost.kt",
+      "bytes": 10842,
+      "sha256": "8c8e0f664baa911b2b38bf3a710a8041a03fea8f0f993705c82af1e721ff97b0",
+      "gitBlob": "af7993f2c9bb79b50bcab70daef61fd8fa6b92b8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "filename": "BottomBarLiquidSegmentedControl.kt",
+      "bytes": 36955,
+      "sha256": "c9d49e481a6cd5b68b3771cb30fdf92213b9078c39c07d92bab884424d545426",
+      "gitBlob": "6a94df2efda712978f23465b3daf6f0cbc4a61ce"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "filename": "BottomBarFloatingSegmentedControl.kt",
+      "bytes": 21596,
+      "sha256": "8cc3aa4295970325562c41d23bb8d4c85848d8ee389269455f76e626db4f09b6",
+      "gitBlob": "2c62399e04b88a724f1782d573efc136742b0ac6"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchTabLabelPolicyTest.kt",
+      "filename": "SearchTabLabelPolicyTest.kt",
+      "bytes": 1330,
+      "sha256": "0888e9831bb090e6ee50b9c3151de3c04f463d3b622b169350fe2af253ec1864",
+      "gitBlob": "9327fb5ad9b3f35b4c6c4a533866e9f71a53072a"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchCardTargetRestoreTest.kt",
+      "filename": "SearchCardTargetRestoreTest.kt",
+      "bytes": 1245,
+      "sha256": "28a94e2c75e3bcda0360746613f000cf662e8ea292f6888a40a6b0617000ef9b",
+      "gitBlob": "2af6083ff5f937c0598d016ef4dfc5abc58d1707"
+    }
+  ]
+}

@@ -70,8 +70,10 @@ class V040NativeChromeSourceTest(unittest.TestCase):
         inventory = json.loads((self.root/'shared/source-inventory.json').read_bytes())
         rows = {row['path']: row for row in inventory['sources']}
         for path in source.SHARED_PATHS:
-            self.assertEqual(source.COMMIT, rows[path]['sourceIdentity']['pinnedCommit'])
-            self.assertEqual(source.identity_for(REPO, path), rows[path]['sourceIdentity'])
+            from v042_search_dependencies import shared_identity
+            expected = shared_identity(REPO, path) or source.identity_for(REPO, path)
+            self.assertEqual(expected['pinnedCommit'], rows[path]['sourceIdentity']['pinnedCommit'])
+            self.assertEqual(expected, rows[path]['sourceIdentity'])
 
     def test_home_lens_and_capability_probe_use_the_same_unchanged_shared_programs(self):
         fixed = source.fixed_sources(REPO)
@@ -156,7 +158,8 @@ class V040NativeChromeSourceTest(unittest.TestCase):
             self.assertEqual(1, definitions, name)
         inventory = json.loads((self.root/'shared/source-inventory.json').read_bytes())
         records = [r for r in inventory['sources'] if r['path'] == path]
-        self.assertEqual({'79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40', source.COMMIT},
+        from v042_search_dependencies import COMMIT as current_geometry_commit
+        self.assertEqual({'79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40', current_geometry_commit},
                          {r['sourceIdentity']['pinnedCommit'] for r in records})
         material_path = source.APP+'feature/home/components/BottomBar.kt'
         raw = source.fixed_sources(REPO)[material_path].decode('utf-8')
@@ -196,7 +199,8 @@ class V040NativeChromeSourceTest(unittest.TestCase):
         originals=source.fixed_sources(REPO)
         path=source.APP+'feature/home/components/FloatingBottomBarGeometry.kt'
         actual=body(self.root/'shared/generated'/path.split('/main/java/',1)[1])
-        self.assertEqual(originals[path].decode('utf-8'),actual)
+        from v042_search_dependencies import fixed_sources as current_sources
+        self.assertEqual(current_sources(REPO)[0][path].decode('utf-8'),actual)
         test_path=source.APP.replace('/main/','/test/')+'feature/home/components/FloatingBottomBarGeometryTest.kt'
         original=originals[test_path]
         adapted,proof=source.adapt_original_test(test_path,original)

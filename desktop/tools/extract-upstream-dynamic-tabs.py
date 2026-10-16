@@ -30,6 +30,8 @@ def read(repo,path):
 def read_selected(repo,path):
  from v037_shared_tabs_progress import selected_source
  source=selected_source(path,read(repo,path))
+ from v042_search_dependencies import native_tabs_source
+ source=native_tabs_source(repo,path,source)
  if path.endswith('/DynamicScreenStatePolicy.kt'):
   from v040_dynamic_pagination import compose_policy
   source,_=compose_policy(repo,source)

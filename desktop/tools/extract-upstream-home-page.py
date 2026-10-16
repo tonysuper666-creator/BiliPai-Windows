@@ -65,6 +65,8 @@ def generate(repo, output, standalone=False):
             body=scope["read"](source)
             if row and row["path"]=="app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt":body=_bind_preview_subject(body)
             body=home_page_delta(repo,target.name,body,home_load_audits)
+            from v042_search_dependencies import adapt_home
+            body=adapt_home(repo,target.name,body,home_load_audits)
             scope["write"](target,body);written.append(target)
         output.mkdir(parents=True,exist_ok=True)
         scope["write"](output/"home-page-producer-inventory.json",json.dumps(rows,ensure_ascii=False,indent=2)+"\n")

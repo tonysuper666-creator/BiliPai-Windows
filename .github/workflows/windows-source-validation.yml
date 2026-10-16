@@ -88,6 +88,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original tabs source ownership regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v041_dynamic_author_search_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Whole original v041 dynamic author-search source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v042_search_layout_source.py -v
+          python -m unittest discover -s desktop/tools/tests -p test_v042_search_dependencies_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Whole current Search and shared glass geometry source regression failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_brand_callers.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Whole brand caller source and historical empty-state contracts failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v042_seed_palette_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Whole original seed palette and shared endpoint source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v

@@ -40,7 +40,9 @@ class BrandCallerProducerTest(unittest.TestCase):
         output,rows=self.generated('extract-upstream-search-pages.py','search')
         row=next(r for r in rows if r['source'].endswith('/SearchScreen.kt'))
         body=(output/'com/android/purebilibili/feature/search/SearchScreen.kt').read_text(encoding='utf-8')
-        audit=row['windowsBrandConsumerAdaptation'];self.assertEqual(audit['countedAdaptations'],8)
+        audit=row['windowsBrandConsumerAdaptation']
+        current_whole=row.get('comprehensiveSearchAdaptation',{}).get('completeCurrentOriginalScreen',False)
+        self.assertEqual(audit['countedAdaptations'],0 if current_whole else 8)
         self.assertTrue(row['inverseOriginalBodyExact']);self.assertTrue(audit['fullAdaptedBodyInverseExact'])
         tab=row['windowsTabAbiAdaptation']
         self.assertEqual(sha(body),tab['afterSha256LF'])
@@ -53,10 +55,20 @@ class BrandCallerProducerTest(unittest.TestCase):
         inverse=self.inverse(inverse,audit)
         producer=load('search_brand_source_contract','extract-upstream-search-pages.py')
         spec=next(s for s in producer.SPEC if s['target']=='feature/search/SearchScreen.kt')
-        self.assertEqual(sha(inverse),spec['outputSha256LF'])
-        for operation in reversed(spec['operations']):
-            at=operation['offset'];self.assertEqual(inverse[at:at+len(operation['after'])],operation['after'])
-            inverse=inverse[:at]+operation['before']+inverse[at+len(operation['after']):]
+        if current_whole:
+            self.assertTrue(audit['alreadyPresentInWholeOriginal'])
+            adoption=row['comprehensiveSearchAdaptation']
+            for key in ('originalToPlatform','canonicalToSelected'):
+                proof=adoption[key];self.assertEqual(sha(inverse),proof['afterSha256LF'])
+                for edit in reversed(proof['indexedEdits']):
+                    at=edit['afterOffset'];self.assertEqual(inverse[at:at+len(edit['after'])],edit['after'])
+                    inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]
+                self.assertEqual(sha(inverse),proof['beforeSha256LF'])
+        else:
+            self.assertEqual(sha(inverse),spec['outputSha256LF'])
+            for operation in reversed(spec['operations']):
+                at=operation['offset'];self.assertEqual(inverse[at:at+len(operation['after'])],operation['after'])
+                inverse=inverse[:at]+operation['before']+inverse[at+len(operation['after']):]
         raw=self.helper()._sources()['v025/app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt']
         self.assertEqual(inverse,raw)
         self.assertEqual(sha(inverse),spec['inputSha256LF'])

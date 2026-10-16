@@ -59,8 +59,9 @@ class V040LiquidControlsSourceTest(unittest.TestCase):
         for leaf in ['AppThemeConfig.kt','AppColorPicker.kt','AppLiquidValueControlPolicy.kt']:
             records=[r for r in self.records if r['path'].endswith('/'+leaf)]
             self.assertEqual(1,len(records),leaf)
-            self.assertEqual(source.COMMIT,records[0]['fixedCommit'])
-            self.assertEqual(source.MANIFEST_SHA256,records[0]['sourceManifestSHA256'])
+            from v042_search_dependencies import COMMIT as current_commit, MANIFEST_SHA256 as current_manifest
+            self.assertEqual(current_commit if leaf == 'AppThemeConfig.kt' else source.COMMIT,records[0]['fixedCommit'])
+            self.assertEqual(current_manifest if leaf == 'AppThemeConfig.kt' else source.MANIFEST_SHA256,records[0]['sourceManifestSHA256'])
         build=(REPO/'desktop/build.gradle.kts').read_text(encoding='utf-8')
         for path in list(source.NEW_COMPONENT_DIRECT_PATHS)+[source.DS+'MatchedLiquidIndicatorGeometry.kt']:
             self.assertEqual(1,build.count('exclude(canonicalOriginalIdentity("'+path+'"))'))

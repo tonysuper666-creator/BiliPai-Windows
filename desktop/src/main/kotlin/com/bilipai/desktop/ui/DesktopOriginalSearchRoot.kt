@@ -5,7 +5,6 @@ import com.android.purebilibili.feature.search.*
 import com.android.purebilibili.navigation3.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import com.bilipai.desktop.data.AccountSummary
 import java.awt.EventQueue
 import java.util.concurrent.atomic.AtomicBoolean
@@ -74,13 +73,14 @@ internal class DesktopOriginalSearchEntry(val identity: DesktopOriginalSearchRoo
     val environment: DesktopOriginalSearchEnvironment, val motionKey: Int = 0) : AutoCloseable {
     val viewModel: SearchViewModel? = if (identity.key is BiliPaiNavKey.Search) SearchViewModel(environment) else null
     val trending: SearchTrendingViewModel? = if (identity.key == BiliPaiNavKey.SearchTrending) SearchTrendingViewModel(environment) else null
+    val articleRequest = DesktopSearchArticleOpenRequest(environment.scope, environment.articleResolver)
     private val consumed = AtomicBoolean()
     var motionSource by mutableStateOf(if(motionKey>0)SearchEntryMotionSource.BOTTOM_BAR else SearchEntryMotionSource.NONE)
         private set
     fun consumeMotion(key: Int) { if(key==motionKey) environment.commit { motionSource=SearchEntryMotionSource.NONE } }
     fun initialKeyword() = if (!consumed.get()) (identity.key as? BiliPaiNavKey.Search)?.keyword.orEmpty() else ""
     fun initialKeywordConsumed() { environment.commit { consumed.set(true) } }
-    override fun close() = environment.close()
+    override fun close() { articleRequest.close(); environment.close() }
 }
 
 internal val LocalDesktopOriginalSearchRoot = staticCompositionLocalOf<DesktopOriginalSearchRoot> {
@@ -96,38 +96,41 @@ internal val LocalDesktopOriginalSearchRoot = staticCompositionLocalOf<DesktopOr
     val entry = remember(root,key,pagerHosted) { root.entry(key,pagerHosted) }
     val commands = root.routes
     fun navigate(block: () -> Unit) = root.navigate(entry,active,block)
+    fun select(block: () -> Unit) = navigate { entry.articleRequest.cancel(); block() }
+    DisposableEffect(entry, active) {
+        if (!active) entry.articleRequest.cancel()
+        onDispose { entry.articleRequest.cancel() }
+    }
     CompositionLocalProvider(LocalDesktopOriginalSearchEnvironment provides entry.environment,
         LocalDesktopOriginalSearchActive provides active) {
         DesktopOriginalSearchBackToTop { when(key) {
             is BiliPaiNavKey.Search -> SearchScreen(viewModel=checkNotNull(entry.viewModel),userFace=account?.avatar.orEmpty(),
                 initialKeyword=entry.initialKeyword(),onInitialKeywordConsumed={ entry.initialKeywordConsumed() },
-                onBack={ navigate(onBack) },onOpenTrending={ navigate { commands.push(BiliPaiNavKey.SearchTrending) } },
+                onBack={ select(onBack) },onOpenTrending={ select { commands.push(BiliPaiNavKey.SearchTrending) } },
                 onNavigateSearchTarget={ target ->
                     var accepted=false
-                    navigate { accepted=dispatchDesktopReadyNativeTarget(commands.root,commands,target) }
+                    select { accepted=dispatchDesktopReadyNativeTarget(commands.root,commands,target) }
                     accepted
                 },
-                onVideoClick={ bvid,cid,cover -> navigate { commands.video(BiliPaiNavKey.VideoDetail(bvid,cid,cover,sourceRoute=key.toLegacyRoute())) } },
-                onWebClick={ url,title -> navigate { commands.push(BiliPaiNavKey.Web(url,title)) } },
-                onUpClick={ mid -> navigate { commands.push(BiliPaiNavKey.Space(mid)) } },
-                onBangumiClick={ season -> if(season>0L)navigate { commands.push(BiliPaiNavKey.BangumiDetail(season)) } },
-                onCheeseClick={ season,ep -> navigate { commands.push(BiliPaiNavKey.BangumiPlayer(season,ep,isCourse=true)) } },
-                onLiveClick={ room,title,name -> navigate { commands.push(BiliPaiNavKey.Live(roomId=room.toString(),title=title,uname=name)) } },
-                onTopicClick={ id -> if(id>0L)navigate { commands.push(BiliPaiNavKey.TopicDetail(id)) } },
-                onArticleClick={ id,title -> navigate { entry.environment.scope.launch {
-                    val target=entry.environment.articleResolver.resolve(id)
-                    navigate { when(target) {
-                        is ArticleNavigationTarget.NativeArticle -> commands.push(BiliPaiNavKey.ArticleDetail(target.articleId,title))
+                onVideoClick={ bvid,cid,cover -> select { commands.video(BiliPaiNavKey.VideoDetail(bvid,cid,cover,sourceRoute=key.toLegacyRoute())) } },
+                onWebClick={ url,title -> select { commands.push(BiliPaiNavKey.Web(url,title)) } },
+                onUpClick={ mid -> select { commands.push(BiliPaiNavKey.Space(mid)) } },
+                onBangumiClick={ season -> if(season>0L)select { commands.push(BiliPaiNavKey.BangumiDetail(season)) } },
+                onCheeseClick={ season,ep -> select { commands.push(BiliPaiNavKey.BangumiPlayer(season,ep,isCourse=true)) } },
+                onLiveClick={ room,title,name -> select { commands.push(BiliPaiNavKey.Live(roomId=room.toString(),title=title,uname=name)) } },
+                onTopicClick={ id -> if(id>0L)select { commands.push(BiliPaiNavKey.TopicDetail(id)) } },
+                onArticleClick={ id,title -> navigate { entry.articleRequest.open(id,title) { target,selectedTitle ->
+                    entry.environment.commit { navigate { when(target) {
+                        is ArticleNavigationTarget.NativeArticle -> commands.push(BiliPaiNavKey.ArticleDetail(target.articleId,selectedTitle))
                         is ArticleNavigationTarget.NativeDynamic -> commands.push(BiliPaiNavKey.DynamicDetail(target.dynamicId))
-                        null -> Unit
-                    } }
+                    } } }
                 } } },
-                onAvatarClick={ navigate { commands.push(if(account!=null)BiliPaiNavKey.Profile else BiliPaiNavKey.Login) } },
+                onAvatarClick={ select { commands.push(if(account!=null)BiliPaiNavKey.Profile else BiliPaiNavKey.Login) } },
                 entryMotionSource=entry.motionSource,entryMotionKey=entry.motionKey,onEntryMotionConsumed=entry::consumeMotion,
                 isReturningFromVideoDetail=returningFromVideo,isQuickReturningFromVideoDetail=quickReturningFromVideo,
                 onVideoDetailReturnAnimationConsumed={ navigate(consumeVideoReturn) })
-            BiliPaiNavKey.SearchTrending -> SearchTrendingScreen(onBack={ navigate(onBack) },
-                onKeywordClick={ query -> navigate { commands.push(BiliPaiNavKey.Search(query)) } },viewModel=checkNotNull(entry.trending))
+            BiliPaiNavKey.SearchTrending -> SearchTrendingScreen(onBack={ select(onBack) },
+                onKeywordClick={ query -> select { commands.push(BiliPaiNavKey.Search(query)) } },viewModel=checkNotNull(entry.trending))
             else -> throw CancellationException("Original Search key retired")
         } }
     }

@@ -54,6 +54,8 @@ def emit_foundations(output,outputs,test_output=None):
   raw=sources[row['path']]
   from v040_liquid_value_controls import retained_original_override
   raw,effective_row,effective_commit,effective_manifest=retained_original_override(Path(__file__).resolve().parents[2],row['path'],raw,row,COMMIT,MANIFEST_SHA)
+  from v042_search_dependencies import retained_foundation
+  raw,effective_row,effective_commit,effective_manifest=retained_foundation(Path(__file__).resolve().parents[2],row['path'],raw,effective_row,effective_commit,effective_manifest)
   if '/test/java/' in row['path']:
    if test_output is not None:
     rel=row['path'].split('/test/java/',1)[1]

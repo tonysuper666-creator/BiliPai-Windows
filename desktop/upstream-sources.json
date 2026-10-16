@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "155",
+  "windowsRevision": "159",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14576,7 +14576,8 @@
     "mainCompiled": false,
     "jvmTestsExecuted": false,
     "applicationExecuted": false,
-    "allFilterLayoutVisibilityMatchesOriginalContract": true
+    "allFilterLayoutVisibilityMatchesOriginalContract": true,
+    "screenSupersededBy": "v042SearchLayoutSlice"
   },
   "v042PlayerReadabilitySlice": {
     "upstreamTag": "v0.4.2",
@@ -14651,5 +14652,36 @@
     "newWindowsPreferenceCasesWritten": 5,
     "WindowsPreferencesConnected": true,
     "fullStableParityQualified": false
+  },
+  "v042SearchLayoutSlice": {
+    "upstreamTag": "v0.4.2",
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-search-layout",
+    "manifestSHA256": "e2ee6a1fe8ba14bfe6f677e224f98c9be6076690b62b7385b1b936eceeb00c69",
+    "originalFiles": 8,
+    "wholeOriginalScreen": true,
+    "wholeOriginalFilterSheet": true,
+    "bothWholeOriginalGlassControls": true,
+    "wholeOriginalSharedCardFoundations": true,
+    "existingRepositoryAndViewModelByteIdenticalToThisTag": true,
+    "originalPolicyTestsPorted": 6,
+    "originalSharedCardNativeRouteCallerConnected": false,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "uiRuntimeVerified": false,
+    "applicationExecuted": false,
+    "fullStableParityQualified": false
+  },
+  "v042SearchDependencySlice": {
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-search-dependencies",
+    "manifestSHA256": "137aaa9f5504fc45fc634677c0be23ebc9e063ea02319c9fc40b864cfa0c288a",
+    "originalFiles": 18,
+    "wholeOriginalPolicyCases": 25,
+    "existingSoleOwnersPreserved": true,
+    "completeCurrentDependencySourcePrepared": true,
+    "sourceQualified": false,
+    "mainCompiled": false,
+    "pixelsValidated": false
   }
 }
