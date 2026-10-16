@@ -34,9 +34,9 @@ GOLDEN_MAIN = {
     LABELS_PATH: 'e5cba87c8ee8440d02b87c777ca545ab5d43408ce3f1d2f0d309b5cb13ef60d0',
     MODEL_DIR + 'ListModels.kt': '3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1',
     MODEL_DIR + 'SpaceModels.kt': '3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b',
-    SEARCH_PATH: '6784c80fd5f1874aa3568c0597948983ff97e3576e83daca315d90fc5188a64a',
+    SEARCH_PATH: '121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30',
     FAVORITE_PATH: '3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534',
-    'v041-video-status-labels-proof.json': 'bf6fb0d81118cd667c82dfea83036488088efc9365d0231477aae858a5566ab4',
+    'v041-video-status-labels-proof.json': '45fd0fb75f3e2d3af858647805c75fdc1a1238dbf121b7daa5f2407b336ce5ca',
 }
 GOLDEN_TESTS = {
     MODEL_DIR + 'VideoStatusLabelsTest.kt': '5802d3ae505a73ab3eb79f31fcbd4ce961a8778f1ff0a39923e9ebad02765b92',
@@ -116,13 +116,12 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
             self.assertEqual(self.main, tree(elsewhere / 'main'))
             self.assertEqual(self.tests, tree(elsewhere / 'tests'))
 
-    def test_five_whole_sources_are_byte_identical_to_the_pinned_v041_archive(self):
-        for name in ('VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt', 'FavoriteModels.kt'):
+    def test_six_whole_sources_are_byte_identical_to_the_pinned_v041_archive(self):
+        for name in ('VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt', 'SearchModels.kt', 'FavoriteModels.kt'):
             with self.subTest(name=name):
                 archived = (REPO / source.ARCHIVE / name).read_bytes()
                 emitted = [raw for path, raw in self.main.items() if path.endswith('/' + name)]
                 self.assertEqual([archived], emitted)
-        self.assertNotEqual(self.latest[source.SEARCH_MODELS].encode('utf-8'), self.main[SEARCH_PATH])
 
     def test_replaced_models_cover_exactly_the_four_synced_files_and_nothing_else(self):
         names = {Path(path).name for path in self.main if path.endswith('.kt')}
@@ -217,30 +216,28 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertIn('including 0', proof['decodeParity']['chargingPay'])
 
     # ------------------------------------------------------------------ hook-edited models
-    def test_search_models_gain_only_the_six_label_fields_and_arguments_without_search_all(self):
+    def test_search_models_are_whole_v041_with_comprehensive_schema_and_flexible_up_fields(self):
         emitted = self.emitted(SEARCH_PATH)
-        baseline = source.baseline(REPO, source.SEARCH_MODELS)
-        for needle in ('SearchType.ALL', 'ALL("all"', 'SearchAllResponse', 'SearchAllData', 'SearchAllResultCategory',
-                       'val res: List<SearchVideoItem>', 'area_name'):
-            with self.subTest(needle=needle):
-                self.assertEqual(0, emitted.count(needle))
-        for needle in ('ALL("all"', 'SearchAllResponse', 'SearchAllData', 'SearchAllResultCategory'):
-            self.assertGreater(self.latest[source.SEARCH_MODELS].count(needle), 0, needle)
+        self.assertEqual(self.latest[source.SEARCH_MODELS], emitted)
+        receipt = json.loads(self.main[source.PROOF_NAME])['mainSources'][SEARCH_PATH]
+        self.assertEqual('whole-v041-replacement', receipt['mode'])
+        self.assertTrue(receipt['identicalToArchive'])
+        self.assertEqual([], receipt['deferredUpstreamHunks'])
+        self.assertEqual(9, len(receipt['appliedPostHookUpstreamHunks']))
         enum = emitted[emitted.index('enum class SearchType'):emitted.index('companion object')]
-        self.assertEqual(['VIDEO', 'UP', 'BANGUMI', 'MEDIA_FT', 'LIVE', 'LIVE_USER', 'ARTICLE', 'TOPIC', 'PHOTO'],
+        self.assertEqual(['ALL', 'VIDEO', 'UP', 'BANGUMI', 'MEDIA_FT', 'LIVE', 'LIVE_USER', 'ARTICLE', 'TOPIC', 'PHOTO'],
                          re.findall(r'^    ([A-Z_]+)\(', enum, re.M))
-        edits = changed_lines(baseline, emitted)
-        self.assertEqual(['replace', 'insert'], [op[0] for op in edits])
-        self.assertEqual(1, sum(op[2] - op[1] for op in edits))
-        for needle in ('val isUnionVideo: Int = 0', 'val isSteins: Boolean = false', 'val isLessonVideo: Boolean = false',
+        for needle in ('SearchAllResponse', 'SearchAllData', 'SearchAllResultCategory',
+                       'val res: List<SearchVideoItem>', 'area_name',
+                       'val isUnionVideo: Int = 0', 'val isSteins: Boolean = false', 'val isLessonVideo: Boolean = false',
                        '@SerialName("charging_pay") val chargingPay: WatchLaterChargingPay? = null',
                        '@SerialName("pgc_label") val pgcLabel: String? = null',
                        'val badges: List<VideoContentBadge> = emptyList()',
                        'isUnionVideo = isUnionVideo,', 'isSteins = isSteins,', 'isLessonVideo = isLessonVideo,',
                        'chargingPay = chargingPay,', 'pgcLabel = pgcLabel,', 'badges = badges,'):
             with self.subTest(needle=needle):
-                self.assertEqual(1, emitted.count(needle))
-                self.assertEqual(1, self.latest[source.SEARCH_MODELS].count(needle))
+                self.assertGreater(emitted.count(needle), 0)
+                self.assertEqual(self.latest[source.SEARCH_MODELS].count(needle), emitted.count(needle))
 
     def edits(self, path, text):
         edits = []
@@ -268,21 +265,15 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertEqual(1, len(receipt['appliedPostHookUpstreamHunks']))
 
     def test_hooked_search_and_favorite_text_replays_inverse_and_matches_independent_replacement(self):
-        for path in (source.SEARCH_MODELS, source.FAVORITE_MODELS):
+        for path, count in ((source.SEARCH_MODELS, 9), (source.FAVORITE_MODELS, 1)):
             with self.subTest(path=path):
                 baseline = source.baseline(REPO, path)
                 edits = self.edits(path, baseline)
+                text = source.apply(path, baseline)
                 emitted = self.emitted(MODEL_DIR + Path(path).name)
-                text = baseline
-                for hook in source.hooks_for(path):
-                    self.assertEqual(1, text.count(hook.before))
-                    text = text.replace(hook.before, hook.after, 1)
-                if path == source.FAVORITE_MODELS:
-                    self.assertEqual(self.latest[path], emitted)
-                    remainder = source.reviewed_delta(path, source.REVIEWED_POST_HOOK_DELTAS, text, emitted)
-                    self.assertEqual(1, len(remainder))
-                else:
-                    self.assertEqual(text, emitted)
+                self.assertEqual(self.latest[path], emitted)
+                remainder = source.reviewed_delta(path, source.REVIEWED_POST_HOOK_DELTAS, text, emitted)
+                self.assertEqual(count, len(remainder))
                 self.assertEqual(baseline, source.revert(text, edits))
 
     # ------------------------------------------------------------------ pins, anchors and inverse replay
@@ -415,13 +406,13 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
 
     def test_archive_manifest_pins_and_identity_match_the_independent_values(self):
         manifest_raw = (REPO / source.ARCHIVE / 'manifest.json').read_bytes()
-        self.assertEqual('a7d3af6952c9744c1e58f4d65511aaad96f760eb72425989163f6f557356df66', sha(manifest_raw))
+        self.assertEqual('e13914083ff47f1ba60181bda99cd71f6b019a71488b8bf2ff323c9c54f3b9d3', sha(manifest_raw))
         self.assertEqual(source.MANIFEST_SHA256, sha(manifest_raw))
         manifest = json.loads(manifest_raw)
         self.assertEqual((1, 'jay3-yy/BiliPai', 'v0.4.1', 'd18fb20e31adb11bbec9fae6dfce7d705d556217'),
                          (manifest['schemaVersion'], manifest['repository'], manifest['tag'], manifest['commit']))
         self.assertEqual(15, len(manifest['files']))
-        self.assertEqual({'VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt', 'FavoriteModels.kt',
+        self.assertEqual({'VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt', 'SearchModels.kt', 'FavoriteModels.kt',
                           'VideoStatusLabelsTest.kt', 'VideoCooperationMetadataTest.kt'},
                          {row['archiveFile'] for row in manifest['files'] if not row['referenceOnly']})
         self.assertEqual({row['archiveFile'] for row in manifest['files']} | {'manifest.json'},
@@ -583,7 +574,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         self.assertEqual(source.MANIFEST_SHA256, record['manifestSHA256'])
         self.assertEqual((source.COMMIT, source.ARCHIVE, 'v0.4.1'),
                          (record['upstreamCommit'], record['archive'], record['upstreamTag']))
-        self.assertEqual((11, 9, 15), (record['originalTestCases'], record['deferredUpstreamModelHunks'],
+        self.assertEqual((11, 0, 15), (record['originalTestCases'], record['deferredUpstreamModelHunks'],
                                         record['archivedFiles']))
         # All 21 anchored hooks are wired: three model hooks and eighteen original consumer hooks.
         by_consumer = {consumer: sum(1 for hook in source.HOOKS if hook.consumer == consumer)

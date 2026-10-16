@@ -25,14 +25,20 @@ def generate(repo,out):
  for item in SPEC:
   original=wide(_desktop_canonical_source(repo, item['path'])).read_text(encoding='utf8').replace('\r\n','\n')
   assert hashlib.sha256(original.encode()).hexdigest()==item['inputSha256LF'],item['path']
-  source=original
-  for op in item['operations']:
-   at=op['offset'];assert source[at:at+len(op['before'])]==op['before'];source=source[:at]+op['after']+source[at+len(op['before']):]
-  assert hashlib.sha256(source.encode()).hexdigest()==item['outputSha256LF']
-  inverse=source
-  for op in reversed(item['operations']):
-   at=op['offset'];assert inverse[at:at+len(op['after'])]==op['after'];inverse=inverse[:at]+op['before']+inverse[at+len(op['after']):]
-  assert inverse==original
+  from v041_search_all import adapt_page
+  adopted=adapt_page(repo,item,original)
+  searchAllAudit=None
+  if adopted is not None:
+   source,searchAllAudit=adopted
+  else:
+   source=original
+   for op in item['operations']:
+    at=op['offset'];assert source[at:at+len(op['before'])]==op['before'];source=source[:at]+op['after']+source[at+len(op['before']):]
+   assert hashlib.sha256(source.encode()).hexdigest()==item['outputSha256LF']
+   inverse=source
+   for op in reversed(item['operations']):
+    at=op['offset'];assert inverse[at:at+len(op['after'])]==op['after'];inverse=inverse[:at]+op['before']+inverse[at+len(op['after']):]
+   assert inverse==original
   brandCallerAudit=None
   if item['target']=='feature/search/SearchScreen.kt':
    source,brandCallerAudit=adapt_brand_callers(source,'search')
@@ -40,7 +46,9 @@ def generate(repo,out):
   if item['target'] in ['feature/search/SearchScreen.kt','feature/search/SearchVideoFilterSheet.kt']:
    source,tabAbiAudit=current_tab_abi(source)
   target=out/'com/android/purebilibili'/item['target'];wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(source,encoding='utf8',newline='\n')
-  rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=hashlib.sha256(source.encode()).hexdigest(),inverseOriginalBodyExact=True,windowsBrandConsumerAdaptation=brandCallerAudit,windowsTabAbiAdaptation=tabAbiAudit))
+  rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=hashlib.sha256(source.encode()).hexdigest(),inverseOriginalBodyExact=True,windowsBrandConsumerAdaptation=brandCallerAudit,windowsTabAbiAdaptation=tabAbiAudit,comprehensiveSearchAdaptation=searchAllAudit))
+ from v041_search_all import emit_policies
+ emit_policies(repo,out)
  # BackToTop is adapted through the existing Root global preferences owner; no second Store.
  backToTopSource=wide(_desktop_canonical_source(repo, 'app/src/main/java/com/android/purebilibili/core/store/BackToTopSettingsStore.kt')).read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(backToTopSource.encode()).hexdigest()=='7cfc48da9652fa33262fb1ce4458b84ea442a0e34733f846836b21a9dc73c97e'
  managerSource=wide(_desktop_canonical_source(repo, 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt')).read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(managerSource.encode()).hexdigest()=='5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c'

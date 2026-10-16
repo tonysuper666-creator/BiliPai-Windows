@@ -112,7 +112,7 @@ class DesktopFullNavigationSettingsTest {
         withFixture {
             DesktopOriginalFullNavigationSettings.setSearchFilterTabOrder(context,listOf("article","unknown","video","article"))
             val tabs=resolveSearchFilterTabs(DesktopOriginalFullNavigationSettings.getSearchFilterTabOrder(context).first())
-            verify(tabs.take(2)==listOf(SearchType.ARTICLE,SearchType.VIDEO) && tabs.size==SearchType.entries.size,"Exact original search ordering policy")
+            verify(tabs.take(2)==listOf(SearchType.ALL,SearchType.ARTICLE) && tabs==listOf(SearchType.ALL,SearchType.ARTICLE,SearchType.BANGUMI,SearchType.MEDIA_FT,SearchType.LIVE,SearchType.UP),"Exact original search ordering policy")
 
         }
     }
