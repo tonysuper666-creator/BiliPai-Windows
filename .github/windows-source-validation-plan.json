@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "ea3b67f1d5fb59a7e76591a1c352f7c3e428014b",
-  "windowsVersion": "0.2.427.155",
-  "createdAt": "2026-10-16T15:55:58.715576+00:00",
+  "baseHead": "daff05d71e513ec341f5c8debf6bd0e570a51d59",
+  "windowsVersion": "0.2.427.156",
+  "createdAt": "2026-10-16T17:08:28.469789+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -64,6 +64,11 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
       "normalization": "lf",
       "sha256": "46e70da832bf1a6b1a0a9388606386fba02b47311051055cd02ca880c1e32371"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt",
+      "normalization": "lf",
+      "sha256": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
@@ -606,6 +611,16 @@
       "sha256": "e2c6b8849916028011e7a298a871fa463390499f13eec33fb9063fe9a84510a5"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "e96bedbd86c69b136724931043b6775edc0808ece2f4457af8887c3e664d5350"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
+      "normalization": "lf",
+      "sha256": "b896409278fe3a2db0e6d307403472a77bc821bc0e2ffa0241acfd4aab36a59e"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSystemAboutRootHost.kt",
       "normalization": "lf",
       "sha256": "de779248053bbfedfd96b17beed366326c01e24c25a7ce41d522854917b55868"
@@ -656,6 +671,11 @@
       "sha256": "b027274fd7424bcc52c836c40f09c682a5240c0a8b5606c276241bcef695ebb1"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalArticleResolver.kt",
+      "normalization": "lf",
+      "sha256": "272904bf46d66683b1ce15167df5ac0c3e756e655f19265bd81eb93909dec10a"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
       "normalization": "lf",
       "sha256": "29966e2c35f6733fef2c0a2ba22f4035fda2b92a7c7af9737b0278aca55efb0e"
@@ -679,6 +699,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
       "normalization": "lf",
       "sha256": "1bf0000c47769886f0ca3f346320643f259a581044c1102a08f3cd7e696c5230"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequest.kt",
+      "normalization": "lf",
+      "sha256": "19baf42cb964e7eed27e23dc60a7095352a03fc98ec919c00e230cf93c82a0df"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
@@ -1169,6 +1194,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementStatusReadTest.kt",
       "normalization": "lf",
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequestTest.kt",
+      "normalization": "lf",
+      "sha256": "805e7a0f492781208b39360d5e936fb69dbe42f1347f70f75c4b34348eb89ae9"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionReadingProgressRegressionTest.kt",
@@ -3383,7 +3413,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "0555e25a38807208d65e6859f429c282017d9f77e744164e66ddffa5349bf8e3"
+      "sha256": "7f9228478e6d10805d49cdf644963204551ca30f8449a406e0b0ceab282116bc"
     }
   ],
   "classes": {
@@ -3466,9 +3496,10 @@
     "com.android.purebilibili.core.theme.LiquidAccentColorSchemeTest": 3,
     "com.android.purebilibili.feature.settings.SeedPaletteSettingsPolicyTest": 3,
     "com.bilipai.desktop.appearance.DesktopSeedPalettePreferencesTest": 5,
-    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4
+    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4,
+    "com.bilipai.desktop.ui.DesktopSearchArticleOpenRequestTest": 11
   },
-  "expectedTests": 737,
+  "expectedTests": 748,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -3476,67 +3507,9 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
-    "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementBindings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommandAttentionBinding.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopPaletteAssertions.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopPaletteAssertionsTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopSeedPalettePreferencesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsOwnerFollowRetryTest.kt",
-    "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-appearance-platform.py",
-    "desktop/tools/extract-upstream-video-detail-full-units.py",
-    "desktop/tools/extract-upstream-video-fullscreen-pager.py",
-    "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_comment_selection_consumer_closure.py",
-    "desktop/tools/tests/test_extract_upstream_command_attention.py",
-    "desktop/tools/tests/test_extract_upstream_owner_follow.py",
-    "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v040_liquid_controls_source.py",
-    "desktop/tools/tests/test_v040_theme_roles_source.py",
-    "desktop/tools/tests/test_v042_seed_palette_source.py",
-    "desktop/tools/v042_owner_follow.py",
-    "desktop/tools/v042_seed_palette.py",
-    "desktop/upstream-slices/v042-owner-follow/PortraitVideoPager.kt",
-    "desktop/upstream-slices/v042-owner-follow/UpPreviewSheet.kt",
-    "desktop/upstream-slices/v042-owner-follow/VideoActionFeedbackPolicy.kt",
-    "desktop/upstream-slices/v042-owner-follow/VideoEngagementViewModel.kt",
-    "desktop/upstream-slices/v042-owner-follow/manifest.json",
-    "desktop/upstream-slices/v042-seed-palette/AppSegmentedControl.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppThemeEndpointPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/AppearanceThemeSegmentPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorScheme.kt",
-    "desktop/upstream-slices/v042-seed-palette/LiquidAccentColorSchemeTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/PaletteSpecPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/PlaybackNotificationColorPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedColorSchemeTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPaletteSettingsPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedPresetColors.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTextContrastPolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
-    "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
-    "desktop/upstream-slices/v042-seed-palette/SettingsManager.kt",
-    "desktop/upstream-slices/v042-seed-palette/Theme.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemeColorTransition.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePreferencePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreview.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemePresetPalettePreviewTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/ThemeRoleOverridePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicy.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverridePolicyTest.kt",
-    "desktop/upstream-slices/v042-seed-palette/WallpaperPaletteOverrides.kt",
-    "desktop/upstream-slices/v042-seed-palette/flex_seed_scheme.LICENSE",
-    "desktop/upstream-slices/v042-seed-palette/manifest.json",
-    "desktop/upstream-slices/v042-seed-palette/material_color_utilities.LICENSE",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSearchArticleOpenRequestTest.kt",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,
