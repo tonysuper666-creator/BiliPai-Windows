@@ -26,13 +26,16 @@ class NetworkProxyExtractionTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.temp.cleanup()
 
-    def test_original_store_has_only_context_import_adapter_and_policy_keeps_direct_owner(self):
+    def test_original_store_has_only_context_import_adapter_and_policy_has_bounded_rule_adapter(self):
         source = self.files['NetworkProxyStore.kt']
         self.assertEqual(source[source.index('package '):], tool.read(REPO, tool.STORE).replace(
             'import android.content.Context', 'import com.bilipai.desktop.plugins.DesktopPluginContext as Context'))
-        self.assertNotIn('NetworkProxyPolicy.kt', self.files)
+        policy = self.files['NetworkProxyPolicy.kt'].split('\n', 2)[2]
+        self.assertEqual(1, policy.count('            .removePrefix("www.")\n'))
+        self.assertEqual(policy.replace('            .removePrefix("www.")\n', ''),
+                         tool.read(REPO, tool.POLICY).strip()+'\n')
         inventory = {item['path']: item for item in tool.inventory(REPO)}
-        self.assertEqual(inventory[tool.POLICY]['mode'], 'direct')
+        self.assertEqual(inventory[tool.POLICY]['mode'], 'platform-rewrite')
         self.assertEqual(inventory[tool.POLICY]['sha256'], hashlib.sha256(tool.read(REPO, tool.POLICY).encode()).hexdigest())
 
     def test_original_selector_and_direct_media_builder_keep_all_route_behavior(self):
@@ -71,7 +74,7 @@ class NetworkProxyExtractionTest(unittest.TestCase):
         before = {path.name: path.read_bytes() for path in self.output.rglob('*.kt')}
         after = {path.name: path.read_bytes() for path in tool.generate(REPO, self.output)}
         self.assertEqual(before, after)
-        self.assertEqual(set(after), {'NetworkProxyStore.kt', 'DesktopNetworkProxyPlatform.kt',
+        self.assertEqual(set(after), {'NetworkProxyStore.kt', 'NetworkProxyPolicy.kt', 'DesktopNetworkProxyPlatform.kt',
                                      'SettingsNetworkProxyFields.kt', 'DesktopProxySettingsVectors.kt'})
         resources = tool.resources(REPO)
         self.assertEqual(len(resources), 2)

@@ -243,7 +243,14 @@ fun main(args: Array<String>) {
             com.bilipai.desktop.appearance.DesktopWindowsDisplayScaleScope(windowsDisplayScale) {
             val danmakuPresentation = com.bilipai.desktop.ui.rememberDesktopWindowsDanmakuPresentation(window, windowState)
             val fullscreenControl = com.bilipai.desktop.ui.rememberDesktopWindowsFullscreenControl(window, windowState)
+            val platformClipboard = androidx.compose.ui.platform.LocalClipboard.current
+            val guardedClipboard = remember(platformClipboard, closing) {
+                com.bilipai.desktop.appearance.DesktopPlatformClipboard(platformClipboard,
+                    isActive = { !closing.get() })
+            }
             androidx.compose.runtime.CompositionLocalProvider(
+                androidx.compose.ui.platform.LocalClipboard provides guardedClipboard,
+                com.bilipai.desktop.appearance.LocalDesktopPlatformClipboard provides guardedClipboard,
                 com.bilipai.desktop.ui.LocalDesktopApplicationImageLoader provides applicationImages,
                 com.bilipai.desktop.ui.LocalDesktopWindowKeyFallback provides windowKeyFallback,
             ) {

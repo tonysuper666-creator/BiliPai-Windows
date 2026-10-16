@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "160",
+  "windowsRevision": "163",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14693,5 +14693,18 @@
     "sourceQualified": false,
     "mainCompiled": false,
     "pixelsValidated": false
+  },
+  "v042NetworkProxySlice": {
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-network-proxy",
+    "manifestSHA256": "f46dacaced3991c49d14bae9ab8803e6c6b296f45c8a38c63560012dd295bdff",
+    "originalFiles": 5,
+    "wholeOriginalProxyPolicyTests": 10,
+    "windowsPreferenceTests": 5,
+    "actualSelectorRoutingTests": 1,
+    "existingApplicationClientAndStorePreserved": true,
+    "sourceQualified": false,
+    "mainCompiled": false,
+    "uiRuntimeVerified": false
   }
 }
