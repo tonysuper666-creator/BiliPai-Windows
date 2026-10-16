@@ -510,7 +510,8 @@ internal class DesktopReadyOriginalRootHandle(
         }
         services.originalVideoWindowContent(originalVideoWindow) {
         DesktopHomeWindowGlobals(resources, sourceReady, { url, size, count -> root.ErrorAnimation(url, size, count) }) {
-            androidx.compose.foundation.layout.Box(Modifier.fillMaxSize()) {
+            DesktopWindowsVideoCardReturnHost(routes, clock, currentHome.cardTransitionEnabled,
+                reduceMotion, transitionDuration, Modifier.fillMaxSize()) {
             DesktopOriginalRootStack(routes, environment, pages, rootThemeColor.luminance() > .5f,
                 reduceMotion, transitionDuration, programmaticBack,
                 false, prepareReturn,

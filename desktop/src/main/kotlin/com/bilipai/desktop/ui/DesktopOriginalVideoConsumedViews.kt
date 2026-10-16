@@ -67,8 +67,9 @@ internal class DesktopOriginalVideoConsumedViews(
     override fun showCommentInputDialog() = command { original.showCommentInputDialog() }
     override fun hideCommentInputDialog() = command { original.hideCommentInputDialog() }
     override fun searchCommentMentionUsers(query: String) = command { original.searchCommentMentionUsers(query) }
-    override fun updateCommentDraft(text: String, imageUris: List<String>, syncToDynamic: Boolean) =
-        command { original.updateCommentDraft(text, imageUris, syncToDynamic) }
+    override fun updateCommentDraft(text: String, imageUris: List<String>, syncToDynamic: Boolean,
+        selectionStart: Int, selectionEnd: Int) =
+        command { original.updateCommentDraft(text, imageUris, syncToDynamic, selectionStart, selectionEnd) }
     override fun sendComment(inputMessage: String?, imageUris: List<String>, syncToDynamic: Boolean, targetAid: Long?) =
         command { original.sendComment(inputMessage, imageUris, syncToDynamic, targetAid) }
 

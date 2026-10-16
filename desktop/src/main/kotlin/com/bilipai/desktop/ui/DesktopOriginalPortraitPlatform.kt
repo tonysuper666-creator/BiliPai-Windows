@@ -37,7 +37,8 @@ internal interface DesktopOriginalPortraitPlaybackOwner {
     fun showCommentInputDialog()
     fun hideCommentInputDialog()
     fun searchCommentMentionUsers(query: String)
-    fun updateCommentDraft(text: String, imageUris: List<String>, syncToDynamic: Boolean)
+    fun updateCommentDraft(text: String, imageUris: List<String>, syncToDynamic: Boolean,
+        selectionStart: Int = -1, selectionEnd: Int = -1)
     fun sendComment(inputMessage: String?, imageUris: List<String>, syncToDynamic: Boolean, targetAid: Long?)
 }
 

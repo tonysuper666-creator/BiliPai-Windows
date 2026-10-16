@@ -1336,6 +1336,8 @@ def generate(repo,output,standalone=False):
   body,autoplayContinuationProof=apply_autoplay_continuation(recipe['output'],body,output)
   from v037_player_known_state import apply_owner as apply_known_state
   body,knownStateProof=apply_known_state(recipe['output'],body,repo,output)
+  from v029_comment_composer import legacy_comment_selection_delta
+  body=legacy_comment_selection_delta(recipe['output'],body,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
