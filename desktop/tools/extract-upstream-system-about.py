@@ -8,6 +8,7 @@ CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 BASE = "app/src/main/java/com/android/purebilibili/feature/settings/"
 SECTIONS = BASE + "ui/SettingsSections.kt"
 GATE = "app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementGate.kt"
+AGREEMENT_OWNER_PRODUCER_LF_SHA256 = "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1"
 MANAGER = "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
 DIRECT = [BASE + "update/" + name + ".kt" for name in ["AppUpdateDownloadState", "AppUpdateReleaseNotesPolicy", "AppUpdateDialogVisualPolicy", "AppUpdateUiPolicy", "AppUpdateAssetSelectionPolicy", "AppBuildVerificationPolicy"]]
 WHOLE = [BASE + "update/" + name + ".kt" for name in ["AppUpdateChecker", "Material3AppUpdateDialog", "MiuixAppUpdateDialog"]]
@@ -93,6 +94,14 @@ import com.bilipai.desktop.ui.LocalDesktopDetailForeground
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 '''
 
+def verified_agreement_owner(repo):
+    producer = Path(repo) / "desktop/tools/extract-upstream-profile-main.py"
+    actual = sha(wide(producer).read_bytes().replace(bytes([13,10]),bytes([10])))
+    if actual != AGREEMENT_OWNER_PRODUCER_LF_SHA256:
+        raise AssertionError("Existing complete agreement owner changed")
+    return actual
+
+
 def generate(repo, output, resource_output, proof_output):
     orig=Original(repo)
     sys.path.insert(0,str(repo/"desktop/tools"))
@@ -166,12 +175,11 @@ def generate(repo, output, resource_output, proof_output):
     if wide(duplicate).exists():
         assert sha(wide(duplicate).read_bytes()) == "fc422e6d435a259ace89ec27ab8e7f65f29bb62c2adcc273e2222ec8b830b7b8", "Unexpected modified duplicate agreement output"
         wide(duplicate).unlink()
-    profile_producer = repo / "desktop/tools/extract-upstream-profile-main.py"
-    assert sha(wide(profile_producer).read_bytes().replace(bytes([13,10]),bytes([10]))) == "17707c046d4e12f55c4bb8c17efe424247c884ff65148215eb4a0ea87610fedf", "Existing complete agreement owner changed"
+    producer_lf_sha256 = verified_agreement_owner(repo)
     agreement_source = orig.text(GATE)
     shared_agreement = dict(originalPath=GATE, originalRawSha256=sha(orig.raw(GATE)),
         originalLfSha256=sha(agreement_source.encode()), producer="desktop/tools/extract-upstream-profile-main.py",
-        producerLfSha256="17707c046d4e12f55c4bb8c17efe424247c884ff65148215eb4a0ea87610fedf", producerHashNormalization="lf",
+        producerLfSha256=producer_lf_sha256, producerHashNormalization="lf",
         output="build/generated/profile-main/com/android/purebilibili/feature/agreement/DesktopOriginalAgreementReview.kt",
         functions={name: sha(media.function(agreement_source,name,parser).encode())
             for name in ["UserAgreementBody", "LinkifiedText", "UserAgreementReviewDialog"]},

@@ -133,6 +133,9 @@ def generate(repo, output, standalone=False):
    declarations='\n\n'.join(media.function(source,name,parser) if name=='toAdaptiveWidthClass' else appearance.declarations(parser,source,[name]) for name in EXTRACTED[path])
    body='package '+pkg+'\n\n'+HEADER.get(Path(path).name,'')+'\n'+declarations
   if path in ADAPTED:
+   from v041_video_status_labels import apply as apply_status_labels
+   hooks=[];body=apply_status_labels(path,body,edits=hooks)
+   changes+=[dict(hook=h['id'],before=h['before'],after=h['after']) for h in hooks]
    for before,after in [
     ('import android.os.Build\n',''),
     ('import androidx.compose.ui.platform.LocalContext','import coil3.PlatformContext'),

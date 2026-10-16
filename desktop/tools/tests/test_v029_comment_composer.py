@@ -83,16 +83,24 @@ class OriginalDomainCommentComposerTests(unittest.TestCase):
         self.assertEqual(canonical[canonical.index(marker):],body[body.index(marker):])
         self.assertEqual(2,body.count('fun DesktopOriginalVideoCommentInputOverlay('))
         schema=self.body('comment','VideoComposerDraftState.kt')
-        self.assertEqual(adapter.fixed(REPO)[adapter.BASE+'feature/video/viewmodel/VideoComposerDraftState.kt'].replace('import android.net.Uri\n','').replace('List<Uri>','List<String>'),schema)
+        schema_proof=self.proof('comment','v029-comment-draft-schema-source')
+        self.assertEqual(adapter.fixed(REPO)[adapter.BASE+'feature/video/viewmodel/VideoComposerDraftState.kt'],
+            inverse(schema,schema_proof['canonicalSchemaToGenerated']))
     def test_full_original_dialog_adapts_container_and_publishes_selected_mention_draft(self):
         proof=self.proof('bgm','v029-domain-comment-dialog-source')
-        body=self.body('bgm','CommentInputDialog.kt');legacy=inverse(body,proof['platformAndDraftPublication'])
+        body=self.body('bgm','CommentInputDialog.kt')
+        tab_proof=json.loads((self.outputs['bgm']/'v037-explicit-tab-role-proofs/CommentInputDialog.kt.json').read_text(encoding='utf8'))
+        before_tabs=inverse(body,tab_proof)
+        legacy=inverse(before_tabs,proof['platformAndDraftPublication'])
+        attachment_source=inverse(before_tabs,proof['attachmentLayout'])
         self.assertTrue(proof['fixedCanonicalEntireBodyIdentical'])
         self.assertTrue(proof['mentionDraftPublicationRepair'])
         # This pins the complete existing platform-adapted original input, not
         # a second Python implementation of the new layout transformation.
         self.assertEqual('159b43eb173ab24892169bbb02f83f3567d42237182ff284de2a2742eccfab28', hashlib.sha256(legacy.encode()).hexdigest())
-        self.assertEqual(16,len(proof['platformAndDraftPublication']['indexedEdits']))
+        self.assertTrue(proof['platformAndDraftPublication']['exactCompleteInverse'])
+        self.assertIn('initialSelectionStart: Int = -1,',before_tabs)
+        self.assertIn('initialSelectionEnd: Int = -1,',before_tabs)
         self.assertTrue(proof['windowsNativeClientLayoutOnly'])
         # The native provider wraps Dialog content, not CommentInputDialog's caller.
         content = '        ) {\n            val density = LocalDensity.current\n'
@@ -104,9 +112,9 @@ class OriginalDomainCommentComposerTests(unittest.TestCase):
         self.assertTrue(attachments['singleOriginalImageItemBody'])
         self.assertTrue(attachments['toolAndSendBodiesVerbatim'])
         import textwrap
-        item_start = legacy.index('                                    Box(', legacy.index('                        if (selectedImageUris.isNotEmpty()) {'))
-        item_end = legacy.index('\n                                }\n', item_start)
-        item = legacy[item_start:item_end]
+        item_start = attachment_source.index('                                    Box(', attachment_source.index('                        if (selectedImageUris.isNotEmpty()) {'))
+        item_end = attachment_source.index('\n                                }\n', item_start)
+        item = attachment_source[item_start:item_end]
         self.assertEqual(attachments['originalItemSha256LF'],hashlib.sha256(item.encode()).hexdigest())
         start = body.index('\n', body.index('    val selectedImageThumbnail:')) + 1
         end = body.index('\n    }\n', start)
@@ -116,13 +124,13 @@ class OriginalDomainCommentComposerTests(unittest.TestCase):
         for first,last,key in [
             ('                                // 转发到动态','\n                            }\n\n                            Spacer','originalToolsSha256LF'),
             ('                            // 发送按钮','\n                        }','originalSendSha256LF')]:
-            start=legacy.index(first);end=legacy.index(last,start);section=legacy[start:end]
+            start=attachment_source.index(first);end=attachment_source.index(last,start);section=attachment_source[start:end]
             self.assertEqual(attachments[key],hashlib.sha256(section.encode()).hexdigest())
             self.assertEqual(1,body.count(section))
-        editor_start=legacy.index('                            CommentEmoteTextField(')
-        editor_end=legacy.index('\n                        AnimatedVisibility(',editor_start)
-        self.assertIn(legacy[editor_start:editor_end],body)
-        changed=body.replace('selectedImageThumbnail(uri, 40.dp)','selectedImageThumbnail(uri, 64.dp)',1)
+        editor_start=attachment_source.index('                            CommentEmoteTextField(')
+        editor_end=attachment_source.index('\n                        AnimatedVisibility(',editor_start)
+        self.assertIn(attachment_source[editor_start:editor_end],body)
+        changed=before_tabs.replace('selectedImageThumbnail(uri, 40.dp)','selectedImageThumbnail(uri, 64.dp)',1)
         with self.assertRaises(ValueError):inverse(changed,proof['platformAndDraftPublication'])
     def test_changed_domain_body_cannot_reuse_a_complete_inverse_receipt(self):
         proof=self.proof('holder','v029-domain-comment-composer-source')
@@ -130,5 +138,14 @@ class OriginalDomainCommentComposerTests(unittest.TestCase):
         row=proof['canonicalDomainToGenerated']['indexedEdits'][-1]
         index=row['afterOffset'];changed=body[:index]+'!'+body[index+1:]
         with self.assertRaises(ValueError):inverse(changed,proof['canonicalDomainToGenerated'])
+
+    def test_reference_dialog_retains_exact_raw_body_without_overwriting_production_tab_proof(self):
+        raw=adapter.fixed(REPO)[adapter.DIALOG]
+        retained=(self.outputs['bgm']/'bgm-original-retained'/adapter.DIALOG).read_text(encoding='utf8')
+        self.assertEqual(raw,retained)
+        body=self.body('bgm','CommentInputDialog.kt')
+        proof=json.loads((self.outputs['bgm']/'v037-explicit-tab-role-proofs/CommentInputDialog.kt.json').read_text(encoding='utf8'))
+        self.assertEqual(hashlib.sha256(body.encode()).hexdigest(),proof['afterSha256LF'])
+        self.assertNotEqual(hashlib.sha256(raw.encode()).hexdigest(),proof['beforeSha256LF'])
 
 if __name__=='__main__':unittest.main()

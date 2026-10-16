@@ -42,6 +42,8 @@ def generate(repo, output, policy_only=False):
         target=output/package.replace('.','/')/name;target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(text,encoding='utf-8',newline='\n')
     policy=read('feature/space/SpaceLoadPolicy.kt')
+    from v041_video_status_labels import apply as apply_status_labels
+    policy=apply_status_labels(BASE+'feature/space/SpaceLoadPolicy.kt',policy)
     names=['resolveSpaceAggregateTopPhoto','parseTopImageDy','resolveSpaceTopImageItems','resolveSpaceRelationState',
         'resolveSpaceInitialSeedFromAggregate','resolveSpaceAggregateDefaultSelection','mapSpaceAggregateVideoItem',
         'mapSpaceAggregateFavoriteFolder','resolveSpaceAggregateVideoId','resolveSpaceAggregateLazyItemKey']

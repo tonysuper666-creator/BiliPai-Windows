@@ -34,6 +34,8 @@ def source(rel):
  blob=subprocess.check_output(['git','show','79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40:'+path],cwd=REPO)
  assert hashlib.sha256(blob.replace(b'\r\n',b'\n')).hexdigest()==hashlib.sha256(s.encode()).hexdigest(),path
  records.append(dict(path=path,upstreamCommit='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40',sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest()))
+ from v041_video_status_personal_consumers import apply as apply_personal_status
+ s=apply_personal_status(REPO,BASE+rel+'.kt',s,OUT)
  return s
 def output(rel,s,mode):
  s=re.sub(r'(\banimate\(\s*)initial\s*=',r'\1initialValue =',s)

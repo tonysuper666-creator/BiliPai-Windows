@@ -170,7 +170,7 @@ def generate(repo,output):
     original,identities=advance_video_detail_skeleton_source(repo,original,identities)
     def emit(relative,body):
         from v037_tab_roles import apply as apply_tab_roles
-        if Path(relative).name=="CommentInputDialog.kt":
+        if relative=="com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt":
             body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",body,output,Path(relative).name)
         elif Path(relative).name=="DesktopOriginalCommentSortHeader.kt":
             body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",body,output,Path(relative).name)

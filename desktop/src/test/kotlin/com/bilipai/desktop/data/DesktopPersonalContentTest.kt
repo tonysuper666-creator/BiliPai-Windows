@@ -66,7 +66,7 @@ class DesktopPersonalContentTest {
 
     @Test
     fun watchLaterFiltersUnsupportedNavigationAndKeepsNextPage() {
-        val result = personalWatchLaterPage(WatchLaterData(60, listOf(
+        val result = personalWatchLaterPage(WatchLaterData(count = 60, list = listOf(
             WatchLaterItem(bvid = "BV1test000001", isPgc = true), WatchLaterItem(bvid = "BV1test000002", isPugv = true))), 1)
         assertTrue(result.items.isEmpty())
         assertTrue(result.hasMore)

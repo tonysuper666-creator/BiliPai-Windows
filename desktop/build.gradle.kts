@@ -223,6 +223,11 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt"))
         // The existing Listen producer owns the original key file with the fixed AudioMode declaration.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))
+        // The sole v0.4.1 status-label producer owns these four complete or hook-edited model sources.
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt"))
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt"))
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt"))
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -1177,6 +1182,8 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-full-card.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-full-card").get().asFile.absolutePath)
+    inputs.file("tools/v041_video_status_labels.py")
+    inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.file("tools/v033_home_refresh_undo.py")
     inputs.dir("upstream-slices/v033-home-undo")
     inputs.files("tools/extract-upstream-home-full-card.py", "tools/extract-upstream-home-page.py", "tools/extract-upstream-media.py",
@@ -1858,6 +1865,8 @@ val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--policy-only",
         "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath)
     inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
+    inputs.file("tools/v041_video_status_labels.py")
+    inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space-overview"))
@@ -2470,6 +2479,8 @@ val extractOriginalWatchLater by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/original-watchlater").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-watchlater.py", "tools/extract-upstream-favorites.py",
         "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.file("tools/v041_video_status_labels.py")
+    inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-personal-watchlater" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -2771,11 +2782,18 @@ kotlin.sourceSets.named("test") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-interaction-retry-tests"))
 }
 // DIRECT10 are copied once by prepareUpstreamSources; production omits --standalone.
+// Retained Holder/portrait comment inputs share the existing selection adaptation.
+listOf("extractOriginalVideoFullOwner", "extractOriginalVideoFullscreenPager").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.files("tools/v029_comment_composer.py", "tools/v029_comment_search.py")
+    }
+}
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v037-holder-comment-close")
     inputs.file("tools/v037_player_known_presentation.py")
     inputs.file("tools/v032_video_return_state.py")
+    inputs.file("tools/windows_video_return_frozen_inputs.py")
     inputs.dir("upstream-slices/v032-video-return-state")
     inputs.file("tools/v031_repost_coin.py")
     inputs.dir("upstream-slices/v031-repost-coin")
@@ -2933,6 +2951,8 @@ val extractOriginalSpacePages by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--out", layout.buildDirectory.dir("generated/original-space-pages").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-space-pages.py", "tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
+    inputs.file("tools/v041_video_status_labels.py")
+    inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.files(layout.buildDirectory.file("generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt"),
         layout.buildDirectory.file("generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt"),
         layout.buildDirectory.file("generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt"),
@@ -2943,6 +2963,47 @@ val extractOriginalSpacePages by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-space-pages")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalSpacePages) }
+
+// Sole v0.4.1 video status label producer: the shared policy, badge row and four models, plus the original tests.
+// Card, Space and WatchLater edits are anchored hooks inside those files' own producers (inputs declared there).
+val extractOriginalVideoStatusLabels by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-v041-video-status-labels.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/v041-video-status-labels").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/v041-video-status-label-tests").get().asFile.absolutePath)
+    inputs.files("tools/extract-v041-video-status-labels.py", "tools/v041_video_status_labels.py",
+        "tools/v025_source_paths.py", "tools/v025-canonical-sources.json")
+    inputs.dir("upstream-slices/v041-video-status-labels")
+    inputs.files(listOf(
+        "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt",
+        "core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt",
+        "core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt",
+        "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+        "core-data/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+        "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt"
+    ).map { canonicalOriginalSource(it) })
+    outputs.dir(layout.buildDirectory.dir("generated/v041-video-status-labels"))
+    outputs.dir(layout.buildDirectory.dir("generated/v041-video-status-label-tests"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/v041-video-status-labels")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/v041-video-status-label-tests")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalVideoStatusLabels) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalVideoStatusLabels) }
+
+// Personal status badges stay in each retained full original producer.
+listOf("extractOriginalFavorites", "extractOriginalProfileMain").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.files("tools/v041_video_status_personal_consumers.py",
+            "tools/v025_source_paths.py", "tools/v025-canonical-sources.json")
+        inputs.dir("upstream-slices/v041-video-status-personal-consumers")
+    }
+}
 
 val extractOriginalWindowLayout by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicDetailContainer)
