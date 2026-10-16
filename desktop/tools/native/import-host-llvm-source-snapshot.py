@@ -25,7 +25,7 @@ KIND = 'BILIPAI_HOST_LLVM_SOURCE_SNAPSHOT'
 BINDING_STATE = 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'
 IMPORT_STATUS = 'IMPORTED_OWN_SOURCE_SNAPSHOT_REAL_LLVM_TARGET_VALIDATED'
 CATALOG_PATH = 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-import-trust.json'
-CATALOG_SHA256 = 'f46ef305b6d0bafb163e565936cfa7bba344211adab005a137ddf359817f9056'
+CATALOG_SHA256 = 'e3b603844b4b81ef95c18d4f4ca67a213906d2880897c6c53f173b35ef2a0646'
 EXPORTER_SHA256 = 'f3a3c2bc84f72fd1473d79f0bca40d0c8a4616b42db34ad903e6c5959bda20a7'
 INPUTS_SHA256 = '0207e4bca5c956b24157298e2e90e711fb6438e9d60d2110bd0b4f5102483688'
 LLVM_RECIPE_SHA256 = 'e89cd57a4085b49500354ef50bb201f51e317c2fe45026736c3a3f9bf0919164'
@@ -135,6 +135,29 @@ def write_new(path, value):
         os.fsync(stream.fileno())
 
 
+def source_worker_maximum(record):
+    # Admission is per independently reviewed original source, never a caller-
+    # supplied parallelism override. Old two-worker material remains distinct.
+    identity = (record.get('id'), record.get('sourceCommit'), record.get('sourceTag'),
+        record.get('workflowRunId'), record.get('workflowRunAttempt'),
+        record.get('assets', {}).get(ASSETS[0], {}).get('sha256'))
+    allowed = {
+        ('host-llvm-run38045803195-313d94cb',
+         '313d94cb05100047c52b4a957c98d3d113192a33',
+         'rtx-source-20261010-313d94cb-17-d3d11-misc', 38045803195, 1,
+         '8e0b0777cc11b963ece40fa9185f1ee6cc98a353ca0878a95ef123fd5b133a41'): 2,
+        ('host-llvm-run38574814418-7f38cc4c-one-worker',
+         '7f38cc4ce016c10ae3b087b5e343703bd4bec21d',
+         'rtx-source-20261014-7f38cc4c-present-one-worker', 38574814418, 1,
+         'f1f82faf1e0ac38a8bfff1d73ffc5dc396ccea03d8e7bfa8bcc14242cd6dd879'): 1,
+    }
+    expected = allowed.get(identity)
+    value = record.get('workerMaximum', 2)
+    if expected is None or type(value) is not int or value != expected:
+        fail('Original source worker contract differs from its reviewed identity')
+    return expected
+
+
 def load_catalog(root):
     catalog = json_file(root / CATALOG_PATH, CATALOG_SHA256, root)
     if (catalog.get('schema') != 1 or catalog.get('kind') != 'BILIPAI_HOST_LLVM_IMPORT_TRUST'
@@ -152,6 +175,7 @@ def load_catalog(root):
                 or row.get('draft') is not True or row.get('published') is not False):
             fail('Invalid immutable original own draft origin')
         ids.add(row['id'])
+        source_worker_maximum(row)
         revision(row.get('sourceCommit'))
         positive(row.get('workflowRunId'))
         positive(row.get('workflowRunAttempt'))
@@ -404,6 +428,81 @@ def verify_used_tracked_source(root, bundle, manifest, used, canonical, actual_b
 
 
 def lifecycle(manifest, descriptor, record, workspace, fixed, command):
+    # Import admission still comes only from the independently reviewed identity.
+    return _lifecycle(manifest, descriptor, record, workspace, fixed, command,
+                      source_worker_maximum(record))
+
+
+def lifecycle_current_cold_export(manifest, descriptor, record, workspace, fixed,
+                                  command, receipt, repository_root):
+    """Validate this run's cold export; never admit it as a reusable import."""
+    current = context()
+    expected_keys = {'sourceCommit', 'sourceTag', 'workflowRunId', 'workflowRunAttempt',
+                     'actualSourceBuildBindingSha256', 'assets'}
+    if (set(record) != expected_keys
+            or any(record.get(key) != value for key, value in current.items())
+            or set(record.get('assets', {})) != set(ASSETS)
+            or receipt.get('schema') != 1
+            or receipt.get('kind') != 'BILIPAI_HOST_LLVM_BUILD_RECEIPT'
+            or receipt.get('state') != 'LOCAL_HOST_TARGET_SUCCEEDED_NATIVE_BUILD_NOT_ASSERTED'
+            or receipt.get('ownrepoSourceCommit') != current['sourceCommit']
+            or receipt.get('ownrepoSourceTag') != current['sourceTag']
+            or receipt.get('workflowRunId') != str(current['workflowRunId'])
+            or receipt.get('workflowRunAttempt') != str(current['workflowRunAttempt'])
+            or receipt.get('hostLlvmSnapshotStatus') != 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'
+            or receipt.get('hostLlvmToolchainImported') is not False
+            or receipt.get('hostLlvmFreshCompileExecuted') is not True
+            or receipt.get('hostLlvmImportReceiptSha256') is not None
+            or receipt.get('snapshotInputsSha256') != INPUTS_SHA256
+            or receipt.get('containerImage') != CONTAINER_IMAGE
+            or receipt.get('recipeCommit') != RECIPE_COMMIT
+            or receipt.get('recipeArchiveSha256') != RECIPE_ARCHIVE_SHA256
+            or receipt.get('hostLlvmActualRecipeSha256') != LLVM_RECIPE_SHA256
+            or receipt.get('hostLlvmSnapshotSourceBindingSha256') != record['actualSourceBuildBindingSha256']
+            or any(receipt.get(key) is not False for key in ('reuseReady', 'nativeBuildSucceeded',
+                'binaryProduced', 'gpuOrDriverTested', 'closedSdkOrRuntimeIncluded'))):
+        fail('Current cold export context/receipt differs')
+    for leaf, row in record['assets'].items():
+        if row.get('fileName') != leaf:
+            fail('Current cold export asset identity differs')
+        positive(row.get('bytes'))
+        digest(row.get('sha256'))
+    expected_command = ['cmake', '-DTARGET_ARCH=x86_64-w64-mingw32', '-DCOMPILER_TOOLCHAIN=clang',
+        '-DGCC_ARCH=x86-64', '-DMAKEJOBS=1', '-DCLANG_PACKAGES_LTO=ON',
+        '-DCMAKE_INSTALL_PREFIX=' + str(workspace / 'clang-root'),
+        '-DMINGW_INSTALL_PREFIX=' + str(workspace / 'build-x64/x86_64-w64-mingw32'),
+        '-DSINGLE_SOURCE_LOCATION=' + str(workspace / 'sources'),
+        '-DRUSTUP_LOCATION=' + str(workspace / 'rustup'), '-G', 'Ninja', '--fresh',
+        '-B', str(workspace / 'build-x64'), '-S', str(workspace / ('mpv-winbuild-cmake-' + RECIPE_COMMIT))]
+    recipes = [row for row in fixed.get('archives', []) if row.get('kind') == 'recipes']
+    if (fixed.get('recipeCommit') != RECIPE_COMMIT
+            or fixed.get('recipeArchivePrefix') != 'mpv-winbuild-cmake-' + RECIPE_COMMIT
+            or len(recipes) != 1 or recipes[0].get('sha256') != RECIPE_ARCHIVE_SHA256
+            or command != expected_command):
+        fail('Current cold export fixed one-worker recipe/command differs')
+    root = Path(repository_root).resolve(strict=True)
+    importer_path = owned(root / 'desktop/tools/native/import-host-llvm-source-snapshot.py', root)
+    producer_path = owned(root / 'desktop/tools/native/build-mpv-rtx-core-runtime.py', root)
+    if importer_path != Path(__file__).resolve():
+        fail('Current cold export verifier is outside the producing source')
+    child_env = {key: value for key, value in os.environ.items() if key not in ('GITHUB_TOKEN', 'GH_TOKEN')}
+    git_command = ['git', '-c', 'safe.directory=' + str(root), '-C', str(root)]
+    head = subprocess.run(git_command + ['rev-parse', 'HEAD'], env=child_env,
+                          check=True, capture_output=True).stdout.decode().strip()
+    if head != current['sourceCommit']:
+        fail('Current cold export checked-out source differs')
+    for path, key in ((producer_path, 'producerSourceSha256'),
+                      (importer_path, 'importCollectorSourceSha256')):
+        raw = subprocess.run(git_command + ['show', current['sourceCommit'] + ':' + path.relative_to(root).as_posix()],
+                             env=child_env, check=True, capture_output=True).stdout
+        if file_sha(path, root) != sha(raw) or receipt.get(key) != sha(raw):
+            fail('Current cold export producer/verifier differs from tagged source')
+    # This literal belongs to the current producer profile. It is not a caller
+    # override, a catalog insertion or permission to import this new snapshot.
+    return _lifecycle(manifest, descriptor, record, workspace, fixed, command, 1)
+
+
+def _lifecycle(manifest, descriptor, record, workspace, fixed, command, worker_maximum):
     origin = {'ownrepoSourceCommit': record['sourceCommit'], 'ownrepoSourceTag': record['sourceTag'],
               'workflowRunId': record['workflowRunId'], 'workflowRunAttempt': record['workflowRunAttempt']}
     for item in (manifest, descriptor):
@@ -443,7 +542,7 @@ def lifecycle(manifest, descriptor, record, workspace, fixed, command):
             or built.get('completeSourceLsTreeSha256') != manifest.get('completeSourceLsTreeSha256')
             or manifest.get('actualSourcePostBuildGitStatus') != ''
             or manifest.get('actualInitialBuildCommand') != command
-            or manifest.get('actualHostTargetCommand') != ['ninja', '-C', str(workspace / 'build-x64'), '-j2', 'llvm']
+            or manifest.get('actualHostTargetCommand') != ['ninja', '-C', str(workspace / 'build-x64'), '-j' + str(worker_maximum), 'llvm']
             or manifest.get('actualPatchedLlvmRecipeSha256') != LLVM_RECIPE_SHA256):
         fail('Actual prebuild/install/cleanup source identity is not exact')
     digest(built.get('completeSourceLsTreeSha256'))
@@ -485,19 +584,11 @@ def inspect_optional(directory, root, workspace, fixed, image, command):
     catalog = load_catalog(root)
     if directory is None:
         return None
-    expected_command = ['cmake', '-DTARGET_ARCH=x86_64-w64-mingw32', '-DCOMPILER_TOOLCHAIN=clang',
-        '-DGCC_ARCH=x86-64', '-DMAKEJOBS=2', '-DCLANG_PACKAGES_LTO=ON',
-        '-DCMAKE_INSTALL_PREFIX=' + str(workspace / 'clang-root'),
-        '-DMINGW_INSTALL_PREFIX=' + str(workspace / 'build-x64/x86_64-w64-mingw32'),
-        '-DSINGLE_SOURCE_LOCATION=' + str(workspace / 'sources'),
-        '-DRUSTUP_LOCATION=' + str(workspace / 'rustup'),
-        '-G', 'Ninja', '--fresh', '-B', str(workspace / 'build-x64'),
-        '-S', str(workspace / ('mpv-winbuild-cmake-' + RECIPE_COMMIT))]
     recipe_archives = [row for row in fixed.get('archives', []) if row.get('kind') == 'recipes']
     if (image != CONTAINER_IMAGE or fixed.get('recipeCommit') != RECIPE_COMMIT
             or fixed.get('recipeArchivePrefix') != 'mpv-winbuild-cmake-' + RECIPE_COMMIT
             or len(recipe_archives) != 1 or recipe_archives[0].get('sha256') != RECIPE_ARCHIVE_SHA256
-            or command != expected_command):
+            ):
         fail('Import cannot cross fixed recipe/container/real initial build contract')
     directory = Path(os.path.abspath(directory))
     if not directory.exists() and not directory.is_symlink():
@@ -508,6 +599,16 @@ def inspect_optional(directory, root, workspace, fixed, image, command):
     if len(records) != 1:
         fail('Present snapshot has no unique independently frozen own-source trust record')
     record = records[0]
+    expected_command = ['cmake', '-DTARGET_ARCH=x86_64-w64-mingw32', '-DCOMPILER_TOOLCHAIN=clang',
+        '-DGCC_ARCH=x86-64', '-DMAKEJOBS=' + str(source_worker_maximum(record)), '-DCLANG_PACKAGES_LTO=ON',
+        '-DCMAKE_INSTALL_PREFIX=' + str(workspace / 'clang-root'),
+        '-DMINGW_INSTALL_PREFIX=' + str(workspace / 'build-x64/x86_64-w64-mingw32'),
+        '-DSINGLE_SOURCE_LOCATION=' + str(workspace / 'sources'),
+        '-DRUSTUP_LOCATION=' + str(workspace / 'rustup'),
+        '-G', 'Ninja', '--fresh', '-B', str(workspace / 'build-x64'),
+        '-S', str(workspace / ('mpv-winbuild-cmake-' + RECIPE_COMMIT))]
+    if command != expected_command:
+        fail('Import cannot cross the reviewed original worker/build command')
     paths = {}
     for leaf in ASSETS:
         path = owned(directory / leaf, directory)
@@ -918,7 +1019,7 @@ def validate_target(control_path, control_sha, workspace, source, install, root)
                 fail('Duplicate actual outer CMake cache key')
             actual[key] = value
     expected = {'TARGET_ARCH': 'x86_64-w64-mingw32', 'COMPILER_TOOLCHAIN': 'clang', 'GCC_ARCH': 'x86-64',
-                'MAKEJOBS': '2', 'CLANG_PACKAGES_LTO': 'ON', 'CMAKE_GENERATOR': 'Ninja',
+                'MAKEJOBS': str(source_worker_maximum(plan['record'])), 'CLANG_PACKAGES_LTO': 'ON', 'CMAKE_GENERATOR': 'Ninja',
                 'CMAKE_INSTALL_PREFIX': str(install), 'MINGW_INSTALL_PREFIX': str(workspace / 'build-x64/x86_64-w64-mingw32'),
                 'SINGLE_SOURCE_LOCATION': str(workspace / 'sources'), 'RUSTUP_LOCATION': str(workspace / 'rustup'),
                 'CMAKE_HOME_DIRECTORY': str(workspace / control['fixedInputs']['recipeArchivePrefix'])}
@@ -1022,7 +1123,7 @@ def verify_delivery_import(directory, root, current, commit, tag):
                 or item.get('actualSourceBuildBindingSha256') != manifest['actualSourceBuildBindingSha256']
                 for item in (receipt, control, target))
             or receipt.get('controlSha256') != target.get('controlSha256')
-            or receipt.get('actualLlvmTargetCommand') != ['ninja', '-C', str(workspace / 'build-x64'), '-j2', 'llvm']
+            or receipt.get('actualLlvmTargetCommand') != ['ninja', '-C', str(workspace / 'build-x64'), '-j' + str(source_worker_maximum(record)), 'llvm']
             or receipt.get('llvmTargetExitCode') != 0 or receipt.get('toolchainImported') is not True
             or receipt.get('originalSnapshotSourceCommit') != record['sourceCommit']
             or receipt.get('originalSnapshotSourceTag') != record['sourceTag']

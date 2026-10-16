@@ -44,6 +44,29 @@ def assert_change_inventory(changed, plan):
     assert changed == expected, ('Frozen change inventory differs',
                                 sorted(changed - expected), sorted(expected - changed))
 
+
+def harness_input_arguments(plan, repo, output):
+    arguments = []
+    for flag, script, property_name, filename, task in (
+        ('exportPackagedUpdaterHarness', 'updater-harness-export.init.gradle', 'packagedUpdaterHarnessInputs',
+         'updater-harness-inputs.json', 'writePackagedUpdaterHarnessInputs'),
+        ('exportOriginalRootUiHarness', 'original-root-ui-harness.init.gradle', 'originalRootUiHarnessInputs',
+         'original-root-ui-harness-inputs.json', 'writeOriginalRootUiHarnessInputs'),
+    ):
+        if plan.get(flag) is True:
+            arguments += ['--init-script', str(repo / 'desktop/tools' / script),
+                          '-P' + property_name + '=' + str(output / filename), task]
+    return arguments
+
+
+def write_harness_flags(path, passed, updater, ui):
+    if not passed or path is None: return
+    flags = []
+    if updater is not None: flags.append('updater_harness_exported=true\n')
+    if ui is not None: flags.append('original_root_ui_harness_exported=true\n')
+    if flags:
+        with open(path, 'a', encoding='utf-8') as stream: stream.writelines(flags)
+
 def check(repo):
     plan = json.loads(read(repo / PLAN))
     assert plan['repository'] == REPOSITORY and plan['schemaVersion'] == 1
@@ -115,10 +138,8 @@ def main():
                'compileKotlin', 'compileTestKotlin', 'test']
     for name in plan['classes']: command += ['--tests', name]
     export_harness = plan.get('exportPackagedUpdaterHarness') is True
-    if export_harness:
-        command += ['--init-script', str(repo / 'desktop/tools/updater-harness-export.init.gradle'),
-            '-PpackagedUpdaterHarnessInputs=' + str(output / 'updater-harness-inputs.json'),
-            'writePackagedUpdaterHarnessInputs']
+    export_ui = plan.get('exportOriginalRootUiHarness') is True
+    command += harness_input_arguments(plan, repo, output)
     started = time.time()
     result = subprocess.run(command, cwd=repo, env=environment)
     suites = []
@@ -152,6 +173,18 @@ def main():
             manifestSha256=exporter.digest(output / 'updater-harness/manifest.json'),
             payloadFiles=len(manifest['payload']), payloadBytes=sum(row['bytes'] for row in manifest['payload']),
             updaterE2EExecuted=False, applicationExecuted=False)
+    ui_harness = None
+    if passed and export_ui:
+        helper = repo / 'desktop/tools/export-original-root-ui-harness.py'
+        spec = importlib.util.spec_from_file_location('qualified_original_root_ui_harness_export', helper)
+        exporter = importlib.util.module_from_spec(spec); spec.loader.exec_module(exporter)
+        manifest = exporter.export(repo, json.loads(read(output / 'original-root-ui-harness-inputs.json')),
+            output / 'original-root-ui-harness', sha, started)
+        ui_harness = dict(schema=1, sourceSha=sha,
+            manifestSha256=digest(read(output / 'original-root-ui-harness/manifest.json')),
+            payloadFiles=len(manifest['payload']), payloadBytes=sum(row['bytes'] for row in manifest['payload']),
+            productionRuntimeBindingRequired=True, productionClassesExported=False,
+            applicationExecuted=False, hardwareExecuted=False)
     after = {row['path']: source_digest(repo, row) for row in plan['sources']}
     passed &= before == after
     receipt = dict(passed=bool(passed), sourceSha=sha, baseHead=plan['baseHead'],
@@ -161,6 +194,7 @@ def main():
         cloudGradleHeapMaximum=CLOUD_GRADLE_HEAP, localGradleHeapMaximum='4g',
         applicationExecuted=False, hardwareExecuted=False, packageBuilt=False, published=False)
     if harness is not None: receipt['updaterHarnessExport'] = harness
+    if ui_harness is not None: receipt['originalRootUiHarnessExport'] = ui_harness
     (output / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
     payload = json.dumps(dict(receipt=receipt, rawXml=raw_xml), ensure_ascii=True).encode()
     encoded = base64.b64encode(gzip.compress(payload, mtime=0)).decode()
@@ -169,9 +203,7 @@ def main():
     print('BILIPAI_SOURCE_RECEIPT_END')
     print(json.dumps(dict(passed=bool(passed), sourceSha=sha, expectedTests=plan['expectedTests'],
                           actualTests=sum(row.get('tests', 0) for row in suites))))
-    if passed and harness is not None and os.environ.get('GITHUB_OUTPUT'):
-        with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as stream:
-            stream.write('updater_harness_exported=true\n')
+    write_harness_flags(os.environ.get('GITHUB_OUTPUT'), passed, harness, ui_harness)
     return 0 if passed else 1
 
 if __name__ == '__main__': sys.exit(main())

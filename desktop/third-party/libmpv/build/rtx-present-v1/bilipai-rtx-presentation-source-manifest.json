@@ -177,7 +177,7 @@
   ],
   "tokenProtocol": 2,
   "upstreamEditsFileName": "presentation-edits.json",
-  "upstreamEditsSha256": "e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f",
+  "upstreamEditsSha256": "7a9f37208757f87f7f591e544957a60a3bf141de743c1502a1af9ed99b0fd311",
   "variant": "bilipai-veyra-rtx-present-v1",
   "vfgImplemented": false
 }

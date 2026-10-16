@@ -51,7 +51,9 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
     fun open(key: BiliPaiNavKey.BangumiPlayer): Entry {
         check(EventQueue.isDispatchThread())
         check(owner.owns() && shell.slot.currentAssembly() === owner && root.owns())
-        current.get()?.takeIf { it.key == key && it.owns() }?.let { return it }
+        // Only the Entry opened for THIS key instance is reused (covered return). An equal but newly
+        // pushed key is a new navigation entry whose witness/login checks the old Entry cannot satisfy.
+        current.get()?.takeIf { desktopBangumiPgcEntryReusable(it.key, key) && it.owns() }?.let { return it }
         current.get()?.close()
         val next = Entry(key)
         current.set(next)
@@ -75,6 +77,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
         // Read-only actual original DTO + accepted publication pair; source facts
         // must match again before retirement captures position. Never an authority.
         private val lastOwnedState = AtomicReference<Pair<BangumiPlayerState.Success, DesktopOriginalVideoAcceptedPublication>?>()
+        private val initialScreenMount = DesktopBangumiPgcScreenMount()
         private val native = DesktopOriginalBangumiNativePresenter(owner,
             { shell.slot.currentAssembly().takeIf { lifetimeOwns() } }, portrait, scope,
             { stateOwner.get()?.uiState?.value as? BangumiPlayerState.Success },
@@ -192,18 +195,32 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             if (!isLoadCurrent(launchCaller)) throw CancellationException("PGC readonly load superseded")
             require(detail.episodes?.getOrNull(episodeIndex) === episode) { "PGC readonly episode must be the original resolved DTO" }
             val source = synchronized(initialDetailSources) { initialDetailSources[launchCaller] }
-            val primary = if (!postBegin) {
-                val actual = source?.takeIf { it.caller === caller && it.launchCaller === launchCaller }
-                    ?: throw CancellationException("PGC initial detail HTTP witness absent")
-                if (!actual.admit {}) throw CancellationException("PGC initial detail HTTP witness retired")
-                actual.primaryInstallation
-            } else {
-                source?.takeIf { it.launchCaller === launchCaller }?.primaryInstallation
-                    // Original switch/reload/authorization recovery may reuse the exact
-                    // already decoded season DTO. Borrow its primary read receipt only;
-                    // this NEW PGC Binding/caller/ref/token mints a new presentation gate.
-                    ?: mutableReadOnlyDetail.value?.takeIf { it.detail === detail }?.primaryInstallation
-                    ?: throw CancellationException("PGC resolved detail origin absent")
+            val witness = if (!postBegin) source?.takeIf { it.caller === caller && it.launchCaller === launchCaller }
+                else source?.takeIf { it.launchCaller === launchCaller }
+            val shown = mutableReadOnlyDetail.value
+            // The season/episode metadata is display-only. Without proof of origin (Mini/SMTC
+            // next, retry after an in-player switch, a route key that left the stack) nothing is
+            // presented, yet the load itself must still play: only the liveness checks above and
+            // the retired witness/Binding/presentation below may cancel it.
+            val origin = desktopBangumiReadOnlyOrigin(postBegin, witness != null,
+                desktopBangumiSameDecodedSeason(shown?.detail, detail))
+            val primary = when (origin) {
+                DesktopBangumiReadOnlyOrigin.WITNESSED -> {
+                    val actual = checkNotNull(witness)
+                    if (!postBegin && !actual.admit {}) throw CancellationException("PGC initial detail HTTP witness retired")
+                    actual.primaryInstallation
+                }
+                // Original switch/reload/authorization recovery reuses the already decoded season
+                // (the VM hands back its Success copy, which shares the decoded episode list).
+                // Borrow its primary read receipt only; this NEW PGC Binding/caller/ref/token
+                // mints a new presentation gate.
+                DesktopBangumiReadOnlyOrigin.BORROWED_DISPLAYED -> checkNotNull(shown).primaryInstallation
+                DesktopBangumiReadOnlyOrigin.NONE -> {
+                    resources.diagnostics?.record("I", "BangumiPlatform",
+                        "PGC read-only metadata not presented (no initial-read witness or displayed season); playback continues")
+                    context.ensureActive(); native.assertCurrent()
+                    return
+                }
             }
             val binding = if (postBegin) native.capturedPlaybackBinding()
                 else (owner.invocations.requireRequestRepository() as DesktopOriginalVideoOwnerRequestRepository).binding
@@ -241,8 +258,14 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             })
             val displayed = DesktopOriginalBangumiReadOnlyDetail(detail, episode, episodeIndex,
                 intentRevision, primary, admission)
-            if (!admission.admit { mutableReadOnlyDetail.value = displayed })
-                throw CancellationException("PGC readonly presentation retired")
+            if (!admission.admit { mutableReadOnlyDetail.value = displayed }) {
+                context.ensureActive(); native.assertCurrent()
+                // A borrowed receipt may have aged while this load is still current: the metadata is
+                // display-only, so drop it and keep playing. Only a witnessed receipt retires the load.
+                if (desktopBangumiReadOnlyAdmissionRetiresLoad(origin, current()))
+                    throw CancellationException("PGC readonly presentation retired")
+                return
+            }
             context.ensureActive(); native.assertCurrent()
         }
 
@@ -359,6 +382,15 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                     stateOwner.get()?.close()
                 }
             }
+        }
+
+        /** The existing Entry and original VM survive covered/foreground Screen remounts.
+         * Only the genuine original Screen effect may consume its first attach+load. */
+        override fun runInitialScreenLoad(viewModel: BangumiPlayerViewModel, action: () -> Unit) {
+            check(EventQueue.isDispatchThread())
+            assertOwned()
+            check(viewModel === this.viewModel) { "PGC Screen must keep its retained original VM" }
+            initialScreenMount.runInitialLoad(action)
         }
 
         private fun projectionManifest(state: BangumiPlayerState.Success): String? {

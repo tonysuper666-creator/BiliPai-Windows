@@ -1,6 +1,7 @@
-"""Exercise the installer against the exact source receipt from build 38574814418.
+"""Exercise three actual source-admission guards with the native173 source fixture.
 
-Only JSON parsing and source-graph admission run; no DLL is loaded or executed.
+The complete source patch helper generated it from fixed archive bytes with Git
+identity/status mocked. No native build, original Git checkout, DLL or GPU proof.
 """
 import hashlib
 import json
@@ -12,7 +13,7 @@ import unittest
 
 REPO = Path(__file__).resolve().parents[3]
 FIXTURE = REPO / 'desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json'
-FIXTURE_SHA256 = 'b65f8eb0be10f461e50b255267ea6512179e627f3bf27d98a4ef324e4651a879'
+FIXTURE_SHA256 = 'd1c8357ca27184192dd8900400d80389d549bfc88166edb8a332df56fd93767a'
 SCRIPT = r'''
 $ErrorActionPreference = 'Stop'
 $taskRoot = $env:BILIPAI_RTX_PROTOCOL_TEST_ROOT
@@ -62,6 +63,8 @@ Test-ReceiptCase 'claimed-hardware-proof' {param($r) $r.displayProofRuntimeVerif
 Test-ReceiptCase 'changed-source-graph' {param($r) $r.sourceGraph[0].afterSha256=('0'*64)}
 Test-ReceiptCase 'changed-source-file' {param($r) $r.filterSourceFiles[0].sha256=('0'*64)}
 Test-ReceiptCase 'wrong-presentation-property' {param($r) $r.presentationProperty='other-property'}
+Test-ReceiptCase 'retired-manifest' {param($r) $r.filterSourceManifestSha256='a1cda53ef043749e006c88a84abee129bccc7bfc649b011976cd421e75e5c607'}
+Test-ReceiptCase 'retired-helper' {param($r) $r.sourcePatchHelperSha256='748199ed370c169b17337154a3f7d0fede10a1c9420b1a8b02b3844aa6e6bebf'}
 }
 $taskReject=$taskProfileVerifierAst.Find({param($a) $a -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $a.Name -eq 'Reject'},$true)
 . ([scriptblock]::Create($taskReject.Extent.Text))
@@ -125,6 +128,10 @@ class MpvRtxInstallerProtocolTest(unittest.TestCase):
 
     def test_source_graph_inventory_and_presentation_property_remain_bound(self):
         for name in ('changed-source-graph', 'changed-source-file', 'wrong-presentation-property'):
+            self.assert_receipt_case(name, False)
+
+    def test_retired_presentation_source_and_helper_are_rejected(self):
+        for name in ('retired-manifest', 'retired-helper'):
             self.assert_receipt_case(name, False)
 
     def test_actual_component_profile_guard_accepts_only_supported_json_integers(self):

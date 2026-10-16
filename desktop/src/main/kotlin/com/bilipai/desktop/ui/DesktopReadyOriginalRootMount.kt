@@ -514,10 +514,7 @@ internal class DesktopReadyOriginalRootHandle(
             DesktopOriginalRootStack(routes, environment, pages, rootThemeColor.luminance() > .5f,
                 reduceMotion, transitionDuration, programmaticBack,
                 false, prepareReturn,
-                { root.returns.onRelatedReturnExposure(currentHome.cardTransitionEnabled,
-                    resolveVideoCardTransitionExposure(clock.phase,
-                        clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
-                        clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
+                { completeDesktopWindowsRelatedVideoReturn(root.returns, clock) },
                 Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
                 onRootContentFrame = { if (ownsStartupRoot()) onRootContentFrame(ownsStartupRoot) },
                 onActivePageFrame = { key, hosted ->
