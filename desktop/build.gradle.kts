@@ -2408,6 +2408,8 @@ sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/do
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
 
 val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_owner_follow.py")
+    inputs.dir("upstream-slices/v042-owner-follow")
     inputs.file("tools/v042_follow_confirmation.py")
     inputs.dir("upstream-slices/v042-follow-confirmation")
     inputs.file("tools/v037_gesture_feedback.py")
@@ -2698,6 +2700,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoTabletFull) }
 
 // Append source-only task wiring. Do not replace the existing build file.
 val extractOriginalVideoFullscreenPager by tasks.registering(Exec::class) {
+    inputs.file("tools/v042_owner_follow.py")
+    inputs.dir("upstream-slices/v042-owner-follow")
     inputs.file("tools/v037_gesture_feedback.py")
     inputs.dir("upstream-slices/v037-gesture-feedback")
     inputs.file("tools/v031_repost_coin.py")
