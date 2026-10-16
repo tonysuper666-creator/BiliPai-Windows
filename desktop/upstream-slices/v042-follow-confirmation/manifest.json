@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamTag": "v0.4.2",
+  "fixedUpstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "filename": "ActionRepository.kt",
+      "bytes": 45228,
+      "sha256Bytes": "c302740f2babaf87de20682bae44714461a07cf5a20d97ebfca9d96f158d38d4",
+      "gitBlob": "eb6671b5641ebfcffed05e2f6229b33ffa093037",
+      "partialReuse": true
+    }
+  ],
+  "scope": "Complete original queryFollowStatus and confirmedOperationValue method only; current cache TTL/pending-expiry rules stay at their existing source version and remain a separately tracked parity item"
+}

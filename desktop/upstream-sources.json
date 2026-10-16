@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "147",
+  "windowsRevision": "148",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14577,5 +14577,41 @@
     "jvmTestsExecuted": false,
     "applicationExecuted": false,
     "allFilterLayoutVisibilityMatchesOriginalContract": true
+  },
+  "v042PlayerReadabilitySlice": {
+    "upstreamTag": "v0.4.2",
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-player-readability",
+    "manifestSHA256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8",
+    "completeOriginalSourcesRetained": true,
+    "partialReuse": true,
+    "fullCurrentPlayerParityClaimed": false,
+    "sourceApplied": true,
+    "mainCompiled": false,
+    "applicationExecuted": false,
+    "pixelsValidated": false,
+    "actualSoleProducersExecuted": 2,
+    "fullInputInverseRecovered": true,
+    "strictAdaptedInputsVerified": 553
+  },
+  "v042FollowConfirmationSlice": {
+    "upstreamTag": "v0.4.2",
+    "upstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+    "archive": "desktop/upstream-slices/v042-follow-confirmation",
+    "manifestSHA256": "7e88af3cb03403cf41a335978bef1bbb58b11073fb9d6d65c921265655d89724",
+    "partialReuse": true,
+    "completeOriginalMethods": [
+      "queryFollowStatus",
+      "confirmedOperationValue"
+    ],
+    "scope": "Complete original queryFollowStatus and confirmedOperationValue method only; current cache TTL/pending-expiry rules stay at their existing source version and remain a separately tracked parity item",
+    "sourceApplied": true,
+    "mainCompiled": false,
+    "applicationExecuted": false,
+    "wholeLatestReleaseParityQualified": false,
+    "actualSoleProducerExecuted": true,
+    "strictAdaptedInputsVerified": 552,
+    "regressionCasesWritten": 6,
+    "regressionCasesExecuted": 0
   }
 }

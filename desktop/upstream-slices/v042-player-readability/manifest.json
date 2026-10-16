@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamTag": "v0.4.2",
+  "fixedUpstreamCommit": "5c34a82418b33bf88acea01784bb3c6b179d6491",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "filename": "TopControlBar.kt",
+      "bytes": 35295,
+      "sha256Bytes": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
+      "gitBlob": "c379ad9700cdf4997015c96be5331a096caad637",
+      "partialReuse": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitSubtitleOverlay.kt",
+      "filename": "PortraitSubtitleOverlay.kt",
+      "bytes": 27762,
+      "sha256Bytes": "f3460f158ee6ff37842d6de2be0df29143656f36905c645878d8e4742663c89e",
+      "gitBlob": "cf8fc4c477aab5164633e58bbc1eba8f1e1ddfae",
+      "partialReuse": true
+    }
+  ],
+  "scope": "Only original title dock function and bounded-height scrolling in the existing subtitle panel; complete source retained, no full-release parity claim"
+}

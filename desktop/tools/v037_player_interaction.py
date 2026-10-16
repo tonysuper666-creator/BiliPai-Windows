@@ -24,7 +24,7 @@ def fixed_sources():
 
 def admitted_cache_calls(text,parser):
     tokens=parser.kotlin_tokens(text);ranges=[]
-    allowed={'interactionCache':{'read','queryVersion','publish','knownValues','beginOperation'},
+    allowed={'interactionCache':{'read','queryVersion','publish','knownValues','beginOperation','confirmedOperationValue'},
              'followingGuard':{'snapshotVersion','accept','beginOperation'}}
     for i in range(len(tokens)-3):
         owner,dot,name,opening=[t[0] for t in tokens[i:i+4]]
@@ -41,7 +41,9 @@ def admitted_cache_calls(text,parser):
 def extend_same_producer(g):
     from v029_comment_search import whole_proof
     raw=fixed_sources();out=g['OUTPUT'];parser=g['parser'];select=g['selected'];rows=g['OUTPUTS']
-    original=raw['ActionRepository.kt']
+    from v042_follow_confirmation import apply as apply_follow_confirmation
+    original,follow_confirmation_proof=apply_follow_confirmation(Path(__file__).resolve().parents[2],raw['ActionRepository.kt'],select)
+    g['save'](out/'v042-confirmed-follow-source-proof.json',follow_confirmation_proof)
     interior=original[original.index('object ActionRepository {')+len('object ActionRepository {'):original.rfind('}')]
     names=['followUser','favoriteVideo','getDefaultFolderId','likeVideo','dislikeVideo','coinVideo',
       'tripleAction','toggleWatchLater','checkLikeStatus','checkFavoriteStatus','checkFollowStatus',
@@ -120,9 +122,11 @@ internal class DesktopOriginalVideoEngagementProtocol(
     g['write'](existing,protocol)
     old[0].update(origin='app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt',
       mode='fixed-v037-complete-original-interaction-protocol-existing-Root-epoch-admission',fixedCommit=COMMIT,
+      sourceDeltaCommit=follow_confirmation_proof['upstreamCommit'],partialReuse=True,
       sha256LF=hashlib.sha256(protocol.encode()).hexdigest(),physicalLines=len(protocol.splitlines()))
     proof=whole_proof(original_methods,methods)
     proof.update(upstreamCommit=COMMIT,originalDeclarations=names,admittedCacheCalls=admitted,
+      additionalOriginalSourceCommit=follow_confirmation_proof['upstreamCommit'],partialReuse=True,
       allLikeFollowCoinTripleMutationBodiesRetained=True,cacheSharedByActualRepository=True,
       accountEpochAdmissionRequired=True,sourceQualified=False,mainCompiled=False)
     g['save'](out/'v037-original-interaction-protocol-proof.json',proof)
@@ -167,6 +171,9 @@ internal class DesktopOriginalVideoWatchLaterMutations(
         assert not any(r['path']==path for r in rows)
         g['write'](out/path,text)
         rows.append(dict(path=path,origin=origin,mode='fixed-v037-complete-original-existing-Root-request-owner',fixedCommit=COMMIT,sha256LF=hashlib.sha256(text.encode()).hexdigest(),physicalLines=len(text.splitlines()),generated=True))
+        if path.endswith('/DesktopOriginalVideoInteractionStatusCache.kt'):
+            rows[-1].update(sourceDeltaCommit=follow_confirmation_proof['upstreamCommit'],partialReuse=True,
+                originalAdditionalMethods=['confirmedOperationValue'])
     fragment=g['wide'](out/'video-operations-members.fragment').read_text(encoding='utf-8')
     before=fragment
     anchor='    internal fun originalVideoEngagementActions(analytics:'
