@@ -180,6 +180,7 @@ internal class DesktopWindowsVideoActions(
     // Keep them separate: moving over video does not steal keyboard focus from a control.
     var nativePointerOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
     var nativeKeyboardOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
+    var viewportKeyboardFocused by remember(assembly, native.surface) { mutableStateOf(false) }
     val nativePointerMotion = remember(assembly, native.surface) { DesktopWindowsNativePointerMotion() }
     fun observeChromePointer() {
         if (!current() || latestPip) return
@@ -193,14 +194,33 @@ internal class DesktopWindowsVideoActions(
     var topFocused by remember(chrome) { mutableStateOf(false) }
     val topInteractions = remember(chrome) { MutableInteractionSource() }
     val topHovered by topInteractions.collectIsHoveredAsState()
+    val windowKeyFallback = LocalDesktopWindowKeyFallback.current
+    val latestKeyInputFocus by rememberUpdatedState(
+        topFocused || barInteraction.focused || viewportKeyboardFocused || nativeKeyboardOnVideo)
     // Only the exact existing Main window; no global input/window observer.
-    DisposableEffect(chromeWindow, assembly, native.surface) {
+    DisposableEffect(chromeWindow, assembly, native.surface, windowKeyFallback, rootEnvironment,
+        route, active, presentationAlive, pipActive) {
+        val input = DesktopWindowsVideoKeyInput(
+            currentSource = { latestChromeSource?.takeIf { chromeCurrent() } },
+            ownsFocus = { latestKeyInputFocus && native.surface.isShowing && chromeWindow != null &&
+                java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === chromeWindow },
+            isFullscreen = { latestFullscreen },
+            onKey = { event ->
+                chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_KEY)
+                latestActions.nativeKey(event)
+            },
+        )
+        // Clicking a Compose control retains its focus. Offer Space/Escape before
+        // that button can consume them, using this exact page/source admission.
+        val keyRegistration = if (active && presentationAlive && !pipActive)
+            windowKeyFallback?.registerLeaf(input::onKey) else null
         val listener = object : java.awt.event.WindowFocusListener {
             override fun windowGainedFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = true
                 chromeActivity(DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_GAINED)
             }
             override fun windowLostFocus(event: java.awt.event.WindowEvent) {
+                input.releaseHeldInput()
                 chromeWindowFocused = false
                 nativePointerOnVideo = false
                 nativeKeyboardOnVideo = false
@@ -209,7 +229,11 @@ internal class DesktopWindowsVideoActions(
         }
         chromeWindow?.addWindowFocusListener(listener)
         chromeWindowFocused = chromeWindow?.isFocused == true
-        onDispose { chromeWindow?.removeWindowFocusListener(listener) }
+        onDispose {
+            chromeWindow?.removeWindowFocusListener(listener)
+            keyRegistration?.close()
+            input.close()
+        }
     }
     // Listen only to this actual native host and its one non-focusable MPV Canvas.
     // A comment editor is outside this component tree and retains its native input.
@@ -1111,7 +1135,10 @@ internal class DesktopWindowsVideoActions(
                                 nativeSurface.reportViewport(route, viewportLease, rect)
                             }
                         }
-                        .focusRequester(viewportFocus).onFocusChanged { if(current()) actions.focusChanged(it.hasFocus) }.focusable()) {
+                        .focusRequester(viewportFocus).onFocusChanged {
+                            viewportKeyboardFocused = it.hasFocus
+                            if(current()) actions.focusChanged(it.hasFocus)
+                        }.focusable()) {
                         if (active && !pipActive) {
                             DesktopVideoCommandPopup(viewportSize, {
                                 Box(Modifier.fillMaxSize()) {

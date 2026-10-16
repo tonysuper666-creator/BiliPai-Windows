@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "e3a868515b0c244af8240a10f1f650a89ca28a01",
-  "windowsVersion": "0.2.427.163",
-  "createdAt": "2026-10-16T21:56:54.923978+00:00",
+  "baseHead": "6ae85500b7f7474f055f937d424c215f48bbb4fe",
+  "windowsVersion": "0.2.427.164",
+  "createdAt": "2026-10-16T22:53:40.385848+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -228,7 +228,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
       "normalization": "lf",
-      "sha256": "be16da79778a5bc81ba9ff12b6f886d83f37f7cb99ac19382067dd03dffcfd63"
+      "sha256": "0d5cebf776197e82b75b10017210bc9a55845153a2bc7e9719f6312c6ea8ba9e"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
@@ -821,9 +821,14 @@
       "sha256": "f3c5f263a41234800ddee5a1b4647d273bfad6065133175d6384b91057127813"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoKeyInput.kt",
+      "normalization": "lf",
+      "sha256": "a3df87d9a4341340cd082910872b797097f812c70b7fc8292ff9171b563cec04"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt",
       "normalization": "lf",
-      "sha256": "86e9a1fa5665f5bdeb94bb787290b4537ded803cfd731617c5399d9104480321"
+      "sha256": "7a3fb875e9ec1cb3075ce403f041d045f5bd19c70542ab981302a4fc9768d6c5"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoff.kt",
@@ -1314,6 +1319,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoEntryCoverIdentityTest.kt",
       "normalization": "lf",
       "sha256": "8063ae3003a80008f82dbd2c77cea3fee8b9811183c582535c0f17ac654b6614"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoKeyInputTest.kt",
+      "normalization": "lf",
+      "sha256": "98d7e4923a34e96df90b47c6b2e6f5373f81da003c09048549c95fec2e5206d7"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoffTest.kt",
@@ -3743,7 +3753,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "ed39343ccb539d0d2aa4273b69af2a4417fe6485c8e69e9268be2de838af7699"
+      "sha256": "c08b9d9ec94751dfff800d4d136b9d15d14ebe9a6d0c2247b63d29c0750309aa"
     }
   ],
   "classes": {
@@ -3836,9 +3846,10 @@
     "com.android.purebilibili.core.network.policy.NetworkProxyPolicyTest": 10,
     "com.bilipai.desktop.plugins.DesktopStringSetPreferencesTest": 5,
     "com.bilipai.desktop.network.DesktopNetworkProxyRoutingTest": 2,
-    "com.bilipai.desktop.appearance.DesktopPlatformClipboardTest": 10
+    "com.bilipai.desktop.appearance.DesktopPlatformClipboardTest": 10,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoKeyInputTest": 15
   },
-  "expectedTests": 806,
+  "expectedTests": 821,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -3846,33 +3857,10 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
-    "desktop/build.gradle.kts",
     "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopPlatformClipboard.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopTextClipboard.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopPlatformClipboardTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyRoutingTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopStringSetPreferencesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoLocalReplay.kt",
-    "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-upstream-network-proxy.py",
-    "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_extract_upstream_network_proxy.py",
-    "desktop/tools/tests/test_publish_release.py",
-    "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v042_network_proxy_source.py",
-    "desktop/tools/v042_network_proxy.py",
-    "desktop/upstream-slices/v042-network-proxy/ApiClient.kt",
-    "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicy.kt",
-    "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicyTest.kt",
-    "desktop/upstream-slices/v042-network-proxy/NetworkProxyStore.kt",
-    "desktop/upstream-slices/v042-network-proxy/SettingsSections.kt",
-    "desktop/upstream-slices/v042-network-proxy/manifest.json",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoKeyInput.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoKeyInputTest.kt",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

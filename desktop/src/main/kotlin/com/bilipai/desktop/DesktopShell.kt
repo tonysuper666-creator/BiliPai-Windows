@@ -2353,7 +2353,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         focusChanged = { focused -> if(messageRoutes.currentKey==entryKey) playerFocused=focused },
                                         registerScreenshot = ordinaryScreenshotShortcut::register,
                                         nativeKey = { event -> if(!isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
-                                            messageRoutes.currentKey==entryKey) latestRootKeyHandler(event) else false }))
+                                            messageRoutes.currentKey==entryKey) {
+                                            // The physical leaf has already admitted its actual viewport/control
+                                            // focus. A control click need not focus the legacy player container.
+                                            if (event.key == Key.Spacebar)
+                                                performPlayerKey(resolvePlayerKeyAction(event, isTextInputActive = false))
+                                            else latestRootKeyHandler(event)
+                                        } else false }))
                                 if (danmaku != null && hostWindow != null && danmakuSource != null && danmakuSource.request.cid > 0L) {
                                     LaunchedEffect(danmakuAssembly,danmakuSource,danmaku) {
                                         danmakuAssembly.playback.danmakuSentEvent.collect { event ->
