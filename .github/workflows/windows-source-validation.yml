@@ -131,6 +131,16 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original Root UI export admission regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_verify_original_root_ui_export.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original Root UI export readback regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_windows_video_return_frozen_inputs.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Whole original return renderer frozen-input regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_comment_selection_consumer_closure.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete original comment selection consumer regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v029_comment_composer.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete original comment composer and inverse regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_video_status_labels_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original v041 status-label regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v041_video_status_personal_consumers.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original v041 personal video status source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_fixed_java_toolchain.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Actual fixed Java toolchain and build evidence regressions failed.' }
       - name: Stage the existing pinned JDK

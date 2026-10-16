@@ -67,7 +67,52 @@ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextConte
     (output/'v029-comment-search-ui-source.json').write_text(json.dumps(comment_selection,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     emit('feature/video/ui/components/CommentSearchSheet.kt',body,path,'Full original local loaded-raw-reply search/filter/highlight/sort/search result UI and helpers. Existing clipboard/feedback and Coil context platform seams only; upstream glassActive=false is retained verbatim.')
     path=BASE+'feature/video/viewmodel/VideoComposerDraftState.kt';body=original[path].replace('import android.net.Uri\n','').replace('List<Uri>','List<String>')
-    emit('feature/video/viewmodel/VideoComposerDraftState.kt',body,path,'Full original draft schema/key; Android Uri only maps to selected opaque file URI Strings. Ephemeral same-video state, no persistence or second player.')
+    # The Windows native composer window is disposed on close and the overlay is
+    # recreated under key(stamp) on every open, so the dialog's rememberSaveable
+    # selection cannot survive. The live UTF-16 caret/selection rides the same
+    # ephemeral per-video/per-reply draft; no second store is introduced.
+    body=replace_once(body,'''data class CommentComposerDraft(
+    val text: String = "",
+    val imageUris: List<String> = emptyList(),
+    val syncToDynamic: Boolean = false
+)''','''data class CommentComposerDraft(
+    val text: String = "",
+    val imageUris: List<String> = emptyList(),
+    val syncToDynamic: Boolean = false,
+    val selectionStart: Int = -1,
+    val selectionEnd: Int = -1
+)
+
+/** Recorded UTF-16 bounds are clamped independently. Preserve start/end direction
+ * so Shift selection and keyboard extension keep the same anchor after reopening. -1 means the draft never
+ * recorded a selection, and seeding then falls back to end-of-text. */
+internal fun resolveCommentDraftSelection(
+    requestedStart: Int,
+    requestedEnd: Int,
+    previous: CommentComposerDraft?,
+    textLength: Int
+): Pair<Int, Int> {
+    fun bound(requested: Int, previousValue: Int): Int = when {
+        requested >= 0 -> requested.coerceIn(0, textLength)
+        previousValue >= 0 -> previousValue.coerceIn(0, textLength)
+        else -> -1
+    }
+    val start = bound(requestedStart, previous?.selectionStart ?: -1)
+    val end = bound(requestedEnd, previous?.selectionEnd ?: -1)
+    return if (start < 0 || end < 0) -1 to -1 else start to end
+}
+
+/** Selection movement is presentation state, not a new comment payload. Retain the
+ * original content/image/sync comparison when deciding whether a sent draft clears. */
+internal fun sameCommentDraftSubmissionContent(
+    current: CommentComposerDraft?, submitted: CommentComposerDraft?
+): Boolean = current?.copy(selectionStart = -1, selectionEnd = -1) ==
+    submitted?.copy(selectionStart = -1, selectionEnd = -1)''')
+    from v029_comment_composer import save
+    from v029_comment_search import whole_proof
+    save(output, 'v029-comment-draft-schema-source',
+         dict(path=path, canonicalSchemaToGenerated=whole_proof(original[path], body)))
+    emit('feature/video/viewmodel/VideoComposerDraftState.kt',body,path,'Full original draft schema/key and key policies; Android Uri maps to selected opaque file URI Strings. Directed selection extends the same ephemeral per-video/reply draft, with no persistence or second player.')
     generate_slots(output)
     from v036_comment_refresh_dependencies import generate_video_padding
     generate_video_padding(output)
@@ -89,6 +134,18 @@ def generate_composer(original,shared,emit,function):
     emote_start=raw.index('    private val _emotePackages =',end);emote_end=raw.index('    // ========== 弹幕发送',emote_start)
     fields+=raw[emote_start:emote_end]
     fields+=function(raw,'updateCommentDraft')+'\n'
+    # A reopen recreates the dialog composition under a new stamp, so the live
+    # caret is recorded into the same ephemeral draft and restored on seed.
+    update_draft=function(raw,'updateCommentDraft')
+    fields=fields.replace(update_draft,update_draft.replace('''        syncToDynamic: Boolean
+    ) {''','''        syncToDynamic: Boolean,
+        selectionStart: Int = -1,
+        selectionEnd: Int = -1
+    ) {''').replace('        val draft = CommentComposerDraft(text, imageUris, syncToDynamic)','''        val previous = _composerDrafts.value.comments[key]
+        val (resolvedSelectionStart, resolvedSelectionEnd) = resolveCommentDraftSelection(
+            selectionStart, selectionEnd, previous, text.length
+        )
+        val draft = CommentComposerDraft(text, imageUris, syncToDynamic, resolvedSelectionStart, resolvedSelectionEnd)'''))
     send_start=raw.index('    private val _isSendingComment =');send_end=raw.index('\n',raw.index('    val commentSentEvent =',send_start))
     fields+=raw[send_start:send_end]+'\n'
     # Keep exact original reply/aid/event policies, original literal values included.
@@ -171,7 +228,10 @@ def generate_input_and_fraud(repo,output,original,shared,emit,function):
     path=BASE+'feature/video/screen/VideoDetailInputOverlayAdapter.kt';raw=original[path]
     begin=raw.index('@Immutable\nprivate data class CommentInputSnapshot(');end=raw.index('@OptIn(ExperimentalLayoutApi::class)',begin)
     types=raw[begin:end].replace('List<Uri>','List<String>')
+    types=replace_once(types,'val updateDraft: (String, List<String>, Boolean) -> Unit,','val updateDraft: (String, List<String>, Boolean, Int, Int) -> Unit,')
     body=function(raw,'VideoDetailCommentInputOverlayContent')
+    # Seed the reopened dialog with the draft-recorded caret/selection.
+    body=replace_once(body,'        initialText = snapshot.draft.text,','        initialText = snapshot.draft.text,\n        initialSelectionStart = snapshot.draft.selectionStart,\n        initialSelectionEnd = snapshot.draft.selectionEnd,')
     begin=raw.index('    val isSendingComment by viewModel.isSendingComment');end=raw.index('    val screenHeightPx =',begin)
     collect=raw[begin:end].replace('viewModel','composer')
     header='''package com.android.purebilibili.feature.video.screen
@@ -182,6 +242,8 @@ import com.android.purebilibili.feature.video.ui.components.CommentInputDialog
 '''
     collect=collect.replace('.collectAsStateWithLifecycle()','.collectAsState()')
     collect='    val showCommentInput by composer.showCommentDialog.collectAsState()\n    val composerDrafts by composer.composerDrafts.collectAsState()\n'+collect
+    # Report the live caret/selection together with the text through the same port.
+    collect=replace_once(collect,'updateDraft = composer::updateCommentDraft,','updateDraft = { text, images, sync, selectionStart, selectionEnd -> composer.updateCommentDraft(text, images, sync, selectionStart, selectionEnd); Unit },')
     owner='''@Composable internal fun DesktopOriginalVideoCommentInputOverlay(
     composer: DesktopOriginalVideoCommentComposer,
     commentState: CommentUiState,

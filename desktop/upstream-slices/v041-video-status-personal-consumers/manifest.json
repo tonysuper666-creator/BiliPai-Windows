@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "jay3-yy/BiliPai",
+  "upstreamTag": "v0.4.1",
+  "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+  "scope": "Exact v041 raw personal card and profile sources; existing Windows whole-source producers receive finite original status-badge blocks.",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCard.kt",
+      "filename": "FavoritePersonalCard.kt",
+      "bytes": 10828,
+      "sha256": "1a14e2d8a5b1f254160828dd85c3d8b381383e9d1bb58f239746c8b99a0a3ad0",
+      "gitBlob": "e4fb9da0cef3ad4927f336029bb1dfeec40f0ddc",
+      "canonicalSha256LF": "3f47f7ec3afbf01e8ae9992c7761fab0ddc9edb1b0334452c5e864e38e14a319"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryPersonalCard.kt",
+      "filename": "HistoryPersonalCard.kt",
+      "bytes": 18781,
+      "sha256": "715e5dcb0c7fc856d6f324c29c9316d4ad971529f18d85023ecbe017e21f5a65",
+      "gitBlob": "82d72baa26f4b3000cdf996acdfbba08d9c0c836",
+      "canonicalSha256LF": "71dafbef774d4fd3d3538a76b7ab887f178381992393b0802bd41bc17ca2f5f5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "filename": "ProfileScreen.kt",
+      "bytes": 224474,
+      "sha256": "b6b08bd10ab5212007618803a176f0898efa68c392a2a8205804f7ba606b5ae5",
+      "gitBlob": "af86354fca16a16463b7f5989966d1ba06eb843f",
+      "canonicalSha256LF": "e39d9e4b1115ee9530345861e1ff4f5acdeead4552e51930e7e9410804869c47"
+    }
+  ]
+}

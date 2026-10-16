@@ -110,7 +110,9 @@
     "desktop/upstream-slices/v041-dynamic-comment-identity",
     "desktop/upstream-slices/v041-feed-import-title",
     "desktop/upstream-slices/v041-player-cover",
-    "desktop/upstream-slices/v041-rss-dynamic"
+    "desktop/upstream-slices/v041-rss-dynamic",
+    "desktop/upstream-slices/v041-video-status-labels",
+    "desktop/upstream-slices/v041-video-status-personal-consumers"
   ],
   "archives": [
     {
@@ -4487,6 +4489,136 @@
           "sha256": "e9bb35a0424c11b21a459f2433047202cc331dbeed7b9f2e3511ed9f1c2e7903",
           "hashNormalization": "raw",
           "blob": "5d9d3b53a9a4fd62562e70d418bb6a0a1c0cf9bb"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v041-video-status-labels",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/FavoriteModels.kt",
+          "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534",
+          "hashNormalization": "raw",
+          "blob": "8e8ce0f0dc335748c66904076c1d7c809c2f3ea7"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/HomeStyleSingleColumnVideoCard.kt",
+          "sha256": "8b910cfbe6dd48b20ffa9dcff0109b99c7554fdadd073da828096a78b1ae9a42",
+          "hashNormalization": "raw",
+          "blob": "31d3a950c38b0761897a203e669a2e4d78547302"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/ListModels.kt",
+          "sha256": "3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1",
+          "hashNormalization": "raw",
+          "blob": "c0db297c727a424c0f59dc57b06a6126cff6dbaa"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/SearchModels.kt",
+          "sha256": "121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30",
+          "hashNormalization": "raw",
+          "blob": "bfa90f39597c1639b37b7b255baf4f7975043dce"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/SpaceLoadPolicy.kt",
+          "sha256": "108e14a0f2316477e6da3df04ae44ca5e9b75fe0b64db25df42ce01697fff240",
+          "hashNormalization": "raw",
+          "blob": "ef511508d88bfa81689b409985208a9af15b6f2c"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/SpaceModels.kt",
+          "sha256": "3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b",
+          "hashNormalization": "raw",
+          "blob": "48f8347e406193fb6d5061c9f0a335d75a70b1e0"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/SpaceScreen.kt",
+          "sha256": "c091fe781a4548ee46af7750d92ba7881eaee3c8f21da4ad3fa0fe14c47c838d",
+          "hashNormalization": "raw",
+          "blob": "122866cff2790f782d430a226c80cc29597ad844"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/UserContentRepository.kt",
+          "sha256": "b95f08c8f693d0ce7a089a52df4f9884c564ae968393ece23488c09732eca3dd",
+          "hashNormalization": "raw",
+          "blob": "8301c8b661f897772bcc56df10bd35d026fb39a4"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/VideoCard.kt",
+          "sha256": "5dd884fc431ca1809a4e766bb6492b862f56b9a59462348093aa1fc55e7bb78d",
+          "hashNormalization": "raw",
+          "blob": "5450beeaafd86f416e18cdaffffc29c900f684d5"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/VideoCooperationMetadataTest.kt",
+          "sha256": "4c8a476ec72a7b3013c8a77504fe946e5b578807937210c4ddb355edd926e0fa",
+          "hashNormalization": "raw",
+          "blob": "4ee8b2b4e5c4fe083e8eea7ca26e02a274757e0b"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/VideoStatusBadges.kt",
+          "sha256": "83cf025c274e340e8877986784ffb1d9bbb88a168ef6b81c830344a601cf854b",
+          "hashNormalization": "raw",
+          "blob": "68e9bc71e5109897d0b8083c64f0c8135508e546"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabels.kt",
+          "sha256": "e5cba87c8ee8440d02b87c777ca545ab5d43408ce3f1d2f0d309b5cb13ef60d0",
+          "hashNormalization": "raw",
+          "blob": "8115954f021f4a5702ab2f94eac790074b32768f"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabelsTest.kt",
+          "sha256": "321d1502204a020546396f474f5cef38c35e78793db184f3a73a4c8fd1090c7c",
+          "hashNormalization": "raw",
+          "blob": "1bf5b2e40dcb517ae61c9a128e001ab98d75f1e1"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/WatchLaterRepository.kt",
+          "sha256": "088b5ea5761f2d709bcb59218a4cd1ca437c434b318066a8c59593ee2dccac28",
+          "hashNormalization": "raw",
+          "blob": "ead77564591d2c93a6d52ff3398f004d0d66abfa"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/WatchLaterScreen.kt",
+          "sha256": "9e7715de37f1e4ad3741f07c6006c2289d94cfc610809e539210d7f9d4e3511b",
+          "hashNormalization": "raw",
+          "blob": "f689fa2592c352a59313cab50b4a22b631550ecf"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-labels/manifest.json",
+          "sha256": "3237709d313f94bc41f836685d7a44bdcfa73b315c29b6af0ed88a534356142c",
+          "hashNormalization": "raw",
+          "blob": "d74733c98452704cc5004d53417cabcb91b35f38"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v041-video-status-personal-consumers",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v041-video-status-personal-consumers/FavoritePersonalCard.kt",
+          "sha256": "1a14e2d8a5b1f254160828dd85c3d8b381383e9d1bb58f239746c8b99a0a3ad0",
+          "hashNormalization": "raw",
+          "blob": "e4fb9da0cef3ad4927f336029bb1dfeec40f0ddc"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-personal-consumers/HistoryPersonalCard.kt",
+          "sha256": "715e5dcb0c7fc856d6f324c29c9316d4ad971529f18d85023ecbe017e21f5a65",
+          "hashNormalization": "raw",
+          "blob": "82d72baa26f4b3000cdf996acdfbba08d9c0c836"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-personal-consumers/manifest.json",
+          "sha256": "80ed5aaf94febad3403323b98a45299fe06efde30683963a7a8316cb8a336d15",
+          "hashNormalization": "raw",
+          "blob": "dd9aa23ed9b55b6d017b7736ac6fb5331abdc6ad"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-video-status-personal-consumers/ProfileScreen.kt",
+          "sha256": "b6b08bd10ab5212007618803a176f0898efa68c392a2a8205804f7ba606b5ae5",
+          "hashNormalization": "raw",
+          "blob": "af86354fca16a16463b7f5989966d1ba06eb843f"
         }
       ]
     }
@@ -11425,6 +11557,264 @@
         "v027-hot-danmaku"
       ],
       "referenceOnly": true
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/FavoriteModels.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "8e8ce0f0dc335748c66904076c1d7c809c2f3ea7",
+      "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "The WatchLaterRights is_stein_gate hunk only; the WatchLaterData ps hunk is pinned as deferred."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/HomeStyleSingleColumnVideoCard.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "31d3a950c38b0761897a203e669a2e4d78547302",
+      "sha256": "8b910cfbe6dd48b20ffa9dcff0109b99c7554fdadd073da828096a78b1ae9a42",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Containment source of the single-column cover badge hook; not emitted as a whole file."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/ListModels.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "c0db297c727a424c0f59dc57b06a6126cff6dbaa",
+      "sha256": "3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/SearchModels.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "bfa90f39597c1639b37b7b255baf4f7975043dce",
+      "sha256": "121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Exact-once SearchVideoItem label field and toVideoItem hunks only; the nine other v0.4.1 hunks (search-all models, SearchUpItem serializers, area_name, SearchType.ALL) are pinned as deferred."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/SpaceLoadPolicy.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "ef511508d88bfa81689b409985208a9af15b6f2c",
+      "sha256": "108e14a0f2316477e6da3df04ae44ca5e9b75fe0b64db25df42ce01697fff240",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Containment source of the aggregate video label-input hook; not emitted as a whole file."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/SpaceModels.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "48f8347e406193fb6d5061c9f0a335d75a70b1e0",
+      "sha256": "3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/SpaceScreen.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "122866cff2790f782d430a226c80cc29597ad844",
+      "sha256": "c091fe781a4548ee46af7750d92ba7881eaee3c8f21da4ad3fa0fe14c47c838d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Containment source of the Space card and list status-label hooks; not emitted as a whole file."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/UserContentRepository.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/UserContentRepository.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "8301c8b661f897772bcc56df10bd35d026fb39a4",
+      "sha256": "b95f08c8f693d0ce7a089a52df4f9884c564ae968393ece23488c09732eca3dd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "durationSeconds and asVideoItem tail only, emitted as test support for the original status-label tests."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/VideoCard.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "5450beeaafd86f416e18cdaffffc29c900f684d5",
+      "sha256": "5dd884fc431ca1809a4e766bb6492b862f56b9a59462348093aa1fc55e7bb78d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Containment source of the premium pill to VideoStatusBadges hook; not emitted as a whole file."
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/VideoCooperationMetadataTest.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/VideoCooperationMetadataTest.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "4ee8b2b4e5c4fe083e8eea7ca26e02a274757e0b",
+      "sha256": "4c8a476ec72a7b3013c8a77504fe946e5b578807937210c4ddb355edd926e0fa",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/VideoStatusBadges.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/VideoStatusBadges.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "68e9bc71e5109897d0b8083c64f0c8135508e546",
+      "sha256": "83cf025c274e340e8877986784ffb1d9bbb88a168ef6b81c830344a601cf854b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/VideoStatusLabels.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabels.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "8115954f021f4a5702ab2f94eac790074b32768f",
+      "sha256": "e5cba87c8ee8440d02b87c777ca545ab5d43408ce3f1d2f0d309b5cb13ef60d0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/VideoStatusLabelsTest.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabelsTest.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "1bf5b2e40dcb517ae61c9a128e001ab98d75f1e1",
+      "sha256": "321d1502204a020546396f474f5cef38c35e78793db184f3a73a4c8fd1090c7c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/WatchLaterRepository.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "ead77564591d2c93a6d52ff3398f004d0d66abfa",
+      "sha256": "088b5ea5761f2d709bcb59218a4cd1ca437c434b318066a8c59593ee2dccac28",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Containment source of the rights, course, charging and pgc-label mapping hooks; not emitted as a whole file."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-labels/WatchLaterScreen.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "f689fa2592c352a59313cab50b4a22b631550ecf",
+      "sha256": "9e7715de37f1e4ad3741f07c6006c2289d94cfc610809e539210d7f9d4e3511b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-video-status-labels-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Containment source of the WatchLater cover badge hook; not emitted as a whole file."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCard.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-personal-consumers/FavoritePersonalCard.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "e4fb9da0cef3ad4927f336029bb1dfeec40f0ddc",
+      "sha256": "1a14e2d8a5b1f254160828dd85c3d8b381383e9d1bb58f239746c8b99a0a3ad0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-personal-video-status-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Exact original status badge import and cover overlay blocks inside the retained whole Windows producer; full v041 card typography/layout is tracked separately."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryPersonalCard.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-personal-consumers/HistoryPersonalCard.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "82d72baa26f4b3000cdf996acdfbba08d9c0c836",
+      "sha256": "715e5dcb0c7fc856d6f324c29c9316d4ad971529f18d85023ecbe017e21f5a65",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-personal-video-status-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Exact original status badge import and cover overlay blocks inside the retained whole Windows producer; full v041 card typography/layout is tracked separately."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "localPath": "desktop/upstream-slices/v041-video-status-personal-consumers/ProfileScreen.kt",
+      "upstreamCommit": "d18fb20e31adb11bbec9fae6dfce7d705d556217",
+      "blob": "af86354fca16a16463b7f5989966d1ba06eb843f",
+      "sha256": "b6b08bd10ab5212007618803a176f0898efa68c392a2a8205804f7ba606b5ae5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v041-personal-video-status-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Exact original status badge import and cover overlay blocks inside the retained whole Windows producer; full v041 card typography/layout is tracked separately."
     }
   ],
   "buildStandaloneInputs": [

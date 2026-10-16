@@ -103,6 +103,10 @@ def generate(repo, output, standalone=False):
         text=apply_return_first_frame(repo,s['output'],text,output)
         from v037_player_known_presentation import apply as apply_known_presentation
         text=apply_known_presentation(s['output'],text,repo,output)
+        from v029_comment_composer import legacy_comment_selection_delta
+        text=legacy_comment_selection_delta(s['output'],text,output)
+        from windows_video_return_frozen_inputs import apply_and_record as apply_frozen_return_inputs
+        text=apply_frozen_return_inputs(s['output'],text,output)
         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf8'));written.append(target)
     return written

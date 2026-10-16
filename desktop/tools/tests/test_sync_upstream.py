@@ -945,6 +945,21 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             'desktop/upstream-slices/v041-player-cover/VideoDetailCoverContentScale.kt',
             'desktop/upstream-slices/v041-player-cover/VideoPlayerCoverPolicyTest.kt',
             'desktop/upstream-slices/v041-player-cover/VideoPlayerSectionPolicyTest.kt',
+            'desktop/upstream-slices/v041-video-status-labels/VideoStatusLabels.kt',
+            'desktop/upstream-slices/v041-video-status-labels/VideoStatusBadges.kt',
+            'desktop/upstream-slices/v041-video-status-labels/ListModels.kt',
+            'desktop/upstream-slices/v041-video-status-labels/SpaceModels.kt',
+            'desktop/upstream-slices/v041-video-status-labels/SearchModels.kt',
+            'desktop/upstream-slices/v041-video-status-labels/FavoriteModels.kt',
+            'desktop/upstream-slices/v041-video-status-labels/UserContentRepository.kt',
+            'desktop/upstream-slices/v041-video-status-labels/VideoStatusLabelsTest.kt',
+            'desktop/upstream-slices/v041-video-status-labels/VideoCooperationMetadataTest.kt',
+            'desktop/upstream-slices/v041-video-status-labels/VideoCard.kt',
+            'desktop/upstream-slices/v041-video-status-labels/HomeStyleSingleColumnVideoCard.kt',
+            'desktop/upstream-slices/v041-video-status-labels/SpaceScreen.kt',
+            'desktop/upstream-slices/v041-video-status-labels/SpaceLoadPolicy.kt',
+            'desktop/upstream-slices/v041-video-status-labels/WatchLaterRepository.kt',
+            'desktop/upstream-slices/v041-video-status-labels/WatchLaterScreen.kt',
         ):
             path = self.repo / relative
             original = path.read_bytes()
@@ -964,10 +979,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 526)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 515)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 108)
-        self.assertEqual(len(self.inventory["archives"]), 112)
+        self.assertEqual(len(entries), 544)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 533)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 110)
+        self.assertEqual(len(self.inventory["archives"]), 114)
         # These five exact v041 inputs extend the previous506-input inventory.
         # Whole author policy/tests now share the real dynamic-tabs UI producer.
         v041_root = "desktop/upstream-slices/v041-rss-dynamic/"
@@ -1036,6 +1051,28 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(len(cover_archives), 1)
         self.assertEqual({Path(leaf["path"]).name for leaf in cover_archives[0]["files"]},
                          set(cover_rows) | {"manifest.json"})
+        status_root = "desktop/upstream-slices/v041-video-status-labels/"
+        status_rows = {Path(item["localPath"]).name: item for item in entries
+                       if item["localPath"].startswith(status_root)}
+        self.assertEqual(set(status_rows), {"VideoStatusLabels.kt", "VideoStatusBadges.kt", "ListModels.kt",
+            "SpaceModels.kt", "SearchModels.kt", "FavoriteModels.kt", "UserContentRepository.kt",
+            "VideoStatusLabelsTest.kt", "VideoCooperationMetadataTest.kt", "VideoCard.kt",
+            "HomeStyleSingleColumnVideoCard.kt", "SpaceScreen.kt", "SpaceLoadPolicy.kt",
+            "WatchLaterRepository.kt", "WatchLaterScreen.kt"})
+        self.assertTrue(all(item["upstreamCommit"] == "d18fb20e31adb11bbec9fae6dfce7d705d556217"
+                            and item["hashNormalization"] == "raw" and item["kind"] == "adaptedSource"
+                            for item in status_rows.values()))
+        # Six whole sources are emitted from the archive; nine are containment or hunk sources only.
+        self.assertEqual({name for name, item in status_rows.items() if not item["referenceOnly"]},
+                         {"VideoStatusLabels.kt", "VideoStatusBadges.kt", "ListModels.kt", "SpaceModels.kt",
+                          "VideoStatusLabelsTest.kt", "VideoCooperationMetadataTest.kt"})
+        self.assertTrue(all(item["partialReuse"] is True and item["usedScope"]
+                            for item in status_rows.values() if item["referenceOnly"]))
+        status_archives = [row for row in self.inventory["archives"] if row["directory"] == status_root.rstrip("/")]
+        self.assertEqual(len(status_archives), 1)
+        self.assertEqual({Path(leaf["path"]).name for leaf in status_archives[0]["files"]},
+                         set(status_rows) | {"manifest.json"})
+        self.assertIn(status_root.rstrip("/"), self.inventory["buildInputRoots"])
         for root, count in (("v034-favorite-content-errors", 1), ("v034-on-demand", 5),
                             ("v034-detail-bootstrap", 4), ("v034-metadata-related", 2),
                             ("v034-text-lyrics", 3), ("v034-next-watch", 1),
@@ -1615,10 +1652,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 526)
+        self.assertEqual(len(self.load()), 544)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 526)
+        self.assertEqual(len(self.load()), 544)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1635,7 +1672,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 526)
+                self.assertEqual(len(entries), 544)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

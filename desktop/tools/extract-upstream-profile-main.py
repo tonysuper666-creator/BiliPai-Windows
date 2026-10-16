@@ -100,7 +100,9 @@ import com.android.purebilibili.feature.video.ui.feedback.resolveVideoActionCoun
   p=BASE+'feature/profile/'+n+'.kt';body=ui(source[p])
   if n=='OfficialWallpaperSheet':body=body.replace('fun OfficialWallpaperSheet(','internal fun OfficialWallpaperSheet(')
   emit(p,body)
- p=BASE+'feature/profile/ProfileScreen.kt';s=ui(source[p])
+ p=BASE+'feature/profile/ProfileScreen.kt'
+ from v041_video_status_personal_consumers import apply as apply_personal_status
+ s=ui(apply_personal_status(repo,p,source[p],out))
  s=s.replace('fun ProfileScreen(','internal fun ProfileScreen(')
  s=s.replace('MobileProfileContent(\n                    captureBackground','MobileProfileContent(\n                    viewModel = viewModel,\n                    captureBackground')
  # Sole packages producer already emits the original repeat policy.

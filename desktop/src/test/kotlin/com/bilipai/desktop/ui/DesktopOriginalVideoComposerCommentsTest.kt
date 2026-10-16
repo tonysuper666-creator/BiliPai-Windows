@@ -2,7 +2,10 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.feature.video.ui.components.commentDraftTextFieldValue
 import com.android.purebilibili.feature.video.viewmodel.*
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.collect
@@ -207,6 +210,125 @@ class DesktopOriginalVideoComposerCommentsTest {
             assertEquals(CommentComposerDraft("B",emptyList(),false),h.vm.composerDrafts.value.comments[0L])
             assertTrue(h.adds.isEmpty());assertTrue(h.uploads.isEmpty());assertTrue(h.failures.isEmpty());next.close()
         }
+    }
+    @Test fun closeAndReopenKeepsRecordedCaretSelectionInSameDraft():Unit=runBlocking {
+        Harness().use { h ->
+            val p=h.presentation();val a=h.open(p)
+            assertTrue(h.vm.changeCommentDraft(a,"你好世界",emptyList(),false,1,3))
+            assertTrue(h.vm.dismissCommentComposer(a))
+            val b=h.open(p)
+            assertEquals(CommentComposerDraft("你好世界",emptyList(),false,1,3),h.vm.composerDrafts.value.comments[0L])
+            // A text-only bridge update preserves the caret, clamped to the new text.
+            h.vm.updateCommentDraft("你好")
+            assertEquals(CommentComposerDraft("你好",emptyList(),false,1,2),h.vm.composerDrafts.value.comments[0L])
+            assertSame(b,h.vm.commentStamp.value);p.close();assertTrue(h.failures.isEmpty())
+        }
+    }
+    @Test fun draftSelectionIsIsolatedPerReplyTargetAndResetPerVideo():Unit=runBlocking {
+        Harness().use { h ->
+            val p=h.presentation();val a=h.open(p)
+            h.vm.changeCommentDraft(a,"root",emptyList(),false,2,4)
+            val reply=ReplyItem(rpid=99,root=90,member=ReplyMember(uname="用户"));val b=h.open(p,reply)
+            h.vm.changeCommentDraft(b,"child",emptyList(),false,0,1)
+            assertEquals(2,h.vm.composerDrafts.value.comments[0L]?.selectionStart)
+            assertEquals(0,h.vm.composerDrafts.value.comments[99L]?.selectionStart)
+            h.source=Any();h.info=ViewInfo(bvid="BVnext",aid=170002,cid=7008);h.generation++
+            h.vm.bindSubject(h.subject())
+            assertTrue(h.vm.composerDrafts.value.comments.isEmpty())
+            val next=h.presentation();h.open(next)
+            // An absent new-video draft has the same default caret as the real overlay.
+            val draft=h.vm.composerDrafts.value.comments[0L] ?: CommentComposerDraft()
+            assertEquals(-1,draft.selectionStart)
+            assertEquals(TextFieldValue("",TextRange(0)),
+                commentDraftTextFieldValue(draft.text,draft.selectionStart,draft.selectionEnd))
+            next.close()
+        }
+    }
+    @Test fun sameVideoPartRebindKeepsRootAndReplySelections():Unit=runBlocking {
+        Harness().use { h ->
+            val old=h.presentation();val root=h.open(old)
+            h.vm.changeCommentDraft(root,"root",emptyList(),false,4,1)
+            val reply=ReplyItem(rpid=99,root=90,member=ReplyMember(uname="用户"))
+            val child=h.open(old,reply);h.vm.changeCommentDraft(child,"child",emptyList(),false,1,3)
+            val before=h.vm.composerDrafts.value
+            h.source=Any();h.info=h.info.copy(cid=7008);h.generation++
+            h.vm.bindSubject(h.subject())
+            assertEquals(before,h.vm.composerDrafts.value)
+            assertNull(h.vm.commentStamp.value)
+            assertFalse(h.vm.changeCommentDraft(child,"stale",emptyList(),false,0,0))
+            val next=h.presentation();h.open(next,reply)
+            assertEquals(CommentComposerDraft("child",emptyList(),false,1,3),
+                h.vm.composerDrafts.value.comments[99L])
+            old.close();next.close();assertTrue(h.failures.isEmpty())
+        }
+    }
+    @Test fun subjectBindingAndTextBridgeUseBoundVideoWhenPlaybackInfoIsStillOld():Unit=runBlocking {
+        Harness().use { h ->
+            val old=h.presentation();val a=h.open(old)
+            h.vm.changeCommentDraft(a,"A",listOf("file:///A.png"),true,1,0)
+            h.source=Any();h.generation++
+            val nextSubject=h.subject().copy(bvid="BVnext",aid=170002,cid=7008)
+            h.vm.bindSubject(nextSubject)
+            // Playback metadata may lag the bound subject during source preparation.
+            assertNotEquals("BVnext",h.info.bvid)
+            assertEquals("BVnext",h.vm.composerDrafts.value.videoId)
+            assertTrue(h.vm.composerDrafts.value.comments.isEmpty())
+            h.vm.updateCommentDraft("B")
+            assertEquals("BVnext",h.vm.composerDrafts.value.videoId)
+            assertEquals(mapOf(0L to CommentComposerDraft("B",emptyList(),false)),
+                h.vm.composerDrafts.value.comments)
+            h.info=ViewInfo(bvid="BVnext",aid=170002,cid=7008)
+            val next=h.presentation();h.open(next)
+            assertEquals(CommentComposerDraft("B",emptyList(),false),h.vm.composerDrafts.value.comments[0L])
+            assertTrue(h.adds.isEmpty());assertTrue(h.uploads.isEmpty())
+            old.close();next.close();assertTrue(h.failures.isEmpty())
+        }
+    }
+    @Test fun realDraftSelectionSeedsTextFieldValueWithClampAndDirection():Unit=runBlocking {
+        // Exercises the real generated seeding helper, not a reimplementation.
+        assertEquals(TextFieldValue("abc",TextRange(3)),commentDraftTextFieldValue("abc"))
+        assertEquals(TextFieldValue("abcde",TextRange(4,1)),commentDraftTextFieldValue("abcde",4,1))
+        assertEquals(TextFieldValue("abc",TextRange(3,3)),commentDraftTextFieldValue("abc",5,9))
+        assertEquals(-1 to -1,resolveCommentDraftSelection(-1,-1,null,10).let{it.first to it.second})
+        assertEquals(2 to 3,resolveCommentDraftSelection(-1,-1,CommentComposerDraft("你好世界",selectionStart=2,selectionEnd=4),3).let{it.first to it.second})
+        assertEquals(3 to 4,resolveCommentDraftSelection(3,4,CommentComposerDraft("12345",selectionStart=0,selectionEnd=1),5).let{it.first to it.second})
+    }
+    @Test fun reversedSelectionSurvivesActualDraftCloseReopenAndTextShrink():Unit=runBlocking {
+        Harness().use { h ->
+            val p=h.presentation();val a=h.open(p)
+            assertTrue(h.vm.changeCommentDraft(a,"A😃BCD",emptyList(),false,5,1))
+            assertTrue(h.vm.dismissCommentComposer(a));h.open(p)
+            val draft=assertNotNull(h.vm.composerDrafts.value.comments[0L])
+            assertEquals(TextRange(5,1),commentDraftTextFieldValue(draft.text,draft.selectionStart,draft.selectionEnd).selection)
+            h.vm.updateCommentDraft("A😃")
+            val shorter=assertNotNull(h.vm.composerDrafts.value.comments[0L])
+            assertEquals(3 to 1,shorter.selectionStart to shorter.selectionEnd)
+            assertEquals(TextRange(3,1),commentDraftTextFieldValue(shorter.text,shorter.selectionStart,shorter.selectionEnd).selection)
+            p.close();assertTrue(h.failures.isEmpty())
+        }
+    }
+    @Test fun selectionOnlyChangeDuringSendDoesNotRetainAlreadySentComment():Unit=runBlocking {
+        Harness().use { h ->
+            val pending=CompletableDeferred<Result<ReplyItem?>>()
+            h.addResult={pending.await()}
+            val p=h.presentation();val a=h.open(p)
+            h.vm.changeCommentDraft(a,"sent text",emptyList(),false,0,4)
+            assertTrue(h.vm.submitComment(a,"sent text",emptyList(),false))
+            withTimeout(3000) { while(h.adds.isEmpty())yield() }
+            assertTrue(h.vm.changeCommentDraft(a,"sent text",emptyList(),false,4,0))
+            pending.complete(Result.success(null));h.settled()
+            assertNull(h.vm.composerDrafts.value.comments[0L]);assertFalse(h.vm.showCommentDialog.value)
+            assertNull(h.vm.commentStamp.value);assertEquals(1,h.adds.size)
+            p.close();assertTrue(h.failures.isEmpty())
+        }
+    }
+    @Test fun submissionContentGuardKeepsNewPicturesSyncAndTextButIgnoresCaret():Unit=runBlocking {
+        val sent=CommentComposerDraft("A",listOf("file:///a.png"),true,1,0)
+        assertTrue(sameCommentDraftSubmissionContent(sent.copy(selectionStart=0,selectionEnd=1),sent))
+        assertFalse(sameCommentDraftSubmissionContent(sent.copy(text="B"),sent))
+        assertFalse(sameCommentDraftSubmissionContent(sent.copy(imageUris=listOf("file:///b.png")),sent))
+        assertFalse(sameCommentDraftSubmissionContent(sent.copy(syncToDynamic=false),sent))
+        assertFalse(sameCommentDraftSubmissionContent(null,sent))
     }
     @Test fun accountRetirementAndDomainCloseCancelOptionalWorkWithoutHandlerFailure():Unit=runBlocking {
         Harness().use {h ->val p=h.presentation();val a=h.open(p);h.vm.searchCommentMentions(a,"query")

@@ -19,7 +19,9 @@ def generate(repo,output,standalone=False):
 
  def source(rel):
   path=BASE+rel+'.kt';sourcePath=_desktop_canonical_source(R,path);path=sourcePath.relative_to(R).as_posix();s=read(sourcePath);b=subprocess.check_output(['git','show',P+':'+path],cwd=R).replace(b'\r\n',b'\n');assert s.encode()==b
-  rows.append({'path':path,'commit':P,'sha256LfUtf8':hashlib.sha256(b).hexdigest()});return s
+  rows.append({'path':path,'commit':P,'sha256LfUtf8':hashlib.sha256(b).hexdigest()})
+  from v041_video_status_labels import apply as apply_status_labels
+  return apply_status_labels(path,s)
  def emit(rel,s,direct=False):
   from v037_tab_roles import apply as apply_tab_roles
   sourcePath="app/src/main/java/com/android/purebilibili/"+rel+".kt"

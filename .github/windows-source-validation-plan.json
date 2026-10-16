@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "5b17f3b57b6043292f0197acf82882a599dac3da",
-  "windowsVersion": "0.2.427.138",
-  "createdAt": "2026-10-16T05:37:36.179568+00:00",
+  "baseHead": "17705422ea734c49660df11bee3bd4d687bde8da",
+  "windowsVersion": "0.2.427.142",
+  "createdAt": "2026-10-16T08:05:21.092768+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "df58cfb1a33c70a7740611baadf1729b705fe0f73bec08f4947117d258b33ea7"
+      "sha256": "dd5c6bb5f97084361fcf63ebba26432f55c15bda80a27ac0a666a7207079de81"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -113,7 +113,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "b9578ba0749a80f0070a81615c9a4f776b616dbe894b69e0008af4577f188b93"
+      "sha256": "4c0942434cd8afbaa2fe3aabc80ef8239775e99edff30742999cf56cbd5d3356"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -456,6 +456,11 @@
       "sha256": "2ee08ca9a0182e3302163179d80998df7d95aaf6871747dc7d23a3fbbd1d4081"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "normalization": "lf",
+      "sha256": "798580a8d4be874fbd6a0b015ba94d34caab535178cbe0b66cca0ef8a873ef31"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
       "normalization": "lf",
       "sha256": "41277852f7f2e8e4a2641fadf16f73f7f6bf5b49d1e0d5cfe1d828266fd322c0"
@@ -551,6 +556,11 @@
       "sha256": "29b6b114132757c34b043a8012b7c7b5a80d58457c5d32a0163ee6a3b2f01c4a"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "normalization": "lf",
+      "sha256": "f651ddf7b9dc1828eed9c3c23d36708b67b320b0fa0f63280aa533889537a0c5"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfilePreferences.kt",
       "normalization": "lf",
       "sha256": "b3ef29be7f694520ed22b2e4ec67a0cf9699d67ee955ad569911a104830c5005"
@@ -558,12 +568,17 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
       "normalization": "lf",
-      "sha256": "1ba79dfa109b7ada562d5717b0e3e8ffecc3e833ea6db4dd75a5545f22a17319"
+      "sha256": "e2c6b8849916028011e7a298a871fa463390499f13eec33fb9063fe9a84510a5"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSystemAboutRootHost.kt",
       "normalization": "lf",
       "sha256": "de779248053bbfedfd96b17beed366326c01e24c25a7ce41d522854917b55868"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoConsumedViews.kt",
+      "normalization": "lf",
+      "sha256": "ec130ac26d86af489aee5b439a9fb46f5674e4578d85af45d059bac48df8ca08"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMetadataAdmission.kt",
@@ -623,7 +638,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
       "normalization": "lf",
-      "sha256": "09042dfe7ec04909a9ea2a0823ab75bd53071d08d06b1ba953fa48a54e45f071"
+      "sha256": "1bf0000c47769886f0ca3f346320643f259a581044c1102a08f3cd7e696c5230"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
@@ -668,12 +683,12 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsNativeVideoSurface.kt",
       "normalization": "lf",
-      "sha256": "ed968eeaef969c10ebc2e94fd9e620b67ff5604112a5ed87798c9016522440b7"
+      "sha256": "0231233c5d74a97cb0b42783201eab6c2f27235ff4fe4ddc4ff4541c2f691e52"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsNavigationDisplay.kt",
       "normalization": "lf",
-      "sha256": "fa43931f1d154538c49eca2b16a392ced137e3f4d951ff18128bbf4d11acec28"
+      "sha256": "4c6eb0edc2ea9344ddb6cb5be5807c9bb20ba0a9d72ea0ef9e25b20d701630e3"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackAudioOutput.kt",
@@ -691,6 +706,21 @@
       "sha256": "9afbef5fe5d6598615779b5c4c5fdc06714c1a42d2d3a5e8f26e14795f0a4601"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnContent.kt",
+      "normalization": "lf",
+      "sha256": "0aeabf31032d843995b67cc1344a4e9d72a53ccba113114c4cdbc48717948467"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnHost.kt",
+      "normalization": "lf",
+      "sha256": "794656568b5568b85043e38a18197c018e3688bf69bfe08b8c76e5f9f799dde7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnSnapshot.kt",
+      "normalization": "lf",
+      "sha256": "5f384ca1583183d01ebd04c207344040eaee4f7f8ff32325669d647e368fa9d2"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoEntryCover.kt",
       "normalization": "lf",
       "sha256": "f3c5f263a41234800ddee5a1b4647d273bfad6065133175d6384b91057127813"
@@ -699,6 +729,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt",
       "normalization": "lf",
       "sha256": "86e9a1fa5665f5bdeb94bb787290b4537ded803cfd731617c5399d9104480321"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoff.kt",
+      "normalization": "lf",
+      "sha256": "7fee8832f29902a350f01c85cbc18778245ec0045bc802cd5a8bf9e39915410d"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
@@ -806,9 +841,19 @@
       "sha256": "3101150e4561c6bfc4a4a29428f7d97e76cd399fc201929703f7c0ed30ba9b4f"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopLiveDanmakuHealthPolicyTest.kt",
+      "normalization": "lf",
+      "sha256": "12c3c5467ede4b759c59edd1f4f3fe8f643a39909f732c224c7d3c017b3e54c4"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopReplyMedalColorTest.kt",
       "normalization": "lf",
       "sha256": "79021ce7b4f292b92cfa37e74822b6bee4cbd96035dd58fa72761290d94a6092"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopVideoStatusLabelEntriesTest.kt",
+      "normalization": "lf",
+      "sha256": "8eded19f12fbbf813f949aa14f9c203c0b39b91f78e4a70e09789308058465eb"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
@@ -1021,6 +1066,11 @@
       "sha256": "7b38ab025880e50bb6a08fbad3e168936dfdef602b2e78fbc00e2d0e6a0e3b00"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoComposerCommentsTest.kt",
+      "normalization": "lf",
+      "sha256": "04687a48f58c399da29eb129d7a987e8b437f6061a5f86fd4ac32aed00d06b8e"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementStatusReadTest.kt",
       "normalization": "lf",
       "sha256": "077bd1960ad143eece38985218976ec7c7ea57aae66f6cbbc83429e3c69332d6"
@@ -1053,7 +1103,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsNavigationDisplayTest.kt",
       "normalization": "lf",
-      "sha256": "6216a5db0dba92588ea2500276103277db9400c26c1a2c13dea50b7c7dd85082"
+      "sha256": "ab2399220847aad35d686d7ed3877e65bdc43040ae647de4aed91ee51c896800"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackAudioOutputTest.kt",
@@ -1086,9 +1136,19 @@
       "sha256": "20097ba167ab3ab62e370918295e91c2a41d84a3bba9783689b46c58312fe38c"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnSnapshotTest.kt",
+      "normalization": "lf",
+      "sha256": "dd9fc3cd1697528a142a225d097c07d91968055640e4cfa3f4b1ccb9a5dde2a9"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoEntryCoverIdentityTest.kt",
       "normalization": "lf",
       "sha256": "8063ae3003a80008f82dbd2c77cea3fee8b9811183c582535c0f17ac654b6614"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoffTest.kt",
+      "normalization": "lf",
+      "sha256": "b704149adb4316e7f328809692f00c31bd0b9f722adb48dc50eb27cd125a8528"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/OriginalOnboardingUiActions.kt",
@@ -1218,7 +1278,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "7383ecabd2cce5186f649554953d9778167925ff0955ef5d29a9e7b55cace6b1"
+      "sha256": "ca2fcc6737fd391d39780e241da6f68f6a07b713fc94846144c9dcae7997a316"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1241,6 +1301,11 @@
       "sha256": "ef35578a318466371ddf46e82bb7a94058a1057b21a9529e4adb9d298ad02dfe"
     },
     {
+      "path": "desktop/tools/extract-space-overview.py",
+      "normalization": "lf",
+      "sha256": "e038a5b110e3c4878151ec04c9cfb0f9ec5706d40073ad9a21c89bb496215fce"
+    },
+    {
       "path": "desktop/tools/extract-upstream-api.py",
       "normalization": "lf",
       "sha256": "6b6e0f1d3321a407c930af520b1da00445c29e5b3844d7b7351ddf153b6e4937"
@@ -1254,6 +1319,11 @@
       "path": "desktop/tools/extract-upstream-bangumi-player-ui.py",
       "normalization": "lf",
       "sha256": "42efc695b56a9f54656a09657bc1653563b27c3e4349a58c2aace6c4cd77e66e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bgm-detail.py",
+      "normalization": "lf",
+      "sha256": "47e3370a95c6699e0d2df043fc611fbccb8134bcc5cff6f334477344f0f4b686"
     },
     {
       "path": "desktop/tools/extract-upstream-components.py",
@@ -1296,6 +1366,16 @@
       "sha256": "169146adc957de848ca7b4b3bd5c549d07547def5cc35d1fad52ea1e3ccbe218"
     },
     {
+      "path": "desktop/tools/extract-upstream-favorites.py",
+      "normalization": "lf",
+      "sha256": "e239e1d7df18350fc5c91fc67a236300eb60ee2ff678790a4846a27b6636dc45"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-full-card.py",
+      "normalization": "lf",
+      "sha256": "544c18559c6e9fad9f9af5bf5207ec499dd519b0b2ce859b874962ca3fd6be2d"
+    },
+    {
       "path": "desktop/tools/extract-upstream-js.py",
       "normalization": "lf",
       "sha256": "53ce169cd804b1da743422dc628221ea750c0509e2e0c79ce0526e2cf1facbba"
@@ -1321,14 +1401,59 @@
       "sha256": "f5b42e38342761ef993a0fef41b55634a0a2ea45574e4e3d63db43e63cb583d9"
     },
     {
+      "path": "desktop/tools/extract-upstream-profile-main.py",
+      "normalization": "lf",
+      "sha256": "b0fb501f5686169b9a9e16ffb98a4133b1c43c69ced959bdcf964de971510cb1"
+    },
+    {
       "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
       "normalization": "lf",
       "sha256": "8df8cb34e8188d1313e3825c67b0f018a0cc6d1012c160466fb3280adc8537fc"
     },
     {
+      "path": "desktop/tools/extract-upstream-space-pages.py",
+      "normalization": "lf",
+      "sha256": "875bdb5587cf79d979817f620751f5f8ca9b63c6501e6717b4fadf7e19bf93f1"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-comment-ui.py",
+      "normalization": "lf",
+      "sha256": "e0675af46ad84dee06b3e29349bfbc465caf2b3b0a6c28ec5b954c3fa8fe96c9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-holder.py",
+      "normalization": "lf",
+      "sha256": "7c24c5288853aa020c0ad0e4bd17cd6e4d31d3be5a3e15642fbef8842a1b3bf2"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "normalization": "lf",
+      "sha256": "c38b3616422d502f8eebd0a97b57cd7d01198a393fe88e3a99d6ba0203a3eb8d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "normalization": "lf",
+      "sha256": "efe10f5b98c1d1c3d672c9f1c4d73fd16126ec801023ea192a7935e2d3e21499"
+    },
+    {
       "path": "desktop/tools/extract-upstream-video-player-section-full.py",
       "normalization": "lf",
       "sha256": "fe9315d102b81f67f321dd166fb82e8c634178a8688d63b5dc677c05b4405343"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-watchlater.py",
+      "normalization": "lf",
+      "sha256": "4de86aaf1df61659913fdbaa1259fddfab2bd0f8987008a951d36906c94ba35d"
+    },
+    {
+      "path": "desktop/tools/extract-v041-video-status-labels.py",
+      "normalization": "lf",
+      "sha256": "c97328398b5ba1ca5d55234d6248185baa1aed9400282ef3f8ded81cbc46de8f"
+    },
+    {
+      "path": "desktop/tools/extract-v041-video-status-personal.py",
+      "normalization": "lf",
+      "sha256": "70b3f336ce2f6803c49c595652ca328d520c8453633404b04e93d1b23df20593"
     },
     {
       "path": "desktop/tools/fetch-js-worker-jdk.py",
@@ -1438,7 +1563,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "1cbc90c0e70377447a8674d5a1eb71853d4d786934cd3f1d6092ea56c126906b"
+      "sha256": "1411916754dfafa6da8b1385bc775c3ebaf370128d69ef96260730963d2bfd99"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -1449,6 +1574,11 @@
       "path": "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
       "normalization": "raw",
       "sha256": "d1c8357ca27184192dd8900400d80389d549bfc88166edb8a332df56fd93767a"
+    },
+    {
+      "path": "desktop/tools/tests/test_comment_selection_consumer_closure.py",
+      "normalization": "lf",
+      "sha256": "7ee190c8e361042f7f95afb424c65cbeaada57af5595e937386d15fff8511991"
     },
     {
       "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
@@ -1573,7 +1703,12 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "0c1fcd31bf20a23aa6fd5f97b92a774be7ce99c043f20574950b24cc0d83a0f8"
+      "sha256": "f8c4aa85f040a8b8fe309424d3f5a12954382b2a73b870ca3276c280f87a968f"
+    },
+    {
+      "path": "desktop/tools/tests/test_v029_comment_composer.py",
+      "normalization": "lf",
+      "sha256": "191290115173814372c0d5c4ea0d3f0114ae1c1b4a25c070d5cbcae21d0526ae"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_search.py",
@@ -1686,6 +1821,16 @@
       "sha256": "42f828de2b3958f2bdcf9c91b4c85aff5044999abe233ef2f07b9a09b4830a53"
     },
     {
+      "path": "desktop/tools/tests/test_v041_video_status_labels_source.py",
+      "normalization": "lf",
+      "sha256": "49f43c4898c84d53852baf2122bb849518549fbf3018fe39da44e661f355cc94"
+    },
+    {
+      "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
+      "normalization": "lf",
+      "sha256": "33230024f7000ce4d35bbbd258e548d71ef91b9a19c5e9e53f17cf941e35ebac"
+    },
+    {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
       "normalization": "lf",
       "sha256": "c881ce6e1739c397dd7362144f98b54614849ad62b8abadbf66940c7c8cc93e9"
@@ -1721,6 +1866,11 @@
       "sha256": "085c0421d02ec19aa0bbc4d5b643826cbc7f76b11c8f01dc1b36832b2cb11ba1"
     },
     {
+      "path": "desktop/tools/tests/test_windows_video_return_frozen_inputs.py",
+      "normalization": "lf",
+      "sha256": "78ef9aff768afbfb894e8517bf94dd8ee675ac74b5e9714a6d792b5f1f1f4789"
+    },
+    {
       "path": "desktop/tools/update/prepare-veyra-compatible-catalog.py",
       "normalization": "lf",
       "sha256": "66bb74b106402f1e2ec86a0f32c3b7c8b27e25992c51567888d527f01d21ea45"
@@ -1734,6 +1884,11 @@
       "path": "desktop/tools/v025_source_paths.py",
       "normalization": "lf",
       "sha256": "43ae1635c64aa3eb695dd3f3babdfaeacdf8899680e6823a44179163facb848f"
+    },
+    {
+      "path": "desktop/tools/v029_comment_composer.py",
+      "normalization": "lf",
+      "sha256": "e1c547cccb4e709c77b1d910520b68d05fbdf2798c291c97caef3fca435b66e2"
     },
     {
       "path": "desktop/tools/v029_home_load.py",
@@ -1881,6 +2036,16 @@
       "sha256": "852d67825734a09c209841d643b49d84195681bb8a619bd57c5bcd784177d0d7"
     },
     {
+      "path": "desktop/tools/v041_video_status_labels.py",
+      "normalization": "lf",
+      "sha256": "6df2326493bbb2c61b086dbc24ed58edb4acf65f068fc9e963c9a00692473b41"
+    },
+    {
+      "path": "desktop/tools/v041_video_status_personal_consumers.py",
+      "normalization": "lf",
+      "sha256": "86d184e342f972da15409e81b92e2bb1bd8a809403868a3adde9c60791847f4e"
+    },
+    {
       "path": "desktop/tools/validate-source-cohort.py",
       "normalization": "lf",
       "sha256": "bf0de7fb28aa4b2e284fbc007bfb1e15d83b66507e7045a9ae36a3c794f46128"
@@ -1909,6 +2074,11 @@
       "path": "desktop/tools/windows_pgc_screen_mount.py",
       "normalization": "lf",
       "sha256": "8d60552abe99dffd57b453ec0c535ba6c1d6aad678ae492df095f6a9b3c7e214"
+    },
+    {
+      "path": "desktop/tools/windows_video_return_frozen_inputs.py",
+      "normalization": "lf",
+      "sha256": "f6539bc7a6261161dac657ac460c0cde62d2b9d1b2f2a468a1512ea6c1d8b3c1"
     },
     {
       "path": "desktop/upstream-slices/v038-audio-library/ListenVideoLibraryDataSource.kt",
@@ -2626,9 +2796,109 @@
       "sha256": "e9bb35a0424c11b21a459f2433047202cc331dbeed7b9f2e3511ed9f1c2e7903"
     },
     {
+      "path": "desktop/upstream-slices/v041-video-status-labels/FavoriteModels.kt",
+      "normalization": "raw",
+      "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/HomeStyleSingleColumnVideoCard.kt",
+      "normalization": "raw",
+      "sha256": "8b910cfbe6dd48b20ffa9dcff0109b99c7554fdadd073da828096a78b1ae9a42"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/ListModels.kt",
+      "normalization": "raw",
+      "sha256": "3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/SearchModels.kt",
+      "normalization": "raw",
+      "sha256": "121a06212ebe034ffb274d822dce5fd5a685113e8984ff5554ab6b3006a94a30"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/SpaceLoadPolicy.kt",
+      "normalization": "raw",
+      "sha256": "108e14a0f2316477e6da3df04ae44ca5e9b75fe0b64db25df42ce01697fff240"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/SpaceModels.kt",
+      "normalization": "raw",
+      "sha256": "3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/SpaceScreen.kt",
+      "normalization": "raw",
+      "sha256": "c091fe781a4548ee46af7750d92ba7881eaee3c8f21da4ad3fa0fe14c47c838d"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/UserContentRepository.kt",
+      "normalization": "raw",
+      "sha256": "b95f08c8f693d0ce7a089a52df4f9884c564ae968393ece23488c09732eca3dd"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/VideoCard.kt",
+      "normalization": "raw",
+      "sha256": "5dd884fc431ca1809a4e766bb6492b862f56b9a59462348093aa1fc55e7bb78d"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/VideoCooperationMetadataTest.kt",
+      "normalization": "raw",
+      "sha256": "4c8a476ec72a7b3013c8a77504fe946e5b578807937210c4ddb355edd926e0fa"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/VideoStatusBadges.kt",
+      "normalization": "raw",
+      "sha256": "83cf025c274e340e8877986784ffb1d9bbb88a168ef6b81c830344a601cf854b"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabels.kt",
+      "normalization": "raw",
+      "sha256": "e5cba87c8ee8440d02b87c777ca545ab5d43408ce3f1d2f0d309b5cb13ef60d0"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabelsTest.kt",
+      "normalization": "raw",
+      "sha256": "321d1502204a020546396f474f5cef38c35e78793db184f3a73a4c8fd1090c7c"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/WatchLaterRepository.kt",
+      "normalization": "raw",
+      "sha256": "088b5ea5761f2d709bcb59218a4cd1ca437c434b318066a8c59593ee2dccac28"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/WatchLaterScreen.kt",
+      "normalization": "raw",
+      "sha256": "9e7715de37f1e4ad3741f07c6006c2289d94cfc610809e539210d7f9d4e3511b"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-labels/manifest.json",
+      "normalization": "raw",
+      "sha256": "3237709d313f94bc41f836685d7a44bdcfa73b315c29b6af0ed88a534356142c"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-personal-consumers/FavoritePersonalCard.kt",
+      "normalization": "raw",
+      "sha256": "1a14e2d8a5b1f254160828dd85c3d8b381383e9d1bb58f239746c8b99a0a3ad0"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-personal-consumers/HistoryPersonalCard.kt",
+      "normalization": "raw",
+      "sha256": "715e5dcb0c7fc856d6f324c29c9316d4ad971529f18d85023ecbe017e21f5a65"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-personal-consumers/ProfileScreen.kt",
+      "normalization": "raw",
+      "sha256": "b6b08bd10ab5212007618803a176f0898efa68c392a2a8205804f7ba606b5ae5"
+    },
+    {
+      "path": "desktop/upstream-slices/v041-video-status-personal-consumers/manifest.json",
+      "normalization": "raw",
+      "sha256": "80ed5aaf94febad3403323b98a45299fe06efde30683963a7a8316cb8a336d15"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "8de21f0a4d3023764fdba1e534daedaf4ca5a5e62ca7f336e1c03cf6c87f5b3b"
+      "sha256": "27e6e2a3806c5bac1898ebba1e82e0abd318cbf6a09d863bf2ceb4bec8211785"
     }
   ],
   "classes": {
@@ -2671,7 +2941,7 @@
     "com.bilipai.desktop.ui.DesktopWindowsNativeVideoGeometryTest": 10,
     "com.android.purebilibili.feature.video.ui.section.DesktopV041OriginalPlayerCoverPolicyTest": 31,
     "com.bilipai.desktop.ui.DesktopWindowsVideoEntryCoverIdentityTest": 5,
-    "com.bilipai.desktop.ui.DesktopWindowsNavigationDisplayTest": 11,
+    "com.bilipai.desktop.ui.DesktopWindowsNavigationDisplayTest": 13,
     "com.bilipai.desktop.ui.DesktopBangumiBasSourceAdmissionAssemblyTest": 10,
     "com.bilipai.desktop.ui.DesktopBangumiPgcLaunchPolicyTest": 8,
     "com.bilipai.desktop.player.PlayerPreferencesReadTest": 6,
@@ -2687,9 +2957,16 @@
     "com.bilipai.desktop.ui.DesktopWindowsPlaybackDefaultsTest": 5,
     "com.bilipai.desktop.ui.DesktopWindowsPlaybackSettingsQualityLabelTest": 3,
     "com.bilipai.desktop.ui.DesktopWindowsSettingsStartupMigrationTest": 3,
-    "com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest": 6
+    "com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest": 6,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoReturnHandoffTest": 8,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoCardReturnSnapshotTest": 10,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoComposerCommentsTest": 22,
+    "com.bilipai.desktop.data.DesktopLiveDanmakuHealthPolicyTest": 8,
+    "com.android.purebilibili.data.model.response.VideoCooperationMetadataTest": 5,
+    "com.android.purebilibili.data.model.response.VideoStatusLabelsTest": 6,
+    "com.bilipai.desktop.data.DesktopVideoStatusLabelEntriesTest": 26
   },
-  "expectedTests": 538,
+  "expectedTests": 625,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -2697,93 +2974,70 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-mpv-rtx-core-manual.yml",
-    ".github/workflows/windows-package-candidate.yml",
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchPreferences.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVeyraPrivateComponent.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerPreferences.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopOriginalAboutBindings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareService.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareWindowsCatalog.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopWindowsSettingsCatalog.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBangumiPgcAudioPreferences.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBangumiPgcLaunchPolicy.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBangumiPgcScreenMount.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerRootOwner.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerScreenPlatform.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackPreferenceProjection.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfilePreferences.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSystemAboutRootHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowsBindingFactory.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoConsumedViews.kt",
     "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsNativeVideoSurface.kt",
     "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsNavigationDisplay.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackDefaults.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackSettings.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerPreferencesReadTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopAboutAutoCheckConsumerTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopOriginalAboutPreferencesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareMirrorTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopWindowsSettingsCatalogTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiBasSourceAdmissionAssemblyTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiPgcAudioPreferencesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBangumiPgcLaunchPolicyTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackPreferenceProjectionTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfilePrivacyAuthorityTest.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnContent.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnSnapshot.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoff.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopLiveDanmakuHealthPolicyTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopVideoStatusLabelEntriesTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoComposerCommentsTest.kt",
     "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsNavigationDisplayTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackAutoContinueGatesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackDefaultsTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackSettingsQualityLabelTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsSettingsStartupMigrationTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
-    "desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-import-trust.json",
-    "desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-material-review-run38574814418.json",
-    "desktop/third-party/libmpv/build/rtx-present-v1/apply-rtx-presentation-source.py",
-    "desktop/third-party/libmpv/build/rtx-present-v1/bilipai-rtx-presentation-source-manifest.json",
-    "desktop/third-party/libmpv/build/rtx-present-v1/fixed-inputs.json",
-    "desktop/third-party/libmpv/build/rtx-present-v1/presentation-edits.json",
-    "desktop/third-party/libmpv/build/rtx-present-v1/recipe-edits.json",
-    "desktop/tools/build.ps1",
-    "desktop/tools/export-original-root-ui-harness.py",
-    "desktop/tools/extract-upstream-bangumi-player-ui.py",
-    "desktop/tools/fixed-java-toolchain.ps1",
-    "desktop/tools/native/build-mpv-rtx-core-runtime.py",
-    "desktop/tools/native/download-host-llvm-source-snapshot.py",
-    "desktop/tools/native/import-host-llvm-source-snapshot.py",
-    "desktop/tools/native/mpv-rtx-core-runtime-descriptor.ps1",
-    "desktop/tools/native/upload-mpv-rtx-core-draft.py",
-    "desktop/tools/native/veyra/assemble-veyra-private-component.ps1",
-    "desktop/tools/native/veyra/verify-veyra-runtime.ps1",
-    "desktop/tools/native/veyra/veyra-presentation-profile-template.json",
-    "desktop/tools/original-root-ui-harness.init.gradle",
-    "desktop/tools/original_root_ui_candidate_classpath.py",
-    "desktop/tools/original_root_ui_class_closure.py",
-    "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
-    "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
-    "desktop/tools/tests/test_export_original_root_ui_harness.py",
-    "desktop/tools/tests/test_fixed_java_toolchain.py",
-    "desktop/tools/tests/test_host_llvm_fresh_export.py",
-    "desktop/tools/tests/test_host_llvm_worker_contract.py",
-    "desktop/tools/tests/test_mpv_rtx_installer_protocol.py",
-    "desktop/tools/tests/test_native_cares_prefetch.py",
-    "desktop/tools/tests/test_native_cares_recipe.py",
-    "desktop/tools/tests/test_native_nested_failure_logs.py",
-    "desktop/tools/tests/test_original_root_ui_candidate_classpath.py",
-    "desktop/tools/tests/test_original_root_ui_class_closure.py",
-    "desktop/tools/tests/test_package_source_qualification.py",
-    "desktop/tools/tests/test_publish_release.py",
-    "desktop/tools/tests/test_validate_source_cohort.py",
-    "desktop/tools/tests/test_verify_original_root_ui_export.py",
-    "desktop/tools/tests/test_windows_pgc_screen_mount.py",
-    "desktop/tools/update/prepare-veyra-compatible-catalog.py",
-    "desktop/tools/validate-source-cohort.py",
-    "desktop/tools/verify-original-root-ui-harness-export.py",
-    "desktop/tools/verify-package-source-qualification.py",
-    "desktop/tools/windows_pgc_screen_mount.py",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnSnapshotTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoffTest.kt",
+    "desktop/tools/compatibility-source-inputs.json",
+    "desktop/tools/extract-space-overview.py",
+    "desktop/tools/extract-upstream-bgm-detail.py",
+    "desktop/tools/extract-upstream-favorites.py",
+    "desktop/tools/extract-upstream-home-full-card.py",
+    "desktop/tools/extract-upstream-profile-main.py",
+    "desktop/tools/extract-upstream-space-pages.py",
+    "desktop/tools/extract-upstream-video-comment-ui.py",
+    "desktop/tools/extract-upstream-video-detail-holder.py",
+    "desktop/tools/extract-upstream-video-full-owner.py",
+    "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+    "desktop/tools/extract-upstream-watchlater.py",
+    "desktop/tools/extract-v041-video-status-labels.py",
+    "desktop/tools/extract-v041-video-status-personal.py",
+    "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_comment_selection_consumer_closure.py",
+    "desktop/tools/tests/test_sync_upstream.py",
+    "desktop/tools/tests/test_v029_comment_composer.py",
+    "desktop/tools/tests/test_v041_video_status_labels_source.py",
+    "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
+    "desktop/tools/tests/test_windows_video_return_frozen_inputs.py",
+    "desktop/tools/v029_comment_composer.py",
+    "desktop/tools/v041_video_status_labels.py",
+    "desktop/tools/v041_video_status_personal_consumers.py",
+    "desktop/tools/windows_video_return_frozen_inputs.py",
+    "desktop/upstream-slices/v041-video-status-labels/FavoriteModels.kt",
+    "desktop/upstream-slices/v041-video-status-labels/HomeStyleSingleColumnVideoCard.kt",
+    "desktop/upstream-slices/v041-video-status-labels/ListModels.kt",
+    "desktop/upstream-slices/v041-video-status-labels/SearchModels.kt",
+    "desktop/upstream-slices/v041-video-status-labels/SpaceLoadPolicy.kt",
+    "desktop/upstream-slices/v041-video-status-labels/SpaceModels.kt",
+    "desktop/upstream-slices/v041-video-status-labels/SpaceScreen.kt",
+    "desktop/upstream-slices/v041-video-status-labels/UserContentRepository.kt",
+    "desktop/upstream-slices/v041-video-status-labels/VideoCard.kt",
+    "desktop/upstream-slices/v041-video-status-labels/VideoCooperationMetadataTest.kt",
+    "desktop/upstream-slices/v041-video-status-labels/VideoStatusBadges.kt",
+    "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabels.kt",
+    "desktop/upstream-slices/v041-video-status-labels/VideoStatusLabelsTest.kt",
+    "desktop/upstream-slices/v041-video-status-labels/WatchLaterRepository.kt",
+    "desktop/upstream-slices/v041-video-status-labels/WatchLaterScreen.kt",
+    "desktop/upstream-slices/v041-video-status-labels/manifest.json",
+    "desktop/upstream-slices/v041-video-status-personal-consumers/FavoritePersonalCard.kt",
+    "desktop/upstream-slices/v041-video-status-personal-consumers/HistoryPersonalCard.kt",
+    "desktop/upstream-slices/v041-video-status-personal-consumers/ProfileScreen.kt",
+    "desktop/upstream-slices/v041-video-status-personal-consumers/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

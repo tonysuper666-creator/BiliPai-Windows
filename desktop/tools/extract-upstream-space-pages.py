@@ -212,6 +212,8 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
         produce(BASE+'feature/space/'+name+'.kt',pkg+name+'.kt',lambda s,*_:s)
     if include_screen:
         def screen(s,edit,logs):
+            from v041_video_status_labels import apply_with as apply_status_labels
+            s=apply_status_labels(BASE+'feature/space/SpaceScreen.kt',s,edit)
             for line in ['import android.os.Build\n','import android.content.Intent\n',
                          'import androidx.lifecycle.viewmodel.compose.viewModel\n',
                          'import coil3.imageLoader\n','import com.android.purebilibili.R\n',
