@@ -1589,6 +1589,10 @@ val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractOriginalFavorites, extractOriginalFavoriteFolder) }
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-favorite-policy-tests")) }
 tasks.named("compileTestKotlin") { dependsOn(extractOriginalFavorites) }
+tasks.named("extractOriginalFavorites") {
+    inputs.file("tools/v044_list_foreground.py")
+    inputs.dir("upstream-slices/v044-list-foreground")
+}
 
 val extractLinkedDock by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)

@@ -82,6 +82,8 @@ class OriginalFavoriteSearchSourceTest(unittest.TestCase):
         body = (self.root/'favorites/com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf8')
         row = next(row for row in self.inventory if any(q['path'].endswith('/CommonListScreen.kt') for q in row['outputs']))
         proof = row['v044FavoriteSubscriptionUiAdvance']['originalSearchNavigation']
+        from v044_list_foreground import restore_predecessor
+        if row.get('v044ListForegroundAdvance'): body = restore_predecessor(body, row['v044ListForegroundAdvance'])
         self.assertEqual(search.BASE_UI_SHA256, search.sha(undo(body, proof['retainedToCurrent'])))
         for segment in proof['originalCallbackSegments']:
             self.assertIn(segment['originalText'], body)

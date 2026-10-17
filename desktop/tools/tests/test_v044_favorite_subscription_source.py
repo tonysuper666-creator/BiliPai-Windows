@@ -144,6 +144,9 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
     def test_actual_subscription_ui_keeps_whole_original_composables_and_live_actions(self):
         actual = self.actual('feature/list/CommonListScreen.kt')
         proof = self.row('CommonListScreen.kt')['v044FavoriteSubscriptionUiAdvance']
+        from v044_list_foreground import restore_predecessor
+        current = self.row('CommonListScreen.kt').get('v044ListForegroundAdvance')
+        if current: actual = restore_predecessor(actual, current)
         previous = undo(actual, proof['retainedToCurrent'])
         self.assertEqual(self.manifest['beforeFinalOutputs']['feature/list/CommonListScreen.kt']['sha256'],
             subscription.sha(previous))

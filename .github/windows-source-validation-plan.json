@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "114cb571afafc381101945930b3e9d4dd5aa2e33",
-  "windowsVersion": "0.2.427.185",
-  "createdAt": "2026-10-17T15:30:35.791671+00:00",
+  "baseHead": "202026284421eeb5e508ca1286cd70ccb70c1bf7",
+  "windowsVersion": "0.2.427.186",
+  "createdAt": "2026-10-17T16:00:27.931794+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "eec8ee9496dfb7297a8293d424b56f0616e40171e8a6c8993a70fa2c29fc74bf"
+      "sha256": "7dbf4500a8a463b11984ffd6ea84c06dec98b2d18fe7bc325d1f33d60384f2b0"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "b7993bd297730176fd4a3143b64fdf2190a36043a7a29aa41082cb33a4e55d8f"
+      "sha256": "709933166d4b82185d51c68846c68cc39c669f59f02e71966bd5bc19fa53c2fd"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -1613,7 +1613,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "9f5625db77603bf4a8ebc4020abdabae4e5955b9961ce3787b7bfefb47694066"
+      "sha256": "f7b0f571d13dc56dab4930e278d59ae4849f3ce6dcdc454cd1e468d1e77e5535"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1713,7 +1713,7 @@
     {
       "path": "desktop/tools/extract-upstream-favorites.py",
       "normalization": "lf",
-      "sha256": "515d16fa169c0a7003a3c9a2cfd1e2a5cab5afc026134505bccbd8c974a5a7b6"
+      "sha256": "fd2de4be567a636c137d6a43c1273266ee32b60115754f866f18fa344423c53f"
     },
     {
       "path": "desktop/tools/extract-upstream-following.py",
@@ -1968,7 +1968,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "485c3366a0066e0c9b01a9c81d14474bf4960b74a5d2c7d384972ccb2cb10611"
+      "sha256": "d83d5f32aa2310d1ace4cdacea22021328b275fc6ae5d540fc0fee36dbe11668"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -2008,7 +2008,7 @@
     {
       "path": "desktop/tools/tests/test_extract_upstream_brand_callers.py",
       "normalization": "lf",
-      "sha256": "19e5c6037bc14677b04f634962e564d602e60b27ec47724b61f20d228f32e196"
+      "sha256": "b1c523ecbde093ea7226e3acbccd310d5e69538bef97335b9f32436f1c3b682a"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_brand_history.py",
@@ -2188,7 +2188,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "0ed89fd7e948e8cd5150ee3e0f44acd012db1148eb4d65bb38ce7c754d6ade83"
+      "sha256": "185bb94c5c07719a5adbc784f6eb2e3eee5a9644371792ff96a53febd1dd4ec0"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2393,22 +2393,27 @@
     {
       "path": "desktop/tools/tests/test_v044_favorite_detail_source.py",
       "normalization": "lf",
-      "sha256": "1b810ffc7303327cd503e57d379c6240a01e522e9d49edc786db6b8a8a3ae2bb"
+      "sha256": "3af8af2db025413021148d1dacd88f89784047011365f0b3297d6ae6c2f99b3b"
     },
     {
       "path": "desktop/tools/tests/test_v044_favorite_search_source.py",
       "normalization": "lf",
-      "sha256": "b460ac58a735289a107d438af105f212d971ba53a4d1df6c0dd7e6e69e9d74ee"
+      "sha256": "7cac5a02d83d3c0094d9dc9e918a6976712b0a678c18c25c89681a7b2a738536"
     },
     {
       "path": "desktop/tools/tests/test_v044_favorite_subscription_source.py",
       "normalization": "lf",
-      "sha256": "1f2c5451b6f6a2a46a8e4498ca303e8301217164a90d50af377b2adf9e889067"
+      "sha256": "d38da7778da2d79d48f0daff3012c1998dcf8bc96e93b6be7a7951bf3d861243"
     },
     {
       "path": "desktop/tools/tests/test_v044_following_source.py",
       "normalization": "lf",
       "sha256": "49374cc7b0d715fc4e9a212fc9d22ed713df0651df7f6e80b5100ac6cc2ea334"
+    },
+    {
+      "path": "desktop/tools/tests/test_v044_list_foreground_source.py",
+      "normalization": "lf",
+      "sha256": "d602ad493a55cd0b82e1819b5cc49c4a5a6dc7da8e6f2ad2758f522858b467d9"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -2749,6 +2754,11 @@
       "path": "desktop/tools/v044_following.py",
       "normalization": "lf",
       "sha256": "b64a0d81abbf0d5d31df0a45c6c3879d6a70e08bd8bb21b89f0ba32c2583e698"
+    },
+    {
+      "path": "desktop/tools/v044_list_foreground.py",
+      "normalization": "lf",
+      "sha256": "4a5ab389f30110572e1cc68e69908c1558dd6d85515268b80b69bbeb840c94db"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -4486,9 +4496,19 @@
       "sha256": "ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9"
     },
     {
+      "path": "desktop/upstream-slices/v044-list-foreground/CommonListPaginationPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "b48b372f8c4710a196faf9da9f6765e0da6bf260925f83d38cba3ce36706e7f9"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-list-foreground/manifest.json",
+      "normalization": "raw",
+      "sha256": "bd892bfffc777d1ca57931d0bfffd4a7c43ec76877cbdb876dd0f6ea4af725e0"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "4f3d5037531e3fe3c57acc3acb47100608f879c77f40bc69f0f4df9b8439e269"
+      "sha256": "bc7f518d693e84e59437936597c13ced8a4b8414d39e72ad991e3d85bf21881b"
     }
   ],
   "classes": {
@@ -4521,6 +4541,7 @@
     "com.android.purebilibili.feature.dynamic.DynamicAuthorSearchPolicyTest": 3,
     "com.android.purebilibili.feature.following.FollowingBatchSelectionPolicyTest": 14,
     "com.android.purebilibili.feature.following.FollowingGroupPolicyTest": 8,
+    "com.android.purebilibili.feature.list.CommonListPaginationPolicyTest": 4,
     "com.android.purebilibili.feature.list.FavoriteFolderAggregationPolicyTest": 21,
     "com.android.purebilibili.feature.search.SearchCardTargetRestoreTest": 3,
     "com.android.purebilibili.feature.search.SearchMotionBudgetPolicyTest": 18,
@@ -4620,7 +4641,7 @@
     "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5
   },
-  "expectedTests": 1127,
+  "expectedTests": 1131,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4630,21 +4651,18 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFollowingPaginationRootTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-upstream-following.py",
+    "desktop/tools/extract-upstream-favorites.py",
     "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_extract_upstream_brand_success.py",
+    "desktop/tools/tests/test_extract_upstream_brand_callers.py",
     "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v044_fans_source.py",
-    "desktop/tools/tests/test_v044_following_source.py",
-    "desktop/tools/v044_fans.py",
-    "desktop/tools/v044_following.py",
-    "desktop/upstream-slices/v044-following-fans/FollowingBatchSelectionPolicyTest.kt",
-    "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicyTest.kt",
-    "desktop/upstream-slices/v044-following-fans/manifest.json",
+    "desktop/tools/tests/test_v044_favorite_detail_source.py",
+    "desktop/tools/tests/test_v044_favorite_search_source.py",
+    "desktop/tools/tests/test_v044_favorite_subscription_source.py",
+    "desktop/tools/tests/test_v044_list_foreground_source.py",
+    "desktop/tools/v044_list_foreground.py",
+    "desktop/upstream-slices/v044-list-foreground/CommonListPaginationPolicyTest.kt",
+    "desktop/upstream-slices/v044-list-foreground/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

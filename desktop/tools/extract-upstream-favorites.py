@@ -2,6 +2,7 @@ from v025_source_paths import canonical_source as _desktop_canonical_source
 from v035_favorite_cover import selected_source as favorite_cover_source, additional_leaf_sources as favorite_cover_leaf_sources, apply_and_record as apply_favorite_cover
 from v044_favorite_detail import selected_source as detail_source, bind_viewmodel as bind_detail_viewmodel, viewmodel_proof as detail_viewmodel_proof, validate_outputs as validate_detail_outputs
 from v044_favorite_subscription import advance_vm as subscription_vm, advance_repository as subscription_repository, advance_policy as subscription_policy, advance_ui as subscription_ui, additional_sources as subscription_sources, validate_outputs as validate_subscription_outputs
+from v044_list_foreground import advance_ui as foreground_ui, validate_outputs as validate_foreground_outputs, emit_tests as emit_foreground_tests
 from pathlib import Path
 import hashlib, importlib.util, json, re, subprocess
 HERE=Path(__file__).resolve().parent
@@ -58,6 +59,7 @@ def output(rel,s,mode):
   from v044_favorite_detail import ui_source_after_platform
   s,detailUiAudit=ui_source_after_platform(REPO,s);records[-1]['v044FavoriteDetailUiAdvance']=detailUiAudit
   s,subscriptionUiAudit=subscription_ui(REPO,s);records[-1]['v044FavoriteSubscriptionUiAdvance']=subscriptionUiAudit
+  s,foregroundAudit=foreground_ui(REPO,s);records[-1]['v044ListForegroundAdvance']=foregroundAudit
  if rel=='feature/list/DesktopOriginalListViewModels':
   s,audit=subscription_vm(REPO,s,drop_logs);records[-1]['v044FavoriteSubscriptionAdvance']=audit
  elif rel=='data/repository/DesktopOriginalFavoriteRepository':
@@ -309,6 +311,7 @@ def produce():
 
 def generate(repo:Path,output:Path,standalone=False,test_output=None):
  global REPO,OUT,parser,records,STANDALONE
+ validate_foreground_outputs(repo,output,test_output)
  validate_subscription_outputs(repo,output,test_output)
  validate_detail_outputs(repo,output)
  REPO=repo.resolve();OUT=output.resolve();STANDALONE=standalone;records=[]
@@ -318,13 +321,14 @@ def generate(repo:Path,output:Path,standalone=False,test_output=None):
  if test_output is not None:
   from v044_favorite_subscription import emit_original_policy_tests
   emit_original_policy_tests(repo,test_output)
+  emit_foreground_tests(repo,test_output)
  canonical={}
  for row in records:
   entry=canonical.setdefault(row['path'],dict(path=row['path'],upstreamCommit=row['upstreamCommit'],sha256LfUtf8=row['sha256LfUtf8'],outputs=[],selections=[]))
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   if row.get('windowsBrandSuccessAdaptation'):entry['windowsBrandSuccessAdaptation']=row['windowsBrandSuccessAdaptation']
   if row.get('windowsHistoryReadSourceAdaptation'):entry['windowsHistoryReadSourceAdaptation']=row['windowsHistoryReadSourceAdaptation']
-  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding','v044FavoriteSubscriptionAdvance','v044FavoriteSubscriptionUiAdvance']:
+  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding','v044FavoriteSubscriptionAdvance','v044FavoriteSubscriptionUiAdvance','v044ListForegroundAdvance']:
    if key in row:entry[key]=row[key]
   if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])

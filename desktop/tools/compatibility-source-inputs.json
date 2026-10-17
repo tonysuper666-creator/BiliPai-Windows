@@ -132,7 +132,8 @@
     "desktop/upstream-slices/v044-favorite-detail",
     "desktop/upstream-slices/v044-favorite-search",
     "desktop/upstream-slices/v044-favorite-subscription",
-    "desktop/upstream-slices/v044-following-fans"
+    "desktop/upstream-slices/v044-following-fans",
+    "desktop/upstream-slices/v044-list-foreground"
   ],
   "archives": [
     {
@@ -5795,6 +5796,23 @@
           "sha256": "ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9",
           "hashNormalization": "raw",
           "blob": "18064769f4ce99d45972b54e5745380d1fc7b7c2"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v044-list-foreground",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v044-list-foreground/CommonListPaginationPolicyTest.kt",
+          "sha256": "b48b372f8c4710a196faf9da9f6765e0da6bf260925f83d38cba3ce36706e7f9",
+          "hashNormalization": "raw",
+          "blob": "45f85b141a9b48fc2814dbf727a59eeed3967e20"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-list-foreground/manifest.json",
+          "sha256": "bd892bfffc777d1ca57931d0bfffd4a7c43ec76877cbdb876dd0f6ea4af725e0",
+          "hashNormalization": "raw",
+          "blob": "b178f7699297d67f050d01c2fe2cdcc54c801d77"
         }
       ]
     }
@@ -15339,6 +15357,21 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original pure policy suite emitted unchanged into the existing Following producer test output"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/CommonListPaginationPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v044-list-foreground/CommonListPaginationPolicyTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "45f85b141a9b48fc2814dbf727a59eeed3967e20",
+      "sha256": "b48b372f8c4710a196faf9da9f6765e0da6bf260925f83d38cba3ce36706e7f9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-list-physical-foreground"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original pure common-list pagination suite over the unchanged original owner policy, emitted by the existing Favorites test producer"
     }
   ],
   "buildStandaloneInputs": [

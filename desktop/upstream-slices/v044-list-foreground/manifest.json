@@ -1,0 +1,18 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.4",
+  "commit": "070ab41608213cd981fd7e51df357295f9a537bf",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/CommonListPaginationPolicyTest.kt",
+      "filename": "CommonListPaginationPolicyTest.kt",
+      "bytes": 1749,
+      "sha256": "b48b372f8c4710a196faf9da9f6765e0da6bf260925f83d38cba3ce36706e7f9",
+      "gitBlob": "45f85b141a9b48fc2814dbf727a59eeed3967e20"
+    }
+  ],
+  "scope": "Whole original pure common-list pagination suite. Foreground UI originals are already fixed by v044-favorite-detail.",
+  "originalCasesSelected": 4,
+  "testsExecuted": false
+}

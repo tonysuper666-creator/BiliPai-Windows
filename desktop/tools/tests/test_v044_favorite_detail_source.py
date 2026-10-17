@@ -85,8 +85,10 @@ class CurrentFavoriteDetailSourceTest(unittest.TestCase):
         actual = (self.root/'favorites/com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf8')
         proof = row['v044FavoriteDetailUiAdvance']
         detail_stage = actual
+        if row.get('v044ListForegroundAdvance'):
+            detail_stage = undo(detail_stage, row['v044ListForegroundAdvance']['retainedToCurrent'])
         if row.get('v044FavoriteSubscriptionUiAdvance'):
-            detail_stage = undo(actual, row['v044FavoriteSubscriptionUiAdvance']['retainedToCurrent'])
+            detail_stage = undo(detail_stage, row['v044FavoriteSubscriptionUiAdvance']['retainedToCurrent'])
         old = undo(detail_stage, proof['actualFinalOwnerToCurrent'])
         self.assertEqual('0ef1331c6c0f461129698628db6239ec7c07945b744de08f6f21172be0d45632', detail.sha(old))
         self.assertTrue(proof['allPriorOwnerSourceGatesRetained'])
@@ -97,7 +99,7 @@ class CurrentFavoriteDetailSourceTest(unittest.TestCase):
         self.assertIn('detailVm.retryLoadMore()', actual)
         self.assertIn('if (canManageFavoriteDetailResources)', actual)
         self.assertIn('onLongClick = if (!historyBatchMode && onHistoryLongDelete != null)', actual)
-        self.assertIn('LaunchedEffect(shouldLoadMore.value, items.size, loadMoreError, isLoading, error)', actual)
+        self.assertIn('LaunchedEffect(shouldLoadMore.value, items.size, loadMoreError, isLoading, error, allowAutomaticLoadMore)', actual)
         from v029_brand_history import selected_source
         baseline = selected_source('feature/list/CommonListScreen')[0]
         advanced, _ = detail.ui_source(REPO, baseline)
