@@ -1,0 +1,47 @@
+import groovy.json.JsonSlurper
+import java.security.MessageDigest
+import org.gradle.api.GradleException
+import org.gradle.api.tasks.testing.Test
+
+// Keep the test list out of cmd.exe/gradlew.bat arguments as the cohort grows.
+// Read only the exact file already validated by the source driver; never eval it.
+def properties = gradle.startParameter.projectProperties
+def planPath = properties.get('bilipaiSourceCohortPlan')
+def expectedDigest = properties.get('bilipaiSourceCohortPlanSHA256')
+if (!planPath || !(expectedDigest ==~ /[0-9a-f]{64}/)) {
+    throw new GradleException('Missing bound source cohort plan')
+}
+def planFile = new File(planPath)
+if (!planFile.isAbsolute() || !planFile.isFile()) {
+    throw new GradleException('Source cohort plan is not an absolute file')
+}
+byte[] bytes = planFile.bytes
+def actualDigest = MessageDigest.getInstance('SHA-256').digest(bytes).encodeHex().toString()
+if (actualDigest != expectedDigest) {
+    throw new GradleException('Source cohort plan changed before Gradle selection')
+}
+def cohort = new JsonSlurper().parseText(new String(bytes, 'UTF-8'))
+def cohortClasses = cohort.classes
+if (cohort.schemaVersion != 1 || cohort.repository != 'tonysuper666-creator/BiliPai-Windows' ||
+        !(cohortClasses instanceof Map) || cohortClasses.isEmpty()) {
+    throw new GradleException('Invalid source cohort identity or class list')
+}
+cohortClasses.each { name, count ->
+    if (!(name instanceof String) || !(name ==~ /[A-Za-z_][A-Za-z0-9_]*(?:[.$][A-Za-z_][A-Za-z0-9_]*)*/) ||
+            !(count instanceof Integer || count instanceof Long) || count <= 0) {
+        throw new GradleException('Invalid exact source cohort class')
+    }
+}
+if (cohortClasses.values().sum() != cohort.expectedTests) {
+    throw new GradleException('Source cohort case count changed')
+}
+String[] classNames = cohortClasses.keySet() as String[]
+gradle.projectsEvaluated {
+    def task = gradle.rootProject.tasks.findByName('test')
+    if (!(task instanceof Test)) {
+        throw new GradleException('Missing standalone desktop Test task')
+    }
+    task.filter.setIncludePatterns(*classNames)
+    task.filter.failOnNoMatchingTests = true
+    task.logger.lifecycle("BILIPAI_SOURCE_COHORT_FILTER classes=${classNames.length} expectedTests=${cohort.expectedTests} planSHA256=${expectedDigest}")
+}

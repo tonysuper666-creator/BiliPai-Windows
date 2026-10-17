@@ -59,6 +59,36 @@ def harness_input_arguments(plan, repo, output):
     return arguments
 
 
+def cohort_filter_arguments(plan, repo):
+    raw = read(repo / PLAN)
+    assert json.loads(raw) == plan, 'Validated source cohort plan changed before launch'
+    assert plan.get('repository') == REPOSITORY and plan.get('schemaVersion') == 1
+    classes = plan.get('classes')
+    assert isinstance(classes, dict) and classes, 'Empty source cohort classes'
+    for name, count in classes.items():
+        assert isinstance(name, str) and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*(?:[.$][A-Za-z_][A-Za-z0-9_]*)*', name), 'Non-exact source cohort class'
+        assert type(count) is int and count > 0, 'Invalid source cohort case count'
+    assert sum(classes.values()) == plan['expectedTests'], 'Source cohort case count changed'
+    return ['--init-script', str(repo / 'desktop/tools/source-cohort-test-filter.init.gradle'),
+            '-PbilipaiSourceCohortPlan=' + str((repo / PLAN).resolve()),
+            '-PbilipaiSourceCohortPlanSHA256=' + digest(raw)]
+
+
+def gradle_command(plan, repo, output, java_home):
+    command = ['cmd.exe', '/d', '/c', str(repo / 'gradlew.bat'), '-p', 'desktop',
+               '--no-daemon', '--console=plain', '--max-workers=1', '--no-parallel',
+               '--no-build-cache', '--gradle-user-home', str(output / 'gradle-home'),
+               '-Dorg.gradle.jvmargs=-Xmx' + CLOUD_GRADLE_HEAP + ' -XX:MaxMetaspaceSize=1g -XX:ReservedCodeCacheSize=256m -Dfile.encoding=UTF-8',
+               '-Pkotlin.compiler.execution.strategy=in-process',
+               '-Porg.gradle.java.installations.auto-detect=false',
+               '-Porg.gradle.java.installations.auto-download=false',
+               '-Porg.gradle.java.installations.paths=' + str(java_home),
+               'compileKotlin', 'compileTestKotlin', 'test']
+    command += cohort_filter_arguments(plan, repo)
+    command += harness_input_arguments(plan, repo, output)
+    return command
+
+
 def write_harness_flags(path, passed, updater, ui):
     if not passed or path is None: return
     flags = []
@@ -127,19 +157,9 @@ def main():
                        PYTHONDONTWRITEBYTECODE='1', PYTHONIOENCODING='utf-8')
     environment.pop('GITHUB_TOKEN', None)
     environment.pop('GH_TOKEN', None)
-    command = ['cmd.exe', '/d', '/c', str(repo / 'gradlew.bat'), '-p', 'desktop',
-               '--no-daemon', '--console=plain', '--max-workers=1', '--no-parallel',
-               '--no-build-cache', '--gradle-user-home', str(output / 'gradle-home'),
-               '-Dorg.gradle.jvmargs=-Xmx' + CLOUD_GRADLE_HEAP + ' -XX:MaxMetaspaceSize=1g -XX:ReservedCodeCacheSize=256m -Dfile.encoding=UTF-8',
-               '-Pkotlin.compiler.execution.strategy=in-process',
-               '-Porg.gradle.java.installations.auto-detect=false',
-               '-Porg.gradle.java.installations.auto-download=false',
-               '-Porg.gradle.java.installations.paths=' + str(java_home),
-               'compileKotlin', 'compileTestKotlin', 'test']
-    for name in plan['classes']: command += ['--tests', name]
+    command = gradle_command(plan, repo, output, java_home)
     export_harness = plan.get('exportPackagedUpdaterHarness') is True
     export_ui = plan.get('exportOriginalRootUiHarness') is True
-    command += harness_input_arguments(plan, repo, output)
     started = time.time()
     result = subprocess.run(command, cwd=repo, env=environment)
     suites = []

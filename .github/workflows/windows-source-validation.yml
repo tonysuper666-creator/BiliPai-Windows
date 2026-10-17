@@ -170,6 +170,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Complete original comment composer and inverse regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v041_video_status_labels_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v041 status-label regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v043_home_recommendation_badges_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original recommendation badge and author row source contracts failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v043_home_native_cards_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original Home native-card model, route and recommendation protocol contracts failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v043_search_up_author_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v043 UP-search author source validation failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v043_navigation_source.py -v

@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.3",
+  "commit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt",
+      "archiveFile": "ListModels.kt",
+      "bytes": 29374,
+      "sha256": "5cb726df0e15c1ffcd79f3722cf9ffae12ffe30a8f0fb784ad223419bb578d1a",
+      "gitBlob": "ad7776d2fae444def57a7034ad373018e0515c25",
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/RecommendationReason.kt",
+      "archiveFile": "RecommendationReason.kt",
+      "bytes": 2446,
+      "sha256": "62af39b81966634667b2af5ca926dd1e1cbf9942425f4a87a8b869cc00b4b7b5",
+      "gitBlob": "b469358558af729b5d2d5fc6ee3e007ee2eede57",
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/RecommendationNativeCardTest.kt",
+      "archiveFile": "RecommendationNativeCardTest.kt",
+      "bytes": 3658,
+      "sha256": "816f03df043673eeb1552c556fb36e9f9ca8c94b33e341cb2addecbb86a47f24",
+      "gitBlob": "4d9663558ad69dba768fa8943e952c244920e44c",
+      "referenceOnly": false
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/RecommendationReasonTest.kt",
+      "archiveFile": "RecommendationReasonTest.kt",
+      "bytes": 2329,
+      "sha256": "295ad5516feca92e780add7994eb48429f5f271669d2c8c4231113bf2d949e54",
+      "gitBlob": "2b25f48354c4c016a34ce5cdd0a7f1847607b4bc",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeVideoClickRequest.kt",
+      "archiveFile": "HomeVideoClickRequest.kt",
+      "bytes": 563,
+      "sha256": "6fd5bf47f2d6a08aadf785fb043515aa8ef8a54b788a2adfabe24a5955ca7957",
+      "gitBlob": "d71160f9da0b8db906197adca89eaaf8d965d362",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt",
+      "archiveFile": "HomeVideoNavigationPolicy.kt",
+      "bytes": 3024,
+      "sha256": "3be20c6fd9dce31ab488a94bf42001b8efe0e948b3ae3e81a33c896e8385eb93",
+      "gitBlob": "c5c85dfe39982092fc600f2969bfe22d7df93e15",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicyTest.kt",
+      "archiveFile": "HomeVideoNavigationPolicyTest.kt",
+      "bytes": 5094,
+      "sha256": "545f1a3fa95b577e4de61e79509b8178ba15047d482d349c3b87e3259be005bd",
+      "gitBlob": "1b6b9aafcb10ab16f971e432f2562ce46df39728",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "archiveFile": "HomeScreen.kt",
+      "bytes": 179052,
+      "sha256": "503e5c049b1f7878bbca29f2f93984b5f3715687e77b71c9ce0b3e73fb7f432c",
+      "gitBlob": "6d2224c68dc56bf93351acc9bfadd720c8f1c1c0",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "archiveFile": "HomeViewModel.kt",
+      "bytes": 100651,
+      "sha256": "e9d69b15875589dc474623f3d6e262faa9241d3491d661f2f3a204f4462d5366",
+      "gitBlob": "d4db07904ead890fdf87edbe080ae5a7191a65c9",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "archiveFile": "VideoRepository.kt",
+      "bytes": 89576,
+      "sha256": "53a97695342686ea554491ef4b6640e5a556bcf8b001acfbc0987e2a2dbf447a",
+      "gitBlob": "a523a9b531beb88ee4e62ddcd76281bc2f4e10eb",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "archiveFile": "HomeCategoryPage.kt",
+      "bytes": 68370,
+      "sha256": "673adbd50bfbd512ef0d60a94cff2b51e611f1e6ebbaad2e5b536599dba6c519",
+      "gitBlob": "8f5146755e83112d6facd328125f0838b7dd9b3f",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+      "archiveFile": "HomeHeroCarousel.kt",
+      "bytes": 33849,
+      "sha256": "af00e86c0568b08230d22057e690651ac03d9c19a8b37d5b125867d141891363",
+      "gitBlob": "cfa883fc625fe895aa41b3fa76424e8cd49f595b",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+      "archiveFile": "VideoCard.kt",
+      "bytes": 102735,
+      "sha256": "f0e5784f4adbb7718e717184c9d42a632ac708cce3c7939594182f271947e32a",
+      "gitBlob": "2ab61d81d41e3d0ae95f23525a6ddd91aebdf5d1",
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
+      "archiveFile": "HomeStyleSingleColumnVideoCard.kt",
+      "bytes": 18311,
+      "sha256": "a367f0e4bb1fd3ee8b0ba810d8e77cba767f3d5a7fa77b5c558d9450cc7be82e",
+      "gitBlob": "25d5578324115928c65c9fff99cf64e7fc397581",
+      "referenceOnly": true
+    }
+  ]
+}
