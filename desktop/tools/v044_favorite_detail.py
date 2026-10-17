@@ -166,6 +166,11 @@ def bind_viewmodel(repo, body):
     # Keep the complete original request algorithms; init(route) is their sole
     # initial activation point at the existing platform ownership boundary.
     replace('    init {\n        loadData()\n    }\n', '')
+    # Without that empty constructor load, a rejected route must complete the
+    # initial loading state itself. It cannot wait for a request that never runs.
+    replace('_uiState.value = _uiState.value.copy(title = title, items = emptyList(), canRemoveItems = false)',
+            '_uiState.value = _uiState.value.copy(title = title, items = emptyList(), canRemoveItems = false,\n'
+            '                isLoading = false, error = "收藏夹或合集参数无效", loadMoreError = null)')
     return body
 
 
@@ -175,6 +180,7 @@ def viewmodel_proof(repo, body):
         originalToPlatform=inverse_proof(original, body),
         existingRootScopeAndApiReused=True, credentialChangeRetiresWholeRootEntry=True,
         rootRouteInitIsSoleInitialLoad=True, redundantConstructorLoadRemoved=True,
+        invalidRouteIsTerminalWithoutTransport=True,
         parallelAccountOrRepositoryOwnerAdded=False)
 
 

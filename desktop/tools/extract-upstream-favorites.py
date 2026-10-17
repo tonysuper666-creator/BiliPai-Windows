@@ -1,6 +1,7 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v035_favorite_cover import selected_source as favorite_cover_source, additional_leaf_sources as favorite_cover_leaf_sources, apply_and_record as apply_favorite_cover
 from v044_favorite_detail import selected_source as detail_source, bind_viewmodel as bind_detail_viewmodel, viewmodel_proof as detail_viewmodel_proof, validate_outputs as validate_detail_outputs
+from v044_favorite_subscription import advance_vm as subscription_vm, advance_repository as subscription_repository, advance_policy as subscription_policy, advance_ui as subscription_ui, additional_sources as subscription_sources, validate_outputs as validate_subscription_outputs
 from pathlib import Path
 import hashlib, importlib.util, json, re, subprocess
 HERE=Path(__file__).resolve().parent
@@ -15,7 +16,7 @@ def emit(p,s):
  relative=str(p).replace(chr(92),'/')
  row=records[-1]
  # The new recap raw is emitted only by this producer, even when a pure file is verbatim.
- mode='selected' if row.get('recapGeneratedAdaptation') or row.get('favoriteCoverGeneratedSource') else 'direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
+ mode='selected' if row.get('recapGeneratedAdaptation') or row.get('favoriteCoverGeneratedSource') or row.get('v044FavoriteSubscriptionOriginal') else 'direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
  row.setdefault('outputs',[]).append(dict(path=relative,sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest(),mode=mode))
  if mode=='direct' and not STANDALONE:return
  p=OUT/p;safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_text(s,encoding='utf-8',newline='\n')
@@ -56,6 +57,13 @@ def output(rel,s,mode):
  if rel=='feature/list/CommonListScreen':
   from v044_favorite_detail import ui_source_after_platform
   s,detailUiAudit=ui_source_after_platform(REPO,s);records[-1]['v044FavoriteDetailUiAdvance']=detailUiAudit
+  s,subscriptionUiAudit=subscription_ui(REPO,s);records[-1]['v044FavoriteSubscriptionUiAdvance']=subscriptionUiAudit
+ if rel=='feature/list/DesktopOriginalListViewModels':
+  s,audit=subscription_vm(REPO,s,drop_logs);records[-1]['v044FavoriteSubscriptionAdvance']=audit
+ elif rel=='data/repository/DesktopOriginalFavoriteRepository':
+  s,audit=subscription_repository(REPO,s,drop_logs);records[-1]['v044FavoriteSubscriptionAdvance']=audit
+ elif rel=='feature/list/FavoriteCollectionPolicy':
+  s,audit=subscription_policy(REPO,s,rmfun);records[-1]['v044FavoriteSubscriptionAdvance']=audit
  if records[-1].get('historySourceAdaptation'):
   from v029_brand_history import generated_audit
   originalRel={'feature/list/DesktopOriginalListViewModels':'feature/list/ListViewModel'}.get(rel,rel)
@@ -93,6 +101,9 @@ def drop_logs(s):
   start=s.rfind('\n',0,m.start())+1;assert not s[start:m.start()].strip()
   end=parser.balanced(mask,mask.index('(',m.start()));s=s[:start]+s[end:]
 def produce():
+ for rel,body,row in subscription_sources(REPO):
+  records.append(row)
+  output(rel,body,'complete original subscription bus/account identity declaration; Root remains account authority')
  for rel,body,row in favorite_cover_leaf_sources():
   records.append(row)
   output(rel,body,'whole original v035 favorite cover cache/policy; fixed Root context/storage only')
@@ -296,20 +307,24 @@ def produce():
  s=source('navigation/AppTopLevelNavigationPolicy');part=decl(s,'resolveBottomPagerNavigationDurationMillis')
  emit('com/android/purebilibili/navigation/DesktopFavoritePagerNavigation.kt','package com.android.purebilibili.navigation\n'+part)
 
-def generate(repo:Path,output:Path,standalone=False):
+def generate(repo:Path,output:Path,standalone=False,test_output=None):
  global REPO,OUT,parser,records,STANDALONE
+ validate_subscription_outputs(repo,output,test_output)
  validate_detail_outputs(repo,output)
  REPO=repo.resolve();OUT=output.resolve();STANDALONE=standalone;records=[]
  spec=importlib.util.spec_from_file_location('source_parser',REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
  parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
  produce()
+ if test_output is not None:
+  from v044_favorite_subscription import emit_original_policy_tests
+  emit_original_policy_tests(repo,test_output)
  canonical={}
  for row in records:
   entry=canonical.setdefault(row['path'],dict(path=row['path'],upstreamCommit=row['upstreamCommit'],sha256LfUtf8=row['sha256LfUtf8'],outputs=[],selections=[]))
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   if row.get('windowsBrandSuccessAdaptation'):entry['windowsBrandSuccessAdaptation']=row['windowsBrandSuccessAdaptation']
   if row.get('windowsHistoryReadSourceAdaptation'):entry['windowsHistoryReadSourceAdaptation']=row['windowsHistoryReadSourceAdaptation']
-  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding']:
+  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding','v044FavoriteSubscriptionAdvance','v044FavoriteSubscriptionUiAdvance']:
    if key in row:entry[key]=row[key]
   if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])
@@ -321,5 +336,5 @@ def generate(repo:Path,output:Path,standalone=False):
  return list(canonical.values())
 if __name__=='__main__':
  import argparse
- ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--standalone',action='store_true')
- args=ap.parse_args();generate(args.repo,args.output,args.standalone)
+ ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--standalone',action='store_true');ap.add_argument('--test-output',type=Path)
+ args=ap.parse_args();generate(args.repo,args.output,args.standalone,args.test_output)

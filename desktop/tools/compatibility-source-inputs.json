@@ -129,7 +129,8 @@
     "desktop/upstream-slices/v043-navigation",
     "desktop/upstream-slices/v043-search-up-author",
     "desktop/upstream-slices/v043-theme-chrome",
-    "desktop/upstream-slices/v044-favorite-detail"
+    "desktop/upstream-slices/v044-favorite-detail",
+    "desktop/upstream-slices/v044-favorite-subscription"
   ],
   "archives": [
     {
@@ -5645,6 +5646,77 @@
           "sha256": "10a12bded6772c50a63e96d120b93c17bd4cbd245107bcbc5697c7c631b2a0d9",
           "hashNormalization": "raw",
           "blob": "acf72f6cffb4aea937b0839e5d5866cf02fc9705"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v044-favorite-subscription",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/ApiClient.kt",
+          "sha256": "bff6c4cdb133d5732ae57af1ad6fb933fa877d85bef69d834ffc735d48de33fb",
+          "hashNormalization": "raw",
+          "blob": "68a60823577658d89e3936d65464db935948f633"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/CommonListScreen.kt",
+          "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1",
+          "hashNormalization": "raw",
+          "blob": "cb59850ef1125c97083612c722fd7c76f14c6da9"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteCollectionPolicy.kt",
+          "sha256": "1356e85afb6aa798b9b0c53c39ba22c3a4ca2ea2026e09541fa5ca256cfe8a1b",
+          "hashNormalization": "raw",
+          "blob": "e7dff37c19cdc4162fff9da9ff7461bf03716aa1"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteFolderAggregationPolicyTest.kt",
+          "sha256": "9b636abbca642a7bd59f66e429d68b46263f72cf164b95a4acb794e10e7c4aed",
+          "hashNormalization": "raw",
+          "blob": "47eb3962c8da97deceb19f627a94b214d5cc42be"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteRepository.kt",
+          "sha256": "7f0de040b6b752a217a42677333b4846fe7a618a4f3925281ec70e8474807e51",
+          "hashNormalization": "raw",
+          "blob": "7e7d67aabafe14073c586d58a8e01d8ce1dd28e4"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscribedFoldersViewModelTest.kt",
+          "sha256": "6e0ccd268212c4321b6b2857e0d4e0908e768fe0b92833087b1b1712b2cad184",
+          "hashNormalization": "raw",
+          "blob": "04f86e660472ef255cfab25c819d47a4aa9a04d0"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscriptionBus.kt",
+          "sha256": "4faea246c4e7858410c7172eee8b38365ec3b091e9dc0382ca9731fe8666aeb5",
+          "hashNormalization": "raw",
+          "blob": "14ede7c98232adad281b87d53ea508cf0a1da430"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/ListViewModel.kt",
+          "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674",
+          "hashNormalization": "raw",
+          "blob": "20b563c6ffa064e575b2222142b2c18ca879b912"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/manifest.json",
+          "sha256": "570143059269b51e3148f6f99d6b8d065451bd07f00d1fc76ee745e4e80d8449",
+          "hashNormalization": "raw",
+          "blob": "da84a5e1773590afc24f2d8feede259163e716ef"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/TokenManager.kt",
+          "sha256": "2316aa9e8d4de997b0a9c546321fac7af248a0590e20ce9cb7cf4ae3e0d1835d",
+          "hashNormalization": "raw",
+          "blob": "a5657fac027215ebb365b51d39a6b848455c4659"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-subscription/WallpaperMediaCardSurface.kt",
+          "sha256": "57f4054a434be37fd6c0c2d65b16177e816e9b73fec6098e549900df484da0ef",
+          "hashNormalization": "raw",
+          "blob": "38e57682f214cef11063825b3b5dfdbf74b7f4c0"
         }
       ]
     }
@@ -14897,6 +14969,156 @@
       "reusedDeclarations": [
         "PlaylistItem"
       ]
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/ApiClient.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "68a60823577658d89e3936d65464db935948f633",
+      "sha256": "bff6c4cdb133d5732ae57af1ad6fb933fa877d85bef69d834ffc735d48de33fb",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Two complete original annotated folder subscribe/unsubscribe methods on the existing BilibiliApi"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/CommonListScreen.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "cb59850ef1125c97083612c722fd7c76f14c6da9",
+      "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Three complete original subscribed-folder composables and their original list/retry/action/search/scroll callers on the retained CommonList owner"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCollectionPolicy.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/FavoriteCollectionPolicy.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "e7dff37c19cdc4162fff9da9ff7461bf03716aa1",
+      "sha256": "1356e85afb6aa798b9b0c53c39ba22c3a4ca2ea2026e09541fa5ca256cfe8a1b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete current original policy except the already installed single risk-control function"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/FavoriteFolderAggregationPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/FavoriteFolderAggregationPolicyTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "47eb3962c8da97deceb19f627a94b214d5cc42be",
+      "sha256": "9b636abbca642a7bd59f66e429d68b46263f72cf164b95a4acb794e10e7c4aed",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original 21-case pure policy suite selected by the Favorites producer; not yet JVM executed"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/FavoriteRepository.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "7e7d67aabafe14073c586d58a8e01d8ce1dd28e4",
+      "sha256": "7f0de040b6b752a217a42677333b4846fe7a618a4f3925281ec70e8474807e51",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "One complete original setFolderSubscription method on the existing Root-bound repository"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/FavoriteSubscribedFoldersViewModelTest.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscribedFoldersViewModelTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "04f86e660472ef255cfab25c819d47a4aa9a04d0",
+      "sha256": "6e0ccd268212c4321b6b2857e0d4e0908e768fe0b92833087b1b1712b2cad184",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference-only Android ViewModel tests; not emitted or executed"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/refresh/FavoriteSubscriptionBus.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscriptionBus.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "14ede7c98232adad281b87d53ea508cf0a1da430",
+      "sha256": "4faea246c4e7858410c7172eee8b38365ec3b091e9dc0382ca9731fe8666aeb5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original subscription notification bus; Root credential epoch supplies identity"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/ListViewModel.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "20b563c6ffa064e575b2222142b2c18ca879b912",
+      "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Ten complete original subscription/activation methods, state declarations and bus collector on the retained Favorites VM; Root cover/history algorithms retained"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/store/TokenManager.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/TokenManager.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "a5657fac027215ebb365b51d39a6b848455c4659",
+      "sha256": "2316aa9e8d4de997b0a9c546321fac7af248a0590e20ce9cb7cf4ae3e0d1835d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Only the complete original AccountSessionIdentity declaration; no Android TokenManager or second account store"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/WallpaperMediaCardSurface.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-subscription/WallpaperMediaCardSurface.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "38e57682f214cef11063825b3b5dfdbf74b7f4c0",
+      "sha256": "57f4054a434be37fd6c0c2d65b16177e816e9b73fec6098e549900df484da0ef",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-subscription-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original material with its Android capability check bound to the existing Root wallpaper layer readiness"
     }
   ],
   "buildStandaloneInputs": [
