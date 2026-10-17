@@ -72,6 +72,21 @@ class DesktopFavoriteCollectionDetailRegressionTest {
         } finally { f.close() }
     }
 
+    @Test fun invalidRootRouteStopsLoadingWithoutReachingAnyApi(): Unit = runBlocking {
+        for ((type, id) in listOf("unknown" to 900L, "favorite_season" to 0L)) {
+            val f = Fixture()
+            try {
+                f.vm.init(type, id, 202L, "Invalid detail")
+                assertFalse(f.hasPendingLoads)
+                assertFalse(f.vm.uiState.value.isLoading)
+                assertFalse(f.vm.uiState.value.canRemoveItems)
+                assertTrue(f.vm.uiState.value.items.isEmpty())
+                assertEquals("收藏夹或合集参数无效", f.vm.uiState.value.error)
+                assertTrue(f.calls.isEmpty())
+            } finally { f.close() }
+        }
+    }
+
     @Test fun subscribedSeasonContinuesPastFortyUntilServerEnd(): Unit = runBlocking {
         val f = Fixture()
         try {

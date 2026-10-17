@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "326467691348985062b11f2baf5f973e9a6ae3bc",
-  "windowsVersion": "0.2.427.178",
-  "createdAt": "2026-10-17T11:52:12.164677+00:00",
+  "baseHead": "90a47197adb5a14b9704003344e32fb1eb407bbe",
+  "windowsVersion": "0.2.427.181",
+  "createdAt": "2026-10-17T13:33:20.447349+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "25f39d8d2b146d098f00d29383add2ac2b31d353324f9dcfc9d23933f1d27549"
+      "sha256": "e139166287bb48dc551f1902d3ad0dd821fd5a9cb4c63c61dcf986d508a4416d"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "2dfc0008ad68b229585d248d8a1fad9b73409acb546b02e169ddc3c6fe98c2d9"
+      "sha256": "dc18371e999921c7326ff799854c6bc4f98412633a46ded5188625c79a4bfea9"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -224,6 +224,11 @@
       "path": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrVideoSrRestore.hlsl",
       "normalization": "lf",
       "sha256": "ad2fbfc064d14fb9214dab4a303db7f26809e27cac58b749e9959cc0b29b9a16"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "026a19124db3a909f16873fe37e409059a80018d30dd4a78d60ce9cbfeddfe23"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
@@ -506,6 +511,16 @@
       "sha256": "72f1355b2462d2c1618696865c7a39f79ba62d29f0a2d462e44d8a9a05b8f9e8"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteWallpaperBackdrop.kt",
+      "normalization": "lf",
+      "sha256": "cfcc114e57e6cf53fe9d6bd96bd63bd3369412690f160241f02f863f52164225"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+      "normalization": "lf",
+      "sha256": "e12e8f9292ecec41f932b6381a9c1e22ee2898c44afec3de54c2117c93f18a69"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
       "normalization": "lf",
       "sha256": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0"
@@ -564,6 +579,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalContentLinkBinding.kt",
       "normalization": "lf",
       "sha256": "1a9c5c3a8ed5622c1ec77f9408b27081d33b3ea5d01d47d5d30103e9274c261d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "normalization": "lf",
+      "sha256": "02d8ed940831239da9cc67308e0e80dc95bf249c3871699a742ab1631f46e669"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
@@ -1203,7 +1223,17 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCollectionDetailRegressionTest.kt",
       "normalization": "lf",
-      "sha256": "155c45c4ca63fdc3de8f8e4a3e74a64c5016d9eb1b0954af11da3f0e94f69a70"
+      "sha256": "d58b132fa6b9e3e1544cb16bb7ee2d9c4e5b357644db529c94c43ade68e53183"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
+      "normalization": "lf",
+      "sha256": "a60d8beba680c25126062d435181bab45880a756dc4142c4a2fc69eaf706d46b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteSubscriptionRegressionTest.kt",
+      "normalization": "lf",
+      "sha256": "da5163be5ac05857e9fc0486c49d491f22f927526f1228cf5d04a503c2bf8ee3"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeFrameBitmapTest.kt",
@@ -1543,7 +1573,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "53469247be624a2851e7b267d207f064f667ad808b6efb56489c482f269dcc52"
+      "sha256": "62fd96749a5b947ff9226031c46c9b24451c24b4f05f376cea357e2dedd47a4b"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1583,7 +1613,7 @@
     {
       "path": "desktop/tools/extract-upstream-api.py",
       "normalization": "lf",
-      "sha256": "fcedd95a2d6a6d068caeec53518701ea78229862b72e1b2487b5645e69548df2"
+      "sha256": "136bd1909b1e1465dc5898d8ad66fe3eac4140770a9e855bd6e911266ffea171"
     },
     {
       "path": "desktop/tools/extract-upstream-audio.py",
@@ -1643,7 +1673,7 @@
     {
       "path": "desktop/tools/extract-upstream-favorites.py",
       "normalization": "lf",
-      "sha256": "259ace77479838a2657e1eb9df1b7587027dd3e411e60a529fc5f7ead0b8bc05"
+      "sha256": "515d16fa169c0a7003a3c9a2cfd1e2a5cab5afc026134505bccbd8c974a5a7b6"
     },
     {
       "path": "desktop/tools/extract-upstream-home-full-card.py",
@@ -1893,7 +1923,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "a620acc7e57979779ee7ca3fc35bf867b577b7efdd1b6921d01ca4378a49fc4a"
+      "sha256": "3da0c8c529855fd7d4b565e9689fa9e94e0e3061e3b05eb7d1ba49dca5632b88"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -1933,7 +1963,7 @@
     {
       "path": "desktop/tools/tests/test_extract_upstream_brand_callers.py",
       "normalization": "lf",
-      "sha256": "d9bfd930590e02a175afc8bd3933d3c3760a07717a2442bd1f89da5f8cb1c996"
+      "sha256": "19e5c6037bc14677b04f634962e564d602e60b27ec47724b61f20d228f32e196"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_brand_history.py",
@@ -2108,7 +2138,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "be8610b8c53714b649eecc85fa81259f3b0afb89249074b63805c2365a66d4f5"
+      "sha256": "deadeb0f459e300fc86f2ed6df7dda38c2109de14a5388f2adb1a6e31415f43c"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2303,7 +2333,12 @@
     {
       "path": "desktop/tools/tests/test_v044_favorite_detail_source.py",
       "normalization": "lf",
-      "sha256": "762d71cacc4178a1f1c561645dec2d1c6941ac0136545f02916d1d54b8168b5f"
+      "sha256": "1b810ffc7303327cd503e57d379c6240a01e522e9d49edc786db6b8a8a3ae2bb"
+    },
+    {
+      "path": "desktop/tools/tests/test_v044_favorite_subscription_source.py",
+      "normalization": "lf",
+      "sha256": "1f2c5451b6f6a2a46a8e4498ca303e8301217164a90d50af377b2adf9e889067"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -2618,7 +2653,12 @@
     {
       "path": "desktop/tools/v044_favorite_detail.py",
       "normalization": "lf",
-      "sha256": "30ca5fe0c0b1d58befb7a58edf751eea3683a13cac81c8c9f8b2b004a81cfe00"
+      "sha256": "aa3a1b1b260571a1e02267dc6cae7399ce04c95a759b03b54a2f37eeba670580"
+    },
+    {
+      "path": "desktop/tools/v044_favorite_subscription.py",
+      "normalization": "lf",
+      "sha256": "a411771433812da33c9e6c1848e793e386463cc64759732ea7fab9c0e9c70f9f"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -4246,131 +4286,188 @@
       "sha256": "21f6536a4a554c824921332ef957fc8bc49c6178ce644821851f8ea294c93861"
     },
     {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/ApiClient.kt",
+      "normalization": "raw",
+      "sha256": "bff6c4cdb133d5732ae57af1ad6fb933fa877d85bef69d834ffc735d48de33fb"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/CommonListScreen.kt",
+      "normalization": "raw",
+      "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteCollectionPolicy.kt",
+      "normalization": "raw",
+      "sha256": "1356e85afb6aa798b9b0c53c39ba22c3a4ca2ea2026e09541fa5ca256cfe8a1b"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteFolderAggregationPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "9b636abbca642a7bd59f66e429d68b46263f72cf164b95a4acb794e10e7c4aed"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteRepository.kt",
+      "normalization": "raw",
+      "sha256": "7f0de040b6b752a217a42677333b4846fe7a618a4f3925281ec70e8474807e51"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscribedFoldersViewModelTest.kt",
+      "normalization": "raw",
+      "sha256": "6e0ccd268212c4321b6b2857e0d4e0908e768fe0b92833087b1b1712b2cad184"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscriptionBus.kt",
+      "normalization": "raw",
+      "sha256": "4faea246c4e7858410c7172eee8b38365ec3b091e9dc0382ca9731fe8666aeb5"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/ListViewModel.kt",
+      "normalization": "raw",
+      "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/TokenManager.kt",
+      "normalization": "raw",
+      "sha256": "2316aa9e8d4de997b0a9c546321fac7af248a0590e20ce9cb7cf4ae3e0d1835d"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/WallpaperMediaCardSurface.kt",
+      "normalization": "raw",
+      "sha256": "57f4054a434be37fd6c0c2d65b16177e816e9b73fec6098e549900df484da0ef"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-subscription/manifest.json",
+      "normalization": "raw",
+      "sha256": "570143059269b51e3148f6f99d6b8d065451bd07f00d1fc76ee745e4e80d8449"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "09b9f3cd9e154003bf786107663ca337593011bb2fd4ba89ffe5a21e111d8f05"
+      "sha256": "735f61877b877b15996e6bc5db2c7c4f2bbb7bca2715835c0422701279878127"
     }
   ],
   "classes": {
-    "com.bilipai.desktop.player.DesktopSubtitleCancellationTest": 12,
-    "com.bilipai.desktop.player.DesktopSubtitleSessionParityTest": 19,
-    "com.bilipai.desktop.player.DesktopSubtitleCacheLifetimeTest": 13,
-    "com.bilipai.desktop.ui.DesktopHomeFrameBitmapTest": 2,
-    "com.bilipai.desktop.ui.DesktopOriginalSubtitleCacheOwnershipTest": 4,
-    "com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest": 3,
-    "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4,
-    "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8,
-    "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 27,
-    "com.bilipai.desktop.ui.DesktopOriginalPlayerInputLayerTest": 4,
-    "com.bilipai.desktop.ui.DesktopOriginalOfflineBindingsLifetimeTest": 11,
-    "com.bilipai.desktop.ui.DesktopOfflinePointerInputTest": 7,
-    "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5,
-    "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13,
-    "com.bilipai.desktop.ui.DesktopWindowsPlaybackAudioOutputTest": 6,
-    "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
-    "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 27,
-    "com.bilipai.desktop.player.MpvNativeInputTest": 23,
-    "com.bilipai.desktop.ui.DesktopWindowKeyFallbackTest": 9,
-    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityManagerTest": 9,
-    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityTest": 6,
-    "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
+    "com.android.purebilibili.core.network.policy.NetworkProxyPolicyTest": 10,
     "com.android.purebilibili.core.plugin.feed.FeedDocumentParserTest": 19,
-    "com.bilipai.desktop.plugins.DesktopSubscriptionIdentityTest": 11,
-    "com.bilipai.desktop.plugins.DesktopSubscriptionTitleRefreshTest": 7,
-    "com.bilipai.desktop.plugins.DesktopPluginServicesTest": 5,
-    "com.bilipai.desktop.plugins.DesktopJsSubscriptionTest": 3,
-    "com.bilipai.desktop.ui.DesktopSubscriptionReadingProgressRegressionTest": 6,
-    "com.android.purebilibili.feature.dynamic.DynamicAuthorSearchPolicyTest": 3,
-    "com.bilipai.desktop.ui.DesktopDynamicAuthorSearchTest": 7,
-    "com.bilipai.desktop.ui.DesktopDynamicTabsTest": 10,
-    "com.bilipai.desktop.ui.DesktopDynamicStartupTest": 9,
-    "com.bilipai.desktop.ui.DesktopDynamicFailedPaginationTest": 4,
-    "com.bilipai.desktop.ui.DesktopDynamicAccountStorageTest": 12,
-    "com.bilipai.desktop.data.DesktopDynamicCommentCacheConsumptionTest": 11,
-    "com.bilipai.desktop.player.DesktopNativeVideoCanvasRegionTest": 24,
-    "com.bilipai.desktop.ui.DesktopWindowsNativeVideoGeometryTest": 10,
-    "com.android.purebilibili.feature.video.ui.section.DesktopV041OriginalPlayerCoverPolicyTest": 31,
-    "com.bilipai.desktop.ui.DesktopWindowsVideoEntryCoverIdentityTest": 5,
-    "com.bilipai.desktop.ui.DesktopWindowsNavigationDisplayTest": 13,
-    "com.bilipai.desktop.ui.DesktopBangumiBasSourceAdmissionAssemblyTest": 10,
-    "com.bilipai.desktop.ui.DesktopBangumiPgcLaunchPolicyTest": 8,
-    "com.bilipai.desktop.player.PlayerPreferencesReadTest": 6,
-    "com.bilipai.desktop.settings.DesktopAboutAutoCheckConsumerTest": 4,
-    "com.bilipai.desktop.settings.DesktopOriginalAboutPreferencesTest": 8,
-    "com.bilipai.desktop.settings.DesktopSettingsShareMirrorTest": 11,
-    "com.bilipai.desktop.settings.DesktopSettingsShareServiceTest": 14,
-    "com.bilipai.desktop.settings.DesktopWindowsSettingsCatalogTest": 8,
-    "com.bilipai.desktop.ui.DesktopBangumiPgcAudioPreferencesTest": 6,
-    "com.bilipai.desktop.ui.DesktopOriginalPlaybackPreferenceProjectionTest": 25,
-    "com.bilipai.desktop.ui.DesktopOriginalProfilePrivacyAuthorityTest": 5,
-    "com.bilipai.desktop.ui.DesktopWindowsPlaybackAutoContinueGatesTest": 4,
-    "com.bilipai.desktop.ui.DesktopWindowsPlaybackDefaultsTest": 5,
-    "com.bilipai.desktop.ui.DesktopWindowsPlaybackSettingsQualityLabelTest": 3,
-    "com.bilipai.desktop.ui.DesktopWindowsSettingsStartupMigrationTest": 3,
-    "com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest": 6,
-    "com.bilipai.desktop.ui.DesktopWindowsVideoReturnHandoffTest": 8,
-    "com.bilipai.desktop.ui.DesktopWindowsVideoCardReturnSnapshotTest": 10,
-    "com.bilipai.desktop.ui.DesktopOriginalVideoComposerCommentsTest": 22,
-    "com.bilipai.desktop.data.DesktopLiveDanmakuHealthPolicyTest": 8,
-    "com.android.purebilibili.data.model.response.VideoCooperationMetadataTest": 5,
-    "com.android.purebilibili.data.model.response.VideoStatusLabelsTest": 6,
-    "com.bilipai.desktop.data.DesktopVideoStatusLabelEntriesTest": 27,
-    "com.bilipai.desktop.data.DesktopSearchAllTest": 10,
-    "com.bilipai.desktop.data.DesktopSearchTest": 12,
-    "com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest": 14,
-    "com.android.purebilibili.data.repository.DesktopFollowConfirmationReadTest": 6,
-    "com.android.purebilibili.data.repository.VideoInteractionStatusCacheTest": 15,
-    "com.android.purebilibili.data.repository.DesktopInteractionCacheLifetimeTest": 2,
-    "com.bilipai.desktop.ui.DesktopWindowsOwnerFollowRetryTest": 11,
+    "com.android.purebilibili.core.theme.AppThemeEndpointPolicyTest": 3,
+    "com.android.purebilibili.core.theme.CustomSelectionContentColorTest": 2,
+    "com.android.purebilibili.core.theme.LiquidAccentColorSchemeTest": 3,
+    "com.android.purebilibili.core.theme.MiuixThemeBridgePolicyTest": 12,
     "com.android.purebilibili.core.theme.PaletteSpecPolicyTest": 2,
     "com.android.purebilibili.core.theme.SeedColorSchemeTest": 7,
     "com.android.purebilibili.core.theme.SeedTextContrastPolicyTest": 5,
     "com.android.purebilibili.core.theme.ThemePresetPalettePreviewTest": 5,
-    "com.android.purebilibili.core.theme.AppThemeEndpointPolicyTest": 3,
     "com.android.purebilibili.core.theme.WallpaperPaletteOverridePolicyTest": 4,
-    "com.android.purebilibili.core.theme.LiquidAccentColorSchemeTest": 3,
-    "com.android.purebilibili.feature.settings.SeedPaletteSettingsPolicyTest": 3,
-    "com.bilipai.desktop.appearance.DesktopSeedPalettePreferencesTest": 5,
-    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4,
-    "com.bilipai.desktop.ui.DesktopSearchArticleOpenRequestTest": 11,
-    "com.android.purebilibili.feature.search.SearchTabLabelPolicyTest": 3,
-    "com.android.purebilibili.feature.search.SearchCardTargetRestoreTest": 3,
-    "com.android.purebilibili.feature.search.SearchMotionBudgetPolicyTest": 18,
-    "com.android.purebilibili.core.ui.AppTabTypographyTest": 2,
     "com.android.purebilibili.core.ui.AppContentColorsTest": 5,
-    "com.android.purebilibili.core.network.policy.NetworkProxyPolicyTest": 10,
-    "com.bilipai.desktop.plugins.DesktopStringSetPreferencesTest": 5,
-    "com.bilipai.desktop.network.DesktopNetworkProxyRoutingTest": 2,
-    "com.bilipai.desktop.appearance.DesktopPlatformClipboardTest": 10,
-    "com.bilipai.desktop.ui.DesktopWindowsVideoKeyInputTest": 15,
-    "com.android.purebilibili.data.model.response.SearchUpItemTest": 2,
+    "com.android.purebilibili.core.ui.AppTabTypographyTest": 2,
+    "com.android.purebilibili.core.ui.ButtonSlotColorTest": 5,
+    "com.android.purebilibili.core.ui.ButtonVisualPolicyTest": 6,
+    "com.android.purebilibili.core.ui.components.AppTabIndicatorPolicyTest": 5,
     "com.android.purebilibili.core.util.BilibiliNavigationTargetParserTest": 21,
     "com.android.purebilibili.core.util.BilibiliUrlParserRegressionTest": 10,
-    "com.android.purebilibili.navigation.MessageLinkNavigationPolicyTest": 17,
-    "com.android.purebilibili.feature.web.LinkOpenGateTest": 2,
-    "com.android.purebilibili.navigation.BilibiliLinkNavigationPolicyTest": 6,
     "com.android.purebilibili.data.model.response.RecommendationNativeCardTest": 6,
     "com.android.purebilibili.data.model.response.RecommendationReasonTest": 4,
+    "com.android.purebilibili.data.model.response.SearchUpItemTest": 2,
+    "com.android.purebilibili.data.model.response.VideoCooperationMetadataTest": 5,
+    "com.android.purebilibili.data.model.response.VideoStatusLabelsTest": 6,
+    "com.android.purebilibili.data.repository.DesktopFollowConfirmationReadTest": 6,
+    "com.android.purebilibili.data.repository.DesktopInteractionCacheLifetimeTest": 2,
+    "com.android.purebilibili.data.repository.VideoInteractionStatusCacheTest": 15,
+    "com.android.purebilibili.feature.dynamic.DynamicAuthorSearchPolicyTest": 3,
+    "com.android.purebilibili.feature.list.FavoriteFolderAggregationPolicyTest": 21,
+    "com.android.purebilibili.feature.search.SearchCardTargetRestoreTest": 3,
+    "com.android.purebilibili.feature.search.SearchMotionBudgetPolicyTest": 18,
+    "com.android.purebilibili.feature.search.SearchTabLabelPolicyTest": 3,
+    "com.android.purebilibili.feature.settings.SeedPaletteSettingsPolicyTest": 3,
+    "com.android.purebilibili.feature.space.SpacePlaybackPolicyTest": 17,
+    "com.android.purebilibili.feature.video.ui.section.DesktopV040OriginalPlayerCoverPolicyTest": 3,
+    "com.android.purebilibili.feature.video.ui.section.DesktopV040PlayerCoverPolicyTest": 4,
+    "com.android.purebilibili.feature.video.ui.section.DesktopV041OriginalPlayerCoverPolicyTest": 31,
+    "com.android.purebilibili.feature.web.LinkOpenGateTest": 2,
+    "com.android.purebilibili.navigation.BilibiliLinkNavigationPolicyTest": 6,
     "com.android.purebilibili.navigation.HomeVideoNavigationPolicyTest": 10,
+    "com.android.purebilibili.navigation.MessageLinkNavigationPolicyTest": 17,
+    "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4,
+    "com.bilipai.desktop.appearance.DesktopPlatformClipboardTest": 10,
+    "com.bilipai.desktop.appearance.DesktopSeedPalettePreferencesTest": 5,
+    "com.bilipai.desktop.data.DesktopDynamicCommentCacheConsumptionTest": 11,
+    "com.bilipai.desktop.data.DesktopLiveDanmakuHealthPolicyTest": 8,
+    "com.bilipai.desktop.data.DesktopSearchAllTest": 10,
+    "com.bilipai.desktop.data.DesktopSearchTest": 12,
+    "com.bilipai.desktop.data.DesktopVideoStatusLabelEntriesTest": 27,
+    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityManagerTest": 9,
+    "com.bilipai.desktop.download.DesktopDownloadQueueAuthorityTest": 6,
+    "com.bilipai.desktop.network.DesktopNetworkProxyRoutingTest": 2,
+    "com.bilipai.desktop.player.DesktopNativeVideoCanvasRegionTest": 24,
+    "com.bilipai.desktop.player.DesktopSubtitleCacheLifetimeTest": 13,
+    "com.bilipai.desktop.player.DesktopSubtitleCancellationTest": 12,
+    "com.bilipai.desktop.player.DesktopSubtitleSessionParityTest": 19,
+    "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
+    "com.bilipai.desktop.player.MpvNativeInputTest": 23,
+    "com.bilipai.desktop.player.PlayerPreferencesReadTest": 6,
+    "com.bilipai.desktop.plugins.DesktopJsSubscriptionTest": 3,
+    "com.bilipai.desktop.plugins.DesktopPluginServicesTest": 5,
+    "com.bilipai.desktop.plugins.DesktopStringSetPreferencesTest": 5,
+    "com.bilipai.desktop.plugins.DesktopSubscriptionIdentityTest": 11,
+    "com.bilipai.desktop.plugins.DesktopSubscriptionTitleRefreshTest": 7,
+    "com.bilipai.desktop.settings.DesktopAboutAutoCheckConsumerTest": 4,
+    "com.bilipai.desktop.settings.DesktopFullNavigationSettingsTest": 14,
+    "com.bilipai.desktop.settings.DesktopOriginalAboutPreferencesTest": 8,
+    "com.bilipai.desktop.settings.DesktopSettingsShareMirrorTest": 11,
+    "com.bilipai.desktop.settings.DesktopSettingsShareServiceTest": 14,
+    "com.bilipai.desktop.settings.DesktopWindowsSettingsCatalogTest": 8,
+    "com.bilipai.desktop.ui.DesktopBangumiBasSourceAdmissionAssemblyTest": 10,
+    "com.bilipai.desktop.ui.DesktopBangumiPgcAudioPreferencesTest": 6,
+    "com.bilipai.desktop.ui.DesktopBangumiPgcLaunchPolicyTest": 8,
+    "com.bilipai.desktop.ui.DesktopBgmCommentLinkRootNavigationTest": 27,
+    "com.bilipai.desktop.ui.DesktopBrandSuccessEngagementTest": 4,
+    "com.bilipai.desktop.ui.DesktopDynamicAccountStorageTest": 12,
+    "com.bilipai.desktop.ui.DesktopDynamicAuthorSearchTest": 7,
+    "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest": 11,
+    "com.bilipai.desktop.ui.DesktopDynamicFailedPaginationTest": 4,
+    "com.bilipai.desktop.ui.DesktopDynamicStartupTest": 9,
+    "com.bilipai.desktop.ui.DesktopDynamicTabsTest": 10,
+    "com.bilipai.desktop.ui.DesktopFavoriteCollectionDetailRegressionTest": 9,
+    "com.bilipai.desktop.ui.DesktopFavoriteSubscriptionRegressionTest": 8,
+    "com.bilipai.desktop.ui.DesktopHomeFrameBitmapTest": 2,
     "com.bilipai.desktop.ui.DesktopHomeNativeCardNavigationTest": 6,
     "com.bilipai.desktop.ui.DesktopHomeNativeCardProtocolTest": 4,
     "com.bilipai.desktop.ui.DesktopHomeRecommendationBadgeTest": 4,
-    "com.bilipai.desktop.ui.DesktopWindowsVideoEngagementBindingTest": 7,
-    "com.bilipai.desktop.ui.DesktopWindowsCoinDialogRequestTest": 10,
-    "com.bilipai.desktop.ui.DesktopWindowsConfirmedVideoFeedbackTest": 4,
+    "com.bilipai.desktop.ui.DesktopOfflineNativeInputTest": 27,
+    "com.bilipai.desktop.ui.DesktopOfflineNativeSourcePublicationTest": 13,
+    "com.bilipai.desktop.ui.DesktopOfflinePointerInputTest": 7,
+    "com.bilipai.desktop.ui.DesktopOriginalOfflineBindingsLifetimeTest": 11,
+    "com.bilipai.desktop.ui.DesktopOriginalPlaybackPreferenceProjectionTest": 25,
+    "com.bilipai.desktop.ui.DesktopOriginalPlayerInputLayerTest": 4,
+    "com.bilipai.desktop.ui.DesktopOriginalPlayerTapGesturesTest": 8,
+    "com.bilipai.desktop.ui.DesktopOriginalProfilePrivacyAuthorityTest": 5,
+    "com.bilipai.desktop.ui.DesktopOriginalSubtitleCacheOwnershipTest": 4,
+    "com.bilipai.desktop.ui.DesktopOriginalVideoComposerCommentsTest": 22,
     "com.bilipai.desktop.ui.DesktopRepostCoinTest": 6,
-    "com.bilipai.desktop.ui.DesktopBrandSuccessEngagementTest": 4,
+    "com.bilipai.desktop.ui.DesktopSearchArticleOpenRequestTest": 11,
+    "com.bilipai.desktop.ui.DesktopSubscriptionReadingProgressRegressionTest": 6,
+    "com.bilipai.desktop.ui.DesktopWindowKeyFallbackTest": 9,
+    "com.bilipai.desktop.ui.DesktopWindowsCoinDialogRequestTest": 10,
     "com.bilipai.desktop.ui.DesktopWindowsCommandAttentionBindingTest": 13,
-    "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest": 11,
-    "com.android.purebilibili.core.ui.ButtonVisualPolicyTest": 6,
-    "com.android.purebilibili.core.ui.ButtonSlotColorTest": 5,
-    "com.android.purebilibili.core.ui.components.AppTabIndicatorPolicyTest": 5,
-    "com.android.purebilibili.core.theme.CustomSelectionContentColorTest": 2,
-    "com.android.purebilibili.core.theme.MiuixThemeBridgePolicyTest": 12,
-    "com.android.purebilibili.feature.space.SpacePlaybackPolicyTest": 17,
-    "com.bilipai.desktop.ui.DesktopFavoriteCollectionDetailRegressionTest": 8
+    "com.bilipai.desktop.ui.DesktopWindowsConfirmedVideoFeedbackTest": 4,
+    "com.bilipai.desktop.ui.DesktopWindowsNativeVideoGeometryTest": 10,
+    "com.bilipai.desktop.ui.DesktopWindowsNavigationDisplayTest": 13,
+    "com.bilipai.desktop.ui.DesktopWindowsOwnerFollowRetryTest": 11,
+    "com.bilipai.desktop.ui.DesktopWindowsPlaybackAudioOutputTest": 6,
+    "com.bilipai.desktop.ui.DesktopWindowsPlaybackAutoContinueGatesTest": 4,
+    "com.bilipai.desktop.ui.DesktopWindowsPlaybackDefaultsTest": 5,
+    "com.bilipai.desktop.ui.DesktopWindowsPlaybackSettingsQualityLabelTest": 3,
+    "com.bilipai.desktop.ui.DesktopWindowsSettingsStartupMigrationTest": 3,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoCardReturnSnapshotTest": 10,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoEngagementBindingTest": 7,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoEntryCoverIdentityTest": 5,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoKeyInputTest": 15,
+    "com.bilipai.desktop.ui.DesktopWindowsVideoReturnHandoffTest": 8,
+    "com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest": 6,
+    "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
+    "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5
   },
-  "expectedTests": 1047,
+  "expectedTests": 1077,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4380,30 +4477,34 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvRuntimeProbe.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvNativeInputTest.kt",
+    "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteWallpaperBackdrop.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
     "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCollectionDetailRegressionTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteSubscriptionRegressionTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-space-overview.py",
-    "desktop/tools/extract-upstream-audio.py",
+    "desktop/tools/extract-upstream-api.py",
     "desktop/tools/extract-upstream-favorites.py",
     "desktop/tools/sync-upstream.py",
     "desktop/tools/tests/test_extract_upstream_brand_callers.py",
-    "desktop/tools/tests/test_extract_upstream_brand_history.py",
     "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v041_video_status_labels_source.py",
     "desktop/tools/tests/test_v044_favorite_detail_source.py",
+    "desktop/tools/tests/test_v044_favorite_subscription_source.py",
     "desktop/tools/v044_favorite_detail.py",
-    "desktop/upstream-slices/v044-favorite-detail/CommonListScreen.kt",
-    "desktop/upstream-slices/v044-favorite-detail/FavoriteModels.kt",
-    "desktop/upstream-slices/v044-favorite-detail/ListViewModel.kt",
-    "desktop/upstream-slices/v044-favorite-detail/PlaylistManager.kt",
-    "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModel.kt",
-    "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModelTest.kt",
-    "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicy.kt",
-    "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicyTest.kt",
-    "desktop/upstream-slices/v044-favorite-detail/manifest.json",
+    "desktop/tools/v044_favorite_subscription.py",
+    "desktop/upstream-slices/v044-favorite-subscription/ApiClient.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/CommonListScreen.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/FavoriteCollectionPolicy.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/FavoriteFolderAggregationPolicyTest.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/FavoriteRepository.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscribedFoldersViewModelTest.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/FavoriteSubscriptionBus.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/ListViewModel.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/TokenManager.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/WallpaperMediaCardSurface.kt",
+    "desktop/upstream-slices/v044-favorite-subscription/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

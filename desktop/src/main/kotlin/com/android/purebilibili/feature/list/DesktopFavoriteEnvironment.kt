@@ -4,6 +4,7 @@ import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.SpaceApi
 import com.android.purebilibili.core.network.DynamicApi
 import com.android.purebilibili.core.network.BangumiApi
+import com.android.purebilibili.core.store.AccountSessionIdentity
 import com.android.purebilibili.data.repository.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -31,6 +32,35 @@ class DesktopFavoriteEnvironment @JvmOverloads constructor(
     private val readAccessTokenPlatform: (() -> String)?,
     private val followStateChanged: ((FollowStateChange) -> Unit)? = null,
 ) {
+    private var cardVisualPreferences: com.bilipai.desktop.settings.DesktopHomeCardVisualPreferences? = null
+    internal fun mountFavoriteHomeCardVisualPreferences(value: com.bilipai.desktop.settings.DesktopHomeCardVisualPreferences) {
+        assertOwned(); check(cardVisualPreferences == null)
+        cardVisualPreferences = value
+    }
+    internal val favoriteHomeCardVisualPreferences: com.bilipai.desktop.settings.DesktopHomeCardVisualPreferences
+        get() = requireNotNull(cardVisualPreferences) { "Favorite card appearance requires Root's shared settings" }
+    private var subscriptionIdentity: (() -> AccountSessionIdentity)? = null
+    private var persistSubscription: (suspend (Long, Boolean) -> Unit)? = null
+    /** Identity and preference admission come from the existing retained Root entry. */
+    internal fun mountFavoriteSubscriptionPorts(identity: () -> AccountSessionIdentity,
+        persist: suspend (Long, Boolean) -> Unit) {
+        assertOwned(); check(subscriptionIdentity == null && persistSubscription == null)
+        subscriptionIdentity = identity; persistSubscription = persist
+    }
+    internal fun favoriteAccountIdentity(): AccountSessionIdentity {
+        assertOwned()
+        val identity = requireNotNull(subscriptionIdentity) { "Favorite subscriptions require Root account identity" }()
+        assertOwned()
+        return identity
+    }
+    internal fun isFavoriteAccountCurrent(identity: AccountSessionIdentity): Boolean =
+        isOwned() && subscriptionIdentity?.invoke() == identity && isOwned()
+    internal suspend fun persistCollectionSubscription(id: Long, subscribed: Boolean) {
+        assertOwned()
+        requireNotNull(persistSubscription) { "Favorite subscriptions require Root preference admission" }(id, subscribed)
+        assertOwned()
+    }
+    internal val collectionActions by lazy { DesktopOriginalCollectionActions(api) { csrf().orEmpty() } }
     private var mountedFavoriteCoverContext: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheContext? = null
     internal fun mountFavoriteCoverContext(context: com.bilipai.desktop.ui.DesktopFavoriteCoverCacheContext) {
         assertOwned(); check(mountedFavoriteCoverContext == null)

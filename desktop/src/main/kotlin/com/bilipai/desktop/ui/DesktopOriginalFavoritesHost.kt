@@ -40,10 +40,13 @@ fun DesktopOriginalFavoritesHost(
         if(detail==null) FavoriteViewModel(environment)
         else SeasonSeriesDetailViewModel(environment).also{it.init(detail.type,detail.id,detail.mid,detail.title,detail.ownerName)}
     }
-    LaunchedEffect(viewModel) {if(loadFavoriteViewModelOnEnter && viewModel is FavoriteViewModel) viewModel.loadData()}
+    LaunchedEffect(viewModel, isCurrentPage, loadFavoriteViewModelOnEnter) {
+        if (loadFavoriteViewModelOnEnter && viewModel is FavoriteViewModel) viewModel.setPageActive(isCurrentPage)
+    }
     val window=LocalWindowSizeClass.current
     CompositionLocalProvider(LocalDesktopFavoriteBindings provides bindings,
         LocalDesktopFavoriteViewport provides DesktopFavoriteViewport(window.widthDp.value.toInt(),window.heightDp.value.toInt())) {
+        DesktopFavoriteWallpaperBackdrop(environment) {
         CommonListScreen(viewModel,onBack,onVideoClick,onUpClick,onCollectionClick,onFolderClick,
             onFavoriteBangumiClick=onBangumi,onFavoriteCheeseClick=onCourse,onFavoriteArticleClick=onArticle,
             onFavoriteTopicClick=onTopic,onFavoriteWebClick=onWeb,initialSearchQuery=initialSearchQuery,
@@ -52,5 +55,6 @@ fun DesktopOriginalFavoritesHost(
             listScopedSearchChannel=listScopedSearchChannel,scrollToTopChannel=scrollToTopChannel,
             isSearchDestination=isSearchDestination,onOpenSearchDestination=onOpenSearchDestination,
             isCurrentPage=isCurrentPage)
+        }
     }
 }

@@ -113,6 +113,8 @@ def generate_core_data_log(repo, output, parser):
         existingDiagnosticsConsumer=True, newConfigOrStoreOrClient=False), indent=2)+'\n', encoding='utf8')
 
 def generate(repo: Path, output: Path) -> Path:
+    from v044_favorite_subscription import validate_outputs as validate_subscription_outputs
+    validate_subscription_outputs(repo, output)
     source_path = _desktop_canonical_source(repo, 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt')
     source = source_path.read_text(encoding="utf-8")
     spec = importlib.util.spec_from_file_location("bilipai_kotlin_structure", repo / "desktop/tools/sync-upstream.py")
@@ -162,6 +164,10 @@ def generate(repo: Path, output: Path) -> Path:
     live_api_body = adapt_story_api(live_api_body, output)
     from v041_search_all import advance_api
     live_api_body = advance_api(repo, live_api_body, output)
+    from v044_favorite_subscription import advance_api as advance_subscription_api
+    live_api_body, subscription_api_proof = advance_subscription_api(repo, live_api_body)
+    (output / 'v044-favorite-subscription-api-proof.json').write_text(
+        json.dumps(subscription_api_proof, ensure_ascii=False, indent=2)+'\n', encoding='utf8', newline='\n')
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),

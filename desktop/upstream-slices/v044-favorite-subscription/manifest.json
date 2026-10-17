@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.4",
+  "commit": "070ab41608213cd981fd7e51df357295f9a537bf",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "filename": "ApiClient.kt",
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "bytes": 154801,
+      "sha256": "bff6c4cdb133d5732ae57af1ad6fb933fa877d85bef69d834ffc735d48de33fb",
+      "gitBlob": "68a60823577658d89e3936d65464db935948f633"
+    },
+    {
+      "filename": "CommonListScreen.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "bytes": 190837,
+      "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1",
+      "gitBlob": "cb59850ef1125c97083612c722fd7c76f14c6da9"
+    },
+    {
+      "filename": "FavoriteCollectionPolicy.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCollectionPolicy.kt",
+      "bytes": 9882,
+      "sha256": "1356e85afb6aa798b9b0c53c39ba22c3a4ca2ea2026e09541fa5ca256cfe8a1b",
+      "gitBlob": "e7dff37c19cdc4162fff9da9ff7461bf03716aa1"
+    },
+    {
+      "filename": "FavoriteFolderAggregationPolicyTest.kt",
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/FavoriteFolderAggregationPolicyTest.kt",
+      "bytes": 12916,
+      "sha256": "9b636abbca642a7bd59f66e429d68b46263f72cf164b95a4acb794e10e7c4aed",
+      "gitBlob": "47eb3962c8da97deceb19f627a94b214d5cc42be"
+    },
+    {
+      "filename": "FavoriteRepository.kt",
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "bytes": 15596,
+      "sha256": "7f0de040b6b752a217a42677333b4846fe7a618a4f3925281ec70e8474807e51",
+      "gitBlob": "7e7d67aabafe14073c586d58a8e01d8ce1dd28e4"
+    },
+    {
+      "filename": "FavoriteSubscribedFoldersViewModelTest.kt",
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/FavoriteSubscribedFoldersViewModelTest.kt",
+      "bytes": 19403,
+      "sha256": "6e0ccd268212c4321b6b2857e0d4e0908e768fe0b92833087b1b1712b2cad184",
+      "gitBlob": "04f86e660472ef255cfab25c819d47a4aa9a04d0"
+    },
+    {
+      "filename": "FavoriteSubscriptionBus.kt",
+      "path": "app/src/main/java/com/android/purebilibili/core/refresh/FavoriteSubscriptionBus.kt",
+      "bytes": 914,
+      "sha256": "4faea246c4e7858410c7172eee8b38365ec3b091e9dc0382ca9731fe8666aeb5",
+      "gitBlob": "14ede7c98232adad281b87d53ea508cf0a1da430"
+    },
+    {
+      "filename": "ListViewModel.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "bytes": 84844,
+      "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674",
+      "gitBlob": "20b563c6ffa064e575b2222142b2c18ca879b912"
+    },
+    {
+      "filename": "TokenManager.kt",
+      "path": "core-data/src/main/java/com/android/purebilibili/core/store/TokenManager.kt",
+      "bytes": 13766,
+      "sha256": "2316aa9e8d4de997b0a9c546321fac7af248a0590e20ce9cb7cf4ae3e0d1835d",
+      "gitBlob": "a5657fac027215ebb365b51d39a6b848455c4659"
+    },
+    {
+      "filename": "WallpaperMediaCardSurface.kt",
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/WallpaperMediaCardSurface.kt",
+      "bytes": 2918,
+      "sha256": "57f4054a434be37fd6c0c2d65b16177e816e9b73fec6098e549900df484da0ef",
+      "gitBlob": "38e57682f214cef11063825b3b5dfdbf74b7f4c0"
+    }
+  ],
+  "beforeFinalOutputs": {
+    "feature/list/DesktopOriginalListViewModels.kt": {
+      "sha256": "3d2f67d35f65a97b195f7333c43802e852938b61b2662aa9d8f80d323279ad78",
+      "bytes": 75353
+    },
+    "feature/list/FavoriteCollectionPolicy.kt": {
+      "sha256": "01f0fddeea1c6fbc57f7a70a0b9e39eae8763e84a2466c53f7679b6d49d53ff3",
+      "bytes": 9185
+    },
+    "data/repository/DesktopOriginalFavoriteRepository.kt": {
+      "sha256": "3885c22a7502bb8033541a9a40ce1dd9dd4bb1c76d43a4050292042eb7b7c144",
+      "bytes": 13711
+    },
+    "feature/list/CommonListScreen.kt": {
+      "sha256": "bfb5bf7fc25ed5fcc18a1af0c0445ff22377fd31f9edc4832cf8575fc9c9e24e",
+      "bytes": 180492
+    }
+  },
+  "originalFavoriteViewModelAdvance": "Complete subscription state declarations and methods from the full archived class, preserving existing Root cover/history methods and retirement",
+  "referenceOnly": [
+    "FavoriteSubscribedFoldersViewModelTest.kt"
+  ],
+  "accountIdentitySource": "Complete one-line public data class from original TokenManager; supplied solely by Root current account epoch",
+  "uiIntegrated": false,
+  "compiled": false,
+  "nativeOrGuiExecuted": false,
+  "originalUiPlan": {
+    "wholeComposableDeclarations": [
+      "FavoriteSubscribedFolderList",
+      "FavoriteSubscribedFolderRow",
+      "FavoriteSubscribedFolderPreview"
+    ],
+    "originalCallAndActionState": true,
+    "materialSource": "WallpaperMediaCardSurface.kt",
+    "windowsBinding": "Borrow existing Root backdrop; no renderer or background owner allocated"
+  }
+}

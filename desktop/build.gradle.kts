@@ -277,6 +277,9 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
 }
 
 val extractUpstreamApi by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     inputs.file("tools/v040_reply_medal.py")
@@ -341,6 +344,8 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamMedia) }
 
 val extractUpstreamAudio by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources)
@@ -450,6 +455,10 @@ val extractUpstreamCast by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/cast"))
 }
 val extractUpstreamPackages by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-packages.py",
@@ -507,6 +516,9 @@ val extractGoogleCastPlatform by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamJs by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-js.py",
@@ -747,6 +759,9 @@ val extractUpstreamBlockedListUi by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v042_network_proxy.py")
     inputs.dir("upstream-slices/v042-network-proxy")
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
@@ -769,6 +784,9 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamNetworkProxy) }
 
 val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-diagnostics.py",
@@ -1241,6 +1259,9 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-card.py",
@@ -1269,6 +1290,10 @@ val extractUpstreamDynamicStaticImageCodec by tasks.registering(Exec::class) {
 }
 
 val extractImageSaveSettingsUi by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-image-save-settings-ui.py",
@@ -1480,6 +1505,9 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 
 val extractOriginalFavorites by tasks.registering(Exec::class) {
+    inputs.file("tools/sync-upstream.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
     inputs.file("tools/v034_favorite_content_errors.py")
@@ -1492,7 +1520,8 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-favorites.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/original-favorites").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/original-favorites").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-favorite-policy-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-favorites.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-favorites" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -1504,6 +1533,7 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.file("tools/v029_history_recap.py")
     inputs.dir("upstream-slices/v029-history-recap")
     outputs.dir(layout.buildDirectory.dir("generated/original-favorites"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-favorite-policy-tests"))
 }
 val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -1518,6 +1548,8 @@ val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/original-favorite-folder"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalFavorites, extractOriginalFavoriteFolder) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-favorite-policy-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalFavorites) }
 
 val extractLinkedDock by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -1845,6 +1877,10 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalDynamicAccountPolicy) }
 tasks.named("compileTestKotlin") { dependsOn(extractOriginalDynamicAccountPolicy) }
 
 val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamDynamicTabs)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-follow.py",
@@ -1927,6 +1963,8 @@ val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources)
@@ -1948,6 +1986,10 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamSpaceOverview) }
 
 val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-story-topic.py",
@@ -2551,6 +2593,9 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPersonalLists) }
 
 // Beside extractOriginalPersonalLists; existing tools/dependencies only.
 val extractOriginalWatchLater by tasks.registering(Exec::class) {
+    inputs.file("tools/sync-upstream.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources, extractOriginalFavorites)
@@ -2622,6 +2667,9 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPlayerFullControls, veri
 
 // After extractOriginalWatchLater; same compiler/dependencies and one source graph.
 val extractOriginalFollowing by tasks.registering(Exec::class) {
+    inputs.file("tools/sync-upstream.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
     inputs.file("tools/v029_brand_success.py")

@@ -68,6 +68,8 @@ class CurrentFavoriteDetailSourceTest(unittest.TestCase):
         self.assertNotIn('    init {\n        loadData()\n    }', actual)
         self.assertTrue(row['v044FavoriteDetailPlatformBinding']['rootRouteInitIsSoleInitialLoad'])
         self.assertTrue(row['v044FavoriteDetailPlatformBinding']['redundantConstructorLoadRemoved'])
+        self.assertTrue(row['v044FavoriteDetailPlatformBinding']['invalidRouteIsTerminalWithoutTransport'])
+        self.assertIn('isLoading = false, error = "收藏夹或合集参数无效", loadMoreError = null)', actual)
 
     def test_original_capabilities_pagination_and_seventeen_cases_are_emitted_whole(self):
         self.assertEqual(self.raw['SpacePlaybackPolicy.kt'],
@@ -82,7 +84,10 @@ class CurrentFavoriteDetailSourceTest(unittest.TestCase):
         row = next(row for row in self.inventory if row['path'].endswith('/CommonListScreen.kt'))
         actual = (self.root/'favorites/com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf8')
         proof = row['v044FavoriteDetailUiAdvance']
-        old = undo(actual, proof['actualFinalOwnerToCurrent'])
+        detail_stage = actual
+        if row.get('v044FavoriteSubscriptionUiAdvance'):
+            detail_stage = undo(actual, row['v044FavoriteSubscriptionUiAdvance']['retainedToCurrent'])
+        old = undo(detail_stage, proof['actualFinalOwnerToCurrent'])
         self.assertEqual('0ef1331c6c0f461129698628db6239ec7c07945b744de08f6f21172be0d45632', detail.sha(old))
         self.assertTrue(proof['allPriorOwnerSourceGatesRetained'])
         self.assertEqual(13, proof['originalSegments'])
