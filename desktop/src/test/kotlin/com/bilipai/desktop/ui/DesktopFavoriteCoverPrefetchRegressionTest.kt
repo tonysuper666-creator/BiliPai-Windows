@@ -40,7 +40,7 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
             assertEquals(setOf(101L, 102L), f.coverCalls.map { it.id }.toSet())
             assertTrue(f.vm.folders.value.all { it.cover.isBlank() })
             f.coverGate.countDown()
-            f.driveUntil { f.vm.folders.value.count { it.cover.isNotBlank() } == 8 && f.entryJob.children.none() }
+            f.driveUntil { f.vm.folders.value.count { it.cover.isNotBlank() } == 8 && f.loadJobs.none() }
             assertEquals((101L..108L).toSet(), f.coverCalls.map { it.id }.toSet())
             val end = resolveFavoriteFolderCoverPrefetchEnd(folderCount = 14, lastVisibleIndex = 8)
             assertEquals(12, end) // original visible frontier plus four
@@ -49,7 +49,7 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
                 f.vm.ensureFavoriteFolderCovers(candidates)
                 f.vm.ensureFavoriteFolderCovers(candidates)
             }
-            f.driveUntil { f.vm.folders.value.count { it.cover.isNotBlank() } == 13 && f.entryJob.children.none() }
+            f.driveUntil { f.vm.folders.value.count { it.cover.isNotBlank() } == 13 && f.loadJobs.none() }
             assertEquals((101L..113L).toSet(), f.coverCalls.map { it.id }.toSet())
             assertTrue(f.coverCalls.groupingBy { it.id }.eachCount().values.all { it == 1 })
             assertEquals(2, f.maxActiveCovers.get())
@@ -115,7 +115,7 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
             assertTrue(f.actor.runJob(stale))
             // New initial prefetch legitimately waits for the original prefetch mutex.
             // Retire the stale lookup, then allow the new catalog's initial eight.
-            f.driveUntil { stale.isCompleted && f.entryJob.children.none() &&
+            f.driveUntil { stale.isCompleted && f.loadJobs.none() &&
                 f.vm.folders.value.take(8).all { it.cover.startsWith("https://image.invalid/r2-") } }
             assertTrue(stale.isCancelled)
             val current = f.launchFromAction { f.vm.ensureFavoriteFolderCovers(f.vm.folders.value.take(9)) }
@@ -131,11 +131,11 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
         for (retirement in listOf("entry", "account", "window", "request")) {
             Fixture(directory.resolve(retirement), folderCount = 1, holdCovers = true).useSuspending { f ->
                 f.driveUntil { f.coverCalls.size == 1 && f.activeCovers.get() == 1 &&
-                    f.vm.folders.value.size == 1 && f.entryJob.children.count { it.isActive } == 1 }
+                    f.vm.folders.value.size == 1 && f.loadJobs.count { it.isActive } == 1 }
                 val before = f.vm.folders.value
                 val beforePayload = f.payload(41L)
                 val beforeBytes = f.preferenceBytes()
-                val coverCaller = f.entryJob.children.single { it.isActive }
+                val coverCaller = f.loadJobs.single { it.isActive }
                 f.ui {
                     when (retirement) {
                         "entry" -> f.entry.close()
@@ -178,10 +178,10 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
         }
     }
 
-    private data class CoverCall(val id: Long, val revision: Int)
+    internal data class CoverCall(val id: Long, val revision: Int)
 
     /** Scheduling port only: each original runnable runs on Swing with its own context/Job. */
-    private class UiActor : CoroutineDispatcher() {
+    internal class UiActor : CoroutineDispatcher() {
         private data class Work(val context: CoroutineContext, val action: Runnable)
         private val pending = CopyOnWriteArrayList<Work>()
         override fun dispatch(context: CoroutineContext, block: Runnable) { pending.add(Work(context, block)) }
@@ -196,7 +196,7 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
         }
     }
 
-    private class Fixture(val directory: Path, private val folderCount: Int, holdCovers: Boolean = false) {
+    internal class Fixture(val directory: Path, private val folderCount: Int, holdCovers: Boolean = false) {
         val sessions = DesktopSessionStore.temporary()
         val repository = DesktopRepository(sessions)
         var store = DesktopPluginStore(directory.resolve("settings"))
@@ -210,6 +210,13 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
         lateinit var entry: DesktopFavoritesRootEntry
         val vm get() = entry.viewModel
         val entryJob get() = checkNotNull(entry.scope.coroutineContext[Job])
+        private lateinit var subscriptionObserver: Job
+        private var observerStarted = false
+        val loadJobs get() = entryJob.children.filter { it !== subscriptionObserver }
+        val subscriptionRequests = CopyOnWriteArrayList<Request>()
+        val mutationRequests = CopyOnWriteArrayList<Request>()
+        @Volatile var subscriptionReply: (Request) -> String = { """{"code":0,"data":{"count":0,"list":[]}}""" }
+        @Volatile var mutationReply: (Request) -> String = { """{"code":0}""" }
         val coverGate = CountDownLatch(if (holdCovers) 1 else 0)
         val activeCovers = AtomicInteger()
         val maxActiveCovers = AtomicInteger()
@@ -236,8 +243,13 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
                                 catalogCalls.incrementAndGet(); folderJson()
                             }
                             "/x/v3/fav/folder/collected/list" -> {
-                                check(request.method == "GET" && request.url.queryParameter("pn") == "1" && request.url.queryParameter("ps") == "20")
-                                """{"code":0,"data":{"count":0,"list":[]}}"""
+                                check(request.method == "GET" && request.url.queryParameter("ps") == "20")
+                                subscriptionRequests.add(request); subscriptionReply(request)
+                            }
+                            "/x/v3/fav/folder/fav", "/x/v3/fav/folder/unfav",
+                            "/x/v3/fav/season/fav", "/x/v3/fav/season/unfav" -> {
+                                check(request.method == "POST")
+                                mutationRequests.add(request); mutationReply(request)
                             }
                             "/x/v3/fav/resource/list" -> {
                                 check(request.method == "GET" && request.url.queryParameter("pn") == "1")
@@ -293,6 +305,15 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
                     }
                 })
             capturedEntry.set(entry); selectedEntry.set(entry)
+            // The controlled dispatcher has not run either task: the original
+            // constructor queues its one persistent bus observer, then Root's
+            // setPageActive queues the initial load. Preserve the observer in
+            // the actual entry scope, and distinguish it from finite load jobs.
+            val startup = entryJob.children.toList()
+            check(startup.size == 2) { "Favorite startup job topology changed: ${startup.size}" }
+            subscriptionObserver = startup.first()
+            check(actor.hasJob(subscriptionObserver))
+            observerStarted = false
         }
         private inline fun <reified T> unused(): T = Proxy.newProxyInstance(T::class.java.classLoader,
             arrayOf(T::class.java)) { _, method, _ ->
@@ -325,15 +346,22 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
             while (!predicate()) { assertTrue(failures.isEmpty(), failures.toString()); delay(1) }
         }
         suspend fun driveUntil(exclude: Job? = null, predicate: () -> Boolean) = withTimeout(6_000) {
+            if (!observerStarted) {
+                val requestsBefore = catalogCalls.get()
+                check(actor.runJob(subscriptionObserver))
+                check(subscriptionObserver.isActive && !actor.hasJob(subscriptionObserver))
+                check(catalogCalls.get() == requestsBefore) { "Startup observer performed a catalog load" }
+                observerStarted = true
+            }
             while (!predicate()) {
                 assertTrue(failures.isEmpty(), failures.toString())
                 if (!actor.runNext(exclude)) delay(1)
             }
         }
         suspend fun drainReady() { while (actor.runNext()) Unit }
-        suspend fun awaitInitialized() = driveUntil { !vm.uiState.value.isLoading && entryJob.children.none() }
+        suspend fun awaitInitialized() = driveUntil { !vm.uiState.value.isLoading && loadJobs.none() }
         suspend fun awaitInitialCovers(count: Int) = driveUntil {
-            vm.folders.value.size == folderCount && vm.folders.value.count { it.cover.isNotBlank() } == count && entryJob.children.none()
+            vm.folders.value.size == folderCount && vm.folders.value.count { it.cover.isNotBlank() } == count && loadJobs.none()
         }
         fun payload(mid: Long) = store.preferences("favorite_folder_cover_cache:$mid")["favorite_folder_cover_payload_v1"]
         fun preferenceBytes(): ByteArray? = preferenceFile.takeIf { Files.exists(it) }?.let { Files.readAllBytes(it) }

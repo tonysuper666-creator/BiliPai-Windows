@@ -43,6 +43,26 @@ internal class DesktopFavoritesRootEntry(
                 }
             }
             value.mountFavoriteCoverContext(context)
+            val settingsContext = com.bilipai.desktop.plugins.DesktopPluginContext(globalStore)
+            value.mountFavoriteHomeCardVisualPreferences(
+                com.bilipai.desktop.settings.DesktopHomeCardVisualPreferences(settingsContext))
+            value.mountFavoriteSubscriptionPorts(
+                identity = { com.android.purebilibili.core.store.AccountSessionIdentity(
+                    readMid()?.takeIf { it > 0L }, epoch) },
+                persist = { id, subscribed ->
+                    com.bilipai.desktop.settings.DesktopCollectionPreferenceWriteOperation.withOwned(
+                        settingsContext, ::isOwned, { action ->
+                            admitCoverCache(::isOwned) {
+                                synchronized(coverAdmission) {
+                                    if (!isOwned()) throw CancellationException("Favorite subscription entry retired")
+                                    action()
+                                }
+                            }
+                        }) {
+                        com.android.purebilibili.core.store.DesktopOriginalCollectionSettings
+                            .setCollectionSubscription(settingsContext, id, subscribed)
+                    }
+                })
         }
     val preferences = DesktopFavoritePreferences(globalStore)
     val viewModel = FavoriteViewModel(environment)
@@ -55,7 +75,7 @@ internal class DesktopFavoritesRootEntry(
     var currentDetail: FavoriteCollectionRoute? by mutableStateOf(null)
     private val details = linkedMapOf<FavoriteCollectionRoute, SeasonSeriesDetailViewModel>()
 
-    init { viewModel.loadData() }
+    init { viewModel.setPageActive(true) }
 
     fun stateKey(route: FavoriteCollectionRoute?): String =
         (saveableKey + ":" + (route?.let { "${it.type}:${it.mid}:${it.id}" } ?: "root")).also(savedStateKeys::add)
