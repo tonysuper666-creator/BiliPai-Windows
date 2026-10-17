@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "93c843b81efdc8bfa06c747ec715ba29b37af219",
-  "windowsVersion": "0.2.427.173",
-  "createdAt": "2026-10-17T09:07:21.891955+00:00",
+  "baseHead": "2f8c44ad9c14d98e4ef3306406fb9a0444719ada",
+  "windowsVersion": "0.2.427.174",
+  "createdAt": "2026-10-17T09:33:12.773539+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "63aab0e673f6211a3bae0608ad6909300cb32e4fa3a439fdfd50b6bd90660130"
+      "sha256": "5cafe3e687b41c926c567ee3e391116aaa62b5f03b3f24880b47c19749837519"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "6d7d73ecb3851bf455ef36b653c93a5eb0a8f1a3d3c5a486494561fc60958c58"
+      "sha256": "bacd041acfb1887f54404d7dcee13acfca6d285fcb4ea64e6be3b680895124ad"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -1538,7 +1538,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "e7f45921653cbf47a3992433549ef6a40260553f5383893b82b9602c8624545c"
+      "sha256": "ffc0548af82973d0beae7694b00ff9fe873a400f8290615286f0ca22b0cac157"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1553,7 +1553,7 @@
     {
       "path": "desktop/tools/extract-appearance-platform.py",
       "normalization": "lf",
-      "sha256": "6508a3cbce91fa9acdc86638b1bacf40d35af2242f2e870b69d16a53e9cedb2a"
+      "sha256": "90edea42379d4de9606aaf6540485ff25ed9d69679737571fd4bc948ed270c80"
     },
     {
       "path": "desktop/tools/extract-dynamic-message-share.py",
@@ -1598,7 +1598,7 @@
     {
       "path": "desktop/tools/extract-upstream-components.py",
       "normalization": "lf",
-      "sha256": "53a6c4c243fd2d3529a338086b2082f8eb27ca4f6d3f90b052cbab08c72dd549"
+      "sha256": "96c49073e5989e6f375e99193332876f00e8b3ec4657cf7864c2d14bbbe256a4"
     },
     {
       "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
@@ -1888,7 +1888,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "5073867c1712105307722c30b9406059906c6b20d6ccd1909d670073a9a441f3"
+      "sha256": "34c9b15e6e518895002da7415ed2c91941cc80db6f470d629463dda3dcbc34cb"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -2098,7 +2098,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "4cbf3c8bf19a984dd9c169e21013f4180690d536586910a6a58ab484740de9a3"
+      "sha256": "3fd3b56486c6b86bd34957512c07e13acfd43cbfa45ae617d264a5f6abf69b42"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2153,7 +2153,7 @@
     {
       "path": "desktop/tools/tests/test_v040_chrome_actions_source.py",
       "normalization": "lf",
-      "sha256": "54bdc474e9fcd1fbb8c1a3ee00c034f9b56b69c83eb5646b6863ec2743cd0ac0"
+      "sha256": "0a0762c45a4206d613af66d1a7237e60f34e9964cac2ff10a6eb8bcbf9169284"
     },
     {
       "path": "desktop/tools/tests/test_v040_dynamic_pagination_source.py",
@@ -2163,7 +2163,7 @@
     {
       "path": "desktop/tools/tests/test_v040_liquid_controls_source.py",
       "normalization": "lf",
-      "sha256": "ac3268644a12c2834c93bcc32df280f20c4e7f5c15effe828c0d9793b3d45345"
+      "sha256": "bf9843c2f89b765fc19bab43a98cede56c58142cfad66fdb48d75c66582d1580"
     },
     {
       "path": "desktop/tools/tests/test_v040_native_chrome_source.py",
@@ -2253,7 +2253,7 @@
     {
       "path": "desktop/tools/tests/test_v042_seed_palette_source.py",
       "normalization": "lf",
-      "sha256": "46e08b8d4c1426036011ceba51510d9b4ae7beb558c6d35b73e682c7f2517af0"
+      "sha256": "3a172a3f66090ee7d9942ec871a197d815cddc86351f41261acc03a892fe1fad"
     },
     {
       "path": "desktop/tools/tests/test_v043_home_native_cards_source.py",
@@ -2284,6 +2284,11 @@
       "path": "desktop/tools/tests/test_v043_search_up_author_source.py",
       "normalization": "lf",
       "sha256": "31462fc50c0945210c5f297e18956e5fc30ab751f1a1a2f3487dbfa088e41bc4"
+    },
+    {
+      "path": "desktop/tools/tests/test_v043_theme_chrome_source.py",
+      "normalization": "lf",
+      "sha256": "5d916cba59d8582d41b32a1dbe93f96e90ddce8f0422adf854530a0f3c32d9cd"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -2548,7 +2553,7 @@
     {
       "path": "desktop/tools/v042_search_dependencies.py",
       "normalization": "lf",
-      "sha256": "ab42e64d9b04ecd57a48bc19b9d3c5707a3ab615a3d4fa9c4e4c1cc7b9a42124"
+      "sha256": "33218879b465ba0c40561d2f9a04fc2d44b1bc5eb0123ed59ffdcf8a2b29df43"
     },
     {
       "path": "desktop/tools/v042_search_layout.py",
@@ -2558,7 +2563,7 @@
     {
       "path": "desktop/tools/v042_seed_palette.py",
       "normalization": "lf",
-      "sha256": "9dfa428c2d8c46a492f93a898dbc57d965d0e3487e8e6aadc93eecbbd39ad904"
+      "sha256": "dd3bfc95c777c87385512a68216b3c7ed08f100af7f8dc40497d313ce836cbc7"
     },
     {
       "path": "desktop/tools/v043_home_native_cards.py",
@@ -2589,6 +2594,11 @@
       "path": "desktop/tools/v043_search_up_author.py",
       "normalization": "lf",
       "sha256": "25eb025b455077038932d264dc79c194ae4e5152643ab170d42b3f6bda178731"
+    },
+    {
+      "path": "desktop/tools/v043_theme_chrome.py",
+      "normalization": "lf",
+      "sha256": "08ca948337b0a2dfc3708034fd78f064fa08a5a3da8c59ce38a827bf68b22416"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -4106,9 +4116,74 @@
       "sha256": "529056aad8f8510e991f88606924d3da3c54745bcad711df545be39a199146f8"
     },
     {
+      "path": "desktop/upstream-slices/v043-theme-chrome/AppMaterial3SegmentedControl.kt",
+      "normalization": "raw",
+      "sha256": "6784ec44148bd0624021ea326de07ccd99605045cc21ffdeb07bf0386167ac73"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/AppMiuixSwitch.kt",
+      "normalization": "raw",
+      "sha256": "d178edb3e0684a572ae5cfb997d1475c7e53a4b6a0b69800ed23be720adb60a6"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/AppPrimitiveComponents.kt",
+      "normalization": "raw",
+      "sha256": "7015a24866db96de6fcb2ee1630d5c4868f599b020c160b0bc90c7ca46ce0e73"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/AppTabIndicatorPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "91d91e29bd7ebb2bfa3b6f2eee04d84c0249961e7981d99e35b8072f793ed330"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicy.kt",
+      "normalization": "raw",
+      "sha256": "0f215926c4fc7350a24189f6a4fb15856f549c734e3b099583fbf539e9428b7d"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "c52459cae58989b61bda7274660ef32b0e1e1b517e88466dcacb047a5ebbc07a"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/ButtonSlotColorTest.kt",
+      "normalization": "raw",
+      "sha256": "2bc6011b33b9fe4b5dc73e5eb137fb360eeffdbb71c4ebcb9472cfbf09024195"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicy.kt",
+      "normalization": "raw",
+      "sha256": "db037c8f2f5acf2a4331103d36707152dc5fec1c4ad4fa694fd295176a9ad8e4"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "68ce3e4ef96326ed2b371226c8076d662ce09a6bb2c32428af82a93204f288ea"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/CustomSelectionContentColorTest.kt",
+      "normalization": "raw",
+      "sha256": "f8065d7c0b3ecac08814d8384dc5421b75eca2aba844e6ce0dc54c7793530b8a"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/MiuixThemeBridgePolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "8f2f42a63defd3a83a6f82b7316a013fc0ec1d93f392c4001f94af509a64157a"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/Theme.kt",
+      "normalization": "raw",
+      "sha256": "b1bc8e5a5007f17425de7505123dd8106d00c7ae490e5da70b5da3adaeb13787"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-theme-chrome/manifest.json",
+      "normalization": "raw",
+      "sha256": "c36ba0ec38c2c78a9dd49c390d0c36840920e4f7b75d9bc0b325821dbcd47fd5"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "1f4d087e7bdc48ac2f3d35cff340be0b53871e17bc1ef9edd3ad405958428c34"
+      "sha256": "a08931111b266a755b0705c5a31d3b1a0df608edce69cd117488ccc0350b30b6"
     }
   ],
   "classes": {
@@ -4221,9 +4296,14 @@
     "com.bilipai.desktop.ui.DesktopRepostCoinTest": 6,
     "com.bilipai.desktop.ui.DesktopBrandSuccessEngagementTest": 4,
     "com.bilipai.desktop.ui.DesktopWindowsCommandAttentionBindingTest": 13,
-    "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest": 11
+    "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest": 11,
+    "com.android.purebilibili.core.ui.ButtonVisualPolicyTest": 6,
+    "com.android.purebilibili.core.ui.ButtonSlotColorTest": 5,
+    "com.android.purebilibili.core.ui.components.AppTabIndicatorPolicyTest": 5,
+    "com.android.purebilibili.core.theme.CustomSelectionContentColorTest": 2,
+    "com.android.purebilibili.core.theme.MiuixThemeBridgePolicyTest": 12
   },
-  "expectedTests": 988,
+  "expectedTests": 1018,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4233,51 +4313,31 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvRuntimeProbe.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopVideoStatusLabelEntriesTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvNativeInputTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeNativeCardNavigationTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeNativeCardProtocolTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeRecommendationBadgeTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-upstream-home-full-card.py",
-    "desktop/tools/extract-upstream-home-page.py",
-    "desktop/tools/extract-upstream-home-protocols.py",
-    "desktop/tools/extract-v041-video-status-labels.py",
-    "desktop/tools/source-cohort-test-filter.init.gradle",
+    "desktop/tools/extract-appearance-platform.py",
+    "desktop/tools/extract-upstream-components.py",
     "desktop/tools/sync-upstream.py",
     "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v041_video_status_labels_source.py",
-    "desktop/tools/tests/test_v043_home_native_cards_source.py",
-    "desktop/tools/tests/test_v043_home_recommendation_badges_source.py",
-    "desktop/tools/tests/test_validate_source_cohort.py",
-    "desktop/tools/v041_video_status_labels.py",
-    "desktop/tools/v043_home_native_cards.py",
-    "desktop/tools/v043_home_recommendation_badges.py",
-    "desktop/tools/validate-source-cohort.py",
-    "desktop/upstream-slices/v043-home-native-cards/HomeCategoryPage.kt",
-    "desktop/upstream-slices/v043-home-native-cards/HomeHeroCarousel.kt",
-    "desktop/upstream-slices/v043-home-native-cards/HomeScreen.kt",
-    "desktop/upstream-slices/v043-home-native-cards/HomeStyleSingleColumnVideoCard.kt",
-    "desktop/upstream-slices/v043-home-native-cards/HomeVideoClickRequest.kt",
-    "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicy.kt",
-    "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicyTest.kt",
-    "desktop/upstream-slices/v043-home-native-cards/HomeViewModel.kt",
-    "desktop/upstream-slices/v043-home-native-cards/ListModels.kt",
-    "desktop/upstream-slices/v043-home-native-cards/RecommendationNativeCardTest.kt",
-    "desktop/upstream-slices/v043-home-native-cards/RecommendationReason.kt",
-    "desktop/upstream-slices/v043-home-native-cards/RecommendationReasonTest.kt",
-    "desktop/upstream-slices/v043-home-native-cards/VideoCard.kt",
-    "desktop/upstream-slices/v043-home-native-cards/VideoRepository.kt",
-    "desktop/upstream-slices/v043-home-native-cards/manifest.json",
-    "desktop/upstream-slices/v043-home-recommendation-badges/StoryVideoCard.kt",
-    "desktop/upstream-slices/v043-home-recommendation-badges/UpBadgeName.kt",
-    "desktop/upstream-slices/v043-home-recommendation-badges/VideoCardSourceSnapshot.kt",
-    "desktop/upstream-slices/v043-home-recommendation-badges/VideoRecommendationBadge.kt",
-    "desktop/upstream-slices/v043-home-recommendation-badges/manifest.json",
+    "desktop/tools/tests/test_v040_chrome_actions_source.py",
+    "desktop/tools/tests/test_v040_liquid_controls_source.py",
+    "desktop/tools/tests/test_v042_seed_palette_source.py",
+    "desktop/tools/tests/test_v043_theme_chrome_source.py",
+    "desktop/tools/v042_search_dependencies.py",
+    "desktop/tools/v042_seed_palette.py",
+    "desktop/tools/v043_theme_chrome.py",
+    "desktop/upstream-slices/v043-theme-chrome/AppMaterial3SegmentedControl.kt",
+    "desktop/upstream-slices/v043-theme-chrome/AppMiuixSwitch.kt",
+    "desktop/upstream-slices/v043-theme-chrome/AppPrimitiveComponents.kt",
+    "desktop/upstream-slices/v043-theme-chrome/AppTabIndicatorPolicyTest.kt",
+    "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicy.kt",
+    "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicyTest.kt",
+    "desktop/upstream-slices/v043-theme-chrome/ButtonSlotColorTest.kt",
+    "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicy.kt",
+    "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicyTest.kt",
+    "desktop/upstream-slices/v043-theme-chrome/CustomSelectionContentColorTest.kt",
+    "desktop/upstream-slices/v043-theme-chrome/MiuixThemeBridgePolicyTest.kt",
+    "desktop/upstream-slices/v043-theme-chrome/Theme.kt",
+    "desktop/upstream-slices/v043-theme-chrome/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

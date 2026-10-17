@@ -1,0 +1,404 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.3",
+  "commit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt",
+      "filename": "ButtonVisualPolicy.kt",
+      "bytes": 2516,
+      "sha256": "db037c8f2f5acf2a4331103d36707152dc5fec1c4ad4fa694fd295176a9ad8e4",
+      "gitBlob": "aad7409357250ff848647d35ae1a6891256e130c",
+      "cases": null
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt",
+      "filename": "AppPrimitiveComponents.kt",
+      "bytes": 56872,
+      "sha256": "7015a24866db96de6fcb2ee1630d5c4868f599b020c160b0bc90c7ca46ce0e73",
+      "gitBlob": "0c241e46004b7623e5899920a9fa7528bd9c0fac",
+      "cases": null
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt",
+      "filename": "AppMaterial3SegmentedControl.kt",
+      "bytes": 12766,
+      "sha256": "6784ec44148bd0624021ea326de07ccd99605045cc21ffdeb07bf0386167ac73",
+      "gitBlob": "6d2315fe522b388ddeaaaeb78da3965c374fd93c",
+      "cases": null
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt",
+      "filename": "AppMiuixSwitch.kt",
+      "bytes": 1364,
+      "sha256": "d178edb3e0684a572ae5cfb997d1475c7e53a4b6a0b69800ed23be720adb60a6",
+      "gitBlob": "ba3d1b240dd1472ec29afe109216fab7e7bf194e",
+      "cases": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicy.kt",
+      "filename": "AppThemeEndpointPolicy.kt",
+      "bytes": 5754,
+      "sha256": "0f215926c4fc7350a24189f6a4fb15856f549c734e3b099583fbf539e9428b7d",
+      "gitBlob": "7c51d96c999ac40d6f7d2a9262f7fe5bb957090c",
+      "cases": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/Theme.kt",
+      "filename": "Theme.kt",
+      "bytes": 49213,
+      "sha256": "b1bc8e5a5007f17425de7505123dd8106d00c7ae490e5da70b5da3adaeb13787",
+      "gitBlob": "872d3edc64c8a0044d81e60937c85ea38eb61a36",
+      "cases": null
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/ButtonVisualPolicyTest.kt",
+      "filename": "ButtonVisualPolicyTest.kt",
+      "bytes": 3856,
+      "sha256": "68ce3e4ef96326ed2b371226c8076d662ce09a6bb2c32428af82a93204f288ea",
+      "gitBlob": "610a32c82f19b9c737325feb93cb0a8c74e4d00f",
+      "cases": 6
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/ButtonSlotColorTest.kt",
+      "filename": "ButtonSlotColorTest.kt",
+      "bytes": 2591,
+      "sha256": "2bc6011b33b9fe4b5dc73e5eb137fb360eeffdbb71c4ebcb9472cfbf09024195",
+      "gitBlob": "f8b425a2e80aef466631c05459202f4a772e1f01",
+      "cases": 5
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/components/AppTabIndicatorPolicyTest.kt",
+      "filename": "AppTabIndicatorPolicyTest.kt",
+      "bytes": 3158,
+      "sha256": "91d91e29bd7ebb2bfa3b6f2eee04d84c0249961e7981d99e35b8072f793ed330",
+      "gitBlob": "3d3335a51a93a0b9411146a084c9d582f19d5917",
+      "cases": 5
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicyTest.kt",
+      "filename": "AppThemeEndpointPolicyTest.kt",
+      "bytes": 6388,
+      "sha256": "c52459cae58989b61bda7274660ef32b0e1e1b517e88466dcacb047a5ebbc07a",
+      "gitBlob": "a982c401ca241d9cd149ac1f9c3ca42ff70d46de",
+      "cases": 3
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/CustomSelectionContentColorTest.kt",
+      "filename": "CustomSelectionContentColorTest.kt",
+      "bytes": 1061,
+      "sha256": "f8065d7c0b3ecac08814d8384dc5421b75eca2aba844e6ce0dc54c7793530b8a",
+      "gitBlob": "e93a5537530bc11402f550d7ebdba7ba0ce4c2d3",
+      "cases": 2
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/MiuixThemeBridgePolicyTest.kt",
+      "filename": "MiuixThemeBridgePolicyTest.kt",
+      "bytes": 14251,
+      "sha256": "8f2f42a63defd3a83a6f82b7316a013fc0ec1d93f392c4001f94af509a64157a",
+      "gitBlob": "cfed2a81ec8624911c89e67a9cd0e0c3d9d34182",
+      "cases": 12
+    }
+  ],
+  "reviewedPredecessors": {
+    "ButtonVisualPolicy.kt": {
+      "predecessorSHA256": "fc70e9438211b4fc181d0bd99ab4f7da397658152f2d0950546ff6edaf68db37",
+      "afterSHA256": "db037c8f2f5acf2a4331103d36707152dc5fec1c4ad4fa694fd295176a9ad8e4",
+      "hunks": [
+        [
+          "insert",
+          35,
+          35,
+          35,
+          39,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "17511eea46a14d5259ea29fbd0510f878870b9ae83030c5128f2a276fd40b25d"
+        ]
+      ]
+    },
+    "AppPrimitiveComponents.kt": {
+      "predecessorSHA256": "2643c2b4a92b831827ebc4b9157ea2abbbc6677244d31d11cd68c3927d0ae6ba",
+      "afterSHA256": "7015a24866db96de6fcb2ee1630d5c4868f599b020c160b0bc90c7ca46ce0e73",
+      "hunks": [
+        [
+          "insert",
+          142,
+          142,
+          142,
+          153,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "7bbf645a26b6749ad1ae9247a0a14479aa635ba577f30787fbdf0aca42bd26dd"
+        ],
+        [
+          "insert",
+          1288,
+          1288,
+          1299,
+          1300,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e112c3d85a41ab58e0c750517a29d28322e7f6c111831a17456ef4ed07c2f854"
+        ],
+        [
+          "replace",
+          1299,
+          1300,
+          1311,
+          1314,
+          "c248be1e80abcd1c78058e93269de3107ab5a39bb0f804657404a86dab8cd2d9",
+          "768fa89fd7cfd11a7947dd46e5ec0b59b78912dca1926b4da5654587dd9dc5a8"
+        ],
+        [
+          "insert",
+          1320,
+          1320,
+          1334,
+          1335,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e112c3d85a41ab58e0c750517a29d28322e7f6c111831a17456ef4ed07c2f854"
+        ],
+        [
+          "replace",
+          1333,
+          1334,
+          1348,
+          1349,
+          "a42544479f355e10555a495079cf49c7c043713ea890ff86bffbb4953520a39f",
+          "7ba7328365843c45b8a98178e37fbbac6c0cff2396e9a10a19dcac2278eb87e4"
+        ]
+      ]
+    },
+    "AppMaterial3SegmentedControl.kt": {
+      "predecessorSHA256": "7c9bc6cebb88075f1144bf2e0d2bd3b403ae7b6295404da5459cea4aac450c4e",
+      "afterSHA256": "6784ec44148bd0624021ea326de07ccd99605045cc21ffdeb07bf0386167ac73",
+      "hunks": [
+        [
+          "insert",
+          148,
+          148,
+          148,
+          163,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e1d9b6ea772524410a2f38282c5d6131b0833531d25e31ce46a19f7864698c74"
+        ],
+        [
+          "insert",
+          208,
+          208,
+          223,
+          224,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cb81b18ccc4eb7db656fafd8bcd0865e638df121b1c2cf052945ba4b073fe5f4"
+        ],
+        [
+          "insert",
+          216,
+          216,
+          232,
+          233,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cb81b18ccc4eb7db656fafd8bcd0865e638df121b1c2cf052945ba4b073fe5f4"
+        ],
+        [
+          "delete",
+          221,
+          223,
+          238,
+          238,
+          "beb2a394b7371e4673e29a6d380c5e689bb324ad255e7e0a5e62695fd3858b35",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        [
+          "insert",
+          237,
+          237,
+          252,
+          253,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "fd7c183385ac05f05916dadb376654a00433418c979b48f5bfa3e853841a87f7"
+        ],
+        [
+          "insert",
+          246,
+          246,
+          262,
+          263,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "b617f540894b30c0fdcba113a80b5b90da746a4c07bfcd51257341577c9b4a25"
+        ]
+      ]
+    },
+    "AppMiuixSwitch.kt": {
+      "predecessorSHA256": "c0627e3a9f289d826edcf1fda72472ce96a24746fc6b91d0d5631e4d014a4208",
+      "afterSHA256": "d178edb3e0684a572ae5cfb997d1475c7e53a4b6a0b69800ed23be720adb60a6",
+      "hunks": [
+        [
+          "insert",
+          4,
+          4,
+          4,
+          5,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "77bcf981b52737eefd0691ce472984a94f43832fa42f0f95d707ff91de827fa9"
+        ],
+        [
+          "replace",
+          20,
+          21,
+          21,
+          30,
+          "e88491a9892264d3546fd52a5d3a13b9bccf63d6784476a2b530a93286a720f6",
+          "87d585fa1bfa29de45bb89cb4d42347d97f6aa11efda14229107831340a43b73"
+        ]
+      ]
+    },
+    "Theme.kt": {
+      "predecessorSHA256": "cc61bf46f5afd356c331345fd01323b2a7198676872f07ce389603c68b3fca3b",
+      "afterSHA256": "b1bc8e5a5007f17425de7505123dd8106d00c7ae490e5da70b5da3adaeb13787",
+      "hunks": [
+        [
+          "delete",
+          396,
+          398,
+          396,
+          396,
+          "def9a391b7f6c61068b38ae2b51a1dfd5b2fecd39709806eaddd948a521b2f2c",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        [
+          "insert",
+          402,
+          402,
+          400,
+          403,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "88ef3d6ee062a38aaaea3aa4200b486e7803a90c7df2c29450189bc080da7471"
+        ]
+      ]
+    },
+    "AppThemeEndpointPolicy.kt": {
+      "predecessorSHA256": "70a57ed5dc08adb69a49f7722ab7bc04072cf5912ca9a09a8f3fef0d8ab9e44b",
+      "afterSHA256": "0f215926c4fc7350a24189f6a4fb15856f549c734e3b099583fbf539e9428b7d",
+      "hunks": [
+        [
+          "insert",
+          4,
+          4,
+          4,
+          5,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "22551c2cd4855a285e82372b4dac4ef5558f1184dcf966c25487865bb44dde3a"
+        ],
+        [
+          "insert",
+          55,
+          55,
+          56,
+          62,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "b53694a72e2c192c2f846cb077c939e051c3d59aef5af89015151ce8a937aa9f"
+        ],
+        [
+          "insert",
+          56,
+          56,
+          63,
+          65,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "5dea1b2732d611023d90935c1f1c552af643343d60a3cd0d0fdce2a1be737d14"
+        ],
+        [
+          "replace",
+          57,
+          63,
+          66,
+          67,
+          "2b05dfbe6463d406fc51645a7a053001f048daf90128975955f85e0c6dea2308",
+          "f28042928b7868d97a88f35dd794125ffb3fef6da59139c6093cc2012c59b654"
+        ],
+        [
+          "insert",
+          70,
+          70,
+          74,
+          76,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "c690a720acae2428319dc0496df1fc9017455d3325619ad8a37537d6bc84a64f"
+        ],
+        [
+          "insert",
+          84,
+          84,
+          90,
+          102,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "7ce56af2c6211a6e45b26a8dfd99674381bb2a522220b5b4783ecd874cd9353e"
+        ]
+      ]
+    },
+    "AppThemeEndpointPolicyTest.kt": {
+      "predecessorSHA256": "4fdb2a5555493d065a8137ba3858e9293fc360c6c59718c791a7c073a1accd13",
+      "afterSHA256": "c52459cae58989b61bda7274660ef32b0e1e1b517e88466dcacb047a5ebbc07a",
+      "hunks": [
+        [
+          "insert",
+          28,
+          28,
+          28,
+          35,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "8ee5b1d750c48c61a58f4b537b2c660a13e874f94581a156b3ebabef078784d7"
+        ]
+      ]
+    },
+    "ButtonVisualPolicyTest.kt": {
+      "predecessorSHA256": "fec626241d32605bac0d2a99d0e1099560f9318f3985b180132eee54966123d3",
+      "afterSHA256": "68ce3e4ef96326ed2b371226c8076d662ce09a6bb2c32428af82a93204f288ea",
+      "hunks": [
+        [
+          "insert",
+          17,
+          17,
+          17,
+          27,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "9afaf31bd505828c3a5546b66ab6991200fecea4bb31af61f57d012fbff28ed7"
+        ]
+      ]
+    },
+    "ButtonSlotColorTest.kt": {
+      "predecessorSHA256": "cf703a593ab5957e521a930ab04c142920443b68d2ae044f506fabd579e1de5e",
+      "afterSHA256": "2bc6011b33b9fe4b5dc73e5eb137fb360eeffdbb71c4ebcb9472cfbf09024195",
+      "hunks": [
+        [
+          "insert",
+          3,
+          3,
+          3,
+          4,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "9155c2d48532467cbdfcbc8e25ac2ad83c87ca7b2b3d1f46ebb74ee3697b12ba"
+        ],
+        [
+          "replace",
+          14,
+          15,
+          15,
+          16,
+          "e5d414be403be776e1949d52138b1e80e8a0b3ef8d2fdd130a0d492fc810e8b6",
+          "072fdb3ec98d88adec8a4da897c701c21a58514b9a4d141170f20a74ad104a4f"
+        ],
+        [
+          "insert",
+          18,
+          18,
+          19,
+          37,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "0f6468335ef140662df41bb20f700c295996c09d6b0d60586425fb2f4a389fa6"
+        ]
+      ]
+    }
+  }
+}

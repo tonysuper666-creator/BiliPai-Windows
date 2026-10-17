@@ -122,12 +122,13 @@
     "desktop/upstream-slices/v042-search-dependencies",
     "desktop/upstream-slices/v042-search-layout",
     "desktop/upstream-slices/v042-seed-palette",
-    "desktop/upstream-slices/v043-search-up-author",
-    "desktop/upstream-slices/v043-navigation",
-    "desktop/upstream-slices/v043-message-link-host",
-    "desktop/upstream-slices/v043-link-open",
     "desktop/upstream-slices/v043-home-native-cards",
-    "desktop/upstream-slices/v043-home-recommendation-badges"
+    "desktop/upstream-slices/v043-home-recommendation-badges",
+    "desktop/upstream-slices/v043-link-open",
+    "desktop/upstream-slices/v043-message-link-host",
+    "desktop/upstream-slices/v043-navigation",
+    "desktop/upstream-slices/v043-search-up-author",
+    "desktop/upstream-slices/v043-theme-chrome"
   ],
   "archives": [
     {
@@ -5501,6 +5502,89 @@
           "sha256": "4afa0ad9b8fc1e16fae25b4ee3f5871fb23e9dacef218e4795867e2fc497a8f8",
           "hashNormalization": "raw",
           "blob": "5cf4cb7096958c1edbae99e37285e398e9cc58cc"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-theme-chrome",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/manifest.json",
+          "sha256": "c36ba0ec38c2c78a9dd49c390d0c36840920e4f7b75d9bc0b325821dbcd47fd5",
+          "hashNormalization": "raw",
+          "blob": "ff74440d0f32e796ccc0abe5159133a79ca62b2d"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicy.kt",
+          "sha256": "db037c8f2f5acf2a4331103d36707152dc5fec1c4ad4fa694fd295176a9ad8e4",
+          "hashNormalization": "raw",
+          "blob": "aad7409357250ff848647d35ae1a6891256e130c"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/AppPrimitiveComponents.kt",
+          "sha256": "7015a24866db96de6fcb2ee1630d5c4868f599b020c160b0bc90c7ca46ce0e73",
+          "hashNormalization": "raw",
+          "blob": "0c241e46004b7623e5899920a9fa7528bd9c0fac"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/AppMaterial3SegmentedControl.kt",
+          "sha256": "6784ec44148bd0624021ea326de07ccd99605045cc21ffdeb07bf0386167ac73",
+          "hashNormalization": "raw",
+          "blob": "6d2315fe522b388ddeaaaeb78da3965c374fd93c"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/AppMiuixSwitch.kt",
+          "sha256": "d178edb3e0684a572ae5cfb997d1475c7e53a4b6a0b69800ed23be720adb60a6",
+          "hashNormalization": "raw",
+          "blob": "ba3d1b240dd1472ec29afe109216fab7e7bf194e"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicy.kt",
+          "sha256": "0f215926c4fc7350a24189f6a4fb15856f549c734e3b099583fbf539e9428b7d",
+          "hashNormalization": "raw",
+          "blob": "7c51d96c999ac40d6f7d2a9262f7fe5bb957090c"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/Theme.kt",
+          "sha256": "b1bc8e5a5007f17425de7505123dd8106d00c7ae490e5da70b5da3adaeb13787",
+          "hashNormalization": "raw",
+          "blob": "872d3edc64c8a0044d81e60937c85ea38eb61a36"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicyTest.kt",
+          "sha256": "68ce3e4ef96326ed2b371226c8076d662ce09a6bb2c32428af82a93204f288ea",
+          "hashNormalization": "raw",
+          "blob": "610a32c82f19b9c737325feb93cb0a8c74e4d00f"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/ButtonSlotColorTest.kt",
+          "sha256": "2bc6011b33b9fe4b5dc73e5eb137fb360eeffdbb71c4ebcb9472cfbf09024195",
+          "hashNormalization": "raw",
+          "blob": "f8b425a2e80aef466631c05459202f4a772e1f01"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/AppTabIndicatorPolicyTest.kt",
+          "sha256": "91d91e29bd7ebb2bfa3b6f2eee04d84c0249961e7981d99e35b8072f793ed330",
+          "hashNormalization": "raw",
+          "blob": "3d3335a51a93a0b9411146a084c9d582f19d5917"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicyTest.kt",
+          "sha256": "c52459cae58989b61bda7274660ef32b0e1e1b517e88466dcacb047a5ebbc07a",
+          "hashNormalization": "raw",
+          "blob": "a982c401ca241d9cd149ac1f9c3ca42ff70d46de"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/CustomSelectionContentColorTest.kt",
+          "sha256": "f8065d7c0b3ecac08814d8384dc5421b75eca2aba844e6ce0dc54c7793530b8a",
+          "hashNormalization": "raw",
+          "blob": "e93a5537530bc11402f550d7ebdba7ba0ce4c2d3"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-theme-chrome/MiuixThemeBridgePolicyTest.kt",
+          "sha256": "8f2f42a63defd3a83a6f82b7316a013fc0ec1d93f392c4001f94af509a64157a",
+          "hashNormalization": "raw",
+          "blob": "cfed2a81ec8624911c89e67a9cd0e0c3d9d34182"
         }
       ]
     }
@@ -14450,6 +14534,186 @@
       "referenceOnly": true,
       "partialReuse": true,
       "usedScope": "Complete original Story card reference for exact badge/author/snapshot caller hooks"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicy.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "aad7409357250ff848647d35ae1a6891256e130c",
+      "sha256": "db037c8f2f5acf2a4331103d36707152dc5fec1c4ad4fa694fd295176a9ad8e4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/AppPrimitiveComponents.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "0c241e46004b7623e5899920a9fa7528bd9c0fac",
+      "sha256": "7015a24866db96de6fcb2ee1630d5c4868f599b020c160b0bc90c7ca46ce0e73",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/AppMaterial3SegmentedControl.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "6d2315fe522b388ddeaaaeb78da3965c374fd93c",
+      "sha256": "6784ec44148bd0624021ea326de07ccd99605045cc21ffdeb07bf0386167ac73",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/AppMiuixSwitch.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "ba3d1b240dd1472ec29afe109216fab7e7bf194e",
+      "sha256": "d178edb3e0684a572ae5cfb997d1475c7e53a4b6a0b69800ed23be720adb60a6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicy.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicy.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "7c51d96c999ac40d6f7d2a9262f7fe5bb957090c",
+      "sha256": "0f215926c4fc7350a24189f6a4fb15856f549c734e3b099583fbf539e9428b7d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/Theme.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/Theme.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "872d3edc64c8a0044d81e60937c85ea38eb61a36",
+      "sha256": "b1bc8e5a5007f17425de7505123dd8106d00c7ae490e5da70b5da3adaeb13787",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete selected theme declarations on existing appearance owner"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/ButtonVisualPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicyTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "610a32c82f19b9c737325feb93cb0a8c74e4d00f",
+      "sha256": "68ce3e4ef96326ed2b371226c8076d662ce09a6bb2c32428af82a93204f288ea",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/ButtonSlotColorTest.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/ButtonSlotColorTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "f8b425a2e80aef466631c05459202f4a772e1f01",
+      "sha256": "2bc6011b33b9fe4b5dc73e5eb137fb360eeffdbb71c4ebcb9472cfbf09024195",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/components/AppTabIndicatorPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/AppTabIndicatorPolicyTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "3d3335a51a93a0b9411146a084c9d582f19d5917",
+      "sha256": "91d91e29bd7ebb2bfa3b6f2eee04d84c0249961e7981d99e35b8072f793ed330",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/AppThemeEndpointPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicyTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "a982c401ca241d9cd149ac1f9c3ca42ff70d46de",
+      "sha256": "c52459cae58989b61bda7274660ef32b0e1e1b517e88466dcacb047a5ebbc07a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/CustomSelectionContentColorTest.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/CustomSelectionContentColorTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "e93a5537530bc11402f550d7ebdba7ba0ce4c2d3",
+      "sha256": "f8065d7c0b3ecac08814d8384dc5421b75eca2aba844e6ce0dc54c7793530b8a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/theme/MiuixThemeBridgePolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v043-theme-chrome/MiuixThemeBridgePolicyTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "cfed2a81ec8624911c89e67a9cd0e0c3d9d34182",
+      "sha256": "8f2f42a63defd3a83a6f82b7316a013fc0ec1d93f392c4001f94af509a64157a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-theme-chrome-fidelity"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
     }
   ],
   "buildStandaloneInputs": [

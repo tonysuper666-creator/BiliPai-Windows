@@ -72,7 +72,9 @@ def shared_identity(repo, path):
 
 def native_tabs_source(repo, path, previous):
     from v042_optical_dependencies import selected_source
-    return selected_source(repo,path,fixed_sources(repo)[0][path].decode('utf-8') if path in NATIVE_RENDERERS | {NATIVE_TABS} else previous)
+    from v043_theme_chrome import native_renderer_source
+    selected = selected_source(repo,path,fixed_sources(repo)[0][path].decode('utf-8') if path in NATIVE_RENDERERS | {NATIVE_TABS} else previous)
+    return native_renderer_source(repo, path, selected)
 
 
 def retained_foundation(repo, path, raw, row, commit, manifest):

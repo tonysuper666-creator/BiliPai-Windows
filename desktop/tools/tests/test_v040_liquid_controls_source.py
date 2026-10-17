@@ -10,6 +10,7 @@ import unittest
 REPO=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(REPO/'desktop/tools'))
 import v040_liquid_value_controls as source
+import v043_theme_chrome as chrome
 
 
 def module(name,filename):
@@ -48,6 +49,8 @@ class V040LiquidControlsSourceTest(unittest.TestCase):
             if body.startswith('// GENERATED from '):body='\n'.join(body.splitlines()[2:])+'\n'
             from v042_optical_dependencies import selected_source, MOTION
             effective_raw = selected_source(REPO,path,raw.decode('utf8')).encode('utf8') if path == MOTION else raw
+            if path in chrome.COMPONENTS:
+                effective_raw = chrome.advance(REPO, Path(path).name, effective_raw)
             expected=self.foundation.adapt_foundation(path,effective_raw).decode('utf-8') if path.endswith('/AppColorPicker.kt') else source.adapt(path,effective_raw)[0]
             self.assertEqual(expected,body,path)
             checked+=1
@@ -112,12 +115,13 @@ class V040LiquidControlsSourceTest(unittest.TestCase):
             'PaletteSpecPolicyTest.kt','SeedColorSchemeTest.kt','SeedTextContrastPolicyTest.kt',
             'ThemePresetPalettePreviewTest.kt','AppThemeEndpointPolicyTest.kt',
             'WallpaperPaletteOverridePolicyTest.kt','LiquidAccentColorSchemeTest.kt',
-            'SeedPaletteSettingsPolicyTest.kt',
+            'SeedPaletteSettingsPolicyTest.kt','MiuixThemeBridgePolicyTest.kt',
+            'CustomSelectionContentColorTest.kt',
         },seed_names)
         all_tests=list((self.root/'tests').rglob('*.kt'))
         seed_tests=[p for p in all_tests if p.name in seed_names]
-        self.assertEqual(8,len(seed_tests))
-        self.assertEqual(32,sum(p.read_bytes().count(b'@Test') for p in seed_tests))
+        self.assertEqual(10,len(seed_tests))
+        self.assertEqual(46,sum(p.read_bytes().count(b'@Test') for p in seed_tests))
         self.assertEqual(27,sum(p.read_bytes().count(b'@Test') for p in all_tests if p.name not in seed_names))
         velocity=(self.root/'components/com/android/purebilibili/core/ui/animation/LiquidIndicatorVelocity.kt').read_bytes()
         self.assertEqual(fixed[source.DS+'animation/LiquidIndicatorVelocity.kt'],velocity)

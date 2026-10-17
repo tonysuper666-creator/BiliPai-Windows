@@ -9,6 +9,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v040_chrome_actions as source
+import v043_theme_chrome as chrome
 
 
 def load(name, filename):
@@ -57,6 +58,8 @@ class V040ChromeActionsSourceTest(unittest.TestCase):
                     expected = expected.replace(edit['before'], edit['after'], 1)
             else:
                 expected = raw.decode('utf-8')
+            if path in chrome.COMPONENTS:
+                expected = chrome.component_source(REPO, path, expected)
             self.assertEqual(expected, actual, path)
             self.assertNotRegex(actual, r'(?m)^import android\.')
             count += 1
@@ -94,11 +97,13 @@ class V040ChromeActionsSourceTest(unittest.TestCase):
             if '/test/java/' not in path:
                 continue
             target = self.root/'tests'/path.split('/test/java/', 1)[1]
+            if target.name in chrome.COMPONENT_TESTS:
+                raw = chrome.advance(REPO, target.name, raw)
             self.assertEqual(raw, target.read_bytes(), path)
             self.assertEqual(1, len(list((self.root/'tests').rglob(target.name))))
             cases += raw.count(b'@Test')
             files += 1
-        self.assertEqual(17, cases)
+        self.assertEqual(20, cases)
         self.assertEqual(5, files)
 
     def test_build_excludes_old_direct_copies_and_tracks_both_real_producers(self):

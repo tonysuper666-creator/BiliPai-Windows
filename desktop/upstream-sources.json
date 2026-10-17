@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "173",
+  "windowsRevision": "174",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14883,5 +14883,37 @@
     "localSourceCasesPassed": 134,
     "jvmTestsNotYetExecuted": true,
     "applicationExecuted": false
+  },
+  "v043ThemeChromeSlice": {
+    "upstreamTag": "v0.4.3",
+    "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+    "archive": "desktop/upstream-slices/v043-theme-chrome",
+    "sourceManifestSHA256": "c36ba0ec38c2c78a9dd49c390d0c36840920e4f7b75d9bc0b325821dbcd47fd5",
+    "sourceFiles": 12,
+    "completeOriginalTests": 6,
+    "completeOriginalCases": 33,
+    "newlySelectedClasses": 5,
+    "newlySelectedCases": 30,
+    "soleExistingOwners": [
+      "extractUpstreamComponents",
+      "extractUpstreamAppearance",
+      "extractUpstreamDynamicTabs"
+    ],
+    "reviewedCompletePredecessors": 9,
+    "rawOriginalsUnchanged": true,
+    "wholeOriginalTestsRetained": true,
+    "transparentButtonsKeepRequestedAccent": true,
+    "selectionRetainsChromaticContrast": true,
+    "nativeMiuixThumbColorsPreserved": true,
+    "nativeUnderlineMeasuresActualLabel": true,
+    "liquidPillBranchUnchanged": true,
+    "existingWindowsSettingsStoreReused": true,
+    "localPythonCasesPassed": 125,
+    "localJvmExecuted": false,
+    "mainCompiled": false,
+    "sourceQualified": false,
+    "applicationExecuted": false,
+    "hardwareExecuted": false,
+    "desktopReplaced": false
   }
 }

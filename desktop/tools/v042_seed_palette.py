@@ -48,7 +48,9 @@ def fixed_sources(repo):
 
 def emit(repo, output, resources, tests, parser, select, extracted, headers, base_outputs):
     """All policies keep their original bodies; Windows supplies existing stores."""
-    sources = fixed_sources(repo)
+    from v043_theme_chrome import seed_sources, seed_source_identity, NEW_SEED_TESTS, validate_outputs
+    validate_outputs(repo, output, resources, tests)
+    sources = seed_sources(repo, fixed_sources(repo))
     for key in ['seed_palette_style', 'theme_color_contrast']:
         if ('stringPreferencesKey("' + key + '")').encode() not in sources['SettingsManager.kt']:
             raise ValueError('Original seed preference key changed: ' + key)
@@ -63,7 +65,8 @@ def emit(repo, output, resources, tests, parser, select, extracted, headers, bas
         target.write_text(body, encoding='utf-8', newline='\n')
         writes.append(dict(path=relative, source=source, mode=mode,
             before=previous, beforeSHA256=sha(previous) if previous is not None else None,
-            afterSHA256=sha(body), originalSHA256=sha(sources[source])))
+            afterSHA256=sha(body), originalSHA256=sha(sources[source]),
+            **seed_source_identity(repo, source, COMMIT, MANIFEST_SHA256)))
 
     for filename in WHOLE:
         raw = sources[filename].decode('utf-8')
@@ -138,7 +141,7 @@ import com.android.purebilibili.feature.settings.Md3ColorSource
         head + body, 'PlaybackNotificationColorPolicy.kt', 'original-accent-policy-on-existing-Windows-settings')
 
     if tests is not None:
-        for filename in TESTS:
+        for filename in TESTS + list(NEW_SEED_TESTS):
             raw = sources[filename].decode('utf-8')
             selected = raw
             edits = []
@@ -169,7 +172,8 @@ import com.android.purebilibili.feature.settings.Md3ColorSource
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(selected, encoding='utf-8', newline='\n')
             test_proofs.append(dict(filename=filename, originalSHA256=sha(raw), outputSHA256=sha(selected),
-                edits=edits, wholeOriginalInverseRecovered=True, cases=raw.count('@Test')))
+                edits=edits, wholeOriginalInverseRecovered=True, cases=raw.count('@Test'),
+                **seed_source_identity(repo, filename, COMMIT, MANIFEST_SHA256)))
 
     for filename in LICENSES:
         target = Path(resources) / 'META-INF/licenses' / filename

@@ -521,6 +521,8 @@ val generatedAppearance = layout.buildDirectory.dir("generated/appearance")
 val generatedAppearanceResources = layout.buildDirectory.dir("generated/appearance-resources")
 val generatedThemeRoleTests = layout.buildDirectory.dir("generated/original-theme-role-tests")
 val extractUpstreamAppearance by tasks.registering(Exec::class) {
+    inputs.file("tools/v043_theme_chrome.py")
+    inputs.dir("upstream-slices/v043-theme-chrome")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-appearance-platform.py",
@@ -546,6 +548,8 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamAppearance) }
 
 val generatedChromeActionTests = layout.buildDirectory.dir("generated/original-chrome-action-tests")
 val extractUpstreamComponents by tasks.registering(Exec::class) {
+    inputs.file("tools/v043_theme_chrome.py")
+    inputs.dir("upstream-slices/v043-theme-chrome")
     inputs.file("tools/v042_optical_dependencies.py")
     inputs.dir("upstream-slices/v042-optical-dependencies")
     dependsOn(prepareUpstreamSources)
@@ -1784,6 +1788,8 @@ val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
+    inputs.file("tools/v043_theme_chrome.py")
+    inputs.dir("upstream-slices/v043-theme-chrome")
     inputs.file("tools/v042_optical_dependencies.py")
     inputs.dir("upstream-slices/v042-optical-dependencies")
     inputs.file("tools/v041_dynamic_author_search.py")

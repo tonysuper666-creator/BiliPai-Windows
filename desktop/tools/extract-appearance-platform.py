@@ -68,6 +68,8 @@ def declarations(parser,source,names):
 def inventory(repo):
     return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['appearance-parity'],sha256=hashlib.sha256(_theme_source(repo, p).decode('utf-8').replace('\r\n','\n').encode()).hexdigest()) for p in DIRECT+list(EXTRACTED)]
 def generate(repo,output,resource_output=None,policy_only=False,test_output=None):
+    from v043_theme_chrome import validate_outputs
+    validate_outputs(repo, output, resource_output or output.parent/'resources', test_output)
     spec=importlib.util.spec_from_file_location('appearance_parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
     output.mkdir(parents=True,exist_ok=True)
     original_outputs=set()

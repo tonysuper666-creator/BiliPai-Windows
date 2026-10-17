@@ -12,6 +12,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO/'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v042_seed_palette as palette
+import v043_theme_chrome as chrome
 
 
 def producer():
@@ -24,6 +25,10 @@ def producer():
 class OriginalSeedPaletteSourceTest(unittest.TestCase):
     def test_complete_original_policies_tests_and_licenses_are_emitted_by_the_existing_producer(self):
         fixed = palette.fixed_sources(REPO)
+        selected = dict(fixed)
+        current = chrome.fixed_sources(REPO)[0]
+        for name in chrome.SEED_REPLACEMENTS + chrome.NEW_SEED_TESTS:
+            selected[name] = current[name]
         with tempfile.TemporaryDirectory(prefix='v042-original-seed-closure-') as temp:
             out, tests, resources = Path(temp)/'main', Path(temp)/'tests', Path(temp)/'resources'
             actual = producer()
@@ -33,9 +38,9 @@ class OriginalSeedPaletteSourceTest(unittest.TestCase):
                 raw = (out/row['path']).read_bytes()
                 self.assertEqual(row['afterSHA256'], hashlib.sha256(raw).hexdigest())
                 if row['mode'] == 'whole-original':
-                    self.assertEqual(fixed[row['source']], raw)
-            self.assertEqual(32, proof['originalTestCaseCount'])
-            self.assertEqual(8, len(proof['wholeOriginalTestProofs']))
+                    self.assertEqual(selected[row['source']], raw)
+            self.assertEqual(46, proof['originalTestCaseCount'])
+            self.assertEqual(10, len(proof['wholeOriginalTestProofs']))
             for row in proof['wholeOriginalTestProofs']:
                 expected_imports = {
                     'SeedColorSchemeTest.kt': (
@@ -56,7 +61,7 @@ class OriginalSeedPaletteSourceTest(unittest.TestCase):
                     at = edit['offset']
                     self.assertEqual(edit['after'], text[at:at + len(edit['after'])])
                     text = text[:at] + edit['before'] + text[at + len(edit['after']):]
-                self.assertEqual(fixed[row['filename']], text.encode())
+                self.assertEqual(selected[row['filename']], text.encode())
                 self.assertTrue(row['wholeOriginalInverseRecovered'])
             for name in palette.LICENSES:
                 self.assertEqual(fixed[name], (resources/'META-INF/licenses'/name).read_bytes())

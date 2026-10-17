@@ -11,6 +11,7 @@ from v040_chrome_actions import selected_component_source as _chrome_source, emi
 
 from v040_native_chrome import emit_components as _native_chrome_components
 from v042_optical_dependencies import selected_source as _optical_source, SURFACE as _optical_surface
+from v043_theme_chrome import component_source as _theme_chrome_source, COMPONENTS as _theme_chrome_direct, validate_outputs as _validate_theme_chrome_outputs, update_component_tests as _theme_chrome_tests
 
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
@@ -78,26 +79,28 @@ def adapt(path, source, host):
     return source
 
 def generate(repo, output, standalone=False, test_output=None):
+    _validate_theme_chrome_outputs(repo, output, test_output)
     host = helper(repo)
     output.mkdir(parents=True, exist_ok=True)
     result = []
     for path in DIRECT:
-        original = _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path))))
+        original = _theme_chrome_source(repo, path, _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))))
         if re.search(r"(?m)^import android\.", original): raise ValueError("Pure renderer acquired Android dependency: " + path)
         host.prune_old_direct(output, path, original)
-        if (standalone or path in _liquid_direct or path in _chrome_direct or path == _optical_surface) and path not in REUSED:
+        if (standalone or path in _liquid_direct or path in _chrome_direct or path in _theme_chrome_direct or path == _optical_surface) and path not in REUSED:
             result.append(host.write(output, path, original, original))
     for path in ADAPTED:
-        original = _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path))))
+        original = _theme_chrome_source(repo, path, _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))))
         result.append(host.write(output, path, original, adapt(path, original, host)))
     for path in POLICIES:
-        original = _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path))))
+        original = _theme_chrome_source(repo, path, _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))))
         declaration = re.findall(r"(?m)^internal fun resolvePiliPlusScrollableUnderlineMinWidth\(\): Dp = [^\n]+", original)
         if len(declaration) != 1: raise ValueError("Original tab-width policy changed")
         body = "package com.android.purebilibili.core.ui.components\n\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\n\n" + declaration[0] + "\n"
         result.append(host.write(output, path, original, body, "AppScrollableUnderlinePolicy.kt"))
     result.extend(_chrome_components(repo, output, test_output))
     result.extend(_native_chrome_components(repo, output, test_output))
+    _theme_chrome_tests(repo, test_output)
     extra = _liquid_components(repo, output)
     result.extend(output / row["path"] for row in extra)
     result.append(output / "com/android/purebilibili/core/ui/components/DesktopLiquidValueColorResources.kt")
