@@ -90,7 +90,7 @@ internal class DesktopOriginalRootPageBindings(
             if (page == null) false
             else {
                 if (shouldResetNavigation3BackStackForBottomPager(routes.stack)) routes.returnToMainHostAdmitted()
-                selectedPage = page
+                routes.selectMainHostPageAdmitted(selectedPage, page) { selectedPage = page }
                 true
             }
         }

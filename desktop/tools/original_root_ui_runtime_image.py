@@ -81,25 +81,57 @@ def archive_snapshot(path, expected):
             yield archive, rows
 
 
-def verify_package_evidence(run, jobs, log, toolchain_raw, source_sha, version):
+def verify_package_evidence(run, jobs, log, toolchain_raw, source_sha, version, *, source_plan_raw=None):
     binding.require(re.fullmatch('[0-9a-f]{40}', source_sha) is not None,
                     'An exact qualified source is required')
     binding.require(run.get('repository', {}).get('full_name') == REPOSITORY and
                     run['repository'].get('private') is False,
                     'Runtime images require the personal public repository')
     binding.require(run.get('status') == 'completed' and run.get('conclusion') == 'success' and
-                    run.get('head_sha') == source_sha and run.get('event') == 'workflow_dispatch' and
-                    run.get('path', '').split('@', 1)[0] == '.github/workflows/windows-package-candidate.yml',
+                    run.get('head_sha') == source_sha,
                     'Candidate packaging run is not the exact successful source')
-    selected = [job for job in jobs.get('jobs', []) if job.get('name') == 'package']
+    binding.require(len(log.encode('utf-8')) <= 32 * 1024 * 1024 and len(toolchain_raw) <= 65536,
+                    'Candidate packaging evidence exceeds its declared bound')
+    path = run.get('path', '').split('@', 1)[0]
+    same_workspace = path == '.github/workflows/windows-source-validation.yml'
+    qualification = None
+    if same_workspace:
+        binding.require(run.get('event') == 'push' and
+            run.get('head_branch', '').startswith('desktop/source-validation-package-') and
+            isinstance(source_plan_raw, bytes) and len(source_plan_raw) <= 4 * 1024 * 1024,
+            'Same-workspace packaging requires its opted-in branch and exact source plan')
+        plan = binding.json_bytes(source_plan_raw)
+        binding.require(plan.get('repository') == REPOSITORY and plan.get('windowsVersion') == version and
+            plan.get('exportOriginalRootUiHarness') is True,
+            'Same-workspace packaging lacks the matching production export plan')
+        gate_spec = importlib.util.spec_from_file_location('same_workspace_terminal_source_gate',
+            Path(__file__).with_name('verify-package-source-qualification.py'))
+        gate = importlib.util.module_from_spec(gate_spec)
+        gate_spec.loader.exec_module(gate)
+        # Re-read the complete terminal receipt and every raw XML case. A prior
+        # provisional image check or a caller-supplied success flag cannot admit it.
+        qualification = gate.verify(run, jobs, log, plan, source_sha)
+        binding.require(qualification.get('sourceQualified') is True and len(jobs.get('jobs', [])) == 1,
+            'Same-workspace packaging requires the one successful qualified source job')
+        selected = [job for job in jobs.get('jobs', []) if job.get('name') == 'source-validation']
+    else:
+        binding.require(run.get('event') == 'workflow_dispatch' and
+            path == '.github/workflows/windows-package-candidate.yml',
+            'Candidate packaging run is not the exact successful source')
+        selected = [job for job in jobs.get('jobs', []) if job.get('name') == 'package']
     binding.require(len(selected) == 1, 'Candidate package job is missing or ambiguous')
     job = selected[0]
     binding.require(job.get('run_id') == run.get('id') and job.get('head_sha') == source_sha and
                     job.get('status') == 'completed' and job.get('conclusion') == 'success' and
                     job.get('labels') == ['windows-latest'] and job.get('runner_group_name') == 'GitHub Actions',
                     'Candidate package job identity or standard runner differs')
-    binding.require(len(log.encode('utf-8')) <= 32 * 1024 * 1024 and len(toolchain_raw) <= 65536,
-                    'Candidate packaging evidence exceeds its declared bound')
+    if same_workspace:
+        for name in ('Prepare one provisional candidate from the same tested workspace',
+                     'Export provisional same-workspace image for terminal-run admission'):
+            steps = [step for step in job.get('steps', []) if step.get('name') == name]
+            binding.require(len(steps) == 1 and steps[0].get('status') == 'completed' and
+                steps[0].get('conclusion') == 'success',
+                'Same-workspace candidate preparation or upload did not complete uniquely')
     lines = [re.sub(r'^\d{4}-\d\d-\d\dT\S+Z ', '', line).strip() for line in log.splitlines()]
     seals = [line.split(' ', 1)[1] for line in lines if line.startswith('BILIPAI_CANDIDATE_TOOLCHAIN_SHA256 ')]
     binding.require(len(seals) == 1 and re.fullmatch('[0-9a-f]{64}', seals[0]) is not None and
@@ -110,7 +142,12 @@ def verify_package_evidence(run, jobs, log, toolchain_raw, source_sha, version):
         record.get('windowsVersion') == version and record.get('javaVersion') == '21.0.12.1' and
         record.get('toolchainAutoDetection') is False and record.get('toolchainAutoDownload') is False,
         'Candidate toolchain does not match the qualified source and fixed JDK')
-    return record, dict(runId=run['id'], jobId=job['id'], toolchainSHA256=seals[0])
+    authority = dict(runId=run['id'], jobId=job['id'], toolchainSHA256=seals[0])
+    if qualification is not None:
+        authority.update(sameWorkspaceTerminalRun=True,
+            sourceReceiptSHA256=qualification['sealedReceiptSHA256'],
+            sourcePlanSHA256=hashlib.sha256(source_plan_raw).hexdigest())
+    return record, authority
 
 
 def _runtime_files(candidate, archive, entries):
@@ -135,11 +172,12 @@ def _runtime_files(candidate, archive, entries):
 
 
 def provision_runtime(production, portable_zip, package_run, package_jobs, package_log,
-                      toolchain_raw, fixed_jdk_archive, output):
+                      toolchain_raw, fixed_jdk_archive, output, *, source_plan_raw=None):
     binding.require(production.get('productionClasspathAndResourcesBound') is True and
         production.get('applicationExecuted') is False, 'A qualified production class/resource binding is required')
     source = production['sourceSha']; version = production['windowsVersion']
-    toolchain, package = verify_package_evidence(package_run, package_jobs, package_log, toolchain_raw, source, version)
+    toolchain, package = verify_package_evidence(package_run, package_jobs, package_log, toolchain_raw, source, version,
+        source_plan_raw=source_plan_raw)
     binding.require(toolchain.get('javaReleaseSha256') == production.get('qualifiedJdkReleaseSHA256'),
                     'Source compilation and candidate packaging used different JDK releases')
     candidate = binding.jars.paths.checked_path(Path(production['candidateRoot'])).resolve()

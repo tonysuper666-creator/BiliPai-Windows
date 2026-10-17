@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.3",
+  "commit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt",
+      "archiveFile": "MessageLinkNavigationPolicy.kt",
+      "bytes": 10477,
+      "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
+      "gitBlob": "9ea862ac7e86f624ab123cf9c0c1b1acb3d8c095",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicyTest.kt",
+      "archiveFile": "MessageLinkNavigationPolicyTest.kt",
+      "bytes": 10612,
+      "sha256": "1a4e5529659a47ce66cf7ce528182b337ea8160001fa74e0795dead792624805",
+      "gitBlob": "4a2dc1a4089ba263df0f26cbb1b95fe03c11a199",
+      "referenceOnly": false
+    }
+  ]
+}

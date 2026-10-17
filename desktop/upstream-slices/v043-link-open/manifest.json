@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.3",
+  "commit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/web/LinkOpenGate.kt",
+      "archiveFile": "LinkOpenGate.kt",
+      "bytes": 590,
+      "sha256": "e60b0847ce10f31d6772f31164802555c97b26a837ba8d40b2954db82e777bef",
+      "gitBlob": "304a3560872d4c0e693524fa14ab81328d6f5586",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/BilibiliLinkNavigationPolicy.kt",
+      "archiveFile": "BilibiliLinkNavigationPolicy.kt",
+      "bytes": 3013,
+      "sha256": "1f5fa7163f491916cebf470f239829f306d1e45a05fddf3815d90c0d03240121",
+      "gitBlob": "ebf2e9286e47d9b8b3b4f92d66ad637dc8532416",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/web/LinkOpenGateTest.kt",
+      "archiveFile": "LinkOpenGateTest.kt",
+      "bytes": 715,
+      "sha256": "7897664c68e7698ccb1c94e7e07720e9276bd4784bd4e3858a72c1d974b74bde",
+      "gitBlob": "5e4a5173afdf449f93ebe6dbb3dc7a5807d90c6a",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation/BilibiliLinkNavigationPolicyTest.kt",
+      "archiveFile": "BilibiliLinkNavigationPolicyTest.kt",
+      "bytes": 2371,
+      "sha256": "239e5e4aea87178cce1e8d9db74d83ec24c2b42f78aae93f4195187f9340cc58",
+      "gitBlob": "925a01acb386e4f27c532753a99ad29a305a368c",
+      "referenceOnly": false
+    }
+  ]
+}

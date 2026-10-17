@@ -11,7 +11,8 @@ param(
     [switch]$UpdaterSmoke,
     [string]$PreviousUpdateTestPackage,
     [string]$MpvRuntimeDescriptorPath,
-    [string]$MpvRuntimeArchivePath
+    [string]$MpvRuntimeArchivePath,
+    [string]$GradleUserHomePath
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
@@ -20,6 +21,20 @@ $desktopRoot = Join-Path $repoRoot 'desktop'
 $gatePath = Join-Path $desktopRoot 'build/release-gate.json'
 if (Test-Path -LiteralPath $gatePath) { Remove-Item -LiteralPath $gatePath -Force }
 if ($ReleaseGate -and $SkipTests) { throw 'ReleaseGate cannot skip unit tests.' }
+$workspaceReuseArguments = @()
+if ($GradleUserHomePath) {
+    if (-not $SkipTests -or -not $FixedJavaToolchain -or $Installer -or $ReleaseGate -or
+        $NativeSmoke -or $NativeMuxSmoke -or $UpdaterSmoke -or $PreviousUpdateTestPackage) {
+        throw 'Validation workspace reuse is limited to an unlaunched fixed-JDK candidate; terminal qualification and runtime verification remain separate.'
+    }
+    $GradleUserHomePath = [IO.Path]::GetFullPath($GradleUserHomePath)
+    if (-not (Test-Path -LiteralPath $GradleUserHomePath -PathType Container)) {
+        throw 'The preceding source validation Gradle home must already exist.'
+    }
+    $workspaceReuseArguments = @('--gradle-user-home', $GradleUserHomePath,
+        '--no-build-cache', '--no-daemon', '--max-workers=1', '--no-parallel',
+        '-Pkotlin.compiler.execution.strategy=in-process')
+}
 $releaseSourceSha = $null
 if ($ReleaseGate) {
     $releaseSourceSha = & git -C $repoRoot rev-parse HEAD
@@ -99,6 +114,7 @@ try {
         $gradleArguments += @('--init-script', (Join-Path $PSScriptRoot 'original-root-ui-harness.init.gradle'),
             "-PcandidateProductionRuntimeModel=$runtimeModel")
         $gradleArguments += $toolchainArguments
+        $gradleArguments += $workspaceReuseArguments
         if (-not $SkipTests) { $gradleArguments += 'test' }
         if ($ReleaseGate) { $gradleArguments += 'backendSmoke' }
         $gradleArguments += 'createDistributable'

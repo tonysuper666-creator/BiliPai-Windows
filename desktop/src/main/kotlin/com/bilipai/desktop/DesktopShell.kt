@@ -234,6 +234,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val scope = rememberCoroutineScope()
     // App/window reference, independent of drawing, section and account MID.
     val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopReadyOriginalRootHandle?>() }
+    val originalContentLinks = remember(repository, pluginStore) {
+        java.util.concurrent.atomic.AtomicReference<DesktopOriginalContentLinkBinding?>()
+    }
+    DisposableEffect(originalContentLinks) {
+        onDispose { originalContentLinks.getAndSet(null)?.close() }
+    }
     val storageOwnerRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<com.bilipai.desktop.settings.DesktopStorageSettingsOwner?>() }
     val ordinaryVideoRef = remember(repository, pluginStore) {
         java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoShellOwner?>()
@@ -1256,6 +1262,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             runCatching { java.awt.Desktop.getDesktop().browse(uri) }.onFailure { error = it.message ?: "无法打开$title" }
         }
     }
+    fun openOriginalContentLink(raw: String) {
+        val routes = rootRoutes() ?: return
+        val binding = originalContentLinks.get()?.takeIf { it.routes === routes }
+            ?: DesktopOriginalContentLinkBinding(routes,
+                stillPresented = { hostVisible && hostDisplayable && !isClosing() && !activatingUpdate },
+                openExternal = { openDynamicWeb(it, "链接") }, feedback = { error = it }).also {
+                originalContentLinks.getAndSet(it)?.close()
+            }
+        binding.open(raw)
+    }
     fun openResource(resource: PersonalResource) {
         when (resource) {
             is PersonalResource.History -> {
@@ -1928,7 +1944,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         if(destination != BiliPaiNavKey.Onboarding && !initialVideoConsumed && initialVideo!=null) {
                             initialVideoConsumed=true;rootRoutes()?.video(BiliPaiNavKey.VideoDetail(initialVideo,sourceRoute="home"))
                         } },
-                    {error=it}, {raw->openDynamicWeb(raw,"链接")},
+                    {error=it}, ::openOriginalContentLink,
                     { event -> authenticationInvalidations.trySend(event); Unit },
                     { gate -> DesktopProfileAccountsBinding(repository,gate.epoch,gate.mid,
                         requireNotNull(gate.scope.coroutineContext[Job]),gate::owns,gate::commit,
@@ -2876,8 +2892,21 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     onDismiss={loginReturn?.cancel?.invoke(); commands.back()},
                                     onComplete={if(loginReturn==null) commands.back()}, loginReturn=loginReturn)
                             }
-                            entryKey is BiliPaiNavKey.Web -> Column {
-                                Text(entryKey.title);TextButton(onClick={openDynamicWeb(entryKey.url,entryKey.title)}){Text("在浏览器打开")}
+                            entryKey is BiliPaiNavKey.Web -> {
+                                val browserOpenGate = remember(messageRoutes, entryKey) {
+                                    com.android.purebilibili.feature.web.LinkOpenGate()
+                                }
+                                Column {
+                                    Text(entryKey.title)
+                                    TextButton(onClick = {
+                                        if (active && hostVisible && hostDisplayable && !isClosing() && !activatingUpdate &&
+                                            messageRoutes.isCurrentContent(entryKey) &&
+                                            browserOpenGate.tryAcquire(System.nanoTime() / 1_000_000L)) {
+                                            try { openDynamicWeb(entryKey.url, entryKey.title) }
+                                            finally { browserOpenGate.release() }
+                                        }
+                                    }) { Text("在浏览器打开") }
+                                }
                             }
                             section == DesktopSection.BGM -> bgmRequest?.let { request ->
                                 DesktopBgmDetailRootHost(request, repository, community, commentFraud,

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.3",
+  "commit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliHostPolicy.kt",
+      "archiveFile": "BilibiliHostPolicy.kt",
+      "bytes": 548,
+      "sha256": "07c7a0a57fb65e6190faf0e1993fb8c538c30713750f919796aea14e226b11a4",
+      "gitBlob": "38a539f089c19e8337b49d8fa5f3f7a6018ed05c",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt",
+      "archiveFile": "BilibiliNavigationTargetParser.kt",
+      "bytes": 15631,
+      "sha256": "54d60f08ef150eb43e12c1edb20d910357786a038c01d4acab169b9f7c9a4522",
+      "gitBlob": "bc6952c11a1c4ec75e9e8ae1efd8192106566022",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliUrlParser.kt",
+      "archiveFile": "BilibiliUrlParser.kt",
+      "bytes": 17964,
+      "sha256": "bae695d7bec9f041e5111fc621ba2ab9b39ddd23aaabc166acd52015637b500b",
+      "gitBlob": "f082232d597e59b8eae8fd24fbd93d92d7ac37f3",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParserTest.kt",
+      "archiveFile": "BilibiliNavigationTargetParserTest.kt",
+      "bytes": 8535,
+      "sha256": "4ecd56649fe6444699e8f64fff4c251afc815602d1a2fb429c89f2e35126f980",
+      "gitBlob": "5e2fcc0070e81aefa00c81e2bf907a6d6bc4d878",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/util/BilibiliUrlParserRegressionTest.kt",
+      "archiveFile": "BilibiliUrlParserRegressionTest.kt",
+      "bytes": 3295,
+      "sha256": "2dbd52c58a41823f5b6ceca40ec54e59150672709224e76f3878d364a796a069",
+      "gitBlob": "1d649c79d6cdb038d7b1b87cf9b6d0a3ebd4b03b",
+      "referenceOnly": false
+    }
+  ]
+}

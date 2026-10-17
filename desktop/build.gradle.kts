@@ -168,6 +168,9 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // Whole v043 typed navigation is emitted by its existing space producer.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
         // Current host-aware HTTP proxy policy has one existing proxy producer.
         exclude(canonicalOriginalIdentity("network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt"))
         // Current semantic surface tokens have one original component producer.
@@ -1209,6 +1212,7 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-full-card").get().asFile.absolutePath)
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.file("tools/v033_home_refresh_undo.py")
     inputs.dir("upstream-slices/v033-home-undo")
@@ -1866,12 +1870,21 @@ val extractUpstreamSpace by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-platform.py",
         "--repo", repositoryRoot.absolutePath, "--policy-only",
-        "--output", layout.buildDirectory.dir("generated/space").get().asFile.absolutePath)
-    inputs.files("tools/extract-space-platform.py", "tools/sync-upstream.py")
+        "--output", layout.buildDirectory.dir("generated/space").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/space-original-tests").get().asFile.absolutePath)
+    inputs.files("tools/extract-space-platform.py", "tools/sync-upstream.py", "tools/v043_navigation.py", "tools/v043_message_link_host.py", "tools/v043_link_open.py")
+    inputs.dir("upstream-slices/v043-link-open")
+    inputs.dir("upstream-slices/v043-message-link-host")
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
+    inputs.dir("upstream-slices/v043-navigation")
     inputs.files(sources.filter { "space" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space"))
+    outputs.dir(layout.buildDirectory.dir("generated/space-original-tests"))
 }
+
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/space-original-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamSpace) }
 
 val extractUpstreamSpaceImagePreviews by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -1904,6 +1917,7 @@ val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath)
     inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -2522,6 +2536,7 @@ val extractOriginalWatchLater by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-watchlater.py", "tools/extract-upstream-favorites.py",
         "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-personal-watchlater" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -3010,6 +3025,7 @@ val extractOriginalSpacePages by tasks.registering(Exec::class) {
         "--out", layout.buildDirectory.dir("generated/original-space-pages").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-space-pages.py", "tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
     inputs.file("tools/v041_video_status_labels.py")
+    inputs.file("tools/v043_search_up_author.py")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.files(layout.buildDirectory.file("generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt"),
         layout.buildDirectory.file("generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt"),
@@ -3031,9 +3047,10 @@ val extractOriginalVideoStatusLabels by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/v041-video-status-labels").get().asFile.absolutePath,
         "--tests-output", layout.buildDirectory.dir("generated/v041-video-status-label-tests").get().asFile.absolutePath)
-    inputs.files("tools/extract-v041-video-status-labels.py", "tools/v041_video_status_labels.py",
+    inputs.files("tools/extract-v041-video-status-labels.py", "tools/v041_video_status_labels.py", "tools/v043_search_up_author.py",
         "tools/v025_source_paths.py", "tools/v025-canonical-sources.json")
     inputs.dir("upstream-slices/v041-video-status-labels")
+    inputs.dir("upstream-slices/v043-search-up-author")
     inputs.files(listOf(
         "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt",
         "core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt",

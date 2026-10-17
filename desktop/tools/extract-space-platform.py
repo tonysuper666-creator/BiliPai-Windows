@@ -22,7 +22,11 @@ SOURCES = {
 def inventory(repo):
     return [dict(path=p,mode=m,features=['space'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
 
-def generate(repo, output, policy_only=False):
+def generate(repo, output, policy_only=False, tests_output=None):
+    import v043_navigation as navigation
+    import v043_message_link_host as message_host
+    import v043_link_open as link_open
+    navigation.validate_outputs(repo, output, tests_output)
     spec=importlib.util.spec_from_file_location('space_parser',repo/'desktop/tools/sync-upstream.py')
     parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
     def read(suffix): return (_desktop_canonical_source(repo, Path(BASE) / suffix)).read_text(encoding='utf-8')
@@ -55,7 +59,7 @@ def generate(repo, output, policy_only=False):
         # Include the called function identifier (mapOf/buildMap), not the assignment.
         return textwrap.dedent(source[start:tokens[end][2]])
     for p, mode in SOURCES.items():
-        if mode=='direct' and not policy_only:
+        if mode=='direct' and not policy_only and not p.endswith('/BilibiliNavigationTargetParser.kt'):
             source=(_desktop_canonical_source(repo, p)).read_text(encoding='utf-8')
             package=re.search(r'^package (.+)$',source,re.M).group(1)
             write(package,Path(p).name,source)
@@ -96,15 +100,28 @@ def generate(repo, output, policy_only=False):
     fallback=expression(rank,fallback_start,'{','}')
     pieces += ['internal fun desktopSpaceElecItems(elec: SpaceElecBlock): List<SpaceUpowerRankItem> = '+fallback]
     write('com.android.purebilibili.feature.space','DesktopUpstreamSpaceDeclarations.kt','\n\n'.join(pieces)+'\n')
-    url=read('core/util/BilibiliUrlParser.kt')
-    url=url.replace('import android.net.Uri','import java.net.URI as Uri\nimport com.bilipai.desktop.data.DesktopSpaceRouteLog as Logger')
-    write('com.android.purebilibili.core.util','BilibiliUrlParser.kt','// GENERATED: Android Uri bound to java.net.URI; debug/error URL logging discarded.\n'+url)
+    originals, proof = navigation.original_sources(repo,
+        read('core/util/BilibiliNavigationTargetParser.kt').encode('utf-8'),
+        read('core/util/BilibiliUrlParser.kt').encode('utf-8'))
+    for path, raw in originals.items():
+        target=output/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+    (output/'v043-navigation-proof.json').write_text(json.dumps(proof,indent=2)+'\n',encoding='utf-8',newline='\n')
+    message_sources, message_proof = message_host.original_policy(repo,
+        read('navigation/MessageLinkNavigationPolicy.kt').encode('utf-8'))
+    for path, raw in message_sources.items():
+        target=output/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+    (output/'v043-message-link-host-proof.json').write_text(json.dumps(message_proof,indent=2)+'\n',encoding='utf-8',newline='\n')
+    for path, raw in link_open.original_sources(repo).items():
+        target=output/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+    if tests_output is not None:
+        for path, raw in {**navigation.original_tests(repo), **message_host.original_tests(repo), **link_open.original_tests(repo)}.items():
+            target=tests_output/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
 
 if __name__=='__main__':
     cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True)
-    cli.add_argument('--output',type=Path);cli.add_argument('--inventory',action='store_true');cli.add_argument('--policy-only',action='store_true')
+    cli.add_argument('--output',type=Path);cli.add_argument('--test-output',type=Path);cli.add_argument('--inventory',action='store_true');cli.add_argument('--policy-only',action='store_true')
     args=cli.parse_args()
     if args.inventory: print(json.dumps(inventory(args.repo),indent=2))
     else:
         if args.output is None:cli.error('--output is required')
-        generate(args.repo,args.output,args.policy_only)
+        generate(args.repo,args.output,args.policy_only,args.test_output)

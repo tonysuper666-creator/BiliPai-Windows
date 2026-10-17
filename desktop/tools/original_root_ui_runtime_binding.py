@@ -290,6 +290,7 @@ def bind(export, candidate, run, jobs, log, plan_raw, source_sha, qualified_nati
     native_proof = None
     if package is not None:
         from original_root_ui_packaged_native import bind_packaged_native
+        package = dict(package, sourcePlanRaw=plan_raw)
         native_proof = bind_packaged_native(package['sourceRepo'], source_sha, manifest['windowsVersion'], package,
             ledger['applicationResources'])
     bound = _verify_production(candidate, model, ledger, {row['path'][:-6] for row in manifest['classes']},

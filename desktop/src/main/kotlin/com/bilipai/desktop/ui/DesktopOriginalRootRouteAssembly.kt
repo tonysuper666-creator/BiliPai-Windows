@@ -331,6 +331,19 @@ internal class DesktopOriginalRootRouteAssembly(
         check(owns())
         replaceStack(listOf(BiliPaiNavKey.MainHost))
     }
+    /** A real pager selection changes the source even while the physical stack stays
+     * MainHost. Use its existing source revision and resolver Job; selectedPage
+     * remains solely owned by the original mounted pager. Called under Root admission. */
+    internal fun selectMainHostPageAdmitted(previousPage: Int, nextPage: Int, selectPage: () -> Unit) {
+        check(EventQueue.isDispatchThread()) { "Original MainHost selection requires its Window EDT" }
+        check(owns()) { "Original MainHost selection requires its retained Root" }
+        if (previousPage != nextPage) {
+            navigationRevision.incrementAndGet()
+            videoRequest.getAndSet(null)?.cancel()
+            videoReturnHandoff.retirePending()
+        }
+        selectPage()
+    }
     fun category(key: BiliPaiNavKey.Category): DesktopCategoryRouteOwner {
         check(owns() && stack.contains(key)) { "Category requires its retained actual stack entry" }
         check(EventQueue.isDispatchThread()) { "Actual category lookup belongs to its Window EDT" }

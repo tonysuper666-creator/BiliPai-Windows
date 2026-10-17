@@ -287,6 +287,282 @@ class DesktopBgmCommentLinkRootNavigationTest {
         }
     }
 
+    private fun bindMainHostSelection(f: Fixture): AtomicInteger = edt {
+        val selected = AtomicInteger(0)
+        f.stack.clear(); f.stack += BiliPaiNavKey.MainHost
+        f.routes.bindMainHostDestination { if (selected.get() == 0) BiliPaiNavKey.Home else BiliPaiNavKey.Settings }
+        f.routes.bindMainHostNavigation { key ->
+            val next = when (key) {
+                BiliPaiNavKey.Home -> 0
+                BiliPaiNavKey.Settings -> 1
+                else -> null
+            }
+            if (next == null) false else {
+                f.routes.selectMainHostPageAdmitted(selected.get(), next) { selected.set(next) }
+                true
+            }
+        }
+        selected
+    }
+
+    private fun queuedMainHostVideo(f: Fixture): Job {
+        val before = f.held.jobs()
+        edt { f.routes.video(BiliPaiNavKey.VideoDetail("av115391124741470", sourceRoute = "home")) }
+        val added = f.held.jobs() - before
+        assertEquals(1, added.size, "Only the actual Root video resolver should be newly queued")
+        return added.single()
+    }
+
+    @Test fun realMainHostTabSelectionCancelsTheQueuedVideoWhileKeepingThePhysicalStack() {
+        Fixture().use { f ->
+            val selected = bindMainHostSelection(f)
+            val revision = f.routes.sourceNavigationRevision
+            val pending = queuedMainHostVideo(f)
+            edt { assertTrue(f.routes.push(BiliPaiNavKey.Settings)) }
+            assertEquals(1, selected.get())
+            assertTrue(f.routes.sourceNavigationRevision > revision)
+            assertTrue(pending.isCancelled)
+            f.run(pending)
+            assertEquals(listOf(BiliPaiNavKey.MainHost), f.stack.toList())
+            assertTrue(f.routes.isCurrentContent(BiliPaiNavKey.Settings))
+            assertTrue(f.resolverCalls.isEmpty()); assertTrue(f.destinationCommits.isEmpty())
+        }
+    }
+
+    @Test fun mainHostAwayAndBackCannotPublishAnAlreadySuspendedVideoIntoTheReturnedTab() {
+        Fixture().use { f ->
+            val selected = bindMainHostSelection(f)
+            val release = CompletableDeferred<Unit>()
+            f.beforeResolve = { release.await() }
+            val pending = queuedMainHostVideo(f)
+            f.run(pending)
+            assertEquals(1, f.resolverCalls.size)
+            val revision = f.routes.sourceNavigationRevision
+            edt {
+                assertTrue(f.routes.push(BiliPaiNavKey.Settings))
+                assertTrue(f.routes.push(BiliPaiNavKey.Home))
+            }
+            assertEquals(0, selected.get())
+            assertTrue(f.routes.sourceNavigationRevision >= revision + 2)
+            assertTrue(pending.isCancelled)
+            release.complete(Unit)
+            f.run(pending)
+            assertEquals(listOf(BiliPaiNavKey.MainHost), f.stack.toList())
+            assertTrue(f.routes.isCurrentContent(BiliPaiNavKey.Home))
+            assertTrue(f.destinationCommits.isEmpty())
+        }
+    }
+
+    @Test fun reselectingTheSameMainHostTabPreservesTheCurrentVideoRequest() {
+        Fixture().use { f ->
+            val selected = bindMainHostSelection(f)
+            val revision = f.routes.sourceNavigationRevision
+            val pending = queuedMainHostVideo(f)
+            edt { assertTrue(f.routes.push(BiliPaiNavKey.Home)) }
+            assertEquals(0, selected.get())
+            assertEquals(revision, f.routes.sourceNavigationRevision)
+            assertTrue(pending.isActive)
+            f.run(pending)
+            assertIs<BiliPaiNavKey.VideoDetail>(f.routes.currentKey)
+            assertEquals(1, f.resolverCalls.size)
+        }
+    }
+
+    @Test fun retiredRootCannotSelectAnotherMainHostTabOrAdvanceItsSourceRevision() {
+        Fixture().use { f ->
+            val selected = bindMainHostSelection(f)
+            val revision = f.routes.sourceNavigationRevision
+            f.replaceAccount()
+            edt { assertFalse(f.routes.push(BiliPaiNavKey.Settings)) }
+            assertEquals(0, selected.get())
+            assertEquals(revision, f.routes.sourceNavigationRevision)
+            assertEquals(listOf(BiliPaiNavKey.MainHost), f.stack.toList())
+            assertTrue(f.resolverCalls.isEmpty())
+        }
+    }
+
+    private fun queuedContentLink(f: Fixture, binding: DesktopOriginalContentLinkBinding,
+        raw: String, title: String = "链接"): Job {
+        val before = f.held.jobs()
+        edt { assertTrue(binding.open(raw, title)) }
+        val added = f.held.jobs() - before
+        assertEquals(1, added.size, "Only one original content-link caller should be queued")
+        return added.single()
+    }
+
+    private fun beginContentLink(f: Fixture, job: Job) {
+        f.run(job) // The required yield leaves the originating Store admission.
+        f.run(job)
+    }
+
+    @Test fun originalContentLinkNativeDispatchLeavesTheOriginatingStoreAdmissionFirst() {
+        Fixture().use { f ->
+            var insideSourceAdmission = false
+            f.onCheckpoint = { assertFalse(insideSourceAdmission) }
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { error("No external launch") }, feedback = { error(it) }).use { binding ->
+                val before = f.held.jobs()
+                edt {
+                    f.entry.gate.commit {
+                        insideSourceAdmission = true
+                        try { assertTrue(binding.open("bilibili://space/23")) }
+                        finally { insideSourceAdmission = false }
+                    }
+                }
+                assertSame(f.source, f.routes.currentKey)
+                val job = (f.held.jobs() - before).single()
+                beginContentLink(f, job)
+                assertEquals(BiliPaiNavKey.Space(23L), f.routes.currentKey)
+            }
+        }
+    }
+
+    @Test fun pendingOriginalContentShortLinkBlocksAnotherClickBeyondTheDebounceWindow() {
+        Fixture().use { f ->
+            var now = 0L
+            val target = CompletableDeferred<com.android.purebilibili.core.util.BilibiliNavigationTarget?>()
+            var resolutions = 0
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { error("No external launch") }, feedback = { error(it) }, nowMillis = { now },
+                resolveShortLink = { resolutions++; target.await() }).use { binding ->
+                val job = queuedContentLink(f, binding, "https://b23.tv/fixture221")
+                beginContentLink(f, job)
+                now = 5000L
+                edt { assertFalse(binding.open("bilibili://space/24")) }
+                assertEquals(1, resolutions)
+                assertSame(f.source, f.routes.currentKey)
+                target.complete(com.android.purebilibili.core.util.BilibiliNavigationTarget.Space(23L))
+                f.run(job)
+                assertEquals(BiliPaiNavKey.Space(23L), f.routes.currentKey)
+                f.backToBgm()
+                beginContentLink(f, queuedContentLink(f, binding, "bilibili://space/24"))
+                assertEquals(BiliPaiNavKey.Space(24L), f.routes.currentKey)
+            }
+        }
+    }
+
+    @Test fun originalContentShortLinkCannotPublishAfterPhysicalNavigationAwayAndBack() {
+        Fixture().use { f ->
+            val target = CompletableDeferred<com.android.purebilibili.core.util.BilibiliNavigationTarget?>()
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { error("No external launch") }, feedback = { error(it) },
+                resolveShortLink = { target.await() }).use { binding ->
+                val job = queuedContentLink(f, binding, "https://b23.tv/fixture221")
+                beginContentLink(f, job)
+                edt { assertTrue(f.routes.push(BiliPaiNavKey.Settings)) }
+                f.backToBgm()
+                val before = f.stack.toList(); val commits = f.destinationCommits.toList()
+                target.complete(com.android.purebilibili.core.util.BilibiliNavigationTarget.Article(31L))
+                f.run(job)
+                assertEquals(before, f.stack.toList()); assertEquals(commits, f.destinationCommits)
+            }
+        }
+    }
+
+    @Test fun originalContentShortLinkCannotPublishAfterMainHostTabAwayAndBack() {
+        Fixture().use { f ->
+            val selected = bindMainHostSelection(f)
+            val target = CompletableDeferred<com.android.purebilibili.core.util.BilibiliNavigationTarget?>()
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { error("No external launch") }, feedback = { error(it) },
+                resolveShortLink = { target.await() }).use { binding ->
+                val job = queuedContentLink(f, binding, "https://b23.tv/fixture221")
+                beginContentLink(f, job)
+                edt {
+                    assertTrue(f.routes.push(BiliPaiNavKey.Settings))
+                    assertTrue(f.routes.push(BiliPaiNavKey.Home))
+                }
+                target.complete(com.android.purebilibili.core.util.BilibiliNavigationTarget.Space(23L))
+                f.run(job)
+                assertEquals(0, selected.get())
+                assertEquals(listOf(BiliPaiNavKey.MainHost), f.stack.toList())
+                assertTrue(f.destinationCommits.isEmpty())
+            }
+        }
+    }
+
+    @Test fun unresolvedOrFailedOriginalContentShortLinkKeepsItsExactWebFallbackAndTitle() {
+        for (fail in listOf(false, true)) Fixture().use { f ->
+            val raw = "https://b23.tv/fixture221?from=BV1xx411c7mD"
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { error("No external launch") }, feedback = { error(it) },
+                resolveShortLink = { if (fail) throw java.io.IOException("Synthetic resolution failure") else null }).use { binding ->
+                beginContentLink(f, queuedContentLink(f, binding, raw, "保留的链接标题"))
+                assertEquals(BiliPaiNavKey.Web(raw, "保留的链接标题"), f.routes.currentKey)
+            }
+        }
+    }
+
+    @Test fun originalContentNativeVideoHandoffSurvivesCompletionOfTheLinkCaller() {
+        Fixture().use { f ->
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { error("No external launch") }, feedback = { error(it) }).use { binding ->
+                val before = f.held.jobs()
+                val link = queuedContentLink(f, binding, "bilibili://video/115391124741470")
+                beginContentLink(f, link)
+                assertTrue(link.isCompleted)
+                val video = (f.held.jobs() - before).single()
+                assertTrue(video.isActive)
+                f.run(video)
+                assertIs<BiliPaiNavKey.VideoDetail>(f.routes.currentKey)
+                assertEquals(1, f.resolverCalls.size)
+            }
+        }
+    }
+
+    @Test fun closingOrRetiringTheOriginalContentLinkOwnerRejectsItsPendingResult() {
+        for (closeBinding in listOf(false, true)) Fixture().use { f ->
+            val target = CompletableDeferred<com.android.purebilibili.core.util.BilibiliNavigationTarget?>()
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { error("No external launch") }, feedback = { error(it) },
+                resolveShortLink = { target.await() }).use { binding ->
+                val job = queuedContentLink(f, binding, "https://b23.tv/fixture221")
+                beginContentLink(f, job)
+                if (closeBinding) binding.close() else f.replaceAccount()
+                target.complete(com.android.purebilibili.core.util.BilibiliNavigationTarget.Space(23L))
+                f.run(job)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source), f.stack.toList())
+                assertTrue(f.destinationCommits.isEmpty())
+                edt { assertFalse(binding.open("bilibili://space/24")) }
+            }
+        }
+    }
+
+    @Test fun originalContentLookalikesStayExternalAndCompletedOpensKeepTheOriginalDebounce() {
+        Fixture().use { f ->
+            var now = 0L
+            val launches = mutableListOf<String>()
+            val raw = "https://bilibili.com.example.invalid/shop"
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { true },
+                openExternal = { launches += it }, feedback = { error(it) }, nowMillis = { now }).use { binding ->
+                beginContentLink(f, queuedContentLink(f, binding, raw))
+                now = 799L
+                edt { assertFalse(binding.open(raw)) }
+                now = 800L
+                beginContentLink(f, queuedContentLink(f, binding, raw))
+                assertEquals(listOf(raw, raw), launches)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source), f.stack.toList())
+                assertTrue(f.destinationCommits.isEmpty())
+            }
+        }
+    }
+
+    @Test fun inactiveWindowDoesNotAdmitOrPublishOriginalContentLinks() {
+        Fixture().use { f ->
+            f.leafActive = false
+            DesktopOriginalContentLinkBinding(f.routes, stillPresented = { f.leafActive },
+                openExternal = { error("No external launch") }, feedback = { error(it) }).use { binding ->
+                edt { assertFalse(binding.open("bilibili://space/23")) }
+                f.leafActive = true
+                val job = queuedContentLink(f, binding, "bilibili://space/23")
+                f.leafActive = false
+                beginContentLink(f, job)
+                assertSame(f.source, f.routes.currentKey)
+                assertTrue(f.destinationCommits.isEmpty())
+            }
+        }
+    }
+
     @Test fun accountReplacementRetiresMainHostSettingsAndItsContentCallback() {
         Fixture().use { f ->
             edt {
@@ -380,6 +656,48 @@ class DesktopBgmCommentLinkRootNavigationTest {
             f.downloads += cache; f.networkAvailable = false
             f.run(f.queuedVideo("bilibili://video/115391124741470"))
             assertEquals(BiliPaiNavKey.OfflineVideoPlayer(cache.id), f.routes.currentKey)
+        }
+    }
+
+    @Test fun h5CommentLookalikeHostsKeepTheirExactWebDestinationInTheActualRoot() {
+        Fixture().use { f ->
+            for (host in listOf("bilibili.com.example.invalid", "fakebilibili.com", "www.bilibili.com@evil.invalid")) {
+                val raw = "https://$host/h5/comment/sub?oid=470&pageType=14&root=701&comment_secondary_id=703"
+                f.click(raw)
+                assertEquals(BiliPaiNavKey.Web(raw), f.routes.currentKey, raw)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source, BiliPaiNavKey.Web(raw)), f.stack.toList(), raw)
+                assertTrue(f.resolverCalls.isEmpty())
+                f.backToBgm()
+            }
+        }
+    }
+
+    @Test fun nestedBrowserWrappedH5LookalikesCannotBypassTheActualRootHostGuard() {
+        Fixture().use { f ->
+            val target = "https://bilibili.com.example.invalid/h5/comment/sub?oid=470&pageType=14&root=701&comment_secondary_id=703"
+            fun wrapped(url: String) = "bilibili://browser/?url=" +
+                java.net.URLEncoder.encode(url, java.nio.charset.StandardCharsets.UTF_8)
+            for (raw in listOf(wrapped(target), wrapped(wrapped(target)))) {
+                f.click(raw)
+                assertEquals(BiliPaiNavKey.Web(target), f.routes.currentKey, raw)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source, BiliPaiNavKey.Web(target)), f.stack.toList(), raw)
+                assertTrue(f.resolverCalls.isEmpty())
+                f.backToBgm()
+            }
+        }
+    }
+
+    @Test fun genuineH5CommentHostsRetainReplyContextIncludingCaseAndDnsRootDot() {
+        Fixture().use { f ->
+            val expected = BiliPaiNavKey.CommentDetail(470L, 701L, 703L, 14, "bilibili://video/470")
+            for (host in listOf("bilibili.com", "www.bilibili.com", "comment.bilibili.com", "WWW.BILIBILI.COM.")) {
+                f.click("https://$host/h5/comment/sub?oid=470&pageType=14&root=701&comment_secondary_id=703")
+                assertEquals(expected, f.routes.currentKey, host)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source, expected), f.stack.toList(), host)
+                assertEquals(f.source to expected, f.destinationCommits.last(), host)
+                assertTrue(f.resolverCalls.isEmpty())
+                f.backToBgm()
+            }
         }
     }
 

@@ -126,7 +126,7 @@ def verify_provenance(mpv_raw, ffmpeg_raw, inventory):
 
 def bind_packaged_native(repo, source, version, package, source_resources=None):
     toolchain, authority = image.verify_package_evidence(package['run'], package['jobs'], package['log'],
-        package['toolchainRaw'], source, version)
+        package['toolchainRaw'], source, version, source_plan_raw=package.get('sourcePlanRaw'))
     inventory = source_inventory(repo, source)
     expected = dict(inventory['resources']); prefix = image.APP + 'app/resources/'
     with image.archive_snapshot(package['zip'], {key:toolchain['candidateZip'][key] for key in ('bytes','sha256')}) as (archive, rows):
