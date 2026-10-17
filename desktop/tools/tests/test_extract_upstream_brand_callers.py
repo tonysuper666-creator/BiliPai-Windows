@@ -78,6 +78,9 @@ class BrandCallerProducerTest(unittest.TestCase):
         row=next(r for r in rows if r['path'].endswith('/CommonListScreen.kt'))
         body=(output/'com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf-8')
         retainedBody=body
+        if row.get('v046FavoriteEditorAdvance'):
+            editor=load('brand_caller_v046_editor_contract','v046_favorite_editor.py')
+            retainedBody=editor.restore(retainedBody,row['v046FavoriteEditorAdvance']['retainedToCurrent'])
         if row.get('v044ListForegroundAdvance'):
             foreground=load('brand_caller_foreground_contract','v044_list_foreground.py')
             retainedBody=foreground.restore_predecessor(retainedBody,row['v044ListForegroundAdvance'])

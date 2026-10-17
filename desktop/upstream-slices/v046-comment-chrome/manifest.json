@@ -1,0 +1,41 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "filename": "CommentSortFilterBar.kt",
+      "bytes": 12523,
+      "sha256": "1749b168d114241295875fbae6bee37a96bfdef03a59dac7fd311fc3214ca62a",
+      "gitBlob": "1b5c029d885e6a197a89f3cbfe7189af0441db5c"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBarPolicyTest.kt",
+      "filename": "CommentSortFilterBarPolicyTest.kt",
+      "bytes": 4600,
+      "sha256": "5d96e93b8c3be00e6dbab1d39ec5064bcefeabe0f123f4235c96f58446162c13",
+      "gitBlob": "afb528a5d0b96fbcc7d6495f49c495c19dfaccce"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt",
+      "filename": "MatchedLiquidIndicatorGeometry.kt",
+      "bytes": 2416,
+      "sha256": "888bc7225df42df639f26884a96ad2c264a437455034373664517a036796bdf8",
+      "gitBlob": "ecfd8790e169c694ac4f08085de19a37daf8395c"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometryTest.kt",
+      "filename": "MatchedLiquidIndicatorGeometryTest.kt",
+      "bytes": 2027,
+      "sha256": "18eef10ababd3d0777aa1286e8c3c32685997a272949545395d08a42b389c1fb",
+      "gitBlob": "d2b3af2464690b3423f4662ae07ab19650447812"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "The complete original shared header/title/sort header, every pure geometry helper, and complete filter/segmented renderers. Split only at the existing producer boundary; all declarations emitted once. Whole original six-case policy suite retained."
+}

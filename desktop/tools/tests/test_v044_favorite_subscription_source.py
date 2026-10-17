@@ -9,6 +9,8 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v044_favorite_subscription as subscription
+import v046_favorite_editor as editor
+import v046_danmaku_like as like
 
 
 def load(name):
@@ -70,7 +72,8 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
     def test_vm_has_complete_original_methods_and_keeps_root_cover_and_history(self):
         actual = self.actual('feature/list/DesktopOriginalListViewModels.kt')
         proof = self.row('DesktopOriginalListViewModels.kt')['v044FavoriteSubscriptionAdvance']
-        before = undo(actual, proof['retainedToCurrent'])
+        stage = editor.restore(actual, self.row('DesktopOriginalListViewModels.kt')['v046FavoriteEditorAdvance']['retainedToCurrent'])
+        before = undo(stage, proof['retainedToCurrent'])
         self.assertEqual(self.manifest['beforeFinalOutputs']['feature/list/DesktopOriginalListViewModels.kt']['sha256'],
             subscription.sha(before))
         current_vm = subscription.declaration(actual, 'class', 'FavoriteViewModel', self.syntax)
@@ -109,7 +112,8 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
     def test_real_repository_and_api_advance_whole_original_subscription_operations(self):
         actual = self.actual('data/repository/DesktopOriginalFavoriteRepository.kt')
         proof = self.row('DesktopOriginalFavoriteRepository.kt')['v044FavoriteSubscriptionAdvance']
-        before = undo(actual, proof['retainedToCurrent'])
+        stage = editor.restore(actual, self.row('DesktopOriginalFavoriteRepository.kt')['v046FavoriteEditorAdvance']['retainedToCurrent'])
+        before = undo(stage, proof['retainedToCurrent'])
         self.assertEqual(self.manifest['beforeFinalOutputs']['data/repository/DesktopOriginalFavoriteRepository.kt']['sha256'],
             subscription.sha(before))
         method = subscription.declaration(actual, 'fun', 'setFolderSubscription', self.syntax)
@@ -121,7 +125,11 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
         api = (self.root/'api/com/android/purebilibili/core/network/DesktopUpstreamApi.kt').read_text(encoding='utf8')
         body = api.split('import okhttp3.ResponseBody\n\n', 1)[1].removesuffix('\n')
         api_proof = json.loads((self.root/'api/v044-favorite-subscription-api-proof.json').read_bytes())
-        old = undo(body, api_proof['retainedToCurrent'])
+        editor_proof = json.loads((self.root/'api/v046-favorite-editor-api-proof.json').read_bytes())
+        like_proof = json.loads((self.root/'api/v046-danmaku-like-api-proof.json').read_bytes())
+        editor_stage = like.restore(body, like_proof['retainedToCurrent'])
+        stage = editor.restore(editor_stage, editor_proof['retainedToCurrent'])
+        old = undo(stage, api_proof['retainedToCurrent'])
         for name in ['favoriteFolder', 'unfavoriteFolder']:
             self.assertNotIn('suspend fun '+name+'(', old)
             self.assertEqual(1, body.count('suspend fun '+name+'('))
@@ -146,6 +154,7 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
         proof = self.row('CommonListScreen.kt')['v044FavoriteSubscriptionUiAdvance']
         from v044_list_foreground import restore_predecessor
         current = self.row('CommonListScreen.kt').get('v044ListForegroundAdvance')
+        actual = editor.restore(actual, self.row('CommonListScreen.kt')['v046FavoriteEditorAdvance']['retainedToCurrent'])
         if current: actual = restore_predecessor(actual, current)
         previous = undo(actual, proof['retainedToCurrent'])
         self.assertEqual(self.manifest['beforeFinalOutputs']['feature/list/CommonListScreen.kt']['sha256'],

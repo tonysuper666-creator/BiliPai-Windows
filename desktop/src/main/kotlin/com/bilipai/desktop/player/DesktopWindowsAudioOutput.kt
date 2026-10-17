@@ -20,7 +20,10 @@ internal data class DesktopWindowsAudioOutputPreferences(val exclusive: Boolean 
     }
 }
 
-internal enum class DesktopWindowsAudioOutputPhase { IDLE, PENDING_NEXT_PLAY, OPENING, ACTIVE_SHARED, ACTIVE_EXCLUSIVE, ERROR, UNAVAILABLE }
+internal enum class DesktopWindowsAudioOutputPhase {
+    IDLE, PENDING_NEXT_PLAY, OPENING, WAITING_FOR_RELEASE, RELEASING, RELEASED,
+    ACTIVE_SHARED, ACTIVE_EXCLUSIVE, ERROR, UNAVAILABLE,
+}
 internal data class DesktopWindowsAudioPcm(val format: String?, val sampleRate: Int?, val channels: String?, val channelCount: Int?) {
     val available: Boolean get() = !format.isNullOrBlank() && sampleRate != null && sampleRate > 0 && channelCount != null && channelCount > 0
 }

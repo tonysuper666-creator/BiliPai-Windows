@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "189",
+  "windowsRevision": "199",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14947,5 +14947,60 @@
     "desktopReplaced": false,
     "fullV044FavoritesSubscriptionsOrStableParityQualified": false,
     "requiredOriginalImportsRetained": true
+  },
+  "windowsPhysicalAudioOutputHandoff": {
+    "status": "implemented-pending-compilation-and-actual-device-validation",
+    "originalNativeBackendCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+    "implementation": "Same two actual MPV actors, a process-local physical-resource lease, and their existing source/publication-gated native event loops.",
+    "ownership": "A queued intent cannot affect a peer until admitted by its actual media publication; late native attachment preserves original request ordering.",
+    "release": "Explicit audio-device=null parking preserves file, position and selected audio track; raw current-ao and configured-device readback or actual mpv_terminate_destroy completion gate the next actor.",
+    "realOutputFailureFallback": "audio-fallback-to-null=no retained; explicit parked output is released and never reports shared/exclusive success.",
+    "futurePreferences": "Pause/resume restores the applied file configuration; settings saves remain future-load intent.",
+    "sourceQualified": false,
+    "applicationExecuted": false,
+    "hardwareExecuted": false,
+    "desktopReplaced": false,
+    "headlessRegressionLifecycle": "Never-started memory Session fixtures attach the original staged intent without activation and acknowledge only their own no-created-handle teardown; production worker release remains actual raw AO readback or native destroy completion."
+  },
+  "v046FavoriteFolderEditor": {
+    "upstreamTag": "v0.4.6",
+    "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+    "archive": "desktop/upstream-slices/v046-favorite-editor",
+    "sourceFiles": 8,
+    "sourceOwner": "Existing API and Favorites producers; existing sole v041 model producer retained.",
+    "scope": "Whole current metadata GET/response, repository getter, captured-folder editor members/dialog, low-bit privacy policy and both entire original regression suites.",
+    "windowsBinding": "Existing Root/account/page ownership, source-bound read completion, opaque editor identity and original save/mutation admission; no new cache, queue, credential store or transport.",
+    "newOriginalJvmCasesSelected": 13,
+    "newRootJvmCasesSelected": 8,
+    "sourceQualified": false,
+    "mainCompiled": false,
+    "applicationExecuted": false,
+    "hardwareExecuted": false,
+    "desktopReplaced": false,
+    "fullStableParityQualified": false
+  },
+  "v046DanmakuLike": {
+    "upstreamTag": "v0.4.6",
+    "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+    "status": "implemented-pending-full-source-validation",
+    "sharedArchive": "desktop/upstream-slices/v046-favorite-editor",
+    "implementation": "One complete original Retrofit method replacement on the existing BilibiliApi; current Root request-local binding, primary account/CSRF, cancellation, menu and Result handling remain sole owners.",
+    "originalDeclarationSHA256LF": "74896d7b422923eedf5796ba616f51b8f0a398a2a131bda03085889981b5de90",
+    "sourceQualified": false,
+    "applicationExecuted": false,
+    "hardwareExecuted": false,
+    "fullStableParityQualified": false
+  },
+  "v046CommentChrome": {
+    "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+    "archive": "desktop/upstream-slices/v046-comment-chrome",
+    "manifestSHA256": "cf040529fbb1acd460fdd92045b0943ee6594a02be281a0485822b58eb8cf629",
+    "wholeOriginalDeclarations": true,
+    "wholeOriginalPolicyTests": 6,
+    "currentProducerOwners": [
+      "extract-upstream-bgm-detail.py",
+      "extract-upstream-video-content-full.py"
+    ],
+    "fullVersionParityQualified": false
   }
 }
