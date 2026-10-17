@@ -146,6 +146,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Actual candidate classpath binding regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_original_root_ui_runtime_binding.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Production classes, resources and native projection binding regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_same_workspace_candidate.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Same-workspace main output congruence regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_original_root_ui_runtime_image.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Actual packaged runtime image and pinned JDK launcher binding regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_original_root_ui_packaged_native.py -v
@@ -168,6 +170,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Complete original comment composer and inverse regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v041_video_status_labels_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v041 status-label regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v043_search_up_author_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original v043 UP-search author source validation failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v043_navigation_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original v043 navigation source validation failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v043_message_link_host_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original message H5 host guard source validation failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_refresh_generation_reentry.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Repeated original Home generation changed or rejected its own qualified outputs.' }
           python -m unittest discover -s desktop/tools/tests -p test_v041_video_status_personal_consumers.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v041 personal video status source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_profile_agreement_owner_source.py -v
@@ -211,7 +221,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: '1'
           PYTHONIOENCODING: utf-8
         run: |
-          python desktop/tools/validate-source-cohort.py --run --repo "$env:GITHUB_WORKSPACE" --output "$env:RUNNER_TEMP/bilipai-source-validation"
+          python desktop/tools/validate-source-cohort.py --run --repo "$env:GITHUB_WORKSPACE" --output "$env:RUNNER_TEMP/bilipai-source-validation" | Tee-Object -FilePath "$env:RUNNER_TEMP/bilipai-source-step.log"
           if ($LASTEXITCODE -ne 0) { throw 'Source cohort validation failed; see the exact receipt and test XML in this log.' }
       - name: Validate NVIDIA source pins and actual verifier resource after Gradle
         shell: pwsh
@@ -235,5 +245,35 @@ jobs:
         with:
           name: windows-original-root-ui-harness-${{ github.sha }}
           path: ${{ runner.temp }}/bilipai-source-validation/original-root-ui-harness
+          if-no-files-found: error
+          retention-days: 1
+      - name: Prepare one provisional candidate from the same tested workspace
+        id: same_workspace_candidate
+        if: startsWith(github.ref_name, 'desktop/source-validation-package-') && steps.source.outputs.original_root_ui_harness_exported == 'true'
+        shell: pwsh
+        env:
+          BILIPAI_WINDOWS_RELEASE_REPOSITORY: tonysuper666-creator/BiliPai-Windows
+          PYTHONDONTWRITEBYTECODE: '1'
+          PYTHONIOENCODING: utf-8
+        run: |
+          $env:GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs="-Xmx8g -XX:MaxMetaspaceSize=1g -XX:ReservedCodeCacheSize=256m"'
+          & ./desktop/tools/build.ps1 -SkipTests -FixedJavaToolchain -JavaHome $env:JAVA_HOME -GradleUserHomePath "$env:RUNNER_TEMP/bilipai-source-validation/gradle-home" | Tee-Object -FilePath "$env:RUNNER_TEMP/bilipai-candidate-step.log"
+          if ($LASTEXITCODE -ne 0) { throw 'Provisional same-workspace candidate preparation failed.' }
+          python desktop/tools/verify-same-workspace-candidate.py --repo "$env:GITHUB_WORKSPACE" --candidate 'desktop/build/compose/binaries/main/app/BiliPai Windows' --ui-export "$env:RUNNER_TEMP/bilipai-source-validation/original-root-ui-harness" --source-log "$env:RUNNER_TEMP/bilipai-source-step.log" --package-log "$env:RUNNER_TEMP/bilipai-candidate-step.log" --source-sha '${{ github.sha }}' --output 'desktop/build/distributions/same-workspace-candidate.json'
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged main differs from the preceding actual tested output.' }
+          git diff --exit-code
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate preparation changed committed source.' }
+      - name: Export provisional same-workspace image for terminal-run admission
+        if: steps.same_workspace_candidate.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiliPai-Windows-same-workspace-candidate-x64
+          path: |
+            desktop/build/distributions/*.zip
+            desktop/build/distributions/*.zip.sha256
+            desktop/build/distributions/same-workspace-candidate.json
+            desktop/build/distributions/candidate-toolchain.json
+            desktop/build/distributions/candidate-runtime-model.json
+            desktop/build/distributions/candidate-classpath.json
           if-no-files-found: error
           retention-days: 1

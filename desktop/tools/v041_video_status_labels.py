@@ -17,6 +17,7 @@ import json
 import os
 import re
 from v025_source_paths import canonical_source
+import v043_search_up_author as search_up_followup
 
 COMMIT = 'd18fb20e31adb11bbec9fae6dfce7d705d556217'
 BASELINE_COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -677,11 +678,17 @@ def emit_models(repo):
         # Full original fields now include search/all/v2 and WatchLaterData.ps.
         # The reviewed hook + remainder chain restores each whole v025 input.
         data = raw[path]
-        emitted[path] = (data, dict(
+        receipt = dict(
             mode='whole-v041-replacement', hooks=[edit['id'] for edit in edits],
             baselineSha256LF=sha(before), sha256=sha(data), bytes=len(data),
             identicalToArchive=True, inverseRestoresBaseline=True,
-            appliedPostHookUpstreamHunks=remainder, deferredUpstreamHunks=[]))
+            appliedPostHookUpstreamHunks=remainder, deferredUpstreamHunks=[])
+        if path == SEARCH_MODELS:
+            data, followup = search_up_followup.advance_model(repo, data)
+            receipt.update(mode='whole-v043-search-up-author-replacement',
+                archive=search_up_followup.ARCHIVE, upstreamCommit=search_up_followup.COMMIT,
+                sha256=sha(data), bytes=len(data), modelFollowup=followup)
+        emitted[path] = (data, receipt)
     for path, (data, receipt) in emitted.items():
         text, latest = data.decode('utf-8'), sources[path]
         needles = {}
@@ -742,6 +749,9 @@ def emit_tests(repo):
     data = body.encode('utf-8')
     emitted[package_path(SUPPORT_PATH)] = (data, dict(
         mode='verbatim-tail', source=USER_CONTENT, tailSha256=sha(tail), sha256=sha(data), declarations=['durationSeconds', 'asVideoItem']))
+    followup_tests = search_up_followup.emit_tests(repo)
+    need(not set(emitted).intersection(followup_tests), 'Duplicate UP-search test producer')
+    emitted.update(followup_tests)
     return emitted
 
 
@@ -758,10 +768,11 @@ def write_all(root, files):
 
 def generate(repo, output, tests_output):
     repo, main_root, test_root = Path(repo).resolve(), Path(output).resolve(), Path(tests_output).resolve()
-    archive = (repo / ARCHIVE).resolve()
+    archives = [(repo / path).resolve() for path in (ARCHIVE, search_up_followup.ARCHIVE)]
     need(not (main_root.is_relative_to(test_root) or test_root.is_relative_to(main_root)), 'Main/test generated roots overlap')
     for root in (main_root, test_root):
-        need(not (root.is_relative_to(archive) or archive.is_relative_to(root)), 'Output overlaps fixed source')
+        for archive in archives:
+            need(not (root.is_relative_to(archive) or archive.is_relative_to(root)), 'Output overlaps fixed source')
     hooks = verify_hooks(repo)
     models, tests = emit_models(repo), emit_tests(repo)
     proof = dict(

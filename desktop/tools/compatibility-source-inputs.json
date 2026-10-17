@@ -121,7 +121,10 @@
     "desktop/upstream-slices/v042-player-readability",
     "desktop/upstream-slices/v042-search-dependencies",
     "desktop/upstream-slices/v042-search-layout",
-    "desktop/upstream-slices/v042-seed-palette"
+    "desktop/upstream-slices/v042-seed-palette",
+    "desktop/upstream-slices/v043-search-up-author",
+    "desktop/upstream-slices/v043-navigation",
+    "desktop/upstream-slices/v043-message-link-host"
   ],
   "archives": [
     {
@@ -5243,6 +5246,93 @@
           "sha256": "f46dacaced3991c49d14bae9ab8803e6c6b296f45c8a38c63560012dd295bdff",
           "hashNormalization": "raw",
           "blob": "a522f3aabb227711c079d45a874b45e6de386cb0"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-search-up-author",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/manifest.json",
+          "sha256": "529056aad8f8510e991f88606924d3da3c54745bcad711df545be39a199146f8",
+          "hashNormalization": "raw",
+          "blob": "cd3c0092bee34c5fcb15e353c8ed097ac8f1fb69"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
+          "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36",
+          "hashNormalization": "raw",
+          "blob": "3d00eacbd42fba08e6e44b95a6537c9418c91fe8"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
+          "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8",
+          "hashNormalization": "raw",
+          "blob": "4841a3eea267be36a7829931ef7d59641d1e041e"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-navigation",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-navigation/manifest.json",
+          "sha256": "877b90467279252644e663b959282addc366d2d6c61a3a8b075d219542653f1e",
+          "hashNormalization": "raw",
+          "blob": "2ca32a12964ca4271324ab6ed3c10cc220d6d49e"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliHostPolicy.kt",
+          "sha256": "07c7a0a57fb65e6190faf0e1993fb8c538c30713750f919796aea14e226b11a4",
+          "hashNormalization": "raw",
+          "blob": "38a539f089c19e8337b49d8fa5f3f7a6018ed05c"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParser.kt",
+          "sha256": "54d60f08ef150eb43e12c1edb20d910357786a038c01d4acab169b9f7c9a4522",
+          "hashNormalization": "raw",
+          "blob": "bc6952c11a1c4ec75e9e8ae1efd8192106566022"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliUrlParser.kt",
+          "sha256": "bae695d7bec9f041e5111fc621ba2ab9b39ddd23aaabc166acd52015637b500b",
+          "hashNormalization": "raw",
+          "blob": "f082232d597e59b8eae8fd24fbd93d92d7ac37f3"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParserTest.kt",
+          "sha256": "4ecd56649fe6444699e8f64fff4c251afc815602d1a2fb429c89f2e35126f980",
+          "hashNormalization": "raw",
+          "blob": "5e2fcc0070e81aefa00c81e2bf907a6d6bc4d878"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliUrlParserRegressionTest.kt",
+          "sha256": "2dbd52c58a41823f5b6ceca40ec54e59150672709224e76f3878d364a796a069",
+          "hashNormalization": "raw",
+          "blob": "1d649c79d6cdb038d7b1b87cf9b6d0a3ebd4b03b"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-message-link-host",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-message-link-host/manifest.json",
+          "sha256": "9aa4a140f2f8ef04daa366edb5559397e39a832c3cbf58fb026244b1e0277301",
+          "hashNormalization": "raw",
+          "blob": "4163ae18264ea48d54494b98563cdd70ca6ad6e1"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicy.kt",
+          "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
+          "hashNormalization": "raw",
+          "blob": "9ea862ac7e86f624ab123cf9c0c1b1acb3d8c095"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicyTest.kt",
+          "sha256": "1a4e5529659a47ce66cf7ce528182b337ea8160001fa74e0795dead792624805",
+          "hashNormalization": "raw",
+          "blob": "4a2dc1a4089ba263df0f26cbb1b95fe03c11a199"
         }
       ]
     }
@@ -13727,6 +13817,141 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole current proxy store/policy or original test; API selects the two original proxy functions and Settings selects original proxy controls plus whole native dialog. Existing Windows owner, client and atomic preference backing retained."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt",
+      "localPath": "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "3d00eacbd42fba08e6e44b95a6537c9418c91fe8",
+      "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-search-up-author-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete whole v043 SearchModels via the existing sole status-model producer"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/SearchUpItemTest.kt",
+      "localPath": "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "4841a3eea267be36a7829931ef7d59641d1e041e",
+      "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-search-up-author-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Two complete original UP-search author inheritance/preservation tests; only JUnit imports adapted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliHostPolicy.kt",
+      "localPath": "desktop/upstream-slices/v043-navigation/BilibiliHostPolicy.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "38a539f089c19e8337b49d8fa5f3f7a6018ed05c",
+      "sha256": "07c7a0a57fb65e6190faf0e1993fb8c538c30713750f919796aea14e226b11a4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-navigation-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original v043 typed navigation/host parser via the existing sole space producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt",
+      "localPath": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParser.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "bc6952c11a1c4ec75e9e8ae1efd8192106566022",
+      "sha256": "54d60f08ef150eb43e12c1edb20d910357786a038c01d4acab169b9f7c9a4522",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-navigation-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original v043 typed navigation/host parser via the existing sole space producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliUrlParser.kt",
+      "localPath": "desktop/upstream-slices/v043-navigation/BilibiliUrlParser.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "f082232d597e59b8eae8fd24fbd93d92d7ac37f3",
+      "sha256": "bae695d7bec9f041e5111fc621ba2ab9b39ddd23aaabc166acd52015637b500b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-navigation-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original v043 typed navigation/host parser via the existing sole space producer"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParserTest.kt",
+      "localPath": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParserTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "5e2fcc0070e81aefa00c81e2bf907a6d6bc4d878",
+      "sha256": "4ecd56649fe6444699e8f64fff4c251afc815602d1a2fb429c89f2e35126f980",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-navigation-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original deterministic parser regression tests; unchanged bodies and imports"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/util/BilibiliUrlParserRegressionTest.kt",
+      "localPath": "desktop/upstream-slices/v043-navigation/BilibiliUrlParserRegressionTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "1d649c79d6cdb038d7b1b87cf9b6d0a3ebd4b03b",
+      "sha256": "2dbd52c58a41823f5b6ceca40ec54e59150672709224e76f3878d364a796a069",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-navigation-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original deterministic parser regression tests; unchanged bodies and imports"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt",
+      "localPath": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicy.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "9ea862ac7e86f624ab123cf9c0c1b1acb3d8c095",
+      "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-message-link-host-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original message resolver with one reversible H5 host guard repair"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicyTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "4a2dc1a4089ba263df0f26cbb1b95fe03c11a199",
+      "sha256": "1a4e5529659a47ce66cf7ce528182b337ea8160001fa74e0795dead792624805",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-message-link-host-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "All seventeen original message-link routing tests unchanged"
     }
   ],
   "buildStandaloneInputs": [

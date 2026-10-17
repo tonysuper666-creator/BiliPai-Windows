@@ -43,20 +43,32 @@ def extend_same_home_producer(output,test_output):
         actual=hashlib.sha256(raw).hexdigest()
         if actual!=expected:raise ValueError('Unknown existing Home refresh output: '+name)
         old[name]=actual
+    proof=dict(upstreamCommit=COMMIT,originalExistingOutputPins=old,
+               wholeOriginalAdaptiveAndComfortableWrappers=True,
+               wholeOriginalPolicyAndTests=True,protectedHomeGeneratorChanged=False,
+               secondRefreshScreenCreated=False,sourceQualified=False)
+    proof_bytes=(json.dumps(proof,indent=2)+'\n').encode()
+    policy_row,policy_raw=originals['AdaptivePullToRefreshPolicy.kt']
+    policy_target=target_for(output,policy_row)
+    previous_proof=output/'v036-refresh-closure-proof.json'
+    # The primary generator rewrites its old wrappers but leaves this extension's
+    # policy in place on a repeated Gradle invocation. Reuse only the exact fixed
+    # policy plus this sole producer's completed receipt. Validate before writing.
+    if policy_target.exists() or policy_target.is_symlink():
+        reusable=(policy_target.is_file() and not policy_target.is_symlink() and
+                  policy_target.stat().st_size==len(policy_raw) and policy_target.read_bytes()==policy_raw and
+                  previous_proof.is_file() and not previous_proof.is_symlink() and
+                  previous_proof.stat().st_size==len(proof_bytes) and previous_proof.read_bytes()==proof_bytes)
+        if not reusable:raise ValueError('Unexpected second full refresh policy producer')
     # Replace the exact existing framework outputs in their sole task. The other
     # task's generator, checkout and file claims are unchanged.
     for name in ['AdaptivePullToRefreshBox.kt','ComfortablePullToRefreshBox.kt','AdaptivePullToRefreshPolicy.kt']:
         row,raw=originals[name]
         target=target_for(output,row)
-        if name=='AdaptivePullToRefreshPolicy.kt' and target.exists():raise ValueError('Unexpected second full refresh policy producer')
         target.write_bytes(raw)
     (core/'DesktopHomeOriginalPullRefreshText.kt').unlink()
     row,raw=originals['AdaptivePullToRefreshPolicyTest.kt']
     target=target_for(test_output,row)
     target.parent.mkdir(parents=True,exist_ok=True)
     target.write_bytes(raw)
-    proof=dict(upstreamCommit=COMMIT,originalExistingOutputPins=old,
-               wholeOriginalAdaptiveAndComfortableWrappers=True,
-               wholeOriginalPolicyAndTests=True,protectedHomeGeneratorChanged=False,
-               secondRefreshScreenCreated=False,sourceQualified=False)
-    (output/'v036-refresh-closure-proof.json').write_bytes((json.dumps(proof,indent=2)+'\n').encode())
+    (output/'v036-refresh-closure-proof.json').write_bytes(proof_bytes)

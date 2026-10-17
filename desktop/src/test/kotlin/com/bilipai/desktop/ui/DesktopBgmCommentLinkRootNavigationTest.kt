@@ -383,6 +383,48 @@ class DesktopBgmCommentLinkRootNavigationTest {
         }
     }
 
+    @Test fun h5CommentLookalikeHostsKeepTheirExactWebDestinationInTheActualRoot() {
+        Fixture().use { f ->
+            for (host in listOf("bilibili.com.example.invalid", "fakebilibili.com", "www.bilibili.com@evil.invalid")) {
+                val raw = "https://$host/h5/comment/sub?oid=470&pageType=14&root=701&comment_secondary_id=703"
+                f.click(raw)
+                assertEquals(BiliPaiNavKey.Web(raw), f.routes.currentKey, raw)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source, BiliPaiNavKey.Web(raw)), f.stack.toList(), raw)
+                assertTrue(f.resolverCalls.isEmpty())
+                f.backToBgm()
+            }
+        }
+    }
+
+    @Test fun nestedBrowserWrappedH5LookalikesCannotBypassTheActualRootHostGuard() {
+        Fixture().use { f ->
+            val target = "https://bilibili.com.example.invalid/h5/comment/sub?oid=470&pageType=14&root=701&comment_secondary_id=703"
+            fun wrapped(url: String) = "bilibili://browser/?url=" +
+                java.net.URLEncoder.encode(url, java.nio.charset.StandardCharsets.UTF_8)
+            for (raw in listOf(wrapped(target), wrapped(wrapped(target)))) {
+                f.click(raw)
+                assertEquals(BiliPaiNavKey.Web(target), f.routes.currentKey, raw)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source, BiliPaiNavKey.Web(target)), f.stack.toList(), raw)
+                assertTrue(f.resolverCalls.isEmpty())
+                f.backToBgm()
+            }
+        }
+    }
+
+    @Test fun genuineH5CommentHostsRetainReplyContextIncludingCaseAndDnsRootDot() {
+        Fixture().use { f ->
+            val expected = BiliPaiNavKey.CommentDetail(470L, 701L, 703L, 14, "bilibili://video/470")
+            for (host in listOf("bilibili.com", "www.bilibili.com", "comment.bilibili.com", "WWW.BILIBILI.COM.")) {
+                f.click("https://$host/h5/comment/sub?oid=470&pageType=14&root=701&comment_secondary_id=703")
+                assertEquals(expected, f.routes.currentKey, host)
+                assertEquals(listOf(BiliPaiNavKey.MainHost, f.source, expected), f.stack.toList(), host)
+                assertEquals(f.source to expected, f.destinationCommits.last(), host)
+                assertTrue(f.resolverCalls.isEmpty())
+                f.backToBgm()
+            }
+        }
+    }
+
     @Test fun unknownHttpAndShortLinksKeepTheExactWebFallbackWhileUnsupportedSchemesDoNothing() {
         Fixture().use { f ->
             for (raw in listOf("https://example.invalid/exact?q=a%2Bb#chapter", "https://b23.tv/fixture47")) {
