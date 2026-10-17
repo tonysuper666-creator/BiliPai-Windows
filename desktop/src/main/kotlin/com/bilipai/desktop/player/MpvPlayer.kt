@@ -30,7 +30,9 @@ import javax.swing.JPanel
  * removal tears down that session before AWT destroys the parent window.
  */
 class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false,
-    private val veyraComponent: DesktopVeyraPrivateComponent? = null) : AutoCloseable {
+    private val veyraComponent: DesktopVeyraPrivateComponent? = null,
+    private val audioOutputFocus: DesktopWindowsAudioOutputFocus = DesktopWindowsAudioOutputFocus.process,
+) : AutoCloseable {
     private var softwareTarget: MpvSoftwareTarget? = null
     private var pendingBackdropCapture: Action.BackdropFrame? = null
     internal constructor(softwareTarget: MpvSoftwareTarget, useNullAudioOutput: Boolean = false) : this(useNullAudioOutput) {
@@ -69,6 +71,20 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private var windowsAudioOutputRevision = 0L
     private var windowsAudioOutputBinding: Any? = null
     private var pendingWindowsAudioReopen: CompletableDeferred<Boolean>? = null
+    private val windowsAudioFocusActor = if (useNullAudioOutput) null else audioOutputFocus.registerActor()
+    private var windowsAudioFocusIntent: DesktopWindowsAudioOutputFocus.Intent? = null
+    private var windowsAudioFocusLoadRevision: Long? = null
+    /** Native resource intent only. Existing publication/source ownership still admits every open. */
+    private fun requestWindowsAudioFocusLocked() {
+        val actor = windowsAudioFocusActor ?: return
+        if (requestedSource == null || closed.get()) return
+        windowsAudioFocusIntent = audioOutputFocus.request(actor, sourceVersion, playbackRevision,
+            pauseIntentSerial, session?.takeUnless { it.closing.get() }?.audioFocusSession)
+    }
+    private fun cancelWindowsAudioFocusLocked() {
+        audioOutputFocus.cancel(windowsAudioFocusIntent)
+        windowsAudioFocusIntent = null
+    }
     internal fun bindWindowsAudioOutputOwner(owner: Any) = synchronized(lock) { if (!closed.get()) windowsAudioOutputBinding = owner }
     internal fun retireWindowsAudioOutputOwner(owner: Any) = synchronized(lock) { if (windowsAudioOutputBinding === owner) windowsAudioOutputBinding = null }
     /** Called under the same native lock when a source/session is requested, stopped or retired. */
@@ -484,7 +500,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             retireNativeCanvasRegionLocked()
             presentationDisposalPending = true
             clearVeyraPresentationState()
-            session?.let { it.closing.set(true); retiringCacheSessions.add(it) }
+            session?.let { it.beginClosing(); retiringCacheSessions.add(it) }
             session = null
             muteIntents.retire()
             mutableState.update { it.copy(ready = false, loading = false, firstVideoFrameReady = false, nativePaused = null) }
@@ -641,6 +657,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     hardwareDecoder = null, seekCompletedId = 0, seekCompletedPositionSeconds = null, operationError = null, videoCodec = null, audioCodec = null, avSyncSeconds = null)
                     .copy(tracks = emptyList(), nativeTrackIdentity = null, subtitleText = null, secondarySubtitleText = null)
             }
+            windowsAudioFocusLoadRevision = revision
+            requestWindowsAudioFocusLocked()
             val active = session
             if (active != null) {
                 val command = Action.Load(retainedSource, sourceVersion, softwareDecodingRequested, revision, startMuted, audioReopen = audioReopen)
@@ -652,6 +670,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     fun setPaused(paused: Boolean) = synchronized(lock) {
         pauseIntentSerial++
         pendingPauseIntent = PendingPauseIntent(pauseIntentSerial, automatic = false)
+        if (!paused) requestWindowsAudioFocusLocked()
+        else if (windowsAudioFocusLoadRevision != playbackRevision) cancelWindowsAudioFocusLocked()
         presentationTransfer?.takeIf { presentationCurrent(it) }?.pause(paused, pauseIntentSerial)
         mutableState.update { it.copy(paused = paused, nativePaused = null, nativeEof = null) }
         send(Action.Property("pause", if (paused) "yes" else "no", pauseIntentSerial))
@@ -666,6 +686,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             (state.value.nativePaused ?: state.value.paused)) return@synchronized null
         pauseIntentSerial++
         pendingPauseIntent = PendingPauseIntent(pauseIntentSerial, automatic = true)
+        if (windowsAudioFocusLoadRevision != playbackRevision) cancelWindowsAudioFocusLocked()
         mutableState.update { it.copy(paused = true, nativePaused = null) }
         active.commands.offer(Action.OwnedLifecyclePause(sourceVersion, playbackRevision, expected.source, pauseIntentSerial, true))
         DesktopBackgroundPlaybackPauseToken(this, expected, pauseIntentSerial)
@@ -685,6 +706,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             !state.value.ready || state.value.ended || state.value.error != null || !state.value.paused) return@synchronized false
         pauseIntentSerial++
         pendingPauseIntent = PendingPauseIntent(pauseIntentSerial, automatic = true)
+        requestWindowsAudioFocusLocked()
         mutableState.update { it.copy(paused = false, nativePaused = null) }
         active.commands.offer(Action.OwnedLifecyclePause(sourceVersion, playbackRevision, token.source.source, pauseIntentSerial, false))
         true
@@ -1028,6 +1050,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             retirePresentationTransferLocked()
             requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication)
             requestedSource = null
+            windowsAudioFocusLoadRevision = null
+            cancelWindowsAudioFocusLocked()
             softwareTarget?.clear()
             softwareDecodingRequested = false
             externalSubtitles.clear()
@@ -1095,6 +1119,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         val next = Session(windowId, requestedSource.takeIf { terminal == null }, sourceVersion, playbackRevision,
             if (transfer == null) requestedLoadMute else null, transfer, terminal)
         session = next
+        next.audioFocusSession?.let { nativeSession ->
+            windowsAudioFocusIntent = windowsAudioFocusIntent?.let { audioOutputFocus.attach(it, nativeSession) }
+        }
         if (transfer != null) presentationHandoffPending = false
         next.thread.start()
     }
@@ -1116,7 +1143,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             mutableDecoderCapabilities.value = null
             retireWindowsAudioAcknowledgement()
             clearVeyraPresentationState()
-            session?.let { it.closing.set(true); retiringCacheSessions.add(it) }
+            session?.let { it.beginClosing(); retiringCacheSessions.add(it) }
             session = null
             // Capture also the presentation worker which already cleared
             // session but has not yet finished native destruction.
@@ -1148,7 +1175,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         if (closed.compareAndSet(false, true)) {
             softwareTarget?.close()
             synchronized(lock) { retireNativeCanvasRegionLocked(); terminalPresentation = null; retirePresentationTransferLocked(); requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication); requestedSource = null; externalSubtitles.clear() }
-            detach()
+            try { detach() } finally { windowsAudioFocusActor?.let(audioOutputFocus::retire) }
         }
     }
 
@@ -1289,6 +1316,20 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private val initialTerminalPresentation: DesktopNativeTerminalPresentation? = null) {
         val commands = LinkedBlockingQueue<Action>()
         val closing = AtomicBoolean(false)
+        val audioFocusSession = windowsAudioFocusActor?.let(audioOutputFocus::registerSession)
+        fun beginClosing() {
+            closing.set(true)
+            audioFocusSession?.let(audioOutputFocus::markClosing)
+        }
+        // All fields below and all native IO belong to this same existing worker.
+        private var audioFocusSequence = 0L
+        private var pendingAudioFocusLoad: Action.Load? = null
+        @Volatile private var windowsAudioFocusWaiting = false
+        private var audioFocusWaitingIntent: DesktopWindowsAudioOutputFocus.Intent? = null
+        private var audioFocusWaitingSince = 0L
+        private var audioFocusFailure: String? = null
+        private var windowsAudioParkRequested = !useNullAudioOutput
+        private var windowsAudioReleaseConfirmed = false
         val cacheTerminated=CompletableDeferred<Unit>()
         // Worker-owned: Stop is asynchronous even after mpv_command returns. Keep the
         // barrier armed while this same event loop advances mpv's unload events.
@@ -1668,13 +1709,16 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
 
         /** Called inside the existing owned Load command. Preserve the source gate/MPV lock ordering. */
-        private fun applyWindowsAudioOutputForLoad(native: MpvNative, handle: Pointer) {
+        private fun applyWindowsAudioOutputForLoad(native: MpvNative, handle: Pointer, parked: Boolean = false) {
             if (useNullAudioOutput) return
             val revision = windowsAudioOutputRevision
             val desired = requestedWindowsAudioOutput
-            if (appliedWindowsAudioOutputRevision == revision && appliedWindowsAudioOutput == desired) return
+            if (windowsAudioParkRequested == parked && appliedWindowsAudioOutputRevision == revision && appliedWindowsAudioOutput == desired) return
+            windowsAudioParkRequested = parked
+            windowsAudioReleaseConfirmed = false
             // Device reload is scheduled by MPV. Only the following new owned file can acknowledge this generation.
-            for ((name, value) in desired.nativeOptions())
+            val options = desired.nativeOptions().let { if (parked) it + ("audio-device" to "null") else it }
+            for ((name, value) in options)
                 checkResult(native, native.mpv_set_property_string(handle, name, value), "audio-output/$name")
             appliedWindowsAudioOutput = desired
             appliedWindowsAudioOutputRevision = revision
@@ -1706,7 +1750,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     appliedWindowsAudioOutputRevision != identity.configuredRevision || appliedWindowsAudioOutput != identity.configured) return
                 val desired = requestedWindowsAudioOutput
                 val nativeFailure = state.value.error ?: windowsAudioInitializationError
-                val phase = if (state.value.ended && nativeFailure == null) DesktopWindowsAudioOutputPhase.IDLE else if (useNullAudioOutput) DesktopWindowsAudioOutputPhase.UNAVAILABLE else resolveWindowsAudioOutputPhase(
+                val releasedPhase = when {
+                    windowsAudioFocusWaiting -> DesktopWindowsAudioOutputPhase.WAITING_FOR_RELEASE
+                    windowsAudioParkRequested && windowsAudioReleaseConfirmed -> DesktopWindowsAudioOutputPhase.RELEASED
+                    windowsAudioParkRequested -> DesktopWindowsAudioOutputPhase.RELEASING
+                    else -> null
+                }
+                val phase = if (nativeFailure == null && releasedPhase != null) releasedPhase else if (state.value.ended && nativeFailure == null) DesktopWindowsAudioOutputPhase.IDLE else if (useNullAudioOutput) DesktopWindowsAudioOutputPhase.UNAVAILABLE else resolveWindowsAudioOutputPhase(
                     desired, windowsAudioOutputRevision, identity.configuredRevision, fileLoaded && windowsAudioPlaybackRestarted, driver, device,
                     exclusive, fallback, outputPcm, selected, nativeFailure, windowsAudioAttemptedRevision)
                 if (phase == DesktopWindowsAudioOutputPhase.IDLE) {
@@ -1721,6 +1771,138 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         phase == DesktopWindowsAudioOutputPhase.ERROR -> nativeFailure ?: "音频输出未成功确认；设备可能忙、不可用或不支持当前 PCM"
                         else -> null
                     }, previousOutputError = nativeFailure.takeIf { phase == DesktopWindowsAudioOutputPhase.PENDING_NEXT_PLAY })
+            }
+        }
+
+        private fun canUnpauseWindowsAudio(): Boolean {
+            val nativeSession = audioFocusSession ?: return true
+            val intent = windowsAudioFocusIntent ?: return false
+            return !windowsAudioParkRequested && audioOutputFocus.holds(intent, nativeSession)
+        }
+
+        /** Safe even after media/account retirement: only releases this core's
+         * physical resource, never changes another actor, queue or user preference. */
+        private fun parkWindowsAudioOutput(native: MpvNative, handle: Pointer) {
+            if (audioFocusSession == null) return
+            if (windowsAudioParkRequested && windowsAudioReleaseConfirmed && audioOutputFocus.isReleased(audioFocusSession)) return
+            if (!windowsAudioParkRequested) {
+                checkResult(native, native.mpv_set_property_string(handle, "pause", "yes"), "audio-focus/park-pause")
+                checkResult(native, native.mpv_set_property_string(handle, "audio-device", "null"), "audio-focus/park")
+                windowsAudioParkRequested = true
+                windowsAudioReleaseConfirmed = false
+            }
+            fun read(name: String): DesktopNativeAudioProperty =
+                com.sun.jna.Memory(Native.POINTER_SIZE.toLong()).use { buffer ->
+                    buffer.clear()
+                    val code = native.mpv_get_property(handle, name, 1, buffer)
+                    val pointer = if (code >= 0) buffer.getPointer(0) else null
+                    DesktopNativeAudioProperty(code, pointer?.let {
+                        try { nativeText(it, 128) } finally { native.mpv_free(it) }
+                    })
+                }
+            val device = read("options/audio-device")
+            val driver = read("current-ao")
+            val format = read("audio-out-params/format")
+            val proof = DesktopWindowsAudioOutputReleaseReadback(device.nativeCode, device.value,
+                driver.nativeCode, driver.value, format.nativeCode, format.value)
+            windowsAudioReleaseConfirmed = audioOutputFocus.acknowledgeReleased(audioFocusSession,
+                ++audioFocusSequence, proof)
+        }
+
+        /** Runs on the normal MPV event loop. Waiting never blocks a player,
+         * publication, Store, AWT thread or peer's event loop. */
+        private fun advanceWindowsAudioFocus(native: MpvNative, handle: Pointer) {
+            val nativeSession = audioFocusSession ?: return
+            val intent = synchronized(lock) {
+                windowsAudioFocusIntent?.takeIf {
+                    session === this && !closing.get() && requestedSource != null &&
+                        it.sourceVersion == sourceVersion && it.playbackRevision == playbackRevision &&
+                        audioOutputFocus.isEligible(it, nativeSession)
+                }
+            }
+            if (intent == null) {
+                windowsAudioFocusWaiting = false
+                audioFocusWaitingIntent = null
+                parkWindowsAudioOutput(native, handle)
+                return
+            }
+            val pending = pendingAudioFocusLoad
+            if (pending != null && pending.version == intent.sourceVersion && pending.revision == intent.playbackRevision) {
+                perform(native, handle, pending) // Re-enters its ORIGINAL media publication and exact source gates.
+                if (pendingAudioFocusLoad === pending) {
+                    windowsAudioFocusWaiting = true
+                    parkWindowsAudioOutput(native, handle)
+                    checkWindowsAudioFocusTimeout(intent)
+                }
+                return
+            }
+            if (!fileLoaded) return
+            val source = synchronized(lock) {
+                requestedSource?.takeIf { session === this && !closing.get() &&
+                    sourceVersion == intent.sourceVersion && playbackRevision == intent.playbackRevision &&
+                    activeSourceVersion == sourceVersion && activeRevision == playbackRevision }
+            } ?: return
+            var opened = false
+            admitPresentation(source) { synchronized(lock) {
+                if (session !== this || closing.get() || requestedSource != source ||
+                    windowsAudioFocusIntent !== intent) return@synchronized
+                if (state.value.paused && windowsAudioFocusLoadRevision == null) {
+                    cancelWindowsAudioFocusLocked()
+                    return@synchronized
+                }
+                if (!audioOutputFocus.activate(intent, nativeSession)) return@synchronized
+                if (!audioOutputFocus.holds(intent, nativeSession) &&
+                    !audioOutputFocus.beginOpen(intent, nativeSession, ++audioFocusSequence)) return@synchronized
+                val wasWaiting = windowsAudioFocusWaiting
+                // A saved future preference must remain pending until a real new
+                // Load/manual Apply. Resuming restores this file's APPLIED choice.
+                if (windowsAudioParkRequested) {
+                    windowsAudioParkRequested = false
+                    windowsAudioReleaseConfirmed = false
+                    for ((name, value) in appliedWindowsAudioOutput.nativeOptions())
+                        checkResult(native, native.mpv_set_property_string(handle, name, value), "audio-focus/restore-$name")
+                }
+                if (audioFocusFailure != null) {
+                    if (windowsAudioInitializationError == audioFocusFailure) windowsAudioInitializationError = null
+                    mutableState.update { if (it.operationError == audioFocusFailure) it.copy(operationError = null) else it }
+                    audioFocusFailure = null
+                }
+                if (wasWaiting || pendingPauseIntent != null) {
+                    checkResult(native, native.mpv_set_property_string(handle, "pause", if (state.value.paused) "yes" else "no"), "audio-focus/resume")
+                    pendingPauseIntent = null
+                }
+                windowsAudioFocusWaiting = false
+                audioFocusWaitingIntent = null
+                opened = true
+            } }
+            if (!opened) {
+                windowsAudioFocusWaiting = audioOutputFocus.isCurrent(intent, nativeSession)
+                parkWindowsAudioOutput(native, handle)
+                if (windowsAudioFocusWaiting) checkWindowsAudioFocusTimeout(intent)
+            }
+        }
+        private fun checkWindowsAudioFocusTimeout(intent: DesktopWindowsAudioOutputFocus.Intent) {
+            val now = System.nanoTime()
+            if (audioFocusWaitingIntent !== intent) {
+                audioFocusWaitingIntent = intent
+                audioFocusWaitingSince = now
+                return
+            }
+            if (now - audioFocusWaitingSince < 5_000_000_000L) return
+            synchronized(lock) {
+                val nativeSession = audioFocusSession ?: return@synchronized
+                if (session !== this || closing.get() || windowsAudioFocusIntent !== intent ||
+                    !audioOutputFocus.isCurrent(intent, nativeSession)) return@synchronized
+                cancelWindowsAudioFocusLocked()
+                windowsAudioFocusWaiting = false
+                pendingPauseIntent = null
+                audioFocusFailure = "另一条播放输出尚未释放，已暂停；请再次点击播放重试"
+                windowsAudioInitializationError = audioFocusFailure
+                mutableWindowsAudioOutput.update { it.copy(phase = DesktopWindowsAudioOutputPhase.ERROR,
+                    sourceVersion = sourceVersion, playbackRevision = playbackRevision,
+                    error = windowsAudioInitializationError, activeDriver = null, outputPcm = null) }
+                mutableState.update { it.copy(paused = true, nativePaused = null, loading = false,
+                    operationError = windowsAudioInitializationError) }
             }
         }
 
@@ -1747,7 +1929,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 handle = native.mpv_create() ?: error("Unable to create the native player.")
                 val startingAudioOutput = synchronized(lock) { requestedWindowsAudioOutput to windowsAudioOutputRevision }
                 windowsAudioAttemptedRevision = startingAudioOutput.second
-                val audioOptions = if (useNullAudioOutput) mapOf("ao" to "null") else startingAudioOutput.first.nativeOptions()
+                // Initialize without claiming a physical output, even when a retiring
+                // HWND/core still owns it. Explicit parking is not null fallback.
+                val audioOptions = if (useNullAudioOutput) mapOf("ao" to "null")
+                    else startingAudioOutput.first.nativeOptions() + ("audio-device" to "null")
                 val options = mapOf(
                     "config" to "no",
                     "load-scripts" to "no",
@@ -1840,6 +2025,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         refreshState(native, handle)
                         lastPoll = now
                     }
+                    advanceWindowsAudioFocus(native, handle)
                     advanceIdleCacheBarrier(native, handle)
                     advancePresentationCapture(native, handle)
                 }
@@ -1863,7 +2049,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 }
                 // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.
                 try { softwareRenderer?.close() }
-                finally { if (native != null && handle != null) native.mpv_terminate_destroy(handle) }
+                finally {
+                    beginClosing()
+                    if (native != null && handle != null) native.mpv_terminate_destroy(handle)
+                    // A closing flag/Java disposal is not proof that WASAPI released.
+                    audioFocusSession?.let(audioOutputFocus::acknowledgeDestroyed)
+                }
                 cacheTerminated.complete(Unit)
                 synchronized(lock) {
                     retiringCacheSessions.remove(this)
@@ -1967,7 +2158,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     !token.capture(position, pause, pauseIntentSerial)) return@synchronized
                 pendingPresentationCapture = null
                 pendingPauseIntent = null
-                session = null; closing.set(true); retiringCacheSessions.add(this)
+                session = null; beginClosing(); retiringCacheSessions.add(this)
                 mutableDecoderCapabilities.value = null
                 retireWindowsAudioAcknowledgement()
                 mutableVideoOutput.value = PlayerVideoOutputState(sourceVersion = sourceVersion)
@@ -2051,6 +2242,27 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         val transfer = action.presentation
                         if (transfer != null && (initialPresentation !== transfer || !presentationCurrent(transfer) ||
                             transfer.phase != DesktopNativePresentationTransfer.Phase.ATTACHED)) return@synchronized
+                        val focusSession = audioFocusSession
+                        // Paused HWND restoration (including audio-only media) can
+                        // prepare the file on null without requesting a real device.
+                        // It must not steal focus merely to display a retained frame.
+                        val parkedLoad = focusSession != null && state.value.paused
+                        if (focusSession != null && !parkedLoad) {
+                            val intent = windowsAudioFocusIntent
+                            if (intent == null || !audioOutputFocus.activate(intent, focusSession) ||
+                                !audioOutputFocus.beginOpen(intent, focusSession, ++audioFocusSequence)) {
+                                pendingAudioFocusLoad = action
+                                windowsAudioFocusWaiting = true
+                                mutableWindowsAudioOutput.update { it.copy(phase = DesktopWindowsAudioOutputPhase.WAITING_FOR_RELEASE) }
+                                return@synchronized
+                            }
+                        }
+                        pendingAudioFocusLoad = null
+                        windowsAudioFocusWaiting = false
+                        audioFocusWaitingIntent = null
+                        // Prevent old PCM from sounding while its device is reconfigured
+                        // before the replacement file's normal load options take over.
+                        if (focusSession != null) checkResult(native, native.mpv_set_property_string(handle, "pause", "yes"), "audio-focus/load-pause")
                         presentationLoadCursor = transfer?.resume
                         pendingPresentationSeek = null
                         pendingPresentationCapture = null
@@ -2069,12 +2281,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         diagnostics.reset(action.source)
                         activeWindowsAudioSource = action.source
                         windowsAudioInitializationError = null
+                        audioFocusFailure = null
                         windowsAudioPlaybackRestarted = false
                         windowsAudioAttemptedRevision = windowsAudioOutputRevision
                         mutableWindowsAudioOutput.update { it.copy(phase = DesktopWindowsAudioOutputPhase.OPENING, error = null,
                             sourceVersion = action.version, playbackRevision = action.revision, activeDriver = null,
                             configuredDeviceId = null, configuredExclusive = null, sourcePcm = null, outputPcm = null) }
-                        applyWindowsAudioOutputForLoad(native, handle)
+                        applyWindowsAudioOutputForLoad(native, handle, parked = parkedLoad)
                         checkResult(native, native.mpv_set_property_string(handle, "hwdec", synchronized(lock) { if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) else "no" }), "hwdec")
                         clearSectionViewport(native,handle)
                         loadedSubtitlePaths.clear()
@@ -2087,13 +2300,15 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                                     "start" to cursor.positionSeconds.toString(), "pause" to if (cursor.paused) "yes" else "no") } ?: original
                             }
                             val args = nodes.array(listOf("loadfile", action.source.nativeLoadUrl, "replace", "-1",
-                                presentationLoadCursor?.fileOptions(fileOptions) ?: fileOptions))
+                                presentationLoadCursor?.fileOptions(fileOptions) ?: (fileOptions +
+                                    ("pause" to if (state.value.paused) "yes" else "no"))))
                             checkResult(native, native.mpv_command_node(handle, args, null), "loadfile")
                         }
                         if (transfer == null && action.startMuted != null) requestedLoadMute?.let { muted ->
                             checkResult(native, native.mpv_set_property_string(handle, "mute", if (muted) "yes" else "no"), "mute")
                         }
                         requestedLoadMute = null
+                        windowsAudioFocusLoadRevision = null
                         // loadfile synchronously installs the new playlist entry before its asynchronous events.
                         expectedEntry = property(native, handle, "playlist/0/id")?.toLongOrNull()
                         if (expectedEntry != null) {
@@ -2229,8 +2444,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             // Automatic-effect disposal may advance the token serial, but it
                             // must never revoke this exact still-pending explicit user Pause.
                             if (session === this && !closing.get() && pending != null && pending.serial == action.pauseSerial && !pending.automatic) {
-                                checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
-                                pendingPauseIntent = null
+                                val waitForOutput = action.value == "no" && !canUnpauseWindowsAudio()
+                                checkResult(native, native.mpv_set_property_string(handle, action.name, if (waitForOutput) "yes" else action.value), action.name)
+                                if (!waitForOutput) pendingPauseIntent = null
                             }
                         }
                     }
@@ -2240,8 +2456,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                                 sourceVersion == action.version && playbackRevision == action.revision &&
                                 activeSourceVersion == action.version && activeRevision == action.revision &&
                                 requestedSource == action.source && pauseIntentSerial == action.intentSerial) {
-                                checkResult(native, native.mpv_set_property_string(handle, "pause", if (action.paused) "yes" else "no"), "pause")
-                                if (pendingPauseIntent == PendingPauseIntent(action.intentSerial, automatic = true)) pendingPauseIntent = null
+                                val waitForOutput = !action.paused && !canUnpauseWindowsAudio()
+                                checkResult(native, native.mpv_set_property_string(handle, "pause", if (action.paused || waitForOutput) "yes" else "no"), "pause")
+                                if (!waitForOutput && pendingPauseIntent == PendingPauseIntent(action.intentSerial, automatic = true)) pendingPauseIntent = null
                                 mutableState.update { it.copy(operationError = null) }
                             }
                         } }
@@ -2271,7 +2488,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             synchronized(lock) { muteIntents.reject(action.intent) }
                     }
                     is Action.Command -> {
-                        if (action.args.first() == "stop") { activeEntry = null; expectedEntry = null; fileLoaded = false; seekTracker.reset() }
+                        if (action.args.first() == "stop") {
+                            activeEntry = null; expectedEntry = null; fileLoaded = false; seekTracker.reset()
+                            pendingAudioFocusLoad = null
+                        }
                         checkResult(native, native.mpv_command(handle, StringArray(action.args.toTypedArray(), "UTF-8")), action.args.first())
                         lastTrackPoll = 0L
                     }
@@ -2595,7 +2815,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 }
                 1 -> { // MPV_EVENT_SHUTDOWN
                     retireVeyraPresentation()
-                    closing.set(true)
+                    beginClosing()
                 }
                 20 -> receiveVeyraPresentationSeek() // MPV_EVENT_SEEK, including native seeks outside our command queue
                 2 -> { // MPV_EVENT_LOG_MESSAGE: prefix, level, text pointers; then int log_level.
@@ -2826,7 +3046,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     sourceVersion == pauseRead.version && playbackRevision == pauseRead.revision &&
                     activeSourceVersion == pauseRead.version && activeRevision == pauseRead.revision &&
                     requestedSource == pauseRead.source && pauseIntentSerial == pauseRead.serial &&
-                    pauseRead.pending == null && pendingPauseIntent == null
+                    pauseRead.pending == null && pendingPauseIntent == null && !windowsAudioFocusWaiting
                 pauseFieldsPublished = fileLoaded && pauseCurrent
                 val muteCurrent = !closing.get() && muteRead.source != null &&
                     sourceVersion == muteRead.version && playbackRevision == muteRead.revision &&

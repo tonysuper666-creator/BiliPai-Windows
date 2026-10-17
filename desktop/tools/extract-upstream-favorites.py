@@ -17,7 +17,7 @@ def emit(p,s):
  relative=str(p).replace(chr(92),'/')
  row=records[-1]
  # The new recap raw is emitted only by this producer, even when a pure file is verbatim.
- mode='selected' if row.get('recapGeneratedAdaptation') or row.get('favoriteCoverGeneratedSource') or row.get('v044FavoriteSubscriptionOriginal') else 'direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
+ mode='selected' if row.get('recapGeneratedAdaptation') or row.get('favoriteCoverGeneratedSource') or row.get('v044FavoriteSubscriptionOriginal') or row.get('v046FavoriteEditorOriginal') else 'direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
  row.setdefault('outputs',[]).append(dict(path=relative,sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest(),mode=mode))
  if mode=='direct' and not STANDALONE:return
  p=OUT/p;safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_text(s,encoding='utf-8',newline='\n')
@@ -66,6 +66,12 @@ def output(rel,s,mode):
   s,audit=subscription_repository(REPO,s,drop_logs);records[-1]['v044FavoriteSubscriptionAdvance']=audit
  elif rel=='feature/list/FavoriteCollectionPolicy':
   s,audit=subscription_policy(REPO,s,rmfun);records[-1]['v044FavoriteSubscriptionAdvance']=audit
+ from v046_favorite_editor import advance_ui as editor_ui, advance_vm as editor_vm, advance_repository as editor_repository
+ editor_operation = {'feature/list/CommonListScreen': editor_ui,
+  'feature/list/DesktopOriginalListViewModels': editor_vm,
+  'data/repository/DesktopOriginalFavoriteRepository': editor_repository}.get(rel)
+ if editor_operation is not None:
+  s,audit=editor_operation(REPO,s);records[-1]['v046FavoriteEditorAdvance']=audit
  if records[-1].get('historySourceAdaptation'):
   from v029_brand_history import generated_audit
   originalRel={'feature/list/DesktopOriginalListViewModels':'feature/list/ListViewModel'}.get(rel,rel)
@@ -109,6 +115,9 @@ def produce():
  for rel,body,row in favorite_cover_leaf_sources():
   records.append(row)
   output(rel,body,'whole original v035 favorite cover cache/policy; fixed Root context/storage only')
+ from v046_favorite_editor import policy_source
+ policy_body,policy_row=policy_source(REPO);records.append(policy_row)
+ output('feature/list/FavoriteManagementPolicy',policy_body,'complete current original favorite management/privacy policy; sole canonical policy excluded')
  # Original models already installed are references; neither parallel DTO nor duplicate declaration.
  for rel in ['data/model/response/PersonalFavoriteModels','data/model/response/FavoriteModels']:
   s=source(rel);records[-1].update(selection='reference: installed original model')
@@ -311,6 +320,8 @@ def produce():
 
 def generate(repo:Path,output:Path,standalone=False,test_output=None):
  global REPO,OUT,parser,records,STANDALONE
+ from v046_favorite_editor import validate_outputs as validate_editor_outputs
+ validate_editor_outputs(repo,output,test_output)
  validate_foreground_outputs(repo,output,test_output)
  validate_subscription_outputs(repo,output,test_output)
  validate_detail_outputs(repo,output)
@@ -322,13 +333,15 @@ def generate(repo:Path,output:Path,standalone=False,test_output=None):
   from v044_favorite_subscription import emit_original_policy_tests
   emit_original_policy_tests(repo,test_output)
   emit_foreground_tests(repo,test_output)
+  from v046_favorite_editor import emit_tests as emit_editor_tests
+  emit_editor_tests(repo,test_output)
  canonical={}
  for row in records:
   entry=canonical.setdefault(row['path'],dict(path=row['path'],upstreamCommit=row['upstreamCommit'],sha256LfUtf8=row['sha256LfUtf8'],outputs=[],selections=[]))
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   if row.get('windowsBrandSuccessAdaptation'):entry['windowsBrandSuccessAdaptation']=row['windowsBrandSuccessAdaptation']
   if row.get('windowsHistoryReadSourceAdaptation'):entry['windowsHistoryReadSourceAdaptation']=row['windowsHistoryReadSourceAdaptation']
-  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding','v044FavoriteSubscriptionAdvance','v044FavoriteSubscriptionUiAdvance','v044ListForegroundAdvance']:
+  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding','v044FavoriteSubscriptionAdvance','v044FavoriteSubscriptionUiAdvance','v044ListForegroundAdvance','v046FavoriteEditorAdvance','v046FavoriteEditorOriginal']:
    if key in row:entry[key]=row[key]
   if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])

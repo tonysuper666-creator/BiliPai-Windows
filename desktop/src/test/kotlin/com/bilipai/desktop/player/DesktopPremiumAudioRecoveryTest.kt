@@ -53,7 +53,11 @@ internal class PremiumRecoveryActor(private val player: MpvPlayer) : AutoCloseab
     private val refresh = clazz.getDeclaredMethod("refreshState", MpvNative::class.java, Pointer::class.java).apply { isAccessible = true }
     @Suppress("UNCHECKED_CAST")
     private val commands = clazz.getDeclaredField("commands").apply { isAccessible = true }.get(actor) as LinkedBlockingQueue<Any>
-    init { field.set(player, actor) }
+    private val memoryLifecycle = DesktopMemoryMpvSessionLifecycle(player, actor)
+    private val advanceAudioFocus = clazz.getDeclaredMethod("advanceWindowsAudioFocus", MpvNative::class.java, Pointer::class.java)
+        .apply { isAccessible = true }
+    init { field.set(player, actor); memoryLifecycle.attach() }
+    fun advanceAudioFocus() { advanceAudioFocus.invoke(actor, native, Pointer(1L)) }
     fun drain() { while(true) perform.invoke(actor, native, Pointer(1L), commands.poll() ?: break) }
     fun loaded() {
         Memory(8).use { entry -> entry.setLong(0, 11); event(6, entry) }
@@ -69,7 +73,7 @@ internal class PremiumRecoveryActor(private val player: MpvPlayer) : AutoCloseab
     private fun event(id: Int, data: Pointer?) = Memory(24).use { event ->
         event.clear(); event.setInt(0, id); event.setPointer(16, data); receive.invoke(actor, native, Pointer(1L), event); Unit
     }
-    override fun close() { field.set(player, null); native.close() }
+    override fun close() = memoryLifecycle.close { field.set(player, null); native.close() }
 }
 internal class PremiumRecoveryNative : MpvNative, AutoCloseable {
     val loads = mutableListOf<List<Any>>()

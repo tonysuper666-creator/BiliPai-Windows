@@ -105,7 +105,7 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
             // Hold only its queued original caller continuation, without touching VM state.
             f.waitUntil { f.actor.hasJob(stale) }
             assertFalse(stale.isCompleted)
-            val mutation = f.launchFromAction { f.vm.editSelectedFavoriteFolder("Renamed", "", false) }
+            val mutation = f.launchFromAction { f.vm.editFavoriteFolder(101L, "Renamed", "", false, f.vm.folders.value.first().cover) }
             f.driveUntil(exclude = stale) {
                 mutation.isCompleted && f.vm.folders.value.size == 10 &&
                     f.vm.folders.value.all { it.media_count == 20 }
@@ -215,6 +215,10 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
         val loadJobs get() = entryJob.children.filter { it !== subscriptionObserver }
         val subscriptionRequests = CopyOnWriteArrayList<Request>()
         val mutationRequests = CopyOnWriteArrayList<Request>()
+        val folderInfoRequests = CopyOnWriteArrayList<Request>()
+        val folderEditRequests = CopyOnWriteArrayList<Request>()
+        @Volatile var folderInfoReply: (Request) -> String = { error("Unprepared original folder metadata request") }
+        @Volatile var folderEditReply: ((Request) -> String)? = null
         val fansRequests = CopyOnWriteArrayList<Request>()
         @Volatile var fansReply: (Request) -> String = { error("Unprepared native fans protocol") }
         val followingRequests = CopyOnWriteArrayList<Request>()
@@ -254,6 +258,10 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
                                 check(request.method == "GET")
                                 """{"code":0,"data":{"isLogin":true,"mid":${repository.account.value!!.mid},"vip":{"status":1}}}"""
                             }
+                            "/x/v3/fav/folder/info" -> {
+                                check(request.method == "GET")
+                                folderInfoRequests.add(request); folderInfoReply(request)
+                            }
                             "/x/v3/fav/folder/created/list-all" -> {
                                 check(request.method == "GET" && request.url.queryParameter("up_mid") == repository.account.value!!.mid.toString())
                                 catalogCalls.incrementAndGet(); folderJson()
@@ -285,11 +293,15 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
                             }
                             "/x/v3/fav/folder/edit" -> {
                                 check(request.method == "POST")
+                                folderEditRequests.add(request)
+                                val handler = folderEditReply
+                                if (handler != null) handler(request) else {
                                 val form = request.body as FormBody
                                 val fields = (0 until form.size).associate { form.name(it) to form.value(it) }
                                 check(fields["media_id"] == "101" && fields["title"] == "Renamed" && fields["csrf"] == "synthetic-csrf-41")
                                 check(revision.compareAndSet(1, 2))
                                 """{"code":0}"""
+                                }
                             }
                             else -> error("Unexpected bounded Favorite protocol: $path")
                         }

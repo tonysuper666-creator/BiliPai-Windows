@@ -100,7 +100,8 @@ def main():
  rel='feature/video/screen/PortraitDetailPresentationPolicy.kt';t=read(rel)
  a,b=function_range(t,'isVideoDetailIntroScrollPastCollapseThreshold')
  emit('feature/video/screen/DesktopOriginalVideoContentCollapseThreshold.kt','package com.android.purebilibili.feature.video.screen\n'+t[a:b]+'\n',rel,'complete-original-collapse-threshold-function')
- rel='feature/video/ui/components/CommentSortFilterBar.kt';t=read(rel)
+ from v046_comment_chrome import advance_sort_source
+ rel='feature/video/ui/components/CommentSortFilterBar.kt';t=advance_sort_source(REPO,read(rel),OUTPUT,'filter')
  cut=t.index('/**\n * 评论排序分段控件，放置在详情页顶栏')
  header=t[:t.index('internal data class CommentSortSegmentedControlSpec')]
  emit('feature/video/ui/components/DesktopOriginalCommentSortFilterBar.kt',header+t[cut:],rel,'complete-original-remaining-filter-bar-reference-sole-generic-header-and-policies')

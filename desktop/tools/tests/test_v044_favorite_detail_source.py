@@ -11,6 +11,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v044_favorite_detail as detail
+import v046_favorite_editor as editor
 
 
 def load(name):
@@ -84,7 +85,7 @@ class CurrentFavoriteDetailSourceTest(unittest.TestCase):
         row = next(row for row in self.inventory if row['path'].endswith('/CommonListScreen.kt'))
         actual = (self.root/'favorites/com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf8')
         proof = row['v044FavoriteDetailUiAdvance']
-        detail_stage = actual
+        detail_stage = editor.restore(actual, row['v046FavoriteEditorAdvance']['retainedToCurrent'])
         if row.get('v044ListForegroundAdvance'):
             detail_stage = undo(detail_stage, row['v044ListForegroundAdvance']['retainedToCurrent'])
         if row.get('v044FavoriteSubscriptionUiAdvance'):

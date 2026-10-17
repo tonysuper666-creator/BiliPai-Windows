@@ -133,7 +133,9 @@
     "desktop/upstream-slices/v044-favorite-search",
     "desktop/upstream-slices/v044-favorite-subscription",
     "desktop/upstream-slices/v044-following-fans",
-    "desktop/upstream-slices/v044-list-foreground"
+    "desktop/upstream-slices/v044-list-foreground",
+    "desktop/upstream-slices/v046-comment-chrome",
+    "desktop/upstream-slices/v046-favorite-editor"
   ],
   "archives": [
     {
@@ -4514,6 +4516,59 @@
       ]
     },
     {
+      "directory": "desktop/upstream-slices/v041-search-all",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v041-search-all/ApiClient.kt",
+          "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+          "hashNormalization": "raw",
+          "blob": "3e901a8fbd3991e376047d67a22decbd3a174099"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/manifest.json",
+          "sha256": "bdbc6b5337f19bfcd8897a65c608804d492c0908bd64bb1ffbd68d331eb3ec1c",
+          "hashNormalization": "raw",
+          "blob": "7626752f853f18e59240f38b8c8aaa0cc43b2a51"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchEmptyStatePolicy.kt",
+          "sha256": "3f42b89a3c3d1512b483ff980d3e29edbb6b2bf7c1a39e4261ae2518a2d53a0b",
+          "hashNormalization": "raw",
+          "blob": "72fb8aa3935310c48bcf9d7b8f283864de388a1a"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchLoadPolicy.kt",
+          "sha256": "680976b2c41780defcebef4b1c1078e0e626f2fd6071c874e837508324e50119",
+          "hashNormalization": "raw",
+          "blob": "0d24d3abe2c905ebce16dc15050573c97d1304c9"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchRepository.kt",
+          "sha256": "9a669b0f7ccd36a5d9a0e878f8c8330e3b46138ab49192035d16ffd306c8fe10",
+          "hashNormalization": "raw",
+          "blob": "4d9ab28aaae5d6b344841f5969f602cccf333183"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchScreen.kt",
+          "sha256": "c742e3cbc6b6902e056c17b27874a5240b0aa9ca3d535c60f53369016ebb5a0d",
+          "hashNormalization": "raw",
+          "blob": "aaf2b036d6b1eadc21bc387e0b90fa18e73348c9"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchVideoFilterSheet.kt",
+          "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+          "hashNormalization": "raw",
+          "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea"
+        },
+        {
+          "path": "desktop/upstream-slices/v041-search-all/SearchViewModel.kt",
+          "sha256": "dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8",
+          "hashNormalization": "raw",
+          "blob": "f0ba713c6087b00e287f637456e23c6ff275b4fc"
+        }
+      ]
+    },
+    {
       "directory": "desktop/upstream-slices/v041-video-status-labels",
       "files": [
         {
@@ -4644,82 +4699,6 @@
       ]
     },
     {
-      "directory": "desktop/upstream-slices/v041-search-all",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v041-search-all/ApiClient.kt",
-          "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
-          "hashNormalization": "raw",
-          "blob": "3e901a8fbd3991e376047d67a22decbd3a174099"
-        },
-        {
-          "path": "desktop/upstream-slices/v041-search-all/manifest.json",
-          "sha256": "bdbc6b5337f19bfcd8897a65c608804d492c0908bd64bb1ffbd68d331eb3ec1c",
-          "hashNormalization": "raw",
-          "blob": "7626752f853f18e59240f38b8c8aaa0cc43b2a51"
-        },
-        {
-          "path": "desktop/upstream-slices/v041-search-all/SearchEmptyStatePolicy.kt",
-          "sha256": "3f42b89a3c3d1512b483ff980d3e29edbb6b2bf7c1a39e4261ae2518a2d53a0b",
-          "hashNormalization": "raw",
-          "blob": "72fb8aa3935310c48bcf9d7b8f283864de388a1a"
-        },
-        {
-          "path": "desktop/upstream-slices/v041-search-all/SearchLoadPolicy.kt",
-          "sha256": "680976b2c41780defcebef4b1c1078e0e626f2fd6071c874e837508324e50119",
-          "hashNormalization": "raw",
-          "blob": "0d24d3abe2c905ebce16dc15050573c97d1304c9"
-        },
-        {
-          "path": "desktop/upstream-slices/v041-search-all/SearchRepository.kt",
-          "sha256": "9a669b0f7ccd36a5d9a0e878f8c8330e3b46138ab49192035d16ffd306c8fe10",
-          "hashNormalization": "raw",
-          "blob": "4d9ab28aaae5d6b344841f5969f602cccf333183"
-        },
-        {
-          "path": "desktop/upstream-slices/v041-search-all/SearchScreen.kt",
-          "sha256": "c742e3cbc6b6902e056c17b27874a5240b0aa9ca3d535c60f53369016ebb5a0d",
-          "hashNormalization": "raw",
-          "blob": "aaf2b036d6b1eadc21bc387e0b90fa18e73348c9"
-        },
-        {
-          "path": "desktop/upstream-slices/v041-search-all/SearchVideoFilterSheet.kt",
-          "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
-          "hashNormalization": "raw",
-          "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea"
-        },
-        {
-          "path": "desktop/upstream-slices/v041-search-all/SearchViewModel.kt",
-          "sha256": "dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8",
-          "hashNormalization": "raw",
-          "blob": "f0ba713c6087b00e287f637456e23c6ff275b4fc"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v042-player-readability",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v042-player-readability/TopControlBar.kt",
-          "sha256": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
-          "hashNormalization": "raw",
-          "blob": "c379ad9700cdf4997015c96be5331a096caad637"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-player-readability/PortraitSubtitleOverlay.kt",
-          "sha256": "f3460f158ee6ff37842d6de2be0df29143656f36905c645878d8e4742663c89e",
-          "hashNormalization": "raw",
-          "blob": "cf8fc4c477aab5164633e58bbc1eba8f1e1ddfae"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-player-readability/manifest.json",
-          "sha256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8",
-          "hashNormalization": "raw",
-          "blob": "296c37bd75b1f7112cfe06983cc0358121af39d9"
-        }
-      ]
-    },
-    {
       "directory": "desktop/upstream-slices/v042-follow-confirmation",
       "files": [
         {
@@ -4739,6 +4718,118 @@
           "sha256": "d5c477f16e102c893f7ba8877fde22ac58066973fc9133abfe7af0aa82a4b054",
           "hashNormalization": "raw",
           "blob": "936471b0f2d133de3f842d110c0b8439b25faf4a"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-network-proxy",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/ApiClient.kt",
+          "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
+          "hashNormalization": "raw",
+          "blob": "3e901a8fbd3991e376047d67a22decbd3a174099"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicy.kt",
+          "sha256": "9f8e846d3afa3437da624064913c2594736bfe714574dc4831365f03e433f1dc",
+          "hashNormalization": "raw",
+          "blob": "cab3a0df85fb139ace4da5c112859d58095c9c1a"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicyTest.kt",
+          "sha256": "652e48282a43fcd91132351af88fd45bf023326dc932adf8f61fc280628b5dea",
+          "hashNormalization": "raw",
+          "blob": "7ef5263ae7510bfab18e09496a0240c0a1c5baa6"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyStore.kt",
+          "sha256": "7be8c222779a3ba55d8c934c292ec8e143b51a043b212d5466d80edd60c3f179",
+          "hashNormalization": "raw",
+          "blob": "ace5e5150dc34bdd8af796e672990b7ace5f5a5c"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/SettingsSections.kt",
+          "sha256": "3a8ae2bbddbb5040390dff94da435410eafcdd92ade05b2df50e939e89d3e1b2",
+          "hashNormalization": "raw",
+          "blob": "ff8ea08cb4daeb65fc0a3b14aa0dbaac1da2ac9e"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-network-proxy/manifest.json",
+          "sha256": "f46dacaced3991c49d14bae9ab8803e6c6b296f45c8a38c63560012dd295bdff",
+          "hashNormalization": "raw",
+          "blob": "a522f3aabb227711c079d45a874b45e6de386cb0"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-optical-dependencies",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
+          "sha256": "473c085001722ee3fa1bd7d20729893ac43e267062f81a69a0f9889f59d64b68",
+          "hashNormalization": "raw",
+          "blob": "29d9701ebf830f849f644823bb012d8736f4961b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/AppSurfaceTokens.kt",
+          "sha256": "6840c3e54a12395f05dcb2383bca75c1d5aaa5bf726ca9ae540a06c875996d2e",
+          "hashNormalization": "raw",
+          "blob": "7075c2e9b4cb7493c3d09194147d2f23bf699ca0"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/ChromeBackdropSource.kt",
+          "sha256": "8fec86cc6e246995e3de2f3f2ad32611305ebd868c7335b16456796db288e5cb",
+          "hashNormalization": "raw",
+          "blob": "61c71f9cc0b4c4410850481d668dcb58bb835779"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/DampedDragAnimation.kt",
+          "sha256": "4b2121b5ee8c35cf976a6d598c3858ab5642fac3ed3814aacb2387239485f9e2",
+          "hashNormalization": "raw",
+          "blob": "97e7e726e9573bca98a221a45a89b0549258e72d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/DragGestureInspector.kt",
+          "sha256": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
+          "hashNormalization": "raw",
+          "blob": "2ee387b0ba27487fc940654593b67cdb2b9b7a29"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlight.kt",
+          "sha256": "11e23f1e9916328cc52ba097e6a5ee4f8b5211453bfe212d75ca97e66fcdfa72",
+          "hashNormalization": "raw",
+          "blob": "160f477d2128364ab2f76e8d8ab629cb82d47410"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightMotionSpec.kt",
+          "sha256": "709cf92c99645039e3e9d3fd063a4576592bc97fa5ca59962b624a11645cedd8",
+          "hashNormalization": "raw",
+          "blob": "f47def4151a843ca4ef98701f75e3475706b49bc"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightPalette.kt",
+          "sha256": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
+          "hashNormalization": "raw",
+          "blob": "bbacc71a500f2eadb9ea94f09c9ca69fa8302e1b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidDockViewport.kt",
+          "sha256": "87fbc89232311cd32c0aa8e90dd858f216b18d8cb9400bdeea38dffc1502c3dd",
+          "hashNormalization": "raw",
+          "blob": "29ab2a5b756834ad5f436e01b25ad4ffbdb81897"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidIndicatorMotion.kt",
+          "sha256": "d544ca9fca04aea84dada69b1d62c65c216c4eaa3befa22e52b9d4afe17e54fa",
+          "hashNormalization": "raw",
+          "blob": "825fb6915dac5a5fb38bf0554002064b3062ea9b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-optical-dependencies/manifest.json",
+          "sha256": "8a5366fac0da15189d06ef8c5bb7824c84cb3987cfb0b5833809d3c69277215f",
+          "hashNormalization": "raw",
+          "blob": "a602fa13e0a4279fb3612fb2271c3ef813ff8725"
         }
       ]
     },
@@ -4774,6 +4865,207 @@
           "sha256": "17a209ca9e89ade48e0c4c9629410542020e6d301a1b59843687018165ffcbe0",
           "hashNormalization": "raw",
           "blob": "eba104633b5be816f348a89a483861a20096c346"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-player-readability",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-player-readability/TopControlBar.kt",
+          "sha256": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
+          "hashNormalization": "raw",
+          "blob": "c379ad9700cdf4997015c96be5331a096caad637"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-player-readability/PortraitSubtitleOverlay.kt",
+          "sha256": "f3460f158ee6ff37842d6de2be0df29143656f36905c645878d8e4742663c89e",
+          "hashNormalization": "raw",
+          "blob": "cf8fc4c477aab5164633e58bbc1eba8f1e1ddfae"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-player-readability/manifest.json",
+          "sha256": "391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f0c8",
+          "hashNormalization": "raw",
+          "blob": "296c37bd75b1f7112cfe06983cc0358121af39d9"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-search-dependencies",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColors.kt",
+          "sha256": "e42a157c4c178d4fe37afa339e6f1f2597eb8d0bccdf58a8a2c6feba2085dca7",
+          "hashNormalization": "raw",
+          "blob": "42055ad666e11bdf09bdd95111a7dbed14eb5b4c"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColorsTest.kt",
+          "sha256": "a88c57b6b9eeb2a854e55ffbb273a19d9d2d96a754488ada246ae8c2bd7d851d",
+          "hashNormalization": "raw",
+          "blob": "f7df0145034bb2961bcfa83675cc1f7e629450c1"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppElasticPress.kt",
+          "sha256": "c2655b0ccc618defcb08c2c2d2b9eb2cc1c8dd843c7368fd97872a5b54d3a69c",
+          "hashNormalization": "raw",
+          "blob": "d1aecdfc4a0df5a6dc61cf89bba0005d59539d9d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppLiquidAwareTabRow.kt",
+          "sha256": "31a81d116fb3a1917cc2ccbd9a3826bdfe85bbce867945e9297e08fe88979a58",
+          "hashNormalization": "raw",
+          "blob": "f8bd897b2d0f401fcae06339748b4854c6440603"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppMaterial3SegmentedControl.kt",
+          "sha256": "7c9bc6cebb88075f1144bf2e0d2bd3b403ae7b6295404da5459cea4aac450c4e",
+          "hashNormalization": "raw",
+          "blob": "ab9e6dfa6739dff40da46aa289ad0ba0b689b7f2"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppMiuixSegmentedControl.kt",
+          "sha256": "0fe235d240a5244c9b4a73689114c36300682e4f7abeb08f46f6cea788d47771",
+          "hashNormalization": "raw",
+          "blob": "9cd6b2bd55a0e0783953898ac0ab3a69cafaddd7"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppSegmentedControl.kt",
+          "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
+          "hashNormalization": "raw",
+          "blob": "cffa54dff05865eeae76846ba1e1717840f866f9"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypography.kt",
+          "sha256": "e38a7f839d4d09de502645b4654a8edcb0aa610b329c5aa05b5d0879e1461fec",
+          "hashNormalization": "raw",
+          "blob": "b6f3db6adbc6b703ea5a56d945cb8cf8be77e036"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypographyTest.kt",
+          "sha256": "d7d861f723ffe033a8198eb894dd1a71ef634404b84650b8170581571c836182",
+          "hashNormalization": "raw",
+          "blob": "dfff960035136f799517ef5736f27e4f59b501b3"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/AppThemeConfig.kt",
+          "sha256": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9",
+          "hashNormalization": "raw",
+          "blob": "642d54150318f263d6e1913140ff50c696662b4d"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarMatchedLiquidChrome.kt",
+          "sha256": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07",
+          "hashNormalization": "raw",
+          "blob": "5d529789a1f464866faa16f7a384046b21676142"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarScrollHidePolicy.kt",
+          "sha256": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c",
+          "hashNormalization": "raw",
+          "blob": "05d5e45e64a8cc1b07c8f85ff61bc14b3e5f3ce8"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBar.kt",
+          "sha256": "bfaf9c74065bcebf473daecbce89362325bf8b7881fd1ba52dbfabb892666c14",
+          "hashNormalization": "raw",
+          "blob": "ce6408476740dbe262083e030c785cc9a51536c5"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBarGeometry.kt",
+          "sha256": "ca25bb7be973d7e6ccdca4c08eada51d25a5daf0ed8c83aa3c079cc0bc3fdaf9",
+          "hashNormalization": "raw",
+          "blob": "1b942844fbae6766696e532c8afd06288037cddb"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingDockChrome.kt",
+          "sha256": "89bfe07642dca9c4424454edd782ffa0763a2802c2bf93b4f8c8046ae450cf36",
+          "hashNormalization": "raw",
+          "blob": "c7e144e4938d412eaba7d8267bcec43176f33647"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicy.kt",
+          "sha256": "6e7b5c635b0bb1da2058db0093610e0a04d252434fa3fd60df3fd2f427133004",
+          "hashNormalization": "raw",
+          "blob": "5a7cc315aa8dad4770fd2c93d21f44945a1f6a40"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicyTest.kt",
+          "sha256": "621f7d46d98ad451aa211c60bfafa806ef4aa3ddbe48f10bfe1df37df7d0ec54",
+          "hashNormalization": "raw",
+          "blob": "53ff9935848d17d83e3a5478be21da498b3a15e4"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/TopBar.kt",
+          "sha256": "d7303c23e7a6a7527b2cc549dcaabd3b61b68cf84cffb2aebe4787edde290d46",
+          "hashNormalization": "raw",
+          "blob": "9f43697383e97ab14e72311b9482cad5cbf9fcc9"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-dependencies/manifest.json",
+          "sha256": "137aaa9f5504fc45fc634677c0be23ebc9e063ea02319c9fc40b864cfa0c288a",
+          "hashNormalization": "raw",
+          "blob": "7a48db9eddd9af9140127422e4f4cfb4c2f2e68e"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v042-search-layout",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
+          "sha256": "8cc3aa4295970325562c41d23bb8d4c85848d8ee389269455f76e626db4f09b6",
+          "hashNormalization": "raw",
+          "blob": "2c62399e04b88a724f1782d573efc136742b0ac6"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
+          "sha256": "c9d49e481a6cd5b68b3771cb30fdf92213b9078c39c07d92bab884424d545426",
+          "hashNormalization": "raw",
+          "blob": "6a94df2efda712978f23465b3daf6f0cbc4a61ce"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/manifest.json",
+          "sha256": "e2ee6a1fe8ba14bfe6f677e224f98c9be6076690b62b7385b1b936eceeb00c69",
+          "hashNormalization": "raw",
+          "blob": "0d1c2ac7555306a71faf5f87f60bd351e230c34b"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
+          "sha256": "28a94e2c75e3bcda0360746613f000cf662e8ea292f6888a40a6b0617000ef9b",
+          "hashNormalization": "raw",
+          "blob": "2af6083ff5f937c0598d016ef4dfc5abc58d1707"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
+          "sha256": "a9a25bdb412e09cd5acc9c2deb629a6e68d30549b1129d1c70db2a1f6508f20f",
+          "hashNormalization": "raw",
+          "blob": "9da10fbf6790c99b4b52f02ea60e1384a4d218a6"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
+          "sha256": "ab85a1517d3dea690e5ae04380fc51f262d139db60904adee08871b1b2f1c7ba",
+          "hashNormalization": "raw",
+          "blob": "b8855a6aecf1b68f99f4356abdcc9bcdf55edc98"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
+          "sha256": "0888e9831bb090e6ee50b9c3151de3c04f463d3b622b169350fe2af253ec1864",
+          "hashNormalization": "raw",
+          "blob": "9327fb5ad9b3f35b4c6c4a533866e9f71a53072a"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
+          "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
+          "hashNormalization": "raw",
+          "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea"
+        },
+        {
+          "path": "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
+          "sha256": "8c8e0f664baa911b2b38bf3a710a8041a03fea8f0f993705c82af1e721ff97b0",
+          "hashNormalization": "raw",
+          "blob": "af7993f2c9bb79b50bcab70daef61fd8fa6b92b8"
         }
       ]
     },
@@ -4969,418 +5261,6 @@
       ]
     },
     {
-      "directory": "desktop/upstream-slices/v042-search-layout",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/BottomBarFloatingSegmentedControl.kt",
-          "sha256": "8cc3aa4295970325562c41d23bb8d4c85848d8ee389269455f76e626db4f09b6",
-          "hashNormalization": "raw",
-          "blob": "2c62399e04b88a724f1782d573efc136742b0ac6"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/BottomBarLiquidSegmentedControl.kt",
-          "sha256": "c9d49e481a6cd5b68b3771cb30fdf92213b9078c39c07d92bab884424d545426",
-          "hashNormalization": "raw",
-          "blob": "6a94df2efda712978f23465b3daf6f0cbc4a61ce"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/manifest.json",
-          "sha256": "e2ee6a1fe8ba14bfe6f677e224f98c9be6076690b62b7385b1b936eceeb00c69",
-          "hashNormalization": "raw",
-          "blob": "0d1c2ac7555306a71faf5f87f60bd351e230c34b"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/SearchCardTargetRestoreTest.kt",
-          "sha256": "28a94e2c75e3bcda0360746613f000cf662e8ea292f6888a40a6b0617000ef9b",
-          "hashNormalization": "raw",
-          "blob": "2af6083ff5f937c0598d016ef4dfc5abc58d1707"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/SearchResultContainerTransition.kt",
-          "sha256": "a9a25bdb412e09cd5acc9c2deb629a6e68d30549b1129d1c70db2a1f6508f20f",
-          "hashNormalization": "raw",
-          "blob": "9da10fbf6790c99b4b52f02ea60e1384a4d218a6"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/SearchScreen.kt",
-          "sha256": "ab85a1517d3dea690e5ae04380fc51f262d139db60904adee08871b1b2f1c7ba",
-          "hashNormalization": "raw",
-          "blob": "b8855a6aecf1b68f99f4356abdcc9bcdf55edc98"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/SearchTabLabelPolicyTest.kt",
-          "sha256": "0888e9831bb090e6ee50b9c3151de3c04f463d3b622b169350fe2af253ec1864",
-          "hashNormalization": "raw",
-          "blob": "9327fb5ad9b3f35b4c6c4a533866e9f71a53072a"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/SearchVideoFilterSheet.kt",
-          "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e",
-          "hashNormalization": "raw",
-          "blob": "a53ec028ebe0ce48cd1824ec10203046175203ea"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-layout/SharedCardContainerHost.kt",
-          "sha256": "8c8e0f664baa911b2b38bf3a710a8041a03fea8f0f993705c82af1e721ff97b0",
-          "hashNormalization": "raw",
-          "blob": "af7993f2c9bb79b50bcab70daef61fd8fa6b92b8"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v042-search-dependencies",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColors.kt",
-          "sha256": "e42a157c4c178d4fe37afa339e6f1f2597eb8d0bccdf58a8a2c6feba2085dca7",
-          "hashNormalization": "raw",
-          "blob": "42055ad666e11bdf09bdd95111a7dbed14eb5b4c"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppContentColorsTest.kt",
-          "sha256": "a88c57b6b9eeb2a854e55ffbb273a19d9d2d96a754488ada246ae8c2bd7d851d",
-          "hashNormalization": "raw",
-          "blob": "f7df0145034bb2961bcfa83675cc1f7e629450c1"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppElasticPress.kt",
-          "sha256": "c2655b0ccc618defcb08c2c2d2b9eb2cc1c8dd843c7368fd97872a5b54d3a69c",
-          "hashNormalization": "raw",
-          "blob": "d1aecdfc4a0df5a6dc61cf89bba0005d59539d9d"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppLiquidAwareTabRow.kt",
-          "sha256": "31a81d116fb3a1917cc2ccbd9a3826bdfe85bbce867945e9297e08fe88979a58",
-          "hashNormalization": "raw",
-          "blob": "f8bd897b2d0f401fcae06339748b4854c6440603"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppMaterial3SegmentedControl.kt",
-          "sha256": "7c9bc6cebb88075f1144bf2e0d2bd3b403ae7b6295404da5459cea4aac450c4e",
-          "hashNormalization": "raw",
-          "blob": "ab9e6dfa6739dff40da46aa289ad0ba0b689b7f2"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppMiuixSegmentedControl.kt",
-          "sha256": "0fe235d240a5244c9b4a73689114c36300682e4f7abeb08f46f6cea788d47771",
-          "hashNormalization": "raw",
-          "blob": "9cd6b2bd55a0e0783953898ac0ab3a69cafaddd7"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppSegmentedControl.kt",
-          "sha256": "f71d4a67f66148bc7b72cf1702d29de46f1faffe41d526b08e9872fcc27bf17a",
-          "hashNormalization": "raw",
-          "blob": "cffa54dff05865eeae76846ba1e1717840f866f9"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypography.kt",
-          "sha256": "e38a7f839d4d09de502645b4654a8edcb0aa610b329c5aa05b5d0879e1461fec",
-          "hashNormalization": "raw",
-          "blob": "b6f3db6adbc6b703ea5a56d945cb8cf8be77e036"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppTabTypographyTest.kt",
-          "sha256": "d7d861f723ffe033a8198eb894dd1a71ef634404b84650b8170581571c836182",
-          "hashNormalization": "raw",
-          "blob": "dfff960035136f799517ef5736f27e4f59b501b3"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/AppThemeConfig.kt",
-          "sha256": "dcf5d881c212831ed0bfb55453a84ecd922b4784c96c526e2c56bbdfc44184c9",
-          "hashNormalization": "raw",
-          "blob": "642d54150318f263d6e1913140ff50c696662b4d"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarMatchedLiquidChrome.kt",
-          "sha256": "eb3df1fe7470aee80838c2b44da94298d622d6608f8b14a8304679cb452a1c07",
-          "hashNormalization": "raw",
-          "blob": "5d529789a1f464866faa16f7a384046b21676142"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/BottomBarScrollHidePolicy.kt",
-          "sha256": "73646b631c85707b3d7cc25e12d858923171c746a60f28f4a3fdc47309f3767c",
-          "hashNormalization": "raw",
-          "blob": "05d5e45e64a8cc1b07c8f85ff61bc14b3e5f3ce8"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBar.kt",
-          "sha256": "bfaf9c74065bcebf473daecbce89362325bf8b7881fd1ba52dbfabb892666c14",
-          "hashNormalization": "raw",
-          "blob": "ce6408476740dbe262083e030c785cc9a51536c5"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingBottomBarGeometry.kt",
-          "sha256": "ca25bb7be973d7e6ccdca4c08eada51d25a5daf0ed8c83aa3c079cc0bc3fdaf9",
-          "hashNormalization": "raw",
-          "blob": "1b942844fbae6766696e532c8afd06288037cddb"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/FloatingDockChrome.kt",
-          "sha256": "89bfe07642dca9c4424454edd782ffa0763a2802c2bf93b4f8c8046ae450cf36",
-          "hashNormalization": "raw",
-          "blob": "c7e144e4938d412eaba7d8267bcec43176f33647"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicy.kt",
-          "sha256": "6e7b5c635b0bb1da2058db0093610e0a04d252434fa3fd60df3fd2f427133004",
-          "hashNormalization": "raw",
-          "blob": "5a7cc315aa8dad4770fd2c93d21f44945a1f6a40"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/SearchMotionBudgetPolicyTest.kt",
-          "sha256": "621f7d46d98ad451aa211c60bfafa806ef4aa3ddbe48f10bfe1df37df7d0ec54",
-          "hashNormalization": "raw",
-          "blob": "53ff9935848d17d83e3a5478be21da498b3a15e4"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/TopBar.kt",
-          "sha256": "d7303c23e7a6a7527b2cc549dcaabd3b61b68cf84cffb2aebe4787edde290d46",
-          "hashNormalization": "raw",
-          "blob": "9f43697383e97ab14e72311b9482cad5cbf9fcc9"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-search-dependencies/manifest.json",
-          "sha256": "137aaa9f5504fc45fc634677c0be23ebc9e063ea02319c9fc40b864cfa0c288a",
-          "hashNormalization": "raw",
-          "blob": "7a48db9eddd9af9140127422e4f4cfb4c2f2e68e"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v042-optical-dependencies",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/AppMaterial3TonalPillTabRow.kt",
-          "sha256": "473c085001722ee3fa1bd7d20729893ac43e267062f81a69a0f9889f59d64b68",
-          "hashNormalization": "raw",
-          "blob": "29d9701ebf830f849f644823bb012d8736f4961b"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/AppSurfaceTokens.kt",
-          "sha256": "6840c3e54a12395f05dcb2383bca75c1d5aaa5bf726ca9ae540a06c875996d2e",
-          "hashNormalization": "raw",
-          "blob": "7075c2e9b4cb7493c3d09194147d2f23bf699ca0"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/ChromeBackdropSource.kt",
-          "sha256": "8fec86cc6e246995e3de2f3f2ad32611305ebd868c7335b16456796db288e5cb",
-          "hashNormalization": "raw",
-          "blob": "61c71f9cc0b4c4410850481d668dcb58bb835779"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/DampedDragAnimation.kt",
-          "sha256": "4b2121b5ee8c35cf976a6d598c3858ab5642fac3ed3814aacb2387239485f9e2",
-          "hashNormalization": "raw",
-          "blob": "97e7e726e9573bca98a221a45a89b0549258e72d"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/DragGestureInspector.kt",
-          "sha256": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
-          "hashNormalization": "raw",
-          "blob": "2ee387b0ba27487fc940654593b67cdb2b9b7a29"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlight.kt",
-          "sha256": "11e23f1e9916328cc52ba097e6a5ee4f8b5211453bfe212d75ca97e66fcdfa72",
-          "hashNormalization": "raw",
-          "blob": "160f477d2128364ab2f76e8d8ab629cb82d47410"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightMotionSpec.kt",
-          "sha256": "709cf92c99645039e3e9d3fd063a4576592bc97fa5ca59962b624a11645cedd8",
-          "hashNormalization": "raw",
-          "blob": "f47def4151a843ca4ef98701f75e3475706b49bc"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/InteractiveHighlightPalette.kt",
-          "sha256": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
-          "hashNormalization": "raw",
-          "blob": "bbacc71a500f2eadb9ea94f09c9ca69fa8302e1b"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidDockViewport.kt",
-          "sha256": "87fbc89232311cd32c0aa8e90dd858f216b18d8cb9400bdeea38dffc1502c3dd",
-          "hashNormalization": "raw",
-          "blob": "29ab2a5b756834ad5f436e01b25ad4ffbdb81897"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/LiquidIndicatorMotion.kt",
-          "sha256": "d544ca9fca04aea84dada69b1d62c65c216c4eaa3befa22e52b9d4afe17e54fa",
-          "hashNormalization": "raw",
-          "blob": "825fb6915dac5a5fb38bf0554002064b3062ea9b"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-optical-dependencies/manifest.json",
-          "sha256": "8a5366fac0da15189d06ef8c5bb7824c84cb3987cfb0b5833809d3c69277215f",
-          "hashNormalization": "raw",
-          "blob": "a602fa13e0a4279fb3612fb2271c3ef813ff8725"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v042-network-proxy",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v042-network-proxy/ApiClient.kt",
-          "sha256": "4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4",
-          "hashNormalization": "raw",
-          "blob": "3e901a8fbd3991e376047d67a22decbd3a174099"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicy.kt",
-          "sha256": "9f8e846d3afa3437da624064913c2594736bfe714574dc4831365f03e433f1dc",
-          "hashNormalization": "raw",
-          "blob": "cab3a0df85fb139ace4da5c112859d58095c9c1a"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyPolicyTest.kt",
-          "sha256": "652e48282a43fcd91132351af88fd45bf023326dc932adf8f61fc280628b5dea",
-          "hashNormalization": "raw",
-          "blob": "7ef5263ae7510bfab18e09496a0240c0a1c5baa6"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-network-proxy/NetworkProxyStore.kt",
-          "sha256": "7be8c222779a3ba55d8c934c292ec8e143b51a043b212d5466d80edd60c3f179",
-          "hashNormalization": "raw",
-          "blob": "ace5e5150dc34bdd8af796e672990b7ace5f5a5c"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-network-proxy/SettingsSections.kt",
-          "sha256": "3a8ae2bbddbb5040390dff94da435410eafcdd92ade05b2df50e939e89d3e1b2",
-          "hashNormalization": "raw",
-          "blob": "ff8ea08cb4daeb65fc0a3b14aa0dbaac1da2ac9e"
-        },
-        {
-          "path": "desktop/upstream-slices/v042-network-proxy/manifest.json",
-          "sha256": "f46dacaced3991c49d14bae9ab8803e6c6b296f45c8a38c63560012dd295bdff",
-          "hashNormalization": "raw",
-          "blob": "a522f3aabb227711c079d45a874b45e6de386cb0"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v043-search-up-author",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v043-search-up-author/manifest.json",
-          "sha256": "529056aad8f8510e991f88606924d3da3c54745bcad711df545be39a199146f8",
-          "hashNormalization": "raw",
-          "blob": "cd3c0092bee34c5fcb15e353c8ed097ac8f1fb69"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
-          "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36",
-          "hashNormalization": "raw",
-          "blob": "3d00eacbd42fba08e6e44b95a6537c9418c91fe8"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
-          "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8",
-          "hashNormalization": "raw",
-          "blob": "4841a3eea267be36a7829931ef7d59641d1e041e"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v043-navigation",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v043-navigation/manifest.json",
-          "sha256": "877b90467279252644e663b959282addc366d2d6c61a3a8b075d219542653f1e",
-          "hashNormalization": "raw",
-          "blob": "2ca32a12964ca4271324ab6ed3c10cc220d6d49e"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-navigation/BilibiliHostPolicy.kt",
-          "sha256": "07c7a0a57fb65e6190faf0e1993fb8c538c30713750f919796aea14e226b11a4",
-          "hashNormalization": "raw",
-          "blob": "38a539f089c19e8337b49d8fa5f3f7a6018ed05c"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParser.kt",
-          "sha256": "54d60f08ef150eb43e12c1edb20d910357786a038c01d4acab169b9f7c9a4522",
-          "hashNormalization": "raw",
-          "blob": "bc6952c11a1c4ec75e9e8ae1efd8192106566022"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-navigation/BilibiliUrlParser.kt",
-          "sha256": "bae695d7bec9f041e5111fc621ba2ab9b39ddd23aaabc166acd52015637b500b",
-          "hashNormalization": "raw",
-          "blob": "f082232d597e59b8eae8fd24fbd93d92d7ac37f3"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParserTest.kt",
-          "sha256": "4ecd56649fe6444699e8f64fff4c251afc815602d1a2fb429c89f2e35126f980",
-          "hashNormalization": "raw",
-          "blob": "5e2fcc0070e81aefa00c81e2bf907a6d6bc4d878"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-navigation/BilibiliUrlParserRegressionTest.kt",
-          "sha256": "2dbd52c58a41823f5b6ceca40ec54e59150672709224e76f3878d364a796a069",
-          "hashNormalization": "raw",
-          "blob": "1d649c79d6cdb038d7b1b87cf9b6d0a3ebd4b03b"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v043-message-link-host",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v043-message-link-host/manifest.json",
-          "sha256": "9aa4a140f2f8ef04daa366edb5559397e39a832c3cbf58fb026244b1e0277301",
-          "hashNormalization": "raw",
-          "blob": "4163ae18264ea48d54494b98563cdd70ca6ad6e1"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicy.kt",
-          "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
-          "hashNormalization": "raw",
-          "blob": "9ea862ac7e86f624ab123cf9c0c1b1acb3d8c095"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicyTest.kt",
-          "sha256": "1a4e5529659a47ce66cf7ce528182b337ea8160001fa74e0795dead792624805",
-          "hashNormalization": "raw",
-          "blob": "4a2dc1a4089ba263df0f26cbb1b95fe03c11a199"
-        }
-      ]
-    },
-    {
-      "directory": "desktop/upstream-slices/v043-link-open",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v043-link-open/manifest.json",
-          "sha256": "7b9f020fa7887da655c734727a39c79fae85a9214e33382ae422f645fd3bab7f",
-          "hashNormalization": "raw",
-          "blob": "b5f4298296d2e96df28b0ff14ce56b1b61eb5fe3"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-link-open/LinkOpenGate.kt",
-          "sha256": "e60b0847ce10f31d6772f31164802555c97b26a837ba8d40b2954db82e777bef",
-          "hashNormalization": "raw",
-          "blob": "304a3560872d4c0e693524fa14ab81328d6f5586"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-link-open/BilibiliLinkNavigationPolicy.kt",
-          "sha256": "1f5fa7163f491916cebf470f239829f306d1e45a05fddf3815d90c0d03240121",
-          "hashNormalization": "raw",
-          "blob": "ebf2e9286e47d9b8b3b4f92d66ad637dc8532416"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-link-open/LinkOpenGateTest.kt",
-          "sha256": "7897664c68e7698ccb1c94e7e07720e9276bd4784bd4e3858a72c1d974b74bde",
-          "hashNormalization": "raw",
-          "blob": "5e4a5173afdf449f93ebe6dbb3dc7a5807d90c6a"
-        },
-        {
-          "path": "desktop/upstream-slices/v043-link-open/BilibiliLinkNavigationPolicyTest.kt",
-          "sha256": "239e5e4aea87178cce1e8d9db74d83ec24c2b42f78aae93f4195187f9340cc58",
-          "hashNormalization": "raw",
-          "blob": "925a01acb386e4f27c532753a99ad29a305a368c"
-        }
-      ]
-    },
-    {
       "directory": "desktop/upstream-slices/v043-home-native-cards",
       "files": [
         {
@@ -5507,6 +5387,128 @@
           "sha256": "4afa0ad9b8fc1e16fae25b4ee3f5871fb23e9dacef218e4795867e2fc497a8f8",
           "hashNormalization": "raw",
           "blob": "5cf4cb7096958c1edbae99e37285e398e9cc58cc"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-link-open",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-link-open/manifest.json",
+          "sha256": "7b9f020fa7887da655c734727a39c79fae85a9214e33382ae422f645fd3bab7f",
+          "hashNormalization": "raw",
+          "blob": "b5f4298296d2e96df28b0ff14ce56b1b61eb5fe3"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-link-open/LinkOpenGate.kt",
+          "sha256": "e60b0847ce10f31d6772f31164802555c97b26a837ba8d40b2954db82e777bef",
+          "hashNormalization": "raw",
+          "blob": "304a3560872d4c0e693524fa14ab81328d6f5586"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-link-open/BilibiliLinkNavigationPolicy.kt",
+          "sha256": "1f5fa7163f491916cebf470f239829f306d1e45a05fddf3815d90c0d03240121",
+          "hashNormalization": "raw",
+          "blob": "ebf2e9286e47d9b8b3b4f92d66ad637dc8532416"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-link-open/LinkOpenGateTest.kt",
+          "sha256": "7897664c68e7698ccb1c94e7e07720e9276bd4784bd4e3858a72c1d974b74bde",
+          "hashNormalization": "raw",
+          "blob": "5e4a5173afdf449f93ebe6dbb3dc7a5807d90c6a"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-link-open/BilibiliLinkNavigationPolicyTest.kt",
+          "sha256": "239e5e4aea87178cce1e8d9db74d83ec24c2b42f78aae93f4195187f9340cc58",
+          "hashNormalization": "raw",
+          "blob": "925a01acb386e4f27c532753a99ad29a305a368c"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-message-link-host",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-message-link-host/manifest.json",
+          "sha256": "9aa4a140f2f8ef04daa366edb5559397e39a832c3cbf58fb026244b1e0277301",
+          "hashNormalization": "raw",
+          "blob": "4163ae18264ea48d54494b98563cdd70ca6ad6e1"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicy.kt",
+          "sha256": "3208a12aa98ecc40dfd560dc444bbfadab982cc3c33f6eb8cc18adec3467e2b1",
+          "hashNormalization": "raw",
+          "blob": "9ea862ac7e86f624ab123cf9c0c1b1acb3d8c095"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicyTest.kt",
+          "sha256": "1a4e5529659a47ce66cf7ce528182b337ea8160001fa74e0795dead792624805",
+          "hashNormalization": "raw",
+          "blob": "4a2dc1a4089ba263df0f26cbb1b95fe03c11a199"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-navigation",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-navigation/manifest.json",
+          "sha256": "877b90467279252644e663b959282addc366d2d6c61a3a8b075d219542653f1e",
+          "hashNormalization": "raw",
+          "blob": "2ca32a12964ca4271324ab6ed3c10cc220d6d49e"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliHostPolicy.kt",
+          "sha256": "07c7a0a57fb65e6190faf0e1993fb8c538c30713750f919796aea14e226b11a4",
+          "hashNormalization": "raw",
+          "blob": "38a539f089c19e8337b49d8fa5f3f7a6018ed05c"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParser.kt",
+          "sha256": "54d60f08ef150eb43e12c1edb20d910357786a038c01d4acab169b9f7c9a4522",
+          "hashNormalization": "raw",
+          "blob": "bc6952c11a1c4ec75e9e8ae1efd8192106566022"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliUrlParser.kt",
+          "sha256": "bae695d7bec9f041e5111fc621ba2ab9b39ddd23aaabc166acd52015637b500b",
+          "hashNormalization": "raw",
+          "blob": "f082232d597e59b8eae8fd24fbd93d92d7ac37f3"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParserTest.kt",
+          "sha256": "4ecd56649fe6444699e8f64fff4c251afc815602d1a2fb429c89f2e35126f980",
+          "hashNormalization": "raw",
+          "blob": "5e2fcc0070e81aefa00c81e2bf907a6d6bc4d878"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-navigation/BilibiliUrlParserRegressionTest.kt",
+          "sha256": "2dbd52c58a41823f5b6ceca40ec54e59150672709224e76f3878d364a796a069",
+          "hashNormalization": "raw",
+          "blob": "1d649c79d6cdb038d7b1b87cf9b6d0a3ebd4b03b"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-search-up-author",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/manifest.json",
+          "sha256": "529056aad8f8510e991f88606924d3da3c54745bcad711df545be39a199146f8",
+          "hashNormalization": "raw",
+          "blob": "cd3c0092bee34c5fcb15e353c8ed097ac8f1fb69"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
+          "sha256": "941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36",
+          "hashNormalization": "raw",
+          "blob": "3d00eacbd42fba08e6e44b95a6537c9418c91fe8"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
+          "sha256": "a0f6dfb560912c828fb58be2d91130c4ea103523dcbbfffe7a63d9b71198e8a8",
+          "hashNormalization": "raw",
+          "blob": "4841a3eea267be36a7829931ef7d59641d1e041e"
         }
       ]
     },
@@ -5653,6 +5655,41 @@
       ]
     },
     {
+      "directory": "desktop/upstream-slices/v044-favorite-search",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/AppNavigation.kt",
+          "sha256": "39b1c456372cffe3f294236e987664dc899eb1eb2a3af713f07ea118976b55ad",
+          "hashNormalization": "raw",
+          "blob": "5450d80a5603397e3f5d2cd067e97fe261aa9a8b"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKey.kt",
+          "sha256": "892ecaa6e6243c09977c0f69c1d555a6d6193229b75a75a550ed0eee9e3dcfc4",
+          "hashNormalization": "raw",
+          "blob": "14c38cc5fc5dfb21d0a5e4142c94640bb94ea8df"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicy.kt",
+          "sha256": "1b6ec5b0ea395f98bceeb5c3eaf6b8846dcd9aa58cfa851d36c2479a6eda5971",
+          "hashNormalization": "raw",
+          "blob": "1333f35c1012287ee3d398280bd3eb0b5fccdf0b"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicyTest.kt",
+          "sha256": "7867ec8e116ff3fc43f9b21d250d81095726a7f7ef98c72e45c6c4361db0a01e",
+          "hashNormalization": "raw",
+          "blob": "7e6f5ce9061b868c7bebc5c1f26e23e9bc4a0b02"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/manifest.json",
+          "sha256": "3ddef87c3e56a4b343777371569cdb962f3095edac2b8a45a8cb3771bcd1d7c8",
+          "hashNormalization": "raw",
+          "blob": "1723ab376f146ff3047dbef9e9998eb39818db31"
+        }
+      ]
+    },
+    {
       "directory": "desktop/upstream-slices/v044-favorite-subscription",
       "files": [
         {
@@ -5724,41 +5761,6 @@
       ]
     },
     {
-      "directory": "desktop/upstream-slices/v044-favorite-search",
-      "files": [
-        {
-          "path": "desktop/upstream-slices/v044-favorite-search/AppNavigation.kt",
-          "sha256": "39b1c456372cffe3f294236e987664dc899eb1eb2a3af713f07ea118976b55ad",
-          "hashNormalization": "raw",
-          "blob": "5450d80a5603397e3f5d2cd067e97fe261aa9a8b"
-        },
-        {
-          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKey.kt",
-          "sha256": "892ecaa6e6243c09977c0f69c1d555a6d6193229b75a75a550ed0eee9e3dcfc4",
-          "hashNormalization": "raw",
-          "blob": "14c38cc5fc5dfb21d0a5e4142c94640bb94ea8df"
-        },
-        {
-          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicy.kt",
-          "sha256": "1b6ec5b0ea395f98bceeb5c3eaf6b8846dcd9aa58cfa851d36c2479a6eda5971",
-          "hashNormalization": "raw",
-          "blob": "1333f35c1012287ee3d398280bd3eb0b5fccdf0b"
-        },
-        {
-          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicyTest.kt",
-          "sha256": "7867ec8e116ff3fc43f9b21d250d81095726a7f7ef98c72e45c6c4361db0a01e",
-          "hashNormalization": "raw",
-          "blob": "7e6f5ce9061b868c7bebc5c1f26e23e9bc4a0b02"
-        },
-        {
-          "path": "desktop/upstream-slices/v044-favorite-search/manifest.json",
-          "sha256": "3ddef87c3e56a4b343777371569cdb962f3095edac2b8a45a8cb3771bcd1d7c8",
-          "hashNormalization": "raw",
-          "blob": "1723ab376f146ff3047dbef9e9998eb39818db31"
-        }
-      ]
-    },
-    {
       "directory": "desktop/upstream-slices/v044-following-fans",
       "files": [
         {
@@ -5813,6 +5815,100 @@
           "sha256": "bd892bfffc777d1ca57931d0bfffd4a7c43ec76877cbdb876dd0f6ea4af725e0",
           "hashNormalization": "raw",
           "blob": "b178f7699297d67f050d01c2fe2cdcc54c801d77"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-comment-chrome",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-comment-chrome/CommentSortFilterBar.kt",
+          "sha256": "1749b168d114241295875fbae6bee37a96bfdef03a59dac7fd311fc3214ca62a",
+          "hashNormalization": "raw",
+          "blob": "1b5c029d885e6a197a89f3cbfe7189af0441db5c"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-chrome/CommentSortFilterBarPolicyTest.kt",
+          "sha256": "5d96e93b8c3be00e6dbab1d39ec5064bcefeabe0f123f4235c96f58446162c13",
+          "hashNormalization": "raw",
+          "blob": "afb528a5d0b96fbcc7d6495f49c495c19dfaccce"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-chrome/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-chrome/manifest.json",
+          "sha256": "cf040529fbb1acd460fdd92045b0943ee6594a02be281a0485822b58eb8cf629",
+          "hashNormalization": "raw",
+          "blob": "4e79f7309ab283e67b6e3b67f7c22cc7ebb1fd41"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-favorite-editor",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/ApiClient.kt",
+          "sha256": "8a1e75f05835c62d4cfe2827855068653e117198d0bf344d85881853b4a8ed9d",
+          "hashNormalization": "raw",
+          "blob": "55a9728773945c749c95245064f1ad36d65919c6"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/CommonListScreen.kt",
+          "sha256": "5335b65726a6f0f1c594f2cc8124a4fd22b60bef9014a7ef30d9c08786b34bc8",
+          "hashNormalization": "raw",
+          "blob": "ce2d3aeef259b1cd8beba0ee24ecb7cc0533c72b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicy.kt",
+          "sha256": "cc52308ea9f972e3e03fc6ccad21621fb9926cf1d270bf5124b41c7a51bbea54",
+          "hashNormalization": "raw",
+          "blob": "e3869f7ac4ab5c38b7c4ee8d53ba32dc7fdd493d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicyTest.kt",
+          "sha256": "608cd12e6bcd0486b545a61b198fe226bafc5fb9fb071227642780804a0ae393",
+          "hashNormalization": "raw",
+          "blob": "cdc448d4e7aab3b3a7774542812fc65de5dc8348"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteModels.kt",
+          "sha256": "ffe5eb84d4dff8d88a989fd35b8690702a7744f9360dd4c4bc18fecb210ddb1d",
+          "hashNormalization": "raw",
+          "blob": "3047c3eea67aed6925432b1313bb271ee0c9fb48"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteModelsMappingTest.kt",
+          "sha256": "319eaab06644ae722606b66ae09c3579d502e5a5ed5eead4d8ca7abd9f8feb16",
+          "hashNormalization": "raw",
+          "blob": "72e29bc7e9263c667968bbfb63ce5e52b6601d61"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteRepository.kt",
+          "sha256": "003b90e7d0c22434bb3a5775c8a608765fc6d142c3299d95d883a9b326ebdf71",
+          "hashNormalization": "raw",
+          "blob": "08c18de18ec40b4c8604571187f0517c9a7cc4db"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/ListViewModel.kt",
+          "sha256": "fdc7d1e42249ef6f64769c2f1707a0e3c7f00bcf6798abb9efb297ee581b59cb",
+          "hashNormalization": "raw",
+          "blob": "0bd0e85340533dfe0eed4b388ad7fab7ba5230c3"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/manifest.json",
+          "sha256": "d735f17a1955b40ce306ac1c099331ad348d7d20f3e9d84ab8ff701b92c43107",
+          "hashNormalization": "raw",
+          "blob": "3fec2ea63d1449ab3eaa21beddd1041318769693"
         }
       ]
     }
@@ -15377,6 +15473,157 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original pure common-list pagination suite over the unchanged original owner policy, emitted by the existing Favorites test producer"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/ApiClient.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "55a9728773945c749c95245064f1ad36d65919c6",
+      "sha256": "8a1e75f05835c62d4cfe2827855068653e117198d0bf344d85881853b4a8ed9d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor",
+        "v046-danmaku-like"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained. Also the complete original v046 likeDanmaku Retrofit declaration, including its source parameters; every other existing API member is preserved."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteModels.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3047c3eea67aed6925432b1313bb271ee0c9fb48",
+      "sha256": "ffe5eb84d4dff8d88a989fd35b8690702a7744f9360dd4c4bc18fecb210ddb1d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteRepository.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "08c18de18ec40b4c8604571187f0517c9a7cc4db",
+      "sha256": "003b90e7d0c22434bb3a5775c8a608765fc6d142c3299d95d883a9b326ebdf71",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/ListViewModel.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "0bd0e85340533dfe0eed4b388ad7fab7ba5230c3",
+      "sha256": "fdc7d1e42249ef6f64769c2f1707a0e3c7f00bcf6798abb9efb297ee581b59cb",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/CommonListScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ce2d3aeef259b1cd8beba0ee24ecb7cc0533c72b",
+      "sha256": "5335b65726a6f0f1c594f2cc8124a4fd22b60bef9014a7ef30d9c08786b34bc8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteManagementPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e3869f7ac4ab5c38b7c4ee8d53ba32dc7fdd493d",
+      "sha256": "cc52308ea9f972e3e03fc6ccad21621fb9926cf1d270bf5124b41c7a51bbea54",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/FavoriteManagementPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "cdc448d4e7aab3b3a7774542812fc65de5dc8348",
+      "sha256": "608cd12e6bcd0486b545a61b198fe226bafc5fb9fb071227642780804a0ae393",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/model/response/FavoriteModelsMappingTest.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteModelsMappingTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "72e29bc7e9263c667968bbfb63ce5e52b6601d61",
+      "sha256": "319eaab06644ae722606b66ae09c3579d502e5a5ed5eead4d8ca7abd9f8feb16",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-chrome/CommentSortFilterBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "1b5c029d885e6a197a89f3cbfe7189af0441db5c",
+      "sha256": "1749b168d114241295875fbae6bee37a96bfdef03a59dac7fd311fc3214ca62a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-chrome"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original comment header/title/sort header, all shared geometry helpers, filter/segmented controls split once by the existing production owners; whole original six-case suite with only class name and archived fixture paths bound."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBarPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-chrome/CommentSortFilterBarPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "afb528a5d0b96fbcc7d6495f49c495c19dfaccce",
+      "sha256": "5d96e93b8c3be00e6dbab1d39ec5064bcefeabe0f123f4235c96f58446162c13",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-chrome"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original comment header/title/sort header, all shared geometry helpers, filter/segmented controls split once by the existing production owners; whole original six-case suite with only class name and archived fixture paths bound."
     }
   ],
   "buildStandaloneInputs": [

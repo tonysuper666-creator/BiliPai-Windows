@@ -586,6 +586,44 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                         self.assertIn(literals[0], list(ast.walk(assignments[0].value)))
                         self.assertEqual('FavoriteModels.kt', literals[0].value)
                         text = text.replace("'FavoriteModels.kt'", "''", 1)
+                    if tool.name == 'v046_favorite_editor.py':
+                        # The new response reads the pinned model and verifies the
+                        # entire old DTO file against its one existing producer.
+                        # Admit only those three read-side literals, never an
+                        # output path or another selector for the four models.
+                        tree_ = ast.parse(text)
+                        parents = {child: node for node in ast.walk(tree_) for child in ast.iter_child_nodes(node)}
+                        expected_node = next(node for node in tree_.body if isinstance(node, ast.Assign)
+                            and any(isinstance(target, ast.Name) and target.id == 'EXPECTED' for target in node.targets))
+                        literals = [node for node in ast.walk(tree_) if isinstance(node, ast.Constant)
+                            and isinstance(node.value, str) and 'FavoriteModels.kt' in node.value]
+                        self.assertEqual(3, len(literals))
+                        allowed = []
+                        for literal in literals:
+                            parent = parents[literal]
+                            in_inputs = literal in list(ast.walk(expected_node.value)) and literal.value == 'FavoriteModels.kt'
+                            read_source = isinstance(parent, ast.Subscript) and parent.slice is literal and isinstance(parent.value, ast.Name) and parent.value.id == 'sources' and literal.value == 'FavoriteModels.kt'
+                            read_before = isinstance(parent, ast.Subscript) and parent.slice is literal and isinstance(parent.value, ast.Subscript) and isinstance(parent.value.value, ast.Name) and parent.value.value.id == 'manifest' and isinstance(parent.value.slice, ast.Constant) and parent.value.slice.value == 'beforeFinalOutputs' and literal.value == 'data/model/response/FavoriteModels.kt'
+                            self.assertTrue(in_inputs or read_source or read_before, ast.dump(parent))
+                            allowed.append((in_inputs, read_source, read_before))
+                            self.assertIn(repr(literal.value), text)
+                            text = text.replace(repr(literal.value), "''", 1)
+                        self.assertEqual([1, 1, 1], [sum(row[i] for row in allowed) for i in range(3)])
+                        output = self.root / 'v046-api-sole-model-contract'
+                        result = subprocess.run([sys.executable, '-X', 'utf8', '-B',
+                            str(REPO / 'desktop/tools/extract-upstream-api.py'), '--repo', str(REPO), '--output', str(output)],
+                            cwd=REPO, env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'), capture_output=True)
+                        self.assertEqual(0, result.returncode, result.stdout.decode('utf8') + result.stderr.decode('utf8'))
+                        files = sorted(output.rglob('*.kt'))
+                        self.assertEqual({'DesktopUpstreamApi.kt', 'FavoriteInfoResponse.kt',
+                            'ResponseModels.kt', 'DesktopSpaceRequestPolicy.kt', 'DesktopUpstreamPolicies.kt',
+                            'LiveModels.kt', 'DynamicCreateModels.kt', 'DesktopHistoryCursorPolicy.kt',
+                            'DesktopCoreDataLog.kt'}, {p.name for p in files})
+                        self.assertEqual([], [p.name for p in files if p.name in names])
+                        response = next(p for p in files if p.name == 'FavoriteInfoResponse.kt').read_text(encoding='utf8')
+                        self.assertEqual(1, response.count('data class FavoriteInfoResponse('))
+                        self.assertNotIn('data class FavoriteFolderInfo(', response)
+                        self.assertEqual(GOLDEN_MAIN[FAVORITE_PATH], sha(self.main[FAVORITE_PATH]))
                     self.assertEqual([], [name for name in names if name in text])
 
     def test_hook_module_imports_only_the_declared_helper_and_standard_modules(self):
