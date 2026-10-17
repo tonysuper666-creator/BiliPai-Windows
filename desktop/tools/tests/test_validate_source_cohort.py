@@ -1,6 +1,9 @@
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -95,6 +98,70 @@ class SourceCohortChangeInventoryTest(unittest.TestCase):
             path = Path(tmp) / 'flags'
             cohort.write_harness_flags(path, False, {}, {})
             self.assertFalse(path.exists())
+
+
+class SourceCohortFileSelectionTest(unittest.TestCase):
+    def plan(self, count=103):
+        return dict(schemaVersion=1, repository=cohort.REPOSITORY,
+            classes={'com.bilipai.desktop.regression.SourceCohortActualProductionClass'+str(i): 1 for i in range(count)},
+            expectedTests=count, exportPackagedUpdaterHarness=True, exportOriginalRootUiHarness=True)
+
+    def write_plan(self, repo, plan):
+        p=repo/cohort.PLAN
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(plan, indent=2)+'\n', encoding='utf-8', newline='\n')
+        return p
+
+    def test_large_exact_cohort_stays_out_of_the_real_batch_command_budget(self):
+        with tempfile.TemporaryDirectory(prefix='bp-cohort-command-') as tmp:
+            repo=Path(tmp);plan=self.plan(5000);p=self.write_plan(repo,plan)
+            command=cohort.gradle_command(plan,repo,repo/'output with spaces',repo/'jdk with spaces')
+            self.assertLess(len(subprocess.list2cmdline(command)),4096)
+            self.assertGreater(len(subprocess.list2cmdline([arg for name in plan['classes'] for arg in ['--tests',name]])),8191)
+            self.assertNotIn('--tests',command)
+            self.assertEqual(3,command.count('--init-script'))
+            self.assertEqual(1,command.count('compileKotlin'))
+            self.assertEqual(1,command.count('compileTestKotlin'))
+            self.assertEqual(1,command.count('test'))
+            self.assertIn('-PbilipaiSourceCohortPlan='+str(p.resolve()),command)
+            self.assertIn('-PbilipaiSourceCohortPlanSHA256='+hashlib.sha256(p.read_bytes()).hexdigest(),command)
+
+    @unittest.skipUnless(sys.platform == 'win32', 'Real Windows batch boundary')
+    def test_real_cmd_batch_receives_the_entire_exact_plan_without_java_or_class_expansion(self):
+        with tempfile.TemporaryDirectory(prefix='bp-cohort-batch-') as tmp:
+            root=Path(tmp);repo=root/'repository with spaces';plan=self.plan(5000);p=self.write_plan(repo,plan)
+            recorder=root/'record.py'
+            recorder.write_text('''import sys,json,pathlib,hashlib
+args=sys.argv[1:]
+path=next(x.split('=',1)[1] for x in args if x.startswith('-PbilipaiSourceCohortPlan='))
+raw=pathlib.Path(path).read_bytes()
+print(json.dumps(dict(args=args,classes=json.loads(raw)['classes'],sha256=hashlib.sha256(raw).hexdigest())))
+''',encoding='utf-8',newline='\n')
+            wrapper=root/'gradlew.bat'
+            wrapper.write_bytes(('@echo off\r\n"'+sys.executable+'" -X utf8 -B "'+str(recorder)+'" %*\r\nexit /b %errorlevel%\r\n').encode('utf-8'))
+            command=cohort.gradle_command(plan,repo,root/'output with spaces',root/'jdk with spaces')
+            command[3]=str(wrapper)  # This owned fixture records argv; it never starts Gradle or Java.
+            done=subprocess.run(command,cwd=root,capture_output=True,check=True,text=True,encoding='utf-8')
+            actual=json.loads(done.stdout)
+            self.assertEqual(plan['classes'],actual['classes'])
+            self.assertEqual(hashlib.sha256(p.read_bytes()).hexdigest(),actual['sha256'])
+            self.assertEqual(command[4:],actual['args'])
+            self.assertNotIn('--tests',actual['args'])
+
+    def test_changed_plan_is_rejected_before_the_wrapper_can_start(self):
+        with tempfile.TemporaryDirectory(prefix='bp-cohort-changed-') as tmp:
+            repo=Path(tmp);plan=self.plan();changed=dict(plan,expectedTests=999)
+            self.write_plan(repo,changed)
+            with self.assertRaisesRegex(AssertionError,'plan changed before launch'):
+                cohort.gradle_command(plan,repo,repo/'output',repo/'jdk')
+
+    def test_wildcards_invalid_counts_and_changed_totals_cannot_broaden_selection(self):
+        for classes, total in [({'com.bilipai.*':1},1),({'com.bilipai.Test':True},1),
+                               ({'com.bilipai.Test':0},0),({'com.bilipai.Test':1},2),({},0)]:
+            with self.subTest(classes=classes,total=total),tempfile.TemporaryDirectory(prefix='bp-cohort-invalid-') as tmp:
+                repo=Path(tmp);plan=dict(self.plan(),classes=classes,expectedTests=total);self.write_plan(repo,plan)
+                with self.assertRaises(AssertionError):
+                    cohort.cohort_filter_arguments(plan,repo)
 
 
 if __name__ == '__main__':

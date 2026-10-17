@@ -132,6 +132,42 @@ class MpvNativeInputTest {
         assertEquals(8,lines.size)
     }
 
+    @Test fun nativeOutputGateIsSilentUnlessExplicitlyEnabled() {
+        val lines=mutableListOf<String>();val probe=MpvRuntimeProbeRecorder(false) {lines+=it}
+        probe.nvidiaOutputGate("vo/gpu/d3d11", "BILIPAI_RTX_PRESENT_GATE 1\n")
+        assertTrue(lines.isEmpty())
+    }
+    @Test fun nativeOutputGateReportsOnlyThePinnedSwapchainNumericDiagnostic() {
+        val lines=mutableListOf<String>();val probe=MpvRuntimeProbeRecorder(true) {lines+=it}
+        probe.nvidiaOutputGate("vo/gpu/d3d11", "BILIPAI_RTX_PRESENT_GATE 1\n")
+        probe.nvidiaOutputGate("vo/gpu/d3d11", "BILIPAI_RTX_PRESENT_GATE 0\r\n")
+        probe.nvidiaOutputGate("vo/gpu/d3d11", "BILIPAI_RTX_PRESENT_GATE 11")
+        assertEquals(listOf(1,0,11).map {
+            "BILIPAI_RUNTIME_PROBE stage=NVIDIA_NATIVE_OUTPUT_GATE first=$it second=0 flags=0"
+        },lines)
+        // Even gate zero states only that output predicates passed; it grants no presentation proof.
+        assertTrue(lines.none {"stage=NVIDIA_PRESENTATION " in it})
+    }
+    @Test fun foreignAndMalformedNativeGateMessagesCannotBecomeDiagnosticsOrLeakPayloads() {
+        val lines=mutableListOf<String>();val probe=MpvRuntimeProbeRecorder(true) {lines+=it}
+        for (prefix in listOf("vf", "bilipai-rtx", "vo/gpu", "vo/gpu/d3d11/foreign", " vo/gpu/d3d11"))
+            probe.nvidiaOutputGate(prefix, "BILIPAI_RTX_PRESENT_GATE 0\n")
+        for (word in listOf("-1", "+1", "01", "12", "2147483648", "", "1 private-token", "1\nextra", "1\u0000"))
+            probe.nvidiaOutputGate("vo/gpu/d3d11", "BILIPAI_RTX_PRESENT_GATE $word\n")
+        probe.nvidiaOutputGate("vo/gpu/d3d11", "https://example.invalid/private-token")
+        assertTrue(lines.isEmpty())
+    }
+    @Test fun repeatedAndChangingNativeGateMessagesRemainBoundedIndependentlyOfPresentation() {
+        val lines=mutableListOf<String>();val probe=MpvRuntimeProbeRecorder(true) {lines+=it}
+        repeat(1000) {probe.nvidiaOutputGate("vo/gpu/d3d11", "BILIPAI_RTX_PRESENT_GATE 1\n")}
+        assertEquals(1,lines.size)
+        repeat(1000) {probe.nvidiaOutputGate("vo/gpu/d3d11", "BILIPAI_RTX_PRESENT_GATE ${it%12}\n")}
+        assertEquals(8,lines.size)
+        probe.recordChanged(MpvRuntimeProbeStage.NVIDIA_PRESENTATION, -1, 0, 32)
+        assertEquals(9,lines.size)
+        assertTrue(lines.last().endsWith("first=-1 second=0 flags=32"))
+    }
+
     private class Message(token:String,word:String) : AutoCloseable {
         val data=Memory(16);val args=Memory(16);val name=Memory(128);val action=Memory(128)
         init {data.clear();args.clear();name.clear();action.clear();name.setString(0,token,"UTF-8");action.setString(0,word,"UTF-8")

@@ -1482,6 +1482,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
         }
         private fun receiveNvidiaMessage(native: MpvNative, handle: Pointer, prefix: String, text: String) {
+            if (MpvRuntimeProbe.enabled) MpvRuntimeProbe.nvidiaOutputGate(prefix, text)
             if (MpvRuntimeProbe.enabled && text.trimStart().startsWith("RTX SDK accepted; GPU frame SUBMITTED"))
                 MpvRuntimeProbe.recordChanged(MpvRuntimeProbeStage.NVIDIA_SUBMITTED_MESSAGE,
                     first = when (prefix) { "bilipai-rtx" -> 1L; "vf" -> 2L; else -> 3L },

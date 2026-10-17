@@ -18,6 +18,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v041_video_status_labels as source
 import v043_search_up_author as search_up_followup
+import v043_home_native_cards as home_native_followup
 from v025_source_paths import canonical_source
 
 MODEL_DIR = 'com/android/purebilibili/data/model/response/'
@@ -33,15 +34,19 @@ PRODUCER = 'tools/extract-v041-video-status-labels.py'
 GOLDEN_MAIN = {
     BADGES_PATH: '83cf025c274e340e8877986784ffb1d9bbb88a168ef6b81c830344a601cf854b',
     LABELS_PATH: 'e5cba87c8ee8440d02b87c777ca545ab5d43408ce3f1d2f0d309b5cb13ef60d0',
-    MODEL_DIR + 'ListModels.kt': '3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1',
+    MODEL_DIR + 'ListModels.kt': '5cb726df0e15c1ffcd79f3722cf9ffae12ffe30a8f0fb784ad223419bb578d1a',
+    MODEL_DIR + 'RecommendationReason.kt': '62af39b81966634667b2af5ca926dd1e1cbf9942425f4a87a8b869cc00b4b7b5',
     MODEL_DIR + 'SpaceModels.kt': '3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b',
     SEARCH_PATH: '941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36',
     FAVORITE_PATH: '3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534',
-    'v041-video-status-labels-proof.json': '062d62a1efa34ce3658c2458f08e94ba5b7259ea6ca9b9db37c9cbd1442c990b',
+    'v041-video-status-labels-proof.json': '68d8b892265e0bd7058bca3f5ea498d53f2897f126ed83ed542ca1454caee2b3',
 }
 GOLDEN_TESTS = {
+    MODEL_DIR + 'RecommendationNativeCardTest.kt': 'f80b74b728572ab721f18080d562fd2af64d4c69e36f7647b1b89b92a0e930c5',
+    MODEL_DIR + 'RecommendationReasonTest.kt': 'dc417702213875a054ba74297903b763e0a27b3dad9823cc7a59bca5bc4c7427',
+    'com/android/purebilibili/navigation/HomeVideoNavigationPolicyTest.kt': '545f1a3fa95b577e4de61e79509b8178ba15047d482d349c3b87e3259be005bd',
     MODEL_DIR + 'SearchUpItemTest.kt': '1b5ba1f311cfe57f899cf2c7e6efa69c17d9c3d7b419cf8317c67f0c48c378a4',
-    MODEL_DIR + 'VideoStatusLabelsTest.kt': '5802d3ae505a73ab3eb79f31fcbd4ce961a8778f1ff0a39923e9ebad02765b92',
+    MODEL_DIR + 'VideoStatusLabelsTest.kt': '0533b4517b33f249812278c3285540aa25228a9dd3b0cd03bc2c6974361dad20',
     MODEL_DIR + 'VideoCooperationMetadataTest.kt': '7ad0dffa6f6ab350b14bd18eb294d3ec8d15cd55e4d3a99bdcc31cf3b6e2337f',
     SUPPORT_PATH: '053873ee6ce6df0dd201c4c911724f61fc068f8987db7a80690eb6f49192840b',
 }
@@ -104,7 +109,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
 
     # ------------------------------------------------------------------ real producer
     def test_actual_producer_cli_emits_only_the_pinned_files_and_is_deterministic(self):
-        self.assertEqual(dict(commit=source.COMMIT, hooks=21, mainSources=6, testSources=4,
+        self.assertEqual(dict(commit=source.COMMIT, hooks=21, mainSources=7, testSources=7,
                               proofSha256=GOLDEN_MAIN['v041-video-status-labels-proof.json']), self.summary)
         self.assertEqual(set(GOLDEN_MAIN), set(self.main))
         self.assertEqual(set(GOLDEN_TESTS), set(self.tests))
@@ -121,7 +126,8 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
     def test_six_whole_sources_are_byte_identical_to_their_pinned_archives(self):
         for name in ('VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt', 'SearchModels.kt', 'FavoriteModels.kt'):
             with self.subTest(name=name):
-                archive = search_up_followup.ARCHIVE if name == 'SearchModels.kt' else source.ARCHIVE
+                archive = (search_up_followup.ARCHIVE if name == 'SearchModels.kt' else
+                           home_native_followup.ARCHIVE if name == 'ListModels.kt' else source.ARCHIVE)
                 archived = (REPO / archive / name).read_bytes()
                 emitted = [raw for path, raw in self.main.items() if path.endswith('/' + name)]
                 self.assertEqual([archived], emitted)
@@ -129,7 +135,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
     def test_replaced_models_cover_exactly_the_four_synced_files_and_nothing_else(self):
         names = {Path(path).name for path in self.main if path.endswith('.kt')}
         self.assertEqual({'VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt',
-                          'SearchModels.kt', 'FavoriteModels.kt'}, names)
+                          'SearchModels.kt', 'FavoriteModels.kt', 'RecommendationReason.kt'}, names)
         # The unmounted charge-chip cluster and the premium pill policy are neither emitted nor hooked.
         for forbidden in ('SpaceChargeBadgePolicy', 'VideoPremiumBadgePolicy', 'resolveVideoPremiumBadgeLabel'):
             self.assertEqual([], [path for path, raw in self.main.items()
@@ -464,11 +470,15 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                 source.generate(repo, repo / 'out', repo / 'out' / 'tests')
 
     # ------------------------------------------------------------------ original tests and test support
-    def test_original_tests_are_import_only_rewrites_with_the_original_case_counts(self):
+    def test_original_tests_keep_case_counts_and_bodies_with_explicit_native_kind_expectation(self):
         for name, cases in (('VideoStatusLabelsTest.kt', 6), ('VideoCooperationMetadataTest.kt', 5)):
             with self.subTest(name=name):
                 archived = (REPO / source.ARCHIVE / name).read_text(encoding='utf-8')
                 emitted = self.tests[MODEL_DIR + name].decode('utf-8')
+                if name == 'VideoStatusLabelsTest.kt':
+                    self.assertEqual(1, emitted.count(home_native_followup.NATIVE_STATUS_EXPECTATION))
+                    emitted = emitted.replace(home_native_followup.NATIVE_STATUS_EXPECTATION,
+                                              home_native_followup.LEGACY_STATUS_EXPECTATION, 1)
                 self.assertEqual(cases, archived.count('    @Test\n'))
                 self.assertEqual(cases, emitted.count('    @Test\n'))
                 self.assertNotIn('org.junit', emitted)
@@ -552,7 +562,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
         # prepareUpstreamSources excludes these four canonical files for everyone, so a second producer (or a hook of
         # another module) for the same file would emit a duplicate declaration or silently drop this slice's hunks.
         # The follow-up helper returns verified bytes to this same producer; it never writes output.
-        own = {'v041_video_status_labels.py', 'extract-v041-video-status-labels.py', 'v043_search_up_author.py'}
+        own = {'v041_video_status_labels.py', 'extract-v041-video-status-labels.py', 'v043_search_up_author.py', 'v043_home_native_cards.py'}
         names = [Path(path).name for path in REPLACED_MODELS]
         self.assertEqual(['ListModels.kt', 'SpaceModels.kt', 'SearchModels.kt', 'FavoriteModels.kt'], names)
         for tool in sorted((REPO / 'desktop/tools').glob('*.py')):
@@ -569,7 +579,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                 roots |= {alias.name.split('.')[0] for alias in node.names}
             elif isinstance(node, ast.ImportFrom):
                 roots.add(node.module.split('.')[0])
-        self.assertEqual({'collections', 'pathlib', 'hashlib', 'json', 'os', 're', 'v025_source_paths', 'v043_search_up_author'}, roots)
+        self.assertEqual({'collections', 'pathlib', 'hashlib', 'json', 'os', 're', 'v025_source_paths', 'v043_search_up_author', 'v043_home_native_cards'}, roots)
         cli = ast.parse((REPO / 'desktop/tools/extract-v041-video-status-labels.py').read_text(encoding='utf-8'))
         cli_roots = set()
         for node in ast.walk(cli):

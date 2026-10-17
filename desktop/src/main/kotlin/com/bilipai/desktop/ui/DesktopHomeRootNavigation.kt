@@ -16,6 +16,7 @@ internal fun dispatchDesktopOriginalHomeVideo(
     onVideo: (HomeVideoNavigationIntent, String) -> Unit,
     onVideoRoute: (String, String) -> Unit,
     onDynamic: (String) -> Unit,
+    onBangumiEpisode: (Long) -> Unit,
 ): Boolean {
     val target = resolveHomeNavigationTarget(request) ?: return false
     return commitIfCurrent {
@@ -26,6 +27,7 @@ internal fun dispatchDesktopOriginalHomeVideo(
                 else onVideoRoute(target.route, request.sourceRoute ?: "home")
             }
             is HomeNavigationTarget.DynamicDetail -> onDynamic(target.dynamicId)
+            is HomeNavigationTarget.BangumiDetail -> onBangumiEpisode(target.episodeId)
         }
     }
 }

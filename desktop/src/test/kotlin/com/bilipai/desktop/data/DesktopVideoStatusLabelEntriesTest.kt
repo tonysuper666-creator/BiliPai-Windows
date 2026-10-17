@@ -178,8 +178,9 @@ class DesktopVideoStatusLabelEntriesTest {
         assertLabels(LabelEntry.MOBILE_FEED,
             // upstream VideoStatusLabelsTest: cover_right_text is the duration on AV cards
             """{"goto":"av","cover_right_text":"03:25"}""" to none,
-            """{"goto":"bangumi","cover_right_text":"独家"}""" to listOf("独家"),
-            """{"goto":"bangumi","cover_right_text":""}""" to none,
+            // Native cards also carry the original v043 kind badge, even without a server label.
+            """{"goto":"bangumi","cover_right_text":"独家"}""" to listOf("独家", "番剧"),
+            """{"goto":"bangumi","cover_right_text":""}""" to listOf("番剧"),
             """{"goto":"av","cover_right_text":"独家","rights":{"pay":1},"charging_pay":{"level":1},"badges":[{"text":"合作"}]}""" to listOf("充电专属", "合作"))
         assertLabels(LabelEntry.RECOMMEND,
             """{"id":5,"bvid":"BV1recommend5","charging_pay":{"level":3},"pgc_label":"独家","badges":[{"text":"合作"}],"rights":{"is_stein_gate":1}}""" to listOf("充电专属", "互动", "独家", "合作"))

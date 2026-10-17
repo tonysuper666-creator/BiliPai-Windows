@@ -11,6 +11,7 @@ internal enum class MpvRuntimeProbeStage {
     NATIVE_CLIENT_MESSAGE, NVIDIA_SUBMITTED_MESSAGE, NVIDIA_PRESENTATION,
     WINDOW_PREVIEW, WINDOW_UNHANDLED, NVIDIA_RECEIPT_SIZE, NVIDIA_OUTPUT_SIZE,
     NVIDIA_SYNCHRONIZATION,
+    NVIDIA_NATIVE_OUTPUT_GATE,
 }
 
 internal class MpvRuntimeProbeRecorder(
@@ -20,6 +21,16 @@ internal class MpvRuntimeProbeRecorder(
     private val counts = AtomicIntegerArray(MpvRuntimeProbeStage.entries.size)
     private data class Values(val first: Long, val second: Long, val flags: Int)
     private val latest = AtomicReferenceArray<Values?>(MpvRuntimeProbeStage.entries.size)
+    /** Fixed diagnostic emitted by the pinned swapchain; never an activation receipt. */
+    fun nvidiaOutputGate(prefix: String, text: String) {
+        if (!enabled || prefix != "vo/gpu/d3d11" || text.length > 32) return
+        val line = text.removeSuffix("\n").removeSuffix("\r")
+        val marker = "BILIPAI_RTX_PRESENT_GATE "
+        if (!line.startsWith(marker)) return
+        val word = line.substring(marker.length)
+        val gate = word.toIntOrNull()?.takeIf { it in 0..11 && word == it.toString() } ?: return
+        recordChanged(MpvRuntimeProbeStage.NVIDIA_NATIVE_OUTPUT_GATE, gate.toLong())
+    }
     /** Fixed numeric observations only; unknown native values never become log text. */
     fun nvidiaSynchronization(mode: String?, active: String?, interpolation: String?, drops: String?) {
         if (!enabled) return
@@ -57,6 +68,7 @@ internal object MpvRuntimeProbe {
     private val recorder = MpvRuntimeProbeRecorder(
         java.lang.Boolean.getBoolean("bilipai.test.runtimeProbe"), System.err::println)
     val enabled: Boolean get() = recorder.enabled
+    fun nvidiaOutputGate(prefix: String, text: String) = recorder.nvidiaOutputGate(prefix, text)
     fun nvidiaSynchronization(mode: String?, active: String?, interpolation: String?, drops: String?) =
         recorder.nvidiaSynchronization(mode, active, interpolation, drops)
     fun record(stage: MpvRuntimeProbeStage, first: Long = 0, second: Long = 0, flags: Int = 0) =
