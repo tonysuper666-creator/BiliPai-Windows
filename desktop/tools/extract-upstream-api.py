@@ -115,6 +115,10 @@ def generate_core_data_log(repo, output, parser):
 def generate(repo: Path, output: Path) -> Path:
     from v044_favorite_subscription import validate_outputs as validate_subscription_outputs
     validate_subscription_outputs(repo, output)
+    from v046_favorite_editor import validate_outputs as validate_editor_outputs
+    validate_editor_outputs(repo, output)
+    from v046_danmaku_like import validate_outputs as validate_like_outputs
+    validate_like_outputs(repo, output)
     from v044_fans import validate_outputs as validate_fans_outputs
     validate_fans_outputs(repo, output)
     source_path = _desktop_canonical_source(repo, 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt')
@@ -170,6 +174,15 @@ def generate(repo: Path, output: Path) -> Path:
     live_api_body, subscription_api_proof = advance_subscription_api(repo, live_api_body)
     (output / 'v044-favorite-subscription-api-proof.json').write_text(
         json.dumps(subscription_api_proof, ensure_ascii=False, indent=2)+'\n', encoding='utf8', newline='\n')
+    from v046_favorite_editor import advance_api as advance_editor_api, emit_response
+    live_api_body, editor_proof = advance_editor_api(repo, live_api_body)
+    editor_proof['responseDeclaration'] = emit_response(repo, output)
+    (output / 'v046-favorite-editor-api-proof.json').write_text(
+        json.dumps(editor_proof, ensure_ascii=False, indent=2)+'\n', encoding='utf8', newline='\n')
+    from v046_danmaku_like import advance_api as advance_like_api
+    live_api_body, like_proof = advance_like_api(repo, live_api_body)
+    (output / 'v046-danmaku-like-api-proof.json').write_text(
+        json.dumps(like_proof, ensure_ascii=False, indent=2)+'\n', encoding='utf8', newline='\n')
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),

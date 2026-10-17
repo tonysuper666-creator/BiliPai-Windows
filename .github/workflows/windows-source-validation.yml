@@ -102,6 +102,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Whole original seed palette and shared endpoint source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v043_theme_chrome_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v043 theme, transparent control and measured native tab closure failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v046_danmaku_like_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original v046 danmaku-like declaration and existing API ownership regressions failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v046_favorite_editor_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original folder metadata and captured editor source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_favorite_detail_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Current original favorite detail, live UI, ownership and playlist model source failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_favorite_subscription_source.py -v
@@ -118,6 +122,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Current original physical-page list paging gates and sole real callers contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_navigation_contracts_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original navigation codec and unchanged whole22-case original regression suite contract failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_windows_audio_output_focus_sources.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Physical audio lease and actual native actor wiring regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_android_backup_format_sources.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original Android backup format, official Preferences schema, retained licenses and real Root restore wiring contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_brand_history.py -v

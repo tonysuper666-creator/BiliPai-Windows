@@ -164,5 +164,105 @@ print(json.dumps(dict(args=args,classes=json.loads(raw)['classes'],sha256=hashli
                     cohort.cohort_filter_arguments(plan,repo)
 
 
+class SourceCohortProductionVersionTest(unittest.TestCase):
+    def fixture(self, root):
+        from v025_source_paths import canonical_source, canonical_relative
+        repo = Path(root)
+        real_repo = TOOL.parents[2]
+        relative = canonical_relative(real_repo, 'app/build.gradle.kts')
+        build = repo/relative; build.parent.mkdir(parents=True)
+        build.write_bytes(canonical_source(real_repo, 'app/build.gradle.kts').read_bytes())
+        meta = repo/'desktop/upstream-sources.json';meta.parent.mkdir(parents=True, exist_ok=True)
+        meta.write_text(json.dumps(dict(windowsRevision='195')), encoding='utf8')
+        props = repo/'desktop/gradle.properties'
+        props.write_text('org.gradle.workers.max=1\norg.gradle.parallel=false\norg.gradle.daemon=false\nkotlin.compiler.execution.strategy=in-process\norg.gradle.jvmargs=-Xmx4g\n', encoding='utf8')
+        plan = dict(schemaVersion=1, repository=cohort.REPOSITORY, cloudGradleHeapMaximum=cohort.CLOUD_GRADLE_HEAP,
+            classes={'com.bilipai.synthetic.Only':1}, expectedTests=1,
+            windowsVersion=cohort.actual_windows_version(repo),
+            sources=[dict(path=name, normalization='raw', sha256='') for name in [relative, 'desktop/upstream-sources.json', 'desktop/gradle.properties']])
+        self.save(repo, plan)
+        return repo, plan
+
+    def save(self, repo, plan):
+        for row in plan['sources']: row['sha256']=hashlib.sha256((repo/row['path']).read_bytes()).hexdigest()
+        path=repo/cohort.PLAN;path.parent.mkdir(parents=True, exist_ok=True);path.write_text(json.dumps(plan), encoding='utf8')
+
+    def test_real_canonical_build_and_actual_revision_match_without_subprocess(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            repo,plan=self.fixture(tmp)
+            with patch.object(cohort.subprocess,'run') as child:
+                self.assertEqual(plan,cohort.check(repo))
+            child.assert_not_called()
+            self.assertTrue(plan['windowsVersion'].endswith('.195'))
+
+    def test_plan_only_revision_change_is_rejected_before_any_build(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            repo,plan=self.fixture(tmp);plan['windowsVersion']=plan['windowsVersion'].rsplit('.',1)[0]+'.196';self.save(repo,plan)
+            with patch.object(cohort.subprocess,'run') as child, self.assertRaisesRegex(AssertionError,'Actual production Windows version differs'):
+                cohort.check(repo)
+            child.assert_not_called()
+
+    def test_manifest_only_revision_change_is_rejected_even_with_updated_input_hash(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo,plan=self.fixture(tmp)
+            (repo/'desktop/upstream-sources.json').write_text(json.dumps(dict(windowsRevision='196')),encoding='utf8');self.save(repo,plan)
+            with self.assertRaisesRegex(AssertionError,'Actual production Windows version differs'):cohort.check(repo)
+
+    def test_missing_or_null_revision_uses_the_same_existing_gradle_default(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo,plan=self.fixture(tmp)
+            for meta in [{},dict(windowsRevision=None)]:
+                (repo/'desktop/upstream-sources.json').write_text(json.dumps(meta),encoding='utf8')
+                self.assertTrue(cohort.actual_windows_version(repo).endswith('.1'))
+
+    def test_malformed_or_out_of_range_revision_cannot_reach_resource_generation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo,plan=self.fixture(tmp)
+            for value in [False,1.5,0,-1,65536,'one','1.0','']:
+                with self.subTest(value=value):
+                    (repo/'desktop/upstream-sources.json').write_text(json.dumps(dict(windowsRevision=value)),encoding='utf8')
+                    with self.assertRaisesRegex(AssertionError,'Invalid production Windows revision'):cohort.actual_windows_version(repo)
+
+    def test_changed_original_version_file_cannot_be_admitted_by_repinning_the_cohort(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo,plan=self.fixture(tmp);build=repo/plan['sources'][0]['path'];build.write_bytes(build.read_bytes()+b'\n// foreign original\n');self.save(repo,plan)
+            with self.assertRaisesRegex(ValueError,'digest mismatch'):cohort.check(repo)
+
+    def test_actual_run_entry_rejects_version_drift_before_environment_or_wrapper(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            repo,plan=self.fixture(tmp);plan['windowsVersion']='0.2.1.1';self.save(repo,plan);output=repo/'must-not-exist'
+            with patch.object(sys,'argv',['cohort','--run','--repo',str(repo),'--output',str(output)]),patch.object(cohort.subprocess,'run') as child:
+                with self.assertRaisesRegex(AssertionError,'Actual production Windows version differs'):cohort.main()
+            child.assert_not_called();self.assertFalse(output.exists())
+
+
+class SourceCohortExportFailureReceiptTest(unittest.TestCase):
+    def test_success_returns_only_the_actual_receipt_and_calls_exporter_once(self):
+        calls=[];actual=dict(schema=1,sourceSha='synthetic-only')
+        def action():calls.append(1);return actual
+        passed,receipt,error=cohort.guarded_harness_export('original-root-ui',action)
+        self.assertTrue(passed);self.assertIs(receipt,actual);self.assertIsNone(error);self.assertEqual([1],calls)
+
+    def test_failed_or_missing_export_receipt_stays_failed_and_never_publishes_flags(self):
+        import contextlib,io
+        for missing in [False,True]:
+            with self.subTest(missing=missing),tempfile.TemporaryDirectory() as tmp:
+                def action():
+                    if missing:return None
+                    raise ValueError('injected export failure')
+                with contextlib.redirect_stderr(io.StringIO()) as trace:
+                    passed,receipt,error=cohort.guarded_harness_export('original-root-ui',action)
+                self.assertFalse(passed);self.assertIsNone(receipt);self.assertEqual('original-root-ui',error['stage'])
+                self.assertIn(error['errorType'],['ValueError','AssertionError']);self.assertTrue(trace.getvalue())
+                path=Path(tmp)/'flags';cohort.write_harness_flags(path,passed,{},receipt);self.assertFalse(path.exists())
+
+    def test_process_interruption_is_never_swallowed_as_an_export_receipt(self):
+        def action():raise KeyboardInterrupt()
+        with self.assertRaises(KeyboardInterrupt):cohort.guarded_harness_export('original-root-ui',action)
+
+
 if __name__ == '__main__':
     unittest.main()

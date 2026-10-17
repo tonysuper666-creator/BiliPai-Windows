@@ -133,7 +133,8 @@
     "desktop/upstream-slices/v044-favorite-search",
     "desktop/upstream-slices/v044-favorite-subscription",
     "desktop/upstream-slices/v044-following-fans",
-    "desktop/upstream-slices/v044-list-foreground"
+    "desktop/upstream-slices/v044-list-foreground",
+    "desktop/upstream-slices/v046-favorite-editor"
   ],
   "archives": [
     {
@@ -5813,6 +5814,71 @@
           "sha256": "bd892bfffc777d1ca57931d0bfffd4a7c43ec76877cbdb876dd0f6ea4af725e0",
           "hashNormalization": "raw",
           "blob": "b178f7699297d67f050d01c2fe2cdcc54c801d77"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-favorite-editor",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/ApiClient.kt",
+          "sha256": "8a1e75f05835c62d4cfe2827855068653e117198d0bf344d85881853b4a8ed9d",
+          "hashNormalization": "raw",
+          "blob": "55a9728773945c749c95245064f1ad36d65919c6"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/CommonListScreen.kt",
+          "sha256": "5335b65726a6f0f1c594f2cc8124a4fd22b60bef9014a7ef30d9c08786b34bc8",
+          "hashNormalization": "raw",
+          "blob": "ce2d3aeef259b1cd8beba0ee24ecb7cc0533c72b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicy.kt",
+          "sha256": "cc52308ea9f972e3e03fc6ccad21621fb9926cf1d270bf5124b41c7a51bbea54",
+          "hashNormalization": "raw",
+          "blob": "e3869f7ac4ab5c38b7c4ee8d53ba32dc7fdd493d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicyTest.kt",
+          "sha256": "608cd12e6bcd0486b545a61b198fe226bafc5fb9fb071227642780804a0ae393",
+          "hashNormalization": "raw",
+          "blob": "cdc448d4e7aab3b3a7774542812fc65de5dc8348"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteModels.kt",
+          "sha256": "ffe5eb84d4dff8d88a989fd35b8690702a7744f9360dd4c4bc18fecb210ddb1d",
+          "hashNormalization": "raw",
+          "blob": "3047c3eea67aed6925432b1313bb271ee0c9fb48"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteModelsMappingTest.kt",
+          "sha256": "319eaab06644ae722606b66ae09c3579d502e5a5ed5eead4d8ca7abd9f8feb16",
+          "hashNormalization": "raw",
+          "blob": "72e29bc7e9263c667968bbfb63ce5e52b6601d61"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/FavoriteRepository.kt",
+          "sha256": "003b90e7d0c22434bb3a5775c8a608765fc6d142c3299d95d883a9b326ebdf71",
+          "hashNormalization": "raw",
+          "blob": "08c18de18ec40b4c8604571187f0517c9a7cc4db"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/ListViewModel.kt",
+          "sha256": "fdc7d1e42249ef6f64769c2f1707a0e3c7f00bcf6798abb9efb297ee581b59cb",
+          "hashNormalization": "raw",
+          "blob": "0bd0e85340533dfe0eed4b388ad7fab7ba5230c3"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-favorite-editor/manifest.json",
+          "sha256": "d735f17a1955b40ce306ac1c099331ad348d7d20f3e9d84ab8ff701b92c43107",
+          "hashNormalization": "raw",
+          "blob": "3fec2ea63d1449ab3eaa21beddd1041318769693"
         }
       ]
     }
@@ -15377,6 +15443,127 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original pure common-list pagination suite over the unchanged original owner policy, emitted by the existing Favorites test producer"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/ApiClient.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "55a9728773945c749c95245064f1ad36d65919c6",
+      "sha256": "8a1e75f05835c62d4cfe2827855068653e117198d0bf344d85881853b4a8ed9d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor",
+        "v046-danmaku-like"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained. Also the complete original v046 likeDanmaku Retrofit declaration, including its source parameters; every other existing API member is preserved."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteModels.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3047c3eea67aed6925432b1313bb271ee0c9fb48",
+      "sha256": "ffe5eb84d4dff8d88a989fd35b8690702a7744f9360dd4c4bc18fecb210ddb1d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteRepository.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "08c18de18ec40b4c8604571187f0517c9a7cc4db",
+      "sha256": "003b90e7d0c22434bb3a5775c8a608765fc6d142c3299d95d883a9b326ebdf71",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/ListViewModel.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "0bd0e85340533dfe0eed4b388ad7fab7ba5230c3",
+      "sha256": "fdc7d1e42249ef6f64769c2f1707a0e3c7f00bcf6798abb9efb297ee581b59cb",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/CommonListScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ce2d3aeef259b1cd8beba0ee24ecb7cc0533c72b",
+      "sha256": "5335b65726a6f0f1c594f2cc8124a4fd22b60bef9014a7ef30d9c08786b34bc8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteManagementPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e3869f7ac4ab5c38b7c4ee8d53ba32dc7fdd493d",
+      "sha256": "cc52308ea9f972e3e03fc6ccad21621fb9926cf1d270bf5124b41c7a51bbea54",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/FavoriteManagementPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteManagementPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "cdc448d4e7aab3b3a7774542812fc65de5dc8348",
+      "sha256": "608cd12e6bcd0486b545a61b198fe226bafc5fb9fb071227642780804a0ae393",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/model/response/FavoriteModelsMappingTest.kt",
+      "localPath": "desktop/upstream-slices/v046-favorite-editor/FavoriteModelsMappingTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "72e29bc7e9263c667968bbfb63ce5e52b6601d61",
+      "sha256": "319eaab06644ae722606b66ae09c3579d502e5a5ed5eead4d8ca7abd9f8feb16",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-favorite-editor"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original folder-info API/response and repository, captured-subject editor members/dialog, privacy policy or whole pure regression suite; existing Root/DTO owners retained."
     }
   ],
   "buildStandaloneInputs": [

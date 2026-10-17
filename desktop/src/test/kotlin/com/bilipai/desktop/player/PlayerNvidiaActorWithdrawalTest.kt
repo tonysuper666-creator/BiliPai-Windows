@@ -30,8 +30,10 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
     private val refreshNvidia = type.getDeclaredMethod("refreshNvidiaVideo", MpvNative::class.java, Pointer::class.java).apply { isAccessible = true }
     @Suppress("UNCHECKED_CAST")
     private val queue = type.getDeclaredField("commands").apply { isAccessible = true }.get(actor) as LinkedBlockingQueue<Any>
+    private val memoryLifecycle = DesktopMemoryMpvSessionLifecycle(player, actor)
     init {
         session.set(player, actor)
+        memoryLifecycle.attach()
         type.getDeclaredField("fileLoaded").apply { isAccessible = true }.setBoolean(actor, true)
         @Suppress("UNCHECKED_CAST")
         val output = field("mutableVideoOutput").get(player) as MutableStateFlow<PlayerVideoOutputState>
@@ -127,7 +129,7 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
             }
         }
     }
-    override fun close() { session.set(player, null); native.close() }
+    override fun close() = memoryLifecycle.close { session.set(player, null); native.close() }
     private fun field(name: String) = MpvPlayer::class.java.getDeclaredField(name).apply { isAccessible = true }
 }
 
