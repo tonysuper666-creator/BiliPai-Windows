@@ -4,6 +4,7 @@ import importlib.util,json,re,shutil,subprocess,sys,tempfile,unittest
 REPO=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(REPO/'desktop/tools'))
 import v044_list_foreground as foreground
+import v046_favorite_editor as editor
 from v025_source_paths import canonical_source
 
 class OriginalListForegroundSourceTest(unittest.TestCase):
@@ -16,16 +17,17 @@ class OriginalListForegroundSourceTest(unittest.TestCase):
   cls.row=next(row for row in cls.rows if row.get('v044ListForegroundAdvance'))
   cls.proof=cls.row['v044ListForegroundAdvance']
   cls.body=(cls.root/'main/com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf8')
-  cls.before=foreground.restore_predecessor(cls.body,cls.proof)
+  cls.foreground_body=editor.restore(cls.body,cls.row['v046FavoriteEditorAdvance']['retainedToCurrent'])
+  cls.before=foreground.restore_predecessor(cls.foreground_body,cls.proof)
  @classmethod
  def tearDownClass(cls):cls.temp.cleanup()
 
  def test_actual_sole_producer_has_a_complete_exact_retained_predecessor_inverse(self):
   self.assertEqual(foreground.BEFORE_UI_SHA256,foreground.sha(self.before))
   body,proof=foreground.advance_ui(REPO,self.before)
-  self.assertEqual(self.body,body);self.assertEqual(self.proof,proof)
+  self.assertEqual(self.foreground_body,body);self.assertEqual(self.proof,proof)
   actual=next(row for row in self.row['outputs'] if row['path'].endswith('/CommonListScreen.kt'))
-  self.assertEqual(foreground.sha(body),actual['sha256LfUtf8'])
+  self.assertEqual(foreground.sha(self.body),actual['sha256LfUtf8'])
 
  def test_both_paging_effects_are_complete_current_original_segments(self):
   raw=foreground.fixed_sources(REPO)[0]['CommonListScreen.kt']

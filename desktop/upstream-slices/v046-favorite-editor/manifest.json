@@ -1,0 +1,85 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "filename": "ApiClient.kt",
+      "bytes": 155454,
+      "sha256": "8a1e75f05835c62d4cfe2827855068653e117198d0bf344d85881853b4a8ed9d",
+      "gitBlob": "55a9728773945c749c95245064f1ad36d65919c6"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+      "filename": "FavoriteModels.kt",
+      "bytes": 6194,
+      "sha256": "ffe5eb84d4dff8d88a989fd35b8690702a7744f9360dd4c4bc18fecb210ddb1d",
+      "gitBlob": "3047c3eea67aed6925432b1313bb271ee0c9fb48"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "filename": "FavoriteRepository.kt",
+      "bytes": 16211,
+      "sha256": "003b90e7d0c22434bb3a5775c8a608765fc6d142c3299d95d883a9b326ebdf71",
+      "gitBlob": "08c18de18ec40b4c8604571187f0517c9a7cc4db"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "filename": "ListViewModel.kt",
+      "bytes": 85821,
+      "sha256": "fdc7d1e42249ef6f64769c2f1707a0e3c7f00bcf6798abb9efb297ee581b59cb",
+      "gitBlob": "0bd0e85340533dfe0eed4b388ad7fab7ba5230c3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "filename": "CommonListScreen.kt",
+      "bytes": 193553,
+      "sha256": "5335b65726a6f0f1c594f2cc8124a4fd22b60bef9014a7ef30d9c08786b34bc8",
+      "gitBlob": "ce2d3aeef259b1cd8beba0ee24ecb7cc0533c72b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteManagementPolicy.kt",
+      "filename": "FavoriteManagementPolicy.kt",
+      "bytes": 948,
+      "sha256": "cc52308ea9f972e3e03fc6ccad21621fb9926cf1d270bf5124b41c7a51bbea54",
+      "gitBlob": "e3869f7ac4ab5c38b7c4ee8d53ba32dc7fdd493d"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/list/FavoriteManagementPolicyTest.kt",
+      "filename": "FavoriteManagementPolicyTest.kt",
+      "bytes": 2407,
+      "sha256": "608cd12e6bcd0486b545a61b198fe226bafc5fb9fb071227642780804a0ae393",
+      "gitBlob": "cdc448d4e7aab3b3a7774542812fc65de5dc8348"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/model/response/FavoriteModelsMappingTest.kt",
+      "filename": "FavoriteModelsMappingTest.kt",
+      "bytes": 5609,
+      "sha256": "319eaab06644ae722606b66ae09c3579d502e5a5ed5eead4d8ca7abd9f8feb16",
+      "gitBlob": "72e29bc7e9263c667968bbfb63ce5e52b6601d61"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "beforeFinalOutputs": {
+    "feature/list/CommonListScreen.kt": {
+      "sha256": "d3dda3f0ad3a4b9a9fe4fc69c165ab3d1e5cfb5ea6d103ff1ccf1c957ee0baf9"
+    },
+    "feature/list/DesktopOriginalListViewModels.kt": {
+      "sha256": "823f1adc3711726cc4a0c79cd6b5847d9c48e4e2094031a5fb4f8ab72eec8b34"
+    },
+    "data/repository/DesktopOriginalFavoriteRepository.kt": {
+      "sha256": "782274bdc88992a784cfb32e1932bad8820613bae8c3f8b34e30136093b4f1eb"
+    },
+    "data/model/response/FavoriteModels.kt": {
+      "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534",
+      "soleInstalledProducer": "v041_video_status_labels.py; retain its current DTOs and emit only the new whole original FavoriteInfoResponse declaration from the API producer"
+    }
+  },
+  "currentWindowsParent": "5215ac2c8730e6150fa3cc74a909d1ce2e96d5c0",
+  "fullStableParityQualified": false
+}

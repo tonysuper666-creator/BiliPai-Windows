@@ -334,7 +334,10 @@ def generate_ui(repo,output,original,shared,emit,changes):
     body=dialog_delta(repo,output,original[path],body)
     emit('com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt',body)
     retained(path,body,'Full original input renderer/policies/mention/emotes/skin/draft/sync/9 images; owned existing Windows picker replaces ActivityResult, measured viewport replaces Android configuration and Android-only dialog inset flag is omitted.')
-    path=BASE+'feature/video/ui/components/CommentSortFilterBar.kt';body=original[path]
+    from v046_comment_chrome import advance_sort_source, emit_tests as emit_comment_chrome_tests
+    path=BASE+'feature/video/ui/components/CommentSortFilterBar.kt'
+    body=advance_sort_source(repo,original[path],output,'header')
+    emit_comment_chrome_tests(repo,output)
     end=body.index('/**\n * 评论排序分段控件，放置在详情页顶栏')
     body=body[:end] # Complete original CommentSortHeader + every pure helper it consumes.
     body=replace_once(body,'import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl\n','')

@@ -97,6 +97,55 @@ def write_harness_flags(path, passed, updater, ui):
     if flags:
         with open(path, 'a', encoding='utf-8') as stream: stream.writelines(flags)
 
+def actual_windows_version(repo):
+    """The same canonical build source and revision used by desktop/build.gradle.kts."""
+    from v025_source_paths import canonical_source
+    manifest = json.loads(read(repo / 'desktop/upstream-sources.json'))
+    original = read(canonical_source(repo, 'app/build.gradle.kts')).decode('utf-8')
+    code = re.search(r'versionCode\s*=\s*(\d+)', original)
+    revision = manifest.get('windowsRevision')
+    if revision is None: revision = '1'
+    assert type(revision) in (str, int) and re.fullmatch(r'[1-9][0-9]*', str(revision)) and int(revision) <= 65535, 'Invalid production Windows revision'
+    return '0.2.' + (code.group(1) if code else '406') + '.' + str(revision)
+
+
+def export_updater_fixture(repo, output, source_sha, started):
+    helper = repo / 'desktop/tools/export-packaged-updater-harness.py'
+    spec = importlib.util.spec_from_file_location('qualified_updater_harness_export', helper)
+    exporter = importlib.util.module_from_spec(spec); spec.loader.exec_module(exporter)
+    manifest = exporter.export(repo, json.loads(read(output / 'updater-harness-inputs.json')),
+        output / 'updater-harness', source_sha, started)
+    return dict(schema=1, sourceSha=source_sha,
+        manifestSha256=exporter.digest(output / 'updater-harness/manifest.json'),
+        payloadFiles=len(manifest['payload']), payloadBytes=sum(row['bytes'] for row in manifest['payload']),
+        updaterE2EExecuted=False, applicationExecuted=False)
+
+
+def export_original_ui_fixture(repo, output, source_sha, started):
+    helper = repo / 'desktop/tools/export-original-root-ui-harness.py'
+    spec = importlib.util.spec_from_file_location('qualified_original_root_ui_harness_export', helper)
+    exporter = importlib.util.module_from_spec(spec); spec.loader.exec_module(exporter)
+    manifest = exporter.export(repo, json.loads(read(output / 'original-root-ui-harness-inputs.json')),
+        output / 'original-root-ui-harness', source_sha, started)
+    return dict(schema=1, sourceSha=source_sha,
+        manifestSha256=digest(read(output / 'original-root-ui-harness/manifest.json')),
+        payloadFiles=len(manifest['payload']), payloadBytes=sum(row['bytes'] for row in manifest['payload']),
+        productionRuntimeBindingRequired=True, productionClassesExported=False,
+        applicationExecuted=False, hardwareExecuted=False)
+
+
+def guarded_harness_export(stage, action):
+    """An export failure still seals the actual XML, but can never qualify a build."""
+    try:
+        result = action()
+        assert isinstance(result, dict), 'Harness export produced no receipt'
+        return True, result, None
+    except Exception as error:
+        import traceback
+        traceback.print_exc()
+        return False, None, dict(stage=stage, errorType=type(error).__name__, message=str(error)[:1024])
+
+
 def check(repo):
     plan = json.loads(read(repo / PLAN))
     assert plan['repository'] == REPOSITORY and plan['schemaVersion'] == 1
@@ -109,6 +158,7 @@ def check(repo):
         path = Path(row['path'])
         assert not path.is_absolute() and '..' not in path.parts
         assert source_digest(repo, row) == row['sha256'], row['path']
+    assert plan['windowsVersion'] == actual_windows_version(repo), 'Actual production Windows version differs from the frozen plan'
     properties = read(repo / 'desktop/gradle.properties').decode()
     assert 'org.gradle.workers.max=1' in properties
     assert 'org.gradle.parallel=false' in properties
@@ -183,28 +233,16 @@ def main():
         else: passed = False
         suites.append(row)
     harness = None
-    if passed and export_harness:
-        helper = repo / 'desktop/tools/export-packaged-updater-harness.py'
-        spec = importlib.util.spec_from_file_location('qualified_updater_harness_export', helper)
-        exporter = importlib.util.module_from_spec(spec); spec.loader.exec_module(exporter)
-        manifest = exporter.export(repo, json.loads(read(output / 'updater-harness-inputs.json')),
-            output / 'updater-harness', sha, started)
-        harness = dict(schema=1, sourceSha=sha,
-            manifestSha256=exporter.digest(output / 'updater-harness/manifest.json'),
-            payloadFiles=len(manifest['payload']), payloadBytes=sum(row['bytes'] for row in manifest['payload']),
-            updaterE2EExecuted=False, applicationExecuted=False)
     ui_harness = None
+    export_errors = []
+    if passed and export_harness:
+        passed, harness, error = guarded_harness_export('packaged-updater',
+            lambda: export_updater_fixture(repo, output, sha, started))
+        if error is not None: export_errors.append(error)
     if passed and export_ui:
-        helper = repo / 'desktop/tools/export-original-root-ui-harness.py'
-        spec = importlib.util.spec_from_file_location('qualified_original_root_ui_harness_export', helper)
-        exporter = importlib.util.module_from_spec(spec); spec.loader.exec_module(exporter)
-        manifest = exporter.export(repo, json.loads(read(output / 'original-root-ui-harness-inputs.json')),
-            output / 'original-root-ui-harness', sha, started)
-        ui_harness = dict(schema=1, sourceSha=sha,
-            manifestSha256=digest(read(output / 'original-root-ui-harness/manifest.json')),
-            payloadFiles=len(manifest['payload']), payloadBytes=sum(row['bytes'] for row in manifest['payload']),
-            productionRuntimeBindingRequired=True, productionClassesExported=False,
-            applicationExecuted=False, hardwareExecuted=False)
+        passed, ui_harness, error = guarded_harness_export('original-root-ui',
+            lambda: export_original_ui_fixture(repo, output, sha, started))
+        if error is not None: export_errors.append(error)
     after = {row['path']: source_digest(repo, row) for row in plan['sources']}
     passed &= before == after
     receipt = dict(passed=bool(passed), sourceSha=sha, baseHead=plan['baseHead'],
@@ -213,6 +251,7 @@ def main():
         expectedTests=plan['expectedTests'], standardRunner='windows-latest',
         cloudGradleHeapMaximum=CLOUD_GRADLE_HEAP, localGradleHeapMaximum='4g',
         applicationExecuted=False, hardwareExecuted=False, packageBuilt=False, published=False)
+    if export_errors: receipt['harnessExportErrors'] = export_errors
     if harness is not None: receipt['updaterHarnessExport'] = harness
     if ui_harness is not None: receipt['originalRootUiHarnessExport'] = ui_harness
     (output / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')

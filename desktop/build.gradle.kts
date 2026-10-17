@@ -222,6 +222,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt"))
+        // The existing Favorites producer now emits the complete current management/privacy policy.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/list/FavoriteManagementPolicy.kt"))
         // These three complete fixed v031 sources have one producer in the existing detail output.
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt"))
@@ -280,6 +282,9 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
 }
 
 val extractUpstreamApi by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_danmaku_like.py")
+    inputs.file("tools/v046_favorite_editor.py")
+    inputs.dir("upstream-slices/v046-favorite-editor")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
     inputs.file("tools/v044_fans.py")
@@ -1493,6 +1498,8 @@ val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
 }
 
 val extractBgmDetail by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_comment_chrome.py")
+    inputs.dir("upstream-slices/v046-comment-chrome")
     inputs.files("tools/v029_comment_composer.py", "tools/v029_comment_search.py")
     inputs.dir("upstream-slices/v029-comment-composer")
     dependsOn(prepareUpstreamSources)
@@ -1540,6 +1547,8 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 
 val extractOriginalFavorites by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_favorite_editor.py")
+    inputs.dir("upstream-slices/v046-favorite-editor")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
     inputs.file("tools/v044_fans.py")
@@ -2778,6 +2787,8 @@ dependencies {
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc14")
 }
 val extractOriginalVideoContentFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_comment_chrome.py")
+    inputs.dir("upstream-slices/v046-comment-chrome")
     inputs.file("tools/v036_video_comment_viewport.py")
     inputs.dir("upstream-slices/v036-video-comment-viewport")
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalPlayerFullControls)
@@ -4192,3 +4203,6 @@ tasks.matching { it.name in setOf("extractOriginalPlayerFullControls", "extractO
     inputs.file("tools/v042_player_readability.py")
     inputs.dir("upstream-slices/v042-player-readability")
 }
+
+// The existing BGM owner emits the complete retained v046 shared chrome policy tests.
+sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/bgm-detail/test")) }

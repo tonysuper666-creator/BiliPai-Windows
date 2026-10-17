@@ -76,7 +76,12 @@ class OriginalNativeFansSourceTest(unittest.TestCase):
         self.assertIn('@Query("ps") ps: Int = 20', proof['originalMethod'])
         self.assertIn('@Query("order_type") orderType: String = "attention"', proof['originalMethod'])
         declarations = body.split('import okhttp3.ResponseBody\n\n', 1)[1].removesuffix('\n')
-        before = undo(declarations, proof['retainedToCurrent'])
+        from v046_danmaku_like import restore
+        like_proof = json.loads((self.root/'api/v046-danmaku-like-api-proof.json').read_bytes())
+        editor_proof = json.loads((self.root/'api/v046-favorite-editor-api-proof.json').read_bytes())
+        editor_stage = restore(declarations, like_proof['retainedToCurrent'])
+        fans_stage = restore(editor_stage, editor_proof['retainedToCurrent'])
+        before = undo(fans_stage, proof['retainedToCurrent'])
         self.assertNotIn('suspend fun getFollowers(', before)
         self.assertIn('suspend fun favoriteFolder(', before)
         self.assertIn('suspend fun unfavoriteFolder(', before)

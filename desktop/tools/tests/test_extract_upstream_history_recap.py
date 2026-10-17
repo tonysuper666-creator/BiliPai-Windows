@@ -69,7 +69,8 @@ class HistoryRecapProducerTest(unittest.TestCase):
   for rel,body in [('feature/list/ListViewModel',model),('feature/list/CommonListScreen',screen)]:
    raw=history.load_raw(rel)
    row=next(r for r in self.rows if r['path'].endswith('/'+rel+'.kt'))
-   audit=row['historyGeneratedAdaptation']
+   # Validate the final emitted body, including cover/tab/v044/v046 layers.
+   audit=row['historyFinalGeneratedAdaptation']
    self.assertEqual(sha(body),audit['generatedSha256LfUtf8'])
    restored=self.inverse(body,audit['edits'])
    self.assertEqual(raw,restored)

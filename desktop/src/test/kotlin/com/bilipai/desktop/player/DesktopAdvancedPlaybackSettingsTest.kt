@@ -83,12 +83,13 @@ private class DormantActor(val player: MpvPlayer) : AutoCloseable {
     private val perform = clazz.getDeclaredMethod("perform", MpvNative::class.java, Pointer::class.java, actionClass).apply { isAccessible = true }
     @Suppress("UNCHECKED_CAST")
     private val queue = clazz.getDeclaredField("commands").apply { isAccessible = true }.get(actor) as LinkedBlockingQueue<Any>
-    init { sessionField.set(player, actor) }
+    private val memoryLifecycle = DesktopMemoryMpvSessionLifecycle(player, actor)
+    init { sessionField.set(player, actor); memoryLifecycle.attach() }
     fun execute(action: Any) { perform.invoke(actor, native, Pointer(1L), action) }
     fun queued(): Any = requireNotNull(queue.poll())
     fun drain() { while (true) execute(queue.poll() ?: break) }
     fun loaded() { clazz.getDeclaredField("fileLoaded").apply { isAccessible = true }.setBoolean(actor, true) }
-    override fun close() { sessionField.set(player, null) }
+    override fun close() = memoryLifecycle.close { sessionField.set(player, null) }
 }
 private class ActorNative : MpvNative {
     val properties = mutableListOf<Pair<String, String>>()

@@ -83,6 +83,9 @@ class OriginalFavoriteSearchSourceTest(unittest.TestCase):
         row = next(row for row in self.inventory if any(q['path'].endswith('/CommonListScreen.kt') for q in row['outputs']))
         proof = row['v044FavoriteSubscriptionUiAdvance']['originalSearchNavigation']
         from v044_list_foreground import restore_predecessor
+        from v046_favorite_editor import restore as restore_editor_predecessor
+        if row.get('v046FavoriteEditorAdvance'):
+            body = restore_editor_predecessor(body, row['v046FavoriteEditorAdvance']['retainedToCurrent'])
         if row.get('v044ListForegroundAdvance'): body = restore_predecessor(body, row['v044ListForegroundAdvance'])
         self.assertEqual(search.BASE_UI_SHA256, search.sha(undo(body, proof['retainedToCurrent'])))
         for segment in proof['originalCallbackSegments']:
