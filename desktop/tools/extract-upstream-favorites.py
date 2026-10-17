@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v035_favorite_cover import selected_source as favorite_cover_source, additional_leaf_sources as favorite_cover_leaf_sources, apply_and_record as apply_favorite_cover
+from v044_favorite_detail import selected_source as detail_source, bind_viewmodel as bind_detail_viewmodel, viewmodel_proof as detail_viewmodel_proof, validate_outputs as validate_detail_outputs
 from pathlib import Path
 import hashlib, importlib.util, json, re, subprocess
 HERE=Path(__file__).resolve().parent
@@ -28,7 +29,7 @@ def source(rel):
   s,row=selected_source(rel);records.append(row);return s
  if rel in {'feature/list/ListViewModel','feature/list/CommonListScreen','feature/common/ListLoadError'}:
   from v029_brand_history import selected_source
-  s,row=selected_source(rel);records.append(row);return s
+  s,row=selected_source(rel);s,row=detail_source(REPO,rel,s,row);records.append(row);return s
  path=BASE+rel+'.kt';s=read(_desktop_canonical_source(REPO, path))
  path=_desktop_canonical_source(REPO,path).relative_to(REPO).as_posix()
  blob=subprocess.check_output(['git','show','79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40:'+path],cwd=REPO)
@@ -36,6 +37,7 @@ def source(rel):
  records.append(dict(path=path,upstreamCommit='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40',sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest()))
  from v041_video_status_personal_consumers import apply as apply_personal_status
  s=apply_personal_status(REPO,BASE+rel+'.kt',s,OUT)
+ s,records[-1]=detail_source(REPO,rel,s,records[-1])
  return s
 def output(rel,s,mode):
  s=re.sub(r'(\banimate\(\s*)initial\s*=',r'\1initialValue =',s)
@@ -51,6 +53,13 @@ def output(rel,s,mode):
  if coverAudit is not None:records[-1]['windowsFavoriteCoverAdaptation']=coverAudit
  from v037_tab_roles import apply as apply_tab_roles
  s=apply_tab_roles(BASE+rel+".kt",s,OUT,Path(rel).name)
+ if rel=='feature/list/CommonListScreen':
+  from v044_favorite_detail import ui_source_after_platform
+  s,detailUiAudit=ui_source_after_platform(REPO,s);records[-1]['v044FavoriteDetailUiAdvance']=detailUiAudit
+ if records[-1].get('historySourceAdaptation'):
+  from v029_brand_history import generated_audit
+  originalRel={'feature/list/DesktopOriginalListViewModels':'feature/list/ListViewModel'}.get(rel,rel)
+  records[-1]['historyFinalGeneratedAdaptation']=generated_audit(originalRel,s)
  emit('com/android/purebilibili/'+rel+'.kt',s)
  records[-1].update(output='com/android/purebilibili/'+rel+'.kt',selection=mode,outputSha256=hashlib.sha256(s.encode()).hexdigest())
 def rmfun(s,name):
@@ -173,6 +182,8 @@ def produce():
  s=toast(s);s=drop_logs(s);output('feature/list/DesktopOriginalListViewModels',s,'full original Base/Favorite/History/Liked algorithms; lifecycle/environment aliases, Android factory omitted; history/liked not mounted by favorites host')
  s=source('feature/space/SeasonSeriesDetailViewModel');s=s.replace('import android.app.Application\n','').replace('import androidx.lifecycle.viewModelScope\n','').replace('import com.android.purebilibili.core.network.NetworkModule\n','').replace('import com.android.purebilibili.data.repository.FavoriteRepository\n','')
  s=s.replace('application: Application','environment: com.android.purebilibili.feature.list.DesktopFavoriteEnvironment').replace('BaseListViewModel(application,','BaseListViewModel(environment,').replace('NetworkModule.spaceApi','environment.spaceApi').replace('FavoriteRepository.','environment.favorite.')
+ s=toast(bind_detail_viewmodel(REPO,s))
+ records[-1]['v044FavoriteDetailPlatformBinding']=detail_viewmodel_proof(REPO,s)
  output('feature/space/SeasonSeriesDetailViewModel',s,'entire original collection/favorite/favorite-season detail VM; same environment/scope')
  s=source('feature/list/FavoriteCategoryScreen');s=s.replace('import android.app.Application\n','').replace('import androidx.lifecycle.AndroidViewModel\n','').replace('import androidx.lifecycle.viewModelScope\n','').replace('import androidx.lifecycle.viewmodel.compose.viewModel\n','').replace('import com.android.purebilibili.data.repository.BangumiRepository\n','').replace('import com.android.purebilibili.data.repository.PersonalFavoriteRepository\n','')
  s=s.replace('application: Application','environment: DesktopFavoriteEnvironment').replace('AndroidViewModel(application)','DesktopFavoriteScopedOwner(environment)').replace('BangumiRepository.','environment.pgc.').replace('PersonalFavoriteRepository.','environment.personal.')
@@ -287,6 +298,7 @@ def produce():
 
 def generate(repo:Path,output:Path,standalone=False):
  global REPO,OUT,parser,records,STANDALONE
+ validate_detail_outputs(repo,output)
  REPO=repo.resolve();OUT=output.resolve();STANDALONE=standalone;records=[]
  spec=importlib.util.spec_from_file_location('source_parser',REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
  parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
@@ -297,7 +309,7 @@ def generate(repo:Path,output:Path,standalone=False):
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   if row.get('windowsBrandSuccessAdaptation'):entry['windowsBrandSuccessAdaptation']=row['windowsBrandSuccessAdaptation']
   if row.get('windowsHistoryReadSourceAdaptation'):entry['windowsHistoryReadSourceAdaptation']=row['windowsHistoryReadSourceAdaptation']
-  for key in ['historySourceAdaptation','historyGeneratedAdaptation','rawSha256Bytes','gitBlob']:
+  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding']:
    if key in row:entry[key]=row[key]
   if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])

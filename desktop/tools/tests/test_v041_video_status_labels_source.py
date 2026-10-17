@@ -569,6 +569,23 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
             if tool.name not in own:
                 with self.subTest(tool=tool.name):
                     text = tool.read_text(encoding='utf-8')
+                    if tool.name == 'v044_favorite_detail.py':
+                        # The complete FavoriteModels archive is reference only.
+                        # Permit exactly its fixed input-set literal, never a
+                        # model selector, output name or second model producer.
+                        tree_ = ast.parse(text)
+                        assignments = [node for node in tree_.body if isinstance(node, ast.Assign)
+                                       and any(isinstance(target, ast.Name) and target.id == 'EXPECTED'
+                                               for target in node.targets)]
+                        self.assertEqual(1, len(assignments))
+                        expected = ast.literal_eval(assignments[0].value)
+                        self.assertIn('FavoriteModels.kt', expected)
+                        literals = [node for node in ast.walk(tree_) if isinstance(node, ast.Constant)
+                                    and isinstance(node.value, str) and 'FavoriteModels.kt' in node.value]
+                        self.assertEqual(1, len(literals))
+                        self.assertIn(literals[0], list(ast.walk(assignments[0].value)))
+                        self.assertEqual('FavoriteModels.kt', literals[0].value)
+                        text = text.replace("'FavoriteModels.kt'", "''", 1)
                     self.assertEqual([], [name for name in names if name in text])
 
     def test_hook_module_imports_only_the_declared_helper_and_standard_modules(self):
