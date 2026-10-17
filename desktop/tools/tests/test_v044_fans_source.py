@@ -102,7 +102,7 @@ class OriginalNativeFansSourceTest(unittest.TestCase):
         self.assertIn('if(key.fans) fansViewModel=FansListViewModel(key.mid,environment)', host)
         self.assertIn('else viewModel=FollowingListViewModel(environment)', host)
         self.assertIn('if(entry.key.fans) FansListScreen(', host)
-        self.assertIn('entry.fansViewModel,isCurrentPage)', host)
+        self.assertIn('entry.fansViewModel,foreground)', host)
         self.assertIn('if(closed.compareAndSet(false,true))job.cancel()', host)
         shell = (REPO/'desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt').read_text(encoding='utf8')
         self.assertIn('onFansClick={mid->commands.push(BiliPaiNavKey.Following(mid,fans=true))}', shell)

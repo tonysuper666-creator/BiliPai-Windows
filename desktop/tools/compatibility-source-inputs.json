@@ -15293,11 +15293,12 @@
       "hashNormalization": "raw",
       "kind": "adaptedSource",
       "features": [
-        "v044-native-fans"
+        "v044-native-fans",
+        "windows-following-physical-foreground"
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Complete native fans state, ViewModel and UI; platform lifecycle/API supplied by existing Root entry"
+      "usedScope": "Complete native fans state, ViewModel and UI; platform lifecycle/API supplied by existing Root entry; actual enclosing-window foreground is retained by the existing host and binds UI paging triggers."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
@@ -15309,11 +15310,12 @@
       "kind": "adaptedSource",
       "features": [
         "v044-native-fans",
-        "v044-following-on-demand"
+        "v044-following-on-demand",
+        "windows-following-physical-foreground"
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole current original Following VM/UI or group/pagination policy with existing Windows owner/cache/API bindings"
+      "usedScope": "Whole current original Following VM/UI or group/pagination policy with existing Windows owner/cache/API bindings; actual enclosing-window foreground is retained by the existing host and binds UI paging triggers."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",

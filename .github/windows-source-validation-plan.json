@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "202026284421eeb5e508ca1286cd70ccb70c1bf7",
-  "windowsVersion": "0.2.427.187",
-  "createdAt": "2026-10-17T16:47:24.990418+00:00",
+  "baseHead": "89b776ebd8df49f090c3180e375c87d7cda04fe5",
+  "windowsVersion": "0.2.427.188",
+  "createdAt": "2026-10-17T17:13:43.053958+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -593,7 +593,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
       "normalization": "lf",
-      "sha256": "0027fff8ddce8b1cebb8e7b32e15137782568007336b2a0d7d63bb8ffa98979b"
+      "sha256": "32bfe72651962542bdd8eec0c154e60dceaa4141c73c4038ca472087a5c11c6e"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
@@ -1613,7 +1613,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "ca7857b78790075d1abe657450351c273539bbcd2d25d29ec883e324d02317b5"
+      "sha256": "00aded98c08b0011b5c10bc2cde0eff7914c091449154c7a2486903075477f3b"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1968,7 +1968,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "ccabe96d869a296b7866ecf695cf6a3c5398be8ea561307fb121e60f27ffea32"
+      "sha256": "090d3d84c98b88a5bd57452bab784b7a53bf8bd655a4351f3d5b64b49a1bcbd0"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -2388,7 +2388,7 @@
     {
       "path": "desktop/tools/tests/test_v044_fans_source.py",
       "normalization": "lf",
-      "sha256": "7d10b04479ad271f14a80018978d87bd5253969601c4d049a40d267335a43d4a"
+      "sha256": "2962f62e347eb3e764242f73362004b422bb7dbea540781c0ce06537d4e5a666"
     },
     {
       "path": "desktop/tools/tests/test_v044_favorite_detail_source.py",
@@ -2408,7 +2408,7 @@
     {
       "path": "desktop/tools/tests/test_v044_following_source.py",
       "normalization": "lf",
-      "sha256": "49374cc7b0d715fc4e9a212fc9d22ed713df0651df7f6e80b5100ac6cc2ea334"
+      "sha256": "f245f4d1e1c45ba47887f120ef80cec58b01cc0d1a23fcf677a494d9dd9e5697"
     },
     {
       "path": "desktop/tools/tests/test_v044_list_foreground_source.py",
@@ -2758,7 +2758,7 @@
     {
       "path": "desktop/tools/v044_following.py",
       "normalization": "lf",
-      "sha256": "b64a0d81abbf0d5d31df0a45c6c3879d6a70e08bd8bb21b89f0ba32c2583e698"
+      "sha256": "035a863cd91a845e40929bcc0a026964e33ba2527965fb0fb2e908f5560b9d72"
     },
     {
       "path": "desktop/tools/v044_list_foreground.py",
@@ -4518,7 +4518,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "44fe31b7d6d64d35a8d53d4966452de839a641b35df71bae355eefbbb79441a2"
+      "sha256": "a3e1a56868492adc0a8211c5ea6fee78c62bc18039e4708a63abda8f822d63fd"
     }
   ],
   "classes": {
@@ -4660,23 +4660,12 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    ".github/workflows/windows-source-validation.yml",
-    "desktop/build.gradle.kts",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-upstream-favorites.py",
     "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_extract_upstream_brand_callers.py",
-    "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v044_favorite_detail_source.py",
-    "desktop/tools/tests/test_v044_favorite_search_source.py",
-    "desktop/tools/tests/test_v044_favorite_subscription_source.py",
-    "desktop/tools/tests/test_v044_list_foreground_source.py",
-    "desktop/tools/tests/test_v044_navigation_contracts_source.py",
-    "desktop/tools/v044_favorite_search.py",
-    "desktop/tools/v044_list_foreground.py",
-    "desktop/tools/v044_navigation_contracts.py",
-    "desktop/upstream-slices/v044-list-foreground/CommonListPaginationPolicyTest.kt",
-    "desktop/upstream-slices/v044-list-foreground/manifest.json",
+    "desktop/tools/tests/test_v044_fans_source.py",
+    "desktop/tools/tests/test_v044_following_source.py",
+    "desktop/tools/v044_following.py",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

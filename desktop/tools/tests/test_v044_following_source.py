@@ -69,10 +69,10 @@ class WholeOriginalFollowingSourceTest(unittest.TestCase):
 
     def test_current_user_interface_keeps_explicit_full_search_and_native_fans_callbacks(self):
         self.assertIn('搜索已加载 UP 主（全量请点加载全部）', self.body)
-        self.assertIn('AppTextButton(onClick = { viewModel.loadAllForSearch() })', self.body)
+        self.assertIn('AppTextButton(onClick = { if (active) viewModel.loadAllForSearch() })', self.body)
         self.assertIn('onFansClick = { onFansClick(user.mid) }', self.body)
         host = (REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt').read_text(encoding='utf8')
-        self.assertIn('{mid->if(entry.owns())onFansClick(mid)},entry.viewModel)', host)
+        self.assertIn('{mid->if(entry.owns() && foreground)onFansClick(mid)},entry.viewModel,foreground)', host)
 
     def test_current_group_policy_and_22_original_pure_cases_are_emitted_verbatim(self):
         raw = following.fixed(REPO)
@@ -97,6 +97,29 @@ class WholeOriginalFollowingSourceTest(unittest.TestCase):
             self.assertFalse(row['referenceOnly'])
             self.assertFalse(row['partialReuse'])
             self.assertEqual(following.COMMIT, row['upstreamCommit'])
+
+    def test_initial_and_automatic_paging_observe_actual_foreground_without_a_new_owner(self):
+        self.assertIn('    active: Boolean\n', self.body)
+        self.assertIn('LaunchedEffect(mid, active) {\n        if (active) viewModel.loadFollowingList(mid)', self.body)
+        self.assertIn('LaunchedEffect(user.mid, filteredUsers.size, active)', self.body)
+        self.assertIn('if (active && user.mid == filteredUsers.lastOrNull()?.mid && searchQuery.isBlank())', self.body)
+        self.assertIn('if (active && !isPullRefreshing)', self.body)
+        self.assertIn('.clickable { if (active) viewModel.loadMore() }', self.body)
+        self.assertTrue(self.proof['rootPhysicalForegroundBound'])
+        self.assertTrue(self.proof['existingRetainedScopeApiAndActionsUsed'])
+
+    def test_real_host_retains_enclosing_window_visibility_for_following_and_fans(self):
+        host = (REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt').read_text(encoding='utf8')
+        binding = 'val foreground = isCurrentPage && LocalDesktopDetailForeground.current'
+        self.assertIn(binding, host)
+        self.assertLess(host.index(binding), host.index('CompositionLocalProvider'))
+        self.assertIn('LocalDesktopDetailForeground provides foreground', host)
+        self.assertNotIn('LocalDesktopDetailForeground provides isCurrentPage', host)
+        self.assertIn('entry.fansViewModel,foreground)', host)
+        self.assertIn('entry.viewModel,foreground)', host)
+        self.assertEqual(6, host.count('if(entry.owns() && foreground)'))
+        shell = (REPO/'desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt').read_text(encoding='utf8')
+        self.assertIn('LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)', shell)
 
 if __name__ == '__main__':
     unittest.main()

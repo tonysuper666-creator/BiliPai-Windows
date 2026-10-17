@@ -21,7 +21,20 @@ def bind_screen(repo, drop_logs):
     replace('import kotlinx.coroutines.Job\n', 'import kotlinx.coroutines.Job\nimport kotlinx.coroutines.ensureActive\n')
     replace('class FollowingListViewModel : ViewModel() {',
             'class FollowingListViewModel(environment: DesktopFollowingEnvironment) : DesktopFollowingScopedOwner(environment) {')
-    replace('viewModel: FollowingListViewModel = viewModel()', 'viewModel: FollowingListViewModel')
+    replace('viewModel: FollowingListViewModel = viewModel()', 'viewModel: FollowingListViewModel,\n    active: Boolean')
+    # The retained Root supplies actual page AND enclosing-window visibility.
+    # Only UI request triggers pause; already-owned requests keep their state.
+    replace('    LaunchedEffect(mid) {\n        viewModel.loadFollowingList(mid)\n    }',
+            '    LaunchedEffect(mid, active) {\n        if (active) viewModel.loadFollowingList(mid)\n    }')
+    replace('LaunchedEffect(user.mid, filteredUsers.size)', 'LaunchedEffect(user.mid, filteredUsers.size, active)')
+    replace('if (user.mid == filteredUsers.lastOrNull()?.mid && searchQuery.isBlank())',
+            'if (active && user.mid == filteredUsers.lastOrNull()?.mid && searchQuery.isBlank())')
+    replace('if (!isPullRefreshing)', 'if (active && !isPullRefreshing)')
+    replace('AppButton(onClick = { viewModel.loadFollowingList(mid, forceRefresh = true) })',
+            'AppButton(onClick = { if (active) viewModel.loadFollowingList(mid, forceRefresh = true) })')
+    replace('AppTextButton(onClick = { viewModel.loadAllForSearch() })',
+            'AppTextButton(onClick = { if (active) viewModel.loadAllForSearch() })')
+    replace('.clickable { viewModel.loadMore() }', '.clickable { if (active) viewModel.loadMore() }')
     need(body.count('NetworkModule.api.getFollowings(') == 2, 'Original following request topology changed')
     body = body.replace('NetworkModule.api.getFollowings(', 'environment.getFollowings(')
     replace('NetworkModule.appContext ?: return false', 'environment.cacheContext')
@@ -64,7 +77,7 @@ def bind_screen(repo, drop_logs):
     return body, dict(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256,
         completeOriginalFollowingVmAndUi=True, originalGenerationReused=True,
         rootCacheRequestAndWriteAdmissionRetained=True, existingRetainedScopeApiAndActionsUsed=True,
-        firstPageOnlyAtStartup=True, explicitOriginalLoadAllForSearch=True,
+        firstPageOnlyAtStartup=True, explicitOriginalLoadAllForSearch=True, rootPhysicalForegroundBound=True,
         originalToWindows=inverse_proof(original, body), windowsBrandSuccessAdaptation=brand)
 
 def group_source(repo):

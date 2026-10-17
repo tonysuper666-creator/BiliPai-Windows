@@ -30,10 +30,11 @@ internal class DesktopFollowingEntry(private val root:DesktopPersonalListsRoot,
 internal fun DesktopOriginalFollowingHost(entry:DesktopFollowingEntry,onBack:()->Unit,
     onUserClick:(Long)->Unit,onFansClick:(Long)->Unit,isCurrentPage:Boolean) {
     if (!entry.owns()) return
-    androidx.compose.runtime.CompositionLocalProvider(LocalDesktopDetailForeground provides isCurrentPage) {
-        if(entry.key.fans) FansListScreen(entry.key.mid,{if(entry.owns())onBack()},
-            {mid->if(entry.owns())onUserClick(mid)},{mid->if(entry.owns())onFansClick(mid)},entry.fansViewModel,isCurrentPage)
-        else FollowingListScreen(entry.key.mid,{if(entry.owns())onBack()},{mid->if(entry.owns())onUserClick(mid)},
-            {mid->if(entry.owns())onFansClick(mid)},entry.viewModel)
+    val foreground = isCurrentPage && LocalDesktopDetailForeground.current
+    androidx.compose.runtime.CompositionLocalProvider(LocalDesktopDetailForeground provides foreground) {
+        if(entry.key.fans) FansListScreen(entry.key.mid,{if(entry.owns() && foreground)onBack()},
+            {mid->if(entry.owns() && foreground)onUserClick(mid)},{mid->if(entry.owns() && foreground)onFansClick(mid)},entry.fansViewModel,foreground)
+        else FollowingListScreen(entry.key.mid,{if(entry.owns() && foreground)onBack()},{mid->if(entry.owns() && foreground)onUserClick(mid)},
+            {mid->if(entry.owns() && foreground)onFansClick(mid)},entry.viewModel,foreground)
     }
 }
