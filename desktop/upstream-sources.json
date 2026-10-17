@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "174",
+  "windowsRevision": "177",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14915,5 +14915,37 @@
     "applicationExecuted": false,
     "hardwareExecuted": false,
     "desktopReplaced": false
+  },
+  "v044FavoriteDetailSlice": {
+    "upstreamTag": "v0.4.4",
+    "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+    "archive": "desktop/upstream-slices/v044-favorite-detail",
+    "sourceManifestSHA256": "21f6536a4a554c824921332ef957fc8bc49c6178ce644821851f8ea294c93861",
+    "completeOriginalFiles": 8,
+    "referenceOnlyFiles": [
+      "ListViewModel.kt",
+      "SeasonSeriesDetailViewModelTest.kt",
+      "FavoriteModels.kt"
+    ],
+    "completeOriginalViewModel": true,
+    "completeOriginalPlaybackPolicy": true,
+    "completeAnnotatedPlaylistItem": true,
+    "originalLiveUiSegments": 13,
+    "sourceStagesAppliedAfterAllExistingOwnerGates": true,
+    "historyFinalOutputInverseRecorded": true,
+    "existingRootScopeApiAndQueueOwnersReused": true,
+    "newAccountOrRepositoryOwnerAdded": false,
+    "originalPolicyCasesSelectedNotRun": 17,
+    "desktopRegressionCasesWrittenNotRun": 7,
+    "originalAndroidViewModelCasesExecuted": false,
+    "originalAndroidViewModelReferenceCases": 5,
+    "localPythonCasesPassed": 103,
+    "sourceQualified": false,
+    "mainCompiled": false,
+    "applicationExecuted": false,
+    "hardwareExecuted": false,
+    "desktopReplaced": false,
+    "fullV044FavoritesSubscriptionsOrStableParityQualified": false,
+    "requiredOriginalImportsRetained": true
   }
 }

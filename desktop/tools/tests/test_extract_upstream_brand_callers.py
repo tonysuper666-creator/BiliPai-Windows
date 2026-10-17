@@ -78,6 +78,17 @@ class BrandCallerProducerTest(unittest.TestCase):
         row=next(r for r in rows if r['path'].endswith('/CommonListScreen.kt'))
         body=(output/'com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf-8')
         retainedBody=body
+        detail=row.get('v044FavoriteDetailUiAdvance')
+        if detail:
+            advance=detail['actualFinalOwnerToCurrent']
+            self.assertEqual(sha(retainedBody),advance['afterSHA256'])
+            lines=retainedBody.splitlines(keepends=True)
+            for hunk in reversed(advance['hunks']):
+                start,end=hunk['afterLines']
+                self.assertEqual(''.join(lines[start:end]),hunk['after'])
+                lines[start:end]=hunk['before'].splitlines(keepends=True)
+            retainedBody=''.join(lines)
+            self.assertEqual(sha(retainedBody),advance['beforeSHA256'])
         tabPath=output/'v037-explicit-tab-role-proofs/CommonListScreen.json'
         if tabPath.exists():
             tab=json.loads(tabPath.read_bytes())

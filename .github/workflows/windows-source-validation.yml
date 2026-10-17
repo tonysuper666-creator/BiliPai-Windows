@@ -102,6 +102,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Whole original seed palette and shared endpoint source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v043_theme_chrome_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v043 theme, transparent control and measured native tab closure failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v044_favorite_detail_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Current original favorite detail, live UI, ownership and playlist model source failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_brand_history.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Full original history/list source stages and authenticated baseline recovery failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original theme-role source regression failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_liquid_controls_source.py -v
