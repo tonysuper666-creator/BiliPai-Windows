@@ -14947,5 +14947,19 @@
     "desktopReplaced": false,
     "fullV044FavoritesSubscriptionsOrStableParityQualified": false,
     "requiredOriginalImportsRetained": true
+  },
+  "windowsPhysicalAudioOutputHandoff": {
+    "status": "implemented-pending-compilation-and-actual-device-validation",
+    "originalNativeBackendCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+    "implementation": "Same two actual MPV actors, a process-local physical-resource lease, and their existing source/publication-gated native event loops.",
+    "ownership": "A queued intent cannot affect a peer until admitted by its actual media publication; late native attachment preserves original request ordering.",
+    "release": "Explicit audio-device=null parking preserves file, position and selected audio track; raw current-ao and configured-device readback or actual mpv_terminate_destroy completion gate the next actor.",
+    "realOutputFailureFallback": "audio-fallback-to-null=no retained; explicit parked output is released and never reports shared/exclusive success.",
+    "futurePreferences": "Pause/resume restores the applied file configuration; settings saves remain future-load intent.",
+    "sourceQualified": false,
+    "applicationExecuted": false,
+    "hardwareExecuted": false,
+    "desktopReplaced": false,
+    "headlessRegressionLifecycle": "Never-started memory Session fixtures attach the original staged intent without activation and acknowledge only their own no-created-handle teardown; production worker release remains actual raw AO readback or native destroy completion."
   }
 }
