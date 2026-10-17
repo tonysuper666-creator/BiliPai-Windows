@@ -88,8 +88,12 @@ internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopH
     override fun close() { homePreloadDeferred?.cancel(); homePreloadDeferred=null; preloadedHomeVideos=null; verticalVideoCache.clear() }
 }
 '''
-    write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',
-          apply_v032_catalog('com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',original_home_output,OUT))
+    from v043_home_native_cards import home_protocol_delta
+    native_card_audits=[]
+    original_home_output=apply_v032_catalog('com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',original_home_output,OUT)
+    original_home_output=home_protocol_delta(REPO,original_home_output,native_card_audits)
+    write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',original_home_output)
+    write(OUT/'home-native-v043-protocol-adaptations.json',json.dumps(dict(audits=native_card_audits),ensure_ascii=False,indent=2)+'\n')
 
     def general_adapt(s):
      s=s.replace('com.android.purebilibili.core.network.CoreDataLog.', 'com.android.purebilibili.core.util.Logger.')

@@ -125,7 +125,9 @@
     "desktop/upstream-slices/v043-search-up-author",
     "desktop/upstream-slices/v043-navigation",
     "desktop/upstream-slices/v043-message-link-host",
-    "desktop/upstream-slices/v043-link-open"
+    "desktop/upstream-slices/v043-link-open",
+    "desktop/upstream-slices/v043-home-native-cards",
+    "desktop/upstream-slices/v043-home-recommendation-badges"
   ],
   "archives": [
     {
@@ -5369,6 +5371,136 @@
           "sha256": "239e5e4aea87178cce1e8d9db74d83ec24c2b42f78aae93f4195187f9340cc58",
           "hashNormalization": "raw",
           "blob": "925a01acb386e4f27c532753a99ad29a305a368c"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-home-native-cards",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/manifest.json",
+          "sha256": "6ef313927e77acc7e0e682b29b0cd43f1c2af876514660b33be82ce26a63592d",
+          "hashNormalization": "raw",
+          "blob": "5bec682255cf82cc942d503c4e8d98bd66d08025"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/ListModels.kt",
+          "sha256": "5cb726df0e15c1ffcd79f3722cf9ffae12ffe30a8f0fb784ad223419bb578d1a",
+          "hashNormalization": "raw",
+          "blob": "ad7776d2fae444def57a7034ad373018e0515c25"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/RecommendationReason.kt",
+          "sha256": "62af39b81966634667b2af5ca926dd1e1cbf9942425f4a87a8b869cc00b4b7b5",
+          "hashNormalization": "raw",
+          "blob": "b469358558af729b5d2d5fc6ee3e007ee2eede57"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/RecommendationNativeCardTest.kt",
+          "sha256": "816f03df043673eeb1552c556fb36e9f9ca8c94b33e341cb2addecbb86a47f24",
+          "hashNormalization": "raw",
+          "blob": "4d9663558ad69dba768fa8943e952c244920e44c"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/RecommendationReasonTest.kt",
+          "sha256": "295ad5516feca92e780add7994eb48429f5f271669d2c8c4231113bf2d949e54",
+          "hashNormalization": "raw",
+          "blob": "2b25f48354c4c016a34ce5cdd0a7f1847607b4bc"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeVideoClickRequest.kt",
+          "sha256": "6fd5bf47f2d6a08aadf785fb043515aa8ef8a54b788a2adfabe24a5955ca7957",
+          "hashNormalization": "raw",
+          "blob": "d71160f9da0b8db906197adca89eaaf8d965d362"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicy.kt",
+          "sha256": "3be20c6fd9dce31ab488a94bf42001b8efe0e948b3ae3e81a33c896e8385eb93",
+          "hashNormalization": "raw",
+          "blob": "c5c85dfe39982092fc600f2969bfe22d7df93e15"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicyTest.kt",
+          "sha256": "545f1a3fa95b577e4de61e79509b8178ba15047d482d349c3b87e3259be005bd",
+          "hashNormalization": "raw",
+          "blob": "1b6b9aafcb10ab16f971e432f2562ce46df39728"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeScreen.kt",
+          "sha256": "503e5c049b1f7878bbca29f2f93984b5f3715687e77b71c9ce0b3e73fb7f432c",
+          "hashNormalization": "raw",
+          "blob": "6d2224c68dc56bf93351acc9bfadd720c8f1c1c0"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeViewModel.kt",
+          "sha256": "e9d69b15875589dc474623f3d6e262faa9241d3491d661f2f3a204f4462d5366",
+          "hashNormalization": "raw",
+          "blob": "d4db07904ead890fdf87edbe080ae5a7191a65c9"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/VideoRepository.kt",
+          "sha256": "53a97695342686ea554491ef4b6640e5a556bcf8b001acfbc0987e2a2dbf447a",
+          "hashNormalization": "raw",
+          "blob": "a523a9b531beb88ee4e62ddcd76281bc2f4e10eb"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeCategoryPage.kt",
+          "sha256": "673adbd50bfbd512ef0d60a94cff2b51e611f1e6ebbaad2e5b536599dba6c519",
+          "hashNormalization": "raw",
+          "blob": "8f5146755e83112d6facd328125f0838b7dd9b3f"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeHeroCarousel.kt",
+          "sha256": "af00e86c0568b08230d22057e690651ac03d9c19a8b37d5b125867d141891363",
+          "hashNormalization": "raw",
+          "blob": "cfa883fc625fe895aa41b3fa76424e8cd49f595b"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/VideoCard.kt",
+          "sha256": "f0e5784f4adbb7718e717184c9d42a632ac708cce3c7939594182f271947e32a",
+          "hashNormalization": "raw",
+          "blob": "2ab61d81d41e3d0ae95f23525a6ddd91aebdf5d1"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-native-cards/HomeStyleSingleColumnVideoCard.kt",
+          "sha256": "a367f0e4bb1fd3ee8b0ba810d8e77cba767f3d5a7fa77b5c558d9450cc7be82e",
+          "hashNormalization": "raw",
+          "blob": "25d5578324115928c65c9fff99cf64e7fc397581"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v043-home-recommendation-badges",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v043-home-recommendation-badges/manifest.json",
+          "sha256": "2f84b9d058010331081cc4c0c101ca52e9a932f5408c4fbfb7b8f2236a1c67ee",
+          "hashNormalization": "raw",
+          "blob": "dd3176fec98fd53e89e6902a48542581f8b17848"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-recommendation-badges/VideoRecommendationBadge.kt",
+          "sha256": "3be56014c1ebf01e6a9236347d895f40aacdf2c780a9b1005eda524a4751e3d9",
+          "hashNormalization": "raw",
+          "blob": "1e21389f9c5381ed72c79512d7b5db265e2b7106"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-recommendation-badges/UpBadgeName.kt",
+          "sha256": "24b59fdf75cbeddd017bf41e6b7bc799c88550374ebe3521f578afa92923e672",
+          "hashNormalization": "raw",
+          "blob": "2716bf2df5740fb7cb887fa6cd1529e2d11152aa"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-recommendation-badges/VideoCardSourceSnapshot.kt",
+          "sha256": "cc6683cda448d47948c0aad84ba1c7712642a7ad636d53a2a7b7167fe3456166",
+          "hashNormalization": "raw",
+          "blob": "fb23bace655c4def332e8aeba11819ecf6f31994"
+        },
+        {
+          "path": "desktop/upstream-slices/v043-home-recommendation-badges/StoryVideoCard.kt",
+          "sha256": "4afa0ad9b8fc1e16fae25b4ee3f5871fb23e9dacef218e4795867e2fc497a8f8",
+          "hashNormalization": "raw",
+          "blob": "5cf4cb7096958c1edbae99e37285e398e9cc58cc"
         }
       ]
     }
@@ -14048,6 +14180,276 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole original content-link gate/policy or unchanged original tests, consumed by the existing Windows Root"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/ListModels.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "ad7776d2fae444def57a7034ad373018e0515c25",
+      "sha256": "5cb726df0e15c1ffcd79f3722cf9ffae12ffe30a8f0fb784ad223419bb578d1a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Home model, reason serializer, click request, navigation policy or original tests via existing sole producers"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/RecommendationReason.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/RecommendationReason.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "b469358558af729b5d2d5fc6ee3e007ee2eede57",
+      "sha256": "62af39b81966634667b2af5ca926dd1e1cbf9942425f4a87a8b869cc00b4b7b5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Home model, reason serializer, click request, navigation policy or original tests via existing sole producers"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/RecommendationNativeCardTest.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/RecommendationNativeCardTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "4d9663558ad69dba768fa8943e952c244920e44c",
+      "sha256": "816f03df043673eeb1552c556fb36e9f9ca8c94b33e341cb2addecbb86a47f24",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Home model, reason serializer, click request, navigation policy or original tests via existing sole producers"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/response/RecommendationReasonTest.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/RecommendationReasonTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "2b25f48354c4c016a34ce5cdd0a7f1847607b4bc",
+      "sha256": "295ad5516feca92e780add7994eb48429f5f271669d2c8c4231113bf2d949e54",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Home model, reason serializer, click request, navigation policy or original tests via existing sole producers"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeVideoClickRequest.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeVideoClickRequest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "d71160f9da0b8db906197adca89eaaf8d965d362",
+      "sha256": "6fd5bf47f2d6a08aadf785fb043515aa8ef8a54b788a2adfabe24a5955ca7957",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Home model, reason serializer, click request, navigation policy or original tests via existing sole producers"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicy.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "c5c85dfe39982092fc600f2969bfe22d7df93e15",
+      "sha256": "3be20c6fd9dce31ab488a94bf42001b8efe0e948b3ae3e81a33c896e8385eb93",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Home model, reason serializer, click request, navigation policy or original tests via existing sole producers"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicyTest.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "1b6b9aafcb10ab16f971e432f2562ce46df39728",
+      "sha256": "545f1a3fa95b577e4de61e79509b8178ba15047d482d349c3b87e3259be005bd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original Home model, reason serializer, click request, navigation policy or original tests via existing sole producers"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeScreen.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "6d2224c68dc56bf93351acc9bfadd720c8f1c1c0",
+      "sha256": "503e5c049b1f7878bbca29f2f93984b5f3715687e77b71c9ce0b3e73fb7f432c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original reference for reviewed Home caller/repository/card hooks; not emitted wholesale"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeViewModel.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "d4db07904ead890fdf87edbe080ae5a7191a65c9",
+      "sha256": "e9d69b15875589dc474623f3d6e262faa9241d3491d661f2f3a204f4462d5366",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original reference for reviewed Home caller/repository/card hooks; not emitted wholesale"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/VideoRepository.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "a523a9b531beb88ee4e62ddcd76281bc2f4e10eb",
+      "sha256": "53a97695342686ea554491ef4b6640e5a556bcf8b001acfbc0987e2a2dbf447a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original reference for reviewed Home caller/repository/card hooks; not emitted wholesale"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeCategoryPage.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "8f5146755e83112d6facd328125f0838b7dd9b3f",
+      "sha256": "673adbd50bfbd512ef0d60a94cff2b51e611f1e6ebbaad2e5b536599dba6c519",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original reference for reviewed Home caller/repository/card hooks; not emitted wholesale"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeHeroCarousel.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "cfa883fc625fe895aa41b3fa76424e8cd49f595b",
+      "sha256": "af00e86c0568b08230d22057e690651ac03d9c19a8b37d5b125867d141891363",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original reference for reviewed Home caller/repository/card hooks; not emitted wholesale"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/VideoCard.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "2ab61d81d41e3d0ae95f23525a6ddd91aebdf5d1",
+      "sha256": "f0e5784f4adbb7718e717184c9d42a632ac708cce3c7939594182f271947e32a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original reference for reviewed Home caller/repository/card hooks; not emitted wholesale"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
+      "localPath": "desktop/upstream-slices/v043-home-native-cards/HomeStyleSingleColumnVideoCard.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "25d5578324115928c65c9fff99cf64e7fc397581",
+      "sha256": "a367f0e4bb1fd3ee8b0ba810d8e77cba767f3d5a7fa77b5c558d9450cc7be82e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-native-card-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original reference for reviewed Home caller/repository/card hooks; not emitted wholesale"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoRecommendationBadge.kt",
+      "localPath": "desktop/upstream-slices/v043-home-recommendation-badges/VideoRecommendationBadge.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "1e21389f9c5381ed72c79512d7b5db265e2b7106",
+      "sha256": "3be56014c1ebf01e6a9236347d895f40aacdf2c780a9b1005eda524a4751e3d9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-recommendation-badges-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original recommendation badge, shared UpBadgeName leading slot or click-time snapshot emitted once by the existing full-card producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeName.kt",
+      "localPath": "desktop/upstream-slices/v043-home-recommendation-badges/UpBadgeName.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "2716bf2df5740fb7cb887fa6cd1529e2d11152aa",
+      "sha256": "24b59fdf75cbeddd017bf41e6b7bc799c88550374ebe3521f578afa92923e672",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-recommendation-badges-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original recommendation badge, shared UpBadgeName leading slot or click-time snapshot emitted once by the existing full-card producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt",
+      "localPath": "desktop/upstream-slices/v043-home-recommendation-badges/VideoCardSourceSnapshot.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "fb23bace655c4def332e8aeba11819ecf6f31994",
+      "sha256": "cc6683cda448d47948c0aad84ba1c7712642a7ad636d53a2a7b7167fe3456166",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-recommendation-badges-retained-original-inputs"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original recommendation badge, shared UpBadgeName leading slot or click-time snapshot emitted once by the existing full-card producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
+      "localPath": "desktop/upstream-slices/v043-home-recommendation-badges/StoryVideoCard.kt",
+      "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+      "blob": "5cf4cb7096958c1edbae99e37285e398e9cc58cc",
+      "sha256": "4afa0ad9b8fc1e16fae25b4ee3f5871fb23e9dacef218e4795867e2fc497a8f8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v043-home-recommendation-badges-retained-original-inputs"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original Story card reference for exact badge/author/snapshot caller hooks"
     }
   ],
   "buildStandaloneInputs": [

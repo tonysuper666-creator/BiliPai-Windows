@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "92f4388bb8f64efeec7fab5a0ba72e14107bb6f2",
-  "windowsVersion": "0.2.427.167",
-  "createdAt": "2026-10-17T00:48:06.045361+00:00",
+  "baseHead": "93c843b81efdc8bfa06c747ec715ba29b37af219",
+  "windowsVersion": "0.2.427.170",
+  "createdAt": "2026-10-17T02:33:15.713483+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "b615cbf96d8126c1c617924ca7279b3825c5905b91a77c0e227ea6fd096c7c3a"
+      "sha256": "63aab0e673f6211a3bae0608ad6909300cb32e4fa3a439fdfd50b6bd90660130"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "cc9fb00efa25e3dce32abc38fc6d353e50a92043c93534a12d955f14a6f6c202"
+      "sha256": "6d7d73ecb3851bf455ef36b653c93a5eb0a8f1a3d3c5a486494561fc60958c58"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -521,6 +521,11 @@
       "sha256": "798580a8d4be874fbd6a0b015ba94d34caab535178cbe0b66cca0ef8a873ef31"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+      "normalization": "lf",
+      "sha256": "02e72d98ff4616934673960db07294c2a6b46dba74255fc96ee6d7467040568e"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntries.kt",
       "normalization": "lf",
       "sha256": "41277852f7f2e8e4a2641fadf16f73f7f6bf5b49d1e0d5cfe1d828266fd322c0"
@@ -629,6 +634,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfilePreferences.kt",
       "normalization": "lf",
       "sha256": "b3ef29be7f694520ed22b2e4ec67a0cf9699d67ee955ad569911a104830c5005"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "normalization": "lf",
+      "sha256": "f3968143e42e5b642e9d13da791850e9570151b6f297b940b36011e7738305ad"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
@@ -1186,6 +1196,21 @@
       "sha256": "0b87ed2c591cf100e32136574aceae06b63854a1af15a0f749ef0ff5f7dbf35e"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeNativeCardNavigationTest.kt",
+      "normalization": "lf",
+      "sha256": "8003412cb69ae5dc3ae697cc258d5a9e3d3875646525da643fd11d2ca44ae853"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeNativeCardProtocolTest.kt",
+      "normalization": "lf",
+      "sha256": "eb344d8e82b8b75cf12f2efd72649939b04e7f81448b38ae32e0a9e1bf84d20f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeRecommendationBadgeTest.kt",
+      "normalization": "lf",
+      "sha256": "d52ba814f5374e44c6515b6b5472b9ee38585ebbf6faf511c5351a73d39dddee"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopMessageNotificationEntriesTest.kt",
       "normalization": "lf",
       "sha256": "b5312d408b9de241fc89460b425377f097dbbfe54061cb5c38eccaaf630cf041"
@@ -1478,7 +1503,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "bdc4bb40737cab081125958419dddf977e8bedb0a47eb141757efeddac98bed3"
+      "sha256": "e7f45921653cbf47a3992433549ef6a40260553f5383893b82b9602c8624545c"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1583,12 +1608,17 @@
     {
       "path": "desktop/tools/extract-upstream-home-full-card.py",
       "normalization": "lf",
-      "sha256": "544c18559c6e9fad9f9af5bf5207ec499dd519b0b2ce859b874962ca3fd6be2d"
+      "sha256": "306130f38f6531e915861a8d3aaeb9b47e12802ff7fcd8bb60c65927104284c2"
     },
     {
       "path": "desktop/tools/extract-upstream-home-page.py",
       "normalization": "lf",
-      "sha256": "ae039a55bff8127779c8130bd44a5bc05e1b348c3f654eb945d50658c6319ec4"
+      "sha256": "97f4959c377c05df2024d7831f83fa73ed32d63cf9f60990d196136ea69cf1e6"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-protocols.py",
+      "normalization": "lf",
+      "sha256": "060856ce143389e1017039deb27594e4064f760a3c165ec4701026feeb91bf15"
     },
     {
       "path": "desktop/tools/extract-upstream-js.py",
@@ -1688,7 +1718,7 @@
     {
       "path": "desktop/tools/extract-v041-video-status-labels.py",
       "normalization": "lf",
-      "sha256": "4780a2a2928906cc0e37dd3c63b5a774a84e24d9f671412c93d08045720bd2db"
+      "sha256": "7981c341cbb8a256ae210852fa87dfc6a397c198ead48c7bf45a0223d07d51d0"
     },
     {
       "path": "desktop/tools/extract-v041-video-status-personal.py",
@@ -1816,9 +1846,14 @@
       "sha256": "3b22081ec03e76d595109ed203f1cdb568547ae682d1337c3b1133b25c291d7c"
     },
     {
+      "path": "desktop/tools/source-cohort-test-filter.init.gradle",
+      "normalization": "lf",
+      "sha256": "6d91fa69bcbf2588c01f3dcd000c49921d74574b556171e59a04e08b5afc5c60"
+    },
+    {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "905be7081f8dfccbdeb3b91e0faebcd85fb83044f49dda464eff7542c90d43d0"
+      "sha256": "5073867c1712105307722c30b9406059906c6b20d6ccd1909d670073a9a441f3"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -2028,7 +2063,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "c6df1d87e955e99d2263f8838cb58213806c511e9d7e7d1ba8bfc22ff301a786"
+      "sha256": "4cbf3c8bf19a984dd9c169e21013f4180690d536586910a6a58ab484740de9a3"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2153,7 +2188,7 @@
     {
       "path": "desktop/tools/tests/test_v041_video_status_labels_source.py",
       "normalization": "lf",
-      "sha256": "6f48a81f5a0d23bde38cbe369cafb3457817e92f267d09ac847abae12298c63d"
+      "sha256": "19ad162cf20cb6802033f28b9096833be037f4a64633fb0da630f6ad3ffea15c"
     },
     {
       "path": "desktop/tools/tests/test_v041_video_status_personal_consumers.py",
@@ -2186,6 +2221,16 @@
       "sha256": "46e08b8d4c1426036011ceba51510d9b4ae7beb558c6d35b73e682c7f2517af0"
     },
     {
+      "path": "desktop/tools/tests/test_v043_home_native_cards_source.py",
+      "normalization": "lf",
+      "sha256": "11ee39f1c641545c470d3c7b7a09dd54171aaab1322bfa45a924c39f1c6ddcff"
+    },
+    {
+      "path": "desktop/tools/tests/test_v043_home_recommendation_badges_source.py",
+      "normalization": "lf",
+      "sha256": "6670ef85e052e06f76552541c5245d6df3b712960d082629ad7f8185c16232f0"
+    },
+    {
       "path": "desktop/tools/tests/test_v043_link_open_source.py",
       "normalization": "lf",
       "sha256": "cb91ce8d32c7f83bbda7dca9d05db9f945369f1a84380823238957b37ef0ef39"
@@ -2208,7 +2253,7 @@
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
       "normalization": "lf",
-      "sha256": "c881ce6e1739c397dd7362144f98b54614849ad62b8abadbf66940c7c8cc93e9"
+      "sha256": "ed16f9dd8b8cdef51a641b0dc0d20366c43221029c50deb48a018fcd459e4a90"
     },
     {
       "path": "desktop/tools/tests/test_verify_original_root_ui_export.py",
@@ -2433,7 +2478,7 @@
     {
       "path": "desktop/tools/v041_video_status_labels.py",
       "normalization": "lf",
-      "sha256": "a8a4d096bf7ccbfeba358c158bed6f524262522ec208690ac8de7896d5a1fc9e"
+      "sha256": "cc0170baf4feb3a05b5daf83bb05218557f2aa556390e96ba384b4366a9054b8"
     },
     {
       "path": "desktop/tools/v041_video_status_personal_consumers.py",
@@ -2481,6 +2526,16 @@
       "sha256": "9dfa428c2d8c46a492f93a898dbc57d965d0e3487e8e6aadc93eecbbd39ad904"
     },
     {
+      "path": "desktop/tools/v043_home_native_cards.py",
+      "normalization": "lf",
+      "sha256": "a1a2f2cdee1224ed89074d384526cbfa2020dfa01460bc68660cc0edc8e94e80"
+    },
+    {
+      "path": "desktop/tools/v043_home_recommendation_badges.py",
+      "normalization": "lf",
+      "sha256": "05d07d745c015eb7cdd83c199ce20e925206499f0f9d8dd7af3461158bd8ed16"
+    },
+    {
       "path": "desktop/tools/v043_link_open.py",
       "normalization": "lf",
       "sha256": "2184aa3b263d3a1ab4d35bdbc3ed34259804266f8e3f86600f23c77172acd1c3"
@@ -2503,7 +2558,7 @@
     {
       "path": "desktop/tools/validate-source-cohort.py",
       "normalization": "lf",
-      "sha256": "bf0de7fb28aa4b2e284fbc007bfb1e15d83b66507e7045a9ae36a3c794f46128"
+      "sha256": "95d595ac86481104688c3312a8a72a20c82ad6e0c9726097d2d0555d132bfa7e"
     },
     {
       "path": "desktop/tools/verify-original-root-ui-harness-export.py",
@@ -3831,6 +3886,106 @@
       "sha256": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426"
     },
     {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeCategoryPage.kt",
+      "normalization": "raw",
+      "sha256": "673adbd50bfbd512ef0d60a94cff2b51e611f1e6ebbaad2e5b536599dba6c519"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeHeroCarousel.kt",
+      "normalization": "raw",
+      "sha256": "af00e86c0568b08230d22057e690651ac03d9c19a8b37d5b125867d141891363"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeScreen.kt",
+      "normalization": "raw",
+      "sha256": "503e5c049b1f7878bbca29f2f93984b5f3715687e77b71c9ce0b3e73fb7f432c"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeStyleSingleColumnVideoCard.kt",
+      "normalization": "raw",
+      "sha256": "a367f0e4bb1fd3ee8b0ba810d8e77cba767f3d5a7fa77b5c558d9450cc7be82e"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeVideoClickRequest.kt",
+      "normalization": "raw",
+      "sha256": "6fd5bf47f2d6a08aadf785fb043515aa8ef8a54b788a2adfabe24a5955ca7957"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicy.kt",
+      "normalization": "raw",
+      "sha256": "3be20c6fd9dce31ab488a94bf42001b8efe0e948b3ae3e81a33c896e8385eb93"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "545f1a3fa95b577e4de61e79509b8178ba15047d482d349c3b87e3259be005bd"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/HomeViewModel.kt",
+      "normalization": "raw",
+      "sha256": "e9d69b15875589dc474623f3d6e262faa9241d3491d661f2f3a204f4462d5366"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/ListModels.kt",
+      "normalization": "raw",
+      "sha256": "5cb726df0e15c1ffcd79f3722cf9ffae12ffe30a8f0fb784ad223419bb578d1a"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/RecommendationNativeCardTest.kt",
+      "normalization": "raw",
+      "sha256": "816f03df043673eeb1552c556fb36e9f9ca8c94b33e341cb2addecbb86a47f24"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/RecommendationReason.kt",
+      "normalization": "raw",
+      "sha256": "62af39b81966634667b2af5ca926dd1e1cbf9942425f4a87a8b869cc00b4b7b5"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/RecommendationReasonTest.kt",
+      "normalization": "raw",
+      "sha256": "295ad5516feca92e780add7994eb48429f5f271669d2c8c4231113bf2d949e54"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/VideoCard.kt",
+      "normalization": "raw",
+      "sha256": "f0e5784f4adbb7718e717184c9d42a632ac708cce3c7939594182f271947e32a"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/VideoRepository.kt",
+      "normalization": "raw",
+      "sha256": "53a97695342686ea554491ef4b6640e5a556bcf8b001acfbc0987e2a2dbf447a"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-native-cards/manifest.json",
+      "normalization": "raw",
+      "sha256": "6ef313927e77acc7e0e682b29b0cd43f1c2af876514660b33be82ce26a63592d"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-recommendation-badges/StoryVideoCard.kt",
+      "normalization": "raw",
+      "sha256": "4afa0ad9b8fc1e16fae25b4ee3f5871fb23e9dacef218e4795867e2fc497a8f8"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-recommendation-badges/UpBadgeName.kt",
+      "normalization": "raw",
+      "sha256": "24b59fdf75cbeddd017bf41e6b7bc799c88550374ebe3521f578afa92923e672"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-recommendation-badges/VideoCardSourceSnapshot.kt",
+      "normalization": "raw",
+      "sha256": "cc6683cda448d47948c0aad84ba1c7712642a7ad636d53a2a7b7167fe3456166"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-recommendation-badges/VideoRecommendationBadge.kt",
+      "normalization": "raw",
+      "sha256": "3be56014c1ebf01e6a9236347d895f40aacdf2c780a9b1005eda524a4751e3d9"
+    },
+    {
+      "path": "desktop/upstream-slices/v043-home-recommendation-badges/manifest.json",
+      "normalization": "raw",
+      "sha256": "2f84b9d058010331081cc4c0c101ca52e9a932f5408c4fbfb7b8f2236a1c67ee"
+    },
+    {
       "path": "desktop/upstream-slices/v043-link-open/BilibiliLinkNavigationPolicy.kt",
       "normalization": "raw",
       "sha256": "1f5fa7163f491916cebf470f239829f306d1e45a05fddf3815d90c0d03240121"
@@ -3918,7 +4073,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "43015669928c57787b798a0b3a1aed00567308378bf3801af42ba4cf3cc4d541"
+      "sha256": "a870a98271b827a21f1e51d4d2772f5a0a5a874425b947eb5ea5df9fc2b9f04e"
     }
   ],
   "classes": {
@@ -4018,9 +4173,15 @@
     "com.android.purebilibili.core.util.BilibiliUrlParserRegressionTest": 10,
     "com.android.purebilibili.navigation.MessageLinkNavigationPolicyTest": 17,
     "com.android.purebilibili.feature.web.LinkOpenGateTest": 2,
-    "com.android.purebilibili.navigation.BilibiliLinkNavigationPolicyTest": 6
+    "com.android.purebilibili.navigation.BilibiliLinkNavigationPolicyTest": 6,
+    "com.android.purebilibili.data.model.response.RecommendationNativeCardTest": 6,
+    "com.android.purebilibili.data.model.response.RecommendationReasonTest": 4,
+    "com.android.purebilibili.navigation.HomeVideoNavigationPolicyTest": 10,
+    "com.bilipai.desktop.ui.DesktopHomeNativeCardNavigationTest": 6,
+    "com.bilipai.desktop.ui.DesktopHomeNativeCardProtocolTest": 4,
+    "com.bilipai.desktop.ui.DesktopHomeRecommendationBadgeTest": 4
   },
-  "expectedTests": 895,
+  "expectedTests": 929,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4030,55 +4191,47 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalContentLinkBinding.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBgmCommentLinkRootNavigationTest.kt",
-    "desktop/tools/bind-original-root-ui-candidate.py",
-    "desktop/tools/build.ps1",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeNativeCardNavigationTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeNativeCardProtocolTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeRecommendationBadgeTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-space-platform.py",
+    "desktop/tools/extract-upstream-home-full-card.py",
+    "desktop/tools/extract-upstream-home-page.py",
+    "desktop/tools/extract-upstream-home-protocols.py",
     "desktop/tools/extract-v041-video-status-labels.py",
-    "desktop/tools/original_root_ui_packaged_native.py",
-    "desktop/tools/original_root_ui_runtime_binding.py",
-    "desktop/tools/original_root_ui_runtime_image.py",
-    "desktop/tools/run-tool-tests.py",
+    "desktop/tools/source-cohort-test-filter.init.gradle",
     "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_publish_release.py",
-    "desktop/tools/tests/test_refresh_generation_reentry.py",
-    "desktop/tools/tests/test_same_workspace_candidate.py",
-    "desktop/tools/tests/test_same_workspace_terminal_admission.py",
     "desktop/tools/tests/test_sync_upstream.py",
     "desktop/tools/tests/test_v041_video_status_labels_source.py",
-    "desktop/tools/tests/test_v043_link_open_source.py",
-    "desktop/tools/tests/test_v043_message_link_host_source.py",
-    "desktop/tools/tests/test_v043_navigation_source.py",
-    "desktop/tools/tests/test_v043_search_up_author_source.py",
-    "desktop/tools/v036_comment_refresh_dependencies.py",
+    "desktop/tools/tests/test_v043_home_native_cards_source.py",
+    "desktop/tools/tests/test_v043_home_recommendation_badges_source.py",
+    "desktop/tools/tests/test_validate_source_cohort.py",
     "desktop/tools/v041_video_status_labels.py",
-    "desktop/tools/v043_link_open.py",
-    "desktop/tools/v043_message_link_host.py",
-    "desktop/tools/v043_navigation.py",
-    "desktop/tools/v043_search_up_author.py",
-    "desktop/tools/verify-same-workspace-candidate.py",
-    "desktop/upstream-slices/v043-link-open/BilibiliLinkNavigationPolicy.kt",
-    "desktop/upstream-slices/v043-link-open/BilibiliLinkNavigationPolicyTest.kt",
-    "desktop/upstream-slices/v043-link-open/LinkOpenGate.kt",
-    "desktop/upstream-slices/v043-link-open/LinkOpenGateTest.kt",
-    "desktop/upstream-slices/v043-link-open/manifest.json",
-    "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicy.kt",
-    "desktop/upstream-slices/v043-message-link-host/MessageLinkNavigationPolicyTest.kt",
-    "desktop/upstream-slices/v043-message-link-host/manifest.json",
-    "desktop/upstream-slices/v043-navigation/BilibiliHostPolicy.kt",
-    "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParser.kt",
-    "desktop/upstream-slices/v043-navigation/BilibiliNavigationTargetParserTest.kt",
-    "desktop/upstream-slices/v043-navigation/BilibiliUrlParser.kt",
-    "desktop/upstream-slices/v043-navigation/BilibiliUrlParserRegressionTest.kt",
-    "desktop/upstream-slices/v043-navigation/manifest.json",
-    "desktop/upstream-slices/v043-search-up-author/SearchModels.kt",
-    "desktop/upstream-slices/v043-search-up-author/SearchUpItemTest.kt",
-    "desktop/upstream-slices/v043-search-up-author/manifest.json",
+    "desktop/tools/v043_home_native_cards.py",
+    "desktop/tools/v043_home_recommendation_badges.py",
+    "desktop/tools/validate-source-cohort.py",
+    "desktop/upstream-slices/v043-home-native-cards/HomeCategoryPage.kt",
+    "desktop/upstream-slices/v043-home-native-cards/HomeHeroCarousel.kt",
+    "desktop/upstream-slices/v043-home-native-cards/HomeScreen.kt",
+    "desktop/upstream-slices/v043-home-native-cards/HomeStyleSingleColumnVideoCard.kt",
+    "desktop/upstream-slices/v043-home-native-cards/HomeVideoClickRequest.kt",
+    "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicy.kt",
+    "desktop/upstream-slices/v043-home-native-cards/HomeVideoNavigationPolicyTest.kt",
+    "desktop/upstream-slices/v043-home-native-cards/HomeViewModel.kt",
+    "desktop/upstream-slices/v043-home-native-cards/ListModels.kt",
+    "desktop/upstream-slices/v043-home-native-cards/RecommendationNativeCardTest.kt",
+    "desktop/upstream-slices/v043-home-native-cards/RecommendationReason.kt",
+    "desktop/upstream-slices/v043-home-native-cards/RecommendationReasonTest.kt",
+    "desktop/upstream-slices/v043-home-native-cards/VideoCard.kt",
+    "desktop/upstream-slices/v043-home-native-cards/VideoRepository.kt",
+    "desktop/upstream-slices/v043-home-native-cards/manifest.json",
+    "desktop/upstream-slices/v043-home-recommendation-badges/StoryVideoCard.kt",
+    "desktop/upstream-slices/v043-home-recommendation-badges/UpBadgeName.kt",
+    "desktop/upstream-slices/v043-home-recommendation-badges/VideoCardSourceSnapshot.kt",
+    "desktop/upstream-slices/v043-home-recommendation-badges/VideoRecommendationBadge.kt",
+    "desktop/upstream-slices/v043-home-recommendation-badges/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

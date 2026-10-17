@@ -39,6 +39,7 @@ internal fun desktopOriginalRootHomeNavigation(
                 else commands.videoRoute(target.route, request.sourceRoute ?: "home")
             }
             is HomeNavigationTarget.DynamicDetail -> commands.push(BiliPaiNavKey.DynamicDetail(target.dynamicId))
+            is HomeNavigationTarget.BangumiDetail -> commands.push(BiliPaiNavKey.BangumiDetail(epId = target.episodeId))
             null -> Unit // Original invalid/empty request; no mounted route fallback.
         }
     },

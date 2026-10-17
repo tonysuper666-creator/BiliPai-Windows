@@ -110,12 +110,16 @@ def desktop_dynamic_navigation(source, token_parser):
 
 def generate(repo, output, standalone=False):
  global HERE,REPO,parser,appearance,media
+ from v043_home_recommendation_badges import check_output, emit_originals, REPLACED, apply_card
+ check_output(repo,output)
+ originals=emit_originals(repo)
  HERE=output;REPO=repo
  parser=load('hc_parser',repo/'desktop/tools/sync-upstream.py')
  appearance=load('hc_declarations',repo/'desktop/tools/extract-appearance-platform.py')
  media=load('hc_media',repo/'desktop/tools/extract-upstream-media.py')
  rows=[]
  for path in DIRECT+list(EXTRACTED)+ADAPTED:
+  if path in REPLACED:continue # Whole original replacements below have one output owner.
   source=read(path);pkg=re.search(r'(?m)^package (\S+)',source).group(1);body=source
   changes=[]
   if path in {APP+'core/ui/transition/VideoCardTransitionBackgroundPolicy.kt',APP+'core/ui/blur/RecoverableVisualEffects.kt'}:
@@ -173,9 +177,16 @@ def generate(repo, output, standalone=False):
    before='    val onlineCountFlow = remember(bvid, cid) {';after='    val defaultVideoCardOnlineCountStore = LocalDesktopVideoCardOnlineStore.current ?: return ""\n    val onlineCountFlow = remember(defaultVideoCardOnlineCountStore, bvid, cid) {'
    body=body.replace(before,after);changes.append(dict(before=before,after=after))
    body=body.replace('LaunchedEffect(bvid, cid)', 'LaunchedEffect(defaultVideoCardOnlineCountStore, bvid, cid)')
+  body=apply_card(repo,Path(path).name,body,changes)
   out=HERE/'generated'/pkg.replace('.','/')/Path(path).name
   if path not in DIRECT or standalone:write(out,'// Original source '+path+'\n// LF SHA256 '+hashlib.sha256(source.encode()).hexdigest()+'\n'+body)
   rows.append(dict(path=path,mode='direct' if path in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((_desktop_canonical_source(REPO, path)).read_bytes()).hexdigest(),changes=changes,generated=str(out.relative_to(HERE))))
+ for relative,(raw,proof) in originals.items():
+  target=HERE/'generated'/relative
+  write(target,raw.decode('utf-8'))
+  assert target.read_bytes()==raw
+  rows.append(dict(path=proof['source'],mode='raw-v043',features=['home-full-card','v043-home-recommendation-badges'],
+   sha256=proof['sha256'],sha256Bytes=proof['sha256'],changes=[proof],generated=target.relative_to(HERE).as_posix()))
  write(HERE/'source-inventory.json',json.dumps(rows,indent=2)+'\n')
 
 

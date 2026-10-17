@@ -18,6 +18,7 @@ import os
 import re
 from v025_source_paths import canonical_source
 import v043_search_up_author as search_up_followup
+import v043_home_native_cards as home_native_followup
 
 COMMIT = 'd18fb20e31adb11bbec9fae6dfce7d705d556217'
 BASELINE_COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -653,7 +654,7 @@ def label_vocabulary(*texts):
 
 
 def emit_models(repo):
-    """Return {path: (bytes, receipt)} for the six emitted main sources; nothing is written."""
+    """Return {path: (bytes, receipt)} for the shared models and reviewed follow-ups; nothing is written."""
     raw, sources = verified_raw(repo), verified_sources(repo)
     emitted = {}
     for path in (LABELS, BADGES):
@@ -701,7 +702,17 @@ def emit_models(repo):
         receipt['parityNeedleCounts'] = needles
         receipt['deferredAbsent'] = list(ABSENT_FROM_EMITTED.get(path, ()))
     emitted[LABELS][1].update(priorityOrder=order, vocabulary=list(vocabulary))
-    return {package_path(path): value for path, value in emitted.items()}
+    data, followup = home_native_followup.advance_model(repo, emitted[LIST_MODELS][0])
+    predecessor = emitted[LIST_MODELS][1]
+    emitted[LIST_MODELS] = (data, dict(mode='whole-v043-home-native-cards-replacement',
+        archive=home_native_followup.ARCHIVE, upstreamCommit=home_native_followup.COMMIT,
+        sha256=sha(data), bytes=len(data), identicalToArchive=True,
+        previousStatusModel=predecessor, modelFollowup=followup))
+    result = {package_path(path): value for path, value in emitted.items()}
+    support = home_native_followup.emit_support(repo)
+    need(not set(result).intersection(support), 'Duplicate native Home model producer')
+    result.update(support)
+    return result
 
 
 def rewrite_test(path, text):
@@ -752,6 +763,9 @@ def emit_tests(repo):
     followup_tests = search_up_followup.emit_tests(repo)
     need(not set(emitted).intersection(followup_tests), 'Duplicate UP-search test producer')
     emitted.update(followup_tests)
+    home_tests = home_native_followup.emit_tests(repo)
+    need(not set(emitted).intersection(home_tests), 'Duplicate native Home test producer')
+    emitted.update(home_tests)
     return emitted
 
 
@@ -768,7 +782,7 @@ def write_all(root, files):
 
 def generate(repo, output, tests_output):
     repo, main_root, test_root = Path(repo).resolve(), Path(output).resolve(), Path(tests_output).resolve()
-    archives = [(repo / path).resolve() for path in (ARCHIVE, search_up_followup.ARCHIVE)]
+    archives = [(repo / path).resolve() for path in (ARCHIVE, search_up_followup.ARCHIVE, home_native_followup.ARCHIVE)]
     need(not (main_root.is_relative_to(test_root) or test_root.is_relative_to(main_root)), 'Main/test generated roots overlap')
     for root in (main_root, test_root):
         for archive in archives:

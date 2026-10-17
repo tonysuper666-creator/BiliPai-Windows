@@ -3,8 +3,9 @@
 
 Emits VideoStatusLabels, VideoStatusBadges, ListModels, SpaceModels, SearchModels (hooks SM1/SM2 and the
 complete v043 UP-author follow-up) and
-FavoriteModels (hook FM1) under --output, and the two original status-label tests with their
-test-only durationSeconds/asVideoItem support plus both original UP-search tests under --tests-output. Every pin, exact-once anchor and
+FavoriteModels (hook FM1), plus the whole v043 native Home ListModels/RecommendationReason
+follow-up under --output. The original status-label tests, test-only durationSeconds/asVideoItem
+support, UP-search tests and twenty original Home model/navigation cases go under --tests-output. Every pin, exact-once anchor and
 inverse replay (including the consumer hooks applied by the card/screen generators) is verified
 before any file is written; the proof receipt lands beside the main sources.
 """

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.3",
+  "commit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoRecommendationBadge.kt",
+      "archiveFile": "VideoRecommendationBadge.kt",
+      "bytes": 1412,
+      "sha256": "3be56014c1ebf01e6a9236347d895f40aacdf2c780a9b1005eda524a4751e3d9",
+      "gitBlob": "1e21389f9c5381ed72c79512d7b5db265e2b7106",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeName.kt",
+      "archiveFile": "UpBadgeName.kt",
+      "bytes": 6214,
+      "sha256": "24b59fdf75cbeddd017bf41e6b7bc799c88550374ebe3521f578afa92923e672",
+      "gitBlob": "2716bf2df5740fb7cb887fa6cd1529e2d11152aa",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt",
+      "archiveFile": "VideoCardSourceSnapshot.kt",
+      "bytes": 6735,
+      "sha256": "cc6683cda448d47948c0aad84ba1c7712642a7ad636d53a2a7b7167fe3456166",
+      "gitBlob": "fb23bace655c4def332e8aeba11819ecf6f31994",
+      "referenceOnly": false
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
+      "archiveFile": "StoryVideoCard.kt",
+      "bytes": 25298,
+      "sha256": "4afa0ad9b8fc1e16fae25b4ee3f5871fb23e9dacef218e4795867e2fc497a8f8",
+      "gitBlob": "5cf4cb7096958c1edbae99e37285e398e9cc58cc",
+      "referenceOnly": true
+    }
+  ]
+}
