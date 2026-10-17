@@ -46,6 +46,8 @@ def write(output: Path, relative: str, source: str, original: str, body: str) ->
     return file
 
 def generate(repo: Path, output: Path) -> list[Path]:
+    from v044_favorite_detail import validate_outputs, playlist_source
+    validate_outputs(repo, output)
     output = Path(str(output) if str(output).startswith("\\\\?\\") else "\\\\?\\" + str(output.absolute()))
     generated = []
     source = AUDIO + "viewmodel/MusicViewModel.kt"
@@ -125,6 +127,9 @@ def generate(repo: Path, output: Path) -> list[Path]:
     source = "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt"
     original = read_source(repo, source)
     queue = section(original, "/**\n * 播放列表项", "/**\n *  播放列表管理器")
+    queue, queue_advance = playlist_source(repo, queue)
+    (output / "v044-playlist-item-source-proof.json").write_text(
+        json.dumps(queue_advance, ensure_ascii=False, indent=2)+"\n", encoding="utf-8", newline="\n")
     for required in ("data class PlaylistItem(", "enum class PlayMode", "internal fun advanceShuffleProgress(",
                      "internal fun reconcileShuffleProgressForPlaylistUpdate(", "internal fun resolvePlaylistUiState("):
         if required not in queue:
