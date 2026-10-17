@@ -29,7 +29,11 @@ internal suspend fun ensureDesktopWindowsPlaybackDefaults(context: DesktopOrigin
             { context.preferenceWritePermit(::current) }) { fresh ->
             val initialized = (store.preferences("windows_desktop_defaults")["highest_quality_v1"]
                 as? JsonPrimitive)?.booleanOrNull == true
-            val highest: Map<String, Map<String, JsonElement?>> = if (initialized) emptyMap() else mapOf(
+            val restoredHighest = (store.preferences("windows_android_backup_migration")["pending"]
+                as? JsonPrimitive)?.booleanOrNull == true && fresh[playerBooleanPreferencesKey("auto_highest_quality")] != null
+            val highest: Map<String, Map<String, JsonElement?>> = if (initialized) emptyMap() else if (restoredHighest) mapOf(
+                "windows_desktop_defaults" to mapOf("highest_quality_v1" to JsonPrimitive(true)),
+            ) else mapOf(
                 "settings" to mapOf("auto_highest_quality" to JsonPrimitive(true)),
                 "quality_settings" to mapOf("auto_highest_quality" to JsonPrimitive(true)),
                 "windows_desktop_defaults" to mapOf("highest_quality_v1" to JsonPrimitive(true)),
@@ -39,6 +43,7 @@ internal suspend fun ensureDesktopWindowsPlaybackDefaults(context: DesktopOrigin
             }.orEmpty()
             Unit to mergeNamespaceEdits(highest, seeded)
         }
+        com.bilipai.desktop.settings.DesktopSettingsShareService(context).reconcileRestoredAndroidBackup()
     }
 
 private fun mergeNamespaceEdits(vararg parts: Map<String, Map<String, JsonElement?>>): Map<String, Map<String, JsonElement?>> {

@@ -114,17 +114,53 @@ class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSett
                     values.changes["windows_liquid_glass_default_v1"] = JsonPrimitive(true)
                 }
             }
-            // Only imported fields project into theme_cache; no stale captured unrelated values.
-            if (listOf("theme_mode_v2", "dark_theme_style_v1", "app_language_v1").any(accepted::containsKey)) {
-                context.getSharedPreferences("theme_cache", DesktopOriginalPlayerSettingsContext.MODE_PRIVATE).edit().apply {
-                    accepted["theme_mode_v2"]?.let { putInt("theme_mode", it.jsonPrimitive.int) }
-                    accepted["dark_theme_style_v1"]?.let { putInt("dark_theme_style", it.jsonPrimitive.int) }
-                    accepted["app_language_v1"]?.let { putInt("app_language", it.jsonPrimitive.int) }
-                }.apply()
-            }
+            applyThemeCacheMirrors(accepted)
             applyOriginalMirrorSetters(accepted)
         }
         return SettingsShareApplyResult(accepted.keys.sorted(), verified.preview.skippedKeys)
+    }
+
+    /** After a foreign ZIP restore the new real Root refreshes existing synchronous caches
+     * before constructing players. The original setters and single journal own normalization,
+     * quality merging and mirror publication; the ZIP decoder creates no cache authority.
+     */
+    internal suspend fun reconcileRestoredAndroidBackup() {
+        currentCoroutineContext().ensureActive()
+        context.requireCurrent()
+        val migration = context.getSharedPreferences("windows_android_backup_migration", DesktopOriginalPlayerSettingsContext.MODE_PRIVATE)
+        if (!migration.getBoolean("pending", false)) return
+        val keys = migration.getStringSet("keys", emptySet()).orEmpty()
+        require(keys.size <= 10_000) { "Android 备份迁移记录过大" }
+        DesktopOriginalPlaybackPreferenceOperation.run(context, context::isCurrentForOriginalWrite) {
+            var accepted = emptyMap<String, JsonElement>()
+            context.settingsDataStore.edit { fresh ->
+                val offered = keys.mapNotNull { key -> fresh[DesktopPreferenceKey<JsonElement>(key) { it }]?.let { key to it } }.toMap()
+                val migrated = normalizeThemeSelectionForImport(SettingsShareSections(appearance = offered)).appearance
+                accepted = acceptedForImport(migrated)
+                fresh.changes.putAll(accepted)
+                if ("theme_selection_v1" in accepted) {
+                    fresh.changes["ui_preset"] = null
+                    fresh.changes["android_native_variant_v1"] = null
+                }
+                if ("android_native_liquid_glass_enabled" in accepted) {
+                    fresh.changes["windows_liquid_glass_default_v1"] = JsonPrimitive(true)
+                }
+            }
+            applyThemeCacheMirrors(accepted)
+            applyOriginalMirrorSetters(accepted)
+            migration.edit().putBoolean("pending", false).putStringSet("keys", null).apply()
+        }
+    }
+
+    private fun applyThemeCacheMirrors(accepted: Map<String, JsonElement>) {
+        // Only imported fields project into theme_cache; no stale captured unrelated values.
+        if (listOf("theme_mode_v2", "dark_theme_style_v1", "app_language_v1").any(accepted::containsKey)) {
+            context.getSharedPreferences("theme_cache", DesktopOriginalPlayerSettingsContext.MODE_PRIVATE).edit().apply {
+                accepted["theme_mode_v2"]?.let { putInt("theme_mode", it.jsonPrimitive.int) }
+                accepted["dark_theme_style_v1"]?.let { putInt("dark_theme_style", it.jsonPrimitive.int) }
+                accepted["app_language_v1"]?.let { putInt("app_language", it.jsonPrimitive.int) }
+            }.apply()
+        }
     }
 
     /** The allowlisted values of a profile, with one rule for the merged Windows quality option: only IEEE 802.11

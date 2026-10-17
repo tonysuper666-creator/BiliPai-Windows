@@ -62,7 +62,7 @@ internal fun BackupSettingsDialog(backup: DesktopBackupCoordinator, onDismiss: (
                     DesktopBackupSettingsSection.LOCAL_SETTINGS -> "Windows 设置备份"
                     DesktopBackupSettingsSection.WEBDAV -> "WebDAV 云备份"
                 }, style = MaterialTheme.typography.headlineSmall)
-                Text("备份 Windows 本地设置、历史、听视频队列和插件。账号凭证、WebDAV 密码与下载的视频不写入备份。恢复成功后客户端将退出，再次打开即可生效。",
+                Text("备份 Windows 本地设置、历史、听视频队列和插件，也可导入原版 Android 设置备份。Android 设置和插件配置会合并，同名项以备份为准。账号凭证、WebDAV 密码与下载的视频不写入备份。恢复成功后客户端将退出，再次打开即可生效。",
                     style = MaterialTheme.typography.bodyMedium)
                 if (initialSection != DesktopBackupSettingsSection.LOCAL_SETTINGS) {
                 OutlinedTextField(url, { url = it }, label = { Text("服务器地址") }, singleLine = true, enabled = !state.busy, modifier = Modifier.fillMaxWidth())

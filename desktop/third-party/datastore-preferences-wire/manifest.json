@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/androidx/androidx",
+  "commit": "88f6829b8e444cc83280547803309dfb7741b214",
+  "sourcePath": "datastore/datastore-preferences-proto/src/main/proto/preferences.proto",
+  "observedAtUtc": "2026-10-17T17:33:15.214852+00:00",
+  "mode": "wire-format-reference-only",
+  "generatedRuntimeClassesAdded": false,
+  "newDependencyAdded": false,
+  "sourceSHA256": "33922b04d97fe7184dbb46554fdf39b2925bafdfb1b6214c77581452123996ae",
+  "licenseSHA256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0",
+  "runtimeDecoder": "DesktopAndroidSettingsBackup.preferences",
+  "protobufRuntime": "existing protobuf-javalite4.33.2",
+  "licenseSourcePath": "LICENSE.txt",
+  "licenseRetainedPath": "LICENSE"
+}

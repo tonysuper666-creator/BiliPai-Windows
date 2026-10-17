@@ -1,0 +1,18 @@
+{
+  "repository": "https://github.com/jay3-yy/BiliPai",
+  "commit": "070ab41608213cd981fd7e51df357295f9a537bf",
+  "sourcePath": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt",
+  "mode": "original-archive-format-reference-only",
+  "sourceSHA256": "04f46bedef25085b658d0edb04e6e430e5b0cb774d85c5690b34e3d14b081704",
+  "licenseSHA256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+  "originalAndroidServiceEmitted": false,
+  "originalWebDavTransportAlreadyRetained": true,
+  "originalEntries": [
+    "datastore/settings_prefs.preferences_pb",
+    "datastore/plugin_prefs.preferences_pb",
+    "shared_prefs/json_plugins.xml",
+    "json_plugins/*.json"
+  ],
+  "WindowsRestoreTransaction": "DesktopBackupArchive.restore",
+  "sourceOriginalLibrary": "<existing sole DesktopPluginStore>/plugin-settings.json"
+}

@@ -66,7 +66,8 @@ class DesktopBackupArchive(private val directory: Path, private val beforeReplac
                 val entry = zip.nextEntry ?: break
                 require(!entry.isDirectory && entries.size < MAX_ENTRIES + 1) { "备份目录结构不符合当前格式" }
                 val name = entry.name
-                require(name == "manifest.json" || name.startsWith("windows/") && allowed(name.removePrefix("windows/"))) { "备份包含未知或不安全路径" }
+                require(name == "manifest.json" || name.startsWith("windows/") && allowed(name.removePrefix("windows/")) ||
+                    DesktopAndroidSettingsBackup.allows(name)) { "备份包含未知或不安全路径" }
                 require(name !in entries) { "备份包含重复文件" }
                 val value = readLimited(zip, MAX_FILE_BYTES)
                 total += value.size
@@ -76,18 +77,28 @@ class DesktopBackupArchive(private val directory: Path, private val beforeReplac
             }
         }
         val manifest = entries.remove("manifest.json")?.let { json.parseToJsonElement(it.toString(Charsets.UTF_8)).jsonObject }
-            ?: error("缺少备份说明；请选用 Windows 客户端导出的设置备份")
-        require(manifest["format"]?.jsonPrimitive?.content == FORMAT && manifest["schemaVersion"]?.jsonPrimitive?.int == 1) {
-            "此备份格式无法在 Windows 恢复"
+            ?: error("缺少备份说明；请选择 BiliPai 导出的设置备份")
+        val android = if (manifest["format"] == null) DesktopAndroidSettingsBackup.decode(manifest, entries) else null
+        val values = if (android != null) android.files else {
+            require(manifest["format"]?.jsonPrimitive?.content == FORMAT && manifest["schemaVersion"]?.jsonPrimitive?.int == 1) {
+                "此备份格式无法在 Windows 恢复"
+            }
+            val declared = requireNotNull(manifest["files"]).jsonArray.map { it.jsonObject }
+            require(declared.size == entries.size && declared.map { it["path"]?.jsonPrimitive?.content }.distinct().size == declared.size) { "备份文件清单不完整" }
+            linkedMapOf<String, ByteArray>().apply {
+                for (description in declared) {
+                    val name = requireNotNull(description["path"]).jsonPrimitive.content
+                    require(allowed(name)) { "备份包含未知或不安全路径" }
+                    val value = requireNotNull(entries["windows/$name"]) { "备份文件缺失：$name" }
+                    require(description["bytes"]?.jsonPrimitive?.int == value.size && description["sha256"]?.jsonPrimitive?.content == sha256(value)) { "备份文件校验失败：$name" }
+                    put(name, value)
+                }
+            }
         }
-        val declared = requireNotNull(manifest["files"]).jsonArray.map { it.jsonObject }
-        require(declared.size == entries.size && declared.map { it["path"]?.jsonPrimitive?.content }.distinct().size == declared.size) { "备份文件清单不完整" }
         val targets = linkedMapOf<Path, ByteArray>()
-        for (description in declared) {
-            val name = requireNotNull(description["path"]).jsonPrimitive.content
+        for ((name, value) in values) {
             require(allowed(name)) { "备份包含未知或不安全路径" }
-            val value = requireNotNull(entries["windows/$name"]) { "备份文件缺失：$name" }
-            require(description["bytes"]?.jsonPrimitive?.int == value.size && description["sha256"]?.jsonPrimitive?.content == sha256(value)) { "备份文件校验失败：$name" }
+            require(value.size <= MAX_FILE_BYTES) { "转换后的设置文件过大" }
             json.parseToJsonElement(value.toString(Charsets.UTF_8))
             val target = checkedTarget(name)
             require(target !in targets) { "备份包含重复的 Windows 文件路径" }
@@ -96,6 +107,14 @@ class DesktopBackupArchive(private val directory: Path, private val beforeReplac
         require(targets.isNotEmpty()) { "备份没有可恢复的设置" }
         beforeReplace()
         val previous = targets.keys.associateWith { if (Files.isRegularFile(it)) Files.readAllBytes(it) else null }
+        // Read and merge only after all existing writers have retired. A pre-barrier snapshot
+        // would lose a final Windows-only preference written while the foreign ZIP was parsed.
+        val settingsTarget = root.resolve("plugin-settings.json")
+        if (android != null && settingsTarget in targets) {
+            val merged = android.mergePluginSettings(previous[settingsTarget])
+            require(merged.size <= MAX_FILE_BYTES) { "合并后的设置文件过大" }
+            targets[settingsTarget] = merged
+        }
         val replaced = mutableListOf<Path>()
         try {
             targets.forEach { (target, value) ->

@@ -64,7 +64,7 @@ class DesktopBackupArchiveTest {
         assertFalse(Files.exists(root.resolve("json_plugins/a.json")))
     }
 
-    @Test fun `Android protobuf backup is identified as incompatible before writes`() {
+    @Test fun `malformed Android protobuf backup is rejected before writes`() {
         val root = Files.createTempDirectory("backup-android-")
         val android = zip(linkedMapOf("manifest.json" to "{\"createdAtEpochMs\":1}".toByteArray(),
             "datastore/settings_prefs.preferences_pb" to byteArrayOf(1, 2)))

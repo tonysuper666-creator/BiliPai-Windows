@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "89b776ebd8df49f090c3180e375c87d7cda04fe5",
-  "windowsVersion": "0.2.427.188",
-  "createdAt": "2026-10-17T17:13:43.053958+00:00",
+  "baseHead": "bc05b1a3521138fda803989927a5e1c2631546a4",
+  "windowsVersion": "0.2.427.189",
+  "createdAt": "2026-10-17T17:41:30.563436+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "f18b9f1793503eb0e4984bda546d68829a210f428451696d1668a9cce03e8516"
+      "sha256": "9cc7b1a55d6c2ae5efb9014df11aae3e5d2cfbcdd004b87c3bc81a8b164652eb"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -271,6 +271,16 @@
       "sha256": "3ae86ba7aebda4a7750be89fd2ec7f344f4197e6855f0866a972b0b00da26983"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopAndroidSettingsBackup.kt",
+      "normalization": "lf",
+      "sha256": "fee8ed9d917a1e449631349ad6a1d24afd05ed5fe111e38d7212265871a43ba0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+      "normalization": "lf",
+      "sha256": "cfa09630455a9c982744321d4774309edfd73cb959b37508dbfaa2162570336c"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
       "normalization": "lf",
       "sha256": "827a64d9b5cee2905afdb9c58fe0779e388e1d2d4752173101ca6da503db3621"
@@ -453,7 +463,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareService.kt",
       "normalization": "lf",
-      "sha256": "1a4b822b00b2bb65c7da6fad1b93306150870d8782ed67fd9dc5516cd65d537a"
+      "sha256": "d3a7c98d88eb21cb0346aaba6dc21aae7e14d540c819bc898f612701f588f971"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareWindowsCatalog.kt",
@@ -464,6 +474,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopWindowsSettingsCatalog.kt",
       "normalization": "lf",
       "sha256": "a545364b86ae16fc63cbbcd93f6cf499647e66c8099af558aa80c35241292cd9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+      "normalization": "lf",
+      "sha256": "f59bd66b07e47f869addd0b6e9cc8f140db1c6ac2fa129b6178fcf0975a9e821"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
@@ -853,7 +868,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackDefaults.kt",
       "normalization": "lf",
-      "sha256": "7c5ebd64ab4a348b5c03afe8aecb6b226caad4bcae8fabfd5d6b1539366064d9"
+      "sha256": "c66edda5caa8668ba8a5b84a77f6975e09b1c42afbd31b6933877d9438eff468"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackSettings.kt",
@@ -1014,6 +1029,16 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopSeedPalettePreferencesTest.kt",
       "normalization": "lf",
       "sha256": "b214153905599b2f3a85a4181f603eee2082e9dee869c8b9ffa68438273d83f7"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopAndroidSettingsBackupTest.kt",
+      "normalization": "lf",
+      "sha256": "319a81fb8e47d4f045b4b7ead2f91457b09956262f011dfa6dfe176c9f19cfd3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopBackupArchiveTest.kt",
+      "normalization": "lf",
+      "sha256": "79760b74ed19fe65ac30d51d2039d7fa0b66b037dc2a236d8ed7e7689a72af51"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequestsTest.kt",
@@ -1556,6 +1581,36 @@
       "sha256": "2955e61f3b177034c465e2e3d75fce8b9baabbf8677f5245810ef06591c138b5"
     },
     {
+      "path": "desktop/third-party/android-backup-format/LICENSE",
+      "normalization": "raw",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "desktop/third-party/android-backup-format/WebDavBackupService.kt",
+      "normalization": "raw",
+      "sha256": "04f46bedef25085b658d0edb04e6e430e5b0cb774d85c5690b34e3d14b081704"
+    },
+    {
+      "path": "desktop/third-party/android-backup-format/manifest.json",
+      "normalization": "raw",
+      "sha256": "06b5c567e82961a3ca14967b4d27f6ee23bd5353d55724737a6adbd9fe0d23c3"
+    },
+    {
+      "path": "desktop/third-party/datastore-preferences-wire/LICENSE",
+      "normalization": "raw",
+      "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+    },
+    {
+      "path": "desktop/third-party/datastore-preferences-wire/manifest.json",
+      "normalization": "raw",
+      "sha256": "ece49bcac43ef5365ae7c998fe70731e31e4ba48022a1c4ea2f48293e733f7ff"
+    },
+    {
+      "path": "desktop/third-party/datastore-preferences-wire/preferences.proto",
+      "normalization": "raw",
+      "sha256": "33922b04d97fe7184dbb46554fdf39b2925bafdfb1b6214c77581452123996ae"
+    },
+    {
       "path": "desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-import-trust.json",
       "normalization": "lf",
       "sha256": "e3b603844b4b81ef95c18d4f4ca67a213906d2880897c6c53f173b35ef2a0646"
@@ -1979,6 +2034,11 @@
       "path": "desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json",
       "normalization": "raw",
       "sha256": "d1c8357ca27184192dd8900400d80389d549bfc88166edb8a332df56fd93767a"
+    },
+    {
+      "path": "desktop/tools/tests/test_android_backup_format_sources.py",
+      "normalization": "lf",
+      "sha256": "80022fcedf2e41b343b90d9fa3a9ad665702522d3a734c90e1e43e50e0013f14"
     },
     {
       "path": "desktop/tools/tests/test_candidate_production_classpath.py",
@@ -4518,7 +4578,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "a3e1a56868492adc0a8211c5ea6fee78c62bc18039e4708a63abda8f822d63fd"
+      "sha256": "08494168650e0e4dfde498e2065bc260b490b752c664fb98e6cb71025852d8f1"
     }
   ],
   "classes": {
@@ -4571,6 +4631,8 @@
     "com.bilipai.desktop.appearance.DesktopPaletteAssertionsTest": 4,
     "com.bilipai.desktop.appearance.DesktopPlatformClipboardTest": 10,
     "com.bilipai.desktop.appearance.DesktopSeedPalettePreferencesTest": 5,
+    "com.bilipai.desktop.backup.DesktopAndroidSettingsBackupTest": 18,
+    "com.bilipai.desktop.backup.DesktopBackupArchiveTest": 9,
     "com.bilipai.desktop.data.DesktopDynamicCommentCacheConsumptionTest": 11,
     "com.bilipai.desktop.data.DesktopLiveDanmakuHealthPolicyTest": 8,
     "com.bilipai.desktop.data.DesktopSearchAllTest": 10,
@@ -4652,7 +4714,7 @@
     "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5
   },
-  "expectedTests": 1153,
+  "expectedTests": 1180,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4660,12 +4722,21 @@
   "publicationEnabled": false,
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
-    "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/sync-upstream.py",
-    "desktop/tools/tests/test_v044_fans_source.py",
-    "desktop/tools/tests/test_v044_following_source.py",
-    "desktop/tools/v044_following.py",
+    ".github/workflows/windows-source-validation.yml",
+    "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopAndroidSettingsBackup.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareService.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackDefaults.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopAndroidSettingsBackupTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopBackupArchiveTest.kt",
+    "desktop/third-party/android-backup-format/LICENSE",
+    "desktop/third-party/android-backup-format/WebDavBackupService.kt",
+    "desktop/third-party/android-backup-format/manifest.json",
+    "desktop/third-party/datastore-preferences-wire/LICENSE",
+    "desktop/third-party/datastore-preferences-wire/manifest.json",
+    "desktop/third-party/datastore-preferences-wire/preferences.proto",
+    "desktop/tools/tests/test_android_backup_format_sources.py",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

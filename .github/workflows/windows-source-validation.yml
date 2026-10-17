@@ -16,7 +16,7 @@ jobs:
   source-validation:
     if: github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
     runs-on: windows-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Set checkout path and newline policy
         shell: pwsh
@@ -118,6 +118,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Current original physical-page list paging gates and sole real callers contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_navigation_contracts_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original navigation codec and unchanged whole22-case original regression suite contract failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_android_backup_format_sources.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original Android backup format, official Preferences schema, retained licenses and real Root restore wiring contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_brand_history.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Full original history/list source stages and authenticated baseline recovery failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v
