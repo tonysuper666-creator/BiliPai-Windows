@@ -164,6 +164,8 @@ def emit_original_test(repo, output):
         'class V044FavoriteSearchOriginalPolicyTest {\n'+method+'\n}\n', encoding='utf8', newline='\n')
     from v044_audio_routes import emit_original_test as emit_audio_test
     audio_test = emit_audio_test(repo, output)
+    from v044_navigation_contracts import emit as emit_whole_navigation_suite
+    navigation_suite = emit_whole_navigation_suite(repo, output)
     return dict(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256,
                 originalMethodSHA256=sha(method), wholeOriginalMethod=True, casesSelected=1,
-                originalAudioCollectionRegression=audio_test, testsExecuted=False)
+                originalAudioCollectionRegression=audio_test, completeOriginalNavigationRegression=navigation_suite, testsExecuted=False)

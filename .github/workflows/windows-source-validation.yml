@@ -114,6 +114,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Current original native fans page, owned API, Root caller and complete navigation source contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_following_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Current original following on-demand pagination, retained cache ownership, complete UI and original suites contract failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v044_list_foreground_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Current original physical-page list paging gates and sole real callers contract failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v044_navigation_contracts_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Complete original navigation codec and unchanged whole22-case original regression suite contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_brand_history.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Full original history/list source stages and authenticated baseline recovery failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v
