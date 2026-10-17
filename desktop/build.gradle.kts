@@ -238,6 +238,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt"))
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt"))
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt"))
+        // The existing Home-page producer owns the complete v043 native-card navigation policy.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt"))
         // The existing full Search producer owns the complete v041 policies.
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt"))
@@ -3070,6 +3072,14 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/v041-video-status-label-tests")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoStatusLabels) }
 tasks.named("compileTestKotlin") { dependsOn(extractOriginalVideoStatusLabels) }
+
+// Native Home models and routes remain in their existing sole producers.
+listOf("extractOriginalVideoStatusLabels", "extractOriginalHomePage", "extractOriginalHomeProtocols").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.file("tools/v043_home_native_cards.py")
+        inputs.dir("upstream-slices/v043-home-native-cards")
+    }
+}
 
 // Personal status badges stay in each retained full original producer.
 listOf("extractOriginalFavorites", "extractOriginalProfileMain").forEach { taskName ->

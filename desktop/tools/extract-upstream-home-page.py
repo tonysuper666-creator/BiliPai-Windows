@@ -67,7 +67,13 @@ def generate(repo, output, standalone=False):
             body=home_page_delta(repo,target.name,body,home_load_audits)
             from v042_search_dependencies import adapt_home
             body=adapt_home(repo,target.name,body,home_load_audits)
+            from v043_home_native_cards import home_page_delta as native_home_page_delta
+            body=native_home_page_delta(repo,target.name,body,home_load_audits)
             scope["write"](target,body);written.append(target)
+        from v043_home_native_cards import verified_raw
+        navigation=output/'com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt'
+        scope["write"](navigation,verified_raw(repo)['HomeVideoNavigationPolicy.kt'].decode('utf-8'))
+        written.append(navigation)
         output.mkdir(parents=True,exist_ok=True)
         scope["write"](output/"home-page-producer-inventory.json",json.dumps(rows,ensure_ascii=False,indent=2)+"\n")
         scope["write"](output/"home-page-settings-selection.json",scope["read"](work/"settings-selection-evidence.json"))

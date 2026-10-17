@@ -11657,7 +11657,7 @@
       "hardwareExecuted": false
     }
   },
-  "windowsRevision": "167",
+  "windowsRevision": "168",
   "v034LiveModerationSlice": {
     "repository": "jay3-yy/BiliPai",
     "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
@@ -14781,5 +14781,30 @@
     "jvmTestsExecuted": false,
     "applicationExecuted": false,
     "fullV043ParityClaimed": false
+  },
+  "v043HomeNativeCardSlice": {
+    "upstreamTag": "v0.4.3",
+    "upstreamCommit": "35e2fac8a3870a2227a323e19f29f1e93d7e591c",
+    "archive": "desktop/upstream-slices/v043-home-native-cards",
+    "manifestSHA256": "6ef313927e77acc7e0e682b29b0cd43f1c2af876514660b33be82ce26a63592d",
+    "modelProducer": "desktop/tools/extract-v041-video-status-labels.py",
+    "homePageProducer": "desktop/tools/extract-upstream-home-page.py",
+    "protocolProducer": "desktop/tools/extract-upstream-home-protocols.py",
+    "hookModule": "desktop/tools/v043_home_native_cards.py",
+    "predecessorSlice": "v041VideoStatusLabelsSlice",
+    "predecessorListModelsSHA256": "3da884027dae2c641ac4deb90f5149dc9462d1b5d786f8e7db547f16f94e75f1",
+    "archivedFiles": 14,
+    "originalTestCases": 20,
+    "completeOriginalModels": true,
+    "completeOriginalInverse": true,
+    "rootNavigationWired": true,
+    "fullV043ParityClaimed": false,
+    "mainCompiled": false,
+    "jvmTestsExecuted": false,
+    "applicationExecuted": false,
+    "recommendationReasonBadgeUiAligned": false,
+    "rootNavigationRegressionCasesWrittenNotRun": 6,
+    "rootProtocolRegressionCasesWrittenNotRun": 4,
+    "fullSourceCohortNotYetValidated": true
   }
 }
