@@ -142,6 +142,7 @@ internal class DesktopWindowsAudioOutputController(private val store: DesktopPlu
                 actual.sourceVersion == status.sourceVersion && actual.playbackRevision == status.playbackRevision &&
                 status.phase in setOf(DesktopWindowsAudioOutputPhase.PENDING_NEXT_PLAY,
                     DesktopWindowsAudioOutputPhase.ACTIVE_SHARED, DesktopWindowsAudioOutputPhase.ACTIVE_EXCLUSIVE,
+                    DesktopWindowsAudioOutputPhase.RELEASED,
                     DesktopWindowsAudioOutputPhase.ERROR)
         }
         const val NAMESPACE = "windows_audio_output"

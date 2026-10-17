@@ -118,6 +118,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Current original physical-page list paging gates and sole real callers contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_navigation_contracts_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Complete original navigation codec and unchanged whole22-case original regression suite contract failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_windows_audio_output_focus_sources.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Physical audio lease and actual native actor wiring regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_android_backup_format_sources.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original Android backup format, official Preferences schema, retained licenses and real Root restore wiring contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_brand_history.py -v

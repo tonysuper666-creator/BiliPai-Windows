@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "bc05b1a3521138fda803989927a5e1c2631546a4",
-  "windowsVersion": "0.2.427.189",
-  "createdAt": "2026-10-17T17:41:30.563436+00:00",
+  "baseHead": "21370cb46f8c5bbe57fda1f278befdb53a1df5a4",
+  "windowsVersion": "0.2.427.190",
+  "createdAt": "2026-10-17T19:12:57.648399+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "9cc7b1a55d6c2ae5efb9014df11aae3e5d2cfbcdd004b87c3bc81a8b164652eb"
+      "sha256": "a0cdd47314827b2be5ab0542f3d614fb39fe9dfa0dca58517cac5eb18a5380b9"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -393,7 +393,17 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
       "normalization": "lf",
-      "sha256": "823549633528935e01dff9255eda6c55518e7db1db96698529766795e4815da4"
+      "sha256": "ca50a2f480c23b0adbc262ad4f1fd8991f7c23d695658dc161b4984db6adaac5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputController.kt",
+      "normalization": "lf",
+      "sha256": "fdb9050b58d40b8aa688440243d39e134218004c7f4733a9d2d4c3436d264d84"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputFocus.kt",
+      "normalization": "lf",
+      "sha256": "e8669e72cf68c0c09c77b15ff312342a798cfe5e3d8bfbb405140421919cfad8"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
@@ -408,7 +418,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
       "normalization": "lf",
-      "sha256": "c3da0b6149ed172481d8e36554eae7eb627e96e429faa6d6dfc7cbdfdda71f1a"
+      "sha256": "516fc48e40c661c29d1774717f9e1c09ec37195df20869cfb41efaff0139fe1c"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvRuntimeProbe.kt",
@@ -826,6 +836,11 @@
       "sha256": "f6dc3fe8fd83ac58483ed7c742511c73e621964ee8714397bc2bddec10870bb0"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsAudioOutputSettings.kt",
+      "normalization": "lf",
+      "sha256": "4058d50aa7731420dc033b111bb4172602d02b605e6c7d278032e4546e0b5b5b"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommandAttentionBinding.kt",
       "normalization": "lf",
       "sha256": "f92ec2a8346e19a349f6b36bd003e055835b80619d79be8085bf664b3c93a6e2"
@@ -1131,9 +1146,19 @@
       "sha256": "edb9dd0c0e54238d37d976ddd900ce4426c5d988bbf02a25b60f0a729a536c64"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputFocusTest.kt",
+      "normalization": "lf",
+      "sha256": "9402d456f0931a8827e8c46c9559ec0f42f241a81b090e8240aa6433be0482b8"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputPolicyTest.kt",
       "normalization": "lf",
       "sha256": "a1d2eba7f62d62c861f7b19bff7022b2bcbdc9cbed11099465a0ea65e8ca0a58"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputProtocolTest.kt",
+      "normalization": "lf",
+      "sha256": "9c14a22b94c2e56f08858a1a78cbb066207712f69d52a55be73a4203009afc5e"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvNativeInputTest.kt",
@@ -2509,6 +2534,11 @@
       "path": "desktop/tools/tests/test_veyra_verifier_child_environment.py",
       "normalization": "lf",
       "sha256": "02ad6093fa8c2850ac6ecc141b921523231a5124b1f34b22eb5203269377c4f0"
+    },
+    {
+      "path": "desktop/tools/tests/test_windows_audio_output_focus_sources.py",
+      "normalization": "lf",
+      "sha256": "bad10e36bd06f2278dd4f209a1fbedddf0c2a081e464a3f2f40414aaaf016989"
     },
     {
       "path": "desktop/tools/tests/test_windows_pgc_screen_mount.py",
@@ -4578,7 +4608,7 @@
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "08494168650e0e4dfde498e2065bc260b490b752c664fb98e6cb71025852d8f1"
+      "sha256": "0c9258e45281af80d0d1117ea30254ba2f4360997a2612aac542a904793eea4b"
     }
   ],
   "classes": {
@@ -4645,7 +4675,9 @@
     "com.bilipai.desktop.player.DesktopSubtitleCacheLifetimeTest": 13,
     "com.bilipai.desktop.player.DesktopSubtitleCancellationTest": 12,
     "com.bilipai.desktop.player.DesktopSubtitleSessionParityTest": 19,
+    "com.bilipai.desktop.player.DesktopWindowsAudioOutputFocusTest": 17,
     "com.bilipai.desktop.player.DesktopWindowsAudioOutputPolicyTest": 11,
+    "com.bilipai.desktop.player.DesktopWindowsAudioOutputProtocolTest": 6,
     "com.bilipai.desktop.player.MpvNativeInputTest": 23,
     "com.bilipai.desktop.player.PlayerPreferencesReadTest": 6,
     "com.bilipai.desktop.plugins.DesktopJsSubscriptionTest": 3,
@@ -4714,7 +4746,7 @@
     "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5
   },
-  "expectedTests": 1180,
+  "expectedTests": 1203,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4723,20 +4755,14 @@
   "cloudGradleHeapMaximum": "8g",
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
-    "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopAndroidSettingsBackup.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsShareService.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPlaybackDefaults.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopAndroidSettingsBackupTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopBackupArchiveTest.kt",
-    "desktop/third-party/android-backup-format/LICENSE",
-    "desktop/third-party/android-backup-format/WebDavBackupService.kt",
-    "desktop/third-party/android-backup-format/manifest.json",
-    "desktop/third-party/datastore-preferences-wire/LICENSE",
-    "desktop/third-party/datastore-preferences-wire/manifest.json",
-    "desktop/third-party/datastore-preferences-wire/preferences.proto",
-    "desktop/tools/tests/test_android_backup_format_sources.py",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutput.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputController.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputFocus.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsAudioOutputSettings.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputFocusTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopWindowsAudioOutputProtocolTest.kt",
+    "desktop/tools/tests/test_windows_audio_output_focus_sources.py",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,
