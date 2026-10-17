@@ -217,6 +217,8 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
         val mutationRequests = CopyOnWriteArrayList<Request>()
         val fansRequests = CopyOnWriteArrayList<Request>()
         @Volatile var fansReply: (Request) -> String = { error("Unprepared native fans protocol") }
+        val followingRequests = CopyOnWriteArrayList<Request>()
+        @Volatile var followingReply: (Request) -> String = { error("Unprepared current following protocol") }
         @Volatile var subscriptionReply: (Request) -> String = { """{"code":0,"data":{"count":0,"list":[]}}""" }
         @Volatile var mutationReply: (Request) -> String = { """{"code":0}""" }
         val coverGate = CountDownLatch(if (holdCovers) 1 else 0)
@@ -236,6 +238,14 @@ class DesktopFavoriteCoverPrefetchRegressionTest {
                         check(request.url.isHttps && request.url.host == "api.bilibili.com" && request.url.port == 443)
                         val path = request.url.encodedPath
                         val body = when (path) {
+                            "/x/relation/followings" -> {
+                                check(request.method == "GET")
+                                followingRequests.add(request); followingReply(request)
+                            }
+                            "/x/relation/tags", "/x/relation/tag" -> {
+                                check(request.method == "GET")
+                                """{"code":0,"data":[]}"""
+                            }
                             "/x/relation/fans" -> {
                                 check(request.method == "GET")
                                 fansRequests.add(request); fansReply(request)

@@ -17,6 +17,7 @@ TOOLS = Path(__file__).resolve().parents[1]
 REPO = TOOLS.parents[1]
 sys.path.insert(0, str(TOOLS))
 import v029_brand_success as business
+import v044_following as current_following
 
 
 def load(name, file):
@@ -123,9 +124,9 @@ class BrandSuccessProducerTest(unittest.TestCase):
             final = producer.safe(output / relative).read_bytes()
             self.assertEqual(sha(final), audit["afterSha256"])
             self.assertEqual(sha(final), row["output"]["sha256LfUtf8"])
-            self.assertEqual(3, len(audit["edits"]))
+            self.assertEqual(2, len(audit["edits"]))
             baseline = Path(temp) / "before-brand-stage"
-            with patch.object(business, "following_delta", lambda text: (text, {})):
+            with patch.object(current_following, "bind_brand", lambda text: (text, {})):
                 producer.generate(REPO, baseline, True)
             original = business.reverse(final.decode(), audit["edits"]).encode()
             self.assertEqual(producer.safe(baseline / relative).read_bytes(), original)

@@ -24,11 +24,27 @@
       "bytes": 2840,
       "sha256": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68",
       "gitBlob": "0aca79c61d7699b431b159a752af17339bf5a378"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/following/FollowingGroupPolicyTest.kt",
+      "filename": "FollowingGroupPolicyTest.kt",
+      "bytes": 6120,
+      "sha256": "dab9f304827d4d0d33e3282eeb00ffa16c42ac35556187e94b1f296760b1577f",
+      "gitBlob": "253094b498dc7346d90ccc31113798066659e46e"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/following/FollowingBatchSelectionPolicyTest.kt",
+      "filename": "FollowingBatchSelectionPolicyTest.kt",
+      "bytes": 5118,
+      "sha256": "f084c86a50f739067750a805aa94419198d54d936429b536adf99c3144ed8d76",
+      "gitBlob": "679ca85c3b5da8e816096fa74a2201c5a5942b04"
     }
   ],
   "initialUseScope": {
     "FansListScreen.kt": "Complete original state, VM and UI; Android ViewModel owner must be bound to the existing Windows entry",
     "FollowingListScreen.kt": "Current full original reference for subsequent following UI/caller alignment; not yet emitted",
-    "FollowingGroupPolicy.kt": "Current full original reference; not yet emitted"
+    "FollowingGroupPolicy.kt": "Current full original reference; not yet emitted",
+    "FollowingGroupPolicyTest.kt": "Complete original pure regression suite for current following pagination/group/selection policies",
+    "FollowingBatchSelectionPolicyTest.kt": "Complete original pure regression suite for current following pagination/group/selection policies"
   }
 }

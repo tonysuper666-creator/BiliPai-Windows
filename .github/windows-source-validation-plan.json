@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "c1007836398f082891d7b3fff464407399142dfb",
-  "windowsVersion": "0.2.427.184",
-  "createdAt": "2026-10-17T14:58:18.579678+00:00",
+  "baseHead": "114cb571afafc381101945930b3e9d4dd5aa2e33",
+  "windowsVersion": "0.2.427.185",
+  "createdAt": "2026-10-17T15:30:35.791671+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "3f68a91464c73337d364a325fe35d228de952b94d3617c89a29bc02fc39ff096"
+      "sha256": "eec8ee9496dfb7297a8293d424b56f0616e40171e8a6c8993a70fa2c29fc74bf"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "c77bc76e106a58fe06620da1518b49ceb3165fce25603e686b3f096541c954cd"
+      "sha256": "b7993bd297730176fd4a3143b64fdf2190a36043a7a29aa41082cb33a4e55d8f"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -593,7 +593,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
       "normalization": "lf",
-      "sha256": "6441d7dab57b8d33cbd96eea7b4cb96de787189d3860494149626f6e782c62a2"
+      "sha256": "0027fff8ddce8b1cebb8e7b32e15137782568007336b2a0d7d63bb8ffa98979b"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
@@ -1258,7 +1258,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
       "normalization": "lf",
-      "sha256": "0dae4a3229cf4056c9c295b6c9778a529c31098424ba60dfc2f046bd5ea73d4f"
+      "sha256": "c71a5cce742f868c28ee30b1124cc40ef49be771e204a3fc068f31afb9324d1e"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteSearchNavigationTest.kt",
@@ -1269,6 +1269,11 @@
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteSubscriptionRegressionTest.kt",
       "normalization": "lf",
       "sha256": "da5163be5ac05857e9fc0486c49d491f22f927526f1228cf5d04a503c2bf8ee3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFollowingPaginationRootTest.kt",
+      "normalization": "lf",
+      "sha256": "9e30e8340942ae3a086cd913966bfc5f5d39da9042869bb7669e96eaeafac2a4"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeFrameBitmapTest.kt",
@@ -1608,7 +1613,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "6e73e6e19f1b8fd2d78323593b063fab7222b37becb141aad3cbbba4f9e2924c"
+      "sha256": "9f5625db77603bf4a8ebc4020abdabae4e5955b9961ce3787b7bfefb47694066"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1713,7 +1718,7 @@
     {
       "path": "desktop/tools/extract-upstream-following.py",
       "normalization": "lf",
-      "sha256": "bacc80e99685866693f2068252020858aedc2cae89099e8c85328ac278eadad1"
+      "sha256": "ffd1b0fb621f122fd5f4aa59b16549a55fdbe6b6766c5e1af1ea186755d841d2"
     },
     {
       "path": "desktop/tools/extract-upstream-home-full-card.py",
@@ -1963,7 +1968,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "f30ad847f6356b134fd955baeb456356faa474ddee47b969021e18be4259dfc0"
+      "sha256": "485c3366a0066e0c9b01a9c81d14474bf4960b74a5d2c7d384972ccb2cb10611"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -2009,6 +2014,11 @@
       "path": "desktop/tools/tests/test_extract_upstream_brand_history.py",
       "normalization": "lf",
       "sha256": "f97ecd98ae7e77a104a5ae885740f88fedb0e35059b7b3bbec9d42d5a1417d80"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_brand_success.py",
+      "normalization": "lf",
+      "sha256": "59bc68b1721a3513fd20402b7140e871c25ba0fcffbeeb925ba04ad25e59030b"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_command_attention.py",
@@ -2178,7 +2188,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "e020ef6dc1385a074f44661fea568e9739ed92526dcac435208387c306e46f54"
+      "sha256": "0ed89fd7e948e8cd5150ee3e0f44acd012db1148eb4d65bb38ce7c754d6ade83"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2378,7 +2388,7 @@
     {
       "path": "desktop/tools/tests/test_v044_fans_source.py",
       "normalization": "lf",
-      "sha256": "93a599f352a065adf8da0a13ac554b941b6845b3f84ada08274831a9a94264c3"
+      "sha256": "7d10b04479ad271f14a80018978d87bd5253969601c4d049a40d267335a43d4a"
     },
     {
       "path": "desktop/tools/tests/test_v044_favorite_detail_source.py",
@@ -2394,6 +2404,11 @@
       "path": "desktop/tools/tests/test_v044_favorite_subscription_source.py",
       "normalization": "lf",
       "sha256": "1f2c5451b6f6a2a46a8e4498ca303e8301217164a90d50af377b2adf9e889067"
+    },
+    {
+      "path": "desktop/tools/tests/test_v044_following_source.py",
+      "normalization": "lf",
+      "sha256": "49374cc7b0d715fc4e9a212fc9d22ed713df0651df7f6e80b5100ac6cc2ea334"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -2713,7 +2728,7 @@
     {
       "path": "desktop/tools/v044_fans.py",
       "normalization": "lf",
-      "sha256": "4f4955f514aca1729903a02734d5b4d038e842b2caa338d9e13a8ff0d02fd540"
+      "sha256": "6478a9df0f9a595266d637da62a83292934aec33293b7382d89075980c81d8d4"
     },
     {
       "path": "desktop/tools/v044_favorite_detail.py",
@@ -2729,6 +2744,11 @@
       "path": "desktop/tools/v044_favorite_subscription.py",
       "normalization": "lf",
       "sha256": "f8b6f901a2a7ba60a427774f7bd0f63515c57832063b9fb0311e6b7888ae6751"
+    },
+    {
+      "path": "desktop/tools/v044_following.py",
+      "normalization": "lf",
+      "sha256": "b64a0d81abbf0d5d31df0a45c6c3879d6a70e08bd8bb21b89f0ba32c2583e698"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -4441,9 +4461,19 @@
       "sha256": "cbea2e0c5d403a55f5d7b4ce9e959026e66684b3ce1bfdc5eebd0401f1e95e4c"
     },
     {
+      "path": "desktop/upstream-slices/v044-following-fans/FollowingBatchSelectionPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "f084c86a50f739067750a805aa94419198d54d936429b536adf99c3144ed8d76"
+    },
+    {
       "path": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicy.kt",
       "normalization": "raw",
       "sha256": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "dab9f304827d4d0d33e3282eeb00ffa16c42ac35556187e94b1f296760b1577f"
     },
     {
       "path": "desktop/upstream-slices/v044-following-fans/FollowingListScreen.kt",
@@ -4453,12 +4483,12 @@
     {
       "path": "desktop/upstream-slices/v044-following-fans/manifest.json",
       "normalization": "raw",
-      "sha256": "bbe07a94f22f2bc56a1d65d89933cb01d7e7eb424db84b1cfd0912c943f06f47"
+      "sha256": "ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9"
     },
     {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "fb5e435ac722efcbc22999eb7e845a352c0447d67b71c306058f038c3f741f39"
+      "sha256": "4f3d5037531e3fe3c57acc3acb47100608f879c77f40bc69f0f4df9b8439e269"
     }
   ],
   "classes": {
@@ -4489,6 +4519,8 @@
     "com.android.purebilibili.data.repository.DesktopInteractionCacheLifetimeTest": 2,
     "com.android.purebilibili.data.repository.VideoInteractionStatusCacheTest": 15,
     "com.android.purebilibili.feature.dynamic.DynamicAuthorSearchPolicyTest": 3,
+    "com.android.purebilibili.feature.following.FollowingBatchSelectionPolicyTest": 14,
+    "com.android.purebilibili.feature.following.FollowingGroupPolicyTest": 8,
     "com.android.purebilibili.feature.list.FavoriteFolderAggregationPolicyTest": 21,
     "com.android.purebilibili.feature.search.SearchCardTargetRestoreTest": 3,
     "com.android.purebilibili.feature.search.SearchMotionBudgetPolicyTest": 18,
@@ -4549,6 +4581,7 @@
     "com.bilipai.desktop.ui.DesktopFavoriteCollectionDetailRegressionTest": 9,
     "com.bilipai.desktop.ui.DesktopFavoriteSearchNavigationTest": 6,
     "com.bilipai.desktop.ui.DesktopFavoriteSubscriptionRegressionTest": 8,
+    "com.bilipai.desktop.ui.DesktopFollowingPaginationRootTest": 8,
     "com.bilipai.desktop.ui.DesktopHomeFrameBitmapTest": 2,
     "com.bilipai.desktop.ui.DesktopHomeNativeCardNavigationTest": 6,
     "com.bilipai.desktop.ui.DesktopHomeNativeCardProtocolTest": 4,
@@ -4587,7 +4620,7 @@
     "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5
   },
-  "expectedTests": 1097,
+  "expectedTests": 1127,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4597,28 +4630,20 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
-    "desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
     "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFansListRootRegressionTest.kt",
     "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFollowingPaginationRootTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-upstream-api.py",
     "desktop/tools/extract-upstream-following.py",
-    "desktop/tools/extract-upstream-listen-video-root.py",
     "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_extract_upstream_brand_success.py",
     "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v038_listen_screen_source.py",
-    "desktop/tools/tests/test_v044_audio_routes_source.py",
     "desktop/tools/tests/test_v044_fans_source.py",
-    "desktop/tools/v038_listen_screen.py",
+    "desktop/tools/tests/test_v044_following_source.py",
     "desktop/tools/v044_fans.py",
-    "desktop/tools/v044_favorite_search.py",
-    "desktop/tools/v044_favorite_subscription.py",
-    "desktop/upstream-slices/v044-following-fans/FansListScreen.kt",
-    "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicy.kt",
-    "desktop/upstream-slices/v044-following-fans/FollowingListScreen.kt",
+    "desktop/tools/v044_following.py",
+    "desktop/upstream-slices/v044-following-fans/FollowingBatchSelectionPolicyTest.kt",
+    "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicyTest.kt",
     "desktop/upstream-slices/v044-following-fans/manifest.json",
     "desktop/upstream-sources.json"
   ],

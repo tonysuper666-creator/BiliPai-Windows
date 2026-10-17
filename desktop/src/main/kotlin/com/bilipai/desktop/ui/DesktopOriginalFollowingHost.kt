@@ -33,6 +33,7 @@ internal fun DesktopOriginalFollowingHost(entry:DesktopFollowingEntry,onBack:()-
     androidx.compose.runtime.CompositionLocalProvider(LocalDesktopDetailForeground provides isCurrentPage) {
         if(entry.key.fans) FansListScreen(entry.key.mid,{if(entry.owns())onBack()},
             {mid->if(entry.owns())onUserClick(mid)},{mid->if(entry.owns())onFansClick(mid)},entry.fansViewModel,isCurrentPage)
-        else FollowingListScreen(entry.key.mid,{if(entry.owns())onBack()},{mid->if(entry.owns())onUserClick(mid)},entry.viewModel)
+        else FollowingListScreen(entry.key.mid,{if(entry.owns())onBack()},{mid->if(entry.owns())onUserClick(mid)},
+            {mid->if(entry.owns())onFansClick(mid)},entry.viewModel)
     }
 }

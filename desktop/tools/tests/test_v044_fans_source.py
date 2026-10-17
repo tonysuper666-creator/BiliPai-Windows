@@ -117,16 +117,16 @@ class OriginalNativeFansSourceTest(unittest.TestCase):
                 call()
             self.assertEqual(before, {p.name: p.read_bytes() for p in target.iterdir()})
 
-    def test_transitive_inputs_and_reference_only_following_ui_are_explicit(self):
+    def test_transitive_inputs_and_current_following_sources_are_explicit(self):
         build = (REPO/'desktop/build.gradle.kts').read_text(encoding='utf8')
         self.assertEqual(15, build.count('inputs.dir("upstream-slices/v044-following-fans")'))
         self.assertIn('"tools/v044_fans.py"', build)
         catalog = json.loads((REPO/'desktop/tools/compatibility-source-inputs.json').read_bytes())
         rows = [row for row in catalog['inputs'] if row['localPath'].startswith(fans.ARCHIVE+'/')]
-        self.assertEqual(3, len(rows))
+        self.assertEqual(5, len(rows))
         self.assertFalse(next(row for row in rows if row['localPath'].endswith('/FansListScreen.kt'))['referenceOnly'])
         for name in ['FollowingListScreen.kt', 'FollowingGroupPolicy.kt']:
-            self.assertTrue(next(row for row in rows if row['localPath'].endswith('/'+name))['referenceOnly'])
+            self.assertFalse(next(row for row in rows if row['localPath'].endswith('/'+name))['referenceOnly'])
         for name in ['BiliPaiNavKey.kt', 'BiliPaiNavKeyMappingPolicy.kt']:
             row = next(row for row in catalog['inputs'] if row['localPath'] == navigation.ARCHIVE+'/'+name)
             self.assertFalse(row['partialReuse'])

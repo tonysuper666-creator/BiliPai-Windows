@@ -6,8 +6,9 @@ from v044_favorite_detail import inverse_proof
 
 COMMIT = '070ab41608213cd981fd7e51df357295f9a537bf'
 ARCHIVE = 'desktop/upstream-slices/v044-following-fans'
-MANIFEST_SHA256 = 'bbe07a94f22f2bc56a1d65d89933cb01d7e7eb424db84b1cfd0912c943f06f47'
-EXPECTED = {'FansListScreen.kt', 'FollowingListScreen.kt', 'FollowingGroupPolicy.kt'}
+MANIFEST_SHA256 = 'ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9'
+EXPECTED = {'FansListScreen.kt', 'FollowingListScreen.kt', 'FollowingGroupPolicy.kt',
+            'FollowingGroupPolicyTest.kt', 'FollowingBatchSelectionPolicyTest.kt'}
 
 def sha(raw):
     return hashlib.sha256(raw.encode('utf8') if isinstance(raw, str) else raw).hexdigest()

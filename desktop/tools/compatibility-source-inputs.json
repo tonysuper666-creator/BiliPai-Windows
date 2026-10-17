@@ -5767,10 +5767,22 @@
           "blob": "21693e03672b5342742a826e628db678ceceb774"
         },
         {
+          "path": "desktop/upstream-slices/v044-following-fans/FollowingBatchSelectionPolicyTest.kt",
+          "sha256": "f084c86a50f739067750a805aa94419198d54d936429b536adf99c3144ed8d76",
+          "hashNormalization": "raw",
+          "blob": "679ca85c3b5da8e816096fa74a2201c5a5942b04"
+        },
+        {
           "path": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicy.kt",
           "sha256": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68",
           "hashNormalization": "raw",
           "blob": "0aca79c61d7699b431b159a752af17339bf5a378"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicyTest.kt",
+          "sha256": "dab9f304827d4d0d33e3282eeb00ffa16c42ac35556187e94b1f296760b1577f",
+          "hashNormalization": "raw",
+          "blob": "253094b498dc7346d90ccc31113798066659e46e"
         },
         {
           "path": "desktop/upstream-slices/v044-following-fans/FollowingListScreen.kt",
@@ -5780,9 +5792,9 @@
         },
         {
           "path": "desktop/upstream-slices/v044-following-fans/manifest.json",
-          "sha256": "bbe07a94f22f2bc56a1d65d89933cb01d7e7eb424db84b1cfd0912c943f06f47",
+          "sha256": "ca4bd93d45e72c42d9d405a8f2aad2ded891c0288a177634c82e30099872fda9",
           "hashNormalization": "raw",
-          "blob": "3210d4d8cb44f8ac5dd4cce8f226657fc4dbfd65"
+          "blob": "18064769f4ce99d45972b54e5745380d1fc7b7c2"
         }
       ]
     }
@@ -15275,11 +15287,12 @@
       "hashNormalization": "raw",
       "kind": "adaptedSource",
       "features": [
-        "v044-native-fans"
+        "v044-native-fans",
+        "v044-following-on-demand"
       ],
-      "referenceOnly": true,
+      "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Current full following screen/group reference, not yet emitted"
+      "usedScope": "Whole current original Following VM/UI or group/pagination policy with existing Windows owner/cache/API bindings"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
@@ -15290,11 +15303,42 @@
       "hashNormalization": "raw",
       "kind": "adaptedSource",
       "features": [
-        "v044-native-fans"
+        "v044-native-fans",
+        "v044-following-on-demand"
       ],
-      "referenceOnly": true,
+      "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Current full following screen/group reference, not yet emitted"
+      "usedScope": "Whole current original Following VM/UI or group/pagination policy with existing Windows owner/cache/API bindings"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/following/FollowingGroupPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicyTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "253094b498dc7346d90ccc31113798066659e46e",
+      "sha256": "dab9f304827d4d0d33e3282eeb00ffa16c42ac35556187e94b1f296760b1577f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-following-on-demand"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original pure policy suite emitted unchanged into the existing Following producer test output"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/following/FollowingBatchSelectionPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v044-following-fans/FollowingBatchSelectionPolicyTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "679ca85c3b5da8e816096fa74a2201c5a5942b04",
+      "sha256": "f084c86a50f739067750a805aa94419198d54d936429b536adf99c3144ed8d76",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-following-on-demand"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original pure policy suite emitted unchanged into the existing Following producer test output"
     }
   ],
   "buildStandaloneInputs": [

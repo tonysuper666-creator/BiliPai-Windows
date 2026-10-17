@@ -172,6 +172,7 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
         // Current collection playback/management policy has one Space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
         // Current host-aware HTTP proxy policy has one existing proxy producer.
         exclude(canonicalOriginalIdentity("network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt"))
@@ -2736,16 +2737,20 @@ val extractOriginalFollowing by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-following.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/original-following").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-following.py", "tools/extract-upstream-favorites.py",
+        "--output", layout.buildDirectory.dir("generated/original-following").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-following-tests").get().asFile.absolutePath)
+    inputs.files("tools/v044_following.py", "tools/extract-upstream-following.py", "tools/extract-upstream-favorites.py",
         "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-personal-following" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-following"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-following-tests"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-following")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalFollowing) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-following-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalFollowing) }
 
 // Beside other original leaf producers; uses existing Python/compiler/dependencies.
 val extractOriginalArticleDetail by tasks.registering(Exec::class) {
