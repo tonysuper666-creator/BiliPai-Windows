@@ -133,11 +133,9 @@ def adapt_navigation(repo, latest):
     if sha(baseline.encode()) != BASE_NAV_SHA256_LF:
         raise ValueError('Canonical baseline navigation source changed')
     adaptation = Adaptation(baseline)
-    adaptation.replace(audio_declaration(baseline), audio_declaration(latest),
-        'complete latest AudioMode declaration with original defaulted collection fields')
-    adaptation.replace(favorite_search.favorite_declaration(adaptation.body),
-        favorite_search.favorite_declaration(favorite_search.fixed(repo)['BiliPaiNavKey.kt']),
-        'complete current original FavoriteSearch declaration preserves subscribed mode')
+    from v044_fans import current_nav_key
+    adaptation.replace(baseline, current_nav_key(repo, baseline, latest),
+        'complete current pure original Nav3 key including collection audio, subscribed search and fans identity')
     body, edits = adaptation.finish()
     return body, edits, baseline
 
@@ -160,6 +158,8 @@ def adapt_player(original):
 
 
 def emit(repo, output, base_recipe):
+    from v044_fans import validate_outputs
+    validate_outputs(repo, output)
     sources = fixed_sources(repo)
     screen, screen_edits = adapt_screen(sources['ListenVideoScreen.kt'], base_recipe)
     nav, nav_edits, nav_baseline = adapt_navigation(repo, sources['BiliPaiNavKey.kt'])
@@ -180,11 +180,14 @@ def emit(repo, output, base_recipe):
             fullInverseOriginalSha256LF=sha(inverse_original.encode()), adaptedSha256LF=sha(body.encode()),
             wholeOriginalInverse=True, inverseBase='v025 canonical navigation' if name == 'BiliPaiNavKey.kt' else 'v038 whole original',
             edits=edits))
+        if name == 'BiliPaiNavKey.kt':
+            receipts[-1].update(upstreamCommit=favorite_search.COMMIT, sourceManifestSHA256=favorite_search.MANIFEST_SHA256,
+                fullCurrentOriginalUnadapted=True, fullCurrentOriginalSHA256=sha(body.encode()))
     mapping = favorite_search.emit_mapping(repo, output)
     proof = dict(upstreamCommit=COMMIT, sources=receipts, favoriteSearchMapping=mapping,
         favoriteSearchUpstreamCommit=favorite_search.COMMIT, favoriteSearchManifestSHA256=favorite_search.MANIFEST_SHA256,
         completeLatestListenScreenAndPlayerRetained=True,
-        completeLatestAudioModeDeclarationRetained=True, remainingCanonicalNavigationOutsideFavoriteSearchPreserved=True,
+        completeLatestAudioModeDeclarationRetained=True, wholeCurrentOriginalNavigationKeyRetained=True,
         existingRootPageLifecycleAndUiCallerUsed=True, originalCollectionAndArtistCallbacksRetained=True,
         actualCollectionRouteMounted=False, actualVideoBootstrapTargetVerified=False,
         soleProducerWiringVerified=False, mainCompiled=False, runtimeExecuted=False)

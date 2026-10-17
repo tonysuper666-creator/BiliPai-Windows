@@ -281,6 +281,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
 val extractUpstreamApi by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -349,6 +351,8 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamMedia) }
 
 val extractUpstreamAudio by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -464,6 +468,8 @@ val extractUpstreamPackages by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -526,6 +532,8 @@ val extractGoogleCastPlatform by tasks.registering(Exec::class) {
 val extractUpstreamJs by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -771,6 +779,8 @@ val extractUpstreamBlockedListUi by tasks.registering(Exec::class) {
 val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -798,6 +808,8 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamNetworkProxy) }
 val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -1275,6 +1287,8 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
 val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -1309,6 +1323,8 @@ val extractImageSaveSettingsUi by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -1525,6 +1541,8 @@ tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -1900,6 +1918,8 @@ val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -1986,6 +2006,8 @@ val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
 
 val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -2013,6 +2035,8 @@ val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -2621,6 +2645,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPersonalLists) }
 val extractOriginalWatchLater by tasks.registering(Exec::class) {
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -2697,6 +2723,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPlayerFullControls, veri
 val extractOriginalFollowing by tasks.registering(Exec::class) {
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.file("tools/v044_favorite_search.py")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
@@ -3917,7 +3945,8 @@ val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v038-listen-viewmodel")
     inputs.dir("upstream-slices/v038-listen-collection")
     inputs.dir("upstream-slices/v038-listen-screen")
-    inputs.files("tools/v044_favorite_search.py", "tools/v044_favorite_detail.py", "tools/v044_audio_routes.py")
+    inputs.files("tools/v044_favorite_search.py", "tools/v044_favorite_detail.py", "tools/v044_audio_routes.py", "tools/v044_fans.py")
+    inputs.dir("upstream-slices/v044-following-fans")
     inputs.dir("upstream-slices/v044-favorite-search")
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt"))
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))

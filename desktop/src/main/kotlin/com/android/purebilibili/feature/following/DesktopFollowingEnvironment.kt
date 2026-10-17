@@ -14,6 +14,7 @@ class DesktopFollowingEnvironment(
     val scope get() = favorites.scope
     fun assertOwned() = favorites.assertOwned()
     suspend fun getFollowings(mid:Long,pn:Int,ps:Int) = owned { favorites.api.getFollowings(mid,pn,ps) }
+    suspend fun getFollowers(vmid:Long,pn:Int) = owned { favorites.api.getFollowers(vmid=vmid,pn=pn) }
     val actions = DesktopFollowingOwnedActions(this)
     suspend fun <T> owned(block:suspend ()->T):T {
         currentCoroutineContext().ensureActive();assertOwned()

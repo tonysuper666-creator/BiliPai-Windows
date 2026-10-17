@@ -10,6 +10,8 @@ def safe(p):
 def write(p,s):safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_text(s,encoding='utf-8',newline='\n')
 def generate(repo,output,standalone=False):
  repo=Path(repo);out=Path(output);rows=[]
+ from v044_fans import emit as emit_fans, validate_outputs as validate_fans_outputs
+ validate_fans_outputs(repo, out)
  def source(rel):
   path=BASE+rel+'.kt';b=subprocess.check_output(['git','show',PIN+':'+path],cwd=repo).replace(b'\r\n',b'\n')
   s=safe(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n');assert b==s.encode(),path
@@ -49,6 +51,7 @@ def generate(repo,output,standalone=False):
  from v029_brand_success import following_delta
  s,businessAudit=following_delta(s);rows[-1]['windowsBrandSuccessAdaptation']=businessAudit
  emit('feature/following/FollowingListScreen',s)
+ rows.append(emit_fans(repo, out))
  return rows
 if __name__=='__main__':
  # Gradle captures stdout using the Windows locale; JSON escapes preserve the

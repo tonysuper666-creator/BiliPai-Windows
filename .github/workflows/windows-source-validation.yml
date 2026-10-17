@@ -110,6 +110,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Current original subscribed search navigation, restoration and caller contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_audio_routes_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Current original collection audio routing, restoration and producer contract failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v044_fans_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Current original native fans page, owned API, Root caller and complete navigation source contract failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_extract_upstream_brand_history.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Full original history/list source stages and authenticated baseline recovery failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v040_theme_roles_source.py -v

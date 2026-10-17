@@ -131,7 +131,8 @@
     "desktop/upstream-slices/v043-theme-chrome",
     "desktop/upstream-slices/v044-favorite-detail",
     "desktop/upstream-slices/v044-favorite-search",
-    "desktop/upstream-slices/v044-favorite-subscription"
+    "desktop/upstream-slices/v044-favorite-subscription",
+    "desktop/upstream-slices/v044-following-fans"
   ],
   "archives": [
     {
@@ -5753,6 +5754,35 @@
           "sha256": "3ddef87c3e56a4b343777371569cdb962f3095edac2b8a45a8cb3771bcd1d7c8",
           "hashNormalization": "raw",
           "blob": "1723ab376f146ff3047dbef9e9998eb39818db31"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v044-following-fans",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v044-following-fans/FansListScreen.kt",
+          "sha256": "cbea2e0c5d403a55f5d7b4ce9e959026e66684b3ce1bfdc5eebd0401f1e95e4c",
+          "hashNormalization": "raw",
+          "blob": "21693e03672b5342742a826e628db678ceceb774"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicy.kt",
+          "sha256": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68",
+          "hashNormalization": "raw",
+          "blob": "0aca79c61d7699b431b159a752af17339bf5a378"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-following-fans/FollowingListScreen.kt",
+          "sha256": "40efc40e9d7844fc25be260bd7afda6e3e4aecdb15423a7be0b2cc24de9a520d",
+          "hashNormalization": "raw",
+          "blob": "92a1bf1a35aa2defb8ff8b4efa1c2cf7f2e88374"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-following-fans/manifest.json",
+          "sha256": "bbe07a94f22f2bc56a1d65d89933cb01d7e7eb424db84b1cfd0912c943f06f47",
+          "hashNormalization": "raw",
+          "blob": "3210d4d8cb44f8ac5dd4cce8f226657fc4dbfd65"
         }
       ]
     }
@@ -15015,11 +15045,12 @@
       "hashNormalization": "raw",
       "kind": "adaptedSource",
       "features": [
-        "v044-favorite-subscription-current-originals"
+        "v044-favorite-subscription-current-originals",
+        "v044-native-fans"
       ],
       "referenceOnly": false,
       "partialReuse": true,
-      "usedScope": "Two complete original annotated folder subscribe/unsubscribe methods on the existing BilibiliApi"
+      "usedScope": "Complete original annotated favorite-folder subscription methods and native fans GET method on the existing owned API"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
@@ -15165,11 +15196,12 @@
       "hashNormalization": "raw",
       "kind": "adaptedSource",
       "features": [
-        "v044-favorite-search-original-navigation"
+        "v044-favorite-search-original-navigation",
+        "v044-native-fans"
       ],
       "referenceOnly": false,
-      "partialReuse": true,
-      "usedScope": "Complete original FavoriteSearch declaration, route branches, callback contract or regression method; other destination implementations retain their accepted originals"
+      "partialReuse": false,
+      "usedScope": "Whole current pure original Nav3 key or route codec, emitted byte-for-byte by the sole existing navigation producer"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt",
@@ -15181,11 +15213,12 @@
       "kind": "adaptedSource",
       "features": [
         "v044-favorite-search-original-navigation",
-        "v044-audio-collection-route"
+        "v044-audio-collection-route",
+        "v044-native-fans"
       ],
       "referenceOnly": false,
-      "partialReuse": true,
-      "usedScope": "Complete original FavoriteSearch and AudioMode route branches and original regression methods; unrelated navigation keeps its accepted implementations"
+      "partialReuse": false,
+      "usedScope": "Whole current pure original Nav3 key or route codec, emitted byte-for-byte by the sole existing navigation producer"
     },
     {
       "path": "app/src/test/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicyTest.kt",
@@ -15217,6 +15250,51 @@
       "referenceOnly": true,
       "partialReuse": true,
       "usedScope": "Complete original FavoriteSearch declaration, route branches, callback contract or regression method; other destination implementations retain their accepted originals"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FansListScreen.kt",
+      "localPath": "desktop/upstream-slices/v044-following-fans/FansListScreen.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "21693e03672b5342742a826e628db678ceceb774",
+      "sha256": "cbea2e0c5d403a55f5d7b4ce9e959026e66684b3ce1bfdc5eebd0401f1e95e4c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-native-fans"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete native fans state, ViewModel and UI; platform lifecycle/API supplied by existing Root entry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "localPath": "desktop/upstream-slices/v044-following-fans/FollowingListScreen.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "92a1bf1a35aa2defb8ff8b4efa1c2cf7f2e88374",
+      "sha256": "40efc40e9d7844fc25be260bd7afda6e3e4aecdb15423a7be0b2cc24de9a520d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-native-fans"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Current full following screen/group reference, not yet emitted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+      "localPath": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicy.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "0aca79c61d7699b431b159a752af17339bf5a378",
+      "sha256": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-native-fans"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Current full following screen/group reference, not yet emitted"
     }
   ],
   "buildStandaloneInputs": [

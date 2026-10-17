@@ -115,6 +115,8 @@ def generate_core_data_log(repo, output, parser):
 def generate(repo: Path, output: Path) -> Path:
     from v044_favorite_subscription import validate_outputs as validate_subscription_outputs
     validate_subscription_outputs(repo, output)
+    from v044_fans import validate_outputs as validate_fans_outputs
+    validate_fans_outputs(repo, output)
     source_path = _desktop_canonical_source(repo, 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt')
     source = source_path.read_text(encoding="utf-8")
     spec = importlib.util.spec_from_file_location("bilipai_kotlin_structure", repo / "desktop/tools/sync-upstream.py")

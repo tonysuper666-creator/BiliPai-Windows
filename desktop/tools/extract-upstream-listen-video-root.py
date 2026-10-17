@@ -18,6 +18,8 @@ def read(repo,path):
     assert sha(text)==SOURCES[path],('original source changed',path)
     return text
 def produce(repo,output,test_output=None):
+    from v044_fans import validate_outputs
+    validate_outputs(repo, output, test_output)
     output=Path(str(output) if str(output).startswith('\\\\?\\') else '\\\\?\\'+str(output.absolute()))
     output.mkdir(parents=True,exist_ok=True)
     receipts=[]

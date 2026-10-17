@@ -46,7 +46,8 @@ class OriginalAudioRouteSourceTest(unittest.TestCase):
             self.assertIn(row['originalText'], self.mapping)
 
     def test_audio_advance_preserves_the_complete_pending_favorite_mapping_and_other_routes(self):
-        favorite = undo(self.mapping, self.proof['originalAudioCollectionMapping']['retainedToCurrent'])
+        audio_mapping = undo(self.mapping, self.proof['originalNativeFansMapping']['retainedToCurrent'])
+        favorite = undo(audio_mapping, self.proof['originalAudioCollectionMapping']['retainedToCurrent'])
         self.assertEqual(audio.BEFORE_MAPPING_SHA256, search.sha(favorite))
         baseline = search.canonical_source(REPO, search.NAV+'BiliPaiNavKeyMappingPolicy.kt').read_text(encoding='utf8')
         self.assertEqual(baseline, undo(self.mapping, self.proof['retainedToCurrent']))
@@ -54,7 +55,8 @@ class OriginalAudioRouteSourceTest(unittest.TestCase):
         self.assertIn('subscribed = query["subscribed"].toBoolean()', self.mapping)
 
     def test_unreviewed_predecessor_and_second_application_are_rejected(self):
-        before = undo(self.mapping, self.proof['originalAudioCollectionMapping']['retainedToCurrent'])
+        audio_mapping = undo(self.mapping, self.proof['originalNativeFansMapping']['retainedToCurrent'])
+        before = undo(audio_mapping, self.proof['originalAudioCollectionMapping']['retainedToCurrent'])
         for value in [before+'\n', self.mapping]:
             with self.assertRaises(ValueError):
                 audio.advance_mapping(REPO, value)

@@ -13,19 +13,26 @@ internal class DesktopFollowingEntry(private val root:DesktopPersonalListsRoot,
     val scope=CoroutineScope(root.scope.coroutineContext+job)
     lateinit var environment:DesktopFollowingEnvironment;private set
     lateinit var viewModel:FollowingListViewModel;private set
+    lateinit var fansViewModel:FansListViewModel;private set
     val saveableKey=java.util.UUID.randomUUID().toString()
     fun owns()=!closed.get() && job.isActive && root.owns()
     fun assertOwned(){if(!owns())throw CancellationException("Following entry retired")}
     fun commit(block:()->Unit)=root.gate.commit {if(owns())block()} && owns()
-    fun install(environment:DesktopFollowingEnvironment) {check(!this::viewModel.isInitialized);assertOwned();this.environment=environment;viewModel=FollowingListViewModel(environment)}
+    fun install(environment:DesktopFollowingEnvironment) {
+        check(!this::environment.isInitialized);assertOwned();this.environment=environment
+        if(key.fans) fansViewModel=FansListViewModel(key.mid,environment)
+        else viewModel=FollowingListViewModel(environment)
+    }
     override fun close(){if(closed.compareAndSet(false,true))job.cancel()}
 }
 
 @Composable
 internal fun DesktopOriginalFollowingHost(entry:DesktopFollowingEntry,onBack:()->Unit,
-    onUserClick:(Long)->Unit,isCurrentPage:Boolean) {
+    onUserClick:(Long)->Unit,onFansClick:(Long)->Unit,isCurrentPage:Boolean) {
     if (!entry.owns()) return
     androidx.compose.runtime.CompositionLocalProvider(LocalDesktopDetailForeground provides isCurrentPage) {
-        FollowingListScreen(entry.key.mid,{if(entry.owns())onBack()},{mid->if(entry.owns())onUserClick(mid)},entry.viewModel)
+        if(entry.key.fans) FansListScreen(entry.key.mid,{if(entry.owns())onBack()},
+            {mid->if(entry.owns())onUserClick(mid)},{mid->if(entry.owns())onFansClick(mid)},entry.fansViewModel,isCurrentPage)
+        else FollowingListScreen(entry.key.mid,{if(entry.owns())onBack()},{mid->if(entry.owns())onUserClick(mid)},entry.viewModel)
     }
 }

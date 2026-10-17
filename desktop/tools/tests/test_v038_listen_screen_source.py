@@ -39,14 +39,14 @@ class V038ListenScreenSourceTest(unittest.TestCase):
             self.assertFalse(proof['actualCollectionRouteMounted'])
             self.assertFalse(proof['mainCompiled'])
 
-    def test_complete_latest_audio_and_favorite_search_are_the_only_canonical_navigation_changes(self):
+    def test_complete_current_original_navigation_key_keeps_audio_search_and_native_fans(self):
         latest = screen.fixed_sources(REPO)['BiliPaiNavKey.kt']
         generated, edits, baseline = screen.adapt_navigation(REPO, latest)
-        self.assertEqual(2, len(edits))
+        self.assertEqual(1, len(edits))
         self.assertEqual(screen.audio_declaration(latest), screen.audio_declaration(generated))
-        strip = lambda text: text.replace(screen.audio_declaration(text), '').replace(
-            screen.favorite_search.favorite_declaration(text), '')
-        self.assertEqual(strip(baseline), strip(generated))
+        current = screen.favorite_search.fixed(REPO)['BiliPaiNavKey.kt']
+        self.assertEqual(current, generated)
+        self.assertIn('val fans: Boolean = false', generated)
 
     def test_unreviewed_source_manifest_or_existing_platform_recipe_is_rejected(self):
         for name in (*screen.PINS, 'manifest.json'):

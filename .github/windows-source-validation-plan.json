@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "c3d08df9ee453b06b22a72e5d8b5568efc3a8a99",
-  "windowsVersion": "0.2.427.183",
-  "createdAt": "2026-10-17T14:13:17.561133+00:00",
+  "baseHead": "c1007836398f082891d7b3fff464407399142dfb",
+  "windowsVersion": "0.2.427.184",
+  "createdAt": "2026-10-17T14:58:18.579678+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "69e1dd2361da13538afbb5ac21958c00a6bdc9d39658b606a2db99e868d3fa84"
+      "sha256": "3f68a91464c73337d364a325fe35d228de952b94d3617c89a29bc02fc39ff096"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "d6b69118832b23d55849416aa3b318d2b084b72f3217d8a1d8b8b81479ecf8ee"
+      "sha256": "c77bc76e106a58fe06620da1518b49ceb3165fce25603e686b3f096541c954cd"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -226,6 +226,11 @@
       "sha256": "ad2fbfc064d14fb9214dab4a303db7f26809e27cac58b749e9959cc0b29b9a16"
     },
     {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
+      "normalization": "lf",
+      "sha256": "44c027d90d0619ba05a791013d531395b0aa41115a297f9b786809eca107e49d"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
       "normalization": "lf",
       "sha256": "026a19124db3a909f16873fe37e409059a80018d30dd4a78d60ce9cbfeddfe23"
@@ -233,7 +238,7 @@
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
       "normalization": "lf",
-      "sha256": "5ee8518c97f22f92a883338f2f5ee5f38f5e4d1ddd7ff58604df9f82556bbec3"
+      "sha256": "4087c1d247d41e07d433e1e95aae798a47ff748572425b08b8617187b52efe48"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
@@ -586,6 +591,11 @@
       "sha256": "caa43d012d7dcd7219b0b31e56a62986c0746c3240c40497ccdd9bdb4a9f8b0c"
     },
     {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
+      "normalization": "lf",
+      "sha256": "6441d7dab57b8d33cbd96eea7b4cb96de787189d3860494149626f6e782c62a2"
+    },
+    {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
       "normalization": "lf",
       "sha256": "10c792d58c6435af82a3c96dd584250c41c0525ce32a3da671d495588716eb4b"
@@ -684,6 +694,11 @@
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
       "normalization": "lf",
       "sha256": "b896409278fe3a2db0e6d307403472a77bc821bc0e2ffa0241acfd4aab36a59e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "normalization": "lf",
+      "sha256": "d61de12fedbfdbb83703bbb631cfc139364d51e95dd38e24fd06492e5c7ad952"
     },
     {
       "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSystemAboutRootHost.kt",
@@ -1231,6 +1246,11 @@
       "sha256": "053e0284135c8cf62f0f075d8446f5d4bdc79808c6e3af665eab48ccfbaec1de"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFansListRootRegressionTest.kt",
+      "normalization": "lf",
+      "sha256": "75b075864ec625ebcd6cb516688eab779b99401a60a567c616174424d92684cc"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCollectionDetailRegressionTest.kt",
       "normalization": "lf",
       "sha256": "d58b132fa6b9e3e1544cb16bb7ee2d9c4e5b357644db529c94c43ade68e53183"
@@ -1238,7 +1258,7 @@
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
       "normalization": "lf",
-      "sha256": "a60d8beba680c25126062d435181bab45880a756dc4142c4a2fc69eaf706d46b"
+      "sha256": "0dae4a3229cf4056c9c295b6c9778a529c31098424ba60dfc2f046bd5ea73d4f"
     },
     {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteSearchNavigationTest.kt",
@@ -1588,7 +1608,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "b899ae3b2b1fd8c77bb300f919184cff0e176d2ee3194c2da587eeb66e496646"
+      "sha256": "6e73e6e19f1b8fd2d78323593b063fab7222b37becb141aad3cbbba4f9e2924c"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1628,7 +1648,7 @@
     {
       "path": "desktop/tools/extract-upstream-api.py",
       "normalization": "lf",
-      "sha256": "136bd1909b1e1465dc5898d8ad66fe3eac4140770a9e855bd6e911266ffea171"
+      "sha256": "e3b6a73edef0d3e98e227955157bf81ee6c58872ca6a4bf7232c0021078f57ab"
     },
     {
       "path": "desktop/tools/extract-upstream-audio.py",
@@ -1691,6 +1711,11 @@
       "sha256": "515d16fa169c0a7003a3c9a2cfd1e2a5cab5afc026134505bccbd8c974a5a7b6"
     },
     {
+      "path": "desktop/tools/extract-upstream-following.py",
+      "normalization": "lf",
+      "sha256": "bacc80e99685866693f2068252020858aedc2cae89099e8c85328ac278eadad1"
+    },
+    {
       "path": "desktop/tools/extract-upstream-home-full-card.py",
       "normalization": "lf",
       "sha256": "306130f38f6531e915861a8d3aaeb9b47e12802ff7fcd8bb60c65927104284c2"
@@ -1713,7 +1738,7 @@
     {
       "path": "desktop/tools/extract-upstream-listen-video-root.py",
       "normalization": "lf",
-      "sha256": "3e871d5df0cc91a15bbe8d8e8372fbb17af8782fcedb2215d441d045095c60c6"
+      "sha256": "b043fc3126dbafa40e303057284ae0a9afbd8723799b6749b23c33982773769b"
     },
     {
       "path": "desktop/tools/extract-upstream-message-notifications.py",
@@ -1938,7 +1963,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "4449bbf2961a916e5e327424ee050717852355f0670acf20fb6d77b6942250a7"
+      "sha256": "f30ad847f6356b134fd955baeb456356faa474ddee47b969021e18be4259dfc0"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -2153,7 +2178,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "5e43936afb9be1516641918deb54d4d30aaf8fc68fb8c4c63b1e546e207db0ba"
+      "sha256": "e020ef6dc1385a074f44661fea568e9739ed92526dcac435208387c306e46f54"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2188,7 +2213,7 @@
     {
       "path": "desktop/tools/tests/test_v038_listen_screen_source.py",
       "normalization": "lf",
-      "sha256": "a5256354f631a2c66df949eb7ddee8f584fb6c37b970fdba7a449b52c6e4dbb0"
+      "sha256": "b011851fdf2aa1b0980839bad0f440674ad0cb27b956820e53596517c3b11d32"
     },
     {
       "path": "desktop/tools/tests/test_v038_listen_viewmodel_source.py",
@@ -2348,7 +2373,12 @@
     {
       "path": "desktop/tools/tests/test_v044_audio_routes_source.py",
       "normalization": "lf",
-      "sha256": "331da3142bc7f50402944f18b91a22e2d8f6381081fae99a4c2ca1a9a9dec81b"
+      "sha256": "45f8436b8602f7c4527362482b0e8dfb4bacb2638ce2b5940b4d77f514253678"
+    },
+    {
+      "path": "desktop/tools/tests/test_v044_fans_source.py",
+      "normalization": "lf",
+      "sha256": "93a599f352a065adf8da0a13ac554b941b6845b3f84ada08274831a9a94264c3"
     },
     {
       "path": "desktop/tools/tests/test_v044_favorite_detail_source.py",
@@ -2503,7 +2533,7 @@
     {
       "path": "desktop/tools/v038_listen_screen.py",
       "normalization": "lf",
-      "sha256": "1b43668eae03dc99e29e956aa36d1b9ed4e8fd570d48ebf3f646cc33279eab9e"
+      "sha256": "f0764f665d40785095c6a083d51e4c3d50df96e1149dab97cd68c9f5acd14045"
     },
     {
       "path": "desktop/tools/v038_listen_viewmodel.py",
@@ -2681,6 +2711,11 @@
       "sha256": "13a7dd91f0de3e3fe4de1499a9c5dd74a06ae650a08f0f4e52717120b406c334"
     },
     {
+      "path": "desktop/tools/v044_fans.py",
+      "normalization": "lf",
+      "sha256": "4f4955f514aca1729903a02734d5b4d038e842b2caa338d9e13a8ff0d02fd540"
+    },
+    {
       "path": "desktop/tools/v044_favorite_detail.py",
       "normalization": "lf",
       "sha256": "aa3a1b1b260571a1e02267dc6cae7399ce04c95a759b03b54a2f37eeba670580"
@@ -2688,12 +2723,12 @@
     {
       "path": "desktop/tools/v044_favorite_search.py",
       "normalization": "lf",
-      "sha256": "3aa9a4b3b7d088c694a1952818d51e1c9cc87157e94b7851328a844e87e759dc"
+      "sha256": "cbb1bdbdc95c019bd335b9bb365b8bfbb92dad13f6a60f86ec416b62f1ce045b"
     },
     {
       "path": "desktop/tools/v044_favorite_subscription.py",
       "normalization": "lf",
-      "sha256": "c8a7a9be2ea6b39cb2901c37e9acb5de1f298d29a36cd2f83a2e1a10a5eb11f0"
+      "sha256": "f8b6f901a2a7ba60a427774f7bd0f63515c57832063b9fb0311e6b7888ae6751"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -4401,9 +4436,29 @@
       "sha256": "570143059269b51e3148f6f99d6b8d065451bd07f00d1fc76ee745e4e80d8449"
     },
     {
+      "path": "desktop/upstream-slices/v044-following-fans/FansListScreen.kt",
+      "normalization": "raw",
+      "sha256": "cbea2e0c5d403a55f5d7b4ce9e959026e66684b3ce1bfdc5eebd0401f1e95e4c"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicy.kt",
+      "normalization": "raw",
+      "sha256": "5cd74fb81b3dde9d36a1ce3bfa0578192768a1b9b352243341772ad3d440be68"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-following-fans/FollowingListScreen.kt",
+      "normalization": "raw",
+      "sha256": "40efc40e9d7844fc25be260bd7afda6e3e4aecdb15423a7be0b2cc24de9a520d"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-following-fans/manifest.json",
+      "normalization": "raw",
+      "sha256": "bbe07a94f22f2bc56a1d65d89933cb01d7e7eb424db84b1cfd0912c943f06f47"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "6694069f5f6e003e88365b3665a1f484c24c0ad760c1e7e8b5daa3836385d165"
+      "sha256": "fb5e435ac722efcbc22999eb7e845a352c0447d67b71c306058f038c3f741f39"
     }
   ],
   "classes": {
@@ -4490,6 +4545,7 @@
     "com.bilipai.desktop.ui.DesktopDynamicFailedPaginationTest": 4,
     "com.bilipai.desktop.ui.DesktopDynamicStartupTest": 9,
     "com.bilipai.desktop.ui.DesktopDynamicTabsTest": 10,
+    "com.bilipai.desktop.ui.DesktopFansListRootRegressionTest": 8,
     "com.bilipai.desktop.ui.DesktopFavoriteCollectionDetailRegressionTest": 9,
     "com.bilipai.desktop.ui.DesktopFavoriteSearchNavigationTest": 6,
     "com.bilipai.desktop.ui.DesktopFavoriteSubscriptionRegressionTest": 8,
@@ -4531,7 +4587,7 @@
     "com.bilipai.desktop.update.DesktopUpdaterStageLeaseTest": 25,
     "com.bilipai.desktop.update.PackagedUpdaterChildEnvironmentTest": 5
   },
-  "expectedTests": 1089,
+  "expectedTests": 1097,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4541,27 +4597,29 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
+    "desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
     "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
-    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopAudioCollectionRouteTest.kt",
-    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteSearchNavigationTest.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFansListRootRegressionTest.kt",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCoverPrefetchRegressionTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
+    "desktop/tools/extract-upstream-api.py",
+    "desktop/tools/extract-upstream-following.py",
     "desktop/tools/extract-upstream-listen-video-root.py",
     "desktop/tools/sync-upstream.py",
     "desktop/tools/tests/test_sync_upstream.py",
     "desktop/tools/tests/test_v038_listen_screen_source.py",
     "desktop/tools/tests/test_v044_audio_routes_source.py",
-    "desktop/tools/tests/test_v044_favorite_search_source.py",
+    "desktop/tools/tests/test_v044_fans_source.py",
     "desktop/tools/v038_listen_screen.py",
-    "desktop/tools/v044_audio_routes.py",
+    "desktop/tools/v044_fans.py",
     "desktop/tools/v044_favorite_search.py",
     "desktop/tools/v044_favorite_subscription.py",
-    "desktop/upstream-slices/v044-favorite-search/AppNavigation.kt",
-    "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKey.kt",
-    "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicy.kt",
-    "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicyTest.kt",
-    "desktop/upstream-slices/v044-favorite-search/manifest.json",
+    "desktop/upstream-slices/v044-following-fans/FansListScreen.kt",
+    "desktop/upstream-slices/v044-following-fans/FollowingGroupPolicy.kt",
+    "desktop/upstream-slices/v044-following-fans/FollowingListScreen.kt",
+    "desktop/upstream-slices/v044-following-fans/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

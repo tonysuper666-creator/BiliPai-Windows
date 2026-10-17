@@ -148,9 +148,7 @@ internal class DesktopOriginalSpacePageEntry(val environment:DesktopOriginalSpac
                 onLikedVideosClick={mid,name->navigate {routes.push(BiliPaiNavKey.LikedVideos(mid,name))}},
                 onMessageClick={mid,name,_->navigate {routes.push(BiliPaiNavKey.Chat(mid,1,name))}},
                 onFollowingClick={mid->navigate {routes.push(BiliPaiNavKey.Following(mid))}},
-                // v023 fans is an explicitly original Web leaf, not a native
-                // list promised by the full SpaceScreen closure.
-                onFansClick={mid->navigate {routes.push(BiliPaiNavKey.Web("https://space.bilibili.com/$mid/fans/fans","粉丝"))}},
+                onFansClick={mid->navigate {routes.push(BiliPaiNavKey.Following(mid,fans=true))}},
                 onUpowerRankClick={mid,name,count->navigate {routes.push(BiliPaiNavKey.UpowerRank(mid,name,count))}},
                 onMemberGuardClick={mid,name,count->navigate {routes.push(BiliPaiNavKey.MemberGuard(mid,name,count))}},
                 sharedTransitionScope=null,animatedVisibilityScope=null)

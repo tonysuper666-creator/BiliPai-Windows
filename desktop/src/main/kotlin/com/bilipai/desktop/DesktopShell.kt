@@ -2513,7 +2513,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 val entry=remember(personalLists,entryKey) {personalLists.following(entryKey)}
                                 DesktopDetailWindow {
                                     DesktopOriginalFollowingHost(entry,onBack={commands.back()},
-                                        onUserClick={mid->openUser(mid)},isCurrentPage=active && !activatingUpdate)
+                                        onUserClick={mid->openUser(mid)},
+                                        onFansClick={mid->commands.push(BiliPaiNavKey.Following(mid,fans=true))},isCurrentPage=active && !activatingUpdate)
                                 }
                             }
                             entryKey == BiliPaiNavKey.WatchLater || entryKey is BiliPaiNavKey.WatchLaterSearch -> {

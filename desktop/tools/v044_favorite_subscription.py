@@ -238,7 +238,9 @@ def advance_api(repo, before):
         methods.append(original[annotations:last])
     first, last = span(before, 'interface', 'BilibiliApi', syntax)
     selected = before[:last-1]+'\n'+'\n\n'.join(methods)+'\n'+before[last-1:]
-    return selected, dict(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256,
+    from v044_fans import append_api
+    selected, fans = append_api(repo, selected)
+    return selected, dict(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256, originalFollowersApi=fans,
         completeOriginalRetrofitMethods=2, declarationsSHA256=sha('\n\n'.join(methods)),
         retainedToCurrent=inverse_proof(before, selected))
 

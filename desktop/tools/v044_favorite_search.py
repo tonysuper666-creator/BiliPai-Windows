@@ -78,6 +78,8 @@ def emit_mapping(repo, output):
          'Favorite-search original round-trip flag missing')
     from v044_audio_routes import advance_mapping
     body, audio = advance_mapping(repo, body)
+    from v044_fans import finish_mapping
+    body, fans = finish_mapping(repo, body)
     target = Path(output)/'com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt'
     archive = (Path(repo)/ARCHIVE).resolve()
     need(not target.resolve().is_relative_to(archive) and not archive.is_relative_to(target.resolve()),
@@ -86,8 +88,8 @@ def emit_mapping(repo, output):
     target.write_text(body, encoding='utf8', newline='\n')
     proof = dict(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256,
         output='com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt',
-        completeOriginalBranches=selected, originalAudioCollectionMapping=audio,
-        canonicalRoutesOutsideFavoriteAndAudioUnchanged=True,
+        completeOriginalBranches=selected, originalAudioCollectionMapping=audio, originalNativeFansMapping=fans,
+        fullCurrentOriginalMappingUnadapted=True,
         retainedToCurrent=inverse_proof(before, body))
     (Path(output)/'v044-favorite-search-mapping-proof.json').write_text(
         json.dumps(proof, ensure_ascii=False, indent=2)+'\n', encoding='utf8', newline='\n')
