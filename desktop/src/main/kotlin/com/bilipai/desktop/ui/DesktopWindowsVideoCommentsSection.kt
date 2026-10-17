@@ -178,9 +178,12 @@ internal fun DesktopWindowsVideoCommentsSection(
             Column(Modifier.fillMaxSize()) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { search { reply -> ui.thread(reply, 0L) } }
                 if (!ui.threadVisible || !replies.visible) input()
-                VideoCommentTab(listState, Modifier.weight(1f), success.info, state.replies, state.replyCount,
-                    emotes, state.isRepliesLoading, state.isRepliesRefreshing, state.repliesError, state.isRepliesEnd,
-                    state.voteCard, success.videoTags, onUpClick = userClick,
+                VideoCommentTab(listState = listState, modifier = Modifier.weight(1f), upMid = success.info.owner.mid,
+                    maxTimestampMs = success.info.pages.firstOrNull { it.cid == success.info.cid }?.duration?.times(1000L)
+                        ?: success.info.pages.firstOrNull()?.duration?.times(1000L), replies = state.replies, replyCount = state.replyCount,
+                    emoteMap = emotes, isRepliesLoading = state.isRepliesLoading, isRepliesRefreshing = state.isRepliesRefreshing,
+                    repliesError = state.repliesError, isRepliesEnd = state.isRepliesEnd,
+                    voteCard = state.voteCard, pinnedReplyIds = state.pinnedReplyIds, onUpClick = userClick,
                     onSubReplyClick = { reply, target -> ui.thread(reply, target) }, onCommentReplyClick = replyClick,
                     onLoadMoreReplies = { ui.loadMore() }, onRefreshReplies = { ui.refresh() }, onImagePreview = previewClick,
                     onTimestampClick = timeClick, contentPadding = PaddingValues(bottom = 12.dp),

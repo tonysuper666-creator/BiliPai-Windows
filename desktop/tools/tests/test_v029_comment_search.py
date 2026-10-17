@@ -76,8 +76,11 @@ class V029CommentSearchSourceTest(unittest.TestCase):
         self.assertEqual('v0.3.6',selection['fixedUpstreamTag'])
         self.assert_original_inverse(fixed.VM,read(out/'com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt'),selection,
             original=read_sources()['VideoCommentViewModel.kt'])
-        out=self.outputs['video-comment-ui'];self.assert_original_inverse(fixed.SEARCH,
-            read(out/'com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt'),
+        out=self.outputs['video-comment-ui']
+        from v046_favorite_editor import restore
+        current_search=read(out/'com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt')
+        current_proof=json.loads(read(out/'v046-comment-search-sheet-proof.json'))
+        self.assert_original_inverse(fixed.SEARCH,restore(current_search,current_proof['retainedToCurrent']),
             json.loads(read(out/'v029-comment-search-ui-source.json')))
         out=self.outputs['dynamic-reply-protocol']
         selection=json.loads(read(out/'v029-comment-grpc-source.json'))

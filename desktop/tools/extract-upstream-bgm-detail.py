@@ -175,6 +175,9 @@ def generate(repo,output):
         elif Path(relative).name=="DesktopOriginalCommentSortHeader.kt":
             body=apply_tab_roles("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",body,output,Path(relative).name)
         body=comment_detail_root_entry_delta(relative,body)
+        if relative=='com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt':
+            from v046_comment_list import advance_bgm_comment_content
+            body=advance_bgm_comment_content(repo,body,output)
         target=output/relative;v=str(target.absolute());safe=Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
         safe.parent.mkdir(parents=True,exist_ok=True);safe.write_text(body,encoding='utf-8',newline='\n');return target
     package='com/android/purebilibili/feature/audio/bgm/'

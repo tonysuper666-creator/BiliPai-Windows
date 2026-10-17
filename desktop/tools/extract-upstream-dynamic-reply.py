@@ -175,6 +175,16 @@ def generate(repo, output):
             comment_presentation_proofs.append(proof)
             (output / "windows-comment-presentation.json").write_text(
                 json.dumps(comment_presentation_proofs, ensure_ascii=True, indent=2) + "\n", encoding="utf8")
+        from v046_comment_list import advance_reply_components, advance_subreply_components, advance_dynamic_items, advance_settings, emit_shared
+        if filename == 'DesktopOriginalReplyComponents.kt':
+            body = advance_reply_components(repo, body, output)
+            emit_shared(repo, output)
+        elif filename == 'DesktopOriginalSubReplyDetailComponents.kt':
+            body = advance_subreply_components(repo, body, output)
+        elif filename == 'DesktopOriginalDynamicInlineReplyUi.kt':
+            body = advance_dynamic_items(repo, body, output)
+        elif filename == 'DesktopOriginalReplySettings.kt':
+            body = advance_settings(repo, body, output, 'reply')
         emitted.append(host.write(output, path, read(repo, path), body, filename))
 
     original = read(repo, REPLY)

@@ -108,6 +108,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Original folder metadata and captured editor source regressions failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v046_comment_chrome_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Original v046 shared comment material and sole producer closure failed.' }
+          python -m unittest discover -s desktop/tools/tests -p test_v046_comment_list_source.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Original v046 shared reply list, actual callers, Bangumi panel and settings closure failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_favorite_detail_source.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Current original favorite detail, live UI, ownership and playlist model source failed.' }
           python -m unittest discover -s desktop/tools/tests -p test_v044_favorite_subscription_source.py -v

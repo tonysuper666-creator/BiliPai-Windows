@@ -33,7 +33,7 @@ CANONICAL_CATALOG_PATH = "desktop/tools/v025-canonical-sources.json"
 COMPATIBILITY_CATALOG_PATH = "desktop/tools/compatibility-source-inputs.json"
 BUILD_CONFIGURATION_PATH = "app/build.gradle.kts"
 CANONICAL_BUILD_CONFIGURATION_PATH = "desktop/tools/upstream-build-configuration-baseline-v025.gradle.kts"
-COMPATIBILITY_CATALOG_SHA256 = "6815132b76be2244a3b2c04c9bf23e8343c8906f94743d423011d21395eb5f0e"
+COMPATIBILITY_CATALOG_SHA256 = "2f4ab1587b27cfb3d6f02447cd169f67d52be9e04b23aef8558ab710620af517"
 
 
 class UpdateError(RuntimeError):

@@ -63,6 +63,12 @@ def emit(rel,t,original):
  from v037_player_known_presentation import apply as apply_known_presentation
  t=apply_known_presentation(rel,t,REPO,LANE)
  t=validate_fresh_v025_comment_consumer("com/android/purebilibili/"+rel,t)
+ from v046_comment_list import advance_bottom_bar, advance_bottom_calls, advance_tablet_avatars
+ if rel=='feature/video/ui/components/DesktopOriginalBottomInputBar.kt':
+  t=advance_bottom_bar(REPO,t,OUT)
+ elif rel in {'feature/video/screen/TabletVideoLayout.kt','feature/video/screen/TabletCinemaLayout.kt'}:
+  t=advance_bottom_calls(REPO,t,OUT,Path(rel).stem)
+  t=advance_tablet_avatars(REPO,t,OUT,Path(rel).stem)
  if BASE+original in DIRECT and not args.standalone:return
  p=OUT/'com/android/purebilibili'/rel;write(p,t)
  OUTPUTS.append({'path':str(p),'sha256LF':sha(t),'original':BASE+original})

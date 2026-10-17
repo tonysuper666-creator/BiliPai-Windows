@@ -135,6 +135,7 @@
     "desktop/upstream-slices/v044-following-fans",
     "desktop/upstream-slices/v044-list-foreground",
     "desktop/upstream-slices/v046-comment-chrome",
+    "desktop/upstream-slices/v046-comment-list",
     "desktop/upstream-slices/v046-favorite-editor"
   ],
   "archives": [
@@ -5921,6 +5922,155 @@
           "sha256": "d735f17a1955b40ce306ac1c099331ad348d7d20f3e9d84ab8ff701b92c43107",
           "hashNormalization": "raw",
           "blob": "3fec2ea63d1449ab3eaa21beddd1041318769693"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-comment-list",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/BangumiCommentPanel.kt",
+          "sha256": "6317a8e5637e1ec60ecdc1aa0376332752ec96d677c6355b0c3fa54557ef1afa",
+          "hashNormalization": "raw",
+          "blob": "3c7abc482feb1a9312faaca0c818743a8374f0d4"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/BangumiPlayerCommentPolicyTest.kt",
+          "sha256": "1be04965701a1f18c6cec0deb0eb78303309a1d276e388039c8179818d05dfe7",
+          "hashNormalization": "raw",
+          "blob": "547001b34cbfb4ee25b8c69949307b438cd032f0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/BangumiPlayerContent.kt",
+          "sha256": "956ad4163431704bbfed30efca2c4f7c9c516ee4cb31002abc814e00e50e70c8",
+          "hashNormalization": "raw",
+          "blob": "2ed4b909b91702ab5d2242fbbb67f9e6a52f7bc9"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/BangumiPlayerScreen.kt",
+          "sha256": "5177c569e3bbcb0615f8abaca2cd2803ab252e308a5b7a225c29f89cce06d728",
+          "hashNormalization": "raw",
+          "blob": "25500bb275ae15aaeb4b141940b17109212cdc19"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/BottomInputBar.kt",
+          "sha256": "ff138afe299d8bce2d6c7a46e2344a01febb301de1454550680747aab55d2809",
+          "hashNormalization": "raw",
+          "blob": "a2f269e8cc2ac467adff1fed066d55a1568758da"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/CommentAvatarPush.kt",
+          "sha256": "260d4be2633a7795beea430deaf2bb9a488ffc304e870101e326837b58d4e80c",
+          "hashNormalization": "raw",
+          "blob": "78b897fd0a6675f296b002b414aa4be07460393d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/CommentAvatarPushPolicyTest.kt",
+          "sha256": "c8efed88c17eb233f6ab51c7cd6ddb7c38d2c9c3b2ee693ba2d9a7c94d477899",
+          "hashNormalization": "raw",
+          "blob": "61129905752156f38c243c48f0e266242611239b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/CommentCascadingContent.kt",
+          "sha256": "59d5ce7abca280b754c23a801f2e2ad90cd6909f093095d0e515e3620bafcd32",
+          "hashNormalization": "raw",
+          "blob": "7de88671b0e2025e03c9fa631b9ad629367dfdba"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/CommentContentReveal.kt",
+          "sha256": "9a78ef231dc14216cb16a8646a4ffbc42b10c47cf5d77273f87eb022e84d208f",
+          "hashNormalization": "raw",
+          "blob": "3bcbf6136bba36f8aa34bb535aef0fe18af144af"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/manifest.json",
+          "sha256": "bf6aec2a3a7802d5394520136c79c7d96ee2913be31b1cd449fa886a9ec5d8b1",
+          "hashNormalization": "raw",
+          "blob": "5703ce2fed75c0597f0f6b3a49d70e1a926827a7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/NagramChatAvatarPlacement.kt",
+          "sha256": "cd4ff58cdedac362254c7be0fbffe69cf6e1e913f4136b21773c78b4509cbc7e",
+          "hashNormalization": "raw",
+          "blob": "aa86165827ba43e66ea273cf8131f34afca65dc2"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/ReplyComponents.kt",
+          "sha256": "7ccb907e2df200bd28008d7a303903276082babeea77090f92651496fca24968",
+          "hashNormalization": "raw",
+          "blob": "57eb54e269e0bcac572c24a16ed6c6f38ca8aee6"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/SettingsManager.kt",
+          "sha256": "ab7ceccdb70212f9fbf8b35f723b47cf1f2715e66c5b6f53b0b0c9e0b7ac837c",
+          "hashNormalization": "raw",
+          "blob": "5f89ecaa3f945d131f62174d525e717feb0b91bc"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/VideoCommentFloatingHeader.kt",
+          "sha256": "f03b4fbc40abfa71f5bfdf87fc2c53d94031cc9a3042530473adde670d128ee3",
+          "hashNormalization": "raw",
+          "blob": "81c5eb20df6ba4529651a7769716c9b90c066586"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/VideoContentSection.kt",
+          "sha256": "d0a7466186607baf78b27a5dc5412f01021319f2d42d6fda50ab03fd27188490",
+          "hashNormalization": "raw",
+          "blob": "15290f776babd1b1533d913aa088d9da53d5180d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/SubReplyDetailComponents.kt",
+          "sha256": "bc15d61fe8915ca1fe2e0b6a341991a35c38ef7d537958d5e0f2a6a8c6255f38",
+          "hashNormalization": "raw",
+          "blob": "0eee0d98f609ff9a24a0854e8f6c1868f2b49da8"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/CommentSearchSheet.kt",
+          "sha256": "4933ce20711d7fc316ad43e35faa6c882bef9acbc753c8c53178805a00a32854",
+          "hashNormalization": "raw",
+          "blob": "96c7d37660921662caecb04c5b1ff6b4a2c02237"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/DynamicCommentSheet.kt",
+          "sha256": "961dce087e98d357de62de0e585b30fae956f499c4107e3b2ffbb2d0541b967b",
+          "hashNormalization": "raw",
+          "blob": "ee1cd4f3c4e451ee392059e4cd9046bae7654cb0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/DynamicDetailScreen.kt",
+          "sha256": "701c2348fcdaf3e0e07a72f6037459bde051a8ba3177e4911927ba9ad700aea9",
+          "hashNormalization": "raw",
+          "blob": "16a0061454d02da4a453f8d62ed3f78405cf03e1"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/TabletVideoLayout.kt",
+          "sha256": "943d4074aabb29c99015cf92ad3501f226a00dc1fbe2dc4d72646268818cc8d7",
+          "hashNormalization": "raw",
+          "blob": "65d3ba656ff5f443ea4dcd0feb3335d397216a27"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/TabletCinemaLayout.kt",
+          "sha256": "651fbc4ebed77fffacf9da118866912db27063fbcc72ac13a986f4534b59a899",
+          "hashNormalization": "raw",
+          "blob": "8f94148aeb1fe40f052fb5c19af7675349ad239f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/VideoCommentSheetHost.kt",
+          "sha256": "407af2fcf1e8db9ecb3a268a0abf434c0cde3db012b4880523da17e070f65e4d",
+          "hashNormalization": "raw",
+          "blob": "ffacd7e641cd3e20e9dcb871c4f160fa0fccd5e5"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-list/BgmDetailScreen.kt",
+          "sha256": "0fa8ceaf0a4374302c3b89a8a02c15afc2f684217b2ee86e92c4268bdf199d10",
+          "hashNormalization": "raw",
+          "blob": "c17cb1a6637a5511e395ab68b5bce60afb14d518"
         }
       ]
     }
@@ -15666,6 +15816,336 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original geometry kernel is verified byte-identical to the existing sole production owner; the complete original four-case geometry suite is emitted with only its class renamed. No duplicate kernel is emitted."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCommentPanel.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/BangumiCommentPanel.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3c7abc482feb1a9312faaca0c818743a8374f0d4",
+      "sha256": "6317a8e5637e1ec60ecdc1aa0376332752ec96d677c6355b0c3fa54557ef1afa",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiPlayerCommentPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/BangumiPlayerCommentPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "547001b34cbfb4ee25b8c69949307b438cd032f0",
+      "sha256": "1be04965701a1f18c6cec0deb0eb78303309a1d276e388039c8179818d05dfe7",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference-only original broader PGC source contract; its two source-reading JVM tests are not emitted or counted."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/BangumiPlayerContent.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2ed4b909b91702ab5d2242fbbb67f9e6a52f7bc9",
+      "sha256": "956ad4163431704bbfed30efca2c4f7c9c516ee4cb31002abc814e00e50e70c8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete retained original declaration(s) on existing Windows owners; full file remains archived, actual selection and invertible adaptations are recorded by the real production generator."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/BangumiPlayerScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "25500bb275ae15aaeb4b141940b17109212cdc19",
+      "sha256": "5177c569e3bbcb0615f8abaca2cd2803ab252e308a5b7a225c29f89cce06d728",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete retained original declaration(s) on existing Windows owners; full file remains archived, actual selection and invertible adaptations are recorded by the real production generator."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/BottomInputBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "a2f269e8cc2ac467adff1fed066d55a1568758da",
+      "sha256": "ff138afe299d8bce2d6c7a46e2344a01febb301de1454550680747aab55d2809",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentAvatarPush.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/CommentAvatarPush.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "78b897fd0a6675f296b002b414aa4be07460393d",
+      "sha256": "260d4be2633a7795beea430deaf2bb9a488ffc304e870101e326837b58d4e80c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/CommentAvatarPushPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/CommentAvatarPushPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "61129905752156f38c243c48f0e266242611239b",
+      "sha256": "c8efed88c17eb233f6ab51c7cd6ddb7c38d2c9c3b2ee693ba2d9a7c94d477899",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentCascadingContent.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/CommentCascadingContent.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7de88671b0e2025e03c9fa631b9ad629367dfdba",
+      "sha256": "59d5ce7abca280b754c23a801f2e2ad90cd6909f093095d0e515e3620bafcd32",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentContentReveal.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/CommentContentReveal.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3bcbf6136bba36f8aa34bb535aef0fe18af144af",
+      "sha256": "9a78ef231dc14216cb16a8646a4ffbc42b10c47cf5d77273f87eb022e84d208f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NagramChatAvatarPlacement.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/NagramChatAvatarPlacement.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "aa86165827ba43e66ea273cf8131f34afca65dc2",
+      "sha256": "cd4ff58cdedac362254c7be0fbffe69cf6e1e913f4136b21773c78b4509cbc7e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/ReplyComponents.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "57eb54e269e0bcac572c24a16ed6c6f38ca8aee6",
+      "sha256": "7ccb907e2df200bd28008d7a303903276082babeea77090f92651496fca24968",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete retained original declaration(s) on existing Windows owners; full file remains archived, actual selection and invertible adaptations are recorded by the real production generator."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/SettingsManager.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "5f89ecaa3f945d131f62174d525e717feb0b91bc",
+      "sha256": "ab7ceccdb70212f9fbf8b35f723b47cf1f2715e66c5b6f53b0b0c9e0b7ac837c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete retained original declaration(s) on existing Windows owners; full file remains archived, actual selection and invertible adaptations are recorded by the real production generator."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentFloatingHeader.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/VideoCommentFloatingHeader.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "81c5eb20df6ba4529651a7769716c9b90c066586",
+      "sha256": "f03b4fbc40abfa71f5bfdf87fc2c53d94031cc9a3042530473adde670d128ee3",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file and all declarations; original platform adaptations are recorded by the sole existing producer. Avatar original thirteen-case suite is emitted to the test source set only."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/VideoContentSection.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "15290f776babd1b1533d913aa088d9da53d5180d",
+      "sha256": "d0a7466186607baf78b27a5dc5412f01021319f2d42d6fda50ab03fd27188490",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete retained original declaration(s) on existing Windows owners; full file remains archived, actual selection and invertible adaptations are recorded by the real production generator."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/SubReplyDetailComponents.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "0eee0d98f609ff9a24a0854e8f6c1868f2b49da8",
+      "sha256": "bc15d61fe8915ca1fe2e0b6a341991a35c38ef7d537958d5e0f2a6a8c6255f38",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original SubReplyDetailItem, layout DTO and factory, with existing Windows save/share/block/translation ports kept byte-identical. The actual existing conversation list forwards its real LazyListState and root/child keys. Broader v046 conversation-host changes are not claimed."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/CommentSearchSheet.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "96c7d37660921662caecb04c5b1ff6b4a2c02237",
+      "sha256": "4933ce20711d7fc316ad43e35faa6c882bef9acbc753c8c53178805a00a32854",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original search sheet, result/avatar renderers, filtering/sorting/highlighting and motion. Existing Windows clipboard, feedback, Coil and owned modal ports stay the same. Actual root/child search keys are forwarded to the original avatar placement."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/DynamicCommentSheet.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ee1cd4f3c4e451ee392059e4cd9046bae7654cb0",
+      "sha256": "961dce087e98d357de62de0e585b30fae956f499c4107e3b2ffbb2d0541b967b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original dynamicInlineCommentItems extension; same raw rows, actions and rpid keys, now receiving the actual host list. Broader original DynamicCommentSheet container changes are not claimed."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/DynamicDetailScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "16a0061454d02da4a453f8d62ed3f78405cf03e1",
+      "sha256": "701c2348fcdaf3e0e07a72f6037459bde051a8ba3177e4911927ba9ad700aea9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Original avatar preference read and visible-list forwarding are applied to the actual existing Windows detail layout. Existing session/account/callback owners stay unchanged. Broader v046 screen changes are not claimed."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/TabletVideoLayout.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "65d3ba656ff5f443ea4dcd0feb3335d397216a27",
+      "sha256": "943d4074aabb29c99015cf92ad3501f226a00dc1fbe2dc4d72646268818cc8d7",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Original avatar preference and actual comment-list/key forwarding are applied to the existing Windows tablet/cinema owner. String lazy keys match the existing rows. Broader v046 layout-file parity is not claimed."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/TabletCinemaLayout.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "8f94148aeb1fe40f052fb5c19af7675349ad239f",
+      "sha256": "651fbc4ebed77fffacf9da118866912db27063fbcc72ac13a986f4534b59a899",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Original avatar preference and actual comment-list/key forwarding are applied to the existing Windows tablet/cinema owner. String lazy keys match the existing rows. Broader v046 layout-file parity is not claimed."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/VideoCommentSheetHost.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ffacd7e641cd3e20e9dcb871c4f160fa0fccd5e5",
+      "sha256": "407af2fcf1e8db9ecb3a268a0abf434c0cde3db012b4880523da17e070f65e4d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original VideoCommentMainList with actual generic VM full-search state/load callback, original viewport skeletons, AppLazyColumn and avatar list state. Existing Windows settings/context/density ports are retained. Footer declarations already match byte-for-byte. Broader v046 fullscreen sheet-host parity is not claimed."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-list/BgmDetailScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "c17cb1a6637a5511e395ab68b5bce60afb14d518",
+      "sha256": "0fa8ceaf0a4374302c3b89a8a02c15afc2f684217b2ee86e92c4268bdf199d10",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-list"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original BgmDetailContent, including original comment list and theme colors; existing Windows playing-bar state and media-search parameters remain. The original BGM body does not enable avatar pushing. Broader v046 BGM screen parity is not claimed."
     }
   ],
   "buildStandaloneInputs": [
