@@ -1,0 +1,36 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.4",
+  "commit": "070ab41608213cd981fd7e51df357295f9a537bf",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "filename": "BiliPaiNavKey.kt",
+      "bytes": 14438,
+      "sha256": "892ecaa6e6243c09977c0f69c1d555a6d6193229b75a75a550ed0eee9e3dcfc4",
+      "gitBlob": "14c38cc5fc5dfb21d0a5e4142c94640bb94ea8df"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt",
+      "filename": "BiliPaiNavKeyMappingPolicy.kt",
+      "bytes": 25235,
+      "sha256": "1b6ec5b0ea395f98bceeb5c3eaf6b8846dcd9aa58cfa851d36c2479a6eda5971",
+      "gitBlob": "1333f35c1012287ee3d398280bd3eb0b5fccdf0b"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicyTest.kt",
+      "filename": "BiliPaiNavKeyMappingPolicyTest.kt",
+      "bytes": 14916,
+      "sha256": "7867ec8e116ff3fc43f9b21d250d81095726a7f7ef98c72e45c6c4361db0a01e",
+      "gitBlob": "7e6f5ce9061b868c7bebc5c1f26e23e9bc4a0b02"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "filename": "AppNavigation.kt",
+      "bytes": 321073,
+      "sha256": "39b1c456372cffe3f294236e987664dc899eb1eb2a3af713f07ea118976b55ad",
+      "gitBlob": "5450d80a5603397e3f5d2cd067e97fe261aa9a8b"
+    }
+  ]
+}

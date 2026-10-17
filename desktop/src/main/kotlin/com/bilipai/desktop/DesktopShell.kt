@@ -2499,10 +2499,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             loadFavoriteViewModelOnEnter = false,
                                             initialSearchQuery = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.query.orEmpty(),
                                             initialSearchScope = (entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.data.model.response.FavoriteSearchScope.CURRENT_FOLDER,
-                                            initialSubscribed = entryKey == BiliPaiNavKey.FavoriteSubscribed,
+                                            initialSubscribed = entryKey == BiliPaiNavKey.FavoriteSubscribed ||
+                                                (entryKey as? BiliPaiNavKey.FavoriteSearch)?.subscribed == true,
                                             isSearchDestination = entryKey is BiliPaiNavKey.FavoriteSearch,
-                                            onOpenSearchDestination = if (detail == null) {
-                                                { value -> commands.push(BiliPaiNavKey.FavoriteSearch(value,(entryKey as? BiliPaiNavKey.FavoriteSearch)?.scope ?: com.android.purebilibili.data.model.response.FavoriteSearchScope.CURRENT_FOLDER)) }
+                                            onOpenSearchDestination = if (detail == null && entryKey !is BiliPaiNavKey.FavoriteSearch) {
+                                                { value, subscribed -> commands.push(BiliPaiNavKey.FavoriteSearch(query = value, subscribed = subscribed)) }
                                             } else null)
                                     }
                                     }

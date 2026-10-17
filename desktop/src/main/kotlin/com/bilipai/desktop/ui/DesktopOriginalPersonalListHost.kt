@@ -78,7 +78,7 @@ internal class DesktopPersonalListNavigation(
             initialSearchQuery = historySearch?.query.orEmpty(),
             isSearchDestination = historySearch != null,
             onOpenSearchDestination = if (model is HistoryViewModel && historySearch == null)
-                ({ query -> if (entry.owns()) onOpenHistorySearch(query) }) else null,
+                ({ query, _ -> if (entry.owns()) onOpenHistorySearch(query) }) else null,
             listScopedSearchChannel = if (model is HistoryViewModel && historySearch == null) historySearchChannel else null,
             scrollToTopChannel = if (model is HistoryViewModel) historyScrollToTopChannel else null,
             onPlayAllAudioClick = { bvid, cid -> if (entry.owns()) onPlayAllAudio(bvid, cid) },

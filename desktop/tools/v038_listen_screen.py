@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib
 import json
 from v025_source_paths import canonical_source
+import v044_favorite_search as favorite_search
 from v038_listen_viewmodel import adapt_screen_lifecycle, block_end
 
 COMMIT = 'b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14'
@@ -134,6 +135,9 @@ def adapt_navigation(repo, latest):
     adaptation = Adaptation(baseline)
     adaptation.replace(audio_declaration(baseline), audio_declaration(latest),
         'complete latest AudioMode declaration with original defaulted collection fields')
+    adaptation.replace(favorite_search.favorite_declaration(adaptation.body),
+        favorite_search.favorite_declaration(favorite_search.fixed(repo)['BiliPaiNavKey.kt']),
+        'complete current original FavoriteSearch declaration preserves subscribed mode')
     body, edits = adaptation.finish()
     return body, edits, baseline
 
@@ -176,8 +180,11 @@ def emit(repo, output, base_recipe):
             fullInverseOriginalSha256LF=sha(inverse_original.encode()), adaptedSha256LF=sha(body.encode()),
             wholeOriginalInverse=True, inverseBase='v025 canonical navigation' if name == 'BiliPaiNavKey.kt' else 'v038 whole original',
             edits=edits))
-    proof = dict(upstreamCommit=COMMIT, sources=receipts, completeLatestListenScreenAndPlayerRetained=True,
-        completeLatestAudioModeDeclarationRetained=True, remainingCanonicalNavigationPreserved=True,
+    mapping = favorite_search.emit_mapping(repo, output)
+    proof = dict(upstreamCommit=COMMIT, sources=receipts, favoriteSearchMapping=mapping,
+        favoriteSearchUpstreamCommit=favorite_search.COMMIT, favoriteSearchManifestSHA256=favorite_search.MANIFEST_SHA256,
+        completeLatestListenScreenAndPlayerRetained=True,
+        completeLatestAudioModeDeclarationRetained=True, remainingCanonicalNavigationOutsideFavoriteSearchPreserved=True,
         existingRootPageLifecycleAndUiCallerUsed=True, originalCollectionAndArtistCallbacksRetained=True,
         actualCollectionRouteMounted=False, actualVideoBootstrapTargetVerified=False,
         soleProducerWiringVerified=False, mainCompiled=False, runtimeExecuted=False)

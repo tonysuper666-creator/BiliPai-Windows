@@ -235,6 +235,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt"))
         // The existing Listen producer owns the original key file with the fixed AudioMode declaration.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))
+        // Current subscribed-search route mapping shares that existing navigation producer.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt"))
         // The sole v0.4.1 status-label producer owns these four complete or hook-edited model sources.
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt"))
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt"))
@@ -279,6 +281,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
 val extractUpstreamApi by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -345,6 +349,8 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamMedia) }
 
 val extractUpstreamAudio by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
@@ -458,6 +464,8 @@ val extractUpstreamPackages by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -518,6 +526,8 @@ val extractGoogleCastPlatform by tasks.registering(Exec::class) {
 val extractUpstreamJs by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -761,6 +771,8 @@ val extractUpstreamBlockedListUi by tasks.registering(Exec::class) {
 val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v042_network_proxy.py")
     inputs.dir("upstream-slices/v042-network-proxy")
@@ -786,6 +798,8 @@ tasks.named("compileTestKotlin") { dependsOn(extractUpstreamNetworkProxy) }
 val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
@@ -1261,6 +1275,8 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
 val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -1293,6 +1309,8 @@ val extractImageSaveSettingsUi by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -1507,6 +1525,8 @@ tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
@@ -1880,6 +1900,8 @@ val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamDynamicTabs)
     workingDir(projectDir)
@@ -1964,6 +1986,8 @@ val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
 
 val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
@@ -1989,6 +2013,8 @@ val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -2595,6 +2621,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPersonalLists) }
 val extractOriginalWatchLater by tasks.registering(Exec::class) {
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
@@ -2669,6 +2697,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPlayerFullControls, veri
 val extractOriginalFollowing by tasks.registering(Exec::class) {
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
+    inputs.file("tools/v044_favorite_search.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
     inputs.dir("upstream-slices/v044-favorite-subscription")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v044-favorite-detail")
@@ -3881,18 +3911,25 @@ val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-listen-video-root.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/original-listen-video-pages").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/original-listen-video-pages").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-listen-video-policy-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py", "tools/v038_audio_library.py", "tools/v038_listen_viewmodel.py", "tools/v038_listen_collection.py", "tools/v038_listen_screen.py")
     inputs.dir("upstream-slices/v038-listen-viewmodel")
     inputs.dir("upstream-slices/v038-listen-collection")
     inputs.dir("upstream-slices/v038-listen-screen")
+    inputs.files("tools/v044_favorite_search.py", "tools/v044_favorite_detail.py", "tools/v044_audio_routes.py")
+    inputs.dir("upstream-slices/v044-favorite-search")
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt"))
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))
     inputs.files(sources.filter { "original-listen-video-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-listen-video-pages"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-listen-video-policy-tests"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-listen-video-pages")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-listen-video-policy-tests")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalListenVideoPages) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalListenVideoPages) }
 
 // AU song content shares the existing full Music UI/lyrics/native owners.
 val extractOriginalAuMusicPage by tasks.registering(Exec::class) {

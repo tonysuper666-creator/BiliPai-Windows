@@ -130,6 +130,7 @@
     "desktop/upstream-slices/v043-search-up-author",
     "desktop/upstream-slices/v043-theme-chrome",
     "desktop/upstream-slices/v044-favorite-detail",
+    "desktop/upstream-slices/v044-favorite-search",
     "desktop/upstream-slices/v044-favorite-subscription"
   ],
   "archives": [
@@ -5717,6 +5718,41 @@
           "sha256": "57f4054a434be37fd6c0c2d65b16177e816e9b73fec6098e549900df484da0ef",
           "hashNormalization": "raw",
           "blob": "38e57682f214cef11063825b3b5dfdbf74b7f4c0"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v044-favorite-search",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/AppNavigation.kt",
+          "sha256": "39b1c456372cffe3f294236e987664dc899eb1eb2a3af713f07ea118976b55ad",
+          "hashNormalization": "raw",
+          "blob": "5450d80a5603397e3f5d2cd067e97fe261aa9a8b"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKey.kt",
+          "sha256": "892ecaa6e6243c09977c0f69c1d555a6d6193229b75a75a550ed0eee9e3dcfc4",
+          "hashNormalization": "raw",
+          "blob": "14c38cc5fc5dfb21d0a5e4142c94640bb94ea8df"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicy.kt",
+          "sha256": "1b6ec5b0ea395f98bceeb5c3eaf6b8846dcd9aa58cfa851d36c2479a6eda5971",
+          "hashNormalization": "raw",
+          "blob": "1333f35c1012287ee3d398280bd3eb0b5fccdf0b"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicyTest.kt",
+          "sha256": "7867ec8e116ff3fc43f9b21d250d81095726a7f7ef98c72e45c6c4361db0a01e",
+          "hashNormalization": "raw",
+          "blob": "7e6f5ce9061b868c7bebc5c1f26e23e9bc4a0b02"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-search/manifest.json",
+          "sha256": "3ddef87c3e56a4b343777371569cdb962f3095edac2b8a45a8cb3771bcd1d7c8",
+          "hashNormalization": "raw",
+          "blob": "1723ab376f146ff3047dbef9e9998eb39818db31"
         }
       ]
     }
@@ -15119,6 +15155,68 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole original material with its Android capability check bound to the existing Root wallpaper layer readiness"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKey.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "14c38cc5fc5dfb21d0a5e4142c94640bb94ea8df",
+      "sha256": "892ecaa6e6243c09977c0f69c1d555a6d6193229b75a75a550ed0eee9e3dcfc4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-search-original-navigation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original FavoriteSearch declaration, route branches, callback contract or regression method; other destination implementations retain their accepted originals"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicy.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "1333f35c1012287ee3d398280bd3eb0b5fccdf0b",
+      "sha256": "1b6ec5b0ea395f98bceeb5c3eaf6b8846dcd9aa58cfa851d36c2479a6eda5971",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-search-original-navigation",
+        "v044-audio-collection-route"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original FavoriteSearch and AudioMode route branches and original regression methods; unrelated navigation keeps its accepted implementations"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-search/BiliPaiNavKeyMappingPolicyTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "7e6f5ce9061b868c7bebc5c1f26e23e9bc4a0b02",
+      "sha256": "7867ec8e116ff3fc43f9b21d250d81095726a7f7ef98c72e45c6c4361db0a01e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-search-original-navigation",
+        "v044-audio-collection-route"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original FavoriteSearch and AudioMode route branches and original regression methods; unrelated navigation keeps its accepted implementations"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-search/AppNavigation.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "5450d80a5603397e3f5d2cd067e97fe261aa9a8b",
+      "sha256": "39b1c456372cffe3f294236e987664dc899eb1eb2a3af713f07ea118976b55ad",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-search-original-navigation"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Complete original FavoriteSearch declaration, route branches, callback contract or regression method; other destination implementations retain their accepted originals"
     }
   ],
   "buildStandaloneInputs": [

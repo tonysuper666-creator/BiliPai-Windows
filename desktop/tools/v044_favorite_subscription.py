@@ -364,7 +364,9 @@ def advance_ui(repo, before):
             marker = 'package com.android.purebilibili.feature.list\n'
             need(body.count(marker) == 1, 'Subscription UI package changed')
             body = body.replace(marker, marker+'\n'+line, 1)
-    return body, dict(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256,
+    from v044_favorite_search import advance_common_list
+    body, search = advance_common_list(repo, body, original)
+    return body, dict(upstreamCommit=COMMIT, sourceManifestSHA256=MANIFEST_SHA256, originalSearchNavigation=search,
         completeOriginalComposables=reused, wholeOriginalListCall=True, originalActionStateCaller=True,
         accountEffectUsesRootRetiredViewModelIdentity=True, originalSearchAndScrollOwners=True,
         retainedToCurrent=inverse_proof(before, body))

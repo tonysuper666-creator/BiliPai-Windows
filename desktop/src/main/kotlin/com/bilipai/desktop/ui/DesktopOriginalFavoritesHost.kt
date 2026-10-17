@@ -30,7 +30,7 @@ fun DesktopOriginalFavoritesHost(
     listScopedSearchChannel:kotlinx.coroutines.channels.Channel<String>?=null,
     scrollToTopChannel:kotlinx.coroutines.channels.Channel<Unit>?=null,
     isSearchDestination:Boolean=false,
-    onOpenSearchDestination:((String)->Unit)?=null,
+    onOpenSearchDestination:((String,Boolean)->Unit)?=null,
     isCurrentPage:Boolean=true,
     retainedViewModel:BaseListViewModel?=null,
     loadFavoriteViewModelOnEnter:Boolean=true,

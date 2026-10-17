@@ -17,7 +17,7 @@ def read(repo,path):
     text=canonical_source(repo,path).read_text(encoding='utf-8').replace('\r\n','\n')
     assert sha(text)==SOURCES[path],('original source changed',path)
     return text
-def produce(repo,output):
+def produce(repo,output,test_output=None):
     output=Path(str(output) if str(output).startswith('\\\\?\\') else '\\\\?\\'+str(output.absolute()))
     output.mkdir(parents=True,exist_ok=True)
     receipts=[]
@@ -26,7 +26,9 @@ def produce(repo,output):
             receipts.append(v038_listen_viewmodel.emit(repo, output))
             continue
         if row['originalPath'].endswith('/ListenVideoScreen.kt'):
-            receipts.extend(v038_listen_screen.emit(repo, output, row)['sources'])
+            proof = v038_listen_screen.emit(repo, output, row)
+            receipts.extend(proof['sources'])
+            receipts.append(dict(v044FavoriteSearchMapping=proof['favoriteSearchMapping']))
             continue
         full=read(repo,row['originalPath']); selected=full
         if 'selection' in row:
@@ -52,12 +54,16 @@ def produce(repo,output):
         target.write_text(header+row.get('prefix','')+body,encoding='utf-8',newline='\n')
         receipts.append(dict(source=row['originalPath'],output=row['output'],fullOriginalSha256LF=sha(full),selectedOriginalSha256LF=sha(selected),adaptedSha256LF=sha(body),fullSelectedInverse=True,loaderCompatibilityAdaptation=None,lifecycleAdaptation=lifecycle_adaptation))
     receipts.append(v038_listen_collection.emit(repo, output))
+    if test_output is not None:
+        import v044_favorite_search
+        receipts.append(dict(originalFavoriteSearchTest=v044_favorite_search.emit_original_test(repo,test_output)))
     (output/'listen-original-source-receipt.json').write_text(json.dumps(receipts,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path)
+    parser.add_argument('--test-output',type=Path)
     parser.add_argument('--inventory',action='store_true');args=parser.parse_args()
     if args.inventory:
         print(json.dumps([dict(path=p,mode='direct' if p.endswith('ListenVideoLayoutPolicy.kt') else 'policy-extract',sha256=h,features=['original-listen-video-pages'])for p,h in SOURCES.items()],ensure_ascii=False,indent=2))
-    elif args.output: produce(args.repo,args.output)
+    elif args.output: produce(args.repo,args.output,args.test_output)
     else:parser.error('Pass --output or --inventory')
