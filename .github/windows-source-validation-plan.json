@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "repository": "tonysuper666-creator/BiliPai-Windows",
-  "baseHead": "2f8c44ad9c14d98e4ef3306406fb9a0444719ada",
-  "windowsVersion": "0.2.427.174",
-  "createdAt": "2026-10-17T09:33:12.773539+00:00",
+  "baseHead": "326467691348985062b11f2baf5f973e9a6ae3bc",
+  "windowsVersion": "0.2.427.175",
+  "createdAt": "2026-10-17T10:25:28.074231+00:00",
   "sources": [
     {
       "path": ".github/workflows/windows-desktop.yml",
@@ -23,7 +23,7 @@
     {
       "path": ".github/workflows/windows-source-validation.yml",
       "normalization": "lf",
-      "sha256": "5cafe3e687b41c926c567ee3e391116aaa62b5f03b3f24880b47c19749837519"
+      "sha256": "25f39d8d2b146d098f00d29383add2ac2b31d353324f9dcfc9d23933f1d27549"
     },
     {
       "path": ".github/workflows/windows-veyra-core-manual.yml",
@@ -118,7 +118,7 @@
     {
       "path": "desktop/build.gradle.kts",
       "normalization": "lf",
-      "sha256": "bacd041acfb1887f54404d7dcee13acfca6d285fcb4ea64e6be3b680895124ad"
+      "sha256": "2dfc0008ad68b229585d248d8a1fad9b73409acb546b02e169ddc3c6fe98c2d9"
     },
     {
       "path": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
@@ -1201,6 +1201,11 @@
       "sha256": "053e0284135c8cf62f0f075d8446f5d4bdc79808c6e3af665eab48ccfbaec1de"
     },
     {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCollectionDetailRegressionTest.kt",
+      "normalization": "lf",
+      "sha256": "aca0228dd13e31a2557a932b5eb631e57bea52ba5c02fb95efc54574b5855754"
+    },
+    {
       "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeFrameBitmapTest.kt",
       "normalization": "lf",
       "sha256": "0b87ed2c591cf100e32136574aceae06b63854a1af15a0f749ef0ff5f7dbf35e"
@@ -1538,7 +1543,7 @@
     {
       "path": "desktop/tools/compatibility-source-inputs.json",
       "normalization": "lf",
-      "sha256": "ffc0548af82973d0beae7694b00ff9fe873a400f8290615286f0ca22b0cac157"
+      "sha256": "7e2dfc5cd31802e6efdf1af41325710a5ddb2f4f69c9d58717c3386ce3f02301"
     },
     {
       "path": "desktop/tools/export-original-root-ui-harness.py",
@@ -1568,7 +1573,7 @@
     {
       "path": "desktop/tools/extract-space-overview.py",
       "normalization": "lf",
-      "sha256": "e038a5b110e3c4878151ec04c9cfb0f9ec5706d40073ad9a21c89bb496215fce"
+      "sha256": "746cd7850a3dae183fb5c6d0d990dce80dcd1c5b7fdb026a91470aac80fff78c"
     },
     {
       "path": "desktop/tools/extract-space-platform.py",
@@ -1583,7 +1588,7 @@
     {
       "path": "desktop/tools/extract-upstream-audio.py",
       "normalization": "lf",
-      "sha256": "e3316865a53bae538de74dec6189847a06d11c56209ab5c7ba344f6aee84e7f4"
+      "sha256": "9965246b539db63f14a351122bcd7bc3dd2cb3a48b745420f9fa576ecc595d34"
     },
     {
       "path": "desktop/tools/extract-upstream-bangumi-player-ui.py",
@@ -1638,7 +1643,7 @@
     {
       "path": "desktop/tools/extract-upstream-favorites.py",
       "normalization": "lf",
-      "sha256": "e239e1d7df18350fc5c91fc67a236300eb60ee2ff678790a4846a27b6636dc45"
+      "sha256": "259ace77479838a2657e1eb9df1b7587027dd3e411e60a529fc5f7ead0b8bc05"
     },
     {
       "path": "desktop/tools/extract-upstream-home-full-card.py",
@@ -1888,7 +1893,7 @@
     {
       "path": "desktop/tools/sync-upstream.py",
       "normalization": "lf",
-      "sha256": "34c9b15e6e518895002da7415ed2c91941cc80db6f470d629463dda3dcbc34cb"
+      "sha256": "1696a9102f9bd9838759200b801624d0062249bd7fa791397534043d365a199e"
     },
     {
       "path": "desktop/tools/tests/fixtures/c-ares-cd1edc11.cmake",
@@ -1928,7 +1933,12 @@
     {
       "path": "desktop/tools/tests/test_extract_upstream_brand_callers.py",
       "normalization": "lf",
-      "sha256": "af26c12cbe063e14dee18a419a55883dc6daaeae1fe1bf8f0528e64f4ae2c720"
+      "sha256": "d9bfd930590e02a175afc8bd3933d3c3760a07717a2442bd1f89da5f8cb1c996"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_brand_history.py",
+      "normalization": "lf",
+      "sha256": "f97ecd98ae7e77a104a5ae885740f88fedb0e35059b7b3bbec9d42d5a1417d80"
     },
     {
       "path": "desktop/tools/tests/test_extract_upstream_command_attention.py",
@@ -2098,7 +2108,7 @@
     {
       "path": "desktop/tools/tests/test_sync_upstream.py",
       "normalization": "lf",
-      "sha256": "3fd3b56486c6b86bd34957512c07e13acfd43cbfa45ae617d264a5f6abf69b42"
+      "sha256": "be8610b8c53714b649eecc85fa81259f3b0afb89249074b63805c2365a66d4f5"
     },
     {
       "path": "desktop/tools/tests/test_v029_comment_composer.py",
@@ -2289,6 +2299,11 @@
       "path": "desktop/tools/tests/test_v043_theme_chrome_source.py",
       "normalization": "lf",
       "sha256": "5d916cba59d8582d41b32a1dbe93f96e90ddce8f0422adf854530a0f3c32d9cd"
+    },
+    {
+      "path": "desktop/tools/tests/test_v044_favorite_detail_source.py",
+      "normalization": "lf",
+      "sha256": "38ed572f5f26f10ba5e14f447728bfb3a35aa169a0f38e69f5e45cc2f832fa02"
     },
     {
       "path": "desktop/tools/tests/test_validate_source_cohort.py",
@@ -2599,6 +2614,11 @@
       "path": "desktop/tools/v043_theme_chrome.py",
       "normalization": "lf",
       "sha256": "08ca948337b0a2dfc3708034fd78f064fa08a5a3da8c59ce38a827bf68b22416"
+    },
+    {
+      "path": "desktop/tools/v044_favorite_detail.py",
+      "normalization": "lf",
+      "sha256": "fbe8dfa752a58dd6a4b741c2af850303dd6355d30d3c970a526a2e05c08b55f3"
     },
     {
       "path": "desktop/tools/validate-source-cohort.py",
@@ -4181,9 +4201,54 @@
       "sha256": "c36ba0ec38c2c78a9dd49c390d0c36840920e4f7b75d9bc0b325821dbcd47fd5"
     },
     {
+      "path": "desktop/upstream-slices/v044-favorite-detail/CommonListScreen.kt",
+      "normalization": "raw",
+      "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/FavoriteModels.kt",
+      "normalization": "raw",
+      "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/ListViewModel.kt",
+      "normalization": "raw",
+      "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/PlaylistManager.kt",
+      "normalization": "raw",
+      "sha256": "10a12bded6772c50a63e96d120b93c17bd4cbd245107bcbc5697c7c631b2a0d9"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModel.kt",
+      "normalization": "raw",
+      "sha256": "5fb0d51ee4fa5ccc66fcf8beb9699d911e16f5df66a1694a00e72e59f0dcf4ed"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModelTest.kt",
+      "normalization": "raw",
+      "sha256": "9568a20a15d5abaf8d97b6392898f717b0b31d67fb830dd639e52597eb9e5469"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicy.kt",
+      "normalization": "raw",
+      "sha256": "55ec246c81b4bc78fdcb2e74d1b6ec86766773b0bdaf02d9e9736fd4679bf227"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicyTest.kt",
+      "normalization": "raw",
+      "sha256": "511eee68b08d67555b734f6d7f338288d5785dc7359ff2649cbeafbce025fbd9"
+    },
+    {
+      "path": "desktop/upstream-slices/v044-favorite-detail/manifest.json",
+      "normalization": "raw",
+      "sha256": "378800d9354b0385aad89e441a4f0f8fe09dbf0c2c4ba583a5674f9f3e5fba66"
+    },
+    {
       "path": "desktop/upstream-sources.json",
       "normalization": "lf",
-      "sha256": "a08931111b266a755b0705c5a31d3b1a0df608edce69cd117488ccc0350b30b6"
+      "sha256": "ab071ad257c89fb7949d849039b17b08a44ba4e5bb6e7a0a25563f221ca89523"
     }
   ],
   "classes": {
@@ -4301,9 +4366,11 @@
     "com.android.purebilibili.core.ui.ButtonSlotColorTest": 5,
     "com.android.purebilibili.core.ui.components.AppTabIndicatorPolicyTest": 5,
     "com.android.purebilibili.core.theme.CustomSelectionContentColorTest": 2,
-    "com.android.purebilibili.core.theme.MiuixThemeBridgePolicyTest": 12
+    "com.android.purebilibili.core.theme.MiuixThemeBridgePolicyTest": 12,
+    "com.android.purebilibili.feature.space.SpacePlaybackPolicyTest": 17,
+    "com.bilipai.desktop.ui.DesktopFavoriteCollectionDetailRegressionTest": 7
   },
-  "expectedTests": 1018,
+  "expectedTests": 1042,
   "sourceOnly": true,
   "fullStableParity": false,
   "applicationExecuted": false,
@@ -4313,31 +4380,26 @@
   "changedPaths": [
     ".github/workflows/windows-source-validation.yml",
     "desktop/build.gradle.kts",
+    "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopFavoriteCollectionDetailRegressionTest.kt",
     "desktop/tools/compatibility-source-inputs.json",
-    "desktop/tools/extract-appearance-platform.py",
-    "desktop/tools/extract-upstream-components.py",
+    "desktop/tools/extract-space-overview.py",
+    "desktop/tools/extract-upstream-audio.py",
+    "desktop/tools/extract-upstream-favorites.py",
     "desktop/tools/sync-upstream.py",
+    "desktop/tools/tests/test_extract_upstream_brand_callers.py",
+    "desktop/tools/tests/test_extract_upstream_brand_history.py",
     "desktop/tools/tests/test_sync_upstream.py",
-    "desktop/tools/tests/test_v040_chrome_actions_source.py",
-    "desktop/tools/tests/test_v040_liquid_controls_source.py",
-    "desktop/tools/tests/test_v042_seed_palette_source.py",
-    "desktop/tools/tests/test_v043_theme_chrome_source.py",
-    "desktop/tools/v042_search_dependencies.py",
-    "desktop/tools/v042_seed_palette.py",
-    "desktop/tools/v043_theme_chrome.py",
-    "desktop/upstream-slices/v043-theme-chrome/AppMaterial3SegmentedControl.kt",
-    "desktop/upstream-slices/v043-theme-chrome/AppMiuixSwitch.kt",
-    "desktop/upstream-slices/v043-theme-chrome/AppPrimitiveComponents.kt",
-    "desktop/upstream-slices/v043-theme-chrome/AppTabIndicatorPolicyTest.kt",
-    "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicy.kt",
-    "desktop/upstream-slices/v043-theme-chrome/AppThemeEndpointPolicyTest.kt",
-    "desktop/upstream-slices/v043-theme-chrome/ButtonSlotColorTest.kt",
-    "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicy.kt",
-    "desktop/upstream-slices/v043-theme-chrome/ButtonVisualPolicyTest.kt",
-    "desktop/upstream-slices/v043-theme-chrome/CustomSelectionContentColorTest.kt",
-    "desktop/upstream-slices/v043-theme-chrome/MiuixThemeBridgePolicyTest.kt",
-    "desktop/upstream-slices/v043-theme-chrome/Theme.kt",
-    "desktop/upstream-slices/v043-theme-chrome/manifest.json",
+    "desktop/tools/tests/test_v044_favorite_detail_source.py",
+    "desktop/tools/v044_favorite_detail.py",
+    "desktop/upstream-slices/v044-favorite-detail/CommonListScreen.kt",
+    "desktop/upstream-slices/v044-favorite-detail/FavoriteModels.kt",
+    "desktop/upstream-slices/v044-favorite-detail/ListViewModel.kt",
+    "desktop/upstream-slices/v044-favorite-detail/PlaylistManager.kt",
+    "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModel.kt",
+    "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModelTest.kt",
+    "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicy.kt",
+    "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicyTest.kt",
+    "desktop/upstream-slices/v044-favorite-detail/manifest.json",
     "desktop/upstream-sources.json"
   ],
   "exportPackagedUpdaterHarness": true,

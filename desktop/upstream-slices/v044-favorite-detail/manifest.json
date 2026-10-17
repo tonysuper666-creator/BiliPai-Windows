@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.4",
+  "commit": "070ab41608213cd981fd7e51df357295f9a537bf",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SeasonSeriesDetailViewModel.kt",
+      "filename": "SeasonSeriesDetailViewModel.kt",
+      "bytes": 12630,
+      "sha256": "5fb0d51ee4fa5ccc66fcf8beb9699d911e16f5df66a1694a00e72e59f0dcf4ed",
+      "gitBlob": "a81a733c2b0d8cd355ed9c88b06ec81dbbdf1fa3",
+      "cases": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt",
+      "filename": "SpacePlaybackPolicy.kt",
+      "bytes": 8251,
+      "sha256": "55ec246c81b4bc78fdcb2e74d1b6ec86766773b0bdaf02d9e9736fd4679bf227",
+      "gitBlob": "34b9be01fb3774aceb8f4785054223818fbf8ab2",
+      "cases": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "filename": "CommonListScreen.kt",
+      "bytes": 190837,
+      "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1",
+      "gitBlob": "cb59850ef1125c97083612c722fd7c76f14c6da9",
+      "cases": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "filename": "ListViewModel.kt",
+      "bytes": 84844,
+      "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674",
+      "gitBlob": "20b563c6ffa064e575b2222142b2c18ca879b912",
+      "cases": null
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/space/SpacePlaybackPolicyTest.kt",
+      "filename": "SpacePlaybackPolicyTest.kt",
+      "bytes": 13177,
+      "sha256": "511eee68b08d67555b734f6d7f338288d5785dc7359ff2649cbeafbce025fbd9",
+      "gitBlob": "d8424b06fc79dd0a4b13951b4e1b4dc5fbb047e6",
+      "cases": 17
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/space/SeasonSeriesDetailViewModelTest.kt",
+      "filename": "SeasonSeriesDetailViewModelTest.kt",
+      "bytes": 7582,
+      "sha256": "9568a20a15d5abaf8d97b6392898f717b0b31d67fb830dd639e52597eb9e5469",
+      "gitBlob": "afac65c6b5121323489d420abb63fbd024af6dcf",
+      "cases": 5
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+      "filename": "FavoriteModels.kt",
+      "bytes": 6056,
+      "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534",
+      "gitBlob": "8e8ce0f0dc335748c66904076c1d7c809c2f3ea7",
+      "cases": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+      "filename": "PlaylistManager.kt",
+      "bytes": 28195,
+      "sha256": "10a12bded6772c50a63e96d120b93c17bd4cbd245107bcbc5697c7c631b2a0d9",
+      "gitBlob": "acf72f6cffb4aea937b0839e5d5866cf02fc9705",
+      "cases": null
+    }
+  ],
+  "scope": "Complete detail VM, current playback/management policies and exact UI reference; original Android ViewModel test is reference-only until a genuine platform fixture is available.",
+  "reviewedTransitions": {
+    "SeasonSeriesDetailViewModel.kt": {
+      "predecessorCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+      "predecessorSHA256": "292617f21e44fbc1cfa9cb401e1cb07b4f62f34b74e51268d54be3f1cc700e9b",
+      "selectedSHA256": "5fb0d51ee4fa5ccc66fcf8beb9699d911e16f5df66a1694a00e72e59f0dcf4ed"
+    },
+    "SpacePlaybackPolicy.kt": {
+      "predecessorCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+      "predecessorSHA256": "c5ff00dfb6891e6b11800d51be191be7e7e9a7baa426103b97495517745c6cda",
+      "selectedSHA256": "55ec246c81b4bc78fdcb2e74d1b6ec86766773b0bdaf02d9e9736fd4679bf227"
+    }
+  },
+  "reviewedUiAdvance": {
+    "predecessorCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+    "predecessorSelectedSHA256": "b536179831e1cd0ca6ea4f42b7184e8ad9249d9d75df498085a392103a45d3a3",
+    "selectedSHA256": "d46ceee822c86313552dae6ae35fbbdf58b200fa9d9e83f242ec68981b510fa9",
+    "edits": [
+      {
+        "label": "original-detail-capabilities-and-observable-management",
+        "before": "    val isFavoriteDetailPage = seasonSeriesDetailViewModel?.isFavoriteDetail == true\n",
+        "after": "    val isFavoriteDetailPage = seasonSeriesDetailViewModel?.isFavoriteDetail == true\n    val canCopyFavoriteDetailResources = seasonSeriesDetailViewModel?.canCopyFavoriteResources == true\n    val canManageFavoriteDetailResources = state.canRemoveItems &&\n        seasonSeriesDetailViewModel?.canManageFavoriteResources == true\n    val isFavoriteDetailManaging by seasonSeriesDetailViewModel?.isManagingState?.collectAsStateWithLifecycle()\n        ?: remember { mutableStateOf(false) }\n",
+        "offset": 18910,
+        "originalOffset": 19980,
+        "originalText": "    val canCopyFavoriteDetailResources = seasonSeriesDetailViewModel?.canCopyFavoriteResources == true\n    val canManageFavoriteDetailResources = state.canRemoveItems &&\n        seasonSeriesDetailViewModel?.canManageFavoriteResources == true\n    val isFavoriteDetailManaging by seasonSeriesDetailViewModel?.isManagingState?.collectAsStateWithLifecycle()\n        ?: remember { mutableStateOf(false) }\n",
+        "originalSHA256": "87219067b3b929a25b7e48123dde9e7a365aa0fecb3a81b8228f8c2043d84c8e"
+      },
+      {
+        "label": "original-detail-ui-op-5",
+        "before": "    LaunchedEffect(state.items, isFavoriteDetailBatchMode, isFavoriteDetailPage) {\n",
+        "after": "    LaunchedEffect(state.items, isFavoriteDetailBatchMode, canCopyFavoriteDetailResources, canManageFavoriteDetailResources) {\n        if (!canCopyFavoriteDetailResources) {\n            isFavoriteDetailBatchMode = false\n            selectedFavoriteDetailKeys = emptySet()\n            pendingFavoriteDetailTransferCopy = null\n        }\n        if (!canManageFavoriteDetailResources) {\n            showFavoriteDetailRemoveConfirm = false\n            pendingFavoriteDetailRemoveKeys = null\n            if (pendingFavoriteDetailTransferCopy == false) pendingFavoriteDetailTransferCopy = null\n        }\n",
+        "offset": 20210,
+        "originalOffset": 21195,
+        "originalText": "    LaunchedEffect(state.items, isFavoriteDetailBatchMode, canCopyFavoriteDetailResources, canManageFavoriteDetailResources) {\n        if (!canCopyFavoriteDetailResources) {\n            isFavoriteDetailBatchMode = false\n            selectedFavoriteDetailKeys = emptySet()\n            pendingFavoriteDetailTransferCopy = null\n        }\n        if (!canManageFavoriteDetailResources) {\n            showFavoriteDetailRemoveConfirm = false\n            pendingFavoriteDetailRemoveKeys = null\n            if (pendingFavoriteDetailTransferCopy == false) pendingFavoriteDetailTransferCopy = null\n        }\n",
+        "originalSHA256": "f3ef5e5df782ebf685f7fcf7dcc8b2df2cbdc0f0910ce02e2b7ba2cf0cb226b9"
+      },
+      {
+        "label": "original-detail-same-page-retry-callback",
+        "before": "                            onCollectionClick = onCollectionClick,\n                            onRetry = { viewModel.loadData() },\n",
+        "after": "                            onCollectionClick = onCollectionClick,\n                            onRetry = { viewModel.loadData() },\n                            loadMoreError = state.loadMoreError,\n                            onRetryLoadMore = seasonSeriesDetailViewModel?.let { detailVm ->\n                                { detailVm.retryLoadMore() }\n                            },\n",
+        "offset": 73712,
+        "originalOffset": 78518,
+        "originalText": "                            loadMoreError = state.loadMoreError,\n                            onRetryLoadMore = seasonSeriesDetailViewModel?.let { detailVm ->\n                                { detailVm.retryLoadMore() }\n                            },\n",
+        "originalSHA256": "8bd8c10b2ec9c5a133a241671801fad593fb4a9dd84e23efbed07ed800289e3e"
+      },
+      {
+        "label": "original-detail-ui-op-27",
+        "before": "                                isFavoriteDetailPage && !isFavoriteDetailBatchMode -> ({ video ->\n",
+        "after": "                                canManageFavoriteDetailResources && !isFavoriteDetailBatchMode -> ({ video ->\n",
+        "offset": 74915,
+        "originalOffset": 79590,
+        "originalText": "                                canManageFavoriteDetailResources && !isFavoriteDetailBatchMode -> ({ video ->\n",
+        "originalSHA256": "7ef7c8d08ac7f255e434a1f468ec5ed15352693d4d815e28778a61f0d157081c"
+      },
+      {
+        "label": "original-detail-ui-op-29",
+        "before": "                            historyBatchMode = isFavoriteDetailPage && isFavoriteDetailBatchMode,\n                            historySelectedKeys = if (isFavoriteDetailPage) selectedFavoriteDetailKeys else emptySet(),\n",
+        "after": "                            historyBatchMode = canCopyFavoriteDetailResources && isFavoriteDetailBatchMode,\n                            historySelectedKeys = if (canCopyFavoriteDetailResources) selectedFavoriteDetailKeys else emptySet(),\n",
+        "offset": 75791,
+        "originalOffset": 80466,
+        "originalText": "                            historyBatchMode = canCopyFavoriteDetailResources && isFavoriteDetailBatchMode,\n                            historySelectedKeys = if (canCopyFavoriteDetailResources) selectedFavoriteDetailKeys else emptySet(),\n",
+        "originalSHA256": "30ecfe3780cb63017f61166af210d98fcfd3e3009b3f42e365f7fbdff6a8625e"
+      },
+      {
+        "label": "original-detail-ui-op-31",
+        "before": "                            onHistoryLongDelete = if (isFavoriteDetailPage) {\n",
+        "after": "                            onHistoryLongDelete = if (canCopyFavoriteDetailResources) {\n",
+        "offset": 76221,
+        "originalOffset": 80896,
+        "originalText": "                            onHistoryLongDelete = if (canCopyFavoriteDetailResources) {\n",
+        "originalSHA256": "bc1ade163567a7c88cb66dbce54d3d1d0f5f97df66e9e73d12bdea8b3c6b9e80"
+      },
+      {
+        "label": "original-detail-ui-op-33",
+        "before": "                            onHistoryDissolveComplete = if (isFavoriteDetailPage) ({ }) else null,\n                            onHistoryToggleSelect = if (isFavoriteDetailPage) {\n",
+        "after": "                            onHistoryToggleSelect = if (canCopyFavoriteDetailResources) {\n",
+        "offset": 76843,
+        "originalOffset": 81518,
+        "originalText": "                            onHistoryToggleSelect = if (canCopyFavoriteDetailResources) {\n",
+        "originalSHA256": "bd3585040296b1af695d25dada0d7403be4b0cd8af1d7b09fbc945656810cd00"
+      },
+      {
+        "label": "original-detail-ui-op-49",
+        "before": "    if (showFavoriteDetailRemoveConfirm && seasonSeriesDetailViewModel != null) {\n",
+        "after": "    if (showFavoriteDetailRemoveConfirm && canManageFavoriteDetailResources && seasonSeriesDetailViewModel != null) {\n",
+        "offset": 129774,
+        "originalOffset": 135323,
+        "originalText": "    if (showFavoriteDetailRemoveConfirm && canManageFavoriteDetailResources && seasonSeriesDetailViewModel != null) {\n",
+        "originalSHA256": "e19931ba3aba26ecc6c369f6b44191afb183b97f3e163b854c4dd6f0034efd2c"
+      },
+      {
+        "label": "original-detail-ui-op-51",
+        "before": "    pendingFavoriteDetailRemoveKeys?.let { removeKeys ->\n",
+        "after": "    pendingFavoriteDetailRemoveKeys?.takeIf { canManageFavoriteDetailResources }?.let { removeKeys ->\n",
+        "offset": 130937,
+        "originalOffset": 136486,
+        "originalText": "    pendingFavoriteDetailRemoveKeys?.takeIf { canManageFavoriteDetailResources }?.let { removeKeys ->\n",
+        "originalSHA256": "1a433684e5a56ef0f9e53f0a2cb1807004071a18e284f091f9493e590256e364"
+      },
+      {
+        "label": "original-detail-ui-op-53",
+        "before": "        if (detailTransferVm != null) {\n",
+        "after": "        if (detailTransferVm != null && canCopyFavoriteDetailResources && (copy || canManageFavoriteDetailResources)) {\n",
+        "offset": 132015,
+        "originalOffset": 137564,
+        "originalText": "        if (detailTransferVm != null && canCopyFavoriteDetailResources && (copy || canManageFavoriteDetailResources)) {\n",
+        "originalSHA256": "a1f514bf18ca647ce6f4ba4668948586f74321319b0c65dedd4d5ca6b581de2d"
+      },
+      {
+        "label": "whole-original-detail-toolbar-at-existing-layout-depth",
+        "before": "                            if (isFavoriteDetailPage && isFavoriteDetailBatchMode) {\n                                val detailVm = requireNotNull(seasonSeriesDetailViewModel)\n                                val detailKeys = state.items\n                                    .map(favoriteDetailRenderKey)\n                                    .filter { it.isNotBlank() }\n                                    .toSet()\n                                val detailAllSelected = detailKeys.isNotEmpty() &&\n                                    selectedFavoriteDetailKeys.containsAll(detailKeys)\n                                AppTextButton(\n                                    onClick = {\n                                        selectedFavoriteDetailKeys =\n                                            if (detailAllSelected) emptySet() else detailKeys\n                                    }\n                                ) {\n                                    AppText(if (detailAllSelected) \"取消全选\" else \"全选\")\n                                }\n                                AppTextButton(\n                                    enabled = selectedFavoriteDetailKeys.isNotEmpty() && !detailVm.isManagingState.value,\n                                    onClick = {\n                                        pendingFavoriteDetailTransferCopy = true\n                                        selectedFavoriteDetailTransferFolderId = null\n                                        detailVm.loadTransferFolders()\n                                    },\n                                ) {\n                                    AppText(\"复制\")\n                                }\n                                AppTextButton(\n                                    enabled = selectedFavoriteDetailKeys.isNotEmpty() && !detailVm.isManagingState.value,\n                                    onClick = {\n                                        pendingFavoriteDetailTransferCopy = false\n                                        selectedFavoriteDetailTransferFolderId = null\n                                        detailVm.loadTransferFolders()\n                                    },\n                                ) {\n                                    AppText(\"移动\")\n                                }\n                                AppTextButton(\n                                    enabled = selectedFavoriteDetailKeys.isNotEmpty() && !detailVm.isManagingState.value,\n                                    onClick = { showFavoriteDetailRemoveConfirm = true },\n                                ) {\n                                    AppText(\n                                        \"移除\",\n                                        color = MaterialTheme.colorScheme.error,\n                                    )\n                                }\n                            }",
+        "after": "                            if (canCopyFavoriteDetailResources && isFavoriteDetailBatchMode) {\n                                val detailVm = requireNotNull(seasonSeriesDetailViewModel)\n                                val detailKeys = state.items\n                                    .map(favoriteDetailRenderKey)\n                                    .filter { it.isNotBlank() }\n                                    .toSet()\n                                val detailAllSelected = detailKeys.isNotEmpty() &&\n                                    selectedFavoriteDetailKeys.containsAll(detailKeys)\n                                AppTextButton(\n                                    onClick = {\n                                        selectedFavoriteDetailKeys =\n                                            if (detailAllSelected) emptySet() else detailKeys\n                                    }\n                                ) {\n                                    AppText(if (detailAllSelected) \"取消全选\" else \"全选\")\n                                }\n                                AppTextButton(\n                                    enabled = selectedFavoriteDetailKeys.isNotEmpty() && !isFavoriteDetailManaging,\n                                    onClick = {\n                                        pendingFavoriteDetailTransferCopy = true\n                                        selectedFavoriteDetailTransferFolderId = null\n                                        detailVm.loadTransferFolders()\n                                    },\n                                ) {\n                                    AppText(\"复制\")\n                                }\n                                if (canManageFavoriteDetailResources) {\n                                    AppTextButton(\n                                        enabled = selectedFavoriteDetailKeys.isNotEmpty() && !isFavoriteDetailManaging,\n                                        onClick = {\n                                            pendingFavoriteDetailTransferCopy = false\n                                            selectedFavoriteDetailTransferFolderId = null\n                                            detailVm.loadTransferFolders()\n                                        },\n                                    ) {\n                                        AppText(\"移动\")\n                                    }\n                                    AppTextButton(\n                                        enabled = selectedFavoriteDetailKeys.isNotEmpty() && !isFavoriteDetailManaging,\n                                        onClick = { showFavoriteDetailRemoveConfirm = true },\n                                    ) {\n                                        AppText(\n                                            \"移除\",\n                                            color = AppContentColors.error(),\n                                        )\n                                    }\n                                }\n                            }",
+        "offset": 97289,
+        "originalOffset": 86763,
+        "existingLayoutIndentSpaces": 28,
+        "originalText": "                if (canCopyFavoriteDetailResources && isFavoriteDetailBatchMode) {\n                    val detailVm = requireNotNull(seasonSeriesDetailViewModel)\n                    val detailKeys = state.items\n                        .map(favoriteDetailRenderKey)\n                        .filter { it.isNotBlank() }\n                        .toSet()\n                    val detailAllSelected = detailKeys.isNotEmpty() &&\n                        selectedFavoriteDetailKeys.containsAll(detailKeys)\n                    AppTextButton(\n                        onClick = {\n                            selectedFavoriteDetailKeys =\n                                if (detailAllSelected) emptySet() else detailKeys\n                        }\n                    ) {\n                        AppText(if (detailAllSelected) \"取消全选\" else \"全选\")\n                    }\n                    AppTextButton(\n                        enabled = selectedFavoriteDetailKeys.isNotEmpty() && !isFavoriteDetailManaging,\n                        onClick = {\n                            pendingFavoriteDetailTransferCopy = true\n                            selectedFavoriteDetailTransferFolderId = null\n                            detailVm.loadTransferFolders()\n                        },\n                    ) {\n                        AppText(\"复制\")\n                    }\n                    if (canManageFavoriteDetailResources) {\n                        AppTextButton(\n                            enabled = selectedFavoriteDetailKeys.isNotEmpty() && !isFavoriteDetailManaging,\n                            onClick = {\n                                pendingFavoriteDetailTransferCopy = false\n                                selectedFavoriteDetailTransferFolderId = null\n                                detailVm.loadTransferFolders()\n                            },\n                        ) {\n                            AppText(\"移动\")\n                        }\n                        AppTextButton(\n                            enabled = selectedFavoriteDetailKeys.isNotEmpty() && !isFavoriteDetailManaging,\n                            onClick = { showFavoriteDetailRemoveConfirm = true },\n                        ) {\n                            AppText(\n                                \"移除\",\n                                color = AppContentColors.error(),\n                            )\n                        }\n                    }\n                }",
+        "originalSHA256": "ee22ce216428ced7ff1dabd277d463595ae9f633068a9b32bd28249c66394160"
+      },
+      {
+        "label": "original-long-press-capability-independent-of-GL-dissolve",
+        "before": "onLongClick = if (!historyBatchMode && supportsHistoryDissolve) {",
+        "after": "onLongClick = if (!historyBatchMode && onHistoryLongDelete != null) {",
+        "offset": 158165,
+        "originalOffset": 164483,
+        "originalText": "onLongClick = if (!historyBatchMode && onHistoryLongDelete != null) {",
+        "originalSHA256": "162109e1411859a912376294ba4d94e6eb40a1a3ab11f35ef1d92917a4df49ad"
+      },
+      {
+        "label": "original-new-items-pagination-trigger-on-existing-caller-API",
+        "before": "LaunchedEffect(shouldLoadMore.value, loadMoreError, isLoading, error)",
+        "after": "LaunchedEffect(shouldLoadMore.value, items.size, loadMoreError, isLoading, error)",
+        "offset": 146070,
+        "originalOffset": 150451,
+        "originalText": "LaunchedEffect(shouldLoadMore.value, items.size, loadMoreError, isLoading, error, allowAutomaticLoadMore)",
+        "originalSHA256": "41d74036d08d6ced5d8ed29159fa7d48a92f3123e8475d4e9fbde46e2395f456"
+      }
+    ],
+    "fullPredecessorInverseExact": true,
+    "wholeOriginalToolbarReindentedOnly": true,
+    "untouchedHistoryRecapAndBrandPaths": true,
+    "finalProducerPredecessorSHA256": "0ef1331c6c0f461129698628db6239ec7c07945b744de08f6f21172be0d45632",
+    "finalProducerSelectedSHA256": "9129530ebf4f9b1d9f4b8f7f590dd6f11d2389a6d1c4fbbbc82b49ed9f6e19d3",
+    "finalUiAdvanceAfterAllPriorOwnerGates": true
+  }
+}

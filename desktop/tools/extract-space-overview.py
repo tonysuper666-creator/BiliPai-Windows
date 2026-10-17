@@ -14,7 +14,9 @@ SOURCES = {BASE+'feature/space/SpaceLoadPolicy.kt':'policy-extract',
 def inventory(repo):
     return [dict(path=p,mode=m,features=['space-overview'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
 
-def generate(repo, output, policy_only=False):
+def generate(repo, output, policy_only=False, test_output=None):
+    from v044_favorite_detail import validate_outputs, emit_policy
+    validate_outputs(repo, output, test_output)
     spec=importlib.util.spec_from_file_location('space_overview_parser',repo/'desktop/tools/sync-upstream.py')
     parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
     def read(suffix): return (_desktop_canonical_source(repo, Path(BASE) / suffix)).read_text(encoding='utf-8')
@@ -65,16 +67,17 @@ def generate(repo, output, policy_only=False):
     vm=read('feature/space/SpaceViewModel.kt')
     pieces += [declaration(vm,'extractCategories').replace('private fun extractCategories','internal fun desktopOriginalSpaceVideoCategories',1)]
     write('com.android.purebilibili.feature.space','DesktopOriginalSpaceOverview.kt','\n\n'.join(pieces)+'\n')
+    emit_policy(repo, output, test_output, read('feature/space/SpacePlaybackPolicy.kt'))
     if not policy_only:
         for path,mode in SOURCES.items():
-            if mode=='direct':
+            if mode=='direct' and not path.endswith('/SpacePlaybackPolicy.kt'):
                 original=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8')
                 write('com.android.purebilibili.feature.space',Path(path).name,original)
 
 if __name__=='__main__':
     cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True)
-    cli.add_argument('--output',type=Path);cli.add_argument('--inventory',action='store_true');cli.add_argument('--policy-only',action='store_true')
+    cli.add_argument('--output',type=Path);cli.add_argument('--inventory',action='store_true');cli.add_argument('--policy-only',action='store_true');cli.add_argument('--test-output',type=Path)
     args=cli.parse_args()
     if args.inventory: print(json.dumps(inventory(args.repo),indent=2))
-    elif args.output: generate(args.repo,args.output,args.policy_only)
+    elif args.output: generate(args.repo,args.output,args.policy_only,args.test_output)
     else: cli.error('--output is required')

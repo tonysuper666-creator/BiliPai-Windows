@@ -128,7 +128,8 @@
     "desktop/upstream-slices/v043-message-link-host",
     "desktop/upstream-slices/v043-navigation",
     "desktop/upstream-slices/v043-search-up-author",
-    "desktop/upstream-slices/v043-theme-chrome"
+    "desktop/upstream-slices/v043-theme-chrome",
+    "desktop/upstream-slices/v044-favorite-detail"
   ],
   "archives": [
     {
@@ -5585,6 +5586,65 @@
           "sha256": "8f2f42a63defd3a83a6f82b7316a013fc0ec1d93f392c4001f94af509a64157a",
           "hashNormalization": "raw",
           "blob": "cfed2a81ec8624911c89e67a9cd0e0c3d9d34182"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v044-favorite-detail",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/manifest.json",
+          "sha256": "378800d9354b0385aad89e441a4f0f8fe09dbf0c2c4ba583a5674f9f3e5fba66",
+          "hashNormalization": "raw",
+          "blob": "0c3e60abc6d49b773b354b1cb4100cf0e32cbf17"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModel.kt",
+          "sha256": "5fb0d51ee4fa5ccc66fcf8beb9699d911e16f5df66a1694a00e72e59f0dcf4ed",
+          "hashNormalization": "raw",
+          "blob": "a81a733c2b0d8cd355ed9c88b06ec81dbbdf1fa3"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicy.kt",
+          "sha256": "55ec246c81b4bc78fdcb2e74d1b6ec86766773b0bdaf02d9e9736fd4679bf227",
+          "hashNormalization": "raw",
+          "blob": "34b9be01fb3774aceb8f4785054223818fbf8ab2"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/CommonListScreen.kt",
+          "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1",
+          "hashNormalization": "raw",
+          "blob": "cb59850ef1125c97083612c722fd7c76f14c6da9"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/ListViewModel.kt",
+          "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674",
+          "hashNormalization": "raw",
+          "blob": "20b563c6ffa064e575b2222142b2c18ca879b912"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicyTest.kt",
+          "sha256": "511eee68b08d67555b734f6d7f338288d5785dc7359ff2649cbeafbce025fbd9",
+          "hashNormalization": "raw",
+          "blob": "d8424b06fc79dd0a4b13951b4e1b4dc5fbb047e6"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModelTest.kt",
+          "sha256": "9568a20a15d5abaf8d97b6392898f717b0b31d67fb830dd639e52597eb9e5469",
+          "hashNormalization": "raw",
+          "blob": "afac65c6b5121323489d420abb63fbd024af6dcf"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/FavoriteModels.kt",
+          "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534",
+          "hashNormalization": "raw",
+          "blob": "8e8ce0f0dc335748c66904076c1d7c809c2f3ea7"
+        },
+        {
+          "path": "desktop/upstream-slices/v044-favorite-detail/PlaylistManager.kt",
+          "sha256": "10a12bded6772c50a63e96d120b93c17bd4cbd245107bcbc5697c7c631b2a0d9",
+          "hashNormalization": "raw",
+          "blob": "acf72f6cffb4aea937b0839e5d5866cf02fc9705"
         }
       ]
     }
@@ -14714,6 +14774,129 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original source or test on existing component, appearance or native-tab producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SeasonSeriesDetailViewModel.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModel.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "a81a733c2b0d8cd355ed9c88b06ec81dbbdf1fa3",
+      "sha256": "5fb0d51ee4fa5ccc66fcf8beb9699d911e16f5df66a1694a00e72e59f0dcf4ed",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete current original collection detail VM, Space policy or pure policy test on existing owner"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicy.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "34b9be01fb3774aceb8f4785054223818fbf8ab2",
+      "sha256": "55ec246c81b4bc78fdcb2e74d1b6ec86766773b0bdaf02d9e9736fd4679bf227",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete current original collection detail VM, Space policy or pure policy test on existing owner"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/CommonListScreen.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "cb59850ef1125c97083612c722fd7c76f14c6da9",
+      "sha256": "e68f03e865f1835f2d042ec066c0b64d1146d98aec856dc252d203ae39f602b1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "13 reviewed original UI segments after all existing owner gates"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/ListViewModel.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "20b563c6ffa064e575b2222142b2c18ca879b912",
+      "sha256": "2b7544e6522dee367aa01e485a76c565b95dd6a4c46eddfb7b757908ae319674",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference-only Android account/DTO/test context; not emitted or claimed executable"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/space/SpacePlaybackPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/SpacePlaybackPolicyTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "d8424b06fc79dd0a4b13951b4e1b4dc5fbb047e6",
+      "sha256": "511eee68b08d67555b734f6d7f338288d5785dc7359ff2649cbeafbce025fbd9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete current original collection detail VM, Space policy or pure policy test on existing owner"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/space/SeasonSeriesDetailViewModelTest.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/SeasonSeriesDetailViewModelTest.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "afac65c6b5121323489d420abb63fbd024af6dcf",
+      "sha256": "9568a20a15d5abaf8d97b6392898f717b0b31d67fb830dd639e52597eb9e5469",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference-only Android account/DTO/test context; not emitted or claimed executable"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/FavoriteModels.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "8e8ce0f0dc335748c66904076c1d7c809c2f3ea7",
+      "sha256": "3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference-only Android account/DTO/test context; not emitted or claimed executable"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+      "localPath": "desktop/upstream-slices/v044-favorite-detail/PlaylistManager.kt",
+      "upstreamCommit": "070ab41608213cd981fd7e51df357295f9a537bf",
+      "blob": "acf72f6cffb4aea937b0839e5d5866cf02fc9705",
+      "sha256": "10a12bded6772c50a63e96d120b93c17bd4cbd245107bcbc5697c7c631b2a0d9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v044-favorite-detail-current-originals"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original PlaylistItem declaration on existing audio owner",
+      "reusedDeclarations": [
+        "PlaylistItem"
+      ]
     }
   ],
   "buildStandaloneInputs": [

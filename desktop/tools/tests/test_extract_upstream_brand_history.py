@@ -38,7 +38,7 @@ class BrandHistoryProducerTest(unittest.TestCase):
                 raw=helper.load_raw(rel);selected,audit=helper.selected_source(rel)
                 self.assertEqual(self.inverse(selected,audit['historySourceAdaptation']['edits']),raw)
                 body=(output/'com/android/purebilibili'/f'{target}.kt').read_text(encoding='utf-8')
-                ledger=row['historyGeneratedAdaptation']
+                ledger=row['historyFinalGeneratedAdaptation']
                 self.assertEqual(self.inverse(body,ledger['edits']),raw)
                 self.assertEqual(sha(body),ledger['generatedSha256LfUtf8'])
                 self.assertEqual(sha(raw),row['rawSha256Bytes'])
@@ -51,15 +51,24 @@ class BrandHistoryProducerTest(unittest.TestCase):
         self.assertEqual(sole.read(REPO,'ListLoadError.kt'),helper.load_raw('feature/common/ListLoadError'))
         message=(REPO/'desktop/tools/extract-upstream-message-pages.py').read_text(encoding='utf-8')
         self.assertEqual(message.count("emit('com/android/purebilibili/feature/common/ListLoadError.kt'"),1)
-    def test_existing_transport_owner_and_all_other_sources_remain_canonical(self):
+    def test_existing_transport_owner_and_other_sources_keep_authenticated_baselines(self):
         output,rows=self.generated();history=[r for r in rows if 'historySourceAdaptation' in r]
         self.assertEqual(len(history),3)
         catalog=load('history_canonical_contract','v025_source_paths.py')._catalog()
+        compatibility=load('history_all_retained_inputs','sync-upstream.py').adapted_compatibility_inputs(REPO)
         # The raw new three-file slice does not change the existing canonical catalog.
         for row in rows:
             if row in history or "recapGeneratedAdaptation" in row:continue
-            self.assertEqual(row['upstreamCommit'],catalog['upstreamCommit'])
-            self.assertEqual(row['sha256LfUtf8'],catalog['paths'][row['path']]['sha256'])
+            if row['upstreamCommit']==catalog['upstreamCommit']:
+                self.assertEqual(row['sha256LfUtf8'],catalog['paths'][row['path']]['sha256'])
+            else:
+                fixed=[item for item in compatibility if item['upstreamCommit']==row['upstreamCommit'] and
+                    (item['path']==row['path'] or item['localPath']==row['path'])]
+                self.assertTrue(fixed,row['path'])
+                for item in fixed:
+                    original=(REPO/item['localPath']).read_bytes()
+                    self.assertEqual(row['sha256LfUtf8'],sha(original.replace(b'\r\n',b'\n')))
+                    self.assertEqual(row['gitBlob'],hashlib.sha1(b'blob '+str(len(original)).encode()+b'\0'+original).hexdigest())
         repository=(output/'com/android/purebilibili/data/repository/DesktopOriginalHistoryRepository.kt').read_text(encoding='utf-8')
         self.assertIn('private val api = environment.api',repository)
         self.assertIn('if (e is kotlinx.coroutines.CancellationException) throw e',repository)

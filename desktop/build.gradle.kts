@@ -170,6 +170,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
         // Whole v043 typed navigation is emitted by its existing space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
+        // Current collection playback/management policy has one Space producer.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
         // Current host-aware HTTP proxy policy has one existing proxy producer.
         exclude(canonicalOriginalIdentity("network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt"))
@@ -339,6 +341,8 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamMedia) }
 
 val extractUpstreamAudio by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-audio.py",
@@ -1476,6 +1480,8 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 
 val extractOriginalFavorites by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v044-favorite-detail")
     inputs.file("tools/v034_favorite_content_errors.py")
     inputs.dir("upstream-slices/v034-favorite-content-errors")
     inputs.file("tools/v029_history_read_failure.py")
@@ -1921,11 +1927,14 @@ val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-overview.py",
         "--repo", repositoryRoot.absolutePath, "--policy-only",
-        "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/original-space-playback-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
     inputs.file("tools/v041_video_status_labels.py")
     inputs.file("tools/v043_search_up_author.py")
@@ -1933,7 +1942,10 @@ val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
     inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space-overview"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-space-playback-tests"))
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-space-playback-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamSpaceOverview) }
 
 val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -2539,6 +2551,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPersonalLists) }
 
 // Beside extractOriginalPersonalLists; existing tools/dependencies only.
 val extractOriginalWatchLater by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v044-favorite-detail")
     dependsOn(prepareUpstreamSources, extractOriginalFavorites)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-watchlater.py",
@@ -2608,6 +2622,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPlayerFullControls, veri
 
 // After extractOriginalWatchLater; same compiler/dependencies and one source graph.
 val extractOriginalFollowing by tasks.registering(Exec::class) {
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v044-favorite-detail")
     inputs.file("tools/v029_brand_success.py")
     inputs.dir("upstream-slices/v029-brand-success")
     dependsOn(prepareUpstreamSources, extractOriginalFavorites, extractOriginalWatchLater)
