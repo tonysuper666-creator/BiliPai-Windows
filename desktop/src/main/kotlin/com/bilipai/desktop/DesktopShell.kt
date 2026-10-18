@@ -1771,7 +1771,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         com.bilipai.desktop.ui.LocalDesktopOriginalModalContentBlurTarget provides modalContentBlur,
         LocalDesktopWindowsPlayerWindow provides hostWindow,
         LocalDesktopWindowsVideoEnhancement provides DesktopWindowsVideoEnhancementUiBinding(
-            pluginRuntime.enhancementConfiguration, enhancement?.state ?: emptyEnhancement),
+            pluginRuntime.enhancementConfiguration, enhancement?.state ?: emptyEnhancement,
+            enhancement?.let { session -> session::redetectGpu }),
         LocalDesktopLiquidTabSettings provides liquidTabSettings,
         LocalDesktopLiquidReadabilityEnvironment provides liquidEnvironment,
         com.android.purebilibili.core.ui.LocalAppThemeConfig provides effectiveThemeConfig,

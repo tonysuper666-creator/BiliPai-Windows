@@ -1,7 +1,8 @@
-"""Source checks for the NVIDIA enhancement strings (slice S1: the single owner file).
+"""Source checks for the NVIDIA enhancement strings.
 
-Later slices extend this file with the Controls and Session sources. The checks read the string
-literals of the Kotlin source as data: the tier word and the forbidden words are lexical rules."""
+Slice S1 pins the single owner file. Slice S3 extends the same rules to the Controls, the Session, the
+settings configuration and the preferences. The checks read the string literals of the Kotlin source as
+data: the tier word and the forbidden words are lexical rules."""
 import re
 import sys
 import unittest
@@ -176,6 +177,168 @@ class StatusTextSourceTest(unittest.TestCase):
     def test_string_templates_use_braces_so_chinese_text_cannot_extend_an_identifier(self):
         for literal in self.literals:
             self.assertNotRegex(literal, r"\$[A-Za-z_]")
+
+
+
+# ---- Slice S3: the Controls, the Session, the configuration and the preferences ----
+
+CONTROLS = source.K / "ui/DesktopVideoEnhancementControls.kt"
+SESSION = source.K / "player/DesktopVideoEnhancementSession.kt"
+CONFIGURATION = source.K / "plugins/DesktopVideoEnhancementConfiguration.kt"
+PREFERENCES = source.K / "player/DesktopNvidiaVideoPreferences.kt"
+S3_SOURCES = (CONTROLS, SESSION, CONFIGURATION, PREFERENCES)
+
+# The conditional sentences that keep the driver route honest. Each stays, once, behind its condition.
+KEPT_CONDITIONAL_SENTENCES = (
+    "当前无法应用处理质量，选择已保存，可用时自动应用。",
+    "当前视频暂不支持质量调节，选择已保存，支持时自动应用。",
+    "当前效果强度未应用，选择已保存；可用时自动应用。",
+    "仅 HDR 自动使用原尺寸转换，不使用清晰度处理质量。",
+    "HDR 自动仅在 HDR 显示目标可用时转换 SDR；原生 HDR 保持原样。",
+)
+# Only this unconditional paragraph is removed.
+REMOVED_PARAGRAPH = "HDR 减弱也会减少亮度扩展。计算质量由完整应用设置中的处理质量决定。"
+# Pre-existing templates that predate this work and are kept byte for byte.
+LEGACY_UNBRACED_TEMPLATES = {"$it；$text", "$name；$status", "NVIDIA · $label"}
+# Pre-existing detection-off words that happen to contain a documented fragment. They stay byte for byte and
+# are replaced by the owner's line whenever detection is on.
+LEGACY_LITERALS_WITH_DOCUMENTED_FRAGMENTS = {"画质增强画面已显示"}
+
+
+def literals_of(path):
+    return source.lex_kotlin(source.read(path))[1]
+
+
+class ControlsSessionStringsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.texts = {path.name: source.read(path) for path in S3_SOURCES}
+        cls.lexed = {path.name: source.lex_kotlin(cls.texts[path.name]) for path in S3_SOURCES}
+
+    def test_no_documented_string_is_repeated_outside_the_single_owner_file(self):
+        for name, (_, literals) in self.lexed.items():
+            for row, fragments in SECTION_11_3.items():
+                for fragment in fragments:
+                    repeated = [item for item in literals
+                                if fragment in item and item not in LEGACY_LITERALS_WITH_DOCUMENTED_FRAGMENTS]
+                    self.assertFalse(repeated, "%s repeats %s" % (name, row))
+
+    def test_the_status_texts_are_taken_from_the_owner_not_retyped(self):
+        controls = self.texts[CONTROLS.name]
+        session = self.texts[SESSION.name]
+        for expected in ("DesktopNvidiaStatusText.QUALITY_CEILING_HELPER", "desktopNvidiaSwitchSubtitle(",
+                         "desktopNvidiaRequestedDetail("):
+            self.assertEqual(1, controls.count(expected), expected)
+        for expected in ("DesktopNvidiaStatusText.HDR_DRIVER_OLD", "DesktopNvidiaStatusText.TIER_DENIES_HDR",
+                         "DesktopNvidiaStatusText.DRIVER_ADVISORY", "DesktopNvidiaStatusText.FAILED_THIS_VIDEO_TAIL",
+                         "desktopNvidiaStatusLine(", "desktopNvidiaActivationStatusLine("):
+            self.assertIn(expected, session)
+
+    def test_no_forbidden_word_appears_in_any_string_literal_of_the_changed_sources(self):
+        for name, (_, literals) in self.lexed.items():
+            for literal in literals:
+                for word in FORBIDDEN_WORDS:
+                    self.assertNotIn(word, literal, "%s: %r" % (name, literal))
+
+    def test_a_request_is_never_worded_as_applied_and_requested_text_has_one_producer(self):
+        for name, (_, literals) in self.lexed.items():
+            for literal in literals:
+                self.assertNotIn("已请求", literal, name)
+                self.assertNotIn("已应用", literal, name)
+        controls = self.texts[CONTROLS.name]
+        use = controls[controls.index("val requestedDetail = "):controls.index("requestedDetail?.let")]
+        self.assertIn("if (detecting && (state.pending || state.veyraSubmitted || state.active)) {", use)
+        self.assertIn("desktopNvidiaRequestedDetail(state.backend, level, intensityLabel)", use)
+
+    def test_no_tier_word_or_tier_suffix_is_typed_outside_the_gated_function(self):
+        # The preferences file is skipped: its quality label 高 is the processing-quality choice, not a GPU tier.
+        for name, (_, literals) in self.lexed.items():
+            if name == PREFERENCES.name:
+                continue
+            for literal in literals:
+                for word in TIER_WORDS:
+                    self.assertNotEqual(word, literal, "%s types the tier word %s" % (name, word))
+                self.assertNotIn("极致", literal, name)
+                self.assertNotIn("档位", literal, name)
+        # The only producer of a tier word is the owner's gated function, called with the shipped switch.
+        session = self.texts[SESSION.name]
+        self.assertEqual(1, len(re.findall(r"desktopNvidiaTierWord\(", session)))
+        self.assertIn("desktopNvidiaTierWord(plan?.tier, routeInUse, TIER_WORD_ENABLED)", session)
+
+    def test_driver_version_numbers_are_never_typed_in_these_sources(self):
+        for name, (_, literals) in self.lexed.items():
+            for literal in literals:
+                self.assertNotRegex(literal, r"\d{3}\.\d{2}", name)
+
+    def test_new_templates_use_braces_and_only_the_two_pre_existing_ones_do_not(self):
+        unbraced = set()
+        for name, (_, literals) in self.lexed.items():
+            for literal in literals:
+                if re.search(r"\$[A-Za-z_]", literal):
+                    unbraced.add(literal)
+        # Strings inside the status templates of the controls ("$status", "$label") predate this work too.
+        allowed = LEGACY_UNBRACED_TEMPLATES | {"当前状态：$label。", "$status 强度选择已保存，当前未应用。"}
+        self.assertTrue(unbraced <= allowed, unbraced - allowed)
+
+    def test_the_conditional_honesty_sentences_stay_once_and_the_unconditional_paragraph_is_gone(self):
+        controls = self.texts[CONTROLS.name]
+        literals = self.lexed[CONTROLS.name][1]
+        for sentence in KEPT_CONDITIONAL_SENTENCES:
+            self.assertEqual(1, len([item for item in literals if item == sentence]), sentence)
+        self.assertEqual(0, len([item for item in literals if "HDR 减弱" in item or "计算质量由完整应用设置中的处理质量决定" in item]))
+        self.assertNotIn(REMOVED_PARAGRAPH, controls)
+        # Each kept sentence still sits behind its own condition.
+        body = controls[controls.index("private fun DesktopWindowsVideoEnhancementBody("):]
+        collapsed = " ".join(body.split())
+        self.assertIn('if (enabled && !preferences.srEnabled) AppText("仅 HDR 自动使用原尺寸转换，不使用清晰度处理质量。",', collapsed)
+        self.assertIn("preferences.srEnabled && (componentMissing || routeNotCore)) AppText( "
+                      'if (componentMissing) "当前无法应用处理质量，选择已保存，可用时自动应用。" '
+                      'else "当前视频暂不支持质量调节，选择已保存，支持时自动应用。",', collapsed)
+        self.assertIn("if (enabled && (componentMissing || routeNotCore || state.error != null || state.unavailableReason != null)) "
+                      'AppText( "当前效果强度未应用，选择已保存；可用时自动应用。",', collapsed)
+
+    def test_the_processing_quality_chip_is_relabelled_a_ceiling_with_the_owner_helper_on_full_pages_only(self):
+        controls = self.texts[CONTROLS.name]
+        self.assertIn('if (showProcessingQuality) DesktopWindowsSettingsChoice("质量上限", preferences.quality,', controls)
+        self.assertNotIn('DesktopWindowsSettingsChoice("处理质量"', controls)
+        body = controls[controls.index("private fun DesktopWindowsVideoEnhancementBody("):]
+        helper = body.index("AppText(DesktopNvidiaStatusText.QUALITY_CEILING_HELPER,")
+        full_page = body.index("        if (showProcessingQuality) {\n")
+        compact_page = body.index("        } else {\n            val label = ")
+        self.assertLess(full_page, helper)
+        self.assertLess(helper, compact_page)
+
+    def test_the_full_page_and_the_compact_menu_each_show_one_status_line(self):
+        controls = self.texts[CONTROLS.name]
+        body = controls[controls.index("private fun DesktopWindowsVideoEnhancementBody("):]
+        self.assertEqual(1, body.count("AppText(state.statusText,"))
+        self.assertIn("val status = if (detecting) state.statusText else state.unavailableReason ?: when {", body)
+        # Detection off keeps its own words, which stay byte for byte.
+        for legacy in ("已关闭，使用原画播放。", "增强异常，详情见下方。", "正在准备增强画面。", "正在准备增强。",
+                       "当前使用原画，满足条件后自动增强。"):
+            self.assertEqual(1, len([item for item in self.lexed[CONTROLS.name][1] if item == legacy]), legacy)
+
+    def test_the_redetect_button_is_a_plain_text_action_that_only_rereads_the_gpu(self):
+        controls = self.texts[CONTROLS.name]
+        self.assertEqual(1, controls.count('AppText("重新检测显卡")'))
+        self.assertEqual(1, controls.count("AppTextButton(onClick = redetectGpu)"))
+        for forbidden in ("仍要尝试", "恢复自动", "强制", "忽略"):
+            for name, (_, literals) in self.lexed.items():
+                for literal in literals:
+                    self.assertNotIn(forbidden, literal, name)
+
+    def test_the_driver_route_session_lines_never_claim_a_confirmed_result(self):
+        session = self.texts[SESSION.name]
+        live = session[session.index("private fun liveStatusLine("):]
+        live = live[:live.index("\n    private fun retireClearingLocked")]
+        collapsed = " ".join(live.split())
+        self.assertIn("route = native.backend", collapsed)
+        self.assertIn("native.unavailableReason?.let { return it }", collapsed)
+        # No literal text is built in the live line: every word comes from the owner's status kinds.
+        self.assertEqual([], source.lex_kotlin(live)[1])
+        # And the owner's driver-route text says the result cannot be confirmed.
+        owner = "".join(literals_of(source.STATUS_TEXT))
+        self.assertIn("本程序无法确认", owner)
 
 
 if __name__ == "__main__":

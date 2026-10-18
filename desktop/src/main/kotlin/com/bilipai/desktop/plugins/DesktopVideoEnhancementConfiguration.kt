@@ -18,6 +18,16 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.intOrNull
 import java.util.concurrent.atomic.AtomicBoolean
 
+/** Root switch: a store created by this build is seeded with HDR automatic. */
+internal const val SEED_FRESH_STORE_HDR_AUTO: Boolean = true
+
+/**
+ * Root switch: the exact store the previous build seeded and nobody touched since carries HDR
+ * automatic in memory only. Nothing is rewritten on load; the first save stamps the profile
+ * version and from then on the stored value is authoritative.
+ */
+internal const val EFFECTIVE_HDR_AUTO_FOR_UNTOUCHED_SEED: Boolean = true
+
 /** One Windows preference authority. Accepted writes drain before Store retirement. */
 class DesktopVideoEnhancementConfiguration(
     private val store: DesktopPluginStore,
@@ -50,7 +60,8 @@ class DesktopVideoEnhancementConfiguration(
                     if (fresh[migrationKey] == null) {
                         // One user-authorized migration to the Windows replacement;
                         // legacy plugin keys and JSON remain untouched.
-                        savedValues(DesktopNvidiaVideoPreferences(enabled = true)) +
+                        savedValues(DesktopNvidiaVideoPreferences(enabled = true,
+                            hdrMode = if (SEED_FRESH_STORE_HDR_AUTO) DesktopNvidiaVideoHdrMode.AUTO else DesktopNvidiaVideoHdrMode.OFF)) +
                             (MIGRATION_KEY to JsonPrimitive(1))
                     } else {
                         validatedPreferences(fresh)
@@ -104,14 +115,32 @@ class DesktopVideoEnhancementConfiguration(
                 "NVIDIA 效果强度设置无效"
             }
         }
-        return DesktopNvidiaVideoPreferences(enabled, quality, hdrMode, srEnabled, intensity)
+        val stored = DesktopNvidiaVideoPreferences(enabled, quality, hdrMode, srEnabled, intensity)
+        return if (EFFECTIVE_HDR_AUTO_FOR_UNTOUCHED_SEED && untouchedOldSeed(snapshot, stored)) {
+            stored.copy(hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
+        } else stored
     }
+    /** Lenient on purpose: anything that is not a whole number of at least 1 counts as the version before any stamp. */
+    private fun profileVersion(snapshot: DesktopPreferenceSnapshot): Int {
+        val value = snapshot[profileVersionKey] as? JsonPrimitive ?: return 1
+        if (value.isString) return 1
+        val version = value.intOrNull ?: return 1
+        return if (version >= 1) version else 1
+    }
+    /** The exact signature of the store the previous build seeded and nobody changed since: every stored value is
+     * the old default (a missing key is that default) and no build has stamped the current profile version.
+     * `enabled` is deliberately ignored, so the switch alone never makes the store look touched. */
+    private fun untouchedOldSeed(snapshot: DesktopPreferenceSnapshot, stored: DesktopNvidiaVideoPreferences): Boolean =
+        profileVersion(snapshot) < PROFILE_VERSION_CURRENT &&
+            stored.quality == DesktopNvidiaVideoQuality.HIGHEST && stored.hdrMode == DesktopNvidiaVideoHdrMode.OFF &&
+            stored.srEnabled && stored.intensity == DesktopNvidiaVideoIntensity.FULL
     private fun savedValues(preferences: DesktopNvidiaVideoPreferences) = mapOf(
         ENABLED_KEY to JsonPrimitive(preferences.enabled),
         QUALITY_KEY to JsonPrimitive(preferences.quality.nativeLevel),
         HDR_MODE_KEY to JsonPrimitive(preferences.hdrMode.storedValue),
         SR_ENABLED_KEY to JsonPrimitive(preferences.srEnabled),
         INTENSITY_KEY to JsonPrimitive(preferences.intensity.nativePercent),
+        PROFILE_VERSION_KEY to JsonPrimitive(PROFILE_VERSION_CURRENT),
     )
     private val worker = scope.launch {
         try { serialize { ensureLoaded() } }
@@ -181,6 +210,10 @@ class DesktopVideoEnhancementConfiguration(
         const val HDR_MODE_KEY = "hdr_mode"
         const val SR_ENABLED_KEY = "sr_enabled"
         const val INTENSITY_KEY = "effect_intensity_percent"
+        /** Lenient, never validated: only written, and read to tell an untouched old seed from a saved store. */
+        const val PROFILE_VERSION_KEY = "profile_version"
+        const val PROFILE_VERSION_CURRENT = 2
+        private val profileVersionKey = DesktopPreferenceKey(PROFILE_VERSION_KEY) { it }
         private val enabledKey = DesktopPreferenceKey(ENABLED_KEY) { it }
         private val migrationKey = DesktopPreferenceKey(MIGRATION_KEY) { it }
         private val qualityKey = DesktopPreferenceKey(QUALITY_KEY) { it }

@@ -1,5 +1,7 @@
 package com.bilipai.desktop.player
 
+import com.bilipai.desktop.nvidia.NvidiaPlan
+
 /** Actual Veyra/NGX VSR quality levels; these are processing quality, not a sharpness filter. */
 enum class DesktopNvidiaVideoQuality(val nativeLevel: Int, val label: String) {
     STANDARD(2, "标准"), HIGH(3, "高"), HIGHEST(4, "最高")
@@ -37,11 +39,33 @@ data class DesktopNvidiaVideoPreferences(
     }
 }
 
-/** A driver fallback cannot consume quality, so preference changes keep its exact request stable. */
+/**
+ * What the adaptive guard currently allows for one source. None changes nothing. The guard of a
+ * later slice maps its rung to these two limits; this slice only gives the request builder a place to read them.
+ */
+internal data class NvidiaGuardLimits(val qualityCap: Int = 4, val hdrAllowed: Boolean = true) {
+    companion object {
+        val None: NvidiaGuardLimits = NvidiaGuardLimits()
+    }
+}
+
+/**
+ * A driver fallback cannot consume quality, so preference changes keep its exact request stable.
+ * On the shared core the stored quality is a ceiling (质量上限): the request is the lowest of that ceiling,
+ * the GPU tier's quality and the guard's cap. HDR additionally needs the plan and the guard to allow it.
+ * Without a plan and with the default guard this is exactly the request the preferences alone describe.
+ */
 internal fun DesktopNvidiaVideoPreferences.optionsFor(decision: DesktopNvidiaVideoDecision,
-    backend: NvidiaVideoBackend): NvidiaVideoOptions = NvidiaVideoOptions(decision.scale,
-    decision.hdr && hdrMode == DesktopNvidiaVideoHdrMode.AUTO,
-    decision.nativeResolutionProcessing, backend,
-    qualityLevel = if (backend == NvidiaVideoBackend.VEYRA_CORE && srEnabled) quality.nativeLevel else 4,
-    srEnabled = srEnabled,
-    intensityPercent = if (backend == NvidiaVideoBackend.VEYRA_CORE) intensity.nativePercent else 100)
+    backend: NvidiaVideoBackend, plan: NvidiaPlan? = null, guard: NvidiaGuardLimits = NvidiaGuardLimits.None): NvidiaVideoOptions {
+    val sharedCore = backend == NvidiaVideoBackend.VEYRA_CORE
+    val hdrAllowed = (plan?.hdrAllowedFor(srEnabled) ?: true) && guard.hdrAllowed
+    val level = if (sharedCore && srEnabled) {
+        minOf(quality.nativeLevel, plan?.tierQuality ?: 4, guard.qualityCap).coerceIn(1, 4)
+    } else 4
+    return NvidiaVideoOptions(decision.scale,
+        decision.hdr && hdrMode == DesktopNvidiaVideoHdrMode.AUTO && hdrAllowed,
+        decision.nativeResolutionProcessing, backend,
+        qualityLevel = level,
+        srEnabled = srEnabled,
+        intensityPercent = if (sharedCore) intensity.nativePercent else 100)
+}
