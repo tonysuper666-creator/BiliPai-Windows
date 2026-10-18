@@ -1,0 +1,42 @@
+--- a/desktop/tools/extract-upstream-video-state-core.py
++++ b/desktop/tools/extract-upstream-video-state-core.py
+@@ -196,6 +196,43 @@ def build_usecase():
+         try {''','Task-owned entry admission before original cooldown/network work')
+ swap('''            return detailResult.fold(''','''            environment.assertOwned()
+             return detailResult.fold(''','Retired task cannot apply original load result/cooldown success')
++# v037 already has the stable034 bootstrap algorithm. It does not have the
++# desktop boundary from v034_detail_bootstrap: box an ordinary playurl failure
++# and admit ownership before onVideoInfo. Do not reapply that whole recipe.
++swap('''                        val playUrlDeferred = async {
++                            VideoRepository.getInitialPlayUrlData(
++                                bvid = bvid,
++                                cid = bootstrapCid,
++                                targetQuality = defaultQuality,
++                                audioLang = audioLang
++                            )
++                        }''','''                        val playUrlDeferred = async<Result<PlayUrlData?>> {
++                            try {
++                                Result.success(VideoRepository.getInitialPlayUrlData(
++                                    bvid = bvid,
++                                    cid = bootstrapCid,
++                                    targetQuality = defaultQuality,
++                                    audioLang = audioLang
++                                ))
++                            } catch (cancelled: kotlinx.coroutines.CancellationException) {
++                                throw cancelled
++                            } catch (failure: Exception) {
++                                // An ordinary URL failure must wait for the original
++                                // metadata result/callback before caller classification.
++                                Result.failure(failure)
++                            }
++                        }''','Ordinary playurl failure must not cancel the original detail waiter')
++swap('''                                    playUrlDeferred.await()''',
++     '''                                    playUrlDeferred.await().getOrThrow()''',
++     'Consume boxed playurl failure only after the detail callback')
++needle='                                onVideoInfo(info)\\n'
++assert s.count(needle)==2,('Retired owner cannot publish original detail callback',s.count(needle))
++owned='                                environment.assertOwned()\\n'+needle
++s=s.replace(needle,owned)
++replacements.append(dict(label='Retired owner cannot publish original detail callback',before=needle,after=owned,count=2))
+ # Windows transport restrictions must survive the original IOException branch.
+ # Only the error presentation boundary changes; original requests/cooldown stay intact.
