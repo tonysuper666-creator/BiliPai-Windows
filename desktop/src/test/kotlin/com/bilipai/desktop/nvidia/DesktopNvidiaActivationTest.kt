@@ -340,4 +340,246 @@ class DesktopNvidiaActivationTest {
         ))
         assertEquals(DesktopNvidiaStatusText.OFF_GPU_UNKNOWN, desktopNvidiaActivationStatusLine(DesktopNvidiaActivationState.Off()))
     }
+
+    // ---- environment layer rules (slice S5): the monitor-cover input model ---------------------
+
+    private fun facts(
+        pid: Int? = 4242,
+        state: Int? = null,
+        shellHandle: Boolean = false,
+        className: String? = "UnrealWindow",
+        window: DesktopNvidiaScreenRect? = DesktopNvidiaScreenRect(0, 0, 1920, 1080),
+        monitor: DesktopNvidiaScreenRect? = DesktopNvidiaScreenRect(0, 0, 1920, 1080),
+    ) = DesktopNvidiaForegroundFacts(pid, state, shellHandle, className, window, monitor)
+
+    @Test fun aWindowCoversAMonitorOnlyWhenItsRectangleMatchesEdgeForEdge() {
+        val monitor = DesktopNvidiaScreenRect(0, 0, 5120, 1440)
+        assertTrue(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(0, 0, 5120, 1440), monitor))
+        // Two pixels of rounding on each edge are absorbed, a third is not.
+        assertTrue(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(-2, 2, 5122, 1438), monitor))
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(0, 0, 5120, 1437), monitor))
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(3, 0, 5120, 1440), monitor))
+        // A second monitor to the right of the first one is told apart from it.
+        val second = DesktopNvidiaScreenRect(5120, 0, 7680, 1440)
+        assertTrue(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(5120, 0, 7680, 1440), second))
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(0, 0, 5120, 1440), second))
+        assertTrue(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(1, 1, 5119, 1439), monitor, tolerancePixels = 1))
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(2, 0, 5120, 1440), monitor, tolerancePixels = 1))
+        assertEquals(2, NVIDIA_MONITOR_COVER_TOLERANCE_PIXELS)
+    }
+
+    @Test fun aMaximizedWindowWithATaskbarOrAnInvisibleBorderDoesNotCoverTheMonitor() {
+        val monitor = DesktopNvidiaScreenRect(0, 0, 1920, 1080)
+        // Maximized: the work area ends above the taskbar, and the frame overhangs by eight pixels.
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(0, 0, 1920, 1040), monitor))
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(-8, -8, 1928, 1048), monitor))
+        // The same window with a hidden taskbar still overhangs, so it is not taken for a full-screen window.
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(-8, -8, 1928, 1088), monitor))
+    }
+
+    @Test fun unknownOrEmptyRectanglesNeverCoverAMonitor() {
+        val window = DesktopNvidiaScreenRect(0, 0, 1920, 1080)
+        val monitor = DesktopNvidiaScreenRect(0, 0, 1920, 1080)
+        assertFalse(desktopNvidiaCoversWholeMonitor(null, monitor))
+        assertFalse(desktopNvidiaCoversWholeMonitor(window, null))
+        assertFalse(desktopNvidiaCoversWholeMonitor(null, null))
+        val empty = DesktopNvidiaScreenRect(0, 0, 0, 0)
+        assertFalse(desktopNvidiaCoversWholeMonitor(empty, empty))
+        assertFalse(desktopNvidiaCoversWholeMonitor(DesktopNvidiaScreenRect(0, 0, 100, 100), DesktopNvidiaScreenRect(0, 0, 0, 1080)))
+        assertEquals(1920L, window.width)
+        assertEquals(1080L, window.height)
+    }
+
+    @Test fun theForegroundFactsFeedTheGameRuleWithTheOwnProcessComparison() {
+        val own = 100
+        // Another process with a monitor-sized window and no notification state is game-like.
+        val game = desktopNvidiaForegroundSnapshot(facts(), own)
+        assertEquals(4242, game.foregroundProcessId)
+        assertEquals(own, game.ownProcessId)
+        assertTrue(game.coversWholeMonitor)
+        assertFalse(game.isShellOrDesktopWindow)
+        assertTrue(desktopNvidiaGameLike(game))
+        // The same window owned by this process is never a yield, whatever the shell says.
+        assertFalse(desktopNvidiaGameLike(desktopNvidiaForegroundSnapshot(facts(pid = own, state = 3), own)))
+        // A window of another process that is smaller than the monitor is not a game by size alone.
+        val windowed = facts(window = DesktopNvidiaScreenRect(100, 100, 1500, 900))
+        assertFalse(desktopNvidiaGameLike(desktopNvidiaForegroundSnapshot(windowed, own)))
+        // Unless the shell says a busy or full-screen application is running.
+        assertTrue(desktopNvidiaGameLike(desktopNvidiaForegroundSnapshot(windowed.copy(notificationState = 2), own)))
+        // Unknown rectangles and an unknown foreground never count.
+        assertFalse(desktopNvidiaGameLike(desktopNvidiaForegroundSnapshot(facts(window = null), own)))
+        assertFalse(desktopNvidiaGameLike(desktopNvidiaForegroundSnapshot(facts(monitor = null), own)))
+        assertFalse(desktopNvidiaGameLike(desktopNvidiaForegroundSnapshot(facts(pid = null, state = 3), own)))
+    }
+
+    @Test fun shellAndDesktopWindowsAreNeverTreatedAsAGameBySize() {
+        val own = 100
+        assertFalse(desktopNvidiaGameLike(desktopNvidiaForegroundSnapshot(facts(shellHandle = true), own)))
+        for (className in listOf("Progman", "WorkerW", "Shell_TrayWnd", "Shell_SecondaryTrayWnd", "progman", "WORKERW")) {
+            val snapshot = desktopNvidiaForegroundSnapshot(facts(className = className), own)
+            assertTrue(snapshot.isShellOrDesktopWindow, className)
+            assertFalse(desktopNvidiaGameLike(snapshot), className)
+        }
+        assertFalse(desktopNvidiaForegroundSnapshot(facts(className = "UnrealWindow"), own).isShellOrDesktopWindow)
+        assertFalse(desktopNvidiaForegroundSnapshot(facts(className = null), own).isShellOrDesktopWindow)
+        assertTrue(desktopNvidiaIsShellWindowClass("Progman"))
+        assertFalse(desktopNvidiaIsShellWindowClass(null))
+        assertFalse(desktopNvidiaIsShellWindowClass("Notepad"))
+    }
+
+    // ---- environment layer rules (slice S5): battery, remote output, display adapter ----------
+
+    @Test fun onBatteryNeedsAnOfflineAcLineAndAPresentBattery() {
+        assertTrue(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = 0))
+        assertTrue(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = 1))
+        assertTrue(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = 2))
+        assertTrue(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = 4))
+        // Online or unknown power is never battery.
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = 1, batteryFlag = 0))
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = 1, batteryFlag = 8))
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = 255, batteryFlag = 0))
+        // No system battery (128) and an unknown battery (255) never count.
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = 128))
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = 255))
+        // A signed BYTE read back from native memory is masked to eight bits.
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = -1, batteryFlag = 0))
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = -1))
+        assertFalse(desktopNvidiaOnBattery(acLineStatus = 0, batteryFlag = -128))
+    }
+
+    @Test fun onlyMiracastAndIndirectOutputsAreRemoteByTechnology() {
+        assertTrue(desktopNvidiaRemoteOutputTechnology(15))
+        assertTrue(desktopNvidiaRemoteOutputTechnology(16))
+        assertTrue(desktopNvidiaRemoteOutputTechnology(17))
+        for (physical in listOf(-1, 0, 4, 5, 10, 11, 14)) {
+            assertFalse(desktopNvidiaRemoteOutputTechnology(physical), physical.toString())
+        }
+        assertFalse(desktopNvidiaRemoteOutputTechnology(null))
+        assertEquals(15, DesktopNvidiaOutputTechnology.MIRACAST)
+        assertEquals(16, DesktopNvidiaOutputTechnology.INDIRECT_WIRED)
+        assertEquals(17, DesktopNvidiaOutputTechnology.INDIRECT_VIRTUAL)
+    }
+
+    @Test fun aMonitorAdapterThatIsNotPciEnumeratedIsRemoteOrVirtual() {
+        val physical = "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#4&abc&0&0008#{5b45201d-f2f2-4f3b-85bb-30ff1f953599}"
+        val remotePlay = "\\\\?\\ROOT#DISPLAY#0000#{5b45201d-f2f2-4f3b-85bb-30ff1f953599}"
+        assertFalse(desktopNvidiaAdapterPathIsNonPci(physical))
+        assertFalse(desktopNvidiaAdapterPathIsNonPci("\\\\?\\pci#ven_1002&dev_164e"))
+        assertTrue(desktopNvidiaAdapterPathIsNonPci(remotePlay))
+        assertTrue(desktopNvidiaAdapterPathIsNonPci("\\\\?\\SWD#MSRRAS#0000"))
+        assertTrue(desktopNvidiaAdapterPathIsNonPci("\\\\?\\USB#VID_17E9&PID_4301"))
+        // An unknown or empty path is never a reason.
+        assertFalse(desktopNvidiaAdapterPathIsNonPci(null))
+        assertFalse(desktopNvidiaAdapterPathIsNonPci(""))
+        assertFalse(desktopNvidiaAdapterPathIsNonPci("   "))
+        // Either the technology or the path is enough.
+        assertTrue(desktopNvidiaRemoteOrVirtualOutput(16, physical))
+        assertTrue(desktopNvidiaRemoteOrVirtualOutput(10, remotePlay))
+        assertTrue(desktopNvidiaRemoteOrVirtualOutput(null, remotePlay))
+        assertFalse(desktopNvidiaRemoteOrVirtualOutput(10, physical))
+        assertFalse(desktopNvidiaRemoteOrVirtualOutput(null, null))
+    }
+
+    private val otherAdapterLuid = "0000000000012345"
+
+    @Test fun aDisplayOnAnotherAdapterStepsTheTierDownOnceAndAddsTheNote() {
+        val capable = desktopCapable()
+        assertEquals(NvidiaTier.ULTRA, capable.tier)
+        assertFalse(NvidiaCapabilityNote.CROSS_ADAPTER in capable.notes)
+        val stepped = nvidiaCapabilityForDisplayAdapter(capable, otherAdapterLuid)
+        assertEquals(NvidiaTier.HIGH, stepped.tier)
+        assertTrue(NvidiaCapabilityNote.CROSS_ADAPTER in stepped.notes)
+        assertEquals(capable.gpu, stepped.gpu)
+        assertEquals(capable.pin, stepped.pin)
+        assertEquals(capable.sku, stepped.sku)
+        assertEquals(capable.notes + NvidiaCapabilityNote.CROSS_ADAPTER, stepped.notes)
+        // It is applied once: a capability that already carries the note comes back as it is.
+        assertEquals(stepped, nvidiaCapabilityForDisplayAdapter(stepped, otherAdapterLuid))
+        // The plan built from it says so, and the lower tier carries the lower budget.
+        val plan = buildNvidiaPlan(stepped)
+        assertTrue(plan.crossAdapter)
+        assertEquals(NvidiaTier.HIGH, plan.tier)
+    }
+
+    @Test fun aDisplayOnTheSameAdapterOrAnUnknownOneChangesNothing() {
+        val capable = desktopCapable()
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, capable.gpu.luidHex))
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, capable.gpu.luidHex.uppercase()))
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, "0x" + capable.gpu.luidHex))
+        // Either 32-bit half order names the same adapter, as for the player-logged LUID.
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, "0000e78200000000"))
+        // Unknown or malformed text never steps the tier down.
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, null))
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, ""))
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, "not-a-luid"))
+        assertEquals(capable, nvidiaCapabilityForDisplayAdapter(capable, "e782"))
+        // A selected adapter whose own LUID text is malformed cannot be compared either.
+        val unreadable = capable.copy(gpu = capable.gpu.copy(luidHex = ""))
+        assertEquals(unreadable, nvidiaCapabilityForDisplayAdapter(unreadable, otherAdapterLuid))
+    }
+
+    @Test fun theResolverAppliesTheCrossAdapterStepToEveryStateThatCarriesAPlan() {
+        val capable = desktopCapable()
+        val allowed = assertIs<DesktopNvidiaActivationState.Allowed>(
+            resolveDesktopNvidiaActivation(
+                DesktopNvidiaMode.AUTO, capable, sourceLoaded = true, displayAdapterLuidHex = otherAdapterLuid,
+            ),
+        )
+        assertEquals(NvidiaTier.HIGH, allowed.plan.tier)
+        assertTrue(allowed.plan.crossAdapter)
+        val standby = assertIs<DesktopNvidiaActivationState.Standby>(
+            resolveDesktopNvidiaActivation(
+                DesktopNvidiaMode.AUTO, capable, sourceLoaded = false, displayAdapterLuidHex = otherAdapterLuid,
+            ),
+        )
+        assertTrue(standby.plan.crossAdapter)
+        val paused = assertIs<DesktopNvidiaActivationState.PausedGame>(
+            resolveDesktopNvidiaActivation(
+                DesktopNvidiaMode.AUTO, capable, DesktopNvidiaEnvironment(gameLike = true),
+                sourceLoaded = true, displayAdapterLuidHex = otherAdapterLuid,
+            ),
+        )
+        assertEquals(NvidiaTier.HIGH, paused.plan.tier)
+        // The same adapter and an unknown one keep the selected tier.
+        for (display in listOf(capable.gpu.luidHex, null)) {
+            val kept = assertIs<DesktopNvidiaActivationState.Allowed>(
+                resolveDesktopNvidiaActivation(
+                    DesktopNvidiaMode.AUTO, capable, sourceLoaded = true, displayAdapterLuidHex = display,
+                ),
+            )
+            assertEquals(NvidiaTier.ULTRA, kept.plan.tier)
+            assertFalse(kept.plan.crossAdapter)
+        }
+        // A probe failure with a verified observed LUID takes the same step, below its capped tier.
+        val failed = NvidiaCapability.Unknown(NvidiaUnknownReason.PROBE_FAILED)
+        val observed = assertIs<DesktopNvidiaActivationState.Allowed>(
+            resolveDesktopNvidiaActivation(
+                DesktopNvidiaMode.AUTO, failed, observedGpu = verifiedObserved,
+                sourceLoaded = true, displayAdapterLuidHex = otherAdapterLuid,
+            ),
+        )
+        assertEquals(NvidiaTier.BALANCED, observed.plan.tier)
+        assertTrue(observed.plan.crossAdapter)
+        // Off and the states decided before a plan exists are not affected.
+        assertIs<DesktopNvidiaActivationState.Off>(
+            resolveDesktopNvidiaActivation(DesktopNvidiaMode.OFF, capable, displayAdapterLuidHex = otherAdapterLuid),
+        )
+        assertEquals(
+            DesktopNvidiaActivationState.NoNvidia,
+            resolveDesktopNvidiaActivation(DesktopNvidiaMode.AUTO, NvidiaCapability.Absent, displayAdapterLuidHex = otherAdapterLuid),
+        )
+    }
+
+    @Test fun aCapabilityThatAlreadyCarriesTheCrossAdapterNoteIsNotSteppedTwice() {
+        val laptop = laptopCapable()
+        assertEquals(NvidiaTier.BALANCED, laptop.tier)
+        assertTrue(NvidiaCapabilityNote.CROSS_ADAPTER in laptop.notes)
+        assertEquals(laptop, nvidiaCapabilityForDisplayAdapter(laptop, otherAdapterLuid))
+        val allowed = assertIs<DesktopNvidiaActivationState.Allowed>(
+            resolveDesktopNvidiaActivation(
+                DesktopNvidiaMode.AUTO, laptop, sourceLoaded = true, displayAdapterLuidHex = otherAdapterLuid,
+            ),
+        )
+        assertEquals(NvidiaTier.BALANCED, allowed.plan.tier)
+    }
 }

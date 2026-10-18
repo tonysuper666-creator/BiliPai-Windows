@@ -227,6 +227,28 @@ class DesktopVideoEnhancementSessionTest {
         assertEquals(listOf("OFF", "LEGACY", "PROBING", "NO_NVIDIA", "UNIDENTIFIED"), allKinds)
     }
 
+    @Test fun aDisplayOnAnotherAdapterLowersTheGateTierAndNamesItInTheLine() {
+        val capable = scenarioCapability("this-pc")
+        val preferences = DesktopNvidiaVideoPreferences(enabled = true)
+        val none = DesktopNvidiaEnvironment()
+        val sameAdapter = resolveDesktopNvidiaGate(capable, none, null, true, true, preferences, false, "000000000000e782")
+        assertEquals(NvidiaTier.ULTRA, assertNotNull(sameAdapter.plan).tier)
+        assertFalse(assertNotNull(sameAdapter.plan).crossAdapter)
+        val unknownAdapter = resolveDesktopNvidiaGate(capable, none, null, true, true, preferences, false, null)
+        assertEquals(NvidiaTier.ULTRA, assertNotNull(unknownAdapter.plan).tier)
+        val otherAdapter = resolveDesktopNvidiaGate(capable, none, null, true, true, preferences, false, "00000000000109a0")
+        assertEquals(NvidiaTier.HIGH, assertNotNull(otherAdapter.plan).tier)
+        assertTrue(assertNotNull(otherAdapter.plan).crossAdapter)
+        assertEquals("RTX 5080" + DesktopNvidiaStatusText.SEPARATOR + DesktopNvidiaStatusText.STANDBY_TAIL +
+            DesktopNvidiaStatusText.CROSS_ADAPTER_SUFFIX, otherAdapter.lineFor("unused", DesktopNvidiaStatusKind.STANDBY))
+        // A pause keeps the lower plan, and the pause line itself needs no GPU name.
+        val paused = resolveDesktopNvidiaGate(capable, DesktopNvidiaEnvironment(gameLike = true), null, true, true,
+            preferences, false, "00000000000109a0")
+        assertEquals(DesktopVideoEnhancementActivation.PAUSED_GAME, paused.kind)
+        assertEquals(NvidiaTier.HIGH, assertNotNull(paused.plan).tier)
+        assertEquals(DesktopNvidiaStatusText.PAUSED_GAME, paused.gateLine())
+    }
+
     @Test fun anOldDriverOrALightTierDropsHdrFirstAndSaysSo() {
         val auto = DesktopNvidiaVideoPreferences(enabled = true, hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
         val hdrOnly = auto.copy(srEnabled = false)

@@ -341,5 +341,99 @@ class ControlsSessionStringsTest(unittest.TestCase):
         self.assertIn("本程序无法确认", owner)
 
 
+# ---- Slice S5: the environment layer (game yield, battery, remote or virtual output) ----
+
+ENVIRONMENT_FILES = (source.KN / "DesktopWindowsGpuProbe.kt", source.KN / "DesktopNvidiaCapabilityMonitor.kt",
+                     source.KN / "DesktopNvidiaEnvironmentRules.kt", source.KN / "DesktopNvidiaActivation.kt")
+HDR_DISPLAY = source.K / "player/DesktopWindowsHdrDisplay.kt"
+POWER_SAVING_WORDS = ("省电", "节能", "续航", "节电", "降低功耗")
+PAUSE_KINDS = ("PAUSED_GAME", "PAUSED_BATTERY", "PAUSED_REMOTE")
+
+# The user-visible text of the display reader predates the environment layer and must not grow: the state gains two
+# read-only fields and no new words.
+HDR_DISPLAY_LITERALS = [
+    "等待显示器 HDR 状态", "当前显示器未报告 HDR 支持", "当前显示器的 Windows HDR 未开启", "当前显示器尚未进入 HDR 输出模式",
+    "当前显示器已开启 Windows HDR", "user32", "尚无可检查的 Windows 视频窗口", "当前系统无法查询显示器 HDR 状态",
+    "当前显示器 HDR 状态不可用", "无法确定视频窗口所在显示器", "无法读取视频显示器", "无法查询活动显示器", "无法读取活动显示配置",
+    "当前系统或显示器未提供明确的 HDR 状态", "视频显示器正在切换或尚未就绪",
+]
+
+
+def has_cjk(text):
+    return re.search(r"[一-鿿]", text) is not None
+
+
+class EnvironmentStringsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.owner_text = source.read(source.STATUS_TEXT)
+        cls.owner_code, cls.owner_literals = source.lex_kotlin(cls.owner_text)
+        cls.all_sources = tuple(sorted(source.KN.glob("*.kt"))) + S3_SOURCES + (HDR_DISPLAY,)
+
+    def test_the_environment_sources_type_no_user_visible_text_of_their_own(self):
+        for path in ENVIRONMENT_FILES:
+            for literal in literals_of(path):
+                self.assertFalse(has_cjk(literal), "%s types user-visible text: %r" % (path.name, literal))
+                for word in FORBIDDEN_WORDS:
+                    self.assertNotIn(word, literal, path.name)
+
+    def test_the_display_reader_typed_no_new_words(self):
+        self.assertEqual(HDR_DISPLAY_LITERALS, literals_of(HDR_DISPLAY))
+        for literal in literals_of(HDR_DISPLAY):
+            for word in FORBIDDEN_WORDS:
+                self.assertNotIn(word, literal)
+
+    def test_the_three_pause_lines_have_one_owner_and_are_plain_constants(self):
+        pause_literals = [literal for literal in self.owner_literals if "已暂停增强" in literal]
+        self.assertEqual(3, len(pause_literals))
+        for literal in pause_literals:
+            # No GPU name, no tier word, no template and no number: the pause says what was seen and what stopped.
+            self.assertNotIn("$", literal)
+            self.assertNotRegex(literal, r"\d")
+            for word in TIER_WORDS:
+                self.assertNotEqual(word, literal)
+        for kind in PAUSE_KINDS:
+            self.assertIn("DesktopNvidiaStatusKind.%s -> DesktopNvidiaStatusText.%s" % (kind, kind), self.owner_code)
+            self.assertEqual(1, len(re.findall(r"const val %s: String = " % kind, self.owner_code)), kind)
+
+    def test_the_game_line_is_hedged_and_is_the_only_text_that_names_a_game(self):
+        owners = []
+        for path in self.all_sources:
+            for literal in literals_of(path):
+                if "游戏" in literal:
+                    owners.append((path.name, literal))
+        self.assertEqual(1, len(owners), owners)
+        name, literal = owners[0]
+        self.assertEqual(source.STATUS_TEXT.name, name)
+        self.assertIn("检测到其他全屏应用（可能是游戏）", literal)
+        self.assertNotIn("正在运行游戏", "".join(self.owner_literals))
+
+    def test_the_battery_line_claims_no_power_saving_and_says_playback_stays_on_the_discrete_gpu(self):
+        for path in self.all_sources:
+            for literal in literals_of(path):
+                for word in POWER_SAVING_WORDS:
+                    self.assertNotIn(word, literal, "%s: %r" % (path.name, literal))
+        battery = [literal for literal in self.owner_literals if "电池供电" in literal]
+        self.assertEqual(1, len(battery))
+        self.assertIn("播放仍使用独立显卡", battery[0])
+
+    def test_the_remote_line_names_what_was_observed(self):
+        remote = [literal for literal in self.owner_literals if "远程或虚拟显示输出" in literal]
+        self.assertEqual(1, len(remote))
+        self.assertTrue(remote[0].startswith("当前为"))
+
+    def test_the_session_and_the_controls_never_retype_a_pause_line(self):
+        for path in (SESSION, CONTROLS):
+            for literal in literals_of(path):
+                for fragment in ("暂停增强", "让出显卡", "电池供电", "远程或虚拟", "全屏应用"):
+                    self.assertNotIn(fragment, literal, "%s: %r" % (path.name, literal))
+        # The one pause word of the controls is the compact label, and it is chosen by the activation state.
+        words = [literal for literal in literals_of(CONTROLS) if "暂停" in literal]
+        self.assertEqual(["已暂停"], words)
+        # The session shows the pause through the gate line, which the owner builds.
+        session = source.read(SESSION)
+        self.assertIn("bypassUnavailable(Anime4KBypassReason.NONE, frameGate.gateLine() ?: DesktopNvidiaStatusText.UNIDENTIFIED)", session)
+
+
 if __name__ == "__main__":
     unittest.main()

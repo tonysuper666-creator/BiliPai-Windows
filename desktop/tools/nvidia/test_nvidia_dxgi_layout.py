@@ -195,7 +195,11 @@ class AdapterNamePacketTest(unittest.TestCase):
 
     def test_only_get_adapter_name_is_requested_from_user32_through_the_jna_core(self):
         code, _ = source.lex_kotlin(self.text)
-        self.assertEqual(1, code.count("Native.load(\"user32\""))
+        # Slice S5 adds the read-only foreground window reads to this file with their own user32 binding, so the
+        # one-binding rule is scoped to the identity object. The whole file still declares the adapter query once.
+        identity_code, _ = source.lex_kotlin(member(self.text, "internal object DesktopWindowsAdapterIdentity"))
+        self.assertEqual(1, identity_code.count("Native.load(\"user32\""))
+        self.assertEqual(1, identity_code.count("fun DisplayConfigGetDeviceInfo(packet: Pointer): Int"))
         self.assertEqual(1, code.count("fun DisplayConfigGetDeviceInfo(packet: Pointer): Int"))
         self.assertNotIn("com.sun.jna.platform", code)
         for setter in ("SetDisplayConfig", "ChangeDisplaySettings", "DisplayConfigSetDeviceInfo"):

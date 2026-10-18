@@ -233,6 +233,8 @@ internal fun nvidiaNoticeFor(plan: NvidiaPlan?, preferences: DesktopNvidiaVideoP
  * The activation gate (design 8.1), pure. Detection off (the capability was never evaluated) is Legacy whatever the
  * switch says, so the existing behaviour and texts are kept exactly. Otherwise the shared precedence decides.
  * componentAvailable is whether the shared core is loaded; it only selects the route the controls assume.
+ * displayAdapterLuidHex is the adapter of the video window's monitor, when known: another adapter than the
+ * selected GPU lowers the plan's tier one step (cross-adapter).
  */
 internal fun resolveDesktopNvidiaGate(
     capability: NvidiaCapability,
@@ -242,6 +244,7 @@ internal fun resolveDesktopNvidiaGate(
     sourceLoaded: Boolean,
     preferences: DesktopNvidiaVideoPreferences,
     componentAvailable: Boolean,
+    displayAdapterLuidHex: String? = null,
 ): DesktopNvidiaGate {
     val state: DesktopNvidiaActivationState = if (capability is NvidiaCapability.NotEvaluated) {
         DesktopNvidiaActivationState.Legacy
@@ -252,6 +255,7 @@ internal fun resolveDesktopNvidiaGate(
             environment = environment,
             observedGpu = observed,
             sourceLoaded = sourceLoaded,
+            displayAdapterLuidHex = displayAdapterLuidHex,
         )
     }
     val plan = state.planOrNull
@@ -434,9 +438,17 @@ class DesktopVideoEnhancementSession(
         val identity = if (current) input.label.key.takeIf { input.label.version == source!!.sourceVersion }
             ?: "video:${source!!.sourceVersion}" else null
         val native = player.nvidiaVideoState.value
+        // The monitor of the video window: its adapter and output technology feed the remote-output check of the
+        // environment poll, and its adapter decides the cross-adapter step-down of the plan.
+        val display = input.output.hdrDisplay
+        player.gpuCapability.reportDisplayOutput(display.adapterLuidHex, display.outputTechnology)
         val frameGate = resolveDesktopNvidiaGate(input.settings.policy.capability, input.settings.policy.environment,
-            input.settings.policy.observed, input.settings.enabled, current, input.settings.preferences, native.veyraAvailable)
+            input.settings.policy.observed, input.settings.enabled, current, input.settings.preferences, native.veyraAvailable,
+            display.adapterLuidHex)
         gate = frameGate
+        // The environment is polled only while a plan exists (standby, running or paused) and the host is visible.
+        // A pause is entered and left by the poll, and the bypass below clears the owned filter when one is entered.
+        player.gpuCapability.setEnvironmentPolling(frameGate.plan != null && (input.settings.started || input.settings.pip))
         val available = native.gpuVendorId == 0x10de && native.currentGpuContext?.startsWith("d3d11") == true &&
             frameGate.capabilityUsable
         fun bypass(reason: Anime4KBypassReason, text: String, statusKind: DesktopNvidiaStatusKind? = null, line: String? = null) {
@@ -713,6 +725,9 @@ class DesktopVideoEnhancementSession(
                 clearing = null
                 mutableState.value = DesktopVideoEnhancementState(requested = enhancementPreferences?.value?.enabled ?: automaticEnabled.value,
                     statusText = "视频增强会话已关闭")
+                // A pass that was already running has finished (it holds this lock) and every later one sees the closed session,
+                // so nothing can start the environment poll again.
+                player.gpuCapability.setEnvironmentPolling(false)
             }
         }
     }

@@ -192,6 +192,9 @@ private fun nvidiaCapabilityGpuDescription(capability: NvidiaCapability): String
  * verified observed LUID, game, battery on a mobile GPU, remote or virtual output, remembered
  * failure, extended-range failure, guard give-up for the source, then Standby before a file loads
  * and Allowed after.
+ *
+ * displayAdapterLuidHex is the adapter that owns the video window's monitor, when known. A monitor on
+ * another adapter lowers the tier one step (cross-adapter) in the plan of every state that carries one.
  */
 internal fun resolveDesktopNvidiaActivation(
     mode: DesktopNvidiaMode,
@@ -202,6 +205,7 @@ internal fun resolveDesktopNvidiaActivation(
     failureRemembered: Boolean = false,
     extendedRangeFailedForSource: Boolean = false,
     guardGaveUpForSource: Boolean = false,
+    displayAdapterLuidHex: String? = null,
 ): DesktopNvidiaActivationState {
     if (mode == DesktopNvidiaMode.OFF) {
         return DesktopNvidiaActivationState.Off(nvidiaCapabilityGpuDescription(capability))
@@ -213,7 +217,7 @@ internal fun resolveDesktopNvidiaActivation(
         return DesktopNvidiaActivationState.Unsupported(capability.reason, capability.gpu)
     }
     val plan: NvidiaPlan = if (capability is NvidiaCapability.Capable) {
-        buildNvidiaPlan(capability)
+        buildNvidiaPlan(nvidiaCapabilityForDisplayAdapter(capability, displayAdapterLuidHex))
     } else {
         // The probe failed. Only a verified physical observed LUID lets a capped profile through.
         val observed = observedGpu
@@ -225,7 +229,7 @@ internal fun resolveDesktopNvidiaActivation(
             return DesktopNvidiaActivationState.Unsupported(observedCapability.reason, observedCapability.gpu)
         }
         if (observedCapability !is NvidiaCapability.Capable) return DesktopNvidiaActivationState.Unidentified
-        buildNvidiaPlan(observedCapability)
+        buildNvidiaPlan(nvidiaCapabilityForDisplayAdapter(observedCapability, displayAdapterLuidHex))
     }
     if (environment.gameLike) return DesktopNvidiaActivationState.PausedGame(plan)
     if (plan.mobile && environment.onBattery) return DesktopNvidiaActivationState.PausedBattery(plan)

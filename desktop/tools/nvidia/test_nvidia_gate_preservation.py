@@ -28,6 +28,20 @@ RUNTIME_PROBE = PLAYER / "MpvRuntimeProbe.kt"
 MAIN = source.K / "Main.kt"
 JAVA_DXGI = REPO / "desktop/src/main/java/com/bilipai/desktop/player/DesktopWindowsDxgiAdapters.java"
 VEYRA_COMPONENT = PLAYER / "DesktopVeyraPrivateComponent.kt"
+# The other main sources this work changes (slices S3 to S5), so the lint below covers every changed file.
+SESSION = PLAYER / "DesktopVideoEnhancementSession.kt"
+HDR_DISPLAY = PLAYER / "DesktopWindowsHdrDisplay.kt"
+AUTO_POLICY = PLAYER / "DesktopNvidiaVideoAutoPolicy.kt"
+PREFERENCES = PLAYER / "DesktopNvidiaVideoPreferences.kt"
+PLAYER_OUTPUT = PLAYER / "PlayerVideoOutput.kt"
+CONFIGURATION = source.K / "plugins/DesktopVideoEnhancementConfiguration.kt"
+CATALOG = source.K / "settings/DesktopWindowsSettingsCatalog.kt"
+CONTROLS = source.K / "ui/DesktopVideoEnhancementControls.kt"
+SHELL = source.K / "DesktopShell.kt"
+PROBE = source.KN / "DesktopWindowsGpuProbe.kt"
+MONITOR = source.KN / "DesktopNvidiaCapabilityMonitor.kt"
+RULES = source.KN / "DesktopNvidiaEnvironmentRules.kt"
+ACTIVATION = source.KN / "DesktopNvidiaActivation.kt"
 
 # LF-normalised sha256 of the files that define the presentation proof and the native frame token.
 GATE_FILE_SHA256 = {
@@ -157,7 +171,8 @@ def new_package_files():
 
 
 def changed_or_new_main_sources():
-    return new_package_files() + [JAVA_DXGI, MPV_PLAYER, PLAYER_NVIDIA, RUNTIME_PROBE, MAIN]
+    return new_package_files() + [JAVA_DXGI, MPV_PLAYER, PLAYER_NVIDIA, RUNTIME_PROBE, MAIN, SESSION, HDR_DISPLAY,
+                                  AUTO_POLICY, PREFERENCES, PLAYER_OUTPUT, CONFIGURATION, CATALOG, CONTROLS, SHELL]
 
 
 class FrozenGateFilesTest(unittest.TestCase):
@@ -425,6 +440,192 @@ class NewPackageLexicalRulesTest(unittest.TestCase):
         player_imports = re.findall(r"^import com\.bilipai\.desktop\.player\.(\w+)", source.read(source.KN / "DesktopNvidiaCapabilityMonitor.kt"), re.M)
         self.assertEqual(["DesktopWindowsDxgiAdapters"], player_imports)
         self.assertNotIn("MpvPlayer", code)
+
+
+# ---- Slice S5: the environment layer (game yield, battery, remote output, display adapter) ----
+
+# Hashes (whitespace collapsed) of the members of DesktopWindowsHdrDisplay.kt that predate this work and stay untouched.
+HDR_DISPLAY_UNCHANGED_MEMBER_SHA256 = {
+    "internal fun decodeWindowsHdrDisplay(": "311c157f5ab3f81a704e7bb7ad821f99f9f109de6b6ea68da1ccf950b0925288",
+    "fun query(windowId: Long): WindowsHdrDisplayState": "884755fa73b19d7b9d43607e1de5d7127085bbae3c43eb6a26e42775d2c9855e",
+    "private fun wideName(": "83d546f80f82cec51f06dfae2e7e1facf8836fb8bfd39800abb14601a987147c",
+    "private fun header(": "2e51d16bc15311f45ec2d803f27393b15873bf3776ef717f706ddf9db5508298",
+    "private interface DisplayApi": "686be9462fae6be682b8534c16fa665e4cee8e3f80ca4dc3e409580ab186ce60",
+}
+
+# Every native function the probe file may declare. All of them only read.
+PROBE_NATIVE_CALLS = {
+    "DisplayConfigGetDeviceInfo", "GetSystemPowerStatus", "GetForegroundWindow", "GetShellWindow", "GetDesktopWindow",
+    "GetWindowThreadProcessId", "GetClassNameW", "GetWindowRect", "MonitorFromWindow", "GetMonitorInfoW",
+    "SHQueryUserNotificationState",
+}
+HDR_DISPLAY_NATIVE_CALLS = {
+    "MonitorFromWindow", "GetMonitorInfoW", "GetDisplayConfigBufferSizes", "QueryDisplayConfig", "DisplayConfigGetDeviceInfo",
+}
+
+# Names that no environment source may contain: nothing here changes a window, the foreground, input, the display
+# configuration, the power state, a process or the registry.
+ENVIRONMENT_FORBIDDEN_API = (
+    "SetForegroundWindow", "SetWindowPos", "SetWindowLong", "SetWindowText", "ShowWindow", "SendMessage", "PostMessage",
+    "SendInput", "keybd_event", "mouse_event", "SetCursorPos", "SetDisplayConfig", "DisplayConfigSetDeviceInfo",
+    "SystemParametersInfo", "SetThreadExecutionState", "SetSuspendState", "SetSystemPowerState", "ExitWindowsEx",
+    "LockWorkStation", "OpenProcess", "TerminateProcess", "SetProcessAffinityMask", "SetThreadAffinityMask",
+    "SetProcessWorkingSetSize", "RegOpenKey", "RegQueryValue", "RegDeleteKey", "RegDeleteValue", "ProcessBuilder",
+    "Runtime.getRuntime", "EnumWindows", "EnumDisplay",
+)
+ENVIRONMENT_SOURCES = (PROBE, MONITOR, RULES, ACTIVATION, HDR_DISPLAY, SESSION)
+
+
+class EnvironmentLayerReadOnlyTest(unittest.TestCase):
+    """Forbidden-API lint over the new and changed environment sources (design 8.3 and 13)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.probe = source.read(PROBE)
+        cls.probe_code, _ = source.lex_kotlin(cls.probe)
+
+    def test_the_probe_declares_exactly_the_read_only_native_calls(self):
+        declared = set(re.findall(r"\bfun ([A-Z][A-Za-z0-9]*)\(", self.probe_code))
+        self.assertEqual(PROBE_NATIVE_CALLS, declared)
+        for name in declared:
+            self.assertTrue(name.startswith(("Get", "SHQuery", "MonitorFrom", "DisplayConfigGet")), name)
+
+    def test_the_hdr_display_adds_no_native_call_beyond_its_existing_five(self):
+        code, _ = source.lex_kotlin(source.read(HDR_DISPLAY))
+        self.assertEqual(HDR_DISPLAY_NATIVE_CALLS, set(re.findall(r"\bfun ([A-Z][A-Za-z0-9]*)\(", code)))
+
+    def test_every_native_read_of_the_probe_runs_inside_a_guard_for_linkage_and_runtime_errors(self):
+        text = self.probe
+        for marker in ("    fun onBattery(): Boolean {",
+                       "    fun snapshot(ownProcessId: Int): DesktopNvidiaForegroundSnapshot? {",
+                       "    private fun notificationState(): Int? = try {"):
+            start = text.index(marker)
+            body = text[start:text.index("\n\n", start)]
+            self.assertIn("catch (_: LinkageError)", body, marker)
+            self.assertIn("catch (_: RuntimeException)", body, marker)
+        # The helpers that make the other native calls are reached only from the guarded snapshot.
+        self.assertEqual(2, self.probe_code.count("readFacts()"), "the definition and the one call")
+        snapshot_start = text.index("    fun snapshot(ownProcessId: Int)")
+        snapshot = text[snapshot_start:text.index("\n\n", snapshot_start)]
+        self.assertIn("desktopNvidiaForegroundSnapshot(readFacts(), ownProcessId)", snapshot)
+        for helper in ("windowClassName(window)", "windowRect(window)", "monitorRect(window)"):
+            self.assertEqual(1, self.probe_code.count(helper), helper)
+        self.assertEqual(2, self.probe_code.count("notificationState()"), "the definition and the one call in readFacts")
+
+    def test_the_gate_helpers_of_the_probe_check_windows_and_the_abi_first(self):
+        self.assertIn("Platform.isWindows() && Native.POINTER_SIZE == 8 && Native.WCHAR_SIZE == 2", self.probe_code)
+        for marker in ("    fun onBattery(): Boolean {", "    fun snapshot(ownProcessId: Int): DesktopNvidiaForegroundSnapshot? {"):
+            start = self.probe.index(marker)
+            self.assertIn("if (!windowsProbeGateOpen()) return", self.probe[start:start + 200], marker)
+
+    def test_no_environment_source_uses_a_setter_or_an_api_that_changes_the_system(self):
+        for path in ENVIRONMENT_SOURCES:
+            code, _ = source.lex_kotlin(source.read(path))
+            for forbidden in FORBIDDEN_API + ENVIRONMENT_FORBIDDEN_API:
+                self.assertNotIn(forbidden, code, "%s: %s" % (path.name, forbidden))
+
+    def test_the_rules_file_is_pure(self):
+        text = source.read(RULES)
+        code, _ = source.lex_kotlin(text)
+        self.assertEqual(["kotlin.math.abs"], re.findall(r"^import ([\w.]+)", text, re.M))
+        for forbidden in ("System.", "Thread", "com.sun.jna", "java.", "kotlinx", "Native", "Memory", "Pointer"):
+            self.assertNotIn(forbidden, code, forbidden)
+
+    def test_no_environment_source_writes_the_active_flag_or_names_the_tracker(self):
+        # The assignment rule covers the new package files. The session has its own rule in the session seam checks, and
+        # the HDR display file names a local value active in its pre-existing display decoder.
+        for path in (PROBE, MONITOR, RULES, ACTIVATION):
+            code, _ = source.lex_kotlin(source.read(path))
+            self.assertIsNone(re.search(r"(?<![A-Za-z0-9_])active\s*=(?!=)", code), path.name)
+        for path in (PROBE, MONITOR, RULES, ACTIVATION, HDR_DISPLAY):
+            text = source.read(path)
+            for forbidden in ("VeyraPresentationTracker", "proved", "veyraReceipt", "glsl-shaders"):
+                self.assertNotIn(forbidden, text, "%s: %s" % (path.name, forbidden))
+
+
+class GameYieldRuleTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.activation = source.read(ACTIVATION)
+
+    def test_the_broad_switch_is_declared_once_and_is_on(self):
+        self.assertEqual(1, self.activation.count("internal const val GAME_YIELD_BROAD: Boolean = true"))
+        for path in new_package_files():
+            if path != ACTIVATION:
+                self.assertNotIn("GAME_YIELD_BROAD", source.lex_kotlin(source.read(path))[0], path.name)
+
+    def test_the_applications_own_process_is_never_a_yield(self):
+        body = kotlin_member(self.activation, "internal fun desktopNvidiaGameLike(")
+        own = body.index("if (foreground == snapshot.ownProcessId) return false")
+        self.assertLess(own, body.index("val state = snapshot.notificationState"))
+        self.assertLess(own, body.index("DesktopNvidiaNotificationState.RUNNING_D3D_FULL_SCREEN"))
+        self.assertLess(body.index("val foreground = snapshot.foregroundProcessId ?: return false"), own)
+
+    def test_the_notification_states_are_busy_full_screen_d3d_and_presentation_mode(self):
+        values = dict(re.findall(r"const val (BUSY|RUNNING_D3D_FULL_SCREEN|PRESENTATION_MODE): Int = (\d+)", self.activation))
+        self.assertEqual({"BUSY": "2", "RUNNING_D3D_FULL_SCREEN": "3", "PRESENTATION_MODE": "4"}, values)
+
+    def test_the_monitor_asks_with_the_shipped_width_and_the_foreground_snapshot_adds_the_shell_and_cover_rules(self):
+        monitor_code, _ = source.lex_kotlin(source.read(MONITOR))
+        self.assertIn("desktopNvidiaGameLike(snapshot)", monitor_code)
+        self.assertNotIn("broad =", monitor_code)
+        rules = source.read(RULES)
+        snapshot = rules[rules.index("internal fun desktopNvidiaForegroundSnapshot("):]
+        compact = collapse(snapshot[:700])
+        self.assertIn("isShellOrDesktopWindow = facts.windowIsShellOrDesktopHandle || "
+                      "desktopNvidiaIsShellWindowClass(facts.windowClassName),", compact)
+        self.assertIn("coversWholeMonitor = desktopNvidiaCoversWholeMonitor(facts.windowRect, facts.monitorRect),", compact)
+        classes = re.search(r"NVIDIA_SHELL_WINDOW_CLASSES: List<String> =\s*listOf\((.*?)\)", rules, re.S)
+        self.assertIsNotNone(classes)
+        self.assertEqual({"Progman", "WorkerW", "Shell_TrayWnd", "Shell_SecondaryTrayWnd"},
+                         set(re.findall(r'"([^"]+)"', classes.group(1))))
+
+
+class HdrDisplayAdditiveTest(unittest.TestCase):
+    """The display state gains two read-only fields; the existing HDR decisions are byte for byte what they were."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.text = source.read(HDR_DISPLAY)
+        cls.code, cls.literals = source.lex_kotlin(cls.text)
+
+    def test_the_state_gains_exactly_two_defaulted_fields_at_the_end(self):
+        start = self.text.index("data class WindowsHdrDisplayState(")
+        header = self.text[start:self.text.index("\n)\n", start)]
+        fields = re.findall(r"^    val (\w+): ([^=\n]+?) = ", header, re.M)
+        self.assertEqual(["known", "hdrSupported", "hdrUserEnabled", "hdrActive", "hdrEnabled", "bitsPerChannel",
+                          "statusText", "nativeCode", "adapterLuidHex", "outputTechnology"], [name for name, _ in fields])
+        kinds = dict(fields)
+        self.assertEqual("String?", kinds["adapterLuidHex"])
+        self.assertEqual("Int?", kinds["outputTechnology"])
+        self.assertIn("val adapterLuidHex: String? = null,", header)
+        self.assertIn("val outputTechnology: Int? = null,", header)
+
+    def test_the_existing_hdr_members_are_unchanged(self):
+        for marker, expected in HDR_DISPLAY_UNCHANGED_MEMBER_SHA256.items():
+            member = kotlin_member(self.text, marker)
+            self.assertEqual(expected, hashlib.sha256(collapse(member).encode("utf-8")).hexdigest(), marker)
+
+    def test_the_inspect_flow_keeps_its_hdr_statements_and_only_adds_the_two_read_only_fields(self):
+        inspect = kotlin_member(self.text, "private fun inspect(window: Pointer): WindowsHdrDisplayState")
+        compact = collapse(inspect)
+        for expected in (
+            'val monitor = api.MonitorFromWindow(window, 2) ?: return unavailable("无法确定视频窗口所在显示器")',
+            "header(color, 15, 36, path, 20)",
+            "decodeWindowsHdrDisplay(color.getInt(20), color.getInt(32), color.getInt(28))",
+            "return matched.firstOrNull { !it.hdrEnabled } ?: matched.first()",
+            'return unavailable("视频显示器正在切换或尚未就绪")',
+        ):
+            self.assertIn(expected, compact)
+        self.assertEqual(1, compact.count(".copy("))
+        self.assertIn("matched += hdr.copy(adapterLuidHex = pathAdapterLuidHex(path), "
+                      "outputTechnology = path.getInt(OUTPUT_TECHNOLOGY_OFFSET))", compact)
+        self.assertNotIn("path.set", self.code)
+
+    def test_the_display_literals_carry_no_forbidden_word(self):
+        for literal in self.literals:
+            for word in ("DLSS", "Tensor", "帧生成", "插帧", "补帧", "HDR10+", "支持 HDR", "已应用"):
+                self.assertNotIn(word, literal)
 
 
 if __name__ == "__main__":

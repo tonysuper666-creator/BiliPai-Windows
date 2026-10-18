@@ -1,5 +1,6 @@
 package com.bilipai.desktop.player
 
+import com.bilipai.desktop.nvidia.nvidiaLuidHex
 import com.sun.jna.Memory
 import com.sun.jna.Native
 import com.sun.jna.Platform
@@ -17,6 +18,10 @@ data class WindowsHdrDisplayState(
     val bitsPerChannel: Int = 0,
     val statusText: String = "等待显示器 HDR 状态",
     val nativeCode: Int? = null,
+    /** LUID text (high part first) of the adapter that owns this monitor's display path, or null while unknown. */
+    val adapterLuidHex: String? = null,
+    /** DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY of this monitor's display path, or null while unknown. */
+    val outputTechnology: Int? = null,
 )
 
 /** INFO_2 distinguishes user-enabled HDR from wide-color-only Advanced Color. */
@@ -80,11 +85,15 @@ internal object DesktopWindowsHdrDisplay {
                             header(name, 1, 84, path, 0)
                             api.DisplayConfigGetDeviceInfo(name) == 0 && wideName(name, 20).equals(device, true)
                         }
-                        if (matches) matched += Memory(36).use { color -> // GET_ADVANCED_COLOR_INFO_2
-                            header(color, 15, 36, path, 20)
-                            val status = api.DisplayConfigGetDeviceInfo(color)
-                            if (status != 0) unavailable("当前系统或显示器未提供明确的 HDR 状态", status)
-                            else decodeWindowsHdrDisplay(color.getInt(20), color.getInt(32), color.getInt(28))
+                        if (matches) {
+                            val hdr = Memory(36).use { color -> // GET_ADVANCED_COLOR_INFO_2
+                                header(color, 15, 36, path, 20)
+                                val status = api.DisplayConfigGetDeviceInfo(color)
+                                if (status != 0) unavailable("当前系统或显示器未提供明确的 HDR 状态", status)
+                                else decodeWindowsHdrDisplay(color.getInt(20), color.getInt(32), color.getInt(28))
+                            }
+                            // Read-only facts of the same display path, for the cross-adapter and remote-output checks.
+                            matched += hdr.copy(adapterLuidHex = pathAdapterLuidHex(path), outputTechnology = path.getInt(OUTPUT_TECHNOLOGY_OFFSET))
                         }
                     }
                     if (matched.isNotEmpty()) {
@@ -97,6 +106,15 @@ internal object DesktopWindowsHdrDisplay {
         }
         return unavailable("视频显示器正在切换或尚未就绪")
     }
+
+    // DISPLAYCONFIG_PATH_INFO (72 bytes): sourceInfo.adapterId is a LUID (LowPart, HighPart) at offset 0, and the
+    // targetInfo that starts at offset 20 carries outputTechnology 16 bytes in, so at offset 36.
+    private const val SOURCE_ADAPTER_LUID_LOW_OFFSET = 0L
+    private const val SOURCE_ADAPTER_LUID_HIGH_OFFSET = 4L
+    private const val OUTPUT_TECHNOLOGY_OFFSET = 36L
+
+    private fun pathAdapterLuidHex(path: Pointer): String =
+        nvidiaLuidHex(path.getInt(SOURCE_ADAPTER_LUID_HIGH_OFFSET), path.getInt(SOURCE_ADAPTER_LUID_LOW_OFFSET))
 
     private fun wideName(memory: Memory, offset: Long): String =
         String(memory.getByteArray(offset, 64), Charsets.UTF_16LE).substringBefore('\u0000')

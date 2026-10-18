@@ -44,6 +44,29 @@ private class ScenarioProbe(
     }
 }
 
+/** Fixture environment probe with a settable foreground, battery and adapter paths. No native call. */
+private class EnvironmentFixtureProbe : DesktopNvidiaEnvironmentProbe {
+    @Volatile var snapshot: DesktopNvidiaForegroundSnapshot? = null
+    @Volatile var battery: Boolean = false
+    @Volatile var paths: Map<String, String> = emptyMap()
+    @Volatile var failWith: Throwable? = null
+    @Volatile var foregroundThreadName: String? = null
+    @Volatile var foregroundThreadDaemon: Boolean? = null
+    val foregroundCalls = AtomicInteger()
+
+    override fun foreground(): DesktopNvidiaForegroundSnapshot? {
+        foregroundCalls.incrementAndGet()
+        foregroundThreadName = Thread.currentThread().name
+        foregroundThreadDaemon = Thread.currentThread().isDaemon
+        failWith?.let { throw it }
+        return snapshot
+    }
+
+    override fun onBattery(): Boolean = battery
+
+    override fun adapterDevicePath(luidHex: String): String? = paths[luidHex]
+}
+
 private fun scenario(id: String): JsonObject =
     NvidiaGoldenVectors.objects("scenarios").first { NvidiaGoldenVectors.string(it, "id") == id }
 
@@ -407,6 +430,159 @@ class DesktopNvidiaCapabilityMonitorTest {
         assertEquals(1 to 0xb95ad, parseNvidiaLuidHalves(" 00000001000B95AD "))
         for (invalid in listOf(null, "", "e782", "000000000000e78", "000000000000e7822", "000000000000e78g", "zzzzzzzzzzzzzzzz")) {
             assertNull(parseNvidiaLuidHalves(invalid), invalid ?: "null")
+        }
+    }
+
+    // ---- Environment poll (slice S5) ----
+
+    private fun gameSnapshot() = DesktopNvidiaForegroundSnapshot(4242, 100, 3, false, false)
+
+    private fun quietSnapshot() = DesktopNvidiaForegroundSnapshot(4242, 100, 5, false, false)
+
+    @Test fun theNeutralMonitorAndAMonitorWithoutAnEnvironmentProbeNeverPoll() {
+        val neutral = DesktopNvidiaCapabilityMonitor.neutral()
+        neutral.setEnvironmentPolling(true)
+        neutral.pollEnvironmentNow()
+        neutral.reportDisplayOutput(physicalLuid, 16)
+        assertEquals(DesktopNvidiaEnvironment(), neutral.environment.value)
+        neutral.setEnvironmentPolling(false)
+        val gpuOnly = DesktopNvidiaCapabilityMonitor(ScenarioProbe(scenario("this-pc")))
+        gpuOnly.setEnvironmentPolling(true)
+        gpuOnly.pollEnvironmentNow()
+        assertEquals(DesktopNvidiaEnvironment(), gpuOnly.environment.value)
+        // Stopping a poll that never started touches nothing.
+        val idle = DesktopNvidiaCapabilityMonitor(null, environmentProbe = EnvironmentFixtureProbe())
+        idle.setEnvironmentPolling(false)
+        assertEquals(DesktopNvidiaEnvironment(), idle.environment.value)
+        assertEquals(2_000L, DesktopNvidiaCapabilityMonitor.ENVIRONMENT_POLL_MILLIS)
+    }
+
+    @Test fun aGameIsEnteredAfterTwoPollsAndLeftAfterFiveClearSeconds() {
+        var now = 0L
+        val probe = EnvironmentFixtureProbe()
+        val monitor = DesktopNvidiaCapabilityMonitor(null, nowMillis = { now }, environmentProbe = probe)
+        probe.snapshot = gameSnapshot()
+        monitor.pollEnvironmentNow()
+        assertFalse(monitor.environment.value.gameLike, "one positive poll is not enough")
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        assertTrue(monitor.environment.value.gameLike)
+        probe.snapshot = quietSnapshot()
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        assertTrue(monitor.environment.value.gameLike, "the pause lingers while the signal is clear")
+        now += 4_999L
+        monitor.pollEnvironmentNow()
+        assertTrue(monitor.environment.value.gameLike)
+        now += 1L
+        monitor.pollEnvironmentNow()
+        assertFalse(monitor.environment.value.gameLike)
+    }
+
+    @Test fun batteryAndRemoteOutputGoThroughTheSameHysteresis() {
+        var now = 0L
+        val probe = EnvironmentFixtureProbe()
+        val monitor = DesktopNvidiaCapabilityMonitor(null, nowMillis = { now }, environmentProbe = probe)
+        probe.battery = true
+        monitor.reportDisplayOutput(null, 16)
+        monitor.pollEnvironmentNow()
+        assertEquals(DesktopNvidiaEnvironment(), monitor.environment.value)
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        assertEquals(
+            DesktopNvidiaEnvironment(gameLike = false, onBattery = true, remoteOrVirtualOutput = true),
+            monitor.environment.value,
+        )
+        // Each pause is left only after five clear seconds.
+        probe.battery = false
+        monitor.reportDisplayOutput(null, 10)
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        assertTrue(monitor.environment.value.onBattery)
+        assertTrue(monitor.environment.value.remoteOrVirtualOutput)
+        now += 5_000L
+        monitor.pollEnvironmentNow()
+        assertEquals(DesktopNvidiaEnvironment(), monitor.environment.value)
+    }
+
+    @Test fun aMonitorOnANonPciAdapterIsRemoteAndAPciOneIsNot() {
+        var now = 0L
+        val probe = EnvironmentFixtureProbe()
+        val monitor = DesktopNvidiaCapabilityMonitor(null, nowMillis = { now }, environmentProbe = probe)
+        probe.paths = mapOf(
+            physicalLuid to "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1",
+            twinLuid to "\\\\?\\ROOT#DISPLAY#0000",
+        )
+        monitor.reportDisplayOutput(physicalLuid, 10)
+        repeat(3) {
+            now += 2_000L
+            monitor.pollEnvironmentNow()
+        }
+        assertFalse(monitor.environment.value.remoteOrVirtualOutput)
+        monitor.reportDisplayOutput(twinLuid, 10)
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        assertFalse(monitor.environment.value.remoteOrVirtualOutput, "one poll is not enough")
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        assertTrue(monitor.environment.value.remoteOrVirtualOutput)
+        // An adapter whose path cannot be read is unknown, never remote.
+        monitor.reportDisplayOutput("0000000000099999", 10)
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        now += 5_000L
+        monitor.pollEnvironmentNow()
+        assertFalse(monitor.environment.value.remoteOrVirtualOutput)
+    }
+
+    @Test fun aFailingOrUnknownProbeNeverPauses() {
+        var now = 0L
+        val probe = EnvironmentFixtureProbe()
+        probe.failWith = IllegalStateException("fixture")
+        val monitor = DesktopNvidiaCapabilityMonitor(null, nowMillis = { now }, environmentProbe = probe)
+        repeat(4) {
+            now += 2_000L
+            monitor.pollEnvironmentNow()
+        }
+        assertEquals(DesktopNvidiaEnvironment(), monitor.environment.value)
+        assertTrue(probe.foregroundCalls.get() >= 4)
+        probe.failWith = LinkageError("fixture")
+        now += 2_000L
+        monitor.pollEnvironmentNow()
+        assertEquals(DesktopNvidiaEnvironment(), monitor.environment.value)
+        // An unknown foreground is not a game either.
+        probe.failWith = null
+        probe.snapshot = null
+        repeat(3) {
+            now += 2_000L
+            monitor.pollEnvironmentNow()
+        }
+        assertFalse(monitor.environment.value.gameLike)
+    }
+
+    @Test fun theBackgroundPollRunsOnADaemonThreadAndStoppingItClearsEveryPause() {
+        val probe = EnvironmentFixtureProbe()
+        probe.snapshot = gameSnapshot()
+        val monitor = DesktopNvidiaCapabilityMonitor(null, environmentProbe = probe, environmentIntervalMillis = 5L)
+        try {
+            monitor.setEnvironmentPolling(true)
+            monitor.setEnvironmentPolling(true)
+            eventually("the game pause") { monitor.environment.value.gameLike }
+            assertTrue(probe.foregroundCalls.get() >= 2, "a pause needs two consecutive polls")
+            assertEquals("BiliPai-gpu-environment", probe.foregroundThreadName)
+            assertEquals(true, probe.foregroundThreadDaemon)
+            monitor.setEnvironmentPolling(false)
+            assertEquals(DesktopNvidiaEnvironment(), monitor.environment.value)
+            Thread.sleep(100L)
+            val stopped = probe.foregroundCalls.get()
+            Thread.sleep(100L)
+            assertEquals(stopped, probe.foregroundCalls.get(), "no poll runs after the stop")
+            assertEquals(DesktopNvidiaEnvironment(), monitor.environment.value)
+            // Starting again polls again.
+            monitor.setEnvironmentPolling(true)
+            eventually("the pause after a restart") { monitor.environment.value.gameLike }
+        } finally {
+            monitor.setEnvironmentPolling(false)
         }
     }
 }

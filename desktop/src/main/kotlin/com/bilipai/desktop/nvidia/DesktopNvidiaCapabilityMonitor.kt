@@ -172,6 +172,35 @@ internal class DesktopNvidiaSystemGpuProbe : DesktopNvidiaGpuProbe {
 }
 
 /**
+ * The raw, read-only environment facts one poll needs. Real in production, fake in tests. Every method
+ * answers "unknown" instead of throwing, and unknown never counts as a pause reason.
+ */
+internal interface DesktopNvidiaEnvironmentProbe {
+    /** The foreground window facts, or null when they could not be read. */
+    fun foreground(): DesktopNvidiaForegroundSnapshot?
+
+    /** True only for AC offline with a battery present. */
+    fun onBattery(): Boolean
+
+    /** PnP device path of the display adapter with this 16 digit LUID text, or null when unknown. */
+    fun adapterDevicePath(luidHex: String): String?
+}
+
+/** The real environment probe: the foreground window, the power state and the adapter path, all read-only. */
+internal class DesktopNvidiaSystemEnvironmentProbe : DesktopNvidiaEnvironmentProbe {
+    private val ownProcessId: Int = ProcessHandle.current().pid().toInt()
+
+    override fun foreground(): DesktopNvidiaForegroundSnapshot? = DesktopWindowsForegroundBusy.snapshot(ownProcessId)
+
+    override fun onBattery(): Boolean = DesktopWindowsPowerState.onBattery()
+
+    override fun adapterDevicePath(luidHex: String): String? {
+        val halves = parseNvidiaLuidHalves(luidHex) ?: return null
+        return DesktopWindowsAdapterIdentity.adapterDevicePath(halves.first, halves.second)
+    }
+}
+
+/**
  * Cached, bounded, fail-closed capability verdict.
  *
  * The first probe runs at startup on a daemon thread named BiliPai-gpu-probe with a five second
@@ -181,6 +210,13 @@ internal class DesktopNvidiaSystemGpuProbe : DesktopNvidiaGpuProbe {
  * -Dbilipai.gpu.autodetect=off makes the monitor report NotEvaluated, which is today's behaviour.
  * The neutral monitor has no probe at all and is what a player gets unless the application passes
  * the process monitor.
+ *
+ * The environment (game, battery, remote or virtual output) is polled every two seconds on a daemon
+ * thread named BiliPai-gpu-environment, and only while the session asks for it: a plan exists (standby,
+ * running or paused) and the host is visible. The raw reads go through the pause hysteresis of the
+ * activation file (enter after two consecutive polls, leave after five clear seconds). Stopping the poll
+ * clears every pause, so a stale one cannot linger. Without an environment probe (the neutral monitor, the
+ * kill switch, a test) nothing is ever polled and the environment stays empty.
  */
 internal class DesktopNvidiaCapabilityMonitor internal constructor(
     private val probe: DesktopNvidiaGpuProbe?,
@@ -188,6 +224,8 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
     private val warmUpTimeoutMillis: Long = WARM_UP_TIMEOUT_MILLIS,
     private val sessionTimeoutMillis: Long = SESSION_TIMEOUT_MILLIS,
     private val maxAgeMillis: Long = MAX_AGE_MILLIS,
+    private val environmentProbe: DesktopNvidiaEnvironmentProbe? = null,
+    private val environmentIntervalMillis: Long = ENVIRONMENT_POLL_MILLIS,
 ) {
     private val mutableCapability = MutableStateFlow<NvidiaCapability>(
         if (probe == null) NvidiaCapability.NotEvaluated else NvidiaCapability.Probing,
@@ -196,8 +234,9 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
     /** NotEvaluated without a probe, Probing until the first result, then the verdict. */
     val capability: StateFlow<NvidiaCapability> = mutableCapability.asStateFlow()
 
-    // Placeholder: the environment layer (game, battery, remote output) fills this in a later slice.
     private val mutableEnvironment = MutableStateFlow(DesktopNvidiaEnvironment())
+
+    /** The smoothed environment flags. Empty while nothing is polled. */
     val environment: StateFlow<DesktopNvidiaEnvironment> = mutableEnvironment.asStateFlow()
 
     private val mutableObserved = MutableStateFlow<DesktopNvidiaObservedGpu?>(null)
@@ -217,6 +256,18 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
     private var warmUpStarted = false
     private var inFlight: ProbeRun? = null
     private val observedVerdicts = LinkedHashMap<String, Boolean>()
+
+    // Environment poll state. Lock order is pollLock then environmentLock; the poll thread takes only
+    // environmentLock and never holds either lock while it reads the system.
+    private val pollLock = Any()
+    private val environmentLock = Any()
+    private val pollGeneration = AtomicLong()
+    private var pollThread: Thread? = null
+    private var environmentTracker = DesktopNvidiaEnvironmentTracker()
+
+    // The latest monitor of the video window as the session reports it: the adapter LUID text and the
+    // output technology. One immutable pair, so a poll never mixes two reports.
+    @Volatile private var displayReport: Pair<String?, Int?> = Pair(null, null)
 
     private class ProbeRun(val startInvalidations: Long) {
         val result = CompletableFuture<NvidiaCapability>()
@@ -309,6 +360,113 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
         val source = probe ?: return
         markStale()
         startSupervisor(source, warmUpTimeoutMillis)
+    }
+
+    /**
+     * The session reports the monitor of the video window: the adapter LUID text (high part first) and the
+     * output technology of its display path, either may be unknown. Raw facts only: the next poll reads them,
+     * so the remote flag goes through the same hysteresis as the others. Cheap and safe to call often.
+     */
+    fun reportDisplayOutput(adapterLuidHex: String?, outputTechnology: Int?) {
+        displayReport = Pair(adapterLuidHex, outputTechnology)
+    }
+
+    /**
+     * Starts or stops the environment poll. The session wants it only while a plan exists and the host is
+     * visible. Idempotent. Starting polls at once on a new daemon thread and then every interval. Stopping
+     * clears every pause. Does nothing without an environment probe.
+     */
+    fun setEnvironmentPolling(wanted: Boolean) {
+        if (environmentProbe == null) return
+        synchronized(pollLock) {
+            if (wanted) startEnvironmentPollLocked() else stopEnvironmentPollLocked()
+        }
+    }
+
+    private fun startEnvironmentPollLocked() {
+        val running = pollThread
+        if (running != null && running.isAlive) return
+        val generation = pollGeneration.incrementAndGet()
+        val thread = Thread({ pollEnvironmentLoop(generation) }, "BiliPai-gpu-environment")
+        thread.isDaemon = true
+        pollThread = thread
+        try {
+            thread.start()
+        } catch (_: Throwable) {
+            // No thread could be created: nothing is polled and the environment stays empty.
+            pollThread = null
+        }
+    }
+
+    private fun stopEnvironmentPollLocked() {
+        pollGeneration.incrementAndGet()
+        val hadThread = pollThread != null
+        pollThread = null
+        if (hadThread) resetEnvironment()
+    }
+
+    /**
+     * One poll: reads the raw facts, advances the hysteresis with the monitor clock and publishes the smoothed
+     * environment. Tests call it directly. Does nothing without an environment probe.
+     */
+    internal fun pollEnvironmentNow() {
+        pollEnvironmentFor(null)
+    }
+
+    private fun pollEnvironmentLoop(generation: Long) {
+        while (pollGeneration.get() == generation) {
+            try {
+                pollEnvironmentFor(generation)
+            } catch (_: Throwable) {
+                // A failed poll leaves the flags as they are. Unknown never pauses.
+            }
+            try {
+                Thread.sleep(environmentIntervalMillis)
+            } catch (_: InterruptedException) {
+                return
+            }
+        }
+    }
+
+    private fun pollEnvironmentFor(generation: Long?) {
+        val source = environmentProbe ?: return
+        val raw = readRawEnvironment(source)
+        synchronized(environmentLock) {
+            // A poll that finished after the poll was stopped or restarted must not publish.
+            if (generation != null && pollGeneration.get() != generation) return
+            environmentTracker = environmentTracker.advance(raw, nowMillis())
+            mutableEnvironment.value = environmentTracker.environment
+        }
+    }
+
+    private fun readRawEnvironment(source: DesktopNvidiaEnvironmentProbe): DesktopNvidiaEnvironment {
+        val gameLike = try {
+            val snapshot = source.foreground()
+            snapshot != null && desktopNvidiaGameLike(snapshot)
+        } catch (_: Throwable) {
+            false
+        }
+        val onBattery = try {
+            source.onBattery()
+        } catch (_: Throwable) {
+            false
+        }
+        val remoteOrVirtual = try {
+            val report = displayReport
+            val luid = report.first
+            desktopNvidiaRemoteOutputTechnology(report.second) ||
+                (luid != null && desktopNvidiaAdapterPathIsNonPci(source.adapterDevicePath(luid)))
+        } catch (_: Throwable) {
+            false
+        }
+        return DesktopNvidiaEnvironment(gameLike, onBattery, remoteOrVirtual)
+    }
+
+    private fun resetEnvironment() {
+        synchronized(environmentLock) {
+            environmentTracker = DesktopNvidiaEnvironmentTracker()
+            mutableEnvironment.value = DesktopNvidiaEnvironment()
+        }
     }
 
     private fun markStale() {
@@ -408,6 +566,9 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
         const val WARM_UP_TIMEOUT_MILLIS: Long = 5_000L
         const val SESSION_TIMEOUT_MILLIS: Long = 1_500L
         const val MAX_AGE_MILLIS: Long = 30_000L
+
+        /** The environment (game, battery, remote output) is read this often while the session wants it. */
+        const val ENVIRONMENT_POLL_MILLIS: Long = 2_000L
         private const val OBSERVED_CACHE_LIMIT: Int = 8
         private val FAILED: NvidiaCapability = NvidiaCapability.Unknown(NvidiaUnknownReason.PROBE_FAILED)
 
@@ -426,7 +587,10 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
 
         private val processMonitor: DesktopNvidiaCapabilityMonitor by lazy {
             if (autodetectRequested(System.getProperty(KILL_SWITCH_PROPERTY)) && windowsGateOpen()) {
-                DesktopNvidiaCapabilityMonitor(DesktopNvidiaSystemGpuProbe())
+                DesktopNvidiaCapabilityMonitor(
+                    DesktopNvidiaSystemGpuProbe(),
+                    environmentProbe = DesktopNvidiaSystemEnvironmentProbe(),
+                )
             } else {
                 DesktopNvidiaCapabilityMonitor(probe = null)
             }
