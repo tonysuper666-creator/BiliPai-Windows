@@ -77,6 +77,7 @@ internal class PremiumRecoveryActor(private val player: MpvPlayer) : AutoCloseab
 }
 internal class PremiumRecoveryNative : MpvNative, AutoCloseable {
     val loads = mutableListOf<List<Any>>()
+    val commands = mutableListOf<List<String>>()
     val properties = mutableListOf<Pair<String, String>>()
     private val buffers = mutableListOf<Memory>()
     private val values = mutableMapOf("playlist/0/id" to "11", "time-pos" to "27.75", "duration" to "120.0", "pause" to "yes",
@@ -106,7 +107,16 @@ internal class PremiumRecoveryNative : MpvNative, AutoCloseable {
     override fun mpv_command_node(handle: Pointer, args: Pointer, result: Pointer?): Int {
         val command = node(args) as List<Any>; check(command.first() == "loadfile"); loads.add(command); return 0
     }
-    override fun mpv_command(handle: Pointer, args: StringArray): Int { check(args.getStringArray(0).first() == "sub-add"); return 0 }
+    override fun mpv_command(handle: Pointer, args: StringArray): Int {
+        val argv = args.getStringArray(0).toList()
+        val name = argv.first()
+        if (name == "define-section" || name == "enable-section") {
+            commands.add(argv)
+            return 0
+        }
+        check(name == "sub-add")
+        return 0
+    }
     override fun mpv_error_string(error: Int) = if(error == -14) "audio output initialization failed" else "fixture terminal error"
     override fun mpv_create(): Pointer? = error("No real native initialization")
     override fun mpv_initialize(handle: Pointer): Int = error("No real native initialization")
