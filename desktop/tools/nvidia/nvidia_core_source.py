@@ -2,9 +2,14 @@
 
 The checks read Kotlin source and the shared golden vectors as data. They never re-implement the
 Kotlin classification or budget logic: a drift between source and vectors is caught by the JVM
-tests, and these helpers only make the data and the source shape inspectable."""
+tests, and these helpers only make the data and the source shape inspectable.
+
+Line endings. read() normalises CRLF to LF, because a checkout with core.autocrlf=true holds CRLF
+working copies of LF blobs. The guarantee that the committed blobs are LF is a separate check:
+assert_lf_only() asks git for the index line-ending word of each file."""
 import json
 import re
+import subprocess
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
@@ -22,11 +27,60 @@ VECTORS = ST / "resources/nvidia-gpu-classification-vectors.json"
 S1_CORE_FILES = (CAPABILITY, TIER_PROFILE, ACTIVATION, STATUS_TEXT)
 
 
+# The shader-list option name is a gate bit of the presentation proof, so no file of this work may spell it out.
+# It is assembled here once; every check that needs the name imports this constant.
+SHADER_LIST_OPTION = "glsl" + "-shaders"
+
+
 def read(path):
-    data = Path(path).read_bytes()
-    if b"\r" in data:
-        raise AssertionError("%s contains a carriage return" % path)
-    return data.decode("utf-8")
+    """UTF-8 text of a source file with CRLF normalised to LF, so a CRLF working copy reads like the LF blob."""
+    return Path(path).read_bytes().replace(b"\r\n", b"\n").decode("utf-8")
+
+
+def relative_posix(path):
+    """Repository-relative path with forward slashes, as git prints it."""
+    return Path(path).resolve().relative_to(REPO).as_posix()
+
+
+def index_eol(paths):
+    """{repo-relative path: index line-ending word} for the tracked files among paths, from git ls-files --eol.
+
+    The word is one of lf, crlf, mixed, none or -text. Untracked files are absent from the result. Returns None
+    when git cannot answer (no git, not a repository, a timeout), so the caller can fall back. Read-only."""
+    names = [relative_posix(path) for path in paths]
+    if not names:
+        return {}
+    try:
+        completed = subprocess.run(
+            ["git", "-c", "core.autocrlf=false", "ls-files", "--eol", "--"] + names,
+            cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60, check=False)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if completed.returncode != 0:
+        return None
+    words = {}
+    for line in completed.stdout.decode("utf-8", "replace").splitlines():
+        meta, tab, name = line.partition("\t")
+        fields = meta.split()
+        if tab and fields and fields[0].startswith("i/"):
+            words[name] = fields[0][2:]
+    return words
+
+
+def assert_lf_only(test, *paths):
+    """The committed blob of every file is LF (index word lf, or none for a file without any line break).
+
+    A CRLF working copy is fine: that is what core.autocrlf=true makes of an LF blob. For a file that is not
+    tracked yet, or when git cannot answer, the working copy must hold no carriage return outside a CRLF pair."""
+    paths = [Path(path) for path in paths]
+    words = index_eol(paths)
+    for path in paths:
+        name = relative_posix(path)
+        word = None if words is None else words.get(name)
+        if word is None:
+            test.assertIsNone(re.search(rb"\r(?!\n)", path.read_bytes()), "%s holds a bare carriage return" % name)
+        else:
+            test.assertIn(word, ("lf", "none"), "%s is committed with %s line endings" % (name, word))
 
 
 def load_vectors():

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 // Process-level NVIDIA capability monitor. It owns the read-only probe, the cached verdict, the
@@ -206,7 +207,9 @@ internal class DesktopNvidiaSystemEnvironmentProbe : DesktopNvidiaEnvironmentPro
  * The first probe runs at startup on a daemon thread named BiliPai-gpu-probe with a five second
  * watchdog. A hung driver call cannot be interrupted: the thread is abandoned and the verdict becomes
  * Unknown(PROBE_FAILED). Each native session start reuses a result younger than thirty seconds or
- * re-probes, waiting at most one and a half seconds on the native worker. The kill switch
+ * re-probes, waiting at most one and a half seconds on the native worker. A session start never waits on
+ * an abandoned probe, but the user's re-detection does start a fresh one beside it (at most three native
+ * calls may be stuck at once), so the button keeps working while an old call hangs. The kill switch
  * -Dbilipai.gpu.autodetect=off makes the monitor report NotEvaluated, which is today's behaviour.
  * The neutral monitor has no probe at all and is what a player gets unless the application passes
  * the process monitor.
@@ -257,6 +260,8 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
     private var stale = false
     private var warmUpStarted = false
     private var inFlight: ProbeRun? = null
+    // Probe threads that were started and have not returned. An abandoned thread stays counted until its call returns.
+    private val liveWorkers = AtomicInteger()
     private val observedVerdicts = LinkedHashMap<String, Boolean>()
 
     // Environment poll state. Lock order is pollLock then environmentLock; the poll thread takes only
@@ -357,11 +362,15 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
         markStale()
     }
 
-    /** The user-requested re-detection: stale now and a fresh probe in the background. */
+    /**
+     * The user-requested re-detection: stale now and a fresh probe in the background. When the previous probe was
+     * abandoned and its native call still hangs, the fresh probe runs on a new thread beside it, so the button is
+     * never dead. Only a bounded number of stuck calls is tolerated.
+     */
     fun redetect() {
         val source = probe ?: return
         markStale()
-        startSupervisor(source, warmUpTimeoutMillis)
+        startSupervisor(source, warmUpTimeoutMillis, replaceAbandoned = true)
     }
 
     /**
@@ -490,8 +499,8 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
         }
     }
 
-    private fun startSupervisor(source: DesktopNvidiaGpuProbe, timeoutMillis: Long) {
-        val supervisor = Thread({ awaitProbe(source, timeoutMillis) }, "BiliPai-gpu-probe-watchdog")
+    private fun startSupervisor(source: DesktopNvidiaGpuProbe, timeoutMillis: Long, replaceAbandoned: Boolean = false) {
+        val supervisor = Thread({ awaitProbe(source, timeoutMillis, replaceAbandoned) }, "BiliPai-gpu-probe-watchdog")
         supervisor.isDaemon = true
         try {
             supervisor.start()
@@ -504,12 +513,16 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
      * Joins the probe in flight or starts one, and waits at most timeoutMillis. Only the caller that
      * started the probe may abandon it: a timeout then publishes Unknown(PROBE_FAILED) once, and the
      * late result of the abandoned thread is dropped. A run that was already abandoned is never
-     * waited for again, so a hung driver call cannot block every later caller.
+     * waited for again, so a hung driver call cannot block every later caller. Only a re-detection
+     * (replaceAbandoned) starts a fresh run in its place, and only while fewer than MAX_LIVE_PROBE_WORKERS
+     * probe threads are still stuck; the abandoned thread's late publish and slot release stay no-ops.
      */
-    private fun awaitProbe(source: DesktopNvidiaGpuProbe, timeoutMillis: Long) {
+    private fun awaitProbe(source: DesktopNvidiaGpuProbe, timeoutMillis: Long, replaceAbandoned: Boolean = false) {
         val claim = synchronized(runLock) {
             val existing = inFlight
-            if (existing != null) {
+            val replace = replaceAbandoned && existing != null && existing.published.get() &&
+                liveWorkers.get() < MAX_LIVE_PROBE_WORKERS
+            if (existing != null && !replace) {
                 ProbeClaim(existing, false)
             } else {
                 val fresh = ProbeRun(invalidations.get())
@@ -531,25 +544,32 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
     }
 
     private fun startWorker(run: ProbeRun, source: DesktopNvidiaGpuProbe) {
+        liveWorkers.incrementAndGet()
         val worker = Thread({
-            val verdict: NvidiaCapability = try {
-                classifyNvidiaCapability(source.probe())
-            } catch (_: Throwable) {
-                FAILED
+            try {
+                val verdict: NvidiaCapability = try {
+                    classifyNvidiaCapability(source.probe())
+                } catch (_: Throwable) {
+                    FAILED
+                }
+                // Publish and release the slot before completing: a waiter that wakes on the future must
+                // already see the verdict and must be able to start the next probe.
+                publish(run, verdict)
+                synchronized(runLock) { if (inFlight === run) inFlight = null }
+                run.result.complete(verdict)
+                // The failure memory reads its file lazily. Reading it here, after the verdict is out, keeps that read off the
+                // interface thread and off every thread that waits for the verdict. It never throws.
+                healthStore.warmUp()
+            } finally {
+                liveWorkers.decrementAndGet()
             }
-            // Publish and release the slot before completing: a waiter that wakes on the future must
-            // already see the verdict and must be able to start the next probe.
-            publish(run, verdict)
-            synchronized(runLock) { if (inFlight === run) inFlight = null }
-            run.result.complete(verdict)
-            // The failure memory reads its file lazily. Reading it here, after the verdict is out, keeps that read off the
-            // interface thread and off every thread that waits for the verdict. It never throws.
-            healthStore.warmUp()
         }, "BiliPai-gpu-probe")
         worker.isDaemon = true
         try {
             worker.start()
         } catch (_: Throwable) {
+            // The thread never ran, so its count is released here.
+            liveWorkers.decrementAndGet()
             publish(run, FAILED)
             synchronized(runLock) { if (inFlight === run) inFlight = null }
         }
@@ -571,6 +591,9 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
         const val WARM_UP_TIMEOUT_MILLIS: Long = 5_000L
         const val SESSION_TIMEOUT_MILLIS: Long = 1_500L
         const val MAX_AGE_MILLIS: Long = 30_000L
+
+        /** A re-detection starts a fresh probe beside an abandoned one only while fewer native calls than this are stuck. */
+        private const val MAX_LIVE_PROBE_WORKERS: Int = 3
 
         /** The environment (game, battery, remote output) is read this often while the session wants it. */
         const val ENVIRONMENT_POLL_MILLIS: Long = 2_000L

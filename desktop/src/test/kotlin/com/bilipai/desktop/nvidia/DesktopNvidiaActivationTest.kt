@@ -283,6 +283,28 @@ class DesktopNvidiaActivationTest {
         assertEquals(3_000L, NVIDIA_MIN_RECONFIGURE_INTERVAL_MILLIS)
     }
 
+    @Test fun aUsableGpuIsKnownFromTheCapabilityAloneWhateverTheSwitchSays() {
+        val failed = NvidiaCapability.Unknown(NvidiaUnknownReason.PROBE_FAILED)
+        assertTrue(nvidiaGpuUsable(desktopCapable()))
+        assertTrue(nvidiaGpuUsable(laptopCapable()))
+        assertTrue(nvidiaGpuUsable(NvidiaCapability.Probing), "probing counts as usable")
+        assertTrue(nvidiaGpuUsable(NvidiaCapability.NotEvaluated), "detection off counts as usable")
+        assertFalse(nvidiaGpuUsable(NvidiaCapability.Absent))
+        assertFalse(nvidiaGpuUsable(NvidiaCapability.Unsupported(NvidiaUnsupportedReason.NOT_PHYSICAL)))
+        assertFalse(nvidiaGpuUsable(scenarioCapability("gtx-only")))
+        assertFalse(nvidiaGpuUsable(failed), "a failed probe without a verified physical GPU is not usable")
+        assertTrue(nvidiaGpuUsable(failed, verifiedObserved), "a verified physical GPU rescues a failed probe")
+        assertFalse(nvidiaGpuUsable(failed, verifiedObserved.copy(verifiedPhysical = false)))
+        // It agrees with the switch-on precedence for every capability.
+        for (capability in listOf(desktopCapable(), NvidiaCapability.Probing, NvidiaCapability.NotEvaluated,
+            NvidiaCapability.Absent, failed)) {
+            val whenOn = resolve(capability, sourceLoaded = false)
+            val expected = whenOn !is DesktopNvidiaActivationState.NoNvidia &&
+                whenOn !is DesktopNvidiaActivationState.Unsupported && whenOn !is DesktopNvidiaActivationState.Unidentified
+            assertEquals(expected, nvidiaGpuUsable(capability))
+        }
+    }
+
     // ---- status text over activation states (the single string owner) ---------------------
 
     @Test fun statusLinesDoNotShowATierWordWhileTheSwitchIsOff() {

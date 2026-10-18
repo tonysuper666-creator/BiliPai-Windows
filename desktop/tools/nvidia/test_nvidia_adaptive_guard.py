@@ -151,7 +151,7 @@ class GuardShapeTest(unittest.TestCase):
     def test_the_guard_never_names_the_proof_machinery_or_writes_an_active_flag(self):
         for forbidden in ("VeyraPresentationTracker", "veyraReceipt", "MpvVeyraPresentation", "NvidiaVideoState",
                           "mutableNvidiaVideo", "hdrConversionActive", "NvidiaVideoOptions", "NvidiaVideoBackend",
-                          "glsl-shaders", "interpolation", "video-sync", "d3d11-flip", "target-colorspace-hint"):
+                          source.SHADER_LIST_OPTION, "interpolation", "video-sync", "d3d11-flip", "target-colorspace-hint"):
             self.assertNotIn(forbidden, self.text, forbidden)
         self.assertIsNone(re.search(r"(?<![A-Za-z0-9_])active\s*=(?!=)", self.code))
         self.assertNotIn("proved", self.text)
@@ -332,7 +332,7 @@ class StoreShapeTest(unittest.TestCase):
 
     def test_the_store_is_pure_of_the_proof_machinery_and_the_forbidden_apis(self):
         for forbidden in ("VeyraPresentationTracker", "veyraReceipt", "NvidiaVideoState", "mutableNvidiaVideo",
-                          "hdrConversionActive", "glsl-shaders", "RegSetValue", "RegCreateKey", "ProcessBuilder",
+                          "hdrConversionActive", source.SHADER_LIST_OPTION, "RegSetValue", "RegCreateKey", "ProcessBuilder",
                           "Runtime.getRuntime", "SetThreadPriority", "SetPriorityClass", "nvidia-smi"):
             self.assertNotIn(forbidden, self.text, forbidden)
         self.assertIsNone(re.search(r"(?<![A-Za-z0-9_])active\s*=(?!=)", self.code))
@@ -354,9 +354,8 @@ class KotlinTestFilesTest(unittest.TestCase):
     def test_the_slice_tests_exist_use_kotlin_test_and_are_lf_only(self):
         for name in ("DesktopNvidiaAdaptiveGuardTest.kt", "DesktopNvidiaHealthStoreTest.kt"):
             path = TESTS / name
-            data = path.read_bytes()
-            self.assertNotIn(b"\r", data, name)
-            text = data.decode("utf-8")
+            source.assert_lf_only(self, path)
+            text = source.read(path)
             self.assertTrue(text.startswith("package com.bilipai.desktop.nvidia\n"), name)
             self.assertIn("import kotlin.test.Test", text, name)
             self.assertNotIn("org.junit.Test", text, name)

@@ -196,8 +196,7 @@ class ConfigurationSchemaTest(unittest.TestCase):
             self.assertNotIn("DesktopPluginStore", text)
 
     def test_the_configuration_source_keeps_lf_only(self):
-        for path in (CONFIGURATION, PREFERENCES, CONFIGURATION_TEST):
-            self.assertNotIn(b"\r", path.read_bytes(), path.name)
+        source.assert_lf_only(self, CONFIGURATION, PREFERENCES, CONFIGURATION_TEST)
 
 
 class OptionsForSchemaTest(unittest.TestCase):

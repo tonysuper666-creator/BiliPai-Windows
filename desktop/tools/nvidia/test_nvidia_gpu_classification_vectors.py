@@ -57,7 +57,7 @@ class VectorSchemaTest(unittest.TestCase):
     def test_file_is_utf8_lf_and_ends_with_a_newline(self):
         data = source.VECTORS.read_bytes()
         data.decode("utf-8")
-        self.assertNotIn(b"\r", data)
+        source.assert_lf_only(self, source.VECTORS)
         self.assertTrue(data.endswith(b"\n"))
 
     def test_top_level_shape(self):

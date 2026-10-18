@@ -29,6 +29,7 @@ import com.bilipai.desktop.nvidia.desktopNvidiaStatusLine
 import com.bilipai.desktop.nvidia.desktopNvidiaTierWord
 import com.bilipai.desktop.nvidia.nvidiaAdvanceStickyFloor
 import com.bilipai.desktop.nvidia.nvidiaDriverPublicX100FromText
+import com.bilipai.desktop.nvidia.nvidiaGpuUsable
 import com.bilipai.desktop.nvidia.nvidiaHealthKeyFor
 import com.bilipai.desktop.nvidia.nvidiaStickyFloorAfterGuardCommit
 import com.bilipai.desktop.nvidia.nvidiaStickyFloorFor
@@ -94,6 +95,8 @@ data class DesktopVideoEnhancementState(
     val tierWord: String? = null,
     /** One short explanatory line (old driver, HDR dropped by the tier), or null. */
     val notice: String? = null,
+    /** False only when no usable NVIDIA GPU is known, whatever the switch says. Probing and detection off count as capable. */
+    val gpuCapable: Boolean = true,
 )
 
 /** Shared projection; the session admits the current source/configuration before calling it. */
@@ -176,6 +179,8 @@ internal class DesktopNvidiaGate(
     /** The route the controls assume before a request exists: the shared core once its component is loaded. */
     val route: NvidiaVideoBackend,
     val notice: String?,
+    /** Whether a usable GPU is known, also while the switch is off (capabilityUsable below follows the state instead). */
+    val gpuCapable: Boolean = true,
 ) {
     val kind: DesktopVideoEnhancementActivation get() = state.publicKind()
 
@@ -222,7 +227,7 @@ internal class DesktopNvidiaGate(
 /** Carries the gate's facts on a state. The route is the one in use (the owned request's) or the assumed one. */
 internal fun DesktopVideoEnhancementState.withGate(gate: DesktopNvidiaGate, routeInUse: NvidiaVideoBackend): DesktopVideoEnhancementState =
     copy(activation = gate.kind, gpuSummary = gate.gpuSummary, route = routeInUse,
-        tierWord = gate.tierWordFor(routeInUse), notice = gate.notice)
+        tierWord = gate.tierWordFor(routeInUse), notice = gate.notice, gpuCapable = gate.gpuCapable)
 
 /**
  * What the adaptive guard and the failure memory say about the request, as the three inputs of the activation
@@ -298,7 +303,7 @@ internal fun resolveDesktopNvidiaGate(
     }
     val route = if (componentAvailable) NvidiaVideoBackend.VEYRA_CORE else NvidiaVideoBackend.DRIVER
     return DesktopNvidiaGate(state, plan, description?.let { desktopNvidiaGpuShortName(it) }, route,
-        nvidiaNoticeFor(plan, preferences))
+        nvidiaNoticeFor(plan, preferences), gpuCapable = nvidiaGpuUsable(capability, observed))
 }
 
 /** One Windows NVIDIA session on the main native video actor. Every video kind

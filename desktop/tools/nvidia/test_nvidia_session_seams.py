@@ -58,6 +58,7 @@ NEW_STATE_FIELDS = {
     "route": "NvidiaVideoBackend",
     "tierWord": "String?",
     "notice": "String?",
+    "gpuCapable": "Boolean",
 }
 INTERNAL_TYPE_NAMES = (
     "NvidiaPlan", "NvidiaTier", "NvidiaCapability", "DesktopNvidiaActivationState", "DesktopNvidiaGate",
@@ -271,7 +272,7 @@ class SessionStateShapeTest(unittest.TestCase):
         self.assertIn("val activation: DesktopVideoEnhancementActivation = DesktopVideoEnhancementActivation.LEGACY,", self.header)
         for default in ("val steppedDown: Boolean = false,", "val qualityLowered: Boolean = false,", "val proofDelayed: Boolean = false,",
                         "val gpuSummary: String? = null,", "val requestedQualityLevel: Int? = null,",
-                        "val tierWord: String? = null,", "val notice: String? = null,",
+                        "val tierWord: String? = null,", "val notice: String? = null,", "val gpuCapable: Boolean = true,",
                         "val route: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,"):
             self.assertIn(default, self.header)
 
@@ -311,8 +312,13 @@ class SessionStateShapeTest(unittest.TestCase):
         carried = self.text[self.text.index("internal fun DesktopVideoEnhancementState.withGate("):]
         compact = collapse(carried[:400])
         for expected in ("activation = gate.kind", "gpuSummary = gate.gpuSummary", "route = routeInUse",
-                         "tierWord = gate.tierWordFor(routeInUse)", "notice = gate.notice"):
+                         "tierWord = gate.tierWordFor(routeInUse)", "notice = gate.notice", "gpuCapable = gate.gpuCapable"):
             self.assertIn(expected, compact)
+        # The capability flag comes from the capability alone, so a switched-off session on a machine without a usable
+        # GPU still says so; the gate computes it once, after the precedence.
+        gate = collapse(member(self.text, "internal fun resolveDesktopNvidiaGate("))
+        self.assertIn("nvidiaNoticeFor(plan, preferences), gpuCapable = nvidiaGpuUsable(capability, observed))", gate)
+        self.assertEqual(1, self.code.count("nvidiaGpuUsable("))
         self.assertIn("desktopNvidiaTierWord(plan?.tier, routeInUse, TIER_WORD_ENABLED)", self.text)
 
     def test_the_tier_word_and_requested_text_stay_behind_their_switches(self):
@@ -331,7 +337,7 @@ class SessionProofGateTest(unittest.TestCase):
         cls.code, cls.literals = source.lex_kotlin(cls.text)
 
     def test_this_file_never_writes_the_presentation_proof_or_touches_the_tracker(self):
-        for forbidden in ("VeyraPresentationTracker", "proved", "veyraReceipt", "MpvVeyraPresentation", "glsl-shaders",
+        for forbidden in ("VeyraPresentationTracker", "proved", "veyraReceipt", "MpvVeyraPresentation", source.SHADER_LIST_OPTION,
                           "interpolation", "video-sync", "d3d11-flip", "target-colorspace-hint"):
             self.assertNotIn(forbidden, self.text, forbidden)
         # The only values ever assigned to an active flag here are a projection of the player's own state or false.
@@ -361,11 +367,10 @@ class SessionProofGateTest(unittest.TestCase):
             for path in (SESSION, CONTROLS, CATALOG, source.K / "player/DesktopNvidiaVideoPreferences.kt",
                          source.K / "plugins/DesktopVideoEnhancementConfiguration.kt"):
                 self.assertNotIn(forbidden, path.read_text(encoding="utf-8"), "%s: %s" % (path.name, forbidden))
-        for path in (SESSION, CONTROLS, SHELL, CATALOG, source.K / "player/DesktopNvidiaVideoPreferences.kt",
-                     source.K / "plugins/DesktopVideoEnhancementConfiguration.kt",
-                     source.ST / "kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSessionTest.kt",
-                     source.ST / "kotlin/com/bilipai/desktop/plugins/DesktopVideoEnhancementConfigurationTest.kt"):
-            self.assertNotIn(b"\r", path.read_bytes(), path.name)
+        source.assert_lf_only(self, SESSION, CONTROLS, SHELL, CATALOG, source.K / "player/DesktopNvidiaVideoPreferences.kt",
+                              source.K / "plugins/DesktopVideoEnhancementConfiguration.kt",
+                              source.ST / "kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSessionTest.kt",
+                              source.ST / "kotlin/com/bilipai/desktop/plugins/DesktopVideoEnhancementConfigurationTest.kt")
 
 
 class ControlsAnchorTest(unittest.TestCase):
@@ -410,6 +415,8 @@ class ControlsAnchorTest(unittest.TestCase):
         # The entry reads no activation, so no gate state can hide it; only the label changes.
         self.assertNotIn("activation", compact)
         self.assertEqual(1, self.code.count("desktopVideoEnhancementCapable(state)"), "only the switch subtitle asks")
+        capable = collapse(member(self.text, "internal fun desktopVideoEnhancementCapable(state: DesktopVideoEnhancementState): Boolean"))
+        self.assertIn("= state.gpuCapable && when (state.activation) {", capable)
 
     def test_the_compact_label_gains_gate_branches_after_the_error_and_off_branches(self):
         label = member(self.text, "internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementState,")
@@ -543,14 +550,14 @@ class AutoPolicyBudgetShapeTest(unittest.TestCase):
         self.assertEqual(1, self.code.count("nvidiaStickyUpscale("))
 
     def test_this_file_never_writes_the_presentation_proof_and_adds_no_forbidden_literal(self):
-        for forbidden in ("VeyraPresentationTracker", "proved", "veyraReceipt", "glsl-shaders", "interpolation", "video-sync",
+        for forbidden in ("VeyraPresentationTracker", "proved", "veyraReceipt", source.SHADER_LIST_OPTION, "interpolation", "video-sync",
                           "d3d11-flip", "target-colorspace-hint", "NvidiaVideoState"):
             self.assertNotIn(forbidden, self.text, forbidden)
         self.assertIsNone(re.search(r"(?<![A-Za-z0-9_])active\s*=(?!=)", self.code))
         for literal in self.literals:
             for word in ("DLSS", "Tensor", "帧生成", "插帧", "补帧", "HDR10+", "已应用", "极致"):
                 self.assertNotIn(word, literal)
-        self.assertNotIn(b"\r", AUTO_POLICY.read_bytes())
+        source.assert_lf_only(self, AUTO_POLICY)
 
 
 class SessionBudgetSeamTest(unittest.TestCase):
@@ -738,9 +745,8 @@ class FrameRateAndDecodeObservationTest(unittest.TestCase):
         self.assertIn("native.mpv_initialize(handle)", run)
         self.assertIn("perform(native, handle, Action.Load(", run)
         self.assertIn("applyNvidiaVideo(native, handle, action)", self.mpv)
-        self.assertNotIn("glsl-shaders", self.mpv)
-        self.assertNotIn(b"\r", MPV_PLAYER.read_bytes())
-        self.assertNotIn(b"\r", PLAYER_OUTPUT.read_bytes())
+        self.assertNotIn(source.SHADER_LIST_OPTION, self.mpv)
+        source.assert_lf_only(self, MPV_PLAYER, PLAYER_OUTPUT)
 
 
 # ---- Slice S6: the adaptive guard, the failure memory, the retry attempt and the playback health ----
@@ -1075,17 +1081,16 @@ class PlaybackHealthSamplingTest(unittest.TestCase):
                 self.assertNotIn(word, body, "%s reads %s" % (name, word))
         self.assertEqual(1, self.mpv.count("active = proved"))
         self.assertEqual(1, self.mpv.count("val proved = "))
-        self.assertNotIn("glsl-shaders", self.mpv)
+        self.assertNotIn(source.SHADER_LIST_OPTION, self.mpv)
         self.assertEqual(1, self.mpv.count("private var lastPlaybackHealthPoll = 0L"))
-        self.assertNotIn(b"\r", MPV_PLAYER.read_bytes())
+        source.assert_lf_only(self, MPV_PLAYER)
 
     def test_the_session_test_files_of_this_slice_are_lf_only_and_use_kotlin_test(self):
         tests = source.ST / "kotlin/com/bilipai/desktop"
         for path in (tests / "nvidia/DesktopNvidiaAdaptiveGuardTest.kt", tests / "nvidia/DesktopNvidiaHealthStoreTest.kt",
                      tests / "player/DesktopVideoEnhancementSessionTest.kt", tests / "player/PlayerNvidiaActorWithdrawalTest.kt"):
-            data = path.read_bytes()
-            self.assertNotIn(b"\r", data, path.name)
-            text = data.decode("utf-8")
+            source.assert_lf_only(self, path)
+            text = source.read(path)
             self.assertIn("import kotlin.test.", text, path.name)
             self.assertNotIn("import org.junit.Test", text, path.name)
 

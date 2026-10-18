@@ -158,6 +158,26 @@ class DesktopVideoEnhancementSessionTest {
         assertEquals(DesktopNvidiaStatusText.OFF_GPU_UNKNOWN, off.lineFor("unused", DesktopNvidiaStatusKind.OFF))
     }
 
+    @Test fun theGateKnowsWhetherAUsableGpuExistsWhateverTheSwitchSaysAndTheStateCarriesIt() {
+        val failed = NvidiaCapability.Unknown(NvidiaUnknownReason.PROBE_FAILED)
+        for (enabled in listOf(true, false)) {
+            assertFalse(gateFor(scenarioCapability("amd-only"), enabled = enabled).gpuCapable, "no NVIDIA, enabled=$enabled")
+            assertFalse(gateFor(scenarioCapability("gtx-only"), enabled = enabled).gpuCapable, "pre-RTX, enabled=$enabled")
+            assertFalse(gateFor(failed, enabled = enabled).gpuCapable, "failed probe, enabled=$enabled")
+            assertTrue(gateFor(scenarioCapability("this-pc"), enabled = enabled).gpuCapable, "this PC, enabled=$enabled")
+            assertTrue(gateFor(NvidiaCapability.Probing, enabled = enabled).gpuCapable, "probing, enabled=$enabled")
+            assertTrue(gateFor(NvidiaCapability.NotEvaluated, enabled = enabled).gpuCapable, "detection off, enabled=$enabled")
+        }
+        val verified = DesktopNvidiaObservedGpu("NVIDIA GeForce RTX 5080", 0x2C02, "000000000000e782", true)
+        assertTrue(gateFor(failed, enabled = false, observed = verified).gpuCapable)
+        // The switch is off on a machine without NVIDIA: the state says off and also says no usable GPU.
+        val off = gateFor(scenarioCapability("amd-only"), enabled = false)
+        val shown = DesktopVideoEnhancementState().withGate(off, off.route)
+        assertEquals(DesktopVideoEnhancementActivation.OFF, shown.activation)
+        assertFalse(shown.gpuCapable)
+        assertTrue(DesktopVideoEnhancementState().gpuCapable, "the default state is capable")
+    }
+
     @Test fun aProbeFailureNeverMeansNoGpuAndNeedsAVerifiedPhysicalLuid() {
         val failed = NvidiaCapability.Unknown(NvidiaUnknownReason.PROBE_FAILED)
         assertEquals(DesktopVideoEnhancementActivation.PROBING, gateFor(NvidiaCapability.Probing).kind)
@@ -333,9 +353,14 @@ class DesktopVideoEnhancementSessionTest {
             DesktopVideoEnhancementSession(player, MutableStateFlow(true), MutableStateFlow(true), MutableStateFlow(false),
                 { CompletableDeferred(Unit) }).use { enhancement ->
                 val version = player.loadVersioned(PlaybackSource("file:///C:/no-nvidia-fixture.avi"))
-                awaitState { enhancement.state.value.sourceVersion == version &&
-                    enhancement.state.value.activation == DesktopVideoEnhancementActivation.NO_NVIDIA }
-                val shown = enhancement.state.value
+                // The session publishes the bypass first and the unavailable reason in a second write, so the wait
+                // names both and every check below reads the one snapshot that satisfied it.
+                var shown = enhancement.state.value
+                awaitState {
+                    shown = enhancement.state.value
+                    shown.sourceVersion == version && shown.activation == DesktopVideoEnhancementActivation.NO_NVIDIA &&
+                        shown.unavailableReason != null
+                }
                 assertFalse(shown.available)
                 assertFalse(shown.pending)
                 assertFalse(shown.active)

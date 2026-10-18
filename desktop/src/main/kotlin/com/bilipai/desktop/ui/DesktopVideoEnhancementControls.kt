@@ -81,12 +81,16 @@ private fun desktopVideoEnhancementGateLabel(state: DesktopVideoEnhancementState
     else -> if (state.steppedDown) "已回退" else null
 }
 
-/** False only when no usable NVIDIA GPU is known. Probing and detection off still count as capable. */
-internal fun desktopVideoEnhancementCapable(state: DesktopVideoEnhancementState): Boolean = when (state.activation) {
-    DesktopVideoEnhancementActivation.NO_NVIDIA, DesktopVideoEnhancementActivation.UNSUPPORTED,
-    DesktopVideoEnhancementActivation.UNIDENTIFIED -> false
-    else -> true
-}
+/**
+ * False only when no usable NVIDIA GPU is known, also while the switch is off: the gate fills gpuCapable from the
+ * capability whatever the switch says. Probing and detection off still count as capable.
+ */
+internal fun desktopVideoEnhancementCapable(state: DesktopVideoEnhancementState): Boolean = state.gpuCapable &&
+    when (state.activation) {
+        DesktopVideoEnhancementActivation.NO_NVIDIA, DesktopVideoEnhancementActivation.UNSUPPORTED,
+        DesktopVideoEnhancementActivation.UNIDENTIFIED -> false
+        else -> true
+    }
 
 internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementState,
     enabled: Boolean, configurationError: String?): String {

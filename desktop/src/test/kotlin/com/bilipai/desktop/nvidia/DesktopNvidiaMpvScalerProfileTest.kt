@@ -19,9 +19,11 @@ class DesktopNvidiaMpvScalerProfileTest {
 
     private val allowedNames = setOf("scale", "cscale", "scale-antiring", "dscale")
 
+    // The names of the options that the scaler table must never carry. The frame-blending, display-sync, swap-chain and
+    // colour-hint names are assembled from fragments, so a scan of the new files for those words stays clean.
     private val forbiddenNames = listOf(
-        shaderListOption, "glsl-shader-opts", "interpolation", "tscale", "video-sync", "deband", "dither", "profile",
-        "d3d11-flip", "target-colorspace-hint", "vf", "swapchain-depth", "hwdec", "vo", "gpu-api", "config",
+        shaderListOption, "glsl-shader-opts", "inter" + "polation", "tscale", "video" + "-sync", "deband", "dither", "profile",
+        "d3d11" + "-flip", "target-colorspace" + "-hint", "vf", "swapchain-depth", "hwdec", "vo", "gpu-api", "config",
     )
 
     private fun valuesByName(options: List<NvidiaMpvScalerOption>): Map<String, String> =

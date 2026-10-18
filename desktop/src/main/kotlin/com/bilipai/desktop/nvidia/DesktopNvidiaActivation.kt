@@ -243,3 +243,15 @@ internal fun resolveDesktopNvidiaActivation(
         DesktopNvidiaActivationState.Standby(plan)
     }
 }
+
+/**
+ * Whether a usable NVIDIA GPU is known, whatever the switch says: false for no NVIDIA GPU, an unsupported one, and a
+ * failed probe that no verified observed GPU rescued. Probing and detection off count as usable. The three negative
+ * outcomes of the activation precedence depend on the capability and the observed GPU alone, so the precedence is
+ * asked with the switch on and everything else at its default.
+ */
+internal fun nvidiaGpuUsable(capability: NvidiaCapability, observedGpu: DesktopNvidiaObservedGpu? = null): Boolean {
+    val whenOn = resolveDesktopNvidiaActivation(DesktopNvidiaMode.AUTO, capability, observedGpu = observedGpu)
+    return whenOn !is DesktopNvidiaActivationState.NoNvidia && whenOn !is DesktopNvidiaActivationState.Unsupported &&
+        whenOn !is DesktopNvidiaActivationState.Unidentified
+}

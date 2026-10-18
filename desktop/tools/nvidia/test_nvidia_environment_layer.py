@@ -264,6 +264,27 @@ class MonitorSeamTest(unittest.TestCase):
         self.assertEqual({"foreground", "onBattery", "adapterDevicePath"}, set(re.findall(r"fun (\w+)\(", interface)))
 
 
+    def test_only_the_re_detection_replaces_an_abandoned_probe_and_stuck_threads_are_capped(self):
+        text = self.text
+        redetect = collapse(balanced_body(text, "fun redetect() {"))
+        self.assertIn("startSupervisor(source, warmUpTimeoutMillis, replaceAbandoned = true)", redetect)
+        # The warm-up and the session start keep the old rule: an abandoned run is never waited for or replaced.
+        self.assertEqual(1, text.count("startSupervisor(source, warmUpTimeoutMillis)"))
+        self.assertEqual(1, text.count("awaitProbe(source, sessionTimeoutMillis)"))
+        self.assertEqual(1, text.count("replaceAbandoned = true"))
+        wait = collapse(balanced_body(
+            text, "private fun awaitProbe(source: DesktopNvidiaGpuProbe, timeoutMillis: Long, replaceAbandoned: Boolean = false) {"))
+        self.assertIn("val replace = replaceAbandoned && existing != null && existing.published.get() && "
+                      "liveWorkers.get() < MAX_LIVE_PROBE_WORKERS", wait)
+        self.assertIn("if (existing != null && !replace) { ProbeClaim(existing, false) } else {", wait)
+        self.assertEqual(["3"], re.findall(r"private const val MAX_LIVE_PROBE_WORKERS: Int = (\d+)", text))
+        worker = collapse(balanced_body(text, "private fun startWorker(run: ProbeRun, source: DesktopNvidiaGpuProbe) {"))
+        self.assertEqual(1, worker.count("liveWorkers.incrementAndGet()"))
+        self.assertEqual(2, worker.count("liveWorkers.decrementAndGet()"), "the thread's finally and a failed start")
+        self.assertLess(worker.index("run.result.complete(verdict)"), worker.index("healthStore.warmUp()"))
+        self.assertEqual(1, text.count("healthStore.warmUp()"))
+
+
 class SessionSeamTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -363,8 +384,7 @@ class FilesAreLfOnlyTest(unittest.TestCase):
         paths = [PROBE, MONITOR, RULES, ACTIVATION, HDR_DISPLAY, SESSION, Path(__file__),
                  tests / "nvidia/DesktopNvidiaActivationTest.kt", tests / "nvidia/DesktopNvidiaCapabilityMonitorTest.kt",
                  tests / "player/DesktopVideoEnhancementSessionTest.kt"]
-        for path in paths:
-            self.assertNotIn(b"\r", path.read_bytes(), path.name)
+        source.assert_lf_only(self, *paths)
 
 
 if __name__ == "__main__":

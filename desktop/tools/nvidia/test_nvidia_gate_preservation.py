@@ -90,9 +90,9 @@ OPTIONS_HEADER = (
     "val qualityLevel: Int = 4, val srEnabled: Boolean = true, val intensityPercent: Int = 100) {"
 )
 
-# The shader-list option name is assembled so that this file never spells it out. It is a gate bit of the
-# presentation proof, so no source file under the application tree may contain it.
-SHADER_LIST_OPTION = "glsl" + "-shaders"
+# The shader-list option name is assembled once, in nvidia_core_source, so that no file of this work spells it
+# out. It is a gate bit of the presentation proof, so no source file under the application tree may contain it.
+SHADER_LIST_OPTION = source.SHADER_LIST_OPTION
 
 # Literals and words that must never appear in a new package file (design sections 13 and 16 (c)).
 NEW_FILE_FORBIDDEN = (
@@ -195,9 +195,8 @@ class FrozenGateFilesTest(unittest.TestCase):
             self.assertNotIn("presentation-edits.json", relative)
             self.assertNotIn("DesktopVeyraPrivateComponent.kt", relative)
 
-    def test_the_native_gate_files_carry_no_carriage_return(self):
-        for relative in GATE_FILE_SHA256:
-            self.assertNotIn(b"\r", (REPO / relative).read_bytes(), relative)
+    def test_the_native_gate_files_are_committed_with_lf(self):
+        source.assert_lf_only(self, *[REPO / relative for relative in GATE_FILE_SHA256])
 
     def test_the_wire_constants_that_the_tracker_requires_are_unchanged(self):
         # peak=1000 and timeout=1000: the tracker requires 1000, and tier budgets never change it.
@@ -432,14 +431,11 @@ class NewPackageLexicalRulesTest(unittest.TestCase):
             self.assertNotIn("nvml", code.lower(), name)
 
     def test_all_new_and_changed_files_use_lf_only(self):
-        for path in changed_or_new_main_sources():
-            self.assertNotIn(b"\r", path.read_bytes(), path.name)
-        for path in sorted(Path(__file__).resolve().parent.glob("*.py")):
-            self.assertNotIn(b"\r", path.read_bytes(), path.name)
+        source.assert_lf_only(self, *changed_or_new_main_sources())
+        source.assert_lf_only(self, *sorted(Path(__file__).resolve().parent.glob("*.py")))
         tests = source.ST / "kotlin/com/bilipai/desktop"
-        for path in [tests / "nvidia/DesktopNvidiaCapabilityMonitorTest.kt", tests / "player/PlayerNvidiaVideoTest.kt",
-                     tests / "player/PlayerNvidiaActorWithdrawalTest.kt", tests / "player/DesktopWindowsDxgiAdaptersTest.kt"]:
-            self.assertNotIn(b"\r", path.read_bytes(), path.name)
+        source.assert_lf_only(self, tests / "nvidia/DesktopNvidiaCapabilityMonitorTest.kt", tests / "player/PlayerNvidiaVideoTest.kt",
+                              tests / "player/PlayerNvidiaActorWithdrawalTest.kt", tests / "player/DesktopWindowsDxgiAdaptersTest.kt")
 
     def test_the_monitor_never_references_the_player_package_state_it_could_write(self):
         code, _ = source.lex_kotlin(source.read(source.KN / "DesktopNvidiaCapabilityMonitor.kt"))
@@ -803,7 +799,7 @@ class ScalerPlayerSeamTest(unittest.TestCase):
         self.assertIn("native.mpv_initialize(handle)", self.run_body)
         self.assertIn("perform(native, handle, Action.Load(", self.run_body)
         self.assertIn("applyNvidiaVideo(native, handle, action)", self.text)
-        self.assertNotIn(b"\r", MPV_PLAYER.read_bytes())
+        source.assert_lf_only(self, MPV_PLAYER)
 
 
 class ScalerLiteralLintTest(unittest.TestCase):
@@ -819,14 +815,16 @@ class ScalerLiteralLintTest(unittest.TestCase):
                     self.assertNotIn(SHADER_LIST_OPTION, path.read_text(encoding="utf-8"), str(path))
         self.assertGreater(checked, 100)
 
-    def test_this_file_assembles_the_name_and_never_spells_it(self):
-        own = Path(__file__).read_text(encoding="utf-8")
-        self.assertEqual(1, len(re.findall(r'^SHADER_LIST_OPTION = "glsl" \+ "-shaders"$', own, re.M)))
-        self.assertNotIn(SHADER_LIST_OPTION, own)
+    def test_the_name_is_assembled_once_and_no_check_of_this_work_spells_it(self):
+        helper = Path(source.__file__).read_text(encoding="utf-8")
+        self.assertEqual(1, len(re.findall(r'^SHADER_LIST_OPTION = "glsl" \+ "-shaders"$', helper, re.M)))
+        checks = sorted(Path(__file__).resolve().parent.glob("*.py"))
+        self.assertGreaterEqual(len(checks), 10, "every check file of the folder, this one and the helper included")
+        for path in checks:
+            self.assertNotIn(SHADER_LIST_OPTION, path.read_text(encoding="utf-8"), path.name)
 
     def test_the_scaler_files_are_lf_only(self):
-        for path in (SCALER_PROFILE, SCALER_PROFILE_TEST, Path(__file__)):
-            self.assertNotIn(b"\r", path.read_bytes(), path.name)
+        source.assert_lf_only(self, SCALER_PROFILE, SCALER_PROFILE_TEST, Path(__file__))
 
     def test_the_scaler_test_exists_uses_kotlin_test_and_pins_the_switch_off(self):
         text = source.read(SCALER_PROFILE_TEST)

@@ -44,6 +44,22 @@ private class ScenarioProbe(
     }
 }
 
+/** A probe whose first call hangs until released and whose later calls answer at once. No native call, no GPU. */
+private class FirstCallHangsProbe(
+    private val answers: ScenarioProbe,
+    private val release: CountDownLatch,
+) : DesktopNvidiaGpuProbe {
+    val calls = AtomicInteger()
+
+    override fun probe(): NvidiaProbeInput {
+        if (calls.incrementAndGet() == 1) release.await()
+        return answers.probe()
+    }
+
+    override fun physicalVerdict(luidHigh: Int, luidLow: Int, dxgiDeviceId: Int): NvidiaPhysicalVerdict =
+        answers.physicalVerdict(luidHigh, luidLow, dxgiDeviceId)
+}
+
 /** Fixture environment probe with a settable foreground, battery and adapter paths. No native call. */
 private class EnvironmentFixtureProbe : DesktopNvidiaEnvironmentProbe {
     @Volatile var snapshot: DesktopNvidiaForegroundSnapshot? = null
@@ -359,6 +375,57 @@ class DesktopNvidiaCapabilityMonitorTest {
             assertTrue(elapsedMillis < 3_000L, "the native worker waited $elapsedMillis ms")
             assertEquals(failed, monitor.capability.value)
             assertEquals(NVIDIA_LEGACY_ADAPTER_PIN, monitor.pinFor())
+        } finally {
+            release.countDown()
+        }
+    }
+
+    @Test fun aRedetectionStartsAFreshProbeWhileAnAbandonedOneStillHangs() {
+        val release = CountDownLatch(1)
+        val probe = FirstCallHangsProbe(ScenarioProbe(scenario("this-pc")), release)
+        val monitor = DesktopNvidiaCapabilityMonitor(probe, warmUpTimeoutMillis = 100L, sessionTimeoutMillis = 5_000L)
+        try {
+            monitor.warmUp()
+            assertEquals(failed, awaitCapability(monitor) { it !is NvidiaCapability.Probing })
+            // A session start still never waits on the abandoned call and never starts a second one.
+            monitor.invalidate()
+            monitor.refreshForSession()
+            assertEquals(1, probe.calls.get())
+            assertEquals(failed, monitor.capability.value)
+            // The user's re-detection does start one: the button is not dead while the old call hangs.
+            monitor.redetect()
+            assertIs<NvidiaCapability.Capable>(awaitCapability(monitor) { it is NvidiaCapability.Capable })
+            assertEquals(2, probe.calls.get())
+            // The abandoned thread finishes late and its result is dropped.
+            release.countDown()
+            val deadline = System.nanoTime() + 300_000_000L
+            while (System.nanoTime() < deadline) {
+                assertIs<NvidiaCapability.Capable>(monitor.capability.value, "a late result must never replace the new verdict")
+                Thread.sleep(10L)
+            }
+        } finally {
+            release.countDown()
+        }
+    }
+
+    @Test fun aRedetectionNeverPilesUpMoreThanThreeStuckProbeThreads() {
+        val release = CountDownLatch(1)
+        val probe = ScenarioProbe(scenario("this-pc"), gate = release)
+        val monitor = DesktopNvidiaCapabilityMonitor(probe, warmUpTimeoutMillis = 100L, sessionTimeoutMillis = 5_000L)
+        try {
+            monitor.warmUp()
+            val deadline = System.nanoTime() + 5_000_000_000L
+            while (probe.probeCalls.get() < 3) {
+                if (System.nanoTime() > deadline) throw AssertionError("Timed out waiting for three stuck probe calls")
+                monitor.redetect()
+                Thread.sleep(150L)
+            }
+            repeat(3) {
+                monitor.redetect()
+                Thread.sleep(250L)
+            }
+            assertEquals(3, probe.probeCalls.get(), "no fourth thread while three native calls are stuck")
+            assertEquals(failed, monitor.capability.value)
         } finally {
             release.countDown()
         }
