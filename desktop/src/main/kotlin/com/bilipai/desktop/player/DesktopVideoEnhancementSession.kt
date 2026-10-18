@@ -8,15 +8,19 @@ import com.bilipai.desktop.nvidia.DesktopNvidiaObservedGpu
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusInput
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusKind
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
+import com.bilipai.desktop.nvidia.DesktopNvidiaVideoBudget
 import com.bilipai.desktop.nvidia.NvidiaCapability
 import com.bilipai.desktop.nvidia.NvidiaCapabilityNote
 import com.bilipai.desktop.nvidia.NvidiaPlan
+import com.bilipai.desktop.nvidia.NvidiaStickyFloor
 import com.bilipai.desktop.nvidia.TIER_WORD_ENABLED
 import com.bilipai.desktop.nvidia.desktopNvidiaActivationStatusLine
 import com.bilipai.desktop.nvidia.desktopNvidiaGpuShortName
 import com.bilipai.desktop.nvidia.desktopNvidiaStatusLine
 import com.bilipai.desktop.nvidia.desktopNvidiaTierWord
+import com.bilipai.desktop.nvidia.nvidiaAdvanceStickyFloor
 import com.bilipai.desktop.nvidia.nvidiaDriverPublicX100FromText
+import com.bilipai.desktop.nvidia.nvidiaStickyFloorFor
 import com.bilipai.desktop.nvidia.planOrNull
 import com.bilipai.desktop.nvidia.resolveDesktopNvidiaActivation
 import kotlinx.coroutines.*
@@ -311,6 +315,8 @@ class DesktopVideoEnhancementSession(
     private var submittedToken: Long = -1L
     private var submittedSinceNanos: Long = 0L
     private var proofTimer: Job? = null
+    // The highest upscale bucket already used for the current source (design 6.5), under the same lock.
+    private var stickyFloor: NvidiaStickyFloor = NvidiaStickyFloor()
 
     init {
         scope.launch {
@@ -491,20 +497,32 @@ class DesktopVideoEnhancementSession(
         }
         val backend = if (sharedCoreAvailable) NvidiaVideoBackend.VEYRA_CORE else NvidiaVideoBackend.DRIVER
         val plan = frameGate.plan
-        val decision = resolveDesktopNvidiaVideoDecision(input.output.inputWidth, input.output.inputHeight,
-            input.output.displayWidth, input.output.displayHeight, input.output.maximumTextureDimension,
-            input.output.gamma, input.output.dolbyVisionProfile, input.output.hdrDisplay.hdrEnabled,
-            input.target.transfer.takeIf { input.target.sourceVersion == currentSource.sourceVersion },
-            input.target.primaries.takeIf { input.target.sourceVersion == currentSource.sourceVersion },
-            nativeResolutionPatchAvailable = input.target.nativeResolutionPatchAvailable &&
-                input.target.sourceVersion == currentSource.sourceVersion,
-            hdrMode = nvidiaEffectiveHdrMode(input.settings.preferences, plan),
-            sharedCoreNativeResolutionAvailable = sharedCoreAvailable,
-            srEnabled = input.settings.preferences.srEnabled)
+        // The per-source limits of the GPU's plan. Detection off has no plan, hence no budget: today's decision exactly.
+        val budget = plan?.budget(input.output.frameRate)
+        // The effective HDR mode goes into the resolver, so a decision never carries HDR that the request would drop.
+        fun resolveWith(limits: DesktopNvidiaVideoBudget?): DesktopNvidiaVideoDecision =
+            resolveDesktopNvidiaVideoDecision(input.output.inputWidth, input.output.inputHeight,
+                input.output.displayWidth, input.output.displayHeight, input.output.maximumTextureDimension,
+                input.output.gamma, input.output.dolbyVisionProfile, input.output.hdrDisplay.hdrEnabled,
+                input.target.transfer.takeIf { input.target.sourceVersion == currentSource.sourceVersion },
+                input.target.primaries.takeIf { input.target.sourceVersion == currentSource.sourceVersion },
+                nativeResolutionPatchAvailable = input.target.nativeResolutionPatchAvailable &&
+                    input.target.sourceVersion == currentSource.sourceVersion,
+                hdrMode = nvidiaEffectiveHdrMode(input.settings.preferences, plan),
+                sharedCoreNativeResolutionAvailable = sharedCoreAvailable,
+                srEnabled = input.settings.preferences.srEnabled,
+                budget = limits)
+        // The unbudgeted decision first: a source that needs no processing keeps its outcome and its text. Only a
+        // source that needed processing is judged against the budget, which can turn it into OVER_BUDGET or trim its scale.
+        val unbudgeted = resolveWith(null)
+        val decision = if (budget != null && unbudgeted.needsProcessing) resolveWith(budget) else unbudgeted
         if (!decision.needsProcessing) {
+            // Any decision without processing ends the sticky floor of the source.
+            stickyFloor = NvidiaStickyFloor()
             val text = when (decision.kind) {
                 DesktopNvidiaVideoDecisionKind.WAITING_VIDEO -> "等待实际视频尺寸，原画输出"
                 DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT -> "等待 GPU 输出能力，原画输出"
+                DesktopNvidiaVideoDecisionKind.OVER_BUDGET -> DesktopNvidiaStatusText.OVER_BUDGET_TAIL
                 else -> when {
                     decision.sourceIsHdr -> "原生 HDR / Dolby Vision 内容，保留原生输出"
                     !input.settings.preferences.srEnabled -> "HDR 显示目标或视频条件尚未就绪，原画播放"
@@ -514,19 +532,28 @@ class DesktopVideoEnhancementSession(
             val textKind = when (decision.kind) {
                 DesktopNvidiaVideoDecisionKind.WAITING_VIDEO, DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT ->
                     DesktopNvidiaStatusKind.WAITING
+                DesktopNvidiaVideoDecisionKind.OVER_BUDGET -> DesktopNvidiaStatusKind.OVER_BUDGET
                 else -> if (decision.sourceIsHdr || !input.settings.preferences.srEnabled) null else DesktopNvidiaStatusKind.DIRECT
             }
             bypass(Anime4KBypassReason.NONE, text, textKind); return
         }
         // Request build: an invalid combination bypasses this video instead of ending the collector.
+        val floorKey = "${epoch}:${currentSource.sourceVersion}"
+        var stickyApplied = false
         val request = try {
             val options = input.settings.preferences.optionsFor(decision, backend, plan, NvidiaGuardLimits.None)
-            val stableOptions = options.copy(scale = nvidiaStableUpscale(options.scale,
-                input.output.inputWidth, input.output.inputHeight, input.output.maximumTextureDimension)).requireValid()
+            // The stable bucket is bounded by the budget; the sticky floor then applies to a real upscale only.
+            val sized = nvidiaRequestScale(options, decision, budget, input.output.inputWidth, input.output.inputHeight,
+                input.output.maximumTextureDimension, nvidiaStickyFloorFor(stickyFloor, floorKey))
+            stickyApplied = sized.stickyApplied
+            val stableOptions = options.copy(scale = sized.scale).requireValid()
             Request(currentSource, epoch, stableOptions, nativeIdentity)
         } catch (_: IllegalArgumentException) {
+            stickyFloor = NvidiaStickyFloor()
             bypassUnavailable(Anime4KBypassReason.NONE, failedThisVideoLine(frameGate)); return
         }
+        stickyFloor = if (stickyApplied) nvidiaAdvanceStickyFloor(stickyFloor, floorKey, true, request.options.scale)
+            else NvidiaStickyFloor()
         val previous = owned
         if (previous != null && previous.request.matches(request)) {
             mutableState.update { it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled).withGate(frameGate, backend) }
@@ -575,11 +602,15 @@ class DesktopVideoEnhancementSession(
         val sharedCore = native.backend == NvidiaVideoBackend.VEYRA_CORE
         val hdrPresented = native.hdrConversionActive && shown.hdrDisplayEnabled && native.active &&
             nvidiaHdrTarget(native.targetTransfer, native.targetPrimaries)
+        // Informational only: the filter needs Direct3D 11 surfaces, so another decoder explains a request that never
+        // gets going. It replaces only the in-progress lines and never an error, a reason or a displayed result.
+        val notD3d11Decode = player.videoOutput.value.d3d11Decode == false
         val kind = when {
             native.error != null ->
                 if (native.failureDiagnostic?.code == 5) DesktopNvidiaStatusKind.COLOR_UNSUPPORTED else DesktopNvidiaStatusKind.FAILED_THIS_VIDEO
             native.active && shown.steppedDown && shown.requestedQualityLevel != null -> DesktopNvidiaStatusKind.STEPPED_DOWN
             native.active -> DesktopNvidiaStatusKind.ACTIVE
+            notD3d11Decode -> DesktopNvidiaStatusKind.NON_D3D11_DECODE
             sharedCore && native.veyraSubmitted ->
                 if (shown.proofDelayed) DesktopNvidiaStatusKind.PROOF_DELAYED else DesktopNvidiaStatusKind.SUBMITTED
             else -> DesktopNvidiaStatusKind.PENDING

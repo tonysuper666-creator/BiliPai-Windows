@@ -162,7 +162,11 @@ class TierTableSourceTest(unittest.TestCase):
         self.assertEqual(1, tier.count("internal data class DesktopNvidiaVideoBudget("))
         self.assertEqual(1, tier.count("internal data class NvidiaPlan("))
         policy = source.read(source.K / "player/DesktopNvidiaVideoAutoPolicy.kt")
-        self.assertNotIn("DesktopNvidiaVideoBudget", policy)
+        # Slice S4: the policy file now consumes the budget, so it imports the type from the tier file's package
+        # (design section 6: "which AutoPolicy.kt imports") but still never declares the budget or the plan.
+        self.assertIn("import com.bilipai.desktop.nvidia.DesktopNvidiaVideoBudget\n", policy)
+        self.assertNotIn("class DesktopNvidiaVideoBudget", policy)
+        self.assertNotIn("class NvidiaPlan", policy)
         self.assertNotIn("NvidiaPlan", policy)
 
 

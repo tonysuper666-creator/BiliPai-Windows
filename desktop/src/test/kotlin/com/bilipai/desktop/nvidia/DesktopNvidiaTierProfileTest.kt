@@ -1,5 +1,15 @@
 package com.bilipai.desktop.nvidia
 
+import com.bilipai.desktop.player.DesktopNvidiaVideoDecision
+import com.bilipai.desktop.player.DesktopNvidiaVideoDecisionKind
+import com.bilipai.desktop.player.DesktopNvidiaVideoHdrMode
+import com.bilipai.desktop.player.DesktopNvidiaVideoPreferences
+import com.bilipai.desktop.player.NvidiaVideoBackend
+import com.bilipai.desktop.player.NvidiaVideoOptions
+import com.bilipai.desktop.player.nvidiaEffectiveHdrMode
+import com.bilipai.desktop.player.nvidiaRequestScale
+import com.bilipai.desktop.player.optionsFor
+import com.bilipai.desktop.player.resolveDesktopNvidiaVideoDecision
 import kotlinx.serialization.json.JsonObject
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -311,5 +321,144 @@ class DesktopNvidiaTierProfileTest {
         val direct = nvidiaAdvanceStickyFloor(state, "a", false, 1.0)
         assertEquals(NvidiaStickyFloor(), direct)
         assertEquals(NvidiaStickyFloor(), nvidiaAdvanceStickyFloor(state, "a", true, 1.0))
+    }
+
+    // ---- Resolver, request scale and sticky floor with real plans (slice S4) ----
+
+    private fun sdrDecision(budget: DesktopNvidiaVideoBudget?, inputWidth: Int, inputHeight: Int,
+        displayWidth: Int, displayHeight: Int, sharedCore: Boolean = false) =
+        resolveDesktopNvidiaVideoDecision(inputWidth, inputHeight, displayWidth, displayHeight, 16384,
+            "bt.1886", null, false, sharedCoreNativeResolutionAvailable = sharedCore, budget = budget)
+
+    private fun hdrOnlyDecision(budget: DesktopNvidiaVideoBudget?, width: Int, height: Int) =
+        resolveDesktopNvidiaVideoDecision(width, height, width, height, 16384, "bt.1886", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, sharedCoreNativeResolutionAvailable = true, srEnabled = false, budget = budget)
+
+    private fun coreOptionsFor(decision: DesktopNvidiaVideoDecision) = NvidiaVideoOptions(decision.scale, decision.hdr,
+        decision.nativeResolutionProcessing, NvidiaVideoBackend.VEYRA_CORE)
+
+    @Test fun thisPcExamplesResolveToTheDocumentedBucketsAndRates() {
+        val budget = budgetFor("rtx-5080-this-pc", 60.0)
+        // 1080p60 into the 2560x1440 video rectangle of the 5120x1440 panel: scale 1.333, bucket 1.5, output 2880x1620.
+        val decision = sdrDecision(budget, 1920, 1080, 2560, 1440)
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, decision.kind)
+        assertEquals(4.0 / 3.0, decision.scale, 1e-9)
+        val sized = nvidiaRequestScale(coreOptionsFor(decision), decision, budget, 1920, 1080, 16384, null)
+        assertEquals(1.5, sized.scale)
+        assertEquals(279.936, budget.outputRate(1920.0 * sized.scale, 1080.0 * sized.scale, false), 1e-9)
+        assertEquals(349.92, budget.outputRate(1920.0 * sized.scale, 1080.0 * sized.scale, true), 1e-9)
+        // 1080p24 lands in the same bucket at a lower rate.
+        val film = budgetFor("rtx-5080-this-pc", 24.0)
+        val filmDecision = sdrDecision(film, 1920, 1080, 2560, 1440)
+        assertEquals(1.5, nvidiaRequestScale(coreOptionsFor(filmDecision), filmDecision, film, 1920, 1080, 16384, null).scale)
+        assertEquals(111.9744, film.outputRate(2880.0, 1620.0, false), 1e-9)
+        // 720p30 fullscreen into 2560x1440: scale 2.0 and 110.6 Mpix/s.
+        val slow = budgetFor("rtx-5080-this-pc", 30.0)
+        val slowDecision = sdrDecision(slow, 1280, 720, 2560, 1440)
+        assertEquals(2.0, slowDecision.scale)
+        assertEquals(2.0, nvidiaRequestScale(coreOptionsFor(slowDecision), slowDecision, slow, 1280, 720, 16384, null).scale)
+        assertEquals(110.592, slow.outputRate(2560.0, 1440.0, false), 1e-9)
+    }
+
+    @Test fun aFourKSourceIsJudgedByTheRateOfEachGpu() {
+        fun nativeUhd(id: String) = sdrDecision(budgetFor(id, 60.0), 3840, 2160, 1920, 1080, sharedCore = true)
+        // 4K60 at native size is 497.7 Mpix/s.
+        for (id in listOf("rtx-5080-this-pc", "rtx-4090", "rtx-4080", "rtx-4070-ti")) {
+            assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, nativeUhd(id).kind, id)
+        }
+        // A 0.7-factor 4070 (350), and tiers whose native-size cap is below 8.3 megapixels, pass it through.
+        for (id in listOf("rtx-4070", "rtx-3060-ti", "rtx-3060")) {
+            val decision = nativeUhd(id)
+            assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, decision.kind, id)
+            assertFalse(decision.needsProcessing, id)
+        }
+        // 4K60 HDR-only is 622 Mpix/s: the 5080 and 4090 take it, the 4080 (500) and the 4070 do not.
+        for (id in listOf("rtx-5080-this-pc", "rtx-4090")) {
+            assertEquals(DesktopNvidiaVideoDecisionKind.HDR, hdrOnlyDecision(budgetFor(id, 60.0), 3840, 2160).kind, id)
+        }
+        for (id in listOf("rtx-4080", "rtx-4070")) {
+            assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, hdrOnlyDecision(budgetFor(id, 60.0), 3840, 2160).kind, id)
+        }
+    }
+
+    @Test fun overBudgetOnlyAppearsForASourceThatNeededProcessing() {
+        val light = budgetFor("rtx-3060", 60.0)
+        // A video rectangle smaller than the source needs nothing, however large the source is.
+        assertEquals(DesktopNvidiaVideoDecisionKind.DIRECT, sdrDecision(light, 7680, 4320, 960, 540).kind)
+        // The same light tier trims what it can run and passes through what it cannot.
+        val ok = sdrDecision(budgetFor("rtx-3060", 30.0), 1280, 720, 1920, 1080)
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, ok.kind)
+        assertEquals(1.5, ok.scale)
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, sdrDecision(light, 1920, 1080, 2560, 1440).kind)
+    }
+
+    @Test fun theSrBoxIsUltrawideSafeInTheResolver() {
+        val ultra = budgetFor("rtx-5080-this-pc", 60.0)
+        val ultrawide = sdrDecision(ultra, 3440, 1440, 5160, 2160)
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, ultrawide.kind)
+        assertEquals(1.5, ultrawide.scale)
+        // 4K is beyond the box: an upscale is not attempted.
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, sdrDecision(ultra, 3840, 2160, 5760, 3240).kind)
+    }
+
+    @Test fun theFrameRateOfThePlanBudgetDecidesTheTrim() {
+        val plan = planFor("rtx-4070")
+        assertEquals(24.0, plan.budget(24.0).effectiveFrameRate())
+        assertEquals(2.0, sdrDecision(plan.budget(24.0), 1920, 1080, 3840, 2160).scale)
+        assertEquals(1.5, sdrDecision(plan.budget(60.0), 1920, 1080, 3840, 2160).scale)
+        assertEquals(1.5, sdrDecision(plan.budget(null), 1920, 1080, 3840, 2160).scale)
+    }
+
+    @Test fun theLightTierDropsHdrBeforeTheResolverSoNoRequestNeedsNoFilter() {
+        val plan = planFor("rtx-3060")
+        val preferences = DesktopNvidiaVideoPreferences(enabled = true, hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
+        val effective = nvidiaEffectiveHdrMode(preferences, plan)
+        assertEquals(DesktopNvidiaVideoHdrMode.OFF, effective)
+        fun unity(mode: DesktopNvidiaVideoHdrMode) = resolveDesktopNvidiaVideoDecision(1280, 720, 1280, 720, 16384, "bt.1886",
+            null, true, "pq", "bt.2020", hdrMode = mode, budget = plan.budget(30.0))
+        val withEffectiveMode = unity(effective)
+        assertEquals(DesktopNvidiaVideoDecisionKind.DIRECT, withEffectiveMode.kind)
+        assertFalse(withEffectiveMode.needsProcessing)
+        // The HDR flag cannot be masked afterwards: unity HDR would become a request that needs no filter.
+        val unmasked = unity(DesktopNvidiaVideoHdrMode.AUTO)
+        assertEquals(DesktopNvidiaVideoDecisionKind.HDR, unmasked.kind)
+        assertFalse(preferences.optionsFor(unmasked, NvidiaVideoBackend.VEYRA_CORE, plan).requiresFilter)
+    }
+
+    @Test fun aFullscreenToWindowTransitionKeepsTheBucketAndAnyDirectDecisionEndsTheFloor() {
+        val budget = budgetFor("rtx-5080-this-pc", 60.0)
+        var floor = NvidiaStickyFloor()
+        fun step(displayWidth: Int, displayHeight: Int): Double {
+            val decision = sdrDecision(budget, 1920, 1080, displayWidth, displayHeight)
+            if (!decision.needsProcessing) {
+                floor = NvidiaStickyFloor()
+                return 1.0
+            }
+            val sized = nvidiaRequestScale(coreOptionsFor(decision), decision, budget, 1920, 1080, 16384,
+                nvidiaStickyFloorFor(floor, "source-1"))
+            floor = if (sized.stickyApplied) nvidiaAdvanceStickyFloor(floor, "source-1", true, sized.scale) else NvidiaStickyFloor()
+            return sized.scale
+        }
+        assertEquals(1.5, step(2560, 1440), "window on the panel")
+        assertEquals(2.0, step(3840, 2160), "fullscreen")
+        assertEquals(2.0, step(2560, 1440), "back in the window: the same configuration is kept")
+        assertEquals(2.0, step(2880, 1620), "a request of 1.5 still keeps the floor")
+        assertEquals(1.0, step(960, 540), "smaller than the source: direct, the floor ends")
+        assertEquals(1.5, step(2560, 1440), "a new run starts from the stable bucket")
+        // Another source never inherits the floor.
+        assertNull(nvidiaStickyFloorFor(floor, "source-2"))
+    }
+
+    @Test fun everyStepOfTheFloorSequenceIsAValidNativeRequest() {
+        val budget = budgetFor("rtx-5080-this-pc", 60.0)
+        val upscale = sdrDecision(budget, 1920, 1080, 2560, 1440)
+        val sized = nvidiaRequestScale(coreOptionsFor(upscale), upscale, budget, 1920, 1080, 16384, 2.0)
+        coreOptionsFor(upscale).copy(scale = sized.scale).requireValid()
+        // After a floor, a native-size decision keeps unity scale and passes requireValid.
+        val native = sdrDecision(budget, 1920, 1080, 1920, 1080, sharedCore = true)
+        assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, native.kind)
+        val nativeSized = nvidiaRequestScale(coreOptionsFor(native), native, budget, 1920, 1080, 16384, 2.0)
+        assertEquals(1.0, nativeSized.scale)
+        coreOptionsFor(native).copy(scale = nativeSized.scale).requireValid()
     }
 }

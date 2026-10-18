@@ -18,6 +18,10 @@ data class PlayerVideoOutputState(
     val hdrDisplay: WindowsHdrDisplayState = WindowsHdrDisplayState(),
     /** Actual pre-filter video-params primaries from the same owned native poll. */
     val inputPrimaries: String? = null,
+    /** Container frame rate (mpv container-fps) from the same poll; null while unknown, which budgets treat as 60. */
+    val frameRate: Double? = null,
+    /** True only for the exact Direct3D 11 surface decoder; false for the copy decoder or software decoding; null while unread. */
+    val d3d11Decode: Boolean? = null,
 )
 
 /** Native OSD observations, including legitimate negative crop/pan margins. No aspect/fit inference. */

@@ -3064,11 +3064,17 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 tracks = readTracks(native, handle)
                 lastTrackPoll = now
             }
-            val hardwareDecoder = if (fileLoaded) property(native, handle, "hwdec-current")?.takeUnless { it == "no" } else null
+            val hardwareDecoderCurrent = if (fileLoaded) property(native, handle, "hwdec-current") else null
+            val hardwareDecoder = hardwareDecoderCurrent?.takeUnless { it == "no" }
+            // Exact equality: the copy decoder is not a Direct3D 11 surface path. Informational only, no gate reads it.
+            val d3d11Decode = hardwareDecoderCurrent?.takeIf { it.isNotBlank() }?.let { it == "d3d11va" }
             val videoWidth = if (fileLoaded) property(native, handle, "video-params/dw")?.toIntOrNull() ?: 0 else 0
             val videoHeight = if (fileLoaded) property(native, handle, "video-params/dh")?.toIntOrNull() ?: 0 else 0
             val inputWidth = if (fileLoaded) property(native, handle, "video-dec-params/w")?.toIntOrNull()?.coerceAtLeast(0) ?: 0 else 0
             val inputHeight = if (fileLoaded) property(native, handle, "video-dec-params/h")?.toIntOrNull()?.coerceAtLeast(0) ?: 0 else 0
+            // Same 200 ms observation as the decoded size, so the frame rate is normally known at the first decision.
+            val frameRate = if (fileLoaded) property(native, handle, "container-fps")?.toDoubleOrNull()
+                ?.takeIf { it.isFinite() && it > 0.0 && it <= 1000.0 } else null
             val osdWidth = if (fileLoaded && videoWidth > 0) property(native, handle, "osd-dimensions/w")?.toIntOrNull() else null
             val osdHeight = if (fileLoaded && videoHeight > 0) property(native, handle, "osd-dimensions/h")?.toIntOrNull() else null
             fun margin(name: String) = if (fileLoaded) property(native, handle, "osd-dimensions/$name")?.toIntOrNull() else null
@@ -3098,7 +3104,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             synchronized(lock) {
                 if (session === this && sourceVersion == activeSourceVersion && playbackRevision == activeRevision)
-                    mutableVideoOutput.update { it.copy(sourceVersion = activeSourceVersion, inputWidth = inputWidth, inputHeight = inputHeight, displayWidth = displayWidth, displayHeight = displayHeight, viewport = videoViewport, gamma = gamma, dolbyVisionProfile = dolbyVisionProfile, hdrDisplay = hdrDisplay, inputPrimaries = inputPrimaries) }
+                    mutableVideoOutput.update { it.copy(sourceVersion = activeSourceVersion, inputWidth = inputWidth, inputHeight = inputHeight, displayWidth = displayWidth, displayHeight = displayHeight, viewport = videoViewport, gamma = gamma, dolbyVisionProfile = dolbyVisionProfile, hdrDisplay = hdrDisplay, inputPrimaries = inputPrimaries, frameRate = frameRate, d3d11Decode = d3d11Decode) }
             }
             refreshNvidiaVideo(native, handle)
             var pauseFieldsPublished = false
