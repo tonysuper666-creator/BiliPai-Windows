@@ -118,15 +118,19 @@ class DanmakuTest {
     }
 
     @Test fun `duplicate merging keeps the original timing and styles and can be disabled`() {
+        // Pinned v038 DanmakuMerger contract: text grouping, 15 s window from batch first item, colour-insensitive.
         val comments = listOf(comment(0, 0.0).copy(text = "same"), comment(1, 0.3).copy(text = "same"),
-            comment(2, 1.5).copy(text = "same"), comment(3, 0.2).copy(text = "same", color = 0xff0000))
+            comment(2, 1.5).copy(text = "same"), comment(3, 0.2).copy(text = "same", color = 0xff0000),
+            comment(4, 16.0).copy(text = "same")) // beyond 15_000 ms (DanmakuMerger.kt:27,57-58)
         val merged = mergeDuplicateDanmaku(comments)
-        assertEquals(listOf(0, 3, 2), merged.map { it.id })
-        assertEquals("same x2", merged.first().text)
+        assertEquals(listOf(0, 4), merged.map { it.id })
+        assertEquals("same x4", merged.first().text)
         assertEquals(0.0, merged.first().timeSeconds)
-        assertEquals(0xff0000, merged[1].color)
+        assertEquals(0xffffff, merged.first().color)
+        assertEquals("same", merged[1].text)
+        assertEquals(16.0, merged[1].timeSeconds)
         val scheduler = DanmakuScheduler(comments, DanmakuSettings(displayAreaRatio = 1f, allowColorful = false), liveAdmission=false)
-        assertEquals(listOf("same x2"), scheduler.frame(0.4, 640, 360, 36) { 100 }.map { it.comment.text })
+        assertEquals(listOf("same x3"), scheduler.frame(0.4, 640, 360, 36) { 100 }.map { it.comment.text })
         scheduler.applySettings(DanmakuSettings(displayAreaRatio = 1f, allowColorful = false, mergeDuplicates = false))
         assertEquals(listOf(0, 1), scheduler.frame(0.4, 640, 360, 36) { 100 }.map { it.comment.id })
     }
