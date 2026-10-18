@@ -13,6 +13,8 @@ internal enum class MpvRuntimeProbeStage {
     NVIDIA_SYNCHRONIZATION,
     NVIDIA_NATIVE_OUTPUT_GATE,
     NVIDIA_NATIVE_RENDER_FLAGS,
+    /** Fixed code only (2 = displayed frame from another adapter than the verified one); never an adapter id. */
+    NVIDIA_LUID_GATE,
 }
 
 internal class MpvRuntimeProbeRecorder(

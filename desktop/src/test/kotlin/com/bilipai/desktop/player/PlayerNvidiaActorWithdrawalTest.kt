@@ -1,5 +1,11 @@
 package com.bilipai.desktop.player
 
+import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
+import com.bilipai.desktop.nvidia.DesktopNvidiaGpuProbe
+import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
+import com.bilipai.desktop.nvidia.NvidiaAdapterEvidence
+import com.bilipai.desktop.nvidia.NvidiaPhysicalVerdict
+import com.bilipai.desktop.nvidia.NvidiaProbeInput
 import com.bilipai.desktop.ui.desktopVideoEnhancementCompactLabel
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration
@@ -93,6 +99,19 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
         observed.value = observed.value.copy(gpuVendorId = vendor, currentGpuContext = context)
     }
+    /** Fixture observation of the logged device block. The real log path is exercised by deviceLog. */
+    fun recordGpuIdentity(luidHex: String?, deviceId: Int? = 0x2c02, driver: String? = null) {
+        @Suppress("UNCHECKED_CAST")
+        val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
+        observed.value = observed.value.copy(gpuName = "NVIDIA GeForce RTX 5080", gpuDeviceId = deviceId,
+            gpuLuidHex = luidHex, gpuDriverVersion = driver)
+    }
+    /** One logged line of the Direct3D 11 device block through the real event receiver. */
+    fun deviceLog(line: String) { nativeMessage("vo/gpu/d3d11", line) }
+    /** Moves the Device ID timestamp into the past, so the bounded LUID wait can run out without sleeping. */
+    fun ageDeviceId(nanos: Long) {
+        type.getDeclaredField("gpuDeviceIdSeenNanos").apply { isAccessible = true }.setLong(actor, System.nanoTime() - nanos)
+    }
     fun nextNvidia(): Any {
         while (true) {
             val action = assertNotNull(queue.poll(), "Expected a real queued NVIDIA action")
@@ -177,6 +196,34 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
     override fun mpv_wait_event(handle: Pointer, timeout: Double): Pointer { check(timeout == 0.0); return noEvent }
     fun delegatePropertiesAreEmpty(): Boolean = delegate.properties.isEmpty()
     override fun close() { nodeOwners.forEach { it.close() }; noEvent.close(); delegate.close() }
+}
+
+/** Fixture probe for this machine's shape: a physical RTX 5080 (e782) and a virtual twin (b95ad) with its exact identity. */
+private class ActorLuidProbe(private val input: NvidiaProbeInput) : DesktopNvidiaGpuProbe {
+    val probeCalls = java.util.concurrent.atomic.AtomicInteger()
+    override fun probe(): NvidiaProbeInput { probeCalls.incrementAndGet(); return input }
+    override fun physicalVerdict(luidHigh: Int, luidLow: Int, dxgiDeviceId: Int): NvidiaPhysicalVerdict {
+        val adapter = input.adapters.firstOrNull { it.luidHigh == luidHigh && it.luidLow == luidLow }
+            ?: return NvidiaPhysicalVerdict.UNKNOWN
+        // Like the real PnP path check, a device id that differs from the path's DEV is never physical.
+        return if (adapter.physical == NvidiaPhysicalVerdict.PHYSICAL && adapter.deviceId != dxgiDeviceId) {
+            NvidiaPhysicalVerdict.VIRTUAL
+        } else {
+            adapter.physical
+        }
+    }
+    companion object {
+        private fun rtx5080(luidLow: Int, physical: NvidiaPhysicalVerdict, outputs: Int) = NvidiaAdapterEvidence(
+            vendorId = 0x10DE, deviceId = 0x2C02, subSysId = 0x8A4A1043.toInt(), revision = 0xA1,
+            description = "NVIDIA GeForce RTX 5080", dedicatedVideoMemoryBytes = 15_978L * 1024L * 1024L,
+            luidLow = luidLow, luidHigh = 0, flags = 0, outputCount = outputs, physical = physical,
+            umdVersion = (32L shl 48) or (16L shl 16) or 1742L)
+        fun capable() = ActorLuidProbe(NvidiaProbeInput(true,
+            listOf(rtx5080(0xe782, NvidiaPhysicalVerdict.PHYSICAL, 1), rtx5080(0xb95ad, NvidiaPhysicalVerdict.VIRTUAL, 0))))
+        /** An incomplete inventory: Unknown(PROBE_FAILED), never a verdict about the twin. */
+        fun failed() = ActorLuidProbe(NvidiaProbeInput(false,
+            listOf(rtx5080(0xb95ad, NvidiaPhysicalVerdict.VIRTUAL, 0), rtx5080(0xe782, NvidiaPhysicalVerdict.PHYSICAL, 1))))
+    }
 }
 
 class PlayerNvidiaActorWithdrawalTest {
@@ -1022,6 +1069,176 @@ class PlayerNvidiaActorWithdrawalTest {
                     assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters, case)
                     assertTrue(player.ownsSourceSnapshot(source), case)
                 }
+            }
+        }
+    }
+
+    // ---- Adapter LUID veto: additive, only with an expectation from the capability monitor ----
+
+    private val foreignFilterOnly = listOf("scale" to "foreign-user-filter")
+
+    private fun luidMonitor(probe: ActorLuidProbe) = DesktopNvidiaCapabilityMonitor(probe).also { it.refreshForSession() }
+
+    @Test fun anObservedLuidThatIsNotTheVerifiedPhysicalAdapterWithdrawsTheRequestAndInvalidatesTheProbe() {
+        val probe = ActorLuidProbe.capable()
+        val monitor = luidMonitor(probe)
+        assertEquals(1, probe.probeCalls.get())
+        MpvPlayer(gpuCapability = monitor).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-twin.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = "00000000000b95ad") // the virtual twin: same vendor, device, name, driver
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                actor.apply()
+                val native = player.nvidiaVideoState.value
+                assertEquals(DesktopNvidiaStatusText.LUID_MISMATCH, native.unavailableReason)
+                assertNull(native.error); assertFalse(native.active); assertFalse(native.pending)
+                assertTrue(actor.native.commands.isEmpty()); assertEquals(foreignFilterOnly, actor.native.filters)
+                monitor.refreshForSession()
+                assertEquals(2, probe.probeCalls.get(), "a mismatch makes the verdict stale, so the next session start probes again")
+            }
+        }
+    }
+
+    @Test fun theVerifiedPhysicalLuidPassesInEitherHalfOrderAndTheRequestProceeds() {
+        for (observedLuid in listOf("000000000000e782", "000000000000E782", "0000e78200000000")) {
+            MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-physical.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordGpuIdentity(luidHex = observedLuid)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    assertEquals(2, actor.native.filters.size, observedLuid)
+                    assertNull(player.nvidiaVideoState.value.unavailableReason, observedLuid)
+                    assertFalse(player.nvidiaVideoState.value.active, "Passing the veto is never presentation proof")
+                }
+            }
+        }
+    }
+
+    @Test fun anAbsentLuidStaysPendingUntilTheWaitRunsOutThenTheRequestIsUnavailable() {
+        MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-missing.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = null)
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                val action = actor.nextNvidia()
+                actor.apply(action)
+                val waiting = player.nvidiaVideoState.value
+                assertNull(waiting.unavailableReason); assertNull(waiting.error); assertTrue(waiting.pending)
+                assertTrue(actor.native.commands.isEmpty())
+                actor.apply(action) // the next poll, still inside the two second wait
+                assertNull(player.nvidiaVideoState.value.unavailableReason); assertTrue(player.nvidiaVideoState.value.pending)
+                actor.ageDeviceId(3_000_000_000L)
+                actor.apply(action)
+                val native = player.nvidiaVideoState.value
+                assertEquals(DesktopNvidiaStatusText.LUID_UNKNOWN, native.unavailableReason)
+                assertNull(native.error); assertFalse(native.pending); assertFalse(native.active)
+                assertTrue(actor.native.commands.isEmpty()); assertEquals(foreignFilterOnly, actor.native.filters)
+            }
+        }
+    }
+
+    @Test fun theLoggedDeviceBlockFeedsTheVetoThroughTheRealEventPath() {
+        for ((luid, mismatch) in listOf("000000000000e782" to false, "00000000000b95ad" to true)) {
+            MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-logged.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.deviceLog("Device Name: NVIDIA GeForce RTX 5080\n")
+                    actor.deviceLog("Device ID: 10de:2c02 (rev a1)\n")
+                    actor.deviceLog("Driver version: 32.0.16.1742\n")
+                    actor.deviceLog("LUID: $luid\n")
+                    val logged = player.nvidiaVideoState.value
+                    assertEquals(0x10de, logged.gpuVendorId); assertEquals(0x2c02, logged.gpuDeviceId)
+                    assertEquals(luid, logged.gpuLuidHex); assertEquals("32.0.16.1742", logged.gpuDriverVersion)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    if (mismatch) {
+                        assertEquals(DesktopNvidiaStatusText.LUID_MISMATCH, player.nvidiaVideoState.value.unavailableReason)
+                        assertTrue(actor.native.commands.isEmpty())
+                    } else {
+                        assertNull(player.nvidiaVideoState.value.unavailableReason)
+                        assertEquals(2, actor.native.filters.size)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun aFailedProbeFailsClosedAndOnlyAVerifiedPhysicalObservedLuidMayProceed() {
+        // (observed luid, device id, expected outcome): the physical card passes; the twin, a missing
+        // device id and a luid that no adapter owns are all refused as a mismatch.
+        for ((luid, device, proceeds) in listOf(
+            Triple("000000000000e782", 0x2c02, true), Triple("0000e78200000000", 0x2c02, true),
+            Triple("00000000000b95ad", 0x2c02, false), Triple("000000000000e782", null, false),
+            Triple("000000000000e782", 0x2c03, false), Triple("0000000000012345", 0x2c02, false))) {
+            val probe = ActorLuidProbe.failed()
+            val monitor = luidMonitor(probe)
+            MpvPlayer(gpuCapability = monitor).use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-failed-probe.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordGpuIdentity(luidHex = luid, deviceId = device)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    val case = "$luid/$device"
+                    if (proceeds) {
+                        assertNull(player.nvidiaVideoState.value.unavailableReason, case)
+                        assertEquals(2, actor.native.filters.size, case)
+                    } else {
+                        assertEquals(DesktopNvidiaStatusText.LUID_MISMATCH, player.nvidiaVideoState.value.unavailableReason, case)
+                        assertTrue(actor.native.commands.isEmpty(), case)
+                        assertEquals(foreignFilterOnly, actor.native.filters, case)
+                    }
+                    assertFalse(player.nvidiaVideoState.value.active, case)
+                }
+            }
+        }
+    }
+
+    @Test fun aFailedProbeWithoutAnyObservedLuidIsUnavailableAfterTheWait() {
+        MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.failed())).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-failed-missing.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = null)
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                val action = actor.nextNvidia()
+                actor.apply(action)
+                assertTrue(player.nvidiaVideoState.value.pending); assertNull(player.nvidiaVideoState.value.unavailableReason)
+                actor.ageDeviceId(2_500_000_000L)
+                actor.apply(action)
+                assertEquals(DesktopNvidiaStatusText.LUID_UNKNOWN, player.nvidiaVideoState.value.unavailableReason)
+                assertTrue(actor.native.commands.isEmpty())
+            }
+        }
+    }
+
+    @Test fun withoutAnExpectationTheLegacyVendorOnlyGateIsExactlyUnchanged() {
+        // The default player has the neutral monitor: even the twin's luid, or none at all, changes nothing.
+        for (luid in listOf("00000000000b95ad", "000000000000e782", null)) {
+            MpvPlayer().use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-legacy.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordGpuIdentity(luidHex = luid)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    assertEquals(2, actor.native.filters.size, "luid=$luid")
+                    assertNull(player.nvidiaVideoState.value.unavailableReason, "luid=$luid")
+                }
+            }
+        }
+    }
+
+    @Test fun theVendorAndContextCheckStillComesFirstAndTheMonitorIsNeverAskedForAWrongVendor() {
+        val probe = ActorLuidProbe.capable()
+        MpvPlayer(gpuCapability = luidMonitor(probe)).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-vendor-first.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = "00000000000b95ad")
+                actor.recordDevice(0x1002, "d3d11")
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                actor.apply()
+                assertEquals("实际播放器未使用 NVIDIA Direct3D 11 设备，继续原画播放",
+                    player.nvidiaVideoState.value.unavailableReason)
+                assertEquals(1, probe.probeCalls.get(), "no mismatch means no invalidation")
             }
         }
     }

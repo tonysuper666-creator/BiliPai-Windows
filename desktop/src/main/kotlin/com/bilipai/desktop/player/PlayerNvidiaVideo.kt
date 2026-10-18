@@ -115,6 +115,14 @@ data class NvidiaVideoState(
     /** Application output weight requested for this exact configuration, never native SDK Strength. */
     val requestedIntensityPercent: Int = 100,
     val failureDiagnostic: NvidiaVideoFailureDiagnostic? = null,
+    /** Bounded identity the player logged for the Direct3D 11 device it actually opened. Observations only. */
+    val gpuDeviceId: Int? = null,
+    /** Sixteen lowercase hex digits of the logged adapter LUID; the logged half order is unverified. */
+    val gpuLuidHex: String? = null,
+    /** Logged driver text of four bounded numbers, for display and diagnostics only. */
+    val gpuDriverVersion: String? = null,
+    /** Return code of the adapter option request. Diagnostic only: it never proves which adapter was used. */
+    val adapterPinResult: Int? = null,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -174,7 +182,11 @@ internal sealed interface NvidiaNativeMessage {
     data class Failure(val safeMessage: String) : NvidiaNativeMessage
     data class FilterFailed(val label: String) : NvidiaNativeMessage
     data class DeviceName(val name: String) : NvidiaNativeMessage
-    data class DeviceVendor(val vendorId: Int) : NvidiaNativeMessage
+    data class DeviceVendor(val vendorId: Int, val deviceId: Int? = null) : NvidiaNativeMessage
+    /** Sixteen lowercase hex digits from the logged "LUID:" line. */
+    data class DeviceLuid(val luidHex: String) : NvidiaNativeMessage
+    /** Four dot separated numbers from the logged "Driver version:" line. */
+    data class DeviceDriver(val version: String) : NvidiaNativeMessage
 }
 
 /** Only fixed pinned-mpv messages are decoded. Arbitrary native text is never retained. */
@@ -231,8 +243,16 @@ internal fun parseNvidiaNativeMessage(prefix: String, text: String): NvidiaNativ
             if (name.any { it.code < 32 || it.code == 127 } || name.contains("://")) return null
             return NvidiaNativeMessage.DeviceName(name)
         }
-        Regex("Device ID: ([0-9a-fA-F]{4}):[0-9a-fA-F]{4} \\(rev [0-9a-fA-F]{2}\\)").matchEntire(line)?.let {
-            return NvidiaNativeMessage.DeviceVendor(it.groupValues[1].toInt(16))
+        Regex("Device ID: ([0-9a-fA-F]{4}):([0-9a-fA-F]{4}) \\(rev [0-9a-fA-F]{2}\\)").matchEntire(line)?.let {
+            return NvidiaNativeMessage.DeviceVendor(it.groupValues[1].toInt(16), it.groupValues[2].toInt(16))
+        }
+        // Same logger prefixes and the same bound. Only digits are admitted, so no control
+        // character, path, address or other free text can be retained from these two lines.
+        Regex("LUID: ([0-9a-fA-F]{16})").matchEntire(line)?.let {
+            return NvidiaNativeMessage.DeviceLuid(it.groupValues[1].lowercase())
+        }
+        Regex("Driver version: ([0-9]{1,5}\\.[0-9]{1,5}\\.[0-9]{1,5}\\.[0-9]{1,5})").matchEntire(line)?.let {
+            return NvidiaNativeMessage.DeviceDriver(it.groupValues[1])
         }
     }
     return null
