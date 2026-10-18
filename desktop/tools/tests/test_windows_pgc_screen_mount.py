@@ -41,7 +41,14 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
             cls.run_producer(cls.baseline)
         cls.run_producer(cls.generated)
         cls.before = cls.captured['screen']
-        cls.after = (cls.generated / stage.TARGET).read_text(encoding='utf-8')
+        cls.current = (cls.generated / stage.TARGET).read_text(encoding='utf-8')
+        # The initial-load gate precedes the reviewed full v046 comment stage.
+        # Check the unchanged old contract through that stage's exact inverse,
+        # while also checking the connected current caller below.
+        from v046_favorite_editor import restore
+        cls.comment_proof = json.loads((cls.generated /
+            'v046-DesktopOriginalBangumiPlayerScreen-comment-caller-proof.json').read_bytes())
+        cls.after = restore(cls.current, cls.comment_proof['retainedToCurrent'])
 
     @classmethod
     def tearDownClass(cls):
@@ -88,7 +95,15 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
         originals = {p.relative_to(self.baseline) for p in self.baseline.rglob('*.kt')}
         generated = {p.relative_to(self.generated) for p in self.generated.rglob('*.kt')}
         self.assertEqual(originals, generated)
-        self.assertEqual(len(originals), 8)
+        added = {Path('com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCommentPanel.kt'),
+                 Path('com/android/purebilibili/feature/video/ui/components/DesktopOriginalVideoCommentFloatingHeader.kt')}
+        retained = {Path(row['output']) for row in self.producer.RECIPES} | {
+            Path(self.producer.POLICY['output']),
+            Path('com/android/purebilibili/core/store/DesktopOriginalBangumiPlayerUiSettings.kt'),
+            Path('com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiSponsorPolicy.kt')}
+        self.assertEqual(len(retained), 8)
+        self.assertEqual(originals - added, retained)
+        self.assertEqual(originals & added, added)
         for name in originals - {Path(stage.TARGET)}:
             self.assertEqual((self.baseline / name).read_bytes(), (self.generated / name).read_bytes(), str(name))
 
@@ -99,6 +114,12 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
         self.assertTrue(proof['inverseByteEqual'])
         self.assertFalse(proof['kotlinCompiled'])
         self.assertFalse(proof['applicationExecuted'])
+        self.assertEqual(1, self.current.count('platform.runInitialScreenLoad(viewModel) {'))
+        self.assertIn('isVideoPlaying = playbackDebugSnapshot.isPlaying,', self.current)
+        self.assertIn('onTimestampClick = ::seekFromComment,', self.current)
+        self.assertIn('if (!platform.owns() || !exoPlayer.isOwned()) return', self.current)
+        self.assertTrue(self.comment_proof['actualNativeSeekAction'])
+        self.assertTrue(self.comment_proof['noAdditionalPlayerOrListener'])
 
     def test_non_screen_outputs_have_no_gate_or_proof_side_effect(self):
         directory = self.directory / 'non-screen'

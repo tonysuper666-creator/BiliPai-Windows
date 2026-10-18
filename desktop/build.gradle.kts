@@ -2252,7 +2252,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-static-image-codec"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-image-save-path"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-editor"))
-    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply/com"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail-container"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply-protocol/generated"))
@@ -4210,3 +4210,22 @@ tasks.matching { it.name in setOf("extractOriginalPlayerFullControls", "extractO
 
 // The existing BGM owner emits the complete retained v046 shared chrome policy tests.
 sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/bgm-detail/test")) }
+
+// Whole v046 comment list/avatar inputs feed the existing production owners.
+tasks.matching { it.name in setOf(
+    "extractUpstreamDynamicReply", "extractVideoCommentUi", "extractOriginalVideoContentFull",
+    "extractOriginalVideoDetailHolderFull", "extractOriginalVideoTabletFull",
+    "extractOriginalBangumiPlayerUi", "extractOriginalWholePlaybackSettings", "extractUpstreamDynamicDetailContainer",
+    "extractOriginalVideoFullscreenPager", "extractBgmDetail",
+) }.configureEach {
+    inputs.files("tools/v046_comment_list.py", "tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v046-comment-list")
+}
+// The reply producer emits the complete original avatar policy suite separately from main.
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-reply/test")) }
+
+// Nested-page state follows the two existing full-source comment consumers.
+tasks.matching { it.name in setOf("extractUpstreamDynamicReply", "extractOriginalVideoDetailHolderFull") }.configureEach {
+    inputs.file("tools/v046_comment_thread.py")
+    inputs.dir("upstream-slices/v046-comment-thread")
+}

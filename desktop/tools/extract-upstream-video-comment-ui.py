@@ -50,7 +50,9 @@ import com.android.purebilibili.feature.video.viewmodel.resolveVideoCommentSkele
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent
 '''
-    emit('feature/video/screen/DesktopOriginalVideoCommentTab.kt',header+'\n'+tab+'\n',CONTENT,'Entire original VideoCommentTab, including exact pagination/vote/raw rich replies/timestamps/top/fraud/delete/dissolve/identities/header. Only existing desktop dissolve platform name maps.')
+    from v046_comment_list import advance_comment_tab
+    emitted_tab=advance_comment_tab(repo,tab,output)
+    emit('feature/video/screen/DesktopOriginalVideoCommentTab.kt',header+'\n'+emitted_tab+'\n',CONTENT,'Entire original VideoCommentTab, including exact pagination/vote/raw rich replies/timestamps/top/fraud/delete/dissolve/identities/header. Only existing desktop dissolve platform name maps.')
     path=BASE+'feature/video/screen/VideoCommentPerformancePolicy.kt'
     emit('feature/video/screen/VideoCommentPerformancePolicy.kt',original[path],path,'Full original LF-identical pure policy file.')
     path=BASE+'core/ui/blur/FloatingChromeBackdrop.kt'
@@ -65,6 +67,8 @@ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextConte
     body=body.replace(old,'import com.bilipai.desktop.ui.DesktopWindowsCommentSearchModalSheet as AppModalBottomSheet',1)
     comment_selection['originalToPlatform']=comment_search.whole_proof(comment_raw,body)
     (output/'v029-comment-search-ui-source.json').write_text(json.dumps(comment_selection,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+    from v046_comment_list import advance_search_sheet
+    body=advance_search_sheet(repo,body,output)
     emit('feature/video/ui/components/CommentSearchSheet.kt',body,path,'Full original local loaded-raw-reply search/filter/highlight/sort/search result UI and helpers. Existing clipboard/feedback and Coil context platform seams only; upstream glassActive=false is retained verbatim.')
     path=BASE+'feature/video/viewmodel/VideoComposerDraftState.kt';body=original[path].replace('import android.net.Uri\n','').replace('List<Uri>','List<String>')
     # The Windows native composer window is disposed on close and the overlay is

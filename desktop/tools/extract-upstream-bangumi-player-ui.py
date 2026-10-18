@@ -89,7 +89,11 @@ def main():
   if gesture_proof is not None:
    write(a.output,Path(r['output']).name+'.v037-gesture-api-proof.json',json.dumps(gesture_proof,indent=2)+'\n')
   from windows_pgc_screen_mount import apply_and_record as apply_screen_mount;body=apply_screen_mount(r['output'],body,a.output,edits=windows_edits)
+  from v046_comment_list import advance_bangumi_ui
+  body=advance_bangumi_ui(a.repo,body,a.output,r['output'])
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
+ from v046_comment_list import emit_bangumi_panel
+ emit_bangumi_panel(a.repo,a.output)
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')
  selected=raw[first:last]+raw[i:j];assert sha(selected)==POLICY['exactBodySha256LF']

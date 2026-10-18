@@ -27,7 +27,13 @@ class DynamicCommentIdentitySourceTests(unittest.TestCase):
         inline=next((self.output/'reply').rglob('DesktopOriginalDynamicInlineReplyUi.kt')).read_text(encoding='utf-8')
         thread=next((self.output/'reply').rglob('DesktopOriginalDynamicThreadContent.kt')).read_text(encoding='utf-8')
         session=next((self.output/'detail').rglob('DesktopOriginalDynamicReplySession.kt')).read_text(encoding='utf-8')
-        self.assertIn(self.media.function(identity.dynamic_comment_sheet(),'dynamicInlineCommentItems',self.parser),inline)
+        # Recover the exact v041 predecessor through the later full v046
+        # slot builder, then retain the actual current author checks below.
+        from v046_favorite_editor import restore
+        proof=json.loads((self.output/'reply/v046-dynamic-inline-comment-items-proof.json').read_bytes())
+        previous=restore(inline.split('\n',2)[2],proof['retainedToCurrent'])
+        self.assertIn(self.media.function(identity.dynamic_comment_sheet(),'dynamicInlineCommentItems',self.parser),previous)
+        self.assertIn('avatarListState = avatarListState,',inline)
         self.assertEqual(1,inline.count('upMid = dynamicAuthorMid,'))
         self.assertEqual(1,thread.count('upMid = state.upMid,'))
         self.assertEqual(2,session.count('upMid = _selectedDynamic.value?.modules?.module_author?.mid ?: 0L,'))

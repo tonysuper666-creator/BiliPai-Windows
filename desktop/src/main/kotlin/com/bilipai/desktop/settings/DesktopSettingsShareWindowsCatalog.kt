@@ -124,7 +124,7 @@ internal object DesktopSettingsShareWindowsCatalog {
 
         val playback = SettingsShareSection.PLAYBACK
         booleans(playback, "auto_play", "hw_decode", "remember_last_playback_speed",
-            "comment_fraud_detection_enabled", "comment_member_decorations_enabled", "detailed_comment_time_enabled",
+            "comment_fraud_detection_enabled", "comment_member_decorations_enabled", "comment_avatar_push_enabled", "detailed_comment_time_enabled",
             "image_preview_long_press_save_enabled", "image_preview_3d_page_enabled", "stop_playback_on_exit",
             "background_playback_enabled", "audio_now_playing_bar_opens_audio_mode", "video_ai_summary_entry_enabled",
             "video_note_enabled", "video_note_default_collapsed", "video_info_default_expanded", "video_argue_msg_shown",

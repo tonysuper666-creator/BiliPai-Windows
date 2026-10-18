@@ -107,6 +107,12 @@ def generate(repo, output, standalone=False):
         text=legacy_comment_selection_delta(s['output'],text,output)
         from windows_video_return_frozen_inputs import apply_and_record as apply_frozen_return_inputs
         text=apply_frozen_return_inputs(s['output'],text,output)
+        if s['output'].endswith('/VideoDetailPhoneContent.kt'):
+            from v046_comment_list import advance_phone_comments
+            text=advance_phone_comments(repo,text,output)
+        elif s['output'].endswith('/VideoDetailScreenStateHolder.kt'):
+            from v046_comment_list import advance_landscape_pins
+            text=advance_landscape_pins(repo,text,output)
         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf8'));written.append(target)
     return written
