@@ -6,7 +6,8 @@ all defaulted and carried by every construction, that `available` is combined wi
 presentation proof is never written from this file, and that the Python-pinned anchors of the controls stay.
 Slice S4 adds the budgeted resolver call (unbudgeted decision first), the OVER_BUDGET text branch, the
 upscale-only sticky floor, and the frame rate and decoder observations of the player.
-Later slices extend this file with their own seams (the guard, the retry attempt, the environment poll)."""
+Slice S6 adds the guard hook, the retry attempt, the epoch of the policy flow, the failure-memory inputs of the gate and the
+playback health reader of the player."""
 import re
 import sys
 import unittest
@@ -35,7 +36,7 @@ CLEAR_OWNED = (
 REQUEST_MATCHES = (
     "fun matches(other: Request) = epoch == other.epoch && options == other.options && "
     "source.sourceVersion == other.source.sourceVersion && source.source == other.source.source && "
-    "nativeIdentity == other.nativeIdentity"
+    "nativeIdentity == other.nativeIdentity && attempt == other.attempt"
 )
 OWNS = (
     "private fun owns(source: OwnedPlaybackSourceSnapshot, epoch: Long): Boolean = !closed.get() && "
@@ -52,6 +53,7 @@ NEW_STATE_FIELDS = {
     "gpuSummary": "String?",
     "requestedQualityLevel": "Int?",
     "steppedDown": "Boolean",
+    "qualityLowered": "Boolean",
     "proofDelayed": "Boolean",
     "route": "NvidiaVideoBackend",
     "tierWord": "String?",
@@ -156,7 +158,7 @@ class SessionGateShapeTest(unittest.TestCase):
         previous = body.index("val previous = owned")
         self.assertLess(build, previous)
         block = body[build:previous]
-        self.assertIn("optionsFor(decision, backend, plan, NvidiaGuardLimits.None)", block)
+        self.assertIn("optionsFor(decision, backend, plan, guardLimits)", block)
         self.assertIn(".requireValid()", block)
         self.assertIn("catch (_: IllegalArgumentException) {", block)
         self.assertIn("bypassUnavailable(Anime4KBypassReason.NONE, failedThisVideoLine(frameGate)); return", block)
@@ -267,7 +269,7 @@ class SessionStateShapeTest(unittest.TestCase):
         for internal in INTERNAL_TYPE_NAMES:
             self.assertNotIn(internal, self.header, internal)
         self.assertIn("val activation: DesktopVideoEnhancementActivation = DesktopVideoEnhancementActivation.LEGACY,", self.header)
-        for default in ("val steppedDown: Boolean = false,", "val proofDelayed: Boolean = false,",
+        for default in ("val steppedDown: Boolean = false,", "val qualityLowered: Boolean = false,", "val proofDelayed: Boolean = false,",
                         "val gpuSummary: String? = null,", "val requestedQualityLevel: Int? = null,",
                         "val tierWord: String? = null,", "val notice: String? = null,",
                         "val route: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,"):
@@ -562,7 +564,7 @@ class SessionBudgetSeamTest(unittest.TestCase):
 
     def test_the_budget_comes_from_the_plan_and_the_frame_rate_and_detection_off_has_none(self):
         body = self.apply_locked
-        self.assertEqual(1, body.count("val budget = plan?.budget(input.output.frameRate)"))
+        self.assertEqual(1, body.count("val budget = plan?.budget(input.output.frameRate, healthView.extendedRangeDenied)"))
         self.assertIn("val plan = frameGate.plan", body)
         self.assertLess(body.index("val plan = frameGate.plan"), body.index("val budget = plan?.budget("))
         # Without a plan the capability gate was Legacy, so there is no budget and the decision is today's exactly.
@@ -604,10 +606,38 @@ class SessionBudgetSeamTest(unittest.TestCase):
         init = self.text.index("    init {")
         declaration = self.text.index("private var stickyFloor: NvidiaStickyFloor = NvidiaStickyFloor()")
         self.assertLess(declaration, init)
-        outside = self.text.replace(self.apply_locked, "")
-        self.assertEqual(1, outside.count("stickyFloor"), "the declaration is the only mention outside applyLocked")
+        # Outside applyLocked the floor is touched in exactly one other place: the commit timer of the guard (S6 fix).
+        commit = member(self.text, "private fun scheduleGuardCommitLocked(delayMillis: Long)")
+        outside = self.text.replace(self.apply_locked, "").replace(commit, "")
+        self.assertEqual(1, outside.count("stickyFloor"), "the declaration is the only mention outside applyLocked and the commit timer")
         for write in re.findall(r"stickyFloor = ([^\n]+)", self.apply_locked):
             self.assertTrue(write.startswith("NvidiaStickyFloor()") or write.startswith("if (stickyApplied) nvidiaAdvanceStickyFloor("), write)
+        self.assertEqual(["nvidiaStickyFloorAfterGuardCommit(stickyFloor, stepsBefore, guard.transitionCount)"],
+                         re.findall(r"stickyFloor = ([^\n]+)", commit))
+
+    def test_a_committed_step_ends_the_sticky_floor_and_a_busy_retry_keeps_it(self):
+        # Design 6.5: the floor resets on any guard step. The reset sits in the commit path and is guarded by the step count,
+        # so a committed busy retry (which resends identical options) keeps the floor and a committed step ends it.
+        commit = collapse(member(self.text, "private fun scheduleGuardCommitLocked(delayMillis: Long)"))
+        before = commit.index("val stepsBefore = guard.transitionCount")
+        committed = commit.index("if (guard.commitPending(guardNow())) {")
+        reset = commit.index("stickyFloor = nvidiaStickyFloorAfterGuardCommit(stickyFloor, stepsBefore, guard.transitionCount)")
+        raised = commit.index("guardEpoch.value = guardEpoch.value + 1")
+        otherwise = commit.index("} else {")
+        self.assertLess(before, committed)
+        self.assertLess(committed, reset)
+        self.assertLess(reset, raised)
+        self.assertLess(raised, otherwise)
+        self.assertEqual(1, commit.count("stickyFloor ="))
+        # Nothing else of the guard path touches the floor: not the decision handler, not the forgetting, not the hook.
+        for name in ("private fun handleGuardDecisionLocked(decision: NvidiaGuardDecision)", "private fun forgetFailuresLocked()",
+                     "private fun observeGuardLocked(native: NvidiaVideoState, current: Owned)"):
+            self.assertNotIn("stickyFloor", member(self.text, name), name)
+        # The pure rule behind it: a moved step count ends the floor, an unchanged one keeps the very same state.
+        tier = source.read(source.TIER_PROFILE)
+        self.assertEqual(1, tier.count("internal fun nvidiaStickyFloorAfterGuardCommit("))
+        self.assertIn("if (stepsAfter != stepsBefore) NvidiaStickyFloor() else current", tier)
+        self.assertIn("import com.bilipai.desktop.nvidia.nvidiaStickyFloorAfterGuardCommit\n", self.text)
 
     def test_a_decision_without_processing_and_an_invalid_request_both_end_the_floor(self):
         body = self.apply_locked
@@ -711,6 +741,353 @@ class FrameRateAndDecodeObservationTest(unittest.TestCase):
         self.assertNotIn("glsl-shaders", self.mpv)
         self.assertNotIn(b"\r", MPV_PLAYER.read_bytes())
         self.assertNotIn(b"\r", PLAYER_OUTPUT.read_bytes())
+
+
+# ---- Slice S6: the adaptive guard, the failure memory, the retry attempt and the playback health ----
+
+GUARD_FILE = source.KN / "DesktopNvidiaAdaptiveGuard.kt"
+HEALTH_STORE_FILE = source.KN / "DesktopNvidiaHealthStore.kt"
+
+
+class SessionGuardSeamTest(unittest.TestCase):
+    """Where the guard sits in the session: the attempt of the request, the epoch of the policy flow, the hook that
+    reads the player's own failure, the commit timer, the memory inputs of the gate and the playback health reader."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.text = source.read(SESSION)
+        cls.code, cls.literals = source.lex_kotlin(cls.text)
+        cls.apply_locked = member(cls.text, "private fun applyLocked(input: Input)")
+        cls.init = cls.text[cls.text.index("    init {"):cls.text.index("    /** Missing BV/PGC/live/story IDs")]
+
+    # -- the retry attempt --
+
+    def test_the_private_request_gains_a_defaulted_attempt_that_the_match_includes(self):
+        start = self.text.index("private class Request(")
+        header = collapse(self.text[start:self.text.index("{", start)])
+        self.assertIn("val nativeIdentity: PlayerNativeTrackIdentity, val attempt: Int = 0)", header)
+        matches = collapse(member(self.text, "fun matches(other: Request)"))
+        self.assertTrue(matches.endswith("nativeIdentity == other.nativeIdentity && attempt == other.attempt }") or
+                        "&& attempt == other.attempt" in matches)
+        # The identity of the native request is untouched: the options carry no attempt.
+        self.assertEqual(1, self.code.count("Request(currentSource, epoch, stableOptions, nativeIdentity, guard.attempt)"))
+        self.assertEqual(1, len(re.findall(r"(?<![A-Za-z])Request\(currentSource,", self.code)))
+
+    def test_a_busy_retry_is_a_new_request_because_the_attempt_is_raised_only_by_a_commit(self):
+        body = self.apply_locked
+        # The unchanged-request shortcut is the one place that would swallow an identical retry, and it compares the attempt.
+        self.assertIn("previous.request.matches(request)", body)
+        commit = collapse(member(self.text, "private fun scheduleGuardCommitLocked(delayMillis: Long)"))
+        self.assertIn("if (guard.commitPending(guardNow())) {", commit)
+        self.assertEqual(1, commit.count("guardEpoch.value = guardEpoch.value + 1"))
+        # The epoch is raised on the committed branch, after the floor decision, and never on the not-yet-due branch.
+        self.assertLess(commit.index("if (guard.commitPending(guardNow())) {"), commit.index("guardEpoch.value = guardEpoch.value + 1"))
+        self.assertLess(commit.index("guardEpoch.value = guardEpoch.value + 1"), commit.index("} else {"))
+        # Nothing but the guard raises the attempt.
+        self.assertNotIn("attempt +", self.text)
+        self.assertNotIn("attempt++", self.text)
+
+    def test_while_the_guard_holds_a_retry_or_a_step_the_owned_request_is_kept(self):
+        body = self.apply_locked
+        self.assertEqual(1, body.count("previous.request.matches(request) || guard.holding"))
+        block = body[body.index("previous.request.matches(request) || guard.holding"):body.index("// Native actor performs source publication admission")]
+        self.assertIn("observeNativeLocked(native, previous)", block)
+        self.assertIn("return", block)
+        self.assertNotIn("clearOwnedLocked()", block)
+
+    # -- the policy flow --
+
+    def test_the_policy_flow_gains_the_guard_epoch_and_the_existing_combines_are_unchanged(self):
+        self.assertIn("val observed: DesktopNvidiaObservedGpu?, val guardEpoch: Long = 0L)", collapse(self.text))
+        init = self.init
+        self.assertIn("combine(monitor.capability, monitor.environment, monitor.observed)", init)
+        self.assertIn("val policy = combine(monitorPolicy, guardEpoch) { snapshot, epoch -> snapshot.copy(guardEpoch = epoch) }", init)
+        self.assertIn("combine(preferenceSnapshots, hostStarted, pip, policy)", init)
+        self.assertIn("combine(settings, label, frame, player.videoOutput, target)", init)
+        # The epoch is only ever raised, and only under the ownership lock or by the commit timer that takes it.
+        raises = re.findall(r"guardEpoch\.value = ([^\n]+)", self.code)
+        self.assertTrue(raises)
+        for raised in raises:
+            self.assertEqual("guardEpoch.value + 1", raised.strip())
+
+    def test_the_guard_state_is_declared_before_the_collectors_start(self):
+        init = self.text.index("    init {")
+        for declaration in ("private val guard = DesktopNvidiaAdaptiveGuard()", "private val guardEpoch = MutableStateFlow(0L)",
+                            "private var guardTimer: Job? = null", "private var healthyTimer: Job? = null",
+                            "private var lastMemoryKey: String? = null", "private var healthKey: String? = null",
+                            "private var wasEnabled = false"):
+            self.assertEqual(1, self.text.count(declaration), declaration)
+            self.assertLess(self.text.index(declaration), init, declaration)
+
+    # -- the hook --
+
+    def test_the_hook_runs_before_the_line_is_built_and_detection_off_never_reaches_the_guard(self):
+        locked = member(self.text, "private fun observeNativeLocked(native: NvidiaVideoState, current: Owned)")
+        update = locked.index("mutableState.update { observedState(it.copy(proofDelayed = delayed), native) }")
+        # S6 fix: the guard answers the failure first, so a busy retry or a step it starts is silent in the published line.
+        # The guard reads the player's own state, so the order changes nothing it sees.
+        self.assertLess(locked.index("observeGuardLocked(native, current)"), update)
+        self.assertEqual(1, locked.count("observeGuardLocked(native, current)"))
+        hook = collapse(member(self.text, "private fun observeGuardLocked(native: NvidiaVideoState, current: Owned)"))
+        self.assertTrue(hook.startswith("private fun observeGuardLocked(native: NvidiaVideoState, current: Owned) { if (gate.legacy) return"))
+        self.assertIn("val diagnostic = native.failureDiagnostic ?: return", hook)
+        self.assertIn("if (native.error == null) return", hook)
+        self.assertIn("guard.onFailure(current.token, diagnostic.code, diagnostic.stage, guardNow())", hook)
+        # Only the player's own diagnostic feeds the guard: no code is invented here.
+        self.assertEqual(1, self.code.count("guard.onFailure("))
+
+    def test_every_decision_is_handled_and_only_a_give_up_records_the_memory(self):
+        handler = collapse(member(self.text, "private fun handleGuardDecisionLocked(decision: NvidiaGuardDecision)"))
+        for branch in ("is NvidiaGuardDecision.NoChange -> Unit",
+                       "is NvidiaGuardDecision.Retry -> scheduleGuardCommitLocked(decision.delayMillis)",
+                       "is NvidiaGuardDecision.StepDown -> scheduleGuardCommitLocked(decision.delayMillis)"):
+            self.assertIn(branch, handler)
+        give_up = handler[handler.index("is NvidiaGuardDecision.GiveUp ->"):]
+        self.assertLess(give_up.index("recordGuardMemoryLocked(decision)"), give_up.index("guardEpoch.value = guardEpoch.value + 1"))
+        record = collapse(member(self.text, "private fun recordGuardMemoryLocked(decision: NvidiaGuardDecision.GiveUp)"))
+        for effect in ("NONE", "DEVICE_FAILURE", "REMEMBER_NOW", "EXTENDED_RANGE_DENIED"):
+            self.assertIn("NvidiaMemoryEffect.%s ->" % effect, record)
+        self.assertIn("val key = healthKey ?: return", record)
+        self.assertEqual(1, self.code.count("store.recordDeviceFailure("))
+        # The memory is read through the monitor's store and the session never names the store type.
+        self.assertNotIn("DesktopNvidiaHealthStore", self.code)
+        self.assertEqual(5, self.code.count("player.gpuCapability.healthStore"), "view, memory, forget, healthy and close")
+
+    def test_the_commit_timer_waits_outside_the_lock_and_reschedules_when_not_yet_due(self):
+        commit = collapse(member(self.text, "private fun scheduleGuardCommitLocked(delayMillis: Long)"))
+        self.assertIn("guardTimer?.cancel()", commit)
+        self.assertLess(commit.index("delay(maxOf(0L, delayMillis) + GUARD_COMMIT_SLACK_MILLIS)"), commit.index("synchronized(ownershipLock)"))
+        self.assertIn("if (!closed.get())", commit)
+        self.assertIn("val due = guard.pendingDueAtMillis", commit)
+        self.assertIn("if (due != null) scheduleGuardCommitLocked(due - guardNow())", commit)
+        self.assertIn("const val GUARD_COMMIT_SLACK_MILLIS = 50L", self.text)
+        self.assertIn("private fun guardNow(): Long = System.nanoTime() / 1_000_000L", self.text)
+
+    def test_the_healthy_streak_only_reads_the_players_own_flag(self):
+        body = collapse(member(self.text, "private fun trackHealthyLocked(native: NvidiaVideoState, current: Owned)"))
+        self.assertIn("val key = healthKey ?: return", body)
+        self.assertIn("val held = native.active && native.error == null", body)
+        self.assertIn("guard.observeProofHeld(current.token, held, guardNow())", body)
+        self.assertIn("healthStore.recordHealthy(key)", body)
+        self.assertNotIn("copy(active", body)
+        self.assertIsNone(re.search(r"(?<![A-Za-z0-9_])active\s*=(?!=)", body))
+
+    # -- what flows into the request and the gate --
+
+    def test_the_guard_source_and_the_memory_come_before_the_gate_and_the_gate_receives_the_memory(self):
+        body = self.apply_locked
+        select = body.index('guard.selectSource("${epoch}:${source.sourceVersion}")')
+        key = body.index("val memoryKey = memoryKeyFor(input.settings.policy, native)")
+        view = body.index("val healthView = if (memoryKey == null) NvidiaHealthView.None else player.gpuCapability.healthStore.view(memoryKey)")
+        memory = body.index("val memory = DesktopNvidiaGateMemory(")
+        gate = body.index("val frameGate = resolveDesktopNvidiaGate(")
+        self.assertLess(body.index("player.gpuCapability.reportDisplayOutput("), select)
+        self.assertLess(select, key)
+        self.assertLess(key, view)
+        self.assertLess(view, memory)
+        self.assertLess(memory, gate)
+        block = collapse(body[memory:gate])
+        self.assertIn("failureRemembered = healthView.remembered,", block)
+        self.assertIn("extendedRangeFailed = givenUp == NvidiaGiveUpReason.EXTENDED_RANGE,", block)
+        self.assertIn("guardGaveUp = givenUp != null && givenUp != NvidiaGiveUpReason.EXTENDED_RANGE)", block)
+        self.assertIn("if (source != null && owns(source, epoch)) guard.selectSource(", collapse(body[select - 60:select + 120]))
+
+    def test_the_memory_key_exists_only_for_the_shared_core_and_uses_the_installed_runtime_identity(self):
+        key = collapse(member(self.text, "private fun memoryKeyFor(policy: Policy, native: NvidiaVideoState)"))
+        self.assertIn("if (!native.veyraAvailable) return null", key)
+        self.assertIn("player.veyraInstalledIdentity.value?.profileSha256 ?: NVIDIA_HEALTH_RUNTIME_UNKNOWN", key)
+        self.assertIn("nvidiaHealthKeyFor(policy.capability, policy.observed, runtime, NVIDIA_HEALTH_BACKEND_VEYRA)", key)
+        self.assertEqual(1, self.code.count("nvidiaHealthKeyFor("))
+
+    def test_the_request_is_built_from_the_unlowered_options_and_the_guard_only_lowers(self):
+        body = self.apply_locked
+        build = collapse(body[body.index("val request = try {"):body.index("val previous = owned")])
+        learned = build.index("val learnedCap = healthView.learnedQualityCeiling ?: 4")
+        unlowered = build.index("val unlowered = input.settings.preferences.optionsFor(decision, backend, plan, NvidiaGuardLimits(qualityCap = learnedCap))")
+        configure = build.index("guard.configure(unlowered.qualityLevel, unlowered.hdr,")
+        caps = build.index("val caps = guard.caps()")
+        limits = build.index("val guardLimits = NvidiaGuardLimits(qualityCap = minOf(caps.qualityCap, learnedCap), hdrAllowed = caps.hdrAllowed)")
+        options = build.index("val options = input.settings.preferences.optionsFor(decision, backend, plan, guardLimits)")
+        self.assertTrue(learned < unlowered < configure < caps < limits < options)
+        self.assertIn("backend == NvidiaVideoBackend.VEYRA_CORE && input.settings.preferences.srEnabled,", build)
+        self.assertIn("budget?.inExtendedRange(input.output.inputWidth, input.output.inputHeight) == true, input.output.frameRate)", build)
+        self.assertEqual(1, body.count("guard.configure("))
+        self.assertEqual(1, body.count("guard.caps()"))
+
+    def test_a_request_without_any_effect_left_plays_unchanged_but_never_in_legacy(self):
+        body = self.apply_locked
+        self.assertIn("if (!frameGate.legacy && !request.options.requiresFilter) {", body)
+        block = body[body.index("if (!frameGate.legacy && !request.options.requiresFilter) {"):body.index("stickyFloor = if (stickyApplied)")]
+        self.assertIn("DesktopNvidiaStatusText.DIRECT_TAIL, DesktopNvidiaStatusKind.DIRECT); return", block)
+
+    def test_an_installed_request_starts_the_settling_time_and_remembers_its_key_and_the_state_carries_the_step(self):
+        body = self.apply_locked
+        installed = collapse(body[body.index("owned = Owned(request, token)"):])
+        self.assertIn("healthKey = memoryKey guard.noteConfiguration(guardNow())", installed)
+        self.assertEqual(1, body.count("guard.noteConfiguration("))
+        self.assertEqual(2, body.count(".copy(steppedDown = guard.steppedDown, qualityLowered = qualityLowered)"))
+        self.assertNotIn(".copy(steppedDown = guard.steppedDown)", body)
+
+    def test_the_overload_stop_has_its_own_line_inside_the_one_gate_block(self):
+        body = self.apply_locked
+        start = body.index("if (frameGate.bypassesBeforeSourceChecks) {")
+        block = collapse(body[start:body.index("if (!current) {")])
+        self.assertIn("if (overloadBypassed(frameGate)) {", block)
+        self.assertIn("frameGate.lineFor(DesktopNvidiaStatusText.GUARD_BYPASS, DesktopNvidiaStatusKind.GUARD_BYPASS)", block)
+        self.assertLess(block.index("overloadBypassed"), block.index("frameGate.gateLine() ?: DesktopNvidiaStatusText.UNIDENTIFIED"))
+        helper = collapse(member(self.text, "private fun overloadBypassed(forGate: DesktopNvidiaGate): Boolean"))
+        self.assertIn("forGate.state is DesktopNvidiaActivationState.FailedThisVideo && reason != null && reason.overload", helper)
+
+    def test_the_gate_takes_the_memory_last_and_passes_each_flag_to_the_unchanged_precedence(self):
+        gate = collapse(member(self.text, "internal fun resolveDesktopNvidiaGate("))
+        self.assertIn("memory: DesktopNvidiaGateMemory = DesktopNvidiaGateMemory.None, ): DesktopNvidiaGate {", gate)
+        for argument in ("failureRemembered = memory.failureRemembered,", "extendedRangeFailedForSource = memory.extendedRangeFailed,",
+                         "guardGaveUpForSource = memory.guardGaveUp,"):
+            self.assertIn(argument, gate)
+        data = collapse(member(self.text, "internal data class DesktopNvidiaGateMemory("))
+        self.assertIn("val failureRemembered: Boolean = false, val extendedRangeFailed: Boolean = false, val guardGaveUp: Boolean = false,", data)
+
+    # -- the switch, the redetect button and the close --
+
+    def test_switching_off_after_on_forgets_but_the_default_before_loading_does_not(self):
+        body = self.apply_locked
+        off = collapse(body[body.index("if (!input.settings.enabled) {"):body.index("wasEnabled = true")])
+        self.assertIn("if (wasEnabled) { wasEnabled = false forgetFailuresLocked() }", off)
+        self.assertLess(off.index("forgetFailuresLocked()"), off.index("bypass(Anime4KBypassReason.DISABLED"))
+        self.assertEqual(1, body.count("wasEnabled = true"))
+        # The forgetting never raises the epoch itself, or the off branch would run forever.
+        forget = collapse(member(self.text, "private fun forgetFailuresLocked()"))
+        self.assertNotIn("guardEpoch", forget)
+        self.assertIn("guard.resetForSwitch()", forget)
+        self.assertIn("healthStore.clearKey(key)", forget)
+        self.assertEqual(2, self.code.count("forgetFailuresLocked()") - 1, "the definition, the off branch and the redetect")
+
+    def test_a_new_detection_forgets_the_memory_before_asking_the_monitor(self):
+        redetect = collapse(member(self.text, "fun redetectGpu()"))
+        self.assertLess(redetect.index("forgetFailuresLocked()"), redetect.index("player.gpuCapability.redetect()"))
+        self.assertIn("synchronized(ownershipLock) { forgetFailuresLocked() guardEpoch.value = guardEpoch.value + 1 }", redetect)
+
+    def test_closing_flushes_the_memory_after_the_scope_is_cancelled(self):
+        close = member(self.text, "override fun close()")
+        self.assertLess(close.index("scope.cancel()"), close.index("player.gpuCapability.healthStore.flushNow()"))
+        self.assertLess(close.index("player.gpuCapability.healthStore.flushNow()"), close.index("synchronized(ownershipLock)"))
+
+    # -- S6 fixes: silent retries, the wording of an HDR-only step, a colour-rejected source --
+
+    def test_a_failure_the_guard_answers_with_a_retry_or_a_step_is_silent_until_the_replacement_is_installed(self):
+        helper = collapse(member(self.text, "private fun failureAnsweredSilently(native: NvidiaVideoState): Boolean"))
+        self.assertIn("native.error != null && guard.holding && !guard.colorFailed", helper)
+        observed = collapse(member(self.text, "private fun observedState(state: DesktopVideoEnhancementState, native: NvidiaVideoState)"))
+        self.assertIn("val visible = if (failureAnsweredSilently(native)) shown.copy(error = null, failureDiagnostic = null) else shown", observed)
+        self.assertIn("return visible.copy(statusText = liveStatusLine(visible, native))", observed)
+        live = collapse(member(self.text, "private fun liveStatusLine("))
+        # The silent kind is the first branch, so it also covers a failure line that would follow; the colour line never does.
+        self.assertLess(live.index("failureAnsweredSilently(native) -> DesktopNvidiaStatusKind.PENDING"), live.index("native.error != null ->"))
+        self.assertEqual(3, self.code.count("failureAnsweredSilently("), "the definition, the state and the line")
+        # The guard decides from the player's own state: nothing the guard reads is taken from the published state.
+        hook = collapse(member(self.text, "private fun observeGuardLocked(native: NvidiaVideoState, current: Owned)"))
+        self.assertNotIn("mutableState", hook)
+        self.assertNotIn("failureAnsweredSilently", hook)
+
+    def test_only_a_lowered_quality_level_is_worded_as_a_lowered_quality(self):
+        body = self.apply_locked
+        build = collapse(body[body.index("val request = try {"):body.index("val previous = owned")])
+        self.assertEqual(1, body.count("var qualityLowered = false"))
+        options = build.index("val options = input.settings.preferences.optionsFor(decision, backend, plan, guardLimits)")
+        lowered = build.index("qualityLowered = options.qualityLevel < unlowered.qualityLevel")
+        self.assertLess(options, lowered)
+        self.assertLess(lowered, build.index("val sized = nvidiaRequestScale("))
+        live = collapse(member(self.text, "private fun liveStatusLine("))
+        self.assertIn("native.active && shown.qualityLowered && shown.requestedQualityLevel != null -> DesktopNvidiaStatusKind.STEPPED_DOWN", live)
+        self.assertNotIn("shown.steppedDown", live)
+        # The compact label still reads the broader flag, so an HDR-only step is still "已回退" there.
+        self.assertIn('else -> if (state.steppedDown) "已回退" else null', collapse(source.read(CONTROLS)))
+
+    def test_a_colour_rejected_source_is_never_requested_again_and_keeps_the_colour_line(self):
+        body = self.apply_locked
+        keep = "previous.request.matches(request) || guard.holding || guard.colorFailed"
+        self.assertEqual(1, body.count(keep))
+        self.assertEqual(1, body.count("guard.colorFailed) {"))
+        bypass = collapse(body[body.index("if (guard.colorFailed) {"):body.index("// Native actor performs source publication admission")])
+        self.assertIn("bypass(Anime4KBypassReason.NONE, DesktopNvidiaStatusText.COLOR_UNSUPPORTED, DesktopNvidiaStatusKind.COLOR_UNSUPPORTED); return", bypass)
+        # The mark is read before anything is cleared or installed, and the owned line stays the player's colour error.
+        self.assertLess(body.index(keep), body.index("if (guard.colorFailed) {"))
+        self.assertLess(body.index("if (guard.colorFailed) {"), body.index("clearOwnedLocked()\n        if (!owns(request.source"))
+        guard_text = source.read(source.KN / "DesktopNvidiaAdaptiveGuard.kt")
+        self.assertEqual(1, guard_text.count("colorRejected = true"))
+        self.assertEqual(1, guard_text.count("val colorFailed: Boolean get() = colorRejected"))
+        # Only the colour class sets it, and it is not a give-up.
+        branch = collapse(guard_text[guard_text.index("NvidiaFailureClass.COLOR -> {"):][:160])
+        self.assertTrue(branch.startswith("NvidiaFailureClass.COLOR -> { colorRejected = true NvidiaGuardDecision.NoChange }"), branch)
+
+    # -- playback health --
+
+    def test_the_session_collects_the_players_health_and_judges_only_a_running_filter_of_the_current_source(self):
+        self.assertIn("player.playbackHealth.collect { sample -> observePlayback(sample) }", self.init)
+        body = collapse(member(self.text, "private fun observePlayback(sample: NvidiaPlaybackHealthSample): Unit = synchronized(ownershipLock)"))
+        self.assertIn("if (closed.get() || gate.legacy) return@synchronized", body)
+        self.assertIn("sample.sourceVersion != current.request.source.sourceVersion", body)
+        self.assertIn("native.configurationVersion == current.token && native.error == null && native.unavailableReason == null &&", body)
+        self.assertIn("(native.veyraSubmitted || native.driverVsrAccepted || native.driverHdrAccepted || native.active)", body)
+        self.assertEqual(2, body.count("guard.resetPlaybackWindow()"))
+        self.assertIn("handleGuardDecisionLocked(guard.observePlayback(sample))", body)
+        self.assertEqual(1, self.code.count("guard.observePlayback("))
+
+
+class PlaybackHealthSamplingTest(unittest.TestCase):
+    """The player publishes about one reading a second of the video output counters. Observation only."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mpv = source.read(MPV_PLAYER)
+        cls.code, _ = source.lex_kotlin(cls.mpv)
+        cls.refresh = member(cls.mpv, "private fun refreshState(native: MpvNative, handle: Pointer)")
+
+    def test_the_flow_is_internal_read_only_and_typed_with_the_guard_sample(self):
+        self.assertIn("import com.bilipai.desktop.nvidia.NvidiaPlaybackHealthSample", self.mpv)
+        self.assertIn("private val mutablePlaybackHealth = MutableStateFlow(NvidiaPlaybackHealthSample())", self.mpv)
+        self.assertIn("internal val playbackHealth: StateFlow<NvidiaPlaybackHealthSample> = mutablePlaybackHealth.asStateFlow()", self.mpv)
+        self.assertEqual(1, self.code.count("mutablePlaybackHealth.value ="))
+
+    def test_the_counters_are_read_once_a_second_for_a_loaded_file_next_to_the_existing_poll(self):
+        refresh = collapse(self.refresh)
+        self.assertIn("if (fileLoaded && now - lastPlaybackHealthPoll >= 1_000_000_000L) { lastPlaybackHealthPoll = now", refresh)
+        self.assertIn('val droppedFrames = property(native, handle, "frame-drop-count")?.toLongOrNull()?.takeIf { it >= 0L }', refresh)
+        self.assertIn('val delayedFrames = property(native, handle, "vo-delayed-frame-count")?.toLongOrNull()?.takeIf { it >= 0L }', refresh)
+        self.assertIn('val seekingNow = seekTracker.hasPendingSeek || property(native, handle, "seeking") == "yes"', refresh)
+        self.assertIn("NvidiaPlaybackHealthSample(activeSourceVersion, now / 1_000_000L, droppedFrames, delayedFrames, "
+                      "avSync?.takeIf { it.isFinite() }, paused, buffering, seekingNow, speed ?: 1.0)", refresh)
+        self.assertEqual(1, self.refresh.count('"frame-drop-count"'))
+        self.assertEqual(1, self.mpv.count('"vo-delayed-frame-count"'))
+        # The sample is published under the same source checks as the other observations, before the nvidia refresh.
+        publish = refresh[refresh.index("val healthSample = "):]
+        self.assertIn("synchronized(lock) { if (session === this && sourceVersion == activeSourceVersion && "
+                      "playbackRevision == activeRevision) mutablePlaybackHealth.value = healthSample }", publish[:420])
+        self.assertLess(refresh.index("mutablePlaybackHealth.value = healthSample"), refresh.index("refreshNvidiaVideo(native, handle)"))
+        # The existing reads are unchanged: the one avsync read of the poll feeds both the state and the sample.
+        self.assertEqual(1, self.refresh.count('"avsync"'))
+
+    def test_no_gate_actor_or_proof_path_reads_the_health_and_the_proof_assignment_is_untouched(self):
+        for name in ("private fun applyNvidiaVideo(native: MpvNative, handle: Pointer, action: Action.NvidiaVideo)",
+                     "private fun refreshNvidiaVideo(", "private fun refreshVeyraPresentation(", "private fun failNvidia("):
+            body = member(self.mpv, name)
+            for word in ("playbackHealth", "mutablePlaybackHealth", "NvidiaPlaybackHealthSample", "lastPlaybackHealthPoll"):
+                self.assertNotIn(word, body, "%s reads %s" % (name, word))
+        self.assertEqual(1, self.mpv.count("active = proved"))
+        self.assertEqual(1, self.mpv.count("val proved = "))
+        self.assertNotIn("glsl-shaders", self.mpv)
+        self.assertEqual(1, self.mpv.count("private var lastPlaybackHealthPoll = 0L"))
+        self.assertNotIn(b"\r", MPV_PLAYER.read_bytes())
+
+    def test_the_session_test_files_of_this_slice_are_lf_only_and_use_kotlin_test(self):
+        tests = source.ST / "kotlin/com/bilipai/desktop"
+        for path in (tests / "nvidia/DesktopNvidiaAdaptiveGuardTest.kt", tests / "nvidia/DesktopNvidiaHealthStoreTest.kt",
+                     tests / "player/DesktopVideoEnhancementSessionTest.kt", tests / "player/PlayerNvidiaActorWithdrawalTest.kt"):
+            data = path.read_bytes()
+            self.assertNotIn(b"\r", data, path.name)
+            text = data.decode("utf-8")
+            self.assertIn("import kotlin.test.", text, path.name)
+            self.assertNotIn("import org.junit.Test", text, path.name)
 
 
 if __name__ == "__main__":

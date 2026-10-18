@@ -3,6 +3,7 @@ package com.bilipai.desktop.player
 import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
 import com.bilipai.desktop.nvidia.NvidiaLuidGateResult
+import com.bilipai.desktop.nvidia.NvidiaPlaybackHealthSample
 import com.bilipai.desktop.nvidia.nvidiaDriverPublicX100FromText
 import com.bilipai.desktop.nvidia.nvidiaProofLuidAllowed
 import com.bilipai.desktop.nvidia.resolveNvidiaLuidGate
@@ -200,6 +201,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private var nvidiaOptions = NvidiaVideoOptions()
     private val mutableNvidiaVideo = MutableStateFlow(NvidiaVideoState())
     val nvidiaVideoState: StateFlow<NvidiaVideoState> = mutableNvidiaVideo.asStateFlow()
+    // About one reading a second of the video output counters, for the adaptive guard. Observation only.
+    private val mutablePlaybackHealth = MutableStateFlow(NvidiaPlaybackHealthSample())
+    internal val playbackHealth: StateFlow<NvidiaPlaybackHealthSample> = mutablePlaybackHealth.asStateFlow()
 
     internal fun setNvidiaVideoEnhancementIfSourceSnapshot(expected: OwnedPlaybackSourceSnapshot, options: NvidiaVideoOptions,
         expectedNativeIdentity: PlayerNativeTrackIdentity? = null): Long? = synchronized(lock) {
@@ -1390,6 +1394,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private var nvidiaConfiguredPosition: Double? = null
         private var nvidiaRestarted = false
         private var lastHdrDisplayPoll = 0L
+        private var lastPlaybackHealthPoll = 0L
         private var hdrDisplay = WindowsHdrDisplayState()
         private var pendingGpuName: String? = null
         // Worker-owned: when the player logged its Device ID line; the LUID wait counts from here.
@@ -3105,6 +3110,20 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             synchronized(lock) {
                 if (session === this && sourceVersion == activeSourceVersion && playbackRevision == activeRevision)
                     mutableVideoOutput.update { it.copy(sourceVersion = activeSourceVersion, inputWidth = inputWidth, inputHeight = inputHeight, displayWidth = displayWidth, displayHeight = displayHeight, viewport = videoViewport, gamma = gamma, dolbyVisionProfile = dolbyVisionProfile, hdrDisplay = hdrDisplay, inputPrimaries = inputPrimaries, frameRate = frameRate, d3d11Decode = d3d11Decode) }
+            }
+            // The adaptive guard's counters, about once a second and only for a loaded file. Read-only observations:
+            // no gate, request or proof ever reads them, and they are published under the same source checks.
+            if (fileLoaded && now - lastPlaybackHealthPoll >= 1_000_000_000L) {
+                lastPlaybackHealthPoll = now
+                val droppedFrames = property(native, handle, "frame-drop-count")?.toLongOrNull()?.takeIf { it >= 0L }
+                val delayedFrames = property(native, handle, "vo-delayed-frame-count")?.toLongOrNull()?.takeIf { it >= 0L }
+                val seekingNow = seekTracker.hasPendingSeek || property(native, handle, "seeking") == "yes"
+                val healthSample = NvidiaPlaybackHealthSample(activeSourceVersion, now / 1_000_000L, droppedFrames, delayedFrames,
+                    avSync?.takeIf { it.isFinite() }, paused, buffering, seekingNow, speed ?: 1.0)
+                synchronized(lock) {
+                    if (session === this && sourceVersion == activeSourceVersion && playbackRevision == activeRevision)
+                        mutablePlaybackHealth.value = healthSample
+                }
             }
             refreshNvidiaVideo(native, handle)
             var pauseFieldsPublished = false

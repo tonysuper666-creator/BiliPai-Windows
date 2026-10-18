@@ -308,7 +308,8 @@ internal fun nvidiaStickyUpscale(
 
 /**
  * Next floor after a decision was applied. A non-upscale decision, or a scale of 1.0, resets it,
- * and so does a different source. A guard step resets it by the caller passing a fresh state.
+ * and so does a different source. A guard step resets it by the caller passing a fresh state
+ * (see nvidiaStickyFloorAfterGuardCommit).
  */
 internal fun nvidiaAdvanceStickyFloor(
     current: NvidiaStickyFloor,
@@ -320,3 +321,12 @@ internal fun nvidiaAdvanceStickyFloor(
     val previous = nvidiaStickyFloorFor(current, sourceKey) ?: 1.0
     return NvidiaStickyFloor(sourceKey, max(previous, appliedScale))
 }
+
+/**
+ * The floor after the adaptive guard committed a decision, given the guard's step count before and after the commit.
+ * A committed step lowers the rung, so the floor of the old rung ends and the next request starts from the stable
+ * bucket again (design 6.5). A committed busy retry leaves the count unchanged: it changes no rung and must resend
+ * identical options, so it keeps the floor.
+ */
+internal fun nvidiaStickyFloorAfterGuardCommit(current: NvidiaStickyFloor, stepsBefore: Int, stepsAfter: Int): NvidiaStickyFloor =
+    if (stepsAfter != stepsBefore) NvidiaStickyFloor() else current

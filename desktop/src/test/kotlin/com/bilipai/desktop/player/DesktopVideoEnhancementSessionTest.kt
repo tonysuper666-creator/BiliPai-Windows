@@ -4,12 +4,15 @@ import com.bilipai.desktop.nvidia.DesktopNvidiaActivationState
 import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
 import com.bilipai.desktop.nvidia.DesktopNvidiaEnvironment
 import com.bilipai.desktop.nvidia.DesktopNvidiaGpuProbe
+import com.bilipai.desktop.nvidia.DesktopNvidiaHealthStore
 import com.bilipai.desktop.nvidia.DesktopNvidiaObservedGpu
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusKind
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
 import com.bilipai.desktop.nvidia.NvidiaCapability
 import com.bilipai.desktop.nvidia.NvidiaGoldenVectors
+import com.bilipai.desktop.nvidia.NvidiaHealthView
 import com.bilipai.desktop.nvidia.NvidiaPhysicalVerdict
+import com.bilipai.desktop.nvidia.NvidiaPlaybackHealthSample
 import com.bilipai.desktop.nvidia.NvidiaProbeInput
 import com.bilipai.desktop.nvidia.NvidiaTier
 import com.bilipai.desktop.nvidia.NvidiaUnknownReason
@@ -371,6 +374,7 @@ class DesktopVideoEnhancementSessionTest {
                 assertNull(shown.tierWord)
                 assertNull(shown.requestedQualityLevel)
                 assertFalse(shown.steppedDown)
+                assertFalse(shown.qualityLowered)
                 assertFalse(shown.proofDelayed)
             }
         }
@@ -391,6 +395,97 @@ class DesktopVideoEnhancementSessionTest {
             enhancement.redetectGpu()
             delay(200)
             assertEquals(afterClose, probe.calls.get())
+        }
+    }
+
+
+    // ---- Adaptive guard: the memory inputs of the gate and the wiring of the health store ----
+
+    private fun gateWithMemory(capability: NvidiaCapability, memory: DesktopNvidiaGateMemory,
+        environment: DesktopNvidiaEnvironment = DesktopNvidiaEnvironment(), sourceLoaded: Boolean = true): DesktopNvidiaGate =
+        resolveDesktopNvidiaGate(capability, environment, null, true, sourceLoaded, DesktopNvidiaVideoPreferences(enabled = true),
+            false, null, memory)
+
+    @Test fun theMemoryInputsSelectTheFailedStatesBeforeAnySourceCheckAndNameTheGpu() {
+        val capable = scenarioCapability("this-pc")
+        val remembered = gateWithMemory(capable, DesktopNvidiaGateMemory(failureRemembered = true))
+        assertEquals(DesktopVideoEnhancementActivation.FAILED_REMEMBERED, remembered.kind)
+        assertTrue(remembered.bypassesBeforeSourceChecks)
+        assertTrue(remembered.capabilityUsable, "the GPU is fine; the combination failed before")
+        assertEquals("RTX 5080" + DesktopNvidiaStatusText.SEPARATOR + DesktopNvidiaStatusText.FAILED_REMEMBERED_TAIL,
+            remembered.gateLine())
+        val extended = gateWithMemory(capable, DesktopNvidiaGateMemory(extendedRangeFailed = true))
+        assertEquals(DesktopVideoEnhancementActivation.FAILED_EXTENDED_RANGE, extended.kind)
+        assertTrue(extended.bypassesBeforeSourceChecks)
+        assertEquals(DesktopNvidiaStatusText.FAILED_EXTENDED_RANGE, extended.gateLine())
+        val gaveUp = gateWithMemory(capable, DesktopNvidiaGateMemory(guardGaveUp = true))
+        assertEquals(DesktopVideoEnhancementActivation.FAILED_THIS_VIDEO, gaveUp.kind)
+        assertTrue(gaveUp.bypassesBeforeSourceChecks)
+        assertEquals("RTX 5080" + DesktopNvidiaStatusText.SEPARATOR + DesktopNvidiaStatusText.FAILED_THIS_VIDEO_TAIL,
+            gaveUp.gateLine())
+        // The plan stays known, so the controls and the compact label can still name the GPU.
+        for (gate in listOf(remembered, extended, gaveUp)) assertEquals("RTX 5080", gate.gpuSummary)
+    }
+
+    @Test fun rememberedBeatsExtendedRangeBeatsAGivenUpVideoAndAPauseBeatsAllOfThem() {
+        val capable = scenarioCapability("this-pc")
+        val all = DesktopNvidiaGateMemory(failureRemembered = true, extendedRangeFailed = true, guardGaveUp = true)
+        assertEquals(DesktopVideoEnhancementActivation.FAILED_REMEMBERED, gateWithMemory(capable, all).kind)
+        assertEquals(DesktopVideoEnhancementActivation.FAILED_EXTENDED_RANGE,
+            gateWithMemory(capable, all.copy(failureRemembered = false)).kind)
+        assertEquals(DesktopVideoEnhancementActivation.FAILED_THIS_VIDEO,
+            gateWithMemory(capable, all.copy(failureRemembered = false, extendedRangeFailed = false)).kind)
+        // A pause outranks every failed state, and clears by itself when the game is gone.
+        assertEquals(DesktopVideoEnhancementActivation.PAUSED_GAME,
+            gateWithMemory(capable, all, environment = DesktopNvidiaEnvironment(gameLike = true)).kind)
+        assertEquals(DesktopVideoEnhancementActivation.PAUSED_REMOTE,
+            gateWithMemory(capable, all, environment = DesktopNvidiaEnvironment(remoteOrVirtualOutput = true)).kind)
+        // A remembered failure applies before a file is loaded too: no standby, no request.
+        assertEquals(DesktopVideoEnhancementActivation.FAILED_REMEMBERED,
+            gateWithMemory(capable, DesktopNvidiaGateMemory(failureRemembered = true), sourceLoaded = false).kind)
+    }
+
+    @Test fun noMemoryChangesNothingAndEveryEarlierStateOutranksTheMemory() {
+        val capable = scenarioCapability("this-pc")
+        assertEquals(DesktopNvidiaGateMemory(), DesktopNvidiaGateMemory.None)
+        assertEquals(DesktopVideoEnhancementActivation.ALLOWED, gateWithMemory(capable, DesktopNvidiaGateMemory.None).kind)
+        assertEquals(DesktopVideoEnhancementActivation.STANDBY,
+            gateWithMemory(capable, DesktopNvidiaGateMemory.None, sourceLoaded = false).kind)
+        val all = DesktopNvidiaGateMemory(failureRemembered = true, extendedRangeFailed = true, guardGaveUp = true)
+        // Detection off stays legacy, a missing GPU stays a missing GPU, and a failed probe stays unidentified.
+        assertEquals(DesktopVideoEnhancementActivation.LEGACY, gateWithMemory(NvidiaCapability.NotEvaluated, all).kind)
+        assertEquals(DesktopVideoEnhancementActivation.PROBING, gateWithMemory(NvidiaCapability.Probing, all).kind)
+        assertEquals(DesktopVideoEnhancementActivation.NO_NVIDIA, gateWithMemory(scenarioCapability("amd-only"), all).kind)
+        assertEquals(DesktopVideoEnhancementActivation.UNSUPPORTED, gateWithMemory(scenarioCapability("only-virtual"), all).kind)
+        assertEquals(DesktopVideoEnhancementActivation.UNIDENTIFIED,
+            gateWithMemory(NvidiaCapability.Unknown(NvidiaUnknownReason.PROBE_FAILED), all).kind)
+    }
+
+    @Test fun theOverloadStopHasItsOwnWordingAndNeverNamesAFailure() {
+        val gate = gateWithMemory(scenarioCapability("this-pc"), DesktopNvidiaGateMemory(guardGaveUp = true))
+        assertEquals(DesktopNvidiaStatusText.GUARD_BYPASS,
+            gate.lineFor(DesktopNvidiaStatusText.GUARD_BYPASS, DesktopNvidiaStatusKind.GUARD_BYPASS))
+        assertTrue(DesktopNvidiaStatusText.GUARD_BYPASS != gate.gateLine())
+    }
+
+    @Test fun everyMonitorCarriesAnInMemoryHealthStoreByDefaultSoATestNeverTouchesTheDisk() {
+        val key = "00000000000000a1"
+        val neutral = DesktopNvidiaCapabilityMonitor.neutral()
+        neutral.healthStore.recordRemembered(key)
+        assertTrue(neutral.healthStore.view(key).remembered)
+        assertTrue(neutral.healthStore.flushNow(), "an in-memory store has nothing to write")
+        assertEquals(NvidiaHealthView.None, DesktopNvidiaCapabilityMonitor.neutral().healthStore.view(key),
+            "every monitor has its own memory")
+        val shared = DesktopNvidiaHealthStore.inMemory()
+        assertSame(shared, DesktopNvidiaCapabilityMonitor(probe = null, healthStore = shared).healthStore)
+    }
+
+    @Test fun aFreshPlayerReportsAnEmptyPlaybackHealthUntilAFileIsLoadedAndPolled() {
+        MpvPlayer().use { player ->
+            assertEquals(NvidiaPlaybackHealthSample(), player.playbackHealth.value)
+            assertEquals(0L, player.playbackHealth.value.sourceVersion)
+            assertNull(player.playbackHealth.value.frameDrops)
+            assertNull(player.playbackHealth.value.delayedFrames)
         }
     }
 

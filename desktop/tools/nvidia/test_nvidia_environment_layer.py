@@ -277,7 +277,7 @@ class SessionSeamTest(unittest.TestCase):
         self.assertLess(body.index("val display = input.output.hdrDisplay"), report)
         self.assertLess(report, gate)
         call = collapse(body[gate:body.index("gate = frameGate")])
-        self.assertTrue(call.endswith("native.veyraAvailable, display.adapterLuidHex)"), call)
+        self.assertTrue(call.endswith("native.veyraAvailable, display.adapterLuidHex, memory)"), call)
         self.assertEqual(1, body.count("reportDisplayOutput("))
 
     def test_the_poll_is_wanted_only_with_a_plan_and_a_visible_host_and_stops_with_the_session(self):
@@ -317,8 +317,9 @@ class SessionSeamTest(unittest.TestCase):
         self.assertLess(gate, body.index("player.setNvidiaVideoEnhancementIfSourceSnapshot("))
 
     def test_the_gate_takes_the_display_adapter_as_a_defaulted_last_argument(self):
-        gate = collapse(self.text[self.text.index("internal fun resolveDesktopNvidiaGate("):][:1100])
-        self.assertIn("componentAvailable: Boolean, displayAdapterLuidHex: String? = null, ): DesktopNvidiaGate {", gate)
+        gate = collapse(self.text[self.text.index("internal fun resolveDesktopNvidiaGate("):][:1400])
+        self.assertIn("componentAvailable: Boolean, displayAdapterLuidHex: String? = null, "
+                      "memory: DesktopNvidiaGateMemory = DesktopNvidiaGateMemory.None, ): DesktopNvidiaGate {", gate)
         self.assertIn("displayAdapterLuidHex = displayAdapterLuidHex, )", gate)
 
 

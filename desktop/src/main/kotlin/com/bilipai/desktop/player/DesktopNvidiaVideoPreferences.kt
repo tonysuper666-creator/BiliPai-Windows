@@ -40,8 +40,8 @@ data class DesktopNvidiaVideoPreferences(
 }
 
 /**
- * What the adaptive guard currently allows for one source. None changes nothing. The guard of a
- * later slice maps its rung to these two limits; this slice only gives the request builder a place to read them.
+ * What the adaptive guard currently allows for one source. None changes nothing. The session maps the rung the
+ * guard is at to these two limits (quality cap and HDR) when it builds a request, and the request builder reads them here.
  */
 internal data class NvidiaGuardLimits(val qualityCap: Int = 4, val hdrAllowed: Boolean = true) {
     companion object {

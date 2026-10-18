@@ -226,6 +226,8 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
     private val maxAgeMillis: Long = MAX_AGE_MILLIS,
     private val environmentProbe: DesktopNvidiaEnvironmentProbe? = null,
     private val environmentIntervalMillis: Long = ENVIRONMENT_POLL_MILLIS,
+    /** The failure memory of this machine. In process only unless the application asks for the file. */
+    val healthStore: DesktopNvidiaHealthStore = DesktopNvidiaHealthStore.inMemory(),
 ) {
     private val mutableCapability = MutableStateFlow<NvidiaCapability>(
         if (probe == null) NvidiaCapability.NotEvaluated else NvidiaCapability.Probing,
@@ -540,6 +542,9 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
             publish(run, verdict)
             synchronized(runLock) { if (inFlight === run) inFlight = null }
             run.result.complete(verdict)
+            // The failure memory reads its file lazily. Reading it here, after the verdict is out, keeps that read off the
+            // interface thread and off every thread that waits for the verdict. It never throws.
+            healthStore.warmUp()
         }, "BiliPai-gpu-probe")
         worker.isDaemon = true
         try {
@@ -590,6 +595,7 @@ internal class DesktopNvidiaCapabilityMonitor internal constructor(
                 DesktopNvidiaCapabilityMonitor(
                     DesktopNvidiaSystemGpuProbe(),
                     environmentProbe = DesktopNvidiaSystemEnvironmentProbe(),
+                    healthStore = DesktopNvidiaHealthStore.machineLocal(),
                 )
             } else {
                 DesktopNvidiaCapabilityMonitor(probe = null)

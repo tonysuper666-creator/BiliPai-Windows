@@ -2,6 +2,7 @@ package com.bilipai.desktop.player
 
 import com.android.purebilibili.feature.anime4k.Anime4KBypassReason
 import com.bilipai.desktop.nvidia.DesktopNvidiaActivationState
+import com.bilipai.desktop.nvidia.DesktopNvidiaAdaptiveGuard
 import com.bilipai.desktop.nvidia.DesktopNvidiaEnvironment
 import com.bilipai.desktop.nvidia.DesktopNvidiaMode
 import com.bilipai.desktop.nvidia.DesktopNvidiaObservedGpu
@@ -9,9 +10,17 @@ import com.bilipai.desktop.nvidia.DesktopNvidiaStatusInput
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusKind
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
 import com.bilipai.desktop.nvidia.DesktopNvidiaVideoBudget
+import com.bilipai.desktop.nvidia.GUARD_HEALTHY_CLEAR_MILLIS
+import com.bilipai.desktop.nvidia.NVIDIA_HEALTH_BACKEND_VEYRA
+import com.bilipai.desktop.nvidia.NVIDIA_HEALTH_RUNTIME_UNKNOWN
 import com.bilipai.desktop.nvidia.NvidiaCapability
 import com.bilipai.desktop.nvidia.NvidiaCapabilityNote
+import com.bilipai.desktop.nvidia.NvidiaGiveUpReason
+import com.bilipai.desktop.nvidia.NvidiaGuardDecision
+import com.bilipai.desktop.nvidia.NvidiaHealthView
+import com.bilipai.desktop.nvidia.NvidiaMemoryEffect
 import com.bilipai.desktop.nvidia.NvidiaPlan
+import com.bilipai.desktop.nvidia.NvidiaPlaybackHealthSample
 import com.bilipai.desktop.nvidia.NvidiaStickyFloor
 import com.bilipai.desktop.nvidia.TIER_WORD_ENABLED
 import com.bilipai.desktop.nvidia.desktopNvidiaActivationStatusLine
@@ -20,6 +29,8 @@ import com.bilipai.desktop.nvidia.desktopNvidiaStatusLine
 import com.bilipai.desktop.nvidia.desktopNvidiaTierWord
 import com.bilipai.desktop.nvidia.nvidiaAdvanceStickyFloor
 import com.bilipai.desktop.nvidia.nvidiaDriverPublicX100FromText
+import com.bilipai.desktop.nvidia.nvidiaHealthKeyFor
+import com.bilipai.desktop.nvidia.nvidiaStickyFloorAfterGuardCommit
 import com.bilipai.desktop.nvidia.nvidiaStickyFloorFor
 import com.bilipai.desktop.nvidia.planOrNull
 import com.bilipai.desktop.nvidia.resolveDesktopNvidiaActivation
@@ -71,8 +82,10 @@ data class DesktopVideoEnhancementState(
     val gpuSummary: String? = null,
     /** Quality level requested for the owned configuration; null when none is owned. Requested, never proven. */
     val requestedQualityLevel: Int? = null,
-    /** True after the adaptive guard lowered the request for this video. */
+    /** True after the adaptive guard lowered the request for this video: a quality level, or only the HDR conversion. */
     val steppedDown: Boolean = false,
+    /** True when the guard lowered the quality level itself. Dropping only the HDR conversion leaves it false. */
+    val qualityLowered: Boolean = false,
     /** Submitted but no displayed frame for a long time. Changes the wording only, never counts as proof or failure. */
     val proofDelayed: Boolean = false,
     /** The route the controls should assume: the owned request's route, or the shared core when its component is loaded. */
@@ -211,6 +224,21 @@ internal fun DesktopVideoEnhancementState.withGate(gate: DesktopNvidiaGate, rout
     copy(activation = gate.kind, gpuSummary = gate.gpuSummary, route = routeInUse,
         tierWord = gate.tierWordFor(routeInUse), notice = gate.notice)
 
+/**
+ * What the adaptive guard and the failure memory say about the request, as the three inputs of the activation
+ * precedence: a remembered failure of this GPU, a failure beyond the super resolution box for this source, and a
+ * source the guard gave up. None changes nothing.
+ */
+internal data class DesktopNvidiaGateMemory(
+    val failureRemembered: Boolean = false,
+    val extendedRangeFailed: Boolean = false,
+    val guardGaveUp: Boolean = false,
+) {
+    companion object {
+        val None: DesktopNvidiaGateMemory = DesktopNvidiaGateMemory()
+    }
+}
+
 /** HDR is dropped first when the tier or the known driver does not allow it; SR is unaffected. */
 internal fun nvidiaEffectiveHdrMode(preferences: DesktopNvidiaVideoPreferences, plan: NvidiaPlan?): DesktopNvidiaVideoHdrMode =
     if (plan != null && preferences.hdrMode == DesktopNvidiaVideoHdrMode.AUTO && !plan.hdrAllowedFor(preferences.srEnabled)) {
@@ -234,7 +262,7 @@ internal fun nvidiaNoticeFor(plan: NvidiaPlan?, preferences: DesktopNvidiaVideoP
  * switch says, so the existing behaviour and texts are kept exactly. Otherwise the shared precedence decides.
  * componentAvailable is whether the shared core is loaded; it only selects the route the controls assume.
  * displayAdapterLuidHex is the adapter of the video window's monitor, when known: another adapter than the
- * selected GPU lowers the plan's tier one step (cross-adapter).
+ * selected GPU lowers the plan's tier one step (cross-adapter). memory carries the guard and failure memory.
  */
 internal fun resolveDesktopNvidiaGate(
     capability: NvidiaCapability,
@@ -245,6 +273,7 @@ internal fun resolveDesktopNvidiaGate(
     preferences: DesktopNvidiaVideoPreferences,
     componentAvailable: Boolean,
     displayAdapterLuidHex: String? = null,
+    memory: DesktopNvidiaGateMemory = DesktopNvidiaGateMemory.None,
 ): DesktopNvidiaGate {
     val state: DesktopNvidiaActivationState = if (capability is NvidiaCapability.NotEvaluated) {
         DesktopNvidiaActivationState.Legacy
@@ -255,6 +284,9 @@ internal fun resolveDesktopNvidiaGate(
             environment = environment,
             observedGpu = observed,
             sourceLoaded = sourceLoaded,
+            failureRemembered = memory.failureRemembered,
+            extendedRangeFailedForSource = memory.extendedRangeFailed,
+            guardGaveUpForSource = memory.guardGaveUp,
             displayAdapterLuidHex = displayAdapterLuidHex,
         )
     }
@@ -283,9 +315,9 @@ class DesktopVideoEnhancementSession(
 ) : AutoCloseable {
     private data class Label(val key: String? = null, val version: Long = 0, val epoch: Long = 0)
     private data class Frame(val ready: Boolean, val hasVideo: Boolean, val audioOnly: Boolean, val ended: Boolean, val failed: Boolean, val nativeIdentity: PlayerNativeTrackIdentity?)
-    /** What the GPU monitor knows. The guard and failure memory join this flow in a later slice. */
+    /** What the GPU monitor knows, and a counter the guard raises whenever it decided something that needs a new request. */
     private data class Policy(val capability: NvidiaCapability, val environment: DesktopNvidiaEnvironment,
-        val observed: DesktopNvidiaObservedGpu?)
+        val observed: DesktopNvidiaObservedGpu?, val guardEpoch: Long = 0L)
     private data class Settings(val preferences: DesktopNvidiaVideoPreferences, val started: Boolean, val pip: Boolean,
         val policy: Policy) {
         val enabled: Boolean get() = preferences.enabled
@@ -294,10 +326,10 @@ class DesktopVideoEnhancementSession(
         val nativeResolutionPatchAvailable: Boolean, val veyraAvailable: Boolean)
     private data class Input(val settings: Settings, val label: Label, val frame: Frame, val output: PlayerVideoOutputState, val target: Target)
     private class Request(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val options: NvidiaVideoOptions,
-        val nativeIdentity: PlayerNativeTrackIdentity) {
+        val nativeIdentity: PlayerNativeTrackIdentity, val attempt: Int = 0) {
         fun matches(other: Request) = epoch == other.epoch && options == other.options &&
             source.sourceVersion == other.source.sourceVersion && source.source == other.source.source &&
-            nativeIdentity == other.nativeIdentity
+            nativeIdentity == other.nativeIdentity && attempt == other.attempt
     }
     private class Owned(val request: Request, val token: Long)
     private class Clearing(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val token: Long) {
@@ -321,14 +353,26 @@ class DesktopVideoEnhancementSession(
     private var proofTimer: Job? = null
     // The highest upscale bucket already used for the current source (design 6.5), under the same lock.
     private var stickyFloor: NvidiaStickyFloor = NvidiaStickyFloor()
+    // The adaptive guard keeps its per-source state under the same lock. guardEpoch is raised whenever the guard decided
+    // something that needs a new request; it joins the policy flow, so the next pass of the decision sees it.
+    private val guard = DesktopNvidiaAdaptiveGuard()
+    private val guardEpoch = MutableStateFlow(0L)
+    private var guardTimer: Job? = null
+    private var healthyTimer: Job? = null
+    private var healthyTimerToken: Long = -1L
+    // The failure-memory key of the latest decision pass and of the owned request, under the same lock.
+    private var lastMemoryKey: String? = null
+    private var healthKey: String? = null
+    private var wasEnabled = false
 
     init {
         scope.launch {
             val preferenceSnapshots = enhancementPreferences ?: automaticEnabled.map { DesktopNvidiaVideoPreferences(enabled = it) }
             val monitor = player.gpuCapability
-            val policy = combine(monitor.capability, monitor.environment, monitor.observed) { capability, environment, observed ->
+            val monitorPolicy = combine(monitor.capability, monitor.environment, monitor.observed) { capability, environment, observed ->
                 Policy(capability, environment, observed)
             }
+            val policy = combine(monitorPolicy, guardEpoch) { snapshot, epoch -> snapshot.copy(guardEpoch = epoch) }
             val settings = combine(preferenceSnapshots, hostStarted, pip, policy) { preferences, started, inPip, activationPolicy ->
                 Settings(preferences, started, inPip, activationPolicy)
             }
@@ -346,6 +390,9 @@ class DesktopVideoEnhancementSession(
                 confirmObservedGpu(native)
                 observeNative(native)
             }
+        }
+        scope.launch {
+            player.playbackHealth.collect { sample -> observePlayback(sample) }
         }
     }
 
@@ -380,9 +427,16 @@ class DesktopVideoEnhancementSession(
     }
 
     /** User-requested re-detection of the GPU: the monitor marks its verdict stale and probes again in the background.
-     * Nothing is requested or withdrawn here; the new verdict reaches the gate through the policy flow. */
+     * The failure memory of the current GPU is cleared first. Nothing is requested or withdrawn here; the new verdict
+     * and the cleared memory reach the gate through the policy flow. */
     fun redetectGpu() {
         if (closed.get()) return
+        // A new detection is a fresh start: the remembered failure of this GPU and the per-source give-up are forgotten.
+        // The memory file was read ahead on the probe thread of the monitor, so this call normally does no disk read.
+        synchronized(ownershipLock) {
+            forgetFailuresLocked()
+            guardEpoch.value = guardEpoch.value + 1
+        }
         player.gpuCapability.redetect()
     }
 
@@ -442,9 +496,20 @@ class DesktopVideoEnhancementSession(
         // environment poll, and its adapter decides the cross-adapter step-down of the plan.
         val display = input.output.hdrDisplay
         player.gpuCapability.reportDisplayOutput(display.adapterLuidHex, display.outputTechnology)
+        // The guard works per source and the failure memory per GPU, driver, runtime and tier. A new source starts the
+        // guard from scratch at once, even before the output state of that source has caught up.
+        if (source != null && owns(source, epoch)) guard.selectSource("${epoch}:${source.sourceVersion}")
+        val memoryKey = memoryKeyFor(input.settings.policy, native)
+        lastMemoryKey = memoryKey
+        val healthView = if (memoryKey == null) NvidiaHealthView.None else player.gpuCapability.healthStore.view(memoryKey)
+        val givenUp = guard.gaveUp
+        val memory = DesktopNvidiaGateMemory(
+            failureRemembered = healthView.remembered,
+            extendedRangeFailed = givenUp == NvidiaGiveUpReason.EXTENDED_RANGE,
+            guardGaveUp = givenUp != null && givenUp != NvidiaGiveUpReason.EXTENDED_RANGE)
         val frameGate = resolveDesktopNvidiaGate(input.settings.policy.capability, input.settings.policy.environment,
             input.settings.policy.observed, input.settings.enabled, current, input.settings.preferences, native.veyraAvailable,
-            display.adapterLuidHex)
+            display.adapterLuidHex, memory)
         gate = frameGate
         // The environment is polled only while a plan exists (standby, running or paused) and the host is visible.
         // A pause is entered and left by the poll, and the bypass below clears the owned filter when one is entered.
@@ -471,11 +536,22 @@ class DesktopVideoEnhancementSession(
             mutableState.update { it.copy(available = false, unavailableReason = line) }
         }
         if (!input.settings.enabled) {
+            // Switching the feature off after it was on gives one fresh attempt when it is switched on again: the
+            // per-source steps and the remembered failure are forgotten. The default before the settings are loaded
+            // is off too, but it never followed an on, so it forgets nothing.
+            if (wasEnabled) {
+                wasEnabled = false
+                forgetFailuresLocked()
+            }
             bypass(Anime4KBypassReason.DISABLED, "NVIDIA 自动增强已关闭，原画直出", DesktopNvidiaStatusKind.OFF); return
         }
+        wasEnabled = true
         // Activation gate (design 8.1): after the switch, before any source check. Legacy and the states that may
         // request fall through to the unchanged ladder; every other state makes no request and says why.
         if (frameGate.bypassesBeforeSourceChecks) {
+            if (overloadBypassed(frameGate)) {
+                bypassUnavailable(Anime4KBypassReason.NONE, frameGate.lineFor(DesktopNvidiaStatusText.GUARD_BYPASS, DesktopNvidiaStatusKind.GUARD_BYPASS)); return
+            }
             bypassUnavailable(Anime4KBypassReason.NONE, frameGate.gateLine() ?: DesktopNvidiaStatusText.UNIDENTIFIED); return
         }
         if (!current) { bypass(Anime4KBypassReason.NONE, "等待当前视频源", DesktopNvidiaStatusKind.STANDBY); return }
@@ -510,7 +586,8 @@ class DesktopVideoEnhancementSession(
         val backend = if (sharedCoreAvailable) NvidiaVideoBackend.VEYRA_CORE else NvidiaVideoBackend.DRIVER
         val plan = frameGate.plan
         // The per-source limits of the GPU's plan. Detection off has no plan, hence no budget: today's decision exactly.
-        val budget = plan?.budget(input.output.frameRate)
+        // A failure beyond the super resolution box learned earlier lowers the native-size caps to the documented range.
+        val budget = plan?.budget(input.output.frameRate, healthView.extendedRangeDenied)
         // The effective HDR mode goes into the resolver, so a decision never carries HDR that the request would drop.
         fun resolveWith(limits: DesktopNvidiaVideoBudget?): DesktopNvidiaVideoDecision =
             resolveDesktopNvidiaVideoDecision(input.output.inputWidth, input.output.inputHeight,
@@ -552,25 +629,52 @@ class DesktopVideoEnhancementSession(
         // Request build: an invalid combination bypasses this video instead of ending the collector.
         val floorKey = "${epoch}:${currentSource.sourceVersion}"
         var stickyApplied = false
+        var qualityLowered = false
         val request = try {
-            val options = input.settings.preferences.optionsFor(decision, backend, plan, NvidiaGuardLimits.None)
+            // The guard starts from what the user, the tier and a learned ceiling allow, then lowers only. The ladder it
+            // follows is built from that unlowered request.
+            val learnedCap = healthView.learnedQualityCeiling ?: 4
+            val unlowered = input.settings.preferences.optionsFor(decision, backend, plan, NvidiaGuardLimits(qualityCap = learnedCap))
+            guard.configure(unlowered.qualityLevel, unlowered.hdr,
+                backend == NvidiaVideoBackend.VEYRA_CORE && input.settings.preferences.srEnabled,
+                budget?.inExtendedRange(input.output.inputWidth, input.output.inputHeight) == true, input.output.frameRate)
+            val caps = guard.caps()
+            val guardLimits = NvidiaGuardLimits(qualityCap = minOf(caps.qualityCap, learnedCap), hdrAllowed = caps.hdrAllowed)
+            val options = input.settings.preferences.optionsFor(decision, backend, plan, guardLimits)
+            // Only a lower quality level counts as the guard having lowered the request in words; HDR alone does not.
+            qualityLowered = options.qualityLevel < unlowered.qualityLevel
             // The stable bucket is bounded by the budget; the sticky floor then applies to a real upscale only.
             val sized = nvidiaRequestScale(options, decision, budget, input.output.inputWidth, input.output.inputHeight,
                 input.output.maximumTextureDimension, nvidiaStickyFloorFor(stickyFloor, floorKey))
             stickyApplied = sized.stickyApplied
             val stableOptions = options.copy(scale = sized.scale).requireValid()
-            Request(currentSource, epoch, stableOptions, nativeIdentity)
+            Request(currentSource, epoch, stableOptions, nativeIdentity, guard.attempt)
         } catch (_: IllegalArgumentException) {
             stickyFloor = NvidiaStickyFloor()
             bypassUnavailable(Anime4KBypassReason.NONE, failedThisVideoLine(frameGate)); return
         }
+        if (!frameGate.legacy && !request.options.requiresFilter) {
+            // The guard took away the last effect (HDR): nothing is left to process and the video plays unchanged.
+            stickyFloor = NvidiaStickyFloor()
+            bypass(Anime4KBypassReason.NONE, DesktopNvidiaStatusText.DIRECT_TAIL, DesktopNvidiaStatusKind.DIRECT); return
+        }
         stickyFloor = if (stickyApplied) nvidiaAdvanceStickyFloor(stickyFloor, floorKey, true, request.options.scale)
             else NvidiaStickyFloor()
         val previous = owned
-        if (previous != null && previous.request.matches(request)) {
-            mutableState.update { it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled).withGate(frameGate, backend) }
+        // An unchanged request is kept. So is the owned one while the guard holds a retry or a step for its delay, and the
+        // failed one of a source whose colour format the filter rejected: that source is not requested again.
+        if (previous != null && (previous.request.matches(request) || guard.holding || guard.colorFailed)) {
+            healthKey = memoryKey
+            mutableState.update {
+                it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled).withGate(frameGate, backend)
+                    .copy(steppedDown = guard.steppedDown, qualityLowered = qualityLowered)
+            }
             observeNativeLocked(native, previous)
             return
+        }
+        if (guard.colorFailed) {
+            // The failed request is gone (a pause or a different decision removed it): the source stays on its original picture.
+            bypass(Anime4KBypassReason.NONE, DesktopNvidiaStatusText.COLOR_UNSUPPORTED, DesktopNvidiaStatusKind.COLOR_UNSUPPORTED); return
         }
         // Native actor performs source publication admission outside its MPV lock.
         clearOwnedLocked()
@@ -585,11 +689,14 @@ class DesktopVideoEnhancementSession(
         }
         owned = Owned(request, token)
         clearing = null
+        healthKey = memoryKey
+        guard.noteConfiguration(guardNow())
         mutableState.value = DesktopVideoEnhancementState(identity, source!!.sourceVersion, true, available,
             pending = true, bypassReason = Anime4KBypassReason.NONE,
             statusText = frameGate.statusText("正在请求 NVIDIA 硬件增强", DesktopNvidiaStatusKind.PENDING, backend),
             gpuName = native.gpuName, hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled,
             requestedQualityLevel = request.options.qualityLevel).withGate(frameGate, backend)
+            .copy(steppedDown = guard.steppedDown, qualityLowered = qualityLowered)
         observeNativeLocked(player.nvidiaVideoState.value, checkNotNull(owned))
     }
 
@@ -603,8 +710,16 @@ class DesktopVideoEnhancementSession(
     private fun observedState(state: DesktopVideoEnhancementState, native: NvidiaVideoState): DesktopVideoEnhancementState {
         val shown = state.withNvidiaObservation(native, gate.capabilityUsable)
         if (gate.legacy) return shown
-        return shown.copy(statusText = liveStatusLine(shown, native))
+        // A failure that the guard answers with a retry or a lower rung is silent (design 9.2): until the replacement is
+        // installed the video is only being prepared again, so the state carries neither the error nor its diagnostic.
+        // The guard itself reads the player's own state, never this one.
+        val visible = if (failureAnsweredSilently(native)) shown.copy(error = null, failureDiagnostic = null) else shown
+        return visible.copy(statusText = liveStatusLine(visible, native))
     }
+
+    /** The player failed, and the guard holds a busy retry or a step for it. A colour rejection is never answered that way. */
+    private fun failureAnsweredSilently(native: NvidiaVideoState): Boolean =
+        native.error != null && guard.holding && !guard.colorFailed
 
     /** A confirmed reason is already a complete sentence. Everything else is one of the shared status kinds;
      * requested is never worded as applied and the driver route never claims a confirmed result. */
@@ -618,9 +733,10 @@ class DesktopVideoEnhancementSession(
         // gets going. It replaces only the in-progress lines and never an error, a reason or a displayed result.
         val notD3d11Decode = player.videoOutput.value.d3d11Decode == false
         val kind = when {
+            failureAnsweredSilently(native) -> DesktopNvidiaStatusKind.PENDING
             native.error != null ->
                 if (native.failureDiagnostic?.code == 5) DesktopNvidiaStatusKind.COLOR_UNSUPPORTED else DesktopNvidiaStatusKind.FAILED_THIS_VIDEO
-            native.active && shown.steppedDown && shown.requestedQualityLevel != null -> DesktopNvidiaStatusKind.STEPPED_DOWN
+            native.active && shown.qualityLowered && shown.requestedQualityLevel != null -> DesktopNvidiaStatusKind.STEPPED_DOWN
             native.active -> DesktopNvidiaStatusKind.ACTIVE
             notD3d11Decode -> DesktopNvidiaStatusKind.NON_D3D11_DECODE
             sharedCore && native.veyraSubmitted ->
@@ -675,7 +791,125 @@ class DesktopVideoEnhancementSession(
             return
         }
         val delayed = proofDelayedFor(native, current)
+        // The guard answers a failure first: a retry or a step it starts is silent, so the line is built after its answer.
+        observeGuardLocked(native, current)
         mutableState.update { observedState(it.copy(proofDelayed = delayed), native) }
+    }
+
+    // ---- Adaptive guard (design 9) ----
+
+    /** Milliseconds on the monotonic clock, the clock domain of the guard and of the playback health samples. */
+    private fun guardNow(): Long = System.nanoTime() / 1_000_000L
+
+    /** The failure-memory key of the shared core on this GPU, or null when the route, the GPU or the runtime is not known. */
+    private fun memoryKeyFor(policy: Policy, native: NvidiaVideoState): String? {
+        if (!native.veyraAvailable) return null
+        val runtime = player.veyraInstalledIdentity.value?.profileSha256 ?: NVIDIA_HEALTH_RUNTIME_UNKNOWN
+        return nvidiaHealthKeyFor(policy.capability, policy.observed, runtime, NVIDIA_HEALTH_BACKEND_VEYRA)
+    }
+
+    /** True when the guard stopped this source because of smoothness, which has its own wording. */
+    private fun overloadBypassed(forGate: DesktopNvidiaGate): Boolean {
+        val reason = guard.gaveUp
+        return forGate.state is DesktopNvidiaActivationState.FailedThisVideo && reason != null && reason.overload
+    }
+
+    /** One fresh attempt: the per-source state and the remembered failure of the current GPU are forgotten. */
+    private fun forgetFailuresLocked() {
+        guard.resetForSwitch()
+        guardTimer?.cancel()
+        guardTimer = null
+        val key = lastMemoryKey
+        if (key != null) player.gpuCapability.healthStore.clearKey(key)
+    }
+
+    /** Reads the player's own failure of the owned configuration. Detection off keeps every pre-detection behaviour. */
+    private fun observeGuardLocked(native: NvidiaVideoState, current: Owned) {
+        if (gate.legacy) return
+        trackHealthyLocked(native, current)
+        val diagnostic = native.failureDiagnostic ?: return
+        if (native.error == null) return
+        handleGuardDecisionLocked(guard.onFailure(current.token, diagnostic.code, diagnostic.stage, guardNow()))
+    }
+
+    private fun handleGuardDecisionLocked(decision: NvidiaGuardDecision) {
+        when (decision) {
+            is NvidiaGuardDecision.NoChange -> Unit
+            is NvidiaGuardDecision.Retry -> scheduleGuardCommitLocked(decision.delayMillis)
+            is NvidiaGuardDecision.StepDown -> scheduleGuardCommitLocked(decision.delayMillis)
+            is NvidiaGuardDecision.GiveUp -> {
+                recordGuardMemoryLocked(decision)
+                guardEpoch.value = guardEpoch.value + 1
+            }
+        }
+    }
+
+    private fun recordGuardMemoryLocked(decision: NvidiaGuardDecision.GiveUp) {
+        val key = healthKey ?: return
+        val store = player.gpuCapability.healthStore
+        when (decision.memory) {
+            NvidiaMemoryEffect.NONE -> Unit
+            NvidiaMemoryEffect.DEVICE_FAILURE -> store.recordDeviceFailure(key, decision.atLowestRung, decision.qualityLevel)
+            NvidiaMemoryEffect.REMEMBER_NOW -> store.recordRemembered(key)
+            NvidiaMemoryEffect.EXTENDED_RANGE_DENIED -> store.recordExtendedRangeDenied(key)
+        }
+    }
+
+    /** Waits for the delay of a retry or a step, then commits it. A commit raises the epoch, which builds the next request. */
+    private fun scheduleGuardCommitLocked(delayMillis: Long) {
+        guardTimer?.cancel()
+        guardTimer = scope.launch {
+            delay(maxOf(0L, delayMillis) + GUARD_COMMIT_SLACK_MILLIS)
+            synchronized(ownershipLock) {
+                if (!closed.get()) {
+                    val stepsBefore = guard.transitionCount
+                    if (guard.commitPending(guardNow())) {
+                        // A committed step ends the sticky floor of the old rung (design 6.5); a busy retry keeps it, so that the
+                        // retry resends identical options.
+                        stickyFloor = nvidiaStickyFloorAfterGuardCommit(stickyFloor, stepsBefore, guard.transitionCount)
+                        guardEpoch.value = guardEpoch.value + 1
+                    } else {
+                        val due = guard.pendingDueAtMillis
+                        if (due != null) scheduleGuardCommitLocked(due - guardNow())
+                    }
+                }
+            }
+        }
+    }
+
+    /** The streak of hard failures ends after the player's own flag held for thirty seconds. The flag is only read. */
+    private fun trackHealthyLocked(native: NvidiaVideoState, current: Owned) {
+        val key = healthKey ?: return
+        val held = native.active && native.error == null
+        if (guard.observeProofHeld(current.token, held, guardNow())) player.gpuCapability.healthStore.recordHealthy(key)
+        if (held && healthyTimerToken != current.token) {
+            healthyTimerToken = current.token
+            healthyTimer?.cancel()
+            healthyTimer = scope.launch {
+                delay(GUARD_HEALTHY_CLEAR_MILLIS + GUARD_COMMIT_SLACK_MILLIS)
+                synchronized(ownershipLock) {
+                    if (!closed.get() && owned === current) observeNativeLocked(player.nvidiaVideoState.value, current)
+                }
+            }
+        }
+    }
+
+    /** One reading of the video output counters. Only a running filter of the current source is ever judged. */
+    private fun observePlayback(sample: NvidiaPlaybackHealthSample): Unit = synchronized(ownershipLock) {
+        if (closed.get() || gate.legacy) return@synchronized
+        val current = owned
+        if (current == null || sample.sourceVersion != current.request.source.sourceVersion) {
+            guard.resetPlaybackWindow()
+            return@synchronized
+        }
+        val native = player.nvidiaVideoState.value
+        val running = native.configurationVersion == current.token && native.error == null && native.unavailableReason == null &&
+            (native.veyraSubmitted || native.driverVsrAccepted || native.driverHdrAccepted || native.active)
+        if (!running) {
+            guard.resetPlaybackWindow()
+            return@synchronized
+        }
+        handleGuardDecisionLocked(guard.observePlayback(sample))
     }
 
     /** Submitted but not shown for PROOF_DELAY_MILLIS: wording only. Detection off never reports it, and a state the
@@ -720,6 +954,9 @@ class DesktopVideoEnhancementSession(
     override fun close() {
         if (closed.compareAndSet(false, true)) {
             scope.cancel()
+            // A write that is still waiting for its interval is done now; the memory never throws. This is the one deliberate
+            // synchronous write (a file of at most 16 KB, on the closing thread); every other write is on the writer thread.
+            player.gpuCapability.healthStore.flushNow()
             synchronized(ownershipLock) {
                 clearOwnedLocked()
                 clearing = null
@@ -736,5 +973,6 @@ class DesktopVideoEnhancementSession(
         const val PROOF_DELAY_MILLIS = 8_000L
         const val PROOF_DELAY_NANOS = 8_000_000_000L
         const val PROOF_RECHECK_SLACK_MILLIS = 50L
+        const val GUARD_COMMIT_SLACK_MILLIS = 50L
     }
 }

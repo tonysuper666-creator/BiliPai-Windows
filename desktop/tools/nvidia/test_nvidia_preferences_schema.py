@@ -212,7 +212,7 @@ class OptionsForSchemaTest(unittest.TestCase):
             self.text)
         self.assertIn("import com.bilipai.desktop.nvidia.NvidiaPlan", self.text)
         for caller in (source.K / "player/DesktopVideoEnhancementSession.kt",):
-            self.assertIn("optionsFor(decision, backend, plan, NvidiaGuardLimits.None)", source.read(caller))
+            self.assertIn("optionsFor(decision, backend, plan, guardLimits)", source.read(caller))
         # The tests keep calling the two-argument form.
         legacy_callers = source.read(source.ST / "kotlin/com/bilipai/desktop/player/PlayerNvidiaVideoTest.kt")
         self.assertIn("optionsFor(decision, NvidiaVideoBackend.DRIVER)", legacy_callers)

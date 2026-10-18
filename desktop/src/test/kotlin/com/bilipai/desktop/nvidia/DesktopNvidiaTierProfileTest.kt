@@ -449,6 +449,61 @@ class DesktopNvidiaTierProfileTest {
         assertNull(nvidiaStickyFloorFor(floor, "source-2"))
     }
 
+    @Test fun aGuardStepEndsTheStickyFloorButABusyRetryKeepsItAndResendsIdenticalOptions() {
+        val budget = budgetFor("rtx-5080-this-pc", 60.0)
+        var now = 1_000_000L
+        val guard = DesktopNvidiaAdaptiveGuard { now }
+        guard.selectSource("1:1")
+        guard.configure(4, false, true, false, 60.0)
+        var floor = NvidiaStickyFloor()
+        // The request build of the session reduced to quality and scale: the guard's limits first, then the floored scale.
+        fun build(displayWidth: Int, displayHeight: Int): NvidiaVideoOptions {
+            val decision = sdrDecision(budget, 1920, 1080, displayWidth, displayHeight)
+            val options = coreOptionsFor(decision).copy(qualityLevel = guard.caps().qualityCap)
+            val sized = nvidiaRequestScale(options, decision, budget, 1920, 1080, 16384, nvidiaStickyFloorFor(floor, "1:1"))
+            floor = if (sized.stickyApplied) nvidiaAdvanceStickyFloor(floor, "1:1", true, sized.scale) else NvidiaStickyFloor()
+            return options.copy(scale = sized.scale).requireValid()
+        }
+        // The commit of the session: only a committed step (the step count moved) ends the floor.
+        fun commit(): Boolean {
+            val before = guard.transitionCount
+            val committed = guard.commitPending(now)
+            if (committed) floor = nvidiaStickyFloorAfterGuardCommit(floor, before, guard.transitionCount)
+            return committed
+        }
+        assertEquals(2.0, build(3840, 2160).scale, "fullscreen")
+        val beforeRetry = build(2560, 1440)
+        assertEquals(2.0, beforeRetry.scale, "back in the window the floor keeps the bucket")
+
+        // A busy failure retries the same configuration: no step is counted, the floor stays and the options are identical.
+        assertIs<NvidiaGuardDecision.Retry>(guard.onFailure(1L, 3, "bridge-unavailable", now))
+        now += 1_000L
+        assertTrue(commit())
+        assertEquals(0, guard.transitionCount)
+        assertEquals(beforeRetry, build(2560, 1440), "a busy retry resends identical options")
+        assertEquals(2.0, nvidiaStickyFloorFor(floor, "1:1"), "the retry kept the floor")
+
+        // A device failure steps down to quality 3 and ends the floor: the smaller stable bucket now gives a lower scale.
+        assertIs<NvidiaGuardDecision.StepDown>(guard.onFailure(2L, 6, "process-bypass", now))
+        assertTrue(commit())
+        assertEquals(1, guard.transitionCount)
+        assertEquals(NvidiaStickyFloor(), floor)
+        val stepped = build(2560, 1440)
+        assertEquals(3, stepped.qualityLevel)
+        assertEquals(1.5, stepped.scale, "without the old floor the stable bucket of the window applies")
+        assertTrue(stepped.scale < beforeRetry.scale)
+        // The lower scale is the floor from then on.
+        assertEquals(1.5, build(2560, 1440).scale)
+
+        // Nothing committed (not due yet, or nothing pending) leaves the floor as it is.
+        assertEquals(NvidiaStickyFloor("1:1", 1.5), floor)
+        assertFalse(commit())
+        assertEquals(NvidiaStickyFloor("1:1", 1.5), floor)
+        // The pure rule: a moved step count ends the floor, an unchanged one keeps it.
+        assertEquals(NvidiaStickyFloor(), nvidiaStickyFloorAfterGuardCommit(floor, 0, 1))
+        assertEquals(floor, nvidiaStickyFloorAfterGuardCommit(floor, 1, 1))
+    }
+
     @Test fun everyStepOfTheFloorSequenceIsAValidNativeRequest() {
         val budget = budgetFor("rtx-5080-this-pc", 60.0)
         val upscale = sdrDecision(budget, 1920, 1080, 2560, 1440)
