@@ -143,9 +143,13 @@ private data class DesktopVideoCommentDetailRoute(val root: Long, val target: Lo
                     onUrlClick = { if (owned()) currentLinkClick(it) }, showIdentityDecorations = decorations,
                     onAvatarClick = { id -> id.toLongOrNull()?.let { if (owned()) currentUserClick(it) } },
                     modifier = Modifier.weight(1f))
-            } else VideoCommentTab(listState, Modifier.weight(1f), info, commentState.replies,
-                commentState.replyCount, emoteMap, commentState.isRepliesLoading, commentState.isRepliesRefreshing, commentState.repliesError, commentState.isRepliesEnd,
-                commentState.voteCard, videoTags, onUpClick = { if (owned()) currentUserClick(it) },
+            } else VideoCommentTab(listState = listState, modifier = Modifier.weight(1f), upMid = info.owner.mid,
+                maxTimestampMs = info.pages.firstOrNull { it.cid == info.cid }?.duration?.times(1000L)
+                    ?: info.pages.firstOrNull()?.duration?.times(1000L), replies = commentState.replies,
+                replyCount = commentState.replyCount, emoteMap = emoteMap,
+                isRepliesLoading = commentState.isRepliesLoading, isRepliesRefreshing = commentState.isRepliesRefreshing,
+                repliesError = commentState.repliesError, isRepliesEnd = commentState.isRepliesEnd,
+                voteCard = commentState.voteCard, pinnedReplyIds = commentState.pinnedReplyIds, onUpClick = { if (owned()) currentUserClick(it) },
                 onSubReplyClick = viewModel::openSubReply, onCommentReplyClick = ::openComposer,
                 onLoadMoreReplies = viewModel::loadComments, onRefreshReplies = viewModel::refreshComments, onImagePreview = ::imagePreview,
                 onTimestampClick = { if (owned()) currentSeek(it) }, contentPadding = PaddingValues(bottom = 12.dp),

@@ -1,0 +1,170 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "filename": "SettingsManager.kt",
+      "bytes": 422131,
+      "sha256": "ab7ceccdb70212f9fbf8b35f723b47cf1f2715e66c5b6f53b0b0c9e0b7ac837c",
+      "gitBlob": "5f89ecaa3f945d131f62174d525e717feb0b91bc"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCommentPanel.kt",
+      "filename": "BangumiCommentPanel.kt",
+      "bytes": 12413,
+      "sha256": "6317a8e5637e1ec60ecdc1aa0376332752ec96d677c6355b0c3fa54557ef1afa",
+      "gitBlob": "3c7abc482feb1a9312faaca0c818743a8374f0d4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "filename": "VideoContentSection.kt",
+      "bytes": 105956,
+      "sha256": "d0a7466186607baf78b27a5dc5412f01021319f2d42d6fda50ab03fd27188490",
+      "gitBlob": "15290f776babd1b1533d913aa088d9da53d5180d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt",
+      "filename": "BottomInputBar.kt",
+      "bytes": 27012,
+      "sha256": "ff138afe299d8bce2d6c7a46e2344a01febb301de1454550680747aab55d2809",
+      "gitBlob": "a2f269e8cc2ac467adff1fed066d55a1568758da"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentAvatarPush.kt",
+      "filename": "CommentAvatarPush.kt",
+      "bytes": 6033,
+      "sha256": "260d4be2633a7795beea430deaf2bb9a488ffc304e870101e326837b58d4e80c",
+      "gitBlob": "78b897fd0a6675f296b002b414aa4be07460393d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentCascadingContent.kt",
+      "filename": "CommentCascadingContent.kt",
+      "bytes": 4279,
+      "sha256": "59d5ce7abca280b754c23a801f2e2ad90cd6909f093095d0e515e3620bafcd32",
+      "gitBlob": "7de88671b0e2025e03c9fa631b9ad629367dfdba"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentContentReveal.kt",
+      "filename": "CommentContentReveal.kt",
+      "bytes": 3341,
+      "sha256": "9a78ef231dc14216cb16a8646a4ffbc42b10c47cf5d77273f87eb022e84d208f",
+      "gitBlob": "3bcbf6136bba36f8aa34bb535aef0fe18af144af"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NagramChatAvatarPlacement.kt",
+      "filename": "NagramChatAvatarPlacement.kt",
+      "bytes": 1318,
+      "sha256": "cd4ff58cdedac362254c7be0fbffe69cf6e1e913f4136b21773c78b4509cbc7e",
+      "gitBlob": "aa86165827ba43e66ea273cf8131f34afca65dc2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "filename": "ReplyComponents.kt",
+      "bytes": 137234,
+      "sha256": "7ccb907e2df200bd28008d7a303903276082babeea77090f92651496fca24968",
+      "gitBlob": "57eb54e269e0bcac572c24a16ed6c6f38ca8aee6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentFloatingHeader.kt",
+      "filename": "VideoCommentFloatingHeader.kt",
+      "bytes": 3611,
+      "sha256": "f03b4fbc40abfa71f5bfdf87fc2c53d94031cc9a3042530473adde670d128ee3",
+      "gitBlob": "81c5eb20df6ba4529651a7769716c9b90c066586"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiPlayerCommentPolicyTest.kt",
+      "filename": "BangumiPlayerCommentPolicyTest.kt",
+      "bytes": 2501,
+      "sha256": "1be04965701a1f18c6cec0deb0eb78303309a1d276e388039c8179818d05dfe7",
+      "gitBlob": "547001b34cbfb4ee25b8c69949307b438cd032f0"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/CommentAvatarPushPolicyTest.kt",
+      "filename": "CommentAvatarPushPolicyTest.kt",
+      "bytes": 4516,
+      "sha256": "c8efed88c17eb233f6ab51c7cd6ddb7c38d2c9c3b2ee693ba2d9a7c94d477899",
+      "gitBlob": "61129905752156f38c243c48f0e266242611239b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "filename": "BangumiPlayerContent.kt",
+      "bytes": 47253,
+      "sha256": "956ad4163431704bbfed30efca2c4f7c9c516ee4cb31002abc814e00e50e70c8",
+      "gitBlob": "2ed4b909b91702ab5d2242fbbb67f9e6a52f7bc9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+      "filename": "BangumiPlayerScreen.kt",
+      "bytes": 75396,
+      "sha256": "5177c569e3bbcb0615f8abaca2cd2803ab252e308a5b7a225c29f89cce06d728",
+      "gitBlob": "25500bb275ae15aaeb4b141940b17109212cdc19"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "filename": "SubReplyDetailComponents.kt",
+      "bytes": 78247,
+      "sha256": "bc15d61fe8915ca1fe2e0b6a341991a35c38ef7d537958d5e0f2a6a8c6255f38",
+      "gitBlob": "0eee0d98f609ff9a24a0854e8f6c1868f2b49da8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "filename": "CommentSearchSheet.kt",
+      "bytes": 33936,
+      "sha256": "4933ce20711d7fc316ad43e35faa6c882bef9acbc753c8c53178805a00a32854",
+      "gitBlob": "96c7d37660921662caecb04c5b1ff6b4a2c02237"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt",
+      "filename": "DynamicCommentSheet.kt",
+      "bytes": 80102,
+      "sha256": "961dce087e98d357de62de0e585b30fae956f499c4107e3b2ffbb2d0541b967b",
+      "gitBlob": "ee1cd4f3c4e451ee392059e4cd9046bae7654cb0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+      "filename": "DynamicDetailScreen.kt",
+      "bytes": 50161,
+      "sha256": "701c2348fcdaf3e0e07a72f6037459bde051a8ba3177e4911927ba9ad700aea9",
+      "gitBlob": "16a0061454d02da4a453f8d62ed3f78405cf03e1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt",
+      "filename": "TabletVideoLayout.kt",
+      "bytes": 97966,
+      "sha256": "943d4074aabb29c99015cf92ad3501f226a00dc1fbe2dc4d72646268818cc8d7",
+      "gitBlob": "65d3ba656ff5f443ea4dcd0feb3335d397216a27"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt",
+      "filename": "TabletCinemaLayout.kt",
+      "bytes": 83032,
+      "sha256": "651fbc4ebed77fffacf9da118866912db27063fbcc72ac13a986f4534b59a899",
+      "gitBlob": "8f94148aeb1fe40f052fb5c19af7675349ad239f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt",
+      "filename": "VideoCommentSheetHost.kt",
+      "bytes": 52262,
+      "sha256": "407af2fcf1e8db9ecb3a268a0abf434c0cde3db012b4880523da17e070f65e4d",
+      "gitBlob": "ffacd7e641cd3e20e9dcb871c4f160fa0fccd5e5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "filename": "BgmDetailScreen.kt",
+      "bytes": 22034,
+      "sha256": "0fa8ceaf0a4374302c3b89a8a02c15afc2f684217b2ee86e92c4268bdf199d10",
+      "gitBlob": "c17cb1a6637a5511e395ab68b5bce60afb14d518"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "beforeWindowsReplyComponentsSHA256": "1e791895016d71ba45aac7332155a3f6a357b6d9bb7ac19e88fb39d7648da971",
+  "selection": "Complete retained v046 shared reply/list/avatar/floating header and Bangumi panel declarations; existing Windows transport/account/settings/page/save/share/block/translation owners remain. Original platform adaptations are recorded as invertible full-declaration deltas.",
+  "beforeWindowsReplyComponentsBodySHA256": "08263c705232a64b8ede634ba660fac0ec4d383ddd3df925bbd6a8f4d675c2c9",
+  "beforeWindowsBodyNormalization": "lf"
+}

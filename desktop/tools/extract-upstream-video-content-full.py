@@ -83,6 +83,9 @@ def read(rel):
  return SOURCES[path]['text']
 def emit(rel,t,origin,mode):
  t=validate_fresh_v025_comment_consumer("com/android/purebilibili/"+rel,t)
+ if rel=='feature/video/screen/DesktopOriginalVideoContentSection.kt':
+  from v046_comment_list import advance_content_comments
+  t=advance_content_comments(REPO,t,OUTPUT)
  if rel=='feature/video/ui/section/VideoNoteSection.kt':
   t=adapt_v025_note_badge(rel,t);mode='policy-extract'
  direct=mode=='direct-complete-original'

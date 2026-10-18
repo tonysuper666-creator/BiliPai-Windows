@@ -64,6 +64,13 @@ class V029ReplyRendererTest(unittest.TestCase):
                 return matches[0].read_text(encoding='utf8')
             reply = body('DesktopOriginalReplyComponents.kt')
             thread = body('DesktopOriginalSubReplyDetailComponents.kt')
+            # The complete retained v046 item/layout stage now follows this
+            # renderer. Recover its exact predecessor before checking v029 rules.
+            from v046_favorite_editor import restore
+            proof = json.loads((root / 'reply/v046-subreply-list-renderer-proof.json').read_bytes())
+            thread_proof = json.loads((root / 'reply/v046-comment-thread-host-proof.json').read_bytes())
+            thread = restore(thread.split('\n', 2)[2], thread_proof['retainedToCurrent'])
+            thread = restore(thread, proof['retainedToCurrent'])
             policy = body('DesktopOriginalDynamicRichCommentPolicy.kt')
             self.assertIn('fun TopTag(modifier: Modifier = Modifier)', reply)
             self.assertNotIn('crossfade(!lightweightMode)', reply)

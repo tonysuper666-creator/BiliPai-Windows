@@ -219,6 +219,8 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
 }
 '''
     body=body.replace('resolveDynamicDetailBottomBarColor(', 'resolveDesktopOriginalReplyBottomBarColor(')
+    from v046_comment_list import advance_dynamic_detail_layout
+    body=advance_dynamic_detail_layout(REPO,body,OUTPUT)
     emit(path,body,'DesktopOriginalDynamicDetailLayout.kt',note='Original screen success layout/top bar. Card action ownership remains the existing Main host. Modal and liquid material are separately declared closure dependencies.')
 
 def thread_container():

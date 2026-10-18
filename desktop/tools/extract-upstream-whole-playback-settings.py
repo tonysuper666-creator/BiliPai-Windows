@@ -159,7 +159,10 @@ import com.bilipai.desktop.ui.playerIntPreferencesKey as intPreferencesKey
 import com.bilipai.desktop.ui.playerLongPreferencesKey as longPreferencesKey
 import com.bilipai.desktop.ui.playerStringPreferencesKey as stringPreferencesKey
 '''+''.join(x+'\n'for x in dict.fromkeys(imports))
-    emit('com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt',header+'\ninternal object DesktopOriginalPlaybackSettingsPreferences {\n'+body+'\n}\n')
+    from v046_comment_list import advance_settings as advance_v046_comment_settings
+    preferences = header+'\ninternal object DesktopOriginalPlaybackSettingsPreferences {\n'+body+'\n}\n'
+    preferences = advance_v046_comment_settings(repo, preferences, output, 'playback')
+    emit('com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt', preferences)
     # The original synchronous cache setters project into exactly the already used
     # mirror namespace; singleton volatile cache authority is not introduced on desktop.
     cache=read(CACHE);cachebody=cache[cache.index('{',cache.index('object PlayerSettingsCache'))+1:cache.rfind('\n}\n')]

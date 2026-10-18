@@ -59,6 +59,7 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
     val commentSort = desktopWindowsSettingsValue(remember(context) { DesktopOriginalReplySettings.getCommentDefaultSortMode(context.pluginContext) })
     val detailedCommentTime = desktopWindowsSettingsValue(remember(context) { Preferences.getDetailedCommentTimeEnabled(context) })
     val commentDecorations = desktopWindowsSettingsValue(remember(context) { Preferences.getCommentMemberDecorationsEnabled(context) })
+    val commentAvatarPush = desktopWindowsSettingsValue(remember(context) { Preferences.getCommentAvatarPushEnabled(context) })
     val codecChoices = listOf("avc1" to "AVC / H.264", "hev1" to "HEVC / H.265", "av01" to "AV1")
     DesktopWindowsSettingsPane("播放与音频", onBack) {
         DesktopWindowsSettingsGroup("解码与画质", modifier = Modifier.desktopSettingsSearchFocusAnchor(
@@ -148,6 +149,10 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             DesktopWindowsSettingsSwitch("详细评论时间", detailedCommentTime,
                 description = "显示完整时间；关闭后沿用原有相对时间规则。") { enabled ->
                 writer.launch { Preferences.setDetailedCommentTimeEnabled(context, enabled) }
+            }
+            DesktopWindowsSettingsSwitch("评论头像跟随", commentAvatarPush,
+                description = "滚动长评论时，头像跟随评论内容显示。") { enabled ->
+                writer.launch { Preferences.setCommentAvatarPushEnabled(context, enabled) }
             }
             DesktopWindowsSettingsSwitch("评论区个性装扮", commentDecorations,
                 description = "显示粉丝牌、铭牌和装扮卡片。") { enabled ->
