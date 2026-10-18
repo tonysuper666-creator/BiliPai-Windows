@@ -1,6 +1,6 @@
 # Task 3 — 评论修复分支编译检查（desktop/source261-comment-closure-compile-repair @ e46fe930d）
 
-结论：修复分支**不用再改代码**就能在 Linux 上编过主代码和测试代码；要求的 7 个 Python 测试全部通过（需加路径垫片）；23 个评论相关 JVM 测试类共 171 项，只有 1 项失败，这个失败在 256 基线上就有，不是这次修复引入的（推断，依据见下）。
+结论：修复分支**不用再改产品代码**就能在 Linux 上编过主代码和测试代码；要求的 7 个 Python 测试全部通过（需加路径垫片）；23 个评论相关 JVM 测试类共 171 项，只有 1 项失败，这个失败在 256 基线上就有，不是这次修复引入的（推断，依据见下）。
 
 ## 环境（14:4x 伦敦时间重新准备）
 - 云电脑之前被重置过，这次重装了 Temurin JDK 21.0.12.1+1（packages.adoptium.net apt 源）和 GNU time。
@@ -86,13 +86,20 @@
 **失败项**：`DesktopWindowsCommentSearchBindingTest.originalTimePagingOffsetsProgressAndTopDedupeAreConsumed`，测试期望全文搜索每页 ps=20，实际是 30。
 - 根因：生成的 VideoCommentViewModel 全文搜索用的是 `VIDEO_COMMENT_PAGE_SIZE`，它在固定上游切片 `desktop/upstream-slices/v036-video-comment-cache/VideoCommentLoadPolicy.kt:12` 里是 30（10-13 的提交 e3e1914cb 引入）；这个测试是 10-05 写的（fe40c13dc），当时按 20 写。
 - 跟本次修复无关：这两个提交都在 256 里；测试文件和 v036 切片在 256 和 261 之间完全相同；260/261 也没碰评论加载策略或页大小。**推断 256 上也失败，但我没在 256 上实际跑过。** 云端校验器跑的是按 cohort 过滤后的 test 子集，这个测试多半不在里面，所以云端一直没报。
-- **没改**：到底该改测试期望（30，跟固定上游一致）还是改页大小，是语义问题，需要用户决定。
+- 处理（15:4x 伦敦时间）：用户把决定交给主代理，最后定为**让测试期望对齐固定上游契约 30**。见下面的“测试期望调整”。
+
+## 测试期望调整（用户委托决定）
+- 由 Grok Build 修改，只改了 `desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsCommentSearchBindingTest.kt` 一行：`originalTimePagingOffsetsProgressAndTopDedupeAreConsumed` 里期望的两次搜索调用，`ps` 从字面量 `20` 改为 `VIDEO_COMMENT_PAGE_SIZE`。这个常量就是固定上游 VideoCommentLoadPolicy.kt 里的那个，值为 30；它是 internal，测试在同一模块，原来的通配 import（`...feature.video.viewmodel.*`）已经引入了它，所以没新增 import，也没放宽任何可见性。
+- 断言数量和严格程度不变。`loadedCount == 3` 来自测试数据（2 条置顶 + 第 1 页 1 条，去重后 3 条），偏移 `"next"` 来自 grpcNextOffset，都跟页大小无关，所以没动。
+- 验证：compileTestKotlin 通过（0 个错误）；DesktopWindowsCommentSearchBindingTest 13/13 通过，DesktopUserVipPinkTest 1/1 通过（同样的 Linux 参数）。
+- 这是一次**测试期望对齐固定上游契约（30）**，不是产品行为变化。
 
 ## 6. 提交
-本分支只加报告（grokbot-reports/task3.md），没有代码改动。
+- 4cf2fc9c2：报告。
+- 后续提交：上面那一行测试期望调整，加上这份报告的更新。
 
 ## 证据分类
 - 已在 Linux 编译通过：261 的 compileKotlin、compileTestKotlin（上述变通下）；260 校准复现了 24 个错误。
 - Python 检查通过：7 个指定测试全部通过（加垫片）。
-- JVM 测试通过：评论相关 23 个类里 170/171 项通过，DesktopUserVipPinkTest 通过；1 项失败，看起来是基线就有的问题。
+- JVM 测试通过：评论相关 23 个类里 170/171 项通过，DesktopUserVipPinkTest 通过；唯一失败的那项是基线就有的页大小期望问题，期望改为 30 后 DesktopWindowsCommentSearchBindingTest 13/13 通过（其余 22 个类没在改动后重跑，测试代码只改了这一个文件）。
 - 未验证：Windows 云端验证、界面、真机。

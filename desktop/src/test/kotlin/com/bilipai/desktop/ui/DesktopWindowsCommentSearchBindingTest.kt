@@ -57,7 +57,7 @@ class DesktopWindowsCommentSearchBindingTest {
             val binding=h.binding(); binding.load()
             assertTrue(h.vm.fullSearchState.value.isLoading)
             assertEquals(3,h.vm.fullSearchState.value.loadedCount)
-            assertEquals(listOf(Call(170001,1,1,20,2,null),Call(170001,1,2,20,2,"next")),h.searchCalls)
+            assertEquals(listOf(Call(170001,1,1,VIDEO_COMMENT_PAGE_SIZE,2,null),Call(170001,1,2,VIDEO_COMMENT_PAGE_SIZE,2,"next")),h.searchCalls)
             second.complete(Result.success(data(3,end=true)))
             assertTrue(h.vm.fullSearchState.value.isReady)
             assertEquals(listOf(1L,2L,3L),h.vm.fullSearchReplies.value.map { it.rpid })
