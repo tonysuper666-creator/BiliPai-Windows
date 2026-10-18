@@ -1,4 +1,4 @@
-"""Exercise three actual source-admission guards with the native173 source fixture.
+"""Exercise three actual source-admission guards with the native261 source fixture.
 
 The complete source patch helper generated it from fixed archive bytes with Git
 identity/status mocked. No native build, original Git checkout, DLL or GPU proof.
@@ -13,7 +13,7 @@ import unittest
 
 REPO = Path(__file__).resolve().parents[3]
 FIXTURE = REPO / 'desktop/tools/tests/fixtures/mpv-rtx-present-v1-native-patch-receipt.json'
-FIXTURE_SHA256 = 'd1c8357ca27184192dd8900400d80389d549bfc88166edb8a332df56fd93767a'
+FIXTURE_SHA256 = 'edf86a51734b25884f67d0eafcdfe916a2710c935f412c1dfac2bc7949b7c576'
 SCRIPT = r'''
 $ErrorActionPreference = 'Stop'
 $taskRoot = $env:BILIPAI_RTX_PROTOCOL_TEST_ROOT
