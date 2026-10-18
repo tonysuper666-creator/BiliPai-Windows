@@ -184,6 +184,25 @@ class OriginalCommentListSources(unittest.TestCase):
         self.assertIn('avatarListState = avatarListState', current)
         self.assertTrue(proof['noAdditionalSessionCacheOrTransport'])
 
+    def test_copied_original_declarations_name_only_symbols_the_pinned_tree_provides(self):
+        # Cloud compile 39083342426: these symbols were used by the copied v046 declarations but
+        # neither imported by the retained Windows files nor present in the pinned design-system.
+        reply = body(self.output/'actual'/comments.PACKAGE/'DesktopOriginalReplyComponents.kt')
+        nested = body(self.output/'actual'/comments.PACKAGE/'DesktopOriginalSubReplyDetailComponents.kt')
+        for text in (reply, nested):
+            self.assertIn('import com.android.purebilibili.core.ui.AppContentColors\n', text)
+            self.assertNotIn('core.ui.components.userVipPink()', text)
+            self.assertIn('com.bilipai.desktop.ui.desktopUserVipPink()', text)
+        self.assertEqual(2, reply.count('desktopUserVipPink()'))
+        self.assertEqual(1, nested.count('desktopUserVipPink()'))
+        self.assertIn('import androidx.compose.runtime.mutableIntStateOf\n', nested)
+        compat = (self.output/'actual'/comments.PACKAGE/'DesktopOriginalCommentMotionCompat.kt').read_text(encoding='utf8')
+        self.assertIn('internal val AppBottomSheetMotion.reducedMotion: Boolean get() = false', compat)
+        for name in ['CommentContentReveal.kt', 'CommentCascadingContent.kt']:
+            self.assertEqual(self.sources[name], (self.output/'actual'/comments.PACKAGE/name).read_text(encoding='utf8'))
+        desktop = (REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopUserVipPink.kt').read_text(encoding='utf8')
+        self.assertIn('Color(0xFFD44E7D) else Color(0xFFFF6699)', desktop)
+
 
 class ConnectedCommentPanelSources(unittest.TestCase):
     @classmethod
@@ -436,6 +455,35 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         with self.assertRaises(AssertionError):
             comments.advance_bangumi_ui(REPO, 'unrelated parent', self.output/'bad',
                 'com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerContent.kt')
+
+    def test_every_generated_owner_declares_each_bottom_bar_helper_once_and_imports_what_it_names(self):
+        labels = ['comments', 'content', 'holder', 'tablet', 'bangumi', 'dynamic', 'fullscreen', 'bgm']
+        for helper in ['shouldUseFloatingLiquidBottomInputBar', 'resolveBottomInputBarContentBottomPadding']:
+            owners = [path.name for label in labels for path in (self.output/label).rglob('*.kt')
+                      if 'fun '+helper+'(' in path.read_text(encoding='utf8')]
+            self.assertEqual(['DesktopOriginalDetailInputPadding.kt'], owners, helper)
+        bar = self.generated('tablet', 'DesktopOriginalBottomInputBar.kt')
+        self.assertIn('fun shouldUseFrostedBottomInputBar(', bar)
+        self.assertEqual(self.sources['BottomInputBar.kt'],
+                         restore(bar, self.proof('tablet', 'v046-shared-bottom-input-bar-proof')['originalToWindows']))
+        host = self.generated('fullscreen', 'VideoCommentSheetHost.kt')
+        self.assertIn('import com.android.purebilibili.core.ui.AppContentColors\n', host)
+        search = self.generated('comments', 'CommentSearchSheet.kt')
+        self.assertIn('com.bilipai.desktop.ui.desktopUserVipPink()', search)
+        self.assertNotIn('core.ui.components.userVipPink()', search)
+
+    def test_landscape_comment_panel_declares_and_receives_the_real_pinned_set(self):
+        content = self.generated('content', 'DesktopOriginalVideoContentSection.kt')
+        panel = comments.declaration(self.syntax, content, 'LandscapeCommentPanel')
+        self.assertIn('    pinnedReplyIds: Set<Long> = emptySet(),\n    modifier: Modifier = Modifier,\n) {', panel)
+        self.assertIn('pinnedReplyIds = pinnedReplyIds', panel)
+        holder = self.generated('holder', 'VideoDetailScreenStateHolder.kt')
+        calls = comments.call_spans(self.syntax, holder, 'LandscapeCommentPanel')
+        self.assertEqual(2, len(calls))
+        for first, last in calls:
+            self.assertEqual(1, holder[first:last].count('pinnedReplyIds = commentState.pinnedReplyIds'))
+        proof = self.proof('holder', 'v046-landscape-comment-pins-proof')
+        self.assertEqual(2, proof['actualLandscapeCallers'])
 
 
 if __name__ == '__main__':

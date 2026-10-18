@@ -87,6 +87,38 @@ def once(text, before, after):
     return text.replace(before, after, 1)
 
 
+def ensure_import(text, name):
+    """Add one import for a symbol the copied original declaration already names; imports need no order."""
+    line = 'import '+name+'\n'
+    if line in text:
+        return text
+    first = text.index('\nimport ')+1
+    return text[:first]+line+text[first:]
+
+
+# The pinned design-system UserVipBadge predates upstream's shared VIP pink. The same two
+# values live in the desktop-owned function until that file itself is advanced.
+VIP_PINK_ORIGINAL = 'com.android.purebilibili.core.ui.components.userVipPink()'
+VIP_PINK_WINDOWS = 'com.bilipai.desktop.ui.desktopUserVipPink()'
+
+
+# The pinned v0.3.7 AppBottomSheetMotion has no reduced-motion member (it arrived with v0.4.x).
+# Both original v046 consumers already OR this flag with the original uiEntranceAnimationEnabled
+# theme switch, so the pinned contract is "not reduced". A real member of the same name wins over
+# this extension, so advancing AppSheetComponents.kt retires the compatibility file by itself.
+COMPAT_REDUCED_MOTION = '''package com.android.purebilibili.feature.video.ui.components
+
+import com.android.purebilibili.core.ui.AppBottomSheetMotion
+
+internal val AppBottomSheetMotion.reducedMotion: Boolean get() = false
+'''
+
+
+def windows_vip_pink(text, expected):
+    assert text.count(VIP_PINK_ORIGINAL) == expected, ('Original VIP colour owners changed', text.count(VIP_PINK_ORIGINAL))
+    return text.replace(VIP_PINK_ORIGINAL, VIP_PINK_WINDOWS)
+
+
 def translation_job(parser, text):
     marker = 'isTranslating = true'
     assert text.count(marker) == 1
@@ -128,7 +160,10 @@ def advance_reply_components(repo, before, output):
                       'CommentGrpcRepository.translateReply']:
         assert forbidden not in body, forbidden
     assert 'avatarListState: LazyListState? = null' in body and 'PushingReplyMemberAvatar(' in body
+    body = windows_vip_pink(body, 2)
+    assert body.count('AppContentColors.error()') == 1
     after = once(before, old, body)
+    after = ensure_import(after, 'com.android.purebilibili.core.ui.AppContentColors')
     if 'import androidx.compose.foundation.lazy.LazyListState\n' not in after:
         after = once(after, 'package com.android.purebilibili.feature.video.ui.components\n',
                      'package com.android.purebilibili.feature.video.ui.components\n\nimport androidx.compose.foundation.lazy.LazyListState\n')
@@ -165,6 +200,8 @@ def advance_subreply_components(repo, before, output):
                       'BlockedUpRepository.getInstance', 'Toast.makeText', 'Intent(',
                       'CommentGrpcRepository.translateReply']:
         assert forbidden not in body, forbidden
+    body = windows_vip_pink(body, 1)
+    assert body.count('AppContentColors.error()') == 1 and body.count('mutableIntStateOf(') == 1
     host = once(old_host, '    val appearance = rememberVideoCommentAppearance()\n',
                 '    val appearance = rememberVideoCommentAppearance()\n    val avatarPushEnabled = rememberCommentAvatarPushEnabled()\n')
     calls = call_spans(parser, host, 'SubReplyDetailItem')
@@ -194,6 +231,9 @@ def advance_subreply_components(repo, before, output):
         line = 'import '+imported+'\n'
         if line not in after:
             after = once(after, 'import androidx.compose.ui.Modifier\n', 'import androidx.compose.ui.Modifier\n'+line)
+    # The copied original renderer names these two symbols; the retained Windows file never imported them.
+    for imported in ['androidx.compose.runtime.mutableIntStateOf', 'com.android.purebilibili.core.ui.AppContentColors']:
+        after = ensure_import(after, imported)
     save(repo, output, 'v046-subreply-list-renderer-proof', dict(upstreamCommit=COMMIT,
         sourceManifestSHA256=MANIFEST_SHA256, completeOriginalItemDeclaration=True,
         originalToWindows=inverse_proof(original, body), retainedToCurrent=inverse_proof(before, after),
@@ -290,6 +330,9 @@ def emit_shared(repo, output):
     emitted = {}
     for name in ['NagramChatAvatarPlacement.kt', 'CommentContentReveal.kt', 'CommentCascadingContent.kt']:
         emitted[PACKAGE+name] = sources[name]
+    assert sources['CommentContentReveal.kt'].count('sheetMotion.reducedMotion') == 1
+    assert sources['CommentCascadingContent.kt'].count('motion.reducedMotion') == 1
+    emitted[PACKAGE+'DesktopOriginalCommentMotionCompat.kt'] = COMPAT_REDUCED_MOTION
     original = sources['CommentAvatarPush.kt']
     body = once(original, 'import androidx.compose.ui.platform.LocalContext', 'import com.bilipai.desktop.ui.LocalDesktopCommentBindings')
     body = once(body, 'import androidx.lifecycle.compose.collectAsStateWithLifecycle', 'import androidx.compose.runtime.collectAsState')
@@ -369,6 +412,7 @@ def advance_search_sheet(repo, before, output):
     body = once(body, 'import com.android.purebilibili.core.ui.AppModalBottomSheet\n',
                 'import com.bilipai.desktop.ui.DesktopWindowsCommentSearchModalSheet as AppModalBottomSheet\n')
     assert 'val glassActive = false' in body
+    body = windows_vip_pink(body, 1)
     assert 'avatarListState = listState.takeIf { avatarPushEnabled }' in body
     assert 'platform.copyText(entry.reply.content.message, "评论")' in before
     assert 'platform.showFeedback("评论已复制")' in before
@@ -398,7 +442,9 @@ def advance_main_comment_list(repo, before, output):
     body = once(body, 'resolveVideoCommentSkeletonSlotCount(',
                 'com.android.purebilibili.feature.video.viewmodel.resolveVideoCommentSkeletonSlotCount(')
     body = once(body, 'LazyColumn(', 'com.android.purebilibili.core.ui.components.AppLazyColumn(')
+    assert body.count('AppContentColors.error()') == 1
     after = once(before, old, body)
+    after = ensure_import(after, 'com.android.purebilibili.core.ui.AppContentColors')
     save(repo, output, 'v046-main-comment-list-proof', dict(upstreamCommit=COMMIT,
         sourceManifestSHA256=MANIFEST_SHA256, completeOriginalListDeclaration=True,
         originalToWindows=inverse_proof(original, body), retainedToCurrent=inverse_proof(before, after),
@@ -457,6 +503,12 @@ def advance_content_comments(repo, before, output):
     after = once(after, state, projected)
     after = once(after, '    val dissolvingIds = commentState.dissolvingIds',
                  '    val dissolvingIds = commentState.dissolvingIds\n    val pinnedReplyIds = commentState.pinnedReplyIds')
+    # The landscape panel is a separate Windows-owned function: it needs its own real pinned input
+    # (its callers read the same generic VM state) instead of a name from the portrait owner.
+    landscape = declaration(parser, after, 'LandscapeCommentPanel')
+    assert 'pinnedReplyIds' not in landscape
+    after = once(after, landscape, once(landscape, '    modifier: Modifier = Modifier,\n) {\n',
+                 '    pinnedReplyIds: Set<Long> = emptySet(),\n    modifier: Modifier = Modifier,\n) {\n'))
     spans = call_spans(parser, after, 'VideoCommentTab')
     assert len(spans) == 2, 'Ordinary inline/fullscreen comment list owners changed'
     for first, last in reversed(spans):
@@ -538,6 +590,20 @@ def advance_tablet_avatars(repo, before, output, label):
     return after
 
 
+def advance_landscape_pins(repo, before, output):
+    parser = load(repo, 'v046_landscape_pins_syntax', 'sync-upstream.py')
+    spans = call_spans(parser, before, 'LandscapeCommentPanel')
+    assert len(spans) == 2, 'Actual landscape comment panel callers changed'
+    after = before
+    for first, last in reversed(spans):
+        marker = 'dissolvingIds = commentState.dissolvingIds,'
+        advanced = once(after[first:last], marker, marker+' pinnedReplyIds = commentState.pinnedReplyIds,')
+        after = after[:first]+advanced+after[last:]
+    save(repo, output, 'v046-landscape-comment-pins-proof', dict(upstreamCommit=COMMIT,
+        actualLandscapeCallers=2, sameGenericVmPinnedSet=True, retainedToCurrent=inverse_proof(before, after)))
+    return after
+
+
 def advance_phone_comments(repo, before, output):
     parser = load(repo, 'v046_phone_comment_syntax', 'sync-upstream.py')
     spans = call_spans(parser, before, 'VideoContentCommentState')
@@ -578,6 +644,14 @@ def advance_bottom_bar(repo, before, output):
                 'DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.SCROLL_HIDE')
     assert 'SettingsManager' not in body and 'LocalContext' not in body
     assert body.count('likeStatusKnown = likeStatusKnown,') >= 4, 'Incomplete original known-state chain'
+    # Both helpers are byte-identical to the v046 originals and already live in the sole
+    # DesktopOriginalDetailInputPadding owner; a second copy is a Kotlin redeclaration.
+    selector = load(repo, 'v046_bottom_bar_helper_selector', 'extract-appearance-platform.py')
+    for helper in ['shouldUseFloatingLiquidBottomInputBar', 'resolveBottomInputBarContentBottomPadding']:
+        selected = selector.declarations(parser, body, [helper]).rstrip()
+        assert selected == selector.declarations(parser, original, [helper]).rstrip()
+        assert selected.startswith('internal fun '+helper) and selected.count('fun ') == 1, helper
+        body = once(body, selected, '')
     save(repo, output, 'v046-shared-bottom-input-bar-proof', dict(upstreamCommit=COMMIT,
         sourceManifestSHA256=MANIFEST_SHA256, completeOriginalFile=True,
         originalToWindows=inverse_proof(original, body), retainedToCurrent=inverse_proof(before, body),

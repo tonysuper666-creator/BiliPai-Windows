@@ -110,6 +110,9 @@ def generate(repo, output, standalone=False):
         if s['output'].endswith('/VideoDetailPhoneContent.kt'):
             from v046_comment_list import advance_phone_comments
             text=advance_phone_comments(repo,text,output)
+        elif s['output'].endswith('/VideoDetailScreenStateHolder.kt'):
+            from v046_comment_list import advance_landscape_pins
+            text=advance_landscape_pins(repo,text,output)
         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf8'));written.append(target)
     return written
