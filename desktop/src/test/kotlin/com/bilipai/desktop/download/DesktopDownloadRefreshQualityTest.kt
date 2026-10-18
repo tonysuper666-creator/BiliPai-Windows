@@ -77,7 +77,7 @@ class DesktopDownloadRefreshQualityTest {
             assertEquals(expectedDirectory, Path.of(task.directory)); assertEquals(id, Files.readString(expectedDirectory.resolve(".bilipai-download")))
             assertTrue(Path.of(task.outputFile!!).startsWith(expectedDirectory))
             assertContentEquals("merged".toByteArray() + bytes, Files.readAllBytes(Path.of(manager.offlinePlayback(id).videoUrl)))
-        } finally { manager.close() }
+        } finally { manager.shutdownForApplicationExit() }
         val restored = DesktopDownloadManager(client, state, muxer, publication = lease())
         try {
             val task = restored.tasks.value.single()
@@ -679,7 +679,7 @@ class DesktopDownloadRefreshQualityTest {
             assertEquals(paused.item.createdAt,
                 persisted.getValue("item").jsonObject.getValue("createdAt").jsonPrimitive.long)
             assertTrue(requests.none { it.url.queryParameter("token") == "fresh" })
-            manager.close()
+            manager.shutdownForApplicationExit()
 
             val coldManager = DesktopDownloadManager(client, state, muxer, publication = lease())
             restored = coldManager
