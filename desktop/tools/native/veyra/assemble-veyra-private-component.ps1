@@ -190,7 +190,7 @@ try{
     $presentation=$ProducerVariant-ceq'bilipai-veyra-rtx-present-v1'
     $templateContract='tools/native/veyra/veyra-profile-template.json';$buildFolder='third-party/libmpv/build/rtx-core-v1';$manifestLeaf='bilipai-rtx-source-manifest.json'
     $contracts=[ordered]@{
-        'tools/native/veyra/verify-veyra-runtime.ps1'='ee94c3957f23d53eff885f8aadbabe6882517167436a9290bb562e48b517ff8f'
+        'tools/native/veyra/verify-veyra-runtime.ps1'='a0e1e04c90b3ac90899e1fbb7c123f6ef65c2472dd3f99e58561b63f2df3ed55'
         'tools/native/veyra/veyra-profile-template.json'='b9d6201b7e33d3e042edaf0175683d6166a5e013dc85825c98ecc9e740cd2bbc'
         'third-party/libmpv/build/rtx-core-v1/fixed-inputs.json'='b1cfbd180bd2c0c00257f29176707cc965cd7f849a22271cae402259778bceb7'
         'third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json'='9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f'
@@ -200,8 +200,8 @@ try{
     if($presentation){
         foreach($key in @('tools/native/veyra/veyra-profile-template.json','third-party/libmpv/build/rtx-core-v1/fixed-inputs.json','third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json','third-party/libmpv/build/rtx-core-v1/filter-registration-edits.json')){[void]$contracts.Remove($key)}
         $templateContract='tools/native/veyra/veyra-presentation-profile-template.json';$buildFolder='third-party/libmpv/build/rtx-present-v1';$manifestLeaf='bilipai-rtx-presentation-source-manifest.json'
-        $contracts[$templateContract]='0ac53db0ba390e73c4741395e4122aa88a475fdbeb1af7300fb2986a34b6a323'
-        $contracts[$buildFolder+'/fixed-inputs.json']='b95925745b72a671f660e7678860f8d6df0fe3ef970aada653a251a7ef5a1e0a'
+        $contracts[$templateContract]='5b18ba2cd2bb0c6f5b35f696caa3f926b34d352ff719c142c37c0618651e75a3'
+        $contracts[$buildFolder+'/fixed-inputs.json']='f3082169dce6ed9999a279bbe69b0dbe0a7f5a3d2fbd849ab923830cb65065d4'
         $contracts[$buildFolder+'/'+$manifestLeaf]='822bc81a4451977f3d074c5c31347157fff5020269ba79541b7b05a534bed19b'
         $contracts[$buildFolder+'/filter-registration-edits.json']='95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042'
         $contracts[$buildFolder+'/presentation-edits.json']='6f4ca6c34c843ab722db1aca2f7a8f75cb7eb12cdc9ed27635346e7db1a17ada'

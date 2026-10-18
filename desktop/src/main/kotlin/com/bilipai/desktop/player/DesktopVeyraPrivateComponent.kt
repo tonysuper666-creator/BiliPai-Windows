@@ -295,7 +295,7 @@ internal class DesktopVeyraPrivateComponent(
         private const val PRESENTATION_EDITS_SHA256 = "6f4ca6c34c843ab722db1aca2f7a8f75cb7eb12cdc9ed27635346e7db1a17ada"
         private const val PRESENTATION_HELPER_SHA256 = "b8a5b00b850e357e2e4fef2eb0bae174ccb234d8384c2ccec5c2064010c2887b"
         private const val PRESENTATION_REGISTRATION_SHA256 = "95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042"
-        private const val VERIFIER_SOURCE_SHA256 = "ee94c3957f23d53eff885f8aadbabe6882517167436a9290bb562e48b517ff8f"
+        private const val VERIFIER_SOURCE_SHA256 = "a0e1e04c90b3ac90899e1fbb7c123f6ef65c2472dd3f99e58561b63f2df3ed55"
     }
 }
 
