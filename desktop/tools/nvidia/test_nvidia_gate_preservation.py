@@ -5,6 +5,8 @@ the presentation tracker, the native frame token and bridge sources (frozen hash
 `active = proved` assignment and every original conjunct of `proved`, the position and shape of the
 additive LUID vetoes, the exact adapter option call, the preserved Python-pinned anchors, and the
 lexical rules for the new package (no proof writer, no forbidden API, no shader-list option).
+Slice S7 adds the checks of the residual mpv scaler profile: its default-off switch, its closed option
+table, its non-throwing setter and the one place the player calls it before the core is initialised.
 
 The hash fixture below was computed from the tree at slice S2 (the Native261 head plus the slices
 committed so far). Only Root updates it, together with a deliberate change of one of these files. It
@@ -88,9 +90,13 @@ OPTIONS_HEADER = (
     "val qualityLevel: Int = 4, val srEnabled: Boolean = true, val intensityPercent: Int = 100) {"
 )
 
+# The shader-list option name is assembled so that this file never spells it out. It is a gate bit of the
+# presentation proof, so no source file under the application tree may contain it.
+SHADER_LIST_OPTION = "glsl" + "-shaders"
+
 # Literals and words that must never appear in a new package file (design sections 13 and 16 (c)).
 NEW_FILE_FORBIDDEN = (
-    "VeyraPresentationTracker", "proved =", "veyraReceipt", "glsl-shaders", "interpolation", "video-sync",
+    "VeyraPresentationTracker", "proved =", "veyraReceipt", SHADER_LIST_OPTION, "interpolation", "video-sync",
     "d3d11-flip", "target-colorspace-hint", "NvidiaVideoState", "mutableNvidiaVideo", "hdrConversionActive",
 )
 
@@ -346,9 +352,9 @@ class AdapterPinShapeTest(unittest.TestCase):
         self.assertIn("applyNvidiaVideo(native, handle, action)", text)
 
     def test_the_shader_list_option_literal_is_absent_everywhere_it_is_pinned(self):
-        self.assertNotIn("glsl-shaders", self.text)
+        self.assertNotIn(SHADER_LIST_OPTION, self.text)
         for path in changed_or_new_main_sources():
-            self.assertNotIn("glsl-shaders", path.read_text(encoding="utf-8"), path.name)
+            self.assertNotIn(SHADER_LIST_OPTION, path.read_text(encoding="utf-8"), path.name)
 
     def test_the_player_takes_its_monitor_as_a_neutral_default_internal_property(self):
         self.assertIn("    internal val gpuCapability: DesktopNvidiaCapabilityMonitor = DesktopNvidiaCapabilityMonitor.neutral(),\n"
@@ -539,7 +545,7 @@ class EnvironmentLayerReadOnlyTest(unittest.TestCase):
             self.assertIsNone(re.search(r"(?<![A-Za-z0-9_])active\s*=(?!=)", code), path.name)
         for path in (PROBE, MONITOR, RULES, ACTIVATION, HDR_DISPLAY):
             text = source.read(path)
-            for forbidden in ("VeyraPresentationTracker", "proved", "veyraReceipt", "glsl-shaders"):
+            for forbidden in ("VeyraPresentationTracker", "proved", "veyraReceipt", SHADER_LIST_OPTION):
                 self.assertNotIn(forbidden, text, "%s: %s" % (path.name, forbidden))
 
 
@@ -626,6 +632,210 @@ class HdrDisplayAdditiveTest(unittest.TestCase):
         for literal in self.literals:
             for word in ("DLSS", "Tensor", "帧生成", "插帧", "补帧", "HDR10+", "支持 HDR", "已应用"):
                 self.assertNotIn(word, literal)
+
+
+# ---- Slice S7: the residual mpv scaler profile behind a default-off switch (design section 12) ----
+
+SCALER_PROFILE = source.KN / "DesktopNvidiaMpvScalerProfile.kt"
+SCALER_PROFILE_TEST = source.ST / "kotlin/com/bilipai/desktop/nvidia/DesktopNvidiaMpvScalerProfileTest.kt"
+
+# The documented rows (design section 12): HQ for the HIGH tier, HQ-ultra for the ULTRA tier.
+SCALER_HQ_ROWS = [("scale", "ewa_lanczossharp"), ("cscale", "ewa_lanczossharp"), ("scale-antiring", "0.6"),
+                  ("dscale", "mitchell")]
+SCALER_HQ_ULTRA_ROWS = [("scale", "ewa_lanczossharp"), ("cscale", "ewa_lanczossharp"), ("scale-antiring", "0.6"),
+                        ("dscale", "ewa_lanczos")]
+SCALER_OPTION_NAMES = {"scale", "cscale", "scale-antiring", "dscale"}
+# Every string literal the profile file may contain: the four option names and their values. Nothing else, so a
+# fifth option (or any text) cannot be added without changing this test.
+SCALER_STRING_LITERALS = SCALER_OPTION_NAMES | {"ewa_lanczossharp", "mitchell", "ewa_lanczos", "0.6"}
+
+# Words that no code of the profile may contain (comments are removed first). Design section 12: never the shader-list
+# option, frame blending, display-sync timing, debanding, dithering, a named quality profile, a filter after the NVIDIA
+# filter or a swap chain change. The whole text is also covered by NEW_FILE_FORBIDDEN.
+SCALER_FORBIDDEN_CODE_WORDS = (
+    SHADER_LIST_OPTION, "glsl-shader-opts", "interpolation", "tscale", "video-sync", "deband", "dither",
+    "error-diffusion", "high-quality", "d3d11-flip", "target-colorspace-hint", "swapchain", "bitblt", "hwdec", "gpu-api",
+)
+
+
+class ScalerProfileTableTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.text = source.read(SCALER_PROFILE)
+        cls.code, cls.literals = source.lex_kotlin(cls.text)
+        cls.block = source.marked_block(cls.text, "MPV-SCALER-TABLE")
+
+    def rows(self, name):
+        start = self.block.index("internal val %s: List<NvidiaMpvScalerOption> = listOf(" % name)
+        body = self.block[start:self.block.index("\n)\n", start)]
+        return re.findall(r'NvidiaMpvScalerOption\("([^"]+)", "([^"]+)"\)', body)
+
+    def test_the_file_is_in_the_new_package_and_directory(self):
+        self.assertTrue(self.text.startswith("package com.bilipai.desktop.nvidia\n"))
+        self.assertEqual(source.KN, SCALER_PROFILE.parent)
+        self.assertIn(SCALER_PROFILE, new_package_files())
+
+    def test_the_two_tables_hold_exactly_the_documented_rows(self):
+        self.assertEqual(SCALER_HQ_ROWS, self.rows("NVIDIA_MPV_SCALER_HQ_OPTIONS"))
+        self.assertEqual(SCALER_HQ_ULTRA_ROWS, self.rows("NVIDIA_MPV_SCALER_HQ_ULTRA_OPTIONS"))
+
+    def test_the_ultra_table_differs_from_the_hq_table_only_in_the_downscaler(self):
+        hq = dict(self.rows("NVIDIA_MPV_SCALER_HQ_OPTIONS"))
+        ultra = dict(self.rows("NVIDIA_MPV_SCALER_HQ_ULTRA_OPTIONS"))
+        self.assertEqual("mitchell", hq.pop("dscale"))
+        self.assertEqual("ewa_lanczos", ultra.pop("dscale"))
+        self.assertEqual(hq, ultra)
+        self.assertEqual(SCALER_OPTION_NAMES, set(name for name, _ in self.rows("NVIDIA_MPV_SCALER_HQ_OPTIONS")))
+
+    def test_every_string_literal_of_the_file_belongs_to_the_documented_rows(self):
+        self.assertEqual(SCALER_STRING_LITERALS, set(self.literals))
+        for literal in self.literals:
+            self.assertRegex(literal, r"^[a-z0-9_.-]+$")
+
+    def test_no_forbidden_option_or_word_appears_in_the_code(self):
+        for word in SCALER_FORBIDDEN_CODE_WORDS:
+            self.assertNotIn(word, self.code, word)
+        # The profile names no route, no native bridge and no post filter.
+        for word in ("NvidiaVideoOptions", "NvidiaVideoBackend", "MpvVeyra", "d3d11", "vf_bilipai"):
+            self.assertNotIn(word, self.code, word)
+
+    def test_the_file_is_pure_and_imports_nothing(self):
+        self.assertEqual([], re.findall(r"^import ", self.text, re.M))
+        for forbidden in ("System.", "Thread", "com.sun.jna", "Native", "Pointer", "Memory", "kotlinx", "java.",
+                          "Runtime", "File(", "Files."):
+            self.assertNotIn(forbidden, self.code, forbidden)
+
+    def test_the_switch_is_declared_once_is_false_and_is_used_only_as_a_default(self):
+        self.assertEqual(1, self.text.count("internal const val MPV_SCALER_PROFILE_ENABLED: Boolean = false\n"))
+        self.assertEqual(2, self.code.count("MPV_SCALER_PROFILE_ENABLED"), "the declaration and the default argument")
+        self.assertIn("    enabled: Boolean = MPV_SCALER_PROFILE_ENABLED,\n", self.text)
+        for path in sorted((source.REPO / "desktop/src/main").rglob("*.kt")):
+            if path != SCALER_PROFILE:
+                self.assertNotIn("MPV_SCALER_PROFILE_ENABLED", path.read_text(encoding="utf-8"), path.name)
+
+    def test_the_profile_is_selected_by_the_tier_table_for_the_ultra_and_high_tiers_only(self):
+        profiles = source.tier_profiles()
+        self.assertEqual({"ULTRA": "NvidiaMpvScalerClass.HQ_ULTRA", "HIGH": "NvidiaMpvScalerClass.HQ",
+                          "BALANCED": "NvidiaMpvScalerClass.MPV_DEFAULT", "LIGHT": "NvidiaMpvScalerClass.MPV_DEFAULT"},
+                         {tier: row["mpvScaler"] for tier, row in profiles.items()})
+        self.assertIn("if (capability is NvidiaCapability.Capable) {\n        nvidiaTierProfile(capability.tier).mpvScaler",
+                      self.text)
+        self.assertIn("if (enabled) nvidiaMpvScalerOptions(nvidiaMpvScalerClassFor(capability)) else emptyList()", self.text)
+
+    def test_the_setter_never_throws_and_passes_on_only_the_table_rows(self):
+        apply = kotlin_member(self.text, "internal fun applyNvidiaMpvScalerOptions(")
+        code, _ = source.lex_kotlin(apply)
+        self.assertEqual(1, code.count("catch (_: Throwable)"))
+        for forbidden in ("throw ", "error(", "require(", "check(", "!!", "checkResult", "exitProcess"):
+            self.assertNotIn(forbidden, code, forbidden)
+        self.assertEqual(1, code.count("setOption("), "the one call of the injected setter")
+        self.assertLess(code.index("option !in NVIDIA_MPV_SCALER_ALLOWED_ROWS"), code.index("setOption("))
+        self.assertIn("(NVIDIA_MPV_SCALER_HQ_OPTIONS + NVIDIA_MPV_SCALER_HQ_ULTRA_OPTIONS).toSet()", self.text)
+        # The result carries counts and option names, never a value.
+        start = self.text.index("internal data class NvidiaMpvScalerApplyResult(")
+        result = self.text[start:self.text.index("\n)\n", start)]
+        self.assertEqual(["requested", "accepted", "rejectedNames"], re.findall(r"val (\w+): ", result))
+
+    def test_the_file_never_names_the_proof_machinery_or_writes_an_active_flag(self):
+        for forbidden in NEW_FILE_FORBIDDEN + FORBIDDEN_API:
+            self.assertNotIn(forbidden, self.text, forbidden)
+        self.assertIsNone(re.search(r"(?<![A-Za-z0-9_])active\s*=(?!=)", self.code))
+        self.assertNotIn("proved", self.text)
+
+
+class ScalerPlayerSeamTest(unittest.TestCase):
+    """The one place the player applies the profile: after the adapter pin, before the required startup options and
+    before the core is initialised, through the non-throwing setter, and only through the switch of the profile file."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.text = source.read(MPV_PLAYER)
+        cls.run_body = kotlin_member(cls.text, "private fun run()")
+        match = re.search(
+            r"if \(softwareTarget == null && com\.sun\.jna\.Platform\.isWindows\(\)\) \{\s+val scalerNative", cls.run_body)
+        assert match is not None
+        cls.start = match.start()
+        cls.block = collapse(cls.run_body[cls.start:cls.run_body.index("options.forEach {", cls.start)])
+
+    def test_the_imports_are_the_two_helpers_and_nothing_else_of_the_profile(self):
+        self.assertEqual(1, self.text.count("import com.bilipai.desktop.nvidia.applyNvidiaMpvScalerOptions\n"))
+        self.assertEqual(1, self.text.count("import com.bilipai.desktop.nvidia.nvidiaMpvScalerOptionsFor\n"))
+        self.assertEqual(2, len(re.findall(r"^import com\.bilipai\.desktop\.nvidia\.\w*[Ss]caler\w*$", self.text, re.M)))
+
+    def test_the_block_is_exactly_the_guarded_non_throwing_application(self):
+        self.assertEqual(
+            "if (softwareTarget == null && com.sun.jna.Platform.isWindows()) { "
+            "val scalerNative: MpvNative = native val scalerHandle: Pointer = handle "
+            "applyNvidiaMpvScalerOptions(nvidiaMpvScalerOptionsFor(gpuCapability.capability.value)) { name, value -> "
+            "scalerNative.mpv_set_option_string(scalerHandle, name, value) } }",
+            self.block)
+        self.assertEqual(2, self.text.count("applyNvidiaMpvScalerOptions"), "the import and the one call")
+        self.assertEqual(2, self.text.count("nvidiaMpvScalerOptionsFor"), "the import and the one call")
+
+    def test_the_switch_cannot_be_passed_or_named_by_the_player(self):
+        self.assertNotIn("MPV_SCALER_PROFILE_ENABLED", self.text)
+        self.assertNotIn("enabled = ", self.block)
+        self.assertNotIn("enabled=", self.block)
+
+    def test_the_block_sits_after_the_pin_and_before_the_startup_options_and_the_core_initialisation(self):
+        run = self.run_body
+        pin = run.index("val adapterPinRequestResult = adapterPinResult")
+        scaler = run.index("applyNvidiaMpvScalerOptions(")
+        options = run.index("options.forEach { (name, value) ->")
+        initialise = run.index("native.mpv_initialize(handle)")
+        self.assertLess(pin, scaler)
+        self.assertLess(scaler, options)
+        self.assertLess(options, initialise)
+        self.assertEqual(2, run.count("if (softwareTarget == null && com.sun.jna.Platform.isWindows()) {"),
+                         "the adapter pin and the scaler profile")
+        # The pin block is untouched.
+        self.assertIn("val adapterPin = gpuCapability.pinFor()", run)
+
+    def test_the_block_touches_no_state_proof_or_throwing_helper(self):
+        for forbidden in ("mutableNvidiaVideo", "pendingNvidiaAction", "active", "proved", "checkResult", "synchronized",
+                          "mpv_set_property", "mpv_command", "perform(", "nvidiaOptions", "state."):
+            self.assertNotIn(forbidden, self.block, forbidden)
+        self.assertEqual(1, self.block.count("mpv_set_option_string("))
+
+    def test_the_player_never_spells_the_shader_list_option_and_keeps_its_anchors(self):
+        self.assertNotIn(SHADER_LIST_OPTION, self.text)
+        self.assertEqual(1, self.text.count("active = proved"))
+        self.assertIn("native.mpv_initialize(handle)", self.run_body)
+        self.assertIn("perform(native, handle, Action.Load(", self.run_body)
+        self.assertIn("applyNvidiaVideo(native, handle, action)", self.text)
+        self.assertNotIn(b"\r", MPV_PLAYER.read_bytes())
+
+
+class ScalerLiteralLintTest(unittest.TestCase):
+    """The shader-list option is a gate bit of the presentation proof: no source or test file of the application may
+    spell it, and the S7 files are LF only and use kotlin.test."""
+
+    def test_no_kotlin_or_java_file_under_the_application_tree_spells_the_shader_list_option(self):
+        checked = 0
+        for root in (source.REPO / "desktop/src/main", source.REPO / "desktop/src/test"):
+            for path in sorted(root.rglob("*")):
+                if path.suffix in (".kt", ".java"):
+                    checked += 1
+                    self.assertNotIn(SHADER_LIST_OPTION, path.read_text(encoding="utf-8"), str(path))
+        self.assertGreater(checked, 100)
+
+    def test_this_file_assembles_the_name_and_never_spells_it(self):
+        own = Path(__file__).read_text(encoding="utf-8")
+        self.assertEqual(1, len(re.findall(r'^SHADER_LIST_OPTION = "glsl" \+ "-shaders"$', own, re.M)))
+        self.assertNotIn(SHADER_LIST_OPTION, own)
+
+    def test_the_scaler_files_are_lf_only(self):
+        for path in (SCALER_PROFILE, SCALER_PROFILE_TEST, Path(__file__)):
+            self.assertNotIn(b"\r", path.read_bytes(), path.name)
+
+    def test_the_scaler_test_exists_uses_kotlin_test_and_pins_the_switch_off(self):
+        text = source.read(SCALER_PROFILE_TEST)
+        self.assertTrue(text.startswith("package com.bilipai.desktop.nvidia\n"))
+        self.assertIn("import kotlin.test.Test\n", text)
+        self.assertNotIn("org.junit", text)
+        self.assertIn("class DesktopNvidiaMpvScalerProfileTest {", text)
+        self.assertIn("assertFalse(MPV_SCALER_PROFILE_ENABLED)", text)
+        self.assertGreaterEqual(text.count("@Test fun"), 10)
 
 
 if __name__ == "__main__":

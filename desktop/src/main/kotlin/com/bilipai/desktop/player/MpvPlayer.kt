@@ -4,7 +4,9 @@ import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
 import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
 import com.bilipai.desktop.nvidia.NvidiaLuidGateResult
 import com.bilipai.desktop.nvidia.NvidiaPlaybackHealthSample
+import com.bilipai.desktop.nvidia.applyNvidiaMpvScalerOptions
 import com.bilipai.desktop.nvidia.nvidiaDriverPublicX100FromText
+import com.bilipai.desktop.nvidia.nvidiaMpvScalerOptionsFor
 import com.bilipai.desktop.nvidia.nvidiaProofLuidAllowed
 import com.bilipai.desktop.nvidia.resolveNvidiaLuidGate
 import com.sun.jna.Native
@@ -2035,6 +2037,17 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 val adapterPinRequestResult = adapterPinResult
                 if (adapterPinRequestResult != null) synchronized(lock) {
                     if (session === this && !closing.get()) mutableNvidiaVideo.update { it.copy(adapterPinResult = adapterPinRequestResult) }
+                }
+                // Optional residual scaler profile for a capable ULTRA or HIGH GPU. It is off by a root switch, so the
+                // list is empty today. It goes through a setter that never throws, unlike the required startup options
+                // below: a rejected scaler option is skipped, never a session failure. It reads no enhancement state
+                // and writes none, and the options are set before the core is initialised.
+                if (softwareTarget == null && com.sun.jna.Platform.isWindows()) {
+                    val scalerNative: MpvNative = native
+                    val scalerHandle: Pointer = handle
+                    applyNvidiaMpvScalerOptions(nvidiaMpvScalerOptionsFor(gpuCapability.capability.value)) { name, value ->
+                        scalerNative.mpv_set_option_string(scalerHandle, name, value)
+                    }
                 }
                 options.forEach { (name, value) -> checkResult(native, native.mpv_set_option_string(handle, name, value), name) }
                 // Keep bounded fixed GPU/RTX observations; discard all other verbose text.
