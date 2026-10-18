@@ -202,7 +202,7 @@ class DesktopUpdaterRegistryTransactionTest {
         }.build()
         private val installationClass = DesktopUpdater::class.java.declaredClasses.single { it.simpleName == "ActiveInstallation" }
         private val constructor = installationClass.getDeclaredConstructor(
-            String::class.java, String::class.java, String::class.java, String::class.java, String::class.java,
+            String::class.java, String::class.java, String::class.java, String::class.java, String::class.java, String::class.java,
         ).apply { isAccessible = true }
         private val readSnapshot = DesktopUpdater::class.java.getDeclaredMethod("readActiveInstallationSnapshot").apply { isAccessible = true }
         private val commitSnapshot = DesktopUpdater::class.java.declaredMethods.single {
@@ -234,7 +234,7 @@ class DesktopUpdaterRegistryTransactionTest {
 
         fun installation(version: String, executable: String, previousVersion: String? = null,
             previousExecutable: String? = null): Any = constructor.newInstance(REPOSITORY, version,
-                executable, previousVersion, previousExecutable)
+                executable, previousVersion, previousExecutable, null)
 
         fun snapshot(owner: DesktopUpdater): Any = requireNotNull(invoke(readSnapshot, owner))
         fun commit(owner: DesktopUpdater, observed: Any, installation: Any, upgrade: Boolean,
