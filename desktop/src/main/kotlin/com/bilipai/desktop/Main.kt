@@ -16,6 +16,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopSessionStore
+import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.MpvStartupProbe
 import com.bilipai.desktop.update.DesktopUpdater
@@ -126,7 +127,9 @@ fun main(args: Array<String>) {
             com.bilipai.desktop.player.desktopRestoreVeyraLocalSelection()
             com.bilipai.desktop.player.desktopVeyraComponentFromExplicitConfiguration()
         }
-        val playerResult = remember(veyraComponent) { runCatching { MpvPlayer(veyraComponent = veyraComponent) } }
+        // Read-only GPU probe on a daemon thread; the player waits for it only bounded, at each native session start.
+        val gpuCapability = remember { DesktopNvidiaCapabilityMonitor.process().also { it.warmUp() } }
+        val playerResult = remember(veyraComponent) { runCatching { MpvPlayer(veyraComponent = veyraComponent, gpuCapability = gpuCapability) } }
         val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)
         val applicationScope = rememberCoroutineScope()
         val shutdown = remember(diagnosticLifecycle) {

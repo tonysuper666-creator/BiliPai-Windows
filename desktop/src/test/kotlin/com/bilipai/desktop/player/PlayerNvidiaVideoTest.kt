@@ -138,10 +138,72 @@ class PlayerNvidiaVideoTest {
 
     @Test fun actualGpuMetadataIsParsedAsThePinnedSeparateLineEvents() {
         assertEquals(NvidiaNativeMessage.DeviceName("NVIDIA GeForce RTX 5080"), parseNvidiaNativeMessage("vo/gpu/d3d11", "Device Name: NVIDIA GeForce RTX 5080\n"))
-        assertEquals(NvidiaNativeMessage.DeviceVendor(0x10de), parseNvidiaNativeMessage("vo/gpu/d3d11", "Device ID: 10de:2c02 (rev a1)\n"))
+        assertEquals(NvidiaNativeMessage.DeviceVendor(0x10de, 0x2c02), parseNvidiaNativeMessage("vo/gpu/d3d11", "Device ID: 10de:2c02 (rev a1)\n"))
+        assertEquals(NvidiaNativeMessage.DeviceVendor(0x10de, 0x2c02), parseNvidiaNativeMessage("vo/gpu-next/d3d11", "Device ID: 10DE:2C02 (rev A1)"))
         assertNull(parseNvidiaNativeMessage("ffmpeg", "Device ID: 10de:2c02 (rev a1)"))
         assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", "Device Name: http://fixture.invalid/private"))
         assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", "Device ID: 10de:2c02 (rev a1) private-data"))
+    }
+
+    @Test fun deviceIdKeepsTheVendorAndDefaultsTheDeviceToUnknown() {
+        assertEquals(0x10de, NvidiaNativeMessage.DeviceVendor(0x10de).vendorId)
+        assertNull(NvidiaNativeMessage.DeviceVendor(0x10de).deviceId)
+        assertEquals(0x2c02, NvidiaNativeMessage.DeviceVendor(0x10de, 0x2c02).deviceId)
+        assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", "Device ID: 10de:2c0 (rev a1)"))
+        assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", "Device ID: 10de:2c02x (rev a1)"))
+        assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", "Device ID: 10de:zzzz (rev a1)"))
+    }
+
+    @Test fun luidAndDriverLinesAreBoundedDigitsOnlyOnTheDeviceLoggerPrefixes() {
+        for (prefix in listOf("vo/gpu/d3d11", "vo/gpu-next/d3d11")) {
+            assertEquals(NvidiaNativeMessage.DeviceLuid("00000000000be782"),
+                parseNvidiaNativeMessage(prefix, "LUID: 00000000000be782\n"))
+            assertEquals(NvidiaNativeMessage.DeviceLuid("00000000000be782"),
+                parseNvidiaNativeMessage(prefix, "LUID: 00000000000BE782"))
+            assertEquals(NvidiaNativeMessage.DeviceDriver("32.0.16.1742"),
+                parseNvidiaNativeMessage(prefix, "Driver version: 32.0.16.1742\n"))
+        }
+        for (prefix in listOf("ffmpeg", "vf", "d3d11vpp", "bilipai-rtx", "vo/gpu", "vo/gpu/d3d11/extra")) {
+            assertNull(parseNvidiaNativeMessage(prefix, "LUID: 00000000000be782"), prefix)
+            assertNull(parseNvidiaNativeMessage(prefix, "Driver version: 32.0.16.1742"), prefix)
+        }
+        for (other in listOf("LUID: 00000000000be78", "LUID: 00000000000be7822", "LUID: 0x00000000000be782",
+            "LUID: 00000000000be78g", "LUID: 00000000000be782 private", "LUID: http://fixture.invalid/x",
+            "LUID: 00000000000be782\u0000", "LUID: 00000000000be782\n00000000000be782", "LUID:", "LUID: ",
+            " 00000000000be782", "luid: 00000000000be782"))
+            assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", other), other)
+        for (other in listOf("Driver version: 32.0.16", "Driver version: 32.0.16.1742.1", "Driver version: 32.0.16.",
+            "Driver version: 32.0.16.1742 private", "Driver version: 123456.0.16.1742", "Driver version: -1.0.16.1742",
+            "Driver version: 32.0.16.1742\u0007", "Driver version: http://fixture.invalid/x", "Driver version: ",
+            "Driver version: a.b.c.d"))
+            assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", other), other)
+        assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", "LUID: " + "0".repeat(1100)))
+        assertNull(parseNvidiaNativeMessage("vo/gpu/d3d11", "Driver version: " + "1".repeat(1100)))
+    }
+
+    @Test fun newGpuObservationFieldsDefaultToUnknownAndNeverClaimAnAdapter() {
+        val state = NvidiaVideoState()
+        assertNull(state.gpuDeviceId); assertNull(state.gpuLuidHex)
+        assertNull(state.gpuDriverVersion); assertNull(state.adapterPinResult)
+        val observed = state.copy(gpuDeviceId = 0x2c02, gpuLuidHex = "00000000000be782",
+            gpuDriverVersion = "32.0.16.1742", adapterPinResult = 0)
+        assertFalse(observed.active); assertFalse(observed.pending); assertFalse(observed.veyraSubmitted)
+    }
+
+    @Test fun configurationInstallKeepsTheObservedAdapterIdentityOfTheSameCore() {
+        MpvPlayer().use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/owned-adapter-identity.avi"))
+            val field = MpvPlayer::class.java.getDeclaredField("mutableNvidiaVideo").apply { isAccessible = true }
+            @Suppress("UNCHECKED_CAST")
+            val flow = field.get(player) as kotlinx.coroutines.flow.MutableStateFlow<NvidiaVideoState>
+            flow.value = flow.value.copy(gpuName = "NVIDIA GeForce RTX 5080", gpuVendorId = 0x10de, gpuDeviceId = 0x2c02,
+                gpuLuidHex = "00000000000be782", gpuDriverVersion = "32.0.16.1742", adapterPinResult = 0)
+            assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+            val installed = player.nvidiaVideoState.value
+            assertEquals(0x2c02, installed.gpuDeviceId); assertEquals("00000000000be782", installed.gpuLuidHex)
+            assertEquals("32.0.16.1742", installed.gpuDriverVersion); assertEquals(0, installed.adapterPinResult)
+            assertFalse(installed.active)
+        }
     }
 
     @Test fun newerSourceAndConfigurationCannotBeChangedByAnOldOwner() {

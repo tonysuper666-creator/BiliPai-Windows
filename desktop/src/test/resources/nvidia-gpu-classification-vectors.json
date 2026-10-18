@@ -1,0 +1,3353 @@
+{
+  "schema": 1,
+  "description": "Golden vectors shared by the Python data checks and the JVM tests for the pure NVIDIA core. Hex values are strings; sizes are decimal; vramMiB 0 means the adapter reported no memory.",
+  "notes": [
+    "This PC: RTX 5080 LUID ending e782 (physical, owns the display), GameViewer twin LUID ending b95ad (virtual, ROOT enumerated), AMD iGPU, software adapter.",
+    "Only the LUID suffixes e782 and b95ad, the 5080 identity (10DE:2C02 subsystem 8A4A1043 revision A1, 15978 MiB, driver 32.0.16.1742) and the PnP prefixes were measured. The LUID high parts, the AMD ids and LUID, the software adapter LUID and the PnP instance tails are fixture placeholders.",
+    "Several device ids for real products (marked pciTable unknown) are intentionally absent from the Kotlin PCI table: the name decides, and the table is only a secondary source.",
+    "Hypothetical names (RTX 5080 SUPER, RTX 6090) exist only to exercise the base-model and unknown-base rules."
+  ],
+  "driverConversions": [
+    {
+      "fields": [32, 0, 16, 1742],
+      "publicX100": 61742,
+      "text": "617.42"
+    },
+    {
+      "fields": [31, 0, 15, 4601],
+      "publicX100": 54601,
+      "text": "546.01"
+    },
+    {
+      "fields": [32, 0, 15, 7602],
+      "publicX100": 57602,
+      "text": "576.02"
+    },
+    {
+      "fields": [31, 0, 15, 3000],
+      "publicX100": 53000,
+      "text": "530.00"
+    },
+    {
+      "fields": [31, 0, 15, 5000],
+      "publicX100": 55000,
+      "text": "550.00"
+    },
+    {
+      "fields": [26, 0, 14, 4250],
+      "publicX100": 44250,
+      "text": "442.50"
+    },
+    {
+      "fields": [31, 0, 15, 5123],
+      "publicX100": 55123,
+      "text": "551.23"
+    },
+    {
+      "fields": [32, 0, 15, 7216],
+      "publicX100": 57216,
+      "text": "572.16"
+    },
+    {
+      "fields": [31, 0, 15, 4584],
+      "publicX100": 54584,
+      "text": "545.84"
+    },
+    {
+      "fields": [32, 1, 16, 1742],
+      "publicX100": null
+    },
+    {
+      "fields": [25, 0, 15, 4601],
+      "publicX100": null
+    },
+    {
+      "fields": [100, 0, 15, 4601],
+      "publicX100": null
+    },
+    {
+      "fields": [32, 0, 16, 10000],
+      "publicX100": null
+    },
+    {
+      "fields": [32, 0, -1, 1742],
+      "publicX100": null
+    }
+  ],
+  "packedDrivers": [
+    {
+      "fields": [32, 0, 16, 1742],
+      "packed": "9007199255791310",
+      "publicX100": 61742
+    },
+    {
+      "fields": [31, 0, 15, 4601],
+      "packed": "8725724279017977",
+      "publicX100": 54601
+    },
+    {
+      "fields": [32, 0, 15, 7602],
+      "packed": "9007199255731634",
+      "publicX100": 57602
+    }
+  ],
+  "paths": [
+    {
+      "path": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+      "deviceId": "0x2C02",
+      "verdict": "PHYSICAL"
+    },
+    {
+      "path": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+      "deviceId": "0x2C02",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+      "deviceId": "0x2C02",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#x",
+      "deviceId": "0x2C03",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "\\\\?\\pci#ven_10de&dev_2c02&subsys_8a4a1043&rev_a1#x",
+      "deviceId": "0x2C02",
+      "verdict": "PHYSICAL"
+    },
+    {
+      "path": "\\\\?\\SWD#DISPLAY#VEN_10DE&DEV_2C02#x",
+      "deviceId": "0x2C02",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "\\\\?\\USB#VID_10DE&PID_2C02#x",
+      "deviceId": "0x2C02",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "\\\\?\\PCI#VEN_1002&DEV_2C02&SUBSYS_00#x",
+      "deviceId": "0x2C02",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "\\\\?\\PCI#VEN_10DE&DEV_2C02",
+      "deviceId": "0x2C02",
+      "verdict": "PHYSICAL"
+    },
+    {
+      "path": "\\\\?\\PCI#VEN_10DE&DEV_2C0",
+      "deviceId": "0x2C02",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "\\\\?\\PCI#VEN_10DE&DEV_2C02X&SUBSYS",
+      "deviceId": "0x2C02",
+      "verdict": "VIRTUAL"
+    },
+    {
+      "path": "   ",
+      "deviceId": "0x2C02",
+      "verdict": "UNKNOWN"
+    },
+    {
+      "path": "",
+      "deviceId": "0x2C02",
+      "verdict": "UNKNOWN"
+    },
+    {
+      "path": null,
+      "deviceId": "0x2C02",
+      "verdict": "UNKNOWN"
+    }
+  ],
+  "luidMatches": [
+    {
+      "expected": "000000000000e782",
+      "observed": "000000000000e782",
+      "match": true
+    },
+    {
+      "expected": "000000000000e782",
+      "observed": "0000e78200000000",
+      "match": true
+    },
+    {
+      "expected": "0000000000e782ff",
+      "observed": "0000000000e782ff",
+      "match": true
+    },
+    {
+      "expected": "000000000000E782",
+      "observed": "000000000000e782",
+      "match": true
+    },
+    {
+      "expected": "000000000000e782",
+      "observed": "0x000000000000e782",
+      "match": true
+    },
+    {
+      "expected": "000000000000e782",
+      "observed": "000000000000b95d",
+      "match": false
+    },
+    {
+      "expected": "000000000000e782",
+      "observed": "000000000000e78",
+      "match": false
+    },
+    {
+      "expected": "000000000000e782",
+      "observed": null,
+      "match": false
+    },
+    {
+      "expected": "000000000000e782",
+      "observed": "zz0000000000e782",
+      "match": false
+    },
+    {
+      "expected": "000000000000e782",
+      "observed": "",
+      "match": false
+    },
+    {
+      "expected": "0000000a0000000a",
+      "observed": "0000000a0000000a",
+      "match": true
+    }
+  ],
+  "gpus": [
+    {
+      "id": "rtx-5090",
+      "description": "NVIDIA GeForce RTX 5090",
+      "deviceId": "0x2B85",
+      "vramMiB": 32607,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5080-this-pc",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5070-ti-16g",
+      "description": "NVIDIA GeForce RTX 5070 Ti",
+      "deviceId": "0x2C05",
+      "vramMiB": 15900,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 0.5,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5070",
+      "description": "NVIDIA GeForce RTX 5070",
+      "deviceId": "0x2F04",
+      "vramMiB": 11900,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.8,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5060-ti-8g",
+      "description": "NVIDIA GeForce RTX 5060 Ti",
+      "deviceId": "0x2D04",
+      "vramMiB": 8151,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "B",
+        "tier": "BALANCED",
+        "costFactor": 1.0,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5060",
+      "description": "NVIDIA GeForce RTX 5060",
+      "deviceId": "0x2D05",
+      "vramMiB": 8151,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "B",
+        "tier": "BALANCED",
+        "costFactor": 1.0,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5050",
+      "description": "NVIDIA GeForce RTX 5050",
+      "deviceId": "0x2D07",
+      "vramMiB": 8151,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "C",
+        "tier": "LIGHT",
+        "costFactor": 1.0,
+        "qualityCeiling": 2,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5080-laptop",
+      "description": "NVIDIA GeForce RTX 5080 Laptop GPU",
+      "deviceId": "0x2C19",
+      "vramMiB": 15900,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "HIGH",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": true,
+        "hdrDriverOk": true,
+        "notes": ["MOBILE_STEP_DOWN"]
+      }
+    },
+    {
+      "id": "rtx-5080-super-base-class",
+      "description": "NVIDIA GeForce RTX 5080 SUPER",
+      "deviceId": "0x2C03",
+      "vramMiB": 24000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5090-d-base-class",
+      "description": "NVIDIA GeForce RTX 5090 D",
+      "deviceId": "0x2B8C",
+      "vramMiB": 32000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4090",
+      "description": "NVIDIA GeForce RTX 4090",
+      "deviceId": "0x2684",
+      "vramMiB": 24000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4080",
+      "description": "NVIDIA GeForce RTX 4080",
+      "deviceId": "0x2704",
+      "vramMiB": 16000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 0.5,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4080-super",
+      "description": "NVIDIA GeForce RTX 4080 SUPER",
+      "deviceId": "0x2702",
+      "vramMiB": 16000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 0.5,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070-ti-super-16g",
+      "description": "NVIDIA GeForce RTX 4070 Ti SUPER",
+      "deviceId": "0x2705",
+      "vramMiB": 16000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070-ti",
+      "description": "NVIDIA GeForce RTX 4070 Ti",
+      "deviceId": "0x2782",
+      "vramMiB": 12000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070-super",
+      "description": "NVIDIA GeForce RTX 4070 SUPER",
+      "deviceId": "0x2783",
+      "vramMiB": 12000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4060-ti",
+      "description": "NVIDIA GeForce RTX 4060 Ti",
+      "deviceId": "0x2803",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "B",
+        "tier": "BALANCED",
+        "costFactor": 1.0,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4060",
+      "description": "NVIDIA GeForce RTX 4060",
+      "deviceId": "0x2882",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "C",
+        "tier": "LIGHT",
+        "costFactor": 1.0,
+        "qualityCeiling": 2,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3090",
+      "description": "NVIDIA GeForce RTX 3090",
+      "deviceId": "0x2204",
+      "vramMiB": 24000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3080-ti",
+      "description": "NVIDIA GeForce RTX 3080 Ti",
+      "deviceId": "0x2208",
+      "vramMiB": 12000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.9,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3080",
+      "description": "NVIDIA GeForce RTX 3080",
+      "deviceId": "0x2206",
+      "vramMiB": 10000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.9,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3070",
+      "description": "NVIDIA GeForce RTX 3070",
+      "deviceId": "0x2484",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "B",
+        "tier": "BALANCED",
+        "costFactor": 1.0,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3070-ti-base-row",
+      "description": "NVIDIA GeForce RTX 3070 Ti",
+      "deviceId": "0x2482",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "B",
+        "tier": "BALANCED",
+        "costFactor": 1.0,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3060-ti",
+      "description": "NVIDIA GeForce RTX 3060 Ti",
+      "deviceId": "0x2486",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "B",
+        "tier": "BALANCED",
+        "costFactor": 1.0,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3060",
+      "description": "NVIDIA GeForce RTX 3060",
+      "deviceId": "0x2504",
+      "vramMiB": 12000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "C",
+        "tier": "LIGHT",
+        "costFactor": 1.0,
+        "qualityCeiling": 2,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-3050-class-d",
+      "description": "NVIDIA GeForce RTX 3050",
+      "deviceId": "0x2507",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "D",
+        "tier": "LIGHT",
+        "costFactor": 0.6,
+        "qualityCeiling": 1,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-2080-ti",
+      "description": "NVIDIA GeForce RTX 2080 Ti",
+      "deviceId": "0x1E04",
+      "vramMiB": 11000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "TURING",
+        "skuClass": "B",
+        "tier": "BALANCED",
+        "costFactor": 0.8,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-2070-super",
+      "description": "NVIDIA GeForce RTX 2070 SUPER",
+      "deviceId": "0x1E84",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "TURING",
+        "skuClass": "C",
+        "tier": "LIGHT",
+        "costFactor": 0.8,
+        "qualityCeiling": 2,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-2060",
+      "description": "NVIDIA GeForce RTX 2060",
+      "deviceId": "0x1F08",
+      "vramMiB": 6000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "TURING",
+        "skuClass": "C",
+        "tier": "LIGHT",
+        "costFactor": 0.8,
+        "qualityCeiling": 2,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-2060-super",
+      "description": "NVIDIA GeForce RTX 2060 SUPER",
+      "deviceId": "0x1F06",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "TURING",
+        "skuClass": "C",
+        "tier": "LIGHT",
+        "costFactor": 0.8,
+        "qualityCeiling": 2,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-2050-class-d",
+      "description": "NVIDIA GeForce RTX 2050",
+      "deviceId": "0x25A7",
+      "vramMiB": 4000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "TURING",
+        "skuClass": "D",
+        "tier": "LIGHT",
+        "costFactor": 0.6,
+        "qualityCeiling": 1,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "gtx-1660-name-beats-turing-id",
+      "description": "NVIDIA GeForce GTX 1660",
+      "deviceId": "0x2184",
+      "vramMiB": 6000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PRE_RTX"
+      }
+    },
+    {
+      "id": "gtx-1080-ti",
+      "description": "NVIDIA GeForce GTX 1080 Ti",
+      "deviceId": "0x1B06",
+      "vramMiB": 11000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PRE_RTX"
+      }
+    },
+    {
+      "id": "mx450",
+      "description": "NVIDIA GeForce MX450",
+      "deviceId": "0x1F9C",
+      "vramMiB": 2048,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PRE_RTX"
+      }
+    },
+    {
+      "id": "gt-1030",
+      "description": "NVIDIA GeForce GT 1030",
+      "deviceId": "0x1D01",
+      "vramMiB": 2048,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PRE_RTX"
+      }
+    },
+    {
+      "id": "quadro-p2000",
+      "description": "Quadro P2000",
+      "deviceId": "0x1C30",
+      "vramMiB": 5000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PRE_RTX"
+      }
+    },
+    {
+      "id": "titan-xp",
+      "description": "NVIDIA TITAN Xp",
+      "deviceId": "0x1B02",
+      "vramMiB": 12000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PRE_RTX"
+      }
+    },
+    {
+      "id": "rtx-a2000-6g",
+      "description": "NVIDIA RTX A2000",
+      "deviceId": "0x2531",
+      "vramMiB": 6000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "BALANCED",
+        "costFactor": 0.7,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "rtx-a2000-12g",
+      "description": "NVIDIA RTX A2000 12GB",
+      "deviceId": "0x2571",
+      "vramMiB": 12000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "rtx-a6000",
+      "description": "NVIDIA RTX A6000",
+      "deviceId": "0x2230",
+      "vramMiB": 48000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "rtx-2000-ada-not-turing",
+      "description": "NVIDIA RTX 2000 Ada Generation",
+      "deviceId": "0x28B0",
+      "vramMiB": 16000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "rtx-5000-ada-not-blackwell",
+      "description": "NVIDIA RTX 5000 Ada Generation",
+      "deviceId": "0x26B2",
+      "vramMiB": 32000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "rtx-4000-sff-ada",
+      "description": "NVIDIA RTX 4000 SFF Ada Generation",
+      "deviceId": "0x27B0",
+      "vramMiB": 20000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "quadro-rtx-5000-not-blackwell",
+      "description": "NVIDIA Quadro RTX 5000",
+      "deviceId": "0x1EB0",
+      "vramMiB": 16000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "TURING",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "rtx-pro-6000-blackwell",
+      "description": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+      "deviceId": "0x2BB1",
+      "vramMiB": 98000,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "rtx-a4000-laptop",
+      "description": "NVIDIA RTX A4000 Laptop GPU",
+      "deviceId": "0x24B6",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "BALANCED",
+        "costFactor": 0.7,
+        "qualityCeiling": 3,
+        "mobile": true,
+        "hdrDriverOk": true,
+        "notes": ["MOBILE_STEP_DOWN", "PROFESSIONAL_PART"]
+      }
+    },
+    {
+      "id": "unknown-id-8g",
+      "description": "NVIDIA Graphics Device",
+      "deviceId": "0x1234",
+      "vramMiB": 8192,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "UNKNOWN",
+        "skuClass": null,
+        "tier": "BALANCED",
+        "costFactor": 0.7,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["UNKNOWN_MODEL"]
+      }
+    },
+    {
+      "id": "unknown-id-4g",
+      "description": "NVIDIA Graphics Device",
+      "deviceId": "0x1234",
+      "vramMiB": 4096,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "UNKNOWN",
+        "skuClass": null,
+        "tier": "LIGHT",
+        "costFactor": 0.7,
+        "qualityCeiling": 2,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["UNKNOWN_MODEL"]
+      }
+    },
+    {
+      "id": "unknown-id-2g",
+      "description": "NVIDIA Graphics Device",
+      "deviceId": "0x1234",
+      "vramMiB": 2048,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "VRAM_LOW"
+      }
+    },
+    {
+      "id": "unknown-model-in-blackwell-range",
+      "description": "NVIDIA Graphics Device",
+      "deviceId": "0x2FAB",
+      "vramMiB": 16384,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": null,
+        "tier": "BALANCED",
+        "costFactor": 0.7,
+        "qualityCeiling": 3,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["UNKNOWN_MODEL"]
+      }
+    },
+    {
+      "id": "rtx-6090-unknown-base",
+      "description": "NVIDIA GeForce RTX 6090",
+      "deviceId": "0x3001",
+      "vramMiB": 32000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "NEWER",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "pci-table-identity-5080",
+      "description": "NVIDIA Graphics Device",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "pci-table-identity-5080-mobile",
+      "description": "NVIDIA Graphics Device",
+      "deviceId": "0x2C19",
+      "vramMiB": 15900,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "HIGH",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": true,
+        "hdrDriverOk": true,
+        "notes": ["MOBILE_STEP_DOWN"]
+      }
+    },
+    {
+      "id": "rtx-4090-laptop",
+      "description": "NVIDIA GeForce RTX 4090 Laptop GPU",
+      "deviceId": "0x2757",
+      "vramMiB": 16000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "S",
+        "tier": "HIGH",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": true,
+        "hdrDriverOk": true,
+        "notes": ["MOBILE_STEP_DOWN"]
+      }
+    },
+    {
+      "id": "rtx-4070-laptop",
+      "description": "NVIDIA GeForce RTX 4070 Laptop GPU",
+      "deviceId": "0x2860",
+      "vramMiB": 8000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "BALANCED",
+        "costFactor": 0.7,
+        "qualityCeiling": 3,
+        "mobile": true,
+        "hdrDriverOk": true,
+        "notes": ["MOBILE_STEP_DOWN"]
+      }
+    },
+    {
+      "id": "rtx-3060-laptop",
+      "description": "NVIDIA GeForce RTX 3060 Laptop GPU",
+      "deviceId": "0x2520",
+      "vramMiB": 6000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "C",
+        "tier": "LIGHT",
+        "costFactor": 1.0,
+        "qualityCeiling": 2,
+        "mobile": true,
+        "hdrDriverOk": true,
+        "notes": ["MOBILE_STEP_DOWN"]
+      }
+    },
+    {
+      "id": "rtx-3080-max-q",
+      "description": "NVIDIA GeForce RTX 3080 Max-Q",
+      "deviceId": "0x249C",
+      "vramMiB": 16000,
+      "driver": null,
+      "pciTable": "unknown",
+      "expect": {
+        "kind": "capable",
+        "generation": "AMPERE",
+        "skuClass": "A",
+        "tier": "BALANCED",
+        "costFactor": 0.9,
+        "qualityCeiling": 3,
+        "mobile": true,
+        "hdrDriverOk": true,
+        "notes": ["MOBILE_STEP_DOWN"]
+      }
+    },
+    {
+      "id": "rtx-5080-unknown-vram",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 0,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "HIGH",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": ["VRAM_UNKNOWN"]
+      }
+    },
+    {
+      "id": "rtx-5080-vram-low",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 2048,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "VRAM_LOW"
+      }
+    },
+    {
+      "id": "rtx-5080-virtual-name-excluded",
+      "description": "NVIDIA GeForce RTX 5080 Virtual Display",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "NOT_PHYSICAL"
+      }
+    },
+    {
+      "id": "rtx-5080-remote-name-excluded",
+      "description": "NVIDIA GeForce RTX 5080 (Remote)",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [32, 0, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "NOT_PHYSICAL"
+      }
+    },
+    {
+      "id": "rtx-4070-driver-530-advisory",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": [31, 0, 15, 3000],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": false,
+        "notes": ["DRIVER_ADVISORY"]
+      }
+    },
+    {
+      "id": "rtx-4070-driver-550-no-hdr",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": [31, 0, 15, 5000],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": false,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070-driver-5123-hdr-boundary",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": [31, 0, 15, 5123],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070-driver-5122-below-hdr",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": [31, 0, 15, 5122],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": false,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070-driver-4584-no-advisory",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": [31, 0, 15, 4584],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": false,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-4070-driver-4583-advisory",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": [31, 0, 15, 4583],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": false,
+        "notes": ["DRIVER_ADVISORY"]
+      }
+    },
+    {
+      "id": "rtx-4070-driver-invalid-fields",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "vramMiB": 12000,
+      "driver": [31, 1, 15, 3000],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "ADA",
+        "skuClass": "A",
+        "tier": "HIGH",
+        "costFactor": 0.7,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5080-driver-550-old",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [31, 0, 15, 5000],
+      "pciTable": "known",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "DRIVER_OLD"
+      }
+    },
+    {
+      "id": "rtx-5080-driver-7215-old",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [32, 0, 15, 7215],
+      "pciTable": "known",
+      "expect": {
+        "kind": "unsupported",
+        "reason": "DRIVER_OLD"
+      }
+    },
+    {
+      "id": "rtx-5080-driver-7216-floor",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [32, 0, 15, 7216],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5080-driver-unknown",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": null,
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    },
+    {
+      "id": "rtx-5080-driver-invalid-fields",
+      "description": "NVIDIA GeForce RTX 5080",
+      "deviceId": "0x2C02",
+      "vramMiB": 15978,
+      "driver": [32, 1, 16, 1742],
+      "pciTable": "known",
+      "expect": {
+        "kind": "capable",
+        "generation": "BLACKWELL",
+        "skuClass": "S",
+        "tier": "ULTRA",
+        "costFactor": 1.0,
+        "qualityCeiling": 4,
+        "mobile": false,
+        "hdrDriverOk": true,
+        "notes": []
+      }
+    }
+  ],
+  "vramLadder": [
+    {
+      "skuClass": "S",
+      "description": "NVIDIA GeForce RTX 5090",
+      "deviceId": "0x2B85",
+      "rows": [
+        {
+          "vramMiB": 2048,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3394,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3395,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 3500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 4096,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5334,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5335,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 5500,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 6144,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 7274,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 7275,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 7500,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 8192,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 11154,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 11155,
+          "expect": "ULTRA"
+        },
+        {
+          "vramMiB": 11500,
+          "expect": "ULTRA"
+        },
+        {
+          "vramMiB": 12288,
+          "expect": "ULTRA"
+        },
+        {
+          "vramMiB": 16384,
+          "expect": "ULTRA"
+        },
+        {
+          "vramMiB": 24576,
+          "expect": "ULTRA"
+        }
+      ]
+    },
+    {
+      "skuClass": "A",
+      "description": "NVIDIA GeForce RTX 4070",
+      "deviceId": "0x2786",
+      "rows": [
+        {
+          "vramMiB": 2048,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3394,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3395,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 3500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 4096,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5334,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5335,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 5500,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 6144,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 7274,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 7275,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 7500,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 8192,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 11154,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 11155,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 11500,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 12288,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 16384,
+          "expect": "HIGH"
+        },
+        {
+          "vramMiB": 24576,
+          "expect": "HIGH"
+        }
+      ]
+    },
+    {
+      "skuClass": "B",
+      "description": "NVIDIA GeForce RTX 5060 Ti",
+      "deviceId": "0x2D04",
+      "rows": [
+        {
+          "vramMiB": 2048,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3394,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3395,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 3500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 4096,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5334,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5335,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 5500,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 6144,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 7274,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 7275,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 7500,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 8192,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 11154,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 11155,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 11500,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 12288,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 16384,
+          "expect": "BALANCED"
+        },
+        {
+          "vramMiB": 24576,
+          "expect": "BALANCED"
+        }
+      ]
+    },
+    {
+      "skuClass": "C",
+      "description": "NVIDIA GeForce RTX 3060",
+      "deviceId": "0x2504",
+      "rows": [
+        {
+          "vramMiB": 2048,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3394,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3395,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 3500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 4096,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5334,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5335,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 6144,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 7274,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 7275,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 7500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 8192,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 11154,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 11155,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 11500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 12288,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 16384,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 24576,
+          "expect": "LIGHT"
+        }
+      ]
+    },
+    {
+      "skuClass": "D",
+      "description": "NVIDIA GeForce RTX 3050",
+      "deviceId": "0x2507",
+      "rows": [
+        {
+          "vramMiB": 2048,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3394,
+          "expect": "VRAM_LOW"
+        },
+        {
+          "vramMiB": 3395,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 3500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 4096,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5334,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5335,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 5500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 6144,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 7274,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 7275,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 7500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 8192,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 11154,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 11155,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 11500,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 12288,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 16384,
+          "expect": "LIGHT"
+        },
+        {
+          "vramMiB": 24576,
+          "expect": "LIGHT"
+        }
+      ]
+    }
+  ],
+  "unknownModelLadder": [
+    {
+      "vramMiB": 2048,
+      "expect": "VRAM_LOW"
+    },
+    {
+      "vramMiB": 3394,
+      "expect": "VRAM_LOW"
+    },
+    {
+      "vramMiB": 3395,
+      "expect": "LIGHT"
+    },
+    {
+      "vramMiB": 7946,
+      "expect": "LIGHT"
+    },
+    {
+      "vramMiB": 7947,
+      "expect": "BALANCED"
+    },
+    {
+      "vramMiB": 8192,
+      "expect": "BALANCED"
+    },
+    {
+      "vramMiB": 16384,
+      "expect": "BALANCED"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "this-pc",
+      "note": "RTX 5080 physical e782 first, AMD iGPU, GameViewer twin b95ad, software adapter. Pin safe, no cross-adapter.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "000000000000e782",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "ULTRA",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "exact:NVIDIA GeForce RTX 5080",
+        "crossAdapter": false,
+        "hdrDriverOk": true,
+        "notes": []
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "ALLOWED",
+          "request": true
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": false,
+          "state": "STANDBY",
+          "request": false
+        },
+        {
+          "mode": "OFF",
+          "sourceLoaded": true,
+          "state": "OFF",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "env": {
+            "game": true,
+            "battery": false,
+            "remote": false
+          },
+          "state": "PAUSED_GAME",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "env": {
+            "game": false,
+            "battery": true,
+            "remote": false
+          },
+          "state": "ALLOWED",
+          "request": true
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "env": {
+            "game": false,
+            "battery": false,
+            "remote": true
+          },
+          "state": "PAUSED_REMOTE",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "failureRemembered": true,
+          "state": "FAILED_REMEMBERED",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "extendedRangeFailed": true,
+          "state": "FAILED_EXTENDED_RANGE",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "guardGaveUpForSource": true,
+          "state": "FAILED_THIS_VIDEO",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "this-pc-display-unknown",
+      "note": "Same inventory, the display adapter is not known: no cross-adapter step-down.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "ULTRA",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "exact:NVIDIA GeForce RTX 5080",
+        "crossAdapter": false,
+        "hdrDriverOk": true,
+        "notes": []
+      },
+      "activations": []
+    },
+    {
+      "id": "twin-first-pin-unsafe",
+      "note": "The virtual twin enumerates first: the first NVIDIA prefix match is the twin, so the pin is unsafe.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "000000000000e782",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        },
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PIN_UNSAFE"
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "UNSUPPORTED",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "only-virtual",
+      "note": "Only the virtual twin, AMD and software adapters: hard decline.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        },
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "NOT_PHYSICAL"
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "UNSUPPORTED",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "amd-only",
+      "note": "No NVIDIA adapter at all.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        },
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "absent"
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "NO_NVIDIA",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "software-only",
+      "note": "Only the software adapter.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "absent"
+      },
+      "activations": []
+    },
+    {
+      "id": "empty-inventory",
+      "note": "A complete but empty inventory is Absent.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [],
+      "expect": {
+        "kind": "absent"
+      },
+      "activations": []
+    },
+    {
+      "id": "dxgi-failed-twin-present",
+      "note": "DXGI incomplete with the twin in the partial list: Unknown, never accepted.",
+      "dxgiComplete": false,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        }
+      ],
+      "expect": {
+        "kind": "unknown",
+        "reason": "PROBE_FAILED"
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "UNIDENTIFIED",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": false,
+          "state": "UNIDENTIFIED",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "observed": {
+            "verified": false,
+            "description": "NVIDIA GeForce RTX 5080",
+            "deviceId": "0x2C02",
+            "luid": "00000000000b95ad"
+          },
+          "state": "UNIDENTIFIED",
+          "request": false
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "observed": {
+            "verified": true,
+            "description": "NVIDIA GeForce RTX 5080",
+            "deviceId": "0x2C02",
+            "luid": "000000000000e782"
+          },
+          "state": "ALLOWED",
+          "request": true
+        },
+        {
+          "mode": "AUTO",
+          "sourceLoaded": false,
+          "observed": {
+            "verified": true,
+            "description": "NVIDIA GeForce RTX 5080",
+            "deviceId": "0x2C02",
+            "luid": "000000000000e782"
+          },
+          "state": "STANDBY",
+          "request": false
+        },
+        {
+          "mode": "OFF",
+          "sourceLoaded": true,
+          "observed": {
+            "verified": true,
+            "description": "NVIDIA GeForce RTX 5080",
+            "deviceId": "0x2C02",
+            "luid": "000000000000e782"
+          },
+          "state": "OFF",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "dxgi-failed-empty",
+      "note": "DXGI failed outright: Unknown, not Absent.",
+      "dxgiComplete": false,
+      "displayAdapterLuid": null,
+      "adapters": [],
+      "expect": {
+        "kind": "unknown",
+        "reason": "PROBE_FAILED"
+      },
+      "activations": []
+    },
+    {
+      "id": "displayconfig-failed-twin-present",
+      "note": "The PnP query failed for both identical adapters: ambiguous, hard decline.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": null,
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PHYSICAL_UNVERIFIED"
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "UNSUPPORTED",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "displayconfig-failed-unique",
+      "note": "The PnP query failed but only one adapter has that PCI identity: accepted with a note.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": null,
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        },
+        {
+          "vendorId": "0x1414",
+          "deviceId": "0x008C",
+          "subSysId": "0x00000000",
+          "revision": "0x00",
+          "description": "Microsoft Basic Render Driver",
+          "vramMiB": 0,
+          "luidHigh": 0,
+          "luidLow": "0x000D3B6A",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": null,
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "ULTRA",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "exact:NVIDIA GeForce RTX 5080",
+        "crossAdapter": false,
+        "hdrDriverOk": true,
+        "notes": ["PHYSICAL_ASSUMED_UNIQUE"]
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "ALLOWED",
+          "request": true
+        }
+      ]
+    },
+    {
+      "id": "virtual-verified-physical-unknown",
+      "note": "The twin is verified virtual but the real card's PnP query failed: identity is shared, so decline.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": null,
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PHYSICAL_UNVERIFIED"
+      },
+      "activations": []
+    },
+    {
+      "id": "cross-adapter-no-outputs",
+      "note": "The only RTX owns no output (the iGPU drives the display): one tier down.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "HIGH",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "exact:NVIDIA GeForce RTX 5080",
+        "crossAdapter": true,
+        "hdrDriverOk": true,
+        "notes": ["CROSS_ADAPTER"]
+      },
+      "activations": []
+    },
+    {
+      "id": "cross-adapter-display-elsewhere",
+      "note": "The monitor belongs to the AMD adapter: one tier down.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "00000000000109a0",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "HIGH",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "exact:NVIDIA GeForce RTX 5080",
+        "crossAdapter": true,
+        "hdrDriverOk": true,
+        "notes": ["CROSS_ADAPTER"]
+      },
+      "activations": []
+    },
+    {
+      "id": "mobile-and-cross-adapter",
+      "note": "Laptop 5080 whose display is on the iGPU: ULTRA, minus mobile, minus cross-adapter.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "00000000000109a0",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C19",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080 Laptop GPU",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C19&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "BALANCED",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "exact:NVIDIA GeForce RTX 5080 Laptop GPU",
+        "crossAdapter": true,
+        "hdrDriverOk": true,
+        "notes": ["CROSS_ADAPTER", "MOBILE_STEP_DOWN"]
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "env": {
+            "game": false,
+            "battery": true,
+            "remote": false
+          },
+          "state": "PAUSED_BATTERY",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "two-physical-output-owner",
+      "note": "Two physical GPUs: the one with an attached output wins over the stronger one.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2882",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 4060",
+          "vramMiB": 8000,
+          "luidHigh": 0,
+          "luidLow": "0x00002002",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2882&SUBSYS_12345678&REV_A1#j",
+          "umd": null
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x1F08",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 2060",
+          "vramMiB": 6000,
+          "luidHigh": 0,
+          "luidLow": "0x00002001",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_1F08&SUBSYS_12345678&REV_A1#i",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "LIGHT",
+        "skuClass": "C",
+        "primaryLuid": "0000000000002001",
+        "pin": "exact:NVIDIA GeForce RTX 2060",
+        "crossAdapter": false,
+        "hdrDriverOk": true,
+        "notes": []
+      },
+      "activations": []
+    },
+    {
+      "id": "two-physical-no-output-class-wins",
+      "note": "Neither owns an output: the higher class wins (then cross-adapter, one tier down).",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2504",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 3060",
+          "vramMiB": 12000,
+          "luidHigh": 0,
+          "luidLow": "0x00002004",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2504&SUBSYS_12345678&REV_A1#l",
+          "umd": null
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2684",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 4090",
+          "vramMiB": 24000,
+          "luidHigh": 0,
+          "luidLow": "0x00002003",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2684&SUBSYS_12345678&REV_A1#k",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "HIGH",
+        "skuClass": "S",
+        "primaryLuid": "0000000000002003",
+        "pin": "exact:NVIDIA GeForce RTX 4090",
+        "crossAdapter": true,
+        "hdrDriverOk": true,
+        "notes": ["CROSS_ADAPTER"]
+      },
+      "activations": []
+    },
+    {
+      "id": "two-physical-display-owner",
+      "note": "Both own an output; the adapter that owns the video window's display beats the stronger one.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "0000000000002004",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2684",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 4090",
+          "vramMiB": 24000,
+          "luidHigh": 0,
+          "luidLow": "0x00002003",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2684&SUBSYS_12345678&REV_A1#k",
+          "umd": null
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2504",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 3060",
+          "vramMiB": 12000,
+          "luidHigh": 0,
+          "luidLow": "0x00002004",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2504&SUBSYS_12345678&REV_A1#l",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "LIGHT",
+        "skuClass": "C",
+        "primaryLuid": "0000000000002004",
+        "pin": "exact:NVIDIA GeForce RTX 3060",
+        "crossAdapter": false,
+        "hdrDriverOk": true,
+        "notes": []
+      },
+      "activations": []
+    },
+    {
+      "id": "non-ascii-description-legacy-pin",
+      "note": "A non printable-ASCII description cannot be pinned exactly: the legacy literal, still safe when first.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "000000000000e782",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080 测试",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "ULTRA",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "legacy",
+        "crossAdapter": false,
+        "hdrDriverOk": true,
+        "notes": []
+      },
+      "activations": []
+    },
+    {
+      "id": "non-ascii-twin-first-unsafe",
+      "note": "With a legacy pin the first NVIDIA prefix match is the twin: unsafe.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "000000000000e782",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080 测试",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080 测试",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PIN_UNSAFE"
+      },
+      "activations": []
+    },
+    {
+      "id": "virtual-name-excludes-even-with-a-pci-path",
+      "note": "A virtual-sounding name only excludes: this adapter has a PCI path yet is not accepted.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "000000000000e782",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080 Virtual Display",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "NOT_PHYSICAL"
+      },
+      "activations": []
+    },
+    {
+      "id": "virtual-named-adapter-first-physical-still-pins",
+      "note": "A virtual-named adapter first does not break the exact pin: its description is not a prefix match.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "000000000000e782",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA Virtual Display Adapter",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x000B95AD",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\ROOT#DISPLAY#0000#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [32, 0, 16, 1742]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "ULTRA",
+        "skuClass": "S",
+        "primaryLuid": "000000000000e782",
+        "pin": "exact:NVIDIA GeForce RTX 5080",
+        "crossAdapter": false,
+        "hdrDriverOk": true,
+        "notes": []
+      },
+      "activations": []
+    },
+    {
+      "id": "gtx-only",
+      "note": "A pre-RTX GPU alone is a hard decline but keeps a pin for decode steering.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2184",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce GTX 1660",
+          "vramMiB": 6000,
+          "luidHigh": 0,
+          "luidLow": "0x00003001",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2184&SUBSYS_12345678&REV_A1#m",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "PRE_RTX"
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "UNSUPPORTED",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "blackwell-old-driver",
+      "note": "This PC's card with a pre-572.16 driver: DRIVER_OLD.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": "000000000000e782",
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2C02",
+          "subSysId": "0x8A4A1043",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 5080",
+          "vramMiB": 15978,
+          "luidHigh": 0,
+          "luidLow": "0x0000E782",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2C02&SUBSYS_8A4A1043&REV_A1#fixture-instance#{fixture-interface}",
+          "umd": [31, 0, 15, 5000]
+        },
+        {
+          "vendorId": "0x1002",
+          "deviceId": "0x164E",
+          "subSysId": "0x00000000",
+          "revision": "0xC1",
+          "description": "AMD Radeon(TM) Graphics",
+          "vramMiB": 512,
+          "luidHigh": 0,
+          "luidLow": "0x000109A0",
+          "flags": 0,
+          "outputCount": 0,
+          "pnpPath": "\\\\?\\PCI#VEN_1002&DEV_164E&SUBSYS_00000000&REV_C1#fixture-instance#{fixture-interface}",
+          "umd": null
+        }
+      ],
+      "expect": {
+        "kind": "unsupported",
+        "reason": "DRIVER_OLD"
+      },
+      "activations": [
+        {
+          "mode": "AUTO",
+          "sourceLoaded": true,
+          "state": "UNSUPPORTED",
+          "request": false
+        }
+      ]
+    },
+    {
+      "id": "this-pc-old-hdr-driver-ada",
+      "note": "Ada card with a 550.00 driver: allowed, advisory not triggered, HDR gate closed.",
+      "dxgiComplete": true,
+      "displayAdapterLuid": null,
+      "adapters": [
+        {
+          "vendorId": "0x10DE",
+          "deviceId": "0x2704",
+          "subSysId": "0x12345678",
+          "revision": "0xA1",
+          "description": "NVIDIA GeForce RTX 4080",
+          "vramMiB": 16000,
+          "luidHigh": 0,
+          "luidLow": "0x00004001",
+          "flags": 0,
+          "outputCount": 1,
+          "pnpPath": "\\\\?\\PCI#VEN_10DE&DEV_2704&SUBSYS_12345678&REV_A1#n",
+          "umd": [31, 0, 15, 5000]
+        }
+      ],
+      "expect": {
+        "kind": "capable",
+        "tier": "ULTRA",
+        "skuClass": "S",
+        "primaryLuid": "0000000000004001",
+        "pin": "exact:NVIDIA GeForce RTX 4080",
+        "crossAdapter": false,
+        "hdrDriverOk": false,
+        "notes": []
+      },
+      "activations": []
+    }
+  ]
+}

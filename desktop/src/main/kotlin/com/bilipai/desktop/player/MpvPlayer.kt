@@ -1,5 +1,14 @@
 package com.bilipai.desktop.player
 
+import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
+import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
+import com.bilipai.desktop.nvidia.NvidiaLuidGateResult
+import com.bilipai.desktop.nvidia.NvidiaPlaybackHealthSample
+import com.bilipai.desktop.nvidia.applyNvidiaMpvScalerOptions
+import com.bilipai.desktop.nvidia.nvidiaDriverPublicX100FromText
+import com.bilipai.desktop.nvidia.nvidiaMpvScalerOptionsFor
+import com.bilipai.desktop.nvidia.nvidiaProofLuidAllowed
+import com.bilipai.desktop.nvidia.resolveNvidiaLuidGate
 import com.sun.jna.Native
 import com.sun.jna.Pointer
 import com.sun.jna.StringArray
@@ -32,6 +41,8 @@ import javax.swing.JPanel
 class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false,
     private val veyraComponent: DesktopVeyraPrivateComponent? = null,
     private val audioOutputFocus: DesktopWindowsAudioOutputFocus = DesktopWindowsAudioOutputFocus.process,
+    /** Neutral by default, so a player built without the application monitor keeps today's behaviour exactly. */
+    internal val gpuCapability: DesktopNvidiaCapabilityMonitor = DesktopNvidiaCapabilityMonitor.neutral(),
 ) : AutoCloseable {
     private var softwareTarget: MpvSoftwareTarget? = null
     private var pendingBackdropCapture: Action.BackdropFrame? = null
@@ -192,6 +203,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private var nvidiaOptions = NvidiaVideoOptions()
     private val mutableNvidiaVideo = MutableStateFlow(NvidiaVideoState())
     val nvidiaVideoState: StateFlow<NvidiaVideoState> = mutableNvidiaVideo.asStateFlow()
+    // About one reading a second of the video output counters, for the adaptive guard. Observation only.
+    private val mutablePlaybackHealth = MutableStateFlow(NvidiaPlaybackHealthSample())
+    internal val playbackHealth: StateFlow<NvidiaPlaybackHealthSample> = mutablePlaybackHealth.asStateFlow()
 
     internal fun setNvidiaVideoEnhancementIfSourceSnapshot(expected: OwnedPlaybackSourceSnapshot, options: NvidiaVideoOptions,
         expectedNativeIdentity: PlayerNativeTrackIdentity? = null): Long? = synchronized(lock) {
@@ -236,6 +250,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             targetTransfer = previous.targetTransfer.takeIf { targetCurrent },
             targetPrimaries = previous.targetPrimaries.takeIf { targetCurrent },
             gpuName = previous.gpuName, gpuVendorId = previous.gpuVendorId, currentGpuContext = previous.currentGpuContext,
+            gpuDeviceId = previous.gpuDeviceId, gpuLuidHex = previous.gpuLuidHex,
+            gpuDriverVersion = previous.gpuDriverVersion, adapterPinResult = previous.adapterPinResult,
             nativeResolutionPatchAvailable = previous.nativeResolutionPatchAvailable,
             nativeResolutionProcessingRequested = options.nativeResolutionProcessing,
             veyraAvailable = previous.veyraAvailable, backend = options.backend,
@@ -1380,8 +1396,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private var nvidiaConfiguredPosition: Double? = null
         private var nvidiaRestarted = false
         private var lastHdrDisplayPoll = 0L
+        private var lastPlaybackHealthPoll = 0L
         private var hdrDisplay = WindowsHdrDisplayState()
         private var pendingGpuName: String? = null
+        // Worker-owned: when the player logged its Device ID line; the LUID wait counts from here.
+        private var gpuDeviceIdSeenNanos = 0L
 
         private fun nvidiaCurrent(action: Action.NvidiaVideo): Boolean = synchronized(lock) {
             session === this && !closing.get() && !closed.get() && nvidiaConfigurationVersion == action.configurationVersion &&
@@ -1449,6 +1468,27 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             if (observed.gpuVendorId != 0x10de || observed.currentGpuContext != "d3d11") {
                 failNvidia(native, handle, action, "实际播放器未使用 NVIDIA Direct3D 11 设备，继续原画播放", unavailable = true); return
+            }
+            // Additive veto only. With an expectation the player's own logged LUID must be the verified physical
+            // adapter; a vendor id alone cannot tell a physical card from a virtual twin with an identical identity.
+            val luidExpectation = gpuCapability.expectation()
+            if (luidExpectation != null) {
+                val seenAt = if (gpuDeviceIdSeenNanos != 0L) gpuDeviceIdSeenNanos else System.nanoTime().also { gpuDeviceIdSeenNanos = it }
+                val luidGate = resolveNvidiaLuidGate(luidExpectation, observed.gpuLuidHex, System.nanoTime() - seenAt) { luid ->
+                    gpuCapability.validateObservedLuid(luid, observed.gpuDeviceId, observed.gpuName,
+                        nvidiaDriverPublicX100FromText(observed.gpuDriverVersion))
+                }
+                when (luidGate) {
+                    is NvidiaLuidGateResult.Pass -> Unit
+                    is NvidiaLuidGateResult.Pending -> { pendingNvidiaAction = action; return }
+                    is NvidiaLuidGateResult.Missing -> {
+                        failNvidia(native, handle, action, DesktopNvidiaStatusText.LUID_UNKNOWN, unavailable = true); return
+                    }
+                    is NvidiaLuidGateResult.Mismatch -> {
+                        failNvidia(native, handle, action, DesktopNvidiaStatusText.LUID_MISMATCH, unavailable = true)
+                        gpuCapability.invalidate(); return
+                    }
+                }
             }
             val maximum = input.maximumTextureDimension
             if (maximum == null) { pendingNvidiaAction = action; return }
@@ -1536,7 +1576,17 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 is NvidiaNativeMessage.DeviceVendor -> synchronized(lock) {
                     val name = pendingGpuName
                     pendingGpuName = null
-                    if (name != null && session === this && !closing.get()) mutableNvidiaVideo.update { it.copy(gpuName = name, gpuVendorId = message.vendorId) }
+                    if (name != null && session === this && !closing.get()) {
+                        gpuDeviceIdSeenNanos = System.nanoTime()
+                        mutableNvidiaVideo.update { it.copy(gpuName = name, gpuVendorId = message.vendorId, gpuDeviceId = message.deviceId) }
+                    }
+                }
+                // Bounded observations of the logged device block; never a proof of any presentation.
+                is NvidiaNativeMessage.DeviceLuid -> synchronized(lock) {
+                    if (session === this && !closing.get()) mutableNvidiaVideo.update { it.copy(gpuLuidHex = message.luidHex) }
+                }
+                is NvidiaNativeMessage.DeviceDriver -> synchronized(lock) {
+                    if (session === this && !closing.get()) mutableNvidiaVideo.update { it.copy(gpuDriverVersion = message.version) }
                 }
                 null -> Unit
                 else -> {
@@ -1628,6 +1678,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     val receipt = veyraReceipt
                     val shown = veyraPresentationTracker.accept(snapshot, checkNotNull(action.version), action.configurationVersion,
                         receipt, input.inputWidth, input.inputHeight, activeNvidiaOptions, actuallyPaused, now)
+                    val proofLuidExpectation = gpuCapability.expectation()
                     mutableNvidiaVideo.update { previous ->
                         val submitted = receipt != null && receipt.sourceVersion == action.version &&
                             receipt.configurationVersion == action.configurationVersion && receipt.width == outputWidth && receipt.height == outputHeight
@@ -1635,10 +1686,16 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             NvidiaFrameObservation(input.inputWidth, input.inputHeight, outputWidth, outputHeight,
                                 transfer, targetTransfer, targetPrimaries, fileLoaded && state.value.firstVideoFrameReady,
                                 filterPresent, input.hdrDisplay.hdrEnabled))
+                        // Only tightens: the displayed frame must come from the verified adapter. A mismatch leaves
+                        // the proof unset and is recorded for the runtime probe instead of staying silent.
+                        val luidAllowed = shown == null ||
+                            nvidiaProofLuidAllowed(proofLuidExpectation, previous.gpuLuidHex, shown.adapterLuidHex)
+                        if (!luidAllowed && MpvRuntimeProbe.enabled) MpvRuntimeProbe.recordChanged(MpvRuntimeProbeStage.NVIDIA_LUID_GATE, 2L)
                         val proved = shown != null && shown.width == outputWidth && shown.height == outputHeight &&
                             previous.error == null && previous.unavailableReason == null &&
                             filterPresent && state.value.firstVideoFrameReady && !state.value.ended && state.value.error == null &&
-                            (!activeNvidiaOptions.hdr || (input.hdrDisplay.hdrEnabled && nvidiaHdrTarget(targetTransfer, targetPrimaries)))
+                            (!activeNvidiaOptions.hdr || (input.hdrDisplay.hdrEnabled && nvidiaHdrTarget(targetTransfer, targetPrimaries))) &&
+                            luidAllowed
                         observed.copy(active = proved, hdrConversionActive = proved && activeNvidiaOptions.hdr,
                             nativeResolutionAttemptAccepted = false)
                     }
@@ -1967,9 +2024,30 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 } + audioOptions
                 // The pinned option validator enumerates actual DXGI adapters. A missing
                 // NVIDIA prefix is rejected without changing the original auto selection.
+                // The value is the exact description of the verified physical adapter when it is provably the
+                // first match, the legacy prefix while detection is off or undecided, and no option at all
+                // when only a virtual or ambiguous adapter exists. The return code is a diagnostic only.
                 // Never interpret this request as observed GPU/RTX execution.
+                var adapterPinResult: Int? = null
                 if (softwareTarget == null && com.sun.jna.Platform.isWindows()) {
-                    native.mpv_set_option_string(handle, "d3d11-adapter", "NVIDIA")
+                    gpuCapability.refreshForSession()
+                    val adapterPin = gpuCapability.pinFor()
+                    if (adapterPin != null) adapterPinResult = native.mpv_set_option_string(handle, "d3d11-adapter", adapterPin)
+                }
+                val adapterPinRequestResult = adapterPinResult
+                if (adapterPinRequestResult != null) synchronized(lock) {
+                    if (session === this && !closing.get()) mutableNvidiaVideo.update { it.copy(adapterPinResult = adapterPinRequestResult) }
+                }
+                // Optional residual scaler profile for a capable ULTRA or HIGH GPU. It is off by a root switch, so the
+                // list is empty today. It goes through a setter that never throws, unlike the required startup options
+                // below: a rejected scaler option is skipped, never a session failure. It reads no enhancement state
+                // and writes none, and the options are set before the core is initialised.
+                if (softwareTarget == null && com.sun.jna.Platform.isWindows()) {
+                    val scalerNative: MpvNative = native
+                    val scalerHandle: Pointer = handle
+                    applyNvidiaMpvScalerOptions(nvidiaMpvScalerOptionsFor(gpuCapability.capability.value)) { name, value ->
+                        scalerNative.mpv_set_option_string(scalerHandle, name, value)
+                    }
                 }
                 options.forEach { (name, value) -> checkResult(native, native.mpv_set_option_string(handle, name, value), name) }
                 // Keep bounded fixed GPU/RTX observations; discard all other verbose text.
@@ -2065,7 +2143,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         mutableState.update { it.copy(nativeTrackIdentity = null, tracks = emptyList()) }
                         mutableDecoderCapabilities.value = null
                         mutableNvidiaVideo.update { it.copy(active = false, hdrConversionActive = false, pending = false,
-                            nativeResolutionPatchAvailable = false, veyraAvailable = false, veyraSubmitted = false, nativeResolutionAttemptAccepted = false, driverVsrAccepted = false, driverHdrAccepted = false, gpuName = null, gpuVendorId = null, currentGpuContext = null) }
+                            nativeResolutionPatchAvailable = false, veyraAvailable = false, veyraSubmitted = false, nativeResolutionAttemptAccepted = false, driverVsrAccepted = false, driverHdrAccepted = false, gpuName = null, gpuVendorId = null, currentGpuContext = null,
+                            gpuDeviceId = null, gpuLuidHex = null, gpuDriverVersion = null, adapterPinResult = null) }
                         fatalFailure?.let { failure ->
                             val typed = diagnostics.failure((failure as? MpvCallException)?.nativeCode,
                                 failure.message ?: "Native player failed.", sourceVersion, nextAttemptId.incrementAndGet())
@@ -3003,11 +3082,17 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 tracks = readTracks(native, handle)
                 lastTrackPoll = now
             }
-            val hardwareDecoder = if (fileLoaded) property(native, handle, "hwdec-current")?.takeUnless { it == "no" } else null
+            val hardwareDecoderCurrent = if (fileLoaded) property(native, handle, "hwdec-current") else null
+            val hardwareDecoder = hardwareDecoderCurrent?.takeUnless { it == "no" }
+            // Exact equality: the copy decoder is not a Direct3D 11 surface path. Informational only, no gate reads it.
+            val d3d11Decode = hardwareDecoderCurrent?.takeIf { it.isNotBlank() }?.let { it == "d3d11va" }
             val videoWidth = if (fileLoaded) property(native, handle, "video-params/dw")?.toIntOrNull() ?: 0 else 0
             val videoHeight = if (fileLoaded) property(native, handle, "video-params/dh")?.toIntOrNull() ?: 0 else 0
             val inputWidth = if (fileLoaded) property(native, handle, "video-dec-params/w")?.toIntOrNull()?.coerceAtLeast(0) ?: 0 else 0
             val inputHeight = if (fileLoaded) property(native, handle, "video-dec-params/h")?.toIntOrNull()?.coerceAtLeast(0) ?: 0 else 0
+            // Same 200 ms observation as the decoded size, so the frame rate is normally known at the first decision.
+            val frameRate = if (fileLoaded) property(native, handle, "container-fps")?.toDoubleOrNull()
+                ?.takeIf { it.isFinite() && it > 0.0 && it <= 1000.0 } else null
             val osdWidth = if (fileLoaded && videoWidth > 0) property(native, handle, "osd-dimensions/w")?.toIntOrNull() else null
             val osdHeight = if (fileLoaded && videoHeight > 0) property(native, handle, "osd-dimensions/h")?.toIntOrNull() else null
             fun margin(name: String) = if (fileLoaded) property(native, handle, "osd-dimensions/$name")?.toIntOrNull() else null
@@ -3037,7 +3122,21 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             synchronized(lock) {
                 if (session === this && sourceVersion == activeSourceVersion && playbackRevision == activeRevision)
-                    mutableVideoOutput.update { it.copy(sourceVersion = activeSourceVersion, inputWidth = inputWidth, inputHeight = inputHeight, displayWidth = displayWidth, displayHeight = displayHeight, viewport = videoViewport, gamma = gamma, dolbyVisionProfile = dolbyVisionProfile, hdrDisplay = hdrDisplay, inputPrimaries = inputPrimaries) }
+                    mutableVideoOutput.update { it.copy(sourceVersion = activeSourceVersion, inputWidth = inputWidth, inputHeight = inputHeight, displayWidth = displayWidth, displayHeight = displayHeight, viewport = videoViewport, gamma = gamma, dolbyVisionProfile = dolbyVisionProfile, hdrDisplay = hdrDisplay, inputPrimaries = inputPrimaries, frameRate = frameRate, d3d11Decode = d3d11Decode) }
+            }
+            // The adaptive guard's counters, about once a second and only for a loaded file. Read-only observations:
+            // no gate, request or proof ever reads them, and they are published under the same source checks.
+            if (fileLoaded && now - lastPlaybackHealthPoll >= 1_000_000_000L) {
+                lastPlaybackHealthPoll = now
+                val droppedFrames = property(native, handle, "frame-drop-count")?.toLongOrNull()?.takeIf { it >= 0L }
+                val delayedFrames = property(native, handle, "vo-delayed-frame-count")?.toLongOrNull()?.takeIf { it >= 0L }
+                val seekingNow = seekTracker.hasPendingSeek || property(native, handle, "seeking") == "yes"
+                val healthSample = NvidiaPlaybackHealthSample(activeSourceVersion, now / 1_000_000L, droppedFrames, delayedFrames,
+                    avSync?.takeIf { it.isFinite() }, paused, buffering, seekingNow, speed ?: 1.0)
+                synchronized(lock) {
+                    if (session === this && sourceVersion == activeSourceVersion && playbackRevision == activeRevision)
+                        mutablePlaybackHealth.value = healthSample
+                }
             }
             refreshNvidiaVideo(native, handle)
             var pauseFieldsPublished = false

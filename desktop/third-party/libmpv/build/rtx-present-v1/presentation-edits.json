@@ -1,7 +1,7 @@
 [
   {
-    "afterBytes": 29407,
-    "afterSha256": "59b2ec20c855bbb26f571e456e59119241a02699bc045beacd6025d3dd21e4de",
+    "afterBytes": 30584,
+    "afterSha256": "dc1a9254496cd919e14892fab86c8d2b49ed89e3e0958170d7ab62615397de66",
     "beforeBytes": 24865,
     "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
     "edits": [
@@ -89,6 +89,36 @@
         "count": 1,
         "new": "        struct mp_frame frame = mp_pin_out_read(p->filters_out);\n        // Failure may have been observed while requesting this inner output.\n        if (p->public.bilipai_context_fatal) {\n            mp_frame_unref(&frame);\n            frame = MP_EOF_FRAME;\n        }\n\n        p->public.got_output_eof = frame.type == MP_FRAME_EOF;",
         "old": "        struct mp_frame frame = mp_pin_out_read(p->filters_out);\n\n        p->public.got_output_eof = frame.type == MP_FRAME_EOF;"
+      },
+      {
+        "old": "    struct mp_autoconvert *convert;\n",
+        "new": "    struct mp_autoconvert *convert;\n    struct mp_user_filter *bilipai_autovflip, *bilipai_autorotate;\n",
+        "count": 1
+      },
+      {
+        "old": "static void user_wrapper_process(struct mp_filter *f)\n",
+        "new": "static bool bilipai_is_identity_auto_filter(struct mp_user_filter *u,\n                                            const struct mp_image *image)\n{\n    struct chain *p = u->p;\n    // Only these owned automatic wrappers have a reviewed identity path.\n    // Names are insufficient: a user filter can have the same name.\n    if ((u != p->bilipai_autovflip && u != p->bilipai_autorotate) ||\n        !image || image->params.rotate || image->params.vflip)\n        return false;\n    struct mp_filter_command cmd = {.type = MP_FILTER_COMMAND_IS_ACTIVE};\n    return mp_filter_command(u->f, &cmd) && !cmd.is_active;\n}\n\nstatic void bilipai_clear_frame_provenance(struct mp_image *image)\n{\n    image->bilipai_rtx = (struct mp_bilipai_frame_token){0};\n    mp_image_params_bilipai_invalidate_current(&image->params);\n    image->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n}\n\nstatic void user_wrapper_process(struct mp_filter *f)\n",
+        "count": 1
+      },
+      {
+        "old": "            u != p->input && u != p->output && u != p->convert_wrapper) {\n            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};\n            mp_image_params_bilipai_invalidate_current(&((struct mp_image *)frame.data)->params);\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n",
+        "new": "            u != p->input && u != p->output && u != p->convert_wrapper &&\n            !bilipai_is_identity_auto_filter(u, frame.data)) {\n            bilipai_clear_frame_provenance(frame.data);\n",
+        "count": 1
+      },
+      {
+        "old": "        // The private RTX producer replaces params after copy_attributes.\n",
+        "new": "        // Recheck after processing: an automatic wrapper may have inserted\n        // a transform while handling this input or a format transition.\n        if (frame.type == MP_FRAME_VIDEO &&\n            (u == p->bilipai_autovflip || u == p->bilipai_autorotate) &&\n            !bilipai_is_identity_auto_filter(u, frame.data))\n            bilipai_clear_frame_provenance(frame.data);\n\n        // The private RTX producer replaces params after copy_attributes.\n",
+        "count": 1
+      },
+      {
+        "old": "    f->name = \"autovflip\";\n",
+        "new": "    f->name = \"autovflip\";\n    p->bilipai_autovflip = f;\n",
+        "count": 1
+      },
+      {
+        "old": "    f->name = \"autorotate\";\n",
+        "new": "    f->name = \"autorotate\";\n    p->bilipai_autorotate = f;\n",
+        "count": 1
       }
     ],
     "path": "filters/f_output_chain.c"

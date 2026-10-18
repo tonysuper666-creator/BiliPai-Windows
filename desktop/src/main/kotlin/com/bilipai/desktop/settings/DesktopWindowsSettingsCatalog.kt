@@ -22,7 +22,7 @@ internal val desktopWindowsSettingsSearchEntries = listOf(
     // The detail is mounted by DesktopSettingsTree and opened from the privacy page; no focus anchor exists, so none is advertised.
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.MESSAGE_NOTIFICATION, "消息通知", "私信、回复、@我、点赞和检查频率", "隐私", listOf("通知", "回复我的", "收到的赞", "系统通知", "关注动态", "开播", "开播提醒", "节能", "更及时")),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.DATA_BACKUP, "缓存、下载与备份", "本机路径、缓存管理和备份", "存储", listOf("缓存", "下载", "目录", "路径", "备份", "WebDAV", "ZIP", "下载位置", "图片保存位置", "清除缓存", "自动清理缓存", "缓存容量上限", "设置分享")),
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "NVIDIA 自动增强", "所有视频统一增强与当前原生输出状态", "播放", listOf("NVIDIA", "RTX", "超分辨率", "画质增强", "VSR", "HDR"), "windows_video_enhancement"),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "NVIDIA 自动增强", "所有视频统一增强与当前原生输出状态", "播放", listOf("NVIDIA", "RTX", "超分辨率", "画质增强", "VSR", "HDR", "自动增强", "档位"), "windows_video_enhancement"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLUGINS, "插件与扩展", "CDN、播放加速与规则扩展", "插件", listOf("插件", "CDN", "加速", "规则")),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.DIAGNOSTICS, "更新与诊断", "Windows 更新器与用户打开的本地日志", "系统", listOf("更新", "版本", "日志", "诊断", "代理", "关于", "帮助", "协议", "许可", "自动检查更新", "趣味彩蛋")),
 )

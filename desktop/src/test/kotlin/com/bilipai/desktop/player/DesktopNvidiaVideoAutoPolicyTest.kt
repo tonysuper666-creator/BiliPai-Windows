@@ -1,5 +1,11 @@
 package com.bilipai.desktop.player
 
+import com.bilipai.desktop.nvidia.DesktopNvidiaVideoBudget
+import com.bilipai.desktop.nvidia.NvidiaScalePolicy
+import com.bilipai.desktop.nvidia.NvidiaSkuClass
+import com.bilipai.desktop.nvidia.NvidiaSkuInfo
+import com.bilipai.desktop.nvidia.NvidiaTier
+import com.bilipai.desktop.nvidia.buildBudget
 import kotlin.test.*
 
 class DesktopNvidiaVideoAutoPolicyTest {
@@ -218,4 +224,267 @@ class DesktopNvidiaVideoAutoPolicyTest {
         assertEquals(1.0, nvidiaStableUpscale(2.0, 1920, 1080, null))
     }
 
+    // ---- Budget (slice S4). Every case above runs with budget = null and is unchanged. ----
+
+    private fun sku(model: Int, skuClass: NvidiaSkuClass, costFactor: Double) = NvidiaSkuInfo(model, skuClass, costFactor, null, false)
+
+    // 5080 class: ULTRA, rate 1000.
+    private fun ultra(frameRate: Double? = 60.0, extendedRangeDenied: Boolean = false) =
+        buildBudget(NvidiaTier.ULTRA, sku(5080, NvidiaSkuClass.S, 1.0), frameRate, extendedRangeDenied)
+    // 4070 Ti class: HIGH with factor 1.0, rate 500.
+    private fun highTi(frameRate: Double? = 60.0) = buildBudget(NvidiaTier.HIGH, sku(4070, NvidiaSkuClass.A, 1.0), frameRate)
+    // 4070 class: HIGH with factor 0.7, rate 350.
+    private fun high(frameRate: Double? = 60.0) = buildBudget(NvidiaTier.HIGH, sku(4070, NvidiaSkuClass.A, 0.7), frameRate)
+    // 3060 class: LIGHT, rate 125.
+    private fun light(frameRate: Double? = 60.0) = buildBudget(NvidiaTier.LIGHT, sku(3060, NvidiaSkuClass.C, 1.0), frameRate)
+
+    // A budget with no practical limit: it must change nothing.
+    private val ample = DesktopNvidiaVideoBudget(
+        tier = NvidiaTier.ULTRA, maxScale = 4.0, srInputMaxWidth = 1_000_000, srInputMaxHeight = 1_000_000,
+        nativeSizeMaxInputPixels = Long.MAX_VALUE, hdrOnlyMaxInputPixels = Long.MAX_VALUE,
+        maxOutputPixels = Long.MAX_VALUE / 4, rateMpixPerSecond = 1.0e12, frameRate = 60.0,
+        hdrWithSrAllowed = true, hdrOnlyAllowed = true, scalePolicy = NvidiaScalePolicy.STICKY_UP, extendedRangeDenied = false,
+    )
+
+    private val existingCases: List<(DesktopNvidiaVideoBudget?) -> DesktopNvidiaVideoDecision> = listOf(
+        { b -> resolveDesktopNvidiaVideoDecision(3840, 2160, 1920, 1080, 16384, "bt.1886", null, false,
+            sharedCoreNativeResolutionAvailable = true, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(7680, 4320, 3840, 2160, 16384, "bt.1886", null, false,
+            sharedCoreNativeResolutionAvailable = true, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(3840, 2160, 1920, 1080, 16384, "srgb", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, sharedCoreNativeResolutionAvailable = true, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(3840, 2160, 3840, 2160, 16384, "bt.1886", null, false,
+            nativeResolutionPatchAvailable = true, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 5120, 2880, 16384, "bt.1886", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.OFF, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 960, 540, 16384, "bt.1886", null, false, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 7680, 4320, 2880, "bt.1886", null, false, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(320, 180, 7680, 4320, 16384, "bt.1886", null, false, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "bt.1886", null, false, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "bt.1886", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "pq", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", 5, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 1920, 1080, 16384, "bt.1886", null, true, "linear", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(0, 1080, 1920, 1080, 16384, "bt.1886", null, true, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "pq", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, sharedCoreNativeResolutionAvailable = true, srEnabled = false, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, sharedCoreNativeResolutionAvailable = true, srEnabled = false, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1919, 1080, 3840, 2160, 16384, "bt.1886", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, sharedCoreNativeResolutionAvailable = true, srEnabled = false, budget = b) },
+        { b -> resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "srgb", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, sharedCoreNativeResolutionAvailable = true, srEnabled = false, budget = b) },
+    )
+
+    @Test fun aBudgetWithNoPracticalLimitChangesNoExistingDecision() {
+        for ((index, case) in existingCases.withIndex()) {
+            assertEquals(case(null), case(ample), "case $index")
+        }
+    }
+
+    @Test fun aSourceThatNeededNoProcessingKeepsItsOutcomeUnderEveryBudget() {
+        val tiny = light()
+        // A smaller video rectangle is DIRECT whatever the source size: the budget never creates a decision.
+        val direct = resolveDesktopNvidiaVideoDecision(7680, 4320, 960, 540, 16384, "bt.1886", null, false, budget = tiny)
+        assertEquals(DesktopNvidiaVideoDecisionKind.DIRECT, direct.kind)
+        assertFalse(direct.needsProcessing)
+        val waitingVideo = resolveDesktopNvidiaVideoDecision(0, 2160, 1920, 1080, 16384, "bt.1886", null, false, budget = tiny)
+        assertEquals(DesktopNvidiaVideoDecisionKind.WAITING_VIDEO, waitingVideo.kind)
+        val waitingLimit = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "bt.1886", null, false, budget = tiny)
+        assertEquals(DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT, waitingLimit.kind)
+        val nativeHdrOnly = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "pq", null, true, "pq", "bt.2020",
+            hdrMode = DesktopNvidiaVideoHdrMode.AUTO, sharedCoreNativeResolutionAvailable = true, srEnabled = false, budget = tiny)
+        assertEquals(DesktopNvidiaVideoDecisionKind.DIRECT, nativeHdrOnly.kind)
+        assertTrue(nativeHdrOnly.sourceIsHdr)
+    }
+
+    @Test fun overBudgetNeverNeedsProcessingAndKeepsTheSourceColourFact() {
+        val over = DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.OVER_BUDGET)
+        assertFalse(over.needsProcessing)
+        assertEquals(1.0, over.scale)
+        assertFalse(over.hdr)
+        assertFalse(over.nativeResolutionProcessing)
+        assertFalse(over.isUpscale)
+        // A native HDR source that would be upscaled beyond the SR box stays marked as an HDR source.
+        val hdrSource = resolveDesktopNvidiaVideoDecision(3840, 2160, 7680, 4320, 16384, "pq", null, false, budget = ultra())
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, hdrSource.kind)
+        assertTrue(hdrSource.sourceIsHdr)
+        assertFalse(hdrSource.needsProcessing)
+    }
+
+    @Test fun onlyTheTwoUpscaleKindsAreUpscales() {
+        for (kind in DesktopNvidiaVideoDecisionKind.entries) {
+            val expected = kind == DesktopNvidiaVideoDecisionKind.UPSCALE || kind == DesktopNvidiaVideoDecisionKind.UPSCALE_AND_HDR
+            assertEquals(expected, DesktopNvidiaVideoDecision(kind, scale = 2.0).isUpscale, kind.name)
+        }
+    }
+
+    @Test fun nativeSizeSourcesAreCheckedAgainstTheNativeSizeCapAndTheRate() {
+        fun nativeUhd(budget: DesktopNvidiaVideoBudget?) = resolveDesktopNvidiaVideoDecision(3840, 2160, 1920, 1080, 16384,
+            "bt.1886", null, false, sharedCoreNativeResolutionAvailable = true, budget = budget)
+        assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, nativeUhd(null).kind)
+        assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, nativeUhd(ultra()).kind)
+        // 4K60 is 497.7 Mpix/s: inside a rate of 500, outside 350.
+        assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, nativeUhd(highTi()).kind)
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, nativeUhd(high()).kind)
+        // The frame rate is part of the rate: 4K30 fits the same 350 budget.
+        assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, nativeUhd(high(30.0)).kind)
+        // Beyond the native-size cap, and when a failed extended range lowered the cap to the SR box.
+        val eightK = resolveDesktopNvidiaVideoDecision(7680, 4320, 3840, 2160, 16384, "bt.1886", null, false,
+            sharedCoreNativeResolutionAvailable = true, budget = ultra())
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, eightK.kind)
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, nativeUhd(ultra(extendedRangeDenied = true)).kind)
+        // Native-size with HDR uses the HDR factor: 622 Mpix/s fits 1000, not 500.
+        fun nativeUhdHdr(budget: DesktopNvidiaVideoBudget?) = resolveDesktopNvidiaVideoDecision(3840, 2160, 1920, 1080, 16384,
+            "srgb", null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO,
+            sharedCoreNativeResolutionAvailable = true, budget = budget)
+        assertEquals(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION_AND_HDR, nativeUhdHdr(ultra()).kind)
+        assertTrue(nativeUhdHdr(ultra()).hdr)
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, nativeUhdHdr(highTi()).kind)
+    }
+
+    @Test fun hdrOnlyUsesTheHdrOnlyCapAndTheHdrRate() {
+        fun hdrOnly(width: Int, height: Int, budget: DesktopNvidiaVideoBudget?) = resolveDesktopNvidiaVideoDecision(width, height,
+            width, height, 16384, "bt.1886", null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO,
+            sharedCoreNativeResolutionAvailable = true, srEnabled = false, budget = budget)
+        assertEquals(DesktopNvidiaVideoDecisionKind.HDR, hdrOnly(3840, 2160, ultra()).kind)
+        assertTrue(hdrOnly(3840, 2160, ultra()).hdr)
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, hdrOnly(3840, 2160, highTi()).kind)
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, hdrOnly(3840, 2160, ultra(extendedRangeDenied = true)).kind)
+        // 1080p60 with HDR is 155.5 Mpix/s: over the 125 of the light tier, inside it at 24 fps.
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, hdrOnly(1920, 1080, light()).kind)
+        assertEquals(DesktopNvidiaVideoDecisionKind.HDR, hdrOnly(1920, 1080, light(24.0)).kind)
+        // Unknown frame rate counts as 60.
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, hdrOnly(1920, 1080, light(null)).kind)
+    }
+
+    @Test fun anUpscaleIsTrimmedToTheBudgetScaleCeilingAndKeepsItsKind() {
+        fun toUhd(budget: DesktopNvidiaVideoBudget?) = resolveDesktopNvidiaVideoDecision(1920, 1080,
+            3840, 2160, 16384, "bt.1886", null, false, budget = budget)
+        assertEquals(2.0, toUhd(null).scale)
+        val top = toUhd(ultra())
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, top.kind)
+        assertEquals(2.0, top.scale)
+        // The 4070 rate of 350 allows 1.5x for 1080p60.
+        val trimmed = toUhd(high())
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, trimmed.kind)
+        assertEquals(1.5, trimmed.scale)
+        assertFalse(trimmed.nativeResolutionProcessing)
+        assertTrue(trimmed.isUpscale)
+        // The frame rate matters: 1080p24 into 4K is not trimmed on the same budget, unknown counts as 60.
+        assertEquals(2.0, toUhd(high(24.0)).scale)
+        assertEquals(1.5, toUhd(high(null)).scale)
+        // With HDR the kind is kept and the HDR rate factor applies.
+        fun toUhdHdr(budget: DesktopNvidiaVideoBudget?) = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384,
+            "bt.1886", null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO, budget = budget)
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE_AND_HDR, toUhdHdr(ultra()).kind)
+        assertEquals(2.0, toUhdHdr(ultra()).scale)
+        val hdrTrimmed = toUhdHdr(high())
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE_AND_HDR, hdrTrimmed.kind)
+        assertTrue(hdrTrimmed.hdr)
+        assertEquals(1.5, hdrTrimmed.scale)
+    }
+
+    @Test fun aScaleTrimmedToExactlyOneOrAnInputBeyondTheBoxIsOverBudget() {
+        // The light tier cannot output more than 1080p, so 1080p into a 1440p rectangle has no scale that fits.
+        val noScaleFits = resolveDesktopNvidiaVideoDecision(1920, 1080, 2560, 1440, 16384, "bt.1886", null, false, budget = light())
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, noScaleFits.kind)
+        assertFalse(noScaleFits.needsProcessing)
+        assertEquals(1.0, noScaleFits.scale)
+        // A 4K input into an 8K rectangle needs an upscale, and 4K is beyond the SR box of 3440x1440.
+        val beyondBox = resolveDesktopNvidiaVideoDecision(3840, 2160, 7680, 4320, 16384, "bt.1886", null, false, budget = ultra())
+        assertEquals(DesktopNvidiaVideoDecisionKind.OVER_BUDGET, beyondBox.kind)
+        // The same upscale is inside the box when the input is 3440x1440.
+        val insideBox = resolveDesktopNvidiaVideoDecision(3440, 1440, 6880, 2880, 16384, "bt.1886", null, false, budget = ultra())
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, insideBox.kind)
+    }
+
+    @Test fun theTextureLimitStillBoundsABudgetedUpscale() {
+        val limited = resolveDesktopNvidiaVideoDecision(1920, 1080, 7680, 4320, 2880, "bt.1886", null, false, budget = ultra())
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, limited.kind)
+        assertEquals(1.5, limited.scale)
+        assertEquals(DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT,
+            resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "bt.1886", null, false, budget = ultra()).kind)
+    }
+
+    @Test fun theStableBucketDefaultCeilingChangesNothingAndABudgetCeilingOnlyLowersIt() {
+        for (requested in listOf(1.05, 2.01, 2.26, 3.7, 5.0)) {
+            assertEquals(nvidiaStableUpscale(requested, 1920, 1080, 16384),
+                nvidiaStableUpscale(requested, 1920, 1080, 16384, 4.0), "$requested")
+        }
+        assertEquals(2.25, nvidiaStableUpscale(2.01, 1920, 1080, 16384, 2.5))
+        assertEquals(2.0, nvidiaStableUpscale(2.01, 1920, 1080, 16384, 2.0))
+        assertEquals(1.0, nvidiaStableUpscale(2.01, 1920, 1080, 16384, 0.5), "a ceiling below one never undersizes")
+        assertEquals(1.0, nvidiaStableUpscale(2.01, 1920, 1080, 16384, Double.NaN))
+        // The texture limit stays the tighter bound when it is lower.
+        assertEquals(2.1, nvidiaStableUpscale(2.01, 1000, 600, 2100, 4.0))
+        assertEquals(2.05, nvidiaStableUpscale(2.01, 1000, 600, 2100, 2.05))
+        // Not an upscale: nothing changes.
+        assertEquals(1.0, nvidiaStableUpscale(1.0, 1920, 1080, 16384, 2.0))
+    }
+
+    // ---- Request scale: the budget ceiling and the upscale-only sticky floor ----
+
+    private fun coreOptions(scale: Double, hdr: Boolean = false, nativeResolution: Boolean = false, sr: Boolean = true) =
+        NvidiaVideoOptions(scale, hdr, nativeResolution, NvidiaVideoBackend.VEYRA_CORE, srEnabled = sr)
+
+    private val upscaleDecision = DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.UPSCALE, scale = 4.0 / 3.0)
+
+    @Test fun withoutABudgetTheRequestScaleIsTheStableBucketAndTheFloorIsIgnored() {
+        val sized = nvidiaRequestScale(coreOptions(4.0 / 3.0), upscaleDecision, null, 1920, 1080, 16384, 2.0)
+        assertEquals(1.5, sized.scale)
+        assertFalse(sized.stickyApplied)
+    }
+
+    @Test fun aStickyTierRaisesAnUpscaleToTheFloorAndClampsItToTheBudgetCeiling() {
+        val options = coreOptions(4.0 / 3.0)
+        val first = nvidiaRequestScale(options, upscaleDecision, ultra(), 1920, 1080, 16384, null)
+        assertEquals(1.5, first.scale)
+        assertTrue(first.stickyApplied)
+        assertEquals(2.0, nvidiaRequestScale(options, upscaleDecision, ultra(), 1920, 1080, 16384, 2.0).scale)
+        assertEquals(1.5, nvidiaRequestScale(options, upscaleDecision, ultra(), 1920, 1080, 16384, 1.25).scale, "the floor never lowers")
+        // The floor stays under the budget ceiling (the 14.7 Mpx output cap is 8/3 for 1080p).
+        assertEquals(8.0 / 3.0, nvidiaRequestScale(options, upscaleDecision, ultra(), 1920, 1080, 16384, 3.5).scale, 1e-9)
+        // A tighter budget clamps the floor too: the 4070 ceiling for 1080p60 is 1.5.
+        assertEquals(1.5, nvidiaRequestScale(options, upscaleDecision, high(), 1920, 1080, 16384, 2.0).scale)
+    }
+
+    @Test fun theFloorNeverTouchesNativeSizeHdrOnlyOrDirectRequests() {
+        val floor = 2.0
+        val nativeDecision = DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.NATIVE_RESOLUTION, nativeResolutionProcessing = true)
+        val nativeSized = nvidiaRequestScale(coreOptions(1.0, nativeResolution = true), nativeDecision, ultra(), 3840, 2160, 16384, floor)
+        assertEquals(1.0, nativeSized.scale)
+        assertFalse(nativeSized.stickyApplied)
+        val hdrOnlyDecision = DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.HDR, hdr = true)
+        val hdrSized = nvidiaRequestScale(coreOptions(1.0, hdr = true, sr = false), hdrOnlyDecision, ultra(), 1920, 1080, 16384, floor)
+        assertEquals(1.0, hdrSized.scale)
+        assertFalse(hdrSized.stickyApplied)
+        // Unity HDR with super resolution on is not an upscale either, so no floor can reach it.
+        val unityHdr = nvidiaRequestScale(coreOptions(1.0, hdr = true), hdrOnlyDecision, ultra(), 1920, 1080, 16384, floor)
+        assertEquals(1.0, unityHdr.scale)
+        assertFalse(unityHdr.stickyApplied)
+        val direct = nvidiaRequestScale(coreOptions(1.0), DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.DIRECT),
+            ultra(), 1920, 1080, 16384, floor)
+        assertEquals(1.0, direct.scale)
+        assertFalse(direct.stickyApplied)
+        // The native contract accepts each of these requests as it is.
+        coreOptions(nativeSized.scale, nativeResolution = true).requireValid()
+        coreOptions(hdrSized.scale, hdr = true, sr = false).requireValid()
+        coreOptions(unityHdr.scale, hdr = true).requireValid()
+    }
+
+    @Test fun tiersThatFollowTheDisplayHaveNoFloor() {
+        val follows = buildBudget(NvidiaTier.BALANCED, sku(3060, NvidiaSkuClass.B, 1.0), 30.0)
+        assertEquals(NvidiaScalePolicy.FOLLOWS_DISPLAY, follows.scalePolicy)
+        val decision = DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.UPSCALE, scale = 4.0 / 3.0)
+        val sized = nvidiaRequestScale(coreOptions(4.0 / 3.0), decision, follows, 1280, 720, 16384, 2.0)
+        assertEquals(1.5, sized.scale)
+        assertFalse(sized.stickyApplied)
+    }
 }

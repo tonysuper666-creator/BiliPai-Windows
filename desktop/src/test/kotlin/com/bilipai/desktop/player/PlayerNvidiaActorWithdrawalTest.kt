@@ -1,5 +1,14 @@
 package com.bilipai.desktop.player
 
+import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
+import com.bilipai.desktop.nvidia.DesktopNvidiaGpuProbe
+import com.bilipai.desktop.nvidia.DesktopNvidiaStatusText
+import com.bilipai.desktop.nvidia.NVIDIA_HEALTH_BACKEND_VEYRA
+import com.bilipai.desktop.nvidia.NVIDIA_HEALTH_RUNTIME_UNKNOWN
+import com.bilipai.desktop.nvidia.NvidiaAdapterEvidence
+import com.bilipai.desktop.nvidia.NvidiaPhysicalVerdict
+import com.bilipai.desktop.nvidia.NvidiaProbeInput
+import com.bilipai.desktop.nvidia.nvidiaHealthKeyFor
 import com.bilipai.desktop.ui.desktopVideoEnhancementCompactLabel
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration
@@ -93,6 +102,19 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
         observed.value = observed.value.copy(gpuVendorId = vendor, currentGpuContext = context)
     }
+    /** Fixture observation of the logged device block. The real log path is exercised by deviceLog. */
+    fun recordGpuIdentity(luidHex: String?, deviceId: Int? = 0x2c02, driver: String? = null) {
+        @Suppress("UNCHECKED_CAST")
+        val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
+        observed.value = observed.value.copy(gpuName = "NVIDIA GeForce RTX 5080", gpuDeviceId = deviceId,
+            gpuLuidHex = luidHex, gpuDriverVersion = driver)
+    }
+    /** One logged line of the Direct3D 11 device block through the real event receiver. */
+    fun deviceLog(line: String) { nativeMessage("vo/gpu/d3d11", line) }
+    /** Moves the Device ID timestamp into the past, so the bounded LUID wait can run out without sleeping. */
+    fun ageDeviceId(nanos: Long) {
+        type.getDeclaredField("gpuDeviceIdSeenNanos").apply { isAccessible = true }.setLong(actor, System.nanoTime() - nanos)
+    }
     fun nextNvidia(): Any {
         while (true) {
             val action = assertNotNull(queue.poll(), "Expected a real queued NVIDIA action")
@@ -177,6 +199,34 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
     override fun mpv_wait_event(handle: Pointer, timeout: Double): Pointer { check(timeout == 0.0); return noEvent }
     fun delegatePropertiesAreEmpty(): Boolean = delegate.properties.isEmpty()
     override fun close() { nodeOwners.forEach { it.close() }; noEvent.close(); delegate.close() }
+}
+
+/** Fixture probe for this machine's shape: a physical RTX 5080 (e782) and a virtual twin (b95ad) with its exact identity. */
+private class ActorLuidProbe(private val input: NvidiaProbeInput) : DesktopNvidiaGpuProbe {
+    val probeCalls = java.util.concurrent.atomic.AtomicInteger()
+    override fun probe(): NvidiaProbeInput { probeCalls.incrementAndGet(); return input }
+    override fun physicalVerdict(luidHigh: Int, luidLow: Int, dxgiDeviceId: Int): NvidiaPhysicalVerdict {
+        val adapter = input.adapters.firstOrNull { it.luidHigh == luidHigh && it.luidLow == luidLow }
+            ?: return NvidiaPhysicalVerdict.UNKNOWN
+        // Like the real PnP path check, a device id that differs from the path's DEV is never physical.
+        return if (adapter.physical == NvidiaPhysicalVerdict.PHYSICAL && adapter.deviceId != dxgiDeviceId) {
+            NvidiaPhysicalVerdict.VIRTUAL
+        } else {
+            adapter.physical
+        }
+    }
+    companion object {
+        private fun rtx5080(luidLow: Int, physical: NvidiaPhysicalVerdict, outputs: Int) = NvidiaAdapterEvidence(
+            vendorId = 0x10DE, deviceId = 0x2C02, subSysId = 0x8A4A1043.toInt(), revision = 0xA1,
+            description = "NVIDIA GeForce RTX 5080", dedicatedVideoMemoryBytes = 15_978L * 1024L * 1024L,
+            luidLow = luidLow, luidHigh = 0, flags = 0, outputCount = outputs, physical = physical,
+            umdVersion = (32L shl 48) or (16L shl 16) or 1742L)
+        fun capable() = ActorLuidProbe(NvidiaProbeInput(true,
+            listOf(rtx5080(0xe782, NvidiaPhysicalVerdict.PHYSICAL, 1), rtx5080(0xb95ad, NvidiaPhysicalVerdict.VIRTUAL, 0))))
+        /** An incomplete inventory: Unknown(PROBE_FAILED), never a verdict about the twin. */
+        fun failed() = ActorLuidProbe(NvidiaProbeInput(false,
+            listOf(rtx5080(0xb95ad, NvidiaPhysicalVerdict.VIRTUAL, 0), rtx5080(0xe782, NvidiaPhysicalVerdict.PHYSICAL, 1))))
+    }
 }
 
 class PlayerNvidiaActorWithdrawalTest {
@@ -1026,4 +1076,377 @@ class PlayerNvidiaActorWithdrawalTest {
         }
     }
 
+    // ---- Adapter LUID veto: additive, only with an expectation from the capability monitor ----
+
+    private val foreignFilterOnly = listOf("scale" to "foreign-user-filter")
+
+    private fun luidMonitor(probe: ActorLuidProbe) = DesktopNvidiaCapabilityMonitor(probe).also { it.refreshForSession() }
+
+    @Test fun anObservedLuidThatIsNotTheVerifiedPhysicalAdapterWithdrawsTheRequestAndInvalidatesTheProbe() {
+        val probe = ActorLuidProbe.capable()
+        val monitor = luidMonitor(probe)
+        assertEquals(1, probe.probeCalls.get())
+        MpvPlayer(gpuCapability = monitor).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-twin.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = "00000000000b95ad") // the virtual twin: same vendor, device, name, driver
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                actor.apply()
+                val native = player.nvidiaVideoState.value
+                assertEquals(DesktopNvidiaStatusText.LUID_MISMATCH, native.unavailableReason)
+                assertNull(native.error); assertFalse(native.active); assertFalse(native.pending)
+                assertTrue(actor.native.commands.isEmpty()); assertEquals(foreignFilterOnly, actor.native.filters)
+                monitor.refreshForSession()
+                assertEquals(2, probe.probeCalls.get(), "a mismatch makes the verdict stale, so the next session start probes again")
+            }
+        }
+    }
+
+    @Test fun theVerifiedPhysicalLuidPassesInEitherHalfOrderAndTheRequestProceeds() {
+        for (observedLuid in listOf("000000000000e782", "000000000000E782", "0000e78200000000")) {
+            MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-physical.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordGpuIdentity(luidHex = observedLuid)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    assertEquals(2, actor.native.filters.size, observedLuid)
+                    assertNull(player.nvidiaVideoState.value.unavailableReason, observedLuid)
+                    assertFalse(player.nvidiaVideoState.value.active, "Passing the veto is never presentation proof")
+                }
+            }
+        }
+    }
+
+    @Test fun anAbsentLuidStaysPendingUntilTheWaitRunsOutThenTheRequestIsUnavailable() {
+        MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-missing.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = null)
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                val action = actor.nextNvidia()
+                actor.apply(action)
+                val waiting = player.nvidiaVideoState.value
+                assertNull(waiting.unavailableReason); assertNull(waiting.error); assertTrue(waiting.pending)
+                assertTrue(actor.native.commands.isEmpty())
+                actor.apply(action) // the next poll, still inside the two second wait
+                assertNull(player.nvidiaVideoState.value.unavailableReason); assertTrue(player.nvidiaVideoState.value.pending)
+                actor.ageDeviceId(3_000_000_000L)
+                actor.apply(action)
+                val native = player.nvidiaVideoState.value
+                assertEquals(DesktopNvidiaStatusText.LUID_UNKNOWN, native.unavailableReason)
+                assertNull(native.error); assertFalse(native.pending); assertFalse(native.active)
+                assertTrue(actor.native.commands.isEmpty()); assertEquals(foreignFilterOnly, actor.native.filters)
+            }
+        }
+    }
+
+    @Test fun theLoggedDeviceBlockFeedsTheVetoThroughTheRealEventPath() {
+        for ((luid, mismatch) in listOf("000000000000e782" to false, "00000000000b95ad" to true)) {
+            MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-logged.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.deviceLog("Device Name: NVIDIA GeForce RTX 5080\n")
+                    actor.deviceLog("Device ID: 10de:2c02 (rev a1)\n")
+                    actor.deviceLog("Driver version: 32.0.16.1742\n")
+                    actor.deviceLog("LUID: $luid\n")
+                    val logged = player.nvidiaVideoState.value
+                    assertEquals(0x10de, logged.gpuVendorId); assertEquals(0x2c02, logged.gpuDeviceId)
+                    assertEquals(luid, logged.gpuLuidHex); assertEquals("32.0.16.1742", logged.gpuDriverVersion)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    if (mismatch) {
+                        assertEquals(DesktopNvidiaStatusText.LUID_MISMATCH, player.nvidiaVideoState.value.unavailableReason)
+                        assertTrue(actor.native.commands.isEmpty())
+                    } else {
+                        assertNull(player.nvidiaVideoState.value.unavailableReason)
+                        assertEquals(2, actor.native.filters.size)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun aFailedProbeFailsClosedAndOnlyAVerifiedPhysicalObservedLuidMayProceed() {
+        // (observed luid, device id, expected outcome): the physical card passes; the twin, a missing
+        // device id and a luid that no adapter owns are all refused as a mismatch.
+        for ((luid, device, proceeds) in listOf(
+            Triple("000000000000e782", 0x2c02, true), Triple("0000e78200000000", 0x2c02, true),
+            Triple("00000000000b95ad", 0x2c02, false), Triple("000000000000e782", null, false),
+            Triple("000000000000e782", 0x2c03, false), Triple("0000000000012345", 0x2c02, false))) {
+            val probe = ActorLuidProbe.failed()
+            val monitor = luidMonitor(probe)
+            MpvPlayer(gpuCapability = monitor).use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-failed-probe.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordGpuIdentity(luidHex = luid, deviceId = device)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    val case = "$luid/$device"
+                    if (proceeds) {
+                        assertNull(player.nvidiaVideoState.value.unavailableReason, case)
+                        assertEquals(2, actor.native.filters.size, case)
+                    } else {
+                        assertEquals(DesktopNvidiaStatusText.LUID_MISMATCH, player.nvidiaVideoState.value.unavailableReason, case)
+                        assertTrue(actor.native.commands.isEmpty(), case)
+                        assertEquals(foreignFilterOnly, actor.native.filters, case)
+                    }
+                    assertFalse(player.nvidiaVideoState.value.active, case)
+                }
+            }
+        }
+    }
+
+    @Test fun aFailedProbeWithoutAnyObservedLuidIsUnavailableAfterTheWait() {
+        MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.failed())).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-failed-missing.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = null)
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                val action = actor.nextNvidia()
+                actor.apply(action)
+                assertTrue(player.nvidiaVideoState.value.pending); assertNull(player.nvidiaVideoState.value.unavailableReason)
+                actor.ageDeviceId(2_500_000_000L)
+                actor.apply(action)
+                assertEquals(DesktopNvidiaStatusText.LUID_UNKNOWN, player.nvidiaVideoState.value.unavailableReason)
+                assertTrue(actor.native.commands.isEmpty())
+            }
+        }
+    }
+
+    @Test fun withoutAnExpectationTheLegacyVendorOnlyGateIsExactlyUnchanged() {
+        // The default player has the neutral monitor: even the twin's luid, or none at all, changes nothing.
+        for (luid in listOf("00000000000b95ad", "000000000000e782", null)) {
+            MpvPlayer().use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/luid-legacy.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordGpuIdentity(luidHex = luid)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    assertEquals(2, actor.native.filters.size, "luid=$luid")
+                    assertNull(player.nvidiaVideoState.value.unavailableReason, "luid=$luid")
+                }
+            }
+        }
+    }
+
+    @Test fun theVendorAndContextCheckStillComesFirstAndTheMonitorIsNeverAskedForAWrongVendor() {
+        val probe = ActorLuidProbe.capable()
+        MpvPlayer(gpuCapability = luidMonitor(probe)).use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/luid-vendor-first.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordGpuIdentity(luidHex = "00000000000b95ad")
+                actor.recordDevice(0x1002, "d3d11")
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                actor.apply()
+                assertEquals("实际播放器未使用 NVIDIA Direct3D 11 设备，继续原画播放",
+                    player.nvidiaVideoState.value.unavailableReason)
+                assertEquals(1, probe.probeCalls.get(), "no mismatch means no invalidation")
+            }
+        }
+    }
+
+
+    // ---- Adaptive guard through the real session and the real actor (memory-only C ABI) ----
+
+    private fun guardMonitorKey(monitor: DesktopNvidiaCapabilityMonitor): String = assertNotNull(
+        nvidiaHealthKeyFor(monitor.capability.value, null, NVIDIA_HEALTH_RUNTIME_UNKNOWN, NVIDIA_HEALTH_BACKEND_VEYRA))
+
+    @Test fun aBusyFailureIsRetriedAsANewConfigurationVersionWithTheIdenticalOptions() = runBlocking<Unit> {
+        val enabled = MutableStateFlow(true)
+        val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(enabled = true, hdrMode = DesktopNvidiaVideoHdrMode.OFF))
+        MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+            val version = player.loadVersioned(PlaybackSource("file:///C:/guard-busy-retry.avi", startPaused = true))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                actor.recordGpuIdentity(luidHex = "000000000000e782")
+                DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                    enabled.value = it; preferences.value = preferences.value.copy(enabled = it); CompletableDeferred(Unit)
+                }, enhancementPreferences = preferences).use { enhancement ->
+                    awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    val first = player.nvidiaVideoState.value
+                    assertEquals(NvidiaVideoBackend.VEYRA_CORE, first.backend)
+                    assertTrue(actor.native.filters.any { it.first == "bilipai-rtx" })
+
+                    // BV_BUSY (code 3) is a busy resource, not a verdict: the same request is tried again.
+                    actor.coreFailure(version, first.configurationVersion, code = "3", stage = "bridge-unavailable")
+                    // The answer to a busy resource is silent: while the retry waits (one second), no error and no failure
+                    // line is published, only the preparing one.
+                    delay(300)
+                    val waiting = enhancement.state.value
+                    assertNull(waiting.error)
+                    assertNull(waiting.failureDiagnostic)
+                    assertEquals("RTX 5080" + DesktopNvidiaStatusText.SEPARATOR + DesktopNvidiaStatusText.PENDING_TAIL, waiting.statusText)
+                    awaitSession { player.nvidiaVideoState.value.configurationVersion > first.configurationVersion + 1 &&
+                        actor.hasQueuedNvidia() }
+                    val retried = player.nvidiaVideoState.value
+                    // The clear and the retry are two native configuration versions; the identical options came back as a new one.
+                    assertEquals(first.configurationVersion + 2, retried.configurationVersion)
+                    assertEquals(first.requestedScale, retried.requestedScale)
+                    assertEquals(first.hdrRequested, retried.hdrRequested)
+                    assertEquals(first.requestedQualityLevel, retried.requestedQualityLevel)
+                    assertEquals(first.srEnabledRequested, retried.srEnabledRequested)
+                    assertEquals(first.requestedIntensityPercent, retried.requestedIntensityPercent)
+                    assertEquals(first.backend, retried.backend)
+                    assertFalse(enhancement.state.value.steppedDown, "a busy retry lowers nothing")
+                    assertFalse(enhancement.state.value.qualityLowered, "a busy retry lowers nothing")
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    assertTrue(actor.native.filters.any { it.second == "bilipai-nvidia-${retried.configurationVersion}" })
+                    assertFalse(actor.native.filters.any { it.second == "bilipai-nvidia-${first.configurationVersion}" })
+                    assertFalse(player.nvidiaVideoState.value.active, "a retry is never presentation proof")
+                }
+            }
+        }
+    }
+
+    @Test fun aDeviceFailureStepsDownOnceThenGivesTheVideoUpAndANewDetectionStartsAgain() = runBlocking<Unit> {
+        val enabled = MutableStateFlow(true)
+        val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(enabled = true, hdrMode = DesktopNvidiaVideoHdrMode.OFF))
+        val monitor = luidMonitor(ActorLuidProbe.capable())
+        MpvPlayer(gpuCapability = monitor).use { player ->
+            val version = player.loadVersioned(PlaybackSource("file:///C:/guard-device-failure.avi", startPaused = true))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                actor.recordGpuIdentity(luidHex = "000000000000e782")
+                DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                    enabled.value = it; preferences.value = preferences.value.copy(enabled = it); CompletableDeferred(Unit)
+                }, enhancementPreferences = preferences).use { enhancement ->
+                    awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    assertEquals(4, enhancement.state.value.requestedQualityLevel)
+                    assertFalse(enhancement.state.value.steppedDown)
+                    val key = guardMonitorKey(monitor)
+
+                    // BV_DEVICE_FAILURE: one step down to quality 3, as a new configuration of the same video.
+                    val firstConfiguration = player.nvidiaVideoState.value.configurationVersion
+                    actor.coreFailure(version, firstConfiguration, code = "6", stage = "process-bypass")
+                    awaitSession { enhancement.state.value.steppedDown && enhancement.state.value.requestedQualityLevel == 3 &&
+                        actor.hasQueuedNvidia() }
+                    assertEquals(3, player.nvidiaVideoState.value.requestedQualityLevel)
+                    assertTrue(enhancement.state.value.qualityLowered, "the guard lowered the quality level itself")
+                    assertTrue(player.nvidiaVideoState.value.configurationVersion > firstConfiguration)
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    assertFalse(monitor.healthStore.view(key).remembered, "one step is not a verdict")
+
+                    // The second failure of the same video gives it up: the original picture, and the line says so.
+                    actor.coreFailure(version, player.nvidiaVideoState.value.configurationVersion, code = "7",
+                        stage = "bridge-unavailable")
+                    awaitSession { enhancement.state.value.activation == DesktopVideoEnhancementActivation.FAILED_THIS_VIDEO }
+                    val shown = enhancement.state.value
+                    assertEquals("RTX 5080" + DesktopNvidiaStatusText.SEPARATOR + DesktopNvidiaStatusText.FAILED_THIS_VIDEO_TAIL, shown.statusText)
+                    assertEquals(shown.statusText, shown.unavailableReason)
+                    assertFalse(shown.available); assertFalse(shown.active); assertFalse(shown.pending)
+                    assertFalse(player.nvidiaVideoState.value.active)
+                    assertEquals(foreignFilterOnly, actor.native.filters)
+                    // One given-up video is one hard failure, and it is only remembered after two.
+                    assertEquals(1, monitor.healthStore.snapshot().single { it.key == key }.streak)
+                    assertFalse(monitor.healthStore.view(key).remembered)
+
+                    // A new detection is a fresh start for this video: the top rung again, nothing lowered.
+                    enhancement.redetectGpu()
+                    awaitSession { enhancement.state.value.pending && enhancement.state.value.requestedQualityLevel == 4 &&
+                        actor.hasQueuedNvidia() }
+                    assertFalse(enhancement.state.value.steppedDown)
+                    assertFalse(enhancement.state.value.qualityLowered)
+                    assertTrue(monitor.healthStore.snapshot().isEmpty())
+                    assertEquals(DesktopVideoEnhancementActivation.ALLOWED, enhancement.state.value.activation)
+                }
+            }
+        }
+    }
+
+    @Test fun aRememberedFailureKeepsTheRequestOffAndANewDetectionClearsItAndAllowsAnAttempt() = runBlocking<Unit> {
+        val enabled = MutableStateFlow(true)
+        val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(enabled = true, hdrMode = DesktopNvidiaVideoHdrMode.OFF))
+        val monitor = luidMonitor(ActorLuidProbe.capable())
+        monitor.healthStore.recordRemembered(guardMonitorKey(monitor))
+        MpvPlayer(gpuCapability = monitor).use { player ->
+            player.loadVersioned(PlaybackSource("file:///C:/guard-remembered.avi", startPaused = true))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                actor.recordGpuIdentity(luidHex = "000000000000e782")
+                DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                    enabled.value = it; preferences.value = preferences.value.copy(enabled = it); CompletableDeferred(Unit)
+                }, enhancementPreferences = preferences).use { enhancement ->
+                    awaitSession { enhancement.state.value.activation == DesktopVideoEnhancementActivation.FAILED_REMEMBERED }
+                    val shown = enhancement.state.value
+                    assertTrue(shown.statusText.contains(DesktopNvidiaStatusText.FAILED_REMEMBERED_TAIL), shown.statusText)
+                    assertFalse(shown.available); assertFalse(shown.pending); assertFalse(shown.active)
+                    assertFalse(actor.hasQueuedNvidia(), "a remembered failure makes no request")
+                    assertEquals(foreignFilterOnly, actor.native.filters)
+
+                    enhancement.redetectGpu()
+                    awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                    assertEquals(DesktopVideoEnhancementActivation.ALLOWED, enhancement.state.value.activation)
+                    assertTrue(monitor.healthStore.snapshot().isEmpty())
+                }
+            }
+        }
+    }
+
+    @Test fun aColourRejectionKeepsTheColourLineAndIsNotRequestedAgainWhenTheSizeCrossesABucket() = runBlocking<Unit> {
+        val enabled = MutableStateFlow(true)
+        val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(enabled = true, hdrMode = DesktopNvidiaVideoHdrMode.OFF))
+        MpvPlayer(gpuCapability = luidMonitor(ActorLuidProbe.capable())).use { player ->
+            val version = player.loadVersioned(PlaybackSource("file:///C:/guard-colour.avi", startPaused = true))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                actor.recordGpuIdentity(luidHex = "000000000000e782")
+                DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                    enabled.value = it; preferences.value = preferences.value.copy(enabled = it); CompletableDeferred(Unit)
+                }, enhancementPreferences = preferences).use { enhancement ->
+                    awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    // Control: before any failure a larger video rectangle (a new scale bucket) is a new request.
+                    val firstConfiguration = player.nvidiaVideoState.value.configurationVersion
+                    actor.recordOutput { it.copy(displayWidth = 1920, displayHeight = 1080) }
+                    awaitSession { player.nvidiaVideoState.value.configurationVersion > firstConfiguration && actor.hasQueuedNvidia() }
+                    while (actor.hasQueuedNvidia()) actor.apply()
+
+                    // BV_COLOR_UNSUPPORTED (code 5): the source keeps the colour line and nothing is lowered or remembered.
+                    val failedConfiguration = player.nvidiaVideoState.value.configurationVersion
+                    actor.coreFailure(version, failedConfiguration, code = "5", stage = "process-bypass")
+                    awaitSession { enhancement.state.value.error != null }
+                    assertEquals(DesktopNvidiaStatusText.COLOR_UNSUPPORTED, enhancement.state.value.statusText)
+                    assertFalse(enhancement.state.value.steppedDown)
+
+                    // A video rectangle in another bucket would be a new request for the same source: it is not made.
+                    actor.recordOutput { it.copy(displayWidth = 2560, displayHeight = 1440) }
+                    delay(400)
+                    assertFalse(actor.hasQueuedNvidia(), "the rejected source is not requested again")
+                    assertEquals(failedConfiguration, player.nvidiaVideoState.value.configurationVersion)
+                    assertEquals(DesktopNvidiaStatusText.COLOR_UNSUPPORTED, enhancement.state.value.statusText)
+                    assertNotNull(enhancement.state.value.error, "the rejection stays visible as before")
+                }
+            }
+        }
+    }
+
+    @Test fun theGuardIsInertWithoutDetectionSoTheLegacyFailureKeepsItsErrorAndNothingIsRetried() = runBlocking<Unit> {
+        val enabled = MutableStateFlow(true)
+        val preferences = MutableStateFlow(DesktopNvidiaVideoPreferences(enabled = true, hdrMode = DesktopNvidiaVideoHdrMode.OFF))
+        MpvPlayer().use { player ->
+            val version = player.loadVersioned(PlaybackSource("file:///C:/guard-legacy.avi", startPaused = true))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput(); actor.recordVeyra(fixtureSharedCoreBinding())
+                DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                    enabled.value = it; preferences.value = preferences.value.copy(enabled = it); CompletableDeferred(Unit)
+                }, enhancementPreferences = preferences).use { enhancement ->
+                    awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                    while (actor.hasQueuedNvidia()) actor.apply()
+                    val configuration = player.nvidiaVideoState.value.configurationVersion
+                    actor.coreFailure(version, configuration, code = "3", stage = "process-bypass")
+                    awaitSession { enhancement.state.value.error != null }
+                    // Nothing steps, retries or gives up: the failure stays exactly where it was.
+                    delay(1_300)
+                    assertEquals(configuration, player.nvidiaVideoState.value.configurationVersion)
+                    assertFalse(actor.hasQueuedNvidia())
+                    assertEquals(DesktopVideoEnhancementActivation.LEGACY, enhancement.state.value.activation)
+                    assertFalse(enhancement.state.value.steppedDown)
+                    assertNotNull(enhancement.state.value.error)
+                }
+            }
+        }
+    }
 }
