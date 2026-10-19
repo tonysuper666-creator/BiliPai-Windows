@@ -560,7 +560,10 @@ class V046AccountScopedRequestsSourceTest(unittest.TestCase):
                 self.assertNotIn(needle, text, path.name)
         generators = tool_sources()
         mentions = lambda needle: sorted(name for name, text in generators.items() if needle in text)
-        self.assertEqual(['v044_favorite_detail.py', 'v044_favorite_subscription.py'], mentions('accountRequests'))
+        # v046_history_in_place.py only names it inside a negative assertion (the carried session must NOT touch accountRequests)
+        self.assertEqual(['v044_favorite_detail.py', 'v044_favorite_subscription.py', 'v046_history_in_place.py'],
+                         mentions('accountRequests'))
+        self.assertIn("'accountRequests' not in session", generators['v046_history_in_place.py'])
         self.assertEqual(['extract-upstream-video-detail-full-units.py', 'v044_favorite_search.py',
                           'v044_favorite_subscription.py', 'v046_account_scoped_requests.py',
                           'v046_favorite_editor.py'], mentions('accountIdentity'))

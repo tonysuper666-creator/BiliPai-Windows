@@ -1817,7 +1817,8 @@ class CurrentIntegrationTree(unittest.TestCase):
         # closed by the identity-badges, core-data-policies and home-card-cascade-definers slices: no longer gaps
         for closed in CLOSED_SEEDS:
             self.assertNotIn(closed[0] + '.' + closed[1], symbols)
-        self.assertIn('com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment', symbols)
+        # closed by the v046 danmaku protocol slice: retired, no longer a known gap
+        self.assertNotIn('com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment', symbols)
 
     def test_the_longest_path_a_producer_wrote_is_within_the_measured_limit(self):
         build = gate._long(self.root / 'desktop/build')
