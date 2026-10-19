@@ -896,9 +896,9 @@ class V046DesignSystemLeavesBSourceTest(unittest.TestCase):
         self.assertEqual(rows, [row for row in loaded if row['localPath'].startswith(leaves.ARCHIVE + '/')])
         self.assertEqual(hashlib.sha256(lf((TOOLS / 'compatibility-source-inputs.json').read_bytes())).hexdigest(),
                          sync.COMPATIBILITY_CATALOG_SHA256)
-        self.assertEqual((768, 754, 143, 147), (len(self.catalog['inputs']),
-                                                 len({(row['upstreamCommit'], row['path']) for row in self.catalog['inputs']}),
-                                                 len(self.catalog['buildInputRoots']), len(self.catalog['archives'])))
+        # The catalog TOTALS change with every slice and are pinned once, by test_sync_upstream.py; this slice only pins
+        # its own rows above (a total here made the test depend on merge order).
+        self.assertIn(leaves.ARCHIVE, self.catalog['buildInputRoots'])
 
     # ---- source hygiene and the Kotlin regression class ----------------------------------------------------
 
