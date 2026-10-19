@@ -1,9 +1,9 @@
 # Grok Bot status
 
-- Time (UTC): 2026-10-19 05:56:58
-- Current task: T9 batch done (#2 pushed); next T13
+- Time (UTC): 2026-10-19 05:57:45
+- Current task: T13 #10 audit-unknown-entries (start)
 - Completed tasks: T6 (grokbot/r1-test-currency @ 3d0deb5cf)
-- Current step: slices-batch1 79ed052e4. T9: #12 #14 #25(n/a) #13p1 #3 #2 done; BLOCKED #35 (SettingsManager plan), #46 step1 + #3 palette (direct-mode exclude outside exception 4)
-- Last Gradle: processResources OK
+- Current step: No Root reply yet on BLOCKED (exclude-line exception, #35 plan); VERIFY queue empty
+- Last Gradle: -
 - Blocked: none
 - Last box reset: 2026-10-18 ~12:50 UTC (re-provision: JDK, /tmp, ~/.gradle, build dirs wiped); plain reboots since (latest 2026-10-18 20:22:51 local BST) kept state
