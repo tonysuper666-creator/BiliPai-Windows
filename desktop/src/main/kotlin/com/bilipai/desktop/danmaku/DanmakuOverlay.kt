@@ -545,6 +545,13 @@ class DanmakuOverlay internal constructor(
         mutableBasItems.value=emptyList()
     }
 
+    /** Admission already failed. Do not wait for a paintable frame to drop the public count. */
+    private fun retireNonCurrentBasPresentation() {
+        if (basInstallation?.let(::basCurrent) == false) {
+            clearBasPresentation(); updateVodCount()
+        }
+    }
+
     /** Refilter raw BAS separately: changing its settings must not replay ordinary plugins or lanes. */
     private fun refreshBasDocument() {
         val captured = synchronized(requestLock) {
@@ -592,7 +599,7 @@ class DanmakuOverlay internal constructor(
                 if (installed) {
                     basPaintFrame = null; basInput.cancel(); basRenderer.clear()
                     updateVodCount(); requestRenderFrame()
-                }
+                } else retireNonCurrentBasPresentation()
             }
         }
         synchronized(requestLock) {
@@ -865,7 +872,10 @@ class DanmakuOverlay internal constructor(
                 observeHost(SwingUtilities.getWindowAncestor(player.surface))
                 validateWebMaskOwnership()
                 frameRequests.updateVisibilityScheduling()
-                if (!canRenderOverlay()) parkOverlay()
+                if (!canRenderOverlay()) {
+                    retireNonCurrentBasPresentation()
+                    parkOverlay()
+                }
             }
         }
     }
@@ -1310,9 +1320,7 @@ class DanmakuOverlay internal constructor(
         }
         val surface = player.surface
         basInput.attach(surface.components.filterIsInstance<java.awt.Canvas>().singleOrNull())
-        if (basInstallation?.let(::basCurrent) == false) {
-            clearBasPresentation(); updateVodCount()
-        }
+        retireNonCurrentBasPresentation()
         if (liveMode) {
             repeat(200) {
                 val pending = pendingLive.poll()
