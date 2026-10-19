@@ -1,0 +1,136 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/Type.kt",
+      "filename": "Type.kt",
+      "bytes": 7021,
+      "sha256": "a71f4267d00d58cda8ab4e3320becfac95aa83b6a936b6318af1edd308dd7982",
+      "gitBlob": "e7ce2ed1a9608a92ef787713f5a634182c14c787"
+    },
+    {
+      "path": "design-tokens/src/main/java/com/android/purebilibili/core/theme/AppTextStyles.kt",
+      "filename": "AppTextStyles.kt",
+      "bytes": 3406,
+      "sha256": "d1ded25053a2e88d70666fc00151a35a46a61705a902d7bd3637c9d31059e7c2",
+      "gitBlob": "2a6a5debdbbaa1b04d28c06216b17720cd6d1316"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicy.kt",
+      "filename": "AdaptiveAccentColorPolicy.kt",
+      "bytes": 2732,
+      "sha256": "79b9eec87eaf704c721f6aad3be8027bee861a2b32ba6e5b5b053f6dc16637a6",
+      "gitBlob": "b1cc2d7c7353762e3d0b796f656cf1d1279a9f73"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt",
+      "filename": "AndroidNativeVariantThemePolicy.kt",
+      "bytes": 2791,
+      "sha256": "0778cf426165b12a5b9715b9413317697a803b993486d2acbce7a0741812f96e",
+      "gitBlob": "3f9483e45c65a5b23bf286df844afb41e946ec1b"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt",
+      "filename": "AppDisplayPolicy.kt",
+      "bytes": 12666,
+      "sha256": "1f3c1f0c6bb485897cdcca0caa86a172a626ec9df4a6d769624b27048e725275",
+      "gitBlob": "247bb36ca6f86cb2c674bf38d7da8221b2b3f224"
+    },
+    {
+      "path": "design-tokens/src/main/java/com/android/purebilibili/core/theme/Color.kt",
+      "filename": "Color.kt",
+      "bytes": 7158,
+      "sha256": "531af0208a23d9950c6ee5b5333e2ccf5f7d5774b1f559fe7a94303100c3dd60",
+      "gitBlob": "a09f941624605d98c9b110a2331d8636d98dd3be"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/Md3TypographyPolicyTest.kt",
+      "filename": "Md3TypographyPolicyTest.kt",
+      "bytes": 1342,
+      "sha256": "09b307c577c58ce62e412a3fddbbdb7d809eafb4dd5bb219162b25e6549c00d8",
+      "gitBlob": "ccfbd76ce5c6d7a96a1292e624075289e55036f1"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicyTest.kt",
+      "filename": "AdaptiveAccentColorPolicyTest.kt",
+      "bytes": 3951,
+      "sha256": "eb0d593938505e31635b53e4af884f40381c1ec6883e72663af17fb0e4e40834",
+      "gitBlob": "ac52007eed603bfc72d39fd31619a6c47cbb9272"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicyTest.kt",
+      "filename": "AndroidNativeVariantThemePolicyTest.kt",
+      "bytes": 4363,
+      "sha256": "9dbc001ce6aa6bb5e119d72b65d42cee11eb177dd370ab436967641abc0377fc",
+      "gitBlob": "f73018d1aa0ba6fda9da4e644919b38d4de75396"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AppDisplayPolicyTest.kt",
+      "filename": "AppDisplayPolicyTest.kt",
+      "bytes": 5449,
+      "sha256": "55fb21daa57403fa815c82bd58b99b67a83c2a26bb6301d414059f3e33c36cd5",
+      "gitBlob": "917e0f5be22cea9e778d74dbfedb57b09c997375"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AppFontWeightPolicyTest.kt",
+      "filename": "AppFontWeightPolicyTest.kt",
+      "bytes": 2794,
+      "sha256": "d747b987dc4cc38c8f81342beb62758cf4f458f08b78248eaf6f125ad9ecc55a",
+      "gitBlob": "4943abb6c03c2493898747a8e0879a6a19067a13"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Six whole v0.4.6 theme files (Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy, Color) plus the five upstream design-system theme tests that exercise them.",
+  "purpose": "Emit the six files verbatim from the appearance producer and exclude the six direct-mode v0.2.5 copies; emit the five original tests into the producer test root. One Windows call site changes: the carried v0.4.6 Typography.toMiuixTextStyles() pins the native Miuix titles to a fixed 32/24/20/18sp Medium scale, so DesktopAppearanceTheme.kt now converts the Material baseline first and applies the font size and weight presets to the resulting TextStyles through the desktop-owned resolveDesktopMiuixTextStyles (DesktopMiuixTextStyles.kt), the order the original Theme.kt uses. The carried v0.4.3 Theme.kt is not compiled (the appearance producer emits no PureBiliBiliTheme), so the Windows theme is the only consumer.",
+  "replacedVendoredCopies": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/Type.kt",
+      "vendoredLfSha256": "e9caf249fe8bc4b10983fe025be96e14acda2b91977f77783ae3420058c27ff8",
+      "replacedBy": "Type.kt"
+    },
+    {
+      "path": "design-tokens/src/main/java/com/android/purebilibili/core/theme/AppTextStyles.kt",
+      "vendoredLfSha256": "534e266f11e1d31e3f6ee343ec80bce1a011a7aa6242d7537b9f2e8ba519af8b",
+      "replacedBy": "AppTextStyles.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicy.kt",
+      "vendoredLfSha256": "99b41df93d0cae5dec1256b2e1ec31ff327709802d292f898c481a243b3d6f05",
+      "replacedBy": "AdaptiveAccentColorPolicy.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt",
+      "vendoredLfSha256": "41f500549ac5fcf8d3ec194df73580920e23cadb264ffd3618456ab1103e80a4",
+      "replacedBy": "AndroidNativeVariantThemePolicy.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt",
+      "vendoredLfSha256": "a774e9a8b34a563da1cd6a5e0cf3fbdf3f57b11f2a7160f6e56049b2be5a5de6",
+      "replacedBy": "AppDisplayPolicy.kt"
+    },
+    {
+      "path": "design-tokens/src/main/java/com/android/purebilibili/core/theme/Color.kt",
+      "vendoredLfSha256": "57232489067aac602f2621833fb87b709e9aa21e07a2852d3083badbcf235097",
+      "replacedBy": "Color.kt"
+    }
+  ],
+  "typographyDecision": "R-T1 (Root, 2026-10-19): adopt the v0.4.6 Material baseline typography as is, with no extra 4K compensation. The desktop app has its own display scale (default 125 percent times the Windows scale); bodySmall 13 to 12sp and labelSmall 12 to 11sp are accepted.",
+  "typographyDecisionEffects": [
+    "Sizes and line heights: bodySmall 13 to 12sp and labelSmall 12 to 11sp; line heights bodyMedium 21 to 20sp, bodySmall 19 to 16sp, labelMedium 17 to 16sp (labelSmall stays 16sp).",
+    "Letter spacing: the v0.2.5 scale set every slot to 0sp. The v0.4.6 baseline carries the Material 3 spec values (bodyLarge 0.5, bodyMedium 0.25, bodySmall 0.4, labelLarge 0.1, labelMedium 0.5, labelSmall 0.5, titleMedium 0.15, titleSmall 0.1sp, displayLarge -0.25sp), and they now apply to CJK text. The values listed are the carried AppTextStyles tokens; the compiled Md3Typography is androidx Typography(), which follows the same Material 3 spec (not read from a class file here).",
+    "lineHeightStyle: the v0.2.5 scale gave every slot LineHeightStyle(Center, Trim.None) so CJK glyphs were centred in fixed-height components. The v0.4.6 baseline has none, so that centring falls back to the Compose default.",
+    "Native Miuix titles: v0.2.5 mapped title1..title4 to displayLarge, headlineLarge, headlineMedium and headlineSmall (57/32/28/24sp). v0.4.6 uses a fixed 32/24/20/18sp scale with 38/30/26/24sp line heights, Medium weight.",
+    "Windows pipeline: the font size and weight presets are applied to the converted Miuix TextStyles (resolveDesktopMiuixTextStyles), not to the Material typography before the conversion, so they still reach title1..title4.",
+    "Needs a visual check of CJK rendering on the real 5120x2160 window (Root); R-T1 keeps the display scale (Ctrl+wheel or the appearance setting) as the remedy instead of a typography compensation."
+  ],
+  "notCarried": [
+    "design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt (platform-adapter-reference; Windows ships its own preference entry)",
+    "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt (one-word TIPS subtitle hunk; shared file, owned by misc-ui-polish-and-toggles-low)"
+  ]
+}

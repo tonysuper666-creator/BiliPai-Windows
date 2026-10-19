@@ -112,7 +112,9 @@ fun DesktopAppearanceTheme(
         resolveMaterialTypography(settings.uiStyle).scaled(settings.appFontSizePreset.multiplier)
             .withFontWeight(settings.appFontWeightPreset.fontWeight)
     }
-    val textStyles = remember(typography) { typography.toMiuixTextStyles() }
+    val textStyles = remember(settings.uiStyle, settings.appFontSizePreset, settings.appFontWeightPreset) {
+        resolveDesktopMiuixTextStyles(settings.uiStyle, settings.appFontSizePreset, settings.appFontWeightPreset)
+    }
     val controller = remember(settings.themeMode, palette) {
         ThemeController(resolveMiuixColorSchemeMode(settings.themeMode, false),
             lightColors = palette.miuixLight, darkColors = palette.miuixDark, isDark = palette.dark)

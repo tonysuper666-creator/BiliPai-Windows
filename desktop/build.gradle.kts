@@ -255,6 +255,13 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt"))
         // The existing Home-page producer owns the complete v0.4.6 refresh UI policy.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt"))
+        // The existing appearance producer owns the complete v0.4.6 theme token files.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/Type.kt"))
+        exclude(canonicalOriginalIdentity("design-tokens/src/main/java/com/android/purebilibili/core/theme/AppTextStyles.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt"))
+        exclude(canonicalOriginalIdentity("design-tokens/src/main/java/com/android/purebilibili/core/theme/Color.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -574,6 +581,8 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
         "--test-output", generatedThemeRoleTests.get().asFile.absolutePath)
     inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py", "tools/v040_theme_roles.py", "tools/v040_liquid_value_controls.py")
     inputs.dir("upstream-slices/v040-theme-roles")
+    inputs.file("tools/v046_theme_tokens.py")
+    inputs.dir("upstream-slices/v046-theme-tokens")
     inputs.file("tools/v042_seed_palette.py")
     inputs.dir("upstream-slices/v042-seed-palette")
     inputs.dir("upstream-slices/v040-liquid-value-controls")

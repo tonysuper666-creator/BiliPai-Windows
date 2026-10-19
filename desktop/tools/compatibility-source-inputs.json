@@ -143,7 +143,8 @@
     "desktop/upstream-slices/v046-home-card-cascade-definers",
     "desktop/upstream-slices/v046-sheet-motion",
     "desktop/upstream-slices/v046-home-refresh-ui-policy",
-    "desktop/upstream-slices/v046-message-notifications"
+    "desktop/upstream-slices/v046-message-notifications",
+    "desktop/upstream-slices/v046-theme-tokens"
   ],
   "archives": [
     {
@@ -6311,6 +6312,89 @@
           "sha256": "f694d3140bce99087a4ddd216855ba20f4416ad404e5409549d909e5d32c0188",
           "hashNormalization": "raw",
           "blob": "e4530fab908b61999b50246747593a249b608d9d"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-theme-tokens",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AdaptiveAccentColorPolicy.kt",
+          "sha256": "79b9eec87eaf704c721f6aad3be8027bee861a2b32ba6e5b5b053f6dc16637a6",
+          "hashNormalization": "raw",
+          "blob": "b1cc2d7c7353762e3d0b796f656cf1d1279a9f73"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AdaptiveAccentColorPolicyTest.kt",
+          "sha256": "eb0d593938505e31635b53e4af884f40381c1ec6883e72663af17fb0e4e40834",
+          "hashNormalization": "raw",
+          "blob": "ac52007eed603bfc72d39fd31619a6c47cbb9272"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AndroidNativeVariantThemePolicy.kt",
+          "sha256": "0778cf426165b12a5b9715b9413317697a803b993486d2acbce7a0741812f96e",
+          "hashNormalization": "raw",
+          "blob": "3f9483e45c65a5b23bf286df844afb41e946ec1b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AndroidNativeVariantThemePolicyTest.kt",
+          "sha256": "9dbc001ce6aa6bb5e119d72b65d42cee11eb177dd370ab436967641abc0377fc",
+          "hashNormalization": "raw",
+          "blob": "f73018d1aa0ba6fda9da4e644919b38d4de75396"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AppDisplayPolicy.kt",
+          "sha256": "1f3c1f0c6bb485897cdcca0caa86a172a626ec9df4a6d769624b27048e725275",
+          "hashNormalization": "raw",
+          "blob": "247bb36ca6f86cb2c674bf38d7da8221b2b3f224"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AppDisplayPolicyTest.kt",
+          "sha256": "55fb21daa57403fa815c82bd58b99b67a83c2a26bb6301d414059f3e33c36cd5",
+          "hashNormalization": "raw",
+          "blob": "917e0f5be22cea9e778d74dbfedb57b09c997375"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AppFontWeightPolicyTest.kt",
+          "sha256": "d747b987dc4cc38c8f81342beb62758cf4f458f08b78248eaf6f125ad9ecc55a",
+          "hashNormalization": "raw",
+          "blob": "4943abb6c03c2493898747a8e0879a6a19067a13"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/AppTextStyles.kt",
+          "sha256": "d1ded25053a2e88d70666fc00151a35a46a61705a902d7bd3637c9d31059e7c2",
+          "hashNormalization": "raw",
+          "blob": "2a6a5debdbbaa1b04d28c06216b17720cd6d1316"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/Color.kt",
+          "sha256": "531af0208a23d9950c6ee5b5333e2ccf5f7d5774b1f559fe7a94303100c3dd60",
+          "hashNormalization": "raw",
+          "blob": "a09f941624605d98c9b110a2331d8636d98dd3be"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/manifest.json",
+          "sha256": "845317a46a61c54e843c02fa1dafa28d8bcb2a752b3fdfe80e0201f085e43563",
+          "hashNormalization": "raw",
+          "blob": "8b3ea226cabef9ace7c14a5dea337f6187cfe23c"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/Md3TypographyPolicyTest.kt",
+          "sha256": "09b307c577c58ce62e412a3fddbbdb7d809eafb4dd5bb219162b25e6549c00d8",
+          "hashNormalization": "raw",
+          "blob": "ccfbd76ce5c6d7a96a1292e624075289e55036f1"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-tokens/Type.kt",
+          "sha256": "a71f4267d00d58cda8ab4e3320becfac95aa83b6a936b6318af1edd308dd7982",
+          "hashNormalization": "raw",
+          "blob": "e7ce2ed1a9608a92ef787713f5a634182c14c787"
         }
       ]
     }
@@ -16671,6 +16755,171 @@
       "referenceOnly": false,
       "partialReuse": true,
       "usedScope": "Only the five recent-author DTO declarations are emitted, as their own file. The rest of the v0.4.6 file equals the v0.3.5 original that is already emitted; no whole-file advance is claimed."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/Type.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/Type.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e7ce2ed1a9608a92ef787713f5a634182c14c787",
+      "sha256": "a71f4267d00d58cda8ab4e3320becfac95aa83b6a936b6318af1edd308dd7982",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-tokens/src/main/java/com/android/purebilibili/core/theme/AppTextStyles.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AppTextStyles.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2a6a5debdbbaa1b04d28c06216b17720cd6d1316",
+      "sha256": "d1ded25053a2e88d70666fc00151a35a46a61705a902d7bd3637c9d31059e7c2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AdaptiveAccentColorPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "b1cc2d7c7353762e3d0b796f656cf1d1279a9f73",
+      "sha256": "79b9eec87eaf704c721f6aad3be8027bee861a2b32ba6e5b5b053f6dc16637a6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AndroidNativeVariantThemePolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3f9483e45c65a5b23bf286df844afb41e946ec1b",
+      "sha256": "0778cf426165b12a5b9715b9413317697a803b993486d2acbce7a0741812f96e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AppDisplayPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "247bb36ca6f86cb2c674bf38d7da8221b2b3f224",
+      "sha256": "1f3c1f0c6bb485897cdcca0caa86a172a626ec9df4a6d769624b27048e725275",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-tokens/src/main/java/com/android/purebilibili/core/theme/Color.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/Color.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "a09f941624605d98c9b110a2331d8636d98dd3be",
+      "sha256": "531af0208a23d9950c6ee5b5333e2ccf5f7d5774b1f559fe7a94303100c3dd60",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/Md3TypographyPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/Md3TypographyPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ccfbd76ce5c6d7a96a1292e624075289e55036f1",
+      "sha256": "09b307c577c58ce62e412a3fddbbdb7d809eafb4dd5bb219162b25e6549c00d8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AdaptiveAccentColorPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ac52007eed603bfc72d39fd31619a6c47cbb9272",
+      "sha256": "eb0d593938505e31635b53e4af884f40381c1ec6883e72663af17fb0e4e40834",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AndroidNativeVariantThemePolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f73018d1aa0ba6fda9da4e644919b38d4de75396",
+      "sha256": "9dbc001ce6aa6bb5e119d72b65d42cee11eb177dd370ab436967641abc0377fc",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AppDisplayPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AppDisplayPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "917e0f5be22cea9e778d74dbfedb57b09c997375",
+      "sha256": "55fb21daa57403fa815c82bd58b99b67a83c2a26bb6301d414059f3e33c36cd5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/theme/AppFontWeightPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-tokens/AppFontWeightPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "4943abb6c03c2493898747a8e0879a6a19067a13",
+      "sha256": "d747b987dc4cc38c8f81342beb62758cf4f458f08b78248eaf6f125ad9ecc55a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-tokens"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
     }
   ],
   "buildStandaloneInputs": [

@@ -11,6 +11,7 @@ REPO=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(REPO/'desktop/tools'))
 import v040_liquid_value_controls as source
 import v043_theme_chrome as chrome
+import v046_theme_tokens as theme_tokens
 
 
 def module(name,filename):
@@ -122,7 +123,9 @@ class V040LiquidControlsSourceTest(unittest.TestCase):
         seed_tests=[p for p in all_tests if p.name in seed_names]
         self.assertEqual(10,len(seed_tests))
         self.assertEqual(46,sum(p.read_bytes().count(b'@Test') for p in seed_tests))
-        self.assertEqual(27,sum(p.read_bytes().count(b'@Test') for p in all_tests if p.name not in seed_names))
+        # The five v046-theme-tokens original tests are counted by that slice's own test.
+        self.assertEqual(27,sum(p.read_bytes().count(b'@Test') for p in all_tests
+                                if p.name not in seed_names and p.name not in theme_tokens.TEST_FILES))
         velocity=(self.root/'components/com/android/purebilibili/core/ui/animation/LiquidIndicatorVelocity.kt').read_bytes()
         self.assertEqual(fixed[source.DS+'animation/LiquidIndicatorVelocity.kt'],velocity)
 

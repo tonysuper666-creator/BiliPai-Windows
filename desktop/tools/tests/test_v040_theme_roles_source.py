@@ -10,6 +10,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v040_theme_roles as source
+import v046_theme_tokens as theme_tokens
 from v025_source_paths import canonical_source
 
 
@@ -107,9 +108,11 @@ class V040ThemeRolesSourceTest(unittest.TestCase):
             producer().generate(REPO,output,resource_output=Path(tmp)/'resources',policy_only=True)
             proof = json.loads((output/'v042-seed-palette-proof.json').read_bytes())
             added = {row['path'] for row in proof['writes'] if row['before'] is None}
+            # The six whole v0.4.6 theme token files are owned by the v046-theme-tokens slice.
             self.assertEqual(set(retained)|{p.split('/main/java/',1)[1] for p in source.MAIN_PATHS}|{
                 'com/android/purebilibili/feature/settings/ThemeCustomColorPickerDialog.kt',
-                'com/android/purebilibili/feature/settings/DesktopOriginalThemeColorPickerPolicy.kt'}|added,
+                'com/android/purebilibili/feature/settings/DesktopOriginalThemeColorPickerPolicy.kt'}|added|{
+                theme_tokens.RELATIVE[name] for name in theme_tokens.MAIN_FILES},
                 {p.relative_to(output).as_posix() for p in output.rglob('*.kt')})
             for path,digest in retained.items():
                 self.assertEqual(digest,hashlib.sha256(before_seed_palette(output,path)).hexdigest(),path)
