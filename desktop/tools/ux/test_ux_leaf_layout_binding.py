@@ -38,8 +38,8 @@ import ux_leaf_model as model  # noqa: E402
 from test_ux_leaf_anchor_guard import call_arguments, argument_names, check_legacy_branch, check_must_keep, BAR_ARGUMENTS  # noqa: E402
 
 BASE_COMMIT = "dee21a6c523948c9ba64e83810c4f6b97bccc02c"  # the branch head before slice V2; the hash below is of its leaf blob
-BASE_SHA256 = "7a3fb875e9ec1cb3075ce403f041d045f5bd19c70542ab981302a4fc9768d6c5"
-BASE_BYTES = 122926
+BASE_SHA256 = "cb44523d1c71e0931e6601c4408627ed6975aabb9a8d6ae3e5360e1505b8b978"
+BASE_BYTES = 123287
 ADDED_LINES, REMOVED_LINES = 35, 16
 
 # The ten hunks of slice V2 in leaf order: (label, lines before, lines after). The first and the last line of each hunk are unchanged

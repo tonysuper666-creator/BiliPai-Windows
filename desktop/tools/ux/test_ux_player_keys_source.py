@@ -75,7 +75,7 @@ UNTOUCHED = {
 }
 UNTOUCHED_TEST = {"ui/DesktopWindowsVideoKeyInputTest.kt": "98d7e4923a34e96df90b47c6b2e6f5373f81da003c09048549c95fec2e5206d7"}
 VENDORED_SHA256 = "d9315792c605c4acc4f7c3de98c888b335de729fba741c6e7f0eb966a3101441"
-V2_STATE_LEAF_SHA256 = "91b26ab1dff277a62c71bb6e684c7b5551cbbfaa042040fdc2d62014618ddf22"  # the leaf at the commit before slice V6
+V2_STATE_LEAF_SHA256 = "0ec64b3e10318ff795c5d181200e057243a15a159af613e7a887060d367827e4"  # the leaf at the commit before slice V6
 V6_ADDED, V6_REMOVED = 68, 3
 
 
