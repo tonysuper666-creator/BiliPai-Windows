@@ -28,11 +28,13 @@ KNOWN_JS='DesktopOriginalVideoCdnSelectionAssemblyTest DesktopOriginalPortraitMe
 
 mkdir -p "$OUT"
 LOCK=$OUT/.lockdir
-if ! mkdir "$LOCK" 2>/dev/null; then
-  if kill -0 "$(cat "$LOCK/pid" 2>/dev/null)" 2>/dev/null; then echo "another verifier is already running"; exit 0; fi
-  rm -rf "$LOCK"; mkdir "$LOCK" || exit 2
+if [ "${VERIFY_REEXEC:-}" != 1 ]; then   # a self-update re-exec keeps the lock it already owns (same pid)
+  if ! mkdir "$LOCK" 2>/dev/null; then
+    if kill -0 "$(cat "$LOCK/pid" 2>/dev/null)" 2>/dev/null; then echo "another verifier is already running"; exit 0; fi
+    rm -rf "$LOCK"; mkdir "$LOCK" || exit 2
+  fi
+  echo $$ > "$LOCK/pid"
 fi
-echo $$ > "$LOCK/pid"
 trap 'rm -rf "$LOCK"' EXIT
 cd "$REPO" || { echo "no repo at $REPO"; exit 2; }
 git config core.autocrlf false
@@ -139,8 +141,10 @@ verify_one() {  # <branch> <sha>
     while IFS= read -r spec; do
       [ -z "$spec" ] && continue
       dir=${spec%%:*}; pat=${spec#*:}
-      out=$(timeout 1800 bash "$BOOT/python-test.sh" "$W" discover -s "desktop/tools/$dir" -p "$pat" 2>&1 | tail -4 | tr '\n' ' ' | cut -c1-220)
+      timeout 1800 bash "$BOOT/python-test.sh" "$W" discover -s "desktop/tools/$dir" -p "$pat" > "$L/py.out" 2>&1
+      out=$(tail -4 "$L/py.out" | tr '\n' ' ' | cut -c1-220)
       echo "- $dir/$pat: $out" >> "$rep"
+      grep -E '^(FAIL|ERROR): ' "$L/py.out" | head -8 | cut -c1-200 | sed 's/^/    /' >> "$rep"
     done < <(target_field py)
   fi
   local pushed
@@ -158,6 +162,14 @@ while true; do
   [ $(( (now - START) / 3600 )) -ge "$MAX_HOURS" ] && { heartbeat "stopped: ran ${MAX_HOURS}h"; exit 0; }
   if git fetch -q origin "$QUEUE" 2>/dev/null; then
     if git cat-file -e "origin/$QUEUE:STOP" 2>/dev/null; then heartbeat "stopped by Root (STOP file)"; log "STOP"; exit 0; fi
+    # self-update: when Root changes verify.sh on the queue branch (and Root's commit authored it), re-exec the new copy
+    if [ "$(git log -1 --format=%an "origin/$QUEUE" 2>/dev/null)" = "$ROOT_AUTHOR" ]; then
+      newsum=$(git show "origin/$QUEUE:verify.sh" 2>/dev/null | sha256sum | cut -d' ' -f1)
+      ownsum=$(sha256sum "$0" | cut -d' ' -f1)
+      if [ -n "$newsum" ] && [ "$newsum" != "$ownsum" ] && git show "origin/$QUEUE:verify.sh" 2>/dev/null | head -1 | grep -q '^#!/bin/bash'; then
+        git show "origin/$QUEUE:verify.sh" > "$0.new" && mv "$0.new" "$0" && log "self-update to ${newsum:0:12}" && VERIFY_REEXEC=1 exec bash "$0"
+      fi
+    fi
     author=$(git log -1 --format=%an "origin/$QUEUE" 2>/dev/null)
     branch=$(target_field branch | head -1); sha=$(target_field sha | head -1)
     if [ "$author" = "$ROOT_AUTHOR" ] && [ -n "$branch" ] && [ -n "$sha" ] && [ "$sha" != "$(cat "$OUT/last-sha" 2>/dev/null)" ]; then
