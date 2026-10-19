@@ -1,0 +1,33 @@
+test_changed_fixed_raw_or_manifest_cannot_generate_metadata (test_v029_failure_recovery.FailureRecoveryGeneratorTests.test_changed_fixed_raw_or_manifest_cannot_generate_metadata) ... ok
+test_fresh_usecase_alias_consumes_three_classifiers_and_retry_with_complete_inverse (test_v029_failure_recovery.FailureRecoveryGeneratorTests.test_fresh_usecase_alias_consumes_three_classifiers_and_retry_with_complete_inverse) ... FAIL
+test_fresh_whole_vm_inverse_and_actual_native_observer_consumption (test_v029_failure_recovery.FailureRecoveryGeneratorTests.test_fresh_whole_vm_inverse_and_actual_native_observer_consumption) ... FAIL
+test_original_neutral_declarations_and_all_eight_original_policy_tests_are_preserved (test_v029_failure_recovery.FailureRecoveryGeneratorTests.test_original_neutral_declarations_and_all_eight_original_policy_tests_are_preserved) ... ok
+test_premium_final_admission_and_cancellation_do_not_retarget_latest_source (test_v029_failure_recovery.FailureRecoveryGeneratorTests.test_premium_final_admission_and_cancellation_do_not_retarget_latest_source) ... ok
+
+======================================================================
+FAIL: test_fresh_usecase_alias_consumes_three_classifiers_and_retry_with_complete_inverse (test_v029_failure_recovery.FailureRecoveryGeneratorTests.test_fresh_usecase_alias_consumes_three_classifiers_and_retry_with_complete_inverse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/bilipai-g/desktop/tools/tests/test_v029_failure_recovery.py", line 93, in test_fresh_usecase_alias_consumes_three_classifiers_and_retry_with_complete_inverse
+    self.assertEqual(related["afterSha256LF"], hashlib.sha256(typed.encode()).hexdigest())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '34257885a47a71a870efde0265ba8a4b71806423e76153f538591e410c5d06e2' != '53456012a46d1fd51dd898b13ec6ac2a095fbafee274b746a176e3ef0674c2b8'
+- 34257885a47a71a870efde0265ba8a4b71806423e76153f538591e410c5d06e2
++ 53456012a46d1fd51dd898b13ec6ac2a095fbafee274b746a176e3ef0674c2b8
+
+
+======================================================================
+FAIL: test_fresh_whole_vm_inverse_and_actual_native_observer_consumption (test_v029_failure_recovery.FailureRecoveryGeneratorTests.test_fresh_whole_vm_inverse_and_actual_native_observer_consumption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/bilipai-g/desktop/tools/tests/test_v029_failure_recovery.py", line 61, in test_fresh_whole_vm_inverse_and_actual_native_observer_consumption
+    original_actual = restore(original_actual, row[field])
+  File "/workspace/bilipai-g/desktop/tools/tests/test_v029_failure_recovery.py", line 31, in restore
+    assert body[index:index + len(row["after"])] == row["after"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.290s
+
+FAILED (failures=2)

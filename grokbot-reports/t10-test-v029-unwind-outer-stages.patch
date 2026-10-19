@@ -1,0 +1,68 @@
+diff --git a/desktop/tools/tests/test_v029_failure_recovery.py b/desktop/tools/tests/test_v029_failure_recovery.py
+index 67234f81d..7044c7768 100644
+--- a/desktop/tools/tests/test_v029_failure_recovery.py
++++ b/desktop/tools/tests/test_v029_failure_recovery.py
+@@ -25,9 +25,9 @@ def module(name, path):
+     return result
+ 
+ 
+-def restore(body, edits):
++def restore(body, edits, key="offset"):
+     for row in reversed(edits):
+-        index = row["offset"]
++        index = row[key]
+         assert body[index:index + len(row["after"])] == row["after"]
+         body = body[:index] + row["before"] + body[index + len(row["after"]):]
+     return body
+@@ -54,6 +54,24 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
+         actual = (self.root / "owner" / recovery.VM).read_text(encoding="utf-8")
+         self.assertEqual(row["sha256LF"], hashlib.sha256(actual.encode()).hexdigest())
+         original_actual = actual
++        # Outer stages (38daac558 and later) are unwound via their own recorded
++        # proofs before the original chain.
++        comment = json.loads((self.root / "owner" / "v029-comment-selection-VideoPlaybackViewModel.json").read_text(encoding="utf-8"))
++        self.assertEqual(comment["afterSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
++        original_actual = restore(original_actual, comment["inverseEdits"])
++        self.assertEqual(comment["beforeSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
++        known = json.loads((self.root / "owner" / "v037-complete-known-state-owner-proof.json").read_text(encoding="utf-8"))
++        self.assertEqual(known["afterSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
++        original_actual = restore(original_actual, known["indexedEdits"], key="afterOffset")
++        self.assertEqual(known["beforeSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
++        for field in (
++            "autoplayContinuationInverseEdits",
++            "nextWatchInverseEdits",
++            "metadataRelatedInverseEdits",
++            "detailInverseEdits",
++        ):
++            original_actual = restore(original_actual, row[field])
++        self.assertEqual(row["postRelatedAfterSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
+         for field, checkpoint in (
+             ("postRelatedInverseEdits", "postRelatedBeforeSha256LF"),
+             ("relatedInverseEdits", "relatedBeforeSha256LF"),
+@@ -87,6 +105,26 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
+         ]:
+             actual = (self.root / "core" / path).read_text(encoding="utf-8")
+             typed = actual
++            # Outer stages (38daac558 and later) are unwound via their own recorded
++            # proofs before the original chain.
++            playurl_file = self.root / "core" / (filename + ".v034-playurl-failure-inverse.json")
++            on_demand_file = self.root / "core" / (filename + ".v034-on-demand-inverse.json")
++            if "LoadProtocol" in filename:
++                self.assertTrue(playurl_file.is_file())
++                self.assertTrue(on_demand_file.is_file())
++            if playurl_file.exists():
++                playurl = json.loads(playurl_file.read_text(encoding="utf-8"))
++                self.assertEqual(playurl["afterSha256LF"], hashlib.sha256(typed.encode()).hexdigest())
++                typed = restore(typed, playurl["inverseEdits"])
++                self.assertEqual(playurl["beforeSha256LF"], hashlib.sha256(typed.encode()).hexdigest())
++            if on_demand_file.exists():
++                data = json.loads(on_demand_file.read_text(encoding="utf-8"))
++                recipe = data["recipe"]
++                self.assertEqual(recipe["afterSha256LF"], hashlib.sha256(typed.encode()).hexdigest())
++                for edit in reversed(recipe["edits"]):
++                    self.assertEqual(edit["count"], typed.count(edit["after"]))
++                    typed = typed.replace(edit["after"], edit["before"], edit["count"])
++                self.assertEqual(recipe["beforeSha256LF"], hashlib.sha256(typed.encode()).hexdigest())
+             related_file = self.root / "core" / (filename + ".v034-related-inverse.json")
+             if related_file.exists():
+                 related = json.loads(related_file.read_text(encoding="utf-8"))
