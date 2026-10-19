@@ -189,19 +189,24 @@ class OriginalCommentListSources(unittest.TestCase):
         # neither imported by the retained Windows files nor present in the pinned design-system.
         reply = body(self.output/'actual'/comments.PACKAGE/'DesktopOriginalReplyComponents.kt')
         nested = body(self.output/'actual'/comments.PACKAGE/'DesktopOriginalSubReplyDetailComponents.kt')
+        pink = 'com.android.purebilibili.core.ui.components.userVipPink()'
         for text in (reply, nested):
             self.assertIn('import com.android.purebilibili.core.ui.AppContentColors\n', text)
-            self.assertNotIn('core.ui.components.userVipPink()', text)
-            self.assertIn('com.bilipai.desktop.ui.desktopUserVipPink()', text)
-        self.assertEqual(2, reply.count('desktopUserVipPink()'))
-        self.assertEqual(1, nested.count('desktopUserVipPink()'))
+            self.assertNotIn('desktopUserVipPink()', text)
+            self.assertIn(pink, text)
+        self.assertEqual(2, reply.count(pink))
+        self.assertEqual(1, nested.count(pink))
         self.assertIn('import androidx.compose.runtime.mutableIntStateOf\n', nested)
         compat = (self.output/'actual'/comments.PACKAGE/'DesktopOriginalCommentMotionCompat.kt').read_text(encoding='utf8')
         self.assertIn('internal val AppBottomSheetMotion.reducedMotion: Boolean get() = false', compat)
         for name in ['CommentContentReveal.kt', 'CommentCascadingContent.kt']:
             self.assertEqual(self.sources[name], (self.output/'actual'/comments.PACKAGE/name).read_text(encoding='utf8'))
-        desktop = (REPO/'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopUserVipPink.kt').read_text(encoding='utf8')
-        self.assertIn('Color(0xFFD44E7D) else Color(0xFFFF6699)', desktop)
+        badge = (REPO/'desktop/upstream-slices/v046-identity-badges/UserVipBadge.kt').read_text(encoding='utf8')
+        self.assertEqual(1, badge.count('fun resolveUserVipPink('))
+        self.assertEqual(1, badge.count('fun userVipPink('))
+        self.assertIn('if (isDark) Color(0xFFD44E7D) else Color(0xFFFF6699)', badge)
+        self.assertNotIn('desktopUserVipPink', badge)
+        self.assertNotIn('AppSurfaceTokens', badge)
 
 
 class ConnectedCommentPanelSources(unittest.TestCase):
@@ -469,8 +474,13 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         host = self.generated('fullscreen', 'VideoCommentSheetHost.kt')
         self.assertIn('import com.android.purebilibili.core.ui.AppContentColors\n', host)
         search = self.generated('comments', 'CommentSearchSheet.kt')
-        self.assertIn('com.bilipai.desktop.ui.desktopUserVipPink()', search)
-        self.assertNotIn('core.ui.components.userVipPink()', search)
+        pink = 'com.android.purebilibili.core.ui.components.userVipPink()'
+        self.assertIn(pink, search)
+        self.assertEqual(1, search.count(pink))
+        self.assertNotIn('desktopUserVipPink()', search)
+        badge = (REPO/'desktop/upstream-slices/v046-identity-badges/UserVipBadge.kt').read_text(encoding='utf8')
+        self.assertEqual(1, badge.count('fun userVipPink('))
+        self.assertIn('fun userVipPink(): Color =\n    resolveUserVipPink(MaterialTheme.colorScheme.surface.luminance() < 0.5f)', badge)
 
     def test_landscape_comment_panel_declares_and_receives_the_real_pinned_set(self):
         content = self.generated('content', 'DesktopOriginalVideoContentSection.kt')

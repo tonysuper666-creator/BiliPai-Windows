@@ -51,6 +51,8 @@ def _bind_preview_subject(text):
     return text.replace(closing,"                hazeState = hazeState\n            )\n                } // Native preview subject lifetime\n            }\n        }\n        } // Unified header/feed depth snapshot")
 
 def generate(repo, output, standalone=False):
+    from v046_identity_badges import validate_outputs
+    validate_outputs(repo, output)
     from v043_home_recommendation_badges import check_output
     check_output(repo,output)
     output=Path(output).resolve();written=[];home_load_audits=[]
@@ -73,6 +75,11 @@ def generate(repo, output, standalone=False):
             body=native_home_page_delta(repo,target.name,body,home_load_audits)
             from v043_home_recommendation_badges import apply_card as apply_recommendation_badge
             body=apply_recommendation_badge(repo,target.name,body,home_load_audits)
+            if target.name=='UserVipBadge.kt':
+                from v046_identity_badges import advance
+                body,proof=advance(repo,body)
+                if proof is not None:
+                    scope["write"](output/"v046-identity-badges-proof.json", json.dumps(proof, ensure_ascii=False, indent=2)+"\n")
             scope["write"](target,body);written.append(target)
         from v043_home_native_cards import verified_raw
         navigation=output/'com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt'

@@ -1,0 +1,26 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/UserVipBadge.kt",
+      "filename": "UserVipBadge.kt",
+      "bytes": 3462,
+      "sha256": "22a6971b0ccdb440a7abf728b317ab027ff30a11065cf5f45480cb2b610d9c77",
+      "gitBlob": "ad4304d88607d708e0f958c636d1392d210d390c"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 UserVipBadge.kt: resolveUserVipPink, userVipPink, and the pink UserVipBadge with white text. resolveVipBadgeColors and AccessibleVipBadgeColors remain.",
+  "purpose": "Replaces the pinned home-page policy-extract UserVipBadge.kt so emitted comment files call com.android.purebilibili.core.ui.components.userVipPink().",
+  "beforeFinalOutputs": {
+    "com/android/purebilibili/core/ui/components/UserVipBadge.kt": {
+      "sha256": "1b5aa17cde1232f1405fafd6d4464d46d9869f4d61ab1e2f3e9420a60cb6fce5"
+    }
+  }
+}
