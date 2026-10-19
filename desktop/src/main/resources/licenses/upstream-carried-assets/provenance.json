@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "jay3-yy/BiliPai",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "files": [
+    {
+      "resource": "AndroidLiquidGlass.LICENSE",
+      "upstreamPath": "design-system/src/main/assets/licenses/AndroidLiquidGlass.LICENSE",
+      "bytes": 10750,
+      "sha256": "4b9f7e7c2821a5a1822a6cf1e4a34e877bba48a99b9bba1f03e5e2eccf6dec56",
+      "gitBlob": "e29d7cc03d2595fe32466a3ff9f3d7bc75d56339"
+    },
+    {
+      "resource": "piliplus-LICENSE.txt",
+      "upstreamPath": "docs/third-party/piliplus-LICENSE.txt",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "gitBlob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+    },
+    {
+      "resource": "piliplus-tv-play.md",
+      "upstreamPath": "docs/third-party/piliplus-tv-play.md",
+      "bytes": 574,
+      "sha256": "ec75d0487b1ef1f251c96deb3f9de0c47c8987efed218d6d6b4d7107ec01faa6",
+      "gitBlob": "eb6b5ff58b454b8d220f4c702dfab2d738a0c3a0"
+    },
+    {
+      "resource": "piliplus-artwork-LICENSE",
+      "upstreamPath": "artwork/third-party/piliplus/LICENSE",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "gitBlob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+    },
+    {
+      "resource": "piliplus-artwork-README.md",
+      "upstreamPath": "artwork/third-party/piliplus/README.md",
+      "bytes": 463,
+      "sha256": "018909479de244ec7b9cb441df6ac941478c6c67f04f4dc75fd6597d536e7866",
+      "gitBlob": "d8cd0c697a6e9f98d43974ffb9fc9a34173fc484"
+    }
+  ],
+  "covers": [
+    {
+      "name": "piliplus_custom_icons.ttf",
+      "notices": [
+        "piliplus-LICENSE.txt",
+        "piliplus-artwork-LICENSE",
+        "piliplus-artwork-README.md"
+      ],
+      "archivePath": "desktop/upstream-slices/v037-shared-tabs-progress-closure/piliplus_custom_icons.ttf",
+      "canonicalPath": "app/src/main/res/font/piliplus_custom_icons.ttf",
+      "windowsResource": "fonts/piliplus_custom_icons.ttf"
+    },
+    {
+      "name": "ic_pili_tv_play.png",
+      "notices": [
+        "piliplus-LICENSE.txt",
+        "piliplus-tv-play.md"
+      ],
+      "archivePath": "desktop/upstream-slices/v037-player-runtime-resources/ic_pili_tv_play.png",
+      "canonicalPath": "app/src/main/res/drawable-nodpi/ic_pili_tv_play.png",
+      "windowsResource": "icons/ic_pili_tv_play.png"
+    },
+    {
+      "name": "Lens.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v040-native-chrome/Lens.kt",
+      "priorArchivePath": "desktop/upstream-slices/v027-liquid-glass-lens/Lens.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt"
+    },
+    {
+      "name": "LiquidLens.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v040-liquid-value-controls/LiquidLens.kt",
+      "canonicalPath": "design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt"
+    },
+    {
+      "name": "Vibrancy.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt"
+    },
+    {
+      "name": "InnerShadow.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt"
+    },
+    {
+      "name": "CombinedBackdrop.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt"
+    },
+    {
+      "name": "LiquidGlassShader.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt"
+    },
+    {
+      "name": "AppLiquidValueControls.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControls.kt",
+      "canonicalPath": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidValueControls.kt"
+    },
+    {
+      "name": "AppElasticPress.kt",
+      "notices": [
+        "AndroidLiquidGlass.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v040-chrome-actions/AppElasticPress.kt",
+      "canonicalPath": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppElasticPress.kt"
+    }
+  ]
+}

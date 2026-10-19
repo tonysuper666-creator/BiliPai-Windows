@@ -1,0 +1,54 @@
+Upstream notices for assets and sources carried in the Windows desktop build.
+Copied byte-exact from jay3-yy/BiliPai commit d6bf8b1655ae910999860bf13e65c8fcea5b345b.
+Provenance record only.
+
+AndroidLiquidGlass.LICENSE
+Upstream path: design-system/src/main/assets/licenses/AndroidLiquidGlass.LICENSE.
+The file is the Apache License, Version 2.0, with the appendix line "Copyright 2025 Kyant".
+It is the notice carried for these compiled liquid-lens sources:
+
+- Lens.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt.
+  Windows selected archive: desktop/upstream-slices/v040-native-chrome/Lens.kt.
+  That archive delegates to com.android.purebilibili.core.ui.effect.lens.
+  Earlier fixed archive: desktop/upstream-slices/v027-liquid-glass-lens/Lens.kt.
+  Both Lens.kt headers say the lens is adapted from Kyant0/AndroidLiquidGlass (Apache 2.0).
+- LiquidLens.kt
+  Canonical path: design-system/src/main/java/com/android/purebilibili/core/ui/effect/LiquidLens.kt.
+  Archive: desktop/upstream-slices/v040-liquid-value-controls/LiquidLens.kt.
+  The header says it is adapted from Kyant0/AndroidLiquidGlass (Apache 2.0).
+- Vibrancy.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt.
+- InnerShadow.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt.
+- CombinedBackdrop.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt.
+- LiquidGlassShader.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt.
+  The file header describes LiquidGlassShader.kt as BiliPai's own AGSL shader.
+- AppLiquidValueControls.kt
+  Canonical path: design-system/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidValueControls.kt.
+  Archive: desktop/upstream-slices/v040-liquid-value-controls/AppLiquidValueControls.kt.
+  The header says: Copyright 2025 Kyant. Apache-2.0; see assets/licenses/AndroidLiquidGlass.LICENSE.
+- AppElasticPress.kt
+  Canonical path: design-system/src/main/java/com/android/purebilibili/core/ui/components/AppElasticPress.kt.
+  Archive: desktop/upstream-slices/v040-chrome-actions/AppElasticPress.kt.
+  The header says the motion is adapted from Kyant's AndroidLiquidGlass and names Apache License, Version 2.0, Copyright 2025 Kyant.
+
+piliplus-LICENSE.txt
+Upstream path: docs/third-party/piliplus-LICENSE.txt.
+The file is the GNU General Public License, Version 3, 29 June 2007, as published by the Free Software Foundation.
+piliplus-artwork-LICENSE is the same git blob, copied from artwork/third-party/piliplus/LICENSE.
+
+piliplus-tv-play.md
+Upstream path: docs/third-party/piliplus-tv-play.md.
+It states that ic_pili_tv_play.png, canonical path app/src/main/res/drawable-nodpi/ic_pili_tv_play.png, is an unmodified copy of assets/images/play.png from PiliPlus (https://github.com/bggRGjQaUbCoE/PiliPlus), local source revision 1c19925b58c62ee131051c2eb5ac8f1f2660e582, and points at piliplus-LICENSE.txt for the upstream GNU GPL v3.0 text.
+Windows processResources copies desktop/upstream-slices/v037-player-runtime-resources/ic_pili_tv_play.png into icons/ic_pili_tv_play.png.
+DesktopWindowsVideoEntryCover.kt loads icons/ic_pili_tv_play.png.
+
+piliplus-artwork-README.md
+Upstream path: artwork/third-party/piliplus/README.md.
+It states that piliplus_custom_icons.ttf, canonical path app/src/main/res/font/piliplus_custom_icons.ttf, is copied unchanged from PiliPlus assets/fonts/custom_icon.ttf (https://github.com/bggRGjQaUbCoE/PiliPlus), and that the license is GNU GPL v3, with the source repository license in LICENSE.
+That LICENSE is shipped here as piliplus-artwork-LICENSE, the same blob as piliplus-LICENSE.txt.
+Windows processResources copies desktop/upstream-slices/v037-shared-tabs-progress-closure/piliplus_custom_icons.ttf into fonts/piliplus_custom_icons.ttf.
+PiliPlusDanmakuSendIcon loads /fonts/piliplus_custom_icons.ttf.
