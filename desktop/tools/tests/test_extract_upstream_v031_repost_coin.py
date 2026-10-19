@@ -61,6 +61,24 @@ class RepostCoinExtractionTest(unittest.TestCase):
                 proof = json.loads(read(output / (Path(path).name + ".repost-coin-proof.json")))
                 after = read(output / path)
                 if producer == "fullscreen-pager" and path == coin.PAGER:
+                    # 38512320c comment selection and daff05d71 owner-follow rewrite the pager
+                    # after the v035 story proof. Unwind those recorded proofs first.
+                    follow = json.loads(read(output / "PortraitVideoPager.kt.v042-owner-follow-ui-proof.json"))
+                    self.assertTrue(follow["wholePreviousInputInverseRecovered"])
+                    self.assertEqual(follow["outputSHA256"], coin.sha(after))
+                    for edit in reversed(follow["edits"]):
+                        at = edit["offset"]
+                        self.assertEqual(edit["after"], after[at:at + len(edit["after"])])
+                        after = after[:at] + edit["before"] + after[at + len(edit["after"]):]
+                    self.assertEqual(follow["inputSHA256"], coin.sha(after))
+                    selection = json.loads(read(output / "v029-comment-selection-PortraitVideoPager.json"))
+                    self.assertTrue(selection["exactCompleteInverse"])
+                    self.assertEqual(selection["afterSha256LF"], coin.sha(after))
+                    for edit in reversed(selection["inverseEdits"]):
+                        at = edit["offset"]
+                        self.assertEqual(edit["after"], after[at:at + len(edit["after"])])
+                        after = after[:at] + edit["before"] + after[at + len(edit["after"]):]
+                    self.assertEqual(selection["beforeSha256LF"], coin.sha(after))
                     later = json.loads(read(output / "PortraitVideoPager.kt.v035-story-source.json"))["recipe"]
                     self.assertEqual(later["afterSha256LF"], coin.sha(after))
                     data = after.encode()
@@ -100,6 +118,15 @@ class RepostCoinExtractionTest(unittest.TestCase):
         identity = selected_source_identity(latest["originalPath"])
         self.assertEqual("8b47769d22c0d5bc88ae5248cee4aa04ff10d62c", latest["fixedCommit"])
         self.assertEqual(hashlib.sha256(identity["text"].encode()).hexdigest(), latest["originalSha256LF"])
+        # daff05d71 owner-follow rewrites the VM after this repost-contract snapshot.
+        engagement = json.loads(read(self.output / "detail-full-units/v042-owner-follow-projection-proof.json"))
+        self.assertTrue(engagement["wholePreviousInputInverseRecovered"])
+        self.assertEqual(engagement["outputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
+        for edit in reversed(engagement["edits"]):
+            at = edit["offset"]
+            self.assertEqual(edit["after"], vm[at:at + len(edit["after"])])
+            vm = vm[:at] + edit["before"] + vm[at + len(edit["after"]):]
+        self.assertEqual(engagement["inputSHA256"], hashlib.sha256(vm.encode()).hexdigest())
         self.assertEqual(hashlib.sha256(vm.encode()).hexdigest(), latest["generatedSha256LF"])
         self.assertTrue(latest["wholeLatestOriginalRepostContractAlreadySelected"])
         self.assertTrue(latest["previousSemanticDeltaNotReapplied"])
@@ -110,7 +137,17 @@ class RepostCoinExtractionTest(unittest.TestCase):
         from v037_player_interaction import fixed_sources
         protocol_proof = json.loads(read(self.output / "detail-full-units/v037-original-interaction-protocol-proof.json"))
         raw = fixed_sources()["ActionRepository.kt"]
-        interior = raw[raw.index("object ActionRepository {") + len("object ActionRepository {"):raw.rfind("}")]
+        # ea3b67f1d projects confirmed follow onto the pinned repository before v037 hashes the selected methods.
+        confirmed = json.loads(read(self.output / "detail-full-units/v042-confirmed-follow-source-proof.json"))
+        self.assertTrue(confirmed["wholePreviousInputInverseRecovered"])
+        self.assertEqual(confirmed["previousSourceSHA256"], hashlib.sha256(raw.encode()).hexdigest())
+        projected = raw
+        for edit in confirmed["edits"]:
+            at = edit["offset"]
+            self.assertEqual(edit["before"], projected[at:at + len(edit["before"])])
+            projected = projected[:at] + edit["after"] + projected[at + len(edit["before"]):]
+        self.assertEqual(confirmed["projectedSourceSHA256"], hashlib.sha256(projected.encode()).hexdigest())
+        interior = projected[projected.index("object ActionRepository {") + len("object ActionRepository {"):projected.rfind("}")]
         original_methods = self.producers["detail-full-units"].selected(interior, protocol_proof["originalDeclarations"])
         self.assertEqual(hashlib.sha256(original_methods.encode()).hexdigest(), protocol_proof["beforeSha256LF"])
         methods = original_methods
