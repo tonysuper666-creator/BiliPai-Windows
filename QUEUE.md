@@ -8,7 +8,8 @@
 | T6 | DONE（grokbot/r1-test-currency @ 3d0deb5cf 已推送；Root 已审并采用其中 6 个测试提交） | 任务 6（6a 验证 R1，6b 过时测试，6c 十二项分类，6d 全量复扫，另加大屏 UI 备份的只读检查）。基于 origin/desktop/r1-veyra-pins。 | tasks/T6.md | 无 |
 | T8 | DONE（T8a、T8b 已由 Root 审并摘入 integration-263@dd37c7abc） | 两项产品缺陷的修复补丁，各用隔离分支（grokbot/fix-bas-publication、grokbot/fix-early-video-detail），验证后由 Root 决定是否合并。 | tasks/T8.md | T6 |
 | T9 | TODO | 路线图切片批次 1：实现 + Linux 编译/测试验证（#12、#14、#25、#3、#13+#35、#46、#2），累积在 grokbot/slices-batch1。 | tasks/T9.md | T8；基础分支 origin/desktop/integration-263 最新头（现为 dd37c7abc） |
-| T10 | TODO | test_v029_failure_recovery 两项旧失败的只读分析（根因 + 最小修复补丁，不提交到可合并分支）。 | tasks/T10.md | 无 |
-| T7 | TODO | 在 T6 通过后：对 origin/grokbot/r1-test-currency 的头（含 R1 修复和测试更新）做一次“集成体检”：compileKotlin/compileTestKotlin，NVIDIA 14 个测试类，评论相关 23 个测试类，desktop/tools/nvidia 的 Python 检查，以及 tasks/T7.md 里列出的 Python 测试。只汇报，不改代码。 | tasks/T7.md | T6 |
+| T10 | DONE（Root 已审并摘入 integration-263：测试修复提交 578444aeb） | test_v029_failure_recovery 两项旧失败的只读分析（根因 + 最小修复补丁，不提交到可合并分支）。 | tasks/T10.md | 无 |
+| T11 | TODO | 三个旧 Python 测试失败的只读分析（up_danmaku、brand_success_mount、comment_renderer），方法同 T10。 | tasks/T11.md | 无 |
+| T7 | DONE（grokbot/T7-report；全部通过，test_rtx_hdr_color 在 R1 之后真实 7/7） | 在 T6 通过后：对 origin/grokbot/r1-test-currency 的头（含 R1 修复和测试更新）做一次“集成体检”：compileKotlin/compileTestKotlin，NVIDIA 14 个测试类，评论相关 23 个测试类，desktop/tools/nvidia 的 Python 检查，以及 tasks/T7.md 里列出的 Python 测试。只汇报，不改代码。 | tasks/T7.md | T6 |
 
 VERIFY.md 里的条目优先于 TODO 任务（见 STANDING-ORDERS 第 1 节）。
