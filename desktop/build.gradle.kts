@@ -2927,6 +2927,7 @@ val extractOriginalVideoFullscreenPager by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-fullscreen-pager")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalVideoFullscreenPager) }
 tasks.named("extractOriginalVideoStateCore") { inputs.file("tools/extract-upstream-video-fullscreen-pager.py") }
+tasks.named("extractOriginalVideoFullscreenPager") { inputs.file("tools/v046_fullscreen_tap_gestures.py") }
 // Production omits --standalone. DIRECT15 must be copied once by registry Sync.
 
 
