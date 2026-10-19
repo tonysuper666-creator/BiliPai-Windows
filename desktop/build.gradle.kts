@@ -285,6 +285,9 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt"))
         // The existing Home-page producer owns the complete v0.4.6 card tint policy.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt"))
+        // The existing dynamic-detail-container producer owns the complete v0.4.6 glyph text style and window action menu.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -1523,6 +1526,8 @@ val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v040-native-chrome")
     inputs.file("tools/v046_sheet_motion.py")
     inputs.dir("upstream-slices/v046-sheet-motion")
+    inputs.file("tools/v046_glyph_toolbar_pickers.py")
+    inputs.dir("upstream-slices/v046-glyph-toolbar-pickers")
     inputs.files(sources.filter { "dynamic-detail-container" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v036_comment_viewport.py")

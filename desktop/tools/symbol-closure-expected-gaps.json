@@ -92,18 +92,6 @@
       ]
     },
     {
-      "reason": "AppFloatingToolbar is imported by carried favorite/tab-role archives and absent from the pinned design-system.",
-      "closedBy": "fnd-sheet-motion-and-glyph",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.components.AppFloatingToolbar"
-        }
-      ]
-    },
-    {
       "reason": "Wallpaper selection, transform, palette and playback symbols the carried seed-palette, liquid-value and favorite-search archives reference.",
       "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "roadmap",
@@ -510,6 +498,17 @@
       "retiredBy": "desktop/upstream-slices/v046-home-card-tint-policy (VideoCardAdaptiveTintPolicy.kt and WallpaperReadabilityPolicy.kt, emitted by desktop/tools/v046_home_card_tint_policy.py; the vendored direct copy is excluded in prepareUpstreamSources)",
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_home_card_tint_policy_source.py",
       "closedBy": "fnd-home-card-cascade-definers",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "AppFloatingToolbar",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.components",
+      "reason": "Symbol gate gap AppFloatingToolbar (eight carried favorite, watch-later and tab-role locations import it). CLOSED by the whole v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-glyph-toolbar-pickers (AppFloatingToolbar.kt, emitted by desktop/tools/v046_glyph_toolbar_pickers.py through the dynamic-detail-container producer). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppFloatingToolbar.kt declares it",
+      "retiredBy": "desktop/upstream-slices/v046-glyph-toolbar-pickers (AppFloatingToolbar.kt, emitted by desktop/tools/v046_glyph_toolbar_pickers.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_glyph_toolbar_pickers_source.py",
+      "closedBy": "fnd-sheet-motion-and-glyph",
       "closedByEvidence": "roadmap"
     }
   ],

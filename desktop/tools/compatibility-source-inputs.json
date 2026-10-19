@@ -155,7 +155,8 @@
     "desktop/upstream-slices/v046-rss-public-content",
     "desktop/upstream-slices/v046-image-viewer",
     "desktop/upstream-slices/v046-chrome-glass-tuning",
-    "desktop/upstream-slices/v046-home-card-tint-policy"
+    "desktop/upstream-slices/v046-home-card-tint-policy",
+    "desktop/upstream-slices/v046-glyph-toolbar-pickers"
   ],
   "archives": [
     {
@@ -6875,6 +6876,53 @@
           "sha256": "80aadf3d9787ec0ea2b7475e1adada0f5cf493310365693eb54efe9b019c8860",
           "hashNormalization": "raw",
           "blob": "5b8ce14f4c92707c97ef8eb4c794af80ff11b593"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-glyph-toolbar-pickers",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppDurationPicker.kt",
+          "sha256": "6480ac4a0c5cad2dffeb88f2fa9c20eeb7262980180637f1bd2532e1d1aa639f",
+          "hashNormalization": "raw",
+          "blob": "82255f8a1171e61c582d8ef60580236baf51e624"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppFloatingToolbar.kt",
+          "sha256": "6b950a178cb547db4a4ff3c85dc3161cc8121d9b768c6808ac68693f17421824",
+          "hashNormalization": "raw",
+          "blob": "d3dcc476e55bb5c2b682a561ad5633cab4591e1b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppNumberPicker.kt",
+          "sha256": "d0b9f8b4d8aaed15d5a16bdf9f87fb3c509ecc3d009acd5298c1ccd9db375987",
+          "hashNormalization": "raw",
+          "blob": "849feebdc54adedba9d25b32f6770b8f86344677"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppPrimitiveThemeDefaults.kt",
+          "sha256": "4c9e997961523d2f4a2a025cfa814b52028f529a92f30c3229770eb834dda068",
+          "hashNormalization": "raw",
+          "blob": "835b537b89bfb2d1e361c5e4a89c622613be1f1b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppWindowActionMenu.kt",
+          "sha256": "2da894db84d677661e38c1586d289164d7a8c5ac3e4e459b74f646c86535d136",
+          "hashNormalization": "raw",
+          "blob": "b92eb0e83f38547fcc9400d65c85c08e8b632a54"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-glyph-toolbar-pickers/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-glyph-toolbar-pickers/manifest.json",
+          "sha256": "cb68980d5a0c7c3d60ff6d00eb714c06551f4d180ac7b245013ea2d0084251eb",
+          "hashNormalization": "raw",
+          "blob": "77c6c43408a42f0ae2172e5c81424b0490b20c22"
         }
       ]
     }
@@ -18090,6 +18138,81 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 VideoCardAdaptiveTintPolicy (resolveWallpaperGlassAlpha, LocalHomeCardScrolling, LocalHomeCardTransitionRunning, WallpaperPalette.readability) and the whole v0.4.6 design-system WallpaperReadabilityPolicy it imports, emitted verbatim by the home-page producer. The direct-mode VideoCardAdaptiveTintPolicy copy is excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt",
+      "localPath": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppPrimitiveThemeDefaults.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "835b537b89bfb2d1e361c5e4a89c622613be1f1b",
+      "sha256": "4c9e997961523d2f4a2a025cfa814b52028f529a92f30c3229770eb834dda068",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-glyph-toolbar-pickers"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 appIconGlyphTextStyle (AppPrimitiveThemeDefaults), AppNumberPicker, AppDurationPicker, AppFloatingToolbar and AppWindowActionMenu with native cascading popups, emitted by the dynamic-detail-container producer. The direct-mode AppPrimitiveThemeDefaults and AppWindowActionMenu copies are excluded; AppPrimitiveThemeDefaults omits the Android font padding copy. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDurationPicker.kt",
+      "localPath": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppDurationPicker.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "82255f8a1171e61c582d8ef60580236baf51e624",
+      "sha256": "6480ac4a0c5cad2dffeb88f2fa9c20eeb7262980180637f1bd2532e1d1aa639f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-glyph-toolbar-pickers"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 appIconGlyphTextStyle (AppPrimitiveThemeDefaults), AppNumberPicker, AppDurationPicker, AppFloatingToolbar and AppWindowActionMenu with native cascading popups, emitted by the dynamic-detail-container producer. The direct-mode AppPrimitiveThemeDefaults and AppWindowActionMenu copies are excluded; AppPrimitiveThemeDefaults omits the Android font padding copy. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppFloatingToolbar.kt",
+      "localPath": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppFloatingToolbar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d3dcc476e55bb5c2b682a561ad5633cab4591e1b",
+      "sha256": "6b950a178cb547db4a4ff3c85dc3161cc8121d9b768c6808ac68693f17421824",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-glyph-toolbar-pickers"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 appIconGlyphTextStyle (AppPrimitiveThemeDefaults), AppNumberPicker, AppDurationPicker, AppFloatingToolbar and AppWindowActionMenu with native cascading popups, emitted by the dynamic-detail-container producer. The direct-mode AppPrimitiveThemeDefaults and AppWindowActionMenu copies are excluded; AppPrimitiveThemeDefaults omits the Android font padding copy. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppNumberPicker.kt",
+      "localPath": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppNumberPicker.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "849feebdc54adedba9d25b32f6770b8f86344677",
+      "sha256": "d0b9f8b4d8aaed15d5a16bdf9f87fb3c509ecc3d009acd5298c1ccd9db375987",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-glyph-toolbar-pickers"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 appIconGlyphTextStyle (AppPrimitiveThemeDefaults), AppNumberPicker, AppDurationPicker, AppFloatingToolbar and AppWindowActionMenu with native cascading popups, emitted by the dynamic-detail-container producer. The direct-mode AppPrimitiveThemeDefaults and AppWindowActionMenu copies are excluded; AppPrimitiveThemeDefaults omits the Android font padding copy. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt",
+      "localPath": "desktop/upstream-slices/v046-glyph-toolbar-pickers/AppWindowActionMenu.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "b92eb0e83f38547fcc9400d65c85c08e8b632a54",
+      "sha256": "2da894db84d677661e38c1586d289164d7a8c5ac3e4e459b74f646c86535d136",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-glyph-toolbar-pickers"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 appIconGlyphTextStyle (AppPrimitiveThemeDefaults), AppNumberPicker, AppDurationPicker, AppFloatingToolbar and AppWindowActionMenu with native cascading popups, emitted by the dynamic-detail-container producer. The direct-mode AppPrimitiveThemeDefaults and AppWindowActionMenu copies are excluded; AppPrimitiveThemeDefaults omits the Android font padding copy. No call sites are added."
     }
   ],
   "buildStandaloneInputs": [

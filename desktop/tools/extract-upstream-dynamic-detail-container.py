@@ -319,6 +319,9 @@ def _generate_body():
     emit(path,'package com.android.purebilibili.core.ui.transition\nimport com.android.purebilibili.core.ui.adaptive.MotionTier\nimport com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\nimport kotlin.math.roundToInt\n\n'+body,'DesktopOriginalDetailPredictiveBlurPolicy.kt',note='Original quantum/radius/math; Android API gate becomes actual Compose support check.')
     detail_layout()
     thread_container()
+    # Whole v0.4.6 glyph style, pickers, floating toolbar and window action menu; the vendored direct copies are excluded.
+    from v046_glyph_toolbar_pickers import emit as emit_glyph_toolbar_pickers
+    emit_glyph_toolbar_pickers(REPO, OUTPUT)
     if STANDALONE:
         write(OUTPUT/'original-source-inventory.json',json.dumps(inventory,indent=2)+'\n')
 
@@ -328,6 +331,8 @@ def generate(repo, output, *, standalone=False):
     OUTPUT = Path(output)
     from v046_sheet_motion import validate_outputs
     validate_outputs(REPO, OUTPUT)
+    from v046_glyph_toolbar_pickers import validate_outputs as validate_glyph_toolbar_pickers_outputs
+    validate_glyph_toolbar_pickers_outputs(REPO, OUTPUT)
     STANDALONE = standalone
     appearance = load('detail_declarations', 'desktop/tools/extract-appearance-platform.py')
     parser = load('detail_parser', 'desktop/tools/sync-upstream.py')
