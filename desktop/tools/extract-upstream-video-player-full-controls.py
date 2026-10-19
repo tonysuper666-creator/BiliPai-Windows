@@ -177,6 +177,8 @@ def main():
  t=re.sub(r'(?m)^\s*decorFitsSystemWindows = false,?\s*\n','',t)
  t=t.replace('import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset','import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset')
  t=windows_nvidia_control_bar_ui(t,record=True)
+ from v042_player_readability import apply_and_record as apply_player_readability
+ t=apply_player_readability(REPO,rel,t,OUTPUT)
  emit(rel,t,rel,'complete-original-bottom-controls-and-menus-platform-adapt')
  rel='feature/video/ui/overlay/TopControlBar.kt';t=read(rel)
  for name in ['android.content.Context','android.content.Intent','android.content.IntentFilter','android.os.BatteryManager','androidx.compose.ui.platform.LocalContext']:
