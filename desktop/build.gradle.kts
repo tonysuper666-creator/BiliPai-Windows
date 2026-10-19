@@ -253,6 +253,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         // The existing full Search producer owns the complete v041 policies.
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt"))
+        // The existing Home-page producer owns the complete v0.4.6 refresh UI policy.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -875,6 +877,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v046-identity-badges")
     inputs.file("tools/v046_home_card_cascade_definers.py")
     inputs.dir("upstream-slices/v046-home-card-cascade-definers")
+    inputs.file("tools/v046_home_refresh_ui_policy.py")
+    inputs.dir("upstream-slices/v046-home-refresh-ui-policy")
     inputs.file("tools/v042_search_dependencies.py")
     inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.file("tools/v040_native_chrome.py")

@@ -979,10 +979,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         self.assertEqual(sync.adapted_compatibility_inputs(self.original_repo), self.inventory["inputs"])
         entries = self.load()
         self.assertEqual(entries, self.inventory["inputs"])
-        self.assertEqual(len(entries), 744)
-        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 730)
-        self.assertEqual(len(self.inventory["buildInputRoots"]), 139)
-        self.assertEqual(len(self.inventory["archives"]), 143)
+        self.assertEqual(len(entries), 745)
+        self.assertEqual(len({(item["upstreamCommit"], item["path"]) for item in entries}), 731)
+        self.assertEqual(len(self.inventory["buildInputRoots"]), 140)
+        self.assertEqual(len(self.inventory["archives"]), 144)
         for root, names in {
             "desktop/upstream-slices/v042-network-proxy/": {
                 "NetworkProxyStore.kt",
@@ -1729,10 +1729,10 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
         pin = optional[0]
         document = self.repo / pin["path"]
         self.assertFalse(document.exists())
-        self.assertEqual(len(self.load()), 744)
+        self.assertEqual(len(self.load()), 745)
         self.assertEqual(hashlib.sha256(self.OPTIONAL_README).hexdigest(), pin["sha256"])
         document.write_bytes(self.OPTIONAL_README)
-        self.assertEqual(len(self.load()), 744)
+        self.assertEqual(len(self.load()), 745)
         document.write_bytes(self.OPTIONAL_README + b"changed local note")
         with self.assertRaisesRegex(sync.UpdateError, "Optional local document bytes changed"):
             self.load()
@@ -1749,7 +1749,7 @@ class AdaptedCompatibilityInventoryTests(unittest.TestCase):
             with self.subTest(dynamicCRLF=b"\r\n" in contents):
                 dynamic.write_bytes(contents)
                 entries = self.load()
-                self.assertEqual(len(entries), 744)
+                self.assertEqual(len(entries), 745)
                 self.assertIn(input_pin, entries)
         dynamic.write_bytes(original_lf + b"\n// changed source\n")
         with self.assertRaisesRegex(sync.UpdateError, "Adapted archive bytes changed"):

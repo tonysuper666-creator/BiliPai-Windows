@@ -116,13 +116,15 @@ class V043HomeRecommendationBadgeSourceTest(unittest.TestCase):
     def test_real_producers_reject_output_inside_fixed_badge_sources_before_writing(self):
         for producer in [self.full, self.page]:
             root = self.copy_archive()
-            # Home-page generate validates the v046 identity and home-card cascade
-            # archives before this overlap check.
+            # Home-page generate validates the v046 identity, home-card cascade,
+            # and home refresh UI policy archives before this overlap check.
             if producer is self.page:
                 shutil.copytree(REPO/'desktop/upstream-slices/v046-identity-badges',
                                 root/'desktop/upstream-slices/v046-identity-badges')
                 shutil.copytree(REPO/'desktop/upstream-slices/v046-home-card-cascade-definers',
                                 root/'desktop/upstream-slices/v046-home-card-cascade-definers')
+                shutil.copytree(REPO/'desktop/upstream-slices/v046-home-refresh-ui-policy',
+                                root/'desktop/upstream-slices/v046-home-refresh-ui-policy')
             with self.assertRaisesRegex(ValueError, 'Output overlaps fixed badge source'):
                 producer.generate(root, root/source.ARCHIVE/'generated')
             self.assertFalse((root/source.ARCHIVE/'generated').exists())
