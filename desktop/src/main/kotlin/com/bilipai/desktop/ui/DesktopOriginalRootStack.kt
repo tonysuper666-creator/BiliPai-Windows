@@ -84,6 +84,9 @@ internal class DesktopOriginalRootPageBindings(
     var contentReady by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { withFrameNanos { }; contentReady = true }
     val currentItem = resolveBottomPagerItemForPage(selectedPage, visibleItems)
+    // AppNavigation.kt 792: a new tab visit is distinct even if the History page was uncomposed while
+    // away. Opening playback leaves the selected tab, and so this identity, intact.
+    val historyVisit = remember(currentItem) { DesktopHistoryBrowsingVisit() }
     val selectPage: (BiliPaiNavKey) -> Boolean = remember(routes, visibleItems) {
         { key ->
             val page = resolveBottomPagerPageForRoute(key.toLegacyRoute(), visibleItems)
@@ -142,6 +145,7 @@ internal class DesktopOriginalRootPageBindings(
             LocalDesktopDynamicCardBindings provides aggregate.gallery,
             com.android.purebilibili.core.ui.components.LocalPageImageLoadingAllowed provides (active && routes.owns()),
             LocalDesktopImagePreviewShareBindings provides aggregate.gallery.imageShare,
+            LocalDesktopHistoryBrowsingSessionKey provides desktopHistoryBrowsingSessionKey(historyVisit, pagerHosted),
         ) {
             // This exists only inside a real page slot, after every Root initialization gate.
             Box(Modifier.fillMaxSize().drawWithContent {

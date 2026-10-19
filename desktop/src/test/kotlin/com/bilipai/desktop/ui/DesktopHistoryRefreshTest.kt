@@ -66,17 +66,9 @@ class DesktopHistoryRefreshTest {
         assertEquals(listOf("current"), page.rows)
     }
 
-    @Test fun persistentShellSubscriberInvalidatesHistoryWhileHistoryScreenIsAbsent(): Unit = runBlocking {
-        val memory = DesktopBrowseMemory()
-        val page = memory.feeds.page<String, Int>(Pair(PersonalSection.HISTORY, 1L))
-        page.acceptBatch(0, CommunityBatch(listOf("history retained after navigation"), 2), true) { it }
-        val collector = launch(start = CoroutineStart.UNDISPATCHED) { HistoryRefreshBus.changes.collect { memory.invalidateCloudHistory() } }
-        try {
-            HistoryRefreshBus.notifyChanged()
-            withTimeout(1_000) { while (page.reloadRevision == 0L) yield() }
-            assertFalse(page.initialized); assertEquals(listOf("history retained after navigation"), page.rows)
-        } finally { collector.cancelAndJoin() }
-    }
+    // The window shell no longer subscribes to the bus to invalidate a retained history page (the
+    // pre-0.3.9 reload-on-change behaviour); the original HistoryViewModel updates progress in place.
+    // Its replacement contract is DesktopHistoryInPlaceProgressTest.
 
     @Test fun originalNestedDetailsSuppressionCoalescesEventsUntilTheLastDetailsCloses(): Unit = runBlocking {
         var changes = 0

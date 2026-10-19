@@ -1446,7 +1446,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (section == DesktopSection.CLOUD_FAVORITES && repository.sessionEpoch == capturedFavoritesUiEpoch &&
             !isClosing() && !activatingUpdate && favoritesEntryRef.get()?.isOwned() != true) ensureFavoritesEntry()
     }
-    DesktopHistoryRefreshEffects(browseMemory, showVideo && playing.details != null)
+    DesktopHistoryRefreshEffects(showVideo && playing.details != null)
     LaunchedEffect(retainedMedia, jsExecutionRevision, sessionEpoch) {
         if (!retainedMedia.external.authorizationCurrent) retainedMedia.external.stopPlayback()
     }

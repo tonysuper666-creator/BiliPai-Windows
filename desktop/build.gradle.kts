@@ -1561,6 +1561,7 @@ tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.file("tools/v046_favorite_editor.py")
     inputs.dir("upstream-slices/v046-favorite-editor")
+    inputs.file("tools/v046_history_in_place.py")
     inputs.file("tools/sync-upstream.py")
     inputs.file("tools/v044_favorite_subscription.py")
     inputs.file("tools/v044_fans.py")

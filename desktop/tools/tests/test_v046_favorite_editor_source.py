@@ -9,6 +9,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v046_favorite_editor as editor
+import v046_history_in_place as history
 import v046_danmaku_like as like
 
 
@@ -68,6 +69,9 @@ class OriginalFavoriteEditorSources(unittest.TestCase):
     def test_actual_repository_and_vm_restore_whole_prior_outputs_and_original_members(self):
         for relative in ['data/repository/DesktopOriginalFavoriteRepository.kt', 'feature/list/DesktopOriginalListViewModels.kt']:
             current = self.actual(relative); proof = self.row(Path(relative).name)['v046FavoriteEditorAdvance']
+            if relative.endswith('DesktopOriginalListViewModels.kt'):
+                # The History in-place layer is appended after this layer on the same generated VM output.
+                current = history.restore(current, self.row(Path(relative).name)['v046HistoryInPlaceAdvance']['retainedToCurrent'])
             before = editor.restore(current, proof['retainedToCurrent'])
             self.assertEqual(self.manifest['beforeFinalOutputs'][relative]['sha256'], editor.sha(before))
             for row in proof['completeOriginalMethods']:

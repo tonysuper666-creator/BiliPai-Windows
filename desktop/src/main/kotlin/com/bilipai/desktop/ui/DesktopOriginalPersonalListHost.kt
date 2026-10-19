@@ -52,9 +52,18 @@ internal class DesktopPersonalListNavigation(
                 latestCurrentPage
             }?.let { intent -> { routes.loginFromReadFailure(intent); Unit } }
         } else null
-    LaunchedEffect(model, isCurrentPage) {
-        if (isCurrentPage && model is HistoryViewModel)
-            model.loadData(showLoading = model.uiState.value.items.isEmpty())
+    val historyModel = model as? HistoryViewModel
+    val historySessionKey = LocalDesktopHistoryBrowsingSessionKey.current
+    // The original CommonListScreen binds History page activity; the generated screen carries only the
+    // favorite binding, so this host owns it. Activation only refreshes progress in place.
+    DisposableEffect(historyModel, isCurrentPage) {
+        historyModel?.bindDesktopPageActivity(entry.owns(), isCurrentPage)
+        onDispose { historyModel?.bindDesktopPageActivity(entryOwned = false, active = false) }
+    }
+    // Original AppNavigation reads the server once per browsing session (a tab visit), never per
+    // activation: playback and return keep the loaded order, cursor and scroll position.
+    LaunchedEffect(historyModel, isCurrentPage, historySessionKey) {
+        historyModel?.enterDesktopBrowsingSession(entry.owns(), isCurrentPage, historySessionKey)
     }
     val historyClick = remember(entry, navigation) {
         (model as? HistoryViewModel)?.let {

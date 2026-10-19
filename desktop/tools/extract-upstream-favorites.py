@@ -72,6 +72,9 @@ def output(rel,s,mode):
   'data/repository/DesktopOriginalFavoriteRepository': editor_repository}.get(rel)
  if editor_operation is not None:
   s,audit=editor_operation(REPO,s);records[-1]['v046FavoriteEditorAdvance']=audit
+ if rel=='feature/list/DesktopOriginalListViewModels':
+  from v046_history_in_place import advance_vm as history_in_place_vm
+  s,audit=history_in_place_vm(REPO,s);records[-1]['v046HistoryInPlaceAdvance']=audit
  if records[-1].get('historySourceAdaptation'):
   from v029_brand_history import generated_audit
   originalRel={'feature/list/DesktopOriginalListViewModels':'feature/list/ListViewModel'}.get(rel,rel)
@@ -341,7 +344,7 @@ def generate(repo:Path,output:Path,standalone=False,test_output=None):
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   if row.get('windowsBrandSuccessAdaptation'):entry['windowsBrandSuccessAdaptation']=row['windowsBrandSuccessAdaptation']
   if row.get('windowsHistoryReadSourceAdaptation'):entry['windowsHistoryReadSourceAdaptation']=row['windowsHistoryReadSourceAdaptation']
-  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding','v044FavoriteSubscriptionAdvance','v044FavoriteSubscriptionUiAdvance','v044ListForegroundAdvance','v046FavoriteEditorAdvance','v046FavoriteEditorOriginal']:
+  for key in ['historySourceAdaptation','historyGeneratedAdaptation','historyFinalGeneratedAdaptation','rawSha256Bytes','gitBlob','v044FavoriteDetailUiAdvance','v044FavoriteDetailSourceAdvance','v044FavoriteDetailPlatformBinding','v044FavoriteSubscriptionAdvance','v044FavoriteSubscriptionUiAdvance','v044ListForegroundAdvance','v046FavoriteEditorAdvance','v046FavoriteEditorOriginal','v046HistoryInPlaceAdvance']:
    if key in row:entry[key]=row[key]
   if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])

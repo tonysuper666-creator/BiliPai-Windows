@@ -10,6 +10,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v044_favorite_subscription as subscription
 import v046_favorite_editor as editor
+import v046_history_in_place as history
 import v046_danmaku_like as like
 
 
@@ -72,7 +73,9 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
     def test_vm_has_complete_original_methods_and_keeps_root_cover_and_history(self):
         actual = self.actual('feature/list/DesktopOriginalListViewModels.kt')
         proof = self.row('DesktopOriginalListViewModels.kt')['v044FavoriteSubscriptionAdvance']
-        stage = editor.restore(actual, self.row('DesktopOriginalListViewModels.kt')['v046FavoriteEditorAdvance']['retainedToCurrent'])
+        # The History in-place layer and then the favorite-editor layer sit on top of this layer.
+        in_place = history.restore(actual, self.row('DesktopOriginalListViewModels.kt')['v046HistoryInPlaceAdvance']['retainedToCurrent'])
+        stage = editor.restore(in_place, self.row('DesktopOriginalListViewModels.kt')['v046FavoriteEditorAdvance']['retainedToCurrent'])
         before = undo(stage, proof['retainedToCurrent'])
         self.assertEqual(self.manifest['beforeFinalOutputs']['feature/list/DesktopOriginalListViewModels.kt']['sha256'],
             subscription.sha(before))
@@ -93,8 +96,10 @@ class OriginalSubscriptionSourceTest(unittest.TestCase):
         for name in proof['preservedRootCoverMethods']:
             self.assertEqual(subscription.declaration(previous_vm, 'fun', name, self.syntax),
                 subscription.declaration(current_vm, 'fun', name, self.syntax))
+        # This layer and the favorite-editor layer leave the History class alone; only the History
+        # in-place layer on top of them (peeled above) changes it.
         self.assertEqual(subscription.declaration(before, 'class', 'HistoryViewModel', self.syntax),
-            subscription.declaration(actual, 'class', 'HistoryViewModel', self.syntax))
+            subscription.declaration(in_place, 'class', 'HistoryViewModel', self.syntax))
 
     def test_whole_policy_uses_type_and_fid_and_keeps_single_risk_control_function(self):
         actual = self.actual('feature/list/FavoriteCollectionPolicy.kt')
