@@ -4,4 +4,4 @@
 
 | 状态 | 分支@提交 | 测试范围 | 备注 |
 |---|---|---|---|
-| (暂无，Root 之后在这里追加) | | | |
+| TODO | desktop/integration-263@89a0aee85 | compileKotlin/compileTestKotlin；desktop/tools/tests/test_symbol_closure.py（约 6 分钟，Root 的符号闭包检查，期望全过）；nvidia 14 个测试类；评论 23 个测试类；Python：desktop/tools/nvidia 全部 | 这是集成分支新头，含 Root 写的符号闭包检查（约 5400 行 Python，从未在 Linux 上跑过） |
