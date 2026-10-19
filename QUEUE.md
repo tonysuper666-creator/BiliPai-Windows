@@ -8,7 +8,7 @@
 | T6 | DONE（grokbot/r1-test-currency @ 3d0deb5cf 已推送；Root 已审并采用其中 6 个测试提交） | 任务 6（6a 验证 R1，6b 过时测试，6c 十二项分类，6d 全量复扫，另加大屏 UI 备份的只读检查）。基于 origin/desktop/r1-veyra-pins。 | tasks/T6.md | 无 |
 | T8 | DONE（T8a、T8b 已由 Root 审并摘入 integration-263@dd37c7abc） | 两项产品缺陷的修复补丁，各用隔离分支（grokbot/fix-bas-publication、grokbot/fix-early-video-detail），验证后由 Root 决定是否合并。 | tasks/T8.md | T6 |
 | T9 | TODO | 路线图切片批次 1：实现 + Linux 编译/测试验证（#12、#14、#25、#3、#13+#35、#46、#2），累积在 grokbot/slices-batch1。 | tasks/T9.md | T8；基础分支 origin/desktop/integration-263 最新头（现为 dd37c7abc） |
-| T13 | TODO | 路线图切片批次 2（#10 审计、#17、#11、#19、#15、#18、#5、#6、#4），接着 T9 做，累积在 grokbot/slices-batch1。 | tasks/T13.md | T9 |
+| T13 | TODO | 路线图切片批次 2（Root 重新分工后：#10 审计、#15、#18、#5、#6、#4；#17、#11、#19、#7、#8 归 Root），接着 T9 做，累积在 grokbot/slices-batch1。 | tasks/T13.md | T9 |
 | T12 | TODO | 应用 T11 的三个测试补丁（Root 附条件）+ 分析第 4 个旧失败 v031_repost_coin；分支 grokbot/t12-python-test-currency。 | tasks/T12.md | 无（可与 T9 交替做） |
 | T10 | DONE（Root 已审并摘入 integration-263：测试修复提交 578444aeb） | test_v029_failure_recovery 两项旧失败的只读分析（根因 + 最小修复补丁，不提交到可合并分支）。 | tasks/T10.md | 无 |
 | T11 | DONE（grokbot/t11-old-python-failures @ c9bf8bbca；Root 的答复见 DECISIONS.md，补丁由 T12 应用） | 三个旧 Python 测试失败的只读分析（up_danmaku、brand_success_mount、comment_renderer），方法同 T10。 | tasks/T11.md | 无 |
