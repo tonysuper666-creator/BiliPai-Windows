@@ -9,7 +9,7 @@
 | T8 | DONE（T8a、T8b 已由 Root 审并摘入 integration-263@dd37c7abc） | 两项产品缺陷的修复补丁，各用隔离分支（grokbot/fix-bas-publication、grokbot/fix-early-video-detail），验证后由 Root 决定是否合并。 | tasks/T8.md | T6 |
 | T9 | TODO | 路线图切片批次 1：实现 + Linux 编译/测试验证（#12、#14、#25、#3、#13+#35、#46、#2），累积在 grokbot/slices-batch1。 | tasks/T9.md | T8；基础分支 origin/desktop/integration-263 最新头（现为 dd37c7abc） |
 | T13 | TODO | 路线图切片批次 2（Root 再次收紧分工后只剩次要的：#10 审计、#5、#6、#4；其余全部归 Root），接着 T9 做，累积在 grokbot/slices-batch1。 | tasks/T13.md | T9 |
-| T12 | TODO | 应用 T11 的三个测试补丁（Root 附条件）+ 分析第 4 个旧失败 v031_repost_coin；分支 grokbot/t12-python-test-currency。 | tasks/T12.md | 无（可与 T9 交替做） |
+| T12 | DONE（grokbot/t12-python-test-currency @ 24753a5a5；Root 已审，4 个测试提交已摘入 desktop/integration-263-claude-main@c11c5a98b，Windows 上 4 个文件全过） | 应用 T11 的三个测试补丁（Root 附条件）+ 分析第 4 个旧失败 v031_repost_coin；分支 grokbot/t12-python-test-currency。 | tasks/T12.md | 无（可与 T9 交替做） |
 | T10 | DONE（Root 已审并摘入 integration-263：测试修复提交 578444aeb） | test_v029_failure_recovery 两项旧失败的只读分析（根因 + 最小修复补丁，不提交到可合并分支）。 | tasks/T10.md | 无 |
 | T11 | DONE（grokbot/t11-old-python-failures @ c9bf8bbca；Root 的答复见 DECISIONS.md，补丁由 T12 应用） | 三个旧 Python 测试失败的只读分析（up_danmaku、brand_success_mount、comment_renderer），方法同 T10。 | tasks/T11.md | 无 |
 | T7 | DONE（grokbot/T7-report；全部通过，test_rtx_hdr_color 在 R1 之后真实 7/7） | 在 T6 通过后：对 origin/grokbot/r1-test-currency 的头（含 R1 修复和测试更新）做一次“集成体检”：compileKotlin/compileTestKotlin，NVIDIA 14 个测试类，评论相关 23 个测试类，desktop/tools/nvidia 的 Python 检查，以及 tasks/T7.md 里列出的 Python 测试。只汇报，不改代码。 | tasks/T7.md | T6 |
