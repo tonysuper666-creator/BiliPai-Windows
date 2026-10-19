@@ -3,18 +3,6 @@
   "description": "Known gaps for desktop/tools/check_slice_symbol_closure.py. A gap listed here is accepted; a gap listed but no longer observed is stale and fails the gate (a partial run judges only the gaps its checks can observe). Every slice appends the gaps it knowingly leaves and removes the ones it closes. closedByEvidence says how firm the owner is: roadmap = that slice's roadmap text names the symbol; proposed = the gap author's inference, to be confirmed or reassigned by the slice owner; unassigned = no roadmap slice owns it. retiredSeeds are roadmap seeds a generated shim already defines; the gate fails if one loses its definer.",
   "groups": [
     {
-      "reason": "The carried v0.4.x comment, dynamic and space archives call upstream userVipPink, which the pinned design-system lacks. The v046 generators rewrite the call to the desktop-owned desktopUserVipPink; the archives stay verbatim (roadmap seed: userVipPink).",
-      "closedBy": "fnd-identity-badges-vip-pink",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.ui.components.userVipPink"
-        }
-      ]
-    },
-    {
       "reason": "Policies upstream moved into core-data (data.model) that the pinned tree still keeps elsewhere or lacks (roadmap seeds: resolveVideoCardStatsTexts, resolveWatchLaterDisplayProgressState).",
       "closedBy": "fnd-core-data-relocated-policies",
       "closedByEvidence": "roadmap",
@@ -26,30 +14,8 @@
         },
         {
           "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.data.model.resolveVideoCardStatsTexts"
-        },
-        {
-          "scope": "carried",
           "check": "unresolved-qualified",
           "symbol": "com.android.purebilibili.core.network.BuvidManager"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.data.model.resolveWatchLaterDisplayProgressState"
-        }
-      ]
-    },
-    {
-      "reason": "Policies upstream moved into core-data (data.model) that the pinned tree still keeps elsewhere or lacks (roadmap seeds: resolveVideoCardStatsTexts, resolveWatchLaterDisplayProgressState). Ownership of these symbols by fnd-core-data-relocated-policies is the gap author's inference: that slice's roadmap text does not name resolveHistoryProgressLabel. Its owner must confirm or reassign them when the slice is reached.",
-      "closedBy": "fnd-core-data-relocated-policies",
-      "closedByEvidence": "proposed",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.data.model.resolveHistoryProgressLabel"
         }
       ]
     },
@@ -61,17 +27,7 @@
         {
           "scope": "carried",
           "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.components.AppPressShiftContent"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
           "symbol": "com.android.purebilibili.feature.home.resolveOldContentDividerContainerColor"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.feature.home.components.HomeOverlayPillButton"
         }
       ]
     },
@@ -439,15 +395,6 @@
   ],
   "latent": [
     {
-      "symbol": "resolveVideoDisplayProgressState",
-      "kind": "declaration",
-      "package": "com.android.purebilibili.data.model",
-      "reason": "Upstream v0.4.6 moved the policy into core-data; planned slices import it from data.model, the pinned tree declares it in feature.list only (roadmap seed).",
-      "evidence": "d6bf8b16:app-tv/src/main/java/com/android/bilipai/tv/ui/TvApp.kt:65 imports com.android.purebilibili.data.model.resolveVideoDisplayProgressState",
-      "closedBy": "fnd-core-data-relocated-policies",
-      "closedByEvidence": "roadmap"
-    },
-    {
       "symbol": "resolveWallpaperGlassAlpha",
       "kind": "declaration",
       "package": "com.android.purebilibili.feature.home.components.cards",
@@ -483,6 +430,83 @@
       "retiredBy": "desktop/tools/v046_comment_list.py COMPAT_REDUCED_MOTION, emitted as DesktopOriginalCommentMotionCompat.kt",
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: ChecksOnSyntheticTrees.test_member_the_type_lacks_is_flagged_and_a_compat_extension_retires_it, ExpectedGapsTests.test_retired_seeds_must_keep_a_definer, CurrentIntegrationTree.test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree; test_v046_comment_list_source.py pins the compat text",
       "closedBy": "fnd-sheet-motion-and-glyph",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "AppPressShiftContent",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.components",
+      "reason": "Roadmap seed AppPressShiftContent. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-home-card-cascade-definers (AppPressShiftContent.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPressShiftContent.kt declares it",
+      "retiredBy": "desktop/upstream-slices/v046-home-card-cascade-definers (AppPressShiftContent.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "closedBy": "fnd-home-card-cascade-definers",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "userVipPink",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.components",
+      "reason": "Roadmap seed userVipPink. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-identity-badges (UserVipBadge.kt, emitted by desktop/tools/v046_identity_badges.py). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/components/UserVipBadge.kt declares userVipPink",
+      "retiredBy": "desktop/upstream-slices/v046-identity-badges (UserVipBadge.kt, emitted by desktop/tools/v046_identity_badges.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "closedBy": "fnd-identity-badges-vip-pink",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "resolveHistoryProgressLabel",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.data.model",
+      "reason": "Roadmap seed resolveHistoryProgressLabel. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:core-data/src/main/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicy.kt declares it",
+      "retiredBy": "desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "closedBy": "fnd-core-data-relocated-policies",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "resolveVideoCardStatsTexts",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.data.model",
+      "reason": "Roadmap seed resolveVideoCardStatsTexts. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (VideoCardStatsTextPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:core-data/src/main/java/com/android/purebilibili/data/model/VideoCardStatsTextPolicy.kt declares it",
+      "retiredBy": "desktop/upstream-slices/v046-core-data-policies (VideoCardStatsTextPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "closedBy": "fnd-core-data-relocated-policies",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "resolveWatchLaterDisplayProgressState",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.data.model",
+      "reason": "Roadmap seed resolveWatchLaterDisplayProgressState. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (WatchLaterProgressPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:core-data/src/main/java/com/android/purebilibili/data/model/WatchLaterProgressPolicy.kt declares it",
+      "retiredBy": "desktop/upstream-slices/v046-core-data-policies (WatchLaterProgressPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "closedBy": "fnd-core-data-relocated-policies",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "HomeOverlayPillButton",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.home.components",
+      "reason": "Roadmap seed HomeOverlayPillButton. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-home-card-cascade-definers (HomeOverlayPillButton.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/components/HomeOverlayPillButton.kt declares it",
+      "retiredBy": "desktop/upstream-slices/v046-home-card-cascade-definers (HomeOverlayPillButton.kt, emitted by desktop/tools/v046_home_card_cascade_definers.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "closedBy": "fnd-home-card-cascade-definers",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "resolveVideoDisplayProgressState",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.data.model",
+      "reason": "Roadmap seed resolveVideoDisplayProgressState. CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app-tv/src/main/java/com/android/bilipai/tv/ui/TvApp.kt:65 imports com.android.purebilibili.data.model.resolveVideoDisplayProgressState",
+      "retiredBy": "desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
+      "closedBy": "fnd-core-data-relocated-policies",
       "closedByEvidence": "roadmap"
     }
   ],

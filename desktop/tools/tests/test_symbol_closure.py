@@ -1194,7 +1194,9 @@ class ExpectedGapsTests(unittest.TestCase):
         # and the expected-gaps file says so instead of omitting it
         self.assertIn('COMPAT_REDUCED_MOTION', (TOOLS / 'v046_comment_list.py').read_text(encoding='utf8'))
         self.assertEqual([('AppBottomSheetMotion', 'reducedMotion')],
-                         [(e['owner'], e['symbol']) for e in expected['retired']])
+                         [(e['owner'], e['symbol']) for e in expected['retired'] if e.get('owner')])
+        self.assertEqual(sorted(name for _package, name in CLOSED_SEEDS),
+                         sorted(e['symbol'] for e in expected['retired'] if not e.get('owner')))
 
     def test_the_retired_seed_names_its_shim_its_guards_and_the_slice_that_replaces_it(self):
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
@@ -1224,13 +1226,14 @@ class ExpectedGapsTests(unittest.TestCase):
                     self.assertIn('inference', entry['reason'])
         # the roadmap names the proposed groups' slices but not these exact symbols; a reader must see that
         proposed = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'proposed'}
-        for name in ('resolveHistoryProgressLabel', 'rememberBangumiSubtitles', 'shouldAttemptInstantArticle',
+        for name in ('rememberBangumiSubtitles', 'shouldAttemptInstantArticle',
                      'readSeedWallpaperColorScheme', 'sanitizeWallpaperTransform', 'WallpaperPaletteRequest',
                      'isScheduledDarkTheme', 'normalizeDarkThemeSchedule'):
             self.assertIn(name, proposed)
         roadmap_named = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'roadmap'}
-        for name in ('userVipPink', 'AppPressShiftContent', 'HomeOverlayPillButton', 'invalidateDanmakuSegment'):
-            self.assertIn(name, roadmap_named)
+        self.assertIn('invalidateDanmakuSegment', roadmap_named)
+        for _package, name in CLOSED_SEEDS:
+            self.assertNotIn(name, roadmap_named)
 
     def test_the_wallpaper_transform_gaps_say_the_slice_names_only_the_policy_file(self):
         # wallpaper-foundation-and-adjust names WallpaperTransformPolicy.kt (upstreamFiles, firstStep) but not the two
@@ -1732,6 +1735,17 @@ def require_history(*revisions):
             'BP_SYMBOL_GATE_ALLOW_SHALLOW=1 to skip these classes on purpose.')
 
 
+CLOSED_SEEDS = (
+    ('com.android.purebilibili.core.ui.components', 'userVipPink'),
+    ('com.android.purebilibili.core.ui.components', 'AppPressShiftContent'),
+    ('com.android.purebilibili.feature.home.components', 'HomeOverlayPillButton'),
+    ('com.android.purebilibili.data.model', 'resolveVideoCardStatsTexts'),
+    ('com.android.purebilibili.data.model', 'resolveWatchLaterDisplayProgressState'),
+    ('com.android.purebilibili.data.model', 'resolveHistoryProgressLabel'),
+    ('com.android.purebilibili.data.model', 'resolveVideoDisplayProgressState'),
+)
+
+
 @unittest.skipIf(SKIP_HEAVY, 'BP_SYMBOL_GATE_SKIP_HEAVY=1')
 @unittest.skipIf(ALLOW_SHALLOW and not (object_exists(V025_COMMIT) and object_exists(gate.TARGET_COMMIT)),
                  'BP_SYMBOL_GATE_ALLOW_SHALLOW=1 and the pinned upstream objects (v0.2.5, v0.4.6) are not in this clone')
@@ -1790,9 +1804,10 @@ class CurrentIntegrationTree(unittest.TestCase):
         self.assertEqual({'carried': {'unresolved-import', 'unresolved-qualified'},
                           'compiled': {'unresolved-name'}}, by_scope)
         symbols = {f.symbol for f in self.result.known}
-        self.assertIn('com.android.purebilibili.core.ui.components.userVipPink', symbols)
-        self.assertIn('com.android.purebilibili.core.ui.components.AppPressShiftContent', symbols)
-        self.assertIn('com.android.purebilibili.feature.home.components.HomeOverlayPillButton', symbols)
+        # closed by the identity-badges, core-data-policies and home-card-cascade-definers slices: no longer gaps
+        for closed in CLOSED_SEEDS:
+            self.assertNotIn(closed[0] + '.' + closed[1], symbols)
+        self.assertIn('com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment', symbols)
 
     def test_the_longest_path_a_producer_wrote_is_within_the_measured_limit(self):
         build = gate._long(self.root / 'desktop/build')
@@ -1847,9 +1862,18 @@ class CurrentIntegrationTree(unittest.TestCase):
         universe = self.result.universe
         entry = dict(symbol='reducedMotion', kind='member', owner='AppBottomSheetMotion')
         self.assertTrue(gate.latent_defined(universe, entry))
-        self.assertEqual([('reducedMotion', 'defined')], [(e['symbol'], e['status']) for e in self.result.retired])
+        self.assertEqual([('reducedMotion', 'defined')],
+                         [(e['symbol'], e['status']) for e in self.result.retired if e['symbol'] == 'reducedMotion'])
         for seed in self.expected['latent']:
             self.assertFalse(gate.latent_defined(universe, dict(seed)), seed['symbol'])
+
+    def test_the_closed_seeds_keep_their_definers_in_the_real_tree(self):
+        # slices #3, #5 and #6 carried the real v0.4.6 declarations; the gate keeps them guarded as retired seeds
+        status = {e['symbol']: e['status'] for e in self.result.retired}
+        for package, name in CLOSED_SEEDS:
+            with self.subTest(symbol=name):
+                self.assertEqual('defined', status.get(name), package)
+        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS] + ['reducedMotion']), sorted(status))
 
     def test_analysis_is_deterministic_and_the_report_carries_the_limits(self):
         again = gate.analyze(self.sources, self.notes, self.expected, gate.Options(), extra_findings=self.extra,
