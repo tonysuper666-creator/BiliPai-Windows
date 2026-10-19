@@ -1,0 +1,36 @@
+FF.E.
+======================================================================
+ERROR: test_mutated_full_body_or_ambiguous_anchor_is_rejected (test_extract_upstream_comment_renderer.OriginalCommentPresentationTests.test_mutated_full_body_or_ambiguous_anchor_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_comment_renderer.py", line 47, in test_mutated_full_body_or_ambiguous_anchor_is_rejected
+    original=adapter.inverse(body,proof['edits'])
+  File "/workspace/t10-wt/desktop/tools/v021_comment_renderer.py", line 15, in inverse
+    raise ValueError('Comment presentation inverse mismatch')
+ValueError: Comment presentation inverse mismatch
+
+======================================================================
+FAIL: test_actual_bounded_caller_keeps_one_vm_and_search_entry (test_extract_upstream_comment_renderer.OriginalCommentPresentationTests.test_actual_bounded_caller_keeps_one_vm_and_search_entry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_comment_renderer.py", line 81, in test_actual_bounded_caller_keeps_one_vm_and_search_entry
+    self.assertIn('if (selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS)',details)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'if (selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS)' not found in 'package com.bilipai.desktop.ui\n\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.foundation.lazy.LazyColumn\nimport androidx.compose.material.icons.Icons\nimport androidx.compose.material.icons.filled.Close\nimport androidx.compose.material3.*\nimport androidx.compose.runtime.Composable\nimport com.android.purebilibili.feature.video.ui.components.VideoDetailInfoPaneSkeleton\nimport com.android.purebilibili.feature.video.ui.components.VideoDetailSecondaryPaneSkeleton\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.semantics.contentDescription\nimport androidx.compose.ui.semantics.semantics\nimport androidx.compose.ui.unit.dp\n\ninternal enum class DesktopWindowsVideoDetailsTab(val title: String) {\n    INTRODUCTION("简介与分P"), COMMENTS("评论"), RELATED("相关推荐")\n}\n\n/** A real sibling of the native viewport, never a Compose overlay over its heavyweight Canvas. */\n@Composable\ninternal fun DesktopWindowsVideoDetailsPanel(\n    modifier: Modifier, selectedTab: DesktopWindowsVideoDetailsTab,\n    onTabChange: (DesktopWindowsVideoDetailsTab) -> Unit, onClose: () -> Unit,\n    current: () -> Boolean, related: @Composable () -> Unit,\n    introduction: @Composable () -> Unit, comments: @Composable () -> Unit,\n    loading: Boolean = false, failureContent: (@Composable () -> Unit)? = null,\n) {\n    DesktopWindowsPlayerSurface(modifier) {\n        Column(Modifier.fillMaxSize().semantics { contentDescription = "视频详情面板" }) {\n            Row(Modifier.fillMaxWidth().padding(start = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {\n                Text("视频详情", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)\n                IconButton(onClick = onClose, modifier = Modifier.size(44.dp)) {\n                    Icon(Icons.Default.Close, contentDescription = "关闭详情")\n                }\n            }\n            if (loading && failureContent == null) {\n                Box(Modifier.fillMaxWidth().weight(1f)) {\n                    if (selectedTab == DesktopWindowsVideoDetailsTab.INTRODUCTION)\n                        VideoDetailInfoPaneSkeleton(Modifier.fillMaxSize())\n                    else VideoDetailSecondaryPaneSkeleton(\n                        showComments = selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS,\n                        modifier = Modifier.fillMaxSize(),\n                    )\n                }\n            } else {\n            TabRow(selectedTab.ordinal) {\n                DesktopWindowsVideoDetailsTab.entries.forEach { tab ->\n                    Tab(selected = selectedTab == tab, onClick = { if (current()) onTabChange(tab) },\n                        text = { Text(tab.title, style = MaterialTheme.typography.labelMedium, maxLines = 1) })\n                }\n            }\n            // Each original tab receives a finite sibling viewport and owns its own list.\n            if (failureContent != null)\n                Box(Modifier.fillMaxWidth().weight(1f).padding(12.dp)) { failureContent() }\n            else when (selectedTab) {\n                DesktopWindowsVideoDetailsTab.COMMENTS ->\n                    Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp)) { comments() }\n                DesktopWindowsVideoDetailsTab.RELATED ->\n                    Box(Modifier.fillMaxWidth().weight(1f)) { related() }\n                DesktopWindowsVideoDetailsTab.INTRODUCTION ->\n                    LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(12.dp),\n                        verticalArrangement = Arrangement.spacedBy(12.dp)) {\n                        item { introduction() }\n                    }\n            }\n            }\n        }\n    }\n}\n'
+
+======================================================================
+FAIL: test_every_complete_original_body_restores_after_counted_container_edits (test_extract_upstream_comment_renderer.OriginalCommentPresentationTests.test_every_complete_original_body_restores_after_counted_container_edits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_comment_renderer.py", line 36, in test_every_complete_original_body_restores_after_counted_container_edits
+    self.assertEqual(proof['outputBodySha256'],adapter.sha(body))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '08263c705232a64b8ede634ba660fac0ec4d383ddd3df925bbd6a8f4d675c2c9' != '0ddd57a3bdbd744784f7e86e4f1055164c879aba1d0f847b4395675969bfcbec'
+- 08263c705232a64b8ede634ba660fac0ec4d383ddd3df925bbd6a8f4d675c2c9
++ 0ddd57a3bdbd744784f7e86e4f1055164c879aba1d0f847b4395675969bfcbec
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.417s
+
+FAILED (failures=2, errors=1)

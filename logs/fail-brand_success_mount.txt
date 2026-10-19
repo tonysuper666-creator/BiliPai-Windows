@@ -1,0 +1,26 @@
+FF.
+======================================================================
+FAIL: test_actual_members_pass_the_existing_unmodified_exact_member_gate (test_extract_upstream_brand_success_mount.BrandSuccessMountContractTest.test_actual_members_pass_the_existing_unmodified_exact_member_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_brand_success_mount.py", line 35, in test_actual_members_pass_the_existing_unmodified_exact_member_gate
+    self.assertEqual(sha(final), proof['afterSha256LF'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '90f9d28c10e11a5479280517c17c1ecd8b7f30c37eb250bc4ae6eeac63527846' != '217a0a5e10ae32b176f576c4f35ee68131120cf306d4a0ed8a7012c0bcf278e4'
+- 90f9d28c10e11a5479280517c17c1ecd8b7f30c37eb250bc4ae6eeac63527846
++ 217a0a5e10ae32b176f576c4f35ee68131120cf306d4a0ed8a7012c0bcf278e4
+
+
+======================================================================
+FAIL: test_business_bridge_has_one_inverse_and_changes_no_original_vm_or_protocol (test_extract_upstream_brand_success_mount.BrandSuccessMountContractTest.test_business_bridge_has_one_inverse_and_changes_no_original_vm_or_protocol)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_brand_success_mount.py", line 47, in test_business_bridge_has_one_inverse_and_changes_no_original_vm_or_protocol
+    self.assertEqual(1, inverse.count(edit['after']))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.931s
+
+FAILED (failures=2)

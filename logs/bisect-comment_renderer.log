@@ -1,0 +1,40 @@
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 124 revisions left to test after this (roughly 7 steps)
+[83d444e9c8995edb9b915d399bc314a6f774f966] Preserve Home background request authority and History error-slot provenance
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 62 revisions left to test after this (roughly 6 steps)
+[56a83b20652790b99346cb49b9995febb526ff29] Verify declared LLVM CRLF materializations against fixed Git source
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 31 revisions left to test after this (roughly 5 steps)
+[4f20e7dd6c8c4a7192893241a2258ff9cc790c89] Stop the native video chain on unrecovered RTX shared context
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[26aa4b0335efe98de8ac76a52cd6670ac6d64862] Connect three NVIDIA enhancement content modes through the actual native video owner
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[5b0439fd906a5a7bd3ad3377ab6ffbeaf4dbbaea] Pin the ARIB dependency and restore its actual internal MD5 implementation
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[4dd02ceb04d8af729ce9003ea6bf82b7cd394506] Open NVIDIA enhancement in the anchored playback menu
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[4b27f1b648143e5becfe2c09e4ef774574122e41] Render playback menus with the original liquid glass material
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[2be2159888c1b798c93a1aae803991a1e48c38de] Mount original related video cards and source-owned UP navigation
+running '/workspace/g-logs/t11/bis.sh' 'comment_renderer'
+2be2159888c1b798c93a1aae803991a1e48c38de is the first bad commit
+commit 2be2159888c1b798c93a1aae803991a1e48c38de
+Author: tonysuper666-creator <226117044+tonysuper666-creator@users.noreply.github.com>
+Date:   Sat Oct 10 09:38:00 2026 +0100
+
+    Mount original related video cards and source-owned UP navigation
+
+ .../kotlin/com/bilipai/desktop/DesktopShell.kt     | 24 ++++++
+ .../desktop/ui/DesktopWindowsVideoDetailsPanel.kt  | 31 +++----
+ .../desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt  | 11 ++-
+ .../ui/DesktopWindowsVideoRelatedSection.kt        | 98 ++++++++++++++++++++++
+ .../tools/extract-upstream-video-content-full.py   |  6 ++
+ 5 files changed, 149 insertions(+), 21 deletions(-)
+ create mode 100644 desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoRelatedSection.kt
+bisect found first bad commit

@@ -1,0 +1,135 @@
+running '/workspace/g-logs/t11/bis.sh' 'up_danmaku'
+Bisecting: 20 revisions left to test after this (roughly 4 steps)
+[a6f005147215453a6a9557d39ee514ee6f227ac3] Windows: retain active offline seek gestures across equal native source receipts
+running '/workspace/g-logs/t11/bis.sh' 'up_danmaku'
+Bisecting: 10 revisions left to test after this (roughly 3 steps)
+[11bf32a71b733ac53cdb6e86863469ece7d40861] Windows: retain actual updater descendants and report download custody rejection
+running '/workspace/g-logs/t11/bis.sh' 'up_danmaku'
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[17705422ea734c49660df11bee3bd4d687bde8da] Validate coherent Windows settings and original PGC audio migration
+running '/workspace/g-logs/t11/bis.sh' 'up_danmaku'
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[671da16eef8fa804a553c49576768d33fb3fcf27] Bind the complete production runtime and require actual NVIDIA frame presentation
+running '/workspace/g-logs/t11/bis.sh' 'up_danmaku'
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[eaa4c484eb6bd50f8cf1e7825f46d8cf3390585c] Validate complete search dispatch and the actual packaged production runtime
+running '/workspace/g-logs/t11/bis.sh' 'up_danmaku'
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[38512320c49783396cba3fefe674067e0cd9691f] Validate full favorite schema and original agreement ownership
+running '/workspace/g-logs/t11/bis.sh' 'up_danmaku'
+38512320c49783396cba3fefe674067e0cd9691f is the first bad commit
+commit 38512320c49783396cba3fefe674067e0cd9691f
+Author: tonysuper666-creator <226117044+tonysuper666-creator@users.noreply.github.com>
+Date:   Fri Oct 16 09:46:59 2026 +0100
+
+    Validate full favorite schema and original agreement ownership
+
+ .github/windows-source-validation-plan.json        |  470 +-
+ .github/workflows/windows-source-validation.yml    |   12 +
+ desktop/build.gradle.kts                           |   61 +
+ .../desktop/ui/DesktopHomeReturnNavigationOwner.kt |   13 +
+ .../desktop/ui/DesktopOriginalPortraitPlatform.kt  |    3 +-
+ .../desktop/ui/DesktopOriginalRootRouteAssembly.kt |   45 +-
+ .../ui/DesktopOriginalVideoConsumedViews.kt        |    5 +-
+ .../desktop/ui/DesktopReadyOriginalRootMount.kt    |    3 +-
+ .../desktop/ui/DesktopWindowsNativeVideoSurface.kt |  115 +-
+ .../desktop/ui/DesktopWindowsNavigationDisplay.kt  |   17 +-
+ .../ui/DesktopWindowsVideoCardReturnContent.kt     |  137 +
+ .../ui/DesktopWindowsVideoCardReturnHost.kt        |  255 +
+ .../ui/DesktopWindowsVideoCardReturnSnapshot.kt    |   85 +
+ .../desktop/ui/DesktopWindowsVideoReturnHandoff.kt |  101 +
+ .../data/DesktopLiveDanmakuHealthPolicyTest.kt     |   90 +
+ .../desktop/data/DesktopPersonalContentTest.kt     |    2 +-
+ .../data/DesktopVideoStatusLabelEntriesTest.kt     |  578 ++
+ .../ui/DesktopOriginalVideoComposerCommentsTest.kt |  122 +
+ .../ui/DesktopWindowsNavigationDisplayTest.kt      |   50 +
+ .../DesktopWindowsVideoCardReturnSnapshotTest.kt   |  123 +
+ .../ui/DesktopWindowsVideoReturnHandoffTest.kt     |  116 +
+ desktop/tools/compatibility-source-inputs.json     |  390 +-
+ desktop/tools/extract-space-overview.py            |    2 +
+ desktop/tools/extract-upstream-bgm-detail.py       |    2 +-
+ desktop/tools/extract-upstream-favorites.py        |    2 +
+ desktop/tools/extract-upstream-home-full-card.py   |    3 +
+ desktop/tools/extract-upstream-profile-main.py     |    4 +-
+ desktop/tools/extract-upstream-space-pages.py      |    2 +
+ desktop/tools/extract-upstream-system-about.py     |   14 +-
+ desktop/tools/extract-upstream-video-comment-ui.py |   64 +-
+ .../tools/extract-upstream-video-detail-holder.py  |    4 +
+ desktop/tools/extract-upstream-video-full-owner.py |    2 +
+ .../extract-upstream-video-fullscreen-pager.py     |    2 +
+ desktop/tools/extract-upstream-watchlater.py       |    4 +-
+ desktop/tools/extract-v041-video-status-labels.py  |   21 +
+ .../tools/extract-v041-video-status-personal.py    |   11 +
+ desktop/tools/sync-upstream.py                     |    2 +-
+ .../test_comment_selection_consumer_closure.py     |  136 +
+ .../tests/test_profile_agreement_owner_source.py   |  103 +
+ desktop/tools/tests/test_sync_upstream.py          |   51 +-
+ desktop/tools/tests/test_v029_comment_composer.py  |   39 +-
+ .../tests/test_v041_video_status_labels_source.py  |  706 +++
+ .../test_v041_video_status_personal_consumers.py   |  106 +
+ .../test_windows_video_return_frozen_inputs.py     |   92 +
+ desktop/tools/v029_comment_composer.py             |  119 +-
+ desktop/tools/v041_video_status_labels.py          |  791 +++
+ .../tools/v041_video_status_personal_consumers.py  |   86 +
+ .../tools/windows_video_return_frozen_inputs.py    |  102 +
+ .../v041-video-status-labels/FavoriteModels.kt     |  222 +
+ .../HomeStyleSingleColumnVideoCard.kt              |  381 ++
+ .../v041-video-status-labels/ListModels.kt         |  843 +++
+ .../v041-video-status-labels/SearchModels.kt       |  686 +++
+ .../v041-video-status-labels/SpaceLoadPolicy.kt    |  878 +++
+ .../v041-video-status-labels/SpaceModels.kt        | 1126 ++++
+ .../v041-video-status-labels/SpaceScreen.kt        | 5685 ++++++++++++++++++++
+ .../UserContentRepository.kt                       |   61 +
+ .../v041-video-status-labels/VideoCard.kt          | 2127 ++++++++
+ .../VideoCooperationMetadataTest.kt                |   55 +
+ .../v041-video-status-labels/VideoStatusBadges.kt  |   27 +
+ .../v041-video-status-labels/VideoStatusLabels.kt  |   28 +
+ .../VideoStatusLabelsTest.kt                       |   65 +
+ .../WatchLaterRepository.kt                        |  158 +
+ .../v041-video-status-labels/WatchLaterScreen.kt   | 1757 ++++++
+ .../v041-video-status-labels/manifest.json         |  129 +
+ .../FavoritePersonalCard.kt                        |  234 +
+ .../HistoryPersonalCard.kt                         |  422 ++
+ .../ProfileScreen.kt                               | 5337 ++++++++++++++++++
+ .../manifest.json                                  |   33 +
+ desktop/upstream-sources.json                      |   69 +-
+ 69 files changed, 25426 insertions(+), 160 deletions(-)
+ create mode 100644 desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnContent.kt
+ create mode 100644 desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnHost.kt
+ create mode 100644 desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnSnapshot.kt
+ create mode 100644 desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoff.kt
+ create mode 100644 desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopLiveDanmakuHealthPolicyTest.kt
+ create mode 100644 desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopVideoStatusLabelEntriesTest.kt
+ create mode 100644 desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCardReturnSnapshotTest.kt
+ create mode 100644 desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoReturnHandoffTest.kt
+ create mode 100644 desktop/tools/extract-v041-video-status-labels.py
+ create mode 100644 desktop/tools/extract-v041-video-status-personal.py
+ create mode 100644 desktop/tools/tests/test_comment_selection_consumer_closure.py
+ create mode 100644 desktop/tools/tests/test_profile_agreement_owner_source.py
+ create mode 100644 desktop/tools/tests/test_v041_video_status_labels_source.py
+ create mode 100644 desktop/tools/tests/test_v041_video_status_personal_consumers.py
+ create mode 100644 desktop/tools/tests/test_windows_video_return_frozen_inputs.py
+ create mode 100644 desktop/tools/v041_video_status_labels.py
+ create mode 100644 desktop/tools/v041_video_status_personal_consumers.py
+ create mode 100644 desktop/tools/windows_video_return_frozen_inputs.py
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/FavoriteModels.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/HomeStyleSingleColumnVideoCard.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/ListModels.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/SearchModels.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/SpaceLoadPolicy.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/SpaceModels.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/SpaceScreen.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/UserContentRepository.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/VideoCard.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/VideoCooperationMetadataTest.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/VideoStatusBadges.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/VideoStatusLabels.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/VideoStatusLabelsTest.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/WatchLaterRepository.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/WatchLaterScreen.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-labels/manifest.json
+ create mode 100644 desktop/upstream-slices/v041-video-status-personal-consumers/FavoritePersonalCard.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-personal-consumers/HistoryPersonalCard.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-personal-consumers/ProfileScreen.kt
+ create mode 100644 desktop/upstream-slices/v041-video-status-personal-consumers/manifest.json
+bisect found first bad commit

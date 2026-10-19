@@ -1,0 +1,33 @@
+.F..F.....
+======================================================================
+FAIL: test_actual_owner_last_stage_inverse_equals_full_generated_original_before_guard (test_extract_upstream_up_danmaku.CompleteUpDanmakuSourceTest.test_actual_owner_last_stage_inverse_equals_full_generated_original_before_guard)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_up_danmaku.py", line 140, in test_actual_owner_last_stage_inverse_equals_full_generated_original_before_guard
+    body = self.restore_later_owner_stages(body)
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_up_danmaku.py", line 53, in restore_later_owner_stages
+    self.assertEqual(proof['afterSha256LF'], hashlib.sha256(body.encode()).hexdigest())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '6fc660caeb7a898d4c48ce038b380a7300e9aa81faa53181c7bedd89c79e8862' != 'b360f506b9bc09e71ec7b3e0ec9b9565d36b8787ed4f92bcfddd45ae65804de9'
+- 6fc660caeb7a898d4c48ce038b380a7300e9aa81faa53181c7bedd89c79e8862
++ b360f506b9bc09e71ec7b3e0ec9b9565d36b8787ed4f92bcfddd45ae65804de9
+
+
+======================================================================
+FAIL: test_changed_guard_anchor_and_double_application_fail_closed (test_extract_upstream_up_danmaku.CompleteUpDanmakuSourceTest.test_changed_guard_anchor_and_double_application_fail_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_up_danmaku.py", line 170, in test_changed_guard_anchor_and_double_application_fail_closed
+    original = self.restore_later_owner_stages(final)
+  File "/workspace/t10-wt/desktop/tools/tests/test_extract_upstream_up_danmaku.py", line 53, in restore_later_owner_stages
+    self.assertEqual(proof['afterSha256LF'], hashlib.sha256(body.encode()).hexdigest())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '6fc660caeb7a898d4c48ce038b380a7300e9aa81faa53181c7bedd89c79e8862' != 'b360f506b9bc09e71ec7b3e0ec9b9565d36b8787ed4f92bcfddd45ae65804de9'
+- 6fc660caeb7a898d4c48ce038b380a7300e9aa81faa53181c7bedd89c79e8862
++ b360f506b9bc09e71ec7b3e0ec9b9565d36b8787ed4f92bcfddd45ae65804de9
+
+
+----------------------------------------------------------------------
+Ran 10 tests in 1.494s
+
+FAILED (failures=2)
