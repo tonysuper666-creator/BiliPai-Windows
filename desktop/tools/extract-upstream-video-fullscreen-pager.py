@@ -137,6 +137,8 @@ def generate(repo,output,standalone=False):
   if spec['output']=='com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt':
    from v046_comment_list import advance_main_comment_list
    text=advance_main_comment_list(repo,text,output)
+  from v046_fullscreen_tap_gestures import apply_and_record as apply_fullscreen_tap_gestures
+  text=apply_fullscreen_tap_gestures(repo,spec['output'],text,output)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')
