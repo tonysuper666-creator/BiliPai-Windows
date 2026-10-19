@@ -161,6 +161,77 @@ import com.android.purebilibili.feature.video.note.VideoNoteUiState
 """
  exec(code,globals().copy())
 
+def apply_early_video_detail_boundary(body):
+ """38daac558 desktop boundary on the v037 bootstrap block.
+ Ordinary playurl failure stays boxed until after onVideoInfo.
+ A retired owner throws before either onVideoInfo call.
+ """
+ s24=' '*24; s28=' '*28; s32=' '*32; s36=' '*36
+ play_before=(
+  s24+'val playUrlDeferred = async {\n'
+  +s28+'VideoRepository.getInitialPlayUrlData(\n'
+  +s32+'bvid = bvid,\n'
+  +s32+'cid = bootstrapCid,\n'
+  +s32+'targetQuality = defaultQuality,\n'
+  +s32+'audioLang = audioLang\n'
+  +s28+')\n'
+  +s24+'}')
+ play_after=(
+  s24+'val playUrlDeferred = async<Result<PlayUrlData?>> {\n'
+  +s28+'try {\n'
+  +s32+'Result.success(VideoRepository.getInitialPlayUrlData(\n'
+  +s36+'bvid = bvid,\n'
+  +s36+'cid = bootstrapCid,\n'
+  +s36+'targetQuality = defaultQuality,\n'
+  +s36+'audioLang = audioLang\n'
+  +s32+'))\n'
+  +s28+'} catch (cancelled: kotlinx.coroutines.CancellationException) {\n'
+  +s32+'throw cancelled\n'
+  +s28+'} catch (failure: Exception) {\n'
+  +s32+'// An ordinary URL failure must wait for the original\n'
+  +s32+'// metadata result/callback before caller classification.\n'
+  +s32+'Result.failure(failure)\n'
+  +s28+'}\n'
+  +s24+'}')
+ await_before=s36+'playUrlDeferred.await()\n'
+ await_after=s36+'playUrlDeferred.await().getOrThrow()\n'
+ info_before=s28+'onSuccess = { info ->\n'+s32+'onVideoInfo(info)\n'
+ info_after=(s28+'onSuccess = { info ->\n'
+  +s32+'environment.assertOwned()\n'
+  +s32+'onVideoInfo(info)\n')
+ steps=[
+  ('Ordinary playurl failure must not cancel the original detail waiter', play_before, play_after, 1),
+  ('Consume boxed playurl failure only after the detail callback', await_before, await_after, 1),
+  ('Retired owner cannot publish original detail callback', info_before, info_after, 2)]
+ original=body
+ before_sha=hashlib.sha256(original.encode()).hexdigest()
+ edits=[]
+ for label,before,after,count in steps:
+  assert body.count(before)==count,(label,body.count(before))
+  assert after.count(before)==0,label
+  for _ in range(count):
+   index=body.index(before)
+   body=body[:index]+after+body[index+len(before):]
+   edits.append(dict(offset=index,label=label,before=before,after=after))
+ after_sha=hashlib.sha256(body.encode()).hexdigest()
+ inverse=body
+ for edit in reversed(edits):
+  i=edit['offset']
+  assert inverse[i:i+len(edit['after'])]==edit['after'],edit['label']
+  inverse=inverse[:i]+edit['before']+inverse[i+len(edit['after']):]
+ assert inverse==original
+ assert hashlib.sha256(inverse.encode()).hexdigest()==before_sha
+ replaced=body
+ for label,before,after,count in reversed(steps):
+  assert replaced.count(after)==count,(label,replaced.count(after))
+  replaced=replaced.replace(after,before)
+ assert replaced==original and hashlib.sha256(replaced.encode()).hexdigest()==before_sha
+ for label,before,after,count in steps:
+  assert body.count(before)==0,('double application',label,body.count(before))
+ replacements=[dict(label=label,before=before,after=after,count=count) for label,before,after,count in steps]
+ return body,dict(beforeSha256=before_sha,afterSha256=after_sha,inverseExact=True,
+  replacements=replacements,edits=edits)
+
 def build_usecase():
  code=r"""rel='feature/video/usecase/VideoPlaybackUseCase.kt';original=p.original(p.BASE+rel)
 bootstrap_start=original.index('internal fun resolvePlaybackBootstrapCid(');bootstrap_end=original.index('\n\n',bootstrap_start)
@@ -196,6 +267,10 @@ swap('''    ): VideoLoadResult {
         try {''','Task-owned entry admission before original cooldown/network work')
 swap('''            return detailResult.fold(''','''            environment.assertOwned()
             return detailResult.fold(''','Retired task cannot apply original load result/cooldown success')
+# v037 already has the stable034 bootstrap algorithm. Restore only the
+# 38daac558 desktop boundary. Do not reapply that whole recipe.
+s,earlyDetailProof=apply_early_video_detail_boundary(s)
+replacements.extend(earlyDetailProof['replacements'])
 # Windows transport restrictions must survive the original IOException branch.
 # Only the error presentation boundary changes; original requests/cooldown stay intact.
 swap('VideoLoadError.fromException(e).isRetryable()',
