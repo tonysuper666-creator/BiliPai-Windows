@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import java.nio.file.Files
+import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicLong
 
 data class DesktopSubscriptionState(val sources: List<SavedSubscriptionFeed> = emptyList(),
@@ -125,6 +127,11 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     }
     suspend fun exportOpml(): String = withContext(Dispatchers.IO) { buildSubscriptionOpml(SubscriptionFeedStore.list(context)) }
     suspend fun setEnabled(id: String, enabled: Boolean) = mutate { SubscriptionFeedStore.setEnabled(context, id, enabled) }
+    /** Saved feeds only. A builtin:* id is rejected before the store is touched. */
+    suspend fun setGroup(id: String, group: String) = mutate {
+        require(!id.startsWith("builtin:")) { "内置订阅源不能修改分组" }
+        SubscriptionFeedStore.setGroup(context, id, group)
+    }
     suspend fun remove(id: String): Unit = mutate {
         val source = SubscriptionFeedStore.list(context).firstOrNull { it.id == id } ?: return@mutate
         SubscriptionFeedStore.remove(context, id)
@@ -208,4 +215,9 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         generation.incrementAndGet()
         mutation.withLock { publishCleanupState() }
     }
+}
+
+/** UTF-8 text for a path the subscription save dialog already chose. */
+internal fun writeSubscriptionOpml(path: Path, text: String) {
+    Files.writeString(path, text, Charsets.UTF_8)
 }

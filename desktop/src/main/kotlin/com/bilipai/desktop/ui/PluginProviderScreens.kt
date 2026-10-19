@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.LocalAwtWindow
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -26,14 +27,28 @@ import com.android.purebilibili.feature.plugin.*
 import com.bilipai.desktop.data.VideoCard
 import com.bilipai.desktop.data.discoveryVideoCard
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
+import com.bilipai.desktop.plugins.writeSubscriptionOpml
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.swing.Swing
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
+import java.awt.Dialog
+import java.awt.EventQueue
+import java.awt.FileDialog
+import java.awt.Frame
 import java.awt.Toolkit
+import java.awt.Window
 import java.awt.datatransfer.StringSelection
+import java.nio.file.Path
+import java.util.concurrent.atomic.AtomicReference
 
 @Composable
 internal fun DesktopAdditionalPluginSettings(id: String, runtime: DesktopPluginRuntime, subscriptionBinding: DesktopSubscriptionPageBindings?, onDismiss: () -> Unit,
@@ -211,13 +226,67 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
     key(binding) { SubscriptionReaderContent(binding, refreshOnOpen, onDismiss) }
 }
 
+/** One Windows save selector. Cancellation disposes that dialog; its modal loop is not inside Root admission. */
+private val subscriptionOpmlChooser = AtomicReference<FileDialog?>()
+
+private suspend fun chooseSubscriptionOpmlFile(window: Window, owned: () -> Boolean): Path? {
+    val caller = currentCoroutineContext()
+    caller.ensureActive()
+    if (!owned()) throw CancellationException("Subscription owner retired")
+    val chooser = AtomicReference<FileDialog?>()
+    val closer = checkNotNull(caller[Job]).invokeOnCompletion {
+        chooser.get()?.let { dialog -> EventQueue.invokeLater { dialog.dispose() } }
+    }
+    try {
+        val selected = withContext(Dispatchers.Swing) {
+            caller.ensureActive()
+            if (!owned()) throw CancellationException("Subscription owner retired")
+            check(window.isDisplayable) { "订阅文件选择需要已打开的窗口" }
+            val dialog = when (window) {
+                is Frame -> FileDialog(window, "导出 OPML 文件", FileDialog.SAVE)
+                is Dialog -> FileDialog(window, "导出 OPML 文件", FileDialog.SAVE)
+                else -> error("订阅文件选择需要窗口")
+            }
+            if (!subscriptionOpmlChooser.compareAndSet(null, dialog)) {
+                dialog.dispose()
+                error("已有订阅文件选择窗口")
+            }
+            chooser.set(dialog)
+            try {
+                dialog.isMultipleMode = false
+                dialog.file = "bilipai-subscriptions.opml"
+                dialog.setFilenameFilter { _, name -> name.endsWith(".opml", ignoreCase = true) }
+                caller.ensureActive()
+                if (!owned()) throw CancellationException("Subscription owner retired")
+                dialog.isVisible = true
+                caller.ensureActive()
+                if (!owned()) throw CancellationException("Subscription owner retired")
+                dialog.file?.let { name ->
+                    val leaf = if (name.endsWith(".opml", ignoreCase = true)) name else "$name.opml"
+                    Path.of(dialog.directory ?: ".", leaf)
+                }
+            } finally {
+                chooser.compareAndSet(dialog, null)
+                subscriptionOpmlChooser.compareAndSet(dialog, null)
+                dialog.dispose()
+            }
+        }
+        caller.ensureActive()
+        if (!owned()) throw CancellationException("Subscription owner retired")
+        return selected
+    } finally { closer.dispose() }
+}
+
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable private fun SubscriptionReaderContent(binding: DesktopSubscriptionPageBindings, refreshOnOpen: Boolean, onDismiss: () -> Unit) {
+    val window = LocalAwtWindow.current
     val jsRevision by binding.runtime.jsPlugins.host.executionRevision.collectAsState()
     val state by binding.state.collectAsState()
     val scope = rememberCoroutineScope()
     var busy by remember { mutableStateOf(false) }; var error by remember { mutableStateOf<String?>(null) }
     var title by remember { mutableStateOf("") }; var url by remember { mutableStateOf("") }
     var importText by remember { mutableStateOf<String?>(null) }; var showSources by remember { mutableStateOf(true) }
+    var grouping by remember { mutableStateOf<SavedSubscriptionFeed?>(null) }
     var unreadOnly by remember { mutableStateOf(false) }; var article by remember { mutableStateOf<ParsedFeedItem?>(null) }
     fun dismiss() = binding.commitUi(onDismiss)
     fun action(block: suspend () -> Unit) {
@@ -249,6 +318,19 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
                         val text = binding.exportOpml()
                         binding.commitCallerUi { binding.copyText(text, "已复制 OPML") }
                     } }) { Text("复制 OPML") }
+                    TextButton(onClick = { action {
+                        val owner = window ?: kotlin.error("订阅窗口不可用")
+                        val selected = chooseSubscriptionOpmlFile(owner, binding::isOwned)
+                        if (selected != null) {
+                            val text = binding.exportOpml()
+                            withContext(Dispatchers.IO) {
+                                ensureActive()
+                                if (!binding.isOwned()) throw CancellationException("Subscription owner retired")
+                                writeSubscriptionOpml(selected, text)
+                            }
+                            binding.commitCallerUi { binding.showFeedback("已导出 OPML") }
+                        }
+                    } }) { Text("导出 OPML 文件") }
                 }
                 if (busy || state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
                 (state.errors + listOfNotNull(error)).forEach { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -265,11 +347,17 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
                 items(state.sources, key = { "source:${it.id.length}:${it.id}${it.url}" }) { source ->
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Column(Modifier.weight(1f)) {
-                            Text(source.title)
-                            if (source.group.isNotBlank()) Text(source.group, style = MaterialTheme.typography.labelSmall)
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Text(source.title)
+                                if (source.group.isNotBlank()) Text(source.group, style = MaterialTheme.typography.labelSmall)
+                            }
                             Text(source.url, style = MaterialTheme.typography.bodySmall)
                         }
                         Switch(source.enabled, { value -> action { binding.setEnabled(source.id, value) } }, enabled = !busy)
+                        if (!source.id.startsWith("builtin:")) TextButton(onClick = {
+                            val current = source
+                            binding.commitUi { grouping = current }
+                        }, enabled = !busy) { Text("分组") }
                         TextButton(onClick = { action { binding.remove(source.id) } }, enabled = !busy) { Text("删除") }
                     }
                 }
@@ -298,6 +386,22 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
             binding.commitCallerUi { importText = null }
         } }, enabled = !busy && text.isNotBlank()) { Text("导入") } }, dismissButton = {
             TextButton(onClick = { binding.commitUi { importText = null } }) { Text("取消") }
+        })
+    }
+    grouping?.let { feed ->
+        var draft by remember(feed.id, feed.group) { mutableStateOf(feed.group) }
+        AlertDialog(onDismissRequest = { binding.commitUi { grouping = null } }, title = { Text("设置分组") }, text = {
+            OutlinedTextField(draft, { value -> binding.commitUi { draft = value } }, label = { Text("分组") },
+                singleLine = true, modifier = Modifier.width(480.dp))
+        }, confirmButton = { TextButton(onClick = {
+            val id = feed.id
+            val requested = draft
+            action {
+                binding.setGroup(id, requested)
+                binding.commitCallerUi { grouping = null }
+            }
+        }, enabled = !busy) { Text("保存") } }, dismissButton = {
+            TextButton(onClick = { binding.commitUi { grouping = null } }) { Text("取消") }
         })
     }
     article?.let { item -> key(binding, item) { SubscriptionArticleDialog(binding, item) { binding.commitUi { article = null } } } }
