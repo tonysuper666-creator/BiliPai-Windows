@@ -113,6 +113,7 @@ internal class DesktopSubscriptionPageBindings(
     }
     suspend fun exportOpml(): String = owned { repository.exportOpml() }
     suspend fun setEnabled(id: String, value: Boolean) = owned { repository.setEnabled(id, value) }
+    suspend fun setGroup(id: String, group: String) = owned { repository.setGroup(id, group) }
     suspend fun remove(id: String) = owned { repository.remove(id) }
     suspend fun loadFullArticle(item: ParsedFeedItem,
         identity: DesktopSubscriptionArticleReadingIdentity): String =
