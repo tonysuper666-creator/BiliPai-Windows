@@ -20,18 +20,6 @@
       ]
     },
     {
-      "reason": "Home card cascade symbols the carried home/search archives need and the pinned tree lacks (roadmap seeds: AppPressShiftContent, HomeOverlayPillButton).",
-      "closedBy": "fnd-home-card-cascade-definers",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.home.resolveOldContentDividerContainerColor"
-        }
-      ]
-    },
-    {
       "reason": "ForegroundSettleBudget is referenced by carried home archives and not declared (roadmap seed).",
       "closedBy": "fnd-motion-gate-and-resource-hooks",
       "closedByEvidence": "roadmap",
@@ -507,6 +495,17 @@
       "retiredBy": "desktop/upstream-slices/v046-core-data-policies (VideoProgressDisplayPolicy.kt, emitted by desktop/tools/v046_core_data_policies.py)",
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree",
       "closedBy": "fnd-core-data-relocated-policies",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "resolveOldContentDividerContainerColor",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.home",
+      "reason": "Gap resolveOldContentDividerContainerColor (and OLD_CONTENT_DIVIDER_CONTAINER_ALPHA) from the home card cascade slice. CLOSED by the whole v0.4.6 HomeRefreshUiPolicy.kt carried in desktop/upstream-slices/v046-home-refresh-ui-policy (HomeRefreshUiPolicy.kt, emitted by desktop/tools/v046_home_refresh_ui_policy.py; the vendored direct copy is excluded in prepareUpstreamSources). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt declares it",
+      "retiredBy": "desktop/upstream-slices/v046-home-refresh-ui-policy (HomeRefreshUiPolicy.kt, emitted by desktop/tools/v046_home_refresh_ui_policy.py; the vendored direct copy is excluded in prepareUpstreamSources)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_home_refresh_ui_policy_source.py",
+      "closedBy": "fnd-home-card-cascade-definers",
       "closedByEvidence": "roadmap"
     }
   ],

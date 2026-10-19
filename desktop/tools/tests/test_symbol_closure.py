@@ -1746,6 +1746,7 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.data.model', 'resolveWatchLaterDisplayProgressState'),
     ('com.android.purebilibili.data.model', 'resolveHistoryProgressLabel'),
     ('com.android.purebilibili.data.model', 'resolveVideoDisplayProgressState'),
+    ('com.android.purebilibili.feature.home', 'resolveOldContentDividerContainerColor'),
 )
 
 
