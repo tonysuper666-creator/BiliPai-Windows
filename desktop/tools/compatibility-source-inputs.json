@@ -162,7 +162,8 @@
     "desktop/upstream-slices/v046-player-overlay",
     "desktop/upstream-slices/v046-bangumi-player",
     "desktop/upstream-slices/v046-danmaku-hot-command",
-    "desktop/upstream-slices/v046-audio-listen-closure"
+    "desktop/upstream-slices/v046-audio-listen-closure",
+    "desktop/upstream-slices/v046-mfx-small-protocol-fixes"
   ],
   "archives": [
     {
@@ -7265,6 +7266,71 @@
           "sha256": "12655eb3703eac6d1a8203759926e8a09e9f70fa3be4a7c46fefdd8b22d26ce7",
           "hashNormalization": "raw",
           "blob": "393aa059ec2691c2598ed376b2456cf6e0deaad6"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-mfx-small-protocol-fixes",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/ArticleContentBlockParser.kt",
+          "sha256": "463e5c2457c38c5fb5e8091194f8ff4af5e7191e86baec29bfd115e7a2ca0870",
+          "hashNormalization": "raw",
+          "blob": "49190bbf68d5313df79c8bcfea7e10da4405daa3"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/ArticleRepository.kt",
+          "sha256": "69d797e8122b98dfc5857812641b9563f6d3127efa52d54ce72eb754faf5f108",
+          "hashNormalization": "raw",
+          "blob": "d35ed47919f2f6e60258c86d4229b9aa7e6e5f77"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/Logger.kt",
+          "sha256": "acd3a9f17a719153be32fc5b7a17da645ee17b48fb9930ccfa9be3853b7c1eac",
+          "hashNormalization": "raw",
+          "blob": "7e38317a4d97ada29d3b5c53bdf48c97ec041cd9"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/manifest.json",
+          "sha256": "8122e2e97d2cb1bb9d889dcc3a4e0309b49450015b19d8659075e8b5fb0d6674",
+          "hashNormalization": "raw",
+          "blob": "59d4de5413c0aa746733c5876b9f1258fb12df71"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/MessageHistoryCursorSerializer.kt",
+          "sha256": "e2a79af18951fe4cb88adeb7a1f823e6dc9a57416d7a3de6afb3b235761469b2",
+          "hashNormalization": "raw",
+          "blob": "a5bbfea25f8fb4cb2497805e456df47e880b28f8"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/MessageHistoryParsingTest.kt",
+          "sha256": "99068c46dabcb3233b6ac3b5ec35e12a28d98b2f16de647231d366cd441d0a91",
+          "hashNormalization": "raw",
+          "blob": "84b31fb24dd6f926c689f8665442bee3fcbd8e7a"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/MessageResponse.kt",
+          "sha256": "5f51adc424f78b1f6b4324c9ea8717ef13a76c8f89a1eeec0322c801915e6b2e",
+          "hashNormalization": "raw",
+          "blob": "f28580e9bc354c1b8aa30d47bc5d5e44fac59da7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/SponsorBlockPlugin.kt",
+          "sha256": "37ed5b8a8cf24dba8e7db0658aed803f4a2016f3534a941c0d45d2652676a0f0",
+          "hashNormalization": "raw",
+          "blob": "12eb8553da794153b30a0f5e436d30962d71e937"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/SponsorBlockRepository.kt",
+          "sha256": "b7bc7da52f86558c523ac635378901a191593ac33ccaa9b41d95e265ebd9bbbc",
+          "hashNormalization": "raw",
+          "blob": "0cd88278b6dfe2079c9d9994d789557ea7ca312f"
         }
       ]
     }
@@ -19140,6 +19206,138 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 ListenVideoScreen, MusicPlayerContent, Music3DCoverFlow, AudioModeMusicPlayer and LyricsDisplayPolicy, each advanced inside the producer that already owns its predecessor (listen page, music player, audio mode and text lyrics producers) with the predecessor's recorded Windows ports replayed on the v0.4.6 body plus the counted ports of v046_audio_listen_closure.py. The audio waveform atmosphere, the now playing bar and the listen view model are not carried."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/MessageResponse.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/MessageResponse.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f28580e9bc354c1b8aa30d47bc5d5e44fac59da7",
+      "sha256": "5f51adc424f78b1f6b4324c9ea8717ef13a76c8f89a1eeec0322c801915e6b2e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 MessageResponse emitted verbatim by the message-pages producer; the direct-mode copy is excluded. Only MessageHistoryData.min_seqno changes (MessageHistoryCursorSerializer)."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/MessageHistoryCursorSerializer.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/MessageHistoryCursorSerializer.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "a5bbfea25f8fb4cb2497805e456df47e880b28f8",
+      "sha256": "e2a79af18951fe4cb88adeb7a1f823e6dc9a57416d7a3de6afb3b235761469b2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole new v0.4.6 MessageHistoryCursorSerializer (the UINT64_MAX empty-history cursor maps to 0), emitted verbatim by the message-pages producer."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/model/response/MessageHistoryParsingTest.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/MessageHistoryParsingTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "84b31fb24dd6f926c689f8665442bee3fcbd8e7a",
+      "sha256": "99068c46dabcb3233b6ac3b5ec35e12a28d98b2f16de647231d366cd441d0a91",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original MessageHistoryParsingTest, byte-identical copy under desktop/src/test."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/ArticleContentBlockParser.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "49190bbf68d5313df79c8bcfea7e10da4405daa3",
+      "sha256": "463e5c2457c38c5fb5e8091194f8ff4af5e7191e86baec29bfd115e7a2ca0870",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 ArticleContentBlockParser (top-level Quill array public notes, ops win over HTML) emitted verbatim by the article-detail producer; the direct-mode copy is excluded."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/ArticleRepository.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d35ed47919f2f6e60258c86d4229b9aa7e6e5f77",
+      "sha256": "69d797e8122b98dfc5857812641b9563f6d3127efa52d54ce72eb754faf5f108",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": true,
+      "partialReuse": true,
+      "usedScope": "Reference of the v0.4.6 public-note article fallback; DesktopOriginalArticleBindings mirrors fetchPublicNoteArticle and no declaration is emitted from this file."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/SponsorBlockRepository.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "0cd88278b6dfe2079c9d9994d789557ea7ca312f",
+      "sha256": "b7bc7da52f86558c523ac635378901a191593ac33ccaa9b41d95e265ebd9bbbc",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original buildSponsorBlockHttpClient, buildSponsorBlockClientRequest, buildSponsorBlockVoteBody and voteOnSegment advanced into the plugins producer output; BuildConfig.VERSION_NAME is bound to the Windows package version.",
+      "reusedMethods": [
+        "buildSponsorBlockHttpClient",
+        "buildSponsorBlockClientRequest",
+        "buildSponsorBlockVoteBody",
+        "voteOnSegment"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/SponsorBlockPlugin.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "12eb8553da794153b30a0f5e436d30962d71e937",
+      "sha256": "37ed5b8a8cf24dba8e7db0658aed803f4a2016f3534a941c0d45d2652676a0f0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original loadConfigSuspend and the normalised config initializer advanced into the plugins producer output.",
+      "reusedMethods": [
+        "loadConfigSuspend"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+      "localPath": "desktop/upstream-slices/v046-mfx-small-protocol-fixes/Logger.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7e38317a4d97ada29d3b5c53bdf48c97ec041cd9",
+      "sha256": "acd3a9f17a719153be32fc5b7a17da645ee17b48fb9930ccfa9be3853b7c1eac",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-mfx-small-protocol-fixes"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original LogCollector.sanitizeMessage and LogRedactionPatterns advanced into the diagnostics collector output.",
+      "reusedMethods": [
+        "sanitizeMessage"
+      ]
     }
   ],
   "buildStandaloneInputs": [

@@ -127,10 +127,12 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
             withTimeout(8_000) { while (f.server.votes.isEmpty() || f.toasts.none { it.contains("已提交社区投票") }) delay(5) }
             val vote = f.server.votes.single()
             assertEquals("POST", vote.method)
-            assertEquals("0", vote.query["type"])
-            assertEquals(skip.segment?.UUID, vote.query["UUID"])
-            assertEquals(USER_ID, vote.query["userID"])
-            assertEquals("", vote.body)
+            assertEquals(emptyMap<String, String>(), vote.query)
+            val voteBody = Json.parseToJsonElement(vote.body).jsonObject
+            assertEquals(0, voteBody.getValue("type").jsonPrimitive.int)
+            assertEquals(skip.segment?.UUID, voteBody.getValue("UUID").jsonPrimitive.content)
+            assertEquals(USER_ID, voteBody.getValue("userID").jsonPrimitive.content)
+            assertEquals(setOf("UUID", "userID", "type"), voteBody.keys)
             f.ui { f.owner.playback.markWholeVideoAsSponsor() }
             val review = f.contribution()
             assertSame(source, review.source)
@@ -796,8 +798,12 @@ class DesktopOriginalSponsorPresentationAssemblyTest {
                             gets.add(request); body = SEGMENT_JSON
                         }
                         request.method == "POST" && request.path == "$basePath/voteOnSponsorTime" -> {
-                            check(request.query["UUID"] == SEGMENT_ID && request.query["userID"] == USER_ID)
-                            check(request.query["type"] == "0")
+                            // v0.4.6: the vote is a JSON body {UUID,userID,type}, never a query string.
+                            check(request.query.isEmpty())
+                            val vote = Json.parseToJsonElement(request.body).jsonObject
+                            check(vote.getValue("UUID").jsonPrimitive.content == SEGMENT_ID)
+                            check(vote.getValue("userID").jsonPrimitive.content == USER_ID)
+                            check(vote.getValue("type").jsonPrimitive.int == 0)
                             votes.add(request)
                         }
                         request.method == "POST" && request.path == "$basePath/skipSegments" -> {

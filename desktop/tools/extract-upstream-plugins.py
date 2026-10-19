@@ -305,6 +305,8 @@ def bind_owned_scopes(source: str, owner: str) -> str:
 def generate(repo: Path, output: Path) -> list[Path]:
     parser = parser_for(repo)
     generated = []
+    from v046_mfx_small_protocol_fixes import validate_outputs as validate_mfx_outputs
+    validate_mfx_outputs(repo, output)
     prune_retired_renderer_outputs(repo, output)
     from v046_rss_public_content import validate_outputs as validate_public_content_outputs
     validate_public_content_outputs(repo, output)
@@ -446,6 +448,10 @@ def generate(repo: Path, output: Path) -> list[Path]:
     body = substitute(body, "NetworkModule.okHttpClient", "com.bilipai.desktop.plugins.DesktopPluginNetwork.publicClient")
     body = substitute(body, "android.os.SystemClock.elapsedRealtime()", "com.bilipai.desktop.appearance.DesktopMonotonicClock.elapsedRealtime()", count=2)
     body = substitute(body, "    private suspend fun postJson(url: String, body: String): Result<String> = withContext(Dispatchers.IO) {\n        runCatching {\n            val request = Request.Builder()\n                .url(url)\n                .post(body.toRequestBody(\"application/json\".toMediaType()))\n                .build()\n            client.newCall(request).execute().use { response ->", "    private suspend fun postJson(url: String, body: String): Result<String> = withContext(Dispatchers.IO) {\n        runCatching {\n            val request = Request.Builder()\n                .url(url)\n                .post(body.toRequestBody(\"application/json\".toMediaType()))\n                .build()\n            com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.executePublicOrOriginal(client.newCall(request)) { response ->", 1)
+    # v0.4.6 vote JSON body, client request headers and no stale User-Agent; hash-pinned layer on the body above.
+    from v046_mfx_small_protocol_fixes import advance_sponsorblock_repository, write_proof
+    body, mfx_repository_proof = advance_sponsorblock_repository(repo, body)
+    write_proof(output, 'v046-mfx-sponsorblock-repository-proof.json', mfx_repository_proof)
     generated.append(write(output, path, source, body))
 
     path = BASE + "feature/plugin/SponsorBlockPlugin.kt"
@@ -463,7 +469,11 @@ def generate(repo: Path, output: Path) -> list[Path]:
     start = source.rfind("\n", 0, tokens[begin][1]) + 1
     body += "\n@Serializable\n" + source[start:tokens[end][2]] + "\n"
     body = substitute(body, "com.android.purebilibili.core.util.AnalyticsHelper.logSponsorBlockSkip", "com.bilipai.desktop.plugins.DesktopPluginAnalytics.logSponsorBlockSkip")
-    generated.append(write(output, path, source, platform_logger(body)))
+    # v0.4.6 stable normalised config ID, persisted when it had none; hash-pinned layer on the adapted body.
+    from v046_mfx_small_protocol_fixes import advance_sponsorblock_plugin, write_proof as write_mfx_proof
+    body, mfx_plugin_proof = advance_sponsorblock_plugin(repo, platform_logger(body))
+    write_mfx_proof(output, 'v046-mfx-sponsorblock-plugin-proof.json', mfx_plugin_proof)
+    generated.append(write(output, path, source, body))
 
     path = BASE + "feature/plugin/SponsorBlockInsightPolicy.kt"
     source = read(repo, path)

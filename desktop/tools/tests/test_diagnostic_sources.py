@@ -1,9 +1,11 @@
 from pathlib import Path
 import importlib.util
+import sys
 import unittest
 
 
 REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO / "desktop/tools"))
 GENERATED = REPO / "desktop/build/generated/diagnostics/sources"
 spec = importlib.util.spec_from_file_location("diagnostic_product_extractor", REPO / "desktop/tools/extract-upstream-diagnostics.py")
 extractor = importlib.util.module_from_spec(spec)
@@ -31,8 +33,15 @@ class DiagnosticSources(unittest.TestCase):
         original = extractor.read(REPO, extractor.LOGGER)
         collector = original[original.index("object LogCollector {"):]
         product = generated("DesktopDiagnosticCollector.kt")
-        for name in ("sanitizeMessage", "getEntries", "getCount", "clear"):
+        for name in ("getEntries", "getCount", "clear"):
             self.assertEqual(helper.function(collector, name, parser), helper.function(product, name, parser), name)
+        # v0.4.6 shares the immutable redaction patterns: the sanitizer is the complete v0.4.6 original, whose
+        # inlined patterns equal the v0.2.5 sanitizer (proved in test_v046_mfx_small_protocol_fixes_source).
+        from v046_mfx_small_protocol_fixes import fixed
+        archived = fixed(REPO)[0]["Logger.kt"]
+        newest = archived[archived.index("object LogCollector {"):]
+        self.assertEqual(helper.function(newest, "sanitizeMessage", parser), helper.function(product, "sanitizeMessage", parser))
+        self.assertNotEqual(helper.function(collector, "sanitizeMessage", parser), helper.function(product, "sanitizeMessage", parser))
         actual = helper.function(product, "add", parser).replace("clock()", "System.currentTimeMillis()").replace(
             "persist(it, basicDiagnostic)", "appendEntryToRuntimeFile(it, basicDiagnostic)"
         )

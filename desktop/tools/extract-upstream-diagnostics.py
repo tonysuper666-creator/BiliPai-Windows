@@ -64,6 +64,8 @@ def generate_core_api_error_policy(repo, out, parser, media, source):
         existingConsumerOwnedInstance=True, cloudUpload=False), indent=2)+'\n', encoding='utf8')
 
 def generate(repo,out):
+ from v046_mfx_small_protocol_fixes import validate_outputs as validate_mfx_outputs
+ validate_mfx_outputs(repo,out)
  host=load(repo/'desktop/tools/extract-upstream-plugins.py','diaghost');media=host.media_extractor(repo);parser=media.parser_for(repo)
  identity=load(repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py','diag_fixed_identity')
  fixed_sources,source_ids=identity.load_pinned_sources(repo,[LOGGER,SETTINGS,SECTIONS,CRASH,EXIT,NATIVE])
@@ -96,6 +98,10 @@ def generate(repo,out):
  clear=clear[:clear.index('    val context = appContext')].rstrip()+'\n}'
  sanitize=media.function(collector,'sanitizeMessage',parser)
  source='package com.android.purebilibili.core.util\nimport java.text.SimpleDateFormat\nimport java.util.*\n\ninternal class DesktopDiagnosticCollector(\n    private val clock: () -> Long = System::currentTimeMillis,\n    private val persist: (LogEntry, Boolean) -> Unit,\n) {\n'+fields+'\n'+model+'\n\n'+entry+'\n\n'+'\n\n'.join(methods)+'\n\n'+clear+'\n\n    companion object {\n'+textwrap.indent(sanitize,'        ')+'\n    }\n}\n'
+ # v0.4.6 shares the immutable redaction patterns behind the unchanged sanitizer; hash-pinned layer on the body above.
+ from v046_mfx_small_protocol_fixes import advance_log_collector,write_proof
+ source,mfx_proof=advance_log_collector(repo,source)
+ write_proof(out,'v046-mfx-log-redaction-proof.json',mfx_proof)
  files.append(host.write(out,LOGGER,original,source,'DesktopDiagnosticCollector.kt'))
  # Preserve original settings key/default/body while binding its one DataStore to
  # the existing Windows atomic settings namespace. Cold-start reads that same key.

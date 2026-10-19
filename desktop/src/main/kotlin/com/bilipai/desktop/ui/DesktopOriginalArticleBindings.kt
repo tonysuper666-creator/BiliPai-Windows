@@ -44,5 +44,8 @@ internal fun desktopOriginalArticleBindings(
         assertOwned()
         if (keys == null) params else WbiUtils.sign(params, keys.first, keys.second)
     }, ::assertOwned, { articleId -> history.reportArticleView(articleId).getOrThrow() })
-    return DesktopOriginalArticleBindings(protocol::getArticleUiDetail, owned)
+    // v0.4.6: a public video note opened as an article falls back to the public note after the original
+    // article request fails or yields no blocks; the original protocol remains the sole article owner.
+    val publicNoteFallback = DesktopArticlePublicNoteFallback({ articleId -> api.getPublicVideoNoteInfo(articleId) }, ::assertOwned)
+    return DesktopOriginalArticleBindings({ articleId -> publicNoteFallback.load(articleId, protocol::getArticleUiDetail) }, owned)
 }

@@ -1,0 +1,81 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/MessageResponse.kt",
+      "filename": "MessageResponse.kt",
+      "bytes": 15935,
+      "sha256": "5f51adc424f78b1f6b4324c9ea8717ef13a76c8f89a1eeec0322c801915e6b2e",
+      "gitBlob": "f28580e9bc354c1b8aa30d47bc5d5e44fac59da7"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/MessageHistoryCursorSerializer.kt",
+      "filename": "MessageHistoryCursorSerializer.kt",
+      "bytes": 1251,
+      "sha256": "e2a79af18951fe4cb88adeb7a1f823e6dc9a57416d7a3de6afb3b235761469b2",
+      "gitBlob": "a5bbfea25f8fb4cb2497805e456df47e880b28f8"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/data/model/response/MessageHistoryParsingTest.kt",
+      "filename": "MessageHistoryParsingTest.kt",
+      "bytes": 1655,
+      "sha256": "99068c46dabcb3233b6ac3b5ec35e12a28d98b2f16de647231d366cd441d0a91",
+      "gitBlob": "84b31fb24dd6f926c689f8665442bee3fcbd8e7a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt",
+      "filename": "ArticleContentBlockParser.kt",
+      "bytes": 28677,
+      "sha256": "463e5c2457c38c5fb5e8091194f8ff4af5e7191e86baec29bfd115e7a2ca0870",
+      "gitBlob": "49190bbf68d5313df79c8bcfea7e10da4405daa3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "filename": "ArticleRepository.kt",
+      "bytes": 7073,
+      "sha256": "69d797e8122b98dfc5857812641b9563f6d3127efa52d54ce72eb754faf5f108",
+      "gitBlob": "d35ed47919f2f6e60258c86d4229b9aa7e6e5f77"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "filename": "SponsorBlockRepository.kt",
+      "bytes": 13280,
+      "sha256": "b7bc7da52f86558c523ac635378901a191593ac33ccaa9b41d95e265ebd9bbbc",
+      "gitBlob": "0cd88278b6dfe2079c9d9994d789557ea7ca312f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "filename": "SponsorBlockPlugin.kt",
+      "bytes": 71799,
+      "sha256": "37ed5b8a8cf24dba8e7db0658aed803f4a2016f3534a941c0d45d2652676a0f0",
+      "gitBlob": "12eb8553da794153b30a0f5e436d30962d71e937"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+      "filename": "Logger.kt",
+      "bytes": 51287,
+      "sha256": "acd3a9f17a719153be32fc5b7a17da645ee17b48fb9930ccfa9be3853b7c1eac",
+      "gitBlob": "7e38317a4d97ada29d3b5c53bdf48c97ec041cd9"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 MessageResponse.kt, MessageHistoryCursorSerializer.kt and ArticleContentBlockParser.kt with the original MessageHistoryParsingTest; the v0.4.6 SponsorBlockRepository.kt, SponsorBlockPlugin.kt and Logger.kt are carried so their small fixes (vote JSON body and client request, stable config user ID, shared log redaction patterns) are advanced from the verbatim upstream declarations; ArticleRepository.kt is carried as the reference of the public-note fallback.",
+  "purpose": "Empty private-message history returns UINT64_MAX as min_seqno, and public-note articles are top-level Quill arrays. MessageResponse.kt and ArticleContentBlockParser.kt are emitted whole by existing producers and their direct-mode copies are excluded. The three advance layers apply hash-pinned edits to the existing plugins and diagnostics producer outputs and record inverse proofs.",
+  "beforeFinalOutputs": {
+    "com/android/purebilibili/data/repository/SponsorBlockRepository.kt": {
+      "sha256": "ea7440335d34fe534262e5b4eb02e1e67dd1b2295f8233ddd27b9b317641e794"
+    },
+    "com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt": {
+      "sha256": "47dbc590b1af9cc96221cb0e8a36bf61768c3f89d0dec62820e16c8c16d20936"
+    },
+    "com/android/purebilibili/core/util/DesktopDiagnosticCollector.kt": {
+      "sha256": "90c071546cff81ef984d59ae24d2c1a304a26f18b64f74b36de61a5a72d80296"
+    }
+  }
+}

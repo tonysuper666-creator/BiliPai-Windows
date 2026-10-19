@@ -50,6 +50,8 @@ def message_editor_hold(body, out):
  return body
 
 def generate(repo,out,standalone=False):
+ from v046_mfx_small_protocol_fixes import validate_outputs as validate_mfx_outputs
+ validate_mfx_outputs(repo,out)
  spec=importlib.util.spec_from_file_location('message_decl',repo/'desktop/tools/extract-appearance-platform.py');decl=importlib.util.module_from_spec(spec);spec.loader.exec_module(decl)
  spec=importlib.util.spec_from_file_location('message_host',repo/'desktop/tools/extract-upstream-plugins.py');host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host);media=host.media_extractor(repo)
  parser=media.parser_for(repo);files=[]
@@ -199,6 +201,9 @@ def generate(repo,out,standalone=False):
    v029_chat_sources.record_adaptation(repo,out,name+'.kt',s)
   emit('com/android/purebilibili/feature/message/'+name+'.kt',s)
  emit('com/android/purebilibili/feature/message/MessageAppScaffold.kt',message_scaffold_source(repo))
+ # v0.4.6 chat cursor: empty histories return UINT64_MAX as min_seqno. The direct-mode MessageResponse copy is excluded.
+ from v046_mfx_small_protocol_fixes import emit_message_history
+ emit_message_history(repo,out)
  return files
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--out',type=Path);p.add_argument('--inventory',action='store_true');p.add_argument('--standalone',action='store_true');a=p.parse_args()

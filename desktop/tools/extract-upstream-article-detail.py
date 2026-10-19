@@ -4,6 +4,8 @@ import hashlib,importlib.util,json,re
 def wide(p):
  s=str(Path(p).absolute()); prefix=chr(92)*2+'?'+chr(92); return Path(s if s.startswith(prefix) else prefix+s)
 def generate(repo:Path,output:Path):
+    from v046_mfx_small_protocol_fixes import validate_outputs as validate_mfx_outputs
+    validate_mfx_outputs(repo,output)
     spec=importlib.util.spec_from_file_location('article_source_lexer',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
     lexer=importlib.util.module_from_spec(spec); spec.loader.exec_module(lexer)
     base='app/src/main/java/com/android/purebilibili/'
@@ -46,6 +48,9 @@ import androidx.compose.ui.unit.dp
 '''
     put('com/android/purebilibili/core/ui/skeleton/DesktopOriginalArticleSkeleton.kt',header+block+'\n')
     put('source-identity.json',json.dumps(identities,indent=2)+'\n'); put('selected-source-bodies.json',json.dumps(bodies,indent=2)+'\n'); put('platform-edits.json',json.dumps(edits,ensure_ascii=False,indent=2)+'\n')
+    # v0.4.6 public notes are top-level Quill arrays. The direct-mode parser copy is excluded.
+    from v046_mfx_small_protocol_fixes import emit_article_parser
+    emit_article_parser(repo,output)
     return sorted(wide(output).rglob('*.kt'))
 if __name__=='__main__':
     import argparse

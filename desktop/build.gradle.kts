@@ -293,6 +293,10 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         // The existing fullscreen-controls producer owns the complete v0.4.6 persistent and seek progress bar files.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt"))
+        // The existing message-pages producer owns the complete v0.4.6 chat history response (UINT64_MAX cursor).
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/MessageResponse.kt"))
+        // The existing article-detail producer owns the complete v0.4.6 article content parser (public-note arrays).
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -4328,6 +4332,13 @@ tasks.matching { it.name in setOf(
 tasks.matching { it.name in setOf("extractUpstreamComponents", "extractUpstreamPreferences", "extractSharedLiquidTabs", "extractOriginalPlayerFullControls") }.configureEach {
     inputs.file("tools/v046_design_system_leaves_b.py")
     inputs.dir("upstream-slices/v046-design-system-leaves-b")
+// The v0.4.6 small protocol fixes: whole chat history response and article parser, plus the SponsorBlock and
+// log redaction layers, all emitted by the four existing producers that own those outputs.
+tasks.matching { it.name in setOf(
+    "extractOriginalMessagePages", "extractOriginalArticleDetail", "extractUpstreamPlugins", "extractUpstreamDiagnostics",
+) }.configureEach {
+    inputs.file("tools/v046_mfx_small_protocol_fixes.py")
+    inputs.dir("upstream-slices/v046-mfx-small-protocol-fixes")
 }
 
 // A generated source directory is rebuilt from nothing. Gradle never removes a file an Exec producer stopped
