@@ -694,8 +694,9 @@ class V046DesignSystemLeavesBSourceTest(unittest.TestCase):
         adapted_loop = generate[generate.index('    for path in ADAPTED:'):generate.index('    for path in POLICIES:')]
         self.assertLess(adapted_loop.index('_leaf_b_source'), adapted_loop.index('adapt(path, original, host)'))
         producer = text['shared']
-        self.assertIn(' return _leaf_b_source(repo,path,selected_shared_source(repo,path,_previous_native_source(repo,path,previous)))\n', producer)
-        self.assertIn(' return _leaf_b_identity(repo,path) or shared_identity(repo,path) or _previous_native_identity(repo,path)\n', producer)
+        # chrome glass tuning (a disjoint path set) wraps this layer as the last one; the leaf B hook stays inside it
+        self.assertIn(' return glass_tuning.selected_source(repo,path,_leaf_b_source(repo,path,selected_shared_source(repo,path,_previous_native_source(repo,path,previous))))\n', producer)
+        self.assertIn(' return glass_tuning.identity_for(repo,path) or _leaf_b_identity(repo,path) or shared_identity(repo,path) or _previous_native_identity(repo,path)\n', producer)
         self.assertEqual(1, producer.count('from v046_design_system_leaves_b import '))
         self.assertLess(producer.index('from v042_search_layout import selected_shared_source, shared_identity'),
                         producer.index('from v046_design_system_leaves_b import '))
