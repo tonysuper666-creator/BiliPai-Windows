@@ -6,6 +6,22 @@ TOOLS=Path(os.environ.get('BILIPAI_COMMENT_TEST_TOOLS',REPO/'desktop/tools'))
 sys.path.insert(0,str(TOOLS))
 import v021_comment_renderer as adapter
 
+# aad198489 advances these bodies after v021 records outputBodySha256.
+# Outer stage first. Each name is that stage's retainedToCurrent proof.
+LATER_COMMENT_STAGES={
+    'DesktopOriginalReplyComponents.kt':('v046-reply-list-renderer-proof.json',),
+    'DesktopOriginalSubReplyDetailComponents.kt':(
+        'v046-comment-thread-host-proof.json','v046-subreply-list-renderer-proof.json'),
+}
+def restore_hunks(text, hunks):
+    lines=text.splitlines(keepends=True)
+    for hunk in reversed(hunks):
+        start,end=hunk['afterLines']
+        assert ''.join(lines[start:end])==hunk['after']
+        before=hunk['before']
+        lines[start:end]=before.splitlines(keepends=True) if before else []
+    return ''.join(lines)
+
 class OriginalCommentPresentationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -27,7 +43,16 @@ class OriginalCommentPresentationTests(unittest.TestCase):
         matches=list(self.outputs['card' if 'ImagePreview' in proof['filename'] else 'reply'].rglob(proof['filename']))
         self.assertEqual(1,len(matches))
         text=matches[0].read_text(encoding='utf8')
-        return '\n'.join(text.split('\n')[2:])
+        body='\n'.join(text.split('\n')[2:])
+        for name in LATER_COMMENT_STAGES.get(proof['filename'],()):
+            path=self.outputs['reply']/name
+            self.assertTrue(path.is_file())
+            stage=json.loads(path.read_text(encoding='utf8'))['retainedToCurrent']
+            self.assertTrue(stage['wholeInverseExact'])
+            self.assertEqual(stage['afterSHA256'],adapter.sha(body))
+            body=restore_hunks(body,stage['hunks'])
+            self.assertEqual(stage['beforeSHA256'],adapter.sha(body))
+        return body
     def test_every_complete_original_body_restores_after_counted_container_edits(self):
         proofs=self.proofs();self.assertEqual(4,len(proofs))
         self.assertEqual(4,len({p['filename'] for p in proofs}))
@@ -78,7 +103,8 @@ class OriginalCommentPresentationTests(unittest.TestCase):
         self.assertIn('VideoCommentTab(',section);self.assertIn('VideoInlineSubReplyDetailContent(',section)
         self.assertEqual(1,leaf.count('DesktopWindowsCommentSearchSection('))
         self.assertNotIn('DesktopWindowsVideoComments(',leaf)
-        self.assertIn('if (selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS)',details)
+        self.assertIn('showComments = selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS',details)
+        self.assertIn('DesktopWindowsVideoDetailsTab.COMMENTS ->\n                    Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp)) { comments() }',details)
         self.assertIn('Box(Modifier.fillMaxWidth().weight(1f)',details)
         self.assertNotIn('COMMENTS -> item { comments() }',details)
 
