@@ -141,7 +141,8 @@
     "desktop/upstream-slices/v046-identity-badges",
     "desktop/upstream-slices/v046-core-data-policies",
     "desktop/upstream-slices/v046-home-card-cascade-definers",
-    "desktop/upstream-slices/v046-sheet-motion"
+    "desktop/upstream-slices/v046-sheet-motion",
+    "desktop/upstream-slices/v046-home-refresh-ui-policy"
   ],
   "archives": [
     {
@@ -6215,6 +6216,29 @@
           "sha256": "42178c5a93e84af2d914ac68069ff0401cb743167ddf5e0aeeeb4682ead1985f",
           "hashNormalization": "raw",
           "blob": "37f4295adfe82b4c5e2948bf171a690390f32b0f"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-home-refresh-ui-policy",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-home-refresh-ui-policy/HomeRefreshUiPolicy.kt",
+          "sha256": "985fd2b1dc74372cca2a67382df97938de759551861a7528809dec57f8ccea6a",
+          "hashNormalization": "raw",
+          "blob": "994001b78e0b1d2c04ffdcb8c6548595ce3476a2"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-home-refresh-ui-policy/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-home-refresh-ui-policy/manifest.json",
+          "sha256": "e6175b3d969d475d8924a9b59415608a5654dbf000c219368ebef7f5d007213b",
+          "hashNormalization": "raw",
+          "blob": "161ef52a11bd9ba04a7b64524fe0b80085587ff3"
         }
       ]
     }
@@ -16425,6 +16449,21 @@
       "referenceOnly": false,
       "partialReuse": true,
       "usedScope": "v0.4.6 reduced-motion parameter, AppBottomSheetMotion.reducedMotion and dragSettleSpec, controlled dismiss (visible, onDismissStarted, retained finishDismiss, sheetState hide/show), and contentColor default AppContentColors.primaryText(), applied onto the existing Windows-adapted AppSheetComponents body. Windows navigation host, window size class, and removed hinge branches stay."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-home-refresh-ui-policy/HomeRefreshUiPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "994001b78e0b1d2c04ffdcb8c6548595ce3476a2",
+      "sha256": "985fd2b1dc74372cca2a67382df97938de759551861a7528809dec57f8ccea6a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-home-refresh-ui-policy"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 HomeRefreshUiPolicy, including resolveOldContentDividerContainerColor and OLD_CONTENT_DIVIDER_CONTAINER_ALPHA, emitted verbatim by the home-page producer. The direct-mode copy is excluded. No call sites are added."
     }
   ],
   "buildStandaloneInputs": [

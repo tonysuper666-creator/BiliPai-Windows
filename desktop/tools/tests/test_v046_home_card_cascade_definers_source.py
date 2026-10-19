@@ -292,9 +292,17 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
         self.assertEqual(1, producer.count(
             'from v046_home_card_cascade_definers import validate_outputs as validate_cascade_outputs'))
         self.assertEqual(1, producer.count('validate_cascade_outputs(repo, output)'))
+        refresh_validate = 'from v046_home_refresh_ui_policy import validate_outputs as validate_refresh_ui_policy_outputs'
+        self.assertEqual(1, producer.count(refresh_validate))
+        self.assertEqual(1, producer.count('validate_refresh_ui_policy_outputs(repo, output)'))
+        refresh_at = producer.index(refresh_validate, start)
+        self.assertLess(validate, refresh_at)
+        self.assertLess(refresh_at, check)
         emit_import = 'from v046_home_card_cascade_definers import emit as emit_home_card_cascade_definers'
         self.assertEqual(1, producer.count(emit_import))
         self.assertEqual(1, producer.count('emit_home_card_cascade_definers(repo, output)'))
+        self.assertEqual(1, producer.count('from v046_home_refresh_ui_policy import emit as emit_home_refresh_ui_policy'))
+        self.assertEqual(1, producer.count('emit_home_refresh_ui_policy(repo, output)'))
         unlink_at = producer.index('legacy_agreement.unlink()', start)
         emit_at = producer.index(emit_import, start)
         call_at = producer.index('emit_home_card_cascade_definers(repo, output)', emit_at)
@@ -302,7 +310,12 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
         self.assertLess(unlink_at, emit_at)
         self.assertLess(emit_at, call_at)
         self.assertLess(call_at, ret_at)
-        self.assertEqual('emit_home_card_cascade_definers(repo, output)\n    return written', producer[call_at:ret_at + len('return written')])
+        tail = (
+            'emit_home_card_cascade_definers(repo, output)\n'
+            '    from v046_home_refresh_ui_policy import emit as emit_home_refresh_ui_policy\n'
+            '    emit_home_refresh_ui_policy(repo, output)\n'
+            '    return written')
+        self.assertEqual(tail, producer[call_at:ret_at + len('return written')])
         self.assertFalse(any(line.startswith('import v046_home_card_cascade_definers') or
                              line.startswith('from v046_home_card_cascade_definers') for line in producer.splitlines()))
 

@@ -55,6 +55,8 @@ def generate(repo, output, standalone=False):
     validate_outputs(repo, output)
     from v046_home_card_cascade_definers import validate_outputs as validate_cascade_outputs
     validate_cascade_outputs(repo, output)
+    from v046_home_refresh_ui_policy import validate_outputs as validate_refresh_ui_policy_outputs
+    validate_refresh_ui_policy_outputs(repo, output)
     from v043_home_recommendation_badges import check_output
     check_output(repo,output)
     output=Path(output).resolve();written=[];home_load_audits=[]
@@ -100,6 +102,8 @@ def generate(repo, output, standalone=False):
         legacy_agreement.unlink()
     from v046_home_card_cascade_definers import emit as emit_home_card_cascade_definers
     emit_home_card_cascade_definers(repo, output)
+    from v046_home_refresh_ui_policy import emit as emit_home_refresh_ui_policy
+    emit_home_refresh_ui_policy(repo, output)
     return written
 
 if __name__=="__main__":

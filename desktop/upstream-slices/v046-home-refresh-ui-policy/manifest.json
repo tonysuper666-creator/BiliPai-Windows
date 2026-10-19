@@ -1,0 +1,21 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt",
+      "filename": "HomeRefreshUiPolicy.kt",
+      "bytes": 3890,
+      "sha256": "985fd2b1dc74372cca2a67382df97938de759551861a7528809dec57f8ccea6a",
+      "gitBlob": "994001b78e0b1d2c04ffdcb8c6548595ce3476a2"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 HomeRefreshUiPolicy.kt, including resolveOldContentDividerContainerColor and OLD_CONTENT_DIVIDER_CONTAINER_ALPHA.",
+  "purpose": "Emit the complete v0.4.6 file verbatim from the home-page producer and exclude the direct-mode copy. No call sites are added."
+}
