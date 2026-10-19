@@ -959,5 +959,97 @@
     "context_menu_max_rows": 12,
     "card_menu_max_items": 7,
     "speed": {"presets": [0.5, 0.75, 1, 1.25, 1.5, 2, 3], "step": 0.05, "range": [0.25, 4]}
+  },
+  "kit": {
+    "disabled_alpha_percent": 38,
+    "pointer_focus_window_ms": 400,
+    "hairline_densities": [1.0, 1.25, 1.5, 1.5625, 1.875, 2.0, 2.34375, 3.0],
+    "snap": [
+      {"px": 0.0, "snapped": 1},
+      {"px": 0.4, "snapped": 1},
+      {"px": 1.0, "snapped": 1},
+      {"px": 1.49, "snapped": 1},
+      {"px": 1.5, "snapped": 2},
+      {"px": 2.0, "snapped": 2},
+      {"px": 2.5, "snapped": 2},
+      {"px": 2.51, "snapped": 3},
+      {"px": 3.5, "snapped": 4},
+      {"px": 3.75, "snapped": 4}
+    ],
+    "wash": [
+      {"enabled": false, "hovered": false, "pressed": false, "percent": 0},
+      {"enabled": false, "hovered": true, "pressed": false, "percent": 0},
+      {"enabled": false, "hovered": false, "pressed": true, "percent": 0},
+      {"enabled": false, "hovered": true, "pressed": true, "percent": 0},
+      {"enabled": true, "hovered": false, "pressed": false, "percent": 0},
+      {"enabled": true, "hovered": true, "pressed": false, "percent": 8},
+      {"enabled": true, "hovered": false, "pressed": true, "percent": 12},
+      {"enabled": true, "hovered": true, "pressed": true, "percent": 12}
+    ],
+    "motion": [
+      {"reduced": false, "ms": 100, "expect": 100},
+      {"reduced": false, "ms": 160, "expect": 160},
+      {"reduced": true, "ms": 100, "expect": 0},
+      {"reduced": true, "ms": 160, "expect": 0}
+    ],
+    "segment_step": [
+      {"enabled": [true, true, true], "current": 0, "delta": 1, "expect": 1},
+      {"enabled": [true, true, true], "current": 2, "delta": 1, "expect": 0},
+      {"enabled": [true, true, true], "current": 0, "delta": -1, "expect": 2},
+      {"enabled": [true, true, true], "current": 1, "delta": -1, "expect": 0},
+      {"enabled": [true, true, false], "current": 1, "delta": 1, "expect": 0},
+      {"enabled": [true, false, true], "current": 0, "delta": 1, "expect": 2},
+      {"enabled": [true, false, true], "current": 2, "delta": -1, "expect": 0},
+      {"enabled": [true, false, false], "current": 0, "delta": 1, "expect": 0},
+      {"enabled": [false, false, false], "current": 0, "delta": 1, "expect": 0},
+      {"enabled": [true, true, true], "current": -1, "delta": 1, "expect": 0},
+      {"enabled": [true, true, true], "current": -1, "delta": -1, "expect": 2},
+      {"enabled": [false, true, true], "current": -1, "delta": 1, "expect": 1},
+      {"enabled": [true, true, false], "current": -1, "delta": -1, "expect": 1},
+      {"enabled": [false, false, false], "current": -1, "delta": 1, "expect": -1},
+      {"enabled": [true, true], "current": 0, "delta": 1, "expect": 1},
+      {"enabled": [true, true], "current": 1, "delta": 1, "expect": 0},
+      {"enabled": [true, true, true], "current": 1, "delta": 0, "expect": 1},
+      {"enabled": [], "current": 0, "delta": 1, "expect": 0}
+    ],
+    "segment_edge": [
+      {"enabled": [true, true, true], "last": false, "expect": 0},
+      {"enabled": [true, true, true], "last": true, "expect": 2},
+      {"enabled": [false, true, true, false], "last": false, "expect": 1},
+      {"enabled": [false, true, true, false], "last": true, "expect": 2},
+      {"enabled": [false, false], "last": false, "expect": -1},
+      {"enabled": [false, false], "last": true, "expect": -1},
+      {"enabled": [], "last": false, "expect": -1}
+    ],
+    "focus": [
+      {"id": "keyboard-focus", "events": [["focus", 1000]], "ring": true},
+      {"id": "press-then-focus", "events": [["press", 1000], ["focus", 1100]], "ring": false},
+      {
+        "id": "press-then-focus-at-the-window-edge",
+        "events": [["press", 1000], ["focus", 1400]],
+        "ring": false
+      },
+      {"id": "press-then-focus-after-the-window", "events": [["press", 1000], ["focus", 1401]], "ring": true},
+      {"id": "same-millisecond", "events": [["press", 5000], ["focus", 5000]], "ring": false},
+      {"id": "focus-then-press", "events": [["focus", 1000], ["press", 1100]], "ring": false},
+      {
+        "id": "navigation-key-after-press",
+        "events": [["focus", 1000], ["press", 1100], ["key", 1200]],
+        "ring": true
+      },
+      {"id": "blur-hides-the-ring", "events": [["focus", 1000], ["unfocus", 1100]], "ring": false},
+      {
+        "id": "refocus-by-keyboard-later",
+        "events": [["focus", 1000], ["press", 1100], ["unfocus", 1200], ["focus", 9000]],
+        "ring": true
+      },
+      {
+        "id": "refocus-soon-after-press",
+        "events": [["press", 1000], ["unfocus", 1050], ["focus", 1300]],
+        "ring": false
+      },
+      {"id": "press-without-focus", "events": [["press", 1000]], "ring": false},
+      {"id": "focus-clock-before-the-press", "events": [["press", 2000], ["focus", 1900]], "ring": true}
+    ]
   }
 }
