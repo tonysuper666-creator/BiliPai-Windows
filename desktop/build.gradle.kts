@@ -280,6 +280,9 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt"))
+        // The existing dynamic card producer owns the complete v0.4.6 zoomable image and its gesture policy.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -1346,7 +1349,8 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-card.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/dynamic-full-card").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/dynamic-full-card").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/dynamic-full-card-tests").get().asFile.absolutePath)
     inputs.file("third-party/dynamic-reaction-v034/DynamicReactionApi.kt")
     inputs.files("tools/extract-upstream-dynamic-card.py", "tools/extract-dynamic-message-share.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
@@ -1354,8 +1358,13 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     inputs.file("tools/v021_comment_renderer.py")
     inputs.files(sources.filter { "settings-dynamic-full-card-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v046_image_viewer.py")
+    inputs.dir("upstream-slices/v046-image-viewer")
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-full-card-tests"))
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-full-card"))
 }
+// The original v0.4.6 gesture suites are emitted next to the main output, never inside it.
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card-tests")) }
 
 val extractUpstreamDynamicStaticImageCodec by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)

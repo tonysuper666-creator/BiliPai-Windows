@@ -1,0 +1,63 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "filename": "ZoomableImage.kt",
+      "bytes": 22079,
+      "sha256": "c0fb4e50e79e38b22733cf41a59f9486b57615b942ae4e3de562cf8c88b462c6",
+      "gitBlob": "263a58a36f0ce083463abd320848d98c4a0c1557"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt",
+      "filename": "ZoomableImageGesturePolicy.kt",
+      "bytes": 1006,
+      "sha256": "5de54c12e4dd8a10c0beb3c5db4d076d948a788031873b80a6864e252ed544da",
+      "gitBlob": "3d1cdd5f6dbe76135304f6453b8fd6c00881c374"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageMotionPolicy.kt",
+      "filename": "ZoomableImageMotionPolicy.kt",
+      "bytes": 1732,
+      "sha256": "98a17c11a797a6e22983c37aaff8bcb9ae32b383860e4e2aea8783ee25d17357",
+      "gitBlob": "ae5dbda0ab74380173512fc7b554e5c330be7e56"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "filename": "ImagePreviewDialog.kt",
+      "bytes": 154547,
+      "sha256": "54ff05fff6a9aff581f91e631542b3cb70aefa28b883f68386c50099f6e10060",
+      "gitBlob": "e4e227b317ba9230d1d2d38bebc7bf54b5f65663"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageMotionPolicyTest.kt",
+      "filename": "ZoomableImageMotionPolicyTest.kt",
+      "bytes": 2038,
+      "sha256": "ca96b67e50461661bff523fd4bf4f2e2d652587a5becfb9e491c003ca66540e3",
+      "gitBlob": "99ae666792ca98f93edcd9283fee5cbf469779a1"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewGesturePolicyTest.kt",
+      "filename": "ImagePreviewGesturePolicyTest.kt",
+      "bytes": 3670,
+      "sha256": "cb81883b5f4764390f2ba2b44779b25a615e2948da44c2eb5e0f92afd903003c",
+      "gitBlob": "60c0912daa0642b0281fd6089fd336c509a3737d"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 ZoomableImage.kt, ZoomableImageGesturePolicy.kt and ZoomableImageMotionPolicy.kt, their two original gesture suites, and the whole v0.4.6 ImagePreviewDialog.kt pinned once for the Windows preview chain.",
+  "purpose": "Image viewer motion and gestures from 0.3.4-beta.2 (42e8c500: exit drag in root coordinates, UNDECIDED gesture mode) and 0.4.3 (b49ad8a5: continuous double-tap zoom, drag inertia, system reduced motion). The three main files are emitted verbatim by the dynamic card producer and the vendored direct copies of ZoomableImage and ZoomableImageGesturePolicy are excluded. ImagePreviewDialog.kt is archived whole and hash-pinned but only its pager span (userScrollEnabled) is consumed here: the AppContentColors, AppHorizontalPager and publicContent hunks of the v0.4.6 file belong to other slices and are not applied.",
+  "notCarried": {
+    "ImagePreviewDialog.kt (other hunks)": "AppContentColors import and two call sites, AppHorizontalPager alias, publicContent flag with PublicContentImageLoader; the whole-file re-base of the Windows renderer chain is a proposed follow-up with the rss publicContent flag.",
+    "ZoomableImageScalePolicy.kt": "Byte-identical to the vendored copy; stays direct.",
+    "ImagePreviewDialogUiRegressionTest.kt and ZoomableImageUiRegressionTest.kt": "androidTest instrumentation suites; no Windows runner."
+  },
+  "compiled": false,
+  "jvmTestsExecuted": false
+}

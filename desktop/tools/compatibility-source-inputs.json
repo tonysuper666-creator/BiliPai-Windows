@@ -152,7 +152,8 @@
     "desktop/upstream-slices/v046-follow-confirmation",
     "desktop/upstream-slices/v046-danmaku-protocol",
     "desktop/upstream-slices/v046-design-system-leaves-b",
-    "desktop/upstream-slices/v046-rss-public-content"
+    "desktop/upstream-slices/v046-rss-public-content",
+    "desktop/upstream-slices/v046-image-viewer"
   ],
   "archives": [
     {
@@ -6755,6 +6756,59 @@
           "sha256": "7f0bb083df77f5f4cf575e09429dd9d5a6cbd6f903fef9a427263044b3d6cfe4",
           "hashNormalization": "raw",
           "blob": "0a63c40e8028b39340fa64dec1c09b55ae093f09"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-image-viewer",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/ImagePreviewDialog.kt",
+          "sha256": "54ff05fff6a9aff581f91e631542b3cb70aefa28b883f68386c50099f6e10060",
+          "hashNormalization": "raw",
+          "blob": "e4e227b317ba9230d1d2d38bebc7bf54b5f65663"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/ImagePreviewGesturePolicyTest.kt",
+          "sha256": "cb81883b5f4764390f2ba2b44779b25a615e2948da44c2eb5e0f92afd903003c",
+          "hashNormalization": "raw",
+          "blob": "60c0912daa0642b0281fd6089fd336c509a3737d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/manifest.json",
+          "sha256": "98a098e9fa4e275a8a35d7f8e982aa1203e22207b095a532ca7781aa36e56480",
+          "hashNormalization": "raw",
+          "blob": "99ac5685087c28c243303ef37fa8f017265b7e86"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/ZoomableImage.kt",
+          "sha256": "c0fb4e50e79e38b22733cf41a59f9486b57615b942ae4e3de562cf8c88b462c6",
+          "hashNormalization": "raw",
+          "blob": "263a58a36f0ce083463abd320848d98c4a0c1557"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/ZoomableImageGesturePolicy.kt",
+          "sha256": "5de54c12e4dd8a10c0beb3c5db4d076d948a788031873b80a6864e252ed544da",
+          "hashNormalization": "raw",
+          "blob": "3d1cdd5f6dbe76135304f6453b8fd6c00881c374"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/ZoomableImageMotionPolicy.kt",
+          "sha256": "98a17c11a797a6e22983c37aaff8bcb9ae32b383860e4e2aea8783ee25d17357",
+          "hashNormalization": "raw",
+          "blob": "ae5dbda0ab74380173512fc7b554e5c330be7e56"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-image-viewer/ZoomableImageMotionPolicyTest.kt",
+          "sha256": "ca96b67e50461661bff523fd4bf4f2e2d652587a5becfb9e491c003ca66540e3",
+          "hashNormalization": "raw",
+          "blob": "99ae666792ca98f93edcd9283fee5cbf469779a1"
         }
       ]
     }
@@ -17805,6 +17859,96 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original eight-case test, emitted verbatim by the plugin producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt",
+      "localPath": "desktop/upstream-slices/v046-image-viewer/ZoomableImage.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "263a58a36f0ce083463abd320848d98c4a0c1557",
+      "sha256": "c0fb4e50e79e38b22733cf41a59f9486b57615b942ae4e3de562cf8c88b462c6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-image-viewer"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 zoomable image (continuous double-tap zoom, drag inertia, exit drag in root coordinates, system reduced motion), emitted verbatim by the dynamic card producer; replaces the vendored direct copy."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-image-viewer/ZoomableImageGesturePolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3d1cdd5f6dbe76135304f6453b8fd6c00881c374",
+      "sha256": "5de54c12e4dd8a10c0beb3c5db4d076d948a788031873b80a6864e252ed544da",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-image-viewer"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 gesture mode policy (UNDECIDED for a diagonal start), emitted verbatim by the dynamic card producer; replaces the vendored direct copy."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageMotionPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-image-viewer/ZoomableImageMotionPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ae5dbda0ab74380173512fc7b554e5c330be7e56",
+      "sha256": "98a17c11a797a6e22983c37aaff8bcb9ae32b383860e4e2aea8783ee25d17357",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-image-viewer"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 pan bounds and fling velocity policy, new in 0.4.3, emitted verbatim by the dynamic card producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+      "localPath": "desktop/upstream-slices/v046-image-viewer/ImagePreviewDialog.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e4e227b317ba9230d1d2d38bebc7bf54b5f65663",
+      "sha256": "54ff05fff6a9aff581f91e631542b3cb70aefa28b883f68386c50099f6e10060",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-image-viewer"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole v0.4.6 dialog pinned once for the Windows preview chain. Only its pager userScrollEnabled span is consumed, by a layer over the generated preview renderer; the AppContentColors, AppHorizontalPager and publicContent hunks are not applied. The file is not emitted."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageMotionPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-image-viewer/ZoomableImageMotionPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "99ae666792ca98f93edcd9283fee5cbf469779a1",
+      "sha256": "ca96b67e50461661bff523fd4bf4f2e2d652587a5becfb9e491c003ca66540e3",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-image-viewer"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original five-case test, emitted verbatim by the dynamic card producer."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewGesturePolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-image-viewer/ImagePreviewGesturePolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "60c0912daa0642b0281fd6089fd336c509a3737d",
+      "sha256": "cb81883b5f4764390f2ba2b44779b25a615e2948da44c2eb5e0f92afd903003c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-image-viewer"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original eight-case test, emitted verbatim by the dynamic card producer."
     }
   ],
   "buildStandaloneInputs": [

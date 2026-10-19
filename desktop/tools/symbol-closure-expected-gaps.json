@@ -343,6 +343,18 @@
           ]
         }
       ]
+    },
+    {
+      "reason": "The v0.4.6 ImagePreviewDialog.kt is pinned whole in the v046-image-viewer archive, but only its pager span is consumed; the Windows preview renderer does not take the publicContent hunk. That unconsumed hunk names the public-content image loader in two places. The rss publicContent follow-up must define the loader (or route it through DesktopPublicContentImageRouting) when it applies the flag, and this gap closes with it. Ownership by rss-readability-public-network is the gap author's inference: that slice's roadmap text does not name PublicContentImageLoader.",
+      "closedBy": "rss-readability-public-network",
+      "closedByEvidence": "proposed",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.plugin.feed.PublicContentImageLoader"
+        }
+      ]
     }
   ],
   "latent": [

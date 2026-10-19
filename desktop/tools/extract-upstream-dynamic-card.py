@@ -23,6 +23,9 @@ def messages(repo):
  path=Path(__file__).with_name('extract-dynamic-message-share.py');spec=importlib.util.spec_from_file_location('dynamic_message_share',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def inventory(repo):return [dict(path=p,mode='platform-adapter-reference' if p in SHARED+[BASE+'core/util/ModifierExt.kt'] else 'direct' if p in DIRECT else 'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]+messages(repo).inventory(repo)
 def generate(repo,output,standalone=False,shared_closure=False):
+ from v046_image_viewer import validate_outputs as validate_image_viewer_outputs
+ validate_image_viewer_outputs(repo,output)
+ image_viewer_renderer_proof=None
  host=module(repo,'full_card_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  appearance=module(repo,'full_card_decl','desktop/tools/extract-appearance-platform.py')
  output.mkdir(parents=True,exist_ok=True);files=[]
@@ -281,6 +284,11 @@ object DesktopDynamicCardSettings {
  body=re.sub(r'Toast.makeText\(\s*context,\s*(.*?),\s*Toast.LENGTH_SHORT\s*\)\.show\(\)',r'platform.showFeedback(\1)',body,flags=re.S)
  body=body.replace('                            val clipboard = context.getSystemService(ClipboardManager::class.java)\n                            clipboard?.setPrimaryClip(ClipData.newPlainText("图片链接", currentImageUrl))','                            platform.copyText(currentImageUrl)')
  body=body.replace('LivePhotoPlayback(','com.bilipai.desktop.ui.DesktopDynamicLivePhotoPlayback(')
+ if not standalone:
+  # v046-image-viewer: the v0.4.6 pager scroll rule and the Windows reduced-motion signal. Standalone keeps the
+  # original bodies, which have no LocalSystemReduceMotion.
+  from v046_image_viewer import advance_preview_renderer
+  body,image_viewer_renderer_proof=advance_preview_renderer(repo,body)
  emit(p,body,'DesktopOriginalImagePreviewRenderer.kt')
  # HapticType is now already produced by the installed original Home closure.
  # This lane only references that actual product enum, never redefines it.
@@ -314,6 +322,19 @@ object DesktopDynamicCardSettings {
  files+=emit_link_sources(output)
  from v035_dynamic_preview import emit_preview_core
  files+=emit_preview_core(output)
+ if not standalone:
+  # v046-image-viewer: ZoomableImage, its gesture policy and the new motion policy verbatim. The vendored direct
+  # copies of the first two are excluded by prepareUpstreamSources, so this producer is their only definer. Like the
+  # other slice emitters the receipt and these paths are not part of this producer's own generated list.
+  from v046_image_viewer import emit_main as emit_image_viewer_main
+  emit_image_viewer_main(repo,output,image_viewer_renderer_proof)
  return files
+def generate_image_viewer_tests(repo,output):
+ from v046_image_viewer import emit_tests as emit_image_viewer_tests
+ return emit_image_viewer_tests(repo,output)
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--standalone',action='store_true');a=p.parse_args();generate(a.repo,a.output,a.standalone)
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--standalone',action='store_true');p.add_argument('--test-output',type=Path)
+ a=p.parse_args()
+ if a.test_output is not None and a.test_output.resolve().is_relative_to(a.output.resolve()):p.error('--test-output must be outside the generated main source root')
+ generate(a.repo,a.output,a.standalone)
+ if a.test_output is not None:print('Generated %d image viewer test source files'%len(generate_image_viewer_tests(a.repo.resolve(),a.test_output.resolve())))
