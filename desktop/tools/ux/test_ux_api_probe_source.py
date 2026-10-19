@@ -273,7 +273,8 @@ class VendoredSourceTest(unittest.TestCase):
     backdrop = probe.read_text(probe.MIUIX / "upstream/miuix-blur/src/commonMain/kotlin/blur/LayerBackdrop.kt")
     modifier = probe.read_text(probe.MIUIX / "upstream/miuix-blur/src/commonMain/kotlin/blur/LayerBackdropModifier.kt")
     drawing = probe.read_text(REPO / "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt")
-    bar = probe.read_text(REPO / "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoControlBar.kt")
+    # Since slice V2b the player bar no longer calls Miuix itself: its tooltips are the kit tooltip, which holds the one production call.
+    kit_tooltip = probe.read_text(REPO / "desktop/src/main/kotlin/com/bilipai/desktop/ui/kit/DesktopKitTooltip.kt")
 
     def check_call(self, signature, call):
         """Every named argument is a parameter; every parameter without a default is supplied by name, by position or as
@@ -291,11 +292,11 @@ class VendoredSourceTest(unittest.TestCase):
         calls = probe.calls(PROBE_TEXT, "MiuixTooltipBox")
         self.assertEqual(1, len(calls))
         self.check_call(signatures[0], calls[0])
-        production = probe.calls(self.bar, "MiuixTooltipBox")
+        production = probe.calls(self.kit_tooltip, "MiuixTooltipBox")
         self.assertEqual(1, len(production))
-        # The probe adds only `modifier`, and passes the content by name instead of as a trailing lambda.
-        self.assertTrue(production[0][2])
-        self.assertEqual(set(production[0][0]) | {"modifier", "content"}, set(calls[0][0]))
+        # The kit call passes `modifier` and the content by name, with no trailing lambda: the shape of the probe call exactly.
+        self.assertFalse(production[0][2])
+        self.assertEqual(set(production[0][0]), set(calls[0][0]))
 
     def test_tooltip_state_position_provider_and_plain_tooltip(self):
         state = probe.function_signatures(self.tooltip, "rememberTooltipState")

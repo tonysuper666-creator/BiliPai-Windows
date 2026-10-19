@@ -1709,5 +1709,123 @@
       ],
       "reset_command": "ResetLayout"
     }
+  },
+  "control_bar": {
+    "about": "The LEGACY player control bar restyled with the kit (slice V2b, spec 4.5, 4.13 and 5.1). The layout and menu numbers that the bar had before the restyle stay (the two breakpoints, the menu floor and limits); the rest follow the kit tokens: the pill and the menu rows are the kit control height, the slider row is the kit list row height (the bar sets that height on the row), the gap between two buttons is the spec dock gap. Every menu height adds a 4 dp rounding slack to the exact content height, because Compose rounds each padding to whole pixels and at the density 1.875 the two 4 dp paddings of the menu host cost 16 px against a budget of 15. A hint is the key a tooltip names: its chord must be an active row of shortcuts.rows with the same action.",
+    "layout": {
+      "expanded_min_width": 940,
+      "status_min_width": 520,
+      "row_min_height": 40,
+      "side_padding": 8,
+      "button_gap": 2,
+      "pill_padding": 10
+    },
+    "menu": {
+      "host_padding": 8,
+      "rounding_slack": 4,
+      "start_inset": 12,
+      "divider_block": 9,
+      "min_height": 64,
+      "max_height": 420,
+      "compact_more_max_height": 564,
+      "more_base_rows": 6,
+      "more_compact_fixed_rows": 4,
+      "more_compact_dividers": 3,
+      "more_compact_slider_rows": 1
+    },
+    "hints": [
+      {"target": "PLAY_PAUSE", "chord": "Space", "action": "PLAY_PAUSE", "label_from": "KEY_SPACE"},
+      {"target": "PREVIOUS", "chord": "LeftBracket", "action": "PART", "arg": -1, "label": "["},
+      {"target": "NEXT", "chord": "RightBracket", "action": "PART", "arg": 1, "label": "]"},
+      {"target": "MUTE", "chord": "M", "action": "MUTE", "label": "M"},
+      {"target": "MINI_PLAYER", "chord": "P", "action": "MINI_PLAYER", "label": "P"},
+      {"target": "DETAILS", "chord": "Ctrl+B", "action": "SIDE_PANEL_OR_CINEMA", "label": "Ctrl+B"},
+      {"target": "FULLSCREEN", "chord": "F", "action": "FULLSCREEN_TOGGLE", "label": "F"}
+    ],
+    "golden": {
+      "menu_height": [
+        {"id": "volume-menu", "rows": 1, "dividers": 0, "slider_rows": 1, "expect": 84},
+        {"id": "empty-menu-floor", "rows": 0, "dividers": 0, "slider_rows": 0, "expect": 64},
+        {"id": "one-row-floor", "rows": 1, "dividers": 0, "slider_rows": 0, "expect": 64},
+        {"id": "two-rows", "rows": 2, "dividers": 0, "slider_rows": 0, "expect": 76},
+        {"id": "speed-list-of-nine", "rows": 9, "dividers": 0, "slider_rows": 0, "expect": 300},
+        {"id": "quality-list-of-eight", "rows": 8, "dividers": 0, "slider_rows": 0, "expect": 268},
+        {"id": "just-below-the-limit", "rows": 12, "dividers": 0, "slider_rows": 0, "expect": 396},
+        {"id": "limit-clamps", "rows": 13, "dividers": 0, "slider_rows": 0, "expect": 420},
+        {"id": "limit-exceeded", "rows": 40, "dividers": 0, "slider_rows": 0, "expect": 420},
+        {"id": "dividers-count", "rows": 3, "dividers": 2, "slider_rows": 0, "expect": 126},
+        {"id": "negative-counts-are-none", "rows": -3, "dividers": -1, "slider_rows": -2, "expect": 64}
+      ],
+      "more_menu_height": [
+        {
+          "id": "wide-plain",
+          "expanded": true,
+          "speed_rows": 9,
+          "quality_rows": 4,
+          "chapter_row": false,
+          "collection_row": false,
+          "queue_row": false,
+          "expect": 204
+        },
+        {
+          "id": "wide-all-optional",
+          "expanded": true,
+          "speed_rows": 9,
+          "quality_rows": 4,
+          "chapter_row": true,
+          "collection_row": true,
+          "queue_row": true,
+          "expect": 300
+        },
+        {
+          "id": "compact-plain",
+          "expanded": false,
+          "speed_rows": 9,
+          "quality_rows": 4,
+          "chapter_row": false,
+          "collection_row": false,
+          "queue_row": false,
+          "expect": 564
+        },
+        {
+          "id": "compact-short-lists",
+          "expanded": false,
+          "speed_rows": 2,
+          "quality_rows": 2,
+          "chapter_row": false,
+          "collection_row": false,
+          "queue_row": false,
+          "expect": 527
+        },
+        {
+          "id": "compact-no-lists",
+          "expanded": false,
+          "speed_rows": 0,
+          "quality_rows": 0,
+          "chapter_row": false,
+          "collection_row": false,
+          "queue_row": false,
+          "expect": 399
+        },
+        {
+          "id": "compact-all-optional-short",
+          "expanded": false,
+          "speed_rows": 2,
+          "quality_rows": 2,
+          "chapter_row": true,
+          "collection_row": true,
+          "queue_row": true,
+          "expect": 564
+        }
+      ],
+      "breakpoints": [
+        {"width": 939.5, "expanded": false, "status": true},
+        {"width": 940.0, "expanded": true, "status": true},
+        {"width": 519.5, "expanded": false, "status": false},
+        {"width": 520.0, "expanded": false, "status": true},
+        {"width": 0.0, "expanded": false, "status": false},
+        {"width": 2730.0, "expanded": true, "status": true}
+      ]
+    }
   }
 }

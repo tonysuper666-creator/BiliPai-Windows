@@ -114,7 +114,8 @@ private fun Modifier.probeCursor(hidden: Boolean, blank: PointerIcon): Modifier 
     if (hidden) pointerHoverIcon(blank, overrideDescendants = true) else pointerHoverIcon(PointerIcon.Hand)
 
 // probe: miuix-tooltip-box
-// The exact shape of DesktopWindowsPlayerIconButton in DesktopWindowsVideoControlBar.kt, which compiles today.
+// The exact shape of the one production MiuixTooltipBox call, in ui/kit/DesktopKitTooltip.kt (named arguments, no trailing lambda), which
+// compiles today. The player control bar reaches it through the kit tooltip and no longer calls Miuix itself.
 @Composable
 private fun ProbeTooltip(tooltip: String, visible: Boolean, content: @Composable () -> Unit) {
     val tooltipState = rememberMiuixTooltipState(isPersistent = true)

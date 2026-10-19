@@ -55,6 +55,8 @@ BANNED_IMPORT_GLOBS = (
     "ui/DesktopWindowsShellFrame.kt",
     "ui/DesktopWindowsNowPlayingBar.kt",
     "ui/DesktopWindowsToast.kt",
+    # The LEGACY control bar, its pure model and its strings (spec 4.13, slice V2b). V2b migrated it onto the kit, so the allowlist names none of them.
+    "ui/DesktopWindowsVideoControlBar*.kt",
     # The re-skinned settings files (spec 3.7, slice X3). X3 migrated them, so the allowlist names none of them any more.
     "ui/DesktopWindowsSettingsControls.kt",
     "ui/DesktopWindowsUxSettings.kt",
@@ -77,6 +79,7 @@ STRICT_TEXT_GLOBS = (
     "ui/DesktopWindowsShellFrame.kt",
     "ui/DesktopWindowsNowPlayingBar.kt",
     "ui/DesktopWindowsToast.kt",
+    "ui/DesktopWindowsVideoControlBar*.kt",
     "ui/DesktopWindowsLayoutMetrics.kt",
     "ui/DesktopWindowsVideoShortcutInput.kt",
 )

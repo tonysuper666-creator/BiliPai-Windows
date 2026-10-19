@@ -1,12 +1,12 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.hoverable
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -15,17 +15,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.semantics.*
@@ -38,11 +45,27 @@ import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.feature.video.progress.PbpRidgeDensity
 import com.android.purebilibili.feature.video.progress.PbpRidgeSample
 import com.bilipai.desktop.player.PlayerState
-import top.yukonga.miuix.kmp.basic.PlainTooltip as MiuixPlainTooltip
+import com.bilipai.desktop.ui.kit.DESKTOP_KIT_CONTROL_HEIGHT_DP
+import com.bilipai.desktop.ui.kit.DESKTOP_KIT_ICON_DP
+import com.bilipai.desktop.ui.kit.DESKTOP_KIT_ROW_LIST_DP
+import com.bilipai.desktop.ui.kit.DESKTOP_KIT_TOOLTIP_DELAY_PLAYER_MS
+import com.bilipai.desktop.ui.kit.DesktopIconButton
+import com.bilipai.desktop.ui.kit.DesktopKitDivider
+import com.bilipai.desktop.ui.kit.DesktopMenuRow
+import com.bilipai.desktop.ui.kit.DesktopSliderRow
+import com.bilipai.desktop.ui.kit.DesktopTooltipBox
+import com.bilipai.desktop.ui.kit.desktopKitDisabledAlpha
+import com.bilipai.desktop.ui.kit.desktopKitInteraction
 import top.yukonga.miuix.kmp.basic.TooltipAnchorPosition
-import top.yukonga.miuix.kmp.basic.TooltipBox as MiuixTooltipBox
-import top.yukonga.miuix.kmp.basic.TooltipDefaults as MiuixTooltipDefaults
-import top.yukonga.miuix.kmp.basic.rememberTooltipState as rememberMiuixTooltipState
+
+/*
+ * The LEGACY control bar, restyled with the component kit (slice V2b, spec 4.13 and 5.1): 32 dp icon buttons with a 20 dp glyph
+ * and a tooltip that names the key, text pills for speed and quality, kit menu rows and a kit slider row in the menu windows.
+ * The function signature, the accessible names, the breakpoints and every operation are the ones of the bar before the restyle;
+ * the texts live in DesktopWindowsVideoControlBarStrings and the pure rules (breakpoints, hints, menu heights) in
+ * DesktopWindowsVideoControlBarModel. The NVIDIA trigger is the existing compact slot, untouched. The rows that
+ * sponsorMoreActions adds come from another file and keep their own look.
+ */
 
 /** Shared original glass/fallback surface. The heavyweight video is never sampled by this layer. */
 @Composable
@@ -84,6 +107,7 @@ internal fun DesktopWindowsVideoControlBar(
         resolveDesktopWindowsVideoSpeedOptions(speedOptions, state.speed.toFloat())
     }
     val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
+    val hints = remember { DesktopControlBarHintTarget.entries.associateWith { desktopControlBarShortcutHint(it) } }
     val interactions = remember { MutableInteractionSource() }
     val hovered by interactions.collectIsHoveredAsState()
     var focused by remember { mutableStateOf(false) }
@@ -93,13 +117,13 @@ internal fun DesktopWindowsVideoControlBar(
     DesktopWindowsPlayerSurface(Modifier.fillMaxWidth().desktopWindowsChromePointerInput(onChromePointerInput)
         .onFocusChanged { focused = it.hasFocus }
         .focusGroup().hoverable(interactions)) {
-        Column(Modifier.padding(horizontal = 8.dp)) {
+        Column(Modifier.padding(horizontal = DESKTOP_CONTROL_BAR_SIDE_PADDING_DP.dp)) {
             DesktopWindowsThinSeek(state.positionSeconds, state.durationSeconds, sourceVersion,
                 enabled && state.durationSeconds > 0.0, chapters, chaptersSource, onChapterSeek, { scrubbing = it }, onSeek,
                 pbpRidgeSamples, seekPreviewSource, seekPreviewEnabled, onSeekPreviewChanged)
             BoxWithConstraints(Modifier.fillMaxWidth()) {
-                val expanded = maxWidth >= 940.dp
-                val showEnhancementStatus = maxWidth >= 520.dp
+                val expanded = desktopControlBarExpanded(maxWidth.value)
+                val showEnhancementStatus = desktopControlBarShowsStatus(maxWidth.value)
                 var more by remember { mutableStateOf(false) }
                 var speedMenu by remember { mutableStateOf(false) }
                 var qualityMenu by remember { mutableStateOf(false) }
@@ -111,17 +135,23 @@ internal fun DesktopWindowsVideoControlBar(
                 LaunchedEffect(enabled) {
                     if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false; chapterMenu = false; enhancementMenu = false }
                 }
-                Row(Modifier.fillMaxWidth().heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
-                    DesktopWindowsPlayerIconButton(tooltip = if (state.paused || state.ended) "播放" else "暂停", onClick = onPlayPause, enabled = enabled && state.ready, modifier = Modifier.size(44.dp)) {
-                        Icon(if (state.paused || state.ended) Icons.Default.PlayArrow else Icons.Default.Pause,
-                            contentDescription = if (state.paused || state.ended) "播放" else "暂停")
+                val showPlay = state.paused || state.ended
+                val chapterRowInMore = !showEnhancementStatus && chapters != null && chaptersSource != null && segments.isNotEmpty()
+                Row(Modifier.fillMaxWidth().heightIn(min = DESKTOP_CONTROL_BAR_ROW_MIN_HEIGHT_DP.dp),
+                    horizontalArrangement = Arrangement.spacedBy(DESKTOP_CONTROL_BAR_BUTTON_GAP_DP.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    DesktopControlBarButton(label = if (showPlay) DesktopWindowsVideoControlBarStrings.PLAY else DesktopWindowsVideoControlBarStrings.PAUSE,
+                        onClick = onPlayPause, enabled = enabled && state.ready, hint = hints[DesktopControlBarHintTarget.PLAY_PAUSE]) {
+                        DesktopControlBarGlyph(if (showPlay) Icons.Default.PlayArrow else Icons.Default.Pause)
                     }
                     if (expanded) {
-                        DesktopWindowsPlayerIconButton(tooltip = "上一集", onClick = onPrevious, enabled = enabled && hasPrevious, modifier = Modifier.size(44.dp)) {
-                            Icon(Icons.Default.SkipPrevious, contentDescription = "上一集")
+                        DesktopControlBarButton(label = DesktopWindowsVideoControlBarStrings.PREVIOUS, onClick = onPrevious,
+                            enabled = enabled && hasPrevious, hint = hints[DesktopControlBarHintTarget.PREVIOUS]) {
+                            DesktopControlBarGlyph(Icons.Default.SkipPrevious)
                         }
-                        DesktopWindowsPlayerIconButton(tooltip = "下一集", onClick = onNext, enabled = enabled && hasNext, modifier = Modifier.size(44.dp)) {
-                            Icon(Icons.Default.SkipNext, contentDescription = "下一集")
+                        DesktopControlBarButton(label = DesktopWindowsVideoControlBarStrings.NEXT, onClick = onNext,
+                            enabled = enabled && hasNext, hint = hints[DesktopControlBarHintTarget.NEXT]) {
+                            DesktopControlBarGlyph(Icons.Default.SkipNext)
                         }
                     }
                     Text("${FormatUtils.formatDuration((state.positionSeconds.coerceAtLeast(0.0) * 1000).toLong())} / " +
@@ -130,123 +160,128 @@ internal fun DesktopWindowsVideoControlBar(
                         maxLines = 1, overflow = TextOverflow.Ellipsis)
                     if (expanded) {
                         Box {
-                            DesktopWindowsPlayerIconButton(tooltip = "音量与静音", onClick = { volumeMenu = true }, enabled = enabled, modifier = Modifier.size(44.dp)) {
-                                Icon(if (state.muted) Icons.Default.VolumeOff else Icons.Default.VolumeUp,
-                                    contentDescription = "音量与静音")
+                            DesktopControlBarButton(label = DesktopWindowsVideoControlBarStrings.VOLUME_AND_MUTE, onClick = { volumeMenu = true },
+                                enabled = enabled, hint = hints[DesktopControlBarHintTarget.MUTE]) {
+                                DesktopControlBarGlyph(if (state.muted) Icons.Default.VolumeOff else Icons.Default.VolumeUp)
                             }
-                            DesktopWindowsPlayerMenu(volumeMenu, onDismissRequest = { volumeMenu = false }, preferredHeight = 144.dp) {
-                                DropdownMenuItem(text = { Text(if (state.muted) "取消静音" else "静音") }, onClick = onMute)
-                                Text("音量 ${state.volume.toInt()}%", Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.labelMedium)
-                                Slider(state.volume.toFloat().coerceIn(0f, 100f), { onVolume(it.toDouble()) },
-                                    Modifier.width(180.dp).padding(horizontal = 12.dp), enabled = enabled && state.ready, valueRange = 0f..100f)
+                            DesktopWindowsPlayerMenu(volumeMenu, onDismissRequest = { volumeMenu = false },
+                                preferredHeight = desktopControlBarMenuHeightDp(rows = 1, sliderRows = 1).dp) {
+                                DesktopControlBarMenuRow(if (state.muted) DesktopWindowsVideoControlBarStrings.UNMUTE else DesktopWindowsVideoControlBarStrings.MUTE,
+                                    onClick = onMute)
+                                DesktopControlBarVolumeRow(state, enabled, onVolume)
                             }
                         }
                         Box {
-                            TextButton(onClick = { speedMenu = true }, enabled = enabled,
-                                modifier = Modifier.semantics { contentDescription = "倍速" }) { Text("${playbackSpeedLabel(state.speed)}×") }
-                            DesktopWindowsPlayerMenu(speedMenu, onDismissRequest = { speedMenu = false }, preferredHeight = 256.dp) {
+                            DesktopControlBarPill(text = DesktopWindowsVideoControlBarStrings.speedValue(playbackSpeedLabel(state.speed)),
+                                label = DesktopWindowsVideoControlBarStrings.SPEED, onClick = { speedMenu = true }, enabled = enabled)
+                            DesktopWindowsPlayerMenu(speedMenu, onDismissRequest = { speedMenu = false },
+                                preferredHeight = desktopControlBarMenuHeightDp(rows = menuSpeeds.size).dp) {
                                 menuSpeeds.forEach { speed ->
-                                    DropdownMenuItem(text = { Text("${speed}×") }, onClick = { onSpeed(speed.toDouble()); speedMenu = false })
+                                    DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.speedValue(speed.toString()),
+                                        onClick = { onSpeed(speed.toDouble()); speedMenu = false },
+                                        marksCurrent = true, current = speed == state.speed.toFloat())
                                 }
                             }
                         }
                         Box {
-                            TextButton(onClick = { qualityMenu = true }, enabled = enabled && qualities.isNotEmpty(),
-                                modifier = Modifier.semantics { contentDescription = "画质" }) {
-                                Text(qualities.firstOrNull { it.first == selectedQuality }?.second ?: "画质", maxLines = 1)
-                            }
+                            DesktopControlBarPill(text = desktopControlBarQualityLabel(qualities, selectedQuality),
+                                label = DesktopWindowsVideoControlBarStrings.QUALITY, onClick = { qualityMenu = true },
+                                enabled = enabled && qualities.isNotEmpty())
                             DesktopWindowsPlayerMenu(qualityMenu, onDismissRequest = { qualityMenu = false },
-                                preferredHeight = (qualities.size * 48 + 16).coerceIn(64, 420).dp) {
+                                preferredHeight = desktopControlBarMenuHeightDp(rows = qualities.size).dp) {
                                 qualities.forEach { (id, label) ->
-                                    DropdownMenuItem(text = { Text(label) }, onClick = { onQuality(id); qualityMenu = false })
+                                    DesktopControlBarMenuRow(label, onClick = { onQuality(id); qualityMenu = false },
+                                        marksCurrent = true, current = id == selectedQuality)
                                 }
                             }
                         }
                     }
                     if (showEnhancementStatus && chapters != null && chaptersSource != null && segments.isNotEmpty()) Box {
-                        DesktopWindowsPlayerIconButton(tooltip = "视频章节", onClick = { chapterMenu = true }, enabled = enabled, modifier = Modifier.size(44.dp)) {
-                            Icon(Icons.Default.ListAlt, contentDescription = "视频章节")
+                        DesktopControlBarButton(label = DesktopWindowsVideoControlBarStrings.CHAPTERS, onClick = { chapterMenu = true },
+                            enabled = enabled) {
+                            DesktopControlBarGlyph(Icons.Default.ListAlt)
                         }
                         DesktopWindowsPlayerMenu(chapterMenu, onDismissRequest = { chapterMenu = false },
-                            preferredHeight = (segments.size * 48 + 16).coerceIn(64, 420).dp) {
+                            preferredHeight = desktopControlBarMenuHeightDp(rows = segments.size).dp) {
                             segments.forEach { segment ->
-                                DropdownMenuItem(text = {
-                                    Text("${FormatUtils.formatDuration(segment.fromMs)} · ${segment.content}", maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis)
-                                }, enabled = enabled, onClick = { onChapterSeek(chapters, chaptersSource, segment.fromMs); chapterMenu = false })
+                                DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.chapterRow(
+                                    FormatUtils.formatDuration(segment.fromMs), segment.content), enabled = enabled,
+                                    onClick = { onChapterSeek(chapters, chaptersSource, segment.fromMs); chapterMenu = false })
                             }
                         }
                     }
                     sponsorSkip()
                     DesktopVideoEnhancementCompactSlot(showStatus = showEnhancementStatus, menuEnabled = enabled,
                         onMenuExpandedChanged = { enhancementMenu = it }) { enhancement() }
-                    DesktopWindowsPlayerIconButton(tooltip = "详情", onClick = onDetails, modifier = Modifier.size(44.dp)) {
-                        Icon(Icons.Default.Info, contentDescription = "详情",
+                    DesktopControlBarButton(label = DesktopWindowsVideoControlBarStrings.DETAILS, onClick = onDetails,
+                        active = detailsOpen, hint = hints[DesktopControlBarHintTarget.DETAILS]) {
+                        DesktopControlBarGlyph(Icons.Default.Info,
                             tint = if (detailsOpen) MaterialTheme.colorScheme.primary else LocalContentColor.current)
                     }
-                    if (expanded) DesktopWindowsPlayerIconButton(tooltip = "浮窗", onClick = onPictureInPicture,
-                        enabled = enabled && canPictureInPicture, modifier = Modifier.size(44.dp)) {
-                        Icon(Icons.Default.PictureInPictureAlt, contentDescription = "浮窗")
+                    if (expanded) DesktopControlBarButton(label = DesktopWindowsVideoControlBarStrings.MINI_PLAYER, onClick = onPictureInPicture,
+                        enabled = enabled && canPictureInPicture, hint = hints[DesktopControlBarHintTarget.MINI_PLAYER]) {
+                        DesktopControlBarGlyph(Icons.Default.PictureInPictureAlt)
                     }
-                    DesktopWindowsPlayerIconButton(tooltip = if (fullscreen) "退出全屏" else "全屏", onClick = onFullscreen, modifier = Modifier.size(44.dp)) {
-                        Icon(if (fullscreen) Icons.Default.FullscreenExit else Icons.Default.Fullscreen,
-                            contentDescription = if (fullscreen) "退出全屏" else "全屏")
+                    DesktopControlBarButton(label = if (fullscreen) DesktopWindowsVideoControlBarStrings.EXIT_FULLSCREEN else DesktopWindowsVideoControlBarStrings.FULLSCREEN,
+                        onClick = onFullscreen, hint = hints[DesktopControlBarHintTarget.FULLSCREEN]) {
+                        DesktopControlBarGlyph(if (fullscreen) Icons.Default.FullscreenExit else Icons.Default.Fullscreen)
                     }
                     Box {
-                        DesktopWindowsPlayerIconButton(tooltip = "更多播放操作", onClick = { more = true }, modifier = Modifier.size(44.dp)) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "更多播放操作")
+                        DesktopControlBarButton(label = DesktopWindowsVideoControlBarStrings.MORE_ACTIONS, onClick = { more = true }) {
+                            DesktopControlBarGlyph(Icons.Default.MoreVert)
                         }
                         DesktopWindowsPlayerMenu(more, onDismissRequest = { more = false },
-                            preferredHeight = if (expanded) (64 + (if (canOpenCollection) 48 else 0) +
-                                 (if (canOpenPlaybackQueue) 48 else 0) + 144).dp else 564.dp) {
+                            preferredHeight = desktopControlBarMoreMenuHeightDp(expanded, menuSpeeds.size, qualities.size,
+                                chapterRow = chapterRowInMore, collectionRow = canOpenCollection,
+                                queueRow = canOpenPlaybackQueue).dp) {
                             if (!expanded) {
-                                DropdownMenuItem(text = { Text("上一集") }, enabled = enabled && hasPrevious,
+                                DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.PREVIOUS, enabled = enabled && hasPrevious,
                                     onClick = { onPrevious(); more = false })
-                                DropdownMenuItem(text = { Text("下一集") }, enabled = enabled && hasNext,
+                                DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.NEXT, enabled = enabled && hasNext,
                                     onClick = { onNext(); more = false })
-                                DropdownMenuItem(text = { Text(if (state.muted) "取消静音" else "静音") }, enabled = enabled,
-                                    onClick = onMute)
-                                Text("音量 ${state.volume.toInt()}%", Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.labelMedium)
-                                Slider(state.volume.toFloat().coerceIn(0f, 100f), { onVolume(it.toDouble()) },
-                                    Modifier.width(200.dp).padding(horizontal = 12.dp), enabled = enabled && state.ready, valueRange = 0f..100f)
-                                HorizontalDivider()
+                                DesktopControlBarMenuRow(if (state.muted) DesktopWindowsVideoControlBarStrings.UNMUTE else DesktopWindowsVideoControlBarStrings.MUTE,
+                                    enabled = enabled, onClick = onMute)
+                                DesktopControlBarVolumeRow(state, enabled, onVolume)
+                                DesktopControlBarMenuDivider()
                                 menuSpeeds.forEach { speed ->
-                                    DropdownMenuItem(text = { Text("倍速 ${speed}×") }, enabled = enabled,
+                                    DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.speedRow(speed.toString()), enabled = enabled,
                                         onClick = { onSpeed(speed.toDouble()); more = false })
                                 }
-                                HorizontalDivider()
-                                qualities.forEach { (id, label) -> DropdownMenuItem(text = { Text("画质 · $label") }, enabled = enabled,
-                                    onClick = { onQuality(id); more = false }) }
-                                HorizontalDivider()
-                                DropdownMenuItem(text = { Text("浮窗") }, enabled = enabled && canPictureInPicture,
+                                DesktopControlBarMenuDivider()
+                                qualities.forEach { (id, label) -> DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.qualityRow(label),
+                                    enabled = enabled, onClick = { onQuality(id); more = false }) }
+                                DesktopControlBarMenuDivider()
+                                DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.MINI_PLAYER, enabled = enabled && canPictureInPicture,
                                     onClick = { onPictureInPicture(); more = false })
                             }
                             if (!showEnhancementStatus && chapters != null && chaptersSource != null && segments.isNotEmpty())
-                                DropdownMenuItem(text = { Text("视频章节") }, enabled = enabled,
+                                DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.CHAPTERS, enabled = enabled,
                                     onClick = { more = false; chapterMenu = true })
-                            if (canOpenCollection) DropdownMenuItem(text = { Text("视频合集") }, enabled = enabled,
+                            if (canOpenCollection) DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.COLLECTION, enabled = enabled,
                                 onClick = { more = false; onOpenCollection() })
-                            if (canOpenPlaybackQueue) DropdownMenuItem(text = { Text("播放队列") }, enabled = enabled,
+                            if (canOpenPlaybackQueue) DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.PLAYBACK_QUEUE, enabled = enabled,
                                 onClick = { more = false; onOpenPlaybackQueue() })
-                            DropdownMenuItem(text = { Text("发送弹幕") }, enabled = enabled && canOpenInteraction,
+                            DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.SEND_DANMAKU, enabled = enabled && canOpenInteraction,
                                 onClick = { more = false; onSendDanmaku() })
-                            DropdownMenuItem(text = { Text("分享视频") }, enabled = enabled && canOpenInteraction,
+                            DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.SHARE_VIDEO, enabled = enabled && canOpenInteraction,
                                 onClick = { more = false; onShareVideo() })
-                            DropdownMenuItem(text = { Text("仅下载音频") }, enabled = enabled && canDownloadAudio,
+                            DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.DOWNLOAD_AUDIO, enabled = enabled && canDownloadAudio,
                                 onClick = { more = false; onDownloadAudio() })
-                            DropdownMenuItem(text = { Text("保存封面") }, enabled = enabled && canSaveCover,
+                            DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.SAVE_COVER, enabled = enabled && canSaveCover,
                                 onClick = { more = false; onSaveCover() })
-                            DropdownMenuItem(text = { Text(if (screenshotBusy) "截图中…" else "视频截图（S）") },
+                            DesktopControlBarMenuRow(if (screenshotBusy) DesktopWindowsVideoControlBarStrings.SCREENSHOT_BUSY else DesktopWindowsVideoControlBarStrings.SCREENSHOT,
                                 enabled = enabled && canScreenshot && !screenshotBusy,
                                 onClick = { more = false; onScreenshot() })
                             sponsorMoreActions { more = false }
-                            DropdownMenuItem(text = { Text("简介、分P与播放设置") }, onClick = { onOpenIntroduction(); more = false })
+                            DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.INTRODUCTION_AND_SETTINGS,
+                                onClick = { onOpenIntroduction(); more = false })
                         }
                         if (!showEnhancementStatus && chapters != null && chaptersSource != null)
                             DesktopWindowsPlayerMenu(chapterMenu, onDismissRequest = { chapterMenu = false },
-                                preferredHeight = (segments.size * 48 + 16).coerceIn(64, 420).dp) {
+                                preferredHeight = desktopControlBarMenuHeightDp(rows = segments.size).dp) {
                                 segments.forEach { segment ->
-                                    DropdownMenuItem(text = { Text("${FormatUtils.formatDuration(segment.fromMs)} · ${segment.content}") },
+                                    DesktopControlBarMenuRow(DesktopWindowsVideoControlBarStrings.chapterRow(
+                                        FormatUtils.formatDuration(segment.fromMs), segment.content),
                                         enabled = enabled, onClick = { onChapterSeek(chapters, chaptersSource, segment.fromMs); chapterMenu = false })
                                 }
                             }
@@ -257,30 +292,96 @@ internal fun DesktopWindowsVideoControlBar(
     }
 }
 
-/** Reuse the original Miuix tooltip without adding a long-click action to the button. */
+/**
+ * One icon button of the bar: the kit icon button (32 dp hit, 20 dp glyph, one clickable named by the label) inside the kit tooltip
+ * with the player settings, above the button and after the player delay. The tooltip reads the label, then the key the shortcut table
+ * binds to the button (null when none). The kit button itself runs without a tooltip, so the two never show twice.
+ */
 @Composable
-private fun DesktopWindowsPlayerIconButton(
-    tooltip: String, onClick: () -> Unit, enabled: Boolean = true,
-    modifier: Modifier = Modifier, content: @Composable () -> Unit,
+private fun DesktopControlBarButton(
+    label: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    active: Boolean? = null,
+    hint: String? = null,
+    content: @Composable () -> Unit,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val hovered by interactionSource.collectIsHoveredAsState()
-    val focused by interactionSource.collectIsFocusedAsState()
-    val tooltipState = rememberMiuixTooltipState(isPersistent = true)
-    LaunchedEffect(hovered, focused, enabled) {
-        if (enabled && (hovered || focused)) tooltipState.show() else tooltipState.dismiss()
+    DesktopTooltipBox(text = label, shortcut = hint, enabled = enabled, delayMillis = DESKTOP_KIT_TOOLTIP_DELAY_PLAYER_MS,
+        positioning = TooltipAnchorPosition.Above) {
+        DesktopIconButton(onClick = onClick, label = label, enabled = enabled, active = active, tooltip = null, content = content)
     }
-    MiuixTooltipBox(
-        positionProvider = MiuixTooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above, 4.dp),
-        tooltip = { MiuixPlainTooltip {
-            Text(tooltip, color = MiuixTooltipDefaults.plainTooltipContentColor,
-                style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        } },
-        state = tooltipState, focusable = false, enableUserInput = false,
+}
+
+/** The glyph of an icon button: a vector at the kit icon size. The button names itself, so the glyph is decorative. */
+@Composable
+private fun DesktopControlBarGlyph(icon: ImageVector, tint: Color = LocalContentColor.current) {
+    Icon(icon, contentDescription = null, modifier = Modifier.size(DESKTOP_KIT_ICON_DP.dp), tint = tint)
+}
+
+/**
+ * A text pill (speed, quality): a 32 dp rounded control that shows the current value, with the kit hover wash, hand cursor and
+ * keyboard focus ring. One clickable; the accessible name is the label, the shown text is the value, as the text button it replaces.
+ * The pill has no tooltip, as the text button had none: it already shows its value, and the Windows fixtures that step through the
+ * bar by keyboard know a tooltip layer for the icon buttons only.
+ */
+@Composable
+private fun DesktopControlBarPill(text: String, label: String, onClick: () -> Unit, enabled: Boolean = true) {
+    val source = remember { MutableInteractionSource() }
+    Box(
+        Modifier
+            .height(DESKTOP_KIT_CONTROL_HEIGHT_DP.dp)
+            .defaultMinSize(minWidth = DESKTOP_KIT_CONTROL_HEIGHT_DP.dp)
+            .alpha(desktopKitDisabledAlpha(enabled))
+            .desktopKitInteraction(source, (DESKTOP_KIT_CONTROL_HEIGHT_DP / 2).dp, enabled)
+            .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
+            .semantics { contentDescription = label }
+            .padding(horizontal = DESKTOP_CONTROL_BAR_PILL_PADDING_DP.dp),
+        contentAlignment = Alignment.Center,
     ) {
-        IconButton(onClick = { tooltipState.dismiss(); onClick() }, enabled = enabled,
-            modifier = modifier, interactionSource = interactionSource, content = content)
+        Text(text, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.labelLarge,
+            maxLines = 1, softWrap = false)
     }
+}
+
+/**
+ * The volume slider row of a menu window, exactly the 40 dp kit list row height that the menu heights count. Under the default
+ * Material 3 style the slider would make the row taller in two ways: it enforces a 48 dp minimum interactive size, and its own
+ * handle is 44 dp tall. The enforcement is switched off for this row, as the other player menus do, and the row is given its
+ * height outright, so the handle is laid out inside it and the menu is not left a few dp short.
+ */
+@Composable
+private fun DesktopControlBarVolumeRow(state: PlayerState, enabled: Boolean, onVolume: (Double) -> Unit) {
+    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+        DesktopSliderRow(title = DesktopWindowsVideoControlBarStrings.VOLUME,
+            value = state.volume.toFloat().coerceIn(0f, 100f), onValueChange = { onVolume(it.toDouble()) },
+            modifier = Modifier.padding(start = DESKTOP_CONTROL_BAR_MENU_START_INSET_DP.dp).height(DESKTOP_KIT_ROW_LIST_DP.dp),
+            enabled = enabled && state.ready, valueRange = 0f..100f,
+            valueLabel = DesktopWindowsVideoControlBarStrings.volumePercent(state.volume.toInt()))
+    }
+}
+
+/**
+ * A row of a menu window: the kit menu row, inset to match the 12 dp end padding of the menu host. marksCurrent reserves the 20 dp
+ * glyph slot, so a list that marks its current row (speed, quality) keeps every label on one line; current draws the check.
+ */
+@Composable
+private fun DesktopControlBarMenuRow(
+    label: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    marksCurrent: Boolean = false,
+    current: Boolean = false,
+) {
+    val mark: (@Composable () -> Unit)? =
+        if (marksCurrent) ({ if (current) DesktopControlBarGlyph(Icons.Default.Check, MaterialTheme.colorScheme.primary) }) else null
+    DesktopMenuRow(label = label, onClick = onClick,
+        modifier = Modifier.padding(start = DESKTOP_CONTROL_BAR_MENU_START_INSET_DP.dp), enabled = enabled, icon = mark)
+}
+
+/** A divider between two groups of a menu window: the one-pixel kit line with 4 dp above and below. */
+@Composable
+private fun DesktopControlBarMenuDivider() {
+    DesktopKitDivider(Modifier.padding(start = DESKTOP_CONTROL_BAR_MENU_START_INSET_DP.dp, top = 4.dp, bottom = 4.dp))
 }
 
 /** A 24dp input region expands to 44dp for chapter labels. The thin rail retains
@@ -367,7 +468,7 @@ private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVer
                 }
             }
         }.semantics {
-            contentDescription = "播放进度"
+            contentDescription = DesktopWindowsVideoControlBarStrings.SEEK_BAR
             progressBarRangeInfo = ProgressBarRangeInfo(value.toFloat(), 0f..total.toFloat())
             if (!enabled) disabled()
             setProgress { requested -> if (enabled) { latestSeek(requested.toDouble().coerceIn(0.0, total)); true } else false }
