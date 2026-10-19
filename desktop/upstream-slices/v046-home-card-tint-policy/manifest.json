@@ -1,0 +1,28 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt",
+      "filename": "VideoCardAdaptiveTintPolicy.kt",
+      "bytes": 10007,
+      "sha256": "cf64939ff557d678be561fe850f4c4d75c7dda9fca3f4e5f612a72d59fbfea18",
+      "gitBlob": "f3f39f80ae3708fa8cbf99d2ca34c51d7a69dcd7"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperReadabilityPolicy.kt",
+      "filename": "WallpaperReadabilityPolicy.kt",
+      "bytes": 1976,
+      "sha256": "80aadf3d9787ec0ea2b7475e1adada0f5cf493310365693eb54efe9b019c8860",
+      "gitBlob": "5b8ce14f4c92707c97ef8eb4c794af80ff11b593"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 VideoCardAdaptiveTintPolicy.kt (resolveWallpaperGlassAlpha, LocalHomeCardScrolling, LocalHomeCardTransitionRunning, WallpaperPalette.readability, wallpaperYFraction and wallpaperGlassAlpha on resolveVideoCardAdaptiveContentColors) and the whole v0.4.6 design-system WallpaperReadabilityPolicy.kt it imports.",
+  "purpose": "Emit both complete files verbatim from the home-page producer and exclude the direct-mode v0.2.5 VideoCardAdaptiveTintPolicy.kt. WallpaperReadabilityPolicy.kt is new to the tree; no vendored copy exists. No call sites are added."
+}

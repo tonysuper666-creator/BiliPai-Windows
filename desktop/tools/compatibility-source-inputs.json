@@ -154,7 +154,8 @@
     "desktop/upstream-slices/v046-design-system-leaves-b",
     "desktop/upstream-slices/v046-rss-public-content",
     "desktop/upstream-slices/v046-image-viewer",
-    "desktop/upstream-slices/v046-chrome-glass-tuning"
+    "desktop/upstream-slices/v046-chrome-glass-tuning",
+    "desktop/upstream-slices/v046-home-card-tint-policy"
   ],
   "archives": [
     {
@@ -6845,6 +6846,35 @@
           "sha256": "a69ad532fd462d266ffec3bd21eb78cbb66f8d742b3d5147a3b0093fec0bc9b4",
           "hashNormalization": "raw",
           "blob": "7e8fe667d126ba9065d7321f0622cb35d42691b9"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-home-card-tint-policy",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-home-card-tint-policy/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-home-card-tint-policy/manifest.json",
+          "sha256": "4a3bfa65eee5a6ab3ddb80f9f5d0d9498a60f7f452803ffca1427ded70ec5bb4",
+          "hashNormalization": "raw",
+          "blob": "ee6302c21ede00c0189b0673681f8ec963d1549d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-home-card-tint-policy/VideoCardAdaptiveTintPolicy.kt",
+          "sha256": "cf64939ff557d678be561fe850f4c4d75c7dda9fca3f4e5f612a72d59fbfea18",
+          "hashNormalization": "raw",
+          "blob": "f3f39f80ae3708fa8cbf99d2ca34c51d7a69dcd7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-home-card-tint-policy/WallpaperReadabilityPolicy.kt",
+          "sha256": "80aadf3d9787ec0ea2b7475e1adada0f5cf493310365693eb54efe9b019c8860",
+          "hashNormalization": "raw",
+          "blob": "5b8ce14f4c92707c97ef8eb4c794af80ff11b593"
         }
       ]
     }
@@ -18030,6 +18060,36 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "whole v0.4.6 LiquidGlassTuning (linear readability protection, 0.34 scrim, constant indicator chromatic boost), BottomBarGlassMaterialPolicy (container alpha without the preset scale) and the original LiquidGlassTuningTest"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-home-card-tint-policy/VideoCardAdaptiveTintPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f3f39f80ae3708fa8cbf99d2ca34c51d7a69dcd7",
+      "sha256": "cf64939ff557d678be561fe850f4c4d75c7dda9fca3f4e5f612a72d59fbfea18",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-home-card-tint-policy"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 VideoCardAdaptiveTintPolicy (resolveWallpaperGlassAlpha, LocalHomeCardScrolling, LocalHomeCardTransitionRunning, WallpaperPalette.readability) and the whole v0.4.6 design-system WallpaperReadabilityPolicy it imports, emitted verbatim by the home-page producer. The direct-mode VideoCardAdaptiveTintPolicy copy is excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperReadabilityPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-home-card-tint-policy/WallpaperReadabilityPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "5b8ce14f4c92707c97ef8eb4c794af80ff11b593",
+      "sha256": "80aadf3d9787ec0ea2b7475e1adada0f5cf493310365693eb54efe9b019c8860",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-home-card-tint-policy"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 VideoCardAdaptiveTintPolicy (resolveWallpaperGlassAlpha, LocalHomeCardScrolling, LocalHomeCardTransitionRunning, WallpaperPalette.readability) and the whole v0.4.6 design-system WallpaperReadabilityPolicy it imports, emitted verbatim by the home-page producer. The direct-mode VideoCardAdaptiveTintPolicy copy is excluded. No call sites are added."
     }
   ],
   "buildStandaloneInputs": [

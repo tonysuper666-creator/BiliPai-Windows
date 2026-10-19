@@ -59,6 +59,8 @@ def generate(repo, output, standalone=False):
     validate_refresh_ui_policy_outputs(repo, output)
     from v046_identity_badge_palette import validate_outputs as validate_identity_badge_palette_outputs
     validate_identity_badge_palette_outputs(repo, output)
+    from v046_home_card_tint_policy import validate_outputs as validate_home_card_tint_policy_outputs
+    validate_home_card_tint_policy_outputs(repo, output)
     from v043_home_recommendation_badges import check_output
     check_output(repo,output)
     output=Path(output).resolve();written=[];home_load_audits=[]
@@ -108,6 +110,8 @@ def generate(repo, output, standalone=False):
     emit_home_card_cascade_definers(repo, output)
     from v046_home_refresh_ui_policy import emit as emit_home_refresh_ui_policy
     emit_home_refresh_ui_policy(repo, output)
+    from v046_home_card_tint_policy import emit as emit_home_card_tint_policy
+    emit_home_card_tint_policy(repo, output)
     return written
 
 if __name__=="__main__":

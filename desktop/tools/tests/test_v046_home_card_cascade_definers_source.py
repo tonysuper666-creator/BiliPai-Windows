@@ -314,6 +314,8 @@ class V046HomeCardCascadeDefinersSourceTest(unittest.TestCase):
             'emit_home_card_cascade_definers(repo, output)\n'
             '    from v046_home_refresh_ui_policy import emit as emit_home_refresh_ui_policy\n'
             '    emit_home_refresh_ui_policy(repo, output)\n'
+            '    from v046_home_card_tint_policy import emit as emit_home_card_tint_policy\n'
+            '    emit_home_card_tint_policy(repo, output)\n'
             '    return written')
         self.assertEqual(tail, producer[call_at:ret_at + len('return written')])
         self.assertFalse(any(line.startswith('import v046_home_card_cascade_definers') or

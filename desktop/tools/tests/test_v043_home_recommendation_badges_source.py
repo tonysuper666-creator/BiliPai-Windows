@@ -117,7 +117,7 @@ class V043HomeRecommendationBadgeSourceTest(unittest.TestCase):
         for producer in [self.full, self.page]:
             root = self.copy_archive()
             # Home-page generate validates the v046 identity, identity palette, home-card cascade,
-            # and home refresh UI policy archives before this overlap check.
+            # home refresh UI policy, and home card tint policy archives before this overlap check.
             if producer is self.page:
                 shutil.copytree(REPO/'desktop/upstream-slices/v046-identity-badges',
                                 root/'desktop/upstream-slices/v046-identity-badges')
@@ -127,6 +127,8 @@ class V043HomeRecommendationBadgeSourceTest(unittest.TestCase):
                                 root/'desktop/upstream-slices/v046-home-card-cascade-definers')
                 shutil.copytree(REPO/'desktop/upstream-slices/v046-home-refresh-ui-policy',
                                 root/'desktop/upstream-slices/v046-home-refresh-ui-policy')
+                shutil.copytree(REPO/'desktop/upstream-slices/v046-home-card-tint-policy',
+                                root/'desktop/upstream-slices/v046-home-card-tint-policy')
             with self.assertRaisesRegex(ValueError, 'Output overlaps fixed badge source'):
                 producer.generate(root, root/source.ARCHIVE/'generated')
             self.assertFalse((root/source.ARCHIVE/'generated').exists())

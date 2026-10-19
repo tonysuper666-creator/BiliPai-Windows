@@ -249,16 +249,6 @@
         {
           "scope": "carried",
           "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.home.components.cards.LocalHomeCardScrolling"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.home.components.cards.LocalHomeCardTransitionRunning"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
           "symbol": "com.android.purebilibili.feature.video.ui.components.landscapeEndDrawerPadding"
         },
         {
@@ -357,17 +347,7 @@
       ]
     }
   ],
-  "latent": [
-    {
-      "symbol": "resolveWallpaperGlassAlpha",
-      "kind": "declaration",
-      "package": "com.android.purebilibili.feature.home.components.cards",
-      "reason": "Called by v0.4.x VideoCard.kt (carried, unresolved bare call); its definer is not carried (roadmap seed).",
-      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt:108 declares it",
-      "closedBy": "fnd-home-card-cascade-definers",
-      "closedByEvidence": "roadmap"
-    }
-  ],
+  "latent": [],
   "retiredSeeds": [
     {
       "symbol": "reducedMotion",
@@ -519,6 +499,17 @@
       "retiredBy": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt DanmakuDocument.failedSegmentCount",
       "guardedBy": "this gate (status LOST fails the run); test_v046_danmaku_protocol_source.py: test_the_three_definers_are_in_the_carried_files_exactly_once, test_the_window_loader_keeps_the_trailing_lambda_contract_and_calls_the_hardened_members",
       "closedBy": "dmk-protocol-hardening",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "resolveWallpaperGlassAlpha",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.home.components.cards",
+      "reason": "Roadmap seed resolveWallpaperGlassAlpha. CLOSED by the whole v0.4.6 VideoCardAdaptiveTintPolicy.kt carried in desktop/upstream-slices/v046-home-card-tint-policy (VideoCardAdaptiveTintPolicy.kt and the WallpaperReadabilityPolicy.kt it imports, emitted by desktop/tools/v046_home_card_tint_policy.py; the vendored direct copy is excluded in prepareUpstreamSources). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt:108 declares it",
+      "retiredBy": "desktop/upstream-slices/v046-home-card-tint-policy (VideoCardAdaptiveTintPolicy.kt and WallpaperReadabilityPolicy.kt, emitted by desktop/tools/v046_home_card_tint_policy.py; the vendored direct copy is excluded in prepareUpstreamSources)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_home_card_tint_policy_source.py",
+      "closedBy": "fnd-home-card-cascade-definers",
       "closedByEvidence": "roadmap"
     }
   ],

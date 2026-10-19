@@ -16,6 +16,10 @@ def write(path,text):
 def read(path):return (_desktop_canonical_source(REPO, path)).read_text(encoding='utf-8')
 APP='app/src/main/java/com/android/purebilibili/'
 DS='design-system/src/main/java/com/android/purebilibili/'
+# VideoCardAdaptiveTintPolicy stays listed: DIRECT is the v0.2.5 identity pin and must keep matching
+# desktop/upstream-sources.json (mode direct). Production compiles the whole v0.4.6 file instead: it is emitted from
+# upstream-slices/v046-home-card-tint-policy by extract-upstream-home-page.py and prepareUpstreamSources excludes the
+# vendored copy. This producer never writes it outside --standalone (test_v046_home_card_tint_policy_source.py pins that).
 DIRECT=[APP+'feature/home/components/cards/'+n+'.kt' for n in [
  'VideoCardScrollLiteVisualPolicy','VideoCardHistoryProgressPolicy','VideoCardDurationBadgeVisualPolicy',
  'VideoCardCoverStatsLayoutPolicy','VideoCardCoverOverlayTextPolicy','VideoCardCoverDurationText',

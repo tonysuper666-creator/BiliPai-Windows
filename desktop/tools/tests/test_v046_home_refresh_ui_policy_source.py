@@ -358,8 +358,12 @@ class V046HomeRefreshUiPolicySourceTest(unittest.TestCase):
         self.assertLess(cascade_call, emit_at)
         self.assertLess(emit_at, call_at)
         self.assertLess(call_at, ret_at)
-        self.assertEqual('emit_home_refresh_ui_policy(repo, output)\n    return written',
-                         producer[call_at:ret_at + len('return written')])
+        tail = (
+            'emit_home_refresh_ui_policy(repo, output)\n'
+            '    from v046_home_card_tint_policy import emit as emit_home_card_tint_policy\n'
+            '    emit_home_card_tint_policy(repo, output)\n'
+            '    return written')
+        self.assertEqual(tail, producer[call_at:ret_at + len('return written')])
         self.assertFalse(any(line.startswith('import v046_home_refresh_ui_policy') or
                              line.startswith('from v046_home_refresh_ui_policy') for line in producer.splitlines()))
 

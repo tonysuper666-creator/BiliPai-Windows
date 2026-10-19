@@ -283,6 +283,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         // The existing dynamic card producer owns the complete v0.4.6 zoomable image and its gesture policy.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt"))
+        // The existing Home-page producer owns the complete v0.4.6 card tint policy.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -915,6 +917,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v046-home-card-cascade-definers")
     inputs.file("tools/v046_home_refresh_ui_policy.py")
     inputs.dir("upstream-slices/v046-home-refresh-ui-policy")
+    inputs.file("tools/v046_home_card_tint_policy.py")
+    inputs.dir("upstream-slices/v046-home-card-tint-policy")
     inputs.file("tools/v042_search_dependencies.py")
     inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.file("tools/v040_native_chrome.py")
