@@ -1748,6 +1748,7 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.data.model', 'resolveVideoDisplayProgressState'),
     ('com.android.purebilibili.feature.home', 'resolveOldContentDividerContainerColor'),
     ('com.android.purebilibili.feature.video.ui.components', 'CommentFraudFeedbackHost'),
+    ('com.android.purebilibili.core.coroutines', 'AccountScopedRequests'),
 )
 
 

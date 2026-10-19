@@ -931,6 +931,8 @@ val extractOriginalHomeViewModel by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.file("tools/v029_home_load.py")
     inputs.dir("upstream-slices/v029-home-load")
+    inputs.file("tools/v046_account_scoped_requests.py")
+    inputs.dir("upstream-slices/v046-account-scoped-requests")
     inputs.files(sources.filter { "home-viewmodel" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-viewmodel"))

@@ -44,18 +44,6 @@
       ]
     },
     {
-      "reason": "AccountScopedRequests arrived after the pinned tree; carried favorite/home archives import it.",
-      "closedBy": "acct-account-scoped-requests",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.coroutines.AccountScopedRequests"
-        }
-      ]
-    },
-    {
       "reason": "Bangumi player feature symbols imported by the carried v046 comment-list archive.",
       "closedBy": "bgm-player-viewmodel-and-features",
       "closedByEvidence": "roadmap",
@@ -505,6 +493,17 @@
       "retiredBy": "desktop/upstream-slices/v046-comment-polish (CommentFraudFeedbackHost.kt, emitted by desktop/tools/v046_comment_polish.py through extract-upstream-video-comment-ui.py)",
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_comment_polish_source.py",
       "closedBy": "cmt-closure-merge-and-polish",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "AccountScopedRequests",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.coroutines",
+      "reason": "Gap AccountScopedRequests, imported by the carried v0.4.3 Home view model and the carried v0.4.4 and v0.4.6 favorite list view models. CLOSED by the whole v0.4.6 AccountScopedRequests.kt carried in desktop/upstream-slices/v046-account-scoped-requests (emitted by desktop/tools/v046_account_scoped_requests.py through the Home view model producer, with the Android TokenManager default removed so a caller passes Root identity flow). No Windows page constructs it: every personal page owner is already retired and rebuilt per Root session epoch, which test_v046_account_scoped_requests_source.py audits. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/coroutines/AccountScopedRequests.kt declares internal class AccountScopedRequests; the carried HomeViewModel.kt and ListViewModel.kt archives import it",
+      "retiredBy": "desktop/upstream-slices/v046-account-scoped-requests (AccountScopedRequests.kt, emitted by desktop/tools/v046_account_scoped_requests.py through extract-upstream-home-viewmodel.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_account_scoped_requests_source.py",
+      "closedBy": "acct-account-scoped-requests",
       "closedByEvidence": "roadmap"
     }
   ],

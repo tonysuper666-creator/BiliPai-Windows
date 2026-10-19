@@ -36,6 +36,8 @@ def owned_today_watch_feedback_delta(vm):
 
 def generate(repo,output,standalone=False,test_output=None):
  repo=Path(repo);output=Path(output)
+ from v046_account_scoped_requests import validate_outputs as validate_account_scoped_outputs
+ validate_account_scoped_outputs(repo,output,test_output)
  for path,expected in SOURCE_PINS.items():assert sha(read(_desktop_canonical_source(repo, path)))==expected,path
  tool=Path(__file__)
  spec=json.loads(read(tool.with_name('extract-upstream-home-viewmodel-adaptations.json')))
@@ -73,6 +75,9 @@ def generate(repo,output,standalone=False,test_output=None):
   for path in DIRECT:
    relative=path.removeprefix('app/src/main/java/')
    write(output/relative,read(_desktop_canonical_source(repo, path)))
+ # Last step: the whole v0.4.6 account-scoped request owner (no Windows page constructs it) and its original test.
+ from v046_account_scoped_requests import emit as emit_account_scoped_requests
+ emit_account_scoped_requests(repo,output,test_output)
  return {'pinnedCommit':'79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40','vmOriginalSha256LF':spec['sha256LF'],'vmDesiredSha256LF':sha(vm),'preparedBaseVmDesiredSha256LF':spec['desiredSha256LF'],'solePlanConverterVisibilityAdaptation':True,'adaptationOperations':len(spec['operations']),'productionOutputs':3,'standaloneOnlyDirect':DIRECT}
 
 if __name__=='__main__':

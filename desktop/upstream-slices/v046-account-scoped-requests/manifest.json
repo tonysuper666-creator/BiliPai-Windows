@@ -1,0 +1,28 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/coroutines/AccountScopedRequests.kt",
+      "filename": "AccountScopedRequests.kt",
+      "bytes": 2106,
+      "sha256": "6788188c18279735295ccc5117aedacd6e71ffe7b34fc438ef255e9dd94f1c4a",
+      "gitBlob": "04f5354eb0d6fff0e4c7c9da5b74e05ce699b91e"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/coroutines/AccountScopedRequestsTest.kt",
+      "filename": "AccountScopedRequestsTest.kt",
+      "bytes": 3464,
+      "sha256": "ef7b40b5f84bf2d276188a12fc12bb884ab731f1f96676eb6306cba98cfbe5a0",
+      "gitBlob": "6319cf7ce21ba739514f820d0e5e573a35752924"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 AccountScopedRequests.kt and its original AccountScopedRequestsTest.kt.",
+  "purpose": "Carry the upstream account-scoped request owner as the one definer of that name, emitted by the existing Home view model producer with the Android TokenManager default removed so the caller passes Root's identity flow, plus its three original JVM cases verbatim. No Windows page constructs it: every personal page owner is already retired and rebuilt per Root session epoch."
+}
