@@ -1718,15 +1718,29 @@ def object_exists(rev):
     return done.returncode == 0
 
 
+# A commit missing from the clone must FAIL the history-dependent classes: a skipped class prints OK, and the project
+# treats skipped as not passed. Skipping them on purpose needs BP_SYMBOL_GATE_ALLOW_SHALLOW=1.
+ALLOW_SHALLOW = os.environ.get('BP_SYMBOL_GATE_ALLOW_SHALLOW') == '1'
+
+
+def require_history(*revisions):
+    missing = [r for r in revisions if not object_exists(r)]
+    if missing:
+        raise AssertionError(
+            'commits missing from this clone: ' + ', '.join(missing) + '. A missing commit is a failure, not a skip: '
+            'fetch them (the full history of the integration branch, or git fetch origin <commit>), or set '
+            'BP_SYMBOL_GATE_ALLOW_SHALLOW=1 to skip these classes on purpose.')
+
+
 @unittest.skipIf(SKIP_HEAVY, 'BP_SYMBOL_GATE_SKIP_HEAVY=1')
-@unittest.skipUnless(object_exists(V025_COMMIT) and object_exists(gate.TARGET_COMMIT),
-                     'the pinned upstream objects (v0.2.5 and v0.4.6) are not in this clone object store '
-                     '(shallow checkout); the producers read them with git')
+@unittest.skipIf(ALLOW_SHALLOW and not (object_exists(V025_COMMIT) and object_exists(gate.TARGET_COMMIT)),
+                 'BP_SYMBOL_GATE_ALLOW_SHALLOW=1 and the pinned upstream objects (v0.2.5, v0.4.6) are not in this clone')
 class CurrentIntegrationTree(unittest.TestCase):
     """Every real producer, run exactly as Gradle runs them, in a mirror of this checkout (about 3 minutes)."""
 
     @classmethod
     def setUpClass(cls):
+        require_history(V025_COMMIT, gate.TARGET_COMMIT)
         cls.before = gate.repo_state(REPO)
         cls.scratch = Path(tempfile.mkdtemp(prefix='bp-sc-'))
         cls.addClassCleanup(rmtree_force, gate._long(cls.scratch))   # also runs when this setUp fails half way
@@ -1847,13 +1861,14 @@ class CurrentIntegrationTree(unittest.TestCase):
 
 
 @unittest.skipIf(SKIP_HEAVY, 'BP_SYMBOL_GATE_SKIP_HEAVY=1')
-@unittest.skipUnless(object_exists(SOURCE260_HEAD),
-                     'the failed Source260 head is not in this clone\'s object store (shallow checkout)')
+@unittest.skipIf(ALLOW_SHALLOW and not object_exists(SOURCE260_HEAD),
+                 'BP_SYMBOL_GATE_ALLOW_SHALLOW=1 and the failed Source260 head is not in this clone')
 class Source260History(unittest.TestCase):
     """The failed cloud compile (24 errors, head aad198489) must be flagged by class, from `git archive` alone."""
 
     @classmethod
     def setUpClass(cls):
+        require_history(SOURCE260_HEAD)
         cls.result, cls.producers = gate.run_gate(
             REPO, revision=SOURCE260_HEAD, expected_path=None, options=gate.Options(carried=False))
 
