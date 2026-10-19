@@ -96,10 +96,9 @@ def ensure_import(text, name):
     return text[:first]+line+text[first:]
 
 
-# The pinned design-system UserVipBadge predates upstream's shared VIP pink. The same two
-# values live in the desktop-owned function until that file itself is advanced.
+# v046_identity_badges replaces the home-page UserVipBadge.kt output with the v0.4.6
+# definer. These owners keep the original fully qualified call and its count.
 VIP_PINK_ORIGINAL = 'com.android.purebilibili.core.ui.components.userVipPink()'
-VIP_PINK_WINDOWS = 'com.bilipai.desktop.ui.desktopUserVipPink()'
 
 
 # The pinned v0.3.7 AppBottomSheetMotion has no reduced-motion member (it arrived with v0.4.x).
@@ -116,7 +115,7 @@ internal val AppBottomSheetMotion.reducedMotion: Boolean get() = false
 
 def windows_vip_pink(text, expected):
     assert text.count(VIP_PINK_ORIGINAL) == expected, ('Original VIP colour owners changed', text.count(VIP_PINK_ORIGINAL))
-    return text.replace(VIP_PINK_ORIGINAL, VIP_PINK_WINDOWS)
+    return text
 
 
 def translation_job(parser, text):
