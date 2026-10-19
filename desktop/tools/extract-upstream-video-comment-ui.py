@@ -16,6 +16,8 @@ def replace_once(t,a,b):
 def inventory(repo):
     return [dict(path=p,mode='policy-extract',features=['stable-video-original-comments'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n').encode()).hexdigest()) for p in SOURCES]
 def generate(repo,output):
+    from v046_comment_polish import validate_outputs as validate_comment_polish_outputs
+    validate_comment_polish_outputs(repo,output)
     shared=mod(Path(__file__).with_name('extract-upstream-dynamic-reply-protocol.py'),'original_video_comment_identity')
     original,identities=shared.load_pinned_sources(repo,SOURCES)
     selections=[]
@@ -262,7 +264,11 @@ import com.android.purebilibili.feature.video.ui.components.CommentInputDialog
     body=replace_once(body,'context: Context,','platform: DesktopCommentPlatform,')
     body=body.replace('playbackViewModel: VideoPlaybackViewModel','playbackViewModel: DesktopOriginalVideoCommentComposer').replace('context.applicationContext','platform')
     body=replace_once(body,'Toast.makeText(context, lightMessage, Toast.LENGTH_SHORT).show()','platform.showFeedback(lightMessage)')
-    emit('feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt',body,path,'Full original receipt-to-genericVM-fraud event chain and result/light-message/delete UI, with required same-owner platform/composer types. Original type1 protocol and policy reused unchanged.')
+    # v0.4.6 extracted the fraud feedback into one shared host (2bc6e885); the adapter keeps only the receipt chain.
+    from v046_comment_polish import advance_fraud_adapter, fraud_host_body, UPSTREAM_PATHS
+    body=advance_fraud_adapter(repo,body,output)
+    emit('feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt',body,path,'Full v0.4.6 receipt-to-genericVM chain calling the shared fraud feedback host, with required same-owner platform/composer types. Original type1 protocol and policy reused unchanged.')
+    emit('feature/video/ui/components/CommentFraudFeedbackHost.kt',fraud_host_body(repo,output),UPSTREAM_PATHS['CommentFraudFeedbackHost.kt'],'Whole v0.4.6 shared fraud feedback host (d6bf8b16); the Android Toast and LocalContext become the mounted Windows comment platform feedback port.')
 
 if __name__=='__main__':
     cli=argparse.ArgumentParser();cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);args=cli.parse_args();generate(args.repo,args.output)

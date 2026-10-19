@@ -44,7 +44,8 @@ class OriginalCommentListSources(unittest.TestCase):
              patch.object(comments, 'advance_dynamic_items', side_effect=lambda repo, before, output: before), \
              patch.object(comments, 'advance_settings', side_effect=lambda repo, before, output, owner: before), \
              patch.object(comments, 'emit_shared', return_value={}), \
-             patch('v046_comment_thread.advance', side_effect=lambda repo, before, output: before):
+             patch('v046_comment_thread.advance', side_effect=lambda repo, before, output: before), \
+             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before):
             cls.owner.generate(REPO, cls.output/'before')
 
     @classmethod
@@ -139,7 +140,9 @@ class OriginalCommentListSources(unittest.TestCase):
         before = body(self.output/'before'/path)
         proof = self.proof('v046-subreply-list-renderer-proof')
         thread_proof = self.proof('v046-comment-thread-host-proof')
-        previous_stage = restore(actual, thread_proof['retainedToCurrent'])
+        # The v046 comment polish inline entrance stage follows the nested page stage; peel it first.
+        entrance_proof = self.proof('v046-inline-subreply-entrance-proof')
+        previous_stage = restore(restore(actual, entrance_proof['retainedToCurrent']), thread_proof['retainedToCurrent'])
         self.assertEqual(before, restore(previous_stage, proof['retainedToCurrent']))
         item = comments.declaration(self.syntax, actual, 'SubReplyDetailItem')
         old_item = comments.declaration(self.syntax, before, 'SubReplyDetailItem')
@@ -341,6 +344,9 @@ class ConnectedCommentPanelSources(unittest.TestCase):
     def test_fullscreen_and_music_main_list_keep_whole_original_with_real_full_search_and_skeletons(self):
         actual = self.generated('fullscreen', 'VideoCommentSheetHost.kt')
         proof = self.proof('fullscreen', 'v046-main-comment-list-proof')
+        # The v046 comment polish host stage follows the main list stage; recover its exact predecessor first.
+        host_proof = self.proof('fullscreen', 'v046-comment-sheet-host-proof')
+        actual = restore(actual, host_proof['retainedToCurrent'])
         previous = restore(actual, proof['retainedToCurrent'])
         selected = comments.declaration(self.syntax, actual, 'VideoCommentMainList')
         self.assertEqual(comments.declaration(self.syntax, self.sources['VideoCommentSheetHost.kt'], 'VideoCommentMainList'),

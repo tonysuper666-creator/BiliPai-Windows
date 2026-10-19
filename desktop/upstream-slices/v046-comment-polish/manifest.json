@@ -1,0 +1,50 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt",
+      "filename": "VideoCommentAppearance.kt",
+      "bytes": 4918,
+      "sha256": "af4119fb7da72dbf4c42f7c61cf39339034fc4a1b50b0be4e1c065923bfc4106",
+      "gitBlob": "050bc92373027a72b7d678ab22b708d750c98514"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearancePolicyTest.kt",
+      "filename": "VideoCommentAppearancePolicyTest.kt",
+      "bytes": 2452,
+      "sha256": "a61a836dcc7b6b25970349368fc08c013fd50bcb4f6a006edf5cb571bf5da2b9",
+      "gitBlob": "11ab130182fd30f348f959a665dfe005b2646f9c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt",
+      "filename": "CommentFraudFeedbackHost.kt",
+      "bytes": 2105,
+      "sha256": "817ab368beb50b975a74dc7eb59f3b0cb280ef52a4a99f51d80970270db28bb8",
+      "gitBlob": "08e04e60360779c7a39480b30d04038fb2387749"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "filename": "VideoDetailCommentFraudOverlayAdapter.kt",
+      "bytes": 1135,
+      "sha256": "a147bdc1b918c1a7aca36c99e164709f45a639aa2f32ff4c646cdd3a89db5eca",
+      "gitBlob": "044aa356a7ceb55cb90d8355744208128c83e9bf"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "filename": "CommentDetailScreen.kt",
+      "bytes": 11038,
+      "sha256": "c945196aaee6ea42b946018c6b1b2e0670315df8e1a9c0114886e925d6a458b9",
+      "gitBlob": "30e280eca191993e4cb209f3174d50dcf18506e6"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "v0.4.6 VideoCommentAppearance.kt whole (v0.2.7 comment body and nested reply font step bodySmall to bodyMedium) with its two-case policy suite; CommentFraudFeedbackHost.kt whole (shared fraud feedback host extracted by 2bc6e885) and VideoDetailCommentFraudOverlayAdapter.kt whole (now a thin caller of that host); CommentDetailScreen.kt whole as the verified source of the one conversation anchor identity line that 8eb5996b forwards to SubReplyDetailContent. The comment-list archive already carries every other source this slice reads (SubReplyDetailComponents.kt, VideoCommentSheetHost.kt).",
+  "purpose": "Close the roadmap cmt-closure-merge-and-polish gaps that the v046-comment-list, v046-comment-thread and v046-comment-chrome slices left: comment body font, shared fraud feedback host, nested reply inline entrance motion and the fullscreen comment host sheet motion. Windows platform adaptations are recorded as invertible deltas by desktop/tools/v046_comment_polish.py.",
+  "fullStableParityQualified": false
+}

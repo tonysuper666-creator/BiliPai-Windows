@@ -28,10 +28,13 @@ class OriginalNestedPageSources(unittest.TestCase):
         cls.parser = comments.load(REPO, 'thread259_tests_syntax', 'sync-upstream.py')
         cls.owner = comments.load(REPO, 'thread259_tests_owner', 'extract-upstream-dynamic-reply.py')
         cls.owner.generate(REPO, cls.output/'actual')
-        with patch.object(thread, 'advance', side_effect=lambda repo, before, output: before):
+        with patch.object(thread, 'advance', side_effect=lambda repo, before, output: before), \
+             patch('v046_comment_polish.advance_inline_entrance', side_effect=lambda repo, before, output: before):
             cls.owner.generate(REPO, cls.output/'previous')
         relative = comments.PACKAGE+'DesktopOriginalSubReplyDetailComponents.kt'
-        cls.actual = body(cls.output/'actual'/relative)
+        # The v046 comment polish inline entrance stage follows the nested page stage; recover this stage's own output.
+        entrance = json.loads((cls.output/'actual/v046-inline-subreply-entrance-proof.json').read_bytes())
+        cls.actual = restore(body(cls.output/'actual'/relative), entrance['retainedToCurrent'])
         cls.previous = body(cls.output/'previous'/relative)
         cls.original = comments.fixed(REPO)[0]['SubReplyDetailComponents.kt']
         cls.proof = json.loads((cls.output/'actual/v046-comment-thread-host-proof.json').read_bytes())

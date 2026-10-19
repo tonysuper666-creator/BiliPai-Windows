@@ -159,6 +159,8 @@ def adapt_common(body):
 
 
 def generate(repo, output):
+    from v046_comment_polish import validate_outputs as validate_comment_polish_outputs
+    validate_comment_polish_outputs(repo, output)
     host = load(repo, 'reply_original_host', 'desktop/tools/extract-upstream-plugins.py')
     media = host.media_extractor(repo)
     parser = media.parser_for(repo)
@@ -183,6 +185,8 @@ def generate(repo, output):
             body = advance_subreply_components(repo, body, output)
             from v046_comment_thread import advance as advance_comment_thread
             body = advance_comment_thread(repo, body, output)
+            from v046_comment_polish import advance_inline_entrance
+            body = advance_inline_entrance(repo, body, output)
         elif filename == 'DesktopOriginalDynamicInlineReplyUi.kt':
             body = advance_dynamic_items(repo, body, output)
         elif filename == 'DesktopOriginalReplySettings.kt':
@@ -649,6 +653,9 @@ internal object DesktopOriginalReplySettings {
     maybe = maybe.replace('fun MaybeDissolvableVideoCard(', 'internal fun DesktopReplyDissolvableContainer(', 1)
     emit(path, 'package com.bilipai.desktop.ui\nimport androidx.compose.animation.core.*\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.draw.alpha\nimport androidx.compose.ui.draw.drawWithContent\nimport androidx.compose.ui.graphics.graphicsLayer\nimport androidx.compose.ui.graphics.layer.drawLayer\nimport androidx.compose.ui.graphics.rememberGraphicsLayer\nimport androidx.compose.ui.layout.layout\nimport androidx.compose.ui.layout.onSizeChanged\nimport androidx.compose.ui.unit.IntSize\nimport kotlin.math.roundToInt\n' + helpers + '\n@Composable\n' + dissolve + '\n@Composable\n' + maybe,
          'DesktopOriginalReplyFailedCaptureDissolve.kt')
+    # Whole v0.4.6 comment font file; the vendored direct copy is excluded in prepareUpstreamSources.
+    from v046_comment_polish import emit_appearance
+    emit_appearance(repo, output)
     return emitted
 
 

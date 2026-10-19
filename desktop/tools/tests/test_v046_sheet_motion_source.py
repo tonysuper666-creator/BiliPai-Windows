@@ -134,7 +134,10 @@ class OriginalSheetMotionSources(unittest.TestCase):
         self.assertIn('AppContentColors.primaryText()', rows[0]['usedScope'])
         catalog = json.loads((TOOLS/'compatibility-source-inputs.json').read_bytes())
         self.assertIn(sheet.ARCHIVE, catalog['buildInputRoots'])
-        self.assertEqual(sheet.ARCHIVE, catalog['buildInputRoots'][-1])
+        # Registration is append-only, so the archive keeps its exact position when later slices are appended
+        # (v046-home-refresh-ui-policy and v046-comment-polish follow it); it was the last root when this was written.
+        self.assertEqual(1, catalog['buildInputRoots'].count(sheet.ARCHIVE))
+        self.assertEqual(138, catalog['buildInputRoots'].index(sheet.ARCHIVE))
         archives = [row for row in catalog['archives'] if row['directory'] == sheet.ARCHIVE]
         self.assertEqual(1, len(archives))
         self.assertEqual([sheet.ARCHIVE+'/AppSheetComponents.kt', sheet.ARCHIVE+'/LICENSE', sheet.ARCHIVE+'/manifest.json'],

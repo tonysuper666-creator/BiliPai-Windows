@@ -266,6 +266,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"))
+        // The existing reply producer owns the complete v0.4.6 comment font policy file.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -4261,6 +4263,14 @@ kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.matching { it.name in setOf("extractUpstreamDynamicReply", "extractOriginalVideoDetailHolderFull") }.configureEach {
     inputs.file("tools/v046_comment_thread.py")
     inputs.dir("upstream-slices/v046-comment-thread")
+}
+
+// v0.4.6 comment polish: font file, shared fraud host, inline entrance, fullscreen host and detail anchor.
+tasks.matching { it.name in setOf(
+    "extractUpstreamDynamicReply", "extractVideoCommentUi", "extractOriginalVideoFullscreenPager", "extractBgmDetail",
+) }.configureEach {
+    inputs.file("tools/v046_comment_polish.py")
+    inputs.dir("upstream-slices/v046-comment-polish")
 }
 
 // A generated source directory is rebuilt from nothing. Gradle never removes a file an Exec producer stopped

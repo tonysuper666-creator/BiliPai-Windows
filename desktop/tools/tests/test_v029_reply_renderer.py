@@ -69,7 +69,9 @@ class V029ReplyRendererTest(unittest.TestCase):
             from v046_favorite_editor import restore
             proof = json.loads((root / 'reply/v046-subreply-list-renderer-proof.json').read_bytes())
             thread_proof = json.loads((root / 'reply/v046-comment-thread-host-proof.json').read_bytes())
-            thread = restore(thread.split('\n', 2)[2], thread_proof['retainedToCurrent'])
+            entrance_proof = json.loads((root / 'reply/v046-inline-subreply-entrance-proof.json').read_bytes())
+            thread = restore(thread.split('\n', 2)[2], entrance_proof['retainedToCurrent'])
+            thread = restore(thread, thread_proof['retainedToCurrent'])
             thread = restore(thread, proof['retainedToCurrent'])
             policy = body('DesktopOriginalDynamicRichCommentPolicy.kt')
             self.assertIn('fun TopTag(modifier: Modifier = Modifier)', reply)

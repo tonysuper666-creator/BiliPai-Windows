@@ -145,7 +145,8 @@
     "desktop/upstream-slices/v046-home-refresh-ui-policy",
     "desktop/upstream-slices/v046-message-notifications",
     "desktop/upstream-slices/v046-theme-tokens",
-    "desktop/upstream-slices/v046-design-system-leaves-a"
+    "desktop/upstream-slices/v046-design-system-leaves-a",
+    "desktop/upstream-slices/v046-comment-polish"
   ],
   "archives": [
     {
@@ -6449,6 +6450,53 @@
           "sha256": "dabfc89e60da5bd649693938b09a59099e2af1a4d8fc0cd24f4e3253964e964c",
           "hashNormalization": "raw",
           "blob": "7f72c26cad6f59173e28d33b483ee0fb836db08e"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-comment-polish",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-comment-polish/CommentDetailScreen.kt",
+          "sha256": "c945196aaee6ea42b946018c6b1b2e0670315df8e1a9c0114886e925d6a458b9",
+          "hashNormalization": "raw",
+          "blob": "30e280eca191993e4cb209f3174d50dcf18506e6"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-polish/CommentFraudFeedbackHost.kt",
+          "sha256": "817ab368beb50b975a74dc7eb59f3b0cb280ef52a4a99f51d80970270db28bb8",
+          "hashNormalization": "raw",
+          "blob": "08e04e60360779c7a39480b30d04038fb2387749"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-polish/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-polish/manifest.json",
+          "sha256": "5c6d05ec9cbd7cb0c9c7be9e080a8bb897bb37928d05d812afeec8f8fc37dda1",
+          "hashNormalization": "raw",
+          "blob": "070dd21161ea0f931cebb229c5b87f8af1542354"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-polish/VideoCommentAppearance.kt",
+          "sha256": "af4119fb7da72dbf4c42f7c61cf39339034fc4a1b50b0be4e1c065923bfc4106",
+          "hashNormalization": "raw",
+          "blob": "050bc92373027a72b7d678ab22b708d750c98514"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-polish/VideoCommentAppearancePolicyTest.kt",
+          "sha256": "a61a836dcc7b6b25970349368fc08c013fd50bcb4f6a006edf5cb571bf5da2b9",
+          "hashNormalization": "raw",
+          "blob": "11ab130182fd30f348f959a665dfe005b2646f9c"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-comment-polish/VideoDetailCommentFraudOverlayAdapter.kt",
+          "sha256": "a147bdc1b918c1a7aca36c99e164709f45a639aa2f32ff4c646cdd3a89db5eca",
+          "hashNormalization": "raw",
+          "blob": "044aa356a7ceb55cb90d8355744208128c83e9bf"
         }
       ]
     }
@@ -17064,6 +17112,81 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens emitted verbatim by the component producer with the original AppEntryIconPaletteTest. The direct-mode copies of the first three are excluded and AppChromeSizeTokens advances the v0.4.0 copy of the component chain. No call sites are added."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-polish/VideoCommentAppearance.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "050bc92373027a72b7d678ab22b708d750c98514",
+      "sha256": "af4119fb7da72dbf4c42f7c61cf39339034fc4a1b50b0be4e1c065923bfc4106",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-polish"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 VideoCommentAppearance.kt (comment body and nested reply font bodySmall to bodyMedium), emitted verbatim by the reply producer. The vendored direct-mode copy is excluded in prepareUpstreamSources."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearancePolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-polish/VideoCommentAppearancePolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "11ab130182fd30f348f959a665dfe005b2646f9c",
+      "sha256": "a61a836dcc7b6b25970349368fc08c013fd50bcb4f6a006edf5cb571bf5da2b9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-polish"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original two-case appearance policy class. Only the class name is renamed (V046VideoCommentAppearanceOriginalPolicyTest) so it cannot collide with a vendored test; no cases removed."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-polish/CommentFraudFeedbackHost.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "08e04e60360779c7a39480b30d04038fb2387749",
+      "sha256": "817ab368beb50b975a74dc7eb59f3b0cb280ef52a4a99f51d80970270db28bb8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-polish"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 shared fraud feedback host. Only the Android Toast and LocalContext seams become the mounted Windows comment platform feedback port."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-polish/VideoDetailCommentFraudOverlayAdapter.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "044aa356a7ceb55cb90d8355744208128c83e9bf",
+      "sha256": "a147bdc1b918c1a7aca36c99e164709f45a639aa2f32ff4c646cdd3a89db5eca",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-polish"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 video detail fraud adapter (thin caller of the shared host) on the existing Windows composer and platform types; replaces the 79e8-derived inline dialog body."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-comment-polish/CommentDetailScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "30e280eca191993e4cb209f3174d50dcf18506e6",
+      "sha256": "c945196aaee6ea42b946018c6b1b2e0670315df8e1a9c0114886e925d6a458b9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-comment-polish"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Verification source only: v0.4.6 differs from the pinned file by one conversationAnchorId line, which the BGM producer applies to its existing generated destination. The file is not emitted."
     }
   ],
   "buildStandaloneInputs": [

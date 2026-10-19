@@ -52,3 +52,11 @@ It states that piliplus_custom_icons.ttf, canonical path app/src/main/res/font/p
 That LICENSE is shipped here as piliplus-artwork-LICENSE, the same blob as piliplus-LICENSE.txt.
 Windows processResources copies desktop/upstream-slices/v037-shared-tabs-progress-closure/piliplus_custom_icons.ttf into fonts/piliplus_custom_icons.ttf.
 PiliPlusDanmakuSendIcon loads /fonts/piliplus_custom_icons.ttf.
+
+NagramChatAvatarPlacement.kt
+Canonical path: app/src/main/java/com/android/purebilibili/feature/video/ui/components/NagramChatAvatarPlacement.kt.
+Archive: desktop/upstream-slices/v046-comment-list/NagramChatAvatarPlacement.kt, emitted unchanged by desktop/tools/v046_comment_list.py.
+The header says: Derived from Telegram for Android / NextAlone Nagram, ChatActivity.drawChild(). Copyright Nikolai Kudashov, 2013-2018. SPDX-License-Identifier: GPL-2.0-or-later. Distributed as part of BiliPai under GPLv3. Source revision fb56ea9801e5de68c60f0152b444bbe2a0fda520.
+Upstream v0.4.6 lists the same code in its open source licenses screen as "Telegram / Nagram Chat Avatar Placement", license GPL-2.0-or-later (distributed under GPLv3).
+piliplus-LICENSE.txt is the GNU General Public License, Version 3, the same git blob as the upstream repository LICENSE.
+This entry is a provenance record of what the source header and the upstream notice state. It is not legal advice.

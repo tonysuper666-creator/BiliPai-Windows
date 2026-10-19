@@ -56,18 +56,6 @@
       ]
     },
     {
-      "reason": "CommentFraudFeedbackHost is imported by the carried v046 comment-list archive and not carried.",
-      "closedBy": "cmt-closure-merge-and-polish",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.video.ui.components.CommentFraudFeedbackHost"
-        }
-      ]
-    },
-    {
       "reason": "Bangumi player feature symbols imported by the carried v046 comment-list archive.",
       "closedBy": "bgm-player-viewmodel-and-features",
       "closedByEvidence": "roadmap",
@@ -506,6 +494,17 @@
       "retiredBy": "desktop/upstream-slices/v046-home-refresh-ui-policy (HomeRefreshUiPolicy.kt, emitted by desktop/tools/v046_home_refresh_ui_policy.py; the vendored direct copy is excluded in prepareUpstreamSources)",
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_home_refresh_ui_policy_source.py",
       "closedBy": "fnd-home-card-cascade-definers",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "CommentFraudFeedbackHost",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.video.ui.components",
+      "reason": "Roadmap seed CommentFraudFeedbackHost, imported by the carried v0.4.6 comment-list archive (BangumiPlayerContent.kt, VideoCommentSheetHost.kt). CLOSED by the whole v0.4.6 shared fraud feedback host carried in desktop/upstream-slices/v046-comment-polish (CommentFraudFeedbackHost.kt, adapted to the Windows feedback port by desktop/tools/v046_comment_polish.py and emitted by the video comment producer); the video detail fraud adapter and the Windows fullscreen comment host both call it. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt declares internal fun CommentFraudFeedbackHost",
+      "retiredBy": "desktop/upstream-slices/v046-comment-polish (CommentFraudFeedbackHost.kt, emitted by desktop/tools/v046_comment_polish.py through extract-upstream-video-comment-ui.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_comment_polish_source.py",
+      "closedBy": "cmt-closure-merge-and-polish",
       "closedByEvidence": "roadmap"
     }
   ],

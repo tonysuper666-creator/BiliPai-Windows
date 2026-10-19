@@ -1747,6 +1747,7 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.data.model', 'resolveHistoryProgressLabel'),
     ('com.android.purebilibili.data.model', 'resolveVideoDisplayProgressState'),
     ('com.android.purebilibili.feature.home', 'resolveOldContentDividerContainerColor'),
+    ('com.android.purebilibili.feature.video.ui.components', 'CommentFraudFeedbackHost'),
 )
 
 
@@ -1826,13 +1827,13 @@ class CurrentIntegrationTree(unittest.TestCase):
                              'MAX_SCRATCH_ROOT)')
 
     MISSING_PROJECT_SYMBOLS = (
-        'BottomPagerPreloadedItemsSaver', 'CommentFraudFeedbackHost', 'DanmakuRenderPauseState',
+        'BottomPagerPreloadedItemsSaver', 'DanmakuRenderPauseState',
         'DynamicFeedPageDataSource', 'PlaybackLoadException', 'RecentPlaybackStore', 'StartupAnimationStyle',
         'SubtitleContentRepository', 'VideoDetailPlaybackErrorNotice', 'VideoLoadStage', 'VideoLoadTimeline',
         'VideoNetworkPressureObserver')
 
     def test_a_missing_project_definer_is_never_taught_as_an_ambient_name(self):
-        # the carried archives bare-use these twelve names, whose definers no source declares; they used to be
+        # the carried archives bare-use these eleven names, whose definers no source declares; they used to be
         # learned as ambient, so a generated file that bare-used one of them passed the gate and failed the compile
         ambient = self.result.ambient
         self.assertGreater(len(ambient), 500)

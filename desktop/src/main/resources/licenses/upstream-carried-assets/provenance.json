@@ -125,6 +125,14 @@
       ],
       "archivePath": "desktop/upstream-slices/v040-chrome-actions/AppElasticPress.kt",
       "canonicalPath": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppElasticPress.kt"
+    },
+    {
+      "name": "NagramChatAvatarPlacement.kt",
+      "notices": [
+        "piliplus-LICENSE.txt"
+      ],
+      "archivePath": "desktop/upstream-slices/v046-comment-list/NagramChatAvatarPlacement.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NagramChatAvatarPlacement.kt"
     }
   ]
 }

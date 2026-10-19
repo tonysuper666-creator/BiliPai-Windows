@@ -98,6 +98,8 @@ def portrait_metadata_before_native_delta(path,text):
 
 def generate(repo,output,standalone=False):
  global parser
+ from v046_comment_polish import validate_outputs as validate_comment_polish_outputs
+ validate_comment_polish_outputs(repo,output)
  repo=Path(repo);output=Path(output);parser=module('original_fullscreen_tokens',repo/'desktop/tools/sync-upstream.py');lex=module('original_fullscreen_balanced',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py');rows=[]
  for spec in SPECS:
   text=original(repo,spec['origin'],spec['originalSHA'])
@@ -137,6 +139,8 @@ def generate(repo,output,standalone=False):
   if spec['output']=='com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHost.kt':
    from v046_comment_list import advance_main_comment_list
    text=advance_main_comment_list(repo,text,output)
+   from v046_comment_polish import advance_comment_sheet_host
+   text=advance_comment_sheet_host(repo,text,output)
   from v046_fullscreen_tap_gestures import apply_and_record as apply_fullscreen_tap_gestures
   text=apply_fullscreen_tap_gestures(repo,spec['output'],text,output)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))

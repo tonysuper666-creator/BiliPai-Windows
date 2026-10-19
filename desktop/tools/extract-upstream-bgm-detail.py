@@ -165,6 +165,8 @@ def comment_detail_root_entry_delta(relative,body):
  return body
 
 def generate(repo,output):
+    from v046_comment_polish import validate_outputs as validate_comment_polish_outputs
+    validate_comment_polish_outputs(repo,output)
     shared=module(Path(__file__).with_name('extract-upstream-dynamic-reply-protocol.py'),'bgm_identity')
     original,identities=shared.load_pinned_sources(repo,SOURCES)
     original,identities=advance_video_detail_skeleton_source(repo,original,identities)
@@ -178,6 +180,9 @@ def generate(repo,output):
         if relative=='com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt':
             from v046_comment_list import advance_bgm_comment_content
             body=advance_bgm_comment_content(repo,body,output)
+        elif relative=='com/android/purebilibili/feature/comment/CommentDetailScreen.kt':
+            from v046_comment_polish import advance_comment_detail_screen
+            body=advance_comment_detail_screen(repo,body,output)
         target=output/relative;v=str(target.absolute());safe=Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
         safe.parent.mkdir(parents=True,exist_ok=True);safe.write_text(body,encoding='utf-8',newline='\n');return target
     package='com/android/purebilibili/feature/audio/bgm/'
