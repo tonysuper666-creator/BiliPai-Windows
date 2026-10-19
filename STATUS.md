@@ -1,9 +1,9 @@
 # Grok Bot status
 
-- Time (UTC): 2026-10-19 04:00:43
-- Current task: T9 #25 step 1 (start)
+- Time (UTC): 2026-10-19 04:02:19
+- Current task: T9 #13 part 1 (Grok implementing)
 - Completed tasks: T6 (grokbot/r1-test-currency @ 3d0deb5cf)
-- Current step: Root 23bc370bd authorized T9 slice-owned registration edits (new archive dir only, catalog appends, tool-computed pins, srcDir/inputs wiring); #3/#46/#35 archive parts now unblocked. merged 3c4a93457
+- Current step: #25 step1: not applicable on Windows (no rank request/caller), report pushed 1ffb0e900, no code change
 - Last Gradle: -
 - Blocked: none
 - Last box reset: 2026-10-18 ~12:50 UTC (re-provision: JDK, /tmp, ~/.gradle, build dirs wiped); plain reboots since (latest 2026-10-18 20:21:27 local BST) kept state
