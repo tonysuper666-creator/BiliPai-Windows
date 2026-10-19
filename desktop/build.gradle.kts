@@ -3211,6 +3211,8 @@ val extractOriginalVideoStatusLabels by tasks.registering(Exec::class) {
         "tools/v025_source_paths.py", "tools/v025-canonical-sources.json")
     inputs.dir("upstream-slices/v041-video-status-labels")
     inputs.dir("upstream-slices/v043-search-up-author")
+    inputs.file("tools/v046_core_data_policies.py")
+    inputs.dir("upstream-slices/v046-core-data-policies")
     inputs.files(listOf(
         "core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt",
         "core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt",

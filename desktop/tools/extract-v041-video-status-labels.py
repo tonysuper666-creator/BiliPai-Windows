@@ -7,12 +7,14 @@ FavoriteModels (hook FM1), plus the whole v043 native Home ListModels/Recommenda
 follow-up under --output. The original status-label tests, test-only durationSeconds/asVideoItem
 support, UP-search tests and twenty original Home model/navigation cases go under --tests-output. Every pin, exact-once anchor and
 inverse replay (including the consumer hooks applied by the card/screen generators) is verified
-before any file is written; the proof receipt lands beside the main sources.
+before any file is written; the proof receipt lands beside the main sources. It also emits the three
+v0.4.6 data.model policies and their original test via v046_core_data_policies.
 """
 import argparse
 import json
 from pathlib import Path
 from v041_video_status_labels import generate
+import v046_core_data_policies as policies
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
@@ -20,4 +22,10 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--tests-output', type=Path, required=True)
     args = parser.parse_args()
-    print(json.dumps(generate(args.repo.resolve(), args.output.resolve(), args.tests_output.resolve()), sort_keys=True))
+    repo = args.repo.resolve()
+    output = args.output.resolve()
+    tests_output = args.tests_output.resolve()
+    policies.validate_outputs(repo, output, tests_output)
+    summary = generate(repo, output, tests_output)
+    policies.emit(repo, output, tests_output)
+    print(json.dumps(summary, sort_keys=True))

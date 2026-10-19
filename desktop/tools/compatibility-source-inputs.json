@@ -138,7 +138,8 @@
     "desktop/upstream-slices/v046-comment-list",
     "desktop/upstream-slices/v046-favorite-editor",
     "desktop/upstream-slices/v046-comment-thread",
-    "desktop/upstream-slices/v046-identity-badges"
+    "desktop/upstream-slices/v046-identity-badges",
+    "desktop/upstream-slices/v046-core-data-policies"
   ],
   "archives": [
     {
@@ -6119,6 +6120,47 @@
           "sha256": "22a6971b0ccdb440a7abf728b317ab027ff30a11065cf5f45480cb2b610d9c77",
           "hashNormalization": "raw",
           "blob": "ad4304d88607d708e0f958c636d1392d210d390c"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-core-data-policies",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-core-data-policies/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-core-data-policies/manifest.json",
+          "sha256": "381c7a21706c7e0558ce8538563fcca502cd7aaa45cfc9289301fb7a08a2daa4",
+          "hashNormalization": "raw",
+          "blob": "64b16d03a85ec5f51e6e4a4e9e997bd71432de40"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-core-data-policies/VideoCardStatsTextPolicy.kt",
+          "sha256": "3406eaa4fc0933ad15be7c033f0ab6399f5dba313dd6c026fcf9bf61f160d3bf",
+          "hashNormalization": "raw",
+          "blob": "503e8c9090dd7240039d4639297dd8d0be9ad545"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-core-data-policies/VideoProgressDisplayPolicy.kt",
+          "sha256": "65042496b8e7704945fe3de882a3996c972dd670f28db06c3a539769efa05d3f",
+          "hashNormalization": "raw",
+          "blob": "2aacc3a00535b49caa3112ec6c9ca833396b9545"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-core-data-policies/VideoProgressDisplayPolicyTest.kt",
+          "sha256": "ca72dd9d3a4394e7074f81d17eb83760493722a99b3a368d382a6a2e09a36131",
+          "hashNormalization": "raw",
+          "blob": "027b94ea36ee06c44ba5618a4c2cc269ef6d38a1"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-core-data-policies/WatchLaterProgressPolicy.kt",
+          "sha256": "6cc40fdad3d7032f344795f666a7033551dc7149161c2a9d34507f3a8da49fb9",
+          "hashNormalization": "raw",
+          "blob": "b506583d0ee9d1a251d911fa68ac884eafbbb906"
         }
       ]
     }
@@ -16224,6 +16266,66 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 UserVipBadge.kt: resolveUserVipPink, userVipPink, and the pink UserVipBadge with white text. resolveVipBadgeColors and AccessibleVipBadgeColors remain. Replaces the pinned home-page policy-extract output."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-core-data-policies/VideoProgressDisplayPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2aacc3a00535b49caa3112ec6c9ca833396b9545",
+      "sha256": "65042496b8e7704945fe3de882a3996c972dd670f28db06c3a539769efa05d3f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-core-data-policies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "whole v0.4.6 core-data VideoProgressDisplayPolicy, WatchLaterProgressPolicy, VideoCardStatsTextPolicy and the original VideoProgressDisplayPolicyTest"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/WatchLaterProgressPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-core-data-policies/WatchLaterProgressPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "b506583d0ee9d1a251d911fa68ac884eafbbb906",
+      "sha256": "6cc40fdad3d7032f344795f666a7033551dc7149161c2a9d34507f3a8da49fb9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-core-data-policies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "whole v0.4.6 core-data VideoProgressDisplayPolicy, WatchLaterProgressPolicy, VideoCardStatsTextPolicy and the original VideoProgressDisplayPolicyTest"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/VideoCardStatsTextPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-core-data-policies/VideoCardStatsTextPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "503e8c9090dd7240039d4639297dd8d0be9ad545",
+      "sha256": "3406eaa4fc0933ad15be7c033f0ab6399f5dba313dd6c026fcf9bf61f160d3bf",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-core-data-policies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "whole v0.4.6 core-data VideoProgressDisplayPolicy, WatchLaterProgressPolicy, VideoCardStatsTextPolicy and the original VideoProgressDisplayPolicyTest"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-core-data-policies/VideoProgressDisplayPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "027b94ea36ee06c44ba5618a4c2cc269ef6d38a1",
+      "sha256": "ca72dd9d3a4394e7074f81d17eb83760493722a99b3a368d382a6a2e09a36131",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-core-data-policies"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "whole v0.4.6 core-data VideoProgressDisplayPolicy, WatchLaterProgressPolicy, VideoCardStatsTextPolicy and the original VideoProgressDisplayPolicyTest"
     }
   ],
   "buildStandaloneInputs": [

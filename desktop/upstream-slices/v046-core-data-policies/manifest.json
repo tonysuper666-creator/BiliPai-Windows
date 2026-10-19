@@ -1,0 +1,42 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicy.kt",
+      "filename": "VideoProgressDisplayPolicy.kt",
+      "bytes": 2976,
+      "sha256": "65042496b8e7704945fe3de882a3996c972dd670f28db06c3a539769efa05d3f",
+      "gitBlob": "2aacc3a00535b49caa3112ec6c9ca833396b9545"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/WatchLaterProgressPolicy.kt",
+      "filename": "WatchLaterProgressPolicy.kt",
+      "bytes": 844,
+      "sha256": "6cc40fdad3d7032f344795f666a7033551dc7149161c2a9d34507f3a8da49fb9",
+      "gitBlob": "b506583d0ee9d1a251d911fa68ac884eafbbb906"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/VideoCardStatsTextPolicy.kt",
+      "filename": "VideoCardStatsTextPolicy.kt",
+      "bytes": 1430,
+      "sha256": "3406eaa4fc0933ad15be7c033f0ab6399f5dba313dd6c026fcf9bf61f160d3bf",
+      "gitBlob": "503e8c9090dd7240039d4639297dd8d0be9ad545"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/data/model/VideoProgressDisplayPolicyTest.kt",
+      "filename": "VideoProgressDisplayPolicyTest.kt",
+      "bytes": 2789,
+      "sha256": "ca72dd9d3a4394e7074f81d17eb83760493722a99b3a368d382a6a2e09a36131",
+      "gitBlob": "027b94ea36ee06c44ba5618a4c2cc269ef6d38a1"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 core-data VideoProgressDisplayPolicy, WatchLaterProgressPolicy, VideoCardStatsTextPolicy, and the original VideoProgressDisplayPolicyTest.",
+  "purpose": "Emit the three relocated data.model policies verbatim so carried references resolve, plus the unchanged four-case JUnit5 test."
+}
