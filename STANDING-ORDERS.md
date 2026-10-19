@@ -7,7 +7,7 @@
 2. 做 QUEUE.md 里第一个状态不是 DONE 的任务（TODO 或 IN-PROGRESS）。任务的细节在 tasks/ 目录里同名文件。
 3. 做完一个任务：把报告推到 grokbot/<任务编号>-report 分支（报告放 grokbot-reports/，代码改动放同一分支的单独提交），然后更新状态（见第 3 节），再回到第 1 步取下一个任务。
 4. VERIFY.md 里列出的“待验证的提交”优先于 QUEUE 里状态为 TODO 的任务，但不打断一个正在跑的 Gradle。
-5. 没有任务了就每 20 分钟回到第 1 步检查一次，最多检查到 10 小时后结束，结束时写最终状态。
+5. 没有任务了就每 20 分钟回到第 1 步检查一次，一直检查到 Root 在 QUEUE.md 最上面写“STOP”，或者从你第一次读到本条算起满 36 小时（取先到的）才结束，结束时写最终状态。Root 会持续往 VERIFY.md 追加待验证的提交，别在 10 小时处自行收工。
 
 ## 2. 铁律（任何时候都不能违反）
 - 只访问本仓库 https://github.com/tonysuper666-creator/BiliPai-Windows。绝不访问、克隆、拉取、联系 jay3-yy/BiliPai（不提 PR、Issue、评论、消息）。
