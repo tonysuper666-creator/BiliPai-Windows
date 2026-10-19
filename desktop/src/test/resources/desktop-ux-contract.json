@@ -1,0 +1,963 @@
+{
+  "schema": 1,
+  "name": "desktop-ux",
+  "source": "design-20261018.md revision 2 sections 3 to 6 and 8.2; root-decisions-20261019.md D2",
+  "units": "Lengths are dp after the app zoom unless a key says px, dip, sp, ms, percent or hz. dp = physical px / (windows_scale x app_zoom). Derived integers are rounded half to even from exact rational arithmetic, as in the spec tables (Kotlin: kotlin.math.round, never roundToInt).",
+  "regenerate": "python desktop/tools/ux/ux_model.py --write recomputes every derived value (displays.derived and derived_status, resolved golden widths, derive_status, every expect) and rewrites this file and the Kotlin test copy. A status is measured only when every input is: the maximised height rests on the assumed maximised_chrome_dip.",
+  "displays": {
+    "common": {
+      "maximised_chrome_dip": 64,
+      "maximised_chrome_status": "assumed",
+      "maximised_chrome_note": "Caption bar plus taskbar in Windows DIP. Chosen so the spec 4K row is 1101 dp high (assumed; a real-window item).",
+      "rounding": "half-even"
+    },
+    "primary": {
+      "label": "5K2K 39 inch 165 Hz",
+      "px": [5120, 2160],
+      "windows_scale_percent": 150,
+      "app_zoom_percent": 125,
+      "refresh_hz": 165,
+      "diagonal_inch": 39,
+      "status": "measured",
+      "measured_on": "2026-10-19",
+      "source": "root-decisions-20261019.md D2",
+      "role": "primary",
+      "derived": {"width_dp": 2731, "screen_height_dp": 1152, "maximised_height_dp": 1101},
+      "derived_status": {"width_dp": "measured", "screen_height_dp": "measured", "maximised_height_dp": "assumed"}
+    },
+    "secondary": {
+      "label": "4K 32 inch",
+      "px": [3840, 2160],
+      "windows_scale_percent": 150,
+      "app_zoom_percent": 125,
+      "diagonal_inch": 32,
+      "status": "assumed",
+      "source": "spec 3.5; Windows scale not measured",
+      "role": "secondary",
+      "derived": {"width_dp": 2048, "screen_height_dp": 1152, "maximised_height_dp": 1101},
+      "derived_status": {"width_dp": "assumed", "screen_height_dp": "assumed", "maximised_height_dp": "assumed"}
+    }
+  },
+  "tokens": {
+    "control_height": 32,
+    "row_height": {"list": 40, "nav": 40, "settings": [36, 40, 48]},
+    "icon": 20,
+    "icon_hit": [32, 36],
+    "hit_floor": 24,
+    "radius": {"control": 8, "row": 10, "menu": 12, "flyout": 12, "panel": 16},
+    "scrollbar": {"thumb": 8, "hit_strip": 12},
+    "focus_ring": {"outer": 2, "inner": 1},
+    "motion_ms": [100, 160],
+    "motion_reduced": "none",
+    "tooltip_delay_ms": {"kit": 500, "player": 400, "rail_expanded": 700},
+    "toast_ms": {"plain": 2400, "with_action": 5000},
+    "zoom_percent": {"min": 50, "max": 200, "default": 125, "step": 5},
+    "min_window_dp": [960, 680]
+  },
+  "flags": {
+    "namespace": "windows_ux",
+    "kotlin_file": "appearance/DesktopWindowsUxModel.kt",
+    "fields": [
+      {
+        "key": "rail_mode",
+        "kotlin": "railMode",
+        "enum": "DesktopWindowsUxRailMode",
+        "values": ["AUTO", "EXPANDED", "COLLAPSED", "CLASSIC_TEXT"],
+        "default": "AUTO"
+      },
+      {
+        "key": "player_layout",
+        "kotlin": "playerLayout",
+        "enum": "DesktopWindowsUxPlayerLayout",
+        "values": ["LEGACY", "DESKTOP"],
+        "default": "LEGACY"
+      },
+      {
+        "key": "home_layout",
+        "kotlin": "homeLayout",
+        "enum": "DesktopWindowsUxHomeLayout",
+        "values": ["DESKTOP", "CLASSIC"],
+        "default": "DESKTOP"
+      },
+      {
+        "key": "card_interactions",
+        "kotlin": "cardInteractions",
+        "enum": "DesktopWindowsUxCardInteractions",
+        "values": ["ON", "OFF"],
+        "default": "ON"
+      },
+      {
+        "key": "details_panel",
+        "kotlin": "detailsPanel",
+        "enum": "DesktopWindowsUxDetailsPanel",
+        "values": ["AUTO", "OPEN", "CLOSED"],
+        "default": "AUTO"
+      },
+      {
+        "key": "wheel_action",
+        "kotlin": "wheelAction",
+        "enum": "DesktopWindowsUxWheelAction",
+        "values": ["VOLUME", "SEEK", "NONE"],
+        "default": "VOLUME"
+      },
+      {
+        "key": "click_action",
+        "kotlin": "clickAction",
+        "enum": "DesktopWindowsUxClickAction",
+        "values": ["PAUSE", "NONE"],
+        "default": "PAUSE"
+      },
+      {
+        "key": "double_click_action",
+        "kotlin": "doubleClickAction",
+        "enum": "DesktopWindowsUxDoubleClickAction",
+        "values": ["FULLSCREEN", "NONE"],
+        "default": "FULLSCREEN"
+      }
+    ],
+    "details_panel_width": {"key": "details_panel_width", "kotlin": "detailsPanelWidthDp", "min": 320, "max": 560, "default": null},
+    "window": {
+      "keys": ["window_x", "window_y", "window_width", "window_height", "window_maximized"],
+      "kotlin": "windowBounds",
+      "min_extent": 100,
+      "max_extent": 32768,
+      "max_abs_origin": 100000,
+      "unit": "AWT frame bounds as java.awt.Window reports them; sanity limits only, clamping to a visible monitor is W3"
+    },
+    "reset_keys": [
+      "rail_mode",
+      "player_layout",
+      "home_layout",
+      "card_interactions",
+      "details_panel",
+      "details_panel_width",
+      "wheel_action",
+      "click_action",
+      "double_click_action"
+    ],
+    "notes": [
+      "Defaults are the first listed value of each flag in spec 5.2, which agrees with the stated defaults (rail_mode AUTO, player_layout LEGACY) and with spec 6.8 (wheel VOLUME, click PAUSE, double click FULLSCREEN).",
+      "Spec 5.2 states no default for home_layout and card_interactions: the first listed value (DESKTOP, ON) is used. Nothing reads either flag in X0; H1 and H2 decide whether they ship on.",
+      "player_layout stays LEGACY until the user accepts the real-window list; the flip is one constant.",
+      "A missing key follows the default. An explicit choice is stored as an explicit key and survives a later default flip."
+    ]
+  },
+  "rail": {
+    "modes": ["AUTO", "EXPANDED", "COLLAPSED", "CLASSIC_TEXT"],
+    "footprint": {"expanded": 216, "collapsed": 72, "classic": 172},
+    "margin": 8,
+    "panel_expanded": 200,
+    "panel_collapsed": 56,
+    "panel_radius": 16,
+    "min_content_width_expanded": 884,
+    "thresholds": {
+      "AUTO": {"expand_at": 1280, "collapse_below": 1264, "reexpand_at": 1280},
+      "EXPANDED": {"expand_at": 1100, "collapse_below": 1084, "reexpand_at": 1116}
+    },
+    "metrics": {
+      "header": 48,
+      "search_row": 36,
+      "search_collapsed": 40,
+      "item": 40,
+      "item_radius": 10,
+      "item_icon": 20,
+      "item_gap": 12,
+      "selected_fill_percent": 16,
+      "hover_percent": 8,
+      "pressed_percent": 12,
+      "selected_pill": [3, 16],
+      "badge": 18,
+      "badge_cap": 99,
+      "badge_dot": 8,
+      "now_playing_bar": 56
+    },
+    "groups": {
+      "browse": ["HOME", "DYNAMIC", "LIVE", "LISTEN_VIDEO"],
+      "library": ["HISTORY", "FAVORITE", "WATCHLATER", "DOWNLOADS"],
+      "footer": ["ACCOUNT_SWITCH", "PROFILE", "PLUGINS", "SETTINGS"],
+      "excluded": ["STORY"]
+    },
+    "fixed_destinations": ["HOME", "DYNAMIC", "LIVE", "LISTEN_VIDEO", "HISTORY", "FAVORITE", "WATCHLATER", "DOWNLOADS", "PROFILE"],
+    "golden": [
+      {
+        "id": "auto-fresh-960",
+        "mode": "AUTO",
+        "width_dp": 960,
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "auto-fresh-1263",
+        "mode": "AUTO",
+        "width_dp": 1263,
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "auto-fresh-1264",
+        "mode": "AUTO",
+        "width_dp": 1264,
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "auto-fresh-1279",
+        "mode": "AUTO",
+        "width_dp": 1279,
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "auto-fresh-1280",
+        "mode": "AUTO",
+        "width_dp": 1280,
+        "expect": {"rail": "expanded", "footprint": 216}
+      },
+      {
+        "id": "auto-expanded-1279",
+        "mode": "AUTO",
+        "width_dp": 1279,
+        "previous": "expanded",
+        "expect": {"rail": "expanded", "footprint": 216}
+      },
+      {
+        "id": "auto-expanded-1264",
+        "mode": "AUTO",
+        "width_dp": 1264,
+        "previous": "expanded",
+        "expect": {"rail": "expanded", "footprint": 216}
+      },
+      {
+        "id": "auto-expanded-1263",
+        "mode": "AUTO",
+        "width_dp": 1263,
+        "previous": "expanded",
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "auto-collapsed-1279",
+        "mode": "AUTO",
+        "width_dp": 1279,
+        "previous": "collapsed",
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "auto-collapsed-1280",
+        "mode": "AUTO",
+        "width_dp": 1280,
+        "previous": "collapsed",
+        "expect": {"rail": "expanded", "footprint": 216}
+      },
+      {
+        "id": "expanded-fresh-1099",
+        "mode": "EXPANDED",
+        "width_dp": 1099,
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "expanded-fresh-1100",
+        "mode": "EXPANDED",
+        "width_dp": 1100,
+        "expect": {"rail": "expanded", "footprint": 216}
+      },
+      {
+        "id": "expanded-expanded-1084",
+        "mode": "EXPANDED",
+        "width_dp": 1084,
+        "previous": "expanded",
+        "expect": {"rail": "expanded", "footprint": 216}
+      },
+      {
+        "id": "expanded-expanded-1083",
+        "mode": "EXPANDED",
+        "width_dp": 1083,
+        "previous": "expanded",
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "expanded-collapsed-1115",
+        "mode": "EXPANDED",
+        "width_dp": 1115,
+        "previous": "collapsed",
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "expanded-collapsed-1116",
+        "mode": "EXPANDED",
+        "width_dp": 1116,
+        "previous": "collapsed",
+        "expect": {"rail": "expanded", "footprint": 216}
+      },
+      {
+        "id": "collapsed-4000",
+        "mode": "COLLAPSED",
+        "width_dp": 4000,
+        "expect": {"rail": "collapsed", "footprint": 72}
+      },
+      {
+        "id": "classic-1600",
+        "mode": "CLASSIC_TEXT",
+        "width_dp": 1600,
+        "expect": {"rail": "classic", "footprint": 172}
+      }
+    ]
+  },
+  "feed": {
+    "rules": {
+      "side_padding": 24,
+      "gutter": 16,
+      "min_card": 216,
+      "max_card": 320,
+      "card_floor": 160,
+      "card_presets": [160, 200, 260, 320],
+      "min_columns": 2,
+      "max_columns_below_wide": 8,
+      "max_columns_wide": 10,
+      "wide_from_content_width": 2800,
+      "compact_metadata_off_from_card": 200,
+      "min_content_width": 884,
+      "dropped_legacy_cap": 1280
+    },
+    "sweep": {"from": 960, "to": 4200, "rail_modes": ["AUTO", "EXPANDED", "COLLAPSED"]},
+    "golden": [
+      {
+        "id": "spec-w960",
+        "width_dp": 960,
+        "expect": {"rail": "collapsed", "wc": 888, "cols": 3, "card": 269.3, "grid": 840, "capped": false}
+      },
+      {
+        "id": "spec-w1088",
+        "width_dp": 1088,
+        "expect": {"rail": "collapsed", "wc": 1016, "cols": 4, "card": 230, "grid": 968, "capped": false}
+      },
+      {
+        "id": "spec-w1279",
+        "width_dp": 1279,
+        "expect": {"rail": "collapsed", "wc": 1207, "cols": 5, "card": 219, "grid": 1159, "capped": false}
+      },
+      {
+        "id": "spec-w1280",
+        "width_dp": 1280,
+        "expect": {"rail": "expanded", "wc": 1064, "cols": 4, "card": 242, "grid": 1016, "capped": false}
+      },
+      {
+        "id": "spec-w1600",
+        "width_dp": 1600,
+        "expect": {"rail": "expanded", "wc": 1384, "cols": 5, "card": 254.4, "grid": 1336, "capped": false}
+      },
+      {
+        "id": "spec-w1920",
+        "width_dp": 1920,
+        "expect": {"rail": "expanded", "wc": 1704, "cols": 7, "card": 222.9, "grid": 1656, "capped": false}
+      },
+      {
+        "id": "spec-w2730-literal",
+        "width_dp": 2730,
+        "expect": {"rail": "expanded", "wc": 2514, "cols": 8, "card": 294.2, "grid": 2466, "capped": false}
+      },
+      {
+        "id": "spec-w3000",
+        "width_dp": 3000,
+        "expect": {"rail": "expanded", "wc": 2784, "cols": 8, "card": 320, "grid": 2672, "capped": true}
+      },
+      {
+        "id": "spec-w3840",
+        "width_dp": 3840,
+        "expect": {"rail": "expanded", "wc": 3624, "cols": 10, "card": 320, "grid": 3344, "capped": true}
+      },
+      {
+        "id": "spec-w2048-secondary-125",
+        "width_dp": 2048,
+        "derive": {"display": "secondary", "app_zoom_percent": 125, "extent": "maximised"},
+        "derive_status": "assumed",
+        "expect": {"rail": "expanded", "wc": 1832, "cols": 7, "card": 241.1, "grid": 1784, "capped": false}
+      },
+      {
+        "id": "spec-w2560-secondary-100",
+        "width_dp": 2560,
+        "derive": {"display": "secondary", "app_zoom_percent": 100, "extent": "maximised"},
+        "derive_status": "assumed",
+        "expect": {"rail": "expanded", "wc": 2344, "cols": 8, "card": 273, "grid": 2296, "capped": false}
+      },
+      {
+        "id": "spec-w3413-primary-100",
+        "width_dp": 3413,
+        "derive": {"display": "primary", "app_zoom_percent": 100, "extent": "maximised"},
+        "derive_status": "measured",
+        "expect": {"rail": "expanded", "wc": 3197, "cols": 10, "card": 300.5, "grid": 3149, "capped": false}
+      },
+      {
+        "id": "primary-125",
+        "width_dp": 2731,
+        "derive": {"display": "primary", "app_zoom_percent": 125, "extent": "maximised"},
+        "derive_status": "measured",
+        "expect": {"rail": "expanded", "wc": 2515, "cols": 8, "card": 294.4, "grid": 2467, "capped": false}
+      },
+      {
+        "id": "expanded-mode-1100",
+        "mode": "EXPANDED",
+        "width_dp": 1100,
+        "expect": {"rail": "expanded", "wc": 884, "cols": 3, "card": 268, "grid": 836, "capped": false}
+      },
+      {
+        "id": "expanded-mode-1099",
+        "mode": "EXPANDED",
+        "width_dp": 1099,
+        "expect": {"rail": "collapsed", "wc": 1027, "cols": 4, "card": 232.8, "grid": 979, "capped": false}
+      },
+      {
+        "id": "collapsed-mode-2048",
+        "mode": "COLLAPSED",
+        "width_dp": 2048,
+        "expect": {"rail": "collapsed", "wc": 1976, "cols": 8, "card": 227, "grid": 1928, "capped": false}
+      },
+      {
+        "id": "classic-rail-1600",
+        "mode": "CLASSIC_TEXT",
+        "width_dp": 1600,
+        "expect": {"rail": "classic", "wc": 1428, "cols": 6, "card": 216.7, "grid": 1380, "capped": false}
+      },
+      {
+        "id": "preset-260-w1600",
+        "width_dp": 1600,
+        "min_card": 260,
+        "expect": {"rail": "expanded", "wc": 1384, "cols": 4, "card": 320, "grid": 1328, "capped": true}
+      },
+      {
+        "id": "preset-160-w1280",
+        "width_dp": 1280,
+        "min_card": 160,
+        "expect": {"rail": "expanded", "wc": 1064, "cols": 5, "card": 190.4, "grid": 1016, "capped": false}
+      }
+    ]
+  },
+  "player": {
+    "rules": {
+      "aspect": [16, 9],
+      "default_open_from_width": 1280,
+      "dock_min_window_width": 640,
+      "fullscreen_min_aspect": 2,
+      "panel_min": 320,
+      "panel_max": 560,
+      "default_percent": 22,
+      "default_clamp": [340, 480],
+      "min_stage": 480,
+      "tier_l_min": 960,
+      "tier_m_min": 640,
+      "dock_capsule_max": 1280,
+      "dock_capsule_margin": 32,
+      "tier_basis": "exact video width, not the rounded one"
+    },
+    "overlay": {
+      "top_bar": {"height": 48, "top_margin": 8, "side_margin": 16, "back_button": 36, "title_sp": 15, "scrim": 96},
+      "dock": {
+        "height": 48,
+        "radius": 24,
+        "padding": [10, 6],
+        "button_hit": 36,
+        "glyph": 20,
+        "button_gap": 2,
+        "group_gap": 8,
+        "bottom_gap": 16,
+        "rail_gap": 8,
+        "scrim": 160
+      },
+      "seek_rail": {"idle": 3, "active": 6, "hit": 20, "side_margin": 16, "chapter_gap": 2, "bubble": [232, 130]},
+      "side_panel": {"header": 44, "splitter_hit": 6},
+      "error_card": 360
+    },
+    "golden": [
+      {
+        "id": "min-default",
+        "w": 960,
+        "h": 680,
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [960, 540],
+          "tier": "L",
+          "bars": {"axis": "top_bottom", "size": 70},
+          "dock": 928
+        }
+      },
+      {
+        "id": "min-panel-open",
+        "w": 960,
+        "h": 680,
+        "panel": "OPEN",
+        "expect": {
+          "docked": true,
+          "panel": 340,
+          "video": [620, 349],
+          "tier": "S",
+          "bars": {"axis": "top_bottom", "size": 166},
+          "dock": 588
+        }
+      },
+      {
+        "id": "w1088-default",
+        "w": 1088,
+        "h": 720,
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [1088, 612],
+          "tier": "L",
+          "bars": {"axis": "top_bottom", "size": 54},
+          "dock": 1056
+        }
+      },
+      {
+        "id": "w1088-panel-open",
+        "w": 1088,
+        "h": 720,
+        "panel": "OPEN",
+        "expect": {
+          "docked": true,
+          "panel": 340,
+          "video": [748, 421],
+          "tier": "M",
+          "bars": {"axis": "top_bottom", "size": 150},
+          "dock": 716
+        }
+      },
+      {
+        "id": "w1280-default",
+        "w": 1280,
+        "h": 690,
+        "expect": {
+          "docked": true,
+          "panel": 340,
+          "video": [940, 529],
+          "tier": "M",
+          "bars": {"axis": "top_bottom", "size": 81},
+          "dock": 908
+        }
+      },
+      {
+        "id": "secondary-default",
+        "w": 2048,
+        "h": 1101,
+        "derive": {"display": "secondary", "app_zoom_percent": 125, "extent": "maximised"},
+        "derive_status": "assumed",
+        "expect": {
+          "docked": true,
+          "panel": 451,
+          "video": [1597, 899],
+          "tier": "L",
+          "bars": {"axis": "top_bottom", "size": 101},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "secondary-cinema",
+        "w": 2048,
+        "h": 1101,
+        "panel": "CLOSED",
+        "derive": {"display": "secondary", "app_zoom_percent": 125, "extent": "maximised"},
+        "derive_status": "assumed",
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [1957, 1101],
+          "tier": "L",
+          "bars": {"axis": "left_right", "size": 45},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "secondary-fullscreen",
+        "w": 2048,
+        "h": 1152,
+        "mode": "fullscreen",
+        "derive": {"display": "secondary", "app_zoom_percent": 125, "extent": "screen"},
+        "derive_status": "assumed",
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [2048, 1152],
+          "tier": "L",
+          "bars": {"axis": "none", "size": 0},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "primary-default",
+        "w": 2731,
+        "h": 1101,
+        "derive": {"display": "primary", "app_zoom_percent": 125, "extent": "maximised"},
+        "derive_status": "assumed",
+        "expect": {
+          "docked": true,
+          "panel": 560,
+          "video": [1957, 1101],
+          "tier": "L",
+          "bars": {"axis": "left_right", "size": 107},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "primary-fullscreen-panel-open",
+        "w": 2731,
+        "h": 1152,
+        "mode": "fullscreen",
+        "panel": "OPEN",
+        "derive": {"display": "primary", "app_zoom_percent": 125, "extent": "screen"},
+        "derive_status": "measured",
+        "expect": {
+          "docked": true,
+          "panel": 560,
+          "video": [2048, 1152],
+          "tier": "L",
+          "bars": {"axis": "left_right", "size": 62},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "primary-fullscreen-panel-closed",
+        "w": 2731,
+        "h": 1152,
+        "mode": "fullscreen",
+        "panel": "CLOSED",
+        "derive": {"display": "primary", "app_zoom_percent": 125, "extent": "screen"},
+        "derive_status": "measured",
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [2048, 1152],
+          "tier": "L",
+          "bars": {"axis": "left_right", "size": 342},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "primary-100-default",
+        "w": 3413,
+        "h": 1440,
+        "derive": {"display": "primary", "app_zoom_percent": 100, "extent": "screen"},
+        "derive_status": "measured",
+        "expect": {
+          "docked": true,
+          "panel": 560,
+          "video": [2560, 1440],
+          "tier": "L",
+          "bars": {"axis": "left_right", "size": 146},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "tier-m-959",
+        "w": 959,
+        "h": 680,
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [959, 539],
+          "tier": "M",
+          "bars": {"axis": "top_bottom", "size": 70},
+          "dock": 927
+        }
+      },
+      {
+        "id": "tier-s-639",
+        "w": 639,
+        "h": 400,
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [639, 359],
+          "tier": "S",
+          "bars": {"axis": "top_bottom", "size": 20},
+          "dock": 607
+        }
+      },
+      {
+        "id": "tier-m-640",
+        "w": 640,
+        "h": 400,
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [640, 360],
+          "tier": "M",
+          "bars": {"axis": "top_bottom", "size": 20},
+          "dock": 608
+        }
+      },
+      {
+        "id": "default-closed-1279",
+        "w": 1279,
+        "h": 800,
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [1279, 719],
+          "tier": "L",
+          "bars": {"axis": "top_bottom", "size": 40},
+          "dock": 1247
+        }
+      },
+      {
+        "id": "panel-user-min",
+        "w": 1600,
+        "h": 900,
+        "panel": "OPEN",
+        "user_panel_width": 300,
+        "expect": {
+          "docked": true,
+          "panel": 320,
+          "video": [1280, 720],
+          "tier": "L",
+          "bars": {"axis": "top_bottom", "size": 90},
+          "dock": 1248
+        }
+      },
+      {
+        "id": "panel-user-max",
+        "w": 2000,
+        "h": 1000,
+        "panel": "OPEN",
+        "user_panel_width": 600,
+        "expect": {
+          "docked": true,
+          "panel": 560,
+          "video": [1440, 810],
+          "tier": "L",
+          "bars": {"axis": "top_bottom", "size": 95},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "panel-not-docked-narrow",
+        "w": 700,
+        "h": 500,
+        "panel": "OPEN",
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [700, 394],
+          "tier": "M",
+          "bars": {"axis": "top_bottom", "size": 53},
+          "dock": 668
+        }
+      },
+      {
+        "id": "fullscreen-ratio-2",
+        "w": 2304,
+        "h": 1152,
+        "mode": "fullscreen",
+        "panel": "OPEN",
+        "expect": {
+          "docked": true,
+          "panel": 480,
+          "video": [1824, 1026],
+          "tier": "L",
+          "bars": {"axis": "top_bottom", "size": 63},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "fullscreen-ratio-below-2",
+        "w": 2303,
+        "h": 1152,
+        "mode": "fullscreen",
+        "panel": "OPEN",
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [2048, 1152],
+          "tier": "L",
+          "bars": {"axis": "left_right", "size": 128},
+          "dock": 1280
+        }
+      },
+      {
+        "id": "entry-narrow-then-wide",
+        "w": 1600,
+        "h": 900,
+        "entry_width": 1200,
+        "expect": {
+          "docked": false,
+          "panel": 0,
+          "video": [1600, 900],
+          "tier": "L",
+          "bars": {"axis": "none", "size": 0},
+          "dock": 1280
+        }
+      }
+    ]
+  },
+  "chrome": {
+    "idle_ms": 2500,
+    "move_threshold_px": 2,
+    "fade_out_ms": 200,
+    "fade_in_ms": 120,
+    "leave_idle_ms": 600,
+    "legacy_fullscreen_idle_ms": 4000,
+    "hold_while": [
+      "PAUSED",
+      "BUFFERING",
+      "ENDED",
+      "ERRORED",
+      "AUDIO_ONLY",
+      "FLYOUT_OPEN",
+      "SCRUBBING",
+      "DRAGGING_VOLUME",
+      "DOCK_HOVERED",
+      "TOP_BAR_HOVERED"
+    ],
+    "buffering": {"spinner": 36, "spinner_after_ms": 400, "text_after_ms": 5000},
+    "progress_strip": {"height": 2, "refresh_hz": 2}
+  },
+  "pointer": {
+    "double_click_tolerance_dp": 6,
+    "osd_flash_delay_cap_ms": 250,
+    "wheel": {"volume_per_notch": 5, "seek_seconds": 10, "rail_seek_seconds": 5, "rail_seek_shift_seconds": 10},
+    "key_seek_seconds": {"arrow": 5, "shift_arrow": 10, "j_l": 10},
+    "volume_step": 5,
+    "volume_slider": {"width": 88, "show_delay_ms": 200, "hide_delay_ms": 450},
+    "fine_scrub_knots": [[48, 1.0], [96, 0.5], [192, 0.25], [288, 0.1]],
+    "fine_scrub_note": "Spec 4.6 names the knots; the curve between them is decided by X1b and must be monotone with a floor of 0.1."
+  },
+  "shortcuts": {
+    "reserved": [
+      "Ctrl+Plus",
+      "Ctrl+Equals",
+      "Ctrl+Add",
+      "Ctrl+Minus",
+      "Ctrl+Subtract",
+      "Ctrl+0",
+      "Ctrl+Numpad0",
+      "Ctrl+C",
+      "Ctrl+V",
+      "Ctrl+X",
+      "Ctrl+A",
+      "Ctrl+Z",
+      "Ctrl+Y",
+      "Alt+F4",
+      "Backspace"
+    ],
+    "zoom_decoder_keys": ["Plus", "Equals", "Add", "Minus", "Subtract", "0", "Numpad0"],
+    "dual_meaning": ["Ctrl+B"],
+    "not_taken": ["Enter", "Backspace"],
+    "rules": [
+      "no duplicate chord inside a scope",
+      "no bare printable key in the shell scope",
+      "no chord with both Ctrl and Alt (AltGr)",
+      "no Ctrl chord on a zoom decoder key",
+      "Ctrl digits only 1 to 9",
+      "a chord used by two scopes has the same action or is listed in dual_meaning"
+    ],
+    "rows": [
+      {"scope": "shell", "chord": "Ctrl+K", "action": "OPEN_SEARCH"},
+      {"scope": "shell", "chord": "Ctrl+F", "action": "OPEN_SEARCH"},
+      {"scope": "shell", "chord": "Alt+Left", "action": "BACK"},
+      {"scope": "shell", "chord": "F5", "action": "REFRESH"},
+      {"scope": "shell", "chord": "Ctrl+R", "action": "REFRESH"},
+      {"scope": "shell", "chord": "Ctrl+1", "action": "GO_DESTINATION", "arg": "HOME"},
+      {"scope": "shell", "chord": "Ctrl+2", "action": "GO_DESTINATION", "arg": "DYNAMIC"},
+      {"scope": "shell", "chord": "Ctrl+3", "action": "GO_DESTINATION", "arg": "LIVE"},
+      {"scope": "shell", "chord": "Ctrl+4", "action": "GO_DESTINATION", "arg": "LISTEN_VIDEO"},
+      {"scope": "shell", "chord": "Ctrl+5", "action": "GO_DESTINATION", "arg": "HISTORY"},
+      {"scope": "shell", "chord": "Ctrl+6", "action": "GO_DESTINATION", "arg": "FAVORITE"},
+      {"scope": "shell", "chord": "Ctrl+7", "action": "GO_DESTINATION", "arg": "WATCHLATER"},
+      {"scope": "shell", "chord": "Ctrl+8", "action": "GO_DESTINATION", "arg": "DOWNLOADS"},
+      {"scope": "shell", "chord": "Ctrl+9", "action": "GO_DESTINATION", "arg": "PROFILE"},
+      {"scope": "shell", "chord": "Ctrl+B", "action": "RAIL_TOGGLE"},
+      {"scope": "shell", "chord": "Ctrl+Comma", "action": "OPEN_SETTINGS"},
+      {"scope": "shell", "chord": "Ctrl+J", "action": "OPEN_DOWNLOADS"},
+      {"scope": "shell", "chord": "F6", "action": "CYCLE_PANES", "arg": 1},
+      {"scope": "shell", "chord": "Shift+F6", "action": "CYCLE_PANES", "arg": -1},
+      {"scope": "shell", "chord": "F1", "action": "SHORTCUT_HELP"},
+      {"scope": "shell", "chord": "F11", "action": "FULLSCREEN_TOGGLE", "status": "existing"},
+      {"scope": "shell", "chord": "Alt+Enter", "action": "FULLSCREEN_TOGGLE"},
+      {"scope": "player", "chord": "Space", "action": "PLAY_PAUSE"},
+      {"scope": "player", "chord": "K", "action": "PLAY_PAUSE"},
+      {"scope": "player", "chord": "Left", "action": "SEEK", "arg": -5},
+      {"scope": "player", "chord": "Right", "action": "SEEK", "arg": 5},
+      {"scope": "player", "chord": "Shift+Left", "action": "SEEK", "arg": -10},
+      {"scope": "player", "chord": "Shift+Right", "action": "SEEK", "arg": 10},
+      {"scope": "player", "chord": "Ctrl+Left", "action": "CHAPTER", "arg": -1},
+      {"scope": "player", "chord": "Ctrl+Right", "action": "CHAPTER", "arg": 1},
+      {"scope": "player", "chord": "J", "action": "SEEK", "arg": -10},
+      {"scope": "player", "chord": "L", "action": "SEEK", "arg": 10},
+      {"scope": "player", "chord": "Up", "action": "VOLUME", "arg": 5},
+      {"scope": "player", "chord": "Down", "action": "VOLUME", "arg": -5},
+      {"scope": "player", "chord": "M", "action": "MUTE"},
+      {"scope": "player", "chord": "F", "action": "FULLSCREEN_TOGGLE"},
+      {"scope": "player", "chord": "Alt+Enter", "action": "FULLSCREEN_TOGGLE"},
+      {"scope": "player", "chord": "F11", "action": "FULLSCREEN_TOGGLE", "status": "existing-at-root"},
+      {
+        "scope": "player",
+        "chord": "Esc",
+        "action": "ESC_CHAIN",
+        "note": "popup first, then leave fullscreen; windowed behaviour is decision D4"
+      },
+      {"scope": "player", "chord": "T", "action": "SIDE_PANEL_OR_CINEMA"},
+      {"scope": "player", "chord": "Ctrl+B", "action": "SIDE_PANEL_OR_CINEMA"},
+      {"scope": "player", "chord": "P", "action": "MINI_PLAYER"},
+      {"scope": "player", "chord": "I", "action": "VIDEO_INFO"},
+      {"scope": "player", "chord": "C", "action": "SUBTITLE_TOGGLE"},
+      {"scope": "player", "chord": "Shift+C", "action": "SUBTITLE_FLYOUT"},
+      {"scope": "player", "chord": "D", "action": "DANMAKU_TOGGLE"},
+      {"scope": "player", "chord": "S", "action": "SCREENSHOT"},
+      {"scope": "player", "chord": "LeftBracket", "action": "PART", "arg": -1},
+      {"scope": "player", "chord": "RightBracket", "action": "PART", "arg": 1},
+      {"scope": "player", "chord": "Shift+P", "action": "PART", "arg": -1},
+      {"scope": "player", "chord": "Shift+N", "action": "PART", "arg": 1},
+      {"scope": "player", "chord": "0", "action": "SEEK_PERCENT", "arg": 0},
+      {"scope": "player", "chord": "1", "action": "SEEK_PERCENT", "arg": 10},
+      {"scope": "player", "chord": "2", "action": "SEEK_PERCENT", "arg": 20},
+      {"scope": "player", "chord": "3", "action": "SEEK_PERCENT", "arg": 30},
+      {"scope": "player", "chord": "4", "action": "SEEK_PERCENT", "arg": 40},
+      {"scope": "player", "chord": "5", "action": "SEEK_PERCENT", "arg": 50},
+      {"scope": "player", "chord": "6", "action": "SEEK_PERCENT", "arg": 60},
+      {"scope": "player", "chord": "7", "action": "SEEK_PERCENT", "arg": 70},
+      {"scope": "player", "chord": "8", "action": "SEEK_PERCENT", "arg": 80},
+      {"scope": "player", "chord": "9", "action": "SEEK_PERCENT", "arg": 90},
+      {"scope": "player", "chord": "Home", "action": "SEEK_START"},
+      {"scope": "player", "chord": "End", "action": "SEEK_END"},
+      {
+        "scope": "player",
+        "chord": "Comma",
+        "action": "FRAME_STEP",
+        "arg": -1,
+        "when": "paused",
+        "status": "omitted-until-mpv-api"
+      },
+      {
+        "scope": "player",
+        "chord": "Period",
+        "action": "FRAME_STEP",
+        "arg": 1,
+        "when": "paused",
+        "status": "omitted-until-mpv-api"
+      },
+      {"scope": "player", "chord": "Shift+Comma", "action": "SPEED_STEP", "arg": -1},
+      {"scope": "player", "chord": "Shift+Period", "action": "SPEED_STEP", "arg": 1},
+      {"scope": "player", "chord": "Shift+1", "action": "SPEED_SET", "arg": 1},
+      {"scope": "player", "chord": "Shift+2", "action": "SPEED_SET", "arg": 2},
+      {"scope": "player", "chord": "Menu", "action": "CONTEXT_MENU"},
+      {"scope": "player", "chord": "Shift+F10", "action": "CONTEXT_MENU"},
+      {"scope": "player", "chord": "Shift+Slash", "action": "SHORTCUT_HELP"}
+    ]
+  },
+  "flyout": {
+    "widths": {
+      "speed": 240,
+      "quality": 260,
+      "subtitle": 300,
+      "danmaku": 260,
+      "chapters": 320,
+      "more": 260,
+      "nvidia": 360
+    },
+    "radius": 12,
+    "padding": 6,
+    "row_height": 36,
+    "label_sp": 14,
+    "divider_px": 1,
+    "anchor_gap": 8,
+    "placements": ["AboveEnd", "AboveCenter", "BelowEnd", "AtPoint"],
+    "dismiss_reasons": ["ESC", "SELECTED", "OUTSIDE_CLICK", "FOCUS_LOST", "OWNER_CHANGED", "DENSITY"],
+    "context_menu_max_rows": 12,
+    "card_menu_max_items": 7,
+    "speed": {"presets": [0.5, 0.75, 1, 1.25, 1.5, 2, 3], "step": 0.05, "range": [0.25, 4]}
+  }
+}

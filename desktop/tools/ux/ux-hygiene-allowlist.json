@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "about": "Unmigrated files that still break a UX source rule. Every entry needs an owner (the slice that removes it) and a reason. test_ux_source_hygiene.py fails when a listed file no longer violates its rule, so the list only shrinks. rule is one of banned-import, no-chinese, global-hook, key-fallback; path is relative to desktop/src/main/kotlin/com/bilipai/desktop. The no-chinese rule covers every file of PROGRAM_GLOBS in ux_source.py (not only the strict text files); the banned-import rule covers material3 and Material 2 (androidx.compose.material). Slice V0 (the carrier wheel input, spec 6.4) must register its wheel input through window.addMouseWheelListener, because the global-hook rule bans Toolkit.addAWTEventListener; if a global listener is truly unavoidable, V0 adds an entry {rule: global-hook, path: appearance/DesktopWindowsCarrierScaleInput.kt, owner: V0, reason: ...}.",
+  "entries": [
+    {"rule": "banned-import", "path": "ui/DesktopWindowsSettingsControls.kt", "owner": "X3", "reason": "The bodies of Pane, Group, Switch and Choice are replaced by the kit (spec 3.7); material3 TextButton, Switch and FilterChip go with them."},
+    {"rule": "banned-import", "path": "settings/DesktopSettingsTree.kt", "owner": "X3 (TextButton), X4 (AlertDialog)", "reason": "The settings tree gets kit navigation rows (X3); the confirm AlertDialog is part of the material burn-down (X4)."}
+  ]
+}

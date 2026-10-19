@@ -454,6 +454,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         val registration = windowsDisplayScale.registerWindowContext(storageSettingsContext)
         onDispose { registration.close() }
     }
+    val windowsUx = remember(pluginStore, scope) {
+        com.bilipai.desktop.appearance.DesktopWindowsUxController(pluginStore, scope)
+    }
+    DisposableEffect(windowsUx) { onDispose { windowsUx.close() } }
     val brandSuccessEvents = remember(repository) {
         com.android.purebilibili.core.events.BrandSuccessEvents { !isClosing() }
     }
@@ -1804,6 +1808,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             }),
         com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext provides storageSettingsContext,
         com.bilipai.desktop.ui.LocalDesktopWindowsAudioOutputController provides windowsAudioOutputController,
+        com.bilipai.desktop.appearance.LocalDesktopWindowsUx provides windowsUx,
         com.bilipai.desktop.ui.LocalDesktopDetailedCommentTimeContext provides globalPluginContext,
         com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled provides detailedCommentTimeEnabled,
         LocalDesktopBrandSuccessEvents provides brandSuccessEvents,
