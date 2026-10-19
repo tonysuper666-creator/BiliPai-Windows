@@ -1,0 +1,75 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppBadge.kt",
+      "filename": "AppBadge.kt",
+      "bytes": 1648,
+      "sha256": "717668e7f8ca8dea8b23f61dcde6230b6e0558452bb2ac5c9eabcdb924bc8d73",
+      "gitBlob": "7b300b4019109d1b717f1e911f2ac0b2f871062f"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt",
+      "filename": "OfficialVerifyBadgePolicy.kt",
+      "bytes": 4593,
+      "sha256": "1294bff72cfb334cd120b4181ad31583cef69b0000e725259a9804e7102bab7c",
+      "gitBlob": "2c7ea718cbe8994cadff814367fbccb6b2291ad3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeNamePolicy.kt",
+      "filename": "UpBadgeNamePolicy.kt",
+      "bytes": 1329,
+      "sha256": "6ef02d3262339b009b8c506b1081a980d5750493f7281b7ba872260f2452c380",
+      "gitBlob": "bf06cc547f5f599a7154968d6b182f5675db83fd"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/UserAvatarCornerMark.kt",
+      "filename": "UserAvatarCornerMark.kt",
+      "bytes": 4037,
+      "sha256": "d6e479435fab2303fda372071160528d619c0884ee58bffb0263c9ef30602b14",
+      "gitBlob": "2f04a46a567597736b09b43b817839866c6c6021"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UserUpBadge.kt",
+      "filename": "UserUpBadge.kt",
+      "bytes": 2345,
+      "sha256": "10f079d042208bc2c10ab1abe9b04be5877a8035e14d3a0cf6306a7961768b10",
+      "gitBlob": "398242ea5c35c45f4ec1d09c38c512ab5b80752e"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicyTest.kt",
+      "filename": "OfficialVerifyBadgePolicyTest.kt",
+      "bytes": 2317,
+      "sha256": "cce291c808f58d6f1eb6b71a6acd6016ddf1e0490deff15d8bd3051406f64537",
+      "gitBlob": "d20976590b5cf29631b6cf399dd6ab90ed681611"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/ui/components/UpBadgeNamePolicyTest.kt",
+      "filename": "UpBadgeNamePolicyTest.kt",
+      "bytes": 2228,
+      "sha256": "09467564cfced4e148ca424664bab1c8d4fd8161fd788d6bc80f906ea2fe540a",
+      "gitBlob": "19eb3e361703dec3f054151a13d33ce8e39b19fc"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/UserAvatarCornerMarkTest.kt",
+      "filename": "UserAvatarCornerMarkTest.kt",
+      "bytes": 1406,
+      "sha256": "c1fb5b2797b4fec3002a95b6696bc9070af93545702eec4ef20d7685585192ff",
+      "gitBlob": "6b4682e1b5cbe4302de5bccadb99fd2cced3bb3b"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 identity badge palette: AppBadge, UpBadgeNamePolicy, UserUpBadge, UserAvatarCornerMark and OfficialVerifyBadgePolicy, plus the three upstream JVM suites that exercise them (UpBadgeNamePolicyTest, OfficialVerifyBadgePolicyTest, UserAvatarCornerMarkTest).",
+  "purpose": "Replaces the vendored v0.2.5 direct-mode copies of the five palette sources (the Sync copies are excluded in prepareUpstreamSources). resolveUpNameColor now reads its secondary argument as the annual-VIP colour, so every compiled caller must pass userVipPink(). The compiled reply, sub-reply and comment-search owners already do. The three owners still built from older originals (DynamicCard, SpaceScreen and VideoInfoSection, upstream DynamicCard.kt:552, SpaceScreen.kt:3266 and VideoInfoSection.kt:1239) are migrated by one pinned line rewrite in each owning producer (v046_identity_badge_palette.UP_NAME_MIGRATIONS); the archived originals that are not compiled keep their v0.2.5-era calls. The other palette changes: AppBadge corrects its contrast color, UserUpBadge and OfficialVerifyBadge use the theme label typography, officialVerifyColor is the single source of the verified bolt colors and UserAvatarCornerMark draws the VIP mark with userVipPink.",
+  "windowsAdaptations": {
+    "UserUpBadge.kt": "Emitted without the Android-only PlatformTextStyle(includeFontPadding = false) argument and its import; the Skia JVM text renderer has no font-padding option. Every other byte is the v0.4.6 file.",
+    "UpBadgeNamePolicyTest.kt": "The org.junit imports are rewritten to kotlin.test; the desktop test classpath is kotlin-test-junit5."
+  },
+  "outOfScope": "BangumiUiPolicy.kt is extracted-mode and belongs to the Bangumi producer chain."
+}

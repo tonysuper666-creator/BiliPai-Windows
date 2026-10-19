@@ -11,6 +11,7 @@ REPO=Path(__file__).resolve().parents[3]
 TOOLS=REPO/'desktop/tools'
 sys.path.insert(0,str(TOOLS))
 import v036_comment_refresh_dependencies as refresh
+import v046_identity_badge_palette as palette
 
 
 def snapshot(root):
@@ -59,7 +60,13 @@ class RefreshGenerationReentryTest(unittest.TestCase):
         out,tests=self.outputs()
         refresh.extend_same_home_producer(out,tests)
         self.assertEqual(snapshot(self.seed),snapshot(out))
-        self.assertEqual(snapshot(self.seed_tests),snapshot(tests))
+        # After the refresh extension the same wrapper emits the identity palette suites into this test root.
+        palette_paths={palette.RELATIVE[name] for name in palette.TEST_FILES}|{palette.TESTS_PROOF_NAME}
+        complete=snapshot(self.seed_tests)
+        self.assertEqual(palette_paths,palette_paths&set(complete))
+        self.assertEqual({path:raw for path,raw in complete.items() if path not in palette_paths},snapshot(tests))
+        palette.emit_tests(REPO,tests)
+        self.assertEqual(complete,snapshot(tests))
 
     def test_unknown_existing_policy_is_rejected_before_any_output_is_modified(self):
         out,tests=self.outputs();policy=out/'com/android/purebilibili/core/ui/AdaptivePullToRefreshPolicy.kt'

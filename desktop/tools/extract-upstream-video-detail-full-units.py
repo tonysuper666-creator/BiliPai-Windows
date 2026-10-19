@@ -199,6 +199,10 @@ def main():
         if name=='UpInfoSection':
             body=adapt(body,'    val playerControlVisibility by','    val VideoRepository = LocalDesktopOriginalVideoInfoBindings.current\n    val playerControlVisibility by','Capture actual info request binding')
             body=body.replace('LocalDesktopOriginalVideoInfoBindings.current.getCreatorCardStats(info.owner.mid)','VideoRepository.getCreatorCardStats(info.owner.mid)')
+            # v0.4.6 resolveUpNameColor reads `secondary` as the annual-VIP colour; this original still binds the theme colour.
+            from v046_identity_badge_palette import up_name_vip_pink
+            pinkBefore,pinkAfter=up_name_vip_pink('VideoInfoSection.kt',body)
+            body=adapt(body,pinkBefore,pinkAfter,'Owner name annual VIP colour is userVipPink() as in v0.4.6')
         body=body.replace('InlineBgmSection(','DesktopOriginalInlineBgmSection(')
         if name=='VideoTitleWithDesc':
             body=body.replace('SettingsManager\n        .getVideoArgueMsgShown(context)','com.android.purebilibili.core.store.DesktopOriginalVideoMetadataSettings\n        .getVideoArgueMsgShown(context)')

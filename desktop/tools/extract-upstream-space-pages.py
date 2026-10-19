@@ -290,6 +290,10 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
             # Whole original handler already belongs to extract-space-overview.
             declaration=helper.members(parser,s)['handleAggregateArchiveClick'][0]['text']
             s=edit(s,declaration,'',1)
+            # v0.4.6 resolveUpNameColor reads `secondary` as the annual-VIP colour; this original still passes the theme colour.
+            from v046_identity_badge_palette import up_name_vip_pink
+            pink_before,pink_after=up_name_vip_pink('SpaceScreen.kt',s)
+            s=edit(s,pink_before,pink_after,1)
             return logs(s)
         produce(BASE+'feature/space/SpaceScreen.kt',pkg+'SpaceScreen.kt',screen)
         def supporter_screen(s,edit,logs):

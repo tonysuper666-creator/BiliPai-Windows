@@ -268,6 +268,12 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"))
         // The existing reply producer owns the complete v0.4.6 comment font policy file.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt"))
+        // The existing Home-page producer owns the complete v0.4.6 identity badge palette.
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppBadge.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeNamePolicy.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UserUpBadge.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/UserAvatarCornerMark.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -892,6 +898,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
     inputs.file("tools/v046_identity_badges.py")
     inputs.dir("upstream-slices/v046-identity-badges")
+    inputs.file("tools/v046_identity_badge_palette.py")
+    inputs.dir("upstream-slices/v046-identity-badge-palette")
     inputs.file("tools/v046_home_card_cascade_definers.py")
     inputs.dir("upstream-slices/v046-home-card-cascade-definers")
     inputs.file("tools/v046_home_refresh_ui_policy.py")
@@ -1318,6 +1326,7 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
 }
 
 val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_identity_badge_palette.py")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.file("tools/v044_favorite_subscription.py")
     inputs.file("tools/v044_fans.py")
@@ -2614,6 +2623,7 @@ sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/do
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
 
 val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_identity_badge_palette.py")
     inputs.file("tools/v042_owner_follow.py")
     inputs.dir("upstream-slices/v042-owner-follow")
     inputs.file("tools/v042_follow_confirmation.py")
@@ -3205,6 +3215,7 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalMessagePages) }
 // Full original retained Space page, supporter leaves and business ViewModels.
 // Existing SpaceUiState/SubTab/selected policies, dynamic cards and gallery stay sole-owned.
 val extractOriginalSpacePages by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_identity_badge_palette.py")
     dependsOn(prepareUpstreamSources, extractUpstreamSpace, extractUpstreamSpaceOverview, extractUpstreamSpaceContributions,
         extractOriginalVideoTabletFull, extractOriginalFavorites)
     workingDir(projectDir)
