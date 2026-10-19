@@ -6,6 +6,7 @@ import argparse
 cli=argparse.ArgumentParser(description='Complete fixed-tag AudioModeScreen and AudioModeMusicPlayer original source consumers')
 cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);cli.add_argument('--standalone',action='store_true')
 args=cli.parse_args();REPO=args.repo.resolve();LANE=args.output.resolve()
+import v046_audio_listen_closure;v046_audio_listen_closure.validate_outputs(REPO,LANE)
 FEATURE='stable-video-audio-original'
 SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt': {'sha256LF': '8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d', 'gitBlob': '88daf54da269640a18a1ab07bb030f0bff5fa462'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt': {'sha256LF': '4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea', 'gitBlob': '86588a2c4f6404a0464b8d3ef856bfce43734d14'}}
 manifest=json.loads((REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
@@ -129,4 +130,7 @@ for o in OUTPUTS:
  write(LANE/'diffs'/(Path(o['path']).stem+'.diff'),''.join(difflib.unified_diff(SOURCES[original]['text'].splitlines(True),safe(o['path']).read_text(encoding='utf-8').splitlines(True),fromfile=original,tofile=o['path'])))
 write(LANE/'audio-source-pins.json',json.dumps({p:{k:v for k,v in d.items()if k!='text'}for p,d in SOURCES.items()},indent=2)+'\n')
 write(LANE/'audio-adaptations.json',json.dumps(CHANGES,ensure_ascii=False,indent=2)+'\n')
-write(LANE/'audio-outputs.json',json.dumps(OUTPUTS,indent=2)+'\n');print(json.dumps({'outputs':len(OUTPUTS),'exactWholeBodyInverse':True}))
+write(LANE/'audio-outputs.json',json.dumps(OUTPUTS,indent=2)+'\n')
+# v0.4.6 listen closure (roadmap audio-listen-video-closure): the whole v0.4.6 AudioModeMusicPlayer.
+v046_audio_listen_closure.advance_audio_mode_outputs(REPO,LANE,CHANGES)
+print(json.dumps({'outputs':len(OUTPUTS),'exactWholeBodyInverse':True}))

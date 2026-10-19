@@ -30,6 +30,8 @@ def require(value: bool, message: str) -> None:
 def generate(repo: Path, output: Path) -> list[Path]:
     root = Path(__file__).resolve().parents[1] / "upstream-slices" / "v034-text-lyrics"
     raw_manifest = wide(root / "manifest.json").read_bytes()
+    from v046_audio_listen_closure import validate_outputs
+    validate_outputs(repo, output)
     require(sha(raw_manifest) == MANIFEST_SHA256, "Text/lyrics manifest changed")
     manifest = json.loads(raw_manifest)
     require(manifest.get("schemaVersion") == 1 and
@@ -75,6 +77,10 @@ def generate(repo: Path, output: Path) -> list[Path]:
         if original == 'core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt':
             from v035_dynamic_link import upgraded_dynamic_model
             raw, effective_row = upgraded_dynamic_model(raw, effective_row)
+        if original == 'app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt':
+            # v0.4.6 resolveLyricsDisplayDocument (roadmap audio-listen-video-closure): the whole v0.4.6 file.
+            from v046_audio_listen_closure import upgraded_lyrics_display_policy
+            raw, effective_row = upgraded_lyrics_display_policy(repo, raw, effective_row)
         prepared.append((emitted, raw, effective_row))
     # Validate every input before writing any source. Each output remains the raw Git source.
     generated = []

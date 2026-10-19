@@ -5,6 +5,7 @@ import com.android.purebilibili.feature.audio.library.resolveListenVideoPlayback
 import com.android.purebilibili.feature.audio.screen.ListenVideoRoute
 import com.android.purebilibili.feature.video.player.ExternalPlaylistSource
 import com.android.purebilibili.navigation3.BiliPaiNavKey
+import com.bilipai.desktop.plugins.DesktopPluginContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 
@@ -17,8 +18,16 @@ internal class DesktopOriginalListenVideoPage(
     private val caller: Job,
     private val active: () -> Boolean,
     private val pagerHosted: Boolean,
+    pluginContext: DesktopPluginContext,
 ) {
     val playlist get() = entry.playlist
+    /** The page's one use of the original music UI is the v0.4.6 recent plays sheet. It reads only the global
+     * play history, through the same settings document and the same page admission as every other callback. */
+    val historyPlatform: DesktopOriginalMusicUiPlatform = run {
+        val settings = DesktopOriginalPlayerSettingsContext(pluginContext, { isCurrentUi() },
+            { action -> isCurrentUi() && entry.commit(action) })
+        DesktopOriginalListenHistoryPlatform(settings, DesktopOriginalMusicStorageBinding(settings).history)
+    }
     fun isActive() = active()
     fun isCurrentUi(): Boolean = caller.isActive && active() && entry.owns() && routes.owns() &&
         routes.currentKey == (if (pagerHosted) BiliPaiNavKey.MainHost else BiliPaiNavKey.ListenVideo)
@@ -43,9 +52,10 @@ internal val LocalDesktopOriginalListenVideoPage = staticCompositionLocalOf<Desk
     if (!entry.owns()) return
     val pageScope = rememberCoroutineScope()
     val latestActive by rememberUpdatedState(active)
-    val page = remember(entry, routes, pageScope, pagerHosted) {
+    val pluginContext = LocalDesktopHomeEnvironment.current.pluginContext
+    val page = remember(entry, routes, pageScope, pagerHosted, pluginContext) {
         DesktopOriginalListenVideoPage(entry, routes, checkNotNull(pageScope.coroutineContext[Job]),
-            { latestActive }, pagerHosted)
+            { latestActive }, pagerHosted, pluginContext)
     }
     CompositionLocalProvider(LocalDesktopOriginalListenVideoPage provides page) {
         // AppNavigation ListenVideo callbacks retain original selection/source
@@ -65,6 +75,9 @@ internal val LocalDesktopOriginalListenVideoPage = staticCompositionLocalOf<Desk
                 }
             } },
             onLogin = { page.runUi { routes.push(BiliPaiNavKey.Login) } },
+            onPlayFromHistory = { bvid, cid -> page.runUi {
+                routes.push(BiliPaiNavKey.AudioMode(sourceBvid = bvid, sourceCid = cid))
+            } },
             onPlayCollection = { mediaId, seasonId, title -> page.runUi {
                 routes.push(BiliPaiNavKey.AudioMode(collectionMediaId = mediaId,
                     collectionSeasonId = seasonId, collectionTitle = title))

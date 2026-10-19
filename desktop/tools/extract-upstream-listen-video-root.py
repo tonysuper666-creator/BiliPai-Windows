@@ -20,6 +20,8 @@ def read(repo,path):
 def produce(repo,output,test_output=None):
     from v044_fans import validate_outputs
     validate_outputs(repo, output, test_output)
+    import v046_audio_listen_closure
+    v046_audio_listen_closure.validate_outputs(repo, output, test_output)
     output=Path(str(output) if str(output).startswith('\\\\?\\') else '\\\\?\\'+str(output.absolute()))
     output.mkdir(parents=True,exist_ok=True)
     receipts=[]
@@ -30,6 +32,9 @@ def produce(repo,output,test_output=None):
         if row['originalPath'].endswith('/ListenVideoScreen.kt'):
             proof = v038_listen_screen.emit(repo, output, row)
             receipts.extend(proof['sources'])
+            # v0.4.6 recent plays: the whole v0.4.6 screen with the same recorded ports (roadmap audio-listen-video-closure).
+            import v046_audio_listen_closure
+            v046_audio_listen_closure.advance_listen_output(repo, output, receipts)
             receipts.append(dict(v044FavoriteSearchMapping=proof['favoriteSearchMapping']))
             continue
         full=read(repo,row['originalPath']); selected=full

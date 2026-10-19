@@ -161,7 +161,8 @@
     "desktop/upstream-slices/v046-episode-selector",
     "desktop/upstream-slices/v046-player-overlay",
     "desktop/upstream-slices/v046-bangumi-player",
-    "desktop/upstream-slices/v046-danmaku-hot-command"
+    "desktop/upstream-slices/v046-danmaku-hot-command",
+    "desktop/upstream-slices/v046-audio-listen-closure"
   ],
   "archives": [
     {
@@ -7217,6 +7218,53 @@
           "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
           "hashNormalization": "raw",
           "blob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-audio-listen-closure",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-audio-listen-closure/AudioModeMusicPlayer.kt",
+          "sha256": "7616669f70e83f3958a5eb60e58bec93af834163ffe07d98c900c3a66bbe5909",
+          "hashNormalization": "raw",
+          "blob": "1d097cf83990b3c18a876174f0ea6fa872d17d8a"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-audio-listen-closure/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-audio-listen-closure/ListenVideoScreen.kt",
+          "sha256": "6bfc08238d5cd2c31384604413f8c794030418e87623f4463261fd29d10ddc1a",
+          "hashNormalization": "raw",
+          "blob": "f823a512282ad25e21c4b64c07d3976e92e06675"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-audio-listen-closure/LyricsDisplayPolicy.kt",
+          "sha256": "b7a9fc7fd9aa6fd8412dba3c67a2c07bc6ac2bd783baf3e3f9fee5d40085caf8",
+          "hashNormalization": "raw",
+          "blob": "d97c1d1fc6095ebaf946f0e4cfa5c1086013f436"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-audio-listen-closure/manifest.json",
+          "sha256": "ddfa57bc96acc7f8e24f40a6441e17dfa1f6484863d5e8df94ea0fc89bb2b22d",
+          "hashNormalization": "raw",
+          "blob": "f3ce2ca08b432885102d35f9b19f6cfc825ab6fd"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-audio-listen-closure/Music3DCoverFlow.kt",
+          "sha256": "8faf4b71fb2d9c4e344a43bddb2ba657359c67458a5b7844ba782630d94c2c00",
+          "hashNormalization": "raw",
+          "blob": "2b35a8fe0a816e21d55ca25ad1c296bdf4db51ef"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-audio-listen-closure/MusicPlayerContent.kt",
+          "sha256": "12655eb3703eac6d1a8203759926e8a09e9f70fa3be4a7c46fefdd8b22d26ce7",
+          "hashNormalization": "raw",
+          "blob": "393aa059ec2691c2598ed376b2456cf6e0deaad6"
         }
       ]
     }
@@ -19017,6 +19065,81 @@
       "referenceOnly": false,
       "partialReuse": true,
       "usedScope": "Whole v0.4.6 hot danmaku policy, bar and count text with the hot policy test, the whole v0.4.6 command overlay, and from VideoActionFeedbackPolicy only canSubmitVideoTripleAction. Each is advanced inside the producer that already owns its predecessor (hot danmaku, vote and player section/engagement producers) with the hash-pinned Windows ports of v046_danmaku_hot_command.py. The Android engine, DanmakuManager and layout hunks of the same upstream commits are not carried. The command overlay policy test is a reference-only row."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-audio-listen-closure/ListenVideoScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f823a512282ad25e21c4b64c07d3976e92e06675",
+      "sha256": "6bfc08238d5cd2c31384604413f8c794030418e87623f4463261fd29d10ddc1a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-audio-listen-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 ListenVideoScreen, MusicPlayerContent, Music3DCoverFlow, AudioModeMusicPlayer and LyricsDisplayPolicy, each advanced inside the producer that already owns its predecessor (listen page, music player, audio mode and text lyrics producers) with the predecessor's recorded Windows ports replayed on the v0.4.6 body plus the counted ports of v046_audio_listen_closure.py. The audio waveform atmosphere, the now playing bar and the listen view model are not carried."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+      "localPath": "desktop/upstream-slices/v046-audio-listen-closure/MusicPlayerContent.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "393aa059ec2691c2598ed376b2456cf6e0deaad6",
+      "sha256": "12655eb3703eac6d1a8203759926e8a09e9f70fa3be4a7c46fefdd8b22d26ce7",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-audio-listen-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 ListenVideoScreen, MusicPlayerContent, Music3DCoverFlow, AudioModeMusicPlayer and LyricsDisplayPolicy, each advanced inside the producer that already owns its predecessor (listen page, music player, audio mode and text lyrics producers) with the predecessor's recorded Windows ports replayed on the v0.4.6 body plus the counted ports of v046_audio_listen_closure.py. The audio waveform atmosphere, the now playing bar and the listen view model are not carried."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+      "localPath": "desktop/upstream-slices/v046-audio-listen-closure/Music3DCoverFlow.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2b35a8fe0a816e21d55ca25ad1c296bdf4db51ef",
+      "sha256": "8faf4b71fb2d9c4e344a43bddb2ba657359c67458a5b7844ba782630d94c2c00",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-audio-listen-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 ListenVideoScreen, MusicPlayerContent, Music3DCoverFlow, AudioModeMusicPlayer and LyricsDisplayPolicy, each advanced inside the producer that already owns its predecessor (listen page, music player, audio mode and text lyrics producers) with the predecessor's recorded Windows ports replayed on the v0.4.6 body plus the counted ports of v046_audio_listen_closure.py. The audio waveform atmosphere, the now playing bar and the listen view model are not carried."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt",
+      "localPath": "desktop/upstream-slices/v046-audio-listen-closure/AudioModeMusicPlayer.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "1d097cf83990b3c18a876174f0ea6fa872d17d8a",
+      "sha256": "7616669f70e83f3958a5eb60e58bec93af834163ffe07d98c900c3a66bbe5909",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-audio-listen-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 ListenVideoScreen, MusicPlayerContent, Music3DCoverFlow, AudioModeMusicPlayer and LyricsDisplayPolicy, each advanced inside the producer that already owns its predecessor (listen page, music player, audio mode and text lyrics producers) with the predecessor's recorded Windows ports replayed on the v0.4.6 body plus the counted ports of v046_audio_listen_closure.py. The audio waveform atmosphere, the now playing bar and the listen view model are not carried."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-audio-listen-closure/LyricsDisplayPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d97c1d1fc6095ebaf946f0e4cfa5c1086013f436",
+      "sha256": "b7a9fc7fd9aa6fd8412dba3c67a2c07bc6ac2bd783baf3e3f9fee5d40085caf8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-audio-listen-closure"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 ListenVideoScreen, MusicPlayerContent, Music3DCoverFlow, AudioModeMusicPlayer and LyricsDisplayPolicy, each advanced inside the producer that already owns its predecessor (listen page, music player, audio mode and text lyrics producers) with the predecessor's recorded Windows ports replayed on the v0.4.6 body plus the counted ports of v046_audio_listen_closure.py. The audio waveform atmosphere, the now playing bar and the listen view model are not carried."
     }
   ],
   "buildStandaloneInputs": [

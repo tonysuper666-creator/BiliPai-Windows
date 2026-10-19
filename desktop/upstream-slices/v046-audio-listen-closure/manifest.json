@@ -1,0 +1,68 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt",
+      "filename": "ListenVideoScreen.kt",
+      "bytes": 34906,
+      "sha256": "6bfc08238d5cd2c31384604413f8c794030418e87623f4463261fd29d10ddc1a",
+      "gitBlob": "f823a512282ad25e21c4b64c07d3976e92e06675"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+      "filename": "MusicPlayerContent.kt",
+      "bytes": 208280,
+      "sha256": "12655eb3703eac6d1a8203759926e8a09e9f70fa3be4a7c46fefdd8b22d26ce7",
+      "gitBlob": "393aa059ec2691c2598ed376b2456cf6e0deaad6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/Music3DCoverFlow.kt",
+      "filename": "Music3DCoverFlow.kt",
+      "bytes": 29148,
+      "sha256": "8faf4b71fb2d9c4e344a43bddb2ba657359c67458a5b7844ba782630d94c2c00",
+      "gitBlob": "2b35a8fe0a816e21d55ca25ad1c296bdf4db51ef"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt",
+      "filename": "AudioModeMusicPlayer.kt",
+      "bytes": 28440,
+      "sha256": "7616669f70e83f3958a5eb60e58bec93af834163ffe07d98c900c3a66bbe5909",
+      "gitBlob": "1d097cf83990b3c18a876174f0ea6fa872d17d8a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt",
+      "filename": "LyricsDisplayPolicy.kt",
+      "bytes": 5133,
+      "sha256": "b7a9fc7fd9aa6fd8412dba3c67a2c07bc6ac2bd783baf3e3f9fee5d40085caf8",
+      "gitBlob": "d97c1d1fc6095ebaf946f0e4cfa5c1086013f436"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 files of the listen-to-video closure: ListenVideoScreen (recent plays entry), MusicPlayerContent (glass controls, queue behaviour, immersive colour and pager fixes, subtitle toggle, lyric display projection, unknown like state), Music3DCoverFlow (unknown like state placeholder), AudioModeMusicPlayer (subtitle toggle, like-state guard, same-track queue resume) and LyricsDisplayPolicy (resolveLyricsDisplayDocument).",
+  "purpose": "Roadmap slice audio-listen-video-closure. Each leaf advances one existing producer output whole; the Windows ports are the predecessor layer's recorded ports replayed on the v0.4.6 body plus the counted hunks in desktop/tools/v046_audio_listen_closure.py. Not carried: the audio waveform atmosphere (roadmap D8), AudioNowPlayingBar (card transitions D1 and dock D5), ListenVideoViewModel (the account audit of acct-account-scoped-requests found the Root entry already owns the reset).",
+  "beforeFinalOutputs": {
+    "listen/ListenVideoScreen.kt": {
+      "sha256": "5f40197cf6f079434ecaa057b807700c8cd74ccaf65e033f07187c40cf23f9cf"
+    },
+    "music/MusicPlayerContent.kt": {
+      "sha256": "92d6eaa1637ef960c2f543357615ff3dbb4ae097a5f4be088eb3e66367103a7b"
+    },
+    "music/Music3DCoverFlow.kt": {
+      "sha256": "fea16146c8b3ff2ecca919e31f177330d59ff973703972eba6a162aac2b23392"
+    },
+    "audio/AudioModeMusicPlayer.kt": {
+      "sha256": "640bf139905a0d5dc3ae5cd06330144d514afb22dc44b3bba938342dcb4ca982"
+    },
+    "lyrics/LyricsDisplayPolicy.kt": {
+      "sha256": "cecab90e58b2e625f63a8ab34973a46b2c71b2e628265a9dd6e357535f6434db"
+    }
+  },
+  "currentWindowsParent": "9a34d0119",
+  "fullStableParityQualified": false
+}

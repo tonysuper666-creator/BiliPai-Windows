@@ -4406,3 +4406,15 @@ tasks.matching { it.name in setOf(
     inputs.files("tools/v046_danmaku_hot_command.py", "tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v046-danmaku-hot-command")
 }
+
+// v0.4.6 listen-to-video closure (roadmap audio-listen-video-closure): the listen page producer advances the screen
+// (recent plays), the music player producer advances MusicPlayerContent and Music3DCoverFlow, the audio mode producer
+// advances AudioModeMusicPlayer and the text lyrics producer emits the whole LyricsDisplayPolicy. UI only: the audio
+// waveform atmosphere, the now playing bar and the listen view model are not carried, so no output path changes.
+tasks.matching { it.name in setOf(
+    "extractOriginalListenVideoPages", "extractOriginalMusicPlayerFull",
+    "extractOriginalVideoAudioFull", "extractOriginalTextLyrics",
+) }.configureEach {
+    inputs.files("tools/v046_audio_listen_closure.py", "tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v046-audio-listen-closure")
+}

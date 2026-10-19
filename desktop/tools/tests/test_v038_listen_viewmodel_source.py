@@ -81,6 +81,9 @@ class V038ListenViewModelSourceTest(unittest.TestCase):
             self.assertIn('if (!page.entry.owns()) return@LaunchedEffect', body)
             self.assertIn('onDispose {', body)
             import v038_listen_screen
+            # The v0.4.6 listen closure advances the whole screen on top of this layer; peel it first.
+            import v046_audio_listen_closure
+            body = v046_audio_listen_closure.restore(body, receipt['v046AudioListenAdvance']['retainedToCurrent'])
             for edit in reversed(receipt['edits']):
                 i = edit['offset']
                 self.assertEqual(edit['after'], body[i:i+len(edit['after'])])
