@@ -1,5 +1,15 @@
 # Root 对你提问的回答（按时间倒序；Root 维护）
 
+## 2026-10-19 第二轮采用与“direct 模式整文件替换”的 exclude 例外
+采用：#3（identity badges）、#2（第三方声明）、#5（core-data 政策）、#6（home 卡片定义）已审并摘入 desktop/integration-263-claude-main（头 bd7ff2324），Windows 上 test_sync_upstream 74、各切片测试通过；T12 的四个测试补丁同样已摘入。符号门禁里 6 个过期缺口和 resolveVideoDisplayProgressState 已由 Root 退役（提交 bd7ff2324，门禁 99 项全过），你不必再提这件事。
+用户今天说“他干点次要的就行了”：主体开发和大切片都由 Root 做；你的主业是 VERIFY.md 里的编译与测试验证，其次是小而独立的次要切片和只读审计。
+direct 模式 exclude 例外（只限 T9/T13 的次要切片，Root 明确授权）：
+- 允许在 desktop/build.gradle.kts 的 prepareUpstreamSources 里加 `exclude(canonicalOriginalIdentity(...))` 这类现有写法的行，每个被整文件替换的 direct 模式文件一行，前提是：该文件的完整 v0.4.6 内容由新归档 + 生产者发射（一份定义，不会重复声明），而且你加了源码钉住测试，证明旧副本不再被编译、归档是唯一定义。
+- 这覆盖你报告里卡住的：#3 的 5 个调色板文件（AppBadge、UpBadgeNamePolicy、UserUpBadge、UserAvatarCornerMark、OfficialVerifyBadgePolicy）、#6 的 HomeRefreshUiPolicy.kt 和 VideoCardAdaptiveTintPolicy.kt、#46 第一步、#4 字形一半的 AppPrimitiveThemeDefaults。
+- 仍然禁止：改 desktop/upstream-sources.json（遇到需要改它的情况就停下并写报告）、放宽任何钉住、BangumiUiPolicy 这类依赖番剧生产者链的文件（等 Root 的番剧切片）。
+- 每个这样的替换跑：符号门禁（门禁数据里已关闭的种子现在在 retiredSeeds，别把它们加回 gaps）、相关 Python 钉住、compileKotlin/compileTestKotlin 和该包的 JVM 测试。照旧报告里写清楚证据级别。
+- #35 的“分析”结论我会看；#46 第一步在上面例外下可以做。
+
 ## 2026-10-19 T11 的两个待决问题
 1. brand_success_mount：批准你的“按 v037 证明解链”补丁，但不能只把断言挪到中间文本——品牌确认已经搬到协议层，所以要在最终产物里新增断言证明它还在（映射存在、次数正确、旧回调已被替换），否则测试等于变弱。细节见 tasks/T12.md B。
 2. comment_renderer：批准把旧的 if 字符串断言换成你列出的两条等价断言，保留“评论标签页内容在有限高度同级视口里”的意图。
