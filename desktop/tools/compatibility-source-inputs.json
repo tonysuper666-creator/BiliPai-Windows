@@ -144,7 +144,8 @@
     "desktop/upstream-slices/v046-sheet-motion",
     "desktop/upstream-slices/v046-home-refresh-ui-policy",
     "desktop/upstream-slices/v046-message-notifications",
-    "desktop/upstream-slices/v046-theme-tokens"
+    "desktop/upstream-slices/v046-theme-tokens",
+    "desktop/upstream-slices/v046-design-system-leaves-a"
   ],
   "archives": [
     {
@@ -6395,6 +6396,59 @@
           "sha256": "a71f4267d00d58cda8ab4e3320becfac95aa83b6a936b6318af1edd308dd7982",
           "hashNormalization": "raw",
           "blob": "e7ce2ed1a9608a92ef787713f5a634182c14c787"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-design-system-leaves-a",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/AppChromeSizeTokens.kt",
+          "sha256": "6105e5dd2baa131438888e44971385df57bd3127f566d313bfc9e289e7a0de4d",
+          "hashNormalization": "raw",
+          "blob": "e4e989c92188de4ece1a41e35c6c6b8161aa4001"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/AppEntryIconPalette.kt",
+          "sha256": "ad96bac1c9fa304788eeb9d61c146cb2d45ffa9c77160fb6e10ae83627d3cc2b",
+          "hashNormalization": "raw",
+          "blob": "10d1989fdc2e0eca140e5ba29783d898da833726"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/AppEntryIconPaletteTest.kt",
+          "sha256": "5902d1b291f2a23d72b53ac93630e1f314b1fb3dbc567ad28852420b67b4ad9f",
+          "hashNormalization": "raw",
+          "blob": "6c02ebd3177ae13ab1fd682f78f9f5f2f166d2e0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/AppPopupSurface.kt",
+          "sha256": "38fc5f2454b65e42683e832758c099bcdcdac30fc741f0a0ff89d46b57eb2bb2",
+          "hashNormalization": "raw",
+          "blob": "823b66731c20d88c355d0072b463ec182179f4f2"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/AppSemanticVisualPolicy.kt",
+          "sha256": "f82b1e2f6b86b397e1f661f0d10ab53dc80d4428b4db78c55c38321277135c63",
+          "hashNormalization": "raw",
+          "blob": "d31280bfcc4d3d0191b5d5389379ad8a4764d01f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/manifest.json",
+          "sha256": "161b36110ed6a55fc2b31368c23c0923066ca4705e4ff2a5b559daba1bcad698",
+          "hashNormalization": "raw",
+          "blob": "26d80b9df154cbae6a13ce5705e1dbcebbe62a1d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-a/MediaContrastPalette.kt",
+          "sha256": "dabfc89e60da5bd649693938b09a59099e2af1a4d8fc0cd24f4e3253964e964c",
+          "hashNormalization": "raw",
+          "blob": "7f72c26cad6f59173e28d33b483ee0fb836db08e"
         }
       ]
     }
@@ -16920,6 +16974,96 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 Type, AppTextStyles, AdaptiveAccentColorPolicy, AndroidNativeVariantThemePolicy, AppDisplayPolicy and Color emitted verbatim by the appearance producer with five original theme tests. The six direct-mode copies are excluded. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-a/MediaContrastPalette.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7f72c26cad6f59173e28d33b483ee0fb836db08e",
+      "sha256": "dabfc89e60da5bd649693938b09a59099e2af1a4d8fc0cd24f4e3253964e964c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-a"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens emitted verbatim by the component producer with the original AppEntryIconPaletteTest. The direct-mode copies of the first three are excluded and AppChromeSizeTokens advances the v0.4.0 copy of the component chain. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-a/AppPopupSurface.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "823b66731c20d88c355d0072b463ec182179f4f2",
+      "sha256": "38fc5f2454b65e42683e832758c099bcdcdac30fc741f0a0ff89d46b57eb2bb2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-a"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens emitted verbatim by the component producer with the original AppEntryIconPaletteTest. The direct-mode copies of the first three are excluded and AppChromeSizeTokens advances the v0.4.0 copy of the component chain. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-a/AppSemanticVisualPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d31280bfcc4d3d0191b5d5389379ad8a4764d01f",
+      "sha256": "f82b1e2f6b86b397e1f661f0d10ab53dc80d4428b4db78c55c38321277135c63",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-a"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens emitted verbatim by the component producer with the original AppEntryIconPaletteTest. The direct-mode copies of the first three are excluded and AppChromeSizeTokens advances the v0.4.0 copy of the component chain. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppEntryIconPalette.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-a/AppEntryIconPalette.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "10d1989fdc2e0eca140e5ba29783d898da833726",
+      "sha256": "ad96bac1c9fa304788eeb9d61c146cb2d45ffa9c77160fb6e10ae83627d3cc2b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-a"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens emitted verbatim by the component producer with the original AppEntryIconPaletteTest. The direct-mode copies of the first three are excluded and AppChromeSizeTokens advances the v0.4.0 copy of the component chain. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-a/AppChromeSizeTokens.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e4e989c92188de4ece1a41e35c6c6b8161aa4001",
+      "sha256": "6105e5dd2baa131438888e44971385df57bd3127f566d313bfc9e289e7a0de4d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-a"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens emitted verbatim by the component producer with the original AppEntryIconPaletteTest. The direct-mode copies of the first three are excluded and AppChromeSizeTokens advances the v0.4.0 copy of the component chain. No call sites are added."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AppEntryIconPaletteTest.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-a/AppEntryIconPaletteTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "6c02ebd3177ae13ab1fd682f78f9f5f2f166d2e0",
+      "sha256": "5902d1b291f2a23d72b53ac93630e1f314b1fb3dbc567ad28852420b67b4ad9f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-a"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 MediaContrastPalette, AppPopupSurface, AppSemanticVisualPolicy, AppEntryIconPalette and AppChromeSizeTokens emitted verbatim by the component producer with the original AppEntryIconPaletteTest. The direct-mode copies of the first three are excluded and AppChromeSizeTokens advances the v0.4.0 copy of the component chain. No call sites are added."
     }
   ],
   "buildStandaloneInputs": [

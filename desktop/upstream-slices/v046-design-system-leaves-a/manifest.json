@@ -1,0 +1,99 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt",
+      "filename": "MediaContrastPalette.kt",
+      "bytes": 587,
+      "sha256": "dabfc89e60da5bd649693938b09a59099e2af1a4d8fc0cd24f4e3253964e964c",
+      "gitBlob": "7f72c26cad6f59173e28d33b483ee0fb836db08e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt",
+      "filename": "AppPopupSurface.kt",
+      "bytes": 2051,
+      "sha256": "38fc5f2454b65e42683e832758c099bcdcdac30fc741f0a0ff89d46b57eb2bb2",
+      "gitBlob": "823b66731c20d88c355d0072b463ec182179f4f2"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt",
+      "filename": "AppSemanticVisualPolicy.kt",
+      "bytes": 5959,
+      "sha256": "f82b1e2f6b86b397e1f661f0d10ab53dc80d4428b4db78c55c38321277135c63",
+      "gitBlob": "d31280bfcc4d3d0191b5d5389379ad8a4764d01f"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppEntryIconPalette.kt",
+      "filename": "AppEntryIconPalette.kt",
+      "bytes": 2432,
+      "sha256": "ad96bac1c9fa304788eeb9d61c146cb2d45ffa9c77160fb6e10ae83627d3cc2b",
+      "gitBlob": "10d1989fdc2e0eca140e5ba29783d898da833726"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt",
+      "filename": "AppChromeSizeTokens.kt",
+      "bytes": 4489,
+      "sha256": "6105e5dd2baa131438888e44971385df57bd3127f566d313bfc9e289e7a0de4d",
+      "gitBlob": "e4e989c92188de4ece1a41e35c6c6b8161aa4001"
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/AppEntryIconPaletteTest.kt",
+      "filename": "AppEntryIconPaletteTest.kt",
+      "bytes": 760,
+      "sha256": "5902d1b291f2a23d72b53ac93630e1f314b1fb3dbc567ad28852420b67b4ad9f",
+      "gitBlob": "6c02ebd3177ae13ab1fd682f78f9f5f2f166d2e0"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 design-system leaf files MediaContrastPalette.kt, AppPopupSurface.kt, AppSemanticVisualPolicy.kt, AppEntryIconPalette.kt and AppChromeSizeTokens.kt, plus the original AppEntryIconPaletteTest.kt. Part A of roadmap slice fnd-design-system-leaf-completion.",
+  "purpose": "Emit the complete v0.4.6 files verbatim from the existing component producer (extract-upstream-components.py). Three direct-mode v0.2.5 copies are excluded in prepareUpstreamSources; AppChromeSizeTokens advances the v0.4.0 copy the component chain already emits; AppEntryIconPalette is new. Nothing is adapted and no consumer is re-pinned (consumer rule): features re-pin to v0.4.6 when their own slice runs.",
+  "replacedVendoredCopies": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt",
+      "vendoredLfSha256": "8cbefefe563834983daf639250644b6fe43ab6822d6c773f52a822097915dee4",
+      "replacedBy": "MediaContrastPalette.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt",
+      "vendoredLfSha256": "fdddaad8b821026c6e8909e609a67799f0618511457a9ce56c9291079a7d2939",
+      "replacedBy": "AppPopupSurface.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt",
+      "vendoredLfSha256": "6383d0beb96863fa52534897e4463409ecbc194d8603db72d955607339be1bbf",
+      "replacedBy": "AppSemanticVisualPolicy.kt"
+    }
+  ],
+  "componentChainPredecessors": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt",
+      "predecessorSha256": "fdddaad8b821026c6e8909e609a67799f0618511457a9ce56c9291079a7d2939",
+      "predecessor": "the vendored v0.2.5 file read by extract-upstream-components.py (no earlier layer touches it)",
+      "replacedBy": "AppPopupSurface.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt",
+      "predecessorSha256": "89c7d9a7f651741d5322391c8b03c005310fc4a7c5589eadaefb88853e072657",
+      "predecessor": "desktop/upstream-slices/v040-chrome-actions/AppChromeSizeTokens.kt (v0.4.0, emitted by the same chain; its direct-mode exclude already exists)",
+      "replacedBy": "AppChromeSizeTokens.kt"
+    }
+  ],
+  "behaviourChanges": [
+    "MediaContrastPalette gains SecondaryForeground, ControlSurface, ControlScrim, Track, Success, Warning, Error and Rating (the v0.2.5 object only had Foreground and Scrim); the carried v042-player-readability TopControlBar already reads Error and Warning.",
+    "AppPopupSurface resolves the default content colour through AppContentColors.primaryText() instead of MaterialTheme.colorScheme.onSurface.",
+    "AppChromeSizeTokens gains LiquidSearchFieldHeightDp = 40; the native search metrics are unchanged.",
+    "AppSemanticVisualPolicy differs from v0.2.5 in KDoc comments only; its declarations are byte-for-byte the same code.",
+    "AppEntryIconPalette (sixteen entry icon colours, cursor and ProvideAppEntryIconColors) is new; nothing consumes it until the settings entry slices land."
+  ],
+  "notCarried": [
+    "AppChromeSizeTokensTest.kt: byte-identical to the v0.4.0 copy that v040-chrome-actions already emits into the original chrome action test root.",
+    "AppSemanticVisualPolicyTest.kt and AppIconStylePolicyTest.kt: byte-identical to the v0.2.5 copies and emitted by no producer today; the first reads app source files by relative path, so neither is added here.",
+    "design-system/.../AppPreferenceComponents.kt, AppSelectionPreferenceComponents.kt, AppCard.kt, AppDesktopInteraction.kt, AppTonalPillTabPolicy.kt and DampedDragAnimation.kt: part B of the roadmap slice (Windows adapters, hash-pinned recipes)."
+  ]
+}

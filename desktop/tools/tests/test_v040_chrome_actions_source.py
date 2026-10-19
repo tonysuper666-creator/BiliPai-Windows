@@ -10,6 +10,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO/'desktop/tools'))
 import v040_chrome_actions as source
 import v043_theme_chrome as chrome
+import v046_design_system_leaves_a as leaves
 
 
 def load(name, filename):
@@ -60,6 +61,9 @@ class V040ChromeActionsSourceTest(unittest.TestCase):
                 expected = raw.decode('utf-8')
             if path in chrome.COMPONENTS:
                 expected = chrome.component_source(REPO, path, expected)
+            if path in leaves.CHAIN_PATHS:
+                # the v046 design-system leaf layer advances the v0.4.0 chrome size tokens to the whole v0.4.6 file
+                expected = leaves.chain_source(REPO, path, expected)
             self.assertEqual(expected, actual, path)
             self.assertNotRegex(actual, r'(?m)^import android\.')
             count += 1

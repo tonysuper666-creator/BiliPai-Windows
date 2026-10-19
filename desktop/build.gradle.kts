@@ -262,6 +262,10 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt"))
         exclude(canonicalOriginalIdentity("design-tokens/src/main/java/com/android/purebilibili/core/theme/Color.kt"))
+        // The existing component producer owns the complete v0.4.6 design-system leaf files (part A).
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -614,6 +618,8 @@ val extractUpstreamComponents by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v040-native-chrome")
     inputs.dir("upstream-slices/v040-chrome-actions")
     inputs.dir("upstream-slices/v040-liquid-value-controls")
+    inputs.file("tools/v046_design_system_leaves_a.py")
+    inputs.dir("upstream-slices/v046-design-system-leaves-a")
     inputs.files(sources.filter { "component-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/components"))
