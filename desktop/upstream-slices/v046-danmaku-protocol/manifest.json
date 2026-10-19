@@ -1,0 +1,50 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt",
+      "filename": "DanmakuProto.kt",
+      "bytes": 25151,
+      "sha256": "606cb541a39bbbae4ee7160bd3f6424693a4a535bb0e573e1ffec84e5747aac7",
+      "gitBlob": "f9df3ff19f48f2a7bef6f524fbc4ce396e9956f6"
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt",
+      "filename": "AdvancedDanmakuData.kt",
+      "bytes": 6865,
+      "sha256": "aa66437743880bcd04b2bc945330d6f44eee554a3d6d07e9aa087311a01aee28",
+      "gitBlob": "1fd75aaa8e023d8be7c8d67a7d81cd6436143085"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt",
+      "filename": "DanmakuContentRepository.kt",
+      "bytes": 10793,
+      "sha256": "f7bc05f436b30213915193821cca5712e6a59f9fa32e76ca29fdcfef828fb214",
+      "gitBlob": "53c252b0b3452ba002ed90586f0464368f279db3"
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuParser.kt",
+      "filename": "DanmakuParser.kt",
+      "bytes": 20865,
+      "sha256": "2ea28407e5c7b333b2e7456f2507ad9c501ddd3db37f10afde4fb4f4d60abf59",
+      "gitBlob": "54075f8746ee9ab76460c06a9de314d35556f4ae"
+    },
+    {
+      "path": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/DanmakuProtoPolicyTest.kt",
+      "filename": "DanmakuProtoPolicyTest.kt",
+      "bytes": 9573,
+      "sha256": "91bab184191b73a46d02d500173a3c65bcc150854b664ff815a1fc0ff86c2854",
+      "gitBlob": "d665dc2aadb78d6edb8ac779cfa7e2b91843a45d"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Five whole files at the v0.4.6 commit: DanmakuProto.kt, AdvancedDanmakuData.kt, DanmakuContentRepository.kt, DanmakuParser.kt and the DanmakuProtoPolicyTest.kt regression suite.",
+  "purpose": "Definers for DanmakuProto.parseFailed (strict protobuf wire parse), ParsedDanmaku.failedSegmentCount and DanmakuContentRepository.invalidateDanmakuSegment, which the carried v029-bas-filter and v030-up-danmaku DanmakuManager archives already call (upstream ccb37f85, v0.2.8 danmaku segment hardening).",
+  "scope": "DanmakuProto.kt is emitted whole by extract-upstream-danmaku.py (the v0.2.5 canonical copy is excluded in prepareUpstreamSources). The AdvancedDanmakuData.kt model head and the DanmakuContentRepository.kt object body replace their v0.2.5 predecessors inside the existing producers. DanmakuParser.kt is carried for the failed-segment reference and for the proof that the two blocks the Windows build extracts from it are unchanged. The regression suite is emitted with two hash-pinned edits. The desktop DanmakuWindowLoader is desktop-owned Kotlin, not an upstream hunk."
+}

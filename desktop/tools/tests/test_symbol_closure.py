@@ -1195,9 +1195,10 @@ class ExpectedGapsTests(unittest.TestCase):
         # the interim compat extension is gone: the real member comes from v046-sheet-motion
         self.assertNotIn('COMPAT_REDUCED_MOTION', (TOOLS / 'v046_comment_list.py').read_text(encoding='utf8'))
         self.assertEqual([('AppBottomSheetMotion', 'reducedMotion')],
-                         [(e['owner'], e['symbol']) for e in expected['retired'] if e.get('owner')])
-        self.assertEqual(sorted(name for _package, name in CLOSED_SEEDS),
-                         sorted(e['symbol'] for e in expected['retired'] if not e.get('owner')))
+                         [(e['owner'], e['symbol']) for e in expected['retired']
+                          if e.get('owner') and e['symbol'] not in DANMAKU_SEEDS])
+        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS] + list(DANMAKU_SEEDS)),
+                         sorted(e['symbol'] for e in expected['retired'] if not e.get('owner') or e['symbol'] in DANMAKU_SEEDS))
 
     def test_the_retired_seed_names_its_shim_its_guards_and_the_slice_that_replaces_it(self):
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
@@ -1234,7 +1235,8 @@ class ExpectedGapsTests(unittest.TestCase):
                      'isScheduledDarkTheme', 'normalizeDarkThemeSchedule'):
             self.assertIn(name, proposed)
         roadmap_named = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'roadmap'}
-        self.assertIn('invalidateDanmakuSegment', roadmap_named)
+        for name in DANMAKU_SEEDS:
+            self.assertNotIn(name, roadmap_named)
         for _package, name in CLOSED_SEEDS:
             self.assertNotIn(name, roadmap_named)
 
@@ -1750,6 +1752,8 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.feature.video.ui.components', 'CommentFraudFeedbackHost'),
     ('com.android.purebilibili.core.coroutines', 'AccountScopedRequests'),
 )
+# closed by the v046 danmaku protocol slice (members and identifiers, not top-level declarations)
+DANMAKU_SEEDS = ('invalidateDanmakuSegment', 'parseFailed', 'failedSegmentCount')
 
 
 @unittest.skipIf(SKIP_HEAVY, 'BP_SYMBOL_GATE_SKIP_HEAVY=1')
@@ -1879,7 +1883,12 @@ class CurrentIntegrationTree(unittest.TestCase):
         for package, name in CLOSED_SEEDS:
             with self.subTest(symbol=name):
                 self.assertEqual('defined', status.get(name), package)
-        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS] + ['reducedMotion']), sorted(status))
+        self.assertEqual(sorted([name for _package, name in CLOSED_SEEDS] + list(DANMAKU_SEEDS) + ['reducedMotion']),
+                         sorted(status))
+        for name in DANMAKU_SEEDS:
+            self.assertEqual('defined', status.get(name), name)
+        known = {f.symbol for f in self.result.known}
+        self.assertNotIn('com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment', known)
 
     def test_analysis_is_deterministic_and_the_report_carries_the_limits(self):
         again = gate.analyze(self.sources, self.notes, self.expected, gate.Options(), extra_findings=self.extra,

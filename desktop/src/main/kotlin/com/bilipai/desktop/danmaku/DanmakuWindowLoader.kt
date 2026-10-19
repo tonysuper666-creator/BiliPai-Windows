@@ -1,5 +1,6 @@
 package com.bilipai.desktop.danmaku
 
+import com.android.purebilibili.data.repository.DanmakuRepository
 import com.android.purebilibili.data.repository.resolveDanmakuSegmentCount
 import com.android.purebilibili.feature.video.danmaku.CommandDanmakuItem
 import com.android.purebilibili.danmaku.parser.DanmakuProto
@@ -44,17 +45,34 @@ data class DanmakuWindowResult(
     val specialOnly: Boolean = false,
     val specialStartMs: Long? = null,
     val specialEndMs: Long? = null,
+    /** Segments of this window whose bytes failed the strict protobuf parse and were evicted for a retry (v0.4.6 parseFailed). */
+    val failedSegments: List<Int> = emptyList(),
 )
 
-data class DanmakuRefreshKey(val segments:List<Int>,val specialBucket:Long,val indexRevision:Long,val seekRevision:Long,val retreatRevision:Long)
+data class DanmakuRefreshKey(val segments:List<Int>,val specialBucket:Long,val indexRevision:Long,val seekRevision:Long,val retreatRevision:Long,
+    /** Changes when segments missing from the window (failed fetch or failed parse) are due for their next attempt. */
+    val retryRevision:Long=0)
 
-/** Three-segment playback windows and bounded per-content LRU caching follow the upstream policy. */
+/**
+ * Three-segment playback windows and bounded per-content LRU caching follow the upstream policy. A segment whose bytes fail
+ * the v0.4.6 strict protobuf parse is detected, counted, evicted from this loader's cache and retried after
+ * [SEGMENT_RETRY_INTERVAL_MS], instead of showing as a silently empty segment; a segment whose fetch failed is retried the
+ * same way. A local (offline) segment session is never retried, as in upstream DanmakuManager: its files are read from disk,
+ * so a re-read only rebuilds the identical document.
+ *
+ * [invalidateShared] also evicts the segment from the shared repository cache (DanmakuRepository). That is a
+ * forward-compatible hook only: the playback source reads segments straight from the transport and never fills that cache,
+ * so today only the eviction from this loader's own cache changes behaviour.
+ * The injectable ports come before the trailing duration lambda so the overlay's trailing-lambda call is unchanged.
+ */
 class DanmakuWindowLoader(
     private val source: DesktopDanmakuSource,
     private val cid: Long,
     private val aid: Long = 0,
     private val durationMs: Long = 0,
     indexingScope:CoroutineScope?=null,
+    private val invalidateShared:(Long,Int)->Unit=DanmakuRepository::invalidateDanmakuSegment,
+    private val nowMs:()->Long={System.nanoTime()/1_000_000L},
     private val standardDurationMs:()->Long={10_000L},
 ) : AutoCloseable {
     init { require(cid > 0 && aid >= 0 && durationMs >= 0) }
@@ -81,9 +99,17 @@ class DanmakuWindowLoader(
     private var observedPosition=Long.MIN_VALUE
     private var observedSeekId=0L
     private var retreatRevision=0L
+    // Segments of the active window that are not usable (fetch failed or the strict parse failed), their next attempt and
+    // a counter that makes every retry round a new refresh key. All guarded by refreshLock.
+    private var missingSegments=emptySet<Int>()
+    private var retryAtMs=Long.MAX_VALUE
+    private var retryRound=0L
+    // Local download sessions know their real slots and read them from disk: an unchanged file cannot heal, so nothing is retried.
+    private val localSegmentSession:Boolean get()=source.offlineSegmentCount!=null
     private var ordinary:DanmakuDocument?=null
     private var ordinaryFormat=DanmakuFormat.PROTOBUF
     private var ordinaryWarning:String?=null
+    private var ordinaryFailed=emptyList<Int>()
     private var previousSpecial=DanmakuDocument()
     private var previousDocument:DanmakuDocument?=null
     private var commands = emptyList<CommandDanmakuItem>()
@@ -97,8 +123,11 @@ class DanmakuWindowLoader(
         observedPosition=positionMs;observedSeekId=maxOf(observedSeekId,seekCompletedId)
         DanmakuRefreshKey(windowForPosition(positionMs),
             if(hasSpecial)positionMs.coerceAtLeast(0)/DesktopSpecialSourceLimits.REFRESH_GUARD_MS else 0,
-            mutableSpecialRevision.value,if(hasSpecial)observedSeekId else 0,if(hasSpecial)retreatRevision else 0)
+            mutableSpecialRevision.value,if(hasSpecial)observedSeekId else 0,if(hasSpecial)retreatRevision else 0,
+            if(retryDueLocked())retryRound+1 else retryRound)
     }
+    private fun retryDueLocked():Boolean=missingSegments.isNotEmpty() && nowMs()>=retryAtMs
+    private fun retryDue():Boolean=synchronized(refreshLock) {retryDueLocked()}
     override fun close() {if(closed.compareAndSet(false,true))indexOwner.cancel()}
     private fun checkCurrent() {check(!closed.get()) {"Special source owner retired"}}
 
@@ -131,13 +160,20 @@ class DanmakuWindowLoader(
         // Indexed special sources still need their independent short-window refresh.
         if(!hasSpecial && ordinaryFormat==DanmakuFormat.XML && xmlFallback!=null)return@withLock null
         if(refreshKey(positionMs,seekCompletedId)==activeRefresh)return@withLock null
-        loadWindow(positionMs)
+        // A retry round that brings nothing new must not republish the identical window every interval.
+        val retrying=retryDue() && windowForPosition(positionMs)==activeSegments
+        val before=previousDocument
+        val beforeWarning=ordinaryWarning ?: metadataWarning
+        val result=loadWindow(positionMs)
+        if(retrying && before!=null && result.document==before && result.warning==beforeWarning)return@withLock null
+        result
     }
 
     private suspend fun loadWindow(positionMs: Long): DanmakuWindowResult {
         checkCurrent()
         val indices=windowForPosition(positionMs)
-        val indicesUnchanged=indices==activeSegments && ordinary!=null
+        // Segments missing from an unchanged window are fetched again once their retry is due.
+        val indicesUnchanged=indices==activeSegments && ordinary!=null && !retryDue()
         if(!indicesUnchanged && !(!metadataAvailable && xmlFallback!=null)) {
             val results=coroutineScope {
                 indices.map {index->async {
@@ -149,16 +185,27 @@ class DanmakuWindowLoader(
                     index to bytes
                 }}.awaitAll()
             }
-            val available=results.mapNotNull {it.second.getOrNull()}
-            if(available.isNotEmpty()) {
-                ordinary=DanmakuParser.parseProtobuf(available)
+            val fetched=results.mapNotNull {(index,bytes)->bytes.getOrNull()?.let {index to it}}
+            val window=DanmakuParser.parseProtobufWindow(fetched.map {it.second})
+            // v0.4.6: bytes that fail the strict parse are never kept. Evict exactly those segments (here and in the shared
+            // repository) so the next attempt fetches them again; they count as missing for the retry below.
+            val failed=window.failedPositions.map {fetched[it].first}
+            failed.forEach(::invalidateSegment)
+            val usable=fetched.size-failed.size
+            if(usable>0) {
+                ordinary=window.document
                 ordinaryFormat=DanmakuFormat.PROTOBUF
-                ordinaryWarning=if(available.size<indices.size)"部分弹幕分段未加载（${available.size}/${indices.size}），已显示可用内容。" else null
+                ordinaryFailed=failed
+                ordinaryWarning=segmentWarning(usable,indices.size,failed)
+                noteSegmentOutcome(indices.filter {index->index in failed || fetched.none {it.first==index}})
             } else {
                 val xml=xmlFallback ?: try {DanmakuParser.parseDocument(source.xml(cid).inputStream()).also {xmlFallback=it}}
                 catch(failure:Exception) {if(failure is CancellationException)throw failure;throw IllegalStateException("分段与兼容弹幕均加载失败",failure)}
                 ordinary=xml;ordinaryFormat=DanmakuFormat.XML
+                ordinaryFailed=emptyList()
                 ordinaryWarning="当前使用 XML 兼容弹幕，分段接口暂不可用。"
+                // One complete XML document is not a segmented window: there is nothing left to retry.
+                noteSegmentOutcome(emptyList())
             }
         }
         val base=requireNotNull(ordinary)
@@ -181,7 +228,40 @@ class DanmakuWindowLoader(
         previousDocument=combined;activeSegments=indices;activeRefresh=key
         return DanmakuWindowResult(combined,ordinaryFormat,
             if(ordinaryFormat==DanmakuFormat.PROTOBUF)indices else emptyList(),commands,ordinaryWarning ?: metadataWarning,
-            specialOnly,ranged?.startTimeMs,ranged?.endTimeMs)
+            specialOnly,ranged?.startTimeMs,ranged?.endTimeMs,ordinaryFailed)
+    }
+
+    /**
+     * Evicts exactly one segment whose bytes failed protocol parsing from this loader's cache (the eviction that matters for
+     * playback) and, best effort, through [invalidateShared] (a forward-compatible hook, see the class documentation).
+     */
+    private fun invalidateSegment(index: Int) {
+        synchronized(cache) { cache.remove(index)?.let { cacheBytes -= it.size } }
+        // Best effort: a failing shared-cache port must not break loading the remaining segments.
+        try { invalidateShared(cid, index) } catch (_: Exception) { }
+    }
+
+    private fun noteSegmentOutcome(missing: List<Int>) {
+        synchronized(refreshLock) {
+            // Upstream DanmakuManager: hasMissingSegments = !isLocalSegmentSession && ...
+            if (missing.isEmpty() || localSegmentSession) {
+                missingSegments = emptySet()
+                retryAtMs = Long.MAX_VALUE
+            } else {
+                missingSegments = missing.toSet()
+                retryAtMs = nowMs() + SEGMENT_RETRY_INTERVAL_MS
+                retryRound++
+            }
+        }
+    }
+
+    private fun segmentWarning(usable: Int, total: Int, failed: List<Int>): String? {
+        if (usable >= total) return null
+        val base = "部分弹幕分段未加载（${usable}/${total}），已显示可用内容。"
+        if (failed.isEmpty()) return base
+        // A local session never retries, so it must not promise one.
+        val outcome = if (localSegmentSession) "已丢弃。" else "已丢弃并将重试。"
+        return base + "其中 ${failed.size} 段数据损坏，" + outcome
     }
 
     /** Each compact index becomes ready independently. No whole-file cache. */
@@ -251,7 +331,7 @@ class DanmakuWindowLoader(
             .sortedBy {it.startTimeMs}.filter(basBudget::retainCompiled).take(5_000)
         return DanmakuDocument(comments, (first.advanced + second.advanced).distinctBy { it.id }.sortedBy { it.startTimeMs }.take(5_000),
             first.serverDisabled || second.serverDisabled,
-            bas)
+            bas, first.failedSegmentCount + second.failedSegmentCount)
     }
 
     private fun requireProtocolBytes(bytes: ByteArray) {
@@ -261,5 +341,9 @@ class DanmakuWindowLoader(
         }
     }
 
-    companion object { private const val MAX_CACHE_BYTES = 16 * 1024 * 1024 }
+    companion object {
+        private const val MAX_CACHE_BYTES = 16 * 1024 * 1024
+        /** Upstream DanmakuManager SEGMENT_RETRY_INTERVAL_MS: how long a missing or corrupt segment waits for its next attempt. */
+        const val SEGMENT_RETRY_INTERVAL_MS = 15_000L
+    }
 }

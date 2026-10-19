@@ -41,6 +41,9 @@ def generate(repo: Path, output: Path) -> list[Path]:
     # The sole producer now emits the same original types in danmaku/parser.
     # Other files in the caller's output directory remain protected.
     output = output.resolve()
+    # Before anything is created: the output must not be inside or around the carried v0.4.6 archive.
+    from v046_danmaku_protocol import validate_outputs as validate_protocol_outputs
+    validate_protocol_outputs(repo, output)
     output.mkdir(parents=True, exist_ok=True)
     obsolete = []
     for name, original_source in (("AdvancedDanmakuData.kt", "AdvancedDanmakuData.kt"),
@@ -59,11 +62,17 @@ def generate(repo: Path, output: Path) -> list[Path]:
         json.dumps(dict(soleProducer=True, obsoleteNamedOutputs=obsolete), indent=2) + "\n", encoding="utf-8")
     model_path = FEATURE_ROOT + "AdvancedDanmakuData.kt"
     model = read_source(repo, model_path)
+    # v0.4.6 content (ParsedDanmaku.failedSegmentCount); the head this producer keeps is unchanged code.
+    from v046_danmaku_protocol import advance_model, emit_proto, write_proof
+    model, model_proof = advance_model(repo, model)
+    write_proof(output, "AdvancedDanmakuData.kt", model_proof)
     marker = "\n/**\n * 弹幕解析结果"
     if model.count(marker) != 1:
         raise ValueError("Upstream advanced model boundary changed; review the desktop renderer")
     generated = [generated_file(output,
         "com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt", model_path, model, model.split(marker)[0])]
+    # The whole v0.4.6 strict protobuf parser (DanmakuProto.parseFailed). The v0.2.5 copy is excluded from the direct sync.
+    generated.append(emit_proto(repo, output))
 
     parser_path = FEATURE_ROOT + "DanmakuParser.kt"
     parser = read_source(repo, parser_path)

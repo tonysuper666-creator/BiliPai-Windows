@@ -278,6 +278,21 @@ def bind_offline_task_repository(body):
     changes = []
     mappings = [('private data class DanmakuSegmentCacheKey(\n    val cid: Long,\n    val segmentIndex: Int\n)', 'private data class DanmakuRawCacheKey(val cid: Long, val authorization: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt)\n\nprivate data class DanmakuSegmentCacheKey(\n    val cid: Long,\n    val segmentIndex: Int,\n    val authorization: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt\n)', 1, 'Complete nonsecret receipt extends both existing cache keys'), ('LinkedHashMap<Long, ByteArray>(5, 0.75f, true)', 'LinkedHashMap<DanmakuRawCacheKey, ByteArray>(5, 0.75f, true)', 1, 'Retain the same original raw LRU/count/bytes owner'), ('        // 先检查缓存\n        synchronized(danmakuCache) {\n            danmakuCache[cid]?.let { return@withContext it }\n        }', '        val binding = com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding()\n        val cacheKey = DanmakuRawCacheKey(cid, binding.cacheReceipt)\n        val cached = binding.admit { synchronized(danmakuCache) { danmakuCache[cacheKey] } }\n        if (cached != null) return@withContext cached', 1, 'Raw access-order hit is admitted'), ('                    synchronized(danmakuCache) {\n                        danmakuCache.remove(cid)?.let { danmakuCacheBytes -= it.size.toLong() }\n\n                        val iterator = danmakuCache.entries.iterator()\n                        while (iterator.hasNext() &&\n                            (danmakuCache.size >= MAX_DANMAKU_CACHE_COUNT ||\n                                danmakuCacheBytes + entrySize > MAX_DANMAKU_CACHE_BYTES)\n                        ) {\n                            val eldest = iterator.next()\n                            danmakuCacheBytes -= eldest.value.size.toLong()\n                            iterator.remove()\n                        }\n                        danmakuCache[cid] = result\n                        danmakuCacheBytes += entrySize\n                    }', '                    binding.admit {\n                        synchronized(danmakuCache) {\n                            danmakuCache.remove(cacheKey)?.let { danmakuCacheBytes -= it.size.toLong() }\n\n                            val iterator = danmakuCache.entries.iterator()\n                            while (iterator.hasNext() &&\n                                (danmakuCache.size >= MAX_DANMAKU_CACHE_COUNT ||\n                                    danmakuCacheBytes + entrySize > MAX_DANMAKU_CACHE_BYTES)\n                            ) {\n                                val eldest = iterator.next()\n                                danmakuCacheBytes -= eldest.value.size.toLong()\n                                iterator.remove()\n                            }\n                            danmakuCache[cacheKey] = result\n                            danmakuCacheBytes += entrySize\n                        }\n                    }', 1, 'Raw remove/evict/put/byte accounting Store -> queue -> same cache'), ('            result\n        } catch (e: CancellationException)', '            binding.assertCurrent()\n            result\n        } catch (e: CancellationException)', 1, 'Retired raw result rejected after IO/decompression'), ('        val cacheKey = DanmakuSegmentCacheKey(cid, segmentIndex)\n        synchronized(danmakuSegmentCache) {\n            danmakuSegmentCache[cacheKey]?.let { return@withContext it }\n        }', '        val binding = com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding()\n        val cacheKey = DanmakuSegmentCacheKey(cid, segmentIndex, binding.cacheReceipt)\n        val cached = binding.admit { synchronized(danmakuSegmentCache) { danmakuSegmentCache[cacheKey] } }\n        if (cached != null) return@withContext cached', 1, 'Parallel child hit uses inherited original root guard and receipt'), ('            synchronized(danmakuSegmentCache) {\n                danmakuSegmentCache.remove(cacheKey)?.let { removed ->\n                    danmakuSegmentCacheBytes -= removed.size.toLong()\n                }\n                val iterator = danmakuSegmentCache.entries.iterator()\n                while (\n                    iterator.hasNext() &&\n                    (danmakuSegmentCache.size >= MAX_SEGMENT_CACHE_COUNT ||\n                        danmakuSegmentCacheBytes + entrySize > MAX_SEGMENT_CACHE_BYTES)\n                ) {\n                    val eldest = iterator.next()\n                    danmakuSegmentCacheBytes -= eldest.value.size.toLong()\n                    iterator.remove()\n                }\n                danmakuSegmentCache[cacheKey] = bytes\n                danmakuSegmentCacheBytes += entrySize\n            }', '            binding.admit {\n                synchronized(danmakuSegmentCache) {\n                    danmakuSegmentCache.remove(cacheKey)?.let { removed ->\n                        danmakuSegmentCacheBytes -= removed.size.toLong()\n                    }\n                    val iterator = danmakuSegmentCache.entries.iterator()\n                    while (\n                        iterator.hasNext() &&\n                        (danmakuSegmentCache.size >= MAX_SEGMENT_CACHE_COUNT ||\n                            danmakuSegmentCacheBytes + entrySize > MAX_SEGMENT_CACHE_BYTES)\n                    ) {\n                        val eldest = iterator.next()\n                        danmakuSegmentCacheBytes -= eldest.value.size.toLong()\n                        iterator.remove()\n                    }\n                    danmakuSegmentCache[cacheKey] = bytes\n                    danmakuSegmentCacheBytes += entrySize\n                }\n            }', 1, 'Segment remove/evict/put/byte accounting under same owner'), ('        bytes\n    }\n\n    /**\n     * 并发拉取', '        binding.assertCurrent()\n        bytes\n    }\n\n    /**\n     * 并发拉取', 1, 'Segment result still belongs to original task')]
     mappings.extend([
+        # v046-danmaku-protocol: the v0.4.6 member removes a segment by its two-field key, but the Windows cache key above
+        # also carries the authorization receipt. The window loader has no download binding, so it evicts the corrupt
+        # segment for every receipt (a pure cache eviction, nothing is read or admitted).
+        ("            danmakuSegmentCache.remove(DanmakuSegmentCacheKey(cid, segmentIndex))?.let {\n"
+         "                danmakuSegmentCacheBytes -= it.size.toLong()\n"
+         "            }\n",
+         "            val iterator = danmakuSegmentCache.entries.iterator()\n"
+         "            while (iterator.hasNext()) {\n"
+         "                val entry = iterator.next()\n"
+         "                if (entry.key.cid == cid && entry.key.segmentIndex == segmentIndex) {\n"
+         "                    danmakuSegmentCacheBytes -= entry.value.size.toLong()\n"
+         "                    iterator.remove()\n"
+         "                }\n"
+         "            }\n", 1,
+         "Corrupt-segment eviction covers every authorization receipt of the Windows cache key"),
         ("    private val api get() = com.bilipai.desktop.download.DownloadDanmakuTransport.api",
          "    private suspend fun api() = com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding().api()", 1,
          "Actual coroutine request facade captures child body-cancellation Job"),
@@ -300,6 +315,8 @@ def bind_offline_task_repository(body):
 
 
 def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[Path]:
+    from v046_danmaku_protocol import validate_outputs as validate_danmaku_protocol
+    validate_danmaku_protocol(repo, output, test_output)
     parser = parser_for(repo)
     generated = []
     path = BASE + "data/repository/BangumiRepository.kt"
@@ -318,9 +335,17 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
     account_source = read(repo, account_path)
     content_path = "core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt"
     content_source = read(repo, content_path)
-    # Entire canonical read/cache schema and object body in the existing owner.
+    # v0.4.6 content (invalidateDanmakuSegment, an empty segment body is a successful segment) replaces the v0.2.5
+    # predecessor; the canonical read above keeps its digest gate and the predecessor pin.
+    from v046_danmaku_protocol import (advance_content_repository, write_proof as write_danmaku_protocol_proof,
+                                       emit_tests as emit_danmaku_protocol_tests)
+    current_content, content_advance = advance_content_repository(repo, content_source)
+    write_danmaku_protocol_proof(output, "DanmakuContentRepository.kt", content_advance)
+    if test_output is not None:
+        emit_danmaku_protocol_tests(repo, test_output)
+    # Entire current read/cache schema and object body in the existing owner.
     # The account methods use the same already configured transport getter.
-    body = content_source
+    body = current_content
     for original,replacement in {
         "import com.android.purebilibili.core.network.NetworkModule\n": "",
         "object DanmakuContentRepository {": "object DanmakuRepository {",
@@ -368,10 +393,11 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
         raise ValueError("Original offline composite binding inverse failed")
     (output/"offline-task-binding-source-proof.json").write_text(json.dumps(dict(
         canonicalContentSha256LF=hashlib.sha256(content_source.encode()).hexdigest(),
+        currentContentSha256LF=hashlib.sha256(current_content.encode()).hexdigest(),
         canonicalAccountSha256LF=hashlib.sha256(account_source.encode()).hexdigest(),
         sameRepositoryCacheOwner=True, originalLruLimitsAndParallelism=True, noGlobalApiOrMetadata=True,
         wholeCompositeInverseExact=True, mappings=binding_changes),indent=2)+"\n",encoding="utf8")
-    generated.append(write(output, "com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt", content_path, content_source, body))
+    generated.append(write(output, "com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt", content_path, current_content, body))
 
     path = BASE + "feature/video/danmaku/DanmakuParser.kt"
     source = read(repo, path)

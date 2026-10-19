@@ -274,6 +274,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UserUpBadge.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/UserAvatarCornerMark.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt"))
+        // The whole v0.4.6 strict protobuf parser (DanmakuProto.parseFailed) is emitted by the existing danmaku producer.
+        exclude(canonicalOriginalIdentity("danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -4311,3 +4313,11 @@ tasks.matching { it.name in setOf(
 }
 tasks.named("extractOriginalSpacePages") { inputs.file("tools/v046_follow_confirmation.py") }
 tasks.named("extractOriginalVideoDetailUnits") { inputs.file("tools/v046_like_write_guard.py") }
+
+// v0.4.6 danmaku protocol hardening: the danmaku producer emits the whole strict DanmakuProto and the AdvancedDanmakuData
+// model head; the media producer emits the v0.4.6 content repository body (as DanmakuRepository) and the adapted
+// DanmakuProtoPolicyTest into the live-stream original test root that is already a test source root.
+tasks.matching { it.name in setOf("extractUpstreamDanmaku", "extractUpstreamMedia") }.configureEach {
+    inputs.file("tools/v046_danmaku_protocol.py")
+    inputs.dir("upstream-slices/v046-danmaku-protocol")
+}

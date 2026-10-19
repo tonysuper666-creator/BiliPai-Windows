@@ -14,7 +14,25 @@ internal interface DesktopDanmakuFramePlatform {
     fun cancelFrameCallback(callback: (Long) -> Unit)
 }
 
-/** One-shot Swing callbacks; parking retains no periodic timer or media data. */
+/**
+ * One-shot Swing callbacks; parking retains no periodic timer or media data.
+ *
+ * Pacing decision (slice dmk-protocol-hardening, roadmap v039-danmaku-60fps-cadence): the overlay stays at the original
+ * 60 fps cadence and does NOT derive its interval from the monitor refresh rate.
+ * - The loop is hard-capped at 60 fps by construction. The verbatim original RenderFrameCadence advances its absolute
+ *   deadline `cadence.nextFrameNs` in FRAME_INTERVAL_NS = 1_000_000_000L / 60L steps and requestFrameCallback arms one Swing
+ *   Timer for that deadline, so at most one paint request per 16.7 ms is admitted whatever the panel rate. Upstream 295798c
+ *   chose that cap on purpose (absolute deadlines, so a 90 Hz panel does not fall to 45 fps and a 120 Hz panel does not
+ *   drift); it is the original design, not a Windows defect.
+ * - Whether a faster loop would actually be shown is unmeasured. The overlay is a transparent JWindow painted by Java2D
+ *   (`panel.repaint()`) over the mpv surface, the Swing Timer has whole-millisecond granularity and no vsync callback, and
+ *   repainting a per-pixel translucent window of 5120x2160 may itself be too slow to exceed 60 fps. Nothing in this tree
+ *   measures the achieved paint rate, so raising the cadence would be a guess that multiplies CPU use at 4K.
+ * - A panel probe exists (DesktopOriginalVideoOverlayPlatform.readPanelRefreshRate, used only for the player debug label).
+ *   If a measurement on the real display shows the 60 fps cap is visible, the follow-up is a counted, hash-pinned
+ *   adaptation of v038_danmaku_cadence.cadence_source that makes the interval a constructor parameter (default: the
+ *   original constant) plus a pure desktop policy that caps it, never a silent change of the carried class.
+ */
 internal class SwingDesktopDanmakuFramePlatform : DesktopDanmakuFramePlatform, AutoCloseable {
     private var wake: Runnable? = null
     private var frame: ((Long) -> Unit)? = null

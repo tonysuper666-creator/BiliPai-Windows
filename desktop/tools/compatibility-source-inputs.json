@@ -149,7 +149,8 @@
     "desktop/upstream-slices/v046-comment-polish",
     "desktop/upstream-slices/v046-account-scoped-requests",
     "desktop/upstream-slices/v046-identity-badge-palette",
-    "desktop/upstream-slices/v046-follow-confirmation"
+    "desktop/upstream-slices/v046-follow-confirmation",
+    "desktop/upstream-slices/v046-danmaku-protocol"
   ],
   "archives": [
     {
@@ -6617,6 +6618,53 @@
           "sha256": "fcd52ecc839fea1eba25cc63459a6dfa5ff9ec9e28694ead05a5ef10067fb9f1",
           "hashNormalization": "raw",
           "blob": "3a4e67e88863f6c033820f09e5b0b1c4b4f2f14c"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-danmaku-protocol",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-protocol/AdvancedDanmakuData.kt",
+          "sha256": "aa66437743880bcd04b2bc945330d6f44eee554a3d6d07e9aa087311a01aee28",
+          "hashNormalization": "raw",
+          "blob": "1fd75aaa8e023d8be7c8d67a7d81cd6436143085"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuContentRepository.kt",
+          "sha256": "f7bc05f436b30213915193821cca5712e6a59f9fa32e76ca29fdcfef828fb214",
+          "hashNormalization": "raw",
+          "blob": "53c252b0b3452ba002ed90586f0464368f279db3"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuParser.kt",
+          "sha256": "2ea28407e5c7b333b2e7456f2507ad9c501ddd3db37f10afde4fb4f4d60abf59",
+          "hashNormalization": "raw",
+          "blob": "54075f8746ee9ab76460c06a9de314d35556f4ae"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuProto.kt",
+          "sha256": "606cb541a39bbbae4ee7160bd3f6424693a4a535bb0e573e1ffec84e5747aac7",
+          "hashNormalization": "raw",
+          "blob": "f9df3ff19f48f2a7bef6f524fbc4ce396e9956f6"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuProtoPolicyTest.kt",
+          "sha256": "91bab184191b73a46d02d500173a3c65bcc150854b664ff815a1fc0ff86c2854",
+          "hashNormalization": "raw",
+          "blob": "d665dc2aadb78d6edb8ac779cfa7e2b91843a45d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-protocol/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-protocol/manifest.json",
+          "sha256": "b6f83c56a1a917f63a08b232cdaad109d1c7b6bdac00f079908c4d79c8283bed",
+          "hashNormalization": "raw",
+          "blob": "f997dbd6fb93dd9121f1bae89f35bed9d8af9946"
         }
       ]
     }
@@ -17472,6 +17520,81 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original file, byte exact (the new shared unfollow confirmation of upstream c4124a06). Emitted unchanged by the fullscreen pager producer under com/android/purebilibili/core/ui/components; its call sites are hash-pinned adaptations in desktop/tools/v046_follow_confirmation.py."
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuProto.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f9df3ff19f48f2a7bef6f524fbc4ce396e9956f6",
+      "sha256": "606cb541a39bbbae4ee7160bd3f6424693a4a535bb0e573e1ffec84e5747aac7",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-protocol"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (strict protobuf wire parse and DanmakuSegReply.parseFailed). Emitted unchanged by extract-upstream-danmaku.py under com/android/purebilibili/danmaku/parser; the v0.2.5 canonical copy is excluded in prepareUpstreamSources."
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-protocol/AdvancedDanmakuData.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "1fd75aaa8e023d8be7c8d67a7d81cd6436143085",
+      "sha256": "aa66437743880bcd04b2bc945330d6f44eee554a3d6d07e9aa087311a01aee28",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-protocol"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "The model head up to ParsedDanmaku (unchanged code, v0.4.6 comments and one import) replaces the v0.2.5 head in extract-upstream-danmaku.py. ParsedDanmaku with failedSegmentCount is carried for the symbol gate and as reference; the Windows parse result is the desktop DanmakuDocument, which carries the same count."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuContentRepository.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "53c252b0b3452ba002ed90586f0464368f279db3",
+      "sha256": "f7bc05f436b30213915193821cca5712e6a59f9fa32e76ca29fdcfef828fb214",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-protocol"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original object body (invalidateDanmakuSegment; an empty segment body is a successful segment) replaces the v0.2.5 body in extract-upstream-media.py, which renames the object to DanmakuRepository and applies its three pinned platform bindings. DanmakuSegmentPolicy extraction still reads the unchanged v0.2.5 resolveSegmentCount."
+    },
+    {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuParser.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuParser.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "54075f8746ee9ab76460c06a9de314d35556f4ae",
+      "sha256": "2ea28407e5c7b333b2e7456f2507ad9c501ddd3db37f10afde4fb4f4d60abf59",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-protocol"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference only. The failed-segment counting of parseProtobuf is mirrored by the desktop DanmakuParser. The advanced parser block and the font scale block that extract-upstream-danmaku.py takes from this file are proved byte-identical to the v0.2.5 predecessor, and the producer fails closed if they change."
+    },
+    {
+      "path": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/DanmakuProtoPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-protocol/DanmakuProtoPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d665dc2aadb78d6edb8ac779cfa7e2b91843a45d",
+      "sha256": "91bab184191b73a46d02d500173a3c65bcc150854b664ff815a1fc0ff86c2854",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-protocol"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "All five original cases and every assertion retained. Two hash-pinned edits: an explicit import binds DanmakuParser to the Windows parser, and the class carries the V046Original prefix. Emitted by extract-upstream-media.py into the existing live-stream original test root."
     }
   ],
   "buildStandaloneInputs": [

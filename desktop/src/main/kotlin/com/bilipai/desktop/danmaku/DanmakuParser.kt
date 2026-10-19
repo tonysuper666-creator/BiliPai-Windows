@@ -6,6 +6,7 @@ import com.android.purebilibili.danmaku.parser.DesktopAdvancedDanmakuParser
 import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
 import com.android.purebilibili.danmaku.parser.bas.BasParseException
 import com.android.purebilibili.danmaku.parser.bas.BasScriptParser
+import kotlinx.coroutines.CancellationException
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayInputStream
@@ -38,9 +39,14 @@ data class DanmakuComment(
 
 data class DanmakuDocument(val comments: List<DanmakuComment> = emptyList(), val advanced: List<AdvancedDanmakuData> = emptyList(), val serverDisabled: Boolean = false,
     // Fixed v029 Mode9 grammar/timeline only. Windows BAS painting and target input are not mounted yet.
-    val bas: List<BasDanmaku> = emptyList()) {
+    val bas: List<BasDanmaku> = emptyList(),
+    // v0.4.6 ParsedDanmaku.failedSegmentCount: protobuf segments whose bytes failed the strict wire parse and were dropped whole.
+    val failedSegmentCount: Int = 0) {
     val size: Int get() = comments.size + advanced.size + bas.size
 }
+
+/** One windowed protobuf parse: the document of every segment that decoded, and the input positions that did not. */
+data class DanmakuProtobufWindow(val document: DanmakuDocument, val failedPositions: List<Int>)
 
 /** Secure streaming parser for Bilibili's public XML comment endpoint. */
 object DanmakuParser {
@@ -133,41 +139,73 @@ object DanmakuParser {
             bas = bas.sortedBy { it.startTimeMs })
     }
 
-    fun parseProtobuf(segments: List<ByteArray>): DanmakuDocument {
+    fun parseProtobuf(segments: List<ByteArray>): DanmakuDocument = parseProtobufWindow(segments).document
+
+    /**
+     * v0.4.6 parseProtobuf: a segment whose bytes fail the strict wire parse (DanmakuSegReply.parseFailed) is skipped whole
+     * and counted, never half-shown; a valid empty body is an empty segment, not a failure. The failed input positions let
+     * the window loader evict exactly those segments and retry them.
+     *
+     * Like upstream, an exception raised while a decoded segment is turned into elements also counts that segment as failed
+     * (a cancellation still propagates). What the segment had already contributed is dropped again, so it is not half shown.
+     * [decode] is the wire decoder, the strict upstream DanmakuProto.parseReply by default; it is a parameter only so a test
+     * can make one segment fail.
+     */
+    fun parseProtobufWindow(segments: List<ByteArray>,
+        decode: (ByteArray) -> DanmakuProto.DanmakuSegReply = DanmakuProto::parseReply): DanmakuProtobufWindow {
         val comments = mutableListOf<DanmakuComment>()
         val advanced = mutableListOf<AdvancedDanmakuData>()
         val bas = mutableListOf<BasDanmaku>()
         val basBudget=DesktopBasDocumentBudget()
         require(segments.sumOf { it.size.toLong() } <= MAX_DOCUMENT_BYTES) { "Danmaku window is too large." }
         var serverDisabled = false
-        segments.forEach { bytes ->
-            val reply = DanmakuProto.parseReply(bytes)
-            if (reply.state == 1) serverDisabled = true
-            reply.elems.take(MAX_COMMENTS).forEach { item ->
-                if (item.progress < 0 || item.content.isBlank()) return@forEach
-                when (item.mode) {
-                    in 1..6 -> if (comments.size < MAX_COMMENTS) {
-                        val count = item.count.coerceAtLeast(0)
-                        val content = item.content.take(300).replace(Regex("[\\r\\n\\t]+"), " ")
-                        comments += DanmakuComment(comments.size, item.progress / 1000.0, item.mode,
-                            item.fontsize.coerceIn(12, 48), item.color and 0xffffff,
-                            if (count > 1) "$content x$count" else content, item.id, item.midHash.take(200), item.weight,
-                            item.colorful == DanmakuProto.DmColorfulTypeVipGradualColor, originalElement = item)
-                    }
-                    7 -> if (advanced.size < MAX_ADVANCED_COMMENTS && item.content.length <= 16_384) {
-                        DesktopAdvancedDanmakuParser.parseAdvancedDanmaku(item.content, item.progress.toLong(), item.color and 0xffffff)
-                            ?.copy(id = "proto_${item.id}_${item.progress}")?.let { normalizeAdvanced(it)?.let(advanced::add) }
-                    }
-                    9 -> if (bas.size < MAX_ADVANCED_COMMENTS) {
-                        parseBas(item.content, item.progress.toLong(), item.color and 0xffffff,
-                            item.id, item.midHash.take(200), item.weight, item.isSelf,basBudget)?.let(bas::add)
+        val failedPositions = mutableListOf<Int>()
+        segments.forEachIndexed { position, bytes ->
+            val commentsBefore = comments.size
+            val advancedBefore = advanced.size
+            val basBefore = bas.size
+            val serverDisabledBefore = serverDisabled
+            try {
+                val reply = decode(bytes)
+                if (reply.parseFailed) {
+                    failedPositions += position
+                    return@forEachIndexed
+                }
+                if (reply.state == 1) serverDisabled = true
+                reply.elems.take(MAX_COMMENTS).forEach { item ->
+                    if (item.progress < 0 || item.content.isBlank()) return@forEach
+                    when (item.mode) {
+                        in 1..6 -> if (comments.size < MAX_COMMENTS) {
+                            val count = item.count.coerceAtLeast(0)
+                            val content = item.content.take(300).replace(Regex("[\\r\\n\\t]+"), " ")
+                            comments += DanmakuComment(comments.size, item.progress / 1000.0, item.mode,
+                                item.fontsize.coerceIn(12, 48), item.color and 0xffffff,
+                                if (count > 1) "$content x$count" else content, item.id, item.midHash.take(200), item.weight,
+                                item.colorful == DanmakuProto.DmColorfulTypeVipGradualColor, originalElement = item)
+                        }
+                        7 -> if (advanced.size < MAX_ADVANCED_COMMENTS && item.content.length <= 16_384) {
+                            DesktopAdvancedDanmakuParser.parseAdvancedDanmaku(item.content, item.progress.toLong(), item.color and 0xffffff)
+                                ?.copy(id = "proto_${item.id}_${item.progress}")?.let { normalizeAdvanced(it)?.let(advanced::add) }
+                        }
+                        9 -> if (bas.size < MAX_ADVANCED_COMMENTS) {
+                            parseBas(item.content, item.progress.toLong(), item.color and 0xffffff,
+                                item.id, item.midHash.take(200), item.weight, item.isSelf,basBudget)?.let(bas::add)
+                        }
                     }
                 }
+            } catch (failure: Exception) {
+                if (failure is CancellationException) throw failure
+                comments.subList(commentsBefore, comments.size).clear()
+                advanced.subList(advancedBefore, advanced.size).clear()
+                bas.subList(basBefore, bas.size).clear()
+                serverDisabled = serverDisabledBefore
+                failedPositions += position
             }
         }
-        return DanmakuDocument(comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id }),
+        return DanmakuProtobufWindow(DanmakuDocument(comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id }),
             advanced.distinctBy { it.id }.sortedBy { it.startTimeMs }, serverDisabled,
-            bas.distinctBy { if (it.id > 0) "id:${it.id}" else "${it.startTimeMs}:${it.source}" }.sortedBy { it.startTimeMs })
+            bas.distinctBy { if (it.id > 0) "id:${it.id}" else "${it.startTimeMs}:${it.source}" }.sortedBy { it.startTimeMs },
+            failedSegmentCount = failedPositions.size), failedPositions.toList())
     }
 
     /** Bound untrusted scene work without changing any fixed original grammar/timeline body. */

@@ -78,8 +78,11 @@ internal fun next(): Int { return 1 }
             self.assertNotIn("normalizeDanmakuDisplayArea", repository)
             # v025 moved the cache to core-data. Verify its complete original
             # schema/body, rather than the retired app repository field subset.
+            # v046-danmaku-protocol: the producer carries the whole v0.4.6 object body (invalidateDanmakuSegment,
+            # empty segment = success) in place of the pinned v0.2.5 predecessor read here.
             cache_path = "core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt"
-            expected_cache = media.read(REPO, cache_path)
+            from v046_danmaku_protocol import advance_content_repository
+            expected_cache = advance_content_repository(REPO, media.read(REPO, cache_path))[0]
             for original_binding, windows_binding in (
                 ("import com.android.purebilibili.core.network.NetworkModule\n", ""),
                 ("object DanmakuContentRepository {", "object DanmakuRepository {"),

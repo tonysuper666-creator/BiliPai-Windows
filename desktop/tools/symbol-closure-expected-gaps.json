@@ -32,18 +32,6 @@
       ]
     },
     {
-      "reason": "The carried danmaku archives call DanmakuContentRepository.invalidateDanmakuSegment, a member the pinned repository lacks (roadmap seed).",
-      "closedBy": "dmk-protocol-hardening",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment"
-        }
-      ]
-    },
-    {
       "reason": "Bangumi player feature symbols imported by the carried v046 comment-list archive.",
       "closedBy": "bgm-player-viewmodel-and-features",
       "closedByEvidence": "roadmap",
@@ -366,22 +354,6 @@
       "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt:108 declares it",
       "closedBy": "fnd-home-card-cascade-definers",
       "closedByEvidence": "roadmap"
-    },
-    {
-      "symbol": "parseFailed",
-      "kind": "identifier",
-      "reason": "DanmakuProto.DanmakuSegReply.parseFailed (v0.4.x) is read by DanmakuParser; the pinned danmaku-engine never mentions it (roadmap seed: DanmakuProto.parseFailed).",
-      "evidence": "d6bf8b16:danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt:39",
-      "closedBy": "dmk-protocol-hardening",
-      "closedByEvidence": "roadmap"
-    },
-    {
-      "symbol": "failedSegmentCount",
-      "kind": "identifier",
-      "reason": "Added to the danmaku parse result after the pinned tree; carried DanmakuManager archives read it (roadmap seed).",
-      "evidence": "d6bf8b16:danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt:181",
-      "closedBy": "dmk-protocol-hardening",
-      "closedByEvidence": "roadmap"
     }
   ],
   "retiredSeeds": [
@@ -504,6 +476,37 @@
       "retiredBy": "desktop/upstream-slices/v046-account-scoped-requests (AccountScopedRequests.kt, emitted by desktop/tools/v046_account_scoped_requests.py through extract-upstream-home-viewmodel.py)",
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_account_scoped_requests_source.py",
       "closedBy": "acct-account-scoped-requests",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "invalidateDanmakuSegment",
+      "kind": "member",
+      "owner": "DanmakuRepository",
+      "reason": "Roadmap seed DanmakuContentRepository.invalidateDanmakuSegment (upstream ccb37f85): the carried v029-bas-filter and v030-up-danmaku DanmakuManager archives call it. RETIRED, not open: the v046-danmaku-protocol slice carries the whole v0.4.6 DanmakuContentRepository.kt, and extract-upstream-media.py emits that object body as DesktopDownloadDanmakuRepository.kt, where the Windows download owner names the object DanmakuRepository, so the member has a compiled definer under that name. The carried archive file declares the upstream name DanmakuContentRepository with the member, which is what resolves the carried references in this gate; the compiled Windows object does not have that name, so the slice that emits DanmakuManager whole must map it. The desktop DanmakuWindowLoader calls the member through its default invalidateShared port, but the playback source (ApiDesktopDanmakuSource.segment) reads the API directly and never fills that repository cache, so for playback the call is a forward-compatible hook: only the loader's own cache eviction changes behaviour.",
+      "evidence": "d6bf8b16:core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt declares fun invalidateDanmakuSegment(cid: Long, segmentIndex: Int); the pinned v0.2.5 copy has no such member",
+      "retiredBy": "desktop/tools/v046_danmaku_protocol.py advance_content_repository, applied by desktop/tools/extract-upstream-media.py and emitted as DesktopDownloadDanmakuRepository.kt",
+      "guardedBy": "this gate (status LOST fails the run); test_v046_danmaku_protocol_source.py: test_the_three_definers_are_in_the_carried_files_exactly_once, test_the_window_loader_keeps_the_trailing_lambda_contract_and_calls_the_hardened_members",
+      "closedBy": "dmk-protocol-hardening",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "parseFailed",
+      "kind": "identifier",
+      "reason": "Roadmap seed DanmakuProto.parseFailed (upstream ccb37f85): DanmakuSegReply.parseFailed marks a protobuf segment whose bytes failed the strict wire parse. RETIRED, not open: the v046-danmaku-protocol slice emits the whole v0.4.6 DanmakuProto.kt from extract-upstream-danmaku.py (the v0.2.5 copy is excluded in prepareUpstreamSources), and the desktop DanmakuParser.parseProtobufWindow reads reply.parseFailed.",
+      "evidence": "d6bf8b16:danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt:39",
+      "retiredBy": "desktop/tools/v046_danmaku_protocol.py emit_proto, emitted as com/android/purebilibili/danmaku/parser/DanmakuProto.kt",
+      "guardedBy": "this gate (status LOST fails the run); test_v046_danmaku_protocol_source.py: test_the_three_definers_are_in_the_carried_files_exactly_once, test_the_window_loader_keeps_the_trailing_lambda_contract_and_calls_the_hardened_members",
+      "closedBy": "dmk-protocol-hardening",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "failedSegmentCount",
+      "kind": "identifier",
+      "reason": "Roadmap seed ParsedDanmaku.failedSegmentCount (upstream ccb37f85): the count of failed protobuf segments that the carried DanmakuManager archives read. RETIRED, not open: the compiled Windows parse result is the desktop-owned DanmakuDocument, which now declares failedSegmentCount (parseProtobufWindow counts the failed segments and the window loader reads them). ParsedDanmaku itself stays uncompiled (extract-upstream-danmaku.py cuts AdvancedDanmakuData.kt before it) and is carried in v046-danmaku-protocol with the v0.4.6 AdvancedDanmakuData.kt. This identifier check matches by name only, so it cannot tell DanmakuDocument from ParsedDanmaku.",
+      "evidence": "d6bf8b16:danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt:181",
+      "retiredBy": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt DanmakuDocument.failedSegmentCount",
+      "guardedBy": "this gate (status LOST fails the run); test_v046_danmaku_protocol_source.py: test_the_three_definers_are_in_the_carried_files_exactly_once, test_the_window_loader_keeps_the_trailing_lambda_contract_and_calls_the_hardened_members",
+      "closedBy": "dmk-protocol-hardening",
       "closedByEvidence": "roadmap"
     }
   ],
