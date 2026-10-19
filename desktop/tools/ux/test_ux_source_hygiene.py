@@ -127,6 +127,42 @@ class ScannerSelfTest(unittest.TestCase):
         self.assertTrue(source.key_fallback_uses("val f = LocalDesktopWindowKeyFallback.current\n"))
         self.assertEqual([], source.key_fallback_uses("// the key fallback has two slots\nval s = \"KeyFallback\"\n"))
 
+    def test_control_characters_are_found_by_line_and_lf_and_cr_are_not(self):
+        backspace = bytes([8])
+        self.assertEqual([], source.control_characters(b"fun f() = 1\nval s = \"a\"\r\nval t = 2\n"))
+        self.assertEqual([(1, 8), (1, 8)], source.control_characters(b"r\"" + backspace + b"Dp" + backspace + b"\"\n"))
+        self.assertEqual([(2, 8), (2, 8), (3, 0), (4, 9), (4, 127)],
+                         source.control_characters(b"ok\n" + backspace + b"x" + backspace + b"\n\x00\n\t\x7f\n"))
+        for code in list(range(0, 10)) + [11, 12] + list(range(14, 32)) + [127]:
+            self.assertEqual([(1, code)], source.control_characters(b"a" + bytes([code]) + b"b\n"), code)
+        for code in (10, 13) + tuple(range(32, 127)):
+            self.assertEqual([], source.control_characters(b"a" + bytes([code]) + b"b\n"), code)
+
+    def test_assert_lf_only_rejects_a_control_character_that_a_heredoc_left_for_a_regex_escape(self):
+        backspace = bytes([8])
+        with tempfile.TemporaryDirectory() as scratch:
+            good, bad = Path(scratch, "good.py"), Path(scratch, "bad.py")
+            good.write_bytes(b"pattern = r\"\\bDp\\b\"\n")
+            bad.write_bytes(b"pattern = r\"" + backspace + b"Dp" + backspace + b"\"\n")
+            with mock.patch.object(source, "relative_posix", lambda path: Path(path).name), \
+                    mock.patch.object(source, "index_eol", lambda paths: None):
+                source.assert_lf_only(self, good)
+                with self.assertRaises(AssertionError) as caught:
+                    source.assert_lf_only(self, bad)
+        self.assertIn("control characters", str(caught.exception))
+        self.assertIn("bad.py", str(caught.exception))
+
+    def test_no_file_of_the_ux_program_holds_a_control_character(self):
+        # The suites themselves, the shared helpers, the contract and the Kotlin of the program: not one control byte
+        # (CR of the tracked CRLF files of the vendored tree is not part of this scope).
+        here = Path(__file__).resolve().parent
+        scanned = sorted(path for path in here.iterdir() if path.suffix in (".py", ".json"))
+        scanned += sorted(path for path in (source.KT / "ux").glob("*.kt"))
+        scanned += sorted(path for path in (source.REPO / "desktop/src/test/resources").glob("desktop-ux-contract.json"))
+        self.assertGreaterEqual(len(scanned), 12)
+        for path in scanned:
+            self.assertEqual([], source.control_characters(path.read_bytes()), source.relative_posix(path))
+
     def test_allowlist_mechanism(self):
         scope = {"banned-import": {"a.kt", "b.kt", "c.kt"}}
         findings = {"banned-import": {"a.kt": [(1, "Switch")], "b.kt": [], "c.kt": [(2, "TextButton")]}}

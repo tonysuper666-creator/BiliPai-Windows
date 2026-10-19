@@ -149,7 +149,7 @@ class ProbeFileTest(unittest.TestCase):
         self.assertIn("import kotlin.test.assertTrue", PROBE_CODE)
 
     def test_no_other_source_of_the_ux_test_package_depends_on_the_probe(self):
-        marker = re.compile(r"UxApiProbe|DesktopCardContextMenu|Probe[A-Z]\w*")
+        marker = re.compile(r"\bUxApiProbe\b|\bDesktopCardContextMenu|\bProbe[A-Z]\w*")
         for path in sorted((probe.PROBE.parent).glob("*.kt")):
             if path != probe.PROBE:
                 self.assertIsNone(marker.search(probe.read_text(path)), path.name)

@@ -24,7 +24,9 @@ desktop/tools/tests as spec 8.2 and 9.2 say. Root adds each suite to the validat
 `-s desktop/tools/ux -p <file>` line.
 
 Line endings. read() normalises CRLF to LF so a CRLF working copy reads like the LF blob; assert_lf_only() asks git
-for the index line-ending word and falls back to a bare carriage-return scan.
+for the index line-ending word and falls back to a bare carriage-return scan. It also rejects every control byte
+other than LF (control_characters), because a backspace left by a heredoc where a regex escape was meant makes a
+test vacuous without any other symptom.
 """
 import json
 import re
@@ -242,14 +244,29 @@ def index_eol(paths):
     return words
 
 
+_CONTROL_BYTES = re.compile(rb"[\x00-\x09\x0b\x0c\x0e-\x1f\x7f]")
+
+
+def control_characters(data):
+    """[(line, byte)] of every control byte in data except LF and CR (CR has its own checks, tab is a control byte too).
+
+    The classic victim is the word-boundary escape of a regular expression: typed through a shell heredoc it becomes a
+    backspace (byte 8) inside a raw string, and the pattern can then never match anything, so the test that uses it
+    passes without checking. A source file of the program holds none of these bytes."""
+    return [(data.count(b"\n", 0, match.start()) + 1, match.group()[0]) for match in _CONTROL_BYTES.finditer(data)]
+
+
 def assert_lf_only(test, *paths):
-    """No bare carriage return in the working copy; the committed blob is LF; a new (untracked) file is pure LF."""
+    """No control character but LF (CR aside); no bare carriage return in the working copy; the committed blob is LF;
+    a new (untracked) file is pure LF."""
     paths = [Path(path) for path in paths]
     words = index_eol(paths)
     for path in paths:
         name = relative_posix(path)
         test.assertTrue(path.is_file(), name)
         data = path.read_bytes()
+        controls = control_characters(data)
+        test.assertEqual([], controls, "%s holds control characters (line, byte): %s" % (name, controls[:5]))
         test.assertIsNone(re.search(rb"\r(?!\n)", data), "%s holds a bare carriage return" % name)
         word = None if words is None else words.get(name)
         if word is None:
