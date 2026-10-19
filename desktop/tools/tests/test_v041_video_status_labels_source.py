@@ -39,6 +39,9 @@ GOLDEN_MAIN = {
     MODEL_DIR + 'SpaceModels.kt': '3fdd9795a060157922f5bbfa28c705d193fd401247e5d975b0f60eefdedcaf4b',
     SEARCH_PATH: '941c24c45ab415de3ae291209e1b945f7c714053386ebd838c6b02e181d8fb36',
     FAVORITE_PATH: '3b5a648f0b9625019f173afbd4981d81313919c64dbea8140602a8437d595534',
+    'com/android/purebilibili/data/model/VideoProgressDisplayPolicy.kt': '65042496b8e7704945fe3de882a3996c972dd670f28db06c3a539769efa05d3f',
+    'com/android/purebilibili/data/model/WatchLaterProgressPolicy.kt': '6cc40fdad3d7032f344795f666a7033551dc7149161c2a9d34507f3a8da49fb9',
+    'com/android/purebilibili/data/model/VideoCardStatsTextPolicy.kt': '3406eaa4fc0933ad15be7c033f0ab6399f5dba313dd6c026fcf9bf61f160d3bf',
     'v041-video-status-labels-proof.json': '68d8b892265e0bd7058bca3f5ea498d53f2897f126ed83ed542ca1454caee2b3',
 }
 GOLDEN_TESTS = {
@@ -49,6 +52,7 @@ GOLDEN_TESTS = {
     MODEL_DIR + 'VideoStatusLabelsTest.kt': '0533b4517b33f249812278c3285540aa25228a9dd3b0cd03bc2c6974361dad20',
     MODEL_DIR + 'VideoCooperationMetadataTest.kt': '7ad0dffa6f6ab350b14bd18eb294d3ec8d15cd55e4d3a99bdcc31cf3b6e2337f',
     SUPPORT_PATH: '053873ee6ce6df0dd201c4c911724f61fc068f8987db7a80690eb6f49192840b',
+    'com/android/purebilibili/data/model/VideoProgressDisplayPolicyTest.kt': 'ca72dd9d3a4394e7074f81d17eb83760493722a99b3a368d382a6a2e09a36131',
 }
 HOOK_IDS = ['SM1', 'SM2', 'FM1', 'HC1', 'HC2', 'HC3', 'HC4', 'SS0', 'SS1', 'SS2', 'SS3', 'SS4', 'SS5', 'SS6', 'SS7',
             'SO1', 'WL1', 'WL2', 'WL3', 'WL4', 'WL5']
@@ -135,7 +139,9 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
     def test_replaced_models_cover_exactly_the_four_synced_files_and_nothing_else(self):
         names = {Path(path).name for path in self.main if path.endswith('.kt')}
         self.assertEqual({'VideoStatusLabels.kt', 'VideoStatusBadges.kt', 'ListModels.kt', 'SpaceModels.kt',
-                          'SearchModels.kt', 'FavoriteModels.kt', 'RecommendationReason.kt'}, names)
+                          'SearchModels.kt', 'FavoriteModels.kt', 'RecommendationReason.kt',
+                          'VideoProgressDisplayPolicy.kt', 'WatchLaterProgressPolicy.kt',
+                          'VideoCardStatsTextPolicy.kt'}, names)
         # The unmounted charge-chip cluster and the premium pill policy are neither emitted nor hooked.
         for forbidden in ('SpaceChargeBadgePolicy', 'VideoPremiumBadgePolicy', 'resolveVideoPremiumBadgeLabel'):
             self.assertEqual([], [path for path, raw in self.main.items()
@@ -642,7 +648,7 @@ class V041VideoStatusLabelsSourceTest(unittest.TestCase):
                 cli_roots |= {alias.name.split('.')[0] for alias in node.names}
             elif isinstance(node, ast.ImportFrom):
                 cli_roots.add(node.module.split('.')[0])
-        self.assertEqual({'argparse', 'json', 'pathlib', 'v041_video_status_labels'}, cli_roots)
+        self.assertEqual({'argparse', 'json', 'pathlib', 'v041_video_status_labels', 'v046_core_data_policies'}, cli_roots)
 
     def test_manifest_record_and_compatibility_inventory_pin_the_same_archive(self):
         record = json.loads((REPO / 'desktop/upstream-sources.json').read_text(encoding='utf-8'))['v041VideoStatusLabelsSlice']
