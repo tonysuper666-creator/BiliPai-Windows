@@ -45,8 +45,12 @@ internal class DesktopWindowsNativePointerMotion {
 internal fun desktopWindowsNativePointerScreenPosition(): java.awt.Point? =
     runCatching { java.awt.MouseInfo.getPointerInfo()?.location }.getOrNull()
 
-/** Mount-local UI timing, never a playback/source/window authority. */
-internal class DesktopWindowsFullscreenChromeState(private val clockNanos: () -> Long = System::nanoTime) {
+/** Mount-local UI timing, never a playback/source/window authority.
+ * idleNanos comes first so that a trailing clock lambda still binds to clockNanos. */
+internal class DesktopWindowsFullscreenChromeState(
+    private val idleNanos: Long = DEFAULT_IDLE_NANOS,
+    private val clockNanos: () -> Long = System::nanoTime,
+) {
     var visible by mutableStateOf(true)
         private set
     var activityRevision by mutableLongStateOf(0L)
@@ -64,7 +68,7 @@ internal class DesktopWindowsFullscreenChromeState(private val clockNanos: () ->
 
     fun remainingIdleMillis(): Long {
         val elapsed = (clockNanos() - lastActivityNanos).coerceAtLeast(0L)
-        val remaining = (IDLE_NANOS - elapsed).coerceAtLeast(0L)
+        val remaining = (idleNanos - elapsed).coerceAtLeast(0L)
         return (remaining + 999_999L) / 1_000_000L
     }
 
@@ -75,7 +79,7 @@ internal class DesktopWindowsFullscreenChromeState(private val clockNanos: () ->
         return true
     }
 
-    companion object { private const val IDLE_NANOS = 4_000_000_000L }
+    companion object { internal const val DEFAULT_IDLE_NANOS = 4_000_000_000L }
 }
 
 /** A heavyweight Canvas can own input while Compose retains its last hover/focus.

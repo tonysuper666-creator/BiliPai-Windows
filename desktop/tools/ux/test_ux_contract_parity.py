@@ -563,7 +563,9 @@ class PinnedConstantsTest(unittest.TestCase):
     def test_legacy_fullscreen_idle(self):
         text = source.read(source.K / "ui/DesktopWindowsFullscreenChromeState.kt")
         nanos = CONTRACT["chrome"]["legacy_fullscreen_idle_ms"] * 1000000
-        self.assertIn("IDLE_NANOS = %s" % "{:,}".format(nanos).replace(",", "_") + "L", text)
+        # Slice X1b turned the private IDLE_NANOS into the idleNanos constructor parameter whose default is this constant.
+        self.assertIn("const val DEFAULT_IDLE_NANOS = %s" % "{:,}".format(nanos).replace(",", "_") + "L", text)
+        self.assertIn("private val idleNanos: Long = DEFAULT_IDLE_NANOS,", text)
 
     def test_minimum_window(self):
         text = source.read(source.K / "appearance/DesktopWindowsDisplayScaleScope.kt")
