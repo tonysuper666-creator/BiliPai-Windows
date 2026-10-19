@@ -95,7 +95,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             }
             val referer = resolveReferer(original.url, original.header("Referer"))
             if (referer == null) builder.removeHeader("Referer") else builder.header("Referer", referer)
-            if (original.header("Origin").isNullOrBlank() && original.url.host != "app.bilibili.com" &&
+            if (usesDefaultBilibiliHeaders(original.url.host) && original.header("Origin").isNullOrBlank() && original.url.host != "app.bilibili.com" &&
                 resolveAndroidHdLoginAppKeyHeader(original.url.encodedPath) == null) builder.header("Origin", "https://www.bilibili.com")
             if (original.header("Accept").isNullOrBlank()) builder.header("Accept", "application/json, text/plain, */*")
             builder.header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
@@ -1117,9 +1117,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             return resolved
         }
 
-        // Mirror upstream ApiClient: explicit headers win, WBI omits Referer, video APIs use the video page.
+        // Mirror upstream ApiClient: explicit Referer wins, then the Bilibili host gate, then WBI/app omit Referer and video APIs use the video page.
         internal fun resolveReferer(url: HttpUrl, explicit: String?): String? {
             explicit?.takeIf { it.isNotBlank() }?.let { return it }
+            if (!usesDefaultBilibiliHeaders(url.host)) return null
             if (url.encodedPath.contains("/wbi/") || url.host == "app.bilibili.com" ||
                 resolveAndroidHdLoginAppKeyHeader(url.encodedPath) != null) return null
             return url.queryParameter("bvid")?.takeIf { it.isNotBlank() }?.let { "https://www.bilibili.com/video/$it" }
