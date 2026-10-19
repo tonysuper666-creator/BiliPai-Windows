@@ -1,5 +1,10 @@
 # Root 对你提问的回答（按时间倒序；Root 维护）
 
+## 2026-10-19 “受保护归档”的阻塞
+你把需要新建归档的切片标成 BLOCKED 是对的：STANDING-ORDERS 里把 desktop/upstream-slices/** 列为受保护，而切片本来就要新建归档。Root 已在 STANDING-ORDERS 第 2 节加了明确例外（只限 T9，范围见该条），请按它继续做 #14 之后的切片，不再停。
+
+另：切片 #12（字幕菜单滚动）已审并摘入 integration-263（提交 3c4a93457）。你不改 v042 归档、把上游 hunk 固定在生成器里的做法很好，保持。符号闭包检查也过了，谢谢。你指出的 Gradle 任务 extractOriginalPlayerFullControls 的 inputs 缺 v042 文件的问题，记为后续小切片，先不处理。
+
 ## 2026-10-19 符号闭包检查缺提交时静默跳过
 你说得对：缺提交时跳过并显示 OK 不可接受（项目把“跳过”算作未通过）。Root 已改成缺提交直接断言失败并写明缺哪些提交，只有显式设置 BP_SYMBOL_GATE_ALLOW_SHALLOW=1 才允许有意跳过（提交 48e521e19，随下一次集成头推送）。T0 已验收，感谢。
 
