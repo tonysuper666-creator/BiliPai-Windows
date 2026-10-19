@@ -55,10 +55,11 @@ BANNED_IMPORT_GLOBS = (
     "ui/DesktopWindowsShellFrame.kt",
     "ui/DesktopWindowsNowPlayingBar.kt",
     "ui/DesktopWindowsToast.kt",
-    # The re-skinned settings files (spec 3.7, slice X3). They exist today and are allowlisted until X3 migrates them.
+    # The re-skinned settings files (spec 3.7, slice X3). X3 migrated them, so the allowlist names none of them any more.
     "ui/DesktopWindowsSettingsControls.kt",
     "ui/DesktopWindowsUxSettings.kt",
     "ui/DesktopWindowsTipsSettings.kt",
+    "ui/DesktopWindowsTipsShortcuts.kt",
     "settings/DesktopSettingsTree.kt",
     "appearance/DesktopWindowsDisplayScaleSettings.kt",
 )

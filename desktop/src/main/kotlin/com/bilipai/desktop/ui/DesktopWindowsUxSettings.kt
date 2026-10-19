@@ -1,0 +1,78 @@
+package com.bilipai.desktop.ui
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.bilipai.desktop.appearance.DesktopWindowsUxCardInteractions
+import com.bilipai.desktop.appearance.DesktopWindowsUxCommand
+import com.bilipai.desktop.appearance.DesktopWindowsUxHomeLayout
+import com.bilipai.desktop.appearance.DesktopWindowsUxPlayerLayout
+import com.bilipai.desktop.appearance.DesktopWindowsUxRailMode
+import com.bilipai.desktop.appearance.LocalDesktopWindowsUx
+import com.bilipai.desktop.ui.kit.DESKTOP_KIT_RADIUS_CONTROL_DP
+import com.bilipai.desktop.ui.kit.DesktopMenuRow
+import com.bilipai.desktop.ui.kit.desktopKitHairlineBorder
+
+/*
+ * A row of the layout group is offered only while something reads its flag. Nothing reads any of the four flags yet (the
+ * new rail, home feed, cards and player come with their own slices), and the player flag in particular must not be set to
+ * DESKTOP before the flip gate: an explicit DESKTOP key would switch the unaccepted overlay on the day it lands. So the
+ * rows are shown, with the stored value, but cannot be changed. The slice that adds the consumer of a flag turns its row on
+ * (S1 the rail, H1 the home feed, H2 the cards, the player flip gate the player layout) and the source test that scans for
+ * readers of the flags fails until it does.
+ */
+private const val RAIL_MODE_HAS_CONSUMER = false
+private const val PLAYER_LAYOUT_HAS_CONSUMER = false
+private const val HOME_LAYOUT_HAS_CONSUMER = false
+private const val CARD_INTERACTIONS_HAS_CONSUMER = false
+
+/**
+ * The layout group of the settings (spec 3.7), shown inside the display-scale card of the appearance settings: the navigation rail mode,
+ * the player layout, the home layout, the card right-click menu and hover, and the button that resets them. Each row
+ * writes one flag of the windows_ux store through LocalDesktopWindowsUx once its consumer exists; a fixture that provides
+ * nothing sees the read-only defaults, which refuse every command. The defaults are the existing behaviour, so nothing
+ * changes until a choice is made. The rows are plain choices (no group container), because the card around them is the container.
+ */
+@Composable
+internal fun DesktopWindowsUxLayoutGroup() {
+    val ux = LocalDesktopWindowsUx.current
+    val settings by ux.settings.collectAsState()
+    val writeError by ux.writeError.collectAsState()
+    val colors = MaterialTheme.colorScheme
+    val text = DesktopWindowsUxSettingsStrings
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(text.TITLE, style = MaterialTheme.typography.titleMedium)
+        Text(text.NOTE, style = MaterialTheme.typography.bodySmall)
+        DesktopWindowsSettingsChoice(text.RAIL, settings.railMode, listOf(
+            DesktopWindowsUxRailMode.AUTO to text.RAIL_AUTO,
+            DesktopWindowsUxRailMode.EXPANDED to text.RAIL_EXPANDED,
+            DesktopWindowsUxRailMode.COLLAPSED to text.RAIL_COLLAPSED,
+            DesktopWindowsUxRailMode.CLASSIC_TEXT to text.RAIL_CLASSIC_TEXT,
+        ), enabled = RAIL_MODE_HAS_CONSUMER) { ux.submit(DesktopWindowsUxCommand.SetRailMode(it)) }
+        DesktopWindowsSettingsChoice(text.PLAYER, settings.playerLayout, listOf(
+            DesktopWindowsUxPlayerLayout.DESKTOP to text.PLAYER_DESKTOP,
+            DesktopWindowsUxPlayerLayout.LEGACY to text.PLAYER_LEGACY,
+        ), enabled = PLAYER_LAYOUT_HAS_CONSUMER) { ux.submit(DesktopWindowsUxCommand.SetPlayerLayout(it)) }
+        DesktopWindowsSettingsChoice(text.HOME, settings.homeLayout, listOf(
+            DesktopWindowsUxHomeLayout.DESKTOP to text.HOME_DESKTOP,
+            DesktopWindowsUxHomeLayout.CLASSIC to text.HOME_CLASSIC,
+        ), enabled = HOME_LAYOUT_HAS_CONSUMER) { ux.submit(DesktopWindowsUxCommand.SetHomeLayout(it)) }
+        DesktopWindowsSettingsChoice(text.CARDS, settings.cardInteractions, listOf(
+            DesktopWindowsUxCardInteractions.ON to text.CARDS_ON,
+            DesktopWindowsUxCardInteractions.OFF to text.CARDS_OFF,
+        ), enabled = CARD_INTERACTIONS_HAS_CONSUMER) { ux.submit(DesktopWindowsUxCommand.SetCardInteractions(it)) }
+        DesktopMenuRow(
+            label = text.RESET, onClick = { ux.submit(DesktopWindowsUxCommand.ResetLayout) },
+            modifier = Modifier.width(176.dp).desktopKitHairlineBorder(colors.outlineVariant, DESKTOP_KIT_RADIUS_CONTROL_DP.dp),
+        )
+        (settings.error ?: writeError)?.let { Text(it, color = colors.error, style = MaterialTheme.typography.bodySmall) }
+    }
+}

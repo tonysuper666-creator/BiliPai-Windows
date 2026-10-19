@@ -25,5 +25,6 @@ import androidx.compose.runtime.Composable
             Text("主题、字体、壁纸与插件保留桌面可用功能；插件网络、CDN 和播放加速在插件页面管理。",
                 style = MaterialTheme.typography.bodySmall)
         }
+        DesktopWindowsTipsShortcuts()
     }
 }

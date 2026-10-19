@@ -1359,5 +1359,355 @@
         }
       ]
     }
+  },
+  "settings": {
+    "metrics": {
+      "content_max_width": 960,
+      "rail_width": 200,
+      "header_height": 56,
+      "row_padding": 12,
+      "row_padding_vertical": 8,
+      "page_padding": 24,
+      "section_gap": 24
+    },
+    "choice": {
+      "segmented_max": 4,
+      "segment_padding": 16,
+      "segment_min": 56,
+      "track_padding": 4,
+      "segment_gap": 2,
+      "inline_control_max": 360,
+      "inline_title_min": 200,
+      "glyph": {"wide": 14, "narrow": 8, "space": 4},
+      "wide_ranges": [[11904, 40959], [44032, 55203], [63744, 64255], [65280, 65519]],
+      "golden": [
+        {
+          "id": "nvidia-content-popover",
+          "labels": [{"wide": 3}, {"wide": 5, "narrow": 4, "space": 3}, {"wide": 3, "narrow": 3, "space": 2}],
+          "presentation": "AUTO",
+          "available": 284,
+          "expect": {"form": "RADIO_ROWS", "control": 284}
+        },
+        {
+          "id": "nvidia-intensity-popover",
+          "labels": [{"wide": 2}, {"wide": 2}, {"wide": 2}],
+          "presentation": "AUTO",
+          "available": 284,
+          "expect": {"form": "SEGMENTED_STACKED", "control": 176}
+        },
+        {
+          "id": "codec-page",
+          "labels": [{"narrow": 9, "space": 2}, {"narrow": 10, "space": 2}, {"narrow": 3}],
+          "presentation": "AUTO",
+          "available": 936,
+          "expect": {"form": "SEGMENTED_INLINE", "control": 320}
+        },
+        {
+          "id": "subtitle-page",
+          "labels": [{"wide": 2}, {"wide": 2}, {"wide": 4, "narrow": 2, "space": 2}, {"wide": 2}],
+          "presentation": "AUTO",
+          "available": 936,
+          "expect": {"form": "SEGMENTED_STACKED", "control": 394}
+        },
+        {
+          "id": "five-choices",
+          "labels": [{"wide": 2}, {"wide": 2}, {"wide": 2}, {"wide": 2}, {"wide": 2}],
+          "presentation": "AUTO",
+          "available": 936,
+          "expect": {"form": "RADIO_ROWS", "control": 936}
+        },
+        {
+          "id": "quality-dropdown",
+          "labels": [{"narrow": 4}, {"narrow": 4}, {"narrow": 4}, {"narrow": 5}, {"narrow": 6}, {"narrow": 2}],
+          "presentation": "DROPDOWN",
+          "available": 936,
+          "expect": {"form": "DROPDOWN", "control": 936}
+        },
+        {
+          "id": "quality-six-auto",
+          "labels": [{"narrow": 4}, {"narrow": 4}, {"narrow": 4}, {"narrow": 5}, {"narrow": 6}, {"narrow": 2}],
+          "presentation": "AUTO",
+          "available": 936,
+          "expect": {"form": "RADIO_ROWS", "control": 936}
+        },
+        {
+          "id": "no-choices",
+          "labels": [],
+          "presentation": "AUTO",
+          "available": 500,
+          "expect": {"form": "RADIO_ROWS", "control": 500}
+        },
+        {
+          "id": "one-choice",
+          "labels": [{"wide": 2}],
+          "presentation": "AUTO",
+          "available": 300,
+          "expect": {"form": "SEGMENTED_INLINE", "control": 60}
+        },
+        {
+          "id": "fits-exactly",
+          "labels": [{"narrow": 5}, {"narrow": 5}],
+          "presentation": "AUTO",
+          "available": 118,
+          "expect": {"form": "SEGMENTED_STACKED", "control": 118}
+        },
+        {
+          "id": "one-short",
+          "labels": [{"narrow": 5}, {"narrow": 5}],
+          "presentation": "AUTO",
+          "available": 117,
+          "expect": {"form": "RADIO_ROWS", "control": 117}
+        },
+        {
+          "id": "inline-boundary",
+          "labels": [{"narrow": 5}, {"narrow": 5}],
+          "presentation": "AUTO",
+          "available": 318,
+          "expect": {"form": "SEGMENTED_INLINE", "control": 118}
+        },
+        {
+          "id": "inline-one-short",
+          "labels": [{"narrow": 5}, {"narrow": 5}],
+          "presentation": "AUTO",
+          "available": 317,
+          "expect": {"form": "SEGMENTED_STACKED", "control": 118}
+        },
+        {
+          "id": "control-max-360",
+          "labels": [{"narrow": 42, "space": 1}],
+          "presentation": "AUTO",
+          "available": 560,
+          "expect": {"form": "SEGMENTED_INLINE", "control": 360}
+        },
+        {
+          "id": "control-over-max",
+          "labels": [{"narrow": 42, "space": 2}],
+          "presentation": "AUTO",
+          "available": 560,
+          "expect": {"form": "SEGMENTED_STACKED", "control": 364}
+        },
+        {
+          "id": "negative-available",
+          "labels": [{"wide": 2}],
+          "presentation": "AUTO",
+          "available": -5,
+          "expect": {"form": "RADIO_ROWS", "control": 0}
+        },
+        {
+          "id": "dropdown-no-room",
+          "labels": [{"wide": 2}],
+          "presentation": "DROPDOWN",
+          "available": 0,
+          "expect": {"form": "DROPDOWN", "control": 0}
+        },
+        {
+          "id": "home-columns-seven",
+          "labels": [
+            {"wide": 2},
+            {"wide": 1, "space": 1, "narrow": 0},
+            {"wide": 1, "space": 1, "narrow": 0},
+            {"wide": 1, "space": 1, "narrow": 0},
+            {"wide": 1, "space": 1, "narrow": 0},
+            {"wide": 1, "space": 1, "narrow": 0},
+            {"wide": 1, "space": 1, "narrow": 0}
+          ],
+          "presentation": "AUTO",
+          "available": 936,
+          "expect": {"form": "RADIO_ROWS", "control": 936}
+        }
+      ],
+      "glyph_cases": [
+        {"code": 32, "width": 4},
+        {"code": 65, "width": 8},
+        {"code": 11903, "width": 8},
+        {"code": 11904, "width": 14},
+        {"code": 12288, "width": 14},
+        {"code": 20013, "width": 14},
+        {"code": 40959, "width": 14},
+        {"code": 40960, "width": 8},
+        {"code": 44031, "width": 8},
+        {"code": 44032, "width": 14},
+        {"code": 55203, "width": 14},
+        {"code": 55204, "width": 8},
+        {"code": 63743, "width": 8},
+        {"code": 63744, "width": 14},
+        {"code": 64255, "width": 14},
+        {"code": 64256, "width": 8},
+        {"code": 65279, "width": 8},
+        {"code": 65280, "width": 14},
+        {"code": 65313, "width": 14},
+        {"code": 65519, "width": 14},
+        {"code": 65520, "width": 8}
+      ]
+    },
+    "tree": {
+      "rail": [
+        "PLAYBACK_QUALITY",
+        "HOME_RECOMMENDATION",
+        "APPEARANCE_THEME",
+        "STORAGE_BACKUP",
+        "PRIVACY_PERMISSION",
+        "PLUGINS_EXTENSIONS",
+        "SYSTEM_ABOUT"
+      ],
+      "default_category": "PLAYBACK_QUALITY",
+      "not_landable": ["SYSTEM_ABOUT"],
+      "direct_detail": {
+        "PLAYBACK_QUALITY": "PLAYBACK",
+        "HOME_RECOMMENDATION": "HOME_FEED",
+        "APPEARANCE_THEME": "APPEARANCE",
+        "PLUGINS_EXTENSIONS": "PLUGINS"
+      },
+      "scenarios": [
+        {
+          "id": "fresh-visit-lands-on-the-default",
+          "steps": ["root", "land"],
+          "expect": {"stack": ["Root", "Detail:PLAYBACK"], "last": "PLAYBACK_QUALITY", "pending": false}
+        },
+        {
+          "id": "rail-clicks-replace-each-other",
+          "steps": ["root", "land", "rail:PRIVACY_PERMISSION", "rail:STORAGE_BACKUP", "rail:HOME_RECOMMENDATION"],
+          "expect": {"stack": ["Root", "Detail:HOME_FEED"], "last": "HOME_RECOMMENDATION", "pending": false}
+        },
+        {
+          "id": "back-pops-once-to-the-root",
+          "steps": ["root", "land", "rail:PRIVACY_PERMISSION", "rail:STORAGE_BACKUP", "pop"],
+          "expect": {"stack": ["Root"], "last": "STORAGE_BACKUP", "pending": false}
+        },
+        {
+          "id": "the-next-visit-lands-on-the-last-used",
+          "steps": ["root", "land", "rail:STORAGE_BACKUP", "pop", "root", "land"],
+          "expect": {"stack": ["Root", "Category:STORAGE_BACKUP"], "last": "STORAGE_BACKUP", "pending": false}
+        },
+        {
+          "id": "the-system-category-is-not-landable",
+          "steps": ["root", "land", "open_category:SYSTEM_ABOUT", "root", "land"],
+          "expect": {"stack": ["Root", "Detail:PLAYBACK"], "last": "PLAYBACK_QUALITY", "pending": false}
+        },
+        {
+          "id": "a-rail-click-keeps-the-search-page",
+          "steps": ["root", "land", "search", "rail:PRIVACY_PERMISSION"],
+          "expect": {
+            "stack": ["Root", "Detail:PLAYBACK", "Search", "Category:PRIVACY_PERMISSION"],
+            "last": "PRIVACY_PERMISSION",
+            "pending": false
+          }
+        },
+        {
+          "id": "a-rail-click-drops-the-detail-chain",
+          "steps": [
+            "root",
+            "land",
+            "rail:PRIVACY_PERMISSION",
+            "open_detail:MESSAGE_NOTIFICATION",
+            "rail:PLUGINS_EXTENSIONS"
+          ],
+          "expect": {"stack": ["Root", "Detail:PLUGINS"], "last": "PLUGINS_EXTENSIONS", "pending": false}
+        },
+        {
+          "id": "the-same-target-changes-nothing",
+          "steps": ["root", "land", "rail:PLAYBACK_QUALITY"],
+          "expect": {"stack": ["Root", "Detail:PLAYBACK"], "last": "PLAYBACK_QUALITY", "pending": false}
+        },
+        {
+          "id": "the-category-entry-from-a-page-under-it-opens-the-category-page",
+          "steps": [
+            "root",
+            "land",
+            "rail:PRIVACY_PERMISSION",
+            "open_detail:MESSAGE_NOTIFICATION",
+            "rail:PRIVACY_PERMISSION"
+          ],
+          "expect": {"stack": ["Root", "Category:PRIVACY_PERMISSION"], "last": "PRIVACY_PERMISSION", "pending": false}
+        },
+        {
+          "id": "a-push-ends-the-pending-landing",
+          "steps": ["root", "open_category:PRIVACY_PERMISSION", "land"],
+          "expect": {"stack": ["Root", "Category:PRIVACY_PERMISSION"], "last": "PRIVACY_PERMISSION", "pending": false}
+        },
+        {
+          "id": "a-rail-click-from-the-root",
+          "steps": ["root", "rail:HOME_RECOMMENDATION"],
+          "expect": {"stack": ["Root", "Detail:HOME_FEED"], "last": "HOME_RECOMMENDATION", "pending": false}
+        },
+        {
+          "id": "open-category-keeps-the-original-direct-rule-appearance",
+          "steps": ["open_category:APPEARANCE_THEME"],
+          "expect": {"stack": ["Root", "Detail:APPEARANCE"], "last": "APPEARANCE_THEME", "pending": false}
+        },
+        {
+          "id": "open-category-keeps-the-original-direct-rule-playback",
+          "steps": ["open_category:PLAYBACK_QUALITY"],
+          "expect": {"stack": ["Root", "Category:PLAYBACK_QUALITY"], "last": "PLAYBACK_QUALITY", "pending": false}
+        },
+        {
+          "id": "a-detail-outside-the-rail-leaves-the-last-category",
+          "steps": ["root", "land", "open_detail:ANIMATION"],
+          "expect": {
+            "stack": ["Root", "Detail:PLAYBACK", "Detail:ANIMATION"],
+            "last": "PLAYBACK_QUALITY",
+            "pending": false
+          }
+        },
+        {
+          "id": "pop-at-the-bottom-is-refused",
+          "steps": ["pop"],
+          "expect": {"stack": ["Root"], "last": "PLAYBACK_QUALITY", "pending": false}
+        },
+        {
+          "id": "pop-returns-to-the-landed-page",
+          "steps": ["root", "land", "open_category:PRIVACY_PERMISSION", "pop"],
+          "expect": {"stack": ["Root", "Detail:PLAYBACK"], "last": "PLAYBACK_QUALITY", "pending": false}
+        }
+      ],
+      "rail_clicks": [
+        {
+          "id": "the-open-system-page",
+          "page": "Category:SYSTEM_ABOUT",
+          "category": "SYSTEM_ABOUT",
+          "redundant": true
+        },
+        {
+          "id": "the-open-category-page",
+          "page": "Category:PRIVACY_PERMISSION",
+          "category": "PRIVACY_PERMISSION",
+          "redundant": true
+        },
+        {
+          "id": "the-open-direct-detail",
+          "page": "Detail:PLAYBACK",
+          "category": "PLAYBACK_QUALITY",
+          "redundant": true
+        },
+        {
+          "id": "a-page-under-the-category",
+          "page": "Detail:MESSAGE_NOTIFICATION",
+          "category": "PRIVACY_PERMISSION",
+          "redundant": false
+        },
+        {
+          "id": "a-page-under-the-system-category",
+          "page": "Detail:TIPS",
+          "category": "SYSTEM_ABOUT",
+          "redundant": false
+        },
+        {
+          "id": "another-category",
+          "page": "Category:PRIVACY_PERMISSION",
+          "category": "STORAGE_BACKUP",
+          "redundant": false
+        },
+        {"id": "the-root", "page": "Root", "category": "PLAYBACK_QUALITY", "redundant": false}
+      ]
+    },
+    "ux_group": {
+      "rows": [
+        {"flag": "rail_mode", "values": ["AUTO", "EXPANDED", "COLLAPSED", "CLASSIC_TEXT"]},
+        {"flag": "player_layout", "values": ["DESKTOP", "LEGACY"]},
+        {"flag": "home_layout", "values": ["DESKTOP", "CLASSIC"]},
+        {"flag": "card_interactions", "values": ["ON", "OFF"]}
+      ],
+      "reset_command": "ResetLayout"
+    }
   }
 }

@@ -1,19 +1,93 @@
 package com.bilipai.desktop.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled
 import com.android.purebilibili.feature.settings.*
 import com.bilipai.desktop.data.DesktopDiscoveryRepository
+import com.bilipai.desktop.ui.DESKTOP_SETTINGS_CONTENT_MAX_WIDTH_DP
+import com.bilipai.desktop.ui.DESKTOP_SETTINGS_HEADER_HEIGHT_DP
+import com.bilipai.desktop.ui.DESKTOP_SETTINGS_PAGE_PADDING_DP
+import com.bilipai.desktop.ui.DESKTOP_SETTINGS_RAIL_WIDTH_DP
+import com.bilipai.desktop.ui.DesktopSettingsBackButton
+import com.bilipai.desktop.ui.DesktopSettingsHeaderState
+import com.bilipai.desktop.ui.DesktopWindowsSettingsGroup
+import com.bilipai.desktop.ui.DesktopWindowsSettingsStrings
+import com.bilipai.desktop.ui.LocalDesktopSettingsHeader
+import com.bilipai.desktop.ui.LocalDesktopSettingsPanePrelude
+import com.bilipai.desktop.ui.kit.DesktopKitDivider
+import com.bilipai.desktop.ui.kit.DesktopKitVerticalScrollbar
+import com.bilipai.desktop.ui.kit.DesktopMenuRow
+import com.bilipai.desktop.ui.kit.DesktopNavRow
+import com.bilipai.desktop.ui.kit.desktopKitHairlineDp
 import kotlinx.coroutines.CoroutineScope
+
+/**
+ * The one header row of the tree: Back (when a page is open), the title of the page, and the search action. The title is
+ * the title of the Pane that is mounted below, else the rail title of the page's category, else the tree title. Back
+ * is the Pane's own Back when a Pane is mounted (it knows how its route is left), else the page Back of the tree.
+ * The four settings fixtures click this one Back by its accessible name, left of the title and on its row.
+ */
+@Composable
+private fun DesktopSettingsTreeHeader(title: String, showBack: Boolean, onBack: () -> Unit, onSearch: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().height(DESKTOP_SETTINGS_HEADER_HEIGHT_DP.dp).padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (showBack) DesktopSettingsBackButton(onBack)
+        Text(title, Modifier.weight(1f), style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        DesktopMenuRow(DesktopWindowsSettingsStrings.SEARCH, onSearch, Modifier.width(120.dp))
+    }
+}
+
+/** The category rail: one kit navigation row per category, the category of the open page selected. */
+@Composable
+private fun DesktopSettingsRail(selected: SettingsRootCategory?, onSelect: (SettingsRootCategory) -> Unit) {
+    Column(
+        Modifier.width(DESKTOP_SETTINGS_RAIL_WIDTH_DP.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        DESKTOP_SETTINGS_RAIL_CATEGORIES.forEach { category ->
+            val title = DesktopWindowsSettingsStrings.railTitle(category) ?: return@forEach
+            DesktopNavRow(label = title, selected = category == selected, onClick = { onSelect(category) })
+        }
+    }
+}
+
+/** The root page holds nothing but a hint, and not even that while the landing on the last category is still to come. */
+@Composable
+private fun DesktopSettingsRootHint(landingPending: Boolean) {
+    if (!landingPending) Text(DesktopWindowsSettingsStrings.EMPTY_HINT, Modifier.padding(DESKTOP_SETTINGS_PAGE_PADDING_DP.dp))
+}
+
+/** A page that the tree itself scrolls: content at most 960 dp wide, left aligned, with the shared overlay scrollbar. */
+@Composable
+private fun DesktopSettingsTreePage(content: @Composable ColumnScope.() -> Unit) {
+    val scroll = rememberScrollState()
+    Box(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize().verticalScroll(scroll)) {
+            Column(
+                Modifier.widthIn(max = DESKTOP_SETTINGS_CONTENT_MAX_WIDTH_DP.dp).fillMaxWidth().padding(DESKTOP_SETTINGS_PAGE_PADDING_DP.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                content = content,
+            )
+        }
+        DesktopKitVerticalScrollbar(scroll)
+    }
+}
 
 /** Windows navigation chrome; category rows, fields and search remain original source. */
 @Composable
@@ -42,6 +116,11 @@ internal fun DesktopSettingsTree(
     imageSavePathContent: @Composable (openInitially: Boolean) -> Unit = {
         AppText("图片保存位置设置仍在移植中。", Modifier.padding(12.dp))
     },
+    /** A rail click. The system category is a route of its own and goes through onCategoryOpen; the others replace the page. */
+    onCategorySelect: (SettingsRootCategory) -> Unit = { category ->
+        if (canonicalSettingsRootCategory(category) == SettingsRootCategory.SYSTEM_ABOUT) onCategoryOpen(category)
+        else navigator.replaceCategory(category)
+    },
 ) {
     val navigation by navigator.state.collectAsState()
     val page = navigation.current
@@ -55,93 +134,73 @@ internal fun DesktopSettingsTree(
     }
     LaunchedEffect(page) { if (donateEntry?.parentPage !== page) donateEntry = null }
     DisposableEffect(Unit) { onDispose { donateEntry = null } }
-    val groups = listOf(
-        "播放与音频" to SettingsRootCategory.PLAYBACK_QUALITY,
-        "首页与推荐" to SettingsRootCategory.HOME_RECOMMENDATION,
-        "外观与显示" to SettingsRootCategory.APPEARANCE_THEME,
-        "缓存与备份" to SettingsRootCategory.STORAGE_BACKUP,
-        "隐私与屏蔽" to SettingsRootCategory.PRIVACY_PERMISSION,
-        "插件与扩展" to SettingsRootCategory.PLUGINS_EXTENSIONS,
-        "更新与诊断" to SettingsRootCategory.SYSTEM_ABOUT,
-    )
-    androidx.compose.material3.Surface(Modifier.fillMaxSize()) {
+    // A fresh visit opens the last used category; a category page that has a direct detail is replaced by it.
+    LaunchedEffect(page, navigation.landingPending) {
+        if (page === DesktopSettingsPage.Root && navigation.landingPending) navigator.landOnLastCategory()
+        else if (page is DesktopSettingsPage.Category && desktopSettingsDirectDetail(page.category) != null) navigator.replaceCategory(page.category)
+    }
+    val selected = desktopSettingsPageCategory(page)
+    val header = remember { DesktopSettingsHeaderState() }
+    val homePrelude: @Composable ColumnScope.() -> Unit = {
+        DesktopWindowsSettingsGroup(DesktopWindowsSettingsStrings.HOME_RECOMMENDATION_GROUP) {
+            DesktopHomeRecommendationSettings(discovery, onFailure)
+        }
+    }
+    Surface(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                if (page != DesktopSettingsPage.Root) androidx.compose.material3.TextButton(onClick = onPageBack) {
-                    androidx.compose.material3.Text("返回")
-                }
-                androidx.compose.material3.Text("Windows 设置", style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.weight(1f))
-                androidx.compose.material3.TextButton(onClick = onOpenSearch) { androidx.compose.material3.Text("搜索设置") }
-            }
-            androidx.compose.material3.HorizontalDivider()
+            DesktopSettingsTreeHeader(
+                title = header.title ?: selected?.let { DesktopWindowsSettingsStrings.railTitle(it) } ?: DesktopWindowsSettingsStrings.TREE_TITLE,
+                showBack = page != DesktopSettingsPage.Root,
+                onBack = { (header.onBack ?: onPageBack)() },
+                onSearch = onOpenSearch,
+            )
+            DesktopKitDivider()
             Row(Modifier.weight(1f).fillMaxWidth()) {
-                Column(Modifier.width(160.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    groups.forEach { (title, category) ->
-                        androidx.compose.material3.TextButton(onClick = { onCategoryOpen(category) }, modifier = Modifier.fillMaxWidth()) {
-                            androidx.compose.material3.Text(title)
-                        }
-                    }
+                DesktopSettingsRail(selected) { category ->
+                    // A click on the entry whose page is open does nothing; from a page under it, it opens the category page.
+                    if (!desktopSettingsRailClickIsRedundant(page, category)) onCategorySelect(category)
                 }
-                androidx.compose.material3.VerticalDivider()
+                Box(Modifier.width(desktopKitHairlineDp(LocalDensity.current.density).dp).fillMaxHeight()
+                    .background(MaterialTheme.colorScheme.outlineVariant))
                 Box(Modifier.weight(1f).fillMaxHeight()) {
-                    when (page) {
-                        DesktopSettingsPage.Root -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
-                            verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                            androidx.compose.material3.Text("适合鼠标、键盘与桌面窗口的设置。")
-                            groups.forEach { (title, category) ->
-                                androidx.compose.material3.OutlinedButton(onClick = { onCategoryOpen(category) }, modifier = Modifier.fillMaxWidth()) {
-                                    androidx.compose.material3.Text(title)
+                    CompositionLocalProvider(LocalDesktopSettingsHeader provides header) {
+                        when (page) {
+                            DesktopSettingsPage.Root -> DesktopSettingsRootHint(navigation.landingPending)
+                            is DesktopSettingsPage.Search -> DesktopSettingsSearchScreen(search, onBack = onPageBack,
+                                onCategoryClick = onCategoryOpen, onResultClick = onSearchResult, historyWritesScope = historyWritesScope)
+                            is DesktopSettingsPage.CommentFraudHistory -> commentFraudHistoryContent(page) { navigator.pop() }
+                            is DesktopSettingsPage.Detail -> when (page.target) {
+                                SettingsSearchTarget.PLAYBACK -> playbackContent(page) { onDetailBack(page.target) }
+                                SettingsSearchTarget.HOME_FEED -> CompositionLocalProvider(LocalDesktopSettingsPanePrelude provides homePrelude) {
+                                    homeContent(page) { onDetailBack(page.target) }
                                 }
+                                SettingsSearchTarget.APPEARANCE -> appearanceContent()
+                                SettingsSearchTarget.PLUGINS -> pluginsContent()
+                                SettingsSearchTarget.MESSAGE_NOTIFICATION -> DesktopMessageNotificationSettingsContent(onFailure)
+                                SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
+                                SettingsSearchTarget.TIPS -> com.bilipai.desktop.ui.DesktopWindowsTipsSettings(onBack = { onDetailBack(page.target) })
+                                SettingsSearchTarget.OPEN_SOURCE_LICENSES -> OpenSourceLicensesScreen(onBack = { onDetailBack(page.target) })
+                                SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE -> backupContent(page.target) { navigator.pop() }
+                                SettingsSearchTarget.DOWNLOAD_PATH, SettingsSearchTarget.CLEAR_CACHE -> DesktopSettingsTreePage {
+                                    storageContent(page.target)
+                                }
+                                SettingsSearchTarget.IMAGE_SAVE_PATH -> DesktopSettingsTreePage { imageSavePathContent(true) }
+                                else -> Text("此入口不属于当前 Windows 设置。", Modifier.padding(20.dp))
                             }
-                        }
-                        is DesktopSettingsPage.Search -> DesktopSettingsSearchScreen(search, onBack = onPageBack,
-                            onCategoryClick = onCategoryOpen, onResultClick = onSearchResult, historyWritesScope = historyWritesScope)
-                        is DesktopSettingsPage.CommentFraudHistory -> commentFraudHistoryContent(page) { navigator.pop() }
-                        is DesktopSettingsPage.Detail -> when (page.target) {
-                            SettingsSearchTarget.PLAYBACK -> playbackContent(page) { onDetailBack(page.target) }
-                            SettingsSearchTarget.HOME_FEED -> homeContent(page) { onDetailBack(page.target) }
-                            SettingsSearchTarget.APPEARANCE -> appearanceContent()
-                            SettingsSearchTarget.PLUGINS -> pluginsContent()
-                            SettingsSearchTarget.MESSAGE_NOTIFICATION -> DesktopMessageNotificationSettingsContent(onFailure)
-                            SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
-                            SettingsSearchTarget.TIPS -> com.bilipai.desktop.ui.DesktopWindowsTipsSettings(onBack = { onDetailBack(page.target) })
-                            SettingsSearchTarget.OPEN_SOURCE_LICENSES -> OpenSourceLicensesScreen(onBack = { onDetailBack(page.target) })
-                            SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE -> backupContent(page.target) { navigator.pop() }
-                            SettingsSearchTarget.DOWNLOAD_PATH, SettingsSearchTarget.CLEAR_CACHE -> Column(Modifier.verticalScroll(rememberScrollState()).padding(20.dp)) {
-                                storageContent(page.target)
-                            }
-                            SettingsSearchTarget.IMAGE_SAVE_PATH -> Column(Modifier.verticalScroll(rememberScrollState()).padding(20.dp)) { imageSavePathContent(true) }
-                            else -> androidx.compose.material3.Text("此入口不属于当前 Windows 设置。", Modifier.padding(20.dp))
-                        }
-                        is DesktopSettingsPage.Category -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                            when (canonicalSettingsRootCategory(page.category)) {
-                                SettingsRootCategory.PLAYBACK_QUALITY -> androidx.compose.material3.OutlinedButton(onClick = {
-                                    navigator.openDetail(SettingsSearchTarget.PLAYBACK, null)
-                                }) { androidx.compose.material3.Text("打开播放与 Windows 音频设置") }
-                                SettingsRootCategory.HOME_RECOMMENDATION -> {
-                                    androidx.compose.material3.OutlinedButton(onClick = { navigator.openDetail(SettingsSearchTarget.HOME_FEED, null) }) {
-                                        androidx.compose.material3.Text("首页布局、轮播与背景")
-                                    }
-                                    DesktopHomeRecommendationSettings(discovery, onFailure)
+                            is DesktopSettingsPage.Category -> DesktopSettingsTreePage {
+                                when (canonicalSettingsRootCategory(page.category)) {
+                                    SettingsRootCategory.PRIVACY_PERMISSION -> DesktopPrivacySection(privacy,
+                                        onPermissionClick = {},
+                                        onMessageNotificationClick = { navigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION, null) },
+                                        onBlockedListClick = { navigator.openDetail(SettingsSearchTarget.BLOCKED_LIST, null) },
+                                        onCommentFraudHistoryClick = navigator::openCommentFraudHistory)
+                                    SettingsRootCategory.STORAGE_BACKUP -> storageContent(null)
+                                    SettingsRootCategory.SYSTEM_ABOUT -> systemContent(page, requestDonate)
+                                    // These categories open straight to their detail; the effect above replaces this page at once.
+                                    SettingsRootCategory.PLAYBACK_QUALITY, SettingsRootCategory.HOME_RECOMMENDATION,
+                                    SettingsRootCategory.APPEARANCE_THEME, SettingsRootCategory.PLUGINS_EXTENSIONS -> Unit
+                                    else -> Text("此分类已从 Windows 设置中移除。")
                                 }
-                                SettingsRootCategory.PRIVACY_PERMISSION -> DesktopPrivacySection(privacy,
-                                    onPermissionClick = {},
-                                    onMessageNotificationClick = { navigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION, null) },
-                                    onBlockedListClick = { navigator.openDetail(SettingsSearchTarget.BLOCKED_LIST, null) },
-                                    onCommentFraudHistoryClick = navigator::openCommentFraudHistory)
-                                SettingsRootCategory.STORAGE_BACKUP -> storageContent(null)
-                                SettingsRootCategory.SYSTEM_ABOUT -> systemContent(page, requestDonate)
-                                SettingsRootCategory.APPEARANCE_THEME -> androidx.compose.material3.OutlinedButton(onClick = { navigator.openDetail(SettingsSearchTarget.APPEARANCE, null) }) {
-                                    androidx.compose.material3.Text("打开外观设置")
-                                }
-                                SettingsRootCategory.PLUGINS_EXTENSIONS -> androidx.compose.material3.OutlinedButton(onClick = { navigator.openDetail(SettingsSearchTarget.PLUGINS, null) }) {
-                                    androidx.compose.material3.Text("打开插件设置")
-                                }
-                                else -> androidx.compose.material3.Text("此分类已从 Windows 设置中移除。")
                             }
                         }
                     }

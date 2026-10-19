@@ -48,6 +48,7 @@ import kotlin.math.roundToInt
             Text("Ctrl＋滚轮 / Ctrl＋加减调整 · Ctrl＋0 恢复 125%", style = MaterialTheme.typography.bodySmall)
             OutlinedButton(onClick = { select(WINDOWS_DISPLAY_DEFAULT_PERCENT) }, enabled = !busy) { Text("恢复默认（125%）") }
             (error ?: writeError ?: settings.error)?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+            com.bilipai.desktop.ui.DesktopWindowsUxLayoutGroup()
         }
     }
 }

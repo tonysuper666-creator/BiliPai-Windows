@@ -78,7 +78,7 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             }
             if (highest == false) {
             DesktopWindowsSettingsChoice("默认画质", quality, desktopWindowsDefaultQualityChoices,
-                enabled = highest == false && qualityReady, allowUnselected = qualityReady) { value ->
+                enabled = highest == false && qualityReady, allowUnselected = qualityReady, presentation = DesktopWindowsSettingsChoicePresentation.DROPDOWN) { value ->
                 // The one original operation journal publishes both network keys and their
                 // original quality_settings mirrors together. Ethernet is not Wi-Fi.
                 writer.launch {
