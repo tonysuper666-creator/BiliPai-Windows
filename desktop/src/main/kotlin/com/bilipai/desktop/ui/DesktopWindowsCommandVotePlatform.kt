@@ -162,6 +162,12 @@ internal fun DesktopWindowsSectionCommandOverlay(
     followStatusKnown: Boolean,
     likeStatusKnown: Boolean,
     isFollowing: Boolean = false,
+    isLiked: Boolean,
+    isCoined: Boolean,
+    isFavorited: Boolean,
+    // The Section state does not carry the in-flight flags yet; the native command popup path forwards the real ones.
+    isFollowSubmitting: Boolean = false,
+    isTripleSubmitting: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     if (commandPort == null) return
@@ -172,7 +178,8 @@ internal fun DesktopWindowsSectionCommandOverlay(
             onTripleClick = onTripleClick, onVoteSubmit = onVoteSubmit,
             onLinkClick = onLinkClick, followStatusKnown = followStatusKnown,
             likeStatusKnown = likeStatusKnown, renderingPaused = renderingPaused,
-            isFollowing = isFollowing, modifier = modifier,
+            isFollowing = isFollowing, isLiked = isLiked, isCoined = isCoined, isFavorited = isFavorited,
+            isFollowSubmitting = isFollowSubmitting, isTripleSubmitting = isTripleSubmitting, modifier = modifier,
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.bilipai.desktop.ui
 
+import com.android.purebilibili.feature.video.ui.feedback.canSubmitVideoTripleAction
 import com.android.purebilibili.feature.video.viewmodel.VideoEngagementUiState
 import com.android.purebilibili.feature.video.viewmodel.VideoEngagementViewModel
 import com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot
@@ -59,7 +60,9 @@ internal class DesktopWindowsCommandAttentionBinding private constructor(
 
     fun triple(): Boolean {
         val captured = captureState() ?: return false
-        if (!captured.likeStatusKnown || !isOwned()) return false
+        // v0.4.6: unknown, already complete and in-flight states never reach the request (the card disables itself too).
+        if (!canSubmitVideoTripleAction(captured.likeStatusKnown, captured.isLiked, captured.coinCount > 0,
+                captured.isFavorited, captured.isTripleSubmitting) || !isOwned()) return false
         engagement.doTripleAction(subject.aid, subject.bvid, captured.isLiked,
             captured.coinCount, captured.isFavorited, presentation = presentation)
         return true

@@ -189,6 +189,12 @@ internal fun DesktopVideoCommandVoteContent(
                     state = commandState, fontScale = fontScale, isFollowing = attentionState?.isFollowing ?: false,
                     followStatusKnown = attentionOwned && attentionState?.followStatusKnown == true,
                     likeStatusKnown = attentionOwned && attentionState?.likeStatusKnown == true,
+                    // v0.4.6: the cards show the real like/coin/favorite state and the in-flight follow/triple requests.
+                    isLiked = attentionOwned && attentionState?.isLiked == true,
+                    isCoined = attentionOwned && (attentionState?.coinCount ?: 0) > 0,
+                    isFavorited = attentionOwned && attentionState?.isFavorited == true,
+                    isFollowSubmitting = attentionOwned && attentionState?.isFollowSubmitting == true,
+                    isTripleSubmitting = attentionOwned && attentionState?.isTripleSubmitting == true,
                     onFollowClick = { if (attentionOwned && current()) attention?.follow() },
                     onTripleClick = { if (attentionOwned && current()) attention?.triple() },
                     onLinkClick = { item -> link.open(item) },

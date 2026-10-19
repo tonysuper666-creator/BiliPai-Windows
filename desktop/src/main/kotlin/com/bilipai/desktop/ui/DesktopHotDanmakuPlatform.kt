@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.android.purebilibili.core.ui.AppAlertDialog
-import kotlinx.coroutines.flow.Flow
 
 /** An interface to the existing actor's actual clock and completed seek readback.
  * Root implements this for its captured accepted source; this is not a media core.
@@ -22,12 +21,11 @@ interface DesktopHotDanmakuPlayer {
 }
 
 /** No preference cache, account, player, transport or coroutine scope is created here.
- * Provide the existing Store flow and an immutable complete accepted-source lease.
+ * Provide an immutable complete accepted-source lease. The v0.4.6 bar has one mode, so no expanded-mode flow exists.
  * Root must key the WHOLE HotDanmakuBar composition by that lease, and guard both
  * original like/send callbacks with the same account/source ownership admission.
  * owns must be a pure bounded check, not a settings/account/native lock operation. */
 internal class DesktopHotDanmakuBindings(
-    val expandedMode: Flow<Boolean>,
     val sourceLease: Any,
     val owns: () -> Boolean,
 )

@@ -39,7 +39,8 @@ internal interface DesktopOriginalSectionDanmakuPort : DesktopOriginalDanmakuSli
     fun cancelSeekScrub()
     fun getLoadedDanmakuList(): List<DanmakuItem>
     fun getHotDanmakuList(): List<DanmakuItem>
-    fun reserveHotDanmakuBarHeight(heightPx: Float)
+    /** The v0.4.6 hot bar reports the shown entries with its measured height; Windows reserves the height and hides them. */
+    fun updateHotDanmakuPresentation(items: List<DanmakuItem>, heightPx: Int)
     val upOwnerUserHash: String?
 }
 

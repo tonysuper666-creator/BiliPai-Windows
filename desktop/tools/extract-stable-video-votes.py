@@ -11,6 +11,8 @@ OPS_FRAGMENT='\n// STABLE_VIDEO_VOTE_GRADE_MEMBERS\n// Desktop command vote grad
 OPS_FRAGMENT += '\nsuspend fun getGradeDanmakuSummary(cid: Long, aid: Long, gradeId: String): Result<com.android.purebilibili.data.model.response.GradeDanmakuSummary> = result {\n    read {\n        com.android.purebilibili.data.repository.DesktopVideoGradeProtocol(api)\n            .getGradeDanmakuSummary(cid, aid, gradeId).getOrThrow()\n    }\n}\n'
 
 def generate(repo:Path,output:Path):
+ from v046_danmaku_hot_command import advance_command_overlay,emit_command_overlay,emit_triple_policy,validate_outputs
+ validate_outputs(repo,output)
  spec=importlib.util.spec_from_file_location("video_vote_ast",repo/"desktop/tools/sync-upstream.py")
  parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
  def read(p):
@@ -36,7 +38,9 @@ def generate(repo:Path,output:Path):
   target=output/path;target.parent.mkdir(parents=True,exist_ok=True)
   size,raw_sha,blob=v029.PINS[source_path]
   target.write_text("// GENERATED from "+source_path+"; do not edit.\n// Fixed upstream "+v029.COMMIT+"; raw SHA-256: "+raw_sha+"; Git blob: "+blob+"\n"+body,encoding="utf-8",newline="\n")
- v037.emit(output,"com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",p,s)
+ # v0.4.6 (roadmap dmk-command-merge-hot-banners): the whole v0.4.6 overlay advances the v0.3.7 layer above,
+ # and its triple submit guard has its own generated file next to the follow guard of the owner follow layer.
+ emit_command_overlay(repo,output,*advance_command_overlay(repo,s));emit_triple_policy(repo,output)
  v030.emit_link_callbacks(repo,output)
  for source_path in [v029.POLICY,v029.STATE]:
   emit_v029(source_path.split("/java/",1)[1],source_path,v029.read(repo,source_path))

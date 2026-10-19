@@ -183,7 +183,10 @@ class DanmakuOverlay internal constructor(
         // Their absence from a visible scheduler is not permission to inject them again.
         val processedLocalIds:Set<Int>)
     private var hotDocument:HotDocument? = null
-    private data class HotReservation(val sourceVersion:Long,val token:Any,val heightPx:Float)
+    // The selection is the entries the counted hot bar currently shows (v0.4.6): the ordinary renderer keeps their
+    // schedule slot but does not draw or hit-test them. It lives and dies with the reservation of its source.
+    private data class HotReservation(val sourceVersion:Long,val token:Any,val heightPx:Float,
+        val selection:DesktopHotDanmakuSelection=DesktopHotDanmakuSelection.NONE)
     @Volatile private var hotReservation:HotReservation? = null
 
     /** A projection of the actual installed plugin output, before duplicate merging.
@@ -212,9 +215,16 @@ class DanmakuOverlay internal constructor(
             SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()};true
         }
     }
-    internal fun updateHotBarReservation(sourceVersion:Long,token:Any,heightPx:Float):Boolean = synchronized(requestLock) {
+    /** The counted hot bar reports the entries it shows and its measured height (v0.4.6 updateHotDanmakuPresentation).
+     * Normal mode reserves the height; massive mode ignores it in the config policy and only hides the shown entries. */
+    internal fun updateHotBarPresentation(sourceVersion:Long,token:Any,items:List<com.android.purebilibili.danmaku.engine.DanmakuItem>,
+        heightPx:Float):Boolean = synchronized(requestLock) {
+        require(heightPx.isFinite() && heightPx>=0f)
         if(!originalDocumentOwned(sourceVersion) || hotReservation?.token!==token || hotReservation?.sourceVersion!=sourceVersion)false
-        else {hotReservation=HotReservation(sourceVersion,token,heightPx);SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()};true}
+        else {
+            hotReservation=HotReservation(sourceVersion,token,if(items.isEmpty())0f else heightPx,DesktopHotDanmakuSelection.of(items))
+            SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()};true
+        }
     }
     internal fun releaseHotBarReservation(token:Any) = synchronized(requestLock) {
         if(hotReservation?.token===token) {hotReservation=null;SwingUtilities.invokeLater {if(!closed.get())requestRenderFrame()}}
@@ -698,7 +708,9 @@ class DanmakuOverlay internal constructor(
                     finally {physical.dispose()}
                   } else {
                 // Uses the actual Root-monitor geometry resolved once above.
-                val reserved=hotReservation?.takeIf {it.sourceVersion==poolSourceVersion && player.ownsSourceVersion(it.sourceVersion)}?.heightPx ?: 0f
+                val hot=hotReservation?.takeIf {it.sourceVersion==poolSourceVersion && player.ownsSourceVersion(it.sourceVersion)}
+                val reserved=hot?.heightPx ?: 0f
+                val hidden=hot?.selection ?: DesktopHotDanmakuSelection.NONE
                 val key=ConfigKey(configuration,viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable(),reserved,fullscreen)
                 val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform,reserved).resolveRenderConfig(viewport,fullscreen).copy(maskEnabled=key.maskReady).also { resolvedConfig=key to it }
                 val physical=context.create() as Graphics2D
@@ -722,7 +734,7 @@ class DanmakuOverlay internal constructor(
                     val positioned = scheduler.frame(displayTime, geometry.viewport.widthPx, geometry.viewport.heightPx, config, author.measurementRevision) { comment ->
                         val metrics=textMetrics(comment)
                         DesktopDanmakuTextMetrics(metrics.width,metrics.ascent)
-                    }
+                    }.filter {hidden.isVisible(it.comment)}
                     val originalHits=mutableListOf<OriginalPaintHit>()
                     positioned.forEach { item ->
                         val style = styles[item.comment.id]

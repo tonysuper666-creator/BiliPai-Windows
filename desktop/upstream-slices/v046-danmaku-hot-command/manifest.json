@@ -1,0 +1,84 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/HotDanmakuPolicy.kt",
+      "filename": "HotDanmakuPolicy.kt",
+      "bytes": 2482,
+      "sha256": "5cd4aa8e9f181d2c87960c8fae0babcb521ea00fd0d8d8aa59fe201ee87283d5",
+      "gitBlob": "8b68634a9c40d3e176cae6a6e06064521d4b7fbe"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/HotDanmakuBar.kt",
+      "filename": "HotDanmakuBar.kt",
+      "bytes": 11362,
+      "sha256": "fb7b1d3690a4df17214dff6957a260e86544dc6d3b1ad0ad3312a407c04c5dd1",
+      "gitBlob": "de12082caf30b2c60005d398bb55d8fe52d8c254"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AnimatedCountText.kt",
+      "filename": "AnimatedCountText.kt",
+      "bytes": 5043,
+      "sha256": "e4ad60fa2f57c131d68ffc500cb0eb73d1374662824b59c6ffe5d5673d6d99f0",
+      "gitBlob": "3753ed92cbaf72b9d717076bcff41f71365fa978"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/HotDanmakuPolicyTest.kt",
+      "filename": "HotDanmakuPolicyTest.kt",
+      "bytes": 3702,
+      "sha256": "d8383eb8904b7eda3b38815b8383161f4ffcbeb8cf2243192601455396bf737a",
+      "gitBlob": "ba2f3d277cf5bbeac438b57920cf5691e9db0a82"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "filename": "CommandDanmakuOverlay.kt",
+      "bytes": 47783,
+      "sha256": "925f9d1f27053856c6c1e9a3f7395053b5b4ec797d24a8ebc8cff9ad9e15d8bf",
+      "gitBlob": "ea56abd34b72b06f3414959f83d940fa1cdbdb41"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayPolicyTest.kt",
+      "filename": "CommandDanmakuOverlayPolicyTest.kt",
+      "bytes": 5787,
+      "sha256": "ff2eab97ec23805ef46c789db41aad425acc3485cf40e89152926da9293cb7cf",
+      "gitBlob": "3b32f0493c33ef9306d5dff0022586f3c3eac4f7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "filename": "VideoActionFeedbackPolicy.kt",
+      "bytes": 3081,
+      "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+      "gitBlob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 files for the counted hot-danmaku banners and the attention command cards",
+  "purpose": "roadmap slice dmk-command-merge-hot-banners: three whole v0.4.6 hot-banner files (policy, bar, count text) and their policy test, the whole v0.4.6 command overlay and its policy test, and the v0.4.6 video action feedback policy that defines the follow and triple submit guards",
+  "scope": "Source only. Nothing was compiled or run. The Windows adaptations are the hash-pinned hunks of desktop/tools/v046_danmaku_hot_command.py.",
+  "beforeFinalOutputs": {
+    "hot/HotDanmakuPolicy.kt": {
+      "sha256": "2be4cad461dfd9ad04eb3b37d762055deaa10ad6cb3c3c0c6702db11d78ed8ee"
+    },
+    "hot/HotDanmakuBar.kt": {
+      "sha256": "e497c2124f10cb10dce54c7d35e05f0cfcbdceed0ec20eca5c44ca80b85ce5f3"
+    },
+    "hot/AnimatedCountText.kt": {
+      "sha256": "8c965039694dd2bae97bf99bdfc3c0218fc4e5d4cf8e562c1f8988ef409c3fb0"
+    },
+    "hot/HotDanmakuPolicyTest.kt": {
+      "sha256": "bf7e4cb2058777508d6724a02cff72ddc54057dbe938355504863428fb472110"
+    },
+    "votes/DesktopOriginalCommandDanmakuOverlay.kt": {
+      "sha256": "ede00c9fb551ec8b8a461da44a37f5d01e43327157b3e5715dd2dccb3bde599d"
+    },
+    "units/VideoEngagementViewModel.kt": {
+      "sha256": "b5434f08fab19fb3fef48e4558b8a2be21a4ab5d69f4391acddfc51bcd811478"
+    }
+  }
+}

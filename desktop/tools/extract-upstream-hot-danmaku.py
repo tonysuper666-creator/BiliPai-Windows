@@ -130,9 +130,15 @@ def inventory(repo):
 
 
 def generate(repo, output, tests_output=None):
+    # v0.4.6 (roadmap dmk-command-merge-hot-banners): the policy, the bar, the count text and the policy test advance
+    # to the whole v0.4.6 files as the last layer; the v027 receipts below still describe the stage they replace.
+    from v046_danmaku_hot_command import HOT_LEAVES, advance_hot, hot_prefix, validate_outputs
     originals = checked_inputs(repo)
+    validate_outputs(repo, output, tests_output)
     # Validate every full-file transform before publishing any output.
     transformed = {path: port(path, text) for path, text in originals.items()}
+    advanced = {path: advance_hot(repo, Path(path).name, adapted)
+                for path, (adapted, _) in transformed.items() if Path(path).name in HOT_LEAVES}
     records = []
     paths = []
     for path, (adapted, changes) in transformed.items():
@@ -143,7 +149,11 @@ def generate(repo, output, tests_output=None):
         target = wide(root / relative)
         target.parent.mkdir(parents=True, exist_ok=True)
         prefix = "// Fixed original " + COMMIT + ":" + path + "\n// Complete original file; only explicit reversible Windows platform ports follow.\n"
-        generated = prefix + adapted
+        final = adapted
+        if path in advanced:
+            final = advanced[path][0]
+            prefix = hot_prefix(path)
+        generated = prefix + final
         target.write_text(generated, encoding="utf-8", newline="\n")
         paths.append(Path(root) / relative)
         records.append({"source": path, "upstreamCommit": COMMIT,
@@ -154,6 +164,8 @@ def generate(repo, output, tests_output=None):
                         "generatedPath": relative.as_posix(), "testSource": path == TEST,
                         "generatedPrefix": prefix, "changes": changes,
                         "completeFileInverseExact": restore(adapted, changes) == originals[path]})
+        if path in advanced:
+            records[-1]["v046Advance"] = advanced[path][1]
     proof = {"schemaVersion": 1, "fixedUpstreamCommit": COMMIT,
              "overallCanonicalBaselineAdvanced": False,
              "originalRawArchiveVerified": True, "completeFilesInverseExact": True,

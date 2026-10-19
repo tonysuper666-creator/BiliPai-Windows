@@ -209,6 +209,53 @@ class DesktopWindowsCommandAttentionBindingTest {
         }
     }
 
+    @Test fun aSecondTripleWhileOneIsInFlightIsRejectedAndTheFlagIsReleasedAfterFailureAndCompletion() = runBlocking {
+        Harness().use { h ->
+            val result = CompletableDeferred<Result<TripleActionResult>>()
+            h.tripleResult = { result.await() }
+            assertTrue(h.binding.triple())
+            assertTrue(h.binding.state.value.isTripleSubmitting)
+            assertFalse(h.binding.triple())
+            assertEquals(listOf(17L), h.triples)
+            result.complete(Result.failure(IllegalStateException("server refused"))); h.drain()
+            assertFalse(h.binding.state.value.isTripleSubmitting)
+            assertFalse(h.binding.state.value.isLiked)
+            h.tripleResult = { Result.success(TripleActionResult(true, true, null, true)) }
+            assertTrue(h.binding.triple()); h.drain()
+            assertEquals(listOf(17L, 17L), h.triples)
+            assertFalse(h.binding.state.value.isTripleSubmitting)
+        }
+    }
+
+    @Test fun anAlreadyCompleteTripleIsRefusedByTheBindingAndByTheViewModel() = runBlocking {
+        Harness().use { h ->
+            assertTrue(h.binding.triple()); h.drain()
+            val state = h.engagement.uiState.value
+            assertTrue(state.isLiked); assertTrue(state.isFavorited); assertTrue(state.coinCount > 0)
+            assertFalse(h.binding.triple()); h.drain()
+            // Another caller of the same view model gets the same answer: nothing is sent and no flag is left behind.
+            h.engagement.doTripleAction(); h.drain()
+            assertEquals(listOf(17L), h.triples)
+            assertFalse(h.engagement.uiState.value.isTripleSubmitting)
+        }
+    }
+
+    @Test fun aPartialTripleStaysRetryableAndTheFlagFollowsEachRequest() = runBlocking {
+        Harness().use { h ->
+            h.tripleResult = { Result.success(TripleActionResult(true, false, "余额不足", true)) }
+            assertTrue(h.binding.triple()); h.drain()
+            assertFalse(h.binding.state.value.isTripleSubmitting)
+            val result = CompletableDeferred<Result<TripleActionResult>>()
+            h.tripleResult = { result.await() }
+            assertTrue(h.binding.triple())
+            assertTrue(h.binding.state.value.isTripleSubmitting)
+            result.complete(Result.success(TripleActionResult(true, true, null, true))); h.drain()
+            assertFalse(h.binding.state.value.isTripleSubmitting)
+            assertEquals(2, h.engagement.uiState.value.coinCount)
+            assertEquals(2, h.triples.size)
+        }
+    }
+
     private val analytics = object : DesktopOriginalVideoInteractionAnalytics {
         override fun logLike(videoId: String, isLiked: Boolean) = Unit
         override fun logDislike(videoId: String, isDisliked: Boolean) = Unit

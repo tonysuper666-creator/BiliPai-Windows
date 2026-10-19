@@ -215,12 +215,13 @@ internal class DesktopOriginalDanmakuCloudRuleProtocol(
   selected.append(s);setterrows.append(dict(member=name,sourceLine=original[:start].count('\n')+1,originalBodySha256LF=sha(raw),adaptedBodySha256LF=sha(s),changes='Context argument removed; original edit body delegates owned global Store atomic update.'))
  cloudGet=decl(original,'getDanmakuCloudSyncEnabled','    ')[0].replace('context: Context','').replace('context.settingsDataStore.data','store.snapshot("settings")')
  hot_keys=[];hot_methods=[]
- for key in ['KEY_DANMAKU_HOT_BAR_ENABLED','KEY_HOT_DANMAKU_EXPANDED_MODE']:
+ # v0.3.8 (f31c3b83) retired the expanded-mode key: the v0.4.6 bar has one mode, so only the on/off switch is carried.
+ for key in ['KEY_DANMAKU_HOT_BAR_ENABLED']:
   match=re.search(r'(?m)^    private val '+key+r'\s*=\s*booleanPreferencesKey\("[^"]+"\)',hot_manager)
   if match is None:raise ValueError('Fixed original hot-danmaku key missing: '+key)
   hot_keys.append(match.group(0))
   hot_members.append(dict(member=key,pinnedCommit=HOT_SETTINGS_COMMIT,sourceLine=hot_manager[:match.start()].count('\n')+1,originalBodySha256LF=sha(match.group(0))))
- for name in ['getDanmakuHotBarEnabled','setDanmakuHotBarEnabled','getHotDanmakuExpandedMode','setHotDanmakuExpandedMode']:
+ for name in ['getDanmakuHotBarEnabled','setDanmakuHotBarEnabled']:
   raw,start=decl(hot_manager,name,'    ')
   port=raw.replace('context: Context, ','').replace('context: Context','').replace('context.settingsDataStore.data','store.snapshot("settings")').replace('context.settingsDataStore.edit','writeOriginal')
   hot_methods.append(port)
@@ -259,7 +260,6 @@ internal class DesktopOriginalDanmakuPreferences(
     }
     fun currentSettings(scope:DanmakuSettingsScope)=mapDanmakuSettingsFromPreferences(store.snapshot("settings").value,scope)
     fun currentDanmakuHotBarEnabled():Boolean=store.snapshot("settings").value[KEY_DANMAKU_HOT_BAR_ENABLED] ?: true
-    fun currentHotDanmakuExpandedMode():Boolean=store.snapshot("settings").value[KEY_HOT_DANMAKU_EXPANDED_MODE] ?: false
     suspend fun setDanmakuBlockRulesRaw(value:String,scope:DanmakuSettingsScope)=blocks.setDanmakuBlockRulesRaw(value,scope)
     internal suspend fun migrateMissingOriginalLegacyValues(values:Map<String,JsonElement>) {
         writeOriginal { editor -> values.forEach { (name,value) ->

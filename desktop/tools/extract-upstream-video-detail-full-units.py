@@ -110,6 +110,10 @@ def emit(path,t,origin,mode):
     from v042_owner_follow import apply as apply_owner_follow
     t,owner_follow_proof=apply_owner_follow(path,t,globals())
     if owner_follow_proof is not None:mode='mixed-original-v037-v042-engagement-owned-projection'
+    # v0.4.6 isTripleSubmitting and the guarded doTripleAction (roadmap dmk-command-merge-hot-banners). It sits before the
+    # follow confirmation and the like write guard so that those two stay contiguous; it only touches doTripleAction.
+    from v046_danmaku_hot_command import apply_triple_submission
+    t=apply_triple_submission(REPO,path,t,OUTPUT)
     from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
     t=apply_follow_confirmation(REPO,path,t,OUTPUT)
     from v046_like_write_guard import apply_and_record as apply_like_write_guard
@@ -553,6 +557,8 @@ def generate(repo,output,standalone=False):
     validate_video_info_outputs(REPO,OUTPUT)
     from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
     validate_episode_selector_outputs(REPO,OUTPUT)
+    from v046_danmaku_hot_command import validate_outputs
+    validate_outputs(REPO,OUTPUT)
     SOURCES={};OUTPUTS=[];ADAPTATIONS=[]
     manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
     assert manifest['upstreamCommit']==COMMIT

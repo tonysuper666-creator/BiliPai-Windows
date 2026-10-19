@@ -1,11 +1,10 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import com.android.purebilibili.feature.video.viewmodel.DesktopOriginalDanmakuSession
 import com.android.purebilibili.feature.video.ui.overlay.HotDanmakuBar
 import com.bilipai.desktop.danmaku.DanmakuOverlay
+import com.bilipai.desktop.danmaku.DesktopHotPresentationRelay
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerState
 import com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences
@@ -72,16 +71,19 @@ internal class DesktopHotDanmakuNativeClock(
         val sending by assembly.playback.isSendingDanmaku.collectAsState()
         if(enabled && owned()) {
             val reservation=remember{Any()}
-            var visible by remember{mutableStateOf(false)}
-            var height by remember{mutableIntStateOf(0)}
+            val latestOverlay by rememberUpdatedState(overlay)
+            // The bar reports once and drops identical reports; the relay offers a rejected one again.
+            val relay=remember{DesktopHotPresentationRelay {items,heightPx->
+                !owned() || latestOverlay.updateHotBarPresentation(lease.sourceVersion,reservation,items,heightPx)}}
             val clock=remember{DesktopHotDanmakuNativeClock(
                 {(player.state.value.positionSeconds*1000.0).toLong().coerceAtLeast(0L)},::owned,player.state.value)}
-            val bindings=remember{DesktopHotDanmakuBindings(preferences.getHotDanmakuExpandedMode(),lease,::owned)}
+            val bindings=remember{DesktopHotDanmakuBindings(lease,::owned)}
             DisposableEffect(overlay,lease,reservation) {
                 overlay.reserveHotBar(lease.sourceVersion,reservation,0f)
+                relay.resend() // a new reservation starts without the selection of the last report
                 onDispose {overlay.releaseHotBarReservation(reservation)}
             }
-            SideEffect {if(owned())overlay.updateHotBarReservation(lease.sourceVersion,reservation,if(visible)height.toFloat() else 0f)}
+            LaunchedEffect(relay) {relay.redeliverWhileWaiting()}
             LaunchedEffect(clock,player) {player.state.collect(clock::accept)}
             CompositionLocalProvider(LocalDesktopHotDanmakuBindings provides bindings) {
                 HotDanmakuBar(
@@ -91,8 +93,10 @@ internal class DesktopHotDanmakuNativeClock(
                     onSendSame={text->
                         dispatchDesktopOriginalDanmakuSameSend(text,assembly.playback,lease.nativeSource,
                             sourceCurrent,::owned,latestAdmission)},
-                    isSending=sending,modifier=Modifier.onSizeChanged {height=it.height},
-                    onVisibilityChange={visible=it},
+                    isSending=sending,
+                    // The v0.4.6 bar measures itself and reports its shown entries with its height: the renderer
+                    // reserves the height in normal mode and hides the same entries from the ordinary timeline.
+                    onPresentationChange={items,heightPx->relay.report(items,heightPx.toFloat())},
                 )
             }
         }

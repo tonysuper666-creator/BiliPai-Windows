@@ -152,6 +152,10 @@ class DesktopWindowsVideoFeedbackOriginTest {
             h.triple = { Result.success(TripleActionResult(true, true, null, true)) }
             assertTrue(h.ordinary.triple()); h.drain()
             val first = assertNotNull(h.ordinary.feedback(DesktopWindowsVideoFeedbackKind.TRIPLE))
+            // v0.4.6 refuses a triple that is already complete, so the successor instance needs a like that was taken back.
+            h.like = { Result.success(false) }
+            assertTrue(h.ordinary.like()); h.drain()
+            assertFalse(h.vm.uiState.value.isLiked)
             assertTrue(h.ordinary.triple()); h.drain()
             val second = assertNotNull(h.ordinary.feedback(DesktopWindowsVideoFeedbackKind.TRIPLE))
             assertTrue(second.instanceId > first.instanceId)

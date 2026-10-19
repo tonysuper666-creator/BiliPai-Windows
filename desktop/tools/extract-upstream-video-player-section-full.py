@@ -317,6 +317,9 @@ def render_section():
  mapped_hot=hot.replace('player = playerState.player,','player = hotPlayer,').replace('danmakuManager.getLoadedDanmakuList()','danmakuManager.getHotDanmakuList()')
  wrapped='                    platform.HotDanmakuScope { hotPlayer ->\n'+'\n'.join('    '+line for line in mapped_hot.splitlines())+'\n                    }'
  t=exact(t,hot,wrapped,'Whole original hot bar uses existing source-owned clock, plugin output and preference scope')
+ # v0.4.6 (roadmap dmk-command-merge-hot-banners): last layer on this section, anchored on text no earlier layer rewrites.
+ from v046_danmaku_hot_command import advance_section
+ t=advance_section(REPO,t,OUTPUT)
  t=exact(t,'        NextWatchOverlay(\n            player = playerState.player,','        val nextWatchHint by platform.nextWatchHint.collectAsStateWithLifecycle()\n        NextWatchOverlay(\n            settingsContext = platform.settingsContext,\n            playing = playerState.player.isPlaying,\n            hint = nextWatchHint,','Existing owned next-watch binding supplies actual hint and native playing state')
  t=exact(t,'            resolve = actions.resolveNextWatch,\n            play = actions.playNextWatch,','            resolve = platform::captureNextWatchHint,\n            play = { hint -> platform.playNextWatchHint(hint, checkNotNull(settingsScope.coroutineContext[kotlinx.coroutines.Job])) },','Use retained lookahead and captured original UI caller; never create another queue')
  t=exact(t,'                VideoPlayerOverlay(state = overlayState, actions = overlayActions)',
@@ -414,6 +417,8 @@ def render_dimension():
 def generate(repo,output,standalone=False,test_output=None):
  global REPO,OUTPUT,STANDALONE,parser,selector,protocol,controls,c,SOURCES,OUTPUTS,EDITS
  REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone;SOURCES={};OUTPUTS=[];EDITS=[]
+ from v046_danmaku_hot_command import validate_outputs
+ validate_outputs(REPO,OUTPUT,test_output)
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'));assert manifest['upstreamCommit']==COMMIT
  registered={r['path']:r['sha256']for r in manifest['sources']}
  for path,pin in SOURCE_PINS.items():

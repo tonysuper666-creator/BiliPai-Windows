@@ -24,6 +24,7 @@ import com.android.purebilibili.feature.video.ui.components.VideoViewportLayout
 import com.bilipai.desktop.data.DesktopDynamicCardOperations
 import com.bilipai.desktop.danmaku.DanmakuOverlay
 import com.bilipai.desktop.danmaku.DanmakuSettings
+import com.bilipai.desktop.danmaku.DesktopHotPresentationRelay
 import com.bilipai.desktop.danmaku.DesktopOwnedWebMaskSource
 import com.bilipai.desktop.player.*
 import com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration
@@ -264,6 +265,8 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         resources.nextWatch.play(hint,caller) {owns(hint.accepted) && resources.isPresentationCurrent(hint.accepted)}
 
     private var hotReservation: Pair<DesktopOriginalVideoAcceptedPublication,Any>? = null
+    // Offers a presentation report again when the overlay rejected it; the bar reports once and drops identical reports.
+    private var hotRelay: DesktopHotPresentationRelay? = null
     @Composable override fun HotDanmakuScope(content:@Composable (DesktopHotDanmakuPlayer)->Unit) {
         val lease=resources.native.current() ?: return
         key(lease) {
@@ -272,18 +275,23 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
             val token=remember {Any()}
             val clock=remember {DesktopHotDanmakuNativeClock(
                 {(player.state.value.positionSeconds*1000.0).toLong().coerceAtLeast(0L)},::current,player.state.value)}
-            val bindings=remember {DesktopHotDanmakuBindings(resources.preferences.getHotDanmakuExpandedMode(),lease,::current)}
+            val bindings=remember {DesktopHotDanmakuBindings(lease,::current)}
+            val relay=remember {DesktopHotPresentationRelay {items,heightPx->
+                !current() || resources.overlay.updateHotBarPresentation(lease.sourceVersion,token,items,heightPx)}}
             DisposableEffect(lease,token) {
                 if(current()) {
                     hotReservation=lease to token
+                    hotRelay=relay
                     resources.overlay.reserveHotBar(lease.sourceVersion,token,0f)
+                    relay.resend() // a new reservation starts without the selection of the last report
                 }
                 onDispose {
                     alive.set(false)
-                    if(hotReservation?.second===token)hotReservation=null
+                    if(hotReservation?.second===token) {hotReservation=null;hotRelay=null}
                     resources.overlay.releaseHotBarReservation(token)
                 }
             }
+            LaunchedEffect(relay) {relay.redeliverWhileWaiting()}
             LaunchedEffect(clock,player) {player.state.collect(clock::accept)}
             CompositionLocalProvider(LocalDesktopHotDanmakuBindings provides bindings) {content(clock)}
         }
@@ -476,11 +484,9 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
             if(!owns(value) || !resources.isPresentationCurrent(value))return emptyList()
             return resources.overlay.hotItemsFor(value.request.cid,value.sourceVersion)
         }
-        override fun reserveHotDanmakuBarHeight(heightPx:Float) {
-            require(heightPx.isFinite() && heightPx>=0f)
-            val reservation=hotReservation ?: return
-            if(owns(reservation.first) && resources.isPresentationCurrent(reservation.first))
-                resources.overlay.updateHotBarReservation(reservation.first.sourceVersion,reservation.second,heightPx)
+        override fun updateHotDanmakuPresentation(items:List<DanmakuItem>,heightPx:Int) {
+            require(heightPx>=0)
+            hotRelay?.report(items,heightPx.toFloat())
         }
         override val upOwnerUserHash get()=resources.overlay.originalUpOwnerUserHash()
         override suspend fun loadDanmaku(cid:Long,aid:Long,durationHintMs:Long,bvid:String){

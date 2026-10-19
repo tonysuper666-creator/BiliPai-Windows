@@ -14,6 +14,10 @@ tool = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tool)
 
 
+def adapted_sha(text):
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
 class HotDanmakuExtractionTest(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="bilipai-hot-danmaku-")
@@ -35,6 +39,13 @@ class HotDanmakuExtractionTest(unittest.TestCase):
             source = raw.decode("utf-8")
             self.assertTrue(source.startswith(row["generatedPrefix"]))
             adapted = source[len(row["generatedPrefix"]):]
+            if "v046Advance" in row:
+                # The whole v0.4.6 file (roadmap dmk-command-merge-hot-banners) is the last layer: peel it with its own
+                # exact receipt first, then the v027 stage below it is checked exactly as before.
+                import v046_danmaku_hot_command as advance
+                self.assertEqual(advance.sha(adapted), row["v046Advance"]["adaptedSHA256"])
+                adapted = advance.restore(adapted, row["v046Advance"]["retainedToCurrent"])
+            self.assertEqual(adapted_sha(adapted), row["adaptedFullFileSha256LF"])
             self.assertEqual(tool.restore(adapted, row["changes"]), originals[row["source"]])
             self.assertEqual(row["originalRawSha256"], tool.PINS[row["source"]])
             self.assertTrue(all(change["occurrenceCount"] == 1 for change in row["changes"]))

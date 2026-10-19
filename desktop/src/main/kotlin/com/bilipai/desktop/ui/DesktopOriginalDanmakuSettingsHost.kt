@@ -20,9 +20,7 @@ internal class DesktopDanmakuHotSettingsBindings(
     private val platform: DesktopDanmakuSettingsPlatform,
 ) {
     fun getDanmakuHotBarEnabled(): Flow<Boolean> = preferences.getDanmakuHotBarEnabled()
-    fun getHotDanmakuExpandedMode(): Flow<Boolean> = preferences.getHotDanmakuExpandedMode()
     suspend fun setDanmakuHotBarEnabled(enabled: Boolean) = update { preferences.setDanmakuHotBarEnabled(enabled) }
-    suspend fun setHotDanmakuExpandedMode(enabled: Boolean) = update { preferences.setHotDanmakuExpandedMode(enabled) }
     private suspend fun update(action: suspend () -> Unit) {
         currentCoroutineContext().ensureActive()
         if (!platform.isOwned()) throw CancellationException("Hot-danmaku settings owner retired")

@@ -69,6 +69,22 @@ internal class DesktopOriginalVideoEngagementEnvironment(
             }
         }
     }
+
+    /** The same release for the v0.4.6 triple submitting flag (generated doTripleAction, v046_danmaku_hot_command.py).
+     * It publishes no business result, only the end of this subject's own transient request. */
+    internal fun completeTripleSubmission(
+        state: MutableStateFlow<VideoEngagementUiState>,
+        subject: VideoSubjectSnapshot?,
+    ) {
+        if (!isCurrent()) return
+        commitIfCurrent {
+            if (isCurrent() && state.value.subject == subject) {
+                state.update { current ->
+                    if (current.subject == subject) current.copy(isTripleSubmitting = false) else current
+                }
+            }
+        }
+    }
 }
 
 /** A captured presentation permission, never another subject/source authority.

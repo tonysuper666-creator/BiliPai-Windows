@@ -4396,3 +4396,13 @@ tasks.named("extractOriginalBangumiPages") {
     outputs.dir(layout.buildDirectory.dir("generated/independent-bangumi-pages-tests"))
 }
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/independent-bangumi-pages-tests")) }
+// v0.4.6 counted hot banners and attention command cards (roadmap dmk-command-merge-hot-banners): the hot danmaku producer
+// advances the policy, bar, count text and policy test; the vote producer advances the command overlay and emits the triple
+// submit guard; the player section gets three counted hunks; the engagement view model gets isTripleSubmitting.
+tasks.matching { it.name in setOf(
+    "extractOriginalHotDanmaku", "extractStableVideoVotes",
+    "extractOriginalVideoPlayerSectionFull", "extractOriginalVideoDetailUnits",
+) }.configureEach {
+    inputs.files("tools/v046_danmaku_hot_command.py", "tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v046-danmaku-hot-command")
+}

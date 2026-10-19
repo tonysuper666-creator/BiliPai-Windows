@@ -31,6 +31,13 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             self.assertEqual(guard["after"], actual[at:at + len(guard["after"])])
             actual = actual[:at] + guard["before"] + actual[at + len(guard["after"]):]
             self.assertEqual(guard["inputSHA256"], hashlib.sha256(actual.encode()).hexdigest())
+            # The v0.4.6 triple submit guard (roadmap dmk-command-merge-hot-banners) is the stage below the like guard: peel it next.
+            triple = json.loads((out / "v046-triple-submission-proofs/VideoEngagementViewModel.kt.json").read_text(encoding="utf-8"))
+            self.assertEqual(triple["outputSHA256"], hashlib.sha256(actual.encode()).hexdigest())
+            for edit in reversed(triple["edits"]):
+                self.assertEqual(1, actual.count(edit["after"]), edit["label"])
+                actual = actual.replace(edit["after"], edit["before"], 1)
+            self.assertEqual(triple["inputSHA256"], hashlib.sha256(actual.encode()).hexdigest())
             proof = json.loads((out / "engagement-presentation-proof.json").read_text(encoding="utf-8"))
             import v037_player_interaction as interaction
             self.assertEqual(interaction.COMMIT, proof["upstreamCommit"])
@@ -69,6 +76,7 @@ class CommandAttentionExtractionTest(unittest.TestCase):
                     patch("v029_video_feedback_host.apply_feedback_lifetime", side_effect=lambda path, body: (body, None)), \
                     patch("v037_video_coin_request.apply", side_effect=lambda path, body, parser: (body, None)), \
                     patch("v042_owner_follow.apply", side_effect=lambda path, body, globals: (body, None)), \
+                    patch("v046_danmaku_hot_command.apply_triple_submission", side_effect=lambda repo, relative, text, output: text), \
                     patch("v046_like_write_guard.apply_and_record", side_effect=lambda repo, relative, text, output: text):
                 units.generate(REPO, before)
             self.assertEqual(units.wide(before / VM).read_text(encoding="utf-8"), inverse)

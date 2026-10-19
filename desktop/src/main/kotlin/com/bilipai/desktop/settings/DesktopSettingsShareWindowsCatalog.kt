@@ -171,8 +171,9 @@ internal object DesktopSettingsShareWindowsCatalog {
         floats(gesture, "subtitle_portrait_vertical_offset_fraction", ::normalizeSubtitleVerticalOffsetFraction)
 
         val danmaku = SettingsShareSection.DANMAKU
+        // hot_danmaku_expanded_mode left the Android share definitions in v0.3.8 (f31c3b83): an old backup's value is reported as unmapped.
         booleans(danmaku, "danmaku_enabled", "danmaku_scroll_fixed_velocity", "danmaku_static_to_scroll",
-            "hot_danmaku_expanded_mode", "danmaku_massive_mode", "danmaku_allow_scroll", "danmaku_allow_top",
+            "danmaku_massive_mode", "danmaku_allow_scroll", "danmaku_allow_top",
             "danmaku_allow_bottom", "danmaku_allow_colorful", "danmaku_allow_special", "danmaku_block_attention_commands",
             "danmaku_smart_occlusion", "danmaku_merge_duplicates")
         floats(danmaku, "danmaku_opacity", ::normalizeDanmakuOpacity)
@@ -184,7 +185,11 @@ internal object DesktopSettingsShareWindowsCatalog {
         floats(danmaku, "danmaku_line_height") { it.coerceIn(1f, 3f) }
         floats(danmaku, "danmaku_scroll_duration_seconds") { it.coerceIn(1f, 50f) }
         floats(danmaku, "danmaku_static_duration_seconds") { it.coerceIn(1f, 50f) }
-        intRange(danmaku, "danmaku_duplicate_merge_window_ms", 100..3000)
+        // v0.3.8 anchors the merge window to the first item and allows 15 s; the one second floor follows (1f2c3872,
+        // normalizeDanmakuDuplicateMergeWindowMs). Older backups carry 100..3000, so the value is coerced, not dropped.
+        field("danmaku_duplicate_merge_window_ms", danmaku) { value ->
+            primitive(value)?.takeUnless { it.isString }?.intOrNull?.coerceIn(1_000, 15_000)?.let(::JsonPrimitive)
+        }
         intRange(danmaku, "danmaku_duplicate_merge_count_threshold", 2..10)
         field("danmaku_block_rules", danmaku) { string(it)?.let(::JsonPrimitive) }
 
@@ -205,7 +210,7 @@ internal object DesktopSettingsShareWindowsCatalog {
 
     val definitions: List<SettingsShareEntryDefinition> = fields.values.map { it.definition }
     val baselineDanmakuKeys: Set<String> = definitions.filter { it.section == SettingsShareSection.DANMAKU }
-        .map { it.storageKey }.toSet() - setOf("hot_danmaku_expanded_mode", "danmaku_block_attention_commands")
+        .map { it.storageKey }.toSet() - setOf("danmaku_block_attention_commands")
 
     fun normalize(values: Map<String, JsonElement>): Map<String, JsonElement> = buildMap {
         values.forEach { (key, value) -> fields[key]?.normalize?.invoke(value)?.let { put(key, it) } }

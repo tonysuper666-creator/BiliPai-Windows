@@ -160,7 +160,8 @@
     "desktop/upstream-slices/v046-video-info-section",
     "desktop/upstream-slices/v046-episode-selector",
     "desktop/upstream-slices/v046-player-overlay",
-    "desktop/upstream-slices/v046-bangumi-player"
+    "desktop/upstream-slices/v046-bangumi-player",
+    "desktop/upstream-slices/v046-danmaku-hot-command"
   ],
   "archives": [
     {
@@ -7157,6 +7158,65 @@
           "sha256": "397fe6bfe7fce8510d0ffab72c841f351b270b22895a07efb5168b684acc2ebe",
           "hashNormalization": "raw",
           "blob": "71220e261cecbf7a925c3599813f6398e104725e"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-danmaku-hot-command",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/AnimatedCountText.kt",
+          "sha256": "e4ad60fa2f57c131d68ffc500cb0eb73d1374662824b59c6ffe5d5673d6d99f0",
+          "hashNormalization": "raw",
+          "blob": "3753ed92cbaf72b9d717076bcff41f71365fa978"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/CommandDanmakuOverlay.kt",
+          "sha256": "925f9d1f27053856c6c1e9a3f7395053b5b4ec797d24a8ebc8cff9ad9e15d8bf",
+          "hashNormalization": "raw",
+          "blob": "ea56abd34b72b06f3414959f83d940fa1cdbdb41"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/CommandDanmakuOverlayPolicyTest.kt",
+          "sha256": "ff2eab97ec23805ef46c789db41aad425acc3485cf40e89152926da9293cb7cf",
+          "hashNormalization": "raw",
+          "blob": "3b32f0493c33ef9306d5dff0022586f3c3eac4f7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/HotDanmakuBar.kt",
+          "sha256": "fb7b1d3690a4df17214dff6957a260e86544dc6d3b1ad0ad3312a407c04c5dd1",
+          "hashNormalization": "raw",
+          "blob": "de12082caf30b2c60005d398bb55d8fe52d8c254"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/HotDanmakuPolicy.kt",
+          "sha256": "5cd4aa8e9f181d2c87960c8fae0babcb521ea00fd0d8d8aa59fe201ee87283d5",
+          "hashNormalization": "raw",
+          "blob": "8b68634a9c40d3e176cae6a6e06064521d4b7fbe"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/HotDanmakuPolicyTest.kt",
+          "sha256": "d8383eb8904b7eda3b38815b8383161f4ffcbeb8cf2243192601455396bf737a",
+          "hashNormalization": "raw",
+          "blob": "ba2f3d277cf5bbeac438b57920cf5691e9db0a82"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/manifest.json",
+          "sha256": "097217edeff6588ba4f0c47c149912d8869754763714a86f2c9711c5324467cb",
+          "hashNormalization": "raw",
+          "blob": "9c380f488cea5d97736b9074cf98fb8918b871f6"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-danmaku-hot-command/VideoActionFeedbackPolicy.kt",
+          "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+          "hashNormalization": "raw",
+          "blob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324"
         }
       ]
     }
@@ -18852,6 +18912,111 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 BangumiPlayerViewModel advanced onto the sole PGC producer output through 48 counted hash-pinned hunks (sixteen declared Windows bindings), the whole follow-session policy preload and the whole BangumiPlayerFeatures emitted through the producers that already own those outputs with counted adaptations; BangumiFollowStatusPolicyTest is emitted with kotlin.test imports; five counted pairs thread likeStatusKnown through the sole PGC UI producer. No Bangumi UI file is carried here."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/HotDanmakuPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-hot-command/HotDanmakuPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "8b68634a9c40d3e176cae6a6e06064521d4b7fbe",
+      "sha256": "5cd4aa8e9f181d2c87960c8fae0babcb521ea00fd0d8d8aa59fe201ee87283d5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-hot-command"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 hot danmaku policy, bar and count text with the hot policy test, the whole v0.4.6 command overlay, and from VideoActionFeedbackPolicy only canSubmitVideoTripleAction. Each is advanced inside the producer that already owns its predecessor (hot danmaku, vote and player section/engagement producers) with the hash-pinned Windows ports of v046_danmaku_hot_command.py. The Android engine, DanmakuManager and layout hunks of the same upstream commits are not carried. The command overlay policy test is a reference-only row."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/HotDanmakuBar.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-hot-command/HotDanmakuBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "de12082caf30b2c60005d398bb55d8fe52d8c254",
+      "sha256": "fb7b1d3690a4df17214dff6957a260e86544dc6d3b1ad0ad3312a407c04c5dd1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-hot-command"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 hot danmaku policy, bar and count text with the hot policy test, the whole v0.4.6 command overlay, and from VideoActionFeedbackPolicy only canSubmitVideoTripleAction. Each is advanced inside the producer that already owns its predecessor (hot danmaku, vote and player section/engagement producers) with the hash-pinned Windows ports of v046_danmaku_hot_command.py. The Android engine, DanmakuManager and layout hunks of the same upstream commits are not carried. The command overlay policy test is a reference-only row."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AnimatedCountText.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-hot-command/AnimatedCountText.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3753ed92cbaf72b9d717076bcff41f71365fa978",
+      "sha256": "e4ad60fa2f57c131d68ffc500cb0eb73d1374662824b59c6ffe5d5673d6d99f0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-hot-command"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 hot danmaku policy, bar and count text with the hot policy test, the whole v0.4.6 command overlay, and from VideoActionFeedbackPolicy only canSubmitVideoTripleAction. Each is advanced inside the producer that already owns its predecessor (hot danmaku, vote and player section/engagement producers) with the hash-pinned Windows ports of v046_danmaku_hot_command.py. The Android engine, DanmakuManager and layout hunks of the same upstream commits are not carried. The command overlay policy test is a reference-only row."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/HotDanmakuPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-hot-command/HotDanmakuPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ba2f3d277cf5bbeac438b57920cf5691e9db0a82",
+      "sha256": "d8383eb8904b7eda3b38815b8383161f4ffcbeb8cf2243192601455396bf737a",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-hot-command"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 hot danmaku policy, bar and count text with the hot policy test, the whole v0.4.6 command overlay, and from VideoActionFeedbackPolicy only canSubmitVideoTripleAction. Each is advanced inside the producer that already owns its predecessor (hot danmaku, vote and player section/engagement producers) with the hash-pinned Windows ports of v046_danmaku_hot_command.py. The Android engine, DanmakuManager and layout hunks of the same upstream commits are not carried. The command overlay policy test is a reference-only row."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-hot-command/CommandDanmakuOverlay.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ea56abd34b72b06f3414959f83d940fa1cdbdb41",
+      "sha256": "925f9d1f27053856c6c1e9a3f7395053b5b4ec797d24a8ebc8cff9ad9e15d8bf",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-hot-command"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 hot danmaku policy, bar and count text with the hot policy test, the whole v0.4.6 command overlay, and from VideoActionFeedbackPolicy only canSubmitVideoTripleAction. Each is advanced inside the producer that already owns its predecessor (hot danmaku, vote and player section/engagement producers) with the hash-pinned Windows ports of v046_danmaku_hot_command.py. The Android engine, DanmakuManager and layout hunks of the same upstream commits are not carried. The command overlay policy test is a reference-only row."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-hot-command/CommandDanmakuOverlayPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3b32f0493c33ef9306d5dff0022586f3c3eac4f7",
+      "sha256": "ff2eab97ec23805ef46c789db41aad425acc3485cf40e89152926da9293cb7cf",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-hot-command"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference only. The committed v029 copy of CommandDanmakuOverlayPolicyTest stays byte-pinned and is the only copy compiled; the two cases v0.4.6 added are ported by hand into DesktopV046CommandCardPolicyTest. This leaf is not emitted or compiled."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-danmaku-hot-command/VideoActionFeedbackPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "a8c8da800ebc922acaa856ed7d92dc3b82e8e324",
+      "sha256": "5b50a9606130453a1308ab1e423114050ab619bf956caaac7e6a4dcaf1003c95",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-danmaku-hot-command"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole v0.4.6 hot danmaku policy, bar and count text with the hot policy test, the whole v0.4.6 command overlay, and from VideoActionFeedbackPolicy only canSubmitVideoTripleAction. Each is advanced inside the producer that already owns its predecessor (hot danmaku, vote and player section/engagement producers) with the hash-pinned Windows ports of v046_danmaku_hot_command.py. The Android engine, DanmakuManager and layout hunks of the same upstream commits are not carried. The command overlay policy test is a reference-only row."
     }
   ],
   "buildStandaloneInputs": [

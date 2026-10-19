@@ -66,13 +66,15 @@ class HotDanmakuSettingsExtractionTest(unittest.TestCase):
         text = (output / "com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt").read_text(encoding="utf-8")
         originals, _ = tool.hot_settings_originals(REPO)
         manager = originals[tool.BASE + "core/store/SettingsManager.kt"]
-        for name in ["getDanmakuHotBarEnabled", "setDanmakuHotBarEnabled", "getHotDanmakuExpandedMode", "setHotDanmakuExpandedMode"]:
+        # v0.3.8 (f31c3b83) retired the expanded-mode key; the pinned v027 original still declares it, the Windows copy does not.
+        for name in ["getDanmakuHotBarEnabled", "setDanmakuHotBarEnabled"]:
             raw, _ = tool.decl(manager, name, "    ")
             expected = raw.replace("context: Context, ", "").replace("context: Context", "").replace("context.settingsDataStore.data", 'store.snapshot("settings")').replace("context.settingsDataStore.edit", "writeOriginal")
             self.assertIn(expected, text)
         self.assertIn('KEY_DANMAKU_HOT_BAR_ENABLED=booleanPreferencesKey', text.replace(" ", "").replace("\n", ""))
         self.assertIn('"danmaku_hot_bar_enabled"', text)
-        self.assertIn('"hot_danmaku_expanded_mode"', text)
+        for retired in ("hot_danmaku_expanded_mode", "HotDanmakuExpandedMode", "KEY_HOT_DANMAKU_EXPANDED_MODE"):
+            self.assertNotIn(retired, text)
         self.assertNotIn("DesktopPluginStore(", text)
         self.assertNotIn("object SettingsManager", text)
 

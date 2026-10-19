@@ -69,6 +69,20 @@ class DesktopV038DanmakuMergeBridgeTest {
     }
 
     @Test
+    fun theFifteenSecondDefaultWindowIsAnchoredToItsFirstCommentAndSumsLikesPerWindow() {
+        // The v0.4.6 DanmakuMergerPolicyTest cases (26ea45ac), run through the Windows projection and its 15 s default.
+        val edge = mergeDuplicateDanmaku(listOf(comment(1, 0), comment(2, 15_000), comment(3, 15_001)))
+        assertEquals(listOf(1, 3), edge.map { it.id })
+        assertEquals(listOf("repeat x2", "repeat"), edge.map { it.text })
+        val likes = listOf(0 to 3L, 10_000 to 10L, 20_000 to 7L, 30_000 to 0L)
+            .mapIndexed { index, (ms, count) -> comment(index + 1, ms, likes = count) }
+        val merged = mergeDuplicateDanmaku(likes)
+        assertEquals(listOf(1, 3), merged.map { it.id })
+        assertEquals(listOf(13L, 7L), merged.map { it.originalRenderItem?.likeCount })
+        assertEquals(listOf(3L, 10L, 7L, 0L), likes.map { it.originalElement?.like })
+    }
+
+    @Test
     fun rendererDefaultsAndOldSavedWindowsUseTheOriginalOneToFifteenSecondRange() {
         assertEquals(15_000, DanmakuSettings().normalized().duplicateMergeWindowMs)
         assertEquals(1000, DanmakuSettings(duplicateMergeWindowMs = 500).normalized().duplicateMergeWindowMs)
