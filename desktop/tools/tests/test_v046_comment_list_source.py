@@ -421,7 +421,10 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         self.assertIn('onTimestampClick: ((Long) -> Unit)?,', actual)
 
     def test_screen_supplies_reactive_existing_player_state_and_actual_guarded_seek(self):
-        actual = self.generated('bangumi', 'DesktopOriginalBangumiPlayerScreen.kt')
+        current = self.generated('bangumi', 'DesktopOriginalBangumiPlayerScreen.kt')
+        # The v0.4.6 like-status threading (bgm-player-viewmodel-and-features) is appended after this comment layer.
+        retry = self.proof('bangumi', 'v046-bangumi-player-proofs/ui-retry-DesktopOriginalBangumiPlayerScreen')
+        actual = restore(current, retry['retainedToCurrent'])
         proof = self.proof('bangumi', 'v046-DesktopOriginalBangumiPlayerScreen-comment-caller-proof')
         previous = restore(actual, proof['retainedToCurrent'])
         self.assertIn('isVideoPlaying = playbackDebugSnapshot.isPlaying', actual)

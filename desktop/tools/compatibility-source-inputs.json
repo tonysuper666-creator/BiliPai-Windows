@@ -159,7 +159,8 @@
     "desktop/upstream-slices/v046-glyph-toolbar-pickers",
     "desktop/upstream-slices/v046-video-info-section",
     "desktop/upstream-slices/v046-episode-selector",
-    "desktop/upstream-slices/v046-player-overlay"
+    "desktop/upstream-slices/v046-player-overlay",
+    "desktop/upstream-slices/v046-bangumi-player"
   ],
   "archives": [
     {
@@ -7115,6 +7116,47 @@
           "sha256": "594dac61d8824aaffd5b3ecff0c9d3d8a1106287e484a88605c78b3424438518",
           "hashNormalization": "raw",
           "blob": "675c39fa887dc9439222c3546bea037aa32521da"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-bangumi-player",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-player/BangumiFollowStatusPolicy.kt",
+          "sha256": "a989ae7a0c95057406ed15ee7cc251b886c92378be34dc8d8aa523dd03b0d2db",
+          "hashNormalization": "raw",
+          "blob": "f734b599e76f2e403b141e2decbfca4ccb4255b1"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-player/BangumiFollowStatusPolicyTest.kt",
+          "sha256": "817f90181645f7915d14b7c139fb99abda9bd70a7e76928214a91fcc45f993df",
+          "hashNormalization": "raw",
+          "blob": "67a1a8f870830fe35bd3696fe22f740f78dc31ea"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-player/BangumiPlayerFeatures.kt",
+          "sha256": "2787d83abd3f961ba4e9e63094a0e533b2ad8fa6f8345d58ae807f3d3457d9ae",
+          "hashNormalization": "raw",
+          "blob": "fd8a02f8bc3152ba3ef9a3c37662f4c3c51089dd"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-player/BangumiPlayerViewModel.kt",
+          "sha256": "5018676f2e5e5fdea1d6bce8864735ea2765938ba2ca9fd3ac0677da5cc7c186",
+          "hashNormalization": "raw",
+          "blob": "2bd981f725a8b25b661185e8955cffe935a3fa82"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-player/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-player/manifest.json",
+          "sha256": "397fe6bfe7fce8510d0ffab72c841f351b270b22895a07efb5168b684acc2ebe",
+          "hashNormalization": "raw",
+          "blob": "71220e261cecbf7a925c3599813f6398e104725e"
         }
       ]
     }
@@ -18750,6 +18792,66 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-player/BangumiPlayerViewModel.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2bd981f725a8b25b661185e8955cffe935a3fa82",
+      "sha256": "5018676f2e5e5fdea1d6bce8864735ea2765938ba2ca9fd3ac0677da5cc7c186",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-player"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BangumiPlayerViewModel advanced onto the sole PGC producer output through 48 counted hash-pinned hunks (sixteen declared Windows bindings), the whole follow-session policy preload and the whole BangumiPlayerFeatures emitted through the producers that already own those outputs with counted adaptations; BangumiFollowStatusPolicyTest is emitted with kotlin.test imports; five counted pairs thread likeStatusKnown through the sole PGC UI producer. No Bangumi UI file is carried here."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerFeatures.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-player/BangumiPlayerFeatures.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "fd8a02f8bc3152ba3ef9a3c37662f4c3c51089dd",
+      "sha256": "2787d83abd3f961ba4e9e63094a0e533b2ad8fa6f8345d58ae807f3d3457d9ae",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-player"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BangumiPlayerViewModel advanced onto the sole PGC producer output through 48 counted hash-pinned hunks (sixteen declared Windows bindings), the whole follow-session policy preload and the whole BangumiPlayerFeatures emitted through the producers that already own those outputs with counted adaptations; BangumiFollowStatusPolicyTest is emitted with kotlin.test imports; five counted pairs thread likeStatusKnown through the sole PGC UI producer. No Bangumi UI file is carried here."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-player/BangumiFollowStatusPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f734b599e76f2e403b141e2decbfca4ccb4255b1",
+      "sha256": "a989ae7a0c95057406ed15ee7cc251b886c92378be34dc8d8aa523dd03b0d2db",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-player"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BangumiPlayerViewModel advanced onto the sole PGC producer output through 48 counted hash-pinned hunks (sixteen declared Windows bindings), the whole follow-session policy preload and the whole BangumiPlayerFeatures emitted through the producers that already own those outputs with counted adaptations; BangumiFollowStatusPolicyTest is emitted with kotlin.test imports; five counted pairs thread likeStatusKnown through the sole PGC UI producer. No Bangumi UI file is carried here."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiFollowStatusPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-player/BangumiFollowStatusPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "67a1a8f870830fe35bd3696fe22f740f78dc31ea",
+      "sha256": "817f90181645f7915d14b7c139fb99abda9bd70a7e76928214a91fcc45f993df",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-player"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BangumiPlayerViewModel advanced onto the sole PGC producer output through 48 counted hash-pinned hunks (sixteen declared Windows bindings), the whole follow-session policy preload and the whole BangumiPlayerFeatures emitted through the producers that already own those outputs with counted adaptations; BangumiFollowStatusPolicyTest is emitted with kotlin.test imports; five counted pairs thread likeStatusKnown through the sole PGC UI producer. No Bangumi UI file is carried here."
     }
   ],
   "buildStandaloneInputs": [

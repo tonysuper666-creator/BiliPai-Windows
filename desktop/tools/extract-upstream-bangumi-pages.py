@@ -195,6 +195,12 @@ e.write(rel,'DesktopOriginalBangumiFollowPreloadPolicy.kt')
 ROWS[-1]['completeOriginalFileBody']=False
 ROWS[-1]['completeSelectedMethodBodies']=True
 ROWS[-1]['selectedMethods']=['resolveFollowPreloadPageCount','preloadFollowedSeasonsForType']
+# v0.4.6 follow-session policy (targetSeasonId, sessionProvider, shared verification permit) replaces the v0.2.5 selection.
+from v046_bangumi_player import advance_follow_preload,emit_follow_preload_test
+_policy_file=OUT/'com/android/purebilibili/feature/bangumi/policy/DesktopOriginalBangumiFollowPreloadPolicy.kt'
+_policy_file.write_text(advance_follow_preload(C,_policy_file.read_text(encoding='utf-8'),OUT),encoding='utf-8',newline='\n')
+ROWS[-1].update(v046FollowPreloadAdvance=True,v046FollowPreloadSha256LF=sha(_policy_file.read_text(encoding='utf-8')))
+emit_follow_preload_test(C,OUT.parent/(OUT.name+'-tests'))
 rel,s=original('feature/bangumi/MyFollowStats.kt');Edit(s).write(rel,'DesktopOriginalMyFollowStats.kt')
 rel,s=original('feature/bangumi/policy/BangumiUiPolicy.kt')
 selected='package com.android.purebilibili.feature.bangumi\n\n'+s[s.index('internal data class BangumiEpisodePreviewWindow'):]

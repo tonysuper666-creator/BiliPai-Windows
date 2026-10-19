@@ -383,7 +383,9 @@ class GradleModelTests(unittest.TestCase):
         known_side_effect_or_unrunnable = {'generated/upstream', 'generated/js-worker',
                                            'generated/native-diagnostic-share/kotlin',
                                            'generated/audio-library-original-tests',
-                                           'generated/original-video-interaction-retry-tests'}
+                                           'generated/original-video-interaction-retry-tests',
+                                           # written next to its main output by the independent-pages producer
+                                           'generated/independent-bangumi-pages-tests'}
         for rel in sorted(wanted - known_side_effect_or_unrunnable):
             self.assertTrue(any(gate._under(rel, p) or gate._under(p, rel) for p in produced), rel)
 
@@ -1230,7 +1232,7 @@ class ExpectedGapsTests(unittest.TestCase):
                     self.assertIn('inference', entry['reason'])
         # the roadmap names the proposed groups' slices but not these exact symbols; a reader must see that
         proposed = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'proposed'}
-        for name in ('rememberBangumiSubtitles', 'shouldAttemptInstantArticle',
+        for name in ('shouldAttemptInstantArticle',
                      'readSeedWallpaperColorScheme', 'sanitizeWallpaperTransform', 'WallpaperPaletteRequest',
                      'isScheduledDarkTheme', 'normalizeDarkThemeSchedule'):
             self.assertIn(name, proposed)
@@ -1754,6 +1756,9 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.feature.home.components.cards', 'resolveWallpaperGlassAlpha'),
     ('com.android.purebilibili.core.ui.components', 'AppFloatingToolbar'),
     ('com.android.purebilibili.feature.video.ui.section', 'VideoDescriptionAndTags'),
+    # the v046-bangumi-player slice emits the whole BangumiPlayerFeatures.kt from the PGC view model producer
+    ('com.android.purebilibili.feature.bangumi.ui.player', 'BangumiPlayerFeatures'),
+    ('com.android.purebilibili.feature.bangumi.ui.player', 'rememberBangumiSubtitles'),
 )
 # closed by the v046 danmaku protocol slice (members and identifiers, not top-level declarations)
 DANMAKU_SEEDS = ('invalidateDanmakuSegment', 'parseFailed', 'failedSegmentCount')

@@ -326,6 +326,8 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 object : DesktopOriginalBangumiPlayerActions {
                     override suspend fun checkLikeStatus(aid: Long) = owner.environment.actions.checkLikeStatus(aid)
                     override suspend fun checkCoinStatus(aid: Long) = owner.environment.actions.checkCoinStatus(aid)
+                    override suspend fun queryLikeStatus(aid: Long) = owner.environment.actions.queryLikeStatus(aid)
+                    override fun cachedLikeStatus(aid: Long) = owner.environment.actions.cachedLikeStatus(aid)
                 }, owner.environment.interactionUseCase, desktopOriginalBangumiPrimaryApiView(owner),
                 ports.progress, base, native,
                 DesktopOriginalBangumiPlayerUiSettings.getSponsorBlockAutoSkip(ports.settings),
@@ -344,7 +346,19 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                     // Same actual PGC Binding/caller; unchanged required 15s native stage.
                     factory.requestRepository(owner, captured).awaitMediaPreparation()
                     currentCoroutineContext().ensureActive(); captured.assertCurrent(); native.assertCurrent()
-                }, native::captureInitialDetailLaunchCaller)
+                }, native::captureInitialDetailLaunchCaller,
+                // v0.4.6 PGC: danmaku and cover save reuse the ordinary owner's protocols; the follow
+                // caches compare this presenter's account epoch, never a credential.
+                danmaku = DesktopOriginalBangumiPlayerDanmakuView(
+                    owner.environment.danmaku::isDanmakuServerDisabled,
+                    { aid, cid, message, progress, color, fontSize, mode, colorful ->
+                        owner.environment.danmaku.sendDanmaku(aid, cid, message, progress, color, fontSize, mode,
+                            colorful, false)
+                    }, ::assertOwned),
+                followSession = { desktopOriginalBangumiFollowSession(root.repository.sessionEpoch) },
+                saveImageToGallery = { context, url, title ->
+                    assertOwned(); owner.environment.download.saveImageToGallery(context, url, title)
+                })
             val vm = BangumiPlayerViewModel(environment)
             stateOwner.set(vm)
             native.installRetirementCapture(::captureFinalHeartbeat) { _, nextEpisode ->

@@ -4384,3 +4384,15 @@ tasks.matching { it.name in setOf("extractOriginalPlayerFullControls", "extractS
     inputs.file("tools/v046_episode_selector.py")
     inputs.dir("upstream-slices/v046-episode-selector")
 }
+// v0.4.6 Bangumi player (roadmap slice bgm-player-viewmodel-and-features, part 1): the view model layer and the feature
+// state run in the sole PGC producer, the follow-session policy and its upstream test in the independent-pages producer
+// that already owns the preload half of that policy file, and the like-status threading in the sole PGC UI producer.
+// The test root is a sibling of the main output (never inside it).
+tasks.matching { it.name in setOf("extractOriginalBangumiPlayer", "extractOriginalBangumiPages", "extractOriginalBangumiPlayerUi") }.configureEach {
+    inputs.file("tools/v046_bangumi_player.py")
+    inputs.dir("upstream-slices/v046-bangumi-player")
+}
+tasks.named("extractOriginalBangumiPages") {
+    outputs.dir(layout.buildDirectory.dir("generated/independent-bangumi-pages-tests"))
+}
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/independent-bangumi-pages-tests")) }

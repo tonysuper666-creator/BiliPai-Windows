@@ -15,6 +15,7 @@ TOOLS = Path(__file__).resolve().parents[1]
 ROOT = TOOLS.parents[1]
 sys.path.insert(0, str(TOOLS))
 import windows_pgc_screen_mount as stage
+import v046_bangumi_player as bangumi_player
 
 
 class WindowsPgcScreenMountTests(unittest.TestCase):
@@ -37,7 +38,10 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
                 cls.captured['screen'] = body
             return body
 
-        with patch.object(stage, 'apply_and_record', side_effect=capture):
+        # The like-status layer of bgm-player-viewmodel-and-features pins the real chain, which this
+        # capture run deliberately is not: it is switched off here and peeled below for the real run.
+        with patch.object(stage, 'apply_and_record', side_effect=capture), \
+                patch.object(bangumi_player, 'apply_retry_ui', side_effect=lambda repo, relative, body, output: body):
             cls.run_producer(cls.baseline)
         cls.run_producer(cls.generated)
         cls.before = cls.captured['screen']
@@ -48,7 +52,9 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
         from v046_favorite_editor import restore
         cls.comment_proof = json.loads((cls.generated /
             'v046-DesktopOriginalBangumiPlayerScreen-comment-caller-proof.json').read_bytes())
-        cls.after = restore(cls.current, cls.comment_proof['retainedToCurrent'])
+        retry_proof = json.loads((cls.generated / 'v046-bangumi-player-proofs' /
+            'ui-retry-DesktopOriginalBangumiPlayerScreen.json').read_bytes())
+        cls.after = restore(restore(cls.current, retry_proof['retainedToCurrent']), cls.comment_proof['retainedToCurrent'])
 
     @classmethod
     def tearDownClass(cls):
@@ -104,8 +110,16 @@ class WindowsPgcScreenMountTests(unittest.TestCase):
         self.assertEqual(len(retained), 8)
         self.assertEqual(originals - added, retained)
         self.assertEqual(originals & added, added)
-        for name in originals - {Path(stage.TARGET)}:
+        # The like-status layer of bgm-player-viewmodel-and-features threads one flag through three outputs
+        # (the Screen is handled by the dedicated tests above); the other two are compared after peeling it.
+        threaded = {Path(output) for output in bangumi_player.UI_RETRY_HUNKS}
+        for name in originals - {Path(stage.TARGET)} - threaded:
             self.assertEqual((self.baseline / name).read_bytes(), (self.generated / name).read_bytes(), str(name))
+        from v046_favorite_editor import restore
+        for name in threaded - {Path(stage.TARGET)}:
+            retry = json.loads((self.generated / 'v046-bangumi-player-proofs' / ('ui-retry-' + name.stem + '.json')).read_bytes())
+            self.assertEqual((self.baseline / name).read_text(encoding='utf-8'),
+                             restore((self.generated / name).read_text(encoding='utf-8'), retry['retainedToCurrent']), str(name))
 
     def test_record_binds_the_real_complete_producer_not_a_synthetic_fragment(self):
         proof = json.loads((self.generated / 'windows-pgc-screen-mount-proof.json').read_text(encoding='utf-8'))

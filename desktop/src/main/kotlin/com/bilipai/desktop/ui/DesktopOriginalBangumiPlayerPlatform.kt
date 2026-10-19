@@ -2,7 +2,9 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.feature.bangumi.BangumiFollowSession
 import com.android.purebilibili.feature.bangumi.BangumiPlayerState
+import com.android.purebilibili.feature.bangumi.currentBangumiFollowSession
 import com.android.purebilibili.feature.download.DownloadTask
 import com.android.purebilibili.feature.plugin.PlaybackCdnPlugin
 import com.android.purebilibili.feature.video.playback.audio.AudioQualityOption
@@ -79,6 +81,18 @@ internal interface DesktopOriginalBangumiBaseRequests {
 internal interface DesktopOriginalBangumiPlayerActions {
     suspend fun checkLikeStatus(aid: Long): Boolean
     suspend fun checkCoinStatus(aid: Long): Int
+    /** v0.4.6 like read that reports a failed request instead of inventing "not liked". A port that
+     * only has the older read derives success from it; the real Root overrides this with the
+     * ordinary owner's status protocol so a transient failure keeps the like button unknown. */
+    suspend fun queryLikeStatus(aid: Long): Result<Boolean> = try {
+        Result.success(checkLikeStatus(aid))
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (failure: Exception) {
+        Result.failure(failure)
+    }
+    /** Owner-scoped cached like state; absent means the status is not known yet. */
+    fun cachedLikeStatus(aid: Long): Boolean? = null
 }
 
 /** Per-presenter lifetime attached to the SAME OriginalVideoAssembly. No
@@ -124,6 +138,15 @@ internal class DesktopOriginalBangumiPlayerEnvironment(
         (Job) -> Boolean) -> Unit,
     val prepareMedia: suspend () -> Unit,
     val captureLoadCaller: suspend () -> Job,
+    /** The v0.4.6 PGC danmaku send and server-disabled read, through the ordinary owner's
+     * existing send protocol. The default fails closed: a port set without it cannot send. */
+    val danmaku: DesktopOriginalBangumiPlayerDanmaku = DesktopOriginalBangumiUnavailableDanmaku,
+    /** Opaque identity of the signed-in account for the follow caches. The default is the
+     * single constant identity (no account tracking); Root supplies the account epoch. */
+    val followSession: () -> BangumiFollowSession = ::currentBangumiFollowSession,
+    /** The ordinary owner's cover save (file admission included). Fails closed by default. */
+    val saveImageToGallery: suspend (DesktopOriginalPlayerSettingsContext, String, String) -> Boolean =
+        { _, _, _ -> false },
 ) {
     /** Read the existing Root quality mirror once per initial PGC request. */
     fun autoHighestQualityEnabled(): Boolean {

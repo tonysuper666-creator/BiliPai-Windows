@@ -1,0 +1,366 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+      "filename": "BangumiPlayerViewModel.kt",
+      "bytes": 71998,
+      "sha256": "5018676f2e5e5fdea1d6bce8864735ea2765938ba2ca9fd3ac0677da5cc7c186",
+      "gitBlob": "2bd981f725a8b25b661185e8955cffe935a3fa82"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerFeatures.kt",
+      "filename": "BangumiPlayerFeatures.kt",
+      "bytes": 10383,
+      "sha256": "2787d83abd3f961ba4e9e63094a0e533b2ad8fa6f8345d58ae807f3d3457d9ae",
+      "gitBlob": "fd8a02f8bc3152ba3ef9a3c37662f4c3c51089dd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt",
+      "filename": "BangumiFollowStatusPolicy.kt",
+      "bytes": 7192,
+      "sha256": "a989ae7a0c95057406ed15ee7cc251b886c92378be34dc8d8aa523dd03b0d2db",
+      "gitBlob": "f734b599e76f2e403b141e2decbfca4ccb4255b1"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiFollowStatusPolicyTest.kt",
+      "filename": "BangumiFollowStatusPolicyTest.kt",
+      "bytes": 11891,
+      "sha256": "817f90181645f7915d14b7c139fb99abda9bd70a7e76928214a91fcc45f993df",
+      "gitBlob": "67a1a8f870830fe35bd3696fe22f740f78dc31ea"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 BangumiPlayerViewModel.kt, ui/player/BangumiPlayerFeatures.kt, policy/BangumiFollowStatusPolicy.kt and the upstream test BangumiFollowStatusPolicyTest.kt for roadmap slice bgm-player-viewmodel-and-features (part 1: view model, follow-session policy and feature state; the UI re-pin is a follow-up slice).",
+  "purpose": "Advance the Windows PGC view model to the v0.4.6 blob (2bd981f7) inside the existing sole producer (tools/extract-upstream-bangumi-player.py), after its v034 initial-detail and audio-download layers: the follow-session convergence of 3b37b7a2 (v036), the like-status retry and mutex of 5a0bd7e2 (the v038 Bangumi hunks; d7ba1077 only changes ActionRepository and is not part of this slice), and the two methods of the 0.3.5 feature commit that the retained body never had, sendEpisodeDanmaku and saveCover. The 48 counted hunks below are the exact difference between the predecessor output (beforeFinalOutputs) and the advanced output; every line they add is upstream text except the sixteen windowsLines, which bind the new members to the Windows presenter environment. The follow-session policy and the v0.4.6 preload (targetSeasonId, sessionProvider, serialized background verification) are carried whole by the existing independent-pages producer (tools/v046_bangumi_player.py advance_follow_preload) because the view model calls it; the whole feature state file is emitted by the same producer as the view model with its Android settings, global repository and mute listener replaced by the desktop-owned DesktopOriginalBangumiSubtitlePort.",
+  "beforeFinalOutputs": {
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt": {
+      "sha256": "224636a0752bd36344b5dea0adb0b162dfa1ed32396fbc9ecc781d10dddcf995"
+    },
+    "com/android/purebilibili/feature/bangumi/policy/DesktopOriginalBangumiFollowPreloadPolicy.kt": {
+      "sha256": "d3bda4ea45418f40e574477b078046f702bdb02e995023c859c589807bdab797"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt": {
+      "sha256": "50f5be81fa6f966df022c6a2d8784ef0cbf84b88fdf4f7a8a6ef113c23429a4a"
+    },
+    "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerComponents.kt": {
+      "sha256": "a848e8ed23e98d017823fea190ed7e212ec7708f52854ac7239bfd8bbf1421ba"
+    },
+    "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerOverlayHost.kt": {
+      "sha256": "53413db28b78ad8c57e9ed2f3c93b6473e1e8ae4cc86e9dc7dc77d9ded1e121e"
+    }
+  },
+  "uiRetry": {
+    "purpose": "The carried v0.4.6 overlay shows the like icon as active only while likeStatusKnown is true and the retained Windows Bangumi UI bodies never passed it, so a liked episode would look unliked. Five counted pairs thread the flag exactly like upstream: 5a0bd7e2 (OverlayHost) and 763cf7b8 (Screen, Components).",
+    "outputs": {
+      "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt": {
+        "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+        "upstreamBlob": "25500bb275ae15aaeb4b141940b17109212cdc19",
+        "introducedBy": "763cf7b8b57c6ad06fbd90f713efce5766cf0c74",
+        "upstreamLines": [
+          "likeStatusKnown = successState?.likeStatusKnown == true,"
+        ]
+      },
+      "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerComponents.kt": {
+        "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerComponents.kt",
+        "upstreamBlob": "e3e6bd10d36d5987e84965055ea4d84c581f88a8",
+        "introducedBy": "763cf7b8b57c6ad06fbd90f713efce5766cf0c74",
+        "upstreamLines": [
+          "likeStatusKnown: Boolean = false,",
+          "likeStatusKnown = likeStatusKnown,"
+        ]
+      },
+      "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerOverlayHost.kt": {
+        "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+        "upstreamBlob": "4af4a70a3fece0b68f3f3e5f0cc2dcbf5b3468ad",
+        "introducedBy": "5a0bd7e25bfe517ede8ad9bb88541542a18a5a5a",
+        "upstreamLines": [
+          "likeStatusKnown: Boolean,",
+          "likeStatusKnown = likeStatusKnown,"
+        ]
+      }
+    }
+  },
+  "viewModel": {
+    "output": "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt",
+    "beforeSha256LF": "224636a0752bd36344b5dea0adb0b162dfa1ed32396fbc9ecc781d10dddcf995",
+    "afterSha256LF": "3a8a2ee2e2d1bc3ca4913fa1dac51a62e18d1429286ebebf9e2f257f21f6ced4",
+    "hunks": [
+      {
+        "label": "imports :: import kotlinx.coroutines.CancellationException",
+        "before": "import com.android.purebilibili.feature.plugin.PlaybackCdnPlugin\nimport kotlinx.coroutines.Dispatchers\n",
+        "after": "import com.android.purebilibili.feature.plugin.PlaybackCdnPlugin\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Dispatchers\n"
+      },
+      {
+        "label": "imports :: import kotlinx.coroutines.sync.Mutex",
+        "before": "import kotlinx.coroutines.flow.MutableStateFlow\nimport kotlinx.coroutines.flow.asStateFlow\n",
+        "after": "import kotlinx.coroutines.flow.MutableStateFlow\nimport kotlinx.coroutines.sync.Mutex\nimport kotlinx.coroutines.sync.withLock\nimport kotlinx.coroutines.flow.asStateFlow\n"
+      },
+      {
+        "label": "shouldRestoreBangumiCachedPlayback :: val likeStatusKnown: Boolean = false,",
+        "before": "        val isLiked: Boolean = false,\n        val coinCount: Int = 0\n",
+        "after": "        val isLiked: Boolean = false,\n        val likeStatusKnown: Boolean = false,\n        val coinCount: Int = 0\n"
+      },
+      {
+        "label": "MutableStateFlow :: private val likeToggleMutex = Mutex()",
+        "before": "    private val _uiState = MutableStateFlow<BangumiPlayerState>(BangumiPlayerState.Loading)\n    val uiState = _uiState.asStateFlow()\n",
+        "after": "    private val _uiState = MutableStateFlow<BangumiPlayerState>(BangumiPlayerState.Loading)\n    private val likeToggleMutex = Mutex()\n    val uiState = _uiState.asStateFlow()\n"
+      },
+      {
+        "label": "resolveConfiguredAudioQuality :: private var followVerificationJob: Job? = null",
+        "before": "    private val loadedFollowTypes = mutableSetOf<Int>()\n",
+        "after": "    private var followVerificationJob: Job? = null\n    private var followCacheSession = environment.followSession()\n\n    private fun ensureFollowCacheSession(): BangumiFollowSession {\n        val session = environment.followSession()\n        if (followCacheSession != session) {\n            followCacheSession = session\n            followVerificationJob?.cancel()\n            followStatusCache.clear()\n            followStatusValueCache.clear()\n            followedSeasonIds.clear()\n            val current = _uiState.value as? BangumiPlayerState.Success\n            if (current != null) {\n                val status = (current.seasonDetail.userStatus ?: UserStatus()).copy(\n                    follow = 0, followStatus = 0\n                )\n                _uiState.value = current.copy(\n                    seasonDetail = current.seasonDetail.copy(userStatus = status)\n                )\n            }\n        }\n        return session\n    }\n\n    private fun acceptsFollowSession(session: BangumiFollowSession): Boolean =\n        ensureFollowCacheSession() == session\n"
+      },
+      {
+        "label": "onPlaybackStateChanged :: // 播放器初始化不扫描两类追番列表。",
+        "before": "    init {\n        environment.launch {\n            ensureFollowedSeasonsLoaded(MY_FOLLOW_TYPE_BANGUMI)\n            ensureFollowedSeasonsLoaded(MY_FOLLOW_TYPE_CINEMA)\n        }\n    }\n",
+        "after": "    // 播放器初始化不扫描两类追番列表。\n"
+      },
+      {
+        "label": "loadBangumiPlay :: val followSession = ensureFollowCacheSession()",
+        "before": "    ) {\n        desktopPlaybackIntentRevision++\n",
+        "after": "    ) {\n        val followSession = ensureFollowCacheSession()\n        desktopPlaybackIntentRevision++\n"
+      },
+      {
+        "label": "loadBangumiPlay :: followVerificationJob?.cancel()",
+        "before": "        currentEpId = epId\n        playbackLoadJob?.cancel()\n",
+        "after": "        currentEpId = epId\n        followVerificationJob?.cancel()\n        playbackLoadJob?.cancel()\n"
+      },
+      {
+        "label": "loadBangumiPlay :: detailResult.exceptionOrNull()?.let { if (it is CancellationException)",
+        "before": "            \n            detailResult.onSuccess { detail ->\n",
+        "after": "            \n            detailResult.exceptionOrNull()?.let { if (it is CancellationException) throw it }\n            kotlinx.coroutines.currentCoroutineContext().ensureActive()\n            if (!acceptsFollowSession(followSession)) return@launch\n            detailResult.onSuccess { detail ->\n"
+      },
+      {
+        "label": "loadBangumiPlay :: followSession = followSession,",
+        "before": "                    episodeIndex = episodeIndex,\n                    startPositionMs = resolveBangumiPlaybackStartPositionMs(\n",
+        "after": "                    episodeIndex = episodeIndex,\n                    followSession = followSession,\n                    startPositionMs = resolveBangumiPlaybackStartPositionMs(\n"
+      },
+      {
+        "label": "fetchPlayUrl :: desktopLoadIntent: Long? = null,",
+        "before": "        desktopLoadIntent: Long? = null\n",
+        "after": "        desktopLoadIntent: Long? = null,\n        followSession: BangumiFollowSession = ensureFollowCacheSession()\n"
+      },
+      {
+        "label": "fetchPlayUrl :: if (!acceptsFollowSession(followSession)) return",
+        "before": "    ) {\n        android.util.Log.d(\"BangumiPlayerVM\", \"🎬 fetchPlayUrl: epId=${episode.id}, cid=${episode.cid}, aid=${episode.aid}\")\n",
+        "after": "    ) {\n        if (!acceptsFollowSession(followSession)) return\n        android.util.Log.d(\"BangumiPlayerVM\", \"🎬 fetchPlayUrl: epId=${episode.id}, cid=${episode.cid}, aid=${episode.aid}\")\n"
+      },
+      {
+        "label": "fetchPlayUrl :: playUrlResult.exceptionOrNull()?.let { if (it is CancellationException",
+        "before": "        \n        playUrlResult.onSuccess { playData ->\n",
+        "after": "        \n        playUrlResult.exceptionOrNull()?.let { if (it is CancellationException) throw it }\n        kotlinx.coroutines.currentCoroutineContext().ensureActive()\n        if (!acceptsFollowSession(followSession)) return\n        playUrlResult.onSuccess { playData ->\n"
+      },
+      {
+        "label": "fetchPlayUrl :: val mergedFollow = resolveBangumiMergedFollowStatus(",
+        "before": "            val followType = defaultMyFollowTypeForSeasonType(detail.seasonType)\n            if (!loadedFollowTypes.contains(followType)) {\n                ensureFollowedSeasonsLoaded(followType)\n            }\n            val isFollowed = when {\n                followStatusValueCache.containsKey(realSeasonId) -> followStatusValueCache[realSeasonId]!! > 0\n                followStatusCache.containsKey(realSeasonId) -> followStatusCache[realSeasonId] == true\n                followedSeasonIds.contains(realSeasonId) -> true\n                else -> isBangumiFollowed(detail.userStatus)\n            }\n            followStatusCache[realSeasonId] = isFollowed\n            if (isFollowed) {\n                followedSeasonIds.add(realSeasonId)\n            }\n",
+        "after": "            val mergedFollow = resolveBangumiMergedFollowStatus(\n                realSeasonId, detail.userStatus, followStatusCache,\n                followStatusValueCache, followedSeasonIds\n            )\n            val isFollowed = mergedFollow.isFollowing\n            // 读取结果不写入操作覆盖缓存，避免临时未追状态挡住后台校验。\n"
+      },
+      {
+        "label": "fetchPlayUrl :: followStatus = mergedFollow.followStatus",
+        "before": "                    followStatus = if (isFollowed) {\n                        followStatusValueCache[realSeasonId]\n                            ?: maxOf(userStatus.followStatus, BANGUMI_FOLLOW_STATUS_WANT)\n                    } else {\n                        0\n                    }\n",
+        "after": "                    followStatus = mergedFollow.followStatus\n"
+      },
+      {
+        "label": "fetchPlayUrl :: followStatus = mergedFollow.followStatus",
+        "before": "                    followStatus = if (isFollowed) 1 else 0\n",
+        "after": "                    followStatus = mergedFollow.followStatus\n"
+      },
+      {
+        "label": "fetchPlayUrl :: verifyPlaybackFollowStatus(detail)",
+        "before": "\n            refreshEpisodeInteractionState(\n",
+        "after": "\n            verifyPlaybackFollowStatus(detail)\n            refreshEpisodeInteractionState(\n"
+      },
+      {
+        "label": "switchEpisode :: val session = ensureFollowCacheSession()",
+        "before": "    fun switchEpisode(episode: BangumiEpisode) {\n        desktopPlaybackIntentRevision++\n",
+        "after": "    fun switchEpisode(episode: BangumiEpisode) {\n        val session = ensureFollowCacheSession()\n        desktopPlaybackIntentRevision++\n"
+      },
+      {
+        "label": "switchEpisode :: followVerificationJob?.cancel()",
+        "before": "        flushBangumiPlaybackHeartbeat()\n        playbackLoadJob?.cancel()\n",
+        "after": "        flushBangumiPlaybackHeartbeat()\n        followVerificationJob?.cancel()\n        playbackLoadJob?.cancel()\n"
+      },
+      {
+        "label": "switchEpisode :: fetchPlayUrl(currentState.seasonDetail, episode, newIndex, desktopLoad",
+        "before": "            fetchPlayUrl(currentState.seasonDetail, episode, newIndex, desktopLoadIntent = desktopEpisodeIntent)\n",
+        "after": "            fetchPlayUrl(currentState.seasonDetail, episode, newIndex, desktopLoadIntent = desktopEpisodeIntent,\n                followSession = session)\n"
+      },
+      {
+        "label": "reloadCurrentEpisode :: val session = ensureFollowCacheSession()",
+        "before": "    fun reloadCurrentEpisode() {\n        desktopPlaybackIntentRevision++\n",
+        "after": "    fun reloadCurrentEpisode() {\n        val session = ensureFollowCacheSession()\n        desktopPlaybackIntentRevision++\n"
+      },
+      {
+        "label": "reloadCurrentEpisode :: followVerificationJob?.cancel()",
+        "before": "        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n        playbackLoadJob?.cancel()\n",
+        "after": "        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n        followVerificationJob?.cancel()\n        playbackLoadJob?.cancel()\n"
+      },
+      {
+        "label": "reloadCurrentEpisode :: desktopLoadIntent = desktopReloadIntent, followSession = session)",
+        "before": "                desktopLoadIntent = desktopReloadIntent)\n",
+        "after": "                desktopLoadIntent = desktopReloadIntent, followSession = session)\n"
+      },
+      {
+        "label": "changeQuality :: val followSession = ensureFollowCacheSession()",
+        "before": "    fun changeQuality(qualityId: Int) {\n        desktopPlaybackIntentRevision++\n",
+        "after": "    fun changeQuality(qualityId: Int) {\n        val followSession = ensureFollowCacheSession()\n        desktopPlaybackIntentRevision++\n"
+      },
+      {
+        "label": "changeQuality :: playUrlResult.exceptionOrNull()?.let { if (it is CancellationException",
+        "before": "            \n            playUrlResult.onSuccess { playData ->\n",
+        "after": "            \n            playUrlResult.exceptionOrNull()?.let { if (it is CancellationException) throw it }\n            kotlinx.coroutines.currentCoroutineContext().ensureActive()\n            if (!acceptsFollowSession(followSession)) return@launch\n            playUrlResult.onSuccess { playData ->\n"
+      },
+      {
+        "label": "changeQuality :: val latestState = _uiState.value as? BangumiPlayerState.Success ?: ret",
+        "before": "                _uiState.value = currentState.copy(\n",
+        "after": "                val latestState = _uiState.value as? BangumiPlayerState.Success ?: return@onSuccess\n                if (latestState.currentEpisode.id != currentState.currentEpisode.id) return@onSuccess\n                _uiState.value = latestState.copy(\n"
+      },
+      {
+        "label": "switchAudioQuality :: ensureFollowCacheSession()",
+        "before": "        desktopPublication: ((BangumiPlayerState.Success, () -> Unit, () -> Unit) -> Unit)? = null): Boolean {\n        val currentState = desktopCaptured ?: (_uiState.value as? BangumiPlayerState.Success ?: return false)\n",
+        "after": "        desktopPublication: ((BangumiPlayerState.Success, () -> Unit, () -> Unit) -> Unit)? = null): Boolean {\n        ensureFollowCacheSession()\n        val currentState = desktopCaptured ?: (_uiState.value as? BangumiPlayerState.Success ?: return false)\n"
+      },
+      {
+        "label": "toggleFollow :: ensureFollowCacheSession()",
+        "before": "    fun toggleFollow() {\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n",
+        "after": "    fun toggleFollow() {\n        ensureFollowCacheSession()\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n"
+      },
+      {
+        "label": "updateFollowStatus :: val session = ensureFollowCacheSession()",
+        "before": "    fun updateFollowStatus(status: Int) {\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n",
+        "after": "    fun updateFollowStatus(status: Int) {\n        val session = ensureFollowCacheSession()\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n"
+      },
+      {
+        "label": "updateFollowStatus :: val wasFollowing = resolveBangumiMergedFollowStatus(",
+        "before": "        val wasFollowing = isBangumiFollowed(currentState.seasonDetail.userStatus) ||\n            followStatusCache[seasonId] == true ||\n            (followStatusValueCache[seasonId] ?: 0) > 0\n",
+        "after": "        val wasFollowing = resolveBangumiMergedFollowStatus(\n            seasonId, currentState.seasonDetail.userStatus,\n            followStatusCache, followStatusValueCache, followedSeasonIds\n        ).isFollowing\n"
+      },
+      {
+        "label": "updateFollowStatus :: if (!acceptsFollowSession(session)) return@launch",
+        "before": "        environment.launch {\n            val result = when {\n",
+        "after": "        environment.launch {\n            if (!acceptsFollowSession(session)) return@launch\n            val result = when {\n"
+      },
+      {
+        "label": "updateFollowStatus :: followResult.exceptionOrNull()?.let { if (it is CancellationException)",
+        "before": "                    val followResult = BangumiRepository.followBangumi(seasonId, isCourse = isCourse)\n                    if (followResult.isSuccess) {\n",
+        "after": "                    val followResult = BangumiRepository.followBangumi(seasonId, isCourse = isCourse)\n                    followResult.exceptionOrNull()?.let { if (it is CancellationException) throw it }\n                    kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                    if (!acceptsFollowSession(session)) return@launch\n                    if (followResult.isSuccess) {\n"
+      },
+      {
+        "label": "updateFollowStatus :: result.exceptionOrNull()?.let { if (it is CancellationException) throw",
+        "before": "            \n            if (result.isSuccess) {\n",
+        "after": "            \n            result.exceptionOrNull()?.let { if (it is CancellationException) throw it }\n            kotlinx.coroutines.currentCoroutineContext().ensureActive()\n            if (!acceptsFollowSession(session)) return@launch\n            if (result.isSuccess) {\n"
+      },
+      {
+        "label": "updateFollowStatus :: followStatus = if (newIsFollowing) status else 0",
+        "before": "                    followStatus = if (newIsFollowing) 1 else 0\n",
+        "after": "                    followStatus = if (newIsFollowing) status else 0\n"
+      },
+      {
+        "label": "updateFollowStatus :: val latestState = _uiState.value as? BangumiPlayerState.Success",
+        "before": "                val updatedDetail = currentState.seasonDetail.copy(userStatus = updatedUserStatus)\n                _uiState.value = currentState.copy(seasonDetail = updatedDetail)\n",
+        "after": "                val latestState = _uiState.value as? BangumiPlayerState.Success\n                if (latestState?.seasonDetail?.seasonId == seasonId) {\n                    val updatedDetail = latestState.seasonDetail.copy(userStatus = updatedUserStatus)\n                    _uiState.value = latestState.copy(seasonDetail = updatedDetail)\n                }\n"
+      },
+      {
+        "label": "toggleLike :: val session = ensureFollowCacheSession()",
+        "before": "    fun toggleLike() {\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n",
+        "after": "    fun toggleLike() {\n        val session = ensureFollowCacheSession()\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n"
+      },
+      {
+        "label": "toggleLike :: likeToggleMutex.withLock {",
+        "before": "            val result = interactionUseCase.toggleLike(\n                aid = aid,\n                currentlyLiked = currentState.isLiked,\n                bvid = currentState.currentEpisode.bvid\n            )\n            result.onSuccess { liked ->\n                val latestState = _uiState.value as? BangumiPlayerState.Success ?: currentState\n                if (latestState.currentEpisode.id != currentState.currentEpisode.id) return@onSuccess\n                _uiState.value = updateBangumiSuccessInteractionState(\n                    state = latestState,\n                    isLiked = liked,\n                    coinCount = latestState.coinCount\n",
+        "after": "            likeToggleMutex.withLock {\n                fun isCurrent(): Boolean = acceptsFollowSession(session) &&\n                    (_uiState.value as? BangumiPlayerState.Success)?.currentEpisode?.id == currentState.currentEpisode.id\n                if (!isCurrent()) return@withLock\n                val before = _uiState.value as? BangumiPlayerState.Success ?: return@withLock\n                val confirmedLike = if (before.likeStatusKnown) before.isLiked else {\n                    com.android.purebilibili.feature.video.viewmodel.queryVideoInteractionStatusWithRetry(\n                        isCurrent = { isCurrent() },\n                        query = { ActionRepository.queryLikeStatus(aid) },\n                    ).getOrElse {\n                        if (it is kotlinx.coroutines.CancellationException) throw it\n                        if (isCurrent()) _toastEvent.trySend(\"点赞状态获取失败，请稍后重试\")\n                        return@withLock\n                    }\n                }\n                if (!isCurrent()) return@withLock\n                val confirmed = _uiState.value as? BangumiPlayerState.Success ?: return@withLock\n                _uiState.value = confirmed.copy(isLiked = confirmedLike, likeStatusKnown = true)\n                val result = interactionUseCase.toggleLike(\n                    aid = aid,\n                    currentlyLiked = confirmedLike,\n                    bvid = currentState.currentEpisode.bvid\n"
+      },
+      {
+        "label": "isCurrent :: result.onSuccess { liked ->",
+        "before": "                _toastEvent.trySend(if (liked) \"已点赞\" else \"已取消点赞\")\n            }.onFailure { error ->\n                _toastEvent.trySend(error.message ?: \"点赞失败\")\n",
+        "after": "                result.onSuccess { liked ->\n                    if (!acceptsFollowSession(session)) return@onSuccess\n                    val latestState = _uiState.value as? BangumiPlayerState.Success ?: currentState\n                    if (latestState.currentEpisode.id != currentState.currentEpisode.id) return@onSuccess\n                    _uiState.value = updateBangumiSuccessInteractionState(\n                        state = latestState,\n                        isLiked = liked,\n                        coinCount = latestState.coinCount\n                    ).copy(likeStatusKnown = true)\n                    _toastEvent.trySend(if (liked) \"已点赞\" else \"已取消点赞\")\n                }.onFailure { error ->\n                    if (error is kotlinx.coroutines.CancellationException) throw error\n                    _toastEvent.trySend(error.message ?: \"点赞失败\")\n                }\n"
+      },
+      {
+        "label": "doCoin :: val session = ensureFollowCacheSession()",
+        "before": "    fun doCoin(count: Int, alsoLike: Boolean) {\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n",
+        "after": "    fun doCoin(count: Int, alsoLike: Boolean) {\n        val session = ensureFollowCacheSession()\n        val currentState = _uiState.value as? BangumiPlayerState.Success ?: return\n"
+      },
+      {
+        "label": "doCoin :: if (!acceptsFollowSession(session)) return@onSuccess",
+        "before": "            result.onSuccess {\n                val latestState = _uiState.value as? BangumiPlayerState.Success ?: currentState\n",
+        "after": "            result.onSuccess {\n                if (!acceptsFollowSession(session)) return@onSuccess\n                val latestState = _uiState.value as? BangumiPlayerState.Success ?: currentState\n"
+      },
+      {
+        "label": "doCoin :: suspend fun sendEpisodeDanmaku(message: String, color: Int, mode: Int,",
+        "before": "    }\n    \n    /**\n     * 重试\n",
+        "after": "    }\n    \n    suspend fun sendEpisodeDanmaku(message: String, color: Int, mode: Int, fontSize: Int): Result<Unit> {\n        val state = _uiState.value as? BangumiPlayerState.Success\n            ?: return Result.failure(IllegalStateException(\"剧集未加载\"))\n        if (!state.isLoggedIn) return Result.failure(IllegalStateException(\"请先登录\"))\n        if (state.currentEpisode.aid <= 0 || state.currentEpisode.cid <= 0) {\n            return Result.failure(IllegalStateException(\"该剧集不支持发送弹幕\"))\n        }\n        if (!canShowBangumiDanmaku(state.seasonDetail.rights) ||\n            environment.danmaku.isDanmakuServerDisabled(state.currentEpisode.cid)) {\n            return Result.failure(IllegalStateException(\"该剧集已关闭弹幕\"))\n        }\n        val gradual = color == com.android.purebilibili.feature.video.ui.components.DANMAKU_SEND_VIP_GRADUAL_COLOR\n        return environment.danmaku.sendDanmaku(\n            aid = state.currentEpisode.aid, cid = state.currentEpisode.cid, message = message,\n            progress = exoPlayer?.currentPosition?.coerceAtLeast(0L) ?: 0L,\n            color = if (gradual) 16777215 else color, colorful = gradual, mode = mode, fontSize = fontSize,\n        ).map { Unit }\n    }\n\n    fun saveCover(context: Context) {\n        val state = _uiState.value as? BangumiPlayerState.Success ?: return\n        val cover = state.currentEpisode.cover.ifBlank { state.seasonDetail.cover }\n        environment.launch {\n            val saved = environment.saveImageToGallery(\n                context, cover, state.seasonDetail.title\n            )\n            _toastEvent.send(if (saved) \"封面已保存到相册\" else \"保存失败\")\n        }\n    }\n\n    /**\n     * 重试\n"
+      },
+      {
+        "label": "ensureFollowedSeasonsLoaded :: private fun verifyPlaybackFollowStatus(detail: BangumiDetail) {",
+        "before": "    private suspend fun ensureFollowedSeasonsLoaded(type: Int): Int {\n        if (loadedFollowTypes.contains(type)) return 0\n        val preloadResult = preloadFollowedSeasonsForType(\n            type = type,\n            followedSeasonIds = followedSeasonIds,\n            fetchPage = { requestedType, page, pageSize -> BangumiRepository.getMyFollowBangumi(requestedType, page, pageSize) }\n        )\n        if (preloadResult.requestSucceeded) {\n            loadedFollowTypes.add(type)\n",
+        "after": "    private fun verifyPlaybackFollowStatus(detail: BangumiDetail) {\n        val session = ensureFollowCacheSession()\n        followVerificationJob?.cancel()\n        val seasonId = detail.seasonId\n        if (detail.seasonType == 10 || followStatusCache.containsKey(seasonId) ||\n            followStatusValueCache.containsKey(seasonId) ||\n            seasonId in followedSeasonIds || isBangumiFollowed(detail.userStatus)) return\n        if (!environment.account.hasPrimarySessionCookie()) return\n        followVerificationJob = environment.launch {\n            if (!acceptsFollowSession(session)) return@launch\n            val foundIds = mutableSetOf<Long>()\n            val result = preloadFollowedSeasonsForType(\n                type = defaultMyFollowTypeForSeasonType(detail.seasonType),\n                followedSeasonIds = foundIds,\n                targetSeasonId = seasonId,\n                sessionProvider = environment.followSession,\n                fetchPage = { requestedType, page, pageSize -> BangumiRepository.getMyFollowBangumi(requestedType, page, pageSize) }\n            )\n            kotlinx.coroutines.currentCoroutineContext().ensureActive()\n            if (!acceptsFollowSession(session)) return@launch\n            val current = _uiState.value as? BangumiPlayerState.Success ?: return@launch\n            if (current.seasonDetail.seasonId != seasonId || !result.requestSucceeded) return@launch\n            followedSeasonIds.addAll(foundIds)\n            if (seasonId !in foundIds) return@launch\n            val verifiedStatus = if (!followStatusCache.containsKey(seasonId) &&\n                !followStatusValueCache.containsKey(seasonId) && result.targetFollowStatus != null) {\n                (current.seasonDetail.userStatus ?: UserStatus()).copy(\n                    follow = 1, followStatus = result.targetFollowStatus\n                )\n            } else current.seasonDetail.userStatus\n            val merged = resolveBangumiMergedFollowStatus(\n                seasonId, verifiedStatus, followStatusCache,\n                followStatusValueCache, followedSeasonIds\n            )\n            val status = (current.seasonDetail.userStatus ?: UserStatus()).copy(\n                follow = if (merged.isFollowing) 1 else 0,\n                followStatus = merged.followStatus\n            )\n            _uiState.value = current.copy(\n                seasonDetail = current.seasonDetail.copy(userStatus = status)\n            )\n"
+      },
+      {
+        "label": "verifyPlaybackFollowStatus :: return preloadResult.total",
+        "before": "        return preloadResult.total\n",
+        "after": ""
+      },
+      {
+        "label": "refreshEpisodeInteractionState :: val session = ensureFollowCacheSession()",
+        "before": "    ) {\n        if (episodeAid <= 0L) return\n",
+        "after": "    ) {\n        val session = ensureFollowCacheSession()\n        if (episodeAid <= 0L) return\n"
+      },
+      {
+        "label": "refreshEpisodeInteractionState :: val likeResult = ActionRepository.queryLikeStatus(episodeAid)",
+        "before": "            val isLiked = runCatching {\n                ActionRepository.checkLikeStatus(episodeAid)\n            }.getOrDefault(false)\n",
+        "after": "            val likeResult = ActionRepository.queryLikeStatus(episodeAid)\n            (likeResult.exceptionOrNull() as? kotlinx.coroutines.CancellationException)?.let { throw it }\n"
+      },
+      {
+        "label": "refreshEpisodeInteractionState :: if (!acceptsFollowSession(session)) return@launch",
+        "before": "\n            val currentState = _uiState.value as? BangumiPlayerState.Success ?: return@launch\n",
+        "after": "\n            if (!acceptsFollowSession(session)) return@launch\n            val currentState = _uiState.value as? BangumiPlayerState.Success ?: return@launch\n"
+      },
+      {
+        "label": "refreshEpisodeInteractionState :: isLiked = if (likeResult.isSuccess) {",
+        "before": "                isLiked = isLiked,\n",
+        "after": "                isLiked = if (likeResult.isSuccess) {\n                    ActionRepository.cachedLikeStatus(episodeAid) ?: likeResult.getOrThrow()\n                } else currentState.isLiked,\n"
+      },
+      {
+        "label": "refreshEpisodeInteractionState :: ).copy(likeStatusKnown = currentState.likeStatusKnown || likeResult.is",
+        "before": "                coinCount = coinCount\n            )\n        }\n",
+        "after": "                coinCount = coinCount\n            ).copy(likeStatusKnown = currentState.likeStatusKnown || likeResult.isSuccess)\n        }\n"
+      }
+    ],
+    "windowsLines": [
+      "    private var followCacheSession = environment.followSession()",
+      "        val session = environment.followSession()",
+      "        desktopLoadIntent: Long? = null,",
+      "            fetchPlayUrl(currentState.seasonDetail, episode, newIndex, desktopLoadIntent = desktopEpisodeIntent,",
+      "                followSession = session)",
+      "                desktopLoadIntent = desktopReloadIntent, followSession = session)",
+      "            environment.danmaku.isDanmakuServerDisabled(state.currentEpisode.cid)) {",
+      "        return environment.danmaku.sendDanmaku(",
+      "    fun saveCover(context: Context) {",
+      "        environment.launch {",
+      "            val saved = environment.saveImageToGallery(",
+      "        if (!environment.account.hasPrimarySessionCookie()) return",
+      "        followVerificationJob = environment.launch {",
+      "                targetSeasonId = seasonId,",
+      "                sessionProvider = environment.followSession,",
+      "                fetchPage = { requestedType, page, pageSize -> BangumiRepository.getMyFollowBangumi(requestedType, page, pageSize) }"
+    ]
+  },
+  "notCarried": [
+    "BangumiPlayerScreen.kt, BangumiPlayerContent.kt, BangumiPlayerComponents.kt and BangumiPlayerOverlayHost.kt at v0.4.6 (the danmaku send entry, subtitle overlay and track menu, audio-only, horizontal and vertical flips, sleep timer, save cover and side comment panel wiring), LandscapeSidePanel closeProgress and DanmakuSendDialog: roadmap slice bgm-player-ui-features-repin. The view model members they call (sendEpisodeDanmaku, saveCover, downloadAudio) and the feature state (BangumiPlayerFeatures, BangumiSubtitleState, rememberBangumiSubtitles, BangumiSubtitleOverlay) exist now, but no Windows screen constructs them yet.",
+    "v038-bangumi-player-session-and-glass (glass controls and the listen-bar session handoff, commit 763cf7b8): UI half, same follow-up slice.",
+    "BangumiViewModel single BangumiUiState, BangumiRepository page size 30 and the hub pages (roadmap slice bgm-hub-pages): only the shared follow policy file is advanced here.",
+    "PiP, auto-rotate, status bar and ACCELEROMETER_ROTATION of the Android player are not part of any carried file."
+  ],
+  "windowsDeviations": [
+    "currentBangumiFollowSession() (TokenManager mid and SESSDATA) becomes environment.followSession(): the Root supplies the account epoch of the presenter (a Windows presenter belongs to exactly one account epoch and retires when it changes). The policy keeps a constant default session for callers that pass none.",
+    "The logged-out test of the background follow verification uses the Root account view hasPrimarySessionCookie() instead of the global session cookie string.",
+    "sendEpisodeDanmaku, the server-disabled read and saveCover go through the ordinary video owner (same CSRF, account epoch and accepted native source admission); a changed source reads as closed and never throws to the caller."
+  ]
+}

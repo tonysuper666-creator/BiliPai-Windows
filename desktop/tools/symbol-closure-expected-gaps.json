@@ -32,30 +32,6 @@
       ]
     },
     {
-      "reason": "Bangumi player feature symbols imported by the carried v046 comment-list archive.",
-      "closedBy": "bgm-player-viewmodel-and-features",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerFeatures"
-        }
-      ]
-    },
-    {
-      "reason": "Bangumi player feature symbols imported by the carried v046 comment-list archive. Ownership of these symbols by bgm-player-viewmodel-and-features is the gap author's inference: that slice's roadmap text does not name rememberBangumiSubtitles. Its owner must confirm or reassign them when the slice is reached.",
-      "closedBy": "bgm-player-viewmodel-and-features",
-      "closedByEvidence": "proposed",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.bangumi.ui.player.rememberBangumiSubtitles"
-        }
-      ]
-    },
-    {
       "reason": "DynamicReactionSheet is called by carried comment archives; the pinned tree has no definer.",
       "closedBy": "dyn-category-merge-and-detail-return",
       "closedByEvidence": "roadmap",
@@ -516,6 +492,28 @@
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_video_info_section_source.py",
       "closedBy": "vid-info-section-repin",
       "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "BangumiPlayerFeatures",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.bangumi.ui.player",
+      "reason": "Roadmap seed BangumiPlayerFeatures (upstream 482eed66, v0.3.5): imported by the carried v0.4.6 BangumiPlayerContent in the v046-comment-list archive. RETIRED, not open: the v046-bangumi-player slice emits the whole v0.4.6 BangumiPlayerFeatures.kt (data class BangumiPlayerFeatures, data class BangumiSubtitleState, rememberBangumiSubtitles, BangumiSubtitleOverlay) from extract-upstream-bangumi-player.py with twelve counted adaptations. Nothing constructs the class on Windows yet: the Bangumi screen, content, components and overlay host re-pin is a follow-up slice, so this is a compiled definer without a Windows consumer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerFeatures.kt declares data class BangumiPlayerFeatures; the pinned v0.2.5 tree has no such file",
+      "retiredBy": "desktop/tools/v046_bangumi_player.py emit_features, emitted by desktop/tools/extract-upstream-bangumi-player.py as com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerFeatures.kt",
+      "guardedBy": "this gate (status LOST fails the run); test_v046_bangumi_player_source.py: test_features_file_declares_the_two_retired_seeds_exactly_once_in_the_producer_output",
+      "closedBy": "bgm-player-viewmodel-and-features",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "rememberBangumiSubtitles",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.bangumi.ui.player",
+      "reason": "Seed rememberBangumiSubtitles (upstream 482eed66, v0.3.5): imported by the carried v0.4.6 BangumiPlayerContent in the v046-comment-list archive. The owner was proposed by the gap author and is now confirmed: it lives in the same file as BangumiPlayerFeatures. RETIRED, not open: the same emission declares it. Its Windows signature takes the desktop-owned DesktopOriginalBangumiSubtitlePort instead of the Media3 player (settings, mute state and the player-info and subtitle-cue requests come through that port), so the UI slice that calls it must supply the port.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerFeatures.kt declares internal fun rememberBangumiSubtitles(bvid: String, cid: Long, player: Player)",
+      "retiredBy": "desktop/tools/v046_bangumi_player.py emit_features (FEATURES_ADAPTATIONS), emitted by desktop/tools/extract-upstream-bangumi-player.py as DesktopOriginalBangumiPlayerFeatures.kt",
+      "guardedBy": "this gate (status LOST fails the run); test_v046_bangumi_player_source.py: test_features_file_declares_the_two_retired_seeds_exactly_once_in_the_producer_output",
+      "closedBy": "bgm-player-viewmodel-and-features",
+      "closedByEvidence": "roadmap"
     }
   ],
   "syntheticDefiners": [
