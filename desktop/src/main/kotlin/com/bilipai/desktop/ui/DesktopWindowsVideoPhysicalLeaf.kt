@@ -63,6 +63,8 @@ import com.bilipai.desktop.player.DesktopNativeVideoViewportTransform
 import com.android.purebilibili.feature.video.viewmodel.resolvePlaybackCompletionRepeatMode
 import com.bilipai.desktop.data.VideoCard
 import com.bilipai.desktop.player.PlayerPreferences
+import com.bilipai.desktop.appearance.DesktopWindowsUxPlayerLayout
+import com.bilipai.desktop.appearance.LocalDesktopWindowsUx
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
@@ -1098,23 +1100,38 @@ internal class DesktopWindowsVideoActions(
             preferencesChanged(preferences.copy(speed = speed))
         }
     }
+    // V2 (spec 4.13 and 4.15): the player_layout flag is read here. DESKTOP has no overlay yet, so it resolves to LEGACY and the
+    // three pieces below render exactly as before. The controls binding holds the admitted actions of the bar and the strip.
+    val windowsUxSettings by LocalDesktopWindowsUx.current.settings.collectAsState()
+    val legacyChrome = desktopPlayerEffectiveLayout(windowsUxSettings.playerLayout, DESKTOP_PLAYER_OVERLAY_AVAILABLE) ==
+        DesktopWindowsUxPlayerLayout.LEGACY
+    val controls = DesktopPlayerControlsBinding(
+        current = ::current, command = ::command,
+        togglePause = { native.togglePause() }, setMuted = { native.setMuted(it) }, setVolume = { native.setVolume(it) },
+        isMuted = { state.muted }, preferences = preferences, preferencesChanged = preferencesChanged,
+        navigate = ::navigateFromThisClick,
+        switchQuality = { shell.playback.switchQuality(it) }, seekToSeconds = { shell.playback.seekTo(it) },
+        goBack = { actions.back() }, enterPictureInPicture = { actions.pictureInPicture() },
+        toggleFullscreen = { actions.fullscreen() }, speed = ::setSpeed,
+    )
     BoxWithConstraints(Modifier.fillMaxSize().padding(if (fullscreen) 0.dp else 8.dp)) {
         // Keep one Row and one native slot through every width/fullscreen/panel change.
         // A narrow window still reserves real sibling space: a heavyweight Canvas cannot be covered by a Compose sheet.
         val detailsWidth = minOf(360.dp, maxWidth * .43f)
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible) 6.dp else 0.dp)) {
-                if (chromeVisible) DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()
+                val legacyTopStrip: @Composable () -> Unit = { DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()
                     .desktopWindowsChromePointerInput(::observeChromePointer)
                     .onFocusChanged { topFocused = it.hasFocus }.focusGroup().hoverable(topInteractions)) {
                     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onClick = { if (current()) actions.back() }, modifier = Modifier.size(44.dp)) {
+                        IconButton(onClick = controls.back, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.ArrowBack, contentDescription = "返回")
                         }
                         Text(success?.info?.title ?: readonlyInfo?.title ?: "视频", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
                             maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
-                }
+                } }
+                if (chromeVisible && legacyChrome) legacyTopStrip()
                 // One retained native slot; original fixed ratios letterbox the same viewport.
                 BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).background(Color.Black)) {
                     val viewportLayout = resolveVideoViewportLayout(constraints.maxWidth, constraints.maxHeight, pictureAspectRatio)
@@ -1219,7 +1236,7 @@ internal class DesktopWindowsVideoActions(
                 if (playback.recovering && playback.recoveryMessage != null)
                     Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)
                 if (bootstrapError != null || playback.error != null) failureContent()
-                if (chromeVisible) DesktopWindowsVideoControlBar(
+                val legacyControlBar: @Composable () -> Unit = { DesktopWindowsVideoControlBar(
                     state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
                     enabled = current() && success != null, fullscreen = fullscreen, detailsOpen = detailsOpen,
                     onInteractionHoldChanged = { interaction ->
@@ -1261,15 +1278,15 @@ internal class DesktopWindowsVideoActions(
                         savedScreenshot?.isCurrent() != true,
                     screenshotBusy = screenshotBusy, onScreenshot = { takeScreenshot() },
                     chapters = chapters, chaptersSource = chaptersSource, onChapterSeek = ::seekChapter,
-                    onPlayPause = { command { native.togglePause() } },
-                    onPrevious = { navigateFromThisClick(false) }, onNext = { navigateFromThisClick(true) },
-                    onMute = { if(command { native.setMuted(!state.muted) }) preferencesChanged(preferences.copy(muted=!state.muted)) },
-                    onVolume = { value -> if(command { native.setVolume(value) }) preferencesChanged(preferences.copy(volume=value)) },
-                    onSpeed = ::setSpeed,
-                    onQuality = { quality -> if (current()) shell.playback.switchQuality(quality) },
-                    onSeek = { seconds -> if (current()) shell.playback.seekTo(seconds) },
-                    onPictureInPicture = { if (current()) actions.pictureInPicture() },
-                    onFullscreen = { if (current()) actions.fullscreen() },
+                    onPlayPause = controls.playPause,
+                    onPrevious = controls.previous, onNext = controls.next,
+                    onMute = controls.mute,
+                    onVolume = controls.volume,
+                    onSpeed = controls.speed,
+                    onQuality = controls.quality,
+                    onSeek = controls.seek,
+                    onPictureInPicture = controls.pictureInPicture,
+                    onFullscreen = controls.fullscreen,
                     onDetails = {
                         detailsCallbackCounts?.let { if (it[0] < Long.MAX_VALUE) it[0]++ }
                         if (current()) {
@@ -1302,9 +1319,10 @@ internal class DesktopWindowsVideoActions(
                                 assembly.playback.desktopSponsorPresentation.value.skip === skip })
                     },
                     enhancement = actions.enhancement,
-                )
+                ) }
+                if (chromeVisible && legacyChrome) legacyControlBar()
             }
-            if (detailsOpen) DesktopWindowsVideoDetailsPanel(
+            val detailsPanel: @Composable () -> Unit = { DesktopWindowsVideoDetailsPanel(
                 modifier = Modifier.width(detailsWidth).fillMaxHeight(), selectedTab = detailsTab,
                 onTabChange = { detailsTab = it }, onClose = { if (current()) detailsOpen = false },
                 current = ::current,
@@ -1586,7 +1604,8 @@ internal class DesktopWindowsVideoActions(
                         }
                     } else Text("正在读取评论", style = MaterialTheme.typography.bodyMedium)
                 },
-            )
+            ) }
+            if (detailsOpen) detailsPanel()
         }
     }
 

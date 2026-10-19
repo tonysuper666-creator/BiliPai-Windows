@@ -22,12 +22,13 @@ import com.bilipai.desktop.ui.kit.DesktopMenuRow
 import com.bilipai.desktop.ui.kit.desktopKitHairlineBorder
 
 /*
- * A row of the layout group is offered only while something reads its flag. Nothing reads any of the four flags yet (the
- * new rail, home feed, cards and player come with their own slices), and the player flag in particular must not be set to
- * DESKTOP before the flip gate: an explicit DESKTOP key would switch the unaccepted overlay on the day it lands. So the
- * rows are shown, with the stored value, but cannot be changed. The slice that adds the consumer of a flag turns its row on
- * (S1 the rail, H1 the home feed, H2 the cards, the player flip gate the player layout) and the source test that scans for
- * readers of the flags fails until it does.
+ * A row of the layout group is offered only while something honours its flag. Nothing honours any of the four flags yet (the
+ * player leaf reads the player flag but resolves DESKTOP to LEGACY while no overlay exists, and the new rail, home feed and
+ * cards come with their own slices), and the player flag in particular must not be set to DESKTOP before the flip gate: an
+ * explicit DESKTOP key would switch the unaccepted overlay on the day it lands. So the rows are shown, with the stored value,
+ * but cannot be changed. The slice that adds the consumer of a flag turns its row on (S1 the rail, H1 the home feed, H2 the
+ * cards, V4a the player layout together with DESKTOP_PLAYER_OVERLAY_AVAILABLE) and the source test that scans for readers of
+ * the flags fails until it does.
  */
 private const val RAIL_MODE_HAS_CONSUMER = false
 private const val PLAYER_LAYOUT_HAS_CONSUMER = false
