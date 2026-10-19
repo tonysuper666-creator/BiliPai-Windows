@@ -4305,6 +4305,8 @@ tasks.matching { it.name in setOf(
 ) }.configureEach {
     inputs.file("tools/v046_comment_polish.py")
     inputs.dir("upstream-slices/v046-comment-polish")
+}
+
 // The v0.4.6 design-system leaf files (part B) feed the four existing producers that own them: the component and
 // preference producers, the v037 control closure of the player producer and the shared liquid tab producer.
 tasks.matching { it.name in setOf("extractUpstreamComponents", "extractUpstreamPreferences", "extractSharedLiquidTabs", "extractOriginalPlayerFullControls") }.configureEach {

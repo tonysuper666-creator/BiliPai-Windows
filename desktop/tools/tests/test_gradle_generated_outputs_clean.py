@@ -45,6 +45,13 @@ class GeneratedOutputsAreRebuiltFromNothing(unittest.TestCase):
         nested = [(a, b) for a in paths for b in paths if a != b and b.startswith(a + '/')]
         self.assertEqual([], nested)
 
+    def test_the_build_script_braces_and_parentheses_balance(self):
+        # Slice merges append blocks to the same tail of build.gradle.kts; a lost closing brace broke the script once.
+        code = re.sub(r'"(?:[^"\\\n]|\\.)*"', '""', BUILD)
+        code = re.sub(r'//[^\n]*', '', code)
+        self.assertEqual(code.count('{'), code.count('}'))
+        self.assertEqual(code.count('('), code.count(')'))
+
     def test_no_exec_task_writes_into_the_generated_root_itself(self):
         for name, body in exec_tasks():
             self.assertNotRegex(body, r'outputs\.dir\(layout\.buildDirectory\.dir\("generated"\)\)', name)
