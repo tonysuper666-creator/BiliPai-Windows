@@ -150,7 +150,8 @@
     "desktop/upstream-slices/v046-account-scoped-requests",
     "desktop/upstream-slices/v046-identity-badge-palette",
     "desktop/upstream-slices/v046-follow-confirmation",
-    "desktop/upstream-slices/v046-danmaku-protocol"
+    "desktop/upstream-slices/v046-danmaku-protocol",
+    "desktop/upstream-slices/v046-design-system-leaves-b"
   ],
   "archives": [
     {
@@ -6665,6 +6666,59 @@
           "sha256": "b6f83c56a1a917f63a08b232cdaad109d1c7b6bdac00f079908c4d79c8283bed",
           "hashNormalization": "raw",
           "blob": "f997dbd6fb93dd9121f1bae89f35bed9d8af9946"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-design-system-leaves-b",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/AppCard.kt",
+          "sha256": "42aaaa3ff3dc863281be041a5c444fe993bbc1c0858d679ddaa5a616b7b9eee4",
+          "hashNormalization": "raw",
+          "blob": "f5b11fbe7851347662d05b0754a5d1bbd60510b0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/AppDesktopInteraction.kt",
+          "sha256": "41598e822f53be2bfde8b7f64be1867a47dec39f9f378fda02e76b7ada54d778",
+          "hashNormalization": "raw",
+          "blob": "8739252e8cc95ccb4ea606b84d134efae4c0609b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/AppPreferenceComponents.kt",
+          "sha256": "46cfc251555311242a6e118863eaee7365f52ae824fa753312c6d3f5af25dcde",
+          "hashNormalization": "raw",
+          "blob": "01ecba8f2ecc9d119f2ba344260d036d5e71afbe"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/AppSelectionPreferenceComponents.kt",
+          "sha256": "26d4cde8041177bb48542e9ebb8099dc7b9e243b01e142d916d28715a080f997",
+          "hashNormalization": "raw",
+          "blob": "6a567ba8b0fbb9ac45825ffc5ad24ec592486e76"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/AppTonalPillTabPolicy.kt",
+          "sha256": "f5428b8bc1d2e5c620d044d4f8eb9f5655f13e57e6fe46fb7455e271da28c8a2",
+          "hashNormalization": "raw",
+          "blob": "7bc90aab00df9efdd2710c85220f0cc19faf4426"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/DampedDragAnimation.kt",
+          "sha256": "a418e7e3aa591e91593445bd90bd9d810d0b31464aabd72e9ae4f21dea0715e9",
+          "hashNormalization": "raw",
+          "blob": "7bd6177a37eda50e642504d95fd96640ebc8a1d3"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-design-system-leaves-b/manifest.json",
+          "sha256": "da13689990bbe0ef322d864decc64a14c0b4a8cdfb4da5e66616ee34ced4e514",
+          "hashNormalization": "raw",
+          "blob": "aaad3fad325ae1a0fd62a052dbcebcf16894caa2"
         }
       ]
     }
@@ -17595,6 +17649,96 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "All five original cases and every assertion retained. Two hash-pinned edits: an explicit import binds DanmakuParser to the Windows parser, and the class carries the V046Original prefix. Emitted by extract-upstream-media.py into the existing live-stream original test root."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-b/AppPreferenceComponents.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "01ecba8f2ecc9d119f2ba344260d036d5e71afbe",
+      "sha256": "46cfc251555311242a6e118863eaee7365f52ae824fa753312c6d3f5af25dcde",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-b"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 AppPreferenceComponents, AppSelectionPreferenceComponents, AppCard, AppDesktopInteraction, AppTonalPillTabPolicy and animation/DampedDragAnimation, each advanced inside the producer that already owns it (component, preference, v037 control closure, shared liquid tab). The direct-mode copies of AppPreferenceComponents, AppCard and AppDesktopInteraction are excluded; the existing platform bindings of the selection file and the drag state run on the v0.4.6 bytes. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSelectionPreferenceComponents.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-b/AppSelectionPreferenceComponents.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "6a567ba8b0fbb9ac45825ffc5ad24ec592486e76",
+      "sha256": "26d4cde8041177bb48542e9ebb8099dc7b9e243b01e142d916d28715a080f997",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-b"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 AppPreferenceComponents, AppSelectionPreferenceComponents, AppCard, AppDesktopInteraction, AppTonalPillTabPolicy and animation/DampedDragAnimation, each advanced inside the producer that already owns it (component, preference, v037 control closure, shared liquid tab). The direct-mode copies of AppPreferenceComponents, AppCard and AppDesktopInteraction are excluded; the existing platform bindings of the selection file and the drag state run on the v0.4.6 bytes. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-b/AppCard.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f5b11fbe7851347662d05b0754a5d1bbd60510b0",
+      "sha256": "42aaaa3ff3dc863281be041a5c444fe993bbc1c0858d679ddaa5a616b7b9eee4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-b"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 AppPreferenceComponents, AppSelectionPreferenceComponents, AppCard, AppDesktopInteraction, AppTonalPillTabPolicy and animation/DampedDragAnimation, each advanced inside the producer that already owns it (component, preference, v037 control closure, shared liquid tab). The direct-mode copies of AppPreferenceComponents, AppCard and AppDesktopInteraction are excluded; the existing platform bindings of the selection file and the drag state run on the v0.4.6 bytes. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-b/AppDesktopInteraction.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "8739252e8cc95ccb4ea606b84d134efae4c0609b",
+      "sha256": "41598e822f53be2bfde8b7f64be1867a47dec39f9f378fda02e76b7ada54d778",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-b"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 AppPreferenceComponents, AppSelectionPreferenceComponents, AppCard, AppDesktopInteraction, AppTonalPillTabPolicy and animation/DampedDragAnimation, each advanced inside the producer that already owns it (component, preference, v037 control closure, shared liquid tab). The direct-mode copies of AppPreferenceComponents, AppCard and AppDesktopInteraction are excluded; the existing platform bindings of the selection file and the drag state run on the v0.4.6 bytes. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-b/AppTonalPillTabPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7bc90aab00df9efdd2710c85220f0cc19faf4426",
+      "sha256": "f5428b8bc1d2e5c620d044d4f8eb9f5655f13e57e6fe46fb7455e271da28c8a2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-b"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 AppPreferenceComponents, AppSelectionPreferenceComponents, AppCard, AppDesktopInteraction, AppTonalPillTabPolicy and animation/DampedDragAnimation, each advanced inside the producer that already owns it (component, preference, v037 control closure, shared liquid tab). The direct-mode copies of AppPreferenceComponents, AppCard and AppDesktopInteraction are excluded; the existing platform bindings of the selection file and the drag state run on the v0.4.6 bytes. No call sites are added."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "localPath": "desktop/upstream-slices/v046-design-system-leaves-b/DampedDragAnimation.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7bd6177a37eda50e642504d95fd96640ebc8a1d3",
+      "sha256": "a418e7e3aa591e91593445bd90bd9d810d0b31464aabd72e9ae4f21dea0715e9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-design-system-leaves-b"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 AppPreferenceComponents, AppSelectionPreferenceComponents, AppCard, AppDesktopInteraction, AppTonalPillTabPolicy and animation/DampedDragAnimation, each advanced inside the producer that already owns it (component, preference, v037 control closure, shared liquid tab). The direct-mode copies of AppPreferenceComponents, AppCard and AppDesktopInteraction are excluded; the existing platform bindings of the selection file and the drag state run on the v0.4.6 bytes. No call sites are added."
     }
   ],
   "buildStandaloneInputs": [

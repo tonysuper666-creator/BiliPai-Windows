@@ -11,6 +11,7 @@ if not TOOL.is_file(): TOOL = HERE / "extract-preferences-platform.py"
 spec = importlib.util.spec_from_file_location("preferences", TOOL)
 module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
 host = module.helper(REPO)
+import v046_design_system_leaves_b as leaves_b
 
 def body(path): return path.read_text(encoding="utf-8").split("\n", 2)[2]
 
@@ -34,13 +35,16 @@ class PreferenceExtractionTest(unittest.TestCase):
             output = Path(name); emitted = module.generate(REPO, output, standalone=True)
             for path in module.DIRECT:
                 original = host.read(REPO, path)
-                self.assertEqual(body(host.output_target(output, path, original)), original.strip() + "\n", path)
+                # the v046 design-system leaf layer (part B) advances the vendored AppPreferenceComponents to the whole v0.4.6 file
+                expected = leaves_b.chain_source(REPO, path, original)
+                self.assertEqual(body(host.output_target(output, path, original)), expected.strip() + "\n", path)
             self.assertEqual(len(emitted), 28)
 
     def test_product_outputs_only_adapters_and_selected_host_local(self):
         with tempfile.TemporaryDirectory() as name:
             emitted = module.generate(REPO, Path(name))
-            self.assertEqual({p.name for p in emitted}, {"AdaptivePreferenceComponents.kt", "AdaptiveContentCardComponents.kt", "AppSelectionPreferenceComponents.kt", "AppWallpaperBackdropLocal.kt", "AppNavigationComponents.kt"})
+            # AppPreferenceComponents.kt is the whole v0.4.6 file now that its direct-mode copy is excluded from Gradle (part B)
+            self.assertEqual({p.name for p in emitted}, {"AdaptivePreferenceComponents.kt", "AdaptiveContentCardComponents.kt", "AppSelectionPreferenceComponents.kt", "AppWallpaperBackdropLocal.kt", "AppNavigationComponents.kt", "AppPreferenceComponents.kt"})
             for path in emitted: self.assertNotRegex(body(path), r"(?m)^import (?:android\.|androidx\.activity\.)")
 
     def test_all_original_signatures_including_generic_selection_remain_exact(self):

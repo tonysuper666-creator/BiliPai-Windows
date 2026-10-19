@@ -276,6 +276,10 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt"))
         // The whole v0.4.6 strict protobuf parser (DanmakuProto.parseFailed) is emitted by the existing danmaku producer.
         exclude(canonicalOriginalIdentity("danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt"))
+        // The existing component and preference producers own the complete v0.4.6 design-system leaf files (part B).
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt"))
+        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -4286,6 +4290,11 @@ tasks.matching { it.name in setOf(
 ) }.configureEach {
     inputs.file("tools/v046_comment_polish.py")
     inputs.dir("upstream-slices/v046-comment-polish")
+// The v0.4.6 design-system leaf files (part B) feed the four existing producers that own them: the component and
+// preference producers, the v037 control closure of the player producer and the shared liquid tab producer.
+tasks.matching { it.name in setOf("extractUpstreamComponents", "extractUpstreamPreferences", "extractSharedLiquidTabs", "extractOriginalPlayerFullControls") }.configureEach {
+    inputs.file("tools/v046_design_system_leaves_b.py")
+    inputs.dir("upstream-slices/v046-design-system-leaves-b")
 }
 
 // A generated source directory is rebuilt from nothing. Gradle never removes a file an Exec producer stopped

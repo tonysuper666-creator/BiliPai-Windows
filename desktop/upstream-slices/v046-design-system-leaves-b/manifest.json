@@ -1,0 +1,164 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt",
+      "filename": "AppPreferenceComponents.kt",
+      "bytes": 7313,
+      "sha256": "46cfc251555311242a6e118863eaee7365f52ae824fa753312c6d3f5af25dcde",
+      "gitBlob": "01ecba8f2ecc9d119f2ba344260d036d5e71afbe"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSelectionPreferenceComponents.kt",
+      "filename": "AppSelectionPreferenceComponents.kt",
+      "bytes": 20569,
+      "sha256": "26d4cde8041177bb48542e9ebb8099dc7b9e243b01e142d916d28715a080f997",
+      "gitBlob": "6a567ba8b0fbb9ac45825ffc5ad24ec592486e76"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt",
+      "filename": "AppCard.kt",
+      "bytes": 2467,
+      "sha256": "42aaaa3ff3dc863281be041a5c444fe993bbc1c0858d679ddaa5a616b7b9eee4",
+      "gitBlob": "f5b11fbe7851347662d05b0754a5d1bbd60510b0"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt",
+      "filename": "AppDesktopInteraction.kt",
+      "bytes": 4351,
+      "sha256": "41598e822f53be2bfde8b7f64be1867a47dec39f9f378fda02e76b7ada54d778",
+      "gitBlob": "8739252e8cc95ccb4ea606b84d134efae4c0609b"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt",
+      "filename": "AppTonalPillTabPolicy.kt",
+      "bytes": 635,
+      "sha256": "f5428b8bc1d2e5c620d044d4f8eb9f5655f13e57e6fe46fb7455e271da28c8a2",
+      "gitBlob": "7bc90aab00df9efdd2710c85220f0cc19faf4426"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "filename": "DampedDragAnimation.kt",
+      "bytes": 21246,
+      "sha256": "a418e7e3aa591e91593445bd90bd9d810d0b31464aabd72e9ae4f21dea0715e9",
+      "gitBlob": "7bd6177a37eda50e642504d95fd96640ebc8a1d3"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 design-system leaf files AppPreferenceComponents.kt, AppSelectionPreferenceComponents.kt (optionLeading), AppCard.kt, AppDesktopInteraction.kt, renderer/material3/AppTonalPillTabPolicy.kt and animation/DampedDragAnimation.kt. Part B of roadmap slice fnd-design-system-leaf-completion.",
+  "purpose": "Advance six Windows-owned design-system leaves to the complete v0.4.6 file through the producers that already own them: the component producer (AppCard, AppDesktopInteraction), the preference producer (AppPreferenceComponents, AppSelectionPreferenceComponents), the v037 control closure of the player producer (AppTonalPillTabPolicy) and the shared liquid tab producer (DampedDragAnimation). Three direct-mode v0.2.5 copies are excluded in prepareUpstreamSources. Only the two platform bindings that already existed are applied on top (the LocalConfiguration import of the selection file; the SystemClock and awaitFrame bindings of the drag state). No consumer is re-pinned (consumer rule): features re-pin to v0.4.6 when their own slice runs.",
+  "replacedVendoredCopies": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt",
+      "vendoredLfSha256": "b5d249b50434e18986dd93cf049513499b07d12efa3563786120b8703ac29eb7",
+      "replacedBy": "AppPreferenceComponents.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt",
+      "vendoredLfSha256": "2f3a9aeb4eb7f2d45ad3d8a8ef1fffc57558e778ca5c25525be1b18fb69cd2b3",
+      "replacedBy": "AppCard.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt",
+      "vendoredLfSha256": "68d9e682eb65a25ff33e5bac5d1d6c79c29b951a7c276a2abbcc7b290d50a693",
+      "replacedBy": "AppDesktopInteraction.kt"
+    }
+  ],
+  "producerPredecessors": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt",
+      "producer": "tools/extract-upstream-preferences.py",
+      "predecessorSha256": "b5d249b50434e18986dd93cf049513499b07d12efa3563786120b8703ac29eb7",
+      "predecessor": "the vendored v0.2.5 file (DIRECT list, no earlier layer)",
+      "replacedBy": "AppPreferenceComponents.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSelectionPreferenceComponents.kt",
+      "producer": "tools/extract-upstream-preferences.py",
+      "predecessorSha256": "593fefb04321121309fa4e8ac5050a84ff541027bcf5620da956db5f37f10cd1",
+      "predecessor": "the vendored v0.2.5 file (ADAPTED list; the platform binding is applied after this layer)",
+      "replacedBy": "AppSelectionPreferenceComponents.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt",
+      "producer": "tools/extract-upstream-components.py",
+      "predecessorSha256": "2f3a9aeb4eb7f2d45ad3d8a8ef1fffc57558e778ca5c25525be1b18fb69cd2b3",
+      "predecessor": "the vendored v0.2.5 file as the liquid, chrome, optical and theme chrome layers hand it over (unchanged by all four)",
+      "replacedBy": "AppCard.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt",
+      "producer": "tools/extract-upstream-components.py",
+      "predecessorSha256": "68d9e682eb65a25ff33e5bac5d1d6c79c29b951a7c276a2abbcc7b290d50a693",
+      "predecessor": "the vendored v0.2.5 file as the four earlier layers hand it over (unchanged by all four)",
+      "replacedBy": "AppDesktopInteraction.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt",
+      "producer": "tools/v037_shared_tabs_progress.py (emit_control_foundations, run by tools/extract-upstream-video-player-full-controls.py)",
+      "predecessorSha256": "326b3c206b9501e0bd7b80528ed95790e6f87c54aad1540d32eb8d1357c91653",
+      "predecessor": "desktop/upstream-slices/v037-shared-tabs-progress-closure/AppTonalPillTabPolicy.kt (byte-identical to the v0.2.5 file; its direct-mode exclude already exists)",
+      "replacedBy": "AppTonalPillTabPolicy.kt"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "producer": "tools/extract-upstream-shared-liquid-tabs.py",
+      "predecessorSha256": "78f22a8379ee4e948306309a7d82b5b21e091a37e9da173ae72ff2baac4e27b4",
+      "predecessor": "the vendored v0.2.5 file read by the shared liquid tab producer (no earlier layer touches this path)",
+      "replacedBy": "DampedDragAnimation.kt"
+    }
+  ],
+  "platformBindings": [
+    {
+      "file": "AppSelectionPreferenceComponents.kt",
+      "producer": "tools/extract-upstream-preferences.py adapt()",
+      "before": "import androidx.compose.ui.platform.LocalConfiguration",
+      "after": "import com.bilipai.desktop.appearance.DesktopWindowConfiguration as LocalConfiguration",
+      "note": "the binding that already existed for the v0.2.5 file; it needs no change for the v0.4.6 bytes"
+    },
+    {
+      "file": "DampedDragAnimation.kt",
+      "producer": "tools/extract-upstream-shared-liquid-tabs.py emit()",
+      "before": [
+        "import android.os.SystemClock\n",
+        "import kotlinx.coroutines.android.awaitFrame",
+        "awaitFrame()",
+        "SystemClock.uptimeMillis()"
+      ],
+      "after": [
+        "",
+        "import androidx.compose.runtime.withFrameNanos",
+        "withFrameNanos { it }",
+        "System.nanoTime() / 1_000_000L"
+      ],
+      "note": "the four bindings that already existed for the v0.2.5 file; each still occurs exactly once in the v0.4.6 bytes"
+    }
+  ],
+  "staleTestAssertion": {
+    "test": "desktop/upstream-slices/v037-shared-tabs-progress-closure/AppTonalPillTabPolicyTest.kt (emitted by emit_control_foundations)",
+    "testSha256": "462faf0b86e5c0c9a99966b5a4ca8955018104ec02a107825e8b55d1e1a81e3e",
+    "removedLine": "        assertEquals(4.dp, resolveTonalPillTabVerticalInset())\n",
+    "evidence": "resolveTonalPillTabVerticalInset is deleted from AppTonalPillTabPolicy.kt at v0.4.6 together with the whole AppTonalPillTabPolicyTest.kt (upstream commit fa290f5e0 \"unify chrome geometry and exact touch bounds\"; the test file is absent from d6bf8b16). The only compiled use of the function was this one assertion. The other four geometry assertions and the two source-reading tests are emitted unchanged."
+  },
+  "behaviourChanges": [
+    "AppPreferenceGroup wraps its content in ProvideAppEntryIconColors; the entry icon cursor is read by nothing until the Windows adapter of AdaptivePreferenceComponents advances.",
+    "AppSwitchPreference, AppSliderPreference, AppPreference and AppPreferenceGridItem default their icon, text and subtitle colours to AppContentColors roles instead of MaterialTheme roles. With the retained v0.2.5 renderer, MATERIAL3 still tints icons with the theme primary colour; MIUIX entries that rely on the default icon colour now show the neutral secondary text colour.",
+    "AppSingleChoicePreference and the centred choice dialog accept optionLeading; the dropdown moves the tick to the trailing slot when a leading visual is supplied; both choice and slider dialogs call ModalWindowBlurBehindEffect().",
+    "AppCard resolves a null colours argument to AppSurfaceTokens.cardContainer() and AppContentColors.primaryText() before it reaches the renderer.",
+    "appDesktopInteractionVisuals and appDesktopFocusableItemVisuals read focus and hover colours from AppContentColors.accent() and primaryText().",
+    "AppTonalPillTabPolicy drops resolveTonalPillTabVerticalInset; the carried v0.4.6 AppMaterial3TonalPillTabRow no longer calls it.",
+    "DampedDragAnimationState replaces the velocity Animatable by LiquidIndicatorVelocity, waits for the press bloom and the settle with timeouts before onSettled, and feeds the deformation velocity from the value animation."
+  ],
+  "notCarried": [
+    "design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt: platform-adapter-reference; Windows keeps its hash-pinned v0.2.5 adapter. The v0.4.6 file differs from that base by a unified diff of about 750 lines (entry icon cursor, neutral MATERIAL3 icon tint, liquid switch intent, search highlight) and would change the default MATERIAL3 settings look, which is a design decision. It declares the same top-level names as the retained adapter; only AppSearchEntry (two more parameters) and three internal list-visual resolvers (the liquid-glass flag is dropped) differ in signature, and no carried or desktop-owned file calls them.",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt: platform-adapter-reference (policy-extract); Windows keeps its hash-pinned adapter. Its public surface is identical in v0.4.6; the delta (ModalWindowBlurBehindEffect in three places and ProvideAppActionContentColor on the dialog actions) is visual and is not needed by any file of this archive.",
+    "design-system/src/test/java/com/android/purebilibili/core/ui/animation/DampedDragAnimationPolicyTest.kt: reads the main source by relative path; the pure policy functions are covered by DesktopDesignSystemLeavesBTest instead.",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixCard.kt: direct-mode renderer outside this slice; v0.4.6 scopes the Material content colour inside the Miuix card. AppCard passes the same named arguments to the retained v0.2.5 renderer."
+  ]
+}

@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import json
 import re
+from v046_design_system_leaves_b import chain_source as _leaf_b_source, CHAIN_PATHS as _leaf_b_chain, validate_outputs as _validate_leaf_b_outputs
 
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
@@ -55,14 +56,15 @@ def adapt(path, source, host):
     return source
 
 def generate(repo, output, standalone=False):
+    _validate_leaf_b_outputs(repo, output)
     host = helper(repo); output.mkdir(parents=True, exist_ok=True); result = []
     for path in DIRECT:
-        original = host.read(repo, path)
+        original = _leaf_b_source(repo, path, host.read(repo, path))
         if re.search(r"(?m)^import (?:android\.|androidx\.activity\.)", original): raise ValueError("Pure facade acquired Android dependency: " + path)
         host.prune_old_direct(output, path, original)
-        if standalone: result.append(host.write(output, path, original, original))
+        if standalone or path in _leaf_b_chain: result.append(host.write(output, path, original, original))
     for path in ADAPTED:
-        original = host.read(repo, path)
+        original = _leaf_b_source(repo, path, host.read(repo, path))
         result.append(host.write(output, path, original, adapt(path, original, host)))
     for path in POLICIES:
         original = host.read(repo, path)

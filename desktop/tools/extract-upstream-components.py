@@ -13,6 +13,7 @@ from v040_native_chrome import emit_components as _native_chrome_components
 from v042_optical_dependencies import selected_source as _optical_source, SURFACE as _optical_surface
 from v043_theme_chrome import component_source as _theme_chrome_source, COMPONENTS as _theme_chrome_direct, validate_outputs as _validate_theme_chrome_outputs, update_component_tests as _theme_chrome_tests
 from v046_design_system_leaves_a import chain_source as _leaf_source, emit as _leaf_emit, CHAIN_PATHS as _leaf_chain, validate_outputs as _validate_leaf_outputs
+from v046_design_system_leaves_b import chain_source as _leaf_b_source, CHAIN_PATHS as _leaf_b_chain, validate_outputs as _validate_leaf_b_outputs
 
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
@@ -82,14 +83,16 @@ def adapt(path, source, host):
 def generate(repo, output, standalone=False, test_output=None):
     _validate_theme_chrome_outputs(repo, output, test_output)
     _validate_leaf_outputs(repo, output, test_output)
+    _validate_leaf_b_outputs(repo, output, test_output)
     host = helper(repo)
     output.mkdir(parents=True, exist_ok=True)
     result = []
     for path in DIRECT:
         original = _leaf_source(repo, path, _theme_chrome_source(repo, path, _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path))))))
+        original = _leaf_b_source(repo, path, original)
         if re.search(r"(?m)^import android\.", original): raise ValueError("Pure renderer acquired Android dependency: " + path)
         host.prune_old_direct(output, path, original)
-        if (standalone or path in _liquid_direct or path in _chrome_direct or path in _theme_chrome_direct or path in _leaf_chain or path == _optical_surface) and path not in REUSED:
+        if (standalone or path in _liquid_direct or path in _chrome_direct or path in _theme_chrome_direct or path in _leaf_chain or path in _leaf_b_chain or path == _optical_surface) and path not in REUSED:
             result.append(host.write(output, path, original, original))
     for path in ADAPTED:
         original = _theme_chrome_source(repo, path, _optical_source(repo, path, _chrome_source(repo, path, _liquid_source(repo, path, host.read(repo, path)))))

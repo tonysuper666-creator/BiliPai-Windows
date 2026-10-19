@@ -72,15 +72,17 @@ def desktop_glass_uniform_transforms():
 
 from v040_native_chrome import selected_source as _previous_native_source, identity_for as _previous_native_identity
 from v042_search_layout import selected_shared_source, shared_identity
+from v046_design_system_leaves_b import shared_source as _leaf_b_source, shared_identity as _leaf_b_identity, validate_outputs as _validate_leaf_b_outputs
 
 def _native_source(repo,path,previous):
- return selected_shared_source(repo,path,_previous_native_source(repo,path,previous))
+ return _leaf_b_source(repo,path,selected_shared_source(repo,path,_previous_native_source(repo,path,previous)))
 
 def _native_identity(repo,path):
- return shared_identity(repo,path) or _previous_native_identity(repo,path)
+ return _leaf_b_identity(repo,path) or shared_identity(repo,path) or _previous_native_identity(repo,path)
 
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
+ _validate_leaf_b_outputs(REPO,HERE)
  parser=load('liquid_selected_parser',REPO/'desktop/tools/sync-upstream.py')
  def declarations(source):
   tokens=parser.kotlin_tokens(source);depth=parens=brackets=0;starts=[]
@@ -135,7 +137,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   write(output,'// OriginalSource: '+path+'\n// OriginalSHA256: '+sha(source)+'\n'+('// OriginalCommit: '+identity['pinnedCommit']+'\n' if identity else '')+text)
   record=dict(path=path,sha256LF=sha(source),output=str(output.relative_to(HERE)),mode='direct' if names is None else 'selected',declarations=[{k:v for k,v in x.items() if k!='body'} for x in selected],adaptations=adaptations)
   if identity:record['sourceIdentity']=identity
-  if shared_identity(REPO,path) is not None:
+  if shared_identity(REPO,path) is not None or _leaf_b_identity(REPO,path) is not None:
    from v029_comment_search import whole_proof
    record['wholeOriginalToPlatform']=whole_proof(source,text)
   records.append(record)

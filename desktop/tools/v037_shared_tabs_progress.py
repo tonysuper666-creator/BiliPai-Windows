@@ -34,11 +34,15 @@ def identity_for(path):
  return dict(pinnedCommit=COMMIT,originalPath=path,path='desktop/upstream-slices/v037-shared-tabs-progress-closure/'+row['filename'],sha256Bytes=row['sha256Bytes'],gitBlobOid=row['gitBlob'],bytes=row['bytes'])
 CONTROL_OUTPUTS={'AppSegmentedControlPolicy.kt', 'DanmakuColorOptions.kt', 'MediaProgressTrack.kt', 'AppPressHighlightMotion.kt', 'CenterPlaybackControl.kt', 'TabVisibilityPolicy.kt', 'PlaybackProgressPolicy.kt', 'AppTonalPillTabPolicy.kt', 'AppLiquidValueControlPolicy.kt', 'VideoActionFeedbackPolicy.kt'}
 def emit_control_foundations(output,outputs,test_output=None):
+ from v046_design_system_leaves_b import validate_outputs as validate_leaf_b_outputs
+ validate_leaf_b_outputs(Path(__file__).resolve().parents[2],output,test_output)
  originals=fixed_sources()
  for row in PINS:
   if '/test/java/' in row['path']:
    if test_output is not None:
     text=originals[row['path']]
+    from v046_design_system_leaves_b import tonal_test_source
+    text=tonal_test_source(Path(__file__).resolve().parents[2],row['path'],text)
     before='''        val normalized = path.removePrefix("design-system/")
         return listOf(
             File("design-system/$path"),
@@ -63,6 +67,8 @@ def emit_control_foundations(output,outputs,test_output=None):
   text=originals[row['path']]
   from v040_liquid_value_controls import retained_original_override
   effective_raw,effective_row,effective_commit,effective_manifest=retained_original_override(Path(__file__).resolve().parents[2],row['path'],text.encode(),row,COMMIT,MANIFEST_SHA)
+  from v046_design_system_leaves_b import retained_original_override as leaf_b_override
+  effective_raw,effective_row,effective_commit,effective_manifest=leaf_b_override(Path(__file__).resolve().parents[2],row['path'],effective_raw,effective_row,effective_commit,effective_manifest)
   text=effective_raw.decode('utf-8')
   if row['filename']=='AppLiquidValueControlPolicy.kt':
    assert text.count('import android.os.Build\n')==1 and text.count('Build.VERSION.SDK_INT >= 33')==1
