@@ -1192,7 +1192,8 @@ class ExpectedGapsTests(unittest.TestCase):
                 self.assertIn(seed, listed)
         # AppBottomSheetMotion.reducedMotion is the twelfth seed: the generated compat extension already retires it,
         # and the expected-gaps file says so instead of omitting it
-        self.assertIn('COMPAT_REDUCED_MOTION', (TOOLS / 'v046_comment_list.py').read_text(encoding='utf8'))
+        # the interim compat extension is gone: the real member comes from v046-sheet-motion
+        self.assertNotIn('COMPAT_REDUCED_MOTION', (TOOLS / 'v046_comment_list.py').read_text(encoding='utf8'))
         self.assertEqual([('AppBottomSheetMotion', 'reducedMotion')],
                          [(e['owner'], e['symbol']) for e in expected['retired'] if e.get('owner')])
         self.assertEqual(sorted(name for _package, name in CLOSED_SEEDS),
@@ -1202,8 +1203,8 @@ class ExpectedGapsTests(unittest.TestCase):
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
         seed = expected['retired'][0]
         self.assertEqual('member', seed['kind'])
-        self.assertIn('COMPAT_REDUCED_MOTION', seed['retiredBy'])
-        self.assertIn('DesktopOriginalCommentMotionCompat.kt', seed['retiredBy'])
+        self.assertIn('v046-sheet-motion', seed['retiredBy'])
+        self.assertIn('v046_sheet_motion.py', seed['retiredBy'])
         self.assertEqual('fnd-sheet-motion-and-glyph', seed['closedBy'])
         self.assertIn('d6bf8b16', seed['evidence'])
         this_file = Path(__file__).read_text(encoding='utf8')
@@ -1213,7 +1214,9 @@ class ExpectedGapsTests(unittest.TestCase):
             self.assertIn(guard, seed['guardedBy'])
             self.assertIn('def %s(' % guard, this_file)
         shim = (TOOLS / 'v046_comment_list.py').read_text(encoding='utf8')
-        self.assertIn('DesktopOriginalCommentMotionCompat.kt', shim)
+        self.assertNotIn('DesktopOriginalCommentMotionCompat.kt', shim)
+        self.assertIn('val reducedMotion: Boolean',
+                      (REPO / 'desktop/upstream-slices/v046-sheet-motion/AppSheetComponents.kt').read_text(encoding='utf8'))
 
     def test_every_listed_symbol_says_how_firm_its_closing_slice_is(self):
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)

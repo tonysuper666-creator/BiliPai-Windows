@@ -197,8 +197,10 @@ class OriginalCommentListSources(unittest.TestCase):
         self.assertEqual(2, reply.count(pink))
         self.assertEqual(1, nested.count(pink))
         self.assertIn('import androidx.compose.runtime.mutableIntStateOf\n', nested)
-        compat = (self.output/'actual'/comments.PACKAGE/'DesktopOriginalCommentMotionCompat.kt').read_text(encoding='utf8')
-        self.assertIn('internal val AppBottomSheetMotion.reducedMotion: Boolean get() = false', compat)
+        # the compatibility extension is retired: v046-sheet-motion carries the real AppBottomSheetMotion.reducedMotion member
+        self.assertFalse((self.output/'actual'/comments.PACKAGE/'DesktopOriginalCommentMotionCompat.kt').exists())
+        sheet = (REPO/'desktop/upstream-slices/v046-sheet-motion/AppSheetComponents.kt').read_text(encoding='utf8')
+        self.assertEqual(1, sheet.count('val reducedMotion: Boolean'))
         for name in ['CommentContentReveal.kt', 'CommentCascadingContent.kt']:
             self.assertEqual(self.sources[name], (self.output/'actual'/comments.PACKAGE/name).read_text(encoding='utf8'))
         badge = (REPO/'desktop/upstream-slices/v046-identity-badges/UserVipBadge.kt').read_text(encoding='utf8')

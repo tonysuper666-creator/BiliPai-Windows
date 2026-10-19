@@ -425,10 +425,10 @@
       "symbol": "reducedMotion",
       "kind": "member",
       "owner": "AppBottomSheetMotion",
-      "reason": "Roadmap seed AppBottomSheetMotion.reducedMotion (Source260 compile errors in CommentContentReveal and CommentCascadingContent, 2 errors): upstream v0.4.6 declares the member and the pinned carried AppSheetComponents lacks it. RETIRED, not open: v046_comment_list.py emits the compat extension COMPAT_REDUCED_MOTION (internal val AppBottomSheetMotion.reducedMotion, constant false) as DesktopOriginalCommentMotionCompat.kt, so the reads have a definer today. The slice fnd-sheet-motion-and-glyph replaces that shim with the real member, which also satisfies this check. The gate fails if the symbol loses every definer.",
+      "reason": "Roadmap seed AppBottomSheetMotion.reducedMotion (Source260 compile errors in CommentContentReveal and CommentCascadingContent, 2 errors): upstream v0.4.6 declares the member and the pinned carried AppSheetComponents lacked it. CLOSED by v046-sheet-motion, which advances the Windows AppSheetComponents to the real v0.4.6 member; the interim compat extension (COMPAT_REDUCED_MOTION in v046_comment_list.py) was removed. The gate fails if the symbol loses every definer.",
       "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt:438 declares \"val reducedMotion: Boolean = false\" in AppBottomSheetMotion; the pinned copy of that file has no reducedMotion",
-      "retiredBy": "desktop/tools/v046_comment_list.py COMPAT_REDUCED_MOTION, emitted as DesktopOriginalCommentMotionCompat.kt",
-      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: ChecksOnSyntheticTrees.test_member_the_type_lacks_is_flagged_and_a_compat_extension_retires_it, ExpectedGapsTests.test_retired_seeds_must_keep_a_definer, CurrentIntegrationTree.test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree; test_v046_comment_list_source.py pins the compat text",
+      "retiredBy": "desktop/upstream-slices/v046-sheet-motion (AppSheetComponents.kt, emitted by desktop/tools/v046_sheet_motion.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: ChecksOnSyntheticTrees.test_member_the_type_lacks_is_flagged_and_a_compat_extension_retires_it, ExpectedGapsTests.test_retired_seeds_must_keep_a_definer, CurrentIntegrationTree.test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree; test_v046_sheet_motion_source.py and test_v046_comment_list_source.py pin the real member",
       "closedBy": "fnd-sheet-motion-and-glyph",
       "closedByEvidence": "roadmap"
     },

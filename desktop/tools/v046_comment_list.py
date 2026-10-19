@@ -101,18 +101,6 @@ def ensure_import(text, name):
 VIP_PINK_ORIGINAL = 'com.android.purebilibili.core.ui.components.userVipPink()'
 
 
-# The pinned v0.3.7 AppBottomSheetMotion has no reduced-motion member (it arrived with v0.4.x).
-# Both original v046 consumers already OR this flag with the original uiEntranceAnimationEnabled
-# theme switch, so the pinned contract is "not reduced". A real member of the same name wins over
-# this extension, so advancing AppSheetComponents.kt retires the compatibility file by itself.
-COMPAT_REDUCED_MOTION = '''package com.android.purebilibili.feature.video.ui.components
-
-import com.android.purebilibili.core.ui.AppBottomSheetMotion
-
-internal val AppBottomSheetMotion.reducedMotion: Boolean get() = false
-'''
-
-
 def windows_vip_pink(text, expected):
     assert text.count(VIP_PINK_ORIGINAL) == expected, ('Original VIP colour owners changed', text.count(VIP_PINK_ORIGINAL))
     return text
@@ -331,7 +319,8 @@ def emit_shared(repo, output):
         emitted[PACKAGE+name] = sources[name]
     assert sources['CommentContentReveal.kt'].count('sheetMotion.reducedMotion') == 1
     assert sources['CommentCascadingContent.kt'].count('motion.reducedMotion') == 1
-    emitted[PACKAGE+'DesktopOriginalCommentMotionCompat.kt'] = COMPAT_REDUCED_MOTION
+    # AppBottomSheetMotion.reducedMotion is a real member since v046-sheet-motion (desktop/tools/v046_sheet_motion.py),
+    # so these two reads need no compatibility extension.
     original = sources['CommentAvatarPush.kt']
     body = once(original, 'import androidx.compose.ui.platform.LocalContext', 'import com.bilipai.desktop.ui.LocalDesktopCommentBindings')
     body = once(body, 'import androidx.lifecycle.compose.collectAsStateWithLifecycle', 'import androidx.compose.runtime.collectAsState')
