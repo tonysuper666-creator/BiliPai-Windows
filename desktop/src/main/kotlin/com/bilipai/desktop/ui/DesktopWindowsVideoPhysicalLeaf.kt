@@ -44,6 +44,7 @@ import com.android.purebilibili.feature.video.subtitle.*
 import com.android.purebilibili.feature.video.ui.section.resolveSubtitleLanguageLabel
 import com.android.purebilibili.feature.video.ui.section.VideoSubtitleOverlayHost
 import com.android.purebilibili.feature.video.ui.overlay.NextWatchOverlay
+import com.android.purebilibili.feature.video.ui.overlay.normalizeViewPointSegments
 import kotlinx.coroutines.ensureActive
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
@@ -198,25 +199,47 @@ internal class DesktopWindowsVideoActions(
     val topInteractions = remember(chrome) { MutableInteractionSource() }
     val topHovered by topInteractions.collectIsHoveredAsState()
     val windowKeyFallback = LocalDesktopWindowKeyFallback.current
+    // V6 (spec 6.5 and 6.6): the layout, the flyout flag and the effects of the shortcut router arrive here from a SideEffect below,
+    // once the page state they read exists. The router itself is built with the key input, because that is where it is registered.
+    val shortcutBinding = remember(assembly) { DesktopWindowsVideoShortcutBinding() }
     val latestKeyInputFocus by rememberUpdatedState(
         topFocused || barInteraction.focused || viewportKeyboardFocused || nativeKeyboardOnVideo)
     // Only the exact existing Main window; no global input/window observer.
     DisposableEffect(chromeWindow, assembly, native.surface, windowKeyFallback, rootEnvironment,
         route, active, presentationAlive, pipActive) {
+        // V6 (spec 6.6): the LEGACY layout keeps its gate (focus on the strip, the bar, the viewport or the native surface); the DESKTOP
+        // layout has none of those controls, so the binding decides by layout. Both keyboard inputs below share this one rule.
+        val keyboardOwned = { shortcutBinding.ownsFocus(latestKeyInputFocus, desktopWindowsTextEditorFocused()) &&
+            native.surface.isShowing && chromeWindow != null &&
+            java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === chromeWindow }
         val input = DesktopWindowsVideoKeyInput(
             currentSource = { latestChromeSource?.takeIf { chromeCurrent() } },
-            ownsFocus = { latestKeyInputFocus && native.surface.isShowing && chromeWindow != null &&
-                java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === chromeWindow },
+            ownsFocus = keyboardOwned,
             isFullscreen = { latestFullscreen },
             onKey = { event ->
                 chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_KEY)
                 latestActions.nativeKey(event)
             },
         )
+        // V6 (spec 6.5): the window-level player shortcuts. Every effect goes through the admitted lambdas bound by the SideEffect below.
+        val shortcuts = DesktopWindowsVideoShortcutInput(
+            currentSource = { latestChromeSource?.takeIf { chromeCurrent() } },
+            ownsFocus = keyboardOwned,
+            controlHoldsFocus = { topFocused || barInteraction.focused },
+            textEditorFocused = ::desktopWindowsTextEditorFocused,
+            isFullscreen = { latestFullscreen },
+            isPaused = { native.state.value.paused },
+            layout = { shortcutBinding.layout },
+            perform = { action ->
+                shortcutBinding.perform(action).also { handled ->
+                    if (handled) chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_KEY)
+                }
+            },
+        )
         // Clicking a Compose control retains its focus. Offer Space/Escape before
         // that button can consume them, using this exact page/source admission.
         val keyRegistration = if (active && presentationAlive && !pipActive)
-            windowKeyFallback?.registerLeaf(input::onKey) else null
+            windowKeyFallback?.registerLeaf { event -> input.onKey(event) || shortcuts.onKey(event) } else null
         val listener = object : java.awt.event.WindowFocusListener {
             override fun windowGainedFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = true
@@ -224,6 +247,7 @@ internal class DesktopWindowsVideoActions(
             }
             override fun windowLostFocus(event: java.awt.event.WindowEvent) {
                 input.releaseHeldInput()
+                shortcuts.releaseHeldInput()
                 chromeWindowFocused = false
                 nativePointerOnVideo = false
                 nativeKeyboardOnVideo = false
@@ -236,6 +260,7 @@ internal class DesktopWindowsVideoActions(
             chromeWindow?.removeWindowFocusListener(listener)
             keyRegistration?.close()
             input.close()
+            shortcuts.close()
         }
     }
     // Listen only to this actual native host and its one non-focusable MPV Canvas.
@@ -1157,6 +1182,11 @@ internal class DesktopWindowsVideoActions(
                             viewportKeyboardFocused = it.hasFocus
                             if(current()) actions.focusChanged(it.hasFocus)
                         }.focusable()) {
+                        // V6 (spec 6.6): on page entry the viewport takes the keyboard focus unless a text editor owns it.
+                        LaunchedEffect(assembly, route, active, presentationAlive, pipActive) {
+                            if (active && presentationAlive && !pipActive && current())
+                                desktopWindowsRequestPageEntryFocus(desktopWindowsTextEditorFocused()) { viewportFocus.requestFocus() }
+                        }
                         if (active && !pipActive) {
                             DesktopVideoCommandPopup(viewportSize, {
                                 Box(Modifier.fillMaxSize()) {
@@ -1607,6 +1637,41 @@ internal class DesktopWindowsVideoActions(
             ) }
             if (detailsOpen) detailsPanel()
         }
+    }
+
+    // V6 (spec 6.5 and 6.6): bind the shortcut router to this composition. Each effect is an admitted lambda of the leaf: the controls binding,
+    // current(), shell.playback.* and actions.*; the router reaches neither the player nor the assembly.
+    SideEffect {
+        shortcutBinding.legacyLayout = legacyChrome
+        shortcutBinding.flyoutOpen = showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null ||
+            interactionMode != null
+        shortcutBinding.effects = DesktopPlayerShortcutEffects(
+            controls = controls,
+            snapshot = { native.state.value.let { DesktopPlayerShortcutSnapshot(it.positionSeconds, it.durationSeconds, it.volume) } },
+            seekBy = { seconds -> if (current()) shell.playback.seekBy(seconds) },
+            hasPart = { forward -> if (forward) shell.playback.hasNext else shell.playback.hasPrevious },
+            canMiniPlayer = { !pipActive && success != null && state.videoCodec != null && !state.audioOnly },
+            togglePanel = { if (current()) detailsOpen = !detailsOpen },
+            toggleSubtitles = {
+                val target = if (subtitleMode != SubtitleDisplayMode.OFF) SubtitleDisplayMode.OFF
+                else subtitleDisplayOptions.firstOrNull { it.enabled && it.mode != SubtitleDisplayMode.OFF }?.mode
+                if (current() && target != null) { subtitleOverride = target; true } else false
+            },
+            toggleDanmaku = { if (current()) actions.toggleDanmaku() },
+            takeScreenshot = ::takeScreenshot,
+            chapterStartsMs = {
+                val result = chapters
+                if (result == null) emptyList()
+                else normalizeViewPointSegments(result.points, (native.state.value.durationSeconds * 1000.0).toLong()).map { it.fromMs }
+            },
+            seekToChapter = { positionMs ->
+                val result = chapters
+                val accepted = chaptersSource
+                if (result != null && accepted != null) seekChapter(result, accepted, positionMs)
+            },
+            speedChoices = { resolveDesktopWindowsVideoSpeedOptions(speedOptions, state.speed.toFloat()).map { it.toDouble() } },
+            currentSpeed = { state.speed },
+        )
     }
 
     audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }?.let { selection ->

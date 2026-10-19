@@ -18,6 +18,11 @@ test_ux_leaf_anchor_guard.py pins the anchors of the leaf. This suite pins what 
 
 A later slice that edits the leaf (V3 to V7) prepends its own hunk tuple to the chain in reverse_apply() in the same commit, so the
 chain always ends at the V2 hunks and then at the base. It never loosens a check.
+
+Slice V6 (the window-level shortcut router) is the first of them: V6_HUNKS below holds its nine hunks, reverse_apply() undoes them first
+and then the ten of V2, so the base leaf (commit dee21a6c5) still comes out byte for byte. The V2 checks that read the leaf as it is now
+stay as they were, with two exact updates that V6 caused: legacyChrome is read four times (it also feeds the shortcut binding), and the
+recorded diff size of V2 is measured between the V2 state (V6 undone) and the base. test_ux_player_keys_source.py pins what V6 did.
 """
 import hashlib
 import itertools
@@ -164,15 +169,169 @@ HUNKS = (
 )
 
 
-def reverse_apply(leaf):
+# The nine hunks of slice V6 in leaf order, in the same form as HUNKS above: the first and the last line of each hunk are unchanged
+# context and each "after" block occurs exactly once in the leaf. Generated from the diff against the V2 state, then reviewed.
+V6_HUNKS = (
+    ("chapter normalizer import", (
+        "import com.android.purebilibili.feature.video.ui.overlay.NextWatchOverlay",
+        "import kotlinx.coroutines.ensureActive",
+    ), (
+        "import com.android.purebilibili.feature.video.ui.overlay.NextWatchOverlay",
+        "import com.android.purebilibili.feature.video.ui.overlay.normalizeViewPointSegments",
+        "import kotlinx.coroutines.ensureActive",
+    )),
+    ("shortcut binding holder", (
+        "    val windowKeyFallback = LocalDesktopWindowKeyFallback.current",
+        "    val latestKeyInputFocus by rememberUpdatedState(",
+    ), (
+        "    val windowKeyFallback = LocalDesktopWindowKeyFallback.current",
+        "    // V6 (spec 6.5 and 6.6): the layout, the flyout flag and the effects of the shortcut router arrive here from a SideEffect below,",
+        "    // once the page state they read exists. The router itself is built with the key input, because that is where it is registered.",
+        "    val shortcutBinding = remember(assembly) { DesktopWindowsVideoShortcutBinding() }",
+        "    val latestKeyInputFocus by rememberUpdatedState(",
+    )),
+    ("shared keyboard gate", (
+        "        route, active, presentationAlive, pipActive) {",
+        "        val input = DesktopWindowsVideoKeyInput(",
+        "            currentSource = { latestChromeSource?.takeIf { chromeCurrent() } },",
+        "            ownsFocus = { latestKeyInputFocus && native.surface.isShowing && chromeWindow != null &&",
+        "                java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === chromeWindow },",
+        "            isFullscreen = { latestFullscreen },",
+    ), (
+        "        route, active, presentationAlive, pipActive) {",
+        "        // V6 (spec 6.6): the LEGACY layout keeps its gate (focus on the strip, the bar, the viewport or the native surface); the DESKTOP",
+        "        // layout has none of those controls, so the binding decides by layout. Both keyboard inputs below share this one rule.",
+        "        val keyboardOwned = { shortcutBinding.ownsFocus(latestKeyInputFocus, desktopWindowsTextEditorFocused()) &&",
+        "            native.surface.isShowing && chromeWindow != null &&",
+        "            java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow === chromeWindow }",
+        "        val input = DesktopWindowsVideoKeyInput(",
+        "            currentSource = { latestChromeSource?.takeIf { chromeCurrent() } },",
+        "            ownsFocus = keyboardOwned,",
+        "            isFullscreen = { latestFullscreen },",
+    )),
+    ("window-level shortcut router", (
+        "        )",
+        "        // Clicking a Compose control retains its focus. Offer Space/Escape before",
+    ), (
+        "        )",
+        "        // V6 (spec 6.5): the window-level player shortcuts. Every effect goes through the admitted lambdas bound by the SideEffect below.",
+        "        val shortcuts = DesktopWindowsVideoShortcutInput(",
+        "            currentSource = { latestChromeSource?.takeIf { chromeCurrent() } },",
+        "            ownsFocus = keyboardOwned,",
+        "            controlHoldsFocus = { topFocused || barInteraction.focused },",
+        "            textEditorFocused = ::desktopWindowsTextEditorFocused,",
+        "            isFullscreen = { latestFullscreen },",
+        "            isPaused = { native.state.value.paused },",
+        "            layout = { shortcutBinding.layout },",
+        "            perform = { action ->",
+        "                shortcutBinding.perform(action).also { handled ->",
+        "                    if (handled) chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_KEY)",
+        "                }",
+        "            },",
+        "        )",
+        "        // Clicking a Compose control retains its focus. Offer Space/Escape before",
+    )),
+    ("composite registration", (
+        "        val keyRegistration = if (active && presentationAlive && !pipActive)",
+        "            windowKeyFallback?.registerLeaf(input::onKey) else null",
+        "        val listener = object : java.awt.event.WindowFocusListener {",
+    ), (
+        "        val keyRegistration = if (active && presentationAlive && !pipActive)",
+        "            windowKeyFallback?.registerLeaf { event -> input.onKey(event) || shortcuts.onKey(event) } else null",
+        "        val listener = object : java.awt.event.WindowFocusListener {",
+    )),
+    ("focus loss releases the router", (
+        "                input.releaseHeldInput()",
+        "                chromeWindowFocused = false",
+    ), (
+        "                input.releaseHeldInput()",
+        "                shortcuts.releaseHeldInput()",
+        "                chromeWindowFocused = false",
+    )),
+    ("dispose closes the router", (
+        "            input.close()",
+        "        }",
+    ), (
+        "            input.close()",
+        "            shortcuts.close()",
+        "        }",
+    )),
+    ("page-entry focus", (
+        "                        }.focusable()) {",
+        "                        if (active && !pipActive) {",
+    ), (
+        "                        }.focusable()) {",
+        "                        // V6 (spec 6.6): on page entry the viewport takes the keyboard focus unless a text editor owns it.",
+        "                        LaunchedEffect(assembly, route, active, presentationAlive, pipActive) {",
+        "                            if (active && presentationAlive && !pipActive && current())",
+        "                                desktopWindowsRequestPageEntryFocus(desktopWindowsTextEditorFocused()) { viewportFocus.requestFocus() }",
+        "                        }",
+        "                        if (active && !pipActive) {",
+    )),
+    ("effects bound by a SideEffect", (
+        "",
+        "    audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }?.let { selection ->",
+    ), (
+        "",
+        "    // V6 (spec 6.5 and 6.6): bind the shortcut router to this composition. Each effect is an admitted lambda of the leaf: the controls binding,",
+        "    // current(), shell.playback.* and actions.*; the router reaches neither the player nor the assembly.",
+        "    SideEffect {",
+        "        shortcutBinding.legacyLayout = legacyChrome",
+        "        shortcutBinding.flyoutOpen = showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null ||",
+        "            interactionMode != null",
+        "        shortcutBinding.effects = DesktopPlayerShortcutEffects(",
+        "            controls = controls,",
+        "            snapshot = { native.state.value.let { DesktopPlayerShortcutSnapshot(it.positionSeconds, it.durationSeconds, it.volume) } },",
+        "            seekBy = { seconds -> if (current()) shell.playback.seekBy(seconds) },",
+        "            hasPart = { forward -> if (forward) shell.playback.hasNext else shell.playback.hasPrevious },",
+        "            canMiniPlayer = { !pipActive && success != null && state.videoCodec != null && !state.audioOnly },",
+        "            togglePanel = { if (current()) detailsOpen = !detailsOpen },",
+        "            toggleSubtitles = {",
+        "                val target = if (subtitleMode != SubtitleDisplayMode.OFF) SubtitleDisplayMode.OFF",
+        "                else subtitleDisplayOptions.firstOrNull { it.enabled && it.mode != SubtitleDisplayMode.OFF }?.mode",
+        "                if (current() && target != null) { subtitleOverride = target; true } else false",
+        "            },",
+        "            toggleDanmaku = { if (current()) actions.toggleDanmaku() },",
+        "            takeScreenshot = ::takeScreenshot,",
+        "            chapterStartsMs = {",
+        "                val result = chapters",
+        "                if (result == null) emptyList()",
+        "                else normalizeViewPointSegments(result.points, (native.state.value.durationSeconds * 1000.0).toLong()).map { it.fromMs }",
+        "            },",
+        "            seekToChapter = { positionMs ->",
+        "                val result = chapters",
+        "                val accepted = chaptersSource",
+        "                if (result != null && accepted != null) seekChapter(result, accepted, positionMs)",
+        "            },",
+        "            speedChoices = { resolveDesktopWindowsVideoSpeedOptions(speedOptions, state.speed.toFloat()).map { it.toDouble() } },",
+        "            currentSpeed = { state.speed },",
+        "        )",
+        "    }",
+        "",
+        "    audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }?.let { selection ->",
+    )),
+)
+
+
+def reverse_chain(leaf, chain):
     """The leaf with every hunk of the chain undone. Each undone block must be present exactly once when its turn comes."""
     text = leaf
-    for label, before, after in reversed(HUNKS):
+    for label, before, after in reversed(chain):
         block = "\n".join(after)
         if text.count(block) != 1:
             raise AssertionError("hunk %r: its block occurs %d times, expected once" % (label, text.count(block)))
         text = text.replace(block, "\n".join(before), 1)
     return text
+
+
+def reverse_v6(leaf):
+    """The V2 state of the leaf: the hunks of slice V6 undone."""
+    return reverse_chain(leaf, V6_HUNKS)
+
+
+def reverse_apply(leaf):
+    """The base leaf: the newest chain first (V6), then the chain of V2."""
+    return reverse_chain(reverse_v6(leaf), HUNKS)
 
 
 def sha256(text):
@@ -253,7 +412,8 @@ def check_v2_structure(leaf):
     need(leaf.count(EFFECTIVE) == 1, "the effective layout")
     need(leaf.count("DESKTOP_PLAYER_OVERLAY_AVAILABLE") == 1, "the overlay availability is read once")
     need(len(re.findall(r"\.playerLayout\b", source.mask_kotlin(leaf))) == 1, "player_layout is read exactly once")
-    need(len(re.findall(r"\blegacyChrome\b", source.mask_kotlin(leaf))) == 3, "legacyChrome is defined once and gates the strip and the bar")
+    need(len(re.findall(r"\blegacyChrome\b", source.mask_kotlin(leaf))) == 4,
+         "legacyChrome is defined once, gates the strip and the bar, and feeds the shortcut binding (slice V6)")
     for opener, call in ((STRIP_OPEN, STRIP_CALL), (BAR_OPEN, BAR_CALL), (PANEL_OPEN, PANEL_CALL)):
         need(leaf.count(opener) == 1, "lambda defined once: " + opener)
         need(leaf.count(call) == 1, "lambda called once: " + call)
@@ -336,7 +496,7 @@ class LeafIdentityTest(unittest.TestCase):
     def test_the_diff_against_the_base_is_small_and_exactly_the_recorded_size(self):
         import difflib
         base = reverse_apply(LEAF_TEXT).split("\n")
-        now = LEAF_TEXT.split("\n")
+        now = reverse_v6(LEAF_TEXT).split("\n")  # the V2 state: slice V6 has its own size check in test_ux_player_keys_source.py
         added = removed = 0
         for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, base, now, autojunk=False).get_opcodes():
             if tag != "equal":

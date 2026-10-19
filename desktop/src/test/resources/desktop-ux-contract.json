@@ -1827,5 +1827,392 @@
         {"width": 2730.0, "expanded": true, "status": true}
       ]
     }
+  },
+  "player_keys": {
+    "about": "Slice V6 (spec 6.5 and 6.6): the window-level shortcut input of the ordinary video page. key_codes maps the AWT virtual key code of a press to the key name of the chords above (shortcuts.rows). The rest are the numbers and sets of the pure part (DesktopPlayerShortcutEffects.kt). vendored is generated from the real vendored map by ux_vendored_player_keys.py --write, never edited: every binding of resolvePlayerKeyAction is kept, changed, not-taken or dropped, and the intentional differences carry their reason.",
+    "owned_elsewhere": {
+      "Space": "DesktopWindowsVideoKeyInput claims Space (and Esc in fullscreen); the router never claims Space"
+    },
+    "repeat_actions": ["SEEK", "VOLUME"],
+    "control_navigation_keys": ["Left", "Right", "Up", "Down", "Home", "End"],
+    "not_performed": {
+      "ESC_CHAIN": "claimed by the router itself, decision D4, never by an effect",
+      "VIDEO_INFO": "slice V8: the video info card does not exist yet",
+      "SUBTITLE_FLYOUT": "slice V1 and V5: the subtitle flyout does not exist yet",
+      "CONTEXT_MENU": "slice V5: the context menu does not exist yet",
+      "SHORTCUT_HELP": "slice V8: the shortcut help sheet does not exist yet",
+      "FRAME_STEP": "omitted until an MpvPlayer API exists"
+    },
+    "chapter_back_margin_ms": 2000,
+    "speed_epsilon": 0.001,
+    "volume": {"min": 0, "max": 100},
+    "key_codes": {
+      "letters": [65, 90],
+      "digits": [48, 57],
+      "numpad_digits": [96, 105],
+      "function_keys": [112, 123],
+      "named": {
+        "Left": 37,
+        "Up": 38,
+        "Right": 39,
+        "Down": 40,
+        "Home": 36,
+        "End": 35,
+        "Space": 32,
+        "Esc": 27,
+        "Enter": 10,
+        "Backspace": 8,
+        "Comma": 44,
+        "Period": 46,
+        "Slash": 47,
+        "LeftBracket": 91,
+        "RightBracket": 93,
+        "Menu": 525,
+        "Plus": 521,
+        "Equals": 61,
+        "Add": 107,
+        "Minus": 45,
+        "Subtract": 109
+      }
+    },
+    "vendored": {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/player/PlayerKeyboardPolicy.kt, resolvePlayerKeyAction",
+      "bindings": [
+        {
+          "chord": "Shift+Left",
+          "vendored": {"action": "SeekRelative", "arg": -10},
+          "status": "kept",
+          "router": {"action": "SEEK", "arg": -10}
+        },
+        {
+          "chord": "Shift+Right",
+          "vendored": {"action": "SeekRelative", "arg": 10},
+          "status": "kept",
+          "router": {"action": "SEEK", "arg": 10}
+        },
+        {
+          "chord": "Shift+1",
+          "vendored": {"action": "SetSpeed", "arg": 1},
+          "status": "kept",
+          "router": {"action": "SPEED_SET", "arg": 1}
+        },
+        {
+          "chord": "Shift+Numpad1",
+          "vendored": {"action": "SetSpeed", "arg": 1},
+          "status": "kept",
+          "router": {"action": "SPEED_SET", "arg": 1}
+        },
+        {
+          "chord": "Shift+2",
+          "vendored": {"action": "SetSpeed", "arg": 2},
+          "status": "kept",
+          "router": {"action": "SPEED_SET", "arg": 2}
+        },
+        {
+          "chord": "Shift+Numpad2",
+          "vendored": {"action": "SetSpeed", "arg": 2},
+          "status": "kept",
+          "router": {"action": "SPEED_SET", "arg": 2}
+        },
+        {
+          "chord": "Space",
+          "vendored": {"action": "PlayPause"},
+          "status": "kept",
+          "router": {"action": "PLAY_PAUSE", "arg": 0}
+        },
+        {
+          "chord": "K",
+          "vendored": {"action": "PlayPause"},
+          "status": "kept",
+          "router": {"action": "PLAY_PAUSE", "arg": 0}
+        },
+        {
+          "chord": "Left",
+          "vendored": {"action": "SeekRelative", "arg": -5},
+          "status": "kept",
+          "router": {"action": "SEEK", "arg": -5}
+        },
+        {
+          "chord": "Right",
+          "vendored": {"action": "SeekRelative", "arg": 5},
+          "status": "kept",
+          "router": {"action": "SEEK", "arg": 5}
+        },
+        {
+          "chord": "J",
+          "vendored": {"action": "SeekRelative", "arg": -10},
+          "status": "kept",
+          "router": {"action": "SEEK", "arg": -10}
+        },
+        {
+          "chord": "Up",
+          "vendored": {"action": "VolumeUp"},
+          "status": "kept",
+          "router": {"action": "VOLUME", "arg": 5}
+        },
+        {
+          "chord": "Down",
+          "vendored": {"action": "VolumeDown"},
+          "status": "kept",
+          "router": {"action": "VOLUME", "arg": -5}
+        },
+        {
+          "chord": "F",
+          "vendored": {"action": "ToggleFullscreen"},
+          "status": "kept",
+          "router": {"action": "FULLSCREEN_TOGGLE", "arg": 0}
+        },
+        {
+          "chord": "Enter",
+          "vendored": {"action": "ToggleFullscreen"},
+          "status": "not-taken",
+          "router": null,
+          "reason": "decision D16: Enter is not taken by the router; it falls to Root, whose vendored map still toggles fullscreen"
+        },
+        {
+          "chord": "NumpadEnter",
+          "vendored": {"action": "ToggleFullscreen"},
+          "status": "not-taken",
+          "router": null,
+          "reason": "the router names both Enter keys Enter (one AWT key code) and never takes it, decision D16"
+        },
+        {
+          "chord": "M",
+          "vendored": {"action": "ToggleMute"},
+          "status": "kept",
+          "router": {"action": "MUTE", "arg": 0}
+        },
+        {
+          "chord": "D",
+          "vendored": {"action": "ToggleDanmaku"},
+          "status": "kept",
+          "router": {"action": "DANMAKU_TOGGLE", "arg": 0}
+        },
+        {
+          "chord": "Q",
+          "vendored": {"action": "ToggleLike"},
+          "status": "dropped",
+          "router": null,
+          "reason": "the engagement keys are a non-goal (spec 1.5); the desktop Root handler never acted on this action"
+        },
+        {
+          "chord": "W",
+          "vendored": {"action": "Coin"},
+          "status": "dropped",
+          "router": null,
+          "reason": "the engagement keys are a non-goal (spec 1.5); the desktop Root handler never acted on this action"
+        },
+        {
+          "chord": "E",
+          "vendored": {"action": "ToggleFavorite"},
+          "status": "dropped",
+          "router": null,
+          "reason": "the engagement keys are a non-goal (spec 1.5); the desktop Root handler never acted on this action"
+        },
+        {
+          "chord": "R",
+          "vendored": {"action": "TripleAction"},
+          "status": "dropped",
+          "router": null,
+          "reason": "the engagement keys are a non-goal (spec 1.5); the desktop Root handler never acted on this action"
+        },
+        {
+          "chord": "S",
+          "vendored": {"action": "TakeScreenshot"},
+          "status": "kept",
+          "router": {"action": "SCREENSHOT", "arg": 0}
+        },
+        {
+          "chord": "L",
+          "vendored": {"action": "ToggleScreenLock"},
+          "status": "changed",
+          "router": {"action": "SEEK", "arg": 10},
+          "reason": "L was the phone screen lock; spec 6.5 makes J and L mirror each other, minus and plus ten seconds"
+        },
+        {
+          "chord": "LeftBracket",
+          "vendored": {"action": "PreviousPart"},
+          "status": "kept",
+          "router": {"action": "PART", "arg": -1}
+        },
+        {
+          "chord": "RightBracket",
+          "vendored": {"action": "NextPart"},
+          "status": "kept",
+          "router": {"action": "PART", "arg": 1}
+        },
+        {
+          "chord": "0",
+          "vendored": {"action": "SeekPercent", "arg": 0},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 0}
+        },
+        {
+          "chord": "Numpad0",
+          "vendored": {"action": "SeekPercent", "arg": 0},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 0}
+        },
+        {
+          "chord": "1",
+          "vendored": {"action": "SeekPercent", "arg": 10},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 10}
+        },
+        {
+          "chord": "Numpad1",
+          "vendored": {"action": "SeekPercent", "arg": 10},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 10}
+        },
+        {
+          "chord": "2",
+          "vendored": {"action": "SeekPercent", "arg": 20},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 20}
+        },
+        {
+          "chord": "Numpad2",
+          "vendored": {"action": "SeekPercent", "arg": 20},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 20}
+        },
+        {
+          "chord": "3",
+          "vendored": {"action": "SeekPercent", "arg": 30},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 30}
+        },
+        {
+          "chord": "Numpad3",
+          "vendored": {"action": "SeekPercent", "arg": 30},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 30}
+        },
+        {
+          "chord": "4",
+          "vendored": {"action": "SeekPercent", "arg": 40},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 40}
+        },
+        {
+          "chord": "Numpad4",
+          "vendored": {"action": "SeekPercent", "arg": 40},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 40}
+        },
+        {
+          "chord": "5",
+          "vendored": {"action": "SeekPercent", "arg": 50},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 50}
+        },
+        {
+          "chord": "Numpad5",
+          "vendored": {"action": "SeekPercent", "arg": 50},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 50}
+        },
+        {
+          "chord": "6",
+          "vendored": {"action": "SeekPercent", "arg": 60},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 60}
+        },
+        {
+          "chord": "Numpad6",
+          "vendored": {"action": "SeekPercent", "arg": 60},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 60}
+        },
+        {
+          "chord": "7",
+          "vendored": {"action": "SeekPercent", "arg": 70},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 70}
+        },
+        {
+          "chord": "Numpad7",
+          "vendored": {"action": "SeekPercent", "arg": 70},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 70}
+        },
+        {
+          "chord": "8",
+          "vendored": {"action": "SeekPercent", "arg": 80},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 80}
+        },
+        {
+          "chord": "Numpad8",
+          "vendored": {"action": "SeekPercent", "arg": 80},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 80}
+        },
+        {
+          "chord": "9",
+          "vendored": {"action": "SeekPercent", "arg": 90},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 90}
+        },
+        {
+          "chord": "Numpad9",
+          "vendored": {"action": "SeekPercent", "arg": 90},
+          "status": "kept",
+          "router": {"action": "SEEK_PERCENT", "arg": 90}
+        }
+      ],
+      "state_rules": [
+        {
+          "vendored": "only a key press is read",
+          "router": "the resolver reads key presses only; the release of a claimed press is consumed by the input",
+          "status": "kept"
+        },
+        {
+          "vendored": "no key in picture-in-picture",
+          "router": "the leaf claims no key while the page is not the current source, which includes picture-in-picture",
+          "status": "kept"
+        },
+        {
+          "vendored": "no key while a text input is active",
+          "router": "the resolver gets textEditorFocused and the leaf passes the focus owner test of a Swing text component",
+          "status": "kept"
+        },
+        {
+          "vendored": "screen locked: only L, which unlocks",
+          "router": "there is no screen lock on the desktop",
+          "status": "dropped"
+        },
+        {
+          "vendored": "Ctrl, Alt or Meta held: no action",
+          "router": "the Ctrl and Alt chords of the table are claimed (Ctrl+Left, Ctrl+Right, Ctrl+B, Alt+Enter); Meta and Ctrl+Alt never",
+          "status": "changed"
+        }
+      ],
+      "additions": [
+        {"chord": "Ctrl+Left", "action": "CHAPTER", "arg": -1, "status": "active"},
+        {"chord": "Ctrl+Right", "action": "CHAPTER", "arg": 1, "status": "active"},
+        {"chord": "Alt+Enter", "action": "FULLSCREEN_TOGGLE", "arg": 0, "status": "active"},
+        {"chord": "F11", "action": "FULLSCREEN_TOGGLE", "arg": 0, "status": "existing-at-root"},
+        {"chord": "Esc", "action": "ESC_CHAIN", "arg": 0, "status": "active"},
+        {"chord": "T", "action": "SIDE_PANEL_OR_CINEMA", "arg": 0, "status": "active"},
+        {"chord": "Ctrl+B", "action": "SIDE_PANEL_OR_CINEMA", "arg": 0, "status": "active"},
+        {"chord": "P", "action": "MINI_PLAYER", "arg": 0, "status": "active"},
+        {"chord": "I", "action": "VIDEO_INFO", "arg": 0, "status": "active"},
+        {"chord": "C", "action": "SUBTITLE_TOGGLE", "arg": 0, "status": "active"},
+        {"chord": "Shift+C", "action": "SUBTITLE_FLYOUT", "arg": 0, "status": "active"},
+        {"chord": "Shift+P", "action": "PART", "arg": -1, "status": "active"},
+        {"chord": "Shift+N", "action": "PART", "arg": 1, "status": "active"},
+        {"chord": "Home", "action": "SEEK_START", "arg": 0, "status": "active"},
+        {"chord": "End", "action": "SEEK_END", "arg": 0, "status": "active"},
+        {"chord": "Comma", "action": "FRAME_STEP", "arg": -1, "status": "omitted-until-mpv-api"},
+        {"chord": "Period", "action": "FRAME_STEP", "arg": 1, "status": "omitted-until-mpv-api"},
+        {"chord": "Shift+Comma", "action": "SPEED_STEP", "arg": -1, "status": "active"},
+        {"chord": "Shift+Period", "action": "SPEED_STEP", "arg": 1, "status": "active"},
+        {"chord": "Menu", "action": "CONTEXT_MENU", "arg": 0, "status": "active"},
+        {"chord": "Shift+F10", "action": "CONTEXT_MENU", "arg": 0, "status": "active"},
+        {"chord": "Shift+Slash", "action": "SHORTCUT_HELP", "arg": 0, "status": "active"}
+      ]
+    }
   }
 }

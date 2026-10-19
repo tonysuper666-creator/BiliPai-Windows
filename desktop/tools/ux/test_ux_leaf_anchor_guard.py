@@ -112,10 +112,15 @@ HIT_AND_FOCUS_ANCHORS = (
     (1, "val topHovered by topInteractions.collectIsHoveredAsState()"),
     (1, "var barInteraction by remember(chrome) { mutableStateOf(DesktopWindowsFullscreenChromeInteraction()) }"),
     (1, "val chromeVisible = !fullscreen || chrome.visible"),
-    (1, "windowKeyFallback?.registerLeaf(input::onKey)"),
+    # Slice V6 (the window-level shortcut router) changed three of these on purpose: the one leaf slot of the window key input now takes the
+    # existing input first and the router second, the viewport takes the focus once more at page entry (the second requestFocus), and the router
+    # and its page-entry focus are new anchors. test_ux_player_keys_source.py pins the rest of what V6 did.
+    (1, "windowKeyFallback?.registerLeaf { event -> input.onKey(event) || shortcuts.onKey(event) }"),
     (1, "val input = DesktopWindowsVideoKeyInput("),
+    (1, "val shortcuts = DesktopWindowsVideoShortcutInput("),
+    (1, "desktopWindowsRequestPageEntryFocus("),
     (1, "surface.isFocusable = true"),
-    (1, "viewportFocus.requestFocus()"),
+    (2, "viewportFocus.requestFocus()"),
     (1, "surface.requestFocusInWindow()"),
     (1, "val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide("),
     (1, "val chrome = remember(assembly, DesktopWindowsFullscreenChromeEntryKey(route), chromeSource) { DesktopWindowsFullscreenChromeState() }"),
@@ -427,7 +432,8 @@ class MutationTest(unittest.TestCase):
     def test_a_removed_hit_region_or_focus_handler_is_found(self):
         self.assertTrue(check_legacy_branch(self.mutated(".desktopWindowsChromePointerInput(::observeChromePointer)", "")))
         self.assertTrue(check_legacy_branch(self.mutated(".focusRequester(viewportFocus).onFocusChanged {", ".onFocusChanged {")))
-        self.assertTrue(check_legacy_branch(self.mutated("windowKeyFallback?.registerLeaf(input::onKey)", "null")))
+        self.assertTrue(check_legacy_branch(self.mutated("windowKeyFallback?.registerLeaf { event -> input.onKey(event) || shortcuts.onKey(event) }", "null")))
+        self.assertTrue(check_legacy_branch(self.mutated("desktopWindowsRequestPageEntryFocus(", "desktopWindowsRequestFocus(")))
 
     def test_a_changed_accessible_name_is_found(self):
         self.assertTrue(check_legacy_branch(self.mutated('Icon(Icons.Default.ArrowBack, contentDescription = "返回")',
