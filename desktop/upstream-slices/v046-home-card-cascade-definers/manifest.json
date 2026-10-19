@@ -1,0 +1,28 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeOverlayPillButton.kt",
+      "filename": "HomeOverlayPillButton.kt",
+      "bytes": 2098,
+      "sha256": "6c75cc0b11ed2ba1d719fc6e805726fa547bc7f163530ae039be66f7aa0da952",
+      "gitBlob": "495e86861215269e0e65639433da763409255d0d"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPressShiftContent.kt",
+      "filename": "AppPressShiftContent.kt",
+      "bytes": 2919,
+      "sha256": "7b4cebfc16b70ec8b7dd72ea39364872bd34295a7b094f8ebfbe5d3210cfc628",
+      "gitBlob": "e93226d235ea08a50a04519e790239800a5e6023"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 HomeOverlayPillButton.kt and AppPressShiftContent.kt, including rememberPressShiftPressedState.",
+  "purpose": "Emit both new files verbatim from the home-page producer. No call sites are added. HomeRefreshUiPolicy and VideoCardAdaptiveTintPolicy stay direct-mode and are not carried."
+}

@@ -53,6 +53,8 @@ def _bind_preview_subject(text):
 def generate(repo, output, standalone=False):
     from v046_identity_badges import validate_outputs
     validate_outputs(repo, output)
+    from v046_home_card_cascade_definers import validate_outputs as validate_cascade_outputs
+    validate_cascade_outputs(repo, output)
     from v043_home_recommendation_badges import check_output
     check_output(repo,output)
     output=Path(output).resolve();written=[];home_load_audits=[]
@@ -96,6 +98,8 @@ def generate(repo, output, standalone=False):
         assert legacy_agreement.stat().st_size==363
         assert hashlib.sha256(legacy_agreement.read_bytes()).hexdigest()=="d5c863b0ff6cba03794b75788836a78d42d9390a94f5b7643f1923b49b795b5c"
         legacy_agreement.unlink()
+    from v046_home_card_cascade_definers import emit as emit_home_card_cascade_definers
+    emit_home_card_cascade_definers(repo, output)
     return written
 
 if __name__=="__main__":
