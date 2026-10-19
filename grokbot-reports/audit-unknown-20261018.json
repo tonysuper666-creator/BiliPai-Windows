@@ -1,0 +1,481 @@
+{
+ "auditedOn": "2026-10-19",
+ "source": "desktop/integration-263@c985a0386 的干净全量构建产物（2026-10-19 VERIFY 时由 Gradle 重跑全部生产者）+ desktop/src/main",
+ "readOnly": true,
+ "entries": [
+  {
+   "id": "v027-dissolve-delete-layout-fixes",
+   "proposedStatus": "missing",
+   "evidence": "Windows WatchLaterScreen 仍是 ad85f33c 之前的形态：AnimatedVideoListItem 无 useLookaheadBounds 参数；completeVideoDissolve 无重复/延迟完成防护（无 'Ignore duplicate/deferred completion'、无 rollbackState）；未使用 resolveCommonListRenderKeys。消散效果为桌面自有 com.bilipai.desktop.ui.jiggleOnDissolve，离屏回调延后（上游用 Android Handler）需桌面等价物。"
+  },
+  {
+   "id": "v034-upstream-tests-added",
+   "proposedStatus": "partial",
+   "evidence": "9 个提交涉及 61 个上游测试文件（6 新增/54 修改/1 删除）。按类名在 Windows 树中找到 3 个（BilibiliLinkNavigationPolicyTest、FloatingBottomBarGeometryTest、VideoPlayerCoverPolicyTest，未逐条核对版本内容）；7 个被测对象已在 Windows 编译集中但测试未携带（DynamicLayoutPolicyTest、AppSegmentedControlPolicyTest、TabVisibilityPolicyTest、PlaybackSettingsSelectionPolicyTest、SettingsEntryVisualPolicyTest、VerticalPriorityPagerGestureTest、NextWatchSuggestionTest）；其余 51 个被测对象未携带（启发式：按文件名匹配），测试随对象切片走。清单见 grokbot-reports/audit-unknown-20261018.json。"
+  },
+  {
+   "id": "v026-home-overlay-pill-press-shift",
+   "proposedStatus": "missing",
+   "evidence": "AppPressShiftContent、HomeOverlayPillButton、resolveOldContentDividerContainerColor 三个定义在编译集中均不存在；它们已登记在 desktop/tools/symbol-closure-expected-gaps.json（首页卡片级联缺口），v033-home-undo/v043-home-native-cards/v029-home-load/v042-search-dependencies 等已有归档引用它们。由 T13 #6 fnd-home-card-cascade-definers 覆盖。"
+  },
+  {
+   "id": "v026-search-entry-centered-transition",
+   "proposedStatus": "missing",
+   "evidence": "Windows AppSearchEntry（preferences 生产者，AdaptivePreferenceComponents.kt:1676）没有 d8cd4bd9 新增的 centeredIdleContent 参数及居中布局；编译集中无任何调用方传该参数。"
+  },
+  {
+   "id": "v026-dynamic-top-tabs-scroll",
+   "proposedStatus": "missing",
+   "evidence": "Windows 动态页不使用上游 DynamicTopBar，而是自有 DesktopDynamicTabsHost → AppNativeTabRow(scrollable 默认 false, Modifier.weight(1f))；b216920a 的固定标签宽度 + 视口滚动 + 选中项 animateScrollTo 未携带。窄窗口下才有实际影响，适用性请 Root 判定。"
+  },
+  {
+   "id": "v027-home-feed-row-alignment",
+   "proposedStatus": "missing",
+   "evidence": "Windows HomeCategoryPage（home-page 生产者，LF sha cfc3ff16…）仍含 f7123aa2 删除的注释 'Truncated cards advance as complete rows'，无 rowHeightPx / 行内最高卡片定高 / bf9a9f7f 的按宽度失效 layout{}。VideoCard（home-full-card）为另一版本形态（nameLeadingContent，reserveTrailingSlot=false），该半部分未判定。"
+  },
+  {
+   "id": "v034b2-third-party-license-notices",
+   "proposedStatus": "done",
+   "evidence": "已在 grokbot/slices-batch1（#2，79ed052e4）交付：desktop/src/main/resources/licenses/upstream-carried-assets/ 含 AndroidLiquidGlass.LICENSE（a0fabed3）与 piliplus-LICENSE.txt（b2091b1d）及来源记录，测试 test_third_party_notices_source.py。integration-263 尚未合入；上游这两个提交没有应用内许可证界面消费者。"
+  },
+  {
+   "id": "v034b2-card-return-source-session",
+   "proposedStatus": "missing",
+   "evidence": "Windows 实际调用的 resolveBiliPaiVideoSource（DesktopHomeReturnNavigationOwner.kt:101 → upstream 副本 BiliPaiVideoSourcePolicy.kt）仍是 b2091b1d 之前的逻辑（'keep list origin … multi-hop returns'），嵌套链接仍借用列表来源；无 sourceCardOwnerRetained。preserveCurrentSession 来自 2026-09-21 的 557313712，不是本修复。"
+  },
+  {
+   "id": "v040-history-in-place-progress",
+   "proposedStatus": "missing",
+   "evidence": "与 v039-history-in-place-progress（missing）重复。Windows HistoryViewModel（original-favorites 生产者）observeHistoryRefresh 收到 historyChanges 仍整表 loadData(showLoading=false)，会重排；无 updateCachedHistoryProgress / enterBrowsingSession。"
+  }
+ ],
+ "upstreamTests": [
+  {
+   "commit": "f641eee3",
+   "change": "M",
+   "test": "TabletVideoLayoutPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "f641eee3",
+   "change": "M",
+   "test": "VideoPlayerOverlayPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "AppLiquidAwareTabRowConstraintPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "DynamicLayoutPolicyTest",
+   "carried": false,
+   "subjectPresent": true
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "A",
+   "test": "DynamicTabDragScrollPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "DynamicTopBarThemePolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "BottomBarLiquidSegmentedControlStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "BottomBarMatchedLiquidChromeStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "BottomBarMiuixStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "FloatingBottomBarStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "HomeHeaderVisualPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "M",
+   "test": "AppSegmentedControlPolicyTest",
+   "carried": false,
+   "subjectPresent": true
+  },
+  {
+   "commit": "a5dcf4de",
+   "change": "A",
+   "test": "TabVisibilityPolicyTest",
+   "carried": false,
+   "subjectPresent": true
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "AnimationSettingsScreenStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "AppBuildVerificationPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "AppearanceSettingsNavigationPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "FeedSettingsSelectionPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "PlaybackSettingsSelectionPolicyTest",
+   "carried": false,
+   "subjectPresent": true
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "PluginsScreenPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsDestinationCopyPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsEntryVisualPolicyTest",
+   "carried": false,
+   "subjectPresent": true
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsInformationArchitecturePolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "A",
+   "test": "SettingsItemSearchPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "A",
+   "test": "SettingsLayoutRefinementStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsMiuixSimplificationStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsNavHierarchyPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsRootCategoryContentStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsRootCategoryPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "d98ddf5a",
+   "change": "M",
+   "test": "SettingsSearchPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "c1c924b5",
+   "change": "M",
+   "test": "WebViewNavigationPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "c1c924b5",
+   "change": "M",
+   "test": "BilibiliLinkNavigationPolicyTest",
+   "carried": true,
+   "subjectPresent": true
+  },
+  {
+   "commit": "c1c924b5",
+   "change": "M",
+   "test": "BiliPaiNavBackStackPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "61180885",
+   "change": "M",
+   "test": "AppVersionPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "61180885",
+   "change": "M",
+   "test": "SettingsLayoutRefinementStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "61180885",
+   "change": "M",
+   "test": "SettingsRootCategoryPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a0fabed3",
+   "change": "M",
+   "test": "AdaptiveBottomSheetPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "a0fabed3",
+   "change": "M",
+   "test": "AppDialogComponentsPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "VerticalPriorityPagerGestureTest",
+   "carried": false,
+   "subjectPresent": true
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "AppLiquidAwareTabRowConstraintPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "VideoCardReturnTimelineTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "42e8c500",
+   "change": "D",
+   "test": "MusicTopControlDragPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "ImagePreviewGesturePolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "HomeHeroFlyoutStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "FloatingBottomBarGeometryTest",
+   "carried": true,
+   "subjectPresent": true
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "TopTabStylePolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "42e8c500",
+   "change": "M",
+   "test": "VideoDetailReturnCoverPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "NowPlayingBarHandoffPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "BilibiliLoginQrTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "AppVersionPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "SettingsLayoutRefinementStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "SettingsRootCategoryContentStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "SettingsSearchFocusPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "SettingsSearchPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "A",
+   "test": "RelatedVideoLoadingStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "VideoDetailSkeletonStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "VideoPlayerCoverPolicyTest",
+   "carried": true,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "BiliPaiReturnSessionStateTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "b2091b1d",
+   "change": "M",
+   "test": "BiliPaiVideoSourcePolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "70a6eecc",
+   "change": "A",
+   "test": "NextWatchSuggestionTest",
+   "carried": false,
+   "subjectPresent": true
+  },
+  {
+   "commit": "70a6eecc",
+   "change": "M",
+   "test": "GestureLevelOverlayPolicyTest",
+   "carried": false,
+   "subjectPresent": false
+  },
+  {
+   "commit": "70a6eecc",
+   "change": "M",
+   "test": "GestureLevelOverlayStructureTest",
+   "carried": false,
+   "subjectPresent": false
+  }
+ ]
+}
