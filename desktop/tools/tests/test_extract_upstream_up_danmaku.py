@@ -43,6 +43,7 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
         # Every subsequently mounted full-owner stage must be reversed before
         # testing the earlier same-send guard at its actual byte offsets.
         for filename in (
+            'v029-comment-selection-VideoPlaybackViewModel.json',
             'v037-complete-known-state-owner-proof.json',
             'original-v035-autoplay-continuation-inverse.json',
             'original-v034-next-watch-inverse.json',
