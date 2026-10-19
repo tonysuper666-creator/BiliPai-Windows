@@ -1,0 +1,505 @@
+{
+  "schemaVersion": 1,
+  "description": "Known gaps for desktop/tools/check_slice_symbol_closure.py. A gap listed here is accepted; a gap listed but no longer observed is stale and fails the gate (a partial run judges only the gaps its checks can observe). Every slice appends the gaps it knowingly leaves and removes the ones it closes. closedByEvidence says how firm the owner is: roadmap = that slice's roadmap text names the symbol; proposed = the gap author's inference, to be confirmed or reassigned by the slice owner; unassigned = no roadmap slice owns it. retiredSeeds are roadmap seeds a generated shim already defines; the gate fails if one loses its definer.",
+  "groups": [
+    {
+      "reason": "The carried v0.4.x comment, dynamic and space archives call upstream userVipPink, which the pinned design-system lacks. The v046 generators rewrite the call to the desktop-owned desktopUserVipPink; the archives stay verbatim (roadmap seed: userVipPink).",
+      "closedBy": "fnd-identity-badges-vip-pink",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.ui.components.userVipPink"
+        }
+      ]
+    },
+    {
+      "reason": "Policies upstream moved into core-data (data.model) that the pinned tree still keeps elsewhere or lacks (roadmap seeds: resolveVideoCardStatsTexts, resolveWatchLaterDisplayProgressState).",
+      "closedBy": "fnd-core-data-relocated-policies",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.network.BuvidManager"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.data.model.resolveVideoCardStatsTexts"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.network.BuvidManager"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.data.model.resolveWatchLaterDisplayProgressState"
+        }
+      ]
+    },
+    {
+      "reason": "Policies upstream moved into core-data (data.model) that the pinned tree still keeps elsewhere or lacks (roadmap seeds: resolveVideoCardStatsTexts, resolveWatchLaterDisplayProgressState). Ownership of these symbols by fnd-core-data-relocated-policies is the gap author's inference: that slice's roadmap text does not name resolveHistoryProgressLabel. Its owner must confirm or reassign them when the slice is reached.",
+      "closedBy": "fnd-core-data-relocated-policies",
+      "closedByEvidence": "proposed",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.data.model.resolveHistoryProgressLabel"
+        }
+      ]
+    },
+    {
+      "reason": "Home card cascade symbols the carried home/search archives need and the pinned tree lacks (roadmap seeds: AppPressShiftContent, HomeOverlayPillButton).",
+      "closedBy": "fnd-home-card-cascade-definers",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.components.AppPressShiftContent"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.home.resolveOldContentDividerContainerColor"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.home.components.HomeOverlayPillButton"
+        }
+      ]
+    },
+    {
+      "reason": "ForegroundSettleBudget is referenced by carried home archives and not declared (roadmap seed).",
+      "closedBy": "fnd-motion-gate-and-resource-hooks",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.lifecycle.ForegroundSettleBudget"
+        }
+      ]
+    },
+    {
+      "reason": "The carried danmaku archives call DanmakuContentRepository.invalidateDanmakuSegment, a member the pinned repository lacks (roadmap seed).",
+      "closedBy": "dmk-protocol-hardening",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.data.repository.DanmakuContentRepository.invalidateDanmakuSegment"
+        }
+      ]
+    },
+    {
+      "reason": "AccountScopedRequests arrived after the pinned tree; carried favorite/home archives import it.",
+      "closedBy": "acct-account-scoped-requests",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.coroutines.AccountScopedRequests"
+        }
+      ]
+    },
+    {
+      "reason": "CommentFraudFeedbackHost is imported by the carried v046 comment-list archive and not carried.",
+      "closedBy": "cmt-closure-merge-and-polish",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.video.ui.components.CommentFraudFeedbackHost"
+        }
+      ]
+    },
+    {
+      "reason": "Bangumi player feature symbols imported by the carried v046 comment-list archive.",
+      "closedBy": "bgm-player-viewmodel-and-features",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerFeatures"
+        }
+      ]
+    },
+    {
+      "reason": "Bangumi player feature symbols imported by the carried v046 comment-list archive. Ownership of these symbols by bgm-player-viewmodel-and-features is the gap author's inference: that slice's roadmap text does not name rememberBangumiSubtitles. Its owner must confirm or reassign them when the slice is reached.",
+      "closedBy": "bgm-player-viewmodel-and-features",
+      "closedByEvidence": "proposed",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.bangumi.ui.player.rememberBangumiSubtitles"
+        }
+      ]
+    },
+    {
+      "reason": "DynamicReactionSheet is called by carried comment archives; the pinned tree has no definer.",
+      "closedBy": "dyn-category-merge-and-detail-return",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.dynamic.components.DynamicReactionSheet"
+        }
+      ]
+    },
+    {
+      "reason": "Instant-article symbols called by the carried favorite-search archive.",
+      "closedBy": "rss-reader-page-repin",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.web.InstantArticleScreen"
+        }
+      ]
+    },
+    {
+      "reason": "Instant-article symbols called by the carried favorite-search archive. Ownership of these symbols by rss-reader-page-repin is the gap author's inference: that slice's roadmap text does not name shouldAttemptInstantArticle. Its owner must confirm or reassign them when the slice is reached.",
+      "closedBy": "rss-reader-page-repin",
+      "closedByEvidence": "proposed",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.web.shouldAttemptInstantArticle"
+        }
+      ]
+    },
+    {
+      "reason": "AppFloatingToolbar is imported by carried favorite/tab-role archives and absent from the pinned design-system.",
+      "closedBy": "fnd-sheet-motion-and-glyph",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.components.AppFloatingToolbar"
+        }
+      ]
+    },
+    {
+      "reason": "Wallpaper selection, transform, palette and playback symbols the carried seed-palette, liquid-value and favorite-search archives reference.",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.store.home.HomeWallpaperSelection"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.WallpaperPlaybackCoordinator"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.store.home.HomeWallpaperSelection"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.profile.HomeWallpaperAdjustmentSheet"
+        }
+      ]
+    },
+    {
+      "reason": "Wallpaper selection, transform, palette and playback symbols the carried seed-palette, liquid-value and favorite-search archives reference. Ownership of these symbols by wallpaper-foundation-and-adjust is the gap author's inference: that slice's roadmap text does not name LocalHomeWallpaperSelection, LocalWallpaperPlaybackCoordinator, WallpaperPaletteRequest, WallpaperPaletteResult, readSeedWallpaperColorScheme, readSystemWallpaperSeed, rememberIsStaticWallpaper, shouldRenderRootHomeWallpaperMedia. For WallpaperTransform and sanitizeWallpaperTransform the inference is narrower: the slice names WallpaperTransformPolicy.kt (upstreamFiles and firstStep), the file that declares both at d6bf8b16, but names neither symbol. Its owner must confirm or reassign them when the slice is reached.",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "proposed",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.theme.readSeedWallpaperColorScheme"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.theme.readSystemWallpaperSeed"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.LocalHomeWallpaperSelection"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.LocalWallpaperPlaybackCoordinator"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.WallpaperTransform"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.sanitizeWallpaperTransform"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.home.components.cards.WallpaperPaletteRequest"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.home.components.cards.WallpaperPaletteResult"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.home.shouldRenderRootHomeWallpaperMedia"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.LocalHomeWallpaperSelection"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.rememberIsStaticWallpaper"
+        }
+      ]
+    },
+    {
+      "reason": "Dark-theme schedule symbols referenced by the carried seed-palette and comment-list archives.",
+      "closedBy": "theme-palette-presets-and-schedule",
+      "closedByEvidence": "roadmap",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.settings.DarkThemeSchedule"
+        }
+      ]
+    },
+    {
+      "reason": "Dark-theme schedule symbols referenced by the carried seed-palette and comment-list archives. Ownership of these symbols by theme-palette-presets-and-schedule is the gap author's inference: that slice's roadmap text does not name isScheduledDarkTheme, normalizeDarkThemeSchedule. Its owner must confirm or reassign them when the slice is reached.",
+      "closedBy": "theme-palette-presets-and-schedule",
+      "closedByEvidence": "proposed",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.settings.isScheduledDarkTheme"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.settings.normalizeDarkThemeSchedule"
+        }
+      ]
+    },
+    {
+      "reason": "Verbatim upstream file in a carried slice archive references a symbol that no compiled, carried or vendored source declares. The producers adapt or never emit the referencing declaration today; whichever slice emits it whole must first bring the definer. No roadmap slice names this symbol yet; the owner of the first slice that emits the referencing file must assign it.",
+      "closedBy": "none-assigned",
+      "closedByEvidence": "unassigned",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.LocalVideoDetailNavigationTransitionScope"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.rememberCompatibleStaggeredGridState"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.rememberHomeStaggeredGridState"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.ui.transition.BlurRenderEffectCache"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.home.components.cards.LocalHomeCardScrolling"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.home.components.cards.LocalHomeCardTransitionRunning"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.video.ui.components.landscapeEndDrawerPadding"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.store.StartupAnimationStyle"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.store.shouldShowMaidStartup"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.ui.HomeStaggeredGridStateSaver"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.ui.createHomeStaggeredGridState"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.ui.transition.resolveNowPlayingBarMediaLayoutHandoff"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.ui.transition.shouldDeferVideoCardSourceHeavyWork"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.core.util.prefersTextureVideoSurface",
+          "reason": "Verbatim upstream file in a carried slice archive references prefersTextureVideoSurface, which no compiled, carried or vendored source declares. The roadmap names it only as an exclusion (v032-android-service-surface-build is superseded-by-desktop: the Windows media service replaces prefersTextureVideoSurface with false), so no slice brings it and the first slice that emits the referencing file must apply that replacement."
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.bangumi.bangumiBrandBadgeColors"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.download.DownloadManager.awaitInitialization"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.download.DownloadManager.isInitialized"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.video.screen.resolveVideoNavigationStartInFullscreen"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-qualified",
+          "symbol": "com.android.purebilibili.feature.video.ui.section.VideoDescriptionAndTags"
+        }
+      ]
+    },
+    {
+      "reason": "Heuristic false positive of the name scan: withTimeoutOrNull is a member of AwaitPointerEventScope, called inside awaitEachGesture; the gate cannot see implicit receivers (stated heuristic limit).",
+      "closedBy": "none (heuristic limit)",
+      "closedByEvidence": "unassigned",
+      "gaps": [
+        {
+          "scope": "compiled",
+          "check": "unresolved-name",
+          "symbol": "withTimeoutOrNull",
+          "paths": [
+            "build/generated/original-video-player-section-full/*/DesktopOriginalPlayerTapGestures.kt"
+          ]
+        }
+      ]
+    }
+  ],
+  "latent": [
+    {
+      "symbol": "resolveVideoDisplayProgressState",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.data.model",
+      "reason": "Upstream v0.4.6 moved the policy into core-data; planned slices import it from data.model, the pinned tree declares it in feature.list only (roadmap seed).",
+      "evidence": "d6bf8b16:app-tv/src/main/java/com/android/bilipai/tv/ui/TvApp.kt:65 imports com.android.purebilibili.data.model.resolveVideoDisplayProgressState",
+      "closedBy": "fnd-core-data-relocated-policies",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "resolveWallpaperGlassAlpha",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.home.components.cards",
+      "reason": "Called by v0.4.x VideoCard.kt (carried, unresolved bare call); its definer is not carried (roadmap seed).",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt:108 declares it",
+      "closedBy": "fnd-home-card-cascade-definers",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "parseFailed",
+      "kind": "identifier",
+      "reason": "DanmakuProto.DanmakuSegReply.parseFailed (v0.4.x) is read by DanmakuParser; the pinned danmaku-engine never mentions it (roadmap seed: DanmakuProto.parseFailed).",
+      "evidence": "d6bf8b16:danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt:39",
+      "closedBy": "dmk-protocol-hardening",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "failedSegmentCount",
+      "kind": "identifier",
+      "reason": "Added to the danmaku parse result after the pinned tree; carried DanmakuManager archives read it (roadmap seed).",
+      "evidence": "d6bf8b16:danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/AdvancedDanmakuData.kt:181",
+      "closedBy": "dmk-protocol-hardening",
+      "closedByEvidence": "roadmap"
+    }
+  ],
+  "retiredSeeds": [
+    {
+      "symbol": "reducedMotion",
+      "kind": "member",
+      "owner": "AppBottomSheetMotion",
+      "reason": "Roadmap seed AppBottomSheetMotion.reducedMotion (Source260 compile errors in CommentContentReveal and CommentCascadingContent, 2 errors): upstream v0.4.6 declares the member and the pinned carried AppSheetComponents lacks it. RETIRED, not open: v046_comment_list.py emits the compat extension COMPAT_REDUCED_MOTION (internal val AppBottomSheetMotion.reducedMotion, constant false) as DesktopOriginalCommentMotionCompat.kt, so the reads have a definer today. The slice fnd-sheet-motion-and-glyph replaces that shim with the real member, which also satisfies this check. The gate fails if the symbol loses every definer.",
+      "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt:438 declares \"val reducedMotion: Boolean = false\" in AppBottomSheetMotion; the pinned copy of that file has no reducedMotion",
+      "retiredBy": "desktop/tools/v046_comment_list.py COMPAT_REDUCED_MOTION, emitted as DesktopOriginalCommentMotionCompat.kt",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: ChecksOnSyntheticTrees.test_member_the_type_lacks_is_flagged_and_a_compat_extension_retires_it, ExpectedGapsTests.test_retired_seeds_must_keep_a_definer, CurrentIntegrationTree.test_the_compat_extension_retires_the_twelfth_seed_in_the_real_tree; test_v046_comment_list_source.py pins the compat text",
+      "closedBy": "fnd-sheet-motion-and-glyph",
+      "closedByEvidence": "roadmap"
+    }
+  ],
+  "syntheticDefiners": [
+    {
+      "package": "com.bilipai.desktop.diagnostics",
+      "names": [
+        "DesktopNativeDiagnosticShareAssetHash"
+      ],
+      "reason": "Written by prepare-native-diagnostic-share.py, which compiles a native DLL with MSVC; the gate does not run it."
+    },
+    {
+      "package": "com.bilipai.desktop.plugins.js",
+      "names": [
+        "DESKTOP_JS_WORKER_CATALOG_SHA256"
+      ],
+      "reason": "Written by prepare-js-worker.py, which needs a downloaded JDK and a Maven graph; the gate does not run it."
+    }
+  ]
+}
