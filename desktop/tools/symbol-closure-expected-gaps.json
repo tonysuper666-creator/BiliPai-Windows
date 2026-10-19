@@ -299,11 +299,6 @@
           "scope": "carried",
           "check": "unresolved-qualified",
           "symbol": "com.android.purebilibili.feature.video.screen.resolveVideoNavigationStartInFullscreen"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.feature.video.ui.section.VideoDescriptionAndTags"
         }
       ]
     },
@@ -510,6 +505,17 @@
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_glyph_toolbar_pickers_source.py",
       "closedBy": "fnd-sheet-motion-and-glyph",
       "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "VideoDescriptionAndTags",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.video.ui.section",
+      "reason": "Carried-reference gap VideoDescriptionAndTags: the carried v0.4.6 TabletVideoLayout.kt (v046-comment-list) calls the shared rich description and tags that v0.4.6 split out of VideoTitleWithDesc. CLOSED by the whole v0.4.6 VideoInfoSection.kt carried in desktop/upstream-slices/v046-video-info-section: the detail units producer emits the complete function (with the file-private OwnerStatsRow it shares a file with) into DesktopOriginalVideoInfoSection.kt, and VideoTitleWithDesc calls it. The roadmap slice vid-info-section-repin names VideoInfoSection.kt (upstreamFiles, firstStep) but not this symbol, so closedBy is an inference from the file. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt declares fun VideoDescriptionAndTags; the carried v046-comment-list TabletVideoLayout.kt:1732 calls it",
+      "retiredBy": "desktop/upstream-slices/v046-video-info-section (VideoInfoSection.kt, selected by desktop/tools/extract-upstream-video-detail-full-units.py into DesktopOriginalVideoInfoSection.kt)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_video_info_section_source.py",
+      "closedBy": "vid-info-section-repin",
+      "closedByEvidence": "proposed"
     }
   ],
   "syntheticDefiners": [

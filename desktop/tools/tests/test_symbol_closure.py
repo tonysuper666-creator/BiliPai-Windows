@@ -1753,6 +1753,7 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.core.coroutines', 'AccountScopedRequests'),
     ('com.android.purebilibili.feature.home.components.cards', 'resolveWallpaperGlassAlpha'),
     ('com.android.purebilibili.core.ui.components', 'AppFloatingToolbar'),
+    ('com.android.purebilibili.feature.video.ui.section', 'VideoDescriptionAndTags'),
 )
 # closed by the v046 danmaku protocol slice (members and identifiers, not top-level declarations)
 DANMAKU_SEEDS = ('invalidateDanmakuSegment', 'parseFailed', 'failedSegmentCount')

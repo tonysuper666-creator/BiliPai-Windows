@@ -24,5 +24,10 @@ def generate_slots(output):
     for name in ['VideoCommentSkeletonSlots.kt','VideoCommentRefreshContainer.kt']:
         row=next(r for r in PINS if r['filename']==name)
         target=output/'com/android/purebilibili'/row['path'].split('com/android/purebilibili/')[1]
-        target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(sources[row['path']].encode());result.append(target)
+        body=sources[row['path']].encode()
+        if name=='VideoCommentRefreshContainer.kt':
+            # Roadmap vid-info-section-repin: the stable refresh box is the whole v0.4.6 file, not the v0.3.6 copy above.
+            from v046_video_info_section import refresh_container_bytes
+            body=refresh_container_bytes()
+        target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(body);result.append(target)
     return result

@@ -186,10 +186,13 @@ class CarriedConfirmationTests(unittest.TestCase):
         self.assertEqual(8, sum(calls.values()))
         windows = {name: sum(1 for sites in follow.SITES.values() for site in sites if site['upstream'] == name)
                    for name in follow.UPSTREAM}
-        self.assertEqual(7, sum(windows.values()))
-        self.assertEqual({'VideoPlayerComponents.kt': 1}, {name: count - windows.get(name, 0)
-                                                           for name, count in calls.items() if count != windows.get(name, 0)},
-                         'only the uncompiled VideoPlayerComponents site has no Windows counterpart')
+        self.assertEqual(6, sum(windows.values()))
+        # Two of the eight upstream sites are not Windows hunks: the uncompiled VideoPlayerComponents site and the video
+        # detail owner row, which is upstream text since the v046-video-info-section re-pin (vid-info-section-repin).
+        self.assertEqual({'VideoPlayerComponents.kt': 1, 'VideoInfoSection.kt': 1},
+                         {name: count - windows.get(name, 0)
+                          for name, count in calls.items() if count != windows.get(name, 0)},
+                         'only the uncompiled VideoPlayerComponents site and the upstream-text owner row have no hunk')
 
 
 class GeneratedOutputTests(unittest.TestCase):
@@ -204,7 +207,7 @@ class GeneratedOutputTests(unittest.TestCase):
         load('extract-upstream-video-player-full-controls.py', 'ess_controls').generate(
             REPO, cls.root / 'controls', False, cls.root / 'controls-tests')
         load('extract-upstream-video-detail-holder.py', 'ess_holder').generate(REPO, cls.root / 'holder')
-        cls.roots = {follow.UP_PREVIEW: 'pager', follow.PORTRAIT: 'pager', follow.INFO: 'units',
+        cls.roots = {follow.UP_PREVIEW: 'pager', follow.PORTRAIT: 'pager',
                      follow.METADATA: 'meta', follow.OVERLAY: 'controls'}
 
     @classmethod
@@ -338,9 +341,9 @@ class GeneratedOutputTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 follow.validate_outputs(REPO, REPO / follow.ARCHIVE / 'child')
             with self.assertRaises(ValueError):
-                follow.apply_and_record(REPO, follow.INFO, peel(
-                    text_of(self.root / 'units' / follow.INFO),
-                    json.loads((self.root / 'units' / follow.PROOF_DIRECTORY / 'DesktopOriginalVideoInfoSection.kt.json').read_bytes())),
+                follow.apply_and_record(REPO, follow.METADATA, peel(
+                    body_of(follow.METADATA, text_of(self.root / 'meta' / follow.METADATA)),
+                    json.loads((self.root / 'meta' / follow.PROOF_DIRECTORY / 'DesktopOriginalVideoMetadata.kt.json').read_bytes())),
                     REPO / follow.ARCHIVE / 'child')
         self.assertEqual({follow.LEAF, 'LICENSE', 'manifest.json'}, {p.name for p in (REPO / follow.ARCHIVE).iterdir()})
 
@@ -395,6 +398,26 @@ class GeneratedOutputTests(unittest.TestCase):
                     follow.apply_and_record(REPO, relative, body_of(relative, text_of(base / relative)), out)
             self.assertEqual(original, follow.apply_and_record(REPO, relative + '.other', original, out))
         self.assertFalse(out.exists())
+
+    def test_the_video_detail_owner_row_is_upstream_text_and_has_no_windows_hunk(self):
+        # vid-info-section-repin: the detail units producer emits the owner row from the whole v0.4.6 VideoInfoSection.kt,
+        # which already guards its follow button. This module therefore owns no site of that file's owner row.
+        info = 'com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt'
+        self.assertNotIn(info, follow.SITES)
+        self.assertFalse(hasattr(follow, 'INFO'))
+        text = text_of(self.root / 'units' / info)
+        self.assertEqual(1, text.count(follow.IMPORT_LINE))
+        self.assertEqual(1, text.count(follow.FUNCTION + '('))
+        self.assertIn('onClick = rememberFollowActionWithConfirmation(\n'
+                      '                    targetKey = info.owner.mid,\n'
+                      '                    userName = info.owner.name,\n'
+                      '                    isFollowing = isFollowing,\n'
+                      '                    onFollowClick = onFollowClick,\n'
+                      '                ),\n', text)
+        self.assertEqual([], list((self.root / 'units').rglob('DesktopOriginalVideoInfoSection.kt.json')))
+        # A foreign body for that output is not silently edited either: there is nothing to edit.
+        self.assertEqual(text, follow.apply_and_record(REPO, info, text, self.root / 'rejected-info'))
+        self.assertFalse((self.root / 'rejected-info').exists())
 
     def test_the_space_header_edit_applies_once_to_the_pinned_anchor_through_the_producer_edit_closure(self):
         site = follow.SITES[follow.SPACE][0]

@@ -7,7 +7,12 @@ SELECTED_SOURCE_FILES={
   'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt':'VideoEngagementViewModel.kt',
   'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt':'VideoActionSection.kt',
   'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt':'VideoInfoSection.kt',
+  'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt':'VideoInfoDisplayPolicy.kt',
 }
+# Roadmap vid-info-section-repin: the action section, the information section and the information display policy are
+# selected from the whole v0.4.6 files of v046-video-info-section (selected_source_identity asks that module first, so
+# the leaf names above are only the seed names of the older copies); the view model stays on the v0.3.7 seed. The seed
+# archive still carries the older VideoActionSection.kt and VideoInfoSection.kt unchanged, nothing reads them now.
 
 def fixed_sources():
     root=Path(__file__).resolve().parent.parent/'upstream-slices/v037-player-interaction-seed'
@@ -205,6 +210,9 @@ internal class DesktopOriginalVideoWatchLaterMutations(
 
 
 def selected_source_identity(path):
+    from v046_video_info_section import selected_source_identity as repinned_identity
+    repinned=repinned_identity(path,Path(__file__).resolve().parents[2])
+    if repinned is not None:return repinned
     filename=SELECTED_SOURCE_FILES.get(path)
     if filename is None:return None
     text=fixed_sources()[filename]

@@ -9,6 +9,11 @@ window shows (a plain in-canvas alert can sit under the heavyweight MPV canvas).
 hash-pinned replacements on the generated Windows text of the producer that already owns each file; the vendored
 originals and every other archive stay untouched.
 
+Update (vid-info-section-repin): the owner row of the video detail is now emitted from the whole v0.4.6
+VideoInfoSection.kt, which already contains this call, so that site is retired here: seven of the eight upstream call
+sites are hunks of this module before the re-pin, six after it (UpPreviewSheet, PortraitFullscreenOverlay x2, the
+creator team chip, the landscape end drawer and the space header), and the owner row is upstream text.
+
 Audit of the six roadmap entries this slice covers (vid-engagement-state-safety), done / partial / deferred:
 - v030-like-toggle-survives-detail-exit: done as a deliberate Windows deviation (v046_like_write_guard.py).
 - v036-unknown-state-phone-audio-story-leftovers: partial. Done: the phone-width detail content forwards both known
@@ -74,8 +79,10 @@ OWNER_EDIT_TOAST = '可在「我的」页面编辑个人资料'
 PKG = 'com/android/purebilibili/'
 UP_PREVIEW = PKG + 'feature/video/ui/components/UpPreviewSheet.kt'
 PORTRAIT = PKG + 'feature/video/ui/overlay/PortraitFullscreenOverlay.kt'
-INFO = PKG + 'feature/video/ui/section/DesktopOriginalVideoInfoSection.kt'
-METADATA = PKG + 'feature/video/ui/section/DesktopOriginalVideoMetadata.kt'
+# The video detail owner row (DesktopOriginalVideoInfoSection.kt) is no longer a site of this module: since the
+# v046-video-info-section re-pin (vid-info-section-repin) the emitted UpInfoSection is the v0.4.6 text, which already
+# calls rememberFollowActionWithConfirmation. The creator team chip below still comes from the v0.2.5 file.
+METADATA =PKG + 'feature/video/ui/section/DesktopOriginalVideoMetadata.kt'
 OVERLAY = PKG + 'feature/video/ui/overlay/VideoPlayerOverlay.kt'
 SPACE = PKG + 'feature/space/SpaceScreen.kt'
 
@@ -131,18 +138,6 @@ SITES = {
                '                                },\n'
                '                            ),\n'
                '                        )\n'))],
-    INFO: [dict(
-        label='Video detail UP row follow button: unfollow asks first', upstream='VideoInfoSection.kt',
-        args=('info.owner.mid', 'info.owner.name', 'isFollowing'),
-        before=('                onClick = onFollowClick,\n'
-                '                enabled = followStatusKnown,\n'),
-        after=('                onClick = rememberFollowActionWithConfirmation(\n'
-               '                    targetKey = info.owner.mid,\n'
-               '                    userName = info.owner.name,\n'
-               '                    isFollowing = isFollowing,\n'
-               '                    onFollowClick = onFollowClick,\n'
-               '                ),\n'
-               '                enabled = followStatusKnown,\n'))],
     METADATA: [dict(
         label='Creator team member chip: unfollow asks first', upstream='VideoInfoSection.kt',
         args=('member.mid', 'member.name', 'isFollowing'),

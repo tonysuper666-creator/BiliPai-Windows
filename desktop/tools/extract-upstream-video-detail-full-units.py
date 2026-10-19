@@ -19,6 +19,9 @@ def write(p,t):
 def save(p,v):write(p,json.dumps(v,ensure_ascii=False,indent=2)+'\n')
 def module(name,path):
     spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+# The VideoActionSection, VideoInfoSection and VideoInfoDisplayPolicy pins below are the v0.2.5 registry identities, kept so the
+# registry cross-check in generate() still binds them. Since vid-info-section-repin read() never reads those three from the
+# vendored tree: v037_player_interaction.selected_source_identity hands over the whole v0.4.6 files of v046-video-info-section.
 SOURCE_PINS = {'app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlay.kt': {'sha256LF': '9269462327088da5a4103e451776a9bb70a1cd098bdb71b54ee73d9b43ce8edb', 'gitBlob': '06ca05617b78fe065421b206fbcd3a25d0ed8618'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt': {'sha256LF': 'bfd4b78900bf0a1b04847ccccb4a18b6d0d445be258f00dcd3ff6f1ce1d71771', 'gitBlob': '5b4eaef8315ed17122ea8de8d4b872a74abdb46f'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt': {'sha256LF': '24f95b99fbb5d8c8830acd31880ff651091c62195407a9ef85f9317f0f498a2a', 'gitBlob': 'dc40151ea62138e5797360e59c4271ee5701939d'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/AnimatedGesturePercentText.kt': {'sha256LF': '512a6a361feb78e06487a1ce2711f078f4aca291a6e1645e6efa2225923659f7', 'gitBlob': 'ddbd93e59a1ea42bef236f420c901d23fe581eb8'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt': {'sha256LF': '964174cee6a0261a430094eb85af8008bf6d51555d11617da3053f4d3b5f5b78', 'gitBlob': 'f86b77fe3ef6250d0771b44f716b8e39c23089d1'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt': {'sha256LF': 'adfd21ce5b00af901c5a5857eba9427a195de8d7c812cd80745969f5d2b1f99c', 'gitBlob': '7e5e8366ea689e0bbf020c431db962d7868985d1'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt': {'sha256LF': '198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0', 'gitBlob': '1775313c3b78d802728b7ac9492a4ba8e27d07a0'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt': {'sha256LF': '799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a', 'gitBlob': '6b7c035b4afd4523f0a54fbf5f47c3e4234c2aae'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt': {'sha256LF': 'dff7b27b7f2bb8440faf8bdce9a9c1cdab91d0790b1106306fc6999d5bf9ca5d', 'gitBlob': 'ca0f4d62aff6111cd1945b8bb82245e1a0203202'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt': {'sha256LF': '84f95453d715ece786e29ee291570b52e6a40ae99336b77b53f065d68c7b5128', 'gitBlob': 'dd6ff4f3c33bfc4306ee60dc3f2b22298c0f3aef'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt': {'sha256LF': '28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785', 'gitBlob': 'e544093fce7111c8be8bb7bc54ad211f94004b00'}, 'design-system/src/main/java/com/android/purebilibili/core/ui/AppPlayerChromeProfile.kt': {'sha256LF': '678594826a55c05d161be7f52bd3c4bbdab1af46346458c64bc7027d060f0042', 'gitBlob': '1e82f0ce4b054335593787f19a510e7da960e879'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt': {'sha256LF': 'f24f729482b9deac38a4fa17c8e60a15b8be49d08b6d641cdacdd87902b28e32', 'gitBlob': 'dfe434f8d2727796fc8bc31c70340c109da5b969'}, 'app/src/main/java/com/android/purebilibili/core/ui/common/Modifiers.kt': {'sha256LF': 'ffb0a934822dc39744a56ec031875e813f8e2a055ed857f5dfc1db4e1e5a5fa2', 'gitBlob': '24e6b81e179fb0f778b2212e8f9fa7554ab5c57e'}, 'app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt': {'sha256LF': 'acf05cba9a89666533378eef35a21609484a02ccd874a460c259c3f3363d1e64', 'gitBlob': 'cbebfced03ada9944da60520a77f227bc05a0e29'}, 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': {'sha256LF': '5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c', 'gitBlob': '5d24281dc2152c1e2113ab3476418f61261cd15a'}, 'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt': {'sha256LF': 'e266056182d40e924535401011071fc61fcfc59738e9263076717f49765c47fa', 'gitBlob': '3a287fd3974b1fbf1dbc6b2907f97b828250b882'}, 'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoDomainBinding.kt': {'sha256LF': '73fcfd5af57e257658164b7adbd2b103c412686a91efa5b8db99d1f67a84f491', 'gitBlob': 'eb987f1b06e0a2339931c570ec2fd3754ae3fc14'}, 'app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt': {'sha256LF': '62c0eae9b9447cfd615a5972ab8f58be906ca2a0cee184ccd57cf8b997ebbb1f', 'gitBlob': '32c9a2eaad4e1c329a496cb7f4b486f55673a299'}, 'app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt': {'sha256LF': '63c0826814274dc8df583105b3dc796498da6ab41d1bd2c50491b52ef68c74d6', 'gitBlob': 'fde1e2268a673569315dc32368b629893d2c57b2'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt': {'sha256LF': '15d803c80018a16b4ca0bb37bf7b89bab65bb18e102bcd2c84fca991833fe822', 'gitBlob': 'ab7dc02a955cc11439eeb774289e45410611aba3'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt': {'sha256LF': 'ac32f597609d7fa820d04d4fe6b3fc6071fe94a431c22ca4ae9d20e90d1605e4', 'gitBlob': '0873e5808de0201dea49acdd3156fbefc1318150'}, 'app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt': {'sha256LF': 'd6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f', 'gitBlob': '377e9680841ef3c1f2edcc2aca3605008099606a'}, 'app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt': {'sha256LF': 'b8a96390d286964518caea6849afaeba075f5d3e8ac1cdb23b73af17feac6ccc', 'gitBlob': 'b25cb99570d4e5ac71e02209ce24353e30acc0ff'}}
 SOURCES={};OUTPUTS=[];ADAPTATIONS=[]
 def read(path):
@@ -140,8 +143,8 @@ def remove_function(t,name):
 
 def video_statistics_function(original):
     # Whole original VideoTitleWithDesc remains emitted separately. This actual
-    # Windows mount selects only its complete stats/time/BV portion, which is also
-    # unchanged in fixed released b2091b1de636e499df80af7e700796b4f52b7f92.
+    # Windows mount selects only its complete stats/time/BV portion of the
+    # v0.4.6 file (v046-video-info-section).
     body=func(original,'VideoTitleWithDesc')
     time_a='    val publishTimeRowText = remember(info.pubdate, info.tname, info.title) {'
     time_b='    val videoBadges = remember(info.isUpowerExclusive, info.isUpowerPreview, info.isCooperation) {'
@@ -157,6 +160,13 @@ def video_statistics_function(original):
         stats=adapt(stats,stats[start:end],'','Windows sibling stats outside Home shared-bounds: '+target)
     stats=adapt(stats,'        trailingStatsContent?.invoke()\n','','Existing mounted AI/note actions remain sole owners')
     stats=adapt(stats,'.copyOnClick(info.bvid, "BV号")','.clickable(onClick = onCopyBvid)','Source-admitted Windows clipboard callback replaces global Android copy modifier')
+    # v0.4.6: the statistics block itself toggles the introduction, and a collapsed introduction shows the declarations
+    # inline. The Windows introduction is always expanded (no collapse state) and its declarations belong to the
+    # metadata section, so both are left out of this mount instead of declaring state they would never use.
+    stats=adapt(stats,'            modifier = Modifier.weight(1f).clickable(\n                onClickLabel = if (expanded) "收起简介" else "展开简介",\n                onClick = toggleExpanded,\n            ),\n','            modifier = Modifier.weight(1f),\n','Windows introduction is always expanded: no statistics-block collapse toggle')
+    stats=adapt(stats,'        if (inlineDeclarations) {\n            Spacer(Modifier.height(4.dp))\n            if (argueMsg.isNotBlank()) VideoArgueMsgRow(argueMsg = argueMsg)\n            if (argueMsg.isNotBlank() && noReprint) Spacer(Modifier.height(2.dp))\n            if (noReprint) VideoArgueMsgRow(argueMsg = "未经作者授权，请勿转载")\n        }\n','','Collapsed inline declarations never show while expanded; the metadata section owns declarations')
+    for undeclared in ['toggleExpanded','inlineDeclarations','argueMsg','noReprint','trailingStatsContent']:
+        assert undeclared not in stats,('Windows statistics mount names state it does not declare',undeclared)
     return '@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)\n@Composable\ninternal fun DesktopOriginalVideoStatisticsRow(\n    info: ViewInfo,\n    onlineCount: String,\n    showOnlineCount: Boolean,\n    onCopyBvid: () -> Unit,\n) {\n    // The existing Windows introduction is already expanded. Keep the complete\n    // original statistics/time/BV content without adding another collapse state.\n    val expanded = true\n    val animateLayout = false\n'+time+'    Column(modifier = Modifier.fillMaxWidth()) {\n'+stats+'    }\n}\n'
 
 def main():
@@ -191,7 +201,9 @@ def main():
     header+='import coil3.compose.LocalPlatformContext\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoInfoBindings\nimport com.android.purebilibili.core.store.DesktopOriginalVideoInfoSettings as SettingsManager\n'
     pure=original[original.index('private val useMiuixSpring'):original.index('private const val BGM_DISCOVERY_LOAD_DELAY_MS')]
     bodies=[]
-    for name in ['VideoTitleSection','VideoDetailSponsorLabelChip','VideoTitleWithDesc','UpInfoSection','DescriptionSection']:
+    # v0.4.6 splits the rich description and tags out of VideoTitleWithDesc (VideoDescriptionAndTags, also called by the
+    # large-screen layouts) and draws the owner statistics with the file-private OwnerStatsRow.
+    for name in ['VideoTitleSection','VideoDetailSponsorLabelChip','VideoTitleWithDesc','VideoDescriptionAndTags','UpInfoSection','DescriptionSection','OwnerStatsRow']:
         body=func(original,name)
         body=body.replace('(String, android.os.Bundle?) -> Unit','(String, Long) -> Unit')
         body=body.replace('com.android.purebilibili.core.store.SettingsManager','SettingsManager')
@@ -203,10 +215,10 @@ def main():
         if name=='UpInfoSection':
             body=adapt(body,'    val playerControlVisibility by','    val VideoRepository = LocalDesktopOriginalVideoInfoBindings.current\n    val playerControlVisibility by','Capture actual info request binding')
             body=body.replace('LocalDesktopOriginalVideoInfoBindings.current.getCreatorCardStats(info.owner.mid)','VideoRepository.getCreatorCardStats(info.owner.mid)')
-            # v0.4.6 resolveUpNameColor reads `secondary` as the annual-VIP colour; this original still binds the theme colour.
-            from v046_identity_badge_palette import up_name_vip_pink
-            pinkBefore,pinkAfter=up_name_vip_pink('VideoInfoSection.kt',body)
-            body=adapt(body,pinkBefore,pinkAfter,'Owner name annual VIP colour is userVipPink() as in v0.4.6')
+            # The v0.4.6 owner row already passes userVipPink() to resolveUpNameColor and already guards the follow button
+            # with rememberFollowActionWithConfirmation: no Windows hunk is needed for either any more.
+            assert body.count('val secondaryColor = com.android.purebilibili.core.ui.components.userVipPink()')==1
+            assert body.count('rememberFollowActionWithConfirmation(')==1
         body=body.replace('InlineBgmSection(','DesktopOriginalInlineBgmSection(')
         if name=='VideoTitleWithDesc':
             body=body.replace('SettingsManager\n        .getVideoArgueMsgShown(context)','com.android.purebilibili.core.store.DesktopOriginalVideoMetadataSettings\n        .getVideoArgueMsgShown(context)')
@@ -532,6 +544,8 @@ internal class DesktopOriginalVideoCreatorCard(private val api:BilibiliApi,priva
 def generate(repo,output,standalone=False):
     global REPO,OUTPUT,STANDALONE,parser,media,selector,SOURCES,OUTPUTS,ADAPTATIONS
     REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone
+    from v046_video_info_section import validate_outputs as validate_video_info_outputs
+    validate_video_info_outputs(REPO,OUTPUT)
     SOURCES={};OUTPUTS=[];ADAPTATIONS=[]
     manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
     assert manifest['upstreamCommit']==COMMIT
@@ -544,6 +558,9 @@ def generate(repo,output,standalone=False):
     main()
     from v037_video_action_anchors import emit as emit_video_anchors
     emit_video_anchors(OUTPUT,OUTPUTS)
+    # v0.4.6 count text, triple-press state and first-batch plan: whole upstream files, written unchanged.
+    from v046_video_info_section import emit_verbatim_leaves
+    emit_verbatim_leaves(REPO,OUTPUT,OUTPUTS)
     save(OUTPUT/'v037-detail-complete-output-readback.json',dict(outputs=OUTPUTS,
         mainCompiled=False,sourceQualified=False,pixelsValidated=False))
 if __name__=='__main__':generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone' in sys.argv[3:])

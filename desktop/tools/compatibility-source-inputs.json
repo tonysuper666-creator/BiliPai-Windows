@@ -156,7 +156,8 @@
     "desktop/upstream-slices/v046-image-viewer",
     "desktop/upstream-slices/v046-chrome-glass-tuning",
     "desktop/upstream-slices/v046-home-card-tint-policy",
-    "desktop/upstream-slices/v046-glyph-toolbar-pickers"
+    "desktop/upstream-slices/v046-glyph-toolbar-pickers",
+    "desktop/upstream-slices/v046-video-info-section"
   ],
   "archives": [
     {
@@ -6923,6 +6924,65 @@
           "sha256": "cb68980d5a0c7c3d60ff6d00eb714c06551f4d180ac7b245013ea2d0084251eb",
           "hashNormalization": "raw",
           "blob": "77c6c43408a42f0ae2172e5c81424b0490b20c22"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-video-info-section",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/manifest.json",
+          "sha256": "7fb458ce28a398e53628dc779bd9382649b324b15505e49ca85fb342b011f6b2",
+          "hashNormalization": "raw",
+          "blob": "6639485d77753935e4f9ec688ddc1888b639576b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/PlaybackPostLoadPlan.kt",
+          "sha256": "91a7681fe1e7cc2e242f29be6e690147a61778ae048b772c9af0edd3919ad18e",
+          "hashNormalization": "raw",
+          "blob": "745a63f1e82a7a61ce6100f8472d191af965c65a"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/VideoActionCountText.kt",
+          "sha256": "1f6cece2a1fd78a011e15ad319fe9bd792baf17a5463a5822532523691889ffb",
+          "hashNormalization": "raw",
+          "blob": "7dee489708bbd5181d9df31f6ab65cce82b6e215"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/VideoActionSection.kt",
+          "sha256": "6237ff3bc75b230d34a4476dd6cc8808a96b8a6553ce32fbbec09db44c817656",
+          "hashNormalization": "raw",
+          "blob": "78926db78a8c3a8bcca871910c75d7df925a596a"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/VideoCommentRefreshContainer.kt",
+          "sha256": "fd6a39dd5b2508c5681415204c0c474f070ad89a8d6d5271b4b44087daf78037",
+          "hashNormalization": "raw",
+          "blob": "739839367ecbbd1c7be41252fd0a3689882dd62a"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/VideoInfoDisplayPolicy.kt",
+          "sha256": "081b7fc9cb7e9e2c441ff3bcbc74050f9cd4be0d2c80841a0bdf0279d4f840cd",
+          "hashNormalization": "raw",
+          "blob": "38d51f88317f1c4f4f911985e213c9805abc2e98"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/VideoInfoSection.kt",
+          "sha256": "c6cd1f9c4b7260d1c3a5bd4c3cbda5bfe02a56840d5bd34a278c2116f9615612",
+          "hashNormalization": "raw",
+          "blob": "23108f5f17a2ba7a3bf89ecc400492441cb65666"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-video-info-section/VideoTriplePressState.kt",
+          "sha256": "85ba6a286a0c6dbec1ece9484c3e333741c185044053c5a6b301c29e43af1e1e",
+          "hashNormalization": "raw",
+          "blob": "d211956ad5ff11907ac65a7cee6cc0385c4e8188"
         }
       ]
     }
@@ -18213,6 +18273,111 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 appIconGlyphTextStyle (AppPrimitiveThemeDefaults), AppNumberPicker, AppDurationPicker, AppFloatingToolbar and AppWindowActionMenu with native cascading popups, emitted by the dynamic-detail-container producer. The direct-mode AppPrimitiveThemeDefaults and AppWindowActionMenu copies are excluded; AppPrimitiveThemeDefaults omits the Android font padding copy. No call sites are added."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "localPath": "desktop/upstream-slices/v046-video-info-section/VideoInfoSection.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "23108f5f17a2ba7a3bf89ecc400492441cb65666",
+      "sha256": "c6cd1f9c4b7260d1c3a5bd4c3cbda5bfe02a56840d5bd34a278c2116f9615612",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-video-info-section"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole v0.4.6 file. The detail units producer selects the title, sponsor label, title with statistics, VideoDescriptionAndTags, owner row with OwnerStatsRow and description declarations, the description patterns and the statistics row from it (hash-pinned Windows bindings); the honor, team and BGM renderers stay on the v0.2.5 file in their own producers. Includes the topic pattern fix, the selectable title and the owner statistics row."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-video-info-section/VideoInfoDisplayPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "38d51f88317f1c4f4f911985e213c9805abc2e98",
+      "sha256": "081b7fc9cb7e9e2c441ff3bcbc74050f9cd4be0d2c80841a0bdf0279d4f840cd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-video-info-section"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole v0.4.6 file. The detail units producer emits every declaration except the five that the metadata and Home card producers own (resolveVideoDetailOwnerStatsLabels is the new one)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "localPath": "desktop/upstream-slices/v046-video-info-section/VideoActionSection.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "78926db78a8c3a8bcca871910c75d7df925a596a",
+      "sha256": "6237ff3bc75b230d34a4476dd6cc8808a96b8a6553ce32fbbec09db44c817656",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-video-info-section"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole v0.4.6 file selected by the detail units producer; TripleProgressIcon stays with the profile producer and the dark theme read uses the Windows port."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionCountText.kt",
+      "localPath": "desktop/upstream-slices/v046-video-info-section/VideoActionCountText.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7dee489708bbd5181d9df31f6ab65cce82b6e215",
+      "sha256": "1f6cece2a1fd78a011e15ad319fe9bd792baf17a5463a5822532523691889ffb",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-video-info-section"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (v0.4.3 count motion), written by the detail units producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoTriplePressState.kt",
+      "localPath": "desktop/upstream-slices/v046-video-info-section/VideoTriplePressState.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d211956ad5ff11907ac65a7cee6cc0385c4e8188",
+      "sha256": "85ba6a286a0c6dbec1ece9484c3e333741c185044053c5a6b301c29e43af1e1e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-video-info-section"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (v0.4.3 triple-press state machine), written by the detail units producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentRefreshContainer.kt",
+      "localPath": "desktop/upstream-slices/v046-video-info-section/VideoCommentRefreshContainer.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "739839367ecbbd1c7be41252fd0a3689882dd62a",
+      "sha256": "fd6a39dd5b2508c5681415204c0c474f070ad89a8d6d5271b4b44087daf78037",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-video-info-section"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (v0.3.9 stable refresh box), written by the video comment producer in place of the v0.3.6 copy."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt",
+      "localPath": "desktop/upstream-slices/v046-video-info-section/PlaybackPostLoadPlan.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "745a63f1e82a7a61ce6100f8472d191af965c65a",
+      "sha256": "91a7681fe1e7cc2e242f29be6e690147a61778ae048b772c9af0edd3919ad18e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-video-info-section"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (0 ms first-batch tags and interaction state), written by the detail units producer; the vendored direct copy is excluded."
     }
   ],
   "buildStandaloneInputs": [

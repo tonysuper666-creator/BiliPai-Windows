@@ -99,8 +99,10 @@ CALLEES = {
 }
 
 
-# The three compiled owners that still passed the theme secondary to resolveUpNameColor, with the v0.4.6 file whose call
-# the producers now match and the generated output each producer writes.
+# The two compiled owners that still pass the theme secondary to resolveUpNameColor, with the v0.4.6 file whose call
+# the producers now match and the generated output each producer writes. The third owner of the first version of this
+# slice, the video detail owner row, is emitted from the whole v0.4.6 VideoInfoSection.kt since vid-info-section-repin
+# and binds userVipPink() itself (VIDEO_INFO_OWNER below).
 UP_NAME_OWNERS = {
     'DynamicCard.kt': dict(
         upstream='app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt',
@@ -110,12 +112,11 @@ UP_NAME_OWNERS = {
         upstream='app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt',
         output='com/android/purebilibili/feature/space/SpaceScreen.kt',
         generated='build/generated/original-space-pages/', producer='extract-upstream-space-pages.py'),
-    'VideoInfoSection.kt': dict(
-        upstream='app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt',
-        output='com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt',
-        generated='build/generated/original-video-detail-units/',
-        producer='extract-upstream-video-detail-full-units.py'),
 }
+VIDEO_INFO_OWNER = dict(
+    upstream='app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt',
+    output='com/android/purebilibili/feature/video/ui/section/DesktopOriginalVideoInfoSection.kt',
+    generated='build/generated/original-video-detail-units/')
 # A finished producer mirror (check_slice_symbol_closure.py --keep-scratch, the directory named r) may be shared with
 # the symbol gate so that the universe class below does not run every producer again.
 SHARED_MIRROR = 'BP_IDENTITY_BADGE_MIRROR'
@@ -562,8 +563,8 @@ class V046IdentityBadgePaletteSourceTest(unittest.TestCase):
                 self.assertEqual(1, prepared.count(line), line)
                 self.assertEqual(1, model.sync_excludes.count(path))
         block = task_block(build, 'extractOriginalHomePage')
-        # The home task also reads the archive; the three producers below only call the generator's rewrite helper.
-        for literal, total in (('inputs.file("tools/v046_identity_badge_palette.py")', 4),
+        # The home task also reads the archive; the two producers below only call the generator's rewrite helper.
+        for literal, total in (('inputs.file("tools/v046_identity_badge_palette.py")', 3),
                                ('inputs.dir("upstream-slices/v046-identity-badge-palette")', 1)):
             self.assertEqual(total, build.count(literal), literal)
             self.assertEqual(1, block.count(literal), literal)
@@ -576,9 +577,11 @@ class V046IdentityBadgePaletteSourceTest(unittest.TestCase):
         self.assertNotIn('v046_identity_badge_palette', full)
         self.assertNotIn('v046-identity-badge-palette', full)
         self.assertEqual(1, build.count('v046-identity-badge-palette'))
-        # The generator is an input of the home task and of the three producers that call up_name_vip_pink.
-        self.assertEqual(4, build.count('v046_identity_badge_palette'))
-        for task in ('extractUpstreamDynamicFullCard', 'extractOriginalVideoDetailUnits', 'extractOriginalSpacePages'):
+        # The generator is an input of the home task and of the two producers that call up_name_vip_pink. The detail
+        # units producer stopped calling it when the owner row became the whole v0.4.6 text.
+        self.assertEqual(3, build.count('v046_identity_badge_palette'))
+        self.assertNotIn('v046_identity_badge_palette', task_block(build, 'extractOriginalVideoDetailUnits'))
+        for task in ('extractUpstreamDynamicFullCard', 'extractOriginalSpacePages'):
             with self.subTest(task=task):
                 producer_block = task_block(build, task)
                 self.assertEqual(1, producer_block.count('inputs.file("tools/v046_identity_badge_palette.py")'))
@@ -794,7 +797,7 @@ class V046IdentityBadgePaletteSourceTest(unittest.TestCase):
                                      for line in producer.splitlines()))
 
     def test_the_standalone_producers_change_exactly_the_pinned_line(self):
-        for name in ('DynamicCard.kt', 'VideoInfoSection.kt'):
+        for name in ('DynamicCard.kt',):
             owner, row = UP_NAME_OWNERS[name], palette.UP_NAME_MIGRATIONS[name]
             marker = row['before'][:-1] + ' // unmigrated\n'
             real, seen = palette.up_name_vip_pink, []
@@ -985,11 +988,16 @@ class V046IdentityBadgePaletteUniverseTest(unittest.TestCase):
         space_row = palette.UP_NAME_MIGRATIONS['SpaceScreen.kt']
         self.assertEqual([space_row['before']], [step['original'] for step in screen[0]['transforms']
                                                   if step['adapted'] == space_row['after']])
+        # The video detail owner row is the whole v0.4.6 text: it binds userVipPink() itself and no hunk of this
+        # slice (or any other) rewrites that line any more.
+        self.assertNotIn('VideoInfoSection.kt', palette.UP_NAME_MIGRATIONS)
+        info_text, info_secondaries = by_file[VIDEO_INFO_OWNER['generated'] + VIDEO_INFO_OWNER['output']]
+        self.assertEqual(['secondaryColor', 'secondaryColor'], info_secondaries)
+        self.assertEqual(1, info_text.count('val secondaryColor = ' + palette.USER_VIP_PINK + '\n'))
+        self.assertEqual(0, info_text.count('val secondaryColor = ' + palette.THEME_SECONDARY))
         bindings = json.loads((self.root / 'desktop/build/generated/original-video-detail-units/source-bindings.json')
                               .read_text(encoding='utf-8'))
-        video_row = palette.UP_NAME_MIGRATIONS['VideoInfoSection.kt']
-        self.assertEqual([video_row['before']], [edit['before'] for edit in bindings['adaptations']
-                                                  if edit['after'] == video_row['after']])
+        self.assertEqual([], [edit for edit in bindings['adaptations'] if 'VIP colour' in edit['label']])
 
     def test_nothing_reads_the_removed_user_up_badge_font_size_or_the_old_vip_names_policy(self):
         for source in self.compiled:

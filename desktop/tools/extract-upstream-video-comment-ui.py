@@ -18,6 +18,8 @@ def inventory(repo):
 def generate(repo,output):
     from v046_comment_polish import validate_outputs as validate_comment_polish_outputs
     validate_comment_polish_outputs(repo,output)
+    from v046_video_info_section import validate_outputs as validate_video_info_outputs
+    validate_video_info_outputs(repo,output)
     shared=mod(Path(__file__).with_name('extract-upstream-dynamic-reply-protocol.py'),'original_video_comment_identity')
     original,identities=shared.load_pinned_sources(repo,SOURCES)
     selections=[]

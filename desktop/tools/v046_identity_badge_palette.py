@@ -6,7 +6,7 @@ The home-page producer emits the complete v0.4.6 files instead; UserUpBadge.kt a
 Android-only PlatformTextStyle(includeFontPadding = false) argument. The home refresh wrapper
 emits the three upstream suites that exercise them into its original test root.
 
-v0.4.6 resolveUpNameColor takes the annual-VIP colour as its `secondary` argument. Three compiled owners are produced
+v0.4.6 resolveUpNameColor takes the annual-VIP colour as its `secondary` argument. Two compiled owners are produced
 from originals older than v0.4.6 and still pass the theme secondary; up_name_vip_pink() pins the one line each of
 their producers rewrites to userVipPink() (UP_NAME_MIGRATIONS). Every other compiled caller already passes it.
 """
@@ -112,11 +112,13 @@ PROOF_NAME = 'v046-identity-badge-palette-proof.json'
 TESTS_PROOF_NAME = 'v046-identity-badge-palette-tests-proof.json'
 # v0.4.6 resolveUpNameColor reads its `secondary` argument as the annual-VIP colour. v0.2.5 callers handed it the
 # theme secondary (an annual VIP name was the fixed FB7299 inside the old policy), so a caller that still passes the
-# theme colour would paint annual VIP names with the accent colour and lose the monthly highlight. Three compiled
+# theme colour would paint annual VIP names with the accent colour and lose the monthly highlight. Two compiled
 # owners are produced from originals older than v0.4.6 and keep that argument. Each row is the single line the
-# owning producer rewrites to the v0.4.6 argument (upstream DynamicCard.kt:552, SpaceScreen.kt:3266 and
-# VideoInfoSection.kt:1239). `argument`: the line is the secondary argument itself; `local`: the line binds the value
-# that every call passes. No other caller is touched: every other compiled owner already passes userVipPink().
+# owning producer rewrites to the v0.4.6 argument (upstream DynamicCard.kt:552 and SpaceScreen.kt:3266).
+# `argument`: the line is the secondary argument itself; `local`: the line binds the value that every call passes (no
+# row uses it now). No other caller is touched: every other compiled owner already passes userVipPink(). The third
+# owner, the video detail UpInfoSection (VideoInfoSection.kt:1239), is no longer produced from an older original: the
+# v046-video-info-section re-pin emits the v0.4.6 text, which already binds userVipPink(), so its row is retired.
 UP_NAME_CALLEE = 'resolveUpNameColor('
 UP_NAME_ARGUMENTS = ['vipStatus', 'vipType', 'onSurface', 'secondary']
 THEME_SECONDARY = 'MaterialTheme.colorScheme.secondary'
@@ -134,12 +136,6 @@ UP_NAME_MIGRATIONS = {
         after=' ' * 24 + 'secondary = ' + USER_VIP_PINK + ',\n',
         beforeSHA256='8ec9682ff89fda6e497d7e8948724beccaf87c2a873036c6cb54b7e9323519ad',
         afterSHA256='0237279c4c6002af31a99594362a16423cd7b463eb2c4002b4e0cce77fa2b08c'),
-    'VideoInfoSection.kt': dict(
-        producer='extract-upstream-video-detail-full-units.py', form='local', calls=2,
-        before=' ' * 16 + 'val secondaryColor = ' + THEME_SECONDARY + '\n',
-        after=' ' * 16 + 'val secondaryColor = ' + USER_VIP_PINK + '\n',
-        beforeSHA256='bc7f229f5db6e8090c6239eb322cfa70a5491c2828edff79d3d32157faab8a3e',
-        afterSHA256='5199b5dea861546e52a9140f8ef82ffe7df2e47b58387139f87136bfa063311f'),
 }
 
 

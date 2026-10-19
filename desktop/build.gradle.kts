@@ -288,6 +288,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         // The existing dynamic-detail-container producer owns the complete v0.4.6 glyph text style and window action menu.
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt"))
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt"))
+        // The detail units producer owns the whole v0.4.6 first-batch playback post-load plan.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -2653,7 +2655,6 @@ sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/do
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
 
 val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
-    inputs.file("tools/v046_identity_badge_palette.py")
     inputs.file("tools/v042_owner_follow.py")
     inputs.dir("upstream-slices/v042-owner-follow")
     inputs.file("tools/v042_follow_confirmation.py")
@@ -4355,4 +4356,13 @@ tasks.named("extractOriginalVideoDetailUnits") { inputs.file("tools/v046_like_wr
 tasks.matching { it.name in setOf("extractUpstreamDanmaku", "extractUpstreamMedia") }.configureEach {
     inputs.file("tools/v046_danmaku_protocol.py")
     inputs.dir("upstream-slices/v046-danmaku-protocol")
+}
+
+// v0.4.6 video detail information re-pin: the detail units producer selects the information, action and policy
+// declarations from the whole v0.4.6 files and writes the count text, the triple-press state and the first-batch
+// post-load plan; the video comment producer writes the stable comment refresh box. The vendored PlaybackPostLoadPlan
+// copy is excluded in prepareUpstreamSources.
+tasks.matching { it.name in setOf("extractOriginalVideoDetailUnits", "extractVideoCommentUi") }.configureEach {
+    inputs.file("tools/v046_video_info_section.py")
+    inputs.dir("upstream-slices/v046-video-info-section")
 }

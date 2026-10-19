@@ -1,0 +1,64 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "filename": "VideoInfoSection.kt",
+      "bytes": 110300,
+      "sha256": "c6cd1f9c4b7260d1c3a5bd4c3cbda5bfe02a56840d5bd34a278c2116f9615612",
+      "gitBlob": "23108f5f17a2ba7a3bf89ecc400492441cb65666"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "filename": "VideoInfoDisplayPolicy.kt",
+      "bytes": 7224,
+      "sha256": "081b7fc9cb7e9e2c441ff3bcbc74050f9cd4be0d2c80841a0bdf0279d4f840cd",
+      "gitBlob": "38d51f88317f1c4f4f911985e213c9805abc2e98"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt",
+      "filename": "VideoActionSection.kt",
+      "bytes": 32315,
+      "sha256": "6237ff3bc75b230d34a4476dd6cc8808a96b8a6553ce32fbbec09db44c817656",
+      "gitBlob": "78926db78a8c3a8bcca871910c75d7df925a596a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionCountText.kt",
+      "filename": "VideoActionCountText.kt",
+      "bytes": 4226,
+      "sha256": "1f6cece2a1fd78a011e15ad319fe9bd792baf17a5463a5822532523691889ffb",
+      "gitBlob": "7dee489708bbd5181d9df31f6ab65cce82b6e215"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoTriplePressState.kt",
+      "filename": "VideoTriplePressState.kt",
+      "bytes": 3469,
+      "sha256": "85ba6a286a0c6dbec1ece9484c3e333741c185044053c5a6b301c29e43af1e1e",
+      "gitBlob": "d211956ad5ff11907ac65a7cee6cc0385c4e8188"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentRefreshContainer.kt",
+      "filename": "VideoCommentRefreshContainer.kt",
+      "bytes": 1629,
+      "sha256": "fd6a39dd5b2508c5681415204c0c474f070ad89a8d6d5271b4b44087daf78037",
+      "gitBlob": "739839367ecbbd1c7be41252fd0a3689882dd62a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt",
+      "filename": "PlaybackPostLoadPlan.kt",
+      "bytes": 2798,
+      "sha256": "91a7681fe1e7cc2e242f29be6e690147a61778ae048b772c9af0edd3919ad18e",
+      "gitBlob": "745a63f1e82a7a61ce6100f8472d191af965c65a"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole VideoInfoSection.kt, VideoInfoDisplayPolicy.kt, VideoActionSection.kt, VideoCommentRefreshContainer.kt and PlaybackPostLoadPlan.kt as they stand at v0.4.6, plus the two new v0.4.3 feedback files VideoActionCountText.kt and VideoTriplePressState.kt.",
+  "purpose": "Re-pin the video detail information, action and first-batch plan sources to v0.4.6 in one step: title tap and selection, the owner statistics row, the topic tag pattern, always-rendered like and follow buttons with count motion and the triple-press state machine, the stable comment refresh box and the 0 ms first-batch tag and interaction requests.",
+  "scope": "The seven files only. desktop/tools/v046_video_info_section.py selects the declarations each Windows producer owns; VideoContentSection (already carried partly by v046-comment-list), SkeletonComponents and the honor, team and BGM subtree stay on their earlier pins."
+}
