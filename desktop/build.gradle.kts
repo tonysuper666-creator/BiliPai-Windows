@@ -1468,6 +1468,8 @@ val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
         "tools/sync-upstream.py")
     inputs.file("tools/v040_native_chrome.py")
     inputs.dir("upstream-slices/v040-native-chrome")
+    inputs.file("tools/v046_sheet_motion.py")
+    inputs.dir("upstream-slices/v046-sheet-motion")
     inputs.files(sources.filter { "dynamic-detail-container" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v036_comment_viewport.py")

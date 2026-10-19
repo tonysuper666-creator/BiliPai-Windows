@@ -225,10 +225,14 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
 
 def thread_container():
     from v037_window_modal_blur import adapt_sheet,fixed_original
+    from v046_sheet_motion import advance
     path=DESIGN+'core/ui/AppSheetComponents.kt';original,identity=fixed_original(REPO,'AppSheetComponents.kt')
     body,proof=adapt_sheet(original)
     proof.update(identity)
     write(OUTPUT/'v037-whole-app-sheet-platform-proof.json',json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
+    body,sheet_proof=advance(REPO,body)
+    if sheet_proof is not None:
+        write(OUTPUT/'v046-sheet-motion-proof.json',json.dumps(sheet_proof,ensure_ascii=False,indent=2)+'\n')
     emit(path,body,'DesktopOriginalDetailAppSheetComponents.kt',note='Whole v037 modal with original Miuix/native material hosts, real Windows coordinates, original blur progress, and same owned navigation input. Android physical-hinge branches are excluded.')
     path=DESIGN+'core/ui/InteractiveOverlayProgressPolicy.kt'
     emit(path,read(path),mode='direct')
@@ -322,6 +326,8 @@ def generate(repo, output, *, standalone=False):
     global REPO, OUTPUT, STANDALONE, appearance, parser, inventory
     REPO = Path(repo)
     OUTPUT = Path(output)
+    from v046_sheet_motion import validate_outputs
+    validate_outputs(REPO, OUTPUT)
     STANDALONE = standalone
     appearance = load('detail_declarations', 'desktop/tools/extract-appearance-platform.py')
     parser = load('detail_parser', 'desktop/tools/sync-upstream.py')

@@ -1,0 +1,26 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt",
+      "filename": "AppSheetComponents.kt",
+      "bytes": 20943,
+      "sha256": "1693624e55708780fc8f10bcfb4dee9c60fde5451eaaa1633019eb3805a02504",
+      "gitBlob": "0a62399789bc06570c3d3b26b91b93e7b2f0b8ef"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "v0.4.6 AppSheetComponents.kt: reducedMotion parameter on resolveAdaptiveBottomSheetMotionSpec, AppBottomSheetMotion.reducedMotion and dragSettleSpec, controlled dismiss (visible, onDismissStarted, retained finishDismiss, sheetState hide/show), and contentColor default AppContentColors.primaryText().",
+  "purpose": "Last layer on the Windows-adapted DesktopOriginalDetailAppSheetComponents.kt body. beforeFinalOutputs pins the adapt_sheet body without the two-line producer header. Windows navigation host, window size class, and removed hinge branches stay.",
+  "beforeFinalOutputs": {
+    "com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt": {
+      "sha256": "75c5d144d1b343bc4774569950a7e8501f94c4635b2d941c5a79e97ce5f3cbc6"
+    }
+  }
+}

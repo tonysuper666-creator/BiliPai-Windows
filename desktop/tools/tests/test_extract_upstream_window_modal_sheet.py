@@ -10,6 +10,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / "desktop/tools"))
 import v037_window_modal_blur as modal
+import v046_sheet_motion as sheet
 
 
 class WholeWindowsModalSheetTest(unittest.TestCase):
@@ -44,9 +45,13 @@ class WholeWindowsModalSheetTest(unittest.TestCase):
             producer.generate(REPO, output)
             original, _ = modal.fixed_original(REPO, "AppSheetComponents.kt")
             adapted, _ = modal.adapt_sheet(original)
-            source = output / "com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt"
-            expected = "// Original source design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt\n// LF SHA256 " + hashlib.sha256(original.encode()).hexdigest() + "\n" + adapted
-            self.assertEqual(source.read_text(encoding="utf-8"), expected)
+            source_path = output / "com/android/purebilibili/core/ui/DesktopOriginalDetailAppSheetComponents.kt"
+            header = "// Original source design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt\n// LF SHA256 " + hashlib.sha256(original.encode()).hexdigest() + "\n"
+            source = source_path.read_text(encoding="utf-8")
+            self.assertTrue(source.startswith(header))
+            self.assertEqual("a8610387b35385aeb61f67959ea4c32d91721dba9b34d7c541047148df3bac92", hashlib.sha256(original.encode()).hexdigest())
+            motion = json.loads((output / "v046-sheet-motion-proof.json").read_bytes())
+            self.assertEqual(adapted, sheet.restore(source[len(header):], motion["retainedToCurrent"]))
             proof = json.loads((output / "v037-whole-app-sheet-platform-proof.json").read_bytes())
             self.assertTrue(proof["exactCompleteInverse"])
             self.assertFalse(proof["sourceQualified"])
