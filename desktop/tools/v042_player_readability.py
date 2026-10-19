@@ -1,4 +1,8 @@
-"""Selected original v0.4.2 title and subtitle fixes, through the sole producers."""
+"""Selected original v0.4.2 title and subtitle fixes, through the sole producers.
+
+BottomControlBar subtitle-menu scroll is a separate hunk pin. The v042 archive
+still holds only TopControlBar and PortraitSubtitleOverlay.
+"""
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -11,6 +15,18 @@ MANIFEST_SHA256 = '391c4e73d3bf6d019a03ddcc4771a13f5785568beb6a15d0be46b9955408f
 APP = 'app/src/main/java/com/android/purebilibili/'
 TITLE = APP + 'feature/video/ui/overlay/TopControlBar.kt'
 SUBTITLE = APP + 'feature/video/ui/overlay/PortraitSubtitleOverlay.kt'
+BOTTOM = APP + 'feature/video/ui/overlay/BottomControlBar.kt'
+BOTTOM_UPSTREAM_BLOB = 'd2d0723213900bf15d6cf769eaf68496ceb9905f'
+BOTTOM_UPSTREAM_COMMITS = (COMMIT, 'd6bf8b1655ae910999860bf13e65c8fcea5b345b')
+BOTTOM_UPSTREAM_HUNK = (
+    '                Column(\n'
+    '                    modifier = Modifier\n'
+    '                        .widthIn(min = 140.dp, max = 220.dp)\n'
+    '                        .verticalScroll(rememberScrollState())\n'
+    '                        .padding(horizontal = 10.dp, vertical = 8.dp),\n'
+)
+BOTTOM_UPSTREAM_HUNK_SHA256 = 'e8b9cd88a7b12ed404003bedaef0a89ad819b7b68b3de0b7ce9fd0c6bc0dfb80'
+BOTTOM_MENU_WIDTH = '.widthIn(min = 140.dp, max = 220.dp)'
 
 
 def sha(raw):
@@ -70,12 +86,35 @@ def function_span(repo, source, name):
     raise ValueError('Unclosed original player function: ' + name)
 
 
+def apply_subtitle_menu_scroll(source, swap):
+    """One superseded hunk: scroll the existing 140-220.dp subtitle menu. No archive read, no new imports."""
+    if sha(BOTTOM_UPSTREAM_HUNK.encode()) != BOTTOM_UPSTREAM_HUNK_SHA256:
+        raise ValueError('Subtitle menu upstream hunk digest changed')
+    scroll = '                        .verticalScroll(rememberScrollState())\n'
+    if BOTTOM_UPSTREAM_HUNK.count(scroll) != 1 or BOTTOM_MENU_WIDTH not in BOTTOM_UPSTREAM_HUNK:
+        raise ValueError('Unknown subtitle menu upstream hunk')
+    before = BOTTOM_UPSTREAM_HUNK.replace(scroll, '', 1)
+    after = BOTTOM_UPSTREAM_HUNK
+    if source.count(before) != 1 or BOTTOM_MENU_WIDTH not in before:
+        raise ValueError('Unknown original subtitle menu column')
+    at = source.index(before)
+    column = source.find('Column(', at, at + len(before))
+    if column < 0 or BOTTOM_MENU_WIDTH not in source[column:at + len(before)]:
+        raise ValueError('Subtitle menu scroll anchor is outside the bounded column')
+    for line in (
+        'import androidx.compose.foundation.rememberScrollState',
+        'import androidx.compose.foundation.verticalScroll',
+    ):
+        if line + '\n' not in source:
+            raise ValueError('Subtitle menu scroll import is missing')
+    swap(before, after, 'Original scrolling in the existing subtitle menu column')
+
+
 def apply_and_record(repo, relative, source, output):
     path = APP + relative.removeprefix('com/android/purebilibili/')
-    if path not in {TITLE, SUBTITLE}:
+    if path not in {TITLE, SUBTITLE, BOTTOM}:
         return source
     original = source
-    fixed = fixed_sources(repo)[path]
     edits = []
 
     def swap(before, after, label):
@@ -86,33 +125,40 @@ def apply_and_record(repo, relative, source, output):
         edits.append(dict(offset=at, before=before, after=after, label=label))
         source = source[:at] + after + source[at + len(before):]
 
-    def import_original(line):
-        if fixed.count(line + '\n') != 1:
-            raise ValueError('Original player import is not pinned')
-        if line + '\n' not in source:
-            package = re.search(r'(?m)^package [^\n]+\n', source)
-            if package is None:
-                raise ValueError('Missing actual player package')
-            before = package.group(0)
-            swap(before, before + '\n' + line + '\n', 'Original v042 player import')
-
-    if path == TITLE:
-        a, b = function_span(repo, source, 'PlayerTitleInfoDock')
-        c, d = function_span(repo, fixed, 'PlayerTitleInfoDock')
-        selected = fixed[c:d]
-        if 'val motionEnabled = LocalComponentMotionEnabled.current' not in selected or 'Modifier.basicMarquee()' not in selected:
-            raise ValueError('Unknown original v042 title motion policy')
-        swap(source[a:b], selected, 'Whole original bounded title dock and reduced-motion fallback')
-        import_original('import com.android.purebilibili.core.ui.LocalComponentMotionEnabled')
+    if path == BOTTOM:
+        apply_subtitle_menu_scroll(source, swap)
+        pinned = BOTTOM_UPSTREAM_HUNK_SHA256
     else:
-        a, b = function_span(repo, source, 'PortraitSubtitlePanel')
-        before = 'modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),'
-        after = 'modifier = Modifier\n                    .verticalScroll(rememberScrollState())\n                    .padding(horizontal = 10.dp, vertical = 8.dp),'
-        if source[a:b].count(before) != 1 or fixed.count(after) != 1:
-            raise ValueError('Unknown original bounded subtitle panel column')
-        swap(source[a:b], source[a:b].replace(before, after, 1), 'Original scrolling in the existing available-height subtitle panel')
-        import_original('import androidx.compose.foundation.rememberScrollState')
-        import_original('import androidx.compose.foundation.verticalScroll')
+        fixed = fixed_sources(repo)[path]
+
+        def import_original(line):
+            if fixed.count(line + '\n') != 1:
+                raise ValueError('Original player import is not pinned')
+            if line + '\n' not in source:
+                package = re.search(r'(?m)^package [^\n]+\n', source)
+                if package is None:
+                    raise ValueError('Missing actual player package')
+                before = package.group(0)
+                swap(before, before + '\n' + line + '\n', 'Original v042 player import')
+
+        if path == TITLE:
+            a, b = function_span(repo, source, 'PlayerTitleInfoDock')
+            c, d = function_span(repo, fixed, 'PlayerTitleInfoDock')
+            selected = fixed[c:d]
+            if 'val motionEnabled = LocalComponentMotionEnabled.current' not in selected or 'Modifier.basicMarquee()' not in selected:
+                raise ValueError('Unknown original v042 title motion policy')
+            swap(source[a:b], selected, 'Whole original bounded title dock and reduced-motion fallback')
+            import_original('import com.android.purebilibili.core.ui.LocalComponentMotionEnabled')
+        else:
+            a, b = function_span(repo, source, 'PortraitSubtitlePanel')
+            before = 'modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),'
+            after = 'modifier = Modifier\n                    .verticalScroll(rememberScrollState())\n                    .padding(horizontal = 10.dp, vertical = 8.dp),'
+            if source[a:b].count(before) != 1 or fixed.count(after) != 1:
+                raise ValueError('Unknown original bounded subtitle panel column')
+            swap(source[a:b], source[a:b].replace(before, after, 1), 'Original scrolling in the existing available-height subtitle panel')
+            import_original('import androidx.compose.foundation.rememberScrollState')
+            import_original('import androidx.compose.foundation.verticalScroll')
+        pinned = sha(fixed.encode())
 
     reverse = source
     for edit in reversed(edits):
@@ -123,9 +169,12 @@ def apply_and_record(repo, relative, source, output):
     if reverse != original:
         raise ValueError('Original player boundary was not preserved')
     proof = dict(upstreamCommit=COMMIT, sourcePath=path, sourceManifestSHA256=MANIFEST_SHA256,
-        sourceSHA256=sha(fixed.encode()), inputSHA256=sha(original.encode()), outputSHA256=sha(source.encode()),
+        sourceSHA256=pinned, inputSHA256=sha(original.encode()), outputSHA256=sha(source.encode()),
         fullInputInverseRecovered=True, edits=edits, partialReuse=True, mainCompiled=False,
         pixelsValidated=False, applicationExecuted=False)
+    if path == BOTTOM:
+        proof.update(upstreamBlob=BOTTOM_UPSTREAM_BLOB, upstreamCommits=list(BOTTOM_UPSTREAM_COMMITS),
+            wholeFileNotPinned=True, supersededBy='plr-overlay-and-controlbar-repin')
     target = Path(output) / 'v042-player-readability-proofs' / (Path(path).name + '.json')
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(proof, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
