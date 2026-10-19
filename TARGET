@@ -1,0 +1,11 @@
+# Root writes this file; the daemon (verify.sh) verifies the sha when it changes. Edit only through Root.
+branch: desktop/integration-263-claude-main
+sha: 7e47d7bc5c2a0bb0aa81f048af087e268e900a93
+py: tests:test_sync_upstream.py
+py: tests:test_validate_source_cohort.py
+py: tests:test_package_source_qualification.py
+py: tests:test_symbol_closure.py
+py: tests:test_v046_*_source.py
+py: tests:test_third_party_notices_source.py
+py: nvidia:test_nvidia_*.py
+py: ux:test_ux_*.py

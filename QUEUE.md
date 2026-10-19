@@ -2,6 +2,8 @@
 
 规则见 STANDING-ORDERS.md。状态值：TODO / IN-PROGRESS / DONE / BLOCKED。你的实际状态写在 grokbot/status 分支的 STATUS.md，不要改本文件。Root 会按你的汇报更新这里。
 
+> **验证改为零 token 的 shell 守护进程（Root 2026-10-19）：不再靠你读 VERIFY.md 逐行做。守护进程 verify.sh 每 15 分钟看一次本分支的 TARGET 文件，有新提交就自己做一次干净编译 + JVM + Python 并把紧凑报告推到 grokbot/verify-<sha>，每小时推一次 grokbot/status 心跳。你只需要启动它一次，之后不要再做任何事、不要轮询、不要写报告。**
+
 > **Root 2026-10-19（用户明确要求“少让他干点活”）：你现在只做 VERIFY.md 里的编译与测试验证，以及我另外点名的只读审计。T9 和 T13 的所有切片开发工作一律停止（含 #4 字形一半、#3 调色板、#6 的 VideoCardAdaptiveTintPolicy、#46、#35）：这些由 Root 接手，已经在做的未提交内容不要再推进，已经推到 grokbot/slices-batch1 的提交我会自己看。没有 VERIFY 行时就空闲检查，不要自己找活。**
 
 | 编号 | 状态 | 内容 | 细节文件 | 依赖 |
