@@ -23,6 +23,8 @@ internal class DesktopOriginalVideoOwnerNetworkBinding(
         return com.bilipai.desktop.player.cache.DesktopCdnNetworkObservation(
             current.profilePresent && current.ianaInterfaceType == 71L, current.identityHash)
     }
+    // The WinRT ABI has no downstream capacity: null is "no estimate", which is unconstrained
+    // for a non-mobile link with internet access (see DesktopOriginalVideoRelatedNetworkObservation).
     override fun relatedNetworkObservation(): DesktopOriginalVideoRelatedNetworkObservation =
         DesktopOriginalVideoRelatedNetworkObservation(observation(), downstreamBandwidthKbps = null)
 

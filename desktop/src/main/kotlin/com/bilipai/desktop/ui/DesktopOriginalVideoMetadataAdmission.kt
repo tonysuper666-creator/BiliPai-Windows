@@ -67,12 +67,20 @@ internal class DesktopOriginalVideoMetadataReadScope internal constructor(
 }
 
 /** Genuine Windows connectivity observation. The current WinRT ABI does not
- * report downstream capacity; null is UNKNOWN and is conservatively deferred
- * by the original bounded scheduler. Packet media bitrate is not throughput. */
+ * report downstream capacity, so null means "no estimate", exactly as the
+ * original scheduler's no-estimate case. Packet media bitrate is not throughput.
+ * No estimate does not make a desktop link constrained: the related list waits
+ * for playback headroom only when Windows reports no internet access, a mobile
+ * (WWAN/cellular) link, or a measured rate at or below 1500 kbps. An unmetered
+ * wired or Wi-Fi link without an estimate loads the list in parallel with the
+ * video, like upstream. The property name stays because the pinned detail
+ * holder reads it; its comment about deferring unknown is superseded here.
+ */
 internal data class DesktopOriginalVideoRelatedNetworkObservation(
     val connection: DesktopHomeNetworkObservation,
     val downstreamBandwidthKbps: Int?,
 ) {
     val constrainedOrUnknown: Boolean get() = !connection.hasInternetAccess ||
-        downstreamBandwidthKbps == null || downstreamBandwidthKbps <= 1_500
+        connection.isMobileNetwork ||
+        (downstreamBandwidthKbps != null && downstreamBandwidthKbps <= 1_500)
 }
