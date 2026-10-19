@@ -158,7 +158,8 @@
     "desktop/upstream-slices/v046-home-card-tint-policy",
     "desktop/upstream-slices/v046-glyph-toolbar-pickers",
     "desktop/upstream-slices/v046-video-info-section",
-    "desktop/upstream-slices/v046-episode-selector"
+    "desktop/upstream-slices/v046-episode-selector",
+    "desktop/upstream-slices/v046-player-overlay"
   ],
   "archives": [
     {
@@ -7037,6 +7038,83 @@
           "sha256": "035c2a02c5d84f899e5915d961868521464caed27e246c7fc1b00efada9e8ca0",
           "hashNormalization": "raw",
           "blob": "687ce34ea78858f57eea7ddcd1a7216ef1d84196"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-player-overlay",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/BottomControlBar.kt",
+          "sha256": "2c5b7847c2c0ce629e2cbca72204ed6dcfcfeafbfe0353faeb27ed3994e9a9a5",
+          "hashNormalization": "raw",
+          "blob": "d2d0723213900bf15d6cf769eaf68496ceb9905f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/LandscapeDanmakuComposer.kt",
+          "sha256": "87931d424c52cb8a3002b7365e132872ef0c2d38814c75381b545f09845fdc21",
+          "hashNormalization": "raw",
+          "blob": "cd7553d9c4c404c4a9675be40c84d48971a28c8b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/manifest.json",
+          "sha256": "4b52704176e7228ef4af4ed204626660b3d39432e00af205884f8577c66b5063",
+          "hashNormalization": "raw",
+          "blob": "34f6c1ce543dfd40e6b5c719a3468dd8c32e13e2"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/PersistentProgressBar.kt",
+          "sha256": "9cb3a6414699c8197a5d73360a4a9b44deeb803355360c916b39bff9148a0fa5",
+          "hashNormalization": "raw",
+          "blob": "daefe1965b44bc530e7616ecac0c914d6ffdecc5"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/PersistentProgressBarPolicyTest.kt",
+          "sha256": "929d8f76ef3923b821243ce032038e69c53ad6e46e7719712f06a9f87040b6d5",
+          "hashNormalization": "raw",
+          "blob": "7ed950d98f5a2019464d497c87372915b4858691"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/PlainLandscapeDanmakuComposer.kt",
+          "sha256": "b96ca30d18fe316683a70a9803e8a95503ce8377cbc8ba54922416edf867fc68",
+          "hashNormalization": "raw",
+          "blob": "5d144a4a5817b978f23aa54f95d4421103de8ba4"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/PlayerControlGlass.kt",
+          "sha256": "602b38b6de80f7a45627166410ff2a76142fa6381213daae245897d8faad6080",
+          "hashNormalization": "raw",
+          "blob": "78a182d9be28ea5f5b6bd2416808cdf4eb5a74a4"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/TopControlBar.kt",
+          "sha256": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
+          "hashNormalization": "raw",
+          "blob": "c379ad9700cdf4997015c96be5331a096caad637"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/VideoPlayerOverlayContracts.kt",
+          "sha256": "3ea521294c61b3233aa52b92f8bdb7e1d23555c382d24a44aa4409fd04aacc88",
+          "hashNormalization": "raw",
+          "blob": "4c0b3696a18870641c06a802799d31e7fd4fcb71"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/VideoProgressBarLayoutPolicy.kt",
+          "sha256": "aa36dd5377366940254b00cff39a879984d39e3854d40e6bbf01194a632b9cd2",
+          "hashNormalization": "raw",
+          "blob": "66c03a786ff8750ee22010b2e2aca9815262f3ce"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-player-overlay/VideoProgressBarLayoutPolicyTest.kt",
+          "sha256": "594dac61d8824aaffd5b3ecff0c9d3d8a1106287e484a88605c78b3424438518",
+          "hashNormalization": "raw",
+          "blob": "675c39fa887dc9439222c3546bea037aa32521da"
         }
       ]
     }
@@ -18522,6 +18600,156 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original test, byte exact, written under the test root of the full controls producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/BottomControlBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d2d0723213900bf15d6cf769eaf68496ceb9905f",
+      "sha256": "2c5b7847c2c0ce629e2cbca72204ed6dcfcfeafbfe0353faeb27ed3994e9a9a5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/TopControlBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "c379ad9700cdf4997015c96be5331a096caad637",
+      "sha256": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/PlayerControlGlass.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "78a182d9be28ea5f5b6bd2416808cdf4eb5a74a4",
+      "sha256": "602b38b6de80f7a45627166410ff2a76142fa6381213daae245897d8faad6080",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/PersistentProgressBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "daefe1965b44bc530e7616ecac0c914d6ffdecc5",
+      "sha256": "9cb3a6414699c8197a5d73360a4a9b44deeb803355360c916b39bff9148a0fa5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/VideoProgressBarLayoutPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "66c03a786ff8750ee22010b2e2aca9815262f3ce",
+      "sha256": "aa36dd5377366940254b00cff39a879984d39e3854d40e6bbf01194a632b9cd2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayContracts.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/VideoPlayerOverlayContracts.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "4c0b3696a18870641c06a802799d31e7fd4fcb71",
+      "sha256": "3ea521294c61b3233aa52b92f8bdb7e1d23555c382d24a44aa4409fd04aacc88",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/LandscapeDanmakuComposer.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "cd7553d9c4c404c4a9675be40c84d48971a28c8b",
+      "sha256": "87931d424c52cb8a3002b7365e132872ef0c2d38814c75381b545f09845fdc21",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlainLandscapeDanmakuComposer.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/PlainLandscapeDanmakuComposer.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "5d144a4a5817b978f23aa54f95d4421103de8ba4",
+      "sha256": "b96ca30d18fe316683a70a9803e8a95503ce8377cbc8ba54922416edf867fc68",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/VideoProgressBarLayoutPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "675c39fa887dc9439222c3546bea037aa32521da",
+      "sha256": "594dac61d8824aaffd5b3ecff0c9d3d8a1106287e484a88605c78b3424438518",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBarPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-player-overlay/PersistentProgressBarPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7ed950d98f5a2019464d497c87372915b4858691",
+      "sha256": "929d8f76ef3923b821243ce032038e69c53ad6e46e7719712f06a9f87040b6d5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-player-overlay"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BottomControlBar, TopControlBar, PlayerControlGlass, PersistentProgressBar, VideoProgressBarLayoutPolicy, VideoPlayerOverlayContracts, LandscapeDanmakuComposer and the new PlainLandscapeDanmakuComposer, each advanced inside the producer that already owns it (fullscreen-controls producer chain and the v037 render closure) with the existing Windows bindings and NVIDIA slot on top; two direct-mode v0.2.5 copies are excluded. VideoPlayerOverlay.kt keeps its v0.3.7 whole file plus nine counted hunks (not a leaf). The two upstream tests are PersistentProgressBarPolicyTest (emitted) and VideoProgressBarLayoutPolicyTest (the Windows copy holds these bytes)."
     }
   ],
   "buildStandaloneInputs": [

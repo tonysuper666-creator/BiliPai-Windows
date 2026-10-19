@@ -43,6 +43,22 @@ internal fun DesktopWindowsDanmakuDialog(
     DesktopWindowsPlayerDialog("弹幕设置", onDismissRequest, properties.dismissOnBackPress, content = content)
 }
 
+/** The v0.4.6 Plain landscape danmaku composer (no liquid glass) asks for a Dialog. The same owned window, with the
+ * composer's own title and a compact preferred height; the composer keeps its input, draft and send authority. */
+@Composable
+internal fun DesktopWindowsDanmakuComposerDialog(
+    onDismissRequest: () -> Unit,
+    properties: DialogProperties,
+    content: @Composable () -> Unit,
+) {
+    DesktopWindowsPlayerDialog(
+        "发弹幕", onDismissRequest, properties.dismissOnBackPress,
+        preferredHeightDp = DESKTOP_WINDOWS_DANMAKU_COMPOSER_DIALOG_HEIGHT_DP, content = content,
+    )
+}
+
+internal const val DESKTOP_WINDOWS_DANMAKU_COMPOSER_DIALOG_HEIGHT_DP = 420
+
 @Composable
 internal fun DesktopWindowsPlayerDialog(
     title: String, onDismissRequest: () -> Unit, dismissOnEscape: Boolean = true,

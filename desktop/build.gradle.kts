@@ -290,6 +290,9 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt"))
         // The detail units producer owns the whole v0.4.6 first-batch playback post-load plan.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt"))
+        // The existing fullscreen-controls producer owns the complete v0.4.6 persistent and seek progress bar files.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -2779,6 +2782,9 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v037-player-closure")
     inputs.dir("upstream-slices/v037-player-render-closure")
     inputs.dir("upstream-slices/v037-player-shared-material")
+    inputs.file("tools/v046_player_overlay.py")
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v046-player-overlay")
 
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalOfflinePlayer)
     workingDir(projectDir)

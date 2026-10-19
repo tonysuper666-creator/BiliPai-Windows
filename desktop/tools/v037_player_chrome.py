@@ -42,8 +42,11 @@ def write_source_proof(output, rel, adapted, generated):
     if path not in originals:
         return
     from v029_comment_search import whole_proof
-    proof = whole_proof(originals[path], adapted)
-    proof.update(upstreamCommit=COMMIT, sourcePath=path, generated=generated,
+    from v046_player_overlay import effective_original
+    # The two bars are carried whole from v0.4.6 now: their proof inverts to that original, not to this archive.
+    original, commit = effective_original(path, originals[path], COMMIT)
+    proof = whole_proof(original, adapted)
+    proof.update(upstreamCommit=commit, sourcePath=path, generated=generated,
                  wholeOriginalSelected=True, sourceQualified=False,
                  pixelEquivalenceQualified=False)
     target = output / 'v037-source-proofs' / (Path(rel).name + '.json')

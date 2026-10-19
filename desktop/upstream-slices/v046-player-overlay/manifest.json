@@ -1,0 +1,174 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "filename": "BottomControlBar.kt",
+      "bytes": 146194,
+      "sha256": "2c5b7847c2c0ce629e2cbca72204ed6dcfcfeafbfe0353faeb27ed3994e9a9a5",
+      "gitBlob": "d2d0723213900bf15d6cf769eaf68496ceb9905f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "filename": "TopControlBar.kt",
+      "bytes": 35295,
+      "sha256": "ffade53f8a59d5e5f4ef9cfe6387ca443c4ea2a8db189f671861a8937372e7cf",
+      "gitBlob": "c379ad9700cdf4997015c96be5331a096caad637"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
+      "filename": "PlayerControlGlass.kt",
+      "bytes": 8574,
+      "sha256": "602b38b6de80f7a45627166410ff2a76142fa6381213daae245897d8faad6080",
+      "gitBlob": "78a182d9be28ea5f5b6bd2416808cdf4eb5a74a4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "filename": "PersistentProgressBar.kt",
+      "bytes": 1635,
+      "sha256": "9cb3a6414699c8197a5d73360a4a9b44deeb803355360c916b39bff9148a0fa5",
+      "gitBlob": "daefe1965b44bc530e7616ecac0c914d6ffdecc5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt",
+      "filename": "VideoProgressBarLayoutPolicy.kt",
+      "bytes": 3898,
+      "sha256": "aa36dd5377366940254b00cff39a879984d39e3854d40e6bbf01194a632b9cd2",
+      "gitBlob": "66c03a786ff8750ee22010b2e2aca9815262f3ce"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayContracts.kt",
+      "filename": "VideoPlayerOverlayContracts.kt",
+      "bytes": 14415,
+      "sha256": "3ea521294c61b3233aa52b92f8bdb7e1d23555c382d24a44aa4409fd04aacc88",
+      "gitBlob": "4c0b3696a18870641c06a802799d31e7fd4fcb71"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+      "filename": "LandscapeDanmakuComposer.kt",
+      "bytes": 19092,
+      "sha256": "87931d424c52cb8a3002b7365e132872ef0c2d38814c75381b545f09845fdc21",
+      "gitBlob": "cd7553d9c4c404c4a9675be40c84d48971a28c8b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlainLandscapeDanmakuComposer.kt",
+      "filename": "PlainLandscapeDanmakuComposer.kt",
+      "bytes": 25547,
+      "sha256": "b96ca30d18fe316683a70a9803e8a95503ce8377cbc8ba54922416edf867fc68",
+      "gitBlob": "5d144a4a5817b978f23aa54f95d4421103de8ba4"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicyTest.kt",
+      "filename": "VideoProgressBarLayoutPolicyTest.kt",
+      "bytes": 1464,
+      "sha256": "594dac61d8824aaffd5b3ecff0c9d3d8a1106287e484a88605c78b3424438518",
+      "gitBlob": "675c39fa887dc9439222c3546bea037aa32521da"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBarPolicyTest.kt",
+      "filename": "PersistentProgressBarPolicyTest.kt",
+      "bytes": 629,
+      "sha256": "929d8f76ef3923b821243ce032038e69c53ad6e46e7719712f06a9f87040b6d5",
+      "gitBlob": "7ed950d98f5a2019464d497c87372915b4858691"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 player overlay chrome for roadmap slice plr-overlay-and-controlbar-repin: overlay/BottomControlBar.kt, overlay/TopControlBar.kt, overlay/PlayerControlGlass.kt, overlay/PersistentProgressBar.kt, overlay/VideoProgressBarLayoutPolicy.kt, overlay/VideoPlayerOverlayContracts.kt, components/LandscapeDanmakuComposer.kt and the new components/PlainLandscapeDanmakuComposer.kt, plus the upstream tests VideoProgressBarLayoutPolicyTest.kt and PersistentProgressBarPolicyTest.kt.",
+  "purpose": "Advance the vendored overlay used by Bangumi and the offline player to the complete v0.4.6 control bars through the producers that already own each file. The fullscreen-controls producer (tools/extract-upstream-video-player-full-controls.py) swaps its own predecessor of six files for the verbatim v0.4.6 bytes behind a hash assertion and emits the new Plain landscape composer with six counted, hash-pinned Windows adaptations (no Android window handle, the owned player dialog instead of Dialog); the render closure producer (tools/v037_player_render.py) does the same for PlayerControlGlass.kt. VideoPlayerOverlay.kt stays the complete v0.3.7 file and receives nine counted, hash-pinned hunks that only wire what the new bars need. The platform bindings and the NVIDIA slot that already existed run on the v0.4.6 bytes.",
+  "producerPredecessors": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "replacedBy": "BottomControlBar.kt",
+      "producer": "tools/extract-upstream-video-player-full-controls.py",
+      "predecessorSha256": "d869e05e416286c340431cd06c66aff59350b6ee656c249763e15564ebf8d29c",
+      "predecessor": "the v0.3.7 file of upstream-slices/v037-player-chrome (blob e51b0374), before the Windows bindings"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "replacedBy": "TopControlBar.kt",
+      "producer": "tools/extract-upstream-video-player-full-controls.py",
+      "predecessorSha256": "ce2a77f51a5b7edeee80e1392f09148cf166705969d05c3e66b92ad8a243e21b",
+      "predecessor": "the v0.3.7 file of upstream-slices/v037-player-chrome (blob f053b6de), before the Windows bindings and the v0.4.2 title dock"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayContracts.kt",
+      "replacedBy": "VideoPlayerOverlayContracts.kt",
+      "producer": "tools/extract-upstream-video-player-full-controls.py",
+      "predecessorSha256": "89fd68782a25c33c4ce5f827f79e987bd47246f4b37ec9d096f3889ba0510c12",
+      "predecessor": "the v0.3.7 file of upstream-slices/v037-player-closure (blob b51a26b6), before the Windows bindings"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt",
+      "replacedBy": "LandscapeDanmakuComposer.kt",
+      "producer": "tools/extract-upstream-video-player-full-controls.py",
+      "predecessorSha256": "e1b06c6fbf75cb095828cdc3cf5f003fb103cc2539f1ff8b0149e68a916ed747",
+      "predecessor": "the v0.3.7 file of upstream-slices/v037-player-closure (blob 193b07fb)"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "replacedBy": "PersistentProgressBar.kt",
+      "producer": "tools/extract-upstream-video-player-full-controls.py",
+      "predecessorSha256": "6ad6ecece75468f4e11cd257710c1b8df78e3b695cca2eb26d0e485a5ea41e62",
+      "predecessor": "the vendored v0.2.5 file (DIRECT mode, identical bytes compiled through prepareUpstreamSources)"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt",
+      "replacedBy": "VideoProgressBarLayoutPolicy.kt",
+      "producer": "tools/extract-upstream-video-player-full-controls.py",
+      "predecessorSha256": "7919c04d360de93abb4cf0832d5ce9b6dde31f33e7fff9971d830fc76e4379c1",
+      "predecessor": "the vendored v0.2.5 file (DIRECT mode, shared with the package, plugin and skin features)"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlayerControlGlass.kt",
+      "replacedBy": "PlayerControlGlass.kt",
+      "producer": "tools/v037_player_render.py generate_render_sources",
+      "predecessorSha256": "369653f30e4d7db00118a8f5dc9b2357ca359666d927c2135e0944b64ea9bfbf",
+      "predecessor": "the v0.3.7 file of upstream-slices/v037-player-render-closure (blob ac8b2e57)"
+    }
+  ],
+  "replacedVendoredCopies": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt",
+      "vendoredLfSha256": "6ad6ecece75468f4e11cd257710c1b8df78e3b695cca2eb26d0e485a5ea41e62",
+      "replacedBy": "PersistentProgressBar.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt",
+      "vendoredLfSha256": "7919c04d360de93abb4cf0832d5ce9b6dde31f33e7fff9971d830fc76e4379c1",
+      "replacedBy": "VideoProgressBarLayoutPolicy.kt"
+    }
+  ],
+  "overlayHunks": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+    "upstreamBlob": "f2255e332befc2437daa3c5ae1ed8a78ce04dbc3",
+    "predecessorSha256": "9b490143e3096efc3656df5c23eb7af10c54f52018bae1946ce71fc2053df97e",
+    "predecessor": "the v0.3.7 file of upstream-slices/v037-player-closure (blob b26e7e3d); not carried again because the v0.4.6 file needs LandscapeSidePanel and PagesSelector changes owned by other roadmap slices",
+    "hunks": 9
+  },
+  "replacedDesktopTest": {
+    "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicyTest.kt",
+    "previousSha256": "de76e072b75c2a53fefca52586473f5a10b588b42071fa32a9a2e88f2f46eb1b",
+    "replacedBy": "VideoProgressBarLayoutPolicyTest.kt",
+    "reason": "The Windows copy pinned the v0.2.5 progress bar heights (20/32 ... 32/48 dp). v0.2.9 compacted them (12/28 ... 24/44 dp) and the upstream test was rewritten to assert layout invariants instead of literals; the Windows copy now holds the exact v0.4.6 upstream test."
+  },
+  "behaviourChanges": [
+    "BottomControlBar: fullscreen without liquid glass uses a plain landscape layout with play and pause, time, danmaku switch, settings and send in glass docks; with liquid glass the dock keeps the switch and shows send instead of settings; the inline time dock, 40 dp danmaku buttons, selection accent colours and adaptive plain dock spacing come with the file.",
+    "TopControlBar: the danmaku send action leaves the top bar; with liquid glass the top bar shows the danmaku settings button instead, and a title dock collapses to a circle when the slot is narrow.",
+    "PlayerControlGlass: docks stay elastic with component motion, force a dark media surface and white content colour.",
+    "Progress bars: 2 dp persistent bar and the seek bar use the selection accent; VideoProgressBarLayoutPolicy compacts the idle heights.",
+    "Overlay: the buffering circle waits for the first frame (defaults keep the old behaviour until a caller sets hasRenderedFirstFrame = false), the centre play control hides in plain fullscreen, and the fullscreen composer is the glass or the plain landscape composer."
+  ],
+  "notCarried": [
+    "overlay/VideoPlayerOverlay.kt whole file: the v0.4.6 file calls landscapeEndDrawerPadding and landscapeControlCenterGroup and passes closeProgress and enableControlCenterMotion to LandscapeSidePanel (roadmap slice plr-control-center-motion) and passes coverUrl to PagesSelector (lst-episode-selector-collection). Nine counted hunks wire only what the carried bars need. Follow-up: re-pin the whole overlay after those two slices land and drop the follow-confirmation hunk of v046_follow_confirmation.py at the same time.",
+    "components/PiliPlusDanmakuSendIcon.kt (centred send glyph of v0.4.3): the v0.4.6 file imports appIconGlyphTextStyle from AppPrimitiveThemeDefaults, whose Windows copy is the v0.2.5 DIRECT file without that function. Follow-up together with the design-system theme defaults leaf.",
+    "ordinary video playback: VideoPlayerSection and the Windows leaf do not yet set VideoPlayerOverlayState.hasRenderedFirstFrame or suppressTransientOverlaysForTransition, so the first-frame gating of the buffering circle is dormant there (the contract defaults keep the previous behaviour).",
+    "OfflineVideoPlayerScreen and BangumiPlayerComponents progress-isolation hunks of f641eee3 (v034b1) and the PortraitTopBarLayoutPolicy change of ce406330 belong to the Bangumi and portrait slices.",
+    "The v0.3.9 glass dock hit-test above the native mpv canvas is unverified: Compose cannot draw above the heavyweight HWND, so the docks only render where the Compose layer is visible."
+  ]
+}

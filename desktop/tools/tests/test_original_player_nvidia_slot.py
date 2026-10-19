@@ -37,7 +37,9 @@ class OriginalPlayerNvidiaSlotTest(unittest.TestCase):
         overlay = (self.root / "controls/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt").read_text(encoding="utf-8")
         self.assertIn("windowsEnhancementContent = windowsEnhancementContent", overlay)
         bar = (self.root / "controls/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt").read_text(encoding="utf-8")
-        self.assertEqual(1, bar.count("windowsEnhancementContent { showWindowsEnhancementMenu = it }"))
+        # v0.4.6 draws the right function row twice (plain landscape and glass); exactly one branch composes.
+        self.assertEqual(2, bar.count("windowsEnhancementContent { showWindowsEnhancementMenu = it }"))
+        self.assertEqual(1, bar.count("var showWindowsEnhancementMenu by remember { mutableStateOf(false) }"))
         self.assertIn("showVideoEnhancementPanel || showWindowsEnhancementMenu", bar)
         ui = (REPO / "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoEnhancementControls.kt").read_text(encoding="utf-8")
         start = ui.index("internal fun DesktopWindowsNvidiaPlayerSlot(")
@@ -58,18 +60,39 @@ class OriginalPlayerNvidiaSlotTest(unittest.TestCase):
             edits = list(self.controls.ADAPT)
         finally:
             self.controls.ADAPT = old_edits
-        self.assertEqual(5, len(edits))
+        # Five edits against the v0.3.7 bar; seven against v0.4.6 (the plain landscape row and the glass row each get the
+        # slot and the direct entry, the more-menu entry exists once per row).
+        self.assertEqual(7, len(edits))
+        self.assertEqual([1, 1, 1, 1, 1, 1, 2], [edit["count"] for edit in edits])
         self.assertIn("windowsEnhancementContent == null", adapted)
         self.assertIn("windowsEnhancementContent: (@Composable ((Boolean) -> Unit) -> Unit)? = null", adapted)
         for edit in reversed(edits):
-            self.assertEqual(1, adapted.count(edit["after"]))
-            adapted = adapted.replace(edit["after"], edit["before"], 1)
+            self.assertEqual(edit["count"], adapted.count(edit["after"]))
+            adapted = adapted.replace(edit["after"], edit["before"])
         self.assertEqual(original, adapted)
+
+    def test_both_v046_action_rows_host_the_compact_slot_and_yield_the_legacy_entries(self):
+        original = self.controls.read("feature/video/ui/overlay/BottomControlBar.kt")
+        adapted = self.controls.windows_nvidia_control_bar_ui(original)
+        plain = adapted.index("PlainLandscapeDockActionRow(")
+        glass = adapted.index("minimumSpacing = when {", plain)
+        slot = "windowsEnhancementContent { showWindowsEnhancementMenu = it }"
+        first = adapted.index(slot)
+        second = adapted.index(slot, first + 1)
+        self.assertLess(plain, first)
+        self.assertLess(first, glass)
+        self.assertLess(glass, second)
+        self.assertEqual(2, adapted.count(slot))
+        self.assertEqual(2, adapted.count("if (anime4kAvailable && windowsEnhancementContent == null) {"))
+        self.assertEqual(2, adapted.count("if (anime4kAvailable && !showDirectTools && windowsEnhancementContent == null) {"))
+        # no legacy direct enhancement entry is left that ignores the slot
+        self.assertEqual(0, adapted.count("if (anime4kAvailable) {"))
+        self.assertEqual(0, original.count("windowsEnhancementContent"))
 
     def test_changed_or_duplicate_original_entry_anchor_is_rejected(self):
         original = self.controls.read("feature/video/ui/overlay/BottomControlBar.kt")
         needle = "if (anime4kAvailable && !showDirectTools) {"
-        self.assertEqual(1, original.count(needle))
+        self.assertEqual(2, original.count(needle))  # once per v0.4.6 action row
         with self.assertRaises(AssertionError):
             self.controls.windows_nvidia_control_bar_ui(original.replace(needle, "if (false) {", 1))
         with self.assertRaises(AssertionError):

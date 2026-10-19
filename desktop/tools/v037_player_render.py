@@ -27,6 +27,8 @@ def generate_render_sources(output):
         original=sources[row['path']]
         from v040_chrome_actions import retained_render_source
         original,effective_row,effective_commit=retained_render_source(Path(__file__).resolve().parents[2],row['path'],original,row,COMMIT)
+        from v046_player_overlay import render_source as v046_render_source
+        original,effective_row,effective_commit=v046_render_source(Path(__file__).resolve().parents[2],row['path'],original,effective_row,effective_commit)
         text=original
         if row['filename']=='VideoPlayerOverlayProgressState.kt':
             before='import androidx.media3.common.Player'
