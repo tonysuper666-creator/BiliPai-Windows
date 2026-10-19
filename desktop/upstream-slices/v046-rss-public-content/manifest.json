@@ -1,0 +1,75 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/PublicContentNetwork.kt",
+      "filename": "PublicContentNetwork.kt",
+      "bytes": 4720,
+      "sha256": "446d3add4dd8193c25e89a6522631385e71ff71a3cb72d7c43b06510cfa7f202",
+      "gitBlob": "7a7a9cf6975b21843fcdba1e631d8bb89d085d95"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/plugin/feed/PublicContentNetworkTest.kt",
+      "filename": "PublicContentNetworkTest.kt",
+      "bytes": 5844,
+      "sha256": "98ccd3c350e1f36a8f3c6fcd3b753a3b31e384bd0aabe91a277a851cfb4bc3ba",
+      "gitBlob": "a9d29a9b2279862b2d366e6e6c1e184770d4cefb"
+    },
+    {
+      "path": "app/src/main/assets/licenses/readability4j.LICENSE",
+      "filename": "readability4j.LICENSE",
+      "bytes": 11377,
+      "sha256": "7f0bb083df77f5f4cf575e09429dd9d5a6cbd6f903fef9a427263044b3d6cfe4",
+      "gitBlob": "0a63c40e8028b39340fa64dec1c09b55ae093f09"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "slice": "rss-readability-public-network",
+  "selection": "PublicContentNetwork.kt (whole, emitted verbatim), its original JVM test, and the upstream readability4j.LICENSE notice (staged, not shipped).",
+  "purpose": "RSS feeds and article pages never inherit an authenticated client, and application images from non-Bilibili hosts leave through the anonymous public image client with a same-site Referer. No new Gradle dependency is added.",
+  "notCarried": {
+    "FeedArticleExtractor.kt": "The v0.4.6 file imports Readability4J. A jsoup-only variant would change extraction for every article without the library that makes the change worthwhile, and the page reader already resolves relative URLs against the item link, so the vendored v0.2.5 extractor stays until the dependency is approved.",
+    "FeedArticleExtractorTest.kt": "Belongs with FeedArticleExtractor.kt.",
+    "FeedFetcher.kt": "The reader route (fetchReadableArticle, NativeArticleRedirect, isBilibiliWebHost) and the FeedLoadSnapshot progress fields belong to the instant article reader slice; the Windows FeedFetcher advances by one pinned hunk instead.",
+    "PublicContentImageLoader.kt": "Android Coil loader bound to android.content.Context; Windows routes non-Bilibili image calls inside DesktopApplicationImageLoader instead.",
+    "ImagePreviewDialog.kt": "The publicContent flag needs the multi-producer Windows preview dialog chain; proposed as a follow-up slice."
+  },
+  "pendingDependencies": {
+    "decision": "Root decision D7 of roadmap-20261018: no new Gradle dependency without explicit user approval. Nothing is added or resolved by this slice.",
+    "status": "not-added",
+    "proposed": [
+      {
+        "coordinate": "net.dankito.readability4j:readability4j:1.0.8",
+        "license": "Apache-2.0",
+        "upstreamDeclaration": "app/build.gradle.kts line 489 at d6bf8b16",
+        "notice": "readability4j.LICENSE in this archive"
+      },
+      {
+        "coordinate": "org.jsoup:jsoup:1.23.2",
+        "replaces": "org.jsoup:jsoup:1.21.2 in desktop/build.gradle.kts",
+        "license": "MIT",
+        "upstreamDeclaration": "app/build.gradle.kts line 490 at d6bf8b16",
+        "notice": "upstream app/src/main/assets/licenses/jsoup.LICENSE; Windows ships desktop/src/main/resources/licenses/jsoup-1.21.2 today"
+      },
+      {
+        "coordinate": "org.slf4j:slf4j-api",
+        "license": "MIT",
+        "note": "transitive 1.7.x through readability4j; desktop/build.gradle.kts already declares 2.0.17; upstream ships app/src/main/assets/licenses/slf4j.LICENSE"
+      }
+    ],
+    "whenApproved": [
+      "add the two implementation lines and refresh dependency resolution",
+      "ship readability4j.LICENSE, the jsoup notice for the new version and the slf4j notice under desktop/src/main/resources/licenses and extend NOTICE.txt and provenance.json of upstream-carried-assets; the upstream THIRD_PARTY_NOTICES.md section 'Local RSS article extraction' at d6bf8b16 is the wording to port",
+      "carry FeedArticleExtractor.kt and FeedArticleExtractorTest.kt whole from d6bf8b16 (seven original cases) with one exclude of the vendored direct copy in prepareUpstreamSources",
+      "pass response.request.url as the base URL of extractArticleBody in the Windows FeedFetcher, as the v0.4.6 fetcher does"
+    ]
+  },
+  "jvmTestsExecuted": false,
+  "compiled": false
+}

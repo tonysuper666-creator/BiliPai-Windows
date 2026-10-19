@@ -17,6 +17,8 @@ import java.util.concurrent.atomic.AtomicReference
  * Only the network Call.Factory is adapted: every call captures the current primary epoch,
  * shares the existing client/proxy/dispatcher/pool, and uses its existing visitor boundary.
  * No request is given the separately selected playback account's credentials.
+ * Hosts outside the Bilibili gate (RSS images and the like) leave through the anonymous public image
+ * client instead, see [routedImageCalls].
  */
 internal class DesktopApplicationImageLoader(
     repository: DesktopRepository,
@@ -40,11 +42,12 @@ internal class DesktopApplicationImageLoader(
         UpdateStorage.existingPathWithoutLinks(imageDirectory)
         val created = AtomicReference<ImageLoader?>()
         val owned = { accepting.get() && rootAlive() }
-        networkCalls = Call.Factory { request ->
+        val bilibiliCalls = Call.Factory { request ->
             // Selecting an epoch when OkHttp executes would authorize an old queued image.
             val capturedEpoch = repository.sessionEpoch
             repository.ownedHomeCallFactory(capturedEpoch, owned, guest = true).newCall(request)
         }
+        networkCalls = routedImageCalls(bilibiliCalls, desktopPublicImageCalls(), owned)
         SingletonImageLoader.setSafe { platform ->
             newImageLoader(platform, networkCalls, directory.toFile()).also { created.set(it) }
         }

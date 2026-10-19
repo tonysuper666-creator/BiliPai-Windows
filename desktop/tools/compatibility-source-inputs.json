@@ -151,7 +151,8 @@
     "desktop/upstream-slices/v046-identity-badge-palette",
     "desktop/upstream-slices/v046-follow-confirmation",
     "desktop/upstream-slices/v046-danmaku-protocol",
-    "desktop/upstream-slices/v046-design-system-leaves-b"
+    "desktop/upstream-slices/v046-design-system-leaves-b",
+    "desktop/upstream-slices/v046-rss-public-content"
   ],
   "archives": [
     {
@@ -6719,6 +6720,41 @@
           "sha256": "da13689990bbe0ef322d864decc64a14c0b4a8cdfb4da5e66616ee34ced4e514",
           "hashNormalization": "raw",
           "blob": "aaad3fad325ae1a0fd62a052dbcebcf16894caa2"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-rss-public-content",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-rss-public-content/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-rss-public-content/manifest.json",
+          "sha256": "3b2818d306d31d2c22118a3bd796f9181ac8102406676708fb5396f51bc8a2d8",
+          "hashNormalization": "raw",
+          "blob": "fc53c8e3547a390bf0eb7f3356f342ad84a445e9"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-rss-public-content/PublicContentNetwork.kt",
+          "sha256": "446d3add4dd8193c25e89a6522631385e71ff71a3cb72d7c43b06510cfa7f202",
+          "hashNormalization": "raw",
+          "blob": "7a7a9cf6975b21843fcdba1e631d8bb89d085d95"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-rss-public-content/PublicContentNetworkTest.kt",
+          "sha256": "98ccd3c350e1f36a8f3c6fcd3b753a3b31e384bd0aabe91a277a851cfb4bc3ba",
+          "hashNormalization": "raw",
+          "blob": "a9d29a9b2279862b2d366e6e6c1e184770d4cefb"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-rss-public-content/readability4j.LICENSE",
+          "sha256": "7f0bb083df77f5f4cf575e09429dd9d5a6cbd6f903fef9a427263044b3d6cfe4",
+          "hashNormalization": "raw",
+          "blob": "0a63c40e8028b39340fa64dec1c09b55ae093f09"
         }
       ]
     }
@@ -17739,6 +17775,36 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 AppPreferenceComponents, AppSelectionPreferenceComponents, AppCard, AppDesktopInteraction, AppTonalPillTabPolicy and animation/DampedDragAnimation, each advanced inside the producer that already owns it (component, preference, v037 control closure, shared liquid tab). The direct-mode copies of AppPreferenceComponents, AppCard and AppDesktopInteraction are excluded; the existing platform bindings of the selection file and the drag state run on the v0.4.6 bytes. No call sites are added."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/PublicContentNetwork.kt",
+      "localPath": "desktop/upstream-slices/v046-rss-public-content/PublicContentNetwork.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "7a7a9cf6975b21843fcdba1e631d8bb89d085d95",
+      "sha256": "446d3add4dd8193c25e89a6522631385e71ff71a3cb72d7c43b06510cfa7f202",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-rss-public-content"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 anonymous public content network, emitted verbatim by the plugin producer: credential-stripping client, per-hop request sanitizer and the same-site image Referer."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/plugin/feed/PublicContentNetworkTest.kt",
+      "localPath": "desktop/upstream-slices/v046-rss-public-content/PublicContentNetworkTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "a9d29a9b2279862b2d366e6e6c1e184770d4cefb",
+      "sha256": "98ccd3c350e1f36a8f3c6fcd3b753a3b31e384bd0aabe91a277a851cfb4bc3ba",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-rss-public-content"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original eight-case test, emitted verbatim by the plugin producer."
     }
   ],
   "buildStandaloneInputs": [

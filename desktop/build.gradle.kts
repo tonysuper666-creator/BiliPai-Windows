@@ -427,6 +427,8 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     inputs.file("tools/v041_feed_images.py")
     inputs.file("tools/v041_feed_store.py")
     inputs.dir("upstream-slices/v041-feed-import-title")
+    inputs.file("tools/v046_rss_public_content.py")
+    inputs.dir("upstream-slices/v046-rss-public-content")
     inputs.file("tools/v038_listen_viewmodel.py")
     inputs.dir("upstream-slices/v041-rss-dynamic")
     inputs.file("tools/v029_history_recap.py")

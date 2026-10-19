@@ -104,7 +104,10 @@ class PluginExtractorTest(unittest.TestCase):
     def test_public_http_does_not_inherit_bilibili_login_jar(self):
         fetcher = self.output_for("com.android.purebilibili.core.plugin.feed", "FeedFetcher")
         sponsor = self.output_for("com.android.purebilibili.data.repository", "SponsorBlockRepository")
-        self.assertIn("DesktopPluginNetwork.publicClient.newBuilder()", fetcher)
+        # v046-rss-public-content: the feed fetcher leaves through the anonymous public content client of
+        # PublicContentNetwork.kt (no cookie jar, no authenticator, credentials stripped at every hop).
+        self.assertIn("publicContentHttpClient.newBuilder()", fetcher)
+        self.assertNotIn("DesktopPluginNetwork.publicClient", fetcher)
         self.assertIn("2 * 1024 * 1024", fetcher)
         self.assertIn("buildSponsorBlockHttpClient(com.bilipai.desktop.plugins.DesktopPluginNetwork.publicClient)", sponsor)
         self.assertNotIn("NetworkModule", fetcher + sponsor)

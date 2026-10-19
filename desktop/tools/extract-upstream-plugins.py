@@ -306,6 +306,8 @@ def generate(repo: Path, output: Path) -> list[Path]:
     parser = parser_for(repo)
     generated = []
     prune_retired_renderer_outputs(repo, output)
+    from v046_rss_public_content import validate_outputs as validate_public_content_outputs
+    validate_public_content_outputs(repo, output)
     for path in DIRECT:
         source = read(repo, path)
         if re.search(r"(?m)^import android\.", source):
@@ -388,6 +390,7 @@ def generate(repo: Path, output: Path) -> list[Path]:
     body += source[begin:tokens[end][2]]
     generated.append(write(output, path, source, body, "DesktopFeedConditionalValidators.kt"))
 
+    public_content_fetcher_proof = None
     for name in ("FeedFetcher", "FeedTitleResolver"):
         path = BASE + "core/plugin/feed/" + name + ".kt"
         source = read(repo, path)
@@ -408,9 +411,18 @@ def generate(repo: Path, output: Path) -> list[Path]:
                 "            }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }\n        }\n    } catch (_: TimeoutCancellationException) {")
             body = substitute(body, "    } catch (_: TimeoutCancellationException) {\n        call.cancel()",
                 "    } catch (_: TimeoutCancellationException) {\n        coroutineContext.ensureActive()\n        call.cancel()")
+            # v046-rss-public-content: feeds and article pages use the anonymous public content client.
+            from v046_rss_public_content import advance_feed_fetcher
+            body, public_content_fetcher_proof = advance_feed_fetcher(repo, body)
         if re.search(r"(?m)^import android\.", body):
             raise ValueError("Unexpected platform dependency in original feed implementation")
         generated.append(write(output, path, source, body))
+
+    # v046-rss-public-content: PublicContentNetwork.kt verbatim. The article extractor is not touched: the v0.4.6
+    # file needs Readability4J, which is not a dependency of the desktop build. Like the other slice emitters,
+    # the receipt is not part of this producer's own generated list.
+    from v046_rss_public_content import emit_main as emit_public_content_main
+    emit_public_content_main(repo, output, public_content_fetcher_proof)
 
     for name in ("EyeProtectionPlugin", "DanmakuEnhancePlugin"):
         path = BASE + "feature/plugin/" + name + ".kt"
@@ -663,6 +675,11 @@ def generate_feed_tests(repo: Path, output: Path) -> list[Path]:
     return [target]
 
 
+def generate_public_content_tests(repo: Path, output: Path) -> list[Path]:
+    from v046_rss_public_content import emit_tests as emit_public_content_tests
+    return emit_public_content_tests(repo, output)
+
+
 def inventory(repo: Path) -> list[dict]:
     rows = [{"path": path, "role": "plugins", "mode": mode,
              "sha256": hashlib.sha256(read(repo, path).encode()).hexdigest()} for path, mode in SOURCES.items()]
@@ -695,5 +712,6 @@ if __name__ == "__main__":
             if args.test_output.resolve().is_relative_to(args.output.resolve()):
                 cli.error("--test-output must be outside the generated main source root")
             print(f"Generated {len(generate_feed_tests(args.repo.resolve(), args.test_output.resolve()))} original feed test source files")
+            print(f"Generated {len(generate_public_content_tests(args.repo.resolve(), args.test_output.resolve()))} RSS public content test source files")
     else:
         cli.error("--output or --inventory is required")
