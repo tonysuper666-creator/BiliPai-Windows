@@ -73,16 +73,19 @@ def desktop_glass_uniform_transforms():
 from v040_native_chrome import selected_source as _previous_native_source, identity_for as _previous_native_identity
 from v042_search_layout import selected_shared_source, shared_identity
 from v046_design_system_leaves_b import shared_source as _leaf_b_source, shared_identity as _leaf_b_identity, validate_outputs as _validate_leaf_b_outputs
+import v046_chrome_glass_tuning as glass_tuning
 
+# v0.4.6 glass tuning values are the last layer: it asserts the exact pinned predecessor body.
 def _native_source(repo,path,previous):
- return _leaf_b_source(repo,path,selected_shared_source(repo,path,_previous_native_source(repo,path,previous)))
+ return glass_tuning.selected_source(repo,path,_leaf_b_source(repo,path,selected_shared_source(repo,path,_previous_native_source(repo,path,previous))))
 
 def _native_identity(repo,path):
- return _leaf_b_identity(repo,path) or shared_identity(repo,path) or _previous_native_identity(repo,path)
+ return glass_tuning.identity_for(repo,path) or _leaf_b_identity(repo,path) or shared_identity(repo,path) or _previous_native_identity(repo,path)
 
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
  _validate_leaf_b_outputs(REPO,HERE)
+ glass_tuning.validate_outputs(REPO,HERE)
  parser=load('liquid_selected_parser',REPO/'desktop/tools/sync-upstream.py')
  def declarations(source):
   tokens=parser.kotlin_tokens(source);depth=parens=brackets=0;starts=[]
@@ -235,6 +238,9 @@ private suspend fun sampleWindowLuminance(activity: DesktopLiquidReadabilityEnvi
     activity.sampleBitmap(sourceBounds, ADAPTIVE_READABILITY_SAMPLE_WIDTH, ADAPTIVE_READABILITY_SAMPLE_HEIGHT)
         ?.averageRelativeLuminance()
 ''')
+ # Original LiquidGlassTuningTest for the Windows test source root (never part of the main source set).
+ for relative,body in glass_tuning.test_files(REPO).items():write(HERE/'test'/relative,body)
+ write(HERE/'v046-chrome-glass-tuning-proof.json',glass_tuning.proof_text(REPO))
  write(HERE/'source-inventory.json',json.dumps(dict(originalCommit=COMMIT,sourceCount=len(records),sources=records,sourceOverrides=[row['sourceIdentity'] for row in records if 'sourceIdentity' in row],explicitActualReuse=['resolveSharedBottomBarCapsuleShape','BILIPAI_PROGRESSIVE_TOP_BLUR_START_FRACTION','desktopDetailRenderEffectsSupported','DesktopDynamicWindowConfiguration','AppNativeTabRow','AppNativeSegmentedControl','AppSegmentOption','resolveReadableNativeTabMinWidth'],noNewHomeSettings=True,noNewSettingsManager=True,noNewStore=True,noNewClient=True),ensure_ascii=False,indent=2)+'\n')
  return sorted(safe(HERE/'generated').rglob('*.kt'))
 if __name__=='__main__':

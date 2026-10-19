@@ -153,7 +153,8 @@
     "desktop/upstream-slices/v046-danmaku-protocol",
     "desktop/upstream-slices/v046-design-system-leaves-b",
     "desktop/upstream-slices/v046-rss-public-content",
-    "desktop/upstream-slices/v046-image-viewer"
+    "desktop/upstream-slices/v046-image-viewer",
+    "desktop/upstream-slices/v046-chrome-glass-tuning"
   ],
   "archives": [
     {
@@ -6809,6 +6810,41 @@
           "sha256": "ca96b67e50461661bff523fd4bf4f2e2d652587a5becfb9e491c003ca66540e3",
           "hashNormalization": "raw",
           "blob": "99ae666792ca98f93edcd9283fee5cbf469779a1"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-chrome-glass-tuning",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-chrome-glass-tuning/BottomBarGlassMaterialPolicy.kt",
+          "sha256": "c92aef70029441df587a362eb47989c8100ab8b2e1762f8976fa042f5a8f1ca9",
+          "hashNormalization": "raw",
+          "blob": "60814d80b686c072e40d112f9203edf7b7051e6d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-chrome-glass-tuning/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-chrome-glass-tuning/LiquidGlassTuning.kt",
+          "sha256": "790794f2d7d2088d8f92933c33385b89f3441f797a78b5cf3a95e22e42a03805",
+          "hashNormalization": "raw",
+          "blob": "f51c84c8f0cbc3749ae4846cea05c6c6a8265ec9"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-chrome-glass-tuning/LiquidGlassTuningTest.kt",
+          "sha256": "636aa1f3c0033bc80d2f9e405ca199741f58898cb7bed4a1ae4d8f2b68c2993d",
+          "hashNormalization": "raw",
+          "blob": "3a1c5663e5ff4273322f349e174a85c34ebd5650"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-chrome-glass-tuning/manifest.json",
+          "sha256": "a69ad532fd462d266ffec3bd21eb78cbb66f8d742b3d5147a3b0093fec0bc9b4",
+          "hashNormalization": "raw",
+          "blob": "7e8fe667d126ba9065d7321f0622cb35d42691b9"
         }
       ]
     }
@@ -17949,6 +17985,51 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original eight-case test, emitted verbatim by the dynamic card producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "localPath": "desktop/upstream-slices/v046-chrome-glass-tuning/LiquidGlassTuning.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f51c84c8f0cbc3749ae4846cea05c6c6a8265ec9",
+      "sha256": "790794f2d7d2088d8f92933c33385b89f3441f797a78b5cf3a95e22e42a03805",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-chrome-glass-tuning"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "whole v0.4.6 LiquidGlassTuning (linear readability protection, 0.34 scrim, constant indicator chromatic boost), BottomBarGlassMaterialPolicy (container alpha without the preset scale) and the original LiquidGlassTuningTest"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-chrome-glass-tuning/BottomBarGlassMaterialPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "60814d80b686c072e40d112f9203edf7b7051e6d",
+      "sha256": "c92aef70029441df587a362eb47989c8100ab8b2e1762f8976fa042f5a8f1ca9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-chrome-glass-tuning"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "whole v0.4.6 LiquidGlassTuning (linear readability protection, 0.34 scrim, constant indicator chromatic boost), BottomBarGlassMaterialPolicy (container alpha without the preset scale) and the original LiquidGlassTuningTest"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/home/components/LiquidGlassTuningTest.kt",
+      "localPath": "desktop/upstream-slices/v046-chrome-glass-tuning/LiquidGlassTuningTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3a1c5663e5ff4273322f349e174a85c34ebd5650",
+      "sha256": "636aa1f3c0033bc80d2f9e405ca199741f58898cb7bed4a1ae4d8f2b68c2993d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-chrome-glass-tuning"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "whole v0.4.6 LiquidGlassTuning (linear readability protection, 0.34 scrim, constant indicator chromatic boost), BottomBarGlassMaterialPolicy (container alpha without the preset scale) and the original LiquidGlassTuningTest"
     }
   ],
   "buildStandaloneInputs": [

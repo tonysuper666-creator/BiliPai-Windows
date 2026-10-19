@@ -1838,6 +1838,8 @@ val extractSharedLiquidTabs by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v037-shared-tabs-progress-closure")
     inputs.file("tools/v037_player_shared_material.py")
     inputs.dir("upstream-slices/v037-player-shared-material")
+    inputs.file("tools/v046_chrome_glass_tuning.py")
+    inputs.dir("upstream-slices/v046-chrome-glass-tuning")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-shared-liquid-tabs.py",
@@ -1853,6 +1855,8 @@ val extractSharedLiquidTabs by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/shared-liquid-tabs"))
 }
 tasks.named("compileKotlin") { dependsOn(extractSharedLiquidTabs) }
+// The same producer emits the original LiquidGlassTuningTest outside the main source root.
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/shared-liquid-tabs/test")) }
 
 val extractStableVideoMetadata by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
