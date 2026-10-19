@@ -687,7 +687,7 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != 'b95925745b72a671f660e7678860f8d6df0fe3ef970aada653a251a7ef5a1e0a':
+    if presentation and sha(fixed_raw) != 'f3082169dce6ed9999a279bbe69b0dbe0a7f5a3d2fbd849ab923830cb65065d4':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:

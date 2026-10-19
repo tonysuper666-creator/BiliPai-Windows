@@ -33,7 +33,7 @@ import org.junit.jupiter.api.io.TempDir
 class DesktopOriginalVideoCoverFileAdmissionTest {
     @TempDir lateinit var directory: Path
 
-    private class Fixture(root: Path) : AutoCloseable {
+    private class Fixture(root: Path) {
         val bytes = Base64.getDecoder().decode(
             "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jIOMAAAAASUVORK5CYII=")
         val requests = AtomicInteger()
@@ -79,16 +79,24 @@ class DesktopOriginalVideoCoverFileAdmissionTest {
             action()
         }
         suspend fun configure() { preferences.setImageSaveTreeUri(images.toUri().toString()) }
-        override fun close() {
-            assets.close(); manager.close(); entryScope.cancel(); lifetime.close(); entryActive.set(false)
-            client.dispatcher.executorService.shutdown(); client.connectionPool.evictAll()
+        suspend fun close() {
+            assets.close()
+            try {
+                manager.shutdownForApplicationExit()
+            } finally {
+                entryScope.cancel(); lifetime.close(); entryActive.set(false)
+                client.dispatcher.executorService.shutdown(); client.connectionPool.evictAll()
+            }
         }
     }
+
+    private suspend fun <T> Fixture.closing(block: suspend (Fixture) -> T): T =
+        try { block(this) } finally { close() }
 
     private fun files(directory: Path): List<Path> = Files.list(directory).use { it.toList() }
 
     @Test fun actualBindingSavesOriginalCoverBytesToConfiguredGallery(): Unit = runBlocking {
-        Fixture(directory).use { fixture ->
+        Fixture(directory).closing { fixture ->
             fixture.configure()
             val admissions = AtomicInteger()
             val saved = fixture.binding.saveImageToGallery(fixture.settings,
@@ -109,7 +117,7 @@ class DesktopOriginalVideoCoverFileAdmissionTest {
     }
 
     @Test fun actualBindingRejectsRetiredCaptureAtFinalMoveAndCleansGalleryStage(): Unit = runBlocking {
-        Fixture(directory).use { fixture ->
+        Fixture(directory).closing { fixture ->
             fixture.configure()
             val admissions = AtomicInteger()
             val observedWrittenStage = AtomicBoolean(false)

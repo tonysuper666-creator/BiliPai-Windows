@@ -139,7 +139,7 @@ class DesktopDownloadBrandSuccessTest {
         try {
             val manager = h.manager(); h.enqueue(manager); h.completed(manager)
             withTimeout(2_000) { while (h.events.isEmpty()) delay(5) }
-            h.closeManager(manager); h.events.clear()
+            manager.shutdownForApplicationExit(); h.events.clear()
             val restored = h.manager(); assertEquals(DownloadStatus.COMPLETED, restored.tasks.value.single().status)
             delay(30); assertTrue(h.events.isEmpty())
         } finally { h.close() }

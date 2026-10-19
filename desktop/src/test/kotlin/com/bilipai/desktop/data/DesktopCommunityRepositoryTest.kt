@@ -121,7 +121,7 @@ class DesktopCommunityRepositoryTest {
         assertEquals("333.1387", dynamic["web_location"])
         val search = communitySearchParams("term", SearchType.LIVE_USER, 2, mapOf("order" to "online"))
         assertEquals("live_user", search["search_type"])
-        assertEquals("20", search["page_size"])
+        assertEquals("30", search["page_size"]) // pinned v041 SearchRepository.kt:103
         assertEquals("1430654", search["web_location"])
         assertEquals("pc", search["platform"])
         assertEquals(mapOf("mid" to "42", "pn" to "2", "ps" to "30", "order" to "pubdate"),

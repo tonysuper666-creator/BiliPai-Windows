@@ -256,7 +256,7 @@ try {
         $fixed.producerVariant='bilipai-veyra-rtx-present-v1'
         $fixed.bridgeSourceSha256='51B988AB9CE5A6AC5DA1708E118675BF499A86C697417A55A61EDD1493067014'
         $fixed.vfSourceSha256='9E6E9BB5910D227ECCDE9F55F2D4C7B590588C5D160D26DC994A73F93B30BB28'
-        $manifestExpected='8F61B3035BD4DBC4690431D532D9FA6E48216A309C7DDEC7664594A892049790'
+        $manifestExpected='822BC81A4451977F3D074C5C31347157FFF5020269BA79541B7B05A534BED19B'
         Require-Properties $profile @('presentationProtocolVersion','presentationProperty','upstreamEditsSha256',
             'sourcePatchHelperSha256','mpvNativeReceiptRelativePath','mpvNativeReceiptSha256') 'PRESENTATION_PROFILE_MISSING'
         if(($profile.presentationProtocolVersion-isnot[int]-and$profile.presentationProtocolVersion-isnot[long])-or$profile.presentationProtocolVersion-ne2-or$profile.presentationProperty-cne'bilipai-rtx-presentation'-or

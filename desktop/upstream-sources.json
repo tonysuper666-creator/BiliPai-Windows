@@ -14083,7 +14083,7 @@
   "windowsNativeComponentContractRevision": {
     "sharedCoreAbiExports": 8,
     "presentationProtocolVersion": 2,
-    "verifierSHA256": "ee94c3957f23d53eff885f8aadbabe6882517167436a9290bb562e48b517ff8f",
+    "verifierSHA256": "a0e1e04c90b3ac90899e1fbb7c123f6ef65c2472dd3f99e58561b63f2df3ed55",
     "windowsPowerShellChildModulePathIsolated": true,
     "integralJsonProtocolTypesSupported": true,
     "sourceIdentityAndRuntimeSignatureChecksRetained": true,
