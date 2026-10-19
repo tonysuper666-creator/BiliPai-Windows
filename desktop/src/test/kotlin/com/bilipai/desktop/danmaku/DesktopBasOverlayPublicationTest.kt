@@ -352,4 +352,116 @@ class DesktopBasOverlayPublicationTest {
             } finally {release.countDown()}
         }
     }
+
+    @Test fun `hidden overlay retires non-current BAS once and rejects a stale snapshot republish`() {
+        val basCalls=AtomicInteger(); val admissions=AtomicInteger()
+        val processor=DesktopBasPluginProcessor(filter={basCalls.incrementAndGet();it},style={null})
+        Fixture(xml(entry(90,1,"ordinary"),bas(91,"hidden BAS")),basProcessor=processor).use {f->
+            f.awaitInstalled(2,1) // count includes BAS
+            assertEquals(1,basCalls.get())
+            val first=assertNotNull(f.player.currentSourceSnapshot())
+            val canRender=edt {
+                DanmakuOverlay::class.java.getDeclaredMethod("canRenderOverlay")
+                    .apply {isAccessible=true}.invoke(f.overlay) as Boolean
+            }
+            assertFalse(canRender)
+            assertTrue(f.player.recoverSource(f.version,positionSeconds=2.0,paused=true))
+            assertFalse(f.player.ownsSourceSnapshot(first))
+            f.await("hidden non-current BAS retired") {
+                f.installation()==null && f.overlay.commentCount.value==1 && f.items().isEmpty()
+            } // ordinary 1 remains; BAS contribution dropped
+            assertFalse(f.installationCurrent())
+            assertEquals(1,basCalls.get()) // no second publication
+            f.overlay.applySettings(settings) // same policy: requestRenderFrame only (888-904)
+            edt { }
+            assertNull(f.installation())
+            assertEquals(1,f.overlay.commentCount.value)
+            assertEquals(1,basCalls.get())
+            val binding=edt {f.overlay.acquireBasActions(first,cid=42L,
+                owned={f.alive.get() && f.player.ownsSourceSnapshot(first)},
+                admit={publish->admissions.incrementAndGet();publish();true},activate={false})}
+            try {
+                f.overlay.applySettings(settings)
+                edt { }
+                assertEquals(0,admissions.get()) // needsRefresh requires ownsSourceSnapshot(first)
+                assertNull(f.installation())
+                assertEquals(1,f.overlay.commentCount.value)
+                assertEquals(1,basCalls.get())
+                assertTrue(f.items().isEmpty())
+                assertFalse(f.installationCurrent())
+            } finally {edt {binding.close()}}
+        }
+    }
+
+    @Test fun `fresh load after hidden retirement publishes once and an extra render request keeps that installation`() {
+        val basCalls=AtomicInteger()
+        val processor=DesktopBasPluginProcessor(filter={basCalls.incrementAndGet();it},style={null})
+        Fixture(xml(entry(90,1,"ordinary"),bas(91,"restored BAS")),basProcessor=processor).use {f->
+            f.awaitInstalled(2,1)
+            val first=assertNotNull(f.player.currentSourceSnapshot())
+            assertTrue(f.player.recoverSource(f.version,positionSeconds=2.0,paused=true))
+            f.await("pre-restore retirement") {
+                f.installation()==null && f.overlay.commentCount.value==1 && !f.player.ownsSourceSnapshot(first)
+            }
+            assertEquals(1,basCalls.get())
+            val recovered=assertNotNull(f.player.currentSourceSnapshot())
+            runBlocking {f.overlay.load(42L,aid=0L,durationSeconds=0.0,expectedSourceVersion=f.version,
+                maskSource=null,stillOwned=f.alive::get)}
+            f.awaitInstalled(2,1)
+            assertEquals("restored BAS",f.items().single().content)
+            assertEquals(2,basCalls.get()) // exactly one new publication
+            val installed=assertNotNull(f.installation())
+            assertTrue(f.installationCurrent())
+            assertTrue(f.player.ownsSourceSnapshot(recovered))
+            f.overlay.applySettings(settings) // additional requestRenderFrame; no refilter
+            edt { }
+            f.overlay.setEyeProtection(0f,0f)
+            edt { }
+            assertSame(installed,f.installation())
+            assertTrue(f.installationCurrent())
+            assertEquals(2,f.overlay.commentCount.value)
+            assertEquals(1,f.items().size)
+            assertEquals(2,basCalls.get()) // extra render did not republish
+        }
+    }
+
+    @Test fun `rapid source switches install only the final current BAS document`() {
+        val wave=AtomicInteger(0)
+        val started=arrayOf(CountDownLatch(1),CountDownLatch(1),CountDownLatch(1))
+        val release=CountDownLatch(1)
+        val processor=DesktopBasPluginProcessor(filter={item->
+            val w=wave.get()
+            started[w].countDown()
+            check(release.await(5,TimeUnit.SECONDS))
+            item.copy(content=item.content.replace("switch BAS","wave-$w"))
+        },style={null})
+        Fixture(xml(bas(91,"switch BAS")),basProcessor=processor).use {f->
+            try {
+                assertTrue(started[0].await(5,TimeUnit.SECONDS))
+                val jobA=f.currentBasJob()
+                wave.set(1)
+                val versionB=f.player.loadVersioned(PlaybackSource("private-bas-B"))
+                runBlocking {f.overlay.load(43L,aid=0L,durationSeconds=0.0,expectedSourceVersion=versionB,
+                    maskSource=null,stillOwned=f.alive::get)}
+                assertTrue(started[1].await(5,TimeUnit.SECONDS))
+                val jobB=f.currentBasJob()
+                wave.set(2)
+                val versionC=f.player.loadVersioned(PlaybackSource("private-bas-C"))
+                runBlocking {f.overlay.load(44L,aid=0L,durationSeconds=0.0,expectedSourceVersion=versionC,
+                    maskSource=null,stillOwned=f.alive::get)}
+                assertTrue(started[2].await(5,TimeUnit.SECONDS))
+                val jobC=f.currentBasJob()
+                release.countDown()
+                f.drain(jobA); f.drain(jobB); f.drain(jobC)
+                f.awaitInstalled(1,1)
+                assertEquals("wave-2",f.items().single().content)
+                assertEquals(1,f.overlay.commentCount.value) // final document size; not 2 or 3
+                assertEquals(1,f.items().size)
+                assertTrue(f.installationCurrent())
+                val current=assertNotNull(f.player.currentSourceSnapshot())
+                assertEquals(versionC,current.sourceVersion)
+                assertTrue(f.player.ownsSourceSnapshot(current))
+            } finally {release.countDown()}
+        }
+    }
 }
