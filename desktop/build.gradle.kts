@@ -873,6 +873,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
     inputs.file("tools/v046_identity_badges.py")
     inputs.dir("upstream-slices/v046-identity-badges")
+    inputs.file("tools/v046_home_card_cascade_definers.py")
+    inputs.dir("upstream-slices/v046-home-card-cascade-definers")
     inputs.file("tools/v042_search_dependencies.py")
     inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.file("tools/v040_native_chrome.py")
