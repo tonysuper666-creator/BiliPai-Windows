@@ -1050,6 +1050,314 @@
       },
       {"id": "press-without-focus", "events": [["press", 1000]], "ring": false},
       {"id": "focus-clock-before-the-press", "events": [["press", 2000], ["focus", 1900]], "ring": true}
-    ]
+    ],
+    "menu": {"width": 220, "popover_width": 320},
+    "menu_place": [
+      {
+        "id": "at-point-fits",
+        "placement": "AT_POINT",
+        "anchor": [100, 100, 100, 100],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [100, 100]
+      },
+      {
+        "id": "at-point-flips-left",
+        "placement": "AT_POINT",
+        "anchor": [900, 100, 900, 100],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [680, 100]
+      },
+      {
+        "id": "at-point-flips-up",
+        "placement": "AT_POINT",
+        "anchor": [100, 600, 100, 600],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [100, 300]
+      },
+      {
+        "id": "at-point-flips-both",
+        "placement": "AT_POINT",
+        "anchor": [900, 600, 900, 600],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [680, 300]
+      },
+      {
+        "id": "at-point-corner-is-clamped-into-the-gap",
+        "placement": "AT_POINT",
+        "anchor": [0, 0, 0, 0],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [8, 8]
+      },
+      {
+        "id": "at-point-bottom-right-corner-flips-both",
+        "placement": "AT_POINT",
+        "anchor": [990, 690, 990, 690],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [770, 390]
+      },
+      {
+        "id": "at-point-exact-fit-at-the-right-edge",
+        "placement": "AT_POINT",
+        "anchor": [772, 100, 772, 100],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [772, 100]
+      },
+      {
+        "id": "at-point-one-pixel-over-flips",
+        "placement": "AT_POINT",
+        "anchor": [773, 100, 773, 100],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [553, 100]
+      },
+      {
+        "id": "at-point-menu-taller-than-the-window",
+        "placement": "AT_POINT",
+        "anchor": [100, 100, 100, 100],
+        "menu": [220, 800],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [100, 8]
+      },
+      {
+        "id": "at-point-nothing-fits-is-clamped-to-the-gap",
+        "placement": "AT_POINT",
+        "anchor": [50, 50, 50, 50],
+        "menu": [220, 300],
+        "window": [200, 150],
+        "gap": 8,
+        "expect": [8, 8]
+      },
+      {
+        "id": "at-point-menu-exactly-fills-the-height",
+        "placement": "AT_POINT",
+        "anchor": [100, 8, 100, 8],
+        "menu": [220, 684],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [100, 8]
+      },
+      {
+        "id": "at-point-gap-zero-fits-flush",
+        "placement": "AT_POINT",
+        "anchor": [780, 100, 780, 100],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 0,
+        "expect": [780, 100]
+      },
+      {
+        "id": "below-start-fits",
+        "placement": "BELOW_START",
+        "anchor": [100, 50, 200, 82],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [100, 90]
+      },
+      {
+        "id": "below-start-flips-up",
+        "placement": "BELOW_START",
+        "anchor": [100, 640, 200, 672],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [100, 332]
+      },
+      {
+        "id": "below-start-aligns-to-the-end-at-the-right-edge",
+        "placement": "BELOW_START",
+        "anchor": [900, 50, 990, 82],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [770, 90]
+      },
+      {
+        "id": "below-start-no-room-either-way",
+        "placement": "BELOW_START",
+        "anchor": [100, 150, 200, 182],
+        "menu": [220, 300],
+        "window": [1000, 400],
+        "gap": 8,
+        "expect": [100, 92]
+      },
+      {
+        "id": "below-end-fits",
+        "placement": "BELOW_END",
+        "anchor": [800, 50, 950, 82],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [730, 90]
+      },
+      {
+        "id": "below-end-aligns-to-the-start-at-the-left-edge",
+        "placement": "BELOW_END",
+        "anchor": [20, 50, 60, 82],
+        "menu": [220, 300],
+        "window": [1000, 700],
+        "gap": 8,
+        "expect": [20, 90]
+      },
+      {
+        "id": "below-end-neither-side-fits",
+        "placement": "BELOW_END",
+        "anchor": [100, 50, 200, 82],
+        "menu": [220, 300],
+        "window": [300, 700],
+        "gap": 8,
+        "expect": [8, 90]
+      }
+    ],
+    "menu_max_height": [
+      {"window_height": 700, "gap": 8, "expect": 684},
+      {"window_height": 320, "gap": 8, "expect": 304},
+      {"window_height": 700, "gap": 0, "expect": 700},
+      {"window_height": 18, "gap": 8, "expect": 2},
+      {"window_height": 17, "gap": 8, "expect": 1},
+      {"window_height": 16, "gap": 8, "expect": 1},
+      {"window_height": 10, "gap": 8, "expect": 1}
+    ],
+    "scrollbar": {
+      "idle_alpha_percent": 28,
+      "hover_alpha_percent": 60,
+      "needed": [
+        {"content": 600, "viewport": 100, "expect": true},
+        {"content": 101.5, "viewport": 100, "expect": true},
+        {"content": 101, "viewport": 100, "expect": false},
+        {"content": 100.5, "viewport": 100, "expect": false},
+        {"content": 100, "viewport": 100, "expect": false},
+        {"content": 50, "viewport": 100, "expect": false},
+        {"content": 0, "viewport": 0, "expect": false}
+      ],
+      "thumb": [
+        {"density": 1.0, "strip": 12, "thumb": 8, "inset": 2},
+        {"density": 1.25, "strip": 15, "thumb": 10, "inset": 2},
+        {"density": 1.5, "strip": 18, "thumb": 12, "inset": 3},
+        {"density": 1.5625, "strip": 19, "thumb": 12, "inset": 4},
+        {"density": 1.875, "strip": 23, "thumb": 15, "inset": 4},
+        {"density": 2.0, "strip": 24, "thumb": 16, "inset": 4},
+        {"density": 2.34375, "strip": 28, "thumb": 19, "inset": 4},
+        {"density": 3.0, "strip": 36, "thumb": 24, "inset": 6},
+        {"density": 0.5, "strip": 6, "thumb": 4, "inset": 1},
+        {"density": 0.25, "strip": 3, "thumb": 2, "inset": 0}
+      ],
+      "thumb_wider_than_the_strip": [
+        {"density": 3.0, "strip": 10, "thumb": 10, "inset": 0},
+        {"density": 1.0, "strip": 4, "thumb": 4, "inset": 0}
+      ]
+    },
+    "toast": {
+      "duration": [{"has_action": false, "ms": 2400}, {"has_action": true, "ms": 5000}],
+      "script": [
+        {
+          "id": "plain",
+          "steps": [
+            {
+              "op": "show",
+              "message": "Saved",
+              "action": null,
+              "expect": {"id": 1, "message": "Saved", "action": null, "ms": 2400}
+            },
+            {"op": "dismiss", "id": 1, "expect": null}
+          ]
+        },
+        {
+          "id": "a-new-toast-replaces-the-shown-one",
+          "steps": [
+            {
+              "op": "show",
+              "message": "Zoom 130%",
+              "action": null,
+              "expect": {"id": 1, "message": "Zoom 130%", "action": null, "ms": 2400}
+            },
+            {
+              "op": "show",
+              "message": "Zoom 135%",
+              "action": null,
+              "expect": {"id": 2, "message": "Zoom 135%", "action": null, "ms": 2400}
+            },
+            {
+              "op": "dismiss",
+              "id": 1,
+              "expect": {"id": 2, "message": "Zoom 135%", "action": null, "ms": 2400}
+            },
+            {"op": "dismiss", "id": 2, "expect": null}
+          ]
+        },
+        {
+          "id": "a-replaced-action-toast-loses-its-action",
+          "steps": [
+            {
+              "op": "show",
+              "message": "Removed",
+              "action": "Undo",
+              "expect": {"id": 1, "message": "Removed", "action": "Undo", "ms": 5000}
+            },
+            {
+              "op": "show",
+              "message": "Saved",
+              "action": null,
+              "expect": {"id": 2, "message": "Saved", "action": null, "ms": 2400}
+            }
+          ]
+        },
+        {
+          "id": "blank-text-is-ignored-and-takes-no-id",
+          "steps": [
+            {"op": "show", "message": "", "action": null, "expect": null},
+            {"op": "show", "message": "   ", "action": "Undo", "expect": null},
+            {
+              "op": "show",
+              "message": "x",
+              "action": "  ",
+              "expect": {"id": 1, "message": "x", "action": null, "ms": 2400}
+            },
+            {
+              "op": "show",
+              "message": "  hello  ",
+              "action": " Undo ",
+              "expect": {"id": 2, "message": "hello", "action": "Undo", "ms": 5000}
+            }
+          ]
+        },
+        {
+          "id": "ids-are-never-reused",
+          "steps": [
+            {
+              "op": "show",
+              "message": "a",
+              "action": null,
+              "expect": {"id": 1, "message": "a", "action": null, "ms": 2400}
+            },
+            {"op": "dismiss", "id": 1, "expect": null},
+            {
+              "op": "show",
+              "message": "b",
+              "action": null,
+              "expect": {"id": 2, "message": "b", "action": null, "ms": 2400}
+            },
+            {"op": "dismiss", "id": 1, "expect": {"id": 2, "message": "b", "action": null, "ms": 2400}},
+            {"op": "dismiss", "id": 3, "expect": {"id": 2, "message": "b", "action": null, "ms": 2400}}
+          ]
+        }
+      ]
+    }
   }
 }

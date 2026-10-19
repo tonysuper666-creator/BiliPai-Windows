@@ -46,7 +46,7 @@ import top.yukonga.miuix.kmp.basic.TooltipAnchorPosition
  * display only, so the tree holds one toggle and not two.
  */
 
-private fun desktopKitDisabledAlpha(enabled: Boolean): Float = if (enabled) 1f else DESKTOP_KIT_DISABLED_ALPHA_PERCENT / 100f
+internal fun desktopKitDisabledAlpha(enabled: Boolean): Float = if (enabled) 1f else DESKTOP_KIT_DISABLED_ALPHA_PERCENT / 100f
 
 /** An icon button: a 32 dp hit (36 dp when large), a 20 dp glyph slot, exactly one clickable with Role.Button. */
 @Composable

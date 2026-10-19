@@ -1,7 +1,9 @@
 package com.bilipai.desktop.ui.kit
 
 import com.bilipai.desktop.ux.DesktopUxContract
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonArray
@@ -12,6 +14,8 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 /**
@@ -182,5 +186,206 @@ class DesktopKitModelTest {
 
     @Test fun theLoadingTextIsTheSettingsWording() {
         assertEquals("读取设置…", DesktopKitStrings.LOADING_SETTING)
+    }
+
+    // ---- Slice X2b: menus, overlay scrollbar, toast ----
+
+    @Test fun partTwoTokensAreTheContractNumbers() {
+        val scrollbar = tokens.getValue("scrollbar").jsonObject
+        val toast = tokens.getValue("toast_ms").jsonObject
+        val menu = kit.getValue("menu").jsonObject
+        val flyout = DesktopUxContract.section("flyout")
+        val kitScrollbar = kit.getValue("scrollbar").jsonObject
+        assertEquals(DesktopUxContract.int(scrollbar, "thumb"), DESKTOP_KIT_SCROLLBAR_THUMB_DP)
+        assertEquals(DesktopUxContract.int(scrollbar, "hit_strip"), DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP)
+        assertEquals(DesktopUxContract.int(toast, "plain"), DESKTOP_KIT_TOAST_PLAIN_MS)
+        assertEquals(DesktopUxContract.int(toast, "with_action"), DESKTOP_KIT_TOAST_ACTION_MS)
+        assertEquals(DesktopUxContract.int(menu, "width"), DESKTOP_KIT_MENU_WIDTH_DP)
+        assertEquals(DesktopUxContract.int(menu, "popover_width"), DESKTOP_KIT_POPOVER_WIDTH_DP)
+        assertEquals(DesktopUxContract.int(flyout, "padding"), DESKTOP_KIT_MENU_PADDING_DP)
+        assertEquals(DesktopUxContract.int(flyout, "anchor_gap"), DESKTOP_KIT_MENU_GAP_DP)
+        assertEquals(DesktopUxContract.int(kitScrollbar, "idle_alpha_percent"), DESKTOP_KIT_SCROLLBAR_IDLE_ALPHA_PERCENT)
+        assertEquals(DesktopUxContract.int(kitScrollbar, "hover_alpha_percent"), DESKTOP_KIT_SCROLLBAR_HOVER_ALPHA_PERCENT)
+        assertTrue(DESKTOP_KIT_SCROLLBAR_THUMB_DP < DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP)
+        assertTrue(DESKTOP_KIT_SCROLLBAR_IDLE_ALPHA_PERCENT < DESKTOP_KIT_SCROLLBAR_HOVER_ALPHA_PERCENT)
+        // Spec 5.1: the menu rows are the control height; the menu radius is its own token.
+        assertEquals(32, DESKTOP_KIT_CONTROL_HEIGHT_DP)
+        assertEquals(12, DESKTOP_KIT_RADIUS_MENU_DP)
+    }
+
+    private fun place(row: kotlinx.serialization.json.JsonObject): DesktopKitMenuPosition {
+        val anchor = DesktopUxContract.ints(row.getValue("anchor"))
+        val menu = DesktopUxContract.ints(row.getValue("menu"))
+        val window = DesktopUxContract.ints(row.getValue("window"))
+        return desktopKitPlaceMenu(
+            DesktopKitMenuPlacement.valueOf(DesktopUxContract.string(row, "placement")),
+            anchor[0], anchor[1], anchor[2], anchor[3], menu[0], menu[1], window[0], window[1], DesktopUxContract.int(row, "gap"),
+        )
+    }
+
+    @Test fun menuPlacementFollowsTheContractRows() {
+        val rows = DesktopUxContract.objects(kit.getValue("menu_place"))
+        assertTrue(rows.size >= 19)
+        for (row in rows) {
+            val expect = DesktopUxContract.ints(row.getValue("expect"))
+            assertEquals(DesktopKitMenuPosition(expect[0], expect[1]), place(row), DesktopUxContract.string(row, "id"))
+        }
+        assertEquals(DesktopKitMenuPlacement.entries.map { it.name }.toSet(), rows.map { DesktopUxContract.string(it, "placement") }.toSet())
+    }
+
+    /** The same rule as a candidate list per axis: the first candidate that lies wholly inside the free range. */
+    private fun pick(candidates: List<Int>, size: Int, limit: Int, gap: Int): Int {
+        val low = gap
+        val high = limit - gap
+        val inside = candidates.firstOrNull { it >= low && it + size <= high }
+        if (inside != null) return inside
+        return if (high - low >= size) candidates[0].coerceIn(low, high - size) else low
+    }
+
+    private fun oracle(
+        placement: DesktopKitMenuPlacement, left: Int, top: Int, right: Int, bottom: Int,
+        width: Int, height: Int, windowWidth: Int, windowHeight: Int, gap: Int,
+    ): DesktopKitMenuPosition {
+        val (xs, ys) = when (placement) {
+            DesktopKitMenuPlacement.AT_POINT -> listOf(left, left - width) to listOf(top, top - height)
+            DesktopKitMenuPlacement.BELOW_START -> listOf(left, right - width) to listOf(bottom + gap, top - gap - height)
+            DesktopKitMenuPlacement.BELOW_END -> listOf(right - width, left) to listOf(bottom + gap, top - gap - height)
+        }
+        return DesktopKitMenuPosition(pick(xs, width, windowWidth, gap), pick(ys, height, windowHeight, gap))
+    }
+
+    @Test fun menuPlacementAgreesWithTheCandidateOracleOverADenseGridAndStaysInsideTheGap() {
+        var checked = 0
+        for ((windowWidth, windowHeight) in listOf(200 to 150, 480 to 320, 1000 to 700)) {
+            for ((width, height) in listOf(100 to 60, 220 to 300, 220 to 800, 500 to 50, 1 to 1)) {
+                for (gap in listOf(0, DESKTOP_KIT_MENU_GAP_DP)) {
+                    for (placement in DesktopKitMenuPlacement.entries) {
+                        for (left in -30..(windowWidth + 30) step 23) {
+                            for (top in -30..(windowHeight + 30) step 19) {
+                                for ((anchorWidth, anchorHeight) in listOf(0 to 0, 90 to 32)) {
+                                    val actual = desktopKitPlaceMenu(
+                                        placement, left, top, left + anchorWidth, top + anchorHeight,
+                                        width, height, windowWidth, windowHeight, gap,
+                                    )
+                                    val expected = oracle(placement, left, top, left + anchorWidth, top + anchorHeight, width, height, windowWidth, windowHeight, gap)
+                                    assertEquals(expected, actual, "$placement $left,$top $width x $height in $windowWidth x $windowHeight gap $gap")
+                                    for ((position, size, limit) in listOf(Triple(actual.x, width, windowWidth), Triple(actual.y, height, windowHeight))) {
+                                        if (size <= limit - 2 * gap) assertTrue(position >= gap && position + size <= limit - gap)
+                                        else assertEquals(gap, position)
+                                    }
+                                    checked++
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        assertTrue(checked > 30_000, "checked $checked")
+    }
+
+    @Test fun menuHeightLimitFollowsTheContractRows() {
+        for (row in DesktopUxContract.objects(kit.getValue("menu_max_height"))) {
+            assertEquals(
+                DesktopUxContract.int(row, "expect"),
+                desktopKitMenuMaxHeightPx(DesktopUxContract.int(row, "window_height"), DesktopUxContract.int(row, "gap")),
+                row.toString(),
+            )
+        }
+        for (height in -5..40) assertTrue(desktopKitMenuMaxHeightPx(height, DESKTOP_KIT_MENU_GAP_DP) >= 1, "height $height")
+    }
+
+    @Test fun scrollbarNumbersFollowTheContractRows() {
+        val scrollbar = kit.getValue("scrollbar").jsonObject
+        for (row in DesktopUxContract.objects(scrollbar.getValue("needed"))) {
+            val actual = desktopKitScrollbarNeeded(DesktopUxContract.double(row, "content"), DesktopUxContract.double(row, "viewport"))
+            assertEquals(row.getValue("expect").jsonPrimitive.boolean, actual, row.toString())
+        }
+        for (table in listOf("thumb", "thumb_wider_than_the_strip")) {
+            for (row in DesktopUxContract.objects(scrollbar.getValue(table))) {
+                val density = DesktopUxContract.double(row, "density").toFloat()
+                val strip = DesktopUxContract.int(row, "strip")
+                val thumb = desktopKitScrollbarThumbPx(density, strip.toFloat())
+                assertEquals(DesktopUxContract.int(row, "thumb").toFloat(), thumb, row.toString())
+                assertEquals(DesktopUxContract.int(row, "inset").toFloat(), desktopKitScrollbarThumbInsetPx(strip.toFloat(), thumb), row.toString())
+                // The strip column of the main table is the layout rounding (ties up) of the 12 dp strip.
+                if (table == "thumb") assertEquals(strip, (DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP * density).roundToInt(), row.toString())
+            }
+        }
+    }
+
+    @Test fun theThumbIsAWholePixelWidthInsideTheStripAtEveryScaleAndZoom() {
+        var checked = 0
+        for (scale in listOf(100, 125, 150, 175, 200, 225, 250)) {
+            for (zoom in 50..200 step 5) {
+                val density = scale / 100f * (zoom / 100f)
+                val strip = (DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP * density).roundToInt().toFloat()
+                val thumb = desktopKitScrollbarThumbPx(density, strip)
+                val inset = desktopKitScrollbarThumbInsetPx(strip, thumb)
+                val label = "scale $scale zoom $zoom"
+                assertEquals(thumb, kotlin.math.floor(thumb), label)
+                assertTrue(thumb >= 1f && thumb <= strip, label)
+                assertTrue(inset >= 0f && inset + thumb <= strip, label)
+                checked++
+            }
+        }
+        assertEquals(7 * 31, checked)
+    }
+
+    @Test fun toastDurationsAndScriptsFollowTheContractRows() {
+        val toast = kit.getValue("toast").jsonObject
+        for (row in DesktopUxContract.objects(toast.getValue("duration"))) {
+            val actual = desktopKitToastDurationMs(row.getValue("has_action").jsonPrimitive.boolean)
+            assertEquals(DesktopUxContract.int(row, "ms").toLong(), actual, row.toString())
+        }
+        assertEquals(2400L, desktopKitToastDurationMs(false))
+        assertEquals(5000L, desktopKitToastDurationMs(true))
+        val scripts = DesktopUxContract.objects(toast.getValue("script"))
+        assertTrue(scripts.size >= 5)
+        for (script in scripts) {
+            var state = DesktopKitToastState()
+            for (step in DesktopUxContract.objects(script.getValue("steps"))) {
+                state = when (DesktopUxContract.string(step, "op")) {
+                    "show" -> state.show(DesktopUxContract.string(step, "message"), step.getValue("action").jsonPrimitive.contentOrNull)
+                    "dismiss" -> state.dismiss(DesktopUxContract.int(step, "id").toLong())
+                    else -> error("unknown toast op in $step")
+                }
+                val label = DesktopUxContract.string(script, "id") + ": " + step
+                val expect = step.getValue("expect")
+                if (expect is JsonNull) {
+                    assertNull(state.current, label)
+                } else {
+                    val entry = expect.jsonObject
+                    val expected = DesktopKitToastEntry(
+                        DesktopUxContract.int(entry, "id").toLong(), DesktopUxContract.string(entry, "message"),
+                        entry.getValue("action").jsonPrimitive.contentOrNull, DesktopUxContract.int(entry, "ms").toLong(),
+                    )
+                    assertEquals(expected, state.current, label)
+                }
+            }
+        }
+    }
+
+    @Test fun oneToastAtATimeIdsOnlyGrowAndAStaleDismissNeverClosesANewerToast() {
+        var state = DesktopKitToastState()
+        val seen = mutableListOf<Long>()
+        for (index in 0 until 12) {
+            state = state.show("message $index", if (index % 3 == 0) "Undo" else null)
+            val current = state.current!!
+            seen += current.id
+            assertEquals((index + 1).toLong(), state.lastId)
+            assertEquals(desktopKitToastDurationMs(index % 3 == 0), current.durationMs)
+            if (index % 4 == 0) {
+                state = state.dismiss(current.id)
+                assertNull(state.current)
+            }
+        }
+        assertEquals(seen.sorted().distinct(), seen)
+        val two = DesktopKitToastState().show("first").show("second")
+        for (stale in listOf(0L, 1L, 3L, 99L, -1L)) assertEquals(2L, two.dismiss(stale).current?.id)
+        assertNull(two.dismiss(2L).current)
+        // Blank text changes nothing: the very same state comes back.
+        assertSame(two, two.show("   "))
+        assertSame(two, two.show(""))
     }
 }

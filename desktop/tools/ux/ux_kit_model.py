@@ -12,9 +12,13 @@ focus state of DesktopKitModel.kt. This module holds:
     without the mirror, or the mirror without the Kotlin, fails;
   * run_focus, the replay of the contract's focus event sequences through the mirrored state.
 
-The composables (DesktopKitFocus, DesktopKitTooltip, DesktopKitControls) are not mirrored: they are judged by
-test_ux_kit_guard.py (source rules) and, after a compile, by DesktopKitUiTest. Python proves nothing about Kotlin
-compilation.
+Slice X2b adds to DesktopKitModel.kt the menu placement (flip, then clamp), the menu height limit, the overlay
+scrollbar numbers and the toast state, and to the token block the scrollbar, toast and menu constants; their mirrors and
+oracles are below, and the contract's "kit" section holds their golden tables.
+
+The composables (DesktopKitFocus, DesktopKitTooltip, DesktopKitControls, DesktopKitMenus, DesktopKitScrollbar,
+DesktopPlayerDarkTheme and ui/DesktopWindowsToast.kt) are not mirrored: they are judged by test_ux_kit_guard.py
+(source rules) and, after a compile, by DesktopKitUiTest. Python proves nothing about Kotlin compilation.
 """
 import re
 import struct
@@ -36,7 +40,11 @@ FOCUS_KT = KIT / "DesktopKitFocus.kt"
 TOOLTIP_KT = KIT / "DesktopKitTooltip.kt"
 CONTROLS_KT = KIT / "DesktopKitControls.kt"
 STRINGS_KT = KIT / "DesktopKitStrings.kt"
-KIT_FILES = (TOKENS_KT, MODEL_KT, FOCUS_KT, TOOLTIP_KT, CONTROLS_KT, STRINGS_KT)
+MENUS_KT = KIT / "DesktopKitMenus.kt"
+SCROLLBAR_KT = KIT / "DesktopKitScrollbar.kt"
+DARK_THEME_KT = KIT / "DesktopPlayerDarkTheme.kt"
+KIT_FILES = (TOKENS_KT, MODEL_KT, FOCUS_KT, TOOLTIP_KT, CONTROLS_KT, STRINGS_KT, MENUS_KT, SCROLLBAR_KT, DARK_THEME_KT)
+TOAST_KT = source.K / "ui/DesktopWindowsToast.kt"
 KOTLIN_MODEL_TEST = source.KT / "ui/kit/DesktopKitModelTest.kt"
 KOTLIN_UI_TEST = source.KT / "ui/kit/DesktopKitUiTest.kt"
 
@@ -48,6 +56,7 @@ marked_block = shell.marked_block
 def token_map(contract):
     """{Kotlin constant: contract number} for every constant of the UX-KIT-TOKENS block."""
     tokens, metrics = contract["tokens"], contract["rail"]["metrics"]
+    kit, flyout = contract["kit"], contract["flyout"]
     return {
         "DESKTOP_KIT_CONTROL_HEIGHT_DP": tokens["control_height"],
         "DESKTOP_KIT_ROW_LIST_DP": tokens["row_height"]["list"],
@@ -79,6 +88,14 @@ def token_map(contract):
         "DESKTOP_KIT_NAV_PILL_HEIGHT_DP": metrics["selected_pill"][1],
         "DESKTOP_KIT_BADGE_DP": metrics["badge"],
         "DESKTOP_KIT_BADGE_DOT_DP": metrics["badge_dot"],
+        "DESKTOP_KIT_SCROLLBAR_THUMB_DP": tokens["scrollbar"]["thumb"],
+        "DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP": tokens["scrollbar"]["hit_strip"],
+        "DESKTOP_KIT_TOAST_PLAIN_MS": tokens["toast_ms"]["plain"],
+        "DESKTOP_KIT_TOAST_ACTION_MS": tokens["toast_ms"]["with_action"],
+        "DESKTOP_KIT_MENU_WIDTH_DP": kit["menu"]["width"],
+        "DESKTOP_KIT_POPOVER_WIDTH_DP": kit["menu"]["popover_width"],
+        "DESKTOP_KIT_MENU_PADDING_DP": flyout["padding"],
+        "DESKTOP_KIT_MENU_GAP_DP": flyout["anchor_gap"],
     }
 
 
@@ -217,3 +234,185 @@ def step_oracle(enabled, current, delta):
         else:
             order.append(count - k if current < 0 else (current - k) % count)
     return next((i for i in order if enabled[i]), current)
+
+
+# --------------------------------------------------------------------------------------
+# Menus (slice X2b): the mirrors of desktopKitFitAxis, desktopKitPlaceMenu and desktopKitMenuMaxHeightPx
+# --------------------------------------------------------------------------------------
+
+PLACEMENTS = ("AT_POINT", "BELOW_START", "BELOW_END")
+
+
+def fit_axis(preferred, alternative, size, low, high):
+    """desktopKitFitAxis: the preferred start when it fits, else the alternative when it fits, else the preferred start
+    clamped into [low, max(low, high - size)] (Kotlin coerceIn)."""
+    preferred_fits = preferred >= low and preferred + size <= high
+    alternative_fits = alternative >= low and alternative + size <= high
+    chosen = preferred if (preferred_fits or not alternative_fits) else alternative
+    upper = max(low, high - size)
+    return min(max(chosen, low), upper)
+
+
+def place_menu(placement, anchor, menu, window, gap):
+    """desktopKitPlaceMenu, statement for statement. anchor = (left, top, right, bottom), menu and window = (w, h)."""
+    left, top, right, bottom = anchor
+    menu_w, menu_h = menu
+    window_w, window_h = window
+    at_point = placement == "AT_POINT"
+    if placement == "AT_POINT":
+        x = fit_axis(left, left - menu_w, menu_w, gap, window_w - gap)
+    elif placement == "BELOW_START":
+        x = fit_axis(left, right - menu_w, menu_w, gap, window_w - gap)
+    elif placement == "BELOW_END":
+        x = fit_axis(right - menu_w, left, menu_w, gap, window_w - gap)
+    else:
+        raise ValueError("unknown placement " + str(placement))
+    if at_point:
+        y = fit_axis(top, top - menu_h, menu_h, gap, window_h - gap)
+    else:
+        y = fit_axis(bottom + gap, top - gap - menu_h, menu_h, gap, window_h - gap)
+    return (x, y)
+
+
+def place_menu_oracle(placement, anchor, menu, window, gap):
+    """The same rule written as a candidate list per axis: the first candidate that lies wholly inside the free range,
+    else the preferred one pulled into the range (or onto its low edge when the menu is longer than the range)."""
+    left, top, right, bottom = anchor
+    menu_w, menu_h = menu
+    window_w, window_h = window
+    if placement == "AT_POINT":
+        x_candidates, y_candidates = [left, left - menu_w], [top, top - menu_h]
+    elif placement == "BELOW_START":
+        x_candidates, y_candidates = [left, right - menu_w], [bottom + gap, top - gap - menu_h]
+    else:
+        x_candidates, y_candidates = [right - menu_w, left], [bottom + gap, top - gap - menu_h]
+
+    def pick(candidates, size, limit):
+        low, high = gap, limit - gap
+        inside = [c for c in candidates if low <= c and c + size <= high]
+        if inside:
+            return inside[0]
+        if high - low >= size:
+            return min(max(candidates[0], low), high - size)
+        return low
+
+    return (pick(x_candidates, menu_w, window_w), pick(y_candidates, menu_h, window_h))
+
+
+def menu_max_height_px(window_height, gap):
+    """desktopKitMenuMaxHeightPx."""
+    return max(window_height - 2 * gap, 1)
+
+
+# --------------------------------------------------------------------------------------
+# Scrollbar (slice X2b)
+# --------------------------------------------------------------------------------------
+
+def scrollbar_needed(content_size, viewport_size):
+    """desktopKitScrollbarNeeded."""
+    return content_size - viewport_size > 1.0
+
+
+def scrollbar_thumb_px(consts, density, strip_px):
+    """desktopKitScrollbarThumbPx in float32: 8 dp snapped to whole pixels, never wider than the strip."""
+    return min(snap_stroke_px(f32(consts["DESKTOP_KIT_SCROLLBAR_THUMB_DP"] * f32(density))), f32(strip_px))
+
+
+def scrollbar_thumb_inset_px(strip_px, thumb_px):
+    """desktopKitScrollbarThumbInsetPx in float32: round (kotlin.math.round, half to even) of half the free width, at least 0."""
+    return max(float(round(f32((f32(strip_px) - f32(thumb_px)) / 2.0))), 0.0)
+
+
+def kotlin_round_to_int(value):
+    """Float.roundToInt: ties go towards positive infinity (the layout rounding of Dp.roundToPx)."""
+    import math
+    return int(math.floor(f32(value) + 0.5))
+
+
+# --------------------------------------------------------------------------------------
+# Toast (slice X2b): the mirror of DesktopKitToastState
+# --------------------------------------------------------------------------------------
+
+def toast_duration_ms(consts, has_action):
+    """desktopKitToastDurationMs."""
+    return consts["DESKTOP_KIT_TOAST_ACTION_MS"] if has_action else consts["DESKTOP_KIT_TOAST_PLAIN_MS"]
+
+
+@dataclass(frozen=True)
+class ToastEntry:
+    id: int
+    message: str
+    action: str
+    ms: int
+
+
+@dataclass(frozen=True)
+class ToastState:
+    """DesktopKitToastState. consts carries the two toast durations."""
+    consts: dict
+    current: ToastEntry = None
+    last_id: int = 0
+
+    def show(self, message, action=None):
+        text = message.strip()
+        if not text:
+            return self
+        label = action.strip() if action is not None else None
+        label = label if label else None
+        entry_id = self.last_id + 1
+        return replace(self, current=ToastEntry(entry_id, text, label, toast_duration_ms(self.consts, label is not None)),
+                       last_id=entry_id)
+
+    def dismiss(self, entry_id):
+        if self.current is not None and self.current.id == entry_id:
+            return replace(self, current=None)
+        return self
+
+
+def toast_expect(entry):
+    """The contract's form of a toast entry (null when nothing is shown)."""
+    return None if entry is None else {"id": entry.id, "message": entry.message, "action": entry.action, "ms": entry.ms}
+
+
+def run_toast_script(consts, steps):
+    """[(step, observed expectation)] of a contract script replayed through the mirrored state."""
+    state = ToastState(consts)
+    observed = []
+    for step in steps:
+        if step["op"] == "show":
+            state = state.show(step["message"], step["action"])
+        elif step["op"] == "dismiss":
+            state = state.dismiss(step["id"])
+        else:
+            raise ValueError("unknown toast op " + str(step["op"]))
+        observed.append((step, toast_expect(state.current)))
+    return observed
+
+
+# --------------------------------------------------------------------------------------
+# Player dark palette (slice X2b): WCAG contrast of the fixed player palette
+# --------------------------------------------------------------------------------------
+
+def palette_constants(text):
+    """{name: 0xAARRGGBB} of the const vals between the UX-PLAYER-DARK markers."""
+    block = marked_block(text, "PLAYER-DARK")
+    return {name: int(value, 16) for name, value in re.findall(r"internal const val (DESKTOP_PLAYER_DARK_\w+) = 0x([0-9A-F]{8})L", block)}
+
+
+def _linear(channel):
+    value = channel / 255.0
+    return value / 12.92 if value <= 0.03928 else ((value + 0.055) / 1.055) ** 2.4
+
+
+def luminance(argb):
+    """WCAG relative luminance of the opaque colour 0xAARRGGBB (alpha must be 0xFF)."""
+    if (argb >> 24) & 0xFF != 0xFF:
+        raise ValueError("a palette colour must be opaque: %08X" % argb)
+    red, green, blue = (argb >> 16) & 0xFF, (argb >> 8) & 0xFF, argb & 0xFF
+    return 0.2126 * _linear(red) + 0.7152 * _linear(green) + 0.0722 * _linear(blue)
+
+
+def contrast(first, second):
+    """WCAG contrast ratio of two opaque colours."""
+    high, low = sorted((luminance(first), luminance(second)), reverse=True)
+    return (high + 0.05) / (low + 0.05)

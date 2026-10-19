@@ -6,8 +6,8 @@ import androidx.compose.ui.unit.dp
 /*
  * Design tokens of the desktop component kit (spec 5.1 and 5.4), in dp after zoom: the app multiplies the Windows
  * scale by its own zoom percent, so these numbers follow Ctrl+wheel for free. Every number between the markers is
- * mirrored by desktop/tools/ux/desktop-ux-contract.json ("tokens" and "rail.metrics"); test_ux_kit_model.py and
- * DesktopKitModelTest compare them, so a drifting number fails in one of the two runs.
+ * mirrored by desktop/tools/ux/desktop-ux-contract.json ("tokens", "rail.metrics", "flyout" and "kit");
+ * test_ux_kit_model.py and DesktopKitModelTest compare them, so a drifting number fails in one of the two runs.
  */
 
 // UX-KIT-TOKENS-BEGIN
@@ -41,6 +41,14 @@ internal const val DESKTOP_KIT_NAV_PILL_WIDTH_DP = 3
 internal const val DESKTOP_KIT_NAV_PILL_HEIGHT_DP = 16
 internal const val DESKTOP_KIT_BADGE_DP = 18
 internal const val DESKTOP_KIT_BADGE_DOT_DP = 8
+internal const val DESKTOP_KIT_SCROLLBAR_THUMB_DP = 8
+internal const val DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP = 12
+internal const val DESKTOP_KIT_TOAST_PLAIN_MS = 2400
+internal const val DESKTOP_KIT_TOAST_ACTION_MS = 5000
+internal const val DESKTOP_KIT_MENU_WIDTH_DP = 220
+internal const val DESKTOP_KIT_POPOVER_WIDTH_DP = 320
+internal const val DESKTOP_KIT_MENU_PADDING_DP = 6
+internal const val DESKTOP_KIT_MENU_GAP_DP = 8
 // UX-KIT-TOKENS-END
 
 /** Dp view of the tokens for composables of other slices (settings, rail, menus). */

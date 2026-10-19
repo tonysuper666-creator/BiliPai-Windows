@@ -1,4 +1,4 @@
-"""Source guard of the desktop component kit, ui/kit (slice X2a, spec 5.1 and 5.5). No JVM.
+"""Source guard of the desktop component kit, ui/kit (slices X2a and X2b, spec 5.1 and 5.5). No JVM.
 
 Run: PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=desktop/tools python -X utf8 -B -m unittest discover -s desktop/tools/ux -p test_ux_kit_guard.py
 
@@ -17,6 +17,16 @@ Rules, all over the files of K/ui/kit:
   typography      text sizes come from MaterialTheme.typography, never a fixed sp
   motion          reduced motion arrives through LocalDesktopKitReducedMotion, read once by the host: no per-control polling
 No global AWT or OS hook and no key fallback use are checked here too (the hygiene suite arms the same rules for ui/kit).
+
+Slice X2b adds rules for its files (DesktopKitMenus.kt, DesktopKitScrollbar.kt, DesktopPlayerDarkTheme.kt in the kit and
+ui/DesktopWindowsToast.kt next to the shell):
+  menus           a menu row is one 32 dp button, the context menu and the popover are one Popup on AppPopupSurface(MENU) with
+                  no dim, the position comes from the pure desktopKitPlaceMenu, Up and Down move focus (modified keys pass on)
+  scrollbar       the kit style is the 12 dp strip with the 8 dp thumb shape and the two alphas, on the v2 adapter, and it
+                  composes nothing while the content fits
+  dark theme      a nested MaterialTheme with a fixed darkColorScheme built from the marked palette constants only
+  toast           one toast at a time on the pure state, a glass pill, a live region, one action button, a no-op default
+                  LocalDesktopToaster, and no Snackbar
 
 Scanner self tests show each pattern on samples. Location: desktop/tools/ux, following the desktop/tools/nvidia precedent,
 not desktop/tools/tests as spec 8.2 says; Root adds the suite to the validation plan as an explicit
@@ -37,6 +47,11 @@ FILES = {path.name: path for path in sorted(kit.KIT.glob("*.kt"))}
 TEXT = {name: kit.read(path) for name, path in FILES.items()}
 CODE = {name: source.mask_kotlin(text) for name, text in TEXT.items()}
 CONTROLS = CODE["DesktopKitControls.kt"]
+MENUS = CODE["DesktopKitMenus.kt"]
+SCROLLBAR = CODE["DesktopKitScrollbar.kt"]
+DARK = CODE["DesktopPlayerDarkTheme.kt"]
+TOAST_TEXT = kit.read(kit.TOAST_KT)
+TOAST = source.mask_kotlin(TOAST_TEXT)
 
 HOST_PATTERN = re.compile(
     r"\bSwingPanel\b|\bMpvPlayer\b|\bnative\.|\bassembly\.|\bComposeDialog\b|\bComposeWindow\b|\bdesktopCommandHitRegion\b|"
@@ -68,7 +83,7 @@ def foreign_imports(text):
 
 def function_block(code, name):
     """Masked source of the top-level function `name`: from its signature to the closing brace at column 0."""
-    match = re.search(r"(?m)^(?:internal |private )?fun (?:<[^>]+> )?(?:Modifier\.)?%s\(" % re.escape(name), code)
+    match = re.search(r"(?m)^(?:internal |private )?fun (?:<[^>]+> )?(?:(?:Modifier|BoxScope)\.)?%s\(" % re.escape(name), code)
     if match is None:
         raise AssertionError("no function " + name)
     end = code.find("\n}\n", match.end())
@@ -357,6 +372,272 @@ class MotionTest(unittest.TestCase):
         self.assertIn("desktopKitMotionMs(reduced, DESKTOP_KIT_MOTION_FAST_MS)", focus)
 
 
+class PartTwoFilesTest(unittest.TestCase):
+    def test_the_part_two_files_exist_in_the_kit_package_and_are_scanned_by_every_rule_above(self):
+        for name in ("DesktopKitMenus.kt", "DesktopKitScrollbar.kt", "DesktopPlayerDarkTheme.kt"):
+            self.assertIn(name, FILES)
+            self.assertEqual(1, len(re.findall(r"(?m)^package com\.bilipai\.desktop\.ui\.kit$", TEXT[name])), name)
+
+    def test_the_toast_file_is_armed_by_the_hygiene_scopes_and_follows_them(self):
+        armed = {source.rel(path) for path in source.kotlin_files(source.BANNED_IMPORT_GLOBS)}
+        strict = {source.rel(path) for path in source.kotlin_files(source.STRICT_TEXT_GLOBS)}
+        self.assertIn("ui/DesktopWindowsToast.kt", armed)
+        self.assertIn("ui/DesktopWindowsToast.kt", strict)
+        self.assertEqual([], source.banned_imports(TOAST_TEXT))
+        self.assertEqual([], source.cjk_positions(TOAST_TEXT))
+        self.assertEqual([], source.hook_uses(TOAST_TEXT))
+        self.assertEqual([], source.key_fallback_uses(TOAST_TEXT))
+        self.assertEqual([], host_uses(TOAST_TEXT))
+
+    def test_the_part_two_files_ask_nothing_of_the_kit_strings(self):
+        # Menus, scrollbar, dark theme and toast own no text: every label comes from the caller.
+        self.assertEqual(["LOADING_SETTING"], re.findall(r"const val (\w+) =", TEXT["DesktopKitStrings.kt"]))
+        for name in ("DesktopKitMenus.kt", "DesktopKitScrollbar.kt", "DesktopPlayerDarkTheme.kt"):
+            self.assertNotIn("DesktopKitStrings", TEXT[name], name)
+
+
+class MenusTest(unittest.TestCase):
+    SQUASHED = kit.squash(MENUS)
+
+    def test_the_menu_composables_exist(self):
+        for name in ("DesktopMenuRow", "DesktopContextMenu", "DesktopPopover", "DesktopKitPopupPanel", "desktopKitMenuKey"):
+            function_block(MENUS, name)
+        self.assertIn("private class DesktopKitMenuPositionProvider(", MENUS)
+
+    def test_a_menu_row_is_one_32_dp_button_with_a_decorative_shortcut(self):
+        block = function_block(MENUS, "DesktopMenuRow")
+        self.assertEqual(1, len(re.findall(r"\bclickable\b", block)))
+        for needle in ("role = Role.Button", ".height(DESKTOP_KIT_CONTROL_HEIGHT_DP.dp)", ".alpha(desktopKitDisabledAlpha(enabled))",
+                       ".desktopKitInteraction(source, DESKTOP_KIT_RADIUS_CONTROL_DP.dp, enabled)", "enabled = enabled",
+                       "Modifier.clearAndSetSemantics { }", "TextOverflow.Ellipsis", "MaterialTheme.typography.bodyMedium",
+                       "MaterialTheme.typography.bodySmall"):
+            self.assertIn(needle, block, needle)
+        # The accessible name of a row is its label alone: no description, no second action.
+        for forbidden in ("pointerInput", "combinedClickable", "onLongClick", "selectable", "toggleable", "contentDescription"):
+            self.assertNotIn(forbidden, block, forbidden)
+
+    def test_a_disabled_row_stays_visible_and_dimmed_and_is_not_focusable(self):
+        # Dimmed through the shared alpha, inert and out of the focus order through clickable(enabled = false).
+        self.assertIn("internal fun desktopKitDisabledAlpha(enabled: Boolean): Float", TEXT["DesktopKitControls.kt"])
+        block = function_block(MENUS, "DesktopMenuRow")
+        self.assertIn("enabled: Boolean = true", block)
+        self.assertLess(block.index(".alpha(desktopKitDisabledAlpha(enabled))"), block.index(".desktopKitInteraction("))
+        self.assertLess(block.index(".desktopKitInteraction("), block.index(".clickable("))
+
+    def test_the_menus_file_has_exactly_one_action_site(self):
+        self.assertEqual(1, len(re.findall(r"(?m)^\s+\.clickable\b", MENUS)))
+        self.assertEqual(0, len(re.findall(
+            r"(?m)^\s+\.(?:selectable|toggleable|triStateToggleable|combinedClickable|pointerInput)\b", MENUS)))
+
+    def test_the_context_menu_and_the_popover_are_one_popup_on_the_menu_surface_without_a_dim(self):
+        self.assertEqual(1, len(re.findall(r"\bPopup\(", MENUS)))
+        self.assertEqual(1, len(re.findall(r"\bAppPopupSurface\(", MENUS)))
+        for needle in ("popupPositionProvider = provider", "onDismissRequest = onDismissRequest", "properties = PopupProperties(focusable = true)",
+                       "type = AppPopupSurfaceType.MENU", "shape = RoundedCornerShape(radius)", "containerColor = colors.surface"):
+            self.assertIn(needle, self.SQUASHED, needle)
+        self.assertIn("import com.android.purebilibili.core.ui.AppPopupSurface\n", TEXT["DesktopKitMenus.kt"])
+        self.assertIn("import com.android.purebilibili.core.ui.AppPopupSurfaceType\n", TEXT["DesktopKitMenus.kt"])
+        for pattern in (r"\bDialog\w*", r"DropdownMenu\w*", r"\w*[Ss]crim\w*", r"\bdim\w*", r"\bblur\w*", r"ModalBottomSheet\w*"):
+            self.assertIsNone(re.search(pattern, MENUS), pattern)
+
+    def test_the_popup_panel_is_shared_and_sized_from_the_tokens(self):
+        self.assertEqual(3, len(re.findall(r"\bDesktopKitPopupPanel\(", MENUS)), "the definition and the two public wrappers")
+        for needle in ("DESKTOP_KIT_MENU_WIDTH_DP.dp", "DESKTOP_KIT_POPOVER_WIDTH_DP.dp", "DESKTOP_KIT_MENU_PADDING_DP.dp",
+                       "DESKTOP_KIT_MENU_GAP_DP.dp", "DESKTOP_KIT_RADIUS_MENU_DP.dp", "DesktopKitMenuPlacement.AT_POINT",
+                       "placement: DesktopKitMenuPlacement = DesktopKitMenuPlacement.BELOW_END", "IntOffset.Zero"):
+            self.assertIn(needle, self.SQUASHED, needle)
+        context = function_block(MENUS, "DesktopContextMenu")
+        self.assertIn("pointer: IntOffset", context)
+        popover = function_block(MENUS, "DesktopPopover")
+        self.assertNotIn("pointer:", popover)
+
+    def test_a_collapsed_menu_composes_nothing_and_the_popup_comes_after_the_guard(self):
+        block = function_block(MENUS, "DesktopKitPopupPanel")
+        self.assertIn("if (!expanded) return", block)
+        self.assertLess(block.index("if (!expanded) return"), block.index("Popup("))
+
+    def test_the_position_is_the_pure_flip_and_clamp_added_to_the_anchor_corner(self):
+        for needle in ("private class DesktopKitMenuPositionProvider(", ") : PopupPositionProvider {", "override fun calculatePosition(",
+                       "val atPoint = placement == DesktopKitMenuPlacement.AT_POINT",
+                       "val left = if (atPoint) anchorBounds.left + pointer.x else anchorBounds.left",
+                       "val top = if (atPoint) anchorBounds.top + pointer.y else anchorBounds.top",
+                       "val position = desktopKitPlaceMenu(", "return IntOffset(position.x, position.y)",
+                       "remember(placement, pointer, gapPx) { DesktopKitMenuPositionProvider(placement, pointer, gapPx) }"):
+            self.assertIn(needle, self.SQUASHED, needle)
+
+    def test_up_and_down_move_the_focus_of_the_popup_layer_and_modified_keys_pass_on(self):
+        block = function_block(MENUS, "desktopKitMenuKey")
+        for needle in ("focus == null || event.type != KeyEventType.KeyDown", "Key.DirectionDown -> focus.moveFocus(FocusDirection.Down)",
+                       "Key.DirectionUp -> focus.moveFocus(FocusDirection.Up)", "else -> false"):
+            self.assertIn(needle, block, needle)
+        for modifier in ("isCtrlPressed", "isAltPressed", "isMetaPressed", "isShiftPressed"):
+            self.assertIn("event." + modifier, block, modifier)
+        # Escape is the popup's own dismissal (dismissOnBackPress); the menu never takes Enter, Space, Tab or the arrows sideways.
+        for key in ("Key.Escape", "Key.Enter", "Key.Spacebar", "Key.Tab", "Key.DirectionLeft", "Key.DirectionRight"):
+            self.assertNotIn(key, block, key)
+        self.assertIn("onPreviewKeyEvent = { event -> desktopKitMenuKey(event, layerFocus) }", self.SQUASHED)
+        # The popup layer owns its focus: the manager is read inside the popup content, after the Popup call.
+        popup_at = re.search(r"\bPopup\(", MENUS).start()
+        self.assertGreater(MENUS.index("LocalFocusManager.current"), popup_at)
+        self.assertEqual(1, MENUS.count("LocalFocusManager.current"))
+        self.assertIn("SideEffect { layerFocus = focusManager }", self.SQUASHED)
+
+    def test_the_menu_scrolls_when_taller_than_the_window_and_uses_the_kit_scrollbar(self):
+        for needle in (".heightIn(max = with(density) { maxHeightPx.toDp() })", ".verticalScroll(scroll)",
+                       "DesktopKitVerticalScrollbar(scroll)", ".desktopKitHairlineBorder(colors.outlineVariant, radius)",
+                       "val endPadding = if (scroll.maxValue > 0) DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP.dp else contentPadding",
+                       "desktopKitMenuMaxHeightPx(LocalWindowInfo.current.containerSize.height, gapPx)"):
+            self.assertIn(needle, self.SQUASHED, needle)
+
+    def test_the_menu_label_is_the_callers_and_the_surface_names_itself_only_when_given_one(self):
+        self.assertIn(".semantics { if (label != null) contentDescription = label }", self.SQUASHED)
+        for name in ("DesktopContextMenu", "DesktopPopover"):
+            self.assertIn("label: String? = null", function_block(MENUS, name), name)
+
+
+class ScrollbarTest(unittest.TestCase):
+    SQUASHED = kit.squash(SCROLLBAR)
+
+    def test_the_style_is_the_kit_style(self):
+        block = function_block(SCROLLBAR, "desktopKitScrollbarStyle")
+        for needle in ("defaultScrollbarStyle().copy(", "minimalHeight = DESKTOP_KIT_HIT_FLOOR_DP.dp",
+                       "thickness = DESKTOP_KIT_SCROLLBAR_HIT_STRIP_DP.dp", "shape = DesktopKitScrollbarThumbShape",
+                       "hoverDurationMillis = desktopKitMotionMs(reduced, DESKTOP_KIT_MOTION_SLOW_MS)",
+                       "unhoverColor = colors.onSurface.copy(alpha = DESKTOP_KIT_SCROLLBAR_IDLE_ALPHA_PERCENT / 100f)",
+                       "hoverColor = colors.onSurface.copy(alpha = DESKTOP_KIT_SCROLLBAR_HOVER_ALPHA_PERCENT / 100f)"):
+            self.assertIn(needle, block, needle)
+        self.assertEqual(1, block.count("LocalDesktopKitReducedMotion.current"))
+        self.assertIn("@Composable\ninternal fun desktopKitScrollbarStyle(): ScrollbarStyle {", TEXT["DesktopKitScrollbar.kt"])
+
+    def test_the_hit_strip_is_the_layout_box_and_only_the_centred_thumb_is_drawn(self):
+        for needle in ("private object DesktopKitScrollbarThumbShape : Shape {",
+                       "override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {",
+                       "val thumb = desktopKitScrollbarThumbPx(density.density, size.width)",
+                       "val inset = desktopKitScrollbarThumbInsetPx(size.width, thumb)",
+                       "Outline.Rounded(RoundRect(rect = Rect(inset, 0f, inset + thumb, size.height), cornerRadius = CornerRadius(thumb / 2f)),)"):
+            self.assertIn(needle, self.SQUASHED, needle)
+
+    def test_it_is_an_overlay_aligned_to_the_end_and_composes_nothing_while_the_content_fits(self):
+        self.assertEqual(3, len(re.findall(r"(?m)^internal fun BoxScope\.DesktopKitVerticalScrollbar\(", SCROLLBAR)))
+        for needle in ("Modifier.align(Alignment.CenterEnd).fillMaxHeight().then(modifier)", "if (!needed) return",
+                       "remember(adapter) { derivedStateOf { desktopKitScrollbarNeeded(adapter.contentSize, adapter.viewportSize) } }",
+                       "style = desktopKitScrollbarStyle()",
+                       "DesktopKitVerticalScrollbar(adapter = rememberScrollbarAdapter(scrollState), modifier = modifier)",
+                       "DesktopKitVerticalScrollbar(adapter = rememberScrollbarAdapter(listState), modifier = modifier)"):
+            self.assertIn(needle, self.SQUASHED, needle)
+        self.assertEqual(1, len(re.findall(r"\bVerticalScrollbar\(", SCROLLBAR)))
+
+    def test_it_uses_the_v2_adapter_and_never_the_deprecated_one(self):
+        text = TEXT["DesktopKitScrollbar.kt"]
+        self.assertIn("import androidx.compose.foundation.v2.ScrollbarAdapter\n", text)
+        self.assertIsNone(re.search(r"import androidx\.compose\.foundation\.ScrollbarAdapter\b", text))
+        for forbidden in ("rememberOldScrollbarAdapter", "HorizontalScrollbar", "Modifier.border", "VerticalScrollbar(adapter = adapter, modifier = modifier)"):
+            self.assertNotIn(forbidden, SCROLLBAR, forbidden)
+
+    def test_the_colours_come_from_the_theme_and_the_fade_from_the_reduced_motion_local(self):
+        self.assertIn("val colors = MaterialTheme.colorScheme", SCROLLBAR)
+        self.assertEqual(0, len(re.findall(r"Color\(0x", SCROLLBAR)))
+        self.assertIsNone(REDUCED_MOTION_POLL.search(SCROLLBAR))
+
+
+class DarkThemeTest(unittest.TestCase):
+    SQUASHED = kit.squash(DARK)
+    PALETTE = kit.palette_constants(TEXT["DesktopPlayerDarkTheme.kt"])
+    SCHEME = DARK[DARK.index("darkColorScheme("):DARK.index("internal fun desktopPlayerDarkColorScheme")]
+    SLOTS = {"primary", "onPrimary", "primaryContainer", "onPrimaryContainer", "secondary", "onSecondary", "secondaryContainer",
+             "onSecondaryContainer", "background", "onBackground", "surface", "onSurface", "surfaceVariant", "onSurfaceVariant",
+             "outline", "outlineVariant", "error", "onError", "errorContainer", "onErrorContainer", "surfaceContainerLowest",
+             "surfaceContainerLow", "surfaceContainer", "surfaceContainerHigh", "surfaceContainerHighest"}
+
+    def test_the_wrapper_is_one_nested_material_theme_with_the_fixed_scheme(self):
+        self.assertIn("internal fun DesktopPlayerDarkTheme(content: @Composable () -> Unit) {", self.SQUASHED)
+        self.assertIn("MaterialTheme(colorScheme = desktopPlayerDarkScheme, content = content)", self.SQUASHED)
+        self.assertEqual(1, len(re.findall(r"\bMaterialTheme\(", DARK)))
+        self.assertEqual(1, len(re.findall(r"\bdarkColorScheme\(", DARK)))
+        self.assertIn("private val desktopPlayerDarkScheme: ColorScheme = darkColorScheme(", self.SQUASHED)
+
+    def test_the_palette_is_fixed_it_reads_nothing_from_the_app_theme(self):
+        for forbidden in ("MaterialTheme.colorScheme", "isSystemInDarkTheme", "LocalDesktopDarkTheme", "LocalAppThemeConfig",
+                          "dynamicColor", "LocalAppUiStyle"):
+            self.assertNotIn(forbidden, DARK, forbidden)
+
+    def test_every_palette_constant_feeds_the_scheme_and_no_colour_literal_is_outside_the_palette(self):
+        self.assertEqual(22, len(self.PALETTE))
+        for name in self.PALETTE:
+            self.assertIn("Color(%s)" % name, self.SCHEME, name)
+        self.assertEqual(0, len(re.findall(r"Color\(0x", DARK)))
+
+    def test_the_scheme_defines_every_colour_slot_the_kit_reads(self):
+        defined = set(re.findall(r"(\w+) = Color\(", self.SCHEME)) | {"surfaceTint"}
+        self.assertTrue(self.SLOTS <= defined, sorted(self.SLOTS - defined))
+        read = set()
+        for name, code in CODE.items():
+            if name != "DesktopPlayerDarkTheme.kt":
+                read |= {slot for slot in re.findall(r"(?:colors|MaterialTheme\.colorScheme)\.(\w+)", code) if slot in self.SLOTS}
+        self.assertTrue(read, "the kit reads colour slots")
+        self.assertTrue(read <= defined, sorted(read - defined))
+
+
+class ToastSourceTest(unittest.TestCase):
+    SQUASHED = kit.squash(TOAST)
+
+    def test_the_default_toaster_does_nothing_so_a_fixture_needs_no_provider(self):
+        for needle in ("internal interface DesktopToaster {",
+                       "fun show(message: String, actionLabel: String? = null, onAction: (() -> Unit)? = null)",
+                       "internal object DesktopNoopToaster : DesktopToaster {",
+                       "override fun show(message: String, actionLabel: String?, onAction: (() -> Unit)?) = Unit",
+                       "internal val LocalDesktopToaster = staticCompositionLocalOf<DesktopToaster> { DesktopNoopToaster }"):
+            self.assertIn(needle, self.SQUASHED, needle)
+
+    def test_one_toast_at_a_time_on_the_pure_state_with_a_timer_per_toast_id(self):
+        for needle in ("var state: DesktopKitToastState by mutableStateOf(DesktopKitToastState()) private set",
+                       "val next = state.show(message, actionLabel)", "if (next === state) return",
+                       "val entry = controller.state.current ?: return", "LaunchedEffect(entry.id) {",
+                       "delay(lifetimeMillis(entry))", "controller.dismiss(entry.id)",
+                       "lifetimeMillis: (DesktopKitToastEntry) -> Long = { it.durationMs }",
+                       "fun dismiss(id: Long) { state = state.dismiss(id) }"):
+            self.assertIn(needle, self.SQUASHED, needle)
+        self.assertEqual(1, len(re.findall(r"\bLaunchedEffect\(", TOAST)))
+
+    def test_the_action_closes_the_toast_before_it_runs_its_callback_exactly_once(self):
+        start = TOAST.index("fun invokeAction(id: Long) {")
+        block = TOAST[start:TOAST.index("\n    }\n", start)]
+        self.assertIn("if (state.current?.id != id) return", block)
+        self.assertLess(block.index("pendingAction = null"), block.index("state = state.dismiss(id)"))
+        self.assertLess(block.index("state = state.dismiss(id)"), block.index("action?.invoke()"))
+        self.assertIn("pendingAction = if (next.current?.actionLabel != null) onAction else null", self.SQUASHED)
+
+    def test_the_pill_is_glass_a_live_region_and_sits_above_other_bottom_chrome(self):
+        for needle in ("internal fun BoxScope.DesktopToastHost(", "bottomInset: Dp = 24.dp", "DesktopWindowsGlassSurface(",
+                       "shape = CircleShape,", ".align(Alignment.BottomCenter)", ".padding(start = 16.dp, end = 16.dp, bottom = bottomInset)",
+                       ".semantics { liveRegion = LiveRegionMode.Polite }", "style = MaterialTheme.typography.bodyMedium",
+                       "style = MaterialTheme.typography.labelLarge"):
+            self.assertIn(needle, self.SQUASHED, needle)
+        self.assertEqual(1, len(re.findall(r"\bDesktopWindowsGlassSurface\(", TOAST)))
+
+    def test_the_action_is_one_32_dp_button(self):
+        self.assertEqual(1, len(re.findall(r"(?m)^\s+\.clickable\b", TOAST)))
+        self.assertEqual(0, len(re.findall(r"\b(?:combinedClickable|onLongClick|selectable|toggleable|pointerInput)\b", TOAST)))
+        for needle in ("role = Role.Button", ".height(DESKTOP_KIT_CONTROL_HEIGHT_DP.dp)",
+                       ".desktopKitInteraction(source, DESKTOP_KIT_RADIUS_CONTROL_DP.dp)"):
+            self.assertIn(needle, self.SQUASHED, needle)
+
+    def test_it_is_not_a_snackbar_and_not_a_window(self):
+        for pattern in (r"\bSnackbar\w*", r"\bPopup\w*", r"\bDialog\w*", r"\bComposeWindow\b", r"\bMpvPlayer\b"):
+            self.assertIsNone(re.search(pattern, TOAST), pattern)
+
+    def test_it_depends_on_the_kit_and_the_glass_surface_only(self):
+        for name in re.findall(r"(?m)^import (com\.bilipai\.desktop\.[\w.]+)", TOAST_TEXT):
+            self.assertTrue(name.startswith("com.bilipai.desktop.ui.kit."), name)
+        self.assertEqual([], [n for n in re.findall(r"(?m)^import ([\w.]+)", TOAST_TEXT) if n.startswith(("java.", "javax."))])
+        self.assertEqual(1, len(re.findall(r"(?m)^package com\.bilipai\.desktop\.ui$", TOAST_TEXT)))
+
+    def test_the_rememberer_and_the_text_rule(self):
+        self.assertIn("internal fun rememberDesktopToastController(): DesktopToastController = remember { DesktopToastController() }",
+                      self.SQUASHED)
+        self.assertEqual([], source.cjk_positions(TOAST_TEXT))
+
+
 class SliceFilesTest(unittest.TestCase):
     def test_the_guard_files_are_lf_only(self):
         here = Path(__file__).resolve().parent
@@ -369,7 +650,11 @@ class SliceFilesTest(unittest.TestCase):
         self.assertIn("ImageComposeScene(", ui)
         self.assertIn("check(GraphicsEnvironment.isHeadless())", ui)
         self.assertIn("ImageComposeScene(480, 320, Density(1f))", ui)
-        self.assertEqual(5, len(re.findall(r"@Test fun ", ui)))
+        # Five tests of slice X2a and seven of slice X2b (menus, popover, scrollbar, toast, default toaster, dark theme).
+        self.assertEqual(12, len(re.findall(r"@Test fun ", ui)))
+        for needle in ("DesktopContextMenu(", "DesktopPopover(", "DesktopKitVerticalScrollbar(state)", "DesktopToastHost(controller",
+                       "DesktopPlayerDarkTheme {", "focusedWindow = true"):
+            self.assertIn(needle, ui, needle)
 
 
 if __name__ == "__main__":
