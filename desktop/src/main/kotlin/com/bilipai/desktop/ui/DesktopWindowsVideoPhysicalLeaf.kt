@@ -47,6 +47,7 @@ import com.android.purebilibili.feature.video.ui.overlay.NextWatchOverlay
 import kotlinx.coroutines.ensureActive
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
+import com.android.purebilibili.core.ui.components.rememberFollowActionWithConfirmation
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
 import com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings
 import com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings
@@ -1376,7 +1377,10 @@ internal class DesktopWindowsVideoActions(
                                 TextButton(onClick = { engagementBinding?.like() }, enabled = engagementBinding?.isOwned() == true,
                                     modifier = Modifier.desktopWindowsFeedbackLikeAnchor(feedbackBounds)) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
                                 actions.favorite(assembly, success, ::current)
-                                TextButton(onClick = { engagementBinding?.toggleFollow() }, enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isFollowing) "已关注" else "关注") }
+                                TextButton(onClick = rememberFollowActionWithConfirmation(
+                                    targetKey = success.info.owner.mid, userName = success.info.owner.name,
+                                    isFollowing = engagement.isFollowing, onFollowClick = { engagementBinding?.toggleFollow() }),
+                                    enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isFollowing) "已关注" else "关注") }
                                 TextButton(onClick = { engagementBinding?.triple() }, enabled = engagementBinding?.isOwned() == true) { Text("三连") }
                             }
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {

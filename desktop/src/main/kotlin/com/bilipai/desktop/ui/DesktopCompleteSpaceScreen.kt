@@ -197,7 +197,9 @@ internal fun DesktopCompleteSpaceScreen(requestedMid: Long, repository: DesktopR
                     if (account?.mid == mid) TextButton(onClick = { onExternalUrl("https://account.bilibili.com/account/setting") }) { Text("编辑资料") }
                     else Row {
                         if (user.relationStatus != 128) CommunityAction(resolveSpaceFollowActionLabel(false, user.relationStatus, user.isFollowed), onLogin,
-                            action = { social.setFollowing(mid, !user.isFollowed) }, onSuccess = { scope.launch { loadOverview() } })
+                            action = { social.setFollowing(mid, !user.isFollowed) },
+                            followTarget = CommunityFollowTarget(mid, user.name, user.isFollowed),
+                            onSuccess = { scope.launch { loadOverview() } })
                         DesktopBlockedUpAction(community.blockedUpRepository, mid, user.name, user.face, onLogin,
                             remoteBlocked = user.relationStatus == 128, onChanged = { scope.launch { loadOverview() } })
                     }

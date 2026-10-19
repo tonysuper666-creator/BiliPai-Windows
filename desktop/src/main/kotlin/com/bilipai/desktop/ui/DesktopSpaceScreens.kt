@@ -122,6 +122,7 @@ internal fun DesktopSpaceScreen(requestedMid: Long, repository: DesktopRepositor
                     }
                     if (account?.mid != user.mid) CommunityAction(if (user.isFollowed) "取消关注" else "关注", onLogin,
                         action = { social.setFollowing(user.mid, !user.isFollowed) },
+                        followTarget = CommunityFollowTarget(user.mid, user.name, user.isFollowed),
                         onSuccess = { state.profile = user.copy(isFollowed = !user.isFollowed) })
                     TextButton(onClick = { scope.launch { loadProfile(); loadSupporters() } }) { Text("刷新资料") }
                 }

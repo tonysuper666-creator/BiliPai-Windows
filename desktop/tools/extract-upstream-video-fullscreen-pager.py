@@ -101,6 +101,8 @@ def generate(repo,output,standalone=False):
  from v046_comment_polish import validate_outputs as validate_comment_polish_outputs
  validate_comment_polish_outputs(repo,output)
  repo=Path(repo);output=Path(output);parser=module('original_fullscreen_tokens',repo/'desktop/tools/sync-upstream.py');lex=module('original_fullscreen_balanced',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py');rows=[]
+ from v046_follow_confirmation import validate_outputs as validate_follow_confirmation
+ validate_follow_confirmation(repo,output)
  for spec in SPECS:
   text=original(repo,spec['origin'],spec['originalSHA'])
   if spec['kind']=='members':text,names=member_closure(body(text,spec['object'],lex),spec['seeds']);assert names==spec['selectedNames'];assert digest(text)==spec['selectionSHA']
@@ -143,9 +145,13 @@ def generate(repo,output,standalone=False):
    text=advance_comment_sheet_host(repo,text,output)
   from v046_fullscreen_tap_gestures import apply_and_record as apply_fullscreen_tap_gestures
   text=apply_fullscreen_tap_gestures(repo,spec['output'],text,output)
+  from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
+  text=apply_follow_confirmation(repo,spec['output'],text,output)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')
+ from v046_follow_confirmation import emit_confirmation as emit_follow_confirmation
+ rows.append(emit_follow_confirmation(repo,output))
  p=wide(output/'source-inventory.json');p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(dict(commit=COMMIT,outputs=rows,protocolFragmentSHA=digest(protocol_members(repo))),indent=2)+'\n',encoding='utf-8');return rows
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--repo',required=True);a.add_argument('--output',required=True);a.add_argument('--standalone',action='store_true');v=a.parse_args();generate(v.repo,v.output,v.standalone)

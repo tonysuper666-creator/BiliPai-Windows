@@ -354,7 +354,9 @@ internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepositor
                     Text(user.biography)
                 }
                 if (account?.mid != user.mid) CommunityAction(if (user.isFollowed) "取消关注" else "关注", navigation.onLogin,
-                    action = { social.setFollowing(user.mid, !user.isFollowed) }, onSuccess = { profile = user.copy(isFollowed = !user.isFollowed) })
+                    action = { social.setFollowing(user.mid, !user.isFollowed) },
+                    followTarget = CommunityFollowTarget(user.mid, user.name, user.isFollowed),
+                    onSuccess = { profile = user.copy(isFollowed = !user.isFollowed) })
             }
             }
         }

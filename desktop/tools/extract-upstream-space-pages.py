@@ -294,6 +294,9 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
             from v046_identity_badge_palette import up_name_vip_pink
             pink_before,pink_after=up_name_vip_pink('SpaceScreen.kt',s)
             s=edit(s,pink_before,pink_after,1)
+            from v046_follow_confirmation import site_edits as follow_confirmation_edits
+            for follow_edit in follow_confirmation_edits(pkg+'SpaceScreen.kt',s):
+                s=edit(s,follow_edit['before'],follow_edit['after'],1)
             return logs(s)
         produce(BASE+'feature/space/SpaceScreen.kt',pkg+'SpaceScreen.kt',screen)
         def supporter_screen(s,edit,logs):

@@ -4299,3 +4299,15 @@ tasks.withType<Exec>().configureEach {
             .forEach { it.toFile().deleteRecursively() }
     }
 }
+// v0.4.6 unfollow confirmation: the whole upstream file is emitted by the fullscreen pager; every producer that owns a
+// generated follow button applies its pinned call-site hunks. The detail units producer also applies the one-hunk
+// Windows like write guard to the engagement view model (a deliberate deviation from the pin, see v046_like_write_guard.py).
+tasks.matching { it.name in setOf(
+    "extractOriginalVideoFullscreenPager", "extractOriginalVideoDetailUnits",
+    "extractStableVideoMetadata", "extractOriginalPlayerFullControls",
+) }.configureEach {
+    inputs.file("tools/v046_follow_confirmation.py")
+    inputs.dir("upstream-slices/v046-follow-confirmation")
+}
+tasks.named("extractOriginalSpacePages") { inputs.file("tools/v046_follow_confirmation.py") }
+tasks.named("extractOriginalVideoDetailUnits") { inputs.file("tools/v046_like_write_guard.py") }

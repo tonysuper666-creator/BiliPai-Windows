@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.android.purebilibili.core.ui.components.rememberFollowActionWithConfirmation
 import com.bilipai.desktop.data.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
@@ -173,22 +174,33 @@ internal fun CommunityLoginGate(repository: DesktopRepository, onLogin: () -> Un
     } else content(account!!.mid)
 }
 
+/** The UP a follow button acts on. Passing it puts the shared unfollow confirmation in front of the action. */
+internal class CommunityFollowTarget(val mid: Long, val name: String, val isFollowing: Boolean)
+
 @Composable
-internal fun CommunityAction(label: String, onLogin: () -> Unit, action: suspend () -> Unit, onSuccess: () -> Unit = {}) {
+internal fun CommunityAction(label: String, onLogin: () -> Unit, action: suspend () -> Unit,
+    followTarget: CommunityFollowTarget? = null, onSuccess: () -> Unit = {}) {
     val scope = rememberCoroutineScope()
     var busy by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<Throwable?>(null) }
     var complete by remember { mutableStateOf(false) }
-    Column {
-        TextButton(enabled = !busy, onClick = {
-            if (busy) return@TextButton
+    val start: () -> Unit = {
+        if (!busy) {
             busy = true; error = null; complete = false
             scope.launch {
                 try { action(); complete = true; onSuccess() }
                 catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
                 finally { busy = false }
             }
-        }) { Text(if (busy) "处理中…" else label) }
+        }
+    }
+    // Following goes straight through; dropping a follow asks first, and a stale answer is discarded when the UP or
+    // the relation changes (the same shared interaction as the generated follow buttons).
+    val click = if (followTarget == null) start else rememberFollowActionWithConfirmation(
+        targetKey = followTarget.mid, userName = followTarget.name, isFollowing = followTarget.isFollowing,
+        onFollowClick = start)
+    Column {
+        TextButton(enabled = !busy, onClick = click) { Text(if (busy) "处理中…" else label) }
         if (error != null) CommunityFailure(error!!, onLogin)
         if (complete) Text("已完成", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
     }

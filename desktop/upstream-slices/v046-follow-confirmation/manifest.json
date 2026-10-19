@@ -1,0 +1,22 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/FollowActionConfirmation.kt",
+      "filename": "FollowActionConfirmation.kt",
+      "bytes": 2410,
+      "sha256": "25b1fe5fb1305bd9c75d85a3bb4fb19c6b4bdffad0589f1d79746d2cd45033a3",
+      "gitBlob": "d97634cd76883a0b2cc1cb2b4326c8d2a45ed00c"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole FollowActionConfirmation.kt as introduced by upstream c4124a062327c168fbd36da53302277be6b41e44 and unchanged at v0.4.6.",
+  "purpose": "Shared unfollow confirmation (rememberFollowActionWithConfirmation) in front of every Windows follow button that can unfollow.",
+  "scope": "The new file only. The call-site hunks are hash-pinned adaptations in desktop/tools/v046_follow_confirmation.py; no other upstream file is carried."
+}

@@ -15,6 +15,7 @@ spec = importlib.util.spec_from_file_location('owner_follow_pager', TOOLS / 'ext
 pager = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pager)
 import v042_owner_follow as follow
+import v046_follow_confirmation as unfollow
 
 SHEET = 'com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt'
 PAGER = 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt'
@@ -35,6 +36,11 @@ class OriginalOwnerFollowUiTest(unittest.TestCase):
             out = Path(temp)
             pager.generate(REPO, out, standalone=True)
             actual = (out / SHEET).read_text(encoding='utf-8')
+            # The v046 unfollow confirmation is the last layer on this sheet: peel it, then compare the v042 sheet.
+            layer = json.loads((out / 'v046-follow-confirmation-proofs/UpPreviewSheet.kt.json').read_bytes())
+            self.assertEqual(layer['outputSHA256'], hashlib.sha256(actual.encode()).hexdigest())
+            actual = inverse(actual, layer['edits'])
+            self.assertEqual(layer['inputSHA256'], hashlib.sha256(actual.encode()).hexdigest())
             proof = json.loads((out / 'UpPreviewSheet.kt.v042-owner-follow-ui-proof.json').read_bytes())
             raw = follow.fixed_sources(REPO)['UpPreviewSheet.kt']
             self.assertEqual(raw, inverse(actual, proof['adaptations']))
@@ -51,7 +57,8 @@ class OriginalOwnerFollowUiTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='owner-follow-pager-caller-') as temp:
             out, before = Path(temp) / 'after', Path(temp) / 'before'
             pager.generate(REPO, out, standalone=True)
-            with patch.object(follow, 'apply_ui', side_effect=lambda repo, path, text, output, spec: text):
+            with patch.object(follow, 'apply_ui', side_effect=lambda repo, path, text, output, spec: text), \
+                    patch.object(unfollow, 'apply_and_record', side_effect=lambda repo, relative, text, output: text):
                 pager.generate(REPO, before, standalone=True)
             actual = (out / PAGER).read_text(encoding='utf-8')
             proof = json.loads((out / 'PortraitVideoPager.kt.v042-owner-follow-ui-proof.json').read_bytes())

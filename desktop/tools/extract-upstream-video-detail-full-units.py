@@ -107,6 +107,10 @@ def emit(path,t,origin,mode):
     from v042_owner_follow import apply as apply_owner_follow
     t,owner_follow_proof=apply_owner_follow(path,t,globals())
     if owner_follow_proof is not None:mode='mixed-original-v037-v042-engagement-owned-projection'
+    from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
+    t=apply_follow_confirmation(REPO,path,t,OUTPUT)
+    from v046_like_write_guard import apply_and_record as apply_like_write_guard
+    t=apply_like_write_guard(REPO,path,t,OUTPUT)
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
 def function_range(t,name):

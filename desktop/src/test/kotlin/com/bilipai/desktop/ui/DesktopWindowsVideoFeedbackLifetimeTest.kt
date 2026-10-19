@@ -163,6 +163,24 @@ class DesktopWindowsVideoFeedbackLifetimeTest {
         }
     }
 
+    /** The view model must send the like through desktopCompleteAdmittedWrite: the request already sent is not cut when
+     * its caller is cancelled (the unguarded form would abandon it), and nothing is published afterwards. */
+    @Test fun anAdmittedLikeSurvivesItsCancelledCallerAndIsNeverPublishedIntoTheRetiredOwner(): Unit = runBlocking {
+        Harness().use { h ->
+            val reply = CompletableDeferred<Result<Boolean>>()
+            var completed = false
+            h.like = { reply.await().also { completed = true } }
+            assertTrue(h.ordinary.like()); assertEquals(1, h.likeCalls)
+            h.scope.coroutineContext.job.children.single().cancel()
+            assertFalse(completed, "the request is still in flight when its caller is cancelled")
+            reply.complete(Result.success(true)); h.drain()
+            assertTrue(completed, "the already admitted like request must survive its caller's cancellation")
+            assertFalse(h.vm.uiState.value.isLiked, "the retired caller must not publish the outcome")
+            assertNull(h.vm.uiState.value.desktopLikeFeedbackOrigin)
+            assertEquals(1, h.likeCalls, "the request is sent exactly once, never retried")
+        }
+    }
+
     @Test fun aRetiredPresentationCannotResurrectAConfirmedOriginOnSameIdentityReturn(): Unit = runBlocking {
         Harness().use { h ->
             assertTrue(h.ordinary.like()); h.drain()

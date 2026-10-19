@@ -148,7 +148,8 @@
     "desktop/upstream-slices/v046-design-system-leaves-a",
     "desktop/upstream-slices/v046-comment-polish",
     "desktop/upstream-slices/v046-account-scoped-requests",
-    "desktop/upstream-slices/v046-identity-badge-palette"
+    "desktop/upstream-slices/v046-identity-badge-palette",
+    "desktop/upstream-slices/v046-follow-confirmation"
   ],
   "archives": [
     {
@@ -6593,6 +6594,29 @@
           "sha256": "10f079d042208bc2c10ab1abe9b04be5877a8035e14d3a0cf6306a7961768b10",
           "hashNormalization": "raw",
           "blob": "398242ea5c35c45f4ec1d09c38c512ab5b80752e"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-follow-confirmation",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-follow-confirmation/FollowActionConfirmation.kt",
+          "sha256": "25b1fe5fb1305bd9c75d85a3bb4fb19c6b4bdffad0589f1d79746d2cd45033a3",
+          "hashNormalization": "raw",
+          "blob": "d97634cd76883a0b2cc1cb2b4326c8d2a45ed00c"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-follow-confirmation/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-follow-confirmation/manifest.json",
+          "sha256": "fcd52ecc839fea1eba25cc63459a6dfa5ff9ec9e28694ead05a5ef10067fb9f1",
+          "hashNormalization": "raw",
+          "blob": "3a4e67e88863f6c033820f09e5b0b1c4b4f2f14c"
         }
       ]
     }
@@ -17433,6 +17457,21 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 identity badge palette (AppBadge, UpBadgeNamePolicy, UserUpBadge, UserAvatarCornerMark, OfficialVerifyBadgePolicy) and their upstream suites; UserUpBadge omits the Android font padding argument and UpBadgeNamePolicyTest uses kotlin.test imports"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/FollowActionConfirmation.kt",
+      "localPath": "desktop/upstream-slices/v046-follow-confirmation/FollowActionConfirmation.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d97634cd76883a0b2cc1cb2b4326c8d2a45ed00c",
+      "sha256": "25b1fe5fb1305bd9c75d85a3bb4fb19c6b4bdffad0589f1d79746d2cd45033a3",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-follow-confirmation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (the new shared unfollow confirmation of upstream c4124a06). Emitted unchanged by the fullscreen pager producer under com/android/purebilibili/core/ui/components; its call sites are hash-pinned adaptations in desktop/tools/v046_follow_confirmation.py."
     }
   ],
   "buildStandaloneInputs": [

@@ -30,7 +30,7 @@ def original_comment_close_fragments():
 
 def apply(path,text,repo,output):
     name=Path(path).name
-    supported={'LargeScreenVideoLayout.kt','VideoDetailScreenStateHolder.kt','VideoDetailPlayerTransitionHost.kt','TabletVideoLayout.kt','TabletCinemaLayout.kt'}
+    supported={'LargeScreenVideoLayout.kt','VideoDetailScreenStateHolder.kt','VideoDetailPlayerTransitionHost.kt','TabletVideoLayout.kt','TabletCinemaLayout.kt','VideoDetailPhoneContent.kt'}
     if name not in supported:return text
     before=text
     def exact(old,new,label):
@@ -44,6 +44,19 @@ def apply(path,text,repo,output):
         exact('                uiState = uiState,\n                bvid = bvid,',
               '                uiState = uiState,\n                engagementState = engagementState,\n                bvid = bvid,',
               'Forward the same engagement owner from the outer large-screen layout')
+    if name=='VideoDetailPhoneContent.kt':
+        # Upstream a614d2eb: the phone-width layer builds VideoContentEngagementState with both confirmed flags.
+        # Without them the state keeps its false defaults, so a narrow window never enables like or follow.
+        exact('''                                    isFollowing = engagementState.isFollowing,
+                                    isFavorited = engagementState.isFavorited,
+                                    isLiked = engagementState.isLiked,
+                                    isDisliked = engagementState.isDisliked,''','''                                    isFollowing = engagementState.isFollowing,
+                                    followStatusKnown = engagementState.followStatusKnown,
+                                    isFavorited = engagementState.isFavorited,
+                                    isLiked = engagementState.isLiked,
+                                    likeStatusKnown = engagementState.likeStatusKnown,
+                                    isDisliked = engagementState.isDisliked,''',
+              'Phone-width content forwards the same confirmed engagement knowledge as the other layouts')
     if name in {'VideoDetailScreenStateHolder.kt','VideoDetailPlayerTransitionHost.kt'}:
         closeState,closeDeclaration,closeProjection=original_comment_close_fragments()
         if name=='VideoDetailScreenStateHolder.kt':
@@ -66,7 +79,7 @@ def apply(path,text,repo,output):
         exact('    val isLiked: Boolean,','    val isLiked: Boolean,\n    val likeStatusKnown: Boolean,','Required like knowledge in the existing fullscreen handoff')
         exact('isFollowed = fullscreenExtras?.isFollowed == true,','isFollowed = fullscreenExtras?.isFollowed == true,\n                followStatusKnown = fullscreenExtras?.followStatusKnown == true,','Nullable fullscreen handoff remains unknown before publication')
         exact('isLiked = fullscreenExtras?.isLiked == true,','isLiked = fullscreenExtras?.isLiked == true,\n                likeStatusKnown = fullscreenExtras?.likeStatusKnown == true,','Actual fullscreen handoff like knowledge')
-    else:
+    elif name!='VideoDetailPhoneContent.kt':
         if name=='VideoDetailScreenStateHolder.kt':
             for old,new in [
                 ('isFollowed = engagementState.isFollowing,','isFollowed = engagementState.isFollowing,\n                followStatusKnown = engagementState.followStatusKnown,'),

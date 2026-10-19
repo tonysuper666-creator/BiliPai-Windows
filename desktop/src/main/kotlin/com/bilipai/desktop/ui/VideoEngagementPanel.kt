@@ -84,7 +84,9 @@ internal fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepo
                 if (account?.mid != details.authorMid) {
                     val followed = uploader?.isFollowed == true
                     CommunityAction(if (followed) "取消关注" else "关注 UP 主", onLogin,
-                        action = { social.setFollowing(details.authorMid, !followed) }, onSuccess = { uploader = uploader?.copy(isFollowed = !followed) })
+                        action = { social.setFollowing(details.authorMid, !followed) },
+                        followTarget = CommunityFollowTarget(details.authorMid, details.author, followed),
+                        onSuccess = { uploader = uploader?.copy(isFollowed = !followed) })
                 }
             }
             error?.let { CommunityFailure(it, onLogin) { error = null; refreshRelation() } }

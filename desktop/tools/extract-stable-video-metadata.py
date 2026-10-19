@@ -16,6 +16,8 @@ def generate(repo,output):
         text=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n');assert hashlib.sha256(text.encode()).hexdigest()==pins[path];return text
     def emit(path,body,name):
         package=re.search(r'(?m)^package (\S+)',body).group(1);target=output/package.replace('.','/')/name
+        from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
+        body=apply_follow_confirmation(repo,package.replace('.','/')+'/'+name,body,output)
         target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text('// GENERATED from '+path+'; do not edit.\n// LF-normalized SHA-256: '+pins[path]+'\n'+body,encoding='utf-8',newline='\n')
         records.append(dict(original=path,originalSha256Lf=pins[path],output=str(target.relative_to(output)),generatedSha256Bytes=hashlib.sha256(target.read_bytes()).hexdigest()))

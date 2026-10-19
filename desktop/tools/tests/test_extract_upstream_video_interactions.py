@@ -36,6 +36,10 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
             output = Path(temp)
             actual_rows = owner.generate(REPO, output / "actual")
             actual = (output / "actual" / VM).read_text(encoding="utf-8")
+            # The v046 like write guard is a stage of VideoEngagementViewModel.kt (detail units producer). This owner
+            # producer emits VideoPlaybackViewModel.kt only, so there is no guard stage to peel in restore_later_stages.
+            self.assertFalse((output / "actual" / "v046-like-write-guard-proofs").exists())
+            self.assertNotIn("desktopCompleteAdmittedWrite", actual)
             # Rebuild the exact pinned whole stage before composer adaptation.
             # Removing an earlier delta from a full generation would invalidate
             # the immutable beta2 related input; that pin is never mocked here.

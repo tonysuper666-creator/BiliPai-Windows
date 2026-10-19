@@ -24,6 +24,13 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             out, before = Path(temp) / "after", Path(temp) / "before"
             units.generate(REPO, out)
             actual = units.wide(out / VM).read_text(encoding="utf-8")
+            # The Windows like write guard (v046) is the last stage on this view model: peel it first.
+            guard = json.loads((out / "v046-like-write-guard-proofs/VideoEngagementViewModel.kt.json").read_text(encoding="utf-8"))
+            self.assertEqual(guard["outputSHA256"], hashlib.sha256(actual.encode()).hexdigest())
+            at = guard["offset"]
+            self.assertEqual(guard["after"], actual[at:at + len(guard["after"])])
+            actual = actual[:at] + guard["before"] + actual[at + len(guard["after"]):]
+            self.assertEqual(guard["inputSHA256"], hashlib.sha256(actual.encode()).hexdigest())
             proof = json.loads((out / "engagement-presentation-proof.json").read_text(encoding="utf-8"))
             import v037_player_interaction as interaction
             self.assertEqual(interaction.COMMIT, proof["upstreamCommit"])
@@ -61,7 +68,8 @@ class CommandAttentionExtractionTest(unittest.TestCase):
                     patch("v037_feedback_origin.apply_feedback_origin", side_effect=lambda path, body: (body, None)), \
                     patch("v029_video_feedback_host.apply_feedback_lifetime", side_effect=lambda path, body: (body, None)), \
                     patch("v037_video_coin_request.apply", side_effect=lambda path, body, parser: (body, None)), \
-                    patch("v042_owner_follow.apply", side_effect=lambda path, body, globals: (body, None)):
+                    patch("v042_owner_follow.apply", side_effect=lambda path, body, globals: (body, None)), \
+                    patch("v046_like_write_guard.apply_and_record", side_effect=lambda repo, relative, text, output: text):
                 units.generate(REPO, before)
             self.assertEqual(units.wide(before / VM).read_text(encoding="utf-8"), inverse)
             self.assertEqual((before / "video-operations-members.fragment").read_bytes(), (out / "video-operations-members.fragment").read_bytes())

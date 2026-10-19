@@ -46,6 +46,8 @@ def read(rel):
  from v037_player_closure import selected_source as closure_source
  return closure_source(path,selected_source(path,SOURCES[path]['text']))
 def emit(rel,t,origin,mode):
+ from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
+ t=apply_follow_confirmation(REPO,'com/android/purebilibili/'+rel,t,OUTPUT)
  canonical=SOURCES.get(BASE+origin,{}).get('text')
  direct=mode=='direct-complete-original' and canonical==t
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)

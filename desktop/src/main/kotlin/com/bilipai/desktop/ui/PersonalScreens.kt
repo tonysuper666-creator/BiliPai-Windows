@@ -181,7 +181,8 @@ private fun PersonalFollowings(community: DesktopCommunityRepository, social: De
                     Text(user.uname, style = MaterialTheme.typography.titleMedium)
                     Text(user.sign, style = MaterialTheme.typography.bodySmall)
                 }
-                CommunityAction("取消关注", onLogin, action = { social.setFollowing(user.mid, false) }, onSuccess = { revision++ })
+                CommunityAction("取消关注", onLogin, action = { social.setFollowing(user.mid, false) },
+                    followTarget = CommunityFollowTarget(user.mid, user.uname, true), onSuccess = { revision++ })
             }
         }
     }
