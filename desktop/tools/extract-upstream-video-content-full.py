@@ -86,6 +86,10 @@ def emit(rel,t,origin,mode):
  if rel=='feature/video/screen/DesktopOriginalVideoContentSection.kt':
   from v046_comment_list import advance_content_comments
   t=advance_content_comments(REPO,t,OUTPUT)
+  # Roadmap lst-episode-selector-collection, last layer of this output (after the comment layers, so the comment callers
+  # proof still describes the text it was authored against): the part selector receives the cover and the playing state.
+  from v046_episode_selector import CONTENT_PAGES_BEFORE,CONTENT_PAGES_AFTER,CALL_SITE_LABELS
+  t=adapt(t,CONTENT_PAGES_BEFORE,CONTENT_PAGES_AFTER,CALL_SITE_LABELS['content'])
  if rel=='feature/video/ui/section/VideoNoteSection.kt':
   t=adapt_v025_note_badge(rel,t);mode='policy-extract'
  direct=mode=='direct-complete-original'
@@ -221,6 +225,8 @@ object DesktopOriginalVideoContentSettings {
 def generate(repo,output,standalone=False):
  global REPO,OUTPUT,STANDALONE,parser,selector,SOURCES,OUTPUTS,ADAPT,REFERENCES
  REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone
+ from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
+ validate_episode_selector_outputs(REPO,OUTPUT)
  SOURCES={};OUTPUTS=[];ADAPT=[];REFERENCES=[]
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT

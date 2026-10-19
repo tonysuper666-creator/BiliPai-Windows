@@ -1,0 +1,71 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+      "filename": "PagesSelector.kt",
+      "bytes": 23116,
+      "sha256": "c86348b7fe6eaa749c36263d29dcb8349ed7201ceec93105047c9a73dd72b773",
+      "gitBlob": "d1ce2370966058a359718faea6d2dfcd48c7a502"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PageCoverList.kt",
+      "filename": "PageCoverList.kt",
+      "bytes": 8778,
+      "sha256": "08e9ebf149fa729753410f29e31258dfa2565bc28d40d03fbcfae44f6684db3c",
+      "gitBlob": "3199684791e0e1f6cd5b2977e0fa4ddb49123a1e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/EpisodeListNavigationActions.kt",
+      "filename": "EpisodeListNavigationActions.kt",
+      "bytes": 1661,
+      "sha256": "4f45702c524d2455d90beb21bf244628f6b3b0d7aa2fdb4383fc8fa34b5cdcd8",
+      "gitBlob": "4fd8d1bade3896fc1a88d38c5a525b8dd2852d21"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSheet.kt",
+      "filename": "CollectionSheet.kt",
+      "bytes": 22803,
+      "sha256": "0cc5d4ab4bd0a6c1dc709cb35306255efbeff45142bb3ac65f0224a6c38d3f9b",
+      "gitBlob": "1901854f6f7ec7e5a6c8c375b95b7d08a149ee5c"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt",
+      "filename": "VideoDetailResponse.kt",
+      "bytes": 6847,
+      "sha256": "035c2a02c5d84f899e5915d961868521464caed27e246c7fc1b00efada9e8ca0",
+      "gitBlob": "687ce34ea78858f57eea7ddcd1a7216ef1d84196"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/PagePreviewNestedScrollTest.kt",
+      "filename": "PagePreviewNestedScrollTest.kt",
+      "bytes": 1716,
+      "sha256": "21b40cbc9848ae5116d027d300bfffe56dfae79f139856f0c0a7d8fe10c05745",
+      "gitBlob": "883246a53489687291e31f850e1186eacecac825"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "beforeFinalOutputs": {
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt": {
+      "sha256": "389d4e15914cb607ff54c04e1550e0bf488e4b2990ee57bd85a3ce4cb8ec71d2",
+      "layer": "selected source before this slice: the v0.3.7 file of v037-player-closure (git blob 14282b6006ec0659be62d5c0e37efdfdd14437d1)"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSheet.kt": {
+      "sha256": "acb0fed81d221b8a4d06564aead150864aaf02e5b04f8ac419d64324c616cb1a",
+      "layer": "selected source before this slice: the vendored v0.2.5 file (LF sha256 of the registry entry)"
+    },
+    "com/android/purebilibili/data/model/response/VideoDetailResponse.kt": {
+      "sha256": "0d42125b33ef0b59b94a4073bc47bc223708cfc8a47e230cc38c27d7dee32989",
+      "layer": "producer output before this slice: the whole v0.3.1 file of v031-repost-coin"
+    }
+  },
+  "selection": "Whole PagesSelector.kt (pages-only final form, v0.3.9 reverted the 0.3.8 collection episodes and v0.4.6 keeps the revert), PageCoverList.kt and EpisodeListNavigationActions.kt (the 0.3.8 cover list, new files), CollectionSheet.kt (introCanExpand, shared list navigation, AppLazyColumn, theme colours) and VideoDetailResponse.kt (Page.firstFrame) as they stand at v0.4.6, plus the original PagePreviewNestedScrollTest.",
+  "purpose": "Carry the episode and part selector rework in its v0.4.6 final form: a horizontal part-card row with a beat indicator, an expandable part list with cover thumbnails, search and chapter chips and auto-locate, the shared top, bottom and current navigation buttons in the collection sheet and the collection intro that only offers expansion when it overflows.",
+  "scope": "The six files only. desktop/tools/v046_episode_selector.py hands each one to the producer that owns the earlier copy (full controls producer: PagesSelector and the test; collection sheet producer: CollectionSheet and the two new files; video detail units producer: VideoDetailResponse). Every compiled PagesSelector caller keeps its Windows file and gets one counted call-site edit (counted: the anchor must occur exactly once; not hash pinned) that passes the video cover as v0.4.6 does, applied as the last layer of its output: VideoContentSection (detail page, also the playing state), VideoPlayerOverlay, TabletVideoLayout, TabletCinemaLayout and AudioModeMusicPlayer. VideoContentSection itself is not re-pinned here."
+}

@@ -157,7 +157,8 @@
     "desktop/upstream-slices/v046-chrome-glass-tuning",
     "desktop/upstream-slices/v046-home-card-tint-policy",
     "desktop/upstream-slices/v046-glyph-toolbar-pickers",
-    "desktop/upstream-slices/v046-video-info-section"
+    "desktop/upstream-slices/v046-video-info-section",
+    "desktop/upstream-slices/v046-episode-selector"
   ],
   "archives": [
     {
@@ -6983,6 +6984,59 @@
           "sha256": "85ba6a286a0c6dbec1ece9484c3e333741c185044053c5a6b301c29e43af1e1e",
           "hashNormalization": "raw",
           "blob": "d211956ad5ff11907ac65a7cee6cc0385c4e8188"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-episode-selector",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/CollectionSheet.kt",
+          "sha256": "0cc5d4ab4bd0a6c1dc709cb35306255efbeff45142bb3ac65f0224a6c38d3f9b",
+          "hashNormalization": "raw",
+          "blob": "1901854f6f7ec7e5a6c8c375b95b7d08a149ee5c"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/EpisodeListNavigationActions.kt",
+          "sha256": "4f45702c524d2455d90beb21bf244628f6b3b0d7aa2fdb4383fc8fa34b5cdcd8",
+          "hashNormalization": "raw",
+          "blob": "4fd8d1bade3896fc1a88d38c5a525b8dd2852d21"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/manifest.json",
+          "sha256": "74aca8825fcf0d16019b2564b37f0721caa5e2eda86a7ee4185518d7801a5af4",
+          "hashNormalization": "raw",
+          "blob": "561574a9b52820d2a11ad5cb29c8cb89e130a63d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/PageCoverList.kt",
+          "sha256": "08e9ebf149fa729753410f29e31258dfa2565bc28d40d03fbcfae44f6684db3c",
+          "hashNormalization": "raw",
+          "blob": "3199684791e0e1f6cd5b2977e0fa4ddb49123a1e"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/PagePreviewNestedScrollTest.kt",
+          "sha256": "21b40cbc9848ae5116d027d300bfffe56dfae79f139856f0c0a7d8fe10c05745",
+          "hashNormalization": "raw",
+          "blob": "883246a53489687291e31f850e1186eacecac825"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/PagesSelector.kt",
+          "sha256": "c86348b7fe6eaa749c36263d29dcb8349ed7201ceec93105047c9a73dd72b773",
+          "hashNormalization": "raw",
+          "blob": "d1ce2370966058a359718faea6d2dfcd48c7a502"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-episode-selector/VideoDetailResponse.kt",
+          "sha256": "035c2a02c5d84f899e5915d961868521464caed27e246c7fc1b00efada9e8ca0",
+          "hashNormalization": "raw",
+          "blob": "687ce34ea78858f57eea7ddcd1a7216ef1d84196"
         }
       ]
     }
@@ -18378,6 +18432,96 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original file, byte exact (0 ms first-batch tags and interaction state), written by the detail units producer; the vendored direct copy is excluded."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+      "localPath": "desktop/upstream-slices/v046-episode-selector/PagesSelector.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d1ce2370966058a359718faea6d2dfcd48c7a502",
+      "sha256": "c86348b7fe6eaa749c36263d29dcb8349ed7201ceec93105047c9a73dd72b773",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-episode-selector"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole v0.4.6 file (pages-only final form, v0.3.9 reverted the 0.3.8 collection episodes). The full controls producer reads it in place of the v0.3.7 copy and keeps its Windows display metrics rewrites (four lines)."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PageCoverList.kt",
+      "localPath": "desktop/upstream-slices/v046-episode-selector/PageCoverList.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3199684791e0e1f6cd5b2977e0fa4ddb49123a1e",
+      "sha256": "08e9ebf149fa729753410f29e31258dfa2565bc28d40d03fbcfae44f6684db3c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-episode-selector"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (v0.3.8 part list with covers, search, sort order and auto-locate), written by the collection sheet producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/EpisodeListNavigationActions.kt",
+      "localPath": "desktop/upstream-slices/v046-episode-selector/EpisodeListNavigationActions.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "4fd8d1bade3896fc1a88d38c5a525b8dd2852d21",
+      "sha256": "4f45702c524d2455d90beb21bf244628f6b3b0d7aa2fdb4383fc8fa34b5cdcd8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-episode-selector"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (shared top, bottom and current buttons), written by the collection sheet producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSheet.kt",
+      "localPath": "desktop/upstream-slices/v046-episode-selector/CollectionSheet.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "1901854f6f7ec7e5a6c8c375b95b7d08a149ee5c",
+      "sha256": "0cc5d4ab4bd0a6c1dc709cb35306255efbeff45142bb3ac65f0224a6c38d3f9b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-episode-selector"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Whole v0.4.6 file (introCanExpand, shared list navigation, AppLazyColumn, theme colours). The collection sheet producer reads it in place of the vendored v0.2.5 file and applies its seven Windows hunks unchanged."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt",
+      "localPath": "desktop/upstream-slices/v046-episode-selector/VideoDetailResponse.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "687ce34ea78858f57eea7ddcd1a7216ef1d84196",
+      "sha256": "035c2a02c5d84f899e5915d961868521464caed27e246c7fc1b00efada9e8ca0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-episode-selector"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file, byte exact (adds Page.firstFrame), emitted by the video detail units producer in place of the v0.3.1 file; the canonical copy was already excluded."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/PagePreviewNestedScrollTest.kt",
+      "localPath": "desktop/upstream-slices/v046-episode-selector/PagePreviewNestedScrollTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "883246a53489687291e31f850e1186eacecac825",
+      "sha256": "21b40cbc9848ae5116d027d300bfffe56dfae79f139856f0c0a7d8fe10c05745",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-episode-selector"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original test, byte exact, written under the test root of the full controls producer."
     }
   ],
   "buildStandaloneInputs": [

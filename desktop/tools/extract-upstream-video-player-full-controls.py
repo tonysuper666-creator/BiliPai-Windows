@@ -44,10 +44,17 @@ def read(rel):
   SOURCES[path]=dict(text=raw.decode(),**pin)
  from v037_player_chrome import selected_source
  from v037_player_closure import selected_source as closure_source
- return closure_source(path,selected_source(path,SOURCES[path]['text']))
+ # Roadmap lst-episode-selector-collection: the part selector is the whole v0.4.6 file of v046-episode-selector.
+ from v046_episode_selector import selected_source as episode_selected_source
+ return episode_selected_source(path,closure_source(path,selected_source(path,SOURCES[path]['text'])),REPO)
 def emit(rel,t,origin,mode):
  from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
  t=apply_follow_confirmation(REPO,'com/android/purebilibili/'+rel,t,OUTPUT)
+ if rel=='feature/video/ui/overlay/VideoPlayerOverlay.kt':
+  # Roadmap lst-episode-selector-collection, last layer of this output (after every overlay layer and the follow
+  # confirmation, so their proofs still describe the text they were authored against): the page sheet gets the cover.
+  from v046_episode_selector import OVERLAY_PAGES_BEFORE,OVERLAY_PAGES_AFTER,CALL_SITE_LABELS
+  t=adapt(t,OVERLAY_PAGES_BEFORE,OVERLAY_PAGES_AFTER,CALL_SITE_LABELS['overlay'])
  canonical=SOURCES.get(BASE+origin,{}).get('text')
  direct=mode=='direct-complete-original' and canonical==t
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)
@@ -321,7 +328,7 @@ import kotlinx.coroutines.flow.combine
    t=windows_native_audio_settings_ui(t,record=True)
    t=adapt(t,'private fun SleepTimerOptions(', 'internal fun SleepTimerOptions(',
            'Same complete original sleep selector exposed to the Windows player')
-  emit(rel,t,rel,'complete-original-menu-sheet-global-context-adapt')
+  emit(rel,t,rel,'complete-original-v046-pages-selector-global-context-adapt' if rel.endswith('/PagesSelector.kt') else 'complete-original-menu-sheet-global-context-adapt')
  rel='core/ui/components/PlaybackSpeedPreferenceControl.kt';t=read(rel)
  # formatPlaybackSpeed is already sole-owned by existing actual playback settings.
  if 'com/android/purebilibili/core/ui/components/PlaybackSpeedPreferenceControlKt.class' in ACTUAL:
@@ -495,6 +502,8 @@ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
 def generate(repo,output,standalone=False,test_output=None):
  global REPO,OUTPUT,STANDALONE,parser,selector,SOURCES,OUTPUTS,ADAPT,REFERENCES
  REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone
+ from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
+ validate_episode_selector_outputs(REPO,OUTPUT,test_output)
  SOURCES={};OUTPUTS=[];ADAPT=[];REFERENCES=[]
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT
@@ -540,6 +549,8 @@ def generate(repo,output,standalone=False,test_output=None):
  if test_output is not None:
   from v037_player_chrome import generate_policy_tests
   generate_policy_tests(Path(test_output))
+  from v046_episode_selector import emit_original_tests as emit_episode_selector_tests
+  emit_episode_selector_tests(REPO,Path(test_output))
 if __name__=='__main__':
  test_output=Path(sys.argv[sys.argv.index('--test-output')+1]) if '--test-output' in sys.argv else None
  generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone' in sys.argv[3:],test_output)

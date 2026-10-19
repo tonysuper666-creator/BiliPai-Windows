@@ -11,6 +11,8 @@ def load(name, path):
     return result
 
 def generate(repo, output):
+    from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
+    validate_episode_selector_outputs(repo, output)
     parser = load('collection_parser', repo/'desktop/tools/sync-upstream.py')
     selector = load('collection_selector', repo/'desktop/tools/extract-appearance-platform.py')
     media = load('collection_functions', repo/'desktop/tools/extract-upstream-media.py')
@@ -21,22 +23,29 @@ def generate(repo, output):
         text = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
         assert hashlib.sha256(text.encode()).hexdigest() == pins[path], path
         return text
-    def emit(path, body, name):
+    def emit(path, body, name, source_sha=None, extra=None, origin_label=None):
         from v037_tab_roles import apply as apply_tab_roles
         body=apply_tab_roles(path,body,output,name)
         original = read(path)
         package = re.search(r'(?m)^package (\S+)', body).group(1)
         dest = output/package.replace('.','/')/name
         dest.parent.mkdir(parents=True,exist_ok=True)
-        dest.write_text('// GENERATED from '+path+'; do not edit.\n// LF-normalized SHA-256: '+pins[path]+'\n'+body,
+        dest.write_text('// GENERATED from '+(origin_label or path)+'; do not edit.\n// LF-normalized SHA-256: '+(source_sha or pins[path])+'\n'+body,
                         encoding='utf-8',newline='\n')
-        records.append({'original':path,'output':str(dest.relative_to(output)),
-                        'originalSha256Lf':pins[path],'generatedSha256':hashlib.sha256(dest.read_bytes()).hexdigest()})
+        record = {'original':path,'output':str(dest.relative_to(output)),
+                  'originalSha256Lf':pins[path],'generatedSha256':hashlib.sha256(dest.read_bytes()).hexdigest()}
+        if extra:
+            record.update(extra)
+        records.append(record)
     def change(text, before, after, count=1):
         assert text.count(before)==count, before
         return text.replace(before,after)
 
     path=APP+'feature/video/ui/components/CollectionSheet.kt'; body=read(path)
+    # Roadmap lst-episode-selector-collection: the sheet is the whole v0.4.6 file of v046-episode-selector. The seven
+    # Windows hunks below and the tab role projection of emit() apply to it unchanged (v0.4.6 declares the role itself).
+    from v046_episode_selector import selected_source as episode_selected_source, source_identity as episode_identity
+    body=episode_selected_source(path, body, repo)
     body=change(body, 'import androidx.compose.ui.platform.LocalContext',
                 'import coil3.compose.LocalPlatformContext\nimport com.bilipai.desktop.ui.LocalDesktopCollectionBindings')
     body=change(body, 'import com.android.purebilibili.core.store.SettingsManager',
@@ -49,7 +58,12 @@ def generate(repo, output):
                 'platform.shareCollection(')
     body=change(body, 'SettingsManager.setCollectionSortMode(context, collectionSubscriptionId, nextMode)',
                 'platform.withOwnedCollectionPreferences { SettingsManager.setCollectionSortMode(context, collectionSubscriptionId, nextMode) }')
-    emit(path,body,'DesktopOriginalCollectionSheet.kt')
+    sheet=episode_identity('CollectionSheet.kt', repo)
+    # The header names the file the body really is (the v0.4.6 archive leaf) and the vendored path it replaces.
+    emit(path,body,'DesktopOriginalCollectionSheet.kt',source_sha=sheet['sourceSha256'],
+         origin_label=sheet['localPath']+' (replaces '+path+')',
+         extra={'vendoredSha256Lf':pins[path],'originalSha256Lf':sheet['sourceSha256'],'upstreamCommit':sheet['upstreamCommit'],
+                'upstreamGitBlob':sheet['upstreamGitBlob'],'sourceManifestSha256':sheet['sourceManifestSha256'],'wholeOriginal':True})
 
     path=APP+'feature/video/ui/components/CollectionSubscriptionButton.kt';body=read(path)
     body=change(body,'import android.widget.Toast\n','')
@@ -109,6 +123,9 @@ import kotlinx.coroutines.withContext
     end=re.search(r'(?m)^[ \t]*val intent = ',share).start()
     emit(path,'package com.android.purebilibili.core.util\ninternal fun buildDesktopCollectionShareText(title:String,mid:Long,seasonId:Long):String {\n'+
          share[begin:end]+'    return shareText\n}\n','DesktopOriginalCollectionShareText.kt')
+    # The part list and the shared list navigation buttons of the same v0.4.6 selector rework, written unchanged.
+    from v046_episode_selector import emit_collection_leaves
+    emit_collection_leaves(repo, output, records)
     output.mkdir(parents=True,exist_ok=True)
     (output/'source-bindings.json').write_text(json.dumps(records,indent=2)+'\n',encoding='utf-8',newline='\n')
 

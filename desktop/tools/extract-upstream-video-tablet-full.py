@@ -14,6 +14,9 @@ assert manifest['upstreamCommit']=='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
+# Roadmap lst-episode-selector-collection: the archive is intact and no output lies inside or around it.
+from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
+validate_episode_selector_outputs(REPO,LANE)
 FRESH_V025_COMMENT_COUNTS={'com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt': {'isRepliesRefreshing': 2, 'repliesError': 2, 'onRefreshReplies': 2, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt': {'isRepliesRefreshing': 3, 'repliesError': 3, 'onRefreshReplies': 3, 'onRefresh': 0}, 'com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 3, 'onRefreshReplies': 0, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 4, 'onRefreshReplies': 0, 'onRefresh': 2}}
 
 def validate_fresh_v025_comment_consumer(output,text):
@@ -69,6 +72,14 @@ def emit(rel,t,original):
  elif rel in {'feature/video/screen/TabletVideoLayout.kt','feature/video/screen/TabletCinemaLayout.kt'}:
   t=advance_bottom_calls(REPO,t,OUT,Path(rel).stem)
   t=advance_tablet_avatars(REPO,t,OUT,Path(rel).stem)
+  # Roadmap lst-episode-selector-collection, last layer of both layouts: the part selector receives the video cover as in
+  # v0.4.6 (counted by replace(): one anchor, one recorded label). TabletVideoLayout's call is reached from the wide-window
+  # LargeScreenVideoLayout through TabletVideoInfoPane; the pinned tree has no caller of TabletCinemaLayout yet.
+  from v046_episode_selector import TABLET_PAGES_BEFORE,TABLET_PAGES_AFTER,CINEMA_PAGES_BEFORE,CINEMA_PAGES_AFTER,CALL_SITE_LABELS
+  if rel=='feature/video/screen/TabletVideoLayout.kt':
+   t=replace(t,TABLET_PAGES_BEFORE,TABLET_PAGES_AFTER,CALL_SITE_LABELS['tablet'])
+  else:
+   t=replace(t,CINEMA_PAGES_BEFORE,CINEMA_PAGES_AFTER,CALL_SITE_LABELS['cinema'])
  if BASE+original in DIRECT and not args.standalone:return
  p=OUT/'com/android/purebilibili'/rel;write(p,t)
  OUTPUTS.append({'path':str(p),'sha256LF':sha(t),'original':BASE+original})

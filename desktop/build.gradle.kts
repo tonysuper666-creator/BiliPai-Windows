@@ -4366,3 +4366,15 @@ tasks.matching { it.name in setOf("extractOriginalVideoDetailUnits", "extractVid
     inputs.file("tools/v046_video_info_section.py")
     inputs.dir("upstream-slices/v046-video-info-section")
 }
+
+// v0.4.6 episode and part selector rework: the controls producer selects the whole part selector (and writes the original
+// nested scroll test), the collection sheet producer selects the whole sheet and writes the part list and the shared list
+// navigation buttons, the detail units producer advances VideoDetailResponse to the whole v0.4.6 file (Page.firstFrame),
+// and the content producer adapts the part selector call of the detail page (the controls producer adapts the one of the
+// player overlay, the tablet producer those of the tablet and cinema layouts and the audio producer the one of the audio
+// mode player; each is a counted call-site edit that passes the video cover as v0.4.6 does). The canonical
+// VideoDetailResponse exclude in prepareUpstreamSources already exists; no new exclude is needed.
+tasks.matching { it.name in setOf("extractOriginalPlayerFullControls", "extractStableCollectionSheet", "extractOriginalVideoDetailUnits", "extractOriginalVideoContentFull", "extractOriginalVideoTabletFull", "extractOriginalVideoAudioFull") }.configureEach {
+    inputs.file("tools/v046_episode_selector.py")
+    inputs.dir("upstream-slices/v046-episode-selector")
+}

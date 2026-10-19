@@ -39,7 +39,13 @@ class RepostCoinExtractionTest(unittest.TestCase):
         self.assertEqual("10c08edadc07c56842402e27048855f4f3c95c38", manifest["upstreamCommit"])
         self.assertEqual(6, len(fixed))
         output = self.output / "detail-full-units"
+        import v046_episode_selector as episode
         for path, text, origin in coin.direct_outputs():
+            if path == episode.DETAIL_RESPONSE_OUTPUT:
+                # lst-episode-selector-collection advances this one output to the whole v0.4.6 file (Page.firstFrame);
+                # the advance asserts that `text` is exactly the v0.3.1 body this test already pins.
+                self.assertEqual(episode.advance_video_detail_response(REPO, text), read(output / path), origin)
+                continue
             self.assertEqual(text, read(output / path), origin)
         self.assertEqual(fixed["TripleActionVisualStatePolicy.kt"], read(output / coin.TRIPLE))
         rows = json.loads(read(output / "source-bindings.json"))["outputs"]

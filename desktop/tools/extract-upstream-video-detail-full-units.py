@@ -279,8 +279,13 @@ import kotlinx.coroutines.flow.*
     emit('com/android/purebilibili/core/store/DesktopOriginalVideoInfoSettings.kt',settings,p,'original-key-read-write-bridge-same-global-store')
     engagement()
     from v031_repost_coin import direct_outputs
+    from v046_episode_selector import DETAIL_RESPONSE_OUTPUT as EPISODE_SELECTOR_RESPONSE, advance_video_detail_response
     for output,text,origin in direct_outputs():
-        emit(output,text,origin,"fixed-v031-complete-original-source")
+        mode="fixed-v031-complete-original-source"
+        if output==EPISODE_SELECTOR_RESPONSE:
+            # Roadmap lst-episode-selector-collection: the whole v0.4.6 file (Page.firstFrame) replaces the v0.3.1 body.
+            text=advance_video_detail_response(REPO,text);mode="complete-original-v046-episode-selector"
+        emit(output,text,origin,mode)
     from v037_player_interaction import extend_same_producer
     extend_same_producer(globals())
     read(BASE+'core/util/AnalyticsHelper.kt') # Original event/default/privacy contract for the local diagnostics platform port.
@@ -546,6 +551,8 @@ def generate(repo,output,standalone=False):
     REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone
     from v046_video_info_section import validate_outputs as validate_video_info_outputs
     validate_video_info_outputs(REPO,OUTPUT)
+    from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
+    validate_episode_selector_outputs(REPO,OUTPUT)
     SOURCES={};OUTPUTS=[];ADAPTATIONS=[]
     manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
     assert manifest['upstreamCommit']==COMMIT

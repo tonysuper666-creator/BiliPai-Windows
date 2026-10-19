@@ -13,6 +13,9 @@ assert manifest['upstreamCommit']=='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
+# Roadmap lst-episode-selector-collection: the archive is intact and no output lies inside or around it.
+from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
+validate_episode_selector_outputs(REPO,LANE)
 def safe(p):
  s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix)else prefix+s)
 def sha(t):return hashlib.sha256(t.encode()if isinstance(t,str)else t).hexdigest()
@@ -114,6 +117,9 @@ t=replace(t,'onPrevious = { viewModel.playPreviousAudioModeTrack() }',
 t=replace(t,'onNext = { viewModel.playNextAudioModeTrack() }',
  'onNext = { viewModel.playNextAudioModeTrack(historyScope) }',
  'Actual original AudioMode UI scope launches a source-bound playlist operation')
+# Roadmap lst-episode-selector-collection, last replace of this file: the part selector receives the video cover as in v0.4.6.
+from v046_episode_selector import AUDIO_PAGES_BEFORE,AUDIO_PAGES_AFTER,CALL_SITE_LABELS
+t=replace(t,AUDIO_PAGES_BEFORE,AUDIO_PAGES_AFTER,CALL_SITE_LABELS['audio'])
 emit(CURRENT,t)
 for o in OUTPUTS:
  original=o['original'];reverse=safe(o['path']).read_text(encoding='utf-8')

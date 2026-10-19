@@ -300,7 +300,13 @@ class ConnectedCommentPanelSources(unittest.TestCase):
         ]:
             actual = self.generated('tablet', name)
             proof = self.proof('tablet', 'v046-'+label+'-avatar-owner-proof')
-            previous = restore(actual, proof['retainedToCurrent'])
+            # lst-episode-selector-collection adds the one v0.4.6 cover argument of the part selector call AFTER this layer
+            # (append-last): peel exactly that edit, then the receipt of this layer must match the rest byte for byte.
+            import v046_episode_selector as episode
+            cover_after, cover_before = ((episode.TABLET_PAGES_AFTER, episode.TABLET_PAGES_BEFORE) if label == 'TabletVideoLayout'
+                                         else (episode.CINEMA_PAGES_AFTER, episode.CINEMA_PAGES_BEFORE))
+            self.assertEqual(1, actual.count(cover_after))
+            previous = restore(actual.replace(cover_after, cover_before), proof['retainedToCurrent'])
             owner = comments.declaration(self.syntax, actual, owner_name)
             before_owner = comments.declaration(self.syntax, previous, owner_name)
             self.assertEqual(1, owner.count('val listState = rememberLazyListState()'))
