@@ -53,10 +53,12 @@ internal fun DesktopMessageNotificationSettingsContent(onFailure: (Throwable) ->
             onCheckedChange = { write { MessageNotificationSettingsStore.setLikesEnabled(context, it) } })
         AppSwitchPreference(title = "系统通知", checked = settings.notifySystemNotices, enabled = settings.enabled,
             onCheckedChange = { write { MessageNotificationSettingsStore.setSystemNoticesEnabled(context, it) } })
-        AppSwitchPreference(title = "关注动态", checked = settings.notifyDynamicUpdates, enabled = settings.enabled,
+        AppSwitchPreference(title = "关注动态", subtitle = "需要 TV 授权登录；只有网页登录时无法预加载关注动态，不会发送此类通知。",
+            checked = settings.notifyDynamicUpdates, enabled = settings.enabled,
             onCheckedChange = { write { MessageNotificationSettingsStore.setDynamicUpdatesEnabled(context, it) } })
         AppSwitchPreference(title = "开播提醒", checked = settings.notifyLiveAlerts, enabled = settings.enabled,
             onCheckedChange = { write { MessageNotificationSettingsStore.setLiveAlertsEnabled(context, it) } })
-        AppText("系统可能合并或隐藏通知。通知菜单保留对应页面入口；关闭应用后停止检查。")
+        AppText("系统可能合并或隐藏通知。通知菜单保留对应页面入口；关闭应用后停止检查。" +
+            "已弹出的托盘气泡无法撤回；内容在服务器端标为已读后，只会从通知菜单中移除对应条目。")
     }
 }

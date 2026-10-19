@@ -42,6 +42,14 @@ internal class DesktopMessageNotificationContext private constructor(
         }
         return authenticated
     }
+    /** The App access token of this Root's account, or null for a web-only session. Same admission as the cookie
+     * read. A retired Root is not a web-only session: it throws instead of returning null. */
+    internal fun appAccessToken(): String? {
+        var token: String? = null
+        if (!admit { token = repository.ownedHomeAccessToken(epoch, ::retained) })
+            throw CancellationException("Message notification Root retired")
+        return token
+    }
     internal fun check() {
         if (!isCurrent()) throw CancellationException("Message notification Root retired")
     }

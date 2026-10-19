@@ -46,12 +46,16 @@ internal class DesktopWindowsMessageNotifications(
         if (canPost()) entries.keys() else emptySet()
     }
 
-    suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String> = emptySet()) = withContext(Dispatchers.Main) {
+    /** [cancelled] are items the server now reports as read. A Windows balloon that was already submitted
+     * cannot be withdrawn, so a cancellation removes the item (and, via [pendingCounts], an emptied group
+     * summary) from the tray menu only; the OS may still show or keep the balloon. */
+    suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String> = emptySet(),
+        pendingCounts: Map<String, Int>? = null) = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
         if (!canPost()) return@withContext
         if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
-        entries.apply(pending, cancelled)
+        entries.apply(pending, cancelled, pendingCounts)
         val visible = entries.snapshot()
         if (visible.isEmpty()) { removeTrayOnEdt(); return@withContext }
         val icon = tray ?: TrayIcon(requireNotNull(ImageIO.read(

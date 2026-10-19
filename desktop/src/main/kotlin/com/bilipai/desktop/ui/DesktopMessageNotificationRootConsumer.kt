@@ -2,6 +2,8 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.*
 import com.android.purebilibili.core.network.BilibiliApi
+import com.android.purebilibili.core.network.DesktopDynamicAuthorUpdatesApi
+import com.android.purebilibili.core.network.DesktopDynamicAuthorUpdatesService
 import com.android.purebilibili.core.network.DynamicApi
 import com.android.purebilibili.core.network.MessageApi
 import com.android.purebilibili.core.network.grpc.DesktopDynamicBiliGrpcClient
@@ -47,6 +49,14 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
             val mid = actual.mid ?: return@collectLatest
             if (!actual.hasAuthenticatedSession()) return@collectLatest
             if (!notifications.canPost()) return@collectLatest
+            if (settings.notifyDynamicUpdates) {
+                // Token-dependent path: without an App access token the original preload refuses before
+                // any request. Say so once per settings session instead of failing silently every cycle.
+                desktopDynamicPreloadBlockedReason(actual.appAccessToken())?.let { reason ->
+                    Logger.getLogger("MessageNotification").log(Level.INFO,
+                        "Dynamic update notifications are inactive for this account: $reason")
+                }
+            }
             val admission = DesktopMessagePageAdmission(actual.repository, actual.epoch, mid,
                 actual.root.entry.gate.scope, actual::isCurrent, actual::isCurrent,
                 actual::admit,
@@ -59,6 +69,7 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
                     val activeKeys = notifications.activeMessageKeys()
                     var batch = emptyList<PendingMessageNotification>()
                     var cancelledKeys = emptySet<String>()
+                    var pendingCounts: Map<String, Int>? = null
                     var retry = false
                     try {
                     messageNotificationMutex.withLock {
@@ -82,13 +93,14 @@ internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotif
                             MessageNotificationStateStore.putState(actual, mid, value.state)
                             batch = value.notifications
                             cancelledKeys = value.cancelNotificationKeys
+                            pendingCounts = desktopPendingSummaryCounts(value.state)
                         }
                     }
                     // Shell/OS delivery is outside Store/entry and state mutex. The actual
                     // settings coroutine and fixed same-account receipt are checked on EDT.
                     currentCoroutineContext().ensureActive(); actual.check()
                     if (MessageNotificationSettingsStore.getSettings(actual).first() == settings)
-                        notifications.postAll(batch, cancelledKeys)
+                        notifications.postAll(batch, cancelledKeys, pendingCounts)
                     } catch (cancelled: CancellationException) { throw cancelled }
                     catch (_: IOException) { retry = true }
                     catch (failure: Exception) {
@@ -130,6 +142,15 @@ private class DesktopOwnedMessageNotificationSource(
     private val messages = context.repository.ownedHomeService(MessageApi::class.java,
         "https://api.vc.bilibili.com/", context.epoch, ::owned)
     private fun owned() = context.isCurrent() && owner.isOwned() && currentCallerActive()
+    // Recent-author red dots: read-only web endpoints over the account cookies. The endpoints need no App
+    // token, but the Poller only reaches them after the token-gated following scan, so web-only accounts never do.
+    private val authorUpdates = context.repository.ownedHomeService(DesktopDynamicAuthorUpdatesService::class.java,
+        "https://api.bilibili.com/", context.epoch, ::owned)
+    /** The App access token of this account (null for a web-only session), read under the same admission. */
+    private fun accessToken(): String? {
+        checkRequest()
+        return context.repository.ownedHomeAccessToken(context.epoch, ::owned)
+    }
     private val grpc = DesktopDynamicBiliGrpcClient(
         context.repository.ownedHomeCallFactory(context.epoch, ::owned),
         {
@@ -139,10 +160,12 @@ private class DesktopOwnedMessageNotificationSource(
             }.toMap()
         },
         { checkRequest(); context.mid },
-        { checkRequest(); context.repository.ownedHomeAccessToken(context.epoch, ::owned) },
+        ::accessToken,
         ::owned,
     )
-    private val personal = DesktopDynamicPersonalFeedApi(grpc::request)
+    // The preload gate and the gRPC authorization header read the same token. Without one the
+    // original preload fails before any request; nothing here substitutes a web cookie or a result.
+    private val personal = DesktopDynamicPersonalFeedApi(grpc::request, ::accessToken)
     // Captured once in the real awaitRead body. Every child/HTTP call still uses this actual
     // executing request Job; it is not a lifecycle owner or a completed UI nav request.
     private fun currentCallerActive() = requestJob.isActive
@@ -169,7 +192,10 @@ private class DesktopOwnedMessageNotificationSource(
         check(response.code == 0) { "Dynamic update code ${response.code}" }
         checkNotNull(response.data).update_num
     }
+    override suspend fun dynamicAuthorUpdates() = read { DesktopDynamicAuthorUpdatesApi(authorUpdates).load() }
     override suspend fun followings(selfMid: Long, page: Int) = read {
+        // Only the dynamic category reads the following list, and its per-author preload needs an App token.
+        requireDesktopDynamicPreloadAuthorization(accessToken())
         val response = api.getFollowings(vmid = selfMid, pn = page, ps = 50)
         check(response.code == 0) { "Followings code ${response.code}" }
         checkNotNull(response.data)

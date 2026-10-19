@@ -88,9 +88,12 @@ class V038NotificationSourceTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp)
             files = producer.generate(REPO, output)
-            self.assertEqual(5, len(files))
-            self.assertEqual(5, len(set(files)))
-            self.assertEqual(42, sum(p.read_text(encoding="utf-8").count("@Test") for p in (output/"policy-tests").rglob("*.kt")))
+            # The producer now emits the v0.4.6 re-pin (v046_message_notifications.py): the settings store plus
+            # seven sources (Policy, Poller, state, preload, author-updates API/service/DTOs) and 45 + 9 + 13
+            # original cases. The v038 generator and its archive stay pinned by the other tests of this file.
+            self.assertEqual(8, len(files))
+            self.assertEqual(8, len(set(files)))
+            self.assertEqual(67, sum(p.read_text(encoding="utf-8").count("@Test") for p in (output/"policy-tests").rglob("*.kt")))
             emitted = output/"com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt"
             self.assertIn("source.feedUnread()", emitted.read_text(encoding="utf-8"))
             self.assertNotIn("NetworkModule", emitted.read_text(encoding="utf-8"))

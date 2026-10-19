@@ -1,0 +1,120 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt",
+      "filename": "MessageNotificationChecker.kt",
+      "bytes": 25313,
+      "sha256": "ea68c115b1309ca222cf3f1626cc57ec02b4c27419fa0eb322150152f0b799b4",
+      "gitBlob": "9beb54a8dad5be39774647005c68aeb1230d978e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicy.kt",
+      "filename": "MessageNotificationPolicy.kt",
+      "bytes": 6504,
+      "sha256": "7fec06d8757cd9ad7c05f1b878fa186af7b5d93fd178eb86c4e30bff5be68c06",
+      "gitBlob": "1393b15b74e69addddafc67c503478a255ead426"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationStateStore.kt",
+      "filename": "MessageNotificationStateStore.kt",
+      "bytes": 3068,
+      "sha256": "f694d3140bce99087a4ddd216855ba20f4416ad404e5409549d909e5d32c0188",
+      "gitBlob": "e4530fab908b61999b50246747593a249b608d9d"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicyTest.kt",
+      "filename": "MessageNotificationPolicyTest.kt",
+      "bytes": 64139,
+      "sha256": "99c0c575d3a6f5f882d85e59370b8b51dade7c92efd08bb94afcac12070f8d35",
+      "gitBlob": "2cf36c0f65553c1ad238b6f2f0d9767b66222063"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/grpc/DynamicPersonalFeedApi.kt",
+      "filename": "DynamicPersonalFeedApi.kt",
+      "bytes": 13646,
+      "sha256": "888a7facd18a88239562780a55d5f8158d42cfc000439c7741b6fba80ea04d26",
+      "gitBlob": "5279fc6c6fa9b822640608286f11404b2b433c9f"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/core/network/grpc/DynamicPersonalFeedApiTest.kt",
+      "filename": "DynamicPersonalFeedApiTest.kt",
+      "bytes": 7184,
+      "sha256": "0c8444c60a9f23d6ead086338c7f1f43e643f9dc5b08ab70f84e84173e7e1412",
+      "gitBlob": "bb2088183523b8e05527cf255721a493af44c3ab"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/DynamicAuthorUpdatesApi.kt",
+      "filename": "DynamicAuthorUpdatesApi.kt",
+      "bytes": 2435,
+      "sha256": "afea71eb7c27a3479db6d19f26299d3beb0667bec7f727552f6d28863e79266e",
+      "gitBlob": "ef3379e8f19f9601cdd68b3dfbab7980ee317601"
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/core/network/DynamicAuthorUpdatesApiTest.kt",
+      "filename": "DynamicAuthorUpdatesApiTest.kt",
+      "bytes": 8047,
+      "sha256": "2aa1a7944437685c3af83cf8631c0c85999986b860b8896e2b4d7177c0a74bec",
+      "gitBlob": "f0a579677b51b692d7cbeab5f05d6df6d99e58a2"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt",
+      "filename": "DynamicModels.kt",
+      "bytes": 57167,
+      "sha256": "ba9f84089b7715ce6efae409b2c85cc3d6c61b18fe9cd8ffa3d7ec04e2614c85",
+      "gitBlob": "d7b6a0ff475dcf9fa11d7e701be8f1477f5c5d0c"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Complete v0.4.6 message notification Poller, Policy and state store; the DynAllPersonal preload with its App-authorization gate; the recent-author red-dot snapshot (portal and uplist) with its original tests; the five DTO declarations of DynamicModels.kt that only this slice needs",
+  "purpose": "Re-pin of v038-message-notifications to the v0.4.6 blobs: the read_offset watermark is replaced by the author-level has_update snapshot, UP scans are concurrent, the dynamic probe baseline replaces the end-of-scan maximum",
+  "replaces": {
+    "archive": "desktop/upstream-slices/v038-message-notifications",
+    "commit": "b69ce4c21bd1bc2f33c5a4f3076b571f9b6d0f14",
+    "manifestSha256": "bf8f62448f5293bec2876476698ee5acceb9b7781ad245f73162c2490455f1a9",
+    "changedFiles": [
+      "MessageNotificationChecker.kt",
+      "MessageNotificationPolicy.kt",
+      "MessageNotificationStateStore.kt",
+      "MessageNotificationPolicyTest.kt",
+      "DynamicPersonalFeedApi.kt",
+      "DynamicPersonalFeedApiTest.kt"
+    ],
+    "newFiles": [
+      "DynamicAuthorUpdatesApi.kt",
+      "DynamicAuthorUpdatesApiTest.kt"
+    ],
+    "unchangedGitBlobs": {
+      "MessageNotificationSettingsStore.kt": "ccc50d07cf93148bc4f5810ad96194cdc1f05d2c",
+      "BiliGrpcClient.kt": "e6d49d15e9962926269b7daf2cdcd57ca7204617",
+      "ProtoWire.kt": "01947331d4efafcdabf23afdb18e6118f082aaee"
+    }
+  },
+  "dynamicModelsSelection": {
+    "file": "DynamicModels.kt",
+    "selectedSha256": "fccd7306fe2c3cb842f50c17b48d9d8f0c2f81dbecadc18214a78615d1255d75",
+    "note": "v0.4.6 DynamicModels.kt equals the pinned v0.3.5 original plus exactly this block; the Windows tree still emits the v0.3.5 file, so the block is emitted as its own file until a whole-file advance retires it"
+  },
+  "apiDeclarationSource": {
+    "archive": "desktop/upstream-slices/v046-favorite-editor",
+    "filename": "ApiClient.kt",
+    "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "gitBlob": "55a9728773945c749c95245064f1ad36d65919c6",
+    "bytes": 155454,
+    "sha256": "8a1e75f05835c62d4cfe2827855068653e117198d0bf344d85881853b4a8ed9d",
+    "selectedMembers": [
+      "getDynamicAuthorUpdatesPortal",
+      "getDynamicAuthorUpdatesPage"
+    ],
+    "selectedSha256": "5f44a8048771b52716996769db11824b6bcd7dd760add1fbfb39729d5584640d"
+  },
+  "mainCompiled": false,
+  "jvmTestsExecuted": false,
+  "applicationExecuted": false
+}

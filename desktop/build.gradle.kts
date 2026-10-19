@@ -4017,6 +4017,10 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalAuMusicPage) }
 val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
     inputs.file("tools/v038_message_notifications.py")
     inputs.dir("upstream-slices/v038-message-notifications")
+    inputs.file("tools/v046_message_notifications.py")
+    inputs.dir("upstream-slices/v046-message-notifications")
+    // The recent-author DynamicApi members are read from the pinned ApiClient.kt of the same upstream commit.
+    inputs.dir("upstream-slices/v046-favorite-editor")
     dependsOn(prepareUpstreamSources, extractOriginalMessagePages, extractUpstreamDynamicFullCard)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-notifications.py",

@@ -14,6 +14,8 @@ def inventory(repo):
   rows.append(dict(path=recipe["path"],mode="policy-extract",features=["desktop-original-message-notification-root"],sha256=recipe["sourceSha256LF"]))
  return rows
 def generate(repo,out):
+ from v046_message_notifications import validate_outputs
+ validate_outputs(repo,out)
  files=[];proofs=[]
  for name,recipe in RECIPES.items():
   if name != "MessageNotificationSettingsStore":continue
@@ -39,8 +41,9 @@ def generate(repo,out):
    dest=out/recipe["output"];dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(text,encoding="utf8",newline="\n");files.append(recipe["output"])
   proofs.append(dict(source=recipe["path"],sourceSha256LF=recipe["sourceSha256LF"],output=recipe["output"],outputSha256LF=recipe["outputSha256LF"],fullActualInverse=True))
  (out/"original-message-notification-source.json").write_text(json.dumps(proofs,indent=2)+"\n",encoding="utf8",newline="\n")
- from v038_message_notifications import generate as generate_v038
- files.extend(generate_v038(repo,out))
+ # v0.4.6 re-pin of the v038 slice: complete Policy/Poller/state/preload plus the recent-author snapshot.
+ from v046_message_notifications import generate as generate_v046
+ files.extend(generate_v046(repo,out))
  return files
 if __name__=="__main__":
  p=argparse.ArgumentParser();p.add_argument("--repo",type=Path,required=True);p.add_argument("--out",type=Path);p.add_argument("--inventory",action="store_true");a=p.parse_args()

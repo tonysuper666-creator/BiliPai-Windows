@@ -142,7 +142,8 @@
     "desktop/upstream-slices/v046-core-data-policies",
     "desktop/upstream-slices/v046-home-card-cascade-definers",
     "desktop/upstream-slices/v046-sheet-motion",
-    "desktop/upstream-slices/v046-home-refresh-ui-policy"
+    "desktop/upstream-slices/v046-home-refresh-ui-policy",
+    "desktop/upstream-slices/v046-message-notifications"
   ],
   "archives": [
     {
@@ -6239,6 +6240,77 @@
           "sha256": "e6175b3d969d475d8924a9b59415608a5654dbf000c219368ebef7f5d007213b",
           "hashNormalization": "raw",
           "blob": "161ef52a11bd9ba04a7b64524fe0b80085587ff3"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-message-notifications",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/DynamicAuthorUpdatesApi.kt",
+          "sha256": "afea71eb7c27a3479db6d19f26299d3beb0667bec7f727552f6d28863e79266e",
+          "hashNormalization": "raw",
+          "blob": "ef3379e8f19f9601cdd68b3dfbab7980ee317601"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/DynamicAuthorUpdatesApiTest.kt",
+          "sha256": "2aa1a7944437685c3af83cf8631c0c85999986b860b8896e2b4d7177c0a74bec",
+          "hashNormalization": "raw",
+          "blob": "f0a579677b51b692d7cbeab5f05d6df6d99e58a2"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/DynamicModels.kt",
+          "sha256": "ba9f84089b7715ce6efae409b2c85cc3d6c61b18fe9cd8ffa3d7ec04e2614c85",
+          "hashNormalization": "raw",
+          "blob": "d7b6a0ff475dcf9fa11d7e701be8f1477f5c5d0c"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/DynamicPersonalFeedApi.kt",
+          "sha256": "888a7facd18a88239562780a55d5f8158d42cfc000439c7741b6fba80ea04d26",
+          "hashNormalization": "raw",
+          "blob": "5279fc6c6fa9b822640608286f11404b2b433c9f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/DynamicPersonalFeedApiTest.kt",
+          "sha256": "0c8444c60a9f23d6ead086338c7f1f43e643f9dc5b08ab70f84e84173e7e1412",
+          "hashNormalization": "raw",
+          "blob": "bb2088183523b8e05527cf255721a493af44c3ab"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/manifest.json",
+          "sha256": "11ebdc367077337c6e42542b8878b6e2157d289b839c137fbaa8d46701f4a476",
+          "hashNormalization": "raw",
+          "blob": "aa51226ddb7d7681e21e7cc61e19a94dc34b4915"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/MessageNotificationChecker.kt",
+          "sha256": "ea68c115b1309ca222cf3f1626cc57ec02b4c27419fa0eb322150152f0b799b4",
+          "hashNormalization": "raw",
+          "blob": "9beb54a8dad5be39774647005c68aeb1230d978e"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/MessageNotificationPolicy.kt",
+          "sha256": "7fec06d8757cd9ad7c05f1b878fa186af7b5d93fd178eb86c4e30bff5be68c06",
+          "hashNormalization": "raw",
+          "blob": "1393b15b74e69addddafc67c503478a255ead426"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/MessageNotificationPolicyTest.kt",
+          "sha256": "99c0c575d3a6f5f882d85e59370b8b51dade7c92efd08bb94afcac12070f8d35",
+          "hashNormalization": "raw",
+          "blob": "2cf36c0f65553c1ad238b6f2f0d9767b66222063"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-message-notifications/MessageNotificationStateStore.kt",
+          "sha256": "f694d3140bce99087a4ddd216855ba20f4416ad404e5409549d909e5d32c0188",
+          "hashNormalization": "raw",
+          "blob": "e4530fab908b61999b50246747593a249b608d9d"
         }
       ]
     }
@@ -16464,6 +16536,141 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 HomeRefreshUiPolicy, including resolveOldContentDividerContainerColor and OLD_CONTENT_DIVIDER_CONTAINER_ALPHA, emitted verbatim by the home-page producer. The direct-mode copy is excluded. No call sites are added."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/MessageNotificationChecker.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "9beb54a8dad5be39774647005c68aeb1230d978e",
+      "sha256": "ea68c115b1309ca222cf3f1626cc57ec02b4c27419fa0eb322150152f0b799b4",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Complete original MessageNotificationSource interface, result types, helpers and MessageNotificationPoller, including the concurrent per-UP scan, the probe baseline and the author-level red-dot reconciliation. The Android NetworkMessageNotificationSource and MessageNotificationChecker wrapper are replaced by the Windows Root consumer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/MessageNotificationPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "1393b15b74e69addddafc67c503478a255ead426",
+      "sha256": "7fec06d8757cd9ad7c05f1b878fa186af7b5d93fd178eb86c4e30bff5be68c06",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original policy file, emitted byte for byte. The read_offset predicate no longer exists upstream."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationStateStore.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/MessageNotificationStateStore.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e4530fab908b61999b50246747593a249b608d9d",
+      "sha256": "f694d3140bce99087a4ddd216855ba20f4416ad404e5409549d909e5d32c0188",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original state store; only the Android Context and DataStore imports and the backing property are adapted to the Windows plugin store."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/MessageNotificationPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2cf36c0f65553c1ad238b6f2f0d9767b66222063",
+      "sha256": "99c0c575d3a6f5f882d85e59370b8b51dade7c92efd08bb94afcac12070f8d35",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original 45-case class, emitted byte for byte; it already uses kotlin.test."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/grpc/DynamicPersonalFeedApi.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/DynamicPersonalFeedApi.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "5279fc6c6fa9b822640608286f11404b2b433c9f",
+      "sha256": "888a7facd18a88239562780a55d5f8158d42cfc000439c7741b6fba80ea04d26",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original DynAllPersonal preload. The object becomes a class that receives the captured gRPC request and the App access token source; the original App-authorization check is kept word for word."
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/core/network/grpc/DynamicPersonalFeedApiTest.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/DynamicPersonalFeedApiTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "bb2088183523b8e05527cf255721a493af44c3ab",
+      "sha256": "0c8444c60a9f23d6ead086338c7f1f43e643f9dc5b08ab70f84e84173e7e1412",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original 9-case class; only the JUnit 4 imports are replaced by kotlin.test."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/DynamicAuthorUpdatesApi.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/DynamicAuthorUpdatesApi.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ef3379e8f19f9601cdd68b3dfbab7980ee317601",
+      "sha256": "afea71eb7c27a3479db6d19f26299d3beb0667bec7f727552f6d28863e79266e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original recent-author snapshot collector. The object becomes a class over the verbatim Retrofit members instead of NetworkModule."
+    },
+    {
+      "path": "core-data/src/test/java/com/android/purebilibili/core/network/DynamicAuthorUpdatesApiTest.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/DynamicAuthorUpdatesApiTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f0a579677b51b692d7cbeab5f05d6df6d99e58a2",
+      "sha256": "2aa1a7944437685c3af83cf8631c0c85999986b860b8896e2b4d7177c0a74bec",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original 13-case class; the JUnit 4 imports are replaced by kotlin.test and the one message-first assertTrue call is reordered."
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt",
+      "localPath": "desktop/upstream-slices/v046-message-notifications/DynamicModels.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d7b6a0ff475dcf9fa11d7e701be8f1477f5c5d0c",
+      "sha256": "ba9f84089b7715ce6efae409b2c85cc3d6c61b18fe9cd8ffa3d7ec04e2614c85",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-message-notifications"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Only the five recent-author DTO declarations are emitted, as their own file. The rest of the v0.4.6 file equals the v0.3.5 original that is already emitted; no whole-file advance is claimed."
     }
   ],
   "buildStandaloneInputs": [
