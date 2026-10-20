@@ -4,7 +4,7 @@ Run: PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=desktop/tools python -X u
 
 What is proved. The four public composables of ui/DesktopWindowsSettingsControls.kt (Pane, Group, Switch, Choice) keep
 their parameter lists prefix-compatible: the old parameters, in order, with the old defaults, and anything new before
-the trailing lambda with a default. Every call line of the six files that called them is still there (67 lines, the
+the trailing lambda with a default. Every call line of the six files that called them is still there (68 lines now: 67 when the controls were swapped and one more for the next-watch switch, the
 spec says 66; the extra line is the one the spec counted differently), every named argument they pass is a parameter,
 and the one RH10 edit in the Root-reserved DesktopWindowsPlaybackSettings.kt is the only use of the select row. The
 catalog and its focus anchors, the six default quality choices, the NVIDIA call lines and the pinned navigator test are
@@ -59,7 +59,7 @@ OLD_CALL_LINES = {
     "ui/DesktopOriginalSystemAboutRootHost.kt": 4,
     "ui/DesktopVideoEnhancementControls.kt": 3,
     "ui/DesktopWindowsHomeSettings.kt": 23,
-    "ui/DesktopWindowsPlaybackSettings.kt": 28,
+    "ui/DesktopWindowsPlaybackSettings.kt": 29,  # 28 when the controls were swapped, +1: the next-watch card switch (vid-next-watch-and-toggle)
     "ui/DesktopWindowsTipsSettings.kt": 4,
 }
 # Call lines that slice X3 itself adds, in the files it creates or rewrites.
@@ -126,7 +126,7 @@ class CallSiteTest(unittest.TestCase):
         found = kotlin_files_with_calls()
         for name, count in OLD_CALL_LINES.items():
             self.assertEqual(count, found.get(name), name)
-        self.assertEqual(67, sum(OLD_CALL_LINES.values()))
+        self.assertEqual(68, sum(OLD_CALL_LINES.values()))
 
     def test_no_other_file_calls_them_except_the_files_of_this_slice(self):
         found = kotlin_files_with_calls()
