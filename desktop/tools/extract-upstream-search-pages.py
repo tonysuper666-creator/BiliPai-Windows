@@ -21,6 +21,8 @@ def current_tab_abi(source,already_current=False):
  return source,whole_proof(before,source)
 
 def generate(repo,out,test_output=None):
+ from v046_search_state import validate_outputs as validate_v046_state
+ validate_v046_state(repo,out,test_output)
  rows=[]
  for item in SPEC:
   original=wide(_desktop_canonical_source(repo, item['path'])).read_text(encoding='utf8').replace('\r\n','\n')
@@ -41,6 +43,10 @@ def generate(repo,out,test_output=None):
    for op in reversed(item['operations']):
     at=op['offset'];assert inverse[at:at+len(op['after'])]==op['after'];inverse=inverse[:at]+op['before']+inverse[at+len(op['after']):]
    assert inverse==original
+  # The v0.4.6 search state layer advances the complete bodies built above; it appends only (hash-pinned predecessor).
+  from v046_search_state import PAGES as V046_STATE_PAGES, advance_page as advance_v046_page
+  v046StateAudit=None
+  if item['path'] in V046_STATE_PAGES:source,v046StateAudit=advance_v046_page(repo,item,source)
   brandCallerAudit=None
   if item['target']=='feature/search/SearchScreen.kt':
    if searchAllAudit is not None and searchAllAudit.get('completeCurrentOriginalScreen'):
@@ -52,13 +58,15 @@ def generate(repo,out,test_output=None):
   if item['target'] in ['feature/search/SearchScreen.kt','feature/search/SearchVideoFilterSheet.kt']:
    source,tabAbiAudit=current_tab_abi(source,already_current=searchAllAudit is not None and searchAllAudit.get('upstreamCommit')=='5c34a82418b33bf88acea01784bb3c6b179d6491')
   target=out/'com/android/purebilibili'/item['target'];wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(source,encoding='utf8',newline='\n')
-  rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=hashlib.sha256(source.encode()).hexdigest(),inverseOriginalBodyExact=True,windowsBrandConsumerAdaptation=brandCallerAudit,windowsTabAbiAdaptation=tabAbiAudit,comprehensiveSearchAdaptation=searchAllAudit))
+  rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=hashlib.sha256(source.encode()).hexdigest(),inverseOriginalBodyExact=True,windowsBrandConsumerAdaptation=brandCallerAudit,windowsTabAbiAdaptation=tabAbiAudit,comprehensiveSearchAdaptation=searchAllAudit,v046SearchStateAdvance=v046StateAudit))
  from v041_search_all import emit_policies
  emit_policies(repo,out)
  from v042_search_layout import emit_foundations
  emit_foundations(repo,out,test_output)
  from v042_search_dependencies import emit_search
  emit_search(repo,out,test_output)
+ from v046_search_state import emit_policies as emit_v046_policies
+ emit_v046_policies(repo,out,test_output)
  # BackToTop is adapted through the existing Root global preferences owner; no second Store.
  backToTopSource=wide(_desktop_canonical_source(repo, 'app/src/main/java/com/android/purebilibili/core/store/BackToTopSettingsStore.kt')).read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(backToTopSource.encode()).hexdigest()=='7cfc48da9652fa33262fb1ce4458b84ea442a0e34733f846836b21a9dc73c97e'
  managerSource=wide(_desktop_canonical_source(repo, 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt')).read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(managerSource.encode()).hexdigest()=='5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c'

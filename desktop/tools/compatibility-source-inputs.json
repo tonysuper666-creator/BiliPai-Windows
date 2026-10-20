@@ -164,7 +164,8 @@
     "desktop/upstream-slices/v046-danmaku-hot-command",
     "desktop/upstream-slices/v046-audio-listen-closure",
     "desktop/upstream-slices/v046-mfx-small-protocol-fixes",
-    "desktop/upstream-slices/v046-dynamic-category-merge"
+    "desktop/upstream-slices/v046-dynamic-category-merge",
+    "desktop/upstream-slices/v046-search-state"
   ],
   "archives": [
     {
@@ -7397,6 +7398,71 @@
           "sha256": "6578b664cbec7cba053e1a32cf6599eef811428f964582c41b2d1ec55269f400",
           "hashNormalization": "raw",
           "blob": "a5d3c19c0240911ca19bcacdcc6e8879df7dbe00"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-search-state",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-search-state/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/manifest.json",
+          "sha256": "07dcdcfb779029d2a2238f995395078373cc4784c6520e321ea35d1df93a18f8",
+          "hashNormalization": "raw",
+          "blob": "2bcd22a13225b2b564720bc6ba89b2edbb8de411"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchContentStatePolicy.kt",
+          "sha256": "06ac6d3b335bf8ce7a64e92884333a5e288dbaa0f83261d67330d85522476060",
+          "hashNormalization": "raw",
+          "blob": "2c22582285cb53d8cf2cdc01e7411a83dcf06531"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchContentStatePolicyTest.kt",
+          "sha256": "46e35cd71a7602abb1f3d12b6d564d95ef0569377c8c6aeb512ea6d71f1eacef",
+          "hashNormalization": "raw",
+          "blob": "fb9435c3e04f29f7ce48ab8f54c9f18b8d8674ad"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchLandingUi.kt",
+          "sha256": "c39bef545edfb5b01cd575c1a29b7783e47125a9d12cab1a36b252ab11136cce",
+          "hashNormalization": "raw",
+          "blob": "dee73728fab34ebf9b1913673078d15ceff58a08"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchMotionBudgetPolicy.kt",
+          "sha256": "ad9589f9e68ec839b44685b22ac381906498d09bb2c023db5e054708dc08af89",
+          "hashNormalization": "raw",
+          "blob": "00e6777fae13fc285649bcdc27f4bc16e0544272"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchMotionBudgetPolicyTest.kt",
+          "sha256": "57fa5c7e6dc4eb595a37954976f294d8eb8cf202e9902a24329176c818f4f6dd",
+          "hashNormalization": "raw",
+          "blob": "b0eb495326a6ac058d068def7aac94dcb31a6908"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchScreen.kt",
+          "sha256": "436351faa54eb186e24d8781930ccaffb38caef50ccd92911b8efa25bc97234c",
+          "hashNormalization": "raw",
+          "blob": "f6997bb3485d08b99195e003f7a64fbc2c486996"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchVideoFilterSheet.kt",
+          "sha256": "255911435182493831308f2c7c7c15c2c0749818f2e87a326fecbd151c0593d0",
+          "hashNormalization": "raw",
+          "blob": "8e4720367116f1843ea250e4662e095d101512c7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-search-state/SearchViewModel.kt",
+          "sha256": "263d6b2fbabe092c92bca17d121a542e75d86ccd8599f6ef00baf841dae66243",
+          "hashNormalization": "raw",
+          "blob": "d86080e60a2fbceb8ed11fd607c94aad02c67c53"
         }
       ]
     }
@@ -19524,6 +19590,126 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 original selected-author request policy test, emitted next to the author search test"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchViewModel.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d86080e60a2fbceb8ed11fd607c94aad02c67c53",
+      "sha256": "263d6b2fbabe092c92bca17d121a542e75d86ccd8599f6ef00baf841dae66243",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 SearchViewModel (submittedQuery separated from the draft, search-only silent switch, no result reset on edit) replayed through the existing complete-Search producer recipe; the v0.4.1 pin is the replaced predecessor."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f6997bb3485d08b99195e003f7a64fbc2c486996",
+      "sha256": "436351faa54eb186e24d8781930ccaffb38caef50ccd92911b8efa25bc97234c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 SearchScreen (results kept on edit and Back, landing focus restore, history switch wiring) replayed through the producer recipe plus one hash-pinned hunk that keeps the layout toggle arguments of the filter actions; the v0.4.2 pin is the replaced predecessor."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchLandingUi.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "dee73728fab34ebf9b1913673078d15ceff58a08",
+      "sha256": "c39bef545edfb5b01cd575c1a29b7783e47125a9d12cab1a36b252ab11136cce",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 SearchLandingUi (v0.3.5 hierarchy, v0.4.0 larger text, history switch row) with the four same-window configuration edits of the retained recipe."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchVideoFilterSheet.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "8e4720367116f1843ea250e4662e095d101512c7",
+      "sha256": "255911435182493831308f2c7c7c15c2c0749818f2e87a326fecbd151c0593d0",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Archived verbatim but withheld: Windows keeps the v0.4.1 filter sheet. The v0.4.6 sheet only adds commit 35e2fac8a (layout toggle removed, selected filter chip colours), which is not part of the search state slice."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchContentStatePolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2c22582285cb53d8cf2cdc01e7411a83dcf06531",
+      "sha256": "06ac6d3b335bf8ce7a64e92884333a5e288dbaa0f83261d67330d85522476060",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 content-state policy (shouldRecordSearchHistory), emitted by the complete-Search producer; the vendored direct copy is excluded in Gradle."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchMotionBudgetPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "00e6777fae13fc285649bcdc27f4bc16e0544272",
+      "sha256": "ad9589f9e68ec839b44685b22ac381906498d09bb2c023db5e054708dc08af89",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 motion policy (Back returns to the landing, a draft edit keeps the surface) advancing the v0.4.2 emission of the same producer."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchContentStatePolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchContentStatePolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "fb9435c3e04f29f7ce48ab8f54c9f18b8d8674ad",
+      "sha256": "46e35cd71a7602abb1f3d12b6d564d95ef0569377c8c6aeb512ea6d71f1eacef",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 original content-state policy test, emitted next to the motion policy test."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-search-state/SearchMotionBudgetPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "b0eb495326a6ac058d068def7aac94dcb31a6908",
+      "sha256": "57fa5c7e6dc4eb595a37954976f294d8eb8cf202e9902a24329176c818f4f6dd",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-search-state"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 original motion policy test replacing the v0.4.2 emission."
     }
   ],
   "buildStandaloneInputs": [

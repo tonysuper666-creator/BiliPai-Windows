@@ -10,6 +10,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v042_search_layout as current
+import v046_search_state as state_layer
 
 
 def load(filename):
@@ -52,6 +53,8 @@ class CurrentSearchLayoutSourceTest(unittest.TestCase):
                 self.assertTrue(brand['alreadyPresentInWholeOriginal'])
                 self.assertEqual([], brand['edits'])
                 self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), brand['beforeSha256LfUtf8'])
+            # The v0.4.6 search state layer follows the v0.4.2 platform stage: peel it to reach the v0.4.2 body.
+            body = state_layer.restore(body, row['v046SearchStateAdvance']['retainedToCurrent'])
             proof = row['comprehensiveSearchAdaptation']
             self.assertTrue(proof['wholeOriginalSelected'])
             self.assertEqual(current.COMMIT, proof['upstreamCommit'])

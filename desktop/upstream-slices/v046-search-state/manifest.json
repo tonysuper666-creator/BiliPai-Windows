@@ -1,0 +1,106 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+      "filename": "SearchViewModel.kt",
+      "bytes": 79517,
+      "sha256": "263d6b2fbabe092c92bca17d121a542e75d86ccd8599f6ef00baf841dae66243",
+      "gitBlob": "d86080e60a2fbceb8ed11fd607c94aad02c67c53"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "filename": "SearchScreen.kt",
+      "bytes": 247533,
+      "sha256": "436351faa54eb186e24d8781930ccaffb38caef50ccd92911b8efa25bc97234c",
+      "gitBlob": "f6997bb3485d08b99195e003f7a64fbc2c486996"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt",
+      "filename": "SearchLandingUi.kt",
+      "bytes": 34403,
+      "sha256": "c39bef545edfb5b01cd575c1a29b7783e47125a9d12cab1a36b252ab11136cce",
+      "gitBlob": "dee73728fab34ebf9b1913673078d15ceff58a08"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "filename": "SearchVideoFilterSheet.kt",
+      "bytes": 18868,
+      "sha256": "255911435182493831308f2c7c7c15c2c0749818f2e87a326fecbd151c0593d0",
+      "gitBlob": "8e4720367116f1843ea250e4662e095d101512c7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt",
+      "filename": "SearchContentStatePolicy.kt",
+      "bytes": 3314,
+      "sha256": "06ac6d3b335bf8ce7a64e92884333a5e288dbaa0f83261d67330d85522476060",
+      "gitBlob": "2c22582285cb53d8cf2cdc01e7411a83dcf06531"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+      "filename": "SearchMotionBudgetPolicy.kt",
+      "bytes": 4753,
+      "sha256": "ad9589f9e68ec839b44685b22ac381906498d09bb2c023db5e054708dc08af89",
+      "gitBlob": "00e6777fae13fc285649bcdc27f4bc16e0544272"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchContentStatePolicyTest.kt",
+      "filename": "SearchContentStatePolicyTest.kt",
+      "bytes": 9111,
+      "sha256": "46e35cd71a7602abb1f3d12b6d564d95ef0569377c8c6aeb512ea6d71f1eacef",
+      "gitBlob": "fb9435c3e04f29f7ce48ab8f54c9f18b8d8674ad"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt",
+      "filename": "SearchMotionBudgetPolicyTest.kt",
+      "bytes": 10571,
+      "sha256": "57fa5c7e6dc4eb595a37954976f294d8eb8cf202e9902a24329176c818f4f6dd",
+      "gitBlob": "b0eb495326a6ac058d068def7aac94dcb31a6908"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "SearchViewModel, SearchScreen, SearchLandingUi, SearchVideoFilterSheet, SearchContentStatePolicy, SearchMotionBudgetPolicy and the two original policy tests at v0.4.6",
+  "purpose": "Roadmap srch-state-landing-and-entry: keep results across edit and Back, search-only silent switch, larger landing text",
+  "scope": "Whole v0.4.6 files replayed through the existing complete-Search producer recipe; SettingsManager, AppLiquidAwareSearchField and AppSearchEntry are not carried (see v046_search_state.py)",
+  "beforeFinalOutputs": {
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt": {
+      "sha256": "a79033d11d4289bbecfe0f2796604f85f075a9c2bb4a634e7841605289d02e83"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt": {
+      "sha256": "ca6e2e0ecfe47a2764d918909c2f244211a2bba4bcca6b115483ad5a6b7eef89"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt": {
+      "sha256": "deea887bc65df4f9de3d329410c57097b56dba8871587d0fce2811147c106a1e"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt": {
+      "sha256": "490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt": {
+      "sha256": "6e7b5c635b0bb1da2058db0093610e0a04d252434fa3fd60df3fd2f427133004"
+    },
+    "app/src/test/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicyTest.kt": {
+      "sha256": "621f7d46d98ad451aa211c60bfafa806ef4aa3ddbe48f10bfe1df37df7d0ec54"
+    }
+  },
+  "afterFinalOutputs": {
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt": {
+      "sha256": "b2d661d2cb319201991d2a3024211467353543bc1de66b4dc380777ae5c20b18"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt": {
+      "sha256": "2498902fb9b77e60651cf1c2564e8ef4a3479d289fc6ef6d24cea48b7dd18500"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt": {
+      "sha256": "e7e21035cb1b3b682bf231bca423d3c4dd4d7063eae5a73cae853f74725f60c1"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt": {
+      "sha256": "255911435182493831308f2c7c7c15c2c0749818f2e87a326fecbd151c0593d0"
+    }
+  },
+  "fullStableParityQualified": false
+}

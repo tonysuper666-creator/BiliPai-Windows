@@ -253,6 +253,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         // The existing full Search producer owns the complete v041 policies.
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt"))
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt"))
+        // The existing full Search producer owns the complete v0.4.6 content-state policy (the search-only silent switch gate).
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt"))
         // The existing Home-page producer owns the complete v0.4.6 refresh UI policy.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt"))
         // The existing appearance producer owns the complete v0.4.6 theme token files.
@@ -3230,6 +3232,10 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-search-pages.py")
     inputs.file("tools/v041_search_all.py")
     inputs.dir("upstream-slices/v041-search-all")
+    inputs.file("tools/v046_search_state.py")
+    inputs.file("tools/v044_favorite_detail.py")
+    inputs.file("tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v046-search-state")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "desktop-full-original-search-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })

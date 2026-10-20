@@ -38,7 +38,7 @@ internal class DesktopOriginalSearchEnvironment(
     parentCommit: ((() -> Unit) -> Boolean),
     val pluginContext: DesktopPluginContext,
     val settings: DesktopHomeSettingsPort,
-    preferences: DesktopSearchPreferences,
+    private val preferences: DesktopSearchPreferences,
     capturedMid: Long?,
     val blocked: DesktopOriginalSearchBlocked,
     articleFactory: (() -> Boolean) -> DesktopPersonalArticleResolver,
@@ -66,6 +66,9 @@ internal class DesktopOriginalSearchEnvironment(
         } catch (failure: Throwable) { lifetime.close(); throw failure }
     }
     val suggestionsEnabled = preferences.suggestionsEnabled
+    /** The v0.4.6 search-only silent switch and the global privacy flag, both from the Root's one preferences facade. */
+    val searchHistoryRecordingEnabled = preferences.searchHistoryRecordingEnabled
+    val privacyMode = preferences.privacyMode
     private val privacy = preferences::isPrivacyModeEnabledSync
     val originalSettings = DesktopOriginalPlayerSettingsContext(pluginContext, ::owns, ::commit)
     fun owns() = lifetime.owns()
@@ -75,6 +78,22 @@ internal class DesktopOriginalSearchEnvironment(
         return lifetime.commit { assertCurrent(); block() }
     }
     fun isPrivacyModeEnabledSync(): Boolean { assertCurrent(); return privacy().also { assertCurrent() } }
+    fun isSearchHistoryRecordingEnabledSync(): Boolean {
+        assertCurrent(); return preferences.isSearchHistoryRecordingEnabledSync().also { assertCurrent() }
+    }
+    /** A retired or cancelled search page can never change the switch. A facade that the Root froze for a backup
+     * restore rejects the write with IllegalStateException; that is this page being retired, not a failure, and the
+     * original view model launches this call without a handler, so it surfaces as the cancellation every other
+     * retired write already uses. Any other IllegalStateException is a real fault and propagates unchanged. */
+    suspend fun setSearchHistoryRecordingEnabled(enabled: Boolean) {
+        currentCoroutineContext().ensureActive(); assertCurrent()
+        try {
+            preferences.setSearchHistoryRecordingEnabled(enabled)
+        } catch (failure: IllegalStateException) {
+            if (!preferences.writesClosed()) throw failure
+            throw CancellationException("Search settings retired for restore").also { it.initCause(failure) }
+        }
+    }
     fun logScreenView(name: String) { commit { screenEvent(name) } }
     fun logSearch(query: String) { commit { searchEvent(query) } }
     fun message(text: String) { commit { feedback(text) } }
@@ -152,6 +171,10 @@ internal object DesktopOriginalSearchSettings {
     suspend fun setSearchDiscoverSectionEnabled(context: DesktopOriginalSearchEnvironment, value: Boolean) = DesktopOriginalSearchPreferenceMethods.setSearchDiscoverSectionEnabled(context.originalSettings,value)
     fun getSearchSuggestionsEnabled(context: DesktopOriginalSearchEnvironment) = context.suggestionsEnabled
     fun isPrivacyModeEnabledSync(context: DesktopOriginalSearchEnvironment) = context.isPrivacyModeEnabledSync()
+    fun getPrivacyModeEnabled(context: DesktopOriginalSearchEnvironment): Flow<Boolean> = context.privacyMode
+    fun getSearchHistoryRecordingEnabled(context: DesktopOriginalSearchEnvironment): Flow<Boolean> = context.searchHistoryRecordingEnabled
+    fun isSearchHistoryRecordingEnabledSync(context: DesktopOriginalSearchEnvironment) = context.isSearchHistoryRecordingEnabledSync()
+    suspend fun setSearchHistoryRecordingEnabled(context: DesktopOriginalSearchEnvironment, value: Boolean) = context.setSearchHistoryRecordingEnabled(value)
     fun isEasterEggEnabledSync(context: DesktopOriginalSearchEnvironment) = DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(context.originalSettings)
     fun getDefaultHintEnabled(context: DesktopOriginalSearchEnvironment) = SearchHintSettingsStore.isEnabled(context.pluginContext)
     suspend fun setGridColumnCountCompact(context: DesktopOriginalSearchEnvironment, value: Int) = DesktopOriginalSearchPreferenceMethods.setGridColumnCountCompact(context.originalSettings,value)

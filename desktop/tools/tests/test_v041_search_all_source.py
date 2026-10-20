@@ -12,6 +12,7 @@ REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v041_search_all as source
 import v042_search_layout as current
+import v046_search_state as state_layer
 
 # Independently read from the fixed upstream Git commit; verification stays offline.
 UPSTREAM_BLOBS = {'core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt': {'blob': '4d9ab28aaae5d6b344841f5969f602cccf333183', 'sha256': '9a669b0f7ccd36a5d9a0e878f8c8330e3b46138ab49192035d16ffd306c8fe10', 'bytes': 33438}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt': {'blob': 'f0ba713c6087b00e287f637456e23c6ff275b4fc', 'sha256': 'dd8e048d666c547cf26be83c0502fb109d369853b2d85c814b6dfd78a5806ef8', 'bytes': 77392}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt': {'blob': 'aaf2b036d6b1eadc21bc387e0b90fa18e73348c9', 'sha256': 'c742e3cbc6b6902e056c17b27874a5240b0aa9ca3d535c60f53369016ebb5a0d', 'bytes': 251347}, 'core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt': {'blob': '0d24d3abe2c905ebce16dc15050573c97d1304c9', 'sha256': '680976b2c41780defcebef4b1c1078e0e626f2fd6071c874e837508324e50119', 'bytes': 4111}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt': {'blob': '72fb8aa3935310c48bcf9d7b8f283864de388a1a', 'sha256': '3f42b89a3c3d1512b483ff980d3e29edbb6b2bf7c1a39e4261ae2518a2d53a0b', 'bytes': 1562}, 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt': {'blob': '3e901a8fbd3991e376047d67a22decbd3a174099', 'sha256': '4beacddf7ee3b2394ce61e6e75de882df76ad5b12019ec0e27f4c9413c8543c4', 'bytes': 154196}, 'app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt': {'blob': 'a53ec028ebe0ce48cd1824ec10203046175203ea', 'sha256': '490338fa9c133f7ce197a9ba3edb2f20b99ccf8cec18c92e0efe7096050f4b1e', 'bytes': 19558}}
@@ -64,6 +65,9 @@ class ComprehensiveSearchSourceTest(unittest.TestCase):
             audit = row['comprehensiveSearchAdaptation']
             self.assertTrue(audit['wholeOriginalSelected'])
             emitted = Path(row['target']).read_text(encoding='utf-8')
+            if row['v046SearchStateAdvance'] is not None:
+                # The v0.4.6 search state layer sits on top of this v0.4.1 stage: peel it first.
+                emitted = state_layer.restore(emitted, row['v046SearchStateAdvance']['retainedToCurrent'])
             original = inverse(emitted, audit['originalToPlatform'])
             self.assertEqual(self.raw[path], original)
             self.assertEqual(source.baseline(REPO, path), inverse(original, audit['canonicalToSelected']))
@@ -81,6 +85,8 @@ class ComprehensiveSearchSourceTest(unittest.TestCase):
             self.assertEqual(edit['after'], body[pos:pos + len(edit['after'])])
             body = body[:pos] + edit['before'] + body[pos + len(edit['after']):]
         self.assertEqual(hashlib.sha256(body.encode()).hexdigest(), brand['beforeSha256LfUtf8'])
+        # The v0.4.6 search state layer sits between the v0.4.2 platform stage and the brand stage: peel it.
+        body = state_layer.restore(body, row['v046SearchStateAdvance']['retainedToCurrent'])
         audit = row['comprehensiveSearchAdaptation']
         # Verify the independently regenerated platform stage before brand remapping.
         item = next(item for item in load('extract-upstream-search-pages.py').SPEC if item['path'] == source.SCREEN)
@@ -143,6 +149,7 @@ class ComprehensiveSearchSourceTest(unittest.TestCase):
         sheet = next(row for row in self.rows if row['source'] == source.FILTER_SHEET)
         body = Path(sheet['target']).read_text(encoding='utf-8')
         body = inverse(body, sheet['windowsTabAbiAdaptation'])
+        body = state_layer.restore(body, sheet['v046SearchStateAdvance']['retainedToCurrent'])
         audit = sheet['comprehensiveSearchAdaptation']
         selected = inverse(body, audit['originalToPlatform'])
         self.assertTrue(audit['wholeOriginalSelected'])

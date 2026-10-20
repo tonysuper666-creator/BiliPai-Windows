@@ -27,6 +27,12 @@ import kotlinx.serialization.json.*
  * The first is declared in the v0.3.4 slice SettingsManager (desktop/upstream-slices/v034-next-watch-ui);
  * the second is declared in DynamicSettingsStore since v0.3.4 and only shared by that slice's SettingsManager.
  * next_watch_hint_enabled is a v0.3.4 key too: that slice's SettingsManager declares it and shares it under PLAYBACK.
+ * related_video_transition_enabled and video_return_content_follow_progress_enabled joined the Android APPEARANCE share
+ * definitions in v0.4.6 (cd86c9f1). Both already have owners in the generated DesktopOriginalFullNavigationSettings:
+ * the first a getter and a setter, the second only the setter of the animation settings control (no getter or aggregated
+ * field is evidenced). DesktopSearchStateSettingsTest reads the first back through its getter and proves that the second
+ * setter writes the same namespace and key that an Android backup import stores.
+ * search_history_recording_enabled is a v0.4.6 key that Android does not share, so it is deliberately absent here.
  * Legacy danmaku keys remain baseline values; explicit portrait/landscape overrides win.
  */
 internal object DesktopSettingsShareWindowsCatalog {
@@ -77,6 +83,7 @@ internal object DesktopSettingsShareWindowsCatalog {
             "bottom_bar_liquid_glass_enabled", "android_native_liquid_glass_enabled", "liquid_glass_enabled",
             "pinch_to_change_grid_columns_enabled", "home_hero_carousel_enabled", "home_hero_carousel_autoplay_enabled",
             "card_animation_enabled", "maid_lottie_animation_enabled", "ui_entrance_animation_enabled", "card_transition_enabled",
+            "related_video_transition_enabled", "video_return_content_follow_progress_enabled",
             "compact_video_stats_on_cover",
             "home_up_badges_visible", "home_refresh_tip_visible", "home_refresh_undo_visible",
             "home_up_avatars_visible", "home_publish_time_visible", "full_video_card_content_visible",

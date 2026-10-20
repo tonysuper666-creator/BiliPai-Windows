@@ -57,6 +57,10 @@ class BrandCallerProducerTest(unittest.TestCase):
         spec=next(s for s in producer.SPEC if s['target']=='feature/search/SearchScreen.kt')
         if current_whole:
             self.assertTrue(audit['alreadyPresentInWholeOriginal'])
+            if row.get('v046SearchStateAdvance'):
+                # The v0.4.6 search state layer sits above the v0.4.2 whole screen: peel its receipt first.
+                layer=load('search_state_layer','v046_search_state.py')
+                inverse=layer.restore(inverse,row['v046SearchStateAdvance']['retainedToCurrent'])
             adoption=row['comprehensiveSearchAdaptation']
             for key in ('originalToPlatform','canonicalToSelected'):
                 proof=adoption[key];self.assertEqual(sha(inverse),proof['afterSha256LF'])

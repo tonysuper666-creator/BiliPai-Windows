@@ -10,6 +10,7 @@ import unittest
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO / 'desktop/tools'))
 import v042_search_dependencies as current
+import v046_search_state as state_layer
 from v041_search_all import parser
 
 
@@ -127,8 +128,12 @@ class CurrentSearchDependencyTests(unittest.TestCase):
                     self.assertFalse(arguments - definitions[name], (name, leaf, arguments-definitions[name]))
 
     def test_focused_clear_policy_and_audio_avoidance_use_real_current_sources(self):
-        self.assertEqual(self.originals[current.SEARCH_MOTION].decode(),
-            self.leaf('search', 'SearchMotionBudgetPolicy.kt'))
+        # The v0.4.6 search state layer advanced this v0.4.2 emission; its receipt recovers the v0.4.2 original.
+        emitted = self.leaf('search', 'SearchMotionBudgetPolicy.kt')
+        self.assertEqual(state_layer.fixed(REPO)[0][state_layer.MOTION_POLICY], emitted)
+        proof = json.loads((self.output/'search'/state_layer.PROOF_NAME).read_bytes())
+        receipt = next(row for row in proof['policies'] if row['path'] == state_layer.MOTION_POLICY)['retainedToCurrent']
+        self.assertEqual(self.originals[current.SEARCH_MOTION].decode(), state_layer.restore(emitted, receipt))
         screen = self.leaf('search', 'SearchScreen.kt')
         self.assertEqual(2, screen.count('(System.nanoTime() / 1_000_000L)'))
         self.assertNotIn('android.os.SystemClock', screen)
@@ -162,9 +167,17 @@ class CurrentSearchDependencyTests(unittest.TestCase):
         rows = [row for row in self.manifest['files'] if '/test/java/' in row['path']]
         self.assertEqual(3, len(rows))
         count = 0
+        state_sources = state_layer.fixed(REPO)[0]
+        proof = json.loads((self.output/'search'/state_layer.PROOF_NAME).read_bytes())
         for row in rows:
             target = self.output/'tests'/row['path'].split('/test/java/',1)[1]
-            self.assertEqual(self.originals[row['path']], target.read_bytes())
+            if row['path'] == state_layer.MOTION_TEST:
+                # Replaced by the v0.4.6 original (18 cases either way); the receipt recovers the v0.4.2 bytes.
+                self.assertEqual(state_sources[row['path']].encode(), target.read_bytes())
+                receipt = next(item for item in proof['policies'] if item['path'] == row['path'])['retainedToCurrent']
+                self.assertEqual(self.originals[row['path']].decode(), state_layer.restore(target.read_text(encoding='utf-8'), receipt))
+            else:
+                self.assertEqual(self.originals[row['path']], target.read_bytes())
             count += target.read_text(encoding='utf-8').count('@Test')
         self.assertEqual(25, count)
         self.assertEqual([], list((self.output/'search').rglob('*Test.kt')))

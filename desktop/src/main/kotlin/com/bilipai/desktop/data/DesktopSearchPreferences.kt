@@ -109,10 +109,14 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
         contexts.values.forEach { it.store.freezeWrites() }
     }
     private fun checkWritesOpen() = check(!writesFrozen) { "搜索设置已关闭，不能写入或创建旧会话数据" }
+    /** True once the Root froze this facade for a backup restore: every write now fails with IllegalStateException. */
+    internal fun writesClosed(): Boolean = synchronized(lock) { writesFrozen }
     /** Same original synchronous privacy key, reading the atomic file across facade instances. */
     fun isPrivacyModeEnabledSync(): Boolean = synchronized(lock) { readPrivacyModeEnabledSync(root) }
 
     internal companion object {
+        /** The original DataStore key name of the v0.4.6 search-only silent switch. */
+        internal const val SEARCH_HISTORY_RECORDING_KEY = "search_history_recording_enabled"
         /** One original privacy file/key. No new facade, cookie jar or cached default. */
         internal fun readPrivacyModeEnabledSync(root: Path = DesktopLibrary.directoryForAccount(null)): Boolean {
             val file = root.resolve("search").resolve("plugin-settings.json")
@@ -123,6 +127,11 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
     }
     private val _suggestionsEnabled = MutableStateFlow(suggestions.getBoolean("search_suggestions_enabled", true))
     val suggestionsEnabled: StateFlow<Boolean> = _suggestionsEnabled.asStateFlow()
+    /** Search-only silent switch, stored next to the other search settings under the original DataStore key name.
+     * The global privacy mode still overrides it: every history writer checks both. */
+    private val _searchHistoryRecording = MutableStateFlow(suggestions.getBoolean(SEARCH_HISTORY_RECORDING_KEY, true))
+    val searchHistoryRecordingEnabled: StateFlow<Boolean> = _searchHistoryRecording.asStateFlow()
+    fun isSearchHistoryRecordingEnabledSync(): Boolean = synchronized(lock) { suggestions.getBoolean(SEARCH_HISTORY_RECORDING_KEY, true) }
 
     private fun dao(mid: Long?): DesktopSearchHistoryDao = synchronized(lock) {
         histories.getOrPut(mid) { DesktopSearchHistoryDao(context(mid)) }
@@ -145,13 +154,17 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
         }
     }
 
+    /** The one keyword writer of the Windows search history: the original Search page and the legacy desktop-owned
+     * CommunitySearch page (CommunitySearchScreens.kt) both call it, so both honour the global privacy mode and the
+     * search-only silent switch over one history list. CommunitySearch has no control of its own: the silent
+     * switch is changed only on the original Search landing (the switch row of SearchLandingUi). */
     suspend fun record(mid: Long?, keyword: String) {
         val value = keyword.trim()
         if (value.isEmpty()) return
-        // Like SearchViewModel.saveHistory: incognito suppresses writes, not access to saved history.
+        // Like SearchViewModel.saveHistory: incognito and the search-only silent switch suppress writes, not access to saved history.
         withContext(Dispatchers.IO) { synchronized(lock) {
             checkWritesOpen()
-            if (!isPrivacyModeEnabledSync()) {
+            if (!isPrivacyModeEnabledSync() && isSearchHistoryRecordingEnabledSync()) {
                 val target = dao(mid)
                 target.insertNow(SearchHistory(value))
             }
@@ -173,5 +186,9 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
     suspend fun setSuggestionsEnabled(enabled: Boolean) = withContext(Dispatchers.IO) { synchronized(lock) {
         checkWritesOpen()
         suggestions.edit().putBoolean("search_suggestions_enabled", enabled).apply(); _suggestionsEnabled.value = enabled
+    } }
+    suspend fun setSearchHistoryRecordingEnabled(enabled: Boolean) = withContext(Dispatchers.IO) { synchronized(lock) {
+        checkWritesOpen()
+        suggestions.edit().putBoolean(SEARCH_HISTORY_RECORDING_KEY, enabled).apply(); _searchHistoryRecording.value = enabled
     } }
 }
