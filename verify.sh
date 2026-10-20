@@ -101,9 +101,34 @@ for c, n in sorted(new.items())[:40]:
 PY
 }
 
+run_phase() {  # <seconds> <command...>: run, poll the queue branch, stop early when Root points TARGET at a newer commit
+  local limit=$1; shift
+  "$@" &
+  local pid=$! waited=0 cur
+  while kill -0 "$pid" 2>/dev/null; do
+    sleep 15; waited=$((waited + 15))
+    if [ $((waited % 120)) -eq 0 ]; then
+      git fetch -q origin "$QUEUE" 2>/dev/null
+      cur=$(target_field sha | head -1)
+      if [ -n "$cur" ] && [ "$cur" != "$PHASE_SHA" ]; then
+        PHASE_SUPERSEDED=$cur
+        kill "$pid" 2>/dev/null; command -v pkill >/dev/null 2>&1 && pkill -f "$PHASE_WORKTREE" 2>/dev/null
+        break
+      fi
+    fi
+    if [ "$waited" -ge "$limit" ]; then
+      PHASE_TIMEDOUT=1
+      kill "$pid" 2>/dev/null; command -v pkill >/dev/null 2>&1 && pkill -f "$PHASE_WORKTREE" 2>/dev/null
+      break
+    fi
+  done
+  wait "$pid" 2>/dev/null
+}
+
 verify_one() {  # <branch> <sha>
-  local branch=$1 sha=$2 short=${2:0:9} W L LOG t0 t1 rc errs shadow build rep line spec dir pat out
+  local branch=$1 sha=$2 short=${2:0:9} W L LOG t0 t1 rc errs shadow build rep line spec dir pat out pushed
   W=$WORK/v-$short; L=$OUT/$short; rep=$L/report.md
+  PHASE_SHA=$sha; PHASE_WORKTREE=$W; PHASE_SUPERSEDED=; PHASE_TIMEDOUT=
   rm -rf "$L"; mkdir -p "$L"
   git fetch -q origin "$branch" || { echo "fetch of $branch failed" > "$L/fail.txt"; }
   if [ -f "$L/fail.txt" ] || ! git merge-base --is-ancestor "$sha" "origin/$branch" 2>/dev/null; then
@@ -113,41 +138,60 @@ verify_one() {  # <branch> <sha>
   git worktree remove --force "$W" 2>/dev/null; rm -rf "$W"; git worktree prune
   git worktree add -q --detach "$W" "$sha" || { echo "worktree failed" > "$L/fail.txt"; }
   t0=$(date +%s)
+  local args=()
+  while IFS= read -r line; do [ -n "$line" ] && args+=(--tests "$line"); done < <(target_field jvm)
+  rc=99
   if [ ! -f "$L/fail.txt" ]; then
     sh "$BOOT/make-stubs.sh" "$W" > "$L/stubs.txt" 2>&1
-    local args=()
-    while IFS= read -r line; do [ -n "$line" ] && args+=(--tests "$line"); done < <(target_field jvm)
-    LOGDIR="$L" timeout 5400 bash "$BOOT/test.sh" "$W" "${args[@]}" > "$L/gradle-wrapper.txt" 2>&1
+    # phase 1: compile only, so Root sees compile errors within minutes instead of after the whole test run
+    LOGDIR="$L" run_phase 3600 bash "$BOOT/gradle.sh" "$W" compileKotlin compileTestKotlin > "$L/gradle-wrapper.txt" 2>&1
     rc=$?
-  else rc=99; fi
+  fi
   LOG=$(ls -t "$L"/gradle-2*.log 2>/dev/null | head -1)
   errs=$( [ -n "$LOG" ] && grep -c '^e: ' "$LOG" || true ); errs=${errs:-0}
   shadow=$( [ -n "$LOG" ] && grep -c 'is shadowed by a member' "$LOG" || true ); shadow=${shadow:-0}
   build=$( [ -n "$LOG" ] && grep -E '^BUILD (SUCCESSFUL|FAILED)' "$LOG" | tail -1 || true ); build=${build:-no BUILD line in the log}
   t1=$(date +%s)
+  if [ -n "$PHASE_SUPERSEDED" ]; then
+    { echo "# VERIFY $branch@$sha"; echo; echo "SUPERSEDED: TARGET moved to ${PHASE_SUPERSEDED:0:9} during the compile phase; stopped after $(( (t1 - t0) / 60 )) min."; } > "$rep"
+    push_report "grokbot/verify-$short" "verify-$short.md" "$rep" "Verify $short: superseded" >/dev/null
+    log "superseded $short by ${PHASE_SUPERSEDED:0:9}"; echo "$sha" > "$OUT/last-sha"
+    git worktree remove --force "$W" 2>/dev/null; rm -rf "$W"; git worktree prune; return 0
+  fi
   {
     echo "# VERIFY $branch@$sha"; echo
-    echo "- Linux, $(java -version 2>&1 | head -1), Python $(python3 -V 2>&1), $(( (t1 - t0) / 60 )) min for the Gradle run (clean worktree, JS-worker and diagnostic stubs, Linux only)"
-    echo "- Gradle: $build, exit $rc; kotlin errors (e:) $errs; 'shadowed by a member' warnings $shadow"
+    echo "- Linux, $(java -version 2>&1 | head -1), Python $(python3 -V 2>&1); compile phase $(( (t1 - t0) / 60 )) min (clean worktree, JS-worker and diagnostic stubs, Linux only)"
+    echo "- Compile: $build, exit $rc${PHASE_TIMEDOUT:+ (TIMED OUT)}; kotlin errors (e:) $errs; 'shadowed by a member' warnings $shadow"
     echo "- Evidence: Linux only. Linux pass is not a Windows validation and not a hardware proof."
-    echo; echo "## JVM"
-    if [ -d "$W/desktop/build/test-results/test" ]; then summarise_jvm "$W/desktop/build/test-results/test"; else echo "no test results (compile failed or tests did not start)"; fi
-    if [ "$errs" != "0" ] && [ -n "$LOG" ]; then echo; echo "## first compile errors"; grep '^e: ' "$LOG" | head -25 | cut -c1-260; fi
+    if [ "$errs" != "0" ] && [ -n "$LOG" ]; then echo; echo "## compile errors (first 40 of $errs)"; grep '^e: ' "$LOG" | head -40 | cut -c1-260; fi
     if [ "$rc" != "0" ] && [ "$errs" = "0" ] && [ -n "$LOG" ]; then echo; echo "## log tail"; tail -15 "$LOG" | cut -c1-260; fi
-    echo; echo "## Python"
   } > "$rep"
-  # Python suites run from the built worktree (some read desktop/build/generated); each is capped at 30 minutes.
-  if [ ! -f "$L/fail.txt" ]; then
-    while IFS= read -r spec; do
-      [ -z "$spec" ] && continue
-      dir=${spec%%:*}; pat=${spec#*:}
-      timeout 1800 bash "$BOOT/python-test.sh" "$W" discover -s "desktop/tools/$dir" -p "$pat" > "$L/py.out" 2>&1
-      out=$(tail -4 "$L/py.out" | tr '\n' ' ' | cut -c1-220)
-      echo "- $dir/$pat: $out" >> "$rep"
-      grep -E '^(FAIL|ERROR): ' "$L/py.out" | head -8 | cut -c1-200 | sed 's/^/    /' >> "$rep"
-    done < <(target_field py)
+  # the early report: compile result only, pushed now
+  push_report "grokbot/verify-$short-compile" "verify-$short-compile.md" "$rep" "Verify $short compile: $build, e: $errs" >/dev/null
+  if [ "$rc" = "0" ] && [ ! -f "$L/fail.txt" ]; then
+    # phase 2: the JVM tests (compile is up to date), then the Python suites
+    t0=$(date +%s)
+    PHASE_SUPERSEDED=
+    LOGDIR="$L" run_phase 5400 bash "$BOOT/test.sh" "$W" "${args[@]}" > "$L/gradle-tests.txt" 2>&1
+    LOG=$(ls -t "$L"/gradle-2*.log 2>/dev/null | head -1)
+    build=$( [ -n "$LOG" ] && grep -E '^BUILD (SUCCESSFUL|FAILED)' "$LOG" | tail -1 || true ); build=${build:-no BUILD line in the log}
+    t1=$(date +%s)
+    { echo; echo "## JVM ($(( (t1 - t0) / 60 )) min)"; echo "- Gradle test task: $build"
+      if [ -d "$W/desktop/build/test-results/test" ]; then summarise_jvm "$W/desktop/build/test-results/test"; else echo "no test results"; fi
+      echo; echo "## Python"; } >> "$rep"
+    if [ -z "$PHASE_SUPERSEDED" ]; then
+      while IFS= read -r spec; do
+        [ -z "$spec" ] && continue
+        dir=${spec%%:*}; pat=${spec#*:}
+        timeout 1800 bash "$BOOT/python-test.sh" "$W" discover -s "desktop/tools/$dir" -p "$pat" > "$L/py.out" 2>&1
+        out=$(tail -4 "$L/py.out" | tr '\n' ' ' | cut -c1-220)
+        echo "- $dir/$pat: $out" >> "$rep"
+        grep -E '^(FAIL|ERROR): ' "$L/py.out" | head -8 | cut -c1-200 | sed 's/^/    /' >> "$rep"
+      done < <(target_field py)
+    else
+      echo "- skipped: TARGET moved to ${PHASE_SUPERSEDED:0:9}" >> "$rep"
+    fi
   fi
-  local pushed
   pushed=$(push_report "grokbot/verify-$short" "verify-$short.md" "$rep" "Verify $short: $build, e: $errs") || pushed="PUSH FAILED"
   log "verified $short -> $pushed ($build, e: $errs)"
   echo "$sha" > "$OUT/last-sha"
@@ -167,7 +211,8 @@ while true; do
       newsum=$(git show "origin/$QUEUE:verify.sh" 2>/dev/null | sha256sum | cut -d' ' -f1)
       ownsum=$(sha256sum "$0" | cut -d' ' -f1)
       if [ -n "$newsum" ] && [ "$newsum" != "$ownsum" ] && git show "origin/$QUEUE:verify.sh" 2>/dev/null | head -1 | grep -q '^#!/bin/bash'; then
-        git show "origin/$QUEUE:verify.sh" > "$0.new" && mv "$0.new" "$0" && log "self-update to ${newsum:0:12}" && VERIFY_REEXEC=1 exec bash "$0"
+        git show "origin/$QUEUE:verify.sh" > "$0.new" && bash -n "$0.new" && mv "$0.new" "$0" && log "self-update to ${newsum:0:12}" && VERIFY_REEXEC=1 exec bash "$0"
+        rm -f "$0.new"; log "self-update refused: the new verify.sh failed the syntax check"
       fi
     fi
     author=$(git log -1 --format=%an "origin/$QUEUE" 2>/dev/null)
