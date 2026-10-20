@@ -60,7 +60,7 @@
   },
   "schemaVersion": 1,
   "selection": "Verbatim v0.4.6 blobs of the portrait overlay family: PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy, PortraitPagerSwitchPolicy and the new PortraitControlsVisibilityPolicy.",
-  "purpose": "Roadmap slice plr-portrait-story-pager-repin. Each producer that already owns a file swaps its own v0.2.5 predecessor for these bytes behind hash assertions and keeps every platform binding that already existed. The 4567-line PortraitVideoPager.kt is not carried: it receives thirteen counted hunks whose inserted text is a verbatim slice of the v0.4.6 blob c4b0d9bea38d488d6bf74fae4d62467178f19115.",
+  "purpose": "Roadmap slice plr-portrait-story-pager-repin. Each producer that already owns a file swaps its own v0.2.5 predecessor for these bytes behind hash assertions and keeps every platform binding that already existed. The 4567-line PortraitVideoPager.kt is not carried: it receives fourteen counted hunks whose inserted text is a verbatim slice of the v0.4.6 blob c4b0d9bea38d488d6bf74fae4d62467178f19115.",
   "producerPredecessors": [
     {
       "replacedBy": "PortraitFullscreenOverlay.kt",
@@ -109,10 +109,11 @@
     "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
     "upstreamBlob": "c4b0d9bea38d488d6bf74fae4d62467178f19115",
     "predecessorSha256": "fdf7a9ee692b22929385f9e58bd3de30436bff6417fec776da7ab3298fcdc5b9",
-    "hunks": 13
+    "hunks": 14
   },
   "newInV046": [
-    "PortraitControlsVisibilityPolicy.kt has no v0.2.5 copy; the pager producer emits it whole."
+    "PortraitControlsVisibilityPolicy.kt has no v0.2.5 copy; the pager producer emits it whole.",
+    "The portrait pager no longer draws its own centre pause icon: counted hunk 14 deletes the shouldShowPortraitPauseIcon block exactly as upstream commit 07362853 did when the overlay gained CenterPlaybackControl (shown while the controls are visible and playback is ready). Keeping both would stack the pager 60dp play icon and the overlay 72dp glass play/pause dock at the centre of a paused page."
   ],
   "retainedWindowsBehaviour": [
     "PortraitPagerSwitchPolicy.shouldShowPortraitCover keeps the v0.2.5 rule (the current page never shows the static cover) with one counted hunk: the Windows pager still paints the video through the native window and its first-frame bookkeeping is the v0.2.5 one; the v0.4.6 rule belongs to the whole pager re-pin."
@@ -122,10 +123,12 @@
     "PortraitWifiPreloadQueue.kt (Android ConnectivityManager and ExoPlayer cache warming; the Windows pager keeps its owned prefetch) and with it the production caller of resolvePortraitPrefetchWindowTargets.",
     "v029-portrait-background-continue: MiniPlayerManager.shouldContinueBackgroundAudio is an Android lifecycle policy inside the pager.",
     "PortraitDetailSheet.kt and PortraitTopBarLayoutPolicy.kt theme-role and size changes (not part of the six entries).",
-    "The portrait page backdrop (LocalPlayerPageBackdrop) that feeds the glass docks: needs the whole pager."
+    "The portrait page backdrop (LocalPlayerPageBackdrop) that feeds the glass docks: needs the whole pager.",
+    "PortraitControlsVisibilityPolicyTest.kt (the upstream unit test of the policy, app/src/test/.../pager/): needs a test root for the fullscreen pager producer, whose main source root is its whole output directory. The first three cases of DesktopPortraitPagerRepinTest mirror it and name it. Follow-up: carry the file through a producer test root."
   ],
   "partiallyDelivered": [
-    "v035-portrait-pager-preload-identity is only partly delivered. Carried: resolvePortraitMediaId, the cid-aware shouldSkipPortraitReloadForCurrentMedia, resolvePortraitPlayUrlPreloadTargets (keeps two parts of one bvid apart) and the new resolvePortraitPrefetchWindowTargets. Not delivered: the retained Windows pager still deduplicates its prefetches by bvid alone (portraitPrefetchedPlayUrlBvids.add(identity.bvid) on the swipe-candidate prefetch and .add(target.bvid) in the forward preload loop), so the second part of one bvid is never prefetched, and resolvePortraitPrefetchWindowTargets has no production caller (v0.4.6 calls it from the PortraitWifiPreloadQueue path, which is not carried). Preloading is not cid-aware end to end. Follow-up: the whole-pager re-pin, or a counted hunk that keys the prefetch set by resolvePortraitMediaId(target.bvid, target.cid)."
+    "v035-portrait-pager-preload-identity is only partly delivered. Carried: resolvePortraitMediaId, the cid-aware shouldSkipPortraitReloadForCurrentMedia, resolvePortraitPlayUrlPreloadTargets (keeps two parts of one bvid apart) and the new resolvePortraitPrefetchWindowTargets. Not delivered: the retained Windows pager still deduplicates its prefetches by bvid alone (portraitPrefetchedPlayUrlBvids.add(identity.bvid) on the swipe-candidate prefetch and .add(target.bvid) in the forward preload loop), so the second part of one bvid is never prefetched, and resolvePortraitPrefetchWindowTargets has no production caller (v0.4.6 calls it from the PortraitWifiPreloadQueue path, which is not carried). Preloading is not cid-aware end to end. Concrete coverage loss: resolvePortraitPlayUrlPreloadTargets now returns every part of one bvid as its own target and those targets spend the preloadCount slots, then the retained forward loop (if (!portraitPrefetchedPlayUrlBvids.add(target.bvid)) return@mapNotNull null) drops every part after the first, so forward pages [BV2 part 1, BV2 part 2, BV2 part 3, BV4] with preloadCount 3 now warm BV2 part 1 only and never BV4, where the v0.2.5 bvid-keyed targets [BV2, BV4] warmed both. Only a feed that holds several parts of one bvid inside the forward window is affected. Follow-up: the whole-pager re-pin, or counted hunks that key the prefetch set by resolvePortraitMediaId(target.bvid, target.cid) at the swipe-candidate add and both of its removes and at the forward loop add and remove.",
+    "v037-portrait-glass-theme-colors-unported is only partly delivered. Carried: the overlay half of upstream commit 07362853 (the AppContentColors theme roles and the glass docks of the overlay, the interaction bar and the input bar). Not delivered: the pager half of the same commit, 95 lines of PortraitVideoPager.kt (the rememberChromeBackdropSource capture of the media layer, the supportsPlayerPageGlass gate and the LocalPlayerPageBackdrop provider). With liquid glass enabled every portrait dock (follow button, chips, icon buttons, progress dock, centre control) therefore falls back to the flat Color.Black 0.32 fill instead of glass until the whole pager is re-pinned. Follow-up: the whole-pager re-pin."
   ],
   "knownDeviations": [
     "Idle auto-hide (PortraitControlsVisibilityPolicy and the pager hunk), static judgement, not run: playbackActive requires Lifecycle.State.RESUMED, and Compose Desktop lowers the window lifecycle to STARTED when the window loses focus (an owned native player or composer window, another application), so the controls never auto-hide while the window is unfocused. Hidden controls return only through the existing tap gesture; there is no desktop mouse-move reveal. Follow-up for the whole-pager re-pin: a desktop hover reveal and STARTED versus RESUMED gating, each as a declared adaptation of the hunk with a pinned before and after.",

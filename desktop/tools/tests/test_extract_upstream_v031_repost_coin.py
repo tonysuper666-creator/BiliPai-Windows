@@ -68,7 +68,7 @@ class RepostCoinExtractionTest(unittest.TestCase):
                 proof = json.loads(read(output / (Path(path).name + ".repost-coin-proof.json")))
                 after = read(output / path)
                 if producer == "fullscreen-pager" and path == coin.PAGER:
-                    # plr-portrait-story-pager-repin is the newest layer of the pager: unwind its thirteen counted hunks first.
+                    # plr-portrait-story-pager-repin is the newest layer of the pager: unwind its fourteen counted hunks first.
                     portrait = json.loads(read(output / "v046-portrait-pager-proofs/PortraitVideoPager.kt.json"))
                     after = portrait_pager.peel_pager(after, portrait)
                     # 38512320c comment selection and daff05d71 owner-follow rewrite the pager

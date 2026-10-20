@@ -1,6 +1,6 @@
 """v0.4.6 portrait pager family (roadmap slice plr-portrait-story-pager-repin): the whole v0.4.6 PortraitFullscreenOverlay,
 PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy
-carried through the producers that already own them, the new PortraitControlsVisibilityPolicy emitted whole, and thirteen
+carried through the producers that already own them, the new PortraitControlsVisibilityPolicy emitted whole, and fourteen
 counted hunks on the generated PortraitVideoPager.
 
 Source checks only: nothing is compiled and no JVM test runs here. The hand-written Kotlin regression class is counted and
@@ -40,6 +40,7 @@ PLATFORM = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOrigina
 CONSUMED_VIEWS = REPO / 'desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoConsumedViews.kt'
 PAGER = portrait.PAGER
 OWNER_VIEW_MODEL = 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt'
+PLAYBACK_UI_STATE = 'com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoPlaybackUiState.kt'
 OVERLAY_OUTPUT = portrait.OUT + 'overlay/PortraitFullscreenOverlay.kt'
 SWITCH_OUTPUT = portrait.OUT + 'pager/PortraitPagerSwitchPolicy.kt'
 PROOFS = portrait.PROOF_DIRECTORY + '/'
@@ -144,6 +145,10 @@ class PortraitPagerSourceTests(unittest.TestCase):
         owner = load('pp_owner', 'extract-upstream-video-full-owner.py')
         owner.generate(REPO, cls.root / 'owner')
         cls.owner_view_model = text_of(cls.root / 'owner' / OWNER_VIEW_MODEL)
+        # the playback UI state (Success and its two known flags) the hand-written JVM class constructs
+        state = load('pp_state', 'extract-upstream-video-state-core.py')
+        state.generate(REPO, cls.root / 'state')
+        cls.playback_ui_state = text_of(cls.root / 'state' / PLAYBACK_UI_STATE)
 
     def emitted(self, relative):
         return self.now[relative].decode('utf-8')
@@ -217,18 +222,27 @@ class PortraitPagerSourceTests(unittest.TestCase):
             else:
                 self.assertEqual(1, hunk['upstream'].count(adaptation['before']), hunk['label'])
                 self.assertIn(hunk['upstream'].replace(adaptation['before'], adaptation['after'], 1), hunk['after'])
+        # v0.4.6 has no pager pause icon: upstream deleted it together with the overlay's centre playback control.
+        self.assertNotIn('shouldShowPortraitPauseIcon', upstream)
+        self.assertNotIn('Icons.Filled.PlayArrow', upstream)
         # The cover hunk is the one deliberate departure from a whole v0.4.6 file: its `before` is the upstream text.
         policy = git_blob(portrait.UPSTREAM_PATHS[portrait.SWITCH_LEAF]).decode('utf-8')
         self.assertEqual(1, policy.count(portrait.COVER_HUNK['before']))
 
     def test_the_pager_hunk_table_is_complete_and_counted(self):
-        self.assertEqual(13, len(portrait.PAGER_HUNKS))
+        self.assertEqual(14, len(portrait.PAGER_HUNKS))
         self.assertEqual(len(portrait.PAGER_HUNKS), len({hunk['label'] for hunk in portrait.PAGER_HUNKS}))
         self.assertEqual(len(portrait.PAGER_HUNKS), self.manifest['pagerHunks']['hunks'])
         for hunk in portrait.PAGER_HUNKS:
             self.assertNotEqual(hunk['before'], hunk['after'], hunk['label'])
             self.assertTrue(hunk['before'].endswith('\n') or hunk['label'].startswith('overlay call'), hunk['label'])
             self.assertNotIn('\r', hunk['after'], hunk['label'])
+        # exactly one hunk only removes text (the pager pause icon); it is the last one and keeps the seek hint comment
+        removing = [hunk for hunk in portrait.PAGER_HUNKS if hunk['after'] in hunk['before']]
+        self.assertEqual([portrait.PAGER_HUNKS[-1]], removing)
+        self.assertEqual(portrait._SEEK_HINT_COMMENT, removing[0]['after'])
+        self.assertEqual(portrait._PAUSE_ICON_BLOCK + portrait._SEEK_HINT_COMMENT, removing[0]['before'])
+        self.assertEqual(portrait._SEEK_HINT_COMMENT, removing[0]['upstream'])
 
     # ---- the producer layers ------------------------------------------------------------------------------------
 
@@ -319,24 +333,53 @@ class PortraitPagerSourceTests(unittest.TestCase):
         self.assertEqual(portrait.CURRENT_OUTPUT_SHA256[portrait.SWITCH_LEAF], recorded['emittedSHA256'])
         self.assertEqual(independent.strip() + '\n', body)
 
-    def test_the_pager_layer_is_thirteen_counted_hunks_that_peel_off_exactly(self):
+    def test_the_pager_layer_is_fourteen_counted_hunks_that_peel_off_exactly(self):
         proof = json.loads(self.now[PROOFS + 'PortraitVideoPager.kt.json'])
         final = self.emitted(PAGER)
         self.assertEqual(sha(final), proof['outputSHA256'])
         self.assertEqual(portrait.PAGER_EMITTED_SHA256, proof['outputSHA256'])
         self.assertEqual(portrait.PAGER_PREDECESSOR_SHA256, proof['inputSHA256'])
-        self.assertEqual(13, len(proof['hunks']))
-        self.assertEqual([1] * 13, [hunk['count'] for hunk in proof['hunks']])
+        self.assertEqual(14, len(proof['hunks']))
+        self.assertEqual([1] * 14, [hunk['count'] for hunk in proof['hunks']])
         self.assertTrue(proof['fullInputInverseRecovered'])
         peeled = portrait.peel_pager(final, proof)
         self.assertEqual(self.before[PAGER].decode('utf-8'), peeled)
         self.assertEqual(portrait.PAGER_PREDECESSOR_SHA256, sha(peeled))
         for hunk in portrait.PAGER_HUNKS:
             self.assertEqual(1, peeled.count(hunk['before']), hunk['label'])
-            self.assertEqual(0, peeled.count(hunk['after']) if hunk['before'] not in hunk['after'] else 0, hunk['label'])
-        self.assertEqual(78, len(final.split('\n')) - len(peeled.split('\n')))
+            # a hunk that only removes text leaves its `after` standing in the predecessor, as the tail of its `before`
+            removes_text = hunk['after'] in hunk['before']
+            self.assertEqual(1 if removes_text else 0,
+                             peeled.count(hunk['after']) if hunk['before'] not in hunk['after'] else 0, hunk['label'])
+        # thirteen hunks add 78 lines; the fourteenth removes the 20 lines of the pager pause icon block
+        removed_lines = (portrait._PAUSE_ICON_BLOCK).count('\n')
+        self.assertEqual(20, removed_lines)
+        self.assertEqual(78 - removed_lines, len(final.split('\n')) - len(peeled.split('\n')))
+        self.assertEqual(58, len(final.split('\n')) - len(peeled.split('\n')))
         with self.assertRaises(ValueError):
             portrait.peel_pager(final + ' ', proof)
+
+    def test_a_paused_page_has_one_centre_play_pause_control_the_overlays_and_not_the_pagers_own_icon(self):
+        pager, overlay = self.emitted(PAGER), self.emitted(OVERLAY_OUTPUT)
+        # the predecessor drew its own 60dp play icon at the centre of a paused current page; that block is gone
+        peeled = portrait.peel_pager(pager, json.loads(self.now[PROOFS + 'PortraitVideoPager.kt.json']))
+        self.assertEqual(1, peeled.count('shouldShowPortraitPauseIcon('))
+        self.assertEqual(1, peeled.count('Icons.Filled.PlayArrow,'))
+        self.assertEqual(0, pager.count('shouldShowPortraitPauseIcon('))
+        self.assertEqual(0, pager.count('showPauseIcon'))
+        self.assertEqual(0, pager.count('Icons.Filled.PlayArrow'))
+        self.assertEqual(0, pager.count('// 暂停图标'))
+        # the seek hint that followed the icon is untouched and directly follows the blank line after the media layer
+        self.assertEqual(1, pager.count(portrait._SEEK_HINT_COMMENT))
+        self.assertIn('\n        }\n\n' + portrait._SEEK_HINT_COMMENT + '        if (isSeekGesture && progressState.duration > 0) {\n', pager)
+        # the overlay the pager calls owns the one centre control, gated on the visible controls and ready playback
+        self.assertEqual(1, overlay.count('CenterPlaybackControl('))
+        self.assertIn('visible = showControls && playbackReady && !isPlaybackRecovering &&', overlay)
+        self.assertIn('onPlayPause = onPlayPause,\n            diameter = 72.dp,', overlay)
+        self.assertEqual(1, call_text(pager, 'PortraitFullscreenOverlay').count('onPlayPause = {'))
+        # the policy that decided the old icon is a carried helper that nothing in the pager calls any more; it stays defined
+        self.assertEqual(1, declared(self.story_now[SWITCH_OUTPUT].decode('utf-8'), 'shouldShowPortraitPauseIcon'))
+        self.assertEqual(0, declared(self.emitted(portrait.OUT + 'pager/PortraitVideoLoadPolicy.kt'), 'shouldShowPortraitPauseIcon'))
 
     def test_the_pager_passes_every_new_required_overlay_parameter(self):
         pager, overlay = self.emitted(PAGER), self.emitted(OVERLAY_OUTPUT)
@@ -475,32 +518,64 @@ class PortraitPagerSourceTests(unittest.TestCase):
         self.assertNotIn('OkHttpDataSource', policy)
         # v035-portrait-pager-preload-identity is only partly delivered (manifest partiallyDelivered): the retained pager
         # calls the carried target resolver but keys its prefetch set by bvid alone and never calls the window helper.
-        # A follow-up that closes this must change these four assertions and the manifest note together.
+        # A follow-up that closes this must change these assertions and the manifest note together.
         pager = self.emitted(PAGER)
         self.assertEqual(1, pager.count('resolvePortraitPlayUrlPreloadTargets('))
         self.assertEqual(1, pager.count('portraitPrefetchedPlayUrlBvids.add(target.bvid)'))
         self.assertEqual(1, pager.count('portraitPrefetchedPlayUrlBvids.add(identity.bvid)'))
+        self.assertEqual(1, pager.count('portraitPrefetchedPlayUrlBvids.remove(target.bvid)'))
+        self.assertEqual(2, pager.count('portraitPrefetchedPlayUrlBvids.remove(identity.bvid)'))
+        self.assertEqual(0, pager.count('portraitPrefetchedPlayUrlBvids.add(resolvePortraitMediaId('))
         self.assertEqual(0, pager.count('resolvePortraitPrefetchWindowTargets'))
+        # The concrete coverage loss recorded in the manifest: the carried resolver spends one preload slot per PART of a
+        # bvid, and this retained loop then drops every part after the first because its set is keyed by bvid.
+        loop = pager[pager.index('preloadTargets.mapNotNull { target ->'):]
+        loop = loop[:loop.index('}.awaitAll()')]
+        self.assertEqual(1, loop.count('if (!portraitPrefetchedPlayUrlBvids.add(target.bvid)) return@mapNotNull null'))
+        self.assertIn('if (targets.none { it.bvid == identity.bvid && it.cid == identity.cid }) {', policy)
+        canonical = text_of(REPO / 'app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt')
+        self.assertIn('if (targets.none { it.bvid == identity.bvid }) {', canonical, 'the v0.2.5 resolver deduplicated by bvid')
+        self.assertNotIn('if (targets.none { it.bvid == identity.bvid }) {', policy)
 
     def test_the_manifest_records_the_partial_delivery_the_known_deviations_and_the_follow_ups(self):
         manifest = self.manifest
-        self.assertEqual(1, len(manifest['partiallyDelivered']))
-        partial = manifest['partiallyDelivered'][0]
+        self.assertEqual(2, len(manifest['partiallyDelivered']))
+        preload, glass = manifest['partiallyDelivered']
         for token in ('v035-portrait-pager-preload-identity is only partly delivered', 'portraitPrefetchedPlayUrlBvids.add(identity.bvid)',
                       '.add(target.bvid) in the forward preload loop', 'resolvePortraitPrefetchWindowTargets has no production caller',
                       'not cid-aware end to end'):
-            self.assertIn(token, partial)
+            self.assertIn(token, preload)
+        # the concrete regression of the partial delivery, so that the follow-up has to close it
+        for token in ('Concrete coverage loss', 'spend the preloadCount slots', 'return@mapNotNull null',
+                      '[BV2 part 1, BV2 part 2, BV2 part 3, BV4] with preloadCount 3 now warm BV2 part 1 only and never BV4',
+                      'the v0.2.5 bvid-keyed targets [BV2, BV4] warmed both',
+                      'resolvePortraitMediaId(target.bvid, target.cid) at the swipe-candidate add and both of its removes'):
+            self.assertIn(token, preload)
+        # the glass half of upstream commit 07362853: the overlay part is carried, the pager part is not
+        for token in ('v037-portrait-glass-theme-colors-unported is only partly delivered', 'AppContentColors theme roles',
+                      'glass docks of the overlay, the interaction bar and the input bar', '95 lines of PortraitVideoPager.kt',
+                      'rememberChromeBackdropSource', 'supportsPlayerPageGlass', 'LocalPlayerPageBackdrop provider',
+                      'flat Color.Black 0.32 fill instead of glass'):
+            self.assertIn(token, glass)
         deviations = ' '.join(manifest['knownDeviations'])
         for token in ('Lifecycle.State.RESUMED', 'STARTED', 'no desktop mouse-move reveal', 'showDanmakuInputDialog', 'showDanmakuSendDialog'):
             self.assertIn(token, deviations)
         not_carried = ' '.join(manifest['notCarried'])
         for token in ('PortraitVideoPager.kt whole', 'PortraitWifiPreloadQueue.kt', 'v029-portrait-background-continue',
-                      'PortraitDetailSheet.kt', 'LocalPlayerPageBackdrop'):
+                      'PortraitDetailSheet.kt', 'LocalPlayerPageBackdrop', 'PortraitControlsVisibilityPolicyTest.kt'):
             self.assertIn(token, not_carried)
+        self.assertIn('counted hunk 14 deletes the shouldShowPortraitPauseIcon block', ' '.join(manifest['newInV046']))
+        self.assertIn('fourteen counted hunks', manifest['purpose'])
         # the generator docstring carries the same statements, so the code reader meets them first
         docstring = portrait.__doc__
-        for token in ('Partly delivered', 'NOT cid-aware end to end', 'Known deviations', 'Size and cut', 'PortraitWifiPreloadQueue'):
+        for token in ('Partly delivered', 'NOT cid-aware end to end', 'Concrete coverage loss', 'v037-portrait-glass-theme-colors-unported',
+                      'Known deviations', 'Size and cut', 'PortraitWifiPreloadQueue', 'fourteen counted hunks', 'CenterPlaybackControl'):
             self.assertIn(token, docstring)
+        # the catalog rows that describe this archive count the same hunks
+        for row in sync.adapted_compatibility_inputs(REPO):
+            if row['localPath'].startswith(portrait.ARCHIVE + '/'):
+                self.assertIn('fourteen counted hunks', row['usedScope'])
+                self.assertNotIn('thirteen', row['usedScope'])
 
     def test_every_new_top_level_name_has_exactly_one_owner_among_these_producers_the_vendored_roots_and_desktop_main(self):
         """Partial universe only: the outputs of the two producers run here, the vendored roots and desktop/src/main.
@@ -628,8 +703,29 @@ class PortraitPagerSourceTests(unittest.TestCase):
     def test_the_hand_written_jvm_class_has_every_case_and_balanced_delimiters(self):
         text = text_of(JVM_TEST)
         self.assertNotIn('\r', text)
-        self.assertEqual(10, text.count('@Test'))
+        self.assertEqual(12, text.count('@Test'))
         balanced(self, text)
+        # the first three cases mirror the upstream unit test of the carried policy: the class says where they come from
+        kdoc = text[text.index('/**'):text.index('class DesktopPortraitPagerRepinTest')]
+        for token in ('PortraitControlsVisibilityPolicyTest', 'app/src/test/java/com/android/purebilibili/feature/video/ui/pager/',
+                      portrait.COMMIT, 'GPL-3.0', 'not carried'):
+            self.assertIn(token, kdoc)
+        if commit_present(portrait.COMMIT):
+            self.assertIn(b'class PortraitControlsVisibilityPolicyTest', git_blob(
+                'app/src/test/java/com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicyTest.kt'))
+        # the two cases that close the gaps of the first review: the swipe target that is also a forward page, and the
+        # shared state that forwards its known flag in both directions
+        self.assertIn('fun aSwipeCandidateThatIsAlsoAForwardPageIsWarmedOnlyOnce()', text)
+        self.assertIn('fun aMatchingSharedStateForwardsItsKnownLikeFlagInBothDirections()', text)
+        # the Success state those cases build is the one the state core producer emits, with the required playUrl and
+        # the two flags the pager hunk reads from it
+        success = self.playback_ui_state[self.playback_ui_state.index('data class Success('):]
+        success = success[:success.index('\n    ) : VideoPlaybackUiState() {')]
+        for member in ('        val info: ViewInfo,\n', '        val playUrl: String,\n', '        val isLiked: Boolean = false,\n',
+                       '        val likeStatusKnown: Boolean = false,\n'):
+            self.assertEqual(1, success.count(member), member)
+        self.assertIn('import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState\n', text)
+        self.assertIn('import com.android.purebilibili.data.model.response.ViewInfo\n', text)
         for symbol in re.findall(r'^import com\.android\.purebilibili\.feature\.video\.ui\.pager\.(\w+)$', text, re.M):
             owners = [name for name, source in {**{k: v.decode('utf-8') for k, v in self.now.items() if k.endswith('.kt')},
                                                 **{k: v.decode('utf-8') for k, v in self.story_now.items() if k.endswith('.kt')}}.items()

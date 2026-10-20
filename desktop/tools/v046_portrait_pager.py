@@ -18,9 +18,12 @@ unchanged on top.
   PortraitControlsVisibilityPolicy.kt
                               new in v0.4.0, emitted whole by the fullscreen pager producer
   PortraitVideoPager.kt       NOT carried whole (4567 lines, 124 existing producer edits and nine layers). The last
-                              layer of the producer applies thirteen counted hunks; each inserted text is a verbatim
-                              slice of the v0.4.6 blob (checked against the git object by the source test) except the
-                              one declared settings adaptation of the declaration hunk.
+                              layer of the producer applies fourteen counted hunks; each inserted or kept text is a
+                              verbatim slice of the v0.4.6 blob (checked against the git object by the source test)
+                              except the one declared settings adaptation of the declaration hunk. The fourteenth hunk
+                              deletes the pager's own centre pause icon, as upstream commit 07362853 did when the overlay
+                              gained CenterPlaybackControl: without it a paused page with visible controls would stack
+                              the pager's 60dp play icon and the overlay's 72dp glass play/pause dock at the centre.
 
 The follow confirmation call sites of the overlay (v046_follow_confirmation.PORTRAIT) are retired by this slice: the
 whole v0.4.6 overlay already calls rememberFollowActionWithConfirmation at both follow buttons.
@@ -28,22 +31,39 @@ whole v0.4.6 overlay already calls rememberFollowActionWithConfirmation at both 
 The manifest records the predecessors, the hunk pins, what is not carried, what is only partly delivered and the known
 deviations.
 
-Partly delivered (manifest partiallyDelivered): v035-portrait-pager-preload-identity. The cid-aware policies are carried
-(resolvePortraitMediaId, the cid-aware shouldSkipPortraitReloadForCurrentMedia, resolvePortraitPlayUrlPreloadTargets and the
-new resolvePortraitPrefetchWindowTargets), but the retained Windows pager still deduplicates its prefetches by bvid alone
+Partly delivered (manifest partiallyDelivered):
+
+v035-portrait-pager-preload-identity. The cid-aware policies are carried (resolvePortraitMediaId, the cid-aware
+shouldSkipPortraitReloadForCurrentMedia, resolvePortraitPlayUrlPreloadTargets and the new
+resolvePortraitPrefetchWindowTargets), but the retained Windows pager still deduplicates its prefetches by bvid alone
 (portraitPrefetchedPlayUrlBvids.add(identity.bvid) and .add(target.bvid)) and nothing outside the JVM test calls the prefetch
-window helper: preloading is NOT cid-aware end to end until the whole pager is re-pinned (or a counted hunk keys the
-prefetch set by media id).
+window helper: preloading is NOT cid-aware end to end until the whole pager is re-pinned (or counted hunks key the
+prefetch set by media id). Concrete coverage loss: resolvePortraitPlayUrlPreloadTargets now returns every part of one bvid as
+its own target and those targets spend the preloadCount slots, then the retained loop drops every part after the first
+(it keys by bvid), so forward pages [BV2 part 1, BV2 part 2, BV2 part 3, BV4] with preloadCount 3 warm BV2 part 1 only
+and never BV4, where the v0.2.5 bvid-keyed targets [BV2, BV4] warmed both. Only a feed that holds several parts of one
+bvid inside the forward window is affected.
+
+v037-portrait-glass-theme-colors-unported. The overlay half of upstream commit 07362853 is carried (AppContentColors
+theme roles, the glass docks of the overlay, the interaction bar and the input bar). The pager half (95 lines:
+rememberChromeBackdropSource capture, the supportsPlayerPageGlass gate and the LocalPlayerPageBackdrop provider) is not, so
+with liquid glass enabled every portrait dock (follow button, chips, icon buttons, progress dock, centre control) falls back
+to the flat Color.Black 0.32 fill instead of glass until the whole pager is re-pinned.
 
 Known deviations (manifest knownDeviations, static judgement, not run): the idle auto-hide waits for Lifecycle RESUMED, which
 Compose Desktop lowers to STARTED while the window is unfocused, and hidden controls return only through the tap gesture (no
 mouse-move reveal); the danmaku flag the hunk reads is upstream's showDanmakuInputDialog, which the composer never sets.
 
-Size and cut: roughly 1700 changed lines without the archive (this generator, its source test, the JVM class and the
-registration edits, 166 of them catalog rows), above the 1200 line guideline. The cut is coherent: the pager gets
-thirteen counted hunks instead of a whole re-pin. The follow-up slices are the whole
-PortraitVideoPager re-pin, the PortraitWifiPreloadQueue / prefetch-window caller, v029-portrait-background-continue and the
-PortraitDetailSheet / PortraitTopBarLayoutPolicy theme-role sizes.
+Size and cut: roughly 1950 changed lines without the archive (this generator, its source test, the JVM class and the
+registration edits, 166 of them catalog rows; about 250 of them are the review fixes), above the 1200 line guideline; the
+overrun is disclosed and is for Root to accept. The cut is coherent: the pager gets fourteen counted hunks instead of a whole re-pin. If Root wants it smaller, the
+auto-hide hunks (the PointerEventPass import, the idle block, the pointer observer, the two dialog flags of the platform
+interface and their JVM cases) are the part that can move to a follow-up slice on their own. The follow-up slices are the
+whole PortraitVideoPager re-pin (which also closes both partial deliveries above), the PortraitWifiPreloadQueue /
+prefetch-window caller, v029-portrait-background-continue and the PortraitDetailSheet / PortraitTopBarLayoutPolicy
+theme-role sizes. The upstream PortraitControlsVisibilityPolicyTest is not carried (it needs a test root for the fullscreen
+pager producer, whose main source root is its whole output directory): the first three cases of the hand-written JVM class
+mirror it and say so.
 """
 from pathlib import Path
 import hashlib
@@ -54,7 +74,7 @@ from v044_favorite_detail import inverse_proof
 
 COMMIT = 'd6bf8b1655ae910999860bf13e65c8fcea5b345b'
 ARCHIVE = 'desktop/upstream-slices/v046-portrait-pager'
-MANIFEST_SHA256 = '18b0c91a698130d5266703dceb299a162d2c7a02f9a7b828951e313d3ad42f58'
+MANIFEST_SHA256 = '3425ac3ed240d094d23bddd05c7c558c88313fc38f768869ffc2c812777207fc'
 PROOF_DIRECTORY = 'v046-portrait-pager-proofs'
 APP = 'app/src/main/java/com/android/purebilibili/'
 OVERLAY = APP + 'feature/video/ui/overlay/'
@@ -123,7 +143,7 @@ CURRENT_OUTPUT_SHA256 = {
     'PortraitPagerSwitchPolicy.kt': '584fcd49e776814793dd50df564176344fcbbe696df97fe5e7c0273d26c7e3bb',
 }
 PAGER_PREDECESSOR_SHA256 = 'fdf7a9ee692b22929385f9e58bd3de30436bff6417fec776da7ab3298fcdc5b9'
-PAGER_EMITTED_SHA256 = '2ae6625946b5c2e738eb79226dc3c080201c173d6418bc5d2d0355b11923f2ec'
+PAGER_EMITTED_SHA256 = '25bbeec777043b24f33aac5f166f714a896f11ff3ddfdbc5849bd892557bca26'
 
 # Tokens that must occur exactly once in a leaf: catches an archive that is internally consistent but not the file.
 DECLARATIONS = {
@@ -274,6 +294,33 @@ _POINTER_OBSERVER = block('''
 ''')
 _GESTURE_ANCHOR = '            .pointerInput(isCurrentPage, bvid, playerGesturesEnabled) {\n'
 
+# The pager's own centre pause icon. Upstream commit 07362853 deleted it in the same change that added CenterPlaybackControl to
+# the overlay (shown while the controls are visible and playback is ready): keeping both stacks two icons at Alignment.Center.
+# The last line of the block is the eight-space line that separates it from the seek hint comment, so it is spelled out.
+_PAUSE_ICON_BLOCK = (
+    '        // 暂停图标 (仅当前页且暂停时显示)\n'
+    '        // [修复] 使用响应式的 isPlaying 状态\n'
+    '        val showPauseIcon = shouldShowPortraitPauseIcon(\n'
+    '            isCurrentPage = isCurrentPage,\n'
+    '            isPlaying = isPlaying,\n'
+    '            playWhenReady = exoPlayer.playWhenReady,\n'
+    '            isLoading = isLoading,\n'
+    '            isSeekGesture = isSeekGesture\n'
+    '        )\n'
+    '        if (showPauseIcon) {\n'
+    '            AppIcon(\n'
+    '                imageVector = Icons.Filled.PlayArrow,\n'
+    '                contentDescription = "Pause",\n'
+    '                modifier = Modifier\n'
+    '                    .align(Alignment.Center)\n'
+    '                    .size(60.dp),\n'
+    '                tint = Color.White.copy(alpha = 0.8f)\n'
+    '            )\n'
+    '        }\n'
+    '        \n'
+)
+_SEEK_HINT_COMMENT = '        // 滑动进度提示\n'
+
 # Counted hunks of the generated PortraitVideoPager.kt. `upstream` is the text that must be a verbatim slice of the
 # v0.4.6 blob (PAGER_UPSTREAM_BLOB); `after` is that text in its Windows form.
 PAGER_HUNKS = (
@@ -370,6 +417,12 @@ PAGER_HUNKS = (
         before='                portraitPageHeightPx = size.height\n            }\n' + _GESTURE_ANCHOR,
         after='                portraitPageHeightPx = size.height\n            }\n' + _POINTER_OBSERVER + _GESTURE_ANCHOR,
         upstream=_POINTER_OBSERVER,
+    ),
+    dict(
+        label='the overlay centre control is the only pause affordance: the pager pause icon is removed',
+        before=_PAUSE_ICON_BLOCK + _SEEK_HINT_COMMENT,
+        after=_SEEK_HINT_COMMENT,
+        upstream=_SEEK_HINT_COMMENT,
     ),
 )
 
@@ -515,7 +568,7 @@ def emit_controls_policy(repo, output):
 
 
 def advance_pager(repo, relative, text, output):
-    """Pager producer, last layer: thirteen counted hunks on the generated PortraitVideoPager.kt."""
+    """Pager producer, last layer: fourteen counted hunks on the generated PortraitVideoPager.kt."""
     if relative != PAGER:
         return text
     fixed(repo)

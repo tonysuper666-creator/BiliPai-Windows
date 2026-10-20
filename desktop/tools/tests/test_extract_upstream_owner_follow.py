@@ -63,7 +63,7 @@ class OriginalOwnerFollowUiTest(unittest.TestCase):
                     patch.object(portrait, 'advance_pager', side_effect=lambda repo, relative, text, output: text):
                 pager.generate(REPO, before, standalone=True)
             actual = (out / PAGER).read_text(encoding='utf-8')
-            # plr-portrait-story-pager-repin is the newest layer of the pager: peel its thirteen counted hunks first.
+            # plr-portrait-story-pager-repin is the newest layer of the pager: peel its fourteen counted hunks first.
             actual = portrait.peel_pager(
                 actual, json.loads((out / 'v046-portrait-pager-proofs/PortraitVideoPager.kt.json').read_bytes()))
             proof = json.loads((out / 'PortraitVideoPager.kt.v042-owner-follow-ui-proof.json').read_bytes())

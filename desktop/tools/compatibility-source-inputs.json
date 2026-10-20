@@ -20202,7 +20202,7 @@
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives fourteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
@@ -20217,7 +20217,7 @@
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives fourteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
@@ -20232,7 +20232,7 @@
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives fourteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
@@ -20247,7 +20247,7 @@
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives fourteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
@@ -20262,7 +20262,7 @@
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives fourteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
@@ -20277,7 +20277,7 @@
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives fourteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicy.kt",
@@ -20292,7 +20292,7 @@
       ],
       "referenceOnly": false,
       "partialReuse": false,
-      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives fourteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/ui/common/ContentTabPager.kt",

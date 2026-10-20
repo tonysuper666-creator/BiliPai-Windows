@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.data.model.response.RelatedVideo
 import com.android.purebilibili.data.model.response.Stat
+import com.android.purebilibili.data.model.response.ViewInfo
 import com.android.purebilibili.feature.video.ui.pager.PORTRAIT_CONTROLS_AUTO_HIDE_DELAY_MS
 import com.android.purebilibili.feature.video.ui.pager.PortraitVideoInteractionOverride
 import com.android.purebilibili.feature.video.ui.pager.PortraitVideoInteractionUiState
@@ -13,6 +14,7 @@ import com.android.purebilibili.feature.video.ui.pager.resolvePortraitVideoInter
 import com.android.purebilibili.feature.video.ui.pager.shouldAutoHidePortraitControls
 import com.android.purebilibili.feature.video.ui.pager.shouldShowPortraitCover
 import com.android.purebilibili.feature.video.ui.pager.shouldSkipPortraitReloadForCurrentMedia
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -22,6 +24,13 @@ import kotlin.test.assertTrue
 /**
  * Pure checks of the v0.4.6 portrait pager re-pin (roadmap slice plr-portrait-story-pager-repin). No window, no GPU,
  * no player and no network: only the policies and state helpers the carried and hunked files expose.
+ *
+ * Provenance: the first three cases (controlsHideAfterFourIdleSecondsOfPlayback, pausedInactiveAndAlreadyHidden...,
+ * scrubbingHoldingAndOpenMenus...) restate the assertions of the upstream unit test
+ * app/src/test/java/com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicyTest.kt of the
+ * v0.4.6 commit d6bf8b1655ae910999860bf13e65c8fcea5b345b (jay3-yy/BiliPai, GPL-3.0, the licence of this repository). That
+ * file is not carried: it needs a test source root for the fullscreen pager producer, which has none (manifest notCarried).
+ * Follow-up: carry it byte for byte through a producer test root and drop these three cases.
  */
 class DesktopPortraitPagerRepinTest {
     @Test
@@ -111,6 +120,31 @@ class DesktopPortraitPagerRepinTest {
     }
 
     @Test
+    fun aSwipeCandidateThatIsAlsoAForwardPageIsWarmedOnlyOnce() {
+        val pages = listOf(
+            RelatedVideo(bvid = "BV0", cid = 10L),
+            RelatedVideo(bvid = "BV1", cid = 11L),
+            RelatedVideo(bvid = "BV2", cid = 12L),
+            RelatedVideo(bvid = "BV3", cid = 13L),
+        )
+        // The swipe candidate (page 2) is also the first forward page of the anchor (page 1): it is listed first and not again.
+        val targets = resolvePortraitPrefetchWindowTargets(
+            anchorPage = 1, pageItems = pages, preloadCount = 2, swipeTargetPage = 2, warmAnchor = true,
+        )
+        assertEquals(listOf("BV2", "BV1", "BV3"), targets.map { it.bvid })
+        // Two pages of one video are told apart by their cid, the very same part is merged.
+        val parts = listOf(
+            RelatedVideo(bvid = "BV5", cid = 1L),
+            RelatedVideo(bvid = "BV5", cid = 2L),
+            RelatedVideo(bvid = "BV5", cid = 2L),
+        )
+        val partTargets = resolvePortraitPrefetchWindowTargets(
+            anchorPage = 0, pageItems = parts, preloadCount = 2, swipeTargetPage = 2, warmAnchor = true,
+        )
+        assertEquals(listOf(2L, 1L), partTargets.map { it.cid })
+    }
+
+    @Test
     fun anUnmatchedVideoKeepsItsLikeStateUnknownUntilALocalOverrideExists() {
         val unmatched = resolvePortraitVideoInteractionUiState("BV_NEXT", Stat(like = 8, favorite = 3), null)
         assertFalse(unmatched.likeStatusKnown)
@@ -127,6 +161,28 @@ class DesktopPortraitPagerRepinTest {
         )
         assertFalse(onlyFavorite.likeStatusKnown)
         assertTrue(onlyFavorite.isFavorited)
+    }
+
+    @Test
+    fun aMatchingSharedStateForwardsItsKnownLikeFlagInBothDirections() {
+        val fallback = Stat(like = 8, favorite = 3)
+        for (known in listOf(false, true)) {
+            val shared = VideoPlaybackUiState.Success(
+                info = ViewInfo(bvid = "BV1", stat = Stat(like = 20, favorite = 6)),
+                playUrl = "",
+                isLiked = true,
+                likeStatusKnown = known,
+            )
+            val matched = resolvePortraitVideoInteractionUiState("BV1", fallback, shared)
+            assertEquals(known, matched.likeStatusKnown)
+            assertTrue(matched.isLiked)
+            assertEquals(20, matched.likeCount)
+            // The shared state of another video never leaks into this one: its flags stay unknown and unliked.
+            val other = resolvePortraitVideoInteractionUiState("BV2", fallback, shared)
+            assertFalse(other.likeStatusKnown)
+            assertFalse(other.isLiked)
+            assertEquals(8, other.likeCount)
+        }
     }
 
     @Test
