@@ -1,6 +1,7 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
 from v034_next_watch_ui import emit_original_ui as _emit_original_next_watch_ui
+from v046_next_watch_toggle import advance_outputs as _advance_next_watch_v046
 from v025_playback_settings_platform import player_settings_body as _playback_player_settings_body, control_settings_body as _playback_control_settings_body
 import hashlib,importlib.util,json,re,subprocess,sys,zipfile
 from v025_source_paths import canonical_source as _desktop_canonical_source
@@ -541,15 +542,19 @@ def generate(repo,output,standalone=False,test_output=None):
     mode='full-original-Windows-platform-boundary',sha256LF=hashlib.sha256(target.read_bytes()).hexdigest(),generated=True))
  _emit_original_next_watch_ui(REPO,OUTPUT)
  next_watch=json.loads(wide(OUTPUT/'original-v034-next-watch-ui-inverse.json').read_bytes())
+ # The two files the v0.3.4 recipes just wrote are the pinned predecessors of the narrow v0.4.6 layer: the overlay's
+ # content colour and the setter of the next-watch switch. Both keep their path, so each row records the final hash.
+ advanced_next_watch=_advance_next_watch_v046(REPO,OUTPUT)
  for relative,recipe in next_watch['outputs'].items():
   assert not any(row['path']==relative for row in OUTPUTS)
   pin=next(row for row in next_watch['sources'] if row['file']==recipe['source'])
   actual_hash=hashlib.sha256(wide(OUTPUT/relative).read_bytes()).hexdigest()
-  assert actual_hash==recipe['afterSha256']
+  assert actual_hash==advanced_next_watch[relative]
   OUTPUTS.append(dict(path=relative,origin=pin['originalPath'],
     fixedCommit=next_watch['upstreamCommit'],source=pin,
     mode='complete-original-next-watch-platform' if 'edits' in recipe else 'original-next-watch-declarations-platform',
-    sha256LF=actual_hash,generated=True,sourceManifestSHA256=next_watch['sourceManifestSha256']))
+    sha256LF=actual_hash,generated=True,sourceManifestSHA256=next_watch['sourceManifestSha256'],
+    v046NextWatchToggleAdvance=True,predecessorSha256LF=recipe['afterSha256']))
  from v037_player_foundations import emit_foundations
  emit_foundations(OUTPUT,OUTPUTS,test_output)
  from v037_shared_tabs_progress import emit_control_foundations

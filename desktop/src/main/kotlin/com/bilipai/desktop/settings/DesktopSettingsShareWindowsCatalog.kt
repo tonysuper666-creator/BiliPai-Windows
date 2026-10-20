@@ -26,6 +26,7 @@ import kotlinx.serialization.json.*
  * maid_lottie_animation_enabled and dynamic_comment_preview_visible: neither literal exists in v0.3.3.
  * The first is declared in the v0.3.4 slice SettingsManager (desktop/upstream-slices/v034-next-watch-ui);
  * the second is declared in DynamicSettingsStore since v0.3.4 and only shared by that slice's SettingsManager.
+ * next_watch_hint_enabled is a v0.3.4 key too: that slice's SettingsManager declares it and shares it under PLAYBACK.
  * Legacy danmaku keys remain baseline values; explicit portrait/landscape overrides win.
  */
 internal object DesktopSettingsShareWindowsCatalog {
@@ -123,7 +124,7 @@ internal object DesktopSettingsShareWindowsCatalog {
         ids(appearance, "top_tab_visible_tabs", topIds, emptyAllowed = true)
 
         val playback = SettingsShareSection.PLAYBACK
-        booleans(playback, "auto_play", "hw_decode", "remember_last_playback_speed",
+        booleans(playback, "next_watch_hint_enabled", "auto_play", "hw_decode", "remember_last_playback_speed",
             "comment_fraud_detection_enabled", "comment_member_decorations_enabled", "comment_avatar_push_enabled", "detailed_comment_time_enabled",
             "image_preview_long_press_save_enabled", "image_preview_3d_page_enabled", "stop_playback_on_exit",
             "background_playback_enabled", "audio_now_playing_bar_opens_audio_mode", "video_ai_summary_entry_enabled",

@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.bilipai.desktop.settings.desktopSettingsSearchFocusAnchor
+import com.android.purebilibili.core.store.DesktopOriginalNextWatchHintSettings
 import com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences as Preferences
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
 import com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings
@@ -54,6 +55,7 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
     val backgroundPlayback = desktopWindowsSettingsValue(remember(context) { Preferences.getBackgroundPlaybackEnabled(context) })
     val resumePrompt = desktopWindowsSettingsValue(remember(context) { Preferences.getResumePlaybackPromptEnabled(context) })
     val completion = desktopWindowsSettingsValue(remember(context) { Preferences.getPlaybackCompletionBehavior(context) })
+    val nextWatchHint = desktopWindowsSettingsValue(remember(context) { DesktopOriginalNextWatchHintSettings.getNextWatchHintEnabled(context) })
     val autoPlayNext = desktopWindowsSettingsValue(remember(context) { Preferences.getAutoPlay(context) })
     val playlistAutoContinue = desktopWindowsSettingsValue(remember(context) { Preferences.getExternalPlaylistAutoContinue(context) })
     val commentSort = desktopWindowsSettingsValue(remember(context) { DesktopOriginalReplySettings.getCommentDefaultSortMode(context.pluginContext) })
@@ -123,6 +125,12 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             DesktopWindowsSettingsSwitch("历史续播提示", resumePrompt,
                 description = "发现历史播放进度时提示继续播放。") { enabled ->
                 writer.launch { Preferences.setResumePlaybackPromptEnabled(context, enabled) }
+            }
+            // The card shown over the last five seconds. The player's card reads this same preference owner, and the
+            // switch never gates 自动连播: that stays with the two gates below.
+            DesktopWindowsSettingsSwitch("接下来观看卡片", nextWatchHint,
+                description = "最后 5 秒提示下一集或相关推荐，关闭不影响自动续播。") { enabled ->
+                writer.launch { DesktopOriginalNextWatchHintSettings.setNextWatchHintEnabled(context, enabled) }
             }
             // The two real gates of 自动连播 (PlaybackCompletionPolicy); both default on and are read from the auto_play_cache mirror.
             DesktopWindowsSettingsSwitch("自动播放下一个", autoPlayNext,

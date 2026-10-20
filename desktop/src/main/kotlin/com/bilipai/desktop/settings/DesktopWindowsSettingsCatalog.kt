@@ -12,7 +12,7 @@ internal val desktopWindowsSettingsSearchEntries = listOf(
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放与画质", "硬件解码、编码、默认画质", "播放", listOf("解码", "显卡", "AV1", "HEVC", "H264", "画质", "清晰度"), "windows_playback_quality"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "倍速与字幕", "记忆倍速、默认速度与自动字幕", "播放", listOf("倍速", "速度", "字幕", "AI"), "windows_playback_speed_subtitle"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "Windows 音频输出", "输出设备、WASAPI 独占与实际格式", "音频", listOf("音频", "声音", "输出", "设备", "独占", "WASAPI", "采样率", "光纤"), "windows_audio_output"),
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放行为", "自动播放、片头片尾跳过、后台播放与续播", "播放", listOf("进入视频自动播放", "自动跳过片头片尾", "自动播放", "片头", "片尾", "跳过", "番剧", "后台", "最小化", "续播", "断点", "连播", "循环", "播完", "暂停", "自动播放下一个", "列表连续播放", "收藏夹"), "windows_playback_behavior"),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放行为", "自动播放、片头片尾跳过、后台播放与续播", "播放", listOf("进入视频自动播放", "自动跳过片头片尾", "自动播放", "片头", "片尾", "跳过", "番剧", "后台", "最小化", "续播", "断点", "连播", "循环", "播完", "暂停", "自动播放下一个", "列表连续播放", "收藏夹", "接下来观看", "接下来观看卡片", "下一集提示", "相关推荐提示"), "windows_playback_behavior"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "评论", "排序、时间、头像跟随和个性装扮", "播放", listOf("评论", "头像跟随", "头像", "热度", "排序", "相对时间", "详细时间", "评论区个性装扮", "装扮", "粉丝牌", "铭牌"), "windows_playback_comments"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "默认音质", "后续播放的音轨质量偏好", "音频", listOf("音质", "音轨", "无损"), "windows_audio_output"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.HOME_FEED, "首页与推荐", "网格、卡片、轮播和本地背景", "首页", listOf("首页", "推荐", "网格", "标题", "轮播", "壁纸", "背景", "UP", "时间表", "动态评论预览", "动态", "评论预览")),

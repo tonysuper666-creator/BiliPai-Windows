@@ -4178,6 +4178,8 @@ tasks.named("extractOriginalPlayerFullControls") {
     inputs.file("tools/v034_next_watch_ui.py")
     inputs.dir("upstream-slices/v034-next-watch-ui")
 }
+// The v0.4.6 next-watch revision: a pinned layer on the two files that producer already emits from that archive.
+tasks.named("extractOriginalPlayerFullControls") { inputs.file("tools/v046_next_watch_toggle.py") }
 
 // Source62 reuses only the original audio-download method in the SAME PGC VM.
 tasks.named("extractOriginalBangumiPlayer") {
