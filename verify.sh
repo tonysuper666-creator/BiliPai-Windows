@@ -98,6 +98,27 @@ print('known JS-worker classes failing (expected on Linux): %d' % len(old))
 print('OTHER failing classes: %d' % len(new))
 for c, n in sorted(new.items())[:40]:
     print('  %s (%d)' % (c, n))
+# the failing cases of those classes with the first line of the message (what Root needs to triage without the box)
+shown = 0
+for path in sorted(glob.glob(results + '/*.xml')):
+    try:
+        root = ET.parse(path).getroot()
+    except ET.ParseError:
+        continue
+    suites = [root] if root.tag == 'testsuite' else root.iter('testsuite')
+    for s in suites:
+        name = s.get('name', '?')
+        if name not in new:
+            continue
+        for case in s.iter('testcase'):
+            problem = case.find('failure')
+            if problem is None:
+                problem = case.find('error')
+            if problem is None or shown >= 30:
+                continue
+            message = (problem.get('message') or (problem.text or '')).strip().splitlines()
+            print('    - %s.%s: %s' % (name.rsplit('.', 1)[-1], case.get('name', '?'), (message[0] if message else '')[:200]))
+            shown += 1
 PY
 }
 
