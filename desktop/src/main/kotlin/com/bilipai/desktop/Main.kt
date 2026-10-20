@@ -9,11 +9,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.withFrameNanos
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopSessionStore
 import com.bilipai.desktop.nvidia.DesktopNvidiaCapabilityMonitor
@@ -130,7 +128,7 @@ fun main(args: Array<String>) {
         // Read-only GPU probe on a daemon thread; the player waits for it only bounded, at each native session start.
         val gpuCapability = remember { DesktopNvidiaCapabilityMonitor.process().also { it.warmUp() } }
         val playerResult = remember(veyraComponent) { runCatching { MpvPlayer(veyraComponent = veyraComponent, gpuCapability = gpuCapability) } }
-        val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)
+        val windowState = com.bilipai.desktop.appearance.rememberDesktopWindowsUxWindowState(applicationPluginStore)
         val applicationScope = rememberCoroutineScope()
         val shutdown = remember(diagnosticLifecycle) {
             java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({ diagnosticLifecycle?.shutdownForRestore() })

@@ -68,8 +68,8 @@ internal object DesktopWindowsUxDefaults : DesktopWindowsUx {
  * permit; until then the difference is recorded here and in the slice notes.
  *
  * close() stops accepting commands and lets the worker finish the commands that are already queued. It does not
- * wait. A path that must not lose the last change (saving the window bounds at exit, slice W3) calls closeAndJoin()
- * with a timeout instead.
+ * wait. A path that must not lose the last change calls closeAndJoin() with a timeout instead. (Slice W3, the window
+ * bounds, does not use this controller: it is needed before the shell exists. See DesktopWindowsUxWindowBounds.kt.)
  */
 internal class DesktopWindowsUxController(
     private val store: DesktopPluginStore,

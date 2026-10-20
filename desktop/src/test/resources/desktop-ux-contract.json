@@ -122,7 +122,7 @@
       "min_extent": 100,
       "max_extent": 32768,
       "max_abs_origin": 100000,
-      "unit": "AWT frame bounds as java.awt.Window reports them; sanity limits only, clamping to a visible monitor is W3"
+      "unit": "AWT frame bounds as java.awt.Window reports them; sanity limits only, the clamp to a visible monitor is the section window_bounds (slice W3)"
     },
     "reset_keys": [
       "rail_mode",
@@ -2262,5 +2262,547 @@
       ]
     },
     "not_covered": ["HomeStyleSingleColumnVideoCard", "StoryVideoCard", "DynamicCard"]
+  },
+  "window_bounds": {
+    "about": "Slice W3 (spec 3.5, hunk RH8): which window bounds Main.kt opens with and which are saved. Units are AWT user space units as java.awt.Window reports them; they equal the Compose dp of the window state and are not scaled by the app zoom. Mirrored by ux_window_model.py and checked by test_ux_window_bounds.py and DesktopWindowsUxWindowBoundsModelTest. The golden rows are written by hand (ux_model.py --write leaves them alone).",
+    "default_size": [1360, 900],
+    "min_base": [960, 680],
+    "edge_tolerance": 16,
+    "settle_ms": 400,
+    "plan_kinds": ["DEFAULT", "UNVALIDATED", "KEPT", "ADJUSTED", "RELOCATED"],
+    "placements": ["FLOATING", "MAXIMIZED", "FULLSCREEN"],
+    "rules": [
+      "Nothing saved, or saved bounds that are not sane: DEFAULT, the default size, the platform picks the position.",
+      "No usable monitor is known: UNVALIDATED, the saved size raised to the minimum, the platform picks the position.",
+      "The minimum window extent is min_base times the app zoom percent (clamped to the zoom range), rounded half up; a monitor smaller than that wins, so the size never exceeds the usable area of the monitor.",
+      "The monitor is the one that shares the largest area with the saved rectangle; a tie goes to the first listed.",
+      "A rectangle that shares nothing with any monitor (touching is not sharing) is centred on the monitor marked primary, or on the first monitor when none is marked: RELOCATED.",
+      "Otherwise the position is the nearest one that keeps the window on the monitor: the top edge is never above the usable area, the left, right and bottom edges may overhang by edge_tolerance (Windows frames carry invisible borders). KEPT when nothing changed, ADJUSTED otherwise.",
+      "The maximised flag is carried through; the rectangle is the one the window returns to when it is restored.",
+      "The tracker saves the last floating rectangle; a maximised window keeps it and sets the flag; fullscreen and minimised samples are ignored; the maximised rectangle stands in only when no floating rectangle was ever seen.",
+      "A save happens settle_ms after the window state stopped changing. There is no save when the application ends: the shell freezes the plugin store first, so a change made within settle_ms of the exit is not saved (the last settled state is)."
+    ],
+    "layouts": {
+      "none": {"about": "No monitor information (a headless JVM, or AWT could not answer).", "screens": []},
+      "primary-5k2k-150": {
+        "about": "The measured primary display (displays.primary, D2): 5120x2160 px at Windows scale 150% is 3413x1440 AWT units; the usable area loses a 48 unit taskbar (assumed, a real-window item).",
+        "screens": [{"x": 0, "y": 0, "width": 3413, "height": 1392, "primary": true}]
+      },
+      "secondary-4k-150": {
+        "about": "The 4K 32 inch (displays.secondary, assumed): 3840x2160 px at 150% is 2560x1440 units, 48 unit taskbar.",
+        "screens": [{"x": 0, "y": 0, "width": 2560, "height": 1392, "primary": true}]
+      },
+      "laptop-1080-100": {
+        "about": "A 1920x1080 panel at 100% with a 48 unit taskbar.",
+        "screens": [{"x": 0, "y": 0, "width": 1920, "height": 1032, "primary": true}]
+      },
+      "laptop-1080-125": {
+        "about": "A 1920x1080 panel at Windows scale 125%: 1536x864 units, 48 unit taskbar.",
+        "screens": [{"x": 0, "y": 0, "width": 1536, "height": 816, "primary": true}]
+      },
+      "primary-5k2k-with-4k-left": {
+        "about": "The primary panel with a 4K monitor to its left: the second monitor has a negative x origin.",
+        "screens": [
+          {"x": 0, "y": 0, "width": 3413, "height": 1392, "primary": true},
+          {"x": -2560, "y": 0, "width": 2560, "height": 1392}
+        ]
+      },
+      "primary-5k2k-with-4k-right": {
+        "about": "The primary panel with a 4K monitor to its right.",
+        "screens": [
+          {"x": 0, "y": 0, "width": 3413, "height": 1392, "primary": true},
+          {"x": 3413, "y": 0, "width": 2560, "height": 1392}
+        ]
+      },
+      "primary-5k2k-with-1080-above": {
+        "about": "The primary panel with a 1080p monitor above it, shifted right: the second monitor has a negative y origin.",
+        "screens": [
+          {"x": 0, "y": 0, "width": 3413, "height": 1392, "primary": true},
+          {"x": 800, "y": -1032, "width": 1920, "height": 1032}
+        ]
+      },
+      "primary-listed-second": {
+        "about": "Monitors in the order AWT lists them when the primary one is not first.",
+        "screens": [
+          {"x": -2560, "y": 0, "width": 2560, "height": 1392},
+          {"x": 0, "y": 0, "width": 3413, "height": 1392, "primary": true}
+        ]
+      },
+      "two-1080-side-by-side": {
+        "about": "Two 1080p monitors side by side, the left one primary.",
+        "screens": [
+          {"x": 0, "y": 0, "width": 1920, "height": 1032, "primary": true},
+          {"x": 1920, "y": 0, "width": 1920, "height": 1032}
+        ]
+      },
+      "two-1080-no-primary-flag": {
+        "about": "Two 1080p monitors side by side with no monitor marked primary.",
+        "screens": [{"x": 0, "y": 0, "width": 1920, "height": 1032}, {"x": 1920, "y": 0, "width": 1920, "height": 1032}]
+      },
+      "primary-1080-with-1080-up-left": {
+        "about": "A 1080p primary with a second 1080p monitor up and to the left: negative x and negative y.",
+        "screens": [
+          {"x": 0, "y": 0, "width": 1920, "height": 1032, "primary": true},
+          {"x": -1920, "y": -1032, "width": 1920, "height": 1032}
+        ]
+      }
+    },
+    "golden_plan": [
+      {
+        "id": "no-saved-bounds",
+        "layout": "primary-5k2k-150",
+        "saved": null,
+        "expect": {
+          "kind": "DEFAULT",
+          "x": null,
+          "y": null,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": null
+        },
+        "note": "The earlier behaviour: 1360x900, the platform picks the position."
+      },
+      {
+        "id": "saved-bounds-not-sane",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 0, "y": 0, "width": 50, "height": 50, "maximized": false},
+        "expect": {
+          "kind": "DEFAULT",
+          "x": null,
+          "y": null,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": null
+        }
+      },
+      {
+        "id": "no-monitor-information",
+        "layout": "none",
+        "saved": {"x": 100, "y": 80, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "UNVALIDATED",
+          "x": null,
+          "y": null,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": null
+        }
+      },
+      {
+        "id": "no-monitor-information-small-and-maximised",
+        "layout": "none",
+        "saved": {"x": 100, "y": 80, "width": 640, "height": 480, "maximized": true},
+        "expect": {
+          "kind": "UNVALIDATED",
+          "x": null,
+          "y": null,
+          "width": 1200,
+          "height": 850,
+          "maximized": true,
+          "screen": null
+        }
+      },
+      {
+        "id": "inside-the-5k2k-panel",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 400, "y": 200, "width": 1360, "height": 900, "maximized": false},
+        "expect": {"kind": "KEPT", "x": 400, "y": 200, "width": 1360, "height": 900, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "maximised-flag-is-carried",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 400, "y": 200, "width": 1360, "height": 900, "maximized": true},
+        "expect": {"kind": "KEPT", "x": 400, "y": 200, "width": 1360, "height": 900, "maximized": true, "screen": 0}
+      },
+      {
+        "id": "bottom-edge-pulled-up",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 400, "y": 600, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": 400,
+          "y": 508,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "right-edge-pulled-left",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 3000, "y": 100, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": 2069,
+          "y": 100,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "invisible-border-on-the-left-is-tolerated",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": -7, "y": 0, "width": 1360, "height": 900, "maximized": false},
+        "expect": {"kind": "KEPT", "x": -7, "y": 0, "width": 1360, "height": 900, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "snapped-right-half-is-restored-7-units-shorter",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 1700, "y": 0, "width": 1720, "height": 1399, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": 1700,
+          "y": 0,
+          "width": 1720,
+          "height": 1392,
+          "maximized": false,
+          "screen": 0
+        },
+        "note": "A snapped window is as tall as the usable area plus the invisible bottom border; the size is capped at the usable area."
+      },
+      {
+        "id": "title-bar-above-the-monitor",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 400, "y": -300, "width": 1360, "height": 900, "maximized": false},
+        "expect": {"kind": "ADJUSTED", "x": 400, "y": 0, "width": 1360, "height": 900, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "left-overhang-beyond-the-tolerance",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": -300, "y": 100, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": -16,
+          "y": 100,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "larger-than-the-monitor",
+        "layout": "laptop-1080-100",
+        "saved": {"x": 0, "y": 0, "width": 3000, "height": 1800, "maximized": false},
+        "expect": {"kind": "ADJUSTED", "x": 0, "y": 0, "width": 1920, "height": 1032, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "smaller-than-the-minimum-at-125",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 500, "y": 300, "width": 640, "height": 480, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": 500,
+          "y": 300,
+          "width": 1200,
+          "height": 850,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "minimum-follows-the-zoom-and-yields-to-the-monitor",
+        "layout": "laptop-1080-100",
+        "zoom_percent": 200,
+        "saved": {"x": 100, "y": 100, "width": 1000, "height": 700, "maximized": false},
+        "expect": {"kind": "ADJUSTED", "x": 16, "y": 16, "width": 1920, "height": 1032, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "second-monitor-on-the-left-negative-x",
+        "layout": "primary-5k2k-with-4k-left",
+        "saved": {"x": -2000, "y": 100, "width": 1360, "height": 900, "maximized": false},
+        "expect": {"kind": "KEPT", "x": -2000, "y": 100, "width": 1360, "height": 900, "maximized": false, "screen": 1}
+      },
+      {
+        "id": "second-monitor-above-negative-y",
+        "layout": "primary-5k2k-with-1080-above",
+        "saved": {"x": 900, "y": -900, "width": 1360, "height": 900, "maximized": false},
+        "expect": {"kind": "KEPT", "x": 900, "y": -900, "width": 1360, "height": 900, "maximized": false, "screen": 1}
+      },
+      {
+        "id": "monitor-up-and-left-negative-x-and-y",
+        "layout": "primary-1080-with-1080-up-left",
+        "zoom_percent": 100,
+        "saved": {"x": -1900, "y": -1000, "width": 960, "height": 700, "maximized": false},
+        "expect": {"kind": "KEPT", "x": -1900, "y": -1000, "width": 960, "height": 700, "maximized": false, "screen": 1}
+      },
+      {
+        "id": "monitor-vanished-on-the-right",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 3600, "y": 200, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "RELOCATED",
+          "x": 1026,
+          "y": 246,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "monitor-vanished-on-the-left",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": -2000, "y": 100, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "RELOCATED",
+          "x": 1026,
+          "y": 246,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "monitor-vanished-keeps-the-maximised-flag",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 3600, "y": 200, "width": 1360, "height": 900, "maximized": true},
+        "expect": {
+          "kind": "RELOCATED",
+          "x": 1026,
+          "y": 246,
+          "width": 1360,
+          "height": 900,
+          "maximized": true,
+          "screen": 0
+        }
+      },
+      {
+        "id": "monitor-vanished-and-the-window-is-too-big",
+        "layout": "laptop-1080-100",
+        "saved": {"x": 3000, "y": 0, "width": 2400, "height": 1300, "maximized": false},
+        "expect": {"kind": "RELOCATED", "x": 0, "y": 0, "width": 1920, "height": 1032, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "straddling-two-monitors-the-larger-share-wins",
+        "layout": "primary-5k2k-with-4k-right",
+        "saved": {"x": 3000, "y": 100, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": 3397,
+          "y": 100,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 1
+        }
+      },
+      {
+        "id": "equal-shares-go-to-the-first-listed-monitor",
+        "layout": "two-1080-side-by-side",
+        "zoom_percent": 100,
+        "saved": {"x": 1440, "y": 100, "width": 960, "height": 700, "maximized": false},
+        "expect": {"kind": "ADJUSTED", "x": 976, "y": 100, "width": 960, "height": 700, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "relocation-goes-to-the-primary-monitor-listed-second",
+        "layout": "primary-listed-second",
+        "saved": {"x": 9000, "y": 0, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "RELOCATED",
+          "x": 1026,
+          "y": 246,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 1
+        }
+      },
+      {
+        "id": "relocation-falls-back-to-the-first-monitor",
+        "layout": "two-1080-no-primary-flag",
+        "saved": {"x": 9000, "y": 0, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "RELOCATED",
+          "x": 280,
+          "y": 66,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "touching-the-monitor-edge-is-not-overlap",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 3413, "y": 100, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "RELOCATED",
+          "x": 1026,
+          "y": 246,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "one-unit-inside-the-monitor-counts",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": 3412, "y": 100, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": 2069,
+          "y": 100,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "4k-32-inch-at-150-percent",
+        "layout": "secondary-4k-150",
+        "saved": {"x": 1600, "y": 800, "width": 1360, "height": 900, "maximized": false},
+        "expect": {
+          "kind": "ADJUSTED",
+          "x": 1216,
+          "y": 508,
+          "width": 1360,
+          "height": 900,
+          "maximized": false,
+          "screen": 0
+        }
+      },
+      {
+        "id": "huge-but-sane-saved-values",
+        "layout": "primary-5k2k-150",
+        "saved": {"x": -99999, "y": -99999, "width": 32768, "height": 32768, "maximized": false},
+        "expect": {"kind": "RELOCATED", "x": 0, "y": 0, "width": 3413, "height": 1392, "maximized": false, "screen": 0}
+      },
+      {
+        "id": "default-size-on-a-125-percent-laptop",
+        "layout": "laptop-1080-125",
+        "saved": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": false},
+        "expect": {"kind": "ADJUSTED", "x": 100, "y": 16, "width": 1360, "height": 816, "maximized": false, "screen": 0},
+        "note": "The default 1360x900 does not fit a 1920x1080 panel at Windows scale 125%: the height follows the monitor."
+      }
+    ],
+    "minimum_extent": [
+      {"percent": 10, "width": 480, "height": 340},
+      {"percent": 50, "width": 480, "height": 340},
+      {"percent": 51, "width": 490, "height": 347},
+      {"percent": 53, "width": 509, "height": 360},
+      {"percent": 100, "width": 960, "height": 680},
+      {"percent": 125, "width": 1200, "height": 850},
+      {"percent": 135, "width": 1296, "height": 918},
+      {"percent": 200, "width": 1920, "height": 1360},
+      {"percent": 999, "width": 1920, "height": 1360}
+    ],
+    "golden_tracker": [
+      {"id": "no-samples-and-no-seed", "seed": null, "samples": [], "expect": null},
+      {
+        "id": "no-samples-returns-the-seed",
+        "seed": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": false},
+        "samples": [],
+        "expect": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": false}
+      },
+      {
+        "id": "insane-seed-is-dropped",
+        "seed": {"x": 0, "y": 0, "width": 10, "height": 10, "maximized": true},
+        "samples": [],
+        "expect": null
+      },
+      {
+        "id": "floating-sample-becomes-the-bounds",
+        "seed": null,
+        "samples": [{"placement": "FLOATING", "minimized": false, "x": 100, "y": 50, "width": 1400, "height": 950}],
+        "expect": {"x": 100, "y": 50, "width": 1400, "height": 950, "maximized": false}
+      },
+      {
+        "id": "moving-updates-the-bounds",
+        "seed": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": false},
+        "samples": [{"placement": "FLOATING", "minimized": false, "x": 200, "y": 60, "width": 1360, "height": 900}],
+        "expect": {"x": 200, "y": 60, "width": 1360, "height": 900, "maximized": false}
+      },
+      {
+        "id": "maximise-keeps-the-floating-rectangle",
+        "seed": null,
+        "samples": [
+          {"placement": "FLOATING", "minimized": false, "x": 100, "y": 50, "width": 1400, "height": 950},
+          {"placement": "MAXIMIZED", "minimized": false, "x": -8, "y": -8, "width": 3429, "height": 1400}
+        ],
+        "expect": {"x": 100, "y": 50, "width": 1400, "height": 950, "maximized": true}
+      },
+      {
+        "id": "restore-down-clears-the-flag",
+        "seed": null,
+        "samples": [
+          {"placement": "FLOATING", "minimized": false, "x": 100, "y": 50, "width": 1400, "height": 950},
+          {"placement": "MAXIMIZED", "minimized": false, "x": -8, "y": -8, "width": 3429, "height": 1400},
+          {"placement": "FLOATING", "minimized": false, "x": 300, "y": 200, "width": 1300, "height": 850}
+        ],
+        "expect": {"x": 300, "y": 200, "width": 1300, "height": 850, "maximized": false}
+      },
+      {
+        "id": "fullscreen-is-ignored",
+        "seed": null,
+        "samples": [
+          {"placement": "FLOATING", "minimized": false, "x": 100, "y": 50, "width": 1400, "height": 950},
+          {"placement": "FULLSCREEN", "minimized": false, "x": 0, "y": 0, "width": 3413, "height": 1440}
+        ],
+        "expect": {"x": 100, "y": 50, "width": 1400, "height": 950, "maximized": false}
+      },
+      {
+        "id": "fullscreen-from-maximised-keeps-maximised",
+        "seed": null,
+        "samples": [
+          {"placement": "FLOATING", "minimized": false, "x": 100, "y": 50, "width": 1400, "height": 950},
+          {"placement": "MAXIMIZED", "minimized": false, "x": -8, "y": -8, "width": 3429, "height": 1400},
+          {"placement": "FULLSCREEN", "minimized": false, "x": 0, "y": 0, "width": 3413, "height": 1440}
+        ],
+        "expect": {"x": 100, "y": 50, "width": 1400, "height": 950, "maximized": true}
+      },
+      {
+        "id": "minimised-sample-is-ignored",
+        "seed": null,
+        "samples": [
+          {"placement": "FLOATING", "minimized": false, "x": 100, "y": 50, "width": 1400, "height": 950},
+          {"placement": "FLOATING", "minimized": true, "x": -32000, "y": -32000, "width": 160, "height": 28}
+        ],
+        "expect": {"x": 100, "y": 50, "width": 1400, "height": 950, "maximized": false}
+      },
+      {
+        "id": "maximised-start-keeps-the-saved-rectangle",
+        "seed": {"x": 400, "y": 200, "width": 1360, "height": 900, "maximized": true},
+        "samples": [{"placement": "MAXIMIZED", "minimized": false, "x": -8, "y": -8, "width": 3429, "height": 1400}],
+        "expect": {"x": 400, "y": 200, "width": 1360, "height": 900, "maximized": true}
+      },
+      {
+        "id": "maximised-without-any-rectangle-falls-back-to-the-sample",
+        "seed": null,
+        "samples": [{"placement": "MAXIMIZED", "minimized": false, "x": -8, "y": -8, "width": 3429, "height": 1400}],
+        "expect": {"x": -8, "y": -8, "width": 3429, "height": 1400, "maximized": true}
+      },
+      {
+        "id": "a-later-floating-sample-replaces-the-fallback",
+        "seed": null,
+        "samples": [
+          {"placement": "MAXIMIZED", "minimized": false, "x": -8, "y": -8, "width": 3429, "height": 1400},
+          {"placement": "FLOATING", "minimized": false, "x": 100, "y": 50, "width": 1400, "height": 950},
+          {"placement": "MAXIMIZED", "minimized": false, "x": -8, "y": -8, "width": 3429, "height": 1400}
+        ],
+        "expect": {"x": 100, "y": 50, "width": 1400, "height": 950, "maximized": true}
+      },
+      {
+        "id": "insane-floating-sample-is-ignored",
+        "seed": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": true},
+        "samples": [{"placement": "FLOATING", "minimized": false, "x": 0, "y": 0, "width": 0, "height": 0}],
+        "expect": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": true}
+      },
+      {
+        "id": "insane-maximised-sample-sets-the-flag-only",
+        "seed": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": false},
+        "samples": [{"placement": "MAXIMIZED", "minimized": false, "x": 0, "y": 0, "width": 0, "height": 0}],
+        "expect": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": true}
+      }
+    ]
   }
 }
