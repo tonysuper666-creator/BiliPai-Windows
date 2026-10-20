@@ -1,0 +1,123 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ControlCenterMotionSpec.kt",
+      "filename": "ControlCenterMotionSpec.kt",
+      "bytes": 1403,
+      "sha256": "9c53cdc3bd36e97c03a068c20b55f3559d49774a1a0c0afe8924e12bb91eb82d",
+      "gitBlob": "aeff2ba98a376673cbe8c2e0692bf15728647c6f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoControlCenterMotion.kt",
+      "filename": "VideoControlCenterMotion.kt",
+      "bytes": 7080,
+      "sha256": "3e9dc183d0e236c725e9fcbaf4756e23dfc84729f6c95715be3edff36a55a4c9",
+      "gitBlob": "1ae121c93d156c1ce4ab9baa8bcc2d13ef061f1f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
+      "filename": "DanmakuSettingsPanelHost.kt",
+      "bytes": 5882,
+      "sha256": "a71aa2ac5375a7fc6e593ff18235c8927230abe79ff6d91e2abfe7547544d04f",
+      "gitBlob": "a27989bac8f64a3b4587871e124d27ad9ca655e3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelAppearance.kt",
+      "filename": "DanmakuSettingsPanelAppearance.kt",
+      "bytes": 3361,
+      "sha256": "bdc54d822235cfc7653f1f4b9ade400fa5b71527d4c729a39e60669328711159",
+      "gitBlob": "d5d98544e1d36a875b742999e41e0c3ec45f68b3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+      "filename": "LandscapeSidePanel.kt",
+      "bytes": 9369,
+      "sha256": "d3771eb072deda5a40c44078664f78b8217f4439d7ea5c1702d9eb80abcbab90",
+      "gitBlob": "e31912c0eb04bc2783c04f3d8e7048bb76ec7e83"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/DanmakuControlCenterMotionPolicyTest.kt",
+      "filename": "DanmakuControlCenterMotionPolicyTest.kt",
+      "bytes": 1182,
+      "sha256": "b8826962af0187653e727102bc4304e64f7d0235bdb38eb524cc16d9cea75df8",
+      "gitBlob": "ab1d27a0d774c6f7ba0d3af73b70dac6c57e28c8"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/VideoControlCenterMotionTest.kt",
+      "filename": "VideoControlCenterMotionTest.kt",
+      "bytes": 2073,
+      "sha256": "d77ed7c2351070fd93b66e80f4e1b9100a6359ed19e2602500d0fd8e9e5c38ba",
+      "gitBlob": "2d8970f628d708b0432912d9c7e777dc92b36989"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "ControlCenterMotionSpec.kt, VideoControlCenterMotion.kt, DanmakuSettingsPanelHost.kt, DanmakuSettingsPanelAppearance.kt and LandscapeSidePanel.kt exactly as they stand at v0.4.6, plus the two original tests of the first four. The overlay and settings panel hunks are not archived: they are counted slices of the v0.4.6 blobs named in emittedHunks.",
+  "purpose": "Roadmap slice plr-control-center-motion (upstream 0.3.8 134b4f9c and 0.4.2 6b789650). The vendored player overlay (Bangumi, offline, the retained ordinary-video section) gets the drawer width sync, the shared spring clock and the control-center groups; the Windows desktop leaf is untouched.",
+  "producerPredecessors": [
+    {
+      "replacedBy": "LandscapeSidePanel.kt",
+      "predecessorArchive": "desktop/upstream-slices/v037-player-closure/LandscapeSidePanel.kt",
+      "predecessorSha256": "f7865f21408545767fbeeed0930deb28d8df70da9bff07239d74de24f89b8a04",
+      "producer": "desktop/tools/extract-upstream-video-player-full-controls.py (read() chain, after v046_player_overlay)"
+    }
+  ],
+  "emittedHunks": {
+    "overlay": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "upstreamBlob": "f2255e332befc2437daa3c5ae1ed8a78ce04dbc3",
+      "hunks": 13,
+      "appliedBy": "emit() of the producer, last layer of VideoPlayerOverlay.kt"
+    },
+    "settingsPanel": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+      "upstreamBlob": "590790ab86a8d26f93fc3788c41192a9b31dda05",
+      "hunks": 3,
+      "upstreamGroupItems": 21,
+      "windowsGroupItems": 1,
+      "appliedBy": "emit() of the producer, last layer of VideoSettingsPanel.kt"
+    }
+  },
+  "windowsAdaptations": [
+    {
+      "file": "DanmakuSettingsPanelHost.kt",
+      "label": "the host dialog is the owned Windows player dialog that stays above the native mpv canvas",
+      "before": "import androidx.compose.ui.window.Dialog\n",
+      "after": "import com.bilipai.desktop.ui.DesktopWindowsDanmakuDialog as Dialog\n"
+    }
+  ],
+  "originalTestEdits": [
+    {
+      "file": "VideoControlCenterMotionTest.kt",
+      "label": "upwardPullAddsResistanceOnlyAfterFullyOpen: 1.14f -> 1.4f",
+      "before": "        motion.dragBy(0.4f)\n        assertEquals(1.14f, motion.progress, absoluteTolerance = 0.0001f)\n",
+      "after": "        motion.dragBy(0.4f)\n        // Windows port: dragBy at v0.4.6 adds the delta (1f + 0.4f) up to the 1.5f clamp; the upstream literal 1.14f\n        // assumed the 0.35 resistance of ControlCenterMotionSpec.dragProgress.\n        assertEquals(1.4f, motion.progress, absoluteTolerance = 0.0001f)\n"
+    },
+    {
+      "file": "VideoControlCenterMotionTest.kt",
+      "label": "overExpansionSettlesOpenAndCanBeReversedWithoutADeadZone: first 1.25f -> 1.5f",
+      "before": "        motion.dragBy(20f)\n        assertEquals(1.25f, motion.progress)\n",
+      "after": "        motion.dragBy(20f)\n        // Windows port: the v0.4.6 clamp is 1.5f; the upstream literal 1.25f is 1f + ControlCenterMotionSpec.MaxOverExpansion.\n        assertEquals(1.5f, motion.progress)\n"
+    },
+    {
+      "file": "VideoControlCenterMotionTest.kt",
+      "label": "overExpansionSettlesOpenAndCanBeReversedWithoutADeadZone: reversal 1f -> 1.25f",
+      "before": "        motion.dragBy(-0.25f)\n        assertEquals(1f, motion.progress)\n",
+      "after": "        motion.dragBy(-0.25f)\n        // Windows port: 1.5f - 0.25f; the upstream literal 1f followed from the 1.25f cap.\n        assertEquals(1.25f, motion.progress)\n"
+    }
+  ],
+  "notCarried": [
+    "DanmakuSettingsPanel.kt: the Windows panel keeps its own dialog body; DanmakuSettingsPanelHost, rememberDanmakuPanelColors and DanmakuSyncButton are carried but not called, because adopting them changes the danmaku settings presentation of the desktop leaf (owned dialog window, glass colours).",
+    "VideoPlayerSection.kt (animated drawer width provider, endDrawerCloseProgress state, 134b4f9c): the retained ordinary-video section keeps passing endDrawerReservedWidth, which the carried contract turns into the default provider.",
+    "VideoSettingsPanel.kt f31c3b83 text hunk and the other v0.3.7 to v0.4.6 differences of that file: owned by other slices.",
+    "PortraitFullscreenOverlay.kt (6b789650): already the whole v0.4.6 file through plr-portrait-story-pager-repin.",
+    "TopControlBar.kt title capsule shrink (134b4f9c): already the whole v0.4.6 file through plr-overlay-and-controlbar-repin."
+  ],
+  "fullStableParityQualified": false
+}

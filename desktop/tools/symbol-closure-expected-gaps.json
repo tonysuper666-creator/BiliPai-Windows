@@ -126,11 +126,6 @@
         },
         {
           "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.video.ui.components.landscapeEndDrawerPadding"
-        },
-        {
-          "scope": "carried",
           "check": "unresolved-qualified",
           "symbol": "com.android.purebilibili.core.store.StartupAnimationStyle"
         },

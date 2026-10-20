@@ -47,7 +47,8 @@ def read(rel):
  from v037_player_closure import selected_source as closure_source
  from v046_episode_selector import selected_source as episode_selected_source
  from v046_player_overlay import chain_source as overlay_source
- return overlay_source(REPO,path,episode_selected_source(path,closure_source(path,selected_source(path,SOURCES[path]['text'])),REPO))
+ from v046_control_center_motion import chain_source as control_center_source
+ return control_center_source(REPO,path,overlay_source(REPO,path,episode_selected_source(path,closure_source(path,selected_source(path,SOURCES[path]['text'])),REPO)))
 def emit(rel,t,origin,mode):
  from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
  t=apply_follow_confirmation(REPO,'com/android/purebilibili/'+rel,t,OUTPUT)
@@ -56,6 +57,10 @@ def emit(rel,t,origin,mode):
   # confirmation, so their proofs still describe the text they were authored against): the page sheet gets the cover.
   from v046_episode_selector import OVERLAY_PAGES_BEFORE,OVERLAY_PAGES_AFTER,CALL_SITE_LABELS
   t=adapt(t,OVERLAY_PAGES_BEFORE,OVERLAY_PAGES_AFTER,CALL_SITE_LABELS['overlay'])
+ # Roadmap plr-control-center-motion, the last layer of the overlay and of the settings panel (counted hunks of the v0.4.6
+ # blobs: the end drawer width sync and motion groups, the glass sheet header and its motion groups).
+ from v046_control_center_motion import advance_emitted as advance_control_center
+ t,control_center_rows=advance_control_center(rel,t);ADAPT.extend(control_center_rows)
  canonical=SOURCES.get(BASE+origin,{}).get('text')
  direct=mode=='direct-complete-original' and canonical==t
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)
@@ -511,6 +516,10 @@ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
  emit(rel,t,rel,'complete-original-overlay-all-menus-cast-reload-diagnostic-drawer-real-mpv-platform-adapt')
  rel='feature/video/screen/VideoDetailPlatformPolicy.kt';t=read(rel)
  emit('feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicy.kt','package com.android.purebilibili.feature.video.screen\n'+selector.declarations(parser,t,['shouldApplyStatusBarPaddingToVideoPlayerChrome','VideoDetailSystemBarsVisibilityPolicy','resolveVideoDetailSystemBarsVisibilityPolicy'])+'\n',rel,'complete-original-inset-policy')
+ # Roadmap plr-control-center-motion: the four new v0.4.2 files the whole side panel, the motion groups and the panel
+ # settings reference (the danmaku host is carried with the owned Windows dialog and is not called by any Windows body).
+ from v046_control_center_motion import definer_files as control_center_definers
+ for rel,text,mode in control_center_definers(REPO):emit(rel,text,rel,mode)
 def generate(repo,output,standalone=False,test_output=None):
  global REPO,OUTPUT,STANDALONE,parser,selector,SOURCES,OUTPUTS,ADAPT,REFERENCES
  REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone
@@ -518,6 +527,8 @@ def generate(repo,output,standalone=False,test_output=None):
  validate_episode_selector_outputs(REPO,OUTPUT,test_output)
  from v046_player_overlay import validate_outputs as validate_player_overlay
  validate_player_overlay(REPO,OUTPUT,test_output)
+ from v046_control_center_motion import validate_outputs as validate_control_center
+ validate_control_center(REPO,OUTPUT,test_output)
  SOURCES={};OUTPUTS=[];ADAPT=[];REFERENCES=[]
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT
@@ -563,6 +574,8 @@ def generate(repo,output,standalone=False,test_output=None):
  emit_window_modal_blur(OUTPUT,OUTPUTS)
  from v046_player_overlay import write_proofs as write_player_overlay_proofs
  write_player_overlay_proofs(REPO,OUTPUT)
+ from v046_control_center_motion import write_proofs as write_control_center_proofs
+ write_control_center_proofs(REPO,OUTPUT)
  save(OUTPUT/'v037-complete-controls-source-readback.json',
    dict(outputs=OUTPUTS,sources=SOURCES,references=REFERENCES,adaptations=ADAPT,
         sourceQualified=False,mainCompiled=False,pixelsValidated=False))
@@ -573,6 +586,8 @@ def generate(repo,output,standalone=False,test_output=None):
   emit_episode_selector_tests(REPO,Path(test_output))
   from v046_player_overlay import emit_original_tests as emit_player_overlay_tests
   emit_player_overlay_tests(REPO,Path(test_output))
+  from v046_control_center_motion import emit_original_tests as emit_control_center_tests
+  emit_control_center_tests(REPO,Path(test_output))
 if __name__=='__main__':
  test_output=Path(sys.argv[sys.argv.index('--test-output')+1]) if '--test-output' in sys.argv else None
  generate(Path(sys.argv[1]),Path(sys.argv[2]),'--standalone' in sys.argv[3:],test_output)

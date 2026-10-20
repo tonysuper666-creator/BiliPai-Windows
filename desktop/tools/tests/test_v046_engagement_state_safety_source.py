@@ -73,9 +73,15 @@ def body_of(relative, text):
 def without_cover_edit(relative, text):
     """lst-episode-selector-collection appends the v0.4.6 cover argument of the player overlay's part selector call as the
     LAST layer of that output, after the follow confirmation, so the receipt of this module describes the text without it.
-    Peel exactly that one edit (and prove it is there once) before the receipt is checked; every other output is unchanged."""
+    Peel exactly that one edit (and prove it is there once) before the receipt is checked; every other output is unchanged.
+    plr-control-center-motion applies its thirteen end drawer hunks after that edit (the very last layer of the overlay),
+    so they are peeled first, each proven present exactly once."""
     if relative != follow.OVERLAY:
         return text
+    import v046_control_center_motion as control_center
+    for hunk in reversed(control_center.OVERLAY_HUNKS):
+        assert text.count(hunk['after']) == 1
+        text = text.replace(hunk['after'], hunk['before'], 1)
     import v046_episode_selector as episode
     assert text.count(episode.OVERLAY_PAGES_AFTER) == 1 and text.count(episode.OVERLAY_PAGES_BEFORE) == 0
     return text.replace(episode.OVERLAY_PAGES_AFTER, episode.OVERLAY_PAGES_BEFORE)

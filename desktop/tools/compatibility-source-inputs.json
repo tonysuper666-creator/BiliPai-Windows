@@ -170,7 +170,8 @@
     "desktop/upstream-slices/v046-theme-palette-schedule",
     "desktop/upstream-slices/v046-portrait-pager",
     "desktop/upstream-slices/v046-space-content-pager",
-    "desktop/upstream-slices/v046-wallpaper-foundation"
+    "desktop/upstream-slices/v046-wallpaper-foundation",
+    "desktop/upstream-slices/v046-control-center-motion"
   ],
   "archives": [
     {
@@ -7727,6 +7728,65 @@
           "sha256": "7b8e564a83bce33c67283216493c9fd535df3231f737a2c83c68fa82ab58a9be",
           "hashNormalization": "raw",
           "blob": "02ceb77c55003f6b5f781f1b0f9142b797e65f97"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-control-center-motion",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/ControlCenterMotionSpec.kt",
+          "sha256": "9c53cdc3bd36e97c03a068c20b55f3559d49774a1a0c0afe8924e12bb91eb82d",
+          "hashNormalization": "raw",
+          "blob": "aeff2ba98a376673cbe8c2e0692bf15728647c6f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/DanmakuControlCenterMotionPolicyTest.kt",
+          "sha256": "b8826962af0187653e727102bc4304e64f7d0235bdb38eb524cc16d9cea75df8",
+          "hashNormalization": "raw",
+          "blob": "ab1d27a0d774c6f7ba0d3af73b70dac6c57e28c8"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/DanmakuSettingsPanelAppearance.kt",
+          "sha256": "bdc54d822235cfc7653f1f4b9ade400fa5b71527d4c729a39e60669328711159",
+          "hashNormalization": "raw",
+          "blob": "d5d98544e1d36a875b742999e41e0c3ec45f68b3"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/DanmakuSettingsPanelHost.kt",
+          "sha256": "a71aa2ac5375a7fc6e593ff18235c8927230abe79ff6d91e2abfe7547544d04f",
+          "hashNormalization": "raw",
+          "blob": "a27989bac8f64a3b4587871e124d27ad9ca655e3"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/LandscapeSidePanel.kt",
+          "sha256": "d3771eb072deda5a40c44078664f78b8217f4439d7ea5c1702d9eb80abcbab90",
+          "hashNormalization": "raw",
+          "blob": "e31912c0eb04bc2783c04f3d8e7048bb76ec7e83"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/manifest.json",
+          "sha256": "2a1114a91b8471e07fced3697f13116628bac6e211e0679a96ba7153ef3aff33",
+          "hashNormalization": "raw",
+          "blob": "3c36bd6dbc10398bed54404f846143f91a32728b"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/VideoControlCenterMotion.kt",
+          "sha256": "3e9dc183d0e236c725e9fcbaf4756e23dfc84729f6c95715be3edff36a55a4c9",
+          "hashNormalization": "raw",
+          "blob": "1ae121c93d156c1ce4ab9baa8bcc2d13ef061f1f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-control-center-motion/VideoControlCenterMotionTest.kt",
+          "sha256": "d77ed7c2351070fd93b66e80f4e1b9100a6359ed19e2602500d0fd8e9e5c38ba",
+          "hashNormalization": "raw",
+          "blob": "2d8970f628d708b0432912d9c7e777dc92b36989"
         }
       ]
     }
@@ -20413,6 +20473,111 @@
       "referenceOnly": true,
       "partialReuse": false,
       "usedScope": "Reference copy of the Android home wallpaper adjustment sheet, never emitted: it needs the v0.4.6 HomeWallpaperBackdrop media load states, the request based WallpaperPaletteStore and WallpaperDeviceTabRow. The Windows-owned sheet in desktop/src keeps its exact public parameter list, which a source test compares against this file."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ControlCenterMotionSpec.kt",
+      "localPath": "desktop/upstream-slices/v046-control-center-motion/ControlCenterMotionSpec.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "aeff2ba98a376673cbe8c2e0692bf15728647c6f",
+      "sha256": "9c53cdc3bd36e97c03a068c20b55f3559d49774a1a0c0afe8924e12bb91eb82d",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-control-center-motion"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoControlCenterMotion.kt",
+      "localPath": "desktop/upstream-slices/v046-control-center-motion/VideoControlCenterMotion.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "1ae121c93d156c1ce4ab9baa8bcc2d13ef061f1f",
+      "sha256": "3e9dc183d0e236c725e9fcbaf4756e23dfc84729f6c95715be3edff36a55a4c9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-control-center-motion"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelHost.kt",
+      "localPath": "desktop/upstream-slices/v046-control-center-motion/DanmakuSettingsPanelHost.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "a27989bac8f64a3b4587871e124d27ad9ca655e3",
+      "sha256": "a71aa2ac5375a7fc6e593ff18235c8927230abe79ff6d91e2abfe7547544d04f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-control-center-motion"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanelAppearance.kt",
+      "localPath": "desktop/upstream-slices/v046-control-center-motion/DanmakuSettingsPanelAppearance.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d5d98544e1d36a875b742999e41e0c3ec45f68b3",
+      "sha256": "bdc54d822235cfc7653f1f4b9ade400fa5b71527d4c729a39e60669328711159",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-control-center-motion"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt",
+      "localPath": "desktop/upstream-slices/v046-control-center-motion/LandscapeSidePanel.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e31912c0eb04bc2783c04f3d8e7048bb76ec7e83",
+      "sha256": "d3771eb072deda5a40c44078664f78b8217f4439d7ea5c1702d9eb80abcbab90",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-control-center-motion"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/DanmakuControlCenterMotionPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-control-center-motion/DanmakuControlCenterMotionPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ab1d27a0d774c6f7ba0d3af73b70dac6c57e28c8",
+      "sha256": "b8826962af0187653e727102bc4304e64f7d0235bdb38eb524cc16d9cea75df8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-control-center-motion"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/components/VideoControlCenterMotionTest.kt",
+      "localPath": "desktop/upstream-slices/v046-control-center-motion/VideoControlCenterMotionTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2d8970f628d708b0432912d9c7e777dc92b36989",
+      "sha256": "d77ed7c2351070fd93b66e80f4e1b9100a6359ed19e2602500d0fd8e9e5c38ba",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-control-center-motion"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
     }
   ],
   "buildStandaloneInputs": [

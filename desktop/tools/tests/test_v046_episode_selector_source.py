@@ -527,8 +527,14 @@ class GeneratedOutputTests(unittest.TestCase):
         removed, added = changed_lines(text_of(self.base('controls', OVERLAY_OUTPUT)), overlay)
         self.assertEqual([], removed)
         self.assertEqual(['                            coverUrl = coverUrl,'], added)
-        # Peeling the one added line gives back exactly the text the proof recorded as its output.
-        self.assertEqual(proof['outputSHA256'], sha(overlay.replace(episode.OVERLAY_PAGES_AFTER, episode.OVERLAY_PAGES_BEFORE)))
+        # Peeling the one added line gives back exactly the text the proof recorded as its output. The control-center
+        # hunks (plr-control-center-motion) are applied after this edit, so they are peeled first.
+        import v046_control_center_motion as control_center
+        peeled = overlay
+        for hunk in reversed(control_center.OVERLAY_HUNKS):
+            self.assertEqual(1, peeled.count(hunk['after']), hunk['label'])
+            peeled = peeled.replace(hunk['after'], hunk['before'], 1)
+        self.assertEqual(proof['outputSHA256'], sha(peeled.replace(episode.OVERLAY_PAGES_AFTER, episode.OVERLAY_PAGES_BEFORE)))
         readback = json.loads(text_of(self.real('controls', 'v037-complete-controls-source-readback.json')))
         row = next(item for item in readback['outputs'] if item['path'] == PAGES_OUTPUT)
         self.assertEqual('complete-original-v046-pages-selector-global-context-adapt', row['mode'])

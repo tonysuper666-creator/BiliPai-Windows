@@ -2808,6 +2808,8 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
     inputs.file("tools/v046_player_overlay.py")
     inputs.file("tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v046-player-overlay")
+    inputs.file("tools/v046_control_center_motion.py")
+    inputs.dir("upstream-slices/v046-control-center-motion")
 
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalOfflinePlayer)
     workingDir(projectDir)
