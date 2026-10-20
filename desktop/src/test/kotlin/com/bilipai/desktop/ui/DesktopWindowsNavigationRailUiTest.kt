@@ -172,8 +172,8 @@ class DesktopWindowsNavigationRailUiTest {
         try {
             fixture.settle()
             for (name in listOf("BiliPai", "搜索", "下载与离线")) assertTrue(fixture.hasText(name), name)
-            // The hint is drawn only while DESKTOP_RAIL_SHORTCUT_HINTS is true (slice S2 turns it on with the shortcut host); from then
-            // on this line proves that the drawn hint stays out of the semantics, and until then it proves that no hint is drawn.
+            // The hint is drawn while DESKTOP_RAIL_SHORTCUT_HINTS is true (slice S2 turned it on with the shortcut host); this line
+            // proves that the drawn hint stays out of the semantics, so the accessible name of the row stays the word alone.
             assertFalse(fixture.hasText(DesktopShellStrings.SEARCH_HINT), "the Ctrl K hint is not part of the semantics")
             assertEquals(1, fixture.described(DesktopShellStrings.RAIL_NAME).size, "the container is named as the main navigation")
             assertEquals(rows.size, fixture.withRole(Role.Tab).size, "one tab node per row")

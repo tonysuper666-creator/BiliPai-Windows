@@ -580,22 +580,34 @@ class TipsTest(unittest.TestCase):
         self.assertIn("table: List<DesktopShellShortcut> = DESKTOP_SHELL_SHORTCUTS", list_text)
         self.assertIn("table: List<DesktopPlayerShortcut> = DESKTOP_PLAYER_SHORTCUTS", list_text)
 
-    def test_the_planned_keys_note_is_shown_once_above_all_three_groups(self):
-        # The lists hold keys and a right-click menu that later slices wire (V6, H2, V5), so the page says so once, first.
+    def test_the_general_planned_keys_note_is_gone_and_the_player_group_carries_its_own_note(self):
+        # Slice S2 made the shell keys real, so the note that said "not every item is available yet" above the three groups is deleted
+        # (it was the NOTE of slice X3). What is left to say is narrower and sits under the player group: the four player targets
+        # (video info card, subtitle flyout, context menu, shortcut sheet) that the new player interface adds.
         text = sm.read(sm.TIPS_SHORTCUTS_KT)
         code = source.mask_kotlin(text)
-        self.assertEqual(1, code.count("DesktopWindowsTipsStrings.NOTE"))
-        self.assertLess(code.index("DesktopWindowsTipsStrings.NOTE"), code.index("DesktopWindowsSettingsGroup("))
+        self.assertEqual(0, len(re.findall(r"\bDesktopWindowsTipsStrings\.NOTE\b", code)))
         body = code[code.index("internal fun DesktopWindowsTipsShortcuts()"):]
         self.assertEqual(3, len(re.findall(r"DesktopWindowsSettingsGroup\(", body)))
-        self.assertEqual(1, body.count("Text(DesktopWindowsTipsStrings.NOTE,"))
-        # The right-click hint is conditional on the new interface, and the note names the keys that work today.
+        self.assertTrue(body.lstrip().split("\n", 1)[1].lstrip().startswith("DesktopWindowsSettingsGroup(DesktopWindowsTipsStrings.SHELL_GROUP)"),
+                        "the first thing on the page is the shell group, no note above the groups")
+        self.assertEqual(1, body.count("Text(DesktopWindowsTipsStrings.PLAYER_NOTE,"))
+        player_group = body[body.index("DesktopWindowsSettingsGroup(DesktopWindowsTipsStrings.PLAYER_GROUP)"):
+                            body.index("DesktopWindowsSettingsGroup(DesktopWindowsTipsStrings.MOUSE_GROUP)")]
+        self.assertIn("Text(DesktopWindowsTipsStrings.PLAYER_NOTE,", player_group)
+        self.assertLess(player_group.index("desktopPlayerShortcutListRows()"), player_group.index("Text(DesktopWindowsTipsStrings.PLAYER_NOTE,"))
         strings = sm.read(sm.TIPS_STRINGS_KT)
+        self.assertNotRegex(strings, r"const val NOTE\b")
+        self.assertNotIn("并非每一项都可用", strings)
+        self.assertNotIn("逐步启用", strings)
+        # The right-click hint is conditional on the new interface; the player note names exactly the four unwired keys and says where
+        # the rest works.
         self.assertIn('const val RIGHT_CLICK_HINT = "新界面启用后，', strings)
-        note = re.search(r'const val NOTE = "([^"]+)"', strings).group(1)
-        for shipped in ("空格", "Esc", "F11"):
-            self.assertIn(shipped, note)
-        self.assertIn("并非每一项都可用", note)
+        note = re.search(r'const val PLAYER_NOTE = "([^"]+)"', strings).group(1)
+        for unwired in ("I（视频信息）", "Shift+C（字幕设置）", "菜单键和 Shift+F10（右键菜单）", "Shift+/（快捷键列表）"):
+            self.assertIn(unwired, note)
+        self.assertIn("目前还不能用", note)
+        self.assertIn("其余按键在普通视频页可用", note)
 
     def test_every_player_action_kind_has_a_label_and_no_branch_is_a_fallback(self):
         kinds = re.findall(r"\b([A-Z][A-Z_]+)\b", re.search(r"enum class DesktopPlayerActionKind \{(.*?)\}", sm.read(sm.PLAYER_SHORTCUTS_KT), re.S).group(1))
@@ -610,9 +622,9 @@ class TipsTest(unittest.TestCase):
         kinds = re.findall(r"\b([A-Z][A-Z_]+)\b", re.search(r"enum class DesktopShellActionKind \{(.*?)\}", sm.read(K / "ui/DesktopShellShortcuts.kt"), re.S).group(1))
         self.assertEqual(kinds, sm.shell.action_label_kinds(shell_text))
 
-    def test_the_lists_say_that_some_keys_come_with_the_new_interface(self):
+    def test_the_lists_say_which_player_keys_and_the_right_click_menu_come_with_the_new_interface(self):
         strings = sm.read(sm.TIPS_STRINGS_KT)
-        self.assertIn("const val NOTE", strings)
+        self.assertIn("const val PLAYER_NOTE", strings)
         self.assertIn("const val RIGHT_CLICK_HINT", strings)
         self.assertTrue(source.cjk_positions(strings))
         self.assertEqual([], source.cjk_positions(sm.read(sm.SHORTCUT_LIST_KT)))

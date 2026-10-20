@@ -21,19 +21,20 @@ private fun DesktopTipsShortcutRow(row: DesktopShortcutListRow) {
 }
 
 /**
- * The shortcut tables of the shell and the player and the right-click hint (spec 3.7), as three groups of the Tips page. The
- * lists are the planned tables, and the new keys and menus are enabled as their slices land, so one note above all three
- * groups says what works today (Space, Esc and F11 in the player) and that the rest comes with the new desktop interface.
+ * The shortcut tables of the shell and the player and the right-click hint (spec 3.7), as three groups of the Tips page. The shell
+ * keys are live (the shell shortcut host of slice S2 handles every row), so that group has no caveat beyond what Ctrl+B means on
+ * the video page. The player group says which keys wait for the new player interface, and the right-click hint is conditional on
+ * that interface by its own words.
  */
 @Composable
 internal fun DesktopWindowsTipsShortcuts() {
-    Text(DesktopWindowsTipsStrings.NOTE, style = MaterialTheme.typography.bodySmall)
     DesktopWindowsSettingsGroup(DesktopWindowsTipsStrings.SHELL_GROUP) {
         desktopShellShortcutListRows().forEach { DesktopTipsShortcutRow(it) }
         Text(DesktopShellStrings.CTRL_B_NOTE, style = MaterialTheme.typography.bodySmall)
     }
     DesktopWindowsSettingsGroup(DesktopWindowsTipsStrings.PLAYER_GROUP) {
         desktopPlayerShortcutListRows().forEach { DesktopTipsShortcutRow(it) }
+        Text(DesktopWindowsTipsStrings.PLAYER_NOTE, style = MaterialTheme.typography.bodySmall)
     }
     DesktopWindowsSettingsGroup(DesktopWindowsTipsStrings.MOUSE_GROUP) {
         Text(DesktopWindowsTipsStrings.RIGHT_CLICK_HINT)

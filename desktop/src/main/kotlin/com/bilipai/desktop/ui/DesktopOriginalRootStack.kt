@@ -241,6 +241,8 @@ internal class DesktopOriginalRootPageBindings(
     // Dock is outside NavDisplay captured content but must use the very same physical Root dispatcher.
     CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides environment.rootNavigationEventOwner,
         LocalDesktopHomeMediaPorts provides root.media, LocalDesktopHomeEnvironment provides root.environment) {
+    // UX S2: the shell shortcut host acts through these same routes and chrome actions (Ctrl+K, F5, Ctrl+1 to 9, F1 ...).
+    DesktopShellRootBinding(routes, chrome, visibleItems)
     DesktopOriginalRootChrome(routes, pages, chrome, currentItem, visibleItems,
         { item -> routes.push(bottomPagerNavKeyForItem(item)) }) {
         val actualBottomBarVisible = LocalBottomBarVisible.current

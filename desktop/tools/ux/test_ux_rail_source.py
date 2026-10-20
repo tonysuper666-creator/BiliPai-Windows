@@ -18,7 +18,7 @@ shape the spec asks for, as text:
                       tooltip wrapper adds no action, the accessible names BiliPai, search and downloads are kept, roving focus
                       makes one tab stop, every click keeps the routes.owns() guard and the admitted push entry, the selection rule
                       is the existing one, the unread badge and its announcement, the right-click menu, the keys the rail names
-                      stay behind DESKTOP_RAIL_SHORTCUT_HINTS until slice S2 adds the shortcut host, the row keys sit at the
+                      stay behind DESKTOP_RAIL_SHORTCUT_HINTS (true since slice S2 added the shortcut host), the row keys sit at the
                       call sites
   NowPlayingSourceTest the strip reads no state, calls no player, and has the five buttons in order
   ModelMirrorTest     the Python mirrors of the new pure functions agree with independent oracles, and the metrics are the contract
@@ -33,8 +33,8 @@ spec 8.2 says; Root adds each suite to the validation plan as an explicit `-s de
 
 Slice notes (S1 and its review fix), kept here with the pins they explain.
   * S1 must not ship without S2 (same release R2). The tooltips and the search hint name Ctrl+B, Ctrl+K and Ctrl+1 to 9, which only
-    the S2 shortcut host handles. Until S2 lands they are behind DESKTOP_RAIL_SHORTCUT_HINTS = false (pinned below); S2 sets it to
-    true in the same change as the host and updates that pin.
+    the S2 shortcut host handles. While S1 stood alone they were behind DESKTOP_RAIL_SHORTCUT_HINTS = false; S2 set it to true in
+    the same change as the host and updated that pin (pinned below as true).
   * The default rail_mode is AUTO (spec 5.2, release R2), so the merge of S1 replaces the 172 dp text block for everyone who has
     chosen nothing; CLASSIC_TEXT keeps the old block. Spec section 2 would ship a [W] item behind a flag that defaults to the
     existing behaviour until accepted, and hard rule 10 asks that for batch A; S1 is a batch B slice and the spec table makes AUTO the
@@ -205,9 +205,14 @@ class Rh2HunkTest(unittest.TestCase):
 class FrameSourceTest(unittest.TestCase):
     def test_exactly_one_content_call_at_a_fixed_place(self):
         self.assertEqual(1, len(re.findall(r"\bcontent\(\)", FRAME_CODE)))
+        # Slice S2 changed this pin by exactly the shortcut wiring: the mouse Back modifier on the Row, one Box around the rail slot and
+        # the pane modifier on the content Box. content() keeps its single call at the same place; nothing conditional wraps it.
         self.assertEqual(1, FRAME_FLAT.count(
-            "Row(Modifier.fillMaxSize()) { if (railVisible) rail(shell) Column(Modifier.weight(1f).fillMaxHeight()) { "
-            "Box(Modifier.weight(1f).fillMaxWidth()) { content() DesktopToastHost(toaster) } "
+            "Row(Modifier.fillMaxSize().desktopShellBackButton(shortcuts)) { "
+            "if (railVisible) Box(Modifier.fillMaxHeight().desktopShellPane(shortcuts, DesktopShellPane.RAIL, railPane)) { rail(shell) } "
+            "Column(Modifier.weight(1f).fillMaxHeight()) { "
+            "Box(Modifier.weight(1f).fillMaxWidth().desktopShellPane(shortcuts, DesktopShellPane.CONTENT, contentPane)) { "
+            "content() DesktopToastHost(toaster) } "
             "if (nowPlayingVisible) nowPlaying(shell) } }"))
         # Nothing conditional wraps the call: the Row, the Column and the Box are plain containers, and the only branches of the
         # frame body sit beside the Column (the rail slot and the strip slot), never around it.
@@ -217,7 +222,8 @@ class FrameSourceTest(unittest.TestCase):
 
     def test_the_rail_slot_comes_before_the_content_column_and_the_strip_after_the_content(self):
         text = FRAME_FLAT
-        self.assertLess(text.index("if (railVisible) rail(shell)"), text.index("content()"))
+        self.assertLess(text.index("if (railVisible) Box("), text.index("{ rail(shell) }"))
+        self.assertLess(text.index("{ rail(shell) }"), text.index("content()"))
         self.assertLess(text.index("content()"), text.index("if (nowPlayingVisible) nowPlaying(shell)"))
 
     def test_the_root_chrome_has_one_frame_call_and_no_content_call_of_its_own(self):
@@ -528,10 +534,13 @@ class RailSourceTest(unittest.TestCase):
         self.assertIn("val number = if (DESKTOP_RAIL_SHORTCUT_HINTS) row.entry.item?.let { desktopRailNumberOf(it) } else null", flat)
         self.assertIn("shortcut = if (DESKTOP_RAIL_SHORTCUT_HINTS) DesktopShellStrings.RAIL_TOGGLE_SHORTCUT else null,", flat)
 
-    def test_the_rail_names_no_key_until_the_shortcut_host_of_slice_s2_exists(self):
-        # Slice S2 sets the constant to true together with the host (Ctrl+B, Ctrl+K, Ctrl+1 to 9) and updates this pin; S1 must not
-        # ship without S2. Every place the rail shows or names a key sits behind the constant, and there are no others.
-        self.assertIn("internal const val DESKTOP_RAIL_SHORTCUT_HINTS = false\n", MODEL_TEXT)
+    def test_the_rail_names_its_keys_because_the_shortcut_host_of_slice_s2_exists(self):
+        # Slice S2 set the constant to true together with the host (Ctrl+B, Ctrl+K, Ctrl+1 to 9) and updated this pin (it said false
+        # while S1 stood alone). Every place the rail shows or names a key still sits behind the constant, and there are no others.
+        self.assertIn("internal const val DESKTOP_RAIL_SHORTCUT_HINTS = true\n", MODEL_TEXT)
+        host = source.read(source.K / "ui/DesktopShellShortcutHost.kt")
+        self.assertIn("internal class DesktopShellShortcutHost(", host)
+        self.assertIn("LocalDesktopShellShortcutHost provides shellShortcutHost,", source.read(SHELL_KT))
         flat = RAIL_FLAT
         for needle in ("val number = if (DESKTOP_RAIL_SHORTCUT_HINTS) row.entry.item?.let { desktopRailNumberOf(it) } else null",
                        "shortcut = if (DESKTOP_RAIL_SHORTCUT_HINTS) DesktopShellStrings.RAIL_TOGGLE_SHORTCUT else null,",
@@ -831,7 +840,7 @@ class ModelMirrorTest(unittest.TestCase):
             "val target = desktopRailToggleMode(mode, presentation) ?: return false "
             "return desktopRailPresentation(target, windowWidthDp, presentation) != presentation",
             "internal const val DESKTOP_RAIL_SAVE_RECHECK_MS = 750L",
-            "internal const val DESKTOP_RAIL_SHORTCUT_HINTS = false",
+            "internal const val DESKTOP_RAIL_SHORTCUT_HINTS = true",
         ):
             self.assertEqual(1, flat.count(needle), needle)
 

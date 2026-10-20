@@ -1747,12 +1747,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     } ?: parentLiquidConfig
     val captureLiquidBackground = effectiveThemeConfig.liquidGlassEnabled &&
         liquidHomeSettings?.liquidGlassReadabilityMode == com.android.purebilibili.core.store.LiquidGlassReadabilityMode.ADAPTIVE
+    // UX S2 (hunk RH1, part S2): one shell shortcut host. Back goes through the window navigation owner, as Esc does.
+    val shellShortcutHost = remember(homeRootRef) { com.bilipai.desktop.ui.DesktopShellShortcutHost({ homeRootRef.get()?.navigation?.requestBack() == true }) }
     val rootKeyHandler: (KeyEvent) -> Boolean = { event ->
             if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
             else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {
                 if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()
                 true
             }
+            // UX S2 (hunk RH1, part S2): the shell shortcuts of spec 6.1 (Ctrl+K, Alt+Left, F5, Ctrl+1 to 9, F6, F1, Alt+Enter ...).
+            else if (shellShortcutHost.onKey(event) { toggleOriginalFullscreen() }) true
             else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {
                 // Shortcuts are scoped to the focused player; comment and search editors keep their keys.
                 performPlayerKey(resolvePlayerKeyAction(event, isTextInputActive = searchFocused))
@@ -1809,6 +1813,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext provides storageSettingsContext,
         com.bilipai.desktop.ui.LocalDesktopWindowsAudioOutputController provides windowsAudioOutputController,
         com.bilipai.desktop.appearance.LocalDesktopWindowsUx provides windowsUx,
+        com.bilipai.desktop.ui.LocalDesktopShellShortcutHost provides shellShortcutHost,
         com.bilipai.desktop.ui.LocalDesktopDetailedCommentTimeContext provides globalPluginContext,
         com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled provides detailedCommentTimeEnabled,
         LocalDesktopBrandSuccessEvents provides brandSuccessEvents,

@@ -300,10 +300,10 @@ internal const val DESKTOP_RAIL_SAVE_RECHECK_MS = 750L
 
 /**
  * Whether the rail names its keys (Ctrl+B on the toggle, Ctrl+K on the search row, Ctrl+1 to Ctrl+9 on the rows) in tooltips and
- * in the search hint. They are named only while the shell shortcut host that handles them exists: slice S2 sets this to true in
- * the same change that adds that host, and not before, so the rail never names a key that does nothing.
+ * in the search hint. They are named only while the shell shortcut host that handles them exists: slice S2 set this to true in
+ * the same change that added that host (DesktopShellShortcutHost), so the rail never names a key that does nothing.
  */
-internal const val DESKTOP_RAIL_SHORTCUT_HINTS = false
+internal const val DESKTOP_RAIL_SHORTCUT_HINTS = true
 
 /**
  * Whether a published write error is shown as "the rail setting could not be saved". The store reports one error for the

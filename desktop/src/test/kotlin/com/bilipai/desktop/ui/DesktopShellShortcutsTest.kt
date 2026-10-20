@@ -278,6 +278,57 @@ class DesktopShellShortcutsTest {
         assertEquals("Ctrl+B 在视频页打开或关闭详情面板", DesktopShellStrings.CTRL_B_NOTE)
     }
 
+    // ---------------------------------------------------------------------------------------------------------------
+    // Slice S2: the collision test of spec 10.1 over the real table, and the keys the host reads
+    // ---------------------------------------------------------------------------------------------------------------
+
+    @Test fun everyKeyNameOfTheRealTableHasAnAwtKeyCodeSoTheHostCanReadIt() {
+        val named = HashSet<String>()
+        for (code in 0..2047) desktopPlayerKeyName(code)?.let { named += it }
+        for (shortcut in DESKTOP_SHELL_SHORTCUTS) {
+            val key = shortcut.chord.substringAfterLast("+")
+            assertTrue(key in named, "${shortcut.chord}: no AWT key code is named $key")
+        }
+        for (key in DESKTOP_SHELL_ZOOM_KEYS) assertTrue(key in named, "the zoom key $key has no AWT key code")
+    }
+
+    @Test fun theRealTableCollidesWithNoWindowsSystemTextEditingOrFocusTraversalChord() {
+        // Spec 6.1 reserved list and the chords a text field, the Windows shell and the Compose focus traversal already own.
+        val owned = listOf(
+            "Alt+F4", "Alt+Tab", "Alt+Space", "Alt+Esc", "Ctrl+Esc", "Ctrl+Alt+Delete", "Meta+D", "Meta+L", "F10", "Shift+F10", "Menu",
+            "Ctrl+C", "Ctrl+V", "Ctrl+X", "Ctrl+A", "Ctrl+Z", "Ctrl+Y", "Ctrl+Backspace", "Ctrl+Delete", "Ctrl+Left", "Ctrl+Right", "Ctrl+Home",
+            "Ctrl+End", "Shift+Left", "Shift+Right", "Shift+Up", "Shift+Down", "Shift+Home", "Shift+End", "Home", "End", "Left", "Right", "Up",
+            "Down", "PageUp", "PageDown", "Tab", "Shift+Tab", "Ctrl+Tab", "Space", "Enter", "Backspace", "Delete", "Esc", "Ctrl+Plus",
+            "Ctrl+Minus", "Ctrl+0", "Ctrl+Equals",
+        )
+        val table = DESKTOP_SHELL_SHORTCUTS.map { it.chord }.toSet()
+        for (chord in owned) assertFalse(chord in table, "$chord is in the shell table")
+        for (chord in owned) {
+            for (page in pages) assertNull(resolve(chord, page), "$chord on $page")
+        }
+    }
+
+    @Test fun theRailRovingKeysAreUnmodifiedAndNoShellChordIsUnmodifiedArrowHomeOrEnd() {
+        val roving = setOf("Up", "Down", "Home", "End")
+        for (shortcut in DESKTOP_SHELL_SHORTCUTS) {
+            assertFalse(shortcut.chord in roving, shortcut.chord)
+        }
+    }
+
+    @Test fun aChordTheShellAndThePlayerBothListHasTheSameActionOrIsTheDualMeaningChord() {
+        val rows = DesktopUxContract.objects(shortcuts.getValue("rows"))
+        val dual = DesktopUxContract.strings(shortcuts.getValue("dual_meaning")).toSet()
+        for (shell in rows.filter { DesktopUxContract.string(it, "scope") == "shell" }) {
+            val chord = DesktopUxContract.string(shell, "chord")
+            for (player in rows.filter { DesktopUxContract.string(it, "scope") == "player" && DesktopUxContract.string(it, "chord") == chord }) {
+                assertTrue(
+                    chord in dual || DesktopUxContract.string(player, "action") == DesktopUxContract.string(shell, "action"),
+                    "$chord means ${DesktopUxContract.string(shell, "action")} in the shell and ${DesktopUxContract.string(player, "action")} in the player",
+                )
+            }
+        }
+    }
+
     @Test fun theSettingsAndDownloadsLabelsAreTheRailLabelsOfThoseRows() {
         assertEquals(
             DesktopShellStrings.railLabel(DesktopRailItem.SETTINGS),

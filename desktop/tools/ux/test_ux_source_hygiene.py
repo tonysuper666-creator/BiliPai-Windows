@@ -299,7 +299,8 @@ class RuleGuardTest(unittest.TestCase):
 
 
 class ShellProviderHunkTest(unittest.TestCase):
-    """Hunk RH1 (provider only) in the Root-reserved DesktopShell.kt. The root key handler branch is slice S2."""
+    """Hunk RH1 (provider only) in the Root-reserved DesktopShell.kt. The root key handler branch is slice S2: its val, its one branch and its
+    provider entry are pinned by test_ux_shell_shortcut_host.py (Rh1HunkTest), and the pins below hold with them (the handler block names no flag)."""
 
     @classmethod
     def setUpClass(cls):

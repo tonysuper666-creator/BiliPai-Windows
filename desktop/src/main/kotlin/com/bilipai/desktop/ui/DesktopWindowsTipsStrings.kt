@@ -11,10 +11,11 @@ internal object DesktopWindowsTipsStrings {
     const val MOUSE_GROUP = "右键菜单"
 
     /**
-     * Shown once above the three shortcut groups. The lists are the planned key tables and menus, which the new desktop
-     * interface enables slice by slice, so the note names the keys that work today and says the rest is not on yet.
+     * Shown under the player group. The shell keys are all live (the shell shortcut host), and so are the player keys of the ordinary
+     * video page except the four whose targets the new player interface adds: the video info card, the subtitle flyout, the context
+     * menu and the shortcut sheet of the player. The note names those keys and says where the rest works.
      */
-    const val NOTE = "以下是新桌面界面计划使用的快捷键和右键菜单，会随功能上线逐步启用，目前并非每一项都可用。播放器里现在可用的按键：空格（播放 / 暂停）、Esc（退出全屏或返回）、F11（全屏）。"
+    const val PLAYER_NOTE = "播放器按键中，I（视频信息）、Shift+C（字幕设置）、菜单键和 Shift+F10（右键菜单）、Shift+/（快捷键列表）随新播放器界面启用，目前还不能用；其余按键在普通视频页可用。"
     const val RIGHT_CLICK_HINT = "新界面启用后，在首页视频卡片或播放画面上点击右键可打开快捷菜单；也可按菜单键或 Shift+F10。"
 
     /** The name of a key as the list shows it: arrows and punctuation as their symbols, two keys by their Chinese names. */

@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
@@ -42,7 +43,7 @@ import kotlinx.coroutines.launch
 
 /**
  * What the rail slot of the frame is told: the mode in force, what the rail shows, the way to write a new mode, and the
- * toggle. The toggle (the hamburger, and the collapse and expand entries of the menu; the Ctrl+B of slice S2 will use it too)
+ * toggle. The toggle (the hamburger, and the collapse and expand entries of the menu; the Ctrl+B of the shell shortcut host uses it too)
  * is decided by the frame: it writes the opposite explicit mode, or, when that would change nothing on screen because the
  * window is too narrow for the expanded rail, it writes nothing and tells the user so.
  */
@@ -130,16 +131,24 @@ internal fun DesktopWindowsShellFrame(
     }
 
     val shell = DesktopWindowsShellRail(settings.railMode, presentation, setMode, toggle)
+
+    // Slice S2: the shell shortcut host. The frame lends it the rail toggle (Ctrl+B) and the two panes that F6 cycles; the rail
+    // slot and the content box are focus groups that the pane modifier names, and the mouse Back button is read on the whole frame.
+    // The wrappers are plain modifiers and one box around the rail slot: content() keeps its one call site and its place.
+    val shortcuts = LocalDesktopShellShortcutHost.current
+    val railPane = remember { FocusRequester() }
+    val contentPane = remember { FocusRequester() }
+    DesktopShellFrameBinding(railVisible, presentation != DesktopRailPresentation.CLASSIC, toggle, railPane, contentPane)
     CompositionLocalProvider(
         LocalDesktopKitReducedMotion provides reducedMotion,
         LocalDesktopToaster provides toaster,
         LocalDesktopShellInsets provides DesktopShellInsets(footprintDp),
     ) {
-        Row(Modifier.fillMaxSize()) {
-            if (railVisible) rail(shell)
+        Row(Modifier.fillMaxSize().desktopShellBackButton(shortcuts)) {
+            if (railVisible) Box(Modifier.fillMaxHeight().desktopShellPane(shortcuts, DesktopShellPane.RAIL, railPane)) { rail(shell) }
             Column(Modifier.weight(1f).fillMaxHeight()) {
                 // The toast host is over the content and ends where the now-playing strip begins, so a toast is always above it.
-                Box(Modifier.weight(1f).fillMaxWidth()) {
+                Box(Modifier.weight(1f).fillMaxWidth().desktopShellPane(shortcuts, DesktopShellPane.CONTENT, contentPane)) {
                     content()
                     DesktopToastHost(toaster)
                 }

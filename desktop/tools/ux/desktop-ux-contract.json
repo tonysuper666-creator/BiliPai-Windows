@@ -2214,5 +2214,25 @@
         {"chord": "Shift+Slash", "action": "SHORTCUT_HELP", "arg": 0, "status": "active"}
       ]
     }
+  },
+  "shell_host": {
+    "about": "Slice S2: the shell shortcut host (ui/DesktopShellShortcutHost.kt) that wires the shell rows of shortcuts to the Root key handler. Mirrored by ux_shell_model.py (host section) and checked by test_ux_shell_shortcut_host.py and DesktopShellShortcutHostTest.",
+    "panes": ["RAIL", "CONTENT", "SIDE_PANEL"],
+    "min_panes_to_cycle": 2,
+    "repeat_window_ms": 1500,
+    "page_routes": {
+      "PLAYER": ["VideoDetail", "AudioMode", "NativeMusic", "BangumiPlayer", "OfflineVideoPlayer"],
+      "SEARCH": ["Search", "SearchTrending"],
+      "HOME": ["Home"],
+      "DYNAMIC": ["Dynamic"],
+      "OFF": ["Onboarding"]
+    },
+    "back": {
+      "never_exits_the_app": true,
+      "idle_at": "the Home tab at the root of the stack",
+      "mouse_button": "Back",
+      "acts_once_per_press": true
+    },
+    "editor_focus": "a Swing text component, or a focus owner (or parent) whose getInputMethodRequests is not null"
   }
 }

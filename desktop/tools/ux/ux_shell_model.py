@@ -551,3 +551,208 @@ def zoom_decoder_keys_from_source():
     names = {"PLUS": "Plus", "EQUALS": "Equals", "ADD": "Add", "MINUS": "Minus", "SUBTRACT": "Subtract", "0": "0",
              "NUMPAD0": "Numpad0"}
     return {names[code] for code in decoded}
+
+
+# --------------------------------------------------------------------------------------
+# Slice S2: mirrors of ui/DesktopShellShortcutHost.kt (the shell shortcut host)
+# --------------------------------------------------------------------------------------
+
+HOST_KT = source.K / "ui/DesktopShellShortcutHost.kt"
+ROUTE_PAGES = ("PLAYER", "SEARCH", "HOME", "DYNAMIC", "OFF")
+
+
+def host_panes(text):
+    """The names of the Kotlin enum DesktopShellPane in declaration order."""
+    match = re.search(r"internal enum class DesktopShellPane \{ ([A-Z_, ]+) \}", text)
+    if match is None:
+        raise AssertionError("no DesktopShellPane enum")
+    return [name.strip() for name in match.group(1).split(",")]
+
+
+def host_page_routes(text):
+    """{page: [route class or object names]} read from the when of desktopShellPageOf, in branch order. OFF is the null branch,
+    the else branch (OTHER) is not listed."""
+    start = text.index("internal fun desktopShellPageOf(destination: BiliPaiNavKey): DesktopShellPage? = when (destination) {")
+    body = text[start:text.index("\n}\n", start)]
+    pages = {}
+    for heads, page in re.findall(r"(?ms)^    ((?:[^\n]*?,\n    )*[^\n]*?) -> (null|DesktopShellPage\.[A-Z]+)$", body):
+        names = re.findall(r"BiliPaiNavKey\.([A-Za-z]+)", heads)
+        key = "OFF" if page == "null" else page.split(".")[1]
+        pages.setdefault(key, []).extend(names)
+    return pages
+
+
+def next_pane_kt(available, current, direction, panes):
+    """desktopShellNextPane. panes: the enum in declaration order."""
+    order = [pane for pane in panes if pane in available]
+    if len(order) < 2:
+        return None
+    index = -1 if current is None else (order.index(current) if current in order else -1)
+    if index < 0:
+        return order[-1] if direction < 0 else order[0]
+    step = -1 if direction < 0 else 1
+    return order[(index + step + len(order)) % len(order)]
+
+
+def oracle_next_pane(available, current, direction):
+    """Spec 6.1: F6 moves to the next pane of the ring rail, content, side panel among the panes that exist; Shift+F6 to the previous;
+    with fewer than two panes there is nothing to cycle between; from outside every pane F6 enters the first and Shift+F6 the last."""
+    ring = [pane for pane in ("RAIL", "CONTENT", "SIDE_PANEL") if pane in available]
+    if len(ring) < 2:
+        return None
+    if current not in ring:
+        return ring[0] if direction >= 0 else ring[-1]
+    position = ring.index(current)
+    return ring[(position + (1 if direction >= 0 else -1)) % len(ring)]
+
+
+class HeldKeysKt:
+    """DesktopShellHeldKeys with the clock passed in (milliseconds)."""
+
+    def __init__(self, window_ms):
+        self.window_ms = window_ms
+        self.held = {}
+
+    def is_repeat(self, key, chord, now):
+        press = self.held.get(key)
+        if press is None:
+            return False
+        if press["chord"] == chord and 0 <= now - press["last"] <= self.window_ms:
+            press["last"] = now
+            return True
+        del self.held[key]
+        return False
+
+    def claim(self, key, chord, now):
+        self.held[key] = {"chord": chord, "last": now}
+
+    def release(self, key):
+        return self.held.pop(key, None) is not None
+
+
+def page_of_kt(routes_by_page, route):
+    """desktopShellPageOf over route names: the page the branch lists the route under, OTHER for any other route, None for OFF."""
+    for page in ("OFF", "HOME", "DYNAMIC", "SEARCH", "PLAYER"):
+        if route in routes_by_page.get(page, ()):
+            return None if page == "OFF" else page
+    return "OTHER"
+
+
+def can_go_back_kt(stack_size, destination_is_home):
+    """canGoBack of the Root binding: false only on the Home tab at the root of the stack."""
+    return not (stack_size <= 1 and destination_is_home)
+
+
+def text_editor_focused_kt(chain):
+    """desktopShellTextEditorFocused. chain: the focus owner and its parents, nearest first, as (is_text_component, input_method_requests)."""
+    return any(is_text or requests is not None for is_text, requests in chain)
+
+
+class HostKt:
+    """DesktopShellShortcutHost.handleKey and perform with recording fakes. table, reserved and zoom come from the Kotlin text
+    (kotlin_shell_table and string_set); bind_root and bind_frame stand for the two bindings of the composition."""
+
+    def __init__(self, table, reserved, zoom, panes, window_ms):
+        self.table, self.reserved, self.zoom, self.panes = table, reserved, zoom, panes
+        self.held = HeldKeysKt(window_ms)
+        self.root = None
+        self.frame = None
+        self.focused_pane = None
+        self.back_held = False
+        self.calls = []
+        self.text_editor = False
+        self.now = 0
+        self.request_back_result = True
+
+    def bind_root(self, page, can_go_back=True, accept=True):
+        self.root = {"page": page, "can_go_back": can_go_back, "accept": accept}
+
+    def bind_frame(self, available, toggleable=True, rail_visible=True, accept=True):
+        self.frame = {"available": list(available), "toggleable": toggleable, "rail_visible": rail_visible, "accept": accept}
+
+    def pane_focus_changed(self, pane, has_focus):
+        if has_focus:
+            self.focused_pane = pane
+        elif self.focused_pane == pane:
+            self.focused_pane = None
+
+    def handle_key(self, key, ctrl=False, alt=False, shift=False, meta=False, key_down=True):
+        if not key_down:
+            return self.held.release(key)
+        if self.root is None or self.root["page"] is None:
+            return False
+        chord = chord_kt(key, ctrl, alt, shift, meta)
+        if self.held.is_repeat(key, chord, self.now):
+            return True
+        action = resolve_shell_key_kt(self.table, self.reserved, self.zoom, key, ctrl, alt, shift, meta, True,
+                                      self.root["page"], self.text_editor)
+        if action is None:
+            return False
+        if not self.perform(action, self.root["page"]):
+            return False
+        self.held.claim(key, chord, self.now)
+        return True
+
+    def perform(self, action, page):
+        kind, destination, direction = action
+        accept = self.root["accept"]
+        if kind == "OPEN_SEARCH":
+            self.calls.append(("openSearch",))
+            return accept
+        if kind == "BACK":
+            return self.back()
+        if kind == "REFRESH":
+            self.calls.append(("refresh", page))
+            return accept and page in ("HOME", "DYNAMIC")
+        if kind == "GO_DESTINATION":
+            if destination is None:
+                return False
+            self.calls.append(("goTo", destination))
+            return accept
+        if kind == "RAIL_TOGGLE":
+            if self.frame is None:
+                return False
+            if self.frame["rail_visible"] and self.frame["toggleable"]:
+                self.calls.append(("toggleRail",))
+                return True
+            return False
+        if kind == "OPEN_SETTINGS":
+            self.calls.append(("goTo", "SETTINGS"))
+            return accept
+        if kind == "OPEN_DOWNLOADS":
+            self.calls.append(("goTo", "DOWNLOADS"))
+            return accept
+        if kind == "CYCLE_PANES":
+            if self.frame is None:
+                return False
+            target = next_pane_kt(self.frame["available"], self.focused_pane, direction, self.panes)
+            if target is None:
+                return False
+            self.calls.append(("focusPane", target))
+            return self.frame["accept"]
+        if kind == "SHORTCUT_HELP":
+            self.calls.append(("openHelp",))
+            return accept
+        if kind == "FULLSCREEN_TOGGLE":
+            self.calls.append(("toggleFullscreen",))
+            return True
+        raise AssertionError("unknown action kind " + kind)
+
+    def back(self):
+        """back of the host: at the first page Back does nothing and says it acted; otherwise it is what requestBack answers."""
+        if self.root["can_go_back"]:
+            self.calls.append(("requestBack",))
+            return self.request_back_result
+        return True
+
+    def back_press(self, back_pressed):
+        fire = back_pressed and not self.back_held
+        self.back_held = back_pressed
+        if not fire:
+            return False
+        if self.root is None or self.root["page"] is None:
+            return False
+        return self.back()
+
+    def back_release(self, back_pressed):
+        self.back_held = back_pressed
