@@ -56,35 +56,20 @@
       ]
     },
     {
-      "reason": "Wallpaper selection, transform, palette and playback symbols the carried seed-palette, liquid-value and favorite-search archives reference.",
-      "closedBy": "wallpaper-foundation-and-adjust",
+      "reason": "Windows desktop-wallpaper seed: SystemWallpaperSeed.kt reads the Android system accent palette (system_accent1_500, Android 12+). Windows has no such palette resource; the equivalent is a new platform reader of the desktop accent or wallpaper colour, which the roadmap puts in wallpaper-surfaces-consumers (\"needs a Windows desktop-wallpaper seed provider\"). wallpaper-foundation-and-adjust deliberately does not add it: nothing in the compiled tree would call it and a registry or wallpaper reader is platform work that needs its own review. The carried Theme.kt and PlaybackNotificationColorPolicy.kt call readSystemWallpaperSeed(context).",
+      "closedBy": "wallpaper-surfaces-consumers",
       "closedByEvidence": "roadmap",
       "gaps": [
         {
           "scope": "carried",
           "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.store.home.HomeWallpaperSelection"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.wallpaper.WallpaperPlaybackCoordinator"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.store.home.HomeWallpaperSelection"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.feature.profile.HomeWallpaperAdjustmentSheet"
+          "symbol": "com.android.purebilibili.core.theme.readSystemWallpaperSeed"
         }
       ]
     },
     {
-      "reason": "Wallpaper selection, transform, palette and playback symbols the carried seed-palette, liquid-value and favorite-search archives reference. Ownership of these symbols by wallpaper-foundation-and-adjust is the gap author's inference: that slice's roadmap text does not name LocalHomeWallpaperSelection, LocalWallpaperPlaybackCoordinator, WallpaperPaletteRequest, WallpaperPaletteResult, readSeedWallpaperColorScheme, readSystemWallpaperSeed, rememberIsStaticWallpaper, shouldRenderRootHomeWallpaperMedia. For WallpaperTransform and sanitizeWallpaperTransform the inference is narrower: the slice names WallpaperTransformPolicy.kt (upstreamFiles and firstStep), the file that declares both at d6bf8b16, but names neither symbol. Its owner must confirm or reassign them when the slice is reached.",
-      "closedBy": "wallpaper-foundation-and-adjust",
+      "reason": "Wallpaper palette and media inputs the carried seed-palette, theme-chrome, favorite-search and wallpaper-foundation archives still reference after wallpaper-foundation-and-adjust. Ownership by wallpaper-surfaces-consumers is the gap author's inference: that slice's roadmap text names HomeWallpaperBackdrop.kt, WallpaperPaletteEditor.kt and SystemWallpaperSeed.kt but does not name readSeedWallpaperColorScheme, WallpaperMediaLoadState, WallpaperPaletteRequest, WallpaperPaletteResult or shouldRenderRootHomeWallpaperMedia. readSeedWallpaperColorScheme rebuilds a Material scheme from the five Android system palettes (system_accent1..neutral2 resources) and needs a Windows seed provider first. WallpaperPaletteRequest and WallpaperPaletteResult belong to the request based v0.4.6 WallpaperPaletteStore; the Windows store is a Windows-owned instance generated from v0.2.5 (extract-upstream-wallpaper-palette.py) and its consumers use the old uri/scope API. WallpaperMediaLoadState (LOADING, READY, ERROR) is declared in the Android-only v0.4.6 WallpaperMedia.kt (ExoPlayer and AndroidView); only the v0.4.6 HomeWallpaperBackdrop (which this slice does not carry) and the carried Android HomeWallpaperAdjustmentSheet, the signature reference of the Windows-owned sheet, import it, and the Windows sheet keeps its own private load state instead. shouldRenderRootHomeWallpaperMedia lives in the direct-mode HomeGlassVisualPolicy.kt and only the Root backdrop calls it (decision D9: no Root-level backdrop for every page). Its owner must confirm or reassign them when the slice is reached.",
+      "closedBy": "wallpaper-surfaces-consumers",
       "closedByEvidence": "proposed",
       "gaps": [
         {
@@ -95,27 +80,7 @@
         {
           "scope": "carried",
           "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.theme.readSystemWallpaperSeed"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.wallpaper.LocalHomeWallpaperSelection"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.wallpaper.LocalWallpaperPlaybackCoordinator"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.wallpaper.WallpaperTransform"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.core.ui.wallpaper.sanitizeWallpaperTransform"
+          "symbol": "com.android.purebilibili.core.ui.wallpaper.WallpaperMediaLoadState"
         },
         {
           "scope": "carried",
@@ -131,16 +96,6 @@
           "scope": "carried",
           "check": "unresolved-import",
           "symbol": "com.android.purebilibili.feature.home.shouldRenderRootHomeWallpaperMedia"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.ui.wallpaper.LocalHomeWallpaperSelection"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.core.ui.wallpaper.rememberIsStaticWallpaper"
         }
       ]
     },
@@ -522,6 +477,94 @@
       "retiredBy": "desktop/upstream-slices/v046-theme-palette-schedule (DarkThemeSchedule.kt, emitted whole by desktop/tools/v046_theme_palette_schedule.py from desktop/tools/extract-appearance-platform.py)",
       "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_theme_palette_schedule_source.py",
       "closedBy": "theme-palette-presets-and-schedule",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "WallpaperTransform",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.wallpaper",
+      "reason": "Gap WallpaperTransform (carried v042-seed-palette and v046-comment-list SettingsManager). CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation (WallpaperTransformPolicy.kt). The roadmap text names WallpaperTransformPolicy.kt (upstreamFiles and firstStep), the file that declares it, but names neither this symbol nor sanitizeWallpaperTransform: the ownership was the gap author's inference, confirmed by carrying the file. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperTransformPolicy.kt:6 declares data class WallpaperTransform; the pinned v0.2.5 tree has no such file",
+      "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperTransformPolicy.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "sanitizeWallpaperTransform",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.wallpaper",
+      "reason": "Gap sanitizeWallpaperTransform (carried v042-seed-palette and v046-comment-list SettingsManager). CLOSED by the same whole WallpaperTransformPolicy.kt. The roadmap text names the file, not this symbol: the ownership was the gap author's inference, confirmed by carrying the file. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperTransformPolicy.kt:12 declares fun sanitizeWallpaperTransform(value); the pinned v0.2.5 tree has no such file",
+      "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperTransformPolicy.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "HomeWallpaperSelection",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.store.home",
+      "reason": "Gap HomeWallpaperSelection (carried liquid-value-controls, seed-palette, favorite-search and comment-list archives). CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation (HomeWallpaperSelection.kt, the file the roadmap entry names). The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/store/home/HomeWallpaperSelection.kt:6 declares data class HomeWallpaperSelection",
+      "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (HomeWallpaperSelection.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "LocalHomeWallpaperSelection",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.wallpaper",
+      "reason": "Gap LocalHomeWallpaperSelection (carried liquid-value-controls and favorite-search archives). CLOSED by the real v0.4.6 HomeWallpaperPresentation.kt carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation. The roadmap text names HomeWallpaperSelection.kt, not this file; that ownership was the gap author's inference (the local publishes the selection), confirmed by carrying it. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/HomeWallpaperPresentation.kt:7 declares internal val LocalHomeWallpaperSelection",
+      "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (HomeWallpaperPresentation.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "WallpaperPlaybackCoordinator",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.wallpaper",
+      "reason": "Gap WallpaperPlaybackCoordinator (carried favorite-search AppNavigation). CLOSED by the real v0.4.6 declaration carried verbatim in desktop/upstream-slices/v046-wallpaper-foundation (WallpaperPlaybackCoordinator.kt, the file the roadmap entry names). Windows has no video wallpaper, so nothing acquires a lease yet; the coordinator is the arbiter for animated image wallpapers and for the adjust preview. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperPlaybackCoordinator.kt:6 declares internal class WallpaperPlaybackCoordinator",
+      "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperPlaybackCoordinator.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "LocalWallpaperPlaybackCoordinator",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.wallpaper",
+      "reason": "Gap LocalWallpaperPlaybackCoordinator (carried favorite-search AppNavigation). CLOSED by the same whole WallpaperPlaybackCoordinator.kt. The roadmap text names the file, not this symbol: the ownership was the gap author's inference, confirmed by carrying the file. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperPlaybackCoordinator.kt:39 declares internal val LocalWallpaperPlaybackCoordinator",
+      "retiredBy": "desktop/upstream-slices/v046-wallpaper-foundation (WallpaperPlaybackCoordinator.kt, emitted whole by desktop/tools/v046_wallpaper_foundation.py from desktop/tools/extract-upstream-home-core-refresh.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "rememberIsStaticWallpaper",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.core.ui.wallpaper",
+      "reason": "Gap rememberIsStaticWallpaper (carried liquid-value-controls, home-native-cards and favorite-search archives). CLOSED by a Windows-owned definer: the Android original asks BitmapFactory for the bounds and MIME type of a .img import or content: URI, so Windows reads the first bytes of the local file instead (the importer stores every picked image as wallpaper_<id>.img). The roadmap names neither WallpaperMediaType.kt nor this symbol: the ownership was the gap author's inference, confirmed by the Windows binding. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMediaType.kt:15 declares internal fun rememberIsStaticWallpaper(uri); the Android version needs BitmapFactory and content: URIs",
+      "retiredBy": "desktop/src/main/kotlin/com/android/purebilibili/core/ui/wallpaper/DesktopWallpaperImageProbe.kt (Windows-owned header probe, no decode)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
+      "closedByEvidence": "proposed"
+    },
+    {
+      "symbol": "HomeWallpaperAdjustmentSheet",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.profile",
+      "reason": "Gap HomeWallpaperAdjustmentSheet (carried liquid-value-controls AppearanceSettingsScreen). CLOSED by a Windows-owned sheet with the exact original parameter list: the Android sheet needs the v0.4.6 HomeWallpaperBackdrop media load states, the request based WallpaperPaletteStore and the internal WallpaperDeviceTabRow, none of which the Windows tree has, so a pointer drag and the mouse wheel drive the carried crop policy instead of touch gestures. The sheet is not wired into a page yet. The gate fails if it loses every definer.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/profile/HomeWallpaperAdjustmentSheet.kt:44 declares internal fun HomeWallpaperAdjustmentSheet(...); carried as the signature reference in desktop/upstream-slices/v046-wallpaper-foundation",
+      "retiredBy": "desktop/src/main/kotlin/com/android/purebilibili/feature/profile/DesktopHomeWallpaperAdjustmentSheet.kt (Windows-owned sheet, same public signature, compared with the carried original by test_v046_wallpaper_foundation_source.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree, ExpectedGapsTests.test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive; test_v046_wallpaper_foundation_source.py",
+      "closedBy": "wallpaper-foundation-and-adjust",
       "closedByEvidence": "roadmap"
     }
   ],

@@ -12,6 +12,7 @@ TOOLS=REPO/'desktop/tools'
 sys.path.insert(0,str(TOOLS))
 import v036_comment_refresh_dependencies as refresh
 import v046_identity_badge_palette as palette
+import v046_wallpaper_foundation as wallpaper
 
 
 def snapshot(root):
@@ -59,13 +60,22 @@ class RefreshGenerationReentryTest(unittest.TestCase):
     def test_exact_previous_policy_and_receipt_allow_the_same_sole_producer(self):
         out,tests=self.outputs()
         refresh.extend_same_home_producer(out,tests)
-        self.assertEqual(snapshot(self.seed),snapshot(out))
-        # After the refresh extension the same wrapper emits the identity palette suites into this test root.
+        # After the refresh extension the same wrapper adds the wallpaper foundation files to this main output.
+        foundation_main={wallpaper.RELATIVE[name] for name in wallpaper.MAIN_FILES}|{wallpaper.PROOF_NAME}
+        complete_main=snapshot(self.seed)
+        self.assertEqual(foundation_main,foundation_main&set(complete_main))
+        self.assertEqual({path:raw for path,raw in complete_main.items() if path not in foundation_main},snapshot(out))
+        wallpaper.emit(REPO,out)
+        self.assertEqual(complete_main,snapshot(out))
+        # ... and emits the identity palette and wallpaper foundation suites into this test root.
         palette_paths={palette.RELATIVE[name] for name in palette.TEST_FILES}|{palette.TESTS_PROOF_NAME}
+        foundation_tests={wallpaper.RELATIVE[name] for name in wallpaper.TEST_FILES}|{wallpaper.TESTS_PROOF_NAME}
+        wrapper_paths=palette_paths|foundation_tests
         complete=snapshot(self.seed_tests)
-        self.assertEqual(palette_paths,palette_paths&set(complete))
-        self.assertEqual({path:raw for path,raw in complete.items() if path not in palette_paths},snapshot(tests))
+        self.assertEqual(wrapper_paths,wrapper_paths&set(complete))
+        self.assertEqual({path:raw for path,raw in complete.items() if path not in wrapper_paths},snapshot(tests))
         palette.emit_tests(REPO,tests)
+        wallpaper.emit_tests(REPO,tests)
         self.assertEqual(complete,snapshot(tests))
 
     def test_unknown_existing_policy_is_rejected_before_any_output_is_modified(self):

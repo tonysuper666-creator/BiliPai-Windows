@@ -1172,7 +1172,10 @@ class ExpectedGapsTests(unittest.TestCase):
 
     def test_the_committed_expected_gaps_file_is_well_formed_and_documents_every_gap(self):
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
-        self.assertGreater(len(expected['gaps']), 40)
+        # 32 open gap rows after v046-wallpaper-foundation closed eight symbols (41 rows before: ten rows closed, some symbols
+        # had an import row and a qualified row, and one row opened for WallpaperMediaLoadState, which the carried Android
+        # sheet imports); this floor is the exact current count and each closing slice lowers it
+        self.assertGreaterEqual(len(expected['gaps']), 32)
         for gap in expected['gaps']:
             self.assertTrue(gap['reason'].strip() and gap['closedBy'].strip(), gap)
             self.assertIn(gap['scope'], gate.KNOWN_SCOPES)
@@ -1233,7 +1236,7 @@ class ExpectedGapsTests(unittest.TestCase):
         # the roadmap names the proposed groups' slices but not these exact symbols; a reader must see that
         proposed = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'proposed'}
         for name in ('shouldAttemptInstantArticle',
-                     'readSeedWallpaperColorScheme', 'sanitizeWallpaperTransform', 'WallpaperPaletteRequest'):
+                     'readSeedWallpaperColorScheme', 'shouldRenderRootHomeWallpaperMedia', 'WallpaperPaletteRequest'):
             self.assertIn(name, proposed)
         roadmap_named = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'roadmap'}
         for name in DANMAKU_SEEDS:
@@ -1241,24 +1244,45 @@ class ExpectedGapsTests(unittest.TestCase):
         for _package, name in CLOSED_SEEDS:
             self.assertNotIn(name, roadmap_named)
 
-    def test_the_wallpaper_transform_gaps_say_the_slice_names_only_the_policy_file(self):
-        # wallpaper-foundation-and-adjust names WallpaperTransformPolicy.kt (upstreamFiles, firstStep) but not the two
-        # symbols that file declares; the label stays 'proposed' and the reason must say exactly that, not "unnamed"
+    def test_the_wallpaper_foundation_seeds_are_retired_by_the_carried_archive(self):
+        # wallpaper-foundation-and-adjust names WallpaperTransformPolicy.kt (upstreamFiles, firstStep) but not the two symbols
+        # that file declares; the label stays 'proposed' and the retired entry must say exactly that. The slice carried the
+        # file, so both are retired seeds with a compiled definer, no longer gaps.
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
+        open_names = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps']}
+        retired = {e['symbol']: e for e in expected['retired']}
+        said = {'WallpaperTransform': 'names neither this symbol nor sanitizeWallpaperTransform',
+                'sanitizeWallpaperTransform': 'names the file, not this symbol'}
         for name in ('WallpaperTransform', 'sanitizeWallpaperTransform'):
             with self.subTest(symbol=name):
+                self.assertNotIn(name, open_names)
+                self.assertIn(name, retired)
+                entry = retired[name]
+                self.assertEqual('com.android.purebilibili.core.ui.wallpaper', entry['package'])
+                self.assertEqual('proposed', entry['closedByEvidence'])
+                self.assertEqual('wallpaper-foundation-and-adjust', entry['closedBy'])
+                self.assertIn('WallpaperTransformPolicy.kt', entry['reason'])
+                self.assertIn(said[name], entry['reason'])
+                self.assertIn('inference', entry['reason'])
+                self.assertIn('d6bf8b16', entry['evidence'])
+                self.assertIn('v046-wallpaper-foundation', entry['retiredBy'])
+                self.assertIn('v046_wallpaper_foundation.py', entry['retiredBy'])
+        # the eight symbols this slice closed are retired, the six it deliberately leaves are open and say why
+        closed = ('WallpaperTransform', 'sanitizeWallpaperTransform', 'HomeWallpaperSelection', 'LocalHomeWallpaperSelection',
+                  'WallpaperPlaybackCoordinator', 'LocalWallpaperPlaybackCoordinator', 'rememberIsStaticWallpaper',
+                  'HomeWallpaperAdjustmentSheet')
+        for name in closed:
+            with self.subTest(closed=name):
+                self.assertIn(name, retired)
+                self.assertEqual('wallpaper-foundation-and-adjust', retired[name]['closedBy'])
+                self.assertNotIn(name, open_names)
+        left = ('readSeedWallpaperColorScheme', 'readSystemWallpaperSeed', 'WallpaperMediaLoadState',
+                'WallpaperPaletteRequest', 'WallpaperPaletteResult', 'shouldRenderRootHomeWallpaperMedia')
+        for name in left:
+            with self.subTest(left=name):
+                self.assertIn(name, open_names)
                 gaps = [g for g in expected['gaps'] if g['symbol'].rsplit('.', 1)[-1] == name]
-                self.assertEqual(1, len(gaps))
-                reason = gaps[0]['reason']
-                self.assertEqual('proposed', gaps[0]['closedByEvidence'])
-                self.assertEqual('wallpaper-foundation-and-adjust', gaps[0]['closedBy'])
-                self.assertIn('names WallpaperTransformPolicy.kt', reason)
-                self.assertIn('names neither symbol', reason)
-                self.assertIn('inference', reason)
-                # the "roadmap text does not name ..." list must not also claim these two are unnamed
-                unnamed = reason.split('does not name ', 1)[1].split('. For ', 1)[0]
-                self.assertNotIn(name, unnamed)
-                self.assertIn('readSeedWallpaperColorScheme', unnamed)
+                self.assertEqual(['wallpaper-surfaces-consumers'], sorted({g['closedBy'] for g in gaps}))
 
     def test_report_states_the_limits_the_result_and_is_deterministic(self):
         expected = gate.load_expected(self.write(self.base(groups=[self.GROUP])))
@@ -1762,6 +1786,16 @@ CLOSED_SEEDS = (
     ('com.android.purebilibili.feature.settings', 'DarkThemeSchedule'),
     ('com.android.purebilibili.feature.settings', 'isScheduledDarkTheme'),
     ('com.android.purebilibili.feature.settings', 'normalizeDarkThemeSchedule'),
+    # the v046-wallpaper-foundation slice: four verbatim files emitted by the home refresh wrapper, plus the Windows-owned
+    # header probe (rememberIsStaticWallpaper) and the Windows-owned adjust sheet (HomeWallpaperAdjustmentSheet)
+    ('com.android.purebilibili.core.ui.wallpaper', 'WallpaperTransform'),
+    ('com.android.purebilibili.core.ui.wallpaper', 'sanitizeWallpaperTransform'),
+    ('com.android.purebilibili.core.store.home', 'HomeWallpaperSelection'),
+    ('com.android.purebilibili.core.ui.wallpaper', 'LocalHomeWallpaperSelection'),
+    ('com.android.purebilibili.core.ui.wallpaper', 'WallpaperPlaybackCoordinator'),
+    ('com.android.purebilibili.core.ui.wallpaper', 'LocalWallpaperPlaybackCoordinator'),
+    ('com.android.purebilibili.core.ui.wallpaper', 'rememberIsStaticWallpaper'),
+    ('com.android.purebilibili.feature.profile', 'HomeWallpaperAdjustmentSheet'),
 )
 # closed by the v046 danmaku protocol slice (members and identifiers, not top-level declarations)
 DANMAKU_SEEDS = ('invalidateDanmakuSegment', 'parseFailed', 'failedSegmentCount')

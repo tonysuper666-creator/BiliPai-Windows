@@ -940,6 +940,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v046-home-refresh-ui-policy")
     inputs.file("tools/v046_home_card_tint_policy.py")
     inputs.dir("upstream-slices/v046-home-card-tint-policy")
+    inputs.file("tools/v046_wallpaper_foundation.py")
+    inputs.dir("upstream-slices/v046-wallpaper-foundation")
     inputs.file("tools/v042_search_dependencies.py")
     inputs.dir("upstream-slices/v042-search-dependencies")
     inputs.file("tools/v040_native_chrome.py")

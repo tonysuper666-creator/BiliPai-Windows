@@ -169,7 +169,8 @@
     "desktop/upstream-slices/v046-bangumi-hub-pages",
     "desktop/upstream-slices/v046-theme-palette-schedule",
     "desktop/upstream-slices/v046-portrait-pager",
-    "desktop/upstream-slices/v046-space-content-pager"
+    "desktop/upstream-slices/v046-space-content-pager",
+    "desktop/upstream-slices/v046-wallpaper-foundation"
   ],
   "archives": [
     {
@@ -7667,6 +7668,65 @@
           "sha256": "c07e26f1866e11fbeb44fe886448977afe13b6a16bb60a44cc7e3562d8edc47c",
           "hashNormalization": "raw",
           "blob": "3cbc64eb4fb6e62cf04de6557a008a48bbcc3a1d"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-wallpaper-foundation",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/HomeWallpaperAdjustmentSheet.kt",
+          "sha256": "69f9c7a01c590c46f475b9cc733a8d4ed5e6f11e6c7483a47a7ee7661c417640",
+          "hashNormalization": "raw",
+          "blob": "3c3e0248a20b0937ba3c409a7cde7f0e8e029076"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/HomeWallpaperPresentation.kt",
+          "sha256": "4fdf7587afb6035aa25f0564a6f1584e61d77f6e38e991186bd0a2ccb3cd1b57",
+          "hashNormalization": "raw",
+          "blob": "5fd4de91fc01884ce77c52387eaf704814bedd21"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/HomeWallpaperSelection.kt",
+          "sha256": "61ce177ed8aeecb38b05816fd46dc52e72a3cfb3f906195b65e34fb145268b66",
+          "hashNormalization": "raw",
+          "blob": "85b34ad6c94477ddc4318b4d79140a1a071045e0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/manifest.json",
+          "sha256": "560fd33ab3022454de8c02422df0f338b991efc0d3408994a9ec59bfed98a754",
+          "hashNormalization": "raw",
+          "blob": "ae472371c82dbd53a54b4542c1f1021008531f98"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperPlaybackCoordinator.kt",
+          "sha256": "d699eb919ea0bb0638958b076fd5044edaf537d0995fefa4b63880cc7497816f",
+          "hashNormalization": "raw",
+          "blob": "69b5f15f3d90d0ef47858c85bfd21575a3ea7aa5"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperPlaybackCoordinatorTest.kt",
+          "sha256": "cb065145aa02254603a83072056b01e9c13548d677dd84749a8cd86184da3da1",
+          "hashNormalization": "raw",
+          "blob": "6bad4dd1b5c6e324c5565aa0adae65b229462ce0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperTransformPolicy.kt",
+          "sha256": "6d4a2079a16c524a73e0465be1ed9ca8e8dc71be093286cf41b476d829395ac6",
+          "hashNormalization": "raw",
+          "blob": "b6e81d5d565f1ec13593b0903eb8792b9da11107"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperTransformPolicyTest.kt",
+          "sha256": "7b8e564a83bce33c67283216493c9fd535df3231f737a2c83c68fa82ab58a9be",
+          "hashNormalization": "raw",
+          "blob": "02ceb77c55003f6b5f781f1b0f9142b797e65f97"
         }
       ]
     }
@@ -20248,6 +20308,111 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Complete original file (the new Space content tab pager of upstream 35e2fac8 with the key(pageCount) PagerState rebuild guard of f00cb206): rememberContentTabPager, stationaryPagerHeader and contentTabPagerGestures. Emitted as a new file under com/android/purebilibili/core/ui/common by the Space pages producer with one counted comment adaptation of the forceVerticalPriority argument; the Space screen pager mount, the banner rotation and the pinned card icon are hash-pinned hunks in desktop/tools/v046_space_content_pager.py."
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperTransformPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperTransformPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "b6e81d5d565f1ec13593b0903eb8792b9da11107",
+      "sha256": "6d4a2079a16c524a73e0465be1ed9ca8e8dc71be093286cf41b476d829395ac6",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-wallpaper-foundation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 wallpaper transform policy, playback coordinator, selection and its composition local, emitted verbatim by the home refresh wrapper with the two original suites. HomeWallpaperAdjustmentSheet.kt is the signature reference of the Windows-owned sheet and is not emitted. The Windows crop adapter, header probe, sheet and tests are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperPlaybackCoordinator.kt",
+      "localPath": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperPlaybackCoordinator.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "69b5f15f3d90d0ef47858c85bfd21575a3ea7aa5",
+      "sha256": "d699eb919ea0bb0638958b076fd5044edaf537d0995fefa4b63880cc7497816f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-wallpaper-foundation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 wallpaper transform policy, playback coordinator, selection and its composition local, emitted verbatim by the home refresh wrapper with the two original suites. HomeWallpaperAdjustmentSheet.kt is the signature reference of the Windows-owned sheet and is not emitted. The Windows crop adapter, header probe, sheet and tests are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/home/HomeWallpaperSelection.kt",
+      "localPath": "desktop/upstream-slices/v046-wallpaper-foundation/HomeWallpaperSelection.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "85b34ad6c94477ddc4318b4d79140a1a071045e0",
+      "sha256": "61ce177ed8aeecb38b05816fd46dc52e72a3cfb3f906195b65e34fb145268b66",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-wallpaper-foundation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 wallpaper transform policy, playback coordinator, selection and its composition local, emitted verbatim by the home refresh wrapper with the two original suites. HomeWallpaperAdjustmentSheet.kt is the signature reference of the Windows-owned sheet and is not emitted. The Windows crop adapter, header probe, sheet and tests are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/HomeWallpaperPresentation.kt",
+      "localPath": "desktop/upstream-slices/v046-wallpaper-foundation/HomeWallpaperPresentation.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "5fd4de91fc01884ce77c52387eaf704814bedd21",
+      "sha256": "4fdf7587afb6035aa25f0564a6f1584e61d77f6e38e991186bd0a2ccb3cd1b57",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-wallpaper-foundation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 wallpaper transform policy, playback coordinator, selection and its composition local, emitted verbatim by the home refresh wrapper with the two original suites. HomeWallpaperAdjustmentSheet.kt is the signature reference of the Windows-owned sheet and is not emitted. The Windows crop adapter, header probe, sheet and tests are desktop-owned."
+    },
+    {
+      "path": "design-system/src/test/java/com/android/purebilibili/core/ui/wallpaper/WallpaperTransformPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperTransformPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "02ceb77c55003f6b5f781f1b0f9142b797e65f97",
+      "sha256": "7b8e564a83bce33c67283216493c9fd535df3231f737a2c83c68fa82ab58a9be",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-wallpaper-foundation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 wallpaper transform policy, playback coordinator, selection and its composition local, emitted verbatim by the home refresh wrapper with the two original suites. HomeWallpaperAdjustmentSheet.kt is the signature reference of the Windows-owned sheet and is not emitted. The Windows crop adapter, header probe, sheet and tests are desktop-owned."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/ui/wallpaper/WallpaperPlaybackCoordinatorTest.kt",
+      "localPath": "desktop/upstream-slices/v046-wallpaper-foundation/WallpaperPlaybackCoordinatorTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "6bad4dd1b5c6e324c5565aa0adae65b229462ce0",
+      "sha256": "cb065145aa02254603a83072056b01e9c13548d677dd84749a8cd86184da3da1",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-wallpaper-foundation"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 wallpaper transform policy, playback coordinator, selection and its composition local, emitted verbatim by the home refresh wrapper with the two original suites. HomeWallpaperAdjustmentSheet.kt is the signature reference of the Windows-owned sheet and is not emitted. The Windows crop adapter, header probe, sheet and tests are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/HomeWallpaperAdjustmentSheet.kt",
+      "localPath": "desktop/upstream-slices/v046-wallpaper-foundation/HomeWallpaperAdjustmentSheet.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "3c3e0248a20b0937ba3c409a7cde7f0e8e029076",
+      "sha256": "69f9c7a01c590c46f475b9cc733a8d4ed5e6f11e6c7483a47a7ee7661c417640",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-wallpaper-foundation"
+      ],
+      "referenceOnly": true,
+      "partialReuse": false,
+      "usedScope": "Reference copy of the Android home wallpaper adjustment sheet, never emitted: it needs the v0.4.6 HomeWallpaperBackdrop media load states, the request based WallpaperPaletteStore and WallpaperDeviceTabRow. The Windows-owned sheet in desktop/src keeps its exact public parameter list, which a source test compares against this file."
     }
   ],
   "buildStandaloneInputs": [

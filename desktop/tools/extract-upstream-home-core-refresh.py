@@ -11,6 +11,8 @@ def main():
     args=p.parse_args()
     from v046_identity_badge_palette import validate_outputs as validate_identity_badge_palette_outputs
     validate_identity_badge_palette_outputs(args.repo,args.output,args.test_output)
+    from v046_wallpaper_foundation import validate_outputs as validate_wallpaper_foundation_outputs
+    validate_wallpaper_foundation_outputs(args.repo,args.output,args.test_output)
     command=[sys.executable,str(args.repo/'desktop/tools/extract-upstream-home-page.py'),
              '--repo',str(args.repo),'--output',str(args.output)]
     result=subprocess.run(command)
@@ -19,6 +21,10 @@ def main():
     # The three upstream suites of the v0.4.6 identity badge palette run in the same test root.
     from v046_identity_badge_palette import emit_tests as emit_identity_badge_palette_tests
     emit_identity_badge_palette_tests(args.repo,args.test_output)
+    # The four pure v0.4.6 wallpaper foundation files join the main output, their two upstream suites the test root.
+    from v046_wallpaper_foundation import emit as emit_wallpaper_foundation, emit_tests as emit_wallpaper_foundation_tests
+    emit_wallpaper_foundation(args.repo,args.output)
+    emit_wallpaper_foundation_tests(args.repo,args.test_output)
     return 0
 
 if __name__=='__main__':raise SystemExit(main())
