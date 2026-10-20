@@ -1,0 +1,154 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
+      "filename": "BangumiViewModel.kt",
+      "bytes": 32117,
+      "sha256": "6c7e7c3b45c3a03098eb7e69f47a1126f95f23a8062e1f3ac09e189cf294306b",
+      "gitBlob": "5d94ef6d176e8380cf4d7df358a327926deb9423"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "filename": "BangumiRepository.kt",
+      "bytes": 34850,
+      "sha256": "cecabeb540116bf52fe47a1118234b32c5c87178f5d4454a60e4d255b3e80224",
+      "gitBlob": "987c42fbdfe18658622ab68bee2ff0bcb2413b79"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+      "filename": "BangumiHubPolicy.kt",
+      "bytes": 10977,
+      "sha256": "217116e6800406b4558b29d4e5eeda112d6d03661b5e623ad6aae7ddbd1dbd12",
+      "gitBlob": "e42db281ff142173f6541d78e34f9cf93226b00a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "filename": "BangumiHubContent.kt",
+      "bytes": 59223,
+      "sha256": "5496fec89ad4344833cf5d2c2e73f35d572cb66e9f82521253699878d7562aaa",
+      "gitBlob": "fb5083c290e039c0635a2c793dba2c53d7d90699"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+      "filename": "BangumiScreen.kt",
+      "bytes": 22613,
+      "sha256": "dbf29935d1cb2a34a37cbc0afc09366a14ac334abba42518d33e630e0ceb1459",
+      "gitBlob": "d3a39e78131813f167f3f6e4d9e00a264efa9840"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "filename": "HomeBangumiTabPage.kt",
+      "bytes": 8681,
+      "sha256": "7aa19916a2c217aa33a4f5230559c200a8260c545cea84372614d8aae9964c6e",
+      "gitBlob": "d3b1c93899ffdd2a8a5dae3d66c3620301943638"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiCardTransition.kt",
+      "filename": "BangumiCardTransition.kt",
+      "bytes": 3888,
+      "sha256": "8c760ae8d55ef8e8118cd4c4fd8e35071e46aaf2555ebe4d117584a6a1df7f4c",
+      "gitBlob": "cf697167983a0f92695f61648814973acf48b725"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiHubPolicyTest.kt",
+      "filename": "BangumiHubPolicyTest.kt",
+      "bytes": 9142,
+      "sha256": "eb99b8907dfa6fda36ce5c1fd5b8ebcddf81a22f975b5e9557e2d8834e753b60",
+      "gitBlob": "754fa066e71d311ea7232a2aeab910a9a0738729"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Whole v0.4.6 BangumiViewModel.kt, BangumiScreen.kt, BangumiHubContent.kt, HomeBangumiTabPage.kt, policy/BangumiHubPolicy.kt and BangumiCardTransition.kt, the v0.4.6 BangumiRepository.kt (page size delta proof) and the upstream test BangumiHubPolicyTest.kt for roadmap slice bgm-hub-pages (entries v036-bangumi-follow-preload-single-state and v040-bangumi-index-filter-and-channel-bar).",
+  "purpose": "Replace the v0.2.5 based outputs of the two producers that already own the Bangumi hub and the independent Bangumi pages (extract-upstream-home-bangumi-page.py, extract-upstream-bangumi-pages.py) by the whole v0.4.6 files through hash-pinned layers: the single BangumiUiState view model with the shorter background follow verification (3b37b7a2), the index filter motion and year range label, the channel bar above the status bar (cf1fc70c, d17c3408, 557de49c) and the card transition state (c42851ae, 4e792adaf). Two counted page size hunks prove the repository delta, one counted hunk reads the detail state from the single uiState and one adds accountGeneration to the hub state. The hub view model account-scoped requests of ba4384bad are not carried: every Windows personal page owner is rebuilt per Root session epoch.",
+  "beforeFinalOutputs": {
+    "com/android/purebilibili/feature/bangumi/BangumiHubContent.kt": {
+      "sha256": "657aa117bc9ffda4dca4498905af50c0da3ccf40e7e332be786b4df00425f8a9"
+    },
+    "com/android/purebilibili/feature/bangumi/BangumiHubPolicy.kt": {
+      "sha256": "c136016b778e72104b097752ef8d0e5ad29ec59d27b2af20a551f088230cd5b5"
+    },
+    "com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt": {
+      "sha256": "6c672d39ec7f78e733ffc6e245d8df329d325ce5cd558913fcfaef96106e344e"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiScreen.kt": {
+      "sha256": "5d64069e25b741ff25f9e3fdb087e36b1beedbf4370b6553264f07e2d9081e65"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiViewModel.kt": {
+      "sha256": "1f4f3e09a80a366bf9c8c993805392fa507c7b90eabe75d7d0d4efeea9aed976"
+    },
+    "com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt": {
+      "sha256": "d4f0e69102616d34258c5ac0df4bade4886051a693f596ea4967efd387a5c841"
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalBangumiHubRepository.kt": {
+      "sha256": "543ec281c988decfd6d9c08a990bf20916397994309f785dc9e361635e9b7a41"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDetailScreen.kt": {
+      "sha256": "0acefeaba869bc39dd2197405a5c86e4e329aa636287ad677445f9147a5e76bb"
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalBangumiPagesRequests.kt": {
+      "sha256": "acae12a816feb255c9c50cf3ae9609fd0a71e16f1b2fc6223c54de99c7023901"
+    }
+  },
+  "afterFinalOutputs": {
+    "com/android/purebilibili/feature/bangumi/BangumiHubContent.kt": {
+      "sha256": "5496fec89ad4344833cf5d2c2e73f35d572cb66e9f82521253699878d7562aaa"
+    },
+    "com/android/purebilibili/feature/bangumi/BangumiHubPolicy.kt": {
+      "sha256": "217116e6800406b4558b29d4e5eeda112d6d03661b5e623ad6aae7ddbd1dbd12"
+    },
+    "com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt": {
+      "sha256": "5fd713096bcf7d655b1baea1ffe9acaec5cae995a9a114c27983888bf52e7bc1"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiScreen.kt": {
+      "sha256": "610ad31c4e6696048ff4b5afa0c5d7becf421dd5eb7ef2911e1eaf0cdb228d4c"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiViewModel.kt": {
+      "sha256": "549a9d2717c7aa411608af8d19558869c4dfc7d2876ee9f6b8c14b131a962f80"
+    },
+    "com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt": {
+      "sha256": "2dd0e47390a54827c31ce639de0485ce56cbf4a3b062a345b51a38d1c2b72692"
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalBangumiHubRepository.kt": {
+      "sha256": "bc7babe0ee5259a7413cb2782bec5cf85e093f7c43a7ee76795735ae7fc648a0"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDetailScreen.kt": {
+      "sha256": "5f9d90b105ee6bcec92be60f5f6b8d63df0f56c29a65f25548c080e5ac3d00e0"
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalBangumiPagesRequests.kt": {
+      "sha256": "59f82bbdd293ee8c2089fbe9256aff698ed0dcb9156632c1098d426c390af4a9"
+    },
+    "com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiCardTransition.kt": {
+      "sha256": "5a62b3b06466e3cd3b5867f394657434741dae9c9b495ebe7e70d34fac5bff6c"
+    }
+  },
+  "repositoryDelta": {
+    "canonicalSha256LF": "7a7f195be5ba108aaa3e9b05d7069e9c981183fa7a79fae751b8f0da25714c73",
+    "hunks": [
+      {
+        "label": "getBangumiIndex default page size",
+        "before": "        page: Int = 1,\n        pageSize: Int = 20\n    ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {\n        try {\n            val requestFilter = buildBangumiIndexRequestFilter(",
+        "after": "        page: Int = 1,\n        pageSize: Int = 30\n    ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {\n        try {\n            val requestFilter = buildBangumiIndexRequestFilter("
+      },
+      {
+        "label": "getBangumiIndexPage default page size",
+        "before": "        pageSize: Int = 21,\n        params: Map<String, String> = emptyMap(),\n    ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {",
+        "after": "        pageSize: Int = 30,\n        params: Map<String, String> = emptyMap(),\n    ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {"
+      }
+    ]
+  },
+  "detailScreenHunk": {
+    "upstreamCommit": "3b37b7a20187c03398a71ebcdfd7c2e1fea284e5",
+    "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
+    "upstreamLines": [
+      "val uiState by viewModel.uiState.collectAsStateWithLifecycle()",
+      "val detailState = uiState.detailState"
+    ]
+  }
+}

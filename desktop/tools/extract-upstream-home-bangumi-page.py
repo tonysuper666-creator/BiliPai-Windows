@@ -99,6 +99,9 @@ def main():
  header='package com.android.purebilibili.data.repository\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.core.network.*\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\n'
  declaration='internal class DesktopOriginalBangumiHubRepository(private val api:BangumiApi, private val ownedNavApi:BilibiliApi, private val ownedSearchApi:SearchApi, private val csrf:()->String?,private val mid:()->Long?) {\n'
  emit(origin,header+declaration+'\n\n'.join(parts)+'\n}\n','DesktopOriginalBangumiHubRepository.kt',changes,methods)
- (out/'bangumi-page-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40',pins=PINS,emitted=rows,originalInverseTransformsVerified=True),indent=2)+'\n',encoding='utf-8')
+ # v0.4.6 hub layer (roadmap slice bgm-hub-pages): whole v0.4.6 content, hash-pinned over the outputs written above.
+ from v046_bangumi_hub_pages import advance_home
+ v046=advance_home(root,out)
+ (out/'bangumi-page-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40',pins=PINS,emitted=rows,originalInverseTransformsVerified=True,v046HubPages=v046),indent=2)+'\n',encoding='utf-8')
  print('Complete original Home Bangumi Hub emitted')
 if __name__=='__main__':main()

@@ -210,6 +210,10 @@ rel,s=original('core/ui/skeleton/ContentLoadingSkeletons.kt')
 selected=s[:s.index('/**')]+ '@Composable\n'+media.function(s,'PosterDetailSkeleton',parser)+'\n'
 Edit(selected).write(rel,'DesktopOriginalBangumiPosterDetailSkeleton.kt')
 ROWS[-1]['completeOriginalFileBody']=False;ROWS[-1]['completeSelectedMethodBodies']=True
+# v0.4.6 hub pages layer (roadmap slice bgm-hub-pages): whole v0.4.6 screen and view model, hash-pinned over the outputs above.
+from v046_bangumi_hub_pages import advance_pages,emit_hub_policy_test
+V046_ROWS=advance_pages(C,OUT)
+V046_ROWS.append(emit_hub_policy_test(C,OUT.parent/(OUT.name+'-tests')))
 _output_path(options.manifest or OUT/'bangumi-pages-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit=INPUT['upstreamCommit'],emitted=ROWS,
- originalInverseTransformsVerified=True,playerBodyNotYetAdapted=True,wholeProductBuildAccepted=False),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ originalInverseTransformsVerified=True,playerBodyNotYetAdapted=True,wholeProductBuildAccepted=False,v046HubPages=V046_ROWS),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(dict(generatedFiles=len(ROWS),fullOriginalFiles=sum(r.get('completeOriginalFileBody',False) for r in ROWS),playerAdaptationStillInProgress=True),ensure_ascii=False))

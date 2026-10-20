@@ -368,14 +368,17 @@ class BangumiPlayerSliceTests(unittest.TestCase):
             self.assertNotIn(token, text, token)
         last = text[text.index('    sessionProvider: '):]
         self.assertIn('    fetchPage: suspend (type: Int, page: Int, pageSize: Int) -> Result<MyFollowBangumiData>\n): FollowPreloadResult {', last)
-        # The hub view model of the same producer still calls the function with its named arguments only.
+        # The pages view model of the same producer calls the function with named arguments only. Since slice
+        # bgm-hub-pages it carries the v0.4.6 target-season verification (a fresh found-set, the target season, the
+        # page environment session and its request view); before that slice it kept the v0.2.5 full-scan call.
         hub = (self.pages / 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiViewModel.kt').read_text(encoding='utf-8')
         call = hub[hub.index('preloadFollowedSeasonsForType('):]
-        call = call[:call.index('\n        )')]
+        call = call[:call.index('\n            )\n')]
         self.assertIn('type = type', call)
-        self.assertIn('followedSeasonIds = followedSeasonIds', call)
+        self.assertIn('followedSeasonIds = foundIds', call)
+        self.assertIn('targetSeasonId = seasonId', call)
+        self.assertIn('sessionProvider = desktopEnvironment.followSession', call)
         self.assertIn('fetchPage = {', call)
-        self.assertNotIn('sessionProvider', call)
 
     def test_follow_policy_upstream_suite_is_emitted_with_only_the_junit_import_binding(self):
         tests = self.root / 'pages-tests'
@@ -391,7 +394,8 @@ class BangumiPlayerSliceTests(unittest.TestCase):
         proof = json.loads((tests / bgm.PROOF_DIRECTORY / 'follow-policy-test.json').read_text(encoding='utf8'))
         self.assertEqual(self.sources[bgm.TEST_LEAF], bgm.restore(emitted, proof['originalToWindows']))
         names = [p.relative_to(tests).as_posix() for p in tests.rglob('*.kt')]
-        self.assertEqual([bgm.TEST_OUTPUT], names)
+        # The independent pages test root also holds the hub policy suite of slice bgm-hub-pages.
+        self.assertEqual(sorted([bgm.TEST_OUTPUT, 'com/android/purebilibili/feature/bangumi/BangumiHubPolicyTest.kt']), sorted(names))
 
     # ---- features ----------------------------------------------------------------------------------------------------
 

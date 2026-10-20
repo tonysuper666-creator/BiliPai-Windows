@@ -4449,3 +4449,12 @@ tasks.matching { it.name in setOf(
     inputs.files("tools/v046_audio_listen_closure.py", "tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v046-audio-listen-closure")
 }
+
+// v0.4.6 Bangumi hub pages (roadmap bgm-hub-pages): the Home hub producer and the independent pages producer each advance
+// their own outputs to the whole v0.4.6 files through hash-pinned layers (single BangumiUiState view model, index filter
+// motion, channel bar, card transition state). The upstream test of the hub policy goes to the independent pages test root
+// registered above; no new source root, no canonical exclude (both producers own their outputs).
+tasks.matching { it.name in setOf("extractOriginalHomeBangumiPage", "extractOriginalBangumiPages") }.configureEach {
+    inputs.files("tools/v046_bangumi_hub_pages.py", "tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v046-bangumi-hub-pages")
+}

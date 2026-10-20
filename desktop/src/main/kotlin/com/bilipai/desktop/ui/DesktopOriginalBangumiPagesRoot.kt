@@ -22,7 +22,15 @@ internal class DesktopOriginalBangumiPagesEnvironment(
     val owns: () -> Boolean,
     val feedback: (String) -> Unit,
     val hazeEffectSupported: Boolean,
+    /** The account identity the v0.4.6 follow caches compare (see [desktopOriginalBangumiPagesFollowSession]). */
+    val followSession: () -> BangumiFollowSession,
 )
+
+/** Windows has no process-wide TokenManager. While an account is signed in the pages belong to one Root account epoch
+ * (the same opaque identity the PGC presenter uses, never a credential); without an account the constant "no account
+ * tracking" session makes the carried background follow verification stand down, exactly like a missing SESSDATA. */
+internal fun desktopOriginalBangumiPagesFollowSession(signedIn: Boolean, accountEpoch: Long): BangumiFollowSession =
+    if (signedIn) desktopOriginalBangumiFollowSession(accountEpoch) else BangumiFollowSession(null, null)
 
 internal val LocalDesktopOriginalBangumiPagesEnvironment =
     staticCompositionLocalOf<DesktopOriginalBangumiPagesEnvironment> {
@@ -111,7 +119,8 @@ internal object DesktopOriginalBangumiPagesToast {
                 scope, ::commit, ::owns,
                 { message -> if (acts()) home.feedback(message) },
                 // Desktop does not have Android's RenderEffect-backed haze.
-                hazeEffectSupported = false)
+                hazeEffectSupported = false,
+                followSession = { desktopOriginalBangumiPagesFollowSession(gate.mid != null, gate.epoch) })
         }
         val detail = remember(environment) {
             if (entryKey is BiliPaiNavKey.BangumiDetail) BangumiViewModel(environment) else null

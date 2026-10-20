@@ -165,7 +165,8 @@
     "desktop/upstream-slices/v046-audio-listen-closure",
     "desktop/upstream-slices/v046-mfx-small-protocol-fixes",
     "desktop/upstream-slices/v046-dynamic-category-merge",
-    "desktop/upstream-slices/v046-search-state"
+    "desktop/upstream-slices/v046-search-state",
+    "desktop/upstream-slices/v046-bangumi-hub-pages"
   ],
   "archives": [
     {
@@ -7463,6 +7464,71 @@
           "sha256": "263d6b2fbabe092c92bca17d121a542e75d86ccd8599f6ef00baf841dae66243",
           "hashNormalization": "raw",
           "blob": "d86080e60a2fbceb8ed11fd607c94aad02c67c53"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-bangumi-hub-pages",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiCardTransition.kt",
+          "sha256": "8c760ae8d55ef8e8118cd4c4fd8e35071e46aaf2555ebe4d117584a6a1df7f4c",
+          "hashNormalization": "raw",
+          "blob": "cf697167983a0f92695f61648814973acf48b725"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiHubContent.kt",
+          "sha256": "5496fec89ad4344833cf5d2c2e73f35d572cb66e9f82521253699878d7562aaa",
+          "hashNormalization": "raw",
+          "blob": "fb5083c290e039c0635a2c793dba2c53d7d90699"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiHubPolicy.kt",
+          "sha256": "217116e6800406b4558b29d4e5eeda112d6d03661b5e623ad6aae7ddbd1dbd12",
+          "hashNormalization": "raw",
+          "blob": "e42db281ff142173f6541d78e34f9cf93226b00a"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiHubPolicyTest.kt",
+          "sha256": "eb99b8907dfa6fda36ce5c1fd5b8ebcddf81a22f975b5e9557e2d8834e753b60",
+          "hashNormalization": "raw",
+          "blob": "754fa066e71d311ea7232a2aeab910a9a0738729"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiRepository.kt",
+          "sha256": "cecabeb540116bf52fe47a1118234b32c5c87178f5d4454a60e4d255b3e80224",
+          "hashNormalization": "raw",
+          "blob": "987c42fbdfe18658622ab68bee2ff0bcb2413b79"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiScreen.kt",
+          "sha256": "dbf29935d1cb2a34a37cbc0afc09366a14ac334abba42518d33e630e0ceb1459",
+          "hashNormalization": "raw",
+          "blob": "d3a39e78131813f167f3f6e4d9e00a264efa9840"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiViewModel.kt",
+          "sha256": "6c7e7c3b45c3a03098eb7e69f47a1126f95f23a8062e1f3ac09e189cf294306b",
+          "hashNormalization": "raw",
+          "blob": "5d94ef6d176e8380cf4d7df358a327926deb9423"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/HomeBangumiTabPage.kt",
+          "sha256": "7aa19916a2c217aa33a4f5230559c200a8260c545cea84372614d8aae9964c6e",
+          "hashNormalization": "raw",
+          "blob": "d3b1c93899ffdd2a8a5dae3d66c3620301943638"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-bangumi-hub-pages/manifest.json",
+          "sha256": "d7c5cbcdc3e3e0d58055958535b5670945ad53304dbf0ff500f2b9682afee369",
+          "hashNormalization": "raw",
+          "blob": "a2f10f8203774246b9f0e86692fcadd4ff0011f0"
         }
       ]
     }
@@ -19710,6 +19776,130 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 original motion policy test replacing the v0.4.2 emission."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiViewModel.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "5d94ef6d176e8380cf4d7df358a327926deb9423",
+      "sha256": "6c7e7c3b45c3a03098eb7e69f47a1126f95f23a8062e1f3ac09e189cf294306b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 BangumiViewModel (one BangumiUiState with the former properties derived from it, generation guarded loads, background follow verification that stops at the target season) advanced onto the independent Bangumi pages producer output through seven counted hash-pinned adaptations; the follow session is the Root account epoch."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiRepository.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "987c42fbdfe18658622ab68bee2ff0bcb2413b79",
+      "sha256": "cecabeb540116bf52fe47a1118234b32c5c87178f5d4454a60e4d255b3e80224",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "Proof of the v0.4.6 page size delta only: the pinned canonical file plus two counted hunks is this blob, and the same two hunks are applied to the selected getBangumiIndex and getBangumiIndexPage bodies of the two producers that own them. No other declaration is emitted from this file here.",
+      "reusedMethods": [
+        "getBangumiIndex",
+        "getBangumiIndexPage"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiHubPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "e42db281ff142173f6541d78e34f9cf93226b00a",
+      "sha256": "217116e6800406b4558b29d4e5eeda112d6d03661b5e623ad6aae7ddbd1dbd12",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 hub policy (adds the glass year range label) emitted verbatim by the Home Bangumi hub producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiHubContent.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "fb5083c290e039c0635a2c793dba2c53d7d90699",
+      "sha256": "5496fec89ad4344833cf5d2c2e73f35d572cb66e9f82521253699878d7562aaa",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 hub content (animated index filter panel, saved grid states, wallpaper aware follow cards, card transition hooks) emitted verbatim by the Home Bangumi hub producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d3a39e78131813f167f3f6e4d9e00a264efa9840",
+      "sha256": "dbf29935d1cb2a34a37cbc0afc09366a14ac334abba42518d33e630e0ceb1459",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Bangumi screen (card transition host, channel bar above the status bar, saved scroll state) advanced onto the independent Bangumi pages producer output through eleven counted hash-pinned adaptations."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/HomeBangumiTabPage.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d3b1c93899ffdd2a8a5dae3d66c3620301943638",
+      "sha256": "7aa19916a2c217aa33a4f5230559c200a8260c545cea84372614d8aae9964c6e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Home Bangumi tab page advanced onto the Home Bangumi hub producer output through nine counted hash-pinned adaptations."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiCardTransition.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiCardTransition.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "cf697167983a0f92695f61648814973acf48b725",
+      "sha256": "8c760ae8d55ef8e8118cd4c4fd8e35071e46aaf2555ebe4d117584a6a1df7f4c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 Bangumi card transition emitted by the Home Bangumi hub producer with one counted adaptation that binds its destination to the desktop owned detail adapter; the container transition stays off because no Windows host passes onPlayEpisode."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/bangumi/BangumiHubPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-bangumi-hub-pages/BangumiHubPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "754fa066e71d311ea7232a2aeab910a9a0738729",
+      "sha256": "eb99b8907dfa6fda36ce5c1fd5b8ebcddf81a22f975b5e9557e2d8834e753b60",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-bangumi-hub-pages"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole original BangumiHubPolicyTest emitted next to the independent Bangumi pages tests with its JUnit4 imports rewritten to kotlin.test."
     }
   ],
   "buildStandaloneInputs": [
