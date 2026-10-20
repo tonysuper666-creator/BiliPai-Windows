@@ -1,6 +1,6 @@
 # Root writes this file; the daemon (verify.sh) verifies the sha when it changes. Edit only through Root.
 branch: desktop/integration-263-claude-main
-sha: b496a6136660e43ebaed83b5fbd75180e1e3451f
+sha: 2d2754371c0c421ee6027cf077d0e8037b4cf167
 py: tests:test_sync_upstream.py
 py: tests:test_validate_source_cohort.py
 py: tests:test_package_source_qualification.py
