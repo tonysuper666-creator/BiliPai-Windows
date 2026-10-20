@@ -182,6 +182,7 @@ def generate(repo, output, standalone=False):
    body=body.replace(before,after);changes.append(dict(before=before,after=after))
    body=body.replace('LaunchedEffect(bvid, cid)', 'LaunchedEffect(defaultVideoCardOnlineCountStore, bvid, cid)')
   body=apply_card(repo,Path(path).name,body,changes)
+  body=__import__("ux_home_card").apply_home_card(repo,Path(path).name,body,changes)
   out=HERE/'generated'/pkg.replace('.','/')/Path(path).name
   if path not in DIRECT or standalone:write(out,'// Original source '+path+'\n// LF SHA256 '+hashlib.sha256(source.encode()).hexdigest()+'\n'+body)
   rows.append(dict(path=path,mode='direct' if path in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((_desktop_canonical_source(REPO, path)).read_bytes()).hexdigest(),changes=changes,generated=str(out.relative_to(HERE))))

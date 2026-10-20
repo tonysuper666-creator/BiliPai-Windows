@@ -384,8 +384,11 @@ class GeneratedTextTest(unittest.TestCase):
     def test_the_generated_video_card_menu_uses_exactly_the_probed_call_shapes(self):
         text = probe.read_text(GENERATED["video_card"])
         code = probe.mask_kotlin(text)
-        menu_import = "import com.android.purebilibili.core.ui.components.AppDropdownMenu\n"
-        item_import = "import com.android.purebilibili.core.ui.components.AppDropdownMenuItem\n"
+        # Slice H2 changed this pin, with exact values: the generator layer ux_home_card.py now swaps the two vendored imports of the
+        # generated card for the aliases of the desktop-owned menu, so the call text below (names, count, trailing lambda) is still the
+        # vendored call text, and the imports are the two alias lines. test_ux_home_card_adaptations.py pins the swap itself.
+        menu_import = "import com.bilipai.desktop.ui.DesktopCardContextMenu as AppDropdownMenu\n"
+        item_import = "import com.bilipai.desktop.ui.DesktopCardContextMenuItem as AppDropdownMenuItem\n"
         self.assertEqual(1, text.count(menu_import))
         self.assertEqual(1, text.count(item_import))
         # Every other token use is a call: no reference, no named import of anything else from the family.

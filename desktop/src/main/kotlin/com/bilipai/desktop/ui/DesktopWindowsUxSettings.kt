@@ -22,32 +22,35 @@ import com.bilipai.desktop.ui.kit.DesktopMenuRow
 import com.bilipai.desktop.ui.kit.desktopKitHairlineBorder
 
 /*
- * A row of the layout group is offered only while something honours its flag. The shell frame honours the rail flag (slice S1)
- * and the Home feed wrappers honour the home flag (slice H1, DesktopHomeFeedLayout.kt); nothing honours the other two yet (the
- * player leaf reads the player flag but resolves DESKTOP to LEGACY while no overlay exists, and the cards come with their own
- * slice), and the player flag in particular must not be set to DESKTOP before the flip gate: an explicit DESKTOP key would
- * switch the unaccepted overlay on the day it lands. So those rows are shown, with the stored value, but cannot be changed.
- * The slice that adds the consumer of a flag turns its row on (S1 the rail and H1 the home feed, done; H2 the cards, V4a the
- * player layout together with DESKTOP_PLAYER_OVERLAY_AVAILABLE) and the source test that scans for readers of the flags fails
- * until it does.
+ * A row of the layout group is offered only while something honours its flag. The shell frame honours the rail flag (slice S1),
+ * the Home feed wrappers honour the home flag (slice H1, DesktopHomeFeedLayout.kt) and the Home card menu, labels, right click and
+ * hand cursor honour the card flag (slice H2, DesktopCardContextMenu.kt); nothing honours the player flag yet (the player leaf reads
+ * it but resolves DESKTOP to LEGACY while no overlay exists), and the player flag in particular must not be set to DESKTOP before
+ * the flip gate: an explicit DESKTOP key would switch the unaccepted overlay on the day it lands. So that row is shown, with the
+ * stored value, but cannot be changed. The slice that adds the consumer of a flag turns its row on (S1 the rail, H1 the home feed
+ * and H2 the cards, done; V4a the player layout together with DESKTOP_PLAYER_OVERLAY_AVAILABLE) and the source test that scans
+ * for readers of the flags fails until it does.
  */
 private const val RAIL_MODE_HAS_CONSUMER = true
 private const val PLAYER_LAYOUT_HAS_CONSUMER = false
 private const val HOME_LAYOUT_HAS_CONSUMER = true
-private const val CARD_INTERACTIONS_HAS_CONSUMER = false
+private const val CARD_INTERACTIONS_HAS_CONSUMER = true
 
 /**
  * The layout group of the settings (spec 3.7), shown inside the display-scale card of the appearance settings: the navigation rail mode,
  * the player layout, the home layout, the card right-click menu and hover, and the button that resets them. Each row
  * writes one flag of the windows_ux store through LocalDesktopWindowsUx once its consumer exists; a fixture that provides
- * nothing sees the read-only defaults, which refuse every command. The defaults of the player layout and the card interactions
- * are the existing behaviour, so those rows change nothing until a choice is made. The default of the rail row is not: it is
+ * nothing sees the read-only defaults, which refuse every command. The default of the player layout is the existing behaviour,
+ * so that row changes nothing until a choice is made. The default of the rail row is not: it is
  * AUTO, the new navigation rail (spec 5.2, slice S1), so the rail replaces the 172 dp text block for everyone who has chosen
- * nothing; and neither is the default of the home row: it is DESKTOP, the feed that takes the whole width the rail leaves
+ * nothing; neither is the default of the home row: it is DESKTOP, the feed that takes the whole width the rail leaves
  * (spec 3.6, slice H1), so the feed is no longer held at the old 1280 dp for everyone who has chosen nothing (the single-column
- * display mode and a pinned column count keep the vendored feed and its cap). The reset row
- * brings back those defaults; the choices that keep the old block and the old feed are the classic text rail mode and the
- * classic home layout. The rows are plain choices (no group container), because the card around them is the container.
+ * display mode and a pinned column count keep the vendored feed and its cap); and neither is the default of the card row: it is
+ * ON (spec 3.6, slice H2), so a Home card opens its menu on a right click, shows the hand cursor, drops the emoji of its menu
+ * labels and has the 32 dp overflow button for everyone who has chosen nothing. The reset row
+ * brings back those defaults; the choices that keep the old block, the old feed and the old cards are the classic text rail mode,
+ * the classic home layout and the card interactions OFF. The rows are plain choices (no group container), because the card around
+ * them is the container.
  */
 @Composable
 internal fun DesktopWindowsUxLayoutGroup() {

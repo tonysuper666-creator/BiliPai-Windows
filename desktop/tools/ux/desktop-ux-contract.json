@@ -2234,5 +2234,33 @@
       "acts_once_per_press": true
     },
     "editor_focus": "a Swing text component, or a focus owner (or parent) whose getInputMethodRequests is not null"
+  },
+  "home_card": {
+    "about": "Slice H2: the Home card interactions (ui/DesktopCardInteractionPolicy.kt, DesktopCardContextMenu.kt, DesktopCardPointer.kt) that desktop/tools/ux_home_card.py wires into the generated VideoCard behind the card_interactions flag; OFF is the vendored behaviour. Mirrored by ux_home_card_model.py and checked by test_ux_home_card_model.py, test_ux_home_card_adaptations.py and DesktopCardInteractionPolicyTest.",
+    "flag": "card_interactions",
+    "menu": {"row_height_dp": 36, "width_dp": 168},
+    "overflow_target_dp": 32,
+    "labels": [
+      {"id": "watch_later", "emoji_code_point": "1F550"},
+      {"id": "unfavorite", "emoji_code_point": "1F494"},
+      {"id": "dismiss", "emoji_code_point": "1F6AB"}
+    ],
+    "secondary": {
+      "opens_on": "PRESS",
+      "consumes": ["PRESS", "RELEASE"],
+      "press_table": [
+        {"primary": false, "secondary": true, "owns": true},
+        {"primary": true, "secondary": true, "owns": false},
+        {"primary": true, "secondary": false, "owns": false},
+        {"primary": false, "secondary": false, "owns": false}
+      ],
+      "follow_table": [
+        {"present": false, "pressed": false, "step": "END"},
+        {"present": false, "pressed": true, "step": "END"},
+        {"present": true, "pressed": true, "step": "WAIT"},
+        {"present": true, "pressed": false, "step": "CONSUME_AND_END"}
+      ]
+    },
+    "not_covered": ["HomeStyleSingleColumnVideoCard", "StoryVideoCard", "DynamicCard"]
   }
 }

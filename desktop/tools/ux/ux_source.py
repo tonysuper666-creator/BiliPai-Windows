@@ -91,6 +91,7 @@ PROGRAM_EXTRA_GLOBS = (
     "ui/DesktopHomeFeedLayout.kt",
     "ui/DesktopHomeFeedLayoutPolicy.kt",
     "ui/DesktopCardContextMenu.kt",
+    "ui/DesktopCardInteractionPolicy.kt",
     "ui/DesktopCardPointer.kt",
     "ui/DesktopLazyScrollbars.kt",
     "ui/DesktopFeedScrollbar.kt",
