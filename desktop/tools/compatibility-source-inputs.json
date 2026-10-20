@@ -168,7 +168,8 @@
     "desktop/upstream-slices/v046-search-state",
     "desktop/upstream-slices/v046-bangumi-hub-pages",
     "desktop/upstream-slices/v046-theme-palette-schedule",
-    "desktop/upstream-slices/v046-portrait-pager"
+    "desktop/upstream-slices/v046-portrait-pager",
+    "desktop/upstream-slices/v046-space-content-pager"
   ],
   "archives": [
     {
@@ -7643,6 +7644,29 @@
           "sha256": "83495fb70ec21928473e1ab051b3d45e7b6956bb2c965379fa10042224b19c64",
           "hashNormalization": "raw",
           "blob": "f03ed746c4777b14ac184ad7bc36c0b2a4f00448"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-space-content-pager",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-space-content-pager/ContentTabPager.kt",
+          "sha256": "5392c163e1ac16caeea0f332a82edc2b052db4e47cc420870b30ec5b33dd05dc",
+          "hashNormalization": "raw",
+          "blob": "d659a5d40f554e475ff0558fb6eebe276b7381c2"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-space-content-pager/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-space-content-pager/manifest.json",
+          "sha256": "c07e26f1866e11fbeb44fe886448977afe13b6a16bb60a44cc7e3562d8edc47c",
+          "hashNormalization": "raw",
+          "blob": "3cbc64eb4fb6e62cf04de6557a008a48bbcc3a1d"
         }
       ]
     }
@@ -20209,6 +20233,21 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/common/ContentTabPager.kt",
+      "localPath": "desktop/upstream-slices/v046-space-content-pager/ContentTabPager.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d659a5d40f554e475ff0558fb6eebe276b7381c2",
+      "sha256": "5392c163e1ac16caeea0f332a82edc2b052db4e47cc420870b30ec5b33dd05dc",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-space-content-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Complete original file (the new Space content tab pager of upstream 35e2fac8 with the key(pageCount) PagerState rebuild guard of f00cb206): rememberContentTabPager, stationaryPagerHeader and contentTabPagerGestures. Emitted as a new file under com/android/purebilibili/core/ui/common by the Space pages producer with one counted comment adaptation of the forceVerticalPriority argument; the Space screen pager mount, the banner rotation and the pinned card icon are hash-pinned hunks in desktop/tools/v046_space_content_pager.py."
     }
   ],
   "buildStandaloneInputs": [

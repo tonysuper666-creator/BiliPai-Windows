@@ -20,6 +20,8 @@ def module(name, path):
     result = importlib.util.module_from_spec(spec); spec.loader.exec_module(result); return result
 
 def generate(repo, out, include_screen=True):
+    from v046_space_content_pager import validate_outputs as validate_space_pager
+    validate_space_pager(repo, out)
     parser = module('space_parser',repo/'desktop/tools/sync-upstream.py')
     helper = module('space_graph',repo/'desktop/tools/extract-upstream-tablet-owner-space.py')
     receipts = []
@@ -294,11 +296,18 @@ internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,pr
             from v046_identity_badge_palette import up_name_vip_pink
             pink_before,pink_after=up_name_vip_pink('SpaceScreen.kt',s)
             s=edit(s,pink_before,pink_after,1)
+            # v0.4.6 content pager (35e2fac8, f00cb206), banner rotation and pinned card icon (b3ace0a55): counted hunks.
+            from v046_space_content_pager import site_edits as space_pager_edits
+            for pager_edit in space_pager_edits(pkg+'SpaceScreen.kt',s):
+                s=edit(s,pager_edit['before'],pager_edit['after'],1)
             from v046_follow_confirmation import site_edits as follow_confirmation_edits
             for follow_edit in follow_confirmation_edits(pkg+'SpaceScreen.kt',s):
                 s=edit(s,follow_edit['before'],follow_edit['after'],1)
             return logs(s)
         produce(BASE+'feature/space/SpaceScreen.kt',pkg+'SpaceScreen.kt',screen)
+        # The whole v0.4.6 ContentTabPager.kt (new declarations: no other file declares them) that the hunks above call.
+        from v046_space_content_pager import emit_pager as emit_space_pager
+        emit_space_pager(repo,out)
         def supporter_screen(s,edit,logs):
             for line in ['import androidx.lifecycle.viewmodel.initializer\n','import androidx.lifecycle.viewmodel.viewModelFactory\n','import androidx.lifecycle.viewmodel.compose.viewModel\n']:
                 s=edit(s,line,'',1)

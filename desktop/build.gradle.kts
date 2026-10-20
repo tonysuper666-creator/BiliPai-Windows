@@ -4472,3 +4472,11 @@ tasks.matching { it.name in setOf("extractOriginalVideoFullscreenPager", "extrac
     inputs.files("tools/v046_portrait_pager.py", "tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v046-portrait-pager")
 }
+
+// v0.4.6 Space content pager (roadmap space-profile-content-pager): the Space pages producer emits the whole ContentTabPager.kt
+// and applies the counted pager mount, banner rotation and pinned card hunks to the generated SpaceScreen. No canonical
+// exclude (nothing else declares the three pager helpers) and no new source root (the producer output is already registered).
+tasks.named("extractOriginalSpacePages") {
+    inputs.file("tools/v046_space_content_pager.py")
+    inputs.dir("upstream-slices/v046-space-content-pager")
+}
