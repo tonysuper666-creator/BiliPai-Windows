@@ -40,7 +40,7 @@ from v044_favorite_detail import inverse_proof
 
 COMMIT = 'd6bf8b1655ae910999860bf13e65c8fcea5b345b'
 ARCHIVE = 'desktop/upstream-slices/v046-audio-listen-closure'
-MANIFEST_SHA256 = 'ddfa57bc96acc7f8e24f40a6441e17dfa1f6484863d5e8df94ea0fc89bb2b22d'
+MANIFEST_SHA256 = 'f1f8033deea1882b5f0db26ea8264a9738afc42dc5a6b66aca5bca93e4a34cd1'
 EXPECTED = {'ListenVideoScreen.kt', 'MusicPlayerContent.kt', 'Music3DCoverFlow.kt', 'AudioModeMusicPlayer.kt',
             'LyricsDisplayPolicy.kt'}
 BASE = 'app/src/main/java/com/android/purebilibili/'
@@ -160,12 +160,10 @@ MUSIC_PORTS = [
 ]
 
 # AudioModeMusicPlayer: the one v0.4.6 argument whose callee is not carried yet.
-AUDIO_PORTS = [
-    ('                pages = info.pages,\n'
-     '                coverUrl = info.pic,\n',
-     '                pages = info.pages,\n',
-     'PagesSelector coverUrl needs the v0.4.6 selector (lst-episode-selector-collection); the Windows selector is v0.3.7'),
-]
+# The only counted v0.4.6 port of this file used to drop the `coverUrl = info.pic,` argument of the part selector call
+# because the Windows selector was the v0.3.7 one. The episode selector slice (lst-episode-selector-collection) now carries
+# the whole v0.4.6 PagesSelector, so the argument is real and stays exactly as v0.4.6 writes it.
+AUDIO_PORTS = []
 
 
 def sha(value):
@@ -236,9 +234,19 @@ def restore(value, proof):
     return result
 
 
+# The predecessor of the audio mode player is the output of the part selector (episode selector) layer; the same output
+# WITHOUT that layer (the layer's own base run) is the only other state this layer accepts. The manifest pins the former.
+ALTERNATE_PREDECESSORS = {
+    'audio/AudioModeMusicPlayer.kt': '640bf139905a0d5dc3ae5cd06330144d514afb22dc44b3bba938342dcb4ca982',
+}
+
+
 def _before(repo, key, body):
     sources, manifest = fixed(repo)
-    need(sha(body) == manifest['beforeFinalOutputs'][key]['sha256'], 'Listen closure predecessor changed: ' + key)
+    accepted = {manifest['beforeFinalOutputs'][key]['sha256']}
+    if key in ALTERNATE_PREDECESSORS:
+        accepted.add(ALTERNATE_PREDECESSORS[key])
+    need(sha(body) in accepted, 'Listen closure predecessor changed: ' + key)
     return sources
 
 
@@ -338,9 +346,22 @@ def advance_cover_flow(repo, before):
 def advance_audio_mode_player(repo, before, changes):
     """The 79e8 Windows AudioModeMusicPlayer becomes the whole v0.4.6 body with the same ports plus the counted hunk."""
     sources = _before(repo, 'audio/AudioModeMusicPlayer.kt', before)
-    return _advance(sources['AudioModeMusicPlayer.kt'], before, group_ops(changes), AUDIO_PORTS,
+    # The episode selector layer (v046_episode_selector) ports the part selector cover argument onto the 79e8 body just
+    # before this layer. The whole v0.4.6 original already carries that argument itself, so that recorded port is
+    # superseded here: drop it, but only after proving the original really contains its result exactly once.
+    from v046_episode_selector import CALL_SITE_LABELS
+    original = sources['AudioModeMusicPlayer.kt']
+    cover_label = CALL_SITE_LABELS['audio']
+    recorded = group_ops(changes)
+    # The recorded change carries the text the layer really produced (the layer's own base run records a no-op), so the
+    # test reads the recorded result instead of a module constant that a baseline run may have patched.
+    for change in changes:
+        if change['label'] == cover_label and change['before'] != change['after']:
+            need(original.count(change['after']) == 1, 'v0.4.6 audio mode player lacks the part selector cover argument')
+    changes = [change for change in changes if change['label'] != cover_label]
+    return _advance(original, before, group_ops(changes), AUDIO_PORTS,
                     _baseline(repo, 'feature/video/screen/AudioModeMusicPlayer.kt', 'AudioModeMusicPlayer.kt'),
-                    'Audio mode player')
+                    'Audio mode player', previous_ops=recorded)
 
 
 def upgraded_lyrics_display_policy(repo, previous_raw, previous_row):

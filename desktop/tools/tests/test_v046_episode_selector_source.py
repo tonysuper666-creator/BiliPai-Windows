@@ -515,7 +515,10 @@ class GeneratedOutputTests(unittest.TestCase):
         # The overlay edit is the LAST layer of that output (after the NVIDIA and audio overlay layers and after the follow
         # confirmation), so the follow confirmation proof is byte for byte the proof of the run without this slice and still
         # describes the text it received. Only the sources, their readback and the selector proof of the page row move.
-        self.assertEqual(sorted([PAGES_OUTPUT, OVERLAY_OUTPUT, 'v037-complete-controls-source-readback.json']), differing)
+        # The player overlay re-pin (v046_player_overlay) applies its own proof AFTER this slice's overlay edit, so its proof of
+        # that file records the edited predecessor and differs as well.
+        self.assertEqual(sorted([PAGES_OUTPUT, OVERLAY_OUTPUT, 'v037-complete-controls-source-readback.json',
+                                 'v046-player-overlay-proofs/VideoPlayerOverlay.kt.json']), differing)
         proof_name = 'v046-follow-confirmation-proofs/VideoPlayerOverlay.kt.json'
         self.assertEqual(real[proof_name], base[proof_name])
         proof = json.loads(real[proof_name].decode('utf8'))
@@ -557,11 +560,17 @@ class GeneratedOutputTests(unittest.TestCase):
             self.assertEqual(set(base), set(real), 'no output is added or removed in the ' + producer + ' producer')
             sources = sorted(name for name in real if name.startswith('com/') and name.endswith('.kt'))
             expected = sorted(SCREEN + name for prod, name, _key, _line in LARGE_SCREEN_SITES if prod == producer)
+            if producer == 'audio':
+                # The listen closure slice (v046_audio_listen_closure) replaces the audio mode player by the WHOLE v0.4.6
+                # original, which already makes the cover call: with or without this slice the Kotlin is the same.
+                expected = []
             differing = sorted(name for name in sources if real[name] != base[name])
             self.assertEqual(expected, differing, producer + ': only the call-site files differ in their Kotlin')
             # Every proof of the layers below this slice is byte for byte the proof of the run without it (last layer).
+            # The listen closure proofs of the audio producer record their predecessor, which does differ.
             proofs = [name for name in real if name.endswith('proof.json')]
-            self.assertEqual([], [name for name in proofs if real[name] != base[name]])
+            if producer != 'audio':
+                self.assertEqual([], [name for name in proofs if real[name] != base[name]])
         for producer, name, key, line in LARGE_SCREEN_SITES:
             with self.subTest(file=name):
                 before_anchor, after_anchor = getattr(episode, key.upper() + '_PAGES_BEFORE'), getattr(episode, key.upper() + '_PAGES_AFTER')
@@ -569,10 +578,15 @@ class GeneratedOutputTests(unittest.TestCase):
                 baseline = text_of(self.base(producer, SCREEN + name))
                 removed, added = changed_lines(baseline, generated)
                 self.assertEqual([], removed)
-                self.assertEqual([line], added)
+                if producer == 'audio':
+                    # whole v0.4.6 original in both runs (see above): the call is there without this slice's own edit
+                    self.assertEqual([], added)
+                    self.assertEqual(1, baseline.count(after_anchor))
+                else:
+                    self.assertEqual([line], added)
+                    self.assertEqual(1, baseline.count(before_anchor))
                 self.assertEqual(1, generated.count(after_anchor))
                 self.assertEqual(0, generated.count(before_anchor))
-                self.assertEqual(1, baseline.count(before_anchor))
                 self.assertEqual(1, generated.count('PagesSelector('), 'exactly one part selector call')
                 # The very same lines exist at v0.4.6: the part list falls back to this cover for a part without first_frame.
                 upstream = upstream_blob(episode.APP + 'feature/video/screen/' + name).decode('utf8')

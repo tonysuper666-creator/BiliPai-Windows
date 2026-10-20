@@ -7250,9 +7250,9 @@
         },
         {
           "path": "desktop/upstream-slices/v046-audio-listen-closure/manifest.json",
-          "sha256": "ddfa57bc96acc7f8e24f40a6441e17dfa1f6484863d5e8df94ea0fc89bb2b22d",
+          "sha256": "f1f8033deea1882b5f0db26ea8264a9738afc42dc5a6b66aca5bca93e4a34cd1",
           "hashNormalization": "raw",
-          "blob": "f3ce2ca08b432885102d35f9b19f6cfc825ab6fd"
+          "blob": "4b6108ca5e60b536968078b0d70b63707ebba70f"
         },
         {
           "path": "desktop/upstream-slices/v046-audio-listen-closure/Music3DCoverFlow.kt",

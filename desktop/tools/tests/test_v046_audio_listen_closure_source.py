@@ -392,7 +392,8 @@ class AudioModeTests(Fixture, ProofMixin):
         body, before = self.out('audio', AUDIO), self.base('audio', AUDIO)
         self.check_proof(proof, body, before, self.sources['AudioModeMusicPlayer.kt'], 'audio/AudioModeMusicPlayer.kt')
         self.assertEqual(sha(body), proof['outputFileSHA256'])
-        self.assertEqual(1, len(proof['windowsEdits']))
+        # no counted port is left: the part selector the Windows tree compiles is the whole v0.4.6 one (episode selector slice)
+        self.assertEqual(0, len(proof['windowsEdits']))
         self.assertEqual({AUDIO}, self.changed_files('audio'))
 
     def test_the_v046_behaviours_are_in_the_audio_mode_player(self):
@@ -406,14 +407,18 @@ class AudioModeTests(Fixture, ProofMixin):
             self.assertEqual(1, body.count(token), token)
         for gone in ('PlaylistManager', 'viewModel()', 'LocalContext', 'ExoPlayer'):
             self.assertNotIn(gone, body)
-        # the selector argument whose callee is the v0.4.6 PagesSelector is not carried yet
-        self.assertNotIn('coverUrl = info.pic', body)
+        # the selector argument is carried exactly as v0.4.6 writes it: its callee is the whole v0.4.6 PagesSelector
+        self.assertEqual(1, body.count('coverUrl = info.pic,'))
         self.assertEqual(1, self.sources['AudioModeMusicPlayer.kt'].count('coverUrl = info.pic'))
 
-    def test_the_v037_selector_the_windows_tree_carries_has_no_cover_parameter(self):
-        selector = text_of(REPO / 'desktop/upstream-slices/v037-player-closure/PagesSelector.kt')
+    def test_the_selector_the_windows_tree_compiles_has_the_cover_parameter(self):
+        # the v0.3.7 selector of the older archive has none, which is why this slice once dropped the argument
+        old = text_of(REPO / 'desktop/upstream-slices/v037-player-closure/PagesSelector.kt')
+        old_signature = old[old.index('fun PagesSelector('):old.index(') {', old.index('fun PagesSelector('))]
+        self.assertNotIn('coverUrl', old_signature)
+        selector = text_of(REPO / 'desktop/upstream-slices/v046-episode-selector/PagesSelector.kt')
         signature = selector[selector.index('fun PagesSelector('):selector.index(') {', selector.index('fun PagesSelector('))]
-        self.assertNotIn('coverUrl', signature)
+        self.assertIn('coverUrl', signature)
 
 
 class DeterminismAndHygieneTests(Fixture):
