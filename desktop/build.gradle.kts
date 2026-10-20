@@ -2891,6 +2891,8 @@ dependencies {
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc14")
 }
 val extractOriginalVideoContentFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_detail_holder_collapse.py")
+    inputs.dir("upstream-slices/v046-detail-holder-collapse")
     inputs.file("tools/v046_comment_chrome.py")
     inputs.dir("upstream-slices/v046-comment-chrome")
     inputs.file("tools/v040_liquid_value_controls.py")
@@ -2990,6 +2992,8 @@ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("gener
 tasks.named("compileKotlin") { dependsOn(prepareUpstreamVideoCommentUrl) }
 
 val extractOriginalVideoTabletFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_detail_holder_collapse.py")
+    inputs.dir("upstream-slices/v046-detail-holder-collapse")
     inputs.file("tools/v037_player_known_presentation.py")
     dependsOn(prepareUpstreamSources, prepareUpstreamVideoCommentUrl, extractOriginalVideoStateCore,
         extractOriginalVideoPlayerSectionFull, extractOriginalVideoContentFull)
@@ -3113,6 +3117,8 @@ listOf("extractOriginalVideoFullOwner", "extractOriginalVideoFullscreenPager").f
 }
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v046_detail_holder_collapse.py")
+    inputs.dir("upstream-slices/v046-detail-holder-collapse")
     inputs.dir("upstream-slices/v037-holder-comment-close")
     inputs.file("tools/v037_player_known_presentation.py")
     inputs.file("tools/v032_video_return_state.py")

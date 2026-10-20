@@ -90,6 +90,9 @@ def emit(rel,t,origin,mode):
   # proof still describes the text it was authored against): the part selector receives the cover and the playing state.
   from v046_episode_selector import CONTENT_PAGES_BEFORE,CONTENT_PAGES_AFTER,CALL_SITE_LABELS
   t=adapt(t,CONTENT_PAGES_BEFORE,CONTENT_PAGES_AFTER,CALL_SITE_LABELS['content'])
+  # Roadmap plr-holder-collapse-family, the last layer of this output: the v0.4.6 compact comment title arguments.
+  from v046_detail_holder_collapse import advance_content as advance_detail_holder_collapse_content
+  t=advance_detail_holder_collapse_content(REPO,t,OUTPUT)
  if rel=='feature/video/ui/section/VideoNoteSection.kt':
   t=adapt_v025_note_badge(rel,t);mode='policy-extract'
  direct=mode=='direct-complete-original'
@@ -227,6 +230,8 @@ def generate(repo,output,standalone=False):
  REPO=Path(repo).resolve();OUTPUT=Path(output).resolve();STANDALONE=standalone
  from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
  validate_episode_selector_outputs(REPO,OUTPUT)
+ from v046_detail_holder_collapse import validate_outputs as validate_detail_holder_collapse_outputs
+ validate_detail_holder_collapse_outputs(REPO,OUTPUT)
  SOURCES={};OUTPUTS=[];ADAPT=[];REFERENCES=[]
  manifest=json.loads(wide(REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT

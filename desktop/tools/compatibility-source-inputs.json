@@ -171,7 +171,8 @@
     "desktop/upstream-slices/v046-portrait-pager",
     "desktop/upstream-slices/v046-space-content-pager",
     "desktop/upstream-slices/v046-wallpaper-foundation",
-    "desktop/upstream-slices/v046-control-center-motion"
+    "desktop/upstream-slices/v046-control-center-motion",
+    "desktop/upstream-slices/v046-detail-holder-collapse"
   ],
   "archives": [
     {
@@ -7787,6 +7788,35 @@
           "sha256": "d77ed7c2351070fd93b66e80f4e1b9100a6359ed19e2602500d0fd8e9e5c38ba",
           "hashNormalization": "raw",
           "blob": "2d8970f628d708b0432912d9c7e777dc92b36989"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-detail-holder-collapse",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-detail-holder-collapse/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-detail-holder-collapse/manifest.json",
+          "sha256": "0c54a94a740600a2b947908bd998a64e16495efef46fd29654e9503904c5a8aa",
+          "hashNormalization": "raw",
+          "blob": "1a4d74c9474eca5ae4163db1e38e3ce366d7959f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-detail-holder-collapse/VideoDetailInlineScrollRecovery.kt",
+          "sha256": "5929c11682f0b7cfa05748ff5bb82537d0123dc9e3c614bc8c9a6a9a0c5201a9",
+          "hashNormalization": "raw",
+          "blob": "85d7b7f7f0e587cd2d3532be4bed1d4768a0fbc2"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-detail-holder-collapse/VideoDetailInlineScrollRecoveryTest.kt",
+          "sha256": "1530368bcab70b55492f91fe1e16fc1f5899f01b269069b200feb6901fb6a994",
+          "hashNormalization": "raw",
+          "blob": "bfd2228ff6de70eb0393f0b0d6045da87b247eda"
         }
       ]
     }
@@ -20578,6 +20608,36 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 LandscapeSidePanel (replaces the v0.3.7 file in the fullscreen-controls producer chain), ControlCenterMotionSpec, VideoControlCenterMotion, DanmakuSettingsPanelAppearance and DanmakuSettingsPanelHost (new in v0.4.2, emitted by the same producer; the host names the owned Windows dialog and nothing calls it), plus the two original tests. VideoPlayerOverlay.kt gets thirteen counted end drawer hunks and VideoSettingsPanel.kt three counted hunks plus one counted item rule (not leaves). The motion test carries three recomputed literals recorded in the manifest."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineScrollRecovery.kt",
+      "localPath": "desktop/upstream-slices/v046-detail-holder-collapse/VideoDetailInlineScrollRecovery.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "85d7b7f7f0e587cd2d3532be4bed1d4768a0fbc2",
+      "sha256": "5929c11682f0b7cfa05748ff5bb82537d0123dc9e3c614bc8c9a6a9a0c5201a9",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-detail-holder-collapse"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 VideoDetailInlineScrollRecovery (new in v0.4.2, emitted by the video detail holder producer, called by one counted holder block) and its unit test (a verbatim desktop-owned copy runs it). TabletVideoLayout, TabletCinemaLayout and VideoContentSection take counted v0.4.6 hunks whose text is read from the v046-comment-list archive (not leaves of this archive); the holder block is pinned by sha256 and git blob."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineScrollRecoveryTest.kt",
+      "localPath": "desktop/upstream-slices/v046-detail-holder-collapse/VideoDetailInlineScrollRecoveryTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "bfd2228ff6de70eb0393f0b0d6045da87b247eda",
+      "sha256": "1530368bcab70b55492f91fe1e16fc1f5899f01b269069b200feb6901fb6a994",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-detail-holder-collapse"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 VideoDetailInlineScrollRecovery (new in v0.4.2, emitted by the video detail holder producer, called by one counted holder block) and its unit test (a verbatim desktop-owned copy runs it). TabletVideoLayout, TabletCinemaLayout and VideoContentSection take counted v0.4.6 hunks whose text is read from the v046-comment-list archive (not leaves of this archive); the holder block is pinned by sha256 and git blob."
     }
   ],
   "buildStandaloneInputs": [

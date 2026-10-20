@@ -86,6 +86,9 @@ def story_dialog_admission_delta(path,text):
 
 def generate(repo, output, standalone=False):
     repo,output=Path(repo),Path(output);written=[]
+    # Roadmap plr-holder-collapse-family: the archive is intact and no output lies inside or around it.
+    from v046_detail_holder_collapse import validate_outputs as validate_detail_holder_collapse_outputs
+    validate_detail_holder_collapse_outputs(repo,output)
     for s in SPECS:
         raw=_wide(_desktop_canonical_source(repo,s['source'])).read_bytes().replace(b'\r\n',b'\n').decode('utf8')
         if _sha(raw)!=s['sourceSHA256LF']:raise ValueError('Original source identity mismatch: '+s['source'])
@@ -113,6 +116,11 @@ def generate(repo, output, standalone=False):
         elif s['output'].endswith('/VideoDetailScreenStateHolder.kt'):
             from v046_comment_list import advance_landscape_pins
             text=advance_landscape_pins(repo,text,output)
+            # Roadmap plr-holder-collapse-family, the last layer of the holder: the v0.4.6 fullscreen exit scroll recovery block
+            # and the verbatim v0.4.2 helper it calls (a new file of the same output).
+            from v046_detail_holder_collapse import advance_holder,emit_recovery
+            text=advance_holder(repo,text,output)
+            written.append(emit_recovery(repo,output))
         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf8'));written.append(target)
     return written

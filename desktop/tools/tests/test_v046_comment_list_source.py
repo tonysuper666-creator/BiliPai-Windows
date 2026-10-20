@@ -13,6 +13,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO/'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_comment_list as comments
+import v046_detail_holder_collapse as holder_collapse
 from v046_favorite_editor import restore
 
 
@@ -306,7 +307,10 @@ class ConnectedCommentPanelSources(unittest.TestCase):
             cover_after, cover_before = ((episode.TABLET_PAGES_AFTER, episode.TABLET_PAGES_BEFORE) if label == 'TabletVideoLayout'
                                          else (episode.CINEMA_PAGES_AFTER, episode.CINEMA_PAGES_BEFORE))
             self.assertEqual(1, actual.count(cover_after))
-            previous = restore(actual.replace(cover_after, cover_before), proof['retainedToCurrent'])
+            # plr-holder-collapse-family is the layer on top of both (append-last): peel its receipt first.
+            collapse_proof = self.proof('tablet', holder_collapse.PROOF_DIRECTORY + '/' + label + '-proof')
+            without_collapse = holder_collapse.restore(actual, collapse_proof['retainedToCurrent'])
+            previous = restore(without_collapse.replace(cover_after, cover_before), proof['retainedToCurrent'])
             owner = comments.declaration(self.syntax, actual, owner_name)
             before_owner = comments.declaration(self.syntax, previous, owner_name)
             self.assertEqual(1, owner.count('val listState = rememberLazyListState()'))

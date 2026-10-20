@@ -27,6 +27,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / 'desktop/tools'
 sys.path.insert(0, str(TOOLS))
 import v046_episode_selector as episode
+import v046_detail_holder_collapse as holder_collapse
 
 PKG = 'com/android/purebilibili/'
 COMPONENTS = PKG + 'feature/video/ui/components/'
@@ -574,7 +575,9 @@ class GeneratedOutputTests(unittest.TestCase):
             self.assertEqual(expected, differing, producer + ': only the call-site files differ in their Kotlin')
             # Every proof of the layers below this slice is byte for byte the proof of the run without it (last layer).
             # The listen closure proofs of the audio producer record their predecessor, which does differ.
-            proofs = [name for name in real if name.endswith('proof.json')]
+            # plr-holder-collapse-family now sits on top of the tablet layers: its own receipts record the text WITH the cover edit.
+            proofs = [name for name in real if name.endswith('proof.json')
+                      and not name.startswith(holder_collapse.PROOF_DIRECTORY + '/')]
             if producer != 'audio':
                 self.assertEqual([], [name for name in proofs if real[name] != base[name]])
         for producer, name, key, line in LARGE_SCREEN_SITES:
@@ -747,7 +750,10 @@ class GeneratedOutputTests(unittest.TestCase):
         proof_name = 'v046-content-comment-callers-proof.json'
         self.assertNotIn(proof_name, differing)
         proof = json.loads(real_tree[proof_name].decode('utf8'))
-        self.assertEqual(sha(generated.replace(episode.CONTENT_PAGES_AFTER, episode.CONTENT_PAGES_BEFORE)),
+        # plr-holder-collapse-family adds the compact title arguments after this edit (append-last): peel exactly those first.
+        collapse_proof = json.loads(real_tree[holder_collapse.PROOF_DIRECTORY + '/content-proof.json'].decode('utf8'))
+        without_collapse = holder_collapse.restore(generated, collapse_proof['retainedToCurrent'])
+        self.assertEqual(sha(without_collapse.replace(episode.CONTENT_PAGES_AFTER, episode.CONTENT_PAGES_BEFORE)),
                          proof['retainedToCurrent']['afterSHA256'])
         self.assertNotEqual(sha(generated), proof['retainedToCurrent']['afterSHA256'])
         verifier = load('verify-upstream-video-content-full.py', 'ves_verify_content')

@@ -1,0 +1,91 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineScrollRecovery.kt",
+      "filename": "VideoDetailInlineScrollRecovery.kt",
+      "bytes": 1263,
+      "sha256": "5929c11682f0b7cfa05748ff5bb82537d0123dc9e3c614bc8c9a6a9a0c5201a9",
+      "gitBlob": "85d7b7f7f0e587cd2d3532be4bed1d4768a0fbc2"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineScrollRecoveryTest.kt",
+      "filename": "VideoDetailInlineScrollRecoveryTest.kt",
+      "bytes": 3085,
+      "sha256": "1530368bcab70b55492f91fe1e16fc1f5899f01b269069b200feb6901fb6a994",
+      "gitBlob": "bfd2228ff6de70eb0393f0b0d6045da87b247eda"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "schemaVersion": 1,
+  "selection": "VideoDetailInlineScrollRecovery.kt (new in v0.4.2) and its unit test; the holder block, the tablet secondary pane hunks and the compact title hunks are counted slices of blobs that other archives or the git objects hold",
+  "purpose": "roadmap slice plr-holder-collapse-family (#55): reproduce-or-skip over eight holder, collapse and gesture entries",
+  "holderBlock": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+    "blob": "a21412fcdaf7895c4edea200c0234de5aa82bed2",
+    "sha256": "a33082bb4b42f59fee585ab40f46b82ac750ece00accda48a6b7a3f4231c76f2",
+    "lines": 29
+  },
+  "countedHunks": {
+    "holder": 1,
+    "tablet": 8,
+    "cinema": 1,
+    "content": 3,
+    "tabletAndCinemaAndContentSource": "desktop/upstream-slices/v046-comment-list"
+  },
+  "entryDecisions": [
+    {
+      "entry": "v030-detail-chrome-hidden-paused-collapsed",
+      "kind": "deferred",
+      "reason": "needs hidePausedPlayerForComments (the v0.3 pause-hide model: isPlaybackPausedForInlineLayout, shouldHidePausedInlinePlayerForComments, resolveInlinePlayerCollapsedViewportHeightDp), which the pinned v0.2.5 holder and PortraitDetailPresentationPolicy do not have; carried by the follow-up phone-detail slice"
+    },
+    {
+      "entry": "v030-detail-glass-gated-chrome-blur",
+      "kind": "already-carried",
+      "reason": "the retained v0.3.4/v0.3.6 VideoContentSection already has chromeBlurActive = !isPlayerCollapsed || liquidGlassEnabled and the glass tab row condition; no change"
+    },
+    {
+      "entry": "v042-detail-cover-169-skeleton",
+      "kind": "not-needed",
+      "reason": "Windows keeps the v0.2.5 geometry (preferLayoutWidth16x9Inline, never the 0.3.x 16:10 detour) and the skeleton is always animated (animated = true), which is the v0.4.6 result whenever card transitions are off (root decision D1); the 16:10 to generic rename belongs to the phone-detail follow-up"
+    },
+    {
+      "entry": "v042-fullscreen-exit-scroll-recovery",
+      "kind": "carried",
+      "reason": "VideoDetailInlineScrollRecovery.kt verbatim plus the v0.4.6 holder block that calls it"
+    },
+    {
+      "entry": "v042-compact-comment-autopause",
+      "kind": "deferred",
+      "reason": "no Windows reproduction: compactInlinePlayerForCommentTab is true only on foldable cover windows, so the pinned auto-pause decision already equals resolvePlayerCollapsedForAutoPause; the policy functions arrive with the phone-detail follow-up"
+    },
+    {
+      "entry": "v042-glass-pager-vertical-priority",
+      "kind": "deferred",
+      "reason": "a touch or pen gesture arbitration (the desktop inputs are the mouse wheel and the tab row; inferred from Compose behaviour, not exercised here), and it needs the Miuix branch of VerticalPriorityPagerGesture (another upstream commit), glassTabFlingBehavior and tabSelectionAnimationSpec of the glass tab rail slice; the sensor orientation hunk is phone only"
+    },
+    {
+      "entry": "v046-collapse-height-shared",
+      "kind": "partial",
+      "reason": "the TabletVideoLayout half of upstream 11a7bae7 (secondary pane tab synchronisation) is carried; the shared collapse height of the phone detail (holder, PortraitDetailPresentationPolicy, VideoDetailPhoneContent, VideoDetailInlineCollapseState) is deferred"
+    },
+    {
+      "entry": "post046-shared-collapse-detail-layouts",
+      "kind": "partial",
+      "reason": "the compact comment title half of upstream d6bf8b16 is carried; the collapse semantics half (layoutReconciled, shared viewport height) is deferred with the phone-detail follow-up"
+    }
+  ],
+  "followUps": [
+    "plr-holder-collapse-core: the phone detail pause-hide model and shared collapse height (entries 1, 5, 7, 8 collapse half): PlayerCollapseAutoPausePolicy and VideoDetailInlineCollapseState as whole v0.4.6 files (direct mode, exclude), PortraitDetailPresentationPolicy v0.4.6 (renames resolveLandscapeDetailPlayerContentHeightPx), the holder collapse region (about 380 lines), VideoDetailPhoneContent without onIntroScrollThresholdChange, VideoContentSection",
+    "the danmaku tap capture of upstream 11a7bae7 (PlayerGestureHandler.captureSingleTap, VideoPlayerSection) and the danmaku click listener DisposableEffect of VideoDetailPlayerSettingsOverlayAdapter are not assigned to any roadmap entry",
+    "the touch-only vertical priority arbitration (entry 6) with the Miuix branch of VerticalPriorityPagerGesture, together with the glass tab rail slice"
+  ],
+  "currentWindowsParent": "609200ab61aa57e0bab258bfe949e6014176bedf",
+  "fullStableParityQualified": false
+}

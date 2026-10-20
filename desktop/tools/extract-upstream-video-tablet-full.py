@@ -17,6 +17,9 @@ OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
 # Roadmap lst-episode-selector-collection: the archive is intact and no output lies inside or around it.
 from v046_episode_selector import validate_outputs as validate_episode_selector_outputs
 validate_episode_selector_outputs(REPO,LANE)
+# Roadmap plr-holder-collapse-family: the archive is intact and no output lies inside or around it.
+from v046_detail_holder_collapse import validate_outputs as validate_detail_holder_collapse_outputs
+validate_detail_holder_collapse_outputs(REPO,LANE)
 FRESH_V025_COMMENT_COUNTS={'com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt': {'isRepliesRefreshing': 2, 'repliesError': 2, 'onRefreshReplies': 2, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt': {'isRepliesRefreshing': 3, 'repliesError': 3, 'onRefreshReplies': 3, 'onRefresh': 0}, 'com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 3, 'onRefreshReplies': 0, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 4, 'onRefreshReplies': 0, 'onRefresh': 2}}
 
 def validate_fresh_v025_comment_consumer(output,text):
@@ -80,6 +83,10 @@ def emit(rel,t,original):
    t=replace(t,TABLET_PAGES_BEFORE,TABLET_PAGES_AFTER,CALL_SITE_LABELS['tablet'])
   else:
    t=replace(t,CINEMA_PAGES_BEFORE,CINEMA_PAGES_AFTER,CALL_SITE_LABELS['cinema'])
+  # Roadmap plr-holder-collapse-family, the last layer of both layouts (after the part selector cover): the v0.4.6 compact comment
+  # title and, for TabletVideoLayout, the secondary pane tab synchronisation (settled page, one request per selection).
+  from v046_detail_holder_collapse import advance_layout as advance_detail_holder_collapse_layout
+  t=advance_detail_holder_collapse_layout(REPO,t,OUT,Path(rel).stem)
  if BASE+original in DIRECT and not args.standalone:return
  p=OUT/'com/android/purebilibili'/rel;write(p,t)
  OUTPUTS.append({'path':str(p),'sha256LF':sha(t),'original':BASE+original})
