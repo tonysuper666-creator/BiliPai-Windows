@@ -12,6 +12,9 @@ class DesktopSettingsSearchController(private val repository: DesktopSettingsSea
     val query: StateFlow<String> = mutableQuery.asStateFlow()
     private val mutableResults = MutableStateFlow(emptyList<SettingsSearchResult>())
     val results: StateFlow<List<SettingsSearchResult>> = mutableResults.asStateFlow()
+    // The rows of the Windows item directory that match the query; the section results above are not changed by them.
+    private val mutableItemResults = MutableStateFlow(emptyList<DesktopSettingsItemHit>())
+    internal val itemResults: StateFlow<List<DesktopSettingsItemHit>> = mutableItemResults.asStateFlow()
     val history = repository.history
     private val mutableError = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = mutableError.asStateFlow()
@@ -19,6 +22,7 @@ class DesktopSettingsSearchController(private val repository: DesktopSettingsSea
     fun setQuery(query: String) {
         mutableQuery.value = query
         mutableResults.value = resolveDesktopWindowsSettingsSearchResults(query)
+        mutableItemResults.value = resolveDesktopSettingsItemSearch(query)
         mutableError.value = null
     }
 
@@ -36,6 +40,16 @@ class DesktopSettingsSearchController(private val repository: DesktopSettingsSea
             SettingsSearchFocusController.submit(result.target, result.focusId)
             onResultClick(result)
         }
+    }
+
+    /**
+     * Opens a matched row through the same dispatch as a section result. When the row has a group anchor, the item request
+     * goes in first, so the anchor that scrolls to the group also finds the row to highlight. Nothing is changed or performed.
+     */
+    internal fun activateItem(hit: DesktopSettingsItemHit, onCategoryClick: (SettingsRootCategory) -> Unit,
+        onResultClick: (SettingsSearchResult) -> Unit) {
+        desktopSettingsItemFocus.submit(hit.item, query.value)
+        activate(hit.toSearchResult(), onCategoryClick, onResultClick)
     }
 
     private suspend fun historyChange(action: suspend () -> Unit) {
