@@ -31,6 +31,8 @@ data class DesktopThemeSettings(
     val uiStyle: AppUiStyle = AppUiStyle.MATERIAL3,
     val themeMode: AppThemeMode = AppThemeMode.FOLLOW_SYSTEM,
     val darkThemeStyle: DarkThemeStyle = DarkThemeStyle.DEFAULT,
+    /** Scheduled dark theme; disabled by default and, when enabled, decides light or dark over [themeMode]. */
+    val darkThemeSchedule: DarkThemeSchedule = DarkThemeSchedule(),
     val appLanguage: AppLanguage = AppLanguage.FOLLOW_SYSTEM,
     val md3ColorSource: Md3ColorSource = Md3ColorSource.FOLLOW_WALLPAPER,
     val md3CustomColorHex: String = "#007AFF",
@@ -133,6 +135,16 @@ class DesktopThemePrefs(
         store.updateThemeFromSnapshot({caller.ensureActive()}) { _, _ -> mapOf("settings" to mapOf("dark_theme_style_v1" to JsonPrimitive(style.value)),
             "theme_cache" to mapOf("dark_theme_style" to JsonPrimitive(style.value))) }
     }
+    /** Same bounds as the original store: both minutes inside the day and different from each other; one atomic write. */
+    suspend fun setDarkThemeSchedule(schedule: DarkThemeSchedule) {
+        require(schedule.startMinute in 0..1439 && schedule.endMinute in 0..1439)
+        require(schedule.startMinute != schedule.endMinute)
+        save(mapOf(
+            "dark_theme_schedule_enabled" to JsonPrimitive(schedule.enabled),
+            "dark_theme_schedule_start_minute" to JsonPrimitive(schedule.startMinute),
+            "dark_theme_schedule_end_minute" to JsonPrimitive(schedule.endMinute),
+        ))
+    }
     suspend fun setAppLanguage(language: AppLanguage) = save("app_language_v1", JsonPrimitive(language.value))
     suspend fun setColorSource(source: Md3ColorSource) = save(mapOf(
         "md3_color_source" to JsonPrimitive(source.name), "dynamic_color" to JsonPrimitive(source == Md3ColorSource.FOLLOW_WALLPAPER),
@@ -190,11 +202,17 @@ internal fun decodeDesktopThemeSettings(
         controlAccentHex = normalizeMd3CustomColorHex(values.string("theme_${mode}_control_accent"), fallback.controlAccentHex),
     )
     val dpi = values.int("app_dpi_override_percent") ?: 0
+    val scheduleDefaults = DarkThemeSchedule()
     return DesktopThemeSettings(
         uiStyle = values.string("theme_selection_v1")?.let(::parseThemeSelectionString)
             ?: AppUiStyle.fromLegacyValues(values.int("ui_preset"), values.int("android_native_variant_v1")),
         themeMode = resolveThemeModePreference(rawMode ?: AppThemeMode.FOLLOW_SYSTEM.value),
         darkThemeStyle = resolveDarkThemeStylePreference(values.int("dark_theme_style_v1") ?: startupCache.int("dark_theme_style"), rawMode),
+        darkThemeSchedule = normalizeDarkThemeSchedule(DarkThemeSchedule(
+            enabled = values.boolean("dark_theme_schedule_enabled") ?: scheduleDefaults.enabled,
+            startMinute = values.int("dark_theme_schedule_start_minute") ?: scheduleDefaults.startMinute,
+            endMinute = values.int("dark_theme_schedule_end_minute") ?: scheduleDefaults.endMinute,
+        )),
         appLanguage = resolveAppLanguagePreference(values.int("app_language_v1") ?: startupCache.int("app_language")),
         md3ColorSource = resolveMd3ColorSourcePreference(values.string("md3_color_source"), values.boolean("dynamic_color")),
         md3CustomColorHex = normalizeMd3CustomColorHex(values.string("md3_custom_color_hex")),

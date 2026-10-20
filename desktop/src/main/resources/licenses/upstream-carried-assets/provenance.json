@@ -37,6 +37,20 @@
       "bytes": 463,
       "sha256": "018909479de244ec7b9cb441df6ac941478c6c67f04f4dc75fd6597d536e7866",
       "gitBlob": "d8cd0c697a6e9f98d43974ffb9fc9a34173fc484"
+    },
+    {
+      "resource": "flex_seed_scheme.LICENSE",
+      "upstreamPath": "app/src/main/assets/licenses/flex_seed_scheme.LICENSE",
+      "bytes": 1574,
+      "sha256": "fa0a357cd6a579d86ec7da0133cb143cf50cdfcf60fd3d8f2ff5a9cc9f711fe8",
+      "gitBlob": "30d5ad463f911a0c86d3d1d388975bc77587c0c5"
+    },
+    {
+      "resource": "material_color_utilities.LICENSE",
+      "upstreamPath": "app/src/main/assets/licenses/material_color_utilities.LICENSE",
+      "bytes": 10756,
+      "sha256": "e662e6c2fc7ba7bc613c7e4ddf852d4ad3fcc05faead7cbe16b1dac67b55f426",
+      "gitBlob": "3879bcb2002e2b2e38a953e1149c14cef55ca555"
     }
   ],
   "covers": [
@@ -133,6 +147,39 @@
       ],
       "archivePath": "desktop/upstream-slices/v046-comment-list/NagramChatAvatarPlacement.kt",
       "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/NagramChatAvatarPlacement.kt"
+    },
+    {
+      "name": "SeedColorScheme.kt",
+      "notices": [
+        "flex_seed_scheme.LICENSE",
+        "material_color_utilities.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/core/theme/SeedColorScheme.kt"
+    },
+    {
+      "name": "SeedPaletteStyle.kt",
+      "notices": [
+        "flex_seed_scheme.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/core/theme/SeedPaletteStyle.kt"
+    },
+    {
+      "name": "SeedTones.kt",
+      "notices": [
+        "flex_seed_scheme.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v042-seed-palette/SeedTones.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/core/theme/SeedTones.kt"
+    },
+    {
+      "name": "SeedToneResolver.kt",
+      "notices": [
+        "material_color_utilities.LICENSE"
+      ],
+      "archivePath": "desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/core/theme/SeedToneResolver.kt"
     }
   ]
 }

@@ -8,6 +8,9 @@ import com.android.purebilibili.feature.settings.SettingsSearchTarget
 internal data class DesktopWindowsSettingsSearchEntry(val target: SettingsSearchTarget,
     val title: String, val subtitle: String, val section: String, val words: List<String>, val focus: String? = null)
 
+/** Focus anchor of the dark theme schedule rows on the appearance page (the original search focus id). */
+internal const val DARK_THEME_SCHEDULE_FOCUS_ID = "appearance.dark_theme_schedule"
+
 internal val desktopWindowsSettingsSearchEntries = listOf(
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放与画质", "硬件解码、编码、默认画质", "播放", listOf("解码", "显卡", "AV1", "HEVC", "H264", "画质", "清晰度"), "windows_playback_quality"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "倍速与字幕", "记忆倍速、默认速度与自动字幕", "播放", listOf("倍速", "速度", "字幕", "AI"), "windows_playback_speed_subtitle"),
@@ -17,6 +20,7 @@ internal val desktopWindowsSettingsSearchEntries = listOf(
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "默认音质", "后续播放的音轨质量偏好", "音频", listOf("音质", "音轨", "无损"), "windows_audio_output"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.HOME_FEED, "首页与推荐", "网格、卡片、轮播和本地背景", "首页", listOf("首页", "推荐", "网格", "标题", "轮播", "壁纸", "背景", "UP", "时间表", "动态评论预览", "动态", "评论预览")),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.APPEARANCE, "外观与显示", "主题、字体、语言和图标", "外观", listOf("外观", "主题", "字体", "语言", "图标", "颜色", "图标样式", "列表样式", "点击文字复制", "入场动画", "女仆动画")),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.APPEARANCE, "定时深色模式", "自选开始和结束时间，支持跨午夜自动切换", "外观", listOf("自动深色", "夜间模式", "深色时间", "定时夜间", "深色定时"), DARK_THEME_SCHEDULE_FOCUS_ID),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.APPEARANCE, "Windows 窗口缩放", "系统 DPI 上的完整布局比例", "外观", listOf("缩放", "DPI", "放大", "缩小", "比例", "Ctrl", "4K", "5K"), "windows_display_scale"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PRIVACY_PERMISSION, "隐私与屏蔽", "搜索推荐、历史记录、屏蔽与发评反诈历史", "隐私", listOf("隐私", "历史", "搜索", "屏蔽", "黑名单", "反诈", "无痕", "不新增", "默认搜索词", "我的回顾", "热搜")),
     // The detail is mounted by DesktopSettingsTree and opened from the privacy page; no focus anchor exists, so none is advertised.

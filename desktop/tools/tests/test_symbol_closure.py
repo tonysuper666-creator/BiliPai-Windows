@@ -1233,8 +1233,7 @@ class ExpectedGapsTests(unittest.TestCase):
         # the roadmap names the proposed groups' slices but not these exact symbols; a reader must see that
         proposed = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'proposed'}
         for name in ('shouldAttemptInstantArticle',
-                     'readSeedWallpaperColorScheme', 'sanitizeWallpaperTransform', 'WallpaperPaletteRequest',
-                     'isScheduledDarkTheme', 'normalizeDarkThemeSchedule'):
+                     'readSeedWallpaperColorScheme', 'sanitizeWallpaperTransform', 'WallpaperPaletteRequest'):
             self.assertIn(name, proposed)
         roadmap_named = {g['symbol'].rsplit('.', 1)[-1] for g in expected['gaps'] if g['closedByEvidence'] == 'roadmap'}
         for name in DANMAKU_SEEDS:
@@ -1759,6 +1758,10 @@ CLOSED_SEEDS = (
     # the v046-bangumi-player slice emits the whole BangumiPlayerFeatures.kt from the PGC view model producer
     ('com.android.purebilibili.feature.bangumi.ui.player', 'BangumiPlayerFeatures'),
     ('com.android.purebilibili.feature.bangumi.ui.player', 'rememberBangumiSubtitles'),
+    # the v046-theme-palette-schedule slice emits the whole DarkThemeSchedule.kt from the appearance producer
+    ('com.android.purebilibili.feature.settings', 'DarkThemeSchedule'),
+    ('com.android.purebilibili.feature.settings', 'isScheduledDarkTheme'),
+    ('com.android.purebilibili.feature.settings', 'normalizeDarkThemeSchedule'),
 )
 # closed by the v046 danmaku protocol slice (members and identifiers, not top-level declarations)
 DANMAKU_SEEDS = ('invalidateDanmakuSegment', 'parseFailed', 'failedSegmentCount')

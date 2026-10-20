@@ -166,7 +166,8 @@
     "desktop/upstream-slices/v046-mfx-small-protocol-fixes",
     "desktop/upstream-slices/v046-dynamic-category-merge",
     "desktop/upstream-slices/v046-search-state",
-    "desktop/upstream-slices/v046-bangumi-hub-pages"
+    "desktop/upstream-slices/v046-bangumi-hub-pages",
+    "desktop/upstream-slices/v046-theme-palette-schedule"
   ],
   "archives": [
     {
@@ -7529,6 +7530,59 @@
           "sha256": "d7c5cbcdc3e3e0d58055958535b5670945ad53304dbf0ff500f2b9682afee369",
           "hashNormalization": "raw",
           "blob": "a2f10f8203774246b9f0e86692fcadd4ff0011f0"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-theme-palette-schedule",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/DarkThemeSchedule.kt",
+          "sha256": "afcb8ad9ddbcc765464a99729bfe293bc81e53e3e4852e994c3f3d772768a6c3",
+          "hashNormalization": "raw",
+          "blob": "600f9c8d20c74f6412d877ce31c6ca43aff0f1d0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/DarkThemeSchedulePreference.kt",
+          "sha256": "6cd0c38a56912c6a3c397c978cb2b9d5726fd81357551814ddfc395c27d18387",
+          "hashNormalization": "raw",
+          "blob": "0527d393c1cd7e2c840e4fc518517926b62fa7ab"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/DarkThemeScheduleTest.kt",
+          "sha256": "921a9cf7eafec9de13a7d63668f5f418e5e89c1159d8b7caeffe243ec618852f",
+          "hashNormalization": "raw",
+          "blob": "ae7a7c814b3c138fddf23f937267a486939f714e"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/manifest.json",
+          "sha256": "6e4434c9be002a5d0cb80a31b8f93fb3004587e10266303e493440ae0123d2c5",
+          "hashNormalization": "raw",
+          "blob": "b15c91554247be4f578af5c71fb4d366306991a7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/ThemeHomePreview.kt",
+          "sha256": "ffc643002468336e58fe9abac5c356aede9b099761f74f9ad982a00e9b1e335b",
+          "hashNormalization": "raw",
+          "blob": "fa33bacf70c8dfcdcd80a0bb3b20386aca254cb0"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/ThemeStylePalettePreview.kt",
+          "sha256": "fd5fd3aade6d7bcb88d74b8e0eb5cba1dbe4608eb78f4f7f75316193c48c7bf5",
+          "hashNormalization": "raw",
+          "blob": "4628421f84e69343fe9505526f77a01f17e9f020"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-theme-palette-schedule/ThemeTimeWheelPicker.kt",
+          "sha256": "e9482a2156846f783053c60a3adf6f6081604329674898c458ff04f0221a611c",
+          "hashNormalization": "raw",
+          "blob": "5a19acd3e542f56ab0769d97e0bc1020c0d9c16b"
         }
       ]
     }
@@ -19900,6 +19954,96 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole original BangumiHubPolicyTest emitted next to the independent Bangumi pages tests with its JUnit4 imports rewritten to kotlin.test."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-palette-schedule/DarkThemeSchedule.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "600f9c8d20c74f6412d877ce31c6ca43aff0f1d0",
+      "sha256": "afcb8ad9ddbcc765464a99729bfe293bc81e53e3e4852e994c3f3d772768a6c3",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-palette-schedule"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 palette style swatch, home preview, dark theme schedule model, schedule preference rows and wheel time picker emitted by the appearance producer, with the original schedule test. ThemeHomePreview and ThemeTimeWheelPicker change only their Android drawable and clock bindings. The Windows minute timer, the three preference keys and the settings rows are desktop-owned."
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/settings/DarkThemeScheduleTest.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-palette-schedule/DarkThemeScheduleTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "ae7a7c814b3c138fddf23f937267a486939f714e",
+      "sha256": "921a9cf7eafec9de13a7d63668f5f418e5e89c1159d8b7caeffe243ec618852f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-palette-schedule"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 palette style swatch, home preview, dark theme schedule model, schedule preference rows and wheel time picker emitted by the appearance producer, with the original schedule test. ThemeHomePreview and ThemeTimeWheelPicker change only their Android drawable and clock bindings. The Windows minute timer, the three preference keys and the settings rows are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemeStylePalettePreview.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-palette-schedule/ThemeStylePalettePreview.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "4628421f84e69343fe9505526f77a01f17e9f020",
+      "sha256": "fd5fd3aade6d7bcb88d74b8e0eb5cba1dbe4608eb78f4f7f75316193c48c7bf5",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-palette-schedule"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 palette style swatch, home preview, dark theme schedule model, schedule preference rows and wheel time picker emitted by the appearance producer, with the original schedule test. ThemeHomePreview and ThemeTimeWheelPicker change only their Android drawable and clock bindings. The Windows minute timer, the three preference keys and the settings rows are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemeHomePreview.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-palette-schedule/ThemeHomePreview.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "fa33bacf70c8dfcdcd80a0bb3b20386aca254cb0",
+      "sha256": "ffc643002468336e58fe9abac5c356aede9b099761f74f9ad982a00e9b1e335b",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-palette-schedule"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 palette style swatch, home preview, dark theme schedule model, schedule preference rows and wheel time picker emitted by the appearance producer, with the original schedule test. ThemeHomePreview and ThemeTimeWheelPicker change only their Android drawable and clock bindings. The Windows minute timer, the three preference keys and the settings rows are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/DarkThemeSchedulePreference.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-palette-schedule/DarkThemeSchedulePreference.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "0527d393c1cd7e2c840e4fc518517926b62fa7ab",
+      "sha256": "6cd0c38a56912c6a3c397c978cb2b9d5726fd81357551814ddfc395c27d18387",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-palette-schedule"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 palette style swatch, home preview, dark theme schedule model, schedule preference rows and wheel time picker emitted by the appearance producer, with the original schedule test. ThemeHomePreview and ThemeTimeWheelPicker change only their Android drawable and clock bindings. The Windows minute timer, the three preference keys and the settings rows are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/ThemeTimeWheelPicker.kt",
+      "localPath": "desktop/upstream-slices/v046-theme-palette-schedule/ThemeTimeWheelPicker.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "5a19acd3e542f56ab0769d97e0bc1020c0d9c16b",
+      "sha256": "e9482a2156846f783053c60a3adf6f6081604329674898c458ff04f0221a611c",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-theme-palette-schedule"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 palette style swatch, home preview, dark theme schedule model, schedule preference rows and wheel time picker emitted by the appearance producer, with the original schedule test. ThemeHomePreview and ThemeTimeWheelPicker change only their Android drawable and clock bindings. The Windows minute timer, the three preference keys and the settings rows are desktop-owned."
     }
   ],
   "buildStandaloneInputs": [

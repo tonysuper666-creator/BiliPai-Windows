@@ -33,9 +33,11 @@ class DesktopWindowsSettingsCatalogTest {
             SettingsSearchTarget.PLAYBACK to "windows_playback_comments",
             SettingsSearchTarget.PLAYBACK to "windows_audio_output",
             SettingsSearchTarget.APPEARANCE to "windows_display_scale",
+            SettingsSearchTarget.APPEARANCE to DARK_THEME_SCHEDULE_FOCUS_ID,
             SettingsSearchTarget.PLAYBACK to "windows_video_enhancement")
         assertEquals(expectedFocusAnchors, focusEntries.map { it.target to it.focus }.toSet())
-        assertEquals(8, focusEntries.size)
+        // windows_audio_output is advertised by two entries; the dark theme schedule is the ninth anchored entry.
+        assertEquals(9, focusEntries.size)
         // No obsolete original phone focus token is advertised by the new controller.
         assertTrue(desktopWindowsSettingsSearchEntries.all { it.focus == null ||
             (it.target to it.focus) in expectedFocusAnchors })

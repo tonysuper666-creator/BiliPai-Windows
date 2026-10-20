@@ -3,6 +3,7 @@ package com.bilipai.desktop.appearance
 import com.bilipai.desktop.ui.LocalDesktopWindowsGlassMaterial
 import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext
 import com.bilipai.desktop.brand.DesktopMaidMotionPreferences
+import com.bilipai.desktop.settings.DARK_THEME_SCHEDULE_FOCUS_ID
 import com.bilipai.desktop.settings.desktopSettingsSearchFocusAnchor
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.android.purebilibili.feature.settings.SettingsSearchFocusIds
@@ -29,6 +30,7 @@ import com.android.purebilibili.core.ui.components.AppSwitchPreference
 import com.android.purebilibili.core.ui.components.AppSwitch
 import com.android.purebilibili.core.ui.components.AppOutlinedTextField
 import com.android.purebilibili.feature.settings.*
+import com.android.purebilibili.feature.settings.screen.DarkThemeSchedulePreference
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
@@ -91,6 +93,9 @@ fun DesktopAppearanceSettings(
             }
             AppearanceChoice(strings["appearance_theme_mode_title"], settings.themeMode,
                 resolveThemeModeSegmentOptions(strings["theme_mode_follow_system"], strings["theme_mode_light"], strings["theme_mode_dark"]), !busy) { update { prefs.setThemeMode(it) } }
+            // The three schedule rows stay in one vertically measured child so the search anchor scrolls to all of them.
+            DarkThemeSchedulePreference(settings.darkThemeSchedule, { schedule -> update { prefs.setDarkThemeSchedule(schedule) } },
+                Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.APPEARANCE, DARK_THEME_SCHEDULE_FOCUS_ID))
             AppearanceChoice(strings["appearance_dark_theme_style_title"], settings.darkThemeStyle,
                 resolveDarkThemeStyleSegmentOptions(strings["dark_theme_style_default"], strings["dark_theme_style_amoled"]), !busy) { update { prefs.setDarkThemeStyle(it) } }
             AppearanceChoice(strings["appearance_app_language_title"], settings.appLanguage,
@@ -102,11 +107,14 @@ fun DesktopAppearanceSettings(
             AppearanceChoice(strings.desktop("主题颜色来源", "主題顏色來源", "Theme color source"), settings.md3ColorSource,
                 listOf(AppSegmentOption(Md3ColorSource.FOLLOW_WALLPAPER, strings.desktop("上游预设色", "上游預設色", "Preset color")),
                     AppSegmentOption(Md3ColorSource.CUSTOM, strings.desktop("自定义颜色", "自訂顏色", "Custom color"))), !busy) { update { prefs.setColorSource(it) } }
+            // The colour every preview below is computed from: the preset, the custom hex or the stored index.
+            val seedColor = remember(settings.md3ColorSource, settings.md3CustomColorHex, settings.themeColorIndex) {
+                resolveMd3ThemeSeedColor(settings.md3ColorSource, settings.md3CustomColorHex, settings.themeColorIndex)
+            }
+            val previewDark = resolveColorSchemeIsDark(MaterialTheme.colorScheme)
             if (settings.md3ColorSource == Md3ColorSource.FOLLOW_WALLPAPER) {
                 DesktopAppearanceText(strings.desktop("预设颜色不会随桌面壁纸变化。", "預設顏色不會隨桌布變更。", "Preset colors do not change with your desktop wallpaper."),
                     Modifier.padding(horizontal = 16.dp, vertical = 8.dp), style = MaterialTheme.typography.bodySmall)
-                AppearanceChoice(strings.desktop("预设颜色", "預設顏色", "Preset color"), settings.themeColorIndex,
-                    ThemeColors.indices.map { AppSegmentOption(it, "${it + 1} · ${formatMd3CustomColorHex(ThemeColors[it])}") }, !busy) { update { prefs.setThemeColorIndex(it) } }
             } else {
                 var custom by remember(settings.md3CustomColorHex) { mutableStateOf(settings.md3CustomColorHex) }
                 Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -118,13 +126,31 @@ fun DesktopAppearanceSettings(
                         enabled = !busy && isValidMd3CustomColorHex(custom))
                 }
             }
+            // Preset colours as swatch cells. The 19 seed presets replace the original list while a seed style is on.
+            DesktopAppearanceText(strings.desktop("预设颜色", "預設顏色", "Preset color"),
+                Modifier.padding(horizontal = 16.dp, vertical = 8.dp), style = MaterialTheme.typography.titleSmall)
+            DesktopThemePresetPalette(settings.seedPaletteStyle, settings.colorStyle, settings.colorSpec,
+                settings.colorContrast, seedColor, !busy) { index, color ->
+                when (resolveDesktopPresetPick(settings.seedPaletteStyle.enabled, settings.md3ColorSource)) {
+                    DesktopPresetPick.THEME_COLOR_INDEX -> update { prefs.setThemeColorIndex(index) }
+                    DesktopPresetPick.CUSTOM_COLOR -> update { prefs.setCustomColor(formatMd3CustomColorHex(color)) }
+                }
+            }
+            val seedStyleSwatches = rememberSeedStyleSwatches(seedColor, previewDark, settings.colorSpec)
             AppearanceChoice(strings.desktop("配色预设", "配色預設", "Color preset"), settings.seedPaletteStyle,
-                resolveSeedPaletteStyleOptions(), !busy) { update { prefs.setSeedPaletteStyle(it) } }
+                resolveSeedPaletteStyleOptions(), !busy,
+                optionLeading = { style -> seedStyleSwatches[style]?.let { ThemeStyleSwatch(it) } }) { update { prefs.setSeedPaletteStyle(it) } }
             DesktopAppearanceText(resolveSeedPaletteStyleDescription(settings.seedPaletteStyle),
                 Modifier.padding(horizontal = 16.dp, vertical = 4.dp), style = MaterialTheme.typography.bodySmall)
             if (!settings.seedPaletteStyle.enabled) {
+                val colorStyleOptions = remember { resolveColorStyleOptions() }
+                val colorStyles = remember(colorStyleOptions) { colorStyleOptions.map { it.value } }
+                val styleSwatches = rememberThemeStylePaletteSwatches(seedColor, previewDark, colorStyles,
+                    settings.colorSpec, settings.colorContrast, settings.seedPaletteStyle)
+                val styleSwatchByStyle = remember(styleSwatches) { colorStyles.zip(styleSwatches).toMap() }
                 AppearanceChoice(strings.desktop("调色板风格", "調色盤風格", "Palette style"), settings.colorStyle,
-                    resolveColorStyleOptions(), !busy) { update { prefs.setColorStyle(it) } }
+                    colorStyleOptions, !busy,
+                    optionLeading = { style -> styleSwatchByStyle[style]?.let { ThemeStyleSwatch(it) } }) { update { prefs.setColorStyle(it) } }
                 AppearanceChoice(strings.desktop("对比度", "對比度", "Contrast"), settings.colorContrast,
                     resolveColorContrastOptions(), !busy) { update { prefs.setColorContrast(it) } }
             }
@@ -179,6 +205,8 @@ fun DesktopAppearanceSettings(
                 DesktopAppearanceText(strings.desktop("外观预览", "外觀預覽", "Appearance preview"), style = MaterialTheme.typography.titleLarge)
                 DesktopAppearanceText(strings.desktop("标题、正文、控件与卡片会随当前选择变化。", "標題、內文、控制項與卡片會隨目前選擇變更。", "Titles, text, controls and cards follow the selected appearance."))
                 DesktopAppearanceButton(strings.desktop("示例按钮", "範例按鈕", "Example button"), {}, enabled = false)
+                // The original home page colour preview; it reads the live theme, so it follows every choice above.
+                ThemeHomePreview(Modifier.widthIn(max = 440.dp))
             }
         }
     }
@@ -202,11 +230,13 @@ fun DesktopAppearanceSettings(
     }
 }
 
+/** [optionLeading] puts a swatch before each option (the original colour style and seed style previews). */
 @Composable
-private fun <T> AppearanceChoice(title: String, value: T, options: List<AppSegmentOption<T>>, enabled: Boolean, onSelect: (T) -> Unit) {
+private fun <T> AppearanceChoice(title: String, value: T, options: List<AppSegmentOption<T>>, enabled: Boolean,
+    optionLeading: (@Composable (T) -> Unit)? = null, onSelect: (T) -> Unit) {
     AppSingleChoicePreference(title = title, selectedValue = value,
         options = options.map { AppChoiceOption(it.value, it.label) }, enabled = enabled,
-        modifier = Modifier.fillMaxWidth(), onValueChange = onSelect)
+        modifier = Modifier.fillMaxWidth(), optionLeading = optionLeading, onValueChange = onSelect)
 }
 
 @Composable

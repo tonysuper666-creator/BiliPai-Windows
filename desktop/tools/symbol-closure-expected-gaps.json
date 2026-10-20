@@ -145,35 +145,6 @@
       ]
     },
     {
-      "reason": "Dark-theme schedule symbols referenced by the carried seed-palette and comment-list archives.",
-      "closedBy": "theme-palette-presets-and-schedule",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.settings.DarkThemeSchedule"
-        }
-      ]
-    },
-    {
-      "reason": "Dark-theme schedule symbols referenced by the carried seed-palette and comment-list archives. Ownership of these symbols by theme-palette-presets-and-schedule is the gap author's inference: that slice's roadmap text does not name isScheduledDarkTheme, normalizeDarkThemeSchedule. Its owner must confirm or reassign them when the slice is reached.",
-      "closedBy": "theme-palette-presets-and-schedule",
-      "closedByEvidence": "proposed",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.settings.isScheduledDarkTheme"
-        },
-        {
-          "scope": "carried",
-          "check": "unresolved-import",
-          "symbol": "com.android.purebilibili.feature.settings.normalizeDarkThemeSchedule"
-        }
-      ]
-    },
-    {
       "reason": "Verbatim upstream file in a carried slice archive references a symbol that no compiled, carried or vendored source declares. The producers adapt or never emit the referencing declaration today; whichever slice emits it whole must first bring the definer. No roadmap slice names this symbol yet; the owner of the first slice that emits the referencing file must assign it.",
       "closedBy": "none-assigned",
       "closedByEvidence": "unassigned",
@@ -518,6 +489,39 @@
       "retiredBy": "desktop/tools/v046_bangumi_player.py emit_features (FEATURES_ADAPTATIONS), emitted by desktop/tools/extract-upstream-bangumi-player.py as DesktopOriginalBangumiPlayerFeatures.kt",
       "guardedBy": "this gate (status LOST fails the run); test_v046_bangumi_player_source.py: test_features_file_declares_the_two_retired_seeds_exactly_once_in_the_producer_output",
       "closedBy": "bgm-player-viewmodel-and-features",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "DarkThemeSchedule",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.settings",
+      "reason": "Roadmap seed DarkThemeSchedule (upstream v0.4.2): imported by the carried v042-seed-palette and v046-comment-list SettingsManager archives. RETIRED, not open: the v046-theme-palette-schedule slice emits the whole v0.4.6 DarkThemeSchedule.kt from the appearance producer, and DesktopThemeSettings now carries the schedule.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt declares data class DarkThemeSchedule(enabled, startMinute, endMinute); the pinned v0.2.5 tree has no such file",
+      "retiredBy": "desktop/upstream-slices/v046-theme-palette-schedule (DarkThemeSchedule.kt, emitted whole by desktop/tools/v046_theme_palette_schedule.py from desktop/tools/extract-appearance-platform.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_theme_palette_schedule_source.py",
+      "closedBy": "theme-palette-presets-and-schedule",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "isScheduledDarkTheme",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.settings",
+      "reason": "Seed isScheduledDarkTheme (upstream v0.4.2): imported by the carried v042-seed-palette PlaybackNotificationColorPolicy. The owner was proposed by the gap author and is now confirmed: it lives in DarkThemeSchedule.kt, the file the roadmap entry names. RETIRED, not open: the same emission declares it, and the Windows minute timer (DesktopScheduledDarkTheme.kt) and the palette builder call it.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt declares internal fun isScheduledDarkTheme(schedule, minuteOfDay); the pinned v0.2.5 tree has no such file",
+      "retiredBy": "desktop/upstream-slices/v046-theme-palette-schedule (DarkThemeSchedule.kt, emitted whole by desktop/tools/v046_theme_palette_schedule.py from desktop/tools/extract-appearance-platform.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_theme_palette_schedule_source.py",
+      "closedBy": "theme-palette-presets-and-schedule",
+      "closedByEvidence": "roadmap"
+    },
+    {
+      "symbol": "normalizeDarkThemeSchedule",
+      "kind": "declaration",
+      "package": "com.android.purebilibili.feature.settings",
+      "reason": "Seed normalizeDarkThemeSchedule (upstream v0.4.2): imported by the carried v042-seed-palette and v046-comment-list SettingsManager. The owner was proposed by the gap author and is now confirmed: it lives in DarkThemeSchedule.kt, the file the roadmap entry names. RETIRED, not open: the same emission declares it, and decodeDesktopThemeSettings normalizes the three stored keys with it.",
+      "evidence": "d6bf8b16:app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt declares internal fun normalizeDarkThemeSchedule(schedule); the pinned v0.2.5 tree has no such file",
+      "retiredBy": "desktop/upstream-slices/v046-theme-palette-schedule (DarkThemeSchedule.kt, emitted whole by desktop/tools/v046_theme_palette_schedule.py from desktop/tools/extract-appearance-platform.py)",
+      "guardedBy": "this gate (status LOST fails the run); test_symbol_closure.py: CurrentIntegrationTree.test_the_closed_seeds_keep_their_definers_in_the_real_tree; test_v046_theme_palette_schedule_source.py",
+      "closedBy": "theme-palette-presets-and-schedule",
       "closedByEvidence": "roadmap"
     }
   ],

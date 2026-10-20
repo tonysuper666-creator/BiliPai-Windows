@@ -21,6 +21,9 @@ SOURCES = [BASE + "screen/TipsSettingsScreen.kt",
            BASE + "SettingsScreenPolicy.kt"]
 UPSTREAM = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 FEATURE = ["desktop-whole-static-settings-pages"]
+FLEX_SEED_SCHEME_ROW = ('    OpenSourceLibrary(\n        name = "Flex Seed Scheme",\n        license = "BSD-3-Clause",\n'
+                        '        url = "https://github.com/rydmike/flex_seed_scheme",\n'
+                        '        description = "扩展调色板的色调表与配色规则（原生移植自 5.0.1）"\n    ),\n')
 
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
@@ -66,6 +69,8 @@ def adapt(repo, path):
         else:
             # Only dependency attribution data changes; all screen/layout declarations remain.
             source = edit(source, '    OpenSourceLibrary(\n        name = "pinyin4j",\n        license = "GPL-2.0",\n        url = "https://github.com/belerweb/pinyin4j",\n        description = "中文拼音转换"\n    ),', '    OpenSourceLibrary(\n        name = "TinyPinyin",\n        license = "Apache-2.0",\n        url = "https://github.com/biezhi/TinyPinyin",\n        description = "中文拼音转换"\n    ),\n    OpenSourceLibrary(\n        name = "AhoCorasick",\n        license = "Apache-2.0",\n        url = "https://github.com/robert-bor/aho-corasick",\n        description = "TinyPinyin 的 Java 字符串匹配依赖"\n    ),', operations)
+            # v0.4.6 lists the carried flex_seed_scheme palette port first (row text verbatim from d6bf8b16, BSD-3-Clause).
+            source = edit(source, '    OpenSourceLibrary(\n        name = "Kotlin",', FLEX_SEED_SCHEME_ROW + '    OpenSourceLibrary(\n        name = "Kotlin",', operations)
             source = edit(source,
                 "com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_keyboard_arrow_right_24)",
                 "desktopStaticSettingsVector(DesktopStaticSettingsSymbols.ms_keyboard_arrow_right_24)", operations)

@@ -624,6 +624,8 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v040-theme-roles")
     inputs.file("tools/v046_theme_tokens.py")
     inputs.dir("upstream-slices/v046-theme-tokens")
+    inputs.file("tools/v046_theme_palette_schedule.py")
+    inputs.dir("upstream-slices/v046-theme-palette-schedule")
     inputs.file("tools/v042_seed_palette.py")
     inputs.dir("upstream-slices/v042-seed-palette")
     inputs.dir("upstream-slices/v040-liquid-value-controls")

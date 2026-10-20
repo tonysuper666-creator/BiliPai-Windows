@@ -72,6 +72,8 @@ def generate(repo,output,resource_output=None,policy_only=False,test_output=None
     validate_outputs(repo, output, resource_output or output.parent/'resources', test_output)
     from v046_theme_tokens import validate_outputs as validate_theme_token_outputs
     validate_theme_token_outputs(repo, output, resource_output or output.parent/'resources', test_output)
+    from v046_theme_palette_schedule import validate_outputs as validate_palette_schedule_outputs
+    validate_palette_schedule_outputs(repo, output, resource_output or output.parent/'resources', test_output)
     spec=importlib.util.spec_from_file_location('appearance_parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
     output.mkdir(parents=True,exist_ok=True)
     original_outputs=set()
@@ -88,6 +90,8 @@ def generate(repo,output,resource_output=None,policy_only=False,test_output=None
         parser, declarations, EXTRACTED, HEADERS, original_outputs)
     from v046_theme_tokens import emit as emit_theme_tokens
     emit_theme_tokens(repo, output, test_output)
+    from v046_theme_palette_schedule import emit as emit_palette_schedule
+    emit_palette_schedule(repo, output, test_output)
     for language,path in RESOURCES.items():
         target=(resource_output or output.parent/'resources')/'bilipai-strings'/language/'strings.xml';target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(repo/path,target)
 if __name__=='__main__':

@@ -1,0 +1,69 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeSchedule.kt",
+      "filename": "DarkThemeSchedule.kt",
+      "bytes": 1132,
+      "sha256": "afcb8ad9ddbcc765464a99729bfe293bc81e53e3e4852e994c3f3d772768a6c3",
+      "gitBlob": "600f9c8d20c74f6412d877ce31c6ca43aff0f1d0"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/settings/DarkThemeScheduleTest.kt",
+      "filename": "DarkThemeScheduleTest.kt",
+      "bytes": 2004,
+      "sha256": "921a9cf7eafec9de13a7d63668f5f418e5e89c1159d8b7caeffe243ec618852f",
+      "gitBlob": "ae7a7c814b3c138fddf23f937267a486939f714e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemeStylePalettePreview.kt",
+      "filename": "ThemeStylePalettePreview.kt",
+      "bytes": 2433,
+      "sha256": "fd5fd3aade6d7bcb88d74b8e0eb5cba1dbe4608eb78f4f7f75316193c48c7bf5",
+      "gitBlob": "4628421f84e69343fe9505526f77a01f17e9f020"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemeHomePreview.kt",
+      "filename": "ThemeHomePreview.kt",
+      "bytes": 8247,
+      "sha256": "ffc643002468336e58fe9abac5c356aede9b099761f74f9ad982a00e9b1e335b",
+      "gitBlob": "fa33bacf70c8dfcdcd80a0bb3b20386aca254cb0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/DarkThemeSchedulePreference.kt",
+      "filename": "DarkThemeSchedulePreference.kt",
+      "bytes": 5350,
+      "sha256": "6cd0c38a56912c6a3c397c978cb2b9d5726fd81357551814ddfc395c27d18387",
+      "gitBlob": "0527d393c1cd7e2c840e4fc518517926b62fa7ab"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/ThemeTimeWheelPicker.kt",
+      "filename": "ThemeTimeWheelPicker.kt",
+      "bytes": 10169,
+      "sha256": "e9482a2156846f783053c60a3adf6f6081604329674898c458ff04f0221a611c",
+      "gitBlob": "5a19acd3e542f56ab0769d97e0bc1020c0d9c16b"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "selection": "Five whole v0.4.6 settings files (DarkThemeSchedule, ThemeStylePalettePreview, ThemeHomePreview, DarkThemeSchedulePreference, ThemeTimeWheelPicker) plus the upstream DarkThemeScheduleTest.",
+  "purpose": "Emit the palette style swatch, the home preview, the dark theme schedule model, its preference rows and the wheel time picker from the existing appearance producer. Three files are emitted verbatim; ThemeHomePreview.kt replaces its Android drawable ids with the existing settings vector symbols (three hunks) and ThemeTimeWheelPicker.kt replaces the Android uptime clock with the existing Windows monotonic clock (two hunks). SeedPresetColors.kt and ThemePresetPalettePreview.kt are not repeated: the v0.4.2 copies in v042-seed-palette are byte-identical to v0.4.6.",
+  "windowsEmission": {
+    "DarkThemeSchedule.kt": "whole original",
+    "ThemeStylePalettePreview.kt": "whole original",
+    "DarkThemeSchedulePreference.kt": "whole original",
+    "ThemeHomePreview.kt": "whole original with 3 counted hunks (R import and two drawable ids)",
+    "ThemeTimeWheelPicker.kt": "whole original with 2 counted hunks (SystemClock import and call)",
+    "DarkThemeScheduleTest.kt": "whole original test"
+  },
+  "notCarried": [
+    "app/src/main/java/com/android/purebilibili/core/theme/ScheduledDarkThemeObserver.kt (Android broadcast receiver; Windows owns a minute timer in DesktopScheduledDarkTheme.kt)",
+    "app/src/androidTest/java/com/Android/purebilibili/feature/settings/ThemeTimeWheelPickerTest.kt (instrumented Android test)",
+    "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt (phone settings page; Windows keeps DesktopAppearanceSettings)"
+  ]
+}

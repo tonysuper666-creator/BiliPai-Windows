@@ -60,3 +60,36 @@ The header says: Derived from Telegram for Android / NextAlone Nagram, ChatActiv
 Upstream v0.4.6 lists the same code in its open source licenses screen as "Telegram / Nagram Chat Avatar Placement", license GPL-2.0-or-later (distributed under GPLv3).
 piliplus-LICENSE.txt is the GNU General Public License, Version 3, the same git blob as the upstream repository LICENSE.
 This entry is a provenance record of what the source header and the upstream notice state. It is not legal advice.
+
+flex_seed_scheme.LICENSE
+Upstream path: app/src/main/assets/licenses/flex_seed_scheme.LICENSE.
+The file is the BSD 3-Clause License. Its copyright lines read "FlexSeedScheme Copyright (c) 2022-2025" and "Mike Rydstrom (Twitter @RydMike GitHub rydmike)".
+It is the notice carried for these compiled seed palette sources, each emitted as a whole original file by desktop/tools/v042_seed_palette.py:
+
+- SeedColorScheme.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/core/theme/SeedColorScheme.kt.
+  Archive: desktop/upstream-slices/v042-seed-palette/SeedColorScheme.kt.
+  The header says: Adapted from flex_seed_scheme 5.0.1, Copyright 2022-2025 Mike Rydstrom. BSD-3-Clause; full license: assets/licenses/flex_seed_scheme.LICENSE.
+  It also says: MCU uses MaterialKolor 4.1.1 (Apache-2.0); see assets/licenses/material_color_utilities.LICENSE.
+- SeedPaletteStyle.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/core/theme/SeedPaletteStyle.kt.
+  Archive: desktop/upstream-slices/v042-seed-palette/SeedPaletteStyle.kt.
+  The header says the same two lines about flex_seed_scheme 5.0.1 and BSD-3-Clause.
+- SeedTones.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/core/theme/SeedTones.kt.
+  Archive: desktop/upstream-slices/v042-seed-palette/SeedTones.kt.
+  The header says the same two lines about flex_seed_scheme 5.0.1 and BSD-3-Clause.
+Upstream v0.4.6 lists this library in its open source licenses screen as "Flex Seed Scheme", license BSD-3-Clause.
+
+material_color_utilities.LICENSE
+Upstream path: app/src/main/assets/licenses/material_color_utilities.LICENSE.
+The file is the Apache License, Version 2.0.
+It is the notice named by these compiled sources:
+
+- SeedColorScheme.kt
+  The third header line names it for the Material Color Utilities used through MaterialKolor 4.1.1 (Apache-2.0).
+- SeedToneResolver.kt
+  Canonical path: app/src/main/java/com/android/purebilibili/core/theme/SeedToneResolver.kt.
+  Archive: desktop/upstream-slices/v042-seed-palette/SeedToneResolver.kt.
+  The header says: Copyright 2023 Google LLC. Licensed under the Apache License, Version 2.0. See assets/licenses/material_color_utilities.LICENSE. Native port of flex_seed_scheme 5.0.1's MCU DynamicColor.getTone.
+This entry is a provenance record of what the source headers and the upstream notices state. It is not legal advice.

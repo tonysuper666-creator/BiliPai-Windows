@@ -45,8 +45,11 @@ internal data class DesktopAppearancePalette(
 )
 
 /** The Android-free branches of the original PureBiliBiliTheme, with Windows wallpaper fallback. */
-internal fun buildDesktopAppearancePalette(settings: DesktopThemeSettings, systemDark: Boolean): DesktopAppearancePalette {
-    val state = resolveThemePreferenceState(settings.themeMode, settings.darkThemeStyle, systemDark)
+internal fun buildDesktopAppearancePalette(settings: DesktopThemeSettings, systemDark: Boolean,
+    scheduledDark: Boolean? = null): DesktopAppearancePalette {
+    // An active dark theme schedule (non-null) decides light or dark over the manual mode and the system setting.
+    val state = resolveThemePreferenceState(settings.themeMode, settings.darkThemeStyle, systemDark,
+        scheduledDarkTheme = scheduledDark)
     val seed = resolveMd3ThemeSeedColor(settings.md3ColorSource, settings.md3CustomColorHex, settings.themeColorIndex)
     fun base(dark: Boolean) = createBiliPaiStyleColorScheme(
         seed, dark, dark && state.useAmoledDarkTheme, settings.colorStyle, settings.colorSpec, settings.uiStyle,
@@ -91,7 +94,10 @@ fun DesktopAppearanceTheme(
     content: @Composable () -> Unit,
 ) {
     val systemDark = isSystemInDarkTheme()
-    val palette = remember(settings, systemDark) { buildDesktopAppearancePalette(settings, systemDark) }
+    val scheduledDark = rememberDesktopScheduledDarkTheme(settings.darkThemeSchedule)
+    val palette = remember(settings, systemDark, scheduledDark) {
+        buildDesktopAppearancePalette(settings, systemDark, scheduledDark)
+    }
     val languages = systemLanguageTags ?: remember { WindowsUiLanguage.preferredTags() }
     val strings = remember(settings.appLanguage, languages) { DesktopStrings.forLanguage(settings.appLanguage, languages) }
     val density = LocalDensity.current
@@ -115,8 +121,9 @@ fun DesktopAppearanceTheme(
     val textStyles = remember(settings.uiStyle, settings.appFontSizePreset, settings.appFontWeightPreset) {
         resolveDesktopMiuixTextStyles(settings.uiStyle, settings.appFontSizePreset, settings.appFontWeightPreset)
     }
-    val controller = remember(settings.themeMode, palette) {
-        ThemeController(resolveMiuixColorSchemeMode(settings.themeMode, false),
+    val miuixThemeMode = resolveDesktopEffectiveThemeMode(settings.themeMode, scheduledDark)
+    val controller = remember(miuixThemeMode, palette) {
+        ThemeController(resolveMiuixColorSchemeMode(miuixThemeMode, false),
             lightColors = palette.miuixLight, darkColors = palette.miuixDark, isDark = palette.dark)
     }
     CompositionLocalProvider(
