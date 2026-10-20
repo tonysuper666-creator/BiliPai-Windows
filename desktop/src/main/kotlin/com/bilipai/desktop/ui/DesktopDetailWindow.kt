@@ -15,11 +15,19 @@ import com.android.purebilibili.core.util.WindowSizeClass
 import com.android.purebilibili.core.util.resolveWindowHeightSizeClass
 import com.android.purebilibili.core.util.resolveWindowWidthSizeClass
 
-/** Window measurement is actual Compose constraints; this host has no Android hinge sensor. */
+/** Window measurement is actual Compose constraints; this host has no Android hinge sensor.
+ *
+ * Input flags (spec 3.8, slice X5, decision D15). A Windows desktop always has a mouse, so [precisePointerConnected] defaults to
+ * true: the vendored input policy derives hover effects and pointer focus from it, and a page that starts reading either should
+ * find them on. [hardwareKeyboardConnected] stays false by default: its only readers are the key handlers of the vendored
+ * VideoPlayerSection and FullscreenPlayerOverlay, and the root site that takes these defaults can mount the original video
+ * route that hosts the former, which would then compete with the window-level player shortcuts. The Bangumi player leaf passes
+ * both flags as true on its own. The inventory behind both defaults is desktop/tools/ux/test_ux_detail_window_inventory.py.
+ */
 @Composable
 fun DesktopDetailWindow(
     modifier: Modifier = Modifier,
-    precisePointerConnected: Boolean = false,
+    precisePointerConnected: Boolean = true,
     hardwareKeyboardConnected: Boolean = false,
     content: @Composable () -> Unit,
 ) {
