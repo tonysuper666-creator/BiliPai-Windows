@@ -197,13 +197,14 @@ class CarriedConfirmationTests(unittest.TestCase):
         self.assertEqual(8, sum(calls.values()))
         windows = {name: sum(1 for sites in follow.SITES.values() for site in sites if site['upstream'] == name)
                    for name in follow.UPSTREAM}
-        self.assertEqual(6, sum(windows.values()))
-        # Two of the eight upstream sites are not Windows hunks: the uncompiled VideoPlayerComponents site and the video
-        # detail owner row, which is upstream text since the v046-video-info-section re-pin (vid-info-section-repin).
-        self.assertEqual({'VideoPlayerComponents.kt': 1, 'VideoInfoSection.kt': 1},
+        self.assertEqual(4, sum(windows.values()))
+        # Four of the eight upstream sites are not Windows hunks: the uncompiled VideoPlayerComponents site, the video
+        # detail owner row (upstream text since the v046-video-info-section re-pin, vid-info-section-repin) and the two
+        # portrait overlay buttons (upstream text since the whole v0.4.6 overlay, plr-portrait-story-pager-repin).
+        self.assertEqual({'VideoPlayerComponents.kt': 1, 'VideoInfoSection.kt': 1, 'PortraitFullscreenOverlay.kt': 2},
                          {name: count - windows.get(name, 0)
                           for name, count in calls.items() if count != windows.get(name, 0)},
-                         'only the uncompiled VideoPlayerComponents site and the upstream-text owner row have no hunk')
+                         'only the uncompiled site and the upstream-text owner row and portrait buttons have no hunk')
 
 
 class GeneratedOutputTests(unittest.TestCase):
@@ -218,8 +219,7 @@ class GeneratedOutputTests(unittest.TestCase):
         load('extract-upstream-video-player-full-controls.py', 'ess_controls').generate(
             REPO, cls.root / 'controls', False, cls.root / 'controls-tests')
         load('extract-upstream-video-detail-holder.py', 'ess_holder').generate(REPO, cls.root / 'holder')
-        cls.roots = {follow.UP_PREVIEW: 'pager', follow.PORTRAIT: 'pager',
-                     follow.METADATA: 'meta', follow.OVERLAY: 'controls'}
+        cls.roots = {follow.UP_PREVIEW: 'pager', follow.METADATA: 'meta', follow.OVERLAY: 'controls'}
 
     @classmethod
     def tearDownClass(cls):
@@ -358,7 +358,7 @@ class GeneratedOutputTests(unittest.TestCase):
                     REPO / follow.ARCHIVE / 'child')
         self.assertEqual({follow.LEAF, 'LICENSE', 'manifest.json'}, {p.name for p in (REPO / follow.ARCHIVE).iterdir()})
 
-    def test_without_the_layer_only_the_two_pager_files_differ_and_the_leaf_disappears(self):
+    def test_without_the_layer_only_the_pager_sheet_differs_and_the_leaf_disappears(self):
         peeled = self.root / 'pager-peeled'
         with patch.object(follow, 'apply_and_record', lambda repo, relative, text, output: text), \
                 patch.object(follow, 'emit_confirmation', lambda repo, output: dict(
@@ -366,11 +366,10 @@ class GeneratedOutputTests(unittest.TestCase):
             self.pager.generate(REPO, peeled)
         current, before = tree(self.root / 'pager'), tree(peeled)
         changed = {name for name in before if name in current and current[name] != before[name]}
-        self.assertEqual({follow.UP_PREVIEW, follow.PORTRAIT, 'source-inventory.json'}, changed)
+        self.assertEqual({follow.UP_PREVIEW, 'source-inventory.json'}, changed)
         added = set(current) - set(before)
         self.assertEqual({follow.OUTPUT_RELATIVE, follow.PROOF_DIRECTORY + '/FollowActionConfirmation.kt.json',
-                          follow.PROOF_DIRECTORY + '/UpPreviewSheet.kt.json',
-                          follow.PROOF_DIRECTORY + '/PortraitFullscreenOverlay.kt.json'}, added)
+                          follow.PROOF_DIRECTORY + '/UpPreviewSheet.kt.json'}, added)
         self.assertEqual(set(), set(before) - set(current))
         inventory = {r['path']: r for r in json.loads(current['source-inventory.json'])['outputs']}
         base = {r['path']: r for r in json.loads(before['source-inventory.json'])['outputs']}
@@ -378,7 +377,7 @@ class GeneratedOutputTests(unittest.TestCase):
         self.assertNotIn(follow.OUTPUT_RELATIVE, base)
         for path, row in base.items():
             if path in inventory:
-                self.assertEqual(path in (follow.UP_PREVIEW, follow.PORTRAIT), row['sha256LF'] != inventory[path]['sha256LF'], path)
+                self.assertEqual(path == follow.UP_PREVIEW, row['sha256LF'] != inventory[path]['sha256LF'], path)
 
     def test_the_pager_overlap_is_rejected_and_a_second_run_is_byte_identical(self):
         before = {p.name: p.read_bytes() for p in (REPO / follow.ARCHIVE).iterdir()}
@@ -429,6 +428,27 @@ class GeneratedOutputTests(unittest.TestCase):
         # A foreign body for that output is not silently edited either: there is nothing to edit.
         self.assertEqual(text, follow.apply_and_record(REPO, info, text, self.root / 'rejected-info'))
         self.assertFalse((self.root / 'rejected-info').exists())
+
+    def test_the_portrait_overlay_buttons_are_upstream_text_and_have_no_windows_hunk(self):
+        # plr-portrait-story-pager-repin: the pager producer emits the overlay from the whole v0.4.6
+        # PortraitFullscreenOverlay.kt, which already guards both of its follow buttons (info row and co-creator sheet).
+        overlay = 'com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt'
+        self.assertNotIn(overlay, follow.SITES)
+        self.assertFalse(hasattr(follow, 'PORTRAIT'))
+        text = text_of(self.root / 'pager' / overlay)
+        self.assertEqual(1, text.count(follow.IMPORT_LINE))
+        self.assertEqual(2, text.count(follow.FUNCTION + '('))
+        self.assertIn('onClick = rememberFollowActionWithConfirmation(\n'
+                      '                                targetKey = ownerMid,\n'
+                      '                                userName = authorName,\n'
+                      '                                isFollowing = isFollowing,\n'
+                      '                                onFollowClick = onFollowClick,\n'
+                      '                            ),\n', text)
+        self.assertIn('targetKey = member.mid,\n', text)
+        self.assertFalse((self.root / 'pager' / follow.PROOF_DIRECTORY / 'PortraitFullscreenOverlay.kt.json').exists())
+        # A body for that output is not silently edited either: there is nothing to edit.
+        self.assertEqual(text, follow.apply_and_record(REPO, overlay, text, self.root / 'rejected-overlay'))
+        self.assertFalse((self.root / 'rejected-overlay').exists())
 
     def test_the_space_header_edit_applies_once_to_the_pinned_anchor_through_the_producer_edit_closure(self):
         site = follow.SITES[follow.SPACE][0]

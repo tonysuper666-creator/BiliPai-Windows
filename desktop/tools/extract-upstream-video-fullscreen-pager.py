@@ -103,13 +103,17 @@ def generate(repo,output,standalone=False):
  repo=Path(repo);output=Path(output);parser=module('original_fullscreen_tokens',repo/'desktop/tools/sync-upstream.py');lex=module('original_fullscreen_balanced',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py');rows=[]
  from v046_follow_confirmation import validate_outputs as validate_follow_confirmation
  validate_follow_confirmation(repo,output)
+ from v046_portrait_pager import validate_outputs as validate_portrait_pager
+ validate_portrait_pager(repo,output)
  for spec in SPECS:
   text=original(repo,spec['origin'],spec['originalSHA'])
+  from v046_portrait_pager import spec_source as portrait_pager_source
+  text,expected_output_sha=portrait_pager_source(repo,spec['output'],text,spec['outputSHA'])
   if spec['kind']=='members':text,names=member_closure(body(text,spec['object'],lex),spec['seeds']);assert names==spec['selectedNames'];assert digest(text)==spec['selectionSHA']
   elif spec['kind']=='declaration':assert spec['originalDeclaration']in text;text=spec['originalDeclaration']
   for edit in spec['edits']:
    count=edit.get('count',1);assert text.count(edit['before'])>=count,(spec['output'],edit.get('label'));text=text.replace(edit['before'],edit['after'],count)
-  text=spec.get('prefix','')+text+spec.get('suffix','');assert digest(text)==spec['outputSHA'],spec['output']
+  text=spec.get('prefix','')+text+spec.get('suffix','');assert digest(text)==expected_output_sha,spec['output']
   text=captured_media_byte_consumer_delta(spec['output'],text)
   text=portrait_hwnd_foreground_delta(spec['output'],text)
   if spec['output']=='com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt':
@@ -147,11 +151,16 @@ def generate(repo,output,standalone=False):
   text=apply_fullscreen_tap_gestures(repo,spec['output'],text,output)
   from v046_follow_confirmation import apply_and_record as apply_follow_confirmation
   text=apply_follow_confirmation(repo,spec['output'],text,output)
+  from v046_portrait_pager import advance_pager as advance_portrait_pager, record_spec as record_portrait_pager_spec
+  text=advance_portrait_pager(repo,spec['output'],text,output)
+  record_portrait_pager_spec(repo,spec['output'],text,output)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')
  from v046_follow_confirmation import emit_confirmation as emit_follow_confirmation
  rows.append(emit_follow_confirmation(repo,output))
+ from v046_portrait_pager import emit_controls_policy as emit_portrait_controls_policy
+ rows.append(emit_portrait_controls_policy(repo,output))
  p=wide(output/'source-inventory.json');p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(dict(commit=COMMIT,outputs=rows,protocolFragmentSHA=digest(protocol_members(repo))),indent=2)+'\n',encoding='utf-8');return rows
 if __name__=='__main__':
  a=argparse.ArgumentParser();a.add_argument('--repo',required=True);a.add_argument('--output',required=True);a.add_argument('--standalone',action='store_true');v=a.parse_args();generate(v.repo,v.output,v.standalone)

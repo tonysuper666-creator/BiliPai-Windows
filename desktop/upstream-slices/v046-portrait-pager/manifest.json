@@ -1,0 +1,136 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "filename": "PortraitFullscreenOverlay.kt",
+      "bytes": 44151,
+      "sha256": "b7a2e35a32fe825e6eba7b7f438fa1bfe81b1a53bca3874bd196b942c7204e5f",
+      "gitBlob": "788e1059de76d9cbf7ba9997ca276187c84c1a8f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "filename": "PortraitInteractionBar.kt",
+      "bytes": 12060,
+      "sha256": "9223f8c2e362391040ab7d8a5ee7691fe65fa0da32c4b69b7c8b0ac16fe292de",
+      "gitBlob": "d560e39cc1fc61650d59f4d0d506aa0b9ef3798d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "filename": "PortraitBottomInputBar.kt",
+      "bytes": 5839,
+      "sha256": "9c18f056eb5f1f4d4fe7a38315e919c7fab1076f44ba5cf6617db0b1dd7ae47f",
+      "gitBlob": "2d3e7ffffeb58982aac78af4c77b06868cd7aadd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "filename": "PortraitProgressBar.kt",
+      "bytes": 14412,
+      "sha256": "3606cdf6cf50510c280a9787f281d3facf1af48785299475f3d30e9fca5e8d62",
+      "gitBlob": "fcd1a16fc5e698509abd7468587e930ff2091797"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "filename": "PortraitVideoLoadPolicy.kt",
+      "bytes": 17878,
+      "sha256": "83495fb70ec21928473e1ab051b3d45e7b6956bb2c965379fa10042224b19c64",
+      "gitBlob": "f03ed746c4777b14ac184ad7bc36c0b2a4f00448"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+      "filename": "PortraitPagerSwitchPolicy.kt",
+      "bytes": 18390,
+      "sha256": "9b775643f49efbdf7623c110d00a45263a648e66517a55aefd7ab4a217f01e09",
+      "gitBlob": "52a3d133a8dffe3d27f511261bb87ceca868ac72"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicy.kt",
+      "filename": "PortraitControlsVisibilityPolicy.kt",
+      "bytes": 479,
+      "sha256": "13b6db2de38eddeb37a46817eecce648d30ee2e20cbe421a53d021623babefe2",
+      "gitBlob": "deccd15f55baf1796000e88dd653e8ded53327bf"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "schemaVersion": 1,
+  "selection": "Verbatim v0.4.6 blobs of the portrait overlay family: PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy, PortraitPagerSwitchPolicy and the new PortraitControlsVisibilityPolicy.",
+  "purpose": "Roadmap slice plr-portrait-story-pager-repin. Each producer that already owns a file swaps its own v0.2.5 predecessor for these bytes behind hash assertions and keeps every platform binding that already existed. The 4567-line PortraitVideoPager.kt is not carried: it receives thirteen counted hunks whose inserted text is a verbatim slice of the v0.4.6 blob c4b0d9bea38d488d6bf74fae4d62467178f19115.",
+  "producerPredecessors": [
+    {
+      "replacedBy": "PortraitFullscreenOverlay.kt",
+      "producer": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "canonicalLfSha256": "8dd7fb38cedd8b1cdf0accc796c8077c22012f18c1b47988cde6b716f51c4353",
+      "previousSpecOutputSha256": "93d4ca25709f4acaa88eabda992f6db73b003c769e1fe060d7786d3893094593"
+    },
+    {
+      "replacedBy": "PortraitInteractionBar.kt",
+      "producer": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "canonicalLfSha256": "1a155295c162521a3d860f341a12cbc1f94ca08dd0d1be25d1dfd8a0f2562263",
+      "previousSpecOutputSha256": "9c1e2b436b47ab7bd80630483d0a8ffaede3a2fa0c3d587d5e84965ee7c30b0f"
+    },
+    {
+      "replacedBy": "PortraitBottomInputBar.kt",
+      "producer": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "canonicalLfSha256": "8e52f5641a61ce40c874a0610170fa57782293f4ff25d908bf7330b7d32ee6a7",
+      "previousSpecOutputSha256": "190ff2772f250667aaf3561bb4cffc6812c6faf63033039ced9740e439c75089"
+    },
+    {
+      "replacedBy": "PortraitProgressBar.kt",
+      "producer": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "canonicalLfSha256": "fc1d5baefa3033d00be84ced887d801f9148dd19934a2dbf527ed08611c51b7f",
+      "previousSpecOutputSha256": "d070f8b9069c814d68b4449fae83053a664d0a264844f5326370028c8094f402"
+    },
+    {
+      "replacedBy": "PortraitVideoLoadPolicy.kt",
+      "producer": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "canonicalLfSha256": "e80e604e6393d0e44764b49e813fff004fb581293f8d71eeb8bdeaf18c9a9fc3",
+      "previousSpecOutputSha256": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4"
+    },
+    {
+      "replacedBy": "PortraitPagerSwitchPolicy.kt",
+      "producer": "desktop/tools/extract-upstream-story-topic.py",
+      "canonicalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+      "canonicalLfSha256": "6805c3dfcd1f853d5251c47001cbb5a16adfa070e46971468dd84e3c7c0c59c0",
+      "previousAdaptedSha256": "18c847742327ae9d56ce62975955574712b1ec39a938ba00edd9ca35841afb8c"
+    }
+  ],
+  "pagerHunks": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+    "upstreamBlob": "c4b0d9bea38d488d6bf74fae4d62467178f19115",
+    "predecessorSha256": "fdf7a9ee692b22929385f9e58bd3de30436bff6417fec776da7ab3298fcdc5b9",
+    "hunks": 13
+  },
+  "newInV046": [
+    "PortraitControlsVisibilityPolicy.kt has no v0.2.5 copy; the pager producer emits it whole."
+  ],
+  "retainedWindowsBehaviour": [
+    "PortraitPagerSwitchPolicy.shouldShowPortraitCover keeps the v0.2.5 rule (the current page never shows the static cover) with one counted hunk: the Windows pager still paints the video through the native window and its first-frame bookkeeping is the v0.2.5 one; the v0.4.6 rule belongs to the whole pager re-pin."
+  ],
+  "notCarried": [
+    "PortraitVideoPager.kt whole (4567 lines, 124 existing producer edits and nine layers): proposed follow-up slice. That re-pin also brings the portrait page backdrop for the glass docks (LocalPlayerPageBackdrop), the v0.4.6 cover rule and the first-frame bookkeeping it needs.",
+    "PortraitWifiPreloadQueue.kt (Android ConnectivityManager and ExoPlayer cache warming; the Windows pager keeps its owned prefetch) and with it the production caller of resolvePortraitPrefetchWindowTargets.",
+    "v029-portrait-background-continue: MiniPlayerManager.shouldContinueBackgroundAudio is an Android lifecycle policy inside the pager.",
+    "PortraitDetailSheet.kt and PortraitTopBarLayoutPolicy.kt theme-role and size changes (not part of the six entries).",
+    "The portrait page backdrop (LocalPlayerPageBackdrop) that feeds the glass docks: needs the whole pager."
+  ],
+  "partiallyDelivered": [
+    "v035-portrait-pager-preload-identity is only partly delivered. Carried: resolvePortraitMediaId, the cid-aware shouldSkipPortraitReloadForCurrentMedia, resolvePortraitPlayUrlPreloadTargets (keeps two parts of one bvid apart) and the new resolvePortraitPrefetchWindowTargets. Not delivered: the retained Windows pager still deduplicates its prefetches by bvid alone (portraitPrefetchedPlayUrlBvids.add(identity.bvid) on the swipe-candidate prefetch and .add(target.bvid) in the forward preload loop), so the second part of one bvid is never prefetched, and resolvePortraitPrefetchWindowTargets has no production caller (v0.4.6 calls it from the PortraitWifiPreloadQueue path, which is not carried). Preloading is not cid-aware end to end. Follow-up: the whole-pager re-pin, or a counted hunk that keys the prefetch set by resolvePortraitMediaId(target.bvid, target.cid)."
+  ],
+  "knownDeviations": [
+    "Idle auto-hide (PortraitControlsVisibilityPolicy and the pager hunk), static judgement, not run: playbackActive requires Lifecycle.State.RESUMED, and Compose Desktop lowers the window lifecycle to STARTED when the window loses focus (an owned native player or composer window, another application), so the controls never auto-hide while the window is unfocused. Hidden controls return only through the existing tap gesture; there is no desktop mouse-move reveal. Follow-up for the whole-pager re-pin: a desktop hover reveal and STARTED versus RESUMED gating, each as a declared adaptation of the hunk with a pinned before and after.",
+    "The danmaku composer flag read by the auto-hide hunk is the upstream showDanmakuInputDialog, which the portrait composer never sets: it opens through showDanmakuSendDialog, which sets showDanmakuDialog (v0.4.6 has the same mismatch). An open composer is covered only by its playback pause. Follow-up: read the owner showDanmakuDialog flow through a declared adaptation."
+  ],
+  "currentWindowsParent": "ac792b4ab",
+  "fullStableParityQualified": false
+}

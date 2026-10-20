@@ -27,6 +27,13 @@ internal interface DesktopOriginalPortraitPlaybackOwner {
     val commentMentionSearchState: StateFlow<CommentMentionSearchUiState>
     val composerDrafts: StateFlow<VideoComposerDraftState>
     val commentSentEvent: Flow<ReplyItem?>
+    /** Read views of two original dialog flags that the carried v0.4.6 pager reads verbatim for its idle auto-hide
+     * (v0.4.0 PortraitControlsVisibilityPolicy). favoriteFolderDialogVisible is true while the folder sheet is open.
+     * showDanmakuInputDialog is the upstream flag as carried: the portrait composer opens through showDanmakuSendDialog,
+     * which sets showDanmakuDialog and never this flag, so an open composer keeps the controls visible only because
+     * it pauses playback (the pager's playbackActive is then false), not through this flow. */
+    val showDanmakuInputDialog: StateFlow<Boolean>
+    val favoriteFolderDialogVisible: StateFlow<Boolean>
     fun ensureFollowStatus(mid: Long, force: Boolean = false)
     fun toggleFavorite()
     fun showFavoriteFolderDialog(requestedAid: Long? = null)

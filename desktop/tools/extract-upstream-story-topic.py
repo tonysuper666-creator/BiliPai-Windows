@@ -114,6 +114,8 @@ def adapt_story_root_screen(source):
  return source
 
 def generate(repo, output, standalone=False):
+    from v046_portrait_pager import validate_outputs as validate_portrait_pager
+    validate_portrait_pager(repo, output)  # before any write: an output inside the archive must not be created
     helpers = host(repo); media = helpers.media_extractor(repo); parser = media.parser_for(repo)
     output.mkdir(parents=True, exist_ok=True); result = []
     for path in DIRECT:
@@ -121,7 +123,14 @@ def generate(repo, output, standalone=False):
         source = read(repo, path); helpers.prune_old_direct(output, path, source)
         if standalone: result.append(helpers.write(output, path, source, source))
     for path in ADAPTED:
-        source = read(repo, path); result.append(helpers.write(output, path, source, adapt(path, source, helpers)))
+        source = read(repo, path)
+        if path.endswith("PortraitPagerSwitchPolicy.kt"):
+            # Roadmap plr-portrait-story-pager-repin: the whole v0.4.6 policy; the two platform substitutions above run on it.
+            from v046_portrait_pager import switch_policy
+            upstream, body = switch_policy(repo, source, lambda text: adapt(path, text, helpers), output)
+            result.append(helpers.write(output, path, upstream, body))
+            continue
+        result.append(helpers.write(output, path, source, adapt(path, source, helpers)))
     for path in EXTRACT:
         source = read(repo, path)
         if path.endswith("StoryViewModel.kt"):

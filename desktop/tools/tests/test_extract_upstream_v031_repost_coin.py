@@ -12,6 +12,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v031_repost_coin as coin
+import v046_portrait_pager as portrait_pager
 
 
 def load(name):
@@ -67,6 +68,9 @@ class RepostCoinExtractionTest(unittest.TestCase):
                 proof = json.loads(read(output / (Path(path).name + ".repost-coin-proof.json")))
                 after = read(output / path)
                 if producer == "fullscreen-pager" and path == coin.PAGER:
+                    # plr-portrait-story-pager-repin is the newest layer of the pager: unwind its thirteen counted hunks first.
+                    portrait = json.loads(read(output / "v046-portrait-pager-proofs/PortraitVideoPager.kt.json"))
+                    after = portrait_pager.peel_pager(after, portrait)
                     # 38512320c comment selection and daff05d71 owner-follow rewrite the pager
                     # after the v035 story proof. Unwind those recorded proofs first.
                     follow = json.loads(read(output / "PortraitVideoPager.kt.v042-owner-follow-ui-proof.json"))

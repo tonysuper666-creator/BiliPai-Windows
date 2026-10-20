@@ -316,7 +316,8 @@ class ArchiveAndWiringTests(unittest.TestCase):
         follow = load('v046_follow_confirmation.py', 'vis_follow')
         self.assertNotIn(INFO_OUTPUT, follow.SITES)
         self.assertFalse(hasattr(follow, 'INFO'))
-        self.assertEqual({follow.UP_PREVIEW, follow.PORTRAIT, follow.METADATA, follow.OVERLAY, follow.SPACE}, set(follow.SITES))
+        # plr-portrait-story-pager-repin retired the two portrait overlay buttons as well: the whole v0.4.6 overlay is upstream text.
+        self.assertEqual({follow.UP_PREVIEW, follow.METADATA, follow.OVERLAY, follow.SPACE}, set(follow.SITES))
         palette = load('v046_identity_badge_palette.py', 'vis_palette')
         self.assertEqual({'DynamicCard.kt', 'SpaceScreen.kt'}, set(palette.UP_NAME_MIGRATIONS))
         producer = text_of(TOOLS / 'extract-upstream-video-detail-full-units.py')

@@ -39,6 +39,8 @@ internal class DesktopOriginalVideoConsumedViews(
     override val commentMentionSearchState get() = original.commentMentionSearchState
     override val composerDrafts get() = original.composerDrafts
     override val commentSentEvent = original.commentSentEvent.filter { assembly.owns() }
+    override val showDanmakuInputDialog get() = original.showDanmakuInputDialog
+    override val favoriteFolderDialogVisible get() = original.favoriteFolderDialogVisible
     override val sleepTimerMinutes get() = original.sleepTimerMinutes
     override val currentPlayer: DesktopOriginalMpvSectionControl?
         get() = assembly.section.takeIf { assembly.owns() && original.currentPlayer === it }

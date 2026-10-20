@@ -4460,3 +4460,12 @@ tasks.matching { it.name in setOf("extractOriginalHomeBangumiPage", "extractOrig
     inputs.files("tools/v046_bangumi_hub_pages.py", "tools/v044_favorite_detail.py")
     inputs.dir("upstream-slices/v046-bangumi-hub-pages")
 }
+
+// v0.4.6 portrait pager family (roadmap slice plr-portrait-story-pager-repin): the fullscreen pager producer swaps five of
+// its own v0.2.5 predecessors (overlay, interaction bar, bottom input bar, progress bar, load policy) for the whole v0.4.6
+// files, emits the new controls visibility policy and applies thirteen counted hunks to the generated pager; the story topic
+// producer carries the whole pager switch policy. No vendored copy is excluded: none of these files is a direct-mode copy.
+tasks.matching { it.name in setOf("extractOriginalVideoFullscreenPager", "extractUpstreamStoryTopic") }.configureEach {
+    inputs.files("tools/v046_portrait_pager.py", "tools/v044_favorite_detail.py")
+    inputs.dir("upstream-slices/v046-portrait-pager")
+}

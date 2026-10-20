@@ -14,6 +14,14 @@ VideoInfoSection.kt, which already contains this call, so that site is retired h
 sites are hunks of this module before the re-pin, six after it (UpPreviewSheet, PortraitFullscreenOverlay x2, the
 creator team chip, the landscape end drawer and the space header), and the owner row is upstream text.
 
+Update (plr-portrait-story-pager-repin): the portrait overlay is now emitted from the whole v0.4.6
+PortraitFullscreenOverlay.kt (v046_portrait_pager.py), which already calls rememberFollowActionWithConfirmation at the
+info row follow button and at the co-creator sheet follow button, so both sites are retired here: four of the eight
+upstream call sites are hunks of this module (UpPreviewSheet, the creator team chip, the landscape end drawer and the
+space header); the owner row and the two portrait buttons are upstream text. The overlay also carries the
+followStatusKnown parameter and the recheck click label that v042-follow-pending-recovery needs, which closes the
+PortraitVideoInfo hunk that was deferred below.
+
 Audit of the six roadmap entries this slice covers (vid-engagement-state-safety), done / partial / deferred:
 - v030-like-toggle-survives-detail-exit: done as a deliberate Windows deviation (v046_like_write_guard.py).
 - v036-unknown-state-phone-audio-story-leftovers: partial. Done: the phone-width detail content forwards both known
@@ -21,8 +29,9 @@ Audit of the six roadmap entries this slice covers (vid-engagement-state-safety)
 - v036-merge-pr905-integration: bookkeeping only, nothing to compile.
 - v038-interaction-status-retry: deferred. The retry helper already exists (v038-player-interaction-retry archive);
   the retry UI half and the Bangumi hunks are not taken here.
-- v042-follow-pending-recovery: deferred. The PortraitVideoInfo onClickLabel/followStatusKnown hunk needs the
-  parameter that the pinned base lacks, so it belongs to the whole-file pager re-pin.
+- v042-follow-pending-recovery: partial. The PortraitVideoInfo onClickLabel/followStatusKnown hunk is closed by the
+  whole v0.4.6 portrait overlay (plr-portrait-story-pager-repin) together with the pager call site that forwards the
+  known flag and guards the click; the view model half was carried before.
 - v046-unfollow-confirmation: done for seven of the eight upstream call sites plus every desktop-owned follow button.
   VideoPlayerComponents.UpInfoSection is not compiled: its vendored file is not in the source registry and the live
   detail button is VideoInfoSection.UpInfoSection. The SpaceScreen card clip reorder of the same commit is a different
@@ -63,8 +72,6 @@ APP = 'app/src/main/java/com/android/purebilibili/'
 UPSTREAM = {
     'UpPreviewSheet.kt': (APP + 'feature/video/ui/components/UpPreviewSheet.kt',
                           '79205b0c7dd6274519827b5bee1429642b6ff90e'),
-    'PortraitFullscreenOverlay.kt': (APP + 'feature/video/ui/overlay/PortraitFullscreenOverlay.kt',
-                                     '788e1059de76d9cbf7ba9997ca276187c84c1a8f'),
     'VideoInfoSection.kt': (APP + 'feature/video/ui/section/VideoInfoSection.kt',
                             '23108f5f17a2ba7a3bf89ecc400492441cb65666'),
     'VideoPlayerOverlay.kt': (APP + 'feature/video/ui/overlay/VideoPlayerOverlay.kt',
@@ -78,7 +85,8 @@ OWNER_EDIT_TOAST = '可在「我的」页面编辑个人资料'
 
 PKG = 'com/android/purebilibili/'
 UP_PREVIEW = PKG + 'feature/video/ui/components/UpPreviewSheet.kt'
-PORTRAIT = PKG + 'feature/video/ui/overlay/PortraitFullscreenOverlay.kt'
+# The portrait overlay (PortraitFullscreenOverlay.kt) is no longer a site of this module: since plr-portrait-story-pager-repin
+# the emitted file is the v0.4.6 text, which already guards both of its follow buttons.
 # The video detail owner row (DesktopOriginalVideoInfoSection.kt) is no longer a site of this module: since the
 # v046-video-info-section re-pin (vid-info-section-repin) the emitted UpInfoSection is the v0.4.6 text, which already
 # calls rememberFollowActionWithConfirmation. The creator team chip below still comes from the v0.2.5 file.
@@ -99,45 +107,6 @@ SITES = {
                '                        isFollowing = isFollowing,\n'
                '                        onFollowClick = onFollowClick,\n'
                '                    ),\n'))],
-    PORTRAIT: [dict(
-        label='Portrait info row follow button: unfollow asks first', upstream='PortraitFullscreenOverlay.kt',
-        args=('ownerMid', 'authorName', 'isFollowing'),
-        before='                    .clickable { onFollowClick() }\n',
-        after=('                    .clickable(\n'
-               '                        onClick = rememberFollowActionWithConfirmation(\n'
-               '                            targetKey = ownerMid,\n'
-               '                            userName = authorName,\n'
-               '                            isFollowing = isFollowing,\n'
-               '                            onFollowClick = onFollowClick,\n'
-               '                        ),\n'
-               '                    )\n')), dict(
-        label='Co-creator sheet follow button: unfollow asks first', upstream='PortraitFullscreenOverlay.kt',
-        args=('member.mid', 'member.name', 'isFollowing'),
-        before=('                        modifier = Modifier.clickable {\n'
-                '                            scope.launch {\n'
-                '                                val target = !isFollowing\n'
-                '                                val ok = creatorTeam\n'
-                '                                    .followUser(member.mid, target)\n'
-                '                                    .getOrDefault(false)\n'
-                '                                if (ok) followStates[member.mid] = target\n'
-                '                            }\n'
-                '                        }\n'),
-        after=('                        modifier = Modifier.clickable(\n'
-               '                            onClick = rememberFollowActionWithConfirmation(\n'
-               '                                targetKey = member.mid,\n'
-               '                                userName = member.name,\n'
-               '                                isFollowing = isFollowing,\n'
-               '                                onFollowClick = {\n'
-               '                                    scope.launch {\n'
-               '                                        val target = !isFollowing\n'
-               '                                        val ok = creatorTeam\n'
-               '                                            .followUser(member.mid, target)\n'
-               '                                            .getOrDefault(false)\n'
-               '                                        if (ok) followStates[member.mid] = target\n'
-               '                                    }\n'
-               '                                },\n'
-               '                            ),\n'
-               '                        )\n'))],
     METADATA: [dict(
         label='Creator team member chip: unfollow asks first', upstream='VideoInfoSection.kt',
         args=('member.mid', 'member.name', 'isFollowing'),

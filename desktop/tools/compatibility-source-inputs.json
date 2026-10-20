@@ -167,7 +167,8 @@
     "desktop/upstream-slices/v046-dynamic-category-merge",
     "desktop/upstream-slices/v046-search-state",
     "desktop/upstream-slices/v046-bangumi-hub-pages",
-    "desktop/upstream-slices/v046-theme-palette-schedule"
+    "desktop/upstream-slices/v046-theme-palette-schedule",
+    "desktop/upstream-slices/v046-portrait-pager"
   ],
   "archives": [
     {
@@ -7583,6 +7584,65 @@
           "sha256": "e9482a2156846f783053c60a3adf6f6081604329674898c458ff04f0221a611c",
           "hashNormalization": "raw",
           "blob": "5a19acd3e542f56ab0769d97e0bc1020c0d9c16b"
+        }
+      ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-portrait-pager",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/manifest.json",
+          "sha256": "18b0c91a698130d5266703dceb299a162d2c7a02f9a7b828951e313d3ad42f58",
+          "hashNormalization": "raw",
+          "blob": "2e6a7172b3a764b013daec01448c4605fc2149fd"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/PortraitBottomInputBar.kt",
+          "sha256": "9c18f056eb5f1f4d4fe7a38315e919c7fab1076f44ba5cf6617db0b1dd7ae47f",
+          "hashNormalization": "raw",
+          "blob": "2d3e7ffffeb58982aac78af4c77b06868cd7aadd"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/PortraitControlsVisibilityPolicy.kt",
+          "sha256": "13b6db2de38eddeb37a46817eecce648d30ee2e20cbe421a53d021623babefe2",
+          "hashNormalization": "raw",
+          "blob": "deccd15f55baf1796000e88dd653e8ded53327bf"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/PortraitFullscreenOverlay.kt",
+          "sha256": "b7a2e35a32fe825e6eba7b7f438fa1bfe81b1a53bca3874bd196b942c7204e5f",
+          "hashNormalization": "raw",
+          "blob": "788e1059de76d9cbf7ba9997ca276187c84c1a8f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/PortraitInteractionBar.kt",
+          "sha256": "9223f8c2e362391040ab7d8a5ee7691fe65fa0da32c4b69b7c8b0ac16fe292de",
+          "hashNormalization": "raw",
+          "blob": "d560e39cc1fc61650d59f4d0d506aa0b9ef3798d"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/PortraitPagerSwitchPolicy.kt",
+          "sha256": "9b775643f49efbdf7623c110d00a45263a648e66517a55aefd7ab4a217f01e09",
+          "hashNormalization": "raw",
+          "blob": "52a3d133a8dffe3d27f511261bb87ceca868ac72"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/PortraitProgressBar.kt",
+          "sha256": "3606cdf6cf50510c280a9787f281d3facf1af48785299475f3d30e9fca5e8d62",
+          "hashNormalization": "raw",
+          "blob": "fcd1a16fc5e698509abd7468587e930ff2091797"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-portrait-pager/PortraitVideoLoadPolicy.kt",
+          "sha256": "83495fb70ec21928473e1ab051b3d45e7b6956bb2c965379fa10042224b19c64",
+          "hashNormalization": "raw",
+          "blob": "f03ed746c4777b14ac184ad7bc36c0b2a4f00448"
         }
       ]
     }
@@ -20044,6 +20104,111 @@
       "referenceOnly": false,
       "partialReuse": false,
       "usedScope": "Whole v0.4.6 palette style swatch, home preview, dark theme schedule model, schedule preference rows and wheel time picker emitted by the appearance producer, with the original schedule test. ThemeHomePreview and ThemeTimeWheelPicker change only their Android drawable and clock bindings. The Windows minute timer, the three preference keys and the settings rows are desktop-owned."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlay.kt",
+      "localPath": "desktop/upstream-slices/v046-portrait-pager/PortraitFullscreenOverlay.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "788e1059de76d9cbf7ba9997ca276187c84c1a8f",
+      "sha256": "b7a2e35a32fe825e6eba7b7f438fa1bfe81b1a53bca3874bd196b942c7204e5f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-portrait-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+      "localPath": "desktop/upstream-slices/v046-portrait-pager/PortraitInteractionBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "d560e39cc1fc61650d59f4d0d506aa0b9ef3798d",
+      "sha256": "9223f8c2e362391040ab7d8a5ee7691fe65fa0da32c4b69b7c8b0ac16fe292de",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-portrait-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBar.kt",
+      "localPath": "desktop/upstream-slices/v046-portrait-pager/PortraitBottomInputBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2d3e7ffffeb58982aac78af4c77b06868cd7aadd",
+      "sha256": "9c18f056eb5f1f4d4fe7a38315e919c7fab1076f44ba5cf6617db0b1dd7ae47f",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-portrait-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt",
+      "localPath": "desktop/upstream-slices/v046-portrait-pager/PortraitProgressBar.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "fcd1a16fc5e698509abd7468587e930ff2091797",
+      "sha256": "3606cdf6cf50510c280a9787f281d3facf1af48785299475f3d30e9fca5e8d62",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-portrait-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-portrait-pager/PortraitVideoLoadPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "f03ed746c4777b14ac184ad7bc36c0b2a4f00448",
+      "sha256": "83495fb70ec21928473e1ab051b3d45e7b6956bb2c965379fa10042224b19c64",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-portrait-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-portrait-pager/PortraitPagerSwitchPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "52a3d133a8dffe3d27f511261bb87ceca868ac72",
+      "sha256": "9b775643f49efbdf7623c110d00a45263a648e66517a55aefd7ab4a217f01e09",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-portrait-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitControlsVisibilityPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-portrait-pager/PortraitControlsVisibilityPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "deccd15f55baf1796000e88dd653e8ded53327bf",
+      "sha256": "13b6db2de38eddeb37a46817eecce648d30ee2e20cbe421a53d021623babefe2",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-portrait-pager"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 PortraitFullscreenOverlay, PortraitInteractionBar, PortraitBottomInputBar, PortraitProgressBar, PortraitVideoLoadPolicy and PortraitPagerSwitchPolicy, each advanced inside the producer that already owns it (fullscreen pager producer rows and the story topic producer) with the existing Windows bindings on top, plus the new PortraitControlsVisibilityPolicy emitted whole. PortraitPagerSwitchPolicy keeps the v0.2.5 cover rule through one counted hunk. PortraitVideoPager.kt is not a leaf: it receives thirteen counted hunks whose inserted text is a slice of the v0.4.6 blob."
     }
   ],
   "buildStandaloneInputs": [

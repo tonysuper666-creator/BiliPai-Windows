@@ -13,6 +13,7 @@ REPO = Path(__file__).resolve().parents[3]
 TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v029_comment_composer as composer
+import v046_portrait_pager as portrait_pager
 
 PREFIX = "com/android/purebilibili/feature/video/"
 OWNER = PREFIX + "viewmodel/VideoPlaybackViewModel.kt"
@@ -115,6 +116,9 @@ class CommentSelectionConsumerClosureTest(unittest.TestCase):
                 proof = json.loads((self.output / ("v029-comment-selection-" + Path(path).stem + ".json")).read_text(encoding="utf-8"))
                 current = self.source(path)
                 if path == PORTRAIT:
+                    # plr-portrait-story-pager-repin is the newest layer of the pager: peel its counted hunks first.
+                    current = portrait_pager.peel_pager(current, json.loads(
+                        (self.output / 'v046-portrait-pager-proofs/PortraitVideoPager.kt.json').read_bytes()))
                     follow = json.loads((self.output / 'PortraitVideoPager.kt.v042-owner-follow-ui-proof.json').read_bytes())
                     self.assertTrue(follow['wholePreviousInputInverseRecovered'])
                     self.assertEqual(follow['outputSHA256'], hashlib.sha256(current.encode()).hexdigest())

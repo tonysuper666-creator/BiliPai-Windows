@@ -16,6 +16,7 @@ pager = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pager)
 import v042_owner_follow as follow
 import v046_follow_confirmation as unfollow
+import v046_portrait_pager as portrait
 
 SHEET = 'com/android/purebilibili/feature/video/ui/components/UpPreviewSheet.kt'
 PAGER = 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt'
@@ -58,9 +59,13 @@ class OriginalOwnerFollowUiTest(unittest.TestCase):
             out, before = Path(temp) / 'after', Path(temp) / 'before'
             pager.generate(REPO, out, standalone=True)
             with patch.object(follow, 'apply_ui', side_effect=lambda repo, path, text, output, spec: text), \
-                    patch.object(unfollow, 'apply_and_record', side_effect=lambda repo, relative, text, output: text):
+                    patch.object(unfollow, 'apply_and_record', side_effect=lambda repo, relative, text, output: text), \
+                    patch.object(portrait, 'advance_pager', side_effect=lambda repo, relative, text, output: text):
                 pager.generate(REPO, before, standalone=True)
             actual = (out / PAGER).read_text(encoding='utf-8')
+            # plr-portrait-story-pager-repin is the newest layer of the pager: peel its thirteen counted hunks first.
+            actual = portrait.peel_pager(
+                actual, json.loads((out / 'v046-portrait-pager-proofs/PortraitVideoPager.kt.json').read_bytes()))
             proof = json.loads((out / 'PortraitVideoPager.kt.v042-owner-follow-ui-proof.json').read_bytes())
             self.assertEqual((before / PAGER).read_text(encoding='utf-8'), inverse(actual, proof['edits']))
             self.assertFalse(proof['fullOriginalPagerParityClaimed'])
