@@ -7602,9 +7602,9 @@
         },
         {
           "path": "desktop/upstream-slices/v046-portrait-pager/manifest.json",
-          "sha256": "18b0c91a698130d5266703dceb299a162d2c7a02f9a7b828951e313d3ad42f58",
+          "sha256": "3425ac3ed240d094d23bddd05c7c558c88313fc38f768869ffc2c812777207fc",
           "hashNormalization": "raw",
-          "blob": "2e6a7172b3a764b013daec01448c4605fc2149fd"
+          "blob": "3608150233de1079bee9fae30d1fadc57ff934e8"
         },
         {
           "path": "desktop/upstream-slices/v046-portrait-pager/PortraitBottomInputBar.kt",
