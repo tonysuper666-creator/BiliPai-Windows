@@ -64,7 +64,7 @@ class DesktopPublicContentImageRoutingTest {
         val routed = routedImageCalls(RecordingCalls(), publicCalls) { true }
         routed.newCall(request("cdnfile.sspai.com"))
         routed.newCall(Request.Builder().url("https://image.gcores.com/a.png").header("User-Agent", "caller-agent").build())
-        assertEquals(listOf(DesktopRepository.USER_AGENT, "caller-agent"), publicCalls.agents)
+        assertEquals<List<String?>>(listOf(DesktopRepository.USER_AGENT, "caller-agent"), publicCalls.agents)
     }
 
     @Test
