@@ -163,7 +163,8 @@
     "desktop/upstream-slices/v046-bangumi-player",
     "desktop/upstream-slices/v046-danmaku-hot-command",
     "desktop/upstream-slices/v046-audio-listen-closure",
-    "desktop/upstream-slices/v046-mfx-small-protocol-fixes"
+    "desktop/upstream-slices/v046-mfx-small-protocol-fixes",
+    "desktop/upstream-slices/v046-dynamic-category-merge"
   ],
   "archives": [
     {
@@ -7333,6 +7334,71 @@
           "blob": "0cd88278b6dfe2079c9d9994d789557ea7ca312f"
         }
       ]
+    },
+    {
+      "directory": "desktop/upstream-slices/v046-dynamic-category-merge",
+      "files": [
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicReactionSheet.kt",
+          "sha256": "d43da90f37e360f6534c811e721d5fc21a4293565d711faff45caeb3d45e7afe",
+          "hashNormalization": "raw",
+          "blob": "dddc31efb210e951e3e450b730deb29c93b1bfd5"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicScreen.kt",
+          "sha256": "e7572dc078fe8a021690cbb29286e1e548cf358a0d9fc84ee2cbc412c024c26e",
+          "hashNormalization": "raw",
+          "blob": "c42f57dbb8fd8bb5b684b4c89b0b302a1207b926"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicScreenStatePolicy.kt",
+          "sha256": "1ae96f94ef06fa3a1c1277701cf34de689c7aeb547800308b633f2e99e592c39",
+          "hashNormalization": "raw",
+          "blob": "16d338a42536f6d1ee47e370b137de1ea349062f"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicTabPolicy.kt",
+          "sha256": "1b9c7d101c28e3edfc4302b2b3adcff7b5fc0cf59d0145a6f236249611631656",
+          "hashNormalization": "raw",
+          "blob": "2151dc40e374c73d227c04d97750418f0de9f2d9"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicTabPolicyTest.kt",
+          "sha256": "043041da70da12fec5138828f4c5467a9ceb6188ecc8d7ef82330941997d96ce",
+          "hashNormalization": "raw",
+          "blob": "bfbdc48920f8a227576785cd14c643965cbb37ad"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicUserRequestPolicy.kt",
+          "sha256": "186db5818b60afbc8adb4f0490eac9d9f1a30ae46c5095925cee2d6133d4a9d8",
+          "hashNormalization": "raw",
+          "blob": "df9d4703b61fc4e871d13fa4b86055f1f1d3321a"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicUserRequestPolicyTest.kt",
+          "sha256": "3dd08554b283ef153f7aeee23e35ccd6ca46c82ddb099f140a70e346d8ff6f06",
+          "hashNormalization": "raw",
+          "blob": "34fc8180f6a601c37805d4696000f05741520f35"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/LICENSE",
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "hashNormalization": "raw",
+          "blob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/manifest.json",
+          "sha256": "ccd0fc5d1d5d1dc03ce1a0adf9ee99d5cec9043311a2ded64c00aadb2fd3fce7",
+          "hashNormalization": "raw",
+          "blob": "0c2d02c8c9296ee927af77a8e0605ccee464e762"
+        },
+        {
+          "path": "desktop/upstream-slices/v046-dynamic-category-merge/SettingsSections.kt",
+          "sha256": "6578b664cbec7cba053e1a32cf6599eef811428f964582c41b2d1ec55269f400",
+          "hashNormalization": "raw",
+          "blob": "a5d3c19c0240911ca19bcacdcc6e8879df7dbe00"
+        }
+      ]
     }
   ],
   "inputs": [
@@ -13267,7 +13333,7 @@
       "features": [
         "dynamic-reaction-v034"
       ],
-      "referenceOnly": false
+      "referenceOnly": true
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveDanmakuFilterPolicy.kt",
@@ -19338,6 +19404,126 @@
       "reusedMethods": [
         "sanitizeMessage"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicTabPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "2151dc40e374c73d227c04d97750418f0de9f2d9",
+      "sha256": "1b9c7d101c28e3edfc4302b2b3adcff7b5fc0cf59d0145a6f236249611631656",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 tab policy (UP tab merged into All), emitted by the dynamic settings producer; the vendored direct copy is excluded in Gradle"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicScreenStatePolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "16d338a42536f6d1ee47e370b137de1ea349062f",
+      "sha256": "1ae96f94ef06fa3a1c1277701cf34de689c7aeb547800308b633f2e99e592c39",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "The selected policy functions of the dynamic tabs producer (author strip, author feed and panel boundary), read through its selected-source chain"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicUserRequestPolicy.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "df9d4703b61fc4e871d13fa4b86055f1f1d3321a",
+      "sha256": "186db5818b60afbc8adb4f0490eac9d9f1a30ae46c5095925cee2d6133d4a9d8",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 selected-author request policy (content filter enum retired), emitted by the dynamic tabs producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicScreen.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "c42f57dbb8fd8bb5b684b4c89b0b302a1207b926",
+      "sha256": "e7572dc078fe8a021690cbb29286e1e548cf358a0d9fc84ee2cbc412c024c26e",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "HorizontalUserList and DynamicSelectedUserFeedHeader advanced inside the dynamic tabs producer, one pinned self avatar binding"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicReactionSheet.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicReactionSheet.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "dddc31efb210e951e3e450b730deb29c93b1bfd5",
+      "sha256": "d43da90f37e360f6534c811e721d5fc21a4293565d711faff45caeb3d45e7afe",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 reaction user list sheet adapted by the editor producer to the Windows reaction list state"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/SettingsSections.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "a5d3c19c0240911ca19bcacdcc6e8879df7dbe00",
+      "sha256": "6578b664cbec7cba053e1a32cf6599eef811428f964582c41b2d1ec55269f400",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": true,
+      "usedScope": "FeedDynamicTabVisibilityItem advanced inside the dynamic tabs producer; the strip switch left FeedApiSection"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicTabPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "bfbdc48920f8a227576785cd14c643965cbb37ad",
+      "sha256": "043041da70da12fec5138828f4c5467a9ceb6188ecc8d7ef82330941997d96ce",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 original tab policy test, emitted next to the author search test"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicyTest.kt",
+      "localPath": "desktop/upstream-slices/v046-dynamic-category-merge/DynamicUserRequestPolicyTest.kt",
+      "upstreamCommit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+      "blob": "34fc8180f6a601c37805d4696000f05741520f35",
+      "sha256": "3dd08554b283ef153f7aeee23e35ccd6ca46c82ddb099f140a70e346d8ff6f06",
+      "hashNormalization": "raw",
+      "kind": "adaptedSource",
+      "features": [
+        "v046-dynamic-category-merge"
+      ],
+      "referenceOnly": false,
+      "partialReuse": false,
+      "usedScope": "Whole v0.4.6 original selected-author request policy test, emitted next to the author search test"
     }
   ],
   "buildStandaloneInputs": [

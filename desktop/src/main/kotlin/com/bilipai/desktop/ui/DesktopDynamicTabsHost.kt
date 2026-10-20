@@ -38,7 +38,6 @@ import kotlinx.coroutines.sync.withLock
     val preferences=users.preferences
     val visible by preferences.visibleTabs.collectAsState(preferences.initialVisibleTabs)
     val order by preferences.tabOrder.collectAsState(preferences.initialTabOrder)
-    val showAllUsers by preferences.allTabUsers.collectAsState(preferences.initialAllTabUsers)
     val pinned by preferences.pinned.collectAsState(preferences.initialPinned)
     val hidden by preferences.hidden.collectAsState(preferences.initialHidden)
     var settingError by remember(users){mutableStateOf<Throwable?>(null)}
@@ -53,7 +52,9 @@ import kotlinx.coroutines.sync.withLock
             .initialize(timelinePreferences.incrementalRefresh.first())
     }}
     val selectedType=resolveDynamicFeedRequestType(users.selectedLogicalTab)
-    val activeTimeline=if(users.selectedLogicalTab==4)null else timeline(selectedType)
+    val activeTimeline=timeline(selectedType)
+    // v0.4.6: an author selection filters All, Video and Article; pgc always shows its public timeline.
+    val selectedAuthorFeed=shouldUseSelectedUserDynamicFeed(users.selectedLogicalTab,users.selectedUid)
     val cardSession=LocalDesktopDynamicCardSession.current
     val contentRevision by (cardSession?.contentRevision ?: remember { kotlinx.coroutines.flow.MutableStateFlow(0L) }).collectAsState()
     LaunchedEffect(users,selectedType,users.selectedUid,contentRevision,active) {
@@ -79,24 +80,23 @@ import kotlinx.coroutines.sync.withLock
             }
             trailing()
         }
-        if(shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab,
-                users.selectedLogicalTab==0&&showAllUsers)) {
+        if(shouldShowDynamicHorizontalUserList(true,users.selectedLogicalTab)) {
             HorizontalUserList(users.panelUsers(),users.selectedUid,selfUid=users.selfUid,listState=listState,
                 showHiddenUsers=users.showHidden,hiddenCount=users.hiddenCount,uplistUpdateMids=users.unread,
-                onUserClick={users.selectUser(it,onOpenUser)},onToggleShowHidden=users::toggleShowHidden,
+                onUserClick=users::selectUser,onToggleShowHidden=users::toggleShowHidden,
                 onTogglePin={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,it)}},
                 onToggleHidden={write{preferences.toggleUserPreference(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,it)}})
         }
         settingError?.let{CommunityFailure(it,onLogin){settingError=null}}
         users.followingsError?.let{CommunityFailure(it,onLogin){scope.launch{users.hydrateUsers()}}}
         Box(Modifier.weight(1f)) {
-            if(activeTimeline!=null) {
+            if(selectedAuthorFeed) {
+                DesktopDynamicSelectedUserFeed(users,activeTimeline,timelinePreferences,onOpenUser,onLogin,transform,active,row)
+            } else {
                 val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
                 DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
                     oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,row=row)
-            } else if(users.selectedUid!=null) {
-                DesktopDynamicSelectedUserFeed(users,timelinePreferences,onOpenUser,onLogin,transform,active,row)
-            } else AppText("选择关注用户查看动态",Modifier.padding(20.dp),color=MaterialTheme.colorScheme.onSurfaceVariant)
+            }
         }
     }
     if(showAuthorSearch&&active&&users.isCurrentOwner())key(users){
@@ -109,12 +109,13 @@ import kotlinx.coroutines.sync.withLock
 }
 
 @Composable private fun DesktopDynamicSelectedUserFeed(
-    state:DesktopDynamicUsersState,preferences:DesktopDynamicTimelinePreferences,
+    state:DesktopDynamicUsersState,categoryTimeline:DesktopDynamicTimelineState,preferences:DesktopDynamicTimelinePreferences,
     onOpenUser:(Long)->Unit,onLogin:()->Unit,transform:(List<DynamicItem>)->List<DynamicItem>,active:Boolean,row:@Composable (DynamicItem)->Unit,
 ) {
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
-    val rows=transform(state.visibleItems())
-    val grid=remember(state.selectedUid){LazyStaggeredGridState()}
+    // The local rows are the current category's own timeline; the remote rows are the author's space feed.
+    val rows=transform(state.visibleItems(categoryTimeline.page.items))
+    val grid=remember(state.selectedUid,state.selectedLogicalTab){LazyStaggeredGridState()}
     val rootScroll = LocalDesktopRootDynamicScroll.current
     LaunchedEffect(rootScroll, state, state.selectedUid, active) {
         if(!active)return@LaunchedEffect
@@ -122,8 +123,8 @@ import kotlinx.coroutines.sync.withLock
             applyDesktopRootDynamicScroll(request, grid) { state.refreshUser() }
         }
     }
-    val allowAutomaticLoadMore=shouldAutoLoadMoreForUserContentFilter(
-        isSelectedUserFeed=true,filter=state.filter,visibleItemCount=rows.size)
+    // The category filters the author's rows; a page without a match keeps paging through the original chain.
+    val allowAutomaticLoadMore=true
     val shouldLoadMore by remember(grid,state.userLoading,state.hasUserMore,allowAutomaticLoadMore) {
         derivedStateOf {
             val layoutInfo=grid.layoutInfo
@@ -133,10 +134,13 @@ import kotlinx.coroutines.sync.withLock
                 isLoading=state.userLoading,hasMore=state.hasUserMore,error=state.userError?.let{it.message.orEmpty()})
         }
     }
-    LaunchedEffect(shouldLoadMore,state.selectedUid,state.filter,active){if(active&&shouldLoadMore)state.loadMoreUser()}
+    LaunchedEffect(shouldLoadMore,state.selectedUid,state.selectedLogicalTab,active){if(active&&shouldLoadMore)state.loadMoreUser()}
+    // A page without a row of this category is normal: the slot says "loading" while more pages exist (v0.4.6 DynamicScreen).
+    val emptyState=resolveDesktopDynamicAuthorEmptyState(loading=state.userLoading,failed=state.userError!=null,
+        hasMore=state.hasUserMore,hasDisplayedItems=rows.isNotEmpty())
     Column(Modifier.fillMaxSize()) {
         DynamicSelectedUserFeedHeader(state.panelUsers().firstOrNull{it.uid==state.selectedUid}?.name.orEmpty(),
-            state.filter,{state.filter=it},{state.selectedUid?.let(onOpenUser)})
+            state.selectedLogicalTab,{state.selectedUid?.let(onOpenUser)})
         AppTextButton(enabled=!state.userLoading,onClick=state::refreshUser){AppText("刷新")}
         FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
             else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=grid,
@@ -144,9 +148,15 @@ import kotlinx.coroutines.sync.withLock
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),verticalItemSpacing=resolveDynamicTimelineVerticalSpacing()) {
             rows.forEach {item->item(key="dynamic_${dynamicFeedItemKey(item)}"){row(item)}}
             state.userError?.let{error->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(error,onLogin,state::retryUser)}}
-            if(state.userLoading)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
-            if(!state.userLoading&&rows.isEmpty()&&state.userError==null)item(span=StaggeredGridItemSpan.FullLine){AppText("暂无内容")}
-            if(!state.userLoading&&state.hasUserMore&&state.userError==null)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
+            if(state.userLoading||emptyState==DesktopDynamicEmptyState.LOADING)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
+            if(emptyState==DesktopDynamicEmptyState.LOADING)item(span=StaggeredGridItemSpan.FullLine){
+                AppText("正在加载该 UP 的动态",color=MaterialTheme.colorScheme.onSurfaceVariant)}
+            if(emptyState==DesktopDynamicEmptyState.EMPTY)item(span=StaggeredGridItemSpan.FullLine){
+                Column{
+                    AppText("该 UP 暂无动态")
+                    AppText("仅显示当前分类的内容",color=MaterialTheme.colorScheme.onSurfaceVariant)
+                }}
+            if(!state.userLoading&&state.hasUserMore&&state.userError==null&&emptyState!=DesktopDynamicEmptyState.LOADING)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(text="加载更多",onClick=state::loadMoreUser)}
         }
     }
 }

@@ -195,7 +195,7 @@ class DesktopDynamicAccountStorageTest {
         val f=DynamicAccountFixture()
         try {
             val global=DesktopDynamicTabsPreferences(f.context)
-            global.setAllTabUsers(true);assertTrue(global.allTabUsers.first())
+            global.setVisibleTabs(setOf("pgc"));assertEquals(setOf("pgc"),global.visibleTabs.first())
             assertFailsWith<IllegalStateException>{global.selectedTab}
             assertFailsWith<IllegalStateException>{global.setSelectedTab(1)}
             assertTrue(f.store.preferences("dynamic_user_prefs").isEmpty())

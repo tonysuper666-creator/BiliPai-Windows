@@ -297,6 +297,8 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/MessageResponse.kt"))
         // The existing article-detail producer owns the complete v0.4.6 article content parser (public-note arrays).
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt"))
+        // The existing dynamic settings producer owns the whole v0.4.6 tab policy (UP tab merged into All).
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
@@ -894,6 +896,8 @@ val extractUpstreamDynamicSettings by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-settings.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
+    inputs.files("tools/v046_dynamic_category_merge.py", "tools/v044_favorite_detail.py", "tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v046-dynamic-category-merge")
     inputs.files(sources.filter { "settings-home-dynamic-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-settings"))
@@ -1451,6 +1455,8 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
     inputs.file("tools/v029_reply_renderer.py")
     inputs.file("tools/v032_comment_media.py")
     inputs.file("tools/v034_dynamic_reaction_ui.py")
+    inputs.files("tools/v046_dynamic_category_merge.py", "tools/v044_favorite_detail.py", "tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v046-dynamic-category-merge")
     inputs.files("third-party/dynamic-reaction-v034/DynamicCommentSheet.kt", "third-party/dynamic-reaction-v034/DynamicReactionSheet.kt")
     inputs.dir("upstream-slices/v032-comment-media")
     inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/util/FormatUtils.kt"))
@@ -1984,6 +1990,10 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
         "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.file("tools/v042_search_dependencies.py")
     inputs.dir("upstream-slices/v042-search-dependencies")
+    inputs.files("tools/v046_dynamic_category_merge.py", "tools/v044_favorite_detail.py", "tools/v044_favorite_subscription.py")
+    inputs.dir("upstream-slices/v046-dynamic-category-merge")
+    // The v0.4.6 SettingsManager of the same commit is read from the comment-list archive by pinned hash.
+    inputs.file("upstream-slices/v046-comment-list/SettingsManager.kt")
     inputs.files(sources.filter { "settings-dynamic-tabs-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-tabs"))

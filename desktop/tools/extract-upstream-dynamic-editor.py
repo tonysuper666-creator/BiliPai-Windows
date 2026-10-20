@@ -8,6 +8,7 @@ from v029_comment_time import apply as apply_original_comment_time
 from v029_reply_renderer import rich_link_policy as advance_reply_link_policy
 from v032_comment_media import emit_shared as emit_comment_media, adapt as adapt_comment_media
 from v034_dynamic_reaction_ui import source as reaction_ui_source, sheet_body as reaction_sheet_body, BASE as REACTION_UI_BASE, PINS as REACTION_UI_PINS, COMMIT as REACTION_UI_COMMIT
+from v046_dynamic_category_merge import reaction_sheet_source as reaction_sheet_v046_source, reaction_sheet_identity as reaction_sheet_v046_identity, validate_outputs as validate_category_merge_outputs
 from pathlib import Path
 import hashlib, importlib.util, json, sys
 sys.dont_write_bytecode = True
@@ -36,6 +37,7 @@ def inventory(repo):
     return [dict(path=p, mode='direct' if p in DIRECT else 'policy-extract' if p in selected else 'reference-only', features=['dynamic-editor-detail-parity'], sha256=hashlib.sha256(source_texts[p].encode()).hexdigest()) for p in unique]
 
 def generate(repo, output, standalone=False):
+    validate_category_merge_outputs(repo, output)
     source_texts, source_identities = pinned(repo)
     host = load(repo, 'editor_host', 'desktop/tools/extract-upstream-plugins.py')
     media = host.media_extractor(repo); parser = media.parser_for(repo)
@@ -89,9 +91,13 @@ import com.android.purebilibili.feature.dynamic.resolveDynamicCommentCountLabel
 import com.android.purebilibili.feature.video.viewmodel.CommentSortMode
 import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
 '''+body,'DesktopOriginalDynamicInlineCommentHeader.kt',original=s)
-    p=REACTION_UI_BASE+'DynamicReactionSheet.kt';s=reaction_ui_source(repo,'DynamicReactionSheet.kt')
+    # The reaction user list is the whole v0.4.6 sheet (theme colour roles); the comment sheet stays at beta2.
+    p=COMP+'DynamicReactionSheet.kt';s=reaction_sheet_v046_source(repo)
     emit(p,reaction_sheet_body(s),'DesktopOriginalDynamicReactionSheet.kt',original=s)
     for name, (digest, blob) in REACTION_UI_PINS.items():
+        if name == 'DynamicReactionSheet.kt':
+            source_identities.append(reaction_sheet_v046_identity(repo))
+            continue
         source_identities.append(dict(path=REACTION_UI_BASE+name, requestedPath=COMP+name,
             pinnedCommit=REACTION_UI_COMMIT, pinnedTag='v0.3.4-beta.2', pinnedGitBlob=blob,
             currentGitBlob=blob, sha256LfUtf8=digest, matchesPinnedCommit=True))

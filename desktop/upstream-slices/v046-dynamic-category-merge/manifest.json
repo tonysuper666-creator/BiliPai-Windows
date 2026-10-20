@@ -1,0 +1,100 @@
+{
+  "repository": "jay3-yy/BiliPai",
+  "tag": "v0.4.6",
+  "commit": "d6bf8b1655ae910999860bf13e65c8fcea5b345b",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt",
+      "filename": "DynamicTabPolicy.kt",
+      "bytes": 3645,
+      "sha256": "1b9c7d101c28e3edfc4302b2b3adcff7b5fc0cf59d0145a6f236249611631656",
+      "gitBlob": "2151dc40e374c73d227c04d97750418f0de9f2d9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "filename": "DynamicScreenStatePolicy.kt",
+      "bytes": 26552,
+      "sha256": "1ae96f94ef06fa3a1c1277701cf34de689c7aeb547800308b633f2e99e592c39",
+      "gitBlob": "16d338a42536f6d1ee47e370b137de1ea349062f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
+      "filename": "DynamicUserRequestPolicy.kt",
+      "bytes": 2159,
+      "sha256": "186db5818b60afbc8adb4f0490eac9d9f1a30ae46c5095925cee2d6133d4a9d8",
+      "gitBlob": "df9d4703b61fc4e871d13fa4b86055f1f1d3321a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+      "filename": "DynamicScreen.kt",
+      "bytes": 102837,
+      "sha256": "e7572dc078fe8a021690cbb29286e1e548cf358a0d9fc84ee2cbc412c024c26e",
+      "gitBlob": "c42f57dbb8fd8bb5b684b4c89b0b302a1207b926"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicReactionSheet.kt",
+      "filename": "DynamicReactionSheet.kt",
+      "bytes": 5395,
+      "sha256": "d43da90f37e360f6534c811e721d5fc21a4293565d711faff45caeb3d45e7afe",
+      "gitBlob": "dddc31efb210e951e3e450b730deb29c93b1bfd5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "filename": "SettingsSections.kt",
+      "bytes": 109630,
+      "sha256": "6578b664cbec7cba053e1a32cf6599eef811428f964582c41b2d1ec55269f400",
+      "gitBlob": "a5d3c19c0240911ca19bcacdcc6e8879df7dbe00"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicyTest.kt",
+      "filename": "DynamicTabPolicyTest.kt",
+      "bytes": 3290,
+      "sha256": "043041da70da12fec5138828f4c5467a9ceb6188ecc8d7ef82330941997d96ce",
+      "gitBlob": "bfbdc48920f8a227576785cd14c643965cbb37ad"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicyTest.kt",
+      "filename": "DynamicUserRequestPolicyTest.kt",
+      "bytes": 4826,
+      "sha256": "3dd08554b283ef153f7aeee23e35ccd6ca46c82ddb099f140a70e346d8ff6f06",
+      "gitBlob": "34fc8180f6a601c37805d4696000f05741520f35"
+    }
+  ],
+  "license": {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "schemaVersion": 1,
+  "selection": "Whole v0.4.6 DynamicTabPolicy, DynamicScreenStatePolicy and DynamicUserRequestPolicy; the v0.4.6 HorizontalUserList, DynamicSelectedUserFeedHeader and FeedDynamicTabVisibilityItem declarations; the whole v0.4.6 DynamicReactionSheet; the two original policy tests. SettingsManager.kt of the same commit is read from the v046-comment-list archive by pinned hash.",
+  "purpose": "Dynamic category merge (the UP tab folds into All, the strip gains an All dynamics entry, an author selection filters the current category) with the dynamic tab settings migration and the reaction user list colour roles.",
+  "externalInputs": {
+    "SettingsManager.kt": {
+      "archive": "desktop/upstream-slices/v046-comment-list",
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "ab7ceccdb70212f9fbf8b35f723b47cf1f2715e66c5b6f53b0b0c9e0b7ac837c",
+      "gitBlob": "5f89ecaa3f945d131f62174d525e717feb0b91bc"
+    }
+  },
+  "beforeFinalOutputs": {
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt": {
+      "sha256": "727beb11ad857e3745383e8fb90a2df4712f701f141d1d49a1c13e919294cef0"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt": {
+      "sha256": "cf08da0f4a2332cea17de66dbc772c9a0789295fe9af1ab57092bbefaa6fc597"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt": {
+      "sha256": "46e70da832bf1a6b1a0a9388606386fba02b47311051055cd02ca880c1e32371"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt": {
+      "sha256": "5a2a9773123be8af865b30a199dcc049f711da957b33a2e73a8e76e9372ed587"
+    },
+    "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt": {
+      "sha256": "e306f73ee7cf49877248eb01063816d50f43f61b47c9d41a52ab372917de54f7"
+    },
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt": {
+      "sha256": "5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c"
+    }
+  },
+  "fullStableParityQualified": false
+}

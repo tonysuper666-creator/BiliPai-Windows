@@ -28,7 +28,8 @@ internal class DesktopDynamicUsersState(
 ) : DesktopDynamicCardItemsOwner {
     private var configuredVisibleTabs = preferences.initialVisibleTabs
     private var configuredTabOrder = preferences.initialTabOrder
-    private var authorSearchTabEnabled = false
+    /** An author selection reveals the merged All feed for this page session only, never in settings. */
+    private var authorFeedTabEnabled = false
     var selectedLogicalTab by mutableIntStateOf(resolveDynamicSelectedTabWithinVisibleTabs(preferences.selectedTab,
         resolveDynamicVisibleTabs(configuredVisibleTabs,configuredTabOrder)));private set
     var selectedUid by mutableStateOf<Long?>(null);private set
@@ -40,7 +41,6 @@ internal class DesktopDynamicUsersState(
     var followingsError by mutableStateOf<Throwable?>(null);private set
     var unread by mutableStateOf<Set<Long>>(emptySet());private set
     var showHidden by mutableStateOf(false);private set
-    var filter by mutableStateOf(DynamicUserContentFilter.ALL)
     var visibleTabs by mutableStateOf(resolveDynamicVisibleTabs(preferences.initialVisibleTabs,preferences.initialTabOrder));private set
     private var followings:List<FollowingUser> = emptyList()
     private var live:List<LiveRoom> = emptyList()
@@ -98,23 +98,26 @@ internal class DesktopDynamicUsersState(
             currentCoroutineContext().ensureActive()
             if(owned())loadAllFollowings(force=false,pageLimit=plan.initialFollowingsPageLimit)
         }
-        if(selectedLogicalTab==4)requestCompleteFollowingsLoad()
+        // The strip is on every category except the official-only pgc feed, so those tabs need the full list.
+        if(shouldShowDynamicUpPanel(selectedLogicalTab))requestCompleteFollowingsLoad()
     }
+    private fun resolveConfiguredTabs()=resolveDynamicVisibleTabs(
+        if(authorFeedTabEnabled)configuredVisibleTabs+"all"else configuredVisibleTabs,configuredTabOrder)
     suspend fun applyTabs(visible:Set<String>,order:List<String>) {
         if(!owned())return
         configuredVisibleTabs=visible;configuredTabOrder=order
-        visibleTabs=resolveDynamicVisibleTabs(if(authorSearchTabEnabled)visible+"up"else visible,order)
+        visibleTabs=resolveConfiguredTabs()
         val next=resolveDynamicSelectedTabWithinVisibleTabs(selectedLogicalTab,visibleTabs)
         if(next!=selectedLogicalTab)selectTab(next)
         else if(preferences.selectedTab!=next)preferences.setSelectedTab(next)
     }
+    /** Category tabs keep the selected author (the filter), only pgc stops applying it. */
     suspend fun selectTab(logical:Int) {
         if(!owned())return
         val next=resolveDynamicSelectedTabWithinVisibleTabs(logical,visibleTabs)
-        if(next!=4)clearSelection()
         selectedLogicalTab=next
         preferences.setSelectedTab(next)
-        if(next==4)requestCompleteFollowingsLoad()
+        if(shouldShowDynamicUpPanel(next))requestCompleteFollowingsLoad()
     }
     suspend fun hydrateUsers()=coroutineScope {
         if(!owned())return@coroutineScope
@@ -147,7 +150,7 @@ internal class DesktopDynamicUsersState(
             items=dynamics.toImmutableList(),userItems=userItems.toImmutableList()),authorMid)
         dynamics=reduced.items
         userItems=reduced.userItems
-        if(selectedUid==authorMid)selectUser(null)
+        if(selectedUid==authorMid)clearSelection()
         users=resolveFollowedUsersAfterAuthorUnfollow(users,authorMid)
         rebuild()
     }
@@ -204,19 +207,20 @@ internal class DesktopDynamicUsersState(
         requestCompleteFollowingsLoad()
     }
     fun isCurrentOwner():Boolean=owned()
-    /** The original search selection reveals UP only for this page session, never settings. */
+    /** The search result is an author selection like a strip click; pgc has no author feed, so it moves to All. */
     suspend fun selectAuthorSearchResult(uid:Long) {
         if(uid<=0L)return
         val caller=currentCoroutineContext()[Job]
         currentCoroutineContext().ensureActive()
-        if(!publish(caller){
-            authorSearchTabEnabled=true
-            visibleTabs=resolveDynamicVisibleTabs(configuredVisibleTabs+"up",configuredTabOrder)
-            filter=DynamicUserContentFilter.ALL
-        })return
-        selectTab(4)
+        if(!publish(caller){revealAuthorFeedTabIfNeeded()})return
         currentCoroutineContext().ensureActive()
         if(owned())selectUser(uid)
+    }
+    private fun authorTargetTab()=if(shouldShowDynamicUpPanel(selectedLogicalTab))selectedLogicalTab else 0
+    private fun revealAuthorFeedTabIfNeeded() {
+        if(authorTargetTab()!=0||authorFeedTabEnabled)return
+        authorFeedTabEnabled=true
+        visibleTabs=resolveConfiguredTabs()
     }
     private fun requestCompleteFollowingsLoad(){
         if(!owned()||followingsFullyLoaded)return
@@ -229,20 +233,26 @@ internal class DesktopDynamicUsersState(
     fun toggleShowHidden(){if(owned()){showHidden=!showHidden;rebuild()}}
     private fun rebuild(){users=applyUserPreferences(resolveMergedFollowedUsers(extractUsersFromFollowings(followings),extractUsersFromLive(live),extractUsersFromDynamicItems(dynamics)),pinned,hidden,showHidden)}
     fun panelUsers()=resolveDynamicUpPanelUsers(users,selfUid,selfFace)
-    fun visibleItems():List<DynamicItem> = filterSelectedUserDynamicItems(resolveSelectedUserVisibleItems(dynamics,userItems,selectedUid)
-        .filter{it.visible}.distinctBy{it.id_str},filter)
-    fun selectUser(uid:Long?,onOpenUser:(Long)->Unit={}) {
+    /** The selected author's rows of the current category; `timelineItems` are that category's own timeline rows. */
+    fun visibleItems(timelineItems:List<DynamicItem> = dynamics):List<DynamicItem> = filterSelectedUserDynamicItems(
+        resolveSelectedUserVisibleItems(timelineItems,userItems,selectedUid).filter{it.visible}.distinctBy{it.id_str},selectedLogicalTab)
+    /** Strip click or search result: filter the current category by the author (null or the All entry clears). */
+    fun selectUser(uid:Long?) {
         if(!owned())return
-        if(!isDynamicUserTabVisible(visibleTabs)){uid?.takeIf{it>0}?.let(onOpenUser);return}
+        val target=authorTargetTab()
+        revealAuthorFeedTabIfNeeded()
+        if(shouldShowDynamicUpPanel(target))requestCompleteFollowingsLoad()
+        if(target!=selectedLogicalTab){
+            selectedLogicalTab=target
+            launchOwned{preferences.setSelectedTab(target)}
+        }
         val previous=selectedUid
         val next=resolveDynamicSelectedUserIdAfterClick(previous,uid)
-        val tab=resolveDynamicTabAfterUserSelection(previous,uid,selectedLogicalTab)
-        selectedUid=next;selectedLogicalTab=tab
-        launchOwned{preferences.setSelectedTab(tab);if(tab==4)requestCompleteFollowingsLoad()}
+        selectedUid=next
         if(next==null){clearSelection();return}
         unread=unread-next
         if(!shouldReloadSelectedUserDynamics(previous,next,userItems,userError?.message))return
-        if(previous!=next){userItems=emptyList();hasUserMore=true;filter=DynamicUserContentFilter.ALL}
+        if(previous!=next){userItems=emptyList();hasUserMore=true}
         userJob?.cancel();val token=++requestToken;userLoading=true;userError=null
         userJob=launchOwned {
             try{delay(120);loadUser(true,next,token)}

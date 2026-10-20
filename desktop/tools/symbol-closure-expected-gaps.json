@@ -32,18 +32,6 @@
       ]
     },
     {
-      "reason": "DynamicReactionSheet is called by carried comment archives; the pinned tree has no definer.",
-      "closedBy": "dyn-category-merge-and-detail-return",
-      "closedByEvidence": "roadmap",
-      "gaps": [
-        {
-          "scope": "carried",
-          "check": "unresolved-qualified",
-          "symbol": "com.android.purebilibili.feature.dynamic.components.DynamicReactionSheet"
-        }
-      ]
-    },
-    {
       "reason": "Instant-article symbols called by the carried favorite-search archive.",
       "closedBy": "rss-reader-page-repin",
       "closedByEvidence": "roadmap",
@@ -302,6 +290,23 @@
           "scope": "carried",
           "check": "unresolved-qualified",
           "symbol": "com.android.purebilibili.core.plugin.feed.PublicContentImageLoader"
+        }
+      ]
+    },
+    {
+      "reason": "Verbatim v0.4.6 leaves of the v046-dynamic-category-merge archive import symbols that their producers replace on purpose: DynamicReactionApi is swapped for the Windows DesktopDynamicReactionListState by the editor producer (the beta2 API file stays a third-party generated type), and DynamicSelfAvatar is swapped for the Windows DesktopDynamicSelfAvatar by the pinned strip binding of v046_dynamic_category_merge.py (the upstream composable needs a PageAwareAsyncImage error callback and the Android sidebar file). Neither is a missing definer.",
+      "closedBy": "none (producer adaptation)",
+      "closedByEvidence": "unassigned",
+      "gaps": [
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.core.network.grpc.DynamicReactionApi"
+        },
+        {
+          "scope": "carried",
+          "check": "unresolved-import",
+          "symbol": "com.android.purebilibili.feature.dynamic.components.DynamicSelfAvatar"
         }
       ]
     }

@@ -18,14 +18,14 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
     private fun requireAccount()=checkNotNull(account){"Dynamic user preferences require the actual current Root cache session"}
     val visibleTabs=DesktopDynamicTabsSettings.getDynamicTabVisibleTabs(context)
     val tabOrder=DesktopDynamicTabsSettings.getDynamicTabOrder(context)
-    val allTabUsers=DesktopDynamicTabsSettings.getDynamicAllTabHorizontalUserListVisible(context)
     // These are synchronous maps of the already loaded StateFlow, with no disk/network wait.
     val initialVisibleTabs:Set<String> get()=runBlocking{visibleTabs.first()}
     val initialTabOrder:List<String> get()=runBlocking{tabOrder.first()}
     val users get()=requireAccount().userPreferences(context.store)
-    val selectedTab:Int get()=resolveDynamicSelectedTab(users.value[selectedKey],5)
+    // The v0.4.6 tab count: a saved "up" index (4) from an older session resolves to the All tab.
+    val selectedTab:Int get()=resolveDynamicSelectedTab(users.value[selectedKey],allDynamicTabSpecs.size)
     private val selectedKey=dynamicIntPreferencesKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB)
-    val selectedTabFlow by lazy {users.map{resolveDynamicSelectedTab(it[selectedKey],5)}}
+    val selectedTabFlow by lazy {users.map{resolveDynamicSelectedTab(it[selectedKey],allDynamicTabSpecs.size)}}
     private fun setKey(name:String)=DesktopPreferenceKey(name){value:JsonElement->
         require(value is JsonArray){"动态用户设置格式无效"}
         val array=value
@@ -35,7 +35,6 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
     val hidden by lazy {users.map{it[setKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS)].orEmpty()}}
     val initialPinned:Set<Long> get()=runBlocking{pinned.first()}
     val initialHidden:Set<Long> get()=runBlocking{hidden.first()}
-    val initialAllTabUsers:Boolean get()=runBlocking{allTabUsers.first()}
     private suspend fun writeUser(edit:(DesktopPreferenceSnapshot)->Map<String,JsonElement?>) {
         val session=requireAccount()
         val caller=currentCoroutineContext()[Job] ?: error("Dynamic preference write requires a caller Job")
@@ -43,11 +42,10 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
         withContext(Dispatchers.IO) { session.updateUserPreferences(context.store,caller,edit) }
     }
     suspend fun setSelectedTab(value:Int)=writeUser {
-        mapOf(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB to JsonPrimitive(resolveDynamicSelectedTab(value,5)))
+        mapOf(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB to JsonPrimitive(resolveDynamicSelectedTab(value,allDynamicTabSpecs.size)))
     }
     suspend fun setVisibleTabs(value:Set<String>)=DesktopDynamicTabsSettings.setDynamicTabVisibleTabs(context,value)
     suspend fun setOrder(value:List<String>)=DesktopDynamicTabsSettings.setDynamicTabOrder(context,value)
-    suspend fun setAllTabUsers(value:Boolean)=DesktopDynamicTabsSettings.setDynamicAllTabHorizontalUserListVisible(context,value)
     suspend fun toggleVisibility(id:String)=setVisibleTabs(resolveDynamicVisibleTabIdsAfterToggle(visibleTabs.first(),id))
     // StringSet has no Android platform representation on Windows. A JSON array preserves
     // the original set of decimal MID strings in the same original namespace and key.
@@ -68,9 +66,7 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, i
 @Composable internal fun DesktopDynamicTabsSettings(preferences:DesktopDynamicTabsPreferences,onFailure:(Throwable)->Unit) {
     val visible by preferences.visibleTabs.collectAsState(preferences.initialVisibleTabs)
     val order by preferences.tabOrder.collectAsState(preferences.initialTabOrder)
-    val users by preferences.allTabUsers.collectAsState(preferences.initialAllTabUsers)
     val scope=rememberCoroutineScope();val writer=remember(preferences){Mutex()};val failure by rememberUpdatedState(onFailure)
     fun write(block:suspend()->Unit){scope.launch{try{writer.withLock{block()}}catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){failure(error)}}}
-    DesktopDynamicTabsSettingsFields(users,{write{preferences.setAllTabUsers(it)}},visible,
-        {write{preferences.toggleVisibility(it)}},order,{write{preferences.setOrder(it)}})
+    DesktopDynamicTabsSettingsFields(visible,{write{preferences.toggleVisibility(it)}},order,{write{preferences.setOrder(it)}})
 }

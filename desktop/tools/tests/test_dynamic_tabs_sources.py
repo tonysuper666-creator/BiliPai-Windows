@@ -6,6 +6,8 @@ HERE=Path(__file__).resolve();REPO=next(p for p in HERE.parents
 if len(sys.argv)>1 and (Path(sys.argv[1])/'desktop/tools/extract-upstream-dynamic-tabs.py').is_file() and (Path(sys.argv[1])/'desktop/upstream-sources.json').is_file():REPO=Path(sys.argv.pop(1)).resolve()
 TOOL=HERE.parents[1]/'extract-upstream-dynamic-tabs.py'
 s=importlib.util.spec_from_file_location('tabs_source_test',TOOL);g=importlib.util.module_from_spec(s);s.loader.exec_module(g)
+sys.path.insert(0,str(HERE.parents[1]))
+import v046_dynamic_category_merge as merge
 class DynamicTabsSourcesTest(unittest.TestCase):
  def setUp(self):
   self.temporary=tempfile.TemporaryDirectory(prefix='bpd-tab-source-');self.output=Path(self.temporary.name)
@@ -48,10 +50,12 @@ class DynamicTabsSourcesTest(unittest.TestCase):
   actual=self.generated('DesktopOriginalDynamicUserStatePolicy.kt')
   self.assertEqual(self.media.function(original,'shouldLoadMoreDynamicFeed',self.parser),self.media.function(actual,'shouldLoadMoreDynamicFeed',self.parser))
  def test_settings_getters_setters_and_original_controls_are_preserved(self):
-  original=g.read(REPO,g.BASE+'core/store/SettingsManager.kt');actual=self.generated('DesktopDynamicTabsSettings.kt')
-  for name in ['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder','getDynamicAllTabHorizontalUserListVisible','setDynamicAllTabHorizontalUserListVisible']:
+  # v0.4.6 (dynamic category merge): the strip key and its two accessors are gone, the two tab getters fold "up" into "all".
+  original=merge.settings_manager_source(REPO);actual=self.generated('DesktopDynamicTabsSettings.kt')
+  for name in ['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder']:
    self.assertEqual(self.media.function(original,name,self.parser),self.media.function(actual,name,self.parser))
-  source=g.read(REPO,g.BASE+'feature/settings/ui/SettingsSections.kt')
+  for name in ['getDynamicAllTabHorizontalUserListVisible','setDynamicAllTabHorizontalUserListVisible']:self.assertNotIn(name,actual)
+  source=merge.fixed(REPO)[0]['SettingsSections.kt']
   self.assertEqual(self.media.function(source,'FeedDynamicTabVisibilityItem',self.parser),
    self.media.function(self.generated('DesktopOriginalDynamicTabsFields.kt'),'FeedDynamicTabVisibilityItem',self.parser))
  def test_native_component_body_is_original_with_only_platform_and_shared_declaration_binding(self):
@@ -72,6 +76,7 @@ class DynamicTabsSourcesTest(unittest.TestCase):
   self.assertEqual(expected,self.media.function(actual,'getUserDynamicFeed',self.parser))
   self.assertEqual(self.media.function(source,'buildSelectedUserDynamicFeedParams',self.parser),self.media.function(actual,'buildSelectedUserDynamicFeedParams',self.parser))
   body=self.generated('DesktopOriginalDynamicUserControls.kt')
-  original=g.read(REPO,g.BASE+'feature/dynamic/DynamicScreen.kt')
-  self.assertEqual(self.media.function(original,'HorizontalUserList',self.parser).replace('private fun','internal fun',1),self.media.function(body,'HorizontalUserList',self.parser))
+  # v0.4.6 strip: the whole original declaration plus its one pinned Windows self avatar binding.
+  original=merge.fixed(REPO)[0]['DynamicScreen.kt']
+  self.assertEqual(self.media.function(original,'HorizontalUserList',self.parser).replace('private fun','internal fun',1).replace(merge.SELF_AVATAR_BEFORE,merge.SELF_AVATAR_AFTER,1),self.media.function(body,'HorizontalUserList',self.parser))
 if __name__=='__main__':unittest.main()

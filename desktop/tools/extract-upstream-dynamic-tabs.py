@@ -27,7 +27,7 @@ def read(repo,path):
  from v041_dynamic_author_search import MAIN_PATHS,main_sources
  if path in MAIN_PATHS:return main_sources(repo)[path]
  return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
-def read_selected(repo,path):
+def read_selected_before_category_merge(repo,path):
  from v037_shared_tabs_progress import selected_source
  source=selected_source(path,read(repo,path))
  from v042_search_dependencies import native_tabs_source
@@ -36,6 +36,10 @@ def read_selected(repo,path):
   from v040_dynamic_pagination import compose_policy
   source,_=compose_policy(repo,source)
  return source
+def read_selected(repo,path):
+ # Last layer: the v0.4.6 dynamic category merge (tab policy aside) over every predecessor above.
+ from v046_dynamic_category_merge import advance_selected
+ return advance_selected(repo,path,read_selected_before_category_merge(repo,path))
 def inventory(repo):
  from v041_dynamic_author_search import COMMIT
  rows=[dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p.endswith('DynamicUserLiveBadge.kt') else 'policy-extract',
@@ -46,6 +50,8 @@ def inventory(repo):
    row['features'].append('v041-dynamic-author-search')
  return rows
 def generate(repo,output,standalone=False):
+ from v046_dynamic_category_merge import validate_outputs as validate_category_merge_outputs
+ validate_category_merge_outputs(repo,output)
  host=module(repo,'tabs_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  a=module(repo,'tabs_decl','desktop/tools/extract-appearance-platform.py');home=module(repo,'tabs_ui','desktop/tools/extract-upstream-settings-home.py')
  output.mkdir(parents=True,exist_ok=True);files=[]
@@ -53,7 +59,8 @@ def generate(repo,output,standalone=False):
  def functions(source,names):return '\n\n'.join(a.declarations(parser,source,[n]).rstrip()
   if n=='normalizeDynamicNotInterestedIds' else media.function(source,n,parser) for n in names)
  path=BASE+'core/store/SettingsManager.kt';s=read_selected(repo,path)
- names=['KEY_DYNAMIC_TAB_VISIBLE_TABS','KEY_DYNAMIC_TAB_ORDER','KEY_DYNAMIC_ALL_TAB_HORIZONTAL_USER_LIST_VISIBLE','DEFAULT_DYNAMIC_TAB_VISIBLE','DEFAULT_DYNAMIC_TAB_ORDER']
+ # v0.4.6 retired the persisted "All page strip" key and its accessors; "up" folds into "all" in the two tab getters.
+ names=['KEY_DYNAMIC_TAB_VISIBLE_TABS','KEY_DYNAMIC_TAB_ORDER','DEFAULT_DYNAMIC_TAB_VISIBLE','DEFAULT_DYNAMIC_TAB_ORDER']
  lines=[]
  for name in names:
   matches=[line.strip() for line in s.splitlines() if (line.strip().startswith('private val '+name+' =') or line.strip().startswith('private const val '+name+' ='))]
@@ -63,17 +70,15 @@ def generate(repo,output,standalone=False):
   lines+=matches
  body='''package com.android.purebilibili.core.store
 import com.bilipai.desktop.plugins.DesktopPluginContext as Context
-import com.bilipai.desktop.plugins.booleanPreferencesKey
 import com.bilipai.desktop.plugins.stringPreferencesKey
 import com.bilipai.desktop.settings.dynamicSettingsDataStore as settingsDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 object DesktopDynamicTabsSettings {
-'''+textwrap.indent('\n'.join(lines)+'\n\n'+functions(s,['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder','getDynamicAllTabHorizontalUserListVisible','setDynamicAllTabHorizontalUserListVisible']),'    ')+'\n}\n'
+'''+textwrap.indent('\n'.join(lines)+'\n\n'+functions(s,['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder']),'    ')+'\n}\n'
  emit(path,body,'DesktopDynamicTabsSettings.kt')
  path=BASE+'feature/settings/ui/SettingsSections.kt';s=read_selected(repo,path);section=media.function(s,'FeedApiSection',parser)
- marker=section.index('title = "“全部”页显示关注用户栏"');begin=section.rfind('        SettingSwitchItem(',0,marker);end=section.index('        SettingsAdaptiveDivider()',marker)
- switch=home.call(section[begin:end],'SettingSwitchItem',parser)
+ # The "All page strip" switch left FeedApiSection in v0.4.6 (the strip is always on); only the tab item remains.
  marker=section.index('        FeedDynamicTabVisibilityItem(');end=section.index('        SettingsAdaptiveDivider()',marker)
  tabs=home.call(section[marker:end],'FeedDynamicTabVisibilityItem',parser)
  prelude='\n'.join(line for line in section.splitlines() if line.strip().startswith('val siblingTints =') or line.strip().startswith('val visibilityIcon ='))
@@ -95,12 +100,10 @@ import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppIconButton as IconButton
 import com.android.purebilibili.feature.dynamic.*
 @Composable internal fun DesktopDynamicTabsSettingsFields(
- dynamicAllTabHorizontalUserListVisible:Boolean,
- onDynamicAllTabHorizontalUserListVisibleChange:(Boolean)->Unit,
  dynamicVisibleTabIds:Set<String>,onDynamicTabVisibilityChange:(String)->Unit,
  dynamicTabOrder:List<String>,onDynamicTabOrderChange:(List<String>)->Unit,
 ) {
-'''+prelude+'\n SettingsCardGroup {\n'+switch+'\n SettingsAdaptiveDivider()\n'+tabs+'\n }\n}\n\n@Composable\n'+media.function(s,'FeedDynamicTabVisibilityItem',parser)+'\n'
+'''+prelude+'\n SettingsCardGroup {\n'+tabs+'\n }\n}\n\n@Composable\n'+media.function(s,'FeedDynamicTabVisibilityItem',parser)+'\n'
  emit(path,body,'DesktopOriginalDynamicTabsFields.kt')
  path=BASE+'feature/dynamic/DynamicViewModel.kt';s=read_selected(repo,path)
  mapped=functions(s,['extractUsersFromFollowings','extractUsersFromLive','applyUserPreferences'])
@@ -124,9 +127,13 @@ private const val DYNAMIC_FOLLOWINGS_PAGE_SIZE = 50
  from v040_dynamic_pagination import compose_policy
  _,pagination_proof=compose_policy(repo,read(repo,path))
  (output/'v040-original-dynamic-pagination-proof.json').write_text(json.dumps(pagination_proof,indent=2)+'\n',encoding='utf-8')
+ from v046_dynamic_category_merge import SELECTED_PATHS as category_merge_paths,receipt as category_merge_receipt
+ (output/'v046-dynamic-category-merge-proof.json').write_text(json.dumps(category_merge_receipt(repo,
+  {p:read_selected_before_category_merge(repo,p) for p in category_merge_paths}),indent=2,ensure_ascii=False)+'\n',encoding='utf-8',newline='\n')
+ # v0.4.6 merged the UP tab into All: the tab/author hand-offs are gone, the strip panel boundary is new.
  selected=['resolveDynamicUpPanelUsers','isDynamicUpPanelAllShortcut','isDynamicUpPanelShortcut','isDynamicUpPanelItemSelected',
- 'resolveDynamicSelectedUserIdAfterClick','shouldUseSelectedUserDynamicFeed','resolveDynamicSelectedUserForTab','resolveDynamicTabAfterUserSelection',
- 'resolveDynamicSelectedTab','resolveDynamicFeedRequestType','shouldShowDynamicHorizontalUserList','resolveHorizontalUserListVerticalPaddingDp',
+ 'resolveDynamicSelectedUserIdAfterClick','shouldUseSelectedUserDynamicFeed',
+ 'resolveDynamicSelectedTab','resolveDynamicFeedRequestType','shouldShowDynamicUpPanel','shouldShowDynamicHorizontalUserList','resolveHorizontalUserListVerticalPaddingDp',
  'extractUsersFromDynamicItems','resolveMergedFollowedUsers','isDynamicItemRealUser','shouldLoadMoreDynamicFeed','normalizeDynamicNotInterestedIds']
  emit(path,'''package com.android.purebilibili.feature.dynamic
 import com.android.purebilibili.data.model.response.*
@@ -134,10 +141,8 @@ import kotlin.math.max
 internal const val DYNAMIC_UP_PANEL_ALL_UID = -1L
 '''+functions(s,selected),'DesktopOriginalDynamicUserStatePolicy.kt')
  path=BASE+'feature/dynamic/DynamicUserRequestPolicy.kt';s=read_selected(repo,path)
- # The one presentation extension requires Android ViewModel state; callers reuse its item filter directly.
- extension=media.function(s,'withUserContentFilter',parser)
- body=s.replace(extension+'\n','')
- emit(path,body,'DesktopOriginalDynamicUserRequestPolicy.kt')
+ # Whole v0.4.6 file: the content filter enum and its presentation extension left it with the category merge.
+ emit(path,s,'DesktopOriginalDynamicUserRequestPolicy.kt')
  path=BASE+'feature/dynamic/DynamicInteractionPolicy.kt';s=read_selected(repo,path)
  emit(path,'package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.data.model.response.DynamicItem\n\n'+functions(s,
  ['shouldIncludeDynamicItemInVideoTab','shouldIncludeDynamicItemInPgcTab','shouldIncludeDynamicItemInArticleTab']),'DesktopOriginalDynamicUserItemFilter.kt')
@@ -232,8 +237,15 @@ def generate_tests(repo,output):
  host=module(repo,'author_search_test_host','desktop/tools/extract-upstream-plugins.py')
  return generate_author_search_tests(repo,output,host)
 
+def generate_category_merge_tests(repo,output):
+ """The two whole v0.4.6 policy tests of the dynamic category merge, next to the author-search test."""
+ from v046_dynamic_category_merge import validate_outputs,original_tests
+ validate_outputs(repo,output)
+ host=module(repo,'category_merge_test_host','desktop/tools/extract-upstream-plugins.py')
+ return [host.write(output,path,body,body) for path,body in original_tests(repo).items()]
+
 if __name__=='__main__':
  c=argparse.ArgumentParser(description=__doc__);c.add_argument('--repo',type=Path,required=True);c.add_argument('--output',type=Path);c.add_argument('--inventory',action='store_true');c.add_argument('--standalone',action='store_true');c.add_argument('--tests-output',type=Path);a=c.parse_args()
  if a.inventory:print(json.dumps(inventory(a.repo.resolve()),indent=2))
  if a.output:print('Generated',len(generate(a.repo.resolve(),a.output.resolve(),standalone=a.standalone)))
- if a.tests_output:print('Generated tests',len(generate_tests(a.repo.resolve(),a.tests_output.resolve())))
+ if a.tests_output:print('Generated tests',len(generate_tests(a.repo.resolve(),a.tests_output.resolve()))+len(generate_category_merge_tests(a.repo.resolve(),a.tests_output.resolve())))

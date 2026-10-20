@@ -28,37 +28,52 @@ class DesktopDynamicAuthorSearchTest {
             follow, { emptyList() }, { null }, request, owned, startupDelay = wait)
     private suspend fun eventually(predicate: () -> Boolean) { withTimeout(5000) { while (!predicate()) delay(5) } }
 
-    @Test fun searchRevealsHiddenUPForThisPageOnlyAndUsesTheExistingSelectedUserFeed(): Unit = runBlocking {
-        val prefs = preferences(); prefs.setVisibleTabs(setOf("all", "article")); prefs.setOrder(listOf("article", "all"))
+    @Test fun searchFromPgcRevealsTheMergedAllFeedForThisPageOnlyAndUsesTheExistingSelectedUserFeed(): Unit = runBlocking {
+        val prefs = preferences(); prefs.setVisibleTabs(setOf("pgc", "article")); prefs.setOrder(listOf("pgc", "article"))
         val calls = mutableListOf<Map<String, String>>()
         val value = state(this, prefs, request = { calls += it; tabsResponse(listOf(tabsDynamic("author", 81))) })
         try {
             value.applyTabs(prefs.visibleTabs.first(), prefs.tabOrder.first())
-            assertFalse(isDynamicUserTabVisible(value.visibleTabs))
+            assertEquals(listOf("pgc", "article"), value.visibleTabs.map { it.id })
+            assertEquals(2, value.selectedLogicalTab)
             value.selectAuthorSearchResult(81)
             eventually { !value.userLoading && value.userItems.isNotEmpty() }
-            assertEquals(81L, value.selectedUid); assertEquals(4, value.selectedLogicalTab)
+            assertEquals(81L, value.selectedUid); assertEquals(0, value.selectedLogicalTab)
             assertEquals("81", calls.single()["host_mid"])
-            assertEquals(setOf("all", "article"), prefs.visibleTabs.first())
-            assertEquals(listOf("article", "all"), prefs.tabOrder.first())
-            value.applyTabs(setOf("all", "article"), listOf("article", "all"))
-            assertTrue(isDynamicUserTabVisible(value.visibleTabs))
-            assertEquals(4, value.selectedLogicalTab)
+            assertEquals(setOf("pgc", "article"), prefs.visibleTabs.first())
+            assertEquals(listOf("pgc", "article"), prefs.tabOrder.first())
+            value.applyTabs(setOf("pgc", "article"), listOf("pgc", "article"))
+            assertEquals(listOf("pgc", "article", "all"), value.visibleTabs.map { it.id })
+            assertEquals(0, value.selectedLogicalTab)
             val successor = state(this, prefs)
-            try { assertFalse(isDynamicUserTabVisible(successor.visibleTabs)); assertNull(successor.selectedUid) }
+            try { assertEquals(listOf("pgc", "article"), successor.visibleTabs.map { it.id }); assertNull(successor.selectedUid) }
             finally { successor.close() }
         } finally { value.close() }
     }
 
-    @Test fun selectingTheSameAuthorKeepsCachedRowsAndResetsTheOriginalContentFilter(): Unit = runBlocking {
+    @Test fun searchInsideACategoryKeepsItAndOnlyFiltersByTheAuthor(): Unit = runBlocking {
+        val prefs = preferences(); prefs.setVisibleTabs(setOf("video", "article")); prefs.setOrder(listOf("article", "video"))
+        val calls = mutableListOf<Map<String, String>>()
+        val value = state(this, prefs, request = { calls += it; tabsResponse(listOf(tabsDynamic("author", 81))) })
+        try {
+            assertEquals(3, value.selectedLogicalTab)
+            value.selectAuthorSearchResult(81)
+            eventually { !value.userLoading && value.userItems.isNotEmpty() }
+            assertEquals(3, value.selectedLogicalTab, "The article category is kept")
+            assertEquals(listOf("article", "video"), value.visibleTabs.map { it.id }, "No hidden tab is revealed")
+            assertEquals(81L, value.selectedUid); assertEquals("81", calls.single()["host_mid"])
+        } finally { value.close() }
+    }
+
+    @Test fun selectingTheSameAuthorKeepsCachedRowsAndTheCurrentCategory(): Unit = runBlocking {
         var calls = 0
         val value = state(this, request = { calls++; tabsResponse(listOf(tabsDynamic("kept", 81))) })
         try {
             value.selectAuthorSearchResult(81); eventually { !value.userLoading && value.userItems.isNotEmpty() }
             val cached = value.userItems
-            value.filter = DynamicUserContentFilter.ARTICLE
+            value.selectTab(3)
             value.selectAuthorSearchResult(81)
-            assertEquals(DynamicUserContentFilter.ALL, value.filter)
+            assertEquals(3, value.selectedLogicalTab)
             assertFalse(value.userLoading); assertEquals(81L, value.selectedUid)
             assertSame(cached, value.userItems); yield(); assertEquals(1, calls)
         } finally { value.close() }
@@ -81,7 +96,9 @@ class DesktopDynamicAuthorSearchTest {
 
     @Test fun searchDuringAnActivePartialHydrationQueuesOneCompleteFollowingReload(): Unit = runBlocking {
         val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>(); val pages = mutableListOf<Int>()
-        val value = state(this, follow = { page ->
+        // The pgc category has no strip, so activation runs the partial hydration alone (a strip tab loads the full list at once).
+        val pgc = preferences(); pgc.setSelectedTab(2)
+        val value = state(this, pgc, follow = { page ->
             pages += page
             if (pages.size == 1) { entered.complete(Unit); release.await() }
             following(page, 51)
@@ -113,7 +130,8 @@ class DesktopDynamicAuthorSearchTest {
         val dispatcher = QueueDispatcher(); val child = CoroutineScope(coroutineContext + dispatcher)
         val delaySeen = CompletableDeferred<Unit>(); val delayRelease = CompletableDeferred<Unit>()
         val firstSeen = CompletableDeferred<Unit>(); val firstRelease = CompletableDeferred<Unit>(); val pages = mutableListOf<Int>()
-        val value = state(child, follow = { page ->
+        val pgc = preferences(); pgc.setSelectedTab(2)
+        val value = state(child, pgc, follow = { page ->
             pages += page
             if (pages.size == 1) { firstSeen.complete(Unit); firstRelease.await() }
             following(page, 51)

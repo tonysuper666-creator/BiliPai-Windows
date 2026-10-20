@@ -19,6 +19,12 @@ class DynamicTimelineSources(unittest.TestCase):
     def generated(self,name):return next(self.output.rglob(name)).read_text(encoding='utf-8')
     def test_original_direct_sources_are_full_bodies_and_have_exact_original_hash_headers(self):
         for path in extractor.DIRECT:
+            if path in extractor.SLICE_OWNED:
+                # The whole v0.4.6 file replaced the vendored copy (Gradle excludes that copy); the slice test pins its bytes.
+                emitted=self.output/'com/android/purebilibili/feature/dynamic'/Path(path).name
+                self.assertTrue(emitted.is_file())
+                self.assertNotIn('GENERATED from',emitted.read_text(encoding='utf-8'))
+                continue
             original=extractor.read(REPO,extractor.BASE+path)
             actual=self.generated(Path(path).name)
             self.assertEqual(original,actual[actual.index('\npackage ')+1:])

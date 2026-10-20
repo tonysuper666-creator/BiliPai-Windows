@@ -31,7 +31,9 @@ private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreference
         val feedDone=CompletableDeferred<Unit>();val liveDone=CompletableDeferred<Unit>()
         val delayEntered=CompletableDeferred<Long>();val delayDone=CompletableDeferred<Unit>()
         val pages=mutableListOf<Int>();var feedCalls=0;var unreadCalls=0
-        val state=startupState(this,following={pages+=it;followingRows(it,120)},
+        // pgc has no author strip: the startup plan alone decides, one partial page after the feed and live barrier.
+        val prefs=startupPreferences();prefs.setSelectedTab(2)
+        val state=startupState(this,prefs,following={pages+=it;followingRows(it,120)},
             live={liveEntered.complete(Unit);liveDone.await();emptyList()},
             unread={unreadCalls++;null},wait={delayEntered.complete(it);delayDone.await()})
         try {
@@ -43,13 +45,13 @@ private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreference
             liveDone.complete(Unit);assertEquals(1200L,delayEntered.await());assertTrue(pages.isEmpty())
             delayDone.complete(Unit);startupEventually{state.users.size==50}
             assertEquals(listOf(1),pages);assertEquals(1,feedCalls)
-            state.selectTab(4);startupEventually{state.users.size==120}
+            state.selectTab(0);startupEventually{state.users.size==120}
             assertEquals(listOf(1,1,2,3),pages)
-            state.selectTab(4);yield();assertEquals(listOf(1,1,2,3),pages)
+            state.selectTab(0);yield();assertEquals(listOf(1,1,2,3),pages)
         }finally{state.close()}
     }
-    @Test fun restoredUPTabLoadsAllFollowingsWhilePrimaryFeedIsStillPending():Unit=runBlocking {
-        val prefs=startupPreferences();prefs.setSelectedTab(4)
+    @Test fun restoredStripTabLoadsAllFollowingsWhilePrimaryFeedIsStillPending():Unit=runBlocking {
+        val prefs=startupPreferences();prefs.setSelectedTab(0)
         val feedDone=CompletableDeferred<Unit>();val delayEntered=CompletableDeferred<Long>()
         val pages=mutableListOf<Int>()
         val state=startupState(this,prefs,following={pages+=it;followingRows(it,51)},wait={delayEntered.complete(it)})
@@ -61,20 +63,21 @@ private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreference
             assertEquals(listOf(1,2),pages,"Fresh complete list must survive deferred startup hydration")
         }finally{state.close()}
     }
-    @Test fun enteringUPDuringPartialHydrationQueuesOneCompleteReload():Unit=runBlocking {
+    @Test fun enteringAStripTabDuringPartialHydrationQueuesOneCompleteReload():Unit=runBlocking {
         val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>()
         val pages=mutableListOf<Int>()
-        val state=startupState(this,following={page->pages+=page
+        val prefs=startupPreferences();prefs.setSelectedTab(2)
+        val state=startupState(this,prefs,following={page->pages+=page
             if(pages.size==1){entered.complete(Unit);release.await()};followingRows(page,51)})
         try {
             state.activateStartupLoads{};entered.await()
-            state.selectTab(4);state.selectTab(4);assertEquals(listOf(1),pages)
+            state.selectTab(0);state.selectTab(0);assertEquals(listOf(1),pages)
             release.complete(Unit);startupEventually{state.users.size==51}
             assertEquals(listOf(1,1,2),pages)
         }finally{state.close()}
     }
     @Test fun staleFullListIsHydratedAgainAtTheOriginalFiveMinuteBoundary():Unit=runBlocking {
-        val prefs=startupPreferences();prefs.setSelectedTab(4)
+        val prefs=startupPreferences();prefs.setSelectedTab(0)
         val now=AtomicLong(1000);val feedDone=CompletableDeferred<Unit>();val pages=mutableListOf<Int>()
         val state=startupState(this,prefs,following={pages+=it;followingRows(it,51)},now=now::get,
             wait={assertEquals(1200L,it);now.addAndGet(FOLLOWINGS_REFRESH_TTL_MS)})
@@ -87,7 +90,8 @@ private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreference
     @Test fun changedCredentialEpochDuringDelayCannotStartFollowingRequests():Unit=runBlocking {
         val epoch=AtomicLong(1);val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>()
         var requests=0
-        val state=startupState(this,owned={epoch.get()==1L},following={requests++;followingRows(it,1)},
+        val prefs=startupPreferences();prefs.setSelectedTab(2)
+        val state=startupState(this,prefs,owned={epoch.get()==1L},following={requests++;followingRows(it,1)},
             wait={entered.complete(Unit);release.await()})
         try {
             state.activateStartupLoads{};entered.await();epoch.incrementAndGet();release.complete(Unit)
@@ -97,7 +101,8 @@ private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreference
     @Test fun closingStartupCancelsFeedLiveUnreadAndNeverSchedulesFollowings():Unit=runBlocking {
         val feedEntered=CompletableDeferred<Unit>();val liveEntered=CompletableDeferred<Unit>()
         val unreadEntered=CompletableDeferred<Unit>();val cancelled=AtomicLong();var followingCalls=0
-        val state=startupState(this,following={followingCalls++;FollowingsData()},
+        val prefs=startupPreferences();prefs.setSelectedTab(2)
+        val state=startupState(this,prefs,following={followingCalls++;FollowingsData()},
             live={liveEntered.complete(Unit);try{awaitCancellation()}finally{cancelled.incrementAndGet()}},
             unread={unreadEntered.complete(Unit);try{awaitCancellation()}finally{cancelled.incrementAndGet()}})
         state.activateStartupLoads{feedEntered.complete(Unit);try{awaitCancellation()}finally{cancelled.incrementAndGet()}}
@@ -107,10 +112,11 @@ private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreference
     }
     @Test fun closingAnInFlightFollowingPageRejectsLateRowsAndFurtherPages():Unit=runBlocking {
         val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>();var requests=0
-        val state=startupState(this,following={requests++;entered.complete(Unit)
+        val prefs=startupPreferences();prefs.setSelectedTab(2)
+        val state=startupState(this,prefs,following={requests++;entered.complete(Unit)
             withContext(NonCancellable){release.await()};followingRows(it,51)})
         try {
-            state.activateStartupLoads{};entered.await();state.selectTab(4);state.close();release.complete(Unit)
+            state.activateStartupLoads{};entered.await();state.selectTab(0);state.close();release.complete(Unit)
             yield();delay(20);assertEquals(1,requests);assertTrue(state.users.isEmpty());assertNull(state.followingsError)
         }finally{state.close();release.complete(Unit)}
     }

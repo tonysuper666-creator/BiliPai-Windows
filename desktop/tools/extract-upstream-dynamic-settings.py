@@ -11,6 +11,8 @@ BASE='app/src/main/java/com/android/purebilibili/'
 DIRECT=['data/repository/DynamicFeedFetchPolicy.kt','data/repository/DynamicFetchRetryPolicy.kt',
  'core/util/FeedMergeUtils.kt','core/ui/components/FeedVerticalStaggeredGrid.kt','core/ui/components/FeedPrependScrollPolicy.kt',
  'feature/dynamic/DynamicTabPolicy.kt']
+# The whole v0.4.6 tab policy (UP tab merged into All) replaces the vendored direct copy; Gradle excludes that copy.
+SLICE_OWNED=['feature/dynamic/DynamicTabPolicy.kt']
 SELECTED=['core/store/SettingsManager.kt','feature/settings/ui/SettingsSections.kt','data/repository/DynamicRepository.kt',
  'feature/dynamic/DynamicViewModel.kt','feature/dynamic/DynamicScreenStatePolicy.kt','feature/dynamic/DynamicIncrementalRefreshPolicy.kt',
  'feature/dynamic/DynamicLayoutPolicy.kt','feature/dynamic/DynamicScreen.kt']
@@ -22,6 +24,8 @@ def inventory(repo):return [dict(path=BASE+p,mode='direct' if p in DIRECT else '
  sha256=hashlib.sha256(read(repo,BASE+p).encode()).hexdigest()) for p in DIRECT+SELECTED]
 
 def generate(repo,output,standalone=False):
+ from v046_dynamic_category_merge import validate_outputs as validate_category_merge_outputs
+ validate_category_merge_outputs(repo,output)
  host=module(repo,'dynamic_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  appearance=module(repo,'dynamic_declarations','desktop/tools/extract-appearance-platform.py')
  home=module(repo,'dynamic_ui_calls','desktop/tools/extract-upstream-settings-home.py')
@@ -43,8 +47,13 @@ def generate(repo,output,standalone=False):
   return textwrap.dedent(source[begin:tokens[end][2]])
  def emit(path,body,name):files.append(host.write(output,path,read(repo,path),body,name))
  for short in DIRECT:
+  if short in SLICE_OWNED:continue
   path=BASE+short;original=read(repo,path);host.prune_old_direct(output,path,original)
   if standalone:files.append(host.write(output,path,original,original))
+ from v046_dynamic_category_merge import emit_tab_policy,tab_policy_receipt
+ canonical=read(repo,BASE+SLICE_OWNED[0])
+ files.append(emit_tab_policy(repo,output,canonical))
+ (output/'v046-dynamic-tab-policy-proof.json').write_text(json.dumps(tab_policy_receipt(repo,canonical),indent=2)+'\n',encoding='utf-8',newline='\n')
  path=BASE+'core/store/SettingsManager.kt';source=read(repo,path)
  keys=['KEY_INCREMENTAL_TIMELINE_REFRESH','KEY_DYNAMIC_FEED_LAYOUT_MODE']
  keyLines=[]

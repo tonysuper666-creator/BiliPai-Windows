@@ -195,10 +195,12 @@ internal object DesktopSettingsShareWindowsCatalog {
         field("danmaku_block_rules", danmaku) { string(it)?.let(::JsonPrimitive) }
 
         val navigation = SettingsShareSection.NAVIGATION
+        // dynamic_all_tab_horizontal_user_list_visible left the Android share definitions in v0.4.5 (9ee5fc5f): the
+        // follow strip is always on, so an old backup's value is reported as unmapped. dynamic_tab_visible_tabs and
+        // dynamic_tab_order are not imported on Windows, so the "up" to "all" fold happens in the tab getters.
         booleans(navigation, "header_collapse_enabled", "show_pgc_timeline", "tablet_use_sidebar", "sidebar_expanded",
             "sidebar_account_switcher_enabled", "incremental_timeline_refresh", "dynamic_image_preview_text_visible",
-            "dynamic_all_tab_horizontal_user_list_visible", "dynamic_top_bar_collapse_on_scroll",
-            "dynamic_comment_preview_visible")
+            "dynamic_top_bar_collapse_on_scroll", "dynamic_comment_preview_visible")
         ints(navigation, "home_top_layout_order", HomeTopLayoutOrder.entries.map { it.value }.toSet())
         ints(navigation, "home_header_collapse_mode", HomeHeaderCollapseMode.entries.map { it.value }.toSet())
         ints(navigation, "common_list_header_collapse_mode", CommonListHeaderCollapseMode.entries.map { it.value }.toSet())

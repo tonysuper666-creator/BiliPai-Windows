@@ -38,6 +38,8 @@ internal class DesktopDynamicTimelineState(
         DynamicTimelinePageState(items=initialCachedItems.toImmutableList(),isCachePlaceholder=true)
         else DynamicTimelinePageState());private set
     var initialized by mutableStateOf(false);private set
+    /** The first fetch reached a verdict (accepted, discarded by the follow guard, or failed); a cancellation is no verdict. */
+    var firstFetchSettled by mutableStateOf(false);private set
     internal var editorRefreshRevision=0L
     @Volatile private var followStateRevision=0L
     var busy by mutableStateOf(false);private set
@@ -88,6 +90,7 @@ internal class DesktopDynamicTimelineState(
             currentCoroutineContext().ensureActive()
             var succeeded=false
             publish(caller) {
+                firstFetchSettled=true
                 if(followRevision!=followStateRevision) {
                     // A pre-confirmation response cannot undo the accepted local reducer.
                     original.restoreAfterFollowChange(type,paginationBefore)
@@ -113,7 +116,7 @@ internal class DesktopDynamicTimelineState(
             throw cancelled
         }catch(failure:Exception){
             currentCoroutineContext().ensureActive()
-            publish(caller){error=failure;page=resolveDynamicTimelinePageAfterFailure(snapshot.copy(items=page.items),failure.message.orEmpty(),refresh)}
+            publish(caller){error=failure;firstFetchSettled=true;page=resolveDynamicTimelinePageAfterFailure(snapshot.copy(items=page.items),failure.message.orEmpty(),refresh)}
             return false
         }finally{publish { if(followRevision!=followStateRevision)original.restoreAfterFollowChange(type,paginationBefore) };busy=false}
     }
@@ -138,8 +141,10 @@ internal fun DesktopDynamicTimelineFeed(
     val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
     val divider=resolveOldContentDividerIndex(displayed.map(::dynamicFeedItemKey),state.page.incrementalRefreshBoundaryKey,true)
     LaunchedEffect(state){snapshotFlow { latestActive.value }.first { it };state.initialize(incrementalRefresh=incremental)}
-    val allowAutomaticLoadMore=shouldAutoLoadMoreForUserContentFilter(
-        isSelectedUserFeed=false,filter=DynamicUserContentFilter.ALL,visibleItemCount=displayed.size)
+    // The v0.4.6 screen lets every mounted category page page on its own; the author filter is a separate feed.
+    val allowAutomaticLoadMore=true
+    val emptyState=resolveDesktopDynamicEmptyState(firstFetchSettled=state.firstFetchSettled,busy=state.busy,failed=state.error!=null,
+        hasPageItems=state.page.items.isNotEmpty(),hasDisplayedItems=displayed.isNotEmpty())
     val shouldLoadMore by remember(state.scroll,state.busy,state.page.hasMore,allowAutomaticLoadMore) {
         derivedStateOf {
             val layoutInfo=state.scroll.layoutInfo
@@ -179,9 +184,9 @@ internal fun DesktopDynamicTimelineFeed(
                 item(key=keys[index]){row(item)}
             }
             state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
-            if(state.busy)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
-            if(!state.busy&&displayed.isEmpty()&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){
-                Text(if(state.page.items.isEmpty())"暂无内容"else"当前筛选隐藏了这一批内容",color=MaterialTheme.colorScheme.onSurfaceVariant)}
+            if(state.busy||emptyState==DesktopDynamicEmptyState.LOADING)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
+            if(emptyState==DesktopDynamicEmptyState.EMPTY||emptyState==DesktopDynamicEmptyState.FILTERED)item(span=StaggeredGridItemSpan.FullLine){
+                Text(if(emptyState==DesktopDynamicEmptyState.EMPTY)"暂无内容"else"当前筛选隐藏了这一批内容",color=MaterialTheme.colorScheme.onSurfaceVariant)}
             if(!state.busy&&state.initialized&&state.page.hasMore&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={scope.launch{state.loadMore(incremental)}}){Text("加载更多")}}
         }
     }
