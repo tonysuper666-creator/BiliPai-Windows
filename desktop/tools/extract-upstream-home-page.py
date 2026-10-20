@@ -83,6 +83,7 @@ def generate(repo, output, standalone=False):
             body=native_home_page_delta(repo,target.name,body,home_load_audits)
             from v043_home_recommendation_badges import apply_card as apply_recommendation_badge
             body=apply_recommendation_badge(repo,target.name,body,home_load_audits)
+            body=__import__("ux_home_layout").apply_home_layout(repo,target.name,body,home_load_audits)
             if target.name=='UserVipBadge.kt':
                 from v046_identity_badges import advance
                 body,proof=advance(repo,body)

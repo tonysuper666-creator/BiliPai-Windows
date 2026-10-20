@@ -929,6 +929,7 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath,
         "--test-output", layout.buildDirectory.dir("generated/original-refresh-policy-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
+    inputs.files("tools/ux_home_layout.py")
     inputs.file("tools/v046_identity_badges.py")
     inputs.dir("upstream-slices/v046-identity-badges")
     inputs.file("tools/v046_identity_badge_palette.py")
@@ -1351,6 +1352,7 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v033-home-undo")
     inputs.files("tools/extract-upstream-home-full-card.py", "tools/extract-upstream-home-page.py", "tools/extract-upstream-media.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
+    inputs.files("tools/ux_home_layout.py")
     inputs.files(sources.filter { "home-full-card" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }

@@ -367,7 +367,10 @@ class FrameSourceTest(unittest.TestCase):
                 readers.append(source.rel(path))
         self.assertEqual(["ui/DesktopWindowsShellFrame.kt"], readers)
         self.assertIn("private const val RAIL_MODE_HAS_CONSUMER = true\n", source.read(SETTINGS_GROUP_KT))
-        for other in ("PLAYER_LAYOUT", "HOME_LAYOUT", "CARD_INTERACTIONS"):
+        # Slice H1 changed this pin, with exact values: the Home feed wrappers (ui/DesktopHomeFeedLayout.kt) read home_layout and honour
+        # both values (CLASSIC runs the vendored functions), so the home row is on. The rail row stays pinned above.
+        self.assertIn("private const val HOME_LAYOUT_HAS_CONSUMER = true\n", source.read(SETTINGS_GROUP_KT))
+        for other in ("PLAYER_LAYOUT", "CARD_INTERACTIONS"):
             self.assertIn("private const val %s_HAS_CONSUMER = false\n" % other, source.read(SETTINGS_GROUP_KT), other)
 
     def test_the_default_mode_is_automatic_and_the_classic_mode_is_the_old_block(self):

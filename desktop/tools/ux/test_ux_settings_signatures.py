@@ -519,7 +519,10 @@ class LayoutGroupTest(unittest.TestCase):
     # shell frame reads rail_mode and honours every value of it (the pure rail presentation rule, the classic block inline), so the
     # rail row is on. The readers are pinned exactly: any other reader of any of the four flags still fails here until its slice
     # turns its row on.
-    EXPECTED_READERS = {"playerLayout": ["ui/DesktopWindowsVideoPhysicalLeaf.kt"], "railMode": ["ui/DesktopWindowsShellFrame.kt"]}
+    # Slice H1 changed it a third time, with exact values: the Home feed wrappers read home_layout and honour both values (CLASSIC runs
+    # the vendored functions), so the home row is on and the wrapper file is the one reader of the flag.
+    EXPECTED_READERS = {"homeLayout": ["ui/DesktopHomeFeedLayout.kt"], "playerLayout": ["ui/DesktopWindowsVideoPhysicalLeaf.kt"],
+                        "railMode": ["ui/DesktopWindowsShellFrame.kt"]}
     SELECTION_KT = K / "ui/DesktopPlayerLayoutSelection.kt"
 
     def honoured_flags(self, readers):
@@ -529,9 +532,9 @@ class LayoutGroupTest(unittest.TestCase):
         return {flag for flag in readers if flag != "playerLayout" or overlay.group(1) == "true"}
 
     def test_a_row_is_enabled_only_while_something_reads_its_flag(self):
-        # Only the rail flag has a reader that honours it (slice S1); home_layout, card_interactions and player_layout have none,
-        # so no row of theirs may be offered: a stored explicit DESKTOP player layout would switch the unaccepted overlay on the
-        # day the player slice lands.
+        # Only the rail flag (slice S1) and the home flag (slice H1) have a reader that honours them; card_interactions and
+        # player_layout have none, so no row of theirs may be offered: a stored explicit DESKTOP player layout would switch the
+        # unaccepted overlay on the day the player slice lands.
         squashed = sm.squash(self.TEXT)
         readers = self.flag_readers()
         honoured = self.honoured_flags(readers)
@@ -541,7 +544,7 @@ class LayoutGroupTest(unittest.TestCase):
             self.assertEqual(flag in honoured, wired, "%s: the row is on exactly when a reader that honours the flag exists %s" % (flag, readers.get(flag)))
             self.assertEqual(1, squashed.count("enabled = %s_HAS_CONSUMER)" % constant), constant)
         self.assertEqual(self.EXPECTED_READERS, readers)
-        self.assertEqual({"railMode"}, honoured)
+        self.assertEqual({"homeLayout", "railMode"}, honoured)
         self.assertEqual(4, squashed.count("enabled = "))
         # The reset button is the escape from a stored flag and stays enabled.
         self.assertIn("DesktopMenuRow(label = text.RESET, onClick = { ux.submit(DesktopWindowsUxCommand.ResetLayout) },", squashed)
@@ -552,8 +555,9 @@ class LayoutGroupTest(unittest.TestCase):
         self.assertIn("尚不可用", note)
 
     def test_the_option_note_says_the_values_take_effect_later_and_the_defaults_are_unchanged(self):
-        # Honest state after slice S1: only the shell frame reads rail_mode, nothing reads home_layout or card_interactions yet,
-        # and the only reader of player_layout is the player leaf, which resolves DESKTOP to LEGACY while no overlay exists.
+        # Honest state after slice H1: the shell frame reads rail_mode and the Home feed wrappers read home_layout (both honoured),
+        # nothing reads card_interactions yet, and the only reader of player_layout is the player leaf, which resolves DESKTOP to
+        # LEGACY while no overlay exists.
         self.assertIn("const val NOTE", self.STRINGS)
         defaults = sm.read(K / "appearance/DesktopWindowsUxModel.kt")
         self.assertIn("val railMode: DesktopWindowsUxRailMode = DesktopWindowsUxRailMode.AUTO,", defaults)

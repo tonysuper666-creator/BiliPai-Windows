@@ -89,6 +89,7 @@ PROGRAM_EXTRA_GLOBS = (
     "ui/DesktopWindowsUxSettings.kt",
     "ui/DesktopWindowsCaptionTheme.kt",
     "ui/DesktopHomeFeedLayout.kt",
+    "ui/DesktopHomeFeedLayoutPolicy.kt",
     "ui/DesktopCardContextMenu.kt",
     "ui/DesktopCardPointer.kt",
     "ui/DesktopLazyScrollbars.kt",
