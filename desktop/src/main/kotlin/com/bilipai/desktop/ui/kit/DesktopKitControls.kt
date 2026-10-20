@@ -84,7 +84,9 @@ internal fun DesktopIconButton(
 /**
  * A navigation row: icon slot, label, optional badge. Selected rows get the primary fill, a left-edge pill and the
  * primary label color. A collapsed row shows the icon only (the badge sits on the icon corner) and keeps its name as
- * the content description. One selectable node with Role.Tab, like the rows of a Material navigation rail.
+ * the content description. One selectable node with Role.Tab, like the rows of a Material navigation rail. A non-null
+ * description is the accessible name of the row, collapsed or not (the shell rail announces the unread count with it);
+ * the shown text stays the label.
  */
 @Composable
 internal fun DesktopNavRow(
@@ -99,6 +101,7 @@ internal fun DesktopNavRow(
     tooltip: String? = null,
     tooltipShortcut: String? = null,
     tooltipDelayMillis: Int = DESKTOP_KIT_TOOLTIP_DELAY_MS,
+    description: String? = null,
 ) {
     val source = remember { MutableInteractionSource() }
     val colors = MaterialTheme.colorScheme
@@ -123,7 +126,10 @@ internal fun DesktopNavRow(
                     }
                 }
                 .selectable(selected = selected, interactionSource = source, indication = null, enabled = enabled, role = Role.Tab, onClick = onClick)
-                .semantics { if (collapsed) contentDescription = label }
+                .semantics {
+                    val name = description ?: if (collapsed) label else null
+                    if (name != null) contentDescription = name
+                }
                 .padding(horizontal = 12.dp),
             horizontalArrangement = if (collapsed) Arrangement.Center else Arrangement.spacedBy(DESKTOP_KIT_NAV_ICON_GAP_DP.dp),
             verticalAlignment = Alignment.CenterVertically,

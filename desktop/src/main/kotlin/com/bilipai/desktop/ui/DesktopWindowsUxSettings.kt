@@ -22,15 +22,15 @@ import com.bilipai.desktop.ui.kit.DesktopMenuRow
 import com.bilipai.desktop.ui.kit.desktopKitHairlineBorder
 
 /*
- * A row of the layout group is offered only while something honours its flag. Nothing honours any of the four flags yet (the
- * player leaf reads the player flag but resolves DESKTOP to LEGACY while no overlay exists, and the new rail, home feed and
- * cards come with their own slices), and the player flag in particular must not be set to DESKTOP before the flip gate: an
- * explicit DESKTOP key would switch the unaccepted overlay on the day it lands. So the rows are shown, with the stored value,
- * but cannot be changed. The slice that adds the consumer of a flag turns its row on (S1 the rail, H1 the home feed, H2 the
- * cards, V4a the player layout together with DESKTOP_PLAYER_OVERLAY_AVAILABLE) and the source test that scans for readers of
- * the flags fails until it does.
+ * A row of the layout group is offered only while something honours its flag. The shell frame honours the rail flag (slice S1);
+ * nothing honours the other three yet (the player leaf reads the player flag but resolves DESKTOP to LEGACY while no overlay
+ * exists, and the new home feed and cards come with their own slices), and the player flag in particular must not be set to
+ * DESKTOP before the flip gate: an explicit DESKTOP key would switch the unaccepted overlay on the day it lands. So those rows
+ * are shown, with the stored value, but cannot be changed. The slice that adds the consumer of a flag turns its row on (S1 the
+ * rail, done; H1 the home feed, H2 the cards, V4a the player layout together with DESKTOP_PLAYER_OVERLAY_AVAILABLE) and the
+ * source test that scans for readers of the flags fails until it does.
  */
-private const val RAIL_MODE_HAS_CONSUMER = false
+private const val RAIL_MODE_HAS_CONSUMER = true
 private const val PLAYER_LAYOUT_HAS_CONSUMER = false
 private const val HOME_LAYOUT_HAS_CONSUMER = false
 private const val CARD_INTERACTIONS_HAS_CONSUMER = false
@@ -39,8 +39,11 @@ private const val CARD_INTERACTIONS_HAS_CONSUMER = false
  * The layout group of the settings (spec 3.7), shown inside the display-scale card of the appearance settings: the navigation rail mode,
  * the player layout, the home layout, the card right-click menu and hover, and the button that resets them. Each row
  * writes one flag of the windows_ux store through LocalDesktopWindowsUx once its consumer exists; a fixture that provides
- * nothing sees the read-only defaults, which refuse every command. The defaults are the existing behaviour, so nothing
- * changes until a choice is made. The rows are plain choices (no group container), because the card around them is the container.
+ * nothing sees the read-only defaults, which refuse every command. The defaults of the player layout, the home layout and the
+ * card interactions are the existing behaviour, so those rows change nothing until a choice is made. The default of the rail
+ * row is not: it is AUTO, the new navigation rail (spec 5.2, slice S1), so the rail replaces the 172 dp text block for everyone
+ * who has chosen nothing, and the reset row brings back that default; the choice that keeps the old block is the classic text
+ * mode. The rows are plain choices (no group container), because the card around them is the container.
  */
 @Composable
 internal fun DesktopWindowsUxLayoutGroup() {

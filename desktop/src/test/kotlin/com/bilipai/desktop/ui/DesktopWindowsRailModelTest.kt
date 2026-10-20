@@ -373,6 +373,48 @@ class DesktopWindowsRailModelTest {
         }
     }
 
+    @Test fun theToggleIsEffectiveOnlyWhereItsWriteChangesWhatTheRailShows() {
+        for (mode in DesktopWindowsUxRailMode.entries) {
+            for (presentation in reachable(mode)) {
+                for (width in 0..5000) {
+                    val target = desktopRailToggleMode(mode, presentation)
+                    val effective = desktopRailToggleEffective(mode, presentation, width)
+                    if (target == null) {
+                        assertFalse(effective, "$mode $presentation $width: nothing to write")
+                    } else {
+                        assertEquals(desktopRailPresentation(target, width, presentation) != presentation, effective, "$mode $presentation $width")
+                    }
+                    if (presentation == DesktopRailPresentation.CLASSIC) assertFalse(effective, "$mode $width: the classic block has no toggle")
+                    if (presentation == DesktopRailPresentation.EXPANDED && target != null) assertTrue(effective, "$mode $width: collapsing always shows")
+                    if (presentation == DesktopRailPresentation.COLLAPSED && target != null) {
+                        assertEquals(width >= DESKTOP_RAIL_EXPANDED_THRESHOLDS.reexpandAt, effective, "$mode $width: expanding needs the re-expand width")
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun theDefaultWindowCannotExpandTheRailSoTheToggleWritesNothingThereAndNeverGetsStuck() {
+        // Main.kt opens the window 1360 dp wide, which is 1088 dp of content at the 125% default zoom (about 1075 with the frame).
+        for (width in listOf(1088, 1075)) {
+            val auto = DesktopWindowsUxRailMode.AUTO
+            assertEquals(DesktopRailPresentation.COLLAPSED, desktopRailPresentation(auto, width), "$width: the default mode shows the collapsed rail")
+            assertEquals(DesktopWindowsUxRailMode.EXPANDED, desktopRailToggleMode(auto, DesktopRailPresentation.COLLAPSED))
+            assertFalse(desktopRailToggleEffective(auto, DesktopRailPresentation.COLLAPSED, width), "$width: the toggle must not write EXPANDED here")
+            // What the toggle used to do: EXPANDED is still the collapsed rail at this width, and then the toggle has no target at all.
+            val stuck = DesktopWindowsUxRailMode.EXPANDED
+            assertEquals(DesktopRailPresentation.COLLAPSED, desktopRailPresentation(stuck, width, DesktopRailPresentation.COLLAPSED))
+            assertNull(desktopRailToggleMode(stuck, DesktopRailPresentation.COLLAPSED))
+            assertFalse(desktopRailToggleEffective(stuck, DesktopRailPresentation.COLLAPSED, width), "$width: and the stuck state reports it too")
+        }
+        // Wide enough, the same toggle expands the rail, from the explicit collapsed mode as well.
+        val reexpandAt = DESKTOP_RAIL_EXPANDED_THRESHOLDS.reexpandAt
+        assertFalse(desktopRailToggleEffective(DesktopWindowsUxRailMode.AUTO, DesktopRailPresentation.COLLAPSED, reexpandAt - 1))
+        assertTrue(desktopRailToggleEffective(DesktopWindowsUxRailMode.AUTO, DesktopRailPresentation.COLLAPSED, reexpandAt))
+        assertTrue(desktopRailToggleEffective(DesktopWindowsUxRailMode.COLLAPSED, DesktopRailPresentation.COLLAPSED, reexpandAt))
+        assertEquals("窗口太窄，无法展开导航栏", DesktopShellStrings.RAIL_TOO_NARROW)
+    }
+
     @Test fun theReachablePresentationsOfEachMode() {
         assertEquals(setOf(DesktopRailPresentation.EXPANDED, DesktopRailPresentation.COLLAPSED), reachable(DesktopWindowsUxRailMode.AUTO))
         assertEquals(setOf(DesktopRailPresentation.EXPANDED, DesktopRailPresentation.COLLAPSED), reachable(DesktopWindowsUxRailMode.EXPANDED))
@@ -429,5 +471,133 @@ class DesktopWindowsRailModelTest {
         )
         assertEquals("无法保存导航栏设置", DesktopShellStrings.RAIL_SAVE_FAILED)
         assertEquals("主导航", DesktopShellStrings.RAIL_NAME)
+    }
+
+    // ---- Slice S1: the shell frame and the rail composables ----
+
+    @Test fun thePanelMetricsAreTheContractNumbersAndAFootprintIsThePanelPlusItsMargins() {
+        val metrics = rail.getValue("metrics").jsonObject
+        assertEquals(DesktopUxContract.int(rail, "panel_expanded"), DESKTOP_RAIL_PANEL_EXPANDED_DP)
+        assertEquals(DesktopUxContract.int(rail, "panel_collapsed"), DESKTOP_RAIL_PANEL_COLLAPSED_DP)
+        assertEquals(DesktopUxContract.int(rail, "margin"), DESKTOP_RAIL_MARGIN_DP)
+        assertEquals(DesktopUxContract.int(rail, "panel_radius"), DESKTOP_RAIL_PANEL_RADIUS_DP)
+        assertEquals(DesktopUxContract.int(metrics, "header"), DESKTOP_RAIL_HEADER_DP)
+        assertEquals(DesktopUxContract.int(metrics, "search_row"), DESKTOP_RAIL_SEARCH_ROW_DP)
+        assertEquals(DesktopUxContract.int(metrics, "search_collapsed"), DESKTOP_RAIL_SEARCH_COLLAPSED_DP)
+        assertEquals(DesktopUxContract.int(metrics, "now_playing_bar"), DESKTOP_RAIL_NOW_PLAYING_BAR_DP)
+        assertEquals(DesktopRailPresentation.EXPANDED.footprintDp, DESKTOP_RAIL_PANEL_EXPANDED_DP + 2 * DESKTOP_RAIL_MARGIN_DP)
+        assertEquals(DesktopRailPresentation.COLLAPSED.footprintDp, DESKTOP_RAIL_PANEL_COLLAPSED_DP + 2 * DESKTOP_RAIL_MARGIN_DP)
+        assertEquals(200, DESKTOP_RAIL_PANEL_EXPANDED_DP)
+        assertEquals(56, DESKTOP_RAIL_PANEL_COLLAPSED_DP)
+    }
+
+    @Test fun rovingTargetsStopAtBothEndsAndNeverWrap() {
+        val up = DesktopRailRovingKey.UP
+        val down = DesktopRailRovingKey.DOWN
+        assertEquals(0, desktopRailRovingTarget(5, 0, up))
+        assertEquals(2, desktopRailRovingTarget(5, 3, up))
+        assertEquals(4, desktopRailRovingTarget(5, 4, down))
+        assertEquals(1, desktopRailRovingTarget(5, 0, down))
+        assertEquals(0, desktopRailRovingTarget(5, 3, DesktopRailRovingKey.HOME))
+        assertEquals(4, desktopRailRovingTarget(5, 1, DesktopRailRovingKey.END))
+        assertEquals(0, desktopRailRovingTarget(1, 0, down))
+        assertEquals(0, desktopRailRovingTarget(1, 0, up))
+        // A current stop outside the list is pulled in: Down from nothing lands on the first stop.
+        assertEquals(0, desktopRailRovingTarget(5, -1, down))
+        assertEquals(4, desktopRailRovingTarget(5, 99, down))
+        assertEquals(4, desktopRailRovingTarget(5, 99, up))
+        for (key in DesktopRailRovingKey.entries) {
+            assertEquals(-1, desktopRailRovingTarget(0, 0, key), key.name)
+            assertEquals(-1, desktopRailRovingTarget(-3, 0, key), key.name)
+        }
+    }
+
+    @Test fun rovingStaysInsideTheStopsAndMovesTheWayTheKeySays() {
+        for (count in 1..14) {
+            for (current in -3..count + 3) {
+                for (key in DesktopRailRovingKey.entries) {
+                    val target = desktopRailRovingTarget(count, current, key)
+                    assertTrue(target in 0 until count, "$count $current $key")
+                    val inside = current.coerceIn(0, count - 1)
+                    when (key) {
+                        DesktopRailRovingKey.UP -> assertTrue(target <= inside, "$count $current")
+                        DesktopRailRovingKey.DOWN -> assertTrue(target >= inside || current < 0, "$count $current")
+                        DesktopRailRovingKey.HOME -> assertEquals(0, target)
+                        DesktopRailRovingKey.END -> assertEquals(count - 1, target)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun theTabStopIsTheRovingStopThenTheSelectedRowThenTheFirstStop() {
+        assertEquals(0, desktopRailTabStop(5, null, null))
+        assertEquals(3, desktopRailTabStop(5, null, 3))
+        assertEquals(2, desktopRailTabStop(5, 2, 3))
+        assertEquals(0, desktopRailTabStop(5, 0, 3))
+        assertEquals(4, desktopRailTabStop(5, 9, null))
+        assertEquals(0, desktopRailTabStop(5, -4, null))
+        assertEquals(4, desktopRailTabStop(5, null, 40))
+        assertEquals(-1, desktopRailTabStop(0, 0, 0))
+        assertEquals(-1, desktopRailTabStop(-1, null, null))
+        for (count in 1..14) {
+            for (roving in listOf<Int?>(null, -2, 0, count - 1, count + 5)) {
+                for (selected in listOf<Int?>(null, 0, count - 1, count + 5)) {
+                    assertTrue(desktopRailTabStop(count, roving, selected) in 0 until count, "$count $roving $selected")
+                }
+            }
+        }
+    }
+
+    @Test fun theZoomPercentIsReadBackFromTheScaledAndTheSystemDensity() {
+        // desktopWindowsScaledDensity multiplies the system density by the percent in Float: do the same here.
+        for (system in listOf(1.0f, 1.25f, 1.5f, 1.75f, 1.875f, 2.0f, 2.25f, 2.5f)) {
+            for (percent in 50..200 step 5) {
+                val scaled = system * percent / 100f
+                assertEquals(percent, desktopZoomPercent(scaled, system), "$system $percent")
+            }
+        }
+        assertNull(desktopZoomPercent(1.5f, null))
+        assertNull(desktopZoomPercent(1.5f, 0f))
+        assertNull(desktopZoomPercent(1.5f, -1f))
+        assertNull(desktopZoomPercent(1.5f, Float.NaN))
+        assertNull(desktopZoomPercent(1.5f, Float.POSITIVE_INFINITY))
+        assertNull(desktopZoomPercent(0f, 1.5f))
+        assertNull(desktopZoomPercent(-1f, 1.5f))
+        assertNull(desktopZoomPercent(Float.NaN, 1.5f))
+        assertNull(desktopZoomPercent(Float.POSITIVE_INFINITY, 1.5f))
+        assertEquals(100, desktopZoomPercent(1f, 1f))
+        assertEquals(125, desktopZoomPercent(1.25f, 1f))
+    }
+
+    @Test fun theZoomToastShowsOnlyAChangeBetweenTwoKnownReads() {
+        assertNull(desktopZoomToastPercent(null, 125))
+        assertNull(desktopZoomToastPercent(125, 125))
+        assertEquals(150, desktopZoomToastPercent(125, 150))
+        assertEquals(50, desktopZoomToastPercent(125, 50))
+        assertNull(desktopZoomToastPercent(150, null))
+        assertNull(desktopZoomToastPercent(null, null))
+        assertEquals("界面缩放 150%", DesktopShellStrings.zoomToast(desktopZoomToastPercent(125, 150) ?: 0))
+    }
+
+    @Test fun aWriteErrorIsTheRailsOwnOnlyJustAfterTheRailWrote() {
+        assertEquals(5000L, DESKTOP_RAIL_SAVE_WINDOW_MS)
+        assertEquals(750L, DESKTOP_RAIL_SAVE_RECHECK_MS)
+        assertTrue(DESKTOP_RAIL_SAVE_RECHECK_MS < DESKTOP_RAIL_SAVE_WINDOW_MS, "the second look at a standing error lands inside the save window")
+        assertFalse(desktopRailWriteFailureShown(null, 10_000L, true), "the rail never wrote")
+        assertFalse(desktopRailWriteFailureShown(1000L, 1500L, false), "no error")
+        assertTrue(desktopRailWriteFailureShown(1000L, 1000L, true))
+        assertTrue(desktopRailWriteFailureShown(1000L, 6000L, true), "the window is inclusive")
+        assertFalse(desktopRailWriteFailureShown(1000L, 6001L, true), "later errors belong to something else")
+        assertFalse(desktopRailWriteFailureShown(1000L, 999L, true), "an error before the write is not a result of it")
+    }
+
+    @Test fun theToggleAndSearchTooltipsAndTheShortcutsAreTheSpecTexts() {
+        assertEquals("搜索 (Ctrl+K)", DesktopShellStrings.searchTooltip())
+        assertEquals("Ctrl+K", DesktopShellStrings.SEARCH_SHORTCUT)
+        assertEquals("Ctrl+B", DesktopShellStrings.RAIL_TOGGLE_SHORTCUT)
+        assertEquals("折叠导航栏", DesktopShellStrings.RAIL_COLLAPSE)
+        assertEquals("展开导航栏", DesktopShellStrings.RAIL_EXPAND)
+        assertEquals("Ctrl K", DesktopShellStrings.SEARCH_HINT)
     }
 }

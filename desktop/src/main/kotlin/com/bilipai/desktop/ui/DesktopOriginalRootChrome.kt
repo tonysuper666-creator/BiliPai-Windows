@@ -81,8 +81,13 @@ internal class DesktopOriginalRootChromeBindings(
         DisposableEffect(binding.owner) { onDispose { binding.onSourceReady(false) } }
         // The Home renderer still independently requires its OWN ready backdrop.
         // This publishes the real Windows shader capability gate, not feed pixels.
-        Row(Modifier.fillMaxSize()) {
-            if (!video) DesktopWindowsGlassSurface(shape = androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) {
+        // UX S1 (hunk RH2): the rail and the content column are one DesktopWindowsShellFrame, whose single content() call site keeps
+        // the content in place whatever the rail does. The classic text rail and the audio row below stay inline here for rail_mode
+        // CLASSIC_TEXT; every other mode mounts the glass rail and the 56 dp now-playing strip.
+        DesktopWindowsShellFrame(railVisible = !video, nowPlayingVisible = audioVisible, content = content,
+            rail = { shell ->
+            if (shell.presentation != DesktopRailPresentation.CLASSIC) DesktopWindowsRailHost(routes, binding, currentItem, visibleItems, onItemClick, shell)
+            else DesktopWindowsGlassSurface(shape = androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) {
                 val sidebarScroll = rememberScrollState()
                 Box(Modifier.width(172.dp).fillMaxHeight()) {
                     Column(Modifier.fillMaxSize().verticalScroll(sidebarScroll).padding(12.dp),
@@ -110,9 +115,15 @@ internal class DesktopOriginalRootChromeBindings(
                     )
                 }
             }
-            Column(Modifier.weight(1f).fillMaxHeight()) {
-                Box(Modifier.weight(1f).fillMaxWidth()) { content() }
-                if (audioVisible && audio != null && snapshot != null) DesktopWindowsGlassSurface(Modifier.fillMaxWidth()) {
+            },
+            nowPlaying = { shell ->
+            if (audio != null && snapshot != null) {
+                if (shell.presentation != DesktopRailPresentation.CLASSIC) DesktopWindowsNowPlayingBar(
+                    title = snapshot.item.title, playing = snapshot.isPlaying,
+                    onPrevious = { audio.previous(snapshot) }, onPlayPause = { audio.playPause(snapshot, navigation) },
+                    onNext = { audio.next(snapshot) }, onOpen = { audio.expand(snapshot, navigation) },
+                    onClose = { audio.dismiss(snapshot, navigation) })
+                else DesktopWindowsGlassSurface(Modifier.fillMaxWidth()) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(snapshot.item.title, Modifier.weight(1f), maxLines = 1)
@@ -124,7 +135,7 @@ internal class DesktopOriginalRootChromeBindings(
                     }
                 }
             }
-        }
+            })
         }
         }
     }

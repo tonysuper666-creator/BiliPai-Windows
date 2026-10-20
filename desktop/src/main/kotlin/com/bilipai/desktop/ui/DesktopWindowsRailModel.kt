@@ -17,6 +17,14 @@ internal const val DESKTOP_RAIL_FOOTPRINT_EXPANDED_DP = 216
 internal const val DESKTOP_RAIL_FOOTPRINT_COLLAPSED_DP = 72
 internal const val DESKTOP_RAIL_FOOTPRINT_CLASSIC_DP = 172
 internal const val DESKTOP_RAIL_BADGE_CAP = 99
+internal const val DESKTOP_RAIL_PANEL_EXPANDED_DP = 200
+internal const val DESKTOP_RAIL_PANEL_COLLAPSED_DP = 56
+internal const val DESKTOP_RAIL_MARGIN_DP = 8
+internal const val DESKTOP_RAIL_PANEL_RADIUS_DP = 16
+internal const val DESKTOP_RAIL_HEADER_DP = 48
+internal const val DESKTOP_RAIL_SEARCH_ROW_DP = 36
+internal const val DESKTOP_RAIL_SEARCH_COLLAPSED_DP = 40
+internal const val DESKTOP_RAIL_NOW_PLAYING_BAR_DP = 56
 // UX-RAIL-METRICS-END
 
 /** Window widths (dp after zoom) at which a mode expands, collapses and re-expands. */
@@ -77,6 +85,22 @@ internal fun desktopRailToggleMode(
         DesktopRailPresentation.CLASSIC -> null
     }
     return if (target == mode) null else target
+}
+
+/**
+ * Whether the toggle can change what the rail shows at this window width: the explicit mode it would write must give another
+ * presentation than the one on screen. A window too narrow for the rail to expand shows the collapsed rail whichever of AUTO
+ * and EXPANDED is in force (the default window is such a window), so there the toggle must not write EXPANDED, which would
+ * change nothing on screen and leave the toggle without a target afterwards; the shell tells the user instead. False when
+ * there is nothing to write.
+ */
+internal fun desktopRailToggleEffective(
+    mode: DesktopWindowsUxRailMode,
+    presentation: DesktopRailPresentation,
+    windowWidthDp: Int,
+): Boolean {
+    val target = desktopRailToggleMode(mode, presentation) ?: return false
+    return desktopRailPresentation(target, windowWidthDp, presentation) != presentation
 }
 
 /** An entry of the rail context menu (spec 3.2). Choosing it writes the explicit mode it carries. */
@@ -213,4 +237,80 @@ internal fun desktopRailBadgeKind(unreadCount: Int, presentation: DesktopRailPre
     unreadCount <= 0 -> DesktopRailBadgeKind.NONE
     presentation == DesktopRailPresentation.COLLAPSED -> DesktopRailBadgeKind.DOT
     else -> DesktopRailBadgeKind.PILL
+}
+
+/*
+ * Slice S1: what the rail composables need beyond the rows. Roving focus makes the rail one tab stop, the zoom functions
+ * decide the toast after a zoom change, and the write-failure rule decides when the rail owns a save problem.
+ */
+
+/** The keys that move the roving focus of the rail (spec 3.2: Up, Down, Home, End). Enter and Space are the rows' own. */
+internal enum class DesktopRailRovingKey { UP, DOWN, HOME, END }
+
+/**
+ * The stop that gets the focus after a key. Stops are numbered in tab order (the header button, the search row, then the
+ * rows); count is how many there are and current is the stop that has the focus. A step stops at the first and the last
+ * stop, it never wraps. Returns -1 when there is no stop at all.
+ */
+internal fun desktopRailRovingTarget(count: Int, current: Int, key: DesktopRailRovingKey): Int {
+    if (count <= 0) return -1
+    val last = count - 1
+    return when (key) {
+        DesktopRailRovingKey.UP -> (current - 1).coerceIn(0, last)
+        DesktopRailRovingKey.DOWN -> (current + 1).coerceIn(0, last)
+        DesktopRailRovingKey.HOME -> 0
+        DesktopRailRovingKey.END -> last
+    }
+}
+
+/**
+ * The one stop that Tab can reach: the stop the user moved to last (roving), else the stop of the selected row, else the
+ * first. An index outside the stops is pulled to the nearest one. Returns -1 when there is no stop at all.
+ */
+internal fun desktopRailTabStop(count: Int, roving: Int?, selected: Int?): Int {
+    if (count <= 0) return -1
+    return (roving ?: selected ?: 0).coerceIn(0, count - 1)
+}
+
+/**
+ * The app zoom in percent, read back from the two densities the display-scale scope provides: the scaled density the
+ * content sees and the system density it started from. Null when the system density is unknown or either value is not a
+ * positive finite number.
+ */
+internal fun desktopZoomPercent(density: Float, systemDensity: Float?): Int? {
+    if (systemDensity == null) return null
+    if (!(density > 0f) || !(systemDensity > 0f)) return null
+    if (density.isInfinite() || systemDensity.isInfinite()) return null
+    return kotlin.math.round(density.toDouble() / systemDensity.toDouble() * 100.0).toInt()
+}
+
+/** The percent the zoom toast shows: the new one, and only when both reads are known and differ, so the first read stays silent. */
+internal fun desktopZoomToastPercent(previous: Int?, current: Int?): Int? =
+    if (previous != null && current != null && previous != current) current else null
+
+/** A write error that arrives this long after the rail wrote its mode is taken to be the rail's own. */
+internal const val DESKTOP_RAIL_SAVE_WINDOW_MS = 5000L
+
+/**
+ * How long the frame waits before it looks at the published write error again, after a rail write that found an error already
+ * standing. A second failure in a row leaves the published error as it was, so no new value arrives to tell about it; a write that
+ * succeeds clears the error well inside this time.
+ */
+internal const val DESKTOP_RAIL_SAVE_RECHECK_MS = 750L
+
+/**
+ * Whether the rail names its keys (Ctrl+B on the toggle, Ctrl+K on the search row, Ctrl+1 to Ctrl+9 on the rows) in tooltips and
+ * in the search hint. They are named only while the shell shortcut host that handles them exists: slice S2 sets this to true in
+ * the same change that adds that host, and not before, so the rail never names a key that does nothing.
+ */
+internal const val DESKTOP_RAIL_SHORTCUT_HINTS = false
+
+/**
+ * Whether a published write error is shown as "the rail setting could not be saved". The store reports one error for the
+ * whole windows_ux namespace, so the rail claims it only when it wrote a mode just before (writeIssuedAtMs, null when it
+ * never did) and the error is there.
+ */
+internal fun desktopRailWriteFailureShown(writeIssuedAtMs: Long?, nowMs: Long, errorPublished: Boolean): Boolean {
+    if (!errorPublished || writeIssuedAtMs == null) return false
+    return (nowMs - writeIssuedAtMs) in 0L..DESKTOP_RAIL_SAVE_WINDOW_MS
 }

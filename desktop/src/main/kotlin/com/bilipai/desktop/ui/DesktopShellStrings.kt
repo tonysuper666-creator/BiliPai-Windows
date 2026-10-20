@@ -19,6 +19,10 @@ internal object DesktopShellStrings {
     const val SEARCH = "搜索"
     const val SEARCH_HINT = "Ctrl K"
 
+    /** The shortcut of the search row and of the rail toggle, as a tooltip shows them. */
+    const val SEARCH_SHORTCUT = "Ctrl+K"
+    const val RAIL_TOGGLE_SHORTCUT = "Ctrl+B"
+
     const val GROUP_BROWSE = "浏览"
     const val GROUP_LIBRARY = "媒体库"
 
@@ -32,8 +36,11 @@ internal object DesktopShellStrings {
      */
     const val RAIL_AUTO = "导航栏恢复为自动"
 
-    /** Shown when a rail mode change could not be written; the mode still holds for this session. */
+    /** Shown when a rail mode change could not be saved (a refused command, or a failed write; a failed write keeps the mode for this session). */
     const val RAIL_SAVE_FAILED = "无法保存导航栏设置"
+
+    /** Shown instead of a write when the toggle asks for the expanded rail in a window that is too narrow to show it. */
+    const val RAIL_TOO_NARROW = "窗口太窄，无法展开导航栏"
 
     /** Ctrl+B means the rail on shell pages and the side panel on the video page; the help list says so. */
     const val CTRL_B_NOTE = "Ctrl+B 在视频页打开或关闭详情面板"
@@ -85,6 +92,9 @@ internal object DesktopShellStrings {
 
     /** The tooltip of a row on an expanded rail, after the long delay: only the shortcut, or nothing. */
     fun expandedTooltip(number: Int?): String? = if (number == null) null else "Ctrl+$number"
+
+    /** The tooltip of the search button of a collapsed rail, in the same form as the other collapsed rows. */
+    fun searchTooltip(): String = "$SEARCH ($SEARCH_SHORTCUT)"
 
     /** The shortcut list line for an action. */
     fun actionLabel(action: DesktopShellAction): String = when (action.kind) {

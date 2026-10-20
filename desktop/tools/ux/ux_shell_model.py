@@ -204,6 +204,15 @@ def rail_toggle_mode_kt(mode, presentation):
     return None if target == mode else target
 
 
+def rail_toggle_effective_kt(limits, mode, presentation, width):
+    """desktopRailToggleEffective: whether the explicit mode the toggle would write shows another presentation than the one on
+    screen at this width (the shown presentation is the memory of the rule). False when there is nothing to write."""
+    target = rail_toggle_mode_kt(mode, presentation)
+    if target is None:
+        return False
+    return rail_presentation_kt(limits, target, width, presentation) != presentation
+
+
 def rail_menu_actions_kt(action_modes, mode, presentation):
     """desktopRailMenuActions. action_modes: {action: mode it writes} (menu_actions of the Kotlin text)."""
     if presentation == "classic":
@@ -259,6 +268,74 @@ def badge_kind_kt(count, presentation):
     if presentation == "collapsed":
         return "DOT"
     return "PILL"
+
+
+# --------------------------------------------------------------------------------------
+# Mirrors of the slice S1 functions of DesktopWindowsRailModel.kt (roving focus, zoom toast, write failure)
+# --------------------------------------------------------------------------------------
+
+ROVING_KEYS = ("UP", "DOWN", "HOME", "END")
+INT_MAX = 2 ** 31 - 1
+INT_MIN = -(2 ** 31)
+
+
+def rail_roving_target_kt(count, current, key):
+    """desktopRailRovingTarget: the stop that gets the focus after a key; -1 when there is no stop."""
+    if count <= 0:
+        return -1
+    last = count - 1
+    if key == "UP":
+        return coerce_in(current - 1, 0, last)
+    if key == "DOWN":
+        return coerce_in(current + 1, 0, last)
+    if key == "HOME":
+        return 0
+    if key == "END":
+        return last
+    raise AssertionError("unknown roving key " + repr(key))
+
+
+def rail_tab_stop_kt(count, roving, selected):
+    """desktopRailTabStop: the one stop Tab can reach, -1 when there is no stop."""
+    if count <= 0:
+        return -1
+    chosen = roving if roving is not None else (selected if selected is not None else 0)
+    return coerce_in(chosen, 0, count - 1)
+
+
+def f32(value):
+    """The nearest Kotlin Float of a number."""
+    import struct
+    try:
+        return struct.unpack("<f", struct.pack("<f", value))[0]
+    except OverflowError:
+        return float("inf") if value > 0 else float("-inf")
+
+
+def zoom_percent_kt(density, system_density):
+    """desktopZoomPercent: Float inputs, Double division, kotlin.math.round (ties to even) and Double.toInt (saturating)."""
+    import math
+    if system_density is None:
+        return None
+    d, s = f32(density), f32(system_density)
+    if not (d > 0.0) or not (s > 0.0):
+        return None
+    if math.isinf(d) or math.isinf(s):
+        return None
+    value = round(d / s * 100.0)
+    return max(INT_MIN, min(INT_MAX, int(value)))
+
+
+def zoom_toast_percent_kt(previous, current):
+    """desktopZoomToastPercent."""
+    return current if previous is not None and current is not None and previous != current else None
+
+
+def rail_write_failure_shown_kt(issued_at_ms, now_ms, error_published, window_ms):
+    """desktopRailWriteFailureShown: the window is inclusive and an error before the write does not count."""
+    if not error_published or issued_at_ms is None:
+        return False
+    return 0 <= now_ms - issued_at_ms <= window_ms
 
 
 # --------------------------------------------------------------------------------------

@@ -310,10 +310,15 @@ class ControlShapeTest(unittest.TestCase):
 
     def test_the_nav_row_is_one_tab_with_the_pill_and_the_collapsed_name(self):
         block = function_block(CONTROLS, "DesktopNavRow")
+        # Slice S1 changed this pin with exact values: an optional description is the accessible name (the shell rail announces
+        # the unread count with it); without one a collapsed row keeps its label as the name, as before.
         for needle in ("role = Role.Tab", "DESKTOP_KIT_NAV_PILL_WIDTH_DP", "DESKTOP_KIT_NAV_PILL_HEIGHT_DP",
-                       "if (collapsed) contentDescription = label", "DESKTOP_KIT_ROW_NAV_DP.dp", "TooltipAnchorPosition.Right"):
+                       "val name = description ?: if (collapsed) label else null", "if (name != null) contentDescription = name",
+                       "DESKTOP_KIT_ROW_NAV_DP.dp", "TooltipAnchorPosition.Right"):
             self.assertIn(needle, block, needle)
+        self.assertIn("    description: String? = null,\n) {", block)
         self.assertEqual(1, block.count(".selectable("))
+        self.assertEqual(1, block.count("contentDescription ="))
 
     def test_the_badge_is_decorative(self):
         block = function_block(CONTROLS, "DesktopBadge")
