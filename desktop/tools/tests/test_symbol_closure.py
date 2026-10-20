@@ -1172,10 +1172,10 @@ class ExpectedGapsTests(unittest.TestCase):
 
     def test_the_committed_expected_gaps_file_is_well_formed_and_documents_every_gap(self):
         expected = gate.load_expected(REPO / gate.EXPECTED_GAPS_FILE)
-        # 32 open gap rows after v046-wallpaper-foundation closed eight symbols (41 rows before: ten rows closed, some symbols
-        # had an import row and a qualified row, and one row opened for WallpaperMediaLoadState, which the carried Android
-        # sheet imports); this floor is the exact current count and each closing slice lowers it
-        self.assertGreaterEqual(len(expected['gaps']), 32)
+        # The open gap rows shrink with every slice that closes symbols (32 after the wallpaper slice, 31 once the Bangumi hub
+        # and the pagers had landed too), so slices running in parallel cannot each pin the exact count. The floor only catches
+        # an accidental wipe of the file; the exact data is guarded by the gate itself (unexpected and stale gaps fail it).
+        self.assertGreaterEqual(len(expected['gaps']), 15)
         for gap in expected['gaps']:
             self.assertTrue(gap['reason'].strip() and gap['closedBy'].strip(), gap)
             self.assertIn(gap['scope'], gate.KNOWN_SCOPES)
