@@ -8,6 +8,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.serialization.json.*
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assumptions.assumeTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.nio.file.AccessDeniedException
 import java.nio.file.Files
@@ -21,6 +23,11 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /** Real Windows no-share-delete handle, real Store file/CAS/Flow. No Root/UI claim. */
 class DesktopPreferenceReplacementRetryWindowsTest {
+    @BeforeEach
+    fun requireWindows() {
+        assumeTrue(System.getProperty("os.name").startsWith("Windows", ignoreCase = true), "Actual Windows no-share-delete handle")
+    }
+
     interface ReadLockKernel32 : StdCallLibrary {
         fun CreateFileW(name: WString, access: Int, share: Int, security: Pointer?, creation: Int, flags: Int, template: Pointer?): Pointer?
         fun CloseHandle(handle: Pointer): Boolean
