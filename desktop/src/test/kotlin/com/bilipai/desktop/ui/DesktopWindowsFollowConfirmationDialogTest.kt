@@ -24,7 +24,8 @@ class DesktopWindowsFollowConfirmationDialogTest {
     @Test
     fun theAdapterIsACompositionThatTakesTheUpstreamDismissRequestFirst() {
         val adapter = Class.forName("com.bilipai.desktop.ui.DesktopWindowsFollowConfirmationDialogKt")
-            .declaredMethods.single { it.name == "DesktopWindowsFollowConfirmationDialog" }
+            // internal functions carry a module suffix in their JVM name, and the default-argument bridge adds a second method
+            .declaredMethods.single { it.name.startsWith("DesktopWindowsFollowConfirmationDialog") && !it.name.contains("default") }
         assertEquals(Function0::class.java, adapter.parameterTypes.first(), "onDismissRequest is the first parameter")
         assertTrue(adapter.parameterTypes.any { it == Composer::class.java }, "it is a composable function")
     }
