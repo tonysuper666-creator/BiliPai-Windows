@@ -4,7 +4,9 @@
 
 > **验证改为零 token 的 shell 守护进程（Root 2026-10-19）：不再靠你读 VERIFY.md 逐行做。守护进程 verify.sh 每 15 分钟看一次本分支的 TARGET 文件，有新提交就自己做一次干净编译 + JVM + Python 并把紧凑报告推到 grokbot/verify-<sha>，每小时推一次 grokbot/status 心跳。你只需要启动它一次，之后不要再做任何事、不要轮询、不要写报告。**
 
-> **Root 2026-10-19（用户明确要求“少让他干点活”）：你现在只做 VERIFY.md 里的编译与测试验证，以及我另外点名的只读审计。T9 和 T13 的所有切片开发工作一律停止（含 #4 字形一半、#3 调色板、#6 的 VideoCardAdaptiveTintPolicy、#46、#35）：这些由 Root 接手，已经在做的未提交内容不要再推进，已经推到 grokbot/slices-batch1 的提交我会自己看。没有 VERIFY 行时就空闲检查，不要自己找活。**
+> **Root 2026-10-22（用户升级了套餐，开放开发）：从本条起，QUEUE 里标 TODO 的开发任务你可以做，覆盖下面 2026-10-19 的“停止开发”。范围只限：`desktop/src/**`、`desktop/src/test/**`、`desktop/tools/*.py`（带哈希证明的生成器，改动要有对应测试）。第 2 节的铁律全部仍然有效，尤其是受保护路径不能手改。VERIFY.md 的条目仍优先于 TODO。每个任务的细节在 tasks/ 下同名文件里，按那里的完成标准收工。**
+
+> **Root 2026-10-19（用户明确要求“少让他干点活”）：已由上面 2026-10-22 条覆盖，历史保留：T9 和 T13 的切片开发已取消，由 Root 接手。已经推到 grokbot/slices-batch1 的提交 Root 会自己看。**
 
 | 编号 | 状态 | 内容 | 细节文件 | 依赖 |
 |---|---|---|---|---|
@@ -17,5 +19,6 @@
 | T10 | DONE（Root 已审并摘入 integration-263：测试修复提交 578444aeb） | test_v029_failure_recovery 两项旧失败的只读分析（根因 + 最小修复补丁，不提交到可合并分支）。 | tasks/T10.md | 无 |
 | T11 | DONE（grokbot/t11-old-python-failures @ c9bf8bbca；Root 的答复见 DECISIONS.md，补丁由 T12 应用） | 三个旧 Python 测试失败的只读分析（up_danmaku、brand_success_mount、comment_renderer），方法同 T10。 | tasks/T11.md | 无 |
 | T7 | DONE（grokbot/T7-report；全部通过，test_rtx_hdr_color 在 R1 之后真实 7/7） | 在 T6 通过后：对 origin/grokbot/r1-test-currency 的头（含 R1 修复和测试更新）做一次“集成体检”：compileKotlin/compileTestKotlin，NVIDIA 14 个测试类，评论相关 23 个测试类，desktop/tools/nvidia 的 Python 检查，以及 tasks/T7.md 里列出的 Python 测试。只汇报，不改代码。 | tasks/T7.md | T6 |
+| T14 | TODO（Root 2026-10-22 派发） | 整合分支头 9c6417bad 上四个失败的 JVM 类（DynamicAccountStorage 2 个、DynamicCache 1 个、UpdateMonitoring 1 个、PublicContentNetwork 1 个）：取到用例名和报错，逐个分类（产品缺陷修复 / 测试错误修复 / 仅 Windows 跳过 / 上游原文只分析），修复按类分提交到 grokbot/fix-jvm-4-classes，报告推到 grokbot/T14-report。 | tasks/T14.md | 无（基于 origin/desktop/integration-263-claude-main @ 9c6417bad） |
 
 VERIFY.md 里的条目优先于 TODO 任务（见 STANDING-ORDERS 第 1 节）。
