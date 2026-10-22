@@ -1,0 +1,19 @@
+--- a/desktop/upstream-slices/v046-rss-public-content/PublicContentNetwork.kt
++++ b/desktop/upstream-slices/v046-rss-public-content/PublicContentNetwork.kt
+@@ -24,7 +24,15 @@
+ 
+ internal fun sanitizePublicContentUrl(url: HttpUrl): HttpUrl {
+     val builder = url.newBuilder().username("").password("")
+-    url.queryParameterNames.filter(::isPublicContentCredential).forEach(builder::removeAllQueryParameters)
++    // removeAllQueryParameters(name) re-encodes the decoded name and compares it with the
++    // encoded query, so a percent-encoded alias such as %61ccess_token survived. Match on the
++    // decoded name, remove by the exact encoded name, and leave the other parameters byte-exact.
++    val encodedNames = url.encodedQuery?.split('&')?.map { it.substringBefore('=') }.orEmpty()
++    for (index in 0 until url.querySize) {
++        if (isPublicContentCredential(url.queryParameterName(index))) {
++            builder.removeAllEncodedQueryParameters(encodedNames[index])
++        }
++    }
+     return builder.build()
+ }
+ 
