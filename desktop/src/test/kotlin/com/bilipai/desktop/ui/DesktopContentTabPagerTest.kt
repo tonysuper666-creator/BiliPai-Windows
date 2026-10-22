@@ -11,11 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Density
 import com.android.purebilibili.core.ui.common.rememberContentTabPager
 import com.android.purebilibili.core.ui.components.AppHorizontalPager
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.yield
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotSame
+import kotlin.test.assertTrue
 
 /**
  * The PagerState rebuild guard of the carried v0.4.6 ContentTabPager (roadmap space-profile-content-pager).
@@ -33,7 +36,10 @@ class DesktopContentTabPagerTest {
         val tabs = mutableStateOf(listOf("home", "dynamic", "contribution"))
         var pager: PagerState? = null
         private var nanos = 0L
-        val scene = ImageComposeScene(400, 300, Density(1f)) {
+        // An exception thrown inside the scene's recomposer belongs to this test, not to whichever runTest runs next.
+        val uncaught = java.util.concurrent.CopyOnWriteArrayList<Throwable>()
+        val scene = ImageComposeScene(400, 300, Density(1f),
+            coroutineContext = Dispatchers.Unconfined + CoroutineExceptionHandler { _, error -> uncaught += error }) {
             val displayed = tabs.value
             val state = rememberContentTabPager(
                 pageCount = displayed.size,
@@ -61,7 +67,10 @@ class DesktopContentTabPagerTest {
             }
         }
 
-        override fun close() = scene.close()
+        override fun close() {
+            scene.close()
+            assertTrue(uncaught.isEmpty(), "uncaught composition exceptions: $uncaught")
+        }
     }
 
     @Test
