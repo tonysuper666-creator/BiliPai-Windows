@@ -1,9 +1,8 @@
 # Grok Bot STATUS
 
-- Time (UTC): 2026-10-22 16:15:05
-- Current task: none (T14 finished; waiting for the next TODO in QUEUE.md)
-- Completed: T14 -> report grokbot/T14-report @ a2044bf6b (grokbot-reports/T14.md + 2 proposal patches); fixes grokbot/fix-jvm-4-classes @ 7e112b2be (3 test commits on 9c6417bad: 3d8d72a64 b, 7ad4c064b c, 7e112b2be b).
-- Classes: DynamicAccountStorage 2 (b, fixed), DynamicCache 1 (c, Windows assumption), WindowsFollowConfirmationDialog 1 (b, fixed), PublicContentNetwork 1 (d, analysis + patch proposal, still fails), UpdateMonitoring 1 (leaked IOOBE from DesktopContentTabPagerTest / upstream ContentTabPager shrink path, needs Root decision, still fails in full runs), LiveVote 1 and NvidiaHealthStore 1 (not reproduced in 5 runs each, unchanged).
-- Last Gradle: gradle.sh test -x prepareJsWorkerResources --continue --rerun at 7e112b2be -> BUILD FAILED in 3m 28s, 5279 tests, 5 failed (3 known JS worker, PublicContentNetwork, UpdateMonitoring), 13 skipped. Linux JVM only; Python not run in this task; Windows and hardware not verified.
-- BLOCKED: none. Needs Root decision: PublicContentNetwork (protected upstream file) and the ContentTabPager leak.
-- Note: VERIFY.md rows f0b8e2e27 / 56873c447 / 7e47d7bc5 still TODO; verify.sh daemon is not running since the box reset and was not restarted.
+- Time (UTC): 2026-10-22 16:20:34
+- Current task: none (T14 round 2 finished; waiting for the next TODO in QUEUE.md)
+- Completed: T14 rounds 1 and 2. Report grokbot/T14-report @ 87b5aa249 (grokbot-reports/T14.md, sections 1-6, plus 2 proposal patches). Round 1 fixes grokbot/fix-jvm-4-classes @ 7e112b2be (adopted by Root as baa93ed01/d2a3f7c39/2aa4e9b04). Round 2: new branch grokbot/fix-jvm-4-classes-r2 @ d1f7ef8ab on 2aa4e9b04 (DesktopContentTabPagerTest exception probe); rebasing the old branch would need a force push, so it was not rebased.
+- Last Gradle: gradle.sh test -x prepareJsWorkerResources --continue --rerun at d1f7ef8ab -> BUILD FAILED in 3m 30s, 646 classes, 5279 tests, 5 failed (DesktopContentTabPagerTest 1 via probe, PublicContentNetworkTest 1, 3 known JS worker), 13 skipped; DesktopUpdateMonitoringTest 20/20. Linux JVM only; Python not run; Windows/hardware not verified.
+- BLOCKED: none. Needs Root decision: PublicContentNetwork encoded credential aliases (protected upstream file); ContentTabPager shrink-path IOOBE (protected upstream file) and whether to adopt d1f7ef8ab.
+- Note: verify.sh daemon is not running since the box reset (TARGET now 2aa4e9b04); not restarted.
