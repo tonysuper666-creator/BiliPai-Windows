@@ -205,7 +205,9 @@ verify_one() {  # <branch> <sha>
         [ -z "$spec" ] && continue
         dir=${spec%%:*}; pat=${spec#*:}
         timeout 1800 bash "$BOOT/python-test.sh" "$W" discover -s "desktop/tools/$dir" -p "$pat" > "$L/py.out" 2>&1
-        out=$(tail -4 "$L/py.out" | tr '\n' ' ' | cut -c1-220)
+        # the unittest verdict lines (Ran / OK / FAILED); the tail is only a fallback when none is printed
+        out=$(grep -E '^(Ran |OK|FAILED|NO TESTS)' "$L/py.out" | tr '\n' ' ' | cut -c1-220)
+        [ -n "$out" ] || out=$(tail -2 "$L/py.out" | tr '\n' ' ' | cut -c1-220)
         echo "- $dir/$pat: $out" >> "$rep"
         grep -E '^(FAIL|ERROR): ' "$L/py.out" | head -8 | cut -c1-200 | sed 's/^/    /' >> "$rep"
       done < <(target_field py)
