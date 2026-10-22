@@ -64,7 +64,7 @@ class DesktopDynamicAccountStorageTest {
         try {
             f.login(101);val first=f.open();val prefs=f.prefs(first)
             first.saveTimeline(listOf(accountDynamic("cold-A")));f.cache.flush()
-            prefs.setSelectedTab(4);prefs.toggleUserPreference("dynamic_pinned_users",77)
+            prefs.setSelectedTab(3);prefs.toggleUserPreference("dynamic_pinned_users",77)
             f.cache.shutdownForRestore();f.store.freezeWrites()
             val store=DesktopPluginStore(f.store.root)
             val cache=DesktopDynamicCache(f.sessions,store)
@@ -72,7 +72,7 @@ class DesktopDynamicAccountStorageTest {
                 val restored=checkNotNull(cache.openCurrent())
                 val current=DesktopDynamicTabsPreferences(DesktopPluginContext(store),restored)
                 assertEquals(listOf("cold-A"),restored.cachedAllItems.value.map{it.id_str})
-                assertEquals(4,current.selectedTab);assertEquals(setOf(77L),current.pinned.first())
+                assertEquals(3,current.selectedTab);assertEquals(setOf(77L),current.pinned.first())
                 assertFailsWith<IllegalStateException>{prefs.setSelectedTab(1)}
             } finally {cache.shutdownForRestore()}
         } finally {f.cache.shutdownForRestore()}
@@ -99,10 +99,10 @@ class DesktopDynamicAccountStorageTest {
         val f=DynamicAccountFixture()
         try {
             f.login(101,"before");val old=f.open();val preferences=f.prefs(old)
-            old.saveTimeline(listOf(accountDynamic("same-account")));f.cache.flush();preferences.setSelectedTab(4)
+            old.saveTimeline(listOf(accountDynamic("same-account")));f.cache.flush();preferences.setSelectedTab(3)
             f.login(101,"after");val next=f.open()
             assertNotEquals(old.owner,next.owner);assertEquals(old.cacheNamespace,next.cacheNamespace)
-            assertEquals(listOf("same-account"),next.cachedAllItems.value.map{it.id_str});assertEquals(4,f.prefs(next).selectedTab)
+            assertEquals(listOf("same-account"),next.cachedAllItems.value.map{it.id_str});assertEquals(3,f.prefs(next).selectedTab)
             assertFailsWith<IllegalStateException>{preferences.setSelectedTab(2)}
             old.saveTimeline(listOf(accountDynamic("retired")));f.cache.flush();assertNotNull(old.writeFailure.value)
             assertEquals(listOf("same-account"),next.cachedAllItems.value.map{it.id_str})
