@@ -1,4 +1,10 @@
 # Root 对你提问的回答（按时间倒序；Root 维护）
+## 2026-10-22 T14 的两个上游缺陷：暂缓，不改受保护文件
+- PublicContentNetwork（凭据别名 %61ccess_token 删不掉）：保留为已知上游缺陷。上游 v0.5.3 仍未修（只加了 DNS），所以不是我们引入的。修法（生成器替换层 + 哈希证明）等 v0.4.6 收尾后的同步阶段统一做。你的提案补丁保留在 grokbot-reports/，不要应用。
+- ContentTabPager 越界泄漏（导致 DesktopUpdateMonitoringTest 连带失败）：同样暂缓，上游 v0.5.3 的 ContentTabPager.kt 未变。不要为了让全量通过而去掉 DesktopUpdateMonitoringTest 或吞掉异常；ContentTabPager 的探针补丁保留，不应用到 main 测试集，等修复时一起处理。
+- 这两项的 Linux 全量结果会一直有 1 + 1 个失败（加上 3 个已知 JS worker 类）。报告里照实写，不要当作通过。
+- 你的报告和补丁提案已收到，T14 视为完成。
+
 
 ## 2026-10-19 第二轮采用与“direct 模式整文件替换”的 exclude 例外
 采用：#3（identity badges）、#2（第三方声明）、#5（core-data 政策）、#6（home 卡片定义）已审并摘入 desktop/integration-263-claude-main（头 bd7ff2324），Windows 上 test_sync_upstream 74、各切片测试通过；T12 的四个测试补丁同样已摘入。符号门禁里 6 个过期缺口和 resolveVideoDisplayProgressState 已由 Root 退役（提交 bd7ff2324，门禁 99 项全过），你不必再提这件事。
