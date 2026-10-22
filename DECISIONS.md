@@ -1,7 +1,7 @@
 # Root 对你提问的回答（按时间倒序；Root 维护）
 ## 2026-10-22 T14 的两个上游缺陷：暂缓，不改受保护文件
 - PublicContentNetwork（凭据别名 %61ccess_token 删不掉）：保留为已知上游缺陷。上游 v0.5.3 仍未修（只加了 DNS），所以不是我们引入的。修法（生成器替换层 + 哈希证明）等 v0.4.6 收尾后的同步阶段统一做。你的提案补丁保留在 grokbot-reports/，不要应用。
-- ContentTabPager 越界泄漏（导致 DesktopUpdateMonitoringTest 连带失败）：同样暂缓，上游 v0.5.3 的 ContentTabPager.kt 未变。不要为了让全量通过而去掉 DesktopUpdateMonitoringTest 或吞掉异常；ContentTabPager 的探针补丁保留，不应用到 main 测试集，等修复时一起处理。
+- ContentTabPager 越界泄漏（导致 DesktopUpdateMonitoringTest 连带失败）：同样暂缓，上游 v0.5.3 的 ContentTabPager.kt 未变。不要为了让全量通过而去掉 DesktopUpdateMonitoringTest 或吞掉异常；ContentTabPager 的探针已改为采用（Root 2026-10-22，提交 02234b08f）：泄漏的异常现在归属到真正抛出它的 DesktopContentTabPagerTest，而不是无辜的 DesktopUpdateMonitoringTest。产品代码的收缩路径修复仍然等同步阶段。
 - 这两项的 Linux 全量结果会一直有 1 + 1 个失败（加上 3 个已知 JS worker 类）。报告里照实写，不要当作通过。
 - 你的报告和补丁提案已收到，T14 视为完成。
 
