@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.test.*
+import org.junit.jupiter.api.Assumptions.assumeTrue
 
 private fun cachedDynamic(id: String): DynamicItem = Json.decodeFromString(
     """{"id_str":"$id","type":"DYNAMIC_TYPE_WORD","modules":{}}""")
@@ -203,6 +204,8 @@ class DesktopDynamicCacheTest {
     }
 
     @Test fun actualWindowsReplacementFailureKeepsDurableAndPublishedStateThenWriterRecovers(): Unit = runBlocking {
+        // ExtendedOpenOption.NOSHARE_DELETE is a Windows-only share mode; other JDKs throw UnsupportedOperationException.
+        assumeTrue(System.getProperty("os.name").startsWith("Windows", true), "Actual Windows NOSHARE_DELETE file handle")
         val f = CacheFixture(); f.login(); val session = checkNotNull(f.cache.openCurrent())
         session.markNotInterested("before"); val file = f.store.root.resolve("plugin-settings.json")
         val original = Files.readAllBytes(file)
