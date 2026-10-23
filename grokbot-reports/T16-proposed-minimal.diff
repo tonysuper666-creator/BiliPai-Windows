@@ -1,0 +1,61 @@
+# Proposal only — not applied. Baseline d9595dc75. Max 3 product files.
+
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsDanmakuDialog.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsDanmakuDialog.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsDanmakuDialog.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsDanmakuDialog.kt
+@@ -62,7 +62,8 @@ internal const val DESKTOP_WINDOWS_DANMAKU_COMPOSER_DIALOG_HEIGHT_DP = 420
+ @Composable
+ internal fun DesktopWindowsPlayerDialog(
+     title: String, onDismissRequest: () -> Unit, dismissOnEscape: Boolean = true,
+-    preferredHeightDp: Int = 720, presentationVisible: Boolean? = null,
++    preferredWidthDp: Int = 640, preferredHeightDp: Int = 720,
++    presentationVisible: Boolean? = null,
+     content: @Composable () -> Unit,
+ ) {
+@@ -90,6 +91,7 @@ internal fun DesktopWindowsPlayerDialog(
+                         javax.swing.SwingUtilities.convertPoint(client, 0, 0, owner).apply { translate(owner.x, owner.y) },
+                         client.size), insets,
+                     parentDensity.density, transform.scaleX, transform.scaleY,
++                    preferredWidthDp = preferredWidthDp,
+                     preferredHeightDp = preferredHeightDp,
+                 )
+
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsFollowConfirmationDialog.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsFollowConfirmationDialog.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsFollowConfirmationDialog.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsFollowConfirmationDialog.kt
+@@ -1,6 +1,7 @@
+ package com.bilipai.desktop.ui
+ 
+ import androidx.compose.runtime.Composable
++import androidx.compose.ui.awt.ComposeDialog
++import androidx.compose.ui.awt.LocalAwtWindow
+ import androidx.compose.ui.Modifier
+ ...
+@@ -47,11 +48,16 @@ internal fun DesktopWindowsFollowConfirmationDialog(
+ ) {
+     val mainWindow = LocalDesktopWindowsPlayerWindow.current
++    // Already inside an owned ComposeDialog (e.g. 设置关注分组): keep one window.
++    val alreadyOwnedDialog = LocalAwtWindow.current is ComposeDialog
+     val original: @Composable () -> Unit = {
+         AppAlertDialog(...)
+     }
+-    if (desktopFollowConfirmationUsesOwnedWindow(mainWindow?.isShowing)) {
++    if (alreadyOwnedDialog) {
++        original()
++    } else if (desktopFollowConfirmationUsesOwnedWindow(mainWindow?.isShowing)) {
+         DesktopWindowsPlayerDialog(..., preferredHeightDp = DESKTOP_FOLLOW_CONFIRMATION_HEIGHT_DP, content = original)
+     } else original()
+ }
+
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPopupMaterial.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPopupMaterial.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPopupMaterial.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsPopupMaterial.kt
+@@ -89,8 +89,10 @@ internal fun DesktopWindowsPopupDialog(
+     DesktopWindowsPlayerDialog(
+         title = "清理缓存",
+         onDismissRequest = onDismissRequest,
+         dismissOnEscape = properties.dismissOnBackPress,
++        // Pass-through once DesktopWindowsPlayerDialog exposes preferredWidthDp.
++        preferredWidthDp = 480,
+         preferredHeightDp = 600,
+     ) { ... }
