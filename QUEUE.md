@@ -20,6 +20,6 @@
 | T11 | DONE（grokbot/t11-old-python-failures @ c9bf8bbca；Root 的答复见 DECISIONS.md，补丁由 T12 应用） | 三个旧 Python 测试失败的只读分析（up_danmaku、brand_success_mount、comment_renderer），方法同 T10。 | tasks/T11.md | 无 |
 | T7 | DONE（grokbot/T7-report；全部通过，test_rtx_hdr_color 在 R1 之后真实 7/7） | 在 T6 通过后：对 origin/grokbot/r1-test-currency 的头（含 R1 修复和测试更新）做一次“集成体检”：compileKotlin/compileTestKotlin，NVIDIA 14 个测试类，评论相关 23 个测试类，desktop/tools/nvidia 的 Python 检查，以及 tasks/T7.md 里列出的 Python 测试。只汇报，不改代码。 | tasks/T7.md | T6 |
 | T14 | DONE（grokbot/T14-report 的 T14.md；三个测试修复已由 Root 摘入 integration-263 @ 2aa4e9b04；PublicContentNetwork 与 ContentTabPager 的上游缺陷只做分析，待 Root 决定） | 整合分支头 9c6417bad 上四个失败的 JVM 类（DynamicAccountStorage 2 个、DynamicCache 1 个、UpdateMonitoring 1 个、PublicContentNetwork 1 个）：取到用例名和报错，逐个分类（产品缺陷修复 / 测试错误修复 / 仅 Windows 跳过 / 上游原文只分析），修复按类分提交到 grokbot/fix-jvm-4-classes，报告推到 grokbot/T14-report。 | tasks/T14.md | 无（基于 origin/desktop/integration-263-claude-main @ 9c6417bad） |
-| T15 | TODO（Root 2026-10-22 派发） | 界面快速跟进 H3：Feed 瀑布流的自定义滚动条（估算是纯函数）和 PageUp/PageDown/Home/End 键盘翻页。基于 integration-263 @ 2aa4e9b04，新建 grokbot/h3-feed-scrollbar，报告推到 grokbot/T15-report。 | tasks/T15.md | 无 |
+| T15 | DONE（Root 2026-10-23 采用：integration-263 @ d9595dc75 含 H3 的 4 个提交；挂载点在 DesktopHomeCardGrid.kt 按第二轮决定；Python 检查在 desktop/tools/ux；未验证项见报告） | 界面快速跟进 H3：Feed 瀑布流的自定义滚动条（估算是纯函数）和 PageUp/PageDown/Home/End 键盘翻页。基于 integration-263 @ 2aa4e9b04，新建 grokbot/h3-feed-scrollbar，报告推到 grokbot/T15-report。 | tasks/T15.md | 无 |
 
 VERIFY.md 里的条目优先于 TODO 任务（见 STANDING-ORDERS 第 1 节）。
