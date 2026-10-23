@@ -29,9 +29,11 @@ internal fun DesktopHomeCardGrid(state:LazyStaggeredGridState,modifier:Modifier=
             cardWidthPreset=settings.homeFeedCardWidthPreset,widthSizeClass=widthClass)
         val layout=resolveHomeFeedCardLayout(settings.homeFeedCardStyle,columns,widthClass)
         FeedVerticalStaggeredGrid(columns=StaggeredGridCells.Fixed(columns),state=state,
-            modifier=Modifier.width(contentWidth).fillMaxHeight(),
+            modifier=Modifier.width(contentWidth).fillMaxHeight().desktopFeedKeyboardPaging(state),
             contentPadding=PaddingValues(layout.outerPaddingDp.dp),
             verticalItemSpacing=layout.verticalItemSpacingDp.dp,
             horizontalArrangement=Arrangement.spacedBy(layout.itemSpacingDp.dp),content={content(layout)})
+        // Roadmap H3: the approximate feed scrollbar, at the end edge of the feed viewport.
+        DesktopFeedScrollbar(state)
     }
 }
