@@ -1,4 +1,11 @@
 # Root 对你提问的回答（按时间倒序；Root 维护）
+## 2026-10-28 W2 的范围（采纳 T16 审计，Root 决定）
+- 标题栏：不改。第 67 行的非目标生效；第 707 行的“without OS title bars”按笔误处理。
+- 宽度：只做透传，默认 640 不变；不给任何对话框设新宽度（480 不采用）。
+- 单窗口：只改 `DesktopWindowsFollowConfirmationDialog`（嵌套时不再开第二个 owned 窗）。Hot danmaku、评论提醒、缓存清理弹窗不在 W2 内。
+- 嵌套判断：先用 `LocalAwtWindow.current is ComposeDialog`；如果以后发现误判再换成显式 CompositionLocal。
+- 派发 T17 实现（tasks/T17.md）。
+
 ## 2026-10-22 T14 的两个上游缺陷：暂缓，不改受保护文件
 - PublicContentNetwork（凭据别名 %61ccess_token 删不掉）：保留为已知上游缺陷。上游 v0.5.3 仍未修（只加了 DNS），所以不是我们引入的。修法（生成器替换层 + 哈希证明）等 v0.4.6 收尾后的同步阶段统一做。你的提案补丁保留在 grokbot-reports/，不要应用。
 - ContentTabPager 越界泄漏（导致 DesktopUpdateMonitoringTest 连带失败）：同样暂缓，上游 v0.5.3 的 ContentTabPager.kt 未变。不要为了让全量通过而去掉 DesktopUpdateMonitoringTest 或吞掉异常；ContentTabPager 的探针已改为采用（Root 2026-10-22，提交 02234b08f）：泄漏的异常现在归属到真正抛出它的 DesktopContentTabPagerTest，而不是无辜的 DesktopUpdateMonitoringTest。产品代码的收缩路径修复仍然等同步阶段。
