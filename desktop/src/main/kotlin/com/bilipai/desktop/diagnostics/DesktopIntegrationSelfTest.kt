@@ -139,7 +139,10 @@ internal object DesktopIntegrationSelfTest {
             .redirectErrorStream(true).start()
         val finished = process.waitFor(30, TimeUnit.SECONDS)
         if (!finished) process.destroyForcibly()
-        return if (target.isFile) target.readText().trim() else "{\"error\":\"system media query failed\"}"
+        val answer = if (target.isFile) target.readText().trim().removePrefix("\uFEFF") else ""
+        // The report embeds this verbatim, so anything that is not a JSON object/array stays out of it.
+        return if (answer.startsWith("[") || answer.startsWith("{")) answer
+        else "{\"error\":\"system media query failed\"}"
     }
 
     private fun <T> onEdt(block: () -> T): T {
