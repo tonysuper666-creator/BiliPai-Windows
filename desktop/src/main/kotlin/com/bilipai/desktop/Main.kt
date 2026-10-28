@@ -80,7 +80,10 @@ fun main(args: Array<String>) {
     val healthToken = args.getOrNull(tokenIndex + 1)?.takeIf { tokenIndex >= 0 }
     val activationRoute = com.bilipai.desktop.integration.DesktopToastNotifications.routeFromArgs(args)
     val successorReport = args.firstOrNull { it.startsWith("--single-instance-probe=") }?.substringAfter('=')
-    val selfTestReport = args.firstOrNull { it.startsWith("--single-instance-self-test=") }?.substringAfter('=')
+    val integrationReport = args.firstOrNull { it.startsWith("--integration-self-test=") }?.substringAfter('=')
+        ?.let { path -> java.io.File(path) }
+    val integrationSmtc = args.firstOrNull { it.startsWith("--integration-smtc=") }?.substringAfter('=')
+        ?.let { path -> java.io.File(path) }
     val instance = try {
         com.bilipai.desktop.integration.DesktopSingleInstance.acquire(
             DesktopLibrary.directoryForAccount(null).resolve("desktop-integration"), activationRoute)
@@ -98,9 +101,13 @@ fun main(args: Array<String>) {
         kotlin.system.exitProcess(if (instance == null) 0 else 3)
     }
     if (instance == null) return
-    if (selfTestReport != null) runSingleInstanceSelfTest(java.io.File(selfTestReport))
     instance.use {
     application {
+        // Runs after the first window is on screen, so window, process and system-media evidence
+        // describe a real session instead of a pre-window state.
+        if (integrationReport != null) remember {
+            com.bilipai.desktop.diagnostics.DesktopIntegrationSelfTest.start(integrationReport, integrationSmtc)
+        }
         val applicationPluginStore = remember {
             com.bilipai.desktop.plugins.DesktopPluginStore(DesktopLibrary.directoryForAccount(null)).also { store ->
                 com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store).asAndroidContext())
@@ -307,25 +314,4 @@ fun main(args: Array<String>) {
         }
     }
     } // release the process lock after all windows and playback have stopped
-}
-
-/**
- * Machine check for "double-clicking the icon never opens a second window": start a real second copy of
- * this installation and record what it did. The successor exits before Compose starts either way, so the
- * evidence is its report plus the process list the caller samples.
- */
-private fun runSingleInstanceSelfTest(report: java.io.File) {
-    report.absoluteFile.parentFile?.mkdirs()
-    val successor = java.io.File(report.absoluteFile.parentFile, "successor.json").apply { delete() }
-    val body = runCatching {
-        val child = DesktopApplicationRestart.prepare()
-            .launch(listOf("--single-instance-probe=" + successor.absolutePath))
-        val exited = child.waitFor(30, java.util.concurrent.TimeUnit.SECONDS)
-        if (!exited) child.destroyForcibly()
-        "{\"ownerPid\":${ProcessHandle.current().pid()},\"childPid\":${child.pid()}," +
-            "\"childExited\":$exited,\"childExitCode\":${if (exited) child.exitValue() else -1}," +
-            "\"successor\":${if (successor.isFile) successor.readText().trim() else "null"}}"
-    }.getOrElse { "{\"error\":\"${it.toString().replace("\"", "'")}\"}" }
-    report.writeText(body)
-    println("SINGLE_INSTANCE_SELF_TEST $body")
 }

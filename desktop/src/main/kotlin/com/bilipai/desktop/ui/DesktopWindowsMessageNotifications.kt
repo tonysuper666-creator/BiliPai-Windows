@@ -46,9 +46,8 @@ internal class DesktopWindowsMessageNotifications(
         if (canPost()) entries.keys() else emptySet()
     }
 
-    /** [cancelled] are items the server now reports as read. A Windows balloon that was already submitted
-     * cannot be withdrawn, so a cancellation removes the item (and, via [pendingCounts], an emptied group
-     * summary) from the tray menu only; the OS may still show or keep the balloon. */
+    /** [cancelled] are items the server now reports as read. The tray entry is removed and the delivered
+     * notification-center toast is withdrawn by its own tag inside this account's group. */
     suspend fun postAll(pending: List<PendingMessageNotification>, cancelled: Set<String> = emptySet(),
         pendingCounts: Map<String, Int>? = null) = withContext(Dispatchers.Main) {
         currentCoroutineContext().ensureActive()
@@ -56,6 +55,12 @@ internal class DesktopWindowsMessageNotifications(
         if (!canPost()) return@withContext
         if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
         entries.apply(pending, cancelled, pendingCounts)
+        if (cancelled.isNotEmpty()) {
+            val group = "messages-${context.mid}"
+            withContext(Dispatchers.IO) {
+                for (key in cancelled) runCatching { com.bilipai.desktop.integration.DesktopToastNotifications.remove(key, group) }
+            }
+        }
         val visible = entries.snapshot()
         if (visible.isEmpty()) { removeTrayOnEdt(); return@withContext }
         val icon = tray ?: TrayIcon(requireNotNull(ImageIO.read(

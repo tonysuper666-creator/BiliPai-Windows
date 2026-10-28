@@ -289,23 +289,30 @@ class WindowsMediaSession(
                 publishedPlaybackStatus = readStatus.value, publishedPositionSeconds = readPosition.value / 10_000_000.0)
         }
 
+        /** A cover is decoration: an unusable URL clears the thumbnail and never retires the session. */
         private fun setThumbnail(display: Pointer, url: String) {
-            if (url.isBlank()) { checkHr(call(display, 11, null), "SMTC.ClearThumbnail"); return }
-            val normalized = if (url.startsWith("//")) "https:$url" else url
-            require(java.net.URI(normalized).scheme in setOf("https", "file")) { "Unsupported SMTC cover URI" }
-            val factory = activationFactory("Windows.Foundation.Uri", "44a9796f-723e-4fdf-a218-033e75b0c084")
-            val uri = PointerByReference()
-            try { withString(normalized) { checkHr(call(factory, 6, it, uri), "Cover.CreateUri") } }
-            finally { release(factory) }
+            val normalized = normalizedSmTcCoverUri(url)
             try {
-                val streams = activationFactory("Windows.Storage.Streams.RandomAccessStreamReference", "857309dc-3fbf-4e7d-986f-ef3b1a07a964")
-                val reference = PointerByReference()
-                try { checkHr(call(streams, 7, uri.value, reference), "Cover.CreateFromUri") }
-                finally { release(streams) }
-                try { checkHr(call(display, 11, reference.value), "SMTC.Thumbnail") }
-                finally { reference.value?.let(::release) }
-            } finally { uri.value?.let(::release) }
+                if (normalized == null) { runCatching { call(display, 11, null) }; return }
+                val factory = activationFactory("Windows.Foundation.Uri", "44a9796f-723e-4fdf-a218-033e75b0c084")
+                val uri = PointerByReference()
+                try { withString(normalized) { checkHr(call(factory, 6, it, uri), "Cover.CreateUri") } }
+                finally { release(factory) }
+                try {
+                    val streams = activationFactory("Windows.Storage.Streams.RandomAccessStreamReference", "857309dc-3fbf-4e7d-986f-ef3b1a07a964")
+                    val reference = PointerByReference()
+                    try { checkHr(call(streams, 7, uri.value, reference), "Cover.CreateFromUri") }
+                    finally { release(streams) }
+                    try { checkHr(call(display, 11, reference.value), "SMTC.Thumbnail") }
+                    finally { reference.value?.let(::release) }
+                } finally { uri.value?.let(::release) }
+            } catch (failure: Throwable) {
+                java.util.logging.Logger.getLogger("BiliPai.WindowsMediaSession")
+                    .log(java.util.logging.Level.WARNING, "SMTC cover rejected: $url", failure)
+                runCatching { call(display, 11, null) }
+            }
         }
+
 
         override fun close() {
             seekToken?.let { token -> extended?.let { call(it, 14, token) } }; seekToken = null
@@ -413,5 +420,25 @@ class WindowsMediaSession(
             val result = PointerByReference(); checkHr(WinRt.api.RoActivateInstance(string, result), "RoActivateInstance")
             requireNotNull(result.value)
         }
+    }
+}
+
+/**
+ * Upstream covers arrive as protocol-relative or plain http URLs; only https/file may reach WinRT.
+ * Returns null when the value cannot be represented as an absolute https/file URI.
+ */
+internal fun normalizedSmTcCoverUri(url: String): String? {
+    val trimmed = url.trim()
+    if (trimmed.isEmpty()) return null
+    val absolute = when {
+        trimmed.startsWith("//") -> "https:$trimmed"
+        trimmed.startsWith("http://") -> "https://" + trimmed.removePrefix("http://")
+        else -> trimmed
+    }
+    val uri = runCatching { java.net.URI(absolute) }.getOrNull() ?: return null
+    return when (uri.scheme?.lowercase()) {
+        "file" -> absolute.takeIf { uri.path?.isNotBlank() == true }
+        "https" -> absolute.takeIf { !uri.host.isNullOrBlank() }
+        else -> null
     }
 }

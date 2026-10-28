@@ -75,6 +75,14 @@ internal object DesktopToastNotifications {
         val safe = group.hashCode().toUInt().toString(16)
         runScript("[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] > ${'$'}null; [Windows.UI.Notifications.ToastNotificationManager]::History.RemoveGroup('$safe', '$APP_ID')")
     }
+    /** Withdraws one already-delivered toast. [tag] and [group] are the caller's raw keys, hashed identically. */
+    fun remove(tag: String, group: String) {
+        if (!registered) return
+        val safeTag = tag.hashCode().toUInt().toString(16)
+        val safeGroup = group.hashCode().toUInt().toString(16)
+        runScript("[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] > ${'$'}null; " +
+            "[Windows.UI.Notifications.ToastNotificationManager]::History.Remove('$safeTag', '$safeGroup', '$APP_ID')")
+    }
     private fun runScript(script: String) {
         val encoded = Base64.getEncoder().encodeToString(script.toByteArray(Charsets.UTF_16LE))
         val process = ProcessBuilder("powershell.exe", "-NoProfile", "-NonInteractive", "-EncodedCommand", encoded).redirectErrorStream(true).start()
