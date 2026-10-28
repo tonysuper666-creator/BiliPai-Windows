@@ -86,7 +86,7 @@ try {
         Write-BpLog 'created tools\PAUSE for the pause phase'
     }
     Start-Sleep -Seconds 5
-    $pause = Measure-CpuWindow -Pid $appPid -Seconds $PauseSeconds -Phase 'pause'
+    $pause = Measure-CpuWindow -ProcessId $uiPid -Seconds $PauseSeconds -Phase 'pause'
     Write-BpLog ('pause: cpu={0}% private_mean={1} MB' -f $pause.cpu_pct_one, $pause.private_mean_mb)
 
     $summary.foreground = $fg

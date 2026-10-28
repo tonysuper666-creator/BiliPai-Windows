@@ -23,15 +23,20 @@ if ($job.args) { $scriptArgs = @($job.args | ForEach-Object { [string]$_ }) }
 $scriptPath = Join-Path $here $scriptName
 if (-not (Test-Path -LiteralPath $scriptPath)) { Write-Result @{ ok = $false; error = "unknown script $scriptName" }; exit 1 }
 
-# A stopped scheduled task leaves its child measurement running, which then fights the next
-# one for the single PresentMon ETW session. Refuse to start while another measurement runs.
-$busy = @(Get-WmiObject Win32_Process | Where-Object {
-        $_.CommandLine -ne $null -and $_.CommandLine.Contains('bp-mac-verify\measure\') -and
-        $_.ProcessId -ne $PID -and $_.CreationDate -lt (Get-Date).AddMinutes(-2) })
-if ($busy.Count -gt 0) {
-    Write-Result ([ordered]@{ ok = $false; error = 'another measurement is still running'; pids = @($busy | ForEach-Object { $_.ProcessId }) })
-    exit 1
+# Only one measurement may run at a time: two chains both open a "PresentMon" ETW session,
+# which silently breaks the frame captures. The lock is a pid file, so a stale lock from a
+# killed run does not block the next one.
+$lockPath = Join-Path $here 'job.lock'
+if (Test-Path -LiteralPath $lockPath) {
+    $held = 0
+    [void][int]::TryParse((Get-Content -LiteralPath $lockPath -Raw).Trim(), [ref]$held)
+    if ($held -gt 0 -and (Get-Process -Id $held -ErrorAction SilentlyContinue)) {
+        Write-Result ([ordered]@{ ok = $false; error = 'another measurement is still running'; pid = $held })
+        exit 1
+    }
+    Remove-Item -LiteralPath $lockPath -Force -ErrorAction SilentlyContinue
 }
+Set-Content -LiteralPath $lockPath -Value $PID -Encoding ascii
 
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $childLog = Join-Path $here ("logs\job-$stamp.log")
@@ -56,4 +61,5 @@ $result.exitCode = $exit
 $result.ok = ($exit -eq 0)
 $result.endedUtc = (Get-Date).ToUniversalTime().ToString('o')
 Write-Result $result
+Remove-Item -LiteralPath $lockPath -Force -ErrorAction SilentlyContinue
 exit $exit

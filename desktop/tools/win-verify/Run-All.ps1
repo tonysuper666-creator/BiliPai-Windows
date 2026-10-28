@@ -11,7 +11,10 @@
 param(
     [string]$Tag = 'run1',
     [switch]$Full,
-    [switch]$Quick
+    [switch]$Quick,
+    [int]$ClickIterations = 20,
+    [int]$SoakMinutes = 30,
+    [string]$Only = ''
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'BpVerify.Common.ps1')
@@ -33,13 +36,18 @@ if ($Quick) {
     $plan = @(
         @{ name = 'pausegate'; script = 'Test-PauseGate.ps1'; args = @() },
         @{ name = 'coldstart'; script = 'Measure-ColdStart.ps1'; args = @('-Iterations', '5') },
-        @{ name = 'clicktoframe'; script = 'Measure-ClickToFrame.ps1'; args = @('-Iterations', '20') },
+        @{ name = 'clicktoframe'; script = 'Measure-ClickToFrame.ps1'; args = @('-Iterations', "$ClickIterations") },
         @{ name = 'frametime'; script = 'Measure-FrameTime.ps1'; args = @() },
         @{ name = 'idle'; script = 'Measure-Idle.ps1'; args = @() },
-        @{ name = 'soak'; script = 'Measure-Soak.ps1'; args = @('-Minutes', '30') }
+        @{ name = 'soak'; script = 'Measure-Soak.ps1'; args = @('-Minutes', "$SoakMinutes") }
     )
 }
 
+if ($Only) {
+    $wanted = @($Only.Split(',') | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+    $plan = @($plan | Where-Object { $wanted -contains $_.name })
+    if ($plan.Count -eq 0) { Write-BpLog ("no step matches -Only " + $Only); exit 1 }
+}
 $rows = New-Object System.Collections.ArrayList
 foreach ($step in $plan) {
     if (Test-BpPause) { Write-BpLog ("PAUSE appeared before '{0}': stopping the set" -f $step.name); break }

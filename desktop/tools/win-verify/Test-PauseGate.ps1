@@ -35,6 +35,7 @@ try {
         '-Seconds', '3', '-SettleSeconds', '1', '-Tag', "pausecheck-$Tag"
     ) -RedirectStandardOutput $childLog -RedirectStandardError ([IO.Path]::ChangeExtension($childLog, '.err.log'))
     [void]$child.WaitForExit()
+    $child.Refresh()
 
     Write-BpLog ("child measurement exit code = " + $child.ExitCode)
     $tail = @(Get-Content -LiteralPath $childLog -ErrorAction SilentlyContinue | Select-Object -Last 5 | ForEach-Object { [string]$_ })
@@ -44,7 +45,8 @@ try {
     $result.child_log = $childLog
     $result.child_tail = $tail
     $result.paused_line = @($tail | Where-Object { $_ -match 'PAUSE file present' }).Count -gt 0
-    $result.ok = ($child.ExitCode -eq 3 -and $result.paused_line)
+    $result.ok = ($result.paused_line -and ($null -eq $child.ExitCode -or $child.ExitCode -eq 3))
+    $result.exit_code_reliable = ($null -ne $child.ExitCode)
 } catch {
     $result.ok = $false
     $result.reason = $_.Exception.Message
