@@ -139,12 +139,14 @@ internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore, regi
         position = if (planX != null && planY != null) WindowPosition(planX.dp, planY.dp) else WindowPosition.PlatformDefault,
         size = DpSize(plan.width.dp, plan.height.dp))
     val tracker = remember(state) { DesktopWindowsUxWindowTracker(startup.seed) }
-    androidx.compose.runtime.SideEffect {
-        registerFlush {
+    val flush: () -> Unit = remember(state, tracker, bounds) {
+        {
             desktopWindowsUxSampleOf(state)?.let(tracker::accept)
-            tracker.bounds()?.let { check(bounds.save(it)) { "窗口位置保存失败" } }
+            // A refused write must not abort shutdown; the operation still reports itself.
+            tracker.bounds()?.let { if (!bounds.save(it)) System.err.println("窗口位置保存失败：退出前写入被拒绝") }
         }
     }
+    androidx.compose.runtime.SideEffect { registerFlush(flush) }
     DesktopWindowsUxWindowBoundsEffect(state, bounds, tracker)
     return state
 }

@@ -1024,7 +1024,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         event.expected.request.bvid, readback, readback.audioOnly,
                         playback.hasPrevious, playback.hasNext,
                         readback.loading || readback.durationSeconds > 0 || readback.ended,
-                        sourceLease = sourceLease, coverUrl = event.owner.playback.state.value.details?.cover.orEmpty()))
+                        sourceLease = sourceLease, coverUrl = event.cover))
                 }
             }
         }

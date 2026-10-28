@@ -1,5 +1,7 @@
 package com.bilipai.desktop.integration
 
+import com.sun.jna.Native
+import com.sun.jna.win32.StdCallLibrary
 import java.awt.EventQueue
 import java.awt.Frame
 import java.awt.Window
@@ -32,10 +34,11 @@ class DesktopSingleInstance private constructor(
             server.accept().use { client ->
                 client.soTimeout = 2_000
                 val input = DataInputStream(client.getInputStream())
-                if (input.readUTF() != token) return@use
+                val output = DataOutputStream(client.getOutputStream())
+                if (input.readUTF() != token) { output.writeBoolean(false); output.flush(); return@use }
                 val route = input.readUTF().take(4_000)
                 activate(route)
-                DataOutputStream(client.getOutputStream()).writeBoolean(true)
+                output.writeBoolean(true); output.flush()
             }
         } catch (failure: Exception) {
             if (!closed) System.err.println("Single-instance activation failed: ${failure.javaClass.simpleName}")
@@ -59,7 +62,14 @@ class DesktopSingleInstance private constructor(
         }
     }
     fun pendingRoute(): String? = activation.get()
-    fun consumed(route: String) { activation.compareAndSet(route, null) }
+    /** Clears only the exact route the caller handled, so a newer activation is never dropped. */
+    fun consumed(route: String) {
+        while (true) {
+            val currentValue = activation.get() ?: return
+            if (currentValue != route) return
+            if (activation.compareAndSet(currentValue, null)) return
+        }
+    }
     override fun close() {
         if (!closing.compareAndSet(false, true)) return
         if (current === this) current = null
@@ -71,6 +81,13 @@ class DesktopSingleInstance private constructor(
     companion object {
         @Volatile var current: DesktopSingleInstance? = null
             private set
+        /** Only this process id may hand the foreground right to the running owner. */
+        private interface WindowsForeground : StdCallLibrary {
+            fun AllowSetForegroundWindow(processId: Int): Boolean
+            companion object {
+                val instance: WindowsForeground by lazy { Native.load("user32", WindowsForeground::class.java) }
+            }
+        }
         /** null means the existing owner acknowledged; failures are explicit, never a second owner. */
         fun acquire(directory: Path, route: String = ""): DesktopSingleInstance? {
             Files.createDirectories(directory)
@@ -86,13 +103,15 @@ class DesktopSingleInstance private constructor(
                         Socket(InetAddress.getLoopbackAddress(), lines[0].toInt()).use { client ->
                             client.soTimeout = 2_000
                             if (System.getProperty("os.name").startsWith("Windows") && lines.size > 2)
-                                com.sun.jna.platform.win32.User32.INSTANCE.AllowSetForegroundWindow(lines[2].toInt())
+                                WindowsForeground.instance.AllowSetForegroundWindow(lines[2].toInt())
                             val output = DataOutputStream(client.getOutputStream())
                             output.writeUTF(lines[1]); output.writeUTF(route.take(4_000)); output.flush()
-                            check(DataInputStream(client.getInputStream()).readBoolean()) { "Activation was refused" }
+                            if (!DataInputStream(client.getInputStream()).readBoolean())
+                                throw IllegalStateException("已有的客户端拒绝了本次激活。")
                         }
                         return null
-                    } catch (failure: Exception) { last = failure; Thread.sleep(100) }
+                    } catch (refused: IllegalStateException) { throw refused }
+                    catch (failure: Exception) { last = failure; Thread.sleep(100) }
                 }
                 throw IllegalStateException("已有客户端未响应，请稍后重试。", last)
             }

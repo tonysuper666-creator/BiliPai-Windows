@@ -1,7 +1,7 @@
 package com.bilipai.desktop.integration
 
-import org.junit.Test
-import org.junit.Assert.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import javax.xml.parsers.DocumentBuilderFactory
 
 class DesktopToastNotificationsTest {

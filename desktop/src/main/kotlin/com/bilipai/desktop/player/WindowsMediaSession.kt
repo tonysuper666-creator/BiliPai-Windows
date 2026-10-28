@@ -77,8 +77,15 @@ class WindowsMediaSession(
     private val sourceOwner: (MpvPlayer) -> WindowsMediaSourceLease? = { null },
 ) : AutoCloseable {
     private val closed = AtomicBoolean()
-    private val taskbar = if (System.getProperty("os.name").startsWith("Windows"))
-        WindowsTaskbarMediaControls(window) { command -> dispatch { it.command(command) } } else null
+    // Taskbar thumbnail buttons are an addition to the transport surface; a failure there must not
+    // remove media keys or crash the window that hosts them.
+    private val taskbar = if (System.getProperty("os.name").startsWith("Windows")) try {
+        WindowsTaskbarMediaControls(window) { command -> dispatch { it.command(command) } }
+    } catch (failure: Throwable) {
+        java.util.logging.Logger.getLogger("BiliPai.WindowsMediaSession")
+            .log(java.util.logging.Level.WARNING, "Taskbar thumbnail buttons unavailable", failure)
+        null
+    } else null
     private val snapshot = AtomicReference<WindowsMediaSnapshot?>()
     private val publishedLease = AtomicReference<WindowsMediaSourceLease?>()
     private val wake = LinkedBlockingQueue<Unit>(1)

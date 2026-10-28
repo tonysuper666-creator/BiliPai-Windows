@@ -1,6 +1,7 @@
 package com.bilipai.desktop.player
 
 import com.sun.jna.*
+import com.sun.jna.Function
 import com.sun.jna.ptr.PointerByReference
 import com.sun.jna.platform.win32.Guid
 import com.sun.jna.platform.win32.Ole32
@@ -95,7 +96,7 @@ internal class WindowsTaskbarMediaControls(window: Window, private val command: 
     private fun checkHr(hr: Int, name: String) { check(hr >= 0) { "$name failed (0x${Integer.toUnsignedString(hr, 16)})" } }
     private fun createIcon(kind: String): Pointer {
         val size = api.GetSystemMetrics(11).coerceAtLeast(16)
-        val mask = ByteArray(((size + 15) / 16) * 2 * size) { 0xff.toByte() }
+        val mask = ByteArray(((size + 15) / 16) * 2 * size) { 0 } // zero AND mask: opaque 32bpp pixels
         val color = ByteArray(size * size * 4)
         for (y in 0 until size) for (x in 0 until size) {
             val px = x.toDouble() / size; val py = y.toDouble() / size

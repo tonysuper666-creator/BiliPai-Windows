@@ -79,9 +79,14 @@ internal class DesktopWindowsMessageNotifications(
         for (item in pending) {
             currentCoroutineContext().ensureActive()
             if (!canPost()) return@withContext
-            withContext(Dispatchers.IO) {
-                com.bilipai.desktop.integration.DesktopToastNotifications.show(item.title, item.text,
-                    "account:${context.mid}:${item.route}", item.key, "messages-${context.mid}")
+            val delivered = withContext(Dispatchers.IO) {
+                runCatching { com.bilipai.desktop.integration.DesktopToastNotifications.show(item.title, item.text,
+                    "account:${context.mid}:${item.route}", item.key, "messages-${context.mid}") }
+            }
+            if (delivered.isFailure) {
+                // The notification center is the requested surface; the balloon keeps the message visible when it is not.
+                System.err.println("Windows 通知中心提交失败，改用托盘气泡: ${delivered.exceptionOrNull()}")
+                icon.displayMessage(item.title, item.text, TrayIcon.MessageType.INFO)
             }
         }
         // The OS may suppress/coalesce balloons. Submission is not evidence of visible delivery,

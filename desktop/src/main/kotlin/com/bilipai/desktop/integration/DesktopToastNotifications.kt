@@ -35,6 +35,9 @@ internal object DesktopToastNotifications {
         // Windows command-line quoting; these values are our executable/classpath, never notification data.
         require(command.none { '"' in it || '\u0000' in it }) { "通知启动路径包含不支持的字符" }
         val root = WinReg.HKEY_CURRENT_USER
+        // The process identity must match the notifier AUMID, otherwise Windows attributes nothing.
+        check(com.sun.jna.platform.win32.Shell32.INSTANCE
+            .SetCurrentProcessExplicitAppUserModelID(com.sun.jna.WString(APP_ID)).toInt() == 0) { "无法设置 Windows 应用标识" }
         val protocol = "Software\\Classes\\$SCHEME"
         Advapi32Util.registryCreateKey(root, protocol)
         Advapi32Util.registrySetStringValue(root, protocol, "", "URL:BiliPai Windows")

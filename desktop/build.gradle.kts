@@ -3434,6 +3434,7 @@ dependencies {
     implementation("commons-io:commons-io:2.19.0")
     implementation("org.apache.commons:commons-lang3:3.17.0")
     implementation("net.java.dev.jna:jna:5.17.0")
+    implementation("net.java.dev.jna:jna-platform:5.17.0")
     implementation("org.json:json:20240303")
     implementation("io.github.biezhi:TinyPinyin:2.0.3.RELEASE") { version { strictly("2.0.3.RELEASE") } }
     implementation("org.ahocorasick:ahocorasick:0.4.0") { version { strictly("0.4.0") } }
