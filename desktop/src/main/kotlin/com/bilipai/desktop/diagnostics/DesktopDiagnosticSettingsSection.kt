@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import com.android.purebilibili.feature.settings.DesktopDiagnosticFields
 import kotlinx.coroutines.*
+import com.bilipai.desktop.hardware.DesktopHardwareSettings
 
 /** The retained process consumer must be supplied; page disposal does not stop logging. */
 @Composable
@@ -18,6 +19,13 @@ internal fun DesktopDiagnosticSettingsSection(
     val scope=rememberCoroutineScope()
     val latestFailure by rememberUpdatedState(onFailure)
     Column(modifier) {
+        diagnostics.hardwareOptimizer?.let { optimizer ->
+            DesktopHardwareSettings(optimizer,onExport={scope.launch {
+                try {chooseDesktopDiagnosticExportFile()?.let {diagnostics.exportTo(it)}}
+                catch(cancelled:CancellationException){throw cancelled}
+                catch(failure:Exception){latestFailure(failure)}
+            }})
+        }
         DesktopDiagnosticFields(enhanced,{enabled ->scope.launch {
             try {diagnostics.setEnhancedEnabled(enabled)}
             catch(cancelled:CancellationException){throw cancelled}

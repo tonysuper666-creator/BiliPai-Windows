@@ -13,11 +13,15 @@ import java.nio.file.*
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.min
+import com.bilipai.desktop.hardware.DesktopHardwareOptimizer
+import com.bilipai.desktop.player.MpvNative
 
 /** Windows-only privacy additions; the original Android sanitizer runs afterwards. */
 internal fun sanitizeDesktopDiagnosticText(value:String):String = sanitizeLogMessage(
     value.replace(Regex("(?i)\\b(?:https?|rtmps?|rtsp)://[^\\s<>\\\"]+"), "[network-address]")
-        .replace(Regex("(?i)\\b[A-Z]:[\\\\/](?:Users|Documents and Settings)[\\\\/][^\\\\/\\r\\n]+"), "[user-home]")
+        .replace(Regex("(?i)\\b[A-Z]:[\\\\/]+(?:Users|Documents and Settings)[\\\\/]+[^\\\\/\\r\\n]+"), "[user-home]")
+        .replace(Regex("(?i)(?:/Users/|/home/)[^/\\s\\\"]+"), "[user-home]")
+        .replace(Regex("""(?i)\\{2,}[^\\\s"]+\\+(?:Users|home)\\+[^\\\s"]+"""), "[user-home]")
         .replace(Regex("(?i)(auth_key|w_rid|x-bili-ticket|x-api-key)[=:]\\s*[^&\\s,}]+"), "$1=***")
         .replace(Regex("(?i)\"(password|access_token|refresh_token|authorization|cookie)\"\\s*:\\s*\"[^\"]*\""), "\"$1\":\"***\"")
 )
@@ -28,11 +32,14 @@ internal class DesktopDiagnostics(
     private val version:String,
     private val clock:()->Long = System::currentTimeMillis,
     private val writer:ExecutorService = Executors.newSingleThreadExecutor { task -> Thread(task,"BiliPai-diagnostic-writer").apply {isDaemon=true} },
+    private val hardwareEnabled:Boolean = true,
 ) : AutoCloseable {
     private val gate=Any()
     private var closing=false
     private val root=store.root.toAbsolutePath().normalize()
     private val settings=DesktopDiagnosticSettings(store)
+    internal val hardwareOptimizer:DesktopHardwareOptimizer? = if(hardwareEnabled && com.sun.jna.Platform.isWindows())
+        DesktopHardwareOptimizer.windows {MpvNative.locateLibrary().toPath()} else null
     private val mutableEnhanced=MutableStateFlow(settings.getEnhancedDiagnosticLoggingEnabledSync())
     val enhancedEnabled:StateFlow<Boolean> = mutableEnhanced.asStateFlow()
     private val mutableError=MutableStateFlow<String?>(null)
@@ -56,6 +63,7 @@ internal class DesktopDiagnostics(
         true
     }
     init {
+        hardwareOptimizer?.start()
         // Synchronous read of the same atomic settings key precedes the first accepted log.
         recordStartupStage("diagnostics_initialized")
         if(mutableEnhanced.value) submit {recordSessionStart()}
@@ -253,9 +261,12 @@ internal class DesktopDiagnostics(
             readBounded(resolveRuntimeLogFile(root.toFile()).toPath(),256*1024).lines()+collector.getEntries().map {it.format()})
             .filter {it.isNotBlank()}.distinct()
         val crash=readBounded(resolveCrashSnapshotFile(root.toFile()).toPath(),256*1024)
-        if(!hasExportableDiagnostics(lines.size,crash.isNotBlank(),0,0))return "暂无日志记录"
+        val hardware=hardwareOptimizer?.diagnosticJson().orEmpty()
+        if(hardware.isEmpty() && !hasExportableDiagnostics(lines.size,crash.isNotBlank(),0,0))return "暂无日志记录"
         val header="BiliPai 应用日志导出\n应用版本: $version\n系统: ${System.getProperty("os.name")} ${System.getProperty("os.version")}\n基础诊断: 64KB；增强诊断: ${if(mutableEnhanced.value)"已开启" else "未开启"}（256KB）\n隐私说明: 本地脱敏日志，仅在用户主动选择文件时导出；不自动上传。\n"
-        val body=sanitizeDesktopDiagnosticText(lines.joinToString("\n")+if(crash.isBlank())"" else "\n----- 最近一次崩溃快照 -----\n$crash")
+        val body=sanitizeDesktopDiagnosticText(lines.joinToString("\n")+
+            (if(crash.isBlank())"" else "\n----- 最近一次崩溃快照 -----\n$crash")+
+            (if(hardware.isEmpty())"" else "\n----- 电脑自动优化（检测、决策、自测）-----\n$hardware"))
         val safeHeader=sanitizeDesktopDiagnosticText(header).toByteArray(Charsets.UTF_8)
         return (safeHeader+utf8Tail(body.toByteArray(Charsets.UTF_8),512*1024-safeHeader.size)).toString(Charsets.UTF_8)
     }
@@ -277,6 +288,7 @@ internal class DesktopDiagnostics(
     /** Call before Store.freezeWrites / restore. Accepted queue drains; old facade rejects new work. */
     suspend fun shutdownForRestore() = withContext(Dispatchers.IO) {close()}
     override fun close() {
+        hardwareOptimizer?.close()
         synchronized(gate){if(!closing){closing=true;writer.shutdown()}}
         DesktopDiagnosticsBridge.retire(this)
         check(writer.awaitTermination(10,TimeUnit.SECONDS)) {"诊断写入尚未排空"}
