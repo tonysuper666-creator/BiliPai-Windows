@@ -566,6 +566,25 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var initialVideoConsumed by remember { mutableStateOf(initialVideo==null) }
     val musicOverlay = remember { MutableStateFlow(false) }
     fun rootRoutes() = homeRootRef.get()?.route?.get()?.takeIf { it.owns() }
+    LaunchedEffect(sessionEpoch) {
+        while (isActive) {
+            val instance = com.bilipai.desktop.integration.DesktopSingleInstance.current
+            val route = instance?.pendingRoute()
+            val destination = rootRoutes()
+            if (route != null && destination != null) {
+                val accountPrefix = "account:"
+                val actual = if (route.startsWith(accountPrefix)) {
+                    val mid = route.removePrefix(accountPrefix).substringBefore(':').toLongOrNull()
+                    if (mid != account?.mid) "message" else route.removePrefix(accountPrefix).substringAfter(':')
+                } else route
+                destination.push(if (actual == "downloads") BiliPaiNavKey.DownloadList
+                    else if (actual == "message") BiliPaiNavKey.Inbox
+                    else com.android.purebilibili.navigation3.legacyRouteToBiliPaiNavKey(actual))
+                instance?.consumed(route)
+            }
+            delay(250)
+        }
+    }
     fun rootSubscriptionBinding(): DesktopSubscriptionPageBindings? =
         (homeRootRef.get()?.retainer?.current()?.entry?.embeddedPages as? DesktopOriginalHomeEmbeddedAggregate)
             ?.subscription?.takeIf { it.isOwned() }
@@ -1005,7 +1024,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         event.expected.request.bvid, readback, readback.audioOnly,
                         playback.hasPrevious, playback.hasNext,
                         readback.loading || readback.durationSeconds > 0 || readback.ended,
-                        sourceLease = sourceLease))
+                        sourceLease = sourceLease, coverUrl = event.owner.playback.state.value.details?.cover.orEmpty()))
                 }
             }
         }
@@ -1608,7 +1627,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 state = state, isAudio = audioTarget || state.audioOnly,
                 hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
                 hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
-                enabled = state.loading || state.durationSeconds > 0 || state.ended, sourceLease = owner))
+                enabled = state.loading || state.durationSeconds > 0 || state.ended, sourceLease = owner,
+                coverUrl = if (audioTarget) audio!!.current!!.cover else current.details?.cover.orEmpty()))
             else systemMedia?.update(WindowsMediaSnapshot(title = "BiliPai", state = state ?: com.bilipai.desktop.player.PlayerState(), enabled = false))
             delay(500)
         }

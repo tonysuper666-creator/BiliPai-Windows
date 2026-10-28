@@ -79,13 +79,19 @@ internal class DesktopWindowsMessageNotifications(
         for (item in pending) {
             currentCoroutineContext().ensureActive()
             if (!canPost()) return@withContext
-            icon.displayMessage(item.title, item.text, TrayIcon.MessageType.INFO)
+            withContext(Dispatchers.IO) {
+                com.bilipai.desktop.integration.DesktopToastNotifications.show(item.title, item.text,
+                    "account:${context.mid}:${item.route}", item.key, "messages-${context.mid}")
+            }
         }
         // The OS may suppress/coalesce balloons. Submission is not evidence of visible delivery,
         // and a previously submitted balloon cannot be atomically withdrawn on account switch.
     }
 
-    suspend fun clear() = withContext(Dispatchers.Main) { removeTrayOnEdt() }
+    suspend fun clear() {
+        withContext(Dispatchers.Main) { removeTrayOnEdt() }
+        withContext(Dispatchers.IO) { com.bilipai.desktop.integration.DesktopToastNotifications.clear("messages-${context.mid}") }
+    }
     private fun removeTrayOnEdt() {
         check(EventQueue.isDispatchThread())
         tray?.let { SystemTray.getSystemTray().remove(it) }

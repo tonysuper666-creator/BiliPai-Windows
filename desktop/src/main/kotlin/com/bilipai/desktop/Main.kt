@@ -78,6 +78,10 @@ fun main(args: Array<String>) {
     val tokenIndex = args.indexOf("--update-health-token")
     val healthPath = args.getOrNull(healthIndex + 1)?.takeIf { healthIndex >= 0 }
     val healthToken = args.getOrNull(tokenIndex + 1)?.takeIf { tokenIndex >= 0 }
+    val activationRoute = com.bilipai.desktop.integration.DesktopToastNotifications.routeFromArgs(args)
+    val instance = com.bilipai.desktop.integration.DesktopSingleInstance.acquire(
+        DesktopLibrary.directoryForAccount(null).resolve("desktop-integration"), activationRoute) ?: return
+    instance.use {
     application {
         val applicationPluginStore = remember {
             com.bilipai.desktop.plugins.DesktopPluginStore(DesktopLibrary.directoryForAccount(null)).also { store ->
@@ -131,7 +135,8 @@ fun main(args: Array<String>) {
         // Read-only GPU probe on a daemon thread; the player waits for it only bounded, at each native session start.
         val gpuCapability = remember { DesktopNvidiaCapabilityMonitor.process().also { it.warmUp() } }
         val playerResult = remember(veyraComponent) { runCatching { MpvPlayer(veyraComponent = veyraComponent, gpuCapability = gpuCapability) } }
-        val windowState = com.bilipai.desktop.appearance.rememberDesktopWindowsUxWindowState(applicationPluginStore)
+        val flushWindow = remember { java.util.concurrent.atomic.AtomicReference<() -> Unit>({}) }
+        val windowState = com.bilipai.desktop.appearance.rememberDesktopWindowsUxWindowState(applicationPluginStore) { flushWindow.set(it) }
         val applicationScope = rememberCoroutineScope()
         val shutdown = remember(diagnosticLifecycle) {
             java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({ diagnosticLifecycle?.shutdownForRestore() })
@@ -155,9 +160,10 @@ fun main(args: Array<String>) {
                 else null
             if (closing.compareAndSet(false, true)) applicationScope.launch {
                 try {
+                    flushWindow.get().invoke()
                     shutdown.get().invoke()
                     withContext(Dispatchers.IO) { applicationImages.close() }
-                    if (restartPlan != null) withContext(Dispatchers.IO) { restartPlan.launch() }
+                    if (restartPlan != null) withContext(Dispatchers.IO) { instance.close(); restartPlan.launch() }
                     playerResult.getOrNull()?.close()
                     exitApplication()
                 } catch (failure: Exception) {
@@ -181,8 +187,9 @@ fun main(args: Array<String>) {
             state = windowState
         ) {
             DisposableEffect(window, diagnosticWindow) {
+                instance.bind(window)
                 diagnosticWindow.set(window)
-                onDispose { diagnosticWindow.compareAndSet(window, null) }
+                onDispose { instance.bind(null); diagnosticWindow.compareAndSet(window, null) }
             }
             val systemDisplayDensity = androidx.compose.ui.platform.LocalDensity.current
             val windowsDisplaySettings by windowsDisplayScale.settings.collectAsState()
@@ -281,4 +288,5 @@ fun main(args: Array<String>) {
             } // Windows user scale applies once to all Main content and its dialogs.
         }
     }
+    } // release the process lock after all windows and playback have stopped
 }

@@ -126,7 +126,7 @@ internal fun desktopWindowsUxSampleOf(state: WindowState): DesktopWindowsUxWindo
  * 1360 by 900, position chosen by the platform.
  */
 @Composable
-internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore): WindowState {
+internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore, registerFlush: ((() -> Unit) -> Unit) = {}): WindowState {
     val bounds = remember(store) { DesktopWindowsUxWindowBoundsStore(store) }
     val startup = remember(bounds) {
         desktopWindowsUxStartup(bounds.load(), desktopWindowsUxProbeScreens(), desktopWindowsUxStoredZoomPercent(store))
@@ -138,7 +138,14 @@ internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore): Win
         placement = if (plan.maximized) WindowPlacement.Maximized else WindowPlacement.Floating,
         position = if (planX != null && planY != null) WindowPosition(planX.dp, planY.dp) else WindowPosition.PlatformDefault,
         size = DpSize(plan.width.dp, plan.height.dp))
-    DesktopWindowsUxWindowBoundsEffect(state, bounds, startup.seed)
+    val tracker = remember(state) { DesktopWindowsUxWindowTracker(startup.seed) }
+    androidx.compose.runtime.SideEffect {
+        registerFlush {
+            desktopWindowsUxSampleOf(state)?.let(tracker::accept)
+            tracker.bounds()?.let { check(bounds.save(it)) { "窗口位置保存失败" } }
+        }
+    }
+    DesktopWindowsUxWindowBoundsEffect(state, bounds, tracker)
     return state
 }
 
@@ -154,16 +161,15 @@ internal fun rememberDesktopWindowsUxWindowState(store: DesktopPluginStore): Win
 private fun DesktopWindowsUxWindowBoundsEffect(
     state: WindowState,
     bounds: DesktopWindowsUxWindowBoundsStore,
-    seed: DesktopWindowsUxWindowBounds?,
+    tracker: DesktopWindowsUxWindowTracker,
 ) {
-    val tracker = remember(state, seed) { DesktopWindowsUxWindowTracker(seed) }
     LaunchedEffect(state, bounds, tracker) {
         snapshotFlow { desktopWindowsUxSampleOf(state) }.collectLatest { sample ->
             if (sample == null) return@collectLatest
-            delay(WINDOWS_UX_WINDOW_SETTLE_MS)
             tracker.accept(sample)
+            delay(WINDOWS_UX_WINDOW_SETTLE_MS)
             val next = tracker.bounds()
-            if (next != null) withContext(Dispatchers.IO) { bounds.save(next) }
+            if (next != null) withContext(Dispatchers.IO) { check(bounds.save(next)) { "窗口位置保存失败" } }
         }
     }
 }
