@@ -38,7 +38,7 @@ manifest 的 `rolloutPercent` 在 0–100 之间，通过随机安装 ID 与版�
 
 ## 下载服务与部署候选
 
-`server.mjs` 仅依赖 Node 标准库，绑定 loopback，前面使用 Caddy。邀请码在服务器 `data/private/invitations.json` 中保存哈希，每个码有单独标签和频道权限。浏览器表单提交后获得 HttpOnly/Secure/SameSite 会话；每次下载重新检查原邀请码是否有效，作废也立即使现有会话失效。
+`server.mjs` 仅依赖 Node 标准库，绑定 loopback，前面使用 Caddy。临时路径使用 `BILIPAI_URL_PREFIX=/bilipai`；专用域名从根目录提供页面时，设 `BILIPAI_URL_PREFIX` 为空字符串并在 Caddy 使用普通 `reverse_proxy`。邀请码在服务器 `data/private/invitations.json` 中保存哈希，每个码有单独标签和频道权限。浏览器表单提交后获得 HttpOnly/Secure/SameSite 会话；每次下载重新检查原邀请码是否有效，作废也立即使现有会话失效。
 
 安装包下载需要邀请码。供已安装客户端使用的签名 manifest、配置和 ZIP 更新资产公开提供，避免更新请求携带邀请码或账号数据。下载日志仅记录邀请码标签、时间和版本，不记原始邀请码、IP、User-Agent、安装 ID 或 B 站信息。没有 HTTP 访问日志输出。
 

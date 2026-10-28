@@ -11,7 +11,7 @@ const page = body => `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><m
 
 export function createDistributionServer({ root, prefix = '/bilipai', now = () => Date.now() }) {
   root = realpathSync(root);
-  if (!/^\/[a-zA-Z0-9/-]+$/.test(prefix) || prefix.endsWith('/')) throw Error('Invalid URL prefix');
+  if (prefix !== '' && (!/^\/[a-zA-Z0-9/-]+$/.test(prefix) || prefix.endsWith('/'))) throw Error('Invalid URL prefix');
   const sessions = new Map();
   const attempts = new Map();
   const readJson = async name => JSON.parse(await readFile(path.join(root, name), 'utf8'));
@@ -116,6 +116,6 @@ export function createDistributionServer({ root, prefix = '/bilipai', now = () =
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const root = process.env.BILIPAI_DISTRIBUTION_ROOT || '/opt/bilipai-distribution/data';
-  const server = createDistributionServer({root, prefix:process.env.BILIPAI_URL_PREFIX || '/bilipai'});
+  const server = createDistributionServer({root, prefix:process.env.BILIPAI_URL_PREFIX ?? '/bilipai'});
   server.listen(Number(process.env.PORT || 8140), '127.0.0.1', () => console.log('BiliPai distribution listening on loopback'));
 }

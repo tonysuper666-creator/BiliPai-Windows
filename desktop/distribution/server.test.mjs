@@ -51,3 +51,24 @@ test('invitation, download, revocation and privacy over real HTTP', async () => 
     await rm(root,{recursive:true,force:true});
   }
 });
+
+test('dedicated hostname can serve invitation forms and sessions at its root', async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(),'bilipai-root-'));
+  const code = 'root-host-invitation-123456789';
+  const hash = createHash('sha256').update(code).digest('hex');
+  await mkdir(path.join(root,'private'));
+  await writeFile(path.join(root,'private/invitations.json'),JSON.stringify({[hash]:{enabled:true,label:'root-dev',channels:['dev']}}));
+  const server=createDistributionServer({root,prefix:''});
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  const base=`http://127.0.0.1:${server.address().port}`;
+  try {
+    assert.ok((await (await fetch(base+'/')).text()).includes('action="/unlock"'));
+    const response=await fetch(base+'/unlock',{method:'POST',redirect:'manual',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({code})});
+    assert.equal(response.status,303);
+    assert.equal(response.headers.get('location'),'/');
+    assert.ok(response.headers.get('set-cookie').includes('Path=/;'));
+  } finally {
+    server.closeAllConnections(); await new Promise(resolve=>server.close(resolve));
+    await rm(root,{recursive:true,force:true});
+  }
+});
