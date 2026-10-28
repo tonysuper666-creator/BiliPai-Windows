@@ -10,7 +10,7 @@ class BiliPaiJsNativeExampleTest {
 
     @Test
     fun tvLiveExampleUsesNativeBiliPaiJsApi() {
-        val script = findRepoFile("examples/plugins/tv-live.bilipai.js").readText(Charsets.UTF_8)
+        val script = findRepoFile("desktop/src/test/fixtures/plugins/tv-live.bilipai.js").readText(Charsets.UTF_8)
 
         assertContains(script, "BiliPaiPlugin")
         assertContains(script, "BiliPai.http.get")

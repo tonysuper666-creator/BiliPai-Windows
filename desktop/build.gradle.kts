@@ -2453,6 +2453,29 @@ fun applyUnifiedPatch(original: String, patch: String, label: String): String {
     return lines.joinToString("\n")
 }
 
+// Desktop-only fixes against the merged upstream tree. The independent upstream-core
+// project deliberately compiles the unpatched originals so upstream regressions stay visible.
+val desktopUpstreamPatchDirectory = file("upstream-core/patches")
+val desktopUpstreamPatchedFiles = fileTree(desktopUpstreamPatchDirectory) { include("**/*.patch") }.files
+    .map { it.relativeTo(desktopUpstreamPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
+val applyDesktopUpstreamPatches by tasks.registering {
+    val output = layout.buildDirectory.dir("patched-upstream")
+    inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(desktopUpstreamPatchedFiles.map { mergedRepositoryRoot.resolve(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val target = output.get().asFile
+        target.deleteRecursively()
+        desktopUpstreamPatchedFiles.forEach { relative ->
+            val patched = applyUnifiedPatch(mergedRepositoryRoot.resolve(relative).readText(),
+                desktopUpstreamPatchDirectory.resolve("$relative.patch").readText(), relative)
+            val destination = target.resolve(relative)
+            destination.parentFile.mkdirs()
+            destination.writeText(patched)
+        }
+    }
+}
+
 val applyTransitionPatches by tasks.registering {
     val generated = layout.buildDirectory.dir("generated")
     val output = layout.buildDirectory.dir("transition-patched")
@@ -2482,6 +2505,7 @@ kotlin.sourceSets.named("main") {
     // smart casts and internal access as before); their generated legacy copies are skipped.
     val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
     val generatedDirectoryPath = buildDirectoryPath.resolve("generated")
+    kotlin.exclude { element -> desktopUpstreamPatchedFiles.any { element.file == mergedRepositoryRoot.resolve(it) } }
     kotlin.exclude { element -> element.file.toPath().startsWith(buildDirectoryPath) && element.relativePath.pathString in migratedUpstreamRelativePaths }
     kotlin.exclude { element ->
         val path = element.file.toPath()
@@ -2493,6 +2517,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir("upstream-core/compat")
     kotlin.srcDir("upstream-core/transition/src")
     kotlin.srcDir(applyTransitionPatches)
+    kotlin.srcDir(applyDesktopUpstreamPatches)
     migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))
