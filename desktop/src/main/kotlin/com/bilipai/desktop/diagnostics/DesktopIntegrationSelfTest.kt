@@ -26,13 +26,13 @@ internal object DesktopIntegrationSelfTest {
         }
     }
 
-    fun start(report: File, smtcReport: File?, move: IntArray? = null) {
-        Thread({ run(report, smtcReport, move ?: defaultMove) }, "BiliPai-integration-self-test")
+    fun start(report: File, smtcReport: File?, move: IntArray? = null, smtcDelaySeconds: Int = 0) {
+        Thread({ run(report, smtcReport, move ?: defaultMove, smtcDelaySeconds) }, "BiliPai-integration-self-test")
             .apply { isDaemon = true }.start()
     }
 
-    private fun run(report: File, smtcReport: File?, move: IntArray) {
-        val body = runCatching { measure(report, smtcReport, move) }.getOrElse { error ->
+    private fun run(report: File, smtcReport: File?, move: IntArray, smtcDelaySeconds: Int) {
+        val body = runCatching { measure(report, smtcReport, move, smtcDelaySeconds) }.getOrElse { error ->
             "{\"error\":\"${escape(error.toString())}\"}"
         }
         report.absoluteFile.parentFile?.mkdirs()
@@ -40,7 +40,7 @@ internal object DesktopIntegrationSelfTest {
         println("INTEGRATION_SELF_TEST $body")
     }
 
-    private fun measure(report: File, smtcReport: File?, move: IntArray): String {
+    private fun measure(report: File, smtcReport: File?, move: IntArray, smtcDelaySeconds: Int): String {
         val window = awaitWindow(90_000) ?: return "{\"window\":null,\"error\":\"no window after 90 s\"}"
         val restored = rectangle(window)
         onEdt {
@@ -56,6 +56,7 @@ internal object DesktopIntegrationSelfTest {
         val exited = child.waitFor(30, TimeUnit.SECONDS)
         if (!exited) child.destroyForcibly()
         val after = processes()
+        if (smtcDelaySeconds > 0) Thread.sleep(smtcDelaySeconds * 1_000L)
         val smtc = smtcReport?.let { observeSystemMedia(it) }
         return buildString {
             append("{\"ownerPid\":").append(ProcessHandle.current().pid())
