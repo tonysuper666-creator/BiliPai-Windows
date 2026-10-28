@@ -439,6 +439,7 @@ val extractUpstreamLogin by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/login"))
 }
 val extractUpstreamPlugins by tasks.registering(Exec::class) {
+    inputs.file("tools/patch-public-content-credentials.py")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-plugins.py",
@@ -463,6 +464,13 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     inputs.files(originalResources.map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/plugins"))
     outputs.dir(layout.buildDirectory.dir("generated/v041-feed-original-tests"))
+    doLast {
+        providers.exec {
+            workingDir(projectDir)
+            commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/patch-public-content-credentials.py",
+                layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath)
+        }.result.get().assertNormalExitValue()
+    }
 }
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/v041-feed-original-tests")) }
 tasks.named("compileTestKotlin") { dependsOn(extractUpstreamPlugins) }

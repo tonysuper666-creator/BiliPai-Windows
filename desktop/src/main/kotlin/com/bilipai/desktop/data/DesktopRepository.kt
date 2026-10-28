@@ -141,7 +141,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             } else request
             val stripped = stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement))
             val mediaOrigin = stripped.tag(com.bilipai.desktop.player.cache.DesktopMediaOriginHeaders::class.java)
-            val received = chain.proceed(mediaOrigin?.apply(stripped) ?: stripped)
+            val received = chain.proceed(com.bilipai.desktop.network.enforceDesktopCredentialBoundary(
+                mediaOrigin?.apply(stripped) ?: stripped))
             val response = downloadDanmakuPolicy?.bind(received) ?: received
             // The same client must reject captured parallel-range redirects before
             // RetryAndFollowUpInterceptor can send a follow-up to another signed address.

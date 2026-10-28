@@ -65,10 +65,15 @@ private class MessagePageTestFixture : AutoCloseable {
         }
         server.start()
         val transport=repository.httpClient.newBuilder().retryOnConnectionFailure(false).proxy(Proxy.NO_PROXY)
+            // Keep the API origin for the production credential gate; only DNS/port use loopback.
+            .dns { host ->
+                check(host in setOf("api.vc.bilibili.com","api.bilibili.com","message.bilibili.com"))
+                listOf(java.net.InetAddress.getByName("127.0.0.1"))
+            }
             .addInterceptor { chain ->
                 val request=chain.request();check(request.url.host in setOf("api.vc.bilibili.com","api.bilibili.com","message.bilibili.com"))
                 check(request.url.encodedPath in allowedPaths) { "Unexpected fixture route" };hostAttempts.incrementAndGet()
-                chain.proceed(request.newBuilder().url(request.url.newBuilder().scheme("http").host("127.0.0.1").port(server.address.port).build()).build())
+                chain.proceed(request.newBuilder().url(request.url.newBuilder().scheme("http").port(server.address.port).build()).build())
             }.build()
         admission=DesktopMessagePageAdmission(repository,repository.sessionEpoch,42,scope,retained::get,visible::get,
             { action->synchronized(rootLock) { if(retained.get()) {action();true}else false } },
