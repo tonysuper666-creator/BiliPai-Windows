@@ -3,6 +3,7 @@ import java.security.MessageDigest
 import java.nio.file.Paths as JvmPaths
 import java.nio.file.Files as JvmFiles
 import java.util.Locale as JvmLocale
+import java.util.zip.ZipFile as JvmZipFile
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -17,7 +18,10 @@ group = "com.bilipai.desktop"
 version = "0.1.0"
 kotlin { jvmToolchain(21) }
 
-val repositoryRoot = projectDir.parentFile
+// Producers that are not migrated yet read the legacy read point (see settings.gradle.kts);
+// migrated upstream modules read the merged repository root (mergedRepositoryRoot).
+val repositoryRoot = file(gradle.extra["bilipai.legacyRoot"] as String)
+val mergedRepositoryRoot = projectDir.parentFile
 val sourceManifest = file("upstream-sources.json")
 val manifest = if (sourceManifest.exists()) {
     JsonSlurper().parse(sourceManifest) as Map<*, *>
@@ -165,9 +169,90 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
     outputs.upToDateWhen { false }
 }
 
+
+// core-data and network-core compile straight from the merged upstream root (main source set below);
+// these are the paths their generated legacy copies had, so producers no longer emit them.
+val migratedUpstreamModules = listOf("core-data/", "network-core/")
+val migratedUpstreamRelativePaths = setOf(
+    "com/android/purebilibili/core/network/AppSignUtils.kt",
+    "com/android/purebilibili/core/network/WbiUtils.kt",
+    "com/android/purebilibili/core/network/grpc/ProtoWire.kt",
+    "com/android/purebilibili/core/network/policy/HomeFeedAnonymizerPolicy.kt",
+    "com/android/purebilibili/core/network/policy/MergedAppFeedCookiePolicy.kt",
+    "com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt",
+    "com/android/purebilibili/core/store/NetworkProxyStore.kt",
+    "com/android/purebilibili/core/subtitle/BiliSubtitlePolicy.kt",
+    "com/android/purebilibili/core/util/FormatUtils.kt",
+    "com/android/purebilibili/core/util/HtmlEntityUtils.kt",
+    "com/android/purebilibili/core/util/IdUtils.kt",
+    "com/android/purebilibili/core/util/SelectionUtils.kt",
+    "com/android/purebilibili/data/model/VideoCardStatsTextPolicy.kt",
+    "com/android/purebilibili/data/model/VideoProgressDisplayPolicy.kt",
+    "com/android/purebilibili/data/model/VideoQuality.kt",
+    "com/android/purebilibili/data/model/WatchLaterProgressPolicy.kt",
+    "com/android/purebilibili/data/model/response/AiSummaryResponse.kt",
+    "com/android/purebilibili/data/model/response/AicuModels.kt",
+    "com/android/purebilibili/data/model/response/ArticleModels.kt",
+    "com/android/purebilibili/data/model/response/AudioModels.kt",
+    "com/android/purebilibili/data/model/response/BangumiIndexFilterPolicy.kt",
+    "com/android/purebilibili/data/model/response/BangumiModels.kt",
+    "com/android/purebilibili/data/model/response/BangumiReviewModels.kt",
+    "com/android/purebilibili/data/model/response/CaptchaModels.kt",
+    "com/android/purebilibili/data/model/response/CreatorCardStats.kt",
+    "com/android/purebilibili/data/model/response/DanmakuThumbupResponse.kt",
+    "com/android/purebilibili/data/model/response/DynamicCreateModels.kt",
+    "com/android/purebilibili/data/model/response/DynamicModels.kt",
+    "com/android/purebilibili/data/model/response/DynamicVoteModels.kt",
+    "com/android/purebilibili/data/model/response/EmoteModels.kt",
+    "com/android/purebilibili/data/model/response/FavoriteModels.kt",
+    "com/android/purebilibili/data/model/response/HistoryModels.kt",
+    "com/android/purebilibili/data/model/response/InteractVideoResponse.kt",
+    "com/android/purebilibili/data/model/response/IpLocationResponse.kt",
+    "com/android/purebilibili/data/model/response/LikedVideosModels.kt",
+    "com/android/purebilibili/data/model/response/ListModels.kt",
+    "com/android/purebilibili/data/model/response/LiveDanmuInfoResponse.kt",
+    "com/android/purebilibili/data/model/response/LiveEmoticonModels.kt",
+    "com/android/purebilibili/data/model/response/LiveFeedModels.kt",
+    "com/android/purebilibili/data/model/response/LiveModels.kt",
+    "com/android/purebilibili/data/model/response/LoginModels.kt",
+    "com/android/purebilibili/data/model/response/MessageHistoryCursorSerializer.kt",
+    "com/android/purebilibili/data/model/response/MessageResponse.kt",
+    "com/android/purebilibili/data/model/response/NavModels.kt",
+    "com/android/purebilibili/data/model/response/OnlineResponse.kt",
+    "com/android/purebilibili/data/model/response/PbpModels.kt",
+    "com/android/purebilibili/data/model/response/PersonalFavoriteModels.kt",
+    "com/android/purebilibili/data/model/response/PlayerInfoResponse.kt",
+    "com/android/purebilibili/data/model/response/RecommendationReason.kt",
+    "com/android/purebilibili/data/model/response/RelatedResponse.kt",
+    "com/android/purebilibili/data/model/response/ResponseModels.kt",
+    "com/android/purebilibili/data/model/response/SearchModels.kt",
+    "com/android/purebilibili/data/model/response/SendDanmakuResponse.kt",
+    "com/android/purebilibili/data/model/response/SpaceModels.kt",
+    "com/android/purebilibili/data/model/response/SplashModels.kt",
+    "com/android/purebilibili/data/model/response/SponsorBlockModels.kt",
+    "com/android/purebilibili/data/model/response/StoryModels.kt",
+    "com/android/purebilibili/data/model/response/UnescapedStringSerializer.kt",
+    "com/android/purebilibili/data/model/response/UserModels.kt",
+    "com/android/purebilibili/data/model/response/VideoDetailResponse.kt",
+    "com/android/purebilibili/data/model/response/VideoNoteResponse.kt",
+    "com/android/purebilibili/data/model/response/VideoResponse.kt",
+    "com/android/purebilibili/data/model/response/VideoStatusLabels.kt",
+    "com/android/purebilibili/data/model/response/VideoVerticalInferencePolicy.kt",
+    "com/android/purebilibili/data/model/response/VideoshotResponse.kt",
+    "com/android/purebilibili/data/repository/ArticleHistoryReportFields.kt",
+    "com/android/purebilibili/data/repository/CommentMediaPolicy.kt",
+    "com/android/purebilibili/data/repository/DynamicFetchRetryPolicy.kt",
+    "com/android/purebilibili/data/repository/OnDemandRequestCache.kt",
+    "com/android/purebilibili/data/repository/PlaybackHeartbeatPolicy.kt",
+    "com/android/purebilibili/data/repository/SearchLoadPolicy.kt",
+    "com/android/purebilibili/data/repository/VideoLoadPolicy.kt"
+)
+fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any { path.startsWith(it) } ||
+    migratedUpstreamRelativePaths.any { path.endsWith("/src/main/java/" + it) }
+
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
-        include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { canonicalOriginalIdentity(it["path"].toString()) })
         // Whole v043 typed navigation is emitted by its existing space producer.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
         // Current collection playback/management policy has one Space producer.
@@ -2298,7 +2383,117 @@ val prepareJsWorkerResources by tasks.registering(Sync::class) {
     into("resources/common/js-engine")
 }
 
+// Generated legacy files that re-declare migrated upstream declarations under another file name.
+val upstreamOwnedGeneratedCopies = setOf(
+    "api/com/android/purebilibili/core/network/DesktopUpstreamApi.kt",
+    "dynamic-reply-protocol/generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt",
+    "bgm-detail/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+    "bgm-detail/com/android/purebilibili/data/repository/DesktopOriginalCommentPaginationPolicy.kt",
+    "original-message-notifications/com/android/purebilibili/data/model/response/DesktopDynamicAuthorUpdatesModels.kt",
+    "api/com/android/purebilibili/data/repository/DesktopHistoryCursorPolicy.kt",
+    "login/com/android/purebilibili/core/store/DesktopUpstreamLoginDeclarations.kt",
+    "dynamic-reply-protocol/generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadRouteMemo.kt",
+    "video-votes/com/android/purebilibili/data/model/response/DesktopOriginalGradeDanmakuSummary.kt",
+    "api/com/android/purebilibili/core/network/DesktopCoreDataLog.kt",
+    "api/com/android/purebilibili/data/model/response/FavoriteInfoResponse.kt",
+    "audio/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt",
+    "space-contributions/com/android/purebilibili/core/network/DesktopOriginalSpaceAggregateParams.kt",
+    "bgm-detail/com/android/purebilibili/data/model/CommentFraudStatus.kt",
+    "original-favorites/com/android/purebilibili/core/store/DesktopFavoriteAccountIdentity.kt",
+    "original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalVideoRequestAccountScope.kt"
+)
+
+// Generated legacy files that mix desktop code with declarations upstream now owns, or that call
+// core-data APIs upstream changed, are patched at build time instead of committing copies:
+// upstream-core/transition/patches/<generated path>.patch is a unified diff against the
+// producer's output. A hunk that no longer matches exactly fails the build.
+val transitionPatchDirectory = file("upstream-core/transition/patches")
+val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
+    .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
+val transitionPatchProducers = mapOf(
+    "api" to "extractUpstreamApi",
+    "dynamic-full-card" to "extractUpstreamDynamicFullCard",
+    "media" to "extractUpstreamMedia",
+    "original-favorites" to "extractOriginalFavorites",
+    "original-message-notifications" to "extractOriginalMessageNotifications",
+    "original-search-pages" to "extractOriginalSearchPages",
+    "original-video-player-full-controls" to "extractOriginalPlayerFullControls",
+    "original-video-state-core" to "extractOriginalVideoStateCore",
+    "original-watchlater" to "extractOriginalWatchLater",
+    "profile-main" to "extractOriginalProfileMain",
+    "search" to "extractUpstreamSearch",
+    "whole-playback-settings" to "extractOriginalWholePlaybackSettings",
+)
+
+/** Applies a unified diff; every hunk must match the original exactly once. */
+fun applyUnifiedPatch(original: String, patch: String, label: String): String {
+    var lines = original.split("\n")
+    val body = patch.split("\n").dropWhile { !it.startsWith("--- ") }.drop(2)
+    var index = 0
+    while (index < body.size) {
+        val header = body[index++]
+        if (header.isEmpty() && index == body.size) break
+        require(header.startsWith("@@ ")) { "$label: malformed hunk header: $header" }
+        val before = mutableListOf<String>()
+        val after = mutableListOf<String>()
+        while (index < body.size && !body[index].startsWith("@@ ")) {
+            val line = body[index++]
+            if (line.isEmpty() && index == body.size) break
+            when (line.firstOrNull()) {
+                ' ' -> { before += line.substring(1); after += line.substring(1) }
+                '-' -> before += line.substring(1)
+                '+' -> after += line.substring(1)
+                else -> throw GradleException("$label: unexpected patch line: $line")
+            }
+        }
+        val matches = (0..lines.size - before.size).filter { start -> lines.subList(start, start + before.size) == before }
+        if (matches.size != 1) throw GradleException("$label: hunk $header matches ${matches.size} times; regenerate the patch against the producer output")
+        lines = lines.subList(0, matches.single()) + after + lines.subList(matches.single() + before.size, lines.size)
+    }
+    return lines.joinToString("\n")
+}
+
+val applyTransitionPatches by tasks.registering {
+    val generated = layout.buildDirectory.dir("generated")
+    val output = layout.buildDirectory.dir("transition-patched")
+    val unknown = transitionPatchedGeneratedFiles.map { it.substringBefore('/') }.toSet() - transitionPatchProducers.keys
+    require(unknown.isEmpty()) { "Transition patches without a known producer task: $unknown" }
+    dependsOn(transitionPatchedGeneratedFiles.map { transitionPatchProducers.getValue(it.substringBefore('/')) }.distinct())
+    inputs.dir(transitionPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(transitionPatchedGeneratedFiles.map { generated.get().file(it) }).withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir(output)
+    doLast {
+        val target = output.get().asFile
+        target.deleteRecursively()
+        transitionPatchedGeneratedFiles.forEach { relative ->
+            val source = generated.get().file(relative).asFile
+            val patched = applyUnifiedPatch(source.readText(), transitionPatchDirectory.resolve("$relative.patch").readText(), relative)
+            // The producer directory prefix (and whole-playback-settings' generated/ level) is dropped:
+            // the output root is a Kotlin source root.
+            val destination = target.resolve(relative.substringAfter('/').removePrefix("generated/"))
+            destination.parentFile.mkdirs()
+            destination.writeText("// Generated at build time: build/generated/$relative + upstream-core/transition/patches/$relative.patch\n" + patched)
+        }
+    }
+}
+
 kotlin.sourceSets.named("main") {
+    // Migrated upstream modules compile straight from the merged root, in this module (same-module
+    // smart casts and internal access as before); their generated legacy copies are skipped.
+    val buildDirectoryPath = layout.buildDirectory.get().asFile.toPath()
+    val generatedDirectoryPath = buildDirectoryPath.resolve("generated")
+    kotlin.exclude { element -> element.file.toPath().startsWith(buildDirectoryPath) && element.relativePath.pathString in migratedUpstreamRelativePaths }
+    kotlin.exclude { element ->
+        val path = element.file.toPath()
+        path.startsWith(generatedDirectoryPath) && generatedDirectoryPath.relativize(path).joinToString("/").let {
+            it in upstreamOwnedGeneratedCopies || it in transitionPatchedGeneratedFiles
+        }
+    }
+    // Desktop stand-ins for the Android APIs the migrated modules use, and transition compat code.
+    kotlin.srcDir("upstream-core/compat")
+    kotlin.srcDir("upstream-core/transition/src")
+    kotlin.srcDir(applyTransitionPatches)
+    migratedUpstreamModules.forEach { kotlin.srcDir(mergedRepositoryRoot.resolve(it + "src/main/java")) }
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/danmaku"))
@@ -2457,6 +2652,9 @@ tasks.withType<JavaExec>().configureEach {
 }
 
 dependencies {
+    // Libraries the migrated upstream modules need (versions as in the desktop graph).
+    implementation("androidx.datastore:datastore-preferences-core:1.2.1")
+    implementation("androidx.collection:collection:1.5.0")
     implementation(compose.desktop.currentOs)
     // Expose existing exact runtime97 Lifecycle modules through Miuix's implementation boundary.
     implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.11.0")
@@ -4493,3 +4691,43 @@ tasks.named("extractOriginalSpacePages") {
     inputs.file("tools/v046_space_content_pager.py")
     inputs.dir("upstream-slices/v046-space-content-pager")
 }
+
+// One product, one copy of every class. Upstream modules now compile from the merged root while old
+// copies of the same classes may still arrive through another source root, a project or a library;
+// the JVM would then silently run whichever copy comes first on the classpath. Fail instead.
+val verifyUniqueClassNames by tasks.registering {
+    val runtime = sourceSets.named("main").map { it.runtimeClasspath }
+    val report = layout.buildDirectory.file("reports/unique-class-names.txt")
+    inputs.files(runtime).withNormalizer(ClasspathNormalizer::class.java)
+    outputs.file(report)
+    doLast {
+        val owners = sortedMapOf<String, MutableList<String>>()
+        fun record(entry: String, owner: String) {
+            // module-info and multi-release variants under META-INF/versions are not class identities.
+            if (!entry.endsWith(".class") || entry.startsWith("META-INF/") || entry.endsWith("module-info.class")) return
+            owners.getOrPut(entry.removeSuffix(".class").replace('/', '.')) { mutableListOf() } += owner
+        }
+        val entries = runtime.get().files.filter { it.exists() }
+        entries.forEach { entry ->
+            if (entry.isDirectory) {
+                val owner = entry.relativeToOrSelf(projectDir).invariantSeparatorsPath
+                entry.walkTopDown().filter { it.isFile }.forEach { record(it.relativeTo(entry).invariantSeparatorsPath, owner) }
+            } else if (entry.extension == "jar" || entry.extension == "zip") {
+                JvmZipFile(entry).use { zip -> zip.entries().asSequence().filter { !it.isDirectory }.forEach { record(it.name, entry.name) } }
+            }
+        }
+        val duplicates = owners.filterValues { it.size > 1 }
+        report.get().asFile.writeText(
+            "classpath entries=${entries.size} classes=${owners.size} duplicated=${duplicates.size}\n" +
+                duplicates.entries.joinToString("") { (name, where) -> "$name\n" + where.joinToString("") { "  $it\n" } })
+        if (duplicates.isNotEmpty()) throw GradleException(
+            "${duplicates.size} class name(s) appear more than once in the desktop runtime classpath; " +
+                "the JVM would load whichever copy comes first:\n" +
+                duplicates.entries.take(20).joinToString("\n") { (name, where) -> "  $name: ${where.joinToString(", ")}" } +
+                "\nFull list: ${report.get().asFile}")
+        logger.lifecycle("Unique class names: ${owners.size} classes in ${entries.size} classpath entries, no duplicates.")
+    }
+}
+tasks.named("check") { dependsOn(verifyUniqueClassNames) }
+tasks.named("jar") { dependsOn(verifyUniqueClassNames) }
+tasks.test { dependsOn(verifyUniqueClassNames) }

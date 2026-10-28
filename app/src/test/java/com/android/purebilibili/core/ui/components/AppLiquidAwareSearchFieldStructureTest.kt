@@ -11,9 +11,9 @@ class AppLiquidAwareSearchFieldStructureTest {
             "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchField.kt"
         ).readText()
 
-        assertTrue(source.contains("AppSearchField("))
+        assertTrue(source.contains("AppCompactInputField("))
         assertTrue(source.contains("BottomBarMatchedReusableLiquidDock("))
-        assertTrue(source.contains("containerColor = if (liquidChromeActive)"))
+        assertTrue(source.contains("height = liquidHeight"))
         assertTrue(source.contains("Color.Transparent"))
         assertTrue(source.contains("leadingIconHorizontalOffset: Dp = 0.dp"))
         assertTrue(source.contains("leadingIconHorizontalOffset = leadingIconHorizontalOffset"))

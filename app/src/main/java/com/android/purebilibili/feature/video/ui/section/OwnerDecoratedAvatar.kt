@@ -43,6 +43,7 @@ fun OwnerDecoratedAvatar(
     faceModifier: Modifier = Modifier,
     contentDescription: String? = null,
 ) {
+    val displayFace = faceUrl
     var card by remember(ownerMid) { mutableStateOf<CreatorCardStats?>(null) }
     LaunchedEffect(ownerMid) {
         if (ownerMid <= 0L) return@LaunchedEffect
@@ -56,7 +57,7 @@ fun OwnerDecoratedAvatar(
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(FormatUtils.fixImageUrl(faceUrl))
+                .data(FormatUtils.fixImageUrl(displayFace))
                 .crossfade(true)
                 .build(),
             contentDescription = contentDescription,

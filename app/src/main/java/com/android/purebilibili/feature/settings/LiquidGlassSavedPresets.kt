@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.settings
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -90,13 +92,13 @@ internal fun LiquidGlassSavedPresets(modifier: Modifier = Modifier) {
         AppText(
             text = "保存当前调节参数，点击名称一键恢复；分享的 JSON 可通过下方“导入设置”恢复。",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
         )
         if (profiles.isEmpty()) {
             AppText(
                 text = if (busy) "正在读取预设…" else "还没有保存的预设",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
         }
         profiles.forEach { profile ->

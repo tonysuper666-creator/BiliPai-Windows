@@ -25,6 +25,17 @@ internal fun shouldUseQuickReturnSharedTransitionPolicy(
     return detailReturnUptimeMs - detailEnterUptimeMs <= thresholdMs
 }
 
+/** Click identity is deliberately referential: restoring a route/key cannot relabel pixels. */
+internal class VideoCardPixelOwner(
+    val sourceKey: String,
+    val sourceInstanceId: Long?,
+)
+
+internal class WholeCardReturnSnapshot(
+    val owner: VideoCardPixelOwner,
+    val bitmap: ImageBitmap,
+)
+
 /**
  *  卡片位置管理器
  * 
@@ -43,7 +54,17 @@ object CardPositionManager {
     /** 最后点击卡片的真实封面边界（在 Root 坐标系中）。 */
     var lastClickedCoverBounds: Rect? = null
         private set
-    
+
+    /**
+     * 最后点击卡片的**信息面**（标题/统计/UP/日期那一块）边界（在 Root 坐标系中）。
+     *
+     * 与 [lastClickedCoverBounds] 一样属于「点击时冻结」的快照。重建来源卡壳的信息板
+     * 必须落在这一块上；用「卡底 − 封面底」推导会在卡片测量高度与列表实际信息面不等价
+     * （例如点击瞬间卡片还没量到最终高度）时留下一段没被盖住的近白带。
+     */
+    var lastClickedInfoBounds: Rect? = null
+        private set
+
     /**
      * 最后点击的卡片中心点（归一化坐标 0-1）
      */
@@ -55,6 +76,16 @@ object CardPositionManager {
 
     internal var lastClickedVideoSourceInstanceId: Long? = null
         private set
+
+    internal var lastClickedVideoPixelOwner: VideoCardPixelOwner? = null
+        private set
+
+    private var activeVideoSourceOwner: VideoCardPixelOwner? = null
+
+    internal fun videoCardPixelOwnerFor(sourceKey: String?): VideoCardPixelOwner? =
+        lastClickedVideoPixelOwner?.takeIf {
+            sourceKey != null && it.sourceKey == sourceKey
+        }
 
     internal fun newVideoCardSourceInstanceId(): Long =
         videoCardSourceInstanceSequence.incrementAndGet()
@@ -70,19 +101,30 @@ object CardPositionManager {
     internal var lastClickedVideoSourceChromeSnapshot: VideoCardSourceChromeSnapshot? = null
         private set
 
-    /** Frozen display list of the stationary card; drawn with drawLayer on the flying entry. */
-    internal var lastClickedNativeCardLayer: GraphicsLayer? by mutableStateOf(null)
-        private set
+    private var nativeResourcesOwner: VideoCardPixelOwner? = null
+    private var nativeCardLayer: GraphicsLayer? by mutableStateOf(null)
+    private var nativeCoverOverlayLayer: GraphicsLayer? by mutableStateOf(null)
+    private var nativeCardBitmap: ImageBitmap? by mutableStateOf(null)
 
-    /**
-     * Frozen cover overlays (gradient, play/danmaku, duration) without the thumbnail.
-     * Drawn over the live flying cover so stats-on-cover cards keep their rest chrome.
-     */
-    internal var lastClickedNativeCoverOverlayLayer: GraphicsLayer? by mutableStateOf(null)
-        private set
+    private fun ownsNativeResources(): Boolean {
+        val owner = nativeResourcesOwner ?: return false
+        return owner === activeVideoSourceOwner &&
+            owner.sourceKey == lastClickedVideoSourceKey &&
+            owner.sourceInstanceId == lastClickedVideoSourceInstanceId
+    }
 
-    /** Stable click-time pixels used when the source composable leaves composition. */
-    internal var lastClickedNativeCardBitmap: ImageBitmap? by mutableStateOf(null)
+    /** Frozen native resources must not be relabelled by restoring a parent's source metadata. */
+    internal val lastClickedNativeCardLayer: GraphicsLayer?
+        get() = nativeCardLayer.takeIf { ownsNativeResources() }
+
+    internal val lastClickedNativeCoverOverlayLayer: GraphicsLayer?
+        get() = nativeCoverOverlayLayer.takeIf { ownsNativeResources() }
+
+    internal val lastClickedNativeCardBitmap: ImageBitmap?
+        get() = nativeCardBitmap.takeIf { ownsNativeResources() }
+
+    /** Immutable pixel provenance survives metadata-only restoration of a parent source key. */
+    internal var lastClickedWholeCardReturnSnapshot: WholeCardReturnSnapshot? by mutableStateOf(null)
         private set
     
     /**
@@ -127,8 +169,11 @@ object CardPositionManager {
     ) {
         lastClickedVideoSourceKey = null
         lastClickedVideoSourceInstanceId = null
+        lastClickedVideoPixelOwner = null
+        activeVideoSourceOwner = null
         lastClickedVideoSourceCornerDp = null
         lastClickedCoverBounds = null
+        lastClickedInfoBounds = null
         lastClickedVideoSourceLayout = VideoCardSourceLayout.COVER_ONLY
         lastClickedVideoSourceChromeSnapshot = null
         clearNativeVideoCardLayers()
@@ -172,6 +217,7 @@ object CardPositionManager {
         sourceLayout: VideoCardSourceLayout? = null,
         sourceChromeSnapshot: VideoCardSourceChromeSnapshot? = null,
         sourceInstanceId: Long? = null,
+        infoBounds: Rect? = null,
     ) {
         recordCardPosition(
             bounds = bounds,
@@ -189,6 +235,10 @@ object CardPositionManager {
             null
         }
         lastClickedVideoSourceInstanceId = sourceInstanceId
+        lastClickedVideoPixelOwner = lastClickedVideoSourceKey?.let {
+            VideoCardPixelOwner(it, sourceInstanceId)
+        }
+        activeVideoSourceOwner = lastClickedVideoPixelOwner
         lastClickedVideoSourceCornerDp = sourceCornerDp?.coerceAtLeast(0)
         lastClickedCoverBounds = coverBounds
             ?.takeIf { it.width > 1f && it.height > 1f }
@@ -198,30 +248,45 @@ object CardPositionManager {
             coverBounds = lastClickedCoverBounds,
         )
         lastClickedVideoSourceChromeSnapshot = sourceChromeSnapshot
+        lastClickedInfoBounds = infoBounds
+            ?.takeIf { it.width > 1f && it.height > 1f }
+            ?.let { Rect(it.left, it.top, it.right, it.bottom) }
     }
 
     internal fun recordNativeCardLayer(layer: GraphicsLayer?) {
-        lastClickedNativeCardLayer = layer
+        nativeResourcesOwner = lastClickedVideoPixelOwner
+        nativeCardLayer = layer
     }
 
     internal fun recordNativeCoverOverlayLayer(layer: GraphicsLayer?) {
-        lastClickedNativeCoverOverlayLayer = layer
+        nativeResourcesOwner = lastClickedVideoPixelOwner
+        nativeCoverOverlayLayer = layer
     }
 
     internal fun recordNativeCardBitmap(
         bitmap: ImageBitmap?,
-        expectedSourceKey: String?,
+        expectedOwner: VideoCardPixelOwner?,
     ) {
-        if (lastClickedVideoSourceKey == expectedSourceKey) {
-            lastClickedNativeCardBitmap = bitmap
+        if (expectedOwner != null && lastClickedVideoPixelOwner === expectedOwner) {
+            nativeResourcesOwner = expectedOwner
+            nativeCardBitmap = bitmap
+        }
+    }
+
+    /** Accept only the exact click that started capture, including repeated clicks on one card. */
+    internal fun recordWholeCardReturnBitmap(bitmap: ImageBitmap, expectedOwner: VideoCardPixelOwner?) {
+        if (expectedOwner != null && lastClickedVideoPixelOwner === expectedOwner) {
+            lastClickedWholeCardReturnSnapshot = WholeCardReturnSnapshot(expectedOwner, bitmap)
         }
     }
 
     /** Release native display lists once their navigation transition has settled. */
     internal fun clearNativeVideoCardLayers() {
-        lastClickedNativeCardLayer = null
-        lastClickedNativeCoverOverlayLayer = null
-        lastClickedNativeCardBitmap = null
+        nativeResourcesOwner = null
+        nativeCardLayer = null
+        nativeCoverOverlayLayer = null
+        nativeCardBitmap = null
+        lastClickedWholeCardReturnSnapshot = null
     }
 
     /** Drop click-time geometry when the window changed after the source was captured. */
@@ -239,10 +304,10 @@ object CardPositionManager {
     }
 
     internal fun isNativeVideoCardLayerCurrentOwner(layer: GraphicsLayer): Boolean =
-        lastClickedNativeCardLayer === layer
+        nativeCardLayer === layer && nativeResourcesOwner === lastClickedVideoPixelOwner
 
     internal fun isNativeCoverOverlayLayerCurrentOwner(layer: GraphicsLayer): Boolean =
-        lastClickedNativeCoverOverlayLayer === layer
+        nativeCoverOverlayLayer === layer && nativeResourcesOwner === lastClickedVideoPixelOwner
     
     /**
      * 清除记录的位置
@@ -250,9 +315,12 @@ object CardPositionManager {
     fun clear() {
         lastClickedCardBounds = null
         lastClickedCoverBounds = null
+        lastClickedInfoBounds = null
         lastClickedCardCenter = null
         lastClickedVideoSourceKey = null
         lastClickedVideoSourceInstanceId = null
+        lastClickedVideoPixelOwner = null
+        activeVideoSourceOwner = null
         lastClickedVideoSourceCornerDp = null
         lastClickedVideoSourceLayout = VideoCardSourceLayout.COVER_ONLY
         lastClickedVideoSourceChromeSnapshot = null
@@ -261,11 +329,11 @@ object CardPositionManager {
         clearNativeVideoCardLayers()
     }
 
-    /**
-     * 相关推荐 pop 回父详情后，把 source key 恢复为进入 related 前的列表来源。
-     */
-    fun restoreVideoSourceKey(sourceKey: String?) {
+    /** Restore source matching metadata, never the provenance of the last captured resource. */
+    internal fun restoreVideoSource(sourceKey: String?, sourceOwner: VideoCardPixelOwner?) {
         lastClickedVideoSourceKey = sourceKey?.trim()?.takeIf { it.isNotEmpty() }
+        activeVideoSourceOwner = sourceOwner?.takeIf { it.sourceKey == lastClickedVideoSourceKey }
+        lastClickedVideoSourceInstanceId = activeVideoSourceOwner?.sourceInstanceId
     }
     
     /**

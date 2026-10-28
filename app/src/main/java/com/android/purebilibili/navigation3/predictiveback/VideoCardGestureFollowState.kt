@@ -124,11 +124,16 @@ internal fun resolveVideoCardFollowPose(
     arcAmplitudePx: Float,
     anchorPose: VideoCardFollowPose = VideoCardFollowPose(),
     gestureProgress: Float = (anchorMorph - morph).coerceIn(0f, 1f),
+    preserveViewport: Boolean = false,
 ): VideoCardFollowPose {
     val scaleX = resolveMiuixVideoCardOuterScale(bounds.width / width, morph, 1f)
-    val scaleY = resolveMiuixVideoCardOuterScale(bounds.height / height, morph, 1f)
+    val scaleY = if (preserveViewport) {
+        resolveMiuixVideoCardOuterScaleY(bounds.width / width, bounds.height / height, morph, 1f)
+    } else resolveMiuixVideoCardOuterScale(bounds.height / height, morph, 1f)
     val anchorScaleX = resolveMiuixVideoCardOuterScale(bounds.width / width, anchorMorph, 1f)
-    val anchorScaleY = resolveMiuixVideoCardOuterScale(bounds.height / height, anchorMorph, 1f)
+    val anchorScaleY = if (preserveViewport) {
+        resolveMiuixVideoCardOuterScaleY(bounds.width / width, bounds.height / height, anchorMorph, 1f)
+    } else resolveMiuixVideoCardOuterScale(bounds.height / height, anchorMorph, 1f)
     val path = resolveVideoCardPathOffset(bounds, width, height, morph, arcAmplitudePx)
     val anchorPath = resolveVideoCardPathOffset(bounds, width, height, anchorMorph, arcAmplitudePx)
     val delta = sample.touch - sample.initialTouch
@@ -189,18 +194,23 @@ internal const val VIDEO_CARD_RELEASE_ROTATION_IMPULSE_PER_VELOCITY = 1.4f
 internal const val VIDEO_CARD_RELEASE_ROTATION_IMPULSE_MAX_DEGREE = 2f
 
 /**
- * 松手瞬间给姿态叠加一个与手指甩动速度成比例的旋转冲量，让卡片"顺势再甩一下
- * 再落位"。方向沿既有倾斜方向（抓取侧决定的 edgeSign 已编码在 rotationZ 符号里）；
- * 无可见倾斜时不施加，避免凭空选方向。
+ * 释放后的旋转冲量随收敛进度建立再消退，两端均为零且斜率为零。
+ * 幅度随释放速度变化，方向沿既有倾斜方向；无可见倾斜时不施加。
  */
-internal fun VideoCardFollowPose.withReleaseImpulse(releaseVelocity: Float): VideoCardFollowPose {
+internal fun VideoCardFollowPose.withReleaseImpulse(
+    releaseVelocity: Float,
+    settleWeight: Float,
+): VideoCardFollowPose {
     val direction = when {
         rotationZ > 0.05f -> 1f
         rotationZ < -0.05f -> -1f
         else -> 0f
     }
     if (direction == 0f || !releaseVelocity.isFinite() || releaseVelocity == 0f) return this
+    val weight = settleWeight.coerceIn(0f, 1f)
+    val pulse = 4f * weight * (1f - weight)
     val impulse = direction * (abs(releaseVelocity) * VIDEO_CARD_RELEASE_ROTATION_IMPULSE_PER_VELOCITY)
-        .coerceIn(0f, VIDEO_CARD_RELEASE_ROTATION_IMPULSE_MAX_DEGREE)
+        .coerceIn(0f, VIDEO_CARD_RELEASE_ROTATION_IMPULSE_MAX_DEGREE) *
+        pulse * pulse
     return copy(rotationZ = (rotationZ + impulse).coerceIn(-6.4f, 6.4f))
 }

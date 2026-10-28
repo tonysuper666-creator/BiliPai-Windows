@@ -7,6 +7,14 @@ import kotlin.test.assertEquals
 
 class HomeTopContentSpacingPolicyTest {
     @Test
+    fun scrollDistanceMatchesSearchVisibilityAndHiddenTabs() {
+        assertEquals(59.dp, resolveHomeTopSearchScrollDistance(48.dp, 6.dp, 5.dp, false))
+        assertEquals(53.dp, resolveHomeTopSearchScrollDistance(48.dp, 6.dp, 5.dp, true))
+        // 顶部搜索已迁到底栏时，旧的额外间距不再留下空收起区段。
+        assertEquals(0.dp, resolveHomeTopSearchScrollDistance(0.dp, 0.dp, 5.dp, false))
+    }
+
+    @Test
     fun bottomBarSearchRemovesTheHiddenTopSearchReservation() {
         assertEquals(
             HomeTopSearchRowMetrics(0.dp, 0.dp),
@@ -20,9 +28,9 @@ class HomeTopContentSpacingPolicyTest {
     }
 
     @Test
-    fun topSearchReservationReturnsWhenTopTabsAreHidden() {
+    fun hiddenTopTabsReserveAvatarAndSettingsWithoutSearchSpacing() {
         assertEquals(
-            HomeTopSearchRowMetrics(48.dp, 6.dp),
+            HomeTopSearchRowMetrics(48.dp, 0.dp),
             resolveHomeTopSearchRowMetrics(
                 configuredHeight = 48.dp,
                 configuredTabsSpacing = 6.dp,
@@ -30,6 +38,25 @@ class HomeTopContentSpacingPolicyTest {
                 hideTopTabs = true,
             ),
         )
+    }
+
+    @Test
+    fun controlsReservationCoversEverySearchAndTabsSwitchCombination() {
+        for (bottomSearch in listOf(false, true)) {
+            for (keepSearch in listOf(false, true)) {
+                for (hideTabs in listOf(false, true)) {
+                    val expected = if (!bottomSearch || keepSearch) {
+                        HomeTopSearchRowMetrics(48.dp, 6.dp)
+                    } else if (hideTabs) {
+                        HomeTopSearchRowMetrics(48.dp, 0.dp)
+                    } else HomeTopSearchRowMetrics(0.dp, 0.dp)
+                    assertEquals(
+                        expected,
+                        resolveHomeTopSearchRowMetrics(48.dp, 6.dp, bottomSearch, hideTabs, keepSearch),
+                    )
+                }
+            }
+        }
     }
 
     @Test

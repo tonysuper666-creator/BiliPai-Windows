@@ -1,8 +1,9 @@
 package com.android.purebilibili.feature.video.screen
 
 import android.content.Context
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -67,10 +68,29 @@ internal fun VideoDetailPlayerSettingsOverlayAdapter(
         sortPreferenceScope = danmakuPreferenceScope,
     )
 
-    LaunchedEffect(danmakuManager, viewModel) {
-        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf ->
-            android.util.Log.d("VideoDetailScreen", "👆 Danmaku clicked: $text")
-            viewModel.showDanmakuMenu(dmid, text, userHash, isSelf)
+    val selectedDanmakuMenu by viewModel.danmakuMenuState.collectAsStateWithLifecycle()
+    LaunchedEffect(danmakuManager, selectedDanmakuMenu.visible) {
+        if (!selectedDanmakuMenu.visible) danmakuManager.clearTapSelection()
+    }
+    LaunchedEffect(danmakuManager, selectedDanmakuMenu, danmakuManager.isTapSelectionActive) {
+        if (selectedDanmakuMenu.visible &&
+            selectedDanmakuMenu.tapAnchor?.owner === danmakuManager.tapSelectionOwner
+        ) {
+            if (selectedDanmakuMenu.expandedActions) danmakuManager.clearTapSelection()
+            else if (!danmakuManager.isTapSelectionActive) viewModel.hideDanmakuMenu()
         }
+    }
+    DisposableEffect(danmakuManager, isFullscreenMode, isPortraitFullscreen) {
+        onDispose {
+            danmakuManager.clearTapSelection()
+            viewModel.hideDanmakuMenu()
+        }
+    }
+    DisposableEffect(danmakuManager, viewModel) {
+        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf, anchor ->
+            android.util.Log.d("VideoDetailScreen", "👆 Danmaku clicked: $text")
+            viewModel.showDanmakuMenu(dmid, text, userHash, isSelf, anchor)
+        }
+        onDispose { danmakuManager.setOnDanmakuClickListener(null) }
     }
 }

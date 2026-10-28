@@ -10,6 +10,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
@@ -45,10 +46,10 @@ import kotlin.math.roundToInt
 // - 返回：景深读取主驱动的已缓动进度，空间 landing pulse 不进入 effects
 private const val VIDEO_CARD_TRANSITION_MAX_BLUR_RADIUS_DP = 12f
 private const val VIDEO_CARD_TRANSITION_BLUR_QUANTUM_PX = VideoHeroMotionTokens.OPEN_BLUR_QUANTUM_PX
-/** 返回消糊段更粗量化，降低 BlurEffect 每帧更新次数。 */
+/** 返回与进场共用步长，中途反向不切换半径网格。 */
 internal const val VIDEO_CARD_TRANSITION_RETURN_BLUR_QUANTUM_PX = VideoHeroMotionTokens.RETURN_BLUR_QUANTUM_PX
-// 保持全屏背景几何稳定（0% 缩放），杜绝状态栏脱节、四周边框黑边与底栏悬空；
-// 空间纵深由动态高斯模糊、柔和暗化与飞卡自身物理升降投影承担。
+// 页面内部只负责模糊与暗化。整个来源页的景深缩放由 Miuix 导航 entry 统一承担，
+// 独立首页 chrome、壁纸与冻结层不得再次缩放；脱离 entry 的快照由 Host 同几何兜底。
 internal const val VIDEO_CARD_TRANSITION_BACKGROUND_SCALE_REDUCTION = 0f
 private const val VIDEO_CARD_TRANSITION_RELATED_SCALE_REDUCTION =
     VIDEO_CARD_TRANSITION_BACKGROUND_SCALE_REDUCTION
@@ -235,6 +236,22 @@ internal fun resolveVideoCardTransitionScrimAlpha(
     return maxAlpha * clamped
 }
 
+/** Shared by the scrim-only path and the complete depth frame; no blur geometry is needed. */
+internal fun resolveVideoCardTransitionBackgroundScrimAlpha(
+    depthProgress: Float,
+    phase: VideoCardTransitionBackgroundPhase,
+    motionTier: MotionTier,
+    isLightBackground: Boolean,
+): Float = if (phase == VideoCardTransitionBackgroundPhase.IDLE) {
+    0f
+} else {
+    resolveVideoCardTransitionScrimAlpha(
+        progress = depthProgress,
+        isLightBackground = isLightBackground,
+        motionTier = motionTier,
+    )
+}
+
 @Suppress("UNUSED_PARAMETER")
 internal fun resolveVideoCardTransitionContentScale(
     progress: Float,
@@ -293,8 +310,10 @@ internal fun Modifier.videoCardTransitionChromeReveal(
     }
     .layout { measurable, constraints ->
         val placeable = measurable.measure(constraints)
-        val reveal = revealProvider().coerceIn(0f, 1f)
         layout(placeable.width, placeable.height) {
+            // Progress changes placement, not constraints or size. Keep the read here
+            // so predictive-back frames do not remeasure the dock and its children.
+            val reveal = revealProvider().coerceIn(0f, 1f)
             val dy = ((1f - reveal) * placeable.height).roundToInt()
             placeable.place(0, if (slideDown) dy else -dy)
         }
@@ -312,6 +331,7 @@ internal fun Modifier.videoCardTransitionOverlayDepthEffect(
     // to the modifier, outside snapshot state, so layer updates do not trigger composition.
     var cachedBlurRadiusPx = Float.NaN
     var cachedBlurEffect: BlurEffect? = null
+    val blurEffects = VideoCardTransitionBlurEffectCache()
     return this.graphicsLayer {
         val progress = progressProvider()
         val phase = phaseProvider()
@@ -343,11 +363,7 @@ internal fun Modifier.videoCardTransitionOverlayDepthEffect(
         transformOrigin = TransformOrigin(pivot.x, pivot.y)
         if (frame.blurRadiusPx != cachedBlurRadiusPx) {
             cachedBlurRadiusPx = frame.blurRadiusPx
-            cachedBlurEffect = if (frame.blurRadiusPx > 0.01f) {
-                BlurEffect(frame.blurRadiusPx, frame.blurRadiusPx, TileMode.Clamp)
-            } else {
-                null
-            }
+            cachedBlurEffect = blurEffects.resolve(frame.blurRadiusPx)
         }
         renderEffect = cachedBlurEffect
     }
@@ -428,17 +444,12 @@ internal fun resolveVideoCardTransitionBackgroundFrame(
             maxRadiusPx = maxBlurRadiusPx,
             quantumPx = blurQuantumPx,
         ),
-        scrimAlpha = when (phase) {
-            VideoCardTransitionBackgroundPhase.OPENING,
-            VideoCardTransitionBackgroundPhase.HELD,
-            VideoCardTransitionBackgroundPhase.RETURNING ->
-                resolveVideoCardTransitionScrimAlpha(
-                    progress = depthProgress,
-                    isLightBackground = isLightBackground,
-                    motionTier = motionTier,
-                )
-            VideoCardTransitionBackgroundPhase.IDLE -> 0f
-        },
+        scrimAlpha = resolveVideoCardTransitionBackgroundScrimAlpha(
+            depthProgress = depthProgress,
+            phase = phase,
+            motionTier = motionTier,
+            isLightBackground = isLightBackground,
+        ),
         contentScale = resolveVideoCardTransitionContentScale(
             progress = clamped,
             phase = phase,
@@ -725,6 +736,17 @@ internal fun Modifier.videoCardTransitionLiveBackgroundEffect(
         }
     }
 
+    // Reuse the render effect and clip shape while the quantized radius stays unchanged. Kept
+    // local to the modifier (outside snapshot state) so per-frame layer updates do not rebuild
+    // BlurEffect/RoundedCornerShape, matching the overlay depth layer above. This is uniform for
+    // every device: blur stays enabled, only redundant allocations are avoided.
+    var cachedLiveBlurRadiusPx = Float.NaN
+    var cachedLiveBlurEffect: BlurEffect? = null
+    // Retain quantized radii across gesture reversals and ordinary recompositions.
+    val liveBlurEffects = remember { VideoCardTransitionBlurEffectCache() }
+    var cachedLiveCornerRadiusPx = Float.NaN
+    var cachedLiveClipShape: RoundedCornerShape? = null
+
     return this
         .drawWithContent {
             val frame = frameState.value
@@ -759,24 +781,28 @@ internal fun Modifier.videoCardTransitionLiveBackgroundEffect(
             val shouldClip = frame.cornerRadiusPx > 0.01f
             clip = shouldClip
             if (shouldClip) {
-                shape = RoundedCornerShape(
-                    (frame.cornerRadiusPx / screenDensity.coerceAtLeast(0.01f)).dp
-                )
+                val cornerRadiusPx = frame.cornerRadiusPx
+                if (cornerRadiusPx != cachedLiveCornerRadiusPx) {
+                    cachedLiveCornerRadiusPx = cornerRadiusPx
+                    cachedLiveClipShape = RoundedCornerShape(
+                        (cornerRadiusPx / screenDensity.coerceAtLeast(0.01f)).dp
+                    )
+                }
+                cachedLiveClipShape?.let { shape = it }
                 shadowElevation = frame.shadowElevationPx
             } else {
                 shadowElevation = 0f
             }
-            renderEffect = if (
-                realtimeBlurEnabledProvider() && frame.blurRadiusPx > 0.01f
-            ) {
-                BlurEffect(
-                    radiusX = frame.blurRadiusPx,
-                    radiusY = frame.blurRadiusPx,
-                    edgeTreatment = TileMode.Clamp,
-                )
+            val liveBlurRadiusPx = if (realtimeBlurEnabledProvider()) {
+                frame.blurRadiusPx
             } else {
-                null
+                0f
             }
+            if (liveBlurRadiusPx != cachedLiveBlurRadiusPx) {
+                cachedLiveBlurRadiusPx = liveBlurRadiusPx
+                cachedLiveBlurEffect = liveBlurEffects.resolve(liveBlurRadiusPx)
+            }
+            renderEffect = cachedLiveBlurEffect
         }
 }
 
@@ -966,20 +992,41 @@ internal class VideoCardTransitionBackgroundFrameCache {
     }
 }
 
+/** Bounded per-owner cache so reversing a gesture can reuse previously visited blur radii. */
+internal class VideoCardTransitionBlurEffectCache {
+    private val effects = LinkedHashMap<Float, BlurEffect>()
+
+    fun resolve(radiusPx: Float, sdkInt: Int = Build.VERSION.SDK_INT): BlurEffect? {
+        if (radiusPx <= 0.01f || !radiusPx.isFinite() || sdkInt < 31) return null
+        return effects.getOrPut(radiusPx) {
+            if (effects.size >= 256) effects.remove(effects.keys.first())
+            BlurEffect(radiusX = radiusPx, radiusY = radiusPx, edgeTreatment = TileMode.Clamp)
+        }
+    }
+
+    fun clear() = effects.clear()
+}
+
 /**
  * 冻结层状态：开场首帧 record 后停止重录 feed，只对静态 display list
  * 更新 scale / BlurEffect / scrim，实现「看起来实时的动态模糊」与稳帧共存。
  */
 internal class VideoCardTransitionSnapshotLayerState {
-    // Reused by both source and host renderers for the lifetime of the captured display list.
-    private val blurEffects = LinkedHashMap<Float, BlurEffect>()
-    fun blurEffect(radiusPx: Float, sdkInt: Int = Build.VERSION.SDK_INT): BlurEffect? {
-        if (radiusPx <= 0.01f || !radiusPx.isFinite() || sdkInt < 31) return null
-        return blurEffects.getOrPut(radiusPx) {
-            if (blurEffects.size >= 256) blurEffects.remove(blurEffects.keys.first())
-            BlurEffect(radiusX = radiusPx, radiusY = radiusPx, edgeTreatment = TileMode.Clamp)
-        }
+    // Lifecycle state, updated by effects rather than by per-frame draw callbacks.
+    private val sourceRenderers = mutableStateMapOf<Any, Boolean>()
+    val hasReadySourceRenderer: Boolean get() = sourceRenderers.values.any { it }
+    val hasAttachedSourceRenderer: Boolean get() = sourceRenderers.isNotEmpty()
+
+    fun attachSourceRenderer(token: Any) { sourceRenderers[token] = false }
+    fun detachSourceRenderer(token: Any) { sourceRenderers.remove(token) }
+    fun markSourceRendererReady(token: Any, ready: Boolean) {
+        if (token in sourceRenderers) sourceRenderers[token] = ready
     }
+
+    // Reused by both source and host renderers for the lifetime of the captured display list.
+    private val blurEffects = VideoCardTransitionBlurEffectCache()
+    fun blurEffect(radiusPx: Float, sdkInt: Int = Build.VERSION.SDK_INT): BlurEffect? =
+        blurEffects.resolve(radiusPx, sdkInt)
     val frameCache = VideoCardTransitionBackgroundFrameCache()
     var freezeRecording: Boolean = false
     var hasRecordedContent: Boolean = false
@@ -1051,6 +1098,13 @@ internal class VideoCardTransitionSnapshotHandle(
 
     fun releaseSession() {
         clearRenderEffect()
+        // 标记失效不会清除 GraphicsLayer 的绘制闭包和子层引用。
+        // 会话结束后录入空内容，归还旧列表的封面与离屏图层。
+        contentLayer.record(
+            density = androidx.compose.ui.unit.Density(1f),
+            layoutDirection = androidx.compose.ui.unit.LayoutDirection.Ltr,
+            size = androidx.compose.ui.unit.IntSize(1, 1),
+        ) {}
         state.reset()
     }
 }
@@ -1067,10 +1121,10 @@ internal fun applyVideoCardTransitionSnapshotFrame(
     frame: VideoCardTransitionBackgroundFrame,
     canvasSize: androidx.compose.ui.geometry.Size,
     sourceBounds: Rect? = null,
+    layerAlpha: Float = 1f,
 ) {
-    // The route draw path may lower alpha during its final live-content handoff. This layer is
-    // shared with the host-owned depth renderer, so every frame starts from an opaque baseline.
-    contentLayer.alpha = 1f
+    // Shared with the host renderer: write the owning renderer's final alpha once.
+    contentLayer.alpha = layerAlpha
     contentLayer.pivotOffset = resolveVideoCardTransitionBackgroundScalePivotOffset(
         sourceBounds = sourceBounds,
         canvasSize = canvasSize,
@@ -1151,16 +1205,19 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
     val effectiveSnapshotHandle = snapshotHandle ?: rememberVideoCardTransitionSnapshotHandle()
     val contentLayer = effectiveSnapshotHandle.contentLayer
     val snapshotState = effectiveSnapshotHandle.state
+    val sourceRendererToken = remember(snapshotState, contentLayer) { Any() }
     val view = LocalView.current
     var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
-    // Host 共享 handle：dispose 时不 wipe 会话，但标记 display list 过期。
-    // 源页再次 compose（预测/返回）时强制重录真实首页，避免 draw 空层全黑。
+    // Keep the shared session snapshot when the last source detaches. A remounted
+    // source refreshes it after Host bridges the preparation frame.
     DisposableEffect(snapshotState, contentLayer, isHostOwnedSnapshot) {
+        if (isHostOwnedSnapshot) snapshotState.attachSourceRenderer(sourceRendererToken)
         onDispose {
+            if (isHostOwnedSnapshot) snapshotState.detachSourceRenderer(sourceRendererToken)
             if (shouldInvalidateSnapshotOnSourceDispose(isHostOwnedSnapshot = isHostOwnedSnapshot)) {
                 contentLayer.renderEffect = null
                 snapshotState.invalidateRecordedContent()
-            } else {
+            } else if (!snapshotState.hasAttachedSourceRenderer) {
                 // Host 会话层：保留 OPENING 冻结帧供 SettledHidden 满糊预热。
                 // 不标 displayListStale（否则完整进详情后 Host 无法预热 → 返回无糊）。
                 // 仅标记 needsSourceRefresh，源页再次挂上时重录真实首页。
@@ -1187,12 +1244,13 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
         realtimeBlurEnabledProvider() &&
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
-    LaunchedEffect(phase, exposure, retainSnapshot, isHostOwnedSnapshot) {
+    LaunchedEffect(phase, exposure, retainSnapshot, isHostOwnedSnapshot, sourceRendererToken) {
         if (!retainSnapshot) {
             // Host 会话层由 Host IDLE 释放；源页不得因 SettledHidden 误 reset。
             if (!isHostOwnedSnapshot) {
                 snapshotState.reset()
             }
+            snapshotState.markSourceRendererReady(sourceRendererToken, true)
             return@LaunchedEffect
         }
         when (exposure) {
@@ -1214,6 +1272,7 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
                         displayListStale = snapshotState.displayListStale,
                     )
                 if (mustRefresh) {
+                    snapshotState.markSourceRendererReady(sourceRendererToken, false)
                     snapshotState.freezeRecording = false
                     withFrameNanos { }
                 } else {
@@ -1229,6 +1288,7 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
                 }
             }
         }
+        snapshotState.markSourceRendererReady(sourceRendererToken, true)
     }
 
     SideEffect {
@@ -1255,13 +1315,30 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
         liveRecordingActive = liveRecordingActive,
     )
 
+    // 无模糊时隔离实时内容的绘制指令：外层遮罩更新不重新执行列表绘制，
+    // 图片、数据和来源卡显隐仍按自身失效信号更新，不冻结为整页快照。
+    // 模糊路径继续直接录制来源，避免冻结层持有随实时内容变化的子图层。
+    val isolateLiveContent = motionTier == MotionTier.Reduced ||
+        Build.VERSION.SDK_INT < Build.VERSION_CODES.S || !realtimeBlurEnabledProvider()
     return this.drawWithContent {
         val activePhase = phaseProvider()
         val activeExposure = exposureProvider()
         val activeDecision = resolveVideoCardTransitionRenderDecision(activeExposure)
-        // SettledHidden：详情盖住时源页通常已 dispose；若仍 compose，画 live 防黑洞，
-        // 不要 return 空画。Host 在 drawable 时另画冻结层。
-        // BackPreview/Returning 绝不能 yield 空画。
+        if (isHostOwnedSnapshot && shouldPaintHostOwnedDepthLayer(
+                exposure = activeExposure,
+                hasRecordedContent = snapshotState.hasRecordedContent,
+                displayListStale = snapshotState.displayListStale,
+                motionTier = motionTierProvider(),
+                realtimeBlurEnabled = realtimeBlurEnabledProvider(),
+                sourceRendererReady = snapshotState.hasReadySourceRenderer,
+            )
+        ) {
+            // Host owns the preparation frame. The effect transfers ownership after
+            // a frame boundary; both draw sites observe the same readiness state.
+            return@drawWithContent
+        }
+        // Once prepared, the source owns both held and exposed depth drawing.
+        // Missing/stale snapshots always fall back to live content rather than an empty frame.
         if (!activeDecision.drawTransitionBackground) {
             if (activeDecision.drawSourceNormally) {
                 drawContent()
@@ -1305,6 +1382,55 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
         }
         val activeProgress = progressProvider()
         val activeMotionTier = motionTierProvider()
+        val snapshotBlurActive = shouldUseVideoCardTransitionSnapshotBlur(
+            exposure = activeExposure,
+            motionTier = activeMotionTier,
+            realtimeBlurEnabled = realtimeBlurEnabledProvider(),
+        )
+        if (!snapshotBlurActive) {
+            // Blur off / Reduced / older APIs: only scrim changes. Do not compute or
+            // allocate the unused blur, corner, shadow and scale frame on every draw.
+            drawContent()
+            val isLightBackground = isLightBackgroundProvider()
+            val scrimAlpha = resolveVideoCardTransitionBackgroundScrimAlpha(
+                depthProgress = resolveVideoCardTransitionDepthProgress(activeProgress, activePhase),
+                phase = activePhase,
+                motionTier = activeMotionTier,
+                isLightBackground = isLightBackground,
+            )
+            if (scrimAlpha > 0.001f) {
+                val scrimColor = if (isLightBackground) {
+                    VIDEO_CARD_TRANSITION_LIGHT_SCRIM_TINT
+                } else {
+                    Color.Black
+                }
+                drawRect(scrimColor.copy(alpha = scrimAlpha))
+            }
+            return@drawWithContent
+        }
+
+        val frozenLayerAlpha = resolveVideoCardTransitionFrozenLayerAlpha(
+            exposure = activeExposure,
+            depthProgress = activeProgress,
+        )
+        if (!shouldDrawVideoCardTransitionFrozenLayer(frozenLayerAlpha)) {
+            // The live page has taken over. Skip recording and invisible blur updates.
+            // Keep refresh state intact so gesture reversal can reacquire a fresh snapshot.
+            drawContent()
+            val isLight = isLightBackgroundProvider()
+            val scrimAlpha = resolveVideoCardTransitionBackgroundScrimAlpha(
+                depthProgress = resolveVideoCardTransitionDepthProgress(activeProgress, activePhase),
+                phase = activePhase,
+                motionTier = activeMotionTier,
+                isLightBackground = isLight,
+            )
+            if (scrimAlpha > 0.001f) {
+                drawRect((if (isLight) VIDEO_CARD_TRANSITION_LIGHT_SCRIM_TINT else Color.Black)
+                    .copy(alpha = scrimAlpha))
+            }
+            return@drawWithContent
+        }
+
         val frame = snapshotState.frameCache.resolve(
             progress = activeProgress,
             phase = activePhase,
@@ -1315,24 +1441,6 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
             deviceCornerRadiusPx = deviceCornerRadiusPx,
             scaleReduction = scaleReductionProvider(),
         )
-        val snapshotBlurActive = shouldUseVideoCardTransitionSnapshotBlur(
-            exposure = activeExposure,
-            motionTier = activeMotionTier,
-            realtimeBlurEnabled = realtimeBlurEnabledProvider(),
-        )
-        if (!snapshotBlurActive) {
-            // IDLE / Reduced / 低版本：正常绘制页面；元素缩放由各 shared shell 自己承担。
-            drawContent()
-            if (frame.scrimAlpha > 0.001f) {
-                val scrimColor = if (frame.useLightScrimTint) {
-                    VIDEO_CARD_TRANSITION_LIGHT_SCRIM_TINT
-                } else {
-                    Color.Black
-                }
-                drawRect(scrimColor.copy(alpha = frame.scrimAlpha))
-            }
-            return@drawWithContent
-        }
 
         // OPENING 首录；预测/返回 DL stale 时重录。
         // 防黑：失效层绝不 drawLayer。防无糊：成功 record 后只画带 BlurEffect 的冻结层，
@@ -1342,20 +1450,6 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
                 hasRecordedContent = snapshotState.hasRecordedContent,
                 displayListStale = snapshotState.displayListStale,
             )
-        if (
-            needsRecord &&
-            activeExposure == VideoCardTransitionExposure.BackPreview &&
-            !snapshotState.freezeRecording &&
-            isVideoCardTransitionSnapshotDrawable(
-                hasRecordedContent = snapshotState.hasRecordedContent,
-                displayListStale = snapshotState.displayListStale,
-            )
-        ) {
-            // 来源页重挂的第一个预测帧不盖住 Host：Host 先画上一场的满模糊冻结层，
-            // 下一帧再录制真实来源页并按 live back progress 消糊。
-            snapshotState.freezeRecording = true
-            return@drawWithContent
-        }
         if (needsRecord) {
             if (size.width <= 0f || size.height <= 0f) {
                 drawContent()
@@ -1400,10 +1494,6 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
         // 捕获 PlayerView/TextureView 的实时像素，若它一直不透明地盖到 progress=0，
         // 上一级页面会在手势即将完成时仍发黑、发糊。交接区间与宽卡片的源内容
         // crossfade 保持一致，使实时页面与返回卡片同步显现。
-        val frozenLayerAlpha = resolveVideoCardTransitionFrozenLayerAlpha(
-            exposure = activeExposure,
-            depthProgress = activeProgress,
-        )
         val liveHandoffActive = frozenLayerAlpha < 0.999f
 
         // 返回末段 / 预览中段：先画 live content 让 hazeSource 重新登记，
@@ -1422,6 +1512,7 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
             frame = frame,
             canvasSize = size,
             sourceBounds = sourceBoundsProvider(),
+            layerAlpha = frozenLayerAlpha,
         )
         if (!liveHandoffActive && shouldDrawVideoCardTransitionScaleGapFill(frame.contentScale)) {
             drawRect(
@@ -1431,11 +1522,8 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
                 )
             )
         }
-        contentLayer.alpha = frozenLayerAlpha
-        if (frozenLayerAlpha > 0.001f) {
-            drawLayer(contentLayer)
-            VideoCardTransitionDiagnostics.onSourceLayerDrawn()
-        }
+        drawLayer(contentLayer)
+        VideoCardTransitionDiagnostics.onSourceLayerDrawn()
 
         if (frame.scrimAlpha > 0.001f) {
             val scrimColor = if (frame.useLightScrimTint) {
@@ -1445,8 +1533,11 @@ internal fun Modifier.videoCardTransitionBackgroundEffect(
             }
             drawRect(scrimColor.copy(alpha = frame.scrimAlpha))
         }
-    }
+    }.then(if (isolateLiveContent) Modifier.graphicsLayer() else Modifier)
 }
+
+/** Match both renderers' visibility boundary before recording or resolving a blur frame. */
+internal fun shouldDrawVideoCardTransitionFrozenLayer(alpha: Float): Boolean = alpha > 0.001f
 
 /**
  * Fades the frozen depth snapshot out over the full source-card takeover window.
@@ -1470,7 +1561,10 @@ internal fun resolveVideoCardTransitionFrozenLayerAlpha(
     if (!supportsLiveHandoff) return 1f
     // 冻结层往往录到了进场时被隐藏标题的卡片。在返回中段就把它交给
     // live source page，否则下方已就绪的标题/UP/统计仍会被无正文快照盖住。
-    return 1f - resolveVideoCardWholeSourceReturnAlpha(depthProgress)
+    val handoff = resolveVideoCardWholeSourceReturnAlpha(depthProgress)
+    // 只柔化背景所有权交接，不能二次缓动飞卡/手势的几何进度。
+    // 窗口两端斜率归零，背景不在开始交接或卸层时突然改变清晰度。
+    return 1f - handoff * handoff * (3f - 2f * handoff)
 }
 
 /**
@@ -1542,8 +1636,8 @@ internal fun resolveVideoCardTransitionMaxBlurRadiusPx(
 
 /**
  * Blur 半径量化步长。
- * RETURNING 用更粗步长（默认 4px）减少 BlurEffect 更新次数，保一镜到底同时降 GPU 抖动；
- * OPENING/HELD 仍用细步长，避免开场虚化阶梯感。
+ * 开合与手势恢复共用网格，保证同一深度的清晰度与方向无关。
+ * 接近清晰时的细分由量化函数统一处理，Host、来源快照和实时层不得各自取整。
  */
 internal fun resolveVideoCardTransitionBlurQuantumPx(
     motionTier: MotionTier,
@@ -1566,7 +1660,11 @@ private fun quantizeVideoCardTransitionBlurRadius(
     if (radiusPx <= 0f || maxRadiusPx <= 0f) return 0f
     // Preserve the full-strength endpoint at fractional display densities.
     if (radiusPx >= maxRadiusPx) return maxRadiusPx
-    val step = quantumPx.coerceAtLeast(0.5f)
+    val step = if (radiusPx <= VideoHeroMotionTokens.CLEAR_BLUR_RANGE_PX) {
+        VideoHeroMotionTokens.CLEAR_BLUR_QUANTUM_PX
+    } else {
+        quantumPx.coerceAtLeast(VideoHeroMotionTokens.CLEAR_BLUR_QUANTUM_PX)
+    }
     return ((radiusPx / step).roundToInt() * step).coerceIn(0f, maxRadiusPx)
 }
 

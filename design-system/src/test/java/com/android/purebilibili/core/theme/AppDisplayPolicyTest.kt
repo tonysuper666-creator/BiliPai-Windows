@@ -1,5 +1,6 @@
 package com.android.purebilibili.core.theme
 
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.isUnspecified
 import kotlin.test.Test
@@ -116,7 +117,7 @@ class AppDisplayPolicyTest {
     }
 
     @Test
-    fun `miuix native roles inherit md3 typography density`() {
+    fun `miuix native titles stay compact with md3 baseline`() {
         val textStyles = Md3Typography.toMiuixTextStyles()
 
         assertEquals(Md3Typography.bodyLarge, textStyles.main)
@@ -124,9 +125,11 @@ class AppDisplayPolicyTest {
         assertEquals(Md3Typography.bodySmall, textStyles.body2)
         assertEquals(Md3Typography.labelLarge, textStyles.button)
         assertEquals(Md3Typography.titleMedium, textStyles.headline1)
-        assertEquals(Md3Typography.displayLarge, textStyles.title1)
-        assertEquals(Md3Typography.headlineLarge, textStyles.title2)
-        assertEquals(Md3Typography.headlineMedium, textStyles.title3)
-        assertEquals(Md3Typography.headlineSmall, textStyles.title4)
+        assertEquals(32.sp, textStyles.title1.fontSize)
+        assertEquals(24.sp, textStyles.title2.fontSize)
+        assertEquals(20.sp, textStyles.title3.fontSize)
+        assertEquals(18.sp, textStyles.title4.fontSize)
+        assertEquals(38.sp, textStyles.title1.lineHeight)
+        assertEquals(40.sp, textStyles.scaled(1.25f).title1.fontSize)
     }
 }

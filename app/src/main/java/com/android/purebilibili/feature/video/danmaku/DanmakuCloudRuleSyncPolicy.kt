@@ -33,7 +33,7 @@ object DanmakuCloudRuleSyncPolicy {
         return when (type) {
             CLOUD_TYPE_KEYWORD -> body
             CLOUD_TYPE_REGEX -> if (isDanmakuRegexRule(body) || isDanmakuRegexRuleCandidate(body)) body else "regex:$body"
-            CLOUD_TYPE_UID -> "uid:$body"
+            CLOUD_TYPE_UID -> if (body.all(Char::isDigit)) "hash:$body" else "uid:$body"
             else -> null
         }
     }
@@ -54,7 +54,7 @@ object DanmakuCloudRuleSyncPolicy {
     fun localUidRuleToCloudFilter(rule: String): String? {
         val body = stripRulePrefix(rule, setOf(USER_HASH_RULE_PREFIX, USER_RULE_PREFIX, HASH_RULE_PREFIX))
             ?: return null
-        return if (body.matches(Regex("\\d+"))) crc32Hex(body) else body
+        return if (!rule.trim().startsWith(HASH_RULE_PREFIX, ignoreCase = true) && body.matches(Regex("\\d+"))) crc32Hex(body) else body
     }
 
     /**

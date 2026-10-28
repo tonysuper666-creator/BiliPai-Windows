@@ -31,16 +31,17 @@ object BiliPaiQrDecoder {
                 bitmap, 0, 0, bitmap.width, bitmap.height,
                 android.graphics.Matrix().apply { postRotate(rotation.toFloat()) }, true,
             )
-            val pixels = IntArray(oriented.width * oriented.height)
-            oriented.getPixels(pixels, 0, oriented.width, 0, 0, oriented.width, oriented.height)
-            val text = decodeLuminance(
-                com.google.zxing.RGBLuminanceSource(oriented.width, oriented.height, pixels))
-                ?: continue
-            return when {
-                acceptAny -> text
-                text.startsWith("bilipai://transfer/") || parseBilibiliLoginQr(text) != null -> text
-                else -> null
+            val text = try {
+                val pixels = IntArray(oriented.width * oriented.height)
+                oriented.getPixels(pixels, 0, oriented.width, 0, 0, oriented.width, oriented.height)
+                decodeLuminance(com.google.zxing.RGBLuminanceSource(oriented.width, oriented.height, pixels))
+            } finally {
+                if (oriented !== bitmap) oriented.recycle()
+            } ?: continue
+            if (acceptAny || text.startsWith("bilipai://transfer/") || parseBilibiliLoginQr(text) != null) {
+                return text
             }
+            // An unrelated result must not abort the remaining orientation attempts.
         }
         return null
     }
@@ -85,4 +86,16 @@ internal fun rotateQrLuminance(bytes: ByteArray, width: Int, height: Int, rotati
         output[index] = bytes[y * width + x]
     }
     return QrLuminanceFrame(output, rotatedWidth, rotatedHeight)
+}
+
+/** Power-of-two album sampling with no extra shrink once the image fits the decode budget. */
+internal fun resolveQrAlbumSampleSize(width: Int, height: Int, maxDimension: Int): Int? {
+    if (width <= 0 || height <= 0 || maxDimension <= 0) return null
+    val longest = maxOf(width, height).toLong()
+    var sample = 1
+    while ((longest + sample - 1) / sample > maxDimension) {
+        if (sample > Int.MAX_VALUE / 2) return null
+        sample *= 2
+    }
+    return sample
 }

@@ -4,7 +4,6 @@ package com.android.purebilibili.core.ui.common
 
 import com.android.purebilibili.core.ui.components.AppSurface
 
-import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -22,6 +21,9 @@ import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.selection.SelectionState
+import androidx.compose.foundation.text.selection.rememberSelectionState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -34,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalTextToolbar
@@ -66,7 +67,6 @@ data class TextSelectionRequest(
 data class AppSelectionToolbarState(
     val visible: Boolean = false,
     val rect: Rect = Rect.Zero,
-    val selectedText: String = "",
     val onCopy: (() -> Unit)? = null,
     val onSelectAll: (() -> Unit)? = null,
 )
@@ -116,8 +116,7 @@ internal fun AppFloatingSelectionToolbar(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val haptic = LocalHapticFeedback.current
-    val clipboardManager = LocalClipboardManager.current
+    val haptic = com.android.purebilibili.core.ui.rememberAppHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.TEXT)
     val positionProvider = remember(rect) { SelectionToolbarPositionProvider(rect) }
 
     Popup(
@@ -168,16 +167,9 @@ internal fun AppFloatingSelectionToolbar(
                     AppTextButton(
                         onClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            val copiedLength = selectedText.length
                             onCopy.invoke()
-                            if (selectedText.isNotEmpty()) {
-                                copyPlainTextToClipboard(context, selectedText, "所选内容")
-                            }
                             onDismiss()
-                            val copiedLength = if (selectedText.isNotEmpty()) {
-                                selectedText.length
-                            } else {
-                                clipboardManager.getText()?.text?.length ?: 0
-                            }
                             Toast.makeText(
                                 context,
                                 TextSelectionPolicy.formatInPlaceCopyFeedback(copiedLength),
@@ -211,9 +203,8 @@ internal fun AppFloatingSelectionToolbar(
 
                     AppTextButton(
                         onClick = {
-                            onCopy?.invoke()
-                            onDismiss()
                             onOpenSheet.invoke()
+                            onDismiss()
                         }
                     ) {
                         AppText(
@@ -263,13 +254,8 @@ internal fun AppFloatingSelectionToolbar(
 
                 AppTextButton(
                     onClick = {
-                        onCopy?.invoke()
+                        val textToShare = selectedText
                         onDismiss()
-                        val textToShare = if (selectedText.isNotEmpty()) {
-                            selectedText
-                        } else {
-                            clipboardManager.getText()?.text.orEmpty()
-                        }
                         if (textToShare.isNotEmpty()) {
                             try {
                                 val shareIntent = TextSelectionPolicy.createShareIntent(textToShare, "分享所选内容")
@@ -322,84 +308,72 @@ internal class DefaultTextSelectionController : TextSelectionController {
  */
 val LocalTextSelectionController = staticCompositionLocalOf<TextSelectionController?> { null }
 
-/**
- * 在顶层提供文本选择宿主、全局悬浮工具条与底栏容器
- */
+/** 只为静态文本定制工具栏；输入框继续使用系统的剪切、粘贴和自动填充菜单。 */
 @Composable
-fun ProvideAppTextSelectionHost(
-    content: @Composable () -> Unit
+fun AppSelectionContainer(
+    modifier: Modifier = Modifier,
+    state: SelectionState = rememberSelectionState(),
+    content: @Composable () -> Unit,
 ) {
-    val controller = remember { DefaultTextSelectionController() }
-    val clipboardManager = LocalClipboardManager.current
+    val selection = state
+    val controller = LocalTextSelectionController.current
     var toolbarState by remember { mutableStateOf(AppSelectionToolbarState()) }
-
     val customToolbar = remember {
         object : TextToolbar {
-            private var _status: TextToolbarStatus = TextToolbarStatus.Hidden
-            override val status: TextToolbarStatus get() = _status
+            override val status: TextToolbarStatus
+                get() = if (toolbarState.visible) TextToolbarStatus.Shown else TextToolbarStatus.Hidden
 
             override fun showMenu(
                 rect: Rect,
                 onCopyRequested: (() -> Unit)?,
                 onPasteRequested: (() -> Unit)?,
                 onCutRequested: (() -> Unit)?,
-                onSelectAllRequested: (() -> Unit)?
+                onSelectAllRequested: (() -> Unit)?,
             ) {
-                _status = TextToolbarStatus.Shown
-                val extracted = TextSelectionPolicy.resolveSelectedTextFromCopyCallback(onCopyRequested) ?: ""
                 toolbarState = AppSelectionToolbarState(
                     visible = true,
                     rect = rect,
-                    selectedText = extracted,
                     onCopy = onCopyRequested,
-                    onSelectAll = onSelectAllRequested
+                    onSelectAll = onSelectAllRequested,
                 )
             }
 
             override fun hide() {
-                _status = TextToolbarStatus.Hidden
-                toolbarState = AppSelectionToolbarState(visible = false)
+                toolbarState = AppSelectionToolbarState()
             }
         }
     }
+    CompositionLocalProvider(LocalTextToolbar provides customToolbar) {
+        SelectionContainer(state = selection, modifier = modifier, content = content)
+    }
+    // 与官方复制行为相同，跨 Text 节点时用换行连接；始终读取当前容器的选区。
+    val selectedText = selection.selectedTexts.joinToString("\n") { it.text }
+    if (toolbarState.visible && selectedText.isNotEmpty()) {
+        AppFloatingSelectionToolbar(
+            rect = toolbarState.rect,
+            selectedText = selectedText,
+            onCopy = toolbarState.onCopy,
+            onSelectAll = toolbarState.onSelectAll,
+            onOpenSheet = controller?.let { host ->
+                { host.show(selectedText, "所选内容") }
+            },
+            onDismiss = customToolbar::hide,
+        )
+    }
+}
 
-    CompositionLocalProvider(
-        LocalTextSelectionController provides controller,
-        LocalTextToolbar provides customToolbar
-    ) {
+/** 在顶层提供部分选择底栏，不覆盖输入框的系统工具栏。 */
+@Composable
+fun ProvideAppTextSelectionHost(content: @Composable () -> Unit) {
+    val controller = remember { DefaultTextSelectionController() }
+    CompositionLocalProvider(LocalTextSelectionController provides controller) {
         content()
-
-        if (toolbarState.visible) {
-            DisableSelection {
-                AppFloatingSelectionToolbar(
-                    rect = toolbarState.rect,
-                    selectedText = toolbarState.selectedText,
-                    onCopy = toolbarState.onCopy,
-                    onSelectAll = toolbarState.onSelectAll,
-                    onOpenSheet = {
-                        val textToOpen = if (toolbarState.selectedText.isNotEmpty()) {
-                            toolbarState.selectedText
-                        } else {
-                            toolbarState.onCopy?.invoke()
-                            clipboardManager.getText()?.text.orEmpty()
-                        }
-                        if (textToOpen.isNotEmpty()) {
-                            controller.show(textToOpen, "所选内容")
-                        }
-                    },
-                    onDismiss = {
-                        customToolbar.hide()
-                    }
-                )
-            }
-        }
-
         controller.activeRequest?.let { request ->
             DisableSelection {
                 TextSelectionBottomSheet(
                     text = request.text,
                     title = request.title,
-                    onDismiss = { controller.dismiss() }
+                    onDismiss = { controller.dismiss() },
                 )
             }
         }

@@ -13,8 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import com.android.purebilibili.core.ui.components.AppLazyVerticalGrid as LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -31,10 +34,10 @@ import com.android.purebilibili.core.ui.components.AppIconButton
 import androidx.compose.material3.MaterialTheme
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppText
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,17 +62,14 @@ fun LiveFollowingScreen(
     onBack: () -> Unit,
     onLiveClick: (Long, String, String) -> Unit
 ) {
+    var coverToSave by remember { mutableStateOf<LiveRoomCardUiModel?>(null) }
     val topChromePolicy = rememberAppTopChromePolicy()
     val visualSpec = remember(topChromePolicy.tabPresentation) {
         resolveLiveVisualSpec(topChromePolicy.tabPresentation)
     }
     val metrics = visualSpec.homeMetrics
     val windowSizeClass = LocalWindowSizeClass.current
-    val contentWidth = if (windowSizeClass.isExpandedScreen) {
-        minOf(windowSizeClass.widthDp, visualSpec.maxContentWidthDp.dp)
-    } else {
-        windowSizeClass.widthDp
-    }
+    val contentWidth = windowSizeClass.widthDp
     val gridColumns = remember(contentWidth, windowSizeClass.isTablet) {
         resolveLiveBiliPaiGridColumns(
             widthDp = contentWidth.value.toInt(),
@@ -80,11 +80,14 @@ fun LiveFollowingScreen(
     var isLoading by remember { mutableStateOf(true) }
     var isLoadingMore by remember { mutableStateOf(false) }
     var isRefreshing by remember { mutableStateOf(false) }
+    val gridState = rememberLazyGridState()
+    var totalCount by remember { mutableStateOf<Int?>(null) }
     var hasMore by remember { mutableStateOf(false) }
-    var nextPage by remember { mutableIntStateOf(1) }
     var error by remember { mutableStateOf<String?>(null) }
+    var loadMoreError by remember { mutableStateOf<String?>(null) }
     var items by remember { mutableStateOf<List<LiveRoom>>(emptyList()) }
     val coroutineScope = rememberCoroutineScope()
+    val requests = remember { LiveBrowseRequestPolicy() }
 
     fun mergeRooms(current: List<LiveRoom>, next: List<LiveRoom>, refresh: Boolean): List<LiveRoom> {
         return if (refresh) {
@@ -94,18 +97,43 @@ fun LiveFollowingScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        LiveRepository.getFollowedLivePage(page = 1)
-            .onSuccess { page ->
-                items = mergeRooms(emptyList(), page.items, refresh = true)
-                hasMore = page.hasMore
-                nextPage = page.nextPage
-                isLoading = false
-            }
-            .onFailure {
-                error = it.message ?: "加载关注直播失败"
-                isLoading = false
-            }
+    fun loadPage(refresh: Boolean) {
+        val request = if (refresh) requests.refresh() else requests.loadMore(hasMore)
+        if (request == null) return
+        error = null
+        loadMoreError = null
+        isLoadingMore = !refresh
+        isRefreshing = refresh && !isLoading
+        coroutineScope.launch {
+            LiveRepository.getFollowedLivePage(page = request.page)
+                .onSuccess { page ->
+                    if (!requests.succeed(request, page.nextPage)) return@onSuccess
+                    items = mergeRooms(items, page.items, refresh)
+                    totalCount = page.totalCount
+                    hasMore = page.hasMore
+                    isLoading = false
+                    isRefreshing = false
+                    isLoadingMore = false
+                }
+                .onFailure {
+                    if (!requests.fail(request)) return@onFailure
+                    if (refresh) error = it.message ?: "加载关注直播失败"
+                    else loadMoreError = it.message ?: "加载更多失败"
+                    isLoading = false
+                    isRefreshing = false
+                    isLoadingMore = false
+                }
+        }
+    }
+
+    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
+    LaunchedEffect(accountIdentity) {
+        requests.invalidate()
+        items = emptyList()
+        totalCount = null
+        hasMore = false
+        isLoading = true
+        loadPage(refresh = true)
     }
 
     AppScaffold(
@@ -113,7 +141,7 @@ fun LiveFollowingScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             AppTopBar(
-                title = if (items.isNotEmpty()) "${items.size}人正在直播" else "关注直播",
+                title = totalCount?.let { "${it}人正在直播" } ?: "关注直播",
                 navigationIcon = {
                     AppIconButton(onClick = onBack) {
                         AppIcon(
@@ -122,65 +150,53 @@ fun LiveFollowingScreen(
                         )
                     }
                 },
-                actions = {
-                    AppIconButton(
-                        enabled = !isLoading && !isRefreshing,
-                        onClick = {
-                            coroutineScope.launch {
-                                isRefreshing = true
-                                error = null
-                                LiveRepository.getFollowedLivePage(page = 1)
-                                    .onSuccess { page ->
-                                        items = mergeRooms(emptyList(), page.items, refresh = true)
-                                        hasMore = page.hasMore
-                                        nextPage = page.nextPage
-                                    }
-                                    .onFailure { error = it.message ?: "刷新关注直播失败" }
-                                isRefreshing = false
-                            }
-                        },
-                    ) {
-                        AppIcon(
-                            imageVector = Icons.Outlined.Refresh,
-                            contentDescription = if (isRefreshing) "正在刷新" else "刷新",
-                        )
-                    }
-                },
+
             )
         },
         containerColor = colorScheme.background,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { innerPadding ->
+        AdaptivePullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = { loadPage(refresh = true) },
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+        ) {
         when {
             isLoading -> ContentVideoGridSkeletonFixedColumns(
                 columns = gridColumns,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
+                    .fillMaxSize(),
             )
-            error != null -> Box(
+            error != null && items.isEmpty() && !hasMore -> Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
                 AppText(text = error ?: "", color = colorScheme.onSurfaceVariant)
             }
+            items.isEmpty() && !hasMore -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    AppText("关注的主播暂时都未开播", color = colorScheme.onSurfaceVariant)
+                    AppButton(onClick = { loadPage(refresh = true) }) { AppText("重新加载") }
+                }
+            }
             else -> {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(gridColumns),
-                    modifier = Modifier
-                        .responsiveContentWidth(maxWidth = visualSpec.maxContentWidthDp.dp)
-                        .fillMaxSize(),
+                    columns = LiveRoomGridCells(),
+                    state = gridState,
+                    modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
                         start = metrics.safeSpaceDp.dp,
                         end = metrics.safeSpaceDp.dp,
-                        top = innerPadding.calculateTopPadding() + AppSpacingTokens.Small,
-                        bottom = maxOf(innerPadding.calculateBottomPadding(), LocalBottomBarContentPadding.current),
+                        top = AppSpacingTokens.Small,
+                        bottom = maxOf(innerPadding.calculateBottomPadding(), LocalBottomBarContentPadding.current, 100.dp),
                     ),
                     horizontalArrangement = Arrangement.spacedBy(metrics.cardSpaceDp.dp),
                     verticalArrangement = Arrangement.spacedBy(metrics.cardSpaceDp.dp),
                 ) {
+                    if (error != null) {
+                        item { AppText(error.orEmpty(), color = colorScheme.onSurfaceVariant) }
+                    }
                     items(items, key = { it.roomid }) { item ->
                         LiveRoomCard(
                             model = LiveRoomCardUiModel(
@@ -189,37 +205,24 @@ fun LiveFollowingScreen(
                                 coverUrl = listOf(item.cover, item.userCover, item.keyframe, item.face)
                                     .firstOrNull { it.isNotBlank() }.orEmpty(),
                                 hostName = item.uname,
-                                viewerCount = item.online,
+                                viewerCount = item.viewerCount(),
+                                viewerText = item.watchedShow?.textLarge.orEmpty(),
                                 areaName = item.areaName,
                             ),
+                            enableSharedCoverTransition = true,
                             onClick = { onLiveClick(item.roomid, item.title, item.uname) },
+                            onLongPress = { coverToSave = LiveRoomCardUiModel(item.roomid, item.title, item.displayCover(), item.uname, item.online, item.areaName) },
                         )
                     }
-                    item {
-                        if (hasMore || isLoadingMore) {
-                            AppButton(
-                                enabled = !isLoadingMore,
-                                modifier = Modifier.fillMaxWidth(),
-                                onClick = {
-                                    coroutineScope.launch {
-                                        isLoadingMore = true
-                                        LiveRepository.getFollowedLivePage(page = nextPage)
-                                            .onSuccess { page ->
-                                                items = mergeRooms(items, page.items, refresh = false)
-                                                hasMore = page.hasMore
-                                                nextPage = page.nextPage
-                                            }
-                                            .onFailure { error = it.message ?: "加载更多失败" }
-                                        isLoadingMore = false
-                                    }
-                                },
-                            ) {
-                                AppText(if (isLoadingMore) "加载中" else "加载更多")
-                            }
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        LiveHomeLoadMoreFooter(isLoadingMore, items.size, hasMore, loadMoreError) {
+                            loadPage(refresh = false)
                         }
                     }
                 }
             }
         }
+        }
     }
+    coverToSave?.let { card -> LiveCoverSaveDialog(card) { coverToSave = null } }
 }

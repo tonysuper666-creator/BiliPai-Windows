@@ -1,0 +1,19 @@
+# upstream added SubtitleAutoPreference.CHINESE_ONLY; both when-branches use the upstream v0.6.7 texts
+--- a/whole-playback-settings/generated/com/android/purebilibili/feature/settings/PlaybackSettingsScreen.kt
++++ b/whole-playback-settings/generated/com/android/purebilibili/feature/settings/PlaybackSettingsScreen.kt
+@@ -1359,6 +1359,7 @@
+         SubtitleAutoPreference.ON -> "默认开启（优先当前可用轨道）"
+         SubtitleAutoPreference.WITHOUT_AI -> "仅自动启用非 AI 字幕"
+         SubtitleAutoPreference.AUTO -> "静音时可自动启用 AI 字幕"
++        SubtitleAutoPreference.CHINESE_ONLY -> "只开启中文字幕，含 AI 中文；没有中文字幕时不开启"
+     }
+ 
+     AppPreferenceGroup {
+@@ -1477,6 +1478,7 @@
+                         SubtitleAutoPreference.ON -> "开启"
+                         SubtitleAutoPreference.WITHOUT_AI -> "无 AI"
+                         SubtitleAutoPreference.AUTO -> "自动"
++                        SubtitleAutoPreference.CHINESE_ONLY -> "仅中文"
+                     }
+                 }",
+                 subtitle = subtitlePreferenceDescription,

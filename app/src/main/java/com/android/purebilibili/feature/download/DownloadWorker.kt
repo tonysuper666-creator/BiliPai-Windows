@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.work.*
 import com.android.purebilibili.app.DOWNLOAD_NOTIFICATION_CHANNEL_ID
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -86,6 +87,7 @@ class DownloadWorker(
             ?: return@withContext Result.failure()
         
         com.android.purebilibili.core.util.Logger.d("DownloadWorker", "🚀 Starting download: $taskId")
+        DownloadManager.init(applicationContext)
         setForeground(getForegroundInfo())
 
         // 周期性把任务进度刷到前台通知上（进度条 + 百分比）
@@ -121,7 +123,9 @@ class DownloadWorker(
                 Result.success()
             } else {
                 com.android.purebilibili.core.util.Logger.w("DownloadWorker", "🔁 Download interrupted, will retry: $taskId", e)
-                DownloadManager.markInterruptedForRetry(taskId, e.message ?: "下载被系统中断，等待重试")
+                withContext(NonCancellable) {
+                    DownloadManager.markInterruptedForRetry(taskId, e.message ?: "下载被系统中断，等待重试")
+                }
                 Result.retry()
             }
             

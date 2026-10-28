@@ -1,6 +1,7 @@
 package com.bilipai.desktop.settings
 
 import androidx.compose.runtime.*
+import com.bilipai.desktop.plugins.asAndroidContext
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Column
 import com.android.purebilibili.core.network.policy.AppHttpProxySettings
@@ -20,12 +21,13 @@ internal class DesktopNetworkProxyBindings(
     private val onFailure: (Throwable) -> Unit,
 ) {
     private val writer=Mutex()
-    init { NetworkProxyStore.init(context) }
+    private val androidContext = context.asAndroidContext()
+    init { NetworkProxyStore.init(androidContext) }
     suspend fun saveAndAwait(value:AppHttpProxySettings) = writer.withLock {
         withContext(Dispatchers.IO) {
             currentCoroutineContext().ensureActive()
-            val previous=NetworkProxyStore.getSync(context)
-            NetworkProxyStore.save(context,value)
+            val previous=NetworkProxyStore.getSync(androidContext)
+            NetworkProxyStore.save(androidContext,value)
             // OkHttp can reuse idle connections without asking the dynamic selector.
             // Retire idle routes after successful persistence; active requests keep the original semantics.
             if (previous!=NetworkProxyStore.getSync()) sharedApplicationClient.connectionPool.evictAll()

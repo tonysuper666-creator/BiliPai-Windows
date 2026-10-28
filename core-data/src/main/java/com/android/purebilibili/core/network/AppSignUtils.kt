@@ -86,6 +86,10 @@ object AppSignUtils {
         return sign(params, ANDROID_APP_SEC)
     }
 
+    /** URI-encoded Android API signing for parameters containing structured values. */
+    fun signForAndroidEncodedApi(params: Map<String, String>): Map<String, String> =
+        signEncoded(params + ("appkey" to ANDROID_APP_KEY), ANDROID_APP_SEC)
+
     /**
      * HD 登录签名：与 bilibili-API-collect Java demo / BiliPai AppSign 一致，
      * 对 key/value 做 percent-encode 后再 MD5(query + appsec)。

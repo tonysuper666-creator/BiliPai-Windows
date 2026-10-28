@@ -1,8 +1,8 @@
 package com.android.purebilibili.feature.video.ui.components
 
 import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.getLinkAnnotations
-androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.data.model.response.ReplyMember
 import com.android.purebilibili.data.model.response.ReplyCardLabel
@@ -41,10 +41,10 @@ class ReplyComponentsPolicyTest {
     @Test
     fun `author history action is present only when the host can navigate to a valid author`() {
         val withoutEntry = buildReplyActionSheetActions(
-            canDelete = false, canReport = false, canShare = false, canBlockUser = false,
+            canCheckFraud = false, canReport = false, canShare = false, canBlockUser = false,
         )
         val withEntry = buildReplyActionSheetActions(
-            canDelete = false, canReport = false, canShare = false, canBlockUser = false,
+            canCheckFraud = false, canReport = false, canShare = false, canBlockUser = false,
             canQueryAuthorHistory = true,
         )
         assertFalse(withoutEntry.contains(ReplyActionSheetAction.QUERY_AUTHOR_HISTORY))
@@ -353,16 +353,17 @@ class ReplyComponentsPolicyTest {
                 ReplyActionSheetAction.COPY_ALL,
                 ReplyActionSheetAction.FREE_COPY,
                 ReplyActionSheetAction.COPY_USERNAME,
+                ReplyActionSheetAction.TIME_STYLE,
                 ReplyActionSheetAction.SAVE,
                 ReplyActionSheetAction.SHARE,
                 ReplyActionSheetAction.REPLY,
                 ReplyActionSheetAction.BLOCK_USER,
                 ReplyActionSheetAction.REPORT,
-                ReplyActionSheetAction.TOGGLE_TOP,
-                ReplyActionSheetAction.DELETE
+                ReplyActionSheetAction.CHECK_FRAUD,
+                ReplyActionSheetAction.TOGGLE_TOP
             ),
             buildReplyActionSheetActions(
-                canDelete = true,
+                canCheckFraud = true,
                 canReport = true,
                 canShare = true,
                 canBlockUser = true,
@@ -375,7 +376,7 @@ class ReplyComponentsPolicyTest {
     fun `reply action sheet can omit username copy when disabled`() {
         assertFalse(
             buildReplyActionSheetActions(
-                canDelete = false,
+                canCheckFraud = false,
                 canReport = false,
                 canShare = false,
                 canBlockUser = false,
@@ -388,7 +389,7 @@ class ReplyComponentsPolicyTest {
     fun `reply action sheet policy hides share when api disables support share`() {
         assertFalse(
             buildReplyActionSheetActions(
-                canDelete = false,
+                canCheckFraud = false,
                 canReport = false,
                 canShare = false,
                 canBlockUser = false
@@ -397,7 +398,7 @@ class ReplyComponentsPolicyTest {
     }
 
     @Test
-    fun `buildReplyCommentImageSpec carries author message and qr url`() {
+    fun `saved comment image metadata preserves publish seconds`() {
         val spec = buildReplyCommentImageSpec(
             ReplyItem(
                 oid = 100L,
@@ -410,11 +411,10 @@ class ReplyComponentsPolicyTest {
             generatedAtMillis = 1_700_000_100_000L
         )
 
-        assertEquals("评论者", spec.authorName)
-        assertEquals("保存这条评论", spec.message)
-        assertEquals("https://www.bilibili.com/video/av100?comment_on=1&comment_root_id=777", spec.qrUrl)
-        assertTrue(spec.footerText.contains("识别二维码"))
-        assertTrue(spec.metadataText.contains("12赞"))
+        assertTrue(
+            Regex("""\d{4}-\d{2}-\d{2} \d{2}:\d{2}:20 · 12赞""").matches(spec.metadataText),
+            spec.metadataText
+        )
     }
 
     @Test
@@ -461,6 +461,46 @@ class ReplyComponentsPolicyTest {
         assertEquals(
             "bilibili://video/BV1testtest",
             annotated.firstCommentLinkTag(RICH_COMMENT_LINK_URL_PREFIX)
+        )
+    }
+
+    @Test
+    fun `shopping web destination wins over source video schema`() {
+        val destination = "https://mall.bilibili.com/detail.html?itemsId=123&from=BV1xx411c7mD"
+        assertEquals(
+            destination,
+            resolveReplyContentUrlNavigationUrl(
+                rawToken = "https://b23.tv/shop",
+                url = ReplyContentUrl(
+                    url = destination,
+                    appUrlSchema = "bilibili://video/BV1xx411c7mD"
+                )
+            )
+        )
+    }
+
+    @Test
+    fun `unsupported shopping schema falls back to web url`() {
+        assertEquals(
+            "https://item.taobao.com/item.htm?id=123",
+            resolveReplyContentUrlNavigationUrl(
+                rawToken = "https://b23.tv/shop",
+                url = ReplyContentUrl(
+                    url = "https://item.taobao.com/item.htm?id=123",
+                    appUrlSchema = "taobao://item.taobao.com/item.htm?id=123"
+                )
+            )
+        )
+    }
+
+    @Test
+    fun `unsupported shopping schema falls back to original short link`() {
+        assertEquals(
+            "https://e.tb.cn/h.demo",
+            resolveReplyContentUrlNavigationUrl(
+                rawToken = "https://e.tb.cn/h.demo",
+                url = ReplyContentUrl(appUrlSchema = "bilibili://unhandled-shopping")
+            )
         )
     }
 

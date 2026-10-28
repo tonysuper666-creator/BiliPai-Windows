@@ -5,6 +5,7 @@ import com.android.purebilibili.core.network.NetworkModule
 import com.android.purebilibili.core.network.WbiUtils
 import com.android.purebilibili.core.store.TokenManager
 import com.android.purebilibili.data.model.response.HotItem
+import com.android.purebilibili.data.model.response.SearchDefaultData
 import com.android.purebilibili.data.model.response.SearchArticleItem
 import com.android.purebilibili.data.model.response.SearchLiveUserItem
 import com.android.purebilibili.data.model.response.SearchPhotoItem
@@ -13,6 +14,9 @@ import com.android.purebilibili.data.model.response.SearchTopicItem
 import com.android.purebilibili.data.model.response.VideoItem
 import com.android.purebilibili.data.model.response.SearchUpItem
 import com.android.purebilibili.data.model.response.LiveRoomSearchItem
+import com.android.purebilibili.data.model.response.SearchVideoItem
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,6 +28,14 @@ data class SearchTrendingBundle(
     val allItems: List<HotItem>
         get() = pinnedItems + items
 }
+
+data class SearchAllResults(
+    val videos: List<VideoItem> = emptyList(),
+    val ups: List<SearchUpItem> = emptyList(),
+    val bangumi: List<com.android.purebilibili.data.model.response.BangumiSearchItem> = emptyList(),
+    val matches: List<com.android.purebilibili.data.model.response.MatchContestInfo> = emptyList(),
+    val pageInfo: SearchRepository.SearchPageInfo
+)
 
 internal fun buildSearchRecommendParams(
     accessToken: String?,
@@ -53,6 +65,7 @@ internal fun buildSearchRecommendParams(
 
 object SearchRepository {
     private val api = NetworkModule.searchApi
+    private val searchJson = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val navApi = NetworkModule.api
 
     //  [新增] 搜索分页信息
@@ -68,20 +81,16 @@ object SearchRepository {
         responsePage: Int,
         totalPages: Int,
         totalResults: Int,
-        fallbackResultCount: Int
-    ): SearchPageInfo {
-        val resolvedPage = resolveSearchLoadedPage(
-            requestedPage = requestedPage,
-            responsePage = responsePage
-        )
-        val resolvedTotalPages = totalPages.takeIf { it > 0 } ?: 1
-        return SearchPageInfo(
-            currentPage = resolvedPage,
-            totalPages = resolvedTotalPages,
-            totalResults = totalResults.takeIf { it > 0 } ?: fallbackResultCount,
-            hasMore = resolvedPage < resolvedTotalPages
-        )
-    }
+        fallbackResultCount: Int,
+        pageSize: Int
+    ): SearchPageInfo = resolveVideoSearchPageInfo(
+        requestedPage = requestedPage,
+        responsePage = responsePage,
+        totalPages = totalPages,
+        totalResults = totalResults,
+        pageSize = pageSize,
+        resultCount = fallbackResultCount
+    )
 
     private fun searchTypeParams(
         keyword: String,
@@ -93,10 +102,69 @@ object SearchRepository {
             "keyword" to keyword,
             "search_type" to searchType,
             "page" to page.toString(),
-            "page_size" to "20",
+            "page_size" to "30",
             "platform" to "pc",
             "web_location" to "1430654"
         ).apply { putAll(extra) }
+    }
+
+    /** 综合页按站点 search/all/v2 返回的分类结构，优先展示视频、UP 主和番剧。 */
+    suspend fun searchAll(keyword: String, page: Int = 1): Result<SearchAllResults> = withContext(Dispatchers.IO) {
+        try {
+            val params = signWithWbi(
+                mapOf(
+                    "keyword" to keyword,
+                    "search_type" to "all",
+                    "page" to page.toString(),
+                    "page_size" to "20",
+                    "platform" to "pc",
+                    "web_location" to "1430654"
+                )
+            )
+            val response = api.searchAll(params)
+            if (response.code != 0) {
+                return@withContext Result.failure(createSearchError(response.code, response.message))
+            }
+            val categories = response.data?.result.orEmpty()
+            val videos = categories.firstOrNull { it.result_type == "video" }
+                ?.data.orEmpty()
+                .mapNotNull { runCatching { searchJson.decodeFromJsonElement<SearchVideoItem>(it).toVideoItem() }.getOrNull() }
+            val ups = categories.firstOrNull { it.result_type == "bili_user" }
+                ?.data.orEmpty()
+                .mapNotNull { runCatching { searchJson.decodeFromJsonElement<SearchUpItem>(it).cleanupFields() }.getOrNull() }
+            val bangumi = categories.filter { it.result_type == "media_bangumi" || it.result_type == "media_ft" }
+                .flatMap { it.data.orEmpty() }
+                .mapNotNull { runCatching { searchJson.decodeFromJsonElement<com.android.purebilibili.data.model.response.BangumiSearchItem>(it) }.getOrNull() }
+                .map { item ->
+                    item.copy(
+                        title = com.android.purebilibili.data.model.response.cleanSearchText(item.title),
+                        cover = com.android.purebilibili.data.model.response.normalizeSearchImageUrl(item.cover)
+                    )
+                }
+            // 综合搜索读取首个赛事块中的全部比赛，页面将首场置顶、其余保留在 UP 主后。
+            val matches = categories.firstOrNull { it.result_type == "esports" }
+                ?.data.orEmpty()
+                .firstOrNull()
+                ?.let { element ->
+                    runCatching {
+                        searchJson.decodeFromJsonElement<com.android.purebilibili.data.model.response.SearchEsportsBlock>(element)
+                    }.getOrNull()?.contest.orEmpty()
+                }
+                .orEmpty()
+            val pageInfo = createPageInfo(
+                requestedPage = page,
+                responsePage = response.data?.page ?: page,
+                totalPages = response.data?.numPages ?: 0,
+                totalResults = response.data?.numResults ?: videos.size + ups.size + bangumi.size + matches.size,
+                fallbackResultCount = videos.size + ups.size + bangumi.size + matches.size,
+                pageSize = response.data?.pagesize ?: 20
+            )
+            Result.success(SearchAllResults(videos, ups, bangumi, matches, pageInfo))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     //  视频搜索 - 支持排序、时长/分区/发布时间过滤和分页
@@ -116,7 +184,7 @@ object SearchRepository {
                 "order" to order.value,
                 "duration" to duration.value.toString(),
                 "page" to page.toString(),
-                "page_size" to "20",
+                "page_size" to "30",
                 "platform" to "pc",
                 "web_location" to "1430654"
             )
@@ -216,6 +284,31 @@ object SearchRepository {
             Result.failure(firstFailure ?: IllegalStateException("搜索失败"))
         }
     }
+
+    /** 综合页无筛选的首屏使用 all/v2，后续翻页或启用筛选时使用视频分类接口。 */
+    suspend fun searchAllPage(
+        keyword: String,
+        page: Int = 1,
+        order: SearchOrder = SearchOrder.TOTALRANK,
+        durations: Set<SearchDuration> = emptySet(),
+        tids: Int = 0,
+        pubBegin: Long? = null,
+        pubEnd: Long? = null,
+    ): Result<SearchAllResults> {
+        val hasVideoFilters = order != SearchOrder.TOTALRANK || durations.isNotEmpty() ||
+            tids != 0 || pubBegin != null || pubEnd != null
+        if (!hasVideoFilters && page == 1) return searchAll(keyword, page)
+
+        return searchWithDurations(
+            keyword = keyword,
+            order = order,
+            durations = durations,
+            tids = tids,
+            page = page,
+            pubBegin = pubBegin,
+            pubEnd = pubEnd,
+        ).map { (videos, pageInfo) -> SearchAllResults(videos = videos, pageInfo = pageInfo) }
+    }
     
     //  UP主 搜索
     suspend fun searchUp(
@@ -251,9 +344,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: upList.size,
-                fallbackResultCount = upList.size
+                fallbackResultCount = upList.size,
+                pageSize = response.data?.pagesize ?: 0
             )
             
             com.android.purebilibili.core.network.CoreDataLog.d(
@@ -271,21 +365,21 @@ object SearchRepository {
     }
 
     // 默认搜索占位词
-    suspend fun getDefaultSearchHint(): Result<String> = withContext(Dispatchers.IO) {
+    suspend fun getDefaultSearchHint(): Result<SearchDefaultData> = withContext(Dispatchers.IO) {
         try {
             val signedParams = signWithWbi(emptyMap())
             val wbiResp = api.getDefaultSearch(signedParams)
             if (wbiResp.code == 0) {
-                val hint = wbiResp.data?.showName?.trim().orEmpty()
-                if (hint.isNotEmpty()) {
+                val hint = wbiResp.data
+                if (hint != null && hint.keyword.isNotEmpty()) {
                     return@withContext Result.success(hint)
                 }
             }
 
             val legacyResp = api.getDefaultSearchLegacy()
             if (legacyResp.code == 0) {
-                val hint = legacyResp.data?.showName?.trim().orEmpty()
-                if (hint.isNotEmpty()) {
+                val hint = legacyResp.data
+                if (hint != null && hint.keyword.isNotEmpty()) {
                     return@withContext Result.success(hint)
                 }
             }
@@ -369,9 +463,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: bangumiList.size,
-                fallbackResultCount = bangumiList.size
+                fallbackResultCount = bangumiList.size,
+                pageSize = response.data?.pageSize ?: 0
             )
             
             com.android.purebilibili.core.network.CoreDataLog.d("SearchRepo", "🔍 Bangumi search result: ${bangumiList.size} items, page ${pageInfo.currentPage}/${pageInfo.totalPages}")
@@ -412,9 +507,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: resultList.size,
-                fallbackResultCount = resultList.size
+                fallbackResultCount = resultList.size,
+                pageSize = response.data?.pageSize ?: 0
             )
 
             com.android.purebilibili.core.network.CoreDataLog.d(
@@ -456,9 +552,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: liveList.size,
-                fallbackResultCount = liveList.size
+                fallbackResultCount = liveList.size,
+                pageSize = response.data?.pagesize ?: 0
             )
             
             com.android.purebilibili.core.network.CoreDataLog.d("SearchRepo", "🔍 Live search result: ${liveList.size} rooms, page ${pageInfo.currentPage}/${pageInfo.totalPages}")
@@ -501,9 +598,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: articleList.size,
-                fallbackResultCount = articleList.size
+                fallbackResultCount = articleList.size,
+                pageSize = response.data?.pagesize ?: 0
             )
 
             Result.success(Pair(articleList, pageInfo))
@@ -528,9 +626,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: items.size,
-                fallbackResultCount = items.size
+                fallbackResultCount = items.size,
+                pageSize = response.data?.pagesize ?: 0
             )
             Result.success(Pair(items, pageInfo))
         } catch (e: Exception) {
@@ -554,9 +653,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: items.size,
-                fallbackResultCount = items.size
+                fallbackResultCount = items.size,
+                pageSize = response.data?.pagesize ?: 0
             )
             Result.success(Pair(items, pageInfo))
         } catch (e: Exception) {
@@ -592,9 +692,10 @@ object SearchRepository {
             val pageInfo = createPageInfo(
                 requestedPage = page,
                 responsePage = response.data?.page ?: page,
-                totalPages = response.data?.numPages ?: 1,
+                totalPages = response.data?.numPages ?: 0,
                 totalResults = response.data?.numResults ?: items.size,
-                fallbackResultCount = items.size
+                fallbackResultCount = items.size,
+                pageSize = response.data?.pagesize ?: 0
             )
             Result.success(Pair(items, pageInfo))
         } catch (e: Exception) {

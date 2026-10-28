@@ -1,18 +1,19 @@
 package com.android.purebilibili.danmaku.parser
 
+import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
+
 /**
- * 高级弹幕数据模型 (Mode 7 / Mode 9 BAS)
+ * Mode 7 单文本高级弹幕数据模型。
  *
- * 用于描述 Bilibili 高级弹幕 (BAS - Bilibili Animation Script)，
- * 完整指令格式 (与官方引擎 BiliDanmukuParser 一致)：
+ * Mode 9 BAS 脚本使用独立的 BasProgram，不使用此数组格式：
  * [beginX, beginY, alphaRange, duration, content, rotateZ, rotateY,
  *  endX, endY, translationDuration, delay, noStroke, font, easing, pathData]
  *
- * - beginX/beginY: 起点；含小数点视为百分比 (0~1，基准为播放器 672x438)，整数为像素
+ * - beginX/beginY: 非整数数值视为相对坐标，整数按 672x438 基准换算
  * - alphaRange: 透明度范围，如 "1-0.5"（起-止，0~1），缺省表示全程 1.0
  * - duration: 弹幕总时长（秒）
  * - endX/endY: 位移终点（百分比或像素）
- * - translationDuration: 位移动画时长（毫秒），缺省等于总时长
+ * - translationDuration: 当前兼容数组按秒换算，内部保存毫秒；缺省等于总时长
  * - delay: 位移开始延迟（毫秒）
  * - noStroke: "true" 表示无描边
  * - font: 字体（官方引擎未处理，忽略）
@@ -56,7 +57,7 @@ data class AdvancedDanmakuData(
     // 剩余的 durationMs - accumulationDurationMs 时间用于展示最终结果
     val accumulationDurationMs: Long = 0L,
 
-    // ========== [新增] 完整 BAS 字段 ==========
+    // Mode 7 透明度、位移和路径动画。
 
     // 透明度动画范围 (0~1)，缺省时用 alpha 字段
     val alphaStart: Float = alpha,
@@ -152,7 +153,7 @@ data class AdvancedDanmakuData(
 }
 
 /**
- * BAS 路径点（坐标已归一化为 0~1）
+ * Mode 7 路径点（坐标已归一化为 0~1）。
  */
 data class BasPathPoint(
     val x: Float,
@@ -160,7 +161,7 @@ data class BasPathPoint(
 )
 
 /**
- * BAS 缓动曲线
+ * Mode 7 数组的缓动曲线，不是 Mode 9 的 CSS 缓动解析器。
  * 官方引擎: easing == "0" 使用 Quadratic.easeOut，其他使用 Linear.easeIn
  */
 enum class BasEasing(val transform: (Float) -> Float) {
@@ -170,10 +171,12 @@ enum class BasEasing(val transform: (Float) -> Float) {
 
 /**
  * 弹幕解析结果
- * 包含标准引擎弹幕和高级弹幕
+ * 包含标准引擎弹幕、Mode 7 高级弹幕和 Mode 9 BAS 脚本。
  */
 data class ParsedDanmaku(
     val standardList: List<com.android.purebilibili.danmaku.engine.DanmakuItem>,
     val advancedList: List<AdvancedDanmakuData>,
-    val serverDisabled: Boolean = false
+    val serverDisabled: Boolean = false,
+    val basList: List<BasDanmaku> = emptyList(),
+    val failedSegmentCount: Int = 0
 )

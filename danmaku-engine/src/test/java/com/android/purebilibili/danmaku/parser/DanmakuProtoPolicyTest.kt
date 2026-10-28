@@ -4,8 +4,28 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class DanmakuProtoPolicyTest {
+
+    @Test
+    fun parseReply_distinguishesTruncatedPayloadsFromValidEmptySegments() {
+        val malformed = listOf(
+            byteArrayOf(0x0a, 0x02, 0x38), // Declared message exceeds remaining bytes.
+            byteArrayOf(0x80.toByte()), // Unterminated tag varint.
+            byteArrayOf(0x1d, 0x00), // Truncated unknown fixed32 field.
+            byteArrayOf(0x00), // Field number zero.
+            byteArrayOf(0x0a, 0x01, 0x80.toByte()) // Truncated nested element.
+        )
+        malformed.forEach { bytes ->
+            assertTrue(DanmakuProto.parseReply(bytes).parseFailed)
+            assertEquals(1, DanmakuParser.parseProtobuf(listOf(bytes)).failedSegmentCount)
+        }
+        assertFalse(DanmakuProto.parseReply(byteArrayOf()).parseFailed)
+        assertFalse(DanmakuProto.parseReply(byteArrayOf(0x1a, 0x00)).parseFailed)
+        assertEquals(0, DanmakuParser.parseProtobuf(listOf(byteArrayOf())).failedSegmentCount)
+        assertEquals(1, DanmakuProto.parseReply(byteArrayOf(0x10, 0x01)).state)
+    }
 
     @Test
     fun parseWebViewReply_supportsNewSchemaDmSgeOnField4() {

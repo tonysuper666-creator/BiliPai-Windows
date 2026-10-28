@@ -5,6 +5,7 @@ import com.android.purebilibili.core.network.NetworkModule
 import com.android.purebilibili.data.model.response.StoryItem
 import com.android.purebilibili.data.model.response.getBestAudio
 import com.android.purebilibili.core.util.Logger
+import kotlinx.coroutines.CancellationException
 
 /**
  * Story 模式播放 URL 数据类
@@ -27,14 +28,17 @@ object StoryRepository {
      * 获取故事流视频列表
      * @param aid 可选，从指定视频开始加载
      * @param pageSize 每页数量
+     * @param displayId Story 列表页码，从 1 开始
      */
     suspend fun getStoryFeed(
         aid: Long = 0,
         bvid: String = "",
-        pageSize: Int = 20
+        pageSize: Int = 20,
+        displayId: Int = 1
     ): Result<List<StoryItem>> {
         return try {
             val response = NetworkModule.storyApi.getStoryFeed(
+                displayId = displayId,
                 ps = pageSize,
                 aid = aid,
                 bvid = bvid
@@ -49,6 +53,8 @@ object StoryRepository {
                 Logger.e(TAG, " 获取故事流失败: code=${response.code}, msg=${response.message}")
                 Result.failure(Exception("获取失败: ${response.message}"))
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             Logger.e(TAG, " 获取故事流异常", e)
             Result.failure(e)

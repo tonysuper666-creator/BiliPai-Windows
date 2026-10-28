@@ -40,7 +40,7 @@ class HistoryPersonalCardPolicyTest {
             File("app/src/main/java/com/android/purebilibili/feature/list/HistoryPersonalCard.kt"),
         ).first { it.exists() }.readText()
 
-        assertTrue(source.contains("PERSONAL_LIST_HORIZONTAL_COVER_ASPECT_RATIO"))
+        assertTrue(source.contains("videoCardCoverAspectRatio()"))
         assertTrue(source.contains("resolveVideoCardCoverOverlayTextShadow()"))
         assertTrue(source.contains("FeedTitleHierarchy.Standard"))
         assertTrue(source.contains("maxLines = titleMaxLines"))

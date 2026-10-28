@@ -56,10 +56,17 @@ internal fun resolveBangumiInitialEpisode(
 ): BangumiResumeTarget? {
     val episodes = detail.episodes.orEmpty()
     if (episodes.isEmpty()) return null
+    fun targetForEpisode(epId: Long): BangumiResumeTarget {
+        val progress = detail.userStatus?.progress
+        val position = if (autoResumeEnabled && progress?.lastEpId == epId) {
+            resolveBangumiResumePositionMs(progress.lastTime)
+        } else 0L
+        return BangumiResumeTarget(epId, position)
+    }
     preferredAid.takeIf { it > 0L }
-        ?.let { aid -> episodes.firstOrNull { it.aid == aid }?.let { return BangumiResumeTarget(it.id, 0L) } }
+        ?.let { aid -> episodes.firstOrNull { it.aid == aid }?.let { return targetForEpisode(it.id) } }
     routeEpId.takeIf { it > 0L }
-        ?.let { epId -> episodes.firstOrNull { it.id == epId }?.let { return BangumiResumeTarget(it.id, 0L) } }
+        ?.let { epId -> episodes.firstOrNull { it.id == epId }?.let { return targetForEpisode(it.id) } }
     return resolveBangumiAutoResumeTarget(
         detail = detail,
         routeEpId = routeEpId,

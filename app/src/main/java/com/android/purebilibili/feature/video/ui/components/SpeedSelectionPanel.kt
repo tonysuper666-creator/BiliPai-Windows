@@ -1,5 +1,7 @@
 // 文件路径: feature/video/ui/components/SpeedSelectionPanel.kt
 package com.android.purebilibili.feature.video.ui.components
+
+import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.components.AppText
 
 import androidx.compose.foundation.layout.*
@@ -18,7 +20,7 @@ import com.android.purebilibili.core.ui.ContainerLevel
  * 播放速度格式化工具
  */
 object PlaybackSpeed {
-    
+
     fun formatSpeed(speed: Float): String =
         if (speed == 1f) "倍速" else formatPlaybackSpeed(speed)
 
@@ -43,7 +45,7 @@ fun SpeedButton(
     ) {
         AppText(
             text = PlaybackSpeed.formatSpeed(currentSpeed),
-            color = if (currentSpeed != 1.0f) MaterialTheme.colorScheme.primary else Color.White,
+            color = if (currentSpeed != 1.0f) AppContentColors.accent() else Color.White,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = if (currentSpeed != 1.0f) FontWeight.Bold else FontWeight.Normal,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)

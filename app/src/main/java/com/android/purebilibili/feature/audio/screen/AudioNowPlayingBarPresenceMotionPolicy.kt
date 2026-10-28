@@ -12,16 +12,11 @@ import com.android.purebilibili.core.ui.motion.emphasizedExitTween
  * 小横条（听视频 NowPlaying 条）presence 出入场动效 token。
  *
  * 出入场采用非对称节奏（enter 减速落定 / exit 加速离场），与 MD3 emphasized 曲线体系一致；
- * 可逆手势 morph（dock merge/search）保持 easeInOut tween——这是官方对跟随手势的可逆 morph
- * 的推荐形态。所有档位在此收口，禁止在调用点散落字面量。
+ * 小横条首次出现使用弹簧，退出使用加速曲线。
  */
 internal const val AUDIO_NOW_PLAYING_PRESENCE_ENTER_DURATION_MILLIS = 300
 internal const val AUDIO_NOW_PLAYING_PRESENCE_EXIT_DURATION_MILLIS = 220
 internal const val AUDIO_NOW_PLAYING_PRESENCE_REDUCED_MOTION_DURATION_MILLIS = 160
-
-/** Linked dock merge/search morph 档位，统一收口到小横条动效 token。 */
-internal const val LINKED_DOCK_MERGE_DURATION_MILLIS = 280
-internal const val LINKED_DOCK_SEARCH_DURATION_MILLIS = 240
 
 /** 会话激活（进场）时 presence 进度动画规格。 */
 internal fun resolveAudioNowPlayingPresenceAnimationSpec(

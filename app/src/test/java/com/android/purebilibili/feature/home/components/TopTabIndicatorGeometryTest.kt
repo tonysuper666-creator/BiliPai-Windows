@@ -208,7 +208,7 @@ class TopTabIndicatorGeometryTest {
     @Test
     fun `reused liquid glass top indicator keeps a narrow edge gap`() {
         assertEquals(
-            1f,
+            4f,
             resolveTopTabDockIndicatorHorizontalGapDp(
                 hasOuterChromeSurface = true,
                 isLiquidGlassReuseEnabled = true

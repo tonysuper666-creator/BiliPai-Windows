@@ -15,11 +15,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.purebilibili.core.plugin.PluginManager
 import com.android.purebilibili.core.ui.components.AppButton
 import com.android.purebilibili.core.ui.components.AppText
-import com.android.purebilibili.feature.plugin.CdnLineDiagnostic
-import com.android.purebilibili.feature.plugin.CdnRegionPlugin
+import com.android.purebilibili.plugin.sdk.CdnLineDiagnostic
+import com.android.purebilibili.feature.plugin.CdnTransferControls
 import com.android.purebilibili.feature.plugin.CdnTransferPanel
 import com.android.purebilibili.feature.plugin.CdnTransferRuntime
-import com.android.purebilibili.feature.plugin.PlaybackCdnPlugin
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
@@ -34,7 +33,7 @@ internal fun PlaybackCdnDiagnostics(
     modifier: Modifier = Modifier
 ) {
     val state by CdnTransferRuntime.state.collectAsStateWithLifecycle()
-    val plugin = PluginManager.getEnabledPlugins(PlaybackCdnPlugin::class).filterIsInstance<CdnRegionPlugin>().firstOrNull()
+    val plugin = PluginManager.getEnabledPlugin(CdnTransferControls::class)
     val scope = rememberCoroutineScope()
     var message by remember { mutableStateOf<String?>(null) }
     Column(

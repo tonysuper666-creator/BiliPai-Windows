@@ -4,6 +4,7 @@ import com.android.purebilibili.core.network.policy.AppHttpProxySettings
 import com.android.purebilibili.core.network.policy.ProxyRouteMode
 import com.android.purebilibili.core.network.policy.parseProxyDomainRules
 import com.android.purebilibili.core.store.NetworkProxyStore
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.settings.DesktopNetworkProxyBindings
@@ -51,7 +52,7 @@ class DesktopNetworkProxyRoutingTest {
             assertEquals(Proxy.NO_PROXY, DesktopNetworkProxyPlatform.buildPlaybackOkHttpClient(application).proxy)
             assertSame(actualSystem, ProxySelector.getDefault())
         } finally {
-            NetworkProxyStore.save(context, before)
+            NetworkProxyStore.save(context.asAndroidContext(), before)
             application.connectionPool.evictAll()
             application.dispatcher.executorService.shutdown()
         }
@@ -89,7 +90,7 @@ class DesktopNetworkProxyRoutingTest {
         } finally {
             // All persistence is in this test's private temporary profile. Restore
             // only the in-process singleton snapshot for later unit test classes.
-            NetworkProxyStore.save(context, before)
+            NetworkProxyStore.save(context.asAndroidContext(), before)
             application.connectionPool.evictAll()
             application.dispatcher.executorService.shutdown()
         }

@@ -4,9 +4,19 @@ package com.android.purebilibili.data.repository
 import com.android.purebilibili.core.store.normalizeDanmakuDisplayArea
 import com.android.purebilibili.core.network.NetworkModule
 import com.android.purebilibili.data.model.response.DanmakuThumbupStatsItem
+import com.android.purebilibili.data.model.response.GradeDanmakuSummary
+import com.android.purebilibili.data.model.response.parseGradeDanmakuSummary
+import com.android.purebilibili.danmaku.parser.DanmakuProto
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import java.io.File
 import kotlin.math.abs
 
 data class DanmakuCloudFilterRule(
@@ -24,6 +34,14 @@ internal data class DanmakuThumbupState(
     val likes: Int,
     val liked: Boolean
 )
+
+/** PiliPlus 将重复操作响应作为服务端真实状态，用于校正本地开关。 */
+internal fun resolveDanmakuLikeResult(code: Int, requestedLike: Boolean): Boolean? = when (code) {
+    0 -> requestedLike
+    65006 -> true
+    65004 -> false
+    else -> null
+}
 
 internal data class DanmakuCloudSyncSettings(
     val enabled: Boolean,
@@ -204,6 +222,24 @@ internal fun resolveDanmakuSegmentCount(
     metadataSegmentCount: Int?
 ): Int = DanmakuContentRepository.resolveSegmentCount(durationMs, metadataSegmentCount)
 
+internal fun resolveGradeDanmakuSummary(
+    commands: List<DanmakuProto.CommandDm>,
+    gradeId: String
+): GradeDanmakuSummary? {
+    for (command in commands) {
+        if (!command.command.trim().equals("#GRADE#", ignoreCase = true)) continue
+        val extra = try {
+            Json.parseToJsonElement(command.extra) as? JsonObject
+        } catch (_: IllegalArgumentException) {
+            null
+        } ?: continue
+        if ((extra["grade_id"] as? JsonPrimitive)?.contentOrNull == gradeId) {
+            return parseGradeDanmakuSummary(extra)
+        }
+    }
+    return null
+}
+
 /**
  * 弹幕相关数据仓库
  * 从 VideoRepository 拆分出来，专注于弹幕功能
@@ -246,6 +282,28 @@ object DanmakuRepository {
         } catch (e: Exception) {
              android.util.Log.e("DanmakuRepo", " getDanmakuView failed: ${e.message}")
              null
+        }
+    }
+
+    /** Reload authenticated command metadata; grade/post does not return aggregate statistics. */
+    suspend fun getGradeDanmakuSummary(
+        cid: Long,
+        aid: Long,
+        gradeId: String
+    ): Result<GradeDanmakuSummary> = withContext(Dispatchers.IO) {
+        try {
+            val bytes = api.getDanmakuView(oid = cid, pid = aid).bytes()
+            if (bytes.isEmpty()) {
+                return@withContext Result.failure(Exception("打分统计暂不可用"))
+            }
+            val metadata = com.android.purebilibili.danmaku.parser.DanmakuParser.parseWebViewReply(bytes)
+            val summary = resolveGradeDanmakuSummary(metadata.commandDms, gradeId)
+                ?: return@withContext Result.failure(Exception("未找到打分统计"))
+            Result.success(summary)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
@@ -346,20 +404,33 @@ object DanmakuRepository {
     ): List<ByteArray> =
         DanmakuContentRepository.getDanmakuSegments(cid, durationMs, metadataSegmentCount)
 
-    suspend fun getSpecialDanmakuSegments(urls: List<String>): List<ByteArray> = withContext(Dispatchers.IO) {
-        urls.mapNotNull { rawUrl ->
-            val url = when {
-                rawUrl.startsWith("//") -> "https:$rawUrl"
-                else -> rawUrl
+    /** Full export is user-requested offline download, not the playback loading path. */
+    suspend fun downloadSpecialDanmaku(url: String, destination: File): Long? = withContext(Dispatchers.IO) {
+        val resolvedUrl = if (url.startsWith("//")) "https:$url" else url
+        try {
+            api.getDanmakuSpecialDm(resolvedUrl).use { body ->
+                body.byteStream().use { input ->
+                    destination.outputStream().use { output ->
+                        val buffer = ByteArray(8192)
+                        var bytes = 0L
+                        while (true) {
+                            currentCoroutineContext().ensureActive()
+                            val count = input.read(buffer)
+                            if (count < 0) break
+                            output.write(buffer, 0, count)
+                            bytes += count
+                        }
+                        bytes
+                    }
+                }
             }
-            try {
-                api.getDanmakuSpecialDm(url).bytes().takeIf { it.isNotEmpty() }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                android.util.Log.w("DanmakuRepo", " Special danmaku fetch failed: ${e.message}")
-                null
-            }
+        } catch (e: CancellationException) {
+            destination.delete()
+            throw e
+        } catch (e: Exception) {
+            destination.delete()
+            android.util.Log.w("DanmakuRepo", "Special danmaku export failed: ${e.message}")
+            null
         }
     }
 
@@ -502,13 +573,12 @@ object DanmakuRepository {
     /**
      * 提交打分弹幕 (x/v2/dm/command/grade/post)
      *
-     * 互动投票/打分弹幕的提交端点；gradeScore 为偶数，最大 10。
-     * 若后续拿到投票弹幕 (VIDEO_VOTE_MSG) 的真实提交端点，只需修改本方法。
+     * gradeScore 为偶数，最大 10。成功响应只确认个人提交，不含聚合统计。
      *
      * @param aid 稿件 aid
      * @param cid 分P cid
      * @param progress 弹幕出现时间 (毫秒)
-     * @param gradeId 打分/投票 ID (voteId / grade_id)
+     * @param gradeId 打分 ID (grade_id)
      * @param gradeScore 分数 (偶数 2~10)
      */
     suspend fun submitGradeDanmaku(
@@ -542,6 +612,8 @@ object DanmakuRepository {
                 android.util.Log.e("DanmakuRepo", "❌ gradeDanmaku failed: ${response.code} - ${response.message}")
                 Result.failure(Exception(mapSendDanmakuErrorMessage(response.code, response.message)))
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             android.util.Log.e("DanmakuRepo", "❌ submitGradeDanmaku exception: ${e.message}", e)
             Result.failure(e)
@@ -619,6 +691,8 @@ object DanmakuRepository {
                 ?: return@withContext Result.failure(Exception("未找到该弹幕投票信息"))
 
             Result.success(state)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             android.util.Log.e("DanmakuRepo", "❌ getDanmakuThumbupState exception: ${e.message}", e)
             Result.failure(e)
@@ -631,12 +705,13 @@ object DanmakuRepository {
      * @param cid 视频 cid
      * @param dmid 弹幕 ID
      * @param like true=点赞, false=取消点赞
+     * @return 服务端确认的已赞状态；重复操作也会返回真实状态。
      */
     suspend fun likeDanmaku(
         cid: Long,
         dmid: Long,
         like: Boolean = true
-    ): Result<Unit> = withContext(Dispatchers.IO) {
+    ): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
             val csrf = com.android.purebilibili.core.store.TokenManager.csrfCache
             if (csrf.isNullOrEmpty()) {
@@ -648,21 +723,22 @@ object DanmakuRepository {
             
             val response = api.likeDanmaku(oid = cid, dmid = dmid, op = op, csrf = csrf)
             
-            if (response.code == 0) {
-                com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "✅ Danmaku ${if (like) "liked" else "unliked"}")
-                Result.success(Unit)
+            val confirmedLike = resolveDanmakuLikeResult(response.code, like)
+            if (confirmedLike != null) {
+                com.android.purebilibili.core.util.Logger.d("DanmakuRepo", "✅ Danmaku ${if (confirmedLike) "liked" else "unliked"}")
+                Result.success(confirmedLike)
             } else {
                 val errorMsg = when (response.code) {
                     -101 -> "请先登录"
                     -111 -> "鉴权失败，请重新登录"
                     -400 -> "请求参数错误"
-                    65004 -> "已经点过赞了"
-                    65005 -> "已经取消点赞了"
                     else -> response.message.ifEmpty { "操作失败 (${response.code})" }
                 }
                 android.util.Log.e("DanmakuRepo", "❌ likeDanmaku failed: ${response.code} - ${response.message}")
                 Result.failure(Exception(errorMsg))
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             android.util.Log.e("DanmakuRepo", "❌ likeDanmaku exception: ${e.message}", e)
             Result.failure(e)

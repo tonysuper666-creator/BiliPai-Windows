@@ -2,6 +2,7 @@ package com.android.purebilibili.feature.video.ui.components
 
 import android.content.ClipData
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -16,12 +17,16 @@ import com.android.purebilibili.core.ui.AppAlertDialog
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.feature.video.util.captureAndSaveVideoScreenshotUri
+import com.android.purebilibili.feature.video.util.buildScreenshotFileName
+import com.android.purebilibili.feature.video.util.saveScreenshotToGalleryUri
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
 /** Captures a frame, saves it first, then offers to share that exact saved image. */
 @Composable
-internal fun rememberVideoScreenshotAction(): (PlayerView, Int, Int, String) -> Unit {
+internal fun rememberVideoScreenshotAction(
+    captureBitmap: (suspend (PlayerView, Int, Int) -> Bitmap?)? = null,
+): (PlayerView, Int, Int, String) -> Unit {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var pendingShareUri by remember { mutableStateOf<Uri?>(null) }
@@ -59,13 +64,26 @@ internal fun rememberVideoScreenshotAction(): (PlayerView, Int, Int, String) -> 
             capturing = true
             scope.launch {
                 try {
-                    val uri = captureAndSaveVideoScreenshotUri(
-                        context = context,
-                        playerView = playerView,
-                        videoWidth = width,
-                        videoHeight = height,
-                        videoTitle = title,
-                    )
+                    val uri = if (captureBitmap == null) {
+                        captureAndSaveVideoScreenshotUri(
+                            context = context,
+                            playerView = playerView,
+                            videoWidth = width,
+                            videoHeight = height,
+                            videoTitle = title,
+                        )
+                    } else {
+                        captureBitmap(playerView, width, height)?.let { bitmap ->
+                            try {
+                                saveScreenshotToGalleryUri(
+                                    context, bitmap,
+                                    buildScreenshotFileName(title, System.currentTimeMillis()),
+                                )
+                            } finally {
+                                bitmap.recycle()
+                            }
+                        }
+                    }
                     if (uri == null) {
                         Toast.makeText(context, "截图失败，请稍后重试", Toast.LENGTH_SHORT).show()
                     } else {

@@ -1,5 +1,7 @@
 // File: feature/video/ui/components/CoinDialog.kt
 package com.android.purebilibili.feature.video.ui.components
+
+import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.components.AppText
 
 import androidx.compose.foundation.clickable
@@ -19,9 +21,9 @@ import com.android.purebilibili.core.ui.components.AppTextButton
 
 /**
  * Coin Dialog Component
- * 
+ *
  * Dialog for giving coins to a video.
- * 
+ *
  * Requirement Reference: AC3.2 - Coin dialog in dedicated file
  */
 
@@ -33,19 +35,20 @@ fun CoinDialog(
     visible: Boolean,
     currentCoinCount: Int,  // Already given coins 0/1/2
     userBalance: Double?,    // [New] Current user coin balance (null = loading)
+    maxCoins: Int = 2,       // Per-video cap: 2 for original, 1 for repost
     onDismiss: () -> Unit,
     onConfirm: (count: Int, alsoLike: Boolean) -> Unit
 ) {
     if (!visible) return
-    
+
     var selectedCount by remember { mutableIntStateOf(1) }
     var alsoLike by remember { mutableStateOf(true) }
-    
-    val maxCoins = 2 - currentCoinCount  // Remaining coins that can be given
-    
+
+    val remainingCoins = maxCoins - currentCoinCount  // Remaining coins that can be given
+
     AppAlertDialog(
         onDismissRequest = onDismiss,
-        title = { 
+        title = {
             Column {
                 AppText("\u6295\u5e01", fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(4.dp))
@@ -58,9 +61,9 @@ fun CoinDialog(
                     else -> "余额: $userBalance"
                 }
                 AppText(
-                    balanceText, 
-                    style = MaterialTheme.typography.labelMedium, 
-                    color = if (userBalance != null && userBalance < 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    balanceText,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = if (userBalance != null && userBalance < 0) AppContentColors.error() else AppContentColors.secondaryText()
                 )
             }
         },
@@ -69,10 +72,10 @@ fun CoinDialog(
                 AppText(
                     "\u9009\u62e9\u6295\u5e01\u6570\u91cf",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 // Coin options
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -83,19 +86,30 @@ fun CoinDialog(
                         selected = selectedCount == 1,
                         onClick = { selectedCount = 1 },
                         label = { AppText("1 \u786c\u5e01") },
-                        enabled = maxCoins >= 1
+                        enabled = remainingCoins >= 1
                     )
-                    // 2 coins
-                    AppFilterChip(
-                        selected = selectedCount == 2,
-                        onClick = { selectedCount = 2 },
-                        label = { AppText("2 \u786c\u5e01") },
-                        enabled = maxCoins >= 2
+                    // 2 coins: only offered for originals; reposts cap at 1 server-side
+                    if (maxCoins >= 2) {
+                        AppFilterChip(
+                            selected = selectedCount == 2,
+                            onClick = { selectedCount = 2 },
+                            label = { AppText("2 \u786c\u5e01") },
+                            enabled = remainingCoins >= 2
+                        )
+                    }
+                }
+                if (maxCoins < 2) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    AppText(
+                        "转载视频最多可投 1 枚硬币",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppContentColors.secondaryText()
                     )
                 }
-                
+
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 // Also like checkbox
                 Row(
                     modifier = Modifier
@@ -114,8 +128,8 @@ fun CoinDialog(
         },
         confirmButton = {
             AppButton(
-                onClick = { onConfirm(selectedCount.coerceAtMost(maxCoins), alsoLike) },
-                enabled = maxCoins > 0
+                onClick = { onConfirm(selectedCount.coerceAtMost(remainingCoins), alsoLike) },
+                enabled = remainingCoins > 0
             ) {
                 AppText("\u6295\u5e01")
             }

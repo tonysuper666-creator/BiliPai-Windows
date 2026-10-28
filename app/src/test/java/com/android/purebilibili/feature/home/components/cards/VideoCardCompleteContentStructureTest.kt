@@ -55,7 +55,7 @@ class VideoCardCompleteContentStructureTest {
         assertTrue(source.contains("metaMaxLines = Int.MAX_VALUE"))
         assertFalse(
             source.substringAfter("if (scrollLitePolicy.showSecondaryStatsRow)")
-                .substringBefore("VideoCardOwnerMetadata(")
+                .substringBefore("VideoCardDurationPublishRow(")
                 .contains("overflow = TextOverflow.Ellipsis")
         )
     }

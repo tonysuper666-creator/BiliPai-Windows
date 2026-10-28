@@ -2,6 +2,8 @@
 
 package com.android.purebilibili.feature.home.subscription
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -128,7 +130,7 @@ internal fun ArticleNoteEditorSheet(
             AppText(
                 text = sourceTitle,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
             Spacer(modifier = Modifier.height(10.dp))
             AppOutlinedTextField(
@@ -159,7 +161,7 @@ internal fun ArticleNoteEditorSheet(
                 AppText(
                     text = if (summaryDraft != null) "从原文生成摘要草稿" else "原文内容不足以生成摘要",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.align(Alignment.CenterVertically),
                 )
             }
@@ -236,7 +238,7 @@ internal fun ArticleNoteEditorSheet(
                 AppText(
                     text = "$charCount 字",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.weight(1f)
                 )
                 if (savedNoteContent != null) {

@@ -111,7 +111,7 @@ object HistoryRepository {
                         )
                     )
                 } else {
-                    Result.failure(Exception(response.message.ifBlank { "搜索历史失败" }))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
@@ -131,7 +131,7 @@ object HistoryRepository {
                 if (response.code == 0) {
                     Result.success(Unit)
                 } else {
-                    Result.failure(Exception(response.message.ifEmpty { "删除历史失败: ${response.code}" }))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
@@ -147,7 +147,7 @@ object HistoryRepository {
                 if (response.code == 0) {
                     Result.success(Unit)
                 } else {
-                    Result.failure(Exception(response.message.ifEmpty { "清空历史失败: ${response.code}" }))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
@@ -163,7 +163,7 @@ object HistoryRepository {
                 if (response.code == 0) {
                     Result.success(response.data)
                 } else {
-                    Result.failure(Exception(response.message.ifEmpty { "查询历史记录状态失败: ${response.code}" }))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
@@ -204,7 +204,7 @@ object HistoryRepository {
                 if (response.code == 0) {
                     Result.success(Unit)
                 } else {
-                    Result.failure(Exception(response.message.ifEmpty { "上报专栏历史失败: ${response.code}" }))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
@@ -225,7 +225,7 @@ object HistoryRepository {
                 if (response.code == 0) {
                     Result.success(Unit)
                 } else {
-                    Result.failure(Exception(response.message.ifEmpty { "设置历史记录状态失败: ${response.code}" }))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e

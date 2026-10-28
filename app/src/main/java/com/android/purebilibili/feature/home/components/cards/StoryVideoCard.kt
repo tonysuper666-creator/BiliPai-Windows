@@ -1,6 +1,8 @@
 // 文件路径: feature/home/components/cards/StoryVideoCard.kt
 package com.android.purebilibili.feature.home.components.cards
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import coil3.request.crossfade
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
@@ -12,7 +14,8 @@ import com.android.purebilibili.core.ui.FeedTitleHierarchy
 import com.android.purebilibili.core.ui.feedContentTypography
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import com.android.purebilibili.core.ui.components.appActionClickable
+import com.android.purebilibili.core.ui.components.appActionWithFeedback
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -23,7 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -36,12 +40,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import com.android.purebilibili.feature.home.LocalHomeCardCoverLoadingAllowed
+import com.android.purebilibili.core.ui.components.PageAwareAsyncImage
 import coil3.request.ImageRequest
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.util.iOSCardTapEffect
 import com.android.purebilibili.core.util.animateEnter
 import com.android.purebilibili.core.util.CardPositionManager
+import com.android.purebilibili.core.ui.transition.videoCardSourceBoundsInRoot
+import com.android.purebilibili.core.util.HomeCoverReturnPrefetchEntry
+import com.android.purebilibili.core.util.HomeCoverReturnPrefetchRegistry
+import com.android.purebilibili.core.ui.components.LocalPageImageLoadingAllowed
 import com.android.purebilibili.data.model.response.VideoItem
 import com.android.purebilibili.core.util.rememberHapticFeedback
 import com.android.purebilibili.core.util.HapticType
@@ -84,7 +93,7 @@ import kotlin.math.roundToInt
 
 /**
  *  故事卡片 - 影院海报风格
- * 
+ *
  * 特点：
  * - 封面比例由首页卡片样式统一配置
  * - 大圆角 (24dp)
@@ -111,7 +120,7 @@ internal fun StoryVideoCard(
     showUpBadge: Boolean? = null,
     showUpAvatar: Boolean? = null,
     homeDurationStyle: HomeDurationStyle = HomeDurationStyle.OUTSIDE_COVER,
-    coverAspectRatio: Float = 4f / 3f,
+    coverAspectRatio: Float = com.android.purebilibili.core.ui.videoCardCoverAspectRatio(),
     cardHorizontalPadding: Dp = AppSpacingTokens.None,
     compactMetadata: Boolean = true,
     titleMinLines: Int = 1,
@@ -123,6 +132,7 @@ internal fun StoryVideoCard(
     onDismiss: (() -> Unit)? = null,    //  [新增] 删除/过滤回调（长按触发）
     onUpClick: ((Long) -> Unit)? = null,
     onLongClick: ((VideoItem) -> Unit)? = null, // [修复] 长按预览回调
+    modifier: Modifier = Modifier,
     onClick: (String, Long) -> Unit
 ) {
     val contentTypography = feedContentTypography(
@@ -132,8 +142,9 @@ internal fun StoryVideoCard(
             FeedTitleHierarchy.Standard
         },
     )
-    val haptic = rememberHapticFeedback()
-    
+    val haptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.MENUS)
+    val longPressHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.LONG_PRESS)
+
     val isLongPressEnabled = com.android.purebilibili.core.ui.LocalVideoCardLongPressEnabled.current
     val cardCornerRadius = AppShapes.containerCornerDp(ContainerLevel.ProminentCard)
     val cardShape = AppShapes.container(ContainerLevel.ProminentCard)
@@ -158,9 +169,11 @@ internal fun StoryVideoCard(
     val premiumBadgeLabel = remember(video.rights) {
         resolveVideoPremiumBadgeLabel(video.rights)
     }
+    var cardVisibleInWindow by remember(video.bvid, video.cid) { mutableStateOf(false) }
     val onlineCount = rememberVideoCardOnlineCount(
         video = video,
-        showOnlineCount = showOnlineCount
+        showOnlineCount = showOnlineCount,
+        isVisibleInWindow = cardVisibleInWindow,
     )
     val useLowQualityCover = isDataSaverActive && preferLowQualityCover
     val coverSource = remember(video.bvid, video.id, video.cid, video.title, video.pic, useLowQualityCover, coverRequestSpec) {
@@ -168,6 +181,9 @@ internal fun StoryVideoCard(
     }
     val coverUrl = coverSource.url
     val coverCacheKey = coverSource.cacheKey
+    var measuredCoverSize by remember(coverCacheKey) {
+        mutableStateOf(androidx.compose.ui.unit.IntSize.Zero)
+    }
     val publishTimeRowText = remember(showPublishTime, video.pubdate) {
         if (!showPublishTime) {
             ""
@@ -176,10 +192,10 @@ internal fun StoryVideoCard(
         }
     }
     val emphasizePublishTime = false
-    
+
     //  [新增] 长按删除菜单状态
     var showDismissMenu by remember { mutableStateOf(false) }
-    
+
     //  获取屏幕尺寸用于计算归一化坐标
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
@@ -189,13 +205,13 @@ internal fun StoryVideoCard(
     val effectiveSharedElementSourceRoute = remember(sharedElementSourceRoute, localSharedElementSourceRoute) {
         sharedElementSourceRoute ?: localSharedElementSourceRoute
     }
-    
+
     //  记录卡片位置
-    var cardBounds by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
-    var coverBounds by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
+    val cardCoordinates = remember { object { var value: LayoutCoordinates? = null } }
+    val coverCoordinates = remember { object { var value: LayoutCoordinates? = null } }
     val nativeCardSnapshot = rememberNativeVideoCardSnapshotController(video.bvid)
-    val triggerCardClick = {
-        cardBounds?.let { bounds ->
+    val triggerCardClick by rememberUpdatedState(appActionWithFeedback {
+        cardCoordinates.value?.takeIf { it.isAttached }?.videoCardSourceBoundsInRoot()?.let { bounds ->
             CardPositionManager.recordVideoCardPosition(
                 bvid = video.bvid,
                 sourceRoute = effectiveSharedElementSourceRoute,
@@ -204,12 +220,14 @@ internal fun StoryVideoCard(
                 screenHeight = screenHeightPx,
                 isSingleColumn = !transitionEnabled,
                 sourceCornerDp = cardCornerRadius.value.roundToInt(),
-                coverBounds = coverBounds,
+                coverBounds = coverCoordinates.value?.takeIf { it.isAttached }?.videoCardSourceBoundsInRoot(),
                 sourceLayout = com.android.purebilibili.core.ui.transition.VideoCardSourceLayout.STACKED,
                 sourceChromeSnapshot = com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot(
                     title = video.title,
                     ownerName = video.owner.name,
                     ownerFaceUrl = video.owner.face,
+                    recommendationReason = video.recommendationReason,
+                    followed = video.isFollowed,
                     viewText = FormatUtils.formatStat(video.stat.view.toLong()),
                     danmakuText = FormatUtils.formatStat(video.stat.danmaku.toLong()),
                     durationText = FormatUtils.formatDuration(video.duration),
@@ -227,8 +245,8 @@ internal fun StoryVideoCard(
             nativeCardSnapshot.capture()
         }
         onClick(video.bvid, 0)
-    }
-    
+    })
+
     //  尝试获取共享元素作用域
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
@@ -262,6 +280,29 @@ internal fun StoryVideoCard(
             (LocalMiuixVideoCardTransitionState.current.enabled && isSharedReturnTarget),
         isSharedReturnTarget = isSharedReturnTarget,
     )
+    val context = LocalContext.current
+    val coverImageRequest = remember(context, coverUrl, coverCacheKey, coverRequestSpec, coverCrossfadeEnabled) {
+        ImageRequest.Builder(context)
+            .data(coverUrl)
+            .apply { coverRequestSpec?.let { size(it.widthPx, it.heightPx) } }
+            .crossfade(coverCrossfadeEnabled)
+            .memoryCacheKey(coverCacheKey)
+            .diskCacheKey(coverCacheKey)
+            .build()
+    }
+    val coverWorkAllowed = LocalPageImageLoadingAllowed.current && cardVisibleInWindow
+    LaunchedEffect(video.bvid, coverUrl, coverCacheKey, coverRequestSpec, measuredCoverSize, coverWorkAllowed) {
+        if (!coverWorkAllowed) return@LaunchedEffect
+        HomeCoverReturnPrefetchRegistry.onCardVisible(
+            HomeCoverReturnPrefetchEntry(
+                bvid = video.bvid.trim(),
+                url = coverUrl,
+                cacheKey = coverCacheKey,
+                decodeWidthPx = coverRequestSpec?.widthPx ?: measuredCoverSize.width,
+                decodeHeightPx = coverRequestSpec?.heightPx ?: measuredCoverSize.height,
+            ),
+        )
+    }
     val transitionAdaptiveInfo = com.android.purebilibili.core.ui.transition
         .LocalVideoTransitionAdaptiveInfo.current
     val cardSharedTransitionMotionSpec = remember(
@@ -277,14 +318,16 @@ internal fun StoryVideoCard(
             adaptiveInfo = transitionAdaptiveInfo,
         )
     }
-    
+
     val cardShellShape = cardShape
+    val homeCardScrolling = LocalHomeCardScrolling.current
     val enterAnimationEnabledAtMount = remember(video.bvid) {
         resolveHomeCardEnterAnimationEnabledAtMount(
             baseAnimationEnabled = animationEnabled,
             isReturningFromDetail = isReturningFromVideoDetail,
             isSwitchingCategory = CardPositionManager.isSwitchingCategory,
-            isScrollInProgress = scrollLiteModeEnabled
+            // Sample once; a card mounted while scrolling stays visible after settling.
+            isScrollInProgress = scrollLiteModeEnabled || homeCardScrolling?.value == true
         )
     }
     val coordinateEnterWithTransition = remember(animationEnabled, transitionEnabled) {
@@ -292,7 +335,10 @@ internal fun StoryVideoCard(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
+            .onVisibilityChanged(minFractionVisible = 0.01f, minDurationMs = 0L) {
+                cardVisibleInWindow = it
+            }
             .fillMaxWidth()
             .adaptiveCardHoverEffect(shape = cardShellShape)
             .videoCardShellSharedBoundsOrEmpty(
@@ -315,7 +361,7 @@ internal fun StoryVideoCard(
             //  [新增] 记录卡片位置
             .then(nativeCardSnapshot.modifier)
             .onGloballyPositioned { coordinates ->
-                cardBounds = coordinates.boundsInRoot()
+                cardCoordinates.value = coordinates
             }
             .pointerInput(isLongPressEnabled, onDismiss, onLongClick) {
                  val hasLongPressAction = isLongPressEnabled && (onDismiss != null || onLongClick != null)
@@ -323,10 +369,10 @@ internal fun StoryVideoCard(
                      detectTapGestures(
                          onLongPress = {
                              if (onLongClick != null) {
-                                 haptic(HapticType.HEAVY)
+                                 longPressHaptic(HapticType.HEAVY)
                                  onLongClick(video)
                              } else if (onDismiss != null) {
-                                 haptic(HapticType.HEAVY)
+                                 longPressHaptic(HapticType.HEAVY)
                                  showDismissMenu = true
                              }
                          },
@@ -361,22 +407,17 @@ internal fun StoryVideoCard(
                 .testTag("home_story_video_cover")
                 .aspectRatio(coverAspectRatio)
                 .onGloballyPositioned { coordinates ->
-                    coverBounds = coordinates.boundsInRoot()
+                    coverCoordinates.value = coordinates
+                    if (coverRequestSpec == null) measuredCoverSize = coordinates.size
                 }
                 .clip(coverShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant) // 封面占位色
         ) {
             // 封面比例由首页卡片样式统一配置。
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(coverUrl)
-                    .apply {
-                        coverRequestSpec?.let { size(it.widthPx, it.heightPx) }
-                    }
-                    .crossfade(coverCrossfadeEnabled)
-                    .memoryCacheKey(coverCacheKey)
-                    .diskCacheKey(coverCacheKey)
-                    .build(),
+            PageAwareAsyncImage(
+                model = coverImageRequest,
+                loadingAllowed = LocalHomeCardCoverLoadingAllowed.current
+                    ?: LocalPageImageLoadingAllowed.current,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize(),
@@ -388,25 +429,10 @@ internal fun StoryVideoCard(
                     .fillMaxSize()
                     .then(nativeCardSnapshot.coverOverlayModifier),
             ) {
-            if (premiumBadgeLabel != null) {
-                HomeVideoBadgePill(
-                    style = badgeStylePolicy.coverStyle,
-                    shape = AppShapes.container(ContainerLevel.Chip),
-                    containerColor = BiliPink.copy(alpha = 0.82f),
-                    borderColor = MediaContrastPalette.Foreground.copy(alpha = 0.24f),
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(AppSpacingTokens.Small)
-                ) {
-                    AppText(
-                        text = premiumBadgeLabel,
-                        color = MediaContrastPalette.Foreground,
-                        style = contentTypography.coverBadge.copy(fontWeight = FontWeight.Bold),
-                        maxLines = 1
-                    )
-                }
-            }
-            
+            com.android.purebilibili.core.ui.components.VideoStatusBadges(
+                labels = video.statusLabels.ifEmpty { listOfNotNull(premiumBadgeLabel) },
+                modifier = Modifier.align(Alignment.TopEnd).padding(AppSpacingTokens.Small),
+            )
             //  时长标签 (保留在封面上)
             if (showDurationOnCover) {
                 AppText(
@@ -425,7 +451,7 @@ internal fun StoryVideoCard(
             }
             }
         }
-        
+
         Column(
             modifier = Modifier.videoCardShellReturnChromeAlpha(
                 enabled = useCardShellSharedBounds,
@@ -435,11 +461,11 @@ internal fun StoryVideoCard(
                 isQuickReturnFromDetail = isQuickReturningFromVideoDetail,
             )
         ) {
-        Spacer(modifier = Modifier.height(if (compactMetadata) AppSpacingTokens.Small else AppSpacingTokens.Medium))
-        
+        Spacer(modifier = Modifier.weight(1f))
+
         AppText(
             text = video.title,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = AppContentColors.primaryText(),
             style = contentTypography.title,
             minLines = titleMinLines,
             maxLines = videoCardTitleMaxLines(titleMaxLines),
@@ -448,7 +474,7 @@ internal fun StoryVideoCard(
         )
 
         Spacer(modifier = Modifier.height(if (compactMetadata) AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro else AppSpacingTokens.Small))
-        
+
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -470,7 +496,7 @@ internal fun StoryVideoCard(
                     if (publishTimeRowText.isNotBlank()) {
                         AppText(
                             text = publishTimeRowText,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
+                            color = AppContentColors.secondaryText(),
                             style = contentTypography.statistic,
                             overflow = TextOverflow.Visible,
                         )
@@ -481,7 +507,7 @@ internal fun StoryVideoCard(
 
             val upClickMid = video.owner.mid.takeIf { it > 0L && onUpClick != null }
             val upNameModifier = if (upClickMid != null) {
-                Modifier.fillMaxWidth().clickable { onUpClick?.invoke(upClickMid) }
+                Modifier.fillMaxWidth().appActionClickable { onUpClick?.invoke(upClickMid) }
             } else {
                 Modifier.fillMaxWidth()
             }
@@ -494,12 +520,17 @@ internal fun StoryVideoCard(
                 ),
                 leadingContent = if ((showUpAvatar ?: com.android.purebilibili.core.ui.LocalUpBadgeVisibility.current.showAvatars) && video.owner.face.isNotEmpty()) {
                     {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(FormatUtils.fixImageUrl(video.owner.face))
+                        val avatarContext = LocalContext.current
+                        val face = video.owner.face
+                        val avatarRequest = remember(avatarContext, face) {
+                            ImageRequest.Builder(avatarContext)
+                                .data(FormatUtils.fixImageUrl(face))
                                 .size(96, 96)
                                 .crossfade(100)
-                                .build(),
+                                .build()
+                        }
+                        PageAwareAsyncImage(
+                            model = avatarRequest,
                             contentDescription = null,
                             modifier = Modifier
                                 .size(AppSpacingTokens.ExtraLarge)
@@ -508,14 +539,22 @@ internal fun StoryVideoCard(
                         )
                     }
                 } else null,
+                nameLeadingContent = if (video.recommendationReason.isNotBlank() || video.isFollowed) {
+                    {
+                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            VideoRecommendationBadge(video.recommendationReason)
+                            if (video.isFollowed) VideoRecommendationBadge("已关注")
+                        }
+                    }
+                } else null,
                 nameStyle = contentTypography.author.copy(fontWeight = FontWeight.Medium),
-                nameColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                metaColor = MaterialTheme.colorScheme.primary,
-                badgeTextColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.85f),
-                badgeBackgroundColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f),
+                nameColor = AppContentColors.secondaryText(),
+                metaColor = AppContentColors.accent(),
+                badgeTextColor = AppContentColors.secondaryText().copy(alpha = 0.85f),
+                badgeBackgroundColor = AppContentColors.secondaryText().copy(alpha = 0.12f),
                 showUpBadge = showUpBadge,
-                maxLines = Int.MAX_VALUE,
-                overflow = TextOverflow.Visible,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 metaMaxLines = Int.MAX_VALUE,
                 metaOverflow = TextOverflow.Visible,
                 modifier = upNameModifier
@@ -526,7 +565,7 @@ internal fun StoryVideoCard(
                     durationText = "",
                     publishTimeText = publishTimeRowText,
                     emphasizePublishTime = emphasizePublishTime,
-                    publishTimeColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
+                    publishTimeColor = AppContentColors.secondaryText().copy(alpha = 0.72f),
                     topSpacing = if (compactMetadata) AppSpacingTokens.ExtraSmall else AppSpacingTokens.Small
                 )
             }
@@ -534,18 +573,18 @@ internal fun StoryVideoCard(
         }
         }
     }
-    
+
     //  [新增] 长按删除菜单
     AppDropdownMenu(
         expanded = showDismissMenu,
         onDismissRequest = { showDismissMenu = false }
     ) {
         AppDropdownMenuItem(
-            text = { 
+            text = {
                 AppText(
-                    "🚫 不感兴趣",
-                    color = MaterialTheme.colorScheme.onSurface
-                ) 
+                    "不感兴趣",
+                    color = AppContentColors.primaryText()
+                )
             },
             onClick = {
                 showDismissMenu = false

@@ -21,60 +21,21 @@ class DynamicScreenStatePolicyTest {
         )
     }
 
+
     @Test
-    fun `dynamic list top padding stays independent from scroll driven chrome collapse`() {
-        assertEquals(
-            144,
-            resolveDynamicListTopPaddingExtraDp(
-                isHorizontalMode = true,
-                shouldShowHorizontalUserList = true
-            )
-        )
-        assertEquals(
-            60,
-            resolveDynamicListTopPaddingExtraDp(
-                isHorizontalMode = true,
-                shouldShowHorizontalUserList = false
-            )
-        )
-        assertEquals(
-            60,
-            resolveDynamicListTopPaddingExtraDp(
-                isHorizontalMode = false,
-            )
-        )
+    fun `all video and article categories expose author filters in horizontal mode`() {
+        for (tab in listOf(0, 1, 3)) {
+            assertTrue(shouldShowDynamicUpPanel(selectedTab = tab))
+            assertTrue(shouldShowDynamicHorizontalUserList(isHorizontalMode = true, selectedTab = tab))
+            assertFalse(shouldShowDynamicHorizontalUserList(isHorizontalMode = false, selectedTab = tab))
+        }
     }
 
     @Test
-    fun `all tab hides horizontal user list by default while up tab keeps it visible`() {
-        assertFalse(
-            shouldShowDynamicHorizontalUserList(
-                isHorizontalMode = true,
-                selectedTab = 0,
-                allTabHorizontalUserListVisible = false
-            )
-        )
-        assertTrue(
-            shouldShowDynamicHorizontalUserList(
-                isHorizontalMode = true,
-                selectedTab = 4,
-                allTabHorizontalUserListVisible = false
-            )
-        )
-        assertTrue(
-            shouldShowDynamicHorizontalUserList(
-                isHorizontalMode = true,
-                selectedTab = 0,
-                allTabHorizontalUserListVisible = true
-            )
-        )
-        assertFalse(
-            shouldShowDynamicHorizontalUserList(
-                isHorizontalMode = false,
-                selectedTab = 4,
-                allTabHorizontalUserListVisible = true
-            )
-        )
+    fun `pgc never exposes an author panel`() {
+        assertFalse(shouldShowDynamicUpPanel(selectedTab = 2))
+        assertFalse(shouldShowDynamicHorizontalUserList(isHorizontalMode = true, selectedTab = 2))
+        assertFalse(shouldShowDynamicHorizontalUserList(isHorizontalMode = false, selectedTab = 2))
     }
 
     @Test
@@ -106,15 +67,15 @@ class DynamicScreenStatePolicyTest {
         assertFalse(
             shouldCollapseDynamicHorizontalUserList(
                 firstVisibleItemIndex = 0,
-                firstVisibleItemScrollOffset = DynamicHorizontalExpandedHeaderReservedHeightDp,
-                topTolerancePx = DynamicHorizontalExpandedHeaderReservedHeightDp,
+                firstVisibleItemScrollOffset = 200,
+                topTolerancePx = 200,
             )
         )
         assertTrue(
             shouldCollapseDynamicHorizontalUserList(
                 firstVisibleItemIndex = 0,
-                firstVisibleItemScrollOffset = DynamicHorizontalExpandedHeaderReservedHeightDp + 1,
-                topTolerancePx = DynamicHorizontalExpandedHeaderReservedHeightDp,
+                firstVisibleItemScrollOffset = 201,
+                topTolerancePx = 200,
             )
         )
     }
@@ -271,6 +232,30 @@ class DynamicScreenStatePolicyTest {
     }
 
     @Test
+    fun `dynamic feed pauses automatic pagination after a request error`() {
+        assertFalse(
+            shouldLoadMoreDynamicFeed(
+                furthestVisibleItemIndex = 2,
+                totalItemsCount = 3,
+                allowAutomaticLoadMore = true,
+                isLoading = false,
+                hasMore = true,
+                error = "请求数据发生错误",
+            )
+        )
+        assertTrue(
+            shouldLoadMoreDynamicFeed(
+                furthestVisibleItemIndex = 2,
+                totalItemsCount = 3,
+                allowAutomaticLoadMore = true,
+                isLoading = false,
+                hasMore = true,
+                error = null,
+            )
+        )
+    }
+
+    @Test
     fun `no more footer should follow active hasMore and list size`() {
         assertTrue(shouldShowDynamicNoMoreFooter(hasMore = false, activeItemsCount = 1))
         assertFalse(shouldShowDynamicNoMoreFooter(hasMore = true, activeItemsCount = 1))
@@ -364,7 +349,7 @@ class DynamicScreenStatePolicyTest {
 
         val presentation = resolveDynamicPagePresentation(
             state = state,
-            logicalTab = 4,
+            logicalTab = 0,
             selectedUserId = 1L
         )
 
@@ -384,7 +369,7 @@ class DynamicScreenStatePolicyTest {
     }
 
     @Test
-    fun `up panel prepends self shortcut without all-dynamics entry`() {
+    fun `up panel prepends all dynamics and self without duplicating shortcuts`() {
         val users = listOf(
             SidebarUser(uid = 11L, name = "A", face = "a"),
             SidebarUser(uid = 22L, name = "me", face = "old-me"),
@@ -393,12 +378,10 @@ class DynamicScreenStatePolicyTest {
         val panel = resolveDynamicUpPanelUsers(
             users = users,
             selfUid = 22L,
-            selfFace = "new-me"
+            selfFace = "https://i0.hdslb.com/bfs/face/current.jpg"
         )
 
-        assertEquals(listOf(22L, 11L), panel.map { it.uid })
-        assertEquals(listOf("我", "A"), panel.map { it.name })
-        assertEquals("new-me", panel[0].face)
+        assertEquals(listOf(DYNAMIC_UP_PANEL_ALL_UID, 22L, 11L), panel.map { it.uid })
         assertTrue(isDynamicUpPanelAllShortcut(-1L))
         assertTrue(isDynamicUpPanelShortcut(-1L, selfUid = 22L))
         assertTrue(isDynamicUpPanelShortcut(22L, selfUid = 22L))
@@ -414,14 +397,6 @@ class DynamicScreenStatePolicyTest {
             resolveDynamicSelectedUserIdAfterClick(
                 selectedUserId = 10001L,
                 clickedUserId = DYNAMIC_UP_PANEL_ALL_UID
-            )
-        )
-        assertEquals(
-            0,
-            resolveDynamicTabAfterUserSelection(
-                selectedUserId = 10001L,
-                clickedUserId = DYNAMIC_UP_PANEL_ALL_UID,
-                currentTab = 4
             )
         )
     }
@@ -471,14 +446,6 @@ class DynamicScreenStatePolicyTest {
                 clickedUserId = 10001L
             )
         )
-        assertEquals(
-            4,
-            resolveDynamicTabAfterUserSelection(
-                selectedUserId = 10001L,
-                clickedUserId = 10001L,
-                currentTab = 4,
-            )
-        )
     }
 
     @Test
@@ -500,24 +467,19 @@ class DynamicScreenStatePolicyTest {
     }
 
     @Test
-    fun `selected user feed is active only on up tab`() {
-        assertTrue(shouldUseSelectedUserDynamicFeed(selectedTab = 4, selectedUserId = 10001L))
-        assertFalse(shouldUseSelectedUserDynamicFeed(selectedTab = 0, selectedUserId = 10001L))
-        assertFalse(shouldUseSelectedUserDynamicFeed(selectedTab = 4, selectedUserId = null))
-    }
-
-    @Test
-    fun `non up tab clears selected user highlight`() {
-        assertNull(resolveDynamicSelectedUserForTab(selectedTab = 0, selectedUserId = 10001L))
-        assertNull(resolveDynamicSelectedUserForTab(selectedTab = 2, selectedUserId = 10001L))
-        assertEquals(10001L, resolveDynamicSelectedUserForTab(selectedTab = 4, selectedUserId = 10001L))
+    fun `selected author scopes all video and article but never pgc`() {
+        for (tab in listOf(0, 1, 3)) {
+            assertTrue(shouldUseSelectedUserDynamicFeed(selectedTab = tab, selectedUserId = 10001L))
+            assertFalse(shouldUseSelectedUserDynamicFeed(selectedTab = tab, selectedUserId = null))
+        }
+        assertFalse(shouldUseSelectedUserDynamicFeed(selectedTab = 2, selectedUserId = 10001L))
     }
 
     @Test
     fun `feed should reset scroll when tab or selected user source changes`() {
         assertTrue(
             shouldResetDynamicFeedScrollOnSourceChange(
-                previousTab = 4,
+                previousTab = 0,
                 nextTab = 0,
                 previousSelectedUserId = 10001L,
                 nextSelectedUserId = null
@@ -525,8 +487,8 @@ class DynamicScreenStatePolicyTest {
         )
         assertTrue(
             shouldResetDynamicFeedScrollOnSourceChange(
-                previousTab = 4,
-                nextTab = 4,
+                previousTab = 0,
+                nextTab = 0,
                 previousSelectedUserId = 10001L,
                 nextSelectedUserId = 10002L
             )
@@ -542,43 +504,15 @@ class DynamicScreenStatePolicyTest {
     }
 
     @Test
-    fun `clicking user avatar always keeps or switches to the up tab`() {
-        assertEquals(
-            4,
-            resolveDynamicTabAfterUserSelection(
-                selectedUserId = null,
-                clickedUserId = 10001L,
-                currentTab = 0
-            )
-        )
-        assertEquals(
-            4,
-            resolveDynamicTabAfterUserSelection(
-                selectedUserId = 10001L,
-                clickedUserId = 10001L,
-                currentTab = 4
-            )
-        )
-        assertEquals(
-            4,
-            resolveDynamicTabAfterUserSelection(
-                selectedUserId = 10001L,
-                clickedUserId = 10001L,
-                currentTab = 2
-            )
-        )
-    }
-
-    @Test
     fun `saved dynamic tab restores when index is valid`() {
-        assertEquals(4, resolveDynamicSelectedTab(savedTab = 4, tabCount = 5))
+        assertEquals(3, resolveDynamicSelectedTab(savedTab = 3, tabCount = 4))
     }
 
     @Test
     fun `saved dynamic tab falls back to all when index is invalid`() {
-        assertEquals(0, resolveDynamicSelectedTab(savedTab = null, tabCount = 5))
-        assertEquals(0, resolveDynamicSelectedTab(savedTab = -1, tabCount = 5))
-        assertEquals(0, resolveDynamicSelectedTab(savedTab = 5, tabCount = 5))
+        assertEquals(0, resolveDynamicSelectedTab(savedTab = null, tabCount = 4))
+        assertEquals(0, resolveDynamicSelectedTab(savedTab = -1, tabCount = 4))
+        assertEquals(0, resolveDynamicSelectedTab(savedTab = 4, tabCount = 4))
         assertEquals(0, resolveDynamicSelectedTab(savedTab = 1, tabCount = 0))
     }
 
@@ -588,7 +522,7 @@ class DynamicScreenStatePolicyTest {
             1,
             resolveDynamicSwipeTargetTab(
                 currentTab = 0,
-                tabCount = 5,
+                tabCount = 4,
                 dragDistancePx = -120f
             )
         )
@@ -596,7 +530,7 @@ class DynamicScreenStatePolicyTest {
             2,
             resolveDynamicSwipeTargetTab(
                 currentTab = 3,
-                tabCount = 5,
+                tabCount = 4,
                 dragDistancePx = 120f
             )
         )
@@ -607,21 +541,21 @@ class DynamicScreenStatePolicyTest {
         assertNull(
             resolveDynamicSwipeTargetTab(
                 currentTab = 2,
-                tabCount = 5,
+                tabCount = 4,
                 dragDistancePx = -40f
             )
         )
         assertNull(
             resolveDynamicSwipeTargetTab(
                 currentTab = 0,
-                tabCount = 5,
+                tabCount = 4,
                 dragDistancePx = 120f
             )
         )
         assertNull(
             resolveDynamicSwipeTargetTab(
-                currentTab = 4,
-                tabCount = 5,
+                currentTab = 3,
+                tabCount = 4,
                 dragDistancePx = -120f
             )
         )
@@ -633,7 +567,6 @@ class DynamicScreenStatePolicyTest {
         assertEquals("video", resolveDynamicFeedRequestType(selectedTab = 1))
         assertEquals("pgc", resolveDynamicFeedRequestType(selectedTab = 2))
         assertEquals("article", resolveDynamicFeedRequestType(selectedTab = 3))
-        assertEquals("all", resolveDynamicFeedRequestType(selectedTab = 4))
     }
 
     @Test
@@ -642,7 +575,6 @@ class DynamicScreenStatePolicyTest {
         assertTrue(shouldUseServerFilteredDynamicFeed(selectedTab = 2))
         assertTrue(shouldUseServerFilteredDynamicFeed(selectedTab = 3))
         assertFalse(shouldUseServerFilteredDynamicFeed(selectedTab = 0))
-        assertFalse(shouldUseServerFilteredDynamicFeed(selectedTab = 4))
     }
 
     @Test

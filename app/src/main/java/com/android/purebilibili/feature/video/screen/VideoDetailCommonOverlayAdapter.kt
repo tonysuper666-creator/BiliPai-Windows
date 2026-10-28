@@ -38,6 +38,7 @@ internal fun VideoDetailCommonOverlayAdapter(
         visible = engagementState.coinDialogVisible,
         currentCoinCount = engagementState.coinCount,
         userBalance = engagementState.userCoinBalance,
+        maxCoins = engagementState.coinLimit,
         onDismiss = { engagementViewModel.setCoinDialogVisible(false) },
         onConfirm = engagementViewModel::doCoin,
     )

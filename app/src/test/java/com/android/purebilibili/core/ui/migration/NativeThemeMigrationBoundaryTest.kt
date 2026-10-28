@@ -224,7 +224,7 @@ class NativeThemeMigrationBoundaryTest {
     }
 
     @Test
-    fun appNativeCardCallsStayWithinTheExactMd3PreviewException() {
+    fun appNativeCardCallsUseOnlyAppFacades() {
         val directCalls = kotlinFiles("app/src/main/java")
             .flatMap { file ->
                 var enclosingFunction = "<top-level>"
@@ -445,10 +445,9 @@ class NativeThemeMigrationBoundaryTest {
             Regex("(?<![A-Za-z0-9_])(?:Card|ElevatedCard|OutlinedCard)\\(")
         val FUNCTION_DECLARATION = Regex("\\bfun\\s+([A-Za-z0-9_]+)\\s*\\(")
 
-        val MD3_CARD_PREVIEW_EXCEPTIONS = listOf(
-            "app/src/main/java/com/android/purebilibili/feature/settings/screen/" +
-                "AppearanceSettingsScreen.kt#Md3ThemeColorPreview#ElevatedCard",
-        )
+        // 首页配色预览重做后，原 Md3ThemeColorPreview 的 ElevatedCard 例外已移除：
+        // app 源码不应再直接调用原生 Card / ElevatedCard / OutlinedCard，一律走 App* 外观。
+        val MD3_CARD_PREVIEW_EXCEPTIONS = emptyList<String>()
 
         // Frozen from production sources on 2026-08-24; lower after each migration batch.
         const val MAX_FEATURE_MATERIAL3_FILES = 237

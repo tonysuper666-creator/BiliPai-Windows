@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.plugin
 
+import com.android.purebilibili.core.plugin.BuiltinPluginIds
+
 import android.content.Context
 import com.android.purebilibili.core.plugin.PluginStore
 import com.android.purebilibili.data.model.response.VideoItem
@@ -208,7 +210,7 @@ internal object AdFilterInsightStore {
     suspend fun readRecords(context: Context): List<AdFilterRecord> {
         val value = PluginStore.getDataJson(
             context = context,
-            pluginId = ADFILTER_PLUGIN_ID,
+            pluginId = BuiltinPluginIds.AD_FILTER,
             name = AD_FILTER_HISTORY_STORE_NAME
         ) ?: return emptyList()
         return runCatching {
@@ -230,7 +232,7 @@ internal object AdFilterInsightStore {
                 .take(AD_FILTER_HISTORY_LIMIT)
             PluginStore.setDataJson(
                 context = context,
-                pluginId = ADFILTER_PLUGIN_ID,
+                pluginId = BuiltinPluginIds.AD_FILTER,
                 name = AD_FILTER_HISTORY_STORE_NAME,
                 dataJson = json.encodeToString(
                     ListSerializer(AdFilterRecord.serializer()),
@@ -246,7 +248,7 @@ internal object AdFilterInsightStore {
     suspend fun readUpProfiles(context: Context): List<AdFilterUpProfile> {
         val value = PluginStore.getDataJson(
             context = context,
-            pluginId = ADFILTER_PLUGIN_ID,
+            pluginId = BuiltinPluginIds.AD_FILTER,
             name = AD_FILTER_UP_PROFILE_STORE_NAME
         ) ?: return emptyList()
         return runCatching {
@@ -272,7 +274,7 @@ internal object AdFilterInsightStore {
                 .take(AD_FILTER_UP_PROFILE_LIMIT)
             PluginStore.setDataJson(
                 context = context,
-                pluginId = ADFILTER_PLUGIN_ID,
+                pluginId = BuiltinPluginIds.AD_FILTER,
                 name = AD_FILTER_UP_PROFILE_STORE_NAME,
                 dataJson = json.encodeToString(
                     ListSerializer(AdFilterUpProfile.serializer()),

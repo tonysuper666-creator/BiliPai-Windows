@@ -37,6 +37,8 @@ internal fun ListScopedSearchActiveBar(
         modifier = modifier.fillMaxWidth(),
         backdrop = backdrop,
         reuseEnabled = true,
+        elasticFeedbackEnabled = true,
+        elasticFeedbackStrength = com.android.purebilibili.core.ui.components.APP_SEARCH_ELASTIC_FEEDBACK_STRENGTH,
         useNeutralLiquidContainer = true,
         shellLensIntensity = resolveFloatingDockGeometryScale(44f),
     ) { liquidChromeActive ->

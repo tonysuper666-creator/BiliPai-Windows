@@ -58,8 +58,8 @@ class BottomBarUiSkinDecorationTest {
         assertTrue(trimSource.contains(".clearAndSetSemantics {}"))
         assertTrue(trimSource.contains(".drawBehind {"))
         assertTrue(trimSource.contains("drawRect(decoration.bottomTrimTint)"))
-        // Crop + 底部对齐可覆盖手势导航区，同时保持素材主体沉底。
-        assertTrue(trimSource.contains("ContentScale.Crop"))
+        // Fit 保留完整皮肤图，基础底色填补未覆盖区域。
+        assertTrue(trimSource.contains("ContentScale.Fit"))
         assertTrue(trimSource.contains("Alignment.BottomCenter"))
         assertTrue(!trimSource.contains(".alpha(0.82f)"))
     }

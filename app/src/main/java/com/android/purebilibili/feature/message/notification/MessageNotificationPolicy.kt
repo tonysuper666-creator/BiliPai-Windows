@@ -41,12 +41,6 @@ internal fun filterNewPrivateSessions(
         knownMsgKeys[sessionNotificationKey(session)] != message.msg_key
 }.distinctBy(::sessionNotificationKey)
 
-internal fun diffNewIds(ids: List<Long>, seen: List<Long>, isInitialized: Boolean): List<Long> {
-    if (!isInitialized) return emptyList()
-    val known = seen.toHashSet()
-    return ids.filter { it > 0 && known.add(it) }
-}
-
 internal fun <T> evictBounded(items: List<T>, cap: Int): List<T> {
     require(cap > 0)
     val recent = LinkedHashSet<T>()
@@ -61,6 +55,37 @@ internal fun <T> evictBounded(items: List<T>, cap: Int): List<T> {
 // API pages are newest-first; persisted lists are oldest-first, including on initialization.
 internal fun <T> mergeNotificationSeen(seen: List<T>, newestFirst: List<T>, cap: Int): List<T> =
     evictBounded(seen + newestFirst.asReversed(), cap)
+
+internal const val MAX_DYNAMIC_NOTIFICATION_PREVIEWS = 3
+internal const val MAX_DYNAMIC_NOTIFICATION_CONCURRENCY = 16
+
+// Dynamic IDs are decimal publish baselines. Compare without Long overflow or BigInteger allocation.
+internal fun isNewerDynamicNotificationId(id: String, baseline: String): Boolean =
+    id.isNotEmpty() && (id.length > baseline.length || (id.length == baseline.length && id > baseline))
+
+internal fun addNewestDynamicNotificationPreview(items: MutableList<DynamicItem>, item: DynamicItem) {
+    var index = 0
+    while (index < items.size && !isNewerDynamicNotificationId(item.id_str, items[index].id_str)) index++
+    if (index >= MAX_DYNAMIC_NOTIFICATION_PREVIEWS) return
+    items.add(index, item)
+    if (items.size > MAX_DYNAMIC_NOTIFICATION_PREVIEWS) items.removeAt(MAX_DYNAMIC_NOTIFICATION_PREVIEWS)
+}
+
+internal fun dynamicNotificationText(item: DynamicItem): String {
+    val content = item.modules.module_dynamic
+    val major = content?.major
+    return major?.archive?.title?.takeIf { it.isNotBlank() }
+        ?: major?.pgc?.title?.takeIf { it.isNotBlank() }
+        ?: major?.article?.title?.takeIf { it.isNotBlank() }
+        ?: major?.opus?.title?.takeIf { it.isNotBlank() }
+        ?: content?.desc?.text?.takeIf { it.isNotBlank() }
+        ?: major?.opus?.summary?.text?.takeIf { it.isNotBlank() }
+        ?: major?.ugc_season?.title?.takeIf { it.isNotBlank() }
+        ?: major?.common?.title?.takeIf { it.isNotBlank() }
+        ?: major?.music?.title?.takeIf { it.isNotBlank() }
+        ?: item.orig?.let(::dynamicNotificationText)
+        ?: ""
+}
 
 internal fun shouldNotifyDynamicItem(item: DynamicItem, selfMid: Long): Boolean {
     val author = item.modules.module_author ?: return false
@@ -107,3 +132,14 @@ internal data class PendingMessageNotification(
     val group: String,
     val isGroupSummary: Boolean = false,
 )
+
+// Suppress adjacent Worker/resident scans, without carrying elapsed timestamps across reboots.
+internal fun shouldSkipRecentNotificationCheck(
+    mid: Long,
+    lastMid: Long?,
+    nowElapsedMs: Long,
+    lastElapsedMs: Long?,
+    boot: Long,
+    lastBoot: Long?
+): Boolean = mid == lastMid && boot >= 0L && boot == lastBoot && lastElapsedMs != null &&
+    nowElapsedMs >= lastElapsedMs && nowElapsedMs - lastElapsedMs < 30_000L

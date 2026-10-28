@@ -42,6 +42,12 @@ snapshot boundary is replaced with a Compose `GraphicsLayer` capture. This
 preserves transparent card corners and excludes the window background and
 action sheet. The GL thread owns a separate software bitmap copy.
 
+The now-playing bar instead uses window `PixelCopy` cropped to its window bounds,
+with transparent capsule corners restored on the software bitmap. This preserves
+its particle effect and visible blur while avoiding an extra offscreen HWUI draw
+of the live backdrop and rotating artwork. A cancelled or timed-out copy keeps
+its destination alive until the PixelCopy callback finishes.
+
 The overlay attaches to the calling window's decor, using the card's window
 coordinates. It occupies the full window, allowing dust to drift outside the
 card bounds. The source remains visible until `TextureView` reports acquisition

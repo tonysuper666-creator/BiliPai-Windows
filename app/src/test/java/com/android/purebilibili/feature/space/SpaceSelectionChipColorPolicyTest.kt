@@ -12,7 +12,7 @@ class SpaceSelectionChipColorPolicyTest {
         val scheme = darkColorScheme(
             primary = Color.White,
             onPrimary = Color.White,
-            primaryContainer = Color(0xFF2A2A2A),
+            secondaryContainer = Color(0xFF2A2A2A),
             onPrimaryContainer = Color(0xFFF2F2F2),
             surface = Color(0xFF121212),
             surfaceVariant = Color(0xFF2B2B2B),
@@ -24,16 +24,16 @@ class SpaceSelectionChipColorPolicyTest {
             colorScheme = scheme
         )
 
-        assertEquals(scheme.primaryContainer, colors.backgroundColor)
-        assertEquals(scheme.onPrimaryContainer, colors.textColor)
+        assertEquals(scheme.secondaryContainer, colors.backgroundColor)
+        assertEquals(scheme.onSecondaryContainer, colors.textColor)
     }
 
     @Test
-    fun `selected chip keeps primary when contrast is healthy`() {
+    fun `selected chip uses the standard secondary container pair`() {
         val scheme = darkColorScheme(
             primary = Color(0xFF0057D8),
             onPrimary = Color.White,
-            primaryContainer = Color(0xFF0F2942),
+            secondaryContainer = Color(0xFF0F2942),
             onPrimaryContainer = Color(0xFFD6E9FF),
             surface = Color(0xFF121212),
             surfaceVariant = Color(0xFF2B2B2B),
@@ -45,8 +45,8 @@ class SpaceSelectionChipColorPolicyTest {
             colorScheme = scheme
         )
 
-        assertEquals(scheme.primary, colors.backgroundColor)
-        assertEquals(scheme.onPrimary, colors.textColor)
+        assertEquals(scheme.secondaryContainer, colors.backgroundColor)
+        assertEquals(scheme.onSecondaryContainer, colors.textColor)
     }
 
     @Test

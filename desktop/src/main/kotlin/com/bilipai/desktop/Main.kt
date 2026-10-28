@@ -1,5 +1,6 @@
 package com.bilipai.desktop
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +28,8 @@ import kotlinx.coroutines.withContext
 import java.awt.Dimension
 
 fun main(args: Array<String>) {
+    // Upstream code compiled from the merged tree must fail loudly, not drop sessions, if it reaches Android Keystore.
+    android.security.keystore.DesktopAndroidKeyStoreGuard.install()
     if (args.firstOrNull() == "--backend-smoke") {
         val smokeResult = runCatching {
             runBlocking {
@@ -78,7 +81,7 @@ fun main(args: Array<String>) {
     application {
         val applicationPluginStore = remember {
             com.bilipai.desktop.plugins.DesktopPluginStore(DesktopLibrary.directoryForAccount(null)).also { store ->
-                com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
+                com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store).asAndroidContext())
             }
         }
         val diagnosticsResult = remember(applicationPluginStore) {

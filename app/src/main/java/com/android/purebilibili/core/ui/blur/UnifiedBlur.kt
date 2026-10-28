@@ -14,12 +14,11 @@ import com.android.purebilibili.core.ui.adaptive.minMotionTier
 import com.android.purebilibili.core.ui.performance.LocalRuntimeVisualGuard
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import dev.chrisbanes.haze.HazeInput
+import dev.chrisbanes.haze.HazePerformanceMode
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeInputScale
-import dev.chrisbanes.haze.ExperimentalHazeApi
 import dev.chrisbanes.haze.blur.HazeBlurStyle
-import dev.chrisbanes.haze.blur.blurEffect
-import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.blur.hazeBlur
 
 private val LocalUnifiedBlurIntensity = staticCompositionLocalOf<BlurIntensity?> { null }
 
@@ -126,31 +125,42 @@ fun Modifier.unifiedBlur(
 
     // 默认仍遵循用户的统一模糊偏好；播放画面等需要保真的场景可显式提供
     // 无主题染色样式，避免 Material surface tint 改变原始画面颜色。
-    val blurStyle = blurStyleOverride
-        ?: BlurStyles.getBlurStyle(currentUnifiedBlurIntensity(), budget)
+    // 注意：getBlurStyle 是 @Composable，只能在组合上下文调用；可缓存的
+    // 预算解析是普通函数，留在 remember 内。
+    val blurStyle = if (blurStyleOverride != null) {
+        blurStyleOverride
+    } else {
+        val intensity = currentUnifiedBlurIntensity()
+        val effectiveIntensity = remember(intensity, budget) {
+            resolveBudgetedBlurIntensity(intensity, budget)
+        }
+        BlurStyles.getBlurStyle(effectiveIntensity)
+    }
     val edgeTreatment = remember(shape) { resolveUnifiedBlurredEdgeTreatment(shape) }
     val inputScaleFactor = remember(budget, surfaceType) {
         resolveBlurInputScale(budget = budget, surfaceType = surfaceType)
     }
 
-    // Haze 2: style/blurEnabled/blurredEdgeTreatment live on BlurVisualEffect via blurEffect {}.
-    // Shape still applied with clip; recoverable background gate is per-effect blurEnabled.
+    // Haze 2: Style 是不可变的可重放程序，recoverable 门控与边缘处理作为额外写入排在
+    // 主题材质样式之前；预算降级映射为性能档位（旧 inputScale 语义 ≈ Fixed 采样质量）。
     val recoverableEnabled = recoverableBlurEnabled(hazeState)
-    return (if (shape != null) this.clip(shape) else this).hazeEffect(
-        state = hazeState,
-    ) {
-        blurEffect {
-            style = blurStyle
-            blurEnabled = recoverableEnabled
-            blurredEdgeTreatment = edgeTreatment
-        }
-        @OptIn(ExperimentalHazeApi::class)
-        run {
-            inputScale = if (inputScaleFactor >= 1f) {
-                HazeInputScale.None
-            } else {
-                HazeInputScale.Fixed(inputScaleFactor)
-            }
+    val performanceMode = remember(inputScaleFactor) {
+        if (inputScaleFactor >= 1f) {
+            HazePerformanceMode.Quality
+        } else {
+            HazePerformanceMode.Fixed(inputScaleFactor)
         }
     }
+    val input = remember(hazeState) { HazeInput.Sources(hazeState) }
+    val effectiveStyle = remember(recoverableEnabled, edgeTreatment, blurStyle) {
+        HazeBlurStyle {
+            blurEnabled(recoverableEnabled)
+            blurredEdgeTreatment(edgeTreatment)
+        }.then(blurStyle)
+    }
+    return (if (shape != null) this.clip(shape) else this).hazeBlur(
+        input = input,
+        style = effectiveStyle,
+        performanceMode = performanceMode,
+    )
 }

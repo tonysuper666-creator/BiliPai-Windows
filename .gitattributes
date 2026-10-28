@@ -164,3 +164,5 @@ desktop/tools/native/veyra-dlss-sr/** whitespace=cr-at-eol
 
 # Preserve the reviewed Windows video color stage and shader byte identities.
 desktop/native/veyra-guidance/** -text whitespace=cr-at-eol,-blank-at-eof
+# Generated brand preview embeds assets and should not count as source code.
+artwork/brand-motion/preview.html linguist-generated=true

@@ -1,5 +1,9 @@
 package com.android.purebilibili.feature.video.player
 
+import com.android.purebilibili.core.ui.components.rememberFollowActionWithConfirmation
+import com.android.purebilibili.core.ui.AppContentColors
+import com.android.purebilibili.core.ui.resolveButtonContentColor
+
 import coil3.request.crossfade
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
@@ -31,17 +35,10 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 
-import com.android.purebilibili.core.theme.resolveAdaptivePrimaryAccentColors
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.util.bouncyClickable
 import com.android.purebilibili.data.model.response.RelatedVideo
 import com.android.purebilibili.data.model.response.ViewInfo
-import androidx.compose.foundation.isSystemInDarkTheme
-import com.android.purebilibili.core.theme.ActionLikeDark
-import com.android.purebilibili.core.theme.ActionCoinDark
-import com.android.purebilibili.core.theme.ActionFavoriteDark
-import com.android.purebilibili.core.theme.ActionShareDark
-import com.android.purebilibili.core.theme.ActionCommentDark
 import com.android.purebilibili.core.ui.components.UserUpBadge
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.rememberAppBookmarkIcon
@@ -59,7 +56,7 @@ fun VideoTitleSection(
     onUpClick: (Long) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,7 +76,7 @@ fun VideoTitleSection(
                 ),
                 maxLines = if (expanded) Int.MAX_VALUE else 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
                 modifier = Modifier
                     .weight(1f)
                     .animateContentSize()
@@ -88,18 +85,18 @@ fun VideoTitleSection(
             AppIcon(
                 imageVector = if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                tint = AppContentColors.secondaryText().copy(alpha = 0.5f),
                 modifier = Modifier.size(18.dp)
             )
         }
-        
+
         Spacer(Modifier.height(2.dp))
-        
+
         // 统计行 (官方样式：播放量 • 弹幕 • 日期)
         AppText(
             text = "${FormatUtils.formatStat(info.stat.view.toLong())}  •  ${FormatUtils.formatStat(info.stat.danmaku.toLong())}弹幕  •  ${FormatUtils.formatPublishTime(info.pubdate)}",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+            color = AppContentColors.secondaryText(),
             maxLines = 1
         )
     }
@@ -111,7 +108,7 @@ fun VideoTitleWithDesc(
     info: ViewInfo
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -131,7 +128,7 @@ fun VideoTitleWithDesc(
                 ),
                 maxLines = if (expanded) Int.MAX_VALUE else 1,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
                 modifier = Modifier
                     .weight(1f)
                     .animateContentSize()
@@ -140,13 +137,13 @@ fun VideoTitleWithDesc(
             AppIcon(
                 imageVector = if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                tint = AppContentColors.secondaryText().copy(alpha = 0.5f),
                 modifier = Modifier.size(16.dp)
             )
         }
-        
+
         Spacer(Modifier.height(2.dp))  //  紧凑布局
-        
+
         // 统计行 (官方样式：播放量 • 弹幕 • 日期)
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -154,18 +151,18 @@ fun VideoTitleWithDesc(
             AppText(
                 text = "${FormatUtils.formatStat(info.stat.view.toLong())}播放  •  ${FormatUtils.formatStat(info.stat.danmaku.toLong())}弹幕  •  ${FormatUtils.formatPublishTime(info.pubdate)}",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                color = AppContentColors.secondaryText(),
                 maxLines = 1
             )
         }
-        
+
         //  描述（动态）- 紧接在统计后面
         if (info.desc.isNotBlank()) {
             Spacer(Modifier.height(4.dp))  //  紧凑布局
             AppText(
                 text = info.desc,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                color = AppContentColors.secondaryText(),
                 maxLines = if (expanded) Int.MAX_VALUE else 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.animateContentSize()
@@ -199,9 +196,9 @@ fun UpInfoSection(
             fallbackOfficialType = info.staff.firstOrNull { it.mid == info.owner.mid }?.official?.type,
             fallbackVipStatus = info.staff.firstOrNull { it.mid == info.owner.mid }?.vip?.status,
         )
-        
+
         Spacer(Modifier.width(10.dp))
-        
+
         // UP主名称行
         Column(modifier = Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -210,19 +207,31 @@ fun UpInfoSection(
                 AppText(
                     text = info.owner.name,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
         }
-        
+
+        // Pair the follow label and plus icon with the actual fill, including bright custom seeds.
+        val followContainer = if (isFollowing) MaterialTheme.colorScheme.surfaceVariant else AppContentColors.accent()
+        val followContent = resolveButtonContentColor(
+            followContainer,
+            if (isFollowing) AppContentColors.secondaryText() else AppContentColors.onAccent(),
+            MaterialTheme.colorScheme,
+        )
         // 关注按钮
         AppSurface(
-            onClick = onFollowClick,
-            color = if (isFollowing) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.primary,
+            onClick = rememberFollowActionWithConfirmation(
+                targetKey = info.owner.mid,
+                userName = info.owner.name,
+                isFollowing = isFollowing,
+                onFollowClick = onFollowClick,
+            ),
+            color = followContainer,
             shape = AppShapes.container(ContainerLevel.Card),
-            modifier = Modifier.height(32.dp)
+            modifier = Modifier.heightIn(min = 32.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -232,15 +241,17 @@ fun UpInfoSection(
                     AppIcon(
                         Icons.Outlined.Add,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = followContent,
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(Modifier.width(2.dp))
                 }
                 AppText(
                     text = if (isFollowing) "已关注" else "关注",
+                    maxLines = 1,
+                    softWrap = false,
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
-                    color = if (isFollowing) MaterialTheme.colorScheme.onSurfaceVariant else Color.White
+                    color = followContent
                 )
             }
         }
@@ -279,7 +290,7 @@ fun ActionButtonsRow(
             icon = if (isLiked) likeFilledIcon else likeIcon,
             text = FormatUtils.formatStat(info.stat.like.toLong()),
             isActive = isLiked,
-            activeColor = MaterialTheme.colorScheme.primary,
+            activeColor = AppContentColors.accent(),
             onClick = onLikeClick
         )
 
@@ -288,7 +299,7 @@ fun ActionButtonsRow(
             icon = coinIcon,
             text = FormatUtils.formatStat(info.stat.coin.toLong()),
             isActive = coinCount > 0,
-            activeColor = Color(0xFFFFB300),
+            activeColor = AppContentColors.accent(),
             onClick = onCoinClick
         )
 
@@ -297,7 +308,7 @@ fun ActionButtonsRow(
             icon = favoriteIcon,
             text = FormatUtils.formatStat(info.stat.favorite.toLong()),
             isActive = isFavorited,
-            activeColor = Color(0xFFFFC107),
+            activeColor = AppContentColors.accent(),
             onClick = onFavoriteClick
         )
 
@@ -308,11 +319,11 @@ fun ActionButtonsRow(
                 icon = likeFilledIcon,
                 text = "三连",
                 isActive = false,
-                activeColor = Color(0xFFE91E63),
+                activeColor = AppContentColors.accent(),
                 onClick = onTripleClick
             )
         }
-        
+
         //  [删除] 评论按钮已移除，因下方已有评论区入口
     }
 }
@@ -329,7 +340,7 @@ private fun BiliActionButton(
     // 按压动画
     val interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    
+
     val scale by androidx.compose.animation.core.animateFloatAsState(
         targetValue = if (isPressed) 0.9f else 1f,
         animationSpec = androidx.compose.animation.core.spring(
@@ -338,7 +349,7 @@ private fun BiliActionButton(
         ),
         label = "buttonScale"
     )
-    
+
     // 激活状态脉冲动画
     var shouldPulse by remember { mutableStateOf(false) }
     val pulseScale by androidx.compose.animation.core.animateFloatAsState(
@@ -350,14 +361,14 @@ private fun BiliActionButton(
         label = "pulseScale",
         finishedListener = { shouldPulse = false }
     )
-    
+
     LaunchedEffect(isActive) {
         if (isActive) shouldPulse = true
     }
-    
-    val iconColor = if (isActive) activeColor else MaterialTheme.colorScheme.onSurfaceVariant
-    val textColor = if (isActive) activeColor else MaterialTheme.colorScheme.onSurfaceVariant
-    
+
+    val iconColor = if (isActive) activeColor else AppContentColors.secondaryText()
+    val textColor = if (isActive) activeColor else AppContentColors.secondaryText()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -393,16 +404,16 @@ fun ActionButton(
     icon: ImageVector,
     text: String,
     isActive: Boolean = false,
-    iconColor: Color = MaterialTheme.colorScheme.onSurfaceVariant, //  新增颜色参数
+    iconColor: Color = AppContentColors.secondaryText(), //  新增颜色参数
     iconSize: androidx.compose.ui.unit.Dp = 24.dp,
     onClick: () -> Unit = {}
 ) {
-    val isDark = isSystemInDarkTheme()
-    
+    val isDark = com.android.purebilibili.core.ui.isAppInDarkTheme()
+
     //  按压动画状态
     val interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    
+
     val pressScale by androidx.compose.animation.core.animateFloatAsState(
         targetValue = if (isPressed) 0.85f else 1f,
         animationSpec = androidx.compose.animation.core.spring(
@@ -411,7 +422,7 @@ fun ActionButton(
         ),
         label = "pressScale"
     )
-    
+
     //  心跳脉冲动画 - 当 isActive 变为 true 时触发
     var shouldPulse by remember { mutableStateOf(false) }
     val pulseScale by androidx.compose.animation.core.animateFloatAsState(
@@ -423,14 +434,14 @@ fun ActionButton(
         label = "pulseScale",
         finishedListener = { shouldPulse = false }  // 动画结束后重置
     )
-    
+
     // 监听 isActive 变化
     LaunchedEffect(isActive) {
         if (isActive) {
             shouldPulse = true
         }
     }
-    
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -469,7 +480,7 @@ fun ActionButton(
         AppText(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
             maxLines = 1
         )
     }
@@ -495,7 +506,7 @@ fun DescriptionSection(desc: String) {
             AppText(
                 text = desc,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.9f),
+                color = AppContentColors.secondaryText(),
                 maxLines = if (expanded) Int.MAX_VALUE else 3,
                 overflow = TextOverflow.Ellipsis
             )
@@ -511,14 +522,14 @@ fun DescriptionSection(desc: String) {
                 ) {
                     AppText(
                         text = if (expanded) "收起" else "展开更多",
-                        color = MaterialTheme.colorScheme.primary,
+                        color = AppContentColors.accent(),
                         style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium)
                     )
                     Spacer(modifier = Modifier.width(2.dp))
                     AppIcon(
                         imageVector = if (expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = AppContentColors.accent(),
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -557,7 +568,7 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
     //  iOS 风格按压动画
     val interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    
+
     val scale by androidx.compose.animation.core.animateFloatAsState(
         targetValue = if (isPressed) 0.97f else 1f,
         animationSpec = androidx.compose.animation.core.spring(
@@ -566,7 +577,7 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
         ),
         label = "cardScale"
     )
-    
+
     AppSurface(
         modifier = Modifier
             .fillMaxWidth()
@@ -608,7 +619,7 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
                         .align(Alignment.BottomEnd)
                         .padding(6.dp),
                 )
-                
+
                 //  播放量遮罩
                 Box(
                     modifier = Modifier
@@ -621,7 +632,7 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
                             )
                         )
                 )
-                
+
                 // 播放量标签
                 Row(
                     modifier = Modifier
@@ -674,14 +685,14 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
                         AppText(
                             text = video.owner.name,
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                            color = AppContentColors.secondaryText(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-                    
+
                     Spacer(modifier = Modifier.height(4.dp))
-                    
+
                     //  [新增] 播放量 · 弹幕数
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -689,26 +700,26 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
                         AppIcon(
                             Icons.Outlined.PlayArrow,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            tint = AppContentColors.secondaryText().copy(alpha = 0.6f),
                             modifier = Modifier.size(12.dp)
                         )
                         Spacer(modifier = Modifier.width(2.dp))
                         AppText(
                             text = FormatUtils.formatStat(video.stat.view.toLong()),
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                            color = AppContentColors.secondaryText()
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         AppText(
                             text = "·",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                            color = AppContentColors.secondaryText().copy(alpha = 0.4f)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         AppText(
                             text = "${FormatUtils.formatStat(video.stat.danmaku.toLong())}弹幕",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                            color = AppContentColors.secondaryText()
                         )
                     }
                 }
@@ -717,161 +728,3 @@ fun RelatedVideoItem(video: RelatedVideo, onClick: () -> Unit) {
     }
 }
 
-
-
-//  [新增] 视频分P选择器 (支持展开/收起)
-@Composable
-fun PagesSelector(
-    pages: List<com.android.purebilibili.data.model.response.Page>,
-    currentPageIndex: Int,
-    onPageSelect: (Int) -> Unit
-) {
-    //  展开/收起状态
-    var isExpanded by remember { mutableStateOf(false) }
-    val selectedColors = resolveAdaptivePrimaryAccentColors(MaterialTheme.colorScheme)
-    
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .animateContentSize()
-            .padding(vertical = 8.dp)
-    ) {
-        // 标题行 + 展开按钮
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AppText(
-                    text = "选集",
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                AppText(
-                    text = "(${pages.size}P)",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                )
-            }
-            
-            //  展开/收起按钮
-            Row(
-                modifier = Modifier
-                    .clickable { isExpanded = !isExpanded }
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AppText(
-                    text = if (isExpanded) "收起" else "展开",
-                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                AppIcon(
-                    imageVector = if (isExpanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(12.dp))
-        
-        if (isExpanded) {
-            //  展开状态：垂直网格布局
-            val columns = 3  // 每行3个
-            val chunkedPages = pages.chunked(columns)
-            
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                chunkedPages.forEachIndexed { rowIndex, rowPages ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        rowPages.forEachIndexed { colIndex, page ->
-                            val actualIndex = rowIndex * columns + colIndex
-                            val isSelected = actualIndex == currentPageIndex
-                            
-                            AppSurface(
-                                onClick = { onPageSelect(actualIndex) },
-                                color = if (isSelected) selectedColors.backgroundColor else MaterialTheme.colorScheme.surfaceVariant,
-                                shape = AppShapes.container(ContainerLevel.Chip),
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                Column(
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 10.dp)
-                                ) {
-                                    AppText(
-                                        text = "P${page.page}",
-                                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                                        color = if (isSelected) selectedColors.contentColor else MaterialTheme.colorScheme.primary
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    AppText(
-                                        text = page.part.ifEmpty { "第${page.page}P" },
-                                        style = MaterialTheme.typography.bodySmall,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        color = if (isSelected) selectedColors.contentColor.copy(alpha = 0.9f) else MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                            }
-                        }
-                        // 填充空位
-                        repeat(columns - rowPages.size) {
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
-                    }
-                }
-            }
-        } else {
-            //  收起状态：横向滚动列表
-            androidx.compose.foundation.lazy.LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(pages.size, key = { index -> pages[index].cid }) { index ->
-                    val page = pages[index]
-                    val isSelected = index == currentPageIndex
-                    
-                    AppSurface(
-                        onClick = { onPageSelect(index) },
-                        color = if (isSelected) selectedColors.backgroundColor else MaterialTheme.colorScheme.surfaceVariant,
-                        shape = AppShapes.container(ContainerLevel.Chip),
-                        modifier = Modifier.width(120.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)
-                        ) {
-                            AppText(
-                                text = "P${page.page}",
-                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                                color = if (isSelected) selectedColors.contentColor else MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            AppText(
-                                text = page.part.ifEmpty { "第${page.page}P" },
-                                style = MaterialTheme.typography.bodySmall,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                color = if (isSelected) selectedColors.contentColor.copy(alpha = 0.9f) else MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}

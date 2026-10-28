@@ -1,11 +1,7 @@
 package com.android.purebilibili.feature.dynamic.components
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import com.android.purebilibili.core.ui.skeleton.skeletonBackground
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -35,46 +32,48 @@ import com.android.purebilibili.core.ui.ContainerLevel
 // 首屏骨架卡片数量（瀑布流两列时为 6 张）
 internal const val DYNAMIC_FEED_SKELETON_ITEM_COUNT = 6
 
-private const val DYNAMIC_SKELETON_PULSE_DURATION_MILLIS = 900
 
 /**
- * 动态 feed 首屏骨架卡（shimmer 脉冲），对齐 BiliPai 的 DynamicCardSkeleton：
+ * 动态 feed 首屏骨架卡（扫光），对齐 BiliPai 的 DynamicCardSkeleton：
  * 头像 + 双行文字 + 正文条 + 封面块 + 底部操作占位。
  *
  * 返回 [State] 而非裸 Float:调用方把 state 包进 provider 传给骨架卡,
  * 值只在 draw 阶段被 [drawBehind] 读取,骨架期间逐帧仅重绘、不触发重组。
  */
 @Composable
-internal fun rememberDynamicFeedSkeletonPulseState(): State<Float> {
-    if (com.android.purebilibili.core.ui.skeleton.rememberSkeletonBreathingEnabled()) {
-        return com.android.purebilibili.core.ui.skeleton.rememberGentleSkeletonPulse()
-    }
-    val transition = rememberInfiniteTransition(label = "dynamicFeedSkeletonPulse")
-    return transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = DYNAMIC_SKELETON_PULSE_DURATION_MILLIS,
-                easing = FastOutSlowInEasing
-            ),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "dynamicFeedSkeletonPulseAlpha"
-    )
-}
+internal fun rememberDynamicFeedSkeletonPulseState(): State<Float> =
+    com.android.purebilibili.core.ui.skeleton.rememberSkeletonSweepState()
 
+/**
+ * 动态 feed 首屏骨架卡，对齐 BiliPai 的 DynamicCardSkeleton：
+ * 头像 + 双行文字 + 正文条 + 封面块 + 底部操作占位。
+ *
+ * [blockColor] 传固定色时用固定色——骨架与真实卡片共用同一个瀑布流、靠 item 身份原地
+ * 替换时，运动中的灰块叠在卡片淡入之下，观感上就是「闪」；固定色只负责占位，切换时
+ * 只剩「卡片淡入」这一件事。留空则退回 [pulse] 驱动的扫光，供独立骨架列表使用。
+ */
 @Composable
 internal fun DynamicFeedSkeletonCard(
-    pulse: () -> Float,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    pulse: () -> Float = { Float.NaN },
+    blockColor: Color? = null,
 ) {
     val cardShape = AppShapes.container(ContainerLevel.Card)
     val textPlaceholderShape = AppShapes.container(ContainerLevel.Tag)
     val actionPlaceholderShape = AppShapes.container(ContainerLevel.Tag)
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
-    val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
-    val blockColor = { lerp(surfaceVariant, onSurfaceVariant.copy(alpha = 0.22f), pulse()) }
+    val onSurfaceVariant = AppContentColors.secondaryText()
+    // 传入固定色时用固定色（「骨架与真实卡片共用同一列表、靠 item 身份原地替换」的页面）；
+    // 否则使用扫光，供独立骨架列表使用。
+    val resolvedBlockColor: () -> Color = if (blockColor != null) {
+        { blockColor }
+    } else {
+        com.android.purebilibili.core.ui.skeleton.skeletonFill(
+            base = surfaceVariant,
+            highlight = lerp(surfaceVariant, onSurfaceVariant.copy(alpha = 0.22f), 0.7f),
+            position = pulse,
+        )
+    }
 
     Column(
         modifier = modifier
@@ -89,7 +88,7 @@ internal fun DynamicFeedSkeletonCard(
                 modifier = Modifier
                     .size(AppSpacingTokens.TripleExtraLarge)
                     .clip(CircleShape)
-                    .dynamicSkeletonBlockBackground(blockColor)
+                    .dynamicSkeletonBlockBackground(resolvedBlockColor)
             )
             Spacer(modifier = Modifier.width(AppSpacingTokens.Medium))
             Column {
@@ -98,7 +97,7 @@ internal fun DynamicFeedSkeletonCard(
                         .width(96.dp)
                         .height(AppSpacingTokens.Small + AppSpacingTokens.Micro)
                         .clip(textPlaceholderShape)
-                        .dynamicSkeletonBlockBackground(blockColor)
+                        .dynamicSkeletonBlockBackground(resolvedBlockColor)
                 )
                 Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall))
                 Box(
@@ -106,7 +105,7 @@ internal fun DynamicFeedSkeletonCard(
                         .width(64.dp)
                         .height(AppSpacingTokens.ExtraSmall)
                         .clip(textPlaceholderShape)
-                        .dynamicSkeletonBlockBackground(blockColor)
+                        .dynamicSkeletonBlockBackground(resolvedBlockColor)
                 )
             }
         }
@@ -118,7 +117,7 @@ internal fun DynamicFeedSkeletonCard(
                 .fillMaxWidth()
                 .height(AppSpacingTokens.Small + AppSpacingTokens.Micro)
                 .clip(textPlaceholderShape)
-                .dynamicSkeletonBlockBackground(blockColor)
+                .dynamicSkeletonBlockBackground(resolvedBlockColor)
         )
         Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall))
         Box(
@@ -126,7 +125,7 @@ internal fun DynamicFeedSkeletonCard(
                 .fillMaxWidth(0.72f)
                 .height(AppSpacingTokens.Small + AppSpacingTokens.Micro)
                 .clip(textPlaceholderShape)
-                .dynamicSkeletonBlockBackground(blockColor)
+                .dynamicSkeletonBlockBackground(resolvedBlockColor)
         )
 
         Spacer(modifier = Modifier.height(AppSpacingTokens.Medium))
@@ -136,7 +135,7 @@ internal fun DynamicFeedSkeletonCard(
                 .fillMaxWidth()
                 .aspectRatio(16f / 10f)
                 .clip(cardShape)
-                .dynamicSkeletonBlockBackground(blockColor)
+                .dynamicSkeletonBlockBackground(resolvedBlockColor)
         )
 
         Spacer(modifier = Modifier.height(AppSpacingTokens.Medium))
@@ -151,7 +150,7 @@ internal fun DynamicFeedSkeletonCard(
                         .weight(1f)
                         .height(AppSpacingTokens.DoubleExtraLarge + AppSpacingTokens.Micro)
                         .clip(actionPlaceholderShape)
-                        .dynamicSkeletonBlockBackground(blockColor)
+                        .dynamicSkeletonBlockBackground(resolvedBlockColor)
                 )
             }
         }
@@ -159,8 +158,7 @@ internal fun DynamicFeedSkeletonCard(
 }
 
 /**
- * 骨架块背景:脉冲色在 draw 阶段解析,逐帧仅触发本层重绘,不触发重组。
- * 与旧的 `background(lerp(...))` 合成结果一致。
+ * 骨架块背景:扫光在 draw 阶段解析,逐帧仅触发本层重绘,不触发重组。
  */
 private fun Modifier.dynamicSkeletonBlockBackground(color: () -> Color): Modifier =
-    drawBehind { drawRect(color()) }
+    skeletonBackground(color)

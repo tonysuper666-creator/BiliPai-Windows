@@ -3,6 +3,8 @@ package com.android.purebilibili.data.repository
 import android.content.Context
 import com.android.purebilibili.core.network.AppSignUtils
 import com.android.purebilibili.core.network.NetworkModule
+import com.android.purebilibili.core.network.AccountCookieSession
+import com.android.purebilibili.core.network.AccountCookieStore
 import com.android.purebilibili.core.store.AccountSessionStore
 import com.android.purebilibili.core.store.TokenManager
 import com.android.purebilibili.data.model.response.NavData
@@ -23,17 +25,20 @@ object SessionRepository {
         context: Context, sessData: String, csrf: String = "", buvid3: String = "",
         mid: Long = 0, accessToken: String = "", refreshToken: String = "",
         accessTokenPlatform: String = TokenManager.ACCESS_TOKEN_PLATFORM_TV,
+        cookies: Map<String, String> = emptyMap(),
     ) = withContext(Dispatchers.IO) {
         require(sessData.isNotBlank()) { "登录数据缺少 SESSDATA" }
-        TokenManager.saveCookies(context, sessData)
-        if (csrf.isNotBlank()) TokenManager.saveCsrf(context, csrf)
-        if (buvid3.isNotBlank()) TokenManager.saveBuvid3(context, buvid3)
-        if (mid > 0L) TokenManager.saveMid(context, mid)
-        if (accessToken.isNotBlank()) {
-            TokenManager.saveAccessToken(context, accessToken, refreshToken, accessTokenPlatform)
-        } else {
-            TokenManager.clearAccessToken(context)
-        }
+        val resolvedMid = mid.takeIf { it > 0L } ?: cookies["DedeUserID"]?.toLongOrNull() ?: 0L
+        val selectedBuvid = buvid3.ifBlank { cookies["buvid3"].orEmpty() }
+            .ifBlank { java.util.UUID.randomUUID().toString() + "infoc" }
+        val session = AccountCookieSession.from(sessData, csrf, resolvedMid, selectedBuvid)
+        AccountCookieStore.replace(context, session, cookies + session.seed)
+        NetworkModule.clearRuntimeCookies()
+        TokenManager.applyStoredSession(
+            context = context, sessData = sessData, csrf = csrf, mid = resolvedMid,
+            accessToken = accessToken, refreshToken = refreshToken,
+            accessTokenPlatform = accessTokenPlatform, buvid3 = selectedBuvid, isVip = false,
+        )
     }
 
     suspend fun signOut(context: Context) = withContext(Dispatchers.IO) {
@@ -50,24 +55,32 @@ object SessionRepository {
         val cookies = data.cookieInfo?.cookies.orEmpty().associate { it.name to it.value }
         NetworkModule.clearRuntimeCookies()
         save(context, cookies["SESSDATA"].orEmpty(), cookies["bili_jct"].orEmpty(),
-            cookies["buvid3"].orEmpty(), data.mid, data.accessToken, data.refreshToken)
+            cookies["buvid3"].orEmpty(), data.mid, data.accessToken, data.refreshToken,
+            accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID_HD, cookies = cookies)
         AccountSessionStore.upsertCurrentAccount(context)
     }
 }
 
 /** The polling lifecycle belongs to the caller so refresh/back cancels it immediately. */
 object QrLoginRepository {
-    suspend fun generate(): TvQrCodeResponse = NetworkModule.passportApi.generateTvQrCode(
-        AppSignUtils.signForTvLogin(mapOf(
-            "appkey" to AppSignUtils.TV_APP_KEY, "local_id" to "0",
-            "ts" to AppSignUtils.getTimestamp().toString(),
-        )),
+    suspend fun generate(): TvQrCodeResponse = NetworkModule.passportApi.generateHdQrCode(
+        buildHdQrLoginParams(authCode = null)
     )
 
-    suspend fun poll(authCode: String): TvPollResponse = NetworkModule.passportApi.pollTvQrCode(
-        AppSignUtils.signForTvLogin(mapOf(
-            "appkey" to AppSignUtils.TV_APP_KEY, "auth_code" to authCode, "local_id" to "0",
-            "ts" to AppSignUtils.getTimestamp().toString(),
-        )),
+    suspend fun poll(authCode: String): TvPollResponse = NetworkModule.passportApi.pollHdQrCode(
+        buildHdQrLoginParams(authCode)
     )
+}
+
+internal fun buildHdQrLoginParams(
+    authCode: String?, timestampSeconds: Long = AppSignUtils.getTimestamp()
+): Map<String, String> {
+    val params = mutableMapOf("local_id" to "0", "ts" to timestampSeconds.toString())
+    if (authCode == null) {
+        params["platform"] = "android"
+        params["mobi_app"] = "android_hd"
+    } else {
+        params["auth_code"] = authCode
+    }
+    return AppSignUtils.signForAndroidHdLogin(params)
 }

@@ -256,50 +256,6 @@ class VideoPlayerSectionPolicyTest {
         assertFalse(shouldIgnoreVideoPlayerHorizontalEdgeDragStart(20f, 1_000f, false, 48f))
     }
 
-    @Test
-    fun bottomGestureExclusion_includesExpandedProgressPreviewContainer() {
-        assertEquals(
-            186,
-            resolveVideoPlayerBottomGestureExclusionHeightDp(
-                controlBarBottomPaddingDp = 14,
-                progressSpacingDp = 10,
-                progressContainerHeightDp = 120,
-                controlRowHeightDp = 30,
-                extraBufferDp = 12
-            )
-        )
-    }
-
-    @Test
-    fun bottomGestureExclusion_allowsLandscapeCenterDragWhenProgressPreviewIsHidden() {
-        val visibleControlExclusionPx = resolveVideoPlayerBottomGestureExclusionHeightDp(
-            controlBarBottomPaddingDp = 14,
-            progressSpacingDp = 10,
-            progressContainerHeightDp = 40,
-            controlRowHeightDp = 40,
-            extraBufferDp = 12
-        ).toFloat()
-
-        assertFalse(
-            shouldIgnoreVideoPlayerDragStart(
-                offsetY = 210f,
-                containerHeightPx = 360f,
-                topGestureExclusionPx = 48f,
-                bottomGestureExclusionPx = visibleControlExclusionPx
-            )
-        )
-    }
-
-    @Test
-    fun bottomGestureExclusion_usesVisibleProgressHeightInVideoPlayerSection() {
-        val source = File("src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt")
-            .readText()
-
-        assertTrue(
-            source.contains("progressContainerHeightDp = videoProgressBarLayoutPolicy.baseHeightWithChapterDp"),
-            "Background drag exclusion should use the visible idle progress bar height; the expanded preview height is only visible while the progress bar itself is scrubbing."
-        )
-    }
 
     @Test
     fun dragStart_ignoresProgressPreviewZoneAboveBottomControls() {
@@ -527,59 +483,7 @@ class VideoPlayerSectionPolicyTest {
     }
 
     @Test
-    fun danmakuLayerTopOffset_keepsInlinePortraitDanmakuAnchoredToViewportTop() {
-        assertEquals(
-            0,
-            resolveDanmakuLayerTopOffsetPx(
-                isFullscreen = false,
-                statusBarHeightPx = 96
-            )
-        )
-        assertEquals(
-            0,
-            resolveDanmakuLayerTopOffsetPx(
-                isFullscreen = true,
-                statusBarHeightPx = 96,
-                useScreenTopSurface = false
-            )
-        )
-        assertEquals(
-            96,
-            resolveDanmakuLayerTopOffsetPx(
-                isFullscreen = true,
-                statusBarHeightPx = 96,
-                useScreenTopSurface = true
-            )
-        )
-    }
-
-    @Test
-    fun screenTopDanmakuSurface_onlyAppliesOutsideLandscapeFullscreen() {
-        assertTrue(
-            shouldUseScreenTopDanmakuSurface(
-                portraitDisplayAreaMode =
-                    com.android.purebilibili.core.store.PortraitDanmakuDisplayAreaMode.SCREEN_TOP,
-                isLandscapeFullscreen = false
-            )
-        )
-        assertFalse(
-            shouldUseScreenTopDanmakuSurface(
-                portraitDisplayAreaMode =
-                    com.android.purebilibili.core.store.PortraitDanmakuDisplayAreaMode.SCREEN_TOP,
-                isLandscapeFullscreen = true
-            )
-        )
-        assertFalse(
-            shouldUseScreenTopDanmakuSurface(
-                portraitDisplayAreaMode =
-                    com.android.purebilibili.core.store.PortraitDanmakuDisplayAreaMode.VIDEO_VIEWPORT,
-                isLandscapeFullscreen = false
-            )
-        )
-    }
-
-    @Test
-    fun danmakuSettingsScope_keepsPortraitProfileDuringPortraitFullscreenTransition() {
+    fun danmakuSettingsScope_usesFullscreenFontProfileForBothFullscreenRoutes() {
         assertEquals(
             com.android.purebilibili.core.store.DanmakuSettingsScope.LANDSCAPE,
             resolveVideoPlayerDanmakuSettingsScope(
@@ -588,7 +492,7 @@ class VideoPlayerSectionPolicyTest {
             )
         )
         assertEquals(
-            com.android.purebilibili.core.store.DanmakuSettingsScope.PORTRAIT,
+            com.android.purebilibili.core.store.DanmakuSettingsScope.LANDSCAPE,
             resolveVideoPlayerDanmakuSettingsScope(
                 isFullscreen = true,
                 isPortraitFullscreen = true
@@ -599,6 +503,13 @@ class VideoPlayerSectionPolicyTest {
             resolveVideoPlayerDanmakuSettingsScope(
                 isFullscreen = false,
                 isPortraitFullscreen = false
+            )
+        )
+        assertEquals(
+            com.android.purebilibili.core.store.DanmakuSettingsScope.LANDSCAPE,
+            resolveVideoPlayerDanmakuSettingsScope(
+                isFullscreen = false,
+                isPortraitFullscreen = true
             )
         )
     }
@@ -1619,6 +1530,16 @@ class VideoPlayerSectionPolicyTest {
                 density = density
             )
         )
+        assertEquals(
+            204,
+            resolveSubtitleBottomOffsetPx(
+                isFullscreen = false,
+                controlsVisible = true,
+                navigationInsetPx = 96,
+                bottomControlsHeightPx = 180,
+                density = density,
+            ),
+        )
     }
 
     @Test
@@ -1644,25 +1565,6 @@ class VideoPlayerSectionPolicyTest {
     }
 
     @Test
-    fun longPressSpeedFeedback_usesLightweightTextAndNoDefaultLockInstruction() {
-        val source = loadVideoPlayerSectionSource()
-
-        assertTrue(source.contains("\"倍速播放中 ${'$'}{effectiveLongPressSpeed}x\""))
-        assertFalse(source.contains("拖至上下区域锁定"))
-        assertFalse(source.contains("rememberInfiniteTransition(label = \"fast_forward\")"))
-    }
-
-    @Test
-    fun longPressSpeedLockHint_usesNonModalPromptActions() {
-        val source = loadVideoPlayerSectionSource()
-
-        assertTrue(source.contains("需要长按锁定倍速吗？"))
-        assertTrue(source.contains("开启锁定"))
-        assertTrue(source.contains("不再提示"))
-        assertFalse(source.contains("AlertDialog"))
-    }
-
-    @Test
     fun longPressSpeedLockHint_waitsUntilAccelerationEnds() {
         assertFalse(
             shouldShowLongPressSpeedLockHint(
@@ -1678,16 +1580,6 @@ class VideoPlayerSectionPolicyTest {
                 isInPipMode = false,
             )
         )
-    }
-
-    @Test
-    fun longPressSpeedLockHint_dismissActionEndsCurrentLongPressSpeed() {
-        val source = loadVideoPlayerSectionSource()
-        val dismissAction = source
-            .substringAfter("TextButton(\n                            onClick = {\n                                showLongPressSpeedLockHint = false")
-            .substringBefore("Text(\"不再提示\")")
-
-        assertTrue(dismissAction.contains("finishLongPressSpeedGesture(gestureEnded = true)"))
     }
 
     @Test
@@ -2001,28 +1893,6 @@ class VideoPlayerSectionPolicyTest {
     }
 
     @Test
-    fun tapAfterLongPressSpeedRelease_doesNotToggleControls() {
-        assertFalse(
-            shouldToggleControlsForVideoTap(
-                longPressSpeedEndedAtMs = 1_000L,
-                nowMs = 1_120L
-            )
-        )
-        assertTrue(
-            shouldToggleControlsForVideoTap(
-                longPressSpeedEndedAtMs = 1_000L,
-                nowMs = 1_700L
-            )
-        )
-        assertTrue(
-            shouldToggleControlsForVideoTap(
-                longPressSpeedEndedAtMs = 0L,
-                nowMs = 1_120L
-            )
-        )
-    }
-
-    @Test
     fun longPressSpeedGesture_disabledWhenScreenLockedOrVideoScaled() {
         assertFalse(
             shouldEnableLongPressSpeedGesture(
@@ -2250,5 +2120,112 @@ class VideoPlayerSectionPolicyTest {
 
         assertFalse(spec.coverUsesSharedBounds)
         assertFalse(spec.showManualStartPlayButton)
+    }
+
+    @Test
+    fun `swipe hint fraction follows trigger direction and clamps to threshold`() {
+        // 非全屏上滑(负距离)推进进度;下滑钳为 0。
+        assertEquals(
+            0.5f,
+            resolveSwipeToFullscreenHintFraction(
+                isFullscreen = false,
+                reverseGesture = false,
+                totalDragDistanceY = -25f,
+                thresholdPx = 50f,
+            ),
+        )
+        assertEquals(
+            0f,
+            resolveSwipeToFullscreenHintFraction(
+                isFullscreen = false,
+                reverseGesture = false,
+                totalDragDistanceY = 25f,
+                thresholdPx = 50f,
+            ),
+        )
+        // 全屏退出路径方向相反:下滑推进,上滑钳为 0。
+        assertEquals(
+            1f,
+            resolveSwipeToFullscreenHintFraction(
+                isFullscreen = true,
+                reverseGesture = false,
+                totalDragDistanceY = 80f,
+                thresholdPx = 50f,
+            ),
+        )
+        assertEquals(
+            0f,
+            resolveSwipeToFullscreenHintFraction(
+                isFullscreen = true,
+                reverseGesture = false,
+                totalDragDistanceY = -80f,
+                thresholdPx = 50f,
+            ),
+        )
+        // reverseGesture 翻转有效方向。
+        assertEquals(
+            1f,
+            resolveSwipeToFullscreenHintFraction(
+                isFullscreen = false,
+                reverseGesture = true,
+                totalDragDistanceY = 60f,
+                thresholdPx = 50f,
+            ),
+        )
+        assertEquals(
+            0f,
+            resolveSwipeToFullscreenHintFraction(
+                isFullscreen = false,
+                reverseGesture = true,
+                totalDragDistanceY = -60f,
+                thresholdPx = 0f,
+            ),
+        )
+    }
+
+    @Test
+    fun `portrait fullscreen exit triggers inline surface rebind only on transition`() {
+        // 进入竖屏全屏与全屏期间不触发；退出瞬间(上一帧全屏、当前帧内联)才触发。
+        assertTrue(
+            shouldRebindInlineSurfaceAfterPortraitFullscreenExit(
+                wasPortraitFullscreen = true,
+                isPortraitFullscreen = false,
+                shouldBindInlinePlayerView = true,
+                hasPlayerView = true,
+            )
+        )
+        assertFalse(
+            shouldRebindInlineSurfaceAfterPortraitFullscreenExit(
+                wasPortraitFullscreen = false,
+                isPortraitFullscreen = false,
+                shouldBindInlinePlayerView = true,
+                hasPlayerView = true,
+            )
+        )
+        assertFalse(
+            shouldRebindInlineSurfaceAfterPortraitFullscreenExit(
+                wasPortraitFullscreen = true,
+                isPortraitFullscreen = true,
+                shouldBindInlinePlayerView = true,
+                hasPlayerView = true,
+            )
+        )
+        // 内联未接入播放(全屏期间)或 view 已卸载时不重绑。
+        assertFalse(
+            shouldRebindInlineSurfaceAfterPortraitFullscreenExit(
+                wasPortraitFullscreen = true,
+                isPortraitFullscreen = false,
+                shouldBindInlinePlayerView = false,
+                hasPlayerView = true,
+            )
+        )
+        assertFalse(
+            shouldRebindInlineSurfaceAfterPortraitFullscreenExit(
+                wasPortraitFullscreen = true,
+                isPortraitFullscreen = false,
+                shouldBindInlinePlayerView = true,
+                hasPlayerView = false,
+            )
+        )
     }
 }

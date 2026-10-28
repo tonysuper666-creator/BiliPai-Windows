@@ -46,6 +46,7 @@ internal sealed interface DynamicOpusLinkCardAction {
     data class OpenLive(val roomId: Long) : DynamicOpusLinkCardAction
     data class OpenUser(val mid: Long) : DynamicOpusLinkCardAction
     data class OpenBangumi(val seasonId: Long, val epId: Long) : DynamicOpusLinkCardAction
+    data class OpenMatch(val contestId: Long) : DynamicOpusLinkCardAction
     data class OpenExternalUrl(val url: String) : DynamicOpusLinkCardAction
     data object None : DynamicOpusLinkCardAction
 }
@@ -337,6 +338,7 @@ internal fun resolveDynamicOpusLinkCardAction(card: OpusLinkCard): DynamicOpusLi
             seasonId = 0L,
             epId = target.epId
         )
+        is BilibiliNavigationTarget.Match -> DynamicOpusLinkCardAction.OpenMatch(target.contestId)
         is BilibiliNavigationTarget.Music,
         is BilibiliNavigationTarget.Search,
         is BilibiliNavigationTarget.PopularFeed,
@@ -349,7 +351,8 @@ internal fun resolveDynamicOpusLinkCardAction(card: OpusLinkCard): DynamicOpusLi
  * 对于合集/系列/番剧等非独立 UP 主发布的动态，避免将虚拟 ID / 赛季 ID 误当作个人 UID 打开个人空间导致“获取用户信息失败”报错。
  */
 internal fun resolveDynamicAuthorClickMid(item: DynamicItem): Long? {
-    val target = item.orig ?: item
+    // Resolve the author of this rendered header, not the forwarded content's author.
+    val target = item
     val type = target.type.trim()
     val major = target.modules.module_dynamic?.major
 

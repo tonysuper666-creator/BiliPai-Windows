@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.video.ui.section
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -145,7 +147,7 @@ fun VideoNoteCard(
                 AppText(
                     text = resolveNoteSubtitle(noteState, isLoggedIn),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = if (defaultCollapsed) 1 else 2,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -172,7 +174,7 @@ fun VideoNoteCard(
                 AppText(
                     text = noteState.feedbackMessage,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppContentColors.accent(),
                 )
             }
             if (!noteState.errorMessage.isNullOrBlank()) {
@@ -180,7 +182,7 @@ fun VideoNoteCard(
                 AppText(
                     text = noteState.errorMessage,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = AppContentColors.error(),
                 )
             }
 
@@ -229,7 +231,7 @@ fun VideoNoteCard(
                 AppText(
                     text = "公开笔记 ${noteState.publicNoteCount} 篇",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 val visibleNotes = if (defaultCollapsed) {
@@ -437,7 +439,7 @@ fun VideoNoteEditorSheet(
                 Spacer(modifier = Modifier.height(8.dp))
                 AppText(
                     text = noteState.errorMessage,
-                    color = MaterialTheme.colorScheme.error,
+                    color = AppContentColors.error(),
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -450,7 +452,7 @@ fun VideoNoteEditorSheet(
                 AppText(
                     text = "$charCount 字",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.weight(1f)
                 )
                 VideoDetailSecondaryButton(
@@ -600,7 +602,7 @@ internal fun VideoNoteSidePanel(
             AppText(
                 text = "$charCount 字 · 支持 B 站官方笔记样式",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
         }
     }
@@ -613,12 +615,13 @@ private fun VideoNotePanelTab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val nativeNavigation = com.android.purebilibili.core.ui.AppInteractionColors.nativeNavigation()
     Box(
         modifier = modifier
             .heightIn(min = 36.dp)
             .clip(VideoDetailShapes.field())
             .background(
-                if (selected) MaterialTheme.colorScheme.primaryContainer
+                if (selected) nativeNavigation?.selectedContainer ?: MaterialTheme.colorScheme.primaryContainer
                 else Color.Transparent
             )
             .clickable(onClick = onClick),
@@ -627,8 +630,8 @@ private fun VideoNotePanelTab(
         AppText(
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer
-            else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (selected) nativeNavigation?.selectedContent ?: MaterialTheme.colorScheme.onPrimaryContainer
+            else AppContentColors.secondaryText(),
         )
     }
 }
@@ -648,14 +651,14 @@ private fun VideoNoteTimestampList(
         AppText(
             text = "点击跳转到对应进度",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
         )
         Spacer(modifier = Modifier.height(8.dp))
         if (timestamps.isEmpty()) {
             AppText(
                 text = "播放中点工具栏的时钟按钮，可在光标处插入当前时间点。",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -701,7 +704,7 @@ internal fun VideoNotePreviewPane(
             AppText(
                 text = "实时预览",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
             Spacer(modifier = Modifier.height(6.dp))
             BasicRichText(state = richTextState)
@@ -790,8 +793,8 @@ internal fun VideoNoteEditorToolbar(
                 AppIcon(
                     Icons.Outlined.FormatColorFill,
                     contentDescription = "高亮",
-                    tint = if (isHighlighted) MaterialTheme.colorScheme.onPrimary
-                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = if (isHighlighted) AppContentColors.onAccent()
+                    else AppContentColors.secondaryText(),
                 )
             }
         )
@@ -802,8 +805,8 @@ internal fun VideoNoteEditorToolbar(
                 AppIcon(
                     Icons.Outlined.FormatListBulleted,
                     contentDescription = "无序列表",
-                    tint = if (isBulletList) MaterialTheme.colorScheme.onPrimary
-                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = if (isBulletList) AppContentColors.onAccent()
+                    else AppContentColors.secondaryText(),
                 )
             }
         )
@@ -855,7 +858,7 @@ internal fun VideoNoteToolbarToggle(
             .size(40.dp)
             .clip(VideoDetailShapes.field())
             .background(
-                if (active) MaterialTheme.colorScheme.primary
+                if (active) AppContentColors.accent()
                 else Color.Transparent
             )
             .clickable(onClick = onClick),
@@ -935,7 +938,7 @@ private fun PublicNoteListRow(
                 AppText(
                     text = note.authorName.ifBlank { "B站用户" },
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.clickable(onClick = onAuthorClick),
                 )
                 noteLevelBadgeRes(note)?.let { badgeRes ->
@@ -954,7 +957,7 @@ private fun PublicNoteListRow(
                 AppText(
                     text = note.pubtime,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                 )
             }
             if (note.summary.isNotBlank()) {
@@ -970,7 +973,7 @@ private fun PublicNoteListRow(
             AppText(
                 text = "查看全部",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.accent(),
             )
         }
     }
@@ -982,13 +985,13 @@ private fun IconBox() {
         modifier = Modifier
             .size(36.dp)
             .clip(VideoDetailShapes.leadingIcon())
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+            .background(AppContentColors.accent().copy(alpha = 0.12f)),
         contentAlignment = Alignment.Center,
     ) {
         AppIcon(
             imageVector = Icons.Outlined.BookmarkBorder,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = AppContentColors.accent(),
             modifier = Modifier.size(18.dp),
         )
     }

@@ -75,17 +75,35 @@ object BilibiliUrlParser {
      * @return 解析结果
      */
     fun parse(input: String): ParseResult {
+        val inputUri = runCatching { URI(input.trim()) }.getOrNull()
+        if (inputUri?.scheme?.lowercase() in listOf("http", "https") && !isBilibiliWebHost(inputUri?.host)) return ParseResult()
         if (input.isBlank()) return ParseResult()
         
+        // URL 的来源/追踪参数可能携带当前视频 ID，只从明确的视频路径识别视频。
+        // 无 scheme 的分享文本仍保留原有 ID 提取行为。
+        val videoInput = if (inputUri?.scheme != null) {
+            val path = inputUri.path.orEmpty()
+            when {
+                inputUri.scheme.lowercase() in listOf("bilibili", "bili") &&
+                    inputUri.host.equals("video", ignoreCase = true) -> path
+                isBilibiliShortHost(inputUri.host) -> path
+                isBilibiliHost(inputUri.host) &&
+                    path.startsWith("/video/", ignoreCase = true) -> path
+                else -> ""
+            }
+        } else {
+            input.substringBefore('?').substringBefore('#')
+        }
+
         // 首先尝试直接匹配 BV 号
-        BV_REGEX.find(input)?.let { match ->
+        BV_REGEX.find(videoInput)?.let { match ->
             val normalizedBvid = "BV${match.groupValues[1]}"
             Logger.d(TAG, "Found BV: $normalizedBvid")
             return ParseResult(bvid = normalizedBvid, isValid = true)
         }
         
         // 尝试匹配 AV 号
-        AV_REGEX.find(input)?.let { match ->
+        AV_REGEX.find(videoInput)?.let { match ->
             val aid = match.groupValues[1].toLongOrNull()
             if (aid != null) {
                 Logger.d(TAG, "Found AV: $aid")
@@ -94,7 +112,7 @@ object BilibiliUrlParser {
         }
 
         // 尝试匹配 /video/{aid} 结构
-        VIDEO_AID_PATH_REGEX.find(input)?.let { match ->
+        VIDEO_AID_PATH_REGEX.find(videoInput)?.let { match ->
             val aid = match.groupValues[1].toLongOrNull()
             if (aid != null) {
                 resolveLikelyDynamicResult(aid, source = "video path")?.let { return it }
@@ -103,7 +121,7 @@ object BilibiliUrlParser {
             }
         }
 
-        resolveDynamicId(input)?.let { dynamicId ->
+        resolveDynamicId(inputUri?.takeIf { it.scheme != null }?.let { "${it.scheme}://${it.host}${it.path.orEmpty()}" } ?: input)?.let { dynamicId ->
             Logger.d(TAG, "Found dynamic ID: $dynamicId")
             return ParseResult(dynamicId = dynamicId, isValid = true)
         }
@@ -125,7 +143,7 @@ object BilibiliUrlParser {
         if (rawUri.isBlank()) return ParseResult()
 
         val javaUri = runCatching { URI(rawUri) }.getOrNull()
-        val host = javaUri?.host ?: ""
+        val host = javaUri?.host?.lowercase()?.trimEnd('.') ?: ""
         val path = javaUri?.path ?: ""
         val scheme = javaUri?.scheme?.lowercase() ?: ""
         val pathSegments = path.split("/").filter { it.isNotEmpty() }
@@ -137,16 +155,17 @@ object BilibiliUrlParser {
             return parseCustomSchemeUri(rawUri)
         }
         
+        if (scheme !in listOf("http", "https") || !isBilibiliWebHost(host)) return ParseResult()
+
         // b23.tv 短链接需要特殊处理
-        if (host.contains("b23.tv")) {
-            // 短链接优先尝试路径；失败时回退全量 URI，避免 query/fragment 携带视频 ID 被漏掉。
-            val pathResult = parse(path)
-            return if (pathResult.isValid) pathResult else parse(rawUri)
+        if (isBilibiliShortHost(host)) {
+            // 仅识别短链路径中的视频 ID，追踪参数不代表短链目标。
+            return parse(rawUri)
         }
         
         // bilibili.com 链接
-        if (host.contains("bilibili.com")) {
-            val pathResult = parse(path)
+        if (isBilibiliHost(host)) {
+            val pathResult = parse(rawUri)
             if (pathResult.isValid) return pathResult
             resolveAidFromVideoPath(
                 pathSegments = pathSegments,
@@ -293,7 +312,7 @@ object BilibiliUrlParser {
     private fun parseCustomSchemeUri(rawUri: String): ParseResult {
         val javaUri = runCatching { URI(rawUri) }.getOrNull()
         val scheme = javaUri?.scheme?.lowercase() ?: ""
-        val host = javaUri?.host ?: ""
+        val host = javaUri?.host?.lowercase()?.trimEnd('.') ?: ""
         val pathSegments = javaUri?.path
             ?.split("/")
             ?.filter { it.isNotEmpty() }
@@ -389,6 +408,7 @@ object BilibiliUrlParser {
         return kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
             try {
                 // 保留浏览器 UA，最多跟随三跳 b23.tv 重定向。
+                if (!isBilibiliShortHost(runCatching { URI(shortUrl).host }.getOrNull())) return@withContext null
                 var current = shortUrl
                 var hop = 0
                 while (hop < SHORT_LINK_MAX_HOPS) {
@@ -413,7 +433,7 @@ object BilibiliUrlParser {
                     })?.trimEnd('/') ?: return@withContext null
 
                     Logger.d(TAG, "Short URL redirected to: $redirectUrl")
-                    if (redirectUrl.contains("b23.tv", ignoreCase = true)) {
+                    if (isBilibiliShortHost(runCatching { URI(redirectUrl).host }.getOrNull())) {
                         current = redirectUrl
                         continue
                     }

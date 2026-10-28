@@ -30,7 +30,8 @@ private data class DanmakuSegmentCacheKey(
  * 发送/点赞/举报/云同步/直播 WebSocket 等账号向操作仍在端侧 DanmakuRepository。
  */
 object DanmakuContentRepository {
-    private val api = NetworkModule.api
+    // Cache eviction must not initialize Retrofit/OkHttp when no danmaku was loaded yet.
+    private val api get() = NetworkModule.api
 
     const val DANMAKU_SEGMENT_DURATION_MS = 360_000L
     private const val DANMAKU_SEGMENT_SAFE_FALLBACK_COUNT = 3
@@ -60,6 +61,15 @@ object DanmakuContentRepository {
             danmakuSegmentCacheBytes = 0L
         }
         android.util.Log.d("DanmakuRepo", "Danmaku cache cleared")
+    }
+
+    /** Evict only a segment whose bytes failed protocol parsing. */
+    fun invalidateDanmakuSegment(cid: Long, segmentIndex: Int) {
+        synchronized(danmakuSegmentCache) {
+            danmakuSegmentCache.remove(DanmakuSegmentCacheKey(cid, segmentIndex))?.let {
+                danmakuSegmentCacheBytes -= it.size.toLong()
+            }
+        }
     }
 
     fun getDanmakuCacheStats(): DanmakuCacheStats {
@@ -194,7 +204,8 @@ object DanmakuContentRepository {
             android.util.Log.w("DanmakuRepo", "Segment $segmentIndex failed: ${e.message}")
             return@withContext null
         }
-        if (bytes.isEmpty()) return@withContext null
+        // A successful empty protobuf body is a valid segment with no comments.
+        // Reserve null for fetch failures so playback can retry those segments.
 
         val entrySize = bytes.size.toLong()
         if (entrySize <= MAX_SEGMENT_CACHE_BYTES) {

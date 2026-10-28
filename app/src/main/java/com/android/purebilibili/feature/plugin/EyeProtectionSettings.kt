@@ -1,4 +1,10 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 package com.android.purebilibili.feature.plugin
+
+import com.android.purebilibili.core.plugin.BuiltinPluginIds
+
+import com.android.purebilibili.core.ui.AppContentColors
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -62,9 +68,7 @@ internal fun EyeProtectionSettings(
     var uiConfig by remember { mutableStateOf(plugin.snapshotConfig()) }
     val isActive by plugin.isNightModeActive.collectAsStateWithLifecycle()
     val usageMinutes by plugin.usageMinutesFlow.collectAsStateWithLifecycle()
-    val pluginEnabled = PluginManager.plugins.any {
-        it.plugin.id == EYE_PROTECTION_PLUGIN_ID && it.enabled
-    }
+    val pluginEnabled = PluginManager.isEnabled(BuiltinPluginIds.EYE_PROTECTION)
 
     LaunchedEffect(Unit) {
         plugin.loadConfigSuspend()
@@ -285,7 +289,7 @@ internal fun EyeProtectionSettings(
             text = "关怀强度",
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary
+            color = AppContentColors.accent()
         )
         AppText(
             text = presetDescription(uiConfig.carePreset),
@@ -318,7 +322,7 @@ internal fun EyeProtectionSettings(
             text = "显示调节",
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
+            color = AppContentColors.accent(),
             modifier = Modifier.padding(bottom = 4.dp)
         )
         AppText(
@@ -371,7 +375,7 @@ internal fun EyeProtectionSettings(
             AppIcon(
                 imageVector = Icons.Outlined.FavoriteBorder,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.error,
+                tint = AppContentColors.error(),
                 modifier = Modifier.size(16.dp)
             )
             AppText(
@@ -390,7 +394,7 @@ private fun EyeProtectionStatusCard(status: EyeProtectionStatusCopy) {
     } else {
         AppSurfaceTokens.cardContainer()
     }
-    val content = MaterialTheme.colorScheme.onSurface
+    val content = AppContentColors.primaryText()
     AppSurface(
         modifier = Modifier.fillMaxWidth(),
         shape = AppShapes.container(ContainerLevel.Card),
@@ -404,7 +408,7 @@ private fun EyeProtectionStatusCard(status: EyeProtectionStatusCopy) {
             AppIcon(
                 imageVector = if (status.isActive) Icons.Outlined.DarkMode else Icons.Outlined.AutoAwesome,
                 contentDescription = null,
-                tint = if (status.isActive) content else MaterialTheme.colorScheme.primary,
+                tint = if (status.isActive) content else AppContentColors.accent(),
                 modifier = Modifier.size(22.dp)
             )
             Column(modifier = Modifier.weight(1f)) {
@@ -481,7 +485,7 @@ private fun SliderRow(
             AppIcon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = AppContentColors.accent(),
                 modifier = Modifier.size(22.dp)
             )
             Spacer(modifier = Modifier.padding(horizontal = 6.dp))
@@ -510,7 +514,39 @@ private fun TimePickerDropdown(
     label: String
 ) {
     var expanded by remember { mutableStateOf(false) }
-    Box(modifier = modifier.fillMaxWidth()) {
+    if (com.android.purebilibili.core.theme.LocalAppUiStyle.current == com.android.purebilibili.core.theme.AppUiStyle.MATERIAL3) {
+        AppOutlinedButton(onClick = { expanded = true }, modifier = modifier.fillMaxWidth()) {
+            AppText("$label：${formatClockHour(selectedHour)}")
+        }
+        if (expanded) {
+            val timeState = androidx.compose.material3.rememberTimePickerState(
+                initialHour = selectedHour,
+                initialMinute = 0,
+                is24Hour = true,
+            )
+            androidx.compose.material3.AlertDialog(
+                onDismissRequest = { expanded = false },
+                title = { AppText(label) },
+                text = {
+                    Column {
+                        androidx.compose.material3.TimeInput(state = timeState)
+                        AppText("当前定时按整点保存，分钟请保持 00。")
+                    }
+                },
+                confirmButton = {
+                    com.android.purebilibili.core.ui.components.AppTextButton(
+                        enabled = timeState.minute == 0,
+                        onClick = { onHourSelected(timeState.hour); expanded = false },
+                    ) { AppText("确定") }
+                },
+                dismissButton = {
+                    com.android.purebilibili.core.ui.components.AppTextButton(onClick = { expanded = false }) { AppText("取消") }
+                },
+            )
+        }
+        return
+    }
+    com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(modifier = modifier.fillMaxWidth(), onOpen = { expanded = true }) {
         AppOutlinedButton(
             onClick = { expanded = true },
             modifier = Modifier
@@ -548,12 +584,13 @@ private fun TimePickerDropdown(
             (0..23).forEach { hour ->
                 AppDropdownMenuItem(
                     text = { AppText(formatClockHour(hour)) },
+                    selected = hour == selectedHour,
                     trailingIcon = {
                         if (hour == selectedHour) {
                             AppText(
                                 text = "当前",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.primary
+                                color = AppContentColors.accent()
                             )
                         }
                     },

@@ -1,0 +1,38 @@
+# drop declarations upstream core-data now owns: DanmakuCacheStats, DanmakuSegmentCacheKey; the download cache key becomes a private desktop class
+--- a/media/com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt
++++ b/media/com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt
+@@ -16,15 +16,10 @@
+ import kotlinx.coroutines.sync.withPermit
+ import kotlinx.coroutines.withContext
+ 
+-data class DanmakuCacheStats(
+-    val rawEntryCount: Int,
+-    val segmentEntryCount: Int,
+-    val totalBytes: Long
+-)
+ 
+ private data class DanmakuRawCacheKey(val cid: Long, val authorization: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt)
+ 
+-private data class DanmakuSegmentCacheKey(
++private data class DesktopDownloadDanmakuSegmentCacheKey(
+     val cid: Long,
+     val segmentIndex: Int,
+     val authorization: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt
+@@ -51,7 +46,7 @@
+ 
+     // Protobuf 弹幕分段缓存
+     private val danmakuSegmentCache =
+-        LinkedHashMap<DanmakuSegmentCacheKey, ByteArray>(12, 0.75f, true)
++        LinkedHashMap<DesktopDownloadDanmakuSegmentCacheKey, ByteArray>(12, 0.75f, true)
+     private const val MAX_SEGMENT_CACHE_COUNT = 12
+     private const val MAX_SEGMENT_CACHE_BYTES = 12L * 1024 * 1024
+     private const val MAX_SEGMENT_PARALLELISM = 3
+@@ -207,7 +202,7 @@
+     ): ByteArray? = withContext(Dispatchers.IO) {
+         require(segmentIndex >= 1) { "segmentIndex must be one-based" }
+         val binding = com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding()
+-        val cacheKey = DanmakuSegmentCacheKey(cid, segmentIndex, binding.cacheReceipt)
++        val cacheKey = DesktopDownloadDanmakuSegmentCacheKey(cid, segmentIndex, binding.cacheReceipt)
+         val cached = binding.admit { synchronized(danmakuSegmentCache) { danmakuSegmentCache[cacheKey] } }
+         if (cached != null) return@withContext cached
+ 

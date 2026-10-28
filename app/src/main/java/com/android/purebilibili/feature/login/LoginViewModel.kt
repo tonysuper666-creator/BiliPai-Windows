@@ -161,15 +161,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                                 Logger.d("LoginDebug", " 成功提取 SESSDATA")
                                 Logger.d("LoginDebug", " 成功提取 bili_jct=${biliJct.isNotEmpty()}")
 
-                                // 保存并更新缓存
-                                TokenManager.saveCookies(getApplication(), sessData)
-                                //  保存 CSRF Token (持久化)
-                                if (biliJct.isNotEmpty()) {
-                                    TokenManager.saveCsrf(getApplication(), biliJct)
-                                }
-
+                                val cookieValues = cookies.mapNotNull { line ->
+                                    line.substringBefore(';').split('=', limit = 2)
+                                        .takeIf { it.size == 2 }?.let { it[0].trim() to it[1] }
+                                }.toMap()
                                 isPolling = false
-                                finishLogin("qrcode_web", hasHighQualityCredential = false)
+                                completeLogin(
+                                    sessData = sessData, csrf = biliJct,
+                                    buvid3 = cookieValues["buvid3"].orEmpty(),
+                                    source = "qrcode_web", cookies = cookieValues,
+                                )
                             } else {
                                 _state.value = LoginState.Error("Cookie 解析失败")
                             }
@@ -193,7 +194,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                             Logger.d("LoginDebug", "等待扫描...")
                         }
                     }
+                } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                    throw cancelled
                 } catch (e: Exception) {
+                    if (!isPolling) _state.value = LoginState.Error(e.message ?: "登录态校验失败")
                     com.android.purebilibili.core.util.Logger.e("LoginDebug", "轮询异常", e)
                 }
             }
@@ -446,7 +450,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     handleLoginResponse(
                         response = response,
                         source = "phone",
-                        accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID
+                        accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID_HD
                     )
                 } else {
                     _state.value = LoginState.Error(
@@ -527,7 +531,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         handleLoginResponse(
                             response = response,
                             source = "password",
-                            accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID
+                            accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID_HD
                         )
                     }
                 } else if (body?.code == CAPTCHA_RETRY_CODE && restartCaptchaFrom(body.data?.url.orEmpty())) {
@@ -728,7 +732,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     handleLoginResponse(
                         response = tokenResponse,
                         source = "password_risk",
-                        accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID,
+                        accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID_HD,
                     )
                 } else {
                     _state.value = LoginState.Error(
@@ -816,7 +820,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         val cookies = response.headers().values("Set-Cookie")
-            .flatMap { it.split(";") }
+            .map { it.substringBefore(';') }
             .mapNotNull { item ->
                 item.trim().takeIf { it.contains('=') }?.let {
                     it.substringBefore('=') to it.substringAfter('=')
@@ -839,7 +843,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 accessToken = body.data?.tokenInfo?.accessToken.orEmpty(),
                 refreshToken = body.data?.tokenInfo?.refreshToken.orEmpty(),
                 accessTokenPlatform = accessTokenPlatform,
-                source = source
+                source = source,
+                cookies = cookies,
             )
         } else {
             val riskHint = body.data?.message?.takeIf { it.isNotBlank() }
@@ -850,14 +855,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private suspend fun finishLogin(source: String, hasHighQualityCredential: Boolean) {
+    private suspend fun finishLogin(source: String) {
         syncCurrentAccountSession()
         withContext(Dispatchers.Main.immediate) {
-            _state.value = if (hasHighQualityCredential) {
-                LoginState.Success
-            } else {
-                LoginState.HighQualityAuthorization
-            }
+            _state.value = LoginState.Success
             com.android.purebilibili.core.util.AnalyticsHelper.logLogin(source)
             com.android.purebilibili.core.util.AnalyticsHelper.syncUserContext(
                 mid = TokenManager.midCache,
@@ -865,6 +866,20 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 privacyModeEnabled = com.android.purebilibili.core.store.SettingsManager
                     .isPrivacyModeEnabledSync(getApplication())
             )
+        }
+    }
+
+    /** Finish the already imported session using the same post-login flow as other methods. */
+    fun completeTransferredLogin() {
+        viewModelScope.launch {
+            _state.value = LoginState.Loading
+            try {
+                finishLogin("bilipai_transfer")
+            } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                _state.value = LoginState.Error(error.message ?: "账号已导入，完成登录失败，请重试")
+            }
         }
     }
 
@@ -880,14 +895,15 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         accessToken: String = "",
         refreshToken: String = "",
         accessTokenPlatform: String = TokenManager.ACCESS_TOKEN_PLATFORM_TV,
-        source: String
+        source: String,
+        cookies: Map<String, String> = emptyMap(),
     ) {
         com.android.purebilibili.data.repository.SessionRepository.save(
             context = getApplication(), sessData = sessData, csrf = csrf, buvid3 = buvid3,
             mid = mid, accessToken = accessToken, refreshToken = refreshToken,
-            accessTokenPlatform = accessTokenPlatform,
+            accessTokenPlatform = accessTokenPlatform, cookies = cookies,
         )
-        finishLogin(source, hasHighQualityCredential = accessToken.isNotBlank())
+        finishLogin(source)
     }
 
     fun loginByCookie(rawCookieHeader: String) {
@@ -913,7 +929,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     csrf = importedCookies.csrf.orEmpty(),
                     buvid3 = importedCookies.buvid3.orEmpty(),
                     mid = navData.mid,
-                    source = "cookie_import"
+                    source = "cookie_import",
+                    cookies = importedCookies.values,
                 )
             } catch (e: Exception) {
                 com.android.purebilibili.core.util.Logger.e("LoginDebug", "Cookie 验证失败", e)
@@ -924,17 +941,18 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private suspend fun syncCurrentAccountSession() {
         NetworkModule.clearRuntimeCookies()
-        val navData = runCatching {
-            NetworkModule.api.getNavInfo().data
-        }.getOrNull()
-
-        if (navData != null && navData.isLogin && navData.mid > 0L) {
-            TokenManager.saveMid(getApplication(), navData.mid)
-            TokenManager.saveVipStatus(navData.vip.status == 1)
-            AccountSessionStore.upsertCurrentAccount(getApplication(), navData)
-        } else {
-            AccountSessionStore.upsertCurrentAccount(getApplication())
+        val response = NetworkModule.api.getNavInfo()
+        val navData = response.data
+        check(response.code == 0 && navData != null && navData.isLogin && navData.mid > 0L) {
+            "登录态校验失败，请重新登录"
         }
+        TokenManager.saveMid(getApplication(), navData.mid)
+        com.android.purebilibili.core.network.AccountCookieStore.update(
+            getApplication(), com.android.purebilibili.core.network.AccountCookieSession.main(),
+            mapOf("DedeUserID" to navData.mid.toString()),
+        )
+        TokenManager.saveVipStatus(navData.vip.status == 1)
+        AccountSessionStore.upsertCurrentAccount(getApplication(), navData)
     }
     
     /**
@@ -1022,6 +1040,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                                     isTvPolling = false
                                     return@launch
                                 }
+                                isTvPolling = false
                                 completeLogin(
                                     sessData = sessData,
                                     csrf = cookies["bili_jct"].orEmpty(),
@@ -1029,9 +1048,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                                     mid = data.mid,
                                     accessToken = data.accessToken,
                                     refreshToken = data.refreshToken,
-                                    source = "qrcode_tv"
+                                    source = "qrcode_tv",
+                                    accessTokenPlatform = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID_HD,
+                                    cookies = cookies,
                                 )
-                                isTvPolling = false
                             } else {
                                 _state.value = LoginState.Error("登录数据解析失败")
                             }
@@ -1058,7 +1078,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                             Logger.d("TvLogin", "未知状态: ${response.code} - ${response.message}")
                         }
                     }
+                } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                    throw cancelled
                 } catch (e: Exception) {
+                    if (!isTvPolling) _state.value = LoginState.Error(e.message ?: "登录态校验失败")
                     com.android.purebilibili.core.util.Logger.e("TvLogin", "TV 轮询异常", e)
                 }
             }

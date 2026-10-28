@@ -1,6 +1,5 @@
 package com.android.purebilibili.feature.audio.lyrics.halcyon
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.AnimatedVisibility
@@ -54,6 +53,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.purebilibili.core.ui.motion.AppMotionEasing
 import kotlin.math.abs
 import kotlin.math.hypot
 import kotlinx.coroutines.delay
@@ -219,7 +219,7 @@ internal fun AppleMusicLyricLine(
     // Read inside graphicsLayer instead so the transition only invalidates the layer.
     val scale = animateFloatAsState(
         targetValue = if (active) 1f else 0.91f,
-        animationSpec = tween(durationMillis = 140, easing = FastOutSlowInEasing),
+        animationSpec = tween(durationMillis = 140, easing = AppMotionEasing.M1Standard),
         label = "appleLyricsScale"
     )
     val lineAlpha = animateFloatAsState(
@@ -227,7 +227,7 @@ internal fun AppleMusicLyricLine(
             active || paused -> 1f
             else -> (0.24f - abs(distance) * 0.025f).coerceAtLeast(0.13f)
         },
-        animationSpec = tween(durationMillis = 120, easing = FastOutSlowInEasing),
+        animationSpec = tween(durationMillis = 120, easing = AppMotionEasing.M1Standard),
         label = "appleLyricsAlpha"
     )
     val primaryStyle = TextStyle(
@@ -527,7 +527,7 @@ internal fun Modifier.appleMusicTouchRipple(
                             progress.snapTo(0f)
                             progress.animateTo(
                                 targetValue = 1f,
-                                animationSpec = tween(durationMillis = 420, easing = FastOutSlowInEasing)
+                                animationSpec = tween(durationMillis = 420, easing = AppMotionEasing.M1Standard)
                             )
                         }
                     }
@@ -550,7 +550,7 @@ internal fun Modifier.appleMusicTouchRipple(
                     progress.snapTo(0f)
                     progress.animateTo(
                         targetValue = 1f,
-                        animationSpec = tween(durationMillis = 420, easing = FastOutSlowInEasing)
+                        animationSpec = tween(durationMillis = 420, easing = AppMotionEasing.M1Standard)
                     )
                 }
             }

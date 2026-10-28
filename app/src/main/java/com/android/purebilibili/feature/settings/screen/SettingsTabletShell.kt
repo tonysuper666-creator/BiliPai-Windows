@@ -1,6 +1,12 @@
 package com.android.purebilibili.feature.settings.screen
 
+import com.android.purebilibili.feature.settings.SettingsFunctionIcon
+import com.android.purebilibili.core.theme.LocalAppUiStyle
+import com.android.purebilibili.core.theme.AppUiStyle
+import com.android.purebilibili.core.ui.AppContentColors
+
 import android.os.Build
+import com.android.purebilibili.core.ui.globalWallpaperAwareBackground
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,7 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
@@ -45,8 +51,7 @@ import com.android.purebilibili.core.ui.blur.unifiedBlur
 import com.android.purebilibili.core.ui.rememberAppBackIcon
 import com.android.purebilibili.feature.home.components.BiliPaiImmersiveTopBar
 import com.android.purebilibili.feature.home.components.shouldUseBiliPaiProgressiveTopBlur
-import top.yukonga.miuix.kmp.blur.layerBackdrop
-import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
+import com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource
 import com.android.purebilibili.core.util.AppFoldPosture
 import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
 import com.android.purebilibili.core.util.LocalWindowSizeClass
@@ -54,10 +59,12 @@ import com.android.purebilibili.feature.settings.SettingsHomeSearchEntry
 import com.android.purebilibili.feature.settings.SettingsRootCategory
 import com.android.purebilibili.feature.settings.canonicalSettingsRootCategory
 import com.android.purebilibili.feature.settings.rememberSettingsEntryVisual
+import com.android.purebilibili.feature.settings.rememberSettingsSiblingIconTints
 import com.android.purebilibili.feature.settings.resolveSettingsRootCategoryOrder
-import com.android.purebilibili.feature.settings.resolveSettingsSiblingIconTints
 import com.android.purebilibili.feature.settings.resolveSettingsTabletLayoutPolicy
 import com.android.purebilibili.feature.settings.resolveSettingsVisualSpec
+import com.android.purebilibili.feature.settings.subtitleResource
+import com.android.purebilibili.feature.settings.titleResource
 import com.android.purebilibili.feature.settings.shouldRenderSettingsTabletDetailPane
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
@@ -87,16 +94,14 @@ fun SettingsTabletShell(
         selectedCategory = selectedCategory,
         isSearchActive = isSearchActive,
     )
-    val categoryIconTints = remember(categories.size) {
-        resolveSettingsSiblingIconTints(categories.size)
-    }
+    val categoryIconTints = rememberSettingsSiblingIconTints(categories.size)
     val useThreePaneLayout =
         LocalWindowSizeClass.current.shouldUseThreePaneLayout && selectedCategory != null
     val emptyDetailPane: @Composable () -> Unit = {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(AppSurfaceTokens.groupedListContainer())
+                .globalWallpaperAwareBackground(AppSurfaceTokens.groupedListContainer())
                 .padding(layoutPolicy.detailPanePaddingDp.dp),
             contentAlignment = Alignment.Center,
         ) {
@@ -112,7 +117,7 @@ fun SettingsTabletShell(
                 AppText(
                     text = "从左侧选择一个分类以查看和修改设置",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                 )
             }
         }
@@ -121,7 +126,7 @@ fun SettingsTabletShell(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(AppSurfaceTokens.groupedListContainer())
+                .globalWallpaperAwareBackground(AppSurfaceTokens.groupedListContainer())
                 .padding(horizontal = layoutPolicy.detailPanePaddingDp.dp),
         ) {
             rightPane()
@@ -138,7 +143,7 @@ fun SettingsTabletShell(
             modifier = Modifier
                 .preferredWidth(layoutPolicy.primaryRatio)
                 .fillMaxHeight()
-                .background(AppSurfaceTokens.groupedListContainer()),
+                .globalWallpaperAwareBackground(AppSurfaceTokens.groupedListContainer()),
         ) {
                 val config = LocalAppThemeConfig.current
                 val progressive = shouldUseBiliPaiProgressiveTopBlur(
@@ -146,7 +151,8 @@ fun SettingsTabletShell(
                     hasBackdrop = true,
                 ) && !isLowBlurBudgetForced()
                 val fadeActive = config.progressiveTopFadeEnabled && !config.headerBlurEnabled
-                val tabletChromeBackdrop = if (progressive) rememberLayerBackdrop() else null
+                val tabletChromeSource = if (progressive) rememberChromeBackdropSource() else null
+                val tabletChromeBackdrop = tabletChromeSource?.takeIf { it.isReady }?.backdrop
                 val tabletHazeState = if (
                     config.headerBlurEnabled && !progressive &&
                         shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)
@@ -192,14 +198,8 @@ fun SettingsTabletShell(
                 }
                 Column(
                     modifier = Modifier
-                    .weight(1f)
-                    .then(
-                            if (tabletChromeBackdrop != null) {
-                                Modifier.layerBackdrop(tabletChromeBackdrop)
-                            } else {
-                                Modifier
-                            }
-                        )
+                        .weight(1f)
+                        .then(tabletChromeSource?.modifier ?: Modifier)
                         .then(if (tabletHazeReady) Modifier.hazeSourceCompat(requireNotNull(tabletHazeState)) else Modifier)
                         .padding(horizontal = layoutPolicy.masterPanePaddingDp.dp),
                 ) {
@@ -217,11 +217,11 @@ fun SettingsTabletShell(
                             AppNavigationDrawerItem(
                                 label = {
                                     Column {
-                                        AppText(category.title, fontWeight = FontWeight.Medium)
+                                        AppText(stringResource(category.titleResource()), fontWeight = FontWeight.Medium)
                                         AppText(
-                                            text = category.subtitle,
+                                            text = stringResource(category.subtitleResource()),
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            color = AppContentColors.secondaryText(),
                                             maxLines = 2,
                                         )
                                     }
@@ -233,7 +233,13 @@ fun SettingsTabletShell(
                                     }
                                 },
                                 icon = {
-                                    Box(
+                                    if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                                        SettingsFunctionIcon(
+                                            title = category.title,
+                                            imageVector = visual.icon,
+                                            painter = visual.iconResId?.let { androidx.compose.ui.res.painterResource(it) },
+                                        )
+                                    } else Box(
                                         modifier = Modifier
                                             .size(resolveSettingsVisualSpec().categoryIconBubbleSize)
                                             .clip(AppShapes.container(ContainerLevel.Field))
@@ -262,19 +268,21 @@ fun SettingsTabletShell(
             modifier = Modifier
                 .preferredWidth(0.35f)
                 .fillMaxSize()
-                .background(AppSurfaceTokens.groupedListContainer())
+                .globalWallpaperAwareBackground(AppSurfaceTokens.groupedListContainer())
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             AppText(
-                text = selectedCategory?.title ?: stringResource(R.string.settings_title),
+                text = selectedCategory?.let { stringResource(it.titleResource()) }
+                    ?: stringResource(R.string.settings_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
             )
             AppText(
-                text = selectedCategory?.subtitle ?: "选择左侧分类以查看设置",
+                text = selectedCategory?.let { stringResource(it.subtitleResource()) }
+                    ?: stringResource(R.string.settings_category_select_hint),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
         }
     }

@@ -77,7 +77,8 @@ data class SessionItem(
     val is_intercept: Int = 0,
     val live_status: Int = 0,          // 是否正在直播
     val account_info: SessionAccountInfo? = null,  // 用户信息
-    val biz: Int = 0
+    val biz: Int = 0,
+    @kotlinx.serialization.Transient val identity_key: String = "",
 )
 
 @Serializable
@@ -193,6 +194,7 @@ data class MessageHistoryResponse(
 data class MessageHistoryData(
     val messages: List<PrivateMessageItem>? = null,
     val has_more: Int = 0,
+    @Serializable(with = MessageHistoryCursorSerializer::class)
     val min_seqno: Long = 0,
     val max_seqno: Long = 0,
     val e_infos: List<EmoteInfo>? = null  // 表情信息

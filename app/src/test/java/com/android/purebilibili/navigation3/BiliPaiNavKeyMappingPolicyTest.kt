@@ -8,6 +8,24 @@ import kotlin.test.assertNotEquals
 
 class BiliPaiNavKeyMappingPolicyTest {
     @Test
+    fun liveMatchesRestoreIntoNativeScheduleDestination() {
+        assertEquals(ScreenRoutes.LiveMatch.route, BiliPaiNavKey.LiveMatch.toLegacyRoute())
+        assertEquals(BiliPaiNavKey.LiveMatch, legacyRouteToBiliPaiNavKey("live_match"))
+        assertEquals(BiliPaiNavEntryContentRole.LIVE_MATCH, resolveBiliPaiNavEntryContentRole(BiliPaiNavKey.LiveMatch))
+    }
+
+    @Test
+    fun audioCollectionKeysPreserveSourceAndTitleAcrossRouteRestoration() {
+        for (key in listOf(
+            BiliPaiNavKey.AudioMode(collectionMediaId = 42L, collectionTitle = "默认收藏夹 + 100% & 音乐"),
+            BiliPaiNavKey.AudioMode(collectionSeasonId = 81L, collectionTitle = "专辑"),
+        )) {
+            assertEquals(key, legacyRouteToBiliPaiNavKey(key.toLegacyRoute()))
+            assertEquals(BiliPaiNavEntryContentRole.AUDIO_MODE, resolveBiliPaiNavEntryContentRole(key))
+        }
+    }
+
+    @Test
     fun weeklySeriesKeysPreservePeriodAcrossRouteRestoration() {
         for (key in listOf(BiliPaiNavKey.WeeklySeries(), BiliPaiNavKey.WeeklySeries(133))) {
             assertEquals(key, legacyRouteToBiliPaiNavKey(key.toLegacyRoute()))
@@ -24,6 +42,7 @@ class BiliPaiNavKeyMappingPolicyTest {
                 "Compose",
                 com.android.purebilibili.data.model.response.FavoriteSearchScope.ALL_VIDEO_FOLDERS,
             ),
+            BiliPaiNavKey.FavoriteSearch(query = "教程 + 合集", subscribed = true),
             BiliPaiNavKey.WatchLaterSearch("稍后"),
         )
 

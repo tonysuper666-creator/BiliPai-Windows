@@ -1,6 +1,6 @@
 package com.android.purebilibili.feature.login
 
-import com.android.purebilibili.core.plugin.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapability
 import com.android.purebilibili.core.plugin.js.BiliPaiJsPluginManifest
 import kotlinx.serialization.json.Json
 import kotlin.test.Test

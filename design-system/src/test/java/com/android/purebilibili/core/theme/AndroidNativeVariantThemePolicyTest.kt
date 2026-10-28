@@ -7,26 +7,25 @@ import androidx.compose.ui.unit.dp
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNotSame
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class AndroidNativeVariantThemePolicyTest {
 
     @Test
-    fun miuix_alwaysUsesBiliMiuixTypographyRegardlessOfLiquidGlass() {
-        assertSame(BiliMiuixTypography, resolveMaterialTypography(AppUiStyle.MIUIX, false))
-        assertSame(BiliMiuixTypography, resolveMaterialTypography(AppUiStyle.MIUIX, true))
+    fun bothVariantsUseStandardTypographyRegardlessOfLiquidGlass() {
+        assertSame(Md3Typography, resolveMaterialTypography(AppUiStyle.MIUIX, false))
+        assertSame(Md3Typography, resolveMaterialTypography(AppUiStyle.MIUIX, true))
         assertSame(Md3Typography, resolveMaterialTypography(AppUiStyle.MATERIAL3, false))
         assertSame(Md3Typography, resolveMaterialTypography(AppUiStyle.MATERIAL3, true))
     }
 
     @Test
-    fun miuixVariant_usesFullMiuixTypography() {
+    fun miuixVariant_usesStandardTypography() {
         val typography = resolveMaterialTypography(AppUiStyle.MIUIX)
 
-        assertSame(BiliMiuixTypography, typography)
-        assertNotSame(Md3Typography, typography)
+        assertSame(Md3Typography, typography)
+        assertSame(Md3Typography, typography)
     }
 
     @Test
@@ -56,11 +55,10 @@ class AndroidNativeVariantThemePolicyTest {
     }
 
     @Test
-    fun material3Variant_usesExpressiveMotionScheme() {
+    fun material3Variant_usesStandardMotionScheme() {
         val motionScheme = resolveMaterialMotionScheme(AppUiStyle.MATERIAL3)
 
-        assertSame(MotionScheme.expressive(), motionScheme)
-        assertNotSame(MotionScheme.standard(), motionScheme)
+        assertSame(MotionScheme.standard(), motionScheme)
     }
 
     @Test

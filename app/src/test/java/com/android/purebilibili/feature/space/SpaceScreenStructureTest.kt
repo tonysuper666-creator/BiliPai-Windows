@@ -19,17 +19,23 @@ class SpaceScreenStructureTest {
     }
 
     @Test
-    fun `title and tabs share one measured chrome while full viewport content supplies blur`() {
+    fun `progressive blur keeps full viewport capture while disabled mode pins content tabs`() {
         val source = loadSource("app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt")
         val chrome = source.substringAfter("topBar = {").substringBefore(") { scaffoldPadding ->")
-        assertTrue(chrome.contains("SpacePinnedTabs("))
-        assertTrue(chrome.indexOf("AppTopBar(") < chrome.indexOf("SpacePinnedTabs("))
+        assertFalse(chrome.contains("SpaceContentTabs("))
+        assertTrue(source.contains("shouldPinSpaceContentTabs(spaceThemeConfig.progressiveTopBlurEnabled)"))
+        assertTrue(source.contains("if (pinContentTabs) {"))
+        assertFalse(source.contains("stickyHeader("))
+        assertTrue(source.contains("item(key = \"space_tabs\", span = StaggeredGridItemSpan.FullLine)"))
+        assertTrue(source.contains("shouldShowSpacePinnedTabs("))
+        assertTrue(source.contains("if (tabsPinned) {"))
+        assertTrue(source.contains("pinnedTabsContent()"))
+        assertTrue(source.contains("fusionEnabled = !collapseAsUnit"))
         assertFalse(chrome.contains("spaceChromeSource?.modifier"))
         val capture = source.indexOf(".then(spaceChromeSource?.modifier ?: Modifier)")
         val content = source.indexOf("SpaceContent(")
         assertTrue(capture >= 0 && capture < content)
         assertTrue(source.substring(capture, content).contains("globalWallpaperAwareBackground"))
-        assertFalse(source.contains(".padding(top = chromeTopInset)"))
         assertFalse(source.contains("pinnedTabHeight"))
         assertTrue(source.contains("chromeTopInset = scaffoldPadding.calculateTopPadding()"))
     }
@@ -171,28 +177,6 @@ class SpaceScreenStructureTest {
         assertFalse(source.contains("SpaceContributionVideoActions("))
     }
 
-    @Test
-    fun `secondary contribution switch returns to native tab row component`() {
-        val source = loadSource("app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt")
-        val secondaryRow = source
-            .substringAfter("private fun SpaceSecondarySwitchRow(")
-            .substringBefore("private fun SpaceMainTabRow(")
-
-        assertTrue(source.contains("SpaceSecondarySwitchRow("))
-        assertFalse(secondaryRow.contains("BottomBarLiquidSegmentedControl("))
-        assertFalse(secondaryRow.contains("if (liquidGlassEnabled)"))
-        assertFalse(secondaryRow.contains("LocalAppThemeConfig.current.liquidGlassEnabled"))
-        assertFalse(secondaryRow.contains("AppFilterChip("))
-        assertTrue(secondaryRow.contains("AppNativeTabRow("))
-        assertTrue(secondaryRow.contains("minTabWidth = resolveSpaceSecondarySwitchNonGlassMinTabWidthDp().dp"))
-        assertTrue(secondaryRow.contains("shouldScrollSpaceSecondarySwitchForNonGlass(items.size)"))
-        assertTrue(secondaryRow.contains("resolveSpaceSecondarySwitchNonGlassMinTabWidthDp()"))
-        assertTrue(secondaryRow.contains("MiuixNonGlassTabItemWidthMode.CONTENT"))
-        assertTrue(secondaryRow.contains("contentSizedMiuixNonGlassItems = true"))
-        assertTrue(secondaryRow.contains("allowLabelOverflow = true"))
-        assertFalse(secondaryRow.contains("getHomeSettings("))
-        assertFalse(source.contains("rememberTextMeasurer()"))
-    }
 
     @Test
     fun `space media library uses card semantic corners`() {
@@ -309,7 +293,7 @@ class SpaceScreenStructureTest {
         assertTrue(header.contains("resolveSpaceBannerMetrics("))
         assertFalse(header.contains("LocalConfiguration.current"))
         assertTrue(header.contains(".widthIn(max = 480.dp)"))
-        assertTrue(dynamicItems.contains("span = { GridItemSpan(1) }"))
+        assertTrue(dynamicItems.contains("span = { StaggeredGridItemSpan.SingleLane }"))
         assertTrue(source.contains("modifier = boundedListModifier"))
     }
 

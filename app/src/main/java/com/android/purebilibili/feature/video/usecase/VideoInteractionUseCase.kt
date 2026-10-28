@@ -145,10 +145,10 @@ class VideoInteractionUseCase {
     /**
      * Triple action (like + coin + favorite)
      */
-    suspend fun doTripleAction(aid: Long): Result<TripleActionResult> {
-        Logger.d(TAG, "doTripleAction: aid=$aid")
+    suspend fun doTripleAction(aid: Long, coinCount: Int = 2): Result<TripleActionResult> {
+        Logger.d(TAG, "doTripleAction: aid=$aid, coinCount=$coinCount")
         
-        return ActionRepository.tripleAction(aid).map { repoResult ->
+        return ActionRepository.tripleAction(aid, coinCount).map { repoResult ->
             TripleActionResult(
                 likeSuccess = repoResult.likeSuccess,
                 coinSuccess = repoResult.coinSuccess,

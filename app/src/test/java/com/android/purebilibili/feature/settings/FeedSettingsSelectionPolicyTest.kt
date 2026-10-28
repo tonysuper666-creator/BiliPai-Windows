@@ -14,9 +14,9 @@ class FeedSettingsSelectionPolicyTest {
 
         assertEquals(SettingsManager.FeedApiType.entries.size, options.size)
         assertEquals(SettingsManager.FeedApiType.WEB, options[0].value)
-        assertEquals("网页端 (Web)", options[0].label)
+        assertEquals("网页端", options[0].label)
         assertEquals(SettingsManager.FeedApiType.MOBILE, options[1].value)
-        assertEquals("移动端 (App)", options[1].label)
+        assertEquals("手机端", options[1].label)
     }
 
     @Test

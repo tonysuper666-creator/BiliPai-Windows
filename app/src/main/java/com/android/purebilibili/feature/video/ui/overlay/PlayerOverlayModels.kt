@@ -142,6 +142,17 @@ internal fun resolvePlaybackDebugRows(
     return candidates.filter { it.value.isNotBlank() }
 }
 
+/** Cheap visibility projection; does not build formatted diagnostic rows or sections. */
+internal fun resolvePlaybackInsightLevel(info: PlaybackDebugInfo): PlaybackInsightLevel {
+    val decoder = info.videoDecoder.lowercase(Locale.ROOT)
+    return when {
+        (info.droppedFrames.toIntOrNull() ?: 0) > 0 || decoder.contains("software") ||
+            decoder.contains("omx.google") || decoder.contains("c2.android") -> PlaybackInsightLevel.ATTENTION
+        info == PlaybackDebugInfo() -> PlaybackInsightLevel.UNAVAILABLE
+        else -> PlaybackInsightLevel.LIVE
+    }
+}
+
 internal fun resolvePlaybackInsightPresentation(
     info: PlaybackDebugInfo
 ): PlaybackInsightPresentation {

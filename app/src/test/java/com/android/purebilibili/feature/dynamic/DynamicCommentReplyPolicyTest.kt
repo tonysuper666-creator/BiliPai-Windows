@@ -85,10 +85,7 @@ class DynamicCommentReplyPolicyTest {
         assertEquals("12条回复", resolveDynamicCommentCountLabel(12))
         assertEquals("1.2万条回复", resolveDynamicCommentCountLabel(12_000))
         assertEquals("还没有评论", resolveDynamicCommentEmptyLabel())
-        assertEquals("发一条友善的评论", resolveDynamicCommentComposerHint())
-        assertEquals("回复 @小明", resolveDynamicCommentComposerHint("小明"))
-        assertEquals("评论内容", resolveDynamicCommentImeSubmission("  评论内容  "))
-        assertEquals(null, resolveDynamicCommentImeSubmission("   "))
+        assertEquals("发一条友善的评论", DYNAMIC_COMMENT_ROOT_INPUT_HINT)
     }
 
     @Test

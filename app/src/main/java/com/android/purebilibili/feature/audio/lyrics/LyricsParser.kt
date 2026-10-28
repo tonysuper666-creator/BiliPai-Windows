@@ -59,7 +59,7 @@ internal fun parseSplLyrics(
                 romanization = romanizationMap[raw.startTimeMs]
                     ?.firstOrNull()
                     ?.takeIf {
-                        needsPhoneticAnnotation(it) && !isPseudoSecondaryLine(raw.text, it)
+                        needsPhoneticAnnotation(raw.text) && !isPseudoSecondaryLine(raw.text, it)
                     },
                 spans = raw.spans
                     .filter { span -> span.startTimeMs < endTime }

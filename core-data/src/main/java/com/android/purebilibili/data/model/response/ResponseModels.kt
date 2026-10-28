@@ -66,7 +66,9 @@ data class ReplyData(
     @SerialName("vote_card")
     val voteCard: ReplyVoteCard? = null,
     @SerialName("grpc_next_offset")
-    val grpcNextOffset: String = ""
+    val grpcNextOffset: String = "",
+    // 手机主评论的分页来源与游标；楼中楼继续使用 grpcNextOffset。
+    val mainListContinuation: CommentMainListContinuation? = null
 ) {
     //  统一获取总评论数
     fun getAllCount(): Int = when {
@@ -353,7 +355,13 @@ data class ReplyFansDetail(
     val masterStatus: Int = 0,
     @Serializable(with = FlexibleIntSerializer::class)
     @SerialName("is_receive")
-    val isReceive: Int = 0
+    val isReceive: Int = 0,
+    @Serializable(with = FlexibleLongSerializer::class)
+    @SerialName("medal_color")
+    val medalColor: Long = 0,
+    @Serializable(with = FlexibleLongSerializer::class)
+    @SerialName("medal_color_name")
+    val medalColorName: Long = 0,
 )
 
 @Serializable
@@ -711,5 +719,8 @@ data class ReplyControl(
     // [新增] 翻译开关 (0=未指定, 1=不支持, 2=显示翻译, 3=显示原文)
     @Serializable(with = FlexibleIntSerializer::class)
     @SerialName("translation_switch")
-    val translationSwitch: Int = 0
+    val translationSwitch: Int = 0,
+    // [新增] 充电专属评论描述，非空即为充电专属评论
+    @SerialName("charged_desc")
+    val chargedDesc: String = ""
 )

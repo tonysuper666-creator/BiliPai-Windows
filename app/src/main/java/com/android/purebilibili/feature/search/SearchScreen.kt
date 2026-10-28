@@ -1,6 +1,18 @@
 // 文件路径: feature/search/SearchScreen.kt
 package com.android.purebilibili.feature.search
 
+import com.android.purebilibili.feature.home.resolveIsVerticalForNavigation
+import com.android.purebilibili.navigation.tabSelectedPage
+import com.android.purebilibili.navigation.tabIndicatorPosition
+import com.android.purebilibili.feature.home.effectiveGridColumnCount
+import com.android.purebilibili.feature.home.effectiveGridColumnCountCompact
+import com.android.purebilibili.feature.home.gridColumnPinchEnabled
+import com.android.purebilibili.core.ui.components.resolveAppCountedTabLabel
+import com.android.purebilibili.core.ui.components.appCountedTabOption
+import com.android.purebilibili.core.ui.AppContentColors
+
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.drawscope.clipRect
 import com.android.purebilibili.core.util.HtmlEntityUtils
 import com.android.purebilibili.core.ui.LocalAppThemeConfig
 import com.android.purebilibili.core.ui.components.resolveVideoListColumns
@@ -16,7 +28,10 @@ import com.android.purebilibili.core.ui.components.AppDropdownMenuItem
 import com.android.purebilibili.core.ui.components.AppFilterChip
 import com.android.purebilibili.core.ui.components.AppHorizontalDivider
 import com.android.purebilibili.core.ui.components.AppIcon
+import com.android.purebilibili.core.ui.components.appElasticPress
 import com.android.purebilibili.core.ui.components.AppIconButton
+import com.android.purebilibili.core.ui.components.AppIconButtonDefaults
+import com.android.purebilibili.core.ui.components.LocalAppTopBarIconDecorationEnabled
 import com.android.purebilibili.core.ui.components.AppInputChip
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppTab
@@ -24,11 +39,16 @@ import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.core.ui.components.KeepScrollableTabSelectionVisible
 import com.android.purebilibili.core.ui.components.liquidDockViewport
-import com.android.purebilibili.core.ui.common.verticalPriorityHorizontalPagerSwipe
 import com.android.purebilibili.navigation.animatePagerSelection
 import com.android.purebilibili.core.util.BilibiliNavigationTarget
+import com.android.purebilibili.data.model.response.MatchContestInfo
+import com.android.purebilibili.data.model.response.MatchContestTeam
+import com.android.purebilibili.data.model.response.resolveMatchContestLogoUrl
 import com.android.purebilibili.navigation.SearchSubmitAction
 import com.android.purebilibili.navigation.resolveSearchSubmitAction
+import com.android.purebilibili.core.store.CommonListHeaderCollapseMode
+import com.android.purebilibili.feature.list.resolveCommonListHeaderOffsetAfterContentScroll
+import com.android.purebilibili.feature.list.resolveCommonListHeaderOffsetForSettledContent
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -51,28 +71,28 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import com.android.purebilibili.feature.home.rememberFeedGridColumnPreference
 import com.android.purebilibili.feature.home.homeFeedPinchZoom
 import com.android.purebilibili.feature.home.resolveHomeFeedPinchColumnBounds
 import com.android.purebilibili.feature.home.GridPinchColumnHudPill
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import com.android.purebilibili.core.ui.components.appActionClickable
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.pager.HorizontalPager
+import com.android.purebilibili.core.ui.components.AppHorizontalPager as HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import com.android.purebilibili.core.ui.components.AppLazyVerticalStaggeredGrid as LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -114,7 +134,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.animation.core.animate
 import androidx.compose.ui.geometry.Offset
 import kotlinx.coroutines.Job
@@ -129,13 +148,11 @@ import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.theme.LocalAppUiStyle
 import com.android.purebilibili.core.theme.AppUiStyle
 import com.android.purebilibili.core.ui.components.AppSegmentOption
-import com.android.purebilibili.core.ui.renderer.material3.AppTonalPillTabRow
+import com.android.purebilibili.core.ui.components.AppTabRowIndicatorPresentation
 import com.android.purebilibili.core.theme.resolveAccessibleContainerColors
 import com.android.purebilibili.core.theme.resolveFilledSelectionAccentColors
 import com.android.purebilibili.core.ui.AppChromeSizeTokens
 import com.android.purebilibili.core.ui.AppSpacingTokens
-import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled
-import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled
 import com.android.purebilibili.core.ui.rememberContentCardSurfaceSpec
 import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl
 import com.android.purebilibili.feature.home.components.resolveHomeTopSearchContainerShape
@@ -155,6 +172,7 @@ import kotlin.math.roundToInt
 import com.android.purebilibili.core.database.entity.SearchHistory
 import com.android.purebilibili.core.ui.LocalGlobalWallpaperBackdropVisible
 import com.android.purebilibili.core.ui.videoCardTitleMaxLines
+import com.android.purebilibili.feature.home.components.cards.HorizontalVideoCardFrame
 import com.android.purebilibili.core.ui.videoCardTitleOverflow
 import com.android.purebilibili.core.ui.skeleton.ContentMediaListSkeleton
 import com.android.purebilibili.core.ui.skeleton.ContentVideoGridSkeleton
@@ -316,6 +334,20 @@ internal fun shouldUseSearchSolidTopChrome(
 ): Boolean = !headerBlurRequested && !progressiveBlurRequested
 
 /** Search chrome sizes and semantic shape levels for actions and content surfaces. */
+/** Shared alignment and spacing for the search field, type tabs and order rail. */
+internal data class SearchComponentSpacingSpec(
+    val horizontalPaddingDp: Int,
+    val resultRailHorizontalPaddingDp: Int,
+    val rowVerticalPaddingDp: Int,
+    val actionGapDp: Int,
+)
+
+internal fun resolveSearchComponentSpacingSpec(uiStyle: AppUiStyle): SearchComponentSpacingSpec =
+    when (uiStyle) {
+        AppUiStyle.MATERIAL3 -> SearchComponentSpacingSpec(16, 8, 0, 12)
+        AppUiStyle.MIUIX -> SearchComponentSpacingSpec(12, 8, 0, 8)
+    }
+
 internal data class SearchChromeVisualSpec(
     val inputHeightDp: Int,
     /** Search-action hit target beside the field, using the same capsule curvature. */
@@ -343,7 +375,7 @@ internal fun resolveSearchChromeVisualSpec(
 ): SearchChromeVisualSpec {
     val compactChrome = chromePolicy.compactChromeSpec
     return SearchChromeVisualSpec(
-        inputHeightDp = minOf(compactChrome.primaryHeightDp, 48),
+        inputHeightDp = minOf(compactChrome.primaryHeightDp, 40),
         actionShapeLevel = ContainerLevel.Pill,
         useFilledSearchAction = chromePolicy.tabPresentation != AppTopTabPresentation.MOVING_CAPSULE,
         suggestionShapeLevel = ContainerLevel.Card,
@@ -453,25 +485,26 @@ internal enum class SearchFilterControl {
 }
 
 internal val defaultSearchFilterTabOrder: List<SearchType> = listOf(
-    SearchType.VIDEO,
+    SearchType.ALL,
     SearchType.BANGUMI,
     SearchType.MEDIA_FT,
     SearchType.LIVE,
-    SearchType.LIVE_USER,
     SearchType.UP,
-    SearchType.ARTICLE,
-    SearchType.TOPIC,
-    SearchType.PHOTO
+    SearchType.ARTICLE
 )
 
 internal fun resolveSearchFilterTabs(
     savedOrder: List<String> = emptyList()
 ): List<SearchType> {
-    val knownByValue = SearchType.entries.associateBy(SearchType::value)
-    val ordered = savedOrder.mapNotNull(knownByValue::get).distinct()
-    val remaining = (defaultSearchFilterTabOrder + SearchType.entries)
-        .distinct()
-        .filterNot(ordered::contains)
+    // Match PiliPlus' active search tabs. Video results are integrated into 综合.
+    val activeTypes = defaultSearchFilterTabOrder.toSet()
+    val knownByValue = SearchType.entries
+        .filter { it in activeTypes }
+        .associateBy(SearchType::value)
+    val saved = savedOrder.mapNotNull(knownByValue::get).distinct()
+    // Older saved layouts may omit 综合; preserve the user's remaining active order.
+    val ordered = if (SearchType.ALL in saved) saved else listOf(SearchType.ALL) + saved
+    val remaining = defaultSearchFilterTabOrder.filterNot(ordered::contains)
     return ordered + remaining
 }
 
@@ -490,7 +523,7 @@ internal fun resolveSearchTypeForPagerPage(
     page: Int,
     tabs: List<SearchType> = resolveSearchFilterTabs()
 ): SearchType {
-    return tabs.getOrNull(page) ?: SearchType.VIDEO
+    return tabs.getOrNull(page) ?: SearchType.ALL
 }
 
 internal fun resolveSearchPagerPageForType(
@@ -507,7 +540,7 @@ internal fun resolveSearchResultPageState(
     return if (state.searchType == searchType) {
         state.toCurrentSearchResultPage()
     } else {
-        state.resultPages[searchType] ?: SearchResultPageUiState(query = state.query.trim())
+        state.resultPages[searchType] ?: SearchResultPageUiState(query = state.submittedQuery)
     }
 }
 
@@ -516,6 +549,8 @@ internal fun resolveSearchFilterControls(
     currentUpOrder: SearchUpOrder
 ): List<SearchFilterControl> {
     return when (currentType) {
+        // PiliPlus 综合页在筛选视频时切换到 video/type API。
+        SearchType.ALL,
         SearchType.VIDEO -> listOf(
             SearchFilterControl.VIDEO_ORDER,
             SearchFilterControl.VIDEO_DURATION,
@@ -634,7 +669,7 @@ fun SearchScreen(
     onBack: () -> Unit,
     onOpenTrending: () -> Unit,
     onNavigateSearchTarget: (BilibiliNavigationTarget) -> Boolean,
-    onVideoClick: (String, Long, String) -> Unit,
+    onVideoClick: (String, Long, String, Boolean) -> Unit,
     onWebClick: (String, String) -> Unit,
     onUpClick: (Long) -> Unit,  //  点击UP主跳转到空间
     onBangumiClick: (Long) -> Unit, //  点击番剧/影视跳转详情
@@ -648,7 +683,11 @@ fun SearchScreen(
     onEntryMotionConsumed: (Int) -> Unit = {},
     isReturningFromVideoDetail: Boolean = false,
     isQuickReturningFromVideoDetail: Boolean = false,
-    onVideoDetailReturnAnimationConsumed: () -> Unit = {}
+    onVideoDetailReturnAnimationConsumed: () -> Unit = {},
+    onUpResultClick: ((Long, String) -> Unit)? = null,
+    onBangumiResultClick: ((Long, String) -> Unit)? = null,
+    onArticleResultClick: ((Long, String, String) -> Unit)? = null,
+    backEnabled: Boolean = true,
 ) {
     val topChromePolicy = rememberAppTopChromePolicy()
     val semanticVisualPolicy = rememberAppSemanticVisualPolicy()
@@ -664,15 +703,19 @@ fun SearchScreen(
     val windowSizeClass = LocalWindowSizeClass.current
     var startupSettled by remember { mutableStateOf(false) }
     var searchFieldFocused by remember { mutableStateOf(false) }
-    // One-shot autofocus for empty landing only; never re-open keyboard after results.
+    var retainSearchImeAfterClear by remember { mutableStateOf(false) }
+    var searchQueryClearedAtElapsedMs by remember { mutableLongStateOf(-1L) }
+    // Startup autofocus is one-shot; returning from results owns its explicit edit-context restore.
     var autoFocusConsumed by rememberSaveable { mutableStateOf(false) }
     var previousShowResults by rememberSaveable { mutableStateOf(false) }
+    var restoreLandingFocusOnBack by rememberSaveable { mutableStateOf(false) }
+    var pendingLandingFocusRestore by remember { mutableStateOf(false) }
     val searchLayoutPolicy = remember(configuration.screenWidthDp) {
         resolveSearchLayoutPolicy(
             widthDp = configuration.screenWidthDp
         )
     }
-    
+
     //  自动聚焦搜索框
     val searchFocusRequester = remember { androidx.compose.ui.focus.FocusRequester() }
 
@@ -681,8 +724,8 @@ fun SearchScreen(
     val resultStateKey = remember(state.searchSessionId, state.searchType) {
         state.searchSessionId to state.searchType
     }
-    val resultGridState = rememberSaveable(resultStateKey, saver = LazyGridState.Saver) {
-        LazyGridState()
+    val resultGridState = rememberSaveable(resultStateKey, saver = com.android.purebilibili.core.ui.CompatibleStaggeredGridStateSaver) {
+        com.android.purebilibili.core.ui.createCompatibleStaggeredGridState()
     }
     val resultListState = rememberSaveable(resultStateKey, saver = LazyListState.Saver) {
         LazyListState()
@@ -700,7 +743,7 @@ fun SearchScreen(
         derivedStateOf {
             state.showResults &&
                 !state.isSearching &&
-                if (state.searchType == SearchType.VIDEO) {
+                if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
                     shouldShowSearchBackToTop(
                         firstVisibleItemIndex = resultGridState.firstVisibleItemIndex,
                         firstVisibleItemScrollOffset = resultGridState.firstVisibleItemScrollOffset
@@ -741,13 +784,14 @@ fun SearchScreen(
     val inputHeightDp = rememberSearchInputHeightDp(searchChromeSpec.inputHeightDp)
     val topBarHeight = resolveSearchTopBarRowMinHeightDp(inputHeightDp).dp
     val contentTopPadding = statusBarHeight + topBarHeight
-    
+
     //  读取动画设置开关
     val context = LocalContext.current
     val searchHintEnabled by remember(context) {
         com.android.purebilibili.core.store.SearchHintSettingsStore.isEnabled(context)
     }.collectAsStateWithLifecycle(initialValue = true)
     val displayedSearchHint = state.defaultSearchHint.takeIf { searchHintEnabled }.orEmpty()
+    val suggestedSearchKeyword = state.defaultSearchKeyword.takeIf { searchHintEnabled }.orEmpty()
     val scope = rememberCoroutineScope()
     val savedSearchFilterTabOrder by SettingsManager
         .getSearchFilterTabOrder(context)
@@ -818,7 +862,7 @@ fun SearchScreen(
         )
     }
     val cardTransitionEnabled by SettingsManager.getCardTransitionEnabled(context).collectAsStateWithLifecycle(initialValue = false)
-    val showOnlineCount by SettingsManager.getShowOnlineCount(context).collectAsStateWithLifecycle(initialValue = false)
+    val showOnlineCount by SettingsManager.getShowCardOnlineCount(context).collectAsStateWithLifecycle(initialValue = false)
     val homeFeedCardStyle by SettingsManager
         .getHomeFeedCardStyle(context)
         .collectAsStateWithLifecycle(initialValue = HomeFeedCardStyle.BILIPAI)
@@ -832,8 +876,8 @@ fun SearchScreen(
     val videoGridColumns = remember(
         searchContentWidth,
         listLayout.singleColumn,
-        homeSettings.gridColumnCount,
-        homeSettings.gridColumnCountCompact,
+        homeSettings.effectiveGridColumnCount,
+        homeSettings.effectiveGridColumnCountCompact,
         homeSettings.homeFeedCardWidthPreset,
         windowSizeClass.widthSizeClass
     ) {
@@ -842,8 +886,8 @@ fun SearchScreen(
             contentWidthDp = searchContentWidth.value.toInt(),
             fixedColumnCount = com.android.purebilibili.feature.home.resolveHomeFeedStoredColumnCount(
                 widthSizeClass = windowSizeClass.widthSizeClass,
-                compactColumnCount = homeSettings.gridColumnCountCompact,
-                defaultColumnCount = homeSettings.gridColumnCount,
+                compactColumnCount = homeSettings.effectiveGridColumnCountCompact,
+                defaultColumnCount = homeSettings.effectiveGridColumnCount,
             ),
             cardWidthPreset = homeSettings.homeFeedCardWidthPreset,
             widthSizeClass = windowSizeClass.widthSizeClass
@@ -868,10 +912,12 @@ fun SearchScreen(
                 searchPagerState.isScrollInProgress
         }
     }
-    val isSearchCollapseEnabled = homeSettings.homeHeaderCollapseMode.collapseSearch
+    val searchHeaderCollapseMode = homeSettings.commonListHeaderCollapseMode
+    val isSearchCollapseEnabled = searchHeaderCollapseMode != CommonListHeaderCollapseMode.ALWAYS_VISIBLE
     var searchTopBarHeightPx by remember { mutableIntStateOf(0) }
     var searchHeaderOffsetPx by remember { mutableFloatStateOf(0f) }
     var searchHeaderSettleJob by remember { mutableStateOf<Job?>(null) }
+    var searchHeaderSettleTargetPx by remember { mutableFloatStateOf(0f) }
     val searchStatusBarHeightPx = with(density) {
         WindowInsets.statusBars.asPaddingValues().calculateTopPadding().toPx()
     }
@@ -887,7 +933,7 @@ fun SearchScreen(
         derivedStateOf {
             if (!state.showResults) {
                 true
-            } else if (state.searchType == SearchType.VIDEO) {
+            } else if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
                 resultGridState.firstVisibleItemIndex == 0 && resultGridState.firstVisibleItemScrollOffset == 0
             } else {
                 resultListState.firstVisibleItemIndex == 0 && resultListState.firstVisibleItemScrollOffset == 0
@@ -896,11 +942,15 @@ fun SearchScreen(
     }
 
     fun animateSearchHeaderOffsetTo(targetOffsetPx: Float) {
+        // 相同目标继续当前动画，避免回顶滚动和位置校正反复重启缓动。
+        if (searchHeaderSettleJob?.isActive == true && searchHeaderSettleTargetPx == targetOffsetPx) return
+        searchHeaderSettleJob?.cancel()
+        searchHeaderSettleJob = null
+        searchHeaderSettleTargetPx = targetOffsetPx
         if (kotlin.math.abs(searchHeaderOffsetPx - targetOffsetPx) <= 0.5f) {
             searchHeaderOffsetPx = targetOffsetPx
             return
         }
-        searchHeaderSettleJob?.cancel()
         searchHeaderSettleJob = scope.launch {
             animate(
                 initialValue = searchHeaderOffsetPx,
@@ -924,14 +974,53 @@ fun SearchScreen(
         }
     }
 
-    val searchHeaderScrollConnection = remember(isSearchCollapseEnabled, searchCollapseDistancePx) {
+    LaunchedEffect(
+        searchHeaderCollapseMode, searchCollapseDistancePx, state.showResults, state.searchType,
+        resultGridState, resultListState,
+    ) {
+        snapshotFlow {
+            val index = if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
+                resultGridState.firstVisibleItemIndex
+            } else {
+                resultListState.firstVisibleItemIndex
+            }
+            val offset = if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
+                resultGridState.firstVisibleItemScrollOffset
+            } else {
+                resultListState.firstVisibleItemScrollOffset
+            }
+            Triple(index, offset, isSearchResultsScrolling)
+        }.collect { (index, offset, scrolling) ->
+            if (!scrolling) {
+                animateSearchHeaderOffsetTo(resolveCommonListHeaderOffsetForSettledContent(
+                    firstVisibleItemIndex = if (state.showResults) index else 0,
+                    firstVisibleItemScrollOffset = if (state.showResults) offset else 0,
+                    maxCollapsePx = searchCollapseDistancePx,
+                    mode = searchHeaderCollapseMode,
+                ))
+            }
+        }
+    }
+    val searchHeaderScrollConnection = remember(searchHeaderCollapseMode, searchCollapseDistancePx, isSearchResultsAtTop) {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 if (!isSearchCollapseEnabled || searchCollapseDistancePx <= 0f) return Offset.Zero
                 if (kotlin.math.abs(available.y) < 0.5f) return Offset.Zero
+                if (kotlin.math.abs(available.y) < kotlin.math.abs(available.x)) return Offset.Zero
+                // 到顶后的剩余滚动交给展开动画，避免直接归零或被连续回调打断。
+                if (isSearchResultsAtTop && available.y > 0f) {
+                    animateSearchHeaderOffsetTo(0f)
+                    return Offset.Zero
+                }
                 searchHeaderSettleJob?.cancel()
                 searchHeaderSettleJob = null
-                searchHeaderOffsetPx = (searchHeaderOffsetPx + available.y).coerceIn(-searchCollapseDistancePx, 0f)
+                searchHeaderOffsetPx = resolveCommonListHeaderOffsetAfterContentScroll(
+                    currentOffsetPx = searchHeaderOffsetPx,
+                    contentConsumedDeltaYPx = available.y,
+                    maxCollapsePx = searchCollapseDistancePx,
+                    isAtTop = isSearchResultsAtTop,
+                    mode = searchHeaderCollapseMode,
+                )
                 return Offset.Zero
             }
         }
@@ -1037,13 +1126,46 @@ fun SearchScreen(
         searchFieldFocused = false
         autoFocusConsumed = true
     }
-    val submitSearch: (String) -> Unit = { keyword ->
+    val updateSearchQuery: (String) -> Unit = { query ->
+        if (
+            shouldRetainSearchImeWhenQueryCleared(
+                fieldFocused = searchFieldFocused,
+                previousQuery = state.query,
+                newQuery = query,
+            )
+        ) {
+            retainSearchImeAfterClear = true
+            searchQueryClearedAtElapsedMs = android.os.SystemClock.elapsedRealtime()
+        }
+        viewModel.onQueryChange(query)
+    }
+    // Clear is an edit action, including when invoked from an unfocused result field.
+    val clearSearchQuery = {
+        pendingLandingFocusRestore = true
+        searchQueryClearedAtElapsedMs = android.os.SystemClock.elapsedRealtime()
+        if (state.showResults) viewModel.exitResultsToLanding()
+        updateSearchQuery("")
+    }
+    LaunchedEffect(retainSearchImeAfterClear) {
+        if (!retainSearchImeAfterClear) return@LaunchedEffect
+        androidx.compose.runtime.withFrameNanos { }
+        runCatching { searchFocusRequester.requestFocus() }
+        keyboardController?.show()
+        retainSearchImeAfterClear = false
+    }
+    val submitSearch: (String) -> Unit = submitSearch@{ keyword ->
         when (val action = resolveSearchSubmitAction(keyword)) {
-            SearchSubmitAction.Ignore -> Unit
-            is SearchSubmitAction.OpenSearch -> viewModel.search(action.keyword)
+            SearchSubmitAction.Ignore -> return@submitSearch
+            is SearchSubmitAction.OpenSearch -> {
+                if (!state.showResults) restoreLandingFocusOnBack = searchFieldFocused
+                viewModel.search(action.keyword)
+            }
             is SearchSubmitAction.OpenNativeTarget -> {
                 viewModel.dismissSuggestions()
-                if (!onNavigateSearchTarget(action.target)) viewModel.search(keyword)
+                if (!onNavigateSearchTarget(action.target)) {
+                    if (!state.showResults) restoreLandingFocusOnBack = searchFieldFocused
+                    viewModel.search(keyword)
+                }
             }
         }
         dismissSearchKeyboardAndFocus()
@@ -1057,6 +1179,12 @@ fun SearchScreen(
                 searchFieldFocused = searchFieldFocused
             )
         ) {
+            SearchBackAction.RETURN_TO_LANDING -> {
+                pendingLandingFocusRestore = restoreLandingFocusOnBack || searchFieldFocused
+                viewModel.exitResultsToLanding()
+                if (pendingLandingFocusRestore) viewModel.onQueryChange(state.query)
+                else dismissSearchKeyboardAndFocus()
+            }
             SearchBackAction.LEAVE_SEARCH -> {
                 dismissSearchKeyboardAndFocus()
                 if (exitMotionSpec != null && !exitMotionInProgress) {
@@ -1069,7 +1197,7 @@ fun SearchScreen(
         }
     }
 
-    BackHandler(onBack = handleSearchBack)
+    BackHandler(enabled = backEnabled, onBack = handleSearchBack)
 
     // Entering results must drop focus so the keyboard cannot reappear.
     LaunchedEffect(state.showResults) {
@@ -1082,7 +1210,17 @@ fun SearchScreen(
         }
         previousShowResults = state.showResults
     }
-    
+
+    LaunchedEffect(state.showResults, pendingLandingFocusRestore) {
+        if (state.showResults || !pendingLandingFocusRestore) return@LaunchedEffect
+        // The same movable input keeps selection; wait until it is placed on the landing surface.
+        androidx.compose.runtime.withFrameNanos { }
+        if (runCatching { searchFocusRequester.requestFocus() }.isSuccess) {
+            keyboardController?.show()
+        }
+        pendingLandingFocusRestore = false
+    }
+
     //  [埋点] 页面浏览追踪
     LaunchedEffect(Unit) {
         com.android.purebilibili.core.util.AnalyticsHelper.logScreenView("SearchScreen")
@@ -1137,10 +1275,77 @@ fun SearchScreen(
         }
     }
 
+    val searchTopBarCallbacks = SearchTopBarCallbacks(
+        onBack = handleSearchBack,
+        onQueryChange = updateSearchQuery,
+        onSearch = submitSearch,
+        onClearQuery = clearSearchQuery,
+        onFocusChanged = { focused ->
+            searchFieldFocused = focused
+            if (focused) {
+                autoFocusConsumed = true
+                if (state.showResults) {
+                    pendingLandingFocusRestore = true
+                    viewModel.exitResultsToLanding()
+                    viewModel.onQueryChange(state.query)
+                }
+            }
+        },
+        onEntryMotionFinished = onEntryMotionConsumed,
+        onExitMotionFinished = { completedKey ->
+            if (exitMotionInProgress && completedKey == exitMotionKey) {
+                onBack()
+            }
+        },
+        isScrollInProgressProvider = { isSearchResultsScrolling },
+    )
+    // One BasicTextField moves between the results scaffold and the landing overlay.
+    // Call sites pass the current query, placement, trailing actions, and callbacks so
+    // this remembered content does not close over the first composition's state.
+    val searchTopBarContent = remember {
+        movableContentOf<
+            String,
+            SearchTopBarPlacement,
+            (@Composable RowScope.() -> Unit)?,
+            SearchTopBarCallbacks,
+        > { query, placement, trailingActions, callbacks ->
+            SearchTopBar(
+                query = query,
+                onBack = callbacks.onBack,
+                onQueryChange = callbacks.onQueryChange,
+                onSearch = callbacks.onSearch,
+                onClearQuery = callbacks.onClearQuery,
+                onFocusChanged = callbacks.onFocusChanged,
+                focusRequester = placement.focusRequester,
+                placeholder = placement.placeholder,
+                suggestedKeyword = placement.suggestedKeyword,
+                autoFocusEnabled = placement.autoFocusEnabled,
+                reducedMotionBudget = placement.reducedMotionBudget,
+                entryMotionSpec = placement.entryMotionSpec,
+                entryMotionKey = placement.entryMotionKey,
+                onEntryMotionFinished = callbacks.onEntryMotionFinished,
+                exitMotionSpec = placement.exitMotionSpec,
+                exitMotionKey = placement.exitMotionKey,
+                onExitMotionFinished = callbacks.onExitMotionFinished,
+                isScrollInProgressProvider = callbacks.isScrollInProgressProvider,
+                liquidGlassEnabled = placement.liquidGlassEnabled,
+                miuixBackdrop = placement.miuixBackdrop,
+                includeStatusBarPadding = placement.includeStatusBarPadding,
+                trailingActions = trailingActions,
+                modifier = placement.modifier,
+            )
+        }
+    }
+
     val resultBottomPadding = resolveBottomSafeAreaPadding(
         navigationBarsBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
         extraBottomPadding = 16.dp
-    )
+    ) + if (com.android.purebilibili.core.ui.rememberNowPlayingBarOverlayVisible()) {
+        // 听视频小横条悬浮时统一上浮避让（与首页/稍后再看一致）
+        com.android.purebilibili.core.ui.NowPlayingBarOverlayAvoidancePadding
+    } else {
+        0.dp
+    }
 
     AppScaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -1190,11 +1395,22 @@ fun SearchScreen(
                         val searchChromeSurface = com.android.purebilibili.core.ui.globalWallpaperAwareChromeColor(
                             AppSurfaceTokens.groupedListContainer()
                         )
+                        // 分类与排序只采样列表；顶部控件额外采样它们的已渲染像素，避免自采样。
+                        val lowerChromeSource = if (effectiveLiquidGlassEnabled) {
+                            com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource()
+                        } else null
+                        val topControlContentBackdrop = if (searchChromeBackdrop != null && lowerChromeSource?.isReady == true) {
+                            com.android.purebilibili.feature.home.components.liquid.rememberCombinedBackdrop(
+                                searchChromeBackdrop, lowerChromeSource.backdrop,
+                            )
+                        } else searchChromeBackdrop
                         BiliPaiImmersiveTopBar(
                             backdrop = searchChromeBackdrop,
                             enabled = immersiveSearchChrome,
                             headerBlurActive = shouldUseSearchTopBarBlur && !immersiveSearchChrome,
                             surfaceColor = searchChromeSurface,
+                            iconSurfaceColor = if (immersiveSearchChrome || searchFadeActive) Color.Transparent
+                            else searchChromeSurface.copy(alpha = if (shouldUseSearchTopBarBlur) AppSurfaceTokens.FrostedScrimAlpha else searchChromeSurface.alpha),
                             fadeEnabled = searchFadeActive,
                             extendBelowBounds = false,
                             modifier = Modifier.then(
@@ -1215,38 +1431,34 @@ fun SearchScreen(
                                 }
                             ),
                         ) {
+                            val topControlBackdrop = com.android.purebilibili.core.ui.blur.rememberSurfaceOverlayBackdrop(
+                                topControlContentBackdrop,
+                                com.android.purebilibili.core.ui.components.LocalAppTopBarSurfaceColor.current,
+                            )
                             val searchCollapseFraction = if (isSearchCollapseEnabled && searchCollapseDistancePx > 0f) {
                                 (-searchHeaderOffsetPx / searchCollapseDistancePx).coerceIn(0f, 1f)
                             } else {
                                 0f
                             }
-                            val currentSearchHeightDp = with(density) {
-                                (searchTopBarHeightPx * (1f - searchCollapseFraction)).toDp()
-                            }
-                            val currentSearchAlpha = (1f - searchCollapseFraction * 1.35f).coerceIn(0f, 1f)
                             Layout(
-                                modifier = Modifier.clipToBounds(),
+                                modifier = if (searchCollapseFraction > 0f) {
+                                    // Hide chrome above the status-bar boundary, but retain
+                                    // a halo below/alongside the header for elastic controls.
+                                    Modifier.drawWithContent {
+                                        val top = searchStatusBarHeightPx.coerceIn(0f, size.height)
+                                        if (size.height > top) {
+                                            val overflow = AppChromeSizeTokens.MinimumTouchTarget.toPx()
+                                            clipRect(
+                                                left = -overflow,
+                                                top = top,
+                                                right = size.width + overflow,
+                                                bottom = size.height + overflow,
+                                            ) { this@drawWithContent.drawContent() }
+                                        }
+                                    }
+                                } else Modifier,
                                 content = {
                                     Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .then(
-                                                if (isSearchCollapseEnabled && searchCollapseDistancePx > 0f) {
-                                                    Modifier.height(currentSearchHeightDp)
-                                                } else {
-                                                    Modifier
-                                                }
-                                            )
-                                            .clipToBounds()
-                                            .graphicsLayer {
-                                                alpha = if (isSearchCollapseEnabled && searchCollapseDistancePx > 0f) {
-                                                    currentSearchAlpha
-                                                } else {
-                                                    1f
-                                                }
-                                            }
-                                    ) {
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -1256,153 +1468,165 @@ fun SearchScreen(
                                                     }
                                                 }
                                         ) {
-                                            SearchTopBar(
-                                                query = state.query,
-                                                onBack = handleSearchBack,
-                                                onQueryChange = {
-                                                    viewModel.onQueryChange(it)
-                                                },
-                                                onSearch = submitSearch,
-                                                onClearQuery = {
-                                                    viewModel.onQueryChange("")
-                                                    viewModel.exitResultsToLanding()
-                                                },
-                                                onFocusChanged = { focused ->
-                                                    searchFieldFocused = focused
-                                                    if (focused) {
-                                                        autoFocusConsumed = true
+                                            searchTopBarContent(
+                                                state.query,
+                                                SearchTopBarPlacement(
+                                                    focusRequester = searchFocusRequester,
+                                                    placeholder = displayedSearchHint.ifBlank { resolveSearchDefaultPlaceholder() },
+                                                    suggestedKeyword = suggestedSearchKeyword,
+                                                    autoFocusEnabled = false,
+                                                    reducedMotionBudget = effectiveSearchMotionBudget == SearchMotionBudget.REDUCED,
+                                                    entryMotionSpec = entryMotionSpec,
+                                                    entryMotionKey = entryMotionKey,
+                                                    exitMotionSpec = exitMotionSpec,
+                                                    exitMotionKey = exitMotionKey,
+                                                    liquidGlassEnabled = effectiveLiquidGlassEnabled,
+                                                    miuixBackdrop = topControlBackdrop,
+                                                    includeStatusBarPadding = false,
+                                                    // 返回、输入框和筛选共用前景层，拖拽越过行高时绘制在分类 dock 上方。
+                                                    // 只调整兄弟节点绘制顺序，玻璃、MD3 与 Miuix 均保留原有布局和触摸区域。
+                                                    modifier = Modifier.zIndex(1f),
+                                                ),
+                                                if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
+                                                    val videoFilters: @Composable RowScope.() -> Unit = {
+                                                        SearchVideoFilterActions(
+                                                            currentDurations = state.searchDurations,
+                                                            currentVideoTid = state.videoTid,
+                                                            currentPubTimeType = state.pubTimeType,
+                                                            currentPubBegin = state.pubBegin,
+                                                            currentPubEnd = state.pubEnd,
+                                                            miuixBackdrop = topControlBackdrop,
+                                                            onDurationSelect = { viewModel.setSearchDuration(it) },
+                                                            onVideoTidChange = { viewModel.setVideoTid(it) },
+                                                            onPubTimeTypeChange = { viewModel.setPubTimeType(it) },
+                                                            onCustomPubTimeRange = { begin, end ->
+                                                                viewModel.setCustomPubTimeRange(begin, end)
+                                                            }
+                                                        )
                                                     }
+                                                    videoFilters
+                                                } else {
+                                                    null
                                                 },
-                                                focusRequester = searchFocusRequester,
-                                                placeholder = displayedSearchHint.ifBlank { resolveSearchDefaultPlaceholder() },
-                                                suggestedKeyword = displayedSearchHint,
-                                                autoFocusEnabled = false,
-                                                reducedMotionBudget = effectiveSearchMotionBudget == SearchMotionBudget.REDUCED,
-                                                isScrollInProgressProvider = { isSearchResultsScrolling },
-                                                liquidGlassEnabled = effectiveLiquidGlassEnabled,
-                                                miuixBackdrop = searchChromeBackdrop,
-                                                includeStatusBarPadding = false,
+                                                searchTopBarCallbacks,
                                             )
-                                            //  搜索彩蛋消息横幅
-                                            val easterEggMsg = state.easterEggMessage
-                                            if (easterEggMsg != null) {
-                                                val easterEggColors = resolveAccessibleContainerColors(
-                                                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
-                                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                    backgroundColor = MaterialTheme.colorScheme.surface,
-                                                    fallbackContentColors = listOf(
-                                                        MaterialTheme.colorScheme.onSurface,
-                                                        MaterialTheme.colorScheme.onBackground,
-                                                    ),
-                                                )
-                                                AppSurface(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                                                    color = easterEggColors.containerColor,
-                                                    shape = AppShapes.container(ContainerLevel.Card)
-                                                ) {
-                                                    Row(
+                                            val lowerChromeContent: @Composable () -> Unit = {
+                                                //  搜索彩蛋消息横幅
+                                                val easterEggMsg = state.easterEggMessage
+                                                if (easterEggMsg != null) {
+                                                    val easterEggColors = resolveAccessibleContainerColors(
+                                                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+                                                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                                        backgroundColor = MaterialTheme.colorScheme.surface,
+                                                        fallbackContentColors = listOf(
+                                                            AppContentColors.primaryText(),
+                                                            MaterialTheme.colorScheme.onBackground,
+                                                        ),
+                                                    )
+                                                    AppSurface(
                                                         modifier = Modifier
                                                             .fillMaxWidth()
-                                                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                                                        horizontalArrangement = Arrangement.Center,
-                                                        verticalAlignment = Alignment.CenterVertically
+                                                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                                                        color = easterEggColors.containerColor,
+                                                        shape = AppShapes.container(ContainerLevel.Card)
                                                     ) {
-                                                        AppText(
-                                                            text = easterEggMsg,
-                                                            color = easterEggColors.contentColor,
-                                                            style = MaterialTheme.typography.bodyMedium,
-                                                            fontWeight = FontWeight.Medium,
-                                                            maxLines = 2,
-                                                            overflow = TextOverflow.Ellipsis,
-                                                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                                        Row(
+                                                            modifier = Modifier
+                                                                .fillMaxWidth()
+                                                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                                                            horizontalArrangement = Arrangement.Center,
+                                                            verticalAlignment = Alignment.CenterVertically
+                                                        ) {
+                                                            AppText(
+                                                                text = easterEggMsg,
+                                                                color = easterEggColors.contentColor,
+                                                                style = MaterialTheme.typography.bodyMedium,
+                                                                fontWeight = FontWeight.Medium,
+                                                                maxLines = 2,
+                                                                overflow = TextOverflow.Ellipsis,
+                                                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                                            )
+                                                        }
+                                                    }
+                                                }
+                                                SearchResultTypeTabRow(
+                                                    tabs = searchTabs,
+                                                    pagerState = searchPagerState,
+                                                    counts = state.searchTypeCounts,
+                                                    miuixBackdrop = searchChromeBackdrop,
+                                                    onTabClick = { page, type ->
+                                                        if (searchPagerState.currentPage == page && state.searchType == type) {
+                                                            scrollToTopSearchType = type
+                                                            scrollToTopRequestId += 1
+                                                            animateSearchHeaderOffsetTo(0f)
+                                                        } else {
+                                                            scope.launch { animatePagerSelection(searchPagerState, page) }
+                                                        }
+                                                    }
+                                                )
+                                                val showStableFilterBar = resolveSearchFilterControls(
+                                                    currentType = state.searchType,
+                                                    currentUpOrder = state.upOrder
+                                                ).isNotEmpty()
+                                                AnimatedVisibility(
+                                                    visible = showStableFilterBar,
+                                                    enter = fadeIn(animationSpec = tween(90)),
+                                                    exit = fadeOut(animationSpec = tween(70))
+                                                ) {
+                                                    if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
+                                                        SearchVideoFilterBar(
+                                                            currentOrder = state.searchOrder,
+                                                            miuixBackdrop = searchChromeBackdrop,
+                                                            onOrderChange = { viewModel.setSearchOrder(it) },
+                                                        )
+                                                    } else {
+                                                        SearchFilterBar(
+                                                            currentType = state.searchType,
+                                                            currentOrder = state.searchOrder,
+                                                            currentDurations = state.searchDurations,
+                                                            currentVideoTid = state.videoTid,
+                                                            currentUpOrder = state.upOrder,
+                                                            currentUpOrderSort = state.upOrderSort,
+                                                            currentUpUserType = state.upUserType,
+                                                            currentLiveOrder = state.liveOrder,
+                                                            currentArticleOrder = state.articleOrder,
+                                                            currentArticleCategory = state.articleCategory,
+                                                            currentPhotoOrder = state.photoOrder,
+                                                            currentPhotoCategory = state.photoCategory,
+                                                            onOrderChange = { viewModel.setSearchOrder(it) },
+                                                            onDurationToggle = { viewModel.toggleSearchDuration(it) },
+                                                            onVideoTidChange = { viewModel.setVideoTid(it) },
+                                                            onUpOrderChange = { viewModel.setUpOrder(it) },
+                                                            onUpOrderSortChange = { viewModel.setUpOrderSort(it) },
+                                                            onUpUserTypeChange = { viewModel.setUpUserType(it) },
+                                                            onLiveOrderChange = { viewModel.setLiveOrder(it) },
+                                                            onArticleOrderChange = viewModel::setArticleOrder,
+                                                            onArticleCategoryChange = viewModel::setArticleCategory,
+                                                            onPhotoOrderChange = viewModel::setPhotoOrder,
+                                                            onPhotoCategoryChange = viewModel::setPhotoCategory
                                                         )
                                                     }
                                                 }
                                             }
-                                        }
-                                    }
-                                    SearchResultTypeTabRow(
-                                        tabs = searchTabs,
-                                        pagerState = searchPagerState,
-                                        counts = state.searchTypeCounts,
-                                        miuixBackdrop = searchChromeBackdrop,
-                                        onTabClick = { page, type ->
-                                            if (searchPagerState.currentPage == page && state.searchType == type) {
-                                                scrollToTopSearchType = type
-                                                scrollToTopRequestId += 1
-                                                animateSearchHeaderOffsetTo(0f)
+                                            if (lowerChromeSource != null) {
+                                                Column(modifier = lowerChromeSource.modifier) { lowerChromeContent() }
                                             } else {
-                                                scope.launch { animatePagerSelection(searchPagerState, page) }
+                                                lowerChromeContent()
                                             }
                                         }
-                                    )
-                                    val showStableFilterBar = resolveSearchFilterControls(
-                                        currentType = state.searchType,
-                                        currentUpOrder = state.upOrder
-                                    ).isNotEmpty()
-                                    AnimatedVisibility(
-                                        visible = showStableFilterBar,
-                                        enter = fadeIn(animationSpec = tween(90)),
-                                        exit = fadeOut(animationSpec = tween(70))
-                                    ) {
-                                        if (state.searchType == SearchType.VIDEO) {
-                                            SearchVideoFilterBar(
-                                                singleColumn = listLayout.singleColumn,
-                                                onLayoutToggle = listLayout.toggle,
-                                                currentOrder = state.searchOrder,
-                                                currentDurations = state.searchDurations,
-                                                currentVideoTid = state.videoTid,
-                                                currentPubTimeType = state.pubTimeType,
-                                                currentPubBegin = state.pubBegin,
-                                                currentPubEnd = state.pubEnd,
-                                                miuixBackdrop = searchChromeBackdrop,
-                                                onOrderChange = { viewModel.setSearchOrder(it) },
-                                                onDurationSelect = { viewModel.setSearchDuration(it) },
-                                                onVideoTidChange = { viewModel.setVideoTid(it) },
-                                                onPubTimeTypeChange = { viewModel.setPubTimeType(it) },
-                                                onCustomPubTimeRange = { begin, end ->
-                                                    viewModel.setCustomPubTimeRange(begin, end)
-                                                }
-                                            )
-                                        } else {
-                                            SearchFilterBar(
-                                                currentType = state.searchType,
-                                                currentOrder = state.searchOrder,
-                                                currentDurations = state.searchDurations,
-                                                currentVideoTid = state.videoTid,
-                                                currentUpOrder = state.upOrder,
-                                                currentUpOrderSort = state.upOrderSort,
-                                                currentUpUserType = state.upUserType,
-                                                currentLiveOrder = state.liveOrder,
-                                                currentArticleOrder = state.articleOrder,
-                                                currentArticleCategory = state.articleCategory,
-                                                currentPhotoOrder = state.photoOrder,
-                                                currentPhotoCategory = state.photoCategory,
-                                                onOrderChange = { viewModel.setSearchOrder(it) },
-                                                onDurationToggle = { viewModel.toggleSearchDuration(it) },
-                                                onVideoTidChange = { viewModel.setVideoTid(it) },
-                                                onUpOrderChange = { viewModel.setUpOrder(it) },
-                                                onUpOrderSortChange = { viewModel.setUpOrderSort(it) },
-                                                onUpUserTypeChange = { viewModel.setUpUserType(it) },
-                                                onLiveOrderChange = { viewModel.setLiveOrder(it) },
-                                                onArticleOrderChange = viewModel::setArticleOrder,
-                                                onArticleCategoryChange = viewModel::setArticleCategory,
-                                                onPhotoOrderChange = viewModel::setPhotoOrder,
-                                                onPhotoCategoryChange = viewModel::setPhotoCategory
-                                            )
-                                        }
-                                    }
                                 }
                             ) { measurables, constraints ->
                                 val placeables = measurables.map { it.measure(constraints) }
                                 val width = placeables.maxOfOrNull { it.width }?.coerceIn(constraints.minWidth, constraints.maxWidth)
                                     ?: constraints.minWidth
-                                val height = placeables.sumOf { it.height }.coerceIn(constraints.minHeight, constraints.maxHeight)
+                                val topInset = placeables.firstOrNull()?.height ?: 0
+                                val offset = if (isSearchCollapseEnabled) searchHeaderOffsetPx.toInt() else 0
+                                val height = (placeables.sumOf { it.height } + offset)
+                                    .coerceIn(topInset.coerceAtLeast(constraints.minHeight), constraints.maxHeight)
                                 layout(width, height) {
-                                    var y = 0
-                                    placeables.forEach { placeable ->
+                                    placeables.firstOrNull()?.placeRelative(0, 0)
+                                    var y = topInset + offset
+                                    placeables.drop(1).forEach { placeable ->
                                         placeable.placeRelative(0, y)
                                         y += placeable.height
                                     }
@@ -1426,15 +1650,11 @@ fun SearchScreen(
                             } else requestedSkeletonColumns
                         HorizontalPager(
                             state = searchPagerState,
-                            userScrollEnabled = false,
+                            userScrollEnabled = true,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .then(searchChromeSource?.modifier ?: Modifier)
-                        .globalWallpaperAwareBackground()
-                                .verticalPriorityHorizontalPagerSwipe(
-                                    state = searchPagerState,
-                                    enabled = true,
-                                ),
+                        .globalWallpaperAwareBackground(),
                             beyondViewportPageCount = 1
                         ) { page ->
                         val targetSearchType = resolveSearchTypeForPagerPage(page, searchTabs)
@@ -1481,9 +1701,9 @@ fun SearchScreen(
                         val pageGridState = rememberSaveable(
                             pageResultState.query,
                             targetSearchType.value,
-                            saver = LazyGridState.Saver
+                            saver = com.android.purebilibili.core.ui.CompatibleStaggeredGridStateSaver
                         ) {
-                            LazyGridState()
+                            com.android.purebilibili.core.ui.createCompatibleStaggeredGridState()
                         }
                         val pageListState = rememberSaveable(
                             pageResultState.query,
@@ -1505,14 +1725,19 @@ fun SearchScreen(
                         // Observe the viewport, not a specific card's composition. This also
                         // continues after a page is entirely removed by local search filters.
                         val latestVideoPage by rememberUpdatedState(pageResultState)
-                        if (targetSearchType == SearchType.VIDEO && targetSearchType == state.searchType) {
+                        if ((targetSearchType == SearchType.VIDEO || targetSearchType == SearchType.ALL) &&
+                            targetSearchType == state.searchType
+                        ) {
                             LaunchedEffect(activePageGridState, state.searchSessionId) {
                                 snapshotFlow {
                                     val current = latestVideoPage
+                                    val itemCount = current.searchResults.size + if (targetSearchType == SearchType.ALL) {
+                                        current.upResults.size + current.bangumiResults.size
+                                    } else 0
                                     current.currentPage to shouldLoadMoreSearchVideos(
-                                        itemCount = current.searchResults.size,
+                                        itemCount = itemCount,
                                         lastVisibleItemIndex = activePageGridState.layoutInfo
-                                            .visibleItemsInfo.lastOrNull()?.index ?: -1,
+                                            .visibleItemsInfo.maxOfOrNull { it.index } ?: -1,
                                         hasMoreResults = current.hasMoreResults,
                                         isSearching = current.isSearching,
                                         isLoadingMore = current.isLoadingMore,
@@ -1525,7 +1750,7 @@ fun SearchScreen(
                         }
                         LaunchedEffect(scrollToTopRequestId, scrollToTopSearchType, targetSearchType) {
                             if (scrollToTopSearchType == targetSearchType && scrollToTopRequestId > 0) {
-                                if (targetSearchType == SearchType.VIDEO) {
+                                if (targetSearchType == SearchType.VIDEO || targetSearchType == SearchType.ALL) {
                                     activePageGridState.animateScrollToItem(0)
                                 } else {
                                     activePageListState.animateScrollToItem(0)
@@ -1535,7 +1760,7 @@ fun SearchScreen(
                         if (pagePresentation.body == SearchResultBodyMode.LOADING) {
                             // 结果形态已知：用骨架占位，不用主题 Loading 动画。
                             when (targetSearchType) {
-                                SearchType.VIDEO -> {
+                                SearchType.ALL, SearchType.VIDEO -> {
                                     val skeletonModifier = Modifier
                                         .then(
                                             if (videoGridColumns == 1) {
@@ -1581,32 +1806,46 @@ fun SearchScreen(
                             }
                         } else if (pagePresentation.body == SearchResultBodyMode.ERROR) {
                             SearchNativeMessageState(
-                                title = "搜索失败",
+                                title = stringResource(R.string.search_failed),
                                 message = pageError,
-                                actionLabel = "重试",
+                                actionLabel = stringResource(R.string.search_retry),
                                 onAction = {
                                     if (isEmptyVideoPage && pageResultState.loadMoreError != null) {
                                         viewModel.loadMoreResults()
                                     } else {
-                                        viewModel.search(pageResultState.query)
+                                        viewModel.search(pageResultState.query, updateDraft = false)
                                     }
                                 },
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(top = resultTopPadding, bottom = resultBottomPadding),
+                                animation = com.android.purebilibili.core.ui.MaidAnimation.RETRY,
+                                isVisible = searchPagerState.currentPage == page
                             )
                         } else if (pagePresentation.body == SearchResultBodyMode.EMPTY) {
                             val copy = pageEmptyStateCopy
                             if (copy != null) {
-                                SearchNativeMessageState(
-                                    title = copy.title,
-                                    message = copy.subtitle,
-                                    actionLabel = "重新搜索",
-                                    onAction = { viewModel.search(pageResultState.query) },
-                                    modifier = Modifier.fillMaxSize()
-                                )
+                                Box(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .padding(top = resultTopPadding, bottom = resultBottomPadding),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    com.android.purebilibili.core.ui.EmptyState(
+                                        message = copy.title,
+                                        subtitle = copy.subtitle,
+                                        animation = com.android.purebilibili.core.ui.MaidAnimation.SEARCH_EMPTY,
+                                        actionText = stringResource(R.string.search_again),
+                                        onAction = { viewModel.search(pageResultState.query, updateDraft = false) },
+                                        enableEasterEgg = false,
+                                        isVisible = searchPagerState.currentPage == page
+                                    )
+                                }
                             }
                         } else {
                         when (targetSearchType) {
-                            com.android.purebilibili.data.model.response.SearchType.VIDEO -> {
+                            // 综合与视频共用卡片交互；材质差异仍由原卡片的玻璃开关隔离。
+                            SearchType.ALL, SearchType.VIDEO -> {
                                 // Size cover requests against the actual result pane, including split windows.
                                 BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
                                     val actualGridColumns = resolveSearchVideoGridColumns(
@@ -1614,17 +1853,24 @@ fun SearchScreen(
                                         contentWidthDp = maxWidth.value.toInt(),
                                         fixedColumnCount = com.android.purebilibili.feature.home.resolveHomeFeedStoredColumnCount(
                                             widthSizeClass = windowSizeClass.widthSizeClass,
-                                            compactColumnCount = homeSettings.gridColumnCountCompact,
-                                            defaultColumnCount = homeSettings.gridColumnCount,
+                                            compactColumnCount = homeSettings.effectiveGridColumnCountCompact,
+                                            defaultColumnCount = homeSettings.effectiveGridColumnCount,
                                         ),
                                         cardWidthPreset = homeSettings.homeFeedCardWidthPreset,
                                         widthSizeClass = windowSizeClass.widthSizeClass
                                     )
-                                    var interactiveColumns by remember { mutableStateOf<Int?>(null) }
+                                    val gridColumnPreference = rememberFeedGridColumnPreference(
+                                        settings = homeSettings,
+                                        widthSizeClass = windowSizeClass.widthSizeClass,
+                                        defaultColumns = actualGridColumns,
+                                        bounds = if (listLayout.singleColumn) 1..1 else resolveHomeFeedPinchColumnBounds(
+                                            windowSizeClass.widthSizeClass, maxWidth.value.toInt(),
+                                        ),
+                                    )
                                     var isPinchPillVisible by remember { mutableStateOf(false) }
                                     var pinchPillDismissJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
-                                    val haptic = LocalHapticFeedback.current
-                                    val requestedSearchGridColumns = interactiveColumns ?: actualGridColumns
+                                    val haptic = com.android.purebilibili.core.ui.rememberAppHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.MENUS)
+                                    val requestedSearchGridColumns = gridColumnPreference.columns
                                     val effectiveSearchGridColumns = if (
                                         com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo.current.shouldAvoidHinge
                                     ) {
@@ -1638,9 +1884,6 @@ fun SearchScreen(
                                             widthSizeClass = windowSizeClass.widthSizeClass,
                                             contentWidthDp = maxWidth.value.toInt(),
                                         )
-                                    }
-                                    LaunchedEffect(homeSettings.gridColumnCount, homeSettings.gridColumnCountCompact) {
-                                        interactiveColumns = null
                                     }
                                     val searchGridCardLayout = remember(
                                         homeFeedCardStyle,
@@ -1680,23 +1923,17 @@ fun SearchScreen(
                                         )
                                         .fillMaxSize()
                                         .homeFeedPinchZoom(
-                                            enabled = !listLayout.singleColumn && homeSettings.pinchToChangeGridColumnsEnabled,
+                                            enabled = !listLayout.singleColumn && homeSettings.gridColumnPinchEnabled,
                                             currentColumns = effectiveSearchGridColumns,
                                             bounds = pinchColumnBounds,
                                             onColumnsChange = { newColumns ->
-                                                interactiveColumns = newColumns
+                                                gridColumnPreference.onChange(newColumns)
                                                 haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                                 isPinchPillVisible = true
                                                 pinchPillDismissJob?.cancel()
                                             },
                                             onGestureEnd = { finalColumns ->
-                                                scope.launch {
-                                                    if (com.android.purebilibili.feature.home.isCompactHomeFeedScreen(windowSizeClass.widthSizeClass)) {
-                                                        SettingsManager.setGridColumnCountCompact(context, finalColumns)
-                                                    } else {
-                                                        SettingsManager.setGridColumnCount(context, finalColumns)
-                                                    }
-                                                }
+                                                gridColumnPreference.onGestureEnd(finalColumns)
                                                 pinchPillDismissJob?.cancel()
                                                 pinchPillDismissJob = scope.launch {
                                                     kotlinx.coroutines.delay(1000)
@@ -1705,8 +1942,8 @@ fun SearchScreen(
                                             }
                                         )
                                         .then(if (searchHazeEnabled) Modifier.hazeSourceCompat(state = hazeState) else Modifier)
-                                LazyVerticalGrid(
-                                    columns = GridCells.Fixed(effectiveSearchGridColumns),
+                                LazyVerticalStaggeredGrid(
+                                    columns = StaggeredGridCells.Fixed(effectiveSearchGridColumns),
                                     state = activePageGridState,
                                     contentPadding = PaddingValues(
                                         top = resultTopPadding,
@@ -1715,14 +1952,123 @@ fun SearchScreen(
                                         end = searchGridCardLayout.outerPaddingDp.dp
                                     ),
                                     horizontalArrangement = searchGridHorizontalArrangement,
-                                    verticalArrangement = Arrangement.spacedBy(searchGridCardLayout.itemSpacingDp.dp),
+                                    verticalItemSpacing = searchGridCardLayout.itemSpacingDp.dp,
                                     modifier = videoGridModifier
                         ) {
+                                if (targetSearchType == SearchType.ALL) {
+                                    pageResultState.matchResults.firstOrNull()?.let { featuredMatch ->
+                                        item(key = "all_match_${featuredMatch.id}", span = StaggeredGridItemSpan.FullLine) {
+                                            MatchSearchResultCard(
+                                                item = featuredMatch,
+                                                appearance = genericResultCardAppearance,
+                                                onClick = {
+                                                    if (featuredMatch.id > 0L) {
+                                                        onNavigateSearchTarget(BilibiliNavigationTarget.Match(featuredMatch.id))
+                                                    }
+                                                },
+                                            )
+                                        }
+                                    }
+                                    if (pageResultState.upResults.isNotEmpty()) {
+                                        itemsIndexed(pageResultState.upResults, key = { _, up -> "all_up_${up.mid}" }, span = { _, _ -> StaggeredGridItemSpan.FullLine }) { _, up ->
+                                            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                                                UpSearchResultCard(
+                                                    upItem = up,
+                                                    appearance = genericResultCardAppearance,
+                                                    onClick = { onUpClick(up.mid) },
+                                                    onLiveClick = { onLiveClick(up.room_id ?: 0L, up.uname, up.uname) },
+                                                    onTransitionClick = onUpResultClick?.let { openResult ->
+                                                        { key -> openResult(up.mid, key) }
+                                                    },
+                                                )
+                                                val relatedVideos = up.res.orEmpty().take(6).map { it.toVideoItem() }
+                                                if (relatedVideos.isNotEmpty()) {
+                                                    Row(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .horizontalScroll(rememberScrollState()),
+                                                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                                    ) {
+                                                        relatedVideos.forEachIndexed { relatedIndex, video ->
+                                                            ElegantVideoCard(
+                                                                video = video,
+                                                                index = relatedIndex,
+                                                                modifier = Modifier.width(160.dp),
+                                                                animationEnabled = false,
+                                                                motionTier = cardMotionTier,
+                                                                transitionEnabled = effectiveCardTransitionEnabled,
+                                                                isReturningFromVideoDetail = isReturningFromVideoDetail,
+                                                                isQuickReturningFromVideoDetail = isQuickReturningFromVideoDetail,
+                                                                showPublishTime = true,
+                                                                glassEnabled = videoCardAppearance.glassEnabled,
+                                                                blurEnabled = videoCardAppearance.blurEnabled,
+                                                                showCoverGlassBadges = videoCardAppearance.showCoverGlassBadges,
+                                                                showInfoGlassBadges = videoCardAppearance.showInfoGlassBadges,
+                                                                homeDurationStyle = homeDurationStyle,
+                                                                coverAspectRatio = com.android.purebilibili.core.ui.videoCardCoverAspectRatio(),
+                                                                highlightedTitle = rememberSearchHighlightedTitle(video),
+                                                            ) { _, _ ->
+                                                                when (
+                                                                    val target = resolveVideoSearchNavigationTarget(
+                                                                        bvid = video.bvid,
+                                                                        contentType = video.contentType,
+                                                                        navigationUrl = video.navigationUrl,
+                                                                        title = video.title,
+                                                                    )
+                                                                ) {
+                                                                    is SearchResultNavigationTarget.Video -> {
+                                                                        com.android.purebilibili.core.util.AnalyticsHelper.logSearchResultClick(
+                                                                            position = relatedIndex,
+                                                                            resultSection = "creator_related"
+                                                                        )
+                                                                        onVideoClick(target.bvid, 0L, video.pic, video.resolveIsVerticalForNavigation())
+                                                                    }
+                                                                    is SearchResultNavigationTarget.Course -> onCheeseClick?.invoke(target.seasonId, target.epId)
+                                                                        ?: onBangumiClick(target.seasonId)
+                                                                    is SearchResultNavigationTarget.Web -> onWebClick(target.url, target.title)
+                                                                    else -> Unit
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (pageResultState.matchResults.isNotEmpty()) {
+                                        itemsIndexed(pageResultState.matchResults.drop(1), key = { _, item -> "all_match_${item.id}" }, span = { _, _ -> StaggeredGridItemSpan.FullLine }) { _, item ->
+                                            MatchSearchResultCard(
+                                                item = item,
+                                                appearance = genericResultCardAppearance,
+                                                onClick = {
+                                                    if (item.id > 0L) {
+                                                        onNavigateSearchTarget(BilibiliNavigationTarget.Match(item.id))
+                                                    }
+                                                },
+                                            )
+                                        }
+                                    }
+                                    if (pageResultState.bangumiResults.isNotEmpty()) {
+                                        itemsIndexed(pageResultState.bangumiResults, key = { _, item -> "all_bangumi_${item.seasonId}" }, span = { _, _ -> StaggeredGridItemSpan.FullLine }) { _, item ->
+                                            BangumiSearchResultCard(
+                                                item = item,
+                                                appearance = genericResultCardAppearance,
+                                                onClick = { onBangumiClick(item.seasonId) },
+                                                categoryLabel = item.seasonTypeName.ifBlank { "番剧 / 影视" },
+                                                onTransitionClick = onBangumiResultClick?.let { openResult ->
+                                                    { key ->
+                                                        if (item.seasonId > 0L) openResult(item.seasonId, key)
+                                                    }
+                                                },
+                                            )
+                                        }
+                                    }
+                                }
                                 itemsIndexed(
                                     pageResultState.searchResults,
                                     key = { index, video ->
                                         resolveSearchResultLazyItemKey(
-                                            searchType = SearchType.VIDEO,
+                                            searchType = targetSearchType,
                                             index = index,
                                             textKey = video.bvid,
                                             numericKey = video.id
@@ -1770,8 +2116,10 @@ fun SearchScreen(
                                                             title = video.title
                                                         )
                                                     ) {
-                                                        is SearchResultNavigationTarget.Video ->
-                                                            onVideoClick(target.bvid, 0, video.pic)
+                                                        is SearchResultNavigationTarget.Video -> {
+                                                            com.android.purebilibili.core.util.AnalyticsHelper.logSearchResultClick(position = index)
+                                                            onVideoClick(target.bvid, 0, video.pic, video.resolveIsVerticalForNavigation())
+                                                        }
                                                         is SearchResultNavigationTarget.Course -> {
                                                             if (onCheeseClick != null) {
                                                                 onCheeseClick(target.seasonId, target.epId)
@@ -1788,37 +2136,30 @@ fun SearchScreen(
 
                                         }
                                     }
-                                    
+
                                     // [新增] 空状态提示 (提示可能被屏蔽)
-                                    if (!pageResultState.isSearching && pageResultState.searchResults.isEmpty() && pageResultState.error == null && pageEmptyStateCopy != null) {
-                                        item(span = { GridItemSpan(maxLineSpan) }) {
+                                    if (!pageResultState.isSearching && pageResultState.totalCount == 0 && pageResultState.error == null && pageEmptyStateCopy != null) {
+                                        item(span = StaggeredGridItemSpan.FullLine) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
                                                     .padding(vertical = 64.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.title,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        fontWeight = FontWeight.Medium
-                                                    )
-                                                    Spacer(modifier = Modifier.height(8.dp))
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.subtitle,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                                                        style = MaterialTheme.typography.bodyMedium
-                                                    )
-                                                }
+                                                com.android.purebilibili.core.ui.EmptyState(
+                                                    message = pageEmptyStateCopy.title,
+                                                    subtitle = pageEmptyStateCopy.subtitle,
+                                                    animation = com.android.purebilibili.core.ui.MaidAnimation.SEARCH_EMPTY,
+                                                    enableEasterEgg = false,
+                                                    isVisible = searchPagerState.currentPage == page
+                                                )
                                             }
                                         }
                                     }
-                                    
+
                                     //  [新增] 加载更多指示器
                                     if (pagePresentation.footer == SearchResultFooterMode.LOADING || pagePresentation.footer == SearchResultFooterMode.ERROR) {
-                                        item(span = { GridItemSpan(maxLineSpan) }) {
+                                        item(span = StaggeredGridItemSpan.FullLine) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -1836,17 +2177,17 @@ fun SearchScreen(
                                             }
                                         }
                                     }
-                                    
+
                                     //  [新增] 已加载全部提示
                                     if (pagePresentation.footer == SearchResultFooterMode.END) {
-                                        item(span = { GridItemSpan(maxLineSpan) }) {
+                                        item(span = StaggeredGridItemSpan.FullLine) {
                                             AppText(
-                                                text = "已加载全部 ${pageResultState.searchResults.size} 条结果",
+                                                text = stringResource(R.string.search_all_loaded_count, pageResultState.totalCount),
                                                 modifier = Modifier
                                                     .fillMaxWidth()
                                                     .padding(16.dp),
                                                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                                color = AppContentColors.secondaryText(),
                                                 style = MaterialTheme.typography.bodySmall
                                             )
                                         }
@@ -1888,7 +2229,11 @@ fun SearchScreen(
                                         UpSearchResultCard(
                                             upItem = upItem,
                                             appearance = genericResultCardAppearance,
-                                            onClick = { onUpClick(upItem.mid) }
+                                            onClick = { onUpClick(upItem.mid) },
+                                            onLiveClick = { onLiveClick(upItem.room_id ?: 0L, upItem.uname, upItem.uname) },
+                                            onTransitionClick = onUpResultClick?.let { openResult ->
+                                                { transitionKey: String -> openResult(upItem.mid, transitionKey) }
+                                            },
                                         )
                                         if (targetSearchType == state.searchType && index == pageResultState.upResults.size - 3 && pageResultState.hasMoreResults && !pageResultState.isLoadingMore) {
                                             LaunchedEffect(pageResultState.currentPage, targetSearchType) {
@@ -1896,7 +2241,7 @@ fun SearchScreen(
                                             }
                                         }
                                     }
-                                    
+
                                      // [新增] 空状态提示
                                     if (!pageResultState.isSearching && pageResultState.upResults.isEmpty() && pageResultState.error == null && pageEmptyStateCopy != null) {
                                         item {
@@ -1904,25 +2249,17 @@ fun SearchScreen(
                                                 modifier = Modifier.fillMaxWidth().padding(vertical = 64.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.title,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        fontWeight = FontWeight.Medium
-                                                    )
-                                                    Spacer(modifier = Modifier.height(8.dp))
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.subtitle,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                                                        style = MaterialTheme.typography.bodyMedium,
-                                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                                                    )
-                                                }
+                                                com.android.purebilibili.core.ui.EmptyState(
+                                                    message = pageEmptyStateCopy.title,
+                                                    subtitle = pageEmptyStateCopy.subtitle,
+                                                    animation = com.android.purebilibili.core.ui.MaidAnimation.SEARCH_EMPTY,
+                                                    enableEasterEgg = false,
+                                                    isVisible = searchPagerState.currentPage == page
+                                                )
                                             }
                                         }
                                     }
-                                    
+
                                     if (pagePresentation.footer == SearchResultFooterMode.LOADING || pagePresentation.footer == SearchResultFooterMode.ERROR) {
                                         item {
                                             Box(
@@ -1976,7 +2313,14 @@ fun SearchScreen(
                                                 if (bangumiItem.seasonId > 0) {
                                                     onBangumiClick(bangumiItem.seasonId)
                                                 }
-                                            }
+                                            },
+                                            onTransitionClick = onBangumiResultClick?.let { openResult ->
+                                                { transitionKey: String ->
+                                                    if (bangumiItem.seasonId > 0L) {
+                                                        openResult(bangumiItem.seasonId, transitionKey)
+                                                    }
+                                                }
+                                            },
                                         )
                                         if (targetSearchType == state.searchType && index == pageResultState.bangumiResults.size - 3 && pageResultState.hasMoreResults && !pageResultState.isLoadingMore) {
                                             LaunchedEffect(pageResultState.currentPage, targetSearchType) {
@@ -2011,20 +2355,13 @@ fun SearchScreen(
                                                 modifier = Modifier.fillMaxWidth().padding(vertical = 64.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.title,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        fontWeight = FontWeight.Medium
-                                                    )
-                                                    Spacer(modifier = Modifier.height(8.dp))
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.subtitle,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                                                        style = MaterialTheme.typography.bodyMedium
-                                                    )
-                                                }
+                                                com.android.purebilibili.core.ui.EmptyState(
+                                                    message = pageEmptyStateCopy.title,
+                                                    subtitle = pageEmptyStateCopy.subtitle,
+                                                    animation = com.android.purebilibili.core.ui.MaidAnimation.SEARCH_EMPTY,
+                                                    enableEasterEgg = false,
+                                                    isVisible = searchPagerState.currentPage == page
+                                                )
                                             }
                                         }
                                     }
@@ -2064,7 +2401,7 @@ fun SearchScreen(
                                             }
                                         }
                                     }
-                                    
+
                                     // [新增] 空状态提示
                                     if (!pageResultState.isSearching && pageResultState.liveResults.isEmpty() && pageResultState.error == null && pageEmptyStateCopy != null) {
                                         item {
@@ -2072,21 +2409,13 @@ fun SearchScreen(
                                                 modifier = Modifier.fillMaxWidth().padding(vertical = 64.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.title,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        fontWeight = FontWeight.Medium
-                                                    )
-                                                    Spacer(modifier = Modifier.height(8.dp))
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.subtitle,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                                                        style = MaterialTheme.typography.bodyMedium,
-                                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                                                    )
-                                                }
+                                                com.android.purebilibili.core.ui.EmptyState(
+                                                    message = pageEmptyStateCopy.title,
+                                                    subtitle = pageEmptyStateCopy.subtitle,
+                                                    animation = com.android.purebilibili.core.ui.MaidAnimation.SEARCH_EMPTY,
+                                                    enableEasterEgg = false,
+                                                    isVisible = searchPagerState.currentPage == page
+                                                )
                                             }
                                         }
                                     }
@@ -2192,7 +2521,10 @@ fun SearchScreen(
                                         ArticleSearchResultCard(
                                             item = articleItem,
                                             appearance = genericResultCardAppearance,
-                                            onClick = { onArticleClick(articleItem.id, articleItem.title) }
+                                            onClick = { onArticleClick(articleItem.id, articleItem.title) },
+                                            onTransitionClick = onArticleResultClick?.let { openResult ->
+                                                { key -> openResult(articleItem.id, articleItem.title, key) }
+                                            },
                                         )
                                         if (targetSearchType == state.searchType && index == pageResultState.articleResults.size - 3 && pageResultState.hasMoreResults && !pageResultState.isLoadingMore) {
                                             LaunchedEffect(pageResultState.currentPage, targetSearchType) {
@@ -2207,21 +2539,13 @@ fun SearchScreen(
                                                 modifier = Modifier.fillMaxWidth().padding(vertical = 64.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.title,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        fontWeight = FontWeight.Medium
-                                                    )
-                                                    Spacer(modifier = Modifier.height(8.dp))
-                                                    AppText(
-                                                        text = pageEmptyStateCopy.subtitle,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                                                        style = MaterialTheme.typography.bodyMedium,
-                                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                                                    )
-                                                }
+                                                com.android.purebilibili.core.ui.EmptyState(
+                                                    message = pageEmptyStateCopy.title,
+                                                    subtitle = pageEmptyStateCopy.subtitle,
+                                                    animation = com.android.purebilibili.core.ui.MaidAnimation.SEARCH_EMPTY,
+                                                    enableEasterEgg = false,
+                                                    isVisible = searchPagerState.currentPage == page
+                                                )
                                             }
                                         }
                                     }
@@ -2358,6 +2682,9 @@ fun SearchScreen(
                     discoverListError = state.discoverListError,
                     isRefreshingDiscoverList = state.isRefreshingDiscoverList,
                     historyList = state.historyList,
+                    recordSearchHistory = state.recordSearchHistory,
+                    globalPrivacyMode = state.globalPrivacyMode,
+                    onToggleHistoryRecording = viewModel::toggleSearchHistoryRecording,
                     hotSearchEnabled = hotSearchEnabled,
                     discoverSectionEnabled = discoverSectionEnabled,
                     onToggleHotSearch = {
@@ -2376,7 +2703,16 @@ fun SearchScreen(
                     onRefreshHot = viewModel::refreshHotSearch,
                     onOpenTrending = onOpenTrending,
                     onRefreshDiscover = viewModel::refreshDiscover,
-                    onKeywordClick = submitSearch,
+                    onKeywordClick = { keyword ->
+                        if (
+                            shouldAcceptSearchLandingKeywordClick(
+                                clearedAtElapsedMs = searchQueryClearedAtElapsedMs,
+                                nowElapsedMs = android.os.SystemClock.elapsedRealtime(),
+                            )
+                        ) {
+                            submitSearch(keyword)
+                        }
+                    },
                     onClearHistory = viewModel::clearHistory,
                     onDeleteHistory = viewModel::deleteHistory,
                     modifier = Modifier
@@ -2399,66 +2735,49 @@ fun SearchScreen(
                 extendBelowBounds = false,
                 modifier = Modifier.align(Alignment.TopCenter),
             ) {
-            SearchTopBar(
-                query = state.query,
-                onBack = handleSearchBack,
-                onQueryChange = {
-                    viewModel.onQueryChange(it)
-                },
-                onSearch = submitSearch,
-                onClearQuery = {
-                    viewModel.onQueryChange("")
-                    viewModel.exitResultsToLanding()
-                },
-                onFocusChanged = { focused ->
-                    searchFieldFocused = focused
-                    if (focused) {
-                        autoFocusConsumed = true
-                    }
-                },
-                focusRequester = searchFocusRequester,
-                placeholder = displayedSearchHint.ifBlank { resolveSearchDefaultPlaceholder() },
-                suggestedKeyword = displayedSearchHint,
-                autoFocusEnabled = shouldAutoFocusSearchField(
-                    startupSettled = startupSettled,
-                    query = state.query,
-                    showResults = state.showResults,
-                    autoFocusConsumed = autoFocusConsumed
+            searchTopBarContent(
+                state.query,
+                SearchTopBarPlacement(
+                    focusRequester = searchFocusRequester,
+                    placeholder = displayedSearchHint.ifBlank { resolveSearchDefaultPlaceholder() },
+                    suggestedKeyword = suggestedSearchKeyword,
+                    autoFocusEnabled = shouldAutoFocusSearchField(
+                        startupSettled = startupSettled,
+                        query = state.query,
+                        showResults = state.showResults,
+                        autoFocusConsumed = autoFocusConsumed
+                    ),
+                    reducedMotionBudget = effectiveSearchMotionBudget == SearchMotionBudget.REDUCED,
+                    entryMotionSpec = entryMotionSpec,
+                    entryMotionKey = entryMotionKey,
+                    exitMotionSpec = exitMotionSpec,
+                    exitMotionKey = exitMotionKey,
+                    liquidGlassEnabled = effectiveLiquidGlassEnabled,
+                    miuixBackdrop = searchChromeBackdrop,
+                    includeStatusBarPadding = true,
+                    modifier = Modifier
+                        .then(
+                            if (!immersiveSearchChrome && shouldUseSearchTopBarBlur) {
+                                Modifier.unifiedBlur(
+                                    hazeState = hazeState,
+                                    surfaceType = com.android.purebilibili.core.ui.blur.BlurSurfaceType.HEADER,
+                                    isScrolling = isSearchResultsScrolling,
+                                    forceLowBudget = forceLowBudgetSearchHeaderBlur
+                                )
+                            } else {
+                                Modifier
+                            }
+                        )
+                        .background(
+                            if (immersiveSearchChrome || shouldUseSearchTopBarBlur) {
+                                Color.Transparent
+                            } else {
+                                searchTopBarHeaderColor
+                            }
+                        ),
                 ),
-                reducedMotionBudget = effectiveSearchMotionBudget == SearchMotionBudget.REDUCED,
-                entryMotionSpec = entryMotionSpec,
-                entryMotionKey = entryMotionKey,
-                onEntryMotionFinished = onEntryMotionConsumed,
-                exitMotionSpec = exitMotionSpec,
-                exitMotionKey = exitMotionKey,
-                onExitMotionFinished = { completedKey ->
-                    if (exitMotionInProgress && completedKey == exitMotionKey) {
-                        onBack()
-                    }
-                },
-                isScrollInProgressProvider = { isSearchResultsScrolling },
-                liquidGlassEnabled = effectiveLiquidGlassEnabled,
-                miuixBackdrop = searchChromeBackdrop,
-                modifier = Modifier
-                    .then(
-                        if (!immersiveSearchChrome && shouldUseSearchTopBarBlur) {
-                            Modifier.unifiedBlur(
-                                hazeState = hazeState,
-                                surfaceType = com.android.purebilibili.core.ui.blur.BlurSurfaceType.HEADER,
-                                isScrolling = isSearchResultsScrolling,
-                                forceLowBudget = forceLowBudgetSearchHeaderBlur
-                            )
-                        } else {
-                            Modifier
-                        }
-                    )
-                    .background(
-                        if (immersiveSearchChrome || shouldUseSearchTopBarBlur) {
-                            Color.Transparent
-                        } else {
-                            searchTopBarHeaderColor
-                        }
-                    )
+                null,
+                searchTopBarCallbacks,
             )
 
             }
@@ -2469,7 +2788,7 @@ fun SearchScreen(
                 onClick = {
                     scope.launch {
                         animateSearchHeaderOffsetTo(0f)
-                        if (state.searchType == SearchType.VIDEO) {
+                        if (state.searchType == SearchType.VIDEO || state.searchType == SearchType.ALL) {
                             resultGridState.animateScrollToTop(fast = true)
                         } else {
                             resultListState.animateScrollToTop(fast = true)
@@ -2484,7 +2803,7 @@ fun SearchScreen(
                         bottom = resultBottomPadding + 12.dp
                     ),
             )
-            
+
             // ---  搜索建议下拉列表 ---
             if (state.suggestions.isNotEmpty() && state.query.isNotEmpty() && !state.showResults) {
                 SearchSuggestionDropdown(
@@ -2501,6 +2820,33 @@ fun SearchScreen(
         }
     }
 }
+
+private class SearchTopBarPlacement(
+    val focusRequester: androidx.compose.ui.focus.FocusRequester,
+    val placeholder: String,
+    val suggestedKeyword: String,
+    val autoFocusEnabled: Boolean,
+    val reducedMotionBudget: Boolean,
+    val entryMotionSpec: SearchEntryMotionSpec?,
+    val entryMotionKey: Int,
+    val exitMotionSpec: SearchEntryMotionSpec?,
+    val exitMotionKey: Int,
+    val liquidGlassEnabled: Boolean,
+    val miuixBackdrop: MiuixBackdrop?,
+    val includeStatusBarPadding: Boolean,
+    val modifier: Modifier,
+)
+
+private class SearchTopBarCallbacks(
+    val onBack: () -> Unit,
+    val onQueryChange: (String) -> Unit,
+    val onSearch: (String) -> Unit,
+    val onClearQuery: () -> Unit,
+    val onFocusChanged: (Boolean) -> Unit,
+    val onEntryMotionFinished: (Int) -> Unit,
+    val onExitMotionFinished: (Int) -> Unit,
+    val isScrollInProgressProvider: () -> Boolean,
+)
 
 // 顶部搜索栏：中性 TextFieldValue 实现，保光标
 @Composable
@@ -2526,8 +2872,10 @@ fun SearchTopBar(
     liquidGlassEnabled: Boolean = false,
     miuixBackdrop: MiuixBackdrop? = null,
     includeStatusBarPadding: Boolean = true,
+    trailingActions: (@Composable RowScope.() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
+    val componentSpacing = resolveSearchComponentSpacingSpec(LocalAppUiStyle.current)
     val topChromePolicy = rememberAppTopChromePolicy()
     val chromeSpec = remember(topChromePolicy) { resolveSearchChromeVisualSpec(topChromePolicy) }
     val inputHeightDp = rememberSearchInputHeightDp(chromeSpec.inputHeightDp)
@@ -2535,25 +2883,12 @@ fun SearchTopBar(
         resolveSearchTopBarRowMinHeightDp(inputHeightDp)
     }
     val searchInteractionSource = remember { MutableInteractionSource() }
-    val isSearchFieldFocused by searchInteractionSource.collectIsFocusedAsState()
     val backIcon = rememberAppBackIcon()
-    val searchIcon = rememberAppSearchIcon()
-    val clearIcon = rememberAppClearIcon()
     val density = LocalDensity.current
     val entryMotionProgress = remember { Animatable(1f) }
     val latestOnEntryMotionFinished by rememberUpdatedState(onEntryMotionFinished)
     val latestOnExitMotionFinished by rememberUpdatedState(onExitMotionFinished)
-    val searchIconColor by animateColorAsState(
-        targetValue = if (isSearchFieldFocused) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-        },
-        animationSpec = if (reducedMotionBudget) snap() else tween(durationMillis = 200),
-        label = "iconColor"
-    )
     val backLabel = stringResource(R.string.common_back)
-    val searchLabel = stringResource(R.string.common_search)
     val resolvedSubmitKeyword = remember(query, suggestedKeyword) {
         resolveSearchSubmitKeyword(
             query = query,
@@ -2568,9 +2903,14 @@ fun SearchTopBar(
     } else {
         HomeTopChromeRenderMode.PLAIN
     }
+    val searchElasticState = com.android.purebilibili.core.ui.components.rememberAppElasticPressState(
+        feedbackStrength = com.android.purebilibili.core.ui.components.APP_SEARCH_ELASTIC_FEEDBACK_STRENGTH,
+    )
+    val backElasticState = com.android.purebilibili.core.ui.components.rememberAppElasticPressState()
     fun Modifier.searchTopChromeGlass(
         shape: androidx.compose.ui.graphics.Shape,
         controlHeightDp: Int,
+        interactionState: com.android.purebilibili.core.ui.components.AppElasticPressState? = null,
     ): Modifier {
         if (!glassActive) return this
         return homeTopBottomBarMatchedSurface(
@@ -2587,13 +2927,16 @@ fun SearchTopBar(
             forceLowBlurBudget = false,
             drawShellLens = true,
             shellLensIntensity = resolveFloatingDockGeometryScale(controlHeightDp.toFloat()),
+            interactionState = interactionState,
         )
     }
 
     // Preserve caret/selection while typing; only resync when external text changes
     // (clear, keyword click, initial keyword). Using TextFieldValue avoids String-field
     // cursor jumps on every parent recomposition.
-    var textFieldValue by remember {
+    var textFieldValue by rememberSaveable(
+        stateSaver = androidx.compose.ui.text.input.TextFieldValue.Saver,
+    ) {
         mutableStateOf(
             androidx.compose.ui.text.input.TextFieldValue(
                 text = query,
@@ -2672,12 +3015,9 @@ fun SearchTopBar(
         Modifier
     }
 
-    AppSurface(
-        modifier = modifier
-            .fillMaxWidth(),
-        color = Color.Transparent,
-        shadowElevation = 0.dp
-    ) {
+    // 外层只负责排列；MD3、Miuix 与玻璃控件都可把弹性绘制伸到布局边界外。
+    // 输入框与按钮自己保留圆角裁切，不用整个顶栏的 Surface 再裁一次。
+    Box(modifier = modifier.fillMaxWidth()) {
         Column {
             if (includeStatusBarPadding) {
                 Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
@@ -2687,7 +3027,7 @@ fun SearchTopBar(
                 modifier = Modifier
                     .responsiveContentWidth()
                     .heightIn(min = topBarRowMinHeightDp.dp)
-                    .padding(horizontal = 12.dp, vertical = (SEARCH_TOP_BAR_VERTICAL_PADDING_DP / 2).dp)
+                    .padding(horizontal = componentSpacing.horizontalPaddingDp.dp, vertical = (SEARCH_TOP_BAR_VERTICAL_PADDING_DP / 2).dp)
                     .padding(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal).asPaddingValues())
                     .then(entryMotionModifier),
                 verticalAlignment = Alignment.CenterVertically
@@ -2696,19 +3036,22 @@ fun SearchTopBar(
                 val actionShape = resolveHomeTopEdgeButtonShape(topChromePolicy)
                 SearchTopBarIconButton(
                     onClick = onBack,
+                    elasticState = backElasticState,
+                    shape = actionShape,
+                    transformInBackdrop = glassActive,
                     modifier = Modifier
                         .size(chromeSpec.clearActionSizeDp.dp)
-                        .searchTopChromeGlass(actionShape, chromeSpec.clearActionSizeDp)
+                        .searchTopChromeGlass(actionShape, chromeSpec.clearActionSizeDp, backElasticState)
                 ) {
                     AppIcon(
                         backIcon,
                         contentDescription = backLabel,
-                        tint = MaterialTheme.colorScheme.onSurface,
+                        tint = AppContentColors.primaryText(),
                         modifier = Modifier.size(chromeSpec.actionIconSizeDp.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(componentSpacing.actionGapDp.dp))
 
                 val containerColor = if (glassActive) {
                     Color.Transparent
@@ -2728,6 +3071,7 @@ fun SearchTopBar(
                     onSearch = {
                         if (canSubmit) onSearch(resolvedSubmitKeyword)
                     },
+                    onClear = onClearQuery,
                     placeholder = placeholder,
                     containerColor = containerColor,
                     fieldShape = inputShape,
@@ -2737,65 +3081,34 @@ fun SearchTopBar(
                         .weight(1f)
                         .fillMaxWidth()
                         .height(inputHeightDp.dp)
-                        .searchTopChromeGlass(inputShape, inputHeightDp)
+                        .appElasticPress(state = searchElasticState, transformInBackdrop = glassActive, highlightShape = inputShape)
+                        .searchTopChromeGlass(inputShape, inputHeightDp, searchElasticState)
                         .onFocusChanged { onFocusChanged(it.isFocused) }
                 )
 
-                Spacer(modifier = Modifier.width(chromeSpec.horizontalGapDp.dp))
-
-                SearchTopBarIconButton(
-                    onClick = { onSearch(resolvedSubmitKeyword) },
-                    enabled = canSubmit,
-                    modifier = Modifier
-                        .size(chromeSpec.submitActionSizeDp.dp)
-                        .searchTopChromeGlass(actionShape, chromeSpec.submitActionSizeDp)
-                        .then(
-                            if (glassActive) {
-                                Modifier
-                            } else {
-                                Modifier
-                                    .clip(actionShape)
-                                    .background(
-                                        if (canSubmit) {
-                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)
-                                        } else {
-                                            Color.Transparent
-                                        }
-                                    )
-                            }
+                if (trailingActions != null) {
+                    Spacer(modifier = Modifier.width(chromeSpec.horizontalGapDp.dp))
+                    trailingActions()
+                } else {
+                    val submitElasticState = com.android.purebilibili.core.ui.components.rememberAppElasticPressState()
+                    Spacer(modifier = Modifier.width(chromeSpec.horizontalGapDp.dp))
+                    SearchTopBarIconButton(
+                        onClick = { onSearch(resolvedSubmitKeyword) },
+                        elasticState = submitElasticState,
+                        shape = actionShape,
+                        transformInBackdrop = glassActive,
+                        enabled = canSubmit,
+                        modifier = Modifier
+                            .size(chromeSpec.submitActionSizeDp.dp)
+                            .searchTopChromeGlass(actionShape, chromeSpec.submitActionSizeDp, submitElasticState),
+                    ) {
+                        AppIcon(
+                            imageVector = rememberAppSearchIcon(),
+                            contentDescription = stringResource(R.string.common_search),
+                            tint = AppContentColors.secondaryText().copy(alpha = if (canSubmit) 1f else 0.35f),
+                            modifier = Modifier.size(chromeSpec.actionIconSizeDp.dp),
                         )
-                ) {
-                    AppIcon(
-                        searchIcon,
-                        contentDescription = searchLabel,
-                        tint = if (canSubmit) {
-                            searchIconColor
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
-                        },
-                        modifier = Modifier.size(chromeSpec.actionIconSizeDp.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(chromeSpec.horizontalGapDp.dp))
-
-                SearchTopBarIconButton(
-                    onClick = onClearQuery,
-                    enabled = query.isNotEmpty(),
-                    modifier = Modifier
-                        .size(chromeSpec.clearActionSizeDp.dp)
-                        .searchTopChromeGlass(actionShape, chromeSpec.clearActionSizeDp)
-                ) {
-                    AppIcon(
-                        clearIcon,
-                        contentDescription = stringResource(R.string.common_clear),
-                        tint = if (query.isNotEmpty()) {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
-                        },
-                        modifier = Modifier.size(chromeSpec.actionIconSizeDp.dp)
-                    )
+                    }
                 }
             }
         }
@@ -2805,8 +3118,12 @@ fun SearchTopBar(
 @Composable
 private fun SearchTopBarIconButton(
     onClick: () -> Unit,
+    elasticState: com.android.purebilibili.core.ui.components.AppElasticPressState,
+    shape: androidx.compose.ui.graphics.Shape,
+    transformInBackdrop: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    elasticFeedbackEnabled: Boolean = enabled,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -2816,13 +3133,27 @@ private fun SearchTopBarIconButton(
         ),
         contentAlignment = Alignment.Center,
     ) {
-        Box(modifier = modifier, contentAlignment = Alignment.Center) {
-            AppIconButton(
-                onClick = onClick,
-                modifier = Modifier.matchParentSize(),
-                enabled = enabled,
-                content = content
-            )
+        // The surface owns motion; never move only the glyph inside a fixed clipping shell.
+        Box(
+            modifier = modifier.appElasticPress(
+                enabled = elasticFeedbackEnabled,
+                state = elasticState,
+                transformInBackdrop = transformInBackdrop,
+                highlightShape = shape,
+            ),
+            contentAlignment = Alignment.Center,
+        ) {
+            androidx.compose.runtime.CompositionLocalProvider(
+                com.android.purebilibili.core.ui.components.LocalElasticPressEnabled provides false,
+            ) {
+                AppIconButton(
+                    onClick = onClick,
+                    // drawBackdrop already transforms the surface and its descendants.
+                    modifier = Modifier.matchParentSize(),
+                    enabled = enabled,
+                    content = content,
+                )
+            }
         }
     }
 }
@@ -2832,6 +3163,7 @@ private fun SearchTopBarInputField(
     value: androidx.compose.ui.text.input.TextFieldValue,
     onValueChange: (androidx.compose.ui.text.input.TextFieldValue) -> Unit,
     onSearch: () -> Unit,
+    onClear: () -> Unit,
     placeholder: String,
     containerColor: Color,
     fieldShape: androidx.compose.ui.graphics.Shape,
@@ -2884,27 +3216,50 @@ private fun SearchTopBarInputField(
         keyboardActions = KeyboardActions(onSearch = { onSearch() }),
         interactionSource = interactionSource,
         decorationBox = { innerTextField ->
-            Box(
-                contentAlignment = Alignment.CenterStart,
+            // This is the search page's shared edit affordance, not a glass geometry override.
+            // Native MD3/Miuix and liquid chrome keep their existing field dimensions and padding.
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 12.dp)
             ) {
-                if (value.text.isEmpty()) {
-                    AppText(
-                        text = placeholder,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = textStyle,
-                        color = placeholderColor
-                    )
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                    if (value.text.isEmpty()) {
+                        AppText(
+                            text = placeholder,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = textStyle,
+                            color = placeholderColor
+                        )
+                    }
+                    // Keep text contrast inside the transparent liquid capsule.
+                    androidx.compose.runtime.CompositionLocalProvider(
+                        androidx.compose.material3.LocalContentColor provides contentColor
+                    ) {
+                        innerTextField()
+                    }
                 }
-                // Provide LocalContentColor so platform text paint never falls back to
-                // a low-contrast Miuix default inside the transparent liquid capsule.
-                androidx.compose.runtime.CompositionLocalProvider(
-                    androidx.compose.material3.LocalContentColor provides contentColor
-                ) {
-                    innerTextField()
+                if (value.text.isNotEmpty()) {
+                    // The field owns the only surface; never decorate its clear icon as a top-bar dock.
+                    CompositionLocalProvider(LocalAppTopBarIconDecorationEnabled provides false) {
+                        AppIconButton(
+                            onClick = onClear,
+                            modifier = Modifier.size(32.dp),
+                            colors = AppIconButtonDefaults.colors(
+                                containerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent,
+                            ),
+                        ) {
+                            AppIcon(
+                                imageVector = rememberAppClearIcon(),
+                                contentDescription = stringResource(R.string.common_clear),
+                                tint = placeholderColor,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -2926,7 +3281,7 @@ fun HistoryChip(
         label = {
             AppText(
                 text = keyword,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
                 style = MaterialTheme.typography.labelMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -2940,7 +3295,7 @@ fun HistoryChip(
                 AppIcon(
                     clearIcon,
                     contentDescription = deleteLabel,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
+                    tint = AppContentColors.secondaryText().copy(0.5f),
                     modifier = Modifier.size(14.dp)
                 )
             }
@@ -2960,12 +3315,12 @@ fun QuickCategory(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clickable { onClick() }
+            .appActionClickable { onClick() }
             .heightIn(min = 48.dp)
             .padding(8.dp)
     ) {
         AppText(text = emoji, style = MaterialTheme.typography.headlineSmall)
-        AppText(text = label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface)
+        AppText(text = label, style = MaterialTheme.typography.bodySmall, color = AppContentColors.primaryText())
     }
 }
 
@@ -3000,20 +3355,20 @@ fun SearchDiscoverySection(
                 AppText(
                     title, //  使用动态标题
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = AppContentColors.primaryText()
                 )
             }
-            
+
             // 刷新按钮
             AppTextButton(onClick = onRefresh) {
                 AppText(
-                    "换一换",
+                    stringResource(R.string.search_shuffle),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
             }
         }
-        
+
         // 动态发现内容
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -3024,12 +3379,12 @@ fun SearchDiscoverySection(
                 AppSurface(
                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                     shape = AppShapes.container(ContainerLevel.Chip),
-                    modifier = Modifier.clickable { onItemClick(keyword) }
+                    modifier = Modifier.appActionClickable { onItemClick(keyword) }
                 ) {
                     AppText(
                         keyword,
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = AppContentColors.primaryText(),
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                     )
                 }
@@ -3069,26 +3424,26 @@ fun SearchHotSection(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     AppText(
-                        "热门搜索",
+                        stringResource(R.string.search_hot_title),
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                 }
                 AppSurface(
                     onClick = onToggleHotSearch,
                     shape = AppShapes.container(ContainerLevel.Card),
                     color = if (hotSearchEnabled) {
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+                        AppContentColors.accent().copy(alpha = 0.14f)
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.72f)
                     }
                 ) {
                     AppText(
-                        text = if (hotSearchEnabled) "热搜开" else "热搜关",
+                        text = stringResource(if (hotSearchEnabled) R.string.search_hot_on else R.string.search_hot_off),
                         color = if (hotSearchEnabled) {
-                            MaterialTheme.colorScheme.primary
+                            AppContentColors.accent()
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            AppContentColors.secondaryText()
                         },
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp)
@@ -3118,7 +3473,7 @@ fun SearchHotSection(
                                 Row(
                                     modifier = Modifier
                                         .weight(1f)
-                                        .clickable { onItemClick(hotItem.keyword) },
+                                        .appActionClickable { onItemClick(hotItem.keyword) },
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     // 排名序号
@@ -3126,7 +3481,7 @@ fun SearchHotSection(
                                         text = "${globalIndex + 1}",
                                         style = MaterialTheme.typography.labelLarge,
                                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                                        color = if (isTop3) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                                        color = if (isTop3) AppContentColors.accent() else AppContentColors.secondaryText().copy(alpha = 0.5f),
                                         modifier = Modifier.width(24.dp)
                                     )
 
@@ -3134,7 +3489,7 @@ fun SearchHotSection(
                                     AppText(
                                         text = hotItem.show_name,
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurface,
+                                        color = AppContentColors.primaryText(),
                                         maxLines = 1,
                                         overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                                     )
@@ -3159,10 +3514,11 @@ fun SearchHotSection(
  * and can be interrupted mid-swipe / mid-animate.
  */
 /** PiliPlus 同款分类计数标签:未加载(-1/null)只显示名称,超过 99 显示 99+。 */
-internal fun resolveSearchTypeTabLabel(displayName: String, count: Int?): String {
-    if (count == null || count < 0) return displayName
-    return "$displayName ${if (count > 99) "99+" else count}"
-}
+internal fun resolveSearchTypeTabLabel(displayName: String, count: Int?): String =
+    resolveAppCountedTabLabel(displayName, count)
+
+internal fun resolveSearchTypeTabMeasurementLabel(type: SearchType, count: Int?): String =
+    requireNotNull(appCountedTabOption(type, type.displayName, count).measurementLabel)
 
 @Composable
 private fun SearchResultTypeTabRow(
@@ -3172,18 +3528,25 @@ private fun SearchResultTypeTabRow(
     onTabClick: (Int, SearchType) -> Unit,
     miuixBackdrop: MiuixBackdrop? = null,
 ) {
+    val componentSpacing = resolveSearchComponentSpacingSpec(LocalAppUiStyle.current)
     if (tabs.isEmpty()) return
     val scrollState = rememberScrollState()
     val density = LocalDensity.current
-    val selectedIndex = pagerState.currentPage.coerceIn(0, tabs.lastIndex)
+    val selectedIndex = pagerState.tabSelectedPage.coerceIn(0, tabs.lastIndex)
     val tabLabels = tabs.map { type ->
         resolveSearchTypeTabLabel(type.displayName, counts[type])
+    }
+    val glassMeasurementLabels = tabs.map { type ->
+        resolveSearchTypeTabMeasurementLabel(type, counts[type])
     }
 
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 2.dp),
+            .padding(
+                horizontal = componentSpacing.resultRailHorizontalPaddingDp.dp,
+                vertical = componentSpacing.rowVerticalPaddingDp.dp,
+            ),
         contentAlignment = Alignment.CenterStart
     ) {
         val viewportWidthDp = maxWidth.value.roundToInt()
@@ -3201,38 +3564,16 @@ private fun SearchResultTypeTabRow(
         val containerHorizontalPaddingPx = with(density) { AppSpacingTokens.ExtraSmall.toPx() }
         val dragFollowEdgePaddingPx = with(density) { 12.dp.toPx() }
 
-        if (LocalAppUiStyle.current == AppUiStyle.MATERIAL3 && !LocalAppThemeConfig.current.liquidGlassEnabled) {
-            // MD3 非玻璃:PiliPlus 搜索页同款 tonal 胶囊分类行(标签自适应宽度 + Pager 跟随)。
-            // 液态玻璃开启时保持玻璃胶囊指示器,不进入本分支。
-            AppTonalPillTabRow(
-                options = tabs.mapIndexed { index, type ->
-                    AppSegmentOption(value = type, label = tabLabels[index])
-                },
-                selectedValue = tabs.getOrElse(selectedIndex) { tabs.first() },
-                onSelectionChange = { type ->
-                    tabs.indexOf(type).takeIf { it >= 0 }?.let { index ->
-                        onTabClick(index, type)
-                    }
-                },
-                scrollable = true,
-                labelFontSize = 13.5.sp,
-                indicatorPositionProvider = {
-                    pagerState.currentPage + pagerState.currentPageOffsetFraction
-                },
-            )
-            return@BoxWithConstraints
-        }
 
         KeepScrollableTabSelectionVisible(
             scrollState = scrollState,
             selectedIndex = if (useScrollableRail) selectedIndex else 0,
             itemWidthPx = itemWidthPx,
-            viewportWidthPx = viewportWidthPx,
             contentPaddingPx = containerHorizontalPaddingPx,
             // Glide with the indicator (page + fraction) while the pager is moving; settle when idle.
             focusPosition = {
                 if (useScrollableRail) {
-                    pagerState.currentPage + pagerState.currentPageOffsetFraction
+                    pagerState.tabIndicatorPosition
                 } else {
                     0f
                 }
@@ -3242,6 +3583,14 @@ private fun SearchResultTypeTabRow(
 
         BottomBarLiquidSegmentedControl(
             items = tabLabels,
+            // 玻璃槽位按计数上限预留，指示器按当前文字适配；原生路径不使用这些测量参数。
+            liquidGlassMeasurementLabels = glassMeasurementLabels,
+            liquidGlassIndicatorMeasurementLabels = tabLabels,
+            liquidGlassAdaptIndicatorToLabel = true,
+            liquidGlassAnimateLabelWidthChanges = false,
+            // Both renderers center on wide devices; each keeps its own sizing and indicator style.
+            centerGlassContent = LocalWindowSizeClass.current.let { it.isTabletDevice && it.isTablet },
+            centerNativeContent = LocalWindowSizeClass.current.let { it.isTabletDevice && it.isTablet },
             selectedIndex = selectedIndex,
             onSelected = { index ->
                 tabs.getOrNull(index)?.let { onTabClick(index, it) }
@@ -3249,14 +3598,15 @@ private fun SearchResultTypeTabRow(
             itemWidth = itemWidth.takeIf { useScrollableRail },
             height = AppChromeSizeTokens.BottomBarMatchedSegmentedControlHeightDp.dp,
             indicatorHeight = AppChromeSizeTokens.BottomBarMatchedSegmentedIndicatorHeightDp.dp,
-            labelFontSize = 13.5.sp,
+            labelFontSize = MaterialTheme.typography.labelMedium.fontSize,
             allowNativeLabelOverflow = true,
+            nativeIndicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
             miuixBackdrop = miuixBackdrop,
             liquidGlassEffectsEnabled = true,
             tapPressRefractionEnabled = !useScrollableRail,
             dragSelectionEnabled = tabs.size > 1,
             indicatorPositionProvider = {
-                pagerState.currentPage + pagerState.currentPageOffsetFraction
+                pagerState.tabIndicatorPosition
             },
             isScrollInProgressProvider = { pagerState.isScrollInProgress },
             externalPagerMotionEffectsEnabled = true,
@@ -3277,7 +3627,10 @@ private fun SearchResultTypeTabRow(
                 }
             },
             modifier = if (useScrollableRail) {
-                Modifier.liquidDockViewport()
+                Modifier.liquidDockViewport(
+                    verticalOverflow = AppChromeSizeTokens.MinimumTouchTarget,
+                    allowNativeOverflow = true,
+                )
             } else {
                 Modifier.fillMaxWidth()
             },
@@ -3288,7 +3641,7 @@ private fun SearchResultTypeTabRow(
 
 @Composable
 private fun rememberSearchHighlightedTitle(video: VideoItem): androidx.compose.ui.text.AnnotatedString? {
-    val highlightColor = MaterialTheme.colorScheme.primary
+    val highlightColor = AppContentColors.accent()
     return remember(video.searchHighlightedTitle, highlightColor) {
         val segments = resolveSearchHighlightedTextSegments(video.searchHighlightedTitle)
         if (segments.none { it.highlighted }) {
@@ -3356,22 +3709,19 @@ fun SearchFilterBar(
     var showPhotoOrderMenu by remember { mutableStateOf(false) }
     var showPhotoCategoryMenu by remember { mutableStateOf(false) }
 
-    val videoTidOptions = remember {
-        listOf(
-            0 to "全部分区",
-            1 to "动画",
-            3 to "音乐",
-            4 to "游戏",
-            5 to "娱乐",
-            36 to "科技",
-            119 to "鬼畜",
-            160 to "生活",
-            181 to "影视"
-        )
-    }
-    val selectedVideoTidName = remember(currentVideoTid, videoTidOptions) {
-        videoTidOptions.find { it.first == currentVideoTid }?.second ?: "分区$currentVideoTid"
-    }
+    val videoTidOptions = listOf(
+            0 to stringResource(R.string.search_zone_all_sections),
+            1 to stringResource(R.string.search_zone_animation),
+            3 to stringResource(R.string.search_zone_music),
+            4 to stringResource(R.string.search_zone_games),
+            5 to stringResource(R.string.search_zone_entertainment),
+            36 to stringResource(R.string.search_zone_technology),
+            119 to stringResource(R.string.search_zone_kichiku),
+            160 to stringResource(R.string.search_zone_life),
+            181 to stringResource(R.string.search_zone_film_tv)
+    )
+    val selectedVideoTidName = videoTidOptions.find { it.first == currentVideoTid }?.second
+        ?: stringResource(R.string.search_zone_unavailable, currentVideoTid)
     val filterControls = remember(currentType, currentUpOrder) {
         resolveSearchFilterControls(
             currentType = currentType,
@@ -3379,27 +3729,32 @@ fun SearchFilterBar(
         )
     }
     if (filterControls.isEmpty()) return
-    
-    val miuixNonGlass = isMiuixNonGlassEnabled()
-    val filterRowPadding = if (miuixNonGlass) {
+
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
+    val filterRowPadding = if (useMiuixPresentation) {
         Modifier.padding(horizontal = AppSpacingTokens.Large, vertical = AppSpacingTokens.Small)
     } else {
         Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
     }
-    val chipSpacing = if (miuixNonGlass) 9.dp else 10.dp
+    val chipSpacing = if (useMiuixPresentation) 9.dp else 10.dp
+    val centerWideFilters = LocalWindowSizeClass.current.let { it.isTabletDevice && it.isTablet }
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .then(filterRowPadding)
     ) {
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(chipSpacing),
-                verticalArrangement = Arrangement.spacedBy(if (miuixNonGlass) AppSpacingTokens.Small else 8.dp)
+                modifier = if (centerWideFilters) Modifier.fillMaxWidth() else Modifier,
+                horizontalArrangement = Arrangement.spacedBy(
+                    chipSpacing,
+                    if (centerWideFilters) Alignment.CenterHorizontally else Alignment.Start,
+                ),
+                verticalArrangement = Arrangement.spacedBy(if (useMiuixPresentation) AppSpacingTokens.Small else 8.dp)
             ) {
                 if (SearchFilterControl.VIDEO_ORDER in filterControls) {
-                Box {
+                com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showOrderMenu = true }) {
                     FilterMenuChip(
-                        text = resolveSearchOrderChipLabel(currentOrder),
+                        text = localizedSearchOrderLabel(currentOrder),
                         highlighted = currentOrder != SearchOrder.TOTALRANK,
                         onClick = { showOrderMenu = true }
                     )
@@ -3409,7 +3764,7 @@ fun SearchFilterBar(
                     ) {
                         resolveSearchVideoOrderOptions().forEach { order ->
                             AppDropdownMenuItem(
-                                text = { AppText(resolveSearchOrderChipLabel(order)) },
+                                text = { AppText(localizedSearchOrderLabel(order)) },
                                 onClick = {
                                     onOrderChange(order)
                                     showOrderMenu = false
@@ -3421,7 +3776,7 @@ fun SearchFilterBar(
                 }
 
                 if (SearchFilterControl.VIDEO_DURATION in filterControls) {
-                Box {
+                com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showDurationMenu = true }) {
                     FilterMenuChip(
                         text = resolveSearchDurationFilterLabel(currentDurations),
                         highlighted = currentDurations.isNotEmpty(),
@@ -3439,6 +3794,7 @@ fun SearchFilterBar(
                             }
                             AppDropdownMenuItem(
                                 text = { AppText(duration.displayName) },
+                                dismissOnClick = false,
                                 leadingIcon = {
                                     AppCheckbox(
                                         checked = selected,
@@ -3455,7 +3811,7 @@ fun SearchFilterBar(
                 }
 
                 if (SearchFilterControl.VIDEO_TID in filterControls) {
-                Box {
+                com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showVideoTidMenu = true }) {
                     FilterMenuChip(
                         text = selectedVideoTidName,
                         highlighted = currentVideoTid != 0,
@@ -3479,7 +3835,7 @@ fun SearchFilterBar(
                 }
 
                 if (SearchFilterControl.UP_ORDER in filterControls) {
-                Box {
+                com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showUpOrderMenu = true }) {
                     FilterMenuChip(
                         text = currentUpOrder.displayName,
                         highlighted = currentUpOrder != SearchUpOrder.DEFAULT,
@@ -3492,6 +3848,7 @@ fun SearchFilterBar(
                         SearchUpOrder.entries.forEach { order ->
                             AppDropdownMenuItem(
                                 text = { AppText(order.displayName) },
+                                selected = order == currentUpOrder,
                                 onClick = {
                                     onUpOrderChange(order)
                                     showUpOrderMenu = false
@@ -3503,7 +3860,7 @@ fun SearchFilterBar(
                 }
 
                 if (SearchFilterControl.UP_ORDER_SORT in filterControls) {
-                    Box {
+                    com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showUpOrderSortMenu = true }) {
                         FilterMenuChip(
                             text = currentUpOrderSort.displayName,
                             highlighted = true,
@@ -3527,7 +3884,7 @@ fun SearchFilterBar(
                 }
 
                 if (SearchFilterControl.UP_USER_TYPE in filterControls) {
-                Box {
+                com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showUpUserTypeMenu = true }) {
                     FilterMenuChip(
                         text = resolveSearchUpUserTypeFilterLabel(currentUpUserType),
                         highlighted = currentUpUserType != SearchUserType.ALL,
@@ -3551,7 +3908,7 @@ fun SearchFilterBar(
                 }
 
                 if (SearchFilterControl.LIVE_ORDER in filterControls) {
-                    Box {
+                    com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showLiveOrderMenu = true }) {
                         FilterMenuChip(
                             text = currentLiveOrder.displayName,
                             highlighted = currentLiveOrder != SearchLiveOrder.ONLINE,
@@ -3564,6 +3921,7 @@ fun SearchFilterBar(
                             SearchLiveOrder.entries.forEach { order ->
                                 AppDropdownMenuItem(
                                     text = { AppText(order.displayName) },
+                                    selected = order == currentLiveOrder,
                                     onClick = {
                                         onLiveOrderChange(order)
                                         showLiveOrderMenu = false
@@ -3631,7 +3989,7 @@ private fun SearchOrderMenu(
     onExpandedChange: (Boolean) -> Unit,
     onSelected: (SearchOrder) -> Unit
 ) {
-    Box {
+    com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { onExpandedChange(true) }) {
         FilterMenuChip(
             text = current.displayName,
             highlighted = current != SearchOrder.TOTALRANK,
@@ -3641,6 +3999,7 @@ private fun SearchOrderMenu(
             options.forEach { order ->
                 AppDropdownMenuItem(
                     text = { AppText(order.displayName) },
+                    selected = order == current,
                     onClick = {
                         onSelected(order)
                         onExpandedChange(false)
@@ -3660,7 +4019,7 @@ private fun SearchCategoryMenu(
     onExpandedChange: (Boolean) -> Unit,
     onSelected: (Int) -> Unit
 ) {
-    Box {
+    com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { onExpandedChange(true) }) {
         FilterMenuChip(label, highlighted) { onExpandedChange(true) }
         AppDropdownMenu(expanded = expanded, onDismissRequest = { onExpandedChange(false) }) {
             options.forEachIndexed { index, option ->
@@ -3823,17 +4182,17 @@ fun SearchResultCard(
     index: Int,
     onClick: (String) -> Unit
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
     val coverUrl = remember(video.bvid) {
         FormatUtils.fixImageUrl(if (video.pic.startsWith("//")) "https:${video.pic}" else video.pic)
     }
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(AppShapes.container(ContainerLevel.Card))
-            .clickable { onClick(video.bvid) }
-            .padding(bottom = if (useMiuixNonGlassPresentation) AppSpacingTokens.Small else 8.dp)
+            .appActionClickable { onClick(video.bvid) }
+            .padding(bottom = if (useMiuixPresentation) AppSpacingTokens.Small else 8.dp)
     ) {
         // 封面
         Box(
@@ -3853,7 +4212,7 @@ fun SearchResultCard(
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-            
+
             // 底部渐变
             Box(
                 modifier = Modifier
@@ -3869,22 +4228,22 @@ fun SearchResultCard(
                         )
                     )
             )
-            
+
             VideoCardCoverDurationText(
                 text = FormatUtils.formatDuration(video.duration),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(8.dp),
             )
-            
+
         }
-        
+
         Spacer(
             modifier = Modifier.height(
-                if (useMiuixNonGlassPresentation) AppSpacingTokens.Small else 8.dp
+                if (useMiuixPresentation) AppSpacingTokens.Small else 8.dp
             )
         )
-        
+
         // 标题
         SearchResultText(
             text = video.title,
@@ -3893,13 +4252,13 @@ fun SearchResultCard(
             maxLines = videoCardTitleMaxLines(),
             overflow = videoCardTitleOverflow(),
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = AppContentColors.primaryText(),
             modifier = Modifier.padding(horizontal = 2.dp)
         )
 
         Spacer(
             modifier = Modifier.height(
-                if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 6.dp
+                if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 6.dp
             )
         )
         HorizontalVideoStatRow(
@@ -3911,22 +4270,22 @@ fun SearchResultCard(
             },
             modifier = Modifier.padding(horizontal = 2.dp),
         )
-        
+
         Spacer(
             modifier = Modifier.height(
-                if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 6.dp
+                if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 6.dp
             )
         )
-        
+
         // UP主 + 发布时间
         FlowRow(
             modifier = Modifier.padding(horizontal = 2.dp),
             itemVerticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(
-                if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 2.dp
+                if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 2.dp
             ),
             verticalArrangement = Arrangement.spacedBy(
-                if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 2.dp
+                if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 2.dp
             )
         ) {
             UpBadgeName(
@@ -3950,20 +4309,20 @@ fun SearchResultCard(
                     }
                 } else null,
                 nameStyle = MaterialTheme.typography.labelSmall,
-                nameColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                badgeTextColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.85f),
-                badgeBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f),
+                nameColor = AppContentColors.secondaryText(),
+                badgeTextColor = AppContentColors.secondaryText().copy(alpha = 0.85f),
+                badgeBorderColor = AppContentColors.secondaryText().copy(alpha = 0.35f),
                 maxLines = Int.MAX_VALUE,
                 overflow = TextOverflow.Visible,
                 modifier = Modifier.wrapContentWidth()
             )
-            
+
             //  显示发布时间
             if (video.pubdate > 0) {
                 SearchResultText(
                     text = "· ${FormatUtils.formatPublishTime(video.pubdate)}",
                     role = SearchResultTextRole.BADGE,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    color = AppContentColors.secondaryText()
                 )
             }
         }
@@ -3977,24 +4336,29 @@ fun SearchResultCard(
 internal fun UpSearchResultCard(
     upItem: com.android.purebilibili.data.model.response.SearchUpItem,
     appearance: SearchResultCardAppearance,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onTransitionClick: ((String) -> Unit)? = null,
+    onLiveClick: (() -> Unit)? = null,
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
-    val cleanedItem = remember(upItem.mid) { upItem.cleanupFields() }
-    
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
+    val cleanedItem = remember(upItem) { upItem.cleanupFields() }
+    val transitionKey = rememberSaveable(upItem.mid) {
+        "${searchUpContainerKey(upItem.mid)}:${java.util.UUID.randomUUID()}"
+    }
+
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
-    
+
     SearchResultCardSurface(
         appearance = appearance,
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
+        onClick = { onTransitionClick?.invoke(transitionKey) ?: onClick() },
+        modifier = Modifier.fillMaxWidth().searchResultContainerBounds(transitionKey)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 12.dp
+                    if (useMiuixPresentation) AppSpacingTokens.Medium else 12.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -4025,7 +4389,24 @@ internal fun UpSearchResultCard(
                         .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentScale = ContentScale.Crop
                 )
-                if (verifyBadge != null) {
+                if (cleanedItem.is_live == 1) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(18.dp)
+                            .background(MaterialTheme.colorScheme.primary, CircleShape)
+                            .border(1.5.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                            .padding(4.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        com.android.purebilibili.core.ui.components.PlaybackBarsIndicator(
+                            isPlaying = true,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            contentDescription = "正在直播",
+                            modifier = Modifier.size(10.dp),
+                        )
+                    }
+                } else if (verifyBadge != null) {
                     OfficialVerifyAvatarBadge(
                         badge = verifyBadge,
                         modifier = Modifier.align(Alignment.BottomEnd)
@@ -4041,20 +4422,20 @@ internal fun UpSearchResultCard(
                     )
                 }
             }
-            
+
             Spacer(
                 modifier = Modifier.width(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 10.dp
+                    if (useMiuixPresentation) AppSpacingTokens.Medium else 10.dp
                 )
             )
-            
+
             // UP主信息
             Column(modifier = Modifier.weight(1f)) {
                 // 名称 + 官方等级标志
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(
-                        if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 6.dp
+                        if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 6.dp
                     )
                 ) {
                     SearchResultText(
@@ -4062,7 +4443,7 @@ internal fun UpSearchResultCard(
                         role = SearchResultTextRole.TITLE,
                         modifier = Modifier.weight(1f, fill = false),
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = AppContentColors.primaryText(),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -4070,30 +4451,60 @@ internal fun UpSearchResultCard(
                         level = cleanedItem.level,
                         isSeniorMember = cleanedItem.is_senior_member == 1
                     )
+                    if (cleanedItem.is_live == 1) {
+                        AppSurface(
+                            modifier = Modifier.appActionClickable(
+                                enabled = (cleanedItem.room_id ?: 0L) > 0L && onLiveClick != null,
+                                onClickLabel = "进入直播间",
+                                onClick = { onLiveClick?.invoke() },
+                            ),
+                            shape = AppShapes.container(ContainerLevel.Tag),
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ) {
+                            SearchResultText(
+                                text = "直播中",
+                                role = SearchResultTextRole.BADGE,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                maxLines = 1,
+                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                            )
+                        }
+                    }
                 }
 
                 Spacer(
                     modifier = Modifier.height(
-                        if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 2.dp
+                        if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 2.dp
                     )
                 )
                 SearchResultText(
                     text = "粉丝：${FormatUtils.formatStat(cleanedItem.fans.toLong())}  " +
                         "视频：${cleanedItem.videos}",
                     role = SearchResultTextRole.METADATA,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                 )
+
+                if (cleanedItem.usign.isNotBlank()) {
+                    SearchResultText(
+                        text = cleanedItem.usign,
+                        role = SearchResultTextRole.BODY,
+                        color = AppContentColors.secondaryText(),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
 
                 if (verifyBadge != null && verifyBadge.text.isNotBlank()) {
                     Spacer(
                         modifier = Modifier.height(
-                            if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 2.dp
+                            if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 2.dp
                         )
                     )
                     SearchResultText(
                         text = verifyBadge.text,
                         role = SearchResultTextRole.METADATA,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppContentColors.secondaryText(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -4112,18 +4523,23 @@ internal fun BangumiSearchResultCard(
     item: com.android.purebilibili.data.model.response.BangumiSearchItem,
     appearance: SearchResultCardAppearance,
     onClick: () -> Unit,
-    categoryLabel: String? = null
+    categoryLabel: String? = null,
+    onTransitionClick: ((String) -> Unit)? = null,
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
+    val transitionKey = rememberSaveable(item.seasonId) {
+        "${searchBangumiContainerKey(item.seasonId)}:${java.util.UUID.randomUUID()}"
+    }
     SearchResultCardSurface(
         appearance = appearance,
-        onClick = onClick
+        onClick = { onTransitionClick?.invoke(transitionKey) ?: onClick() },
+        modifier = Modifier.searchResultContainerBounds(transitionKey),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 12.dp
+                    if (useMiuixPresentation) AppSpacingTokens.Medium else 12.dp
                 ),
             verticalAlignment = Alignment.Top
         ) {
@@ -4141,9 +4557,9 @@ internal fun BangumiSearchResultCard(
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentScale = ContentScale.Crop
             )
-            
+
             Spacer(modifier = Modifier.width(AppSpacingTokens.Medium))
-            
+
             // 番剧信息
             Column(modifier = Modifier.weight(1f)) {
                 if (!categoryLabel.isNullOrBlank()) {
@@ -4164,7 +4580,7 @@ internal fun BangumiSearchResultCard(
                     text = item.title,
                     role = SearchResultTextRole.TITLE,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -4175,7 +4591,7 @@ internal fun BangumiSearchResultCard(
                         SearchResultText(
                             text = item.seasonTypeName,
                             role = SearchResultTextRole.METADATA,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = AppContentColors.accent(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f, fill = false)
@@ -4186,7 +4602,7 @@ internal fun BangumiSearchResultCard(
                         SearchResultText(
                             text = item.indexShow,
                             role = SearchResultTextRole.METADATA,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = AppContentColors.secondaryText(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -4200,13 +4616,13 @@ internal fun BangumiSearchResultCard(
                             SearchResultText(
                                 text = "⭐ ${score.score}",
                                 role = SearchResultTextRole.METADATA,
-                                color = Color(0xFFFF9800)
+                                color = MaterialTheme.colorScheme.tertiary
                             )
                             Spacer(modifier = Modifier.width(AppSpacingTokens.ExtraSmall))
                             SearchResultText(
                                 text = "${score.userCount}人评分",
                                 role = SearchResultTextRole.BADGE,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                                color = AppContentColors.secondaryText()
                             )
                         }
                     }
@@ -4217,13 +4633,119 @@ internal fun BangumiSearchResultCard(
                     SearchResultText(
                         text = item.desc,
                         role = SearchResultTextRole.BODY,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        color = AppContentColors.secondaryText(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
             }
         }
+    }
+}
+
+/**
+ * 综合搜索结果中的赛事卡片：对阵双方队标/队名与比分（或 VS），点击进入原生比赛详情页。
+ */
+@Composable
+internal fun MatchSearchResultCard(
+    item: com.android.purebilibili.data.model.response.MatchContestInfo,
+    appearance: SearchResultCardAppearance,
+    onClick: () -> Unit
+) {
+    SearchResultCardSurface(
+        appearance = appearance,
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                SearchResultText(
+                    text = listOfNotNull(
+                        item.season?.title?.takeIf { it.isNotBlank() },
+                        item.gameStage.takeIf { it.isNotBlank() }
+                    ).joinToString(" · ").ifBlank { "游戏赛事" },
+                    role = SearchResultTextRole.TITLE,
+                    fontWeight = FontWeight.Medium,
+                    color = AppContentColors.primaryText(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    MatchSearchTeamContent(item.homeTeam, Modifier.weight(1f))
+                    SearchResultText(
+                        text = if (item.contestStatus in 2..3) {
+                            "${item.homeScore ?: 0} : ${item.awayScore ?: 0}"
+                        } else {
+                            "VS"
+                        },
+                        role = SearchResultTextRole.METADATA,
+                        fontWeight = FontWeight.Bold,
+                        color = AppContentColors.primaryText(),
+                        modifier = Modifier.padding(horizontal = AppSpacingTokens.Small)
+                    )
+                    MatchSearchTeamContent(item.awayTeam, Modifier.weight(1f))
+                }
+            }
+            Spacer(modifier = Modifier.width(AppSpacingTokens.Medium))
+            AppSurface(
+                color = if (item.contestStatus == 2) {
+                    AppContentColors.accent()
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                },
+                shape = AppShapes.container(ContainerLevel.Tag)
+            ) {
+                SearchResultText(
+                    text = when (item.contestStatus) {
+                        1 -> "未开始"
+                        2 -> "直播中"
+                        3 -> "已结束"
+                        else -> "待确认"
+                    },
+                    role = SearchResultTextRole.BADGE,
+                    color = if (item.contestStatus == 2) {
+                        MaterialTheme.colorScheme.onError
+                    } else {
+                        AppContentColors.secondaryText()
+                    },
+                    modifier = Modifier.padding(
+                        horizontal = AppSpacingTokens.ExtraSmall,
+                        vertical = AppSpacingTokens.Micro,
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MatchSearchTeamContent(
+    team: com.android.purebilibili.data.model.response.MatchContestTeam?,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        val logo = team.resolveMatchContestLogoUrl()
+        AsyncImage(
+            model = logo.ifBlank { null },
+            contentDescription = null,
+            modifier = Modifier
+                .size(28.dp)
+                .clip(AppShapes.container(ContainerLevel.Chip)),
+            contentScale = ContentScale.Fit
+        )
+        Spacer(modifier = Modifier.width(AppSpacingTokens.ExtraSmall))
+        SearchResultText(
+            text = team?.title?.ifBlank { null } ?: "待定",
+            role = SearchResultTextRole.METADATA,
+            color = AppContentColors.secondaryText(),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
@@ -4236,7 +4758,7 @@ internal fun LiveSearchResultCard(
     appearance: SearchResultCardAppearance,
     onClick: () -> Unit
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
     SearchResultCardSurface(
         appearance = appearance,
         onClick = onClick
@@ -4245,7 +4767,7 @@ internal fun LiveSearchResultCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 12.dp
+                    if (useMiuixPresentation) AppSpacingTokens.Medium else 12.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -4270,11 +4792,11 @@ internal fun LiveSearchResultCard(
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(AppSpacingTokens.ExtraSmall),
-                        color = MaterialTheme.colorScheme.error,
+                        color = AppContentColors.error(),
                         shape = AppShapes.container(ContainerLevel.Tag)
                     ) {
                         SearchResultText(
-                            text = "直播中",
+                            text = stringResource(R.string.search_live_now),
                             role = SearchResultTextRole.BADGE,
                             color = MaterialTheme.colorScheme.onError,
                             modifier = Modifier.padding(
@@ -4305,16 +4827,16 @@ internal fun LiveSearchResultCard(
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.width(AppSpacingTokens.Medium))
-            
+
             // 直播信息
             Column(modifier = Modifier.weight(1f)) {
                 SearchResultText(
                     text = item.title,
                     role = SearchResultTextRole.TITLE,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -4323,13 +4845,13 @@ internal fun LiveSearchResultCard(
                 SearchResultText(
                     text = item.uname,
                     role = SearchResultTextRole.METADATA,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(
                     modifier = Modifier.height(
-                        if (useMiuixNonGlassPresentation) AppSpacingTokens.ExtraSmall else 2.dp
+                        if (useMiuixPresentation) AppSpacingTokens.ExtraSmall else 2.dp
                     )
                 )
                 // 分区
@@ -4337,7 +4859,7 @@ internal fun LiveSearchResultCard(
                     SearchResultText(
                         text = "${item.area_v2_parent_name} · ${item.area_v2_name}",
                         role = SearchResultTextRole.BADGE,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        color = AppContentColors.secondaryText(),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -4354,9 +4876,9 @@ private fun SearchLoadMoreIndicator(
 ) {
     if (error != null) {
         SearchNativeMessageState(
-            title = "加载更多失败",
+            title = stringResource(R.string.search_more_failed),
             message = error,
-            actionLabel = onRetry?.let { "重试" },
+            actionLabel = onRetry?.let { stringResource(R.string.search_retry) },
             onAction = onRetry,
             modifier = Modifier
                 .fillMaxWidth()
@@ -4380,30 +4902,51 @@ private fun SearchNativeMessageState(
     message: String? = null,
     actionLabel: String? = null,
     onAction: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    animation: com.android.purebilibili.core.ui.MaidAnimation? = null,
+    isVisible: Boolean = true
 ) {
-    Column(
-        modifier = modifier.padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    com.android.purebilibili.core.ui.MaidStateViewport(
+        modifier = modifier.padding(24.dp)
     ) {
+        if (animation != null) {
+            var replayKey by remember(animation, title, message) { mutableIntStateOf(0) }
+            com.android.purebilibili.core.ui.BlueSnowMaidAnimation(
+                animation = animation,
+                isVisible = isVisible,
+                replayKey = replayKey,
+                modifier = Modifier
+                    .size(com.android.purebilibili.core.ui.maidStateIllustrationSize())
+                    .appActionClickable(
+                        role = androidx.compose.ui.semantics.Role.Button,
+                        onClickLabel = "重播蓝雪女仆动画"
+                    ) { replayKey++ }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         AppText(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = AppContentColors.primaryText()
         )
         if (!message.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(8.dp))
             AppText(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
         }
         if (actionLabel != null && onAction != null) {
             Spacer(modifier = Modifier.height(16.dp))
-            AppTextButton(onClick = onAction) {
-                AppText(actionLabel)
+            if (animation == com.android.purebilibili.core.ui.MaidAnimation.RETRY) {
+                com.android.purebilibili.core.ui.components.AppButton(onClick = onAction) {
+                    AppText(actionLabel)
+                }
+            } else {
+                AppTextButton(onClick = onAction) {
+                    AppText(actionLabel)
+                }
             }
         }
     }
@@ -4415,7 +4958,7 @@ internal fun LiveUserSearchResultCard(
     appearance: SearchResultCardAppearance,
     onClick: () -> Unit
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
     val cleaned = remember(item.uid, item.uname, item.uface) { item.cleanupFields() }
     SearchResultCardSurface(
         appearance = appearance,
@@ -4425,7 +4968,7 @@ internal fun LiveUserSearchResultCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 12.dp
+                    if (useMiuixPresentation) AppSpacingTokens.Medium else 12.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -4448,7 +4991,7 @@ internal fun LiveUserSearchResultCard(
                         text = cleaned.uname,
                         role = SearchResultTextRole.TITLE,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = AppContentColors.primaryText(),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f, fill = false)
@@ -4456,11 +4999,11 @@ internal fun LiveUserSearchResultCard(
                     if (cleaned.isLive || cleaned.liveStatus == 1) {
                         Spacer(modifier = Modifier.width(AppSpacingTokens.Small))
                         AppSurface(
-                            color = MaterialTheme.colorScheme.error,
+                            color = AppContentColors.error(),
                             shape = AppShapes.container(ContainerLevel.Tag)
                         ) {
                             SearchResultText(
-                                text = "直播中",
+                                text = stringResource(R.string.search_live_now),
                                 role = SearchResultTextRole.BADGE,
                                 color = Color.White,
                                 modifier = Modifier.padding(
@@ -4475,7 +5018,7 @@ internal fun LiveUserSearchResultCard(
                 SearchResultText(
                     text = "粉丝 ${FormatUtils.formatStat(cleaned.attentions.toLong())}",
                     role = SearchResultTextRole.METADATA,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
             }
         }
@@ -4488,7 +5031,7 @@ internal fun TopicSearchResultCard(
     appearance: SearchResultCardAppearance,
     onClick: () -> Unit
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
     val cleaned = remember(item.topicId, item.title, item.cover) { item.cleanupFields() }
     SearchResultCardSurface(
         appearance = appearance,
@@ -4498,7 +5041,7 @@ internal fun TopicSearchResultCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 12.dp
+                    if (useMiuixPresentation) AppSpacingTokens.Medium else 12.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -4520,7 +5063,7 @@ internal fun TopicSearchResultCard(
                     text = cleaned.title,
                     role = SearchResultTextRole.TITLE,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -4529,7 +5072,7 @@ internal fun TopicSearchResultCard(
                     SearchResultText(
                         text = cleaned.description,
                         role = SearchResultTextRole.BODY,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppContentColors.secondaryText(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -4538,7 +5081,7 @@ internal fun TopicSearchResultCard(
                 SearchResultText(
                     text = "浏览 ${FormatUtils.formatStat(cleaned.view.toLong())}",
                     role = SearchResultTextRole.METADATA,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f)
+                    color = AppContentColors.secondaryText()
                 )
             }
         }
@@ -4550,7 +5093,7 @@ internal fun PhotoSearchResultCard(
     item: SearchPhotoItem,
     appearance: SearchResultCardAppearance
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
+    val useMiuixPresentation = LocalAppUiStyle.current == AppUiStyle.MIUIX
     val cleaned = remember(item.id, item.title, item.cover) { item.cleanupFields() }
     SearchResultCardSurface(
         appearance = appearance.copy(
@@ -4562,7 +5105,7 @@ internal fun PhotoSearchResultCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 12.dp
+                    if (useMiuixPresentation) AppSpacingTokens.Medium else 12.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -4584,7 +5127,7 @@ internal fun PhotoSearchResultCard(
                     text = cleaned.title,
                     role = SearchResultTextRole.TITLE,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -4592,7 +5135,7 @@ internal fun PhotoSearchResultCard(
                 SearchResultText(
                     text = cleaned.uname,
                     role = SearchResultTextRole.METADATA,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -4600,13 +5143,13 @@ internal fun PhotoSearchResultCard(
                 SearchResultText(
                     text = "图片 ${cleaned.count} · 浏览 ${FormatUtils.formatStat(cleaned.view.toLong())} · 喜欢 ${FormatUtils.formatStat(cleaned.like.toLong())}",
                     role = SearchResultTextRole.BADGE,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall))
                 SearchResultText(
-                    text = "暂不支持打开",
+                    text = stringResource(R.string.search_not_supported),
                     role = SearchResultTextRole.BADGE,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -4619,84 +5162,82 @@ internal fun PhotoSearchResultCard(
 internal fun ArticleSearchResultCard(
     item: SearchArticleItem,
     appearance: SearchResultCardAppearance,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onTransitionClick: ((String) -> Unit)? = null,
 ) {
-    val useMiuixNonGlassPresentation = isMiuixNonGlassEnabled()
+    val transitionKey = rememberSaveable(item.id) {
+        "${searchArticleContainerKey(item.id)}:${java.util.UUID.randomUUID()}"
+    }
     SearchResultCardSurface(
         appearance = appearance,
-        onClick = onClick
+        onClick = { onTransitionClick?.invoke(transitionKey) ?: onClick() },
+        modifier = Modifier.searchResultContainerBounds(transitionKey),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    if (useMiuixNonGlassPresentation) AppSpacingTokens.Medium else 14.dp
-                ),
-            horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.Medium),
-            verticalAlignment = Alignment.Top
-        ) {
-            if (item.imageUrls.isNotEmpty()) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(FormatUtils.buildSizedImageUrl(item.imageUrls.first(), width = 360, height = 240))
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(width = 112.dp, height = 74.dp)
-                        .clip(AppShapes.container(ContainerLevel.Field))
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
+        val metaLine = buildString {
+            val publishTime = FormatUtils.formatPublishTime(item.pubTime)
+            if (publishTime.isNotBlank()) append(publishTime)
+            if (item.categoryName.isNotBlank()) {
+                if (isNotEmpty()) append(" · ")
+                append(item.categoryName)
+            }
+        }
+        val info: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit = {
+            SearchResultText(
+                text = item.title,
+                role = SearchResultTextRole.TITLE,
+                fontWeight = FontWeight.SemiBold,
+                color = AppContentColors.primaryText(),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            if (item.imageUrls.isEmpty() && item.description.isNotBlank()) {
+                SearchResultText(
+                    text = item.description,
+                    role = SearchResultTextRole.BODY,
+                    color = AppContentColors.secondaryText(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.Small)
-            ) {
+            if (metaLine.isNotBlank()) {
                 SearchResultText(
-                    text = item.title,
-                    role = SearchResultTextRole.TITLE,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                if (item.description.isNotBlank()) {
-                    SearchResultText(
-                        text = item.description,
-                        role = SearchResultTextRole.BODY,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-
-                val metaLine = buildString {
-                    val publishTime = FormatUtils.formatPublishTime(item.pubTime)
-                    if (publishTime.isNotBlank()) {
-                        append(publishTime)
-                    }
-                    if (item.categoryName.isNotBlank()) {
-                        if (isNotEmpty()) append(" · ")
-                        append(item.categoryName)
-                    }
-                }
-                if (metaLine.isNotBlank()) {
-                    SearchResultText(
-                        text = metaLine,
-                        role = SearchResultTextRole.METADATA,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-
-                SearchResultText(
-                    text = "${FormatUtils.formatStat(item.view.toLong())}浏览 · ${FormatUtils.formatStat(item.reply.toLong())}评论 · ${FormatUtils.formatStat(item.like.toLong())}点赞",
+                    text = metaLine,
                     role = SearchResultTextRole.METADATA,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                    color = AppContentColors.secondaryText(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
+            SearchResultText(
+                text = "${FormatUtils.formatStat(item.view.toLong())}浏览 · ${FormatUtils.formatStat(item.reply.toLong())}评论 · ${FormatUtils.formatStat(item.like.toLong())}点赞",
+                role = SearchResultTextRole.METADATA,
+                color = AppContentColors.secondaryText(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        if (item.imageUrls.isNotEmpty()) {
+            HorizontalVideoCardFrame(
+                modifier = Modifier.fillMaxWidth(),
+                coverContent = {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(FormatUtils.buildSizedImageUrl(item.imageUrls.first(), width = 480, height = 320))
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                },
+                infoContent = info,
+            )
+        } else {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                content = info,
+            )
         }
     }
 }

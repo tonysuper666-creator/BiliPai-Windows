@@ -42,7 +42,7 @@ data class LiveFeedModuleBlock(
 
 @Serializable
 data class LiveFeedExtraInfo(
-    @SerialName("total_count") val totalCount: Int = 0,
+    @SerialName("total_count") val totalCount: Int? = null,
 )
 
 @Serializable
@@ -63,6 +63,7 @@ data class LiveFeedRoomCard(
     @SerialName("watched_show") val watchedShow: WatchedShow? = null,
     val online: Int = 0,
     @SerialName("is_ad") val isAd: Boolean = false,
+    val feedback: List<LiveFeedbackGroup> = emptyList(),
 ) {
     fun resolvedRoomId(): Long = roomid
 
@@ -78,6 +79,7 @@ data class LiveFeedRoomCard(
         watchedShow = watchedShow,
         areaName = areaName,
         keyframe = systemCover.ifBlank { cover },
+        feedback = feedback,
     )
 }
 
@@ -93,7 +95,7 @@ data class LiveAppSecondListData(
     val count: Int = 0,
     val list: List<LiveFeedRoomCard>? = null,
     @SerialName("new_tags") val newTags: List<LiveSecondSortTag>? = null,
-    @SerialName("has_more") val hasMore: Int = 0,
+    @SerialName("has_more") val hasMore: Int? = null,
 )
 
 @Serializable
@@ -106,16 +108,34 @@ data class LiveSecondSortTag(
  * Domain snapshot for Live home after parsing feed/second list.
  */
 data class LiveFeedHomeSnapshot(
+    val hasFollowModule: Boolean = false,
+    val followError: String? = null,
     val rooms: List<LiveRoom> = emptyList(),
     val followRooms: List<LiveRoom> = emptyList(),
     val areaEntries: List<LiveFeedAreaEntry> = emptyList(),
     val sortTags: List<LiveSecondSortTag> = emptyList(),
     val hasMore: Boolean = false,
-    val totalCount: Int = 0,
+    val totalCount: Int? = null,
 )
 
 data class LiveFeedAreaEntry(
     val title: String,
     val areaId: Int,
     val parentAreaId: Int,
+)
+
+@Serializable
+data class LiveFeedbackGroup(
+    val title: String = "",
+    val subtitle: String = "",
+    val type: String = "",
+    val reasons: List<LiveFeedbackReason> = emptyList(),
+)
+
+@Serializable
+data class LiveFeedbackReason(
+    val id: Long = 0,
+    val name: String = "",
+    @SerialName("id_type") val idType: String = "",
+    @SerialName("reason_id") val reasonId: Long = 0,
 )

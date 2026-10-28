@@ -8,29 +8,6 @@ import kotlin.test.assertTrue
 class ThemeNativeSelectionStructureTest {
 
     @Test
-    fun singleChoiceListsUseTheSharedThemeNativeRow() {
-        val targets = listOf(
-            "feature/video/ui/components/VideoSettingsPanel.kt",
-            "feature/live/components/LiveStreamSourceSheet.kt",
-            "feature/bangumi/ui/player/BangumiPlayerContent.kt",
-            "feature/bangumi/BangumiDetailScreen.kt",
-            "feature/download/DownloadQualityDialog.kt",
-            "feature/watchlater/WatchLaterScreen.kt",
-            "feature/video/screen/TabletVideoLayout.kt",
-            "feature/live/LivePlayerScreen.kt",
-            "feature/video/ui/components/PagesSelector.kt",
-        )
-
-        targets.forEach { relativePath ->
-            val source = loadAppSource(relativePath)
-            assertTrue(
-                source.contains("AppSingleChoiceRow("),
-                "$relativePath must express selection through the shared native row",
-            )
-        }
-    }
-
-    @Test
     fun sharedMediaCardsUseNativeCheckboxesInsteadOfPaintedSelectionOverlays() {
         val source = loadAppSource("feature/personal/PersonalMediaCard.kt")
 

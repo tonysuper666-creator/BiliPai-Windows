@@ -31,6 +31,9 @@ internal data class MiuixContainerShape(val radius: Dp) : Shape {
  */
 object AppShapes {
 
+    /** 导航与分类选中态共用胶囊轮廓，随实际槽位高度适配字体与窗口尺寸。 */
+    val SelectionIndicator: Shape = RoundedCornerShape(percent = 50)
+
     fun resolveContainerCornerDp(
         level: ContainerLevel,
         uiStyle: AppUiStyle,

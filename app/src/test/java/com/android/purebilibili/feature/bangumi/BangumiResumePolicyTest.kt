@@ -114,6 +114,21 @@ class BangumiResumePolicyTest {
     }
 
     @Test
+    fun `explicit last watched episode restores its server position only when resume is enabled`() {
+        val detail = BangumiDetail(
+            seasonId = 9L,
+            episodes = listOf(BangumiEpisode(id = 11L, aid = 101L), BangumiEpisode(id = 12L, aid = 102L)),
+            userStatus = com.android.purebilibili.data.model.response.UserStatus(
+                progress = com.android.purebilibili.data.model.response.WatchProgress(lastEpId = 12L, lastTime = 42L)
+            )
+        )
+        assertEquals(42_000L, resolveBangumiInitialEpisode(detail, 102L, 12L, true)?.resumePositionMs)
+        assertEquals(42_000L, resolveBangumiInitialEpisode(detail, 0L, 12L, true)?.resumePositionMs)
+        assertEquals(0L, resolveBangumiInitialEpisode(detail, 0L, 11L, true)?.resumePositionMs)
+        assertEquals(0L, resolveBangumiInitialEpisode(detail, 0L, 12L, false)?.resumePositionMs)
+    }
+
+    @Test
     fun `reattached player restores cached dash playback for the same episode`() {
         assertTrue(
             shouldRestoreBangumiCachedPlayback(

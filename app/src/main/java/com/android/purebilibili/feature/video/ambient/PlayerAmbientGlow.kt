@@ -40,24 +40,29 @@ import android.os.SystemClock
 /** Reads changing images and fade progress only in draw; has no input semantics. */
 @Composable
 internal fun PlayerAmbientGlow(presentation: AmbientPresentation, fullscreen: Boolean, modifier: Modifier = Modifier) {
+    val visualActive = com.android.purebilibili.core.ui.rememberVisualWorkActive()
+    val motionAllowed = com.android.purebilibili.core.ui.LocalComponentMotionEnabled.current &&
+        !com.android.purebilibili.core.ui.LocalSystemReduceMotion.current
     val painter = remember { AmbientEdgePainter() }
     val visibilityAlpha = remember(presentation) { Animatable(0f) }
-    LaunchedEffect(presentation) {
+    LaunchedEffect(presentation, visualActive, motionAllowed) {
         var epoch = presentation.epoch
         snapshotFlow {
             val frame = presentation.current
             AmbientVisibilityTarget(frame != null, presentation.visibilityGate(),
-                presentation.visible && frame != null && frame.refreshGeneration >= presentation.requiredRefresh,
+                visualActive && presentation.visible && frame != null && frame.refreshGeneration >= presentation.requiredRefresh,
                 presentation.epoch)
         }.collectLatest { (hasFrame, gateOpen, show, nextEpoch) ->
             if (epoch != nextEpoch) {
                 epoch = nextEpoch
                 visibilityAlpha.snapTo(0f)
             }
-            if (!hasFrame || !gateOpen) {
+            if (!hasFrame || !gateOpen || !visualActive) {
                 // Shared-card motion must never carry an external halo. Recovery waits
                 // for a fresh sample and then fades in; old video frames are not retained.
                 visibilityAlpha.snapTo(0f)
+            } else if (!motionAllowed) {
+                visibilityAlpha.snapTo(if (show) 1f else 0f)
             } else {
                 visibilityAlpha.animateTo(if (show) 1f else 0f,
                     tween(durationMillis = if (show) 180 else 80, easing = LinearEasing))
@@ -66,14 +71,16 @@ internal fun PlayerAmbientGlow(presentation: AmbientPresentation, fullscreen: Bo
     }
     var drawTime by remember { mutableLongStateOf(0L) }
     var originInWindow by remember { mutableStateOf(Offset.Zero) }
-    LaunchedEffect(presentation) {
+    LaunchedEffect(presentation, visualActive, motionAllowed) {
         snapshotFlow { Triple(presentation.current?.atMs, presentation.visible && presentation.visibilityGate(), presentation.failureFadeAt) }
             .collectLatest { (frameTime, visible, failureTime) ->
-                if (frameTime != null && visible) {
+                if (frameTime != null && visible && visualActive && motionAllowed) {
                     val until = maxOf(frameTime + (presentation.current?.transitionMs ?: 120L), (failureTime ?: 0) + 200)
                     do {
                         withFrameNanos { drawTime = SystemClock.elapsedRealtime() }
                     } while (drawTime < until)
+                } else if (frameTime != null) {
+                    drawTime = frameTime + (presentation.current?.transitionMs ?: 120L)
                 }
             }
     }
@@ -85,7 +92,7 @@ internal fun PlayerAmbientGlow(presentation: AmbientPresentation, fullscreen: Bo
             painter.clearImages()
             return@Canvas
         }
-        if (!presentation.visibilityGate() || visibilityAlpha.value <= 0f) return@Canvas
+        if (!visualActive || !presentation.visibilityGate() || visibilityAlpha.value <= 0f) return@Canvas
         val previous = presentation.previous
         val progress = ((drawTime - current.atMs) / current.transitionMs.toFloat()).coerceIn(0f, 1f)
         val failure = presentation.failureFadeAt?.let { 1f - ((drawTime - it) / 200f).coerceIn(0f, 1f) } ?: 1f

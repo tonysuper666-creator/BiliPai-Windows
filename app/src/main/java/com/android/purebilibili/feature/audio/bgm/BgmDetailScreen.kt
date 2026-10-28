@@ -1,5 +1,9 @@
 package com.android.purebilibili.feature.audio.bgm
 
+import com.android.purebilibili.core.ui.AppSurfaceTokens
+
+import com.android.purebilibili.core.ui.AppContentColors
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -7,14 +11,14 @@ import android.content.Intent
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import com.android.purebilibili.core.ui.components.AppLazyVerticalGrid as LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
+import com.android.purebilibili.core.ui.common.AppSelectionContainer as SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -59,7 +63,7 @@ internal fun BgmDetailScreen(
     val comments by commentViewModel.commentState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var composer by rememberSaveable(musicId) { mutableStateOf(false) }
-    var submitted by remember { mutableStateOf(false) }
+    var submittedSessionId by remember(musicId) { mutableStateOf<Long?>(null) }
     var emotePackages by remember { mutableStateOf<List<EmotePackage>>(emptyList()) }
     LaunchedEffect(composer) {
         if (composer && emotePackages.isEmpty()) emotePackages = com.android.purebilibili.data.repository.CommentRepository.getEmotePackages().getOrDefault(emptyList())
@@ -72,17 +76,22 @@ internal fun BgmDetailScreen(
         }
     }
     LaunchedEffect(viewModel) { viewModel.messages.collect { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() } }
-    LaunchedEffect(comments.isSending, comments.sendError) {
-        if (submitted && !comments.isSending) {
-            submitted = false
-            if (comments.sendError == null) { composer = false; commentViewModel.cancelReply() }
-            else Toast.makeText(context, comments.sendError, Toast.LENGTH_LONG).show()
+    LaunchedEffect(comments.isSending, comments.sendError, comments.composerDrafts.completedSessionId) {
+        if (submittedSessionId != null && !comments.isSending) {
+            submittedSessionId = null
+            comments.sendError?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
+        }
+    }
+    LaunchedEffect(comments.composerDrafts.sessionId, comments.composerDrafts.completedSessionId) {
+        if (comments.composerDrafts.completedSessionId == comments.composerDrafts.sessionId) {
+            composer = false
         }
     }
     fun compose(reply: ReplyItem? = null) {
         if (TokenManager.sessDataCache.isNullOrBlank()) { onLogin(); return }
         if (!comments.canInputComment) { Toast.makeText(context, "当前评论区暂不可发言", Toast.LENGTH_SHORT).show(); return }
         if (reply == null) commentViewModel.cancelReply() else commentViewModel.replyTo(reply)
+        commentViewModel.beginCommentDraft()
         composer = true
     }
     BgmDetailContent(
@@ -104,13 +113,41 @@ internal fun BgmDetailScreen(
         onCommentDelete = commentViewModel::deleteComment, onCommentReport = commentViewModel::reportComment,
         onLinkClick = onLinkClick, modifier = modifier,
     )
+    val composerSessionId = comments.composerDrafts.sessionId
+    val composerReplyRpid = comments.replyTarget?.rpid
+    val composerDraft = comments.composerDrafts.drafts[commentComposerDraftKey(composerReplyRpid)]
+    val composerKey = remember(info?.oid, info?.pageType, composerReplyRpid, composerSessionId) {
+        "bgm:${info?.oid}:${info?.let(::resolveBgmCommentType)}:$composerReplyRpid:$composerSessionId"
+    }
     CommentInputDialog(
         visible = composer,
-        onDismiss = { composer = false; commentViewModel.cancelReply() },
-        onSend = { text, images, sync -> submitted = true; commentViewModel.sendComment(text, images, sync) },
+        draftKey = composerKey,
+        onDismiss = {
+            if (commentViewModel.commentState.value.composerDrafts.sessionId == composerSessionId) {
+                composer = false
+                commentViewModel.cancelReply()
+            }
+        },
+        onSend = { text, images, sync ->
+            val latest = commentViewModel.commentState.value
+            if (composer && latest.composerDrafts.sessionId == composerSessionId &&
+                latest.composerDrafts.completedSessionId != composerSessionId &&
+                latest.replyTarget?.rpid == composerReplyRpid && !latest.isSending
+            ) {
+                submittedSessionId = composerSessionId
+                commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+                commentViewModel.sendComment(text, images, sync)
+            }
+        },
         isSending = comments.isSending, replyToName = comments.replyTarget?.member?.uname,
         inputHint = if (comments.replyTarget == null) comments.rootInputHint else comments.childInputHint,
         canInputComment = comments.canInputComment, emotePackages = emotePackages,
+        initialText = composerDraft?.text.orEmpty(),
+        initialImageUris = composerDraft?.imageUris.orEmpty(),
+        initialSyncToDynamic = composerDraft?.syncToDynamic ?: false,
+        onDraftChange = { text, images, sync ->
+            commentViewModel.updateCommentDraft(composerSessionId, composerReplyRpid, text, images, sync)
+        },
     )
 }
 
@@ -157,7 +194,7 @@ private fun BgmDetailContent(
                     if (detail.flowAttr?.noShare != true) AppTextButton(onClick = onShare, modifier = Modifier.weight(1f).heightIn(min = 48.dp)) { AppText("分享") }
                     AppTextButton(onClick = onWish, enabled = !state.updatingWish && !state.loading, modifier = Modifier.weight(1f).heightIn(min = 48.dp)) {
                         AppText("${if (detail.wishListen) "已点赞" else "点赞"} ${FormatUtils.formatStat(detail.wishCount.toLong())}",
-                            color = if (detail.wishListen) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
+                            color = if (detail.wishListen) AppContentColors.accent() else AppContentColors.primaryText())
                     }
                 }
             }
@@ -294,7 +331,7 @@ private fun BgmInfoCard(
                 ).joinToString("\n"), style = MaterialTheme.typography.bodyMedium)
             }
             val achievements = (detail.achievement + listOf(detail.musicRank, detail.recreationRank)).filter { it.isNotBlank() }.distinct()
-            if (achievements.isNotEmpty()) AppText(achievements.joinToString(" · "), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+            if (achievements.isNotEmpty()) AppText(achievements.joinToString(" · "), style = MaterialTheme.typography.labelMedium, color = AppContentColors.accent())
             Row {
                 AppTextButton(onClick = { copy(detail.musicTitle) }, modifier = Modifier.heightIn(min = 48.dp)) { AppText("复制歌名") }
                 if (detail.mvCid > 0 && (detail.mvBvid.isNotBlank() || detail.mvAid > 0)) AppTextButton(onClick = { onVideoClick(detail.mvBvid.ifBlank { "av${detail.mvAid}" }, detail.mvCid, detail.mvCover) }, modifier = Modifier.heightIn(min = 48.dp)) { AppText("看 MV") }

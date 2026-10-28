@@ -156,4 +156,17 @@ class ThemeContrastPolicyTest {
         assertEquals(TextPrimary, replaced)
         assertTrue(calculateContrastRatio(TextPrimary, Color.White) >= 4.5f)
     }
+    @Test
+    fun controlGlyphFollowsItsActualFillAndPreservesReadableNativeColors() {
+        val whiteOnWhite = resolveControlGlyphColor(Color.White, Color.White, Color.White)
+        assertTrue(calculateContrastRatio(whiteOnWhite, Color.White) >= ACCESSIBLE_UI_MIN_CONTRAST)
+        val blackOnBlack = resolveControlGlyphColor(Color.Black, Color.Black, Color.White)
+        assertTrue(calculateContrastRatio(blackOnBlack, Color.Black) >= ACCESSIBLE_UI_MIN_CONTRAST)
+        assertEquals(Color.White, resolveControlGlyphColor(Color.White, Color.Black, Color.White))
+        val translucent = Color.Black.copy(alpha = 0.1f)
+        val repaired = resolveControlGlyphColor(Color.White, translucent, Color.White)
+        val background = opaqueCompositeOver(translucent, Color.White)
+        assertTrue(calculateContrastRatio(opaqueCompositeOver(repaired, background), background) >= ACCESSIBLE_UI_MIN_CONTRAST)
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.android.purebilibili.core.plugin.js
 
-import com.android.purebilibili.core.plugin.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapability
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

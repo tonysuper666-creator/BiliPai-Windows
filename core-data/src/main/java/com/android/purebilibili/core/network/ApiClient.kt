@@ -2,10 +2,6 @@
 package com.android.purebilibili.core.network
 
 import android.content.Context
-import com.android.purebilibili.core.network.policy.HomeFeedAnonymizerRuntime
-import com.android.purebilibili.core.network.policy.resolveHardcodedDnsFallback
-import com.android.purebilibili.core.network.policy.resolveHomeFeedCookieAnonymizerDecision
-import com.android.purebilibili.core.network.policy.shouldStripMergedAppFeedCookies
 import com.android.purebilibili.core.network.policy.shouldEnableTrustAllCertificates
 import com.android.purebilibili.core.store.TokenManager
 import com.android.purebilibili.core.store.AccountSessionStore
@@ -19,6 +15,8 @@ import okhttp3.Protocol
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -52,152 +50,23 @@ fun applyForcedCookieHeader(request: okhttp3.Request): okhttp3.Request {
 }
 
 private class AppSessionCookieJar : okhttp3.CookieJar {
-    private val cookieLock = Any()
-    private val cookieStore = mutableMapOf<String, MutableList<okhttp3.Cookie>>()
+    private val cookieStore = mutableMapOf<String, List<okhttp3.Cookie>>()
 
+    @Synchronized
     override fun saveFromResponse(url: okhttp3.HttpUrl, cookies: List<okhttp3.Cookie>) {
-        val host = url.host
-        synchronized(cookieLock) {
-            val existingCookies = cookieStore.getOrPut(host) { mutableListOf() }
-            cookies.forEach { newCookie ->
-                existingCookies.removeAll { it.name == newCookie.name }
-                existingCookies.add(newCookie)
-                com.android.purebilibili.core.network.CoreDataLog.d("CookieJar", " Saved cookie: ${newCookie.name} for $host")
-            }
-        }
+        if (url.host == "bilibili.com" || url.host.endsWith(".bilibili.com")) return
+        val incoming = cookies.map { it.name }.toSet()
+        cookieStore[url.host] = cookieStore[url.host].orEmpty().filterNot { it.name in incoming } + cookies
     }
 
+    @Synchronized
     override fun loadForRequest(url: okhttp3.HttpUrl): List<okhttp3.Cookie> {
-        if (resolveHomeFeedCookieAnonymizerDecision(
-                pluginEnabled = HomeFeedAnonymizerRuntime.enabled,
-                host = url.host,
-                encodedPath = url.encodedPath
-            )
-        ) {
-            com.android.purebilibili.core.network.CoreDataLog.d(
-                "CookieJar",
-                " 初见推荐匿名化首页推荐请求: ${url.encodedPath}, clearCookieHeader=true"
-            )
-            return emptyList()
-        }
-
-        //  合并模式 App 半边: 对齐 PiliNara 原版(app 端点不注入 cookie, 由身份头 + access_key + 签名承担)
-        if (shouldStripMergedAppFeedCookies(
-                host = url.host,
-                encodedPath = url.encodedPath,
-                mobiApp = url.queryParameter("mobi_app")
-            )
-        ) {
-            com.android.purebilibili.core.network.CoreDataLog.d(
-                "CookieJar",
-                " 合并模式 App 半边匿名取流: ${url.encodedPath}, clearCookieHeader=true"
-            )
-            return emptyList()
-        }
-
-        val cookies = mutableListOf<okhttp3.Cookie>()
-
-        synchronized(cookieLock) {
-            cookieStore[url.host]?.let { cookies.addAll(it) }
-        }
-
-        // 会话备份改为异步恢复后，网络线程在此等到恢复完成（通常为 0 等待），
-        // 避免启动窗口内的请求被当成匿名请求发出。
-        TokenManager.awaitRestore()
-
-        var buvid3 = TokenManager.buvid3Cache
-        if (buvid3.isNullOrEmpty()) {
-            buvid3 = UUID.randomUUID().toString() + "infoc"
-            TokenManager.buvid3Cache = buvid3
-        }
-        if (cookies.none { it.name == "buvid3" }) {
-            cookies.add(
-                okhttp3.Cookie.Builder()
-                    .domain(url.host)
-                    .name("buvid3")
-                    .value(buvid3)
-                    .build()
-            )
-        }
-
-        val biliBiliDomain = if (url.host.endsWith("bilibili.com")) "bilibili.com" else url.host
-        val sessData = TokenManager.sessDataCache
-        if (!sessData.isNullOrEmpty()) {
-            cookies.removeAll { it.name == "SESSDATA" }
-            cookies.add(
-                okhttp3.Cookie.Builder()
-                    .domain(biliBiliDomain)
-                    .name("SESSDATA")
-                    .value(sessData)
-                    .build()
-            )
-        }
-
-        val biliJct = TokenManager.csrfCache
-        if (!biliJct.isNullOrEmpty()) {
-            cookies.removeAll { it.name == "bili_jct" }
-            cookies.add(
-                okhttp3.Cookie.Builder()
-                    .domain(biliBiliDomain)
-                    .name("bili_jct")
-                    .value(biliJct)
-                    .build()
-            )
-        }
-
-        TokenManager.midCache?.takeIf { it > 0L }?.let { mid ->
-            if (cookies.none { it.name == "DedeUserID" }) {
-                cookies.add(
-                    okhttp3.Cookie.Builder()
-                        .domain(biliBiliDomain)
-                        .name("DedeUserID")
-                        .value(mid.toString())
-                        .build()
-                )
-            }
-        }
-
-        if (url.encodedPath.contains("playurl") || url.encodedPath.contains("pgc/view")) {
-            com.android.purebilibili.core.network.CoreDataLog.d(
-                "CookieJar",
-                " ${url.encodedPath} request: domain=$biliBiliDomain, hasSess=${!sessData.isNullOrEmpty()}, hasCsrf=${!biliJct.isNullOrEmpty()}"
-            )
-        }
-
-        return cookies
+        if (url.host == "bilibili.com" || url.host.endsWith(".bilibili.com")) return emptyList()
+        return cookieStore[url.host].orEmpty().filter { it.matches(url) && it.expiresAt > System.currentTimeMillis() }
     }
 
-    fun clear() {
-        synchronized(cookieLock) {
-            cookieStore.clear()
-        }
-    }
-}
-
-/** A cookie jar isolated from the main account, used only for playback authorization. */
-private class PlaybackAccountCookieJar(account: StoredAccountSession) : okhttp3.CookieJar {
-    private val cookieLock = Any()
-    private val cookies = mutableMapOf(
-        "SESSDATA" to account.sessData,
-        "bili_jct" to account.csrf,
-        "DedeUserID" to account.mid.toString(),
-        "buvid3" to account.buvid3
-    ).filterValues { it.isNotBlank() }.toMutableMap()
-
-    override fun saveFromResponse(url: okhttp3.HttpUrl, responseCookies: List<okhttp3.Cookie>) {
-        synchronized(cookieLock) {
-            responseCookies.forEach { cookie -> cookies[cookie.name] = cookie.value }
-        }
-    }
-
-    override fun loadForRequest(url: okhttp3.HttpUrl): List<okhttp3.Cookie> {
-        val domain = if (url.host.endsWith("bilibili.com")) "bilibili.com" else url.host
-        return synchronized(cookieLock) {
-            cookies.map { (name, value) ->
-                okhttp3.Cookie.Builder().domain(domain).name(name).value(value).build()
-            }
-        }
-    }
+    @Synchronized
+    fun clear() = cookieStore.clear()
 }
 
 /**
@@ -213,6 +82,127 @@ private class PlaybackAccountCookieJar(account: StoredAccountSession) : okhttp3.
  * - 稍后再看 (L300-320): getWatchLaterList, addToWatchLater, deleteFromWatchLater
  */
 interface BilibiliApi {
+    @GET("x/member/web/coin/log")
+    suspend fun getAccountCoinLedger(
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+        @Query("jsonp") jsonp: String = "jsonp",
+        @Query("web_location") webLocation: String = "333.33",
+    ): AccountLedgerResponse
+
+    @GET("x/member/web/exp/log")
+    suspend fun getAccountExperienceLedger(
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+        @Query("jsonp") jsonp: String = "jsonp",
+        @Query("web_location") webLocation: String = "333.33",
+    ): AccountLedgerResponse
+
+    @GET("x/relation/tags")
+    suspend fun getSortableFollowGroups(
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): FollowGroupOrderResponse
+
+    @FormUrlEncoded
+    @POST("x/relation/tags/update_sort")
+    suspend fun updateFollowGroupOrder(
+        @FieldMap fields: Map<String, String>,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+        @Query("x-bili-device-req-json") device: String = "{\"platform\":\"web\",\"device\":\"pc\",\"spmid\":\"333.1387\"}",
+    ): FollowGroupOrderSaveResponse
+
+    @GET("x/space/acc/relation")
+    suspend fun getFanRelationship(
+        @Query("mid") mid: Long,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): FanRelationshipResponse
+
+    @FormUrlEncoded
+    @POST("x/relation/modify")
+    suspend fun removeAccountFan(
+        @FieldMap fields: Map<String, String>,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): FanRemovalResponse
+
+    @GET("https://passport.bilibili.com/x/safecenter/user_login_devices")
+    suspend fun getAccountLoginDevices(
+        @QueryMap params: Map<String, String>,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): AccountLoginDevicesResponse
+
+    @GET("x/member/web/login/log")
+    suspend fun getAccountLoginRecords(
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+        @Query("jsonp") jsonp: String = "jsonp",
+        @Query("web_location") webLocation: String = "333.33",
+    ): AccountLoginRecordsResponse
+
+    @GET("x/space/setting/app")
+    suspend fun getSpacePrivacy(
+        @Query("mid") mid: Long,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): SpacePrivacyResponse
+
+    @FormUrlEncoded
+    @POST("x/space/privacy/batch/modify")
+    suspend fun updateSpacePrivacy(
+        @FieldMap fields: Map<String, String>,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): SpacePrivacySaveResponse
+
+    @FormUrlEncoded
+    @POST("x/esports/grade/player")
+    suspend fun submitLiveMatchGrade(
+        @FieldMap fields: Map<String, String>,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): BaseResponse
+
+    @FormUrlEncoded
+    @POST("x/v2/reply/add")
+    suspend fun addLiveMatchGradeComment(
+        @FieldMap fields: Map<String, String>,
+        @Header(FORCE_COOKIE_HEADER) cookie: String,
+    ): AddReplyResponse
+
+    @GET("x/esports/grade/info")
+    suspend fun getLiveMatchGrades(
+        @Query("cid") contestId: Long,
+        @Query("bo") game: Int,
+        @Header(FORCE_COOKIE_HEADER) cookie: String? = null,
+    ): LiveMatchGradesResponse
+
+    @GET("x/esports/match/search/filter")
+    suspend fun getLiveMatchSeasons(@Query("gid") gameId: Int): LiveMatchSeasonsResponse
+
+    @GET("x/esports/season/series/match/list")
+    suspend fun getLiveMatchSeason(@Query("sid") seasonId: Long): LiveMatchSeasonResponse
+
+    @GET("x/esports/match/search/list")
+    suspend fun getLiveMatchSeasonSchedule(
+        @Query("sids") seasonId: Long,
+        @Query("pn") page: Int,
+        @Query("ps") pageSize: Int = 30,
+    ): LiveMatchScheduleResponse
+
+    @GET("x/esports/match/info")
+    suspend fun getMatchInfo(
+        @Query("cid") contestId: Long,
+        @Query("platform") platform: Int = 2,
+    ): MatchInfoResponse
+
+    @GET("x/esports/match/search/game/list")
+    suspend fun getLiveMatchGames(): LiveMatchGamesResponse
+
+    @GET("x/esports/match/search/list")
+    suspend fun getLiveMatchSchedule(
+        @Query("gid") gameId: Int,
+        @Query("stime") startTime: Long,
+        @Query("etime") endTime: Long,
+        @Query("pn") page: Int,
+        @Query("ps") pageSize: Int = 30,
+    ): LiveMatchScheduleResponse
+
+    @POST("x/internal/gaia-gateway/ExClimbWuzhi")
+    suspend fun activateSessionBuvid(@retrofit2.http.Body payload: Map<String, String>): SimpleApiResponse
+
     // ==================== 用户信息模块 ====================
     @GET("x/web-interface/zone")
     suspend fun getIpZone(): IpLocationResponse
@@ -230,8 +220,28 @@ interface BilibiliApi {
     @POST("x/member/web/sign/update")
     suspend fun updateMemberSign(
         @retrofit2.http.Field("user_sign") userSign: String,
-        @retrofit2.http.Field("csrf") csrf: String
-    ): SimpleApiResponse
+        @retrofit2.http.Field("csrf") csrf: String,
+        @retrofit2.http.Header(FORCE_COOKIE_HEADER) cookie: String
+    ): ProfileUpdateResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @POST("x/member/app/{field}/update")
+    suspend fun updateMemberAppProfile(
+        @retrofit2.http.Path("field") field: String,
+        @retrofit2.http.FieldMap fields: Map<String, String>,
+        @retrofit2.http.Header(FORCE_COOKIE_HEADER) cookie: String,
+        @retrofit2.http.Header("User-Agent") userAgent: String
+    ): ProfileUpdateResponse
+
+    @retrofit2.http.Multipart
+    @POST("x/member/web/face/update")
+    suspend fun updateMemberAvatar(
+        @Query("csrf") csrf: String,
+        @retrofit2.http.Part("dopost") action: okhttp3.RequestBody,
+        @retrofit2.http.Part("DisplayRank") displayRank: okhttp3.RequestBody,
+        @retrofit2.http.Part face: okhttp3.MultipartBody.Part,
+        @retrofit2.http.Header(FORCE_COOKIE_HEADER) cookie: String
+    ): ProfileUpdateResponse
 
     //  [New] 获取用户卡片信息 (轻量级用户信息)
     @GET("x/web-interface/card")
@@ -345,6 +355,11 @@ interface BilibiliApi {
         @Query("web_location") webLocation: String = "333.1387"
     ): FavFolderResponse
 
+    @GET("x/v3/fav/folder/info")
+    suspend fun getFavFolderInfo(
+        @Query("media_id") mediaId: Long,
+    ): FavoriteInfoResponse
+
     @GET("x/v3/fav/folder/collected/list")
     suspend fun getCollectedFavFolders(
         @Query("up_mid") mid: Long,
@@ -352,6 +367,21 @@ interface BilibiliApi {
         @Query("ps") ps: Int = 20,
         @Query("platform") platform: String = "web"
     ): FavFolderResponse
+
+    // 普通收藏夹使用完整 media_id；UGC 合集订阅使用 favoriteSeason 的 season_id。
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/v3/fav/folder/fav")
+    suspend fun favoriteFolder(
+        @retrofit2.http.Field("media_id") mediaId: Long,
+        @retrofit2.http.Field("csrf") csrf: String,
+    ): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/v3/fav/folder/unfav")
+    suspend fun unfavoriteFolder(
+        @retrofit2.http.Field("media_id") mediaId: Long,
+        @retrofit2.http.Field("csrf") csrf: String,
+    ): SimpleApiResponse
 
     // [新增] 创建收藏夹
     @retrofit2.http.FormUrlEncoded
@@ -543,6 +573,12 @@ interface BilibiliApi {
         @Query("ps") ps: Int = 20
     ): PopularResponse  //  使用专用响应类型
 
+    @GET("pgc/web/rank/list")
+    suspend fun getPgcRanking(@QueryMap params: Map<String, String>): kotlinx.serialization.json.JsonObject
+
+    @GET("pgc/season/rank/web/list")
+    suspend fun getPgcSeasonRanking(@QueryMap params: Map<String, String>): kotlinx.serialization.json.JsonObject
+
     @GET("x/web-interface/ranking/v2")
     suspend fun getRankingVideos(
         @QueryMap params: Map<String, String>
@@ -606,6 +642,13 @@ interface BilibiliApi {
     //  [新增] 获取直播分区列表
     @GET("https://api.live.bilibili.com/room/v1/Area/getList")
     suspend fun getLiveAreaList(): LiveAreaListResponse
+
+    @GET("https://api.live.bilibili.com/xlive/app-interface/v2/second/get_fav_tag")
+    suspend fun getLiveFavoriteTagsRaw(@QueryMap params: Map<String, String>): okhttp3.ResponseBody
+
+    @FormUrlEncoded
+    @POST("https://api.live.bilibili.com/xlive/app-interface/v2/second/set_fav_tag")
+    suspend fun setLiveFavoriteTagsRaw(@FieldMap params: Map<String, String>): okhttp3.ResponseBody
     
     //  [新增] 分区推荐直播列表 (xlive API)
     @GET("https://api.live.bilibili.com/xlive/web-interface/v1/second/getList")
@@ -622,6 +665,9 @@ interface BilibiliApi {
     suspend fun getLiveFeedIndex(
         @QueryMap params: Map<String, String>
     ): com.android.purebilibili.data.model.response.LiveFeedIndexResponse
+
+    @GET("https://api.live.bilibili.com/xlive/app-interface/v2/index/feedback")
+    suspend fun submitLiveFeedFeedback(@QueryMap params: Map<String, String>): SimpleApiResponse
 
     // BiliPai-aligned app second-area list (supports new_tags sort chips)
     @GET("https://api.live.bilibili.com/xlive/app-interface/v2/second/getList")
@@ -684,18 +730,7 @@ interface BilibiliApi {
     //  [新增] 获取直播流 URL - 使用更可靠的 xlive API
     @GET("https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo")
     suspend fun getLivePlayUrl(
-        @Query("room_id") roomId: Long,
-        @Query("protocol") protocol: String = "0,1",  // 0=http_stream, 1=http_hls
-        @Query("format") format: String = "0,1,2",    // 0=flv, 1=ts, 2=fmp4
-        @Query("codec") codec: String = "0,1,2",      // 0=avc, 1=hevc, 2=av1
-        @Query("qn") quality: Int = 150,              // 150=高清
-        @Query("platform") platform: String = "web",
-        @Query("ptype") ptype: Int = 8,
-        @Query("dolby") dolby: Int = 5,
-        @Query("panorama") panorama: Int = 1,
-        @Query("web_location") webLocation: String = "444.8",
-        @Query("only_audio") onlyAudio: Int? = null,
-        @QueryMap signedParams: Map<String, String> = emptyMap()
+        @QueryMap params: Map<String, String>
     ): LivePlayUrlResponse
     
     //  [新增] 旧版直播流 API - 可靠返回 quality_description 画质列表
@@ -717,14 +752,14 @@ interface BilibiliApi {
         @retrofit2.http.Field("fontsize") fontsize: Int = 25,
         @retrofit2.http.Field("mode") mode: Int = 1,
         @retrofit2.http.Field("bubble") bubble: Int = 0,
-        @retrofit2.http.Field("room_type") roomType: Int = 0,
-        @retrofit2.http.Field("jumpfrom") jumpFrom: Int = 0,
-        @retrofit2.http.Field("reply_mid") replyMid: Long = 0,
-        @retrofit2.http.Field("reply_attr") replyAttr: Int = 0,
-        @retrofit2.http.Field("reply_uname") replyUname: String = "",
-        @retrofit2.http.Field("replay_dmid") replayDmid: String = "",
-        @retrofit2.http.Field("statistics") statistics: String = "{\"appId\":100,\"platform\":5}",
-        @retrofit2.http.Field("reply_type") replyType: Int = 0,
+        @retrofit2.http.Field("room_type") roomType: Int? = null,
+        @retrofit2.http.Field("jumpfrom") jumpFrom: Int? = null,
+        @retrofit2.http.Field("reply_mid") replyMid: Long? = null,
+        @retrofit2.http.Field("reply_attr") replyAttr: Int? = null,
+        @retrofit2.http.Field("reply_uname") replyUname: String? = null,
+        @retrofit2.http.Field("replay_dmid") replayDmid: String? = null,
+        @retrofit2.http.Field("statistics") statistics: String? = null,
+        @retrofit2.http.Field("reply_type") replyType: Int? = null,
         @retrofit2.http.Field("dm_type") dmType: Int? = null,
         @retrofit2.http.Field("emoticonOptions") emoticonOptions: String? = null,
         @retrofit2.http.Field("rnd") rnd: Long = System.currentTimeMillis() / 1000,
@@ -868,6 +903,13 @@ interface BilibiliApi {
     // [修复] 通过 aid 获取视频信息 - 用于移动端推荐流（可能只返回 aid）
     @GET("x/web-interface/view")
     suspend fun getVideoInfoByAid(@Query("aid") aid: Long): VideoDetailResponse
+
+    /**
+     * 轻量接口：只返回分P列表（含 dimension），用于在播放信息加载前判断横竖屏。
+     * 比 x/web-interface/view 少返回播放地址、字幕、相关推荐等大字段。
+     */
+    @GET("x/player/pagelist")
+    suspend fun getPageList(@Query("bvid") bvid: String): PageListResponse
     
     @GET("x/tag/archive/tags")
     suspend fun getVideoTags(@Query("bvid") bvid: String): VideoTagResponse
@@ -1059,8 +1101,17 @@ interface BilibiliApi {
         @retrofit2.http.Field("csrf") csrf: String
     ): CommandDanmakuResponse
 
+    @retrofit2.http.Streaming
     @GET
     suspend fun getDanmakuSpecialDm(@retrofit2.http.Url url: String): ResponseBody
+
+    @retrofit2.http.Streaming
+    @Headers("Accept-Encoding: identity")
+    @GET
+    suspend fun getDanmakuSpecialRange(
+        @retrofit2.http.Url url: String,
+        @Header("Range") range: String
+    ): Response<ResponseBody>
 
     // [新增] 云端弹幕屏蔽规则列表
     @retrofit2.http.GET("x/dm/filter/user")
@@ -1113,6 +1164,12 @@ interface BilibiliApi {
         @retrofit2.http.Field("dmid") dmid: Long,             // 弹幕 ID
         @retrofit2.http.Field("op") op: Int = 1,              // 操作: 1点赞/2取消
         @retrofit2.http.Field("platform") platform: String = "web_player",
+        // 对齐 PiliPlus 的播放器来源参数，仅用于弹幕点赞请求。
+        @retrofit2.http.Field("polaris_app_id") polarisAppId: Int = 100,
+        @retrofit2.http.Field("polaris_platform") polarisPlatform: Int = 5,
+        @retrofit2.http.Field("spmid") spmid: String = "333.788.0.0",
+        @retrofit2.http.Field("from_spmid") fromSpmid: String = "333.788.0.0",
+        @retrofit2.http.Field("statistics") statistics: String = "{\"appId\":100,\"platform\":5,\"abtest\":\"\",\"version\":\"\"}",
         @retrofit2.http.Field("csrf") csrf: String
     ): DanmakuActionResponse
 
@@ -1137,7 +1194,10 @@ interface BilibiliApi {
     // ==================== 评论模块 ====================
     // 评论主列表 (需 WBI 签名)
     @GET("x/v2/reply/wbi/main")
-    suspend fun getReplyList(@QueryMap params: Map<String, String>): ReplyResponse
+    suspend fun getReplyList(
+        @QueryMap params: Map<String, String>,
+        @Header(FORCE_COOKIE_HEADER) cookie: String? = null,
+    ): ReplyResponse
 
     // 评论主列表兼容链路
     @GET("x/v2/reply/main")
@@ -1177,8 +1237,10 @@ interface BilibiliApi {
     @GET("x/topic/pub/search")
     suspend fun searchDynamicPublishTopics(
         @Query("keywords") keywords: String? = null,
-        @Query("page_size") pageSize: Int = 20,
-        @Query("page_num") pageNum: Int = 1,
+        @Query("page_size") pageSize: Int? = 20,
+        @Query("page_num") pageNum: Int? = 1,
+        @Query("offset") offset: Int? = null,
+        @Query("web_location") location: String = "333.1365",
     ): com.android.purebilibili.data.model.response.DynamicTopicSearchResponse
 
     // [新增] 发送评论
@@ -1425,6 +1487,17 @@ interface BilibiliApi {
         @Query("order_type") orderType: String = ""  // 按关注顺序
     ): FollowingsResponse
     
+    // 对齐桌面 PiliPlus FanHttp.fans / Api.fans。
+    @GET("x/relation/fans")
+    suspend fun getFollowers(
+        @Query("vmid") vmid: Long,
+        @Query("pn") pn: Int = 1,
+        @Query("ps") ps: Int = 20,
+        @Query("order") order: String = "desc",
+        @Query("order_type") orderType: String = "attention",
+        @Header(FORCE_COOKIE_HEADER) cookie: String? = null,
+    ): FollowingsResponse
+
     //  [官方适配] 获取视频在线观看人数
     @GET("x/player/online/total")
     suspend fun getOnlineCount(
@@ -1558,7 +1631,7 @@ interface SearchApi {
         "Referer: https://search.bilibili.com/"
     )
     @GET("x/web-interface/wbi/search/all/v2")
-    suspend fun searchAll(@QueryMap params: Map<String, String>): SearchResponse
+    suspend fun searchAll(@QueryMap params: Map<String, String>): com.android.purebilibili.data.model.response.SearchAllResponse
     
     //  [修复] 分类搜索 - 支持排序和时长筛选
     @Headers(
@@ -1650,6 +1723,7 @@ interface StoryApi {
     // 获取故事流 (竖屏短视频列表)
     @GET("x/v2/feed/index/story")
     suspend fun getStoryFeed(
+        @Query("display_id") displayId: Int = 1,
         @Query("fnval") fnval: Int = 4048,         // 视频格式参数
         @Query("fnver") fnver: Int = 0,
         @Query("force_host") forceHost: Int = 0,
@@ -1680,7 +1754,8 @@ data class DynamicRepostRequest(
 data class DynamicRepostDynReq(
     val content: DynamicRepostContent,
     val scene: Int,
-    val attach_card: kotlinx.serialization.json.JsonObject?
+    val attach_card: kotlinx.serialization.json.JsonObject?,
+    val topic: com.android.purebilibili.data.model.response.DynamicCreateTopic? = null,
 )
 
 @kotlinx.serialization.Serializable
@@ -1729,9 +1804,11 @@ data class DynamicVisibilityRequest(
 
 fun buildDynamicRepostRequest(
     dynamicId: String,
-    content: String
+    content: String,
+    richContents: List<DynamicRepostContentItem> = emptyList(),
+    topic: com.android.purebilibili.data.model.response.DynamicCreateTopic? = null,
 ): DynamicRepostRequest {
-    val contents = if (content.isBlank()) {
+    val contents = if (richContents.isNotEmpty()) richContents else if (content.isBlank()) {
         emptyList()
     } else {
         listOf(
@@ -1746,7 +1823,8 @@ fun buildDynamicRepostRequest(
         dyn_req = DynamicRepostDynReq(
             content = DynamicRepostContent(contents = contents),
             scene = 4,
-            attach_card = null
+            attach_card = null,
+            topic = topic
         ),
         web_repost_src = DynamicWebRepostSource(dyn_id_str = dynamicId)
     )
@@ -1914,6 +1992,31 @@ interface DynamicApi {
         @retrofit2.http.Body body: DynamicCreateVoteRequest
     ): DynamicCreateVoteResponse
 
+    @retrofit2.http.POST("x/vote/update")
+    suspend fun updateVote(
+        @Query("csrf") csrf: String,
+        @retrofit2.http.Body body: DynamicCreateVoteRequest
+    ): DynamicCreateVoteResponse
+
+    @retrofit2.http.GET("x/new-reserve/up/reserve/info")
+    suspend fun getReserveInfo(
+        @Query("id") id: Long,
+        @Query("from") from: Int = 1,
+        @Query("web_location") location: String = "333.1365",
+    ): com.android.purebilibili.data.model.response.DynamicReserveInfoResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("x/new-reserve/up/reserve/update")
+    suspend fun updateReserve(
+        @retrofit2.http.Field("id") id: Long,
+        @retrofit2.http.Field("type") type: Int = 2,
+        @retrofit2.http.Field("sub_type") subType: Int,
+        @retrofit2.http.Field("from") from: Int = 1,
+        @retrofit2.http.Field("title") title: String,
+        @retrofit2.http.Field("live_plan_start_time") livePlanStartTime: Long,
+        @retrofit2.http.Field("csrf") csrf: String,
+    ): DynamicCreateReserveResponse
+
     @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("x/new-reserve/up/reserve/create")
     suspend fun createReserve(
@@ -1949,6 +2052,20 @@ interface DynamicApi {
     //  关注 UP 列表（含未读标记 has_update，供 UP 列表红点使用）
     @GET("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/w_dyn_uplist")
     suspend fun getDynamicUplist(): UplistResponse
+
+    // Recent authors, not the complete followed-author list. Reading these flags is read-only.
+    @GET("x/polymer/web-dynamic/v1/portal")
+    suspend fun getDynamicAuthorUpdatesPortal(
+        @Query("up_list_more") upListMore: Int = 1,
+        @Query("web_location") webLocation: String = "333.1365"
+    ): DynamicAuthorUpdatesPortalResponse
+
+    @GET("x/polymer/web-dynamic/v1/uplist")
+    suspend fun getDynamicAuthorUpdatesPage(
+        @Query("offset") offset: String,
+        @Query("platform") platform: String = "web",
+        @Query("web_location") webLocation: String = "333.1365"
+    ): DynamicAuthorUpdatesPageResponse
 
     @retrofit2.http.POST("x/dynamic/feed/operate/remove")
     suspend fun deleteDynamic(
@@ -2268,6 +2385,14 @@ fun buildSpaceLikedArchiveParams(
 
 //  [新增] 番剧/影视 API
 interface BangumiApi {
+    @FormUrlEncoded
+    @POST("pgc/season/episode/like/triple")
+    @Headers("Origin: https://www.bilibili.com")
+    suspend fun tripleBangumiEpisode(
+        @retrofit2.http.Field("ep_id") episodeId: Long,
+        @retrofit2.http.Field("csrf") csrf: String,
+        @Header("Referer") referer: String,
+    ): BangumiTripleResponse
     // 番剧时间表
     @GET("pgc/web/timeline")
     suspend fun getTimeline(
@@ -2439,11 +2564,39 @@ interface BangumiApi {
     ): SimpleApiResponse
 
     @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("pgc/review/action/dislike")
+    suspend fun dislikeBangumiReview(
+        @retrofit2.http.Field("media_id") mediaId: Long,
+        @retrofit2.http.Field("review_type") reviewType: Int = 2,
+        @retrofit2.http.Field("review_id") reviewId: Long,
+        @retrofit2.http.Field("csrf") csrf: String
+    ): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("pgc/review/short/modify")
+    suspend fun modifyBangumiShortReview(
+        @retrofit2.http.Field("media_id") mediaId: Long,
+        @retrofit2.http.Field("review_id") reviewId: Long,
+        @retrofit2.http.Field("score") score: Int,
+        @retrofit2.http.Field("content") content: String,
+        @retrofit2.http.Field("csrf") csrf: String
+    ): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("pgc/review/short/del")
+    suspend fun deleteBangumiShortReview(
+        @retrofit2.http.Field("media_id") mediaId: Long,
+        @retrofit2.http.Field("review_id") reviewId: Long,
+        @retrofit2.http.Field("csrf") csrf: String
+    ): SimpleApiResponse
+
+    @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("pgc/review/short/post")
     suspend fun postBangumiShortReview(
         @retrofit2.http.Field("media_id") mediaId: Long,
         @retrofit2.http.Field("score") score: Int,
         @retrofit2.http.Field("content") content: String,
+        @retrofit2.http.Field("share_feed") shareFeed: Int = 0,
         @retrofit2.http.Field("csrf") csrf: String
     ): SimpleApiResponse
 }
@@ -2610,6 +2763,13 @@ interface PassportApi {
     
     // ==========  TV 端登录 (获取 access_token 用于高画质视频) ==========
     
+    // HD 扫码申请与轮询使用查询参数签名。
+    @retrofit2.http.POST("https://passport.bilibili.com/x/passport-tv-login/qrcode/auth_code")
+    suspend fun generateHdQrCode(@QueryMap params: Map<String, String>): TvQrCodeResponse
+
+    @retrofit2.http.POST("https://passport.bilibili.com/x/passport-tv-login/qrcode/poll")
+    suspend fun pollHdQrCode(@QueryMap params: Map<String, String>): TvPollResponse
+
     // TV 端申请二维码
     @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("https://passport.bilibili.com/x/passport-tv-login/qrcode/auth_code")
@@ -2673,6 +2833,35 @@ interface AudioApi {
 
 // ==================== 私信 API (api.vc.bilibili.com) ====================
 interface MessageApi {
+    @GET("https://api.bilibili.com/x/relation/followings/search")
+    suspend fun searchMessageContacts(
+        @Query("vmid") mid: Long,
+        @Query("name") name: String,
+        @Query("pn") page: Int,
+        @Query("ps") pageSize: Int = 50,
+    ): FollowingsResponse
+
+    @GET("https://api.bilibili.com/x/msgfeed/like_detail")
+    suspend fun getLikeDetail(
+        @Query("card_id") cardId: Long,
+        @Query("pn") page: Int,
+        @Query("last_mid") lastMid: Long = 0,
+        @Query("platform") platform: String = "web",
+        @Query("mobi_app") mobiApp: String = "web",
+        @Query("build") build: Int = 0,
+    ): MessageLikeDetailResponse
+
+    @POST("https://message.bilibili.com/x/sys-msg/del_notify_list")
+    suspend fun deleteSystemNotice(
+        @Query("csrf") csrf: String,
+        @Query("mobi_app") mobiApp: String = "android",
+        @retrofit2.http.Body body: kotlinx.serialization.json.JsonObject,
+    ): SimpleApiResponse
+
+    @FormUrlEncoded
+    @POST("https://api.vc.bilibili.com/x/bplus/im/report/add")
+    suspend fun reportPrivateMessage(@FieldMap fields: Map<String, String>): SimpleApiResponse
+
     // 获取未读私信数
     @GET("session_svr/v1/session_svr/single_unread")
     suspend fun getUnreadCount(
@@ -2946,38 +3135,72 @@ object NetworkModule {
         appContext?.let(AccountSessionStore::getPlaybackAccount)
 
     /**
+     * 解析播放账号 + 其客户端缓存键。
+     *
+     * 账号解析要走 SharedPreferences（含账号解析缓存命中时的字符串比较），属于 I/O；
+     * 把它放在 `@Synchronized` 里会让所有取流调用在全局锁上排队。这里在锁**外**完成
+     * 解析，锁内只做键比较与客户端缓存读写。
+     *
+     * 返回 null 表示「使用主账号」（无独立播放账号，或播放账号就是当前主账号）。
+     */
+    private fun resolvePlaybackAccountClientKey(): Pair<StoredAccountSession, String>? {
+        val context = appContext ?: return null
+        val account = AccountSessionStore.getPlaybackAccount(context) ?: return null
+        if (account.mid == TokenManager.midCache) return null
+        val key = "${account.mid}:${account.sessData.hashCode()}:${account.buvid3.hashCode()}"
+        return account to key
+    }
+
+    /**
      * Returns a client scoped to the optional playback account. It never changes
      * the app's primary account or grants entitlements locally: Bilibili still
      * decides access from the selected account's own server-side session.
      */
-    @Synchronized
     fun playbackApi(): BilibiliApi {
-        val context = appContext ?: return api
-        val account = AccountSessionStore.getPlaybackAccount(context) ?: return api
-        if (account.mid == TokenManager.midCache) return api
+        val resolved = resolvePlaybackAccountClientKey() ?: return api
+        return requireNotNull(ensurePlaybackAccountApi(resolved.first, resolved.second))
+    }
 
-        val key = "${account.mid}:${account.sessData.hashCode()}:${account.buvid3.hashCode()}"
-        ensurePlaybackAccountClients(account, key)
-        return requireNotNull(playbackAccountApi)
+    fun playbackBangumiApi(): BangumiApi {
+        val resolved = resolvePlaybackAccountClientKey() ?: return bangumiApi
+        return requireNotNull(ensurePlaybackAccountBangumiApi(resolved.first, resolved.second))
+    }
+
+    /** 锁内只做键比较与缓存读写；账号解析与 Retrofit 构建都在锁外完成。 */
+    @Synchronized
+    private fun ensurePlaybackAccountApi(
+        account: StoredAccountSession,
+        key: String,
+    ): BilibiliApi? {
+        if (playbackAccountKey == key && playbackAccountApi != null && playbackAccountBangumiApi != null) {
+            return playbackAccountApi
+        }
+        buildPlaybackAccountClientsLocked(account, key)
+        return playbackAccountApi
     }
 
     @Synchronized
-    fun playbackBangumiApi(): BangumiApi {
-        val context = appContext ?: return bangumiApi
-        val account = AccountSessionStore.getPlaybackAccount(context) ?: return bangumiApi
-        if (account.mid == TokenManager.midCache) return bangumiApi
-
-        val key = "${account.mid}:${account.sessData.hashCode()}:${account.buvid3.hashCode()}"
-        ensurePlaybackAccountClients(account, key)
-        return requireNotNull(playbackAccountBangumiApi)
+    private fun ensurePlaybackAccountBangumiApi(
+        account: StoredAccountSession,
+        key: String,
+    ): BangumiApi? {
+        if (playbackAccountKey == key && playbackAccountApi != null && playbackAccountBangumiApi != null) {
+            return playbackAccountBangumiApi
+        }
+        buildPlaybackAccountClientsLocked(account, key)
+        return playbackAccountBangumiApi
     }
 
-    private fun ensurePlaybackAccountClients(account: StoredAccountSession, key: String) {
-        if (playbackAccountKey == key && playbackAccountApi != null && playbackAccountBangumiApi != null) {
-            return
-        }
+    /**
+     * 调用方须持有本对象锁。Retrofit 构建本身无 I/O，但会分配若干对象；
+     * 仅在缓存键变化（账号切换）时才执行。
+     */
+    private fun buildPlaybackAccountClientsLocked(account: StoredAccountSession, key: String) {
         val client = okHttpClient.newBuilder()
-            .cookieJar(PlaybackAccountCookieJar(account))
+            .cookieJar(okhttp3.CookieJar.NO_COOKIES)
+            .addInterceptor { chain ->
+                chain.proceed(bindPlaybackAccountCookieSession(chain.request(), account))
+            }
             .build()
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.bilibili.com/")
@@ -3030,6 +3253,7 @@ object NetworkModule {
                 return com.android.purebilibili.core.network.policy.selectAppHttpProxies(
                     settings = settings,
                     systemProxies = systemProxies,
+                    host = uri?.host,
                 )
             }
 
@@ -3091,32 +3315,18 @@ object NetworkModule {
         }
         
         builder
-            //  [Fix] 自定义 DNS 实现，绕过 OkHttp 可能被混淆内部类的问题，并添加日志
-            .dns(object : okhttp3.Dns {
-                override fun lookup(hostname: String): List<java.net.InetAddress> {
-                try {
-                    val addresses = java.net.InetAddress.getAllByName(hostname).toList()
-                    com.android.purebilibili.core.network.CoreDataLog.d("ApiClient", "DNS resolved: $hostname -> $addresses")
-                    return addresses
-                } catch (e: Exception) {
-                if (e is kotlinx.coroutines.CancellationException) throw e
-                    com.android.purebilibili.core.network.CoreDataLog.e("ApiClient", "DNS failed for $hostname: ${e.message}")
-                    val fallback = resolveHardcodedDnsFallback(
-                        hostname = hostname,
-                        allowHardcodedIpFallback = CoreNetworkRuntime.config.allowHardcodedDnsFallback
-                    )
-                    if (fallback != null) {
-                        com.android.purebilibili.core.network.CoreDataLog.w(
-                            "ApiClient",
-                            "⚠️ Using Hardcoded IP for ${fallback.description}: ${fallback.ipAddress}"
-                        )
-                        return listOf(java.net.InetAddress.getByName(fallback.ipAddress))
-                    }
-                    throw e
-                }
-            }})
-            //  [关键] 添加 CookieJar 自动管理 Cookie（参考 PiliPala）
+            .dns(buildAppDns(
+                allowHardcodedIpFallback = CoreNetworkRuntime.config.allowHardcodedDnsFallback
+            ))
+            // 普通第三方响应 Cookie 使用独立临时 jar；账号 Cookie 在网络入口绑定。
             .cookieJar(appSessionCookieJar)
+            .addInterceptor { chain ->
+                val request = chain.request()
+                val session = AccountCookieSession.main().copy(
+                    explicitCookie = request.header("Cookie") != null || request.header(FORCE_COOKIE_HEADER) != null
+                )
+                chain.proceed(request.newBuilder().tag(AccountCookieSession::class.java, session).build())
+            }
             .addInterceptor { chain ->
                 val original = chain.request()
                 val url = original.url
@@ -3199,6 +3409,7 @@ object NetworkModule {
                 val isAppBiliEndpoint = url.host == "app.bilibili.com" || isAndroidHdLoginEndpoint
                 val explicitReferer = original.header("Referer")
                 val explicitUserAgent = original.header("User-Agent")
+                val useBilibiliHeaders = usesDefaultBilibiliHeaders(url.host)
                 val builder = original.newBuilder()
                     .header(
                         "User-Agent",
@@ -3209,7 +3420,7 @@ object NetworkModule {
                             else -> "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
                         }
                     )
-                if (!isAppBiliEndpoint && explicitReferer.isNullOrBlank()) {
+                if (useBilibiliHeaders && !isAppBiliEndpoint && explicitReferer.isNullOrBlank()) {
                     builder.header("Origin", origin) //  动态 Origin 头
                 }
                 if (androidHdLoginAppKeyHeader != null || isHdFeedRequest) {
@@ -3250,12 +3461,8 @@ object NetworkModule {
                         .header("Content-Type", "application/x-www-form-urlencoded; charset=utf-8")
                 }
                 
-                //  [关键修复] WBI 签名接口绝对不能设置 Referer 头，否则会失败
-                // 参考：https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/docs/misc/sign/wbi.md
-                val isWbiEndpoint = url.encodedPath.contains("/wbi/")
-                if (explicitReferer.isNullOrBlank() &&
-                    !isWbiEndpoint && !isAppBiliEndpoint
-                ) {
+                // Web 签名请求同样保留来源页；显式来源由调用方控制。
+                if (useBilibiliHeaders && explicitReferer.isNullOrBlank() && !isAppBiliEndpoint) {
                     builder.header("Referer", referer)
                 }
 
@@ -3295,11 +3502,8 @@ object NetworkModule {
                     throw e
                 }
             }
-            // CookieJar runs after application interceptors and replaces Cookie.
-            // Restore an explicit imported cookie after that, matching PiliPlus.
-            .addNetworkInterceptor { chain ->
-                chain.proceed(applyForcedCookieHeader(chain.request()))
-            }
+            // 最终网络请求与响应固定使用同一账号的完整 Cookie 集合。
+            .addNetworkInterceptor(AccountCookieInterceptor())
             .build()
     }
 
@@ -3311,6 +3515,8 @@ object NetworkModule {
     // 当登录用户遭遇风控 (-351) 时，可以尝试以游客身份获取视频
     val guestOkHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
+            // Guest requests use the same platform ECH support without debug IP fallback.
+            .dns(buildAppDns(allowHardcodedIpFallback = false))
             .protocols(resolveSharedNetworkProtocols())
             .proxySelector(buildAppProxySelector())
             .connectTimeout(15, java.util.concurrent.TimeUnit.SECONDS)

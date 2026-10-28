@@ -7,22 +7,45 @@ import kotlin.test.assertTrue
 class DynamicCommentStructureTest {
 
     @Test
-    fun `comment input uses Miuix text field only in non glass mode`() {
-        val source = File(
+    fun `dynamic comment surfaces open the shared input dialog`() {
+        val sheet = File(
             "src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt"
         ).readText()
-        val composer = source
-            .substringAfter("private fun DynamicCommentComposer(")
-            .substringBefore("/**\n *  单条评论项")
+        val host = File(
+            "src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentInputHost.kt"
+        ).readText()
+        val detail = File(
+            "src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt"
+        ).readText()
+        val screen = File(
+            "src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt"
+        ).readText()
+        val space = File(
+            "src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt"
+        ).readText()
 
-        assertTrue(composer.contains("val useMiuixNonGlassInput = isMiuixNonGlassEnabled()"))
-        assertTrue(composer.contains("if (useMiuixNonGlassInput)"))
-        assertTrue(composer.contains("AppOutlinedTextField("))
-        assertTrue(composer.contains("placeholderText = hint"))
-        assertTrue(composer.contains("OutlinedTextField("))
-        assertTrue(composer.contains("focusedContainerColor = fieldColor"))
-        assertTrue(composer.contains("KeyboardOptions(imeAction = ImeAction.Send)"))
-        assertTrue(composer.contains("resolveDynamicCommentImeSubmission(value)?.let(onSubmit)"))
+        assertTrue(!sheet.contains("private fun DynamicCommentComposer("))
+        assertTrue(!sheet.contains("DynamicInlineCommentComposer("))
+        assertTrue(!sheet.contains("OutlinedTextField"))
+        assertTrue(!sheet.contains("AppOutlinedTextField"))
+        assertTrue(!sheet.contains("onPostComment"))
+        assertTrue(sheet.contains("DynamicCommentEntryBar("))
+        assertTrue(sheet.contains("onOpenComposer"))
+
+        assertTrue(host.contains("CommentInputDialog("))
+        assertTrue(host.contains("replyToName = replyTarget?.uname"))
+        assertTrue(host.contains("allowImageAttachment = replyTarget == null"))
+        assertTrue(host.contains("showSyncToDynamic = false"))
+        assertTrue(host.contains("showProgressInsert = false"))
+        assertTrue(host.contains("initialText = draft.text"))
+        assertTrue(host.contains("onDraftChange"))
+
+        assertTrue(detail.contains("DynamicCommentInputHost("))
+        assertTrue(detail.contains("DynamicCommentEntryBar("))
+
+        assertTrue(!screen.contains("DynamicCommentOverlayHost("))
+        assertTrue(!screen.contains("DynamicCommentSheet"))
+        assertTrue(space.contains("DynamicCommentOverlayHost("))
     }
 
     @Test
@@ -32,7 +55,7 @@ class DynamicCommentStructureTest {
 
         assertTrue(source.contains("val dynamicCommentSortMode: StateFlow<CommentSortMode>"))
         assertTrue(source.contains("fun setDynamicCommentSortMode(mode: CommentSortMode)"))
-        assertTrue(source.contains("commentNextPage = 1"))
+        assertTrue(source.contains("hasMore = false, nextPage = 1"))
         assertTrue(source.contains("commentGrpcNextOffset = null"))
         assertTrue(source.contains("loadCommentsForDynamic(item)"))
     }
@@ -42,8 +65,8 @@ class DynamicCommentStructureTest {
         val source = File("src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt")
             .readText()
 
-        assertTrue(source.contains("paginationOffset = state.grpcNextOffset"))
-        assertTrue(source.contains("CommentRepository.getSortedSubCommentsForSubject("))
+        assertTrue(source.contains("paginationOffset = request.offset"))
+        assertTrue(source.contains("CommentRepository.getMobileSortedSubCommentsForSubject("))
         assertTrue(source.contains("mode = sortMode.apiMode"))
         assertTrue(source.contains("grpcNextOffset = data.grpcNextOffset"))
     }
@@ -66,11 +89,11 @@ class DynamicCommentStructureTest {
             .substringAfter("val commentContent:")
             .substringBefore("val commentComposer:")
 
-        assertTrue(source.contains("DynamicInlineCommentComposer("))
+        assertTrue(source.contains("DynamicCommentEntryBar("))
         assertTrue(source.contains("shouldLoadMoreDynamicDetailComments("))
         assertTrue(source.contains("LaunchedEffect(detailListState, commentListState, useSplitLayout)"))
         assertTrue(commentContent.contains("dynamicInlineCommentItems("))
-        assertTrue(!commentContent.contains("DynamicInlineCommentComposer("))
+        assertTrue(!commentContent.contains("DynamicCommentEntryBar("))
         assertTrue(!source.contains("item(key = \"dynamic_detail_comment_composer\")"))
     }
 
@@ -87,30 +110,60 @@ class DynamicCommentStructureTest {
         assertTrue(composer.contains("liquidGlassEnabled = liquidGlassEnabled"))
         assertTrue(source.contains("shouldUseFloatingLiquidBottomInputBar("))
         assertTrue(source.contains("resolveBottomInputBarContentBottomPadding("))
-        assertTrue(source.contains("val detailCommentBackdrop = rememberLayerBackdrop()"))
-        assertTrue(source.contains(".layerBackdrop(detailCommentBackdrop)"))
-        assertTrue(source.contains("contentPadding = PaddingValues(bottom = commentContentBottomPadding)"))
-        assertTrue(source.contains("widthIn(max = 360.dp)"))
-        assertTrue(!source.contains(".weight(1f)"))
+        assertTrue(source.contains("if (liquidGlassEnabled) rememberChromeBackdropSource() else null"))
+        assertTrue(source.contains("detailCommentSource.modifier.sharedGlobalWallpaperBackground(MaterialTheme.colorScheme.background)"))
+        assertTrue(!source.contains(".layerBackdrop(detailCommentBackdrop)"))
+        assertTrue(source.contains("bottom = commentContentBottomPadding"))
 
-        val componentSource = File(
-            "src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt"
+        val entryBarSource = File(
+            "src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentEntryBar.kt"
         ).readText()
-        val inputComposer = componentSource
-            .substringAfter("private fun DynamicCommentComposer(")
-            .substringBefore("/**\n *  单条评论项")
-        assertTrue(inputComposer.split("BottomBarMatchedReusableLiquidDock(").size - 1 == 2)
-        assertTrue(inputComposer.contains("reuseEnabled = liquidGlassEnabled"))
-        assertTrue(inputComposer.contains("backdrop = backdrop"))
-        assertTrue(inputComposer.contains("drawShellLens = true"))
-        assertTrue(!inputComposer.contains("drawShellLens = false"))
-        assertTrue(inputComposer.contains("shellLensIntensity = composerLensIntensity"))
-        assertTrue(inputComposer.contains("resolveSharedBottomBarCapsuleShape()"))
-        assertTrue(inputComposer.contains("containerColor = Color.Transparent"))
-        assertTrue(inputComposer.contains("fieldTextColor.copy(alpha = 0.82f)"))
-        assertTrue(inputComposer.contains("focusedTextColor = fieldTextColor"))
-        assertTrue(inputComposer.contains("disabledContentColor = MaterialTheme.colorScheme.onSurface.copy("))
-        assertTrue(inputComposer.contains("AppSpacingTokens.TripleExtraLarge + AppSpacingTokens.Small"))
+        assertTrue(entryBarSource.split("BottomBarMatchedReusableLiquidDock(").size - 1 == 1)
+        assertTrue(entryBarSource.contains("reuseEnabled = true"))
+        assertTrue(entryBarSource.contains("drawShellLens = true"))
+        assertTrue(entryBarSource.contains("resolveFloatingDockGeometryScale(44f)"))
+        assertTrue(entryBarSource.contains("resolveSharedBottomBarCapsuleShape()"))
+        assertTrue(entryBarSource.contains("height(48.dp)"))
+        assertTrue(entryBarSource.contains("CommentEntryBarContent("))
+        assertTrue(entryBarSource.contains("containerColor"))
+    }
+
+    @Test
+    fun `dynamic sub reply keeps thread open while opening shared composer`() {
+        val detail = File(
+            "src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt"
+        ).readText()
+        val viewModel = File(
+            "src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt"
+        ).readText()
+
+        val replyHandler = detail
+            .substringAfter("DynamicSubReplyPreviewHost(")
+            .substringBefore("val postComment:")
+            .substringAfter("onReplyClick = { reply ->")
+            .substringBefore("},")
+
+        assertTrue(replyHandler.contains("startCommentReply(reply)"))
+        assertTrue(!replyHandler.contains("closeSubReply()"))
+
+        val postComment = viewModel
+            .substringAfter("fun postComment(")
+            .substringBefore("private suspend fun uploadCommentPictures")
+        assertTrue(postComment.contains("refreshSubReplies()"))
+    }
+
+    @Test
+    fun `dynamic comment composer reuses shared draft state`() {
+        val source = File("src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt")
+            .readText()
+
+        assertTrue(source.contains("CommentComposerDraftState()"))
+        assertTrue(source.contains("fun openCommentComposer()"))
+        assertTrue(source.contains("fun dismissCommentComposer()"))
+        assertTrue(source.contains("commentComposerVisible.value = false"))
+        assertTrue(source.contains("complete(draftSessionId, replyRpid, sentDraft)"))
+        assertTrue(source.contains("isSendingComment"))
+        assertTrue(source.contains("commentMentionSearchState"))
     }
 
     @Test
@@ -122,36 +175,6 @@ class DynamicCommentStructureTest {
         assertTrue(source.contains("val requestId = ++commentLoadRequestId"))
         assertTrue(source.contains("commentLoadJob?.cancel()"))
         assertTrue(source.contains("if (requestId != commentLoadRequestId) return@launch"))
-    }
-
-    @Test
-    fun `dynamic comment mentions forward user navigation through every comment surface`() {
-        val sheetSource = File(
-            "src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentSheet.kt"
-        ).readText()
-        val subReplySource = File(
-            "src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt"
-        ).readText()
-        val screenSource = File(
-            "src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt"
-        ).readText()
-        val detailSource = File(
-            "src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt"
-        ).readText()
-
-        assertTrue(sheetSource.contains("content = reply.content"))
-        assertTrue(sheetSource.contains("content = subReply.content"))
-        assertTrue(sheetSource.contains("SubReplyDetailContent("))
-        assertTrue(sheetSource.contains("onUserClick = onUserClick"))
-        assertTrue(sheetSource.contains("onAvatarClick = { mid -> mid.toLongOrNull()?.let(onUserClick) }"))
-        assertTrue(subReplySource.contains("onAvatarClick = { mid -> mid.toLongOrNull()?.let(onUserClick) }"))
-        assertTrue(subReplySource.contains("DynamicEmoteCatalog.ensureLoaded()"))
-        assertTrue(subReplySource.contains("emoteMap = emoteMap"))
-        assertTrue(!subReplySource.contains("emoteMap = emptyMap()"))
-        assertTrue(screenSource.contains("DynamicCommentOverlayHost("))
-        assertTrue(screenSource.contains("onUserClick = onUserClick"))
-        assertTrue(detailSource.contains("dynamicInlineCommentItems("))
-        assertTrue(detailSource.contains("onUserClick = onUserClick"))
     }
 
     @Test

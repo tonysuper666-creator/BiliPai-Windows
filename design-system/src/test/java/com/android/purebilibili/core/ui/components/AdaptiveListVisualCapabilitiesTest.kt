@@ -17,7 +17,7 @@ class AdaptiveListVisualCapabilitiesTest {
         assertTrue(capabilities.showExplicitActionChevron)
         assertEquals(40, capabilities.componentSpec.iconContainerSizeDp)
         assertEquals(18, capabilities.rowSpec.insideHorizontalPaddingDp)
-        assertEquals(48, capabilities.rowSpec.minTouchTargetHeightDp)
+        assertEquals(44, capabilities.rowSpec.minTouchTargetHeightDp)
     }
 
     @Test
@@ -27,6 +27,6 @@ class AdaptiveListVisualCapabilitiesTest {
         assertFalse(capabilities.showExplicitActionChevron)
         assertEquals(38, capabilities.componentSpec.iconContainerSizeDp)
         assertEquals(16, capabilities.rowSpec.insideHorizontalPaddingDp)
-        assertEquals(48, capabilities.rowSpec.minTouchTargetHeightDp)
+        assertEquals(44, capabilities.rowSpec.minTouchTargetHeightDp)
     }
 }

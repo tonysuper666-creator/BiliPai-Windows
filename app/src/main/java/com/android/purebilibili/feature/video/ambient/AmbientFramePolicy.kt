@@ -8,15 +8,21 @@ internal data class AmbientSettings(val enabled: Boolean = false, val strength: 
     val opacity: Float get() = when (strength) { 0 -> 0.18f; 2 -> 0.42f; else -> 0.30f }
 }
 
-internal fun ambientSampleSize(width: Int, height: Int): Pair<Int, Int> {
+internal fun ambientSampleSize(width: Int, height: Int, longEdge: Int = 96): Pair<Int, Int> {
     val w = width.coerceAtLeast(1)
     val h = height.coerceAtLeast(1)
-    return if (w >= h) 96 to (96f * h / w).roundToInt().coerceAtLeast(1)
-    else (96f * w / h).roundToInt().coerceAtLeast(1) to 96
+    val edge = longEdge.coerceAtLeast(1)
+    return if (w >= h) edge to (edge.toFloat() * h / w).roundToInt().coerceAtLeast(1)
+    else (edge.toFloat() * w / h).roundToInt().coerceAtLeast(1) to edge
 }
 
-internal fun ambientIntervalMs(glow: Boolean, saving: Boolean, static: Boolean): Long = when {
-    !glow -> 1500L
+// 动态模糊与光晕保持相同采样节奏；静态和省电时降低频率，避免模糊条半秒才跟随画面。
+internal fun ambientIntervalMs(
+    glow: Boolean,
+    saving: Boolean,
+    static: Boolean,
+): Long = when {
+    !glow -> if (saving || static) 250L else 125L
     static -> if (saving) 500L else 250L
     saving -> 250L
     else -> 125L

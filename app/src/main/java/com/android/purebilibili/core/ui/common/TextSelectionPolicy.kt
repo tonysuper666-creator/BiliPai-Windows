@@ -113,52 +113,6 @@ object TextSelectionPolicy {
     fun formatSelectedCountBadge(characterCount: Int): String {
         return if (characterCount > 0) "已选 ${characterCount} 字" else ""
     }
-
-    /**
-     * 从 Compose 的 TextToolbar 复制回调中安全提取当前选中的文本内容
-     */
-    fun resolveSelectedTextFromCopyCallback(onCopyRequested: Any?): String? {
-        if (onCopyRequested == null) return null
-        return try {
-            var receiver = (onCopyRequested as? kotlin.jvm.internal.CallableReference)?.boundReceiver
-            if (receiver == null) {
-                for (field in onCopyRequested.javaClass.declaredFields) {
-                    field.isAccessible = true
-                    val value = field.get(onCopyRequested) ?: continue
-                    if (value.javaClass.name.contains("SelectionManager")) {
-                        receiver = value
-                        break
-                    }
-                    if (field.name == "this$0") {
-                        receiver = value
-                    }
-                }
-            }
-            if (receiver != null) {
-                val method = receiver.javaClass.methods.firstOrNull {
-                    it.name.startsWith("getSelectedText") && it.parameterCount == 0
-                } ?: receiver.javaClass.declaredMethods.firstOrNull {
-                    it.name.startsWith("getSelectedText") && it.parameterCount == 0
-                }
-                if (method != null) {
-                    method.isAccessible = true
-                    val result = method.invoke(receiver)
-                    val text = (result as? androidx.compose.ui.text.AnnotatedString)?.text ?: result?.toString()
-                    if (!text.isNullOrEmpty()) return text
-                }
-                for (f in receiver.javaClass.declaredFields) {
-                    f.isAccessible = true
-                    val obj = f.get(receiver) ?: continue
-                    if (obj is androidx.compose.ui.text.AnnotatedString) {
-                        return obj.text
-                    }
-                }
-            }
-            null
-        } catch (_: Throwable) {
-            null
-        }
-    }
 }
 
 /**

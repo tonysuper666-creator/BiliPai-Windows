@@ -16,6 +16,9 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
+import com.android.purebilibili.core.ui.components.appElasticPress
+import java.util.concurrent.atomic.AtomicInteger
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.purebilibili.feature.dynamic.components.IMAGE_PREVIEW_COMMENT_PANEL_TAG
@@ -35,6 +38,27 @@ class ImagePreviewDialogUiRegressionTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    @Test
+    fun swipeUpWithElasticFeedbackAncestor_dismissesPreviewOnce() {
+        val dismissCount = AtomicInteger(0)
+        composeTestRule.setContent {
+            MaterialTheme {
+                Box(Modifier.fillMaxSize().appElasticPress()) {
+                    ImagePreviewDialog(
+                        images = listOf(""),
+                        initialIndex = 0,
+                        onDismiss = { dismissCount.incrementAndGet() },
+                    )
+                    ImagePreviewOverlayHost()
+                }
+            }
+        }
+        composeTestRule.onNodeWithTag(IMAGE_PREVIEW_PAGE_TAG)
+            .performTouchInput { swipeUp() }
+        composeTestRule.waitUntil(timeoutMillis = 3_000) { dismissCount.get() > 0 }
+        composeTestRule.runOnIdle { assertEquals(1, dismissCount.get()) }
+    }
 
     @Test
     fun replacingPreviewRequest_startsAtNewInitialPage() {

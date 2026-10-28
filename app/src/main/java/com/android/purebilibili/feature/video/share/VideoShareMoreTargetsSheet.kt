@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.video.share
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,13 +10,17 @@ import android.os.Build
 import android.widget.ImageView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.ui.Alignment
+import com.android.purebilibili.core.ui.components.AppTextButton
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -92,7 +98,6 @@ internal fun VideoShareMoreTargetsSheet(
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val isLandscape = isLandscapeVideoShare()
-    val sheetBounce = rememberVideoShareSheetBounce(sheetState, isLandscape)
     val maxListHeight = (LocalConfiguration.current.screenHeightDp - 220).coerceIn(160, 440).dp
     val mimeType = shareMedia?.mimeType ?: "text/plain"
     val targets = remember(context, mimeType) { findVideoShareAppTargets(context, mimeType) }
@@ -102,18 +107,30 @@ internal fun VideoShareMoreTargetsSheet(
         onDismissRequest = { if (!openingTarget) onDismiss() },
         sheetState = sheetState,
         presentationOverride = videoSharePresentation(isLandscape),
-        sheetSurfaceModifier = sheetBounce,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(
-                horizontal = AppSpacingTokens.Large,
-                vertical = AppSpacingTokens.Small,
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(if (isLandscape) Modifier.fillMaxHeight() else Modifier)
+                .navigationBarsPadding()
+                .padding(
+                    horizontal = AppSpacingTokens.Large,
+                    vertical = AppSpacingTokens.Small,
+                ),
             verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.Small),
         ) {
-            AppText("更多分享方式", style = MaterialTheme.typography.headlineSmall)
-            AppText("选择应用继续分享", style = MaterialTheme.typography.bodySmall)
-            LazyColumn(modifier = Modifier.fillMaxWidth().heightIn(max = maxListHeight)) {
+            if (isLandscape) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    AppText("更多分享方式", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                    AppTextButton(onClick = onDismiss, enabled = !openingTarget) { AppText("关闭") }
+                }
+            } else {
+                AppText("更多分享方式", style = MaterialTheme.typography.headlineSmall)
+                AppText("选择应用继续分享", style = MaterialTheme.typography.bodySmall)
+            }
+            LazyColumn(modifier = Modifier.fillMaxWidth().then(
+                if (isLandscape) Modifier.weight(1f) else Modifier.heightIn(max = maxListHeight),
+            )) {
                 items(targets, key = { it.packageName }) { target ->
                     AppListItem(
                         headlineContent = { AppText(target.label) },
@@ -148,13 +165,15 @@ internal fun VideoShareMoreTargetsSheet(
                 enabled = !openingTarget,
                 modifier = Modifier.fillMaxWidth(),
             ) { AppText("系统分享面板") }
-            AppText(
-                "系统面板的屏幕方向由设备决定",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            AppButton(onClick = onDismiss, enabled = !openingTarget, modifier = Modifier.fillMaxWidth()) {
-                AppText("取消")
+            if (!isLandscape) {
+                AppText(
+                    "系统面板的屏幕方向由设备决定",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppContentColors.secondaryText(),
+                )
+                AppButton(onClick = onDismiss, enabled = !openingTarget, modifier = Modifier.fillMaxWidth()) {
+                    AppText("取消")
+                }
             }
         }
     }

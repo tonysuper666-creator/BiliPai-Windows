@@ -10,7 +10,7 @@ import kotlin.test.assertTrue
 class AppPrimitiveRendererPolicyTest {
 
     @Test
-    fun outlinedTextFieldUsesMiuixUnlessPrefixOrSuffixIsPresent() {
+    fun outlinedTextFieldKeepsMiuixWithPrefixOrSuffix() {
         assertTrue(
             shouldUseMiuixOutlinedTextField(
                 uiStyle = AppUiStyle.MIUIX,
@@ -18,13 +18,16 @@ class AppPrimitiveRendererPolicyTest {
                 hasSuffix = false,
             )
         )
-        assertFalse(
+        assertTrue(
             shouldUseMiuixOutlinedTextField(
                 uiStyle = AppUiStyle.MIUIX,
                 hasPrefix = true,
                 hasSuffix = false,
             )
         )
+        assertTrue(shouldUseMiuixOutlinedTextField(AppUiStyle.MIUIX, hasPrefix = true, hasSuffix = true))
+        assertFalse(shouldUseMiuixOutlinedTextField(AppUiStyle.MIUIX, hasPrefix = true, hasSuffix = false, liquidGlassEnabled = true))
+        assertTrue(shouldUseMiuixOutlinedTextField(AppUiStyle.MIUIX, hasPrefix = false, hasSuffix = false, liquidGlassEnabled = true))
         assertFalse(
             shouldUseMiuixOutlinedTextField(
                 uiStyle = AppUiStyle.MATERIAL3,
@@ -71,16 +74,16 @@ class AppPrimitiveRendererPolicyTest {
     }
 
     @Test
-    fun fabDefaultMaterialContainerRemapsToMiuixPrimary() {
+    fun fabDefaultMaterialContainerRemapsToMiuixContainer() {
         val materialDefault = Color(0xFF123456)
         val custom = Color(0xFFABCDEF)
-        val miuixPrimary = Color(0xFF111111)
+        val miuixDefaultContainer = Color(0xFF111111)
         assertEquals(
-            miuixPrimary,
+            miuixDefaultContainer,
             resolveMiuixFabContainerColor(
                 requested = materialDefault,
                 defaultMaterialContainer = materialDefault,
-                miuixPrimary = miuixPrimary,
+                miuixDefaultContainer = miuixDefaultContainer,
             ),
         )
         assertEquals(
@@ -88,7 +91,7 @@ class AppPrimitiveRendererPolicyTest {
             resolveMiuixFabContainerColor(
                 requested = custom,
                 defaultMaterialContainer = materialDefault,
-                miuixPrimary = miuixPrimary,
+                miuixDefaultContainer = miuixDefaultContainer,
             ),
         )
     }

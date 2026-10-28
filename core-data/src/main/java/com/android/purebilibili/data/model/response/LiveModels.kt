@@ -24,7 +24,7 @@ data class LiveData(
     val list: List<LiveRoom>? = null,
     @SerialName("list_by_area") val listByArea: List<LiveRoom>? = null,
     val count: Int = 0,
-    @SerialName("has_more") val hasMore: Int = 0
+    @SerialName("has_more") val hasMore: Int? = null
 ) {
     fun getAllRooms(): List<LiveRoom> = list ?: listByArea ?: emptyList()
 }
@@ -98,7 +98,8 @@ data class LiveRoom(
     @JsonNames("parent_name", "area_v2_parent_name")
     @SerialName("parent_name")
     val parentName: String = "",
-    val keyframe: String = ""
+    val keyframe: String = "",
+    val feedback: List<LiveFeedbackGroup> = emptyList()
 ) {
     fun displayCover(preferFirstFrame: Boolean = false): String {
         val ordered = if (preferFirstFrame) {
@@ -132,7 +133,12 @@ data class LivePlayUrlData(
     val durl: List<LiveDurl>? = null,
     val quality_description: List<LiveQuality>? = null,
     val current_quality: Int = 0,
-    val playurl_info: PlayurlInfo? = null
+    val playurl_info: PlayurlInfo? = null,
+    @SerialName("room_id") val roomId: Long = 0,
+    val uid: Long = 0,
+    @SerialName("live_status") val liveStatus: Int? = null,
+    @SerialName("live_time") val liveTime: Long = 0,
+    @SerialName("is_portrait") val isPortrait: Boolean? = null
 )
 
 @Serializable
@@ -197,7 +203,7 @@ data class FollowedLiveResponse(
 @OptIn(ExperimentalSerializationApi::class)
 data class FollowedLiveData(
     val list: List<FollowedLiveRoom>? = null,
-    @JsonNames("living_num", "live_count") val livingNum: Int = 0,
+    @JsonNames("living_num", "live_count") val livingNum: Int? = null,
     @JsonNames("not_living_num", "count") val notLivingNum: Int = 0,
     val pageinfo: PageInfo? = null
 )

@@ -1,6 +1,6 @@
 package com.android.purebilibili.feature.dynamic.components
 
-import androidx.compose.foundation.clickable
+import com.android.purebilibili.core.ui.components.appActionClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -140,7 +140,7 @@ fun DynamicVoteDialog(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable(enabled = canVote) {
+                                    .appActionClickable(enabled = canVote) {
                                         selectedIndexes = if (multiSelect) {
                                             if (selected) {
                                                 selectedIndexes - option.opt_idx

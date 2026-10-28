@@ -24,6 +24,9 @@ data class StoryData(
 @Serializable
 data class StoryItem(
     val id: Long = 0,
+    val bvid: String = "",
+    val param: String = "",
+    val dimension: Dimension? = null,
     val goto: String = "",  // "av" = 视频
     val uri: String = "",
     val title: String = "",
@@ -51,7 +54,11 @@ data class StoryItem(
      */
     fun toVideoItem(): VideoItem {
         return VideoItem(
-            bvid = playerArgs?.bvid ?: "",
+            id = playerArgs?.aid?.takeIf { it > 0L } ?: param.toLongOrNull() ?: id,
+            aid = playerArgs?.aid?.takeIf { it > 0L } ?: param.toLongOrNull() ?: id,
+            bvid = bvid.ifBlank { playerArgs?.bvid.orEmpty() },
+            cid = playerArgs?.cid ?: 0L,
+            isVertical = dimension?.isVertical == true,
             title = title,
             pic = cover,
             duration = duration,

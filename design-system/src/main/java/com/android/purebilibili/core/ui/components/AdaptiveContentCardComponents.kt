@@ -251,16 +251,16 @@ fun AppStatusBadge(
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val containerColor = if (emphasized) {
-        colorScheme.primaryContainer
+        com.android.purebilibili.core.ui.AppSurfaceTokens.primaryContainer()
     } else {
         colorScheme.surfaceContainerHighest
     }
     val contentColor = if (emphasized) {
-        colorScheme.onPrimaryContainer
+        com.android.purebilibili.core.ui.AppSurfaceTokens.onPrimaryContainer()
     } else {
         colorScheme.onSurfaceVariant
     }
-    Surface(
+    AppSurface(
         modifier = modifier,
         shape = when (LocalAppUiStyle.current) {
             AppUiStyle.MATERIAL3 -> MaterialTheme.shapes.small
@@ -271,6 +271,7 @@ fun AppStatusBadge(
     ) {
         AppText(
             text = label,
+            color = contentColor,
             style = MaterialTheme.typography.labelMedium,
             maxLines = 1,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),

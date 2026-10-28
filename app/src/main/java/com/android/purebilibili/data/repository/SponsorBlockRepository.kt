@@ -2,6 +2,7 @@
 package com.android.purebilibili.data.repository
 
 import com.android.purebilibili.core.network.NetworkModule
+import com.android.purebilibili.BuildConfig
 import com.android.purebilibili.data.model.response.SponsorCategory
 import com.android.purebilibili.data.model.response.SponsorSegment
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +15,8 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.longOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import okhttp3.OkHttpClient
@@ -26,8 +29,19 @@ internal fun buildSponsorBlockHttpClient(baseClient: OkHttpClient): OkHttpClient
     return baseClient.newBuilder()
         .connectTimeout(5, TimeUnit.SECONDS)
         .readTimeout(5, TimeUnit.SECONDS)
+        // Run after the shared interceptors so the Bilibili Origin is replaced.
+        .addInterceptor { chain ->
+            chain.proceed(buildSponsorBlockClientRequest(chain.request(), BuildConfig.VERSION_NAME))
+        }
         .build()
 }
+
+internal fun buildSponsorBlockClientRequest(request: Request, versionName: String): Request =
+    request.newBuilder()
+        .header("Origin", "https://github.com/jay3-yy/BiliPai")
+        .header("x-ext-version", versionName)
+        .header("User-Agent", "BiliPai/$versionName")
+        .build()
 
 internal fun buildSponsorBlockSegmentsUrl(
     baseUrl: String,
@@ -45,6 +59,23 @@ internal fun buildSponsorBlockSegmentsUrl(
         }
     }
     return "$baseUrl/skipSegments?${params.joinToString("&")}"
+}
+
+internal fun buildSponsorBlockVoteBody(
+    userId: String,
+    segmentId: String,
+    voteType: Int? = null,
+    category: String? = null,
+): String {
+    require((voteType == null) != (category == null))
+    // API types: 0 = downvote, 1 = upvote, 20 = undo vote.
+    require(voteType == null || voteType in setOf(0, 1, 20))
+    return buildJsonObject {
+        put("UUID", segmentId)
+        put("userID", userId)
+        voteType?.let { put("type", it) }
+        category?.let { put("category", it) }
+    }.toString()
 }
 
 /**
@@ -149,7 +180,6 @@ object SponsorBlockRepository {
 
         val request = Request.Builder()
             .url(url)
-            .header("User-Agent", "BiliPai/2.4.1")
             .get()
             .build()
         val segments = client.newCall(request).execute().use { response ->
@@ -259,21 +289,8 @@ object SponsorBlockRepository {
         voteType: Int? = null,
         category: String? = null,
     ): Result<Unit> {
-        require((voteType == null) != (category == null))
-        val url = okhttp3.HttpUrl.Builder()
-            .scheme(baseUrl.substringBefore("://"))
-            .host(java.net.URI(baseUrl).host)
-            .apply {
-                val uri = java.net.URI(baseUrl)
-                if (uri.port != -1) port(uri.port)
-                uri.path.trim('/').split('/').filter(String::isNotBlank).forEach(::addPathSegment)
-                addPathSegment("voteOnSponsorTime")
-                addQueryParameter("UUID", segmentId)
-                addQueryParameter("userID", userId)
-                voteType?.let { addQueryParameter("type", it.toString()) }
-                category?.let { addQueryParameter("category", it) }
-            }.build()
-        return postJson(url.toString(), "").map { }
+        val body = buildSponsorBlockVoteBody(userId, segmentId, voteType, category)
+        return postJson("${baseUrl.trimEnd('/')}/voteOnSponsorTime", body).map { }
     }
 
     private suspend fun postJson(url: String, body: String): Result<String> = withContext(Dispatchers.IO) {

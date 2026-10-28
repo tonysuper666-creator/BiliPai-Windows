@@ -86,6 +86,21 @@ class SettingsShareService(private val context: Context) : SettingsShareServiceC
                 settings = flattenSettingsShareSections(profile.sections)
                     .filterKeys { it !in PRIVATE_DEFAULT_PROFILE_KEYS },
             )
+            // 内置配置只应用于空设置库；同步播放器的影子缓存，避免设置页与首播行为不一致。
+            SettingsManager.setClickToPlay(context, SettingsManager.getClickToPlay(context).first())
+            SettingsManager.setAutoPlay(context, SettingsManager.getAutoPlay(context).first())
+            SettingsManager.setResumePlaybackPromptEnabled(
+                context, SettingsManager.getResumePlaybackPromptEnabled(context).first()
+            )
+            SettingsManager.setStopPlaybackOnExit(
+                context, SettingsManager.getStopPlaybackOnExit(context).first()
+            )
+            SettingsManager.setBackgroundPlaybackEnabled(
+                context, SettingsManager.getBackgroundPlaybackEnabled(context).first()
+            )
+            SettingsManager.setPlaybackCompletionBehavior(
+                context, SettingsManager.getPlaybackCompletionBehavior(context).first()
+            )
             SettingsManager.markHomeVisualDefaultsCurrent(context)
             marker.edit().putBoolean(DEFAULT_PROFILE_APPLIED_KEY, true).apply()
             true

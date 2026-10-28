@@ -69,6 +69,12 @@ fun interface NavTransition {
      */
     val opaqueDepth: Float get() = 1f
 
+    /** A container transition supplies its own moving clip instead of the host corner clip. */
+    val handlesOwnClipping: Boolean get() = false
+
+    /** Keep a removing entry across an opted-in spring's first endpoint crossing until it settles. */
+    val retainsSpringOvershoot: Boolean get() = false
+
     /**
      * The direction of the interactive swipe that dismisses this entry. Defaults to
      * [NavSwipeDirection.None]: the swipe-to-dismiss gesture is **opt-in**. Enable it either by

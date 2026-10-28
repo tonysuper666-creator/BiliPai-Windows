@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import com.android.purebilibili.feature.video.danmaku.DanmakuViewport
 import com.android.purebilibili.feature.video.danmaku.resolveDanmakuViewport
@@ -20,12 +21,13 @@ internal fun DanmakuViewportHost(
     content: @Composable BoxScope.(DanmakuViewport) -> Unit
 ) {
     val density = LocalDensity.current
+    val systemDensity = LocalContext.current.resources.displayMetrics.density
     BoxWithConstraints(modifier.clipToBounds(), contentAlignment = Alignment.Center) {
-        val viewport = remember(constraints.maxWidth, constraints.maxHeight, density.density) {
+        val viewport = remember(constraints.maxWidth, constraints.maxHeight, systemDensity) {
             resolveDanmakuViewport(
                 constraints.maxWidth,
                 constraints.maxHeight,
-                density.density
+                systemDensity
             )
         }
         if (viewport != null) {

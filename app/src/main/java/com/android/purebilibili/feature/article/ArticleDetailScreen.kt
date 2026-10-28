@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.article
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.spring
 import androidx.activity.compose.BackHandler
@@ -8,7 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -34,6 +36,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.boundsInWindow
@@ -55,6 +59,7 @@ import com.android.purebilibili.core.util.responsiveContentWidth
 import com.android.purebilibili.data.repository.ArticleDetailUiModel
 import com.android.purebilibili.data.repository.ArticleRepository
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
+import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
 import com.android.purebilibili.feature.dynamic.components.prepareImagePreviewSourceTransition
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
@@ -84,13 +89,15 @@ fun ArticleDetailScreen(
     initialTitle: String,
     transitionEnabled: Boolean = false,
     onBack: (Boolean) -> Unit,
-    onUserClick: (Long) -> Unit
+    onUserClick: (Long) -> Unit,
+    contentTransitionReady: Boolean = true,
+    backHandlerEnabled: Boolean = true,
 ) {
     var retryToken by rememberSaveable { mutableIntStateOf(0) }
     val backLabel = stringResource(R.string.common_back)
     val retryLabel = stringResource(R.string.common_retry)
     val loadFailedMessage = stringResource(R.string.dynamic_detail_load_failed)
-    val uiState by produceState<ArticleDetailUiState>(
+    val loadedUiState by produceState<ArticleDetailUiState>(
         initialValue = ArticleDetailUiState.Loading,
         key1 = articleId,
         key2 = retryToken
@@ -104,13 +111,35 @@ fun ArticleDetailScreen(
         )
     }
 
+    val uiState = if (contentTransitionReady) loadedUiState else ArticleDetailUiState.Loading
+    val contentRevealAlpha = com.android.purebilibili.core.ui.transition.rememberSharedCardDetailRevealAlpha(
+        entryKey = articleId,
+        contentTransitionReady = contentTransitionReady,
+        contentLoaded = uiState !is ArticleDetailUiState.Loading,
+    )
     val screenTitle = when (val state = uiState) {
         is ArticleDetailUiState.Success -> state.article.title
         else -> initialTitle.ifBlank { "专栏详情" }
     }
     var sharedReturnReady by remember { mutableStateOf(false) }
+    var showShare by remember(articleId) { mutableStateOf(false) }
+    if (showShare) {
+        (uiState as? ArticleDetailUiState.Success)?.article?.let { article ->
+            com.android.purebilibili.feature.share.ContentShareSheet(
+                source = com.android.purebilibili.feature.share.ContentSharePayload(
+                    key = "article:$articleId", title = article.title,
+                    url = "https://www.bilibili.com/read/cv$articleId",
+                    cover = article.bannerUrl.orEmpty(), author = article.authorName,
+                    authorId = article.authorMid, source = 6, resourceId = articleId,
+                ),
+                onDismiss = { showShare = false },
+            )
+        }
+    }
 
-    BackHandler {
+
+    // Container entries let the host seek the whole card during predictive back.
+    BackHandler(enabled = backHandlerEnabled) {
         onBack(sharedReturnReady)
     }
 
@@ -119,6 +148,13 @@ fun ArticleDetailScreen(
         topBar = {
             AppTopBar(
                 title = screenTitle,
+                actions = {
+                    if (uiState is ArticleDetailUiState.Success) {
+                        AppIconButton(onClick = { showShare = true }) {
+                            AppIcon(com.android.purebilibili.core.ui.rememberAppShareIcon(), contentDescription = "分享专栏")
+                        }
+                    }
+                },
                 navigationIcon = {
                     AppIconButton(onClick = { onBack(sharedReturnReady) }) {
                         AppIcon(rememberAppBackIcon(), contentDescription = backLabel)
@@ -129,7 +165,9 @@ fun ArticleDetailScreen(
     ) { paddingValues ->
         // 遮挡铰链时整页内容落入最大安全区，软折痕允许跨越；长文保持居中单栏。
         com.android.purebilibili.core.ui.adaptive.AppHingeSafeContent(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().graphicsLayer {
+                alpha = if (uiState is ArticleDetailUiState.Loading) 1f else contentRevealAlpha.value
+            },
         ) {
         when (val state = uiState) {
             ArticleDetailUiState.Loading -> {
@@ -153,7 +191,7 @@ fun ArticleDetailScreen(
                     ) {
                         AppText(
                             text = state.message,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppContentColors.secondaryText()
                         )
                         AppButton(onClick = { retryToken++ }) {
                             AppText(retryLabel)
@@ -238,12 +276,14 @@ private fun ArticleDetailContent(
     var imagePreviewRequest by remember(article.bannerUrl, article.blocks) {
         mutableStateOf<ArticleImagePreviewRequest?>(null)
     }
+    val bannerSourceHidden = isImagePreviewSourceHidden(bannerSourceRect)
     val baseBannerModifier = Modifier
         .fillMaxWidth()
         .clip(AppShapes.container(ContainerLevel.Floating))
         .onGloballyPositioned { coordinates ->
             bannerSourceRect = coordinates.boundsInWindow()
         }
+        .alpha(if (bannerSourceHidden) 0f else 1f)
         .clickable(
             interactionSource = null,
             indication = null,
@@ -347,7 +387,7 @@ private fun ArticleDetailContent(
                                 AppText(
                                     text = article.publishTime,
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = AppContentColors.secondaryText()
                                 )
                             }
                         }
@@ -357,7 +397,7 @@ private fun ArticleDetailContent(
                     AppText(
                         text = article.summary,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                 }
             }
@@ -376,7 +416,7 @@ private fun ArticleDetailContent(
                         AppText(
                             text = buildArticleAnnotatedString(
                                 spans = block.spans,
-                                defaultColor = MaterialTheme.colorScheme.onSurface,
+                                defaultColor = AppContentColors.primaryText(),
                                 baseFontSize = MaterialTheme.typography.titleLarge.fontSize
                             ),
                             style = MaterialTheme.typography.titleLarge,
@@ -390,13 +430,13 @@ private fun ArticleDetailContent(
                         AppText(
                             text = block.text,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = AppContentColors.primaryText()
                         )
                     } else {
                         AppText(
                             text = buildArticleAnnotatedString(
                                 spans = block.spans,
-                                defaultColor = MaterialTheme.colorScheme.onSurface,
+                                defaultColor = AppContentColors.primaryText(),
                                 baseFontSize = MaterialTheme.typography.bodyLarge.fontSize
                             ),
                             style = MaterialTheme.typography.bodyLarge
@@ -409,14 +449,14 @@ private fun ArticleDetailContent(
                         AppText(
                             text = block.text,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = AppContentColors.secondaryText(),
                             modifier = Modifier.padding(start = 12.dp)
                         )
                     } else {
                         AppText(
                             text = buildArticleAnnotatedString(
                                 spans = block.spans,
-                                defaultColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                defaultColor = AppContentColors.secondaryText(),
                                 baseFontSize = MaterialTheme.typography.bodyLarge.fontSize
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -432,7 +472,7 @@ private fun ArticleDetailContent(
                             AppText(
                                 text = prefix + item,
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = AppContentColors.primaryText()
                             )
                         }
                     }
@@ -450,12 +490,13 @@ private fun ArticleDetailContent(
                         AppText(
                             text = block.content,
                             style = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = AppContentColors.primaryText()
                         )
                     }
                 }
 
                 is ArticleContentBlock.Image -> {
+                    val sourceHidden = isImagePreviewSourceHidden(bodyImageSourceRects[index])
                     val imageAspectRatio = resolveArticleImageAspectRatio(
                         width = block.width,
                         height = block.height
@@ -476,6 +517,7 @@ private fun ArticleDetailContent(
                             .onGloballyPositioned { coordinates ->
                                 bodyImageSourceRects[index] = coordinates.boundsInWindow()
                             }
+                            .alpha(if (sourceHidden) 0f else 1f)
                             .clickable(interactionSource = null, indication = null) {
                                 val payload = resolveArticleImagePreviewPayload(
                                     blocks = article.blocks,

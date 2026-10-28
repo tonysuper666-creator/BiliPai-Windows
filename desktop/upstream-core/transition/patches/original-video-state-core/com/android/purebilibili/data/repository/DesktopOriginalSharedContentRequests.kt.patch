@@ -1,0 +1,33 @@
+# drop declarations upstream core-data now owns: ContentRequestException, dataRequest
+--- a/original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalSharedContentRequests.kt
++++ b/original-video-state-core/com/android/purebilibili/data/repository/DesktopOriginalSharedContentRequests.kt
+@@ -9,15 +9,6 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ 
+-class ContentRequestException(val code: Int, message: String) : Exception(
+-    when (code) {
+-        -101 -> "登录已失效，请重新扫码登录"
+-        -403 -> message.ifBlank { "当前账号没有访问权限" }
+-        -404 -> "内容不存在或已被删除"
+-        -412 -> "请求暂时受限，请稍后重试"
+-        else -> message.ifBlank { "请求失败（$code）" }
+-    },
+-)
+ 
+ /** Shared calls used by both frontends; mobile retains its feed merge/filter policies. */
+ internal class DesktopOriginalSharedContentRequests(
+@@ -59,13 +50,4 @@
+     fun clearDetailCache() { requestCaches?.clearDetail() }
+ }
+ 
+-internal suspend fun <T> dataRequest(block: suspend () -> T): Result<T> = withContext(Dispatchers.IO) {
+-    try {
+-        Result.success(block())
+-    } catch (cancelled: CancellationException) {
+-        throw cancelled
+-    } catch (error: Exception) {
+-        Result.failure(error)
+-    }
+-}
+ 

@@ -1,5 +1,9 @@
 package com.android.purebilibili.feature.home
 
+import androidx.compose.runtime.CompositionLocalProvider
+import kotlinx.coroutines.channels.Channel
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -58,6 +62,37 @@ class HomeScreenTest {
         assert(clickedIndex == 1) { "Expected index 1, but got $clickedIndex" }
     }
     
+    @Test
+    fun categoryReselection_returnsToTopWithoutSendingRefreshRequest() {
+        val channel = Channel<HomeScrollRequest>(Channel.UNLIMITED)
+        var reselected = 0
+        var selectedIndex = -1
+        composeTestRule.setContent {
+            CompositionLocalProvider(LocalHomeScrollChannel provides channel) {
+                com.android.purebilibili.feature.home.components.CategoryTabRow(
+                    categories = listOf("推荐", "热门"),
+                    categoryKeys = listOf("RECOMMEND", "POPULAR"),
+                    selectedIndex = 0,
+                    onCategorySelected = { selectedIndex = it },
+                    onCategoryReselected = { reselected++ },
+                )
+            }
+        }
+        composeTestRule.onNodeWithText("推荐").performClick()
+        composeTestRule.onNodeWithText("推荐").performClick()
+        composeTestRule.runOnIdle {
+            assertEquals(2, reselected)
+            assertEquals(-1, selectedIndex)
+            assertTrue(channel.tryReceive().isFailure)
+        }
+        composeTestRule.onNodeWithText("热门").performClick()
+        composeTestRule.runOnIdle {
+            assertEquals(1, selectedIndex)
+            assertEquals(2, reselected)
+        }
+        channel.close()
+    }
+
     @Test
     fun bottomNavBar_shouldDisplayAllItems() {
         // Given: 显示底部导航栏

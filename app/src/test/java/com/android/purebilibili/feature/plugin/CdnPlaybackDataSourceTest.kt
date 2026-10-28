@@ -20,13 +20,20 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
-import kotlin.test.Test
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.reflect.KClass
 
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [35], manifest = Config.NONE, application = android.app.Application::class)
 @OptIn(UnstableApi::class)
 class CdnPlaybackDataSourceTest {
     private val url = "https://source.bilivideo.com/datasource-test/video.m4s?sig=a"
@@ -70,7 +77,7 @@ class CdnPlaybackDataSourceTest {
         val queued = CountDownLatch(1)
         val finished = CountDownLatch(1)
         val canceled = AtomicInteger()
-        val uri = mockk<Uri> { every { toString() } returns url }
+        val uri = Uri.parse(url)
         val client = mockk<OkHttpClient>()
         every { client.newCall(any()) } answers {
             FakeCall(firstArg(), null, queued) { canceled.incrementAndGet() }
@@ -97,7 +104,7 @@ class CdnPlaybackDataSourceTest {
     }
 
     private fun withSource(responder: (Request) -> Response): Fixture {
-        val uri = mockk<Uri> { every { toString() } returns url }
+        val uri = Uri.parse(url)
         val client = mockk<OkHttpClient>()
         every { client.newCall(any()) } answers { FakeCall(firstArg(), responder) }
         CdnTransferRuntime.configure(true, true)
@@ -168,10 +175,16 @@ class CdnPlaybackDataSourceTest {
     ) : Call {
         private var callback: Callback? = null
         @Volatile private var canceled = false
+        private val computedTags = ConcurrentHashMap<Class<*>, Any>()
+        private val eventListeners = java.util.concurrent.CopyOnWriteArrayList<okhttp3.EventListener>()
+        override fun addEventListener(eventListener: okhttp3.EventListener) {
+            eventListeners.add(eventListener)
+        }
         override fun request(): Request = request
         override fun execute(): Response = error("Only asynchronous transport is supported")
         override fun enqueue(responseCallback: Callback) {
             callback = responseCallback
+            eventListeners.forEach { it.callStart(this) }
             if (canceled) responseCallback.onFailure(this, IOException("canceled"))
             else if (responder != null) responseCallback.onResponse(this, responder.invoke(request))
             queued?.countDown()
@@ -179,6 +192,7 @@ class CdnPlaybackDataSourceTest {
         override fun cancel() {
             if (!canceled) {
                 canceled = true
+                eventListeners.forEach { it.canceled(this) }
                 onCancel()
                 callback?.onFailure(this, IOException("canceled"))
             }
@@ -186,6 +200,18 @@ class CdnPlaybackDataSourceTest {
         override fun isExecuted(): Boolean = callback != null
         override fun isCanceled(): Boolean = canceled
         override fun timeout(): Timeout = Timeout()
+        override fun <T : Any> tag(type: KClass<T>): T? = tag(type.java)
+        override fun <T> tag(type: Class<out T>): T? {
+            val cached = computedTags[type] ?: return request.tag(type)
+            return type.cast(cached)
+        }
+        override fun <T : Any> tag(type: KClass<T>, computeIfAbsent: () -> T): T =
+            tag(type.java, computeIfAbsent)
+        override fun <T : Any> tag(type: Class<T>, computeIfAbsent: () -> T): T {
+            tag(type)?.let { return it }
+            val computed = computeIfAbsent()
+            return requireNotNull(type.cast(computedTags.putIfAbsent(type, computed) ?: computed))
+        }
         override fun clone(): Call = FakeCall(request, responder, queued, onCancel)
     }
 }

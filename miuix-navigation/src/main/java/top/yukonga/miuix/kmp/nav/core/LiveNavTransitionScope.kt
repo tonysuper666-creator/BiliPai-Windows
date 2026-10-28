@@ -4,6 +4,9 @@
 package top.yukonga.miuix.kmp.nav.core
 
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.structuralEqualityPolicy
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
@@ -39,8 +42,11 @@ internal class LiveNavTransitionScope(
     override val relativeDepth: Float
         get() = relativeDepth(presentation.animatedTop.value, entryIndex)
 
-    override val role: NavRole
-        get() = roleFor(relativeDepth, isRemoving)
+    // Role is consumed during transformEntry binding as well as drawing. Subscribe callers
+    // to role boundaries, rather than leaking animatedTop into the entry's composition.
+    override val role: NavRole by derivedStateOf(structuralEqualityPolicy()) {
+        roleFor(relativeDepth, isRemoving)
+    }
 
     override val gesture: NavGesture? get() = presentation.gesture
 

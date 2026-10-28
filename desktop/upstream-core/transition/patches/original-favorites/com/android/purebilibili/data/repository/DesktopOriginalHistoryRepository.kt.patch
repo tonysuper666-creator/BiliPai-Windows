@@ -1,0 +1,17 @@
+# drop declarations upstream core-data now owns: HistoryResult
+--- a/original-favorites/com/android/purebilibili/data/repository/DesktopOriginalHistoryRepository.kt
++++ b/original-favorites/com/android/purebilibili/data/repository/DesktopOriginalHistoryRepository.kt
+@@ -5,13 +5,6 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ 
+-/**
+- * 历史记录数据结果（包含列表和游标）
+- */
+-data class HistoryResult(
+-    val list: List<HistoryData>,
+-    val cursor: HistoryCursor?
+-)
+ 
+ 
+ 

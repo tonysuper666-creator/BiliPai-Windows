@@ -50,7 +50,7 @@ internal fun MusicWavySlider(
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
-    val haptic = rememberHapticFeedback()
+    val haptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.PLAYER_SEEK)
     val rangeSpan = (valueRange.endInclusive - valueRange.start).coerceAtLeast(0.0001f)
     val resolvedHapticStep = hapticStep?.takeIf { it > 0f } ?: rangeSpan / 20f
     fun hapticBucket(progress: Float): Int =

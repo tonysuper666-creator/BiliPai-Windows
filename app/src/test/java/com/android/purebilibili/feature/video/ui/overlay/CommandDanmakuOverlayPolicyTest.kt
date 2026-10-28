@@ -1,60 +1,19 @@
 package com.android.purebilibili.feature.video.ui.overlay
 
+import com.android.purebilibili.feature.video.ui.feedback.canSubmitVideoFollowAction
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CommandDanmakuOverlayPolicyTest {
 
     @Test
-    fun `triple action never implicitly follows the author`() {
-        for (isFollowing in listOf(false, true)) {
-            val action = resolveAttentionCommandClickAction(
-                attentionType = 2,
-                action = AttentionCommandAction.TRIPLE,
-                isFollowing = isFollowing,
-            )
-
-            assertEquals(false, action.shouldFollow)
-            assertEquals(true, action.shouldTriple)
-        }
-    }
-
-    @Test
-    fun `follow action is independent and ignores existing followers`() {
-        for (isFollowing in listOf(false, true)) {
-            val action = resolveAttentionCommandClickAction(
-                attentionType = 2,
-                action = AttentionCommandAction.FOLLOW,
-                isFollowing = isFollowing,
-            )
-
-            assertEquals(!isFollowing, action.shouldFollow)
-            assertEquals(false, action.shouldTriple)
-        }
-    }
-
-    @Test
-    fun `follow only command cannot trigger triple action`() {
-        val action = resolveAttentionCommandClickAction(
-            attentionType = 0,
-            action = AttentionCommandAction.TRIPLE,
-            isFollowing = false,
-        )
-
-        assertEquals(false, action.shouldFollow)
-        assertEquals(false, action.shouldTriple)
-    }
-
-    @Test
-    fun `triple only command cannot trigger follow action`() {
-        val action = resolveAttentionCommandClickAction(
-            attentionType = 1,
-            action = AttentionCommandAction.FOLLOW,
-            isFollowing = false,
-        )
-
-        assertEquals(false, action.shouldFollow)
-        assertEquals(false, action.shouldTriple)
+    fun `attention follow is disabled while unknown submitting or already followed`() {
+        assertFalse(canSubmitVideoFollowAction(false, false, false))
+        assertTrue(canSubmitVideoFollowAction(true, false, false))
+        assertFalse(canSubmitVideoFollowAction(true, false, true))
+        assertFalse(canSubmitVideoFollowAction(true, true, false))
     }
 
     @Test
@@ -77,5 +36,50 @@ class CommandDanmakuOverlayPolicyTest {
         assertEquals(192, resolveCommandDanmakuVerticalOffsetPx(320, 128, 0.8f))
         assertEquals(0, resolveCommandDanmakuVerticalOffsetPx(320, 400, 0.8f))
         assertEquals(0, resolveCommandDanmakuVerticalOffsetPx(320, 128, -0.2f))
+    }
+
+    @Test
+    fun `attention percentage positions keep both edges clear inside the viewport`() {
+        assertEquals(12, resolveAttentionCommandOffsetPx(320, 120, 0f, 12))
+        assertEquals(100, resolveAttentionCommandOffsetPx(320, 120, 0.5f, 12))
+        assertEquals(188, resolveAttentionCommandOffsetPx(320, 120, 1f, 12))
+        assertEquals(12, resolveAttentionCommandOffsetPx(320, 120, -1f, 12))
+        assertEquals(188, resolveAttentionCommandOffsetPx(320, 120, 2f, 12))
+    }
+
+    @Test
+    fun `attention placement handles oversized cards and unknown percentages without invalid offsets`() {
+        assertEquals(0, resolveAttentionCommandOffsetPx(80, 120, 1f, 12))
+        assertEquals(0, resolveAttentionCommandOffsetPx(0, 120, 0.5f, 12))
+        assertEquals(100, resolveAttentionCommandOffsetPx(320, 120, Float.NaN, 12))
+    }
+
+    @Test
+    fun `bottom right command stays above the permanently reserved control region`() {
+        val inset = resolveCommandDanmakuBottomInsetPx(
+            viewportHeightPx = 320,
+            surfaceHeightPx = 320,
+            controlsReserveHeightPx = 96,
+        )
+        val placementHeight = 320 - inset
+        val y = resolveAttentionCommandOffsetPx(placementHeight, 28, 1f, 12)
+
+        assertEquals(96, inset)
+        assertEquals(184, y)
+        assertEquals(212, y + 28)
+    }
+
+    @Test
+    fun `letterboxing only excludes controls that actually intersect the video viewport`() {
+        assertEquals(0, resolveCommandDanmakuBottomInsetPx(600, 1200, 180))
+        assertEquals(70, resolveCommandDanmakuBottomInsetPx(900, 1000, 120))
+        assertEquals(120, resolveCommandDanmakuBottomInsetPx(900, 900, 120))
+    }
+
+    @Test
+    fun `reserved controls cannot create a negative or oversized placement region`() {
+        assertEquals(320, resolveCommandDanmakuBottomInsetPx(320, 320, 500))
+        assertEquals(0, resolveCommandDanmakuBottomInsetPx(320, 320, -1))
+        assertEquals(0, resolveCommandDanmakuBottomInsetPx(0, 320, 96))
     }
 }

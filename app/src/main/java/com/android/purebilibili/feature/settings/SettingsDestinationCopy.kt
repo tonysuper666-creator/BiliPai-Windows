@@ -16,31 +16,31 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
     // 场景级分组（分类页聚合入口）
     SettingsSearchTarget.INTERFACE_THEME -> SettingsDestinationCopy(
         title = "界面与主题",
-        summary = "界面风格、主题颜色、字体、显示大小、应用图标与启动画面",
+        summary = "界面风格、颜色、字体和启动画面",
     )
     SettingsSearchTarget.NAVIGATION -> SettingsDestinationCopy(
         title = "导航与标签",
-        summary = "底栏、顶部标签、搜索分类栏、平板侧边栏与项目顺序",
+        summary = "调整底栏、分类标签和侧边栏",
     )
     SettingsSearchTarget.PLAYBACK_QUALITY -> SettingsDestinationCopy(
         title = "播放与画质",
-        summary = "视频解码、画质、字幕、倍速、连播与省流量设置",
+        summary = "画质、倍速、字幕和连续播放",
     )
     SettingsSearchTarget.DATA_BACKUP -> SettingsDestinationCopy(
-        title = "数据与备份",
-        summary = "设置分享、WebDAV、下载位置与清除缓存",
+        title = "存储与备份",
+        summary = "保存位置、缓存、设置分享和云备份",
     )
     SettingsSearchTarget.PRIVACY_PERMISSION -> SettingsDestinationCopy(
         title = "隐私与权限",
-        summary = "隐私无痕、权限管理与黑名单",
+        summary = "历史记录、系统权限和屏蔽名单",
     )
     SettingsSearchTarget.DIAGNOSTICS -> SettingsDestinationCopy(
-        title = "诊断与开发",
-        summary = "崩溃追踪、增强诊断日志、播放器诊断与日志导出",
+        title = "问题排查",
+        summary = "记录和导出信息，帮助排查问题",
     )
     SettingsSearchTarget.ABOUT_SUPPORT -> SettingsDestinationCopy(
         title = "关于与支持",
-        summary = "版本、更新、开源、发布渠道、小贴士、默认打开链接、社群与捐赠",
+        summary = "版本更新、使用帮助和官方渠道",
     )
 
     // 目的地页面与行入口
@@ -49,7 +49,7 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
         summary = "选择界面风格、颜色、字体、显示大小和启动画面",
     )
     SettingsSearchTarget.PLAYBACK -> SettingsDestinationCopy(
-        title = "播放设置",
+        title = "播放器与画质",
         summary = "调整解码、清晰度、倍速、小窗和全屏操作",
     )
     SettingsSearchTarget.BOTTOM_BAR -> SettingsDestinationCopy(
@@ -57,8 +57,8 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
         summary = "选择底栏和顶部入口，并调整图标、文字和顺序",
     )
     SettingsSearchTarget.ANIMATION -> SettingsDestinationCopy(
-        title = "动效与触感",
-        summary = "控制页面动画、视频转场、振动反馈和玻璃效果",
+        title = "动画与触感",
+        summary = "页面动画、振动反馈和玻璃效果",
     )
     SettingsSearchTarget.FULLSCREEN_GESTURE -> SettingsDestinationCopy(
         title = "全屏与手势",
@@ -69,8 +69,16 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
         summary = "调整评论显示、点赞操作、视频简介和内容入口",
     )
     SettingsSearchTarget.HOME_FEED -> SettingsDestinationCopy(
-        title = "首页样式与推荐卡片",
-        summary = "调整卡片布局、壁纸、UP 信息和视频时长",
+        title = "首页与推荐",
+        summary = "卡片布局、首页壁纸、推荐内容和动态",
+    )
+    SettingsSearchTarget.LOGIN_ACTIVITY -> SettingsDestinationCopy(
+        title = "登录设备与记录",
+        summary = "查看设备、时间、IP 与地区",
+    )
+    SettingsSearchTarget.SPACE_PRIVACY -> SettingsDestinationCopy(
+        title = "空间公开范围",
+        summary = "管理空间内容的公开范围",
     )
     SettingsSearchTarget.PERMISSION -> SettingsDestinationCopy(
         title = "权限管理",
@@ -86,7 +94,7 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
     )
     SettingsSearchTarget.SETTINGS_SHARE -> SettingsDestinationCopy(
         title = "设置分享",
-        summary = "导出并导入可分享设置",
+        summary = "分享设置，或从文件导入",
     )
     SettingsSearchTarget.WEBDAV_BACKUP -> SettingsDestinationCopy(
         title = "WebDAV 云备份",
@@ -110,7 +118,7 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
     )
     SettingsSearchTarget.EXPORT_LOGS -> SettingsDestinationCopy(
         title = "导出日志",
-        summary = "导出前统一脱敏，仅由你主动分享",
+        summary = "导出排查信息，隐私信息会先隐藏",
     )
     SettingsSearchTarget.OPEN_SOURCE_LICENSES -> SettingsDestinationCopy(
         title = "开源许可证",
@@ -133,16 +141,16 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
         summary = "开源约定与官方渠道",
     )
     SettingsSearchTarget.TIPS -> SettingsDestinationCopy(
-        title = "小贴士与隐藏操作",
+        title = "使用技巧",
         summary = "了解不容易发现的快捷操作和进阶功能",
     )
     SettingsSearchTarget.OPEN_LINKS -> SettingsDestinationCopy(
         title = "默认打开链接",
-        summary = "设置应用链接支持",
+        summary = "用 BiliPai 打开 B 站链接",
     )
     SettingsSearchTarget.DONATE -> SettingsDestinationCopy(
         title = "打赏作者",
-        summary = "自愿支持项目后续持续开发和维护",
+        summary = "支持项目后续持续开发和维护",
     )
     SettingsSearchTarget.TELEGRAM -> SettingsDestinationCopy(
         title = "Telegram 频道 / 交流群",
@@ -155,5 +163,9 @@ internal fun settingsDestinationCopy(target: SettingsSearchTarget): SettingsDest
     SettingsSearchTarget.DISCLAIMER -> SettingsDestinationCopy(
         title = "发布渠道声明",
         summary = "GitHub · Telegram 频道与群组",
+    )
+    SettingsSearchTarget.NEARBY_HANDOFF -> SettingsDestinationCopy(
+        title = com.android.purebilibili.feature.nearby.NEARBY_TITLE,
+        summary = "局域网配对、加密接力与已信任设备",
     )
 }

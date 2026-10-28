@@ -856,20 +856,36 @@ class MainActivityAppCompatContractTest {
     }
 
     private fun loadResourceFile(resourcePath: String): File {
-        val candidates = listOf(
-            File("app/src/main/res/$resourcePath"),
-            File("src/main/res/$resourcePath")
+        val roots = listOf(
+            File("app/src/main/res"), File("src/main/res"),
+            File("brand-motion/src/main/res"), File("../brand-motion/src/main/res"),
         )
-        return candidates.firstOrNull { it.exists() }
-            ?: error("Cannot locate $resourcePath from ${File(".").absolutePath}")
+        roots.map { File(it, resourcePath) }.firstOrNull { it.isFile }?.let { return it }
+        // Keep all pixel/density/theme assertions, following resource aliases just as Android does.
+        if (resourcePath.startsWith("mipmap") && resourcePath.endsWith(".png")) {
+            val directory = resourcePath.substringBefore('/')
+            val name = resourcePath.substringAfter('/').removeSuffix(".png")
+            val density = directory.split('-').firstOrNull { it.endsWith("dpi") }
+            for (root in roots) {
+                val aliases = File(root, directory.replaceFirst("mipmap", "values") + "/launcher_image_aliases.xml")
+                if (!aliases.isFile) continue
+                val items = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                    .parse(aliases).getElementsByTagName("item")
+                for (index in 0 until items.length) {
+                    val item = items.item(index) as org.w3c.dom.Element
+                    if (item.getAttribute("name") != name || item.getAttribute("type") != "mipmap") continue
+                    val target = item.textContent.trim().removePrefix("@mipmap/")
+                    val targetDirectory = if (density == null) "mipmap" else "mipmap-$density"
+                    return roots.map { File(it, "$targetDirectory/$target.png") }.firstOrNull { it.isFile }
+                        ?: error("Missing bitmap target for $resourcePath")
+                }
+            }
+        }
+        error("Cannot locate $resourcePath from ${File(".").absolutePath}")
     }
 
-    private fun resourcePathExists(resourcePath: String): Boolean {
-        return listOf(
-            File("app/src/main/res/$resourcePath"),
-            File("src/main/res/$resourcePath")
-        ).any { it.exists() }
-    }
+    private fun resourcePathExists(resourcePath: String): Boolean =
+        runCatching { loadResourceFile(resourcePath) }.isSuccess
 
     private fun loadResourceText(resourcePath: String): String {
         return loadResourceFile(resourcePath).readText()

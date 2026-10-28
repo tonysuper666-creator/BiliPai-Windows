@@ -76,18 +76,28 @@ internal object PlaybackMediaCache {
         context: Context,
         upstreamFactory: DataSource.Factory
     ): DataSource.Factory {
-        val monitoredUpstreamFactory = DataSource.Factory {
-            CdnPlaybackDataSource(upstreamFactory.createDataSource()).apply {
-                addTransferListener(upstreamTransferListener)
+        val appContext = context.applicationContext
+        // Building a player during entry must not open the disk cache. Resolve the
+        // shared cache only when playback/prefetch first asks for a data source.
+        val delegate: DataSource.Factory by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+            val monitoredUpstreamFactory = DataSource.Factory {
+                CdnPlaybackDataSource(upstreamFactory.createDataSource()).apply {
+                    addTransferListener(upstreamTransferListener)
+                }
+            }
+            val cache = getOrCreateCache(appContext)
+            if (cache == null) {
+                monitoredUpstreamFactory
+            } else {
+                CacheDataSource.Factory()
+                    .setCache(cache)
+                    .setUpstreamDataSourceFactory(monitoredUpstreamFactory)
+                    .setCacheKeyFactory(playbackCacheKeyFactory)
+                    .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+                    .setEventListener(cacheEventListener)
             }
         }
-        val cache = getOrCreateCache(context) ?: return monitoredUpstreamFactory
-        return CacheDataSource.Factory()
-            .setCache(cache)
-            .setUpstreamDataSourceFactory(monitoredUpstreamFactory)
-            .setCacheKeyFactory(playbackCacheKeyFactory)
-            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-            .setEventListener(cacheEventListener)
+        return DataSource.Factory { delegate.createDataSource() }
     }
 
     /**

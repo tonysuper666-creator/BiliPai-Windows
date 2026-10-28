@@ -21,8 +21,8 @@ class AdaptiveListComponentPolicyTest {
     fun `material3 style should use more native material search and group geometry`() {
         val spec = resolveAdaptiveListComponentVisualSpec(AppUiStyle.MATERIAL3)
 
-        assertEquals(56, spec.searchBarHeightDp)
-        assertEquals(28, spec.searchBarCornerRadiusDp)
+        assertEquals(48, spec.searchBarHeightDp)
+        assertEquals(14, spec.searchBarCornerRadiusDp)
         assertEquals(40, spec.iconContainerSizeDp)
         assertEquals(22, spec.iconGlyphSizeDp)
         assertEquals(24, spec.groupCornerRadiusDp)
@@ -32,81 +32,51 @@ class AdaptiveListComponentPolicyTest {
         assertEquals(3, spec.groupTonalElevationDp)
     }
 
-    @Test
-    fun `miuix style should soften grouped settings geometry`() {
-        val spec = resolveAdaptiveListComponentVisualSpec(AppUiStyle.MIUIX)
-
-        assertEquals(48, spec.searchBarHeightDp)
-        assertEquals(22, spec.searchBarCornerRadiusDp)
-        assertEquals(20, spec.groupCornerRadiusDp)
-        assertEquals(16, spec.sectionStartPaddingDp)
-        assertEquals(16, spec.dividerStartIndentDp)
-        assertEquals(10, spec.iconCornerRadiusDp)
-        assertEquals(38, spec.iconContainerSizeDp)
-        assertEquals(20, spec.iconGlyphSizeDp)
-        assertEquals(0.18f, spec.iconBackgroundAlpha, 0.0001f)
-    }
 
     @Test
-    fun `miuix style should align list row spacing with miuix inside margin default`() {
+    fun `miuix style should use compact list row spacing`() {
         val spec = resolveAdaptiveListRowVisualSpec(AppUiStyle.MIUIX)
 
         assertEquals(16, spec.insideHorizontalPaddingDp)
-        assertEquals(16, spec.insideVerticalPaddingDp)
+        assertEquals(12, spec.insideVerticalPaddingDp)
         assertEquals(14, spec.trailingIconSizeDp)
         assertEquals(6, spec.trailingSpacingDp)
     }
 
     @Test
-    fun `material3 style should align list row spacing with md3 list item padding`() {
+    fun `material3 style should use compact app authored list row spacing`() {
         val spec = resolveAdaptiveListRowVisualSpec(AppUiStyle.MATERIAL3)
 
         assertEquals(16, spec.insideHorizontalPaddingDp)
-        assertEquals(16, spec.insideVerticalPaddingDp)
+        assertEquals(12, spec.insideVerticalPaddingDp)
         assertEquals(16, spec.trailingIconSizeDp)
         assertEquals(8, spec.trailingSpacingDp)
-        assertEquals(48, spec.minTouchTargetHeightDp)
+        assertEquals(44, spec.minTouchTargetHeightDp)
     }
 
-    @Test
-    fun `cupertino fallback row consumes the shared row spec instead of hardcoded padding`() {
-        val source = listOf(
-            java.io.File("src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt"),
-            java.io.File("../design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt"),
-        ).first { it.exists() }.readText()
-
-        // 回退 Row 不得再硬编码 16/14 之类的私有间距，必须统一走 rowSpec。
-        assertFalse(
-            source.contains("padding(horizontal = 16.dp, vertical = 14.dp)"),
-            "fallback row still hardcodes legacy 16/14 padding",
-        )
-        assertTrue(
-            source.contains("padding(horizontal = rowSpec.insideHorizontalPaddingDp.dp, vertical = rowSpec.insideVerticalPaddingDp.dp)"),
-        )
-    }
 
     @Test
-    fun `material3 style should map all settings icon tints to theme primary`() {
+    fun `material3 style should map all settings icon tints to neutral content`() {
         val colorScheme = darkColorScheme()
 
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSBlue, AppUiStyle.MATERIAL3, colorScheme)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSGreen, AppUiStyle.MATERIAL3, colorScheme)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSPurple, AppUiStyle.MATERIAL3, colorScheme)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSRed, AppUiStyle.MATERIAL3, colorScheme)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSSystemGray, AppUiStyle.MATERIAL3, colorScheme)
         )
     }
@@ -131,21 +101,22 @@ class AdaptiveListComponentPolicyTest {
             resolveAdaptivePreferenceIconContentColor(iOSBlue, colorScheme),
         )
         assertEquals(
-            colorScheme.secondary,
+            colorScheme.surfaceContainerHigh,
             resolveAdaptivePreferenceIconContainerColor(
                 iconTint = iOSBlue,
                 semanticTint = colorScheme.secondary,
                 treatment = AppPreferenceIconTreatment.FILLED,
+                colorScheme = colorScheme,
             ),
         )
     }
 
     @Test
-    fun `theme container icon style uses opaque secondary container with on color glyphs`() {
+    fun `theme container icon style uses opaque primary container with on color glyphs`() {
         val colorScheme = lightColorScheme()
 
         assertEquals(
-            colorScheme.secondaryContainer,
+            colorScheme.primaryContainer,
             resolveAdaptivePreferenceIconContainerColor(
                 iconTint = iOSBlue,
                 semanticTint = colorScheme.primary,
@@ -163,20 +134,20 @@ class AdaptiveListComponentPolicyTest {
             ),
         )
         assertEquals(
-            colorScheme.onSecondaryContainer,
+            colorScheme.onPrimaryContainer,
             resolveAdaptivePreferenceIconContentColor(
-                containerColor = colorScheme.secondaryContainer,
+                containerColor = colorScheme.primaryContainer,
                 colorScheme = colorScheme,
                 iconStyle = AppIconStyle.THEME_CONTAINER,
             ),
         )
         assertEquals(
-            colorScheme.onSecondaryContainer,
+            colorScheme.onPrimaryContainer,
             resolveAdaptivePreferenceIconGlyphColor(
                 treatment = AppPreferenceIconTreatment.TONAL,
                 iconStyle = AppIconStyle.THEME_CONTAINER,
-                containerContentColor = colorScheme.onSecondaryContainer,
-                semanticIconColor = colorScheme.secondaryContainer,
+                containerContentColor = colorScheme.onPrimaryContainer,
+                semanticIconColor = colorScheme.primaryContainer,
             ),
         )
     }
@@ -245,37 +216,37 @@ class AdaptiveListComponentPolicyTest {
     }
 
     @Test
-    fun `material3 style without dynamic color should collapse legacy accent tints to primary`() {
+    fun `material3 style without dynamic color should collapse legacy accent tints to neutral content`() {
         val colorScheme = darkColorScheme()
 
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSBlue, AppUiStyle.MATERIAL3, colorScheme, useSemanticAccentRoles = false)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSPurple, AppUiStyle.MATERIAL3, colorScheme, useSemanticAccentRoles = false)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSGreen, AppUiStyle.MATERIAL3, colorScheme, useSemanticAccentRoles = false)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSRed, AppUiStyle.MATERIAL3, colorScheme, useSemanticAccentRoles = false)
         )
         assertEquals(
-            colorScheme.primary,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(iOSSystemGray, AppUiStyle.MATERIAL3, colorScheme, useSemanticAccentRoles = false)
         )
     }
 
     @Test
-    fun `miuix style should preserve colorful settings icon tints`() {
+    fun `miuix style should use the same neutral settings icon role`() {
         val colorScheme = darkColorScheme()
 
         assertEquals(
-            iOSPurple,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(
                 iconTint = iOSPurple,
                 uiStyle = AppUiStyle.MIUIX,
@@ -283,7 +254,7 @@ class AdaptiveListComponentPolicyTest {
             ),
         )
         assertEquals(
-            iOSRed,
+            colorScheme.onSurfaceVariant,
             resolveAdaptiveSemanticIconTint(
                 iconTint = iOSRed,
                 uiStyle = AppUiStyle.MIUIX,

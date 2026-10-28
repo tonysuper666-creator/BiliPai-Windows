@@ -7,7 +7,6 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
@@ -75,6 +75,7 @@ internal fun rememberVideoDetailTransitionState(
     val entryOwnsMiuixCardTransition = isVideoDetailEntryActiveMiuixTransitionSource(
         entrySourceRoute = sourceRoute,
         activeSourceRoute = transitionBackgroundState.sourceRouteProvider(),
+        miuixTransitionEnabled = miuixCardTransition.enabled,
     )
     val entryMiuixTransitionEnabled =
         miuixCardTransition.enabled && entryOwnsMiuixCardTransition
@@ -323,6 +324,7 @@ internal fun VideoDetailRouteSheetHost(
     isFullscreenMode: Boolean,
     backgroundColor: Color,
     backgroundAlpha: Float = 1f,
+    backgroundAlphaProvider: () -> Float = { backgroundAlpha },
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
     overlayContent: @Composable BoxScope.() -> Unit
@@ -341,19 +343,19 @@ internal fun VideoDetailRouteSheetHost(
             }
             .graphicsLayer {
                 val frame = frameProvider()
-                scaleX = frame.scale
-                scaleY = frame.scale
-                translationY = with(density) {
+                scaleX = if (isFullscreenMode) 1f else frame.scale
+                scaleY = if (isFullscreenMode) 1f else frame.scale
+                translationY = if (isFullscreenMode) 0f else with(density) {
                     frame.translationYDp.dp.toPx()
                 }
                 transformOrigin = TransformOrigin(0.5f, 0f)
-                clip = motion.enabled && frame.cornerDp > 0.01f
+                clip = !isFullscreenMode && motion.enabled && frame.cornerDp > 0.01f
                 shape = RoundedCornerShape(frame.cornerDp.dp)
             }
-            .background(
-                if (isFullscreenMode) Color.Black.copy(alpha = backgroundAlpha)
-                else backgroundColor.copy(alpha = backgroundAlpha)
-            ),
+            .drawBehind {
+                val background = if (isFullscreenMode) Color.Black else backgroundColor
+                drawRect(background.copy(alpha = backgroundAlphaProvider().coerceIn(0f, 1f)))
+            },
     ) {
         content()
         overlayContent()

@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -41,6 +43,8 @@ fun AdaptivePullToRefreshBox(
     indicatorTopInset: Dp = 0.dp,
     state: PullToRefreshState = rememberPullToRefreshState(),
     contentAlignment: Alignment = Alignment.TopStart,
+    /** Disable refresh gestures without discarding the list's composition state. */
+    enabled: Boolean = true,
     indicator: @Composable BoxScope.() -> Unit = {
         AdaptivePullToRefreshDefaultIndicator(
             isRefreshing = isRefreshing,
@@ -50,6 +54,8 @@ fun AdaptivePullToRefreshBox(
     },
     content: @Composable BoxScope.() -> Unit,
 ) {
+    val contentHaptic = LocalHapticFeedback.current
+    val refreshHaptic = rememberAppHapticFeedback(AppHapticScene.REFRESH)
     val layoutDirection = LocalLayoutDirection.current
     val mergedContentPadding = remember(contentPadding, indicatorTopInset, layoutDirection) {
         PaddingValues(
@@ -62,35 +68,60 @@ fun AdaptivePullToRefreshBox(
 
     when (rememberPresetPrimitiveRenderer()) {
         PresetPrimitiveRenderer.MIUIX_BRIDGED -> {
-            val miuixState = rememberMiuixPullToRefreshState()
-            MiuixPullToRefresh(
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-                modifier = modifier,
-                pullToRefreshState = miuixState,
-                contentPadding = mergedContentPadding,
-                color = AppSurfaceTokens.primary(),
-                refreshTexts = resolveMiuixPullToRefreshTexts(),
-                content = {
+            // MIUIX has no gesture-enabled flag. Move, rather than remount, the list
+            // when bypassing its refresh container so comment row state is retained.
+            val stableContent = remember {
+                movableContentOf<Alignment, @Composable BoxScope.() -> Unit> { alignment, body ->
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = contentAlignment,
-                    ) {
-                        content()
-                    }
-                },
-            )
+                        contentAlignment = alignment,
+                        content = body,
+                    )
+                }
+            }
+            if (enabled) {
+                // The native container owns its drag/refresh animation scope. Discard that
+                // state with the container when player expansion temporarily disables refresh;
+                // otherwise a cancelled Pulling/RefreshComplete session can consume later
+                // comment drags. movableContent below still preserves the list and its offset.
+                val miuixState = rememberMiuixPullToRefreshState()
+                CompositionLocalProvider(LocalHapticFeedback provides refreshHaptic) {
+                    MiuixPullToRefresh(
+                        isRefreshing = isRefreshing,
+                        onRefresh = onRefresh,
+                        modifier = modifier,
+                        pullToRefreshState = miuixState,
+                        contentPadding = mergedContentPadding,
+                        color = AppSurfaceTokens.primary(),
+                        refreshTexts = resolveMiuixPullToRefreshTexts(),
+                        content = {
+                            CompositionLocalProvider(LocalHapticFeedback provides contentHaptic) {
+                                stableContent(contentAlignment, content)
+                            }
+                        },
+                    )
+                }
+            } else {
+                Box(modifier = modifier, contentAlignment = contentAlignment) {
+                    stableContent(contentAlignment, content)
+                }
+            }
         }
         PresetPrimitiveRenderer.MATERIAL3 -> {
-            ComfortablePullToRefreshBox(
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-                modifier = modifier,
-                state = state,
-                contentAlignment = contentAlignment,
-                indicator = indicator,
-                content = content,
-            )
+            CompositionLocalProvider(LocalHapticFeedback provides refreshHaptic) {
+                ComfortablePullToRefreshBox(
+                    isRefreshing = isRefreshing,
+                    onRefresh = onRefresh,
+                    modifier = modifier,
+                    state = state,
+                    contentAlignment = contentAlignment,
+                    enabled = enabled,
+                    indicator = indicator,
+                    content = {
+                        CompositionLocalProvider(LocalHapticFeedback provides contentHaptic) { content() }
+                    },
+                )
+            }
         }
     }
 }
@@ -98,11 +129,10 @@ fun AdaptivePullToRefreshBox(
 /**
  * Default pull-to-refresh chrome for [AdaptivePullToRefreshBox].
  *
- * - Material 3: official expressive [PullToRefreshDefaults.LoadingIndicator]
- *   (ContainedLoadingIndicator + dynamic colors).
+ * - Material 3: official [PullToRefreshDefaults.Indicator] with circular progress.
  * - Miuix: unused — the Miuix branch mounts native [MiuixPullToRefresh] instead.
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BoxScope.AdaptivePullToRefreshDefaultIndicator(
     isRefreshing: Boolean,
@@ -115,10 +145,11 @@ fun BoxScope.AdaptivePullToRefreshDefaultIndicator(
         .padding(top = indicatorTopInset)
     when (rememberPresetPrimitiveRenderer()) {
         PresetPrimitiveRenderer.MATERIAL3 -> {
-            PullToRefreshDefaults.LoadingIndicator(
+            PullToRefreshDefaults.Indicator(
                 modifier = indicatorModifier,
                 isRefreshing = isRefreshing,
                 state = state,
+                color = AppContentColors.accent(),
             )
         }
         PresetPrimitiveRenderer.MIUIX_BRIDGED -> {

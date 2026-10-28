@@ -10,6 +10,7 @@ import com.android.purebilibili.feature.article.opusContentBlocksToArticleBlocks
 import com.android.purebilibili.feature.article.parseArticleContentBlocks
 import com.android.purebilibili.feature.article.selectRicherArticleBlocks
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 
 data class ArticleDetailUiModel(
@@ -34,31 +35,66 @@ object ArticleRepository {
         }
 
         runCatching {
-            val response = articleApi.getArticleView(
-                signWithWbi(
-                    mapOf(
-                        "id" to articleId.toString(),
-                        "gaia_source" to "main_web",
-                        "web_location" to "333.976"
+            val response = try {
+                articleApi.getArticleView(
+                    signWithWbi(
+                        mapOf(
+                            "id" to articleId.toString(),
+                            "gaia_source" to "main_web",
+                            "web_location" to "333.976"
+                        )
                     )
                 )
-            )
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                return@runCatching fetchPublicNoteArticle(articleId) ?: throw error
+            }
 
             if (response.code != 0 || response.data == null) {
+                fetchPublicNoteArticle(articleId)?.let { return@runCatching it }
                 throw IllegalStateException(response.message.ifBlank { "Article detail unavailable" })
             }
 
             val data = requireNotNull(response.data)
             val fromView = data.toUiModel()
             val opusBlocks = fetchOpusArticleBlocks(data.dynamicId)
-            val merged = if (opusBlocks.isEmpty()) {
+            var merged = if (opusBlocks.isEmpty()) {
                 fromView
             } else {
                 fromView.copy(blocks = selectRicherArticleBlocks(fromView.blocks, opusBlocks))
             }
+            if (merged.blocks.isEmpty()) {
+                fetchPublicNoteArticle(articleId)?.let { merged = it }
+            }
             runCatching { HistoryRepository.reportArticleView(merged.articleId) }
             merged
         }
+    }
+
+    private suspend fun fetchPublicNoteArticle(articleId: Long): ArticleDetailUiModel? {
+        val response = try {
+            navApi.getPublicVideoNoteInfo(articleId)
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            return null
+        }
+        if (response.code != 0) return null
+        val note = response.data ?: return null
+        val blocks = parseArticleContentBlocks(emptyList(), note.content)
+        if (blocks.isEmpty()) return null
+        return ArticleDetailUiModel(
+            articleId = note.cvid.takeIf { it > 0L } ?: articleId,
+            title = note.title.ifBlank { "公开笔记" },
+            summary = note.summary,
+            authorName = note.author?.name.orEmpty(),
+            authorMid = note.author?.mid ?: 0L,
+            authorFace = note.author?.face.normalizeImageUrl().orEmpty(),
+            publishTime = "",
+            bannerUrl = null,
+            blocks = blocks,
+        )
     }
 
     private suspend fun fetchOpusArticleBlocks(dynamicId: String): List<ArticleContentBlock> {

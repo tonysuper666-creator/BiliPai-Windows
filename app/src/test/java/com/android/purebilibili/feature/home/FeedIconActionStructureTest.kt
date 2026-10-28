@@ -22,7 +22,7 @@ class FeedIconActionStructureTest {
             ExpectedIconAction(
                 "src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
                 semanticMarkers = listOf(
-                    "contentDescription = \"取消收藏\"",
+                    "contentDescription = \"从收藏夹移除\"",
                     "contentDescription = \"更多操作\"",
                 ),
                 minimumTouchTargetCount = 2,

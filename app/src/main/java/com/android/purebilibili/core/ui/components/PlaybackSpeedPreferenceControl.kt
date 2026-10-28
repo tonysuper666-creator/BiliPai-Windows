@@ -18,8 +18,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -29,9 +27,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.android.purebilibili.core.store.LONG_PRESS_SPEED_MAX
-import com.android.purebilibili.core.store.LONG_PRESS_SPEED_MIN
-import com.android.purebilibili.core.store.LONG_PRESS_SPEED_STEP
 import com.android.purebilibili.core.store.normalizeLongPressSpeed
 import com.android.purebilibili.core.store.parseNewPlaybackSpeedOption
 import com.android.purebilibili.core.store.parseLongPressSpeedInput
@@ -48,17 +43,18 @@ fun formatPlaybackSpeed(speed: Float): String {
 
 private val LONG_PRESS_SPEED_PRESETS = listOf(1.5f, 2f, 3f, 4f, 6f, 8f)
 
+// Shared interaction change for every material and player/settings caller: edit the value
+// directly; presets live in the editor instead of duplicating a slider on the page.
 @Composable
 fun LongPressSpeedPreferenceControl(
     currentSpeed: Float,
     onSpeedChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
     title: String? = "长按临时加速",
-    subtitle: String? = null
+    subtitle: String? = null,
+    titleTrailingContent: (@Composable () -> Unit)? = null,
 ) {
-    var sliderValue by remember(currentSpeed) {
-        mutableFloatStateOf(normalizeLongPressSpeed(currentSpeed))
-    }
+    val displayedSpeed = normalizeLongPressSpeed(currentSpeed)
     var showSpeedEditor by rememberSaveable { mutableStateOf(false) }
     var speedInput by rememberSaveable { mutableStateOf("") }
 
@@ -69,11 +65,19 @@ fun LongPressSpeedPreferenceControl(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 if (title != null) {
-                    AppText(
-                        text = title,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    if (titleTrailingContent == null) {
+                        AppText(
+                            text = title,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            AppText(text = title, style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.weight(1f))
+                            titleTrailingContent()
+                        }
+                    }
                 }
                 if (subtitle != null) {
                     AppText(
@@ -83,82 +87,23 @@ fun LongPressSpeedPreferenceControl(
                     )
                 }
             }
-            AppSurface(
+            AppTextButton(
                 onClick = {
-                    speedInput = ""
+                    speedInput = formatPlaybackSpeed(displayedSpeed).removeSuffix("x")
                     showSpeedEditor = true
                 },
-                shape = AppShapes.container(ContainerLevel.Pill),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier.semantics {
-                    contentDescription = "输入长按倍速，当前 ${formatPlaybackSpeed(sliderValue)}"
-                }
-            ) {
-                Box(
-                    modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
-                        .padding(horizontal = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AppText(
-                        text = formatPlaybackSpeed(sliderValue),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
-        }
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            AppText(
-                text = "1.0x",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            AppSlider(
-                value = sliderValue,
-                onValueChange = { value ->
-                    val ticks = ((value - LONG_PRESS_SPEED_MIN) / LONG_PRESS_SPEED_STEP).roundToInt()
-                    sliderValue = normalizeLongPressSpeed(LONG_PRESS_SPEED_MIN + ticks * LONG_PRESS_SPEED_STEP)
-                },
-                onValueChangeFinished = { onSpeedChange(sliderValue) },
-                valueRange = LONG_PRESS_SPEED_MIN..LONG_PRESS_SPEED_MAX,
-                modifier = Modifier.weight(1f).padding(horizontal = 8.dp)
-            )
-            AppText(
-                text = "8.0x",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            LONG_PRESS_SPEED_PRESETS.forEach { preset ->
-                val selected = sliderValue == preset
-                AppSurface(
-                    onClick = {
-                        sliderValue = preset
-                        onSpeedChange(preset)
+                modifier = Modifier
+                    .sizeIn(minWidth = 48.dp, minHeight = 48.dp)
+                    .semantics {
+                        contentDescription = "输入长按倍速，当前 ${formatPlaybackSpeed(displayedSpeed)}"
                     },
-                    shape = AppShapes.container(ContainerLevel.Card),
-                    color = if (selected) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.surfaceVariant,
-                    modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
-                ) {
-                    Box(
-                        modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
-                            .padding(horizontal = 10.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        AppText(
-                            text = formatPlaybackSpeed(preset),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = if (selected) MaterialTheme.colorScheme.onPrimary
-                                else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+            ) {
+                AppText(
+                    text = formatPlaybackSpeed(displayedSpeed),
+                    color = com.android.purebilibili.core.ui.AppContentColors.link(),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                )
             }
         }
     }
@@ -168,21 +113,53 @@ fun LongPressSpeedPreferenceControl(
             onDismissRequest = { showSpeedEditor = false },
             title = { AppText("输入长按倍速") },
             text = {
-                AppTextField(
-                    value = speedInput,
-                    onValueChange = { speedInput = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    label = "倍速",
-                    placeholder = formatPlaybackSpeed(sliderValue),
-                    isError = speedInput.isNotBlank() && candidate == null,
-                    supportingText = { AppText("范围 1.0x–8.0x，最多两位小数") }
-                )
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    AppTextField(
+                        value = speedInput,
+                        onValueChange = { speedInput = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = "倍速",
+                        placeholder = formatPlaybackSpeed(displayedSpeed),
+                        isError = speedInput.isNotBlank() && candidate == null,
+                        supportingText = { AppText("范围 1.0x–8.0x，最多两位小数") }
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        LONG_PRESS_SPEED_PRESETS.forEach { preset ->
+                            val selected = displayedSpeed == preset
+                            AppSurface(
+                                onClick = {
+                                    onSpeedChange(preset)
+                                    showSpeedEditor = false
+                                },
+                                shape = AppShapes.container(ContainerLevel.Card),
+                                color = if (selected) MaterialTheme.colorScheme.primary
+                                    else MaterialTheme.colorScheme.surfaceVariant,
+                                modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)
+                                        .padding(horizontal = 10.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    AppText(
+                                        text = formatPlaybackSpeed(preset),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = if (selected) MaterialTheme.colorScheme.onPrimary
+                                            else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
             },
             confirmButton = {
                 AppTextButton(
                     onClick = {
                         candidate?.let { speed ->
-                            sliderValue = speed
                             onSpeedChange(speed)
                             showSpeedEditor = false
                         }

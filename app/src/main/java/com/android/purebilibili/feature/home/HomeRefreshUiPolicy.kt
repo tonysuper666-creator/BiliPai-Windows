@@ -1,5 +1,8 @@
 package com.android.purebilibili.feature.home
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.ui.graphics.Color
+
 internal fun shouldHandleRefreshNewItemsEvent(
     refreshKey: Long,
     handledKey: Long
@@ -94,3 +97,15 @@ internal fun resolveHomeRefreshKeptOldItemCount(
     threshold: Int = 200,
     keepCount: Int = 50
 ): Int = if (oldCount > threshold) keepCount else oldCount
+
+/**
+ * 「上次刷新到这里」分隔条的容器颜色。
+ *
+ * 半透明的 primaryContainer：首页/动态信息流铺在模糊壁纸上，卡片都是毛玻璃
+ * 半透明容器；分隔条若用实心 primaryContainer 会形成一块不透模糊的不和谐
+ * 色块。降低不透明度让模糊背景透出，同时保留主色调的可读性。
+ */
+internal fun resolveOldContentDividerContainerColor(colorScheme: ColorScheme): Color =
+    colorScheme.primaryContainer.copy(alpha = OLD_CONTENT_DIVIDER_CONTAINER_ALPHA)
+
+internal const val OLD_CONTENT_DIVIDER_CONTAINER_ALPHA = 0.72f

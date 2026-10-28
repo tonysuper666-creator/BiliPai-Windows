@@ -1,11 +1,11 @@
 package com.android.purebilibili.feature.settings
 
+import com.android.purebilibili.core.ui.AppContentColors
+
+import android.os.Build
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.rememberTransition
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -17,15 +17,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,10 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
@@ -44,6 +44,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
@@ -52,6 +53,7 @@ import com.android.purebilibili.core.ui.AppPopupSurface
 import com.android.purebilibili.core.ui.AppPopupSurfaceType
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.ui.motion.AppMotionTokens
+import com.android.purebilibili.core.ui.blur.hazeEffectCompat
 import com.android.purebilibili.core.ui.components.AppButton
 import com.android.purebilibili.core.ui.components.AppCheckbox
 import com.android.purebilibili.core.ui.components.AppCheckboxDefaults
@@ -62,6 +64,25 @@ import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.core.util.CacheClearTarget
 import com.android.purebilibili.core.util.CacheUtils
 import kotlin.math.min
+
+/**
+ * 构造饱和度色彩矩阵（Rec.709 亮度加权），> 1 提升饱和度，用于模糊背景的 vibrancy 效果。
+ * 项目所用 Compose 版本的 ui-graphics 没有 ColorMatrix.saturation 扩展，需手工构造。
+ */
+private fun saturationColorMatrix(saturation: Float): ColorMatrix {
+    val inv = 1f - saturation
+    val lumR = 0.213f
+    val lumG = 0.715f
+    val lumB = 0.072f
+    return ColorMatrix(
+        floatArrayOf(
+            lumR * inv + saturation, lumG * inv, lumB * inv, 0f, 0f,
+            lumR * inv, lumG * inv + saturation, lumB * inv, 0f, 0f,
+            lumR * inv, lumG * inv, lumB * inv + saturation, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f,
+        )
+    )
+}
 
 data class CacheClearProgress(
     val current: Long,
@@ -105,6 +126,7 @@ internal fun CacheClearConfirmDialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
+        com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect(enabled = true)
         AppPopupSurface(
             type = AppPopupSurfaceType.DIALOG,
             modifier = Modifier
@@ -135,19 +157,19 @@ internal fun CacheClearConfirmDialog(
                     text = "存储使用情况",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = AppContentColors.primaryText()
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 AppText(
                     text = selectedCacheSizeSummary,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 AppText(
                     text = resolveCacheClearConfirmationMessage(selectedTargets),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 segments.forEach { segment ->
@@ -261,13 +283,13 @@ private fun CacheClearUsageDonut(
             AppText(
                 text = "BiliPai",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
             AppText(
                 text = centerSize,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = AppContentColors.primaryText()
             )
         }
     }
@@ -300,18 +322,18 @@ private fun CacheClearCategoryRow(
         Column(modifier = Modifier.weight(1f)) {
             AppText(
                 text = segment.title,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
                 fontWeight = FontWeight.Medium
             )
             AppText(
                 text = segment.percentLabel,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
                 style = MaterialTheme.typography.bodySmall
             )
         }
         AppText(
             text = formatCacheClearBytes(segment.bytes),
-            color = MaterialTheme.colorScheme.primary,
+            color = AppContentColors.link(),
             fontWeight = FontWeight.Medium
         )
     }
@@ -320,8 +342,12 @@ private fun CacheClearCategoryRow(
 @Composable
 fun CacheClearAnimationDialog(
     progress: CacheClearProgress,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    hazeState: dev.chrisbanes.haze.HazeState? = null,
 ) {
+    val window = com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo.current.windowSizeClass
+    val characterSize = if (window.heightDp < 480.dp) 96.dp else 120.dp
+    val maxSheetHeight = (window.heightDp * 0.8f).coerceAtLeast(96.dp)
     val progressValue = if (progress.total > 0) {
         (progress.current.toFloat() / progress.total.toFloat()).coerceIn(0f, 1f)
     } else {
@@ -332,67 +358,139 @@ fun CacheClearAnimationDialog(
         label = "cacheClearProgress"
     )
 
+    val latestOnDismiss by androidx.compose.runtime.rememberUpdatedState(onDismiss)
     LaunchedEffect(progress.isComplete) {
         if (progress.isComplete) {
             kotlinx.coroutines.delay(2000L)
-            onDismiss()
+            latestOnDismiss()
         }
     }
+    androidx.activity.compose.BackHandler(enabled = progress.isComplete) {
+        latestOnDismiss()
+    }
 
-    Dialog(
-        onDismissRequest = { },
-        properties = DialogProperties(
-            dismissOnBackPress = progress.isComplete,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
+    // 窗口内覆盖层（而非独立 Dialog 窗口），才能对页面内容做同窗口模糊。
+    val overlayState = remember {
+        androidx.compose.animation.core.MutableTransitionState(false).apply { targetState = true }
+    }
+    val slideSpec = AppMotionTokens.spatialSpec<androidx.compose.ui.unit.IntOffset>()
+    val fadeSpec = AppMotionTokens.spatialSpec<Float>()
+    val useBackgroundBlur = hazeState != null &&
+        com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect(
+            Build.VERSION.SDK_INT
         )
-    ) {
-        Box(
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // 背景整体模糊 + 压暗；清理期间不响应点击，与旧 Dialog 行为一致。
+        androidx.compose.animation.AnimatedVisibility(
+            visibleState = overlayState,
+            enter = androidx.compose.animation.fadeIn(fadeSpec),
+            exit = androidx.compose.animation.fadeOut(fadeSpec),
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
         ) {
-            AppPopupSurface(
-                type = AppPopupSurfaceType.DIALOG,
+            Box(
                 modifier = Modifier
-                    .padding(48.dp)
-                    .widthIn(max = 360.dp)
-                    .fillMaxWidth(),
-                shape = AppShapes.container(ContainerLevel.Dialog),
+                    .fillMaxSize()
+                    .then(
+                        if (useBackgroundBlur && hazeState != null) {
+                            // 纯模糊 + 饱和度提升（iOS vibrancy）：模糊后颜色更通透，
+                            // 不叠加色调层，保留背景原本的明暗与色彩层次
+                            Modifier.hazeEffectCompat(
+                                state = hazeState,
+                                style = dev.chrisbanes.haze.blur.HazeBlurStyle {
+                                    backgroundColor(Color.Transparent)
+                                    colorEffects(
+                                        listOf(
+                                            dev.chrisbanes.haze.blur.HazeColorEffect.colorFilter(
+                                                androidx.compose.ui.graphics.ColorFilter.colorMatrix(
+                                                    saturationColorMatrix(1.6f)
+                                                )
+                                            )
+                                        )
+                                    )
+                                    noiseFactor(0f)
+                                },
+                            )
+                        } else {
+                            Modifier
+                        }
+                    )
+                    .background(Color.Black.copy(alpha = 0.08f))
+            )
+        }
+
+        // 弹窗自下而上弹出
+        androidx.compose.animation.AnimatedVisibility(
+            visibleState = overlayState,
+            enter = androidx.compose.animation.slideInVertically(slideSpec) { it } +
+                androidx.compose.animation.fadeIn(fadeSpec),
+            exit = androidx.compose.animation.slideOutVertically(slideSpec) { it } +
+                androidx.compose.animation.fadeOut(fadeSpec),
+            modifier = Modifier.align(Alignment.BottomCenter),
+        ) {
+            val successSize = characterSize
+            AppPopupSurface(
+                type = AppPopupSurfaceType.SHEET,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .widthIn(max = 480.dp)
+                    .heightIn(max = maxSheetHeight)
+                    .navigationBarsPadding()
+                    .padding(horizontal = 12.dp),
+                shape = AppShapes.container(ContainerLevel.Sheet),
                 containerColor = MaterialTheme.colorScheme.surface,
                 tonalElevation = 3.dp
             ) {
                 Column(
-                    modifier = Modifier.padding(32.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Box(
-                        modifier = Modifier.size(96.dp),
+                        modifier = Modifier.size(successSize),
                         contentAlignment = Alignment.Center
                     ) {
                         when {
                             progress.isComplete -> {
-                                CacheClearSuccessAnimation()
-                            }
-
-                            progressValue <= 0f -> {
-                                AdaptiveLoadingIndicator(size = 64.dp)
+                                CacheClearSuccessAnimation(size = successSize)
                             }
 
                             else -> {
-                                AppCircularProgressIndicator(
-                                    progress = { animatedProgress },
-                                    modifier = Modifier.size(72.dp)
+                                com.android.purebilibili.core.ui.BlueSnowMaidAnimation(
+                                    animation = com.android.purebilibili.core.ui.MaidAnimation.CLEANING,
+                                    modifier = Modifier.fillMaxSize()
                                 )
                             }
+                        }
+                    }
+                    if (!progress.isComplete) {
+                        if (progress.total > 0L) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                AppCircularProgressIndicator(
+                                    progress = { animatedProgress },
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                AppText(
+                                    text = "${(progressValue * 100).toInt()}%",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = AppContentColors.secondaryText()
+                                )
+                            }
+                        } else {
+                            AdaptiveLoadingIndicator(size = 20.dp)
                         }
                     }
                     AppText(
                         text = if (progress.isComplete) "清理完成" else "正在清理",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     AppText(
                         text = if (progress.clearedSize.isNotEmpty()) {
@@ -402,13 +500,13 @@ fun CacheClearAnimationDialog(
                             "准备中…"
                         },
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     if (progress.isComplete) {
                         AppText(
                             text = "即将自动关闭…",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppContentColors.secondaryText()
                         )
                     }
                 }
@@ -418,60 +516,11 @@ fun CacheClearAnimationDialog(
 }
 
 @Composable
-private fun CacheClearSuccessAnimation() {
-    val transitionState = remember {
-        MutableTransitionState(false).apply { targetState = true }
-    }
-    val transition = rememberTransition(transitionState = transitionState, label = "cacheClearSuccess")
-    val scale by transition.animateFloat(
-        transitionSpec = { tween(durationMillis = 420) },
-        label = "cacheClearSuccessScale"
-    ) { complete -> if (complete) 1f else 0.65f }
-    val sparkleAlpha by transition.animateFloat(
-        transitionSpec = { tween(durationMillis = 650, delayMillis = 180) },
-        label = "cacheClearSparkleAlpha"
-    ) { complete -> if (complete) 1f else 0f }
-    val successColor = Color(0xFF34C759)
-
-    Box(modifier = Modifier.size(96.dp), contentAlignment = Alignment.Center) {
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer { alpha = sparkleAlpha }
-        ) {
-            val center = Offset(size.width / 2f, size.height / 2f)
-            repeat(10) { index ->
-                val angle = Math.toRadians(index * 36.0)
-                val radius = size.minDimension * (0.39f + (index % 3) * 0.045f)
-                val point = Offset(
-                    x = center.x + kotlin.math.cos(angle).toFloat() * radius,
-                    y = center.y + kotlin.math.sin(angle).toFloat() * radius
-                )
-                drawCircle(
-                    color = successColor.copy(alpha = 0.35f + (index % 2) * 0.25f),
-                    radius = if (index % 2 == 0) 4.dp.toPx() else 2.5.dp.toPx(),
-                    center = point
-                )
-            }
-        }
-        Surface(
-            modifier = Modifier
-                .size(72.dp)
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                },
-            shape = CircleShape,
-            color = successColor.copy(alpha = 0.14f)
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                AppIcon(
-                    imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_check_fill_24),
-                    contentDescription = "存储已清除",
-                    modifier = Modifier.size(40.dp),
-                    tint = successColor
-                )
-            }
-        }
-    }
+private fun CacheClearSuccessAnimation(size: Dp = 144.dp, modifier: Modifier = Modifier) {
+    // 完成勾由 CLEAN_COMPLETE 动画自身在收尾时给出（品牌约定），不再叠加静态勾图标，
+    // 否则动画播放到末帧时会出现两个勾。
+    com.android.purebilibili.core.ui.BlueSnowMaidAnimation(
+        animation = com.android.purebilibili.core.ui.MaidAnimation.CLEAN_COMPLETE,
+        modifier = modifier.size(size)
+    )
 }

@@ -64,7 +64,9 @@ internal fun parseArticleContentBlocks(
         .mergeAdjacentListBlocks()
     val contentOps = ops.ifEmpty { parseOpsFromContentJson(htmlContent) }
     val opsBlocks = parseOpsBlocks(contentOps)
-    val htmlBlocks = parseHtmlBlocks(htmlContent).mergeAdjacentListBlocks()
+    val htmlBlocks = if (contentOps.isNotEmpty()) emptyList() else {
+        parseHtmlBlocks(htmlContent).mergeAdjacentListBlocks()
+    }
     return selectRicherArticleBlocks(structuredBlocks, opsBlocks, htmlBlocks)
 }
 
@@ -72,10 +74,15 @@ private val articleContentJson = Json { ignoreUnknownKeys = true }
 
 private fun parseOpsFromContentJson(content: String?): List<JsonObject> {
     val rawContent = content?.trim().orEmpty()
-    if (!rawContent.startsWith("{")) return emptyList()
+    if (!rawContent.startsWith("{") && !rawContent.startsWith("[")) return emptyList()
     return runCatching {
-        val root = articleContentJson.parseToJsonElement(rawContent).jsonObject
-        root["ops"]?.jsonArray
+        val root = articleContentJson.parseToJsonElement(rawContent)
+        val operations = when (root) {
+            is kotlinx.serialization.json.JsonArray -> root
+            is JsonObject -> root["ops"]?.jsonArray
+            else -> null
+        }
+        operations
             ?.mapNotNull { runCatching { it.jsonObject }.getOrNull() }
             .orEmpty()
     }.getOrDefault(emptyList())

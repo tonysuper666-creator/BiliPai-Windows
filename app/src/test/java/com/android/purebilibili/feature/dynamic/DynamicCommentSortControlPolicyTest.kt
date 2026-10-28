@@ -10,6 +10,22 @@ import kotlin.test.assertTrue
 class DynamicCommentSortControlPolicyTest {
 
     @Test
+    fun `dynamic and video comment sort widths agree for both materials`() {
+        for (glass in listOf(false, true)) {
+            for (count in listOf(2, 4)) {
+                val dynamic = resolveDynamicCommentSortControlSpec(count, glass)
+                val video = com.android.purebilibili.feature.video.ui.components
+                    .resolveCommentSortSegmentedControlSpec(count, glass)
+                assertEquals(video.itemWidthDp, dynamic.itemWidthDp)
+                assertEquals(video.heightDp, dynamic.heightDp)
+                assertEquals(video.indicatorHeightDp, dynamic.indicatorHeightDp)
+            }
+        }
+        assertEquals(56, resolveDynamicCommentSortControlSpec(2, true).itemWidthDp)
+        assertEquals(66, resolveDynamicCommentSortControlSpec(2, false).itemWidthDp)
+    }
+
+    @Test
     fun `sort segmented control matches beta36 dynamic comment geometry`() {
         val spec = resolveDynamicCommentSortControlSpec(itemCount = 2)
 

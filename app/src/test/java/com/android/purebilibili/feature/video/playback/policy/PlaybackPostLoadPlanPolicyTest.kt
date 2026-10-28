@@ -24,7 +24,9 @@ class PlaybackPostLoadPlanPolicyTest {
         assertEquals(150L, playerInfoDelay)
         assertEquals(150L, videoshotDelay)
         assertTrue(ownerStatsDelay > playerInfoDelay)
-        assertTrue(tagsDelay > playerInfoDelay)
+        // 标签行会插在简介与操作栏之间，晚到会把下方内容整体下推，
+        // 因此必须与首屏同批发出，不能排在 enrichment 之后。
+        assertTrue(tagsDelay <= playerInfoDelay)
         assertTrue(aiSummaryDelay > ownerStatsDelay)
         assertTrue(heartbeatDelay > playerInfoDelay)
     }

@@ -1,6 +1,10 @@
 package com.android.purebilibili.feature.plugin
 
 import kotlinx.serialization.Serializable
+import com.android.purebilibili.plugin.sdk.PlaybackCdnCandidate
+import com.android.purebilibili.plugin.sdk.PlaybackCdnCandidateSource
+import com.android.purebilibili.plugin.sdk.CdnHealthEvent
+import com.android.purebilibili.plugin.sdk.CdnLineDiagnostic
 import java.net.URI
 
 @Serializable
@@ -30,17 +34,6 @@ data class CdnCustomRule(
     val enabled: Boolean = true
 )
 
-enum class PlaybackCdnCandidateSource {
-    CUSTOM,
-    REGION,
-    ORIGINAL
-}
-
-data class PlaybackCdnCandidate(
-    val videoUrl: String,
-    val audioUrl: String?,
-    val source: PlaybackCdnCandidateSource
-)
 
 enum class PlaybackCdnPreference(
     val storageValue: String,
@@ -111,13 +104,6 @@ data class CdnCandidateHealth(
     val healthWindowStartedAtMs: Long = 0L
 )
 
-enum class CdnHealthEvent {
-    PLAYBACK_READY,
-    FIRST_FRAME_TIMEOUT,
-    AUDIO_TRACK_MISSING,
-    PLAYER_ERROR,
-    BUFFERING
-}
 
 data class CdnProbeLimit(
     val maxCandidates: Int = 5,
@@ -131,19 +117,6 @@ data class CdnProbeCandidate(
     val cooldownRemainingMs: Long
 )
 
-data class CdnLineDiagnostic(
-    val index: Int,
-    val host: String,
-    val displayName: String,
-    val statusLabel: String,
-    val latencyMs: Long?,
-    val speedKbps: Long?,
-    val errorCount: Int,
-    val bufferingCount: Int,
-    val lastProbeAtMs: Long,
-    val score: Int,
-    val sourceLabel: String? = null
-)
 
 data class CdnHostDiagnostic(
     val host: String,

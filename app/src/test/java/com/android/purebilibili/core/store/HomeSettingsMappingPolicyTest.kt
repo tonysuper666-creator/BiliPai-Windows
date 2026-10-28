@@ -35,7 +35,7 @@ class HomeSettingsMappingPolicyTest {
         assertEquals(HomeHeaderCollapseMode.BOTH, result.homeHeaderCollapseMode)
         assertEquals(HomeBarHideType.SYNC, result.homeBarHideType)
         assertEquals(
-            CommonListHeaderCollapseMode.SHOW_ON_REVERSE_SCROLL,
+            CommonListHeaderCollapseMode.SHOW_AT_TOP_ONLY,
             result.commonListHeaderCollapseMode
         )
         assertTrue(result.isHeaderCollapseEnabled)
@@ -356,6 +356,19 @@ class HomeSettingsMappingPolicyTest {
         assertTrue(result.isHeaderCollapseEnabled)
         assertTrue(result.homeHeaderCollapseMode.collapseSearch)
         assertFalse(result.homeHeaderCollapseMode.collapseTabs)
+    }
+
+    @Test
+    fun topOnlyCollapseMode_restoresSavedSelectionAndCollapsesBothRows() {
+        val prefs = mutablePreferencesOf(
+            intPreferencesKey("home_header_collapse_mode") to HomeHeaderCollapseMode.SHOW_AT_TOP_ONLY.value
+        )
+        val result = mapHomeSettingsFromPreferences(prefs)
+
+        assertEquals(HomeHeaderCollapseMode.SHOW_AT_TOP_ONLY, result.homeHeaderCollapseMode)
+        assertTrue(result.isHeaderCollapseEnabled)
+        assertTrue(result.homeHeaderCollapseMode.collapseSearch)
+        assertTrue(result.homeHeaderCollapseMode.collapseTabs)
     }
 
     @Test

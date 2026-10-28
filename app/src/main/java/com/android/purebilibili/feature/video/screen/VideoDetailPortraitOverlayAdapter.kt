@@ -41,6 +41,8 @@ internal fun VideoDetailPortraitOverlayAdapter(
     uiState: VideoPlaybackUiState,
     portraitExperienceEnabled: Boolean,
     isPortraitFullscreen: Boolean,
+    /** 系统小窗：竖屏流只保留播放面，装饰层（标题 / 互动 / 进度）全部让位给系统 PiP。 */
+    isInPipMode: Boolean = false,
     useOfficialInlinePortraitDetailExperience: Boolean,
     isLandscape: Boolean,
     shouldAnimatePortraitPager: Boolean,
@@ -52,6 +54,7 @@ internal fun VideoDetailPortraitOverlayAdapter(
     engagementViewModel: VideoEngagementViewModel,
     sharedPlayer: ExoPlayer?,
     useTextureSurfaceForNavigation: Boolean,
+    isPlayerSurfaceReady: Boolean = true,
     onBack: () -> Unit,
     onHomeClick: () -> Unit,
     onVideoChange: (String) -> Unit,
@@ -104,8 +107,7 @@ internal fun VideoDetailPortraitOverlayAdapter(
             )
         }
     }
-    // Enter is direct so swipe-to-fullscreen never cross-fades through the centered inline player.
-    // Exit keeps the soft scale/slide so manual leave still feels polished.
+    // 内嵌进入直接更新全屏布局并复用播放器，退出保留原有缩放与位移。
     val portraitExitTransition = remember(motionSpec) {
         val exitSpec = tween<Float>(
             durationMillis = motionSpec.exitDurationMillis,
@@ -162,6 +164,7 @@ internal fun VideoDetailPortraitOverlayAdapter(
                 initialInfo = info,
                 recommendations = portraitRecommendations,
                 onlyVerticalRecommendations = portraitOnlyVerticalRecommendations,
+                isInPipMode = isInPipMode,
                 onBack = onBack,
                 onHomeClick = onHomeClick,
                 onVideoChange = onVideoChange,
@@ -170,6 +173,7 @@ internal fun VideoDetailPortraitOverlayAdapter(
                 engagementViewModel = engagementViewModel,
                 sharedPlayer = sharedPlayer,
                 useTextureSurfaceForNavigation = useTextureSurfaceForNavigation,
+                isPlayerSurfaceReady = isPlayerSurfaceReady,
                 initialStartPositionMs = initialStartPositionMs,
                 onProgressUpdate = onProgressUpdate,
                 onExitSnapshot = onExitSnapshot,

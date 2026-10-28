@@ -244,7 +244,7 @@ object BangumiRepository {
     suspend fun getBangumiIndex(
         seasonType: Int = 1,
         page: Int = 1,
-        pageSize: Int = 20
+        pageSize: Int = 30
     ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {
         try {
             val requestFilter = buildBangumiIndexRequestFilter(
@@ -690,7 +690,7 @@ object BangumiRepository {
         indexType: Int? = null,
         type: Int = 0,
         page: Int = 1,
-        pageSize: Int = 21,
+        pageSize: Int = 30,
         params: Map<String, String> = emptyMap(),
     ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {
         try {

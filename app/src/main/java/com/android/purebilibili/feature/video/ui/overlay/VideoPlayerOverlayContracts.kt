@@ -12,14 +12,14 @@ import com.android.purebilibili.feature.video.danmaku.DanmakuCloudSyncUiState
 import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio
 import com.android.purebilibili.data.model.response.SponsorProgressMarker
 import com.android.purebilibili.data.model.response.ViewPoint
-import com.android.purebilibili.feature.plugin.CdnLineDiagnostic
+import com.android.purebilibili.plugin.sdk.CdnLineDiagnostic
 import com.android.purebilibili.feature.video.playback.audio.AudioQualityOption
 import com.android.purebilibili.feature.video.progress.PbpRidgeSample
-import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
+import com.android.purebilibili.plugin.sdk.VideoEnhancementAlgorithm
 import com.android.purebilibili.core.store.player.PlayerSettingsStore
 import com.android.purebilibili.feature.anime4k.Anime4KBypassReason
-import com.android.purebilibili.feature.anime4k.Anime4KPreset
-import com.android.purebilibili.feature.anime4k.DEFAULT_FSR_SHARPNESS
+import com.android.purebilibili.plugin.sdk.Anime4KPreset
+import com.android.purebilibili.plugin.sdk.DEFAULT_FSR_SHARPNESS
 import com.android.purebilibili.feature.video.playback.session.PendingPlaybackUserAction
 import dev.chrisbanes.haze.HazeState
 
@@ -39,7 +39,9 @@ data class VideoPlayerOverlayState(
     val switchableQualityIds: List<Int> = emptyList(),
     val isLoggedIn: Boolean = false,
     val landscapeCommentPanelVisible: Boolean = false,
+    val landscapeCommentViewportAlreadyReserved: Boolean = false,
     val landscapeCommentPanelOnLeft: Boolean = true,
+    val landscapeCommentCloseProgressProvider: () -> Float = { 0f },
     val bvid: String = "",
     val cid: Long = 0L,
     val videoOwnerName: String = "",
@@ -62,6 +64,10 @@ data class VideoPlayerOverlayState(
     val realResolution: String = "",
     val isQualitySwitching: Boolean = false,
     val isBuffering: Boolean = false,
+    /** 首帧是否已渲染。进场前的 BUFFERING 不应叠转圈：加载表达由封面承担。 */
+    val hasRenderedFirstFrame: Boolean = true,
+    /** 转场/返回动画期间抑制瞬时 overlay（缓冲圈等），与 section 的门控同语义。 */
+    val suppressTransientOverlaysForTransition: Boolean = false,
     val isVip: Boolean = false,
     val sponsorContributionAvailable: Boolean = false,
     val sponsorContributionMarking: Boolean = false,
@@ -99,12 +105,14 @@ data class VideoPlayerOverlayState(
     val danmakuSmartOcclusion: Boolean = true,
     val danmakuFullscreenPanelWidthMode: DanmakuPanelWidthMode = DanmakuPanelWidthMode.THIRD,
     val portraitDanmakuDisplayAreaMode: PortraitDanmakuDisplayAreaMode =
-        PortraitDanmakuDisplayAreaMode.VIDEO_VIEWPORT,
+        PortraitDanmakuDisplayAreaMode.SCREEN_TOP,
     val danmakuSettingsScope: DanmakuSettingsScope = DanmakuSettingsScope.PORTRAIT,
     val showDanmakuSyncSection: Boolean = false,
     val danmakuCloudSyncEnabled: Boolean = true,
     val danmakuSyncUiState: DanmakuCloudSyncUiState = DanmakuCloudSyncUiState(),
     val subtitleControlState: SubtitleControlUiState = SubtitleControlUiState(),
+    val subtitleTracks: List<com.android.purebilibili.feature.video.subtitle.SubtitleTrackMeta> = emptyList(),
+    val acquireNativeSubtitles: Boolean = false,
     val doubleTapLikeEnabled: Boolean = true,
     val currentAspectRatio: VideoAspectRatio = VideoAspectRatio.FIT,
     val showDislikeAction: Boolean = true,
@@ -128,6 +136,7 @@ data class VideoPlayerOverlayState(
     val isPlaybackTransitionPending: Boolean = false,
     val highFrequencyProgressActive: Boolean = false,
     val currentCodec: String = "hev1",
+    val availableCodecIds: List<String> = emptyList(),
     val currentSecondCodec: String = "avc1",
     val currentAudioQuality: Int = -1,
     val selectedAudioQuality: Int = -1,
@@ -145,21 +154,31 @@ data class VideoPlayerOverlayState(
     val endDrawerVisible: Boolean = false,
     val endDrawerInitialTab: Int = 0,
     val endDrawerReservedWidth: androidx.compose.ui.unit.Dp = 0.dp,
+    val endDrawerCloseProgress: androidx.compose.runtime.MutableFloatState? = null,
+    val endDrawerReservedWidthProvider: () -> androidx.compose.ui.unit.Dp = { endDrawerReservedWidth },
     val relatedVideos: List<com.android.purebilibili.data.model.response.RelatedVideo> = emptyList(),
     val ugcSeason: com.android.purebilibili.data.model.response.UgcSeason? = null,
     val isFollowed: Boolean = false,
+    val followStatusKnown: Boolean = false,
     val isLiked: Boolean = false,
+    val isDisliked: Boolean = false,
+    val likeStatusKnown: Boolean = false,
     val isCoined: Boolean = false,
     val isFavorited: Boolean = false,
+    val commentCount: Long? = null,
+    val engagementCountsKnown: Boolean = false,
     val likeCount: Long = 0L,
     val favoriteCount: Long = 0L,
     val coinCount: Int = 0,
     val pages: List<com.android.purebilibili.data.model.response.Page> = emptyList(),
     val currentPageIndex: Int = 0,
-    val hasFavoritePlaylist: Boolean = false,
+    val hasExternalPlaylist: Boolean = false,
     val drawerHazeState: HazeState? = null,
     val statusBarAmbientFrame: State<ImageBitmap?>? = null,
     val statusBarBackdropHeight: androidx.compose.ui.unit.Dp = 0.dp,
+    // 播放器 surface 在窗口坐标中的实时矩形；状态栏模糊条据此做几何映射，
+    // 下滑缩小播放器时模糊内容跟随实际可见区域，而不是固定 Crop 整帧。
+    val ambientVideoBoundsInWindow: (() -> androidx.compose.ui.geometry.Rect?)? = null,
 )
 
 data class VideoPlayerOverlayActions(
@@ -171,6 +190,7 @@ data class VideoPlayerOverlayActions(
     val onToggleFullscreen: () -> Unit,
     val onLockToggle: () -> Unit = {},
     val onBottomControlsSizeChanged: (Int) -> Unit = {},
+    val onPersistentChapterBarHeightChanged: (Int) -> Unit = {},
     val onSponsorContributionMarkBoundary: () -> Unit = {},
     val onSponsorContributionMarkWholeVideo: () -> Unit = {},
     val onSponsorContributionCancel: () -> Unit = {},
@@ -186,6 +206,7 @@ data class VideoPlayerOverlayActions(
     ) -> Unit = { _, _, _, _, _ -> },
     val onDanmakuComposerDraftChange: (String, Boolean) -> Unit = { _, _ -> },
     val onDanmakuComposerSelectionChange: (Int, Int, Int) -> Unit = { _, _, _ -> },
+    val onDanmakuSliderPreview: ((com.android.purebilibili.feature.video.ui.components.DanmakuSliderParameter, Float) -> Unit)? = null,
     val onDanmakuOpacityChange: (Float) -> Unit = {},
     val onDanmakuFontScaleChange: (Float) -> Unit = {},
     val onDanmakuFontWeightChange: (Int) -> Unit = {},
@@ -257,6 +278,10 @@ data class VideoPlayerOverlayActions(
     val onToggleFavorite: () -> Unit = {},
     val onDrawerVideoClick: (String, android.os.Bundle?) -> Unit = { _, _ -> },
     val onPageSelect: (Int) -> Unit = {},
-    val onFavoritePlaylistClick: () -> Unit = {},
+    val onExternalPlaylistClick: () -> Unit = {},
     val onShowDanmakuPool: (() -> Unit)? = null,
+    val menuActions: PiliPlayerMenuActions = PiliPlayerMenuActions(),
+    val onTripleAction: () -> Unit = {},
+    val onQuickFavorite: () -> Unit = {},
+    val onFloatingPanelVisibilityChange: (Boolean) -> Unit = {},
 )

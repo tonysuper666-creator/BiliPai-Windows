@@ -1,9 +1,22 @@
 package com.android.purebilibili.feature.search
 
+import com.android.purebilibili.data.model.response.SearchType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class SearchTabLabelPolicyTest {
+
+    @Test
+    fun `all result tabs reserve the same badge width before and after loading`() {
+        SearchType.entries.forEach { type ->
+            val expected = resolveSearchTypeTabMeasurementLabel(type, null)
+            listOf(-1, 0, 12, 99, 100, 99520).forEach { count ->
+                assertEquals(expected, resolveSearchTypeTabMeasurementLabel(type, count))
+            }
+        }
+        // Measurement does not fabricate a visible result count.
+        assertEquals(SearchType.ALL.displayName, resolveSearchTypeTabLabel(SearchType.ALL.displayName, null))
+    }
 
     @Test
     fun `label hides count until a type has loaded`() {

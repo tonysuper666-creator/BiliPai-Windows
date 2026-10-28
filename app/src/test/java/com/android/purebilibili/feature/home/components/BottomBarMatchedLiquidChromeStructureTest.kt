@@ -35,7 +35,10 @@ class BottomBarMatchedLiquidChromeStructureTest {
         assertFalse(source.contains("legacyBackdrop"))
         assertFalse(source.contains("legacyContentBackdrop"))
         assertFalse(source.contains("biliPaiFloatingDockSurface("))
-        assertTrue(source.contains("rememberCombinedBackdrop(localBackdrop, backdrop)"))
+        assertTrue(source.contains("val localBackdrop = if (backdrop == null) rememberLayerBackdrop() else null"))
+        assertTrue(source.contains("val effectiveBackdrop = backdrop ?: localBackdrop"))
+        assertTrue(source.contains("if (localBackdrop != null)"))
+        assertFalse(source.contains("rememberCombinedBackdrop(localBackdrop, backdrop)"))
         assertTrue(source.contains("bottomBarMatchedCaptureOverflow(captureSafeInset)"))
         assertTrue(source.contains("biliPaiMiuixFloatingDockSurface("))
         assertTrue(source.contains("reuseEnabled: Boolean = false"))
@@ -91,10 +94,10 @@ class BottomBarMatchedLiquidChromeStructureTest {
         assertFalse(floating.contains(".drawBackdrop("))
         assertTrue(sharedChrome.contains("drawShellLens = drawShellLens"))
         assertTrue(
-            bottomBar.contains("resolveLiquidGlassIndicatorChromaticAberration(")
+            bottomBar.contains("homeIndicatorLens(")
         )
         assertTrue(
-            floating.contains("resolveLiquidGlassIndicatorChromaticAberration(")
+            floating.contains("homeIndicatorLens(")
         )
         assertFalse(bottomBar.contains("chromaticAberration = 0.5f"))
         assertFalse(segmented.contains(".biliPaiFloatingDockSurface("))
@@ -124,7 +127,7 @@ class BottomBarMatchedLiquidChromeStructureTest {
             "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt"
         )
 
-        assertTrue(dynamicTopBar.contains("BottomBarLiquidSegmentedControl("))
+        assertTrue(dynamicTopBar.contains("AppThemeAdaptiveTabRow("))
         assertTrue(dynamicTopBar.contains("indicatorPositionProvider = indicatorPositionProvider"))
         assertTrue(dynamicTopBar.contains("isScrollInProgressProvider = isScrollInProgressProvider"))
         assertTrue(dynamicScreen.contains("BottomBarMatchedDockVisibility("))

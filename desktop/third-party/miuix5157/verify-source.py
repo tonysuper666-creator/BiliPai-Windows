@@ -26,9 +26,11 @@ def verify_windows_numeric_patch(entry,patch,payload):
  assert restored.count(WINDOWS_NUMERIC_BEFORE)==1
  assert hashlib.sha256(restored).hexdigest()==entry["sha256"],"Windows numeric patch inverse differs from pinned original bytes"
 
-ap=argparse.ArgumentParser();ap.add_argument("--root",type=Path,required=True);args=ap.parse_args()
+ap=argparse.ArgumentParser();ap.add_argument("--root",type=Path,required=True);ap.add_argument("--originals-root",type=Path);args=ap.parse_args()
 root=args.root.resolve()
 if os.name=="nt" and not str(root).startswith("\\\\?\\"):root=Path("\\\\?\\"+str(root))
+# BiliPai navigation originals: the repository root by default, or the legacy read point.
+originals=args.originals_root.resolve() if args.originals_root else root.parents[2]
 source=root/"upstream"
 provenance=json.loads((root/"upstream-provenance.json").read_text(encoding="utf-8"))
 assert provenance["commit"]=="5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca"
@@ -69,8 +71,8 @@ for entry in patch["files"]:
  payload=path.read_bytes()
  assert hashlib.sha256(payload).hexdigest()==entry["sha256Bytes"] and len(payload)==entry["bytes"],entry["storagePath"]
  assert hashlib.sha256(payload.replace(b"\r\n",b"\n")).hexdigest()==entry["sha256LF"]
- original=root.parents[2]/entry["originalPath"]
- assert original.is_file() and not original.is_symlink() and original.resolve().is_relative_to(root.parents[2].resolve())
+ original=originals/entry["originalPath"]
+ assert original.is_file() and not original.is_symlink() and original.resolve().is_relative_to(originals.resolve())
  assert original.read_bytes().replace(b"\r\n",b"\n")==payload.replace(b"\r\n",b"\n"),entry["originalPath"]
  assert entry["wholeOriginal"] is True and entry["adaptations"]==0 and entry["inversePassed"] is True
  patchedDeclared.add(path.resolve())

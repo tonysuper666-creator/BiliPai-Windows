@@ -45,7 +45,10 @@ data class PlayUrlData(
     @SerialName("dolby_type")
     val dolbyType: Int? = null,
     @SerialName("ai_audio")
-    val aiAudio: AiAudioInfo? = null
+    val aiAudio: AiAudioInfo? = null,
+    // 校验响应可能只有此字段，不包含播放地址；不得按普通空流逐档重试。
+    @SerialName("v_voucher")
+    val vVoucher: String? = null
 ) {
     //  PiliPala 风格：提供便捷的访问方法
     val accept_quality: List<Int> get() = acceptQuality
@@ -291,44 +294,22 @@ private fun normalizedSelectionBandwidth(bandwidth: Int): Int {
 
 //  扩展函数：获取最佳音频流
 fun Dash.getBestAudio(preferQuality: Int = -1): DashAudio? {
-    if (audio.isNullOrEmpty()) {
-        com.android.purebilibili.core.network.CoreDataLog.d("VideoResponse", "ℹ️ getBestAudio: no audio streams")
-        return null
+    val validBaseAudio = audio.orEmpty().filter { it.id > 0 && it.getValidUrl().isNotBlank() }
+    if (preferQuality > 0) {
+        val returnedAudio = validBaseAudio +
+            dolby?.takeIf { it.type > 0 }?.audio.orEmpty()
+                .filter { it.id > 0 && it.getValidUrl().isNotBlank() } +
+            listOfNotNull(flac?.audio?.takeIf { it.id > 0 && it.getValidUrl().isNotBlank() })
+        returnedAudio.filter { it.id == preferQuality }
+            .maxByOrNull { it.bandwidth }
+            ?.let { return it }
     }
-    
-    val validAudios = audio.filter { it.getValidUrl().isNotEmpty() }
-    if (validAudios.isEmpty()) {
-        return audio.firstOrNull()
-    }
-    
-    // 如果指定了具体音质（如杜比/Hi-Res/特定码率），优先匹配
-    if (preferQuality != -1) {
-        // 1. 尝试精确匹配 ID
-        val exactMatch = validAudios.find { it.id == preferQuality }
-        if (exactMatch != null) return exactMatch
-        
-        // 2. 杜比/Hi-Res 特殊处理
-        if (preferQuality == 30250 && dolby?.audio?.isNotEmpty() == true) {
-             return dolby.audio.firstOrNull()
-        }
-        if (preferQuality == 30251 && flac?.audio != null) {
-            return flac.audio
-        }
-        
-        // 3. [统一策略] 使用 findClosestTarget：优先 <= 偏好的最高档，没有则取最近更高档
-        val closestId = validAudios.map { it.id }.findClosestTarget(
-            target = preferQuality,
-            fallback = ClosestTargetFallback.NEAREST_HIGHER
-        )
-        val closest = closestId?.let { targetId -> validAudios.find { it.id == targetId } }
-        if (closest != null) {
-            com.android.purebilibili.core.network.CoreDataLog.d("VideoResponse", " getBestAudio: exact match failed for $preferQuality, using closest match ${closest.id}")
-            return closest
-        }
-    }
-    
-    // 默认：最高带宽/码率 (Auto)
-    val selected = validAudios.maxByOrNull { it.bandwidth }
-    com.android.purebilibili.core.network.CoreDataLog.d("VideoResponse", " getBestAudio: selected id=${selected?.id}, bandwidth=${selected?.bandwidth}")
-    return selected
+    // AUTO and missing requests retain the best ordinary audio; never reinterpret a raw ID
+    // as an ordinal quality or silently enable a premium stream.
+    return validBaseAudio.filterNot { track ->
+        val codec = track.codecs.lowercase().replace("_", "-").replace(" ", "")
+        (codec.isBlank() && (track.id == 30250 || track.id == 30255 || track.id == 30251)) ||
+            codec == "flac" || codec.contains("ec-3") || codec.contains("e-ac-3") ||
+            codec.contains("eac3") || codec == "ec3"
+    }.maxByOrNull { it.bandwidth }
 }

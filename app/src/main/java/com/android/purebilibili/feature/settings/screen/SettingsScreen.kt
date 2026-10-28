@@ -1,4 +1,6 @@
 package com.android.purebilibili.feature.settings
+
+import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
 
@@ -15,7 +17,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable // [New]
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -46,7 +48,7 @@ import com.android.purebilibili.core.store.DEFAULT_CRASH_TRACKING_ENABLED
 import com.android.purebilibili.core.ui.AppSpacingTokens
 import com.android.purebilibili.core.theme.LocalSettingsLiquidGlassEnabled
 import com.android.purebilibili.core.ui.LocalBottomBarVisible
-import com.android.purebilibili.core.ui.LocalAnimatedVisibilityScope
+import com.android.purebilibili.core.ui.animation.LocalAppNavigationEntranceReady
 import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.core.store.AppNavigationSettings
 import com.android.purebilibili.core.util.AnalyticsHelper
@@ -85,12 +87,15 @@ const val GITHUB_URL = OFFICIAL_GITHUB_URL
 fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel(),
     onBack: () -> Unit,
+    onSettingsHome: () -> Unit = onBack,
     onOpenSourceLicensesClick: () -> Unit,
     onAppearanceClick: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onAnimationClick: () -> Unit = {},
     onPlaybackClick: () -> Unit = {},
     onPermissionClick: () -> Unit = {},
+    onSpacePrivacyClick: () -> Unit = {},
+    onLoginActivityClick: () -> Unit = {},
     onMessageNotificationClick: () -> Unit = {},
     onPluginsClick: () -> Unit = {},
     onSettingsShareClick: () -> Unit = {},
@@ -106,70 +111,65 @@ fun SettingsScreen(
     rootEntranceEnabled: Boolean = true,
 ) {
     val context = LocalContext.current
-    val hapticFeedback = LocalHapticFeedback.current
+    val hapticFeedback = com.android.purebilibili.core.ui.rememberAppHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.NAVIGATION)
     val uriHandler = LocalUriHandler.current
     val scope = rememberCoroutineScope()
     val configuration = androidx.compose.ui.platform.LocalConfiguration.current
     val navigationTransitionRunning =
-        LocalAnimatedVisibilityScope.current?.transition?.isRunning == true
+        !LocalAppNavigationEntranceReady.current.value
     val rootEntranceStartWhen = shouldStartSettingsEntrance(
         entranceEnabled = rootEntranceEnabled,
         navigationTransitionRunning = navigationTransitionRunning,
     )
     val versionClickThreshold = EasterEggs.VERSION_EASTER_EGG_THRESHOLD
-    
+
     // State Collection
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val privacyModeEnabled by SettingsManager.getPrivacyModeEnabled(context).collectAsStateWithLifecycle(initialValue = false)
-    val searchSuggestionsEnabled by SettingsManager.getSearchSuggestionsEnabled(context).collectAsStateWithLifecycle(initialValue = true)
-    val privacyContentAuthenticationEnabled by SettingsManager
-        .getPrivacyContentAuthenticationEnabled(context)
+    val privacyModeEnabled by remember(context) { SettingsManager.getPrivacyModeEnabled(context) }.collectAsStateWithLifecycle(initialValue = false)
+    val searchSuggestionsEnabled by remember(context) { SettingsManager.getSearchSuggestionsEnabled(context) }.collectAsStateWithLifecycle(initialValue = true)
+    val privacyContentAuthenticationEnabled by remember(context) { SettingsManager.getPrivacyContentAuthenticationEnabled(context) }
         .collectAsStateWithLifecycle(initialValue = false)
-    val crashTrackingEnabled by SettingsManager.getCrashTrackingEnabled(context)
+    val crashTrackingEnabled by remember(context) { SettingsManager.getCrashTrackingEnabled(context) }
         .collectAsStateWithLifecycle(initialValue = DEFAULT_CRASH_TRACKING_ENABLED)
-    val analyticsEnabled by SettingsManager.getAnalyticsEnabled(context)
+    val analyticsEnabled by remember(context) { SettingsManager.getAnalyticsEnabled(context) }
         .collectAsStateWithLifecycle(initialValue = DEFAULT_ANALYTICS_ENABLED)
-    val enhancedDiagnosticLoggingEnabled by SettingsManager
-        .getEnhancedDiagnosticLoggingEnabled(context)
+    val enhancedDiagnosticLoggingEnabled by remember(context) { SettingsManager.getEnhancedDiagnosticLoggingEnabled(context) }
         .collectAsStateWithLifecycle(initialValue = false)
-    val easterEggEnabled by SettingsManager.getEasterEggEnabled(context).collectAsStateWithLifecycle(initialValue = true)
-    val customDownloadPath by SettingsManager.getDownloadPath(context).collectAsStateWithLifecycle(initialValue = null)
-    val downloadExportTreeUri by SettingsManager.getDownloadExportTreeUri(context).collectAsStateWithLifecycle(initialValue = null)
-    val imageSaveTreeUri by SettingsManager.getImageSaveTreeUri(context).collectAsStateWithLifecycle(initialValue = null)
-    val autoCacheClearInterval by SettingsManager.getAutoCacheClearInterval(context)
+    val easterEggEnabled by remember(context) { SettingsManager.getEasterEggEnabled(context) }.collectAsStateWithLifecycle(initialValue = true)
+    val customDownloadPath by remember(context) { SettingsManager.getDownloadPath(context) }.collectAsStateWithLifecycle(initialValue = null)
+    val downloadExportTreeUri by remember(context) { SettingsManager.getDownloadExportTreeUri(context) }.collectAsStateWithLifecycle(initialValue = null)
+    val imageSaveTreeUri by remember(context) { SettingsManager.getImageSaveTreeUri(context) }.collectAsStateWithLifecycle(initialValue = null)
+    val autoCacheClearInterval by remember(context) { SettingsManager.getAutoCacheClearInterval(context) }
         .collectAsStateWithLifecycle(initialValue = SettingsManager.AutoCacheClearInterval.NEVER)
-    val autoCacheClearThresholdGb by SettingsManager.getAutoCacheClearThresholdGb(context)
+    val autoCacheClearThresholdGb by remember(context) { SettingsManager.getAutoCacheClearThresholdGb(context) }
         .collectAsStateWithLifecycle(
             initialValue = SettingsManager.DEFAULT_AUTO_CACHE_CLEAR_THRESHOLD_GB
         )
-    val feedApiType by SettingsManager.getFeedApiType(context).collectAsStateWithLifecycle(initialValue = SettingsManager.FeedApiType.WEB
+    val feedApiType by remember(context) { SettingsManager.getFeedApiType(context) }.collectAsStateWithLifecycle(initialValue = SettingsManager.FeedApiType.WEB
     )
-    val autoCheckUpdateEnabled by SettingsManager.getAutoCheckAppUpdate(context)
+    val autoCheckUpdateEnabled by remember(context) { SettingsManager.getAutoCheckAppUpdate(context) }
         .collectAsStateWithLifecycle(initialValue = true)
-    val appUpdateChannel by SettingsManager.getAppUpdateChannel(context)
+    val appUpdateChannel by remember(context) { SettingsManager.getAppUpdateChannel(context) }
         .collectAsStateWithLifecycle(initialValue = SettingsManager.AppUpdateChannel.STABLE)
-    val incrementalTimelineRefreshEnabled by SettingsManager.getIncrementalTimelineRefresh(context)
+    val incrementalTimelineRefreshEnabled by remember(context) { SettingsManager.getIncrementalTimelineRefresh(context) }
         .collectAsStateWithLifecycle(initialValue = false)
-    val homeRefreshCount by SettingsManager.getHomeRefreshCount(context)
+    val homeRefreshCount by remember(context) { SettingsManager.getHomeRefreshCount(context) }
         .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DEFAULT_HOME_REFRESH_COUNT)
-    val dynamicVisibleTabIds by SettingsManager.getDynamicTabVisibleTabs(context)
+    val dynamicVisibleTabIds by remember(context) { SettingsManager.getDynamicTabVisibleTabs(context) }
         .collectAsStateWithLifecycle(initialValue = defaultDynamicTabVisibleIds)
-    val dynamicTabOrder by SettingsManager.getDynamicTabOrder(context)
+    val dynamicTabOrder by remember(context) { SettingsManager.getDynamicTabOrder(context) }
         .collectAsStateWithLifecycle(initialValue = emptyList())
-    val dynamicImagePreviewTextVisible by SettingsManager.getDynamicImagePreviewTextVisible(context)
+    val dynamicImagePreviewTextVisible by remember(context) { SettingsManager.getDynamicImagePreviewTextVisible(context) }
         .collectAsStateWithLifecycle(initialValue = true)
-    val dynamicDetailImageLayout by SettingsManager.getDynamicDetailImageLayout(context)
+    val dynamicCommentPreviewVisible by remember(context) { com.android.purebilibili.core.store.home.DynamicSettingsStore.observeCommentPreviewVisible(context) }
+        .collectAsStateWithLifecycle(initialValue = false)
+    val dynamicDetailImageLayout by remember(context) { SettingsManager.getDynamicDetailImageLayout(context) }
         .collectAsStateWithLifecycle(initialValue = SettingsManager.peekDynamicDetailImageLayout(context))
-    val dynamicAllTabHorizontalUserListVisible by SettingsManager
-        .getDynamicAllTabHorizontalUserListVisible(context)
+    val dynamicTopBarCollapseOnScroll by remember(context) { SettingsManager.getDynamicTopBarCollapseOnScroll(context) }
         .collectAsStateWithLifecycle(initialValue = false)
-    val dynamicTopBarCollapseOnScroll by SettingsManager
-        .getDynamicTopBarCollapseOnScroll(context)
-        .collectAsStateWithLifecycle(initialValue = false)
-    val dynamicFeedLayoutMode by SettingsManager
-        .getDynamicFeedLayoutMode(context)
+    val dynamicFeedLayoutMode by remember(context) { SettingsManager.getDynamicFeedLayoutMode(context) }
         .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.SettingsManager.DynamicFeedLayoutMode.WATERFALL)
-    
+
     // Local UI State
     var showCacheDialog by remember { mutableStateOf(false) }
     var showCacheAnimation by remember { mutableStateOf(false) }
@@ -196,12 +196,12 @@ fun SettingsScreen(
     var showDonateDialog by remember { mutableStateOf(false) }
     var showReleaseDisclaimerDialog by remember { mutableStateOf(false) }
     var isCheckingUpdate by remember { mutableStateOf(false) }
-    var updateStatusText by remember { mutableStateOf("点击检查") }
+    var updateStatusText by remember { mutableStateOf(context.getString(R.string.settings_update_tap_to_check)) }
     var updateCheckResult by remember { mutableStateOf<AppUpdateCheckResult?>(null) }
     var changelogCheckResult by remember { mutableStateOf<AppUpdateCheckResult?>(null) }
     val currentReleaseEvidence = state.currentReleaseEvidence
     val installedApkSha256 = state.installedApkSha256
-    
+
     // [新增] 黑名单页面状态
     var showBlockedList by remember { mutableStateOf(false) }
     // [新增] 发评反诈页面状态
@@ -230,7 +230,7 @@ fun SettingsScreen(
         ) {
             "GitHub Release"
         } else {
-            "本地构建"
+            context.getString(R.string.settings_build_source_local)
         }
     }
     val buildSourceValue = remember(
@@ -253,7 +253,7 @@ fun SettingsScreen(
         resolveBuildFingerprintValue(installedApkSha256)
     }
     val buildFingerprintCopyValue = remember(installedApkSha256) {
-        installedApkSha256 ?: "未读取"
+        installedApkSha256 ?: context.getString(R.string.settings_build_fingerprint_unavailable)
     }
     val buildFingerprintSubtitle = remember(
         buildVerificationState.localApkSha256,
@@ -269,8 +269,15 @@ fun SettingsScreen(
         )
     }
 
-    // Haze State for this screen
-    val activeHazeState = mainHazeState ?: rememberRecoverableHazeState()
+    // 设置首页为共享导航材质提供采样；分类页仅在缓存清理弹层显示时采样。
+    val localOverlayHazeState = rememberRecoverableHazeState()
+    val isSettingsHome = destination == SettingsNavDestination.Home
+    val activeHazeState = if (isSettingsHome) {
+        mainHazeState ?: localOverlayHazeState
+    } else {
+        localOverlayHazeState
+    }
+    val capturePageForHaze = isSettingsHome || (showCacheAnimation && cacheProgress != null)
 
     // Directory Picker - 使用文件系统 API
     val defaultPath = remember { SettingsManager.getDefaultDownloadPath(context) }
@@ -288,7 +295,7 @@ fun SettingsScreen(
             SettingsManager.setDownloadExportTreeUri(context, uri.toString())
             SettingsManager.setDownloadPath(context, null)
         }
-        Toast.makeText(context, "已设置导出目录", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.settings_download_folder_set), Toast.LENGTH_SHORT).show()
     }
     val imageSaveFolderPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocumentTree()
@@ -303,7 +310,7 @@ fun SettingsScreen(
         scope.launch {
             SettingsManager.setImageSaveTreeUri(context, uri.toString())
         }
-        Toast.makeText(context, "已设置图片保存目录", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.settings_image_folder_set), Toast.LENGTH_SHORT).show()
     }
 
     // Callbacks
@@ -313,7 +320,7 @@ fun SettingsScreen(
     }
     val onDownloadPathAction = { showPathDialog = true }
     val onImageSavePathAction = { showImageSavePathDialog = true }
-    
+
     // Logic Callbacks
     val onSearchSuggestionsChange: (Boolean) -> Unit = { enabled ->
         scope.launch { SettingsManager.setSearchSuggestionsEnabled(context, enabled) }
@@ -352,7 +359,7 @@ fun SettingsScreen(
     val onAppUpdateChannelChange: (SettingsManager.AppUpdateChannel) -> Unit = { channel ->
         scope.launch { SettingsManager.setAppUpdateChannel(context, channel) }
     }
-    
+
     val onVersionClickAction: () -> Unit = {
         versionClickCount++
         val message = EasterEggs.getVersionClickMessage(
@@ -374,7 +381,7 @@ fun SettingsScreen(
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
-    
+
     val onExportLogsAction: () -> Unit = { showLogExportDialog = true }
     val onTelegramClick: () -> Unit = { uriHandler.openUri(OFFICIAL_TELEGRAM_CHANNEL_URL) }
     val onTelegramGroupClick: () -> Unit = { uriHandler.openUri(OFFICIAL_TELEGRAM_GROUP_URL) }
@@ -411,7 +418,7 @@ fun SettingsScreen(
     ) {
         isCheckingUpdate = true
         if (!silent) {
-            updateStatusText = "检查中…"
+            updateStatusText = context.getString(R.string.settings_update_checking)
         }
         val result = AppUpdateChecker.check(
             currentVersion = com.android.purebilibili.BuildConfig.VERSION_NAME,
@@ -436,15 +443,15 @@ fun SettingsScreen(
             }
         }.onFailure { error ->
             if (!silent || shouldOpenReleaseNotes) {
-                updateStatusText = "检查失败"
-                Toast.makeText(context, error.message ?: "更新检查失败，请稍后重试", Toast.LENGTH_SHORT).show()
+                updateStatusText = context.getString(R.string.settings_update_failed)
+                Toast.makeText(context, error.message ?: context.getString(R.string.settings_update_error), Toast.LENGTH_SHORT).show()
             }
         }
         isCheckingUpdate = false
     }
     val onCheckUpdateAction: () -> Unit = {
         if (isCheckingUpdate) {
-            Toast.makeText(context, "正在检查更新，请稍候", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.settings_update_in_progress), Toast.LENGTH_SHORT).show()
         } else {
             scope.launch {
                 runUpdateCheck(
@@ -456,7 +463,7 @@ fun SettingsScreen(
     }
     val onViewReleaseNotesAction: () -> Unit = {
         if (isCheckingUpdate) {
-            Toast.makeText(context, "正在检查更新，请稍候", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.settings_update_in_progress), Toast.LENGTH_SHORT).show()
         } else {
             scope.launch {
                 runUpdateCheck(
@@ -491,7 +498,7 @@ fun SettingsScreen(
             } else {
                 Toast.makeText(
                     context,
-                    resolveCacheClearFailureMessage(clearResult.exceptionOrNull()),
+                    resolveCacheClearFailureMessage(clearResult.exceptionOrNull(), context.getString(R.string.settings_cache_clear_failed)),
                     Toast.LENGTH_SHORT
                 ).show()
                 showCacheAnimation = false
@@ -512,22 +519,22 @@ fun SettingsScreen(
         val rawTraceAvailable = LogCollector.hasRawCrashTrace(context)
         com.android.purebilibili.core.ui.AppAlertDialog(
             onDismissRequest = { showLogExportDialog = false },
-            title = { AppText("导出诊断日志") },
+            title = { AppText(stringResource(R.string.settings_log_export_title)) },
             text = {
                 Column {
                     AppText(
-                        "普通导出包含脱敏的崩溃摘要、系统退出记录和运行日志，以及已有的性能诊断附件。"
+                        stringResource(R.string.settings_log_export_description)
                     )
                     if (rawTraceAvailable) {
                         Spacer(modifier = Modifier.height(8.dp))
-                        AppText("原始系统回溯可能包含设备路径等敏感信息。")
+                        AppText(stringResource(R.string.settings_log_export_raw_warning))
                         com.android.purebilibili.core.ui.AppDialogAction(onClick = {
                             showLogExportDialog = false
                             LogCollector.exportAndShare(context, includeRawCrashTrace = true)
-                        }) { AppText("导出并附原始回溯") }
+                        }) { AppText(stringResource(R.string.settings_log_export_raw_action)) }
                     } else {
                         Spacer(modifier = Modifier.height(8.dp))
-                        AppText("当前没有可单独分享的原始系统回溯。")
+                        AppText(stringResource(R.string.settings_log_export_raw_unavailable))
                     }
                 }
             },
@@ -535,12 +542,12 @@ fun SettingsScreen(
                 com.android.purebilibili.core.ui.AppDialogAction(onClick = {
                     showLogExportDialog = false
                     LogCollector.exportAndShare(context)
-                }) { AppText("普通导出") }
+                }) { AppText(stringResource(R.string.settings_log_export_standard_action)) }
             },
             dismissButton = {
                 com.android.purebilibili.core.ui.AppDialogAction(
                     onClick = { showLogExportDialog = false }
-                ) { AppText("取消") }
+                ) { AppText(stringResource(R.string.common_cancel)) }
             },
         )
     }
@@ -559,7 +566,7 @@ fun SettingsScreen(
             },
             onConfirm = {
                 if (selectedCacheClearTargets.isEmpty()) {
-                    Toast.makeText(context, "请至少选择一项要清理的缓存", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.settings_cache_select_at_least_one), Toast.LENGTH_SHORT).show()
                 } else {
                     pendingCacheClearTargets = selectedCacheClearTargets
                     showCacheDialog = false
@@ -569,31 +576,27 @@ fun SettingsScreen(
             onDismiss = { showCacheDialog = false }
         )
     }
-    
-    if (showCacheAnimation && cacheProgress != null) {
-        CacheClearAnimationDialog(progress = cacheProgress!!, onDismiss = { showCacheAnimation = false; cacheProgress = null })
-    }
-    
+
     if (showPathDialog) {
         com.android.purebilibili.core.ui.AppAlertDialog(
             onDismissRequest = { showPathDialog = false },
-            title = { AppText("下载位置", color = MaterialTheme.colorScheme.onSurface) },
-            text = { 
+            title = { AppText(stringResource(R.string.settings_download_location_title), color = AppContentColors.primaryText()) },
+            text = {
                 Column {
-                    AppText("默认位置（应用私有目录）：", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    AppText(defaultPath.substringAfterLast("Android/"), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
+                    AppText(stringResource(R.string.settings_download_location_default), style = MaterialTheme.typography.labelMedium, color = AppContentColors.secondaryText())
+                    AppText(defaultPath.substringAfterLast("Android/"), style = MaterialTheme.typography.bodySmall, color = AppContentColors.secondaryText())
                     Spacer(modifier = Modifier.height(8.dp))
                     AppText(
-                        "可选：通过系统文件夹授权设置导出目录（无需“管理所有文件”权限）",
+                        stringResource(R.string.settings_download_location_export_help),
                         style = MaterialTheme.typography.bodySmall,
-                        color = com.android.purebilibili.core.theme.iOSOrange
+                        color = AppContentColors.warning()
                     )
                     if (!downloadExportTreeUri.isNullOrBlank()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         AppText(
-                            "当前导出目录：已设置",
+                            stringResource(R.string.settings_download_location_export_set),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppContentColors.secondaryText()
                         )
                     }
                 }
@@ -602,43 +605,43 @@ fun SettingsScreen(
                 com.android.purebilibili.core.ui.AppDialogAction(onClick = {
                     showPathDialog = false
                     downloadFolderPicker.launch(null)
-                }) { AppText("选择导出目录") }
+                }) { AppText(stringResource(R.string.settings_download_location_choose_export)) }
             },
-            dismissButton = { 
+            dismissButton = {
                 com.android.purebilibili.core.ui.AppDialogAction(onClick = {
                     scope.launch {
                         SettingsManager.setDownloadPath(context, null)
                         SettingsManager.setDownloadExportTreeUri(context, null)
                     }
                     showPathDialog = false
-                    Toast.makeText(context, "已恢复默认下载位置", Toast.LENGTH_SHORT).show()
-                }) { AppText("恢复默认") }
+                    Toast.makeText(context, context.getString(R.string.settings_download_location_reset_toast), Toast.LENGTH_SHORT).show()
+                }) { AppText(stringResource(R.string.common_reset_default)) }
             }
         )
     }
     if (showImageSavePathDialog) {
         com.android.purebilibili.core.ui.AppAlertDialog(
             onDismissRequest = { showImageSavePathDialog = false },
-            title = { AppText("图片保存位置", color = MaterialTheme.colorScheme.onSurface) },
+            title = { AppText(stringResource(R.string.settings_image_location_title), color = AppContentColors.primaryText()) },
             text = {
                 Column {
                     AppText(
-                        "默认保存到系统相册的 BiliPai 文件夹。",
+                        stringResource(R.string.settings_image_location_default),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     AppText(
-                        "可通过系统文件夹授权选择动态图片、头像和评论图片的保存目录。",
+                        stringResource(R.string.settings_image_location_help),
                         style = MaterialTheme.typography.bodySmall,
-                        color = com.android.purebilibili.core.theme.iOSOrange
+                        color = AppContentColors.warning()
                     )
                     if (!imageSaveTreeUri.isNullOrBlank()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         AppText(
-                            "当前图片目录：已选择",
+                            stringResource(R.string.settings_image_location_custom_set),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppContentColors.secondaryText()
                         )
                     }
                 }
@@ -647,7 +650,7 @@ fun SettingsScreen(
                 com.android.purebilibili.core.ui.AppDialogAction(onClick = {
                     showImageSavePathDialog = false
                     imageSaveFolderPicker.launch(null)
-                }) { AppText("选择图片目录") }
+                }) { AppText(stringResource(R.string.settings_image_location_choose)) }
             },
             dismissButton = {
                 com.android.purebilibili.core.ui.AppDialogAction(onClick = {
@@ -655,18 +658,18 @@ fun SettingsScreen(
                         SettingsManager.setImageSaveTreeUri(context, null)
                     }
                     showImageSavePathDialog = false
-                    Toast.makeText(context, "已恢复默认图片保存位置", Toast.LENGTH_SHORT).show()
-                }) { AppText("恢复默认") }
+                    Toast.makeText(context, context.getString(R.string.settings_image_location_reset_toast), Toast.LENGTH_SHORT).show()
+                }) { AppText(stringResource(R.string.common_reset_default)) }
             }
         )
     }
-    
+
     if (showEasterEggDialog) {
         com.android.purebilibili.core.ui.AppAlertDialog(
             onDismissRequest = { showEasterEggDialog = false; versionClickCount = 0 },
-            title = { AppText("你发现了彩蛋！", fontWeight = FontWeight.Bold) },
-            text = { AppText("感谢你使用 BiliPai！这是一个用爱发电的开源项目。") },
-            confirmButton = { com.android.purebilibili.core.ui.AppDialogAction(onClick = { showEasterEggDialog = false; versionClickCount = 0 }) { AppText("我知道了！") } }
+            title = { AppText(stringResource(R.string.settings_easter_egg_title), fontWeight = FontWeight.Bold) },
+            text = { AppText(stringResource(R.string.settings_easter_egg_message)) },
+            confirmButton = { com.android.purebilibili.core.ui.AppDialogAction(onClick = { showEasterEggDialog = false; versionClickCount = 0 }) { AppText(stringResource(R.string.common_got_it)) } }
         )
     }
 
@@ -710,7 +713,7 @@ fun SettingsScreen(
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "无法打开设置", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.settings_open_system_settings_failed), Toast.LENGTH_SHORT).show()
         }
     }
     val settingsBackTarget = resolveSettingsBackTarget(
@@ -758,7 +761,10 @@ fun SettingsScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .hazeSourceCompat(state = activeHazeState)
+                .then(
+                    if (capturePageForHaze) Modifier.hazeSourceCompat(state = activeHazeState)
+                    else Modifier,
+                )
         ) {
             if (shouldRenderSettingsSinglePaneContent(
                     widthDp = configuration.screenWidthDp,
@@ -770,6 +776,7 @@ fun SettingsScreen(
                     rootEntranceEnabled = rootEntranceEnabled,
                     rootEntranceStartWhen = rootEntranceStartWhen,
                     onBack = onBack,
+                    onSettingsHome = onSettingsHome,
                     onCategoryClick = onCategoryClick,
                     onSearchOpen = onSearchOpen,
                     onAppearanceClick = onAppearanceClick,
@@ -777,6 +784,8 @@ fun SettingsScreen(
                     onAnimationClick = onAnimationClick,
                     onPlaybackClick = onPlaybackClick,
                     onPermissionClick = onPermissionClick,
+                    onSpacePrivacyClick = onSpacePrivacyClick,
+                    onLoginActivityClick = onLoginActivityClick,
                     onMessageNotificationClick = onMessageNotificationClick,
                     onNavigateToBottomBarSettings = onNavigateToBottomBarSettings,
                     onTipsClick = onTipsClick,
@@ -858,7 +867,7 @@ fun SettingsScreen(
                             SettingsManager.setFeedApiType(context, type)
                             android.widget.Toast.makeText(
                                 context,
-                                "已切换为${type.label}，下拉刷新后生效",
+                                context.getString(R.string.settings_feed_api_changed, localizedFeedApiTypeLabel(context, type)),
                                 android.widget.Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -870,6 +879,13 @@ fun SettingsScreen(
                         }
                     },
                     dynamicImagePreviewTextVisible = dynamicImagePreviewTextVisible,
+                    dynamicCommentPreviewVisible = dynamicCommentPreviewVisible,
+                    onDynamicCommentPreviewVisibleChange = { visible ->
+                        scope.launch {
+                            com.android.purebilibili.core.store.home.DynamicSettingsStore
+                                .setCommentPreviewVisible(context, visible)
+                        }
+                    },
                     onDynamicImagePreviewTextVisibleChange = { visible ->
                         scope.launch {
                             SettingsManager.setDynamicImagePreviewTextVisible(context, visible)
@@ -879,12 +895,6 @@ fun SettingsScreen(
                     onDynamicDetailImageLayoutChange = { layout ->
                         scope.launch {
                             SettingsManager.setDynamicDetailImageLayout(context, layout)
-                        }
-                    },
-                    dynamicAllTabHorizontalUserListVisible = dynamicAllTabHorizontalUserListVisible,
-                    onDynamicAllTabHorizontalUserListVisibleChange = { visible ->
-                        scope.launch {
-                            SettingsManager.setDynamicAllTabHorizontalUserListVisible(context, visible)
                         }
                     },
                     dynamicTopBarCollapseOnScroll = dynamicTopBarCollapseOnScroll,
@@ -925,19 +935,43 @@ fun SettingsScreen(
         }
         }
     }
+
+    // 窗口内底部覆盖层需在内容之后组合才能盖在上面；
+    // 播放清理动画时通过 activeHazeState 模糊压暗背后内容。
+    if (showCacheAnimation && cacheProgress != null) {
+        CacheClearAnimationDialog(
+            progress = cacheProgress!!,
+            onDismiss = { showCacheAnimation = false; cacheProgress = null },
+            hazeState = activeHazeState,
+        )
+    }
 }
 
 internal fun shouldMarkCacheClearAnimationComplete(clearSucceeded: Boolean): Boolean = clearSucceeded
 
-internal fun resolveCacheClearFailureMessage(error: Throwable?): String {
-    return error?.message?.takeIf { it.isNotBlank() } ?: "清理缓存失败，请稍后重试"
+internal fun resolveCacheClearFailureMessage(
+    error: Throwable?,
+    fallbackMessage: String = "清理缓存失败，请稍后重试",
+): String {
+    return error?.message?.takeIf { it.isNotBlank() } ?: fallbackMessage
 }
+
+private fun localizedFeedApiTypeLabel(
+    context: android.content.Context,
+    type: SettingsManager.FeedApiType,
+): String = context.getString(
+    when (type) {
+        SettingsManager.FeedApiType.WEB -> R.string.settings_feed_api_web
+        SettingsManager.FeedApiType.MOBILE -> R.string.settings_feed_api_mobile
+        SettingsManager.FeedApiType.MERGED -> R.string.settings_feed_api_merged
+    }
+)
 
 @Composable
 internal fun SettingsCategoryHeader(title: String) {
     AppText(
         text = title,
-        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.86f),
+        color = AppContentColors.secondaryText(),
         style = MaterialTheme.typography.titleSmall,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(start = 20.dp, top = 20.dp, bottom = AppSpacingTokens.Small)
@@ -951,6 +985,7 @@ private fun MobileSettingsNavLayout(
     rootEntranceEnabled: Boolean,
     rootEntranceStartWhen: Boolean,
     onBack: () -> Unit,
+    onSettingsHome: () -> Unit,
     onCategoryClick: (SettingsRootCategory) -> Unit,
     onSearchOpen: () -> Unit,
     onAppearanceClick: () -> Unit,
@@ -958,6 +993,8 @@ private fun MobileSettingsNavLayout(
     onAnimationClick: () -> Unit,
     onPlaybackClick: () -> Unit,
     onPermissionClick: () -> Unit,
+    onSpacePrivacyClick: () -> Unit,
+    onLoginActivityClick: () -> Unit,
     onMessageNotificationClick: () -> Unit,
     onNavigateToBottomBarSettings: () -> Unit,
     onTipsClick: () -> Unit,
@@ -1033,10 +1070,10 @@ private fun MobileSettingsNavLayout(
     onIncrementalTimelineRefreshChange: (Boolean) -> Unit,
     dynamicImagePreviewTextVisible: Boolean,
     onDynamicImagePreviewTextVisibleChange: (Boolean) -> Unit,
+    dynamicCommentPreviewVisible: Boolean,
+    onDynamicCommentPreviewVisibleChange: (Boolean) -> Unit,
     dynamicDetailImageLayout: SettingsManager.DynamicDetailImageLayout,
     onDynamicDetailImageLayoutChange: (SettingsManager.DynamicDetailImageLayout) -> Unit,
-    dynamicAllTabHorizontalUserListVisible: Boolean,
-    onDynamicAllTabHorizontalUserListVisibleChange: (Boolean) -> Unit,
     dynamicTopBarCollapseOnScroll: Boolean,
     onDynamicTopBarCollapseOnScrollChange: (Boolean) -> Unit,
     dynamicFeedLayoutMode: com.android.purebilibili.core.store.SettingsManager.DynamicFeedLayoutMode,
@@ -1067,6 +1104,8 @@ private fun MobileSettingsNavLayout(
         onPlaybackClick = onPlaybackClick,
         onBottomBarClick = onNavigateToBottomBarSettings,
         onPermissionClick = onPermissionClick,
+        onSpacePrivacyClick = onSpacePrivacyClick,
+        onLoginActivityClick = onLoginActivityClick,
         onMessageNotificationClick = onMessageNotificationClick,
         onBlockedListClick = onBlockedListClick,
         onCommentFraudHistoryClick = onCommentFraudHistoryClick,
@@ -1107,8 +1146,8 @@ private fun MobileSettingsNavLayout(
         onFeedApiTypeChange = onFeedApiTypeChange,
         onIncrementalTimelineRefreshChange = onIncrementalTimelineRefreshChange,
         onDynamicImagePreviewTextVisibleChange = onDynamicImagePreviewTextVisibleChange,
+        onDynamicCommentPreviewVisibleChange = onDynamicCommentPreviewVisibleChange,
         onDynamicDetailImageLayoutChange = onDynamicDetailImageLayoutChange,
-        onDynamicAllTabHorizontalUserListVisibleChange = onDynamicAllTabHorizontalUserListVisibleChange,
         onDynamicTopBarCollapseOnScrollChange = onDynamicTopBarCollapseOnScrollChange,
         onDynamicFeedLayoutModeChange = onDynamicFeedLayoutModeChange,
         onDynamicTabVisibilityChange = onDynamicTabVisibilityChange,
@@ -1147,8 +1186,8 @@ private fun MobileSettingsNavLayout(
         feedApiType = feedApiType,
         incrementalTimelineRefreshEnabled = incrementalTimelineRefreshEnabled,
         dynamicImagePreviewTextVisible = dynamicImagePreviewTextVisible,
+        dynamicCommentPreviewVisible = dynamicCommentPreviewVisible,
         dynamicDetailImageLayout = dynamicDetailImageLayout,
-        dynamicAllTabHorizontalUserListVisible = dynamicAllTabHorizontalUserListVisible,
         dynamicTopBarCollapseOnScroll = dynamicTopBarCollapseOnScroll,
         dynamicFeedLayoutMode = dynamicFeedLayoutMode,
         dynamicVisibleTabIds = dynamicVisibleTabIds,
@@ -1172,11 +1211,18 @@ private fun MobileSettingsNavLayout(
                 }
             }
             is SettingsNavDestination.Category -> {
-                SettingsRootCategoryContent(
-                    category = destination.category,
-                    actions = rootCategoryActions,
-                    state = rootCategoryState,
-                )
+                Column {
+                    SettingsCategoryBreadcrumb(
+                        title = screenTitle,
+                        onSettingsHome = onSettingsHome,
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+                    )
+                    SettingsRootCategoryContent(
+                        category = destination.category,
+                        actions = rootCategoryActions,
+                        state = rootCategoryState,
+                    )
+                }
             }
             SettingsNavDestination.Search -> Unit
         }
@@ -1219,6 +1265,7 @@ fun DonateDialog(onDismiss: () -> Unit) {
             decorFitsSystemWindows = false
         )
     ) {
+        com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect()
         Box(
             modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.9f)),
             contentAlignment = Alignment.Center
@@ -1231,7 +1278,7 @@ fun DonateDialog(onDismiss: () -> Unit) {
                 Box(contentAlignment = Alignment.TopStart) {
                     Image(
                         painter = painterResource(id = com.android.purebilibili.R.drawable.author_qr),
-                        contentDescription = "打赏二维码",
+                        contentDescription = stringResource(R.string.settings_donate_qr_description),
                         modifier = Modifier
                             .fillMaxWidth(0.85f)
                             .aspectRatio(1f)
@@ -1251,25 +1298,25 @@ fun DonateDialog(onDismiss: () -> Unit) {
                     ) {
                         AppIcon(
                             imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_close_24), // Fixed: Filled.Xmark -> Default.Xmark or correct path
-                            contentDescription = "关闭",
+                            contentDescription = stringResource(R.string.common_close),
                             tint = Color.White,
                             modifier = Modifier.size(20.dp)
                         )
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(24.dp))
-                
+
                 AppText(
-                    "感谢您的支持！",
+                    stringResource(R.string.settings_donate_thanks),
                     color = Color.White.copy(alpha = 0.9f),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
-                
+
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 AppText(
-                    "点击二维码或关闭按钮退出",
+                    stringResource(R.string.settings_donate_dismiss_hint),
                     color = Color.White.copy(alpha = 0.6f),
                     style = MaterialTheme.typography.bodySmall
                 )

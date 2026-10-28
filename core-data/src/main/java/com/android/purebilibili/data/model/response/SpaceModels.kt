@@ -300,8 +300,25 @@ data class SpaceAggregateArchiveItem(
     val publishTimeText: String = "",
     val styles: String = "",
     val label: String = "",
-    val badges: List<SpaceAggregateBadge> = emptyList()
-)
+    val badges: List<SpaceAggregateBadge> = emptyList(),
+    @SerialName("is_cooperation")
+    @Serializable(with = FlexibleBooleanSerializer::class)
+    val isCooperation: Boolean = false,
+    @SerialName("is_steins")
+    @Serializable(with = FlexibleBooleanSerializer::class)
+    val isSteins: Boolean = false,
+    @SerialName("is_lesson_video")
+    @Serializable(with = FlexibleBooleanSerializer::class)
+    val isLessonVideo: Boolean = false
+) {
+    val statusLabels: List<String>
+        get() = resolveVideoStatusLabels(
+            cooperation = isCooperation,
+            interactive = isSteins,
+            course = isLessonVideo,
+            serverLabels = listOf(label) + badges.map { it.text },
+        )
+}
 
 @Serializable
 data class SpaceAggregateArticleSection(
@@ -409,8 +426,30 @@ data class SpaceVideoItem(
     @SerialName("ugc_pay")
     val ugcPay: Int = 0,
     @SerialName("ugc_pay_preview")
-    val ugcPayPreview: Int = 0
-)
+    val ugcPayPreview: Int = 0,
+    @SerialName("is_union_video")
+    @Serializable(with = FlexibleIntSerializer::class)
+    val isUnionVideo: Int = 0,
+    @SerialName("is_cooperation")
+    @Serializable(with = FlexibleBooleanSerializer::class)
+    val isCooperation: Boolean = false,
+    @SerialName("is_steins")
+    @Serializable(with = FlexibleBooleanSerializer::class)
+    val isSteins: Boolean = false,
+    @SerialName("is_lesson_video")
+    @Serializable(with = FlexibleBooleanSerializer::class)
+    val isLessonVideo: Boolean = false,
+    val badges: List<SpaceAggregateBadge> = emptyList()
+) {
+    val statusLabels: List<String>
+        get() = resolveVideoStatusLabels(
+            cooperation = isCooperation || isUnionVideo == 1,
+            interactive = isSteins,
+            course = isLessonVideo,
+            charging = isChargingArc || elecArcType == 1 || isUgcpay || ugcPay > 0 || ugcPayPreview > 0,
+            serverLabels = badges.map { it.text },
+        )
+}
 
 // /x/relation/stat 粉丝关注数
 @Serializable

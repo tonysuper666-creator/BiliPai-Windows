@@ -147,6 +147,22 @@ private fun diagnosticTimestampKey(entry: String): String? =
     entry.takeIf { it.length >= 25 && it[0] == '[' && it[24] == ']' }
         ?.substring(1, 24)
 
+/** Keep the last ten minutes before this exit, never the new process' startup entries. */
+internal fun selectLogsBeforeProcessExit(entries: List<String>, exitAtMillis: Long): List<String> {
+    val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        .apply { isLenient = false }
+    val beforeExit = entries.distinct().mapNotNull { entry ->
+        val time = diagnosticTimestampKey(entry)?.let { key ->
+            runCatching { formatter.parse(key)?.time }.getOrNull()
+        } ?: return@mapNotNull null
+        if (time in (exitAtMillis - 10 * 60_000L)..exitAtMillis) time to entry else null
+    }.sortedBy { it.first }
+    val launchIndex = beforeExit.indexOfLast { (_, entry) ->
+        entry.contains("I/StartupDiagnostics: stage=application_start,")
+    }
+    return beforeExit.drop(launchIndex.coerceAtLeast(0)).takeLast(120).map { it.second }
+}
+
 internal fun resolveLogArtifactDirsToClear(
     filesDir: File,
     cacheDir: File
@@ -171,7 +187,8 @@ internal fun buildCrashSnapshotContent(
     androidRelease: String,
     apiLevel: Int,
     buildType: String = "unknown",
-    buildCommit: String = "unknown"
+    buildCommit: String = "unknown",
+    previousProcessLogs: List<String> = emptyList(),
 ): String {
     val headerDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
     return buildString {
@@ -183,6 +200,10 @@ internal fun buildCrashSnapshotContent(
         appendLine("构建: $buildType / $buildCommit")
         appendLine("设备信息: $manufacturer $model")
         appendLine("Android版本: $androidRelease (API $apiLevel)")
+        if (throwable is AbnormalProcessExitException) {
+            appendLine("版本说明: 上方为采集本日志的应用版本；退出前版本以进程摘要为准")
+            appendLine("退出前进程摘要: ${throwable.processContext ?: "不可用（旧版本或系统未保留）"}")
+        }
         appendLine("异常类型: ${throwable.javaClass.simpleName}")
         appendLine("异常信息: ${sanitizeLogMessage(throwable.message.orEmpty())}")
         appendLine("========================================")
@@ -203,7 +224,12 @@ internal fun buildCrashSnapshotContent(
             throwable.stackTraceToString()
         }
         appendLine(sanitizeLogMessage(throwableText))
-        appendLine("----- Recent Logs -----")
+        if (throwable is AbnormalProcessExitException) {
+            appendLine("----- 崩溃前持久化日志（按退出时间筛选） -----")
+            if (previousProcessLogs.isEmpty()) appendLine("无可用记录；未落盘的末尾日志可能丢失")
+            previousProcessLogs.forEach { appendLine(sanitizeLogMessage(it)) }
+            appendLine("----- 当前重启日志（不代表崩溃前操作） -----")
+        } else appendLine("----- Recent Logs -----")
         entries.forEach { appendLine(it.format()) }
     }
 }
@@ -218,6 +244,7 @@ object Logger {
 
     /** Fixed startup stage names only; no links, account identifiers or user input. */
     fun recordStartupStage(stage: String) {
+        com.android.purebilibili.core.performance.ProcessExitContextRecorder.stage(stage)
         LogCollector.add(
             level = "I",
             tag = "StartupDiagnostics",
@@ -481,6 +508,68 @@ object Logger {
     }
 }
 
+/** Immutable patterns are shared across logging threads; replacement order stays in sanitizeMessage. */
+private object LogRedactionPatterns {
+    val sessionCookie = Regex("SESSDATA=[^;\\s]+")
+    val csrfCookie = Regex("bili_jct=[^;\\s]+")
+    val userCookie = Regex("DedeUserID=[^;\\s]+")
+    val userCookieChecksum = Regex("DedeUserID__ckMd5=[^;\\s]+")
+    val sidCookie = Regex("sid=[^;\\s]+")
+    val buvid3Cookie = Regex("buvid3=[^;\\s]+")
+    val buvid4Cookie = Regex("buvid4=[^;\\s]+")
+    val nutCookie = Regex("b_nut=[^;\\s]+")
+    val uuidCookie = Regex("_uuid=[^;\\s]+")
+    val accessToken = Regex("access_token=[^&\\s]+")
+    val refreshToken = Regex("refresh_token=[^&\\s]+")
+    val accessKey = Regex("access_key=[^&\\s]+")
+    val appKey = Regex("appkey=[^&\\s]+")
+    val signature = Regex("sign=[^&\\s]+")
+    val csrf = Regex("csrf=[^&\\s]+")
+    val jsonToken = Regex("\"token\":\"[^\"]+\"")
+    val jsonCsrf = Regex("\"csrf\":\"[^\"]+\"")
+    val authorization = Regex("(?i)Authorization\\s*[:=]\\s*[^\\r\\n]+")
+    val bearer = Regex("Bearer\\s+[^\\s]+")
+    val cookieHeader = Regex("(?i)(cookie|set-cookie)\\s*[:=]\\s*[^\\r\\n]+")
+    val password = Regex("(?i)(password|passwd|pwd|sms_code|captcha|challenge|validate)[=:]\\s*[^&\\s,}]+")
+    val userMid = Regex("mid[=:]\\s*\\d{4,}")
+    val jsonMid = Regex("\"mid\":\\s*\\d+")
+    val userUid = Regex("uid[=:]\\s*\\d{4,}")
+    val jsonUid = Regex("\"uid\":\\s*\\d+")
+    val visitorMid = Regex("vmid[=:]\\s*\\d+")
+    val phone = Regex("\\b1[3-9]\\d{9}\\b")
+    val email = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
+    val ipv4 = Regex("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b")
+    val ipv6 = Regex("\\b[0-9a-fA-F:]{15,}\\b")
+    val mac = Regex("([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}")
+    val androidDataPath = Regex("/data/user/\\d+/[^/]+/")
+    val androidStoragePath = Regex("/storage/emulated/\\d+/")
+    val linuxHomePath = Regex("/home/[^/]+/")
+    val macHomePath = Regex("/Users/[^/]+/")
+    val deviceId = Regex("device_id=[^&\\s]+")
+    val jsonDeviceId = Regex("\"device_id\":\"[^\"]+\"")
+    val androidId = Regex("android_id=[^&\\s]+")
+    val imei = Regex("imei=[^&\\s]+")
+    val jsonFace = Regex("\"face\":\"[^\"]+\"")
+    val jsonPhone = Regex("\"tel\":\"[^\"]+\"")
+    val jsonName = Regex("\"name\":\"[^\"]{2,}\"")
+    val bvid = Regex("BV[0-9A-Za-z]{10}")
+    val avid = Regex("\\bav\\d{4,}\\b", RegexOption.IGNORE_CASE)
+    val jsonAid = Regex("\"aid\":\\s*\\d+")
+    val cid = Regex("\\bcid[=:]\\s*\\d+")
+    val jsonCid = Regex("\"cid\":\\s*\\d+")
+    val roomId = Regex("room_id[=:]\\s*\\d+")
+    val camelRoomId = Regex("roomId[=:]\\s*\\d+")
+    val seasonId = Regex("season_id[=:]\\s*\\d+")
+    val episodeId = Regex("ep_id[=:]\\s*\\d+")
+    val keyword = Regex("keyword=[^&\\s]+")
+    val jsonKeyword = Regex("\"keyword\":\"[^\"]+\"")
+    val searchText = Regex("Search:\\s*[^\\n]+")
+    val inputText = Regex("(?i)\\b(content|message_text|query)[=:]\\s*[^&\\r\\n]+")
+    val jsonInputText = Regex("(?i)\"(content|message_text|query)\"\\s*:\\s*\"[^\"]*\"")
+    val videoTitle = Regex("video_title=[^&\\s]{3,}")
+    val jsonTitle = Regex("\"title\":\"[^\"]{3,}\"")
+}
+
 /**
  *  日志收集器
  * 
@@ -594,52 +683,52 @@ object LogCollector {
         var sanitized = message
         
         // ========== Cookie 脱敏 ==========
-        sanitized = sanitized.replace(Regex("SESSDATA=[^;\\s]+"), "SESSDATA=***")
-        sanitized = sanitized.replace(Regex("bili_jct=[^;\\s]+"), "bili_jct=***")
-        sanitized = sanitized.replace(Regex("DedeUserID=[^;\\s]+"), "DedeUserID=***")
-        sanitized = sanitized.replace(Regex("DedeUserID__ckMd5=[^;\\s]+"), "DedeUserID__ckMd5=***")
-        sanitized = sanitized.replace(Regex("sid=[^;\\s]+"), "sid=***")
-        sanitized = sanitized.replace(Regex("buvid3=[^;\\s]+"), "buvid3=***")
-        sanitized = sanitized.replace(Regex("buvid4=[^;\\s]+"), "buvid4=***")
-        sanitized = sanitized.replace(Regex("b_nut=[^;\\s]+"), "b_nut=***")
-        sanitized = sanitized.replace(Regex("_uuid=[^;\\s]+"), "_uuid=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.sessionCookie, "SESSDATA=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.csrfCookie, "bili_jct=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.userCookie, "DedeUserID=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.userCookieChecksum, "DedeUserID__ckMd5=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.sidCookie, "sid=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.buvid3Cookie, "buvid3=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.buvid4Cookie, "buvid4=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.nutCookie, "b_nut=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.uuidCookie, "_uuid=***")
         
         // ========== Token / Key 脱敏 ==========
-        sanitized = sanitized.replace(Regex("access_token=[^&\\s]+"), "access_token=***")
-        sanitized = sanitized.replace(Regex("refresh_token=[^&\\s]+"), "refresh_token=***")
-        sanitized = sanitized.replace(Regex("access_key=[^&\\s]+"), "access_key=***")
-        sanitized = sanitized.replace(Regex("appkey=[^&\\s]+"), "appkey=***")
-        sanitized = sanitized.replace(Regex("sign=[^&\\s]+"), "sign=***")
-        sanitized = sanitized.replace(Regex("csrf=[^&\\s]+"), "csrf=***")
-        sanitized = sanitized.replace(Regex("\"token\":\"[^\"]+\""), "\"token\":\"***\"")
-        sanitized = sanitized.replace(Regex("\"csrf\":\"[^\"]+\""), "\"csrf\":\"***\"")
+        sanitized = sanitized.replace(LogRedactionPatterns.accessToken, "access_token=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.refreshToken, "refresh_token=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.accessKey, "access_key=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.appKey, "appkey=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.signature, "sign=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.csrf, "csrf=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonToken, "\"token\":\"***\"")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonCsrf, "\"csrf\":\"***\"")
         sanitized = sanitized.replace(
-            Regex("(?i)Authorization\\s*[:=]\\s*[^\\r\\n]+"),
+            LogRedactionPatterns.authorization,
             "Authorization: ***"
         )
-        sanitized = sanitized.replace(Regex("Bearer\\s+[^\\s]+"), "Bearer ***")
+        sanitized = sanitized.replace(LogRedactionPatterns.bearer, "Bearer ***")
         sanitized = sanitized.replace(
-            Regex("(?i)(cookie|set-cookie)\\s*[:=]\\s*[^\\r\\n]+"),
+            LogRedactionPatterns.cookieHeader,
             "$1: ***"
         )
         sanitized = sanitized.replace(
-            Regex("(?i)(password|passwd|pwd|sms_code|captcha|challenge|validate)[=:]\\s*[^&\\s,}]+"),
+            LogRedactionPatterns.password,
             "$1=***"
         )
         
         // ========== 用户 ID 脱敏 ==========
         // Bilibili mid/uid (通常为 6-11 位数字，在特定上下文中)
-        sanitized = sanitized.replace(Regex("mid[=:]\\s*\\d{4,}"), "mid=***")
-        sanitized = sanitized.replace(Regex("\"mid\":\\s*\\d+"), "\"mid\":***")
-        sanitized = sanitized.replace(Regex("uid[=:]\\s*\\d{4,}"), "uid=***")
-        sanitized = sanitized.replace(Regex("\"uid\":\\s*\\d+"), "\"uid\":***")
-        sanitized = sanitized.replace(Regex("vmid[=:]\\s*\\d+"), "vmid=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.userMid, "mid=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonMid, "\"mid\":***")
+        sanitized = sanitized.replace(LogRedactionPatterns.userUid, "uid=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonUid, "\"uid\":***")
+        sanitized = sanitized.replace(LogRedactionPatterns.visitorMid, "vmid=***")
         
         // ========== 手机号脱敏 (11位中国手机号) ==========
-        sanitized = sanitized.replace(Regex("\\b1[3-9]\\d{9}\\b"), "1**********")
+        sanitized = sanitized.replace(LogRedactionPatterns.phone, "1**********")
         
         // ========== 邮箱脱敏 ==========
-        sanitized = sanitized.replace(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) { 
+        sanitized = sanitized.replace(LogRedactionPatterns.email) {
             val email = it.value
             val atIndex = email.indexOf('@')
             if (atIndex > 2) {
@@ -651,7 +740,7 @@ object LogCollector {
         
         // ========== IP 地址脱敏 ==========
         // IPv4
-        sanitized = sanitized.replace(Regex("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b")) {
+        sanitized = sanitized.replace(LogRedactionPatterns.ipv4) {
             val parts = it.value.split(".")
             if (parts.size == 4 && parts.all { p -> p.toIntOrNull() in 0..255 }) {
                 "${parts[0]}.***.***.*"
@@ -660,29 +749,29 @@ object LogCollector {
             }
         }
         // IPv6 (简化处理)
-        sanitized = sanitized.replace(Regex("\\b[0-9a-fA-F:]{15,}\\b"), "***:***:***")
+        sanitized = sanitized.replace(LogRedactionPatterns.ipv6, "***:***:***")
         
         // ========== MAC 地址脱敏 ==========
-        sanitized = sanitized.replace(Regex("([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}"), "**:**:**:**:**:**")
+        sanitized = sanitized.replace(LogRedactionPatterns.mac, "**:**:**:**:**:**")
         
         // ========== 文件路径脱敏 (隐藏用户名) ==========
         // Android 路径
-        sanitized = sanitized.replace(Regex("/data/user/\\d+/[^/]+/"), "/data/user/0/***/")
-        sanitized = sanitized.replace(Regex("/storage/emulated/\\d+/"), "/storage/emulated/0/")
+        sanitized = sanitized.replace(LogRedactionPatterns.androidDataPath, "/data/user/0/***/")
+        sanitized = sanitized.replace(LogRedactionPatterns.androidStoragePath, "/storage/emulated/0/")
         // 通用 home 目录
-        sanitized = sanitized.replace(Regex("/home/[^/]+/"), "/home/***/")
-        sanitized = sanitized.replace(Regex("/Users/[^/]+/"), "/Users/***/")
+        sanitized = sanitized.replace(LogRedactionPatterns.linuxHomePath, "/home/***/")
+        sanitized = sanitized.replace(LogRedactionPatterns.macHomePath, "/Users/***/")
         
         // ========== 设备标识脱敏 ==========
-        sanitized = sanitized.replace(Regex("device_id=[^&\\s]+"), "device_id=***")
-        sanitized = sanitized.replace(Regex("\"device_id\":\"[^\"]+\""), "\"device_id\":\"***\"")
-        sanitized = sanitized.replace(Regex("android_id=[^&\\s]+"), "android_id=***")
-        sanitized = sanitized.replace(Regex("imei=[^&\\s]+"), "imei=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.deviceId, "device_id=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonDeviceId, "\"device_id\":\"***\"")
+        sanitized = sanitized.replace(LogRedactionPatterns.androidId, "android_id=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.imei, "imei=***")
         
         // ========== 敏感 JSON 字段脱敏 ==========
-        sanitized = sanitized.replace(Regex("\"face\":\"[^\"]+\""), "\"face\":\"***\"")
-        sanitized = sanitized.replace(Regex("\"tel\":\"[^\"]+\""), "\"tel\":\"***\"")
-        sanitized = sanitized.replace(Regex("\"name\":\"[^\"]{2,}\"")) {
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonFace, "\"face\":\"***\"")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonPhone, "\"tel\":\"***\"")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonName) {
             // 保留名字首字符
             val name = it.value
             val start = name.indexOf(":\"") + 2
@@ -696,41 +785,41 @@ object LogCollector {
         
         // ========== 🎬 视频内容脱敏（保护用户观看记录隐私） ==========
         // 视频 BVID
-        sanitized = sanitized.replace(Regex("BV[0-9A-Za-z]{10}"), "BV***")
+        sanitized = sanitized.replace(LogRedactionPatterns.bvid, "BV***")
         // 视频 AID/AV 号
-        sanitized = sanitized.replace(Regex("\\bav\\d{4,}\\b", RegexOption.IGNORE_CASE), "av***")
-        sanitized = sanitized.replace(Regex("\"aid\":\\s*\\d+"), "\"aid\":***")
+        sanitized = sanitized.replace(LogRedactionPatterns.avid, "av***")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonAid, "\"aid\":***")
         // CID
-        sanitized = sanitized.replace(Regex("\\bcid[=:]\\s*\\d+"), "cid=***")
-        sanitized = sanitized.replace(Regex("\"cid\":\\s*\\d+"), "\"cid\":***")
+        sanitized = sanitized.replace(LogRedactionPatterns.cid, "cid=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonCid, "\"cid\":***")
         // 直播房间号
-        sanitized = sanitized.replace(Regex("room_id[=:]\\s*\\d+"), "room_id=***")
-        sanitized = sanitized.replace(Regex("roomId[=:]\\s*\\d+"), "roomId=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.roomId, "room_id=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.camelRoomId, "roomId=***")
         // Season ID (番剧)
-        sanitized = sanitized.replace(Regex("season_id[=:]\\s*\\d+"), "season_id=***")
-        sanitized = sanitized.replace(Regex("ep_id[=:]\\s*\\d+"), "ep_id=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.seasonId, "season_id=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.episodeId, "ep_id=***")
         
         // ========== 🔍 搜索关键词脱敏 ==========
-        sanitized = sanitized.replace(Regex("keyword=[^&\\s]+"), "keyword=***")
-        sanitized = sanitized.replace(Regex("\"keyword\":\"[^\"]+\""), "\"keyword\":\"***\"")
-        sanitized = sanitized.replace(Regex("Search:\\s*[^\\n]+"), "Search: ***")
+        sanitized = sanitized.replace(LogRedactionPatterns.keyword, "keyword=***")
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonKeyword, "\"keyword\":\"***\"")
+        sanitized = sanitized.replace(LogRedactionPatterns.searchText, "Search: ***")
 
         // 私信、评论草稿等用户输入内容不进入诊断日志。
         sanitized = sanitized.replace(
-            Regex("(?i)\\b(content|message_text|query)[=:]\\s*[^&\\r\\n]+"),
+            LogRedactionPatterns.inputText,
             "$1=***"
         )
         sanitized = sanitized.replace(
-            Regex("(?i)\"(content|message_text|query)\"\\s*:\\s*\"[^\"]*\""),
+            LogRedactionPatterns.jsonInputText,
             "\"$1\":\"***\""
         )
         
         // ========== 📝 视频标题脱敏（仅保留前两个字符） ==========
-        sanitized = sanitized.replace(Regex("video_title=[^&\\s]{3,}")) { 
+        sanitized = sanitized.replace(LogRedactionPatterns.videoTitle) {
             val title = it.value.substringAfter("=")
             "video_title=${title.take(2)}***"
         }
-        sanitized = sanitized.replace(Regex("\"title\":\"[^\"]{3,}\"")) {
+        sanitized = sanitized.replace(LogRedactionPatterns.jsonTitle) {
             val content = it.value
             val titleStart = content.indexOf(":\"") + 2
             val title = content.substring(titleStart, content.length - 1)
@@ -784,6 +873,17 @@ object LogCollector {
             entry.copy(message = sanitizeMessage(entry.message))
         }
         runCatching {
+            val exitTimestamp = (throwable as? AbnormalProcessExitException)?.exitTimestampMillis
+            val previousLogs = if (exitTimestamp != null) {
+                selectLogsBeforeProcessExit(
+                    listOf(resolveBasicLogFile(context.filesDir), resolveRuntimeLogFile(context.filesDir))
+                        .flatMap { file ->
+                            runCatching { if (file.isFile) file.readLines() else emptyList() }
+                                .getOrDefault(emptyList()).let(::groupDiagnosticLogLines)
+                        },
+                    exitTimestamp,
+                )
+            } else emptyList()
             val content = buildCrashSnapshotContent(
                 throwable = throwable,
                 entries = sanitizedEntries,
@@ -796,6 +896,7 @@ object LogCollector {
                 apiLevel = android.os.Build.VERSION.SDK_INT,
                 buildType = BuildConfig.BUILD_TYPE,
                 buildCommit = BuildConfig.BUILD_COMMIT_SHA,
+                previousProcessLogs = previousLogs,
             )
             val snapshotFile = resolveCrashSnapshotFile(context.filesDir)
             val rawTraceFile = resolveRawCrashTraceFile(context.filesDir)
@@ -1121,9 +1222,9 @@ object LogCollector {
 
     private fun appendEntryToRuntimeFile(entry: LogEntry, basicDiagnostic: Boolean = false) {
         val context = appContext ?: return
-        val sanitizedEntry = entry.copy(message = sanitizeMessage(entry.message)).format() + "\n"
         diskWriter.execute {
             runCatching {
+                val sanitizedEntry = entry.format() + "\n"
                 val isBasic = basicDiagnostic || entry.level == "W" || entry.level == "E"
                 appendRollingDiagnosticLog(
                     file = if (isBasic) resolveBasicLogFile(context.filesDir)

@@ -1,7 +1,13 @@
 package com.android.purebilibili.feature.personal
 
+import com.android.purebilibili.core.ui.components.appActionWithFeedback
+
+import com.android.purebilibili.core.ui.components.wallpaperMediaCardSurface
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -36,6 +42,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.AppShapes
+import com.android.purebilibili.core.ui.LocalSystemReduceMotion
 import com.android.purebilibili.core.ui.AppSpacingTokens
 import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.ui.ContainerLevel
@@ -43,7 +50,7 @@ import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.skeleton.ContentSkeletonBlock
 import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor
-import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulse
+import com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonPulseState
 import com.android.purebilibili.feature.home.components.cards.HORIZONTAL_VIDEO_CARD_COVER_WIDTH_DP
 import com.android.purebilibili.feature.home.components.cards.HorizontalVideoCardFrame
 
@@ -65,8 +72,8 @@ internal fun PersonalMediaCardFrame(
     selected: Boolean = false,
     stacked: Boolean = false,
     enabled: Boolean = true,
-    coverAspectRatio: Float = PERSONAL_LIST_HORIZONTAL_COVER_ASPECT_RATIO,
-    coverWidth: Dp? = null,
+    coverAspectRatio: Float = com.android.purebilibili.core.ui.videoCardCoverAspectRatio(),
+    allowPortraitCover: Boolean = false,
     supportingContent: (@Composable () -> Unit)? = null,
     overlineContent: (@Composable () -> Unit)? = null,
     coverOverlayContent: (@Composable BoxScope.() -> Unit)? = null,
@@ -77,6 +84,7 @@ internal fun PersonalMediaCardFrame(
     val fontScale = LocalDensity.current.fontScale
     val minimumHeight = resolvePersonalMediaCardMinHeightDp(fontScale).dp
     val cardShape = AppShapes.container(ContainerLevel.Card)
+    val cardSurface = wallpaperMediaCardSurface(AppSurfaceTokens.cardContainer(), cardShape)
 
     AppSurface(
         modifier = modifier
@@ -84,13 +92,14 @@ internal fun PersonalMediaCardFrame(
             .heightIn(min = minimumHeight)
             .clip(cardShape)
             .then(nativeSnapshotModifier)
+            .then(cardSurface.modifier)
             .combinedClickable(
                 enabled = enabled,
-                onClick = onClick,
+                onClick = appActionWithFeedback(onClick),
                 onLongClick = onLongClick,
             ),
         shape = cardShape,
-        color = AppSurfaceTokens.cardContainer(),
+        color = cardSurface.containerColor,
     ) {
         Box {
             if (stacked) {
@@ -103,17 +112,26 @@ internal fun PersonalMediaCardFrame(
                             coverOverlayContent?.invoke(this)
                         }
                     }
-                    Row(verticalAlignment = Alignment.Bottom) {
-                        Column(
-                            modifier = Modifier.weight(1f).padding(AppSpacingTokens.Small),
-                            verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall),
-                        ) {
-                            overlineContent?.invoke()
-                            headlineContent()
+                    // 多列的标题占满信息区；底部操作只与辅助信息并排。
+                    // 玻璃和原生材质共用此布局，单列仍使用原有横向卡片。
+                    Column(
+                        modifier = Modifier.padding(AppSpacingTokens.Small),
+                        verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall),
+                    ) {
+                        overlineContent?.invoke()
+                        headlineContent()
+                        if (trailingContent == null) {
                             supportingContent?.invoke()
-                        }
-                        trailingContent?.let { content ->
-                            Row(modifier = Modifier.padding(end = AppSpacingTokens.Small), content = content)
+                        } else {
+                            Row(verticalAlignment = Alignment.Bottom) {
+                                Column(
+                                    modifier = Modifier.weight(1f),
+                                    verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall),
+                                ) {
+                                    supportingContent?.invoke()
+                                }
+                                trailingContent()
+                            }
                         }
                     }
                 }
@@ -123,23 +141,26 @@ internal fun PersonalMediaCardFrame(
                     coverModifier = coverModifier,
                     coverOverlayModifier = coverOverlayModifier,
                     coverOverlayContent = coverOverlayContent,
-                    coverWidth = coverWidth ?: HORIZONTAL_VIDEO_CARD_COVER_WIDTH_DP.dp,
                     coverAspectRatio = coverAspectRatio,
-                    minimumHeight = minimumHeight,
+                    allowPortraitCover = allowPortraitCover,
                     infoContent = {
                         overlineContent?.invoke()
-                        headlineContent()
-                        supportingContent?.invoke()
+                        androidx.compose.material3.ProvideTextStyle(
+                            com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().title,
+                        ) { headlineContent() }
+                        if (supportingContent != null) {
+                            androidx.compose.material3.ProvideTextStyle(
+                                com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().author,
+                            ) {
+                                Column(verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall)) {
+                                    supportingContent()
+                                }
+                            }
+                        }
                     },
                     trailingContent = trailingContent?.let { content ->
                         {
                             Row(
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .padding(
-                                        end = AppSpacingTokens.Small,
-                                        bottom = AppSpacingTokens.Small,
-                                    ),
                                 verticalAlignment = Alignment.Bottom,
                                 content = content,
                             )
@@ -153,23 +174,18 @@ internal fun PersonalMediaCardFrame(
 
 /**
  * PiliPlus 式多选遮罩：选中时在缩略图上铺黑色 60% 蒙层并居中显示对勾圆圈，
- * 以缩放 + 淡入淡出动画进出。
+ * 蒙层完整覆盖缩略图并淡入淡出，仅中心勾选标记做弹性缩放。
  */
 @Composable
 internal fun PersonalCardSelectMask(
     selected: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val reduceMotion = LocalSystemReduceMotion.current
     AnimatedVisibility(
         visible = selected,
-        enter = fadeIn(animationSpec = spring(stiffness = 380f)) + scaleIn(
-            initialScale = 0.7f,
-            animationSpec = spring(dampingRatio = 0.7f, stiffness = 380f),
-        ),
-        exit = fadeOut(animationSpec = spring(stiffness = 480f)) + scaleOut(
-            targetScale = 0.7f,
-            animationSpec = spring(stiffness = 480f),
-        ),
+        enter = fadeIn(animationSpec = tween(160)),
+        exit = fadeOut(animationSpec = tween(120)),
         modifier = modifier,
     ) {
         Box(
@@ -180,6 +196,16 @@ internal fun PersonalCardSelectMask(
         ) {
             Box(
                 modifier = Modifier
+                    .animateEnterExit(
+                        enter = scaleIn(
+                            initialScale = if (reduceMotion) 1f else 0.7f,
+                            animationSpec = spring(dampingRatio = 0.7f, stiffness = 380f),
+                        ),
+                        exit = scaleOut(
+                            targetScale = if (reduceMotion) 1f else 0.85f,
+                            animationSpec = tween(120),
+                        ),
+                    )
                     .size(34.dp)
                     .background(
                         MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
@@ -190,7 +216,7 @@ internal fun PersonalCardSelectMask(
                 AppIcon(
                     Icons.Rounded.Check,
                     contentDescription = "已选择",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = AppContentColors.accent(),
                     modifier = Modifier.size(20.dp),
                 )
             }
@@ -201,11 +227,10 @@ internal fun PersonalCardSelectMask(
 @Composable
 internal fun PersonalMediaCardSkeleton(
     modifier: Modifier = Modifier,
-    blockColor: Color? = null,
+    blockColor: (() -> Color)? = null,
+    stacked: Boolean = false,
 ) {
-    val pulse = if (blockColor == null) rememberContentSkeletonPulse() else 0f
-    val color = blockColor ?: rememberContentSkeletonBlockColor(pulse)
-    val minimumHeight = resolvePersonalMediaCardMinHeightDp(LocalDensity.current.fontScale).dp
+    val color = blockColor ?: rememberContentSkeletonBlockColor(rememberContentSkeletonPulseState())
     val cardShape = AppShapes.container(ContainerLevel.Card)
 
     AppSurface(
@@ -215,7 +240,7 @@ internal fun PersonalMediaCardSkeleton(
         color = AppSurfaceTokens.cardContainer(),
     ) {
         HorizontalVideoCardFrame(
-            minimumHeight = minimumHeight,
+            stacked = stacked,
             coverContent = {
                 ContentSkeletonBlock(
                     color = color,
@@ -223,7 +248,6 @@ internal fun PersonalMediaCardSkeleton(
                     modifier = Modifier.fillMaxSize(),
                 )
             },
-            infoVerticalArrangement = Arrangement.spacedBy(AppSpacingTokens.Small),
             infoContent = {
                 ContentSkeletonBlock(
                     color = color,

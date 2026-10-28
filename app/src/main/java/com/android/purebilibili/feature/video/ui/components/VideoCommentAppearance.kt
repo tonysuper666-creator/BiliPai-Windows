@@ -12,9 +12,10 @@ internal enum class VideoCommentTextRole { AUTHOR, METADATA, BODY, ACTION, ACTIO
 
 internal fun resolveVideoCommentFontSize(typography: Typography, role: VideoCommentTextRole): TextUnit =
     when (role) {
-        VideoCommentTextRole.AUTHOR,
+        VideoCommentTextRole.AUTHOR -> typography.bodySmall.fontSize
+        // 评论正文与楼中楼都是主要阅读内容，跟随页面正文的字阶。
         VideoCommentTextRole.SUB_REPLY,
-        VideoCommentTextRole.BODY -> typography.bodySmall.fontSize
+        VideoCommentTextRole.BODY -> typography.bodyMedium.fontSize
         VideoCommentTextRole.METADATA, VideoCommentTextRole.ACTION_COUNT -> typography.labelSmall.fontSize
         VideoCommentTextRole.ACTION -> typography.labelMedium.fontSize
     }

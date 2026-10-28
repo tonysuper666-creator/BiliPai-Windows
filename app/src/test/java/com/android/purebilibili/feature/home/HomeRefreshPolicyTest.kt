@@ -543,4 +543,17 @@ class HomeRefreshPolicyTest {
         assertEquals(50, resolveHomeRefreshKeptOldItemCount(500))
         assertEquals(80, resolveHomeRefreshKeptOldItemCount(500, threshold = 200, keepCount = 80))
     }
+
+    @Test
+    fun oldContentDividerContainerIsTranslucentPrimaryTint() {
+        val lightScheme = androidx.compose.material3.lightColorScheme(
+            primaryContainer = androidx.compose.ui.graphics.Color(0xFFEADDFF),
+        )
+        val color = resolveOldContentDividerContainerColor(lightScheme)
+
+        assertEquals(lightScheme.primaryContainer, color.copy(alpha = 1f))
+        assertEquals(OLD_CONTENT_DIVIDER_CONTAINER_ALPHA, color.alpha)
+        // 半透明是刻意的：让模糊壁纸背景透出，与毛玻璃卡片观感一致。
+        assertTrue(color.alpha < 1f)
+    }
 }

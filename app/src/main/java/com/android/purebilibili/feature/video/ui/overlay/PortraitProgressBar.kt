@@ -11,6 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemGestures
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -23,6 +29,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -63,17 +70,23 @@ fun PortraitBottomContainer(
             widthDp = configuration.screenWidthDp
         )
     }
+    val touchHeight = layoutPolicy.touchAreaHeightDp.dp * PlayerChromeLayout.FullscreenHeightScale
 
+    PlayerControlTouchBounds(height = touchHeight) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(
-                bottom = layoutPolicy.bottomPaddingDp.dp,
-                start = layoutPolicy.horizontalPaddingDp.dp,
-                end = layoutPolicy.horizontalPaddingDp.dp
+            // Use the larger margin, never fixed padding plus the gesture region.
+            .windowInsetsPadding(
+                WindowInsets.systemGestures.only(WindowInsetsSides.Horizontal).union(
+                    WindowInsets(
+                        left = PlayerChromeLayout.SeekEdgePaddingDp.dp,
+                        right = PlayerChromeLayout.SeekEdgePaddingDp.dp,
+                    )
+                )
             )
-            .height(layoutPolicy.touchAreaHeightDp.dp)
-        ,
+            .padding(bottom = layoutPolicy.bottomPaddingDp.dp * PlayerChromeLayout.FullscreenHeightScale)
+            .height(touchHeight),
         contentAlignment = Alignment.Center
     ) {
          ThinWigglyProgressBar(
@@ -94,6 +107,7 @@ fun PortraitBottomContainer(
             videoshotData = videoshotData,
             videoAspectRatio = videoAspectRatio
         )
+    }
     }
 }
 
@@ -234,38 +248,55 @@ fun ThinWigglyProgressBar(
         ,
         contentAlignment = Alignment.CenterStart
     ) {
-        // 背景轨道
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(barHeight)
-                .background(
-                    Color.White.copy(alpha = 0.3f),
-                    RoundedCornerShape(layoutPolicy.trackCornerRadiusDp.dp)
-                )
-        )
+        val glassTrackHighlight = rememberPlayerProgressGlassHighlight()
+        val trackContent: @Composable () -> Unit = {
+            // 背景轨道
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(barHeight)
+                    .background(
+                        Color.White.copy(alpha = 0.3f),
+                        RoundedCornerShape(layoutPolicy.trackCornerRadiusDp.dp)
+                    )
+            )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(bufferProgress.coerceIn(0f, 1f))
-                .height(barHeight)
-                .background(
-                    Color.White.copy(alpha = 0.55f),
-                    RoundedCornerShape(layoutPolicy.trackCornerRadiusDp.dp)
-                )
-        )
-        
-        // 进度 (当前进度)
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(displayProgress)
-                .height(barHeight)
-                .background(
-                    Color.White.copy(alpha = 0.9f),
-                    RoundedCornerShape(layoutPolicy.trackCornerRadiusDp.dp)
-                )
-        )
-        
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(bufferProgress.coerceIn(0f, 1f))
+                    .height(barHeight)
+                    .background(
+                        Color.White.copy(alpha = 0.55f),
+                        RoundedCornerShape(layoutPolicy.trackCornerRadiusDp.dp)
+                    )
+            )
+
+            // 进度 (当前进度)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(displayProgress)
+                    .height(barHeight)
+                    .background(
+                        Color.White.copy(alpha = 0.9f),
+                        RoundedCornerShape(layoutPolicy.trackCornerRadiusDp.dp)
+                    )
+            )
+        }
+        if (glassTrackHighlight != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(barHeight)
+                    .drawWithContent {
+                        drawContent()
+                        glassTrackHighlight.draw(this, size.height)
+                    },
+                contentAlignment = Alignment.CenterStart,
+            ) { trackContent() }
+        } else {
+            trackContent()
+        }
+
         // 滑块 (Thumb) - 仅拖拽时显示
         if (isSeekScrubbing) {
             val previewPositionMs = dragTargetPositionMs.coerceAtLeast(0L)
@@ -277,13 +308,14 @@ fun ThinWigglyProgressBar(
                     .fillMaxWidth()
                     .align(Alignment.CenterStart)
             ) {
-                Box(
-                    modifier = Modifier
-                        .offset { IntOffset(thumbOffsetX.roundToInt(), 0) }
-                        .size(thumbSize)
-                        .align(Alignment.CenterStart)
-                        .background(Color.White, CircleShape)
-                )
+                val thumbModifier = Modifier
+                    .offset { IntOffset(thumbOffsetX.roundToInt(), 0) }
+                    .align(Alignment.CenterStart)
+                if (LocalPlayerControlGlassEnabled.current) {
+                    PlayerControlGlassThumb(size = thumbSize, dragging = true, modifier = thumbModifier)
+                } else {
+                    Box(thumbModifier.size(thumbSize).background(Color.White, CircleShape))
+                }
             }
 
             if (videoshotData != null && videoshotData.isValid) {

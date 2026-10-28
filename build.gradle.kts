@@ -1,8 +1,5 @@
-// 根目录 build.gradle.kts
-// R8 单独强制为 9.4 稳定版：AGP 9.3.2 内嵌的 R8 9.3.x 存在类合并优化 bug
-// （VideoCard 组合函数被合并进 HeightInLinesModifierKt 后生成 ART 校验失败的
-// 字节码，启动即 VerifyError）。Studio 2026.1.3 最高支持 AGP 9.3.0，无法通过
-// 升级 AGP 获得 R8 修复，故沿用 buildscript classpath 覆盖方式（同此前 9.1.31 pin）。
+// R8 与 AGP 分开固定，便于更新优化器而保持当前 Studio 支持的 AGP 9.3 系列。
+// 历史记录涉及的视频卡片文件类由 app/proguard-rules.pro 暂作合并隔离。
 
 buildscript {
     repositories {
@@ -10,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools:r8:9.4.27")
+        classpath("com.android.tools:r8:9.5.28")
     }
 }
 
@@ -32,4 +29,12 @@ plugins {
     // 3. Firebase 相关插件
     id("com.google.gms.google-services") version "4.4.2" apply false
     id("com.google.firebase.crashlytics") version "3.0.2" apply false
+}
+
+// Custom policies must also run during each library's partial Lint analysis.
+// App-only lintChecks would miss models moved into core-data.
+subprojects {
+    plugins.withId("com.android.library") {
+        dependencies.add("lintChecks", project(":ci-lint"))
+    }
 }

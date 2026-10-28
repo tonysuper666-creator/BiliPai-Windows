@@ -130,7 +130,8 @@ internal class NavPresentation(initialTopIndex: Float) : NavSettleSink {
      * Entries currently presented, in insertion (append-only) order — NOT stack order after a
      * back-stack reorder; readers needing stack order sort by the index map. Includes leaving entries.
      */
-    val presented: List<NavEntry<*>> get() = _presented
+    // toList 返回当前结构的只读快照（O(1)），避免逐帧遍历反复读取 SnapshotStateList 元素。
+    val presented: List<NavEntry<*>> get() = _presented.toList()
 
     /** Last classified stack mutation; surfaced to the transition scope via `change`. */
     var change: NavChange by mutableStateOf(NavChange.None)
@@ -187,22 +188,23 @@ internal class NavPresentation(initialTopIndex: Float) : NavSettleSink {
     fun reconcile(currentEntries: List<NavEntry<*>>, change: NavChange) {
         if (change != NavChange.None) this.change = change
         val currentKeys = currentEntries.mapTo(HashSet(currentEntries.size)) { it.contentKey }
+        val previousEntries = _presented.toList()
         // Entries that fell off the back stack become "leaving" but stay rendered.
-        _presented.forEach { e ->
+        previousEntries.forEach { e ->
             if (e.contentKey !in currentKeys) {
                 e.presentation = e.presentation.copy(isRemoving = true)
             }
         }
         // Insert newly added current entries (keep existing instances for movableContent identity).
-        val presentedKeys = _presented.mapTo(HashSet(_presented.size)) { it.contentKey }
+        val presentedByKey = previousEntries.associateBy { it.contentKey }
         currentEntries.forEach { e ->
-            if (e.contentKey !in presentedKeys) {
+            val existing = presentedByKey[e.contentKey]
+            if (existing == null) {
                 e.presentation = e.presentation.copy(isRemoving = false)
                 _presented.add(e)
             } else {
                 // Reuse existing instance; clear any stale leaving flag (re-push of same key) and
                 // adopt the freshly built registration payload (route key / content / metadata).
-                val existing = _presented.first { it.contentKey == e.contentKey }
                 existing.presentation = existing.presentation.copy(isRemoving = false)
                 existing.adoptFrom(e)
             }

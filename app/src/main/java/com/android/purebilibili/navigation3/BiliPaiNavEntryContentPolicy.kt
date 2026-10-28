@@ -18,6 +18,8 @@ internal enum class BiliPaiNavEntryContentRole {
     ANIMATION_SETTINGS,
     PLAYBACK_SETTINGS,
     PERMISSION_SETTINGS,
+    SPACE_PRIVACY_SETTINGS,
+    LOGIN_ACTIVITY_SETTINGS,
     MESSAGE_NOTIFICATION_SETTINGS,
     PLUGINS_SETTINGS,
     JS_PLUGIN_CONTENT,
@@ -27,6 +29,7 @@ internal enum class BiliPaiNavEntryContentRole {
     WEB_DAV_BACKUP,
     TIPS_SETTINGS,
     PROFILE,
+    ACCOUNT_LEDGER,
     VIDEO_DETAIL,
     AICU_QUERY,
     HISTORY,
@@ -44,6 +47,8 @@ internal enum class BiliPaiNavEntryContentRole {
     LIVE_AREA,
     LIVE_AREA_DETAIL,
     LIVE_FOLLOWING,
+    LIVE_MATCH,
+    MATCH_INFO,
     INBOX,
     REPLY_ME,
     AT_ME,
@@ -92,6 +97,8 @@ internal fun resolveBiliPaiNavEntryContentRole(key: BiliPaiNavKey): BiliPaiNavEn
         BiliPaiNavKey.AnimationSettings -> BiliPaiNavEntryContentRole.ANIMATION_SETTINGS
         BiliPaiNavKey.PlaybackSettings -> BiliPaiNavEntryContentRole.PLAYBACK_SETTINGS
         BiliPaiNavKey.PermissionSettings -> BiliPaiNavEntryContentRole.PERMISSION_SETTINGS
+        BiliPaiNavKey.SpacePrivacySettings -> BiliPaiNavEntryContentRole.SPACE_PRIVACY_SETTINGS
+        BiliPaiNavKey.LoginActivitySettings -> BiliPaiNavEntryContentRole.LOGIN_ACTIVITY_SETTINGS
         BiliPaiNavKey.MessageNotificationSettings -> BiliPaiNavEntryContentRole.MESSAGE_NOTIFICATION_SETTINGS
         is BiliPaiNavKey.PluginsSettings -> BiliPaiNavEntryContentRole.PLUGINS_SETTINGS
         is BiliPaiNavKey.JsPluginContent -> BiliPaiNavEntryContentRole.JS_PLUGIN_CONTENT
@@ -101,6 +108,7 @@ internal fun resolveBiliPaiNavEntryContentRole(key: BiliPaiNavKey): BiliPaiNavEn
         BiliPaiNavKey.WebDavBackup -> BiliPaiNavEntryContentRole.WEB_DAV_BACKUP
         BiliPaiNavKey.TipsSettings -> BiliPaiNavEntryContentRole.TIPS_SETTINGS
         BiliPaiNavKey.Profile -> BiliPaiNavEntryContentRole.PROFILE
+        is BiliPaiNavKey.AccountLedger -> BiliPaiNavEntryContentRole.ACCOUNT_LEDGER
         is BiliPaiNavKey.VideoDetail -> BiliPaiNavEntryContentRole.VIDEO_DETAIL
         is BiliPaiNavKey.AicuQuery -> BiliPaiNavEntryContentRole.AICU_QUERY
         BiliPaiNavKey.History -> BiliPaiNavEntryContentRole.HISTORY
@@ -124,6 +132,8 @@ internal fun resolveBiliPaiNavEntryContentRole(key: BiliPaiNavKey): BiliPaiNavEn
         BiliPaiNavKey.LiveSearch -> BiliPaiNavEntryContentRole.LIVE_SEARCH
         BiliPaiNavKey.LiveArea -> BiliPaiNavEntryContentRole.LIVE_AREA
         is BiliPaiNavKey.LiveAreaDetail -> BiliPaiNavEntryContentRole.LIVE_AREA_DETAIL
+        BiliPaiNavKey.LiveMatch -> BiliPaiNavEntryContentRole.LIVE_MATCH
+        is BiliPaiNavKey.MatchInfo -> BiliPaiNavEntryContentRole.MATCH_INFO
         BiliPaiNavKey.LiveFollowing -> BiliPaiNavEntryContentRole.LIVE_FOLLOWING
         BiliPaiNavKey.Inbox -> BiliPaiNavEntryContentRole.INBOX
         BiliPaiNavKey.ReplyMe -> BiliPaiNavEntryContentRole.REPLY_ME

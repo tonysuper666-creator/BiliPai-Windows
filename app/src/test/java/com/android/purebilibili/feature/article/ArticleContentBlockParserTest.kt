@@ -9,6 +9,15 @@ import kotlin.test.assertEquals
 class ArticleContentBlockParserTest {
 
     @Test
+    fun `public note top level quill array renders text paragraphs`() {
+        val blocks = parseArticleContentBlocks(
+            structuredParagraphs = emptyList(),
+            htmlContent = """[{"insert":"公开笔记正文\n"}]"""
+        )
+        assertEquals("公开笔记正文", (blocks.first() as ArticleContentBlock.Paragraph).text)
+    }
+
+    @Test
     fun `structured word nodes carry font size color and style spans`() {
         val blocks = parseArticleContentBlocks(
             structuredParagraphs = listOf(

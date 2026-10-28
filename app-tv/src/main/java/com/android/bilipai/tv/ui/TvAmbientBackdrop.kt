@@ -1,6 +1,8 @@
 package com.android.bilipai.tv.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import com.android.purebilibili.core.ui.motion.AppMotionEasing
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,20 +29,20 @@ private fun httpsUrl(raw: String): String = if (raw.startsWith("//")) "https:$ra
  */
 @Composable
 internal fun TvAmbientBackdrop(imageUrl: String?, modifier: Modifier = Modifier) {
-    Box(modifier.fillMaxSize()) {
-        if (imageUrl.isNullOrBlank()) {
+    Box(modifier.fillMaxSize().background(TvMediaColors.Base)) {
+        if (imageUrl.isNullOrBlank() || LocalTvSimpleEffects.current) {
             Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface))
         } else {
             val context = LocalContext.current
             if (LocalTvReduceMotion.current) {
                 AmbientImage(imageUrl, context, Modifier.fillMaxSize())
             } else {
-                Crossfade(targetState = imageUrl, label = "ambient") { url ->
+                Crossfade(targetState = imageUrl, animationSpec = tween(TvMotion.backdropMs, easing = AppMotionEasing.Continuity), label = "ambient") { url ->
                     AmbientImage(url, context, Modifier.fillMaxSize())
                 }
             }
             Box(Modifier.fillMaxSize().background(Brush.verticalGradient(
-                0f to Color(0x730B0D14), 0.55f to Color(0xB80B0D14), 1f to Color(0xF60B0D14),
+                0f to TvMediaColors.Deep.copy(alpha = 0.45f), 0.55f to TvMediaColors.Deep.copy(alpha = 0.72f), 1f to TvMediaColors.Deep.copy(alpha = 0.96f),
             )))
         }
     }
@@ -54,6 +56,7 @@ private fun AmbientImage(url: String, context: android.content.Context, modifier
     AsyncImage(
         model = model,
         contentDescription = null,
+        error = androidx.compose.ui.graphics.painter.ColorPainter(TvMediaColors.Base),
         // 与 hero 同为 FillWidth + 顶对齐:两份图层逐像素对位,hero 渐隐处无缝衔接
         contentScale = ContentScale.FillWidth,
         alignment = Alignment.TopStart,

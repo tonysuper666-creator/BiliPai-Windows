@@ -13,6 +13,15 @@ object AppMotionEasing {
     /** 景深返回清晰：ease-in 向 0，先留住模糊再柔化，避免 Continuity 在 1→0 时过早掐清。 */
     val SoftClear: Easing = CubicBezierEasing(0.40f, 0.00f, 0.55f, 0.30f)
 
+    // ═══ Material 1 时代标准曲线（收编自 Compose 内置缓动，单一来源） ═══
+    // 数值与平台内置 FastOutSlowInEasing 完全一致，替换仅收编引用来源，不改变任何现有动画手感。
+    // 适用范围：骨架呼吸、计数滚动、环境性过渡等不随主题切换的常驻动画。
+    // 主题相关动效仍应使用 Md3* / Continuity；新增代码请先评估主题 token 再落到本组。
+    /** M1 标准曲线，与平台 tween 默认缓动同值 */
+    val M1Standard: Easing = CubicBezierEasing(0.4f, 0f, 0.2f, 1f)
+    /** M1 标准减速（入场侧） */
+    val M1Decelerate: Easing = CubicBezierEasing(0f, 0f, 0.2f, 1f)
+
     // ═══ Material Design 3 官方标准曲线 (Material Motion Spec) ═══
     /** MD3 官方强调入场减速 (Emphasized Decelerate) */
     val Md3EmphasizedDecelerate: Easing = CubicBezierEasing(0.05f, 0.70f, 0.10f, 1.00f)

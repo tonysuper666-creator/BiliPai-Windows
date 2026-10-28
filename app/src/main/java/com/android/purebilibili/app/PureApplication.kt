@@ -35,6 +35,8 @@ import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
 import com.android.purebilibili.core.coroutines.AppScope
 import com.android.purebilibili.core.lifecycle.BackgroundManager
+import com.android.purebilibili.core.lifecycle.BACKGROUND_COVER_COLOR_CACHE_MAX_ENTRIES
+import com.android.purebilibili.core.lifecycle.BACKGROUND_IMAGE_CACHE_MAX_BYTES
 import com.android.purebilibili.core.lifecycle.BACKGROUND_IMAGE_TRIM_DELAY_MS
 import com.android.purebilibili.core.lifecycle.resolveBackgroundImageCacheTrimTargetBytes
 import com.android.purebilibili.core.lifecycle.shouldTrimImageCacheAfterBackgroundDelay
@@ -108,14 +110,22 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
                 backgroundElapsedMs = SystemClock.elapsedRealtime() - enteredBackgroundForImageTrimAtMs,
             )
         ) {
-            // Keep a small warm cache for return-to-home. This never stops playback, clears
-            // a video surface, or discards the current wallpaper palette.
+            // Keep a warm cache for return-to-home: covers must stay decodable without a
+            // disk round-trip, otherwise the first bottom-tab switch after resume competes
+            // with a decode storm. This never stops playback or clears a video surface.
+            // 封面代表色表与壁纸调色板只占几 KB，重建代价却是「解码 + Palette 聚类」，
+            // 因此不在这里清理。
             _imageLoader?.memoryCache?.apply {
                 trimToSize(resolveBackgroundImageCacheTrimTargetBytes(size, BACKGROUND_IMAGE_TRIM_DELAY_MS))
             }
-            com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore.trimToSize(16)
-            com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore.clearCache()
-            Logger.d(PureApplicationRuntimeConfig.TAG, "Sustained background: trimmed image cache to 8 MiB")
+            // Raw bytes are reconstructible; active sessions retain their parsed playback window.
+            // Run on sustained background as modern Android may not send pressure callbacks.
+            com.android.purebilibili.data.repository.DanmakuContentRepository.clearCache()
+            Logger.d(
+                PureApplicationRuntimeConfig.TAG,
+                "Sustained background: trimmed image cache to " +
+                    "${BACKGROUND_IMAGE_CACHE_MAX_BYTES / (1024 * 1024)} MiB"
+            )
         }
     }
     private val backgroundImageTrimListener = object : BackgroundManager.BackgroundStateListener {
@@ -146,10 +156,15 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     
     //  Coil 图片加载器 - 优化内存和磁盘缓存
     override fun newImageLoader(context: android.content.Context): ImageLoader {
-        val memoryCachePercent = PureApplicationRuntimeConfig.resolveImageMemoryCachePercent()
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+        val memoryCacheBytes = PureApplicationRuntimeConfig.resolveImageMemoryCacheMaxBytes(
+            memoryClassMb = activityManager.memoryClass,
+            isLowRamDevice = activityManager.isLowRamDevice
+        )
         val diskCacheBytes = 100L * 1024 * 1024
         return ImageLoader.Builder(this)
             .components {
+                add(com.android.purebilibili.core.util.BiliImageQualityInterceptor())
                 // 共享网络客户端及 DNS 策略，保留 HTTP 缓存头语义。
                 add(
                     OkHttpNetworkFetcherFactory(
@@ -166,7 +181,7 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             //  内存缓存预算（移动/平板主仓）
             .memoryCache {
                 MemoryCache.Builder()
-                    .maxSizePercent(context, memoryCachePercent)
+                    .maxSizeBytes(memoryCacheBytes)
                     .build()
             }
             //  磁盘缓存预算（移动/平板主仓）
@@ -182,8 +197,8 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             //  优先使用缓存
             .memoryCachePolicy(CachePolicy.ENABLED)
             .diskCachePolicy(CachePolicy.ENABLED)
-            //  允许适用图片使用 RGB_565，降低内存占用
-            .allowRgb565(true)
+            // 保留完整颜色精度；内存由按显示尺寸采样和缓存预算控制。
+            .allowRgb565(false)
             .crossfade(true)
             .build()
             .also { _imageLoader = it }  // 保存引用
@@ -192,22 +207,62 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate() {
         instance = this
+        if (com.android.purebilibili.feature.message.notification.isLightweightServiceProcess(this)) {
+            super.onCreate()
+            com.android.purebilibili.feature.message.notification.initializeMessageNotificationProcess(this)
+            return
+        }
 
         // Compose 1.13's staggered-grid cache-window prefetch can assign an invalid lane
         // after rapid scroll-to-top and subsequent scrolling. Keep the established prefetcher
         // until the upstream cache-window path is safe for this feed.
         ComposeFoundationFlags.isUsingCacheWindowInStaggeredGrids = false
 
+        // The matching release stack trace resolves to LazyGridKt.keepAroundItems (line 507)
+        // calling LazyGridSpanLayoutProvider.getLineConfiguration with an invalid cache line.
+        // Regular grids need their own fallback: the staggered-grid flag above does not apply.
+        // Retain normal line prefetching while bypassing the default cache-window keepAround path.
+        ComposeFoundationFlags.isPreferDefaultCacheWindowOverPrefetchStrategy = false
+
         // Install the local crash path before theme, StrictMode, or any other startup work. This
         // ensures even an early initialization exception has a private snapshot for feedback.
         LogCollector.init(this)
+        com.android.purebilibili.core.performance.ProcessExitContextRecorder.initialize(this)
         CrashReporter.installGlobalExceptionHandler()
+        // Apply stored collection choices before startup work or the first screen can report.
+        CrashReporter.prepare(
+            getSharedPreferences("crash_tracking", Context.MODE_PRIVATE)
+                .getBoolean("enabled", DEFAULT_CRASH_TRACKING_ENABLED)
+        )
+        AnalyticsHelper.prepare(
+            this,
+            getSharedPreferences("analytics_tracking", Context.MODE_PRIVATE)
+                .getBoolean("enabled", DEFAULT_ANALYTICS_ENABLED)
+        )
         StartupRecovery.beginLaunch(this)
         if (StartupRecovery.isRecoveryMode) {
             super.onCreate()
             return
         }
         Logger.init(this)
+        // 评论仓库已下沉 core-data；手机端的发评后反诈旁路在此注入，共享层不感知其实现。
+        com.android.purebilibili.data.repository.CommentRepository.onCommentPosted =
+            { reply, oid, type, root, parent, message ->
+                AppScope.ioScope.launch {
+                    com.android.purebilibili.data.repository.CommentFraudRepository.saveRecord(
+                        rpid = reply.rpid,
+                        oid = oid,
+                        type = type,
+                        root = root,
+                        parent = parent,
+                        uid = reply.mid,
+                        message = message,
+                        status = com.android.purebilibili.data.model.CommentFraudStatus.UNKNOWN, // 当前状态未知（检测中）
+                        initialStatus = null, // 初始状态先置为 null (等待 5 秒后初检回填)
+                        postTime = if (reply.ctime > 0L) reply.ctime * 1000L else System.currentTimeMillis()
+                    )
+                }
+            }
         // 预热启动任务(wbi_key_restore)要在主线程同步读的 SP 文件:
         // IO 线程提前触发磁盘加载,主线程执行恢复时通常已命中内存缓存。
         AppScope.ioScope.launch {
@@ -231,6 +286,7 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
         applyThemePreference()
         
         super.onCreate()
+        com.android.purebilibili.core.store.DataSaverState.get(this)
         initializeNormalRuntime()
     }
 
@@ -308,6 +364,7 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     override fun onConfigurationChanged(newConfig: Configuration) {
         val previousUiMode = launcherIconUiModeSnapshot
         super.onConfigurationChanged(newConfig)
+        if (com.android.purebilibili.feature.message.notification.isLightweightServiceProcess(this)) return
         if (StartupRecovery.isRecoveryMode) return
         launcherIconUiModeSnapshot = newConfig.uiMode
         if (
@@ -370,6 +427,10 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     private fun initPlaylistRestoreNow() {
         AppScope.ioScope.launch {
             com.android.purebilibili.feature.video.player.PlaylistManager.init(this@PureApplication)
+            kotlinx.coroutines.withContext(Dispatchers.Main.immediate) {
+                com.android.purebilibili.feature.video.player.MiniPlayerManager.getInstance(this@PureApplication)
+                    .recoverRemoteAudioIfPresent()
+            }
         }
     }
 
@@ -399,20 +460,19 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
         //  [BiliPai 移植] 推荐流过滤(默认关闭, 可在插件中心启用)
         PluginManager.register(com.android.purebilibili.feature.plugin.BiliPaiFeedFilterPlugin())
         PluginManager.register(com.android.purebilibili.feature.plugin.SubscriptionFeedPlugin())
-        Logger.d(PureApplicationRuntimeConfig.TAG, " Plugin system initialized with 11 built-in plugins")
-
-        com.android.purebilibili.core.plugin.json.JsonPluginManager.initialize(this)
-        Logger.d(PureApplicationRuntimeConfig.TAG, " JSON plugin system initialized")
-
-        com.android.purebilibili.feature.download.DownloadManager.init(this)
+        Logger.d(PureApplicationRuntimeConfig.TAG, " Plugin system initialized with 12 built-in plugins")
 
         AppScope.ioScope.launch {
-            val sponsorBlockEnabled = com.android.purebilibili.core.store.SettingsManager
-                .getSponsorBlockEnabled(this@PureApplication)
-                .first()
-            PluginManager.setEnabled("sponsor_block", sponsorBlockEnabled)
-            Logger.d(PureApplicationRuntimeConfig.TAG, " SponsorBlock plugin synced: enabled=$sponsorBlockEnabled")
+            com.android.purebilibili.core.plugin.json.JsonPluginManager.initialize(this@PureApplication)
+            Logger.d(PureApplicationRuntimeConfig.TAG, " JSON plugin system initialized")
+        }
 
+        AppScope.ioScope.launch {
+            com.android.purebilibili.feature.download.DownloadManager.init(this@PureApplication)
+            com.android.purebilibili.feature.download.DownloadManager.observeDownloadPath(this@PureApplication)
+        }
+
+        AppScope.ioScope.launch {
             SettingsManager.forceDanmakuDefaults(this@PureApplication)
         }
 
@@ -445,9 +505,9 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
             val prefs = getSharedPreferences("crash_tracking", Context.MODE_PRIVATE)
             val enabled = prefs.getBoolean("enabled", DEFAULT_CRASH_TRACKING_ENABLED)
             
+            CrashReporter.setEnabled(enabled)
             CrashReporter.init(this)
             CrashReporter.installGlobalExceptionHandler()
-            CrashReporter.setEnabled(enabled)
             
             if (enabled) {
                 CrashReporter.syncUserContext(
@@ -466,15 +526,12 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     // � 初始化 Firebase Analytics
     private fun initAnalytics() {
         try {
-            // 初始化 AnalyticsHelper
-            AnalyticsHelper.init(this)
-            
             //  读取用户设置（默认开启）
             val prefs = getSharedPreferences("analytics_tracking", Context.MODE_PRIVATE)
             val enabled = prefs.getBoolean("enabled", DEFAULT_ANALYTICS_ENABLED)
             
             //  根据用户设置启用/禁用 Analytics
-            AnalyticsHelper.setEnabled(enabled)
+            AnalyticsHelper.init(this, enabled)
             
             if (enabled) {
                 AnalyticsHelper.syncUserContext(
@@ -494,27 +551,23 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     }
     
     // [后台内存优化] 响应系统内存警告
+    //
+    // 关键取舍：UI_HIDDEN 只代表「用户切到桌面/多任务」，不是内存吃紧。此处不再清理任何缓存
+    // ——后台预算收敛由 backgroundImageTrimListener 统一负责。否则用户切回前台时，封面要重新
+    // 磁盘解码、代表色要重新聚类、请求要重新握手，正好和底栏切页动画抢主线程。
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
+        if (com.android.purebilibili.feature.message.notification.isLightweightServiceProcess(this)) return
         if (StartupRecovery.isRecoveryMode) return
         val plan = PureApplicationRuntimeConfig.resolveBackgroundMemoryTrimPlan(level)
         if (plan.imageCacheTrimLevel != null) {
             _imageLoader?.memoryCache?.apply {
-                when {
-                    plan.clearImageMemoryCache || (plan.imageCacheTrimLevel >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) -> clear()
-                    else -> trimToSize(size / 2)
-                }
+                if (plan.clearImageMemoryCache) clear() else trimToSize(size / 2)
             }
-            when {
-                plan.clearImageMemoryCache -> {
-                    Logger.d(PureApplicationRuntimeConfig.TAG, "🚨 trim(level=$level), released image memory cache")
-                }
-                level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN -> {
-                    Logger.d(PureApplicationRuntimeConfig.TAG, " UI hidden, trimmed image memory cache for background")
-                }
-                else -> {
-                    Logger.d(PureApplicationRuntimeConfig.TAG, " Low memory trim(level=$level), trimmed image memory cache")
-                }
+            if (plan.clearImageMemoryCache) {
+                Logger.d(PureApplicationRuntimeConfig.TAG, "🚨 trim(level=$level), released image memory cache")
+            } else {
+                Logger.d(PureApplicationRuntimeConfig.TAG, " Low memory trim(level=$level), trimmed image memory cache")
             }
         }
         if (plan.notifyPlayerHeavyOptimization) {
@@ -526,29 +579,21 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
                 )
         }
 
-        // 联动清理全局静态与单例缓存，降低后台 PSS
-        // 注意：UI_HIDDEN 仅代表用户切到桌面/多任务（切出 2~3 秒），适度修剪已滑走的封面色（保留 16 条活跃卡片）并清理历史备用壁纸，
-        // 坚决保留当前前台活跃的壁纸调色板，杜绝切回前台高斯模糊与自适应颜色退化。
-        if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN) {
-            com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore.trimToSize(16)
-            com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore.clearCache()
+        // 联动清理全局静态与单例缓存，降低后台 PSS。仅在系统真的判定本进程已进入后台候选区
+        // （BACKGROUND / MODERATE / COMPLETE）或前台临界（RUNNING_CRITICAL）时执行。
+        // 壁纸调色板与封面代表色表体积可忽略，重建代价却是「解码 + Palette 聚类」，故不清理。
+        if (plan.releaseDerivedCaches) {
+            com.android.purebilibili.data.repository.DanmakuContentRepository.clearCache()
+            com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore
+                .trimToSize(BACKGROUND_COVER_COLOR_CACHE_MAX_ENTRIES)
             com.android.purebilibili.core.cache.PlayUrlCache.clear()
-            com.android.purebilibili.data.repository.VideoRepository.clearSubtitleCueCache()
-        } else if (level == ComponentCallbacks2.TRIM_MEMORY_BACKGROUND ||
-            level == ComponentCallbacks2.TRIM_MEMORY_MODERATE ||
-            level == ComponentCallbacks2.TRIM_MEMORY_COMPLETE ||
-            level == ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL
-        ) {
-            com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore.trimToSize(8)
-            com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore.clearCache()
-            com.android.purebilibili.core.cache.PlayUrlCache.clear()
+            com.android.purebilibili.data.repository.VideoRepository.clearVideoDetailCaches()
             com.android.purebilibili.data.repository.VideoRepository.clearSubtitleCueCache()
         }
 
-        // 当 UI 不可见或处于后台内存压力下，且没有活跃的后台音频播放时，释放 OkHttp 空闲连接与 socket 缓冲
-        if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN ||
-            level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND
-        ) {
+        // 释放 OkHttp 空闲连接与 socket 缓冲；没有活跃的后台音频播放时才做。
+        // 清空连接池会让回前台的所有请求重新走 DNS/TCP/TLS，因此只跟随真实后台压力。
+        if (plan.releaseIdleNetworkConnections) {
             val miniPlayer = com.android.purebilibili.feature.video.player.MiniPlayerManager.getInstanceOrNull()
             val isAudioPlaying = miniPlayer?.let { it.isActive && it.player?.isPlaying == true } ?: false
             if (!isAudioPlaying) {
@@ -559,11 +604,13 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
     
     override fun onLowMemory() {
         super.onLowMemory()
+        if (com.android.purebilibili.feature.message.notification.isLightweightServiceProcess(this)) return
         if (StartupRecovery.isRecoveryMode) return
         val plan = PureApplicationRuntimeConfig.resolveBackgroundMemoryTrimPlan(
             ComponentCallbacks2.TRIM_MEMORY_COMPLETE
         )
         _imageLoader?.memoryCache?.clear()
+        com.android.purebilibili.data.repository.DanmakuContentRepository.clearCache()
         if (plan.notifyPlayerHeavyOptimization) {
             com.android.purebilibili.feature.video.player.MiniPlayerManager
                 .getInstanceOrNull()
@@ -572,9 +619,10 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
                     requestIdlePlaybackRelease = plan.requestIdlePlaybackRelease
                 )
         }
-        com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore.trimToSize(8)
-        com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore.clearCache()
+        com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore
+            .trimToSize(BACKGROUND_COVER_COLOR_CACHE_MAX_ENTRIES)
         com.android.purebilibili.core.cache.PlayUrlCache.clear()
+        com.android.purebilibili.data.repository.VideoRepository.clearVideoDetailCaches()
         com.android.purebilibili.data.repository.VideoRepository.clearSubtitleCueCache()
         NetworkModule.evictIdleConnections()
         Logger.d(PureApplicationRuntimeConfig.TAG, "🚨 onLowMemory, cleared all caches")
@@ -610,7 +658,14 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
         val appLanguage = SettingsManager.getAppLanguageSync(this)
         val themeMode = resolveThemeModePreference(themeModeValue)
         
-        val nightMode = when (themeMode) {
+        val schedule = SettingsManager.getCachedDarkThemeSchedule(this)
+        val localTime = java.util.Calendar.getInstance()
+        val minuteOfDay = localTime.get(java.util.Calendar.HOUR_OF_DAY) * 60 + localTime.get(java.util.Calendar.MINUTE)
+        val nightMode = if (schedule.enabled) {
+            if (com.android.purebilibili.feature.settings.isScheduledDarkTheme(schedule, minuteOfDay)) {
+                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+            } else androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+        } else when (themeMode) {
             AppThemeMode.FOLLOW_SYSTEM -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
             AppThemeMode.LIGHT -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
             AppThemeMode.DARK -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES

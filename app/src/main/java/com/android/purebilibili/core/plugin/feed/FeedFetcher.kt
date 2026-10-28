@@ -1,54 +1,72 @@
 package com.android.purebilibili.core.plugin.feed
 
-import com.android.purebilibili.core.network.NetworkModule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.ByteArrayOutputStream
 import java.nio.charset.Charset
-import java.util.concurrent.TimeUnit
 
 private const val FEED_BODY_LIMIT_BYTES = 2 * 1024 * 1024
 private const val FEED_REQUEST_TIMEOUT_MS = 8_000L
 
-private val feedHttpClient: OkHttpClient by lazy {
-    NetworkModule.okHttpClient.newBuilder()
-        .connectTimeout(6, TimeUnit.SECONDS)
-        .readTimeout(8, TimeUnit.SECONDS)
-        .callTimeout(8, TimeUnit.SECONDS)
-        .build()
-}
+internal class NativeArticleRedirect(val targetUrl: String) : java.io.IOException("此链接应由 B 站原生页面打开")
 
-suspend fun fetchArticleHtml(url: String): Result<String> = withContext(Dispatchers.IO) {
+suspend fun fetchArticleHtml(url: String): Result<String> = fetchReadableArticle(url).map { it.html }
+
+suspend fun fetchReadableArticle(url: String): Result<ReadableArticle> = withContext(Dispatchers.IO) {
     val call = if (isHttpFeedUrl(url)) {
-        feedHttpClient.newCall(Request.Builder().url(url.trim()).header("User-Agent", "Mozilla/5.0 BiliPai Feed").build())
+        publicContentHttpClient.newCall(Request.Builder().url(url.trim()).header("User-Agent", "Mozilla/5.0 BiliPai Reader").build())
     } else null
     if (call == null) return@withContext Result.failure(IllegalArgumentException("原文地址无效"))
-    coroutineContext[Job]?.invokeOnCompletion { call.cancel() }
     runCatching {
-        call.execute().use { response ->
-            if (!response.isSuccessful) error("原文请求失败 ${response.code}")
-            val stream = response.body.byteStream()
-            val buffer = ByteArray(8 * 1024)
-            val output = ByteArrayOutputStream()
-            while (true) {
-                val read = stream.read(buffer)
-                if (read < 0) break
-                if (output.size() + read > FEED_BODY_LIMIT_BYTES) error("原文内容超过 2MB")
-                output.write(buffer, 0, read)
-            }
-            val charset = response.body.contentType()?.charset(Charsets.UTF_8) ?: Charsets.UTF_8
-            val page = output.toString(charset.name())
-            extractArticleBody(page) ?: error("暂时无法提取原文正文")
+        // Keep cancellation attached until the body has been read and parsed, so
+        // leaving the article interrupts both waiting for headers and reading data.
+        suspendCancellableCoroutine<ReadableArticle> { continuation ->
+            continuation.invokeOnCancellation { call.cancel() }
+            call.enqueue(object : okhttp3.Callback {
+                override fun onFailure(call: okhttp3.Call, error: java.io.IOException) {
+                    continuation.resumeWith(Result.failure(error))
+                }
+
+                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                    val result = runCatching {
+                        response.use {
+                            if (com.android.purebilibili.core.util.isBilibiliWebHost(response.request.url.host)) {
+                                throw NativeArticleRedirect(response.request.url.toString())
+                            }
+                            if (!response.isSuccessful) error("原文请求失败 ${response.code}")
+                            val mediaType = response.body.contentType()
+                            if (mediaType != null && mediaType.subtype != "html" && mediaType.subtype != "xhtml+xml") {
+                                error("此链接不是可阅读的网页")
+                            }
+                            val stream = response.body.byteStream()
+                            val buffer = ByteArray(8 * 1024)
+                            val output = ByteArrayOutputStream()
+                            while (continuation.isActive) {
+                                val read = stream.read(buffer)
+                                if (read < 0) break
+                                if (output.size() + read > FEED_BODY_LIMIT_BYTES) error("原文内容超过 2MB")
+                                output.write(buffer, 0, read)
+                            }
+                            if (!continuation.isActive) throw kotlinx.coroutines.CancellationException()
+                            val charset = response.body.contentType()?.charset(Charsets.UTF_8) ?: Charsets.UTF_8
+                            val page = output.toString(charset.name())
+                            extractReadableArticle(page, response.request.url.toString())
+                                ?: error("暂时无法提取原文正文")
+                        }
+                    }
+                    continuation.resumeWith(result)
+                }
+            })
         }
     }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }
 }
@@ -87,7 +105,7 @@ suspend fun fetchFeedXmlConditional(
             lastModified?.takeIf { it.isNotBlank() }?.let { header("If-Modified-Since", it) }
         }
         .build()
-    val call = feedHttpClient.newCall(request)
+    val call = publicContentHttpClient.newCall(request)
     coroutineContext[Job]?.invokeOnCompletion { call.cancel() }
     try {
         withTimeout(FEED_REQUEST_TIMEOUT_MS) {
@@ -145,6 +163,7 @@ suspend fun loadFeedSources(
     val items = mutableListOf<ParsedFeedItem>()
     val errors = mutableListOf<String>()
     val updatedValidators = mutableMapOf<String, FeedConditionalValidators>()
+    var completedSources = 0
     fun publish(): FeedLoadSnapshot {
         val sorted = items.sortedWith(
             compareBy<ParsedFeedItem> { it.publishedEpochSec == null }
@@ -154,6 +173,8 @@ suspend fun loadFeedSources(
             items = sorted.toList(),
             errors = errors.toList(),
             validators = updatedValidators.toMap(),
+            completedSources = completedSources,
+            totalSources = sources.size,
         )
     }
     val gate = Semaphore(4)
@@ -170,6 +191,7 @@ suspend fun loadFeedSources(
                 }
             }
             val snapshot = synchronized(items) {
+                completedSources += 1
                 outcome
                     .onSuccess { parsed ->
                         if (parsed == null) {

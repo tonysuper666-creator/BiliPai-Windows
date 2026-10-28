@@ -29,14 +29,56 @@ internal const val TV_DANMAKU_BASE_TEXT_SIZE_DP = 20f
 
 private const val TV_DANMAKU_LINE_HEIGHT_MULTIPLIER = 1.6f
 private const val TV_DANMAKU_STROKE_WIDTH_PX = 1.5f
-private const val TV_DANMAKU_OPACITY = 0.85f
+private const val TV_DANMAKU_DEFAULT_OPACITY = 0.85f
 private const val TV_DANMAKU_SCROLL_DURATION_MS = 7_000L
 private const val TV_DANMAKU_PINNED_DURATION_MS = 4_000L
 private const val TV_DANMAKU_SEEK_THRESHOLD_MS = 2_000L
 private const val TV_DANMAKU_DRIFT_SYNC_INTERVAL_MS = 5_000L
 
-internal fun resolveTvDanmakuTextSizePx(density: Float): Float =
-    TV_DANMAKU_BASE_TEXT_SIZE_DP * density
+/**
+ * TV 弹幕渲染设置：遥控器档位选择（不提供连续滑杆），持久化于 [com.android.bilipai.tv.TvPreferences]。
+ * 默认值即此前的写死值，行为对老用户不变。public：经 public 的 TvAppViewModel/TvUiState 暴露。
+ */
+data class TvDanmakuSettings(
+    val displayArea: Float = TV_DANMAKU_DEFAULT_DISPLAY_AREA,
+    val textSizeDp: Float = TV_DANMAKU_BASE_TEXT_SIZE_DP,
+    val opacity: Float = TV_DANMAKU_DEFAULT_OPACITY,
+    val speedScale: Float = 1f,
+) {
+    companion object {
+        val TEXT_SIZE_OPTIONS = listOf(16f, 20f, 26f)
+        val AREA_OPTIONS = listOf(0.25f, 0.5f, 0.75f)
+        val OPACITY_OPTIONS = listOf(0.6f, 0.85f, 1f)
+        val SPEED_OPTIONS = listOf(0.8f, 1f, 1.25f)
+    }
+}
+
+internal fun tvDanmakuSizeLabel(textSizeDp: Float): String = when (textSizeDp) {
+    in 0f..17f -> "小"
+    in 17f..23f -> "标准"
+    else -> "大"
+}
+
+internal fun tvDanmakuAreaLabel(displayArea: Float): String = when {
+    displayArea <= 0.25f -> "紧凑（1/4 屏）"
+    displayArea <= 0.5f -> "标准（半屏）"
+    else -> "宽松（3/4 屏）"
+}
+
+internal fun tvDanmakuOpacityLabel(opacity: Float): String = when {
+    opacity <= 0.7f -> "较淡"
+    opacity <= 0.9f -> "标准"
+    else -> "不透明"
+}
+
+internal fun tvDanmakuSpeedLabel(speedScale: Float): String = when {
+    speedScale <= 0.9f -> "慢 0.8x"
+    speedScale <= 1.05f -> "标准 1.0x"
+    else -> "快 1.25x"
+}
+
+internal fun resolveTvDanmakuTextSizePx(density: Float, textSizeDp: Float = TV_DANMAKU_BASE_TEXT_SIZE_DP): Float =
+    textSizeDp * density
 
 /** TV 弹幕行数下限（与手机端 resolveDanmakuMinimumVisibleLines 对齐）。 */
 internal fun resolveTvDanmakuMinimumLines(displayArea: Float): Int = when {
@@ -65,18 +107,20 @@ internal fun resolveTvDanmakuLineCount(viewportHeightPx: Int, displayArea: Float
 private fun buildTvDanmakuRenderConfig(
     viewportHeightPx: Int,
     density: Float,
-    playSpeedPercent: Int
+    playSpeedPercent: Int,
+    settings: TvDanmakuSettings = TvDanmakuSettings(),
 ): DanmakuRenderConfig {
-    val textSizePx = resolveTvDanmakuTextSizePx(density)
+    val textSizePx = resolveTvDanmakuTextSizePx(density, settings.textSizeDp)
     return DanmakuRenderConfig(
-        alpha = (TV_DANMAKU_OPACITY * 255).toInt(),
+        alpha = (settings.opacity * 255).toInt(),
         textSizePx = textSizePx,
         strokeWidthPx = TV_DANMAKU_STROKE_WIDTH_PX,
         strokeColor = android.graphics.Color.BLACK,
-        scrollDurationMs = TV_DANMAKU_SCROLL_DURATION_MS,
+        // 速度档位越大滚动越快：时长按 speedScale 反比缩放，钳制在引擎可接受范围。
+        scrollDurationMs = (TV_DANMAKU_SCROLL_DURATION_MS / settings.speedScale).toLong().coerceIn(2_000L, 30_000L),
         lineHeightPx = textSizePx * TV_DANMAKU_LINE_HEIGHT_MULTIPLIER,
         lineMarginPx = 0f,
-        lineCount = resolveTvDanmakuLineCount(viewportHeightPx, TV_DANMAKU_DEFAULT_DISPLAY_AREA, textSizePx),
+        lineCount = resolveTvDanmakuLineCount(viewportHeightPx, settings.displayArea, textSizePx),
         topMarginPx = 0f,
         bottomMarginPx = 0f,
         pinnedDurationMs = TV_DANMAKU_PINNED_DURATION_MS,
@@ -94,6 +138,7 @@ internal fun TvDanmakuOverlay(
     session: SharedPlaybackSession,
     state: SharedPlaybackState,
     cid: Long,
+    settings: TvDanmakuSettings = TvDanmakuSettings(),
     modifier: Modifier = Modifier,
 ) {
     var renderView by remember { mutableStateOf<DanmakuRenderView?>(null) }
@@ -136,6 +181,7 @@ internal fun TvDanmakuOverlay(
                 viewportHeightPx = view.height,
                 density = view.resources.displayMetrics.density,
                 playSpeedPercent = (player.playbackParameters.speed * 100).toInt(),
+                settings = settings,
             )
         )
         engine.replaceWindow(
@@ -187,8 +233,23 @@ internal fun TvDanmakuOverlay(
                     viewportHeightPx = view.height,
                     density = view.resources.displayMetrics.density,
                     playSpeedPercent = (player.playbackParameters.speed * 100).toInt(),
+                    settings = settings,
                 )
             )
         }
+    }
+
+    // 设置档位变更热更新：引擎幂等，立即重放当前渲染配置（含暂停态）。
+    LaunchedEffect(renderView, loadedCid, cid, settings) {
+        val view = renderView ?: return@LaunchedEffect
+        if (loadedCid == 0L || loadedCid != cid) return@LaunchedEffect
+        view.engine.updateConfig(
+            buildTvDanmakuRenderConfig(
+                viewportHeightPx = view.height,
+                density = view.resources.displayMetrics.density,
+                playSpeedPercent = (player.playbackParameters.speed * 100).toInt(),
+                settings = settings,
+            )
+        )
     }
 }

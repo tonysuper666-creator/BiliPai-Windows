@@ -75,8 +75,8 @@ class PlaybackStallRecoveryPolicyTest {
     }
 
     @Test
-    fun `first frame and an alternate CDN are required`() {
-        assertFalse(
+    fun `startup without a first frame can recover but needs an alternate CDN`() {
+        assertTrue(
             resolvePlaybackStallRecoveryDecision(
                 playbackState = Player.STATE_BUFFERING,
                 playWhenReady = true,
@@ -100,6 +100,23 @@ class PlaybackStallRecoveryPolicyTest {
                 usesAdaptivePlayback = false
             ).shouldSwitchCdn
         )
+    }
+
+    @Test
+    fun `startup recovery handles a stalled short buffer but preserves a usable buffer`() {
+        fun decision(bufferMs: Long, playWhenReady: Boolean = true) = resolvePlaybackStallRecoveryDecision(
+            playbackState = Player.STATE_BUFFERING,
+            playWhenReady = playWhenReady,
+            firstFrameRendered = false,
+            forwardBufferDurationMs = bufferMs,
+            currentCdnIndex = 0,
+            cdnCandidateCount = 2,
+            attemptedCdnIndexes = setOf(0),
+            usesAdaptivePlayback = false,
+        )
+        assertTrue(decision(400L).shouldSwitchCdn)
+        assertFalse(decision(700L).shouldSwitchCdn)
+        assertFalse(decision(0L, playWhenReady = false).shouldSwitchCdn)
     }
 
     @Test
