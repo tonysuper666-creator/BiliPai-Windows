@@ -65,8 +65,11 @@ internal fun capturedPlaybackMediaHeaders(source: PlaybackSource): Map<String,St
  * All origin fields stay private to this in-memory registered request. */
 internal class DesktopMediaOriginHeaders(headers: Map<String, String>, private val allowedOrigins: Set<String>) {
     private val values = copyPlaybackStreamHeaders(headers)
+    fun allowsOrigin(request: Request): Boolean = request.url.origin() in allowedOrigins
+    fun explicitHeader(request: Request, name: String): String? =
+        if (allowsOrigin(request)) values.entries.firstOrNull { it.key.equals(name, ignoreCase = true) }?.value else null
     fun apply(request: Request): Request = request.newBuilder().apply {
-        val sameOrigin = request.url.origin() in allowedOrigins
+        val sameOrigin = allowsOrigin(request)
         values.forEach { (key, value) ->
             if (sameOrigin || key.lowercase() !in SENSITIVE_HEADERS) header(key, value)
             else removeHeader(key)
