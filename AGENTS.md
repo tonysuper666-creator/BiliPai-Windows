@@ -7,40 +7,32 @@ upstream tracking, final merges, packaging and the single desktop installation.
 
 ## Accepted baseline
 
-Read the shared registry before changing source. Its `acceptedHead` is the
-accepted Windows integration commit, not the upstream Android version. The full
+The accepted baseline is the current HEAD of `desktop/integration-263-claude-main`,
+the accepted Windows integration commit, not the upstream Android version. The full
 source baseline is v0.2.5 / 79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40;
 v0.3.4 / a69d4181a073aa3207def3fca43318dcf7ab2c70 is reused in explicit slices.
 Neither a branch name nor old README sections prove complete version parity.
 The old `work/BiliPai` alpha.9 checkout is not a development baseline.
 
-## Shared registration
+## Card registration
 
-For this local task the state directory is:
-`C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/.coordination`.
-Use the controller's current tool:
-`work/BiliPai-v025/desktop/tools/worktree-module-coordinator.py`.
+Coordination happens on the Multica issue, not in a local state directory. The card
+records a `write_scope` metadata value naming its base SHA, its branch, and its
+explicit `file:repo/path` or `prefix:repo/directory` write scopes. Before editing,
+read the `write_scope` of the other open cards and the open pull requests in the same
+project; if a range overlaps yours, write that on your card and hand the overlap to
+Mika to sequence.
 
-Root initializes and configures the registry. Before editing, register your clean
-linked worktree with its exact base SHA, module, optional chat ID, and explicit
-`file:repo/path` or `prefix:repo/directory` scopes. Review-only modules may use
-`--read-only`. Registration rejects old baselines, Root's checkout and conflicting
-write scopes. If an existing task already has edits or its scope must change,
-preserve those edits and submit the paths and commit/base to Root; do not reset,
-rebase, release another claim, or rewrite the registry to obtain admission.
-Root may use `register --adopt-committed` to preserve an existing clean descendant
-commit after checking its entire diff against explicitly approved scopes.
+Each card works in its own `multica repo checkout` worktree. Do not modify another
+agent's checkout and do not touch the shared Git index.
 
-Run `check --record-id UUID` before delivering. Commit only your own changes and
-run `deliver --record-id UUID`; send Root the exact commit and validation report.
-Delivery checks the real diff, including untracked paths, requires a clean
-worktree, and retains the claim. Root reviews, integrates and explicitly releases
-it after the participant stops work. An expired record still reserves its scope.
-Unknown or malformed state is preserved for Root to inspect.
+Commit only your own changes and open the pull request against
+`desktop/integration-263-claude-main`, unless the card names another base. Build
+files, version metadata, upstream tracking, final merges and packaging stay with the
+integration controller.
 
-The tool is a cooperating-agent contract, not a filesystem sandbox or an agent
-liveness detector. File timestamps and `ACTIVE` do not prove a chat is running.
-Do not claim coordination until the actual worktree and scope are registered.
+`write_scope` is a cooperating-agent contract, not a filesystem sandbox or an agent
+liveness detector. An empty overlap check does not prove another chat is idle.
 
 ## Development and verification
 
