@@ -90,4 +90,20 @@ class BilibiliLoginQrTest {
         assertEquals(payload, BiliPaiQrDecoder.decodeRaw(pixels, matrix.width, matrix.height))
         assertNull(BiliPaiQrDecoder.decode(pixels, matrix.width, matrix.height))
     }
+    @Test
+    fun `album sampling preserves phone screenshot QR detail within the decode budget`() {
+        assertEquals(1, resolveQrAlbumSampleSize(1080, 1920, 2048))
+        assertEquals(2, resolveQrAlbumSampleSize(1440, 3200, 2048))
+        assertEquals(2, resolveQrAlbumSampleSize(3200, 1440, 2048))
+        assertEquals(4, resolveQrAlbumSampleSize(1440, 6000, 2048))
+        assertEquals(1, resolveQrAlbumSampleSize(2048, 2048, 2048))
+    }
+
+    @Test
+    fun `album sampling rejects unreadable image dimensions`() {
+        assertNull(resolveQrAlbumSampleSize(-1, -1, 2048))
+        assertNull(resolveQrAlbumSampleSize(0, 1920, 2048))
+        assertNull(resolveQrAlbumSampleSize(1080, 1920, 0))
+    }
+
 }

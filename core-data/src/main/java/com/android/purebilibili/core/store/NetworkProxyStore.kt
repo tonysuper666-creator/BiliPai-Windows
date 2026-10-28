@@ -2,6 +2,7 @@ package com.android.purebilibili.core.store
 
 import android.content.Context
 import com.android.purebilibili.core.network.policy.AppHttpProxySettings
+import com.android.purebilibili.core.network.policy.ProxyRouteMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,6 +16,8 @@ object NetworkProxyStore {
     private const val KEY_ENABLED = "enabled"
     private const val KEY_HOST = "host"
     private const val KEY_PORT = "port"
+    private const val KEY_ROUTE_MODE = "route_mode"
+    private const val KEY_PROXIED_DOMAINS = "proxied_domains"
 
     @Volatile
     private var cached: AppHttpProxySettings = AppHttpProxySettings()
@@ -48,12 +51,15 @@ object NetworkProxyStore {
         val normalized = settings.copy(
             host = settings.host.trim(),
             portText = settings.portText.trim(),
+            proxiedDomains = settings.proxiedDomains.map { it.trim().lowercase() }.filter { it.isNotEmpty() },
         )
         appContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit()
             .putBoolean(KEY_ENABLED, normalized.enabled)
             .putString(KEY_HOST, normalized.host)
             .putString(KEY_PORT, normalized.portText)
+            .putString(KEY_ROUTE_MODE, normalized.routeMode.name)
+            .putStringSet(KEY_PROXIED_DOMAINS, normalized.proxiedDomains.toSet())
             .apply()
         cached = normalized
         mutableSettings.value = normalized
@@ -65,6 +71,14 @@ object NetworkProxyStore {
             enabled = prefs.getBoolean(KEY_ENABLED, false),
             host = prefs.getString(KEY_HOST, "").orEmpty(),
             portText = prefs.getString(KEY_PORT, "").orEmpty(),
+            routeMode = runCatching {
+                ProxyRouteMode.valueOf(prefs.getString(KEY_ROUTE_MODE, null).orEmpty())
+            }.getOrDefault(ProxyRouteMode.GLOBAL),
+            proxiedDomains = prefs.getStringSet(KEY_PROXIED_DOMAINS, emptySet())
+                .orEmpty()
+                .map { it.trim().lowercase() }
+                .filter { it.isNotEmpty() }
+                .sorted(),
         )
     }
 }

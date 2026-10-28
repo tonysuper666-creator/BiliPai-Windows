@@ -3,7 +3,6 @@ package com.android.purebilibili.feature.plugin
 import com.android.purebilibili.core.plugin.formatClockHour
 import kotlin.math.min
 
-internal const val EYE_PROTECTION_PLUGIN_ID = "eye_protection"
 internal const val EYE_WARM_FILTER_COLOR = 0xFFFFC07A
 private const val MINUTES_PER_DAY = 24 * 60
 private const val PLAYBACK_WEAKEN_FACTOR = 0.42f

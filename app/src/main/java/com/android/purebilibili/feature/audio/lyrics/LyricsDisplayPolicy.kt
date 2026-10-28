@@ -1,5 +1,16 @@
 package com.android.purebilibili.feature.audio.lyrics
 
+/** A display-only projection shared by cover previews and both lyric renderers. */
+internal fun resolveLyricsDisplayDocument(
+    document: LyricDocument?,
+    showTranslations: Boolean,
+): LyricDocument? {
+    if (document == null || showTranslations) return document
+    return document.copy(lines = document.lines.map {
+        it.copy(translations = emptyList(), romanization = null)
+    })
+}
+
 /**
  * Last line whose start is at or before [positionMs].
  * Unlike [resolveActiveLyricIndex] this never fails on inter-line gaps.
@@ -124,7 +135,7 @@ internal fun resolveDisplaySecondaryRows(
         ?.trim()
         ?.takeIf {
             it.isNotBlank() &&
-                needsPhoneticAnnotation(it) &&
+                needsPhoneticAnnotation(primaryText) &&
                 !isPseudoSecondaryLine(primaryText, it)
         }
     return displayTranslation to displayRomanization

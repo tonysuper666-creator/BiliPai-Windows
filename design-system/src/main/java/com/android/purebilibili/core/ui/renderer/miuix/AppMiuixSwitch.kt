@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.android.purebilibili.core.ui.components.appDesktopFocusableItemVisuals
 import top.yukonga.miuix.kmp.basic.Switch
+import top.yukonga.miuix.kmp.basic.SwitchDefaults
 
 @Composable
 internal fun AppMiuixSwitch(
@@ -17,6 +18,7 @@ internal fun AppMiuixSwitch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             enabled = enabled,
+            colors = SwitchDefaults.switchColors(),
             modifier = modifier.appDesktopFocusableItemVisuals(enabled && onCheckedChange != null),
         )
     }

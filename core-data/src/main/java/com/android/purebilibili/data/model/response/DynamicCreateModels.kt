@@ -6,8 +6,15 @@ import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class DynamicCreateFeedRequest(
-    val dyn_req: DynamicCreateFeedReq
+    val dyn_req: DynamicCreateFeedReq,
+    val web_repost_src: DynamicVideoRepostSource? = null,
 )
+
+@Serializable
+data class DynamicVideoRepostSource(val revs_id: DynamicVideoRepostResource)
+
+@Serializable
+data class DynamicVideoRepostResource(val rid: Long, val dyn_type: Int)
 
 @Serializable
 data class DynamicEditFeedRequest(
@@ -51,7 +58,10 @@ data class DynamicCreatePic(
 
 @Serializable
 data class DynamicCreateOption(
-    val private_pub: Int? = null
+    val private_pub: Int? = null,
+    val timer_pub_time: Long? = null,
+    val close_comment: Int? = null,
+    val up_choose_comment: Int? = null
 )
 
 @Serializable
@@ -93,7 +103,8 @@ data class DynamicCreateVoteInfo(
     val duration: Int,
     val options: List<DynamicCreateVoteOption>,
     val only_fans_level: Int = 0,
-    val vote_publisher: Long = 0
+    val vote_publisher: Long = 0,
+    val vote_id: Long? = null
 )
 
 @Serializable
@@ -126,6 +137,13 @@ data class DynamicCreateReserveData(
     val sid: Long = 0
 )
 
+@Serializable
+data class DynamicReserveInfoResponse(val code: Int = 0, val message: String = "", val data: DynamicReserveInfo? = null)
+
+@Serializable
+data class DynamicReserveInfo(val id: Long = 0, val title: String = "", val live_plan_start_time: Long = 0, val sub_type: Int = 0)
+
+@Serializable
 data class DynamicPublishDraft(
     val text: String,
     val title: String = "",
@@ -138,10 +156,31 @@ data class DynamicPublishDraft(
     val emotes: List<String> = emptyList(),
     val topic: DynamicPublishTopic? = null,
     val existingImages: List<DynamicCreatePic> = emptyList(),
+    val publishAtSeconds: Long? = null,
+    val replyOption: DynamicReplyOption? = DynamicReplyOption.ALLOW,
+    val richTokens: List<DynamicPublishToken>? = null,
+    val hasUnresolvedRichText: Boolean = false,
+    val unresolvedRichTextRanges: List<DynamicRichTextIssue> = emptyList(),
+    val hasUnlocatedRichText: Boolean = false,
+    val unlocatedRichTextItems: List<DynamicUnlocatedRichText> = emptyList(),
 )
 
+@Serializable
+data class DynamicUnlocatedRichText(val label: String)
+
+@Serializable
+data class DynamicRichTextIssue(val start: Int, val end: Int)
+
+@Serializable
+data class DynamicPublishToken(val start: Int, val end: Int, val type: Int, val bizId: String, val text: String)
+
+@Serializable
+enum class DynamicReplyOption { ALLOW, CLOSED, SELECTED }
+
+@Serializable
 data class DynamicPublishMention(val uid: Long, val name: String)
 
+@Serializable
 data class DynamicPublishTopic(val id: Long, val name: String)
 
 data class DynamicCreatedVote(
@@ -170,10 +209,24 @@ fun buildDynamicCreateContents(
     voteTitle: String,
     mentions: List<DynamicPublishMention> = emptyList(),
     emotes: List<String> = emptyList(),
+    richTokens: List<DynamicPublishToken>? = null,
 ): List<DynamicRepostContentItem> {
     val items = mutableListOf<DynamicRepostContentItem>()
     val trimmed = text.trim()
-    if (trimmed.isNotEmpty()) {
+    if (trimmed.isNotEmpty() && richTokens != null) {
+        val leading = text.length - text.trimStart().length
+        var cursor = 0
+        richTokens.sortedBy { it.start }.forEach { token ->
+            val start = token.start - leading
+            val end = token.end - leading
+            if (start >= cursor && end <= trimmed.length && start < end && trimmed.substring(start, end) == token.text) {
+                if (start > cursor) items += DynamicRepostContentItem(trimmed.substring(cursor, start), type = 1, biz_id = "")
+                items += DynamicRepostContentItem(token.text, type = token.type, biz_id = token.bizId)
+                cursor = end
+            }
+        }
+        if (cursor < trimmed.length) items += DynamicRepostContentItem(trimmed.substring(cursor), type = 1, biz_id = "")
+    } else if (trimmed.isNotEmpty()) {
         val specialNodes = buildList {
             mentions.filter { it.uid > 0L && it.name.isNotBlank() }.forEach { mention ->
                 add(Triple("@${mention.name} ", 2, mention.uid.toString()))
@@ -226,7 +279,11 @@ data class DynamicTopicSearchResponse(
 @Serializable
 data class DynamicTopicSearchData(
     val topic_items: List<DynamicTopicSearchItem> = emptyList(),
+    val page_info: DynamicTopicPageInfo? = null,
 )
+
+@Serializable
+data class DynamicTopicPageInfo(val has_more: Boolean? = null)
 
 @Serializable
 data class DynamicTopicSearchItem(

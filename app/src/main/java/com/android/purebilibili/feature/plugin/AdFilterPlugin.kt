@@ -1,6 +1,10 @@
 // 文件路径: feature/plugin/AdFilterPlugin.kt
 package com.android.purebilibili.feature.plugin
 
+import com.android.purebilibili.core.plugin.BuiltinPluginIds
+
+import com.android.purebilibili.core.ui.AppContentColors
+
 import coil3.request.crossfade
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
@@ -31,9 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
-import com.android.purebilibili.core.plugin.FeedPlugin
-import com.android.purebilibili.core.plugin.PluginCapability
-import com.android.purebilibili.core.plugin.PluginCapabilityManifest
+import com.android.purebilibili.core.plugin.BuiltinPlugin
+import com.android.purebilibili.plugin.sdk.FeedKind
+import com.android.purebilibili.plugin.sdk.FeedPlugin
+import com.android.purebilibili.plugin.sdk.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapabilityManifest
 import com.android.purebilibili.core.plugin.PluginManager
 import com.android.purebilibili.core.plugin.PluginStore
 import com.android.purebilibili.core.network.NetworkModule
@@ -59,7 +65,6 @@ import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 
 private const val TAG = "AdFilterPlugin"
-internal const val ADFILTER_PLUGIN_ID = "adfilter"
 private const val AD_FILTER_CUSTOM_LIST_PREVIEW_LIMIT = 3
 private const val AD_FILTER_PROFILE_REFRESH_LIMIT = 10
 private val AD_FILTER_EVENT_TIME_FORMATTER: DateTimeFormatter =
@@ -107,7 +112,7 @@ internal fun removeAdFilterCustomListItem(
 
 /**
  * 🚫 去广告增强插件 v2.0
- * 
+ *
  * 功能：
  * 1. 过滤广告/推广/商业合作内容
  * 2. 过滤标题党视频
@@ -115,9 +120,9 @@ internal fun removeAdFilterCustomListItem(
  * 4. UP主拉黑（按名称或MID）
  * 5. 自定义关键词屏蔽
  */
-class AdFilterPlugin : FeedPlugin {
-    
-    override val id = ADFILTER_PLUGIN_ID
+class AdFilterPlugin : BuiltinPlugin, FeedPlugin<VideoItem> {
+
+    override val id = BuiltinPluginIds.AD_FILTER
     override val name = "去广告增强"
     override val description = "过滤广告、拉黑UP主、屏蔽关键词"
     override val version = "2.0.1"
@@ -135,17 +140,17 @@ class AdFilterPlugin : FeedPlugin {
             PluginCapability.PLUGIN_STORAGE
         )
     )
-    
+
     private var config: AdFilterConfig = AdFilterConfig()
     private var filteredCount = 0
-    
+
     //  配置版本号，用于检测是否需要重载
     @Volatile
     private var configVersion = 0
     @Volatile
     private var lastConfigReloadMs = 0L
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    
+
     //  内置广告关键词（强化版）
     private val AD_KEYWORDS = listOf(
         // 商业合作类
@@ -159,7 +164,7 @@ class AdFilterPlugin : FeedPlugin {
         // 游戏推广类
         "新游推荐", "游戏推广", "首发", "公测", "不删档"
     )
-    
+
     //  标题党关键词（强化版）
     private val CLICKBAIT_KEYWORDS = listOf(
         "震惊", "惊呆了", "太厉害了", "绝了", "离谱", "疯了",
@@ -169,28 +174,28 @@ class AdFilterPlugin : FeedPlugin {
         "99%的人不知道", "你一定不知道", "居然是这样",
         "原来是这样", "真相了", "曝光", "揭秘", "独家"
     )
-    
+
     override suspend fun onEnable() {
         filteredCount = 0
         loadConfigSuspend()
         Logger.d(TAG, " 去广告增强v2.0已启用")
         Logger.d(TAG, " 拉黑UP主: ${config.blockedUpNames.size}个, 屏蔽关键词: ${config.blockedKeywords.size}个")
     }
-    
+
     override suspend fun onDisable() {
         Logger.d(TAG, "🔴 去广告增强已禁用，本次过滤了 $filteredCount 条内容")
         filteredCount = 0
     }
-    
-    override fun shouldShowItem(item: VideoItem): Boolean {
+
+    override fun shouldShowItem(item: VideoItem, feedKind: FeedKind): Boolean {
         //  每次过滤前确保配置是最新的
         reloadConfigAsync()
-        
+
         val title = item.title
         val upName = item.owner.name
         val upMid = item.owner.mid
         val viewCount = item.stat.view
-        
+
         // 1️⃣ 检查UP主拉黑列表（按名称） - 支持模糊匹配和简繁体
         val blockedName = findBlockedUpName(upName)
         if (blockedName != null) {
@@ -203,7 +208,7 @@ class AdFilterPlugin : FeedPlugin {
             Logger.d(TAG, "🚫 拉黑UP主[名称]: $upName - $title (列表: ${config.blockedUpNames})")
             return false
         }
-        
+
         // 2️⃣ 检查UP主拉黑列表（按MID）
         if (config.blockedUpMids.contains(upMid)) {
             filteredCount++
@@ -215,7 +220,7 @@ class AdFilterPlugin : FeedPlugin {
             Logger.d(TAG, "🚫 拉黑UP主[MID]: $upMid - $title")
             return false
         }
-        
+
         // 3️⃣ 检测广告/推广关键词
         if (config.filterSponsored) {
             val keyword = AD_KEYWORDS.firstOrNull { title.contains(it, ignoreCase = true) }
@@ -230,7 +235,7 @@ class AdFilterPlugin : FeedPlugin {
                 return false
             }
         }
-        
+
         // 4️⃣ 检测标题党
         if (config.filterClickbait) {
             val keyword = CLICKBAIT_KEYWORDS.firstOrNull { title.contains(it, ignoreCase = true) }
@@ -245,7 +250,7 @@ class AdFilterPlugin : FeedPlugin {
                 return false
             }
         }
-        
+
         // 5️⃣ 检测自定义屏蔽关键词
         if (config.blockedKeywords.isNotEmpty()) {
             for (keyword in config.blockedKeywords) {
@@ -261,7 +266,7 @@ class AdFilterPlugin : FeedPlugin {
                 }
             }
         }
-        
+
         // 6️⃣ 过滤低质量视频（播放量过低）
         if (config.filterLowQuality && viewCount > 0 && viewCount < config.minViewCount) {
             filteredCount++
@@ -273,10 +278,10 @@ class AdFilterPlugin : FeedPlugin {
             Logger.d(TAG, "🚫 低播放量: $title (播放: $viewCount)")
             return false
         }
-        
+
         return true
     }
-    
+
     /**
      *  检查UP主名称是否在拉黑列表中
      * 支持：精确匹配、模糊匹配(contains)、简繁体转换
@@ -287,10 +292,10 @@ class AdFilterPlugin : FeedPlugin {
 
     private fun findBlockedUpName(upName: String): String? {
         val normalizedUpName = normalizeChineseChars(upName.lowercase())
-        
+
         return config.blockedUpNames.firstOrNull { blockedName ->
             val normalizedBlocked = normalizeChineseChars(blockedName.lowercase())
-            
+
             // 精确匹配（忽略大小写和简繁体）
             normalizedUpName == normalizedBlocked ||
             // 模糊匹配：UP名包含拉黑词
@@ -334,7 +339,7 @@ class AdFilterPlugin : FeedPlugin {
             upMid = record.upMid.takeIf { it > 0L } ?: profile.mid
         )
     }
-    
+
     /**
      *  简繁体字符转换表
      * 常用字符的简体→繁体映射，方便双向比较
@@ -350,7 +355,7 @@ class AdFilterPlugin : FeedPlugin {
         '脑' to '腦', '乐' to '樂', '欢' to '歡', '爱' to '愛', '国' to '國',
         '华' to '華', '东' to '東', '车' to '車', '马' to '馬', '鸟' to '鳥'
     )
-    
+
     /**
      * 将字符串中的繁体字统一转换为简体字（用于比较）
      */
@@ -360,7 +365,7 @@ class AdFilterPlugin : FeedPlugin {
             traditionalToSimplified[char] ?: char
         }.joinToString("")
     }
-    
+
     //  公开方法：添加UP主到拉黑列表
     fun blockUploader(name: String, mid: Long) {
         if (name.isNotBlank() && !config.blockedUpNames.contains(name)) {
@@ -372,7 +377,7 @@ class AdFilterPlugin : FeedPlugin {
         saveConfig()
         Logger.d(TAG, "➕ 已拉黑UP主: $name (MID: $mid)")
     }
-    
+
     //  公开方法：移除UP主拉黑
     fun unblockUploader(name: String, mid: Long) {
         config = config.copy(
@@ -382,7 +387,7 @@ class AdFilterPlugin : FeedPlugin {
         saveConfig()
         Logger.d(TAG, "➖ 已解除拉黑: $name (MID: $mid)")
     }
-    
+
     private fun saveConfig() {
         ioScope.launch {
             try {
@@ -393,7 +398,7 @@ class AdFilterPlugin : FeedPlugin {
             }
         }
     }
-    
+
     private suspend fun loadConfigSuspend() {
         try {
             val context = PluginManager.getContext()
@@ -405,7 +410,7 @@ class AdFilterPlugin : FeedPlugin {
             Logger.e(TAG, "加载配置失败", e)
         }
     }
-    
+
     /**
      *  同步重载配置
      * 确保每次过滤使用最新的拉黑列表
@@ -414,7 +419,7 @@ class AdFilterPlugin : FeedPlugin {
         val now = System.currentTimeMillis()
         if (now - lastConfigReloadMs < 1000L) return
         lastConfigReloadMs = now
-        
+
         ioScope.launch {
             try {
                 val context = PluginManager.getContext()
@@ -433,7 +438,7 @@ class AdFilterPlugin : FeedPlugin {
             }
         }
     }
-    
+
     @Composable
     override fun SettingsContent() {
         val context = LocalContext.current
@@ -447,7 +452,7 @@ class AdFilterPlugin : FeedPlugin {
         var keywordListExpanded by remember { mutableStateOf(false) }
         var insightRecords by remember { mutableStateOf<List<AdFilterRecord>>(emptyList()) }
         var cachedUpProfiles by remember { mutableStateOf<List<AdFilterUpProfile>>(emptyList()) }
-        
+
         // 输入对话框状态
         var showAddUpDialog by remember { mutableStateOf(false) }
         var showAddKeywordDialog by remember { mutableStateOf(false) }
@@ -456,7 +461,7 @@ class AdFilterPlugin : FeedPlugin {
             config = updatedConfig
             scope.launch { PluginStore.setConfigJson(context, id, Json.encodeToString(updatedConfig)) }
         }
-        
+
         // 加载配置
         LaunchedEffect(Unit) {
             loadConfigSuspend()
@@ -481,7 +486,7 @@ class AdFilterPlugin : FeedPlugin {
                 cachedUpProfiles = cachedUpProfiles
             )
         }
-        
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -489,7 +494,7 @@ class AdFilterPlugin : FeedPlugin {
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
             // ========== 过滤开关 ==========
-            
+
             // 商业合作过滤
             AppSwitchPreference(
                 icon = Icons.Outlined.Close,
@@ -501,11 +506,11 @@ class AdFilterPlugin : FeedPlugin {
                     config = config.copy(filterSponsored = newValue)
                     scope.launch { PluginStore.setConfigJson(context, id, Json.encodeToString(config)) }
                 },
-                iconTint = MaterialTheme.colorScheme.error
+                iconTint = AppContentColors.error()
             )
-            
+
             AppHorizontalDivider(modifier = Modifier.padding(start = 56.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(0.5f))
-            
+
             // 标题党过滤
             AppSwitchPreference(
                 icon = Icons.Outlined.Star,
@@ -519,9 +524,9 @@ class AdFilterPlugin : FeedPlugin {
                 },
                 iconTint = MaterialTheme.colorScheme.tertiary
             )
-            
+
             AppHorizontalDivider(modifier = Modifier.padding(start = 56.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(0.5f))
-            
+
             // 低质量过滤
             AppSwitchPreference(
                 icon = Icons.Outlined.Close,
@@ -533,15 +538,15 @@ class AdFilterPlugin : FeedPlugin {
                     config = config.copy(filterLowQuality = newValue)
                     scope.launch { PluginStore.setConfigJson(context, id, Json.encodeToString(config)) }
                 },
-                iconTint = MaterialTheme.colorScheme.onSurfaceVariant
+                iconTint = AppContentColors.secondaryText()
             )
-            
+
             Spacer(modifier = Modifier.height(16.dp))
 
             AdFilterInsightPanel(summary = insightSummary)
 
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             AdFilterCustomListSection(
                 title = "UP主拉黑",
                 items = blockedUpNames,
@@ -549,7 +554,7 @@ class AdFilterPlugin : FeedPlugin {
                 emptyText = "暂无拉黑的UP主",
                 expanded = upListExpanded,
                 icon = Icons.Outlined.Person,
-                itemIconTint = MaterialTheme.colorScheme.error,
+                itemIconTint = AppContentColors.error(),
                 addButtonText = "添加UP主拉黑",
                 onExpandedChange = { upListExpanded = it },
                 onAddClick = { showAddUpDialog = true },
@@ -560,14 +565,14 @@ class AdFilterPlugin : FeedPlugin {
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             AdFilterCustomListSection(
                 title = "自定义屏蔽关键词",
                 items = blockedKeywords,
                 emptyText = "暂无自定义屏蔽词",
                 expanded = keywordListExpanded,
                 icon = Icons.Outlined.Tag,
-                itemIconTint = MaterialTheme.colorScheme.error,
+                itemIconTint = AppContentColors.error(),
                 addButtonText = "添加屏蔽关键词",
                 onExpandedChange = { keywordListExpanded = it },
                 onAddClick = { showAddKeywordDialog = true },
@@ -577,9 +582,9 @@ class AdFilterPlugin : FeedPlugin {
                 }
             )
         }
-        
+
         // ========== 对话框 ==========
-        
+
         // 添加UP主对话框
         if (showAddUpDialog) {
             AppAlertDialog(
@@ -620,7 +625,7 @@ class AdFilterPlugin : FeedPlugin {
                 }
             )
         }
-        
+
         // 添加关键词对话框
         if (showAddKeywordDialog) {
             AppAlertDialog(
@@ -772,22 +777,22 @@ private fun AdFilterInsightPanel(summary: AdFilterInsightSummary) {
                     text = "过滤效果",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = AppContentColors.primaryText()
                 )
                 AppText(
                     text = "展示最近实际隐藏的视频",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
             }
             AppSurface(
                 shape = AppShapes.container(ContainerLevel.Pill),
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                color = AppContentColors.accent().copy(alpha = 0.12f)
             ) {
                 AppText(
                     text = "${summary.totalFilteredCount} 条",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppContentColors.accent(),
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                 )
@@ -861,14 +866,14 @@ private fun AdFilterStatTile(
         AppText(
             text = title,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         AppText(
             text = value,
             style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = AppContentColors.primaryText(),
             fontWeight = FontWeight.SemiBold,
             maxLines = 1
         )
@@ -886,7 +891,7 @@ private fun AdFilterRecordSection(
         AppText(
             text = title,
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
+            color = AppContentColors.accent(),
             fontWeight = FontWeight.SemiBold
         )
         if (records.isEmpty()) {
@@ -901,7 +906,7 @@ private fun AdFilterRecordSection(
                 AppText(
                     text = emptyText,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
             }
         } else {
@@ -964,7 +969,7 @@ private fun AdFilterRecordCard(
             AppText(
                 text = record.videoTitle.ifBlank { "未知视频" },
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -988,7 +993,7 @@ private fun AdFilterRecordCard(
                 AppText(
                     text = record.upName.ifBlank { "未知 UP" },
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -1005,7 +1010,7 @@ private fun AdFilterRecordCard(
             AppText(
                 text = "播放 ${FormatUtils.formatStat(record.viewCount.toLong())}",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
         }
     }
@@ -1051,12 +1056,12 @@ private fun AdFilterDetailLine(
         AppText(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = AppContentColors.secondaryText()
         )
         AppText(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = AppContentColors.primaryText()
         )
     }
 }
@@ -1065,12 +1070,12 @@ private fun AdFilterDetailLine(
 private fun AdFilterChip(text: String) {
     AppSurface(
         shape = AppShapes.container(ContainerLevel.Pill),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+        color = AppContentColors.accent().copy(alpha = 0.1f)
     ) {
         AppText(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary,
+            color = AppContentColors.accent(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
@@ -1145,7 +1150,7 @@ private fun AdFilterCustomListSection(
                 text = title,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.accent(),
                 modifier = Modifier.weight(1f)
             )
             AppSurface(
@@ -1155,7 +1160,7 @@ private fun AdFilterCustomListSection(
                 AppText(
                     text = summary.countText,
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
                 )
             }
@@ -1166,7 +1171,7 @@ private fun AdFilterCustomListSection(
                     Icons.Outlined.KeyboardArrowDown
                 },
                 contentDescription = if (expanded) "收起$title" else "展开$title",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.68f),
+                tint = AppContentColors.secondaryText().copy(alpha = 0.68f),
                 modifier = Modifier
                     .padding(start = 6.dp)
                     .size(18.dp)
@@ -1176,7 +1181,7 @@ private fun AdFilterCustomListSection(
         AppText(
             text = summary.previewText,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
             modifier = Modifier.padding(bottom = if (summary.hiddenCountText == null) 0.dp else 2.dp)
         )
 
@@ -1185,7 +1190,7 @@ private fun AdFilterCustomListSection(
                 AppText(
                     text = hiddenCountText,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.72f)
+                    color = AppContentColors.accent().copy(alpha = 0.72f)
                 )
             }
         }
@@ -1210,7 +1215,7 @@ private fun AdFilterCustomListSection(
                             AppText(
                                 text = item,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = AppContentColors.primaryText(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
@@ -1218,7 +1223,7 @@ private fun AdFilterCustomListSection(
                                 AppText(
                                     text = "已过滤 ${blockedUpProfile.filteredCount} 条",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = AppContentColors.secondaryText()
                                 )
                             }
                         }
@@ -1229,7 +1234,7 @@ private fun AdFilterCustomListSection(
                             AppIcon(
                                 Icons.Outlined.Close,
                                 contentDescription = "移除$item",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                tint = AppContentColors.secondaryText(),
                                 modifier = Modifier.size(16.dp)
                             )
                         }
@@ -1259,11 +1264,11 @@ data class AdFilterConfig(
     val filterClickbait: Boolean = true,    // 过滤标题党
     val filterLowQuality: Boolean = false,  // 过滤低质量
     val minViewCount: Int = 1000,           // 最低播放量
-    
+
     // UP主拉黑
     val blockedUpNames: List<String> = emptyList(),  // 拉黑UP主名称
     val blockedUpMids: List<Long> = emptyList(),     // 拉黑UP主MID
-    
+
     // 自定义关键词
     val blockedKeywords: List<String> = emptyList()  // 自定义屏蔽词
 )

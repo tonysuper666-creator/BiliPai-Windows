@@ -1,6 +1,6 @@
 package com.android.purebilibili.feature.video.viewmodel
 
-import com.android.purebilibili.core.plugin.SkipAction
+import com.android.purebilibili.plugin.sdk.SkipAction
 import com.android.purebilibili.data.model.response.Owner
 import com.android.purebilibili.data.model.response.SponsorCategory
 import com.android.purebilibili.data.model.response.ViewInfo
@@ -67,6 +67,17 @@ class VideoPlaybackViewModelSponsorBlockPolicyTest {
 
         assertFalse(state.visible)
         assertNull(state.segmentId)
+    }
+
+    @Test
+    fun nullAction_preservesExistingSkipUiState() {
+        val previous = SponsorSkipUiState(
+            visible = true,
+            segmentId = "segment",
+            skipToMs = 15_000L,
+            label = "跳过恰饭",
+        )
+        assertEquals(previous, reduceSponsorSkipUiState(previous, null))
     }
 
     @Test

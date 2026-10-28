@@ -14,8 +14,7 @@ internal val allDynamicTabSpecs: List<DynamicTabSpec> = listOf(
     DynamicTabSpec(id = "all", title = "全部", logicalIndex = 0),
     DynamicTabSpec(id = "video", title = "投稿", logicalIndex = 1),
     DynamicTabSpec(id = "pgc", title = "番剧", logicalIndex = 2),
-    DynamicTabSpec(id = "article", title = "专栏", logicalIndex = 3),
-    DynamicTabSpec(id = "up", title = "UP", logicalIndex = 4)
+    DynamicTabSpec(id = "article", title = "专栏", logicalIndex = 3)
 )
 
 internal val defaultDynamicTabVisibleIds: Set<String> = allDynamicTabSpecs.map { it.id }.toSet()
@@ -82,12 +81,6 @@ internal fun shouldAllowDynamicTabVisibilityToggleOff(
     targetTabId: String
 ): Boolean {
     return !(targetTabId in currentVisibleTabIds && currentVisibleTabIds.size <= 1)
-}
-
-internal fun isDynamicUserTabVisible(
-    visibleTabs: List<DynamicTabSpec>
-): Boolean {
-    return visibleTabs.any { it.logicalIndex == 4 }
 }
 
 internal fun resolveDynamicSettledLogicalTab(

@@ -26,7 +26,8 @@ internal fun PlayerFlowBackground(
     animate: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
-    val drift = if (animate && LocalPlayerSurfaceActive.current) {
+    val animationGate = com.android.purebilibili.core.ui.rememberDecorativeAnimationGate()
+    val drift = if (animate && LocalPlayerSurfaceActive.current && animationGate.active) {
         val transition = rememberInfiniteTransition(label = "player_flow_background")
         val value by transition.animateFloat(
             initialValue = 0f,
@@ -41,7 +42,7 @@ internal fun PlayerFlowBackground(
     } else {
         0.3f
     }
-    Canvas(modifier = modifier.fillMaxSize().background(palette.middle)) {
+    Canvas(modifier = modifier.fillMaxSize().background(palette.middle).then(animationGate.modifier)) {
         val w = size.width
         val h = size.height
         val t = drift * Math.PI.toFloat() * 2f

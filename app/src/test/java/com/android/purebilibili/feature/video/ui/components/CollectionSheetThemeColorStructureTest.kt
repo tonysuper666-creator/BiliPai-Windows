@@ -13,7 +13,7 @@ class CollectionSheetThemeColorStructureTest {
             "src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSheet.kt"
         ).readText()
 
-        assertTrue(source.contains("MaterialTheme.colorScheme.primary"))
+        assertTrue(source.contains("AppContentColors.accent()"))
         assertFalse(source.contains("iOSBlue"))
     }
 }

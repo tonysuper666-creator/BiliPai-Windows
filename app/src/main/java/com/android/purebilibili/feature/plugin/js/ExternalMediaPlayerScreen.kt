@@ -2,6 +2,8 @@
 
 package com.android.purebilibili.feature.plugin.js
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -52,7 +54,10 @@ import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
 import com.android.purebilibili.core.util.layoutHinges
 import com.android.purebilibili.danmaku.engine.DanmakuItem
 import com.android.purebilibili.danmaku.engine.DanmakuRenderView
+import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig
 import com.android.purebilibili.danmaku.engine.DanmakuWindow
+import com.android.purebilibili.feature.video.danmaku.resolveDanmakuStrokeWidthPx
+import com.android.purebilibili.feature.video.danmaku.resolveDanmakuTextSizePx
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,6 +101,16 @@ fun ExternalMediaPlayerScreen(
     var danmakuEnabled by remember(request?.launchId) { mutableStateOf(true) }
     var danmakuItems by remember(request?.launchId) { mutableStateOf<List<DanmakuItem>>(emptyList()) }
     val danmakuRenderView = remember(context) { DanmakuRenderView(context) }
+    val systemDensity = context.resources.displayMetrics.density
+    val danmakuRenderConfig = remember(systemDensity) {
+        // The top bar and stream selector remain visible; this surface is not fullscreen.
+        val textSizePx = resolveDanmakuTextSizePx(systemDensity, fontScale = 1f, isFullscreen = false)
+        DanmakuRenderConfig(
+            textSizePx = textSizePx,
+            strokeWidthPx = resolveDanmakuStrokeWidthPx(systemDensity, strokeWidth = 1.5f),
+            lineHeightPx = textSizePx * (64f / 48f)
+        )
+    }
 
     DisposableEffect(danmakuRenderView) {
         onDispose {
@@ -194,7 +209,7 @@ fun ExternalMediaPlayerScreen(
             ) {
                 AppText(
                     text = "播放请求已失效，请从插件内容重新打开",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
             }
             return@AppScaffold
@@ -235,7 +250,13 @@ fun ExternalMediaPlayerScreen(
                         modifier = Modifier
                             .fillMaxSize(),
                         factory = {
-                            danmakuRenderView.apply { setRendererTouchable(false) }
+                            danmakuRenderView.apply {
+                                setRendererTouchable(false)
+                                engine.updateConfig(danmakuRenderConfig)
+                            }
+                        },
+                        update = { view ->
+                            view.engine.updateConfig(danmakuRenderConfig)
                         }
                     )
                 }

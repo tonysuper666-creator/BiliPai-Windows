@@ -8,6 +8,7 @@ import coil3.imageLoader
 import com.android.purebilibili.core.cache.PlayUrlCache
 import com.android.purebilibili.core.cooldown.PlaybackCooldownManager
 import com.android.purebilibili.core.player.PlaybackMediaCache
+import com.android.purebilibili.core.store.FavoriteFolderCoverCache
 import com.android.purebilibili.core.store.FollowingCacheStore
 import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.data.repository.DanmakuRepository
@@ -207,6 +208,7 @@ object CacheUtils {
 
             if (CacheClearTarget.PLAYBACK_QUALITY in targets) {
                 PlayUrlCache.clear()
+                VideoRepository.clearVideoDetailCaches()
                 PlaybackCooldownManager.clearAll()
                 Logger.d(TAG, " Playback quality cache cleared")
             }
@@ -246,6 +248,7 @@ object CacheUtils {
 
             if (CacheClearTarget.APP_METADATA in targets) {
                 FollowingCacheStore.clear(context)
+                FavoriteFolderCoverCache.clear(context)
                 com.android.purebilibili.core.network.WbiKeyManager.invalidateCache()
                 Logger.d(TAG, " App metadata cache cleared")
             }
@@ -263,6 +266,7 @@ object CacheUtils {
         // 内存缓存
         context.imageLoader.memoryCache?.clear()
         PlayUrlCache.clear()
+        VideoRepository.clearVideoDetailCaches()
         VideoRepository.clearSubtitleCueCache()
         DanmakuRepository.clearDanmakuCache()
         emit(ClearProgress(20, "内存缓存已清除"))
@@ -339,6 +343,7 @@ object CacheUtils {
         val memorySize = breakdown.memoryCache
         context.imageLoader.memoryCache?.clear()
         PlayUrlCache.clear()
+        VideoRepository.clearVideoDetailCaches()
         VideoRepository.clearSubtitleCueCache()
         DanmakuRepository.clearDanmakuCache()
         clearedSize += memorySize
@@ -375,6 +380,7 @@ object CacheUtils {
         
         // 应用缓存
         FollowingCacheStore.clear(context)
+        FavoriteFolderCoverCache.clear(context)
         com.android.purebilibili.core.network.WbiKeyManager.invalidateCache()
         PlaybackCooldownManager.clearAll()
         Logger.clearPrivateLogArtifacts(context)

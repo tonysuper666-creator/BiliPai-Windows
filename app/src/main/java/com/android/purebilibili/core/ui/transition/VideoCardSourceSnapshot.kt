@@ -2,6 +2,7 @@ package com.android.purebilibili.core.ui.transition
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import kotlin.math.roundToInt
 
 internal enum class VideoCardSourceLayout {
@@ -25,6 +26,8 @@ internal data class VideoCardSourceInfoPresentation(
      * When false, those live on the cover overlay and must not appear under the title.
      */
     val showStatsInInfo: Boolean = false,
+    /** Stacked feed cards place the uploader above off-cover statistics. */
+    val ownerBeforeStats: Boolean = false,
     /**
      * Whether duration is painted in the source card's information region.
      *
@@ -88,6 +91,7 @@ internal data class VideoCardSourceChromeSnapshot(
     val danmakuText: String = "",
     val durationText: String = "",
     val followed: Boolean = false,
+    val recommendationReason: String = "",
     /** What the list info column actually showed at click. */
     val infoPresentation: VideoCardSourceInfoPresentation = VideoCardSourceInfoPresentation(),
     /** What the list cover actually painted at click. */
@@ -99,6 +103,8 @@ internal data class VideoCardSourceChromeSnapshot(
     /** Coil `size(w,h)` from list HomeCoverRequestSpec; 0 = omit size(). */
     val coverDecodeWidthPx: Int = 0,
     val coverDecodeHeightPx: Int = 0,
+    /** Opaque click-time information plate, including the wallpaper behind its tint. */
+    val infoContainerColor: Color? = null,
     /** Compact playback bar uses an early source-chrome handoff on return. */
     val isNowPlayingBar: Boolean = false,
 )
@@ -119,9 +125,11 @@ internal fun resolveVideoCardSourceInfoPresentation(
     ownerBeforePublish: Boolean = false,
     useTintedInfoSurface: Boolean = false,
     showOverflowMenu: Boolean = false,
+    ownerBeforeStats: Boolean = false,
 ): VideoCardSourceInfoPresentation = VideoCardSourceInfoPresentation(
     publishTimeText = publishTimeText.trim(),
     showStatsInInfo = showStatsInInfo,
+    ownerBeforeStats = ownerBeforeStats,
     showDurationInInfo = showDurationInInfo,
     ownerBeforePublish = ownerBeforePublish,
     useTintedInfoSurface = useTintedInfoSurface,

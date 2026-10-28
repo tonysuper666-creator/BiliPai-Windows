@@ -17,8 +17,9 @@ def require(condition, message):
 
 settings = (ROOT / 'settings.gradle.kts').read_text()
 allowed_dependencies = {
-    'app-tv': {'core-data', 'core-player', 'network-core', 'settings-core', 'danmaku-engine', 'design-tokens'},
+    'app-tv': {'core-data', 'core-player', 'network-core', 'settings-core', 'danmaku-engine', 'design-tokens', 'brand-motion'},
     'design-tokens': set(),
+    'brand-motion': set(),
     'core-data': {'network-core', 'settings-core'},
     'core-player': {'core-data', 'network-core', 'settings-core', 'danmaku-engine', 'dolby-ffmpeg-decoder'},
 }
@@ -55,7 +56,7 @@ for resource in (ROOT / 'app-tv/src/main').rglob('*.xml'):
 
 # Migrated top-level models must not remain in both app and a shared module.
 symbols = {}
-for module in ('app', 'core-data', 'core-player', 'app-tv'):
+for module in ('app', 'core-data', 'core-player', 'app-tv', 'brand-motion'):
     for source in (ROOT / module / 'src/main/java').rglob('*.kt'):
         text = source.read_text()
         package = re.search(r'^package\s+([\w.]+)', text, re.M)

@@ -1,5 +1,9 @@
 package com.android.purebilibili.feature.plugin
 
+import com.android.purebilibili.plugin.sdk.CdnLineDiagnostic
+
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -59,7 +63,7 @@ internal fun CdnTransferPanel(
             AppText(
                 if (active > 0) "正在取流 · ${cdnSpeed(state.speedHistory.lastOrNull() ?: 0)}" else "等待媒体请求 · 已缓存内容播放时无需下载",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
@@ -67,7 +71,7 @@ internal fun CdnTransferPanel(
                     AppText(
                         if (experimentalRewriteEnabled) parallelUnavailableReason ?: "先关闭实验性 URL 改写，再使用并发下载" else "Wi-Fi 下按缓冲自动调节，最多 4 个分块请求；失败自动回退",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                 }
                 AppSwitch(
@@ -80,7 +84,7 @@ internal fun CdnTransferPanel(
             AppText(
                 "网络读取 ${cdnBytes(state.networkBytes)} · 慢块补救 ${state.rescueCount} 次 · 续传 ${state.resumedCount} 次 · 单连接回退 ${state.fallbackCount} 次",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
             if (state.speedHistory.isNotEmpty()) {
                 var showHistory by remember { mutableStateOf(false) }
@@ -127,7 +131,7 @@ internal fun CdnTransferPanel(
                                 else -> "等待传输样本"
                             },
                             style = MaterialTheme.typography.labelSmall,
-                            color = if (cooling) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                            color = if (cooling) AppContentColors.error() else AppContentColors.secondaryText()
                         )
                         AppLinearProgressIndicator(
                             progress = { ((node?.speedBps ?: 0).toFloat() / highestSpeed).coerceIn(0f, 1f) },
@@ -156,7 +160,7 @@ internal fun CdnTransferPanel(
                 AppText(
                     "请先播放 B 站视频或音乐，让播放器获取媒体地址；已缓存的内容可能需要继续播放或拖到未缓存的位置。",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
             }
             AppButton(onClick = onRestore, enabled = state.nodes.any { it.cooldownUntilMs > state.updatedAtMs }, modifier = Modifier.fillMaxWidth()) {
@@ -165,7 +169,7 @@ internal fun CdnTransferPanel(
             AppText(
                 "统计从本次应用启动累计，仅保留节点域名。手动检测每条线路最多读取 32 KiB；降低优先级将在后续请求生效。",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
         }
     }
@@ -175,7 +179,7 @@ internal fun CdnTransferPanel(
 private fun CdnMetric(label: String, value: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         AppText(value, style = MaterialTheme.typography.titleSmall)
-        AppText(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        AppText(label, style = MaterialTheme.typography.labelSmall, color = AppContentColors.secondaryText())
     }
 }
 

@@ -75,32 +75,53 @@ internal fun shouldAutoFocusSearchField(
 ): Boolean = false
 
 enum class SearchBackAction {
+    RETURN_TO_LANDING,
     LEAVE_SEARCH
 }
 
-/**
- * Search has one navigation back action. Suggestions, IME focus, and result content are chrome
- * inside the same destination; consuming Back for them makes users press Back twice to leave.
- */
+/** Result Back restores the search landing context; landing Back leaves the destination. */
 internal fun resolveSearchBackAction(
-    @Suppress("UNUSED_PARAMETER") showResults: Boolean,
+    showResults: Boolean,
     @Suppress("UNUSED_PARAMETER") suggestionsVisible: Boolean,
     @Suppress("UNUSED_PARAMETER") searchFieldFocused: Boolean
-): SearchBackAction = SearchBackAction.LEAVE_SEARCH
+): SearchBackAction = if (showResults) SearchBackAction.RETURN_TO_LANDING else SearchBackAction.LEAVE_SEARCH
 
 internal fun shouldClearSearchFocusWhenShowingResults(
     showResults: Boolean,
     previousShowResults: Boolean
 ): Boolean = showResults && !previousShowResults
 
+/** Editing the draft, including clearing it, never changes the active search surface. */
+internal fun SearchUiState.withEditedSearchQuery(newQuery: String): SearchUiState = copy(
+    query = newQuery,
+    suggestions = if (newQuery.isBlank()) emptyList() else suggestions,
+)
+
 /**
- * Typing in the results query must keep the result chrome so the top search field is not
- * disposed mid-edit (which drops IME and caret). Only an empty query returns to landing.
+ * Keep the IME when a focused field goes from a non-empty query to empty.
+ * Unfocused clears, already-empty text, and non-empty edits return false so submit and
+ * Back still dismiss the keyboard through the existing path.
  */
-internal fun shouldKeepResultsOnQueryChange(
-    showResults: Boolean,
-    newQuery: String
-): Boolean = showResults && newQuery.isNotEmpty()
+internal fun shouldRetainSearchImeWhenQueryCleared(
+    fieldFocused: Boolean,
+    previousQuery: String,
+    newQuery: String,
+): Boolean = fieldFocused && previousQuery.isNotEmpty() && newQuery.isEmpty()
+
+/** Ignore landing keyword clicks for this long after a focused clear (adjustResize). */
+internal const val SEARCH_LANDING_KEYWORD_CLICK_GUARD_MS = 300L
+
+/**
+ * [clearedAtElapsedMs] is negative when no focused clear has been recorded.
+ * A click at or after [SEARCH_LANDING_KEYWORD_CLICK_GUARD_MS] is accepted.
+ */
+internal fun shouldAcceptSearchLandingKeywordClick(
+    clearedAtElapsedMs: Long,
+    nowElapsedMs: Long,
+): Boolean {
+    if (clearedAtElapsedMs < 0L) return true
+    return nowElapsedMs - clearedAtElapsedMs >= SEARCH_LANDING_KEYWORD_CLICK_GUARD_MS
+}
 
 internal fun shouldForceLowBudgetSearchHeaderBlur(
     isSearching: Boolean,

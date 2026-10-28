@@ -1,5 +1,9 @@
 package com.android.purebilibili.navigation3.predictiveback
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.TransformOrigin
@@ -33,14 +37,14 @@ class VideoCardGestureFollowStateTest {
     private val motion = resolveVideoHeroMotionSpec(360)
 
     private class Scope : NavTransitionScope {
-        override var relativeDepth = 0f
-        override var role = NavRole.Top
+        override var relativeDepth by mutableFloatStateOf(0f)
+        override var role by mutableStateOf(NavRole.Top)
         override val change = NavChange.Pop
         override val layoutSize = IntSize(1080, 2400)
         override val layoutDirection = LayoutDirection.Ltr
         override val density = Density(3f)
-        override var gesture: NavGesture? = NavGesture(0f, NavSwipeEdge.Left, 700f)
-        override var settle: NavSettle? = null
+        override var gesture: NavGesture? by mutableStateOf(NavGesture(0f, NavSwipeEdge.Left, 700f))
+        override var settle: NavSettle? by mutableStateOf(null)
     }
 
     private class Settle(override val phase: NavSettlePhase) : NavSettle {
@@ -120,6 +124,24 @@ class VideoCardGestureFollowStateTest {
     }
 
     @Test
+    fun retainedViewportKeepsGrabPointAttachedDuringHeightContraction() {
+        val initial = Offset(1000f, 1800f)
+        val sample = VideoCardGestureSample(1, initial, initial + Offset(-200f, 350f))
+        for (morph in listOf(.95f, .7f, .65f, .4f, .1f)) {
+            val pose = resolveVideoCardFollowPose(
+                sample, bounds, 1080f, 2400f, morph, 1f, 30f,
+                preserveViewport = true,
+            )
+            val path = resolveVideoCardPathOffset(bounds, 1080f, 2400f, morph, 30f)
+            val grab = path + Offset(
+                resolveMiuixVideoCardOuterScale(bounds.width / 1080f, morph, 1f) * initial.x,
+                resolveMiuixVideoCardOuterScaleY(bounds.width / 1080f, bounds.height / 2400f, morph, 1f) * initial.y,
+            )
+            assertOffset(sample.touch, grab + pose.translation)
+        }
+    }
+
+    @Test
     fun onModeKeepsFloatingPreviewAndOffModeCanLandWhileHeld() {
         for (enabled in listOf(true, false)) {
             val progress = MiuixVideoCardTransitionProgress(gestureTranslationEnabled = enabled, gesturePoseEnabled = enabled)
@@ -171,6 +193,26 @@ class VideoCardGestureFollowStateTest {
             assertEquals(0f, end?.rotationY ?: 0f)
             assertEquals(1f, end?.liftScale ?: 1f)
         }
+    }
+
+    @Test
+    fun nearCompleteFollowCommitKeepsReleaseDepthAndPose() {
+        val scope = Scope()
+        val progress = MiuixVideoCardTransitionProgress(gestureTranslationEnabled = true, gesturePoseEnabled = true)
+        progress.bind(scope)
+        progress.gestureFollow.onTransitionState(event(0f, 700f))
+        pose(progress, scope)
+        scope.relativeDepth = -.99f
+        scope.gesture = NavGesture(.99f, NavSwipeEdge.Left, 1000f, 700f)
+        progress.gestureFollow.onTransitionState(event(600f, 1000f))
+        val releaseDepth = progress.depthOrNull()!!
+        val releasePose = pose(progress, scope)
+        scope.settle = Settle(NavSettlePhase.Commit)
+        scope.role = NavRole.Outgoing
+        assertEquals(releaseDepth, progress.depthOrNull()!!, .0001f)
+        assertEquals(releasePose, pose(progress, scope))
+        scope.relativeDepth = -1f
+        assertOffset(Offset.Zero, pose(progress, scope).translation)
     }
 
     @Test

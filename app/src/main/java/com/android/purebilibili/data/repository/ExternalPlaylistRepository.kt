@@ -12,14 +12,15 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.longOrNull
-import javax.crypto.Cipher
-import javax.crypto.spec.SecretKeySpec
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /** 外部歌单（网易云 / QQ 音乐）导入与匹配。 */
 object ExternalPlaylistRepository {
@@ -55,7 +56,9 @@ object ExternalPlaylistRepository {
         val title: String,
         val cover: String = "",
         val author: String = "",
-        val durationSec: Long = 0L
+        val durationSec: Long = 0L,
+        /** 搜索结果中的 aid，收藏到 B 站收藏夹时使用；旧断点可能为 0。 */
+        val aid: Long = 0L,
     )
 
     data class MatchOutcome(
@@ -112,6 +115,18 @@ object ExternalPlaylistRepository {
     private val BLACKLIST_ZONES = setOf(26, 29, 31, 201, 238)
     private const val DURATION_TOLERANCE_SEC = 20L
     private const val MATCH_DELAY_MS = 1200L
+    private const val NETEASE_WEB_USER_AGENT =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+            "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+    private const val NETEASE_SONG_DETAIL_CHUNK_SIZE = 200
+    private const val NETEASE_MIRROR_BASE_URL = "https://nextmusic.toubiec.cn"
+
+    /** 镜像接口可能不可用，单独限制总超时，避免阻塞官方接口的回退。 */
+    private val neteaseMirrorClient by lazy {
+        NetworkModule.okHttpClient.newBuilder()
+            .callTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
+            .build()
+    }
 
     // ---------------------------------------------------------------- 输入解析
 
@@ -210,44 +225,149 @@ object ExternalPlaylistRepository {
         if (!id.matches(Regex("\\d+"))) {
             throw IllegalStateException("网易云歌单 id 格式不正确")
         }
-        val path = "/api/v6/playlist/detail"
-        val payload = """{"s":"0","id":"$id","n":"1000","t":"0",""""" +
-            """header":{"osver":"16.3","deviceId":"265B59C3-C5DE-4876-8A33-FD52CD5C2960","os":"ios","appver":"9.0.90","__csrf":""},"e_r":false}"""
-        val params = eapiEncrypt(path, payload)
+        // 正常导入优先使用官方接口，只有失败时才访问备用镜像。
+        val official = fetchNeteasePlaylistFromWeb(id)
+        official.getOrNull()?.let { return@runCatching it }
+        Logger.w("ExternalPlaylist", "netease web api failed, trying mirror: ${official.exceptionOrNull()?.message}")
+        val mirror = fetchNeteasePlaylistFromMirror(id)
+        mirror.getOrNull()?.takeIf { it.tracks.isNotEmpty() }?.let { return@runCatching it }
+        // 镜像也失败时保留官方错误，避免将故障替换为无关解析异常。
+        throw official.exceptionOrNull() ?: IllegalStateException("网易云歌单导入失败")
+    }.onFailure { Logger.w("ExternalPlaylist", "fetch netease playlist failed: ${it.message}") }
+
+    /**
+     * 备用镜像先获取出口 IP，再请求整张歌单；两次调用共用 10 秒等待预算。
+     * 该接口会校验 User-Agent，必须使用浏览器 UA。
+     */
+    private fun fetchNeteasePlaylistFromMirror(id: String): Result<ExternalPlaylistMeta> = runCatching {
+        val deadlineNanos = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(10)
+        val ip = fetchNeteaseMirrorClientIp(deadlineNanos)
+            ?: throw IllegalStateException("网易云镜像接口获取客户端 IP 失败")
+        val payload = """{"id":"$id","ip":"$ip","timestamp":${System.currentTimeMillis()}}"""
         val request = okhttp3.Request.Builder()
-            .url("https://interface3.music.163.com/eapi$path")
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .header("Referer", "https://music.163.com")
-            .header("User-Agent", "NeteaseMusic 9.0.90/5038 (iPhone; iOS 16.2; zh_CN)")
-            .header(
-                "Cookie",
-                "osver=16.3; deviceId=265B59C3-C5DE-4876-8A33-FD52CD5C2960; os=ios; appver=9.0.90"
-            )
-            .post(okhttp3.FormBody.Builder().add("params", params).build())
+            .url("$NETEASE_MIRROR_BASE_URL/api/playlist_trackall")
+            .header("Content-Type", "application/json")
+            .header("Origin", "https://wyapi.toubiec.cn")
+            .header("Referer", "https://wyapi.toubiec.cn/")
+            .header("User-Agent", NETEASE_WEB_USER_AGENT)
+            .post(payload.toRequestBody("application/json".toMediaType()))
             .build()
-        NetworkModule.okHttpClient.newCall(request).execute().use { response ->
+        neteaseMirrorCall(request, deadlineNanos).execute().use { response ->
             val body = response.body?.string().orEmpty()
+            if (body.isBlank()) {
+                throw IllegalStateException("网易云镜像接口返回空响应（HTTP ${response.code}）")
+            }
+            val root = json.parseToJsonElement(body).jsonObject
+            val code = root["code"]?.jsonPrimitive?.intOrNull
+            if (code != 200) {
+                throw IllegalStateException(
+                    root["message"]?.jsonPrimitive?.contentOrNull ?: "网易云镜像接口返回错误码 $code"
+                )
+            }
+            val data = root["data"]?.jsonObject
+                ?: throw IllegalStateException("未找到该网易云歌单")
+            val tracks = data["songs"]?.jsonArray.orEmpty().mapNotNull { element ->
+                val song = runCatching { element.jsonObject }.getOrNull() ?: return@mapNotNull null
+                val title = song["name"]?.jsonPrimitive?.contentOrNull.orEmpty()
+                if (title.isBlank()) return@mapNotNull null
+                ExternalTrack(
+                    title = title,
+                    artists = song["singer"]?.jsonPrimitive?.contentOrNull.orEmpty()
+                        .split('/')
+                        .map { it.trim() }
+                        .filter { it.isNotEmpty() },
+                    album = song["album"]?.jsonPrimitive?.contentOrNull.orEmpty(),
+                    durationMs = parseNeteaseDurationText(song["duration"]?.jsonPrimitive?.contentOrNull),
+                    coverUrl = song["picimg"]?.jsonPrimitive?.contentOrNull.orEmpty()
+                        .replace("http://", "https://")
+                )
+            }
+            ExternalPlaylistMeta(
+                source = Source.NETEASE,
+                playlistId = id,
+                name = data["name"]?.jsonPrimitive?.contentOrNull.orEmpty().ifBlank { "网易云歌单" },
+                coverUrl = data["coverImage"]?.jsonPrimitive?.contentOrNull.orEmpty()
+                    .replace("http://", "https://"),
+                author = data["creator"]?.jsonObject?.get("name")?.jsonPrimitive?.contentOrNull.orEmpty(),
+                tracks = tracks
+            )
+        }
+    }
+
+    private fun neteaseMirrorCall(request: okhttp3.Request, deadlineNanos: Long): okhttp3.Call {
+        val remainingNanos = deadlineNanos - System.nanoTime()
+        if (remainingNanos <= 0L) throw java.io.InterruptedIOException("网易云备用接口等待超时")
+        return neteaseMirrorClient.newCall(request).apply {
+            timeout().timeout(remainingNanos, java.util.concurrent.TimeUnit.NANOSECONDS)
+        }
+    }
+
+    private fun fetchNeteaseMirrorClientIp(deadlineNanos: Long): String? {
+        val payload = """{"timestamp":${System.currentTimeMillis()}}"""
+        val request = okhttp3.Request.Builder()
+            .url("$NETEASE_MIRROR_BASE_URL/api/ip")
+            .header("Content-Type", "application/json")
+            .header("Origin", "https://wyapi.toubiec.cn")
+            .header("Referer", "https://wyapi.toubiec.cn/")
+            .header("User-Agent", NETEASE_WEB_USER_AGENT)
+            .post(payload.toRequestBody("application/json".toMediaType()))
+            .build()
+        return runCatching {
+            neteaseMirrorCall(request, deadlineNanos).execute().use { response ->
+                val body = response.body?.string().orEmpty()
+                if (body.isBlank()) return@use null
+                val root = json.parseToJsonElement(body).jsonObject
+                if (root["code"]?.jsonPrimitive?.intOrNull != 200) return@use null
+                root["data"]?.jsonObject?.get("ip")?.jsonPrimitive?.contentOrNull
+                    ?.takeIf { it.isNotBlank() }
+            }
+        }.getOrNull()
+    }
+
+    /** 镜像接口的时长格式为 "m:ss"（超长音频可能是 "h:mm:ss"）。 */
+    private fun parseNeteaseDurationText(text: String?): Long {
+        val parts = text?.split(':')?.mapNotNull { it.trim().toLongOrNull() }.orEmpty()
+        if (parts.isEmpty()) return 0L
+        return parts.fold(0L) { total, part -> total * 60 + part } * 1000L
+    }
+
+    /**
+     * 匿名访问网易云 v6 歌单详情时，返回的 tracks 只有前几首，但 trackIds 是完整的。
+     * 因此先取 trackIds，再分批请求 v3 song/detail 拿到全部曲目。
+     *
+     * 旧实现走 eapi（interface3.music.163.com），服务端现在会返回 200 + 空 body，
+     * 导致 kotlinx.serialization 抛出 "unexpected end of the input at path: $"。
+     */
+    private fun fetchNeteasePlaylistFromWeb(id: String): Result<ExternalPlaylistMeta> = runCatching {
+        val detailRequest = okhttp3.Request.Builder()
+            .url("https://music.163.com/api/v6/playlist/detail?id=$id")
+            .header("Referer", "https://music.163.com")
+            .header("User-Agent", NETEASE_WEB_USER_AGENT)
+            .build()
+        NetworkModule.okHttpClient.newCall(detailRequest).execute().use { response ->
+            val body = response.body?.string().orEmpty()
+            if (body.isBlank()) {
+                throw IllegalStateException("网易云歌单接口返回空响应（HTTP ${response.code}）")
+            }
             val root = json.parseToJsonElement(body).jsonObject
             val code = root["code"]?.jsonPrimitive?.intOrNull
             if (code != 200 && code != 0) throw IllegalStateException("网易云接口返回错误码 $code")
             val playlist = root["playlist"]?.jsonObject
                 ?: throw IllegalStateException("未找到该网易云歌单")
-            val tracks = playlist["tracks"]?.jsonArray.orEmpty().mapNotNull { element ->
-                val track = runCatching { element.jsonObject }.getOrNull() ?: return@mapNotNull null
-                val title = track["name"]?.jsonPrimitive?.contentOrNull.orEmpty()
-                if (title.isBlank()) return@mapNotNull null
-                ExternalTrack(
-                    title = title,
-                    artists = track["ar"]?.jsonArray.orEmpty()
-                        .mapNotNull { runCatching { it.jsonObject["name"]?.jsonPrimitive?.contentOrNull }.getOrNull() },
-                    album = track["al"]?.jsonObject?.get("name")?.jsonPrimitive?.contentOrNull.orEmpty(),
-                    durationMs = track["dt"]?.jsonPrimitive?.longOrNull ?: 0L,
-                    coverUrl = track["al"]?.jsonObject?.get("picUrl")?.jsonPrimitive?.contentOrNull
-                        ?.replace("http://", "https://").orEmpty(),
-                    translatedTitle = track["tns"]?.jsonArray?.firstOrNull()
-                        ?.jsonPrimitive?.contentOrNull
-                )
+
+            val trackIds = playlist["trackIds"]?.jsonArray.orEmpty().mapNotNull { element ->
+                runCatching { element.jsonObject["id"]?.jsonPrimitive?.longOrNull }.getOrNull()
             }
+            val songs = if (trackIds.isNotEmpty()) {
+                fetchNeteaseSongs(trackIds)
+            } else {
+                // 兜底：某些接口变体不返回 trackIds，只能使用 tracks 字段。
+                playlist["tracks"]?.jsonArray.orEmpty().mapNotNull { element ->
+                    runCatching { element.jsonObject }.getOrNull()
+                }
+            }
+            val tracks = songs.mapNotNull { parseNeteaseTrack(it) }
+
             ExternalPlaylistMeta(
                 source = Source.NETEASE,
                 playlistId = id,
@@ -257,20 +377,53 @@ object ExternalPlaylistRepository {
                 tracks = tracks
             )
         }
-    }.onFailure { Logger.w("ExternalPlaylist", "fetch netease playlist failed: ${it.message}") }
+    }.onFailure { Logger.w("ExternalPlaylist", "fetch netease playlist from web failed: ${it.message}") }
 
-    /**
-     * 网易云 eapi 加密：payload = md5 签名的路径-数据串，AES-128-ECB 后转大写 hex。
-     * 与公开的 NeteaseCloudMusicApi 协议一致。
-     */
-    private fun eapiEncrypt(path: String, payload: String): String {
-        val digest = java.security.MessageDigest.getInstance("MD5")
-            .digest("nobody${path}use${payload}md5forencrypt".toByteArray())
-            .joinToString("") { "%02x".format(it) }
-        val data = "$path-36cd479b6b5-$payload-36cd479b6b5-$digest"
-        val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-        cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec("e82ckenh8dichen8".toByteArray(), "AES"))
-        return cipher.doFinal(data.toByteArray()).joinToString("") { "%02X".format(it) }
+    /** 按 trackIds 顺序批量获取歌曲详情；分块避免单次请求参数过长。 */
+    private fun fetchNeteaseSongs(ids: List<Long>): List<JsonObject> {
+        val songsById = LinkedHashMap<Long, JsonObject>()
+        ids.chunked(NETEASE_SONG_DETAIL_CHUNK_SIZE).forEach { chunk ->
+            val payload = chunk.joinToString(prefix = "[", postfix = "]") { """{"id":$it}""" }
+            val request = okhttp3.Request.Builder()
+                .url("https://music.163.com/api/v3/song/detail")
+                .header("Referer", "https://music.163.com")
+                .header("User-Agent", NETEASE_WEB_USER_AGENT)
+                .post(okhttp3.FormBody.Builder().add("c", payload).build())
+                .build()
+            NetworkModule.okHttpClient.newCall(request).execute().use { response ->
+                val body = response.body?.string().orEmpty()
+                if (body.isBlank()) {
+                    throw IllegalStateException("网易云歌曲接口返回空响应（HTTP ${response.code}）")
+                }
+                val root = json.parseToJsonElement(body).jsonObject
+                val code = root["code"]?.jsonPrimitive?.intOrNull
+                if (code != 200 && code != 0) {
+                    throw IllegalStateException("网易云歌曲接口返回错误码 $code")
+                }
+                root["songs"]?.jsonArray.orEmpty().forEach { element ->
+                    val song = runCatching { element.jsonObject }.getOrNull() ?: return@forEach
+                    val songId = song["id"]?.jsonPrimitive?.longOrNull ?: return@forEach
+                    songsById[songId] = song
+                }
+            }
+        }
+        return ids.mapNotNull { songsById[it] }
+    }
+
+    private fun parseNeteaseTrack(track: JsonObject): ExternalTrack? {
+        val title = track["name"]?.jsonPrimitive?.contentOrNull.orEmpty()
+        if (title.isBlank()) return null
+        return ExternalTrack(
+            title = title,
+            artists = track["ar"]?.jsonArray.orEmpty()
+                .mapNotNull { runCatching { it.jsonObject["name"]?.jsonPrimitive?.contentOrNull }.getOrNull() },
+            album = track["al"]?.jsonObject?.get("name")?.jsonPrimitive?.contentOrNull.orEmpty(),
+            durationMs = track["dt"]?.jsonPrimitive?.longOrNull ?: 0L,
+            coverUrl = track["al"]?.jsonObject?.get("picUrl")?.jsonPrimitive?.contentOrNull
+                ?.replace("http://", "https://").orEmpty(),
+            translatedTitle = track["tns"]?.jsonArray?.firstOrNull()
+                ?.jsonPrimitive?.contentOrNull
+        )
     }
 
     // ---------------------------------------------------------------- B站匹配
@@ -300,7 +453,8 @@ object ExternalPlaylistRepository {
                     title = it.title,
                     cover = it.pic,
                     author = it.owner.name,
-                    durationSec = it.duration.toLong()
+                    durationSec = it.duration.toLong(),
+                    aid = it.id,
                 )
             }
         }.getOrNull()

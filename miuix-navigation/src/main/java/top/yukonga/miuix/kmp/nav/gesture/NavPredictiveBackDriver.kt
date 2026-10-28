@@ -46,10 +46,14 @@ internal suspend fun drivePredictiveBack(
     // sampling before stop() would leave a one-frame window for the spring to advance.
     if (!isActive()) return
     animatedTop.stop()
+    // stop/snap suspend while the previous Animatable owner unwinds. A newer gesture may
+    // acquire the driver in that interval; the old collector must not publish into it.
+    if (!isActive()) return
     val anchor = topIndex - animatedTop.value
     events.collect { event ->
         if (!isActive()) return@collect
         animatedTop.snapToFinger(topIndex = topIndex, progress = event.progress, anchor = anchor)
+        if (!isActive()) return@collect
         onProgressApplied((topIndex - animatedTop.value).coerceIn(0f, 1f))
     }
 }

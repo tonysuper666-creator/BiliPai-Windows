@@ -7,6 +7,22 @@ import kotlin.test.assertTrue
 class SettingsSearchPolicyTest {
 
     @Test
+    fun dynamicCommentPreviewTitleAndAliasesOpenHomeCategory() {
+        listOf("显示动态评论提示", "动态评论摘要", "动态评论预览", "相关评论").forEach { query ->
+            val result = resolveSettingsSearchResults(query)
+                .first { it.settingId == "home.dynamic_comment_preview_visible" }
+
+            assertEquals(SettingsSearchTarget.HOME_FEED, result.target)
+            assertEquals(SettingsRootCategory.HOME_RECOMMENDATION, result.page)
+            assertEquals("home_options", result.focusId)
+            assertEquals(
+                com.android.purebilibili.navigation3.BiliPaiNavKey.SettingsCategory(SettingsRootCategory.HOME_RECOMMENDATION),
+                resolveSettingsSearchNavigation(result),
+            )
+        }
+    }
+
+    @Test
     fun blankQuery_returnsEmptyList() {
         val results = resolveSettingsSearchResults("   ")
 
@@ -158,7 +174,7 @@ class SettingsSearchPolicyTest {
     fun queryByRefreshRate_focusesAppearanceDisplayMode() {
         val result = resolveSettingsSearchResults("刷新率").firstOrNull()
 
-        assertEquals("屏幕帧率", result?.title)
+        assertEquals("屏幕刷新率", result?.title)
         assertEquals(SettingsSearchTarget.APPEARANCE, result?.target)
         assertEquals(SettingsSearchFocusIds.APPEARANCE_THEME, result?.focusId)
     }
@@ -249,7 +265,7 @@ class SettingsSearchPolicyTest {
         assertTrue(
             results.any {
                 it.target == SettingsSearchTarget.PLAYBACK &&
-                    it.focusId == SettingsSearchFocusIds.PLAYBACK_INTERACTION
+                    it.focusId == SettingsSearchFocusIds.PLAYBACK_COMMENTS
             }
         )
     }
@@ -273,7 +289,7 @@ class SettingsSearchPolicyTest {
         assertTrue(
             results.any {
                 it.target == SettingsSearchTarget.PLAYBACK &&
-                    it.focusId == SettingsSearchFocusIds.PLAYBACK_INTERACTION
+                    it.focusId == SettingsSearchFocusIds.PLAYBACK_COMMENTS
             }
         )
     }
@@ -285,7 +301,7 @@ class SettingsSearchPolicyTest {
         assertTrue(
             results.any {
                 it.target == SettingsSearchTarget.PLAYBACK &&
-                    it.focusId == SettingsSearchFocusIds.PLAYBACK_INTERACTION
+                    it.focusId == SettingsSearchFocusIds.PLAYBACK_COMMENTS
             }
         )
     }
@@ -455,4 +471,21 @@ class SettingsSearchPolicyTest {
         assertEquals("平板侧边导航栏", result?.title)
         assertEquals("导航设置", result?.section)
     }
+    @Test
+    fun allRestoredCommentSettingsHaveConcreteSearchDestinations() {
+        val restored = settingsItemDirectory.filter { it.page == SettingsRootCategory.COMMENTS_CONTENT }
+        assertEquals(18, restored.size)
+        restored.forEach { item ->
+            val result = resolveSettingsSearchResults(item.title)
+                .first { it.settingId == item.settingId }
+            assertEquals(SettingsSearchFocusIds.PLAYBACK_COMMENTS, result.focusId)
+            assertEquals(com.android.purebilibili.navigation3.BiliPaiNavKey.PlaybackSettings,
+                resolveSettingsSearchNavigation(result))
+            assertTrue(result.path.contains("播放设置 / 互动与评论"))
+        }
+        assertTrue(resolveSettingsSearchResults("隐藏三连").any {
+            it.settingId == "playback.hide_interactive_command_danmaku"
+        })
+    }
+
 }

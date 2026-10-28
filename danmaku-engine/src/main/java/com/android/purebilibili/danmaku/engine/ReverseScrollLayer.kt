@@ -55,6 +55,12 @@ internal class ReverseScrollLayer : IRenderLayer, ITouchDelegate, ConfigChangeLi
         buffer.trimBuffer(playTime)
     }
 
+    override fun addData(
+        playTime: Long,
+        list: List<DanmakuData>,
+        createItem: (DanmakuData) -> DrawItem<DanmakuData>,
+    ) = buffer.addData(playTime, list, createItem)
+
     override fun releaseItem(item: DrawItem<DanmakuData>) {
         controller.notifyEvent(Events.obtainEvent(EVENT_DANMAKU_DISMISS, item.data))
         cachePool.release(item)

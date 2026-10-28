@@ -65,7 +65,7 @@ class HomeFeedGridPolicyTabletTest {
     }
 
     @Test
-    fun cardAspectRatioSwitchesToSixteenNineOnExpanded() {
+    fun legacyWindowRatioDoesNotOverrideSelectedCoverStyle() {
         val compactRatio = resolveHomeFeedCardAspectRatio(WindowWidthSizeClass.Compact)
         val mediumRatio = resolveHomeFeedCardAspectRatio(WindowWidthSizeClass.Medium)
         val expandedRatio = resolveHomeFeedCardAspectRatio(WindowWidthSizeClass.Expanded)
@@ -78,7 +78,7 @@ class HomeFeedGridPolicyTabletTest {
         assertEquals(16f / 9f, largeRatio)
         assertEquals(16f / 9f, extraLargeRatio)
         assertEquals(
-            16f / 9f,
+            16f / 10f,
             resolveHomeFeedCoverAspectRatio(
                 style = HomeFeedCardStyle.BILIPAI,
                 gridColumns = 6,

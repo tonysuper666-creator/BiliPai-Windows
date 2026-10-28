@@ -64,7 +64,8 @@ internal suspend fun prepareVideoShareCardFile(
             coverBitmap.recycle()
             val cacheDir = File(context.cacheDir, "shared_images").apply { mkdirs() }
             cleanupVideoShareCardCache(cacheDir)
-            val outputFile = File(cacheDir, resolveVideoShareCardFileName(payload))
+            val fileName = resolveVideoShareCardFileName(payload).removeSuffix(".jpg")
+            val outputFile = File(cacheDir, "${fileName}_${System.nanoTime()}.jpg")
             outputFile.outputStream().use { output ->
                 cardBitmap.compress(Bitmap.CompressFormat.JPEG, 92, output)
             }

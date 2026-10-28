@@ -8,7 +8,7 @@ internal data class ImageDecodeSize(
 internal enum class ImageDecodeTarget {
     FULLSCREEN_PREVIEW,
     COMMENT_THUMBNAIL,
-    /** 查看原图：使用较高分辨率，但仍按 Canvas 单位图上限安全采样。 */
+    /** 原图模式的整图底图；完整细节由视口区域解码提供。 */
     ORIGINAL_QUALITY
 }
 

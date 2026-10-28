@@ -14,6 +14,9 @@ sealed interface BilibiliNavigationTarget {
     data class Music(val musicId: String) : BilibiliNavigationTarget
     data class Article(val articleId: Long) : BilibiliNavigationTarget
 
+    /** 赛事比赛详情页，contestId 即 cid。 */
+    data class Match(val contestId: Long) : BilibiliNavigationTarget
+
     /**
      * 站内热门榜单页(weekly/rank/all/comprehensive)。
      * 每周必看可指定 weeklyNumber,导航层打开原生选期页面;其余映射到首页子分类。
@@ -67,12 +70,14 @@ object BilibiliNavigationTargetParser {
 
         val uri = runCatching { URI(normalizedInput) }.getOrNull() ?: return null
         val scheme = uri.scheme?.lowercase().orEmpty()
-        val host = uri.host?.lowercase().orEmpty()
+        val host = uri.host?.lowercase()?.trimEnd('.').orEmpty()
         val pathSegments = uri.path
             ?.split("/")
             ?.filter { it.isNotEmpty() }
             ?: emptyList()
         val queryMap = extractQueryParameters(uri.rawQuery)
+
+        if (scheme in listOf("http", "https") && !isBilibiliWebHost(host)) return null
 
         resolveWrappedUrl(queryMap)?.let { wrappedUrl ->
             parse(wrappedUrl)?.let { return it }
@@ -85,7 +90,7 @@ object BilibiliNavigationTargetParser {
 
         if (scheme !in listOf("http", "https")) return null
 
-        if (host.contains("bilibili.com") || host.contains("b23.tv")) {
+        if (isBilibiliWebHost(host)) {
             mapParseResult(BilibiliUrlParser.parseDeepLink(normalizedInput))?.let { return it }
         }
         resolveHttpTarget(host, pathSegments, queryMap)?.let { return it }
@@ -202,7 +207,7 @@ object BilibiliNavigationTargetParser {
             }
 
             host == "search.bilibili.com" ||
-                (host.contains("bilibili.com") && pathSegments.firstOrNull()?.equals("search", ignoreCase = true) == true) -> {
+                (isBilibiliHost(host) && pathSegments.firstOrNull()?.equals("search", ignoreCase = true) == true) -> {
                 resolveSearchKeyword(queryMap)?.let {
                     return BilibiliNavigationTarget.Search(keyword = it)
                 }
@@ -215,12 +220,36 @@ object BilibiliNavigationTargetParser {
                 }
             }
 
-            host.contains("bilibili.com") -> {
+            isBilibiliHost(host) -> {
+                resolveMatchTarget(pathSegments, queryMap)?.let { return it }
                 resolveArticleTarget(pathSegments, queryMap, allowBareReadPath = false)?.let { return it }
                 resolveBangumiTarget(pathSegments)?.let { return it }
             }
         }
 
+        return null
+    }
+
+    /**
+     * 赛事比赛详情链接：h5/match/data/detail 或 match/singledata，
+     * cid 可能是路径末段数字，也可能在 query 里；h5/match/data/home 等首页路径不匹配。
+     */
+    private fun resolveMatchTarget(
+        pathSegments: List<String>,
+        queryMap: Map<String, String>
+    ): BilibiliNavigationTarget? {
+        val joinedPath = pathSegments.joinToString("/").lowercase()
+        val isMatchDetail = "match/data/detail" in joinedPath || "match/singledata" in joinedPath
+        if (!isMatchDetail) return null
+
+        pathSegments.lastOrNull()?.takeIf(::isNumericId)?.toLongOrNull()?.let {
+            return BilibiliNavigationTarget.Match(it)
+        }
+        listOf("cid", "contest_id", "id").firstNotNullOfOrNull { key ->
+            queryMap[key]?.trim()?.takeIf { it.isNotEmpty() && it.all(Char::isDigit) }
+        }?.toLongOrNull()?.let {
+            return BilibiliNavigationTarget.Match(it)
+        }
         return null
     }
 
@@ -364,7 +393,7 @@ object BilibiliNavigationTargetParser {
 
     private fun isShortLinkHost(url: String): Boolean {
         val uri = runCatching { URI(url) }.getOrNull() ?: return false
-        return uri.host?.contains("b23.tv", ignoreCase = true) == true
+        return isBilibiliShortHost(uri.host)
     }
 
     private fun normalizeInput(input: String): String? {

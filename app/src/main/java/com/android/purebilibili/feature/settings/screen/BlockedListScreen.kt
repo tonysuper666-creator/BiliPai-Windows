@@ -1,4 +1,6 @@
 package com.android.purebilibili.feature.settings
+
+import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.animation.jiggleOnDissolve
 import com.android.purebilibili.core.ui.components.AppText
 
@@ -7,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -229,7 +231,7 @@ fun BlockedListContent(
             AppText(
                 text = "暂无屏蔽的 UP 主",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
             if (onSyncBlockedList != null) {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -279,7 +281,7 @@ fun BlockedListContent(
                 AppPreferenceSectionTitle("已屏蔽的 UP 主")
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            
+
             items(blockedUps, key = { it.mid }) { up ->
                 val isDissolving = up.mid in dissolvingBlockedMids
                 com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(
@@ -345,7 +347,7 @@ private fun BlockedListSyncAction(
                 AppCircularProgressIndicator(
                     modifier = Modifier.size(18.dp),
                     strokeWidth = 2.dp,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = AppContentColors.onAccent()
                 )
                 Spacer(modifier = Modifier.width(8.dp))
             }
@@ -382,7 +384,7 @@ private fun BlockedListSyncAction(
                         enabled = !syncing && !refreshingProfiles,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        AppText("导出 JSON 文件")
+                        AppText("导出文件")
                     }
                 }
                 if (onImportBlockedListJsonRequest != null) {
@@ -391,7 +393,7 @@ private fun BlockedListSyncAction(
                         enabled = !syncing && !refreshingProfiles,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        AppText("导入 JSON 文件")
+                        AppText("导入文件")
                     }
                 }
                 if (onImportBlockedListRequest != null) {
@@ -419,7 +421,7 @@ private fun BlockedListSyncAction(
             AppText(
                 text = message,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
         }
     }
@@ -453,19 +455,19 @@ private fun BlockedUpItem(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color.Gray.copy(alpha = 0.2f)),
+                .background(AppSurfaceTokens.searchContainer()),
             contentScale = ContentScale.Crop
         )
-        
+
         Spacer(modifier = Modifier.width(16.dp))
-        
+
         Column(modifier = Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppText(
                     text = name.ifBlank { "UP主$mid" },
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 1,
                     modifier = Modifier.weight(1f)
                 )
@@ -486,7 +488,7 @@ private fun BlockedUpItem(
                     isDeleted = isDeleted
                 ),
                 style = MaterialTheme.typography.bodySmall,
-                color = if (isDeleted) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (isDeleted) AppContentColors.error() else AppContentColors.secondaryText(),
                 maxLines = 2
             )
             if (sign.isNotBlank()) {
@@ -494,14 +496,14 @@ private fun BlockedUpItem(
                 AppText(
                     text = sign.trim(),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 2
                 )
             }
         }
-        
+
         AppTextButton(onClick = onUnblock) {
-            AppText("解除屏蔽", color = Color.Red)
+            AppText("解除屏蔽")
         }
     }
 }

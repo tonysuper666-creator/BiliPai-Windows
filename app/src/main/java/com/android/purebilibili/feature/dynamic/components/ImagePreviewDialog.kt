@@ -1,6 +1,9 @@
 // 文件路径: feature/dynamic/components/ImagePreviewDialog.kt
 package com.android.purebilibili.feature.dynamic.components
 
+import kotlinx.coroutines.ensureActive
+import com.android.purebilibili.core.ui.AppContentColors
+
 import coil3.network.NetworkHeaders
 import coil3.network.httpHeaders
 
@@ -37,9 +40,10 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import com.android.purebilibili.core.ui.components.appActionClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.HorizontalPager
+import com.android.purebilibili.core.ui.components.AppHorizontalPager as HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -73,8 +77,8 @@ import androidx.compose.ui.window.DialogWindowProvider
 import coil3.compose.AsyncImage
 import coil3.Image
 import coil3.imageLoader
+import com.android.purebilibili.core.util.originalBiliImage
 import coil3.request.ImageRequest
-import coil3.request.SuccessResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -186,6 +190,7 @@ private data class ImagePreviewOverlayRequest(
     val textContent: ImagePreviewTextContent?,
     val defaultTextVisible: Boolean,
     val onImageLongPress: ((String) -> Unit)?,
+    val publicContent: Boolean = false,
     val onDismiss: () -> Unit
 )
 
@@ -332,16 +337,18 @@ fun ImagePreviewDialog(
     textContent: ImagePreviewTextContent? = null,
     defaultTextVisible: Boolean = true,
     onImageLongPress: ((String) -> Unit)? = null,
+    publicContent: Boolean = false,
     onDismiss: () -> Unit
 ) {
     val latestOnDismiss by rememberUpdatedState(onDismiss)
-    val requestToken = remember(images, initialIndex, sourceRect, sourceRects, sourceCornerRadiusDp, livePhotoVideos) { System.nanoTime() }
+    val requestToken = remember(images, initialIndex, sourceRect, sourceRects, sourceCornerRadiusDp, livePhotoVideos, publicContent) { System.nanoTime() }
 
     DisposableEffect(requestToken) {
         ImagePreviewOverlayController.show(
             ImagePreviewOverlayRequest(
                 token = requestToken,
                 images = images,
+                publicContent = publicContent,
                 livePhotoVideos = livePhotoVideos,
                 initialIndex = initialIndex,
                 sourceRect = sourceRect,
@@ -393,6 +400,7 @@ fun ImagePreviewOverlayHost(
                 }
                 ImagePreviewOverlayContent(
                     images = request.images,
+                    publicContent = request.publicContent,
                     livePhotoVideos = request.livePhotoVideos,
                     initialIndex = request.initialIndex,
                     sourceRect = request.sourceRect,
@@ -430,6 +438,7 @@ private fun ImagePreviewOverlayContent(
     textContent: ImagePreviewTextContent? = null,
     defaultTextVisible: Boolean = true,
     onImageLongPress: ((String) -> Unit)? = null,
+    publicContent: Boolean = false,
     dismissRequestCount: Int = 0,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
@@ -438,7 +447,7 @@ private fun ImagePreviewOverlayContent(
     val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
     val scope = rememberCoroutineScope()
-    val haptic = rememberHapticFeedback()
+    val haptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.RESULTS)
     val shareIcon = rememberAppShareIcon()
     val likeIcon = rememberAppLikeIcon()
     val likeFilledIcon = rememberAppLikeFilledIcon()
@@ -448,7 +457,7 @@ private fun ImagePreviewOverlayContent(
     var isSaving by remember { mutableStateOf(false) }
     var isSharing by remember { mutableStateOf(false) }
     var showOrdinaryImageActions by remember { mutableStateOf(false) }
-    
+
     //  获取 Activity 和 Window 用于沉浸式控制
     val activity = remember {
         var ctx = context
@@ -462,7 +471,7 @@ private fun ImagePreviewOverlayContent(
     val insetsController = remember {
         window?.let { WindowCompat.getInsetsController(it, it.decorView) }
     }
-    
+
     //  保存原始导航栏颜色
     val originalNavBarColor = remember { window?.navigationBarColor ?: android.graphics.Color.BLACK }
     //  [修复] 同步保存原始导航栏图标明暗，退出时一并还原
@@ -480,7 +489,7 @@ private fun ImagePreviewOverlayContent(
             }
         }
     }
-    
+
     //  动画状态控制
     // 0f = 关闭/初始状态 (at sourceRect), 1f = 打开状态 (Fullscreen)
     val animateTrigger = remember { androidx.compose.animation.core.Animatable(0f) }
@@ -528,7 +537,7 @@ private fun ImagePreviewOverlayContent(
             )
         )
     }
-    
+
     // 竖滑跟手用状态值，避免每帧 launch snapTo 竞态导致滑不动。
     var verticalDismissOffsetYPx by remember { mutableFloatStateOf(0f) }
     // 竖滑退出时手指横向漂移的实时位移：图片跟随手指移动到屏幕各处
@@ -553,7 +562,7 @@ private fun ImagePreviewOverlayContent(
     }
 
     //  GIF 图片加载器
-    val gifImageLoader = context.imageLoader
+    val gifImageLoader = if (publicContent) com.android.purebilibili.core.plugin.feed.PublicContentImageLoader.get(context) else context.imageLoader
 
     //  使用 HorizontalPager 实现滑动切换
     val pagerState = rememberPagerState(
@@ -576,8 +585,8 @@ private fun ImagePreviewOverlayContent(
         )
     }
 
-    // 已通过「查看原图」切换为高分辨率安全采样的页（按页索引记录）。
-    var originalQualityPages by remember { mutableStateOf(setOf<Int>()) }
+    // 图片身份变化后不沿用上一组图片的原图模式。
+    var originalQualityPages by remember(images) { mutableStateOf(setOf<Int>()) }
 
     LaunchedEffect(pagerState.currentPage) {
         activeZoomScale = 1f
@@ -590,7 +599,7 @@ private fun ImagePreviewOverlayContent(
             currentImageDisplayRect = null
         }
     }
-    
+
     val currentLiveVideoUrl = remember(pagerState.currentPage, livePhotoVideos, images) {
         val raw = images.getOrNull(pagerState.currentPage).orEmpty()
         resolveLivePhotoVideoUrl(raw, pagerState.currentPage, livePhotoVideos)
@@ -619,7 +628,7 @@ private fun ImagePreviewOverlayContent(
         if (storagePermission.isGranted) {
             isSaving = true
             scope.launch {
-                val success = saveImageToGallery(context, imageUrl)
+                val success = saveImageToGallery(context, imageUrl, publicContent = publicContent)
                 isSaving = false
                 withContext(Dispatchers.Main.immediate) {
                     handleImageSaveResult(success)
@@ -671,7 +680,7 @@ private fun ImagePreviewOverlayContent(
         if (storagePermission.isGranted) {
             isSaving = true
             scope.launch {
-                val success = urls.map { saveImageToGallery(context, it) }.all { it }
+                val success = urls.map { saveImageToGallery(context, it, publicContent = publicContent) }.all { it }
                 isSaving = false
                 withContext(Dispatchers.Main.immediate) { handleImageSaveResult(success) }
             }
@@ -685,19 +694,19 @@ private fun ImagePreviewOverlayContent(
         if (imageUrl.isEmpty() || isSharing) return
         isSharing = true
         scope.launch {
-            val success = shareImageFromPreview(context, imageUrl)
+            val success = shareImageFromPreview(context, imageUrl, publicContent = publicContent)
             isSharing = false
             withContext(Dispatchers.Main.immediate) {
                 handleImageShareResult(success)
             }
         }
     }
-    
+
     // 当前页的图片 URL
     val currentImageUrl = remember(pagerState.currentPage, images) {
         normalizeImageUrl(images.getOrNull(pagerState.currentPage) ?: "")
     }
-    
+
     BoxWithConstraints(
         modifier = modifier.fillMaxSize()
     ) {
@@ -940,7 +949,7 @@ private fun ImagePreviewOverlayContent(
                     backRecovering = false
                 }
             }
-            
+
             // 1. 背景层 (淡入淡出)
             Box(
                 modifier = Modifier
@@ -968,7 +977,7 @@ private fun ImagePreviewOverlayContent(
                         )
                     }
             )
-            
+
             // 2. 内容层 (缩放位移)
             // Keep the page measured at viewport size. The outer layer animates the clipping
             // rect, while the pager layer counters non-uniform rect scaling so image pixels
@@ -1091,8 +1100,9 @@ private fun ImagePreviewOverlayContent(
                             }
                         },
                     beyondViewportPageCount = 1,  // 预加载相邻页面
-                    userScrollEnabled = !isVerticalDismissDragging &&
-                        !isDismissing && !isPreparingDismiss &&
+                    // The image recognizer consumes vertical moves. Do not restart Pager's
+                    // scrollable node when a drag starts; its hit path must survive until release.
+                    userScrollEnabled = !isDismissing && !isPreparingDismiss &&
                         activeZoomScale <= 1.01f,
                     key = { images.getOrElse(it) { "" } }
                 ) { page ->
@@ -1140,7 +1150,7 @@ private fun ImagePreviewOverlayContent(
                             }
                             .pointerInput(Unit) {
                                 // 阻止点击穿透到关闭手势
-                                detectTapGestures { 
+                                detectTapGestures {
                                      if (!useCommentPreviewChrome) {
                                          // 点击图片也关闭
                                          latestTriggerDismiss()
@@ -1167,13 +1177,20 @@ private fun ImagePreviewOverlayContent(
                                 }
                             )
                         }
-                        val previewRequest = remember(context, imageUrl, decodeSize, placeholderCacheKey, requestToken) {
+                        val previewRequest = remember(context, imageUrl, decodeSize, placeholderCacheKey, requestToken, publicContent) {
                             ImageRequest.Builder(context)
                                 .data(imageUrl)
+                                .originalBiliImage()
+                                .diskCacheKey(imageUrl)
                                 // 预览必须采样解码，避免超大原图超过 Canvas 单位图绘制上限。
                                 .size(decodeSize.widthPx, decodeSize.heightPx)
                                 .placeholderMemoryCacheKey(placeholderCacheKey)
-                                .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com/").build())
+                                // B 站图片需要固定 Referer；公开内容（RSS 正文）改由匿名图片链路按图片站点补 Referer。
+                                .apply {
+                                    if (!publicContent) {
+                                        httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com/").build())
+                                    }
+                                }
                                 // 进出场由画廊自身的 morph 控制，图片请求不能随退出状态重建。
                                 .crossfade(false)
                                 .listener(
@@ -1192,6 +1209,9 @@ private fun ImagePreviewOverlayContent(
 
                         ZoomableImage(
                             model = previewRequest,
+                            originalImageUrl = imageUrl,
+                            originalQuality = page in originalQualityPages,
+                            publicContent = publicContent,
                             contentDescription = null,
                             imageLoader = gifImageLoader,  //  使用 GIF 加载器
                             modifier = Modifier.fillMaxSize(),
@@ -1274,8 +1294,7 @@ private fun ImagePreviewOverlayContent(
                                 }
                             },
                             onExtremeAspectRatioDetected = {
-                                // 长条图在 4096 方形采样档下短边像素不足，放大后仍会发糊。
-                                // 自动提升到现有原图解码档；极端长宽比下实际内存远低于方形上限。
+                                // 长条图自动启用原图区域解码，放大和滚动时按视口补充高清内容。
                                 originalQualityPages = originalQualityPages + page
                             },
                             onVerticalDismissDragCancel = {
@@ -1393,7 +1412,7 @@ private fun ImagePreviewOverlayContent(
                     }
                 }
             }
-            
+
             // 3. UI 覆盖层 - 退出时先于图片清掉 chrome，只剩干净一镜 morph
             Box(
                 modifier = Modifier
@@ -1561,7 +1580,7 @@ private fun ImagePreviewOverlayContent(
                         )
                     }
                 }
-                
+
                 val chromeModifier = Modifier.graphicsLayer {
                     // 同上：横滑期间 currentPageOffsetFraction 每帧变化，
                     // 原先在组合期读取会让整个 chrome（顶栏 + 底栏 + 页码）每帧重组。
@@ -1578,7 +1597,7 @@ private fun ImagePreviewOverlayContent(
                     val isOriginalQuality = currentPage in originalQualityPages
                     ImagePreviewCommentTopBar(
                         label = if (isOriginalQuality) {
-                            "原图已加载"
+                            "原图模式"
                         } else {
                             commentContext.originalSizeLabels.getOrNull(currentPage)
                                 ?: resolveCommentImageOriginalSizeLabel(null)
@@ -1589,8 +1608,7 @@ private fun ImagePreviewOverlayContent(
                         onDismiss = { triggerDismiss() },
                         onShare = { requestShareCurrentImage(currentImageUrl) },
                         onViewOriginal = {
-                            // 按 API 文档：去掉 @ 尺寸参数即为原图 URL（预览已用该 URL），
-                            // 此处切换为全分辨率解码重新加载，突破预览采样限制。
+                            // 原图保留安全的整图底图，高清细节由可见区域解码提供。
                             originalQualityPages = originalQualityPages + currentPage
                         },
                         modifier = Modifier
@@ -1746,7 +1764,7 @@ private fun ImagePreviewOverlayContent(
                         }
                         Spacer(modifier = Modifier.width(AppSpacingTokens.Small))
                     }
-                    
+
                     // 分享按钮
                     AppFilledIconButton(
                         onClick = {
@@ -1852,7 +1870,7 @@ private fun ImagePreviewOverlayContent(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(MediaContrastPalette.Scrim.copy(alpha = 0.65f))
-                                    .clickable { showLivePhotoMenu = !showLivePhotoMenu }
+                                    .appActionClickable { showLivePhotoMenu = !showLivePhotoMenu }
                                     .padding(horizontal = 10.dp, vertical = 6.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -1890,7 +1908,7 @@ private fun ImagePreviewOverlayContent(
                                         Row(
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .clickable {
+                                                .appActionClickable {
                                                     isLivePhotoEnabled = !isLivePhotoEnabled
                                                     if (isLivePhotoEnabled) {
                                                         isLivePhotoPlaying = true
@@ -1923,7 +1941,7 @@ private fun ImagePreviewOverlayContent(
                                         Row(
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .clickable {
+                                                .appActionClickable {
                                                     isLivePhotoEnabled = true
                                                     isLivePhotoPlaying = true
                                                     livePhotoPlayer?.seekTo(0)
@@ -1964,7 +1982,7 @@ private fun ImagePreviewOverlayContent(
                             )
                             .clip(CircleShape)
                             .background(MediaContrastPalette.Scrim.copy(alpha = 0.65f))
-                            .clickable { isLivePhotoMuted = !isLivePhotoMuted }
+                            .appActionClickable { isLivePhotoMuted = !isLivePhotoMuted }
                             .padding(8.dp)
                     ) {
                         AppIcon(
@@ -2053,7 +2071,7 @@ private fun ImagePreviewActionButton(
             .heightIn(min = AppChromeSizeTokens.MinimumTouchTarget),
         contentPadding = PaddingValues(horizontal = AppSpacingTokens.Medium),
         colors = ButtonDefaults.textButtonColors(
-            contentColor = MaterialTheme.colorScheme.onSurface
+            contentColor = AppContentColors.primaryText()
         )
     ) {
         AppText(
@@ -2105,7 +2123,7 @@ private fun ImagePreviewCommentTopBar(
                     .background(MediaContrastPalette.Foreground.copy(alpha = 0.16f))
                     .then(
                         if (onViewOriginal != null) {
-                            Modifier.clickable(
+                            Modifier.appActionClickable(
                                 enabled = enabled,
                                 onClick = onViewOriginal
                             )
@@ -2214,7 +2232,7 @@ private fun ImagePreviewCommentPanel(
                     .height(AppSpacingTokens.DoubleExtraLarge + AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro)
                     .clip(AppShapes.container(ContainerLevel.Floating))
                     .background(MediaContrastPalette.Foreground.copy(alpha = 0.12f))
-                    .clickable(enabled = context.onReplyClick != null, onClick = onReply)
+                    .appActionClickable(enabled = context.onReplyClick != null, onClick = onReply)
                     .padding(horizontal = AppSpacingTokens.Medium + AppSpacingTokens.Micro),
                 contentAlignment = Alignment.CenterStart
             ) {
@@ -2268,7 +2286,7 @@ private fun ImagePreviewCommentActionButton(
     Column(
         modifier = Modifier
             .size(width = AppSpacingTokens.TripleExtraLarge - AppSpacingTokens.Micro, height = AppSpacingTokens.TripleExtraLarge)
-            .clickable(enabled = enabled && !busy, onClick = onClick),
+            .appActionClickable(enabled = enabled && !busy, onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -2282,7 +2300,7 @@ private fun ImagePreviewCommentActionButton(
             AppIcon(
                 imageVector = icon,
                 contentDescription = label,
-                tint = if (selected) MaterialTheme.colorScheme.primary else MediaContrastPalette.Foreground,
+                tint = if (selected) AppContentColors.accent() else MediaContrastPalette.Foreground,
                 modifier = Modifier.size(AppSpacingTokens.ExtraLarge)
             )
         }
@@ -2303,6 +2321,7 @@ private fun ImagePreviewCommentActionButton(
  */
 internal fun normalizeImageUrl(rawSrc: String): String {
     val trimmed = rawSrc.trim()
+    if (trimmed.startsWith("file://") || trimmed.startsWith("content://")) return trimmed
     var result = when {
         trimmed.startsWith("https://") -> trimmed
         trimmed.startsWith("http://") -> trimmed.replace("http://", "https://")
@@ -2310,18 +2329,19 @@ internal fun normalizeImageUrl(rawSrc: String): String {
         trimmed.isNotEmpty() -> "https://$trimmed"
         else -> ""
     }
-    
+
     //  移除 Bilibili 图片尺寸参数（例如 @640w_400h.webp）以获取最高质量
     if (result.contains("@")) {
         result = result.substringBefore("@")
     }
-    
+
     return result
 }
 
 /** Stable cache identity shared by a source thumbnail and its preview placeholder. */
 internal fun resolveImagePreviewPlaceholderCacheKey(rawSrc: String): String? {
     val trimmed = rawSrc.trim()
+    if (trimmed.startsWith("file://") || trimmed.startsWith("content://")) return trimmed
     val normalized = when {
         trimmed.startsWith("https://") -> trimmed
         trimmed.startsWith("http://") -> trimmed.replace("http://", "https://")
@@ -2352,12 +2372,22 @@ private fun resolveImageShareExtension(mimeType: String): String = when (mimeTyp
 /**
  *  分享图片 - 下载原始图片到应用缓存，再通过 FileProvider 交给系统分享面板
  */
-suspend fun shareImageFromPreview(context: Context, imageUrl: String): Boolean {
+suspend fun shareImageFromPreview(context: Context, imageUrl: String, publicContent: Boolean = false): Boolean {
     val normalizedUrl = normalizeImageUrl(imageUrl)
     if (normalizedUrl.isEmpty()) return false
-    val mimeType = resolveImageShareMimeType(normalizedUrl)
+    val mimeType = withContext(Dispatchers.IO) {
+        if (normalizedUrl.startsWith("file://") || normalizedUrl.startsWith("content://")) {
+            val uri = android.net.Uri.parse(normalizedUrl)
+            val options = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            val providerMime = try {
+                context.contentResolver.openInputStream(uri)?.use { android.graphics.BitmapFactory.decodeStream(it, null, options) }
+                context.contentResolver.getType(uri)
+            } catch (_: Exception) { null }
+            options.outMimeType ?: providerMime ?: "image/jpeg"
+        } else resolveImageShareMimeType(normalizedUrl)
+    }
     val sharedFile = withContext(Dispatchers.IO) {
-        createImagePreviewShareFile(context, normalizedUrl, mimeType)
+        createImagePreviewShareFile(context, normalizedUrl, mimeType, publicContent)
     } ?: return false
 
     return withContext(Dispatchers.Main.immediate) {
@@ -2392,13 +2422,23 @@ suspend fun shareImageFromPreview(context: Context, imageUrl: String): Boolean {
 private fun createImagePreviewShareFile(
     context: Context,
     imageUrl: String,
-    mimeType: String
+    mimeType: String,
+    publicContent: Boolean = false,
 ): File? {
     return try {
         val cacheDir = File(context.cacheDir, "shared_images").apply { mkdirs() }
         cleanupImagePreviewShareCache(cacheDir)
         val extension = resolveImageShareExtension(mimeType)
         val outputFile = File(cacheDir, "BiliPai_${System.currentTimeMillis()}.$extension")
+        if (imageUrl.startsWith("file://") || imageUrl.startsWith("content://")) {
+            val input = context.contentResolver.openInputStream(android.net.Uri.parse(imageUrl)) ?: return null
+            input.use { source -> outputFile.outputStream().use { source.copyTo(it) } }
+            return outputFile
+        }
+        if (publicContent) {
+            com.android.purebilibili.core.plugin.feed.downloadPublicContentToFile(imageUrl, outputFile)
+            return outputFile
+        }
         val connection = java.net.URL(imageUrl).openConnection() as java.net.HttpURLConnection
         try {
             connection.setRequestProperty("Referer", "https://www.bilibili.com/")
@@ -2431,138 +2471,19 @@ private fun cleanupImagePreviewShareCache(cacheDir: File) {
     }
 }
 
-/**
- *  保存图片到相册 - 支持 GIF/WebP 等格式保留
- */
-suspend fun saveImageToGallery(context: android.content.Context, imageUrl: String): Boolean {
-    return withContext(Dispatchers.IO) {
-        try {
-            //  检测图片格式
-            val isGif = imageUrl.contains(".gif", ignoreCase = true)
-            val isWebp = imageUrl.contains(".webp", ignoreCase = true)
-            val isPng = imageUrl.contains(".png", ignoreCase = true)
-            
-            //  对于 GIF/WebP，直接下载原始字节流保留动画
-            if (isGif || isWebp) {
-                val url = java.net.URL(imageUrl)
-                val connection = url.openConnection() as java.net.HttpURLConnection
-                connection.setRequestProperty("Referer", "https://www.bilibili.com/")
-                connection.connect()
-                
-                if (connection.responseCode != 200) {
-                    Log.e("ImagePreview", "Failed to download: ${connection.responseCode}")
-                    return@withContext false
-                }
-                
-                // 先把下载流落到临时文件，再分发给保存目标，避免整块字节驻留 Java 堆。
-                val tempFile = File.createTempFile("bilipai_save_", ".bin", context.cacheDir)
-                try {
-                    connection.inputStream.use { input ->
-                        tempFile.outputStream().use { output -> input.copyTo(output, 64 * 1024) }
-                    }
-                } catch (e: Exception) {
-                    tempFile.delete()
-                    throw e
-                }
-                connection.disconnect()
-
-                // 生成文件名
-                val extension = when {
-                    isGif -> "gif"
-                    isWebp -> "webp"
-                    else -> "jpg"
-                }
-                val mimeType = when {
-                    isGif -> "image/gif"
-                    isWebp -> "image/webp"
-                    else -> "image/jpeg"
-                }
-                val fileName = "BiliPai_${System.currentTimeMillis()}.$extension"
-
-                val savedToCustomDirectory = tempFile.inputStream().use { input ->
-                    saveStreamToCustomImageSaveDirectory(context, input, fileName, mimeType)
-                }
-                if (savedToCustomDirectory) {
-                    tempFile.delete()
-                    Log.d("ImagePreview", "Image saved to custom directory: $fileName")
-                    return@withContext true
-                }
-
-                // 使用 MediaStore 保存
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
-                    put(MediaStore.Images.Media.MIME_TYPE, mimeType)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        put(MediaStore.Images.Media.RELATIVE_PATH, resolveDefaultImageMediaStoreRelativePath())
-                        put(MediaStore.Images.Media.IS_PENDING, 1)
-                    }
-                }
-
-                val uri = context.contentResolver.insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    contentValues
-                )
-                if (uri == null) {
-                    tempFile.delete()
-                    return@withContext false
-                }
-
-                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    tempFile.inputStream().use { input -> input.copyTo(outputStream, 64 * 1024) }
-                }
-                tempFile.delete()
-                
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    contentValues.clear()
-                    contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
-                    context.contentResolver.update(uri, contentValues, null, null)
-                }
-                
-                Log.d("ImagePreview", "Image saved successfully: $fileName")
-                return@withContext true
-            }
-            
-            //  对于 JPEG/PNG 等静态图片，使用 Coil 下载并转换
-            val imageLoader = context.imageLoader
-            val request = ImageRequest.Builder(context)
-                .data(imageUrl)
-                .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com/").build())
-                .build()
-            
-            val result = imageLoader.execute(request)
-            if (result !is SuccessResult) {
-                Log.e("ImagePreview", "Failed to download image: $imageUrl")
-                return@withContext false
-            }
-            
-            val bitmap = (result.image as? coil3.BitmapImage)?.bitmap
-            if (bitmap == null) {
-                Log.e("ImagePreview", "Failed to convert drawable to bitmap")
-                return@withContext false
-            }
-            
-            // 生成文件名
-            val extension = if (isPng) "png" else "jpg"
-            val mimeType = if (isPng) "image/png" else "image/jpeg"
+/** 保存原始图片文件，保留长图分辨率、动图帧和编码格式。 */
+suspend fun saveImageToGallery(context: android.content.Context, imageUrl: String, publicContent: Boolean = false): Boolean {
+    return try {
+        withOriginalImageFile(context, imageUrl, publicContent) { file ->
+            val mimeType = originalImageMimeType(file)
+            val extension = originalImageExtension(mimeType)
             val fileName = "BiliPai_${System.currentTimeMillis()}.$extension"
-            val format = if (isPng) android.graphics.Bitmap.CompressFormat.PNG else android.graphics.Bitmap.CompressFormat.JPEG
+            if (file.inputStream().use { input ->
+                    saveStreamToCustomImageSaveDirectory(context, input, fileName, mimeType)
+                }) return@withOriginalImageFile true
 
-            if (
-                saveBitmapToCustomImageSaveDirectory(
-                    context = context,
-                    bitmap = bitmap,
-                    fileName = fileName,
-                    format = format,
-                    quality = 95,
-                    mimeType = mimeType
-                )
-            ) {
-                Log.d("ImagePreview", "Image saved to custom directory: $fileName")
-                return@withContext true
-            }
-            
-            // 使用 MediaStore 保存图片
-            val contentValues = ContentValues().apply {
+            val resolver = context.contentResolver
+            val values = ContentValues().apply {
                 put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
                 put(MediaStore.Images.Media.MIME_TYPE, mimeType)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -2570,29 +2491,29 @@ suspend fun saveImageToGallery(context: android.content.Context, imageUrl: Strin
                     put(MediaStore.Images.Media.IS_PENDING, 1)
                 }
             }
-            
-            val uri = context.contentResolver.insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues
-            ) ?: return@withContext false
-            
-            context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                bitmap.compress(format, 95, outputStream)
+            val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                ?: return@withOriginalImageFile false
+            var saved = false
+            try {
+                val output = resolver.openOutputStream(uri) ?: return@withOriginalImageFile false
+                output.use { sink -> file.inputStream().use { it.copyTo(sink, 64 * 1024) } }
+                kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    values.clear()
+                    values.put(MediaStore.Images.Media.IS_PENDING, 0)
+                    check(resolver.update(uri, values, null, null) > 0)
+                }
+                saved = true
+                true
+            } finally {
+                if (!saved) resolver.delete(uri, null, null)
             }
-            
-            // 标记保存完成
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                contentValues.clear()
-                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
-                context.contentResolver.update(uri, contentValues, null, null)
-            }
-            
-            Log.d("ImagePreview", "Image saved successfully: $fileName")
-            true
-        } catch (e: Exception) {
-            Log.e("ImagePreview", "Error saving image", e)
-            false
         }
+    } catch (error: kotlinx.coroutines.CancellationException) {
+        throw error
+    } catch (error: Exception) {
+        Log.e("ImagePreview", "Error saving original image", error)
+        false
     }
 }
 

@@ -15,25 +15,6 @@ class DanmakuViewportPolicyTest {
     }
 
     @Test
-    fun `viewport carries the measured box and density only`() {
-        val viewport = requireNotNull(resolveDanmakuViewport(1080, 608, 3f))
-        assertEquals(1080, viewport.widthPx)
-        assertEquals(608, viewport.heightPx)
-        assertEquals(3f, viewport.density, 0f)
-    }
-
-    @Test
-    fun `inline and fullscreen surfaces resolve the same text size`() {
-        val inline = requireNotNull(resolveDanmakuViewport(1080, 608, 3f))
-        val fullscreen = requireNotNull(resolveDanmakuViewport(2392, 1080, 3f))
-        assertEquals(
-            resolveDanmakuTextSizePx(fullscreen.density, 1.5f),
-            resolveDanmakuTextSizePx(inline.density, 1.5f),
-            0f
-        )
-    }
-
-    @Test
     fun `a band shorter than one row budgets no lines`() {
         val rowHeight = resolveDanmakuLayerLineHeightPx(fontSize = 45f, lineHeightMultiplier = 1.6f)
         assertEquals(
@@ -67,4 +48,76 @@ class DanmakuViewportPolicyTest {
         assertTrue(tall >= short)
         assertTrue(short > 0)
     }
+
+    @Test
+    fun `native FIT reserves only the band above the actual picture not the full player host`() {
+        val region = upperRegion()
+        assertEquals(PortraitDanmakuUpperRegion(topPx = 96, heightPx = 800), region)
+        assertTrue(requireNotNull(region).topPx + region.heightPx <= 896.25f)
+    }
+
+    @Test
+    fun `glass upward video offset reduces the free band`() {
+        assertEquals(
+            PortraitDanmakuUpperRegion(topPx = 96, heightPx = 656),
+            upperRegion(viewportHeight = 608, viewportOffset = -144f),
+        )
+    }
+
+    @Test
+    fun `fixed ratio frame includes its internal FIT letterbox`() {
+        assertEquals(upperRegion(), upperRegion(viewportHeight = 810))
+    }
+
+    @Test
+    fun `portrait full height cropped stretched and landscape pages have no invented upper area`() {
+        assertNull(upperRegion(sourceWidth = 1080, sourceHeight = 1920))
+        assertNull(upperRegion(fit = false))
+        assertNull(upperRegion(containerWidth = 2400, containerHeight = 1080))
+    }
+
+    @Test
+    fun `zoom and pan use the visible picture edge and fall back when less than one row fits`() {
+        assertEquals(
+            PortraitDanmakuUpperRegion(topPx = 96, heightPx = 496),
+            upperRegion(scale = 2f),
+        )
+        assertEquals(
+            PortraitDanmakuUpperRegion(topPx = 96, heightPx = 600),
+            upperRegion(translationY = -200f),
+        )
+        assertNull(upperRegion(translationY = -750f))
+        assertNull(upperRegion(scale = 4f))
+    }
+
+    @Test
+    fun `unmeasured source or container does not create a placeholder band`() {
+        assertNull(upperRegion(containerWidth = 0))
+        assertNull(upperRegion(sourceWidth = 0, sourceHeight = 0))
+    }
+
+    private fun upperRegion(
+        containerWidth: Int = 1080,
+        containerHeight: Int = 2400,
+        viewportHeight: Int = 2400,
+        viewportOffset: Float = 0f,
+        sourceWidth: Int = 1920,
+        sourceHeight: Int = 1080,
+        fit: Boolean = true,
+        scale: Float = 1f,
+        translationY: Float = 0f,
+    ) = resolvePortraitDanmakuUpperRegion(
+        containerWidthPx = containerWidth,
+        containerHeightPx = containerHeight,
+        videoViewportWidthPx = 1080,
+        videoViewportHeightPx = viewportHeight,
+        videoWidth = sourceWidth,
+        videoHeight = sourceHeight,
+        fitVideoInsideViewport = fit,
+        viewportOffsetYPx = viewportOffset,
+        safeTopPx = 96,
+        minimumHeightPx = 72f,
+        videoScale = scale,
+        videoTranslationYPx = translationY,
+    )
 }

@@ -62,7 +62,7 @@ class TopTabStylePolicyTest {
             "app/src/main/java/com/android/purebilibili/feature/home/components/" +
                 "HomeTopTabFloatingDock.kt"
         )
-        assertTrue(topDock.contains("HorizontalFloatingToolbar("))
+        assertTrue(topDock.contains("AppMaterial3Toolbar("))
         assertTrue(topDock.contains("FilledTonalButton("))
         assertTrue(topDock.contains("FilledTonalIconButton("))
         val topBar = sourceText("app/src/main/java/com/android/purebilibili/feature/home/components/TopBar.kt")
@@ -509,7 +509,7 @@ class TopTabStylePolicyTest {
                 itemCount = 4,
                 minEdgePadding = 20.dp,
                 labelMode = 0,
-                cornerRadius = FloatingBottomBarDefaultShellHeight / 2,
+                cornerRadius = resolveHomeTopDockShellHeight(isFloatingStyle = true) / 2,
             ),
             resolveHomeTopTabFloatingDockWidth(
                 containerWidth = 360.dp,
@@ -589,6 +589,9 @@ class TopTabStylePolicyTest {
     fun `ios top tab icon modes use readable glyph sizes`() {
         assertEquals(18f, resolveTopTabIconSizeDp(labelMode = 0), 0.001f)
         assertEquals(18f, resolveTopTabIconSizeDp(labelMode = 1), 0.001f)
+        assertEquals(24f, resolveHomeTopDockIconSizeDp(labelMode = 1, liquidGlassEnabled = false), 0.001f)
+        assertEquals(18f, resolveHomeTopDockIconSizeDp(labelMode = 1, liquidGlassEnabled = true), 0.001f)
+        assertEquals(18f, resolveHomeTopDockIconSizeDp(labelMode = 0, liquidGlassEnabled = false), 0.001f)
         assertEquals(6f, resolveTopTabIconTextSpacingDp(labelMode = 0), 0.001f)
         // Must match compact chrome track (HomeTopPresetStyle 32/36) or labels clip to "...".
         assertEquals(32.dp, resolveIosTopTabRowHeight(isFloatingStyle = false))
@@ -758,7 +761,7 @@ class TopTabStylePolicyTest {
     }
 
     @Test
-    fun `android native miuix top tabs should use miuix neutral surface content color`() {
+    fun `android native miuix top tabs should use theme accent content color`() {
         val colorScheme = lightColorScheme(
             primary = Color(0xFF2D6A4F),
             surfaceContainerHigh = Color(0xFFF4ECE1),
@@ -769,7 +772,7 @@ class TopTabStylePolicyTest {
         )
 
         assertEquals(
-            colorScheme.onSurface,
+            colorScheme.primary,
             resolveMd3TopTabSelectedContainerColor(
                 colorScheme = colorScheme,
                 presentation = AppTopTabPresentation.MATERIAL_UNDERLINE,
@@ -777,7 +780,7 @@ class TopTabStylePolicyTest {
             )
         )
         assertEquals(
-            colorScheme.onSurface,
+            colorScheme.primary,
             resolveMd3TopTabSelectedIconColor(
                 colorScheme = colorScheme,
                 presentation = AppTopTabPresentation.MATERIAL_UNDERLINE,
@@ -785,7 +788,7 @@ class TopTabStylePolicyTest {
             )
         )
         assertEquals(
-            colorScheme.onSurface,
+            colorScheme.primary,
             resolveMd3TopTabSelectedLabelColor(
                 colorScheme = colorScheme,
                 presentation = AppTopTabPresentation.MATERIAL_UNDERLINE,
@@ -793,7 +796,7 @@ class TopTabStylePolicyTest {
             )
         )
         assertEquals(
-            colorScheme.onSurface,
+            colorScheme.primary,
             resolveIosTopTabSelectedContentColor(
                 colorScheme = colorScheme,
                 uiStyle = AppUiStyle.MIUIX

@@ -11,18 +11,31 @@ fun buildSignedAppPlayUrlParams(
     audioLang: String? = null, timestampSec: Long = AppSignUtils.getTimestamp(),
 ): Map<String, String> {
     val androidToken = tokenPlatform == TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID
+    val hdToken = tokenPlatform == TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID_HD
     val params = mutableMapOf(
         "bvid" to bvid, "cid" to cid.toString(), "qn" to quality.toString(),
         "fnval" to "20432", "fnver" to "0", "fourk" to "1", "access_key" to accessToken,
-        "appkey" to if (androidToken) AppSignUtils.ANDROID_APP_KEY else AppSignUtils.TV_APP_KEY,
+        "appkey" to when {
+            hdToken -> AppSignUtils.ANDROID_HD_APP_KEY
+            androidToken -> AppSignUtils.ANDROID_APP_KEY
+            else -> AppSignUtils.TV_APP_KEY
+        },
         "ts" to timestampSec.toString(), "platform" to "android",
-        "mobi_app" to if (androidToken) "android" else "android_tv_yst", "device" to "android",
+        "mobi_app" to when {
+            hdToken -> "android_hd"
+            androidToken -> "android"
+            else -> "android_tv_yst"
+        }, "device" to "android",
     )
     if (!audioLang.isNullOrEmpty()) {
         params["cur_language"] = audioLang
         params["lang"] = audioLang
     }
-    return if (androidToken) AppSignUtils.signForAndroidApi(params) else AppSignUtils.signForTvLogin(params)
+    return when {
+        hdToken -> AppSignUtils.signForAndroidHdLogin(params)
+        androidToken -> AppSignUtils.signForAndroidApi(params)
+        else -> AppSignUtils.signForTvLogin(params)
+    }
 }
 
 object PlaybackStreamDataSource {

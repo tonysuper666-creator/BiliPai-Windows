@@ -33,15 +33,29 @@ class VideoCardSnapshotSourceExclusionTest {
     @Test
     fun originalSlotStaysEmptyThroughSettleEvenAtZeroDepth() {
         for (exposure in listOf(VideoCardTransitionExposure.BackPreview,
-            VideoCardTransitionExposure.Returning, VideoCardTransitionExposure.Restoring)) {
+            VideoCardTransitionExposure.Returning, VideoCardTransitionExposure.Restoring,
+            VideoCardTransitionExposure.SettledHidden)) {
             assertTrue(shouldHideStationarySourceCard(
-                true, VideoCardTransitionBackgroundPhase.RETURNING, 0f, false, exposure))
+                isSharedMorphSourceCard = true,
+                exposure = exposure,
+                isCoveredLatch = true,
+            ))
             assertFalse(shouldHideStationarySourceCard(
-                false, VideoCardTransitionBackgroundPhase.RETURNING, 0f, false, exposure))
+                isSharedMorphSourceCard = false,
+                exposure = exposure,
+                isCoveredLatch = true,
+            ))
         }
-        assertFalse(shouldHideStationarySourceCard(true,
-            VideoCardTransitionBackgroundPhase.IDLE, 0f, false, VideoCardTransitionExposure.Idle))
-        assertFalse(shouldHideStationarySourceCard(true,
-            VideoCardTransitionBackgroundPhase.OPENING, 0f, false, VideoCardTransitionExposure.Opening))
+        assertFalse(shouldHideStationarySourceCard(
+            isSharedMorphSourceCard = true,
+            exposure = VideoCardTransitionExposure.Idle,
+            isCoveredLatch = true,
+        ))
+        // 未置锁的 Opening：overlay 还没覆盖，卡槽保持（避免点击瞬间空洞）。
+        assertFalse(shouldHideStationarySourceCard(
+            isSharedMorphSourceCard = true,
+            exposure = VideoCardTransitionExposure.Opening,
+            isCoveredLatch = false,
+        ))
     }
 }

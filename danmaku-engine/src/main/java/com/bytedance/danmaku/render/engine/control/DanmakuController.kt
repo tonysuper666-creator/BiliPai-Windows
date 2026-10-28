@@ -81,6 +81,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         renderClock.pause(SystemClock.uptimeMillis())
         mIsPlaying = false
         mDataManager.onPause()
+        mDanmakuView.cancelDanmakuFrames()
     }
 
     /**
@@ -88,6 +89,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      */
     fun stop() {
         mIsPlaying = false
+        mDanmakuView.cancelDanmakuFrames()
         renderClock.reset()
         mDataManager.onStop()
         clear()
@@ -140,6 +142,20 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         if (current > 0) {
             mDataManager.onPlay(current)
         }
+        if (mIsPlaying) mDanmakuView.postInvalidateCompat()
+    }
+
+    /** Replace only mask data; active ordinary lines and their cursor stay untouched. */
+    fun replaceMaskData(dataList: List<DanmakuData>, playTime: Long) {
+        mRenderEngine.clear(LAYER_TYPE_MASK)
+        mDataManager.replaceMasks(dataList, playTime)
+        mRenderEngine.addItems(playTime, mDataManager.queryMasks(playTime))
+        mDanmakuView.postInvalidateCompat()
+    }
+
+    fun seekTimeline(playTime: Long) {
+        mDataManager.seekTo(playTime)
+        mDanmakuView.postInvalidateCompat()
     }
 
     /** Reanchors the media clock while preserving the active render lines. */
@@ -154,6 +170,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      */
     fun appendData(dataList: List<DanmakuData>) {
         mDataManager.appendData(dataList)
+        if (mIsPlaying && dataList.isNotEmpty()) mDanmakuView.postInvalidateCompat()
     }
 
     /** Remove consumed history without pause/setData/start. */
@@ -238,7 +255,13 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         mDanmakuView.postInvalidateCompat()
     }
 
+    private var lastLayoutWidth = -1
+    private var lastLayoutHeight = -1
+
     internal fun onLayoutSizeChanged(width: Int, height: Int) {
+        if (width == lastLayoutWidth && height == lastLayoutHeight) return
+        lastLayoutWidth = width
+        lastLayoutHeight = height
         mRenderEngine.onLayoutSizeChanged(width, height)
         mRenderEngine.typesetting(mDataManager.queryPlayTime(), false, true)
         mDanmakuView.postInvalidateCompat()
@@ -257,19 +280,17 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
             val t3 = System.nanoTime()
             mRenderEngine.draw(canvas)
             val t4 = System.nanoTime()
-            if (!config.common.pauseInvalidateWhenBlank || config.mask.enable) {
+            if (!config.common.pauseInvalidateWhenBlank) {
                 view.postInvalidateCompat()
             } else if (typesettingCount > 0) {
                 view.postInvalidateCompat()
             } else if (mDataManager.getRemainDanmakuCount() > 0) {
-                mDataManager.nextDanmakuShowAfter().let { after ->
+                mDataManager.nextDanmakuShowAfter(includeMask = false).let { after ->
                     val showAfter = after * 100 / config.common.playSpeed
                     if (showAfter in 0..NEXT_DANMAKU_SHOW_MIN_INTERVAL) {
                         view.postInvalidateCompat()
                     } else if (showAfter >= 0) {
-                        view.postDelayed({
-                            view.postInvalidateCompat()
-                        }, showAfter - NEXT_DANMAKU_SHOW_MIN_INTERVAL / 2)
+                        view.postDanmakuFrameAfter(showAfter - NEXT_DANMAKU_SHOW_MIN_INTERVAL / 2)
                     }
                 }
             }
@@ -277,6 +298,42 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
         } else {
             mRenderEngine.typesetting(playTime, false)
             mRenderEngine.draw(canvas)
+        }
+    }
+
+    /** Capture the touched item before Compose waits to distinguish single and double taps. */
+    fun captureDanmakuClick(x: Float, y: Float): Pair<() -> Unit, () -> Unit>? {
+        val listener = itemClickListener ?: return null
+        var click: (() -> Unit)? = null
+        var capturedData: com.bytedance.danmaku.render.engine.data.DanmakuData? = null
+        itemClickListener = object : IItemClickListener {
+            override fun onDanmakuClick(
+                data: com.bytedance.danmaku.render.engine.data.DanmakuData,
+                itemRect: android.graphics.RectF,
+                clickPoint: android.graphics.PointF
+            ) {
+                // Renderer reuses these geometry objects between frames.
+                val rect = android.graphics.RectF(itemRect)
+                val point = android.graphics.PointF(clickPoint.x, clickPoint.y)
+                capturedData = data
+                click = { listener.onDanmakuClick(data, rect, point) }
+            }
+        }
+        val now = android.os.SystemClock.uptimeMillis()
+        val event = MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, x, y, 0)
+        try {
+            val target = mRenderEngine.findTouchTarget(event) ?: return null
+            event.action = MotionEvent.ACTION_UP
+            target.onTouchEvent(event)
+            val action = click ?: return null
+            val data = capturedData ?: return null
+            executeCommand(com.bytedance.danmaku.render.engine.utils.CMD_PAUSE_ITEM, data = data)
+            return action to {
+                executeCommand(com.bytedance.danmaku.render.engine.utils.CMD_RESUME_ITEM, data = data)
+            }
+        } finally {
+            event.recycle()
+            itemClickListener = listener
         }
     }
 

@@ -8,6 +8,40 @@ import kotlin.test.assertIs
 class WebViewNavigationPolicyTest {
 
     @Test
+    fun shoppingRedirectOpensExternallyWithoutUserGesture() {
+        val url = "https://item.jd.com/123.html"
+        val action = resolveWebViewNavigationAction(url, hasUserGesture = false)
+        assertEquals(WebViewNavigationAction.OpenExternal(url), action)
+    }
+
+    @Test
+    fun officialShortLinkContinuesLoadingToFollowRedirects() {
+        assertIs<WebViewNavigationAction.AllowWebLoad>(
+            resolveWebViewNavigationAction("https://b23.tv/shopping", hasUserGesture = false)
+        )
+    }
+
+    @Test
+    fun bilibiliLookalikeHostsOpenExternally() {
+        listOf("bilibili.com.example.org", "fakeb23.tv", "b23.tv.example.org").forEach { host ->
+            val url = "https://$host/shop"
+            assertEquals(
+                WebViewNavigationAction.OpenExternal(url),
+                resolveWebViewNavigationAction(url, hasUserGesture = false)
+            )
+        }
+    }
+
+    @Test
+    fun officialActivityPageStaysInWebView() {
+        assertIs<WebViewNavigationAction.AllowWebLoad>(
+            resolveWebViewNavigationAction(
+                "https://www.bilibili.com/blackboard/activity", hasUserGesture = false
+            )
+        )
+    }
+
+    @Test
     fun resolveWebViewNavigationAction_blocksAutoAppVideoDeepLink() {
         val action = resolveWebViewNavigationAction(
             urlString = "bilibili://video/170001",

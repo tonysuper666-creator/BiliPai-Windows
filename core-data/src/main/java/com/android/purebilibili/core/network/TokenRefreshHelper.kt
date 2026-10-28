@@ -26,6 +26,7 @@ object TokenRefreshHelper {
                 Logger.d(TAG, "Refresh is unavailable for this token platform")
                 return false
             }
+            val expectedSession = AccountCookieSession.main()
             val refreshToken = TokenManager.refreshTokenCache
             if (refreshToken.isNullOrEmpty()) {
                 Logger.d(TAG, "Refresh failed: No refresh_token available")
@@ -49,22 +50,19 @@ object TokenRefreshHelper {
                 val data = response.data
                 Logger.d(TAG, "Token refresh success!")
                 
-                // 更新 Token
-                TokenManager.saveAccessToken(
-                    context, 
-                    data.accessToken, 
-                    data.refreshToken
+                if (TokenManager.sessDataCache.orEmpty() != expectedSession.sessData) return false
+                val cookies = AccountCookieStore.read(context, expectedSession) +
+                    data.cookieInfo?.cookies.orEmpty().associate { it.name to it.value }
+                com.android.purebilibili.data.repository.SessionRepository.save(
+                    context = context,
+                    sessData = cookies["SESSDATA"].orEmpty(),
+                    csrf = cookies["bili_jct"].orEmpty(),
+                    buvid3 = cookies["buvid3"].orEmpty(),
+                    mid = cookies["DedeUserID"]?.toLongOrNull() ?: TokenManager.midCache ?: 0L,
+                    accessToken = data.accessToken, refreshToken = data.refreshToken, cookies = cookies,
                 )
-                
-                // 更新 Cookies (如果有)
-                data.cookieInfo?.cookies?.forEach { cookie ->
-                     if (cookie.name == "SESSDATA") {
-                         TokenManager.saveCookies(context, cookie.value)
-                     } else if (cookie.name == "bili_jct") {
-                         TokenManager.saveCsrf(context, cookie.value)
-                     }
-                }
-                
+                com.android.purebilibili.core.store.AccountSessionStore.upsertCurrentAccount(context)
+
                 return true
             } else {
                 Logger.e(TAG, "Token refresh failed: code=${response.code}, msg=${response.message}")

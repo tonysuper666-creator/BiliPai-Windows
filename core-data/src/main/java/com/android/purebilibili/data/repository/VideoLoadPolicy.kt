@@ -71,26 +71,12 @@ fun resolveRequestedVideoCid(
     return normalizedInfoCid ?: normalizedRequestCid ?: 0L
 }
 
-fun resolveInitialStartQuality(
-    targetQuality: Int?,
-    isAutoHighestQuality: Boolean,
-    isLogin: Boolean,
-    isVip: Boolean,
-    auto1080pEnabled: Boolean
-): Int {
-    return when {
-        // The API documents 127 as the highest qn and 126/125 as separate Dolby/HDR
-        // tiers. Requesting 125 here can omit the Dolby track until a manual switch.
-        isAutoHighestQuality && isVip -> 127
-        isAutoHighestQuality && isLogin -> 80
-        isAutoHighestQuality -> 64
-        targetQuality != null -> targetQuality
-        isVip -> 116
-        isLogin && auto1080pEnabled -> 80
-        isLogin -> 64
-        else -> 32
-    }
-}
+/** 低清目标直接取流；其余目标先发现画质目录，再由播放层选择偏好。 */
+fun resolveInitialStartQuality(targetQuality: Int? = null): Int =
+    targetQuality?.takeIf { it in 1..32 } ?: 129
+
+fun isPlayUrlRiskControlResponse(code: Int, hasVoucher: Boolean): Boolean =
+    hasVoucher || code in setOf(-351, -352, -412)
 
 fun resolveVideoPlaybackAuthState(
     hasSessionCookie: Boolean,
@@ -105,55 +91,17 @@ fun shouldSkipPlayUrlCache(
     audioLang: String?
 ): Boolean {
     // Language-specific streams must not reuse the default-language cache entry.
-    // VIP auto-highest used to always skip cache and hurt re-open TTFF; accept cache
-    // when [shouldAcceptCachedPlayUrlForAutoHighest] says the payload is good enough.
+    // Highest-tier discovery caches the account's returned catalogue, including
+    // legitimate lower-quality results for videos without premium representations.
     return audioLang != null
 }
 
-/**
- * VIP auto-highest can reuse a cached playurl when it already contains a premium track.
- * Thin/low-quality cache entries are ignored so we still re-negotiate high quality.
- */
-fun shouldAcceptCachedPlayUrlForAutoHighest(
-    isAutoHighestQuality: Boolean,
-    isVip: Boolean,
-    cachedDashVideoIds: List<Int>,
-    minPremiumQuality: Int = 112
-): Boolean {
-    if (!isAutoHighestQuality || !isVip) return true
-    return cachedDashVideoIds.any { it >= minPremiumQuality }
-}
+/** 同一播放请求只查询目标画质，不按档位放大失败请求。 */
+fun buildDashAttemptQualities(targetQn: Int): List<Int> = listOf(targetQn)
 
-/**
- * Build the DASH playurl attempt chain for a target quality.
- *
- * The requested quality itself must lead the list. Premium tiers such as 8K (127),
- * Dolby Vision (126), and HDR (125) are not always bundled into a lower-qn response
- * (e.g. qn=120), so omitting the target causes QUALITY_SWITCH_FAILURE / no HDR tracks.
- */
-fun buildDashAttemptQualities(targetQn: Int): List<Int> {
-    if (targetQn <= 80) return listOf(targetQn)
+fun resolveDashRetryDelays(targetQn: Int, isPrimaryAttempt: Boolean = false): List<Long> = listOf(0L)
 
-    val premiumQualities = listOf(129, 127, 126, 125, 120, 116, 112, 100)
-    val lowerFallbacks = premiumQualities.filter { quality -> quality < targetQn }
-
-    return (listOf(targetQn) + lowerFallbacks + 80).distinct()
-}
-
-fun resolveDashRetryDelays(
-    targetQn: Int,
-    isPrimaryAttempt: Boolean = false
-): List<Long> {
-    // 播放接口偶发以 code=0 返回空流。首次目标画质应先原档重试，避免自动最高模式
-    // 立即逐档降级，最终只保留 Legacy/Guest 返回的 720P、360P 轨道。
-    // 后续高级画质 fallback 不重复重试，防止短时间内放大请求并触发接口风控。
-    return if (isPrimaryAttempt || targetQn <= 80) listOf(0L, 450L) else listOf(0L)
-}
-
-fun shouldRetryOnlyTransientEmptyDashResponse(
-    targetQn: Int,
-    isPrimaryAttempt: Boolean,
-): Boolean = isPrimaryAttempt && targetQn > 80
+fun shouldRetryOnlyTransientEmptyDashResponse(targetQn: Int, isPrimaryAttempt: Boolean): Boolean = false
 
 fun shouldRetryDashTrackRecovery(
     targetQn: Int,
@@ -232,15 +180,8 @@ fun buildDirectedTrafficWbiOverrides(
     directedTrafficEnabled: Boolean,
     isOnMobileData: Boolean
 ): Map<String, String> {
-    if (!shouldEnableDirectedTrafficMode(directedTrafficEnabled, isOnMobileData)) {
-        return emptyMap()
-    }
-    return mapOf(
-        "platform" to "android",
-        "mobi_app" to "android",
-        "device" to "android",
-        "build" to "8130300"
-    )
+    // 定向流量设置只影响媒体地址处理，不能改变 Web 签名请求的平台身份。
+    return emptyMap()
 }
 
 fun buildPlayUrlWbiBaseParams(
@@ -260,7 +201,11 @@ fun buildPlayUrlWbiBaseParams(
         "voice_balance" to "1",
         "gaia_source" to "pre-load",
         "isGaiaAvoided" to "true",
-        "web_location" to "1315873"
+        "web_location" to "1315873",
+        "dm_img_list" to "[]",
+        "dm_img_str" to randomPlayUrlFingerprint(16, 64),
+        "dm_cover_img_str" to randomPlayUrlFingerprint(32, 128),
+        "dm_img_inter" to "{\"ds\":[],\"wh\":[0,0,0],\"of\":[0,0,0]}"
     )
     if (tryLook) {
         params["try_look"] = "1"
@@ -278,21 +223,16 @@ fun shouldRequestPlayUrlTryLook(
     return !isLoggedIn && auto1080pEnabled
 }
 
-fun buildLoggedInPlaybackFallbackOrder(): List<PlayUrlSource> {
-    return listOf(
-        PlayUrlSource.DASH,
-        PlayUrlSource.APP,
-        PlayUrlSource.LEGACY,
-        PlayUrlSource.GUEST
-    )
+private fun randomPlayUrlFingerprint(minLength: Int, maxLength: Int): String {
+    val bytes = ByteArray(kotlin.random.Random.nextInt(minLength, maxLength + 1)) {
+        kotlin.random.Random.nextInt(0x26, 0x7f).toByte()
+    }
+    return java.util.Base64.getEncoder().encodeToString(bytes).dropLast(2)
 }
 
-fun buildGuestPlaybackFallbackOrder(): List<PlayUrlSource> {
-    return listOf(
-        PlayUrlSource.DASH,
-        PlayUrlSource.LEGACY
-    )
-}
+fun buildLoggedInPlaybackFallbackOrder(): List<PlayUrlSource> = listOf(PlayUrlSource.DASH)
+
+fun buildGuestPlaybackFallbackOrder(): List<PlayUrlSource> = listOf(PlayUrlSource.DASH)
 
 fun shouldAcceptAppApiResultForTargetQuality(
     requestKind: PlayUrlRequestKind,
@@ -316,7 +256,7 @@ fun shouldAcceptAppApiResultForTargetQuality(
     if (targetQn < 80) return true
     // In DASH responses `quality` is response metadata, not proof that the
     // requested representation is playable. Only an exact playable track may
-    // finish an explicit high-quality request; otherwise continue to APP fallback.
+    // finish an explicit high-quality request; otherwise report the unavailable tier.
     return targetQn in dashVideoIds
 }
 
@@ -329,11 +269,13 @@ fun shouldCachePlayUrlResult(
     audioLang: String?,
     requestedQuality: Int = 0,
     returnedQuality: Int = 0,
-    dashVideoIds: List<Int> = emptyList()
+    dashVideoIds: List<Int> = emptyList(),
+    requestKind: PlayUrlRequestKind = PlayUrlRequestKind.EXPLICIT
 ): Boolean {
     if (audioLang != null) return false
     if (source == PlayUrlSource.GUEST) return false
-    if (requestedQuality >= 80 && !isRequestedQualitySatisfied(
+    // A discovery request may legitimately return a lower tier for this account/video.
+    if (requestKind == PlayUrlRequestKind.EXPLICIT && requestedQuality >= 80 && !isRequestedQualitySatisfied(
             requestedQuality = requestedQuality,
             returnedQuality = returnedQuality,
             dashVideoIds = dashVideoIds
@@ -383,7 +325,7 @@ fun isExactRequestedQualitySelected(
  * 3. User is VIP (premium account)
  * 4. Not on mobile data (Wi-Fi only)
  * 5. Valid access_token available
- * 6. Current DASH does not already include HDR track 125
+ * 6. Current DASH does not already include HDR or a higher tier (125–129)
  * 7. User hasn't made an explicit quality selection
  * 8. Upgrade hasn't already been attempted for this playback session
  */
@@ -402,7 +344,7 @@ fun shouldScheduleHdrAutoUpgrade(
         isVip &&
         !isMobileData &&
         hasAccessToken &&
-        125 !in currentPlayableDashVideoIds &&
+        currentPlayableDashVideoIds.none { it >= 125 } &&
         !userHasExplicitQualitySelection &&
         !upgradeAlreadyAttempted
 }

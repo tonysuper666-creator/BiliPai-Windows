@@ -13,6 +13,20 @@ import org.junit.Test
 class DanmakuConfigPolicyTest {
 
     @Test
+    fun `count bar never reserves tracks in massive mode`() {
+        for (height in listOf(0f, 64f, 128f, 1000f)) {
+            assertEquals(0f, resolveDanmakuHotBarReservedHeightPx(height, 720, true), 0f)
+        }
+    }
+
+    @Test
+    fun `normal mode restores bounded count bar reservation`() {
+        assertEquals(64f, resolveDanmakuHotBarReservedHeightPx(64f, 720, false), 0f)
+        assertEquals(32f, resolveDanmakuHotBarReservedHeightPx(64f, 32, false), 0f)
+        assertEquals(0f, resolveDanmakuHotBarReservedHeightPx(64f, 0, false), 0f)
+    }
+
+    @Test
     fun `bilibili font grades should remain relative to user font scale`() {
         assertEquals(0.72f, resolveBilibiliDanmakuFontScale(18f), 0.001f)
         assertEquals(1.0f, resolveBilibiliDanmakuFontScale(25f), 0.001f)
@@ -57,9 +71,19 @@ class DanmakuConfigPolicyTest {
 
     @Test
     fun `pinned duration should clamp to safe bounds`() {
-        assertEquals(2000L, resolveDanmakuPinnedDurationMillis(0.5f))
+        assertEquals(1000L, resolveDanmakuPinnedDurationMillis(0.5f))
         assertEquals(4000L, resolveDanmakuPinnedDurationMillis(4.0f))
-        assertEquals(15000L, resolveDanmakuPinnedDurationMillis(18.0f))
+        assertEquals(18000L, resolveDanmakuPinnedDurationMillis(18.0f))
+        assertEquals(50000L, resolveDanmakuPinnedDurationMillis(60f))
+    }
+
+    @Test
+    fun `Pili selected range endpoints reach renderer unchanged`() {
+        assertEquals(0f, normalizeDanmakuOpacity(0f), 0f)
+        assertEquals(37.5f, resolveDanmakuTextSizePx(1f, 2.5f, false), 0f)
+        assertEquals(60f, resolveDanmakuLayerLineHeightPx(20f, 3f), 0f)
+        assertEquals(1000L, resolveDanmakuScrollDurationMillis(1f, 1f, false, 1080))
+        assertEquals(50000L, resolveDanmakuScrollDurationMillis(50f, 1f, false, 1080))
     }
 
     @Test
@@ -119,14 +143,18 @@ class DanmakuConfigPolicyTest {
     }
 
     @Test
-    fun `text size ignores the container box so every surface renders the same`() {
-        val inline = requireNotNull(resolveDanmakuViewport(1080, 608, 3f))
-        val fullscreen = requireNotNull(resolveDanmakuViewport(2392, 1080, 3f))
-        assertEquals(
-            resolveDanmakuTextSizePx(inline.density, 1f),
-            resolveDanmakuTextSizePx(fullscreen.density, 1f),
-            0f
-        )
+    fun `fullscreen changes the logical baseline but preserves the user's scale`() {
+        assertEquals(39.375f, resolveDanmakuTextSizePx(2.625f, 1f, false), 0.001f)
+        assertEquals(47.25f, resolveDanmakuTextSizePx(2.625f, 1f, true), 0.001f)
+        assertEquals(59.0625f, resolveDanmakuTextSizePx(2.625f, 1.5f, false), 0.001f)
+        assertEquals(70.875f, resolveDanmakuTextSizePx(2.625f, 1.5f, true), 0.001f)
+    }
+
+    @Test
+    fun `stroke thickness uses system density and zero still disables the outline`() {
+        assertEquals(1.5f, resolveDanmakuStrokeWidthPx(1f, 1.5f), 0.001f)
+        assertEquals(5.25f, resolveDanmakuStrokeWidthPx(3.5f, 1.5f), 0.001f)
+        assertEquals(0f, resolveDanmakuStrokeWidthPx(3.5f, 0f), 0f)
     }
 
     @Test

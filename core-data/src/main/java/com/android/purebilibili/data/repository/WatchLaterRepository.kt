@@ -1,5 +1,6 @@
 package com.android.purebilibili.data.repository
 
+import com.android.purebilibili.data.model.response.VideoRights
 import com.android.purebilibili.core.network.NetworkModule
 import com.android.purebilibili.core.network.WbiKeyManager
 import com.android.purebilibili.core.network.WbiUtils
@@ -24,7 +25,7 @@ fun buildWatchLaterPageParams(
     ascending: Boolean,
 ): Map<String, String> = mapOf(
     "pn" to page.coerceAtLeast(1).toString(),
-    "ps" to "20",
+    "ps" to "30",
     "viewed" to viewed.toString(),
     "key" to keyword.trim(),
     "asc" to ascending.toString(),
@@ -33,7 +34,21 @@ fun buildWatchLaterPageParams(
 )
 
 object WatchLaterRepository {
-    private const val PAGE_SIZE = 20
+    suspend fun add(aid: Long): Result<Boolean> = dataRequest {
+        val response = api.addToWatchLater(aid, requireCsrf())
+        if (response.code != 0) throw ContentRequestException(response.code, when (response.code) {
+            90001 -> "稍后再看列表已满"; 90003 -> "视频已被删除"; else -> response.message
+        })
+        true
+    }
+    suspend fun remove(aid: Long): Result<Boolean> = dataRequest {
+        val response = api.deleteFromWatchLater(aid = aid, csrf = requireCsrf())
+        if (response.code != 0) throw ContentRequestException(response.code, when (response.code) {
+            90001 -> "稍后再看列表已满"; 90003 -> "视频已被删除"; else -> response.message
+        })
+        true
+    }
+    private const val PAGE_SIZE = 30
     private val api = NetworkModule.api
 
     suspend fun getPage(
@@ -47,15 +62,9 @@ object WatchLaterRepository {
             val keys = WbiKeyManager.getWbiKeys().getOrNull()
                 ?: WbiKeyManager.refreshKeys().getOrThrow()
             val response = api.getWatchLaterPage(WbiUtils.sign(params, keys.first, keys.second))
-            check(response.code == 0) { response.message.ifBlank { "加载稍后再看失败" } }
+            if (response.code != 0) throw ContentRequestException(response.code, response.message)
             val data = response.data
             val items = data?.list.orEmpty().map { item ->
-                val badges = buildList {
-                    if (item.chargingPay?.level != null) add("充电")
-                    if (item.rights?.isCooperation == 1) add("合作")
-                    item.pgcLabel?.takeIf(String::isNotBlank)?.let(::add)
-                    if (item.isPugv == true) add("课程")
-                }
                 VideoItem(
                     id = item.aid,
                     aid = item.aid,
@@ -80,7 +89,13 @@ object WatchLaterRepository {
                         share = item.stat?.share ?: 0,
                     ),
                     pubdate = item.pubdate ?: 0L,
-                    contentType = badges.joinToString(" · "),
+                    rights = VideoRights(
+                        isCooperation = item.rights?.isCooperation ?: 0,
+                        isSteinGate = item.rights?.isSteinGate ?: 0,
+                    ),
+                    isLessonVideo = item.isPugv == true,
+                    chargingPay = item.chargingPay,
+                    pgcLabel = item.pgcLabel,
                     navigationUrl = item.redirectUrl.orEmpty(),
                 )
             }
@@ -88,7 +103,8 @@ object WatchLaterRepository {
             WatchLaterPage(
                 items = items,
                 totalCount = total,
-                hasMore = page * PAGE_SIZE < total,
+                hasMore = items.isNotEmpty() && page.toLong() *
+                    (data?.ps?.takeIf { it > 0 } ?: minOf(PAGE_SIZE, items.size).coerceAtLeast(1)) < total,
             )
         }
     }
@@ -129,7 +145,7 @@ object WatchLaterRepository {
         }
     }
 
-    private fun requireCsrf(): String = TokenManager.csrfCache.orEmpty().ifBlank { error("请先登录") }
+    private fun requireCsrf(): String = TokenManager.csrfCache.orEmpty().ifBlank { throw ContentRequestException(-101, "") }
 
     private suspend inline fun <T> apiCall(crossinline block: suspend () -> T): Result<T> = try {
         Result.success(block())

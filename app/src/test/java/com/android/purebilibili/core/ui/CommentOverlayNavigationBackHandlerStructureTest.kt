@@ -54,12 +54,10 @@ class CommentOverlayNavigationBackHandlerStructureTest {
         val facade = File("../design-system/src/main/java/com/android/purebilibili/core/ui/AppSheetComponents.kt").readText()
         assertTrue(window.contains("LocalView.current.findViewTreeNavigationEventDispatcherOwner()"))
         assertTrue(window.contains("LocalNavigationEventDispatcherOwner provides owner"))
-        // Facade owns window-scoped NavigationBackHandler and turns off Dialog default
-        // dismissal so comment sheets can keep dismissOnBackPress = false and run their
-        // own multi-level back stack.
+        // MD3 forwards the opt-out to its native handler, so comment sheets can keep
+        // dismissOnBackPress = false and run their own window-scoped multi-level back stack.
         assertTrue(facade.contains("fun ModalSheetNavigationHost("))
-        assertTrue(facade.contains("shouldDismissOnBackPress = false"))
-        assertTrue(facade.contains("dismissOnBackPress = dismissOnBackPress"))
+        assertTrue(facade.contains("shouldDismissOnBackPress = dismissOnBackPress"))
         val detail = File("src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt").readText()
         val preview = File("src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHost.kt").readText()
         assertTrue(detail.contains("DynamicSubReplyPreviewHost("))

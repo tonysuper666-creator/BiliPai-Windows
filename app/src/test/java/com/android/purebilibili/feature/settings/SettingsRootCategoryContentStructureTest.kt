@@ -57,7 +57,7 @@ class SettingsRootCategoryContentStructureTest {
         assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_DECODER"))
         assertTrue(source.contains("SettingsSearchFocusIds.BOTTOM_BAR_START"))
         assertTrue(source.contains("SettingsSearchFocusIds.ANIMATION_START"))
-        assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_INTERACTION"))
+        assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_COMMENTS"))
         assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_FULLSCREEN"))
         assertTrue(source.contains("SettingsSearchFocusIds.PLAYBACK_DEBUG"))
     }
@@ -309,7 +309,7 @@ class SettingsRootCategoryContentStructureTest {
     }
 
     @Test
-    fun aboutSectionShowsProjectOverviewAndStaticContributorsBeforeRows() {
+    fun aboutSectionShowsProjectOverviewAndStaticDevelopersBeforeRows() {
         val source = listOf(
             File("app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt"),
             File("src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt")
@@ -321,14 +321,14 @@ class SettingsRootCategoryContentStructureTest {
 
         assertTrue(aboutSectionBlock.contains("AboutProjectOverviewCard(versionName = versionName)"))
         assertTrue(aboutSectionBlock.indexOf("AboutProjectOverviewCard(") < aboutSectionBlock.indexOf("SettingsCardGroup {"))
-        assertTrue(source.contains("internal val AboutContributors = listOf("))
-        assertTrue(source.contains("AboutContributor(\"jay3-yy\", \"jay3-yy\", R.drawable.avatar_jay3_yy)"))
+        assertTrue(source.contains("internal val AboutDevelopers = listOf("))
+        assertTrue(source.contains("AboutDeveloper(\"jay3-yy\", \"jay3-yy\", R.drawable.avatar_jay3_yy)"))
         assertTrue(source.contains("name = \"Piracola\""))
         assertTrue(source.contains("githubLogin = \"Piracola\""))
-        assertTrue(source.contains("AboutContributor(\"Chenx Dust\""))
-        assertTrue(source.contains("AboutContributor(\"usontong\""))
-        assertTrue(source.contains("AboutContributor(\"Leko\", \"lekoOwO\", R.drawable.avatar_lekoowo)"))
-        assertTrue(source.contains("AboutContributor(\"qyo123oyq\", \"qyo123oyq\", R.drawable.avatar_qyo123oyq)"))
+        assertTrue(source.contains("AboutDeveloper(\"Chenx Dust\""))
+        assertTrue(source.contains("AboutDeveloper(\"usontong\""))
+        assertTrue(source.contains("AboutDeveloper(\"Leko\", \"lekoOwO\", R.drawable.avatar_lekoowo)"))
+        assertTrue(source.contains("AboutDeveloper(\"qyo123oyq\", \"qyo123oyq\", R.drawable.avatar_qyo123oyq)"))
         assertTrue(source.contains("name = \"maxzrb\""))
         assertTrue(source.contains("githubLogin = \"maxzrb\""))
         assertTrue(source.contains("name = \"xiaoniao427\""))
@@ -337,27 +337,27 @@ class SettingsRootCategoryContentStructureTest {
     }
 
     @Test
-    fun aboutContributors_useGithubProfilesAndClickableAvatars() {
+    fun aboutDevelopers_useGithubProfilesAndClickableAvatars() {
         val source = listOf(
             File("app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt"),
             File("src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt")
         ).first { it.exists() }.readText().replace("\r\n", "\n")
 
-        val contributorBlock = source
-            .substringAfter("internal data class AboutContributor(")
-            .substringBefore("// 默认使用本地头像以避免进入关于页时请求 GitHub")
+        val developerBlock = source
+            .substringAfter("internal data class AboutDeveloper(")
+            .substringBefore("// 名单依据仓库的 GitHub 贡献记录维护")
         val overviewBlock = source
             .substringAfter("private fun AboutProjectOverviewCard(")
-            .substringBefore("@Composable\nprivate fun AboutContributorItem(")
+            .substringBefore("@Composable\nprivate fun AboutDeveloperItem(")
         val itemBlock = source
-            .substringAfter("private fun AboutContributorItem(")
+            .substringAfter("private fun AboutDeveloperItem(")
 
-        assertTrue(contributorBlock.contains("val githubLogin: String"))
-        assertTrue(contributorBlock.contains("val avatarResId: Int?"))
-        assertTrue(contributorBlock.contains("\"https://github.com/${'$'}githubLogin\""))
-        assertTrue(contributorBlock.contains("val avatarUrl: String?"))
+        assertTrue(developerBlock.contains("val githubLogin: String"))
+        assertTrue(developerBlock.contains("val avatarResId: Int?"))
+        assertTrue(developerBlock.contains("\"https://github.com/${'$'}githubLogin\""))
+        assertTrue(developerBlock.contains("val avatarUrl: String?"))
         assertTrue(source.contains("https://avatars.githubusercontent.com/u/114979598?v=4"))
-        assertTrue(overviewBlock.contains("text = \"贡献者\""))
+        assertTrue(overviewBlock.contains("text = \"开发者\""))
         assertFalse(overviewBlock.contains("其他贡献者"))
         assertFalse(overviewBlock.contains("顺手"))
         assertTrue(overviewBlock.contains("remember { AboutSlogans.random() }"))
@@ -399,7 +399,7 @@ class SettingsRootCategoryContentStructureTest {
         assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"画质与播放\")"))
         assertTrue(settingsSections.contains("SettingsDetailGroup(title = \"隐私与安全\")"))
         assertTrue(appearance.contains("AppPreferenceSectionTitle(\"显示模式\")"))
-        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"字体与密度\")"))
+        assertTrue(appearance.contains("AppPreferenceSectionTitle(\"文字与大小\")"))
         assertTrue(appearance.contains("AppPreferenceSectionTitle(\"开屏与图标\")"))
         assertTrue(playback.contains("AppPreferenceSectionTitle(\"小窗与后台\")"))
         assertTrue(playback.contains("AppPreferenceSectionTitle(\"诊断\")"))
@@ -463,7 +463,7 @@ class SettingsRootCategoryContentStructureTest {
             File("src/main/java/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt")
         ).first { it.exists() }.readText().replace("\r\n", "\n")
 
-        assertTrue(copySource.contains("title = \"首页样式与推荐卡片\""))
+        assertTrue(copySource.contains("title = \"首页与推荐\""))
         assertTrue(copySource.contains("title = \"全屏与手势\""))
         assertTrue(source.contains("value = \"出现黑屏、卡顿或画质切换失败时用于排查问题\""))
     }

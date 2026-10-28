@@ -1249,6 +1249,36 @@ class BackgroundPlaybackPolicyTest {
     }
 
     @Test
+    fun bufferingStartupShouldKeepPlaybackNotificationVisible() {
+        assertTrue(
+            shouldKeepPlaybackNotificationVisible(
+                isActive = true,
+                title = "Cold start",
+                isPlaying = false,
+                appInBackground = false,
+                isStartingPlayback = true
+            )
+        )
+        assertFalse(
+            shouldKeepPlaybackNotificationVisible(
+                isActive = false,
+                title = "Cold start",
+                isPlaying = false,
+                appInBackground = false,
+                isStartingPlayback = true
+            )
+        )
+    }
+
+    @Test
+    fun onlyBufferingWithPlayWhenReadyCountsAsStartingPlayback() {
+        assertTrue(isPlayerStartingPlayback(playWhenReady = true, playbackState = Player.STATE_BUFFERING))
+        assertFalse(isPlayerStartingPlayback(playWhenReady = false, playbackState = Player.STATE_BUFFERING))
+        assertFalse(isPlayerStartingPlayback(playWhenReady = true, playbackState = Player.STATE_IDLE))
+        assertFalse(isPlayerStartingPlayback(playWhenReady = true, playbackState = Player.STATE_ENDED))
+    }
+
+    @Test
     fun pausedForegroundSessionShouldNotKeepPlaybackNotificationVisible() {
         assertFalse(
             shouldKeepPlaybackNotificationVisible(

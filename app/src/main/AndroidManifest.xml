@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -52,6 +53,15 @@
             <action android:name="android.intent.action.SEND" />
             <data android:mimeType="image/jpeg" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.APP_BROWSER" />
+        </intent>
     </queries>
 
     <application
@@ -65,11 +75,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PureBiliBili"
         android:usesCleartextTraffic="true"
-        android:localeConfig="@xml/locales_config"
         android:networkSecurityConfig="@xml/network_security_config"
         android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density"
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
+
+        <!-- Collection starts only after the stored app preference is applied. SDK initialization
+             remains automatic so Crashlytics can retain the original uncaught exception handler. -->
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
 
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
@@ -1000,7 +1018,18 @@
         </provider>
 
         <service
+            android:name=".feature.audio.player.BackgroundAudioService"
+            android:process=":playback"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".feature.message.notification.MessageNotificationService"
+            android:process=":message"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property

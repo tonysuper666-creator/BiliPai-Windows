@@ -9,6 +9,7 @@ import com.android.purebilibili.data.model.response.Dolby
 import com.android.purebilibili.data.model.response.Flac
 import com.android.purebilibili.feature.video.playback.audio.AUDIO_QUALITY_DOLBY
 import com.android.purebilibili.feature.video.playback.audio.AUDIO_QUALITY_HI_RES
+import com.android.purebilibili.feature.video.playback.audio.AudioStreamKind
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -209,5 +210,17 @@ class AdaptiveDashTrackPolicyTest {
         )
 
         assertEquals(listOf(30280), result.audioTracks.map { it.id })
+    }
+    @Test
+    fun `speed transitions preserve raw special preferences using actual returned kind`() {
+        for (kind in listOf(AudioStreamKind.DOLBY, AudioStreamKind.HI_RES)) {
+            assertEquals(100010, resolveSpeedCompatibleAudioQualityPreference(100010, 1.5f, requestedAudioKind = kind))
+            assertEquals(-1, resolveSpeedCompatibleAudioQualityPreference(100010, 1.51f, requestedAudioKind = kind))
+            assertEquals(true, shouldRefreshPremiumAudioForPlaybackSpeedChange(100010, 1.5f, 1.51f, requestedAudioKind = kind))
+            assertEquals(true, shouldRefreshPremiumAudioForPlaybackSpeedChange(100010, 2f, 1f, requestedAudioKind = kind))
+            assertEquals(false, shouldRefreshPremiumAudioForPlaybackSpeedChange(100010, 2f, 3f, requestedAudioKind = kind))
+        }
+        assertEquals(100010, resolveSpeedCompatibleAudioQualityPreference(100010, 2f, requestedAudioKind = AudioStreamKind.STANDARD))
+        assertEquals(-1, resolveSpeedCompatibleAudioQualityPreference(30255, 2f))
     }
 }

@@ -7,7 +7,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.android.purebilibili.core.network.NetworkModule
-import com.android.purebilibili.core.plugin.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapability
 import java.io.File
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -134,7 +134,7 @@ class BiliPaiJsRuntime(
 
     /**
      * 调用插件的弹幕函数（manifest.danmakuFunctionName），参数为 `{"title": ...}`。
-     * 仅在插件被授予 [com.android.purebilibili.core.plugin.PluginCapability.DANMAKU_STREAM]
+     * 仅在插件被授予 [com.android.purebilibili.plugin.sdk.PluginCapability.DANMAKU_STREAM]
      * 时可用；结果按 manifest.danmakuCacheDuration 缓存（moduleId 固定为 `__danmaku__`）。
      */
     suspend fun loadDanmuComments(

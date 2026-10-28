@@ -1,5 +1,10 @@
 package com.android.purebilibili.feature.profile
 
+import com.android.purebilibili.navigation.tabIndicatorPosition
+import com.android.purebilibili.data.model.AccountLedgerKind
+import com.android.purebilibili.core.ui.motion.AppMotionEasing
+import com.android.purebilibili.core.ui.AppContentColors
+
 import com.android.purebilibili.feature.personal.PersonalMediaCardFrame
 import com.android.purebilibili.core.ui.components.VideoListLayoutToggle
 import com.android.purebilibili.core.ui.components.resolveVideoListColumns
@@ -12,6 +17,7 @@ import coil3.request.placeholder
 import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
 import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
 import com.android.purebilibili.core.ui.components.AppIcon
+import com.android.purebilibili.core.ui.components.appGentleActionClickable
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppHorizontalDivider
 import com.android.purebilibili.core.ui.AppSpacingTokens
@@ -27,7 +33,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -40,6 +46,7 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.QrCodeScanner
 import com.android.purebilibili.feature.login.OfficialQrAuthorizationDialog
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -48,12 +55,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.zIndex
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -65,8 +78,11 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -74,6 +90,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.purebilibili.core.ui.transition.LocalDynamicImagePreviewTextVisible
@@ -85,8 +102,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.AspectRatioFrameLayout
-import androidx.media3.ui.PlayerView
 import coil3.compose.AsyncImage
 import coil3.imageLoader
 import coil3.request.ImageRequest
@@ -102,6 +117,8 @@ import com.android.purebilibili.feature.home.UserState
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog
 import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
 import com.android.purebilibili.feature.dynamic.components.prepareImagePreviewSourceTransition
+import com.android.purebilibili.feature.dynamic.components.rememberImagePreviewSourceRect
+import com.android.purebilibili.feature.dynamic.components.imagePreviewSourceBounds
 import com.android.purebilibili.feature.dynamic.components.resolveImagePreviewPlaceholderCacheKey
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent
 import com.android.purebilibili.core.ui.AppAlertDialog
@@ -128,9 +145,8 @@ import com.android.purebilibili.core.ui.AppTopBar
 import com.android.purebilibili.core.ui.AppTopBarStyle
 import com.android.purebilibili.feature.home.components.BiliPaiImmersiveTopBar
 import com.android.purebilibili.feature.home.components.shouldUseBiliPaiProgressiveTopBlur
-import top.yukonga.miuix.kmp.blur.LayerBackdrop
-import top.yukonga.miuix.kmp.blur.layerBackdrop
-import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
+import com.android.purebilibili.core.ui.blur.ChromeBackdropSource
+import com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource
 import com.android.purebilibili.core.ui.AppSplitLayout
 import com.android.purebilibili.core.ui.TopReadabilityChrome
 import com.android.purebilibili.core.ui.globalWallpaperAwareBackground
@@ -138,7 +154,6 @@ import com.android.purebilibili.core.ui.LocalBottomBarContentPadding
 import com.android.purebilibili.core.ui.rememberAppBackIcon
 import com.android.purebilibili.core.ui.rememberAppBookmarkIcon
 import com.android.purebilibili.core.ui.rememberAppChevronDownIcon
-import com.android.purebilibili.core.ui.rememberAppChevronUpIcon
 import com.android.purebilibili.core.ui.rememberAppDownloadIcon
 import com.android.purebilibili.core.ui.rememberAppFolderIcon
 import com.android.purebilibili.core.ui.rememberAppHistoryIcon
@@ -177,6 +192,11 @@ import com.android.purebilibili.data.model.response.SpaceDynamicItem
 import com.android.purebilibili.data.model.response.SpaceVideoItem
 import com.android.purebilibili.feature.dynamic.DynamicDeleteAction
 import com.android.purebilibili.feature.space.resolveSpaceAggregateVideoId
+import com.android.purebilibili.core.ui.common.contentTabPagerGestures
+import com.android.purebilibili.core.ui.common.rememberContentTabPager
+import com.android.purebilibili.core.ui.common.stationaryPagerHeader
+import com.android.purebilibili.core.ui.components.AppHorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import com.android.purebilibili.feature.settings.AppThemeMode
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 
@@ -324,6 +344,7 @@ fun ProfileScreen(
     onLogoutSuccess: () -> Unit,
     onAccountSwitchSuccess: () -> Unit = {},
     onSettingsClick: () -> Unit,
+    onAccountLedgerClick: ((AccountLedgerKind) -> Unit)? = null,
     onSearchClick: () -> Unit = {},
     onHistoryClick: () -> Unit,
     showHistoryService: Boolean = true,
@@ -331,6 +352,74 @@ fun ProfileScreen(
     onSubscriptionClick: () -> Unit = {},
     onFavoriteFolderClick: (Long, Long, String) -> Unit = { _, _, _ -> },
     onFollowingClick: (Long) -> Unit = {},  //  关注列表点击
+    onFansClick: (Long) -> Unit = {},
+    onDownloadClick: () -> Unit = {},  //  离线缓存点击
+    onWatchLaterClick: () -> Unit = {}, // 稍后再看点击
+    onInboxClick: () -> Unit = {},  //  [新增] 私信入口点击
+    onVideoClick: (String) -> Unit = {},  // [新增] 视频点击（三连彩蛋跳转用）
+    onBangumiClick: (Long, Long) -> Unit = { _, _ -> },
+    onBangumiMoreClick: () -> Unit = {},
+    skinBackgroundImagePath: String? = null,
+    skinSquaredBackgroundImagePath: String? = null,
+    skinVideoBackgroundPath: String? = null,
+    skinVideoPlayMode: String? = null,
+    deferImmersiveRenderBudget: Boolean = false,
+    scrollToTopChannel: kotlinx.coroutines.channels.Channel<Unit>? = null
+    // [注意] 移除了 globalHazeState - 双 hazeSource 模式与 Haze 库冲突
+) {
+    CompositionLocalProvider(LocalProfileLedgerNavigation provides onAccountLedgerClick) {
+        ProfileScreenContent(
+            viewModel = viewModel,
+            isCurrentPage = isCurrentPage,
+            accountSessionRefreshGeneration = accountSessionRefreshGeneration,
+            onBack = onBack,
+            onGoToLogin = onGoToLogin,
+            onLogoutSuccess = onLogoutSuccess,
+            onAccountSwitchSuccess = onAccountSwitchSuccess,
+            onSettingsClick = onSettingsClick,
+            onSearchClick = onSearchClick,
+            onHistoryClick = onHistoryClick,
+            showHistoryService = showHistoryService,
+            onFavoriteClick = onFavoriteClick,
+            onSubscriptionClick = onSubscriptionClick,
+            onFavoriteFolderClick = onFavoriteFolderClick,
+            onFollowingClick = onFollowingClick,
+            onFansClick = onFansClick,
+            onDownloadClick = onDownloadClick,
+            onWatchLaterClick = onWatchLaterClick,
+            onInboxClick = onInboxClick,
+            onVideoClick = onVideoClick,
+            onBangumiClick = onBangumiClick,
+            onBangumiMoreClick = onBangumiMoreClick,
+            skinBackgroundImagePath = skinBackgroundImagePath,
+            skinSquaredBackgroundImagePath = skinSquaredBackgroundImagePath,
+            skinVideoBackgroundPath = skinVideoBackgroundPath,
+            skinVideoPlayMode = skinVideoPlayMode,
+            deferImmersiveRenderBudget = deferImmersiveRenderBudget,
+            scrollToTopChannel = scrollToTopChannel,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ProfileScreenContent(
+    viewModel: ProfileViewModel = viewModel(),
+    isCurrentPage: Boolean = true,
+    accountSessionRefreshGeneration: Int = 0,
+    onBack: () -> Unit,
+    onGoToLogin: () -> Unit,
+    onLogoutSuccess: () -> Unit,
+    onAccountSwitchSuccess: () -> Unit = {},
+    onSettingsClick: () -> Unit,
+    onSearchClick: () -> Unit = {},
+    onHistoryClick: () -> Unit,
+    showHistoryService: Boolean = true,
+    onFavoriteClick: () -> Unit,
+    onSubscriptionClick: () -> Unit = {},
+    onFavoriteFolderClick: (Long, Long, String) -> Unit = { _, _, _ -> },
+    onFollowingClick: (Long) -> Unit = {},  //  关注列表点击
+    onFansClick: (Long) -> Unit = {},
     onDownloadClick: () -> Unit = {},  //  离线缓存点击
     onWatchLaterClick: () -> Unit = {}, // 稍后再看点击
     onInboxClick: () -> Unit = {},  //  [新增] 私信入口点击
@@ -372,11 +461,13 @@ fun ProfileScreen(
         .collectAsStateWithLifecycle(initialValue = SettingsManager.isPrivacyModeEnabledSync(context))
     val profileActionScope = androidx.compose.runtime.rememberCoroutineScope()
     val togglePrivacyMode: () -> Unit = {
+        // 固定本次切换目标，避免保存期间状态更新导致提示反转。
+        val targetPrivacyModeEnabled = !privacyModeEnabled
         profileActionScope.launch {
-            SettingsManager.setPrivacyModeEnabled(context, !privacyModeEnabled)
+            SettingsManager.setPrivacyModeEnabled(context, targetPrivacyModeEnabled)
             Toast.makeText(
                 context,
-                if (privacyModeEnabled) "已关闭无痕模式" else "已开启无痕模式",
+                if (targetPrivacyModeEnabled) "已开启无痕模式" else "已关闭无痕模式",
                 Toast.LENGTH_SHORT,
             ).show()
         }
@@ -401,7 +492,7 @@ fun ProfileScreen(
         useSplitLayout = windowSizeClass.shouldUseSplitLayout,
         isDarkTheme = isDarkTheme
     )
-    
+
     // [Blur] Haze State: only expose a source when the platform and runtime guard
     // can actually render it; otherwise every top bar keeps its solid fallback.
     val hazeState = if (headerBlurEnabled &&
@@ -425,7 +516,7 @@ fun ProfileScreen(
         val insetsController = if (window != null) {
             WindowInsetsControllerCompat(window, view)
         } else null
-        
+
         // 保存原始配置
         val originalStatusBarColor = window?.let {
             com.android.purebilibili.core.ui.getWindowStatusBarColor(it)
@@ -443,7 +534,7 @@ fun ProfileScreen(
             insetsController?.isAppearanceLightStatusBars = lightStatusBars
             insetsController?.isAppearanceLightNavigationBars = lightStatusBars
         }
-        
+
         onDispose {
             // 离开时恢复原始配置
             if (shouldControlSystemBars && window != null && insetsController != null) {
@@ -453,6 +544,11 @@ fun ProfileScreen(
                 insetsController.isAppearanceLightNavigationBars = originalLightNavigationBars
             }
         }
+    }
+
+    DisposableEffect(viewModel, isCurrentPage) {
+        viewModel.setProfilePageActive(isCurrentPage)
+        onDispose { viewModel.setProfilePageActive(false) }
     }
 
     LaunchedEffect(viewModel, isCurrentPage, accountSessionRefreshGeneration) {
@@ -546,8 +642,8 @@ fun ProfileScreen(
                 dynamic = 0,
                 topPhoto = skinProfileBackgroundPath ?: currentUiState.topPhoto
             )
-            
-            
+
+
             Box(modifier = Modifier.fillMaxSize()) {
                 MobileProfileContent(
                     captureBackground = {
@@ -591,6 +687,7 @@ fun ProfileScreen(
         is ProfileUiState.Error -> {
             // 🔧 [新增] 离线/错误状态 - 显示错误信息并提供重试和离线缓存入口
             AppScaffold(
+                topBarIconBackdropSource = profileProgressiveChrome.source,
                 containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     BiliPaiImmersiveTopBar(
@@ -631,7 +728,7 @@ fun ProfileScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .profileProgressiveBackdrop(profileProgressiveChrome.backdrop)
+                        .profileProgressiveBackdrop(profileProgressiveChrome)
                         .globalWallpaperAwareBackground(MaterialTheme.colorScheme.background)
                         .padding(padding)
                         .padding(32.dp),
@@ -643,19 +740,19 @@ fun ProfileScreen(
                         rememberAppWarningIcon(),
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = AppContentColors.secondaryText()
                     )
-                    
+
                     Spacer(modifier = Modifier.height(16.dp))
-                    
+
                     AppText(
                         text = currentUiState.message,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
-                    
+
                     Spacer(modifier = Modifier.height(24.dp))
-                    
+
                     // 重试按钮
                     AppButton(
                         onClick = { viewModel.loadProfile(force = true) },
@@ -669,9 +766,9 @@ fun ProfileScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         AppText("重试")
                     }
-                    
+
                     Spacer(modifier = Modifier.height(16.dp))
-                    
+
                     // 离线缓存入口
                     AppOutlinedButton(onClick = onDownloadClick) {
                         AppIcon(rememberAppDownloadIcon(), contentDescription = null, modifier = Modifier.size(18.dp))
@@ -704,8 +801,9 @@ fun ProfileScreen(
                     viewModel.clearProfileSpaceMessage()
                 }
             }
-            
+
             AppScaffold(
+                topBarIconBackdropSource = profileProgressiveChrome.source,
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 containerColor = MaterialTheme.colorScheme.background,
                 // [Immersive] Mobile hides default TopBar, Tablet keeps it
@@ -735,7 +833,7 @@ fun ProfileScreen(
                                 style = AppTopBarStyle.LARGE,
                                 navigationIcon = {
                                     AppIconButton(onClick = onBack) {
-                                        AppIcon(rememberAppBackIcon(), contentDescription = "Back", tint = MaterialTheme.colorScheme.primary)
+                                        AppIcon(rememberAppBackIcon(), contentDescription = "Back")
                                     }
                                 },
                                 actions = {
@@ -748,7 +846,7 @@ fun ProfileScreen(
                                         onAccountClick = { showAccountSwitchDialog = true },
                                         onThemeClick = toggleThemeMode,
                                         onSettingsClick = onSettingsClick,
-                                        tint = MaterialTheme.colorScheme.primary,
+                                        tint = androidx.compose.material3.LocalContentColor.current,
                                     )
                                 },
                                 colors = TopAppBarDefaults.topAppBarColors(
@@ -767,7 +865,7 @@ fun ProfileScreen(
                         .fillMaxSize()
                         .then(
                             if (windowSizeClass.shouldUseSplitLayout) {
-                                Modifier.profileProgressiveBackdrop(profileProgressiveChrome.backdrop)
+                                Modifier.profileProgressiveBackdrop(profileProgressiveChrome)
                             } else {
                                 Modifier
                             }
@@ -787,6 +885,7 @@ fun ProfileScreen(
                     ProfileSpaceContent(
                         viewModel = viewModel,
                         user = decoratedUser,
+                        accountFace = currentUiState.user.face,
                         space = currentUiState.space,
                         editableAccount = currentUiState.editableAccount,
                         favoriteFolderShortcuts = favoriteFolderShortcuts,
@@ -803,6 +902,7 @@ fun ProfileScreen(
                         onSubscriptionClick = onSubscriptionClick,
                         onFavoriteFolderClick = onFavoriteFolderClick,
                         onFollowingClick = { onFollowingClick(currentUiState.user.mid) },
+                        onFansClick = { onFansClick(currentUiState.user.mid) },
                         onDownloadClick = onDownloadClick,
                         onWatchLaterClick = onWatchLaterClick,
                         onInboxClick = onInboxClick,
@@ -859,6 +959,7 @@ private fun BoxScope.ProfileBackground(
     val isTablet = windowSizeClass.shouldUseSplitLayout
     val hasSkinVideo = !skinVideoBackgroundPath.isNullOrBlank()
     val hasWallpaper = user.topPhoto.isNotEmpty() || hasSkinVideo
+    val headerMotion = LocalProfileBackgroundMotion.current
     val bgTransform by viewModel.getProfileBgTransform(isTablet).collectAsStateWithLifecycle(initialValue = ProfileWallpaperTransform())
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
@@ -869,6 +970,14 @@ private fun BoxScope.ProfileBackground(
         screenHeightDp = configuration.screenHeightDp,
         widthSizeClass = windowSizeClass.widthSizeClass
     ).dp
+    val backgroundVisible by remember(headerMotion, heroHeight, density) {
+        derivedStateOf {
+            // Expanded photos leave the statistics background visible. Pause media
+            // only when scrolling has actually removed the whole header.
+            headerMotion == null || headerMotion.scrollOffsetPx() <
+                with(density) { heroHeight.toPx() } + headerMotion.pullOffsetPx()
+        }
+    }
     val wallpaperDecodeSize = remember(configuration.screenWidthDp, density.density) {
         resolveProfileWallpaperDecodeSizePx(
             screenWidthDp = configuration.screenWidthDp,
@@ -896,15 +1005,6 @@ private fun BoxScope.ProfileBackground(
             onSurfaceVariantColor = colorScheme.onSurfaceVariant
         )
     }
-    val heroFallbackGradient = remember(hasWallpaper, isDarkTheme, colorScheme.surface, colorScheme.surfaceVariant, colorScheme.primaryContainer) {
-        resolveProfileHeroFallbackGradient(
-            hasWallpaper = hasWallpaper,
-            isDarkTheme = isDarkTheme,
-            surfaceColor = colorScheme.surface,
-            surfaceVariantColor = colorScheme.surfaceVariant,
-            primaryContainerColor = colorScheme.primaryContainer
-        )
-    }
 
     Box(
         modifier = Modifier
@@ -915,7 +1015,7 @@ private fun BoxScope.ProfileBackground(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(heroHeight)
+            .profileHeaderBackgroundMotion(heroHeight)
             .align(Alignment.TopCenter)
     ) {
         if (shouldRenderProfileImmersiveBackground(user.topPhoto.isNotEmpty(), deferImmersiveRenderBudget)) {
@@ -923,7 +1023,7 @@ private fun BoxScope.ProfileBackground(
                 com.android.purebilibili.core.ui.wallpaper.WallpaperMedia(
                     uri = user.topPhoto,
                     imageModel = wallpaperRequest,
-                    playbackEnabled = playSkinVideo && !deferImmersiveRenderBudget,
+                    playbackEnabled = playSkinVideo && backgroundVisible && !deferImmersiveRenderBudget,
                     alignment = androidx.compose.ui.BiasAlignment(
                         bgTransform.offsetX,
                         bgTransform.offsetY
@@ -940,7 +1040,7 @@ private fun BoxScope.ProfileBackground(
                 ProfileSkinVideoBackground(
                     videoPath = requireNotNull(skinVideoBackgroundPath),
                     playMode = skinVideoPlayMode,
-                    playbackEnabled = playSkinVideo,
+                    playbackEnabled = playSkinVideo && backgroundVisible,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -948,21 +1048,8 @@ private fun BoxScope.ProfileBackground(
             ProfileSkinVideoBackground(
                 videoPath = requireNotNull(skinVideoBackgroundPath),
                 playMode = skinVideoPlayMode,
-                playbackEnabled = playSkinVideo,
+                playbackEnabled = playSkinVideo && backgroundVisible,
                 modifier = Modifier.fillMaxSize(),
-            )
-        } else if (heroFallbackGradient != null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                heroFallbackGradient.topColor,
-                                heroFallbackGradient.bottomColor
-                            )
-                        )
-                    )
             )
         }
 
@@ -1005,10 +1092,12 @@ private fun ProfileSkinVideoBackground(
     val lifecycleOwner = LocalLifecycleOwner.current
     val repeatMode = remember(playMode) { resolveProfileSkinVideoRepeatMode(playMode) }
     val player = remember(videoPath) {
-        ExoPlayer.Builder(context).build()
-    }
+        com.android.purebilibili.core.lifecycle.AbandonableResource(
+            ExoPlayer.Builder(context).build(),
+        ) { it.release() }
+    }.value
 
-    DisposableEffect(player, videoPath, repeatMode) {
+    DisposableEffect(player, videoPath) {
         player.volume = 0f
         player.repeatMode = repeatMode
         player.setMediaItem(MediaItem.fromUri(Uri.fromFile(File(videoPath))))
@@ -1039,23 +1128,15 @@ private fun ProfileSkinVideoBackground(
     }
 
     SideEffect {
+        player.repeatMode = repeatMode
         if (!playbackEnabled) player.pause()
     }
 
     AndroidView(
-        factory = { viewContext ->
-            PlayerView(viewContext).apply {
-                useController = false
-                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)
-                setKeepContentOnPlayerReset(true)
-                this.player = player
-            }
-        },
-        update = { playerView ->
-            playerView.player = player
-        },
-        modifier = modifier,
+        factory = { viewContext -> ProfileSkinVideoView(viewContext).apply { this.player = player } },
+        update = { it.player = player },
+        onRelease = { it.player = null },
+        modifier = modifier.clipToBounds(),
     )
 }
 
@@ -1064,6 +1145,7 @@ private fun ProfileSkinVideoBackground(
 private fun ProfileSpaceContent(
     viewModel: ProfileViewModel,
     user: UserState,
+    accountFace: String,
     space: ProfileSpaceUiState,
     editableAccount: ProfileEditableAccountState,
     favoriteFolderShortcuts: List<ProfileFavoriteFolderShortcut>,
@@ -1077,6 +1159,7 @@ private fun ProfileSpaceContent(
     onSubscriptionClick: () -> Unit,
     onFavoriteFolderClick: (Long, Long, String) -> Unit,
     onFollowingClick: () -> Unit,
+    onFansClick: () -> Unit,
     onDownloadClick: () -> Unit,
     onWatchLaterClick: () -> Unit,
     onInboxClick: () -> Unit,
@@ -1100,6 +1183,20 @@ private fun ProfileSpaceContent(
     captureBackground: @Composable BoxScope.() -> Unit = {},
 ) {
     var showEditDialog by remember { mutableStateOf(false) }
+    var avatarPreview by remember(user.mid) { mutableStateOf<String?>(null) }
+    val avatarSourceRect = rememberImagePreviewSourceRect()
+    val openAvatarPreview: () -> Unit = {
+        if (user.face.isNotBlank()) {
+            prepareImagePreviewSourceTransition(avatarSourceRect.value)
+            avatarPreview = user.face
+        }
+    }
+    var accountAvatarPickerMid by rememberSaveable { mutableStateOf<Long?>(null) }
+    var accountAvatarCrop by rememberSaveable(user.mid) { mutableStateOf<String?>(null) }
+    var accountAvatarConfirmation by rememberSaveable(user.mid) { mutableStateOf<String?>(null) }
+    var editingAccountField by remember(user.mid) { mutableStateOf<ProfileAccountField?>(null) }
+    var showAccountSignDialog by remember(user.mid) { mutableStateOf(false) }
+    var showAccountSexDialog by remember(user.mid) { mutableStateOf(false) }
     var showAdjustmentSheet by remember { mutableStateOf(false) }
     var tempSelectedUri by remember { mutableStateOf<Uri?>(null) }
     val customBackgroundUri by viewModel.getProfileBgUri().collectAsStateWithLifecycle(initialValue = null
@@ -1115,6 +1212,17 @@ private fun ProfileSpaceContent(
             showAdjustmentSheet = true
         }
     }
+    val accountAvatarPicker = rememberLauncherForActivityResult(contract = PickGalleryVisualMedia()) { uri: Uri? ->
+        val mid = accountAvatarPickerMid
+        accountAvatarPickerMid = null
+        if (uri != null && mid == user.mid) {
+            if (context.contentResolver.getType(uri)?.equals("image/gif", ignoreCase = true) == true) {
+                Toast.makeText(context, "不能选择 GIF 头像", Toast.LENGTH_SHORT).show()
+            } else {
+                accountAvatarCrop = uri.toString()
+            }
+        }
+    }
     var showWallpaperSheet by remember { mutableStateOf(false) }
     var showPhotoPickerDialog by remember { mutableStateOf(false) }
     var showWallpaperActionSheet by remember { mutableStateOf(false) }
@@ -1122,9 +1230,76 @@ private fun ProfileSpaceContent(
     if (showEditDialog) {
         ProfileEditAccountDialog(
             state = editableAccount,
+            mid = user.mid,
+            accountFace = accountFace,
             isSaving = space.isSavingSign,
             onDismiss = { showEditDialog = false },
-            onSaveSign = onSignSave
+            onEditSign = { showEditDialog = false; showAccountSignDialog = true },
+            // 子编辑流程（昵称/生日、性别、头像）叠加在编辑资料之上，返回时回到编辑资料。
+            onEditField = { field -> editingAccountField = field },
+            onEditSex = { showAccountSexDialog = true },
+            onEditAvatar = {
+                accountAvatarPickerMid = user.mid
+                accountAvatarPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+        )
+    }
+    avatarPreview?.let { image ->
+        val density = LocalDensity.current
+        val radius = avatarSourceRect.value?.let { with(density) { (minOf(it.width, it.height) / 2f).toDp().value } } ?: 0f
+        ImagePreviewDialog(images = listOf(image), initialIndex = 0, sourceRect = avatarSourceRect.value,
+            sourceCornerRadiusDp = radius, onDismiss = { avatarPreview = null })
+    }
+    accountAvatarCrop?.let { source ->
+        com.android.purebilibili.feature.dynamic.components.DynamicImageCropDialog(
+            source = source,
+            onDismiss = { accountAvatarCrop = null },
+            onCropped = { cropped ->
+                accountAvatarCrop = null
+                accountAvatarConfirmation = cropped
+            }
+        )
+    }
+    if (showAccountSignDialog) {
+        ProfileAccountSignDialog(
+            initialValue = editableAccount.sign,
+            onDismiss = { showAccountSignDialog = false },
+            onSave = { sign -> showAccountSignDialog = false; onSignSave(sign) },
+        )
+    }
+    editingAccountField?.let { field ->
+        ProfileAccountFieldDialog(
+            field = field,
+            initialValue = if (field == ProfileAccountField.NAME) editableAccount.name else editableAccount.birthday,
+            onDismiss = { editingAccountField = null },
+            onSubmit = { value ->
+                editingAccountField = null
+                viewModel.updateAccountField(field, value)
+            }
+        )
+    }
+    if (showAccountSexDialog) {
+        AppAlertDialog(
+            onDismissRequest = { showAccountSexDialog = false },
+            title = { AppText("修改账号性别") },
+            text = {
+                Column {
+                    listOf("男" to "1", "女" to "2", "保密" to "0").forEach { (label, value) ->
+                        AppTextButton(onClick = {
+                            showAccountSexDialog = false
+                            viewModel.updateAccountField(ProfileAccountField.SEX, value)
+                        }) { AppText(label) }
+                    }
+                }
+            },
+            confirmButton = { AppTextButton(onClick = { showAccountSexDialog = false }) { AppText("取消") } }
+        )
+    }
+    accountAvatarConfirmation?.let { image ->
+        ProfileAvatarConfirmDialog(
+            image = image,
+            onDismiss = { accountAvatarConfirmation = null },
+            onConfirm = { accountAvatarConfirmation = null; viewModel.updateAccountAvatar(Uri.parse(image)) },
         )
     }
     if (showAdjustmentSheet && tempSelectedUri != null) {
@@ -1218,31 +1393,109 @@ private fun ProfileSpaceContent(
         )
     }
     val tabletRailScrollState = rememberScrollState()
-    val tabletFeedListState = rememberLazyListState()
-    val mobileListState = rememberLazyListState()
-    val isMobileScrolling by remember {
-        derivedStateOf { mobileListState.isScrollInProgress }
+    val profileTabs = remember { defaultProfileSpaceTabs() }
+    val mobilePageListStates = profileTabs.associate { it.tab to rememberLazyListState() }
+    val tabletPageListStates = profileTabs.associate { it.tab to rememberLazyListState() }
+    val tabletFeedListState = tabletPageListStates.getValue(space.selectedTab)
+    val mobileListState = mobilePageListStates.getValue(space.selectedTab)
+    val selectedPage = profileTabs.indexOfFirst { it.tab == space.selectedTab }.coerceAtLeast(0)
+    val pagerState = rememberContentTabPager(
+        pageCount = profileTabs.size,
+        selectedPage = selectedPage,
+        onPageSelected = { onTabSelected(profileTabs[it].tab) },
+        prepareNeighbors = { sourcePage ->
+            val states = if (isTablet) tabletPageListStates else mobilePageListStates
+            val source = states.getValue(profileTabs[sourcePage].tab)
+            profileTabs.forEachIndexed { index, tab ->
+                if (index != sourcePage) {
+                    // Phone content is one existing sheet item after the hero. Its pixel
+                    // offset must match across pages so the dashboard/rail stay stationary.
+                    states.getValue(tab.tab).requestScrollToItem(
+                        source.firstVisibleItemIndex,
+                        source.firstVisibleItemScrollOffset,
+                    )
+                }
+            }
+        },
+    )
+    val density = LocalDensity.current
+    var identityStatsTopPx by remember(density, statusBarTopPadding) {
+        mutableStateOf(with(density) { (statusBarTopPadding + 215.dp).toPx() })
     }
-    val mobileTopChromeScrim by remember {
-        derivedStateOf {
-            resolveProfilePinnedTopChromeScrim(
-                firstVisibleItemIndex = mobileListState.firstVisibleItemIndex,
-                firstVisibleItemScrollOffset = mobileListState.firstVisibleItemScrollOffset,
-            )
+    // Measured text may grow this reserve downward; expanding account details must not move it.
+    val profileStatsTopProvider: () -> Float = { identityStatsTopPx }
+    // Finish identity collapse before the statistics enter the toolbar.
+    val profileCollapseRangeProvider: () -> Float = {
+        with(density) {
+            (profileStatsTopProvider() - (statusBarTopPadding + 56.dp + 24.dp).toPx())
+                .coerceAtLeast(1f)
         }
     }
-    val topBarIconColor = androidx.compose.ui.graphics.lerp(
-        heroChrome.textColor,
-        contentChrome.onSurfaceColor,
-        mobileTopChromeScrim
+    val profileExpandedFractionProvider: () -> Float = {
+        if (mobileListState.firstVisibleItemIndex > 0) 0f else resolveProfileHeaderExpandedFraction(
+            mobileListState.firstVisibleItemScrollOffset.toFloat(), profileCollapseRangeProvider(),
+        )
+    }
+    val photoConfiguration = LocalConfiguration.current
+    // Pull-down avatar expansion belongs to the portrait phone header.
+    // Both MD3/Miuix and both glass states use this same geometry and gesture logic.
+    val photoExpansionEnabled = !isTablet &&
+        photoConfiguration.orientation != android.content.res.Configuration.ORIENTATION_LANDSCAPE && user.face.isNotBlank()
+    val photoState = remember(user.mid, user.face, isTablet, photoConfiguration.orientation, density) {
+        ProfileAvatarExpansionState()
+    }
+    val photoRangeProvider: () -> Float = {
+        (photoState.viewportWidthPx - profileStatsTopProvider()).coerceAtLeast(0f)
+    }
+    val photoFractionProvider: () -> Float = { photoState.fraction(photoRangeProvider()) }
+    val photoBottomProvider: () -> Float = { profileStatsTopProvider() + photoState.visualOffsetPx }
+    val backgroundMotion = ProfileBackgroundMotion(
+        scrollOffsetPx = {
+            if (mobileListState.firstVisibleItemIndex > 0) Float.POSITIVE_INFINITY
+            else mobileListState.firstVisibleItemScrollOffset.toFloat()
+        },
+        pullOffsetPx = { photoState.visualOffsetPx },
+        avatarShiftYPx = {
+            with(density) {
+                -(statusBarTopPadding + (PROFILE_EXPANDED_AVATAR_TOP_DP + 29f).dp).toPx() *
+                    (1f - profileExpandedFractionProvider())
+            }
+        },
     )
+    val photoConnection = rememberProfileAvatarExpansionConnection(photoState, mobileListState, photoExpansionEnabled, photoRangeProvider)
+    val photoScope = rememberCoroutineScope()
+    val photoMotion = com.android.purebilibili.core.ui.LocalComponentMotionEnabled.current &&
+        !com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion() &&
+        !com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced()
+    val collapsePhoto: () -> Unit = {
+        photoScope.launch { photoState.settle(false, photoRangeProvider(), 0f, density.density, photoMotion) }
+    }
+    val photoVisible by remember(photoState) { derivedStateOf { photoState.offsetPx > 0f } }
+    androidx.activity.compose.BackHandler(enabled = photoVisible) { collapsePhoto() }
+    LaunchedEffect(photoState, scrollToTopRequestId, space.selectedTab) { photoState.reset() }
+    val profileHeaderFling = rememberProfileHeaderFlingBehavior(mobileListState, profileCollapseRangeProvider)
+    val isMobileScrolling by remember(mobileListState) {
+        derivedStateOf { mobileListState.isScrollInProgress }
+    }
     ObserveProfileScrollToTop(
         requestId = scrollToTopRequestId,
         listState = if (isTablet) tabletFeedListState else mobileListState,
         scrollState = if (isTablet) tabletRailScrollState else null
     )
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    var mobileFeedRootTopPx by remember { mutableStateOf(0f) }
+    var mobileTabsRootBottomPx by remember { mutableStateOf(Float.POSITIVE_INFINITY) }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(photoConnection)
+            .onSizeChanged {
+                if (photoState.viewportWidthPx != it.width) {
+                    photoState.reset()
+                    photoState.viewportWidthPx = it.width
+                }
+            },
+    ) {
         if (isTablet) {
             // 悬浮底栏会盖在双栏内容上，列表尾部需要与手机分支同等的让位。
             val bottomDockClearance = LocalBottomBarContentPadding.current
@@ -1263,6 +1516,8 @@ private fun ProfileSpaceContent(
                     ProfileSpaceHeader(
                         user = user,
                         editableAccount = editableAccount,
+                        onAvatarClick = openAvatarPreview,
+                        avatarSourceRect = avatarSourceRect,
                         compact = true,
                         heroChrome = heroChrome,
                         showWallpaperAction = true,
@@ -1270,6 +1525,8 @@ private fun ProfileSpaceContent(
                         onEditClick = { showEditDialog = true },
                         onWallpaperActionClick = { showWallpaperActionSheet = true },
                         onFollowingClick = onFollowingClick,
+                        onFansClick = onFansClick,
+                        onDynamicsClick = { onTabSelected(ProfileSpaceMainTab.DYNAMIC) },
                         modifier = Modifier.heightIn(min = tabletWallpaperRevealHeight)
                     )
                     ProfileQuickAccessDashboard(
@@ -1311,52 +1568,105 @@ private fun ProfileSpaceContent(
                         bottom = maxOf(48.dp, bottomDockClearance)
                     ),
                     listState = tabletFeedListState,
+                    pageListStates = tabletPageListStates,
+                    pagerState = pagerState,
                 )
             }
         } else {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .profileProgressiveBackdrop(progressiveTopChrome.backdrop)
+                    .profileProgressiveBackdrop(progressiveTopChrome)
                     .then(if (hazeState != null) Modifier.hazeSourceCompat(hazeState) else Modifier)
                     .globalWallpaperAwareBackground(colorScheme.surface),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .graphicsLayer {
-                            translationY = if (mobileListState.firstVisibleItemIndex > 0) {
-                                -100000f
-                            } else {
-                                -mobileListState.firstVisibleItemScrollOffset.toFloat()
-                            }
-                        }
                 ) {
-                    captureBackground()
+                    CompositionLocalProvider(LocalProfileBackgroundMotion provides backgroundMotion) {
+                        captureBackground()
+                    }
                 }
+                ProfileSpaceTabsHost(
+                    sharedGlassTabs = LocalAppThemeConfig.current.liquidGlassEnabled,
+                    currentPage = { pagerState.currentPage },
+                    tabsVisible = {
+                        mobilePageListStates.getValue(profileTabs[pagerState.currentPage].tab)
+                            .firstVisibleItemIndex <= 1
+                    },
+                    tabs = { tabModifier ->
+                        ProfileSpaceTabs(space.selectedTab, onTabSelected, tabModifier, pagerState)
+                    },
+                    nativeTabs = { page, tabModifier ->
+                        ProfileSpaceTabs(profileTabs[page].tab, onTabSelected, tabModifier, pagerState)
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                ) { tabSlot ->
+                AppHorizontalPager(
+                    state = pagerState,
+                    userScrollEnabled = false,
+                    key = { profileTabs[it].tab },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .contentTabPagerGestures(
+                            pager = pagerState,
+                            enabled = true,
+                            contentTopPx = { mobileTabsRootBottomPx - mobileFeedRootTopPx },
+                        ),
+                ) { page ->
+                val mobileListState = mobilePageListStates.getValue(profileTabs[page].tab)
+                val space = space.copy(selectedTab = profileTabs[page].tab)
+                val profileHeaderFling = rememberProfileHeaderFlingBehavior(mobileListState, profileCollapseRangeProvider)
                 LazyColumn(
                     state = mobileListState,
-                    modifier = Modifier.fillMaxSize(),
+                    flingBehavior = profileHeaderFling,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .onGloballyPositioned {
+                            if (page == selectedPage) mobileFeedRootTopPx = it.boundsInRoot().top
+                        },
                     contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding() + 120.dp)
                 ) {
                 item {
+                    Box(
+                        Modifier
+                            .stationaryPagerHeader(pagerState, page)
+                            .layout { measurable, constraints ->
+                                val extra = photoState.visualOffsetPx.toInt()
+                                val child = measurable.measure(constraints)
+                                layout(child.width, child.height + extra) { child.placeRelative(0, extra) }
+                            },
+                    ) {
                     ProfileSpaceHeroHeader(
                         user = user,
                         editableAccount = editableAccount,
+                        onAvatarClick = openAvatarPreview,
+                        avatarSourceRect = avatarSourceRect,
                         heroChrome = heroChrome,
                         layoutTokens = layoutTokens,
                         showWallpaperAction = false,
                         showEditProfileButton = showProfileEditButton,
                         onEditClick = { showEditDialog = true },
                         onWallpaperActionClick = { showWallpaperActionSheet = true },
-                        onFollowingClick = onFollowingClick
+                        onFollowingClick = onFollowingClick,
+                        onFansClick = onFansClick,
+                        onDynamicsClick = { onTabSelected(ProfileSpaceMainTab.DYNAMIC) },
+                        showIdentity = false,
+                        identityReserve = with(density) { profileStatsTopProvider().toDp() },
+                        topClipProvider = {
+                            with(density) { (statusBarTopPadding + 56.dp).toPx() } +
+                                mobileListState.firstVisibleItemScrollOffset.toFloat() - photoState.visualOffsetPx
+                        },
                     )
+                }
                 }
                 item {
                     ProfileContentSheet(
                         contentChrome = contentChrome,
                         layoutTokens = layoutTokens
                     ) {
+                        Box(Modifier.stationaryPagerHeader(pagerState, page)) {
                         ProfileQuickAccessDashboard(
                             favoriteFolderShortcuts = favoriteFolderShortcuts,
                             onDownloadClick = onDownloadClick,
@@ -1367,9 +1677,12 @@ private fun ProfileSpaceContent(
                             onFavoriteFolderClick = onFavoriteFolderClick,
                             contentColor = contentChrome.onSurfaceColor,
                         )
-                        ProfileSpaceTabs(
-                            selectedTab = space.selectedTab,
-                            onTabSelected = onTabSelected,
+                        }
+                        tabSlot(
+                            page,
+                            Modifier.stationaryPagerHeader(pagerState, page).onGloballyPositioned {
+                                if (page == selectedPage) mobileTabsRootBottomPx = it.boundsInRoot().bottom
+                            },
                         )
                         ProfileSpaceTabBody(
                             user = user,
@@ -1396,45 +1709,185 @@ private fun ProfileSpaceContent(
                     }
                 }
                 }
+                } // AppHorizontalPager
+                } // ProfileSpaceTabsHost
+
             }
-            BiliPaiImmersiveTopBar(
-                backdrop = null,
-                enabled = false,
-                headerBlurActive = false,
-                opaqueBackgroundFallback = false,
+            ProfilePinnedSpaceTopBarBackground(
+                progressiveTopChrome = progressiveTopChrome,
+                statusBarTopPadding = statusBarTopPadding,
+                modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+            )
+            ProfilePinnedSpaceTopBar(
+                listState = mobileListState,
+                heroTextColor = heroChrome.textColor,
+                contentColor = contentChrome.onSurfaceColor,
+                statusBarTopPadding = statusBarTopPadding,
+                privacyModeEnabled = privacyModeEnabled,
+                onBack = if (photoVisible) collapsePhoto else onBack,
+                onSearchClick = onSearchClick,
+                onInboxClick = onInboxClick,
+                onPrivacyClick = onPrivacyClick,
+                onAccountManageClick = onAccountManageClick,
+                onThemeClick = onThemeClick,
+                onSettingsClick = onSettingsClick,
+                onWallpaperClick = { showWallpaperActionSheet = true },
+                onEditClick = { showEditDialog = true },
+                photoFractionProvider = photoFractionProvider,
+                // Only transparent actions sit above the avatar; the chrome background stays below it.
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.TopCenter)
-                    .background(
-                        MaterialTheme.colorScheme.surface.copy(alpha = mobileTopChromeScrim)
-                    ),
-            ) {
-            Row(
+                    .zIndex(1f),
+            )
+            ProfileIdentityHeader(
+                user = user,
+                heroChrome = heroChrome,
+                collapsedTextColor = contentChrome.onSurfaceColor,
+                statusBarTopPadding = statusBarTopPadding,
+                expandedFractionProvider = profileExpandedFractionProvider,
+                statsTopProvider = profileStatsTopProvider,
+                collapseRangeProvider = profileCollapseRangeProvider,
+                onIdentityMeasured = { nameHeight, uidHeight ->
+                    identityStatsTopPx = resolveProfileIdentityStatsTopPx(
+                        statusBarTopPx = with(density) { statusBarTopPadding.toPx() },
+                        density = density.density,
+                        nameHeightPx = nameHeight,
+                        uidHeightPx = uidHeight,
+                    )
+                },
+                listState = mobileListState,
+                flingBehavior = profileHeaderFling,
+                onAvatarClick = openAvatarPreview,
+                avatarSourceRect = avatarSourceRect,
+                photoState = photoState.takeIf { photoExpansionEnabled },
+                photoFractionProvider = photoFractionProvider,
+                photoBottomProvider = photoBottomProvider,
+                photoScrollConnection = photoConnection,
+                onCollapsePhoto = collapsePhoto,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = statusBarTopPadding)
-                    .height(56.dp)
-                    .padding(horizontal = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AppIconButton(onClick = onBack) {
-                    AppIcon(rememberAppBackIcon(), contentDescription = "返回", tint = topBarIconColor)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                ProfileTopActions(
-                    compact = true,
-                    privacyModeEnabled = privacyModeEnabled,
-                    onSearchClick = onSearchClick,
-                    onInboxClick = onInboxClick,
-                    onPrivacyClick = onPrivacyClick,
-                    onAccountClick = onAccountManageClick,
-                    onThemeClick = onThemeClick,
-                    onSettingsClick = onSettingsClick,
-                    onWallpaperClick = { showWallpaperActionSheet = true },
-                    tint = topBarIconColor,
-                )
-            }
-            }
+                    .align(Alignment.TopCenter)
+                    .layout { measurable, constraints ->
+                        // The native avatar host must stop above the scrolling statistics.
+                        // A full-hero AndroidView intercepts taps even in its transparent area.
+                        val toolbarHeight = (statusBarTopPadding + 56.dp).roundToPx()
+                        val statsTop = if (mobileListState.firstVisibleItemIndex > 0) {
+                            toolbarHeight
+                        } else {
+                            (profileStatsTopProvider() + photoState.visualOffsetPx).toInt() - mobileListState.firstVisibleItemScrollOffset
+                        }
+                        val height = statsTop.coerceIn(
+                            toolbarHeight.coerceAtMost(constraints.maxHeight),
+                            constraints.maxHeight,
+                        )
+                        val placeable = measurable.measure(
+                            constraints.copy(minHeight = height, maxHeight = height)
+                        )
+                        layout(placeable.width, placeable.height) {
+                            placeable.placeRelative(0, 0)
+                        }
+                    },
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProfilePinnedSpaceTopBarBackground(
+    progressiveTopChrome: ProfileProgressiveTopChrome,
+    statusBarTopPadding: Dp,
+    modifier: Modifier = Modifier,
+) {
+    BiliPaiImmersiveTopBar(
+        backdrop = progressiveTopChrome.backdrop,
+        enabled = progressiveTopChrome.enabled,
+        headerBlurActive = false,
+        fadeEnabled = if (progressiveTopChrome.enabled) false else null,
+        opaqueBackgroundFallback = false,
+        modifier = modifier,
+    ) {
+        Spacer(Modifier.fillMaxWidth().height(statusBarTopPadding + 56.dp))
+    }
+}
+
+@Composable
+private fun ProfilePinnedSpaceTopBar(
+    listState: LazyListState,
+    heroTextColor: Color,
+    contentColor: Color,
+    statusBarTopPadding: Dp,
+    privacyModeEnabled: Boolean,
+    onBack: () -> Unit,
+    onSearchClick: () -> Unit,
+    onInboxClick: () -> Unit,
+    onPrivacyClick: () -> Unit,
+    onAccountManageClick: () -> Unit,
+    onThemeClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onWallpaperClick: () -> Unit,
+    onEditClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    photoFractionProvider: () -> Float = { 0f },
+) {
+    val openLedger = LocalProfileLedgerNavigation.current
+    val topChromeScrim = remember(listState) {
+        derivedStateOf {
+            resolveProfilePinnedTopChromeScrim(
+                firstVisibleItemIndex = listState.firstVisibleItemIndex,
+                firstVisibleItemScrollOffset = listState.firstVisibleItemScrollOffset,
+            )
+        }
+    }
+    val topBarIconColor = androidx.compose.ui.graphics.lerp(
+        heroTextColor,
+        contentColor,
+        topChromeScrim.value,
+    )
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = statusBarTopPadding)
+            .height(56.dp)
+            .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        var showQrAuthorization by remember { mutableStateOf(false) }
+        if (showQrAuthorization) {
+            OfficialQrAuthorizationDialog(onDismiss = { showQrAuthorization = false })
+        }
+        AppIconButton(onClick = { showQrAuthorization = true }) {
+            ProfilePhotoToolbarIcon(Icons.Rounded.QrCodeScanner, "扫码授权登录", topBarIconColor, photoFractionProvider)
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        AppWindowActionMenu(
+            groups = listOf(
+                listOf(
+                    AppWindowAction(label = "搜索", onClick = onSearchClick),
+                    AppWindowAction(label = "消息", onClick = onInboxClick),
+                    AppWindowAction(label = "编辑资料", onClick = onEditClick),
+                    AppWindowAction(
+                        label = "账号与资产",
+                        children = listOf(
+                            AppWindowAction(label = "切换账号", onClick = onAccountManageClick),
+                        ) + ledgerMenuActions(openLedger),
+                    ),
+                ),
+                listOf(
+                    AppWindowAction(label = if (privacyModeEnabled) "关闭无痕模式" else "开启无痕模式", onClick = onPrivacyClick),
+                    AppWindowAction(
+                        label = "主题与背景",
+                        children = listOf(
+                            AppWindowAction(label = "切换主题", onClick = onThemeClick),
+                            AppWindowAction(label = "更换背景", onClick = onWallpaperClick),
+                        ),
+                    ),
+                    AppWindowAction(label = "设置", onClick = onSettingsClick),
+                    AppWindowAction(label = "返回", onClick = onBack),
+                ),
+            ),
+        ) {
+            ProfilePhotoToolbarIcon(Icons.Rounded.MoreVert, "更多", topBarIconColor, photoFractionProvider)
         }
     }
 }
@@ -1464,16 +1917,54 @@ private fun ProfileSpaceFeedColumn(
     modifier: Modifier,
     contentPadding: PaddingValues,
     listState: LazyListState,
+    pageListStates: Map<ProfileSpaceMainTab, LazyListState>,
+    pagerState: PagerState,
 ) {
+    var feedRootTopPx by remember { mutableStateOf(0f) }
+    var tabsRootBottomPx by remember { mutableStateOf(Float.POSITIVE_INFINITY) }
+    val tabs = remember { defaultProfileSpaceTabs() }
+    ProfileSpaceTabsHost(
+        sharedGlassTabs = LocalAppThemeConfig.current.liquidGlassEnabled,
+        currentPage = { pagerState.currentPage },
+        tabsVisible = {
+            pageListStates.getValue(tabs[pagerState.currentPage].tab).firstVisibleItemIndex == 0
+        },
+        tabs = { tabModifier ->
+            ProfileSpaceTabs(space.selectedTab, onTabSelected, tabModifier, pagerState)
+        },
+        nativeTabs = { page, tabModifier ->
+            ProfileSpaceTabs(tabs[page].tab, onTabSelected, tabModifier, pagerState)
+        },
+        modifier = modifier.fillMaxHeight(),
+    ) { tabSlot ->
+    AppHorizontalPager(
+        state = pagerState,
+        userScrollEnabled = false,
+        key = { tabs[it].tab },
+        modifier = Modifier.fillMaxSize().contentTabPagerGestures(
+            pager = pagerState,
+            enabled = true,
+            contentTopPx = {
+                if (listState.firstVisibleItemIndex > 0) 0f else tabsRootBottomPx - feedRootTopPx
+            },
+        ),
+    ) { page ->
+    val isPageActive = tabs[page].tab == space.selectedTab
+    val space = space.copy(selectedTab = tabs[page].tab)
+    val listState = pageListStates.getValue(space.selectedTab)
     LazyColumn(
         state = listState,
-        modifier = modifier.fillMaxHeight(),
+        modifier = Modifier
+            .fillMaxSize()
+            .onGloballyPositioned { if (isPageActive) feedRootTopPx = it.boundsInRoot().top },
         contentPadding = contentPadding
     ) {
         item {
-            ProfileSpaceTabs(
-                selectedTab = space.selectedTab,
-                onTabSelected = onTabSelected,
+            tabSlot(
+                page,
+                Modifier.stationaryPagerHeader(pagerState, page).onGloballyPositioned {
+                    if (isPageActive) tabsRootBottomPx = it.boundsInRoot().bottom
+                },
             )
         }
         item {
@@ -1500,6 +1991,8 @@ private fun ProfileSpaceFeedColumn(
             )
         }
     }
+    } // AppHorizontalPager
+    } // ProfileSpaceTabsHost
 }
 
 @Composable
@@ -1515,6 +2008,7 @@ private fun ProfileTopActions(
     tint: Color,
     onWallpaperClick: (() -> Unit)? = null,
 ) {
+    val openLedger = LocalProfileLedgerNavigation.current
     var showQrAuthorization by remember { mutableStateOf(false) }
     if (showQrAuthorization) {
         OfficialQrAuthorizationDialog(onDismiss = { showQrAuthorization = false })
@@ -1556,6 +2050,7 @@ private fun ProfileTopActions(
                         )
                     )
                     add(AppWindowAction(label = "切换账号", onClick = onAccountClick))
+                    addAll(ledgerMenuActions(openLedger))
                     add(AppWindowAction(label = "切换主题", onClick = onThemeClick))
                     onWallpaperClick?.let { action ->
                         add(AppWindowAction(label = "更换背景", onClick = action))
@@ -1567,6 +2062,12 @@ private fun ProfileTopActions(
                 AppIcon(Icons.Rounded.MoreVert, contentDescription = "更多", tint = tint)
         }
     }
+    if (!compact && openLedger != null) {
+        AppWindowActionMenu(groups = listOf(ledgerMenuActions(openLedger))) {
+            AppIcon(Icons.Rounded.MoreVert, contentDescription = "硬币与经验明细", tint = tint)
+        }
+    }
+
 }
 
 @Composable
@@ -1606,7 +2107,7 @@ private fun ProfileQuickAccessDashboard(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
-                        AppIcon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        AppIcon(icon, contentDescription = null, tint = AppContentColors.accent())
                         AppText(
                             label,
                             style = MaterialTheme.typography.labelMedium,
@@ -1647,16 +2148,32 @@ private fun ProfileQuickAccessDashboard(
 private fun ProfileSpaceHeroHeader(
     user: UserState,
     editableAccount: ProfileEditableAccountState,
+    onAvatarClick: () -> Unit,
+    avatarSourceRect: androidx.compose.runtime.MutableState<Rect?>,
     heroChrome: ProfileHeroChrome,
     layoutTokens: ProfileLayoutTokens,
     showWallpaperAction: Boolean,
     showEditProfileButton: Boolean = false,
     onEditClick: () -> Unit,
     onWallpaperActionClick: () -> Unit,
-    onFollowingClick: () -> Unit
+    onFollowingClick: () -> Unit,
+    onFansClick: () -> Unit,
+    onDynamicsClick: () -> Unit,
+    showIdentity: Boolean = true,
+    topClipProvider: () -> Float = { 0f },
+    identityReserve: Dp = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + 215.dp,
 ) {
     val configuration = LocalConfiguration.current
     val windowSizeClass = LocalWindowSizeClass.current
+    val colorScheme = MaterialTheme.colorScheme
+    // The separate phone identity overlay owns wallpaper/photo colors. Statistics
+    // use an opaque page surface in both native themes and both glass states.
+    val statisticsChrome = if (!showIdentity) resolveProfileHeroChrome(
+        hasWallpaper = false,
+        isDarkTheme = colorScheme.surface.luminance() < 0.5f,
+        onSurfaceColor = colorScheme.onSurface,
+        onSurfaceVariantColor = colorScheme.onSurfaceVariant,
+    ) else heroChrome
     val heroHeight = resolveProfileHeroHeightDp(
         screenHeightDp = configuration.screenHeightDp,
         widthSizeClass = windowSizeClass.widthSizeClass
@@ -1664,22 +2181,41 @@ private fun ProfileSpaceHeroHeader(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(heroHeight)
+            .heightIn(min = heroHeight)
+            .drawWithContent {
+                // Clip only hero metadata; the feed remains available to the backdrop blur.
+                clipRect(top = topClipProvider().coerceIn(0f, size.height)) {
+                    if (!showIdentity) {
+                        val top = identityReserve.toPx().coerceIn(0f, size.height)
+                        drawRect(
+                            color = colorScheme.surface,
+                            topLeft = androidx.compose.ui.geometry.Offset(0f, top),
+                            size = androidx.compose.ui.geometry.Size(size.width, size.height - top),
+                        )
+                    }
+                    this@drawWithContent.drawContent()
+                }
+            }
     ) {
         ProfileSpaceHeader(
             user = user,
             editableAccount = editableAccount,
+            onAvatarClick = onAvatarClick,
+            avatarSourceRect = avatarSourceRect,
             compact = false,
-            heroChrome = heroChrome,
+            showIdentity = showIdentity,
+            heroChrome = statisticsChrome,
             showWallpaperAction = showWallpaperAction,
             showEditProfileButton = showEditProfileButton,
             onEditClick = onEditClick,
             onWallpaperActionClick = onWallpaperActionClick,
             onFollowingClick = onFollowingClick,
+            onFansClick = onFansClick,
+            onDynamicsClick = onDynamicsClick,
             modifier = Modifier
-                .align(Alignment.BottomStart)
+                .align(if (showIdentity) Alignment.BottomStart else Alignment.TopStart)
                 .padding(
-                    top = 72.dp,
+                    top = if (showIdentity) 72.dp else identityReserve,
                     bottom = layoutTokens.heroBottomInsetDp.dp
                 )
         )
@@ -1695,16 +2231,9 @@ private fun ProfileContentSheet(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        contentChrome.sheetGradientTopColor,
-                        contentChrome.sheetGradientBottomColor
-                    ),
-                    startY = 0f,
-                    endY = 360f
-                )
-            )
+            // An opaque, uniform content plane meets the
+            // clipped colored header. It does not inherit the header's gradient.
+            .background(contentChrome.surfaceColor)
             .padding(
                 top = layoutTokens.contentSheetTopPaddingDp.dp,
                 bottom = layoutTokens.contentSheetBottomPaddingDp.dp
@@ -1718,6 +2247,8 @@ private fun ProfileContentSheet(
 private fun ProfileSpaceHeader(
     user: UserState,
     editableAccount: ProfileEditableAccountState,
+    onAvatarClick: () -> Unit,
+    avatarSourceRect: androidx.compose.runtime.MutableState<Rect?>,
     compact: Boolean,
     heroChrome: ProfileHeroChrome,
     showWallpaperAction: Boolean,
@@ -1725,8 +2256,12 @@ private fun ProfileSpaceHeader(
     onEditClick: () -> Unit,
     onWallpaperActionClick: () -> Unit,
     onFollowingClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onFansClick: () -> Unit,
+    onDynamicsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    showIdentity: Boolean = true,
 ) {
+    val openLedger = LocalProfileLedgerNavigation.current
     val textColor = heroChrome.textColor
     val secondaryColor = heroChrome.secondaryTextColor
     val meta = remember(editableAccount.sign, editableAccount.ipLocation, editableAccount.sex) {
@@ -1747,57 +2282,68 @@ private fun ProfileSpaceHeader(
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            AsyncImage(
-                model = user.face,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(if (compact) 72.dp else 80.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, heroChrome.avatarBorderColor, CircleShape)
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            ProfileSpaceStat("动态", user.dynamic, textColor)
-            ProfileSpaceStat("关注", user.following, textColor, onClick = onFollowingClick)
-            ProfileSpaceStat("粉丝", user.follower, textColor)
+        if (showIdentity) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                AsyncImage(
+                    model = user.face,
+                    contentDescription = "${user.name}的头像，查看大图",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(96.dp)
+                        .imagePreviewSourceBounds(avatarSourceRect)
+                        .alpha(if (isImagePreviewSourceHidden(avatarSourceRect.value)) 0f else 1f)
+                        .clip(CircleShape)
+                        .border(2.dp, heroChrome.avatarBorderColor, CircleShape)
+                        .clickable(onClick = onAvatarClick),
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    AppText(
+                        text = user.name,
+                        color = textColor,
+                        fontSize = (if (compact) 22 else 24).sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                    UserLevelBadge(level = user.level)
+                    if (user.isVip) com.android.purebilibili.core.ui.components.UserVipBadge(label = user.vipLabel, compact = true)
+                }
+                AppText("UID ${user.mid}", color = secondaryColor, style = MaterialTheme.typography.bodySmall)
+            }
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AppText(
-                    text = user.name,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = textColor,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                UserLevelBadge(level = user.level)
-                if (user.isVip) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    com.android.purebilibili.core.ui.components.UserVipBadge(
-                        label = user.vipLabel,
-                        fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                        compact = true,
-                    )
-                }
-            }
-            AppIconButton(
-                onClick = { identityExpanded = !identityExpanded }
-            ) {
+            ProfileSpaceStat("动态", user.dynamic, textColor, onClick = onDynamicsClick)
+            ProfileSpaceStat("关注", user.following, textColor, onClick = onFollowingClick)
+            ProfileSpaceStat("粉丝", user.follower, textColor, onClick = onFansClick)
+            val identityMotionEnabled = com.android.purebilibili.core.ui.LocalComponentMotionEnabled.current &&
+                !com.android.purebilibili.core.ui.LocalSystemReduceMotion.current
+            val identityArrowRotation = androidx.compose.animation.core.animateFloatAsState(
+                targetValue = if (identityExpanded) 180f else 0f,
+                animationSpec = if (identityMotionEnabled) androidx.compose.animation.core.spring(
+                    dampingRatio = 1f, stiffness = 700f,
+                ) else androidx.compose.animation.core.snap(),
+                label = "profileIdentityArrow",
+            )
+            AppIconButton(onClick = { identityExpanded = !identityExpanded }) {
                 AppIcon(
-                    imageVector = if (identityExpanded) rememberAppChevronUpIcon() else rememberAppChevronDownIcon(),
+                    imageVector = rememberAppChevronDownIcon(),
                     contentDescription = if (identityExpanded) "收起个人资料" else "展开个人资料",
                     tint = secondaryColor,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier
+                        .size(20.dp)
+                        .graphicsLayer { rotationZ = identityArrowRotation.value },
                 )
             }
         }
@@ -1820,11 +2366,13 @@ private fun ProfileSpaceHeader(
             ) {
                 AppText(
                     text = "硬币 ${FormatUtils.formatStat(user.coin.toLong())}",
+                    modifier = if (openLedger != null) Modifier.clickable { openLedger(AccountLedgerKind.COINS) } else Modifier,
                     style = MaterialTheme.typography.labelMedium,
                     color = secondaryColor,
                 )
                 AppText(
                     text = "经验 ${levelProgress.currentExp}/${levelProgress.nextExp}",
+                    modifier = if (openLedger != null) Modifier.clickable { openLedger(AccountLedgerKind.EXPERIENCE) } else Modifier,
                     style = MaterialTheme.typography.labelMedium,
                     color = secondaryColor,
                 )
@@ -1832,7 +2380,7 @@ private fun ProfileSpaceHeader(
             AppLinearProgressIndicator(
                 progress = { levelProgress.progress },
                 modifier = Modifier.fillMaxWidth().height(4.dp),
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.accent(),
                 trackColor = secondaryColor.copy(alpha = 0.22f),
             )
         }
@@ -1890,8 +2438,8 @@ private fun ProfileIdentityDrawer(
     val shape = AppShapes.container(ContainerLevel.Card)
     AnimatedVisibility(
         visible = expanded,
-        enter = expandVertically() + fadeIn(),
-        exit = shrinkVertically() + fadeOut()
+        enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(),
+        exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
     ) {
         AppSurface(
             modifier = Modifier
@@ -1966,13 +2514,24 @@ private fun ProfileSpaceMetaChip(
 }
 
 @Composable
-private fun ProfileSpaceStat(label: String, value: Int, color: Color, onClick: (() -> Unit)? = null) {
+private fun ProfileSpaceStat(
+    label: String,
+    value: Int,
+    color: Color,
+    onClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
     val width = if (LocalConfiguration.current.screenWidthDp < 360) 60.dp else 72.dp
     Column(
-        modifier = Modifier
+        modifier = modifier
             .width(width)
             .heightIn(min = 48.dp)
-            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
+            .then(
+                if (onClick != null) Modifier.appGentleActionClickable(
+                    shape = AppShapes.container(ContainerLevel.Card),
+                    onClick = onClick,
+                ) else Modifier,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AppText(
@@ -1989,18 +2548,25 @@ private fun ProfileSpaceStat(label: String, value: Int, color: Color, onClick: (
 private fun ProfileSpaceTabs(
     selectedTab: ProfileSpaceMainTab,
     onTabSelected: (ProfileSpaceMainTab) -> Unit,
+    modifier: Modifier = Modifier,
+    pagerState: PagerState,
 ) {
     val tabs = remember { defaultProfileSpaceTabs() }
     val chromeSpec = remember { resolveProfileSpaceTabChromeSpec() }
     val selectedIndex = tabs.indexOfFirst { it.tab == selectedTab }.coerceAtLeast(0)
     AppThemeAdaptiveTabRow(
+        // Glass indicator fills the measured slot; native geometry keeps its defaults.
+        liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+        role = com.android.purebilibili.core.ui.components.AppTabRowRole.SECONDARY,
         options = tabs.map { AppSegmentOption(it.tab, it.title) },
         selectedValue = tabs[selectedIndex].tab,
         onSelectionChange = onTabSelected,
+        indicatorPositionProvider = { pagerState.tabIndicatorPosition },
+        isScrollInProgressProvider = { pagerState.isScrollInProgress },
         scrollable = false,
         dragSelectionEnabled = tabs.size > 1,
         tapPressRefractionEnabled = true,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = chromeSpec.rowHorizontalInsetDp.dp, vertical = 6.dp),
     )
@@ -2321,7 +2887,7 @@ private fun ProfileSpaceSection(
     title: String,
     count: Int,
     onMoreClick: () -> Unit,
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    textColor: Color = AppContentColors.primaryText(),
     content: @Composable RowScope.() -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -2341,7 +2907,6 @@ private fun ProfileSpaceSection(
             AppTextButton(onClick = onMoreClick) {
                 AppText(
                     text = "查看更多",
-                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -2509,7 +3074,7 @@ private fun ProfileVideoList(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                AppText("投稿加载失败", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                AppText("投稿加载失败", color = AppContentColors.secondaryText())
                 AppOutlinedButton(onClick = onRetry) { AppText("重试") }
             }
             return
@@ -2542,10 +3107,39 @@ private fun ProfileVideoList(
                                 targetModifier = Modifier.width(cardWidth),
                             )) {
                                 if (columns == 1) {
-                                    ProfileSpaceListRow(
-                                        title = video.title,
-                                        subtitle = "${FormatUtils.formatStat(video.play.toLong())} 播放 · ${video.length}",
-                                        imageUrl = video.pic,
+                                    PersonalMediaCardFrame(
+                                        headlineContent = {
+                                            AppText(
+                                                video.title,
+                                                style = com.android.purebilibili.feature.home.components.cards.horizontalVideoCardTypography().title,
+                                                maxLines = com.android.purebilibili.core.ui.videoCardTitleMaxLines(),
+                                                overflow = com.android.purebilibili.core.ui.videoCardTitleOverflow(),
+                                            )
+                                        },
+                                        supportingContent = {
+                                            com.android.purebilibili.feature.home.components.cards.HorizontalVideoStatRow(
+                                                playText = FormatUtils.formatStat(video.play.toLong()),
+                                                danmakuText = "",
+                                            )
+                                        },
+                                        coverContent = {
+                                            AsyncImage(
+                                                model = video.pic,
+                                                contentDescription = video.title,
+                                                contentScale = ContentScale.Crop,
+                                                modifier = Modifier.fillMaxSize(),
+                                            )
+                                        },
+                                        coverOverlayContent = {
+                                            com.android.purebilibili.core.ui.components.VideoStatusBadges(
+                                                labels = video.statusLabels,
+                                                modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
+                                            )
+                                            com.android.purebilibili.feature.home.components.cards.VideoCardCoverDurationText(
+                                                text = video.length,
+                                                modifier = Modifier.align(Alignment.BottomEnd).padding(6.dp),
+                                            )
+                                        },
                                         onClick = { video.bvid.takeIf { it.isNotBlank() }?.let(onVideoClick) },
                                     )
                                 } else {
@@ -2634,7 +3228,7 @@ private fun ProfileDynamicCard(
                         onDeleteClick(action)
                     }
                 ) {
-                    AppText(action.confirmText, color = MaterialTheme.colorScheme.error)
+                    AppText(action.confirmText, color = AppContentColors.error())
                 }
             },
             dismissButton = {
@@ -2666,7 +3260,7 @@ private fun ProfileDynamicCard(
                 AppText(
                     text = authorName,
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppContentColors.accent(),
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -2675,23 +3269,24 @@ private fun ProfileDynamicCard(
                     AppText(
                         text = publishText,
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                 }
             }
-            Box {
+            com.android.purebilibili.core.ui.components.AppGlassMenuAnchor(onOpen = { showMoreMenu = true }) {
                 AppIconButton(onClick = { showMoreMenu = true }, modifier = Modifier.size(40.dp)) {
                     AppIcon(
                         imageVector = moreIcon,
                         contentDescription = "更多",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = AppContentColors.secondaryText(),
                         modifier = Modifier.size(22.dp)
                     )
                 }
                 AppDropdownMenu(
                     expanded = showMoreMenu,
                     onDismissRequest = { showMoreMenu = false },
-                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer)
+                    modifier = if (com.android.purebilibili.core.ui.components.appGlassMenuAvailable()) Modifier
+                else Modifier.background(MaterialTheme.colorScheme.surfaceContainer)
                 ) {
                     AppDropdownMenuItem(
                         text = { AppText("复制链接") },
@@ -2720,7 +3315,7 @@ private fun ProfileDynamicCard(
                                 AppIcon(
                                     deleteIcon,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.error,
+                                    tint = AppContentColors.error(),
                                     modifier = Modifier.size(20.dp)
                                 )
                             },
@@ -2738,7 +3333,7 @@ private fun ProfileDynamicCard(
             AppText(
                 text = bodyText,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
 
                 maxLines = 8,
                 overflow = TextOverflow.Ellipsis
@@ -2774,7 +3369,7 @@ private fun ProfileDynamicOriginalContent(item: SpaceDynamicItem, onVideoClick: 
                 AppText(
                     text = "@$authorName",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppContentColors.accent(),
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -2784,7 +3379,7 @@ private fun ProfileDynamicOriginalContent(item: SpaceDynamicItem, onVideoClick: 
                 AppText(
                     text = text,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
 
                     maxLines = 8,
                     overflow = TextOverflow.Ellipsis
@@ -2829,7 +3424,7 @@ private fun ProfileDynamicMajorContent(item: SpaceDynamicItem, onVideoClick: (St
             AppText(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -2924,14 +3519,14 @@ private fun ProfileDynamicAction(icon: ImageVector, text: String) {
         AppIcon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = AppContentColors.secondaryText(),
             modifier = Modifier.size(18.dp)
         )
         Spacer(modifier = Modifier.width(5.dp))
         AppText(
             text = text,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
             maxLines = 1
         )
     }
@@ -2970,7 +3565,7 @@ private fun ProfileSpaceListRow(title: String, subtitle: String, imageUrl: Strin
                     AppIcon(
                         rememberAppFolderIcon(),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.42f)
+                        tint = AppContentColors.secondaryText().copy(alpha = 0.42f)
                     )
                 }
             }
@@ -2978,7 +3573,7 @@ private fun ProfileSpaceListRow(title: String, subtitle: String, imageUrl: Strin
                 AppText(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -2986,7 +3581,7 @@ private fun ProfileSpaceListRow(title: String, subtitle: String, imageUrl: Strin
                 AppText(
                     text = subtitle.ifBlank { "公开" },
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -3003,80 +3598,237 @@ private fun ProfileSpaceEmpty(text: String) {
             .padding(48.dp),
         contentAlignment = Alignment.Center
     ) {
-        AppText(text = text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        AppText(text = text, style = MaterialTheme.typography.bodyMedium, color = AppContentColors.secondaryText())
     }
 }
 
 @Composable
 private fun ProfileEditAccountDialog(
     state: ProfileEditableAccountState,
+    mid: Long,
+    accountFace: String,
     isSaving: Boolean,
     onDismiss: () -> Unit,
-    onSaveSign: (String) -> Unit
+    onEditSign: () -> Unit,
+    onEditField: (ProfileAccountField) -> Unit,
+    onEditSex: () -> Unit,
+    onEditAvatar: () -> Unit
 ) {
-    var sign by remember(state.sign) { mutableStateOf(state.sign) }
-    val signError = validateProfileSign(sign)
+    val context = LocalContext.current
     AppAlertDialog(
         onDismissRequest = onDismiss,
         title = { AppText("编辑资料") },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                ProfileReadonlyAccountField("昵称", state.name)
-                ProfileReadonlyAccountField("生日", state.birthday.ifBlank { "未展示" })
-                ProfileReadonlyAccountField("性别", state.sex.ifBlank { "未展示" })
-                AppOutlinedTextField(
-                    value = sign,
-                    onValueChange = { sign = it },
-                    label = { AppText("签名") },
-                    minLines = 3,
-                    maxLines = 4,
-                    isError = signError != null,
-                    supportingText = { AppText(signError ?: "${sign.length}/70") },
-                    modifier = Modifier.fillMaxWidth()
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                AppText("B 站账号资料", color = AppContentColors.secondaryText(), style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(start = 12.dp, bottom = 4.dp))
+                ProfileAccountEditRow("头像", "", avatar = accountFace, enabled = !isSaving, onClick = onEditAvatar)
+                ProfileAccountEditRow("昵称", state.name.ifBlank { "未展示" }, enabled = !isSaving) {
+                    onEditField(ProfileAccountField.NAME)
+                }
+                ProfileAccountEditRow("性别", state.sex.ifBlank { "未展示" }, enabled = !isSaving, onClick = onEditSex)
+                ProfileAccountEditRow("生日", state.birthday.ifBlank { "未展示" }, enabled = !isSaving) {
+                    onEditField(ProfileAccountField.BIRTHDAY)
+                }
+                ProfileAccountEditRow("签名", state.sign.ifBlank { "未设置" }, enabled = !isSaving, onClick = onEditSign)
+                ProfileAccountEditRow("UID", mid.toString(), onClick = {
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                    clipboard.setPrimaryClip(android.content.ClipData.newPlainText("UID", mid.toString()))
+                    Toast.makeText(context, "UID 已复制", Toast.LENGTH_SHORT).show()
+                })
+                listOf(
+                    "头像挂件" to "https://www.bilibili.com/h5/mall/pendant/home",
+                    "哔哩哔哩认证" to "https://account.bilibili.com/official/mobile/home"
+                ).forEach { (label, url) ->
+                    ProfileAccountEditRow(label, "", onClick = {
+                        try {
+                            context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url)))
+                        } catch (_: android.content.ActivityNotFoundException) {
+                            Toast.makeText(context, "无法打开链接", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
+            }
+        },
+        confirmButton = { AppTextButton(onClick = onDismiss) { AppText("关闭") } },
+    )
+}
+
+@Composable
+private fun ProfileAccountEditRow(
+    title: String,
+    value: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    avatar: String? = null,
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = modifier.fillMaxWidth().heightIn(min = 48.dp)
+            .clickable(enabled = enabled, onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        contentAlignment = Alignment.CenterStart,
+    ) {
+        AppText(title, color = AppContentColors.primaryText(), style = MaterialTheme.typography.bodyLarge)
+        if (!avatar.isNullOrBlank()) {
+            // 头像行与其他行一致：头像与右箭头右对齐，标题保持居左。
+            Row(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                AsyncImage(model = avatar, contentDescription = "B 站账号头像", contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(36.dp).clip(CircleShape))
+                Spacer(Modifier.width(4.dp))
+                AppIcon(com.android.purebilibili.core.ui.resolveAppChevronForwardIcon(), contentDescription = null,
+                    tint = AppContentColors.secondaryText(), modifier = Modifier.size(20.dp))
+            }
+        } else {
+            Row(
+                modifier = Modifier.align(Alignment.CenterEnd).fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (value.isNotBlank()) {
+                    AppText(
+                        text = value,
+                        color = AppContentColors.secondaryText(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                    Spacer(Modifier.width(4.dp))
+                }
+                AppIcon(com.android.purebilibili.core.ui.resolveAppChevronForwardIcon(), contentDescription = null,
+                    tint = AppContentColors.secondaryText(), modifier = Modifier.size(20.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProfileAvatarConfirmDialog(
+    image: String,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AppAlertDialog(
+        onDismissRequest = onDismiss,
+        title = { AppText("预览头像") },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                AsyncImage(
+                    model = image,
+                    contentDescription = "裁剪后的头像预览",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(144.dp).clip(CircleShape),
+                )
+                AppText(
+                    "确认后将提交到 B 站账号。",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppContentColors.secondaryText(),
                 )
             }
         },
-        confirmButton = {
-            AppButton(
-                onClick = { onSaveSign(sign) },
-                enabled = !isSaving && signError == null
-            ) {
-                AppText(if (isSaving) "保存中" else "保存签名")
+        confirmButton = { AppButton(onClick = onConfirm) { AppText("提交头像") } },
+        dismissButton = { AppTextButton(onClick = onDismiss) { AppText("取消") } },
+    )
+}
+
+@Composable
+private fun ProfileAccountSignDialog(
+    initialValue: String,
+    onDismiss: () -> Unit,
+    onSave: (String) -> Unit,
+) {
+    var sign by remember(initialValue) { mutableStateOf(initialValue) }
+    val error = validateProfileSign(sign)
+    AppAlertDialog(
+        onDismissRequest = onDismiss,
+        title = { AppText("修改账号签名") },
+        text = {
+            AppOutlinedTextField(
+                value = sign,
+                onValueChange = { sign = it.take(70) },
+                label = { AppText("签名") },
+                minLines = 3,
+                maxLines = 4,
+                isError = error != null,
+                supportingText = { AppText(error ?: "${sign.length}/70") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        confirmButton = { AppButton(onClick = { onSave(sign) }, enabled = error == null && sign != initialValue) { AppText("提交") } },
+        dismissButton = { AppTextButton(onClick = onDismiss) { AppText("取消") } },
+    )
+}
+
+@Composable
+private fun ProfileAccountFieldDialog(
+    field: ProfileAccountField,
+    initialValue: String,
+    onDismiss: () -> Unit,
+    onSubmit: (String) -> Unit
+) {
+    var value by remember(field, initialValue) { mutableStateOf(initialValue) }
+    val isName = field == ProfileAccountField.NAME
+    val trimmed = value.trim()
+    val valid = if (isName) {
+        trimmed.isNotEmpty() && trimmed.length <= 16 && trimmed != initialValue
+    } else {
+        val date = runCatching { java.time.LocalDate.parse(trimmed) }.getOrNull()
+        date != null && !date.isAfter(java.time.LocalDate.now()) && trimmed != initialValue
+    }
+    AppAlertDialog(
+        onDismissRequest = onDismiss,
+        title = { AppText(if (isName) "修改账号昵称" else "修改账号生日") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                AppOutlinedTextField(
+                    value = value,
+                    onValueChange = { value = it.take(if (isName) 16 else 10) },
+                    label = { AppText(if (isName) "昵称" else "生日（YYYY-MM-DD）") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                AppText(
+                    if (isName) "改名可能需要消耗 6 枚硬币，实际费用和限制以 B 站返回为准。确认后将提交账号修改。"
+                    else "请输入有效日期，提交后会修改 B 站账号生日。",
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         },
-        dismissButton = {
-            AppTextButton(onClick = onDismiss) {
-                AppText("取消")
-            }
-        }
+        confirmButton = { AppButton(onClick = { onSubmit(trimmed) }, enabled = valid) { AppText("确认修改") } },
+        dismissButton = { AppTextButton(onClick = onDismiss) { AppText("取消") } }
     )
 }
 
 private data class ProfileProgressiveTopChrome(
-    val backdrop: LayerBackdrop?,
+    val source: ChromeBackdropSource?,
     val enabled: Boolean,
-)
+) {
+    val backdrop: top.yukonga.miuix.kmp.blur.Backdrop?
+        get() = source?.takeIf { it.isReady }?.backdrop
+}
 
 @Composable
 private fun rememberProfileProgressiveTopChrome(): ProfileProgressiveTopChrome {
-    return ProfileProgressiveTopChrome(
-        backdrop = null,
-        enabled = false,
-    )
+    val themeConfig = com.android.purebilibili.core.ui.LocalAppThemeConfig.current
+    val enabled = shouldUseBiliPaiProgressiveTopBlur(
+        enabled = themeConfig.progressiveTopBlurEnabled,
+        hasBackdrop = true,
+    ) && !isLowBlurBudgetForced()
+    val source = if (enabled) rememberChromeBackdropSource() else null
+    return remember(source, enabled) { ProfileProgressiveTopChrome(source, enabled) }
 }
 
-private fun Modifier.profileProgressiveBackdrop(backdrop: LayerBackdrop?): Modifier {
-    return if (backdrop != null) then(Modifier.layerBackdrop(backdrop)) else this
+private fun Modifier.profileProgressiveBackdrop(chrome: ProfileProgressiveTopChrome): Modifier {
+    // 录制不依赖就绪状态，消费者只在首次录制完成后读取背景。
+    return then(chrome.source?.modifier ?: Modifier)
 }
-
-@Composable
-private fun ProfileReadonlyAccountField(label: String, value: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        AppText(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        AppText(text = value, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
-    }
-}
-
 
 @Composable
 fun TabletProfileContent(
@@ -3147,12 +3899,12 @@ fun TabletProfileContent(
 
                     // [Modified] Use new grid layout
                     ServicesSection(
-                        onHistoryClick = onHistoryClick, 
+                        onHistoryClick = onHistoryClick,
                         showHistoryService = showHistoryService,
-                        onFavoriteClick = onFavoriteClick, 
+                        onFavoriteClick = onFavoriteClick,
                         favoriteFolderShortcuts = favoriteFolderShortcuts,
                         onFavoriteFolderClick = onFavoriteFolderClick,
-                        onDownloadClick = onDownloadClick, 
+                        onDownloadClick = onDownloadClick,
                         onWatchLaterClick = onWatchLaterClick,
                         onInboxClick = onInboxClick,
                         onAccountManageClick = onAccountManageClick,
@@ -3222,7 +3974,7 @@ private fun MobileProfileContent(
     captureBackground: @Composable BoxScope.() -> Unit = {},
 ) {
     val windowSizeClass = LocalWindowSizeClass.current
-    
+
     // 📸 图片选择器
     // [New] Adjustment Sheet State
     var showAdjustmentSheet by remember { mutableStateOf(false) }
@@ -3239,7 +3991,7 @@ private fun MobileProfileContent(
             showAdjustmentSheet = true
         }
     }
-    
+
     // [New] Adjustment Sheet
     if (showAdjustmentSheet && tempSelectedUri != null) {
         ProfileWallpaperAdjustmentSheet(
@@ -3255,12 +4007,12 @@ private fun MobileProfileContent(
             }
         )
     }
-    
+
     // [New] State for Official Wallpaper Sheet
     var showWallpaperSheet by remember { mutableStateOf(false) }
     var showPhotoPickerDialog by remember { mutableStateOf(false) }
     var showWallpaperActionSheet by remember { mutableStateOf(false) }
-    
+
     // [New] Sheet
     if (showWallpaperSheet) {
         OfficialWallpaperSheet(viewModel = viewModel, onDismiss = { showWallpaperSheet = false })
@@ -3291,7 +4043,7 @@ private fun MobileProfileContent(
                 AppIcon(
                     rememberAppPhotoIcon(),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = AppContentColors.accent(),
                     modifier = Modifier.size(32.dp)
                 )
             },
@@ -3325,30 +4077,30 @@ private fun MobileProfileContent(
             }
         )
     }
-    
+
     val isImmersive = user.topPhoto.isNotEmpty()
-    val contentColor = if (isImmersive) Color.White else MaterialTheme.colorScheme.onSurface
+    val contentColor = if (isImmersive) Color.White else AppContentColors.primaryText()
     val statusBarTopPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
 
         // [Modified] Background logic moved to ProfileBackground()
         // No need to duplicate here, but MobileProfileContent is called separately in Split Layout?
-        // Ah, MobileProfileContent is independent. Let's keep it simple: 
+        // Ah, MobileProfileContent is independent. Let's keep it simple:
         // Remove background rendering from here since it's now at root?
         // NO, MobileProfileContent is used in the "else" branch of Scaffold content.
         // If we move background to root, it covers everything.
         // So we should REMOVE the background logic from here.
-        
+
         // However, ProfileBackground checks user.topPhoto.
         // MobileProfileContent already has `isImmersive`.
         // Let's remove the background rendering here.
         // BUT wait, MobileProfileContent is used in LoggedOut state too, where ProfileScreen wrapper might not have user info?
         // LoggedOut wrapper passes guestUser to MobileProfileContent.
         // So ProfileBackground at root should prefer `currentUiState.user` or fallback?
-        // ProfileUiState.LoggedOut also has topPhoto. 
-        // The root Scaffold logic handles Success state. 
+        // ProfileUiState.LoggedOut also has topPhoto.
+        // The root Scaffold logic handles Success state.
         // LoggedOut state uses MobileProfileContent directly without Scaffold in "when (currentUiState)".
         // So for LoggedOut, we still need background here, OR wrap LoggedOut in ProfileBackground too.
-        
+
         // Let's keep duplicate logic for now (safest) OR refactor LoggedOut to use ProfileBackground?
         // Refactoring LoggedOut is better but complex.
         // Let's simply hide the background here IF the parent is already rendering it?
@@ -3359,18 +4111,21 @@ private fun MobileProfileContent(
 
 
         // YES, remove background here.
-        
+
     val guestListState = rememberLazyListState()
     val isGuestScrolling by remember {
         derivedStateOf { guestListState.isScrollInProgress }
     }
-    val guestTopChromeScrim by remember {
+    val guestTopChromeScrim = remember(guestListState) {
         derivedStateOf {
             resolveProfilePinnedTopChromeScrim(
                 firstVisibleItemIndex = guestListState.firstVisibleItemIndex,
                 firstVisibleItemScrollOffset = guestListState.firstVisibleItemScrollOffset,
             )
         }
+    }
+    val showGuestPinnedTitle by remember(guestTopChromeScrim) {
+        derivedStateOf { guestTopChromeScrim.value > 0.4f }
     }
     ObserveProfileScrollToTop(
         requestId = scrollToTopRequestId,
@@ -3380,7 +4135,7 @@ private fun MobileProfileContent(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .profileProgressiveBackdrop(progressiveTopChrome.backdrop)
+                    .profileProgressiveBackdrop(progressiveTopChrome)
                     .then(if (hazeState != null) Modifier.hazeSourceCompat(hazeState) else Modifier)
                     .globalWallpaperAwareBackground(MaterialTheme.colorScheme.surface),
             ) {
@@ -3395,7 +4150,7 @@ private fun MobileProfileContent(
                     bottom = paddingValues.calculateBottomPadding() + 120.dp
                 )
             ) {
-            item { 
+            item {
                 Column {
                     // [UI优化] 移除背景色，透明显示下方 Header 图
                     UserInfoSection(
@@ -3423,53 +4178,54 @@ private fun MobileProfileContent(
                  item { Spacer(modifier = Modifier.height(56.dp)) }
             }
 
-            
-            item { 
+
+            item {
 
                 // [Adaptive Frost] 自适应磨砂玻璃逻辑
                 // [Fix] Detect theme via MaterialTheme properties
                 val isDarkTheme = MaterialTheme.colorScheme.surface.luminance() < 0.5f
-                
+
                 // 玻璃颜色：深色模式用黑透，浅色模式用白透
                 val glassContainerColor = if (isDarkTheme) Color.Black.copy(alpha = 0.24f) else Color.White.copy(alpha = 0.28f)
-                
+
                 // 文字颜色：深色背景用白字，浅色背景用黑字
                 val glassContentColor = if (isDarkTheme) Color.White else Color.Black
-                
+
                 // 边框颜色：深色用微白边框，浅色用稍明显白边框(增强质感)
                 val glassBorderColor = if (isDarkTheme) Color.White.copy(alpha = 0.1f) else Color.White.copy(alpha = 0.4f)
 
                 ServicesSection(
-                    onHistoryClick = onHistoryClick, 
+                    onHistoryClick = onHistoryClick,
                     showHistoryService = showHistoryService,
-                    onFavoriteClick = onFavoriteClick, 
+                    onFavoriteClick = onFavoriteClick,
                     favoriteFolderShortcuts = favoriteFolderShortcuts,
                     onFavoriteFolderClick = onFavoriteFolderClick,
-                    onDownloadClick = onDownloadClick, 
+                    onDownloadClick = onDownloadClick,
                     onWatchLaterClick = onWatchLaterClick,
                     onInboxClick = onInboxClick,  //  [新增]
                     onAccountManageClick = onAccountManageClick,
                     onLogout = onLogout,
                     containerColor = if (isImmersive) glassContainerColor else MaterialTheme.colorScheme.surface,
-                    contentColor = if (isImmersive) glassContentColor else MaterialTheme.colorScheme.onSurface,
+                    contentColor = if (isImmersive) glassContentColor else AppContentColors.primaryText(),
                     borderColor = if (isImmersive) glassBorderColor else null,
                     isLogin = user.isLogin // [New] Pass login status
                 )
-                
+
             }
             // item { Spacer(...) } // Removed
         }
             }
 
         BiliPaiImmersiveTopBar(
-            backdrop = null,
-            enabled = false,
+            backdrop = progressiveTopChrome.backdrop,
+            enabled = progressiveTopChrome.enabled,
             headerBlurActive = false,
+            fadeEnabled = if (progressiveTopChrome.enabled) false else null,
             opaqueBackgroundFallback = false,
             modifier = Modifier.align(Alignment.TopCenter).fillMaxWidth(),
         ) {
         AppTopBar(
-            title = if (guestTopChromeScrim > 0.4f) "我的" else "",
+            title = if (showGuestPinnedTitle) "我的" else "",
             style = AppTopBarStyle.CENTERED,
             navigationIcon = {
                 AppIconButton(onClick = onBack) {
@@ -3484,9 +4240,6 @@ private fun MobileProfileContent(
                     AppIcon(rememberAppSettingsIcon(), contentDescription = "Settings", tint = contentColor)
                 }
             },
-            modifier = Modifier.background(
-                MaterialTheme.colorScheme.surface.copy(alpha = guestTopChromeScrim)
-            ),
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
                 scrolledContainerColor = Color.Transparent,
@@ -3536,7 +4289,7 @@ fun GuestProfileContent(
                 AppIcon(rememberAppSettingsIcon(), contentDescription = "Settings", tint = Color.White)
             }
         }
-        
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -3616,8 +4369,8 @@ fun GuestProfileContent(
 
 @Composable
 fun UserInfoSection(
-    user: UserState, 
-    centered: Boolean = false, 
+    user: UserState,
+    centered: Boolean = false,
     transparent: Boolean = false,
     onClick: () -> Unit = {} // [New]
 ) {
@@ -3666,7 +4419,10 @@ private fun ProfileWallpaperMenuButton(
         modifier = modifier
             .size(48.dp)
             .clip(shape)
-            .clickable(onClick = onClick),
+            .appGentleActionClickable(
+                shape = shape,
+                onClick = onClick,
+            ),
         shape = shape,
         color = Color.Transparent,
         border = BorderStroke(1.dp, borderColor),
@@ -3709,7 +4465,7 @@ private fun ProfileWallpaperActionSheet(
                 text = "背景装扮",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = AppContentColors.primaryText(),
                 modifier = Modifier.padding(bottom = 2.dp)
             )
             ProfileWallpaperSheetActionRow(
@@ -3741,9 +4497,9 @@ private fun ProfileWallpaperSheetActionRow(
 ) {
     val shape = AppShapes.container(ContainerLevel.Card)
     val contentColor = if (enabled) {
-        MaterialTheme.colorScheme.onSurface
+        AppContentColors.primaryText()
     } else {
-        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        AppContentColors.primaryText().copy(alpha = 0.38f)
     }
     AppSurface(
         modifier = Modifier
@@ -3820,14 +4576,14 @@ private fun ProfileWallpaperActionCard(
     val sectionLabelColor = if (isImmersive) {
         Color.White.copy(alpha = 0.76f)
     } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        AppContentColors.secondaryText()
     }
     val buttonColor = if (isImmersive) {
         if (blurEnabled) Color.White.copy(alpha = 0.10f) else Color.White.copy(alpha = 0.16f)
     } else {
         MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
     }
-    val contentColor = if (isImmersive) Color.White else MaterialTheme.colorScheme.onSurface
+    val contentColor = if (isImmersive) Color.White else AppContentColors.primaryText()
     val buttonBorderColor = if (isImmersive) {
         Color.White.copy(alpha = if (blurEnabled) 0.16f else 0.10f)
     } else {
@@ -4004,9 +4760,9 @@ private fun ProfileWallpaperActionButton(
 @Composable
 fun UserInfoText(user: UserState, centered: Boolean = false, forceWhite: Boolean = false) {
     //  修复：用户名颜色 + 阴影
-    val contentColor = if (forceWhite) Color.White else MaterialTheme.colorScheme.onSurface
+    val contentColor = if (forceWhite) Color.White else AppContentColors.primaryText()
     val shadow = if (forceWhite) Shadow(color = Color.Black.copy(alpha = 0.5f), blurRadius = 4f) else null
-    
+
     AppText(
         text = user.name,
         style = MaterialTheme.typography.titleLarge.copy(
@@ -4028,7 +4784,7 @@ fun UserInfoText(user: UserState, centered: Boolean = false, forceWhite: Boolean
             )
         } else {
             AppSurface(color = MaterialTheme.colorScheme.surfaceVariant, shape = AppShapes.container(ContainerLevel.Tag)) {
-                AppText("正式会员", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = AppSpacingTokens.ExtraSmall, vertical = AppSpacingTokens.Micro))
+                AppText("正式会员", style = MaterialTheme.typography.labelSmall, color = AppContentColors.secondaryText(), modifier = Modifier.padding(horizontal = AppSpacingTokens.ExtraSmall, vertical = AppSpacingTokens.Micro))
             }
         }
     }
@@ -4049,9 +4805,9 @@ fun LevelTag(level: Int) {
 @Composable
 fun UserStatsSection(user: UserState, onFollowingClick: () -> Unit = {}, transparent: Boolean = false) {
     // 如果背景透明，文字强制为白色
-    val textColor = if (transparent) Color.White else MaterialTheme.colorScheme.onSurface
-    val labelColor = if (transparent) Color.White.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant
-    
+    val textColor = if (transparent) Color.White else AppContentColors.primaryText()
+    val labelColor = if (transparent) Color.White.copy(alpha = 0.8f) else AppContentColors.secondaryText()
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -4070,11 +4826,11 @@ fun UserStatsSection(user: UserState, onFollowingClick: () -> Unit = {}, transpa
 
 @Composable
 fun StatItem(
-    count: String, 
-    label: String, 
-    onClick: (() -> Unit)? = null, 
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
-    labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant
+    count: String,
+    label: String,
+    onClick: (() -> Unit)? = null,
+    textColor: Color = AppContentColors.primaryText(),
+    labelColor: Color = AppContentColors.secondaryText()
 ) {
     // Detect if we need shadow (heuristic: if text is white)
     val useShadow = textColor == Color.White
@@ -4089,13 +4845,13 @@ fun StatItem(
     ) {
         //  修复：数字和标签颜色 + 阴影
         AppText(
-            text = count, 
-            fontWeight = FontWeight.Bold, 
+            text = count,
+            fontWeight = FontWeight.Bold,
             color = textColor,
             style = MaterialTheme.typography.titleMedium.copy(shadow = shadow)
         )
         AppText(
-            text = label, 
+            text = label,
             color = if (useShadow) Color.White.copy(alpha = 0.9f) else labelColor, // Whiter label
             style = MaterialTheme.typography.bodySmall.copy(shadow = shadow) // Apply same shadow to label
         )
@@ -4112,12 +4868,7 @@ fun VipBannerSection(user: UserState) {
             .height(60.dp)
             .clip(AppShapes.container(ContainerLevel.Chip))
             .background(
-                Brush.horizontalGradient(
-                    colors = listOf(
-                        colorScheme.tertiaryContainer,
-                        colorScheme.primaryContainer
-                    )
-                )
+                colorScheme.tertiaryContainer
             )
     ) {
         Row(
@@ -4136,7 +4887,7 @@ fun VipBannerSection(user: UserState) {
                 )
                 AppText(
                     text = "硬币: ${user.coin}   B币: ${user.bcoin}",
-                    color = colorScheme.onTertiaryContainer.copy(alpha = 0.8f),
+                    color = colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.labelSmall
                 )
             }
@@ -4163,7 +4914,7 @@ fun ServicesSection(
     onAccountManageClick: () -> Unit = {},
     onLogout: () -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.surface,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    contentColor: Color = AppContentColors.primaryText(),
     borderColor: Color? = null,
     embeddedInPanel: Boolean = false,
     isLogin: Boolean = true,
@@ -4180,7 +4931,7 @@ fun ServicesSection(
     val semanticVisualPolicy = rememberAppSemanticVisualPolicy()
     val primaryAccent = semanticVisualPolicy.resolveAccent(
         AppSemanticAccentRole.PRIMARY,
-        MaterialTheme.colorScheme.primary,
+        AppContentColors.accent(),
     )
     val secondaryAccent = semanticVisualPolicy.resolveAccent(
         AppSemanticAccentRole.SECONDARY,
@@ -4264,7 +5015,7 @@ fun ServicesSection(
                         icon = downloadIcon,
                         title = "离线缓存",
                         onClick = onDownloadClick,
-                        iconTint = MaterialTheme.colorScheme.primary,
+                        iconTint = AppContentColors.accent(),
                         textColor = contentColor,
                     )
                     ProfileServiceDivider(contentColor)
@@ -4353,7 +5104,7 @@ fun ServicesSection(
                         icon = downloadIcon,
                         title = "离线缓存",
                         onClick = onDownloadClick,
-                        iconTint = MaterialTheme.colorScheme.primary,
+                        iconTint = AppContentColors.accent(),
                         textColor = contentColor
                     )
                     if (showHistoryService) {
@@ -4406,7 +5157,7 @@ fun ServicesSection(
                     AppPreference(
                         title = if (isLogin) "退出登录" else "立即登录",
                         onClick = onLogout,
-                        textColor = if (isLogin) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                        textColor = if (isLogin) AppContentColors.error() else AppContentColors.accent(),
                         centered = true,
                         showChevron = false
                     )
@@ -4559,7 +5310,7 @@ private fun ProfileAccountActionArea(
                     text = if (isLogin) "退出登录" else "立即登录",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (isLogin) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                    color = if (isLogin) AppContentColors.error() else AppContentColors.accent(),
                     maxLines = 1
                 )
             }
@@ -4648,7 +5399,10 @@ private fun ProfileFavoriteFolderShortcutChip(
             .heightIn(min = if (compact) 42.dp else 48.dp)
             .clip(AppShapes.container(ContainerLevel.Card))
             .background(MaterialTheme.colorScheme.surface.copy(alpha = if (compact) 0.22f else 0.28f))
-            .clickable(onClick = onClick)
+            .appGentleActionClickable(
+                shape = AppShapes.container(ContainerLevel.Card),
+                onClick = onClick,
+            )
             .padding(horizontal = if (compact) 9.dp else 10.dp, vertical = if (compact) 7.dp else 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -4690,7 +5444,10 @@ private fun ProfileFavoriteFolderMoreChip(
             .heightIn(min = 42.dp)
             .clip(AppShapes.container(ContainerLevel.Card))
             .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.18f))
-            .clickable(onClick = onClick)
+            .appGentleActionClickable(
+                shape = AppShapes.container(ContainerLevel.Card),
+                onClick = onClick,
+            )
             .padding(horizontal = 12.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -4726,7 +5483,7 @@ internal fun AccountSwitchDialog(
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         backgroundColor = MaterialTheme.colorScheme.surface,
         fallbackContentColors = listOf(
-            MaterialTheme.colorScheme.onSurface,
+            AppContentColors.primaryText(),
             MaterialTheme.colorScheme.onBackground,
         ),
     )
@@ -4735,7 +5492,7 @@ internal fun AccountSwitchDialog(
         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
         backgroundColor = MaterialTheme.colorScheme.surface,
         fallbackContentColors = listOf(
-            MaterialTheme.colorScheme.onSurface,
+            AppContentColors.primaryText(),
             MaterialTheme.colorScheme.onBackground,
         ),
     )
@@ -4755,7 +5512,7 @@ internal fun AccountSwitchDialog(
                 AppText(
                     text = "播放视频时，可以用另一个账号的大会员权限。",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
 
                 if (playbackAccount != null) {
@@ -4823,7 +5580,7 @@ internal fun AccountSwitchDialog(
                     AppText(
                         text = "暂无已保存账号，先添加一个账号后即可快速切换。",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                 } else {
                     accounts.forEach { account ->
@@ -4878,11 +5635,11 @@ internal fun AccountSwitchDialog(
                                             if (isActive) {
                                                 AppSurface(
                                                     shape = AppShapes.container(ContainerLevel.Tag),
-                                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+                                                    color = AppContentColors.accent().copy(alpha = 0.14f)
                                                 ) {
                                                     AppText(
                                                         text = "当前",
-                                                        color = MaterialTheme.colorScheme.primary,
+                                                        color = AppContentColors.accent(),
                                                         style = MaterialTheme.typography.labelSmall,
                                                         fontWeight = FontWeight.SemiBold,
                                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -4914,9 +5671,9 @@ internal fun AccountSwitchDialog(
                                             },
                                             style = MaterialTheme.typography.bodySmall,
                                             color = if (account.isVip) {
-                                                MaterialTheme.colorScheme.primary
+                                                AppContentColors.accent()
                                             } else {
-                                                MaterialTheme.colorScheme.onSurfaceVariant
+                                                AppContentColors.secondaryText()
                                             },
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis
@@ -4938,7 +5695,7 @@ internal fun AccountSwitchDialog(
                                             AppText(
                                                 text = "取消播放账号",
                                                 style = MaterialTheme.typography.labelMedium,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                color = AppContentColors.secondaryText()
                                             )
                                         }
                                     } else {
@@ -4949,9 +5706,9 @@ internal fun AccountSwitchDialog(
                                                 text = if (account.isVip) "设为播放(大会员)" else "设为播放",
                                                 style = MaterialTheme.typography.labelMedium,
                                                 color = if (account.isVip) {
-                                                    MaterialTheme.colorScheme.primary
+                                                    AppContentColors.accent()
                                                 } else {
-                                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                                    AppContentColors.secondaryText()
                                                 }
                                             )
                                         }
@@ -4974,7 +5731,7 @@ internal fun AccountSwitchDialog(
                                             AppText(
                                                 text = "移除",
                                                 style = MaterialTheme.typography.labelMedium,
-                                                color = MaterialTheme.colorScheme.error
+                                                color = AppContentColors.error()
                                             )
                                         }
                                     }
@@ -5014,16 +5771,16 @@ fun ProfileTripleActionEntry(
     var showDialog by remember { mutableStateOf(false) }
     var showCelebration by remember { mutableStateOf(false) }
     val progressDuration = 1500 // 1.5 秒
-    
-    val haptic = com.android.purebilibili.core.util.rememberHapticFeedback()
-    
+
+    val haptic = com.android.purebilibili.core.util.rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.VIDEO_ACTIONS)
+
     // 进度动画
     val animatedProgress by androidx.compose.animation.core.animateFloatAsState(
         targetValue = if (isLongPressing) 1f else 0f,
         animationSpec = if (isLongPressing) {
             androidx.compose.animation.core.tween(durationMillis = progressDuration, easing = androidx.compose.animation.core.LinearEasing)
         } else {
-            androidx.compose.animation.core.tween(durationMillis = 200, easing = androidx.compose.animation.core.FastOutSlowInEasing)
+            androidx.compose.animation.core.tween(durationMillis = 200, easing = AppMotionEasing.M1Standard)
         },
         label = "tripleProgress",
         finishedListener = { progress ->
@@ -5034,7 +5791,7 @@ fun ProfileTripleActionEntry(
             }
         }
     )
-    
+
     LaunchedEffect(animatedProgress) {
         longPressProgress = animatedProgress
     }
@@ -5044,7 +5801,7 @@ fun ProfileTripleActionEntry(
             haptic(com.android.purebilibili.core.util.HapticType.LIGHT)
         }
     }
-    
+
     // 选择弹窗
     if (showDialog) {
         AppAlertDialog(
@@ -5096,7 +5853,7 @@ fun ProfileTripleActionEntry(
                 icon = likeIcon,
                 text = "149",
                 progress = longPressProgress,
-                progressColor = MaterialTheme.colorScheme.primary,
+                progressColor = AppContentColors.accent(),
                 isActive = false
             )
 
@@ -5105,7 +5862,7 @@ fun ProfileTripleActionEntry(
                 icon = com.android.purebilibili.core.ui.AppIcons.BiliCoin,
                 text = "25",
                 progress = longPressProgress,
-                progressColor = MaterialTheme.colorScheme.primary,
+                progressColor = AppContentColors.accent(),
                 isActive = false
             )
 
@@ -5114,7 +5871,7 @@ fun ProfileTripleActionEntry(
                 icon = bookmarkIcon,
                 text = "7",
                 progress = longPressProgress,
-                progressColor = MaterialTheme.colorScheme.primary,
+                progressColor = AppContentColors.accent(),
                 isActive = false
             )
         }

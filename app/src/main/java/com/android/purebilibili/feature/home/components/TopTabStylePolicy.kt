@@ -506,7 +506,7 @@ internal fun resolveMd3TopTabSelectedContainerColor(
     presentation: AppTopTabPresentation = AppTopTabPresentation.MATERIAL_UNDERLINE,
     uiStyle: AppUiStyle = AppUiStyle.MATERIAL3
 ): androidx.compose.ui.graphics.Color = when {
-    uiStyle == AppUiStyle.MIUIX -> colorScheme.onSurface
+    uiStyle == AppUiStyle.MIUIX -> colorScheme.primary
     presentation == AppTopTabPresentation.TONAL_CAPSULE -> colorScheme.secondaryContainer
     else -> colorScheme.primary
 }
@@ -516,7 +516,7 @@ internal fun resolveMd3TopTabSelectedIconColor(
     presentation: AppTopTabPresentation = AppTopTabPresentation.MATERIAL_UNDERLINE,
     uiStyle: AppUiStyle = AppUiStyle.MATERIAL3
 ): androidx.compose.ui.graphics.Color = when {
-    uiStyle == AppUiStyle.MIUIX -> colorScheme.onSurface
+    uiStyle == AppUiStyle.MIUIX -> colorScheme.primary
     presentation == AppTopTabPresentation.TONAL_CAPSULE -> colorScheme.onSecondaryContainer
     else -> colorScheme.primary
 }
@@ -526,7 +526,7 @@ internal fun resolveMd3TopTabSelectedLabelColor(
     presentation: AppTopTabPresentation = AppTopTabPresentation.MATERIAL_UNDERLINE,
     uiStyle: AppUiStyle = AppUiStyle.MATERIAL3
 ): androidx.compose.ui.graphics.Color = when {
-    uiStyle == AppUiStyle.MIUIX -> colorScheme.onSurface
+    uiStyle == AppUiStyle.MIUIX -> colorScheme.primary
     presentation == AppTopTabPresentation.TONAL_CAPSULE -> colorScheme.onSecondaryContainer
     else -> colorScheme.primary
 }
@@ -616,6 +616,16 @@ fun resolveTopTabIconSizeDp(labelMode: Int): Float {
         0 -> tuning.tabIconWithTextSizeDp
         1 -> tuning.tabIconOnlySizeDp
         else -> 0f
+    }
+}
+
+/** Native top-dock standalone icons use a standard 24dp glyph; glass keeps its existing dimensions. */
+internal fun resolveHomeTopDockIconSizeDp(labelMode: Int, liquidGlassEnabled: Boolean): Float {
+    val baseSize = resolveTopTabIconSizeDp(labelMode)
+    return if (!liquidGlassEnabled && normalizeTopTabLabelMode(labelMode) == 1) {
+        maxOf(baseSize, 24f)
+    } else {
+        baseSize
     }
 }
 

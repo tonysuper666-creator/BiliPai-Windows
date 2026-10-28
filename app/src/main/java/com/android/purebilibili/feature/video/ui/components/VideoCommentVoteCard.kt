@@ -18,8 +18,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.theme.resolveAccessibleContainerColors
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.data.model.response.ReplyVoteCard
@@ -43,6 +45,7 @@ fun VideoCommentVoteCard(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         color = colors.surfaceContainerLow,
+        contentColor = colors.onSurface,
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -52,6 +55,7 @@ fun VideoCommentVoteCard(
                 text = displayedCard.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
+                color = colors.onSurface,
             )
             AppText(
                 text = if (displayedCard.myVoteOption != null) {
@@ -59,7 +63,7 @@ fun VideoCommentVoteCard(
                 } else {
                     "${displayedCard.count} 人参与 · 选择选项投票"
                 },
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = colors.onSurfaceVariant,
             )
             Row(
@@ -70,21 +74,28 @@ fun VideoCommentVoteCard(
             ) {
                 displayedCard.options.forEachIndexed { position, option ->
                     val selected = displayedCard.myVoteOption == option.idx
-                    val tint = when (position % 3) {
-                        0 -> colors.primaryContainer
-                        1 -> colors.secondaryContainer
-                        else -> colors.tertiaryContainer
+                    val (containerColor, contentColor) = when (position % 3) {
+                        0 -> colors.primaryContainer to colors.onPrimaryContainer
+                        1 -> colors.secondaryContainer to colors.onSecondaryContainer
+                        else -> colors.tertiaryContainer to colors.onTertiaryContainer
                     }
+                    val optionColors = resolveAccessibleContainerColors(
+                        containerColor = containerColor,
+                        contentColor = contentColor,
+                        backgroundColor = colors.surfaceContainerLow,
+                        fallbackContentColors = listOf(colors.onSurface, Color.Black, Color.White),
+                    )
                     AppSurface(
                         onClick = {
                             selectedOption = option.idx.toInt()
                             showVoteDialog = true
                         },
                         modifier = Modifier
-                            .widthIn(min = 144.dp)
+                            .widthIn(min = 144.dp, max = 240.dp)
                             .heightIn(min = 72.dp),
                         shape = RoundedCornerShape(12.dp),
-                        color = tint,
+                        color = optionColors.containerColor,
+                        contentColor = optionColors.contentColor,
                     ) {
                         Column(
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
@@ -94,6 +105,7 @@ fun VideoCommentVoteCard(
                                 text = if (selected) "✓ ${option.desc}" else option.desc,
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
+                                color = optionColors.contentColor,
                             )
                             AppText(
                                 text = if (totalVotes > 0L) {
@@ -101,7 +113,8 @@ fun VideoCommentVoteCard(
                                 } else {
                                     "0%"
                                 },
-                                style = MaterialTheme.typography.bodySmall,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = optionColors.contentColor,
                             )
                         }
                     }

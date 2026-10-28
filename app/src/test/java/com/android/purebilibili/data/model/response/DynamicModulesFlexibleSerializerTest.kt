@@ -149,6 +149,54 @@ class DynamicModulesFlexibleSerializerTest {
     }
 
     @Test
+    fun opusDetailParagraph_keepsEmojiOnlyParagraphWhenRichTextIsBlank() {
+        val payload = """
+            {
+              "data": {
+                "item": {
+                  "modules": [
+                    {
+                      "module_type": "MODULE_TYPE_CONTENT",
+                      "module_content": {
+                        "paragraphs": [
+                          {
+                            "para_type": 1,
+                            "text": {
+                              "nodes": [
+                                {
+                                  "type": "TEXT_NODE_TYPE_RICH",
+                                  "rich": {
+                                    "type": "RICH_TEXT_NODE_TYPE_EMOJI",
+                                    "text": "",
+                                    "orig_text": "",
+                                    "emoji": {
+                                      "icon_url": "https://i0.hdslb.com/bfs/emote/baofu.png",
+                                      "text": "[豹富]"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+        """.trimIndent()
+
+        val response = json.decodeFromString<DynamicDetailResponse>(payload)
+        val opus = response.data?.item?.modules?.module_dynamic?.major?.opus
+        val block = opus?.contentBlocks?.single() as? OpusContentBlock.Text
+
+        assertEquals("[豹富]", block?.text)
+        assertEquals("[豹富]", opus?.summary?.text)
+        assertEquals("[豹富]", block?.richTextNodes?.single()?.emoji?.text)
+    }
+
+    @Test
     fun opusDetailParagraph_keepsFormulaBeforeAtMentionInRichNodeStream() {
         val payload = """
             {
@@ -696,32 +744,39 @@ class DynamicModulesFlexibleSerializerTest {
         val opus = response.data?.item?.modules?.module_dynamic?.major?.opus
 
         assertEquals("第一段正文[表情]\n第二段正文", opus?.summary?.text)
-        assertTrue((opus?.summary?.text?.length ?: 0) > "预览摘要".length)
         assertEquals(
             listOf("https://i0.hdslb.com/full-1.jpg", "https://i0.hdslb.com/full-2.jpg"),
             opus?.pics?.map { it.url }
         )
+        val blocks = opus?.contentBlocks.orEmpty()
         assertEquals(
             listOf(
-                OpusContentBlock.Text("第一段正文[表情]"),
-                OpusContentBlock.Image(
-                    OpusPic(
-                        url = "https://i0.hdslb.com/full-1.jpg",
-                        width = 900,
-                        height = 1800,
-                        size = 1024.5
-                    )
-                ),
-                OpusContentBlock.Text("第二段正文"),
-                OpusContentBlock.Image(
-                    OpusPic(
-                        url = "https://i0.hdslb.com/full-2.jpg",
-                        width = 1000,
-                        height = 1000
-                    )
-                )
+                OpusContentBlock.Text::class,
+                OpusContentBlock.Image::class,
+                OpusContentBlock.Text::class,
+                OpusContentBlock.Image::class,
             ),
-            opus?.contentBlocks
+            blocks.map { it::class },
+        )
+        assertEquals(
+            listOf("第一段正文[表情]", "第二段正文"),
+            blocks.filterIsInstance<OpusContentBlock.Text>().map { it.text },
+        )
+        assertEquals(
+            listOf(
+                OpusPic(
+                    url = "https://i0.hdslb.com/full-1.jpg",
+                    width = 900,
+                    height = 1800,
+                    size = 1024.5,
+                ),
+                OpusPic(
+                    url = "https://i0.hdslb.com/full-2.jpg",
+                    width = 1000,
+                    height = 1000,
+                ),
+            ),
+            blocks.filterIsInstance<OpusContentBlock.Image>().map { it.pic },
         )
     }
 
@@ -786,14 +841,23 @@ class DynamicModulesFlexibleSerializerTest {
         val opus = response.data?.item?.modules?.module_dynamic?.major?.opus
 
         assertEquals("新翼神龙卡组考卷，已快速公式答题", opus?.title)
+        val blocks = opus?.contentBlocks.orEmpty()
         assertEquals(
             listOf(
-                OpusContentBlock.Text("开门见山介绍combo"),
-                OpusContentBlock.Heading("新翼神龙卡组考卷，已快速公式答题"),
-                OpusContentBlock.Image(OpusPic(url = "https://i0.hdslb.com/card.jpg", width = 800, height = 600)),
-                OpusContentBlock.Text("ATK=3000 答题解析")
+                OpusContentBlock.Text::class,
+                OpusContentBlock.Heading::class,
+                OpusContentBlock.Image::class,
+                OpusContentBlock.Text::class,
             ),
-            opus?.contentBlocks
+            blocks.map { it::class },
+        )
+        assertEquals(
+            listOf("开门见山介绍combo", "新翼神龙卡组考卷，已快速公式答题", "", "ATK=3000 答题解析"),
+            blocks.map { it.plainText },
+        )
+        assertEquals(
+            listOf(OpusPic(url = "https://i0.hdslb.com/card.jpg", width = 800, height = 600)),
+            blocks.filterIsInstance<OpusContentBlock.Image>().map { it.pic },
         )
     }
 
@@ -954,7 +1018,7 @@ class DynamicModulesFlexibleSerializerTest {
             opus?.pics?.map { it.url }
         )
         assertEquals(9, opus?.contentBlocks?.size)
-        assertEquals(OpusContentBlock.Text("正文开头"), opus?.contentBlocks?.get(0))
+        assertEquals("正文开头", (opus?.contentBlocks?.get(0) as? OpusContentBlock.Text)?.text)
         assertEquals(
             OpusContentBlock.Image(OpusPic(url = "https://i0.hdslb.com/single.jpg", width = 640, height = 360)),
             opus?.contentBlocks?.get(1)

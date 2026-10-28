@@ -1,7 +1,8 @@
 package com.android.purebilibili.feature.agreement
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
@@ -57,9 +59,9 @@ fun UserAgreementGate(content: @Composable () -> Unit) {
 @Composable
 private fun UserAgreementGateScreen(onAgree: () -> Unit) {
     val activity = LocalActivity.current
-    val darkTheme = isSystemInDarkTheme()
+    val darkTheme = com.android.purebilibili.core.ui.isAppInDarkTheme()
     val titleColor = if (darkTheme) MaterialTheme.colorScheme.onBackground
-    else MaterialTheme.colorScheme.onSurface
+    else AppContentColors.primaryText()
     // The agree button unlocks only after the user has scrolled the full text to the bottom
     // (sticky: it stays enabled afterwards even if they scroll back up).
     // must observe layoutInfo through derivedStateOf: canScrollForward is not snapshot state
@@ -87,7 +89,7 @@ private fun UserAgreementGateScreen(onAgree: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AppText(
-                UserAgreementText.TITLE,
+                stringResource(UserAgreementText.TITLE),
                 style = MaterialTheme.typography.headlineSmall,
                 color = titleColor,
                 textAlign = TextAlign.Center,
@@ -101,9 +103,9 @@ private fun UserAgreementGateScreen(onAgree: () -> Unit) {
                     item { UserAgreementBody() }
                     item {
                         AppText(
-                            "— 已阅读至协议末尾 —",
+                            stringResource(com.android.purebilibili.R.string.user_agreement_read_to_end),
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = AppContentColors.secondaryText(),
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                         )
@@ -114,11 +116,18 @@ private fun UserAgreementGateScreen(onAgree: () -> Unit) {
                 onClick = onAgree,
                 enabled = reachedBottom,
                 modifier = Modifier.fillMaxWidth().widthIn(max = 480.dp),
-            ) { AppText(if (reachedBottom) "同意并继续" else "请阅读至协议末尾") }
+            ) {
+                AppText(
+                    stringResource(
+                        if (reachedBottom) com.android.purebilibili.R.string.user_agreement_agree_continue
+                        else com.android.purebilibili.R.string.user_agreement_read_to_end_action
+                    )
+                )
+            }
             AppTextButton(
                 onClick = { activity?.finishAffinity() },
                 modifier = Modifier.fillMaxWidth().widthIn(max = 480.dp),
-            ) { AppText("不同意并退出") }
+            ) { AppText(stringResource(com.android.purebilibili.R.string.user_agreement_decline_exit)) }
         }
     }
 }
@@ -128,10 +137,10 @@ private fun UserAgreementGateScreen(onAgree: () -> Unit) {
 fun UserAgreementBody(modifier: Modifier = Modifier) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         UserAgreementText.SECTIONS.forEach { section ->
-            AppText(section.title, style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary)
+            AppText(stringResource(section.title), style = MaterialTheme.typography.titleSmall,
+                color = AppContentColors.accent())
             section.bodyLines.forEach { line ->
-                LinkifiedText(line, style = MaterialTheme.typography.bodyMedium)
+                LinkifiedText(stringResource(line), style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
@@ -146,7 +155,7 @@ private fun LinkifiedText(
     style: androidx.compose.ui.text.TextStyle,
 ) {
     val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
-    val linkColor = MaterialTheme.colorScheme.primary
+    val linkColor = AppContentColors.accent()
     val linkStyle = androidx.compose.ui.text.SpanStyle(
         color = linkColor,
         textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline,
@@ -173,12 +182,16 @@ private fun LinkifiedText(
 fun UserAgreementReviewDialog(onDismiss: () -> Unit) {
     com.android.purebilibili.core.ui.AppAlertDialog(
         onDismissRequest = onDismiss,
-        title = { AppText(UserAgreementText.TITLE) },
+        title = { AppText(stringResource(UserAgreementText.TITLE)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 UserAgreementBody()
             }
         },
-        confirmButton = { AppDialogAction(onClick = onDismiss) { AppText("关闭") } },
+        confirmButton = {
+            AppDialogAction(onClick = onDismiss) {
+                AppText(stringResource(com.android.purebilibili.R.string.common_close))
+            }
+        },
     )
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
+import androidx.compose.ui.unit.sp
 import kotlin.math.roundToInt
 import top.yukonga.miuix.kmp.theme.TextStyles
 import top.yukonga.miuix.kmp.theme.defaultTextStyles
@@ -237,8 +238,8 @@ fun Typography.withFontWeight(fontWeight: FontWeight?): Typography {
 /**
  * Maps Miuix-native component roles onto the app's Material typography contract.
  * This keeps native Miuix controls visually consistent with neighboring MD3-backed content.
- * Title1-4 sizes follow the upstream defaults (32/24/20/18sp); weights stay Medium
- * (upstream defaults are Normal) so native controls keep matching adjacent MD3 text.
+ * Native title roles use a compact 32/24/20/18sp scale, independent of Material display roles.
+ * Apply user font scaling/family/weight to the resulting TextStyles after this conversion.
  */
 fun Typography.toMiuixTextStyles(): TextStyles = defaultTextStyles(
     main = bodyLarge,
@@ -251,10 +252,10 @@ fun Typography.toMiuixTextStyles(): TextStyles = defaultTextStyles(
     headline1 = titleMedium,
     headline2 = titleSmall,
     subtitle = labelLarge.copy(fontWeight = FontWeight.Bold),
-    title1 = displayLarge,
-    title2 = headlineLarge,
-    title3 = headlineMedium,
-    title4 = headlineSmall,
+    title1 = headlineLarge.copy(fontSize = 32.sp, lineHeight = 38.sp, fontWeight = FontWeight.Medium),
+    title2 = headlineSmall.copy(fontSize = 24.sp, lineHeight = 30.sp, fontWeight = FontWeight.Medium),
+    title3 = titleLarge.copy(fontSize = 20.sp, lineHeight = 26.sp, fontWeight = FontWeight.Medium),
+    title4 = titleMedium.copy(fontSize = 18.sp, lineHeight = 24.sp, fontWeight = FontWeight.Medium),
 )
 
 fun TextStyles.scaled(multiplier: Float): TextStyles {

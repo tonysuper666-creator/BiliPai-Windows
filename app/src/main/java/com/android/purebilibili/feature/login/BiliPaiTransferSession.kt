@@ -2,9 +2,21 @@ package com.android.purebilibili.feature.login
 
 import android.content.Context
 import com.android.purebilibili.core.store.AccountSessionStore
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.security.KeyPair
 import java.util.TreeMap
 import java.util.UUID
+
+/** Preserve structured cancellation while reporting recoverable transfer errors. */
+internal inline fun <T> transferCatching(block: () -> T): Result<T> = try {
+    Result.success(block())
+} catch (cancelled: CancellationException) {
+    throw cancelled
+} catch (error: Exception) {
+    Result.failure(error)
+}
 
 enum class BiliPaiTransferMode { RECEIVE, SEND }
 
@@ -42,6 +54,10 @@ class BiliPaiTransferChunkBuffer {
         } else if (chunk.transferId != transferId || chunk.total != total) {
             return Result.failure(IllegalArgumentException("分块来自另一次传输，请重新开始接收"))
         }
+        val previous = chunks[chunk.index]
+        if (previous != null && previous != chunk) {
+            return Result.failure(IllegalArgumentException("同一分块内容冲突，请重新开始接收"))
+        }
         chunks[chunk.index] = chunk
         if (chunks.size < total) return Result.success(null)
         val envelope = BiliPaiTransferChunks.join(chunks.values)
@@ -61,6 +77,7 @@ class BiliPaiTransferSession(private val context: Context) {
         private set
 
     fun beginReceive(now: Long = System.currentTimeMillis()): BiliPaiTransferRequest {
+        clear()
         val created = BiliPaiTransferCodecRequestFactory.create(context, now)
         request = created
         state = BiliPaiTransferState.RequestReady(created)
@@ -69,6 +86,7 @@ class BiliPaiTransferSession(private val context: Context) {
 
     fun acceptRequest(raw: String): BiliPaiTransferRequest {
         val parsed = BiliPaiTransferCodec.decodeRequest(raw)
+        clear()
         request = parsed
         state = BiliPaiTransferState.WaitingForRequest(parsed)
         return parsed
@@ -77,18 +95,13 @@ class BiliPaiTransferSession(private val context: Context) {
     suspend fun createEnvelope(
         bundle: BiliPaiSessionBundle,
         selection: BiliPaiTransferContentSelection = BiliPaiTransferContentSelection(),
-    ): List<String> {
+    ): List<String> = withContext(Dispatchers.IO) {
         val target = request ?: error("请先扫描接收设备请求")
         val payload = BiliPaiTransferContent.collect(context, selection, bundle)
         val envelope = BiliPaiTransferCrypto.encryptPayload(keys, keys.public.fingerprint(), target, payload)
-        val encoded = BiliPaiTransferCodec.encodeEnvelope(envelope)
-        val chunks = if (encoded.length <= BiliPaiTransferCodec.SINGLE_QR_MAX_CHARS) {
-            listOf(encoded)
-        } else {
-            BiliPaiTransferChunks.split(target.transferId, encoded)
-        }
+        val chunks = BiliPaiTransferCodec.encodeEnvelopeQrs(envelope)
         state = BiliPaiTransferState.EnvelopeReady(chunks)
-        return chunks
+        chunks
     }
 
     /**
@@ -97,33 +110,39 @@ class BiliPaiTransferSession(private val context: Context) {
      */
     fun acceptEnvelope(raw: String): BiliPaiTransferPayload? {
         val target = request ?: error("请先创建或扫描传输请求")
-        val envelopeRaw = if (BiliPaiTransferChunks.parse(raw) != null) {
+        val chunk = BiliPaiTransferChunks.parse(raw)
+        val envelopeRaw = if (chunk != null) {
+            require(chunk.transferId == target.transferId) { "分块来自另一次传输" }
             val joined = chunkBuffer.offer(raw).getOrElse { error(it.message ?: "分块无效") }
             joined ?: return null
         } else raw
         val envelope = BiliPaiTransferCodec.decodeEnvelope(envelopeRaw)
         val payload = BiliPaiTransferCrypto.decryptPayload(keys.private, target, envelope)
+        require(payload.session.mid > 0L && payload.session.sessData.isNotBlank()) { "传输账号会话无效" }
         require(payload.version == BILIPAI_TRANSFER_PAYLOAD_VERSION) { "传输载荷版本不一致，请升级两端 BiliPai" }
         state = BiliPaiTransferState.AwaitingConfirmation(payload)
         return payload
     }
 
-    suspend fun confirmImport(payload: BiliPaiTransferPayload): Boolean {
+    suspend fun confirmImport(
+        payload: BiliPaiTransferPayload,
+        approvedPluginKeys: Set<String> = emptySet(),
+    ): Boolean = withContext(Dispatchers.IO) {
+        check((state as? BiliPaiTransferState.AwaitingConfirmation)?.payload == payload) {
+            "请先接收并确认当前传输内容"
+        }
         val sessionOk = AccountSessionStore.importTransferredSession(context, payload.session)
         if (!sessionOk) {
-            state = BiliPaiTransferState.Failed("账号会话导入失败")
-            return false
+            return@withContext false
         }
-        val report = if (payload.isContentEmpty()) {
-            BiliPaiTransferImportReport(items = emptyList())
-        } else {
-            runCatching { BiliPaiTransferContent.apply(context, payload) }.getOrElse {
-                BiliPaiTransferImportReport(items = listOf(
-                    BiliPaiTransferImportItemResult("内容导入", false, it.message)))
-            }
+        val report = transferCatching {
+            BiliPaiTransferContent.apply(context, payload, approvedPluginKeys)
+        }.getOrElse {
+            BiliPaiTransferImportReport(items = listOf(
+                BiliPaiTransferImportItemResult("内容导入", false, it.message)))
         }
         state = BiliPaiTransferState.Completed(payload.session.mid, report)
-        return true
+        true
     }
 
     fun clear() {

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.purebilibili.core.store.DEFAULT_APP_ICON_KEY
 import com.android.purebilibili.core.store.AppIconAppearance
 import com.android.purebilibili.core.store.SettingsManager
+import com.android.purebilibili.core.store.PlaybackPreferencesSettings
 import com.android.purebilibili.core.store.BottomBarSearchAutoExpandMode
 import com.android.purebilibili.core.store.BottomBarSearchLayoutMode
 import com.android.purebilibili.core.store.HomeFeedCardWidthPreset
@@ -27,7 +28,6 @@ import com.android.purebilibili.core.theme.AppFontWeightPreset
 import com.android.purebilibili.core.theme.AppFontSizePreset
 import com.android.purebilibili.core.theme.AppUiScalePreset
 import com.android.purebilibili.core.theme.AppUiStyle
-import com.android.purebilibili.core.theme.syncThemeRoleControlAccent
 import com.android.purebilibili.core.ui.AppIconStyle
 import com.android.purebilibili.core.ui.AppListItemStyle
 import com.android.purebilibili.core.ui.blur.BlurIntensity
@@ -35,6 +35,8 @@ import com.android.purebilibili.core.ui.transition.VIDEO_SHARED_TRANSITION_CUSTO
 import com.android.purebilibili.core.ui.transition.VideoSharedTransitionSpeed
 import com.android.purebilibili.core.util.CacheClearTarget
 import com.android.purebilibili.core.util.CacheUtils
+import com.android.purebilibili.core.theme.SeedPaletteStyle
+import com.materialkolor.Contrast
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
 import kotlinx.coroutines.flow.Flow
@@ -51,6 +53,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 enum class SettingsDiagnosticsLoadState {
     NOT_LOADED,
@@ -67,13 +71,16 @@ data class SettingsUiState(
     val themeSelection: AppUiStyle = AppUiStyle.MATERIAL3,
     val hwDecode: Boolean = true,
     val themeMode: AppThemeMode = AppThemeMode.FOLLOW_SYSTEM,
+    val darkThemeSchedule: DarkThemeSchedule = DarkThemeSchedule(),
     val darkThemeStyle: DarkThemeStyle = DarkThemeStyle.DEFAULT,
     val appLanguage: AppLanguage = AppLanguage.FOLLOW_SYSTEM,
     val dynamicColor: Boolean = true,
     val md3ColorSource: Md3ColorSource = Md3ColorSource.FOLLOW_WALLPAPER,
     val md3CustomColorHex: String = "#007AFF",
+    val seedPaletteStyle: SeedPaletteStyle = SeedPaletteStyle.Standard,
     val colorStyle: PaletteStyle = PaletteStyle.TonalSpot,
     val colorSpec: ColorSpec.SpecVersion = ColorSpec.SpecVersion.SPEC_2025,
+    val colorContrast: Contrast = Contrast.Default,
     val appFontSizePreset: AppFontSizePreset = AppFontSizePreset.DEFAULT,
     val appFontWeightPreset: AppFontWeightPreset = AppFontWeightPreset.FOLLOW_THEME,
     val appFontFileName: String = "",
@@ -145,13 +152,16 @@ private data class CoreSettings(
     val themeSelection: AppUiStyle,
     val hwDecode: Boolean,
     val themeMode: AppThemeMode,
+    val darkThemeSchedule: DarkThemeSchedule,
     val darkThemeStyle: DarkThemeStyle,
     val appLanguage: AppLanguage,
     val dynamicColor: Boolean,
     val md3ColorSource: Md3ColorSource,
     val md3CustomColorHex: String,
+    val seedPaletteStyle: SeedPaletteStyle,
     val colorStyle: PaletteStyle,
     val colorSpec: ColorSpec.SpecVersion,
+    val colorContrast: Contrast,
     val bgPlay: Boolean
 )
 
@@ -224,13 +234,16 @@ private data class BaseSettings(
     val themeSelection: AppUiStyle,
     val hwDecode: Boolean,
     val themeMode: AppThemeMode,
+    val darkThemeSchedule: DarkThemeSchedule,
     val darkThemeStyle: DarkThemeStyle,
     val appLanguage: AppLanguage,
     val dynamicColor: Boolean,
     val md3ColorSource: Md3ColorSource,
     val md3CustomColorHex: String,
+    val seedPaletteStyle: SeedPaletteStyle,
     val colorStyle: PaletteStyle,
     val colorSpec: ColorSpec.SpecVersion,
+    val colorContrast: Contrast,
     val appFontSizePreset: AppFontSizePreset,
     val appFontWeightPreset: AppFontWeightPreset,
     val appFontFileName: String,
@@ -302,6 +315,43 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     private val context = application.applicationContext
 
+    // 设置目的地退出不取消已接受的编辑；串行写入保持连续操作的提交顺序。
+    private val navigationEditMutex = Mutex()
+
+    fun saveBottomBarConfiguration(order: List<String>, visible: Set<String>) {
+        val savedOrder = order.toList()
+        val savedVisible = visible.toSet()
+        viewModelScope.launch {
+            navigationEditMutex.withLock {
+                SettingsManager.setBottomBarConfiguration(context, savedOrder, savedVisible)
+            }
+        }
+    }
+
+    fun saveTopTabConfiguration(order: List<String>, visible: Set<String>) {
+        val savedOrder = order.toList()
+        val savedVisible = visible.toSet()
+        viewModelScope.launch {
+            navigationEditMutex.withLock {
+                SettingsManager.setTopTabConfiguration(context, savedOrder, savedVisible)
+            }
+        }
+    }
+
+    fun saveSearchTabOrder(order: List<String>) {
+        val savedOrder = order.toList()
+        viewModelScope.launch {
+            navigationEditMutex.withLock {
+                SettingsManager.setSearchFilterTabOrder(context, savedOrder)
+            }
+        }
+    }
+
+    // 保留跨设置页的最新值；离开设置后停止订阅，重新进入时不重放假默认值。
+    internal val playbackPreferences: StateFlow<PlaybackPreferencesSettings?> =
+        SettingsManager.getPlaybackPreferencesSettings(context)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
     private data class DiagnosticsState(
         val installedApkSha256: String? = null,
         val currentReleaseEvidence: AppUpdateCheckResult? = null,
@@ -343,19 +393,26 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         SettingsManager.getThemeColorSpec(context).asAnyFlow(),
         SettingsManager.getMiniPlayerMode(context)
             .map { it != SettingsManager.MiniPlayerMode.OFF }
-            .asAnyFlow()
+            .asAnyFlow(),
+        SettingsManager.getDarkThemeSchedule(context).asAnyFlow(),
+        // 新增偏好一律追加到末尾：这里按下标取值，插在中间会让后面所有项错位。
+        SettingsManager.getThemeColorContrast(context).asAnyFlow(),
+        SettingsManager.getSeedPaletteStyle(context).asAnyFlow()
     ) { values ->
         CoreSettings(
             themeSelection = values[0] as AppUiStyle,
             hwDecode = values[1] as Boolean,
             themeMode = values[2] as AppThemeMode,
+            darkThemeSchedule = values[11] as DarkThemeSchedule,
             darkThemeStyle = values[3] as DarkThemeStyle,
             appLanguage = values[4] as AppLanguage,
             dynamicColor = values[5] as Boolean,
             md3ColorSource = values[6] as Md3ColorSource,
             md3CustomColorHex = values[7] as String,
+            seedPaletteStyle = values[13] as SeedPaletteStyle,
             colorStyle = values[8] as PaletteStyle,
             colorSpec = values[9] as ColorSpec.SpecVersion,
+            colorContrast = values[12] as Contrast,
             bgPlay = values[10] as Boolean
         )
     }
@@ -588,13 +645,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             themeSelection = core.themeSelection,
             hwDecode = core.hwDecode,
             themeMode = core.themeMode,
+            darkThemeSchedule = core.darkThemeSchedule,
             darkThemeStyle = core.darkThemeStyle,
             appLanguage = core.appLanguage,
             dynamicColor = core.dynamicColor,
             md3ColorSource = core.md3ColorSource,
             md3CustomColorHex = core.md3CustomColorHex,
+            seedPaletteStyle = core.seedPaletteStyle,
             colorStyle = core.colorStyle,
             colorSpec = core.colorSpec,
+            colorContrast = core.colorContrast,
             appFontSizePreset = extra.appFontSizePreset,
             appFontWeightPreset = extra.appFontWeightPreset,
             appFontFileName = extra.appFontFileName,
@@ -656,13 +716,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             themeSelection = settings.themeSelection,
             hwDecode = settings.hwDecode,
             themeMode = settings.themeMode,
+            darkThemeSchedule = settings.darkThemeSchedule,
             darkThemeStyle = settings.darkThemeStyle,
             appLanguage = settings.appLanguage,
             dynamicColor = settings.dynamicColor,
             md3ColorSource = settings.md3ColorSource,
             md3CustomColorHex = settings.md3CustomColorHex,
+            seedPaletteStyle = settings.seedPaletteStyle,
             colorStyle = settings.colorStyle,
             colorSpec = settings.colorSpec,
+            colorContrast = settings.colorContrast,
             appFontSizePreset = settings.appFontSizePreset,
             appFontWeightPreset = settings.appFontWeightPreset,
             appFontFileName = settings.appFontFileName,
@@ -802,6 +865,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             SettingsManager.setUiStyle(context, selection)
         }
     }
+    fun setDarkThemeSchedule(schedule: DarkThemeSchedule) {
+        viewModelScope.launch { SettingsManager.setDarkThemeSchedule(context, schedule) }
+    }
+
     fun setThemeMode(mode: AppThemeMode) { 
         viewModelScope.launch { 
             SettingsManager.setThemeMode(context, mode)
@@ -832,32 +899,23 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch { SettingsManager.setMd3ColorSource(context, source) }
     }
     fun setMd3CustomColorHex(hex: String) {
-        viewModelScope.launch {
-            val normalizedHex = normalizeMd3CustomColorHex(hex)
-            SettingsManager.setMd3CustomColorHex(context, normalizedHex)
-            val overrides = SettingsManager.getThemeRoleOverrides(context).first()
-            val syncedOverrides = syncThemeRoleControlAccent(overrides, normalizedHex)
-            if (syncedOverrides != overrides) {
-                SettingsManager.setThemeRoleOverrides(context, syncedOverrides)
-            }
-        }
+        viewModelScope.launch { SettingsManager.setMd3CustomColorHex(context, hex) }
     }
     fun applyMd3CustomColor(hex: String) {
-        viewModelScope.launch {
-            val normalizedHex = normalizeMd3CustomColorHex(hex)
-            SettingsManager.applyMd3CustomColor(context, normalizedHex)
-            val overrides = SettingsManager.getThemeRoleOverrides(context).first()
-            val syncedOverrides = syncThemeRoleControlAccent(overrides, normalizedHex)
-            if (syncedOverrides != overrides) {
-                SettingsManager.setThemeRoleOverrides(context, syncedOverrides)
-            }
-        }
+        viewModelScope.launch { SettingsManager.applyMd3CustomColor(context, hex) }
     }
+    fun setSeedPaletteStyle(style: SeedPaletteStyle) {
+        viewModelScope.launch { SettingsManager.setSeedPaletteStyle(context, style) }
+    }
+
     fun setThemeColorStyle(style: PaletteStyle) {
         viewModelScope.launch { SettingsManager.setThemeColorStyle(context, style) }
     }
     fun setThemeColorSpec(spec: ColorSpec.SpecVersion) {
         viewModelScope.launch { SettingsManager.setThemeColorSpec(context, spec) }
+    }
+    fun setThemeColorContrast(contrast: Contrast) {
+        viewModelScope.launch { SettingsManager.setThemeColorContrast(context, contrast) }
     }
     fun setAppFontSizePreset(preset: AppFontSizePreset) {
         viewModelScope.launch { SettingsManager.setAppFontSizePreset(context, preset) }
@@ -1090,6 +1148,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     // [New] Splash Screen
     fun toggleSplashEnabled(value: Boolean) { viewModelScope.launch { SettingsManager.setSplashEnabled(context, value) } }
     fun toggleSplashRandomEnabled(value: Boolean) { viewModelScope.launch { SettingsManager.setSplashRandomEnabled(context, value) } }
+    fun setStartupAnimationStyle(value: com.android.purebilibili.core.store.StartupAnimationStyle) {
+        viewModelScope.launch {
+            SettingsManager.setStartupAnimationStyle(context, value)
+        }
+    }
+
     fun toggleSplashIconAnimationEnabled(value: Boolean) {
         viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             SettingsManager.setSplashIconAnimationEnabled(context, value)
@@ -1216,6 +1280,6 @@ internal class SettingsViewModelFactory(
 
 // Move DisplayMode enum here to be accessible
 enum class DisplayMode(val title: String, val description: String, val value: Int) {
-    DoubleGrid(title = "双列网格", description = "经典双列瀑布流布局", value = 0),
-    SingleColumn(title = "单列视频", description = "类似信息流的单列布局", value = 1)
+    DoubleGrid(title = "多列网格", description = "按屏幕宽度排列多列视频", value = 0),
+    SingleColumn(title = "单列视频", description = "每行显示一个视频", value = 1)
 }

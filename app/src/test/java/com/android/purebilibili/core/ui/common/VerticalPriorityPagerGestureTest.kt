@@ -225,16 +225,15 @@ class VerticalPriorityPagerGestureTest {
             .substringAfter("val homeTopPagerSwipeEnabled")
             .substringAfter("HorizontalPager(")
             .substringBefore(") { page ->")
-        assertTrue(homePager.contains("userScrollEnabled = false"))
-        assertTrue(homePager.contains(".verticalPriorityHorizontalPagerSwipe("))
-        assertTrue(homePager.contains("HOME_PAGER_HORIZONTAL_LOCK_SLOP_MULTIPLIER"))
-        assertTrue(homePager.contains("shouldYield = shouldYieldHomePagerToHeroCarousel"))
+        assertTrue(homePager.contains("userScrollEnabled = homeTopPagerSwipeEnabled"))
+        assertTrue(homeSource.contains("AppHorizontalPager as HorizontalPager"))
+        assertTrue(homePager.contains("shouldYieldGesture = shouldYieldHomePagerToHeroCarousel"))
 
         val commentPager = videoContentSource
             .substringAfter("HorizontalPager(")
             .substringBefore(") { page ->")
-        assertTrue(commentPager.contains("userScrollEnabled = false"))
-        assertTrue(commentPager.contains(".verticalPriorityHorizontalPagerSwipe("))
+        assertTrue(commentPager.contains("userScrollEnabled = shouldEnableVideoContentHorizontalPagerSwipe("))
+        assertTrue(videoContentSource.contains("AppHorizontalPager as HorizontalPager"))
     }
 
     @Test
@@ -252,12 +251,12 @@ class VerticalPriorityPagerGestureTest {
         expectedGateCounts.forEach { (relativePath, expectedCount) ->
             val source = File("src/main/java/com/android/purebilibili/$relativePath").readText()
             assertTrue(
-                source.countOccurrences(".verticalPriorityHorizontalPagerSwipe(") >= expectedCount,
-                "$relativePath should use the shared pager direction gate",
+                source.countOccurrences("HorizontalPager(") >= expectedCount,
+                "$relativePath should use the shared theme pager",
             )
             assertTrue(
-                source.countOccurrences("userScrollEnabled = false") >= expectedCount,
-                "$relativePath should disable the pager's competing built-in drag detector",
+                source.contains("AppHorizontalPager as HorizontalPager"),
+                "$relativePath should select the native pager through the theme facade",
             )
         }
     }

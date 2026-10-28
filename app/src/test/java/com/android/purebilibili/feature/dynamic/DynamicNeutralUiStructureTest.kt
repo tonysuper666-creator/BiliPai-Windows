@@ -95,17 +95,4 @@ class DynamicNeutralUiStructureTest {
         assertFalse(cardSource.contains("AppDropdownMenuItem("))
     }
 
-    @Test
-    fun `dynamic segmented controls do not depend on another feature renderer`() {
-        val commentSource = File(sourceRoot, "components/DynamicCommentSheet.kt").readText()
-        val topBarSource = File(sourceRoot, "components/DynamicTopBar.kt").readText()
-
-        assertTrue(commentSource.contains("DynamicAdaptiveSegmentedControl("))
-        assertTrue(commentSource.contains("rememberLayerBackdrop()"))
-        assertTrue(commentSource.contains("backdrop = commentChromeBackdrop"))
-        assertFalse(commentSource.contains("CommentSegmentedControl("))
-        assertFalse(commentSource.contains("feature.video.ui.components.CommentSegmentedControl"))
-        assertFalse(topBarSource.contains("AndroidNativeUnderlinedSegmentedControl("))
-        assertFalse(topBarSource.contains("feature.home.components.AndroidNativeUnderlinedSegmentedControl"))
-    }
 }

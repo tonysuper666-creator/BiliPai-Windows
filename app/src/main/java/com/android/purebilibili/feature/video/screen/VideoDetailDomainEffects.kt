@@ -3,6 +3,8 @@ package com.android.purebilibili.feature.video.screen
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import com.android.purebilibili.feature.video.viewmodel.FavoriteFolderSaveEvent
 import com.android.purebilibili.feature.video.viewmodel.VideoComposerViewModel
 import com.android.purebilibili.feature.video.viewmodel.VideoEngagementEvent
@@ -20,13 +22,15 @@ internal fun VideoDetailDomainEffects(
     context: Context,
     isVisible: Boolean,
     uiState: VideoPlaybackUiState,
-    subjectSnapshot: VideoSubjectSnapshot?,
-    favoriteFolderSaveEvent: FavoriteFolderSaveEvent?,
+    subjectSnapshotState: State<VideoSubjectSnapshot?>,
+    favoriteFolderSaveEventState: State<FavoriteFolderSaveEvent?>,
     playbackViewModel: VideoPlaybackViewModel,
     engagementViewModel: VideoEngagementViewModel,
     composerViewModel: VideoComposerViewModel,
     supplementViewModel: VideoSupplementViewModel,
 ) {
+    val subjectSnapshot by subjectSnapshotState
+    val favoriteFolderSaveEvent by favoriteFolderSaveEventState
     LaunchedEffect(context) {
         engagementViewModel.initWithContext(context)
     }

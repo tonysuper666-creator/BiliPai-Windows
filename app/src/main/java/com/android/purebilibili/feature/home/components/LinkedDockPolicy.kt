@@ -2,6 +2,12 @@ package com.android.purebilibili.feature.home.components
 
 import kotlin.math.roundToInt
 
+/** Shared alpha handoff for the overlapping glass navigation and compact button. */
+internal fun resolveLinkedDockGlassHandoffProgress(mergeProgress: Float): Float {
+    val progress = (mergeProgress / 0.34f).coerceIn(0f, 1f)
+    return progress * progress * progress
+}
+
 enum class LinkedDockPhase { Expanded, Playback, Compact, Search }
 
 /** Search owns the first tap on the compact artwork target. */
@@ -14,13 +20,27 @@ internal fun shouldExpandPlaybackFromSearch(
 internal fun accumulateDockScroll(previous: Float, delta: Float): Float =
     if (previous * delta < 0f) delta else previous + delta
 
+/** Retained playback owns the dock until its exit animation has released the slot. */
+internal fun shouldUseScrollCompactNavigation(
+    enabled: Boolean,
+    hasAudio: Boolean,
+    retainingAudio: Boolean,
+): Boolean = enabled && !hasAudio && !retainingAudio
+
+/** Positive offset browses down; a full opposite-direction threshold expands again. */
+internal fun resolveScrollCompactIntent(accumulatedPx: Float, thresholdPx: Float): Boolean? = when {
+    accumulatedPx >= thresholdPx -> true
+    accumulatedPx <= -thresholdPx -> false
+    else -> null
+}
+
 internal fun resolveLinkedDockRestingPhase(
     collapseRequested: Boolean,
     hasAudio: Boolean,
 ): LinkedDockPhase = when {
     !collapseRequested -> LinkedDockPhase.Expanded
     hasAudio -> LinkedDockPhase.Playback
-    // 无音频的收起态回到完整底栏：搜索收成小圆钮，避免动态页下滑被 Compact 撑开。
+    // 没有播放条时保持完整导航，不再收成播放条联动的小球。
     else -> LinkedDockPhase.Expanded
 }
 
@@ -28,7 +48,8 @@ fun resolveLinkedDockPhaseOnAudioChange(
     currentPhase: LinkedDockPhase,
     hasAudio: Boolean,
 ): LinkedDockPhase = when {
-    !hasAudio && currentPhase == LinkedDockPhase.Playback -> LinkedDockPhase.Compact
+    !hasAudio && (currentPhase == LinkedDockPhase.Playback || currentPhase == LinkedDockPhase.Compact) ->
+        LinkedDockPhase.Expanded
     hasAudio && currentPhase == LinkedDockPhase.Compact -> LinkedDockPhase.Playback
     else -> currentPhase
 }
@@ -120,6 +141,10 @@ internal fun resolveLinkedDockGeometry(
     searchProgress: Float,
     verticalGap: Int = gap,
     presenceProgress: Float = 1f,
+    /** 展开态小横条的宽度；默认铺满容器，dock 传入底栏整簇宽度以对齐长度。 */
+    expandedAudioWidth: Int = width,
+    /** 展开态小横条的左缘；dock 传入底栏整簇的起点 X 以对齐两行胶囊。 */
+    expandedAudioX: Int = 0,
 ): LinkedDockGeometry {
     val merge = mergeProgress.coerceIn(0f, 1f)
     val search = searchProgress.coerceIn(0f, 1f)
@@ -132,15 +157,17 @@ internal fun resolveLinkedDockGeometry(
     val playbackGap = gap
     val compactAudioWidth = (width - button - searchWidth -
         playbackGap * (if (searchEnabled) 2 else 1)).coerceAtLeast(0)
+    val expandedAudio = expandedAudioWidth.coerceIn(0, width)
     val targetAudioWidth = if (hasAudio) {
-        (width + (compactAudioWidth - width) * merge).roundToInt()
+        (expandedAudio + (compactAudioWidth - expandedAudio) * merge).roundToInt()
     } else {
         0
     }
     // Presence 收放以右缘为锚：出现时胶囊从右缘向左生长，消失时向右收起，
     // 避免旧实现的零宽硬切；右缘始终落在完整胶囊的右边界上。
     val audioWidth = (targetAudioWidth * presence).roundToInt()
-    val audioX = ((button + playbackGap) * merge).roundToInt() +
+    val audioX = (expandedAudioX +
+        ((button + playbackGap) - expandedAudioX) * merge).roundToInt() +
         targetAudioWidth - audioWidth
     return LinkedDockGeometry(
         searchWidth = searchWidth,

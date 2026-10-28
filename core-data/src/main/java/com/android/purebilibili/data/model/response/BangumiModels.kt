@@ -456,6 +456,20 @@ data class WatchProgress(
     val lastTime: Long = 0            // 上次观看时间点
 )
 
+@Serializable
+data class BangumiTripleResponse(
+    val code: Int = 0,
+    val message: String = "",
+    val data: BangumiTripleResult? = null,
+)
+
+@Serializable
+data class BangumiTripleResult(
+    val like: Int? = null,
+    val coin: Int? = null,
+    val favorite: Int? = null,
+)
+
 /**
  * 番剧播放地址响应
  * 标准 API /pgc/player/web/playurl 直接返回播放信息在 result 中

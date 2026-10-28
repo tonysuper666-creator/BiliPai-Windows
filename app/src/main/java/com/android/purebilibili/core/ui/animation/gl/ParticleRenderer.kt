@@ -1,7 +1,4 @@
-/*
- * ThanosEffect rendering core ported from Telegram / NagramX (GPL).
- * See docs/telegram-thanos-port.md for pinned upstream versions and integration changes.
- */
+/** 粒子消散效果的渲染核心。 */
 package com.android.purebilibili.core.ui.animation.gl
 
 import android.content.res.Resources

@@ -3,12 +3,14 @@ package com.android.purebilibili.core.theme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import com.materialkolor.Contrast
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
 import com.android.purebilibili.feature.settings.AppThemeMode
 import com.android.purebilibili.feature.settings.Md3ColorSource
 import java.io.File
 import kotlin.test.Test
+import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -30,7 +32,7 @@ class ThemeDynamicColorPolicyTest {
             Triple(true, true, "amoled"),
         )
 
-        PaletteStyle.entries.forEach { style ->
+        PaletteStyle.KnownStyles.forEach { style ->
             ColorSpec.SpecVersion.entries.forEach { spec ->
                 seeds.forEach { seed ->
                     modes.forEach { (dark, amoled, mode) ->
@@ -151,6 +153,28 @@ class ThemeDynamicColorPolicyTest {
     }
 
     @Test
+    fun `resume fallback refresh is throttled so foreground bounces stay cheap`() {
+        // 从未刷新过（例如首次进入前台）时必须刷新一次。
+        assertTrue(
+            shouldRefreshSystemWallpaperPaletteOnResume(lastRefreshAtMs = null, nowMs = 5_000L)
+        )
+        // 距上次刷新不足阈值：跳过。否则每次切回前台都会重算 dynamic color scheme，
+        // 让整棵树重新取色，正好和用户回前台后的第一次切页抢主线程。
+        assertFalse(
+            shouldRefreshSystemWallpaperPaletteOnResume(
+                lastRefreshAtMs = 1_000L,
+                nowMs = 1_000L + SYSTEM_WALLPAPER_PALETTE_RESUME_MIN_INTERVAL_MS - 1
+            )
+        )
+        assertTrue(
+            shouldRefreshSystemWallpaperPaletteOnResume(
+                lastRefreshAtMs = 1_000L,
+                nowMs = 1_000L + SYSTEM_WALLPAPER_PALETTE_RESUME_MIN_INTERVAL_MS
+            )
+        )
+    }
+
+    @Test
     fun `md3 color source maps wallpaper to monet and custom to static seed`() {
         assertTrue(
             resolveMd3DynamicColorEnabled(
@@ -244,6 +268,14 @@ class ThemeDynamicColorPolicyTest {
             ColorSpec.SpecVersion.SPEC_2021,
             resolveColorSpecPreference(ColorSpec.SpecVersion.SPEC_2021.name)
         )
+    }
+
+    @Test
+    fun `color contrast preference defaults to material default and rejects invalid values`() {
+        assertEquals(Contrast.Default, resolveColorContrastPreference(null))
+        assertEquals(Contrast.Default, resolveColorContrastPreference("not-a-contrast"))
+        assertEquals(Contrast.High, resolveColorContrastPreference(Contrast.High.name))
+        assertEquals(Contrast.Reduced, resolveColorContrastPreference(Contrast.Reduced.name))
     }
 
     @Test

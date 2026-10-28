@@ -7,6 +7,48 @@ import kotlin.test.assertNull
 
 class BilibiliNavigationTargetParserTest {
     @Test
+    fun sourceVideoParametersDoNotOverrideLinkDestination() {
+        listOf(
+            "https://www.bilibili.com/blackboard/activity?bvid=BV1xx411c7mD",
+            "https://b23.tv/shop?from=av170001",
+            "bilibili://mall/home?source=BV1xx411c7mD"
+        ).forEach { url ->
+            assertNull(BilibiliNavigationTargetParser.parse(url), url)
+            assertNull(BilibiliUrlParser.parse(url).getVideoId(), url)
+            assertNull(BilibiliUrlParser.parseDeepLink(url).getVideoId(), url)
+        }
+        assertEquals(
+            BilibiliNavigationTarget.Article(123),
+            BilibiliNavigationTargetParser.parse("https://www.bilibili.com/read/cv123?from=BV1xx411c7mD")
+        )
+        assertEquals(
+            BilibiliNavigationTarget.Video("BV1xx411c7mD"),
+            BilibiliNavigationTargetParser.parse("https://www.bilibili.com/video/BV1xx411c7mD?from=av170001")
+        )
+    }
+
+    @Test
+    fun externalLookalikesAndWrappedLinksCannotClaimNativeTargets() {
+        listOf(
+            "https://bilibili.com.example.org/video/BV1xx411c7mD",
+            "https://fakeb23.tv/read/cv123",
+            "https://bilibili.com@evil.example/read/cv123",
+            "https://example.org/?url=https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1xx411c7mD",
+            "https://example.org/posts/BV1xx411c7mD",
+        ).forEach { assertNull(BilibiliNavigationTargetParser.parse(it), it) }
+    }
+
+    @Test
+    fun genuineNativeTargetsKeepPriorityAcrossContentTypes() {
+        assertIs<BilibiliNavigationTarget.Video>(BilibiliNavigationTargetParser.parse("https://www.bilibili.com/video/BV1xx411c7mD"))
+        assertIs<BilibiliNavigationTarget.Article>(BilibiliNavigationTargetParser.parse("https://www.bilibili.com/read/cv123"))
+        assertIs<BilibiliNavigationTarget.Dynamic>(BilibiliNavigationTargetParser.parse("https://t.bilibili.com/1199344045210468386"))
+        assertIs<BilibiliNavigationTarget.Space>(BilibiliNavigationTargetParser.parse("https://space.bilibili.com/123"))
+        assertIs<BilibiliNavigationTarget.Live>(BilibiliNavigationTargetParser.parse("https://live.bilibili.com/123"))
+        assertIs<BilibiliNavigationTarget.BangumiEpisode>(BilibiliNavigationTargetParser.parse("https://www.bilibili.com/bangumi/play/ep123"))
+    }
+
+    @Test
     fun weeklyLinksPreservePeriodAndIgnoreInvalidNumbers() {
         for (url in listOf(
             "bilibili://popular/weekly?number=133",

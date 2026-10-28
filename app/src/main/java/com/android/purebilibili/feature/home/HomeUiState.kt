@@ -144,7 +144,9 @@ data class CategoryContent(
     val isLoading: Boolean = false,
     val error: String? = null,
     val pageIndex: Int = 1, //  保存分页索引
-    val hasMore: Boolean = true //  保存是否还有更多数据
+    val hasMore: Boolean = true, //  保存是否还有更多数据
+    val loadMoreError: String? = null,
+    val refreshError: String? = null,
 )
 
 /**

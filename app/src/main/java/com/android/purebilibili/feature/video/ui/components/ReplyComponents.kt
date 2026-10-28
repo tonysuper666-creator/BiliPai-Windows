@@ -1,5 +1,10 @@
 package com.android.purebilibili.feature.video.ui.components
 
+import com.android.purebilibili.core.ui.components.appActionClickable
+import com.android.purebilibili.core.ui.components.appActionWithFeedback
+
+import com.android.purebilibili.core.ui.AppContentColors
+
 import coil3.network.NetworkHeaders
 import coil3.network.httpHeaders
 
@@ -18,15 +23,19 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.geometry.Rect
+import com.android.purebilibili.core.ui.components.appGlassMenuSource
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -64,13 +73,13 @@ import coil3.request.ImageRequest
 import coil3.size.Size
 import coil3.transform.Transformation
 import coil3.imageLoader
-//  已改用 MaterialTheme.colorScheme.primary
+//  已改用 AppContentColors.accent()
 import com.android.purebilibili.core.store.SettingsManager
+import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.core.theme.calculateContrastRatio
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.util.Logger
 import com.android.purebilibili.core.util.BilibiliUrlParser
-import com.android.purebilibili.core.util.rememberStoragePermissionState
 import com.android.purebilibili.data.model.response.ReplyFansDetail
 import com.android.purebilibili.data.model.response.ReplyCardLabel
 import com.android.purebilibili.data.model.response.ReplyContent
@@ -83,7 +92,12 @@ import com.android.purebilibili.data.model.response.ReplySailingFan
 import com.android.purebilibili.data.model.response.ReplyUpAction
 import com.android.purebilibili.data.repository.BlockedUpRelationSource
 import com.android.purebilibili.data.repository.BlockedUpRepository
+import com.android.purebilibili.data.repository.COMMENT_EMOTE_TOKEN_PATTERN
 import com.android.purebilibili.data.repository.VideoRepository
+import com.android.purebilibili.data.repository.resolveCommentPictureUrls
+import com.android.purebilibili.data.repository.resolveCommentPictureGridColumns
+import com.android.purebilibili.data.repository.resolveCommentRenderableEmoteKeys
+import com.android.purebilibili.data.repository.resolveCommentSinglePictureAspectRatio
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent
 import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor
@@ -112,7 +126,7 @@ import com.android.purebilibili.core.ui.resolveUserAvatarCornerMark
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.resolveUpNameColor
 import com.android.purebilibili.core.ui.components.AppSurface
-import androidx.compose.foundation.text.selection.SelectionContainer
+import com.android.purebilibili.core.ui.common.AppSelectionContainer as SelectionContainer
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -124,11 +138,13 @@ import kotlinx.coroutines.delay
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 
-internal val EMOTE_TOKEN_PATTERN = """\[(.*?)\]""".toRegex()
+// 表情 token 规则下沉 core-data（CommentMediaPolicy），手机原入口保留并委托。
+internal val EMOTE_TOKEN_PATTERN = COMMENT_EMOTE_TOKEN_PATTERN
 private const val COMMENT_INLINE_UP_BADGE_ID = "comment_inline_up_badge"
 private const val COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID = "comment_inline_verify_personal_badge"
 private const val COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID = "comment_inline_verify_organization_badge"
 internal const val COMMENT_INLINE_TOP_BADGE_ID = "comment_inline_top_badge"
+private const val COMMENT_INLINE_CHARGED_BADGE_ID = "comment_inline_charged_badge"
 internal const val COMMENT_URL_TAG = "URL"
 internal const val COMMENT_TIMESTAMP_TAG = "TIMESTAMP"
 internal const val COMMENT_USER_TAG = "USER"
@@ -351,13 +367,7 @@ internal fun parseCommentTimestampSeconds(match: MatchResult): Long? {
 internal fun collectRenderableEmoteKeys(
     text: String,
     emoteMap: Map<String, String>
-): Set<String> {
-    if (text.isEmpty() || emoteMap.isEmpty()) return emptySet()
-    return EMOTE_TOKEN_PATTERN.findAll(text)
-        .map { it.value }
-        .filter { emoteMap.containsKey(it) }
-        .toSet()
-}
+): Set<String> = resolveCommentRenderableEmoteKeys(text, emoteMap)
 
 /**
  * 是否挂载 SelectionContainer。
@@ -508,26 +518,44 @@ internal fun resolveSubReplyOpenTargetId(rootReplyId: Long, clickedReplyId: Long
     return clickedReplyId.takeIf { it > 0L && it != rootReplyId } ?: 0L
 }
 
-internal fun resolveReplyCommentShareUrl(item: ReplyItem): String {
+internal fun resolveReplyCommentShareUrl(
+    item: ReplyItem,
+    context: com.android.purebilibili.feature.share.ReplyShareContext? = null,
+): String {
     val rootId = if (item.root > 0L) item.root else item.rpid
-    return buildString {
-        append("https://www.bilibili.com/video/av")
-        append(item.oid)
-        append("?comment_on=1&comment_root_id=")
-        append(rootId)
-        if (item.root > 0L && item.rpid > 0L) {
-            append("&comment_secondary_id=")
-            append(item.rpid)
+    val episodeId = context?.url?.let { Regex("/bangumi/play/ep(\\d+)").find(it)?.groupValues?.get(1) }
+    if (item.replyType != 1 || episodeId != null) {
+        val enterUri = if (episodeId != null) "bilibili://pgc/season/ep/$episodeId" else
+            context?.url?.takeIf { it.isNotBlank() } ?: when (item.replyType) {
+                11, 17 -> "bilibili://following/detail/${item.oid}"
+                12 -> "https://www.bilibili.com/read/cv${item.oid}"
+                14 -> "https://www.bilibili.com/audio/au${item.oid}"
+                else -> ""
+            }
+        return buildString {
+            append("bilibili://comment/detail/${item.replyType}/${item.oid}/$rootId/?")
+            if (item.root > 0L && item.rpid > 0L) append("anchor=${item.rpid}&")
+            append("enterUri=")
+            append(java.net.URLEncoder.encode(enterUri, "UTF-8"))
         }
+    }
+    val base = context?.url?.takeIf { it.contains("/video/") }
+        ?: "https://www.bilibili.com/video/av${item.oid}"
+    return buildString {
+        append(base)
+        append(if ('?' in base) '&' else '?')
+        append("comment_on=1&comment_root_id=$rootId")
+        if (item.root > 0L && item.rpid > 0L) append("&comment_secondary_id=${item.rpid}")
+        if (context != null && context.page > 1 && !Regex("[?&]p=\\d+").containsMatchIn(base)) append("&p=${context.page}")
     }
 }
 
-internal fun buildReplyCommentShareText(item: ReplyItem): String {
+internal fun buildReplyCommentShareText(item: ReplyItem, context: com.android.purebilibili.feature.share.ReplyShareContext? = null): String {
     return buildString {
         append(item.member.uname.ifBlank { "未知用户" })
         append(": ")
         append(item.content.message.trim())
-        val url = resolveReplyCommentShareUrl(item)
+        val url = resolveReplyCommentShareUrl(item, context)
         if (url.isNotBlank()) {
             append('\n')
             append(url)
@@ -551,24 +579,25 @@ internal enum class ReplyActionSheetAction {
     COPY_USERNAME,
     QUERY_AUTHOR_HISTORY,
     TIME_STYLE,
+    TOGGLE_REPLY_PREVIEW,
     SAVE,
     SHARE,
     REPLY,
     BLOCK_USER,
     REPORT,
     CHECK_FRAUD,
-    TOGGLE_TOP,
-    DELETE
+    TOGGLE_TOP
 }
 
 internal fun buildReplyActionSheetActions(
-    canDelete: Boolean,
+    canCheckFraud: Boolean,
     canReport: Boolean,
     canShare: Boolean,
     canBlockUser: Boolean,
     topActionLabel: String? = null,
     canCopyUsername: Boolean = true,
     canQueryAuthorHistory: Boolean = false,
+    canToggleReplyPreview: Boolean = false,
 ): List<ReplyActionSheetAction> {
     return buildList {
         add(ReplyActionSheetAction.COPY_ALL)
@@ -578,6 +607,9 @@ internal fun buildReplyActionSheetActions(
         }
         if (canQueryAuthorHistory) add(ReplyActionSheetAction.QUERY_AUTHOR_HISTORY)
         add(ReplyActionSheetAction.TIME_STYLE)
+        if (canToggleReplyPreview) {
+            add(ReplyActionSheetAction.TOGGLE_REPLY_PREVIEW)
+        }
         add(ReplyActionSheetAction.SAVE)
         if (canShare) {
             add(ReplyActionSheetAction.SHARE)
@@ -589,14 +621,11 @@ internal fun buildReplyActionSheetActions(
         if (canReport) {
             add(ReplyActionSheetAction.REPORT)
         }
-        if (canDelete) {
+        if (canCheckFraud) {
             add(ReplyActionSheetAction.CHECK_FRAUD)
         }
         if (!topActionLabel.isNullOrBlank()) {
             add(ReplyActionSheetAction.TOGGLE_TOP)
-        }
-        if (canDelete) {
-            add(ReplyActionSheetAction.DELETE)
         }
     }
 }
@@ -611,21 +640,20 @@ private fun resolveReplyActionSheetLabel(
         ReplyActionSheetAction.COPY_USERNAME -> "复制用户名"
         ReplyActionSheetAction.QUERY_AUTHOR_HISTORY -> "查询作者历史"
         ReplyActionSheetAction.TIME_STYLE -> "评论时间样式"
-        ReplyActionSheetAction.SAVE -> "保存评论"
+        ReplyActionSheetAction.TOGGLE_REPLY_PREVIEW -> "显示回复"
+        ReplyActionSheetAction.SAVE -> "存图 / 分享图片"
         ReplyActionSheetAction.SHARE -> "分享评论"
         ReplyActionSheetAction.REPLY -> "回复"
         ReplyActionSheetAction.BLOCK_USER -> "屏蔽用户"
         ReplyActionSheetAction.REPORT -> "举报"
         ReplyActionSheetAction.CHECK_FRAUD -> "检测评论状态"
         ReplyActionSheetAction.TOGGLE_TOP -> topActionLabel.orEmpty()
-        ReplyActionSheetAction.DELETE -> "删除"
     }
 }
 
 private fun isReplyActionDestructive(action: ReplyActionSheetAction): Boolean {
     return action == ReplyActionSheetAction.REPORT ||
-        action == ReplyActionSheetAction.BLOCK_USER ||
-        action == ReplyActionSheetAction.DELETE
+        action == ReplyActionSheetAction.BLOCK_USER
 }
 
 internal fun resolveReplyCommentImageSaveToast(success: Boolean): String {
@@ -678,6 +706,21 @@ internal fun resolveReplyContentUrlNavigationUrl(
     // 动态/图文链接的 app_url_schema 偶尔会被服务端下发成 bilibili://video/{动态ID}。
     // 先保留可解析为动态的 Web URL，避免把动态 ID 当视频 aid 打开。
     listOf(url.url, rawToken).firstOrNull(::isReplyDynamicNavigationUrl)?.let { return it }
+    // 服务端给商业链接附带的视频 schema 可能指向来源视频；有明确网页目标时优先保留。
+    val webUrl = url.url.trim()
+    val webUri = runCatching { java.net.URI(webUrl) }.getOrNull()
+    if (webUri?.scheme?.lowercase() in listOf("http", "https") &&
+        !com.android.purebilibili.core.util.isBilibiliShortHost(webUri?.host)
+    ) return webUrl
+    // 商业富链接可能提供宿主不支持的 app schema；不能让它覆盖可用的网页地址。
+    val appSchema = url.appUrlSchema.trim()
+    if (appSchema.isNotEmpty() &&
+        com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(appSchema) != null
+    ) return appSchema
+    listOf(url.url, rawToken, appSchema).firstOrNull { candidate ->
+        val scheme = runCatching { java.net.URI(candidate.trim()).scheme }.getOrNull()
+        scheme.equals("https", ignoreCase = true) || scheme.equals("http", ignoreCase = true)
+    }?.let { return it.trim() }
     return listOf(
         url.appUrlSchema,
         url.url,
@@ -793,13 +836,25 @@ internal fun buildRichCommentAnnotatedString(
             }
         }
 
-        val replyPattern = "^回复 @(.*?) :".toRegex()
+        val replyPattern = "^回复 (@.+?)(\\s*[:：])".toRegex()
         val replyMatch = replyPattern.find(text)
         var startIndex = 0
         if (replyMatch != null) {
-            withStyle(SpanStyle(color = color, fontWeight = FontWeight.Medium)) {
-                append(replyMatch.value)
+            val mention = replyMatch.groupValues[1]
+            val mid = atNameToMid[mention.removePrefix("@")]
+            withStyle(SpanStyle(color = color)) { append("回复 ") }
+            // 回复前缀中的 @ 与正文提及共用强调色；只有有效用户 ID 才附加跳转。
+            withStyle(SpanStyle(color = urlColor, fontWeight = FontWeight.Medium)) {
+                if (mid != null && mid > 0L) {
+                    withLink(commentLinkAnnotation(
+                        payload = RICH_COMMENT_LINK_USER_PREFIX + mid,
+                        listener = linkListener,
+                    )) { append(mention) }
+                } else {
+                    append(mention)
+                }
             }
+            withStyle(SpanStyle(color = color)) { append(replyMatch.groupValues[2]) }
             startIndex = replyMatch.range.last + 1
         }
 
@@ -1167,7 +1222,8 @@ internal fun resolveReplyPreviewTextContent(
     item: ReplyItem,
     isLiked: Boolean = item.action == 1,
     onLikeClick: (() -> Unit)? = null,
-    onReplyClick: (() -> Unit)? = null
+    onReplyClick: (() -> Unit)? = null,
+    detailedTimeEnabled: Boolean = false
 ): ImagePreviewTextContent {
     val originalSizeLabels = item.content.pictures.orEmpty().map { picture ->
         resolveCommentImageOriginalSizeLabel(picture.imgSize.takeIf { it > 0f })
@@ -1180,9 +1236,9 @@ internal fun resolveReplyPreviewTextContent(
             replyId = item.rpid,
             authorName = item.member.uname,
             avatarUrl = item.member.avatar,
-            timeText = FormatUtils.formatPrecisePublishTime(
+            timeText = FormatUtils.formatCommentTime(
                 timestampSeconds = item.ctime,
-                pattern = "yyyy-MM-dd HH:mm:ss"
+                detailedTimeEnabled = detailedTimeEnabled
             ),
             body = item.content.message,
             originalSizeLabels = originalSizeLabels,
@@ -1210,19 +1266,21 @@ fun ReplyHeader(count: Int) {
         AppText(
             text = "评论",
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.onSurface
+            color = AppContentColors.primaryText()
         )
         Spacer(modifier = Modifier.width(8.dp))
         AppText(
             text = FormatUtils.formatStat(count.toLong()),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = AppContentColors.secondaryText()
         )
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReplyItemView(
+    modifier: Modifier = Modifier,
     item: ReplyItem,
     upMid: Long = 0,
     showUpFlag: Boolean = false,
@@ -1249,19 +1307,42 @@ fun ReplyItemView(
     onUrlClick: ((String) -> Unit)? = null,
     maxTimestampMs: Long? = null,
     hideSubPreview: Boolean = false,
+    // Thread detail reuses this row in every material; defaults keep native main-list behavior.
+    containerColor: Color = Color.Unspecified,
+    onConversationClick: (() -> Unit)? = null,
+    // A thread root shares its lazy item with the section header; its avatar must stop above it.
+    boundAvatarToItem: Boolean = false,
+    // Independent opt-in for comment lists, in every material style.
+    // Null preserves the native MD3/Miuix layout and all other comment callers.
+    avatarListState: LazyListState? = null,
+    avatarItemKey: Any = item.rpid,
     onAvatarClick: (String) -> Unit
 ) {
+    val replyShareContext = com.android.purebilibili.feature.share.LocalReplyShareContext.current
+    var showImagePreview by remember(item.oid, item.rpid) { mutableStateOf(false) }
+    if (showImagePreview) {
+        com.android.purebilibili.feature.share.ShareImagePreviewSheet(
+            document = com.android.purebilibili.feature.share.replyShareDocument(item, replyShareContext, emoteMap),
+            onDismiss = { showImagePreview = false },
+        )
+    }
     val appearance = rememberVideoCommentAppearance()
     val context = LocalContext.current
+    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
     val scope = rememberCoroutineScope()
     val isUpComment = upMid > 0 && item.mid == upMid
     val showResolvedIdentityDecorations = shouldShowReplyIdentityDecorations(showIdentityDecorations)
+    // 右上角菜单的全局开关只控制"回复"快捷按钮本身，楼中楼预览不受影响。
+    val replyButtonVisible = com.android.purebilibili.core.ui.LocalCommentReplyPreviewVisible.current
     val showSubPreview = shouldShowReplySubPreview(
         hideSubPreview = hideSubPreview,
         lightweightMode = lightweightMode
     )
-    val collapsedSubReplyPreviewLimit = remember(context) {
-        SettingsManager.getCommentCollapsedReplyPreviewLimitSync(context)
+    val preview = rememberReplyPreviewState(item = item, enabled = showSubPreview)
+    val collapsedSubReplyPreviewLimit = preview.collapsedLimit
+    val previewReplies = preview.replies
+    val previewRoot = remember(item, previewReplies) {
+        if (item.replies.orEmpty() == previewReplies) item else item.copy(replies = previewReplies)
     }
     val localEmoteMap = remember(item.content.emote, emoteMap) {
         val inlineEmotes = item.content.emote.orEmpty()
@@ -1277,14 +1358,12 @@ fun ReplyItemView(
     val displayLocation = remember(location) {
         resolveReplyLocationText(location)
     }
-    //  [PiliPlus 对齐] 一级评论固定显示绝对时间 yyyy-MM-dd HH:mm:ss，不随
-    //  详细时间开关变化；开关只作用于楼中楼/动态等相对时间表面。
-    val metadataText = remember(item.ctime, displayLocation) {
+    val metadataText = remember(item.ctime, displayLocation, detailedCommentTimeEnabled) {
         buildString {
             append(
-                FormatUtils.formatPrecisePublishTime(
+                FormatUtils.formatCommentTime(
                     timestampSeconds = item.ctime,
-                    pattern = "yyyy-MM-dd HH:mm:ss"
+                    detailedTimeEnabled = detailedCommentTimeEnabled
                 )
             )
             if (!displayLocation.isNullOrEmpty()) {
@@ -1294,13 +1373,23 @@ fun ReplyItemView(
     }
     val showTopBadge = shouldShowReplyTopBadge(item = item, isPinned = isPinned)
     val layoutPolicy = remember { resolveReplyItemLayoutPolicy() }
-    val contentPrefix = remember(showTopBadge) {
-        if (!showTopBadge) {
+    // 充电专属评论：优先取服务端 charged_desc，兜底识别 cardLabels 中的“充电”标签
+    val chargedLabel = remember(item.replyControl, item.cardLabels) {
+        resolveChargedReplyLabel(item)
+    }
+    val contentPrefix = remember(showTopBadge, chargedLabel) {
+        if (!showTopBadge && chargedLabel == null) {
             null
         } else {
             buildAnnotatedString {
-                appendInlineContent(COMMENT_INLINE_TOP_BADGE_ID, "TOP")
-                append(" ")
+                if (showTopBadge) {
+                    appendInlineContent(COMMENT_INLINE_TOP_BADGE_ID, "TOP")
+                    append(" ")
+                }
+                if (chargedLabel != null) {
+                    appendInlineContent(COMMENT_INLINE_CHARGED_BADGE_ID, chargedLabel)
+                    append(" ")
+                }
             }
         }
     }
@@ -1350,31 +1439,31 @@ fun ReplyItemView(
             compact = true
         )
     }
-    var isSubPreviewExpanded by remember(item.rpid, item.replies) {
+    var isSubPreviewExpanded by remember(item.rpid, previewReplies) {
         mutableStateOf(
             resolveInitialSubReplyPreviewExpanded(
-                previewReplyCount = item.replies.orEmpty().size
+                previewReplyCount = previewReplies.size
             )
         )
     }
-    val visibleSubReplies = remember(item.replies, isSubPreviewExpanded, collapsedSubReplyPreviewLimit) {
+    val visibleSubReplies = remember(previewReplies, isSubPreviewExpanded, collapsedSubReplyPreviewLimit) {
         resolveVisibleSubReplies(
-            replies = item.replies,
+            replies = previewReplies,
             expanded = isSubPreviewExpanded,
             collapsedLimit = collapsedSubReplyPreviewLimit
         )
     }
-    val showInlineSubReplyToggle = remember(item.replies, collapsedSubReplyPreviewLimit) {
+    val showInlineSubReplyToggle = remember(previewReplies, collapsedSubReplyPreviewLimit) {
         shouldShowInlineSubReplyToggle(
-            previewReplyCount = item.replies.orEmpty().size,
+            previewReplyCount = previewReplies.size,
             collapsedLimit = collapsedSubReplyPreviewLimit
         )
     }
-    val threadReplyCount = remember(item.count, item.rcount, item.replies) {
-        resolveReplyThreadCount(item)
+    val threadReplyCount = remember(item.count, item.rcount, item.replies, previewReplies) {
+        maxOf(resolveReplyThreadCount(item), previewReplies.size)
     }
-    val hasUpSubReply = remember(item.replyControl?.upReply, item.replies, upMid) {
-        item.replyControl?.upReply == true || (upMid > 0 && item.replies.orEmpty().any { it.mid == upMid })
+    val hasUpSubReply = remember(item.replyControl?.upReply, previewReplies, upMid) {
+        item.replyControl?.upReply == true || (upMid > 0 && previewReplies.any { it.mid == upMid })
     }
     val subReplySummaryLabel = remember(threadReplyCount, hasUpSubReply) {
         resolveSubReplyPreviewSummaryLabel(
@@ -1382,17 +1471,29 @@ fun ReplyItemView(
             hasUpReply = hasUpSubReply
         )
     }
-    val openThreadFromRootClick = remember(item.count, item.rcount, item.replies) {
-        shouldOpenReplyThreadFromRootClick(item)
+    val openThreadFromRootClick = remember(hideSubPreview, previewRoot) {
+        !hideSubPreview && shouldOpenReplyThreadFromRootClick(previewRoot)
     }
     val copyToClipboard = rememberClipboardCopyHandler()
     val blockedUpRepository = remember { BlockedUpRepository.getInstance(context) }
     var showActionSheet by remember(item.rpid) { mutableStateOf(false) }
+    val glassActionsAvailable = com.android.purebilibili.core.ui.components.appGlassMenuAvailable()
+    val actionButtonSource = com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource()
+    var actionSource by remember(item.rpid) { mutableStateOf<com.android.purebilibili.core.ui.components.AppGlassMenuSource?>(null) }
+    var actionAnchor by remember(item.rpid) { mutableStateOf<Rect?>(null) }
+    val actionCoordinates = remember(item.rpid) { arrayOfNulls<androidx.compose.ui.layout.LayoutCoordinates>(1) }
+    val actionPressPosition = remember(item.rpid) { arrayOfNulls<androidx.compose.ui.geometry.Offset>(1) }
+    val actionPressRelay = remember(item.rpid) { arrayOfNulls<com.android.purebilibili.core.ui.components.AppSingleChoicePopupPress>(1) }
+    var actionCarriedPress by remember(item.rpid) { mutableStateOf<com.android.purebilibili.core.ui.components.AppSingleChoicePopupPress?>(null) }
+
+    val openButtonActions = { actionCarriedPress = null; actionSource = actionButtonSource; actionAnchor = null; showActionSheet = true }
+
     var showFreeCopyDialog by remember(item.rpid) { mutableStateOf(false) }
     var showReportDialog by remember(item.rpid) { mutableStateOf(false) }
-    var pendingSaveReply by remember(item.rpid) { mutableStateOf<ReplyItem?>(null) }
     // [新增] 评论翻译状态
-    val canTranslate = item.replyControl?.translationSwitch == 2
+    val canTranslate = remember(item.replyControl?.translationSwitch, item.content.message, item.oid, item.rpid) {
+        shouldOfferCommentTranslation(item.replyControl?.translationSwitch, item.content.message, item.oid, item.rpid)
+    }
     var translatedMessage by remember(item.rpid) { mutableStateOf<String?>(null) }
     var isTranslating by remember(item.rpid) { mutableStateOf(false) }
     // [新增] 点踩折叠：已点踩的评论正文收起为一行，点击展开；取消点踩自动恢复
@@ -1409,36 +1510,13 @@ fun ReplyItemView(
     }
     val copyText = remember(item.content.message) { item.content.message.trim() }
     val replyMemberMid = remember(item.member.mid, item.mid) { resolveReplyMemberMid(item) }
-    fun launchSaveReplyCommentImage(reply: ReplyItem) {
-        scope.launch {
-            val success = saveReplyCommentImageToGallery(context, reply)
-            Toast.makeText(
-                context,
-                resolveReplyCommentImageSaveToast(success),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-    val storagePermission = rememberStoragePermissionState { granted ->
-        val pending = pendingSaveReply
-        pendingSaveReply = null
-        if (granted && pending != null) {
-            launchSaveReplyCommentImage(pending)
-        }
-    }
-    fun requestSaveReplyCommentImage() {
-        if (storagePermission.isGranted) {
-            launchSaveReplyCommentImage(item)
-        } else {
-            pendingSaveReply = item
-            storagePermission.request()
-        }
-    }
+    fun requestSaveReplyCommentImage() { showImagePreview = true }
+
     fun shareReplyComment() {
         val sendIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_SUBJECT, "分享评论")
-            putExtra(Intent.EXTRA_TEXT, buildReplyCommentShareText(item))
+            putExtra(Intent.EXTRA_TEXT, buildReplyCommentShareText(item, replyShareContext))
         }
         context.startActivity(Intent.createChooser(sendIntent, "分享评论"))
     }
@@ -1458,8 +1536,13 @@ fun ReplyItemView(
 
     if (showActionSheet) {
         ReplyActionSheet(
+            source = actionSource,
+            carriedPress = actionCarriedPress,
+            anchorBounds = actionAnchor,
             queryAuthorUid = replyMemberMid,
-            canDelete = onDeleteClick != null,
+            canCheckFraud = onCheckFraudClick != null,
+            // 楼中楼详情页的行也复用同一开关：控制其下方"回复"快捷按钮的显示。
+            canToggleReplyPreview = true,
             canReport = onReportClick != null,
             canShare = shouldSupportReplyShare(item),
             canBlockUser = replyMemberMid > 0L,
@@ -1482,7 +1565,7 @@ fun ReplyItemView(
                 shareReplyComment()
             },
             onReply = {
-                onReplyClick?.invoke() ?: onSubClick(item, 0L)
+                onReplyClick?.invoke() ?: onSubClick(previewRoot, 0L)
             },
             onBlockUser = {
                 confirmBlockUser = true
@@ -1495,9 +1578,6 @@ fun ReplyItemView(
             },
             onCheckFraud = {
                 onCheckFraudClick?.invoke()
-            },
-            onDelete = {
-                onDeleteClick?.invoke()
             }
         )
     }
@@ -1537,20 +1617,83 @@ fun ReplyItemView(
         )
     }
 
+    val avatarContentHeightPx = if (boundAvatarToItem && avatarListState != null) {
+        remember(item.rpid) { mutableIntStateOf(0) }
+    } else null
+
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .background(appearance.panelColor)
+            .then(
+                if (avatarContentHeightPx != null) {
+                    Modifier.onSizeChanged { avatarContentHeightPx.intValue = it.height }
+                } else Modifier
+            )
+            .commentAvatarRowBackground(
+                color = if (containerColor == Color.Unspecified) appearance.panelColor else containerColor,
+                pushEnabled = avatarListState != null,
+                gutterWidth = layoutPolicy.horizontalPaddingDp.dp + NAGRAM_CHAT_AVATAR_SIZE_DP.dp,
+            )
+            .then(
+                if (glassActionsAvailable) Modifier
+                    .onGloballyPositioned { actionCoordinates[0] = it }
+                    .pointerInput(item.rpid) {
+                        awaitEachGesture {
+                            val down = awaitFirstDown(requireUnconsumed = false,
+                                pass = androidx.compose.ui.input.pointer.PointerEventPass.Initial)
+                            actionPressPosition[0] = actionCoordinates[0]?.localToWindow(down.position)
+                            val press = com.android.purebilibili.core.ui.components.AppSingleChoicePopupPress()
+                            actionPressRelay[0] = press
+                            var moved = false
+                            var cancelled = false
+                            try {
+                                while (true) {
+                                    val event = awaitPointerEvent(androidx.compose.ui.input.pointer.PointerEventPass.Initial)
+                                    val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                                    val carrying = actionCarriedPress === press
+                                    if (event.changes.any { it.id != down.id && it.pressed }) {
+                                        cancelled = true
+                                        press.cancel()
+                                    }
+                                    if (carrying) {
+                                        event.changes.forEach { it.consume() }
+                                        val point = actionCoordinates[0]?.localToWindow(change.position)
+                                        moved = moved || (change.position - down.position).getDistance() > viewConfiguration.touchSlop
+                                        if (!cancelled && point != null) {
+                                            if (!change.pressed) {
+                                                if (moved) press.move(point)
+                                                press.release(point)
+                                            }
+                                            else if (moved) press.move(point)
+                                        }
+                                    }
+                                    if (!change.pressed) break
+                                }
+                            } finally {
+                                press.cancel()
+                                if (actionPressRelay[0] === press) actionPressRelay[0] = null
+                            }
+                        }
+                    }
+                else Modifier
+            )
             .combinedClickable(
-                onClick = {
-                    if (openThreadFromRootClick) {
-                        onSubClick(item, 0L)
+                onClick = appActionWithFeedback {
+                    // 条目内部的空白可直接回复；正文、头像及操作按钮各自消费点击。
+                    if (onReplyClick != null) {
+                        onReplyClick()
+                    } else if (openThreadFromRootClick) {
+                        onSubClick(previewRoot, 0L)
                     } else {
                         onClick()
                     }
                 },
                 onLongClick = {
                     onLongClick?.invoke()
+                    actionSource = null
+                    actionCarriedPress = actionPressRelay[0]
+                    val point = actionPressPosition[0] ?: actionCoordinates[0]?.boundsInWindow()?.center
+                    actionAnchor = point?.let { Rect(it, androidx.compose.ui.geometry.Size(1f, 1f)) }
                     showActionSheet = true
                 }
             )
@@ -1560,30 +1703,40 @@ fun ReplyItemView(
                 .fillMaxWidth()
                 .padding(
                     top = 10.dp,
-                    bottom = 10.dp,
+                    bottom = 2.dp,
                     start = layoutPolicy.horizontalPaddingDp.dp,
                     end = layoutPolicy.horizontalPaddingDp.dp
                 )
         ) {
+            // Avatar push owns avatar placement only. Keep author metadata, badges and
+            // the trailing decoration in the same header slots as the native comment row.
             val headerEndPadding = resolveReplyItemHeaderEndPaddingDp(
                 hasBiliPaiDecoration = biliPaiDecoration != null,
-                policy = layoutPolicy
+                policy = layoutPolicy,
             ).dp
-            val startPadding = resolveReplyItemContentStartPaddingDp(
-                containerWidth = maxWidth,
-                policy = layoutPolicy
-            ).dp
-
+            // Avatar push geometry is explicitly opt-in in every material style.
+            // Disabled retains native avatar dimensions and narrow-window defaults.
+            val pushAvatar = avatarListState != null
+            val avatarSize = if (pushAvatar) NAGRAM_CHAT_AVATAR_SIZE_DP.dp else layoutPolicy.avatarSizeDp.dp
+            val startPadding = if (pushAvatar) {
+                avatarSize + layoutPolicy.avatarContentSpacingDp.dp
+            } else {
+                resolveReplyItemContentStartPaddingDp(maxWidth, layoutPolicy).dp
+            }
             Column(modifier = Modifier.fillMaxWidth()) {
                 // User Info Header
                 Row() {
-                    ReplyMemberAvatar(
-                        member = item.member,
-                        placeholderColor = appearance.placeholderColor,
-                        lightweightMode = lightweightMode,
-                        modifier = Modifier.size(layoutPolicy.avatarSizeDp.dp),
-                        onClick = { onAvatarClick(item.member.mid) }
-                    )
+                    if (pushAvatar) {
+                        Spacer(modifier = Modifier.size(avatarSize))
+                    } else {
+                        ReplyMemberAvatar(
+                            member = item.member,
+                            placeholderColor = appearance.placeholderColor,
+                            lightweightMode = lightweightMode,
+                            modifier = Modifier.size(layoutPolicy.avatarSizeDp.dp),
+                            onClick = { if (replyMemberMid > 0L) onAvatarClick(replyMemberMid.toString()) }
+                        )
+                    }
 
                     Spacer(modifier = Modifier.width(layoutPolicy.avatarContentSpacingDp.dp))
 
@@ -1606,8 +1759,9 @@ fun ReplyItemView(
                                 color = resolveUpNameColor(
                                     vipStatus = item.member.vip?.vipStatus ?: 0,
                                     vipType = item.member.vip?.vipType ?: 0,
-                                    onSurface = appearance.primaryTextColor.copy(alpha = 0.9f),
-                                    secondary = MaterialTheme.colorScheme.secondary,
+                                    // 用户名用主题强调色与正文区分层次，大会员保留专属粉色。
+                                    onSurface = appearance.accentColor,
+                                    secondary = com.android.purebilibili.core.ui.components.userVipPink(),
                                 ),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -1668,7 +1822,7 @@ fun ReplyItemView(
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { hatedBodyExpanded = true }
+                                .appActionClickable { hatedBodyExpanded = true }
                                 .padding(vertical = 2.dp)
                         )
                         if (!hatePromptHandled) {
@@ -1709,7 +1863,7 @@ fun ReplyItemView(
                         noteCvidStr = item.noteCvidStr,
                         prefix = contentPrefix,
                         onPlainTextClick = if (openThreadFromRootClick) {
-                            { onSubClick(item, 0L) }
+                            { onSubClick(previewRoot, 0L) }
                         } else {
                             null
                         }
@@ -1730,6 +1884,7 @@ fun ReplyItemView(
                                         isLiked = isLiked,
                                         onLikeClick = onLikeClick,
                                         onReplyClick = onReplyClick,
+                                        detailedTimeEnabled = detailedCommentTimeEnabled
                                     )
                                 )
                             }
@@ -1737,13 +1892,17 @@ fun ReplyItemView(
                     }
                     }
 
-                    // Footer Actions
+                    Spacer(modifier = Modifier.height(2.dp))
+
+                    // Footer Actions；"隐藏回复"开启时收起回复快捷入口（长按菜单仍可回复）。
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                    ReplyTextAction(
-                        label = "回复",
-                        appearance = appearance,
-                        onClick = { onReplyClick?.invoke() ?: onSubClick(item, 0L) }
-                    )
+                    if (replyButtonVisible) {
+                        ReplyTextAction(
+                            label = "回复",
+                            appearance = appearance,
+                            onClick = { onReplyClick?.invoke() ?: onSubClick(previewRoot, 0L) }
+                        )
+                    }
 
                     // [新增] 翻译按钮 (胶囊样式)
                     if (canTranslate) {
@@ -1753,7 +1912,7 @@ fun ReplyItemView(
                             shape = AppShapes.container(ContainerLevel.Pill),
                             color = if (isTranslated) appearance.accentColor.copy(alpha = 0.14f) else appearance.actionTint.copy(alpha = 0.10f),
                             modifier = Modifier
-                                .clickable(enabled = !isTranslating) {
+                                .appActionClickable(enabled = !isTranslating) {
                                     if (isTranslated) {
                                         translatedMessage = null
                                     } else {
@@ -1804,7 +1963,35 @@ fun ReplyItemView(
                         ReplySpecialLabelChip(text = specialLabelText)
                     }
 
+                    if (onConversationClick != null) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        AppText(
+                            text = "查看对话",
+                            fontSize = VideoCommentTypographyTokens.action,
+                            color = appearance.actionTint,
+                            modifier = Modifier
+                                .sizeIn(minHeight = 32.dp)
+                                .testTag("$SUB_REPLY_DETAIL_CONVERSATION_TAG_PREFIX${item.rpid}")
+                                .appActionClickable(onClick = onConversationClick)
+                                .wrapContentHeight(),
+                        )
+                    }
+
                     Spacer(modifier = Modifier.weight(1f))
+
+                    if (onDeleteClick != null) {
+                        Box(modifier = Modifier.height(32.dp)) {
+                            AppIconButton(onClick = onDeleteClick) {
+                                AppIcon(
+                                    imageVector = Icons.Outlined.Delete,
+                                    contentDescription = "删除",
+                                    tint = appearance.actionTint,
+                                    modifier = Modifier.size(16.dp),
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
 
                     val likeFilledIcon = rememberAppLikeFilledIcon()
 
@@ -1812,7 +1999,7 @@ fun ReplyItemView(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .clickable(enabled = onLikeClick != null) { onLikeClick?.invoke() }
+                            .appActionClickable(enabled = onLikeClick != null) { onLikeClick?.invoke() }
                             .padding(4.dp)
                     ) {
                         AppIcon(
@@ -1832,155 +2019,157 @@ fun ReplyItemView(
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
-                    AppIconButton(
-                        onClick = { onHateClick?.invoke() },
-                        enabled = onHateClick != null
-                    ) {
-                        AppIcon(
-                            imageVector = Icons.Filled.ThumbDown,
-                            contentDescription = if (isHated) "取消点踩" else "点踩评论",
-                            tint = if (isHated) MaterialTheme.colorScheme.error else appearance.actionTint,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-
-                    // [新增] 删除按钮 (仅显示给本人)
-                    if (onDeleteClick != null) {
-                        Spacer(modifier = Modifier.width(16.dp))
-                        AppIconButton(onClick = onDeleteClick) {
+                    Box(modifier = Modifier.height(32.dp)) {
+                        AppIconButton(
+                            onClick = { onHateClick?.invoke() },
+                            enabled = onHateClick != null
+                        ) {
                             AppIcon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = "删除",
-                                tint = appearance.actionTint,
-                                modifier = Modifier.size(16.dp),
+                                imageVector = Icons.Filled.ThumbDown,
+                                contentDescription = if (isHated) "取消点踩" else "点踩评论",
+                                tint = if (isHated) AppContentColors.error() else appearance.actionTint,
+                                modifier = Modifier.size(16.dp)
                             )
                         }
                     }
+
                 }
 
                 // Sub-comments (Threaded view)
-                if (showSubPreview && (!item.replies.isNullOrEmpty() || item.rcount > 0)) {
+                if (showSubPreview && (previewReplies.isNotEmpty() || threadReplyCount > 0)) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .animateContentSize(animationSpec = tween(durationMillis = 180))
+                            // This preview is already inside the indented body column.
                             .clip(AppShapes.container(ContainerLevel.Chip))
                             .background(appearance.composerHintBackgroundColor)
-                            .padding(horizontal = 8.dp, vertical = 6.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        visibleSubReplies.forEach { subReply ->
-                            val subEmoteMap = remember(subReply.content.emote, emoteMap) {
-                                val inlineEmotes = subReply.content.emote.orEmpty()
-                                if (inlineEmotes.isEmpty()) {
-                                    emoteMap
-                                } else {
-                                    buildMap(emoteMap.size + inlineEmotes.size) {
-                                        putAll(emoteMap)
-                                        inlineEmotes.forEach { (key, value) -> put(key, value.url) }
-                                    }
-                                }
-                            }
-
-                            val subReplyOfficialBadge = remember(subReply.member.officialVerify) {
-                                resolveOfficialVerifyBadge(
-                                    type = subReply.member.officialVerify.type,
-                                    desc = subReply.member.officialVerify.desc,
-                                    compact = true
-                                )
-                            }
-                            val prefixTokens = remember(
-                                subReply.member.uname,
-                                upMid,
-                                subReply.mid,
-                                subReplyOfficialBadge?.tone
-                            ) {
-                                buildSubReplyPreviewPrefix(
-                                    userName = subReply.member.uname,
-                                    isUpComment = upMid > 0 && subReply.mid == upMid,
-                                    officialVerifyTone = subReplyOfficialBadge?.tone
-                                )
-                            }
-                            val prefixTextColor = appearance.primaryTextColor.copy(alpha = 0.8f)
-                            val prefixSeparatorColor = appearance.secondaryTextColor
-                            val upTagColor = appearance.accentColor
-                            val prefix = remember(prefixTokens, prefixTextColor, prefixSeparatorColor, upTagColor) {
-                                buildAnnotatedString {
-                                    prefixTokens.forEach { token ->
-                                        when (token) {
-                                            "[VERIFY_PERSONAL]" -> appendInlineContent(
-                                                COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID,
-                                                "个人"
-                                            )
-                                            "[VERIFY_ORGANIZATION]" -> appendInlineContent(
-                                                COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID,
-                                                "机构"
-                                            )
-                                            "[UP]" -> withStyle(
-                                                SpanStyle(color = upTagColor)
-                                            ) {
-                                                appendInlineContent(COMMENT_INLINE_UP_BADGE_ID, "UP")
-                                            }
-                                            ": " -> withStyle(
-                                                SpanStyle(color = prefixSeparatorColor)
-                                            ) {
-                                                append(token)
-                                            }
-                                            else -> withStyle(
-                                                SpanStyle(
-                                                    fontWeight = FontWeight.SemiBold,
-                                                    color = prefixTextColor
-                                                )
-                                            ) {
-                                                append(token)
+                        previewReplies.forEachIndexed { index, subReply ->
+                            key(subReply.rpid) {
+                                CommentContentReveal(visible = index < visibleSubReplies.size) {
+                                    val subEmoteMap = remember(subReply.content.emote, emoteMap) {
+                                        val inlineEmotes = subReply.content.emote.orEmpty()
+                                        if (inlineEmotes.isEmpty()) {
+                                            emoteMap
+                                        } else {
+                                            buildMap(emoteMap.size + inlineEmotes.size) {
+                                                putAll(emoteMap)
+                                                inlineEmotes.forEach { (key, value) -> put(key, value.url) }
                                             }
                                         }
                                     }
-                                }
-                            }
 
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .testTag("$COMMENT_SUB_REPLY_PREVIEW_TAG_PREFIX${subReply.rpid}")
-                                    .combinedClickable(
-                                        onClick = {
-                                            onSubClick(
-                                                item,
-                                                resolveSubReplyOpenTargetId(item.rpid, subReply.rpid)
-                                            )
-                                        },
-                                        onLongClick = {
-                                            copyToClipboard(
-                                                subReply.content.message,
-                                                "回复内容"
-                                            )
-                                        }
-                                    )
-                            ) {
-                                ReplyMessageText(
-                                    text = subReply.content.message,
-                                    fontSize = VideoCommentTypographyTokens.subReply,
-                                    color = appearance.primaryTextColor.copy(alpha = 0.8f),
-                                    emoteMap = subEmoteMap,
-                                    content = subReply.content,
-                                    maxLines = 2,
-                                    onTimestampClick = onTimestampClick,
-                                    maxTimestampMs = maxTimestampMs,
-                                    onUrlClick = onUrlClick,
-                                    onUserClick = { mid -> onAvatarClick(mid.toString()) },
-                                    onTopicClick = { topic -> onUrlClick?.invoke(resolveReplyTopicNavigationUrl(topic)) },
-                                    onVoteClick = { voteId -> onUrlClick?.invoke("bilibili://vote?id=$voteId") },
-                                    noteCvidStr = subReply.noteCvidStr,
-                                    prefix = prefix,
-                                    onPlainTextClick = {
-                                        onSubClick(
-                                            item,
-                                            resolveSubReplyOpenTargetId(item.rpid, subReply.rpid)
+                                    val subReplyOfficialBadge = remember(subReply.member.officialVerify) {
+                                        resolveOfficialVerifyBadge(
+                                            type = subReply.member.officialVerify.type,
+                                            desc = subReply.member.officialVerify.desc,
+                                            compact = true
                                         )
                                     }
-                                )
+                                    val prefixTokens = remember(
+                                        subReply.member.uname,
+                                        upMid,
+                                        subReply.mid,
+                                        subReplyOfficialBadge?.tone
+                                    ) {
+                                        buildSubReplyPreviewPrefix(
+                                            userName = subReply.member.uname,
+                                            isUpComment = upMid > 0 && subReply.mid == upMid,
+                                            officialVerifyTone = subReplyOfficialBadge?.tone
+                                        )
+                                    }
+                                    val prefixTextColor = resolveUpNameColor(
+                                        vipStatus = subReply.member.vip?.vipStatus ?: 0,
+                                        vipType = subReply.member.vip?.vipType ?: 0,
+                                        // 楼中楼用户名同样用主题强调色区分正文，大会员保留专属粉色。
+                                        onSurface = appearance.accentColor,
+                                        secondary = com.android.purebilibili.core.ui.components.userVipPink(),
+                                    )
+                                    val prefixSeparatorColor = appearance.secondaryTextColor
+                                    val upTagColor = appearance.accentColor
+                                    val prefix = remember(prefixTokens, prefixTextColor, prefixSeparatorColor, upTagColor) {
+                                        buildAnnotatedString {
+                                            prefixTokens.forEach { token ->
+                                                when (token) {
+                                                    "[VERIFY_PERSONAL]" -> appendInlineContent(
+                                                        COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID,
+                                                        "个人"
+                                                    )
+                                                    "[VERIFY_ORGANIZATION]" -> appendInlineContent(
+                                                        COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID,
+                                                        "机构"
+                                                    )
+                                                    "[UP]" -> withStyle(
+                                                        SpanStyle(color = upTagColor)
+                                                    ) {
+                                                        appendInlineContent(COMMENT_INLINE_UP_BADGE_ID, "UP")
+                                                    }
+                                                    ": " -> withStyle(
+                                                        SpanStyle(color = prefixSeparatorColor)
+                                                    ) {
+                                                        append(token)
+                                                    }
+                                                    else -> withStyle(
+                                                        SpanStyle(
+                                                            fontWeight = FontWeight.SemiBold,
+                                                            color = prefixTextColor
+                                                        )
+                                                    ) {
+                                                        append(token)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .testTag("$COMMENT_SUB_REPLY_PREVIEW_TAG_PREFIX${subReply.rpid}")
+                                            .combinedClickable(
+                                                onClick = appActionWithFeedback {
+                                                    onSubClick(
+                                                        previewRoot,
+                                                        resolveSubReplyOpenTargetId(item.rpid, subReply.rpid)
+                                                    )
+                                                },
+                                                onLongClick = {
+                                                    copyToClipboard(
+                                                        subReply.content.message,
+                                                        "回复内容"
+                                                    )
+                                                }
+                                            )
+                                    ) {
+                                        ReplyMessageText(
+                                            text = subReply.content.message,
+                                            fontSize = VideoCommentTypographyTokens.subReply,
+                                            // 预览单独放宽行高，主评论与楼中楼详情保留原有排版。
+                                            lineHeight = VideoCommentTypographyTokens.subReply * 1.6f,
+                                            color = appearance.primaryTextColor.copy(alpha = 0.8f),
+                                            emoteMap = subEmoteMap,
+                                            content = subReply.content,
+                                            maxLines = 2,
+                                            onTimestampClick = onTimestampClick,
+                                            maxTimestampMs = maxTimestampMs,
+                                            onUrlClick = onUrlClick,
+                                            onUserClick = { mid -> onAvatarClick(mid.toString()) },
+                                            onTopicClick = { topic -> onUrlClick?.invoke(resolveReplyTopicNavigationUrl(topic)) },
+                                            onVoteClick = { voteId -> onUrlClick?.invoke("bilibili://vote?id=$voteId") },
+                                            noteCvidStr = subReply.noteCvidStr,
+                                            prefix = prefix,
+                                            onPlainTextClick = {
+                                                onSubClick(
+                                                    previewRoot,
+                                                    resolveSubReplyOpenTargetId(item.rpid, subReply.rpid)
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
                             }
                         }
 
@@ -1991,7 +2180,7 @@ fun ReplyItemView(
                                 color = appearance.accentColor,
                                 fontWeight = FontWeight.Medium,
                                 modifier = Modifier
-                                    .clickable { isSubPreviewExpanded = !isSubPreviewExpanded }
+                                    .appActionClickable { isSubPreviewExpanded = !isSubPreviewExpanded }
                                     .padding(vertical = 4.dp)
                             )
                         }
@@ -2001,7 +2190,7 @@ fun ReplyItemView(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .testTag("$COMMENT_VIEW_ALL_REPLIES_TAG_PREFIX${item.rpid}")
-                                    .clickable { onSubClick(item, 0L) },
+                                    .appActionClickable { onSubClick(previewRoot, 0L) },
                                 contentAlignment = Alignment.CenterStart
                             ) {
                                 AppText(
@@ -2015,6 +2204,21 @@ fun ReplyItemView(
                     }
                     }
                 }
+            }
+            if (pushAvatar && avatarListState != null) {
+                PushingReplyMemberAvatar(
+                    member = item.member,
+                    placeholderColor = appearance.placeholderColor,
+                    lightweightMode = lightweightMode,
+                    listState = avatarListState,
+                    itemKey = avatarItemKey,
+                    contentHeightPxProvider = if (avatarContentHeightPx == null) null else {
+                        { avatarContentHeightPx.intValue }
+                    },
+                    allowNeighborContact = !boundAvatarToItem,
+                    modifier = Modifier.size(avatarSize),
+                    onClick = { if (replyMemberMid > 0L) onAvatarClick(replyMemberMid.toString()) }
+                )
             }
         }
 
@@ -2031,8 +2235,9 @@ fun ReplyItemView(
         }
 
         AppIconButton(
-            onClick = { showActionSheet = true },
+            onClick = openButtonActions,
             modifier = Modifier
+                .appGlassMenuSource(actionButtonSource, onOpen = openButtonActions)
                 .align(Alignment.TopEnd)
                 .size(layoutPolicy.actionButtonSizeDp.dp)
                 .testTag("$COMMENT_ACTION_BUTTON_TAG_PREFIX${item.rpid}")
@@ -2044,9 +2249,14 @@ fun ReplyItemView(
                 modifier = Modifier.size(18.dp)
             )
         }
-        
+
         AppHorizontalDivider(
-            modifier = Modifier.padding(start = layoutPolicy.dividerStartPaddingDp.dp),
+            modifier = Modifier.padding(
+                start = if (avatarListState != null) {
+                    layoutPolicy.horizontalPaddingDp.dp + NAGRAM_CHAT_AVATAR_SIZE_DP.dp +
+                        layoutPolicy.avatarContentSpacingDp.dp
+                } else layoutPolicy.dividerStartPaddingDp.dp
+            ),
             thickness = 0.5.dp,
             color = appearance.dividerColor.copy(alpha = 0.25f)
         )
@@ -2061,7 +2271,7 @@ fun ReplyItemView(
 internal fun ReplyMessageText(
     text: String,
     fontSize: TextUnit,
-    color: Color = MaterialTheme.colorScheme.onSurface,
+    color: Color = AppContentColors.primaryText(),
     emoteMap: Map<String, String>,
     content: ReplyContent? = null,
     maxLines: Int = Int.MAX_VALUE,
@@ -2073,6 +2283,7 @@ internal fun ReplyMessageText(
     onVoteClick: ((Long) -> Unit)? = null,
     noteCvidStr: String = "",
     prefix: AnnotatedString? = null,
+    lineHeight: TextUnit = fontSize * 1.5f,
     onPlainTextClick: (() -> Unit)? = null
 ) {
     val videoReference = remember(text) { resolveReplyVideoReference(text) }
@@ -2099,6 +2310,7 @@ internal fun ReplyMessageText(
                 fallbackText = text
             ),
             fontSize = fontSize,
+            lineHeight = lineHeight,
             maxLines = maxLines,
             url = videoReference.navigationUrl,
             onUrlClick = onUrlClick,
@@ -2109,6 +2321,7 @@ internal fun ReplyMessageText(
         RichCommentText(
             text = text,
             fontSize = fontSize,
+            lineHeight = lineHeight,
             color = color,
             emoteMap = emoteMap,
             content = content,
@@ -2134,9 +2347,10 @@ private fun ReplyVideoReferenceText(
     url: String,
     onUrlClick: ((String) -> Unit)?,
     prefix: AnnotatedString? = null,
-    copyText: String = text
+    copyText: String = text,
+    lineHeight: TextUnit = fontSize * 1.5f
 ) {
-    val primaryColor = MaterialTheme.colorScheme.primary
+    val primaryColor = AppContentColors.accent()
     val annotatedString = remember(text, url, prefix, primaryColor) {
         buildAnnotatedString {
             if (prefix != null) {
@@ -2156,17 +2370,20 @@ private fun ReplyVideoReferenceText(
     }
     val upBadgeInlineContent = rememberInlineUpBadgeContent()
     val topBadgeInlineContent = rememberInlineTopBadgeContent()
+    val chargedBadgeInlineContent = rememberInlineChargedBadgeContent()
     val personalVerifyInlineContent = rememberInlineOfficialVerifyBadgeContent(OfficialVerifyBadgeTone.PERSONAL)
     val organizationVerifyInlineContent = rememberInlineOfficialVerifyBadgeContent(OfficialVerifyBadgeTone.ORGANIZATION)
     val inlineContent = remember(
         upBadgeInlineContent,
         topBadgeInlineContent,
+        chargedBadgeInlineContent,
         personalVerifyInlineContent,
         organizationVerifyInlineContent
     ) {
         mapOf(
             COMMENT_INLINE_UP_BADGE_ID to upBadgeInlineContent,
             COMMENT_INLINE_TOP_BADGE_ID to topBadgeInlineContent,
+            COMMENT_INLINE_CHARGED_BADGE_ID to chargedBadgeInlineContent,
             COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID to personalVerifyInlineContent,
             COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID to organizationVerifyInlineContent
         )
@@ -2204,7 +2421,7 @@ private fun ReplyVideoReferenceText(
         inlineContent = inlineContent,
         fontSize = fontSize,
         color = primaryColor,
-        lineHeight = (fontSize.value * 1.5).sp,
+        lineHeight = lineHeight,
         maxLines = maxLines,
         onTextLayout = { textLayoutResult = it },
         modifier = modifier
@@ -2227,7 +2444,7 @@ private fun ReplyVideoReferenceText(
 fun RichCommentText(
     text: String,
     fontSize: TextUnit,
-    color: Color = MaterialTheme.colorScheme.onSurface,
+    color: Color = AppContentColors.primaryText(),
     emoteMap: Map<String, String>,
     content: ReplyContent? = null,
     maxLines: Int = Int.MAX_VALUE,
@@ -2239,12 +2456,13 @@ fun RichCommentText(
     onVoteClick: ((Long) -> Unit)? = null,
     noteCvidStr: String = "",
     prefix: AnnotatedString? = null,
+    lineHeight: TextUnit = fontSize * 1.5f,
     onPlainTextClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
-    val timestampColor = MaterialTheme.colorScheme.primary
-    val urlColor = MaterialTheme.colorScheme.primary
-    
+    val timestampColor = AppContentColors.accent()
+    val urlColor = AppContentColors.accent()
+
     val renderableEmoteKeys = remember(text, emoteMap) {
         collectRenderableEmoteKeys(text, emoteMap)
     }
@@ -2264,7 +2482,7 @@ fun RichCommentText(
         }
     }
 
-    
+
     val annotatedString = remember(
         text,
         prefix,
@@ -2299,6 +2517,7 @@ fun RichCommentText(
 
     val upBadgeInlineContent = rememberInlineUpBadgeContent()
     val topBadgeInlineContent = rememberInlineTopBadgeContent()
+    val chargedBadgeInlineContent = rememberInlineChargedBadgeContent()
     val personalVerifyInlineContent = rememberInlineOfficialVerifyBadgeContent(OfficialVerifyBadgeTone.PERSONAL)
     val organizationVerifyInlineContent = rememberInlineOfficialVerifyBadgeContent(OfficialVerifyBadgeTone.ORGANIZATION)
     val inlineContent = remember(
@@ -2309,6 +2528,7 @@ fun RichCommentText(
         urlColor,
         upBadgeInlineContent,
         topBadgeInlineContent,
+        chargedBadgeInlineContent,
         personalVerifyInlineContent,
         organizationVerifyInlineContent
     ) {
@@ -2356,11 +2576,12 @@ fun RichCommentText(
             }
             put(COMMENT_INLINE_UP_BADGE_ID, upBadgeInlineContent)
             put(COMMENT_INLINE_TOP_BADGE_ID, topBadgeInlineContent)
+            put(COMMENT_INLINE_CHARGED_BADGE_ID, chargedBadgeInlineContent)
             put(COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID, personalVerifyInlineContent)
             put(COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID, organizationVerifyInlineContent)
         }
     }
-    
+
     val hasInteractiveAnnotations =
         onTimestampClick != null ||
             onUrlClick != null ||
@@ -2395,7 +2616,7 @@ fun RichCommentText(
             inlineContent = inlineContent,
             fontSize = fontSize,
             color = color,
-            lineHeight = (fontSize.value * 1.5).sp,
+            lineHeight = lineHeight,
             maxLines = maxLines,
             modifier = textModifier
         )
@@ -2500,7 +2721,7 @@ private fun rememberInlineOfficialVerifyBadgeContent(
 fun EmojiText(
     text: String,
     fontSize: TextUnit,
-    color: Color = MaterialTheme.colorScheme.onSurface,
+    color: Color = AppContentColors.primaryText(),
     emoteMap: Map<String, String>
 ) {
     RichCommentText(
@@ -2523,7 +2744,36 @@ fun LevelTag(level: Int, isSeniorMember: Boolean = false) {
 
 @Composable
 private fun FansMedalTag(detail: ReplyFansDetail) {
-    val accentColor = resolveFansMedalColor(detail.level)
+    val accentColor = detail.medalColor.takeIf { it > 0 }?.let {
+        Color((it and 0xFFFFFFL).toInt() or 0xFF000000.toInt())
+    } ?: resolveFansMedalColor(detail.level)
+    val nameColor = detail.medalColorName.takeIf { detail.medalColor > 0 }?.let {
+        Color((it and 0xFFFFFFL).toInt() or 0xFF000000.toInt())
+    } ?: accentColor.copy(alpha = 0.95f)
+    if (detail.medalColor > 0) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .clip(AppShapes.container(ContainerLevel.Tag))
+                .background(accentColor)
+                .padding(horizontal = 6.dp, vertical = 2.dp),
+        ) {
+            AppText(
+                text = detail.medalName,
+                style = MaterialTheme.typography.labelSmall,
+                color = nameColor,
+                maxLines = 1,
+            )
+            AppText(
+                text = " ${detail.level}",
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = nameColor,
+                maxLines = 1,
+            )
+        }
+        return
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -2539,7 +2789,7 @@ private fun FansMedalTag(detail: ReplyFansDetail) {
             text = detail.medalName,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
-            color = accentColor.copy(alpha = 0.95f),
+            color = nameColor,
             maxLines = 1,
             modifier = Modifier.padding(start = 4.dp, end = 3.dp, top = 1.dp, bottom = 1.dp)
         )
@@ -2582,19 +2832,23 @@ internal fun ReplyMemberAvatar(
     onClick: (() -> Unit)? = null
 ) {
     val pendantImageUrl = remember(member) { resolveReplyMemberPendantImage(member) }
+    val displayFace = member.avatar
     val hasPendant = !pendantImageUrl.isNullOrBlank()
     val faceFraction = resolveReplyAvatarFaceFraction(hasPendant)
     Box(
         modifier = modifier.then(
-            if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
+            if (onClick != null) Modifier.appActionClickable(onClick = onClick) else Modifier
         ),
         contentAlignment = Alignment.Center
     ) {
         // Face first (under), slightly smaller when a frame is present.
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(FormatUtils.fixImageUrl(member.avatar))
-                .crossfade(!lightweightMode)
+                .data(FormatUtils.fixImageUrl(displayFace))
+                //  [防闪烁] crossfade 不能随 lightweightMode 翻转：改请求构造会让
+                //  Coil 视为新请求重新执行，切回评论页瞬间全部头像重载闪一下。
+                //  内存缓存命中本身不播淡入，恒定开启不损失滚动性能。
+                .crossfade(true)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -2608,7 +2862,7 @@ internal fun ReplyMemberAvatar(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(pendantImageUrl)
-                    .crossfade(!lightweightMode)
+                    .crossfade(true)
                     .build(),
                 contentDescription = "Avatar pendant",
                 contentScale = ContentScale.Fit,
@@ -2665,7 +2919,7 @@ internal fun FanGroupDecorationBadge(
             val textColor = resolveFanGroupLabelTextColor(
                 fanColorHex = visual.fanColorHex,
                 backgroundColor = MaterialTheme.colorScheme.surface,
-                fallbackColor = MaterialTheme.colorScheme.onSurface
+                fallbackColor = AppContentColors.primaryText()
             )
             Column(
                 horizontalAlignment = Alignment.End,
@@ -2751,7 +3005,7 @@ internal fun ReplySpecialLabelChip(text: String) {
     AppText(
         text = text,
         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-        color = MaterialTheme.colorScheme.primary
+        color = AppContentColors.accent()
     )
 }
 
@@ -2766,7 +3020,7 @@ internal fun ReplyTextAction(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .heightIn(min = 32.dp)
-            .clickable { onClick() }
+            .appActionClickable { onClick() }
             .padding(end = 8.dp)
     ) {
         AppIcon(
@@ -2788,11 +3042,12 @@ internal fun ReplyTextAction(
 @Composable
 internal fun ReplyActionSheet(
     queryAuthorUid: Long = 0L,
-    canDelete: Boolean,
+    canCheckFraud: Boolean,
     canReport: Boolean,
     canShare: Boolean = true,
     canBlockUser: Boolean = false,
     canCopyUsername: Boolean = true,
+    canToggleReplyPreview: Boolean = false,
     topActionLabel: String? = null,
     onDismiss: () -> Unit,
     onCopyAll: () -> Unit,
@@ -2804,8 +3059,10 @@ internal fun ReplyActionSheet(
     onBlockUser: () -> Unit = {},
     onReport: () -> Unit,
     onCheckFraud: () -> Unit = {},
-    onToggleTop: () -> Unit,
-    onDelete: () -> Unit
+    source: com.android.purebilibili.core.ui.components.AppGlassMenuSource? = null,
+    carriedPress: com.android.purebilibili.core.ui.components.AppSingleChoicePopupPress? = null,
+    anchorBounds: Rect? = null,
+    onToggleTop: () -> Unit
 ) {
     val queryAicu = com.android.purebilibili.feature.aicu.LocalAicuNavigation.current
     val canQueryAuthorHistory = queryAicu != null && queryAuthorUid > 0
@@ -2816,76 +3073,98 @@ internal fun ReplyActionSheet(
     val detailedTimeEnabled by SettingsManager
         .getDetailedCommentTimeEnabled(sheetContext)
         .collectAsStateWithLifecycle(initialValue = false)
+    val replyPreviewVisible by SettingsManager
+        .getCommentReplyPreviewVisible(sheetContext)
+        .collectAsStateWithLifecycle(initialValue = true)
     val actions = remember(
         canQueryAuthorHistory,
-        canDelete,
+        canCheckFraud,
         canReport,
         canShare,
         canBlockUser,
         canCopyUsername,
+        canToggleReplyPreview,
         topActionLabel,
     ) {
         buildReplyActionSheetActions(
-            canDelete = canDelete,
+            canCheckFraud = canCheckFraud,
             canReport = canReport,
             canShare = canShare,
             canBlockUser = canBlockUser,
             topActionLabel = topActionLabel,
             canCopyUsername = canCopyUsername,
             canQueryAuthorHistory = canQueryAuthorHistory,
+            canToggleReplyPreview = canToggleReplyPreview,
         )
     }
+    val actionItems: @Composable () -> Unit = {
+        actions.forEach { action ->
+            ReplyActionSheetItem(
+                label = if (action == ReplyActionSheetAction.TIME_STYLE) {
+                    if (detailedTimeEnabled) "评论时间样式：绝对（yyyy-MM-dd HH:mm:ss）"
+                    else "评论时间样式：相对"
+                } else if (action == ReplyActionSheetAction.TOGGLE_REPLY_PREVIEW) {
+                    if (replyPreviewVisible) "隐藏回复按钮" else "显示回复按钮"
+                } else {
+                    resolveReplyActionSheetLabel(action, topActionLabel)
+                },
+                isDestructive = isReplyActionDestructive(action),
+                onClick = {
+                    when (action) {
+                        ReplyActionSheetAction.COPY_ALL -> onCopyAll()
+                        ReplyActionSheetAction.FREE_COPY -> onFreeCopy()
+                        ReplyActionSheetAction.COPY_USERNAME -> onCopyUsername()
+                        ReplyActionSheetAction.QUERY_AUTHOR_HISTORY -> queryAicu?.invoke(queryAuthorUid)
+                        ReplyActionSheetAction.TIME_STYLE -> {
+                            // 与回复按钮开关同因：写盘不挂弹层作用域，避免关闭竞态落空。
+                            val next = !detailedTimeEnabled
+                            SettingsManager.setDetailedCommentTimeEnabledDetached(sheetContext, next)
+                            Toast.makeText(
+                                sheetContext,
+                                if (next) {
+                                    "已切换为绝对时间：评论显示 yyyy-MM-dd HH:mm:ss"
+                                } else {
+                                    "已切换为相对时间：评论按相对时间显示"
+                                },
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        ReplyActionSheetAction.TOGGLE_REPLY_PREVIEW -> {
+                            // 写盘走独立作用域：弹层随即关闭并取消 sheetScope，
+                            // 挂起写入若挂在它下面会与关闭竞态导致开关落空。
+                            val next = !replyPreviewVisible
+                            SettingsManager.setCommentReplyPreviewVisibleDetached(sheetContext, next)
+                            Toast.makeText(
+                                sheetContext,
+                                if (next) "已显示回复按钮" else "已隐藏回复按钮",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        ReplyActionSheetAction.SAVE -> onSave()
+                        ReplyActionSheetAction.SHARE -> onShare()
+                        ReplyActionSheetAction.REPLY -> onReply()
+                        ReplyActionSheetAction.BLOCK_USER -> onBlockUser()
+                        ReplyActionSheetAction.REPORT -> onReport()
+                        ReplyActionSheetAction.CHECK_FRAUD -> onCheckFraud()
+                        ReplyActionSheetAction.TOGGLE_TOP -> onToggleTop()
+                    }
+                    onDismiss()
+                }
+            )
+        }
+    }
+    if (com.android.purebilibili.core.ui.components.AppGlassMenu(
+            expanded = true, onDismissRequest = onDismiss, title = "评论操作",
+            source = source, carriedPress = carriedPress, anchorBounds = anchorBounds, minWidth = 220.dp, maxWidth = 320.dp,
+        ) { Column { actionItems() } }) return
     AppModalBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                // M3 路径的 modalWindowInsets 已消费导航栏 insets（此处为 0）；
-                // 这层 padding 是给 CenteredDialog/平板限宽弹层路径兜底的，勿删。
+                // 保留原生面板和平板居中路径的导航栏避让。
                 .navigationBarsPadding()
                 .padding(bottom = 12.dp)
-        ) {
-            actions.forEach { action ->
-                ReplyActionSheetItem(
-                    label = if (action == ReplyActionSheetAction.TIME_STYLE) {
-                        if (detailedTimeEnabled) "评论时间样式：绝对（yyyy-MM-dd HH:mm:ss）"
-                        else "评论时间样式：相对"
-                    } else {
-                        resolveReplyActionSheetLabel(action, topActionLabel)
-                    },
-                    isDestructive = isReplyActionDestructive(action),
-                    onClick = {
-                        when (action) {
-                            ReplyActionSheetAction.COPY_ALL -> onCopyAll()
-                            ReplyActionSheetAction.FREE_COPY -> onFreeCopy()
-                            ReplyActionSheetAction.COPY_USERNAME -> onCopyUsername()
-                            ReplyActionSheetAction.QUERY_AUTHOR_HISTORY -> queryAicu?.invoke(queryAuthorUid)
-                            ReplyActionSheetAction.TIME_STYLE -> sheetScope.launch {
-                                val next = !detailedTimeEnabled
-                                SettingsManager.setDetailedCommentTimeEnabled(sheetContext, next)
-                                Toast.makeText(
-                                    sheetContext,
-                                    if (next) {
-                                        "已切换为绝对时间：楼中楼与动态评论将显示 yyyy-MM-dd HH:mm:ss"
-                                    } else {
-                                        "已切换为相对时间（默认）：一级评论保持精确时间，楼中楼/动态按相对显示"
-                                    },
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                            ReplyActionSheetAction.SAVE -> onSave()
-                            ReplyActionSheetAction.SHARE -> onShare()
-                            ReplyActionSheetAction.REPLY -> onReply()
-                            ReplyActionSheetAction.BLOCK_USER -> onBlockUser()
-                            ReplyActionSheetAction.REPORT -> onReport()
-                            ReplyActionSheetAction.CHECK_FRAUD -> onCheckFraud()
-                            ReplyActionSheetAction.TOGGLE_TOP -> onToggleTop()
-                            ReplyActionSheetAction.DELETE -> onDelete()
-                        }
-                        onDismiss()
-                    }
-                )
-            }
-        }
+        ) { actionItems() }
     }
 }
 
@@ -2895,13 +3174,20 @@ private fun ReplyActionSheetItem(
     isDestructive: Boolean = false,
     onClick: () -> Unit
 ) {
+    if (com.android.purebilibili.core.ui.components.LocalAppGlassMenuScope.current != null) {
+        com.android.purebilibili.core.ui.components.AppDropdownMenuItem(
+            text = { AppText(label, color = if (isDestructive) AppContentColors.error() else AppContentColors.primaryText()) },
+            onClick = onClick,
+        )
+        return
+    }
     AppText(
         text = label,
         style = MaterialTheme.typography.bodyLarge,
-        color = if (isDestructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+        color = if (isDestructive) AppContentColors.error() else AppContentColors.primaryText(),
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .appActionClickable { onClick() }
             .padding(horizontal = 24.dp, vertical = 16.dp)
     )
 }
@@ -2913,24 +3199,105 @@ fun UpTag() {
 }
 
 @Composable
-fun TopTag() {
+fun TopTag(modifier: Modifier = Modifier) {
+    val labelStyle = MaterialTheme.typography.labelSmall
+    // TOP 没有下伸部，行框居中后仍会显得偏下；按字号补偿视觉中心。
+    val opticalOffset = with(androidx.compose.ui.platform.LocalDensity.current) {
+        (labelStyle.fontSize * -0.08f).toDp()
+    }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(AppShapes.container(ContainerLevel.Tag))
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.accent(),
                 shape = AppShapes.container(ContainerLevel.Tag)
             )
             .padding(horizontal = 3.dp, vertical = 2.dp),
+        contentAlignment = Alignment.Center,
     ) {
         AppText(
             text = "TOP",
-            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.offset(y = opticalOffset),
+            style = labelStyle.copy(
+                lineHeight = labelStyle.fontSize,
+                platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false),
+                lineHeightStyle = androidx.compose.ui.text.style.LineHeightStyle(
+                    alignment = androidx.compose.ui.text.style.LineHeightStyle.Alignment.Center,
+                    trim = androidx.compose.ui.text.style.LineHeightStyle.Trim.Both,
+                ),
+            ),
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+            color = AppContentColors.accent(),
+            maxLines = 1,
+            tapToCopyEnabled = false,
         )
     }
+}
+
+// 充电评论使用主题 tertiaryContainer / onTertiaryContainer，并保留闪电身份标识。
+@Composable
+fun ChargedReplyTag(text: String, modifier: Modifier = Modifier) {
+    val labelStyle = MaterialTheme.typography.labelSmall
+    val chargedContainer = MaterialTheme.colorScheme.tertiaryContainer
+    val chargedContent = MaterialTheme.colorScheme.onTertiaryContainer
+    val opticalOffset = with(androidx.compose.ui.platform.LocalDensity.current) {
+        (labelStyle.fontSize * -0.08f).toDp()
+    }
+    Box(
+        modifier = modifier
+            .clip(AppShapes.container(ContainerLevel.Tag))
+            .background(chargedContainer)
+            .padding(horizontal = 4.dp, vertical = 2.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        AppText(
+            text = "⚡$text",
+            modifier = Modifier.offset(y = opticalOffset),
+            style = labelStyle.copy(
+                lineHeight = labelStyle.fontSize,
+                platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false),
+                lineHeightStyle = androidx.compose.ui.text.style.LineHeightStyle(
+                    alignment = androidx.compose.ui.text.style.LineHeightStyle.Alignment.Center,
+                    trim = androidx.compose.ui.text.style.LineHeightStyle.Trim.Both,
+                ),
+            ),
+            color = chargedContent,
+            maxLines = 1,
+            tapToCopyEnabled = false,
+        )
+    }
+}
+
+@Composable
+private fun rememberInlineChargedBadgeContent(): InlineTextContent {
+    return remember {
+        InlineTextContent(
+            Placeholder(
+                width = 3.2.em,
+                height = 1.15.em,
+                placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+            )
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                ChargedReplyTag(text = "充电评论")
+            }
+        }
+    }
+}
+
+// 充电评论识别：reply_control.charged_desc 非空，或 cardLabels 中出现“充电”标签
+internal fun resolveChargedReplyLabel(item: ReplyItem): String? {
+    val desc = item.replyControl?.chargedDesc?.takeIf { it.isNotBlank() }
+    if (desc != null) return desc
+    val label = item.cardLabels
+        ?.firstOrNull { it.textContent.contains("充电") }
+        ?.textContent
+        ?.takeIf { it.isNotBlank() }
+    return label
 }
 
 private const val COMMENT_PICTURE_MAX_RETRIES = 3
@@ -3007,22 +3374,9 @@ fun CommentPictures(
     onImageClick: (List<String>, Int, ImagePreviewSourceAnchor?) -> Unit,
     testTagPrefix: String = COMMENT_PICTURE_TAG_PREFIX
 ) {
-    //  获取高质量图片URL（移除分辨率限制参数）
+    //  获取高质量图片URL（移除分辨率限制参数）；URL 归一化规则下沉 core-data 后委托共享实现
     val imageUrls = remember(pictures) {
-        pictures.map { pic ->
-            var url = pic.imgSrc
-            // 修复协议
-            if (url.startsWith("//")) {
-                url = "https:$url"
-            } else if (url.startsWith("http://")) {
-                url = url.replace("http://", "https://")
-            }
-            //  移除尺寸参数以获取原图（避免模糊）
-            if (url.contains("@")) {
-                url = url.substringBefore("@")
-            }
-            url
-        }
+        resolveCommentPictureUrls(pictures)
     }
     val galleryRects = remember(imageUrls) { mutableMapOf<Int, Rect>() }
     val context = LocalContext.current
@@ -3033,25 +3387,21 @@ fun CommentPictures(
     val thumbnailDecodeSize = remember {
         resolveImageDecodeSize(ImageDecodeTarget.COMMENT_THUMBNAIL)
     }
-    
+
     //  GIF 图片加载器
     val gifImageLoader = context.imageLoader
-    
-    
+
+
     // 根据图片数量选择不同的布局
     when (pictures.size) {
         1 -> {
             // 单张图片：保持原始比例，限制最大尺寸
             val pic = pictures[0]
-            //  [优化] 更好的比例计算
-            val aspectRatio = if (pic.imgHeight > 0 && pic.imgWidth > 0) {
-                (pic.imgWidth.toFloat() / pic.imgHeight.toFloat()).coerceIn(0.5f, 2f)
-            } else {
-                1.33f  // 默认 4:3 比例
-            }
+            //  [优化] 更好的比例计算；比例规则下沉 core-data 后委托共享实现
+            val aspectRatio = resolveCommentSinglePictureAspectRatio(pic)
             var imageRect by remember { mutableStateOf<Rect?>(null) }
             val sourceHidden = isImagePreviewSourceHidden(imageRect)
-            
+
             Box(
                 modifier = Modifier
                     .widthIn(max = 220.dp)  //  [优化] 增大最大宽度
@@ -3065,7 +3415,7 @@ fun CommentPictures(
                         imageRect = coordinates.boundsInWindow()
                         imageRect?.let { galleryRects[0] = it }
                     }
-                    .clickable(
+                    .appActionClickable(
                         interactionSource = null,
                         indication = null,
                         enabled = !sourceHidden,
@@ -3095,11 +3445,9 @@ fun CommentPictures(
         else -> {
             // 多张图片：网格布局
             val displayItems = pictures.take(9)  //  [优化] 最多显示9张
-            val columns = when {
-                displayItems.size <= 4 -> 2
-                else -> 3
-            }
-            
+            // 列数规则下沉 core-data 后委托共享实现
+            val columns = resolveCommentPictureGridColumns(displayItems.size)
+
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {  //  [优化] 增加间距 4dp → 6dp
                 displayItems.chunked(columns).forEachIndexed { rowIndex, row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -3107,7 +3455,7 @@ fun CommentPictures(
                             val globalIndex = rowIndex * columns + colIndex
                             var imageRect by remember { mutableStateOf<Rect?>(null) }
                             val sourceHidden = isImagePreviewSourceHidden(imageRect)
-                            
+
                             Box(
                                 modifier = Modifier
                                     .size(85.dp)  //  [优化] 增大尺寸 80dp → 85dp
@@ -3119,7 +3467,7 @@ fun CommentPictures(
                                         imageRect = coordinates.boundsInWindow()
                                         imageRect?.let { galleryRects[globalIndex] = it }
                                     }
-                                    .clickable(
+                                    .appActionClickable(
                                         interactionSource = null,
                                         indication = null,
                                         enabled = !sourceHidden,
@@ -3145,7 +3493,7 @@ fun CommentPictures(
                                     imageLoader = gifImageLoader,
                                     decodeSize = thumbnailDecodeSize,
                                 )
-                                
+
                                 //  [新增] 最后一张图片显示多图角标（如 +3）
                                 if (globalIndex == displayItems.size - 1 && totalCount > 9) {
                                     Box(

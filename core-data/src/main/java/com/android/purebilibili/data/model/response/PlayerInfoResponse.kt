@@ -26,6 +26,8 @@ data class PlayerInfoData(
     val aid: Long = 0,
     val bvid: String = "",
     val cid: Long = 0,
+    @SerialName("last_play_cid")
+    val lastPlayCid: Long? = null,
     @SerialName("view_points")
     val viewPoints: List<ViewPoint> = emptyList(),
     @SerialName("online_count")

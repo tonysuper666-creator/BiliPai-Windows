@@ -15,13 +15,30 @@ internal fun resolveHomeTopSearchRowMetrics(
     configuredTabsSpacing: Dp,
     bottomBarSearchEnabled: Boolean,
     hideTopTabs: Boolean,
+    keepTopSearch: Boolean = false,
 ): HomeTopSearchRowMetrics {
-    val searchLivesInTopChrome = !bottomBarSearchEnabled || hideTopTabs
+    // Hiding the search pill must not remove avatar/settings when there is no tab row
+    // to host them. Both native and glass chrome reserve the same controls-only row.
+    val searchLivesInTopChrome = !bottomBarSearchEnabled || keepTopSearch
     return if (searchLivesInTopChrome) {
         HomeTopSearchRowMetrics(configuredHeight, configuredTabsSpacing)
+    } else if (hideTopTabs) {
+        HomeTopSearchRowMetrics(configuredHeight, 0.dp)
     } else {
         HomeTopSearchRowMetrics(0.dp, 0.dp)
     }
+}
+
+/** 首页与顶栏共用实际搜索行的收起距离，隐藏分类或迁移到底栏后不预留不存在的间距。 */
+internal fun resolveHomeTopSearchScrollDistance(
+    searchBarHeight: Dp,
+    searchToTabsSpacing: Dp,
+    extraSpacing: Dp,
+    hideTopTabs: Boolean,
+): Dp = if (searchBarHeight > 0.dp) {
+    searchBarHeight + (if (hideTopTabs) 0.dp else searchToTabsSpacing) + extraSpacing
+} else {
+    0.dp
 }
 
 /**

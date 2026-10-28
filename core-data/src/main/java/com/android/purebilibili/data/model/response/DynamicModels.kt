@@ -8,6 +8,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonNames
@@ -189,6 +190,13 @@ data class DynamicItem(
 object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
     override val descriptor: SerialDescriptor = DynamicModules.serializer().descriptor
 
+    /** 解析 opus 段落内交互载荷（预约 / 赛事 / 按钮）时使用的宽松 Json 配置。 */
+    private val linkCardPayloadJson = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        coerceInputValues = true
+    }
+
     override fun deserialize(decoder: Decoder): DynamicModules {
         val jsonDecoder = decoder as? JsonDecoder ?: return DynamicModules.serializer().deserialize(decoder)
         val element = jsonDecoder.decodeJsonElement()
@@ -328,10 +336,12 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
                         ?.get("text")
                         ?.jsonPrimitive
                         ?.contentOrNull
+                        ?.takeIf { it.isNotBlank() }
                     ?: (nodeObject["rich"] as? JsonObject)
                         ?.get("orig_text")
                         ?.jsonPrimitive
                         ?.contentOrNull
+                        ?.takeIf { it.isNotBlank() }
                     ?: ((nodeObject["rich"] as? JsonObject)?.get("emoji") as? JsonObject)
                         ?.get("text")
                         ?.jsonPrimitive
@@ -490,7 +500,8 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
             oid = card.stringValue("oid").ifBlank { ugc.stringValue("id_str") },
             title = ugc.stringValue("title"),
             description = ugc.stringValue("desc_second"),
-            label = ugc.stringValue("head_text"),
+            // 不设 label：信息流的 additional.ugc 根本没有 head_text 字段，用它会让
+            // 同一个投稿卡在信息流没有角标、进详情却多出一行，版式整体下移。
             cover = normalizeOptionalOpusImageUrl(ugc.stringValue("cover")),
             jumpUrl = ugc.stringValue("jump_url")
         )
@@ -507,7 +518,9 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
                 common.stringValue("desc1"),
                 common.stringValue("desc2")
             ).filter { it.isNotBlank() }.joinToString("\n"),
-            label = common.stringValue("head_text"),
+            // 不设 label：实测同一个「相关游戏」横幅，信息流的 head_text 是「相关游戏」
+            // 而详情侧为空，用它会让卡片进详情后少一行、内容整体上移。统一不展示角标后
+            // 两个入口的版式与高度完全一致。
             cover = normalizeOptionalOpusImageUrl(common.stringValue("cover")),
             jumpUrl = common.stringValue("jump_url")
         )
@@ -578,11 +591,13 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
 
     private fun parseVoteLinkCard(card: JsonObject, type: String): OpusLinkCard {
         val vote = card.objectValue("vote")
+        val joinNum = vote.stringValue("join_num").toIntOrNull() ?: 0
         return OpusLinkCard(
             type = type,
             oid = card.stringValue("oid").ifBlank { vote.stringValue("vote_id") },
             title = vote.stringValue("title").ifBlank { vote.stringValue("desc") }.ifBlank { "投票" },
-            description = vote.stringValue("desc"),
+            // 与信息流对齐：描述行只放参与人数，不再把投票文案重复一遍。
+            description = if (joinNum > 0) "$joinNum 人参与" else "",
             jumpUrl = vote.stringValue("jump_url")
         )
     }
@@ -590,8 +605,6 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
     private fun parseReserveLinkCard(card: JsonObject, type: String): OpusLinkCard {
         val reserve = card.objectValue("reserve")
         val button = reserve.objectValue("button")
-        val buttonStatus = button.stringValue("status").toIntOrNull() ?: 0
-        val buttonState = if (buttonStatus == 2) button.objectValue("check") else button.objectValue("uncheck")
         return OpusLinkCard(
             type = type,
             oid = card.stringValue("oid").ifBlank { reserve.stringValue("rid") },
@@ -602,9 +615,11 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
                 reserve.objectValue("desc3").stringValue("text"),
             ).filter(String::isNotBlank).joinToString(" · "),
             jumpUrl = reserve.stringValue("jump_url").ifBlank { button.stringValue("jump_url") },
-            badgeText = buttonState.stringValue("text").ifBlank {
-                button.objectValue("jump_style").stringValue("text")
-            },
+            // 按钮文案走与信息流完全相同的取值规则（resolveDynamicCardButtonText），
+            // 避免同一个预约按钮在列表里显示「预约」、进详情变成别的文字。
+            badgeText = resolveDynamicCardButtonText(decodeButtonPayload(button)),
+            // 详情侧也要能直接预约，而不是只能点开跳转链接。
+            reserve = decodeReservePayload(reserve),
         )
     }
 
@@ -619,6 +634,9 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
             label = "赛事",
             cover = normalizeOptionalOpusImageUrl(match.stringValue("cover")),
             jumpUrl = match.stringValue("jump_url"),
+            // 补解析 match_info：此前详情侧把比分与左右队伍整段丢掉了，
+            // 同一个赛事卡在信息流有比分行、进详情就消失。
+            match = decodeMatchPayload(match),
         )
     }
 
@@ -635,8 +653,7 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
             ).filter(String::isNotBlank).joinToString(" · "),
             label = "充电专属抽奖",
             jumpUrl = lottery.stringValue("jump_url").ifBlank { button.stringValue("jump_url") },
-            badgeText = button.objectValue("jump_style").stringValue("text")
-                .ifBlank { button.objectValue("check").stringValue("text") },
+            badgeText = resolveDynamicCardButtonText(decodeButtonPayload(button)),
         )
     }
 
@@ -660,6 +677,32 @@ object DynamicModulesFlexibleSerializer : KSerializer<DynamicModules> {
             jumpUrl = card.stringValue("jump_url")
         )
     }
+
+    /**
+     * opus 段落里的交互载荷（预约、赛事）用同一套数据模型承载，
+     * 这样信息流 additional 与详情 opus link_card 可以共用渲染与交互逻辑。
+     * 解析失败时退化为 null，只影响交互，不影响卡片本身的展示。
+     */
+    private fun decodeReservePayload(reserve: JsonObject?): DynamicAdditionalReserve? =
+        reserve?.let { payload ->
+            runCatching {
+                linkCardPayloadJson.decodeFromJsonElement(DynamicAdditionalReserve.serializer(), payload)
+            }.getOrNull()
+        }
+
+    private fun decodeMatchPayload(match: JsonObject?): DynamicAdditionalMatch? =
+        match?.let { payload ->
+            runCatching {
+                linkCardPayloadJson.decodeFromJsonElement(DynamicAdditionalMatch.serializer(), payload)
+            }.getOrNull()
+        }
+
+    private fun decodeButtonPayload(button: JsonObject?): DynamicCardButton? =
+        button?.let { payload ->
+            runCatching {
+                linkCardPayloadJson.decodeFromJsonElement(DynamicCardButton.serializer(), payload)
+            }.getOrNull()
+        }
 
     private fun JsonObject?.stringValue(key: String): String {
         if (this == null) return ""
@@ -854,6 +897,37 @@ data class ReplyInteractionStatus(
     val can_modify: Boolean = false
 )
 
+// Read-only recent-author flags. Missing flags remain unknown, unlike the legacy integer uplist.
+@Serializable
+data class DynamicAuthorUpdatesPortalResponse(
+    val code: Int? = null,
+    val data: DynamicAuthorUpdatesPortalData? = null
+)
+
+@Serializable
+data class DynamicAuthorUpdatesPortalData(
+    @SerialName("up_list") val upList: DynamicAuthorUpdatesPage? = null
+)
+
+@Serializable
+data class DynamicAuthorUpdatesPageResponse(
+    val code: Int? = null,
+    val data: DynamicAuthorUpdatesPage? = null
+)
+
+@Serializable
+data class DynamicAuthorUpdatesPage(
+    @SerialName("has_more") val hasMore: Boolean? = null,
+    val items: List<DynamicAuthorUpdateItem>? = null,
+    val offset: String? = null
+)
+
+@Serializable
+data class DynamicAuthorUpdateItem(
+    val mid: Long? = null,
+    @SerialName("has_update") val hasUpdate: Boolean? = null
+)
+
 // --- 关注 UP 列表（含未读标记，供 UP 列表红点） ---
 // API: dynamic_svr/v1/dynamic_svr/w_dyn_uplist
 @Serializable
@@ -1005,6 +1079,8 @@ data class DynamicAdditional(
 data class DynamicAdditionalCommon(
     val button: DynamicCardButton? = null,
     val cover: String = "",
+    /** 详情侧 opus link_card 会带 desc，信息流此前漏解析，补齐后两侧描述才能逐字一致。 */
+    val desc: String = "",
     val desc1: String = "",
     val desc2: String = "",
     val head_text: String = "",
@@ -1021,7 +1097,9 @@ data class DynamicAdditionalUgc(
     val title: String = "",
     val cover: String = "",
     val desc_second: String = "",
-    val jump_url: String = ""
+    val jump_url: String = "",
+    /** 角标文案来源，与详情侧 LINK_CARD_TYPE_UGC 的 ugc.head_text 对齐。 */
+    val head_text: String = ""
 )
 
 @Serializable
@@ -1061,6 +1139,7 @@ data class DynamicReserveClickData(
 @Serializable
 data class DynamicAdditionalGoods(
     val head_text: String = "",
+    val jump_url: String = "",
     val items: List<DynamicAdditionalGoodsItem> = emptyList()
 )
 
@@ -1068,12 +1147,16 @@ data class DynamicAdditionalGoods(
 data class DynamicAdditionalGoodsItem(
     val name: String = "",
     val brief: String = "",
+    val price: String = "",
     val cover: String = "",
-    val jump_url: String = ""
+    val jump_url: String = "",
+    /** 右侧角标文案，与详情侧 items[].jump_desc 对齐。 */
+    val jump_desc: String = ""
 )
 
 @Serializable
 data class DynamicAdditionalVote(
+    val title: String = "",
     val desc: String = "",
     val join_num: Int = 0,
     val vote_id: Long = 0
@@ -1083,6 +1166,7 @@ data class DynamicAdditionalVote(
 data class DynamicAdditionalMatch(
     val title: String = "",
     val sub_title: String = "",
+    val cover: String = "",
     val jump_url: String = "",
     @SerialName("match_info")
     val matchInfo: DynamicMatchInfo? = null
@@ -1144,6 +1228,16 @@ data class DynamicCardButtonStyle(
     val text: String = "",
     val toast: String = ""
 )
+
+/**
+ * 动态卡片按钮文案。信息流 additional 与详情 opus link_card 共用同一套取值规则：
+ * 已/未选中文案优先，其次回落到跳转文案，避免同一个按钮在两个入口显示两种文字。
+ */
+fun resolveDynamicCardButtonText(button: DynamicCardButton?): String {
+    if (button == null) return ""
+    val stateText = if (button.status == button.type) button.check?.text else button.uncheck?.text
+    return stateText.orEmpty().ifBlank { button.jump_style?.text.orEmpty() }
+}
 
 @Serializable
 data class DynamicAdditionalText(
@@ -1256,7 +1350,18 @@ data class OpusLinkCard(
     val label: String = "",
     val cover: String = "",
     val jumpUrl: String = "",
-    val badgeText: String = ""
+    val badgeText: String = "",
+    /**
+     * 预约交互载荷。信息流的 `additional.reserve` 与详情 opus 段落里的
+     * `link_card.card.reserve` 结构一致，统一承载在这里，让两个入口共用同一套
+     * 预约按钮渲染与交互逻辑。
+     */
+    val reserve: DynamicAdditionalReserve? = null,
+    /**
+     * 赛事比分行载荷。详情侧此前完全没有解析 match_info，导致同一个赛事卡
+     * 在信息流有比分行、进详情后消失。
+     */
+    val match: DynamicAdditionalMatch? = null,
 )
 
 @Serializable

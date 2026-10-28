@@ -19,12 +19,13 @@ import top.yukonga.miuix.kmp.nav.core.NavPresentationState
  * - top steady state -> [Lifecycle.State.RESUMED]
  * - covered layer    -> [Lifecycle.State.STARTED]
  * - being removed     -> [Lifecycle.State.CREATED]
- * - fully exited      -> [Lifecycle.State.DESTROYED]
+ * - outside the presentation window while composed -> [Lifecycle.State.CREATED]
  *
  * The `0.5` threshold splits "top" from "covered": a settled top sits at `d = 0` (RESUMED) while
  * the first covered layer sits at `d = 1` (STARTED). An incoming entry above the top
- * (`-1 < d < -0.5`, not removing) is STARTED while it slides in. Anything with `d <= -1` has left
- * the presentation window and is DESTROYED.
+ * (`-1 < d < -0.5`, not removing) is STARTED while it slides in. An entry outside the
+ * presentation window stays CREATED until its composition is disposed. Animated depth can
+ * reverse, while DESTROYED is terminal and cannot be resumed.
  *
  * While a gesture owns the float ([gestureActive]) the RESUMED window is additionally capped at
  * STARTED: a finger can hover and oscillate around the `+-0.5` thresholds without bound, and a
@@ -40,7 +41,7 @@ import top.yukonga.miuix.kmp.nav.core.NavPresentationState
  * @return the lifecycle ceiling for this entry.
  */
 internal fun navMaxLifecycleFor(presentation: NavPresentationState, d: Float, gestureActive: Boolean): Lifecycle.State = when {
-    d <= -1f -> Lifecycle.State.DESTROYED
+    d <= -1f -> Lifecycle.State.CREATED
     presentation.isRemoving -> Lifecycle.State.CREATED
     d < -0.5f -> Lifecycle.State.STARTED
     d < 0.5f -> if (gestureActive) Lifecycle.State.STARTED else Lifecycle.State.RESUMED

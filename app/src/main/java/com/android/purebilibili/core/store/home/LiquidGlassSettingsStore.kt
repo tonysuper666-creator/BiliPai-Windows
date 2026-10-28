@@ -12,7 +12,27 @@ import kotlinx.coroutines.flow.map
 internal val liquidGlassReadabilityModePreferencesKey =
     intPreferencesKey("liquid_glass_readability_mode")
 
+enum class GlassPopupPalette(val value: Int, val label: String) {
+    DOCK(0, "原有底色"),
+    THEME_FROSTED(1, "主题磨砂");
+
+    companion object {
+        fun fromValue(value: Int): GlassPopupPalette = entries.firstOrNull { it.value == value } ?: DOCK
+    }
+}
+
+internal val glassPopupPalettePreferencesKey = intPreferencesKey("liquid_glass_popup_palette")
+
 object LiquidGlassSettingsStore {
+    fun observePopupPalette(context: Context): Flow<GlassPopupPalette> =
+        context.settingsDataStore.data.map {
+            GlassPopupPalette.fromValue(it[glassPopupPalettePreferencesKey] ?: GlassPopupPalette.DOCK.value)
+        }.distinctUntilChanged()
+
+    suspend fun setPopupPalette(context: Context, palette: GlassPopupPalette) {
+        context.settingsDataStore.edit { it[glassPopupPalettePreferencesKey] = palette.value }
+    }
+
     fun observeReadabilityMode(context: Context): Flow<LiquidGlassReadabilityMode> =
         context.settingsDataStore.data
             .map { preferences ->

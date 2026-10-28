@@ -44,7 +44,7 @@ fun AppPopupSurface(
 ) {
     val renderer = LocalAppPopupSurfaceRenderer.current
     val resolvedContentColor = if (contentColor == Color.Unspecified) {
-        MaterialTheme.colorScheme.onSurface
+        AppContentColors.primaryText()
     } else {
         contentColor
     }

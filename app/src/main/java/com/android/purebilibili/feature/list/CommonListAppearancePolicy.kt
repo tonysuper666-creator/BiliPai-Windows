@@ -110,7 +110,8 @@ internal fun resolveCommonListHeaderOffsetPx(
     mode: CommonListHeaderCollapseMode
 ): Float {
     if (mode == CommonListHeaderCollapseMode.ALWAYS_VISIBLE || maxCollapsePx <= 0f) return 0f
-    if (isAtTop && scrollDeltaYPx >= 0f) return 0f
+    // 到顶后的展开由页面动画接管，保留当前位置，避免滚动回调抢先归零。
+    if (isAtTop && scrollDeltaYPx >= 0f) return currentOffsetPx.coerceIn(-maxCollapsePx, 0f)
     if (mode == CommonListHeaderCollapseMode.SHOW_AT_TOP_ONLY && scrollDeltaYPx > 0f) {
         return currentOffsetPx.coerceIn(-maxCollapsePx, 0f)
     }

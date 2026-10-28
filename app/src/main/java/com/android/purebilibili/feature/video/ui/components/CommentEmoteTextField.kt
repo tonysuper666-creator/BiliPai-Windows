@@ -85,6 +85,9 @@ internal fun CommentEmoteTextField(
             textSelectionRange = value.selection
             focused = editorFocused
             if (!enabled) disabled()
+            requestFocus {
+                if (!enabled || readOnly) false else editor?.requestFocus() == true
+            }
             setText { replacement ->
                 val view = editor
                 if (view == null || !enabled || readOnly) false else {

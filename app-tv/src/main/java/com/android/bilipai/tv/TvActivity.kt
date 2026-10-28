@@ -17,6 +17,6 @@ class TvActivity : ComponentActivity() {
             hide(WindowInsetsCompat.Type.systemBars())
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
-        setContent { TvTheme { TvApp() } }
+        setContent { TvApp() }
     }
 }

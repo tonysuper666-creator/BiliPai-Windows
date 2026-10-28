@@ -135,3 +135,8 @@ desktop/verification/**/private-native-home/
 # Native source-build inputs are source; ordinary build output remains ignored.
 !/desktop/third-party/libmpv/build/
 !/desktop/third-party/libmpv/build/**
+
+# Upstream merge: keep upstream-tracked files trackable.
+!build-logic/src/main/java/com/android/purebilibili/build/
+!app/src/main/baseline-prof.txt
+!app/src/main/baselineProfiles/startup-prof.txt

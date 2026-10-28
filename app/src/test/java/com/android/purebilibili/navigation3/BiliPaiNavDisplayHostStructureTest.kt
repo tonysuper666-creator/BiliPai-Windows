@@ -24,11 +24,12 @@ class BiliPaiNavDisplayHostStructureTest {
     fun cardDisabledVideoUsesSelectedGlobalNavTransition() {
         val source = navDisplayHostSource()
         val fallbackBlock = source
-            .substringAfter("val videoFallbackTransition = if (cardTransitionEnabled)")
+            .substringAfter("val videoFallbackTransition = resolveVideoCardFallbackTransition(")
             .substringBefore("val observedVideoFallbackTransition")
 
-        assertTrue(fallbackBlock.contains("predictiveBackExcludedTransition"))
+        assertTrue(fallbackBlock.contains("NavTransitions.MiuixDefault"))
         assertTrue(fallbackBlock.contains("globalTransition"))
+        assertTrue(fallbackBlock.contains("animationStyle = style"))
         assertTrue(source.contains("videoCardTransitionProgress.observe(videoFallbackTransition)"))
     }
 
@@ -375,18 +376,20 @@ class BiliPaiNavDisplayHostStructureTest {
     }
 
     @Test
-    fun navDisplayHostLayersVideoCardTransitionNavBackdropBehindNavDisplay() {
+    fun navDisplayHostKeepsFixedBackingBelowRetainedDepthAndNavigationEntries() {
         val source = navDisplayHostSource()
 
-        assertTrue(source.contains("VideoCardTransitionNavBackdrop("))
-        assertTrue(source.contains("shouldShowVideoCardTransitionNavBackdrop"))
+        assertTrue(source.contains("backdropColor = if (videoCardMorphOwnsCorners) Color.Unspecified else backdropColor"))
+        assertTrue(source.contains("resolveMiuixVideoCardCoveredScale("))
+        assertTrue(source.contains("shape = hostCoveredShapeCache.resolve(resolveMiuixVideoCardCoveredCornerPx("))
         // Root host Box is multi-line: modifier.fillMaxSize() + background token.
         assertTrue(source.contains("modifier = modifier"))
         assertTrue(source.contains(".fillMaxSize()"))
         val boxBlock = source
             .substringAfter("VideoCardTransitionHostDepthLayer(")
             .substringBefore("@Composable\nprivate fun ProvideNavigation3ViewModelApplicationExtras")
-        assertTrue(boxBlock.indexOf("VideoCardTransitionNavBackdrop") < boxBlock.indexOf("NavDisplay("))
+        assertTrue(boxBlock.indexOf("snapshotHandle = videoCardSnapshotHandle") < boxBlock.indexOf("NavDisplay("))
+        assertFalse(boxBlock.contains("VideoCardTransitionNavBackdrop("))
     }
 
     private fun navDisplayHostSource(): String {

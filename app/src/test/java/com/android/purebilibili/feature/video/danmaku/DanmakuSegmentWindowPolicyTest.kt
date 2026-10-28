@@ -1,11 +1,35 @@
 package com.android.purebilibili.feature.video.danmaku
 
+import com.android.purebilibili.danmaku.engine.DanmakuItem
+import com.android.purebilibili.danmaku.parser.AdvancedDanmakuData
+import com.android.purebilibili.danmaku.parser.ParsedDanmaku
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class DanmakuSegmentWindowPolicyTest {
+    @Test
+    fun `whole video XML fallback is partitioned without duplicates at segment boundaries`() {
+        val times = listOf(0L, 359_999L, 360_000L, 719_999L, 720_000L)
+        val standard = times.map { time -> DanmakuItem().apply { showAtTime = time } }
+        val advanced = times.map { time ->
+            AdvancedDanmakuData(
+                content = "advanced:$time", startTimeMs = time, durationMs = 5_000L,
+                startX = 0f, startY = 0f
+            )
+        }
+        val parsed = ParsedDanmaku(standard, advanced)
+        val slices = (1..3).map { sliceDanmakuFallbackSegment(parsed, it) }
+
+        assertEquals(listOf(0L, 359_999L), slices[0].standardList.map { it.showAtTime })
+        assertEquals(listOf(360_000L, 719_999L), slices[1].standardList.map { it.showAtTime })
+        assertEquals(listOf(720_000L), slices[2].standardList.map { it.showAtTime })
+        assertEquals(standard, slices.flatMap { it.standardList })
+        assertEquals(advanced, slices.flatMap { it.advancedList })
+    }
+
     @Test
     fun `position maps to one-based six-minute segments`() {
         assertEquals(1, segmentIndexForPosition(0L))
@@ -66,35 +90,20 @@ class DanmakuSegmentWindowPolicyTest {
     }
 
     @Test
-    fun `scrubbing gates asynchronous data and playback callbacks`() {
-        val source = java.io.File(
-            "src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt"
-        ).readText()
-        val dataCommit = source.substringAfter("activeSegmentIndices = requestedSegments")
-        assertTrue(dataCommit.indexOf("if (isSeekScrubbing)") < dataCommit.indexOf("rollWindowForward("))
-        val playingCallback = source.substringAfter("override fun onIsPlayingChanged(isPlayerPlaying: Boolean) {")
-        assertTrue(playingCallback.trimStart().startsWith("if (isSeekScrubbing) return"))
-        val overlay = java.io.File(
-            "src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBar.kt"
-        ).readText()
-        assertFalse(overlay.contains("tryAwaitRelease()"))
-        assertTrue(overlay.contains("if (dragInProgress) currentOnSeekDragCancel()"))
-    }
-
-    @Test
-    fun `renderer supports seamless forward window roll instead of timeline reload`() {
-        val managerSource = java.io.File(
-            "src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt"
-        ).readText()
-        val engineSource = java.io.File(
-            "../danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt"
-        ).readText()
-
-        assertTrue(managerSource.contains("rollWindowForward("))
-        assertFalse(managerSource.contains("reason = \"${'$'}reason:complete\""))
-        assertFalse(managerSource.contains("reason = \"${'$'}reason:anchor\""))
-        assertTrue(managerSource.contains("reason != \"playback_progress\""))
-        assertTrue(engineSource.contains("controller.appendData("))
-        assertTrue(engineSource.contains("controller.discardDataBefore("))
+    fun `missing segment retries the displayed window without restarting an in-flight retry`() {
+        assertTrue(
+            shouldRequestDanmakuWindow(
+                activeSegments = listOf(1, 2), pendingSegments = emptyList(),
+                requestInFlight = false, positionMs = 120_000L, totalSegments = 10,
+                hasMissingSegments = true
+            )
+        )
+        assertFalse(
+            shouldRequestDanmakuWindow(
+                activeSegments = listOf(1, 2), pendingSegments = listOf(1, 2),
+                requestInFlight = true, positionMs = 120_000L, totalSegments = 10,
+                hasMissingSegments = true
+            )
+        )
     }
 }

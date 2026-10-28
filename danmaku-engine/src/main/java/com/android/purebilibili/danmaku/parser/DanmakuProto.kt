@@ -35,7 +35,8 @@ object DanmakuProto {
     /** DmSegMobileReply 解析结果：elems + 顶层 state（1 = UP主已关闭弹幕） */
     data class DanmakuSegReply(
         val elems: List<DanmakuElem>,
-        val state: Int
+        val state: Int,
+        val parseFailed: Boolean = false
     )
 
     
@@ -438,6 +439,7 @@ object DanmakuProto {
     fun parseReply(data: ByteArray): DanmakuSegReply {
         val result = mutableListOf<DanmakuElem>()
         var state = 0
+        var parseFailed = false
 
         if (data.isEmpty()) {
             Log.w(TAG, " Empty data received")
@@ -459,6 +461,7 @@ object DanmakuProto {
                         if (wireType == 2) {
                             val elemData = input.readBytes()
                             val elem = parseDanmakuElem(elemData)
+                            if (elem == null && elemData.isNotEmpty()) parseFailed = true
                             if (elem != null && elem.content.isNotEmpty()) {
                                 result.add(elem)
                             }
@@ -480,10 +483,11 @@ object DanmakuProto {
             Log.d(TAG, " Parsed ${result.size} danmakus from protobuf (state=$state)")
 
         } catch (e: Exception) {
+            parseFailed = true
             Log.e(TAG, " Parse protobuf error: ${e.message}", e)
         }
 
-        return DanmakuSegReply(result, state)
+        return DanmakuSegReply(result, state, parseFailed)
     }
     
     /**
@@ -572,7 +576,16 @@ object DanmakuProto {
         
         fun isAtEnd(): Boolean = position >= data.size
         
-        fun readTag(): Int = readVarint().toInt()
+        fun readTag(): Int {
+            val value = readVarint()
+            require(value in 1L..0xFFFF_FFFFL) { "Invalid protobuf tag" }
+            val tag = value.toInt()
+            val wireType = tag and 7
+            require(tag ushr 3 > 0 &&
+                (wireType == 0 || wireType == 1 || wireType == 2 || wireType == 5)
+            ) { "Invalid protobuf wire type" }
+            return tag
+        }
         
         /**
          * 读取 Varint (变长整数)
@@ -586,7 +599,8 @@ object DanmakuProto {
                 result = result or ((byte and 0x7F).toLong() shl shift)
                 
                 if ((byte and 0x80) == 0) {
-                    break
+                    require(shift < 63 || byte <= 1) { "Varint overflow" }
+                    return result
                 }
                 shift += 7
                 
@@ -595,17 +609,16 @@ object DanmakuProto {
                 }
             }
             
-            return result
+            throw IllegalArgumentException("Truncated varint")
         }
         
         /**
          * 读取 length-delimited 字节数组
          */
         fun readBytes(): ByteArray {
-            val length = readVarint().toInt()
-            if (length <= 0 || position + length > data.size) {
-                return ByteArray(0)
-            }
+            val rawLength = readVarint()
+            require(rawLength >= 0L && rawLength <= (data.size - position).toLong()) { "Truncated protobuf bytes" }
+            val length = rawLength.toInt()
             val result = data.copyOfRange(position, position + length)
             position += length
             return result
@@ -620,7 +633,7 @@ object DanmakuProto {
         }
 
         fun readFloat(): Float {
-            if (position + 4 > data.size) return 0f
+            require(data.size - position >= 4) { "Truncated protobuf float" }
             val bits = (data[position].toInt() and 0xFF) or
                 ((data[position + 1].toInt() and 0xFF) shl 8) or
                 ((data[position + 2].toInt() and 0xFF) shl 16) or
@@ -635,14 +648,20 @@ object DanmakuProto {
         fun skipField(wireType: Int) {
             when (wireType) {
                 0 -> readVarint()           // Varint
-                1 -> position += 8          // 64-bit
+                1 -> skipBytes(8)           // 64-bit
                 2 -> {                      // Length-delimited
-                    val length = readVarint().toInt()
-                    position += length
+                    val length = readVarint()
+                    require(length >= 0L && length <= (data.size - position).toLong()) { "Truncated protobuf field" }
+                    skipBytes(length.toInt())
                 }
-                5 -> position += 4          // 32-bit
-                else -> { /* 未知类型，忽略 */ }
+                5 -> skipBytes(4)           // 32-bit
+                else -> throw IllegalArgumentException("Unsupported protobuf wire type")
             }
+        }
+
+        private fun skipBytes(length: Int) {
+            require(length >= 0 && length <= data.size - position) { "Truncated protobuf field" }
+            position += length
         }
     }
 }

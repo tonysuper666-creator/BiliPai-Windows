@@ -7,9 +7,9 @@ import kotlin.test.assertEquals
 class CommonListHeaderCollapsePolicyTest {
 
     @Test
-    fun `collapse mode falls back to reverse scroll behavior`() {
+    fun `collapse mode falls back to top only behavior`() {
         assertEquals(
-            CommonListHeaderCollapseMode.SHOW_ON_REVERSE_SCROLL,
+            CommonListHeaderCollapseMode.SHOW_AT_TOP_ONLY,
             CommonListHeaderCollapseMode.fromValue(999)
         )
     }
@@ -91,7 +91,7 @@ class CommonListHeaderCollapsePolicyTest {
     }
 
     @Test
-    fun `top only mode stays collapsed until list reaches top`() {
+    fun `top only mode retains offset for animated reveal at top`() {
         assertEquals(
             -160f,
             resolveCommonListHeaderOffsetPx(
@@ -103,7 +103,7 @@ class CommonListHeaderCollapsePolicyTest {
             )
         )
         assertEquals(
-            0f,
+            -160f,
             resolveCommonListHeaderOffsetPx(
                 currentOffsetPx = -160f,
                 scrollDeltaYPx = 0f,
@@ -112,6 +112,25 @@ class CommonListHeaderCollapsePolicyTest {
                 mode = CommonListHeaderCollapseMode.SHOW_AT_TOP_ONLY
             )
         )
+    }
+
+    @Test
+    fun `remaining scroll at top preserves partially hidden header for animation`() {
+        for (mode in listOf(
+            CommonListHeaderCollapseMode.SHOW_AT_TOP_ONLY,
+            CommonListHeaderCollapseMode.SHOW_ON_REVERSE_SCROLL,
+        )) {
+            assertEquals(
+                -72f,
+                resolveCommonListHeaderOffsetAfterContentScroll(
+                    currentOffsetPx = -72f,
+                    contentConsumedDeltaYPx = 200f,
+                    maxCollapsePx = 160f,
+                    isAtTop = true,
+                    mode = mode,
+                )
+            )
+        }
     }
 
     @Test

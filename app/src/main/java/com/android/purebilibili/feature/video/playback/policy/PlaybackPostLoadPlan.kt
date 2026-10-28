@@ -36,9 +36,12 @@ internal fun buildPlaybackPostLoadPlan(
             task = PlaybackPostLoadTask.OWNER_STATS,
             delayMs = 450L
         ),
+        // 标签行会插在简介与操作栏之间，晚到必然把下方内容整体下推。
+        // 提前到首批发起，让插入发生在进入详情页的共享元素转场窗口内被掩盖，
+        // 而不是转场结束后单独跳一下。（标签请求很小，不与播放首帧抢占带宽）
         PlaybackPostLoadTaskSpec(
             task = PlaybackPostLoadTask.VIDEO_TAGS,
-            delayMs = 450L
+            delayMs = 0L
         ),
         PlaybackPostLoadTaskSpec(
             task = PlaybackPostLoadTask.HEARTBEAT,
@@ -59,9 +62,11 @@ internal fun buildPlaybackPostLoadPlan(
     )
 
     if (isLoggedIn) {
+        // 交互状态(点赞/关注/收藏/投币)直接决定详情页按钮的最终外观，
+        // 是唯一"晚到即被用户看见"的信号，因此不再排队等待，加载完成后立即发起。
         plan += PlaybackPostLoadTaskSpec(
             task = PlaybackPostLoadTask.REFRESH_DEFERRED_SIGNALS,
-            delayMs = 450L
+            delayMs = 0L
         )
         plan += PlaybackPostLoadTaskSpec(
             task = PlaybackPostLoadTask.LOAD_FOLLOWING_MIDS,

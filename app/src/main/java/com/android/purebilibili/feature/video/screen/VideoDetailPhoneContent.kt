@@ -1,11 +1,13 @@
 package com.android.purebilibili.feature.video.screen
 
+import com.android.purebilibili.feature.video.viewmodel.CommentSubjectKey
+import com.android.purebilibili.feature.video.viewmodel.resolveReplyCount
+import com.android.purebilibili.core.ui.AppContentColors
+
 import android.content.Context
-import android.graphics.RenderEffect as AndroidRenderEffect
-import android.graphics.Shader
 import android.os.Build
-import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
+import com.android.purebilibili.core.ui.transition.BlurRenderEffectCache
 import com.android.purebilibili.core.ui.transition.resolvePredictiveBackBlurFrame
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.purebilibili.core.ui.AppShapes
@@ -47,9 +50,10 @@ import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.feature.video.share.VideoSharePayload
 import com.android.purebilibili.feature.video.share.VideoShareSheet
 import com.android.purebilibili.feature.video.share.buildVideoSharePayload
-import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager
+import com.android.purebilibili.feature.video.danmaku.DanmakuManager
 import com.android.purebilibili.feature.video.state.VideoPlayerState
 import com.android.purebilibili.feature.video.ui.components.BottomInputBar
+import com.android.purebilibili.feature.video.ui.components.VideoDetailSkeleton
 import com.android.purebilibili.feature.video.ui.components.resolveBottomInputBarContentBottomPadding
 import com.android.purebilibili.feature.video.ui.components.shouldUseFloatingLiquidBottomInputBar
 import com.android.purebilibili.feature.home.components.BottomBarMatchedReusableLiquidDock
@@ -74,7 +78,7 @@ internal fun VideoDetailPhoneSuccessContentLayer(
     introListState: LazyListState,
     commentListState: LazyListState,
     videoContentPagerState: PagerState,
-    commentState: CommentUiState,
+    commentStateHandle: androidx.compose.runtime.State<CommentUiState>,
     engagementState: VideoEngagementUiState,
     androidNativeLiquidGlassEnabled: Boolean,
     commentMemberDecorationsEnabled: Boolean,
@@ -87,6 +91,7 @@ internal fun VideoDetailPhoneSuccessContentLayer(
     motionSpec: VideoDetailMotionSpec,
     hazeState: HazeState,
     isTransitionFinished: Boolean,
+    relatedContentReady: Boolean = true,
     isLeaving: Boolean,
     rootTransitionOwnsContentAlpha: Boolean,
     keepContentVisibleAfterBackPreview: Boolean = false,
@@ -98,8 +103,16 @@ internal fun VideoDetailPhoneSuccessContentLayer(
     showCommentInput: Boolean,
     isCommentThreadVisible: Boolean,
     showFavoriteFolderDialog: Boolean,
-    downloadProgress: Float,
+    downloadProgress: androidx.compose.runtime.State<Float>,
     danmakuEnabledForDetail: Boolean,
+    /**
+     * 详情页共享的弹幕会话。
+     *
+     * 必须由上层（与播放器、Overlay 同一份）传入，不能在正文层自行 acquire：
+     * 自行 acquire 会以不同的 key 再开一个会话，导致此处切换弹幕开关改动的是另一个
+     * manager 实例（功能失效），并在切集时产生额外 acquire/release 与渲染器重建。
+     */
+    danmakuManager: DanmakuManager,
     isQuickReturnLimitedForSharedElements: Boolean,
     transitionEnabled: Boolean,
     sourceRouteForSharedElement: String?,
@@ -108,7 +121,6 @@ internal fun VideoDetailPhoneSuccessContentLayer(
     homeUpBadgesVisible: Boolean,
     isVideoPlaying: Boolean,
     onSelectedTabChange: (Int) -> Unit,
-    onIntroScrollThresholdChange: (Boolean) -> Unit,
     openFavoriteFolders: (VideoFavoriteEntryPoint, isLongPress: Boolean) -> Unit,
     navigateToUserSpaceFromVideo: (Long) -> Unit,
     navigateToRelatedVideo: (String, android.os.Bundle?) -> Unit,
@@ -118,18 +130,53 @@ internal fun VideoDetailPhoneSuccessContentLayer(
     externalPlaylistQueueTitle: String,
     playlistItems: List<PlaylistItem>,
     onShowExternalPlaylistQueueSheet: () -> Unit,
-    commentThreadCoveredBlurProgress: Float = 0f,
+    commentThreadCoveredBlurProgressProvider: () -> Float = { 0f },
+    commentPullToRefreshEnabled: Boolean = true,
+    animateLateEntryContent: Boolean = false,
 ) {
+    val commentState by commentStateHandle
     val engagementSuccess = success.withEngagementUiState(engagementState)
-    val danmakuManager = rememberDanmakuManager(success.info.bvid)
     var pendingVideoShare by remember { mutableStateOf<VideoSharePayload?>(null) }
+    val coveredBlurEffectCache = remember { BlurRenderEffectCache() }
     // Android 16 ART 曾拒绝校验 VideoDetailScreen 中捕获过多状态的匿名 Compose lambda。
     // 保持这个成功态为命名边界，避免 R8/Compose 再生成单个超大内容块。
     key(success.info.bvid) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        val detailContentVisible = shouldShowVideoDetailContent(
+            isTransitionFinished = isTransitionFinished,
+            isLeaving = isLeaving,
+            rootTransitionOwnsContentAlpha = rootTransitionOwnsContentAlpha,
+            keepContentVisibleAfterBackPreview = keepContentVisibleAfterBackPreview,
+        )
+        // 正文被入场门控拦住时骨架垫底必须撑住（Loading 骨架此刻已卸载），
+        // 否则骨架结束到正文放行之间是一段纯黑空窗。
+        val holdSkeletonUnderlay = !detailContentVisible && !isLeaving
+        val lateContentReveal = rememberVideoDetailLateContentReveal(
+            animateOnMount = animateLateEntryContent,
+            contentVisible = detailContentVisible,
+        )
+        val showLoadingUnderlay by remember(detailContentVisible, isLeaving) {
+            derivedStateOf { holdSkeletonUnderlay || lateContentReveal.value < 1f }
+        }
+        Box(modifier = Modifier.fillMaxSize().videoInputDiagnostics("detail_body") {
+            "fullscreen=$isFullscreenMode portraitFs=$isPortraitFullscreen " +
+                "leaving=$isLeaving transitionFinished=$isTransitionFinished thread=$isCommentThreadVisible " +
+                "commentInput=$showCommentInput favoriteDialog=$showFavoriteFolderDialog " +
+                "tab=${videoContentPagerState.currentPage} introScrolling=${introListState.isScrollInProgress} " +
+                "commentScrolling=${commentListState.isScrollInProgress} pagerScrolling=${videoContentPagerState.isScrollInProgress}"
+        }) {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
+                // Only late arrival adds an opacity handoff; root geometry and the
+                // glass / MD3 / Miuix layouts stay unchanged. Drop the static underlay
+                // once complete instead of leaving an invisible skeleton mounted.
+                if (showLoadingUnderlay) {
+                    Box(Modifier.fillMaxSize().graphicsLayer {
+                        alpha = if (holdSkeletonUnderlay) 1f else 1f - lateContentReveal.value
+                    }) {
+                        VideoDetailSkeleton(animated = false)
+                    }
+                }
                 val detailContentRevealEnter = fadeIn(
                     tween(
                         motionSpec.contentRevealFadeDurationMillis,
@@ -144,12 +191,8 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                     )
                 )
                 AnimatedVisibility(
-                    visible = shouldShowVideoDetailContent(
-                        isTransitionFinished = isTransitionFinished,
-                        isLeaving = isLeaving,
-                        rootTransitionOwnsContentAlpha = rootTransitionOwnsContentAlpha,
-                        keepContentVisibleAfterBackPreview = keepContentVisibleAfterBackPreview,
-                    ),
+                    modifier = Modifier.graphicsLayer { alpha = lateContentReveal.value },
+                    visible = detailContentVisible,
                     enter = if (rootTransitionOwnsContentAlpha) {
                         EnterTransition.None
                     } else {
@@ -197,7 +240,6 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                             .indexOfFirst { it.cid == success.info.cid }
                             .coerceAtLeast(0)
 
-                        val coveredBlurProgress = if (isCommentThreadVisible) commentThreadCoveredBlurProgress else 0f
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -210,23 +252,17 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                 )
                                 .hazeSourceCompat(hazeState)
                                 .graphicsLayer {
-                                    renderEffect = null
-                                    if (coveredBlurProgress > 0f &&
-                                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                                    ) {
-                                        val blurFrame = resolvePredictiveBackBlurFrame(
-                                            progress = coveredBlurProgress,
-                                        )
-                                        renderEffect = if (blurFrame.blurRadiusPx > 0.5f) {
-                                            AndroidRenderEffect.createBlurEffect(
-                                                blurFrame.blurRadiusPx,
-                                                blurFrame.blurRadiusPx,
-                                                Shader.TileMode.CLAMP,
-                                            ).asComposeRenderEffect()
-                                        } else {
-                                            null
-                                        }
+                                    // 在图层阶段读动画值，模糊动画不重新组合评论与简介。
+                                    val coveredBlurProgress = if (isCommentThreadVisible) {
+                                        commentThreadCoveredBlurProgressProvider()
+                                    } else {
+                                        0f
                                     }
+                                    renderEffect = coveredBlurEffectCache.resolve(
+                                        resolvePredictiveBackBlurFrame(
+                                            progress = coveredBlurProgress,
+                                        ).blurRadiusPx
+                                    )
                                 }
                         ) {
                             VideoContentSection(
@@ -236,8 +272,12 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                     commentListState = commentListState,
                                     pagerState = videoContentPagerState,
                                     relatedVideos = success.related,
+                                    relatedLoadState = success.relatedLoadState,
                                     replies = commentState.replies,
-                                    replyCount = commentState.replyCount,
+                                    replyCount = commentState.resolveReplyCount(
+                                        subject = CommentSubjectKey(engagementSuccess.info.aid),
+                                        detailCount = engagementSuccess.info.stat.reply,
+                                    ) ?: engagementSuccess.info.stat.reply,
                                     emoteMap = success.emoteMap,
                                     followingMids = engagementState.followingMids,
                                     videoTags = success.videoTags,
@@ -247,12 +287,14 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                 engagementState = VideoContentEngagementState(
                                     isLoggedIn = success.isLoggedIn,
                                     isFollowing = engagementState.isFollowing,
+                                    followStatusKnown = engagementState.followStatusKnown,
                                     isFavorited = engagementState.isFavorited,
                                     isLiked = engagementState.isLiked,
+                                    likeStatusKnown = engagementState.likeStatusKnown,
                                     isDisliked = engagementState.isDisliked,
                                     coinCount = engagementState.coinCount,
                                     currentPageIndex = currentPageIndex,
-                                    downloadProgress = downloadProgress,
+                                    downloadProgress = downloadProgress.value,
                                     isInWatchLater = engagementState.isInWatchLater,
                                 ),
                                 commentState = VideoContentCommentState(
@@ -268,6 +310,7 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                     dissolvingIds = commentState.dissolvingIds,
                                     likedComments = commentState.likedComments,
                                     hatedComments = commentState.hatedComments,
+                                    nextPage = commentState.nextPage,
                                 ),
                                 noteState = VideoContentNoteState(
                                     aiSummary = success.aiSummary,
@@ -289,6 +332,8 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                     showInteractionActions = showInteractionActions,
                                     isVideoPlaying = isVideoPlaying,
                                     bottomContentPadding = videoContentBottomPadding,
+                                    commentPullToRefreshEnabled = commentPullToRefreshEnabled,
+                                    relatedContentReady = relatedContentReady,
                                 ),
                                 primaryActions = VideoContentPrimaryActions(
                                     onFollowClick = engagementActions.toggleFollow,
@@ -308,6 +353,9 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                         pendingVideoShare = buildVideoSharePayload(
                                             title = success.info.title,
                                             bvid = success.info.bvid,
+                                            page = success.info.pages.indexOfFirst { it.cid == success.info.cid }.coerceAtLeast(0) + 1,
+                                            positionMs = playerState.player.currentPosition.coerceAtLeast(0L),
+                                            authorId = success.info.owner.mid,
                                             coverUrl = success.info.pic,
                                             upName = success.info.owner.name,
                                             playCountText = FormatUtils.formatStat(success.info.stat.view.toLong()),
@@ -375,14 +423,13 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                 ),
                                 uiActions = VideoContentUiActions(
                                     onSelectedTabChange = onSelectedTabChange,
-                                    onIntroScrollThresholdChange = onIntroScrollThresholdChange,
                                     onCommentScrollStateChange = { _, _ -> },
                                 ),
                             )
                         }
 
                         // 底栏可见度跟随翻页进度:滑动过程中连续淡入淡出,而不是过半时瞬间弹出。
-                        val commentBarProgress by remember {
+                        val commentBarProgress = remember(videoContentPagerState) {
                             derivedStateOf {
                                 resolveVideoDetailCommentBarProgress(
                                     pagerPosition = videoContentPagerState.currentPage +
@@ -391,15 +438,20 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                 )
                             }
                         }
-                        if (showFrozenCommentBar || commentBarProgress > 0f) {
+                        val commentBarVisible by remember(commentBarProgress, showFrozenCommentBar) {
+                            derivedStateOf { showFrozenCommentBar || commentBarProgress.value > 0f }
+                        }
+                        if (commentBarVisible) {
                             BottomInputBar(
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
                                     .graphicsLayer {
-                                        alpha = commentBarProgress
-                                        translationY = (1f - commentBarProgress) * 32f
+                                        val progress = commentBarProgress.value
+                                        alpha = progress
+                                        translationY = (1f - progress) * 32f
                                     },
                                 isLiked = engagementState.isLiked,
+                                likeStatusKnown = engagementState.likeStatusKnown,
                                 isFavorited = engagementState.isFavorited,
                                 isCoined = engagementState.coinCount > 0,
                                 onLikeClick = engagementActions.toggleLike,
@@ -414,6 +466,9 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                     pendingVideoShare = buildVideoSharePayload(
                                         title = success.info.title,
                                         bvid = success.info.bvid,
+                                        page = success.info.pages.indexOfFirst { it.cid == success.info.cid }.coerceAtLeast(0) + 1,
+                                        positionMs = playerState.player.currentPosition.coerceAtLeast(0L),
+                                        authorId = success.info.owner.mid,
                                         coverUrl = success.info.pic,
                                         upName = success.info.owner.name,
                                         playCountText = FormatUtils.formatStat(success.info.stat.view.toLong()),
@@ -494,17 +549,19 @@ private fun ExternalPlaylistQueueCollapsedBar(
     isScrollInProgressProvider: () -> Boolean,
     modifier: Modifier = Modifier
 ) {
-    val shape = AppShapes.borderedContainer(ContainerLevel.Dialog)
+    val shape = AppShapes.container(ContainerLevel.Pill)
+    // 队列入口按内容紧凑排版，两种材质共用最小高度，大字体可自然撑高。
+    val minBarHeight = 40.dp
     if (liquidGlassEnabled) {
         BottomBarMatchedReusableLiquidDock(
             shape = shape,
             modifier = modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .heightIn(min = minBarHeight),
             backdrop = backdrop,
             reuseEnabled = true,
             drawShellLens = true,
-            shellLensIntensity = resolveFloatingDockGeometryScale(64f),
+            shellLensIntensity = resolveFloatingDockGeometryScale(minBarHeight.value),
             isScrollInProgressProvider = isScrollInProgressProvider,
         ) {
             ExternalPlaylistQueueCollapsedBarContent(
@@ -519,7 +576,7 @@ private fun ExternalPlaylistQueueCollapsedBar(
     AppSurface(
         modifier = modifier
             .fillMaxWidth()
-            .height(64.dp)
+            .heightIn(min = minBarHeight)
             // 先 clip 再 haze：否则模糊层按矩形绘制，左/右端会露出直角（与展开 sheet 一致）。
             .clip(shape)
             .then(
@@ -531,8 +588,7 @@ private fun ExternalPlaylistQueueCollapsedBar(
                 } else {
                     Modifier
                 }
-            )
-            .clickable { onClick() },
+            ),
         shape = shape,
         color = AppSurfaceTokens.cardContainer().copy(alpha = 0.74f),
         tonalElevation = 0.dp,
@@ -554,32 +610,37 @@ private fun ExternalPlaylistQueueCollapsedBarContent(
     title: String,
     videoCount: Int,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = modifier
+                .fillMaxWidth()
                 .clickable(onClick = onClick)
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppText(
                 text = title,
+                modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = AppContentColors.primaryText(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(8.dp))
             AppText(
                 text = "${videoCount}个视频",
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.accent(),
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                maxLines = 1,
             )
             Spacer(modifier = Modifier.width(4.dp))
             AppIcon(
                 imageVector = rememberAppChevronUpIcon(),
                 contentDescription = "展开${title}队列",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = AppContentColors.secondaryText()
             )
         }
 }

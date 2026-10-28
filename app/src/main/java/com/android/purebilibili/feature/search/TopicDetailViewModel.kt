@@ -174,8 +174,8 @@ class TopicDetailViewModel : ViewModel() {
             DynamicCreateRepository.publish(context, draft)
                 .onSuccess {
                     _uiState.update { it.copy(isPublishing = false, publishError = null) }
-                    onResult(true, "发布成功")
-                    refreshSelectedFeed()
+                    onResult(true, if (draft.publishAtSeconds != null) "定时发布已创建" else "发布成功")
+                    if (draft.publishAtSeconds == null) refreshSelectedFeed()
                 }
                 .onFailure { error ->
                     val message = error.message ?: "发布失败"

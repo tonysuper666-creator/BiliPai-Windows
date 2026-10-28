@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.video.ui.components
 
+import com.android.purebilibili.core.ui.MediaContrastPalette
+
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 
@@ -450,12 +452,12 @@ private fun SeekPreviewImage(
 ) {
     if (currentPreviewInfo == null || videoshotData == null) {
         Box(
-            modifier = modifier.background(Color(0xFF101010)),
+            modifier = modifier.background(MediaContrastPalette.ControlSurface),
             contentAlignment = Alignment.Center
         ) {
             AppText(
                 text = "预览加载中",
-                color = Color.White.copy(alpha = 0.72f),
+                color = MediaContrastPalette.SecondaryForeground,
                 style = MaterialTheme.typography.bodySmall
             )
         }
@@ -483,7 +485,7 @@ private fun SeekPreviewImage(
     when (val painterState = currentPainterState) {
         is AsyncImagePainter.State.Loading -> {
             Box(
-                modifier = modifier.background(Color(0xFF1A1A1A)),
+                modifier = modifier.background(MediaContrastPalette.ControlSurface),
                 contentAlignment = Alignment.Center
             ) {
                 AppText(text = "...", color = Color.White, style = MaterialTheme.typography.bodySmall)
@@ -491,10 +493,10 @@ private fun SeekPreviewImage(
         }
         is AsyncImagePainter.State.Error -> {
             Box(
-                modifier = modifier.background(Color(0xFF1A1A1A)),
+                modifier = modifier.background(MediaContrastPalette.ControlSurface),
                 contentAlignment = Alignment.Center
             ) {
-                AppText(text = "预览不可用", color = Color.White.copy(alpha = 0.7f), style = MaterialTheme.typography.bodySmall)
+                AppText(text = "预览不可用", color = MediaContrastPalette.SecondaryForeground, style = MaterialTheme.typography.bodySmall)
             }
         }
         is AsyncImagePainter.State.Success -> {
@@ -579,7 +581,7 @@ private fun BoxScope.SeekPreviewTimeLabel(
             Spacer(modifier = Modifier.width(6.dp))
             AppText(
                 text = if (deltaSeconds > 0L) "+${deltaSeconds}s" else "${deltaSeconds}s",
-                color = if (deltaSeconds > 0L) Color(0xFF8CD48C) else Color(0xFFFF8A80),
+                color = com.android.purebilibili.core.ui.MediaContrastPalette.Foreground,
                 fontSize = deltaFontSp.sp,
                 fontWeight = FontWeight.Medium,
                 style = androidx.compose.ui.text.TextStyle(shadow = shadow)
@@ -644,7 +646,7 @@ internal fun SeekPreviewBubbleSimple(
                 Spacer(modifier = Modifier.height(2.dp))
                 AppText(
                     text = if (deltaSeconds > 0L) "+${deltaSeconds}s" else "${deltaSeconds}s",
-                    color = if (deltaSeconds > 0L) Color(0xFF8CD48C) else Color(0xFFFF8A80),
+                    color = com.android.purebilibili.core.ui.MediaContrastPalette.Foreground,
                     fontSize = style.deltaFontSp.sp,
                     fontWeight = FontWeight.Medium
                 )

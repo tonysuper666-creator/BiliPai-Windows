@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.home.components
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,7 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.pager.HorizontalPager
+import com.android.purebilibili.core.ui.components.AppHorizontalPager as HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -39,7 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import com.android.purebilibili.core.ui.components.PageAwareAsyncImage
 import coil3.request.ImageRequest
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.util.FormatUtils
@@ -60,6 +62,7 @@ private const val HERO_IMMERSIVE_AUTO_ADVANCE_MS = 7_000L
 @Composable
 internal fun HomeHeroCarouselImmersive(
     videos: List<VideoItem>,
+    autoAdvanceAllowed: Boolean,
     horizontalEscapeDp: Dp,
     onVideoClick: (VideoItem) -> Unit,
     modifier: Modifier = Modifier,
@@ -67,7 +70,8 @@ internal fun HomeHeroCarouselImmersive(
     if (videos.isEmpty()) return
     val pagerState = rememberPagerState { videos.size }
     //  自动轮播：用户拖动/落定期间跳过 tick，避免与手势抢页；手势结束后下一轮继续。
-    LaunchedEffect(pagerState, videos.size) {
+    LaunchedEffect(pagerState, videos.size, autoAdvanceAllowed) {
+        if (!autoAdvanceAllowed) return@LaunchedEffect
         while (videos.size > 1 && isActive) {
             delay(HERO_IMMERSIVE_AUTO_ADVANCE_MS)
             if (!pagerState.isScrollInProgress) {
@@ -173,7 +177,9 @@ internal fun HomeHeroCarouselImmersive(
                         .size(width = if (i == pagerState.currentPage) 16.dp else 5.dp, height = 5.dp)
                         .clip(CircleShape)
                         .background(
-                            if (i == pagerState.currentPage) MaterialTheme.colorScheme.primary
+                            if (i == pagerState.currentPage) AppContentColors.selectionAccent(
+                                com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+                            )
                             else Color(0x80FFFFFF)
                         ),
                 )
@@ -196,7 +202,7 @@ private fun HeroCarouselPage(item: VideoItem, onClick: () -> Unit) {
         val ambientModel = remember(item.pic) {
             ImageRequest.Builder(context).data(item.pic.toHttpsUrl()).size(48).build()
         }
-        AsyncImage(
+        PageAwareAsyncImage(
             model = ambientModel,
             contentDescription = null,
             contentScale = ContentScale.FillWidth,
@@ -207,7 +213,7 @@ private fun HeroCarouselPage(item: VideoItem, onClick: () -> Unit) {
         val model = remember(item.pic) {
             ImageRequest.Builder(context).data(item.pic.toHttpsUrl()).build()
         }
-        AsyncImage(
+        PageAwareAsyncImage(
             model = model,
             contentDescription = null,
             contentScale = ContentScale.FillWidth,

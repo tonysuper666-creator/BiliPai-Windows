@@ -1,22 +1,34 @@
 package com.android.purebilibili.feature.comment
 
 import android.net.Uri
+import androidx.paging.LoadState
+import androidx.paging.PagingConfig
+import com.android.purebilibili.core.paging.ForwardPagingSession
+import com.android.purebilibili.feature.video.viewmodel.insertSentSubReply
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.repository.CommentFraudRepository
 import com.android.purebilibili.data.model.response.ReplyItem
 import com.android.purebilibili.data.repository.CommentRepository
+import com.android.purebilibili.feature.video.viewmodel.CommentComposerDraft
+import com.android.purebilibili.feature.video.viewmodel.CommentComposerDraftState
+import com.android.purebilibili.feature.video.viewmodel.commentComposerDraftKey
 import com.android.purebilibili.feature.video.viewmodel.SubReplySortMode
+import com.android.purebilibili.feature.video.viewmodel.SubReplyPageRequest
 import com.android.purebilibili.feature.video.viewmodel.SubReplyUiState
-import com.android.purebilibili.feature.video.viewmodel.isSortedSubReplyPageEnd
 import com.android.purebilibili.feature.video.viewmodel.resetForSort
 import com.android.purebilibili.feature.video.viewmodel.resolveRoutedCommentRootReply
 import com.android.purebilibili.feature.video.viewmodel.resolveSubReplyLoadedTotalCount
 import com.android.purebilibili.feature.video.viewmodel.resolveSubReplyRemoteTotalCount
+import com.android.purebilibili.feature.video.viewmodel.resolveSentSubReply
+import com.android.purebilibili.feature.video.viewmodel.withSentSubReply
+import com.android.purebilibili.feature.video.viewmodel.shouldApplySentSubReplyResult
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -42,6 +54,9 @@ class CommentDetailViewModel : ViewModel() {
 
     private val _replyingTo = MutableStateFlow<ReplyItem?>(null)
     val replyingTo = _replyingTo.asStateFlow()
+
+    private val _composerDrafts = MutableStateFlow(CommentComposerDraftState())
+    val composerDrafts = _composerDrafts.asStateFlow()
 
     private val _isSending = MutableStateFlow(false)
     val isSending = _isSending.asStateFlow()
@@ -87,6 +102,10 @@ class CommentDetailViewModel : ViewModel() {
     private var currentRootId: Long = 0L
     private var currentTargetReplyId: Long = 0L
     private var subReplyLoadJob: Job? = null
+    private var threadSession = 0L
+    private var pagingSession: ForwardPagingSession<SubReplyPageRequest, SubReplyPageChunk>? = null
+    private val sentReplies = linkedMapOf<Long, ReplyItem>()
+    private val deletedReplyIds = mutableSetOf<Long>()
 
     fun loadInitial(
         oid: Long,
@@ -101,6 +120,14 @@ class CommentDetailViewModel : ViewModel() {
             return
         }
 
+        if (currentOid != oid || currentRootId != rootId || currentType != type) {
+            _composerDrafts.update { it.reset() }
+            hideReplyInput()
+            _isSending.value = false
+        }
+        threadSession++
+        sentReplies.clear()
+        deletedReplyIds.clear()
         currentOid = oid
         currentType = type
         currentRootId = rootId
@@ -114,7 +141,7 @@ class CommentDetailViewModel : ViewModel() {
             targetReplyId = targetReplyId.takeIf { it != rootId } ?: 0L
         )
 
-        loadSubReplies(page = 1, paginationOffset = null)
+        startSubReplyPaging()
     }
 
     fun setSortMode(mode: SubReplySortMode) {
@@ -122,7 +149,7 @@ class CommentDetailViewModel : ViewModel() {
         if (state.sortMode == mode || state.isLoading) return
         subReplyLoadJob?.cancel()
         _subReplyState.update { it.resetForSort(mode) }
-        loadSubReplies(page = 1, paginationOffset = null)
+        startSubReplyPaging()
     }
 
     fun refresh() {
@@ -131,94 +158,82 @@ class CommentDetailViewModel : ViewModel() {
             (state.isLoading && state.items.isEmpty())
         ) return
         _subReplyState.value = state.copy(isLoading = true, isRefreshing = true, error = null)
-        loadSubReplies(page = 1, paginationOffset = null)
+        startSubReplyPaging()
     }
 
     fun loadMore() {
         val state = _subReplyState.value
-        if (state.isLoading || state.isEnd || state.rootReply == null) return
-        val nextPage = if (state.error != null && state.items.isEmpty()) 1 else state.page + 1
-        _subReplyState.value = state.copy(isLoading = true, error = null)
-        loadSubReplies(page = nextPage, paginationOffset = state.grpcNextOffset)
+        if (state.isLoading) return
+        if (state.error != null) pagingSession?.retry()
+        else if (!state.isEnd && state.rootReply != null) pagingSession?.append()
     }
 
-    private fun loadSubReplies(page: Int, paginationOffset: String?) {
+    private fun startSubReplyPaging() {
         val sortMode = _subReplyState.value.sortMode
-        val targetReplyId = _subReplyState.value.targetReplyId.takeIf { page == 1 } ?: 0L
+        val target = _subReplyState.value.targetReplyId
         val oid = currentOid
         val rootId = currentRootId
         val type = currentType
-
+        val seedRoot = _subReplyState.value.rootReply
         subReplyLoadJob?.cancel()
-        subReplyLoadJob = viewModelScope.launch {
-            CommentRepository.getSortedSubCommentsForSubject(
-                oid = oid,
-                type = type,
-                rootId = rootId,
-                mode = sortMode.apiMode,
-                paginationOffset = paginationOffset,
-                targetReplyId = targetReplyId
-            ).onSuccess { data ->
-                if (currentOid != oid || currentRootId != rootId || currentType != type) return@onSuccess
-                val rootReply = resolveRoutedCommentRootReply(
-                    loadedReplies = emptyList(),
-                    remoteData = data,
-                    rootReplyId = rootId
-                ) ?: _subReplyState.value.rootReply
-                if (rootReply == null) {
-                    _subReplyState.value = _subReplyState.value.copy(
-                        isLoading = false,
-                        isRefreshing = false,
-                        error = "评论可能已被删除或不可见"
-                    )
-                    return@onSuccess
+        var appliedPages = 0
+        lateinit var session: ForwardPagingSession<SubReplyPageRequest, SubReplyPageChunk>
+        session = ForwardPagingSession(
+            config = PagingConfig(pageSize = 1, initialLoadSize = 1, prefetchDistance = 1, enablePlaceholders = false),
+            sourceFactory = {
+                var resolvedRoot = seedRoot
+                subReplyPagingSource { request ->
+                    val data = CommentRepository.getMobileSortedSubCommentsForSubject(
+                        oid = oid, type = type, rootId = rootId, mode = sortMode.apiMode,
+                        paginationOffset = request.offset,
+                        targetReplyId = target.takeIf { request.page == 1 } ?: 0L
+                    ).getOrThrow()
+                    currentCoroutineContext().ensureActive()
+                    resolvedRoot = resolveRoutedCommentRootReply(emptyList(), data, rootId) ?: resolvedRoot
+                    check(resolvedRoot != null) { "评论可能已被删除或不可见" }
+                    data
                 }
-
-                val newItems = data.replies.orEmpty()
-                val currentItems = _subReplyState.value.items
-                val updatedItems = if (page == 1) {
-                    newItems
-                } else {
-                    (currentItems + newItems).distinctBy { it.rpid }
+            },
+            onChanged = { pages, states ->
+                if (pagingSession === session && currentOid == oid && currentRootId == rootId && currentType == type && states != null) {
+                    val failure = (states.refresh as? LoadState.Error)?.error ?: (states.append as? LoadState.Error)?.error
+                    val ready = states.refresh is LoadState.NotLoading && pages.size > appliedPages
+                    _subReplyState.update { current ->
+                        var next = current
+                        if (ready) {
+                            val last = pages.last()
+                            val root = resolveRoutedCommentRootReply(emptyList(), last.data, rootId) ?: current.rootReply ?: seedRoot
+                            if (root != null) {
+                                val incoming = pages.drop(appliedPages).flatMap { it.data.replies.orEmpty() }
+                                var items = (if (appliedPages == 0) incoming else current.items + incoming)
+                                    .distinctBy { it.rpid }.filterNot { it.rpid in deletedReplyIds }
+                                sentReplies.values.filterNot { it.rpid in deletedReplyIds }.forEach { items = insertSentSubReply(items, it) }
+                                val total = resolveSubReplyLoadedTotalCount(
+                                    rootReply = root, loadedReplyCount = items.size,
+                                    remoteReplyCount = resolveSubReplyRemoteTotalCount(last.data, root), previousTotalCount = current.totalCount
+                                )
+                                next = current.copy(
+                                    visible = true, rootReply = root, items = items.toImmutableList(), baseItems = items.toImmutableList(),
+                                    totalCount = total, page = last.request.page, basePage = last.request.page,
+                                    grpcNextOffset = last.data.grpcNextOffset, baseGrpcNextOffset = last.data.grpcNextOffset,
+                                    retryRequest = null
+                                )
+                            }
+                        }
+                        next.copy(
+                            isLoading = states.refresh is LoadState.Loading || states.append is LoadState.Loading,
+                            isRefreshing = current.isRefreshing && states.refresh is LoadState.Loading,
+                            isEnd = states.append.endOfPaginationReached,
+                            baseIsEnd = states.append.endOfPaginationReached,
+                            error = failure?.let { it.message ?: "回复加载失败" },
+                        )
+                    }
+                    if (ready) appliedPages = pages.size
                 }
-
-                val remoteTotalCount = resolveSubReplyRemoteTotalCount(
-                    data = data,
-                    rootReply = rootReply
-                )
-                val totalCount = resolveSubReplyLoadedTotalCount(
-                    rootReply = rootReply,
-                    loadedReplyCount = updatedItems.size,
-                    remoteReplyCount = remoteTotalCount,
-                    previousTotalCount = _subReplyState.value.totalCount
-                )
-                val isEnd = isSortedSubReplyPageEnd(data.cursor.isEnd, data.grpcNextOffset)
-
-                _subReplyState.value = _subReplyState.value.copy(
-                    visible = true,
-                    rootReply = rootReply,
-                    items = updatedItems.toImmutableList(),
-                    baseItems = updatedItems.toImmutableList(),
-                    totalCount = totalCount,
-                    isLoading = false,
-                    isRefreshing = false,
-                    page = page,
-                    basePage = page,
-                    isEnd = isEnd,
-                    baseIsEnd = isEnd,
-                    grpcNextOffset = data.grpcNextOffset,
-                    baseGrpcNextOffset = data.grpcNextOffset,
-                    error = null
-                )
-            }.onFailure { error ->
-                if (currentOid != oid || currentRootId != rootId || currentType != type) return@onFailure
-                _subReplyState.value = _subReplyState.value.copy(
-                    isLoading = false,
-                    isRefreshing = false,
-                    error = error.message ?: "回复加载失败"
-                )
             }
-        }
+        )
+        pagingSession = session
+        subReplyLoadJob = viewModelScope.launch { session.run() }
     }
 
     fun openConversation(reply: ReplyItem) {
@@ -230,6 +245,7 @@ class CommentDetailViewModel : ViewModel() {
     }
 
     fun showReplyInput(reply: ReplyItem? = null) {
+        _composerDrafts.update { it.open() }
         _replyingTo.value = reply ?: _subReplyState.value.rootReply
         _showCommentInput.value = true
     }
@@ -239,20 +255,38 @@ class CommentDetailViewModel : ViewModel() {
         _replyingTo.value = null
     }
 
+    fun updateCommentDraft(
+        sessionId: Long,
+        replyRpid: Long?,
+        text: String,
+        imageUris: List<Uri>,
+        syncToDynamic: Boolean
+    ) {
+        _composerDrafts.update {
+            it.update(sessionId, replyRpid, CommentComposerDraft(text, imageUris, syncToDynamic))
+        }
+    }
+
     fun sendReply(
         message: String,
         pictures: List<Uri> = emptyList(),
         syncToDynamic: Boolean = false,
         onSuccess: () -> Unit = {}
     ) {
+        if (_isSending.value) return
         val rootReply = _subReplyState.value.rootReply ?: return
         val replying = _replyingTo.value ?: rootReply
         val parentId = if (replying.rpid == rootReply.rpid) 0L else replying.rpid
         val oid = currentOid
         val type = currentType
+        val sendSession = threadSession
+        val sendDraftSession = _composerDrafts.value.sessionId
+        val sendDraftReplyRpid = replying.rpid
+        val sentDraft = _composerDrafts.value.drafts[commentComposerDraftKey(sendDraftReplyRpid)]
+        _isSending.value = true
 
         viewModelScope.launch {
-            _isSending.value = true
+            // Bind the result to the thread that opened this composer, not the current destination.
             CommentRepository.addCommentForSubject(
                 oid = oid,
                 type = type,
@@ -261,20 +295,42 @@ class CommentDetailViewModel : ViewModel() {
                 parent = parentId,
                 syncToDynamic = syncToDynamic
             ).onSuccess { newReply ->
-                _isSending.value = false
-                hideReplyInput()
-                onSuccess()
-                if (newReply != null) {
-                    val currentItems = _subReplyState.value.items
-                    _subReplyState.value = _subReplyState.value.copy(
-                        items = (listOf(newReply) + currentItems).distinctBy { it.rpid }.toImmutableList(),
-                        totalCount = _subReplyState.value.totalCount + 1
+                if (currentOid == oid && currentType == type && currentRootId == rootReply.rpid &&
+                    threadSession == sendSession
+                ) {
+                    _isSending.value = false
+                }
+                if (currentOid != oid || currentType != type || !shouldApplySentSubReplyResult(
+                        rootReply.rpid, sendSession, threadSession, _subReplyState.value
                     )
+                ) return@onSuccess
+                _composerDrafts.update {
+                    it.complete(sendDraftSession, sendDraftReplyRpid, sentDraft)
+                }
+                if (_composerDrafts.value.sessionId == sendDraftSession) {
+                    hideReplyInput()
+                }
+                if (newReply != null) {
+                    val resolvedReply = resolveSentSubReply(newReply, rootReply.rpid, parentId, replying)
+                    sentReplies[resolvedReply.rpid] = resolvedReply
+                    _subReplyState.update {
+                        it.withSentSubReply(
+                            resolvedReply,
+                            conversationItemsAreFiltered = false
+                        )
+                    }
                 } else {
-                    loadSubReplies(page = 1, paginationOffset = null)
+                    startSubReplyPaging()
+                }
+                if (_composerDrafts.value.sessionId == sendDraftSession) {
+                    onSuccess()
                 }
             }.onFailure {
-                _isSending.value = false
+                if (currentOid == oid && currentType == type && currentRootId == rootReply.rpid &&
+                    threadSession == sendSession
+                ) {
+                    _isSending.value = false
+                }
             }
         }
     }
@@ -312,11 +368,16 @@ class CommentDetailViewModel : ViewModel() {
     fun deleteComment(rpid: Long) {
         val oid = currentOid
         val type = currentType
+        val session = threadSession
         viewModelScope.launch {
             CommentRepository.deleteCommentForSubject(oid, type, rpid).onSuccess {
+                if (session != threadSession || currentOid != oid || currentType != type) return@onSuccess
+                deletedReplyIds += rpid
+                sentReplies.remove(rpid)
                 val currentItems = _subReplyState.value.items
                 _subReplyState.value = _subReplyState.value.copy(
                     items = currentItems.filterNot { it.rpid == rpid }.toImmutableList(),
+                    baseItems = _subReplyState.value.baseItems.filterNot { it.rpid == rpid }.toImmutableList(),
                     totalCount = (_subReplyState.value.totalCount - 1).coerceAtLeast(0)
                 )
             }

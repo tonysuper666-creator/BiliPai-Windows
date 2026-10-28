@@ -17,6 +17,7 @@ import androidx.compose.material3.adaptive.layout.SupportingPaneScaffold
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldValue
 import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.runtime.key
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.purebilibili.core.util.LocalWindowSizeClass
 import com.android.purebilibili.core.util.WindowHeightSizeClass
 
@@ -29,6 +30,7 @@ fun MessageCenterScreen(
     onNavigateToVideo: (String) -> Unit,
     onOpenBilibiliLink: (String) -> Unit,
 ) {
+    val accountIdentity by com.android.purebilibili.core.store.TokenManager.accountIdentity.collectAsStateWithLifecycle()
     val useTwoPane =
         LocalWindowSizeClass.current.let {
             it.widthSizeClass != com.android.purebilibili.core.util.WindowWidthSizeClass.Compact &&
@@ -38,14 +40,15 @@ fun MessageCenterScreen(
         InboxScreen(
             onBack = onBack,
             onTopItemClick = onTopItemClick,
+            onOpenLink = onOpenBilibiliLink,
             onSessionClick = onOpenSessionFullScreen,
         )
         return
     }
 
-    var activeTalkerId by rememberSaveable { mutableLongStateOf(0L) }
-    var activeSessionType by rememberSaveable { mutableIntStateOf(0) }
-    var activeUserName by rememberSaveable { mutableStateOf("") }
+    var activeTalkerId by rememberSaveable(accountIdentity) { mutableLongStateOf(0L) }
+    var activeSessionType by rememberSaveable(accountIdentity) { mutableIntStateOf(0) }
+    var activeUserName by rememberSaveable(accountIdentity) { mutableStateOf("") }
 
     val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
     val directive = calculatePaneScaffoldDirective(windowAdaptiveInfo)
@@ -67,6 +70,7 @@ fun MessageCenterScreen(
             InboxScreen(
                 onBack = onBack,
                 onTopItemClick = onTopItemClick,
+                onOpenLink = onOpenBilibiliLink,
                 onSessionClick = { talkerId, sessionType, userName ->
                     activeTalkerId = talkerId
                     activeSessionType = sessionType
@@ -76,7 +80,7 @@ fun MessageCenterScreen(
         },
         supportingPane = {
             if (activeTalkerId != 0L) {
-                key(activeTalkerId, activeSessionType) {
+                key(accountIdentity, activeTalkerId, activeSessionType) {
                     ChatScreen(
                         talkerId = activeTalkerId,
                         sessionType = activeSessionType,

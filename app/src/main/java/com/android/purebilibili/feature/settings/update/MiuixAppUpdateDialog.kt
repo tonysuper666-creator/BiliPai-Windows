@@ -1,4 +1,6 @@
 package com.android.purebilibili.feature.settings
+import com.android.purebilibili.core.ui.components.appElasticPress
+
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,6 +46,7 @@ internal fun MiuixAppUpdateDialog(
         onDismissRequest = actions.onDismissRequest,
         maxWidth = 420.dp,
     ) {
+        com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect()
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             MiuixUpdateHeader(state = state, onDismissRequest = actions.onDismissRequest)
             MiuixUpdateContent(state = state, actions = actions)
@@ -88,6 +91,7 @@ private fun MiuixUpdateHeader(
             onClick = onDismissRequest,
             minWidth = 48.dp,
             minHeight = 48.dp,
+            modifier = Modifier.appElasticPress(),
         ) {
             Icon(
                 imageVector = MiuixIcons.Basic.Close,
@@ -309,13 +313,13 @@ private fun MiuixDownloadChannels(
             TextButton(
                 text = "正式版下载",
                 onClick = actions.onOpenRelease,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).appElasticPress(),
                 minHeight = 48.dp,
             )
             TextButton(
                 text = "测试版下载",
                 onClick = actions.onOpenTestRelease,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).appElasticPress(),
                 minHeight = 48.dp,
             )
         }
@@ -340,14 +344,14 @@ private fun MiuixUpdateActions(
                 } else {
                     actions.onDismissRequest
                 },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).appElasticPress(),
                 minHeight = 48.dp,
             )
         }
         TextButton(
             text = appUpdatePrimaryLabel(state.downloadState, state.hasAsset),
             onClick = actions.onPrimaryAction,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).appElasticPress(enabled = !state.downloadState.isActiveDownload()),
             enabled = !state.downloadState.isActiveDownload(),
             colors = ButtonDefaults.textButtonColorsPrimary(),
             minHeight = 48.dp,

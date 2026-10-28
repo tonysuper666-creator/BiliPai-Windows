@@ -2,6 +2,7 @@ package com.android.purebilibili.feature.video.playback.loader
 
 import com.android.purebilibili.feature.video.usecase.VideoLoadResult
 import com.android.purebilibili.feature.video.usecase.VideoPlaybackUseCase
+import com.android.purebilibili.data.model.response.ViewInfo
 
 internal data class PlaybackLoadConfig(
     val defaultQuality: Int,
@@ -11,7 +12,10 @@ internal data class PlaybackLoadConfig(
     val playWhenReady: Boolean,
     val isAv1Supported: Boolean,
     val isHdrSupported: Boolean,
-    val isDolbyVisionSupported: Boolean
+    val isDolbyVisionSupported: Boolean,
+    val onVideoInfo: (ViewInfo) -> Unit = {},
+    val videoInfoLoader: (suspend () -> Result<ViewInfo>)? = null,
+    val playbackSpeed: Float? = null
 )
 
 internal class PlaybackLoader(
@@ -46,7 +50,10 @@ internal class PlaybackLoader(
                     playWhenReady = config.playWhenReady,
                     isAv1SupportedOverride = config.isAv1Supported,
                     isHdrSupportedOverride = config.isHdrSupported,
-                    isDolbyVisionSupportedOverride = config.isDolbyVisionSupported
+                    isDolbyVisionSupportedOverride = config.isDolbyVisionSupported,
+                    onVideoInfo = config.onVideoInfo,
+                    videoInfoLoader = config.videoInfoLoader,
+                    playbackSpeedOverride = config.playbackSpeed
                 )
             }
         }

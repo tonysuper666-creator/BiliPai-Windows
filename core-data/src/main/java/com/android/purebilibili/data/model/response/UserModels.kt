@@ -72,6 +72,9 @@ data class MemberAccountResponse(
 )
 
 @Serializable
+data class ProfileUpdateResponse(val code: Int, val message: String = "")
+
+@Serializable
 data class MemberAccountData(
     val mid: Long = 0,
     val uname: String = "",

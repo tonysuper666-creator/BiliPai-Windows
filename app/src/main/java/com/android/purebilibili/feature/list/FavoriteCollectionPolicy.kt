@@ -41,6 +41,10 @@ internal fun resolveSubscribedFavoritePreviewCover(folder: FavFolder): String? {
     return folder.cover.trim().takeIf { it.isNotEmpty() }
 }
 
+/** collected/list 的 id/fid 只在各自 type 内唯一。 */
+internal fun resolveSubscribedFavoriteFolderKey(folder: FavFolder): String =
+    "${folder.type}:${folder.id}_${folder.fid}"
+
 internal fun resolveFavoriteFolderPreviewCover(
     folder: FavFolder,
     loadedItems: List<VideoItem>

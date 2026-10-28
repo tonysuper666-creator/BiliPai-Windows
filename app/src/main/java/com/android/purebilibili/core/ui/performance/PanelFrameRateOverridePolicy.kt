@@ -47,10 +47,11 @@ private fun Context.findActivity(): Activity? {
 private const val PANEL_FRAME_RATE_SAMPLE_INTERVAL_MS = 500L
 
 @Composable
-internal fun rememberPanelFrameRateLabel(): String {
+internal fun rememberPanelFrameRateLabel(active: Boolean): String {
     val activity = LocalContext.current.findActivity()
     var refreshRate by remember { mutableFloatStateOf(0f) }
-    LaunchedEffect(activity) {
+    LaunchedEffect(activity, active) {
+        if (!active) return@LaunchedEffect
         while (true) {
             refreshRate = resolvePanelDisplayRefreshRate(activity)
             delay(PANEL_FRAME_RATE_SAMPLE_INTERVAL_MS)

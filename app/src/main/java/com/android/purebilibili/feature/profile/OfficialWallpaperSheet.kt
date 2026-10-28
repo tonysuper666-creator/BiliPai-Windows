@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.profile
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import coil3.request.crossfade
 import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
 import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
@@ -13,7 +15,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import com.android.purebilibili.core.ui.components.AppLazyVerticalGrid as LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -77,7 +79,7 @@ fun OfficialWallpaperSheet(
     val error by viewModel.officialWallpapersError.collectAsStateWithLifecycle()
 
     var selectedUrl by remember { mutableStateOf<String?>(null) }
-    
+
     // 初始化加载
     LaunchedEffect(Unit) {
         viewModel.loadOfficialWallpapers()
@@ -109,13 +111,13 @@ fun OfficialWallpaperSheet(
                     AppIconButton(onClick = onDismiss) {
                         AppIcon(clearIcon, contentDescription = "关闭")
                     }
-                    
+
                     AppText(
                         text = "开屏壁纸设置",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
-                    
+
                     // 占位，保持标题居中
                     AppTextButton(
                         onClick = { viewModel.loadOfficialWallpapers() },
@@ -126,7 +128,7 @@ fun OfficialWallpaperSheet(
                     }
                 }
             }
-            
+
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -147,7 +149,7 @@ fun OfficialWallpaperSheet(
             if (error != null && officialWallpapers.isNotEmpty()) {
                 AppText(
                     text = error.orEmpty(),
-                    color = MaterialTheme.colorScheme.error,
+                    color = AppContentColors.error(),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
@@ -166,7 +168,7 @@ fun OfficialWallpaperSheet(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        AppText(text = error ?: "加载失败", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        AppText(text = error ?: "加载失败", color = AppContentColors.secondaryText())
                         Spacer(modifier = Modifier.height(12.dp))
                         AppButton(onClick = { viewModel.loadOfficialWallpapers() }) {
                             AppText("重试")
@@ -175,7 +177,7 @@ fun OfficialWallpaperSheet(
                 }
                 officialWallpapers.isEmpty() -> {
                     Box(Modifier.fillMaxSize().weight(1f), contentAlignment = Alignment.Center) {
-                        AppText(text = "暂无壁纸", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        AppText(text = "暂无壁纸", color = AppContentColors.secondaryText())
                     }
                 }
                 else -> {
@@ -190,7 +192,7 @@ fun OfficialWallpaperSheet(
                             val detailUrl = resolveOfficialWallpaperDetailUrl(item)
                             val imageUrl = resolveOfficialWallpaperThumbnailUrl(item)
                             val isSelected = selectedUrl == detailUrl
-                            
+
                             Column(
                                 modifier = Modifier
                                     .clickable { selectedUrl = detailUrl }
@@ -210,17 +212,17 @@ fun OfficialWallpaperSheet(
                                             .clip(AppShapes.container(ContainerLevel.Chip))
                                             .border(
                                                 width = if (isSelected) 2.dp else 0.dp,
-                                                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                                color = if (isSelected) AppContentColors.accent() else Color.Transparent,
                                                 shape = AppShapes.container(ContainerLevel.Chip)
                                             )
                                     )
-                                    
+
                                     // 选中标记 (右上角)
                                     if (isSelected) {
                                         AppIcon(
                                             imageVector = rememberAppCheckCircleIcon(),
                                             contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.primary,
+                                            tint = AppContentColors.accent(),
                                             modifier = Modifier
                                                 .align(Alignment.TopEnd)
                                                 .padding(4.dp)
@@ -229,21 +231,21 @@ fun OfficialWallpaperSheet(
                                         )
                                     }
                                 }
-                                
+
                                 Spacer(modifier = Modifier.height(6.dp))
-                                
+
                                 AppText(
                                     text = item.title.ifEmpty { "未命名" },
                                     style = MaterialTheme.typography.bodySmall,
                                     maxLines = 1,
-                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface 
+                                    color = if (isSelected) AppContentColors.accent() else AppContentColors.primaryText()
                                 )
                             }
                         }
                     }
                 }
             }
-            
+
             // 3. 底部保存栏
             AppSurface(
                 shadowElevation = 8.dp,
@@ -254,7 +256,7 @@ fun OfficialWallpaperSheet(
                     // [New] Observe save state
                     val saveState by viewModel.wallpaperSaveState.collectAsStateWithLifecycle()
                     val splashSaveState by viewModel.splashSaveState.collectAsStateWithLifecycle()
-                    
+
                     val isSaving = saveState is WallpaperSaveState.Loading || splashSaveState is WallpaperSaveState.Loading
                     var saveToGallery by remember { mutableStateOf(false) }
 
@@ -270,12 +272,12 @@ fun OfficialWallpaperSheet(
                         AppText(
                             text = "保存到系统相册",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface 
+                            color = AppContentColors.primaryText()
                         )
                         AppSwitch(
                             checked = saveToGallery,
                             onCheckedChange = { saveToGallery = it },
-                            modifier = Modifier.scale(0.8f) 
+                            modifier = Modifier.scale(0.8f)
                         )
                     }
 
@@ -285,7 +287,7 @@ fun OfficialWallpaperSheet(
                     ) {
                         // Set as Profile Background
                         val context = LocalContext.current
-                        
+
                         // [New] Adjustment Sheet Logic
                         var showAdjustmentSheet by remember { mutableStateOf(false) }
                         var showSplashAdjustmentSheet by remember { mutableStateOf(false) }
@@ -293,7 +295,7 @@ fun OfficialWallpaperSheet(
         )
                         val initialSplashTabletBias by viewModel.getSplashAlignment(true).collectAsStateWithLifecycle(initialValue = 0f
         )
-                        
+
                         // [New] Adjustment Sheet
                          if (showAdjustmentSheet && selectedUrl != null) {
                              ProfileWallpaperAdjustmentSheet(
@@ -340,9 +342,9 @@ fun OfficialWallpaperSheet(
                                 }
                             )
                         }
-                        
+
                         AppButton(
-                            onClick = { 
+                            onClick = {
                                 showAdjustmentSheet = true
                             },
                             enabled = selectedUrl != null && !isSaving,
@@ -352,7 +354,7 @@ fun OfficialWallpaperSheet(
                             shape = AppShapes.container(ContainerLevel.Floating),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                                contentColor = MaterialTheme.colorScheme.onSurface
+                                contentColor = AppContentColors.primaryText()
                             )
                         ) {
                             if (saveState is WallpaperSaveState.Loading) {
@@ -364,10 +366,10 @@ fun OfficialWallpaperSheet(
                                 AppText("设为背景", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
                             }
                         }
-                        
+
                         // Set as Splash Screen
                         AppButton(
-                            onClick = { 
+                            onClick = {
                                 showSplashAdjustmentSheet = true
                             },
                             enabled = selectedUrl != null && !isSaving,
@@ -392,11 +394,11 @@ fun OfficialWallpaperSheet(
                             }
                         }
                     }
-                    
+
                     if (saveState is WallpaperSaveState.Error) {
                         AppText(
                             text = (saveState as WallpaperSaveState.Error).message,
-                            color = MaterialTheme.colorScheme.error,
+                            color = AppContentColors.error(),
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally)
                         )
@@ -404,7 +406,7 @@ fun OfficialWallpaperSheet(
                     if (splashSaveState is WallpaperSaveState.Error) {
                          AppText(
                             text = (splashSaveState as WallpaperSaveState.Error).message,
-                            color = MaterialTheme.colorScheme.error,
+                            color = AppContentColors.error(),
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally)
                         )

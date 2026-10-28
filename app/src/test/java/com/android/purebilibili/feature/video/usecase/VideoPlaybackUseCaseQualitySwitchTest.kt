@@ -16,6 +16,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertSame
 import org.junit.Test
 
 class VideoPlaybackUseCaseQualitySwitchTest {
@@ -239,93 +240,35 @@ class VideoPlaybackUseCaseQualitySwitchTest {
     }
 
     @Test
-    fun `resolveAutoHighestTargetQuality caps non vip users at 1080p`() {
+    fun `auto highest uses actual streams instead of advertised entitlement tiers`() {
         val useCase = VideoPlaybackUseCase()
-
-        val result = useCase.resolveAutoHighestTargetQuality(
-            acceptQualities = listOf(120, 116, 112, 80, 64, 32),
-            isLoggedIn = true,
-            isVip = false,
+        // The advertised list may mention 4K while this account only received 1080P.
+        assertEquals(80, useCase.resolveAutoHighestTargetQuality(
+            playableQualities = listOf(80, 64, 32),
             isHdrSupported = true,
             isDolbyVisionSupported = true
-        )
-
-        assertEquals(80, result)
-    }
-
-    @Test
-    fun `resolveAutoHighestTargetQuality caps guests at 720p`() {
-        val useCase = VideoPlaybackUseCase()
-
-        val result = useCase.resolveAutoHighestTargetQuality(
-            acceptQualities = listOf(116, 80, 64, 32),
-            isLoggedIn = false,
-            isVip = false,
-            isHdrSupported = true,
-            isDolbyVisionSupported = true
-        )
-
-        assertEquals(64, result)
-    }
-
-    @Test
-    fun `resolveAutoHighestTargetQuality keeps vip highest playable tier`() {
-        val useCase = VideoPlaybackUseCase()
-
-        val result = useCase.resolveAutoHighestTargetQuality(
-            acceptQualities = listOf(120, 116, 112, 80, 64),
-            isLoggedIn = true,
-            isVip = true,
-            isHdrSupported = true,
-            isDolbyVisionSupported = true
-        )
-
-        assertEquals(120, result)
-    }
-
-    @Test
-    fun `resolveAutoHighestTargetQuality treats video highest as normal target`() {
-        val useCase = VideoPlaybackUseCase()
-
-        val result = useCase.resolveAutoHighestTargetQuality(
-            acceptQualities = listOf(116, 80, 64),
-            isLoggedIn = true,
-            isVip = true,
-            isHdrSupported = true,
+        ))
+        // An exact 1080P stream is usable for guests too (try_look).
+        assertEquals(80, useCase.resolveAutoHighestTargetQuality(
+            playableQualities = listOf(80, 64),
+            isHdrSupported = false,
             isDolbyVisionSupported = false
-        )
-
-        assertEquals(116, result)
+        ))
     }
 
     @Test
-    fun `resolveAutoHighestTargetQuality selects documented highest vip tier`() {
+    fun `auto highest chooses HDR Vivid when present and falls back for device capability`() {
         val useCase = VideoPlaybackUseCase()
-
-        val result = useCase.resolveAutoHighestTargetQuality(
-            acceptQualities = listOf(127, 125, 120, 116, 80),
-            isLoggedIn = true,
-            isVip = true,
-            isHdrSupported = true,
-            isDolbyVisionSupported = false
-        )
-
-        assertEquals(127, result)
-    }
-
-    @Test
-    fun `resolveAutoHighestTargetQuality includes app only HDR Vivid tier`() {
-        val useCase = VideoPlaybackUseCase()
-
-        val result = useCase.resolveAutoHighestTargetQuality(
-            acceptQualities = listOf(129, 127, 125, 120, 80),
-            isLoggedIn = true,
-            isVip = true,
+        assertEquals(129, useCase.resolveAutoHighestTargetQuality(
+            playableQualities = listOf(129, 127, 126, 125, 120, 80),
             isHdrSupported = true,
             isDolbyVisionSupported = true
-        )
-
-        assertEquals(129, result)
+        ))
+        assertEquals(120, useCase.resolveAutoHighestTargetQuality(
+            playableQualities = listOf(129, 126, 125, 120, 80),
+            isHdrSupported = false,
+            isDolbyVisionSupported = false
+        ))
     }
 
     @Test
@@ -440,7 +383,7 @@ class VideoPlaybackUseCaseQualitySwitchTest {
         assertEquals("https://example.com/audio-192.m4s", result?.audioUrl)
         assertEquals(listOf(30280, 30216), result?.adaptiveDashSource?.audioTracks?.map { it.id })
         assertEquals(AUDIO_QUALITY_HI_RES, result?.requestedAudioQuality)
-        assertEquals(AUDIO_QUALITY_AUTO, result?.selectedAudioQuality)
+        assertEquals(30280, result?.selectedAudioQuality)
         assertEquals(AudioFallbackReason.SPEED_INCOMPATIBLE, result?.audioFallbackReason)
     }
 
@@ -480,7 +423,7 @@ class VideoPlaybackUseCaseQualitySwitchTest {
         assertEquals(listOf(AUDIO_QUALITY_HI_RES), result?.adaptiveDashSource?.audioTracks?.map { it.id })
         assertEquals(AUDIO_QUALITY_HI_RES, result?.selectedAudioQuality)
         assertEquals(
-            listOf(AUDIO_QUALITY_HI_RES, AUDIO_QUALITY_AUTO),
+            listOf(AUDIO_QUALITY_AUTO, AUDIO_QUALITY_HI_RES, 30280),
             result?.availableAudioQualities?.map { it.preferenceId }
         )
         assertEquals(hiResAudio, result?.cachedDash?.flac?.audio)
@@ -529,9 +472,68 @@ class VideoPlaybackUseCaseQualitySwitchTest {
 
         assertEquals(standardAudio.getValidUrl(), result?.audioUrl)
         assertEquals(listOf(30280), result?.adaptiveDashSource?.audioTracks?.map { it.id })
-        assertEquals(AUDIO_QUALITY_AUTO, result?.selectedAudioQuality)
+        assertEquals(30280, result?.selectedAudioQuality)
         assertEquals(AudioFallbackReason.REQUESTED_UNAVAILABLE, result?.audioFallbackReason)
         assertTrue(result?.availableAudioQualities?.none { it.preferenceId == AUDIO_QUALITY_DOLBY } == true)
+    }
+
+    @Test
+    fun `raw audio selection controls backend source and manifest while preserving fallback preference`() {
+        val standard64 = DashAudio(30216, baseUrl = "https://example.com/64.m4s", bandwidth = 64_000, codecs = "mp4a.40.2")
+        val standard192 = DashAudio(30280, baseUrl = "https://example.com/192.m4s", bandwidth = 192_000, codecs = "mp4a.40.2")
+        val alternateDolby = DashAudio(30255, baseUrl = "https://example.com/30255.m4s", bandwidth = 448_000, codecs = "ec-3")
+        val data = PlayUrlData(
+            quality = 80,
+            acceptQuality = listOf(80),
+            dash = Dash(
+                video = listOf(DashVideo(80, baseUrl = "https://example.com/video.m4s", codecs = "avc1")),
+                audio = listOf(standard64, standard192),
+                dolby = Dolby(type = 1, audio = listOf(alternateDolby))
+            )
+        )
+        val useCase = VideoPlaybackUseCase()
+        for ((request, speed, expectedTrack) in listOf(
+            Triple(30216, 1f, standard64),
+            Triple(30280, 1f, standard192),
+            Triple(30232, 1f, standard192),
+            Triple(30255, 1f, alternateDolby),
+            Triple(30255, 2f, standard192)
+        )) {
+            val result = useCase.resolvePlaybackSelection(
+                playUrlData = data,
+                targetQuality = 80,
+                audioQualityPreference = request,
+                playbackSpeed = speed,
+                videoCodecPreference = "avc1",
+                videoSecondCodecPreference = "hev1",
+                isHevcSupported = true,
+                isAv1Supported = false,
+                isDolbyAudioSupported = true
+            )
+
+            assertNotNull(result)
+            assertEquals(request, result?.requestedAudioQuality)
+            assertEquals(expectedTrack.id, result?.selectedAudioQuality)
+            assertEquals(expectedTrack.getValidUrl(), result?.audioUrl)
+            val manifestTracks = result?.adaptiveDashSource?.audioTracks.orEmpty()
+            assertSame(expectedTrack, manifestTracks.first())
+            assertEquals(
+                if (request == 30255 && speed > 1.5f) listOf(30280, 30216) else listOf(expectedTrack.id),
+                manifestTracks.map { it.id }
+            )
+            assertEquals(
+                when {
+                    speed > 1.5f -> AudioFallbackReason.SPEED_INCOMPATIBLE
+                    request == 30232 -> AudioFallbackReason.REQUESTED_UNAVAILABLE
+                    else -> null
+                },
+                result?.audioFallbackReason
+            )
+            assertEquals(
+                expectedTrack.codecs,
+                result?.availableAudioQualities?.single { it.preferenceId == expectedTrack.id }?.codecDescription
+            )
+        }
     }
 
     @Test

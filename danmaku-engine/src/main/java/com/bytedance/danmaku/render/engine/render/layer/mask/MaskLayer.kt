@@ -69,6 +69,15 @@ class MaskLayer: IRenderLayer {
         }
     }
 
+    override fun addData(
+        playTime: Long,
+        list: List<DanmakuData>,
+        createItem: (DanmakuData) -> DrawItem<DanmakuData>,
+    ) {
+        // Only the latest due mask is visible; intermediate paths need no DrawItem.
+        list.lastOrNull()?.let { addItems(playTime, listOf(createItem(it))) }
+    }
+
     override fun releaseItem(item: DrawItem<DanmakuData>) {
         mCachePool.release(item)
     }

@@ -829,6 +829,11 @@ internal fun shouldContinueSpaceBangumiPagination(
 
 private fun mapSpaceAggregateVideoItem(item: SpaceAggregateArchiveItem): SpaceVideoItem {
     return SpaceVideoItem(
+        isCooperation = item.isCooperation,
+        isSteins = item.isSteins,
+        isLessonVideo = item.isLessonVideo,
+        badges = item.badges + item.label.takeIf(String::isNotBlank)
+            ?.let { listOf(com.android.purebilibili.data.model.response.SpaceAggregateBadge(it)) }.orEmpty(),
         aid = item.aid,
         bvid = item.bvid,
         title = item.title,

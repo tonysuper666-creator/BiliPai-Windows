@@ -36,7 +36,7 @@ class AnimationSettingsScreenStructureTest {
     fun animationSettingsScreen_exposesLiveSurfaceCardTransitionToggle() {
         val source = animationSettingsSource()
 
-        assertTrue(source.contains("title = \"实时画面转场\""))
+        assertTrue(source.contains("title = \"用当前画面过渡\""))
         assertTrue(source.contains("checked = liveSurfaceCardTransitionEnabled"))
         assertTrue(source.contains("toggleLiveSurfaceCardTransition"))
         assertTrue(source.contains("enabled = state.cardTransitionEnabled"))
@@ -47,8 +47,8 @@ class AnimationSettingsScreenStructureTest {
     fun animationSettingsScreen_exposesVideoSharedReturnGestureFollowToggle() {
         val source = animationSettingsSource()
 
-        assertTrue(source.contains("title = \"视频返回跟手姿态\""))
-        assertTrue(source.contains("整卡跟手平移"))
+        assertTrue(source.contains("title = \"返回时倾斜\""))
+        assertTrue(source.contains("滑动返回时，画面随手指移动"))
         assertTrue(source.contains("checked = appNavigationSettings.videoSharedReturnGestureFollowEnabled"))
         assertTrue(source.contains("SettingsManager.setVideoSharedReturnGestureFollowEnabled("))
         assertTrue(source.contains("enabled = state.cardTransitionEnabled"))

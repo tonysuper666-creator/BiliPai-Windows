@@ -32,7 +32,6 @@ object ShareUtils {
         "ts",               // 时间戳
         "is_story_h5",      // 故事模式标记
         "mid",              // 用户ID
-        "p",                // 分P
         "plat_id",          // 平台ID
         "buvid",            // 设备标识
         "up_id",            // UP主ID

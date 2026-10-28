@@ -41,13 +41,7 @@ internal fun resolveDynamicCommentCountLabel(count: Int): String {
 
 internal fun resolveDynamicCommentEmptyLabel(): String = "还没有评论"
 
-internal fun resolveDynamicCommentComposerHint(replyUname: String? = null): String {
-    val uname = replyUname?.trim().orEmpty()
-    return if (uname.isNotEmpty()) "回复 @$uname" else "发一条友善的评论"
-}
-
-internal fun resolveDynamicCommentImeSubmission(text: String): String? =
-    text.trim().takeIf(String::isNotEmpty)
+internal const val DYNAMIC_COMMENT_ROOT_INPUT_HINT = "发一条友善的评论"
 
 internal fun resolveDynamicCommentLocationLabel(location: String?): String? {
     return location?.trim()?.takeIf { it.isNotEmpty() }

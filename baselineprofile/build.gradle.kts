@@ -38,6 +38,12 @@ android {
                     apiLevel = 31
                     systemImageSource = "aosp"
                 }
+                // Android 13 起可采集 RuntimeShader 折射与玻璃控件分支。
+                create<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6Api33") {
+                    device = "Pixel 6"
+                    apiLevel = 33
+                    systemImageSource = "aosp"
+                }
             }
         }
     }

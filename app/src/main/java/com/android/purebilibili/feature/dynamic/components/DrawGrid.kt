@@ -1,6 +1,8 @@
 // 文件路径: feature/dynamic/components/DrawGrid.kt
 package com.android.purebilibili.feature.dynamic.components
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import coil3.network.NetworkHeaders
 import coil3.network.httpHeaders
 
@@ -13,7 +15,7 @@ import com.android.purebilibili.core.ui.MediaContrastPalette
 import com.android.purebilibili.core.ui.rememberAppSparklesIcon
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import com.android.purebilibili.core.ui.components.appActionClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 //  Material Icons
@@ -32,7 +34,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
-import coil3.compose.AsyncImage
+import com.android.purebilibili.core.ui.components.PageAwareAsyncImage
 import coil3.imageLoader
 import com.android.purebilibili.data.model.response.DrawItem
 import com.android.purebilibili.core.ui.components.AppText
@@ -178,7 +180,7 @@ private fun DrawGridImage(
                 imageRectRef.value = coordinates.boundsInWindow()
                 galleryRects[index] = imageRectRef.value!!
             }
-            .clickable(
+            .appActionClickable(
                 interactionSource = null,
                 indication = null,
                 enabled = !sourceHidden,
@@ -201,7 +203,7 @@ private fun DrawGridImage(
         contentAlignment = Alignment.Center
     ) {
         if (imageUrl.isNotEmpty()) {
-            AsyncImage(
+            PageAwareAsyncImage(
                 model = coil3.request.ImageRequest.Builder(context)
                     .data(imageUrl)
                     // Reuse this exact source identity as the preview's placeholder key.
@@ -224,7 +226,7 @@ private fun DrawGridImage(
                 rememberAppSparklesIcon(),
                 contentDescription = null,
                 modifier = Modifier.size(AppSpacingTokens.DoubleExtraLarge),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                tint = AppContentColors.secondaryText().copy(alpha = 0.5f)
             )
         }
 

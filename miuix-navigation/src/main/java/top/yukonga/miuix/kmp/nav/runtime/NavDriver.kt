@@ -127,7 +127,7 @@ internal fun NavSettleSpec.toAnimationSpec(): AnimationSpec<Float> = when (this)
     is NavSettleSpec.Spring -> androidx.compose.animation.core.spring(
         dampingRatio = dampingRatio,
         stiffness = stiffness,
-        visibilityThreshold = NavDriverSpec.VISIBILITY_THRESHOLD,
+        visibilityThreshold = visibilityThreshold,
     )
 
     is NavSettleSpec.Tween -> tween(durationMillis = durationMillis, easing = easing)
@@ -235,7 +235,7 @@ internal suspend fun Animatable<Float, AnimationVector1D>.snapToFinger(
  * eliminating the visual jolt a fresh-from-zero spring would cause. Callers that
  * track a separate finger velocity (e.g. an edge swipe whose drag delta differs
  * from the Animatable's internal velocity) may pass it explicitly. A [NavSettleSpec.Tween]
- * spec ignores the seed (a tween cannot carry velocity).
+ * spec uses the seed only when `matchReleaseVelocity` is enabled; ordinary tweens ignore it.
  *
  * @param target destination value on the depth axis (an entry index, possibly fractional during interruption).
  * @param spec the settle curve; defaults to the default commit spring.
@@ -247,9 +247,21 @@ internal suspend fun Animatable<Float, AnimationVector1D>.settleTo(
     initialVelocity: Float = velocity,
     onFrame: (() -> Unit)? = null,
 ) {
+    val animationSpec = if (spec is NavSettleSpec.Tween && spec.matchReleaseVelocity) {
+        tween<Float>(
+            durationMillis = spec.durationMillis.coerceAtLeast(0),
+            easing = NavVelocityHandoffEasing(
+                distance = target - value,
+                initialVelocity = initialVelocity,
+                durationMillis = spec.durationMillis,
+            ),
+        )
+    } else {
+        spec.toAnimationSpec()
+    }
     animateTo(
         targetValue = target,
-        animationSpec = spec.toAnimationSpec(),
+        animationSpec = animationSpec,
         initialVelocity = initialVelocity,
         block = if (onFrame != null) ({ onFrame() }) else null,
     )

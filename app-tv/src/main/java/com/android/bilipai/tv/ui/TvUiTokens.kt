@@ -2,6 +2,10 @@ package com.android.bilipai.tv.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Typography
@@ -11,7 +15,15 @@ import com.android.purebilibili.core.ui.AppShapeTokens
 import com.android.purebilibili.core.ui.AppSpacingTokens
 import com.android.purebilibili.core.ui.ContainerLevel
 
+internal class TvFocusReturnTarget { var requester by mutableStateOf<FocusRequester?>(null) }
+internal val LocalTvReturnTarget = staticCompositionLocalOf<TvFocusReturnTarget?> { null }
+
 internal val LocalTvReduceMotion = staticCompositionLocalOf { false }
+
+internal val LocalTvBackdropUrl = staticCompositionLocalOf<String?> { null }
+
+internal val LocalTvSimpleEffects = staticCompositionLocalOf { false }
+internal val LocalTvInteractive = staticCompositionLocalOf { true }
 
 internal object TvUiTokens {
     val pagePadding = AppSpacingTokens.DoubleExtraLarge
@@ -23,6 +35,9 @@ internal object TvUiTokens {
     val minimumCardWidth = 150.dp
     val minimumButtonHeight = 48.dp
     val focusBorderWidth = 2.dp
+    val progressTrackHeight = AppSpacingTokens.ExtraSmall
+    val focusedProgressTrackHeight = AppSpacingTokens.Small
+    val progressThumbSize = AppSpacingTokens.Large
     const val focusedCardScale = 1.04f
 
     fun shape(level: ContainerLevel) = RoundedCornerShape(

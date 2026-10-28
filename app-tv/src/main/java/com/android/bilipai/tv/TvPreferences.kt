@@ -6,6 +6,12 @@ import kotlinx.serialization.json.Json
 
 class TvPreferences(context: Context) {
     private val prefs = context.applicationContext.getSharedPreferences("tv_preferences", Context.MODE_PRIVATE)
+    var reduceMotion: Boolean
+        get() = prefs.getBoolean("reduce_motion", false)
+        set(value) { prefs.edit().putBoolean("reduce_motion", value).apply() }
+    var simpleEffects: Boolean
+        get() = prefs.getBoolean("simple_effects", false)
+        set(value) { prefs.edit().putBoolean("simple_effects", value).apply() }
     var quality: Int
         get() = prefs.getInt("quality", 64)
         set(value) { prefs.edit().putInt("quality", value).apply() }
@@ -15,6 +21,27 @@ class TvPreferences(context: Context) {
     var danmakuEnabled: Boolean
         get() = prefs.getBoolean("danmaku_enabled", true)
         set(value) { prefs.edit().putBoolean("danmaku_enabled", value).apply() }
+    var danmakuTextSize: Float
+        get() = prefs.getFloat("danmaku_text_size", 20f)
+        set(value) { prefs.edit().putFloat("danmaku_text_size", value).apply() }
+    var danmakuOpacity: Float
+        get() = prefs.getFloat("danmaku_opacity", 0.85f)
+        set(value) { prefs.edit().putFloat("danmaku_opacity", value).apply() }
+    var danmakuArea: Float
+        get() = prefs.getFloat("danmaku_area", 0.5f)
+        set(value) { prefs.edit().putFloat("danmaku_area", value).apply() }
+    var danmakuSpeed: Float
+        get() = prefs.getFloat("danmaku_speed", 1f)
+        set(value) { prefs.edit().putFloat("danmaku_speed", value).apply() }
+    var gridDensity: Float
+        get() = prefs.getFloat("grid_density", 1f)
+        set(value) { prefs.edit().putFloat("grid_density", value).apply() }
+    var dynamicColor: Boolean
+        get() = prefs.getBoolean("dynamic_color", false)
+        set(value) { prefs.edit().putBoolean("dynamic_color", value).apply() }
+    var gridZoomHintShown: Boolean
+        get() = prefs.getBoolean("grid_zoom_hint_shown", false)
+        set(value) { prefs.edit().putBoolean("grid_zoom_hint_shown", value).apply() }
     var privacyMode: Boolean
         get() = prefs.getBoolean("privacy_mode", false)
         set(value) { prefs.edit().putBoolean("privacy_mode", value).apply() }

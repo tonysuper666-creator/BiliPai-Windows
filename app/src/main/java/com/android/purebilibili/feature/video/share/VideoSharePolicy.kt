@@ -17,10 +17,14 @@ internal data class VideoSharePayload(
     val text: String,
     val upName: String = "",
     val playCountText: String = "",
+    val page: Int = 1,
+    val positionMs: Long = 0,
+    val authorId: Long = 0,
 )
 
 internal enum class VideoShareTarget(val packageName: String?) {
     BILIBILI_FRIENDS(null),
+    BILIBILI_DYNAMIC(null),
     WECHAT(WECHAT_PACKAGE_NAME),
     QQ(QQ_PACKAGE_NAME),
     COPY_LINK(null),
@@ -48,11 +52,14 @@ internal fun buildVideoSharePayload(
     coverUrl: String = "",
     upName: String = "",
     playCountText: String = "",
+    page: Int = 1,
+    positionMs: Long = 0,
+    authorId: Long = 0,
 ): VideoSharePayload {
     val cleanTitle = title.trim()
     val cleanBvid = bvid.trim()
     val fallbackTitle = cleanTitle.ifBlank { cleanBvid }
-    val url = "https://www.bilibili.com/video/$cleanBvid"
+    val url = "https://www.bilibili.com/video/$cleanBvid" + if (page > 1) "?p=$page" else ""
     return VideoSharePayload(
         title = fallbackTitle,
         bvid = cleanBvid,
@@ -61,6 +68,9 @@ internal fun buildVideoSharePayload(
         text = "【$fallbackTitle】\n$url",
         upName = upName.trim(),
         playCountText = playCountText.trim(),
+        page = page.coerceAtLeast(1),
+        positionMs = positionMs.coerceAtLeast(0),
+        authorId = authorId,
     )
 }
 
@@ -253,4 +263,15 @@ internal fun resolvePreferredShareActivity(
         }
         .maxByOrNull { it.second }
         ?.first
+}
+
+internal fun VideoSharePayload.asContentSharePayload() = com.android.purebilibili.feature.share.ContentSharePayload(
+    key = "video:$bvid:$page", title = title, url = url, cover = coverUrl,
+    author = upName, authorId = authorId, bvid = bvid, dynamicType = 8, positionMs = positionMs,
+)
+
+internal fun VideoSharePayload.withPosition(enabled: Boolean): VideoSharePayload {
+    if (!enabled || positionMs <= 0) return this
+    val preciseUrl = com.android.purebilibili.feature.share.buildPositionShareUrl(url, positionMs)
+    return copy(url = preciseUrl, text = "【$title】\n$preciseUrl")
 }

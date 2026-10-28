@@ -8,6 +8,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -17,12 +18,15 @@ import androidx.compose.ui.zIndex
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.structuralEqualityPolicy
 import kotlin.math.PI
 import kotlin.math.sin
 import com.android.purebilibili.core.ui.transition.VideoCardSourceLayout
 import com.android.purebilibili.core.ui.transition.VideoHeroMotionSpec
 import com.android.purebilibili.core.ui.transition.VideoHeroMotionTokens
 import com.android.purebilibili.core.ui.transition.VideoCardTransitionSettleState
+import com.android.purebilibili.core.ui.transition.resolveVideoCardNativeBodyPresence
 import com.android.purebilibili.core.ui.transition.resolveVideoHeroMotionSpec
 import com.android.purebilibili.core.ui.transition.resolveVideoHeroLandingScale
 import top.yukonga.miuix.kmp.nav.transition.NavMotion
@@ -90,6 +94,42 @@ internal const val MIUIX_VIDEO_CARD_GESTURE_CAMERA_PULL_DP = 1.0f
 internal const val MIUIX_VIDEO_CARD_GESTURE_SHADOW_DP = 12f
 internal const val MIUIX_VIDEO_CARD_FLOATING_CORNER_DP = 28f
 
+/** Covered-entry treatment, owned by the Miuix navigation boundary, never by page children. */
+internal fun resolveMiuixVideoCardCoveredScale(depth: Float, reducedMotion: Boolean): Float =
+    if (reducedMotion) 1f else 1f - 0.03f * depth.coerceIn(0f, 1f)
+
+/** 屏幕上的圆角随来源页后退同步建立，恢复时归零，不在首个缩放帧跳到整角。 */
+internal fun resolveMiuixVideoCardCoveredCornerPx(
+    depth: Float,
+    reducedMotion: Boolean,
+    density: Float,
+): Float {
+    if (reducedMotion) return 0f
+    val scale = resolveMiuixVideoCardCoveredScale(depth, reducedMotion)
+    return 24f * density * depth.coerceIn(0f, 1f) / scale
+}
+
+/** 两份轮廓交替复用，保证 layer 能识别圆角更新，无需逐帧分配 Shape。 */
+internal class MiuixVideoCardCoveredShapeCache {
+    private val shapes = arrayOf(MiuixVideoCardClipShape(), MiuixVideoCardClipShape())
+    private var index = 0
+
+    fun resolve(radiusPx: Float): Shape {
+        if (radiusPx <= 0f) return androidx.compose.ui.graphics.RectangleShape
+        val current = shapes[index]
+        if (current.radiusX == radiusPx) return current
+        index = 1 - index
+        return shapes[index].also {
+            it.radiusX = radiusPx
+            it.radiusY = radiusPx
+        }
+    }
+}
+
+/** Video-to-video transitions extend the black player/window canvas into the scale gap. */
+internal fun resolveMiuixVideoCardBackingColor(sourceRoute: String?, surface: Color): Color =
+    if (sourceRoute?.substringBefore('?')?.startsWith("video/") == true) Color.Black else surface
+
 internal fun resolveMiuixVideoCardGesturePoseWeight(morphProgress: Float): Float {
     val pull = (1f - morphProgress.coerceIn(0f, 1f)).coerceIn(0f, 1f)
     return sin(PI.toFloat() * pull)
@@ -149,13 +189,23 @@ internal fun resolveMiuixVideoCardGestureCornerPx(
     morphProgress: Float,
     floatingCornerPx: Float,
     fullscreenCornerPx: Float = 0f,
+    sourceLayout: VideoCardSourceLayout = VideoCardSourceLayout.COVER_ONLY,
+    currentShortSidePx: Float = Float.POSITIVE_INFINITY,
 ): Float {
-    val pull = (1f - morphProgress.coerceIn(0f, 1f)).coerceIn(0f, 1f)
-    val pose = resolveMiuixVideoCardGesturePoseWeight(morphProgress)
+    val morph = morphProgress.coerceIn(0f, 1f)
+    val pull = 1f - morph
     val source = sourceCornerPx.coerceAtLeast(0f)
+    val target = fullscreenCornerPx.coerceAtLeast(0f)
+    if (sourceLayout == VideoCardSourceLayout.SIDE_BY_SIDE) {
+        // 横向来源沿用卡片本身的圆角，不在中段膨胀到设备屏幕圆角。
+        // 同一深度正反向取值相同；两端斜率归零，避免展开或落位时突然变角。
+        val fraction = morph * morph * (3f - 2f * morph)
+        val radius = source + (target - source) * fraction
+        return radius.coerceAtMost(currentShortSidePx.coerceAtLeast(0f) / 2f)
+    }
+    val pose = resolveMiuixVideoCardGesturePoseWeight(morphProgress)
     val floating = floatingCornerPx.coerceAtLeast(source)
-    val landed = fullscreenCornerPx.coerceAtLeast(0f) +
-        (source - fullscreenCornerPx.coerceAtLeast(0f)) * pull
+    val landed = target + (source - target) * pull
     return landed + (floating - landed) * pose
 }
 
@@ -166,6 +216,7 @@ internal fun resolveMiuixVideoCardGestureVisualOrigin(
     layoutHeight: Float,
     morph: Float,
     localOrigin: TransformOrigin,
+    preserveViewport: Boolean = false,
 ): TransformOrigin {
     val m = morph.coerceIn(0f, 1f)
     val width = layoutWidth.coerceAtLeast(1f)
@@ -173,7 +224,9 @@ internal fun resolveMiuixVideoCardGestureVisualOrigin(
     val visualLeft = sourceBounds.left * (1f - m)
     val visualTop = sourceBounds.top * (1f - m)
     val visualWidth = sourceBounds.width + (width - sourceBounds.width) * m
-    val visualHeight = sourceBounds.height + (height - sourceBounds.height) * m
+    val visualHeight = if (preserveViewport) {
+        height * resolveMiuixVideoCardOuterScaleY(sourceBounds.width / width, sourceBounds.height / height, m, 1f)
+    } else sourceBounds.height + (height - sourceBounds.height) * m
     return TransformOrigin(
         pivotFractionX = ((visualLeft + visualWidth * localOrigin.pivotFractionX) / width)
             .coerceIn(0f, 1f),
@@ -233,6 +286,22 @@ internal fun resolveMiuixVideoCardOuterScale(sourceScale: Float, depth: Float, l
     return source + (1f - source) * depth.coerceIn(0f, 1f) - source * (1f - landingScale)
 }
 
+/** Contract the native viewport while its body fades, rather than in a separate second step. */
+internal fun resolveMiuixVideoCardOuterScaleY(
+    sourceScaleX: Float,
+    sourceScaleY: Float,
+    depth: Float,
+    landingScale: Float,
+): Float {
+    val x = resolveMiuixVideoCardOuterScale(sourceScaleX, depth, landingScale)
+    // Once body content yields, the clip must fit the uniformly scaled source card.
+    // Interpolating full-page height independently leaves a tall empty shell even
+    // when the native card pixels have already taken over.
+    val cardY = x * sourceScaleY.coerceIn(0.05f, 1f) / sourceScaleX.coerceIn(0.05f, 1f)
+    val retainedViewport = resolveVideoCardNativeBodyPresence(depth)
+    return cardY + (x - cardY) * retainedViewport
+}
+
 internal data class MiuixVideoCardInverseScale(
     val scaleX: Float,
     val scaleY: Float,
@@ -241,13 +310,12 @@ internal data class MiuixVideoCardInverseScale(
 /**
  * Inverse of the current outer morph after FillWidthTop compensation.
  *
- * Frozen `1/sourceScaleX` on both axes is only correct at depth = 0. While the clip is still
- * non-uniform, that frozen inverse makes cover/info occupy the wrong fraction of the card
- * and then jump to the stationary list layout.
+ * The outer clip and FillWidthTop compensation already produce a uniform width-based
+ * scale. Reconstruct source pixels at that SAME scale on both axes. Fitting source height
+ * independently to the clip stretches glyphs and inserts space below the cover.
  */
 internal fun resolveMiuixVideoCardInverseScale(
     sourceScaleX: Float,
-    sourceScaleY: Float,
     outerScaleX: Float,
     outerScaleY: Float,
 ): MiuixVideoCardInverseScale {
@@ -256,9 +324,10 @@ internal fun resolveMiuixVideoCardInverseScale(
         outerScaleY = outerScaleY,
         contentScale = MiuixVideoCardContentScale.FillWidthTop,
     )
+    val sourcePixelScale = outerScaleX / sourceScaleX.coerceAtLeast(0.01f)
     return MiuixVideoCardInverseScale(
-        scaleX = (1f / sourceScaleX.coerceAtLeast(0.01f)) / compensation.scaleX.coerceAtLeast(0.01f),
-        scaleY = (1f / sourceScaleY.coerceAtLeast(0.01f)) / compensation.scaleY.coerceAtLeast(0.01f),
+        scaleX = sourcePixelScale / (outerScaleX * compensation.scaleX).coerceAtLeast(0.01f),
+        scaleY = sourcePixelScale / (outerScaleY * compensation.scaleY).coerceAtLeast(0.01f),
     )
 }
 
@@ -272,9 +341,8 @@ internal fun resolveMiuixVideoCardInverseScaleForDepth(
     val landingScale = resolveVideoHeroLandingScale(morph, autoReturning)
     return resolveMiuixVideoCardInverseScale(
         sourceScaleX = sourceScaleX,
-        sourceScaleY = sourceScaleY,
         outerScaleX = resolveMiuixVideoCardOuterScale(sourceScaleX, morph, landingScale),
-        outerScaleY = resolveMiuixVideoCardOuterScale(sourceScaleY, morph, landingScale),
+        outerScaleY = resolveMiuixVideoCardOuterScaleY(sourceScaleX, sourceScaleY, morph, landingScale),
     )
 }
 
@@ -290,12 +358,16 @@ internal fun resolveMiuixVideoCardClipRadii(
     morphProgress: Float = 0f,
     floatingCornerPx: Float = sourceCornerPx,
     fullscreenCornerPx: Float = 0f,
+    sourceLayout: VideoCardSourceLayout = VideoCardSourceLayout.COVER_ONLY,
+    currentShortSidePx: Float = Float.POSITIVE_INFINITY,
 ): MiuixVideoCardClipRadii {
     val physicalRadius = resolveMiuixVideoCardGestureCornerPx(
         sourceCornerPx = sourceCornerPx,
         morphProgress = morphProgress,
         floatingCornerPx = floatingCornerPx,
         fullscreenCornerPx = fullscreenCornerPx,
+        sourceLayout = sourceLayout,
+        currentShortSidePx = currentShortSidePx,
     )
     return MiuixVideoCardClipRadii(
         radiusX = physicalRadius / outerScaleX.coerceAtLeast(0.01f),
@@ -387,6 +459,14 @@ internal class MiuixVideoCardTransitionProgress(
         MIUIX_VIDEO_CARD_FOLLOW_MAX_RETURN
     } else MIUIX_VIDEO_CARD_GESTURE_MAX_RETURN
     private var topScope: NavTransitionScope? by mutableStateOf(null)
+    // These predicates are also called from composition and card draw modifiers. Only
+    // boundary changes may invalidate those callers; geometry still reads the live depth.
+    private val gestureInProgress by derivedStateOf(structuralEqualityPolicy()) {
+        topScope?.let {
+            !isCoveredOrRevealedParent(it) && it.gesture != null && it.settle == null
+        } == true
+    }
+    private val settleState by derivedStateOf(structuralEqualityPolicy()) { resolveSettleState() }
     private var gestureStartReturn: Float? = null
     private var lastSeekRawReturn = 0f
     private var lastSeekVisualReturn = 0f
@@ -400,8 +480,61 @@ internal class MiuixVideoCardTransitionProgress(
     private var releaseFollowPose = VideoCardFollowPose()
     private var followSettle: NavSettle? = null
 
+    /**
+     * 帧内记忆：详情 entry 的 `transformEntry` 会在同一帧里挂多层 graphicsLayer，
+     * 每层都会读一次 `visualDepth`。而 `visualDepth` 不是纯读函数——它会推进
+     * `gestureStartReturn` / `activeSettle` / `settleRawReturn` / `lastVisualReturn`
+     * 这套状态机。同帧重复调用等于把状态机推进多次，手势与落位判定互相污染，
+     * 且每帧放大成 N 次读取 + N 次 follow pose 分配，直接表现为转场掉帧。
+     *
+     * 这里以「scope/settle 身份 + 手势进度 + 深度/角色 + 帧序号」为键做帧内记忆：
+     * - `NavTransitionScope` 与 `NavSettle` 都是每帧稳定（跨帧同引用或状态迁移时换新）
+     *   的对象，用身份比较即可区分「同一帧的同一次采样」与「状态真的变了」。
+     * - [localFrameSequence] 由调用方每帧递增，保证跨帧一定失效，不会把上一帧结果留用。
+     */
+    private var lastDepthScope: NavTransitionScope? = null
+    private var lastDepthSettle: NavSettle? = null
+    private var lastDepthGestureProgress: Float? = null
+    private var lastDepthRelativeDepth: Float = Float.NaN
+    private var lastDepthRole: NavRole? = null
+    private var lastDepthFrame: Long = Long.MIN_VALUE
+    private var lastDepthValue: Float = 0f
+
     private fun isCoveredOrRevealedParent(scope: NavTransitionScope): Boolean =
         scope.relativeDepth >= 0f && scope.role != NavRole.Outgoing
+
+    /**
+     * 当前帧序号。由宿主每帧递增（见 `advanceTransitionFrame`）。
+     * 未接入宿主时保持 0，帧内记忆仍生效、跨帧自然失效（键会随深度、角色或手势变化）。
+     */
+    private var localFrameSequence: Long = 0L
+
+    internal fun advanceTransitionFrame() {
+        localFrameSequence += 1L
+    }
+
+    /** 带帧内记忆的 [visualDepth]：同一帧同一 scope 只推进一次状态机。 */
+    fun visualDepthMemoized(scope: NavTransitionScope): Float {
+        if (
+            lastDepthFrame == localFrameSequence &&
+            lastDepthScope === scope &&
+            lastDepthSettle === scope.settle &&
+            lastDepthGestureProgress == scope.gesture?.progress &&
+            lastDepthRelativeDepth == scope.relativeDepth &&
+            lastDepthRole == scope.role
+        ) {
+            return lastDepthValue
+        }
+        val value = visualDepth(scope)
+        lastDepthScope = scope
+        lastDepthSettle = scope.settle
+        lastDepthGestureProgress = scope.gesture?.progress
+        lastDepthRelativeDepth = scope.relativeDepth
+        lastDepthRole = scope.role
+        lastDepthFrame = localFrameSequence
+        lastDepthValue = value
+        return value
+    }
 
     /** One mapping for the flying shell, its contents, and the retained source page. */
     fun visualDepth(scope: NavTransitionScope): Float {
@@ -473,6 +606,7 @@ internal class MiuixVideoCardTransitionProgress(
         height: Float,
         arcAmplitudePx: Float,
         motionSpec: VideoHeroMotionSpec,
+        preserveViewport: Boolean = false,
     ): VideoCardFollowPose? {
         val firstGestureFrame = scope.relativeDepth == 0f && scope.role == NavRole.Top &&
             scope.gesture?.progress == 0f &&
@@ -486,7 +620,8 @@ internal class MiuixVideoCardTransitionProgress(
             return null
         }
         val sample = gestureFollow.localSample() ?: return null
-        val morph = visualDepth(scope)
+        // 同帧内复用 transformEntry 已经算过的 depth，避免此处再推进一次状态机。
+        val morph = visualDepthMemoized(scope)
         val settle = scope.settle
         if (settle == null) {
             if (followSequence != sample.sequence) {
@@ -500,6 +635,7 @@ internal class MiuixVideoCardTransitionProgress(
                 arcAmplitudePx = arcAmplitudePx,
                 anchorPose = followAnchorPose,
                 gestureProgress = scope.gesture?.progress ?: 0f,
+                preserveViewport = preserveViewport,
             )
             val fixedOrigin = resolveMiuixVideoCardGestureVisualOrigin(
                 bounds, width, height, morph,
@@ -507,6 +643,7 @@ internal class MiuixVideoCardTransitionProgress(
                     if (sample.initialTouch.x < width / 2f) .16f else .84f,
                     (sample.touch.y / height).coerceIn(.12f, .88f),
                 ),
+                preserveViewport = preserveViewport,
             )
             lastFollowPose = resolveVideoCardGestureChannels(
                 rawPose, gestureTranslationEnabled, gesturePoseEnabled, fixedOrigin,
@@ -530,9 +667,9 @@ internal class MiuixVideoCardTransitionProgress(
                 if (settleVisualReturn >= 1f) 0f else (1f - visualReturn) / (1f - settleVisualReturn)
             }
             lastFollowPose = releaseFollowPose
-                // 松手冲量：与手指甩动速度成比例的额外旋转，随 settle 权重一并衰减。
-                .withReleaseImpulse(settle.releaseVelocity)
                 .settle(weight)
+                // 冲量从零建立再归零，不在释放首帧直接叠加旋转。
+                .withReleaseImpulse(settle.releaseVelocity, weight)
         }
         return lastFollowPose
     }
@@ -564,6 +701,13 @@ internal class MiuixVideoCardTransitionProgress(
     }
 
     fun clear() {
+        lastDepthScope = null
+        lastDepthSettle = null
+        lastDepthGestureProgress = null
+        lastDepthRelativeDepth = Float.NaN
+        lastDepthRole = null
+        lastDepthFrame = Long.MIN_VALUE
+        lastDepthValue = 0f
         topScope = null
         gestureStartReturn = null
         activeSettle = null
@@ -573,19 +717,19 @@ internal class MiuixVideoCardTransitionProgress(
     }
 
     fun depthOr(fallback: Float): Float = topScope
-        ?.let(::visualDepth)
+        ?.let(::visualDepthMemoized)
         ?: fallback.coerceIn(0f, 1f)
 
     // Miuix retains gesture metadata while settling. It is NOT still direct manipulation.
-    fun isGestureInProgress(): Boolean = topScope?.let {
-        !isCoveredOrRevealedParent(it) && it.gesture != null && it.settle == null
-    } == true
+    fun isGestureInProgress(): Boolean = gestureInProgress
 
-    fun depthOrNull(): Float? = topScope?.let(::visualDepth)
+    fun depthOrNull(): Float? = topScope?.let(::visualDepthMemoized)
 
     fun releaseVelocity(): Float = topScope?.settle?.releaseVelocity ?: 0f
 
-    fun settleStateOrNull(): VideoCardTransitionSettleState? = topScope?.let { scope ->
+    fun settleStateOrNull(): VideoCardTransitionSettleState? = settleState
+
+    private fun resolveSettleState(): VideoCardTransitionSettleState? = topScope?.let { scope ->
         when {
             isCoveredOrRevealedParent(scope) -> VideoCardTransitionSettleState.Held
             scope.settle?.phase == NavSettlePhase.Cancel -> VideoCardTransitionSettleState.CancelRestore
@@ -622,7 +766,8 @@ internal class MiuixVideoCardTransitionProgress(
      */
     fun gestureBackProgress(): Float? = topScope?.let { scope ->
         if (!isCoveredOrRevealedParent(scope) && (scope.gesture != null || scope.settle != null)) {
-            val morph = visualDepth(scope)
+            // 采样同帧已算过的 depth；这是显示路径，不得再推进状态机。
+            val morph = visualDepthMemoized(scope)
             (1f - morph).coerceIn(0f, 1f)
         } else {
             null
@@ -640,10 +785,12 @@ internal fun resolveVideoHeroNavMotion(
     commit = NavSettleSpec.Tween(
         durationMillis = spec.returnDurationMillis,
         easing = spec.returnSpatialSpec,
+        matchReleaseVelocity = !spec.reducedMotion,
     ),
     cancel = if (gestureTranslationEnabled) NavSettleSpec.Tween(
         durationMillis = spec.cancelDurationMillis,
         easing = spec.returnSpatialSpec,
+        matchReleaseVelocity = !spec.reducedMotion,
     ) else NavSettleSpec.Spring(
         dampingRatio = VideoHeroMotionTokens.SPRING_DAMPING,
         stiffness = spec.cancelStiffness,
@@ -673,6 +820,7 @@ internal fun miuixVideoCardNavTransition(
     heroMotionSpec: VideoHeroMotionSpec = resolveVideoHeroMotionSpec(durationMillis),
     returningProvider: () -> Boolean = { false },
     deviceCornerDp: Dp = 32.dp,
+    sourceLayout: VideoCardSourceLayout = VideoCardSourceLayout.COVER_ONLY,
 ): NavTransition {
     val bounds = sourceBounds?.takeIf { it.width > 1f && it.height > 1f }
         ?: return fallback
@@ -685,6 +833,7 @@ internal fun miuixVideoCardNavTransition(
     val corner = sourceCornerDp?.coerceAtLeast(0) ?: 16
     val clipShapeA = MiuixVideoCardClipShape()
     val clipShapeB = MiuixVideoCardClipShape()
+    val coveredShapeCache = MiuixVideoCardCoveredShapeCache()
     var useShapeA = true
 
     return object : NavTransition {
@@ -710,9 +859,11 @@ internal fun miuixVideoCardNavTransition(
                     if (depth <= 0f) {
                         val width = scope.layoutSize.width.toFloat().coerceAtLeast(1f)
                         val height = scope.layoutSize.height.toFloat().coerceAtLeast(1f)
-                        val morph = progress.visualDepth(scope)
+                        // 帧内记忆：同一帧多层 graphicsLayer 只推进一次状态机。
+                        val morph = progress.visualDepthMemoized(scope)
                         val pose = progress.followPose(
                             scope, bounds, width, height, 10.dp.toPx(), heroMotionSpec,
+                            preserveViewport = contentScale == MiuixVideoCardContentScale.FillWidthTop,
                         )
                         if (gesture != null) {
                             if (pose != null) {
@@ -740,6 +891,7 @@ internal fun miuixVideoCardNavTransition(
                                 layoutHeight = height,
                                 morph = morph,
                                 localOrigin = transform.transformOrigin,
+                                preserveViewport = contentScale == MiuixVideoCardContentScale.FillWidthTop,
                             )
                             translationX = transform.translationX
                             translationY = transform.translationY
@@ -761,7 +913,8 @@ internal fun miuixVideoCardNavTransition(
                     val height = scope.layoutSize.height.toFloat().coerceAtLeast(1f)
                     val depth = scope.relativeDepth
                     if (depth <= 0f) {
-                        val morph = progress.visualDepth(scope)
+                        // 帧内记忆：同一帧多层 graphicsLayer 只推进一次状态机。
+                        val morph = progress.visualDepthMemoized(scope)
                         val sourceScaleX = (bounds.width / width).coerceIn(0.05f, 1f)
                         val sourceScaleY = (bounds.height / height).coerceIn(0.05f, 1f)
                         val landingScale = resolveVideoHeroLandingScale(
@@ -771,7 +924,9 @@ internal fun miuixVideoCardNavTransition(
                                 scope.role == NavRole.Outgoing,
                         )
                         val outerScaleX = resolveMiuixVideoCardOuterScale(sourceScaleX, morph, landingScale)
-                        val outerScaleY = resolveMiuixVideoCardOuterScale(sourceScaleY, morph, landingScale)
+                        val outerScaleY = if (contentScale == MiuixVideoCardContentScale.FillWidthTop) {
+                            resolveMiuixVideoCardOuterScaleY(sourceScaleX, sourceScaleY, morph, landingScale)
+                        } else resolveMiuixVideoCardOuterScale(sourceScaleY, morph, landingScale)
                         scaleX = outerScaleX
                         scaleY = outerScaleY
                         transformOrigin = TransformOrigin(0f, 0f)
@@ -783,18 +938,25 @@ internal fun miuixVideoCardNavTransition(
                         // expose the player's black Surface frame at landing.
                         alpha = 1f
                         val poseWeight = resolveMiuixVideoCardGesturePoseWeight(morph)
-                        clip = morph < 0.999f || poseWeight > 0.001f || (gestureFollowEnabled && scope.gesture != null)
+                        val needsClip = morph < 0.999f || poseWeight > 0.001f ||
+                            (gestureFollowEnabled && scope.gesture != null)
+                        clip = needsClip
                         val physicalRadius = resolveMiuixVideoCardGestureCornerPx(
                             sourceCornerPx = corner.dp.toPx(),
                             morphProgress = morph,
                             floatingCornerPx = floatingCornerPx,
                             // Fullscreen content must reach square host bounds, including on tablets.
                             fullscreenCornerPx = 0f,
+                            sourceLayout = sourceLayout,
+                            currentShortSidePx = minOf(width * outerScaleX, height * outerScaleY),
                         )
                         val radX = physicalRadius / outerScaleX.coerceAtLeast(0.01f)
                         val radY = physicalRadius / outerScaleY.coerceAtLeast(0.01f)
                         val activeShape = if (useShapeA) clipShapeA else clipShapeB
-                        if (kotlin.math.abs(activeShape.radiusX - radX) > 0.05f || kotlin.math.abs(activeShape.radiusY - radY) > 0.05f) {
+                        if (!needsClip) {
+                            // 展开完成后同时清除圆角轮廓，避免旧系统保留进场遮罩直到尺寸改变。
+                            shape = androidx.compose.ui.graphics.RectangleShape
+                        } else if (kotlin.math.abs(activeShape.radiusX - radX) > 0.05f || kotlin.math.abs(activeShape.radiusY - radY) > 0.05f) {
                             useShapeA = !useShapeA
                             val nextShape = if (useShapeA) clipShapeA else clipShapeB
                             nextShape.radiusX = radX
@@ -808,13 +970,31 @@ internal fun miuixVideoCardNavTransition(
                             // allocating and resolving the full gesture transform a second time.
                             shadowElevation = MIUIX_VIDEO_CARD_GESTURE_SHADOW_DP.dp.toPx() * poseWeight
                         }
+                    } else {
+                        // Same boundary ownership as Miuix's cross-activity example: transform
+                        // the complete covered entry once, including its page chrome.
+                        val coveredDepth = progress.depthOr(depth)
+                        val coveredScale = resolveMiuixVideoCardCoveredScale(
+                            depth = coveredDepth,
+                            reducedMotion = heroMotionSpec.reducedMotion,
+                        )
+                        scaleX = coveredScale
+                        scaleY = coveredScale
+                        transformOrigin = TransformOrigin.Center
+                        clip = coveredScale < 1f
+                        shape = coveredShapeCache.resolve(resolveMiuixVideoCardCoveredCornerPx(
+                            depth = coveredDepth,
+                            reducedMotion = heroMotionSpec.reducedMotion,
+                            density = scope.density.density,
+                        ))
                     }
                 }.graphicsLayer {
                     val depth = scope.relativeDepth
                     if (depth <= 0f) {
                         val width = scope.layoutSize.width.toFloat().coerceAtLeast(1f)
                         val height = scope.layoutSize.height.toFloat().coerceAtLeast(1f)
-                        val morph = progress.visualDepth(scope)
+                        // 帧内记忆：同一帧多层 graphicsLayer 只推进一次状态机。
+                        val morph = progress.visualDepthMemoized(scope)
                         val landingScale = resolveVideoHeroLandingScale(
                             depth = morph,
                             autoReturning = !heroMotionSpec.reducedMotion &&
@@ -822,7 +1002,9 @@ internal fun miuixVideoCardNavTransition(
                                 scope.role == NavRole.Outgoing,
                         )
                         val outerScaleX = resolveMiuixVideoCardOuterScale(bounds.width / width, morph, landingScale)
-                        val outerScaleY = resolveMiuixVideoCardOuterScale(bounds.height / height, morph, landingScale)
+                        val outerScaleY = if (contentScale == MiuixVideoCardContentScale.FillWidthTop) {
+                            resolveMiuixVideoCardOuterScaleY(bounds.width / width, bounds.height / height, morph, landingScale)
+                        } else resolveMiuixVideoCardOuterScale(bounds.height / height, morph, landingScale)
                         val safeOuterScaleX = outerScaleX.coerceAtLeast(0.01f)
                         val safeOuterScaleY = outerScaleY.coerceAtLeast(0.01f)
                         val uniformScale = when (contentScale) {

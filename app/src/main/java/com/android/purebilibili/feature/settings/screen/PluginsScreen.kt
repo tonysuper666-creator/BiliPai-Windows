@@ -1,5 +1,7 @@
 // 文件路径: feature/settings/PluginsScreen.kt
 package com.android.purebilibili.feature.settings
+
+import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
 
@@ -12,7 +14,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -63,11 +65,6 @@ import com.android.purebilibili.core.plugin.json.readJsonPluginStatsNotification
 import com.android.purebilibili.core.plugin.json.scheduleJsonPluginStatsSummary
 import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.core.theme.iOSPink  // 插件图标色
-import com.android.purebilibili.core.theme.iOSBlue
-import com.android.purebilibili.core.theme.iOSGreen
-import com.android.purebilibili.core.theme.iOSOrange
-import com.android.purebilibili.core.theme.iOSPurple
-import com.android.purebilibili.core.theme.iOSTeal
 import com.android.purebilibili.core.theme.resolveAccessibleContainerColors
 import com.android.purebilibili.feature.settings.SettingsLocalBackHandler
 import com.android.purebilibili.feature.settings.screen.SkinCatalogScreen
@@ -86,15 +83,17 @@ import com.android.purebilibili.core.ui.components.AppOutlinedButton
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppTextField
 import com.android.purebilibili.core.ui.components.AppTextButton
+import com.android.purebilibili.core.theme.AppUiStyle
+import com.android.purebilibili.core.theme.LocalAppUiStyle
+import com.android.purebilibili.core.ui.resolveAppEntryIconColor
 import com.android.purebilibili.core.ui.components.rememberAdaptivePreferenceIconContentColor
 import com.android.purebilibili.core.ui.components.rememberAdaptivePreferenceIconContainerColor
 import com.android.purebilibili.core.ui.components.rememberAdaptiveSemanticIconTint
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.util.rememberNotificationPermissionState
 import com.android.purebilibili.core.plugin.resolvePluginListActivityLabel
-import com.android.purebilibili.feature.plugin.EYE_PROTECTION_PLUGIN_ID
-import com.android.purebilibili.feature.plugin.EyeProtectionPlugin
-import com.android.purebilibili.feature.plugin.SPONSOR_BLOCK_PLUGIN_ID
+import com.android.purebilibili.core.plugin.BuiltinPluginIds
+import com.android.purebilibili.plugin.sdk.EyeProtectionPluginApi
 import com.android.purebilibili.feature.settings.buildUiSkinImagePreviewItems
 import com.android.purebilibili.feature.settings.buildUiSkinPackagePreview
 import kotlinx.coroutines.Dispatchers
@@ -106,19 +105,6 @@ import okhttp3.Request
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
-
-internal suspend fun dispatchBuiltInPluginToggle(
-    pluginId: String,
-    enabled: Boolean,
-    onSponsorBlockToggle: suspend (Boolean) -> Unit,
-    onGenericPluginToggle: suspend (String, Boolean) -> Unit
-) {
-    if (pluginId == SPONSOR_BLOCK_PLUGIN_ID) {
-        onSponsorBlockToggle(enabled)
-    } else {
-        onGenericPluginToggle(pluginId, enabled)
-    }
-}
 
 internal fun downloadUiSkinRemotePackage(url: String): ByteArray {
     val request = Request.Builder()
@@ -162,7 +148,7 @@ private data class BiliPaiJsPluginPreview(
 
 /**
  *  插件中心页面
- * 
+ *
  * 显示所有可用插件，支持启用/禁用和配置。
  */
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
@@ -178,12 +164,12 @@ fun PluginsScreen(
     val scope = rememberCoroutineScope()
     val screenTitle = stringResource(R.string.plugins_center_title)
     val backLabel = stringResource(R.string.common_back)
-    
+
     //  编辑插件状态
     var editingPlugin by remember { mutableStateOf<com.android.purebilibili.core.plugin.json.JsonRulePlugin?>(null) }
     var selectedBuiltInPluginId by remember { mutableStateOf<String?>(null) }
     var showSkinCatalog by remember { mutableStateOf(false) }
-    
+
     //  如果正在编辑插件，显示编辑器全屏覆盖 (Mobile behavior)
     //  In Tablet, this will be handled differently.
     editingPlugin?.let { plugin ->
@@ -192,7 +178,7 @@ fun PluginsScreen(
             plugin = plugin,
             onBack = { editingPlugin = null },
             onSave = { updated ->
-                com.android.purebilibili.core.plugin.json.JsonPluginManager.updatePlugin(updated)
+                scope.launch { com.android.purebilibili.core.plugin.json.JsonPluginManager.updatePlugin(updated) }
             }
         )
         return
@@ -253,6 +239,9 @@ fun PluginsContent(
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val scope = rememberCoroutineScope()
+    LaunchedEffect(context) {
+        com.android.purebilibili.core.plugin.json.JsonPluginManager.initialize(context)
+    }
     val effectMatchHintsEnabledFlow = remember(context) {
         PluginStore.effectMatchHintsEnabledFlow(context)
     }
@@ -265,7 +254,7 @@ fun PluginsContent(
     // Statistics
     val totalPlugins = plugins.size + jsonPlugins.size
     val enabledPlugins = plugins.count { it.enabled } + jsonPlugins.count { it.enabled }
-    
+
     // Local UI states
     var jsonStatsNotificationEnabled by remember(context) {
         mutableStateOf(readJsonPluginStatsNotificationConfig(context).enabled)
@@ -284,7 +273,7 @@ fun PluginsContent(
             showToast("通知权限未开启")
         }
     }
-    
+
     //  导入插件对话框状态
     var showImportDialog by remember { mutableStateOf(false) }
     var importUrl by remember { mutableStateOf("") }
@@ -373,15 +362,15 @@ fun PluginsContent(
             }
         }
     }
-    
+
     //  测试对话框状态
     var testingPluginId by remember { mutableStateOf<String?>(null) }
     var testResult by remember { mutableStateOf<Triple<Int, Int, List<com.android.purebilibili.data.model.response.VideoItem>>?>(null) }
     var testingSampleVideos by remember { mutableStateOf<List<com.android.purebilibili.data.model.response.VideoItem>>(emptyList()) }
-    val importTint = rememberAdaptivePreferenceIconContainerColor(iOSBlue)
-    val jsImportTint = rememberAdaptivePreferenceIconContainerColor(iOSTeal)
-    val kotlinPackageTint = rememberAdaptivePreferenceIconContainerColor(MaterialTheme.colorScheme.primary)
-    val uiSkinTint = rememberAdaptivePreferenceIconContainerColor(MaterialTheme.colorScheme.tertiary)
+    val importTint = rememberAppEntryIconContainerColor(0)
+    val jsImportTint = rememberAppEntryIconContainerColor(1)
+    val kotlinPackageTint = rememberAppEntryIconContainerColor(2)
+    val uiSkinTint = rememberAppEntryIconContainerColor(3)
     val importIconContentColor = rememberAdaptivePreferenceIconContentColor(importTint)
     val jsImportIconContentColor = rememberAdaptivePreferenceIconContentColor(jsImportTint)
     val kotlinPackageIconContentColor = rememberAdaptivePreferenceIconContentColor(kotlinPackageTint)
@@ -568,17 +557,17 @@ fun PluginsContent(
             extraBottom = contentBottomPadding,
         )
     ) {
-            
+
             // 标题说明
             item {
                 AppText(
                     text = "已安装插件".uppercase(),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(start = 32.dp, bottom = 8.dp)
                 )
             }
-            
+
             // 插件列表
             item {
                 AppSurface(
@@ -592,19 +581,10 @@ fun PluginsContent(
                         plugins.forEachIndexed { index, pluginInfo ->
                             PluginItem(
                                 pluginInfo = pluginInfo,
-                                iconTint = getPluginColor(index),
+                                iconTint = rememberPluginEntryIconTint(index),
                                 onToggle = { enabled ->
                                     scope.launch {
-                                        dispatchBuiltInPluginToggle(
-                                            pluginId = pluginInfo.plugin.id,
-                                            enabled = enabled,
-                                            onSponsorBlockToggle = { sponsorEnabled ->
-                                                SettingsManager.setSponsorBlockEnabled(context, sponsorEnabled)
-                                            },
-                                            onGenericPluginToggle = { pluginId, pluginEnabled ->
-                                                PluginManager.setEnabled(pluginId, pluginEnabled)
-                                            }
-                                        )
+                                        PluginManager.setEnabled(pluginInfo.plugin.id, enabled)
                                     }
                                 },
                                 onOpen = { onOpenBuiltInPlugin(pluginInfo.plugin.id) }
@@ -622,14 +602,14 @@ fun PluginsContent(
                     }
                 }
             }
-            
+
             // 统计信息
             item {
                 val enabledCount = plugins.count { it.enabled }
                 AppText(
                     text = "${plugins.size} 个插件，$enabledCount 个已启用",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(start = 32.dp, top = 16.dp)
                 )
             }
@@ -639,7 +619,7 @@ fun PluginsContent(
                 AppText(
                     text = "提示设置",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(start = 32.dp, bottom = 8.dp)
                 )
                 AppSurface(
@@ -667,12 +647,12 @@ fun PluginsContent(
                             AppText(
                                 text = "显示插件生效提示",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = AppContentColors.primaryText()
                             )
                             AppText(
                                 text = "去广告或弹幕增强命中时显示顶部提示",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = AppContentColors.secondaryText()
                             )
                         }
                         Spacer(modifier = Modifier.width(12.dp))
@@ -687,24 +667,24 @@ fun PluginsContent(
                     }
                 }
             }
-            
+
             //  导入外部插件按钮
             item {
                 Spacer(modifier = Modifier.height(24.dp))
                 AppText(
                     text = "高级/实验功能",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(start = 32.dp, bottom = 4.dp)
                 )
                 AppText(
                     text = "JSON、JS、Kotlin 包与装扮等扩展能力",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(start = 32.dp, bottom = 8.dp)
                 )
             }
-            
+
             item {
                 AppSurface(
                     modifier = Modifier
@@ -720,7 +700,12 @@ fun PluginsContent(
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(
+                        if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                            SettingsFunctionIcon(
+                                title = "导入外部插件",
+                                imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_cloud_download_24),
+                            )
+                        } else Box(
                             modifier = Modifier
                                 .size(36.dp)
                                 .adaptiveSquircleBackground(importTint, 10.dp),
@@ -738,12 +723,12 @@ fun PluginsContent(
                             AppText(
                                 text = "导入外部插件",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = AppContentColors.primaryText()
                             )
                             AppText(
                                 text = "通过链接安装 JSON 规则插件，安装前预览能力",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = AppContentColors.secondaryText()
                             )
                         }
                         AppIcon(
@@ -772,7 +757,12 @@ fun PluginsContent(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
+                            if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                                SettingsFunctionIcon(
+                                    title = "导入 JS 媒体插件",
+                                    imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24),
+                                )
+                            } else Box(
                                 modifier = Modifier
                                     .size(36.dp)
                                     .adaptiveSquircleBackground(jsImportTint, 10.dp),
@@ -790,7 +780,7 @@ fun PluginsContent(
                                 AppText(
                                     text = "导入 JS 媒体插件",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = AppContentColors.primaryText()
                                 )
                                 AppText(
                                     text = if (isJsPreviewLoading) {
@@ -799,7 +789,7 @@ fun PluginsContent(
                                         "支持链接或本地 .js，预览 manifest 和权限后安装"
                                     },
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = AppContentColors.secondaryText()
                                 )
                             }
                         }
@@ -831,7 +821,7 @@ fun PluginsContent(
                     AppText(
                         text = jsImportError ?: "",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
+                        color = AppContentColors.error(),
                         modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)
                     )
                 }
@@ -851,6 +841,7 @@ fun PluginsContent(
                             installedJsPlugins.forEachIndexed { index, installed ->
                                 InstalledJsPluginItem(
                                     installed = installed,
+                                    index = index,
                                     onToggle = { enabled ->
                                         jsPluginStore.setEnabled(installed.manifest.id, enabled)
                                         installedJsPlugins = jsPluginStore.listInstalledPlugins()
@@ -896,7 +887,12 @@ fun PluginsContent(
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(
+                        if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                            SettingsFunctionIcon(
+                                title = "开放 Kotlin 插件包",
+                                imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_shield_fill_24),
+                            )
+                        } else Box(
                             modifier = Modifier
                                 .size(36.dp)
                                 .adaptiveSquircleBackground(kotlinPackageTint, 10.dp),
@@ -914,7 +910,7 @@ fun PluginsContent(
                             AppText(
                                 text = "开放 Kotlin 插件包",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = AppContentColors.primaryText()
                             )
                             AppText(
                                 text = if (isKotlinPackageLoading) {
@@ -923,7 +919,7 @@ fun PluginsContent(
                                     "选择 .bpplugin，展示 SHA-256、签名状态和敏感能力"
                                 },
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = AppContentColors.secondaryText()
                             )
                         }
                         AppSurface(
@@ -933,7 +929,7 @@ fun PluginsContent(
                             AppText(
                                 text = "预览",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = AppContentColors.secondaryText(),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
                         }
@@ -946,7 +942,7 @@ fun PluginsContent(
                     AppText(
                         text = kotlinImportError ?: "",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
+                        color = AppContentColors.error(),
                         modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)
                     )
                 }
@@ -974,17 +970,17 @@ fun PluginsContent(
                                         AppText(
                                             text = installed.title,
                                             style = MaterialTheme.typography.bodyLarge,
-                                            color = MaterialTheme.colorScheme.onSurface
+                                            color = AppContentColors.primaryText()
                                         )
                                         AppText(
                                             text = "${installed.subtitle} · ${installed.stateText}",
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            color = AppContentColors.secondaryText()
                                         )
                                         AppText(
                                             text = installed.packageHashText,
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            color = AppContentColors.secondaryText()
                                         )
                                     }
                                     if (index < installedKotlinPackages.lastIndex) {
@@ -1007,7 +1003,7 @@ fun PluginsContent(
                 AppText(
                     text = "界面皮肤",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(start = 32.dp, bottom = 8.dp)
                 )
             }
@@ -1028,7 +1024,12 @@ fun PluginsContent(
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Box(
+                            if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                                SettingsFunctionIcon(
+                                    title = "在线装扮",
+                                    imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_cloud_fill_24),
+                                )
+                            } else Box(
                                 modifier = Modifier
                                     .size(36.dp)
                                     .adaptiveSquircleBackground(uiSkinTint, 10.dp),
@@ -1044,14 +1045,14 @@ fun PluginsContent(
                             Spacer(modifier = Modifier.width(14.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 AppText(
-                                    text = "在线装扮目录",
+                                    text = "在线装扮",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = AppContentColors.primaryText()
                                 )
                                 AppText(
                                     text = "浏览 Rovniced/bilibili-skin 主题存档，真实预览后一键导入",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = AppContentColors.secondaryText()
                                 )
                             }
                             AppSurface(
@@ -1061,7 +1062,7 @@ fun PluginsContent(
                                 AppText(
                                     text = "在线",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = AppContentColors.secondaryText(),
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
                             }
@@ -1082,7 +1083,12 @@ fun PluginsContent(
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Box(
+                            if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                                SettingsFunctionIcon(
+                                    title = "导入界面皮肤包",
+                                    imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_brush_fill_24),
+                                )
+                            } else Box(
                                 modifier = Modifier
                                     .size(36.dp)
                                     .adaptiveSquircleBackground(uiSkinTint, 10.dp),
@@ -1100,7 +1106,7 @@ fun PluginsContent(
                                 AppText(
                                     text = "导入界面皮肤包",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = AppContentColors.primaryText()
                                 )
                                 AppText(
                                     text = if (isUiSkinPackageLoading) {
@@ -1109,7 +1115,7 @@ fun PluginsContent(
                                         "支持 .bpskin、主题 ZIP 和装扮 JSON；缺少的远程资源将联网下载"
                                     },
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = AppContentColors.secondaryText()
                                 )
                             }
                             AppSurface(
@@ -1119,7 +1125,7 @@ fun PluginsContent(
                                 AppText(
                                     text = "资源包",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = AppContentColors.secondaryText(),
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
                             }
@@ -1133,7 +1139,7 @@ fun PluginsContent(
                     AppText(
                         text = uiSkinImportError ?: "",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
+                        color = AppContentColors.error(),
                         modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)
                     )
                 }
@@ -1182,7 +1188,7 @@ fun PluginsContent(
                     }
                 }
             }
-            
+
             //  已安装的 JSON 插件列表
             if (jsonPlugins.isNotEmpty()) {
                 item {
@@ -1207,7 +1213,7 @@ fun PluginsContent(
                 item {
                     Spacer(modifier = Modifier.height(12.dp))
                     val filterStats by com.android.purebilibili.core.plugin.json.JsonPluginManager.filterStats.collectAsStateWithLifecycle()
-                    
+
                     AppSurface(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
@@ -1220,27 +1226,32 @@ fun PluginsContent(
                                 JsonPluginItem(
                                     loaded = loadedPlugin,
                                     filterCount = filterStats[loadedPlugin.plugin.id] ?: 0,
+                                    index = index,
                                     onToggle = { enabled ->
-                                        com.android.purebilibili.core.plugin.json.JsonPluginManager.setEnabled(
-                                            loadedPlugin.plugin.id, enabled
-                                        )
+                                        scope.launch {
+                                            com.android.purebilibili.core.plugin.json.JsonPluginManager.setEnabled(
+                                                loadedPlugin.plugin.id, enabled
+                                            )
+                                        }
                                     },
                                     onEdit = {
                                         //  Callback to editing
                                         onEditJsonPlugin(loadedPlugin.plugin)
                                     },
                                     onDelete = {
-                                        com.android.purebilibili.core.plugin.json.JsonPluginManager.removePlugin(
-                                            loadedPlugin.plugin.id
-                                        )
+                                        scope.launch {
+                                            com.android.purebilibili.core.plugin.json.JsonPluginManager.removePlugin(loadedPlugin.plugin.id)
+                                        }
                                     },
                                     onResetStats = {
-                                        com.android.purebilibili.core.plugin.json.JsonPluginManager.resetStats(loadedPlugin.plugin.id)
-                                        android.widget.Toast.makeText(
-                                            context,
-                                            "统计已重置",
-                                            android.widget.Toast.LENGTH_SHORT
-                                        ).show()
+                                        scope.launch {
+                                            com.android.purebilibili.core.plugin.json.JsonPluginManager.resetStats(loadedPlugin.plugin.id)
+                                            android.widget.Toast.makeText(
+                                                context,
+                                                "统计已重置",
+                                                android.widget.Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     },
                                     onTest = {
                                         //  获取首页样本视频进行测试
@@ -1290,20 +1301,20 @@ fun PluginsContent(
                     }
                 }
             }
-            
+
             // 底部说明
             item {
                 Spacer(modifier = Modifier.height(24.dp))
                 AppText(
                     text = "插件可以扩展应用功能，如自动跳过广告、过滤推荐内容等。\n启用插件后可点击展开查看详细设置。",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = AppContentColors.secondaryText(),
                     modifier = Modifier.padding(horizontal = 32.dp)
                 )
             }
             item { Spacer(modifier = Modifier.height(32.dp)) }
         }
-    
+
     layoutImportMessage?.let { message ->
         AppAlertDialog(
             onDismissRequest = { layoutImportMessage = null },
@@ -1334,14 +1345,14 @@ fun PluginsContent(
                     jsImportError = null
                 }
             },
-            icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24), contentDescription = null) },
+            icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24), title = "导入 JS 媒体插件") },
             title = { AppText("导入 JS 媒体插件") },
             text = {
                 Column {
                     AppText(
                         text = "输入 JS 插件链接。安装前只展示插件信息、模块和权限，确认后默认保持禁用。",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     AppTextField(
@@ -1354,7 +1365,7 @@ fun PluginsContent(
                         placeholder = "例如：https://example.com/plugin.js",
                         singleLine = true,
                         isError = jsImportError != null,
-                        supportingText = jsImportError?.let { { AppText(it, color = MaterialTheme.colorScheme.error) } }
+                        supportingText = jsImportError?.let { { AppText(it, color = AppContentColors.error()) } }
                     )
                     if (isJsPreviewLoading) {
                         Spacer(modifier = Modifier.height(16.dp))
@@ -1400,34 +1411,34 @@ fun PluginsContent(
                     jsPreview = null
                 }
             },
-            icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_shield_fill_24), contentDescription = null) },
+            icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_shield_fill_24), title = "JS 插件预览") },
             title = { AppText("JS 插件预览") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     AppText(
                         text = preview.manifest.title,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     AppText(
                         text = "${preview.manifest.id} · v${preview.manifest.version} · ${preview.manifest.author.ifBlank { "未知作者" }}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = preview.manifest.description.ifBlank { "无描述" },
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = "模块：${preview.manifest.modules.joinToString("、") { it.title }}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = "来源：${preview.sourceUrl ?: "本地文件"}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     PluginCapabilityDetailSection(
                         capabilities = resolveBiliPaiJsPluginCapabilities(preview.manifest)
@@ -1435,7 +1446,7 @@ fun PluginsContent(
                     AppText(
                         text = "外部 JS 由用户信任源提供；不会暴露登录 Cookie、Token、本地文件路径或 Android 对象。",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error
+                        color = AppContentColors.error()
                     )
                     if (isJsInstalling) {
                         Row(
@@ -1492,24 +1503,24 @@ fun PluginsContent(
     //  导入插件对话框
     if (showImportDialog) {
         AppAlertDialog(
-            onDismissRequest = { 
+            onDismissRequest = {
                 showImportDialog = false
                 importUrl = ""
                 importError = null
             },
-            icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_cloud_download_24), contentDescription = null) },
+            icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_cloud_download_24), title = "导入外部插件") },
             title = { AppText("导入外部插件") },
             text = {
                 Column {
                     AppText(
-                        text = "输入 JSON 规则插件链接（支持任意返回 JSON 的 http/https 地址）",
+                        text = "粘贴规则插件的 http 或 https 链接",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     AppTextField(
                         value = importUrl,
-                        onValueChange = { 
+                        onValueChange = {
                             importUrl = it
                             importError = null
                         },
@@ -1517,9 +1528,9 @@ fun PluginsContent(
                         placeholder = "例如：https://example.com/plugin.json",
                         singleLine = true,
                         isError = importError != null,
-                        supportingText = importError?.let { { AppText(it, color = MaterialTheme.colorScheme.error) } }
+                        supportingText = importError?.let { { AppText(it, color = AppContentColors.error()) } }
                     )
-                    
+
                     if (isImporting) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
@@ -1558,7 +1569,7 @@ fun PluginsContent(
             },
             dismissButton = {
                 AppTextButton(
-                    onClick = { 
+                    onClick = {
                         showImportDialog = false
                         importUrl = ""
                         importError = null
@@ -1608,31 +1619,34 @@ fun PluginsContent(
                                 .clip(AppShapes.container(ContainerLevel.Chip))
                         )
                     } else {
-                        AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_extension_24), contentDescription = null)
+                        SettingsFunctionIcon(
+                            com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_extension_24),
+                            title = "确认安装插件",
+                        )
                     }
                 },
-                title = { AppText("安装插件预览") },
+                title = { AppText("确认安装插件") },
                 text = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         AppText(
                             text = plugin.name,
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = AppContentColors.primaryText()
                         )
                         AppText(
                             text = plugin.description.ifEmpty { "无描述" },
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppContentColors.secondaryText()
                         )
                         AppText(
                             text = "作者：${plugin.author}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppContentColors.secondaryText()
                         )
                         AppText(
                             text = "版本：${plugin.version} · 类型：${plugin.type} · 规则数：${plugin.rules.size}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = AppContentColors.secondaryText()
                         )
                         PluginCapabilityDetailSection(
                             capabilities = resolveJsonRulePluginCapabilities(plugin.type)
@@ -1702,29 +1716,29 @@ fun PluginsContent(
                     kotlinPackageBytes = null
                 }
             },
-            icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_shield_fill_24), contentDescription = null) },
+            icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_shield_fill_24), title = "Kotlin 插件包预览") },
             title = { AppText("Kotlin 插件包预览") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     AppText(
                         text = previewModel.title,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     AppText(
                         text = previewModel.subtitle,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.packageHashText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = "${previewModel.signerText} · ${buildExternalPluginPayloadSummary(preview.payloadEntries)}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     PluginCapabilityDetailSection(
                         capabilities = preview.descriptor.manifest.capabilities
@@ -1733,7 +1747,7 @@ fun PluginsContent(
                         AppText(
                             text = decision.reason,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.error
+                            color = AppContentColors.error()
                         )
                     }
                 }
@@ -1792,7 +1806,7 @@ fun PluginsContent(
                     uiSkinPreviewAssetFiles = emptyMap()
                 }
             },
-            icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_brush_fill_24), contentDescription = null) },
+            icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_brush_fill_24), title = "界面皮肤包预览") },
             title = { AppText("界面皮肤包预览") },
             text = {
                 Column(
@@ -1805,40 +1819,40 @@ fun PluginsContent(
                     AppText(
                         text = previewModel.title,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     AppText(
                         text = previewModel.subtitle,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.packageHashText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.assetSummaryText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.sourceText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.licenseText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = "${previewModel.shareText} · ${previewModel.officialAssetText}",
                         style = MaterialTheme.typography.bodySmall,
                         color = if (preview.manifest.containsOfficialAssets) {
-                            MaterialTheme.colorScheme.error
+                            AppContentColors.error()
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            AppContentColors.secondaryText()
                         }
                     )
                     if (preview.manifest.assets.homeProfileBackground != null ||
@@ -1867,7 +1881,7 @@ fun PluginsContent(
                     AppText(
                         text = "皮肤只包含图片和配色，不执行代码。完整插画皮肤使用通栏底栏；其他皮肤沿用当前底栏样式。",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                 }
             },
@@ -1936,47 +1950,47 @@ fun PluginsContent(
         val imagePreviewItems = buildUiSkinImagePreviewItems(installed.assetFiles)
         AppAlertDialog(
             onDismissRequest = { uiSkinInstalledPreview = null },
-            icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_visibility_24), contentDescription = null) },
+            icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_visibility_24), title = "皮肤预览") },
             title = { AppText("皮肤预览") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     AppText(
                         text = previewModel.title,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     AppText(
                         text = previewModel.subtitle,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.packageHashText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.assetSummaryText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.sourceText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = previewModel.licenseText,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     AppText(
                         text = "${previewModel.shareText} · ${previewModel.officialAssetText}",
                         style = MaterialTheme.typography.bodySmall,
                         color = if (installed.manifest.containsOfficialAssets) {
-                            MaterialTheme.colorScheme.error
+                            AppContentColors.error()
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            AppContentColors.secondaryText()
                         }
                     )
                     UiSkinImagePreviewGrid(items = imagePreviewItems)
@@ -2016,7 +2030,7 @@ fun PluginsContent(
     uiSkinPendingDelete?.let { skin ->
         AppAlertDialog(
             onDismissRequest = { uiSkinPendingDelete = null },
-            icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_delete_24), contentDescription = null) },
+            icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_delete_24), title = "删除皮肤") },
             title = { AppText("删除皮肤") },
             text = { AppText("确定要删除皮肤 \"${skin.displayName}\" 吗？删除后会清理本地包和已解压资源。") },
             confirmButton = {
@@ -2047,7 +2061,7 @@ fun PluginsContent(
                         }
                     }
                 ) {
-                    AppText("删除", color = MaterialTheme.colorScheme.error)
+                    AppText("删除", color = AppContentColors.error())
                 }
             },
             dismissButton = {
@@ -2057,7 +2071,7 @@ fun PluginsContent(
             }
         )
     }
-    
+
     //  测试结果对话框
     testingPluginId?.let { pluginId ->
         testResult?.let { (original, filtered, blockedVideos) ->
@@ -2084,7 +2098,7 @@ private fun UiSkinImagePreviewGrid(
         AppText(
             text = "图片预览：未找到可展示资源",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = AppContentColors.secondaryText()
         )
         return
     }
@@ -2109,7 +2123,7 @@ private fun UiSkinImagePreviewGrid(
                         AppIcon(
                             imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_play_circle_24),
                             contentDescription = item.label,
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint = AppContentColors.accent(),
                         )
                     }
                 } else {
@@ -2127,7 +2141,7 @@ private fun UiSkinImagePreviewGrid(
                 AppText(
                     text = item.label,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1
                 )
             }
@@ -2159,12 +2173,12 @@ private fun InstalledUiSkinItem(
             AppText(
                 text = skin.displayName,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                color = AppContentColors.primaryText()
             )
             AppText(
                 text = buildInstalledUiSkinSubtitle(skin.manifest),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
 
                 maxLines = 2
             )
@@ -2182,7 +2196,6 @@ private fun InstalledUiSkinItem(
                     AppIcon(
                         imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_visibility_24),
                         contentDescription = "预览皮肤",
-                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -2194,9 +2207,9 @@ private fun InstalledUiSkinItem(
                         imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_delete_24),
                         contentDescription = "删除皮肤",
                         tint = if (previewModel.canDelete) {
-                            MaterialTheme.colorScheme.error
+                            AppContentColors.error()
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+                            AppContentColors.secondaryText().copy(alpha = 0.38f)
                         },
                         modifier = Modifier.size(18.dp)
                     )
@@ -2205,6 +2218,18 @@ private fun InstalledUiSkinItem(
         }
     }
 }
+
+/** 插件列表入口色：Miuix 下按列表顺序取入口彩色，其余主题保持中性内容色。 */
+@Composable
+private fun rememberPluginEntryIconTint(index: Int): Color {
+    if (LocalAppUiStyle.current != AppUiStyle.MIUIX) return AppContentColors.secondaryText()
+    return remember(index) { resolveAppEntryIconColor(index) }
+}
+
+/** 图标底色：Miuix 直接使用入口彩色，其余主题沿用语义解析结果。 */
+@Composable
+private fun rememberAppEntryIconContainerColor(index: Int): Color =
+    rememberAdaptivePreferenceIconContainerColor(rememberPluginEntryIconTint(index))
 
 @Composable
 private fun PluginItem(
@@ -2217,16 +2242,16 @@ private fun PluginItem(
     val effectiveIconTint = rememberAdaptivePreferenceIconContainerColor(iconTint)
     val iconContentColor = rememberAdaptivePreferenceIconContentColor(effectiveIconTint)
     val eyeActivityFlow = remember(plugin.id) {
-        (plugin as? EyeProtectionPlugin)?.isNightModeActive
+        PluginManager.getPlugin(EyeProtectionPluginApi::class)?.isNightModeActive
             ?: kotlinx.coroutines.flow.MutableStateFlow(false)
     }
     val eyeActive by eyeActivityFlow.collectAsStateWithLifecycle()
     val activityLabel = resolvePluginListActivityLabel(
         enabled = pluginInfo.enabled,
         unavailable = plugin.unavailable,
-        effectActive = plugin.id == EYE_PROTECTION_PLUGIN_ID && eyeActive
+        effectActive = plugin.id == BuiltinPluginIds.EYE_PROTECTION && eyeActive
     )
-    
+
     Column {
         // 主行
         Row(
@@ -2237,7 +2262,20 @@ private fun PluginItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 图标
-            Box(
+            if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                SettingsFunctionIcon(
+                    title = plugin.name,
+                    imageVector = when (plugin.id) {
+                        BuiltinPluginIds.SUBSCRIPTION_FEED ->
+                            com.android.purebilibili.feature.settings.rememberMaterialSymbol(
+                                com.android.purebilibili.R.drawable.ms_rss_feed_24,
+                            )
+                        else -> plugin.icon ?: com.android.purebilibili.feature.settings.rememberMaterialSymbol(
+                            com.android.purebilibili.R.drawable.ms_extension_24,
+                        )
+                    },
+                )
+            } else Box(
                 modifier = Modifier
                     .size(36.dp)
                     .adaptiveSquircleBackground(effectiveIconTint, 10.dp),
@@ -2245,7 +2283,7 @@ private fun PluginItem(
             ) {
                 AppIcon(
                     imageVector = when (plugin.id) {
-                        com.android.purebilibili.feature.plugin.SubscriptionFeedPlugin.PLUGIN_ID ->
+                        BuiltinPluginIds.SUBSCRIPTION_FEED ->
                             com.android.purebilibili.feature.settings.rememberMaterialSymbol(
                                 com.android.purebilibili.R.drawable.ms_rss_feed_24,
                             )
@@ -2258,22 +2296,22 @@ private fun PluginItem(
                     modifier = Modifier.size(20.dp)
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(14.dp))
-            
+
             // 标题和描述
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     AppText(
                         text = plugin.name,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     AppText(
                         text = "v${plugin.version}",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     if (activityLabel != null) {
                         Spacer(modifier = Modifier.width(6.dp))
@@ -2293,11 +2331,11 @@ private fun PluginItem(
                     if (plugin.unavailable) {
                         val unavailableColors = resolveAccessibleContainerColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.8f),
-                            contentColor = MaterialTheme.colorScheme.error,
+                            contentColor = AppContentColors.error(),
                             backgroundColor = MaterialTheme.colorScheme.surface,
                             fallbackContentColors = listOf(
                                 MaterialTheme.colorScheme.onErrorContainer,
-                                MaterialTheme.colorScheme.onSurface,
+                                AppContentColors.primaryText(),
                             ),
                         )
                         Spacer(modifier = Modifier.width(6.dp))
@@ -2318,14 +2356,14 @@ private fun PluginItem(
                 AppText(
                     text = plugin.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
                 //  显示作者
                 if (plugin.author != "Unknown") {
                     AppText(
                         text = "作者：${plugin.author}",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                        color = AppContentColors.accent().copy(alpha = 0.7f)
                     )
                 }
                 PluginCapabilityChips(
@@ -2334,9 +2372,9 @@ private fun PluginItem(
                     modifier = Modifier.padding(top = 6.dp)
                 )
             }
-            
+
             Spacer(modifier = Modifier.width(8.dp))
-            
+
             // 开关
             AppAdaptiveSwitch(
                 checked = pluginInfo.enabled,
@@ -2345,18 +2383,18 @@ private fun PluginItem(
                 },
                 enabled = !plugin.unavailable
             )
-            
+
             // 进入详情
             AppIcon(
                 imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_keyboard_arrow_right_24),
                 contentDescription = "打开插件详情",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                tint = AppContentColors.secondaryText().copy(alpha = 0.5f),
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .size(20.dp)
             )
         }
-        
+
     }
 }
 
@@ -2374,7 +2412,7 @@ private fun PluginDetailScreen(
         bottomContentPadding = bottomContentPadding + 16.dp,
         scrollHost = SettingsPageScrollHost.LazyColumn,
         lazyListContent = {
-            if (plugin.id != com.android.purebilibili.feature.plugin.SubscriptionFeedPlugin.PLUGIN_ID) {
+            if (plugin.id != BuiltinPluginIds.SUBSCRIPTION_FEED) {
                 item {
                     AppSurface(
                         modifier = Modifier
@@ -2387,13 +2425,13 @@ private fun PluginDetailScreen(
                             AppText(
                                 text = plugin.description,
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = AppContentColors.primaryText(),
                             )
                             if (plugin.author != "Unknown") {
                                 AppText(
                                     text = "${plugin.author} · v${plugin.version}",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = AppContentColors.secondaryText(),
                                     modifier = Modifier.padding(top = 4.dp),
                                 )
                             }
@@ -2411,7 +2449,7 @@ private fun PluginDetailScreen(
                     AppText(
                         text = plugin.unavailableReason,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppContentColors.secondaryText(),
                         modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp),
                     )
                 } else {
@@ -2429,33 +2467,54 @@ private fun PluginDetailScreen(
 @Composable
 private fun InstalledJsPluginItem(
     installed: InstalledBiliPaiJsPlugin,
+    index: Int,
     onToggle: (Boolean) -> Unit,
     onOpen: () -> Unit,
     onTest: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val iconTint = rememberPluginEntryIconTint(index)
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                SettingsFunctionIcon(
+                    title = installed.manifest.title,
+                    imageVector = rememberMaterialSymbol(R.drawable.ms_data_object_fill_24),
+                )
+            } else Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .adaptiveSquircleBackground(iconTint, 10.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                AppIcon(
+                    imageVector = rememberMaterialSymbol(R.drawable.ms_data_object_fill_24),
+                    contentDescription = null,
+                    tint = rememberAdaptivePreferenceIconContentColor(iconTint),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
                 AppText(
                     text = installed.manifest.title,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = AppContentColors.primaryText()
                 )
                 AppText(
                     text = "${installed.manifest.id} · v${installed.manifest.version} · ${if (installed.enabled) "已启用" else "未启用"}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
                 AppText(
                     text = installed.manifest.description.ifBlank { installed.sourceUrl ?: "本地 JS 插件" },
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1
                 )
                 PluginCapabilityChips(
@@ -2483,7 +2542,7 @@ private fun InstalledJsPluginItem(
             }
             AppTextButton(
                 onClick = onDelete,
-                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                colors = ButtonDefaults.textButtonColors(contentColor = AppContentColors.error())
             ) {
                 AppText("删除")
             }
@@ -2535,18 +2594,21 @@ private fun JsPluginTestDialog(
 
     AppAlertDialog(
         onDismissRequest = { if (!isRunning) onDismiss() },
-        icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24), contentDescription = null) },
+        icon = { SettingsFunctionIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24), title = "测试：${installed.manifest.title}") },
         title = { AppText("测试：${installed.manifest.title}") },
         text = {
             Column {
                 AppText(
-                    text = "用默认参数运行模块函数，检查返回结构和耗时。完整内容体验请用「打开内容」。",
+                    text = "检查插件能否正常加载内容及所需时间。浏览内容请选“打开内容”。",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 if (modules.size > 1 && selectedModule != null) {
                     AppThemeAdaptiveTabRow(
+                        // Glass indicator fills the measured slot; native geometry keeps its defaults.
+                        liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+                        role = com.android.purebilibili.core.ui.components.AppTabRowRole.SECONDARY,
                         options = modules.map { module -> AppSegmentOption(module, module.title) },
                         selectedValue = selectedModule,
                         onSelectionChange = { selectedModule = it },
@@ -2561,7 +2623,7 @@ private fun JsPluginTestDialog(
                         AppText(
                             text = currentModule.title,
                             style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = AppContentColors.primaryText()
                         )
                     }
                 }
@@ -2582,7 +2644,7 @@ private fun JsPluginTestDialog(
                     AppText(
                         text = text,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                 }
             }
@@ -2619,7 +2681,7 @@ private fun buildJsTestParamsJson(module: com.android.purebilibili.core.plugin.j
 
 @Composable
 private fun PluginCapabilityChips(
-    capabilities: Set<com.android.purebilibili.core.plugin.PluginCapability>,
+    capabilities: Set<com.android.purebilibili.plugin.sdk.PluginCapability>,
     showAuthorizationLabels: Boolean = true,
     modifier: Modifier = Modifier
 ) {
@@ -2673,7 +2735,7 @@ private fun PluginCapabilityChips(
 
 @Composable
 private fun PluginCapabilityDetailSection(
-    capabilities: Set<com.android.purebilibili.core.plugin.PluginCapability>,
+    capabilities: Set<com.android.purebilibili.plugin.sdk.PluginCapability>,
     showAuthorizationLabels: Boolean = true,
     modifier: Modifier = Modifier
 ) {
@@ -2684,9 +2746,9 @@ private fun PluginCapabilityDetailSection(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         AppText(
-            text = if (showAuthorizationLabels) "能力与授权" else "能力",
+            text = if (showAuthorizationLabels) "权限与用途" else "功能",
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary
+            color = AppContentColors.accent()
         )
         models.forEach { model ->
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -2697,24 +2759,16 @@ private fun PluginCapabilityDetailSection(
                         model.label
                     },
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = AppContentColors.primaryText()
                 )
                 AppText(
                     text = model.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
             }
         }
     }
-}
-
-/**
- * 获取插件对应的颜色
- */
-private fun getPluginColor(index: Int): Color {
-    val colors = listOf(iOSTeal, iOSOrange, iOSBlue, iOSGreen, iOSPurple, iOSPink)
-    return colors[index % colors.size]
 }
 
 @Composable
@@ -2723,7 +2777,7 @@ private fun JsonPluginStatsNotificationSection(
     onEnabledChange: (Boolean) -> Unit,
     onSendTest: () -> Unit
 ) {
-    val notificationIconTint = rememberAdaptivePreferenceIconContainerColor(iOSPurple)
+    val notificationIconTint = rememberAdaptivePreferenceIconContainerColor(AppContentColors.accent())
     val notificationIconContentColor = rememberAdaptivePreferenceIconContentColor(notificationIconTint)
     AppSurface(
         modifier = Modifier
@@ -2739,7 +2793,12 @@ private fun JsonPluginStatsNotificationSection(
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
+                if (LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) {
+                    SettingsFunctionIcon(
+                        title = "插件统计通知",
+                        imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_notifications_24),
+                    )
+                } else Box(
                     modifier = Modifier
                         .size(36.dp)
                         .adaptiveSquircleBackground(notificationIconTint, 10.dp),
@@ -2757,12 +2816,12 @@ private fun JsonPluginStatsNotificationSection(
                     AppText(
                         text = "插件统计通知",
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     AppText(
                         text = "每天汇总 JSON 规则插件过滤数量",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                 }
                 Spacer(modifier = Modifier.width(12.dp))
@@ -2783,7 +2842,6 @@ private fun JsonPluginStatsNotificationSection(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(horizontal = 16.dp, vertical = 4.dp),
-                colors = ButtonDefaults.textButtonColors(contentColor = iOSPurple)
             ) {
                 AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_notifications_24), null, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(4.dp))
@@ -2800,6 +2858,7 @@ private fun JsonPluginStatsNotificationSection(
 private fun JsonPluginItem(
     loaded: com.android.purebilibili.core.plugin.json.LoadedJsonPlugin,
     filterCount: Int,
+    index: Int,
     onToggle: (Boolean) -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
@@ -2809,22 +2868,25 @@ private fun JsonPluginItem(
     val plugin = loaded.plugin
     var showDeleteDialog by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(false) }
-    val jsonPluginTint = rememberAdaptivePreferenceIconContainerColor(iOSPurple)
+    val jsonPluginTint = rememberPluginEntryIconTint(index)
     val jsonPluginIconContentColor = rememberAdaptivePreferenceIconContentColor(jsonPluginTint)
-    
+
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { isExpanded = !isExpanded }
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 图标
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .adaptiveSquircleBackground(jsonPluginTint, 10.dp),
+                    .size(if ((LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) && plugin.iconUrl.isNullOrBlank()) 32.dp else 36.dp)
+                    .adaptiveSquircleBackground(
+                        if ((LocalAppUiStyle.current == AppUiStyle.MIUIX || com.android.purebilibili.core.ui.components.useColorfulPreferenceIcons()) && plugin.iconUrl.isNullOrBlank()) Color.Transparent else jsonPluginTint,
+                        10.dp,
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 if (!plugin.iconUrl.isNullOrBlank()) {
@@ -2836,17 +2898,18 @@ private fun JsonPluginItem(
                             .clip(AppShapes.container(ContainerLevel.Field))
                     )
                 } else {
-                    AppIcon(
+                    SettingsFunctionIcon(
+                        title = plugin.name,
                         imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24),
                         contentDescription = null,
                         tint = jsonPluginIconContentColor,
-                        modifier = Modifier.size(20.dp)
+                        nativeSize = 20.dp
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.width(14.dp))
-            
+
             // 信息
             Column(modifier = Modifier.weight(1f)) {
                 Row(
@@ -2855,19 +2918,19 @@ private fun JsonPluginItem(
                     AppText(
                         text = plugin.name,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     AppText(
                         text = "v${plugin.version}",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        color = AppContentColors.secondaryText()
                     )
                 }
                 AppText(
                     text = plugin.description.ifEmpty { plugin.type },
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 1
                 )
                 Row(
@@ -2876,21 +2939,21 @@ private fun JsonPluginItem(
                     AppText(
                         text = "作者：${plugin.author}",
                         style = MaterialTheme.typography.labelSmall,
-                        color = iOSPurple
+                        color = AppContentColors.accent()
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     //  统计始终显示
                     AppSurface(
                         shape = AppShapes.container(ContainerLevel.Tag),
-                        color = if (filterCount > 0) 
-                            iOSGreen.copy(alpha = 0.15f)
-                        else 
+                        color = if (filterCount > 0)
+                            AppContentColors.success().copy(alpha = 0.15f)
+                        else
                             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                     ) {
                         AppText(
                             text = "已过滤 $filterCount 项",
                             style = MaterialTheme.typography.labelSmall,
-                            color = if (filterCount > 0) iOSGreen else MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = if (filterCount > 0) AppContentColors.success() else AppContentColors.secondaryText(),
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
                     }
@@ -2900,24 +2963,24 @@ private fun JsonPluginItem(
                     modifier = Modifier.padding(top = 6.dp)
                 )
             }
-            
+
             // 开关
             AppAdaptiveSwitch(
                 checked = loaded.enabled,
                 onCheckedChange = onToggle
             )
-            
+
             // 展开箭头
             AppIcon(
                 imageVector = if (isExpanded) com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_keyboard_arrow_up_24) else com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_keyboard_arrow_down_24),
                 contentDescription = if (isExpanded) "收起" else "展开",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                tint = AppContentColors.secondaryText().copy(alpha = 0.5f),
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .size(20.dp)
             )
         }
-        
+
         //  展开的操作区域
         AnimatedVisibility(
             visible = isExpanded,
@@ -2940,44 +3003,35 @@ private fun JsonPluginItem(
                     // 测试规则按钮
                     AppTextButton(
                         onClick = onTest,
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = iOSBlue
-                        )
                     ) {
                         AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_lightbulb_24), null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(4.dp))
                         AppText("测试规则", style = MaterialTheme.typography.labelMedium)
                     }
-                    
+
                     // 重置统计按钮
                     AppTextButton(
                         onClick = onResetStats,
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = iOSOrange
-                        )
                     ) {
                         AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_refresh_24), null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(4.dp))
                         AppText("重置统计", style = MaterialTheme.typography.labelMedium)
                     }
-                    
+
                     // 编辑按钮
                     AppTextButton(
                         onClick = onEdit,
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = iOSPurple
-                        )
                     ) {
                         AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24), null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(4.dp))
                         AppText("编辑", style = MaterialTheme.typography.labelMedium)
                     }
-                    
+
                     // 删除按钮
                     AppTextButton(
                         onClick = { showDeleteDialog = true },
                         colors = ButtonDefaults.textButtonColors(
-                            contentColor = MaterialTheme.colorScheme.error
+                            contentColor = AppContentColors.error()
                         )
                     ) {
                         AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_delete_24), null, modifier = Modifier.size(16.dp))
@@ -2988,7 +3042,7 @@ private fun JsonPluginItem(
             }
         }
     }
-    
+
     // 删除确认对话框
     if (showDeleteDialog) {
         AppAlertDialog(
@@ -3000,7 +3054,7 @@ private fun JsonPluginItem(
                     onDelete()
                     showDeleteDialog = false
                 }) {
-                    AppText("删除", color = MaterialTheme.colorScheme.error)
+                    AppText("删除", color = AppContentColors.error())
                 }
             },
             dismissButton = {
@@ -3024,7 +3078,7 @@ private fun TestResultDialog(
     onDismiss: () -> Unit
 ) {
     val blockedCount = originalCount - filteredCount
-    val dialogIconTint = rememberAdaptiveSemanticIconTint(iOSBlue)
+    val dialogIconTint = rememberAdaptiveSemanticIconTint(AppContentColors.accent())
     val resultContainerColor = com.android.purebilibili.core.theme.opaqueCompositeOver(
         MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
         MaterialTheme.colorScheme.surface,
@@ -3033,8 +3087,9 @@ private fun TestResultDialog(
     AppAlertDialog(
         onDismissRequest = onDismiss,
         icon = {
-            AppIcon(
+            SettingsFunctionIcon(
                 com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_lightbulb_24),
+                title = "规则测试结果",
                 contentDescription = null,
                 tint = dialogIconTint
             )
@@ -3045,10 +3100,10 @@ private fun TestResultDialog(
                 AppText(
                     text = "插件：$pluginName",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = AppContentColors.secondaryText()
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                
+
                 // 统计卡片
                 AppSurface(
                     shape = AppShapes.container(ContainerLevel.Chip),
@@ -3065,12 +3120,12 @@ private fun TestResultDialog(
                                 text = "$originalCount",
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = AppContentColors.primaryText()
                             )
                             AppText(
                                 text = "测试视频",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = AppContentColors.secondaryText()
                             )
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -3078,12 +3133,12 @@ private fun TestResultDialog(
                                 text = "$blockedCount",
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = if (blockedCount > 0) iOSGreen else MaterialTheme.colorScheme.onSurface
+                                color = if (blockedCount > 0) AppContentColors.success() else AppContentColors.primaryText()
                             )
                             AppText(
                                 text = "被过滤",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = AppContentColors.secondaryText()
                             )
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -3091,24 +3146,24 @@ private fun TestResultDialog(
                                 text = "$filteredCount",
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = AppContentColors.primaryText()
                             )
                             AppText(
                                 text = "保留",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = AppContentColors.secondaryText()
                             )
                         }
                     }
                 }
-                
+
                 // 被过滤的视频列表
                 if (filteredVideos.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(12.dp))
                     AppText(
                         text = "被过滤的视频示例：",
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppContentColors.secondaryText()
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Column {
@@ -3122,7 +3177,7 @@ private fun TestResultDialog(
                                 AppIcon(
                                     com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_delete_24),
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                                    tint = AppContentColors.error().copy(alpha = 0.7f),
                                     modifier = Modifier.size(14.dp)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
@@ -3131,12 +3186,12 @@ private fun TestResultDialog(
                                         text = video.title,
                                         style = MaterialTheme.typography.bodySmall,
                                         maxLines = 1,
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        color = AppContentColors.primaryText()
                                     )
                                     AppText(
                                         text = "时长：${formatDuration(video.duration)}",
                                         style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = AppContentColors.secondaryText()
                                     )
                                 }
                             }
@@ -3145,7 +3200,7 @@ private fun TestResultDialog(
                             AppText(
                                 text = "……还有 ${filteredVideos.size - 3} 个视频",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = AppContentColors.secondaryText(),
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -3155,7 +3210,7 @@ private fun TestResultDialog(
                     AppText(
                         text = " 当前测试样本中没有符合过滤条件的视频",
                         style = MaterialTheme.typography.bodySmall,
-                        color = iOSGreen
+                        color = AppContentColors.success()
                     )
                 }
             }

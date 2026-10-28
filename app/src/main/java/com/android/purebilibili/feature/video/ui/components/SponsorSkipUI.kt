@@ -1,5 +1,7 @@
 // 文件路径: feature/video/SponsorSkipUI.kt
 package com.android.purebilibili.feature.video.ui.components
+
+import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.components.AppFilterChip
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
@@ -62,7 +64,8 @@ fun SponsorSkipButton(
                 modifier = Modifier
                     .padding(16.dp)
                     .clip(AppShapes.container(ContainerLevel.Card)),
-                color = Color.Black.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.inverseSurface,
+                contentColor = MaterialTheme.colorScheme.inverseOnSurface,
                 shadowElevation = 8.dp
             ) {
                 Row(
@@ -73,17 +76,17 @@ fun SponsorSkipButton(
                     // 类别标签
                     AppText(
                         text = seg.categoryName,
-                        color = Color(0xFFFFA500),
+                        color = MaterialTheme.colorScheme.inversePrimary,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Medium
                     )
-                    
+
                     // 跳过按钮
                     AppSurface(
                         modifier = Modifier
                             .clip(AppShapes.container(ContainerLevel.Chip))
                             .clickable { onSkip() },
-                        color = Color(0xFF00C853)
+                        color = AppContentColors.accent()
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -93,26 +96,26 @@ fun SponsorSkipButton(
                             AppIcon(
                                 imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                                 contentDescription = "跳过",
-                                tint = Color.White,
+                                tint = AppContentColors.onAccent(),
                                 modifier = Modifier.size(16.dp)
                             )
                             AppText(
                                 text = "跳过",
-                                color = Color.White,
+                                color = AppContentColors.onAccent(),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold
                             )
                         }
                     }
-                    AppTextButton(onClick = { onVote(1) }) { AppText("有用") }
-                    AppTextButton(onClick = { onVote(-1) }) { AppText("不准确") }
-                    
+                    AppTextButton(onClick = { onVote(1) }) { AppText("有用", color = MaterialTheme.colorScheme.inverseOnSurface) }
+                    AppTextButton(onClick = { onVote(0) }) { AppText("不准确", color = MaterialTheme.colorScheme.inverseOnSurface) }
+
                     // 关闭按钮
                     AppIconButton(onClick = onDismiss) {
                         AppIcon(
                             imageVector = clearIcon,
                             contentDescription = "忽略",
-                            tint = Color.White.copy(alpha = 0.6f),
+                            tint = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = 0.6f),
                             modifier = Modifier.size(20.dp),
                         )
                     }
@@ -163,7 +166,7 @@ fun SponsorContributionOverlay(
                         AppText(
                             text = "选择片段类别",
                             style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = AppContentColors.secondaryText(),
                         )
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -186,7 +189,7 @@ fun SponsorContributionOverlay(
                         AppText(
                             text = "动作类型",
                             style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = AppContentColors.secondaryText(),
                         )
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -206,7 +209,7 @@ fun SponsorContributionOverlay(
                         AppText(
                             text = "提交将发送类别、时间段、视频标识和社区用户 ID 至 ${state.serverBaseUrl}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = AppContentColors.secondaryText(),
                         )
                     }
                     state.message?.let { message ->
@@ -214,9 +217,9 @@ fun SponsorContributionOverlay(
                             text = message,
                             style = MaterialTheme.typography.bodySmall,
                             color = if (state.phase == SponsorContributionPhase.SUCCESS) {
-                                MaterialTheme.colorScheme.primary
+                                AppContentColors.accent()
                             } else {
-                                MaterialTheme.colorScheme.error
+                                AppContentColors.error()
                             },
                         )
                     }
@@ -279,7 +282,8 @@ fun SponsorSkipToast(
                 modifier = Modifier
                     .padding(top = 60.dp, start = 16.dp, end = 16.dp)
                     .clip(AppShapes.container(ContainerLevel.Floating)),
-                color = Color(0xFF00C853).copy(alpha = 0.9f)
+                color = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -289,12 +293,12 @@ fun SponsorSkipToast(
                     AppIcon(
                         imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
                         modifier = Modifier.size(16.dp)
                     )
                     AppText(
                         text = it,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Medium
                     )

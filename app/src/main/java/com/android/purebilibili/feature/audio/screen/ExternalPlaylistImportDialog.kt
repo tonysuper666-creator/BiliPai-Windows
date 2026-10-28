@@ -1,7 +1,13 @@
 package com.android.purebilibili.feature.audio.screen
 
+import com.android.purebilibili.core.ui.AppContentColors
+import com.android.purebilibili.core.ui.components.appElasticPress
+
+
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,23 +18,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import com.android.purebilibili.core.ui.components.AppButton as Button
+import com.android.purebilibili.core.ui.components.AppCard as Card
+import com.android.purebilibili.core.ui.components.AppCardDefaults as CardDefaults
+import com.android.purebilibili.core.ui.components.AppCheckbox as Checkbox
+import com.android.purebilibili.core.ui.components.AppCircularProgressIndicator as CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
+import com.android.purebilibili.core.ui.components.AppIcon as Icon
+import com.android.purebilibili.core.ui.components.AppIconButton as IconButton
+import com.android.purebilibili.core.ui.components.AppLinearProgressIndicator as LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import com.android.purebilibili.core.ui.components.AppOutlinedButton as OutlinedButton
+import com.android.purebilibili.core.ui.components.AppOutlinedTextField as OutlinedTextField
+import com.android.purebilibili.core.ui.components.AppSurface as Surface
+import com.android.purebilibili.core.ui.components.AppText as Text
+import com.android.purebilibili.core.ui.components.AppTextButton as TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,21 +62,30 @@ import coil3.compose.AsyncImage
 import com.android.purebilibili.core.store.LocalPlaylist
 import com.android.purebilibili.core.store.LocalPlaylistItem
 import com.android.purebilibili.core.store.LocalPlaylistStore
+import com.android.purebilibili.core.store.TokenManager
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
+import com.android.purebilibili.data.model.response.FavFolder
+import com.android.purebilibili.data.repository.ActionRepository
+import com.android.purebilibili.data.repository.ContentRequestException
 import com.android.purebilibili.data.repository.ExternalPlaylistRepository
 import com.android.purebilibili.data.repository.SearchRepository
+import com.android.purebilibili.data.repository.VideoRepository
 import com.android.purebilibili.feature.home.components.LiquidGlassTuning
 import com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell
 import com.android.purebilibili.feature.home.components.resolveLiquidGlassTuning
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
 import java.util.UUID
 
 /**
  * Import an external playlist, match its tracks to Bilibili videos, and save the local playlist.
- * The dialog and its controls use Compose Material 3; the result list is lazy for large playlists.
+ * The dialog controls follow the active app theme; the result list is lazy for large playlists.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,6 +112,19 @@ fun ExternalPlaylistImportDialog(
         mutableStateOf<List<ExternalPlaylistRepository.MatchOutcome>>(emptyList())
     }
     var matchJob by remember { mutableStateOf<Job?>(null) }
+
+    // 收藏到 B 站收藏夹
+    var showFavoritePicker by remember { mutableStateOf(false) }
+    var favoriteFolders by remember { mutableStateOf<List<FavFolder>>(emptyList()) }
+    var favoriteFoldersLoading by remember { mutableStateOf(false) }
+    var favoriteFoldersError by remember { mutableStateOf<String?>(null) }
+    var selectedFolderIds by remember { mutableStateOf<Set<Long>>(emptySet()) }
+    var favoriting by remember { mutableStateOf(false) }
+    var favoriteJob by remember { mutableStateOf<Job?>(null) }
+    var favoriteProcessed by remember { mutableIntStateOf(0) }
+    var favoriteTotal by remember { mutableIntStateOf(0) }
+    var favoriteSucceeded by remember { mutableIntStateOf(0) }
+    var favoriteFailed by remember { mutableIntStateOf(0) }
 
     var editingIndex by remember { mutableStateOf<Int?>(null) }
     var manualKeyword by remember { mutableStateOf("") }
@@ -171,7 +203,114 @@ fun ExternalPlaylistImportDialog(
             LocalPlaylistStore.savePlaylist(context, local)
             ExternalPlaylistRepository.clearImportCheckpoint(context)
             onSaved?.invoke(local)
+            val message = if (onSaved != null) {
+                "已保存 ${items.size} 首并开始播放"
+            } else {
+                "已保存 ${items.size} 首到本地歌单"
+            }
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             onDismiss()
+        }
+    }
+
+    fun stopMatching() {
+        matchJob?.cancel()
+        matchJob = null
+        matching = false
+    }
+
+    fun loadFavoriteFolders() {
+        if (favoriteFoldersLoading) return
+        favoriteFoldersLoading = true
+        favoriteFoldersError = null
+        scope.launch {
+            ActionRepository.getFavoriteFolders()
+                .onSuccess { folders ->
+                    favoriteFolders = folders
+                    val stillValid = folders.any { it.id in selectedFolderIds }
+                    if (!stillValid) {
+                        selectedFolderIds = folders.firstOrNull()?.let { setOf(it.id) } ?: emptySet()
+                    }
+                }
+                .onFailure { favoriteFoldersError = it.message ?: "获取收藏夹失败" }
+            favoriteFoldersLoading = false
+        }
+    }
+
+    fun openFavoritePicker() {
+        scope.launch {
+            withContext(Dispatchers.IO) { TokenManager.awaitRestore() }
+            val loggedIn = (TokenManager.midCache ?: 0L) > 0L && !TokenManager.csrfCache.isNullOrBlank()
+            if (!loggedIn) {
+                Toast.makeText(context, "请先登录 B 站账号后再收藏", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+            showFavoritePicker = true
+            if (favoriteFolders.isEmpty()) loadFavoriteFolders()
+        }
+    }
+
+    fun stopFavoriting() {
+        favoriteJob?.cancel()
+        favoriteJob = null
+        favoriting = false
+    }
+
+    fun startFavoriting() {
+        if (favoriting) return
+        val videos = matchResults.mapNotNull { it.video }
+        if (videos.isEmpty()) return
+        val folderIds = selectedFolderIds
+        if (folderIds.isEmpty()) {
+            Toast.makeText(context, "请至少选择一个收藏夹", Toast.LENGTH_SHORT).show()
+            return
+        }
+        favoriteProcessed = 0
+        favoriteSucceeded = 0
+        favoriteFailed = 0
+        favoriteTotal = videos.size
+        favoriting = true
+        favoriteJob = scope.launch {
+            var stopReason: String? = null
+            try {
+                for (video in videos) {
+                    if (!isActive) break
+                    val aid = video.aid.takeIf { it > 0L }
+                        ?: VideoRepository.getVideoInfoOnly(bvid = video.bvid).getOrNull()?.aid
+                    if (aid == null || aid <= 0L) {
+                        favoriteFailed += 1
+                    } else {
+                        ActionRepository.updateFavoriteFolders(
+                            aid = aid,
+                            addFolderIds = folderIds,
+                            removeFolderIds = emptySet(),
+                        ).onSuccess {
+                            favoriteSucceeded += 1
+                        }.onFailure { error ->
+                            favoriteFailed += 1
+                            stopReason = when ((error as? ContentRequestException)?.code) {
+                                -101 -> "登录已失效，请重新登录"
+                                -509, -412, 34004 -> "操作太频繁，请稍后重试"
+                                else -> null
+                            }
+                        }
+                    }
+                    favoriteProcessed += 1
+                    if (stopReason != null) break
+                    delay(FAVORITE_INTERVAL_MS)
+                }
+            } finally {
+                val stopped = !isActive
+                favoriting = false
+                favoriteJob = null
+                val summary = buildString {
+                    if (stopped) append("已停止收藏：")
+                    append("成功 ${favoriteSucceeded} 首")
+                    if (favoriteFailed > 0) append("，失败 ${favoriteFailed} 首")
+                    stopReason?.let { append("（$it）") }
+                }
+                Toast.makeText(context, summary, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -184,6 +323,7 @@ fun ExternalPlaylistImportDialog(
             decorFitsSystemWindows = false,
         ),
     ) {
+        com.android.purebilibili.core.ui.ModalWindowBlurBehindEffect()
         Surface(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
@@ -199,7 +339,7 @@ fun ExternalPlaylistImportDialog(
                 ),
             shape = panelShape,
             color = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onSurface,
+            contentColor = AppContentColors.primaryText(),
             tonalElevation = 0.dp,
         ) {
             Column(
@@ -214,7 +354,7 @@ fun ExternalPlaylistImportDialog(
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f),
                     )
-                    IconButton(onClick = onDismiss) {
+                    IconButton(onClick = onDismiss, modifier = Modifier.appElasticPress()) {
                         Icon(Icons.Outlined.Close, contentDescription = "关闭")
                     }
                 }
@@ -225,7 +365,7 @@ fun ExternalPlaylistImportDialog(
                     Text(
                         text = "支持网易云音乐和 QQ 音乐歌单。复制公开歌单的分享链接，粘贴到下面。",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppContentColors.secondaryText(),
                     )
                     Spacer(Modifier.height(16.dp))
                     OutlinedTextField(
@@ -237,7 +377,7 @@ fun ExternalPlaylistImportDialog(
                     )
                     fetchError?.let { message ->
                         Spacer(Modifier.height(8.dp))
-                        Text(message, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                        Text(message, color = AppContentColors.error(), style = MaterialTheme.typography.bodySmall)
                     }
                     Spacer(Modifier.height(12.dp))
                     Button(
@@ -282,13 +422,14 @@ fun ExternalPlaylistImportDialog(
                                 fetching = false
                             }
                         },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().appElasticPress(enabled = !fetching),
                         enabled = !fetching,
                     ) {
                         Text(if (fetching) "正在获取…" else "获取歌单信息")
                     }
                 } else {
                     val completed = !matching && matchResults.isNotEmpty() && matchCompleted >= matchTotal
+                    val matchedCount = matchResults.count { it.video != null }
                     val outcomes = matchResults.ifEmpty {
                         meta.tracks.map { ExternalPlaylistRepository.MatchOutcome(it, null) }
                     }
@@ -304,60 +445,114 @@ fun ExternalPlaylistImportDialog(
                             Text(
                                 text = "${meta.author} · ${meta.tracks.size} 首",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = AppContentColors.secondaryText(),
                             )
-                        }
-                        if (completed) {
-                            Button(onClick = { savePlaylist() }, enabled = matchResults.any { it.video != null }) {
-                                Text("保存")
-                            }
-                        } else {
-                            Button(onClick = {
-                                if (matching) {
-                                    matchJob?.cancel()
-                                    matching = false
-                                } else {
-                                    startMatching(resume = matchCompleted in 1 until meta.tracks.size)
-                                }
-                            }) {
-                                Text(
-                                    when {
-                                        matching -> "停止"
-                                        matchCompleted in 1 until meta.tracks.size -> "继续匹配"
-                                        matchCompleted >= meta.tracks.size -> "重新匹配"
-                                        else -> "开始匹配"
-                                    },
-                                )
-                            }
                         }
                     }
 
-                    if (matchTotal > 0 && !completed) {
-                        Spacer(Modifier.height(10.dp))
-                        LinearProgressIndicator(
-                            progress = { (matchCompleted.toFloat() / matchTotal.coerceAtLeast(1)).coerceIn(0f, 1f) },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                        Text(
-                            text = if (matching) {
-                                "正在匹配：$matchingTrackTitle ($matchCompleted/$matchTotal)"
+                    Spacer(Modifier.height(10.dp))
+                    when {
+                        matching -> {
+                            LinearProgressIndicator(
+                                progress = { (matchCompleted.toFloat() / matchTotal.coerceAtLeast(1)).coerceIn(0f, 1f) },
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                            Text(
+                                text = "正在匹配：$matchingTrackTitle ($matchCompleted/$matchTotal)",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppContentColors.secondaryText(),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
+                            )
+                            OutlinedButton(
+                                onClick = { stopMatching() },
+                                modifier = Modifier.fillMaxWidth().appElasticPress(),
+                            ) {
+                                Text("停止匹配")
+                            }
+                        }
+
+                        completed -> {
+                            Text(
+                                text = if (matchedCount == 0) {
+                                    "没有匹配到可用视频，可点击单曲手动修正，或重新匹配"
+                                } else {
+                                    "已匹配 $matchedCount/${matchResults.size} 首"
+                                },
+                                style = MaterialTheme.typography.bodySmall,
+                                color = if (matchedCount == 0) AppContentColors.error() else AppContentColors.secondaryText(),
+                                modifier = Modifier.padding(bottom = 8.dp),
+                            )
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                OutlinedButton(
+                                    onClick = { openFavoritePicker() },
+                                    enabled = matchedCount > 0 && !favoriting,
+                                    modifier = Modifier.weight(1f).appElasticPress(enabled = matchedCount > 0 && !favoriting),
+                                ) {
+                                    Text("收藏到收藏夹")
+                                }
+                                OutlinedButton(
+                                    onClick = { startMatching(resume = false) },
+                                    enabled = !favoriting,
+                                    modifier = Modifier.weight(1f).appElasticPress(enabled = !favoriting),
+                                ) {
+                                    Text("重新匹配")
+                                }
+                            }
+                            Spacer(Modifier.height(8.dp))
+                            Button(
+                                onClick = { savePlaylist() },
+                                enabled = matchedCount > 0 && !favoriting,
+                                modifier = Modifier.fillMaxWidth().appElasticPress(enabled = matchedCount > 0 && !favoriting),
+                            ) {
+                                Text("保存并播放")
+                            }
+                        }
+
+                        else -> {
+                            if (matchTotal > 0) {
+                                LinearProgressIndicator(
+                                    progress = { (matchCompleted.toFloat() / matchTotal.coerceAtLeast(1)).coerceIn(0f, 1f) },
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                                Text(
+                                    text = if (matchCompleted > 0) {
+                                        "已匹配 $matchCompleted/$matchTotal 首，可继续匹配"
+                                    } else {
+                                        "共 $matchTotal 首，开始匹配后可逐首查看结果"
+                                    },
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = AppContentColors.secondaryText(),
+                                    modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
+                                )
+                            }
+                            if (matchCompleted in 1 until matchTotal) {
+                                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Button(
+                                        onClick = { startMatching(resume = true) },
+                                        modifier = Modifier.weight(1f).appElasticPress(),
+                                    ) {
+                                        Text("继续匹配")
+                                    }
+                                    OutlinedButton(
+                                        onClick = { startMatching(resume = false) },
+                                        modifier = Modifier.weight(1f).appElasticPress(),
+                                    ) {
+                                        Text("重新匹配")
+                                    }
+                                }
                             } else {
-                                "已匹配 $matchCompleted/$matchTotal 首"
-                            },
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(top = 4.dp, bottom = 6.dp),
-                        )
-                    } else {
-                        Text(
-                            text = "匹配 ${matchResults.count { it.video != null }}/${matchResults.size} 首",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 4.dp, bottom = 6.dp),
-                        )
+                                Button(
+                                    onClick = { startMatching(resume = false) },
+                                    modifier = Modifier.fillMaxWidth().appElasticPress(),
+                                ) {
+                                    Text("开始匹配")
+                                }
+                            }
+                        }
                     }
+                    Spacer(Modifier.height(8.dp))
 
                     LazyColumn(
                         modifier = Modifier.weight(1f),
@@ -366,8 +561,8 @@ fun ExternalPlaylistImportDialog(
                         itemsIndexed(outcomes) { index, outcome ->
                             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                                 Card(
-                                    modifier = Modifier.clickable(enabled = matchResults.isNotEmpty()) {
-                                        if (matchResults.isNotEmpty()) {
+                                    modifier = Modifier.clickable(enabled = matchResults.isNotEmpty() && !matching && !favoriting) {
+                                        if (matchResults.isNotEmpty() && !matching && !favoriting) {
                                             if (editingIndex == index) {
                                                 dismissEditing()
                                             } else {
@@ -378,8 +573,10 @@ fun ExternalPlaylistImportDialog(
                                             }
                                         }
                                     },
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.62f),
+                                    colors = CardDefaults.colors(
+                                        containerColor = if (com.android.purebilibili.core.ui.isMiuixNonGlassEnabled()) {
+                                            com.android.purebilibili.core.ui.AppSurfaceTokens.cardContainer()
+                                        } else MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.62f),
                                     ),
                                 ) {
                                     Row(
@@ -398,8 +595,8 @@ fun ExternalPlaylistImportDialog(
                                                 text = outcome.video?.let { "${it.author} · ${it.title}" }
                                                     ?: outcome.track.artists.joinToString("/").ifBlank { "未匹配" },
                                                 style = MaterialTheme.typography.bodySmall,
-                                                color = if (outcome.video != null) MaterialTheme.colorScheme.onSurfaceVariant
-                                                else MaterialTheme.colorScheme.error.copy(alpha = 0.86f),
+                                                color = if (outcome.video != null) AppContentColors.secondaryText()
+                                                else AppContentColors.error().copy(alpha = 0.86f),
                                                 maxLines = 1,
                                                 overflow = TextOverflow.Ellipsis,
                                             )
@@ -421,7 +618,10 @@ fun ExternalPlaylistImportDialog(
                                                     manualResults = emptyList()
                                                 }
                                             },
-                                            enabled = matchResults.isNotEmpty(),
+                                            enabled = matchResults.isNotEmpty() && !matching && !favoriting,
+                                            modifier = Modifier.appElasticPress(
+                                                enabled = matchResults.isNotEmpty() && !matching && !favoriting,
+                                            ),
                                         ) {
                                             Icon(Icons.Outlined.Edit, contentDescription = "手动修正")
                                         }
@@ -452,6 +652,7 @@ fun ExternalPlaylistImportDialog(
                                                                         cover = it.pic,
                                                                         author = it.owner.name,
                                                                         durationSec = it.duration.toLong(),
+                                                                        aid = it.id,
                                                                     )
                                                                 }
                                                             }
@@ -459,7 +660,7 @@ fun ExternalPlaylistImportDialog(
                                                     }
                                                 }
                                             },
-                                            enabled = manualKeyword.isNotBlank() && !manualSearching,
+                                            enabled = manualKeyword.isNotBlank() && !manualSearching, modifier = Modifier.appElasticPress(enabled = manualKeyword.isNotBlank() && !manualSearching),
                                         ) {
                                             Text(if (manualSearching) "搜索中" else "搜索")
                                         }
@@ -482,8 +683,10 @@ fun ExternalPlaylistImportDialog(
                                                 }
                                                 dismissEditing()
                                             },
-                                            colors = CardDefaults.cardColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.7f),
+                                            colors = CardDefaults.colors(
+                                                containerColor = if (com.android.purebilibili.core.ui.isMiuixNonGlassEnabled()) {
+                                                    com.android.purebilibili.core.ui.AppSurfaceTokens.cardContainer()
+                                                } else MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.7f),
                                             ),
                                         ) {
                                             Row(
@@ -501,7 +704,7 @@ fun ExternalPlaylistImportDialog(
                                                 Column {
                                                     Text(video.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                     Text(video.author, style = MaterialTheme.typography.bodySmall,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                                        color = AppContentColors.secondaryText())
                                                 }
                                             }
                                         }
@@ -512,12 +715,232 @@ fun ExternalPlaylistImportDialog(
                     }
                     if (completed) {
                         Text(
-                            text = "未匹配的曲目将被跳过，保存后可稍后再添加。",
+                            text = "未匹配的曲目将被跳过。点击任意一行可搜索 B 站视频手动修正。",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = AppContentColors.secondaryText(),
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
+                }
+            }
+        }
+    }
+
+    if (showFavoritePicker) {
+        Dialog(
+            onDismissRequest = { if (!favoriting) showFavoritePicker = false },
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+                decorFitsSystemWindows = false,
+            ),
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .fillMaxHeight(0.9f),
+                shape = panelShape,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                contentColor = AppContentColors.primaryText(),
+                tonalElevation = 0.dp,
+            ) {
+                FavoriteFolderPickerContent(
+                    playlistName = playlist?.name.orEmpty(),
+                    matchedCount = matchResults.count { it.video != null },
+                    folders = favoriteFolders,
+                    loading = favoriteFoldersLoading,
+                    error = favoriteFoldersError,
+                    selectedIds = selectedFolderIds,
+                    favoriting = favoriting,
+                    processed = favoriteProcessed,
+                    total = favoriteTotal,
+                    succeeded = favoriteSucceeded,
+                    failed = favoriteFailed,
+                    onToggleFolder = { folderId ->
+                        selectedFolderIds = if (folderId in selectedFolderIds) {
+                            selectedFolderIds - folderId
+                        } else {
+                            selectedFolderIds + folderId
+                        }
+                    },
+                    onRetry = { loadFavoriteFolders() },
+                    onStart = { startFavoriting() },
+                    onStop = { stopFavoriting() },
+                    onBack = { if (!favoriting) showFavoritePicker = false },
+                )
+            }
+        }
+    }
+}
+
+private const val FAVORITE_INTERVAL_MS = 300L
+
+/**
+ * 收藏夹选择页：与歌单弹窗同尺寸的独立弹窗，避免在内容区里再嵌一层页面。
+ */
+@Composable
+private fun FavoriteFolderPickerContent(
+    playlistName: String,
+    matchedCount: Int,
+    folders: List<FavFolder>,
+    loading: Boolean,
+    error: String?,
+    selectedIds: Set<Long>,
+    favoriting: Boolean,
+    processed: Int,
+    total: Int,
+    succeeded: Int,
+    failed: Int,
+    onToggleFolder: (Long) -> Unit,
+    onRetry: () -> Unit,
+    onStart: () -> Unit,
+    onStop: () -> Unit,
+    onBack: () -> Unit,
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.Transparent,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "收藏到 B 站收藏夹",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = "$playlistName · 将收藏 $matchedCount 首",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppContentColors.secondaryText(),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+                TextButton(onClick = onBack, enabled = !favoriting) {
+                    Text("返回")
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+
+            if (favoriting) {
+                LinearProgressIndicator(
+                    progress = { if (total > 0) processed.toFloat() / total else 0f },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Text(
+                    text = "正在收藏 $processed/$total 首（成功 $succeeded，失败 $failed）",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = AppContentColors.secondaryText(),
+                    modifier = Modifier.padding(top = 6.dp),
+                )
+                Spacer(Modifier.height(10.dp))
+                OutlinedButton(
+                    onClick = onStop,
+                    modifier = Modifier.fillMaxWidth().appElasticPress(),
+                ) {
+                    Text("停止收藏")
+                }
+                Spacer(Modifier.height(12.dp))
+            }
+
+            when {
+                loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(32.dp))
+                    }
+                }
+
+                error != null -> {
+                    Column(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(
+                            text = error,
+                            color = AppContentColors.error(),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        OutlinedButton(onClick = onRetry, enabled = !favoriting) {
+                            Text("重试")
+                        }
+                    }
+                }
+
+                folders.isEmpty() -> {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = "当前账号没有可用的收藏夹",
+                            color = AppContentColors.secondaryText(),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        itemsIndexed(folders) { _, folder ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable(enabled = !favoriting) { onToggleFolder(folder.id) }
+                                    .padding(vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Checkbox(
+                                    checked = folder.id in selectedIds,
+                                    onCheckedChange = { onToggleFolder(folder.id) },
+                                    enabled = !favoriting,
+                                )
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = folder.title.ifBlank { "未命名收藏夹" },
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                    Text(
+                                        text = "${folder.media_count} 个内容",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = AppContentColors.secondaryText(),
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!favoriting) {
+                Spacer(Modifier.height(12.dp))
+                Button(
+                    onClick = onStart,
+                    enabled = matchedCount > 0 && selectedIds.isNotEmpty(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .appElasticPress(enabled = matchedCount > 0 && selectedIds.isNotEmpty()),
+                ) {
+                    Text(
+                        when {
+                            matchedCount <= 0 -> "没有可收藏的视频"
+                            selectedIds.isEmpty() -> "请选择收藏夹"
+                            selectedIds.size == 1 -> "收藏 $matchedCount 首"
+                            else -> "收藏 $matchedCount 首到 ${selectedIds.size} 个收藏夹"
+                        },
+                    )
                 }
             }
         }

@@ -80,6 +80,15 @@ class Runner:
         return any(n.get("focused") == "true" and
                    any(child.get("text") == label for child in n.iter("node")) for n in self.nodes)
 
+    def focus_until_text(self, value, direction="DPAD_RIGHT", limit=12):
+        """Walk focus with one key until the given label owns focus (row walking)."""
+        for _ in range(limit):
+            self.snapshot()
+            if self.focused_text(value):
+                return
+            self.key(direction)
+        raise AssertionError("Focus never reached %r via %s" % (value, direction))
+
     def controls_visible(self):
         return self.text("倍速") and self.text("画质")
 
@@ -185,18 +194,56 @@ class Runner:
         self.key("BACK")
         self.wait(lambda: self.tagged(selected, True), "Returning did not restore original card focus", timeout=15)
 
+    def open_player_controls(self):
+        """Home -> first card -> detail -> player with controls visible and media ready."""
+        self.home()
+        self.wait(lambda: self.focused_id().startswith("video:"), "Recommendation API returned no focused card")
+        self.key("DPAD_CENTER")
+        self.wait(lambda: self.tagged("tv-play", True), "Detail did not focus play button")
+        self.key("DPAD_CENTER")
+        self.wait(lambda: not self.tagged("tv-nav-Home") and
+                  any(n.get("focused") == "true" and n.get("package") == PACKAGE for n in self.nodes),
+                  "Player did not open")
+        self.key("DPAD_CENTER")
+        self.wait(lambda: self.focused_text("暂停") and self.position_seconds() >= 0,
+                  "Media did not become ready with nonzero duration")
+
+    def danmaku_settings(self):
+        """弹幕设置父子弹窗：选档后回父级，返回逐层关闭并恢复触发按钮焦点。"""
+        self.open_player_controls()
+        self.focus_until_text("弹幕设置")
+        self.key("DPAD_CENTER")
+        self.wait(lambda: self.text("弹幕设置") and self.text("字号：") and self.text("密度："),
+                  "Danmaku settings dialog did not open", timeout=10)
+        self.key("DPAD_CENTER")  # 首项「字号」
+        self.wait(lambda: self.text("弹幕字号") and self.text("标准"), "Danmaku size dialog did not open", timeout=10)
+        self.key("DPAD_CENTER")  # 选当前档位，应回到父弹窗
+        self.wait(lambda: self.text("弹幕设置") and self.text("密度："),
+                  "Danmaku size choice did not return to parent dialog", timeout=10)
+        self.key("BACK")  # 关父弹窗
+        self.wait(lambda: self.controls_visible() and not self.text("密度："),
+                  "Back did not close danmaku dialog", timeout=10)
+        self.wait(lambda: self.focused_text("弹幕设置"), "Dialog did not restore danmaku button focus", timeout=10)
+        self.key("BACK")  # 隐藏控件
+        self.wait(lambda: not self.controls_visible(), "Back did not hide controls", timeout=10)
+        self.key("BACK")  # 退出播放
+        self.wait(lambda: self.tagged("tv-play", True), "Player did not return to detail", timeout=15)
+
     def settings(self):
         self.home()
         self.sidebar("Settings")
         self.wait(lambda: self.text("默认画质："), "Settings did not open", timeout=15)
         self.key("DPAD_CENTER")
-        self.wait(lambda: self.text("默认画质") and self.text("480P"), "Quality dialog did not open", timeout=10)
+        # 画质真实化：弹窗应列出共享 VideoQuality 全档位（含 480P/HDR/8K）
+        self.wait(lambda: self.text("默认画质") and self.text("480P") and self.text("HDR") and self.text("8K"),
+                  "Quality dialog did not list the full shared quality ladder", timeout=10)
         self.key("BACK")
         self.wait(lambda: self.text("默认画质：") and not self.text("480P"), "Back did not dismiss dialog", timeout=10)
         self.snapshot()
         focused = next((n for n in self.nodes if n.get("focused") == "true"), None)
         if focused is None or "默认画质：" not in " ".join(n.get("text", "") for n in focused.iter("node")):
             raise AssertionError("Dialog did not restore quality button focus")
+        self.wait(lambda: self.text("模糊效果："), "Blur switch row missing", timeout=10)
         self.key("BACK")
         self.wait(lambda: self.text("为你推荐"), "Settings Back did not return home", timeout=15)
 
@@ -211,6 +258,15 @@ class Runner:
         self.key("ENTER")  # Submit the configured system IME search action.
         self.wait(lambda: any(n.get("resource-id", "").startswith("video:") for n in self.nodes),
                   "Search returned no videos")
+        # 搜索筛选：从结果网格向上走到排序按钮，选择档位后应重置并重新出结果。
+        self.focus_until_text("排序：", direction="DPAD_UP", limit=8)
+        self.key("DPAD_CENTER")
+        self.wait(lambda: self.text("排序") and self.text("综合排序"), "Order dialog did not open", timeout=10)
+        self.focus_until_text("最新发布", direction="DPAD_DOWN", limit=4)
+        self.key("DPAD_CENTER")
+        self.wait(lambda: self.text("排序：最新发布"), "Order choice did not update the filter button", timeout=10)
+        self.wait(lambda: any(n.get("resource-id", "").startswith("video:") for n in self.nodes),
+                  "Filtered search returned no videos", timeout=30)
 
     def account(self):
         self.home()
@@ -226,8 +282,9 @@ class Runner:
         if not self.args.skip_instrumentation:
             self.record("isolated_remote_ui_tests", self.instrumentation)
         self.record("recommend_detail_playback_remote_back", self.viewing)
+        self.record("player_danmaku_settings_dialogs", self.danmaku_settings)
         self.record("settings_dialog_and_focus_restore", self.settings)
-        self.record("system_keyboard_search", self.search)
+        self.record("system_keyboard_search_and_filters", self.search)
         self.record("account_entry_and_cancel", self.account)
         self.record("leave_recommendation_ready", self.home)
         self.save()

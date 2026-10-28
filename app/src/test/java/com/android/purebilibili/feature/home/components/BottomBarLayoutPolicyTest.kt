@@ -283,8 +283,14 @@ class BottomBarLayoutPolicyTest {
     @Test
     fun `bilipai expanded home dock copies search circle size`() {
         assertEquals(56.dp, resolveBiliPaiBottomBarSearchCircleSize())
-        // 照搬 HyperIsland 的壳高 64dp（搜索展开态仍是 56dp 圆形）。
-        assertEquals(64.dp, resolveBiliPaiBottomBarDockHeight(searchExpanded = false))
+        // The ordinary dock and adjacent search circle share a compact resting height.
+        for (searchExpanded in listOf(false, true)) {
+            assertEquals(
+                64.dp,
+                resolveBiliPaiBottomBarDockHeight(searchExpanded, nativeMiuixNavigation = true),
+            )
+        }
+        assertEquals(56.dp, resolveBiliPaiBottomBarDockHeight(searchExpanded = false))
         assertEquals(
             64.dp,
             resolveBiliPaiBottomBarDockHeight(
@@ -293,6 +299,10 @@ class BottomBarLayoutPolicyTest {
             )
         )
         assertEquals(resolveBiliPaiBottomBarSearchCircleSize(), resolveBiliPaiBottomBarDockHeight(searchExpanded = true))
+        assertEquals(
+            resolveBottomBarSkinDockHeight(),
+            resolveBiliPaiBottomBarDockHeight(searchExpanded = true, hasUiSkinDecoration = true),
+        )
         // 照搬 HyperIsland 的 64/56 静止几何：指示器 = 壳高 × 56/64。
         // 64dp 壳 → 56dp 指示器（上下各 4dp）；56dp 短壳按同一比例得 49dp。
         assertEquals(49.dp, resolveBiliPaiBottomBarIndicatorHeight(56.dp))

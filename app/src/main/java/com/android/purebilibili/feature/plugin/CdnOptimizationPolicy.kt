@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.plugin
 
+import com.android.purebilibili.plugin.sdk.PlaybackCdnCandidate
+
 import java.net.URI
 import java.security.MessageDigest
 

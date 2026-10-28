@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.home.components.cards
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -35,7 +37,7 @@ internal fun HorizontalVideoStatRow(
     playIcon: ImageVector = Icons.Outlined.PlayCircleOutline,
     danmakuIcon: ImageVector = Icons.Outlined.Subtitles,
     modifier: Modifier = Modifier,
-    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentColor: Color = AppContentColors.secondaryText(),
     textStyle: TextStyle = feedContentTypography().statistic,
 ) {
     FlowRow(
@@ -66,7 +68,7 @@ internal fun HorizontalVideoStatItem(
     icon: ImageVector,
     text: String,
     modifier: Modifier = Modifier,
-    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    contentColor: Color = AppContentColors.secondaryText(),
     textStyle: TextStyle = feedContentTypography().statistic,
 ) {
     Row(

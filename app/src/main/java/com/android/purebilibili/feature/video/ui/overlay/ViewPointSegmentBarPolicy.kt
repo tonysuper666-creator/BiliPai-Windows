@@ -1,6 +1,7 @@
 // 文件路径: feature/video/ui/overlay/ViewPointSegmentBarPolicy.kt
 package com.android.purebilibili.feature.video.ui.overlay
 
+import androidx.compose.ui.unit.dp
 import com.android.purebilibili.data.model.response.ViewPoint
 
 /**
@@ -45,4 +46,28 @@ internal fun findViewPointSegmentAt(
     if (containing != null) return containing
     val last = segments.last()
     return last.takeIf { positionMs >= it.toMs }
+}
+
+/** 章节 chip 的最小可读宽度：约 4 个 10sp 字符，低于该宽度的章节抬到此宽度。 */
+internal val ViewPointSegmentBarMinChipWidth = 44.dp
+
+/**
+ * 短章节保底是否可行：所有按比例宽不足 [minChipWidthPx] 的章节抬到最小宽度后，
+ * 合计不超过条宽的 [flooredShareLimit]（默认 60%）才启用；章节多而碎时放弃保底，
+ * 整体回退纯时长比例，避免挤压其余章节导致更普遍的不可读。
+ */
+internal fun shouldFloorShortViewPointChips(
+    segments: List<NormalizedViewPointSegment>,
+    durationMs: Long,
+    barWidthPx: Float,
+    minChipWidthPx: Float,
+    flooredShareLimit: Float = 0.6f,
+): Boolean {
+    if (barWidthPx <= 0f || durationMs <= 0L) return false
+    var flooredTotal = 0f
+    for (segment in segments) {
+        val idealWidth = (segment.toMs - segment.fromMs).toFloat() / durationMs * barWidthPx
+        if (idealWidth < minChipWidthPx) flooredTotal += minChipWidthPx
+    }
+    return flooredTotal <= barWidthPx * flooredShareLimit
 }

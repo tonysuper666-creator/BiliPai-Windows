@@ -23,9 +23,12 @@ fun resolveVideoSearchPageInfo(
         currentPage = currentPage,
         totalPages = resolvedTotalPages,
         totalResults = totalResults.takeIf { it > 0 } ?: resultCount,
-        // Match PiliPlus CommonListController: totals are informational; only an
-        // empty server page ends pagination, even after a short nonempty page.
-        hasMore = resultCount > 0
+        // 优先服务端总页数和有效分页大小，缺少元数据时保守探测下一页。
+        hasMore = resultCount > 0 && when {
+            totalPages > 0 -> currentPage < totalPages
+            totalResults > 0 && pageSize > 0 -> currentPage.toLong() * pageSize < totalResults
+            else -> true
+        }
     )
 }
 

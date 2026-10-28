@@ -25,6 +25,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -57,6 +60,14 @@ internal class MusicViewModel : ViewModel() {
     private var lyricsRepository: LyricsRepository? = null
     private var observedPlayer: ExoPlayer? = null
     private var progressJob: Job? = null
+    private val pageActive = MutableStateFlow(false)
+
+    /** UI sampling only; the MiniPlayerManager continues owning audio playback. */
+    fun setPageActive(active: Boolean) {
+        pageActive.value = active
+        if (active) updateProgress()
+    }
+
     private var lyricsJob: Job? = null
     private var lyricsOffsetSaveJob: Job? = null
     private var lastLyricsCacheKey: String? = null
@@ -66,6 +77,11 @@ internal class MusicViewModel : ViewModel() {
     private val playerListener = object : Player.Listener {
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             _uiState.update { it.copy(isPlaying = isPlaying) }
+            if (pageActive.value) updateProgress()
+        }
+
+        override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) {
+            if (pageActive.value) updateProgress()
         }
 
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -296,10 +312,15 @@ internal class MusicViewModel : ViewModel() {
         player.addListener(playerListener)
         progressJob?.cancel()
         progressJob = viewModelScope.launch {
-            while (isActive) {
-                updateProgress()
-                delay(250L)
-            }
+            combine(pageActive, uiState) { visible, state -> visible && state.isPlaying }
+                .distinctUntilChanged()
+                .collectLatest { active ->
+                    if (!active) return@collectLatest
+                    while (isActive) {
+                        updateProgress()
+                        delay(250L)
+                    }
+                }
         }
     }
 

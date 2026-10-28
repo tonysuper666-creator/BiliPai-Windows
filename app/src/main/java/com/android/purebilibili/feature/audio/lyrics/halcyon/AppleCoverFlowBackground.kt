@@ -5,32 +5,34 @@ import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -83,7 +85,10 @@ internal fun AppleCoverFlowBackground(
     isPlaying: Boolean,
     animate: Boolean = true,
     blur: Float = 60f,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    audioEnergyProvider: () -> Float = { 0f },
+    fallbackColor: Color = backgroundColor,
+    reduceMotion: Boolean = false,
 ) {
     val context = LocalContext.current
     val densityDpi = context.resources.displayMetrics.densityDpi
@@ -96,10 +101,9 @@ internal fun AppleCoverFlowBackground(
 
     var viewportSize by remember { mutableStateOf(IntSize.Zero) }
 
-    // Use the process-wide frame clock instead of an elapsed timer local to this Composable.
-    // Browsing pages and every player/lyrics surface therefore render the same flow coordinates
-    // when one replaces another, rather than restarting the animation at a different phase.
-    val sharedClockMs = rememberThrottledFlowTimeMs(sourceBitmap, animate)
+    // 只累计可见且正在播放的时间，暂停、遮挡和换封面都延续当前相位。
+    val animationGate = com.android.purebilibili.core.ui.rememberDecorativeAnimationGate()
+    val sharedClockMs = rememberThrottledFlowTimeMs(sourceBitmap, animate && animationGate.active)
     val scaledTimeMs = scaledAppleFlowTimeMs(sharedClockMs, speed)
     val frameTimeMs = (scaledTimeMs / FRAME_INTERVAL_MS) * FRAME_INTERVAL_MS
 
@@ -115,10 +119,26 @@ internal fun AppleCoverFlowBackground(
         if (isDark) Color.Black.copy(alpha = 0.18f) else Color.White.copy(alpha = 0.14f)
     }.toArgb()
 
-    // Keep the last completed frame while the next one is rendered off-thread.
-    // Retaining frameBitmap across song changes prevents briefly falling back to the
-    // single-layer blurred cover (issue #621), keeping the 3-layer fluid flow seamless.
+    // 新封面的首张流动帧准备好后再混合，旧帧只用于过渡，不额外启动背景渲染器。
     var frameBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var previousFrame by remember { mutableStateOf<Bitmap?>(null) }
+    var renderedSource by remember { mutableStateOf<Bitmap?>(null) }
+    val artworkReveal = remember { Animatable(0f) }
+    val surfaceActive = animationGate.active && LocalPlayerSurfaceActive.current
+    LaunchedEffect(renderedSource, sourceBitmap == null, surfaceActive, reduceMotion) {
+        if (sourceBitmap == null) {
+            if (!surfaceActive || reduceMotion) artworkReveal.snapTo(0f)
+            else artworkReveal.animateTo(0f, tween(450))
+            frameBitmap = null
+            previousFrame = null
+            renderedSource = null
+            return@LaunchedEffect
+        }
+        if (renderedSource == null || renderedSource !== sourceBitmap) return@LaunchedEffect
+        if (!surfaceActive || reduceMotion) artworkReveal.snapTo(1f)
+        else artworkReveal.animateTo(1f, tween(450))
+        previousFrame = null
+    }
     LaunchedEffect(
         sourceBitmap,
         viewportSize,
@@ -132,39 +152,52 @@ internal fun AppleCoverFlowBackground(
         val w = viewportSize.width
         val h = viewportSize.height
         if (cover == null || w <= 0 || h <= 0) {
-            frameBitmap = null
             return@LaunchedEffect
         }
         val next = withContext(Dispatchers.Default) {
             createAppleFlowFrameBitmap(cover, w, h, frameTimeMs, densityDpi, normalizedBlur, washPrimary, washSecondary)
         }
+        if (renderedSource !== cover) {
+            previousFrame = frameBitmap
+            artworkReveal.snapTo(if (reduceMotion || !surfaceActive) 1f else 0f)
+            renderedSource = cover
+        }
         frameBitmap = next
     }
 
-    Box(modifier = modifier.background(backgroundColor)) {
+    Box(modifier = modifier.background(fallbackColor).then(animationGate.modifier)) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .clipToBounds()
                 .onSizeChanged { viewportSize = it }
+                // Modulate the original cover pixels beneath the existing fixed scrim.
+                // No extra black overlay or new palette; zero energy preserves the image.
+                .graphicsLayer {
+                    val energy = audioEnergyProvider().coerceIn(0f, 1f)
+                    scaleX = 1f + energy * 0.035f
+                    scaleY = 1f + energy * 0.035f
+                }
+                .drawWithContent {
+                    drawContent()
+                    val energy = audioEnergyProvider().coerceIn(0f, 1f)
+                    if (energy > 0f) drawRect(Color.White.copy(alpha = energy * 0.035f))
+                }
         ) {
-            val ready = frameBitmap
-            val source = sourceBitmap
-            when {
-                ready != null -> Image(
-                    bitmap = ready.asImageBitmap(),
+            previousFrame?.let { previous ->
+                Image(
+                    bitmap = previous.asImageBitmap(),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.FillBounds,
                 )
-                source != null -> Image(
-                    bitmap = source.asImageBitmap(),
+            }
+            frameBitmap?.let { ready ->
+                Image(
+                    bitmap = ready.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .blur((normalizedBlur * 0.45f).dp),
-                    contentScale = ContentScale.Crop,
-                    alpha = 0.72f
+                    modifier = Modifier.fillMaxSize().graphicsLayer { alpha = artworkReveal.value },
+                    contentScale = ContentScale.FillBounds,
                 )
             }
         }
@@ -173,6 +206,9 @@ internal fun AppleCoverFlowBackground(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .graphicsLayer {
+                    alpha = if (previousFrame != null) 1f else artworkReveal.value
+                }
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
@@ -189,28 +225,26 @@ internal fun AppleCoverFlowBackground(
 internal fun scaledAppleFlowTimeMs(elapsedMs: Long, speedTenths: Int): Long =
     elapsedMs.coerceAtLeast(0L) * speedTenths.coerceIn(5, 60) / 10L
 
-/**
- * ~30 fps process-wide monotonic clock in milliseconds. Every composed flow background samples
- * the same clock origin, so switching surfaces preserves the current coordinates. It freezes
- * (returns the last value) when [animate] is false or the player surface is hidden.
- */
+/** 隐藏、失焦、暂停时冻结；恢复时从当前相位推进，不补算离场时间。 */
 @Composable
 private fun rememberThrottledFlowTimeMs(key: Any?, animate: Boolean): Long {
-    val active = animate && LocalPlayerSurfaceActive.current
-    var sharedClockMs by remember(key) { mutableLongStateOf(0L) }
+    val active = key != null && animate && LocalPlayerSurfaceActive.current
+    var elapsedMs by remember { mutableLongStateOf(0L) }
     LaunchedEffect(key, active) {
         if (!active) return@LaunchedEffect
-        var lastPublishedNanos = 0L
-        while (true) {
-            val now = withFrameNanos { it }
-            if (lastPublishedNanos == 0L || now - lastPublishedNanos >= FRAME_INTERVAL_MS * 1_000_000L) {
-                sharedClockMs = now / 1_000_000L
-                lastPublishedNanos = now
-            }
+        var previousNanos = System.nanoTime()
+        while (isActive) {
+            delay(FRAME_INTERVAL_MS)
+            val now = System.nanoTime()
+            elapsedMs = advanceAppleFlowTimeMs(elapsedMs, (now - previousNanos) / 1_000_000L)
+            previousNanos = now
         }
     }
-    return sharedClockMs
+    return elapsedMs
 }
+
+internal fun advanceAppleFlowTimeMs(currentMs: Long, elapsedMs: Long, active: Boolean = true): Long =
+    currentMs.coerceAtLeast(0L) + if (active) elapsedMs.coerceIn(0L, 100L) else 0L
 
 internal fun Bitmap.scaledForFlowSource(maxDimension: Int = 256): Bitmap {
     val longest = max(width, height)

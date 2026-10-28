@@ -8,6 +8,7 @@ internal sealed interface WebViewNavigationAction {
     data object Block : WebViewNavigationAction
     data class LoadInWebView(val url: String) : WebViewNavigationAction
     data class DispatchTarget(val target: BilibiliNavigationTarget) : WebViewNavigationAction
+    data class OpenExternal(val url: String) : WebViewNavigationAction
 }
 
 internal fun resolveWebViewNavigationAction(
@@ -17,6 +18,12 @@ internal fun resolveWebViewNavigationAction(
     val trimmedUrl = urlString.trim()
     val normalizedUrl = trimmedUrl.lowercase()
     val isCustomScheme = normalizedUrl.startsWith("bilibili://") || normalizedUrl.startsWith("bili://")
+
+    // Short shopping links can redirect off-site. Hand the destination to another app
+    // before WebView renders it; checking the host boundary avoids lookalike domains.
+    if (shouldOpenWebUrlExternally(trimmedUrl)) {
+        return WebViewNavigationAction.OpenExternal(trimmedUrl)
+    }
 
     if (isOfficialMusicDetailUrl(trimmedUrl)) {
         return WebViewNavigationAction.AllowWebLoad
@@ -46,6 +53,15 @@ internal fun resolveWebViewNavigationAction(
     } else {
         WebViewNavigationAction.AllowWebLoad
     }
+}
+
+internal fun shouldOpenWebUrlExternally(urlString: String): Boolean {
+    val uri = runCatching { java.net.URI(urlString.trim()) }.getOrNull() ?: return false
+    if (!uri.scheme.equals("http", ignoreCase = true) &&
+        !uri.scheme.equals("https", ignoreCase = true)
+    ) return false
+    val host = uri.host?.lowercase() ?: return false
+    return !com.android.purebilibili.core.util.isBilibiliWebHost(host)
 }
 
 internal fun isOfficialMusicDetailUrl(urlString: String): Boolean {

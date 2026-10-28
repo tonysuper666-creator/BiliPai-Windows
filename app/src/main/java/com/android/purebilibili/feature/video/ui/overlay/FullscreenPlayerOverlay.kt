@@ -1,5 +1,7 @@
 // 文件路径: feature/video/FullscreenPlayerOverlay.kt
 package com.android.purebilibili.feature.video.ui.overlay
+
+import com.android.purebilibili.core.ui.AppContentColors
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
 
@@ -31,6 +33,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectDragGestures
+import com.android.purebilibili.feature.video.ui.gesture.PlayerGestureInputSurface
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -93,6 +96,7 @@ import com.android.purebilibili.core.ui.blur.BlurSurfaceType
 import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState
 import com.android.purebilibili.core.ui.blur.unifiedBlur
 import com.android.purebilibili.feature.video.ui.gesture.GestureLevelOverlayContent
+import com.android.purebilibili.feature.video.ui.gesture.detectPlayerTapGestures
 import com.android.purebilibili.feature.video.ui.gesture.GestureLevelOverlayStyle
 import com.android.purebilibili.feature.video.ui.gesture.resolveGestureLevelOverlaySpec
 import com.android.purebilibili.feature.video.ui.gesture.resolveGestureLevelKind
@@ -107,7 +111,6 @@ import com.android.purebilibili.feature.video.ui.gesture.GestureMode
 import com.android.purebilibili.feature.video.ui.gesture.GestureIndicator
 import com.android.purebilibili.feature.video.ui.gesture.rememberPlayerGestureState
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -119,6 +122,8 @@ import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio
 import com.android.purebilibili.feature.video.ui.components.PlaybackSpeed
 import com.android.purebilibili.feature.video.ui.components.SpeedSelectionMenuPlacement
 import com.android.purebilibili.feature.video.ui.components.resolveSafeVideoAspectRatio
+import com.android.purebilibili.feature.video.ui.components.schedulePlayerViewViewportRefresh
+import com.android.purebilibili.feature.video.ui.components.cancelPlayerViewViewportRefresh
 import com.android.purebilibili.feature.video.ui.components.toFullscreenAspectRatio
 import com.android.purebilibili.feature.video.ui.components.toVideoAspectRatio
 import com.android.purebilibili.core.ui.common.copyOnLongPress
@@ -210,7 +215,7 @@ internal fun shouldStartFullscreenDragGesture(
 
 /**
  *  全屏播放器覆盖层
- * 
+ *
  * 从小窗展开时直接显示全屏播放器
  * 包含：亮度调节、音量调节、进度滑动等完整功能
  */
@@ -227,32 +232,27 @@ fun FullscreenPlayerOverlay(
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
     val hostLifecycleStarted = lifecycleState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)
-    
+
     val audioManager = remember { context.getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     val maxVolume = remember { audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) }
-    
+
     var showControls by remember { mutableStateOf(true) }
     var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
-    
+
     //  [新增] 弹幕设置面板状态
     var showDanmakuSettings by remember { mutableStateOf(false) }
-    
+
     //  播放速度状态
     var playbackSpeed by remember(player) { mutableFloatStateOf(player?.playbackParameters?.speed ?: 1.0f) }
     var showSpeedMenu by remember { mutableStateOf(false) }
-    
+
     //  视频比例状态
     val fixedFullscreenAspectRatio by SettingsManager
         .getFullscreenAspectRatio(context)
         .collectAsStateWithLifecycle(initialValue = FullscreenAspectRatio.FIT
         )
-    var isVerticalContent by remember(player) {
-        mutableStateOf(
-            player?.videoSize?.let { size ->
-                size.width > 0 && size.height > size.width
-            } ?: false
-        )
-    }
+    var playerVideoSize by remember(player) { mutableStateOf(player?.videoSize ?: androidx.media3.common.VideoSize.UNKNOWN) }
+    val isVerticalContent = playerVideoSize.width > 0 && playerVideoSize.height > playerVideoSize.width
     var aspectRatio by remember {
         mutableStateOf(
             resolveSafeVideoAspectRatio(
@@ -262,7 +262,7 @@ fun FullscreenPlayerOverlay(
         )
     }
     var showRatioMenu by remember { mutableStateOf(false) }
-    
+
     //  画质选择菜单状态
     var showQualityMenu by remember { mutableStateOf(false) }
     var showContextMenu by remember { mutableStateOf(false) }
@@ -286,6 +286,14 @@ fun FullscreenPlayerOverlay(
     }
     //  共享弹幕管理器（横竖屏切换保持状态，同时可用于手势 seek 同步）
     val danmakuManager = rememberDanmakuManager(miniPlayerManager.currentBvid ?: player ?: miniPlayerManager)
+
+    val danmakuScope = com.android.purebilibili.core.store.DanmakuSettingsScope.LANDSCAPE
+    val danmakuSettings by SettingsManager
+        .getDanmakuSettings(context, danmakuScope)
+        .collectAsStateWithLifecycle(initialValue = DanmakuSettings(),
+            context = kotlin.coroutines.EmptyCoroutineContext
+        )
+    val danmakuEnabled = danmakuSettings.enabled
 
     DisposableEffect(player) {
         val exoPlayer = player
@@ -332,27 +340,19 @@ fun FullscreenPlayerOverlay(
     // 拖动 seek 时手指进入顶部角落逃生口时置真，松手即取消本次 seek
     var seekCancelPending by remember { mutableStateOf(false) }
     var swipeExitAccumulatedY by remember { mutableFloatStateOf(0f) }
-    val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
-    // Default to 15s so seek UI/haptics work immediately before prefs load (null blocked delta).
-    val fullscreenSwipeSeekSeconds by produceState(initialValue = 15, context) {
-        SettingsManager.getFullscreenSwipeSeekSeconds(context)
-            .collectLatest { value = it }
-    }
-    val doubleTapSeekEnabled by SettingsManager
-        .getDoubleTapSeekEnabled(context)
-        .collectAsStateWithLifecycle(initialValue = false
+    val haptic = com.android.purebilibili.core.ui.rememberAppHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.PLAYER_GESTURES)
+    val seekSceneHaptic = com.android.purebilibili.core.ui.rememberAppHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.PLAYER_SEEK)
+    val playerInteractionSettings by SettingsManager
+        .getPlayerInteractionSettings(context)
+        .collectAsStateWithLifecycle(
+            initialValue = com.android.purebilibili.core.store.PlayerInteractionSettings()
         )
-    val seekForwardSeconds by SettingsManager
-        .getSeekForwardSeconds(context)
-        .collectAsStateWithLifecycle(initialValue = 10
-        )
-    val seekBackwardSeconds by SettingsManager
-        .getSeekBackwardSeconds(context)
-        .collectAsStateWithLifecycle(initialValue = 10
-        )
-    
+    val doubleTapSeekEnabled = playerInteractionSettings.doubleTapSeekEnabled
+    val seekForwardSeconds = playerInteractionSettings.seekForwardSeconds
+    val seekBackwardSeconds = playerInteractionSettings.seekBackwardSeconds
+
     // 亮度状态
-    var currentBrightness by remember { 
+    var currentBrightness by remember {
         mutableFloatStateOf(
             try {
                 Settings.System.getInt(context.contentResolver, Settings.System.SCREEN_BRIGHTNESS) / 255f
@@ -414,17 +414,13 @@ fun FullscreenPlayerOverlay(
     DisposableEffect(player) {
         val exoPlayer = player
         if (exoPlayer == null) {
-            isVerticalContent = false
+            playerVideoSize = androidx.media3.common.VideoSize.UNKNOWN
             onDispose { }
         } else {
-            fun updateVerticalContent() {
-                val size = exoPlayer.videoSize
-                isVerticalContent = size.width > 0 && size.height > size.width
-            }
-            updateVerticalContent()
+            playerVideoSize = exoPlayer.videoSize
             val listener = object : Player.Listener {
                 override fun onVideoSizeChanged(videoSize: androidx.media3.common.VideoSize) {
-                    isVerticalContent = videoSize.width > 0 && videoSize.height > videoSize.width
+                    playerVideoSize = videoSize
                 }
             }
             exoPlayer.addListener(listener)
@@ -438,7 +434,7 @@ fun FullscreenPlayerOverlay(
             isVerticalVideo = isVerticalContent
         )
     }
-    
+
     // 进入全屏时设置横屏和沉浸式
     DisposableEffect(lifecycleOwner, player, playerViewRef) {
         val activity = context.findHostActivity() ?: return@DisposableEffect onDispose {}
@@ -454,10 +450,10 @@ fun FullscreenPlayerOverlay(
 
         // 设置横屏
         activity.applyPlayerRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE)
-        
+
         //  首次进入时应用沉浸式
         AppWindowSystemUiController.enterImmersive(window)
-        
+
         //  [关键修复] 生命周期观察器：返回前台时重新应用沉浸式模式
         val lifecycleObserver = androidx.lifecycle.LifecycleEventObserver { _, event ->
             if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
@@ -478,22 +474,22 @@ fun FullscreenPlayerOverlay(
             }
         }
         lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-        
+
         onDispose {
             //  移除生命周期观察器
             lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-            
+
             activity.applyPlayerRequestedOrientation(
                 resolveFullscreenOverlayExitRequestedOrientation(
                     originalRequestedOrientation = originalOrientation
                 )
             )
-            
+
             AppWindowSystemUiController.restore(window, originalSystemUi)
             if (desktopFullscreenRequested) {
                 AppWindowSystemUiController.requestDesktopFullscreen(activity, enter = false)
             }
-            
+
             // 取消屏幕常亮
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
@@ -512,7 +508,7 @@ fun FullscreenPlayerOverlay(
             }
         }
     }
-    
+
     // 监听播放器状态
     LaunchedEffect(player, showControls, gestureMode, hostLifecycleStarted) {
         if (!shouldPollFullscreenPlayerProgress(
@@ -546,7 +542,7 @@ fun FullscreenPlayerOverlay(
             delay(pollInterval)
         }
     }
-    
+
     // 自动隐藏控制按钮
     LaunchedEffect(showControls, lastInteractionTime, gestureMode, isPlaying) {
         if (
@@ -562,7 +558,7 @@ fun FullscreenPlayerOverlay(
             }
         }
     }
-    
+
     // [问题6修复] 弹幕设置面板打开时禁用手势
     val gesturesEnabled = !showDanmakuSettings && !showSpeedMenu && !showRatioMenu &&
         !showQualityMenu && !showContextMenu
@@ -596,7 +592,7 @@ fun FullscreenPlayerOverlay(
             runCatching { rootFocusRequester.requestFocus() }
         }
     }
-    
+
     // [问题8修复] 状态栏排除区域高度（像素）
     val statusBarExclusionZonePx = with(density) { 40.dp.toPx() }
     val visibleTopControlsHeightPx = with(density) {
@@ -625,7 +621,7 @@ fun FullscreenPlayerOverlay(
             playbackTransitionPositionMs = pendingGestureSeekPositionMs
         )
     }
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -687,8 +683,11 @@ fun FullscreenPlayerOverlay(
                         true
                     }
                     FullscreenKeyboardAction.ToggleDanmaku -> {
-                        danmakuManager.isEnabled = !danmakuManager.isEnabled
-                        if (!danmakuManager.isEnabled) danmakuManager.clear()
+                        val newValue = !danmakuEnabled
+                        danmakuManager.isEnabled = newValue
+                        scope.launch {
+                            SettingsManager.setDanmakuEnabled(context, newValue, danmakuScope)
+                        }
                         true
                     }
                     FullscreenKeyboardAction.ToggleLock -> false
@@ -722,10 +721,11 @@ fun FullscreenPlayerOverlay(
                 seekBackwardSeconds
             ) {
                 if (!gesturesEnabled) return@pointerInput
-                
+
                 val screenWidth = size.width.toFloat()
-                
-                detectTapGestures(
+
+                detectPlayerTapGestures(
+                    doubleTapSlopPx = android.view.ViewConfiguration.get(context).scaledDoubleTapSlop.toFloat(),
                     onTap = {
                         showControls = !showControls
                         if (showControls) lastInteractionTime = System.currentTimeMillis()
@@ -771,15 +771,19 @@ fun FullscreenPlayerOverlay(
                     }
                 )
             }
-            .pointerInput(gesturesEnabled, fullscreenSwipeSeekSeconds, showControls) {
+            .pointerInput(player, gesturesEnabled, playerInteractionSettings, showControls) {
+                if (gestureMode == FullscreenGestureMode.Seek) {
+                    gestureMode = FullscreenGestureMode.None
+                    seekCancelPending = false
+                }
                 if (!gesturesEnabled) {
                     return@pointerInput
                 }
-                
+
                 val screenWidth = size.width.toFloat()
                 val screenHeight = size.height.toFloat()
                 var dragGestureActive = false
-                
+
                 detectDragGestures(
                     onDragStart = { offset ->
                         dragGestureActive = shouldStartFullscreenDragGesture(
@@ -795,7 +799,7 @@ fun FullscreenPlayerOverlay(
                             gestureMode = FullscreenGestureMode.None
                             return@detectDragGestures
                         }
-                        
+
                         showControls = true
                         lastInteractionTime = System.currentTimeMillis()
                         dragDelta = 0f
@@ -861,7 +865,7 @@ fun FullscreenPlayerOverlay(
                             dragVerticalDelta += dragAmount.y
                             if (shouldEngageHorizontalPlayerSeek(dragDelta, dragVerticalDelta)) {
                                 gestureMode = FullscreenGestureMode.Seek
-                                haptic.performHapticFeedback(
+                                seekSceneHaptic.performHapticFeedback(
                                     androidx.compose.ui.hapticfeedback.HapticFeedbackType.TextHandleMove
                                 )
                             } else if (
@@ -898,12 +902,15 @@ fun FullscreenPlayerOverlay(
                             FullscreenGestureMode.Seek -> {
                                 val seekDelta = resolveHorizontalSeekDeltaMs(
                                     isFullscreen = true,
-                                    fullscreenSwipeSeekEnabled = true,
+                                    fullscreenSwipeSeekEnabled = playerInteractionSettings.fullscreenSwipeSeekEnabled,
                                     totalDragDistanceX = dragDelta,
                                     containerWidthPx = screenWidth,
-                                    fullscreenSwipeSeekSeconds = fullscreenSwipeSeekSeconds,
-                                    inlineSwipeSeekSeconds = 30,
-                                    gestureSensitivity = 1f
+                                    fullscreenSwipeSeekSeconds = playerInteractionSettings.fullscreenSwipeSeekSeconds,
+                                    inlineSwipeSeekSeconds = playerInteractionSettings.inlineSwipeSeekSeconds,
+                                    gestureSensitivity = playerInteractionSettings.gestureSensitivity,
+                                    durationMs = duration,
+                                    useRelativeDuration = playerInteractionSettings.swipeSeekUseRelativeDuration,
+                                    relativeSeekPercent = playerInteractionSettings.swipeSeekRelativePercent
                                 )
                                 if (seekDelta != null) {
                                     seekPreviewPosition = (gestureSeekStartPosition + seekDelta).coerceIn(0L, duration)
@@ -924,7 +931,7 @@ fun FullscreenPlayerOverlay(
                                             currentTargetMs = seekPreviewPosition
                                         )
                                     ) {
-                                        haptic.performHapticFeedback(
+                                        seekSceneHaptic.performHapticFeedback(
                                             androidx.compose.ui.hapticfeedback.HapticFeedbackType.TextHandleMove
                                         )
                                         lastSeekHapticTargetMs = seekPreviewPosition
@@ -982,13 +989,6 @@ fun FullscreenPlayerOverlay(
                 },
             )
         }
-        val danmakuScope = com.android.purebilibili.core.store.DanmakuSettingsScope.LANDSCAPE
-        val danmakuSettings by SettingsManager
-            .getDanmakuSettings(context, danmakuScope)
-            .collectAsStateWithLifecycle(initialValue = DanmakuSettings(),
-                context = kotlin.coroutines.EmptyCoroutineContext
-            )
-        val danmakuEnabled = danmakuSettings.enabled
         val danmakuOpacity = danmakuSettings.opacity
         val danmakuFontScale = danmakuSettings.fontScale
         val danmakuSpeed = danmakuSettings.speed
@@ -1006,11 +1006,15 @@ fun FullscreenPlayerOverlay(
         val danmakuBlockRules = danmakuSettings.blockRules
         //  获取当前 cid 并加载弹幕
         val currentCid = miniPlayerManager.currentCid
-        LaunchedEffect(currentCid, danmakuEnabled, player) {
+        LaunchedEffect(danmakuManager, currentCid, danmakuEnabled, player) {
             if (currentCid > 0 && danmakuEnabled) {
                 danmakuManager.updateSettings(settings = danmakuSettings)
                 danmakuManager.isEnabled = true
-                
+                // UP 主弹幕徽章：全屏路径经小窗管理器，owner.mid 从其缓存的详情状态取
+                danmakuManager.bindUpOwnerMid(
+                    miniPlayerManager.cachedUiState?.info?.owner?.mid ?: 0L
+                )
+
                 // 等待播放器 duration 可用后再加载弹幕，启用 Protobuf API
                 var durationMs = player?.duration ?: 0L
                 var retries = 0
@@ -1019,14 +1023,14 @@ fun FullscreenPlayerOverlay(
                     durationMs = player?.duration ?: 0L
                     retries++
                 }
-                
+
                 danmakuManager.loadDanmaku(
                     currentCid,
                     miniPlayerManager.currentAid,
                     durationMs,
                     miniPlayerManager.currentBvid.orEmpty()
                 )
-            } else {
+            } else if (!danmakuEnabled) {
                 danmakuManager.isEnabled = false
             }
         }
@@ -1037,39 +1041,58 @@ fun FullscreenPlayerOverlay(
         }
 
         // 播放器 owner 成对绑定；渲染 View 由 AndroidView.onRelease 独立解绑。
-        DisposableEffect(player) {
+        DisposableEffect(danmakuManager, player) {
             player?.let { danmakuManager.attachPlayer(it) }
             onDispose {
                 player?.let(danmakuManager::detachPlayer)
             }
         }
-        
+
         // 视频播放器
         player?.let { exoPlayer ->
+            val useTextureSurface = com.android.purebilibili.feature.video.ui.components.rememberCompatibleVideoTextureSurface(
+                exoPlayer, miniPlayerManager.cachedUiState?.currentQuality ?: 0,
+            )
             BoxWithConstraints(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                val viewportLayout = remember(maxWidth, maxHeight, aspectRatio) {
+                val viewportLayout = remember(maxWidth, maxHeight, aspectRatio, playerVideoSize) {
                     with(density) {
                         com.android.purebilibili.feature.video.ui.components.resolveVideoViewportLayout(
                             containerWidth = maxWidth.roundToPx(),
                             containerHeight = maxHeight.roundToPx(),
-                            aspectRatio = aspectRatio
+                            aspectRatio = aspectRatio,
+                            videoWidth = playerVideoSize.width,
+                            videoHeight = playerVideoSize.height,
                         )
                     }
                 }
                 val viewportModifier = with(density) {
                     Modifier
-                        .size(
+                        .requiredSize(
                             width = viewportLayout.width.toDp(),
                             height = viewportLayout.height.toDp()
                         )
                 }
 
+                LaunchedEffect(playerViewRef, exoPlayer, viewportLayout, aspectRatio, playerVideoSize) {
+                    playerViewRef?.let { view ->
+                        schedulePlayerViewViewportRefresh(
+                            playerView = view,
+                            resizeMode = aspectRatio.playerResizeMode,
+                            expectedWidth = viewportLayout.width,
+                            expectedHeight = viewportLayout.height,
+                            videoWidth = playerVideoSize.width,
+                            videoHeight = playerVideoSize.height,
+                        )
+                    }
+                }
+
+                key(exoPlayer, useTextureSurface) {
                 AndroidView(
                     factory = { ctx ->
-                        PlayerView(ctx).apply {
+                        com.android.purebilibili.feature.video.ui.components.createVideoPlayerView(ctx, useTextureSurface).apply {
                             this.player = exoPlayer
                             useController = false
                             keepScreenOn = keepFullscreenPlaybackAwake
@@ -1084,35 +1107,48 @@ fun FullscreenPlayerOverlay(
                         playerView.resizeMode = aspectRatio.playerResizeMode
                         playerViewRef = playerView
                     },
+                    onRelease = { view ->
+                        cancelPlayerViewViewportRefresh(view)
+                        if (playerViewRef === view) playerViewRef = null
+                        view.player = null
+                    },
                     modifier = viewportModifier
                 )
+                }
 
                 if (danmakuEnabled) {
-                    AndroidView(
-                        factory = { ctx ->
-                            DanmakuRenderView(ctx).apply {
-                                setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                                configureAsPassiveDanmakuOverlay()
-                                danmakuManager.attachView(this)
-                                com.android.purebilibili.core.util.Logger.d("FullscreenDanmaku", " DanmakuView (RenderEngine) created for fullscreen")
-                            }
-                        },
-                        update = { view ->
-                            if (view.width > 0 && view.height > 0) {
-                                val sizeTag = "${view.width}x${view.height}"
-                                if (view.tag != sizeTag) {
-                                    view.tag = sizeTag
-                                    danmakuManager.attachView(view)
-                                    com.android.purebilibili.core.util.Logger.d("FullscreenDanmaku", " DanmakuView update: size=${view.width}x${view.height}")
+                    key(danmakuManager) {
+                        AndroidView(
+                            factory = { ctx ->
+                                DanmakuRenderView(ctx).apply {
+                                    danmakuManager.isFullscreenSurface = true
+                                    setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                                    configureAsPassiveDanmakuOverlay()
+                                    danmakuManager.attachView(this)
+                                    com.android.purebilibili.core.util.Logger.d("FullscreenDanmaku", " DanmakuView (RenderEngine) created for fullscreen")
                                 }
-                            }
-                        },
-                        onRelease = { view -> danmakuManager.detachView(view) },
-                        modifier = viewportModifier
-                    )
+                            },
+                            update = { view ->
+                                danmakuManager.isFullscreenSurface = true
+                                if (view.width > 0 && view.height > 0) {
+                                    val sizeTag = "${view.width}x${view.height}"
+                                    if (view.tag != sizeTag) {
+                                        view.tag = sizeTag
+                                        danmakuManager.attachView(view)
+                                        com.android.purebilibili.core.util.Logger.d("FullscreenDanmaku", " DanmakuView update: size=${view.width}x${view.height}")
+                                    }
+                                }
+                            },
+                            onRelease = { view -> danmakuManager.detachView(view) },
+                            modifier = viewportModifier
+                        )
+                    }
                 }
             }
         }
+
+        // Same stable hit surface as inline/fullscreen detail playback; controls stay above it.
+        PlayerGestureInputSurface(modifier = Modifier.matchParentSize())
 
         // 手势指示器（SwipeToExit 无需指示器）
         if (gestureMode != FullscreenGestureMode.None &&
@@ -1137,7 +1173,7 @@ fun FullscreenPlayerOverlay(
                 }
             )
         }
-        
+
         //  Seek 逃生口提示：拖动进度时手指进入顶部角落，松手取消进退
         AnimatedVisibility(
             visible = gestureMode == FullscreenGestureMode.Seek && seekCancelPending,
@@ -1203,9 +1239,11 @@ fun FullscreenPlayerOverlay(
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(end = 8.dp)
                         )
-                        
-                        //  [新增] 弹幕开关按钮
-                        val danmakuActiveColor = Color.White.copy(alpha = 0.96f)
+
+                        //  [新增] 弹幕开关按钮；开启态跟随选中主题色，与玻璃底栏共用 selectionAccent 入口。
+                        val danmakuActiveColor = AppContentColors.selectionAccent(
+                            com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+                        )
                         val danmakuInactiveColor = Color.White.copy(alpha = 0.74f)
                         NativeDanmakuToggleButton(
                             enabled = danmakuEnabled,
@@ -1223,16 +1261,16 @@ fun FullscreenPlayerOverlay(
                             activeTint = danmakuActiveColor,
                             inactiveTint = danmakuInactiveColor,
                         )
-                        
+
                         //  [新增] 弹幕设置按钮
                         AppIconButton(onClick = { showDanmakuSettings = true }) {
                             AppIcon(Icons.Outlined.Settings, "弹幕设置", tint = Color.White)
                         }
                     }
                 }
-                
+
                 //  [修改] 移除中间大按钮，改为在底部控制栏左侧显示
-                
+
                 // 底部进度条和控制按钮
                 Box(
                     modifier = Modifier
@@ -1263,21 +1301,21 @@ fun FullscreenPlayerOverlay(
                                 AppIcon(
                                     imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                                     contentDescription = if (isPlaying) "暂停" else "播放",
-                                    tint = MaterialTheme.colorScheme.primary,
+                                    tint = AppContentColors.accent(),
                                     modifier = Modifier.size(32.dp)
                                 )
                             }
-                            
+
                             Spacer(modifier = Modifier.width(8.dp))
-                            
+
                             AppText(
                                 FormatUtils.formatDuration((displayedProgressState.current / 1000).toInt()),
                                 color = Color.White,
                                 style = MaterialTheme.typography.labelSmall
                             )
-                            
+
                             var isDragging by remember { mutableStateOf(false) }
-                            
+
                             ThinWigglyProgressBar(
                                 progress = currentProgress,
                                 seekPositionMs = displayedProgressState.current,
@@ -1311,12 +1349,12 @@ fun FullscreenPlayerOverlay(
                                 duration = duration,
                                 modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
                             )
-                            
+
                             AppText(FormatUtils.formatDuration((duration / 1000).toInt()), color = Color.White, style = MaterialTheme.typography.labelSmall)
                         }
-                        
+
                         Spacer(modifier = Modifier.height(4.dp))
-                        
+
                         //  底部控制按钮行
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -1348,7 +1386,7 @@ fun FullscreenPlayerOverlay(
                 }
             }
         }
-        
+
         //  [新增] 弹幕设置面板
         if (showDanmakuSettings) {
             //  使用本地状态确保滑动条可以更新
@@ -1406,9 +1444,12 @@ fun FullscreenPlayerOverlay(
             var localPortraitDisplayAreaMode by remember(danmakuSettings.portraitDisplayAreaMode) {
                 mutableStateOf(danmakuSettings.portraitDisplayAreaMode)
             }
-            
+
             DanmakuSettingsPanel(
                 isFullscreen = true,
+                onSliderPreview = { parameter, next ->
+                    com.android.purebilibili.feature.video.ui.components.applyDanmakuSliderPreview(danmakuManager, parameter, next)
+                },
                 settingsScope = danmakuScope,
                 opacity = localOpacity,
                 fontScale = localFontScale,
@@ -1439,12 +1480,12 @@ fun FullscreenPlayerOverlay(
                 smartOcclusion = localSmartOcclusion,
                 fullscreenWidthMode = localFullscreenPanelWidthMode,
                 portraitDisplayAreaMode = localPortraitDisplayAreaMode,
-                onOpacityChange = { 
+                onOpacityChange = {
                     localOpacity = it
                     danmakuManager.opacity = it
                     scope.launch { SettingsManager.setDanmakuOpacity(context, it, danmakuScope) }
                 },
-                onFontScaleChange = { 
+                onFontScaleChange = {
                     localFontScale = it
                     danmakuManager.fontScale = it
                     scope.launch { SettingsManager.setDanmakuFontScale(context, it, danmakuScope) }
@@ -1454,7 +1495,7 @@ fun FullscreenPlayerOverlay(
                     danmakuManager.fontWeight = it
                     scope.launch { SettingsManager.setDanmakuFontWeight(context, it, danmakuScope) }
                 },
-                onSpeedChange = { 
+                onSpeedChange = {
                     localSpeed = it
                     danmakuManager.speedFactor = it
                     scope.launch { SettingsManager.setDanmakuSpeed(context, it, danmakuScope) }
@@ -1567,7 +1608,7 @@ fun FullscreenPlayerOverlay(
                 onDismiss = { showDanmakuSettings = false }
             )
         }
-        
+
         //  播放速度选择菜单
         if (showSpeedMenu) {
             com.android.purebilibili.feature.video.ui.components.SpeedSelectionMenu(
@@ -1585,7 +1626,7 @@ fun FullscreenPlayerOverlay(
                 placement = SpeedSelectionMenuPlacement.RIGHT_SIDE
             )
         }
-        
+
         //  视频比例选择菜单
         if (showRatioMenu) {
             Box(
@@ -1675,7 +1716,8 @@ private fun GestureIndicator(
             resolveGestureLevelOverlaySpec(
                 style = overlayStyle,
                 kind = kind,
-                percent = value
+                percent = value,
+                brightnessColor = androidx.compose.ui.res.colorResource(com.android.purebilibili.R.color.player_brightness_accent),
             ).alignment
         } else {
             Alignment.Center
@@ -1714,7 +1756,7 @@ private fun FullscreenControlButton(
     ) {
         AppText(
             text = text,
-            color = if (isHighlighted) MaterialTheme.colorScheme.primary else Color.White,
+            color = if (isHighlighted) AppContentColors.accent() else Color.White,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = if (isHighlighted) FontWeight.Bold else FontWeight.Normal,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)

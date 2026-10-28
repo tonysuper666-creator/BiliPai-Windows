@@ -12,6 +12,9 @@ pluginManagement {
     }
 }
 
+// ASM 补丁插件（ComposeDetachedOwnerGuard）以组合构建提供，独立 classpath，不进入 buildSrc。
+includeBuild("build-logic")
+
 // Optional local checkout for deterministic development when GitHub Packages credentials are not
 // available. Production/default resolution still uses the exact declared package coordinates.
 providers.gradleProperty("bili.miuix.source").orNull?.let { sourcePath ->
@@ -79,8 +82,10 @@ include(":network-core")
 include(":plugin-sdk")
 include(":design-system")
 include(":design-tokens")
+include(":brand-motion")
 include(":dolby-ffmpeg-decoder")
 include(":danmaku-engine")
 include(":miuix-navigation")
+include(":ci-lint")
 
  

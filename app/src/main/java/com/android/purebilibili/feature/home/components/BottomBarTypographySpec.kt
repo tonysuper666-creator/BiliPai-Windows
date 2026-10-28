@@ -1,7 +1,20 @@
 package com.android.purebilibili.feature.home.components
 
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
+
+/**
+ * Dock 标签的行盒策略：行盒贴近字形，等宽槽位的测量不随所选字体漂移。
+ * Tight 模式下，行高小于字体度量时行盒仍按行高收紧（沿用既有槽位测量），
+ * 行高大于度量时首末行不再保留行高带来的额外留白；字形自然高度超出行高的
+ * 部分不会被裁剪，CJK 与自定义字体均不切顶。
+ */
+internal val DockLabelLineHeightStyle = LineHeightStyle(
+    alignment = LineHeightStyle.Alignment.Center,
+    trim = LineHeightStyle.Trim.Both,
+    mode = LineHeightStyle.Mode.Tight,
+)
 
 /**
  * Dock 槽宽由容器宽度均分,不随系统字体缩放放宽;sp 字号却会随 fontScale 放大,

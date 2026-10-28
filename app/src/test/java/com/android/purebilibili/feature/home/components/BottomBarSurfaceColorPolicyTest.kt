@@ -202,9 +202,9 @@ class BottomBarSurfaceColorPolicyTest {
             liquidGlassPreset = BottomBarLiquidGlassPreset.IOS26_REFINED
         )
 
-        assertEquals(0.30f, bilipai.alpha, 0.003f)
+        assertEquals(0.40f, bilipai.alpha, 0.003f)
         assertEquals(0.40f, ios26.alpha, 0.003f)
-        assertTrue(ios26.alpha > bilipai.alpha)
+        assertEquals(ios26.alpha, bilipai.alpha, 0.003f)
     }
 
     @Test
@@ -567,7 +567,7 @@ class BottomBarSurfaceColorPolicyTest {
             darkTheme = true
         )
 
-        assertEquals(resolveBiliPaiBottomBarContainerColor(darkTheme = true), color)
+        assertEquals(Color.Red.copy(alpha = 0.4f), color)
         assertTrue(shouldBlurBiliPaiBottomBarShell(blurEnabled = true))
     }
 

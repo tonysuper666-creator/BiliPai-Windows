@@ -112,33 +112,8 @@ val BiliTypography = Typography(
     )
 )
 
-/**
- * Material 3 官方 15 槽字阶的中文适配版（基于 material3 基线 token）。
- *
- * 相对官方基线的调整仅限 CJK 阅读体验：
- * - 全部 letterSpacing 归零：汉字为方块字，正字距会显松散；
- * - 正文/标签行高不低于 1.4 倍，bodyMedium/bodySmall/labelMedium 各加一档行高；
- * - bodySmall 12→13sp、labelSmall 11→12sp：密集小字的中文可读性下限；
- * - 全部槽位统一 [AppTextStyles] 的中文行高策略，固定高度组件内中文垂直居中一致。
- * labelSmall 保持 16sp 行高（1.33 倍），服务于徽章等固定槽位的紧凑场景。
- */
-val Md3Typography = Typography(
-    displayLarge = AppTextStyles.displayLarge,
-    displayMedium = AppTextStyles.displayMedium,
-    displaySmall = AppTextStyles.displaySmall,
-    headlineLarge = AppTextStyles.headlineLarge,
-    headlineMedium = AppTextStyles.headlineMedium,
-    headlineSmall = AppTextStyles.headlineSmall,
-    titleLarge = AppTextStyles.titleLarge,
-    titleMedium = AppTextStyles.titleMedium,
-    titleSmall = AppTextStyles.titleSmall,
-    bodyLarge = AppTextStyles.bodyLarge,
-    bodyMedium = AppTextStyles.bodyMedium,
-    bodySmall = AppTextStyles.bodySmall,
-    labelLarge = AppTextStyles.labelLarge,
-    labelMedium = AppTextStyles.labelMedium,
-    labelSmall = AppTextStyles.labelSmall
-)
+/** Material 3's unmodified typography scale. */
+val Md3Typography = Typography()
 
 /**
  * Miuix-owned compact typography. Its density intentionally matches the MD3 baseline, but it is

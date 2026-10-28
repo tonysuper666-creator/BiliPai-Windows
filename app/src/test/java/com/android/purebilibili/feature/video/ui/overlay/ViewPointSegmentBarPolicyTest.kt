@@ -72,4 +72,57 @@ class ViewPointSegmentBarPolicyTest {
     fun find_emptySegmentsReturnsNull() {
         assertTrue(findViewPointSegmentAt(emptyList(), 0L) == null)
     }
+
+    @Test
+    fun floorShortChips_enabledWhenFewShortSegments() {
+        // 600px 宽,只有一个 1s 短章节:保底 44px 远低于 60% 上限。
+        val segments = listOf(
+            NormalizedViewPointSegment(fromMs = 0, toMs = 1000, content = "开场"),
+            NormalizedViewPointSegment(fromMs = 1000, toMs = 60_000, content = "长章节"),
+        )
+        assertTrue(
+            shouldFloorShortViewPointChips(
+                segments = segments,
+                durationMs = 60_000L,
+                barWidthPx = 600f,
+                minChipWidthPx = 44f,
+            )
+        )
+    }
+
+    @Test
+    fun floorShortChips_disabledWhenSegmentsTooFragmented() {
+        // 20 个 1s 短章节:保底合计 880px 超过 600px 的 60%,放弃保底。
+        val fragmented = (0 until 20).map {
+            NormalizedViewPointSegment(fromMs = it * 1000L, toMs = (it + 1) * 1000L, content = "章节")
+        } + NormalizedViewPointSegment(fromMs = 20_000L, toMs = 60_000L, content = "长章节")
+        assertTrue(
+            !shouldFloorShortViewPointChips(
+                segments = fragmented,
+                durationMs = 60_000L,
+                barWidthPx = 600f,
+                minChipWidthPx = 44f,
+            )
+        )
+    }
+
+    @Test
+    fun floorShortChips_disabledOnInvalidGeometry() {
+        assertTrue(
+            !shouldFloorShortViewPointChips(
+                segments = listOf(NormalizedViewPointSegment(0, 1000, "章节")),
+                durationMs = 0L,
+                barWidthPx = 600f,
+                minChipWidthPx = 44f,
+            )
+        )
+        assertTrue(
+            !shouldFloorShortViewPointChips(
+                segments = listOf(NormalizedViewPointSegment(0, 1000, "章节")),
+                durationMs = 60_000L,
+                barWidthPx = 0f,
+                minChipWidthPx = 44f,
+            )
+        )
+    }
 }

@@ -1,7 +1,29 @@
 // 文件路径: feature/bangumi/BangumiPlayerScreen.kt
 package com.android.purebilibili.feature.bangumi
 
+import com.android.purebilibili.core.ui.motion.AppMotionEasing
+import com.android.purebilibili.core.ui.AppContentColors
+import com.android.purebilibili.core.ui.components.appElasticPress
+
+
+import com.android.purebilibili.feature.video.screen.resolvePhoneInlineVideoViewportHeightDp
+import com.android.purebilibili.feature.video.screen.resolveVideoDetailStableStatusBarHeightDp
+import com.android.purebilibili.feature.video.screen.resolveVideoDetailPortraitPlayerTopInsetDp
+import com.android.purebilibili.feature.video.ambient.AmbientPresentation
+import com.android.purebilibili.feature.video.ambient.AmbientFrameController
+import com.android.purebilibili.feature.video.ambient.LocalAmbientPresentation
+import com.android.purebilibili.feature.video.ambient.LocalAmbientController
+import com.android.purebilibili.feature.video.ui.overlay.ImmersiveStatusBarBackdrop
 import android.app.Activity
+import com.android.purebilibili.feature.bangumi.ui.player.BangumiPlayerFeatures
+import com.android.purebilibili.feature.bangumi.ui.player.rememberBangumiSubtitles
+import com.android.purebilibili.feature.video.ui.components.LandscapeSidePanel
+import com.android.purebilibili.feature.video.ui.components.LandscapeSidePanelEdge
+import com.android.purebilibili.feature.video.ui.components.DanmakuSendDialog
+import com.android.purebilibili.feature.video.ui.overlay.resolveLandscapeEndDrawerLayoutPolicy
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.unit.offset
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
@@ -39,6 +61,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.ensureActive
 import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.ui.setWindowNavigationBarColor
 import com.android.purebilibili.core.ui.setWindowStatusBarColor
@@ -58,7 +81,6 @@ import coil3.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 import com.android.purebilibili.core.util.FormatUtils
 import androidx.compose.material.icons.Icons
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
@@ -86,7 +108,7 @@ import androidx.compose.ui.unit.sp
 
 /**
  * 番剧播放页面
- * 
+ *
  *  [重构] 简化后的主屏幕，播放器组件已拆分到 ui/player/ 目录
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -103,17 +125,28 @@ fun BangumiPlayerScreen(
     onNavigateToLogin: () -> Unit = {},
     onUserClick: (Long) -> Unit = {},
     onOpenBilibiliLink: ((String) -> Unit)? = null,
+    onSeasonClick: (Long) -> Unit = {},
     viewModel: BangumiPlayerViewModel = viewModel(),
     commentViewModel: VideoCommentViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val view = LocalView.current
+    val originalSystemBarIconAppearance = remember(view) {
+        view.context.findActivity()?.window?.let { window ->
+            val controller = WindowCompat.getInsetsController(window, view)
+            controller.isAppearanceLightStatusBars to controller.isAppearanceLightNavigationBars
+        }
+    }
     val configuration = LocalConfiguration.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val coinDialogVisible by viewModel.coinDialogVisible.collectAsStateWithLifecycle()
+    val favoriteFolders by viewModel.favoriteFolders.collectAsStateWithLifecycle()
     val userCoinBalance by viewModel.userCoinBalance.collectAsStateWithLifecycle()
     val successState = uiState as? BangumiPlayerState.Success
     val currentEpisodeIdForDebug = successState?.currentEpisode?.id ?: epId
+    var pendingEpisodeShare by remember(currentEpisodeIdForDebug) {
+        mutableStateOf<com.android.purebilibili.feature.share.ContentSharePayload?>(null)
+    }
     val currentCidForDebug = successState?.currentEpisode?.cid ?: 0L
     var playbackDebugSnapshot by remember {
         mutableStateOf(
@@ -126,7 +159,7 @@ fun BangumiPlayerScreen(
     val latestDebugEpisodeId by rememberUpdatedState(currentEpisodeIdForDebug)
     val latestDebugCid by rememberUpdatedState(currentCidForDebug)
     val latestPlaybackDebugSnapshot by rememberUpdatedState(playbackDebugSnapshot)
-    
+
     //  空降助手状态
     val sponsorSegment by viewModel.currentSponsorSegment.collectAsStateWithLifecycle()
     val showSponsorSkipButton by viewModel.showSkipButton.collectAsStateWithLifecycle()
@@ -136,7 +169,7 @@ fun BangumiPlayerScreen(
     val autoSkipOpEd by com.android.purebilibili.core.store.SettingsManager
         .getAutoSkipOpEd(context)
         .collectAsStateWithLifecycle(initialValue = false)
-    
+
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val windowSizeClass = LocalWindowSizeClass.current
     val appWindowAdaptiveInfo = LocalAppWindowAdaptiveInfo.current
@@ -162,19 +195,60 @@ fun BangumiPlayerScreen(
             isInMultiWindowMode = displayContext.isInMultiWindowMode,
         )
     }
-    val isFullscreen = playerPresentation.isFullscreen
+    var isInPipMode by remember(hostActivity) {
+        mutableStateOf(android.os.Build.VERSION.SDK_INT >= 24 && hostActivity?.isInPictureInPictureMode == true)
+    }
+    DisposableEffect(hostActivity) {
+        val activity = hostActivity as? androidx.activity.ComponentActivity
+        val listener = androidx.core.util.Consumer<androidx.core.app.PictureInPictureModeChangedInfo> {
+            isInPipMode = it.isInPictureInPictureMode
+        }
+        activity?.addOnPictureInPictureModeChangedListener(listener)
+        onDispose { activity?.removeOnPictureInPictureModeChangedListener(listener) }
+    }
+    val isFullscreen = playerPresentation.isFullscreen || isInPipMode
     var isPlayerScreenLocked by rememberSaveable(seasonId) { mutableStateOf(false) }
     val latestIsLandscape by rememberUpdatedState(isLandscape)
     val statusBarsInsetTop = WindowInsets.statusBars
         .asPaddingValues()
         .calculateTopPadding()
-    val portraitPlayerTopPadding = resolveBangumiPortraitPlayerContainerTopPaddingDp(
-        statusBarsInsetDp = statusBarsInsetTop.value
+    val stableStatusBarHeight = resolveVideoDetailStableStatusBarHeightDp(
+        visibleStatusBarHeightDp = statusBarsInsetTop.value,
+        statusBarIgnoringVisibilityHeightDp = WindowInsets.statusBarsIgnoringVisibility
+            .asPaddingValues().calculateTopPadding().value,
+        hideStatusBars = isFullscreen,
+    )
+    val portraitPlayerTopPadding = resolveVideoDetailPortraitPlayerTopInsetDp(
+        stableStatusBarHeightDp = stableStatusBarHeight,
+        hideStatusBars = isFullscreen,
+        immersiveStatusBarBackdropEnabled = true,
     ).dp
-    
+    val immersiveStatusBarBackdropEnabled by com.android.purebilibili.core.store.SettingsManager
+        .getHideVideoPageStatusBar(context).collectAsStateWithLifecycle(
+            initialValue = com.android.purebilibili.core.store.SettingsManager.getHideVideoPageStatusBarSync(context)
+        )
+    val ambientPresentation = remember(seasonId) { AmbientPresentation() }
+    val ambientController = remember(ambientPresentation) { AmbientFrameController(ambientPresentation) }
+    val statusBarAmbientFrame = remember(ambientPresentation) {
+        derivedStateOf {
+            ambientPresentation.current?.takeIf {
+                it.refreshGeneration >= ambientPresentation.requiredRefresh
+            }?.raw
+        }
+    }
+    val autoRotateEnabled by com.android.purebilibili.core.store.SettingsManager
+        .getAutoRotateEnabled(context).collectAsStateWithLifecycle(initialValue = false)
+    // The app switch explicitly opts into sensor rotation, independently of the system lock.
+    val sensorAutoRotateEnabled = autoRotateEnabled
+
     // 创建 ExoPlayer
     val exoPlayer = remember {
         ExoPlayer.Builder(context)
+            .apply {
+                if (com.android.purebilibili.core.store.SettingsManager.getResilientVideoBufferSync(context)) {
+                    setLoadControl(com.android.purebilibili.feature.video.state.createVideoLoadControl(context))
+                }
+            }
             .setRenderersFactory(
                 HiResCompatibleRenderersFactory(context)
                     .setExtensionRendererMode(
@@ -281,10 +355,11 @@ fun BangumiPlayerScreen(
         exoPlayer.addListener(errorListener)
         onDispose { exoPlayer.removeListener(errorListener) }
     }
-    
+
     // 附加播放器到 ViewModel 并加载番剧
     // 使用同一个 LaunchedEffect 确保顺序执行，避免竞态条件
     LaunchedEffect(exoPlayer, seasonId, epId, resumePositionMs, isCourse, preferredAid) {
+        miniPlayerManager.beginBangumiPlayback(exoPlayer)
         // 先附加播放器
         viewModel.attachPlayer(exoPlayer)
         // 然后加载番剧
@@ -294,6 +369,17 @@ fun BangumiPlayerScreen(
             resumePositionMs,
             isCourse = isCourse,
             preferredAid = preferredAid
+        )
+    }
+
+    LaunchedEffect(exoPlayer, successState?.currentEpisode?.id, successState?.seasonDetail?.title) {
+        val state = successState ?: return@LaunchedEffect
+        miniPlayerManager.updateBangumiPlaybackMetadata(
+            expectedPlayer = exoPlayer,
+            title = listOf(state.seasonDetail.title, state.currentEpisode.longTitle.ifBlank {
+                state.currentEpisode.title
+            }).filter { it.isNotBlank() }.joinToString(" · "),
+            coverUrl = state.seasonDetail.cover,
         )
     }
 
@@ -330,24 +416,108 @@ fun BangumiPlayerScreen(
             }
         }
     }
-    
+
     // 横竖屏复用当前播放身份的 Session，换集时旧 Session 自动释放。
     val danmakuManager = rememberDanmakuManager("bangumi:$seasonId:$currentEpisodeIdForDebug")
     val activeDanmakuScope = remember(isFullscreen) {
         com.android.purebilibili.core.store.resolveDanmakuSettingsScope(isFullscreen)
     }
-    
+
     // 弹幕开关设置
     val scope = rememberCoroutineScope()  //  用于弹幕开关和设置保存
     val danmakuSettings by com.android.purebilibili.core.store.SettingsManager
         .getDanmakuSettings(context, activeDanmakuScope)
         .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.DanmakuSettings())
     val danmakuAllowed = canShowBangumiDanmaku(successState?.seasonDetail?.rights)
+    var landscapeCommentVisible by rememberSaveable(seasonId) { mutableStateOf(false) }
+    var landscapeCommentOnLeft by rememberSaveable(seasonId) { mutableStateOf(false) }
+    val landscapeCommentCloseProgress = remember(seasonId) { mutableFloatStateOf(1f) }
+    var measuredCommentWidthPx by remember { mutableIntStateOf(0) }
+    val commentWidthDp = resolveLandscapeEndDrawerLayoutPolicy(configuration.screenWidthDp).drawerWidthDp
+    val commentPanelVisible = landscapeCommentVisible && isFullscreen && !isInPipMode && successState != null
+    LaunchedEffect(isFullscreen, isInPipMode) {
+        if (!isFullscreen || isInPipMode) {
+            landscapeCommentVisible = false
+            commentViewModel.closeSubReply()
+        }
+    }
+    var showDanmakuSend by remember(successState?.currentEpisode?.id) { mutableStateOf(false) }
+    var sendingDanmaku by remember(successState?.currentEpisode?.id) { mutableStateOf(false) }
+    var danmakuSendJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
+    DisposableEffect(successState?.currentEpisode?.id) {
+        onDispose { danmakuSendJob?.cancel() }
+    }
+    var isAudioOnly by rememberSaveable(seasonId) { mutableStateOf(false) }
+    var isFlippedHorizontal by rememberSaveable(seasonId) { mutableStateOf(false) }
+    var isFlippedVertical by rememberSaveable(seasonId) { mutableStateOf(false) }
+    LaunchedEffect(exoPlayer, isAudioOnly) {
+        exoPlayer.trackSelectionParameters = exoPlayer.trackSelectionParameters.buildUpon()
+            .setTrackTypeDisabled(androidx.media3.common.C.TRACK_TYPE_VIDEO, isAudioOnly).build()
+    }
+    var sleepTimerMinutes by rememberSaveable(seasonId) { mutableStateOf<Int?>(null) }
+    LaunchedEffect(sleepTimerMinutes) {
+        val minutes = sleepTimerMinutes ?: return@LaunchedEffect
+        kotlinx.coroutines.delay(minutes * 60_000L)
+        exoPlayer.pause()
+        sleepTimerMinutes = null
+        Toast.makeText(context, "定时停止播放", Toast.LENGTH_SHORT).show()
+    }
+    val subtitleState = rememberBangumiSubtitles(
+        successState?.currentEpisode?.bvid.orEmpty(), successState?.currentEpisode?.cid ?: 0L, exoPlayer
+    )
+    fun seekFromComment(positionMs: Long) {
+        val duration = exoPlayer.duration.takeIf { it > 0 } ?: Long.MAX_VALUE
+        com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction(exoPlayer, positionMs.coerceIn(0L, duration))
+    }
+    val playerFeatures = BangumiPlayerFeatures(
+        shareSeasonType = successState?.seasonDetail?.seasonType ?: 0,
+        commentVisible = commentPanelVisible, commentOnLeft = landscapeCommentOnLeft,
+        commentWidthDp = commentWidthDp,
+        commentCloseProgressProvider = { landscapeCommentCloseProgress.floatValue },
+        onCommentClick = { landscapeCommentVisible = !landscapeCommentVisible },
+        onDanmakuInputClick = {
+            if (!danmakuAllowed) Toast.makeText(context, "该剧集不支持弹幕", Toast.LENGTH_SHORT).show()
+            else if (successState?.isLoggedIn != true) onNavigateToLogin()
+            else showDanmakuSend = true
+        },
+        isInPipMode = isInPipMode,
+        onPipClick = {
+            if (android.os.Build.VERSION.SDK_INT >= 26 && hostActivity != null &&
+                hostActivity.packageManager.hasSystemFeature(android.content.pm.PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
+                try {
+                    landscapeCommentVisible = false
+                    showDanmakuSend = false
+                    val params = android.app.PictureInPictureParams.Builder()
+                        .setAspectRatio(com.android.purebilibili.core.util.resolveSafeAndroidPipRational(
+                            exoPlayer.videoSize.width, exoPlayer.videoSize.height
+                        )).build()
+                    if (!hostActivity.enterPictureInPictureMode(params)) {
+                        Toast.makeText(context, "无法进入画中画，请检查系统权限", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (error: IllegalStateException) {
+                    Toast.makeText(context, "暂时无法进入画中画", Toast.LENGTH_SHORT).show()
+                } catch (error: IllegalArgumentException) {
+                    Toast.makeText(context, "设备不支持当前画中画参数", Toast.LENGTH_SHORT).show()
+                }
+            } else Toast.makeText(context, "设备不支持画中画", Toast.LENGTH_SHORT).show()
+        },
+        isAudioOnly = isAudioOnly,
+        onAudioOnlyToggle = { isAudioOnly = !isAudioOnly },
+        isFlippedHorizontal = isFlippedHorizontal,
+        isFlippedVertical = isFlippedVertical,
+        onFlipHorizontal = { isFlippedHorizontal = !isFlippedHorizontal },
+        onFlipVertical = { isFlippedVertical = !isFlippedVertical },
+        onSaveCover = { viewModel.saveCover(context) },
+        onDownloadAudio = viewModel::downloadAudio,
+        sleepTimerMinutes = sleepTimerMinutes,
+        onSleepTimerChange = { sleepTimerMinutes = it?.takeIf { value -> value > 0 } },
+        subtitle = subtitleState,
+    )
     val danmakuEnabled = danmakuSettings.enabled && danmakuAllowed
-    
+
     //  倍速状态
     var currentSpeed by remember { mutableFloatStateOf(1.0f) }
-    
+
     //  弹幕设置状态
     val danmakuOpacity = danmakuSettings.opacity
     val danmakuFontScale = danmakuSettings.fontScale
@@ -362,12 +532,12 @@ fun BangumiPlayerScreen(
     val danmakuAllowColorful = danmakuSettings.allowColorful
     val danmakuAllowSpecial = danmakuSettings.allowSpecial
     val danmakuBlockRules = danmakuSettings.blockRules
-    
+
     //  弹幕设置变化时实时应用到 DanmakuManager
     LaunchedEffect(danmakuManager, danmakuSettings) {
         danmakuManager.updateSettings(settings = danmakuSettings)
     }
-    
+
     // 获取当前剧集 cid
     val currentCid = (uiState as? BangumiPlayerState.Success)?.currentEpisode?.cid ?: 0L
     val currentAid = (uiState as? BangumiPlayerState.Success)?.currentEpisode?.aid ?: 0L
@@ -395,14 +565,14 @@ fun BangumiPlayerScreen(
             )
         }
     }
-    
+
     // 加载弹幕 - 在父级组件管理
     //  [修复] 等待播放器 duration 可用后再加载弹幕，启用 Protobuf API
-    LaunchedEffect(currentCid, currentAid, danmakuEnabled, exoPlayer) {
+    LaunchedEffect(danmakuManager, currentCid, currentAid, danmakuEnabled, exoPlayer) {
         android.util.Log.d("BangumiPlayer", "🎯 Parent Danmaku LaunchedEffect: cid=$currentCid, aid=$currentAid, enabled=$danmakuEnabled")
         if (currentCid > 0 && danmakuEnabled) {
             danmakuManager.isEnabled = true
-            
+
             //  [修复] 等待播放器准备好并获取 duration (最多等待 5 秒)
             var durationMs = 0L
             var retries = 0
@@ -413,7 +583,7 @@ fun BangumiPlayerScreen(
                     retries++
                 }
             }
-            
+
             android.util.Log.d("BangumiPlayer", "🎯 Loading danmaku for cid=$currentCid, aid=$currentAid, duration=${durationMs}ms (after $retries retries)")
             danmakuManager.loadDanmaku(
                 currentCid,
@@ -425,9 +595,9 @@ fun BangumiPlayerScreen(
             danmakuManager.isEnabled = false
         }
     }
-    
+
     // 绑定 Player
-    DisposableEffect(exoPlayer) {
+    DisposableEffect(danmakuManager, exoPlayer) {
         danmakuManager.attachPlayer(exoPlayer)
         onDispose { danmakuManager.detachPlayer(exoPlayer) }
     }
@@ -442,25 +612,29 @@ fun BangumiPlayerScreen(
             PlaybackHandoffRegistry.clearBangumi(seasonId, currentEpisodeIdForDebug)
         }
     }
-    
+
+    com.android.purebilibili.feature.video.screen.VideoDetailKeepScreenOnEffect(
+        window = context.findActivity()?.window,
+        player = exoPlayer,
+    )
+
     // 清理播放器 +  屏幕常亮管理
     DisposableEffect(Unit) {
         val window = context.findActivity()?.window
-        
-        //  [修复] 进入番剧播放页时保持屏幕常亮，防止自动熄屏
-        window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        
+
+
         onDispose {
+            miniPlayerManager.endBangumiPlayback(exoPlayer)
             exoPlayer.release()
             //  恢复默认方向，避免离开播放器后卡在横屏
             context.findActivity()?.applyPlayerRequestedOrientation(
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED,
                 displayContext = displayContext,
             )
-            
+
             //  [修复] 离开番剧播放页时取消屏幕常亮
             window?.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            
+
             //  [修复] 恢复系统亮度控制，解除亮度锁定
             window?.let { w ->
                 val params = w.attributes
@@ -469,7 +643,7 @@ fun BangumiPlayerScreen(
             }
         }
     }
-    
+
     // 辅助函数：切换屏幕方向
     fun toggleOrientation() {
         val target = resolveBangumiToggleOrientationTarget(
@@ -484,7 +658,9 @@ fun BangumiPlayerScreen(
         val activity = context.findActivity() ?: return
         userRequestedFullscreen = !isFullscreen
         activity.applyPlayerRequestedOrientation(
-            requestedOrientation = target,
+            requestedOrientation = if (!sensorAutoRotateEnabled && target == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE) {
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            } else target,
             displayContext = displayContext,
         )
     }
@@ -548,7 +724,18 @@ fun BangumiPlayerScreen(
             }
         }
     }
-    
+
+    // 关闭自动旋转时固定在用户选择的模式，避免系统方向设置绕过应用开关。
+    LaunchedEffect(hostActivity, sensorAutoRotateEnabled, isTablet, usesInWindowFullscreen, userRequestedFullscreen, isPlayerScreenLocked, isInPipMode) {
+        if (!isInPipMode && !sensorAutoRotateEnabled && !isTablet && !usesInWindowFullscreen && !isPlayerScreenLocked) {
+            hostActivity?.applyPlayerRequestedOrientation(
+                requestedOrientation = if (userRequestedFullscreen) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                    else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+                displayContext = displayContext,
+            )
+        }
+    }
+
     // 自动检测设备方向变化；播放器锁定时不再响应传感器。
     DisposableEffect(
         context,
@@ -556,16 +743,18 @@ fun BangumiPlayerScreen(
         isTablet,
         usesInWindowFullscreen,
         isPlayerScreenLocked,
+        sensorAutoRotateEnabled,
+        isInPipMode,
     ) {
-        if (isPlayerScreenLocked) return@DisposableEffect onDispose {}
+        if (isInPipMode || !sensorAutoRotateEnabled || isPlayerScreenLocked) return@DisposableEffect onDispose {}
         val activity = context.findActivity()
         var lastPortraitAppliedAtMs = 0L
         val orientationEventListener = object : android.view.OrientationEventListener(context) {
             private var lastOrientation = -1
-            
+
             override fun onOrientationChanged(orientation: Int) {
                 if (orientation == ORIENTATION_UNKNOWN) return
-                
+
                 val newOrientation = when (orientation) {
                     in 315..360, in 0..45 -> 0   // Portrait
                     in 46..134 -> 270           // Landscape (reverse)
@@ -573,12 +762,12 @@ fun BangumiPlayerScreen(
                     in 225..314 -> 90           // Landscape
                     else -> lastOrientation
                 }
-                
+
                 if (newOrientation != lastOrientation && lastOrientation != -1) {
                     val isDeviceLandscape = newOrientation == 90 || newOrientation == 270
                     // 横屏时 180° 是翻转到另一侧的中点，不能当成竖屏，否则会先识别再转回去。
                     val isUprightPortrait = newOrientation == 0
-                    
+
                     activity?.let { act ->
                         val now = android.os.SystemClock.elapsedRealtime()
                         if (latestIsLandscape && isUprightPortrait) {
@@ -601,7 +790,7 @@ fun BangumiPlayerScreen(
                 lastOrientation = newOrientation
             }
         }
-        
+
         if (
             !isTablet &&
             !usesInWindowFullscreen &&
@@ -609,7 +798,7 @@ fun BangumiPlayerScreen(
         ) {
             orientationEventListener.enable()
         }
-        
+
         onDispose {
             orientationEventListener.disable()
         }
@@ -620,21 +809,24 @@ fun BangumiPlayerScreen(
             userRequestedFullscreen = false
         }
     }
-    
+
     // 拦截系统返回键
     LocalNavigationBackHandler(enabled = isFullscreen) {
         toggleOrientation()
     }
-    
+
     // 沉浸式状态栏控制
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context.findActivity())?.window ?: return@SideEffect
             val insetsController = WindowCompat.getInsetsController(window, view)
-            
+
+            // 顶部是黑色/画面模糊背景，使用白色图标，与普通视频一致。
+            insetsController.isAppearanceLightStatusBars = false
+            insetsController.isAppearanceLightNavigationBars = false
             if (isFullscreen) {
                 insetsController.hide(WindowInsetsCompat.Type.systemBars())
-                insetsController.systemBarsBehavior = 
+                insetsController.systemBarsBehavior =
                     androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 setWindowStatusBarColor(window, Color.Black.toArgb())
                 setWindowNavigationBarColor(window, Color.Black.toArgb())
@@ -655,6 +847,10 @@ fun BangumiPlayerScreen(
             onDispose {
                 val exitWindow = view.context.findActivity()?.window ?: return@onDispose
                 val exitController = WindowCompat.getInsetsController(exitWindow, view)
+                originalSystemBarIconAppearance?.let { (lightStatusBars, lightNavigationBars) ->
+                    exitController.isAppearanceLightStatusBars = lightStatusBars
+                    exitController.isAppearanceLightNavigationBars = lightNavigationBars
+                }
                 exitController.show(WindowInsetsCompat.Type.systemBars())
                 exitController.systemBarsBehavior =
                     androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
@@ -663,7 +859,7 @@ fun BangumiPlayerScreen(
             }
         }
     }
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -679,154 +875,172 @@ fun BangumiPlayerScreen(
                 currentEpisodeId = successState?.currentEpisode?.id ?: 0L
             )
         }
-        
+
         //  [修复] 直接渲染 BangumiPlayerView，使用 key() 保持同一实例
         //  移除 movableContentOf，它会导致切换全屏时 Surface 丢失
         @Composable
         fun playerContentView(isFullscreenMode: Boolean) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                key(exoPlayer) { // 使用 exoPlayer 作为 key 确保 AndroidView 不被重建
-                    BangumiPlayerView(
-                        exoPlayer = exoPlayer,
-                        danmakuManager = danmakuManager,
-                        danmakuEnabled = danmakuEnabled,
-                        onDanmakuToggle = {
-                            if (!danmakuAllowed) {
-                                Toast.makeText(context, "该剧集不支持弹幕", Toast.LENGTH_SHORT).show()
-                            } else {
-                                scope.launch {
-                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(
-                                        context,
-                                        !danmakuEnabled,
-                                        activeDanmakuScope
-                                    )
+            CompositionLocalProvider(
+                LocalAmbientPresentation provides ambientPresentation,
+                LocalAmbientController provides ambientController,
+            ) {
+                Box(modifier = Modifier.fillMaxSize().layout { measurable, constraints ->
+                    val inset = if (commentPanelVisible) {
+                        ((measuredCommentWidthPx.takeIf { it > 0 }?.toFloat() ?: commentWidthDp.dp.toPx()) *
+                            (1f - landscapeCommentCloseProgress.floatValue)).toInt()
+                            .coerceIn(0, constraints.maxWidth)
+                    } else 0
+                    val placeable = measurable.measure(constraints.offset(horizontal = -inset))
+                    layout(placeable.width + inset, placeable.height) {
+                        placeable.placeRelative(if (landscapeCommentOnLeft) inset else 0, 0)
+                    }
+                }) {
+                    key(exoPlayer) { // 使用 exoPlayer 作为 key 确保 AndroidView 不被重建
+                        BangumiPlayerView(
+                            exoPlayer = exoPlayer,
+                            danmakuManager = danmakuManager,
+                            danmakuEnabled = danmakuEnabled,
+                            onDanmakuToggle = {
+                                if (!danmakuAllowed) {
+                                    Toast.makeText(context, "该剧集不支持弹幕", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    scope.launch {
+                                        com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(
+                                            context,
+                                            !danmakuEnabled,
+                                            activeDanmakuScope
+                                        )
+                                    }
                                 }
+                            },
+                            seasonId = successState?.seasonDetail?.seasonId ?: 0L,
+                            epId = successState?.currentEpisode?.id ?: 0L,
+                            title = successState?.seasonDetail?.title.orEmpty(),
+                            subtitle = listOf(
+                                successState?.currentEpisode?.title.orEmpty(),
+                                successState?.currentEpisode?.longTitle.orEmpty()
+                            ).filter { it.isNotBlank() }.joinToString(" "),
+                            bvid = successState?.currentEpisode?.bvid.orEmpty(),
+                            aid = successState?.currentEpisode?.aid ?: 0L,
+                            cid = successState?.currentEpisode?.cid ?: 0L,
+                            videoshotData = successState?.videoshotData,
+                            coverUrl = successState?.currentEpisode?.cover ?: successState?.seasonDetail?.cover.orEmpty(),
+                            currentVideoUrl = successState?.playUrl.orEmpty(),
+                            currentAudioUrl = successState?.audioUrl.orEmpty(),
+                            debugInfo = resolveBangumiPlaybackDebugInfo(playbackDebugSnapshot),
+                            pages = bangumiPages,
+                            currentPageIndex = currentPageIndex,
+                            onPageSelect = { selectedPageIndex ->
+                                val episode = resolveBangumiEpisodeForPageSelection(
+                                    episodes = successState?.seasonDetail?.episodes.orEmpty(),
+                                    selectedPageIndex = selectedPageIndex
+                                )
+                                if (episode != null) {
+                                    viewModel.switchEpisode(episode)
+                                }
+                            },
+                            modifier = Modifier.fillMaxSize(),
+                            features = playerFeatures,
+                            isFullscreen = isFullscreenMode,
+                            currentQuality = successState?.quality ?: 0,
+                            acceptQuality = successState?.acceptQuality ?: emptyList(),
+                            acceptDescription = successState?.acceptDescription ?: emptyList(),
+                            isLoggedIn = successState?.isLoggedIn == true,
+                            isVip = successState?.isVip == true,
+                            onQualityChange = { viewModel.changeQuality(it) },
+                            requestedAudioQuality = successState?.requestedAudioQuality ?: -1,
+                            selectedAudioQuality = successState?.selectedAudioQuality ?: -1,
+                            availableAudioQualities = successState?.availableAudioQualities.orEmpty(),
+                            onAudioQualityChange = viewModel::changeAudioQuality,
+                            onBack = if (isFullscreenMode) { { toggleOrientation() } } else onBack,
+                            onToggleFullscreen = { toggleOrientation() },
+                            onScreenLockChanged = { isPlayerScreenLocked = it },
+                            sponsorSegment = sponsorSegment,
+                            showSponsorSkipButton = showSponsorSkipButton,
+                            onSponsorSkip = { viewModel.skipCurrentSponsorSegment() },
+                            onSponsorDismiss = { viewModel.dismissSponsorSkipButton() },
+                            //  倍速控制
+                            currentSpeed = currentSpeed,
+                            onSpeedChange = {
+                                currentSpeed = it
+                                viewModel.applyPlaybackSpeedFromUi(it)
+                            },
+                            //  弹幕设置
+                            danmakuOpacity = danmakuOpacity,
+                            danmakuFontScale = danmakuFontScale,
+                            danmakuSpeed = danmakuSpeed,
+                            danmakuDisplayArea = danmakuDisplayArea,
+                            danmakuMergeDuplicates = danmakuMergeDuplicates,
+                            danmakuDuplicateMergeWindowMs = danmakuDuplicateMergeWindowMs,
+                            danmakuDuplicateMergeCountThreshold = danmakuDuplicateMergeCountThreshold,
+                            onDanmakuOpacityChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuOpacity(context, it, activeDanmakuScope)
+                                }
+                            },
+                            onDanmakuFontScaleChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuFontScale(context, it, activeDanmakuScope)
+                                }
+                            },
+                            onDanmakuSpeedChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuSpeed(context, it, activeDanmakuScope)
+                                }
+                            },
+                            onDanmakuDisplayAreaChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuArea(context, it, activeDanmakuScope)
+                                }
+                            },
+                            onDanmakuMergeDuplicatesChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuMergeDuplicates(context, it, activeDanmakuScope)
+                                }
+                            },
+                            onDanmakuDuplicateMergeWindowMsChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeWindowMs(context, it, activeDanmakuScope)
+                                }
+                            },
+                            onDanmakuDuplicateMergeCountThresholdChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeCountThreshold(context, it, activeDanmakuScope)
+                                }
+                            },
+                            isLiked = successState?.isLiked ?: false,
+                            likeStatusKnown = successState?.likeStatusKnown == true,
+                            coinCount = successState?.coinCount ?: 0,
+                            onToggleLike = { viewModel.toggleLike() },
+                            onCoin = { viewModel.openCoinDialog() },
+                            onReloadVideo = { viewModel.retry() },
+                            onShowMessage = { message ->
+                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                             }
-                        },
-                        seasonId = successState?.seasonDetail?.seasonId ?: 0L,
-                        epId = successState?.currentEpisode?.id ?: 0L,
-                        title = successState?.seasonDetail?.title.orEmpty(),
-                        subtitle = listOf(
-                            successState?.currentEpisode?.title.orEmpty(),
-                            successState?.currentEpisode?.longTitle.orEmpty()
-                        ).filter { it.isNotBlank() }.joinToString(" "),
-                        bvid = successState?.currentEpisode?.bvid.orEmpty(),
-                        aid = successState?.currentEpisode?.aid ?: 0L,
-                        cid = successState?.currentEpisode?.cid ?: 0L,
-                        coverUrl = successState?.currentEpisode?.cover ?: successState?.seasonDetail?.cover.orEmpty(),
-                        currentVideoUrl = successState?.playUrl.orEmpty(),
-                        currentAudioUrl = successState?.audioUrl.orEmpty(),
-                        debugInfo = resolveBangumiPlaybackDebugInfo(playbackDebugSnapshot),
-                        pages = bangumiPages,
-                        currentPageIndex = currentPageIndex,
-                        onPageSelect = { selectedPageIndex ->
-                            val episode = resolveBangumiEpisodeForPageSelection(
-                                episodes = successState?.seasonDetail?.episodes.orEmpty(),
-                                selectedPageIndex = selectedPageIndex
-                            )
-                            if (episode != null) {
-                                viewModel.switchEpisode(episode)
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                        isFullscreen = isFullscreenMode,
-                        currentQuality = successState?.quality ?: 0,
-                        acceptQuality = successState?.acceptQuality ?: emptyList(),
-                        acceptDescription = successState?.acceptDescription ?: emptyList(),
-                        isLoggedIn = successState?.isLoggedIn == true,
-                        isVip = successState?.isVip == true,
-                        onQualityChange = { viewModel.changeQuality(it) },
-                        requestedAudioQuality = successState?.requestedAudioQuality ?: -1,
-                        selectedAudioQuality = successState?.selectedAudioQuality ?: -1,
-                        availableAudioQualities = successState?.availableAudioQualities.orEmpty(),
-                        onAudioQualityChange = viewModel::changeAudioQuality,
-                        onBack = if (isFullscreenMode) { { toggleOrientation() } } else onBack,
-                        onToggleFullscreen = { toggleOrientation() },
-                        onScreenLockChanged = { isPlayerScreenLocked = it },
-                        sponsorSegment = sponsorSegment,
-                        showSponsorSkipButton = showSponsorSkipButton,
-                        onSponsorSkip = { viewModel.skipCurrentSponsorSegment() },
-                        onSponsorDismiss = { viewModel.dismissSponsorSkipButton() },
-                        //  倍速控制
-                        currentSpeed = currentSpeed,
-                        onSpeedChange = {
-                            currentSpeed = it
-                            viewModel.applyPlaybackSpeedFromUi(it)
-                        },
-                        //  弹幕设置
-                        danmakuOpacity = danmakuOpacity,
-                        danmakuFontScale = danmakuFontScale,
-                        danmakuSpeed = danmakuSpeed,
-                        danmakuDisplayArea = danmakuDisplayArea,
-                        danmakuMergeDuplicates = danmakuMergeDuplicates,
-                        danmakuDuplicateMergeWindowMs = danmakuDuplicateMergeWindowMs,
-                        danmakuDuplicateMergeCountThreshold = danmakuDuplicateMergeCountThreshold,
-                        onDanmakuOpacityChange = {
-                            scope.launch {
-                                com.android.purebilibili.core.store.SettingsManager.setDanmakuOpacity(context, it, activeDanmakuScope)
-                            }
-                        },
-                        onDanmakuFontScaleChange = {
-                            scope.launch {
-                                com.android.purebilibili.core.store.SettingsManager.setDanmakuFontScale(context, it, activeDanmakuScope)
-                            }
-                        },
-                        onDanmakuSpeedChange = {
-                            scope.launch {
-                                com.android.purebilibili.core.store.SettingsManager.setDanmakuSpeed(context, it, activeDanmakuScope)
-                            }
-                        },
-                        onDanmakuDisplayAreaChange = {
-                            scope.launch {
-                                com.android.purebilibili.core.store.SettingsManager.setDanmakuArea(context, it, activeDanmakuScope)
-                            }
-                        },
-                        onDanmakuMergeDuplicatesChange = {
-                            scope.launch {
-                                com.android.purebilibili.core.store.SettingsManager.setDanmakuMergeDuplicates(context, it, activeDanmakuScope)
-                            }
-                        },
-                        onDanmakuDuplicateMergeWindowMsChange = {
-                            scope.launch {
-                                com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeWindowMs(context, it, activeDanmakuScope)
-                            }
-                        },
-                        onDanmakuDuplicateMergeCountThresholdChange = {
-                            scope.launch {
-                                com.android.purebilibili.core.store.SettingsManager.setDanmakuDuplicateMergeCountThreshold(context, it, activeDanmakuScope)
-                            }
-                        },
-                        isLiked = successState?.isLiked ?: false,
-                        coinCount = successState?.coinCount ?: 0,
-                        onToggleLike = { viewModel.toggleLike() },
-                        onCoin = { viewModel.openCoinDialog() },
-                        onReloadVideo = { viewModel.retry() },
-                        onShowMessage = { message ->
-                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                }
+                        )
+                    }
 
-                if (successState != null && successState.playUrl.isNullOrBlank()) {
-                    BangumiPlayNoticeOverlay(
-                        title = listOf(
-                            successState.currentEpisode.title,
-                            successState.currentEpisode.longTitle
-                        ).filter { it.isNotBlank() }.joinToString(" ").ifBlank {
-                            successState.seasonDetail.title
-                        },
-                        message = successState.playbackErrorMessage ?: "该剧集需购买后观看",
-                        coverUrl = successState.currentEpisode.cover.ifBlank { successState.seasonDetail.cover },
-                        isFullscreen = isFullscreenMode,
-                        onBack = if (isFullscreenMode) { { toggleOrientation() } } else onBack,
-                        onRetry = { viewModel.reloadCurrentEpisode() }
-                    )
+                    if (successState != null && successState.playUrl.isNullOrBlank()) {
+                        BangumiPlayNoticeOverlay(
+                            title = listOf(
+                                successState.currentEpisode.title,
+                                successState.currentEpisode.longTitle
+                            ).filter { it.isNotBlank() }.joinToString(" ").ifBlank {
+                                successState.seasonDetail.title
+                            },
+                            message = successState.playbackErrorMessage ?: "该剧集需购买后观看",
+                            coverUrl = successState.currentEpisode.cover.ifBlank { successState.seasonDetail.cover },
+                            isFullscreen = isFullscreenMode,
+                            onBack = if (isFullscreenMode) { { toggleOrientation() } } else onBack,
+                            onRetry = { viewModel.reloadCurrentEpisode() }
+                        )
+                    }
                 }
             }
         }
-        
+
         // 播放器折叠状态（对齐 PiliPlus 下滑收起播放器）
-        val inlinePlayerCollapseState = rememberInlinePortraitPlayerCollapseState("bangumi:$seasonId:$currentEpisodeIdForDebug")
+        val inlinePlayerCollapseState = rememberInlinePortraitPlayerCollapseState("bangumi:$seasonId")
         val portraitPlayerCollapseMode by com.android.purebilibili.core.store.SettingsManager
             .getPortraitPlayerCollapseMode(context)
             .collectAsStateWithLifecycle(initialValue = PortraitPlayerCollapseMode.BOTH)
@@ -838,16 +1052,23 @@ fun BangumiPlayerScreen(
             portraitPlayerCollapseMode != PortraitPlayerCollapseMode.OFF
 
         val density = LocalDensity.current
-        val screenWidthDp = configuration.screenWidthDp.dp
-        val playerHeight = screenWidthDp * 2f / 3f
+        val playerHeight = resolvePhoneInlineVideoViewportHeightDp(
+            windowWidthDp = configuration.screenWidthDp.toFloat(),
+            windowHeightDp = configuration.screenHeightDp.toFloat(),
+            isFoldableCoverWindow = displayContext.isFoldableCoverWindow,
+        ).dp
         val collapsedPlayerHeight = 56.dp
         val collapseRangePx = remember(playerHeight, density) {
             with(density) { (playerHeight - collapsedPlayerHeight).toPx().coerceAtLeast(0f) }
         }
 
-        // 换集时展开播放器
-        LaunchedEffect(currentEpisodeIdForDebug) {
-            inlinePlayerCollapseState.reset()
+        // Keep one viewport state across episodes so the old height can ease to expanded.
+        // This is shared player behavior, independent of glass/native component styling.
+        LaunchedEffect(inlinePlayerCollapseState, currentEpisodeIdForDebug) {
+            inlinePlayerCollapseState.restore()
+        }
+        LaunchedEffect(inlinePlayerCollapseState, inlineCollapseEnabled, collapseRangePx) {
+            inlinePlayerCollapseState.reconcileLayout(inlineCollapseEnabled, collapseRangePx)
         }
 
         val rawCollapseProgress = remember(inlinePlayerCollapseState.offsetPx, collapseRangePx) {
@@ -856,8 +1077,12 @@ fun BangumiPlayerScreen(
 
         val animatedCollapseProgress by animateFloatAsState(
             targetValue = if (inlineCollapseEnabled) rawCollapseProgress else 0f,
-            animationSpec = if (inlinePlayerCollapseState.restoreRequested) {
-                tween(durationMillis = 280, easing = FastOutSlowInEasing)
+            animationSpec = if (
+                inlinePlayerCollapseState.restoreRequested ||
+                    inlinePlayerCollapseState.layoutReconciled ||
+                    !inlineCollapseEnabled
+            ) {
+                tween(durationMillis = 280, easing = AppMotionEasing.M1Standard)
             } else {
                 snap()
             },
@@ -866,12 +1091,16 @@ fun BangumiPlayerScreen(
 
         // 折叠自动暂停 / 展开自动恢复
         var autoPausedByPlayerCollapse by remember(currentEpisodeIdForDebug) { mutableStateOf(false) }
-        val isPlayerCollapsed = animatedCollapseProgress >= 0.98f
+        val isPlayerCollapsed = inlineCollapseEnabled && rawCollapseProgress >= 0.98f &&
+            !inlinePlayerCollapseState.restoreRequested
         LaunchedEffect(isPlayerCollapsed, pauseOnPlayerCollapseEnabled, isFullscreen, currentEpisodeIdForDebug) {
             val player = exoPlayer ?: return@LaunchedEffect
+            // An earlier episode/setting effect can request restoration in this same frame.
+            // The departing visual height must not pause the newly selected episode.
+            val collapsedForAutoPause = isPlayerCollapsed && !inlinePlayerCollapseState.restoreRequested
             if (shouldAutoPauseOnPlayerCollapse(
                 autoPauseEnabled = pauseOnPlayerCollapseEnabled,
-                isPlayerCollapsed = isPlayerCollapsed,
+                isPlayerCollapsed = collapsedForAutoPause,
                 isPlaying = player.isPlaying,
                 isPortraitFullscreen = isFullscreen,
             )) {
@@ -879,43 +1108,47 @@ fun BangumiPlayerScreen(
                 autoPausedByPlayerCollapse = true
             } else if (shouldAutoResumeOnPlayerExpand(
                 autoPauseEnabled = pauseOnPlayerCollapseEnabled,
-                isPlayerCollapsed = isPlayerCollapsed,
+                isPlayerCollapsed = collapsedForAutoPause,
                 wasAutoPausedByCollapse = autoPausedByPlayerCollapse,
                 isPortraitFullscreen = isFullscreen,
             )) {
                 autoPausedByPlayerCollapse = false
                 player.play()
-            } else if (!isPlayerCollapsed) {
+            } else if (!collapsedForAutoPause) {
                 autoPausedByPlayerCollapse = false
             }
         }
 
-        val nestedScrollConnection = remember(inlineCollapseEnabled, isFullscreen, collapseRangePx) {
+        // Re-grabbing an animated restore continues from the visible height, not its zero target.
+        val latestAnimatedCollapseProgress by rememberUpdatedState(animatedCollapseProgress)
+        val nestedScrollConnection = remember(
+            inlinePlayerCollapseState, inlineCollapseEnabled, isFullscreen, collapseRangePx,
+        ) {
             object : NestedScrollConnection {
                 override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                    if (available.y != 0f) inlinePlayerCollapseState.beginScroll()
                     val scrollUpdate = reduceVideoDetailPreScroll(
-                        currentOffsetPx = inlinePlayerCollapseState.offsetPx,
+                        currentOffsetPx = if (inlinePlayerCollapseState.restoreRequested) {
+                            -latestAnimatedCollapseProgress * collapseRangePx
+                        } else inlinePlayerCollapseState.offsetPx,
                         deltaPx = available.y,
                         minOffsetPx = -collapseRangePx,
                         inlinePortraitScrollEnabled = inlineCollapseEnabled,
                         isPortraitFullscreen = isFullscreen
-                    ) ?: return Offset.Zero
-                    inlinePlayerCollapseState.updateOffset(scrollUpdate.nextOffsetPx)
-                    return Offset(0f, scrollUpdate.consumedDeltaPx)
+                    )
+                    return Offset(0f, inlinePlayerCollapseState.consumeScroll(scrollUpdate))
                 }
 
                 override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                    if (available.y != 0f) inlinePlayerCollapseState.beginScroll()
                     val scrollUpdate = reduceVideoDetailPostScroll(
-                        currentOffsetPx = inlinePlayerCollapseState.offsetPx,
+                        currentOffsetPx = if (inlinePlayerCollapseState.restoreRequested) {
+                            -latestAnimatedCollapseProgress * collapseRangePx
+                        } else inlinePlayerCollapseState.offsetPx,
                         deltaPx = available.y,
                         minOffsetPx = -collapseRangePx,
                         inlinePortraitScrollEnabled = inlineCollapseEnabled,
                         isPortraitFullscreen = isFullscreen
-                    ) ?: return Offset.Zero
-                    inlinePlayerCollapseState.updateOffset(scrollUpdate.nextOffsetPx)
-                    return Offset(0f, scrollUpdate.consumedDeltaPx)
+                    )
+                    return Offset(0f, inlinePlayerCollapseState.consumeScroll(scrollUpdate))
                 }
             }
         }
@@ -952,31 +1185,59 @@ fun BangumiPlayerScreen(
                             detail = state.seasonDetail,
                             currentEpisode = state.currentEpisode,
                             commentViewModel = commentViewModel,
+                            isVideoPlaying = playbackDebugSnapshot.isPlaying,
+                            handleCommentFeedback = !commentPanelVisible,
                             onEpisodeClick = { viewModel.switchEpisode(it) },
                             onFollowStatusSelect = { viewModel.updateFollowStatus(it) },
                             onUserClick = onUserClick,
                             onCommentUrlClick = onOpenBilibiliLink,
                             onDownloadClick = { viewModel.downloadCurrentEpisode(context) },
+                            isLiked = state.isLiked,
+                            likeStatusKnown = state.likeStatusKnown,
+                            coinCount = state.coinCount,
+                            onToggleLike = viewModel::toggleLike,
+                            onCoin = viewModel::openCoinDialog,
+                            isFavorited = state.isFavorited,
+                            onFavorite = viewModel::openFavoriteFolders,
+                            inWatchLater = state.inWatchLater,
+                            watchLaterBusy = state.watchLaterBusy,
+                            onWatchLater = viewModel::toggleWatchLater,
+                            onSeasonClick = onSeasonClick,
+                            tripleInProgress = state.tripleInProgress,
+                            onTriple = viewModel::tripleEpisode,
+                            onTimestampClick = ::seekFromComment,
+                            currentVideoPositionMsProvider = { exoPlayer.currentPosition.coerceAtLeast(0L) },
                             onShareClick = {
                                 val episode = state.currentEpisode
-                                val shareUrl = "https://www.bilibili.com/cheese/play/ep${episode.id}"
-                                val shareText = listOf(
-                                    state.seasonDetail.title,
-                                    episode.title,
-                                    shareUrl
-                                ).filter { it.isNotBlank() }.joinToString("\n")
-                                runCatching {
-                                    context.startActivity(
-                                        android.content.Intent.createChooser(
-                                            android.content.Intent(android.content.Intent.ACTION_SEND).apply {
-                                                type = "text/plain"
-                                                putExtra(android.content.Intent.EXTRA_TEXT, shareText)
-                                            },
-                                            "分享课程"
+                                val isCourse = state.seasonDetail.seasonType == 10
+                                if (isCourse) {
+                                    val shareUrl = "https://www.bilibili.com/cheese/play/ep${episode.id}"
+                                    val shareText = listOf(state.seasonDetail.title, episode.title, shareUrl)
+                                        .filter { it.isNotBlank() }.joinToString("\n")
+                                    runCatching {
+                                        context.startActivity(
+                                            android.content.Intent.createChooser(
+                                                android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                                                    type = "text/plain"
+                                                    putExtra(android.content.Intent.EXTRA_TEXT, shareText)
+                                                },
+                                                "分享课程"
+                                            )
                                         )
+                                    }.onFailure {
+                                        Toast.makeText(context, "暂时无法打开分享面板", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else if (episode.id > 0L) {
+                                    pendingEpisodeShare = com.android.purebilibili.feature.share.buildBangumiContentSharePayload(
+                                        epId = episode.id,
+                                        title = resolveBangumiOverlayShareTitle(state.seasonDetail.title, episode.title),
+                                        cover = episode.cover.ifBlank { state.seasonDetail.cover },
+                                        seasonType = state.seasonDetail.seasonType,
+                                        positionMs = exoPlayer.currentPosition.coerceAtLeast(0L),
+                                        aid = episode.aid,
                                     )
-                                }.onFailure {
-                                    Toast.makeText(context, "暂时无法打开分享面板", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "当前剧集暂时无法分享", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         )
@@ -995,9 +1256,31 @@ fun BangumiPlayerScreen(
                 primaryContent = {
                     Box(
                         Modifier.fillMaxSize()
-                            .padding(top = if (isFullscreen) 0.dp else portraitPlayerTopPadding)
                             .background(Color.Black)
-                    ) { playerContentView(isFullscreen) }
+                    ) {
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                                .padding(top = if (isFullscreen) 0.dp else portraitPlayerTopPadding)
+                                // 外层已避让状态栏，所有材质都消费实际占位，防止子顶栏重复下移。
+                                // 这是共用 inset 修复，不改变玻璃与原生组件各自的尺寸、间距和字阶。
+                                .then(
+                                    if (!isFullscreen) {
+                                        Modifier.consumeWindowInsets(PaddingValues(top = portraitPlayerTopPadding))
+                                    } else Modifier
+                                )
+                        ) {
+                            playerContentView(isFullscreen)
+                        }
+                        if (!isFullscreen) {
+                            ImmersiveStatusBarBackdrop(
+                                ambientFrame = statusBarAmbientFrame,
+                                height = portraitPlayerTopPadding,
+                                useAmbientHaze = immersiveStatusBarBackdropEnabled,
+                                videoBoundsInWindow = { ambientPresentation.videoBoundsInWindow() },
+                            )
+                        }
+                    }
                 },
                 secondaryContent = if (isFullscreen) null else supportingContent,
             )
@@ -1014,18 +1297,20 @@ fun BangumiPlayerScreen(
                 // 播放器区域 - 动态高度计算
                 val currentViewportHeight = lerp(playerHeight, collapsedPlayerHeight, animatedCollapseProgress)
 
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(portraitPlayerTopPadding)
-                        .background(Color.Black)
+                ImmersiveStatusBarBackdrop(
+                    ambientFrame = statusBarAmbientFrame,
+                    height = portraitPlayerTopPadding,
+                    useAmbientHaze = immersiveStatusBarBackdropEnabled,
+                    videoBoundsInWindow = { ambientPresentation.videoBoundsInWindow() },
                 )
-                
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(currentViewportHeight)
                         .background(Color.Black)
+                        // 上方状态栏背景已占位；所有材质共用这次消费，原生组件参数保持不变。
+                        .consumeWindowInsets(PaddingValues(top = portraitPlayerTopPadding))
                 ) {
                     playerContentView(false)
 
@@ -1049,13 +1334,97 @@ fun BangumiPlayerScreen(
                         )
                     }
                 }
-                
+
                 // 内容区域
                 supportingContent()
             }
         }
     }
 
+    if (commentPanelVisible) {
+        com.android.purebilibili.core.ui.adaptive.AppHingeSafeSidePanel(
+            isStart = landscapeCommentOnLeft, modifier = Modifier.fillMaxSize(),
+        ) {
+            LandscapeSidePanel(
+                visible = true,
+                edge = if (landscapeCommentOnLeft) LandscapeSidePanelEdge.Start else LandscapeSidePanelEdge.End,
+                width = commentWidthDp.dp.coerceAtMost(maxWidth),
+                onDismiss = { landscapeCommentVisible = false; commentViewModel.closeSubReply() },
+                closeProgress = landscapeCommentCloseProgress,
+                modifier = Modifier.align(if (landscapeCommentOnLeft) Alignment.CenterStart else Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .onSizeChanged { measuredCommentWidthPx = it.width },
+            ) { dismiss ->
+                Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        AppText("评论", modifier = Modifier.weight(1f).padding(start = 12.dp))
+                        com.android.purebilibili.core.ui.components.AppTextButton(onClick = {
+                            landscapeCommentOnLeft = !landscapeCommentOnLeft
+                        }) { AppText(if (landscapeCommentOnLeft) "移至右侧" else "移至左侧") }
+                        com.android.purebilibili.core.ui.components.AppTextButton(onClick = dismiss) { AppText("关闭") }
+                    }
+                    successState?.let { state ->
+                        BangumiPlayerContent(
+                            detail = state.seasonDetail, currentEpisode = state.currentEpisode,
+                            commentViewModel = commentViewModel, commentsOnly = true,
+                            isVideoPlaying = playbackDebugSnapshot.isPlaying,
+                            onEpisodeClick = viewModel::switchEpisode, onFollowStatusSelect = viewModel::updateFollowStatus,
+                            onUserClick = onUserClick, onCommentUrlClick = onOpenBilibiliLink,
+                            onTimestampClick = ::seekFromComment,
+                            currentVideoPositionMsProvider = { exoPlayer.currentPosition.coerceAtLeast(0L) },
+                        )
+                    }
+                }
+            }
+        }
+    }
+    DanmakuSendDialog(
+        visible = showDanmakuSend && !isInPipMode,
+        onDismiss = { if (!sendingDanmaku) showDanmakuSend = false },
+        isSending = sendingDanmaku,
+        attentionCommandAvailable = false,
+        onSend = { message, color, mode, fontSize, attentionCommand ->
+            if (!sendingDanmaku) {
+                if (attentionCommand) {
+                    Toast.makeText(context, "番剧不支持关注指令弹幕", Toast.LENGTH_SHORT).show()
+                } else {
+                    sendingDanmaku = true
+                    danmakuSendJob = scope.launch {
+                        try {
+                            val result = viewModel.sendEpisodeDanmaku(message, color, mode, fontSize)
+                            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                            result.onSuccess {
+                                    showDanmakuSend = false
+                                    val gradual = color == com.android.purebilibili.feature.video.ui.components.DANMAKU_SEND_VIP_GRADUAL_COLOR
+                                    danmakuManager.addLocalDanmaku(message, if (gradual) 16777215 else color, mode, fontSize, gradual)
+                                    Toast.makeText(context, "弹幕发送成功", Toast.LENGTH_SHORT).show()
+                                }.onFailure {
+                                    Toast.makeText(context, it.message ?: "弹幕发送失败", Toast.LENGTH_SHORT).show()
+                                }
+                        } finally { sendingDanmaku = false }
+                    }
+                }
+            }
+        },
+    )
+
+    if (!isInPipMode) pendingEpisodeShare?.let { payload ->
+        com.android.purebilibili.feature.share.ContentShareSheet(payload, onDismiss = { pendingEpisodeShare = null })
+    }
+    favoriteFolders?.let { folders ->
+        if (!isInPipMode) {
+            com.android.purebilibili.feature.video.ui.components.FavoriteFolderSheet(
+                folders = folders.folders,
+                isLoading = folders.loading,
+                selectedFolderIds = folders.selected,
+                isSaving = folders.saving,
+                onFolderToggle = viewModel::toggleFavoriteFolder,
+                onSaveClick = viewModel::saveFavoriteFolders,
+                onDismissRequest = viewModel::dismissFavoriteFolders,
+                onCreateFolder = viewModel::createFavoriteFolder,
+            )
+        }
+    }
     CoinDialog(
         visible = coinDialogVisible,
         currentCoinCount = successState?.coinCount ?: 0,
@@ -1103,7 +1472,7 @@ private fun BangumiPlayNoticeOverlay(
                 alpha = 0.25f
             )
         }
-        
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -1133,8 +1502,8 @@ private fun BangumiPlayNoticeOverlay(
             AppButton(
                 onClick = onRetry,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = AppContentColors.accent(),
+                    contentColor = AppContentColors.onAccent()
                 )
             ) {
                 AppText("重试", style = MaterialTheme.typography.labelMedium)
@@ -1148,7 +1517,7 @@ private fun BangumiPlayNoticeOverlay(
                     .align(Alignment.TopStart)
                     .padding(16.dp)
             ) {
-                IconButton(onClick = onBack) {
+                IconButton(onClick = onBack, modifier = Modifier.appElasticPress()) {
                     AppIcon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "返回",

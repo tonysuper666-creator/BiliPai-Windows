@@ -40,6 +40,10 @@ fun interactiveSnapSpring(): SpringSpec<Float> =
         stiffness = 420f
     )
 
+/** Navigation expands and settles on one continuous trajectory with a restrained overshoot. */
+fun scrollCompactExpansionSpring(): SpringSpec<Float> =
+    spring(dampingRatio = 0.74f, stiffness = 420f)
+
 fun pullRefreshReleaseSpring(): SpringSpec<Float> =
     spring(
         dampingRatio = 0.96f,

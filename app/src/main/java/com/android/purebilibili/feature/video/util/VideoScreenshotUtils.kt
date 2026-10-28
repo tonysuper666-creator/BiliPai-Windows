@@ -235,7 +235,8 @@ suspend fun saveScreenshotToGalleryUri(
     }
 }
 
-private suspend fun captureSurfaceViewBitmap(
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+internal suspend fun captureSurfaceViewBitmap(
     surfaceView: SurfaceView,
     targetWidth: Int,
     targetHeight: Int,
@@ -254,13 +255,12 @@ private suspend fun captureSurfaceViewBitmap(
                     return@request
                 }
                 if (result == PixelCopy.SUCCESS) {
-                    continuation.resume(
-                        resizeBitmapIfNeeded(
-                            bitmap = sourceBitmap,
-                            targetWidth = targetWidth,
-                            targetHeight = targetHeight,
-                        )
+                    val captured = resizeBitmapIfNeeded(
+                        bitmap = sourceBitmap,
+                        targetWidth = targetWidth,
+                        targetHeight = targetHeight,
                     )
+                    continuation.resume(captured, onCancellation = { captured.recycle() })
                 } else {
                     Logger.w("VideoScreenshot", "PixelCopy failed with code: $result")
                     sourceBitmap.recycle()
@@ -277,9 +277,7 @@ private suspend fun captureSurfaceViewBitmap(
         }
     }
 
-    continuation.invokeOnCancellation {
-        sourceBitmap.recycle()
-    }
+    // PixelCopy 无法取消；取消后的位图由结果回调回收，避免回收仍在写入的目标。
 }
 
 private suspend fun captureSurfaceViewAmbientBitmap(

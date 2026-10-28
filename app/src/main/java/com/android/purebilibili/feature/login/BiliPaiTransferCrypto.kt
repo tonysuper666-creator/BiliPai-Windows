@@ -113,5 +113,6 @@ object BiliPaiTransferCrypto {
     // Chunked QR transport lifts the single-QR capacity; the caps remain as sanity limits.
     // 128 chunks x 1_500 chars of base64url carry at most ~144k envelope chars.
     private const val MAX_CIPHERTEXT_FIELD_LENGTH = 200_000
-    private const val MAX_PAYLOAD_BYTES = 140_000
+    // Leave room for AES/RSA fields and both envelope base64 layers inside 128 chunks.
+    private const val MAX_PAYLOAD_BYTES = 79_000
 }

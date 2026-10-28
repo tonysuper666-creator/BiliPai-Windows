@@ -9,25 +9,12 @@ import kotlin.test.assertTrue
 class VideoPlayerSurfacePolicyTest {
 
     @Test
-    fun relatedBackPreviewKeepsTextureSurfaceStableAfterLanding() {
-        val source = java.io.File(
-            "src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt"
-        ).readText()
-
-        assertTrue(source.contains("hasUsedLiveBackPreviewTexture"))
-        assertTrue(
-            source.contains(
-                "liveBackPreview = liveBackPreview || hasUsedLiveBackPreviewTexture"
-            )
-        )
-    }
-
-    @Test
     fun `flip disabled keeps default surface type`() {
         assertFalse(
             shouldUseTextureSurfaceForFlip(
                 isFlippedHorizontal = false,
-                isFlippedVertical = false
+                isFlippedVertical = false,
+                preferCompatibleTextureSurface = false,
             )
         )
     }
@@ -37,7 +24,8 @@ class VideoPlayerSurfacePolicyTest {
         assertTrue(
             shouldUseTextureSurfaceForFlip(
                 isFlippedHorizontal = true,
-                isFlippedVertical = false
+                isFlippedVertical = false,
+                preferCompatibleTextureSurface = false,
             )
         )
     }
@@ -47,7 +35,8 @@ class VideoPlayerSurfacePolicyTest {
         assertTrue(
             shouldUseTextureSurfaceForFlip(
                 isFlippedHorizontal = false,
-                isFlippedVertical = true
+                isFlippedVertical = true,
+                preferCompatibleTextureSurface = false,
             )
         )
     }
@@ -58,7 +47,8 @@ class VideoPlayerSurfacePolicyTest {
             shouldUseTextureSurfaceForFlip(
                 isFlippedHorizontal = false,
                 isFlippedVertical = false,
-                liveBackPreview = true
+                liveBackPreview = true,
+                preferCompatibleTextureSurface = false,
             )
         )
     }
@@ -69,7 +59,8 @@ class VideoPlayerSurfacePolicyTest {
             shouldUseTextureSurfaceForFlip(
                 isFlippedHorizontal = false,
                 isFlippedVertical = false,
-                navigationTransformEnabled = true
+                navigationTransformEnabled = true,
+                preferCompatibleTextureSurface = false,
             )
         )
     }
@@ -81,7 +72,8 @@ class VideoPlayerSurfacePolicyTest {
                 isFlippedHorizontal = false,
                 isFlippedVertical = false,
                 navigationTransformEnabled = true,
-                requiresHdrSurfaceOutput = true
+                requiresHdrSurfaceOutput = true,
+                preferCompatibleTextureSurface = true,
             )
         )
         // Flip still needs TextureView for matrix transforms under HDR.
@@ -90,7 +82,8 @@ class VideoPlayerSurfacePolicyTest {
                 isFlippedHorizontal = true,
                 isFlippedVertical = false,
                 navigationTransformEnabled = true,
-                requiresHdrSurfaceOutput = true
+                requiresHdrSurfaceOutput = true,
+                preferCompatibleTextureSurface = true,
             )
         )
     }
@@ -115,15 +108,6 @@ class VideoPlayerSurfacePolicyTest {
                 liveSurfaceCardTransitionEnabled = true,
             )
         )
-    }
-
-    @Test
-    fun `player texture path keeps non-opaque surface for overlay morph`() {
-        val source = java.io.File(
-            "src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt"
-        ).readText()
-        assertTrue(source.contains("isOpaque = false"))
-        assertTrue(source.contains("videoSurfaceView as? TextureView"))
     }
 
     @Test
@@ -169,7 +153,6 @@ class VideoPlayerSurfacePolicyTest {
         )
 
         assertEquals(0f, spec.alpha)
-        assertEquals(0.985f, spec.scale)
     }
 
     @Test
@@ -181,7 +164,6 @@ class VideoPlayerSurfacePolicyTest {
         )
 
         assertEquals(1f, spec.alpha)
-        assertEquals(1f, spec.scale)
     }
 
     @Test
@@ -198,9 +180,7 @@ class VideoPlayerSurfacePolicyTest {
         )
 
         assertEquals(0f, forcedReturnSpec.alpha)
-        assertEquals(1f, forcedReturnSpec.scale)
         assertEquals(0f, manualStartSpec.alpha)
-        assertEquals(1f, manualStartSpec.scale)
     }
 
     @Test

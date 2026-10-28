@@ -8,6 +8,9 @@ import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_REVERSE
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_SCROLL
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_TOP
 import com.android.purebilibili.danmaku.engine.DanmakuItem
+import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
+import com.android.purebilibili.danmaku.parser.bas.BasParseException
+import com.android.purebilibili.danmaku.parser.bas.BasScriptParser
 import org.xmlpull.v1.XmlPullParser
 import java.io.ByteArrayInputStream
 
@@ -31,6 +34,7 @@ object DanmakuParser {
     fun parseProtobuf(segments: List<ByteArray>): ParsedDanmaku {
         val standardList = mutableListOf<DanmakuItem>()
         val advancedList = mutableListOf<AdvancedDanmakuData>()
+        val basList = mutableListOf<BasDanmaku>()
         
         if (segments.isEmpty()) {
             Log.w(TAG, " No segments to parse")
@@ -41,9 +45,14 @@ object DanmakuParser {
         
         var totalParsed = 0
         var serverDisabled = false
+        var failedSegmentCount = 0
         for ((index, segment) in segments.withIndex()) {
             try {
                 val reply = DanmakuProto.parseReply(segment)
+                if (reply.parseFailed) {
+                    failedSegmentCount++
+                    continue
+                }
                 val elems = reply.elems
                 if (reply.state == 1) {
                     serverDisabled = true
@@ -51,32 +60,10 @@ object DanmakuParser {
                 Log.d(TAG, " Segment ${index + 1}: parsed ${elems.size} danmakus")
                 
                 for (elem in elems) {
-                    // 尝试解析为高级弹幕 (Mode 7 高级弹幕 / Mode 9 BAS 代码弹幕)
-                    // Mode 8 是 JS 代码弹幕，移动端无 JS 沙箱，尝试按 BAS JSON 解析失败则丢弃
-                    if (elem.mode == 7 || elem.mode == 9) {
-                        try {
-                            val advanced = parseAdvancedDanmaku(elem.content, elem.progress.toLong(), elem.color)
-                            if (advanced != null) {
-                                advancedList.add(advanced)
-                                totalParsed++
-                                continue // 成功解析为高级弹幕，跳过标准解析
-                            }
-                        } catch (e: Exception) {
-                            Log.w(TAG, " Failed to parse advanced danmaku: ${e.message}")
-                        }
-                    }
-
-                    // Mode 8 代码弹幕：content 为 JS 代码，无法作为文本渲染
-                    if (elem.mode == 8) continue
-
-                    // 标准弹幕解析
-                    val textData = createTextDataFromProto(elem)
-                    if (textData != null) {
-                        standardList.add(textData)
-                        totalParsed++
-                    }
+                    totalParsed += appendElement(elem, standardList, advancedList, basList)
                 }
             } catch (e: Exception) {
+                failedSegmentCount++
                 Log.e(TAG, " Failed to parse segment ${index + 1}: ${e.message}")
             }
         }
@@ -84,18 +71,66 @@ object DanmakuParser {
         //  [关键] 按时间排序 - DanmakuRenderEngine 需要有序数据
         standardList.sortBy { it.showAtTime }
         advancedList.sortBy { it.startTimeMs }
+        basList.sortBy { it.startTimeMs }
         
         // 统计信息
         if (totalParsed > 0) {
             val times = standardList.map { it.showAtTime }
             val minTime = times.minOrNull() ?: 0
             val maxTime = times.maxOrNull() ?: 0
-            Log.w(TAG, " Parsed result: Standard=${standardList.size}, Advanced=${advancedList.size} | Time: ${minTime}ms ~ ${maxTime}ms")
+            Log.w(TAG, " Parsed result: Standard=${standardList.size}, Advanced=${advancedList.size}, BAS=${basList.size} | Time: ${minTime}ms ~ ${maxTime}ms")
         } else {
             Log.w(TAG, " No danmakus parsed from Protobuf!")
         }
         
-        return ParsedDanmaku(standardList, advancedList, serverDisabled)
+        return ParsedDanmaku(
+            standardList = standardList,
+            advancedList = advancedList,
+            serverDisabled = serverDisabled,
+            basList = basList,
+            failedSegmentCount = failedSegmentCount
+        )
+    }
+
+    /** Parse an already decoded element without copying its protobuf content again. */
+    fun parseElement(elem: DanmakuProto.DanmakuElem): ParsedDanmaku {
+        val standard = mutableListOf<DanmakuItem>()
+        val advanced = mutableListOf<AdvancedDanmakuData>()
+        val bas = mutableListOf<BasDanmaku>()
+        appendElement(elem, standard, advanced, bas)
+        return ParsedDanmaku(standard, advanced, basList = bas)
+    }
+
+    private fun appendElement(
+        elem: DanmakuProto.DanmakuElem,
+        standard: MutableList<DanmakuItem>,
+        advanced: MutableList<AdvancedDanmakuData>,
+        bas: MutableList<BasDanmaku>
+    ): Int {
+        if (elem.mode == 9) {
+            val item = parseBasDanmaku(
+                source = elem.content,
+                startTimeMs = elem.progress.toLong(),
+                color = elem.color,
+                id = elem.id,
+                userHash = elem.midHash,
+                weight = elem.weight,
+                isSelf = elem.isSelf
+            ) ?: return 0
+            bas.add(item)
+            return 1
+        }
+        if (elem.mode == 7) {
+            val item = parseAdvancedDanmaku(elem.content, elem.progress.toLong(), elem.color)
+            if (item != null) {
+                advanced.add(item)
+                return 1
+            }
+        }
+        if (elem.mode == 8) return 0
+        val item = createTextDataFromProto(elem) ?: return 0
+        standard.add(item)
+        return 1
     }
     
     /**
@@ -104,7 +139,7 @@ object DanmakuParser {
     private fun createTextDataFromProto(elem: DanmakuProto.DanmakuElem): DanmakuItem? {
         if (elem.content.isEmpty()) return null
         
-        // Mode 8/9 代码弹幕目前暂不支持
+        // Script modes never fall back to displaying their source as ordinary text.
         if (elem.mode >= 8) return null
         
         val layerType = mapLayerType(elem.mode)
@@ -145,6 +180,7 @@ object DanmakuParser {
     fun parse(rawData: ByteArray): ParsedDanmaku {
         val standardList = mutableListOf<DanmakuItem>()
         val advancedList = mutableListOf<AdvancedDanmakuData>()
+        val basList = mutableListOf<BasDanmaku>()
         
         try {
             val parser = Xml.newPullParser()
@@ -167,7 +203,18 @@ object DanmakuParser {
                             
                             val colorInt = (parts.getOrNull(3)?.toLongOrNull() ?: 0xFFFFFF).toInt()
                             
-                            if (mode == 7 || mode == 9) {
+                            if (mode == 9) {
+                                parseBasDanmaku(
+                                    source = content,
+                                    startTimeMs = timeMs,
+                                    color = colorInt,
+                                    id = parts.getOrNull(7)?.toLongOrNull() ?: 0L,
+                                    userHash = parts.getOrNull(6).orEmpty()
+                                )?.let {
+                                    basList.add(it)
+                                    count++
+                                }
+                            } else if (mode == 7) {
                                 val advanced = parseAdvancedDanmaku(content, timeMs, colorInt)
                                 if (advanced != null) {
                                     advancedList.add(advanced)
@@ -189,14 +236,40 @@ object DanmakuParser {
             
             standardList.sortBy { it.showAtTime }
             advancedList.sortBy { it.startTimeMs }
+            basList.sortBy { it.startTimeMs }
             
-            Log.w(TAG, " XML Parsed: Standard=${standardList.size}, Advanced=${advancedList.size}")
+            Log.w(TAG, " XML Parsed: Standard=${standardList.size}, Advanced=${advancedList.size}, BAS=${basList.size}")
             
         } catch (e: Exception) {
             Log.e(TAG, " XML parse error: ${e.message}", e)
         }
         
-        return ParsedDanmaku(standardList, advancedList)
+        return ParsedDanmaku(standardList, advancedList, basList = basList)
+    }
+
+    private fun parseBasDanmaku(
+        source: String,
+        startTimeMs: Long,
+        color: Int,
+        id: Long,
+        userHash: String = "",
+        weight: Int = 0,
+        isSelf: Boolean = false
+    ): BasDanmaku? = try {
+        val program = BasScriptParser.parse(source)
+        if (program.elements.isEmpty()) null else BasDanmaku(
+            id = id,
+            startTimeMs = startTimeMs,
+            source = source,
+            program = program,
+            userHash = userHash,
+            weight = weight,
+            isSelf = isSelf,
+            color = color
+        )
+    } catch (error: BasParseException) {
+        Log.w(TAG, "Invalid BAS danmaku $id: ${error.message}")
+        null
     }
     
     /**
@@ -207,13 +280,7 @@ object DanmakuParser {
     }
 
     /**
-     * 从 JSON 格式内容解析高级弹幕 (Mode 7)
-     * 格式: [startX, startY, mode, duration, content, rotateZ, rotateY]
-     * 注意：部分高级弹幕的颜色可能在 JSON 中，也可以使用外层属性的颜色
-     */
-    /**
-     * 从 JSON 格式内容解析高级弹幕 (Mode 7 / Mode 9 BAS)
-     * 完整格式 (与官方引擎 BiliDanmukuParser 一致):
+     * 从 Mode 7 JSON 数组解析单文本高级弹幕。
      * [beginX, beginY, alphaRange, duration, content, rotateZ, rotateY,
      *  endX, endY, translationDuration, delay, noStroke, font, easing, pathData]
      *

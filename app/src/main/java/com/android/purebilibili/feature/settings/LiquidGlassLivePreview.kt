@@ -1,5 +1,7 @@
 package com.android.purebilibili.feature.settings
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,12 +12,13 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,13 +27,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.HorizontalPager
+import com.android.purebilibili.core.ui.components.AppHorizontalPager as HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.rememberCoroutineScope
+import com.android.purebilibili.core.store.home.GlassPopupPalette
+import com.android.purebilibili.core.store.home.LiquidGlassSettingsStore
+import com.android.purebilibili.core.ui.components.AppSingleChoicePreference
+import com.android.purebilibili.core.ui.components.AppChoiceOption
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -48,12 +58,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.R
 import com.android.purebilibili.core.store.LiquidGlassAdvancedPreset
@@ -83,6 +93,7 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 import top.yukonga.miuix.kmp.blur.ProgressiveBlur
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun LiquidGlassAdjustmentPanel(
     persistedProgress: Float,
@@ -99,8 +110,12 @@ internal fun LiquidGlassAdjustmentPanel(
     onShareSettings: () -> Unit,
     isImportingSettings: Boolean,
     modifier: Modifier = Modifier,
+    alwaysShowAdvanced: Boolean = false,
 ) {
     val context = LocalContext.current
+    val paletteFlow = remember(context) { LiquidGlassSettingsStore.observePopupPalette(context) }
+    val popupPalette by paletteFlow.collectAsStateWithLifecycle(initialValue = GlassPopupPalette.DOCK)
+    val paletteScope = rememberCoroutineScope()
     val previewImagePicker = rememberLauncherForActivityResult(
         contract = PickGalleryVisualMedia(),
     ) { uri ->
@@ -157,13 +172,13 @@ internal fun LiquidGlassAdjustmentPanel(
                 AppText(
                     text = "先选择一个预设，再按需要微调；修改会自动保存并应用到首页",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                 )
             }
             AppText(
                 text = "$modeLabel · $percentage%",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.link(),
                 maxLines = 1,
                 softWrap = false,
             )
@@ -212,8 +227,20 @@ internal fun LiquidGlassAdjustmentPanel(
                 "根据当前显示区域的明暗自动切换文字颜色，复杂背景下更易辨认。"
             },
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
         )
+
+        SettingsItemAnchor("glass.popup_palette") {
+            AppSingleChoicePreference(
+                title = settingItemTitle("glass.popup_palette"),
+                subtitle = "原有底色保持当前效果；主题磨砂随主题切换深浅底色",
+                selectedValue = popupPalette,
+                options = remember { GlassPopupPalette.entries.map { AppChoiceOption(it, it.label) } },
+                onValueChange = { palette ->
+                    paletteScope.launch { LiquidGlassSettingsStore.setPopupPalette(context, palette) }
+                },
+            )
+        }
 
         if (previewImageUri == null) {
             val selectedArtwork = LiquidGlassPreviewArtwork.entries[
@@ -236,9 +263,9 @@ internal fun LiquidGlassAdjustmentPanel(
                             .clip(CircleShape)
                             .background(
                                 if (selected) {
-                                    MaterialTheme.colorScheme.primary
+                                    AppContentColors.accent()
                                 } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.32f)
+                                    AppContentColors.secondaryText().copy(alpha = 0.32f)
                                 }
                             )
                     )
@@ -250,7 +277,7 @@ internal fun LiquidGlassAdjustmentPanel(
                 AppText(
                     text = "${selectedArtwork.label} · 左右滑动切换",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                 )
             }
         }
@@ -286,7 +313,7 @@ internal fun LiquidGlassAdjustmentPanel(
                 "这张图片只用于效果预览，不会设为首页背景或分享给别人。"
             },
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
         )
 
         LiquidGlassSavedPresets(modifier = Modifier.fillMaxWidth())
@@ -308,7 +335,7 @@ internal fun LiquidGlassAdjustmentPanel(
                     advancedSettings.preset.label
                 },
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.link(),
             )
         }
         AppSlider(
@@ -345,9 +372,9 @@ internal fun LiquidGlassAdjustmentPanel(
                         FontWeight.Normal
                     },
                     color = if (preset == advancedSettings.preset) {
-                        MaterialTheme.colorScheme.primary
+                        AppContentColors.accent()
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        AppContentColors.secondaryText()
                     },
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(1f),
@@ -362,42 +389,52 @@ internal fun LiquidGlassAdjustmentPanel(
                 LiquidGlassAdvancedPreset.CUSTOM -> "自定：已使用下方的高级参数"
             },
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
         )
         AppText(
             text = "导入与分享",
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium,
         )
-        Row(
+        // Size actions by their content; narrow windows move the second action to its own row.
+        FlowRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             AppTextButton(
                 onClick = onImportSettings,
                 enabled = !isImportingSettings,
-                modifier = Modifier.weight(1f),
             ) {
                 Icon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_file_download_24), contentDescription = null)
                 Spacer(modifier = Modifier.width(6.dp))
-                AppText(if (isImportingSettings) "正在读取" else "导入他人设置")
+                AppText(
+                    text = if (isImportingSettings) "正在读取" else "导入他人设置",
+                    maxLines = 1,
+                    softWrap = false,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
             AppTextButton(
                 onClick = onShareSettings,
                 enabled = !isImportingSettings,
-                modifier = Modifier.weight(1f),
             ) {
                 Icon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_share_24), contentDescription = null)
                 Spacer(modifier = Modifier.width(6.dp))
-                AppText("分享我的设置")
+                AppText(
+                    text = "分享我的设置",
+                    maxLines = 1,
+                    softWrap = false,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
         AppText(
             text = "导入前会先确认，只替换液态玻璃参数；分享文件不包含预览图片和其他设置。",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
         )
-        AppTextButton(
+        if (!alwaysShowAdvanced) AppTextButton(
             onClick = { advancedSettingsExpanded = !advancedSettingsExpanded },
         ) {
             Icon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_tune_24), contentDescription = null)
@@ -405,13 +442,14 @@ internal fun LiquidGlassAdjustmentPanel(
             AppText(if (advancedSettingsExpanded) "收起高级调节" else "展开高级调节")
         }
         AnimatedVisibility(
-            visible = advancedSettingsExpanded,
+            visible = alwaysShowAdvanced || advancedSettingsExpanded,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 LiquidGlassAdvancedSlider(
-                    title = "顶部模糊强度",
+                    settingId = "glass.progressive_blur_radius",
+                    title = settingItemTitle("glass.progressive_blur_radius"),
                     description = "数值越高，顶部背景越柔和；0% 关闭顶部模糊",
                     value = advancedSettings.progressiveBlurRadius,
                     valueText = if (advancedSettings.progressiveBlurRadius <= 0.001f) {
@@ -430,7 +468,8 @@ internal fun LiquidGlassAdjustmentPanel(
                     onValueChangeFinished = { onAdvancedSettingsCommitted(advancedSettings) },
                 )
                 LiquidGlassAdvancedSlider(
-                    title = "模糊覆盖范围",
+                    settingId = "glass.progressive_blur_extent",
+                    title = settingItemTitle("glass.progressive_blur_extent"),
                     description = "数值越高，顶部有更多区域保持模糊",
                     value = advancedSettings.progressiveBlurExtent,
                     onValueChange = { value ->
@@ -444,7 +483,8 @@ internal fun LiquidGlassAdjustmentPanel(
                     onValueChangeFinished = { onAdvancedSettingsCommitted(advancedSettings) },
                 )
                 LiquidGlassAdvancedSlider(
-                    title = "模糊过渡",
+                    settingId = "glass.progressive_blur_curve",
+                    title = settingItemTitle("glass.progressive_blur_curve"),
                     description = "向左过渡更快，向右过渡更柔和",
                     value = advancedSettings.progressiveBlurCurve,
                     onValueChange = { value ->
@@ -458,8 +498,9 @@ internal fun LiquidGlassAdjustmentPanel(
                     onValueChangeFinished = { onAdvancedSettingsCommitted(advancedSettings) },
                 )
                 LiquidGlassAdvancedSlider(
-                    title = "文字清晰度保护",
-                    description = "数值越高，越优先保证图标和文字与背景有足够对比度",
+                    settingId = "glass.content_readability",
+                    title = settingItemTitle("glass.content_readability"),
+                    description = "调高后，文字和图标更容易看清",
                     value = advancedSettings.contentReadability,
                     onValueChange = { value ->
                         val updatedSettings = advancedSettings.copy(
@@ -474,8 +515,9 @@ internal fun LiquidGlassAdjustmentPanel(
                     },
                 )
                 LiquidGlassAdvancedSlider(
-                    title = "边缘彩光",
-                    description = "控制玻璃边缘出现彩色光晕的明显程度",
+                    settingId = "glass.chromatic_aberration",
+                    title = settingItemTitle("glass.chromatic_aberration"),
+                    description = "调整玻璃边缘彩色光晕的强弱",
                     value = advancedSettings.chromaticAberration,
                     onValueChange = { value ->
                         val updatedSettings = advancedSettings.copy(
@@ -490,8 +532,9 @@ internal fun LiquidGlassAdjustmentPanel(
                     },
                 )
                 LiquidGlassAdvancedSlider(
-                    title = "内容折射",
-                    description = "控制文字和图标随玻璃产生形变的程度；调至 0% 可完全关闭",
+                    settingId = "glass.content_distortion",
+                    title = settingItemTitle("glass.content_distortion"),
+                    description = "调整文字和图标的变形程度；0% 关闭",
                     value = advancedSettings.contentDistortion,
                     valueText = if (advancedSettings.contentDistortion <= 0.001f) {
                         "关闭"
@@ -524,7 +567,7 @@ internal fun LiquidGlassAdjustmentPanel(
                 ) {
                     Icon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_restore_24), contentDescription = null)
                     Spacer(modifier = Modifier.width(6.dp))
-                    AppText("关闭内容折射")
+                    AppText("关闭玻璃形变")
                 }
             }
         }
@@ -536,7 +579,7 @@ internal fun LiquidGlassAdjustmentPanel(
             AppText(
                 text = "通透",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
             AppSlider(
                 value = previewProgress,
@@ -554,14 +597,14 @@ internal fun LiquidGlassAdjustmentPanel(
             AppText(
                 text = "磨砂",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
             )
         }
 
         AppText(
             text = "拖动时实时预览，松手后自动保存；中间位置是推荐强度。",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
         )
     }
 }
@@ -733,7 +776,7 @@ private fun LiquidGlassHomeSample(
     }
     val sampleShape = RoundedCornerShape(24.dp)
     val glassColor = MaterialTheme.colorScheme.surfaceContainer
-    val contentColor = MaterialTheme.colorScheme.onSurface
+    val contentColor = AppContentColors.primaryText()
     val adaptiveReadabilityEnabled = readabilityMode == LiquidGlassReadabilityMode.ADAPTIVE
     val topReadabilityState = rememberLiquidGlassAdaptiveReadabilityState(
         enabled = adaptiveReadabilityEnabled,
@@ -831,14 +874,11 @@ private fun LiquidGlassHomeSample(
                     HorizontalPager(
                         state = previewArtworkPagerState,
                         key = { page -> LiquidGlassPreviewArtwork.entries[page].name },
-                        beyondViewportPageCount = 1,
                         modifier = Modifier.fillMaxSize(),
                     ) { page ->
                         Box(modifier = Modifier.fillMaxSize()) {
-                            Image(
-                                painter = painterResource(
-                                    LiquidGlassPreviewArtwork.entries[page].drawableResId
-                                ),
+                            AsyncImage(
+                                model = LiquidGlassPreviewArtwork.entries[page].drawableResId,
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxSize(),
@@ -924,11 +964,15 @@ private fun LiquidGlassHomeSample(
                     .weight(1f)
                     .height(48.dp),
                 mode = FloatingBottomBarMode.LiquidGlass,
+                contentHorizontalPadding = com.android.purebilibili.core.ui.resolveLiquidGlassIndicatorHorizontalInsetDp(
+                    requestedInsetDp = 4f,
+                    liquidGlassEnabled = true,
+                ).dp,
                 colors = FloatingBottomBarColors(
                     containerColor = glassColor,
-                    indicatorColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = AppContentColors.accent(),
                     contentColor = bottomContentColor,
-                    activeContentColor = MaterialTheme.colorScheme.primary,
+                    activeContentColor = AppContentColors.accent(),
                 ),
                 shellHeight = 48.dp,
                 indicatorHeight = 44.dp,
@@ -947,7 +991,7 @@ private fun LiquidGlassHomeSample(
                             ),
                             contentDescription = item.label,
                             tint = if (index == previewSelectedBottomBarIndex) {
-                                MaterialTheme.colorScheme.primary
+                                AppContentColors.accent()
                             } else {
                                 bottomContentColor
                             },
@@ -1019,6 +1063,7 @@ private fun LiquidGlassOpenSourceAcknowledgements(
 
 @Composable
 private fun LiquidGlassAdvancedSlider(
+    settingId: String,
     title: String,
     description: String,
     value: Float,
@@ -1026,6 +1071,7 @@ private fun LiquidGlassAdvancedSlider(
     onValueChange: (Float) -> Unit,
     onValueChangeFinished: () -> Unit,
 ) {
+    SettingsItemAnchor(settingId) {
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -1041,13 +1087,13 @@ private fun LiquidGlassAdvancedSlider(
                 AppText(
                     text = description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                 )
             }
             AppText(
                 text = valueText,
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = AppContentColors.link(),
             )
         }
         AppSlider(
@@ -1063,4 +1109,5 @@ private fun LiquidGlassAdvancedSlider(
                 },
         )
     }
+}
 }

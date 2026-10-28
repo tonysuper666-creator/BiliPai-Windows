@@ -2,6 +2,7 @@
 package com.android.purebilibili.core.util
 
 import android.app.Activity
+import android.os.Build
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Configuration
@@ -151,9 +152,9 @@ data class WindowSizeClass(
     val shouldUseSplitLayout: Boolean
         get() = isTablet && heightSizeClass != WindowHeightSizeClass.Compact
     
-    /** 是否应该使用侧边导航栏（仅大屏） */
+    /** 平板在中等宽度竖屏保留侧栏；紧凑分屏回退底栏，恢复宽度后自动还原。 */
     val shouldUseSideNavigation: Boolean
-        get() = widthSizeClass >= WindowWidthSizeClass.Expanded
+        get() = isTablet && (isTabletDevice || widthSizeClass >= WindowWidthSizeClass.Expanded)
 
     val shouldUseExpandedNavigationRail: Boolean
         get() = widthSizeClass >= WindowWidthSizeClass.Large
@@ -351,7 +352,8 @@ private fun Context.hasPrecisePointer(): Boolean {
     val inputManager = getSystemService(InputManager::class.java) ?: return false
     return inputManager.inputDeviceIds.any { deviceId ->
         val device = inputManager.getInputDevice(deviceId) ?: return@any false
-        device.isEnabled && (
+        val deviceEnabled = Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1 || device.isEnabled
+        deviceEnabled && (
             device.supportsSource(InputDevice.SOURCE_MOUSE) ||
                 device.supportsSource(InputDevice.SOURCE_MOUSE_RELATIVE) ||
                 device.supportsSource(InputDevice.SOURCE_TOUCHPAD)
@@ -380,7 +382,7 @@ fun calculateWindowSizeClass(
     val widthSizeClass = resolveWindowWidthSizeClass(adaptiveWindowSizeClass)
     val heightSizeClass = resolveWindowHeightSizeClass(adaptiveWindowSizeClass)
     
-    return remember(widthDp, heightDp, deviceWidthSizeClass) {
+    return remember(widthDp, heightDp, widthSizeClass, heightSizeClass, deviceWidthSizeClass) {
         WindowSizeClass(
             widthSizeClass = widthSizeClass,
             heightSizeClass = heightSizeClass,

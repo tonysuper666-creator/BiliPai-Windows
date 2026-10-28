@@ -1,6 +1,7 @@
 package com.android.purebilibili.data.repository
 
 import com.android.purebilibili.core.network.NetworkModule
+import com.android.purebilibili.core.store.TokenManager
 import com.android.purebilibili.data.model.response.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -103,6 +104,22 @@ object FavoriteRepository {
         }
     }
 
+    suspend fun getFolderInfo(mediaId: Long): Result<FavoriteInfo> = withContext(Dispatchers.IO) {
+        try {
+            val response = api.getFavFolderInfo(mediaId)
+            val info = response.data
+            if (response.code == 0 && info != null && info.id == mediaId) {
+                Result.success(info)
+            } else {
+                Result.failure(favoriteApiFailure("获取收藏夹信息失败", response.code, response.message))
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun editFolder(
         mediaId: Long,
         title: String,
@@ -146,6 +163,38 @@ object FavoriteRepository {
         }
     }
 
+    suspend fun setFolderSubscription(
+        mediaId: Long,
+        subscribe: Boolean,
+    ): Result<Boolean> = withContext(Dispatchers.IO) {
+        val operation = if (subscribe) "订阅收藏夹失败" else "取消订阅收藏夹失败"
+        try {
+            if (mediaId <= 0L) {
+                return@withContext Result.failure(Exception("收藏夹 ID 无效"))
+            }
+            val csrf = TokenManager.csrfCache.orEmpty()
+            if (TokenManager.sessDataCache.isNullOrBlank() || csrf.isBlank()) {
+                return@withContext Result.failure(Exception("请先登录"))
+            }
+            val response = if (subscribe) {
+                api.favoriteFolder(mediaId = mediaId, csrf = csrf)
+            } else {
+                api.unfavoriteFolder(mediaId = mediaId, csrf = csrf)
+            }
+            if (response.code == 0) {
+                Result.success(subscribe)
+            } else {
+                Result.failure(favoriteApiFailure(operation, response.code, response.message))
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: HttpException) {
+            Result.failure(favoriteHttpFailure(operation, e))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun getCollectedFavFolders(
         mid: Long,
         pn: Int = 1,
@@ -156,12 +205,15 @@ object FavoriteRepository {
             try {
                 val response = api.getCollectedFavFolders(mid = mid, pn = pn, ps = ps, platform = platform)
                 if (response.code == 0) {
+                    val data = response.data ?: return@withContext Result.failure(
+                        FavoriteRequestException(message = "获取收藏合集失败: 响应缺少数据")
+                    )
                     Result.success(
                         CollectedFavFoldersPage(
-                            folders = response.data?.list
+                            folders = data.list
                                 ?.map { it.copy(source = FavFolderSource.SUBSCRIBED) }
                                 ?: emptyList(),
-                            totalCount = response.data?.count ?: 0
+                            totalCount = data.count
                         )
                     )
                 } else {
@@ -250,7 +302,7 @@ object FavoriteRepository {
                 if (response.code == 0 && response.data != null) {
                     Result.success(response.data)
                 } else {
-                    Result.failure(Exception(response.message))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
@@ -290,7 +342,7 @@ object FavoriteRepository {
                 if (response.code == 0) {
                     Result.success(true)
                 } else {
-                    Result.failure(Exception(response.message))
+                    Result.failure(ContentRequestException(response.code, response.message))
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e

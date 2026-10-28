@@ -2,6 +2,8 @@
 
 package com.android.purebilibili.feature.video.ui.section
 
+import com.android.purebilibili.core.ui.AppContentColors
+
 import com.android.purebilibili.core.ui.components.AppIconButton
 
 import androidx.compose.foundation.layout.Arrangement
@@ -77,7 +79,7 @@ private fun SupplementEntryIcon(
         androidx.compose.material3.Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = AppContentColors.secondaryText(),
             modifier = Modifier.size(18.dp),
         )
     }
@@ -201,7 +203,7 @@ private fun VideoNoteSheetFooter(
         AppText(
             text = "官方笔记编辑器需要登录 B 站账号",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppContentColors.secondaryText(),
             modifier = Modifier.padding(horizontal = 16.dp),
         )
     }

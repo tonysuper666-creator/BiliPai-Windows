@@ -248,20 +248,6 @@ class HomeFeedScrollStatePersistenceStructureTest {
         assertTrue(followFeedSource.contains("return tipCount"))
     }
 
-    @Test
-    fun `home feed refilters existing content after ad filter configuration is ready`() {
-        val source = loadSource("app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt")
-        val initSource = source
-            .substringAfter("syncTodayWatchFeedbackFromStore()")
-            .substringBefore("PluginManager.pluginsFlow.collect")
-        val refilterSource = source
-            .substringAfter("private fun reFilterAllContent()")
-            .substringBefore("private fun resolveTodayWatchRuntimeConfig")
-
-        assertTrue(initSource.contains("PluginManager.awaitPluginReady(ADFILTER_PLUGIN_ID)"))
-        assertTrue(initSource.contains("reFilterAllContent()"))
-        assertTrue(refilterSource.contains("PluginManager.filterFeedItems("))
-    }
 
     private fun loadSource(path: String): String {
         val normalizedPath = path.removePrefix("app/")

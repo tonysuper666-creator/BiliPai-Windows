@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.RectF
+import android.os.Handler
+import android.os.Looper
 import android.view.Window
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
@@ -22,6 +24,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntSize
+import com.android.purebilibili.core.ui.motion.AppMotionEasing
 import com.android.purebilibili.core.ui.animation.gl.ThanosEffectView
 import com.android.purebilibili.core.ui.animation.gl.isThanosEffectSupported
 import kotlinx.coroutines.CancellationException
@@ -139,7 +142,7 @@ fun Modifier.jiggleOnDissolve(
     }
 }
 
-// ==================== Telegram / NagramX ThanosEffect ====================
+// ==================== Particle dissolve effect ====================
 
 @Composable
 fun DissolvableVideoCard(
@@ -156,6 +159,7 @@ fun DissolvableVideoCard(
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
+    val completionHandler = remember { Handler(Looper.getMainLooper()) }
     val contentLayer = rememberGraphicsLayer()
     var cardSize by remember(cardId) { mutableStateOf(IntSize.Zero) }
     var cardWindowBounds by remember(cardId) { mutableStateOf<RectF?>(null) }
@@ -204,9 +208,9 @@ fun DissolvableVideoCard(
                 stiffness = Spring.StiffnessHigh
             )
             DissolveAnimationPreset.TELEGRAM_FAST -> if (reflowDuringFinalTail) {
-                tween(240, easing = LinearOutSlowInEasing)
+                tween(240, easing = AppMotionEasing.M1Decelerate)
             } else {
-                tween(135, easing = FastOutSlowInEasing)
+                tween(135, easing = AppMotionEasing.M1Standard)
             }
         }
     }
@@ -289,8 +293,12 @@ fun DissolvableVideoCard(
         onDispose {
             effectView?.dispose()
             effectView = null
-            // A removed/offscreen lazy item must still finish the requested deletion.
-            if (latestIsDissolving) dispatchCompletionOnce()
+            // Lazy layouts dispose offscreen items during measurement. Mutating their
+            // item provider here invalidates the grid's in-flight index/Lookahead data.
+            // A queued callback also survives cancellation of this item's effect scope.
+            if (latestIsDissolving) {
+                completionHandler.post { dispatchCompletionOnce() }
+            }
         }
     }
 

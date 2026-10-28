@@ -46,9 +46,16 @@ internal fun Modifier.videoListBoundsAnimation(
 internal fun AnimatedVideoListItem(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    useLookaheadBounds: Boolean = true,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Box(modifier = modifier) {
+        if (!useLookaheadBounds) {
+            // Deletable cards own their collapse animation. Keep lazy placement outside
+            // that subtree, without a Lookahead node that can be disposed mid-measure.
+            Box(content = content)
+            return@Box
+        }
         LookaheadScope {
             // Unlike animateContentSize, animateBounds also interpolates the child's constraints,
             // so covers resize gradually when a grid cell's fixed width changes.

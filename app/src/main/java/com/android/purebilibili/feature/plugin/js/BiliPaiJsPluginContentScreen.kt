@@ -1,5 +1,12 @@
 package com.android.purebilibili.feature.plugin.js
 
+import com.android.purebilibili.feature.home.rememberFeedGridColumnPreference
+import com.android.purebilibili.feature.home.effectiveGridColumnCount
+import com.android.purebilibili.feature.home.effectiveGridColumnCountCompact
+import com.android.purebilibili.feature.home.gridColumnPinchEnabled
+import com.android.purebilibili.core.util.LocalWindowSizeClass
+import com.android.purebilibili.core.ui.AppContentColors
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
@@ -15,9 +22,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import com.android.purebilibili.core.ui.components.AppLazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import com.android.purebilibili.core.ui.rememberCompatibleStaggeredGridState
 import androidx.compose.foundation.rememberScrollState
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.AppSurfaceTokens
@@ -55,7 +64,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.android.purebilibili.core.plugin.PluginCapability
+import com.android.purebilibili.plugin.sdk.PluginCapability
 import com.android.purebilibili.core.plugin.js.BiliPaiJsLayouts
 import com.android.purebilibili.core.plugin.js.BiliPaiJsMediaItem
 import com.android.purebilibili.core.plugin.js.BiliPaiJsModule
@@ -136,10 +145,22 @@ fun BiliPaiJsPluginContentScreen(
     var detailItems by remember(pluginId) { mutableStateOf<List<BiliPaiJsMediaItem>>(emptyList()) }
     var isDetailLoading by remember(pluginId) { mutableStateOf(false) }
     var detailError by remember(pluginId) { mutableStateOf<String?>(null) }
-    val pinchToChangeGridColumnsEnabled by SettingsManager
-        .getPinchToChangeGridColumnsEnabled(context)
-        .collectAsStateWithLifecycle(initialValue = true)
-    var gridColumns by remember(pluginId) { mutableIntStateOf(BILI_PAI_JS_GRID_COLUMNS) }
+    val homeSettings by SettingsManager.getHomeSettings(context)
+        .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.core.store.HomeSettings())
+    val windowSizeClass = LocalWindowSizeClass.current
+    val gridColumnPreference = androidx.compose.runtime.key(pluginId) {
+        rememberFeedGridColumnPreference(
+            settings = homeSettings,
+            widthSizeClass = windowSizeClass.widthSizeClass,
+            defaultColumns = com.android.purebilibili.feature.home.resolveHomeFeedStoredColumnCount(
+                windowSizeClass.widthSizeClass,
+                homeSettings.effectiveGridColumnCountCompact,
+                homeSettings.effectiveGridColumnCount,
+            ).takeIf { it > 0 } ?: BILI_PAI_JS_GRID_COLUMNS,
+            bounds = BILI_PAI_JS_PINCH_COLUMN_BOUNDS,
+            minimumColumns = BILI_PAI_JS_PINCH_COLUMN_BOUNDS.first,
+        )
+    }
     var imagePreview by remember { mutableStateOf<BiliPaiJsImagePreviewRequest?>(null) }
 
     imagePreview?.let { request ->
@@ -279,9 +300,10 @@ fun BiliPaiJsPluginContentScreen(
                 detailError = detailError,
                 detailSupported = current.manifest.supportsDetail,
                 isGridLayout = effectiveLayout == BiliPaiJsLayouts.GRID,
-                gridColumns = gridColumns,
-                pinchZoomEnabled = pinchToChangeGridColumnsEnabled,
-                onGridColumnsChange = { gridColumns = it },
+                gridColumns = gridColumnPreference.columns,
+                pinchZoomEnabled = homeSettings.gridColumnPinchEnabled,
+                onGridColumnsChange = gridColumnPreference.onChange,
+                onGridColumnsEnd = gridColumnPreference.onGestureEnd,
                 onPreviewImage = { images, index, rect ->
                     imagePreview = resolveBiliPaiJsImagePreviewRequest(images, index, rect)
                 },
@@ -337,6 +359,7 @@ private fun PluginContent(
     gridColumns: Int,
     pinchZoomEnabled: Boolean,
     onGridColumnsChange: (Int) -> Unit,
+    onGridColumnsEnd: (Int) -> Unit,
     onPreviewImage: (List<String>, Int, Rect?) -> Unit,
     onShareLayout: () -> Unit,
     onSelectModule: (BiliPaiJsModule) -> Unit,
@@ -346,12 +369,12 @@ private fun PluginContent(
     onBackFromDetail: () -> Unit,
     onPlayItem: (BiliPaiJsMediaItem) -> Unit
 ) {
-    val listState = rememberLazyListState()
+    val listState = rememberCompatibleStaggeredGridState()
     val inDetailView = detailStack.isNotEmpty()
     val shouldLoadMore by remember(canLoadMore, isLoadingMore, inDetailView) {
         derivedStateOf {
             val layoutInfo = listState.layoutInfo
-            val lastVisibleIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
+            val lastVisibleIndex = layoutInfo.visibleItemsInfo.maxOfOrNull { it.index } ?: -1
             canLoadMore && !isLoadingMore && !inDetailView && layoutInfo.totalItemsCount > 0 &&
                 lastVisibleIndex >= layoutInfo.totalItemsCount - 4
         }
@@ -360,27 +383,29 @@ private fun PluginContent(
         if (shouldLoadMore) onLoadMore()
     }
 
-    LazyColumn(
+    AppLazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(if (isGridLayout && !inDetailView) gridColumns.coerceAtLeast(1) else 1),
         modifier = modifier.homeFeedPinchZoom(
             enabled = pinchZoomEnabled && isGridLayout && !inDetailView,
             currentColumns = gridColumns,
             bounds = BILI_PAI_JS_PINCH_COLUMN_BOUNDS,
             onColumnsChange = onGridColumnsChange,
-            onGestureEnd = onGridColumnsChange,
+            onGestureEnd = onGridColumnsEnd,
         ),
         state = listState,
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalItemSpacing = 12.dp,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        item {
+        item(span = StaggeredGridItemSpan.FullLine) {
             AppText(
                 text = installed.manifest.description.ifBlank { "${installed.manifest.id} · v${installed.manifest.version}" },
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = AppContentColors.secondaryText()
             )
         }
         if (inDetailView) {
-            item(key = "js_detail_header") {
+            item(key = "js_detail_header", span = StaggeredGridItemSpan.FullLine) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     AppAssistChip(
                         onClick = onBackFromDetail,
@@ -389,15 +414,18 @@ private fun PluginContent(
                     AppText(
                         text = detailStack.last().title,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = AppContentColors.primaryText()
                     )
                 }
             }
         } else {
-            item {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 val modules = installed.manifest.modules
                 if (modules.isNotEmpty() && selectedModule != null) {
                     AppThemeAdaptiveTabRow(
+                        // Glass indicator fills the measured slot; native geometry keeps its defaults.
+                        liquidGlassAdaptIndicatorToLabel = !com.android.purebilibili.core.ui.LocalAppThemeConfig.current.liquidGlassEnabled,
+                        role = com.android.purebilibili.core.ui.components.AppTabRowRole.SECONDARY,
                         options = modules.map { module -> AppSegmentOption(module, module.title) },
                         selectedValue = selectedModule,
                         onSelectionChange = onSelectModule,
@@ -411,7 +439,7 @@ private fun PluginContent(
                 }
             }
             selectedModule?.params?.filterNot { it.isHostDriven }?.takeIf { it.isNotEmpty() }?.let { params ->
-                item {
+                item(span = StaggeredGridItemSpan.FullLine) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         params.forEach { param ->
                             if (param.hasSelectableOptions) {
@@ -440,7 +468,7 @@ private fun PluginContent(
         }
         val activeLoading = if (inDetailView) isDetailLoading else isLoading
         if (activeLoading) {
-            item {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -454,42 +482,32 @@ private fun PluginContent(
         }
         val activeError = if (inDetailView) detailError else errorMessage
         activeError?.let { message ->
-            item {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 AppText(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error
+                    color = AppContentColors.error()
                 )
             }
         }
         val activeItems = if (inDetailView) detailItems else mediaItems
         val flattenedItems = flattenMediaItems(activeItems)
         if (isGridLayout && !inDetailView) {
-            flattenedItems.chunked(gridColumns.coerceAtLeast(1)).forEachIndexed { rowIndex, rowItems ->
-                item(key = "js_grid_${rowIndex}_${rowItems.first().id}") {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        rowItems.forEach { rowItem ->
-                            Box(modifier = Modifier.weight(1f)) {
-                                BiliPaiJsPosterCard(
-                                    item = rowItem,
-                                    onPlay = { onPlayItem(rowItem) },
-                                    onOpen = {
-                                        rowItem.link?.takeIf { it.isNotBlank() }?.let { link ->
-                                            onOpenLink(BiliPaiJsDetailEntry(link = link, title = rowItem.title))
-                                        }
-                                    },
-                                    onPreviewImage = onPreviewImage
-                                )
-                            }
+            items(
+                count = flattenedItems.size,
+                key = { index -> "js_grid_${index}_${flattenedItems[index].id}" },
+            ) { index ->
+                val rowItem = flattenedItems[index]
+                BiliPaiJsPosterCard(
+                    item = rowItem,
+                    onPlay = { onPlayItem(rowItem) },
+                    onOpen = {
+                        rowItem.link?.takeIf { it.isNotBlank() }?.let { link ->
+                            onOpenLink(BiliPaiJsDetailEntry(link = link, title = rowItem.title))
                         }
-                        repeat(gridColumns.coerceAtLeast(1) - rowItems.size) {
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
-                    }
-                }
+                    },
+                    onPreviewImage = onPreviewImage,
+                )
             }
         } else {
             items(
@@ -514,7 +532,7 @@ private fun PluginContent(
             }
         }
         if (!inDetailView && (canLoadMore || isLoadingMore)) {
-            item(key = "js_media_load_more") {
+            item(key = "js_media_load_more", span = StaggeredGridItemSpan.FullLine) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
@@ -619,14 +637,14 @@ private fun BiliPaiJsPosterCard(
                 AppText(
                     text = item.title,
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppContentColors.primaryText(),
                     maxLines = 1
                 )
                 if (item.description.isNotBlank()) {
                     AppText(
                         text = item.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppContentColors.secondaryText(),
                         maxLines = 1
                     )
                 }
@@ -670,7 +688,7 @@ private fun BiliPaiJsParamOptionChips(
         AppText(
             text = param.title,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = AppContentColors.secondaryText()
         )
         Row(
             modifier = Modifier
@@ -772,14 +790,14 @@ private fun BiliPaiJsMediaItemRow(
                 AppText(
                     text = item.title,
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = AppContentColors.primaryText()
                 )
                 if (item.description.isNotBlank()) {
                     Spacer(modifier = Modifier.height(2.dp))
                     AppText(
                         text = item.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppContentColors.secondaryText(),
                         maxLines = 2
                     )
                 }
@@ -788,7 +806,7 @@ private fun BiliPaiJsMediaItemRow(
                     AppText(
                         text = "线路 ${streams.size} 条",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
+                        color = AppContentColors.accent()
                     )
                 }
             }
@@ -796,7 +814,7 @@ private fun BiliPaiJsMediaItemRow(
                 AppText(
                     text = label,
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = AppContentColors.accent()
                 )
             }
         }
@@ -830,7 +848,7 @@ private fun PluginMediaImagePlaceholder(
                 PluginMediaImageState.LOADING -> title.take(2).ifBlank { "TV" }
             },
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = AppContentColors.secondaryText()
         )
     }
 }
@@ -850,7 +868,7 @@ private fun EmptyState(
         AppText(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = AppContentColors.secondaryText()
         )
     }
 }

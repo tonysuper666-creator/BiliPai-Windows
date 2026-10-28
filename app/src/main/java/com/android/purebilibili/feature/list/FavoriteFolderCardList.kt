@@ -1,7 +1,28 @@
 package com.android.purebilibili.feature.list
 
+import com.android.purebilibili.core.ui.components.appActionWithFeedback
+
+import com.android.purebilibili.core.ui.AppContentColors
+import com.android.purebilibili.core.ui.LocalComponentMotionEnabled
+import com.android.purebilibili.core.ui.LocalSystemReduceMotion
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import com.android.purebilibili.core.ui.components.appActionClickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.RadioButtonUnchecked
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,18 +34,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import com.android.purebilibili.core.ui.components.AppLazyColumn as LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,6 +74,9 @@ import com.android.purebilibili.data.model.response.FavFolder
  * PiliPlus 式收藏夹卡片列表：视频 Tab 下收藏夹以横卡形式罗列，
  * 每张卡展示封面（16:10）、标题、简介、内容数与公开/私密信息，
  * 点击进入收藏夹详情；列表末尾保留订阅收藏夹入口。
+ *
+ * 收藏夹列表接口对部分收藏夹不返回封面，需要逐个额外请求补齐。这里随滚动到可见前沿
+ * 分批回调 [onCoverPrefetch]，交由上层按需补全，避免一次性请求全部收藏夹。
  */
 @Composable
 internal fun FavoriteFolderCardList(
@@ -59,7 +89,31 @@ internal fun FavoriteFolderCardList(
     onSubscribedClick: () -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
+    onCoverPrefetch: (List<FavFolder>) -> Unit = {},
+    selectionMode: Boolean = false,
+    selectedMediaIds: Set<Long> = emptySet(),
+    selectionEnabled: Boolean = true,
+    onToggleSelection: (FavFolder) -> Unit = {},
+    onStartSelection: (FavFolder) -> Unit = {},
 ) {
+    // 只在列表真正可见时跟踪滚动前沿，避免未挂载时反复回调。
+    val coverPrefetchFrontier by remember(listState) {
+        derivedStateOf {
+            listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
+        }
+    }
+    val latestFolders by rememberUpdatedState(folders)
+    LaunchedEffect(coverPrefetchFrontier, folders.size) {
+        val current = latestFolders
+        if (current.isEmpty()) return@LaunchedEffect
+        val end = resolveFavoriteFolderCoverPrefetchEnd(
+            folderCount = current.size,
+            lastVisibleIndex = coverPrefetchFrontier,
+        )
+        if (end < 0) return@LaunchedEffect
+        onCoverPrefetch(current.take(end + 1))
+    }
+
     if (folders.isEmpty() && subscribedFoldersCount == 0) {
         val message = if (searchQuery.isNotBlank()) "没有找到相关收藏夹" else "暂无收藏夹"
         Box(
@@ -68,7 +122,7 @@ internal fun FavoriteFolderCardList(
                 .padding(top = padding.calculateTopPadding()),
             contentAlignment = Alignment.Center,
         ) {
-            AppText(text = message, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            AppText(text = message, color = AppContentColors.secondaryText())
         }
         return
     }
@@ -90,10 +144,17 @@ internal fun FavoriteFolderCardList(
             FavoriteFolderCard(
                 folder = folder,
                 transitionEnabled = transitionEnabled,
-                onClick = { onFolderClick(folder) },
+                onClick = {
+                    if (selectionMode) {
+                        if (selectionEnabled) onToggleSelection(folder)
+                    } else onFolderClick(folder)
+                },
+                selectionMode = selectionMode,
+                selected = resolveFavoriteFolderMediaId(folder) in selectedMediaIds,
+                onLongClick = { if (selectionEnabled) onStartSelection(folder) },
             )
         }
-        if (subscribedFoldersCount > 0 && searchQuery.isBlank()) {
+        if (!selectionMode && subscribedFoldersCount > 0 && searchQuery.isBlank()) {
             item(key = "favorite_folder_subscribed_entry") {
                 FavoriteSubscribedEntryRow(onClick = onSubscribedClick)
             }
@@ -102,31 +163,78 @@ internal fun FavoriteFolderCardList(
 }
 
 /** 单张收藏夹卡片，布局对齐 PiliPlus fav/video/item.dart。 */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FavoriteFolderCard(
     folder: FavFolder,
     transitionEnabled: Boolean,
     onClick: () -> Unit,
+    selectionMode: Boolean,
+    selected: Boolean,
+    onLongClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val coverUrl = remember(folder.cover) {
         resolveFavoriteFolderPreviewCover(folder, emptyList())
     }
-    val privacyLabel = if (folder.attr != 0) "私密" else "公开"
+    val privacyLabel = if (isFavoriteFolderPrivate(folder.attr)) "私密" else "公开"
     val metaLine = buildString {
         append(folder.media_count)
         append("个内容 · ")
         append(privacyLabel)
     }
+    val motionEnabled = LocalComponentMotionEnabled.current && !LocalSystemReduceMotion.current
+    val duration = if (motionEnabled) 160 else 0
+    val selectionColor by animateColorAsState(
+        targetValue = if (selected) AppContentColors.accent() else AppContentColors.secondaryText(),
+        animationSpec = tween(duration),
+        label = "favoriteFolderSelectionColor",
+    )
+    val checkProgress = animateFloatAsState(
+        targetValue = if (selected) 1f else 0f,
+        animationSpec = tween(duration),
+        label = "favoriteFolderSelectionCheck",
+    )
 
     androidx.compose.foundation.layout.Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 96.dp)
             .clip(AppShapes.container(ContainerLevel.Card))
-            .clickable(onClick = onClick)
+            .semantics { if (selectionMode) this.selected = selected }
+            .combinedClickable(onClick = appActionWithFeedback(onClick), onLongClick = onLongClick)
             .padding(vertical = AppSpacingTokens.ExtraSmall),
-        horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.Small + AppSpacingTokens.Micro),
+        horizontalArrangement = Arrangement.Start,
     ) {
+        AnimatedVisibility(
+            visible = selectionMode,
+            modifier = Modifier.align(Alignment.CenterVertically),
+            enter = expandHorizontally(tween(duration), expandFrom = Alignment.Start) + fadeIn(tween(duration)),
+            exit = shrinkHorizontally(tween(duration), shrinkTowards = Alignment.Start) + fadeOut(tween(duration)),
+        ) {
+            Box(
+                Modifier
+                    .padding(end = AppSpacingTokens.Small + AppSpacingTokens.Micro)
+                    .size(24.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                AppIcon(
+                    imageVector = Icons.Rounded.RadioButtonUnchecked,
+                    contentDescription = if (selected) "已选择" else "未选择",
+                    tint = selectionColor,
+                )
+                AppIcon(
+                    imageVector = Icons.Rounded.CheckCircle,
+                    contentDescription = null,
+                    tint = selectionColor,
+                    modifier = Modifier.graphicsLayer {
+                        alpha = checkProgress.value
+                        scaleX = if (motionEnabled) 0.85f + 0.15f * checkProgress.value else 1f
+                        scaleY = scaleX
+                    },
+                )
+            }
+        }
         Box(
             modifier = Modifier
                 .width(150.dp)
@@ -146,10 +254,11 @@ private fun FavoriteFolderCard(
                 AppIcon(
                     imageVector = rememberAppFolderIcon(),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = AppContentColors.accent(),
                 )
             }
         }
+        Spacer(Modifier.width(AppSpacingTokens.Small + AppSpacingTokens.Micro))
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -167,7 +276,7 @@ private fun FavoriteFolderCard(
                 AppText(
                     text = folder.intro,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppContentColors.secondaryText(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -176,7 +285,7 @@ private fun FavoriteFolderCard(
             AppText(
                 text = metaLine,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
                 maxLines = 1,
             )
         }
@@ -193,7 +302,7 @@ private fun FavoriteSubscribedEntryRow(
             .fillMaxWidth()
             .heightIn(min = AppChromeSizeTokens.MinimumTouchTarget)
             .clip(AppShapes.container(ContainerLevel.Card))
-            .clickable(onClick = onClick)
+            .appActionClickable(onClick = onClick)
             .padding(horizontal = AppSpacingTokens.Medium, vertical = AppSpacingTokens.Small),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.Small),
@@ -201,7 +310,7 @@ private fun FavoriteSubscribedEntryRow(
         AppIcon(
             imageVector = rememberAppBookmarkIcon(),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = AppContentColors.accent(),
         )
         AppText(
             text = "订阅收藏夹（追更）",
@@ -211,7 +320,7 @@ private fun FavoriteSubscribedEntryRow(
         AppIcon(
             imageVector = rememberAppChevronForwardIcon(),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = AppContentColors.secondaryText(),
         )
     }
 }

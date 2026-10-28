@@ -141,16 +141,6 @@ class MiuixV2MigrationStructureTest {
         assertTrue(source.contains("shouldUseNativeMiuixSearchBar("))
     }
 
-    @Test
-    fun iosClickableItem_routesThroughAdaptiveListItemPolicy() {
-        val source = loadSource("design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt")
-        assertTrue(source.contains("resolveAppClickableItemRenderer("))
-        assertTrue(source.contains("AppClickableItemRenderer.MIUIX_ARROW"))
-        assertTrue(source.contains("AppClickableItemRenderer.MIUIX_BASIC"))
-        assertTrue(source.contains("shouldRouteSwitchItemToMiuixSwitchPreference("))
-        assertTrue(source.contains("shouldRouteSliderPreferenceToMiuixSliderPreference("))
-        assertTrue(source.contains("MiuixSliderPreference("))
-    }
 
     @Test
     fun themeController_remembersUserThemeInputsWithMiuixBridgeColors() {

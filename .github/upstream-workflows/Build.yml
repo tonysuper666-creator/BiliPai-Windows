@@ -25,41 +25,11 @@ env:
 
 jobs:
   quality-guards:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Set up Gradle cache
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Run source and policy guards
-        run: |
-          chmod +x gradlew
-          ./gradlew :app:testDebugUnitTest \
-            --tests 'com.android.purebilibili.feature.settings.AppUpdateCheckerTest' \
-            --tests 'com.android.purebilibili.feature.settings.AppVersionPolicyTest' \
-            --tests 'com.android.purebilibili.feature.settings.ApkArtifactNamingPolicyTest' \
-            --tests 'com.android.purebilibili.core.store.PreferenceKeyUniquenessTest' \
-            --tests 'com.android.purebilibili.core.ui.lint.HardcodedColorLintTest' \
-            --tests 'com.android.purebilibili.core.ui.lint.HardcodedSpacingLintTest' \
-            --tests 'com.android.purebilibili.core.ui.lint.HardcodedTypographyLintTest' \
-            --tests 'com.android.purebilibili.core.ui.lint.MigratedFeatureStyleLintTest' \
-            --tests 'com.android.purebilibili.core.ui.lint.StyleLintAllowlistRatchetTest' \
-            --tests 'com.android.purebilibili.core.ui.perf.FrameBudgetLintTest' \
-            --no-daemon \
-            --console=plain
+    name: Quality checks
+    uses: ./.github/workflows/QualityChecks.yml
+    permissions:
+      contents: read
+      packages: read
 
   check-fcm:
     runs-on: ubuntu-latest
@@ -137,11 +107,21 @@ jobs:
             "-Pbili.build.releaseTag=${BILI_BUILD_RELEASE_TAG}"
           )
           if [ "${{ steps.set_build_type.outputs.build_type }}" = "release" ]; then
-            ./gradlew "${COMMON_ARGS[@]}" assembleRelease
+            ./gradlew "${COMMON_ARGS[@]}" -Pbili.firebase.uploadMapping=true assembleRelease
           else
             ./gradlew "${COMMON_ARGS[@]}" assembleDev
           fi
   
+      # Keep mapping outside public release assets; upload even if Firebase upload fails.
+      - name: Preserve release mapping
+        if: always() && steps.set_build_type.outputs.build_type == 'release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: crashlytics-mapping-${{ github.sha }}
+          path: app/build/outputs/mapping/release/mapping.txt
+          retention-days: 30
+          if-no-files-found: warn
+
       - name: Collect release evidence
         id: collect_release_assets
         run: |
@@ -168,6 +148,7 @@ jobs:
           import hashlib
           import json
           import os
+          from datetime import datetime, timezone
           from pathlib import Path
 
           dist_dir = Path(os.environ["DIST_DIR"])
@@ -183,7 +164,7 @@ jobs:
               "workflowRunId": os.environ["GITHUB_RUN_ID"],
               "workflowRunUrl": os.environ["WORKFLOW_RUN_URL"],
               "releaseTag": os.environ["RELEASE_TAG"],
-              "generatedAt": os.environ["GENERATED_AT"],
+              "generatedAt": datetime.now(timezone.utc).isoformat(),
               "artifacts": []
           }
           for apk in apk_files:
@@ -203,7 +184,6 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
         env:
           DIST_DIR: ${{ github.workspace }}/build/release-evidence
-          GENERATED_AT: ${{ github.run_started_at }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REF: ${{ github.ref }}
           GITHUB_RUN_ID: ${{ github.run_id }}

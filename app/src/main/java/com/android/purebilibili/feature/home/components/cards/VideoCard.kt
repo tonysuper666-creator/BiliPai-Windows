@@ -1,6 +1,9 @@
 package com.android.purebilibili.feature.home.components.cards
 
-import kotlinx.coroutines.launch
+import com.android.purebilibili.core.ui.common.copyPlainTextToClipboard
+import com.android.purebilibili.core.ui.components.VideoStatusBadges
+import com.android.purebilibili.core.ui.AppContentColors
+
 
 import android.os.Build
 import coil3.request.crossfade
@@ -12,12 +15,15 @@ import com.android.purebilibili.core.ui.AppChromeSizeTokens
 import com.android.purebilibili.core.ui.AppAlertDialog
 import com.android.purebilibili.core.ui.components.AppDropdownMenu
 import com.android.purebilibili.core.ui.components.AppDropdownMenuItem
+import com.android.purebilibili.core.ui.components.appGlassMenuSource
+import com.android.purebilibili.core.ui.components.rememberAppGlassMenuSource
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppTextButton
 
 import com.android.purebilibili.core.ui.MediaContrastPalette
 
-import androidx.compose.foundation.clickable
+import com.android.purebilibili.core.ui.components.appActionClickable
+import com.android.purebilibili.core.ui.components.appActionWithFeedback
 import androidx.compose.foundation.background
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -28,9 +34,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import com.android.purebilibili.core.ui.wallpaper.sharedGlobalWallpaperBackground
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -45,8 +53,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onVisibilityChanged
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -61,18 +72,23 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import com.android.purebilibili.feature.home.LocalHomeCardCoverLoadingAllowed
+import com.android.purebilibili.core.ui.components.PageAwareAsyncImage
+import com.android.purebilibili.core.ui.components.LocalPageImageLoadingAllowed
 import coil3.request.ImageRequest
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.util.rememberHapticFeedback
 import com.android.purebilibili.core.util.animateEnter
 import com.android.purebilibili.core.util.CardPositionManager
+import com.android.purebilibili.core.ui.transition.videoCardSourceBoundsInRoot
 import com.android.purebilibili.core.util.HomeCoverReturnPrefetchEntry
 import com.android.purebilibili.core.util.HomeCoverReturnPrefetchRegistry
 import com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot
 import com.android.purebilibili.core.ui.transition.VideoCardSourceCoverPresentation
 import com.android.purebilibili.core.ui.transition.VideoCardSourceLayout
+import com.android.purebilibili.data.model.resolveVideoCardStatsTexts
 import com.android.purebilibili.data.model.response.VideoItem
+import com.android.purebilibili.data.repository.VideoRepository
 import com.android.purebilibili.core.theme.BiliPink
 import com.android.purebilibili.core.store.HomeCardBadgeEffectMode
 import com.android.purebilibili.core.store.HomeCardInfoGlassMode
@@ -83,6 +99,8 @@ import com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced
 import com.android.purebilibili.core.ui.blur.unifiedBlur
 import com.android.purebilibili.core.util.HapticType
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope.OverlayClip
@@ -96,6 +114,8 @@ import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.ui.feedContentTypography
 import com.android.purebilibili.feature.home.LocalHomeWallpaperBackdrop
+import com.android.purebilibili.core.ui.LocalGlobalWallpaperBackdropVisible
+import com.android.purebilibili.core.ui.wallpaper.LocalGlobalWallpaperBackdropSource
 import com.android.purebilibili.feature.home.LocalHomeWallpaperBackdropReady
 import com.android.purebilibili.feature.home.LocalHomeWallpaperIsStatic
 import com.android.purebilibili.feature.home.HomeCoverRequestSpec
@@ -113,6 +133,9 @@ import com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSo
 import com.android.purebilibili.core.ui.transition.LocalMiuixVideoCardTransitionState
 import com.android.purebilibili.core.ui.transition.captureNativeCoverOverlayLayer
 import com.android.purebilibili.core.ui.transition.captureNativeVideoCardImage
+import com.android.purebilibili.core.ui.transition.captureWholeCardReturnBitmap
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.launch
 import com.android.purebilibili.core.ui.transition.recordNativeVideoCardLayer
 import com.android.purebilibili.core.ui.transition.rememberNativeVideoCardLayer
 import com.android.purebilibili.core.ui.transition.LocalClickToPlayEnabled
@@ -194,13 +217,6 @@ internal fun resolveVideoCardCoverCacheKey(
     return requestSpec?.let { "${baseKey}_${it.cacheKeySuffix}" } ?: baseKey
 }
 
-private data class VideoCardTexts(
-    val durationText: String,
-    val primaryStatText: String,
-    val secondaryStatText: String?,
-    val durationBadgeMinWidth: androidx.compose.ui.unit.Dp
-)
-
 private data class VideoCardPillColors(
     val cover: HomeGlassResolvedColors,
     val emphasizedCover: HomeGlassResolvedColors,
@@ -278,7 +294,7 @@ private fun VideoCardOwnerMetadata(
         .fillMaxWidth()
         .then(
             if (upClickMid != null) {
-                Modifier.clickable { onUpClick?.invoke(upClickMid) }
+                Modifier.appActionClickable { onUpClick?.invoke(upClickMid) }
             } else {
                 Modifier
             }
@@ -290,34 +306,42 @@ private fun VideoCardOwnerMetadata(
             followerCount = upFollowerCount,
             videoCount = upVideoCount
         ),
-        inlineTrailingContent = if (isFollowing) {
+        nameLeadingContent = if (isFollowing || video.isFollowed || video.recommendationReason.isNotBlank()) {
             {
-                if (infoBadgeStyle == HomeVideoBadgeStyle.GLASS) {
-                    AppSurface(
-                        modifier = Modifier.wrapContentSize(),
-                        shape = AppShapes.container(ContainerLevel.Pill),
-                        color = inlinePillColors.containerColor,
-                        border = BorderStroke(
-                            AppSpacingTokens.Micro * 0.4f,
-                            inlinePillColors.borderColor
-                        )
-                    ) {
-                        AppText(
-                            text = "已关注",
-                            style = contentTypography.coverBadge,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(
-                                horizontal = AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro,
-                                vertical = AppSpacingTokens.Micro
+                Row(
+                    horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    VideoRecommendationBadge(video.recommendationReason)
+                    if (isFollowing || video.isFollowed) {
+                        if (infoBadgeStyle == HomeVideoBadgeStyle.GLASS) {
+                            AppSurface(
+                                modifier = Modifier.wrapContentSize(),
+                                shape = AppShapes.container(ContainerLevel.Pill),
+                                color = inlinePillColors.containerColor,
+                                border = BorderStroke(
+                                    AppSpacingTokens.Micro * 0.4f,
+                                    inlinePillColors.borderColor,
+                                ),
+                            ) {
+                                AppText(
+                                    text = "已关注",
+                                    style = contentTypography.coverBadge,
+                                    color = AppContentColors.accent(),
+                                    modifier = Modifier.padding(
+                                        horizontal = AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro,
+                                        vertical = AppSpacingTokens.Micro,
+                                    ),
+                                )
+                            }
+                        } else {
+                            AppText(
+                                text = "已关注",
+                                style = contentTypography.coverBadge,
+                                color = AppContentColors.accent(),
                             )
-                        )
+                        }
                     }
-                } else {
-                    AppText(
-                        text = "已关注",
-                        style = contentTypography.coverBadge,
-                        color = MaterialTheme.colorScheme.primary
-                    )
                 }
             }
         } else {
@@ -325,13 +349,18 @@ private fun VideoCardOwnerMetadata(
         },
         leadingContent = if (showUpAvatar && video.owner.face.isNotEmpty()) {
             {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(FormatUtils.fixImageUrl(video.owner.face))
+                val avatarContext = LocalContext.current
+                val face = video.owner.face
+                val avatarRequest = remember(avatarContext, face) {
+                    ImageRequest.Builder(avatarContext)
+                        .data(FormatUtils.fixImageUrl(face))
                         .crossfade(100)
                         .size(32, 32)
-                        .memoryCacheKey("avatar_${video.owner.face.hashCode()}")
-                        .build(),
+                        .memoryCacheKey("avatar_${face.hashCode()}")
+                        .build()
+                }
+                PageAwareAsyncImage(
+                    model = avatarRequest,
                     contentDescription = null,
                     modifier = Modifier
                         .size(AppSpacingTokens.Medium + AppSpacingTokens.Micro)
@@ -351,14 +380,9 @@ private fun VideoCardOwnerMetadata(
         // 名称占满剩余宽度，省略号顶到卡片内边距附近；右侧留 6dp 空隙不与
         // 后续元素贴死，长昵称也不会被提前折叠到卡片一半宽度。
         nameEndPadding = AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro,
-        // 未关注时不再渲染空的尾部槽位，避免继续占用作者名的可用宽度；
-        // 已关注时由真实的尾部内容自行占位。
-        reserveTrailingSlot = false,
-        trailingSlotMinWidth = AppSpacingTokens.None,
-        trailingSlotMinHeight = AppSpacingTokens.Large + AppSpacingTokens.ExtraSmall,
         showUpBadge = showUpBadge,
-        maxLines = Int.MAX_VALUE,
-        overflow = TextOverflow.Visible,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         metaMaxLines = Int.MAX_VALUE,
         metaOverflow = TextOverflow.Visible,
         modifier = ownerModifier
@@ -396,7 +420,7 @@ internal fun VideoCardDurationPublishRow(
         if (durationText.isNotBlank()) {
             AppText(
                 text = durationText,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = AppContentColors.secondaryText(),
                 style = contentTypography.statistic.copy(fontWeight = FontWeight.Medium),
                 maxLines = 1,
                 softWrap = false,
@@ -525,8 +549,8 @@ internal fun ElegantVideoCard(
     showUpBadge: Boolean? = null,
     showUpAvatar: Boolean? = null,
     homeDurationStyle: HomeDurationStyle = HomeDurationStyle.OUTSIDE_COVER,
-    // 默认跟官方双列 4:3；首页会传入 resolveHomeFeedCardLayout 的比例覆盖
-    coverAspectRatio: Float = 4f / 3f,
+    // All video cards follow the selected ratio; callers can explicitly override artwork geometry.
+    coverAspectRatio: Float = com.android.purebilibili.core.ui.videoCardCoverAspectRatio(),
     compactMetadata: Boolean = true,
     titleMinLines: Int = 2,
     titleMaxLines: Int = 2,
@@ -537,7 +561,7 @@ internal fun ElegantVideoCard(
     onDismiss: (() -> Unit)? = null,    //  [新增] 删除/过滤回调（长按触发）
     onWatchLater: (() -> Unit)? = null,  //  [新增] 稍后再看回调
     onUnfavorite: (() -> Unit)? = null,  //  [新增] 取消收藏回调
-    dismissMenuText: String = "\uD83D\uDEAB 不感兴趣", //  [新增] 自定义长按菜单删除文案
+    dismissMenuText: String = "不感兴趣", //  [新增] 自定义长按菜单删除文案
     onLongClick: ((VideoItem) -> Unit)? = null, // [Feature] Long Press Preview
     onUpClick: ((Long) -> Unit)? = null,
     singleColumn: Boolean = false,
@@ -545,9 +569,105 @@ internal fun ElegantVideoCard(
     modifier: Modifier = Modifier,
     onClick: (String, Long) -> Unit
 ) {
+    val globalWallpaperSource = LocalGlobalWallpaperBackdropSource.current
+    val globalCardWallpaperVisible = LocalGlobalWallpaperBackdropVisible.current &&
+        LocalHomeCardFrostedGlassEnabled.current && globalWallpaperSource != null
+    val resolvedWallpaperTintEnabled = wallpaperTintEnabled || globalCardWallpaperVisible
     val isLongPressEnabled = com.android.purebilibili.core.ui.LocalVideoCardLongPressEnabled.current
+    // 右下角菜单的扩展操作（对齐 PiliPlus）：单列窗口菜单与网格下拉菜单共用状态与对话框。
+    val context = LocalContext.current
+    val cardActionScope = rememberCoroutineScope()
+    var showBlockDialog by remember(video.bvid) { mutableStateOf(false) }
+    var showAiSummaryDialog by remember(video.bvid) { mutableStateOf(false) }
+    var aiSummaryLoading by remember(video.bvid) { mutableStateOf(false) }
+    var aiSummaryData by remember(video.bvid) { mutableStateOf<com.android.purebilibili.data.model.response.AiSummaryData?>(null) }
+    var aiSummaryError by remember(video.bvid) { mutableStateOf<String?>(null) }
+    val launchAiSummary: () -> Unit = {
+        if (!aiSummaryLoading && video.cid > 0L && video.bvid.isNotBlank()) {
+            aiSummaryLoading = true
+            aiSummaryData = null
+            aiSummaryError = null
+            showAiSummaryDialog = true
+            cardActionScope.launch {
+                VideoRepository.getAiSummary(video.bvid, video.cid, video.owner.mid).fold(
+                    onSuccess = { response ->
+                        aiSummaryData = response.data
+                        aiSummaryLoading = false
+                    },
+                    onFailure = { error ->
+                        aiSummaryError = error.message ?: "获取 AI 总结失败"
+                        aiSummaryLoading = false
+                    },
+                )
+            }
+        }
+    }
+    if (showBlockDialog) {
+        AppAlertDialog(
+            onDismissRequest = { showBlockDialog = false },
+            title = { AppText("屏蔽 UP 主") },
+            text = { AppText("屏蔽后，将不再推荐该 UP 主的视频。\n确定要屏蔽 ${video.owner.name} 吗？") },
+            confirmButton = {
+                AppTextButton(
+                    onClick = {
+                        showBlockDialog = false
+                        cardActionScope.launch {
+                            val result = com.android.purebilibili.data.repository.BlockedUpRepository(context)
+                                .blockUpWithBilibiliSync(video.owner.mid, video.owner.name, video.owner.face)
+                            android.widget.Toast.makeText(context, result.message, android.widget.Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                ) {
+                    AppText("确认")
+                }
+            },
+            dismissButton = {
+                AppTextButton(onClick = { showBlockDialog = false }) {
+                    AppText("取消")
+                }
+            }
+        )
+    }
+
+    if (showAiSummaryDialog) {
+        AppAlertDialog(
+            onDismissRequest = { showAiSummaryDialog = false },
+            title = { AppText("AI 总结") },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .heightIn(max = 360.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    when {
+                        aiSummaryLoading -> AppText("正在获取 AI 总结…", color = AppContentColors.secondaryText())
+                        aiSummaryError != null -> AppText(aiSummaryError!!, color = AppContentColors.error())
+                        else -> AppText(
+                            aiSummaryData?.modelResult?.summary?.takeIf { it.isNotBlank() } ?: "该视频暂无 AI 总结",
+                            color = AppContentColors.primaryText()
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                AppTextButton(onClick = { showAiSummaryDialog = false }) {
+                    AppText("关闭")
+                }
+            }
+        )
+    }
+
     if (singleColumn) {
         val actions = buildList {
+            if (video.bvid.isNotBlank()) {
+                add(com.android.purebilibili.core.ui.components.AppWindowAction(
+                    label = "复制BV号",
+                    onClick = {
+                        copyPlainTextToClipboard(context, video.bvid, "BV号")
+                        android.widget.Toast.makeText(context, "已复制 ${video.bvid}", android.widget.Toast.LENGTH_SHORT).show()
+                    },
+                ))
+            }
             onUpClick?.let { visit ->
                 add(com.android.purebilibili.core.ui.components.AppWindowAction(
                     label = "访问UP主", onClick = { visit(video.owner.mid) },
@@ -556,6 +676,30 @@ internal fun ElegantVideoCard(
             onWatchLater?.let {
                 add(com.android.purebilibili.core.ui.components.AppWindowAction(label = "加入稍后再看", onClick = it))
             }
+            if (video.cid > 0L && video.bvid.isNotBlank()) {
+                add(com.android.purebilibili.core.ui.components.AppWindowAction(
+                    label = "AI总结", onClick = { launchAiSummary() },
+                ))
+            }
+            if (video.owner.mid > 0L) {
+                add(com.android.purebilibili.core.ui.components.AppWindowAction(
+                    label = "拉黑：${video.owner.name}", onClick = { showBlockDialog = true },
+                ))
+            }
+            add(com.android.purebilibili.core.ui.components.AppWindowAction(
+                label = "无痕模式",
+                onClick = {
+                    val next = !com.android.purebilibili.core.store.SettingsManager.isPrivacyModeEnabledSync(context)
+                    cardActionScope.launch {
+                        com.android.purebilibili.core.store.SettingsManager.setPrivacyModeEnabled(context, next)
+                        android.widget.Toast.makeText(
+                            context,
+                            if (next) "已进入无痕模式" else "已退出无痕模式",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                },
+            ))
             onUnfavorite?.let {
                 add(com.android.purebilibili.core.ui.components.AppWindowAction(label = "取消收藏", onClick = it))
             }
@@ -585,35 +729,28 @@ internal fun ElegantVideoCard(
         )
         return
     }
-    val haptic = rememberHapticFeedback()
+    val haptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.MENUS)
+    val longPressHaptic = rememberHapticFeedback(com.android.purebilibili.core.ui.AppHapticScene.LONG_PRESS)
     val contentTypography = feedContentTypography()
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     val playbackProgressManager = remember(context) {
         PlaybackProgressManager.getInstance(context)
     }
-    
+
     val cardCornerRadius = AppShapes.containerCornerDp(ContainerLevel.Card)
     val durationBadgeStyle = remember { resolveVideoCardDurationBadgeVisualStyle() }
+    // 统计文案组合规则已下沉 core-data（resolveVideoCardStatsTexts），与 TV 卡片共用同一实现。
     val cardTexts = remember(video.duration, video.stat.view, video.stat.reply, video.stat.danmaku, video.progress) {
-        val durationText = FormatUtils.formatDuration(video.duration)
-        val primaryStatText = if (video.stat.view > 0) {
-            FormatUtils.formatStat(video.stat.view.toLong())
-        } else {
-            FormatUtils.formatProgress(video.progress, video.duration)
-        }
-        val commentCount = video.stat.reply.takeIf { it > 0 } ?: video.stat.danmaku
-        val secondaryStatText = commentCount.takeIf { it > 0 }?.let { FormatUtils.formatStat(it.toLong()) }
-        val durationBadgeMinWidth = resolveVideoCardDurationBadgeMinWidthDp(
-            durationText = durationText,
-            style = durationBadgeStyle
-        ).dp
-        VideoCardTexts(durationText, primaryStatText, secondaryStatText, durationBadgeMinWidth)
+        resolveVideoCardStatsTexts(video)
     }
     val durationText = cardTexts.durationText
     val primaryStatText = cardTexts.primaryStatText
     val secondaryStatText = cardTexts.secondaryStatText
-    val durationBadgeMinWidth = cardTexts.durationBadgeMinWidth
+    val durationBadgeMinWidth = remember(durationText) {
+        resolveVideoCardDurationBadgeMinWidthDp(
+            durationText = durationText,
+            style = durationBadgeStyle
+        ).dp
+    }
     // 时长作为统计行 pill（闹钟图标 + 文本）时的最小宽度预算，供封面统计行自适应让位。
     val durationStatMinWidthDp = remember(durationText) {
         resolveVideoCardDurationStatMinWidthDp(durationText)
@@ -627,8 +764,10 @@ internal fun ElegantVideoCard(
     val inlinePillBaseColor = AppSurfaceTokens.cardContainer()
     val wallpaperHazeState = LocalWallpaperHazeState.current
     val homeWallpaperBackdrop = LocalHomeWallpaperBackdrop.current
-    val homeWallpaperBackdropReady = LocalHomeWallpaperBackdropReady.current
-    val homeWallpaperIsStatic = LocalHomeWallpaperIsStatic.current
+        ?: globalWallpaperSource?.takeIf { globalCardWallpaperVisible && it.isReady }?.backdrop
+    val homeWallpaperBackdropReady = LocalHomeWallpaperBackdropReady.current ||
+        (globalCardWallpaperVisible && globalWallpaperSource?.isReady == true)
+    val homeWallpaperIsStatic = LocalHomeWallpaperIsStatic.current || globalCardWallpaperVisible
     val badgeEffectVisual = remember(badgeEffectMode, wallpaperHazeState != null) {
         resolveHomeCardBadgeEffectVisual(
             mode = badgeEffectMode,
@@ -655,7 +794,7 @@ internal fun ElegantVideoCard(
     val homeWallpaperSurfaceMode = remember(
         homeCardDynamicTintEnabled,
         homeCardFrostedGlassEnabled,
-        wallpaperTintEnabled,
+        resolvedWallpaperTintEnabled,
         homeWallpaperIsStatic,
         homeWallpaperBackdropReady,
         blurEnabled,
@@ -666,7 +805,7 @@ internal fun ElegantVideoCard(
         resolveHomeCardWallpaperSurfaceMode(
             dynamicTintEnabled = homeCardDynamicTintEnabled,
             frostedGlassEnabled = homeCardFrostedGlassEnabled,
-            wallpaperVisible = wallpaperTintEnabled,
+            wallpaperVisible = resolvedWallpaperTintEnabled,
             wallpaperIsStatic = homeWallpaperIsStatic,
             backdropReady = homeWallpaperBackdropReady,
             blurEnabled = blurEnabled,
@@ -677,11 +816,14 @@ internal fun ElegantVideoCard(
     }
     val useRealtimeWallpaperBackdrop =
         homeWallpaperSurfaceMode == HomeCardWallpaperSurfaceMode.REALTIME_FROSTED
-    val cardYFraction = remember { mutableFloatStateOf(0.5f) }
     val infoLayoutCoordinates = remember { mutableStateOf<LayoutCoordinates?>(null) }
     val homeScrollTickProvider = LocalHomeScrollTickProvider.current
+    // 其他列表没有首页滚动驱动，继续用位置回调保持原有壁纸跟随行为。
+    val nonHomeCardYFraction = if (homeScrollTickProvider == null && resolvedWallpaperTintEnabled) {
+        remember { mutableFloatStateOf(0.5f) }
+    } else null
     val infoSurfaceAppearance = remember(
-        wallpaperTintEnabled,
+        resolvedWallpaperTintEnabled,
         wallpaperEffectMode,
         isDarkCardTheme,
         isDataSaverActive,
@@ -690,7 +832,7 @@ internal fun ElegantVideoCard(
         blurEnabled
     ) {
         resolveHomeCardInfoSurfaceAppearance(
-            wallpaperTintEnabled = wallpaperTintEnabled,
+            wallpaperTintEnabled = resolvedWallpaperTintEnabled,
             wallpaperEffectMode = wallpaperEffectMode,
             isDarkTheme = isDarkCardTheme,
             isDataSaverActive = isDataSaverActive,
@@ -701,6 +843,14 @@ internal fun ElegantVideoCard(
         )
     }
     val useCardEffectSurface = homeCardDynamicTintEnabled || homeCardFrostedGlassEnabled
+    val useRealtimeInfoHaze = homeCardFrostedGlassEnabled &&
+        infoSurfaceAppearance.useRealtimeHaze && wallpaperHazeState != null &&
+        !lowBlurBudgetForced && Build.VERSION.SDK_INT >= 31 &&
+        com.android.purebilibili.core.ui.LocalAppThemeConfig.current.bottomBarBlurEnabled
+    val hasRealtimeInfoBlur = useRealtimeWallpaperBackdrop || useRealtimeInfoHaze
+    // 模糊不可用时，关闭动态取色的卡片必须保持中性实色，不能透出壁纸伪装成模糊。
+    val useWallpaperInfoBacking = resolvedWallpaperTintEnabled &&
+        (homeCardDynamicTintEnabled || hasRealtimeInfoBlur)
     val scrollLitePolicy = remember(compactStatsOnCover) {
         resolveVideoCardScrollLiteVisualPolicy(
             scrollLiteModeEnabled = false,
@@ -737,20 +887,20 @@ internal fun ElegantVideoCard(
     val showHistoryProgressBar = historyProgressState.showProgressBar
     val historyProgressFraction = historyProgressState.progressFraction
     val historyProgressBarColor = resolveVideoCardHistoryProgressBarColor(
-        themePrimary = MaterialTheme.colorScheme.primary
+        themePrimary = AppContentColors.accent()
     )
     val coverOverlayBottomLayout = remember(scrollLitePolicy.showHistoryProgressBar, showHistoryProgressBar) {
         resolveVideoCardCoverOverlayBottomLayout(
             showHistoryProgressBar = scrollLitePolicy.showHistoryProgressBar && showHistoryProgressBar
         )
     }
-    
+
     //  [新增] 长按删除菜单状态
     var showDismissMenu by remember { mutableStateOf(false) }
     var menuOffset by remember { mutableStateOf(DpOffset.Zero) }
     //  [新增] 确认对话框状态
     var showUnfavoriteDialog by remember { mutableStateOf(false) }
-    
+
     val useLowQualityCover = isDataSaverActive && preferLowQualityCover
     val coverCacheKey: String
     val coverUrl: String
@@ -778,17 +928,18 @@ internal fun ElegantVideoCard(
         animationSpec = tween(durationMillis = 350),
         label = "video_card_cover_tint"
     )
-    val defaultOnSurface = MaterialTheme.colorScheme.onSurface
-    val defaultOnSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
+    val defaultOnSurface = AppContentColors.primaryText()
+    val defaultOnSurfaceVariant = AppContentColors.secondaryText()
     val adaptiveContentColors = remember(
         wallpaperPalette,
         animatedCoverTint,
-        wallpaperTintEnabled,
+        resolvedWallpaperTintEnabled,
         isDarkCardTheme,
         defaultOnSurface,
         defaultOnSurfaceVariant,
         homeCardDynamicTintEnabled,
         homeCardFrostedGlassEnabled,
+        useWallpaperInfoBacking,
     ) {
         resolveVideoCardAdaptiveContentColors(
             wallpaperPalette = wallpaperPalette,
@@ -797,27 +948,38 @@ internal fun ElegantVideoCard(
             } else {
                 null
             },
-            wallpaperTintEnabled = wallpaperTintEnabled,
+            wallpaperTintEnabled = useWallpaperInfoBacking,
             isDarkTheme = isDarkCardTheme,
             defaultOnSurface = defaultOnSurface,
             defaultOnSurfaceVariant = defaultOnSurfaceVariant,
-            homeCardDynamicTintEnabled = useCardEffectSurface
+            homeCardDynamicTintEnabled = useCardEffectSurface,
+            wallpaperGlassAlpha = resolveWallpaperGlassAlpha(
+                frostedGlassEnabled = homeCardFrostedGlassEnabled,
+                isDarkTheme = isDarkCardTheme
+            )
         )
     }
-    // 返回预热：组合即可见，上报 (bvid, url, cacheKey)，供详情返回时按同一 cacheKey
-    // prefetch，避免首页 scene 重建后封面重新解码造成落位闪变。
-    SideEffect {
+    var cardVisibleInWindow by remember(video.bvid, video.cid) { mutableStateOf(false) }
+    var measuredCoverSize by remember(coverCacheKey) {
+        mutableStateOf(androidx.compose.ui.unit.IntSize.Zero)
+    }
+    val coverReturnPrefetchAllowed = LocalPageImageLoadingAllowed.current && cardVisibleInWindow
+    LaunchedEffect(video.bvid, coverUrl, coverCacheKey, coverRequestSpec, measuredCoverSize, coverReturnPrefetchAllowed) {
+        if (!coverReturnPrefetchAllowed) return@LaunchedEffect
         HomeCoverReturnPrefetchRegistry.onCardVisible(
             HomeCoverReturnPrefetchEntry(
                 bvid = video.bvid.trim(),
                 url = coverUrl,
                 cacheKey = coverCacheKey,
+                decodeWidthPx = coverRequestSpec?.widthPx ?: measuredCoverSize.width,
+                decodeHeightPx = coverRequestSpec?.heightPx ?: measuredCoverSize.height,
             )
         )
     }
     val onlineCount = rememberVideoCardOnlineCount(
         video = video,
-        showOnlineCount = showOnlineCount
+        showOnlineCount = showOnlineCount,
+        isVisibleInWindow = cardVisibleInWindow,
     )
     val publishTimeRowText: String
     val emphasizePublishTime: Boolean
@@ -831,7 +993,7 @@ internal fun ElegantVideoCard(
         publishTimeRowText = text
         emphasizePublishTime = emphasize
     }
-    
+
     //  判断是否为竖屏视频（通过封面图 URL 中的尺寸信息或默认不显示）
     // B站封面 URL 通常包含尺寸信息，如 width=X&height=Y
     // 简单方案：暂不显示竖屏标签（因推荐API不提供视频尺寸信息）
@@ -856,7 +1018,7 @@ internal fun ElegantVideoCard(
     val compactStatsAvailableWidthDp = remember(resolvedCardWidthDp) {
         (resolvedCardWidthDp - (AppSpacingTokens.Small.value * 2f)).coerceAtLeast(0f)
     }
-    
+
     //  记录卡片位置（非 Compose State，避免滚动时触发高频重组）
     //  [性能优化] 存储 LayoutCoordinates 引用而非 Rect，boundsInRoot() 仅在交互时惰性计算，
     //  避免滚动期间每帧 4 次坐标树遍历开销。
@@ -865,6 +1027,14 @@ internal fun ElegantVideoCard(
         CardPositionManager.newVideoCardSourceInstanceId()
     }
     val coverCoordsRef = remember { object { var value: LayoutCoordinates? = null } }
+    // 封面位置只在绘制或点击时读取，不随列表滚动通过全局布局回调回写 snapshot 状态。
+    fun currentCoverYFraction(): Float {
+        nonHomeCardYFraction?.let { return it.floatValue }
+        val coordinates = coverCoordsRef.value?.takeIf { it.isAttached }
+        return if (coordinates != null && screenMetrics.heightPx > 0f) {
+            (coordinates.positionInRoot().y / screenMetrics.heightPx).coerceIn(0f, 1f)
+        } else 0.5f
+    }
     val titleCoordsRef = remember { object { var value: LayoutCoordinates? = null } }
     val menuButtonCoordsRef = remember { object { var value: LayoutCoordinates? = null } }
     val localSharedElementSourceRoute = LocalVideoCardSharedElementSourceRoute.current
@@ -872,6 +1042,10 @@ internal fun ElegantVideoCard(
         sharedElementSourceRoute ?: localSharedElementSourceRoute
     }
 
+    // ⋮ 按钮入口额外提供源图层：玻璃菜单从按钮本身形变展开并跟随按住拖拽；
+    // 长按入口（pressOffset 非空）不接此 source，继续走按点锚点。原生路径不读取。
+    val overflowMenuSource = rememberAppGlassMenuSource()
+    var menuFromOverflowButton by remember { mutableStateOf(false) }
     val openDismissMenu: (LayoutCoordinates?, Offset?) -> Unit = { anchorCoords, pressOffset ->
         menuOffset = resolveVideoCardMenuOffset(
             rootBoundsInRoot = cardCoordsRef.value?.takeIf { it.isAttached }?.boundsInRoot(),
@@ -879,19 +1053,34 @@ internal fun ElegantVideoCard(
             density = screenMetrics.density,
             pressOffsetInAnchorPx = pressOffset
         )
+        // 按钮入口 pressOffset 为 null：玻璃菜单从 ⋮ 源控件形变展开；长按走按点锚点。
+        menuFromOverflowButton = pressOffset == null
         showDismissMenu = true
     }
+    // 液态玻璃同窗菜单使用真实控件边界作为锚点，弹窗按设置页行为覆盖住三点按钮；
+    // 长按入口没有具名控件，保持 null 走按点小锚点，原生菜单路径不读取该状态。
+    var menuGlassAnchorBounds by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
     val hasOverflowMenu = onDismiss != null || onWatchLater != null
     val hasTrailingCardAction = onUnfavorite != null || hasOverflowMenu
     val nativeCardLayer = rememberNativeVideoCardLayer()
+    val wholeCardCaptureScope = rememberCoroutineScope()
     val nativeCoverOverlayLayer = rememberNativeVideoCardLayer()
     val freezeNativeCardLayer = remember(video.bvid) { mutableStateOf(false) }
-    
-    val triggerCardClick = {
-        cardCoordsRef.value?.takeIf { it.isAttached }?.boundsInRoot()?.let { bounds ->
+
+    // 玻璃底色显式选择材质分支，原生卡片不借用玻璃透明度或布局参数。
+    val infoBaseContainerColor = AppSurfaceTokens.videoCardContainer(glassEnabled = useCardEffectSurface)
+    fun resolvedInfoBackingColor(yFraction: Float): Color =
+        if (useWallpaperInfoBacking && wallpaperPalette != null) {
+            interpolateWallpaperColor(wallpaperPalette, yFraction).copy(alpha = 1f)
+        } else {
+            infoBaseContainerColor.copy(alpha = 1f)
+        }
+
+    val triggerCardClick by rememberUpdatedState(appActionWithFeedback {
+        cardCoordsRef.value?.takeIf { it.isAttached }?.videoCardSourceBoundsInRoot()?.let { bounds ->
             val sourceCoverBounds = coverCoordsRef.value
                 ?.takeIf { it.isAttached }
-                ?.boundsInRoot()
+                ?.videoCardSourceBoundsInRoot()
             val frozenCompactStatsLayout = resolveVideoCardCompactCoverStatsLayout(
                 availableWidthDp = sourceCoverBounds?.let { coverBounds ->
                     (
@@ -926,9 +1115,37 @@ internal fun ElegantVideoCard(
                 // survives Loading and does not wait for destination ViewInfo.
                 sourceLayout = VideoCardSourceLayout.STACKED,
                 sourceChromeSnapshot = VideoCardSourceChromeSnapshot(
+                    infoContainerColor = if (useCardEffectSurface && resolvedWallpaperTintEnabled) {
+                        val infoY = infoLayoutCoordinates.value
+                            ?.takeIf { it.isAttached }?.positionInRoot()?.y
+                        val fraction = if (infoY != null && screenMetrics.heightPx > 0f) {
+                            (infoY / screenMetrics.heightPx).coerceIn(0f, 1f)
+                        } else currentCoverYFraction()
+                        val backing = resolvedInfoBackingColor(fraction)
+                        val plate = if (useRealtimeWallpaperBackdrop) {
+                            infoBaseContainerColor.copy(alpha = if (isDarkCardTheme) 0.44f else 0.36f)
+                        } else {
+                            resolveVideoCardAmbientDrawSpec(
+                                wallpaperPalette = wallpaperPalette,
+                                yFraction = fraction,
+                                coverTint = animatedCoverTint.takeIf { it.alpha > 0f },
+                                wallpaperTintEnabled = resolvedWallpaperTintEnabled,
+                                isDarkTheme = isDarkCardTheme,
+                                defaultContainerColor = infoBaseContainerColor,
+                                defaultBorderColor = MediaContrastPalette.Foreground,
+                                isDataSaverActive = isDataSaverActive,
+                                frostedGlassEnabled = homeCardFrostedGlassEnabled,
+                                dynamicTintEnabled = homeCardDynamicTintEnabled,
+                            ).containerColor.let { color ->
+                                if (!homeCardDynamicTintEnabled && !hasRealtimeInfoBlur) color.copy(alpha = 1f) else color
+                            }
+                        }
+                        plate.compositeOver(backing)
+                    } else null,
                     title = video.title,
                     ownerName = video.owner.name,
                     ownerFaceUrl = video.owner.face,
+                    recommendationReason = video.recommendationReason,
                     viewText = if (video.stat.view > 0) {
                         FormatUtils.formatStat(video.stat.view.toLong())
                     } else {
@@ -937,12 +1154,13 @@ internal fun ElegantVideoCard(
                     danmakuText = secondaryStatText
                         ?: FormatUtils.formatStat(video.stat.danmaku.toLong()),
                     durationText = durationText,
-                    followed = video.isFollowed,
+                    followed = isFollowing || video.isFollowed,
                     // Remember what the list info column actually paints (not cover badges).
                     infoPresentation = com.android.purebilibili.core.ui.transition
                         .resolveVideoCardSourceInfoPresentation(
                             publishTimeText = publishTimeRowText,
                             showStatsInInfo = scrollLitePolicy.showSecondaryStatsRow,
+                            ownerBeforeStats = true,
                             showDurationInInfo = showDurationOutside,
                             useTintedInfoSurface = useCardEffectSurface,
                             showOverflowMenu = hasOverflowMenu,
@@ -971,21 +1189,36 @@ internal fun ElegantVideoCard(
                     coverDecodeHeightPx = coverRequestSpec?.heightPx ?: 0,
                 ),
                 sourceInstanceId = sharedSourceInstanceId,
+                // 点击时冻结的信息面矩形：重建壳的信息板按它落位，而不是「卡底 − 封面底」。
+                infoBounds = infoLayoutCoordinates.value
+                    ?.takeIf { it.isAttached }
+                    ?.videoCardSourceBoundsInRoot(),
             )
             // The mounted draw modifier reads this latch directly, so the layer freezes
             // before OPENING can hide the stationary title and statistics.
-            freezeNativeCardLayer.value = true
-            captureNativeVideoCardImage(nativeCardLayer)
-            captureNativeCoverOverlayLayer(nativeCoverOverlayLayer)
+            // 过渡关闭时 draw modifier 未挂载，冻结/捕获纯属空转（层从未 record）。
+            if (transitionEnabled) {
+                freezeNativeCardLayer.value = true
+                captureNativeVideoCardImage(nativeCardLayer)
+                captureNativeCoverOverlayLayer(nativeCoverOverlayLayer)
+                val expectedSourceKey = CardPositionManager.lastClickedVideoSourceKey
+                if (expectedSourceKey != null) {
+                    wholeCardCaptureScope.launch(start = CoroutineStart.UNDISPATCHED) {
+                        captureWholeCardReturnBitmap(nativeCardLayer, expectedSourceKey)
+                    }
+                }
+            }
         }
         onClick(video.bvid, video.cid)
-    }
+    })
+    val homeCardScrolling = LocalHomeCardScrolling.current
     val enterAnimationEnabledAtMount = remember(video.bvid) {
         resolveHomeCardEnterAnimationEnabledAtMount(
             baseAnimationEnabled = animationEnabled,
             isReturningFromDetail = isReturningFromVideoDetail,
             isSwitchingCategory = CardPositionManager.isSwitchingCategory,
-            isScrollInProgress = scrollLiteModeEnabled
+            // Read only at mount: stopping a scroll must not replay skipped entrances.
+            isScrollInProgress = scrollLiteModeEnabled || homeCardScrolling?.value == true
         )
     }
     val coordinateEnterWithTransition = remember(animationEnabled, transitionEnabled) {
@@ -993,8 +1226,12 @@ internal fun ElegantVideoCard(
     }
     val adaptiveHoverShape = AppShapes.container(ContainerLevel.Card)
     Box(
+        propagateMinConstraints = true,
         modifier = modifier
             .fillMaxWidth()
+            .onVisibilityChanged(minFractionVisible = 0.01f, minDurationMs = 0L) {
+                cardVisibleInWindow = it
+            }
             .adaptiveCardHoverEffect(shape = adaptiveHoverShape)
             // 进场动画：挂载门控已含滚动/返回/切分类；与过渡并存时仅淡入不改几何
             .animateEnter(
@@ -1005,7 +1242,7 @@ internal fun ElegantVideoCard(
                 coordinateWithSharedTransition = coordinateEnterWithTransition
             )
             //  [新增] 记录卡片位置（仅存引用，boundsInRoot() 在交互时惰性计算）
-            .onGloballyPositioned { coordinates ->
+            .onPlaced { coordinates ->
                 cardCoordsRef.value = coordinates
             }
     ) {
@@ -1100,6 +1337,7 @@ internal fun ElegantVideoCard(
         // - 内层 Column 挂 sharedBounds（封面/标题等，无 solid fill）
         // 若把 cardContainer 画进 sharedBounds，预测返回时会盖住详情壳实时视频 → 大黑块。
         Box(
+            propagateMinConstraints = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .recordNativeVideoCardLayer(
@@ -1111,12 +1349,13 @@ internal fun ElegantVideoCard(
                     bvid = video.bvid,
                     sourceRoute = effectiveSharedElementSourceRoute,
                     enabled = effectiveTransitionEnabled,
+                    landingFeedbackEnabled = true,
                 ),
         ) {
             val cardShellBaseColor = if (useCardEffectSurface) {
                 Color.Transparent
             } else {
-                AppSurfaceTokens.cardContainer()
+                AppSurfaceTokens.videoCardContainer()
             }
             Box(
                 modifier = Modifier
@@ -1192,13 +1431,16 @@ internal fun ElegantVideoCard(
                 .testTag("home_video_cover")
                 .aspectRatio(coverAspectRatio)
                 .clip(coverShape)
-                .onGloballyPositioned { coordinates ->
-                    coverCoordsRef.value = coordinates
-                    val rootTop = coordinates.boundsInRoot().top
-                    if (screenMetrics.heightPx > 0f) {
-                        cardYFraction.floatValue = (rootTop / screenMetrics.heightPx).coerceIn(0f, 1f)
-                    }
-                }
+                .onPlaced { coordinates -> coverCoordsRef.value = coordinates }
+                .onSizeChanged { if (coverRequestSpec == null) measuredCoverSize = it }
+                .then(
+                    if (nonHomeCardYFraction != null) Modifier.onGloballyPositioned { coordinates ->
+                        if (screenMetrics.heightPx > 0f) {
+                            nonHomeCardYFraction.floatValue =
+                                (coordinates.boundsInRoot().top / screenMetrics.heightPx).coerceIn(0f, 1f)
+                        }
+                    } else Modifier
+                )
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 //  [交互优化] 封面区域：点击跳转
                 .pointerInput(isLongPressEnabled, onLongClick, onDismiss, onWatchLater, onUnfavorite) {
@@ -1208,13 +1450,14 @@ internal fun ElegantVideoCard(
                         onLongPress = if (isLongPressEnabled && (hasPreviewAction || hasLongPressMenu)) {
                             { pressOffset ->
                                 if (hasPreviewAction) {
-                                    haptic(HapticType.HEAVY)
+                                    longPressHaptic(HapticType.HEAVY)
                                     onLongClick(video)
                                 } else if (shouldOpenLongPressMenu(hasPreviewAction, hasLongPressMenu)) {
-                                    haptic(HapticType.HEAVY)
+                                    longPressHaptic(HapticType.HEAVY)
                                     if (onUnfavorite != null && onDismiss == null && onWatchLater == null) {
                                         showUnfavoriteDialog = true
                                     } else {
+                                        menuGlassAnchorBounds = null
                                         openDismissMenu(coverCoordsRef.value, pressOffset)
                                     }
                                 }
@@ -1244,22 +1487,35 @@ internal fun ElegantVideoCard(
                     .diskCacheKey(requestCoverCacheKey)
                     .build()
             }
-            AsyncImage(
+            var loadedCoverCacheKey by remember(requestCoverCacheKey) { mutableStateOf<String?>(null) }
+            val coverWorkAllowed = LocalPageImageLoadingAllowed.current &&
+                LocalHomeCardAuxiliaryWorkAllowed.current
+            LaunchedEffect(
+                loadedCoverCacheKey,
+                requestCoverCacheKey,
+                requestCoverUrl,
+                homeCardDynamicTintEnabled,
+                coverWorkAllowed,
+            ) {
+                if (!coverWorkAllowed || !homeCardDynamicTintEnabled || coverTint != null ||
+                    loadedCoverCacheKey != requestCoverCacheKey
+                ) return@LaunchedEffect
+                val extracted = VideoCardCoverColorStore.extractColor(
+                    context = context,
+                    cacheKey = requestCoverCacheKey,
+                    coverUrl = requestCoverUrl,
+                )
+                if (activeCoverCacheKey == requestCoverCacheKey && extracted != null) {
+                    coverTint = extracted
+                }
+            }
+            PageAwareAsyncImage(
                 model = coverImageRequest,
+                loadingAllowed = LocalHomeCardCoverLoadingAllowed.current
+                    ?: LocalPageImageLoadingAllowed.current,
                 contentDescription = null,
                 onSuccess = {
-                    if (homeCardDynamicTintEnabled && coverTint == null) {
-                        scope.launch {
-                            val extracted = VideoCardCoverColorStore.extractColor(
-                                context = context,
-                                cacheKey = requestCoverCacheKey,
-                                coverUrl = requestCoverUrl,
-                            )
-                            if (activeCoverCacheKey == requestCoverCacheKey && extracted != null) {
-                                coverTint = extracted
-                            }
-                        }
-                    }
+                    loadedCoverCacheKey = requestCoverCacheKey
                 },
                 modifier = Modifier
                     .fillMaxSize(),
@@ -1284,26 +1540,10 @@ internal fun ElegantVideoCard(
                         enabled = effectiveTransitionEnabled,
                     ),
             ) {
-            if (premiumBadgeLabel != null) {
-                HomeVideoBadgePill(
-                    style = badgeStylePolicy.coverStyle,
-                    useRealtimeHaze = badgeEffectVisual.useRealtimeHaze,
-                    shape = AppShapes.container(ContainerLevel.Tag),
-                    containerColor = BiliPink.copy(alpha = if (badgeStylePolicy.coverStyle == HomeVideoBadgeStyle.GLASS) 0.78f else 1f),
-                    borderColor = MediaContrastPalette.Foreground.copy(alpha = 0.24f),
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(AppSpacingTokens.Small)
-                ) {
-                    AppText(
-                        text = premiumBadgeLabel,
-                        color = MediaContrastPalette.Foreground,
-                        fontSize = MaterialTheme.typography.labelSmall.fontSize,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1
-                    )
-                }
-            }
+            VideoStatusBadges(
+                labels = video.statusLabels,
+                modifier = Modifier.align(Alignment.TopEnd).padding(AppSpacingTokens.Small),
+            )
 
             //  底部渐变遮罩
 
@@ -1542,22 +1782,19 @@ internal fun ElegantVideoCard(
             }
 
         }
-        
+
         val infoSurfaceShape = remember(cardCornerRadius) {
             AppShapes.bottomRounded(cardCornerRadius)
         }
         val infoContainerModifier = if (useCardEffectSurface) {
             // Wallpaper-only Haze for realtime blur (never main content HazeState).
-            val hazeModifier = if (
-                homeCardFrostedGlassEnabled &&
-                    infoSurfaceAppearance.useRealtimeHaze && wallpaperHazeState != null
-            ) {
+            val hazeModifier = if (useRealtimeInfoHaze) {
                 Modifier.unifiedBlur(
-                    hazeState = wallpaperHazeState,
+                    hazeState = requireNotNull(wallpaperHazeState),
                     shape = infoSurfaceShape,
                     surfaceType = BlurSurfaceType.BOTTOM_BAR,
-                    isScrolling = false,
-                    isTransitionRunning = false,
+                    isScrolling = LocalHomeCardScrolling.current?.value == true,
+                    isTransitionRunning = LocalHomeCardTransitionRunning.current?.value == true,
                     forceLowBudget = false
                 )
             } else {
@@ -1580,72 +1817,95 @@ internal fun ElegantVideoCard(
             } else {
                 Modifier
             }
-            val baseContainerColor = AppSurfaceTokens.cardContainer()
+            val baseContainerColor = AppSurfaceTokens.videoCardContainer(glassEnabled = true)
             val baseBorderColor = MediaContrastPalette.Foreground
             Modifier
                 .fillMaxWidth()
                 .clip(infoSurfaceShape)
+                // Include the wallpaper in the recorded native pixels before freezing on click.
+                // A translucent plate alone would blend with the detail page during handoff.
+                .then(
+                    if (useWallpaperInfoBacking) {
+                        Modifier.sharedGlobalWallpaperBackground(
+                            fallbackColor = resolvedInfoBackingColor(0.5f),
+                            fallbackColorProvider = {
+                                // 滚动只使绘制失效，使用实时坐标保持壁纸取色对齐。
+                                homeScrollTickProvider?.invoke()
+                                resolvedInfoBackingColor(currentCoverYFraction())
+                            },
+                        )
+                    } else Modifier
+                )
                 .then(hazeModifier)
                 .then(wallpaperBackdropModifier)
                 .onPlaced { coordinates ->
                     infoLayoutCoordinates.value = coordinates
                 }
-                .drawBehind {
-                    if (homeCardDynamicTintEnabled && !useRealtimeWallpaperBackdrop) {
-                        // 1. 在 Draw 阶段按需读取滚动 tick，零重组实现 120fps 实时刷新跟随
-                        homeScrollTickProvider?.invoke()
-
-                        // 2. 动态获取当前帧卡片底部组件在窗口根布局的物理 Y 坐标
-                        val coords = infoLayoutCoordinates.value
-                        val currentY = if (coords != null && coords.isAttached) {
-                            coords.positionInRoot().y
-                        } else null
-
-                        val yFrac = if (currentY != null && screenMetrics.heightPx > 0f) {
-                            (currentY / screenMetrics.heightPx).coerceIn(0f, 1f)
-                        } else {
-                            cardYFraction.floatValue
-                        }
-                        val drawSpec = resolveVideoCardAmbientDrawSpec(
-                            wallpaperPalette = wallpaperPalette,
-                            yFraction = yFrac,
-                            coverTint = if (animatedCoverTint.alpha > 0f) animatedCoverTint else null,
-                            wallpaperTintEnabled = wallpaperTintEnabled,
-                            isDarkTheme = isDarkCardTheme,
-                            defaultContainerColor = baseContainerColor,
-                            defaultBorderColor = baseBorderColor,
-                            isDataSaverActive = isDataSaverActive,
-                            frostedGlassEnabled = homeCardFrostedGlassEnabled,
-                            dynamicTintEnabled = homeCardDynamicTintEnabled,
+                .drawWithCache {
+                    val cachedSpec = resolveVideoCardAmbientDrawSpec(
+                        wallpaperPalette = wallpaperPalette,
+                        yFraction = 0.5f,
+                        coverTint = if (animatedCoverTint.alpha > 0f) animatedCoverTint else null,
+                        wallpaperTintEnabled = resolvedWallpaperTintEnabled,
+                        isDarkTheme = isDarkCardTheme,
+                        defaultContainerColor = baseContainerColor,
+                        defaultBorderColor = baseBorderColor,
+                        isDataSaverActive = isDataSaverActive,
+                        frostedGlassEnabled = homeCardFrostedGlassEnabled,
+                        dynamicTintEnabled = homeCardDynamicTintEnabled,
+                    )
+                    val followsWallpaperPosition = homeCardDynamicTintEnabled &&
+                        !useRealtimeWallpaperBackdrop && resolvedWallpaperTintEnabled && wallpaperPalette != null
+                    val glowBrush = if (cachedSpec.coverGlowAlpha > 0f && animatedCoverTint.alpha > 0f) {
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                animatedCoverTint.copy(alpha = cachedSpec.coverGlowAlpha),
+                                animatedCoverTint.copy(alpha = cachedSpec.coverGlowAlpha * 0.35f),
+                                Color.Transparent,
+                            ),
+                            startY = 0f,
+                            endY = size.height * 0.85f,
                         )
-                        drawRect(color = drawSpec.containerColor)
-                        if (drawSpec.coverGlowAlpha > 0f && animatedCoverTint.alpha > 0f) {
+                    } else null
+                    onDrawBehind {
+                        if (homeCardDynamicTintEnabled && !useRealtimeWallpaperBackdrop) {
+                            val containerColor = if (followsWallpaperPosition) {
+                                // Subscribe to scrolling only when position changes wallpaper tint.
+                                homeScrollTickProvider?.invoke()
+                                val coords = infoLayoutCoordinates.value
+                                val currentY = if (coords != null && coords.isAttached) {
+                                    coords.positionInRoot().y
+                                } else null
+                                val yFraction = if (currentY != null && screenMetrics.heightPx > 0f) {
+                                    (currentY / screenMetrics.heightPx).coerceIn(0f, 1f)
+                                } else {
+                                    currentCoverYFraction()
+                                }
+                                // Only the wallpaper RGB depends on Y; alpha/glow/border remain cached.
+                                interpolateWallpaperColor(requireNotNull(wallpaperPalette), yFraction)
+                                    .copy(alpha = cachedSpec.containerColor.alpha)
+                            } else {
+                                cachedSpec.containerColor
+                            }
+                            drawRect(color = containerColor)
+                            if (glowBrush != null) drawRect(brush = glowBrush)
+                        } else {
+                            val neutralGlassAlpha = if (isDarkCardTheme) 0.38f else 0.34f
+                            val realtimeAlpha = if (isDarkCardTheme) 0.44f else 0.36f
                             drawRect(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        animatedCoverTint.copy(alpha = drawSpec.coverGlowAlpha),
-                                        animatedCoverTint.copy(alpha = drawSpec.coverGlowAlpha * 0.35f),
-                                        Color.Transparent
-                                    ),
-                                    startY = 0f,
-                                    endY = size.height * 0.85f
+                                color = baseContainerColor.copy(
+                                    alpha = if (!homeCardDynamicTintEnabled && !hasRealtimeInfoBlur) {
+                                        1f
+                                    } else if (useRealtimeWallpaperBackdrop) {
+                                        realtimeAlpha
+                                    } else if (homeCardFrostedGlassEnabled) {
+                                        neutralGlassAlpha
+                                    } else {
+                                        infoSurfaceAppearance.containerAlpha
+                                    }
                                 )
                             )
                         }
-                    } else {
-                        val neutralGlassAlpha = if (isDarkCardTheme) 0.38f else 0.34f
-                        val realtimeAlpha = if (isDarkCardTheme) 0.24f else 0.16f
-                        drawRect(
-                            color = baseContainerColor.copy(
-                                alpha = if (useRealtimeWallpaperBackdrop) {
-                                    realtimeAlpha
-                                } else if (homeCardFrostedGlassEnabled) {
-                                    neutralGlassAlpha
-                                } else {
-                                    infoSurfaceAppearance.containerAlpha
-                                }
-                            )
-                        )
                     }
                 }
                 .border(
@@ -1654,7 +1914,7 @@ internal fun ElegantVideoCard(
                         val borderAlpha = if (isDarkCardTheme) 0.30f else 0.45f
                         val baseBorder = Color.White.copy(alpha = borderAlpha)
                         if (
-                            shouldUseCoverTintForCard(wallpaperTintEnabled, coverTint) &&
+                            shouldUseCoverTintForCard(resolvedWallpaperTintEnabled, coverTint) &&
                             animatedCoverTint.alpha > 0f
                         ) {
                             val borderBlend = if (isDarkCardTheme) 0.50f else 0.40f
@@ -1673,27 +1933,22 @@ internal fun ElegantVideoCard(
                     },
                     shape = infoSurfaceShape
                 )
-                .padding(
-                    horizontal = AppSpacingTokens.Small + AppSpacingTokens.Micro,
-                    vertical = if (compactMetadata) AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro else AppSpacingTokens.Small
-                )
         } else {
             val ambientCoverGlowModifier = if (
                 homeCardDynamicTintEnabled &&
-                shouldUseCoverTintForCard(wallpaperTintEnabled, coverTint) &&
+                shouldUseCoverTintForCard(resolvedWallpaperTintEnabled, coverTint) &&
                 animatedCoverTint.alpha > 0f
             ) {
-                Modifier.drawBehind {
-                    drawRect(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                animatedCoverTint.copy(alpha = if (isDarkCardTheme) 0.16f else 0.10f),
-                                Color.Transparent
-                            ),
-                            startY = 0f,
-                            endY = size.height * 0.75f
-                        )
+                Modifier.drawWithCache {
+                    val glowBrush = Brush.verticalGradient(
+                        colors = listOf(
+                            animatedCoverTint.copy(alpha = if (isDarkCardTheme) 0.16f else 0.10f),
+                            Color.Transparent,
+                        ),
+                        startY = 0f,
+                        endY = size.height * 0.75f,
                     )
+                    onDrawBehind { drawRect(brush = glowBrush) }
                 }
             } else {
                 Modifier
@@ -1701,17 +1956,15 @@ internal fun ElegantVideoCard(
             Modifier
                 .fillMaxWidth()
                 .then(ambientCoverGlowModifier)
-                .padding(
-                    start = AppSpacingTokens.Small + AppSpacingTokens.Micro,
-                    top = AppSpacingTokens.None,
-                    end = AppSpacingTokens.Small + AppSpacingTokens.Micro,
-                    bottom = if (compactMetadata) {
-                        AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro
-                    } else {
-                        AppSpacingTokens.Small
-                    }
-                )
         }
+
+        val infoBottomPadding = if (compactMetadata) {
+            AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro
+        } else {
+            AppSpacingTokens.Small
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
 
         Box(
             modifier = infoContainerModifier.videoCardShellReturnChromeAlpha(
@@ -1722,7 +1975,15 @@ internal fun ElegantVideoCard(
                 isQuickReturnFromDetail = isQuickReturningFromVideoDetail,
             )
         ) {
-        Column {
+        // Text keeps its inset; the trailing action aligns to the full info surface.
+        Column(
+            modifier = Modifier.padding(
+                start = AppSpacingTokens.Small + AppSpacingTokens.Micro,
+                top = if (useCardEffectSurface) infoBottomPadding else AppSpacingTokens.None,
+                end = AppSpacingTokens.Small + AppSpacingTokens.Micro,
+                bottom = infoBottomPadding,
+            )
+        ) {
         if (!useCardEffectSurface) {
             Spacer(modifier = Modifier.height(if (compactMetadata) AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro else AppSpacingTokens.Small))
         }
@@ -1738,7 +1999,7 @@ internal fun ElegantVideoCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .semantics { contentDescription = "视频标题: ${video.title}" }
-                .onGloballyPositioned { coordinates ->
+                .onPlaced { coordinates ->
                     titleCoordsRef.value = coordinates
                 }
                 //  [交互优化] 标题区域：长按弹出菜单，点击跳转
@@ -1749,13 +2010,14 @@ internal fun ElegantVideoCard(
                         onLongPress = if (isLongPressEnabled && (hasPreviewAction || hasLongPressMenu)) {
                             { pressOffset ->
                                 if (hasPreviewAction) {
-                                    haptic(HapticType.HEAVY)
+                                    longPressHaptic(HapticType.HEAVY)
                                     onLongClick(video)
                                 } else if (shouldOpenLongPressMenu(hasPreviewAction, hasLongPressMenu)) {
-                                    haptic(HapticType.HEAVY)
+                                    longPressHaptic(HapticType.HEAVY)
                                     if (onUnfavorite != null && onDismiss == null && onWatchLater == null) {
                                         showUnfavoriteDialog = true
                                     } else {
+                                        menuGlassAnchorBounds = null
                                         openDismissMenu(titleCoordsRef.value, pressOffset)
                                     }
                                 }
@@ -1767,7 +2029,7 @@ internal fun ElegantVideoCard(
                     )
                 }
         )
-        
+
         Spacer(modifier = Modifier.height(if (compactMetadata) AppSpacingTokens.ExtraSmall else AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro))
 
         Column(
@@ -1779,6 +2041,20 @@ internal fun ElegantVideoCard(
         )
 
         val resolvedUpBadgeVisibility = com.android.purebilibili.core.ui.LocalUpBadgeVisibility.current
+        VideoCardOwnerMetadata(
+            video = video,
+            isFollowing = isFollowing,
+            showUpBadge = showUpBadge ?: resolvedUpBadgeVisibility.showBadges,
+            showUpAvatar = showUpAvatar ?: resolvedUpBadgeVisibility.showAvatars,
+            upFollowerCount = upFollowerCount,
+            upVideoCount = upVideoCount,
+            infoBadgeStyle = badgeStylePolicy.infoStyle,
+            inlinePillColors = inlinePillColors,
+            metadataColors = metadataColors,
+            onUpClick = onUpClick,
+            modifier = resolveVideoCardMetadataRowModifier()
+        )
+
         if (scrollLitePolicy.showSecondaryStatsRow) {
             Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall + AppSpacingTokens.Micro))
             Column(
@@ -1818,20 +2094,6 @@ internal fun ElegantVideoCard(
             }
         }
 
-        VideoCardOwnerMetadata(
-            video = video,
-            isFollowing = isFollowing,
-            showUpBadge = showUpBadge ?: resolvedUpBadgeVisibility.showBadges,
-            showUpAvatar = showUpAvatar ?: resolvedUpBadgeVisibility.showAvatars,
-            upFollowerCount = upFollowerCount,
-            upVideoCount = upVideoCount,
-            infoBadgeStyle = badgeStylePolicy.infoStyle,
-            inlinePillColors = inlinePillColors,
-            metadataColors = metadataColors,
-            onUpClick = onUpClick,
-            modifier = resolveVideoCardMetadataRowModifier()
-        )
-
         VideoCardDurationPublishRow(
             // 数据贴封面时，时长已随统计行以 pill 呈现，不再在信息区重复显示
             durationText = durationText
@@ -1859,15 +2121,17 @@ internal fun ElegantVideoCard(
                     Box(
                         modifier = Modifier
                             .size(AppChromeSizeTokens.MinimumTouchTarget)
-                            .clickable {
+                            .appActionClickable {
                                 haptic(HapticType.MEDIUM)
                                 showUnfavoriteDialog = true
                             },
                         contentAlignment = Alignment.Center
                     ) {
+                        // 语义是“从收藏夹移除”，用 ✕ 而不是 ThumbUp——
+                        // 后者会被理解为点赞，与行为不符。
                         AppIcon(
-                            imageVector = Icons.Filled.ThumbUp,
-                            contentDescription = "取消收藏",
+                            imageVector = Icons.Outlined.Close,
+                            contentDescription = "从收藏夹移除",
                             modifier = Modifier.size(AppSpacingTokens.Large),
                             tint = adaptiveContentColors.subtitleColor.copy(alpha = 0.7f)
                         )
@@ -1879,11 +2143,18 @@ internal fun ElegantVideoCard(
                         modifier = Modifier
                             .size(AppChromeSizeTokens.MinimumTouchTarget)
                             .semantics { contentDescription = "更多操作" }
-                            .onGloballyPositioned { coordinates ->
+                            .onPlaced { coordinates ->
                                 menuButtonCoordsRef.value = coordinates
                             }
-                            .clickable {
+                            // 玻璃开启时按住即从按钮源图层展开菜单；关闭时 source 短路，仅剩 clickable。
+                            .appGlassMenuSource(overflowMenuSource, onOpen = {
                                 haptic(HapticType.LIGHT)
+                                menuGlassAnchorBounds = null
+                                openDismissMenu(menuButtonCoordsRef.value, null)
+                            })
+                            .appActionClickable {
+                                haptic(HapticType.LIGHT)
+                                menuGlassAnchorBounds = null
                                 openDismissMenu(menuButtonCoordsRef.value, null)
                             },
                         contentAlignment = Alignment.BottomEnd
@@ -1906,77 +2177,154 @@ internal fun ElegantVideoCard(
             }
         }
     }
-        
-        // 菜单需要挂在一个本地小锚点上，避免 DropdownMenu 在整张卡片根节点右侧 fallback 时反向偏移。
-        //
-        // 这里保留非 lambda 版 offset（lint 的 UseOfNonLambdaOffsetOverload 会报）：
-        // menuOffset 只在每次长按时变一次，不是逐帧动画值，lambda 版没有实际收益；
-        // 而改写形式会打断 VideoCardLongPressPolicyTest 对上面那次回归修复的字面守卫。
-        // 为零收益去动别人的回归守卫不划算。
-        @Suppress("UseOfNonLambdaOffsetOverload")
-        Box(
-            modifier = Modifier
-                .offset(x = menuOffset.x, y = menuOffset.y)
-                .size(AppSpacingTokens.Micro / 2)
-        ) {
-            AppDropdownMenu(
-                expanded = showDismissMenu,
-                onDismissRequest = { showDismissMenu = false },
-                offset = DpOffset.Zero
+
+        // Equal-height feed rows give this card tight height constraints. The root propagates
+        // those minima, so isolate the small popup anchor in an overlay that clears them.
+        // matchParentSize keeps the overlay out of the card's intrinsic height calculation.
+        Box(modifier = Modifier.matchParentSize(), propagateMinConstraints = false) {
+            // 菜单需要挂在一个本地小锚点上，避免 DropdownMenu 在整张卡片根节点右侧 fallback 时反向偏移。
+            //
+            // 这里保留非 lambda 版 offset（lint 的 UseOfNonLambdaOffsetOverload 会报）：
+            // menuOffset 只在每次长按时变一次，不是逐帧动画值，lambda 版没有实际收益；
+            // 而改写形式会打断 VideoCardLongPressPolicyTest 对上面那次回归修复的字面守卫。
+            // 为零收益去动别人的回归守卫不划算。
+            @Suppress("UseOfNonLambdaOffsetOverload")
+            Box(
+                modifier = Modifier
+                    .offset(x = menuOffset.x, y = menuOffset.y)
+                    .size(AppSpacingTokens.Micro / 2)
             ) {
-                // 稍后再看
-                if (onWatchLater != null) {
+                AppDropdownMenu(
+                    expanded = showDismissMenu,
+                    onDismissRequest = { showDismissMenu = false },
+                    offset = DpOffset.Zero,
+                    glassAnchorBounds = menuGlassAnchorBounds,
+                    glassSource = overflowMenuSource.takeIf { menuFromOverflowButton },
+                ) {
+                    // 以下扩展操作对齐 PiliPlus 的视频卡片菜单：BV 号、稍后再看、AI 总结、
+                    // 访问 UP 主、不感兴趣、拉黑与无痕模式；取消收藏是本应用收藏页的既有入口。
+                    if (video.bvid.isNotBlank()) {
+                        AppDropdownMenuItem(
+                            text = { AppText(video.bvid, color = AppContentColors.primaryText()) },
+                            onClick = {
+                                showDismissMenu = false
+                                copyPlainTextToClipboard(context, video.bvid, "BV号")
+                                android.widget.Toast.makeText(context, "已复制 ${video.bvid}", android.widget.Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    }
+
+                    // 稍后再看
+                    if (onWatchLater != null) {
+                        AppDropdownMenuItem(
+                            text = {
+                                AppText(
+                                    "稍后再看",
+                                    color = AppContentColors.primaryText()
+                                )
+                            },
+                            onClick = {
+                                showDismissMenu = false
+                                onWatchLater.invoke()
+                            }
+                        )
+                    }
+
+                    // AI 总结（需要 cid 才能请求）
+                    if (video.cid > 0L && video.bvid.isNotBlank()) {
+                        AppDropdownMenuItem(
+                            text = { AppText("AI总结", color = AppContentColors.primaryText()) },
+                            onClick = {
+                                showDismissMenu = false
+                                launchAiSummary()
+                            }
+                        )
+                    }
+
+                    // 访问 UP 主
+                    if (onUpClick != null && video.owner.mid > 0L) {
+                        AppDropdownMenuItem(
+                            text = { AppText("访问：${video.owner.name}", color = AppContentColors.primaryText()) },
+                            onClick = {
+                                showDismissMenu = false
+                                onUpClick.invoke(video.owner.mid)
+                            }
+                        )
+                    }
+
+                    // 不感兴趣 (放第一位，方便操作) -> 改回下方
+                    if (onDismiss != null) {
+                        AppDropdownMenuItem(
+                            text = {
+                                AppText(
+                                    dismissMenuText,
+                                    color = AppContentColors.primaryText()
+                                )
+                            },
+                            onClick = {
+                                showDismissMenu = false
+                                onDismiss.invoke()
+                            }
+                        )
+                    }
+
+                    // 取消收藏 (仅在收藏页显示)
+                    if (onUnfavorite != null) {
+                         AppDropdownMenuItem(
+                            text = {
+                                AppText(
+                                    "取消收藏",
+                                    color = AppContentColors.error()  // 使用错误色强调删除操作
+                                )
+                            },
+                            onClick = {
+                                showDismissMenu = false
+                                // onUnfavorite.invoke() -> 改为弹窗确认
+                                showUnfavoriteDialog = true
+                            }
+                        )
+                    }
+
+                    // 拉黑 UP 主：本地屏蔽并同步 B 站关系
+                    if (video.owner.mid > 0L) {
+                        AppDropdownMenuItem(
+                            text = { AppText("拉黑：${video.owner.name}", color = AppContentColors.primaryText()) },
+                            onClick = {
+                                showDismissMenu = false
+                                showBlockDialog = true
+                            }
+                        )
+                    }
+
+                    // 无痕模式开关
+                    val privacyModeEnabled by remember {
+                        com.android.purebilibili.core.store.SettingsManager.getPrivacyModeEnabled(context)
+                    }.collectAsStateWithLifecycle(initialValue = false)
                     AppDropdownMenuItem(
                         text = {
                             AppText(
-                                "🕐 稍后再看",
-                                color = MaterialTheme.colorScheme.onSurface
+                                if (privacyModeEnabled) "退出无痕模式" else "进入无痕模式",
+                                color = AppContentColors.primaryText()
                             )
                         },
                         onClick = {
                             showDismissMenu = false
-                            onWatchLater.invoke()
-                        }
-                    )
-                }
-
-                // 取消收藏 (仅在收藏页显示)
-                if (onUnfavorite != null) {
-                     AppDropdownMenuItem(
-                        text = {
-                            AppText(
-                                "💔 取消收藏",
-                                color = MaterialTheme.colorScheme.error  // 使用错误色强调删除操作
-                            )
-                        },
-                        onClick = {
-                            showDismissMenu = false
-                            // onUnfavorite.invoke() -> 改为弹窗确认
-                            showUnfavoriteDialog = true
-                        }
-                    )
-                }
-
-                // 不感兴趣 (放第一位，方便操作) -> 改回下方
-                if (onDismiss != null) {
-                    AppDropdownMenuItem(
-                        text = {
-                            AppText(
-                                dismissMenuText,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        },
-                        onClick = {
-                            showDismissMenu = false
-                            onDismiss.invoke()
+                            cardActionScope.launch {
+                                val next = !privacyModeEnabled
+                                com.android.purebilibili.core.store.SettingsManager.setPrivacyModeEnabled(context, next)
+                                android.widget.Toast.makeText(
+                                    context,
+                                    if (next) "已进入无痕模式" else "已退出无痕模式",
+                                    android.widget.Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     )
                 }
             }
         }
     }
-    
-    
+
     if (showUnfavoriteDialog) {
         AppAlertDialog(
             onDismissRequest = { showUnfavoriteDialog = false },
@@ -1989,7 +2337,7 @@ internal fun ElegantVideoCard(
                         onUnfavorite?.invoke()
                     }
                 ) {
-                    AppText("移除", color = MaterialTheme.colorScheme.error)
+                    AppText("移除", color = AppContentColors.error())
                 }
             },
             dismissButton = {
@@ -2017,15 +2365,14 @@ internal fun HomeVideoBadgePill(
         // Wallpaper-only HazeState (sibling source), never main content HazeState —
         // badges live inside the main hazeSource and would SO the render tree otherwise.
         val hazeState = LocalWallpaperHazeState.current
-        // Match bottom bar: keep blur on while scrolling (isScrolling=false → full visual path).
+        // Motion changes input sampling quality while keeping blur radius and fill stable.
         val glassModifier = if (useRealtimeHaze && hazeState != null) {
             modifier.unifiedBlur(
                 hazeState = hazeState,
                 shape = shape,
                 surfaceType = BlurSurfaceType.BOTTOM_BAR,
-                // Bottom bar intentionally does not zero blur on feed scroll.
-                isScrolling = false,
-                isTransitionRunning = false,
+                isScrolling = LocalHomeCardScrolling.current?.value == true,
+                isTransitionRunning = LocalHomeCardTransitionRunning.current?.value == true,
                 forceLowBudget = false
             )
         } else {
