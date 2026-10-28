@@ -84,6 +84,8 @@ fun main(args: Array<String>) {
         ?.let { path -> java.io.File(path) }
     val integrationSmtc = args.firstOrNull { it.startsWith("--integration-smtc=") }?.substringAfter('=')
         ?.let { path -> java.io.File(path) }
+    val integrationMove = args.firstOrNull { it.startsWith("--integration-move=") }?.substringAfter('=')
+        ?.split(',')?.mapNotNull { it.trim().toIntOrNull() }?.takeIf { it.size == 4 }?.toIntArray()
     val instance = try {
         com.bilipai.desktop.integration.DesktopSingleInstance.acquire(
             DesktopLibrary.directoryForAccount(null).resolve("desktop-integration"), activationRoute)
@@ -106,7 +108,8 @@ fun main(args: Array<String>) {
         // Runs after the first window is on screen, so window, process and system-media evidence
         // describe a real session instead of a pre-window state.
         if (integrationReport != null) remember {
-            com.bilipai.desktop.diagnostics.DesktopIntegrationSelfTest.start(integrationReport, integrationSmtc)
+            com.bilipai.desktop.diagnostics.DesktopIntegrationSelfTest.start(
+                integrationReport, integrationSmtc, integrationMove)
         }
         val applicationPluginStore = remember {
             com.bilipai.desktop.plugins.DesktopPluginStore(DesktopLibrary.directoryForAccount(null)).also { store ->

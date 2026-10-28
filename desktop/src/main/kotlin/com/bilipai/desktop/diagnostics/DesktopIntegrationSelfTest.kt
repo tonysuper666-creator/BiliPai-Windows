@@ -17,10 +17,7 @@ import javax.swing.SwingUtilities
  * `--integration-self-test=<report>`; it never changes user data or opens other applications.
  */
 internal object DesktopIntegrationSelfTest {
-    private const val MOVED_X = 200
-    private const val MOVED_Y = 150
-    private const val MOVED_WIDTH = 1600
-    private const val MOVED_HEIGHT = 1000
+    private val defaultMove = intArrayOf(200, 150, 1600, 1000)
 
     private interface Rect32 : StdCallLibrary {
         fun GetWindowRect(hwnd: Pointer, rect: IntArray): Boolean
@@ -29,12 +26,13 @@ internal object DesktopIntegrationSelfTest {
         }
     }
 
-    fun start(report: File, smtcReport: File?) {
-        Thread({ run(report, smtcReport) }, "BiliPai-integration-self-test").apply { isDaemon = true }.start()
+    fun start(report: File, smtcReport: File?, move: IntArray? = null) {
+        Thread({ run(report, smtcReport, move ?: defaultMove) }, "BiliPai-integration-self-test")
+            .apply { isDaemon = true }.start()
     }
 
-    private fun run(report: File, smtcReport: File?) {
-        val body = runCatching { measure(report, smtcReport) }.getOrElse { error ->
+    private fun run(report: File, smtcReport: File?, move: IntArray) {
+        val body = runCatching { measure(report, smtcReport, move) }.getOrElse { error ->
             "{\"error\":\"${escape(error.toString())}\"}"
         }
         report.absoluteFile.parentFile?.mkdirs()
@@ -42,11 +40,11 @@ internal object DesktopIntegrationSelfTest {
         println("INTEGRATION_SELF_TEST $body")
     }
 
-    private fun measure(report: File, smtcReport: File?): String {
+    private fun measure(report: File, smtcReport: File?, move: IntArray): String {
         val window = awaitWindow(90_000) ?: return "{\"window\":null,\"error\":\"no window after 90 s\"}"
         val restored = rectangle(window)
         onEdt {
-            window.setBounds(MOVED_X, MOVED_Y, MOVED_WIDTH, MOVED_HEIGHT)
+            window.setBounds(move[0], move[1], move[2], move[3])
             window.toFront()
         }
         Thread.sleep(6_000)
@@ -64,6 +62,7 @@ internal object DesktopIntegrationSelfTest {
             append(",\"windowVisible\":").append(window.isShowing)
             append(",\"windowRestored\":").append(restored)
             append(",\"windowMoved\":").append(moved)
+            append(",\"moveRequested\":[").append(move.joinToString(",")).append("]")
             append(",\"processesBefore\":").append(before)
             append(",\"successor\":{")
             append("\"childPid\":").append(child.pid())
