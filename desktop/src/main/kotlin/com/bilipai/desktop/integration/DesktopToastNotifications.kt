@@ -9,11 +9,21 @@ import java.net.URLDecoder
 import java.util.Base64
 import java.util.concurrent.TimeUnit
 
+/** The notification surface this desktop publishes to; tests inject a recording implementation. */
+internal interface DesktopNotificationCenter {
+    fun show(title: String, text: String, route: String, tag: String, group: String)
+    fun remove(tag: String, group: String)
+    fun clear(group: String)
+}
+
 /** Windows notification-center adapter. Protocol activation survives the publishing process. */
-internal object DesktopToastNotifications {
+internal object DesktopToastNotifications : DesktopNotificationCenter {
     private const val APP_ID = "BiliPai.Windows"
+    internal const val APP_ID_FOR_TESTS = APP_ID
     private const val SCHEME = "bilipai-windows"
     @Volatile private var registered = false
+    /** Seam for tests; production always shells out to PowerShell. */
+    internal var scriptRunner: (String) -> Unit = ::runScript
 
     internal fun routeFromArgs(args: Array<String>): String = args.firstOrNull { it.startsWith("$SCHEME://open?") }
         ?.let { uri ->
@@ -51,11 +61,11 @@ internal object DesktopToastNotifications {
     }
 
     /** Blocking IO boundary; callers use Dispatchers.IO. Nonzero HRESULT/process exit is surfaced. */
-    fun show(title: String, text: String, route: String, tag: String, group: String) {
+    override fun show(title: String, text: String, route: String, tag: String, group: String) {
         register()
         val payload = Base64.getEncoder().encodeToString(content(title, text, route).toByteArray(Charsets.UTF_8))
-        val safeTag = tag.hashCode().toUInt().toString(16)
-        val safeGroup = group.hashCode().toUInt().toString(16)
+        val safeTag = notificationKeyHash(tag)
+        val safeGroup = notificationKeyHash(group)
         val script = """
             ${'$'}ErrorActionPreference = 'Stop'
             [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] > ${'$'}null
@@ -68,20 +78,15 @@ internal object DesktopToastNotifications {
             if ([int]${'$'}notifier.Setting -ne 0) { throw 'Windows 通知已被系统或用户禁用' }
             ${'$'}notifier.Show(${'$'}toast)
         """.trimIndent()
-        runScript(script)
+        scriptRunner(script)
     }
-    fun clear(group: String) {
-        if (!registered) return
-        val safe = group.hashCode().toUInt().toString(16)
-        runScript("[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] > ${'$'}null; [Windows.UI.Notifications.ToastNotificationManager]::History.RemoveGroup('$safe', '$APP_ID')")
+    /** The center keeps delivered toasts across processes, so this never depends on `register()`. */
+    override fun clear(group: String) {
+        scriptRunner(historyRemoveGroupScript(group))
     }
     /** Withdraws one already-delivered toast. [tag] and [group] are the caller's raw keys, hashed identically. */
-    fun remove(tag: String, group: String) {
-        if (!registered) return
-        val safeTag = tag.hashCode().toUInt().toString(16)
-        val safeGroup = group.hashCode().toUInt().toString(16)
-        runScript("[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] > ${'$'}null; " +
-            "[Windows.UI.Notifications.ToastNotificationManager]::History.Remove('$safeTag', '$safeGroup', '$APP_ID')")
+    override fun remove(tag: String, group: String) {
+        scriptRunner(historyRemoveScript(tag, group))
     }
     private fun runScript(script: String) {
         val encoded = Base64.getEncoder().encodeToString(script.toByteArray(Charsets.UTF_16LE))
@@ -93,3 +98,14 @@ internal object DesktopToastNotifications {
         } finally { if (process.isAlive) process.destroyForcibly() }
     }
 }
+
+/** The one place tag and group keys are turned into the identifiers the shell stores them under. */
+internal fun notificationKeyHash(value: String): String = value.hashCode().toUInt().toString(16)
+
+internal fun historyRemoveScript(tag: String, group: String): String =
+    "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] > \$null; " +
+        "[Windows.UI.Notifications.ToastNotificationManager]::History.Remove('${notificationKeyHash(tag)}', '${notificationKeyHash(group)}', '${DesktopToastNotifications.APP_ID_FOR_TESTS}')"
+
+internal fun historyRemoveGroupScript(group: String): String =
+    "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType=WindowsRuntime] > \$null; " +
+        "[Windows.UI.Notifications.ToastNotificationManager]::History.RemoveGroup('${notificationKeyHash(group)}', '${DesktopToastNotifications.APP_ID_FOR_TESTS}')"

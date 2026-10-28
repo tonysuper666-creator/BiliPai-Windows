@@ -21,6 +21,8 @@ internal object DesktopIntegrationSelfTest {
 
     private interface Rect32 : StdCallLibrary {
         fun GetWindowRect(hwnd: Pointer, rect: IntArray): Boolean
+        fun GetForegroundWindow(): Pointer?
+        fun GetWindowThreadProcessId(hwnd: Pointer, pid: IntArray): Int
         companion object {
             val instance: Rect32 by lazy { Native.load("user32", Rect32::class.java) }
         }
@@ -43,16 +45,18 @@ internal object DesktopIntegrationSelfTest {
     private fun measure(report: File, smtcReport: File?, move: IntArray, smtcDelaySeconds: Int): String {
         val window = awaitWindow(90_000) ?: return "{\"window\":null,\"error\":\"no window after 90 s\"}"
         val restored = rectangle(window)
-        onEdt {
-            window.setBounds(move[0], move[1], move[2], move[3])
-            window.toFront()
-        }
+        onEdt { window.setBounds(move[0], move[1], move[2], move[3]) }
         Thread.sleep(6_000)
         val moved = rectangle(window)
+        // Put our own window out of the foreground so the successor's activation request is observable.
+        val minimized = minimize(window)
+        val foregroundBefore = foregroundPid()
         val before = processes()
         val successorReport = File(report.absoluteFile.parentFile, "successor.json").apply { delete() }
         val child = DesktopApplicationRestart.prepare()
             .launch(listOf("--single-instance-probe=" + successorReport.absolutePath))
+        val becameForeground = awaitForeground(ProcessHandle.current().pid().toInt(), 8_000)
+        val foregroundAfter = foregroundPid()
         val exited = child.waitFor(30, TimeUnit.SECONDS)
         if (!exited) child.destroyForcibly()
         val after = processes()
@@ -61,6 +65,10 @@ internal object DesktopIntegrationSelfTest {
         return buildString {
             append("{\"ownerPid\":").append(ProcessHandle.current().pid())
             append(",\"windowVisible\":").append(window.isShowing)
+            append(",\"minimizedBefore\":").append(minimized)
+            append(",\"foregroundBefore\":").append(foregroundBefore)
+            append(",\"foregroundAfter\":").append(foregroundAfter)
+            append(",\"becameForeground\":").append(becameForeground)
             append(",\"windowRestored\":").append(restored)
             append(",\"windowMoved\":").append(moved)
             append(",\"moveRequested\":[").append(move.joinToString(",")).append("]")
@@ -87,6 +95,29 @@ internal object DesktopIntegrationSelfTest {
             Thread.sleep(250)
         }
         return null
+    }
+
+    private fun minimize(window: Window): Boolean {
+        if (window !is java.awt.Frame) return false
+        onEdt { window.extendedState = window.extendedState or java.awt.Frame.ICONIFIED }
+        Thread.sleep(1_500)
+        return onEdt { window.extendedState and java.awt.Frame.ICONIFIED != 0 }
+    }
+
+    private fun foregroundPid(): Int = runCatching {
+        val hwnd = Rect32.instance.GetForegroundWindow() ?: return 0
+        val pid = IntArray(1)
+        Rect32.instance.GetWindowThreadProcessId(hwnd, pid)
+        pid[0]
+    }.getOrDefault(0)
+
+    private fun awaitForeground(pid: Int, timeoutMs: Long): Boolean {
+        val deadline = System.currentTimeMillis() + timeoutMs
+        while (System.currentTimeMillis() < deadline) {
+            if (foregroundPid() == pid) return true
+            Thread.sleep(200)
+        }
+        return false
     }
 
     private fun rectangle(window: Window): String {
