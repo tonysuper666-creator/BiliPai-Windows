@@ -8,7 +8,7 @@ import com.bilipai.desktop.nvidia.luidMatches
 /** Muted hardware decode in an unrealized-to-screen AWT host. Never shows it or requests SR/HDR.
  * A null VO with d3d11va-copy creates the default adapter in pinned mpv video/d3d.c;
  * a hidden D3D11 VO is needed to honor d3d11-adapter and observe the actual LUID. */
-internal class DesktopHardwareSelfTest(private val libraryPath: () -> Path) {
+internal class DesktopHardwareSelfTest(private val apiLoader: () -> Api) {
     internal interface Api : Library {
         fun mpv_create(): Pointer?
         fun mpv_set_option_string(handle: Pointer, name: String, value: String): Int
@@ -25,7 +25,7 @@ internal class DesktopHardwareSelfTest(private val libraryPath: () -> Path) {
         val deadline=System.nanoTime()+10_000_000_000L
         val adapters=snapshot.adapters.filter { it.physical && it.vendor != HardwareVendor.SOFTWARE }
         if(adapters.none {a->a.decoders.any {it.bitDepth==8 && it.support==HardwareSupport.YES}})return emptyList()
-        val api=Native.load(libraryPath().toAbsolutePath().toString(),Api::class.java,mapOf(Library.OPTION_STRING_ENCODING to "UTF-8"))
+        val api=apiLoader()
         val result=mutableListOf<DecodeMeasurement>()
         // At most one sample per codec/adapter in the shared ten second budget.
         for (adapter in adapters) for(codec in VideoCodec.entries) {
@@ -101,5 +101,11 @@ internal class DesktopHardwareSelfTest(private val libraryPath: () -> Path) {
     }
     private fun number(api:Api, handle:Pointer, name:String):Long=Memory(8).use { m ->
         m.clear();if(api.mpv_get_property(handle,name,4,m)>=0) m.getLong(0).coerceAtLeast(0) else 0L
+    }
+    companion object {
+        /** Explicit reviewed-library entry for the account-free foreground verification harness. */
+        fun forLibrary(path:()->Path)=DesktopHardwareSelfTest {
+            Native.load(path().toAbsolutePath().toString(),Api::class.java,mapOf(Library.OPTION_STRING_ENCODING to "UTF-8"))
+        }
     }
 }

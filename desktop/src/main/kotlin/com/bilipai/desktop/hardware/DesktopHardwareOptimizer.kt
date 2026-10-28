@@ -150,14 +150,14 @@ internal class DesktopHardwareOptimizer(
     override fun close() {closed=true;worker.shutdownNow()}
 
     companion object {
-        fun windows(mpvLibrary:()->Path):DesktopHardwareOptimizer {
+        fun windows(apiLoader:()->DesktopHardwareSelfTest.Api):DesktopHardwareOptimizer {
           // Same machine-local GPU directory as DesktopNvidiaHealthStore, outside account backups.
           val file=System.getenv("LOCALAPPDATA")?.takeIf {it.isNotBlank()}?.let {base->
               runCatching {Path.of(base,HEALTH_DIRECTORY_NAME,HEALTH_SUBDIRECTORY_NAME,"hardware-optimization-v3.json")}.getOrNull()
           }
           val window=java.util.concurrent.atomic.AtomicLong()
           return DesktopHardwareOptimizer(
-            DesktopHardwareProbe {window.get().takeIf {it!=0L} ?: WindowsHardwareFacts.ownWindow()}::probe,DesktopHardwareSelfTest(mpvLibrary)::run,
+            DesktopHardwareProbe {window.get().takeIf {it!=0L} ?: WindowsHardwareFacts.ownWindow()}::probe,DesktopHardwareSelfTest(apiLoader)::run,
             DesktopHardwareCache(file),
             testAllowed={
                 val paused=System.getProperty("bilipai.hardware.selftest.pause")?.let {Files.exists(Path.of(it))}==true

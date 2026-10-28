@@ -14,6 +14,7 @@ import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.min
 import com.bilipai.desktop.hardware.DesktopHardwareOptimizer
+import com.bilipai.desktop.hardware.DesktopHardwareSelfTest
 import com.bilipai.desktop.player.MpvNative
 
 /** Windows-only privacy additions; the original Android sanitizer runs afterwards. */
@@ -25,6 +26,20 @@ internal fun sanitizeDesktopDiagnosticText(value:String):String = sanitizeLogMes
         .replace(Regex("(?i)(auth_key|w_rid|x-bili-ticket|x-api-key)[=:]\\s*[^&\\s,}]+"), "$1=***")
         .replace(Regex("(?i)\"(password|access_token|refresh_token|authorization|cookie)\"\\s*:\\s*\"[^\"]*\""), "\"$1\":\"***\"")
 )
+
+/** Reuse the player's verified selection/fallback loader. No second production DLL locator or load gate. */
+private fun hardwareSelfTestApi(native:MpvNative):DesktopHardwareSelfTest.Api = object:DesktopHardwareSelfTest.Api {
+    override fun mpv_create()=native.mpv_create()
+    override fun mpv_initialize(handle:com.sun.jna.Pointer)=native.mpv_initialize(handle)
+    override fun mpv_set_option_string(handle:com.sun.jna.Pointer,name:String,value:String)=native.mpv_set_option_string(handle,name,value)
+    override fun mpv_command(handle:com.sun.jna.Pointer,args:com.sun.jna.StringArray)=native.mpv_command(handle,args)
+    override fun mpv_get_property_string(handle:com.sun.jna.Pointer,name:String)=native.mpv_get_property_string(handle,name)
+    override fun mpv_get_property(handle:com.sun.jna.Pointer,name:String,format:Int,data:com.sun.jna.Pointer)=native.mpv_get_property(handle,name,format,data)
+    override fun mpv_free(data:com.sun.jna.Pointer)=native.mpv_free(data)
+    override fun mpv_wait_event(handle:com.sun.jna.Pointer,timeout:Double)=native.mpv_wait_event(handle,timeout)
+    override fun mpv_request_log_messages(handle:com.sun.jna.Pointer,level:String)=native.mpv_request_log_messages(handle,level)
+    override fun mpv_terminate_destroy(handle:com.sun.jna.Pointer)=native.mpv_terminate_destroy(handle)
+}
 
 /** One process-owned serial consumer. No account, network client, or upload dependency. */
 internal class DesktopDiagnostics(
@@ -39,7 +54,7 @@ internal class DesktopDiagnostics(
     private val root=store.root.toAbsolutePath().normalize()
     private val settings=DesktopDiagnosticSettings(store)
     internal val hardwareOptimizer:DesktopHardwareOptimizer? = if(hardwareEnabled && com.sun.jna.Platform.isWindows())
-        DesktopHardwareOptimizer.windows {MpvNative.locateLibrary().toPath()} else null
+        DesktopHardwareOptimizer.windows {hardwareSelfTestApi(MpvNative.load())} else null
     private val mutableEnhanced=MutableStateFlow(settings.getEnhancedDiagnosticLoggingEnabledSync())
     val enhancedEnabled:StateFlow<Boolean> = mutableEnhanced.asStateFlow()
     private val mutableError=MutableStateFlow<String?>(null)

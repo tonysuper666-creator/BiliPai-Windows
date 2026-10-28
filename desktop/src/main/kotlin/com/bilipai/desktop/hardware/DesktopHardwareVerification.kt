@@ -14,7 +14,7 @@ internal object DesktopHardwareVerification {
         if(!allowed()) {Files.writeString(output,"{\"status\":\"deferred_pause\"}");return}
         val snapshot=DesktopHardwareProbe().probe()
         val probeOnly=options["--probe-only"]=="1"
-        val measurements=if(probeOnly)emptyList() else runCatching {DesktopHardwareSelfTest {Path.of(checkNotNull(options["--library"]))}.run(snapshot,::allowed)}.getOrElse {emptyList()}
+        val measurements=if(probeOnly)emptyList() else runCatching {DesktopHardwareSelfTest.forLibrary {Path.of(checkNotNull(options["--library"]))}.run(snapshot,::allowed)}.getOrElse {emptyList()}
         val learning=HardwareLearning(snapshot.fingerprint(),measurements,selfTestComplete=!probeOnly && allowed(),
             selfTestReason=if(probeOnly)"probe_only" else if(allowed())"completed" else "deferred")
         val state=HardwareOptimizationState(snapshot,learning,decideHardwarePolicy(snapshot,learning))
