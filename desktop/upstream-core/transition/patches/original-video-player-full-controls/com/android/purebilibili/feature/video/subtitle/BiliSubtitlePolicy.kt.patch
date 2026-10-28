@@ -1,0 +1,12 @@
+# upstream added track languages for CHINESE_ONLY; the legacy caller has none
+--- a/original-video-player-full-controls/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt
++++ b/original-video-player-full-controls/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt
+@@ -71,7 +71,7 @@
+     primaryTrackLikelyAi: Boolean,
+     secondaryTrackLikelyAi: Boolean,
+     isMuted: Boolean
+-): SubtitleDisplayMode = com.android.purebilibili.core.subtitle.resolveSubtitleDisplayModeByAutoPreference(preference = preference, hasPrimaryTrack = hasPrimaryTrack, hasSecondaryTrack = hasSecondaryTrack, primaryTrackLikelyAi = primaryTrackLikelyAi, secondaryTrackLikelyAi = secondaryTrackLikelyAi, isMuted = isMuted)
++): SubtitleDisplayMode = com.android.purebilibili.core.subtitle.resolveSubtitleDisplayModeByAutoPreference(preference = preference, hasPrimaryTrack = hasPrimaryTrack, hasSecondaryTrack = hasSecondaryTrack, primaryTrackLikelyAi = primaryTrackLikelyAi, secondaryTrackLikelyAi = secondaryTrackLikelyAi, primaryTrackLanguage = null, secondaryTrackLanguage = null, isMuted = isMuted)
+ 
+ fun resolveSubtitlePreferenceSession(
+     bvid: String,

@@ -294,6 +294,8 @@ internal class DesktopDiagnostics(
 internal object DesktopDiagnosticsBridge {
     private val active=AtomicReference<DesktopDiagnostics?>()
     fun install(consumer:DesktopDiagnostics) {check(active.compareAndSet(null,consumer)){"诊断记录器已安装"}}
+    // Upstream android.util.Log calls (compiled from the merged upstream tree) land in the same recorder.
+    init { android.util.Log.sink = android.util.Log.Sink { level, tag, message, cause -> record(level, tag, message, cause) } }
     fun retire(consumer:DesktopDiagnostics) {active.compareAndSet(consumer,null)}
     fun areVerboseRuntimeLogsEnabled():Boolean = active.get()?.enhancedEnabled?.value == true
     fun reportApiError(endpoint:String,httpCode:Int,errorMessage:String) {

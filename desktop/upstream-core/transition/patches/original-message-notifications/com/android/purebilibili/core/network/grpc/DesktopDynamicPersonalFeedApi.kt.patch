@@ -1,0 +1,54 @@
+# drop declarations upstream core-data now owns: DynamicPersonalFeedPage, buildDynamicPersonalFeedRequest, parseDynamicPersonalFeedReply
+--- a/original-message-notifications/com/android/purebilibili/core/network/grpc/DesktopDynamicPersonalFeedApi.kt
++++ b/original-message-notifications/com/android/purebilibili/core/network/grpc/DesktopDynamicPersonalFeedApi.kt
+@@ -21,12 +21,6 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ 
+-/** Notification metadata only; opening a card loads its full detail through the existing UI route. */
+-data class DynamicPersonalFeedPage(
+-    val items: List<DynamicItem> = emptyList(),
+-    val offset: String = "",
+-    val hasMore: Boolean = false,
+-)
+ 
+ internal class DesktopDynamicPersonalFeedApi(private val request: suspend (String, ByteArray) -> ByteArray,
+     private val accessToken: () -> String?) {
+@@ -39,36 +33,7 @@
+         }
+ }
+ 
+-internal fun buildDynamicPersonalFeedRequest(hostUid: Long, offset: String, page: Int): ByteArray {
+-    require(hostUid > 0L && page > 0)
+-    return ProtoWire.message(
+-        ProtoWire.int64(1, hostUid),
+-        ProtoWire.string(2, offset),
+-        ProtoWire.int32(3, page),
+-        // Ordinary proto3 int32 defaults to zero: never omit this field, even on later pages.
+-        ProtoWire.int32(4, 1),
+-        ProtoWire.int32(6, 8),
+-    )
+-}
+-
+-internal fun parseDynamicPersonalFeedReply(bytes: ByteArray): DynamicPersonalFeedPage {
+-    val items = ArrayList<DynamicItem>()
+-    var offset = ""
+-    var hasMore = false
+-    for (field in ProtoWire.parseFields(bytes)) {
+-        when (field.number) {
+-            1 -> if (field.wireType == ProtoWire.WIRE_LENGTH_DELIMITED) {
+-                parsePersonalDynamicItem(field.bytes)?.let(items::add)
+-            }
+-            2 -> offset = ProtoWire.stringValue(field)
+-            3 -> hasMore = field.varint != 0L
+-            // Field 4 is the token submitted by DynAllUpdOffset, not a committed read watermark.
+-            // Background polling must neither submit it nor use it to suppress or clear notices.
+-        }
+-    }
+-    check(!hasMore || offset.isNotBlank()) { "动态预加载分页游标为空" }
+-    return DynamicPersonalFeedPage(items, offset, hasMore)
+-}
++
+ 
+ private fun parsePersonalDynamicItem(bytes: ByteArray, depth: Int = 0): DynamicItem? {
+     check(depth < 16) { "动态转发层级过深" }

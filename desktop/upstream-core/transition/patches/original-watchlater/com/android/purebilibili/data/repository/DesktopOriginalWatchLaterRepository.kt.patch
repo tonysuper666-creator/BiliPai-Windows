@@ -1,0 +1,30 @@
+# drop declarations upstream core-data now owns: WatchLaterPage, buildWatchLaterPageParams
+--- a/original-watchlater/com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt
++++ b/original-watchlater/com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt
+@@ -9,26 +9,7 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ 
+-data class WatchLaterPage(
+-    val items: List<VideoItem>,
+-    val totalCount: Int,
+-    val hasMore: Boolean,
+-)
+ 
+-fun buildWatchLaterPageParams(
+-    page: Int,
+-    viewed: Int,
+-    keyword: String,
+-    ascending: Boolean,
+-): Map<String, String> = mapOf(
+-    "pn" to page.coerceAtLeast(1).toString(),
+-    "ps" to "20",
+-    "viewed" to viewed.toString(),
+-    "key" to keyword.trim(),
+-    "asc" to ascending.toString(),
+-    "need_split" to "true",
+-    "web_location" to "333.881",
+-)
+ 
+ class DesktopOriginalWatchLaterRepository(private val environment: com.android.purebilibili.feature.watchlater.DesktopWatchLaterEnvironment) {
+     private val PAGE_SIZE = 20

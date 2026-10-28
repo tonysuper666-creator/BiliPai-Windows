@@ -1,0 +1,39 @@
+# drop declarations upstream core-data now owns: buildSpaceLikedArchiveParams
+--- a/api/com/android/purebilibili/core/network/DesktopSpaceRequestPolicy.kt
++++ b/api/com/android/purebilibili/core/network/DesktopSpaceRequestPolicy.kt
+@@ -9,35 +9,4 @@
+     const val ACCESS_TOKEN_PLATFORM_ANDROID = "android"
+ }
+ 
+-fun buildSpaceLikedArchiveParams(
+-    mid: Long,
+-    page: Int = 1,
+-    pageSize: Int = 20,
+-    accessToken: String?,
+-    accessTokenPlatform: String = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID,
+-): Map<String, String> {
+-    val params = linkedMapOf(
+-        "build" to "8430300",
+-        "version" to "8.43.0",
+-        "c_locale" to "zh_CN",
+-        "channel" to "master",
+-        "mobi_app" to "android",
+-        "platform" to "android",
+-        "s_locale" to "zh_CN",
+-        "pn" to page.toString(),
+-        "ps" to pageSize.toString(),
+-        "statistics" to "{\"appId\":1,\"platform\":3,\"version\":\"8.43.0\",\"abtest\":\"\"}",
+-        "ts" to AppSignUtils.getTimestamp().toString(),
+-        "vmid" to mid.toString(),
+-    )
+-    accessToken?.takeIf { it.isNotBlank() }?.let { params["access_key"] = it }
+-    return if (
+-        !accessToken.isNullOrBlank() &&
+-        accessTokenPlatform == TokenManager.ACCESS_TOKEN_PLATFORM_TV
+-    ) {
+-        AppSignUtils.signForTvApi(params)
+-    } else {
+-        AppSignUtils.signForAndroidHdLogin(params)
+-    }
+-}
+ 

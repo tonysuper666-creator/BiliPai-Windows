@@ -1,0 +1,12 @@
+# upstream updateMemberSign now requires an explicit account cookie; it comes from the desktop account store
+--- a/profile-main/com/android/purebilibili/feature/profile/ProfileViewModel.kt
++++ b/profile-main/com/android/purebilibili/feature/profile/ProfileViewModel.kt
+@@ -635,7 +635,7 @@
+                 space = beforeSave.space.copy(isSavingSign = true, signSaveMessage = null)
+             )
+             val result = runCatching {
+-                environment.api.updateMemberSign(userSign = sign.trim(), csrf = csrf)
++                com.android.purebilibili.data.repository.legacyUpdateMemberSign(environment.api, environment.accounts, userSign = sign.trim(), csrf = csrf)
+             }
+             (result.exceptionOrNull() as? CancellationException)?.let { throw it }
+             kotlinx.coroutines.currentCoroutineContext().ensureActive()

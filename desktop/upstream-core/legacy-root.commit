@@ -1,0 +1,4 @@
+# Last desktop commit before upstream was merged directly (TON-993). Producers that are not
+# migrated yet read upstream originals and desktop data files from this tree; see settings.gradle.kts.
+# Remove together with the last such producer.
+d9595dc75cfe8d5c7128cb76352a607953b8bab6

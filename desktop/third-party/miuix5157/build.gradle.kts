@@ -10,12 +10,17 @@ group = "com.bilipai.windows.sourcefork"
 version = "0.9.4-5c91d5e5-windows-source1"
 
 val verifyPinnedSource by tasks.registering(Exec::class) {
-    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "verify-source.py", "--root", projectDir.absolutePath)
+    // The pinned v0.2.5 navigation originals live in the legacy read point (see settings.gradle.kts):
+    // the merged root carries upstream's current miuix-navigation.
+    val legacyRoot = file(gradle.extra["bilipai.legacyRoot"] as String)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "verify-source.py", "--root", projectDir.absolutePath,
+        "--originals-root", legacyRoot.absolutePath)
     inputs.file("upstream-provenance.json")
     inputs.file("verify-source.py")
     inputs.dir("upstream")
     inputs.dir("bilipai-v025-nav")
-    inputs.files("../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt", "../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt", "../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/gesture/NavPredictiveBackDriver.kt", "../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/core/NavBackCompletionPolicy.kt")
+    inputs.files(listOf("core/NavDisplay.kt", "gesture/PredictiveBackHandler.kt", "gesture/NavPredictiveBackDriver.kt", "core/NavBackCompletionPolicy.kt")
+        .map { legacyRoot.resolve("miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/$it") })
 }
 
 abstract class BakeSquircleSdfTask : DefaultTask() {

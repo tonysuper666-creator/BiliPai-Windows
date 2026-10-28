@@ -1,0 +1,12 @@
+# drop declarations upstream core-data now owns: DynamicReactionUser, DynamicReactionPage
+--- a/dynamic-full-card/com/android/purebilibili/core/network/grpc/DesktopDynamicReactionApi.kt
++++ b/dynamic-full-card/com/android/purebilibili/core/network/grpc/DesktopDynamicReactionApi.kt
+@@ -6,8 +6,6 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ 
+-data class DynamicReactionUser(val mid: Long, val name: String, val face: String, val action: String)
+-data class DynamicReactionPage(val title: String, val users: List<DynamicReactionUser>, val offset: String, val hasMore: Boolean)
+ 
+ /** Field numbers match PiliPlus's bilibili.app.dynamic.v2 ReactionList models. */
+ internal class DesktopDynamicReactionApi(private val request: suspend (String, ByteArray) -> ByteArray) {

@@ -140,3 +140,7 @@ desktop/verification/**/private-native-home/
 !build-logic/src/main/java/com/android/purebilibili/build/
 !app/src/main/baseline-prof.txt
 !app/src/main/baselineProfiles/startup-prof.txt
+
+# Legacy read point materialized by desktop/settings.gradle.kts
+/.legacy-root/
+/.legacy-root.tar

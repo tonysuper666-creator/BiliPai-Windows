@@ -1,0 +1,36 @@
+# drop declarations upstream core-data now owns: FavoriteResourceRequestParams, resolveFavoriteResourceRequestParams
+--- a/original-favorites/com/android/purebilibili/data/repository/DesktopOriginalFavoriteRepository.kt
++++ b/original-favorites/com/android/purebilibili/data/repository/DesktopOriginalFavoriteRepository.kt
+@@ -29,32 +29,6 @@
+     )
+ }
+ 
+-data class FavoriteResourceRequestParams(
+-    val page: Int,
+-    val pageSize: Int,
+-    val keyword: String,
+-    val order: String,
+-    val type: Int,
+-    val tid: Int,
+-    val platform: String,
+-)
+-fun resolveFavoriteResourceRequestParams(
+-    pn: Int,
+-    ps: Int,
+-    keyword: String?,
+-    order: String?,
+-    type: Int,
+-    tid: Int,
+-    platform: String,
+-): FavoriteResourceRequestParams = FavoriteResourceRequestParams(
+-    page = pn.coerceAtLeast(1),
+-    pageSize = ps.coerceIn(1, 20),
+-    keyword = keyword.orEmpty(),
+-    order = order?.takeIf(String::isNotBlank) ?: "mtime",
+-    type = type,
+-    tid = tid,
+-    platform = platform.ifBlank { "web" },
+-)
+ class DesktopOriginalFavoriteRepository(private val environment: com.android.purebilibili.feature.list.DesktopFavoriteEnvironment) {
+     private val api = environment.api
+ 

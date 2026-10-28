@@ -1,0 +1,12 @@
+# upstream FollowedLiveData.livingNum became nullable
+--- a/original-message-notifications/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt
++++ b/original-message-notifications/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt
+@@ -379,7 +379,7 @@
+                 val data = fetch { source.followedLive(page) }
+                 val rooms = data.list.orEmpty()
+                 for (room in rooms) if (room.liveStatus == 1) living.putIfAbsent(room.roomid, room)
+-                if (rooms.isEmpty() || data.livingNum == 0 || living.size >= data.livingNum ||
++                if (rooms.isEmpty() || data.livingNum == 0 || living.size >= (data.livingNum ?: 0) ||
+                     (data.pageinfo?.total_page?.let { it > 0 && page >= it } == true)) {
+                     complete = true
+                     break

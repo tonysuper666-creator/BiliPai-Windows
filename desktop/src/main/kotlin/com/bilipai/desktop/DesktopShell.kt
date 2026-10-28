@@ -1,5 +1,6 @@
 package com.bilipai.desktop
 
+import com.bilipai.desktop.plugins.asAndroidContext
 import com.bilipai.desktop.ui.desktopOriginalModalContentBlur
 
 import com.bilipai.desktop.appearance.DesktopAppearanceSettings
@@ -149,7 +150,7 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
     val applicationImages = LocalDesktopApplicationImageLoader.current
     val pluginStore = remember(applicationPluginStore) {
         (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
-            com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
+            com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store).asAndroidContext())
         }
     }
     val blockedUps = remember(pluginStore) {

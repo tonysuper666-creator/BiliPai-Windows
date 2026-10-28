@@ -1,0 +1,52 @@
+# drop declarations upstream core-data now owns: SearchAllResults, buildSearchRecommendParams; construct upstream SearchAllResults
+--- a/original-search-pages/com/android/purebilibili/data/repository/DesktopOriginalSearchRepository.kt
++++ b/original-search-pages/com/android/purebilibili/data/repository/DesktopOriginalSearchRepository.kt
+@@ -23,38 +23,7 @@
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.withContext
+ 
+-data class SearchAllResults(
+-    val videos: List<VideoItem> = emptyList(),
+-    val ups: List<SearchUpItem> = emptyList(),
+-    val bangumi: List<com.android.purebilibili.data.model.response.BangumiSearchItem> = emptyList(),
+-    val pageInfo: SearchRepository.SearchPageInfo
+-)
+-
+-internal fun buildSearchRecommendParams(
+-    accessToken: String?,
+-    accessTokenPlatform: String,
+-    timestampSeconds: Long
+-): Map<String, String> {
+-    val params = linkedMapOf(
+-        "build" to "8430300",
+-        "channel" to "master",
+-        "version" to "8.43.0",
+-        "c_locale" to "zh_CN",
+-        "mobi_app" to "android",
+-        "platform" to "android",
+-        "s_locale" to "zh_CN",
+-        "from" to "2",
+-        "ts" to timestampSeconds.toString()
+-    )
+-    accessToken?.takeIf { it.isNotBlank() }?.let { params["access_key"] = it }
+-    return if (!accessToken.isNullOrBlank() &&
+-        accessTokenPlatform == TokenManager.ACCESS_TOKEN_PLATFORM_TV
+-    ) {
+-        AppSignUtils.signForTvApi(params)
+-    } else {
+-        AppSignUtils.signForAndroidHdLogin(params)
+-    }
+-}
++
+ 
+ private typealias SearchPageInfo = SearchRepository.SearchPageInfo
+ 
+@@ -146,7 +115,7 @@
+                 fallbackResultCount = videos.size + ups.size + bangumi.size,
+                 pageSize = response.data?.pagesize ?: 20
+             )
+-            run { checked(); Result.success(SearchAllResults(videos, ups, bangumi, pageInfo)) }
++            run { checked(); Result.success(SearchAllResults(videos = videos, ups = ups, bangumi = bangumi, pageInfo = pageInfo)) }
+         } catch (e: CancellationException) {
+             throw e
+         } catch (e: Exception) {
