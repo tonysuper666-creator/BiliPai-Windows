@@ -17,7 +17,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -83,9 +82,7 @@ class DesktopUpdater private constructor(
             "签名 manifest 必须来自配置服务器或自己的 GitHub 发布仓库"
         }
         // No Bilibili client, cookie jar or account identifiers are shared with this client.
-        val query = url.toHttpUrl().newBuilder()
-            .addQueryParameter("version", settings.version).addQueryParameter("channel", settings.channel)
-            .addQueryParameter("installationId", id).build().toString()
+        val query = DistributionTrust.manifestRequestUrl(url, base, settings.version, settings.channel, id)
         val raw = fetchSignedText(query, 32 * 1024)
         val manifest = SignedDistributionFeed.manifest(raw, settings.channel, base, publicKey = signedPublicKeyForTest ?: DistributionTrust.PUBLIC_KEY)
         distributionState.accept("manifest", manifest.sequence, raw)
@@ -126,7 +123,7 @@ class DesktopUpdater private constructor(
     }
 
     private suspend fun fetchSignedText(url: String, limit: Int): String {
-        val scope = VeyraCatalogHttpScope(url, asset = true)
+        val scope = VeyraCatalogHttpScope(url, asset = false)
         val request = Request.Builder().url(url).tag(VeyraCatalogHttpScope::class.java, scope)
             .header("User-Agent", "BiliPai-Windows-Updater").build()
         scope.requireAllowed(request)
@@ -1073,6 +1070,8 @@ class DesktopUpdater private constructor(
             knownRunningStages: () -> Set<Path> = { emptySet() },
             distributionBase: String? = null,
             signedPublicKey: String? = null,
+            manifestUrl: String? = null,
+            configUrl: String? = null,
         ): DesktopUpdater {
             require(DesktopVersion.parse(currentVersion) != null && validRepository(repository))
             val childData = childLocalAppData.toAbsolutePath().normalize()
@@ -1082,7 +1081,7 @@ class DesktopUpdater private constructor(
             require(channel in setOf("stable", "prerelease", "dev"))
             return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, channel = channel, executable = executable,
                 source = if (distributionBase == null) "github-legacy" else "signed",
-                distributionBase = distributionBase ?: DistributionTrust.DEFAULT_BASE),
+                distributionBase = distributionBase ?: DistributionTrust.DEFAULT_BASE, manifestUrl = manifestUrl, configUrl = configUrl),
                 updateRoot, client, childData, onProcessStarted, compatibleCatalog, processFactory, knownRunningStages, signedPublicKey)
         }
         /** Call before creating the UI; true means a previously verified newer window is running. */

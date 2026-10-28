@@ -40,13 +40,13 @@ manifest 的 `rolloutPercent` 在 0–100 之间，通过随机安装 ID 与版�
 
 `server.mjs` 仅依赖 Node 标准库，绑定 loopback，前面使用 Caddy。临时路径使用 `BILIPAI_URL_PREFIX=/bilipai`；专用域名从根目录提供页面时，设 `BILIPAI_URL_PREFIX` 为空字符串并在 Caddy 使用普通 `reverse_proxy`。邀请码在服务器 `data/private/invitations.json` 中保存哈希，每个码有单独标签和频道权限。浏览器表单提交后获得 HttpOnly/Secure/SameSite 会话；每次下载重新检查原邀请码是否有效，作废也立即使现有会话失效。
 
-安装包下载需要邀请码。供已安装客户端使用的签名 manifest、配置和 ZIP 更新资产公开提供，避免更新请求携带邀请码或账号数据。下载日志仅记录邀请码标签、时间和版本，不记原始邀请码、IP、User-Agent、安装 ID 或 B 站信息。没有 HTTP 访问日志输出。
+邀请码只保护 MSI/EXE 初始安装包。签名 manifest、配置和便携 ZIP 更新资产公开提供，避免更新请求携带邀请码或账号数据。作废邀请码会立即禁止 MSI/EXE 下载并使旧会话失效，但不能阻止对方获取公开 ZIP 或继续检查更新；这不是对便携包或使用者的封禁。下载页在解锁前后均明确显示这条边界。下载日志仅记录邀请码标签、时间和版本，不记原始邀请码、IP、User-Agent、安装 ID 或 B 站信息。没有 HTTP 访问日志输出。
 
 服务器目录：
 
 ```text
 /opt/bilipai-distribution/
-  server.mjs, invitation.mjs, publish.py
+  server.mjs, invitation.mjs, invitation.py, publish.py, verify-publication.mjs, sign.mjs
   data/private/invitations.json, downloads.jsonl
   data/channels/<channel>/current.json
   data/channels/<channel>/<sequence>/manifest.json, config.json, publish.json
@@ -54,9 +54,18 @@ manifest 的 `rolloutPercent` 在 0–100 之间，通过随机安装 ID 与版�
   data/installers/<version>/<msi-or-exe>
 ```
 
-`publish.py` 先检查上传文件摘要和不可变资产冲突，再写入完整版本目录，最后用单次原子替换切换 `current.json`，同时切换该频道的 manifest、配置和下载页版本。失败时旧指针保持不变。保留旧版本目录，以便签发新序号撤回版本。
+`publish.py` 在任何指针/资产写入前，用源码固定的 Ed25519 公钥验证 manifest、config 和 archive 摘要签名，并核对频道、序号、有效期和策略。MSI/EXE 的文件名、大小、SHA-256 也写入签名 manifest 的 `installer` 字段，stable 批准标记必须在签名 payload 内；自报摘要或 `publish.json` 的 `stableApproved` 不能授权发布。随后检查上传文件与已签名摘要、大小和不可变资产冲突，再写入完整版本目录，最后用单次原子替换切换 `current.json`，同时切换该频道的 manifest、配置和下载页版本。失败时旧指针保持不变。保留旧版本目录，以便签发新序号撤回版本。
 
-`bilipai-distribution.service` 和 `Caddyfile.fragment` 是候选配置。安装服务前由独立复审确认服务账户、目录权限、端口 8140 与已有服务无冲突。下载服务只需读取公开产物，私有目录允许写下载日志；发布操作由 SSH 运维用户执行。
+`bilipai-distribution.service` 和 `Caddyfile.fragment` 是候选配置。安装服务前由独立复审确认服务账户、目录权限、端口 8140 与已有服务无冲突。`data/` 必须归 `bilipai-distribution` 服务账号所有，目录 0700、私有/原子写入文件 0600 保留。**发布、邀请码登记和服务读取均使用这个 UID**；两个写入入口发现 data owner 不等于当前 UID 就拒绝。不要由 SSH 登录用户直接写 data。部署时单独准备 `incoming/` 为 SSH 运维用户所有，0755；这里仅有将要公开的签名文档和安装/更新产物。签名上传程序先让此 incoming 目录中的文件可读，再用 `sudo -n -u bilipai-distribution` 执行固定 publisher。服务账号不需要修改程序或 systemd 文件。
+
+部署时由管理员准备（本轮不在生产执行）：
+
+```sh
+sudo install -d -o bilipai-distribution -g bilipai-distribution -m 0700 /opt/bilipai-distribution/data
+sudo install -d -o ubuntu -g ubuntu -m 0755 /opt/bilipai-distribution/incoming
+```
+
+程序文件保持管理员所有且服务账号只读。仅向运维用户授予所需的固定 publisher/invitation 调用权限，不把私钥放服务器。
 
 首次修改 Caddy 前备份：
 
@@ -72,8 +81,8 @@ sudo systemctl reload caddy
 运维创建/撤销邀请码（服务器执行，码不进仓库，不将结果放公开评论）：
 
 ```sh
-node invitation.mjs create friend-01 dev
-node invitation.mjs revoke friend-01
+sudo -n -u bilipai-distribution node /opt/bilipai-distribution/invitation.mjs create friend-01 dev
+sudo -n -u bilipai-distribution node /opt/bilipai-distribution/invitation.mjs revoke friend-01
 ```
 
 ## 签名和上传入口
@@ -96,6 +105,8 @@ node desktop/distribution/withdraw.mjs 0.2.427.202 dev
 
 撤回命令在 Mac 上读取并验证服务器当前签名，签发更高序号，禁止继续提供该版本。它不是把旧 manifest 复制回去，也不会强制降级已经运行健康的版本。启动坏版本的回退由客户端 `StartupHealth` 负责。
 
+邀请码写入使用 OS `flock` 串行化；进程退出/被终止时释放锁，没有需手工清除的 mkdir 锁。撤回命令的本机临时目录在成功或失败后都通过 `finally` 删除。
+
 `stable` 还要求实时读取 TON-1009 为 done，以及 Mac 上 `BILIPAI_STABLE_APPROVAL` 文件证明李政先用过 dev：`{"devUsedBy":"李政","devVersion":"…","evidence":"实际使用的验收记录"}`。该文件不进仓库。当前没有此批准，也没有发布 stable。
 
 **未完成的一键范围**：此入口已连接签名、上传和指针切换；尚未串联 Mac 全门禁、Windows jpackage 构建、Sandbox 场景和安全启动任务。没有对应验收产物会直接失败，不能称为已完成的一键发版。既有 `build.ps1 -ReleaseGate` 含直接 GUI 启动，不能未经改造在 winbox 上运行，真机启动仍只能走 `BiliPai-MacTest`。
@@ -107,10 +118,14 @@ node --test desktop/distribution/server.test.mjs
 python3 desktop/distribution/publish_test.py
 PYTHONPATH=desktop/tools python3.12 -m unittest discover \
   -s desktop/tools/tests -p test_publish_release.py -v
-# Mac 按 TON-987 的 POSIX 验证适配环境运行：
-./gradlew -p desktop :compileKotlin :compileTestKotlin :test \
-  --tests 'com.bilipai.desktop.update.*'
+# 必须使用新检出（没有 desktop/build）和 JDK 21，不能依赖预热产物：
+python3.12 desktop/distribution/verify-mac.py --repo . \
+  --java-home "$VERIFY_JAVA_HOME" --out ../distribution-cold-proof
 ```
+
+冷检出 wrapper 内含 TON-987 同源的 POSIX Windows 长路径前缀适配，以及原先已使用的编译占位常量。显式选择 JDK 21，禁用 Gradle build cache 并强制重跑生成器/编译/测试；测试断言、发现规则和 Windows assume 跳过规则不变。这是源码/JVM 证明，不是 Windows native 或 release-gate 证明。
+
+元数据只允许最初请求 URL，不允许跟随到 GitHub 资产 CDN；只有 ZIP 继续使用资产重定向允许列表。manifest 的版本、频道和随机安装 ID 查询参数只发给与配置 `distributionBase` 同源的 URL；GitHub 镜像不附这些查询参数。GitHub 镜像元数据若返回 302 而非直接 200，会被拒绝，不通过携带标识跟随跳转来绕过此边界。
 
 已覆盖真实下载 HTTP、单独作废码/会话、只记录允许字段、不可变上传和原子频道切换，以及客户端实际 downloader/暂存恢复/改一字节拒绝/撤回不启动/防重放。测试 ZIP、MSI 数据是隔离 fixture，不是可用安装包。不要把其大小或结果当正式安装证据。
 

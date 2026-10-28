@@ -1,6 +1,6 @@
 // Revoke a version with a NEW signed sequence; never replay an old manifest.
 import { spawnSync } from 'node:child_process';
-import { mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import { privateKey, envelope, decode } from './sign.mjs';
@@ -19,6 +19,7 @@ const key=await privateKey(process.env.BILIPAI_SIGNING_KEY || path.join(os.homed
 const withdrawn=[...new Set([...manifest.withdrawn,version])];
 if(withdrawn.length>128) throw Error('Too many withdrawals; prepare a new channel manifest');
 const out=await mkdtemp(path.join(process.cwd(),'withdrawal-'));
+try {
 await writeFile(path.join(out,'manifest.json'),envelope({...manifest,...header,withdrawn},key));
 await writeFile(path.join(out,'config.json'),envelope({...config,...header},key));
 await writeFile(path.join(out,'publish.json'),JSON.stringify({...publication,version:publication.version,sequence,files:[],catalog:publication.catalog.version === version ? {...publication.catalog,withdrawn:true} : publication.catalog,withdrawnVersion:version}));
@@ -26,5 +27,8 @@ const incoming=`/opt/bilipai-distribution/incoming/${channel}-${sequence}-withdr
 ssh('mkdir','-p',incoming);
 const copy=spawnSync('scp',['manifest.json','config.json','publish.json'].map(n=>path.join(out,n)).concat(`hermes:${incoming}/`),{encoding:'utf8'});
 if(copy.status) throw Error(copy.stderr);
-console.log(ssh('python3','/opt/bilipai-distribution/publish.py','/opt/bilipai-distribution/data',incoming));
+ssh('chmod','-R','a+rX',incoming);
+console.log(ssh('sudo','-n','-u','bilipai-distribution','python3','/opt/bilipai-distribution/publish.py','/opt/bilipai-distribution/data',incoming));
 console.log('Withdrawn '+version+'; currently running healthy versions are not forcibly downgraded.');
+
+} finally { await rm(out,{recursive:true,force:true}); }

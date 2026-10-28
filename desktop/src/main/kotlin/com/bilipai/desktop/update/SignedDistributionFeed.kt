@@ -2,6 +2,7 @@ package com.bilipai.desktop.update
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.net.URI
 import java.nio.ByteBuffer
 import java.security.KeyFactory
@@ -23,6 +24,14 @@ internal object DistributionTrust {
         verifier.update("BiliPai-Windows/$domain/v1\n".toByteArray(Charsets.UTF_8))
         verifier.update(bytes)
         require(verifier.verify(raw)) { "更新签名验证失败，已保留当前版本" }
+    }
+
+    fun manifestRequestUrl(url: String, base: String, version: String, channel: String, installationId: String): String {
+        val request = url.toHttpUrl()
+        val owner = base.toHttpUrl()
+        if (request.host != owner.host || request.port != owner.port || request.scheme != owner.scheme) return url
+        return request.newBuilder().addQueryParameter("version", version).addQueryParameter("channel", channel)
+            .addQueryParameter("installationId", installationId).build().toString()
     }
 
     fun validBase(base: String): Boolean = runCatching {
@@ -60,10 +69,13 @@ internal object DistributionTrust {
         downloadUrl, downloadUrl + ".sha256", "https://github.com/${DistributionTrust.REPOSITORY}", envelope)
 }
 
+@Serializable internal data class DistributionInstaller(val name: String, val size: Long, val sha256: String)
+
 @Serializable internal data class DistributionManifest(
     val schema: Int, val kind: String, val channel: String, val sequence: Long,
     val issuedAt: Long, val expiresAt: Long, val rolloutPercent: Int,
     val withdrawn: List<String> = emptyList(), val release: DistributionRelease? = null,
+    val installer: DistributionInstaller? = null, val stableApproved: Boolean = false,
 )
 
 @Serializable internal data class DistributionConfig(
@@ -96,8 +108,13 @@ internal object SignedDistributionFeed {
         require(DistributionTrust.validBase(base))
         val m = json.decodeFromString<DistributionManifest>(payload(raw, "manifest", publicKey))
         validateHeader(m.schema, m.kind, "manifest", m.channel, channel, m.sequence, m.issuedAt, m.expiresAt, now)
+        require(m.channel != "stable" || m.stableApproved) { "Stable 发布批准必须包含在签名中" }
         require(m.rolloutPercent in 0..100 && m.withdrawn.size <= 128 && m.withdrawn.distinct().size == m.withdrawn.size &&
             m.withdrawn.all { DesktopVersion.parse(it) != null })
+        m.installer?.let { installer ->
+            require(Regex("[A-Za-z0-9_.+ -]+\\.(?:msi|exe)").matches(installer.name) &&
+                installer.size > 0 && Regex("[0-9a-f]{64}").matches(installer.sha256))
+        }
         m.release?.let { r ->
             require(DesktopVersion.parse(r.version) != null && r.releaseId > 0 && r.assetId > 0 &&
                 DesktopUpdater.isWindowsZip(r.assetName) && r.size in 1..DesktopUpdater.MAX_DOWNLOAD_BYTES &&

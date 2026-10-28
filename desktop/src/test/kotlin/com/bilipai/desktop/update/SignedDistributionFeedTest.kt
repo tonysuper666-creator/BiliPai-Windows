@@ -52,6 +52,23 @@ class SignedDistributionFeedTest {
         assertEquals(raw, release.update(raw).signedManifest)
     }
 
+    @Test fun `signed installer digest is parsed with safe filename and size`() {
+        val installer = buildJsonObject {
+            put("name", "BiliPai-Windows-0.2.427.202.msi"); put("size", 100); put("sha256", hash)
+        }
+        val release = verify(envelope(manifest("installer" to installer))).installer
+        assertEquals(hash, release?.sha256)
+        assertFails { verify(envelope(manifest("installer" to JsonObject(installer + ("name" to JsonPrimitive("../escape.msi")))))) }
+        assertFails { verify(envelope(manifest("installer" to JsonObject(installer + ("size" to JsonPrimitive(0)))))) }
+    }
+
+    @Test fun `stable approval must be part of the signed payload`() {
+        val approved = envelope(manifest("channel" to JsonPrimitive("stable"), "stableApproved" to JsonPrimitive(true)))
+        assertTrue(SignedDistributionFeed.manifest(approved, "stable", base, 1500, publicKey).stableApproved)
+        val unapproved = envelope(manifest("channel" to JsonPrimitive("stable")))
+        assertFails { SignedDistributionFeed.manifest(unapproved, "stable", base, 1500, publicKey) }
+    }
+
     @Test fun `one changed manifest byte and wrong key are rejected`() {
         val raw = envelope(manifest())
         val parsed = Json.parseToJsonElement(raw).jsonObject

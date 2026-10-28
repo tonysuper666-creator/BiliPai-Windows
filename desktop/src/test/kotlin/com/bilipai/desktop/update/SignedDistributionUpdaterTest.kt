@@ -58,14 +58,27 @@ class SignedDistributionUpdaterTest {
             return buildJsonObject { put("payload",Base64.getEncoder().encodeToString(value)); put("signature",signature) }.toString().toByteArray()
         }
         val time = System.currentTimeMillis()/1000
-        fun updater(): DesktopUpdater = DesktopUpdater.forIntegrationTest("0.2.427.201",DistributionTrust.REPOSITORY,root,
+        fun updater(mirrorMetadata: Boolean = false): DesktopUpdater = DesktopUpdater.forIntegrationTest("0.2.427.201",DistributionTrust.REPOSITORY,root,
             OkHttpClient.Builder().addInterceptor { chain ->
                 val request=chain.request(); requests += request
                 assertNull(request.header("Cookie")); assertNull(request.header("Authorization"))
+                if (request.url.encodedPath.endsWith(".json")) {
+                    val scope = assertNotNull(request.tag(VeyraCatalogHttpScope::class.java))
+                    scope.requireAllowed(request)
+                    // Exercise the actual request's redirect policy, including all
+                    // CDN hosts that the ZIP downloader separately permits.
+                    for (host in listOf("release-assets.githubusercontent.com", "objects.githubusercontent.com", "github-releases.githubusercontent.com")) {
+                        assertFails { scope.requireAllowed(request.newBuilder().url("https://$host/redirected.json").build()) }
+                    }
+                }
                 val bytes = when {
-                    request.url.encodedPath.endsWith("/updates/dev.json") -> {
-                        assertEquals(setOf("version","channel","installationId"),request.url.queryParameterNames)
+                    (request.url.encodedPath.endsWith("/updates/dev.json") || request.url.host == "github.com" && request.url.encodedPath.endsWith("/dev.json")) -> {
+                        assertEquals(if (request.url.host == "github.com") emptySet() else setOf("version","channel","installationId"),request.url.queryParameterNames)
                         document("manifest")
+                    }
+                    request.url.encodedPath.endsWith("/config-dev.json") -> {
+                        assertNull(request.url.query)
+                        document("config")
                     }
                     request.url.encodedPath.endsWith("/config/dev.json") -> document("config")
                     request.url.encodedPath.endsWith(".zip") -> servedZip
@@ -74,6 +87,8 @@ class SignedDistributionUpdaterTest {
                 Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("OK").body(bytes.toResponseBody()).build()
             }.build(),home,{},channel="dev",distributionBase=base,
             signedPublicKey=Base64.getEncoder().encodeToString(pair.public.encoded),
+            manifestUrl=if(mirrorMetadata) "https://github.com/${DistributionTrust.REPOSITORY}/releases/download/test/dev.json" else null,
+            configUrl=if(mirrorMetadata) "https://github.com/${DistributionTrust.REPOSITORY}/releases/download/test/config-dev.json" else null,
             processFactory={ launches++; error("Fixture must not launch a process") }).also(owners::add)
         override fun close() { owners.forEach { it.close() }; home.toFile().deleteRecursively() }
     }
@@ -121,6 +136,14 @@ class SignedDistributionUpdaterTest {
             f.corruptManifest=true
             assertIs<UpdateState.Failed>(f.updater().check())
             assertTrue(f.requests.none { it.url.host == "api.github.com" || it.url.encodedPath.endsWith(".zip") })
+        }
+    }
+
+    @Test fun `GitHub metadata never receives installation ID and cannot redirect to asset CDNs`() = runBlocking {
+        Fixture().use { f ->
+            assertIs<UpdateState.Available>(f.updater(mirrorMetadata = true).check())
+            assertEquals(2, f.requests.size)
+            assertTrue(f.requests.all { it.url.host == "github.com" && it.url.query == null })
         }
     }
 }

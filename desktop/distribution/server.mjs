@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const page = body => `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>BiliPai 非官方 Windows 版</title><body><main><h1>BiliPai 非官方 Windows 版</h1>${body}<hr><p>登录信息只留在你的电脑。分发服务器不收集 B 站账号、Cookie 或 token，不做遥测。</p><p><a href="https://github.com/tonysuper666-creator/BiliPai-Windows/tree/desktop/integration-263-claude-main">公开源码</a> · <a href="https://github.com/tonysuper666-creator/BiliPai-Windows/blob/desktop/integration-263-claude-main/LICENSE">GPL-3.0 许可证</a></p></main></body></html>`;
+const page = body => `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>BiliPai 非官方 Windows 版</title><body><main><h1>BiliPai 非官方 Windows 版</h1>${body}<hr><p>邀请码仅保护 MSI/EXE 安装包。签名更新清单、配置和便携 ZIP 公开提供；作废邀请码后，对方仍可取得公开 ZIP，也仍可检查更新。</p><p>登录信息只留在你的电脑。分发服务器不收集 B 站账号、Cookie 或 token，不做遥测。</p><p><a href="https://github.com/tonysuper666-creator/BiliPai-Windows/tree/desktop/integration-263-claude-main">公开源码</a> · <a href="https://github.com/tonysuper666-creator/BiliPai-Windows/blob/desktop/integration-263-claude-main/LICENSE">GPL-3.0 许可证</a></p></main></body></html>`;
 
 export function createDistributionServer({ root, prefix = '/bilipai', now = () => Date.now() }) {
   root = realpathSync(root);
@@ -72,7 +72,7 @@ export function createDistributionServer({ root, prefix = '/bilipai', now = () =
       if (pathname === '/healthz') return reply(200, 'ok');
       if (pathname === '/') {
         const invite = await invitation(req);
-        if (!invite) return reply(200, page(`<p>仅供熟人测试。请输入单独发给你的邀请码。</p><form method="post" action="${prefix}/unlock"><label>邀请码 <input name="code" type="password" required autocomplete="off" maxlength="128"></label><button>查看下载</button></form>`), 'text/html; charset=utf-8');
+        if (!invite) return reply(200, page(`<p>熟人测试渠道。请输入单独发给你的邀请码，查看 MSI/EXE 安装包。</p><form method="post" action="${prefix}/unlock"><label>邀请码 <input name="code" type="password" required autocomplete="off" maxlength="128"></label><button>查看下载</button></form>`), 'text/html; charset=utf-8');
         const listing = await catalog();
         const items = listing.releases.filter(r => !r.withdrawn && invite.channels?.includes(r.channel));
         const html = items.map(r => `<article><h2>${escape(r.version)} · ${escape(r.channel)}</h2><p>${escape(r.notes)}</p><p><a href="${prefix}/download/${encodeURIComponent(r.version)}/${encodeURIComponent(r.installer)}">下载安装包（${Math.ceil(r.size/1024/1024)} MB）</a></p></article>`).join('') || '<p>当前还没有可下载的版本。</p>';

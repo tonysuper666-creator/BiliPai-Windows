@@ -63,7 +63,8 @@ await mkdir(output,{recursive:true});
 const header = {schema:1,channel,sequence,issuedAt:now,expiresAt:now+7*86400};
 const release = {version,releaseId:sequence,assetId:sequence,assetName:zipName,size:(await stat(zipPath)).size,
   downloadUrl:`${base}/artifacts/${version}/${zipName}`,sha256:zipHash,archiveSignature:archiveSignature(zipHash,key)};
-const manifest = {...header,kind:'manifest',rolloutPercent,withdrawn:[],release};
+const installer = {name:installerName,size:(await stat(installerPath)).size,sha256:await digest(installerPath)};
+const manifest = {...header,kind:'manifest',rolloutPercent,withdrawn:[],release,installer,stableApproved:channel==='stable'};
 const policyFile = process.env.BILIPAI_REMOTE_POLICY;
 const policy = policyFile ? JSON.parse(await readFile(policyFile,'utf8')) : {automaticUpdatesEnabled:true,checkIntervalHours:6,announcement:''};
 if(Object.keys(policy).some(k=>!['automaticUpdatesEnabled','checkIntervalHours','announcement'].includes(k)) ||
@@ -89,6 +90,7 @@ if(mode === 'publish') {
   const incoming=`/opt/bilipai-distribution/incoming/${channel}-${sequence}-${randomBytes(4).toString('hex')}`;
   run('ssh',['hermes','mkdir','-p',incoming]);
   run('scp',[...files.map(f=>path.join(output,f.name)),...['manifest.json','config.json','publish.json'].map(n=>path.join(output,n)),`hermes:${incoming}/`]);
-  console.log(run('ssh',['hermes','python3','/opt/bilipai-distribution/publish.py','/opt/bilipai-distribution/data',incoming]));
+  run('ssh',['hermes','chmod','-R','a+rX',incoming]);
+  console.log(run('ssh',['hermes','sudo','-n','-u','bilipai-distribution','python3','/opt/bilipai-distribution/publish.py','/opt/bilipai-distribution/data',incoming]));
 }
 console.log(`Withdrawal/rollback: node desktop/distribution/withdraw.mjs ${version} ${channel}`);

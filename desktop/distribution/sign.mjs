@@ -10,8 +10,11 @@ export function envelope(value, key) {
 }
 export function decode(raw, kind, publicKey = PUBLIC_KEY) {
   const signed = JSON.parse(raw), bytes = Buffer.from(signed.payload,'base64');
+  const signature = Buffer.from(signed.signature,'base64');
+  if(bytes.toString('base64') !== signed.payload || signature.length !== 64 || signature.toString('base64') !== signed.signature)
+    throw Error('Invalid signature encoding');
   const key = createPublicKey({key:Buffer.from(publicKey,'base64'),type:'spki',format:'der'});
-  if(!verify(null,domain(kind,bytes),key,Buffer.from(signed.signature,'base64'))) throw Error('Invalid signature');
+  if(!verify(null,domain(kind,bytes),key,signature)) throw Error('Invalid signature');
   const value = JSON.parse(bytes);
   if(value.kind !== kind) throw Error('Wrong signed document kind');
   return value;
