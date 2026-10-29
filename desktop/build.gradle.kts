@@ -525,6 +525,7 @@ val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebil
 // M4a: migrate the platform-independent parts before the native session and frame scheduler.
 val migratedPlaybackModulePaths = mapOf(
     "core-player/src/main/java/" to setOf(
+        "com/android/purebilibili/core/player/PlaybackProgressManager.kt",
         "com/android/purebilibili/core/player/PlayerErrorRecoveryPolicy.kt",
         "com/android/purebilibili/core/player/PlaybackResumePolicy.kt",
         "com/android/purebilibili/core/player/PlaybackProgressPolicy.kt",
