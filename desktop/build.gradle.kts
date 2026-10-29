@@ -2824,6 +2824,8 @@ val upstreamOwnedGeneratedCopies = setOf(
     "plugins/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
     "plugins/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
     "packages/com/android/purebilibili/core/plugin/skin/DesktopUiSkinCompositionPolicy.kt",
+    // M4a: the refresh-aware desktop request owner replaces this fixed-60Hz generated loop.
+    "original-danmaku-list-menu/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequests.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
     "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
