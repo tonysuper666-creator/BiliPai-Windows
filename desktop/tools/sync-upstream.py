@@ -27,7 +27,7 @@ MAX_MANIFEST_BYTES = 4 * 1024 * 1024
 # A full final page is not proof of completion: exhausting this finite scan fails.
 RELEASE_PAGE_SIZE = 100
 MAX_RELEASE_PAGES = 100
-CANONICAL_CATALOG_SHA256 = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
+CANONICAL_CATALOG_SHA256 = "f4b73f8d202ce266749c67b09525e4c3e807190d477274219bca6f133dee8689"
 CANONICAL_BASELINE_COMMIT = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 CANONICAL_CATALOG_PATH = "desktop/tools/v025-canonical-sources.json"
 COMPATIBILITY_CATALOG_PATH = "desktop/tools/compatibility-source-inputs.json"
@@ -691,7 +691,6 @@ def selected_network_behavior(source: bytes) -> tuple[str, ...]:
     for kind, name, constructor_only in (
         ("fun", "applyForcedCookieHeader", False),
         ("class", "AppSessionCookieJar", False),
-        ("class", "PlaybackAccountCookieJar", False),
         ("object", "NetworkModule", False),
         ("class", "BuvidSpiData", True),
         ("class", "BuvidSpiResponse", True),

@@ -4,7 +4,7 @@ import argparse, hashlib, importlib.util, json, os, re, struct, sys
 from pathlib import Path
 
 UPSTREAM = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
-CATALOG_SHA = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
+CATALOG_SHA = "f4b73f8d202ce266749c67b09525e4c3e807190d477274219bca6f133dee8689"
 SCREEN = "app/src/main/java/com/android/purebilibili/feature/settings/screen/IconSettingsScreen.kt"
 NORMALIZER = "app/src/main/java/com/android/purebilibili/core/store/AppIconKeyNormalizer.kt"
 MANAGER = "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"

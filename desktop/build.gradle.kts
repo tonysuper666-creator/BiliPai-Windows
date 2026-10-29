@@ -47,9 +47,9 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-video-comment-ui.py" to "6537f13ea46e584244a6384c4b43b8df68fb7c3028b210f49bee34e6aafabb31",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
     "tools/run-tool-tests.py" to "0ccdc350020d68fd5d7bf515cf16fcb45147dc9f2549d436ebda7f8936008403",
-    "tools/sync-upstream.py" to "4f2777086628182caf945f5c225a0e9f629eaf698823e2d4fef3b427086e303f",
-    "tools/v025-canonical-sources.json" to "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc",
-    "tools/v025_source_paths.py" to "43ae1635c64aa3eb695dd3f3babdfaeacdf8899680e6823a44179163facb848f",
+    "tools/sync-upstream.py" to "57369fd012f30637583d910134499a5aef67c0dd93b545389dfa183a82cfdf36",
+    "tools/v025-canonical-sources.json" to "f4b73f8d202ce266749c67b09525e4c3e807190d477274219bca6f133dee8689",
+    "tools/v025_source_paths.py" to "9a56c733db270a83a8571171d167860202d84091a01fe36115b9ab5c0b5441f2",
     "tools/v029_brand_consumers.py" to "89648e569d074aaeaa456a12220efb4de3e8ecfcefbbe05f74ea55ef47c3742e",
     "tools/v029_comment_composer.py" to "49321836c7e0b49dbdbd226872f85df8cb391feb8ac7dadd27b56e345bbbca52",
     "tools/v029_comment_search.py" to "b80189f64014e373c136bc38e0fbb4171933203ba0cf2a2e76bf0053e17c1a9d",
@@ -82,7 +82,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "44bc808bb4891e2afd901ce5970dafa61690bc883d00bb4bc1345afceb4d799e"
+val revisionNeutralSourceGradleRecipeSha256 = "bb8075c06e42cb543b717872153ae235a04f1ab1947f2acce0b10f162623c9a3"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -107,7 +107,7 @@ val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
 val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
 val canonicalOriginalCatalogBytes = canonicalOriginalCatalogFile.readBytes().also { bytes ->
     require(MessageDigest.getInstance("SHA-256").digest(bytes)
-        .joinToString("") { "%02x".format(it) } == "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc") {
+        .joinToString("") { "%02x".format(it) } == "f4b73f8d202ce266749c67b09525e4c3e807190d477274219bca6f133dee8689") {
         "The v025 canonical original source catalog changed without review."
     }
 }
@@ -130,9 +130,11 @@ fun canonicalOriginalIdentity(relative: String): String {
 }
 fun canonicalOriginalSource(relative: String): File {
     val identity = canonicalOriginalIdentity(relative)
-    val destination = File(repositoryRoot, identity)
+    // Inventory pins now name the merged direct-compile tree. Unmigrated producers
+    // still copy repositoryRoot, and this check stays an exact byte compare.
+    val destination = File(mergedRepositoryRoot, identity)
     require(!JvmFiles.isSymbolicLink(destination.toPath())) { "Original source is a symbolic link: $relative" }
-    require(destination.canonicalFile.toPath().startsWith(repositoryRoot.canonicalFile.toPath())) { "Original source escapes repository: $relative" }
+    require(destination.canonicalFile.toPath().startsWith(mergedRepositoryRoot.canonicalFile.toPath())) { "Original source escapes repository: $relative" }
     if (canonicalOriginalRoots.any { identity.startsWith(it) }) {
         val pin = canonicalOriginalPins[identity] as Map<*, *>
         val raw = destination.readBytes()
