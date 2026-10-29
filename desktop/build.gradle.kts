@@ -5188,6 +5188,15 @@ tasks.matching { it.name in setOf(
     inputs.dir("upstream-slices/v046-mfx-small-protocol-fixes")
 }
 
+// TON-1026: refresh list and coroutine bindings are part of each existing producer's inputs.
+tasks.matching { it.name in setOf(
+    "extractOriginalHomeViewModel", "extractOriginalLiveList", "extractOriginalHomePartition",
+    "extractOriginalHomeBangumiPage", "extractOriginalSubscriptionPage", "prepareOriginalCategoryPage",
+    "extractUpstreamDynamicReply", "extractUpstreamDynamicDetail", "extractUpstreamDynamicDetailContainer",
+    "extractBgmDetail", "extractVideoCommentUi", "extractOriginalFollowing", "extractOriginalVideoTabletFull",
+    "extractOriginalVideoFullscreenPager", "extractOriginalVideoDetailHolderFull", "extractOriginalMessagePages",
+) }.configureEach { inputs.file("tools/desktop_refresh_adaptation.py") }
+
 // A generated source directory is rebuilt from nothing. Gradle never removes a file an Exec producer stopped
 // writing, so on an incremental build a retired file kept compiling and could hide a lost definer (found by the
 // Linux verify of 47f38a420: the retired reducedMotion compat file survived). A clean build has nothing to delete,

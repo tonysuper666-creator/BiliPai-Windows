@@ -27,6 +27,9 @@ def generate(repo,output,standalone=False):
   s=apply_tab_roles(p,s,output,path)
   raw=originals[p];dst=path or p.removeprefix(BASE)
   if path is None:dst='com/android/purebilibili/'+dst
+  from desktop_refresh_adaptation import bind_refresh_launch
+  from desktop_refresh_adaptation import bind_refresh_lists
+  s=bind_refresh_lists(bind_refresh_launch(s))
   write(output/dst,s);records.append(dict(source=p,output=dst,originalSha256LF=sha(raw),preparedSha256LF=sha(s),wholeOriginalFile=path is None,adapted=raw!=s))
  for n in ['LiveRoomCard','LiveChromePalette','LiveBiliPaiVisualPolicy','LiveHomeSelectableChip','LiveHomeCategoryIndicatorPolicy','LiveHomeAreaSelectionPolicy','LiveListTabColorPolicy']:
   p=BASE+'feature/live/'+n+'.kt'

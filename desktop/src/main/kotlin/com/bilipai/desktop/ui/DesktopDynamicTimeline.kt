@@ -158,22 +158,32 @@ internal fun DesktopDynamicTimelineFeed(
     // must not cancel that request by retiring this threshold-observation effect.
     LaunchedEffect(shouldLoadMore,state,active){if(active&&shouldLoadMore)scope.launch{if(latestActive.value)state.loadMore(incremental)}}
     fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
+    // TON-1026: one refresh path for the corner button and for F5 / Ctrl+R, so both show the same spinner and the same failure toast.
+    val toaster=LocalDesktopToaster.current
+    var refreshing by remember(state){mutableStateOf(false)}
+    suspend fun refreshNow() {
+        if(refreshing||state.busy)return
+        refreshing=true
+        try {
+            val succeeded=state.fetch(true,incremental)
+            if(!succeeded&&latestActive.value)state.error?.let{toaster.show(desktopRefreshFailureMessage(it))}
+        } finally {refreshing=false}
+    }
     LaunchedEffect(rootScroll, state, active) {
         if(!active)return@LaunchedEffect
         rootScroll?.receiveAsFlow()?.collectLatest { request ->
-            applyDesktopRootDynamicScroll(request, state.scroll) { scope.launch{if(latestActive.value)state.fetch(true, incremental)};Unit }
+            applyDesktopRootDynamicScroll(request, state.scroll) { scope.launch{if(latestActive.value)refreshNow()};Unit }
         }
     }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
             Text("${displayed.size} 项",style=MaterialTheme.typography.labelLarge)
-            TextButton(enabled=!state.busy,onClick={fetch(true)}){Text("刷新")}
         }
     Box(Modifier.weight(1f).fillMaxWidth(),contentAlignment=Alignment.TopCenter) {
         FeedVerticalStaggeredGrid(columns=if(layout==DynamicFeedLayoutMode.LIST)StaggeredGridCells.Fixed(1)
             else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=state.scroll,
             modifier=Modifier.widthIn(max=resolveDynamicTimelineMaxWidth()).fillMaxSize(),
-            contentPadding=PaddingValues(20.dp),
+            contentPadding=PaddingValues(start=20.dp,top=20.dp,end=20.dp,bottom=20.dp+DESKTOP_REFRESH_SCROLL_RESERVE_DP.dp),
             horizontalArrangement=Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),
             verticalItemSpacing=resolveDynamicTimelineVerticalSpacing(),
             prependItemKeys=if(shouldUseDynamicManualPrependAnchor(layout))keys else emptyList(),
@@ -189,6 +199,7 @@ internal fun DesktopDynamicTimelineFeed(
                 Text(if(emptyState==DesktopDynamicEmptyState.EMPTY)"暂无内容"else"当前筛选隐藏了这一批内容",color=MaterialTheme.colorScheme.onSurfaceVariant)}
             if(!state.busy&&state.initialized&&state.page.hasMore&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={scope.launch{state.loadMore(incremental)}}){Text("加载更多")}}
         }
+        DesktopRefreshButton(refreshing=refreshing||state.busy,reportFailures=false,onRefresh={scope.launch{state.scroll.scrollToItem(0);refreshNow()}})
     }
     }
 }

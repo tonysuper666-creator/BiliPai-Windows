@@ -1,0 +1,12 @@
+--- a/original-favorites/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt
++++ b/original-favorites/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt
+@@ -123,7 +123,8 @@
+ 
+     AnimatedVisibility(
+         visible = visible,
+-        modifier = modifier.offset(y = (-28).dp),
++        // Desktop (TON-1026): rise above the corner refresh button when the page has one.
++        modifier = modifier.offset(y = (-28).dp - com.bilipai.desktop.ui.desktopRefreshStackLift()),
+         enter = fadeIn(animationSpec = AppMotionTokens.standardSpec()) +
+             scaleIn(animationSpec = AppMotionTokens.standardSpec(), initialScale = 0.92f),
+         exit = fadeOut(animationSpec = AppMotionTokens.expressiveSpec()) +

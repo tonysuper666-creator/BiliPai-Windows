@@ -55,6 +55,8 @@ def emit(path, text, name=None, mode='selected-platform-adapt', note=''):
     package = re.search(r'(?m)^package (\S+)',source).group(1)
     target = OUTPUT/package.replace('.','/')/(name or Path(path).name)
     digest = hashlib.sha256(source.encode()).hexdigest()
+    from desktop_refresh_adaptation import bind_refresh_lists
+    text=bind_refresh_lists(text)
     write(target,'// Original source '+path+'\n// LF SHA256 '+digest+'\n'+text)
     inventory.append(dict(path=path,sha256=digest,mode=mode,feature='dynamic-detail-container',output=str(target.relative_to(OUTPUT)),note=note))
 

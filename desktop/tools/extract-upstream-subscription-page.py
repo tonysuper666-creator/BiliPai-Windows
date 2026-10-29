@@ -84,6 +84,12 @@ def generate(repo,output,standalone=False):
    body,reading_changes,reading_origin=reading_progress(body)
    changes=changes+reading_changes
    assert adapted(original,changes)==body
+  if source.endswith('/SubscriptionFeedPage.kt'):
+   from desktop_refresh_adaptation import bind_refresh_launch, bind_refresh_lists
+   before=body
+   body=bind_refresh_lists(bind_refresh_launch(body))
+   body=body.replace('onRefresh = { reloadToken += 1 }', 'onRefresh = { scope.launch { try { platform.reload() } catch (error: Throwable) { platform.reportFailure(error) { Logger.w("SubscriptionFeed", "刷新失败，保留已显示内容") } } } }')
+   changes=changes+[{'before':before,'after':body,'label':'Desktop refresh invokes owned reload with its coroutine operation and shared list inset'}]
   destination=output/('com/android/purebilibili/'+source.split('/com/android/purebilibili/',1)[1])
   emitted=bool(changes) or standalone
   if emitted:write(destination,body);generated.append(destination)

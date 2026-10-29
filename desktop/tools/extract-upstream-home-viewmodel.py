@@ -56,6 +56,8 @@ def generate(repo,output,standalone=False,test_output=None):
  vm=owned_today_watch_feedback_delta(vm)
  home_load_audits=[]
  vm=home_vm_delta(repo,vm,home_load_audits)
+ from desktop_refresh_adaptation import bind_refresh_launch
+ vm=bind_refresh_launch(vm)
  write(output/spec['target'],vm)
  write(output/'home-load-v029-adaptations.json',json.dumps(dict(upstreamCommit='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480',audits=home_load_audits),ensure_ascii=False,indent=2)+'\n')
  if test_output is not None:
