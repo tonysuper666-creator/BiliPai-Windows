@@ -3,6 +3,10 @@ package com.bilipai.desktop.ui
 import com.android.purebilibili.feature.video.playback.session.PendingPlaybackUserAction
 import com.android.purebilibili.feature.video.playback.session.PlaybackUserActionTracker
 import com.android.purebilibili.feature.video.ui.overlay.PlaybackDebugInfo
+import com.bilipai.desktop.player.DesktopPlaybackSession
+import com.bilipai.desktop.player.DesktopPlaybackSessionRequest
+import com.bilipai.desktop.player.DesktopPlaybackRequestLease
+import com.bilipai.desktop.player.DesktopPlaybackCapabilities
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerState
 import com.bilipai.desktop.player.PlayerTrack
@@ -62,8 +66,22 @@ class DesktopOriginalMpvSectionControl internal constructor(
     private val sourceVersions: StateFlow<Long?>,
     private val commitEventIfCurrent: ((() -> Unit) -> Boolean),
     private val captureContinuation: (Long, Job) -> DesktopOriginalNativePlaybackContinuation? = { _, _ -> null },
+    private val sessionRequest: (DesktopPlaybackSessionRequest) -> DesktopPlaybackRequestLease = { error("Installed playback request owner required") },
+    private val sessionCapabilities: () -> DesktopPlaybackCapabilities = { error("Installed playback capabilities required") },
+    private val closeSession: () -> Unit = { error("Installed playback lifetime owner required") },
 ) : DesktopOriginalMpvOverlayControl(nativePlayer, acceptedSourceVersion, entryOwns,
-    commitIfCurrent, diagnosticLoggingEnabled, ensurePreparedSource, resumeEndedSource, logSeekDiagnostic) {
+    commitIfCurrent, diagnosticLoggingEnabled, ensurePreparedSource, resumeEndedSource, logSeekDiagnostic), DesktopPlaybackSession {
+    override fun requestPlayback(request: DesktopPlaybackSessionRequest): DesktopPlaybackRequestLease {
+        if (!entryOwns()) throw CancellationException("Original player entry retired")
+        return sessionRequest(request)
+    }
+    override fun playbackSnapshot(): PlayerState = snapshot()
+    override fun playbackCapabilities(): DesktopPlaybackCapabilities {
+        if (!entryOwns()) throw CancellationException("Original player entry retired")
+        return sessionCapabilities()
+    }
+    override fun close() = closeSession()
+
     override fun snapshot(): PlayerState {
         if (!entryOwns()) throw CancellationException("Original player entry retired")
         // A loading entry has no accepted native subject yet. Its UI starts at the
@@ -73,7 +91,7 @@ class DesktopOriginalMpvSectionControl internal constructor(
     }
 
     /** Read the existing owned snapshot inside the presenter's native admission. */
-    internal fun capturePresentationState(): PlayerState = snapshot()
+    internal fun capturePresentationState(): PlayerState = playbackSnapshot()
     var playbackParameters: DesktopOriginalPlaybackRate
         get() = DesktopOriginalPlaybackRate(playbackSpeed)
         set(value) {

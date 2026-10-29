@@ -85,6 +85,94 @@ class DesktopOriginalNativeRecoveryAdmissionTest {
         override fun close() { actor.close(); owner.close(); caller.cancel(); player.close() }
     }
 
+    @Test fun sharedSessionUsesInstalledNativeSeekAndRejectsRetiredEntry() = runBlocking<Unit> {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val versions = MutableStateFlow<Long?>(f.accepted.sourceVersion)
+            val control = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, versions, { action -> f.owner.admitPlaybackDispatch(f.accepted, action) })
+            try {
+                val session: DesktopPlaybackSession = control
+                val receipt = assertNotNull(session.seekToTracked(41_250))
+                assertEquals(f.accepted.sourceVersion, receipt.sourceVersion)
+                assertEquals(41_250, receipt.targetPositionMs)
+                assertTrue(receipt.operationId > 0)
+                assertEquals(f.player.state.value, session.playbackSnapshot())
+                f.entry = false
+                assertNull(session.seekToTracked(99_000))
+                assertFailsWith<CancellationException> { session.playbackSnapshot() }
+                assertFailsWith<CancellationException> { session.requestPlayback(DesktopPlaybackSessionRequest("BVnew")) }
+            } finally { scope.cancel() }
+        }
+    }
+
+    @Test fun sharedSessionRequestAndCloseRunOutsideNativeAdmissionAndKeepDecoderRootOwned() {
+        Fixture().use { f ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+            val caps = DesktopPlaybackCapabilities(true, false, true, false, true, false)
+            var requested: DesktopPlaybackSessionRequest? = null
+            var closed = false
+            val lease = object : DesktopPlaybackRequestLease {
+                override val isCurrent get() = !closed
+                override fun retry() = isCurrent
+                override fun selectQuality(quality: Int) = isCurrent
+                override fun selectAudioQuality(preferenceId: Int) = isCurrent
+                override fun close() { closed = true }
+            }
+            val control = DesktopOriginalMpvSectionControl(f.player, { f.owner.current()?.sourceVersion }, { f.entry },
+                { action -> f.owner.admitPlaybackDispatch(f.accepted, action) }, { false }, {}, {},
+                { _, _, _, _ -> }, scope, MutableStateFlow<Long?>(f.accepted.sourceVersion), { it(); true },
+                sessionRequest = { assertFalse(f.publication.held); requested = it; lease },
+                sessionCapabilities = { caps },
+                closeSession = { assertFalse(f.publication.held); closed = true })
+            try {
+                val session: DesktopPlaybackSession = control
+                val request = DesktopPlaybackSessionRequest("BVfixture", 9, 22, 27_750, false, false)
+                assertSame(lease, session.requestPlayback(request))
+                assertSame(request, requested)
+                assertEquals(caps, session.playbackCapabilities())
+                session.close()
+                assertFalse(lease.isCurrent)
+                // The session view does not dispose the root-owned decoder.
+                assertTrue(f.player.ownsSourceVersion(f.accepted.sourceVersion))
+            } finally { scope.cancel() }
+        }
+    }
+
+    @Test fun sharedRequestLeaseRejectsNewOriginalStoreTokenEvenForSameVideo() {
+        val store = com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore()
+        val request = PlaybackRequest.create("BVfixture", 9, 22)
+        store.beginLoadRequest(request)
+        var owner = true
+        val calls = mutableListOf<String>()
+        val lease = DesktopOriginalPlaybackRequestLease({ owner }, { store.state.value },
+            { calls += "retry" }, { calls += "quality:$it" }, { calls += "audio:$it" }, { calls += "close" })
+        store.beginLoadRequest(request)
+        assertFalse(lease.isCurrent)
+        assertFalse(lease.retry()); assertFalse(lease.selectQuality(80)); assertFalse(lease.selectAudioQuality(30280))
+        lease.close()
+        assertTrue(calls.isEmpty())
+        owner = false
+        assertFalse(lease.isCurrent)
+    }
+
+    @Test fun sharedRequestLeaseRetainsOwnRetryAndQualityButRejectsAccountOwnerRetirement() {
+        val store = com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore()
+        store.beginLoadRequest(PlaybackRequest.create("BVfixture", 9, 22))
+        var owner = true
+        val calls = mutableListOf<String>()
+        val lease = DesktopOriginalPlaybackRequestLease({ owner }, { store.state.value },
+            { calls += "retry"; store.beginLoadRequest(PlaybackRequest.create("BVfixture", 9, 22, force = true)) },
+            { calls += "quality:$it" }, { calls += "audio:$it" }, { calls += "close"; owner = false })
+        assertTrue(lease.retry()); assertTrue(lease.isCurrent)
+        assertTrue(lease.selectQuality(80)); assertTrue(lease.selectAudioQuality(30280))
+        assertEquals(listOf("retry", "quality:80", "audio:30280"), calls)
+        owner = false
+        assertFalse(lease.retry()); lease.close()
+        assertEquals(3, calls.size)
+    }
+
     @Test fun sameActualAttemptPublishesOneAacReplacementPreservingSourceControlsAndReceipt() {
         Fixture().use { f ->
             val failure = f.actor.fail(-14)
