@@ -82,7 +82,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "8906fd4fb3b039984ee94622d4e7ec3c0ff03db0f2ccb40fc12c088ca783fa1b"
+val revisionNeutralSourceGradleRecipeSha256 = "f76a69263ea87602a79721ab54ac330bd9d3dedca23d8784d277c040eba53c5d"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
@@ -127,6 +127,18 @@ fun canonicalOriginalIdentity(relative: String): String {
     } else name
     require(canonicalOriginalPins.containsKey(identity)) { "Unknown canonical original source: $identity" }
     return identity
+}
+fun snapshotOriginalIdentity(relative: String): String {
+    val identity = canonicalOriginalIdentity(relative)
+    // prepareUpstreamSources copies the pre-merge snapshot. A retargeted pin names
+    // the direct-compile file, which that snapshot does not contain. Copy the one
+    // predecessor still in the snapshot. The live pin check stays on the new path.
+    if (File(repositoryRoot, identity).isFile) return identity
+    val predecessors = canonicalOriginalPrevious.entries.mapNotNull { (key, value) ->
+        val name = key?.toString() ?: return@mapNotNull null
+        if (value?.toString() == identity && File(repositoryRoot, name).isFile) name else null
+    }.distinct()
+    return if (predecessors.size == 1) predecessors.single() else identity
 }
 fun canonicalOriginalSource(relative: String): File {
     val identity = canonicalOriginalIdentity(relative)
@@ -355,140 +367,140 @@ fun migratedUpstreamSource(path: String): Boolean = migratedUpstreamModules.any 
 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
-        include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        include(sources.filter { (it["mode"] ?: "direct") == "direct" && !migratedUpstreamSource(it["path"].toString()) }.map { snapshotOriginalIdentity(it["path"].toString()) })
         // Whole v043 typed navigation is emitted by its existing space producer.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt"))
         // Current collection playback/management policy has one Space producer.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/MessageLinkNavigationPolicy.kt"))
         // Current host-aware HTTP proxy policy has one existing proxy producer.
-        exclude(canonicalOriginalIdentity("network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt"))
+        exclude(snapshotOriginalIdentity("network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt"))
         // Current semantic surface tokens have one original component producer.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt"))
         // Current whole Search policy is emitted with the complete Search page.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt"))
         // Latest tabs use the same sole controls/dynamic producer split.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt"))
         // Complete original action facades and renderers have one component producer.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIconButton.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimaryButton.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveRendererPolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3IconButton.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixActionPrimitives.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIconButton.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIconButton.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimaryButton.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveRendererPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3IconButton.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixActionPrimitives.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIconButton.kt"))
         // Original value-control facades and compact geometry use the existing component owner.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSwitch.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Switch.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSwitch.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Switch.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt"))
         // Complete fixed theme roles and contrast have one existing appearance producer.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/settings/ThemePreferencePolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/settings/ThemePreferencePolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt"))
         // Latest original theme configuration is emitted once by the full controls producer.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt"))
         // Complete latest backdrop has one section producer; keep other original callers.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt"))
         // Latest whole player policies have one existing controls producer.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeDanmakuComposer.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/LandscapeSidePanel.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/NativeDanmakuToggleButton.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/PlayerMiuixListPopup.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/ImmersiveStatusBarBackdrop.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackButtonComponents.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt"))
         // The existing Favorites producer now emits the complete current management/privacy policy.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/list/FavoriteManagementPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/list/FavoriteManagementPolicy.kt"))
         // These three complete fixed v031 sources have one producer in the existing detail output.
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt"))
         // The fixed b209 whole Sponsor UI has one section-full producer.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/SponsorSkipUI.kt"))
         // The fixed v029 special producer owns this one whole source now.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt"))
         // The pinned stable text/lyrics producer owns these three complete original sources.
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt"))
         // The existing Listen producer owns the original key file with the fixed AudioMode declaration.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt"))
         // Current subscribed-search route mapping shares that existing navigation producer.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKeyMappingPolicy.kt"))
         // The sole v0.4.1 status-label producer owns these four complete or hook-edited model sources.
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt"))
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt"))
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt"))
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SpaceModels.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/FavoriteModels.kt"))
         // Whole v043 author row/snapshot are owned by the retained full-card producer.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeName.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeName.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt"))
         // The existing Home-page producer owns the complete v043 native-card navigation policy.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/navigation/HomeVideoNavigationPolicy.kt"))
         // The existing full Search producer owns the complete v041 policies.
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt"))
         // The existing full Search producer owns the complete v0.4.6 content-state policy (the search-only silent switch gate).
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt"))
         // The existing Home-page producer owns the complete v0.4.6 refresh UI policy.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt"))
         // The existing appearance producer owns the complete v0.4.6 theme token files.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/Type.kt"))
-        exclude(canonicalOriginalIdentity("design-tokens/src/main/java/com/android/purebilibili/core/theme/AppTextStyles.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt"))
-        exclude(canonicalOriginalIdentity("design-tokens/src/main/java/com/android/purebilibili/core/theme/Color.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/Type.kt"))
+        exclude(snapshotOriginalIdentity("design-tokens/src/main/java/com/android/purebilibili/core/theme/AppTextStyles.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-tokens/src/main/java/com/android/purebilibili/core/theme/Color.kt"))
         // The existing component producer owns the complete v0.4.6 design-system leaf files (part A).
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"))
         // The existing reply producer owns the complete v0.4.6 comment font policy file.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.kt"))
         // The existing Home-page producer owns the complete v0.4.6 identity badge palette.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppBadge.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeNamePolicy.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UserUpBadge.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/UserAvatarCornerMark.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppBadge.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeNamePolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/core/ui/components/UserUpBadge.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/UserAvatarCornerMark.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/OfficialVerifyBadgePolicy.kt"))
         // The whole v0.4.6 strict protobuf parser (DanmakuProto.parseFailed) is emitted by the existing danmaku producer.
-        exclude(canonicalOriginalIdentity("danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt"))
+        exclude(snapshotOriginalIdentity("danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuProto.kt"))
         // The existing component and preference producers own the complete v0.4.6 design-system leaf files (part B).
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt"))
         // The existing dynamic card producer owns the complete v0.4.6 zoomable image and its gesture policy.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImage.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt"))
         // The existing Home-page producer owns the complete v0.4.6 card tint policy.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt"))
         // The existing dynamic-detail-container producer owns the complete v0.4.6 glyph text style and window action menu.
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt"))
-        exclude(canonicalOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt"))
+        exclude(snapshotOriginalIdentity("design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt"))
         // The detail units producer owns the whole v0.4.6 first-batch playback post-load plan.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt"))
         // The existing fullscreen-controls producer owns the complete v0.4.6 persistent and seek progress bar files.
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt"))
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PersistentProgressBar.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt"))
         // The existing message-pages producer owns the complete v0.4.6 chat history response (UINT64_MAX cursor).
-        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/MessageResponse.kt"))
+        exclude(snapshotOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/MessageResponse.kt"))
         // The existing article-detail producer owns the complete v0.4.6 article content parser (public-note arrays).
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt"))
         // The existing dynamic settings producer owns the whole v0.4.6 tab policy (UP tab merged into All).
-        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt"))
+        exclude(snapshotOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt"))
     }
     into(generatedUpstream)
     inputs.property("upstreamSourceManifest", revisionNeutralSourceManifestInput)
