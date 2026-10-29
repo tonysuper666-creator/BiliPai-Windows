@@ -1,6 +1,6 @@
 # upstream-core: how the desktop compiles upstream sources
 
-`core-data`, `network-core`, `design-tokens` and `design-system` are compiled straight from the merged upstream tree
+`core-data`, `network-core`, `design-tokens`, `design-system` and `plugin-sdk` are compiled straight from the merged upstream tree
 (`../<module>/src/main/java`) into the desktop module. Nothing of them is copied into this repository. A merge of a new
 upstream tag changes them in place. Where the desktop must differ, the difference is built **at build time** from the
 files below; upstream files are never edited.
@@ -13,6 +13,7 @@ files below; upstream files are never edited.
 | Credential protection | `patches/core-data/.../SessionStorageCipher.kt.patch` + `com.bilipai.desktop.data.DesktopCredentialProtection` (TON-1000) | Upstream session encryption seals through the desktop platform interface (Windows DPAPI; a labelled test-only implementation selected by the Gradle test task on other hosts; a loud failure anywhere else) and throws instead of returning null or "". Android Keystore itself stays guarded (`DesktopAndroidKeyStoreGuard`). | Same as patches. |
 | Patches | `patches/<repository path>.patch` (e.g. `patches/design-system/src/main/java/com/...kt.patch`; one mechanism, `applyDesktopUpstreamPatches`, shared with the other desktop fixes of upstream files) | Counted unified diffs applied to the merged file (dialog window flags, font padding, clipboard, window identity, press glow, lens uniform cache, backdrop recording hook, ...). | A hunk that no longer matches fails the build; a person re-reads the change. |
 | Replacements | `replacements/<upstream path>` | Desktop implementations of files that are entirely Android windows (`AppWindowBlurBehind`, `AppDialogWindowExitEffect`). The first line pins the SHA-256 of the upstream file; the replacement must declare every public top-level name upstream declares. | The build fails until the replacement is reviewed and the pin is updated. |
+| Plugin platform (TON-1028) | `app/.../core/plugin` + `plugin-sdk`, patches under `patches/app/.../core/plugin/` | The upstream plugin manager, stores and feed code run over the desktop plugin platform: `asAndroidContext()` hands upstream an Android Context whose preferences, settings_prefs, assets and change listeners are the plugin store's; `PluginStore` keeps plugin_prefs in that store, subscription/article/install writes and feed requests keep the desktop subscription admission, and `PluginManager` uses the shutdown-tracked scope and the caller's ownership check. Android-only files (WebView JS runtime, WorkManager statistics worker, Coil image loader) are desktop-owned. | Same as patches. |
 | Transition patches | `transition/patches/<producer>/<generated path>.patch` | Patches against the output of a not-yet-migrated producer (the legacy app copies). Deleted together with the producer. | Same as patches. |
 
 Guards: `verifyUniqueClassNames` (one class name once in the runtime classpath), `verifyUpstreamReplacements`,

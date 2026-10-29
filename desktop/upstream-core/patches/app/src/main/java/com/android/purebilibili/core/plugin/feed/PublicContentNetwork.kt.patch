@@ -1,0 +1,17 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/feed/PublicContentNetwork.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/feed/PublicContentNetwork.kt
+@@ -23,13 +23,13 @@
+     // HTTP bridge. Cookies, bearer headers and token query parameters stay absent.
+     .addNetworkInterceptor { chain -> chain.proceed(sanitizePublicContentRequest(chain.request())) }
+     .build()
+ 
+ internal fun sanitizePublicContentUrl(url: HttpUrl): HttpUrl {
+     val builder = url.newBuilder().username("").password("")
+-    url.queryParameterNames.filter(::isPublicContentCredential).forEach(builder::removeAllQueryParameters)
++    com.bilipai.desktop.network.removeDesktopCredentialQueryParameters(builder, url, ::isPublicContentCredential)
+     return builder.build()
+ }
+ 
+ internal fun sanitizePublicContentRequest(request: Request): Request {
+     val builder = request.newBuilder().url(sanitizePublicContentUrl(request.url))
+     request.headers.names().filter { it.lowercase() !in publicContentHeaders }.forEach(builder::removeHeader)

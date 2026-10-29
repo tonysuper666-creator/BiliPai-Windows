@@ -1,5 +1,5 @@
 package com.bilipai.desktop.cast
-import com.android.purebilibili.core.plugin.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
 import com.bilipai.desktop.player.*
 import kotlinx.coroutines.*
 import okhttp3.Call

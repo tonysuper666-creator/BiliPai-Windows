@@ -1,7 +1,8 @@
 package com.bilipai.desktop.cast
 
-import com.android.purebilibili.core.plugin.CastPluginMediaRequest
-import com.android.purebilibili.core.plugin.CastPluginRoute
+import com.bilipai.desktop.plugins.asAndroidContext
+import com.android.purebilibili.plugin.sdk.CastPluginMediaRequest
+import com.android.purebilibili.plugin.sdk.CastPluginRoute
 import com.android.purebilibili.feature.cast.LocalProxyServer
 import com.android.purebilibili.feature.cast.SsdpCastClient
 import com.android.purebilibili.feature.plugin.dlna.DlnaCastPlugin
@@ -14,6 +15,7 @@ import kotlinx.coroutines.sync.withLock
 
 /** The UI and plugin host share one original DLNA plugin and its transport session. */
 class DesktopCastController(val context: DesktopPluginContext, val plugin: DlnaCastPlugin) {
+    private val upstreamContext = context.asAndroidContext()
     val routes = plugin.routes
     val playbackState = plugin.playbackState
     val isDiscovering = plugin.isDiscovering
@@ -32,8 +34,8 @@ class DesktopCastController(val context: DesktopPluginContext, val plugin: DlnaC
         plugin.onDiscoveryAccessRevoked()
         refreshDiscovery()
     }
-    fun startDiscovery() { if (checkNetwork()) plugin.startRouteDiscovery(context) }
-    fun refreshDiscovery() { if (checkNetwork()) plugin.refreshRouteDiscovery(context) }
+    fun startDiscovery() { if (checkNetwork()) plugin.startRouteDiscovery(upstreamContext) }
+    fun refreshDiscovery() { if (checkNetwork()) plugin.refreshRouteDiscovery(upstreamContext) }
     fun stopDiscovery() = plugin.stopRouteDiscovery()
     private fun checkNetwork(): Boolean {
         _error.value = null
@@ -43,10 +45,10 @@ class DesktopCastController(val context: DesktopPluginContext, val plugin: DlnaC
 
     suspend fun cast(route: CastPluginRoute, media: suspend () -> DesktopCastMediaPublication?): Result<Unit> = execute {
         val publication = media() ?: error("当前媒体没有可投屏的播放地址")
-        publication.use { request -> plugin.cast(context, route, request).getOrThrow() }
+        publication.use { request -> plugin.cast(upstreamContext, route, request).getOrThrow() }
     }
     /** Explicit bare/local compatibility; Root account sources use the required publication wrapper. */
-    suspend fun cast(route: CastPluginRoute, media: CastPluginMediaRequest): Result<Unit> = execute { plugin.cast(context, route, media).getOrThrow() }
+    suspend fun cast(route: CastPluginRoute, media: CastPluginMediaRequest): Result<Unit> = execute { plugin.cast(upstreamContext, route, media).getOrThrow() }
     suspend fun play(): Result<Unit> = execute { plugin.play().getOrThrow() }
     suspend fun pause(): Result<Unit> = execute { plugin.pause().getOrThrow() }
     suspend fun seek(positionMs: Long): Result<Unit> = execute { plugin.seek(positionMs.coerceAtLeast(0)).getOrThrow() }

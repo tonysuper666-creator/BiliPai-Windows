@@ -1,6 +1,7 @@
 package com.bilipai.desktop.danmaku
 
-import com.android.purebilibili.core.plugin.DanmakuStyle
+import androidx.compose.ui.graphics.toArgb
+import com.android.purebilibili.plugin.sdk.DanmakuStyle
 import androidx.compose.ui.graphics.Color
 import java.awt.image.BufferedImage
 import kotlin.test.Test
@@ -16,7 +17,7 @@ class DanmakuPluginAdapterTest {
         val changed = assertNotNull(applyDesktopDanmakuPlugin(original) { item ->
             assertEquals(77L, item.id); assertEquals("hash", item.userId); assertEquals(2_000L, item.timeMs)
             item.copy(content = "translated", timeMs = 3_250, type = 5, color = 0x336699) to
-                DanmakuStyle(textColor = Color(0xffffaa00), bold = true, scale = 1.5f)
+                DanmakuStyle(textColor = Color(0xffffaa00).toArgb(), bold = true, scale = 1.5f)
         })
         assertEquals("translated", changed.comment.text)
         assertEquals(3.25, changed.comment.timeSeconds)

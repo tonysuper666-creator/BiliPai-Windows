@@ -1341,7 +1341,7 @@ internal class DesktopWindowsVideoActions(
                             val segmentId = state.segmentId ?: return@let null
                             if (!state.visible || segmentId.isBlank() || segmentId != segment.UUID ||
                                 state.skipToMs <= 0L || state.skipToMs != segment.endTimeMs) return@let null
-                            com.android.purebilibili.core.plugin.SkipAction.ShowButton(
+                            com.android.purebilibili.plugin.sdk.SkipAction.ShowButton(
                                 state.skipToMs, state.label.orEmpty(), segmentId)
                         }
                         DesktopWindowsSponsorSkipSection(shell.playback, assembly, collectionQueueSource,

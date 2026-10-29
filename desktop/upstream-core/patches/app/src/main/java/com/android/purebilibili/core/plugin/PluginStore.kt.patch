@@ -1,0 +1,28 @@
+--- a/app/src/main/java/com/android/purebilibili/core/plugin/PluginStore.kt
++++ b/app/src/main/java/com/android/purebilibili/core/plugin/PluginStore.kt
+@@ -1,22 +1,20 @@
+ // 文件路径: core/plugin/PluginStore.kt
+ package com.android.purebilibili.core.plugin
+ 
+ import android.content.Context
+-import androidx.datastore.preferences.core.booleanPreferencesKey
+-import androidx.datastore.preferences.core.edit
+-import androidx.datastore.preferences.core.stringPreferencesKey
+-import androidx.datastore.preferences.preferencesDataStore
++import com.bilipai.desktop.plugins.booleanPreferencesKey
++import com.bilipai.desktop.plugins.stringPreferencesKey
+ import com.android.purebilibili.core.store.SettingsManager
+ import kotlinx.coroutines.flow.Flow
+ import kotlinx.coroutines.flow.first
+ import kotlinx.coroutines.flow.map
+ import kotlinx.serialization.encodeToString
+ import kotlinx.serialization.json.Json
+ 
+-private val Context.pluginDataStore by preferencesDataStore(name = "plugin_prefs")
++private val Context.pluginDataStore get() = com.bilipai.desktop.plugins.desktopPluginDataStore(this)
+ 
+ /**
+  * 🗄️ 插件配置持久化存储
+  * 
+  * 使用 DataStore 存储每个插件的启用状态和配置
+  */

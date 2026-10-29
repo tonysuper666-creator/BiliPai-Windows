@@ -3,7 +3,7 @@ package com.bilipai.desktop
 import com.android.purebilibili.feature.video.playback.audio.*
 import com.android.purebilibili.feature.video.playback.policy.shouldRefreshPremiumAudioForPlaybackSpeedChange
 
-import com.android.purebilibili.core.plugin.SkipAction
+import com.android.purebilibili.plugin.sdk.SkipAction
 import com.android.purebilibili.feature.plugin.*
 import com.android.purebilibili.feature.video.player.*
 import com.android.purebilibili.feature.video.state.PlayerErrorRecoveryAction

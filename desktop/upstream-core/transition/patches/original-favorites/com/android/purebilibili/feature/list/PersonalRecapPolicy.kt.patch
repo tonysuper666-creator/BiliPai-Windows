@@ -1,0 +1,22 @@
+--- a/original-favorites/com/android/purebilibili/feature/list/PersonalRecapPolicy.kt
++++ b/original-favorites/com/android/purebilibili/feature/list/PersonalRecapPolicy.kt
+@@ -1,7 +1,8 @@
+ package com.android.purebilibili.feature.list
+ 
++import com.bilipai.desktop.plugins.asAndroidContext
+ import com.android.purebilibili.core.plugin.feed.FeedReadingStore
+ import com.android.purebilibili.data.model.response.HistoryBusiness
+ import com.android.purebilibili.data.model.response.HistoryData
+ import com.android.purebilibili.data.repository.DesktopOriginalHistoryRepository
+ import kotlinx.coroutines.Dispatchers
+@@ -155,9 +156,9 @@
+         )
+     }
+ 
+     suspend fun rssRecap(context: com.bilipai.desktop.plugins.DesktopPluginContext, windowStartMs: Long): PersonalRssRecapStats =
+         aggregatePersonalRssRecap(
+-            readTimestamps = FeedReadingStore.loadTimestamps(context),
++            readTimestamps = FeedReadingStore.loadTimestamps(context.asAndroidContext()),
+             windowStartMs = windowStartMs,
+         )
+ }

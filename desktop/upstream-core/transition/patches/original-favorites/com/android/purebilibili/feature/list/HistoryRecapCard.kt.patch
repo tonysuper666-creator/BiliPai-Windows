@@ -1,0 +1,24 @@
+--- a/original-favorites/com/android/purebilibili/feature/list/HistoryRecapCard.kt
++++ b/original-favorites/com/android/purebilibili/feature/list/HistoryRecapCard.kt
+@@ -1,7 +1,8 @@
+ package com.android.purebilibili.feature.list
+ 
++import com.bilipai.desktop.plugins.asAndroidContext
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.horizontalScroll
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.rememberScrollState
+@@ -65,11 +66,11 @@
+         if (!active) return@LaunchedEffect
+         val request = binding.beginRequest()
+         request.publish { loading = snapshot == null; videoUnavailable = false }
+         val start = resolvePersonalRecapWindowStart(System.currentTimeMillis(), window)
+         try {
+-            val sources = request.read { withContext(Dispatchers.IO) { loadEnabledFeedSources(context) } }
++            val sources = request.read { withContext(Dispatchers.IO) { loadEnabledFeedSources(context.asAndroidContext()) } }
+             val rssStats = request.read { PersonalRecapRepository.rssRecap(context, start) }
+             val videoStats = request.read { PersonalRecapRepository.videoRecap(binding.history, request::check, start) }
+             val refreshed = HistoryRecapSnapshot(sources, rssStats, videoStats)
+             request.publish {
+                 snapshotCache?.set(window, refreshed)
