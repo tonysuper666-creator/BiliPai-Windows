@@ -18,7 +18,9 @@ param(
     [int]$MotionSampleMs = 500,
     [double]$MotionMinRatio = 0.7,
     [double]$RefreshHz = 165,
-    [string]$Tag = 'run1'
+    [string]$Tag = 'run1',
+    # A specific staged build under apps\ (before/after comparisons); default is the first one found.
+    [string]$Exe
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'BpVerify.Common.ps1')
@@ -35,7 +37,7 @@ if (-not (Test-BpMachineQuiet)) {
     exit 4
 }
 
-$exe = Get-BpAppExe
+$exe = if ($Exe) { $Exe } else { Get-BpAppExe }
 $csv = Join-Path $dataDir 'presentmon.csv'
 $totalSeconds = $SettleSeconds + $Seconds + 8
 $appPid = 0

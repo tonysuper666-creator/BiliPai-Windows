@@ -39,7 +39,8 @@ internal fun desktopWindowsSafeMinimumSize(systemDensity: Float, percent: Int, u
     CompositionLocalProvider(LocalDesktopWindowsDisplayScale provides controller,
         LocalDesktopWindowsSystemDensity provides system,
         LocalDensity provides desktopWindowsScaledDensity(system, settings.percent)) {
-        DesktopWindowsScaleScrollContent(content)
+        // Lazy lists and grids of the Main window compose ahead in the idle time between frames.
+        com.bilipai.desktop.ui.DesktopFramePrefetchScope { DesktopWindowsScaleScrollContent(content) }
     }
 }
 
