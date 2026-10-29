@@ -1,0 +1,11 @@
+--- a/danmaku-engine/src/main/java/com/bytedance/danmaku/render/engine/utils/Constants.kt
++++ b/danmaku-engine/src/main/java/com/bytedance/danmaku/render/engine/utils/Constants.kt
+@@ -15,7 +15,7 @@
+  */
+ package com.bytedance.danmaku.render.engine.utils
+ 
+-import android.graphics.RectF
++import java.awt.geom.Rectangle2D.Float as RectF
+ import com.bytedance.danmaku.render.engine.data.DanmakuData
+ 
+ /**

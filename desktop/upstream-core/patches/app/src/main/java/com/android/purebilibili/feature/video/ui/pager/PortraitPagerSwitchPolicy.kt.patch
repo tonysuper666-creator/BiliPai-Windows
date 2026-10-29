@@ -1,0 +1,30 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt
+@@ -5,7 +5,6 @@
+ import com.android.purebilibili.data.model.response.RelatedVideo
+ import com.android.purebilibili.data.model.response.VideoItem
+ import com.android.purebilibili.data.model.response.ViewInfo
+-import com.android.purebilibili.data.repository.VideoRepository
+ import kotlinx.coroutines.async
+ import kotlinx.coroutines.awaitAll
+ import kotlinx.coroutines.coroutineScope
+@@ -335,6 +334,7 @@
+ internal suspend fun filterPortraitOnlyVerticalRecommendations(
+     recommendations: List<RelatedVideo>,
+     enabled: Boolean,
++    isVerticalVideo: suspend (String, Long) -> Boolean,
+ ): List<RelatedVideo> {
+     if (!enabled || recommendations.isEmpty()) return recommendations
+     // Detail lookup is required because lightweight recommendation cards do not consistently
+@@ -348,10 +348,7 @@
+                         true -> candidate
+                         false -> null
+                         null -> candidate.takeIf {
+-                            VideoRepository.isVerticalVideo(
+-                                bvid = candidate.bvid,
+-                                aid = candidate.aid,
+-                            )
++                            isVerticalVideo(candidate.bvid, candidate.aid)
+                         }
+                     }
+                 }

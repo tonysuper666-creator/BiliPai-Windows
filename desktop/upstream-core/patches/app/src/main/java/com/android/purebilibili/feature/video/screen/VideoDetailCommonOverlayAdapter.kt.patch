@@ -1,0 +1,19 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt
+@@ -1,7 +1,7 @@
+ package com.android.purebilibili.feature.video.screen
+ 
+ import androidx.compose.runtime.Composable
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player
+ import com.android.purebilibili.feature.video.interaction.InteractiveChoicePanelUiState
+ import com.android.purebilibili.feature.video.player.PlaylistItem
+ import com.android.purebilibili.feature.video.ui.components.CoinDialog
+@@ -27,6 +27,7 @@
+     onDismissQueue: () -> Unit,
+     onVideoSelected: (Int, PlaylistItem) -> Unit,
+ ) {
++    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current
+     InteractiveChoiceOverlay(
+         state = interactiveChoicePanel,
+         onSelectChoice = { edgeId, targetCid ->

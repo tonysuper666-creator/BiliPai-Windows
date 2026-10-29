@@ -1,0 +1,65 @@
+--- a/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuParser.kt
++++ b/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/DanmakuParser.kt
+@@ -2,7 +2,7 @@
+ package com.android.purebilibili.danmaku.parser
+ 
+ import android.util.Log
+-import android.util.Xml
++import javax.xml.stream.XMLInputFactory
+ import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_BOTTOM
+ import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_REVERSE
+ import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_SCROLL
+@@ -11,7 +11,7 @@
+ import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
+ import com.android.purebilibili.danmaku.parser.bas.BasParseException
+ import com.android.purebilibili.danmaku.parser.bas.BasScriptParser
+-import org.xmlpull.v1.XmlPullParser
++import javax.xml.stream.XMLStreamConstants
+ import java.io.ByteArrayInputStream
+ 
+ /**
+@@ -183,17 +183,21 @@
+         val basList = mutableListOf<BasDanmaku>()
+         
+         try {
+-            val parser = Xml.newPullParser()
+-            parser.setInput(ByteArrayInputStream(rawData), "UTF-8")
++            val factory = XMLInputFactory.newFactory().apply {
++                setProperty(XMLInputFactory.IS_COALESCING, true)
++                setProperty(XMLInputFactory.SUPPORT_DTD, false)
++                setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false)
++            }
++            val parser = factory.createXMLStreamReader(ByteArrayInputStream(rawData), "UTF-8")
+             
+             var eventType = parser.eventType
+             var count = 0
+             
+-            while (eventType != XmlPullParser.END_DOCUMENT) {
+-                if (eventType == XmlPullParser.START_TAG && parser.name == "d") {
++            while (eventType != XMLStreamConstants.END_DOCUMENT) {
++                if (eventType == XMLStreamConstants.START_ELEMENT && parser.localName == "d") {
+                     val pAttr = parser.getAttributeValue(null, "p")
+                     parser.next()
+-                    val content = if (parser.eventType == XmlPullParser.TEXT) parser.text else ""
++                    val content = if (parser.eventType == XMLStreamConstants.CHARACTERS) parser.text else ""
+                     
+                     if (pAttr != null && content.isNotEmpty()) {
+                         val parts = pAttr.split(",")
+@@ -234,6 +238,7 @@
+                 eventType = parser.next()
+             }
+             
++            parser.close()
+             standardList.sortBy { it.showAtTime }
+             advancedList.sortBy { it.startTimeMs }
+             basList.sortBy { it.startTimeMs }
+@@ -525,3 +530,9 @@
+     if (!fontSize.isFinite() || fontSize <= 0f) return 1f
+     return (fontSize / BILIBILI_STANDARD_DANMAKU_FONT_SIZE).coerceIn(0.48f, 2.56f)
+ }
++
++/** Compatibility name for the mounted desktop overlay; parsing has one implementation. */
++object DesktopAdvancedDanmakuParser {
++    internal fun parseAdvancedDanmaku(content: String, startTimeMs: Long, color: Int): AdvancedDanmakuData? =
++        DanmakuParser.parseAdvancedDanmaku(content, startTimeMs, color)
++}

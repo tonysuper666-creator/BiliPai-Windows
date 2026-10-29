@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiCardTransition.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiCardTransition.kt
+@@ -80,7 +80,7 @@
+             }
+         },
+         destination = { card, close, replace, ready, modifier ->
+-            BangumiDetailScreen(
++            com.bilipai.desktop.ui.DesktopOriginalBangumiCardDetailScreen(
+                 seasonId = card.seasonId,
+                 epId = card.epId,
+                 onBack = close,

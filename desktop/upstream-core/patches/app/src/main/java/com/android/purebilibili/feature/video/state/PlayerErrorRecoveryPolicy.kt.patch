@@ -1,0 +1,9 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/state/PlayerErrorRecoveryPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/state/PlayerErrorRecoveryPolicy.kt
+@@ -1,6 +1,5 @@
+ package com.android.purebilibili.feature.video.state
+ 
+-import androidx.media3.common.PlaybackException
+ 
+ internal typealias PlayerErrorRecoveryAction = com.android.purebilibili.core.player.PlayerErrorRecoveryAction
+ internal fun decidePlayerErrorRecovery(errorCode: Int, hasCdnAlternatives: Boolean, retryCount: Int, maxRetries: Int,
