@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonPrimitive
 // The plugin store stays the single persistence owner for those preferences.
 fun DesktopPluginContext.asAndroidContext(): android.content.Context = DesktopAndroidContext(this, null)
 
-/** The same Context whose SharedPreferences commits go through the caller's admission (the original write path:
+/** The same Context whose SharedPreferences and settings_prefs DataStore commits go through the caller's admission (the original write path:
  * [checkRequest] before and after, a write permit minted by [acquirePermit], CAS on the settings document). */
 internal fun DesktopPluginContext.asAndroidContext(checkRequest: () -> Unit,
     acquirePermit: () -> DesktopPluginStore.OriginalPreferenceWritePermit): android.content.Context =
@@ -16,10 +16,13 @@ private class DesktopAndroidContext(private val desktop: DesktopPluginContext, p
     androidx.datastore.preferences.DesktopPreferencesDataStoreOwner {
     override val applicationContext: android.content.Context get() = this
     override val filesDir: java.io.File get() = desktop.filesDir
-    // Upstream settings_prefs is the "settings" namespace of the same document; plugin-context writes keep the store's
-    // own request admission (the plugin preferences above write the same way), with no page owner.
+    // Upstream settings_prefs is the "settings" namespace of the same document. With an admission it writes through that
+    // admission, as the SharedPreferences below do; without one, through the store's own request admission (the plugin
+    // preferences write the same way), with no page owner.
     private val settingsStore by lazy {
-        com.bilipai.desktop.settings.DesktopSettingsDocumentDataStore(desktop.store, "settings",
+        if (admission != null) com.bilipai.desktop.settings.DesktopSettingsDocumentDataStore(desktop.store, "settings",
+            checkRequest = admission.checkRequest, acquirePermit = { _ -> admission.acquirePermit() })
+        else com.bilipai.desktop.settings.DesktopSettingsDocumentDataStore(desktop.store, "settings",
             checkRequest = { DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal() },
             acquirePermit = { check -> check(); DesktopPluginStore.OriginalPreferenceWritePermit(desktop.store) })
     }

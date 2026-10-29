@@ -13,6 +13,8 @@ import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.longOrNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlin.coroutines.createCoroutine
+import kotlin.coroutines.resume
 
 /**
  * The Android Context upstream app code receives on the desktop (LocalContext): one page's settings owner. Upstream's
@@ -29,10 +31,20 @@ internal class DesktopOriginalSettingsAndroidContext(private val settings: Deskt
         override val data: kotlinx.coroutines.flow.Flow<Preferences>
             get() = settings.settingsDataStore.data.map { DesktopSettingsDocumentDataStore.toPreferences(it.json) }
         override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
-            // In an open operation the edit is recorded and replayed at its end like every desktop edit there, so it
-            // is the changed keys the transform computed. Otherwise the namespace may move between the transform and
-            // the CAS: commit nothing and run the transform again on the new values, as DesktopSettingsDocumentDataStore does.
-            val inOperation = DesktopOriginalPlaybackPreferenceOperation.currentOrNull() != null
+            // In an open operation the edit is recorded and replayed on the actual snapshot at its end, like every
+            // desktop edit there: the recorded edit is the transform itself, run again on the values it is replayed on.
+            if (DesktopOriginalPlaybackPreferenceOperation.currentOrNull() != null) {
+                var staged: Preferences? = null
+                settings.settingsDataStore.edit { values ->
+                    val before = DesktopSettingsDocumentDataStore.toPreferences(values.json)
+                    val after = runReplayable(transform, before)
+                    if (staged == null) staged = after
+                    values.changes.putAll(DesktopSettingsDocumentDataStore.changes(before.asMap(), after.asMap()))
+                }
+                return staged!!
+            }
+            // Otherwise the namespace may move between the transform and the CAS: commit nothing and run the
+            // transform again on the new values, as DesktopSettingsDocumentDataStore does.
             while (true) {
                 val base = settings.settingsDataStore.data.first().json
                 val before = DesktopSettingsDocumentDataStore.toPreferences(base)
@@ -41,12 +53,21 @@ internal class DesktopOriginalSettingsAndroidContext(private val settings: Deskt
                 if (changes.isEmpty()) return after
                 var moved = false
                 settings.settingsDataStore.edit { values ->
-                    moved = !inOperation && values.json != base
+                    moved = values.json != base
                     if (!moved) values.changes.putAll(changes)
                 }
                 if (!moved) return after
             }
         }
+    }
+
+    /** Runs a DataStore transform to completion on this thread, so an operation can replay it on its actual snapshot.
+     * A transform that suspends cannot be replayed there and fails instead of committing a stale result. */
+    private fun runReplayable(transform: suspend (Preferences) -> Preferences, before: Preferences): Preferences {
+        var outcome: Result<Preferences>? = null
+        transform.createCoroutine(before, kotlin.coroutines.Continuation(kotlin.coroutines.EmptyCoroutineContext) { outcome = it }).resume(Unit)
+        return (outcome ?: throw UnsupportedDesktopCapability("a suspending settings_prefs transform inside a settings operation",
+            "the operation replays its edits synchronously on the actual snapshot")).getOrThrow()
     }
 
     override val applicationContext: android.content.Context get() = this
