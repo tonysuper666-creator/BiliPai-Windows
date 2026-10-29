@@ -11,7 +11,9 @@ import java.time.Instant
 
 /** Sanitized local backup for one uncaught window exception. It exists so a
  * failure is never lost when the diagnostic actor is absent or its write does
- * not succeed, and it reports whether the record really reached the disk. */
+ * not succeed, and it reports whether the record really reached the disk. The
+ * file never exceeds [limitBytes]: one record is cut to that size on a UTF-8
+ * character boundary, and the older content is rotated out when it would overflow. */
 internal class DesktopWindowExceptionFallbackLog(
     private val file: Path = Path.of(System.getenv("LOCALAPPDATA") ?: System.getProperty("java.io.tmpdir"),
         "BiliPaiWindows", "diagnostics", "window-exceptions.log"),
@@ -19,13 +21,9 @@ internal class DesktopWindowExceptionFallbackLog(
     private val now: () -> Instant = Instant::now,
 ) {
     fun append(failure: Throwable): Boolean = runCatching {
-        val record = sanitizeDesktopDiagnosticText(buildString {
-            append(now().toString()).append(' ').append(failure.javaClass.name)
-            append(": ").append(failure.message.orEmpty()).append('\n')
-            append(failure.stackTraceToString()).append('\n')
-        })
+        val record = sanitizeDesktopDiagnosticText(describe(failure))
         file.parent?.let(Files::createDirectories)
-        val bytes = record.toByteArray(Charsets.UTF_8)
+        val bytes = boundedUtf8(record, limitBytes)
         val existing = if (Files.isRegularFile(file)) Files.size(file) else 0L
         val options = if (existing + bytes.size > limitBytes)
             arrayOf(StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
@@ -33,6 +31,48 @@ internal class DesktopWindowExceptionFallbackLog(
         Files.write(file, bytes, *options)
         true
     }.getOrDefault(false)
+
+    /** The text handed to the sanitizer is bounded first: its patterns rescan a long
+     * unbroken run from every position, so an exception message of a million
+     * characters would hold the UI thread for minutes. Bounded here, the cost is fixed. */
+    private fun describe(failure: Throwable): String = buildString {
+        append(now().toString()).append(' ')
+        var current: Throwable? = failure
+        var depth = 0
+        while (current != null && depth < MAX_CAUSES) {
+            if (depth > 0) append("Caused by: ")
+            append(current.javaClass.name).append(": ").append(clip(current.message.orEmpty(), MAX_MESSAGE_CHARS)).append('\n')
+            for (frame in current.stackTrace.take(MAX_FRAMES)) append("\tat ").append(frame).append('\n')
+            current = current.cause?.takeIf { it !== current }
+            depth++
+        }
+    }
+
+    internal companion object {
+        private const val MAX_MESSAGE_CHARS = 4_096
+        private const val MAX_FRAMES = 40
+        private const val MAX_CAUSES = 5
+
+        /** [text] cut to [max] characters without splitting a surrogate pair. */
+        fun clip(text: String, max: Int): String {
+            if (text.length <= max) return text
+            val end = if (max > 0 && Character.isHighSurrogate(text[max - 1])) max - 1 else max
+            return text.substring(0, end) + "...[message truncated]"
+        }
+
+        private val TRUNCATION_MARK = "\n[record truncated]\n".toByteArray(Charsets.UTF_8)
+
+        /** UTF-8 bytes of [text], at most [limit] of them, never ending inside a character. */
+        fun boundedUtf8(text: String, limit: Long): ByteArray {
+            val all = text.toByteArray(Charsets.UTF_8)
+            if (all.size <= limit) return all
+            val mark = if (limit >= TRUNCATION_MARK.size) TRUNCATION_MARK else ByteArray(0)
+            var end = (limit - mark.size).toInt()
+            // 10xxxxxx bytes continue a character; back up to its first byte and drop it.
+            while (end > 0 && (all[end].toInt() and 0xC0) == 0x80) end--
+            return all.copyOfRange(0, end) + mark
+        }
+    }
 }
 
 /** Compose's default factory answers an uncaught window exception with a system
@@ -75,10 +115,10 @@ internal class DesktopWindowExceptionHandler(
             val name = failure.javaClass.simpleName
             return when {
                 recorded -> "界面遇到一个内部错误（$name），已记录到诊断日志。" +
-                    "回到首页重新打开即可继续使用；反复出现请在设置里导出日志。"
+                    "当前窗口可能已无法操作，请点击「重启客户端」恢复；反复出现请重启后在设置里导出日志。"
                 backedUp -> "界面遇到一个内部错误（$name），诊断日志不可用，已写入本地后备日志 window-exceptions.log。" +
-                    "回到首页重新打开即可继续使用。"
-                else -> "界面遇到一个内部错误（$name），本次未能保存日志。请重试；仍反复出现请重启客户端。"
+                    "当前窗口可能已无法操作，请点击「重启客户端」恢复。"
+                else -> "界面遇到一个内部错误（$name），本次未能保存日志。当前窗口可能已无法操作，请点击「重启客户端」恢复。"
             }
         }
     }

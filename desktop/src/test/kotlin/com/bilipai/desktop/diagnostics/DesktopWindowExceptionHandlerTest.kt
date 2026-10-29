@@ -154,6 +154,105 @@ class DesktopWindowExceptionHandlerTest {
         }
     }
 
+    @Test fun aSingleHugeRecordIsCutToTheLimitInsteadOfWrittenWhole() {
+        val directory = Files.createTempDirectory("window-exception-huge-")
+        try {
+            val file = directory.resolve("window-exceptions.log")
+            val limit = 256L * 1024L
+            val log = DesktopWindowExceptionFallbackLog(file, limitBytes = limit)
+
+            // 102,400 Han characters are 307,200 UTF-8 bytes in the message alone.
+            assertTrue(log.append(IllegalStateException("\u6c49".repeat(102_400))))
+
+            assertTrue(Files.size(file) <= limit, "one record must not pass the limit (now=${Files.size(file)})")
+            val text = decodeStrictly(file)
+            assertTrue(text.contains("IllegalStateException"), "the start of the record is kept")
+            assertTrue(text.contains("truncated"), "a cut record says so")
+
+            // A limit below one bounded record forces the byte cut on multi-byte text.
+            val small = directory.resolve("small.log")
+            assertTrue(DesktopWindowExceptionFallbackLog(small, limitBytes = 2048L)
+                .append(IllegalStateException("\u6c49".repeat(102_400))))
+            assertTrue(Files.size(small) <= 2048L, "now=${Files.size(small)}")
+            assertTrue(decodeStrictly(small).contains("[record truncated]"))
+        } finally {
+            deleteCreatedDirectory(directory)
+        }
+    }
+
+    @Test fun aHugeAsciiRecordAfterExistingContentStillStaysUnderTheLimit() {
+        val directory = Files.createTempDirectory("window-exception-huge-ascii-")
+        try {
+            val file = directory.resolve("window-exceptions.log")
+            val limit = 4096L
+            val log = DesktopWindowExceptionFallbackLog(file, limitBytes = limit)
+            repeat(3) { assertTrue(log.append(RuntimeException("small $it"))) }
+
+            // An unbroken million-character message must also return promptly.
+            val started = System.nanoTime()
+            assertTrue(log.append(RuntimeException("x".repeat(1_000_000))))
+            assertTrue((System.nanoTime() - started) < 30_000_000_000L, "bounding must happen before sanitizing")
+            assertTrue(Files.size(file) <= limit, "now=${Files.size(file)}")
+
+            // Rotation after the cut record keeps working and keeps the limit.
+            repeat(30) { assertTrue(log.append(RuntimeException("after $it"))) }
+            assertTrue(Files.size(file) <= limit, "now=${Files.size(file)}")
+            assertTrue(decodeStrictly(file).contains("after 29"), "the newest record is the one that survives")
+        } finally {
+            deleteCreatedDirectory(directory)
+        }
+    }
+
+    @Test fun recordKeepsFramesAndTheCauseChainWithoutRepeatingTheMessage() {
+        val directory = Files.createTempDirectory("window-exception-cause-")
+        try {
+            val file = directory.resolve("window-exceptions.log")
+            val log = DesktopWindowExceptionFallbackLog(file)
+            assertTrue(log.append(IllegalStateException("outer", IllegalArgumentException("inner cause"))))
+
+            val text = Files.readString(file)
+            assertTrue(text.contains("Caused by: java.lang.IllegalArgumentException: inner cause"))
+            assertTrue(text.contains("\tat "), "stack frames are kept")
+            assertEquals(1, Regex("outer").findAll(text).count(), "the message appears once")
+        } finally {
+            deleteCreatedDirectory(directory)
+        }
+    }
+
+    @Test fun clipDoesNotSplitASurrogatePair() {
+        val clipped = DesktopWindowExceptionFallbackLog.clip("a\ud83d\ude00b", 2)
+        assertTrue(clipped.startsWith("a") && !clipped.contains('\ud83d'), clipped)
+        assertEquals("abc", DesktopWindowExceptionFallbackLog.clip("abc", 3))
+    }
+
+    @Test fun truncationNeverSplitsAMultiByteCharacter() {
+        // 1-, 2-, 3- and 4-byte characters, cut at every limit in a range that crosses their boundaries.
+        val text = "a\u00e9\u6c49\ud83d\ude00".repeat(200)
+        for (limit in 30L..80L) {
+            val bytes = DesktopWindowExceptionFallbackLog.boundedUtf8(text, limit)
+            assertTrue(bytes.size <= limit, "limit=$limit size=${bytes.size}")
+            // Throws on a malformed or truncated sequence.
+            Charsets.UTF_8.newDecoder().onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+                .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT)
+                .decode(java.nio.ByteBuffer.wrap(bytes))
+        }
+        assertEquals(0, DesktopWindowExceptionFallbackLog.boundedUtf8("abc", 0L).size)
+        assertContentEquals("abc".toByteArray(), DesktopWindowExceptionFallbackLog.boundedUtf8("abc", 3L))
+    }
+
+    @Test fun noticeNamesTheRestartAsTheWayBackAndNoLongerPromisesAHomeScreen() {
+        for ((recorded, backedUp) in listOf(true to true, false to true, false to false)) {
+            val text = DesktopWindowExceptionHandler.message(recorded, backedUp, IllegalStateException())
+            assertTrue(text.contains("重启客户端"), "the way back must be named: $text")
+            assertFalse(text.contains("回到首页"), "a dead window cannot go back to the home page: $text")
+        }
+    }
+
+    private fun decodeStrictly(file: Path): String =
+        Charsets.UTF_8.newDecoder().onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+            .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT)
+            .decode(java.nio.ByteBuffer.wrap(Files.readAllBytes(file))).toString()
+
     private fun deleteCreatedDirectory(directory: Path) {
         Files.walk(directory).use { paths -> paths.sorted(Comparator.reverseOrder()).forEach(Files::deleteIfExists) }
     }
