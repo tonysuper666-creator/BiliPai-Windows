@@ -1,0 +1,10 @@
+--- a/core-player/src/main/java/com/android/purebilibili/core/player/PlayerErrorRecoveryPolicy.kt
++++ b/core-player/src/main/java/com/android/purebilibili/core/player/PlayerErrorRecoveryPolicy.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.core.player
+ 
+-import androidx.media3.common.PlaybackException
++import com.bilipai.desktop.player.platform.DesktopMedia3ErrorCodes as PlaybackException
+ 
+ enum class PlayerErrorRecoveryAction {
+     FALLBACK_PREMIUM_AUDIO,

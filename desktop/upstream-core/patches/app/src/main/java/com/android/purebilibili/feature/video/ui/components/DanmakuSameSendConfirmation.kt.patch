@@ -1,0 +1,13 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSameSendConfirmation.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSameSendConfirmation.kt
+@@ -1,7 +1,9 @@
++// Fixed original e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf:app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSameSendConfirmation.kt
++// Complete original file; only explicit reversible Windows platform ports follow.
+ package com.android.purebilibili.feature.video.ui.components
+ 
+ import androidx.compose.runtime.Composable
+-import com.android.purebilibili.core.ui.AppAlertDialog
++import com.bilipai.desktop.ui.DesktopHotDanmakuAlertDialog as AppAlertDialog
+ import com.android.purebilibili.core.ui.components.AppText
+ import com.android.purebilibili.core.ui.components.AppTextButton
+ 

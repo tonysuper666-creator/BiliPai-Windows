@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuMerger.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuMerger.kt
+@@ -3,7 +3,7 @@
+ import com.android.purebilibili.danmaku.parser.*
+ 
+ import com.android.purebilibili.danmaku.engine.DanmakuItem
+-import android.util.Log
++import com.bilipai.desktop.ui.DesktopOriginalVideoInteractionLog as Log
+ 
+ /**
+  * 弹幕合并工具

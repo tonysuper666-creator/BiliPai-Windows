@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayProgressState.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayProgressState.kt
+@@ -4,7 +4,7 @@
+ import androidx.compose.runtime.State
+ import androidx.compose.runtime.produceState
+ import androidx.compose.runtime.rememberUpdatedState
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player
+ import kotlinx.coroutines.delay
+ import kotlinx.coroutines.isActive
+ 

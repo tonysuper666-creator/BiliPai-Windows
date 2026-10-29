@@ -1,0 +1,51 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/state/PlayerLifecyclePlaybackPolicy.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/state/PlayerLifecyclePlaybackPolicy.kt
+@@ -1,7 +1,5 @@
+ package com.android.purebilibili.feature.video.state
+-
+-import androidx.media3.common.Player
+-
++import com.bilipai.desktop.player.platform.DesktopMedia3PlayerStates as Player
+ internal fun isPlaybackActiveForLifecycle(
+     isPlaying: Boolean,
+     playWhenReady: Boolean,
+@@ -28,34 +26,6 @@
+     return wasPlaybackActive && !currentlyActive
+ }
+ 
+-internal fun shouldRememberResumeIntentForBuffering(
+-    hasPendingResumeIntent: Boolean,
+-    isPlaying: Boolean,
+-    playWhenReady: Boolean,
+-    playbackState: Int
+-): Boolean {
+-    return (playbackState == Player.STATE_BUFFERING || playbackState == Player.STATE_IDLE) &&
+-        (hasPendingResumeIntent || isPlaying || playWhenReady)
+-}
+-
+-internal fun shouldClearResumeIntentForPlayWhenReadyChange(
+-    playWhenReady: Boolean,
+-    reason: Int
+-): Boolean {
+-    return !playWhenReady && reason == Player.PLAY_WHEN_READY_CHANGE_REASON_USER_REQUEST
+-}
+-
+-internal fun shouldAutoResumeAfterBufferingRecovery(
+-    hasPendingResumeIntent: Boolean,
+-    isPlaying: Boolean,
+-    playWhenReady: Boolean,
+-    playbackState: Int
+-): Boolean {
+-    return hasPendingResumeIntent &&
+-        !isPlaying &&
+-        playbackState == Player.STATE_READY
+-}
+-
+ internal fun shouldRestorePlayerVolumeOnResume(
+     shouldResume: Boolean,
+     currentVolume: Float,
+@@ -63,3 +33,4 @@
+ ): Boolean {
+     return currentVolume <= 0f && (shouldResume || shouldEnsureAudible)
+ }
++

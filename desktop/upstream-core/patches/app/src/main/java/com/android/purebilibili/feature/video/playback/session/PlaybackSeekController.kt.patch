@@ -1,0 +1,10 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSeekController.kt
+@@ -1,6 +1,6 @@
+ package com.android.purebilibili.feature.video.playback.session
+ 
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player
+ import com.android.purebilibili.feature.video.playback.policy.shouldHoldPlaybackTransitionPosition
+ import com.android.purebilibili.feature.video.usecase.shouldResumePlaybackAfterUserSeek
+ 

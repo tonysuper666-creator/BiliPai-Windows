@@ -1,0 +1,21 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentText.kt
+@@ -1,7 +1,7 @@
+ package com.android.purebilibili.feature.video.ui.components
+ 
+-import android.os.Build
+-import android.os.SystemClock
++import com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported
++import com.bilipai.desktop.ui.DesktopOriginalVideoGestureClock as SystemClock
+ import androidx.compose.animation.core.Animatable
+ import androidx.compose.animation.core.CubicBezierEasing
+ import androidx.compose.animation.core.tween
+@@ -76,7 +76,7 @@
+             tapToCopyEnabled = false,
+             modifier = Modifier.graphicsLayer {
+                 val radius = blur.value.dp.toPx()
+-                renderEffect = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && radius > 0.01f) {
++                renderEffect = if (desktopDetailRenderEffectsSupported() && radius > 0.01f) {
+                     BlurEffect(radius, radius, TileMode.Decal)
+                 } else {
+                     null

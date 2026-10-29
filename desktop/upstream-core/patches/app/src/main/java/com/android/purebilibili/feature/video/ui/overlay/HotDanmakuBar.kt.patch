@@ -1,0 +1,27 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/HotDanmakuBar.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/HotDanmakuBar.kt
+@@ -26,7 +26,7 @@
+ import androidx.compose.ui.text.rememberTextMeasurer
+ import androidx.compose.ui.unit.Dp
+ import kotlin.math.ceil
+-import androidx.media3.common.Player
++import com.bilipai.desktop.ui.DesktopHotDanmakuPlayer as Player
+ import com.android.purebilibili.core.ui.components.AnimatedCountText
+ import com.android.purebilibili.core.ui.components.AppIcon
+ import com.android.purebilibili.core.ui.components.AppText
+@@ -36,6 +36,7 @@
+ import com.android.purebilibili.danmaku.engine.DanmakuItem
+ import kotlinx.coroutines.delay
+ import kotlinx.coroutines.isActive
++import com.bilipai.desktop.ui.desktopCommandHitRegion
+ 
+ private class HotDanmakuPresentation {
+     var heightPx = 0
+@@ -168,6 +169,7 @@
+                         val liked = item.danmakuId in likedDanmakuIds
+                         Row(
+                             modifier = Modifier
++                                .desktopCommandHitRegion("hot-danmaku-item-" + item.danmakuId)
+                                 .padding(1.dp),
+                             verticalAlignment = Alignment.CenterVertically,
+                         ) {

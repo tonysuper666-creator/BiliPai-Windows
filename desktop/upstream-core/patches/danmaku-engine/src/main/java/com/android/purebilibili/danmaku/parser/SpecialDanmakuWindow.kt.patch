@@ -1,0 +1,58 @@
+# Preserve the existing desktop DTO boundary and per-window resource admission.
+--- a/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindow.kt
++++ b/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindow.kt
+@@ -1,6 +1,8 @@
+ package com.android.purebilibili.danmaku.parser
+ 
+-import com.android.purebilibili.danmaku.engine.DanmakuItem
++import com.bilipai.desktop.danmaku.DanmakuComment as DanmakuItem
++import com.bilipai.desktop.danmaku.DesktopSpecialParsedDanmaku as ParsedDanmaku
++import com.bilipai.desktop.danmaku.DesktopSpecialParseScope
+ import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
+ import com.android.purebilibili.danmaku.parser.bas.BasParseException
+ import com.android.purebilibili.danmaku.parser.bas.BasScriptParser
+@@ -56,7 +58,10 @@
+         for (record in records) record.parsed = null
+     }
+ 
+-    suspend fun load(
++    suspend fun load(positionMs: Long, lookAheadMs: Long = 3_000L, standardDurationMs: Long = 10_000L): SpecialDanmakuWindowResult =
++        DesktopSpecialParseScope.withWindow { loadBounded(positionMs, lookAheadMs, standardDurationMs) }
++
++    private suspend fun loadBounded(
+         positionMs: Long,
+         lookAheadMs: Long = 3_000L,
+         standardDurationMs: Long = 10_000L
+@@ -70,6 +75,8 @@
+             }
+             if (record.entry.startTimeMs >= end || !overlaps(record, start)) record.parsed = null
+         }
++
++        for (record in records) record.parsed?.let(DesktopSpecialParseScope::seed)
+ 
+         var index = 0
+         while (index < records.size && records[index].entry.startTimeMs < end) {
+@@ -99,6 +106,7 @@
+ 
+     private suspend fun loadRecord(record: Record, start: Long, standardDurationMs: Long) {
+         val entry = record.entry
++        DesktopSpecialParseScope.beforeRead(entry.byteLength)
+         val bytes = record.source.readRange(entry.offset, entry.byteLength)
+         val elem = DanmakuProto.parseReply(bytes).elems.singleOrNull()
+         if (elem == null) {
+@@ -107,13 +115,13 @@
+         }
+         if (entry.mode == 9 && entry.startTimeMs < start && record.durationMs == null) {
+             record.durationMs = try {
+-                BasScriptParser.parseDurationMs(elem.content)
++                DesktopSpecialParseScope.duration(elem.content)
+             } catch (_: BasParseException) {
+                 0L
+             }
+             if (!overlaps(record, start)) return
+         }
+-        val parsed = DanmakuParser.parseElement(elem)
++        val parsed = DesktopSpecialParseScope.parse(bytes, elem)
+         currentCoroutineContext().ensureActive()
+         record.durationMs = when {
+             parsed.basList.isNotEmpty() -> parsed.basList.single().durationMs
