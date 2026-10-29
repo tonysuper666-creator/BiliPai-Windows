@@ -46,7 +46,7 @@ val revisionNeutralSourceRecipePins = mapOf(
     "tools/extract-upstream-special-danmaku.py" to "979060ce22a625c76651b24fee264268385ccb96de8956fb1447defca1dedc56",
     "tools/extract-upstream-video-comment-ui.py" to "6537f13ea46e584244a6384c4b43b8df68fb7c3028b210f49bee34e6aafabb31",
     "tools/extract-video-enhancement.py" to "0046195e1914059a841aacf69ed704c86a85e5a9e3a432fbcce3d3628f2d9195",
-    "tools/run-tool-tests.py" to "0ccdc350020d68fd5d7bf515cf16fcb45147dc9f2549d436ebda7f8936008403",
+    "tools/run-tool-tests.py" to "0114c7c7ecea5c45e26843ed025eae4a7fd991b6d50edf09bf9185ed7f20cd44",
     "tools/sync-upstream.py" to "62e1bab0f3101a76f80d1ec2aa16c0b2f2aacba194df67c291324638adce1fa0",
     "tools/v025-canonical-sources.json" to "2600739eef5521cfef71d6af16762ccc3b9df076dad7ccb79902944f1634130f",
     "tools/v025_source_paths.py" to "3b84ba1b1b0907cfb3cb610bd6f713c37521a79f6a0d78ce185f764547ebc460",
@@ -82,7 +82,7 @@ val revisionNeutralSourceImportContextMatches =
     revisionNeutralSourceImportRoots.none { file("tools/$it").exists() } && revisionNeutralSourceImportShadowFiles.isEmpty
 // Pin the whole Gradle recipe, including canonical helpers and later wiring.
 // Mask exactly this self-digest assignment; raw build bytes remain task inputs.
-val revisionNeutralSourceGradleRecipeSha256 = "bab6614f5c944dc6ec03fc9e8cbd6b4021039967a58203aa590e5a96dea22662"
+val revisionNeutralSourceGradleRecipeSha256 = "72436b1ba6490d42cd449636d129e2d257d6723c2406cf8f7857df17d8c0a8ca"
 val revisionNeutralSourceGradleRecipeMatches = runCatching {
     val recipe = file("build.gradle.kts").readText(Charsets.UTF_8).replace("\r\n", "\n")
     val ownPin = "val revisionNeutralSourceGradleRecipeSha256 = \"$revisionNeutralSourceGradleRecipeSha256\""
