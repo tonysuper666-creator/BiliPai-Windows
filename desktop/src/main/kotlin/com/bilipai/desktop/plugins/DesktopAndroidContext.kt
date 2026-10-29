@@ -1,10 +1,18 @@
 package com.bilipai.desktop.plugins
 
+import kotlinx.serialization.json.JsonPrimitive
+
 // Upstream code compiled from the merged tree takes android.content.Context.
 // The plugin store stays the single persistence owner for those preferences.
-fun DesktopPluginContext.asAndroidContext(): android.content.Context = DesktopAndroidContext(this)
+fun DesktopPluginContext.asAndroidContext(): android.content.Context = DesktopAndroidContext(this, null)
 
-private class DesktopAndroidContext(private val desktop: DesktopPluginContext) : android.content.Context(desktop.filesDir),
+/** The same Context whose SharedPreferences commits go through the caller's admission (the original write path:
+ * [checkRequest] before and after, a write permit minted by [acquirePermit], CAS on the settings document). */
+internal fun DesktopPluginContext.asAndroidContext(checkRequest: () -> Unit,
+    acquirePermit: () -> DesktopPluginStore.OriginalPreferenceWritePermit): android.content.Context =
+    DesktopAndroidContext(this, DesktopAndroidContext.Admission(checkRequest, acquirePermit))
+
+private class DesktopAndroidContext(private val desktop: DesktopPluginContext, private val admission: Admission?) : android.content.Context(desktop.filesDir),
     androidx.datastore.preferences.DesktopPreferencesDataStoreOwner {
     override val applicationContext: android.content.Context get() = this
     override val filesDir: java.io.File get() = desktop.filesDir
@@ -20,7 +28,31 @@ private class DesktopAndroidContext(private val desktop: DesktopPluginContext) :
         else -> throw com.bilipai.desktop.compat.UnsupportedDesktopCapability("DataStore \"$name\"", "the desktop keeps only settings_prefs in Root's settings document")
     }
     override fun getSharedPreferences(name: String, mode: Int): android.content.SharedPreferences =
-        PluginSharedPreferences(desktop.getSharedPreferences(name, mode))
+        if (admission == null) PluginSharedPreferences(desktop.getSharedPreferences(name, mode))
+        else AdmittedSharedPreferences(PluginSharedPreferences(desktop.getSharedPreferences(name, mode)), desktop.store, name, admission)
+
+    class Admission(val checkRequest: () -> Unit, val acquirePermit: () -> DesktopPluginStore.OriginalPreferenceWritePermit)
+}
+
+/** Reads as the plain plugin preferences; commits the collected edits once, through the admission. */
+private class AdmittedSharedPreferences(private val reads: android.content.SharedPreferences, private val store: DesktopPluginStore,
+    private val name: String, private val admission: DesktopAndroidContext.Admission) : android.content.SharedPreferences by reads {
+    override fun edit(): android.content.SharedPreferences.Editor = object : android.content.SharedPreferences.Editor {
+        private val changes = linkedMapOf<String, kotlinx.serialization.json.JsonElement?>()
+        override fun putString(key: String, value: String?) = apply { changes[key] = value?.let(::JsonPrimitive) }
+        override fun putStringSet(key: String, values: Set<String>?) = apply { changes[key] = values?.let { kotlinx.serialization.json.JsonArray(it.map(::JsonPrimitive)) } }
+        override fun putLong(key: String, value: Long) = apply { changes[key] = JsonPrimitive(value.toString()) }
+        override fun putInt(key: String, value: Int) = apply { changes[key] = JsonPrimitive(value) }
+        override fun putBoolean(key: String, value: Boolean) = apply { changes[key] = JsonPrimitive(value) }
+        override fun putFloat(key: String, value: Float) = apply { changes[key] = JsonPrimitive(value.toString()) }
+        override fun remove(key: String) = apply { changes[key] = null }
+        override fun clear(): android.content.SharedPreferences.Editor = apply { reads.all.keys.forEach { changes[it] = null } }
+        override fun commit(): Boolean { apply(); return true }
+        override fun apply() {
+            val edits = changes.toMap()
+            store.updateOriginalFromSnapshot(name, admission.checkRequest, admission.acquirePermit) { Unit to edits }
+        }
+    }
 }
 
 private class PluginSharedPreferences(private val prefs: DesktopPluginPreferences) : android.content.SharedPreferences {

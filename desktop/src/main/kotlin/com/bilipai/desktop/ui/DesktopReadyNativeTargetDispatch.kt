@@ -23,6 +23,8 @@ internal fun dispatchDesktopReadyNativeTarget(root: DesktopHomeRetainedRoot,
             else routes.videoFromSource(key, stillOwned, sourceAdmission)
         }
         is BilibiliNavigationTarget.Dynamic -> return push(BiliPaiNavKey.DynamicDetail(target.dynamicId))
+        // Upstream added match targets; the desktop has no match page yet, so the link stays unhandled.
+        is BilibiliNavigationTarget.Match -> return false
         is BilibiliNavigationTarget.Search -> return push(BiliPaiNavKey.Search(target.keyword))
         is BilibiliNavigationTarget.Space -> {
             if (target.mid <= 0L) return false

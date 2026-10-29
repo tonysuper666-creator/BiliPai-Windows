@@ -56,7 +56,7 @@ internal class DesktopTodayWatchFeedbackWriteBinding(
                 }) throw CancellationException("TodayWatch recommendation commit retired")
             return permit
         }
-        TodayWatchFeedbackStore.saveSnapshot(context.asAndroidContext(), snapshot, ::checkRequest, ::acquirePermit)
+        TodayWatchFeedbackStore.saveSnapshot(context.asAndroidContext(::checkRequest, ::acquirePermit), snapshot)
     }
     suspend fun clear() = withContext(Dispatchers.IO) {
         val caller = currentCoroutineContext()
@@ -70,6 +70,6 @@ internal class DesktopTodayWatchFeedbackWriteBinding(
                 }) throw CancellationException("TodayWatch recommendation clear retired")
             return permit
         }
-        TodayWatchFeedbackStore.clear(context.asAndroidContext(), ::checkRequest, ::acquirePermit)
+        TodayWatchFeedbackStore.clear(context.asAndroidContext(::checkRequest, ::acquirePermit))
     }
 }
