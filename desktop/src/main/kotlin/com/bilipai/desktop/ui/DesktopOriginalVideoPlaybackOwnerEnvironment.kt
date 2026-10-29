@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
-import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
+import com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle
 import com.android.purebilibili.core.plugin.BuiltinPlugin
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.VideoNoteSnapshot
@@ -9,8 +9,8 @@ import com.android.purebilibili.data.repository.VideoNoteSavePayload
 import com.android.purebilibili.data.repository.VideoNotePublicNotePage
 import com.android.purebilibili.data.model.response.CreatorCardStats
 import com.android.purebilibili.feature.download.DownloadTask
-import com.android.purebilibili.feature.plugin.SponsorBlockPlugin
 import com.android.purebilibili.feature.plugin.*
+import com.bilipai.desktop.player.DesktopSponsorPlayerSession as SponsorBlockPlugin
 import com.android.purebilibili.feature.video.player.*
 import com.android.purebilibili.feature.video.progress.PbpProgressData
 import com.android.purebilibili.feature.video.subtitle.SubtitleCue
@@ -165,7 +165,7 @@ internal interface DesktopOriginalVideoOwnerDanmaku {
  */
 internal interface DesktopOriginalVideoOwnerPlugins {
     val sponsorBlock:SponsorBlockPlugin
-    fun enabledPlayerPlugins():List<DesktopSingleSessionPlayerPlugin>
+    fun enabledPlayerPlugins():List<DesktopPlayerPluginSessionHandle>
     fun enabledPlugins():List<BuiltinPlugin>
     fun <T:BuiltinPlugin> enabledPlugins(type:KClass<T>):List<T>
     fun capturePlaybackDispatch():DesktopOriginalVideoAcceptedPublication?
@@ -177,11 +177,11 @@ internal interface DesktopOriginalVideoOwnerPlugins {
      * publication establishes the one Runtime generation before this observer. */
     suspend fun ensureSponsorLoaded(expected:DesktopOriginalVideoAcceptedPublication,bvid:String,cid:Long)
     suspend fun onSponsorDisabled(expected:DesktopOriginalVideoAcceptedPublication)
-    suspend fun onPositionUpdate(expected:DesktopOriginalVideoAcceptedPublication,plugin:DesktopSingleSessionPlayerPlugin,positionMs:Long):com.android.purebilibili.plugin.sdk.SkipAction?
-    suspend fun onUserSeek(expected:DesktopOriginalVideoAcceptedPublication,plugin:DesktopSingleSessionPlayerPlugin,positionMs:Long)
+    suspend fun onPositionUpdate(expected:DesktopOriginalVideoAcceptedPublication,plugin:DesktopPlayerPluginSessionHandle,positionMs:Long):com.android.purebilibili.plugin.sdk.SkipAction?
+    suspend fun onUserSeek(expected:DesktopOriginalVideoAcceptedPublication,plugin:DesktopPlayerPluginSessionHandle,positionMs:Long)
     /** Root queues retirement on its existing Runtime scope with the OLD captured
      * generation. The closed VM's canceled scope must never perform this mutation. */
-    fun onVideoEnd(plugin:DesktopSingleSessionPlayerPlugin)
+    fun onVideoEnd(plugin:DesktopPlayerPluginSessionHandle)
     suspend fun markSponsorSkipped(expected:DesktopOriginalVideoAcceptedPublication,plugin:SponsorBlockPlugin,segmentId:String):SponsorSegment?
     suspend fun voteSponsorSegment(expected:DesktopOriginalVideoAcceptedPublication,plugin:SponsorBlockPlugin,segmentId:String,vote:Int):Result<Unit>
     suspend fun submitSponsorSegment(expected:DesktopOriginalVideoAcceptedPublication,plugin:SponsorBlockPlugin,bvid:String,cid:Long,videoDurationSeconds:Float,startMs:Long,endMs:Long,category:String,actionType:String):Result<List<SponsorSegment>>

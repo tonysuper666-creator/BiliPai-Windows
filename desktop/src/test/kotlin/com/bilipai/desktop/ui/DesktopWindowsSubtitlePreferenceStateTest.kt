@@ -6,7 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.unit.Density
-import com.android.purebilibili.core.plugin.DesktopSingleSessionPlayerPlugin
+import com.bilipai.desktop.player.DesktopPlayerPluginSessionHandle
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.feature.video.subtitle.*
 import com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
@@ -370,7 +370,7 @@ class DesktopWindowsSubtitlePreferenceStateTest {
                 { error("No subtitle fixture feedback") })
             val plugins = Proxy.newProxyInstance(DesktopOriginalVideoOwnerPlugins::class.java.classLoader,
                 arrayOf(DesktopOriginalVideoOwnerPlugins::class.java)) { _, method, _ ->
-                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<DesktopSingleSessionPlayerPlugin>()
+                when (method.name) { "capturePlaybackDispatch" -> null; "enabledPlayerPlugins" -> emptyList<DesktopPlayerPluginSessionHandle>()
                     else -> error("No pre-media plugin operation ${method.name}") }
             } as DesktopOriginalVideoOwnerPlugins
             val network = object : DesktopOriginalVideoOwnerNetwork {
