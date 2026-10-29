@@ -31,6 +31,12 @@ internal val LocalDesktopMessageNotificationContext =
 internal fun DesktopMessageNotificationRootConsumer(context: DesktopMessageNotificationContext?,
     community: DesktopCommunityRepository, window: Window) {
     val port = remember(context, window) { context?.let { DesktopWindowsMessageNotifications(it, window) } }
+    // A new port for a new account retires the previous one; the window going away only detaches it.
+    val previousPort = remember(window) { java.util.concurrent.atomic.AtomicReference<DesktopWindowsMessageNotifications?>() }
+    SideEffect {
+        val before = previousPort.getAndSet(port)
+        if (before != null && before !== port) before.retireForAccountSwitch()
+    }
     DisposableEffect(context, port) { onDispose { context?.close(); port?.close() } }
     LaunchedEffect(context, community, port) {
         val actual = context ?: return@LaunchedEffect

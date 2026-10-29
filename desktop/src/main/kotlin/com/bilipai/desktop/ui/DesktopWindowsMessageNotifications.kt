@@ -57,11 +57,14 @@ internal class DesktopWindowsMessageNotifications(
         currentCoroutineContext().ensureActive()
         check(EventQueue.isDispatchThread()) { "Message notifications require the actual Windows EDT" }
         if (!canPost()) return@withContext
-        if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
+        if (pending.isEmpty() && cancelled.isEmpty() && session.pendingWithdrawals().isEmpty()) return@withContext
         // A refused withdrawal stays pending: the toast is still on screen, so its key must stay
-        // active for the upstream checker and the next round retries it.
-        val stillOnScreen = withContext(Dispatchers.IO) { session.withdraw(cancelled) }
-        entries.apply(pending, cancelled - stillOnScreen, pendingCounts)
+        // active for the upstream checker. Every round retries the outstanding ones first, including
+        // a round with no new work at all, and drops the entries they finally removed.
+        val requested = cancelled + session.pendingWithdrawals()
+        val withdrawn = withContext(Dispatchers.IO) { session.withdrawn(requested) }
+        withContext(Dispatchers.IO) { DesktopNotificationCleanup.retryOutstanding() }
+        entries.apply(pending, withdrawn, pendingCounts)
         val visible = entries.snapshot()
         if (visible.isEmpty()) { removeTrayOnEdt(); return@withContext }
         val icon = tray ?: TrayIcon(requireNotNull(ImageIO.read(
@@ -96,9 +99,21 @@ internal class DesktopWindowsMessageNotifications(
         // and a previously submitted balloon cannot be atomically withdrawn on account switch.
     }
 
+    /** Notifications were turned off: withdraw the group now and keep retrying while the app lives. */
     suspend fun clear() {
         withContext(Dispatchers.Main) { removeTrayOnEdt() }
-        withContext(Dispatchers.IO) { session.clearAll() }
+        withContext(Dispatchers.IO) {
+            session.retire()
+            DesktopNotificationCleanup.track(session)
+        }
+    }
+
+    /** The account this presentation belonged to is gone: retire only that group. */
+    fun retireForAccountSwitch() {
+        Thread({
+            session.retire()
+            DesktopNotificationCleanup.track(session)
+        }, "BiliPai-notification-switch").apply { isDaemon = true }.start()
     }
 
     /** Keys the surface refused to withdraw; they stay active upstream until a retry succeeds. */
@@ -113,8 +128,8 @@ internal class DesktopWindowsMessageNotifications(
         if (!closed.compareAndSet(false, true)) return
         val cleanup = { window.removeHierarchyListener(hierarchy); removeTrayOnEdt() }
         if (EventQueue.isDispatchThread()) cleanup() else EventQueue.invokeLater { cleanup() }
-        // Account switch or window teardown: the group belongs to the account captured at construction,
-        // which is the one whose toasts may still be on screen.
-        Thread({ session.retire() }, "BiliPai-notification-withdraw").apply { isDaemon = true }.start()
+        // A normal exit keeps delivered notifications: the protocol handler still routes their clicks.
+        // Only an account switch or an explicit "notifications off" withdraws the group.
+        session.detach()
     }
 }
