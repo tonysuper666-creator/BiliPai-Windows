@@ -22,18 +22,30 @@ import kotlinx.coroutines.flow.map
  */
 internal class DesktopOriginalSettingsAndroidContext(private val settings: DesktopOriginalPlayerSettingsContext) :
     android.content.Context(settings.pluginContext.filesDir), DesktopPreferencesDataStoreOwner {
-    // Built on the page's own settings DataStore, so upstream writes join an open settings operation (staged, published
-    // at its end, rolled back on failure or retirement) and otherwise go through the page's admission and CAS.
+    // Built on the page's own settings DataStore: inside an open settings operation upstream writes are staged, published
+    // at its end and rolled back on failure or retirement; without one they go through the page's admission and CAS.
     private val settingsStore = object : DataStore<Preferences> {
         // Read on access: an open operation is a thread-local, and its staged values are what this caller must see.
         override val data: kotlinx.coroutines.flow.Flow<Preferences>
             get() = settings.settingsDataStore.data.map { DesktopSettingsDocumentDataStore.toPreferences(it.json) }
         override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
-            val before = data.first()
-            val after = transform(before)
-            val changes = DesktopSettingsDocumentDataStore.changes(before.asMap(), after.asMap())
-            if (changes.isNotEmpty()) settings.settingsDataStore.edit { values -> values.changes.putAll(changes) }
-            return after
+            // In an open operation the edit is recorded and replayed at its end like every desktop edit there, so it
+            // is the changed keys the transform computed. Otherwise the namespace may move between the transform and
+            // the CAS: commit nothing and run the transform again on the new values, as DesktopSettingsDocumentDataStore does.
+            val inOperation = DesktopOriginalPlaybackPreferenceOperation.currentOrNull() != null
+            while (true) {
+                val base = settings.settingsDataStore.data.first().json
+                val before = DesktopSettingsDocumentDataStore.toPreferences(base)
+                val after = transform(before)
+                val changes = DesktopSettingsDocumentDataStore.changes(before.asMap(), after.asMap())
+                if (changes.isEmpty()) return after
+                var moved = false
+                settings.settingsDataStore.edit { values ->
+                    moved = !inOperation && values.json != base
+                    if (!moved) values.changes.putAll(changes)
+                }
+                if (!moved) return after
+            }
         }
     }
 
