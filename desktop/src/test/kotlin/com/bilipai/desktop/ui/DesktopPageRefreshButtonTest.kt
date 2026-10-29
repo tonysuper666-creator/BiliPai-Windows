@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.components.AppLiquidGlassBackToTopButton
 import kotlinx.coroutines.flow.flowOf
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.PointerButtons
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -289,31 +288,16 @@ class DesktopPageRefreshButtonTest {
             fun find(name: String) = scene.semanticsOwners.flatMap { nodes(it.unmergedRootSemanticsNode) }.firstOrNull { node ->
                 node.config.getOrNull(SemanticsProperties.ContentDescription)?.contains(name) == true
             }
-            // Both nodes exist from the first frame, but the lift is not final then: the refresh button reports itself in an effect,
-            // so the back-to-top button (composed before it) rises one frame later and then fades/scales in. Measure the settled
-            // layout: the refresh button is present and both bounds have held still for several frames.
-            val trace = mutableListOf<String>()
-            var stable = 0
-            var last: Pair<Rect, Rect>? = null
             withTimeout(6_000) {
-                while (stable < SETTLED_FRAMES) {
-                    nanos = maxOf(System.nanoTime(), nanos + 1); scene.render(nanos).close(); delay(12)
-                    val refreshNode = find("刷新")
-                    val topNode = find("回到顶部")
-                    if (refreshNode == null || topNode == null) { stable = 0; last = null; continue }
-                    val now = topNode.boundsInRoot to refreshNode.boundsInRoot
-                    trace += "top=${now.first} refresh=${now.second} lifted=${DesktopRefreshButtonPresence.present}"
-                    stable = if (DesktopRefreshButtonPresence.present && now == last) stable + 1 else 0
-                    last = now
-                }
+                do { nanos = maxOf(System.nanoTime(), nanos + 1); scene.render(nanos).close(); delay(12) }
+                while (find("刷新") == null || find("回到顶部") == null)
             }
-            val (top, refresh) = assertNotNull(last)
-            assertTrue(top.bottom <= refresh.top, "back to top $top must sit above refresh $refresh; frames: $trace")
+            val refresh = assertNotNull(find("刷新")).boundsInRoot
+            val top = assertNotNull(find("回到顶部")).boundsInRoot
+            assertTrue(top.bottom <= refresh.top, "back to top $top must sit above refresh $refresh")
             assertTrue(top.right > Scene.WIDTH - 60f, "same corner column")
         } finally { scene.close() }
     }
-
-    private companion object { const val SETTLED_FRAMES = 5 }
 
     private class Scene(style: AppUiStyle, enabled: Boolean = true) : AutoCloseable {
         companion object { const val WIDTH = 520f; const val HEIGHT = 420f }
