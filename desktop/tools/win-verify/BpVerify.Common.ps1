@@ -151,6 +151,20 @@ function Compare-BpThumb {
     return [math]::Round($sum / $A.Length, 1)
 }
 
+# Number of thumbnail cells that changed. Used next to the mean difference: during a normal
+# clip the mean is 19-192 and the cells 400-640, but around a stall the mean collapses to 0
+# while the frame is still on screen, so the two together separate "moved a little" from
+# "did not move at all".
+function Compare-BpThumbCells {
+    param($A, $B, [int]$Threshold = 6)
+    if (-not $A -or -not $B -or $A.Length -ne $B.Length) { return $null }
+    $n = 0
+    for ($i = 0; $i -lt $A.Length; $i++) {
+        if ([math]::Abs([int]$A[$i] - [int]$B[$i]) -ge $Threshold) { $n++ }
+    }
+    return $n
+}
+
 function Get-BpClientPointOnScreen {
     param([IntPtr]$Hwnd, [int]$X, [int]$Y)
     $pt = New-Object BpMeasure+POINT -ArgumentList $X, $Y
