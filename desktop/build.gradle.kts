@@ -238,7 +238,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/util/PlaybackTelemetryPolicy.kt" to "Media3 播放错误码分类；桌面播放走 mpv，没有这些错误码",
     "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/cache/PlayUrlCache.kt" to "Media3 播放地址缓存；桌面播放地址由 DesktopRepository 管理",
     "core/database/AppDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/Converters.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
     "core/database/DatabaseModule.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
