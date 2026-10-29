@@ -318,7 +318,7 @@ internal object DesktopRefreshFailureWatch {
                 val bytes = body.use { it.bytes() }
                 val replacement = response.newBuilder().body(DesktopRefreshResponseBody(bytes.toResponseBody(body.contentType()), ::failed)).build()
                 try { if (desktopRefreshResponseFailed(replacement)) failed() }
-                catch (failure: kotlinx.serialization.SerializationException) { failed(); throw failure }
+                catch (_: kotlinx.serialization.SerializationException) { failed() }
                 replacement
             } else response.newBuilder().body(DesktopRefreshResponseBody(body, ::failed)).build()
         } catch (failure: Exception) {
