@@ -1,0 +1,18 @@
+--- a/com/android/purebilibili/core/database/entity/BlockedUp.kt
++++ b/com/android/purebilibili/core/database/entity/BlockedUp.kt
+@@ -1,13 +1,15 @@
+ package com.android.purebilibili.core.database.entity
+ 
+ import androidx.room.Entity
+ import androidx.room.PrimaryKey
+ 
++// Desktop: the blocked-UP list is a JSON document (DesktopBlockedUpStore), not a Room table.
++@kotlinx.serialization.Serializable
+ @Entity(tableName = "blocked_ups")
+ data class BlockedUp(
+     @PrimaryKey
+     val mid: Long,
+     val name: String,
+     val face: String,
+     val blockedAt: Long = System.currentTimeMillis(),
+     val level: Int? = null,

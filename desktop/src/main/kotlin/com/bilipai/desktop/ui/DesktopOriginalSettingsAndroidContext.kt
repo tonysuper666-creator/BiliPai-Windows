@@ -11,6 +11,8 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.longOrNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 /**
  * The Android Context upstream app code receives on the desktop (LocalContext): one page's settings owner. Upstream's
@@ -20,13 +22,19 @@ import kotlinx.serialization.json.longOrNull
  */
 internal class DesktopOriginalSettingsAndroidContext(private val settings: DesktopOriginalPlayerSettingsContext) :
     android.content.Context(settings.pluginContext.filesDir), DesktopPreferencesDataStoreOwner {
-    private val settingsStore by lazy {
-        DesktopSettingsDocumentDataStore(settings.pluginContext.store, "settings",
-            checkRequest = {
-                settings.requireCurrent()
-                com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()
-            },
-            acquirePermit = { check -> settings.preferenceWritePermit(check) })
+    // Built on the page's own settings DataStore, so upstream writes join an open settings operation (staged, published
+    // at its end, rolled back on failure or retirement) and otherwise go through the page's admission and CAS.
+    private val settingsStore = object : DataStore<Preferences> {
+        // Read on access: an open operation is a thread-local, and its staged values are what this caller must see.
+        override val data: kotlinx.coroutines.flow.Flow<Preferences>
+            get() = settings.settingsDataStore.data.map { DesktopSettingsDocumentDataStore.toPreferences(it.json) }
+        override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
+            val before = data.first()
+            val after = transform(before)
+            val changes = DesktopSettingsDocumentDataStore.changes(before.asMap(), after.asMap())
+            if (changes.isNotEmpty()) settings.settingsDataStore.edit { values -> values.changes.putAll(changes) }
+            return after
+        }
     }
 
     override val applicationContext: android.content.Context get() = this

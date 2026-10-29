@@ -114,7 +114,7 @@ internal class DesktopSettingsDocumentDataStore(
             else -> throw IllegalArgumentException("The desktop settings document cannot hold ${value::class.java.name}")
         }
 
-        private fun changes(before: Map<Preferences.Key<*>, Any>, after: Map<Preferences.Key<*>, Any>): Map<String, JsonElement?> {
+        fun changes(before: Map<Preferences.Key<*>, Any>, after: Map<Preferences.Key<*>, Any>): Map<String, JsonElement?> {
             val result = linkedMapOf<String, JsonElement?>()
             before.keys.filter { it !in after }.forEach { result[it.name] = null }
             after.forEach { (key, value) -> if (before[key] != value) result[key.name] = toJson(value) }

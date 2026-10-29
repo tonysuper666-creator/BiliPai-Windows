@@ -83,6 +83,10 @@ internal fun playerStringPreferencesKey(name: String) = DesktopPreferenceKey(nam
 
 internal class DesktopOriginalPlayerPreferenceValues(private val snapshot: DesktopPreferenceSnapshot) {
     val changes = linkedMapOf<String, JsonElement?>()
+    /** The namespace as this edit sees it (snapshot plus staged changes), for the upstream DataStore bridge. */
+    internal val json: JsonObject get() = JsonObject(snapshot.json.toMutableMap().apply {
+        changes.forEach { (key, value) -> if (value == null) remove(key) else put(key, value) }
+    })
     operator fun <T> get(key: DesktopPreferenceKey<T>): T? =
         if (changes.containsKey(key.name)) changes[key.name]?.let(key.decode) else snapshot[key]
     operator fun <T> set(key: DesktopPreferenceKey<T>, value: T) {
