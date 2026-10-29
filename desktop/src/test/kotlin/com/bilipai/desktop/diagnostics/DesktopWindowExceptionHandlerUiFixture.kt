@@ -63,16 +63,32 @@ object DesktopWindowExceptionHandlerUiFixture {
             observations["restartedWindowRecomposes"] == "true" &&
             observations["failedRestartVisible"] == "true" && observations["stuckRestartVisible"] == "true"
         Files.createDirectories(report.toAbsolutePath().parent)
-        Files.writeString(report, buildString {
-            append("{\n  \"passed\": ").append(passed).append(",\n")
-            for ((key, value) in observations)
-                append("  \"").append(key).append("\": \"").append(value.replace("\\", "\\\\").replace("\"", "\\\""))
-                    .append("\",\n")
-            append("  \"failure\": ").append(failure?.let { "\"${it.javaClass.name}: ${it.message}\"" } ?: "null").append('\n')
-            append("}\n")
-        })
+        Files.writeString(report, renderReport(passed, observations, failure))
         println("WINDOW_EXCEPTION_UI_REPORT $report")
         if (!passed) kotlin.system.exitProcess(1)
+    }
+
+    /** The report as strict JSON: every string goes through [jsonString], so a value
+     * with line breaks (the component tree) cannot make the file unparsable. */
+    internal fun renderReport(passed: Boolean, observations: Map<String, String>, failure: Throwable?): String = buildString {
+        append("{\n  \"passed\": ").append(passed).append(",\n")
+        for ((key, value) in observations) append("  ").append(jsonString(key)).append(": ").append(jsonString(value)).append(",\n")
+        append("  \"failure\": ").append(failure?.let { jsonString("${it.javaClass.name}: ${it.message}") } ?: "null").append('\n')
+        append("}\n")
+    }
+
+    internal fun jsonString(value: String): String = buildString {
+        append('"')
+        for (c in value) when {
+            c == '"' -> append("\\\"")
+            c == '\\' -> append("\\\\")
+            c == '\n' -> append("\\n")
+            c == '\r' -> append("\\r")
+            c == '\t' -> append("\\t")
+            c < ' ' -> append("\\u%04x".format(c.code))
+            else -> append(c)
+        }
+        append('"')
     }
 
     /** The failed window, the notice, a real click, and the UI the restart produces. */
@@ -155,6 +171,8 @@ object DesktopWindowExceptionHandlerUiFixture {
             restartedTick += 1
             val recomposed = waitUntil(10) { restartedComposed.get() != restartedBefore }
             observations["restartedWindowRecomposes"] = recomposed.toString()
+            // Not process-restart evidence: the restart action here swaps in a new window.
+            observations["restartKind"] = "simulated window swap, not a process restart"
         } finally {
             notice.close()
             EventQueue.invokeAndWait { window?.dispose(); restarted?.dispose() }
