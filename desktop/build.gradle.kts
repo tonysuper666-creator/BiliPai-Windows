@@ -317,6 +317,18 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/CenterPlaybackControl.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/glass/PortraitInteractionBar.kt",
+    "com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+    "com/android/purebilibili/feature/video/ui/feedback/LikeBurstAnchor.kt",
+    "com/android/purebilibili/feature/bangumi/ui/player/BangumiCollapsedPlayerBar.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt",
+    "com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/section/PlayerPageBackdrop.kt",
+    "com/android/purebilibili/feature/video/ui/pager/PortraitDetailSheet.kt",
     "com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
     "com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
     "com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
@@ -2811,6 +2823,10 @@ val upstreamOwnedGeneratedCopies = setOf(
     "plugins/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
     "plugins/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
     "packages/com/android/purebilibili/core/plugin/skin/DesktopUiSkinCompositionPolicy.kt",
+    "upstream-video-comment-url/com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigation.kt",
+    "original-video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/CenterPlaybackControl.kt",
+    "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBar.kt",
+    "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCollapsedPlayerBar.kt",
     // M4a: the refresh-aware desktop request owner replaces this fixed-60Hz generated loop.
     "original-danmaku-list-menu/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuFrameRequests.kt",
     "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitCommentSheet.kt",
@@ -2918,8 +2934,6 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
-    // Retirable with the original-bangumi-player transition patch when its upstream VM migrates.
-    "original-bangumi-player" to "extractOriginalBangumiPlayer",
     "shared-liquid-tabs" to "extractSharedLiquidTabs",
     "original-following" to "extractOriginalFollowing",
     "original-space-pages" to "extractOriginalSpacePages",
@@ -2941,6 +2955,8 @@ val transitionPatchProducers = mapOf(
     "packages" to "extractUpstreamPackages",
     "home-subscription-page" to "extractOriginalSubscriptionPage",
     "frosted-audio-renderer" to "extractFrostedAudioRenderer",
+    // Retirable with the original-bangumi-player transition patch when its upstream VM migrates.
+    "original-bangumi-player" to "extractOriginalBangumiPlayer",
     "original-bangumi-player-ui" to "extractOriginalBangumiPlayerUi",
     "original-video-fullscreen-pager" to "extractOriginalVideoFullscreenPager",
     "original-video-full-owner" to "extractOriginalVideoFullOwner",
@@ -3406,6 +3422,7 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/screen/VideoDetailProgressiveReturnTest.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuContentSegmentsTest.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuKeywordFilterPolicyTest.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicyTest.kt",

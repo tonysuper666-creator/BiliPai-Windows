@@ -1,0 +1,21 @@
+--- a/app/src/main/java/com/android/purebilibili/feature/video/ui/section/PlayerPageBackdrop.kt
++++ b/app/src/main/java/com/android/purebilibili/feature/video/ui/section/PlayerPageBackdrop.kt
+@@ -3,6 +3,7 @@
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.Stable
+ import androidx.compose.runtime.remember
++import androidx.compose.ui.graphics.drawscope.DrawScope
+ import com.android.purebilibili.core.ui.blur.ChromeBackdropSource
+ import com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource
+ import com.android.purebilibili.feature.home.components.liquid.rememberCombinedBackdrop
+@@ -23,8 +24,8 @@
+ )
+ 
+ @Composable
+-internal fun rememberPlayerPageBackdrop(): PlayerPageBackdrop {
+-    val video = rememberChromeBackdropSource()
++internal fun rememberPlayerPageBackdrop(videoRecording: DrawScope.() -> Unit): PlayerPageBackdrop {
++    val video = rememberChromeBackdropSource(recordContent = videoRecording)
+     val cover = rememberChromeBackdropSource()
+     val danmaku = rememberChromeBackdropSource()
+     val subtitles = rememberChromeBackdropSource()
