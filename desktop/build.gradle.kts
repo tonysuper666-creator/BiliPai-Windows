@@ -317,6 +317,15 @@ val appCoreLaterSteps: Map<String, String> = mapOf(
 // M4a: video/bangumi logic and unchanged Compose components compile from the merged upstream tree.
 // The remaining UI/player files move when their desktop platform adapters are wired.
 val migratedVideoFeaturePaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSizing.kt",
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeArea.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentSkeletonSlots.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewport.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScale.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCommentStateScope.kt",
+    "com/android/purebilibili/feature/video/ui/components/EpisodeSheetLayoutPolicy.kt",
+    "com/android/purebilibili/feature/video/ui/components/VideoCommentLoadError.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuSegmentWindowPolicy.kt",
     "com/android/purebilibili/feature/video/ui/components/CommentThreadNavigationBlur.kt",
     "com/android/purebilibili/feature/video/ui/section/OwnerDecoratedAvatar.kt",
     "com/android/purebilibili/feature/video/ui/components/CommentFraudFeedbackHost.kt",
@@ -3426,6 +3435,11 @@ val appCoreUpstreamTestsNotRun: Map<String, String> = mapOf(
 // AudioBarReturnPolicyTest also needs MiniPlayerManager; PiliPlayerMenuPolicyTest needs Media3
 // track selection. Those two new upstream suites join with the playback-port migration.
 val migratedVideoFeatureTestPaths = setOf(
+    "com/android/purebilibili/feature/video/ui/overlay/PlayerControlSafeAreaTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/PlayerPanelViewportTest.kt",
+    "com/android/purebilibili/feature/video/screen/VideoDetailCoverContentScaleTest.kt",
+    "com/android/purebilibili/feature/video/ui/components/EpisodeSheetLayoutPolicyTest.kt",
+    "com/android/purebilibili/feature/video/danmaku/DanmakuSegmentWindowPolicyTest.kt",
     "com/android/purebilibili/feature/video/screen/VideoDetailProgressiveReturnTest.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuContentSegmentsTest.kt",
     "com/android/purebilibili/feature/video/danmaku/DanmakuKeywordFilterPolicyTest.kt",
