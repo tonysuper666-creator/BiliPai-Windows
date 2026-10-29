@@ -101,7 +101,7 @@ class ContractTest(unittest.TestCase):
         self.assertEqual([], wm.problems(CONTRACT))
 
     def test_the_values_are_the_ones_the_spec_and_the_earlier_behaviour_fix(self):
-        self.assertEqual([1360, 900], SECTION["default_size"], "Main.kt opened the window 1360 by 900 before this slice")
+        self.assertEqual([1600, 1000], SECTION["default_size"], "desktop first-launch outer window size")
         self.assertEqual(CONTRACT["tokens"]["min_window_dp"], SECTION["min_base"], "the minimum window of the display scale contract")
         self.assertEqual(list(wm.KINDS), SECTION["plan_kinds"])
         self.assertEqual(list(wm.PLACEMENTS), SECTION["placements"])
@@ -222,6 +222,17 @@ def cells(start, length):
     return set(range(start, start + length))
 
 
+def oracle_default(sec, screens, zoom):
+    """First-launch size by the spec: prefer the default, honour zoom, fit the usable display."""
+    live = [s for s in screens if min(s["width"], s["height"]) > 0]
+    chosen = next((s for s in live if s["primary"]), live[0] if live else None)
+    extents = [max(default, math.floor(base * min(200, max(50, zoom)) / 100 + .5))
+               for default, base in zip(sec["default_size"], sec["min_base"])]
+    if chosen is not None:
+        extents = [min(extents[i], chosen[key]) for i, key in enumerate(("width", "height"))]
+    return dict(kind="DEFAULT", x=None, y=None, width=extents[0], height=extents[1], maximized=False, screen=None)
+
+
 def oracle_plan(contract, saved, screens, zoom):
     """The plan by its definition, written differently from the model: counted cells, a sort, a brute force search."""
     sec = contract[wm.SECTION]
@@ -229,8 +240,7 @@ def oracle_plan(contract, saved, screens, zoom):
     sane = saved is not None and all(limits["min_extent"] <= saved[k] <= limits["max_extent"] for k in ("width", "height")) \
         and all(abs(saved[k]) <= limits["max_abs_origin"] for k in ("x", "y"))
     if not sane:
-        return {"kind": "DEFAULT", "x": None, "y": None, "width": sec["default_size"][0], "height": sec["default_size"][1],
-                "maximized": False, "screen": None}
+        return oracle_default(sec, screens, zoom)
     percent = min(max(zoom, 50), 200)
     min_w = math.floor(Fraction(sec["min_base"][0] * percent, 100) + Fraction(1, 2))  # half up
     min_h = math.floor(Fraction(sec["min_base"][1] * percent, 100) + Fraction(1, 2))
@@ -411,8 +421,7 @@ def oracle_plan_fast(contract, saved, screens, zoom):
     only (cell counting would take minutes at 3413 by 1392)."""
     sec = contract[wm.SECTION]
     if saved is None or not wm.is_sane(contract, saved):
-        return {"kind": "DEFAULT", "x": None, "y": None, "width": sec["default_size"][0], "height": sec["default_size"][1],
-                "maximized": False, "screen": None}
+        return oracle_default(sec, screens, zoom)
     percent = min(max(zoom, 50), 200)
     min_w = (sec["min_base"][0] * percent * 2 + 100) // 200
     min_h = (sec["min_base"][1] * percent * 2 + 100) // 200

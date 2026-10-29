@@ -5,7 +5,7 @@ package com.bilipai.desktop.appearance
  *
  * Units. Every number is in the units java.awt.Window reports (AWT user space). They equal the Compose dp of the
  * window state, because Compose writes window.width as Dp, and they are NOT scaled by the app zoom: a 5120x2160
- * panel at Windows scale 150% is 3413x1440 units, and the window opens 1360x900 units wide at any app zoom.
+ * panel at Windows scale 150% is 3413x1440 units. A fresh window prefers 1600x1000, within the usable screen.
  *
  * What it decides.
  *   * planDesktopWindowsUxWindow: the size, the position and the maximised state the window opens with, from the
@@ -20,8 +20,8 @@ package com.bilipai.desktop.appearance
  */
 
 // UX-WINDOW-BOUNDS-BEGIN
-internal const val WINDOWS_UX_WINDOW_DEFAULT_WIDTH = 1360
-internal const val WINDOWS_UX_WINDOW_DEFAULT_HEIGHT = 900
+internal const val WINDOWS_UX_WINDOW_DEFAULT_WIDTH = 1600
+internal const val WINDOWS_UX_WINDOW_DEFAULT_HEIGHT = 1000
 internal const val WINDOWS_UX_WINDOW_MIN_BASE_WIDTH = 960
 internal const val WINDOWS_UX_WINDOW_MIN_BASE_HEIGHT = 680
 internal const val WINDOWS_UX_WINDOW_EDGE_TOLERANCE = 16
@@ -110,14 +110,17 @@ internal fun planDesktopWindowsUxWindow(
     screens: List<DesktopWindowsUxScreen>,
     zoomPercent: Int,
 ): DesktopWindowsUxWindowPlan {
-    if (saved == null || !saved.isSane()) {
-        return DesktopWindowsUxWindowPlan(
-            width = WINDOWS_UX_WINDOW_DEFAULT_WIDTH, height = WINDOWS_UX_WINDOW_DEFAULT_HEIGHT, x = null, y = null,
-            maximized = false, kind = DesktopWindowsUxPlanKind.DEFAULT, screenIndex = null)
-    }
     val minWidth = desktopWindowsUxMinimumExtent(WINDOWS_UX_WINDOW_MIN_BASE_WIDTH, zoomPercent)
     val minHeight = desktopWindowsUxMinimumExtent(WINDOWS_UX_WINDOW_MIN_BASE_HEIGHT, zoomPercent)
     val candidates = screens.withIndex().filter { it.value.usable.width > 0 && it.value.usable.height > 0 }
+    if (saved == null || !saved.isSane()) {
+        val usable = (candidates.firstOrNull { it.value.primary } ?: candidates.firstOrNull())?.value?.usable
+        return DesktopWindowsUxWindowPlan(
+            width = minOf(maxOf(WINDOWS_UX_WINDOW_DEFAULT_WIDTH, minWidth), usable?.width ?: Int.MAX_VALUE),
+            height = minOf(maxOf(WINDOWS_UX_WINDOW_DEFAULT_HEIGHT, minHeight), usable?.height ?: Int.MAX_VALUE),
+            x = null, y = null,
+            maximized = false, kind = DesktopWindowsUxPlanKind.DEFAULT, screenIndex = null)
+    }
     if (candidates.isEmpty()) {
         return DesktopWindowsUxWindowPlan(
             width = maxOf(saved.width, minWidth), height = maxOf(saved.height, minHeight), x = null, y = null,

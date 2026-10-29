@@ -2265,14 +2265,14 @@
   },
   "window_bounds": {
     "about": "Slice W3 (spec 3.5, hunk RH8): which window bounds Main.kt opens with and which are saved. Units are AWT user space units as java.awt.Window reports them; they equal the Compose dp of the window state and are not scaled by the app zoom. Mirrored by ux_window_model.py and checked by test_ux_window_bounds.py and DesktopWindowsUxWindowBoundsModelTest. The golden rows are written by hand (ux_model.py --write leaves them alone).",
-    "default_size": [1360, 900],
+    "default_size": [1600, 1000],
     "min_base": [960, 680],
     "edge_tolerance": 16,
     "settle_ms": 400,
     "plan_kinds": ["DEFAULT", "UNVALIDATED", "KEPT", "ADJUSTED", "RELOCATED"],
     "placements": ["FLOATING", "MAXIMIZED", "FULLSCREEN"],
     "rules": [
-      "Nothing saved, or saved bounds that are not sane: DEFAULT, the default size, the platform picks the position.",
+      "Nothing saved, or saved bounds that are not sane: DEFAULT, prefer 1600x1000 raised to the zoom minimum and clamped to the primary usable monitor (or first usable monitor); the platform picks the position.",
       "No usable monitor is known: UNVALIDATED, the saved size raised to the minimum, the platform picks the position.",
       "The minimum window extent is min_base times the app zoom percent (clamped to the zoom range), rounded half up; a monitor smaller than that wins, so the size never exceeds the usable area of the monitor.",
       "The monitor is the one that shares the largest area with the saved rectangle; a tie goes to the first listed.",
@@ -2356,12 +2356,12 @@
           "kind": "DEFAULT",
           "x": null,
           "y": null,
-          "width": 1360,
-          "height": 900,
+          "width": 1600,
+          "height": 1000,
           "maximized": false,
           "screen": null
         },
-        "note": "The earlier behaviour: 1360x900, the platform picks the position."
+        "note": "A fresh window prefers 1600x1000 AWT units; the platform picks its position."
       },
       {
         "id": "saved-bounds-not-sane",
@@ -2371,8 +2371,8 @@
           "kind": "DEFAULT",
           "x": null,
           "y": null,
-          "width": 1360,
-          "height": 900,
+          "width": 1600,
+          "height": 1000,
           "maximized": false,
           "screen": null
         }
@@ -2683,6 +2683,66 @@
         "saved": {"x": 100, "y": 50, "width": 1360, "height": 900, "maximized": false},
         "expect": {"kind": "ADJUSTED", "x": 100, "y": 16, "width": 1360, "height": 816, "maximized": false, "screen": 0},
         "note": "The default 1360x900 does not fit a 1920x1080 panel at Windows scale 125%: the height follows the monitor."
+      },
+      {
+        "id": "first-launch-small-screen",
+        "layout": "laptop-1080-125",
+        "zoom_percent": 125,
+        "saved": null,
+        "expect": {
+          "kind": "DEFAULT",
+          "x": null,
+          "y": null,
+          "width": 1536,
+          "height": 816,
+          "maximized": false,
+          "screen": null
+        }
+      },
+      {
+        "id": "first-launch-no-screens",
+        "layout": "none",
+        "zoom_percent": 125,
+        "saved": null,
+        "expect": {
+          "kind": "DEFAULT",
+          "x": null,
+          "y": null,
+          "width": 1600,
+          "height": 1000,
+          "maximized": false,
+          "screen": null
+        }
+      },
+      {
+        "id": "first-launch-zoom-minimum",
+        "layout": "primary-5k2k-150",
+        "zoom_percent": 200,
+        "saved": null,
+        "expect": {
+          "kind": "DEFAULT",
+          "x": null,
+          "y": null,
+          "width": 1920,
+          "height": 1360,
+          "maximized": false,
+          "screen": null
+        }
+      },
+      {
+        "id": "first-launch-primary-listed-second",
+        "layout": "primary-listed-second",
+        "zoom_percent": 125,
+        "saved": null,
+        "expect": {
+          "kind": "DEFAULT",
+          "x": null,
+          "y": null,
+          "width": 1600,
+          "height": 1000,
+          "maximized": false,
+          "screen": null
+        }
       }
     ],
     "minimum_extent": [

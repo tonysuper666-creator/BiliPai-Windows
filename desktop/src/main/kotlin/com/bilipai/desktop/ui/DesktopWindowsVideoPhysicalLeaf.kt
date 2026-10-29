@@ -561,6 +561,13 @@ internal class DesktopWindowsVideoActions(
     }
     DisposableEffect(engagementBinding) { onDispose { engagementBinding?.close() } }
     var bootstrapError by remember(assembly, route) { mutableStateOf<String?>(null) }
+    var bootstrapRetry by remember(assembly, route) { mutableIntStateOf(0) }
+    val reportPageError = LocalDesktopPageErrorReporter.current
+    val originalLoadError = (original as? VideoPlaybackUiState.Error)?.error
+    LaunchedEffect(originalLoadError) {
+        if (current() && originalLoadError is com.android.purebilibili.data.model.VideoLoadError.UnknownError)
+            reportPageError?.invoke(originalLoadError.throwable)
+    }
     val latestBootstrapError by rememberUpdatedState(bootstrapError)
     val failureLogin = DesktopVideoFailureLoginIntent.capture(rootEnvironment, shell, assembly, route,
         original as? VideoPlaybackUiState.Error) {
@@ -569,18 +576,22 @@ internal class DesktopWindowsVideoActions(
     }
     // Reuse the same real failure/login/retry content in the finite details pane.
     val failureContent: @Composable () -> Unit = {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(bootstrapError ?: (original as? VideoPlaybackUiState.Error)?.error?.toUserMessage() ?: playback.error.orEmpty(),
-                Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error)
-            TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") }
-            failureLogin?.let { intent ->
-                TextButton(onClick = {
+        DesktopWindowsPageErrorCard(
+            message = desktopWindowsVideoErrorMessage(originalLoadError),
+            onRetry = {
+                if (current() && rootEnvironment.currentKey() === route) {
+                    if (bootstrapError != null) { bootstrapError = null; bootstrapRetry++ }
+                    else shell.playback.retry()
+                }
+            },
+            onLogin = failureLogin?.let { intent ->
+                {
                     (rootEnvironment.commands as? DesktopOriginalRootRouteAssembly)
                         ?.loginFromReadFailure(intent)
-                }) { Text("登录并返回") }
-            }
-        }
+                    Unit
+                }
+            },
+        )
     }
     val speedOptions by remember(platforms.holder.settingsContext) {
         DesktopOriginalVideoControlSettings.getPlaybackSpeedOptions(platforms.holder.settingsContext)
@@ -667,7 +678,7 @@ internal class DesktopWindowsVideoActions(
         if (presentationVerified && samePhysicalEntry())
             nativeSurface.recordPresentedSource(route, assembly, ::samePhysicalEntry)
     }
-    LaunchedEffect(assembly, route.openId, route.bvid, route.cid, route.resumePositionMs, active) {
+    LaunchedEffect(assembly, route.openId, route.bvid, route.cid, route.resumePositionMs, active, bootstrapRetry) {
         if (!active) return@LaunchedEffect
         try {
             native.state.first { actual ->
@@ -690,7 +701,12 @@ internal class DesktopWindowsVideoActions(
                 presentationVerified = true
             }
         } catch (cancelled: CancellationException) { throw cancelled }
-        catch (failure: Exception) { if (current()) bootstrapError = failure.message ?: "播放器初始化失败" }
+        catch (failure: Exception) {
+            if (current()) {
+                reportPageError?.invoke(failure)
+                bootstrapError = "播放器初始化失败，请重试。"
+            }
+        }
     }
     val viewportSource = assembly.native.current()
     SideEffect {

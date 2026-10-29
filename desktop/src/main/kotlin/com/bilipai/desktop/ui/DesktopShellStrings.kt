@@ -88,7 +88,7 @@ internal object DesktopShellStrings {
     fun unreadAnnouncement(label: String, unreadCount: Int): String = "${label}，${unreadCount} 条未读"
 
     /** The tooltip of a row on a collapsed rail: the label, and the Ctrl+number when the row has one. */
-    fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label (Ctrl+$number)"
+    fun collapsedTooltip(label: String, number: Int?): String = if (number == null) label else "$label　Ctrl+$number"
 
     /** The tooltip of a row on an expanded rail, after the long delay: only the shortcut, or nothing. */
     fun expandedTooltip(number: Int?): String? = if (number == null) null else "Ctrl+$number"

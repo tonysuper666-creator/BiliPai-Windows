@@ -57,12 +57,25 @@ class DesktopWindowsUxWindowBoundsModelTest {
         assertEquals(DesktopUxContract.strings(section.getValue("placements")), DesktopWindowsUxPlacement.entries.map { it.name })
     }
 
-    @Test fun theDefaultSizeIsTheSizeThatMainOpenedWithBeforeThisSlice() {
-        assertEquals(1360, WINDOWS_UX_WINDOW_DEFAULT_WIDTH)
-        assertEquals(900, WINDOWS_UX_WINDOW_DEFAULT_HEIGHT)
+    @Test fun aFreshWindowUsesTheDesktopDefaultSize() {
+        assertEquals(1600, WINDOWS_UX_WINDOW_DEFAULT_WIDTH)
+        assertEquals(1000, WINDOWS_UX_WINDOW_DEFAULT_HEIGHT)
         val plan = planDesktopWindowsUxWindow(null, screensOf("primary-5k2k-150"), 125)
-        assertEquals(DesktopWindowsUxWindowPlan(1360, 900, null, null, false, DesktopWindowsUxPlanKind.DEFAULT, null), plan)
+        assertEquals(DesktopWindowsUxWindowPlan(1600, 1000, null, null, false, DesktopWindowsUxPlanKind.DEFAULT, null), plan)
         assertNull(plan.bounds())
+    }
+
+    @Test fun aFreshWindowFitsTheUsableScreenEvenWhenItIsBelowTheZoomMinimum() {
+        val small = planDesktopWindowsUxWindow(null, screensOf("laptop-1080-125"), 200)
+        assertEquals(1536, small.width)
+        assertEquals(816, small.height)
+        val noScreens = planDesktopWindowsUxWindow(null, emptyList(), 200)
+        assertEquals(1920, noScreens.width)
+        assertEquals(1360, noScreens.height)
+        val screens = listOf(DesktopWindowsUxScreen(DesktopWindowsUxRect(-800, 0, 800, 600)),
+            DesktopWindowsUxScreen(DesktopWindowsUxRect(0, 0, 1920, 1032), primary = true))
+        assertEquals(1600, planDesktopWindowsUxWindow(null, screens, 125).width)
+        assertEquals(800, planDesktopWindowsUxWindow(null, screens.take(1), 125).width)
     }
 
     @Test fun theMinimumExtentRowsOfTheContract() {

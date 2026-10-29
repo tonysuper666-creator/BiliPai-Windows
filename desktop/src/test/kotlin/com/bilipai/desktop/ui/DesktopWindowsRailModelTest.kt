@@ -446,8 +446,10 @@ class DesktopWindowsRailModelTest {
     @Test fun stringsAreTheSpecTexts() {
         assertEquals("界面缩放 150%", DesktopShellStrings.zoomToast(150))
         assertEquals("动态，3 条未读", DesktopShellStrings.unreadAnnouncement("动态", 3))
-        assertEquals("推荐 (Ctrl+1)", DesktopShellStrings.collapsedTooltip("推荐", 1))
+        assertEquals("首页　Ctrl+1", DesktopShellStrings.collapsedTooltip("首页", 1))
         assertEquals("设置", DesktopShellStrings.collapsedTooltip("设置", null))
+        assertEquals("插件", DesktopShellStrings.collapsedTooltip("插件", null))
+        assertEquals("切换账号", DesktopShellStrings.collapsedTooltip("切换账号", null))
         assertEquals("Ctrl+1", DesktopShellStrings.expandedTooltip(1))
         assertNull(DesktopShellStrings.expandedTooltip(null))
         assertEquals("浏览", DesktopShellStrings.groupTitle(DesktopRailGroup.BROWSE))

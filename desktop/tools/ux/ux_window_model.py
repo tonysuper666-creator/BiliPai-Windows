@@ -77,12 +77,17 @@ def plan(contract, saved, screens, zoom_percent):
     Returns {kind, x, y, width, height, maximized, screen}; x, y and screen are None when not decided."""
     sec = section(contract)
     default_width, default_height = sec["default_size"]
-    if saved is None or not is_sane(contract, saved):
-        return {"kind": "DEFAULT", "x": None, "y": None, "width": default_width, "height": default_height,
-                "maximized": False, "screen": None}
     min_width = minimum_extent(contract, sec["min_base"][0], zoom_percent)
     min_height = minimum_extent(contract, sec["min_base"][1], zoom_percent)
     candidates = [(index, screen) for index, screen in enumerate(screens) if screen["width"] > 0 and screen["height"] > 0]
+    if saved is None or not is_sane(contract, saved):
+        primary = [candidate for candidate in candidates if candidate[1]["primary"]]
+        usable = (primary or candidates)[0][1] if candidates else None
+        width, height = max(default_width, min_width), max(default_height, min_height)
+        if usable:
+            width, height = min(width, usable["width"]), min(height, usable["height"])
+        return {"kind": "DEFAULT", "x": None, "y": None, "width": width, "height": height,
+                "maximized": False, "screen": None}
     if not candidates:
         return {"kind": "UNVALIDATED", "x": None, "y": None, "width": max(saved["width"], min_width),
                 "height": max(saved["height"], min_height), "maximized": saved["maximized"], "screen": None}
