@@ -156,7 +156,10 @@ val nativeDiagnosticShareOutput = layout.buildDirectory.dir("generated/native-di
 val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/prepare-native-diagnostic-share.py",
-        "--repo", repositoryRoot.absolutePath,
+        // The bridge source, its approval and the compiler driver are checked-in project files, not
+        // produced upstream slices: the legacy read point would build the pre-merge C++ and then
+        // approve it against that same stale copy.
+        "--repo", mergedRepositoryRoot.absolutePath,
         "--output", nativeDiagnosticShareOutput.get().asFile.absolutePath,
         "--asset-dir", file("resources/common/native/windows-x64").absolutePath)
     inputs.files("tools/prepare-native-diagnostic-share.py", "tools/compile-native-diagnostic-share.py",
