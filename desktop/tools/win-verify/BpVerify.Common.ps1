@@ -44,6 +44,9 @@ public static class BpMeasure {
   [DllImport("user32.dll")] public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr w, IntPtr l);
   [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int cmd);
   [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
+  [DllImport("user32.dll")] public static extern bool BringWindowToTop(IntPtr hWnd);
+  [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr hWnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
+  public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1), HWND_NOTOPMOST = new IntPtr(-2);
   [DllImport("user32.dll")] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint msg, IntPtr w, IntPtr l, uint flags, uint timeout, out IntPtr result);
   [DllImport("kernel32.dll")] public static extern uint WTSGetActiveConsoleSessionId();
   [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
@@ -52,14 +55,20 @@ public static class BpMeasure {
   [DllImport("user32.dll")] public static extern void mouse_event(uint flags, int dx, int dy, int data, UIntPtr extra);
   public const uint MOUSEEVENTF_LEFTDOWN = 0x0002, MOUSEEVENTF_LEFTUP = 0x0004, MOUSEEVENTF_WHEEL = 0x0800;
 
-  // 32x20 greyscale thumbnail of the window on screen, used to prove that input had an effect.
-  public static byte[] Thumb(IntPtr hwnd) {
+  // 32x20 greyscale thumbnail of the window, or of a sub-rectangle given as fractions of it.
+  // The inner region is used to tell a playing video (large area changes) from a spinner or a
+  // hover highlight (small area changes).
+  public static byte[] Thumb(IntPtr hwnd) { return ThumbRegion(hwnd, 0.0, 0.0, 1.0, 1.0); }
+  public static byte[] ThumbRegion(IntPtr hwnd, double fx0, double fy0, double fx1, double fy1) {
     RECT r; GetWindowRect(hwnd, out r);
-    int w = r.Right - r.Left, h = r.Bottom - r.Top;
+    int w = (int)((r.Right - r.Left) * (fx1 - fx0));
+    int h = (int)((r.Bottom - r.Top) * (fy1 - fy0));
+    int ox = r.Left + (int)((r.Right - r.Left) * fx0);
+    int oy = r.Top + (int)((r.Bottom - r.Top) * fy0);
     if (w <= 0 || h <= 0) return null;
     using (Bitmap full = new Bitmap(w, h))
     using (Graphics sg = Graphics.FromImage(full)) {
-      sg.CopyFromScreen(r.Left, r.Top, 0, 0, new Size(w, h), CopyPixelOperation.SourceCopy);
+      sg.CopyFromScreen(ox, oy, 0, 0, new Size(w, h), CopyPixelOperation.SourceCopy);
       using (Bitmap small = new Bitmap(32, 20))
       using (Graphics gg = Graphics.FromImage(small)) {
         gg.DrawImage(full, 0, 0, 32, 20);
@@ -108,6 +117,12 @@ function Get-BpScreenThumb {
     return [BpMeasure]::Thumb($Hwnd)
 }
 
+# Centre of the window: where a player draws, and where a spinner occupies only a small part.
+function Get-BpScreenThumbCenter {
+    param([IntPtr]$Hwnd)
+    return [BpMeasure]::ThumbRegion($Hwnd, 0.25, 0.25, 0.75, 0.75)
+}
+
 # Mean absolute difference of two thumbnails, 0 (identical) .. 255.
 function Compare-BpThumb {
     param($A, $B)
@@ -126,19 +141,45 @@ function Get-BpClientPointOnScreen {
 
 # Real mouse input. Posted window messages are ignored by the Compose/Skiko surface, so the
 # pointer is moved to the target, the event is injected, and the pointer is put back.
-function Send-BpWheelReal {
-    param([IntPtr]$Hwnd, [int]$Notches = 3, [switch]$Up)
+# The pointer has to stay inside the window for a scroll run: a wheel event is routed to the
+# window under the cursor when it is processed, and a cursor that keeps leaving drops the
+# scroll entirely (measured: identical frames for 30 s with the old per-event restore).
+function Move-BpCursorIntoWindow {
+    param([IntPtr]$Hwnd, [double]$XRatio = 0.55, [double]$YRatio = 0.5)
     $rect = New-Object BpMeasure+RECT
     [void][BpMeasure]::GetClientRect($Hwnd, [ref]$rect)
-    $pt = Get-BpClientPointOnScreen -Hwnd $Hwnd -X ([int]($rect.Right * 0.55)) -Y ([int]($rect.Bottom * 0.5))
-    $saved = New-Object BpMeasure+POINT
-    [void][BpMeasure]::GetCursorPos([ref]$saved)
+    $pt = Get-BpClientPointOnScreen -Hwnd $Hwnd -X ([int]($rect.Right * $XRatio)) -Y ([int]($rect.Bottom * $YRatio))
     [void][BpMeasure]::SetCursorPos($pt.X, $pt.Y)
-    Start-Sleep -Milliseconds 15
+    Start-Sleep -Milliseconds 150
+    return $pt
+}
+
+function Save-BpCursor {
+    $p = New-Object BpMeasure+POINT
+    [void][BpMeasure]::GetCursorPos([ref]$p)
+    return $p
+}
+
+function Restore-BpCursor {
+    param($Point)
+    if ($Point) { [void][BpMeasure]::SetCursorPos($Point.X, $Point.Y) }
+}
+
+# Cursor must already be parked inside the window (Move-BpCursorIntoWindow).
+function Send-BpWheelReal {
+    param([IntPtr]$Hwnd, [int]$Notches = 3, [switch]$Up, [switch]$KeepCursor)
+    $saved = $null
+    if (-not $KeepCursor) {
+        $saved = Save-BpCursor
+        [void](Move-BpCursorIntoWindow -Hwnd $Hwnd)
+    }
     $delta = 120 * $Notches
     if ($Up) { $delta = -$delta }
     [BpMeasure]::mouse_event([BpMeasure]::MOUSEEVENTF_WHEEL, 0, 0, $delta, [UIntPtr]::Zero)
-    [void][BpMeasure]::SetCursorPos($saved.X, $saved.Y)
+    if (-not $KeepCursor) {
+        Start-Sleep -Milliseconds 80
+        Restore-BpCursor -Point $saved
+    }
 }
 
 function Send-BpClickReal {
@@ -153,6 +194,30 @@ function Send-BpClickReal {
     [BpMeasure]::mouse_event([BpMeasure]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     [void][BpMeasure]::SetCursorPos($saved.X, $saved.Y)
     return (Get-Date).ToUniversalTime()
+}
+
+# Real input goes to whatever is in front, so the client has to be foreground and stay there.
+# SetForegroundWindow alone is frequently refused; the topmost round-trip is the accepted
+# trick, and the result is verified instead of assumed.
+function Set-BpForeground {
+    param([IntPtr]$Hwnd, [int]$TimeoutMs = 6000)
+    $sw = [Diagnostics.Stopwatch]::StartNew()
+    while ($sw.ElapsedMilliseconds -lt $TimeoutMs) {
+        if ([BpMeasure]::GetForegroundWindow() -eq $Hwnd) { return $true }
+        [void][BpMeasure]::ShowWindow($Hwnd, 9)          # SW_RESTORE
+        [void][BpMeasure]::SetWindowPos($Hwnd, [BpMeasure]::HWND_TOPMOST, 0, 0, 0, 0, 0x0001 -bor 0x0002 -bor 0x0040)
+        [void][BpMeasure]::SetWindowPos($Hwnd, [BpMeasure]::HWND_NOTOPMOST, 0, 0, 0, 0, 0x0001 -bor 0x0002 -bor 0x0040)
+        [void][BpMeasure]::BringWindowToTop($Hwnd)
+        [void][BpMeasure]::SetForegroundWindow($Hwnd)
+        Start-Sleep -Milliseconds 300
+    }
+    Write-BpLog ("window 0x{0:x} did not become foreground (foreground=0x{1:x})" -f [int64]$Hwnd, [int64][BpMeasure]::GetForegroundWindow())
+    return $false
+}
+
+function Test-BpForeground {
+    param([IntPtr]$Hwnd)
+    return ([BpMeasure]::GetForegroundWindow() -eq $Hwnd)
 }
 
 function Write-BpLog {
@@ -350,6 +415,8 @@ function Get-BpProcessSample {
         PrivateMB      = [math]::Round($p.PrivateMemorySize64 / 1MB, 1)
         WorkingSetMB   = [math]::Round($p.WorkingSet64 / 1MB, 1)
         CpuSeconds     = [math]::Round($p.TotalProcessorTime.TotalSeconds, 3)
+        IoReadMB       = [math]::Round(($p.ReadOperationCount), 0)
+        IoOtherMB      = [math]::Round(($p.OtherOperationCount), 0)
         Threads        = $p.Threads.Count
         Handles        = $p.HandleCount
     }

@@ -39,7 +39,7 @@ if ($Quick) {
         @{ name = 'clicktoframe'; script = 'Measure-ClickToFrame.ps1'; args = @('-Iterations', "$ClickIterations") },
         @{ name = 'frametime'; script = 'Measure-FrameTime.ps1'; args = @() },
         @{ name = 'idle'; script = 'Measure-Idle.ps1'; args = @() },
-        @{ name = 'soak'; script = 'Measure-Soak.ps1'; args = @('-Minutes', "$SoakMinutes") }
+        @{ name = 'soak'; script = 'Measure-Soak.ps1'; args = @('-Minutes', "$SoakMinutes", '-StartPlayback') }
     )
 }
 

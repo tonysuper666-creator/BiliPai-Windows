@@ -55,16 +55,43 @@ try {
     $hwnd = $win.Hwnd
     $uiPid = $win.Pid
     Write-BpLog ("ui_pid=$uiPid root_pid=$appPid")
-    [void][BpMeasure]::ShowWindow($hwnd, 9)
-    [void][BpMeasure]::SetForegroundWindow($hwnd)
+    if ($StartPlayback) {
+        if (-not (Set-BpForeground -Hwnd $hwnd)) { throw 'the client window could not be brought to the foreground' }
+    }
     Start-Sleep -Seconds $SettleSeconds
 
+    # "连播" only counts when a video is actually playing, so the click has to be followed by
+    # visible motion: consecutive thumbnails must keep changing. A click that lands on a card
+    # but never plays is recorded as a failed soak, not as 15 minutes of process uptime.
+    $playbackVerified = $false
     if ($StartPlayback) {
         $rect = New-Object BpMeasure+RECT
         [void][BpMeasure]::GetClientRect($hwnd, [ref]$rect)
-        $clickUtc = Send-BpClick -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $ClickYRatio))
-        Write-BpLog ('started playback with a click at ' + $clickUtc.ToString('o'))
-        Start-Sleep -Seconds 15
+        $before = Get-BpScreenThumb -Hwnd $hwnd
+        $clickUtc = Send-BpClickReal -Hwnd $hwnd -X ([int]($rect.Right * $ClickXRatio)) -Y ([int]($rect.Bottom * $ClickYRatio))
+        Write-BpLog ('clicked a card at ' + $clickUtc.ToString('o'))
+        Start-Sleep -Seconds 12
+        $prev = Get-BpScreenThumb -Hwnd $hwnd
+        $moving = 0
+        $checks = 0
+        for ($k = 0; $k -lt 12; $k++) {
+            Start-Sleep -Seconds 2
+            $now = Get-BpScreenThumb -Hwnd $hwnd
+            $diff = Compare-BpThumb -A $prev -B $now
+            $checks++
+            if ($null -ne $diff -and $diff -ge 2) { $moving++ }
+            [void]$samples.Add([pscustomobject]@{
+                    ts = (Get-Date).ToUniversalTime().ToString('o'); privateMB = (Get-BpProcessSample -ProcessId $uiPid).PrivateMB
+                    workingMB = 0; threads = 0; handles = 0; responding = $true
+                })
+            $prev = $now
+        }
+        $ratio = 0
+        if ($checks -gt 0) { $ratio = [math]::Round(1.0 * $moving / $checks, 2) }
+        $summary.playback_motion_ratio = $ratio
+        $playbackVerified = ($ratio -ge 0.6)
+        Write-BpLog ("playback motion {0}/{1} checks ({2}) verified={3}" -f $moving, $checks, $ratio, $playbackVerified)
+        $summary.playback_verified = $playbackVerified
     }
 
     $deadline = (Get-Date).AddMinutes($Minutes)
@@ -96,7 +123,9 @@ try {
         $summary.private_max_mb = ($samples | Measure-Object -Property privateMB -Maximum).Maximum
         $summary.growth_pct = [math]::Round(100.0 * ($last - $first) / $first, 1)
     }
-    $summary.ok = (-not $crash -and -not $hang)
+    $summary.played = [bool]$StartPlayback
+    $summary.ok = (-not $crash -and -not $hang -and (-not $StartPlayback -or $playbackVerified))
+    if ($StartPlayback -and -not $playbackVerified) { $summary.reason = 'no continuous playback motion was observed' }
 } catch {
     $summary.ok = $false
     $summary.reason = $_.Exception.Message

@@ -1,18 +1,22 @@
-# Acceptance item 21: click a home-feed card, measure until the first video frame.
+# Acceptance item 21: click a home-feed card, measure until the picture changes.
 #
-# Each iteration is one fresh launch (home loaded), then a single left click posted to a
-# fixed point of the video-card grid, then the first frame presented on a NEW swap chain
-# (the player's surface) is taken as "picture appeared". PresentMon reports --date_time so
-# the click and the frame share one wall clock.
+# Endpoint is the same for every sample (TON-998 review round 2): the first on-screen
+# change of the app window after the click, sampled from a thumbnail every 150 ms. A
+# sample that never changes inside $ObserveSeconds is recorded as a timeout failure and is
+# never counted as a success. PresentMon still runs, but only to say whether the player
+# surface (a new swap chain) appeared - it is not the timing source any more.
 #
 # Exit codes: 0 measured, 3 paused by tools\PAUSE, 4 machine busy, 5 measurement failed.
 [CmdletBinding()]
 param(
     [int]$Iterations = 20,
     [int]$SettleSeconds = 12,
-    [int]$PostClickCaptureSeconds = 20,
+    [int]$ObserveSeconds = 15,
+    [int]$BudgetMs = 3000,
     [double]$ClickXRatio = 0.30,
-    [double]$ClickYRatio = 0.45,
+    [double]$ClickYRatio = 0.30,
+    [int]$MotionWindow = 20,
+    [int]$MotionWindowHits = 15,
     [string]$Tag = 'run1'
 )
 $ErrorActionPreference = 'Stop'
@@ -26,7 +30,7 @@ if (-not (Test-BpMachineQuiet)) { Write-BpLog 'machine busy: measurement skipped
 $exe = Get-BpAppExe
 $results = New-Object System.Collections.ArrayList
 $failures = New-Object System.Collections.ArrayList
-$perRunSeconds = $SettleSeconds + $PostClickCaptureSeconds + 8
+$perRunSeconds = $SettleSeconds + $ObserveSeconds + 10
 
 for ($i = 1; $i -le $Iterations; $i++) {
     if (Test-BpPause) { Write-BpLog 'PAUSE file present: stopping the series.'; break }
@@ -44,71 +48,81 @@ for ($i = 1; $i -le $Iterations; $i++) {
         $win = Wait-BpWindow -ProcessId $appPid -Since $since -TimeoutMs 60000
         $hwnd = $win.Hwnd
         $uiPid = $win.Pid
-        [void][BpMeasure]::ShowWindow($hwnd, 9)
-        [void][BpMeasure]::SetForegroundWindow($hwnd)
+        if (-not (Set-BpForeground -Hwnd $hwnd)) { throw 'the client window could not be brought to the foreground' }
         Start-Sleep -Seconds $SettleSeconds
+        if (-not (Test-BpForeground -Hwnd $hwnd)) { throw 'the client window lost the foreground before the click' }
 
         $rect = New-Object BpMeasure+RECT
         [void][BpMeasure]::GetClientRect($hwnd, [ref]$rect)
         $clickX = [int]($rect.Right * $ClickXRatio)
         $clickY = [int]($rect.Bottom * $ClickYRatio)
         Write-BpLog ("client={0}x{1} click=({2},{3})" -f $rect.Right, $rect.Bottom, $clickX, $clickY)
-        $thumbBefore = Get-BpScreenThumb -Hwnd $hwnd
+
+        $before = Get-BpScreenThumbCenter -Hwnd $hwnd
         $clickUtc = Send-BpClickReal -Hwnd $hwnd -X $clickX -Y $clickY
         Write-BpLog ("clicked at " + $clickUtc.ToString('o'))
 
-        # Screen-based "picture appeared": the first thumbnail that differs from the feed.
+        # "Picture on screen" means the player is drawing, not that the page repainted once:
+        # the baseline must have changed AND two consecutive samples must differ from each
+        # other (motion). A one-shot repaint (hover, pressed state, page transition) never
+        # produces two consecutive moving samples, so it can no longer be counted as success.
+        # "Picture on screen" must survive the page transition: a paused player, a hover state
+        # or a navigation animation all move for a moment. The endpoint is the first sample
+        # where at least $MotionWindowHits of the last $MotionWindow samples are moving, i.e.
+        # the picture keeps changing instead of settling.
         $changeMs = $null
-        $maxDiff = 0
-        $deadline = (Get-Date).AddSeconds($PostClickCaptureSeconds)
+        $series = New-Object System.Collections.ArrayList
+        $prev = $before
+        $flags = New-Object System.Collections.ArrayList
+        $offsets = New-Object System.Collections.ArrayList
+        $deadline = (Get-Date).AddSeconds($ObserveSeconds)
         while ((Get-Date) -lt $deadline) {
             if (Test-BpPause) { throw 'PAUSE appeared during the wait' }
             Start-Sleep -Milliseconds 150
-            $now = Get-BpScreenThumb -Hwnd $hwnd
-            $diff = Compare-BpThumb -A $thumbBefore -B $now
-            if ($null -ne $diff -and $diff -gt $maxDiff) { $maxDiff = $diff }
-            if ($null -ne $diff -and $diff -ge 6 -and -not $changeMs) {
-                $changeMs = [math]::Round(((Get-Date).ToUniversalTime() - $clickUtc).TotalMilliseconds, 0)
-                Write-BpLog ("screen changed after {0} ms (diff {1})" -f $changeMs, $diff)
+            $now = Get-BpScreenThumbCenter -Hwnd $hwnd
+            $vsBase = Compare-BpThumb -A $before -B $now
+            $vsPrev = Compare-BpThumb -A $prev -B $now
+            $offset = [math]::Round(((Get-Date).ToUniversalTime() - $clickUtc).TotalMilliseconds, 0)
+            [void]$series.Add([pscustomobject]@{ offsetMs = $offset; diffBase = $vsBase; diffPrev = $vsPrev })
+            $movingNow = ($null -ne $vsPrev -and $vsPrev -ge 2 -and $null -ne $vsBase -and $vsBase -ge 6)
+            [void]$flags.Add($movingNow)
+            [void]$offsets.Add($offset)
+            if ($flags.Count -ge $MotionWindow) {
+                $window = $flags.GetRange($flags.Count - $MotionWindow, $MotionWindow)
+                $hits = @($window | Where-Object { $_ }).Count
+                if ($hits -ge $MotionWindowHits) {
+                    $changeMs = $offsets[$flags.Count - $MotionWindow]
+                    Write-BpLog ("player motion sustained after {0} ms ({1}/{2} samples moving)" -f $changeMs, $hits, $MotionWindow)
+                    break
+                }
             }
+            $prev = $now
         }
-        Stop-BpPresentMon -Capture $cap
+        @($series) | Export-Csv -LiteralPath (Join-Path $dataDir ("change-series-{0:d2}.csv" -f $i)) -NoTypeInformation -Encoding utf8
+        if ($null -eq $changeMs) { Write-BpLog ("no screen change within {0} s: recorded as a timeout" -f $ObserveSeconds) }
 
-        # PresentMon is only a cross-check here; a missing capture must not lose a sample
-        # whose screen-change timing is already measured.
+        Stop-BpPresentMon -Capture $cap
         $parsed = $null
         try { $parsed = Read-BpPresentMonCsv -Path $csv } catch { Write-BpLog ("presentmon unusable: " + $_.Exception.Message) }
         $rows = @()
         if ($parsed) { $rows = @($parsed.Rows | Where-Object { $_.ProcessId -eq "$uiPid" -and $_.WallClock } | Sort-Object WallClock) }
-        $preClick = @($rows | Where-Object { $_.WallClock -lt $clickUtc } | ForEach-Object { $_.SwapChain } | Sort-Object -Unique)
-        $postClick = @($rows | Where-Object { $_.WallClock -ge $clickUtc })
-        $newChain = @($postClick | Where-Object { $preClick -notcontains $_.SwapChain })
-        $method = 'new_swap_chain'
-        $ms = $null
-        if ($newChain.Count -gt 0) {
-            $ms = [math]::Round(($newChain[0].WallClock.ToUniversalTime() - $clickUtc).TotalMilliseconds, 0)
-        } elseif ($postClick.Count -gt 0) {
-            # No separate surface: fall back to the first frame after the navigation started.
-            $method = 'first_frame_after_click'
-            $ms = [math]::Round(($postClick[0].WallClock.ToUniversalTime() - $clickUtc).TotalMilliseconds, 0)
-        } else {
-            $method = 'screen_only'
-        }
+        $preChains = @($rows | Where-Object { $_.WallClock -lt $clickUtc } | ForEach-Object { $_.SwapChain } | Sort-Object -Unique)
+        $newChain = @($rows | Where-Object { $_.WallClock -ge $clickUtc -and $preChains -notcontains $_.SwapChain })
+
+        $result = 'changed'
+        if ($null -eq $changeMs) { $result = 'timeout' }
         $row = [ordered]@{
-            iteration       = $i
-            pid             = $uiPid
-            launcher_pid    = $appPid
-            clickUtc        = $clickUtc.ToString('o')
-            click_to_frame_ms = $ms
+            iteration          = $i
+            pid                = $uiPid
+            clickUtc           = $clickUtc.ToString('o')
             click_to_change_ms = $changeMs
-            screen_diff_max = $maxDiff
-            method          = $method
-            swapchains_before = ($preClick -join ';')
-            swapchains_after  = (@($postClick | ForEach-Object { $_.SwapChain } | Sort-Object -Unique) -join ';')
-            frames_after_click = $postClick.Count
+            result             = $result
+            within_budget      = ($null -ne $changeMs -and $changeMs -le $BudgetMs)
+            new_player_chain   = ($newChain.Count -gt 0)
+            frames_after_click = @($rows | Where-Object { $_.WallClock -ge $clickUtc }).Count
         }
         [void]$results.Add([pscustomobject]$row)
-        Write-BpLog ('iter {0}: click_to_frame={1} ms method={2} frames_after={3}' -f $i, $ms, $method, $postClick.Count)
+        Write-BpLog ('iter {0}: change={1} ms result={2} new_chain={3}' -f $i, $changeMs, $result, $row.new_player_chain)
     } catch {
         Write-BpLog ("iteration {0} failed: {1}" -f $i, $_.Exception.Message)
         [void]$failures.Add([pscustomobject]@{ iteration = $i; error = $_.Exception.Message })
@@ -121,28 +135,24 @@ for ($i = 1; $i -le $Iterations; $i++) {
 
 $summary = [ordered]@{
     item = 21; tag = $Tag; iterations = $Iterations
-    ok = ($failures.Count -eq 0 -and (@($results | Where-Object { $_.click_to_change_ms }).Count -gt 0))
+    endpoint = 'first sample where at least 15 of the last 20 one-frame steps (3 s at 150 ms) change the centre of the window: a spinner or a page transition cannot keep that up, a playing video can'
+    observe_seconds = $ObserveSeconds; budget_ms = $BudgetMs
+    timeouts = @($results | Where-Object { $_.result -eq 'timeout' }).Count
+    over_budget = @($results | Where-Object { $_.result -eq 'changed' -and -not $_.within_budget }).Count
     failures = $failures
 }
-$vals = @($results | ForEach-Object { $_.click_to_frame_ms } | Where-Object { $null -ne $_ })
+$vals = @($results | ForEach-Object { $_.click_to_change_ms } | Where-Object { $null -ne $_ })
 if ($vals.Count -gt 0) {
     $sorted = $vals | Sort-Object
     $summary.samples = $vals.Count
-    $summary.click_to_frame_p50_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.5)]
-    $summary.click_to_frame_p95_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.95)]
-    $summary.click_to_frame_max_ms = $sorted[$sorted.Count - 1]
-}
-$changes = @($results | ForEach-Object { $_.click_to_change_ms } | Where-Object { $null -ne $_ })
-if ($changes.Count -gt 0) {
-    $cs = $changes | Sort-Object
-    $summary.click_to_change_samples = $cs.Count
-    $summary.click_to_change_p50_ms = $cs[[int][math]::Floor(($cs.Count - 1) * 0.5)]
-    $summary.click_to_change_p95_ms = $cs[[int][math]::Floor(($cs.Count - 1) * 0.95)]
-    $summary.click_verified = $true
+    $summary.click_to_change_p50_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.5)]
+    $summary.click_to_change_p95_ms = $sorted[[int][math]::Floor(($sorted.Count - 1) * 0.95)]
+    $summary.click_to_change_max_ms = $sorted[$sorted.Count - 1]
 }
 if ($results.Count -gt 0) {
-    $summary.methods = (@($results | Group-Object method | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ',')
+    $summary.new_player_chain = @($results | Where-Object { $_.new_player_chain }).Count
 }
+$summary.ok = ($failures.Count -eq 0 -and $results.Count -eq $Iterations -and $summary.timeouts -eq 0)
 Write-BpCsv -Rows $results -Path (Join-Path $dataDir 'iterations.csv')
 $summary | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 -Path (Join-Path $dataDir 'summary.json')
 Write-BpLog ('SUMMARY ' + ($summary | ConvertTo-Json -Depth 5 -Compress))
