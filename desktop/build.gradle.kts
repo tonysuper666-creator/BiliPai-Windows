@@ -2557,6 +2557,13 @@ val transitionPatchDirectory = file("upstream-core/transition/patches")
 val transitionPatchedGeneratedFiles = fileTree(transitionPatchDirectory) { include("**/*.patch") }.files
     .map { it.relativeTo(transitionPatchDirectory).invariantSeparatorsPath.removeSuffix(".patch") }.toSortedSet()
 val transitionPatchProducers = mapOf(
+    "collection-sheet" to "extractStableCollectionSheet",
+    "discovery" to "extractUpstreamDiscovery",
+    "dynamic-reply" to "extractUpstreamDynamicReply",
+    "home-cards" to "extractUpstreamHomeCards",
+    "home-settings" to "extractOriginalHomeSettings",
+    "original-video-detail-holder-full" to "extractOriginalVideoDetailHolderFull",
+    "original-video-detail-units" to "extractOriginalVideoDetailUnits",
     "api" to "extractUpstreamApi",
     "dynamic-detail-container" to "extractUpstreamDynamicDetailContainer",
     "dynamic-full-card" to "extractUpstreamDynamicFullCard",

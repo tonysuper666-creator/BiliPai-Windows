@@ -1,0 +1,13 @@
+--- a/home-full-card/generated/com/android/purebilibili/core/store/DesktopOriginalHomeCardVisualSettings.kt
++++ b/home-full-card/generated/com/android/purebilibili/core/store/DesktopOriginalHomeCardVisualSettings.kt
+@@ -6,10 +6,6 @@
+ import com.bilipai.desktop.settings.homeCardVisualIntKey as intPreferencesKey
+ import kotlinx.coroutines.flow.map
+ 
+-internal fun resolveHomeCardFrostedGlassEnabled(
+-    storedValue: Boolean?,
+-    legacyCombinedValue: Boolean?,
+-): Boolean = storedValue ?: legacyCombinedValue ?: false
+ 
+ 
+ /** No independent constructor defaults: the original persisted mapper is the only default source. */

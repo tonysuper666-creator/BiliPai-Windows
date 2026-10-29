@@ -1,0 +1,149 @@
+--- a/dynamic-reply/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletons.kt
++++ b/dynamic-reply/com/android/purebilibili/core/ui/skeleton/DesktopOriginalReplyLoadingSkeletons.kt
+@@ -36,59 +36,14 @@
+     return pulse
+ }
+ 
+-@Composable
+-fun rememberContentSkeletonBlockColor(pulse: Float): Color {
+-    val isDark = MaterialTheme.colorScheme.surface.luminance() < 0.5f
+-    val onSurface = MaterialTheme.colorScheme.onSurface
+-    return remember(pulse, isDark, onSurface) {
+-        val alpha = if (isDark) {
+-            CONTENT_SKELETON_DARK_MIN_ALPHA +
+-                (CONTENT_SKELETON_DARK_MAX_ALPHA - CONTENT_SKELETON_DARK_MIN_ALPHA) * pulse
+-        } else {
+-            CONTENT_SKELETON_LIGHT_MIN_ALPHA +
+-                (CONTENT_SKELETON_LIGHT_MAX_ALPHA - CONTENT_SKELETON_LIGHT_MIN_ALPHA) * pulse
+-        }
+-        onSurface.copy(alpha = alpha)
+-    }
+-}
+ 
+-@Composable
+-fun ContentSkeletonBlock(
+-    color: Color,
+-    modifier: Modifier = Modifier,
+-    shape: Shape = AppShapes.container(ContainerLevel.Tag),
+-) {
+-    Box(
+-        modifier = modifier
+-            .clip(shape)
+-            .background(color),
+-    )
+-}
+ 
+-@Composable
+-fun rememberStaticSkeletonBlockColor(): Color {
+-    val isDark = MaterialTheme.colorScheme.surface.luminance() < 0.5f
+-    val onSurface = MaterialTheme.colorScheme.onSurface
+-    return remember(isDark, onSurface) {
+-        onSurface.copy(
+-            alpha = if (isDark) STATIC_SKELETON_DARK_ALPHA else STATIC_SKELETON_LIGHT_ALPHA
+-        )
+-    }
+-}
+ 
+ /** 评论区专用静态骨架色，语义等同 [rememberStaticSkeletonBlockColor]。 */
+ 
+-@Composable
+-fun rememberCommentSkeletonBlockColor(): Color = rememberStaticSkeletonBlockColor()
+ 
+ /** 单条评论骨架的正文行数：按槽位错落，避免整屏等高方块显得机械。 */
+ 
+-internal fun resolveCommentSkeletonBodyLineCount(slotIndex: Int): Int =
+-    when (slotIndex % 3) {
+-        0 -> 2
+-        1 -> 1
+-        else -> 3
+-    }
+ 
+ /**
+  * 评论行骨架。
+@@ -98,86 +53,7 @@
+  * 列表不会被突然撑长或缩短——这是消除「跳动」的关键。
+  */
+ 
+-@Composable
+-fun CommentListItemSkeleton(
+-    modifier: Modifier = Modifier,
+-    blockColor: Color? = null,
+-    slotIndex: Int = 0,
+-) {
+-    val color = blockColor ?: rememberCommentSkeletonBlockColor()
+-    val bodyLineCount = resolveCommentSkeletonBodyLineCount(slotIndex)
+-    Column(
+-        modifier = modifier
+-            .fillMaxWidth()
+-            .padding(
+-                start = COMMENT_SKELETON_HORIZONTAL_PADDING_DP.dp,
+-                end = COMMENT_SKELETON_HORIZONTAL_PADDING_DP.dp,
+-                top = COMMENT_SKELETON_TOP_PADDING_DP.dp,
+-                bottom = COMMENT_SKELETON_BOTTOM_PADDING_DP.dp,
+-            ),
+-    ) {
+-        Row(verticalAlignment = Alignment.Top) {
+-            ContentSkeletonBlock(
+-                color = color,
+-                shape = CircleShape,
+-                modifier = Modifier.size(COMMENT_SKELETON_AVATAR_SIZE_DP.dp),
+-            )
+-            Spacer(modifier = Modifier.width(COMMENT_SKELETON_AVATAR_GAP_DP.dp))
+-            Column(modifier = Modifier.weight(1f)) {
+-                ContentSkeletonBlock(
+-                    color = color,
+-                    modifier = Modifier
+-                        .fillMaxWidth(0.34f)
+-                        .height(COMMENT_SKELETON_NAME_HEIGHT_DP.dp),
+-                )
+-                Spacer(modifier = Modifier.height(COMMENT_SKELETON_NAME_GAP_DP.dp))
+-                ContentSkeletonBlock(
+-                    color = color,
+-                    modifier = Modifier
+-                        .fillMaxWidth(0.46f)
+-                        .height(COMMENT_SKELETON_META_HEIGHT_DP.dp),
+-                )
+-            }
+-        }
+-        Spacer(modifier = Modifier.height(COMMENT_SKELETON_BODY_GAP_DP.dp))
+-        repeat(bodyLineCount) { line ->
+-            ContentSkeletonBlock(
+-                color = color,
+-                modifier = Modifier
+-                    .fillMaxWidth(if (line == bodyLineCount - 1) 0.72f else 0.96f)
+-                    .height(COMMENT_SKELETON_BODY_HEIGHT_DP.dp),
+-            )
+-            if (line != bodyLineCount - 1) {
+-                Spacer(modifier = Modifier.height(COMMENT_SKELETON_BODY_LINE_GAP_DP.dp))
+-            }
+-        }
+-        Spacer(modifier = Modifier.height(COMMENT_SKELETON_ACTION_GAP_DP.dp))
+-        Box(
+-            modifier = Modifier.height(COMMENT_SKELETON_ACTION_HEIGHT_DP.dp),
+-            contentAlignment = Alignment.CenterStart,
+-        ) {
+-            ContentSkeletonBlock(
+-                color = color,
+-                modifier = Modifier
+-                    .fillMaxWidth(0.42f)
+-                    .height(COMMENT_SKELETON_ACTION_BAR_HEIGHT_DP.dp),
+-            )
+-        }
+-    }
+-}
+ 
+-@Composable
+-fun CommentListColumnSkeleton(
+-    modifier: Modifier = Modifier,
+-    itemCount: Int = 5,
+-) {
+-    val blockColor = rememberCommentSkeletonBlockColor()
+-    Column(modifier = modifier.fillMaxWidth()) {
+-        repeat(itemCount.coerceAtLeast(0)) { slotIndex ->
+-            CommentListItemSkeleton(blockColor = blockColor, slotIndex = slotIndex)
+-        }
+-    }
+-}
+ 
+ private const val CONTENT_SKELETON_PULSE_DURATION_MILLIS = 2_000
+ 

@@ -1,0 +1,18 @@
+--- a/discovery/com/android/purebilibili/core/store/DesktopDiscoverySettings.kt
++++ b/discovery/com/android/purebilibili/core/store/DesktopDiscoverySettings.kt
+@@ -1,15 +1,9 @@
+ // GENERATED original declarations and Windows platform bindings.
+ package com.android.purebilibili.core.store
+ 
+-internal const val DEFAULT_HOME_REFRESH_COUNT = 20
+ 
+-internal const val MIN_HOME_REFRESH_COUNT = 10
+ 
+-internal const val MAX_HOME_REFRESH_COUNT = 30
+ 
+-internal fun normalizeHomeRefreshCount(count: Int): Int {
+-    return count.coerceIn(MIN_HOME_REFRESH_COUNT, MAX_HOME_REFRESH_COUNT)
+-}
+ 
+ object DesktopFeedSettings {
+     enum class FeedApiType(val value: Int, val label: String, val description: String) {

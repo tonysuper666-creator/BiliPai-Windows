@@ -1,0 +1,11 @@
+--- a/home-settings/generated/com/android/purebilibili/core/store/DesktopOriginalHomeSettingsManager.kt
++++ b/home-settings/generated/com/android/purebilibili/core/store/DesktopOriginalHomeSettingsManager.kt
+@@ -343,8 +343,3 @@
+     }
+ }
+ 
+-internal fun resolveHomeHeaderCollapseModeForTopBarHide(
+-    hideTopBar: Boolean
+-): HomeHeaderCollapseMode {
+-    return if (hideTopBar) HomeHeaderCollapseMode.BOTH else HomeHeaderCollapseMode.OFF
+-}

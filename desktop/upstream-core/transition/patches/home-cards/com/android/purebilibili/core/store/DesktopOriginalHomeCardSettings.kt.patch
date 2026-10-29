@@ -1,0 +1,42 @@
+--- a/home-cards/com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings.kt
++++ b/home-cards/com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings.kt
+@@ -7,22 +7,6 @@
+ import com.bilipai.desktop.settings.homeCardIntPreferencesKey as intPreferencesKey
+ import kotlinx.coroutines.flow.map
+ 
+-enum class HomeFeedCardWidthPreset(
+-    val value: Int,
+-    val label: String,
+-    val minCardWidthDp: Int?
+-) {
+-    AUTO(0, "自动", null),
+-    COMPACT(1, "紧凑", 160),
+-    BALANCED(2, "均衡", 200),
+-    WIDE(3, "宽卡片", 260),
+-    ULTRA_WIDE(4, "超宽", 320);
+-
+-    companion object {
+-        fun fromValue(value: Int): HomeFeedCardWidthPreset =
+-            entries.find { it.value == value } ?: AUTO
+-    }
+-}
+ 
+ /**
+  * 双列视频卡封面框三档（全局一份设置，均居中 Crop）：
+@@ -31,16 +15,6 @@
+  * - [BILIPAI] 16:10：默认信息流封面比例
+  */
+ 
+-enum class HomeFeedCardStyle(val value: Int, val label: String, val subtitle: String) {
+-    CURRENT(0, "16:9", "完整显示，接近投稿源图"),
+-    OFFICIAL(1, "4:3", "更高列表框，左右居中裁切"),
+-    BILIPAI(2, "16:10", "默认信息流封面比例");
+-
+-    companion object {
+-        fun fromValue(value: Int): HomeFeedCardStyle =
+-            entries.find { it.value == value } ?: BILIPAI
+-    }
+-}
+ 
+ /** Windows projection: no constructor defaults competing with the actual persisted mapper. */
+ data class DesktopHomeCardSettings(val gridColumnCount:Int,val gridColumnCountCompact:Int,
