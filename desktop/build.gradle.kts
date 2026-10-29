@@ -2659,7 +2659,7 @@ val generateUpstreamStringResources by tasks.registering {
                         when (val e = raw[index++]) {
                             'n' -> emit("\n"); 't' -> emit("\t")
                             'u' -> { emit(raw.substring(index, index + 4).toInt(16).toChar().toString()); index += 4 }
-                            '\'', '"', '\\', '@', '?' -> emit(e.toString())
+                            '\u0027', '"', '\\', '@', '?' -> emit(e.toString())
                             else -> throw GradleException("$where: unsupported escape \\$e")
                         }
                     }
