@@ -1,0 +1,62 @@
+--- a/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt
++++ b/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt
+@@ -31,5 +31,4 @@
+ import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.platform.LocalConfiguration
+-import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.platform.LocalHapticFeedback
+@@ -37,5 +36,4 @@
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import com.android.purebilibili.core.store.BackToTopSettingsStore
+ import com.android.purebilibili.core.ui.AppSurfaceTokens
+ import com.android.purebilibili.core.ui.LocalAppThemeConfig
+@@ -64,5 +62,6 @@
+     draggable: Boolean = true,
+ ) {
+-    val context = LocalContext.current
++    // Desktop: the offset lives in Root's settings document, reached through the BackToTop bindings.
++    val backToTop = com.bilipai.desktop.ui.desktopBackToTopBindings()
+     val density = LocalDensity.current
+     val configuration = LocalConfiguration.current
+@@ -81,7 +80,7 @@
+     val dockColor = AppSurfaceTokens.surfaceContainerHigh()
+ 
+-    val persistedOffsetDp by remember(context) {
+-        BackToTopSettingsStore.getCustomOffsetDp(context)
+-    }.collectAsStateWithLifecycle(initialValue = BackToTopSettingsStore.getCachedOffsetDp())
++    val persistedOffsetDp by remember(backToTop) {
++        backToTop.offset
++    }.collectAsStateWithLifecycle(initialValue = backToTop.initialOffset)
+ 
+     var dragOffsetPx by remember {
+@@ -89,6 +88,6 @@
+             with(density) {
+                 Offset(
+-                    BackToTopSettingsStore.getCachedOffsetDp().first.dp.toPx(),
+-                    BackToTopSettingsStore.getCachedOffsetDp().second.dp.toPx(),
++                    backToTop.initialOffset.first.dp.toPx(),
++                    backToTop.initialOffset.second.dp.toPx(),
+                 )
+             }
+@@ -194,7 +193,7 @@
+                                         val finalXDp = with(density) { dragOffsetPx.x.toDp().value }
+                                         val finalYDp = with(density) { dragOffsetPx.y.toDp().value }
+-                                        BackToTopSettingsStore.updateCachedOffset(finalXDp, finalYDp)
++                                        backToTop.updateOffset(finalXDp, finalYDp)
+                                         scope.launch(Dispatchers.IO) {
+-                                            BackToTopSettingsStore.setCustomOffsetDp(context, finalXDp, finalYDp)
++                                            backToTop.setOffset(finalXDp, finalYDp)
+                                         }
+                                         scope.launch {
+@@ -207,7 +206,7 @@
+                                         val finalXDp = with(density) { dragOffsetPx.x.toDp().value }
+                                         val finalYDp = with(density) { dragOffsetPx.y.toDp().value }
+-                                        BackToTopSettingsStore.updateCachedOffset(finalXDp, finalYDp)
++                                        backToTop.updateOffset(finalXDp, finalYDp)
+                                         scope.launch(Dispatchers.IO) {
+-                                            BackToTopSettingsStore.setCustomOffsetDp(context, finalXDp, finalYDp)
++                                            backToTop.setOffset(finalXDp, finalYDp)
+                                         }
+                                         scope.launch {
