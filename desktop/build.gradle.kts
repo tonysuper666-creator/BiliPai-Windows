@@ -2875,6 +2875,34 @@ val generateUpstreamPreferenceKeyTypes by tasks.registering {
     }
 }
 
+// Upstream app BuildConfig (TON-1000), the release variant: the version is the upstream app version this desktop build
+// compiles (read from app/build.gradle.kts, so it follows every merge), DEBUG and the verbose-log switches are off as in
+// upstream release builds, and BUILD_COMMIT_SHA is upstream's "local" default unless -Pbili.build.commitSha is given.
+val generateUpstreamBuildConfig by tasks.registering {
+    val script = mergedRepositoryRoot.resolve("app/build.gradle.kts")
+    val output = layout.buildDirectory.dir("generated/upstream-buildconfig")
+    val commitSha = providers.gradleProperty("bili.build.commitSha").orElse("local")
+    inputs.file(script).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.property("commitSha", commitSha)
+    outputs.dir(output)
+    doLast {
+        val text = script.readText()
+        val versionCode = Regex("""versionCode\s*=\s*(\d+)""").find(text)?.groupValues?.get(1)
+            ?: throw GradleException("app/build.gradle.kts: versionCode not found")
+        val versionName = Regex("""versionName\s*=\s*"([^"]+)"""").find(text)?.groupValues?.get(1)
+            ?: throw GradleException("app/build.gradle.kts: versionName not found")
+        val target = output.get().asFile
+        target.deleteRecursively()
+        target.resolve("com/android/purebilibili/BuildConfig.kt").apply { parentFile.mkdirs() }.writeText(
+            "// Generated at build time from the upstream app/build.gradle.kts (release variant).\npackage com.android.purebilibili\n\n" +
+                "object BuildConfig {\n    const val DEBUG: Boolean = false\n    const val BUILD_TYPE: String = \"release\"\n" +
+                "    const val VERSION_CODE: Int = $versionCode\n    const val VERSION_NAME: String = \"$versionName\"\n" +
+                "    const val BUILD_COMMIT_SHA: String = \"${commitSha.get()}\"\n" +
+                "    const val ENABLE_VERBOSE_DEBUG_LOGS: Boolean = false\n    const val ENABLE_VERBOSE_RUNTIME_LOG_PERSISTENCE: Boolean = false\n" +
+                "    const val ALLOW_HARDCODED_DNS_FALLBACK: Boolean = false\n}\n")
+    }
+}
+
 val verifyNoSilentSdkGates by tasks.registering {
     inputs.files(fileTree(mergedRepositoryRoot) { migratedWholeModules.forEach { include(it + "src/main/java/**/*.kt") } })
     inputs.dir(desktopUpstreamPatchDirectory).withPathSensitivity(PathSensitivity.RELATIVE)
@@ -2974,6 +3002,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(generateUpstreamColorResources)
     kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-strings/kotlin")).builtBy(generateUpstreamStringResources))
     kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-preference-types")).builtBy(generateUpstreamPreferenceKeyTypes))
+    kotlin.srcDir(files(layout.buildDirectory.dir("generated/upstream-buildconfig")).builtBy(generateUpstreamBuildConfig))
     kotlin.srcDir(upstreamReplacementDirectory)
     // Desktop stand-ins for the Android APIs the migrated modules use, and transition compat code.
     kotlin.srcDir("upstream-core/compat")

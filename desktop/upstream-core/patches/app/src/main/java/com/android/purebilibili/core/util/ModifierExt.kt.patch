@@ -1,0 +1,92 @@
+--- a/com/android/purebilibili/core/util/ModifierExt.kt
++++ b/com/android/purebilibili/core/util/ModifierExt.kt
+@@ -1,24 +1,22 @@
+ package com.android.purebilibili.core.util
+ 
+ import android.os.Build
+-import android.view.HapticFeedbackConstants
+ import androidx.compose.animation.core.*
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.interaction.MutableInteractionSource
+ import androidx.compose.foundation.interaction.collectIsPressedAsState
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.composed
+ import com.android.purebilibili.core.ui.skeleton.skeletonBackground
+ import androidx.compose.ui.draw.scale
+ import androidx.compose.ui.graphics.graphicsLayer
+-import androidx.compose.ui.platform.LocalView
+ import com.android.purebilibili.core.theme.AppUiStyle
+ import com.android.purebilibili.core.theme.LocalAppUiStyle
+ 
+ /**
+  * 骨架屏闪光特效 Modifier（深浅色主题自适应）。
+  */
+ fun Modifier.shimmerEffect(): Modifier = composed {
+     val color = com.android.purebilibili.core.ui.skeleton.rememberContentSkeletonBlockColor(
+@@ -137,55 +135,31 @@
+  * 
+  * - Android 12+: 使用新的 GESTURE_START/END 等常量
+  * - 旧版本: 使用 LONG_PRESS/KEYBOARD_TAP 等
+  */
+ @Composable
+ fun rememberHapticFeedback(
+     scene: com.android.purebilibili.core.ui.AppHapticScene = com.android.purebilibili.core.ui.AppHapticScene.CONTROLS,
+ ): (HapticType) -> Unit {
+-    val view = LocalView.current
++    // Desktop: Compose's platform haptic service instead of an Android View; standard Windows input devices have no
++    // haptic motor, so this is what the platform offers (the same mapping the desktop used before).
++    val feedback = androidx.compose.ui.platform.LocalHapticFeedback.current
+     val config by rememberUpdatedState(com.android.purebilibili.core.ui.LocalAppThemeConfig.current)
+-    return remember(view, scene) {
++    return remember(feedback, scene) {
+         { type: HapticType ->
+-            val feedbackConstant = when (type) {
+-                HapticType.LIGHT -> {
+-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+-                        HapticFeedbackConstants.CONFIRM
+-                    } else {
+-                        HapticFeedbackConstants.KEYBOARD_TAP
+-                    }
+-                }
+-                HapticType.MEDIUM -> HapticFeedbackConstants.LONG_PRESS
+-                HapticType.HEAVY -> {
+-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+-                        HapticFeedbackConstants.REJECT
+-                    } else {
+-                        HapticFeedbackConstants.LONG_PRESS
+-                    }
+-                }
+-                HapticType.GESTURE_STEP -> {
+-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+-                        HapticFeedbackConstants.SEGMENT_TICK
+-                    } else {
+-                        HapticFeedbackConstants.CLOCK_TICK
+-                    }
+-                }
+-                HapticType.SELECTION -> {
+-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+-                        HapticFeedbackConstants.SEGMENT_FREQUENT_TICK
+-                    } else {
+-                        HapticFeedbackConstants.CLOCK_TICK
+-                    }
+-                }
++            val feedbackType = when (type) {
++                HapticType.SELECTION, HapticType.LIGHT, HapticType.GESTURE_STEP ->
++                    androidx.compose.ui.hapticfeedback.HapticFeedbackType.TextHandleMove
++                HapticType.MEDIUM, HapticType.HEAVY -> androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress
+             }
+             // [新增] 全局触感反馈开关检查
+             if (config.hapticFeedbackEnabled && config.hapticSettings.isEnabled(scene)) {
+                 com.android.purebilibili.core.ui.AppActionHaptics.dispatch {
+-                    view.performHapticFeedback(feedbackConstant)
++                    feedback.performHapticFeedback(feedbackType)
+                 }
+             } else {
+                 com.android.purebilibili.core.ui.AppActionHaptics.suppressCurrentActionFeedback()
+             }
+         }
+     }
+ }
+ 
