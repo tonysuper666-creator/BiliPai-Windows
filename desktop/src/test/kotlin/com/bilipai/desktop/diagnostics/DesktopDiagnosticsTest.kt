@@ -27,11 +27,21 @@ import kotlin.test.*
 class DesktopDiagnosticsTest {
     @TempDir lateinit var temporary: Path
 
+    @Test fun hardwareExportRedactsUserPathsOnEveryHost() {
+        val safe=sanitizeDesktopDiagnosticText("C:\\Users\\friend\\video.mp4 /Users/friend/video.mp4 /home/friend/video.mp4 \\\\server\\Users\\friend\\video.mp4")
+        assertFalse(safe.contains("friend"))
+        assertFalse(safe.contains("server"))
+        assertTrue(safe.contains("[user-home]"))
+        val json=buildJsonObject {put("cpu","C:\\Users\\friend\\cpu");put("gpu","\\\\server\\Users\\friend\\gpu")}.toString()
+        val redacted=sanitizeDesktopDiagnosticText(json)
+        assertFalse(redacted.contains("friend"));assertFalse(redacted.contains("server"))
+    }
+
     private class Fixture(val root: Path) : AutoCloseable {
         val store = DesktopPluginStore(root)
         val clock = AtomicLong(10_000)
         val writer = Executors.newSingleThreadExecutor { Thread(it, "task-owned-diagnostics-writer").apply { isDaemon = true } }
-        val logs = DesktopDiagnostics(store, "diagnostic-offline-test", { clock.getAndAdd(500) }, writer)
+        val logs = DesktopDiagnostics(store, "diagnostic-offline-test", { clock.getAndAdd(500) }, writer,hardwareEnabled=false)
         private val releases = mutableListOf<CountDownLatch>()
         fun blockWriter(): CountDownLatch {
             val entered = CountDownLatch(1)
@@ -296,7 +306,7 @@ class DesktopDiagnosticsTest {
             Files.writeString(target, "task-owned-private-victim-marker\n")
             val bytes = Files.readAllBytes(target)
             val store = DesktopPluginStore(root)
-            val diagnostics = DesktopDiagnostics(store, "offline-boundary-test")
+            val diagnostics = DesktopDiagnostics(store, "offline-boundary-test",hardwareEnabled=false)
             try {
                 diagnostics.flush()
                 assertFails { diagnostics.viewLocal() }
@@ -344,7 +354,7 @@ class DesktopDiagnosticsTest {
     @Test fun aColdJvmReadsPersistedConsentFromTheSameGlobalKeyBeforeFirstDetail(): Unit = runBlocking {
         val root = Files.createTempDirectory(temporary, "cold-store-")
         val store = DesktopPluginStore(root)
-        val first = DesktopDiagnostics(store, "cold-writer-test")
+        val first = DesktopDiagnostics(store, "cold-writer-test",hardwareEnabled=false)
         try { first.setEnhancedEnabled(true) } finally { first.close() }
         val environment = Files.createDirectory(temporary.resolve("cold-environment"))
         val argumentFile = temporary.resolve("cold-jvm.args")
@@ -377,7 +387,7 @@ class DesktopDiagnosticsTest {
 object DesktopDiagnosticColdJvmProbe {
     @JvmStatic fun main(args: Array<String>): Unit = runBlocking {
         val store = DesktopPluginStore(Path.of(args.single()))
-        val logs = DesktopDiagnostics(store, "cold-reader-test")
+        val logs = DesktopDiagnostics(store, "cold-reader-test",hardwareEnabled=false)
         try {
             check(logs.enhancedEnabled.value)
             logs.record("I", "ColdJvm", "fresh_jvm_detail"); logs.flush()
