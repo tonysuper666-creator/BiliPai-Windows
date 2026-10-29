@@ -1,0 +1,33 @@
+--- a/core-player/src/main/java/com/android/purebilibili/core/player/PlaybackProgressManager.kt
++++ b/core-player/src/main/java/com/android/purebilibili/core/player/PlaybackProgressManager.kt
+@@ -1,9 +1,9 @@
+ // File: feature/video/controller/PlaybackProgressManager.kt
+ package com.android.purebilibili.core.player
+ 
+-import android.content.Context
+-import android.content.SharedPreferences
+-import com.android.purebilibili.core.network.CoreDataLog as Logger
++import com.bilipai.desktop.ui.DesktopOriginalProgressPreferences as Context
++import com.bilipai.desktop.ui.DesktopOriginalProgressPreferences as SharedPreferences
++import com.android.purebilibili.core.util.Logger
+ 
+ /**
+  * Playback Progress Manager
+@@ -16,7 +16,7 @@
+  * 
+  * Requirement Reference: AC1.4 - Progress managed by PlaybackProgressManager
+  */
+-class PlaybackProgressManager {
++internal class PlaybackProgressManager {
+     
+     companion object {
+         private const val TAG = "PlaybackProgressManager"
+@@ -57,7 +57,7 @@
+      */
+     fun init(context: Context) {
+         if (prefs == null) {
+-            prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
++            prefs = context
+             loadFromPrefs()
+             Logger.d(TAG, "Initialized with ${memoryCache.size} cached positions")
+         }
