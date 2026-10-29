@@ -4,11 +4,13 @@ package com.bilipai.desktop.diagnostics
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.ComposeWindow
+import kotlinx.coroutines.launch
 import java.awt.EventQueue
 import java.awt.Window as AwtWindow
 import java.nio.file.Files
@@ -18,10 +20,12 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import javax.swing.JDialog
 
-/** Actual Compose entry for an uncaught window exception: the failing coroutine
- * is thrown from a composed effect, so the delivery goes through the same
- * ComposeContainer path the running client uses. Writes a JSON report and exits
- * non-zero when any observation fails. Run with `desktopWindowExceptionUiSmoke`.
+/** Actual Compose entry for an uncaught window exception. The failing coroutine
+ * is launched from a composition scope with its own SupervisorJob, which is the
+ * shape the running client uses (page entry scopes). It therefore reaches the
+ * same ComposeContainer handler while the window keeps composing. Writes a JSON
+ * report and exits non-zero when any observation fails. Run with
+ * `desktopWindowExceptionUiSmoke`.
  *
  * This is a JavaExec fixture because the JUnit `test` task runs headless. */
 object DesktopWindowExceptionHandlerUiFixture {
@@ -49,13 +53,16 @@ object DesktopWindowExceptionHandlerUiFixture {
                 window = opened
                 opened.exceptionHandler = handler.exceptionHandler(opened)
                 opened.setContent {
+                    val compositionScope = rememberCoroutineScope()
                     val value = counter
                     val notice = noticeText
                     SideEffect {
                         if (notice != null) noticeRendered.countDown()
                         if (notice != null && value > 0) recomposedAfterFailure.countDown()
                     }
-                    LaunchedEffect(Unit) { throw IllegalStateException("synthetic composition failure") }
+                    LaunchedEffect(Unit) {
+                        compositionScope.launch { throw IllegalStateException("synthetic composition failure") }
+                    }
                     Text(notice ?: "value=$value")
                 }
                 opened.isVisible = true
