@@ -123,6 +123,25 @@ function Get-BpScreenThumbCenter {
     return [BpMeasure]::ThumbRegion($Hwnd, 0.25, 0.25, 0.75, 0.75)
 }
 
+# A horizontal strip across the first row of the card grid. Scrolling replaces the cards in
+# that strip, while a hover preview only animates the one card under the pointer, so strip
+# motion is the part that actually means "the list moved".
+function Get-BpScreenThumbStrip {
+    param([IntPtr]$Hwnd, [double]$Y0 = 0.30, [double]$Y1 = 0.42)
+    return [BpMeasure]::ThumbRegion($Hwnd, 0.22, $Y0, 0.78, $Y1)
+}
+
+# Three bands of the grid. The page header and banner do not scroll, so a single band can sit
+# on a fixed element and report "no movement" while the list is scrolling fine.
+function Get-BpScrollBands {
+    param([IntPtr]$Hwnd)
+    return @(
+        [BpMeasure]::ThumbRegion($Hwnd, 0.22, 0.18, 0.78, 0.30),
+        [BpMeasure]::ThumbRegion($Hwnd, 0.22, 0.34, 0.78, 0.46),
+        [BpMeasure]::ThumbRegion($Hwnd, 0.22, 0.52, 0.78, 0.64)
+    )
+}
+
 # Mean absolute difference of two thumbnails, 0 (identical) .. 255.
 function Compare-BpThumb {
     param($A, $B)
@@ -173,7 +192,10 @@ function Send-BpWheelReal {
         $saved = Save-BpCursor
         [void](Move-BpCursorIntoWindow -Hwnd $Hwnd)
     }
-    $delta = 120 * $Notches
+    # Windows: a positive wheel delta scrolls up, negative scrolls down. The feed starts at the
+    # top, so the default has to be "down" - the old positive default scrolled up into nothing
+    # and every run looked like "no movement" although the events were delivered.
+    $delta = -120 * $Notches
     if ($Up) { $delta = -$delta }
     [BpMeasure]::mouse_event([BpMeasure]::MOUSEEVENTF_WHEEL, 0, 0, $delta, [UIntPtr]::Zero)
     if (-not $KeepCursor) {

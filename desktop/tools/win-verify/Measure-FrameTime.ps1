@@ -75,7 +75,7 @@ try {
     $savedCursor = Save-BpCursor
     [void](Move-BpCursorIntoWindow -Hwnd $hwnd)
     $thumbBeforeAll = Get-BpScreenThumb -Hwnd $hwnd
-    $prevThumb = $thumbBeforeAll
+    $prevBands = Get-BpScrollBands -Hwnd $hwnd
     $nextSample = (Get-Date).AddMilliseconds($MotionSampleMs)
     $lastPark = Get-Date
     while ((Get-Date) -lt $deadline) {
@@ -94,14 +94,21 @@ try {
         Send-BpWheelReal -Hwnd $hwnd -Notches 3 -KeepCursor
         $posted++
         if ((Get-Date) -ge $nextSample) {
-            $now = Get-BpScreenThumb -Hwnd $hwnd
-            $diff = Compare-BpThumb -A $prevThumb -B $now
+            $nowBands = Get-BpScrollBands -Hwnd $hwnd
+            $diffs = @()
+            $maxDiff = 0
+            for ($b = 0; $b -lt $nowBands.Count; $b++) {
+                $d = Compare-BpThumb -A $prevBands[$b] -B $nowBands[$b]
+                $diffs += $d
+                if ($null -ne $d -and $d -gt $maxDiff) { $maxDiff = $d }
+            }
             [void]$motion.Add([pscustomobject]@{
                     offsetMs = [math]::Round(((Get-Date).ToUniversalTime() - $scrollStart).TotalMilliseconds, 0)
-                    diff     = $diff
-                    moved    = ($null -ne $diff -and $diff -ge 2)
+                    diff     = $maxDiff
+                    band1    = $diffs[0]; band2 = $diffs[1]; band3 = $diffs[2]
+                    moved    = ($maxDiff -ge 2)
                 })
-            $prevThumb = $now
+            $prevBands = $nowBands
             $nextSample = (Get-Date).AddMilliseconds($MotionSampleMs)
         }
         Start-Sleep -Milliseconds $WheelIntervalMs
@@ -118,6 +125,7 @@ try {
     $summary.scroll_motion_moving = $moved
     $summary.scroll_motion_ratio = $ratio
     $summary.scroll_continuous = ($samples.Count -ge 10 -and $ratio -ge $MotionMinRatio)
+    $summary.scroll_motion_region = 'three horizontal bands of the card grid (22-78 % x at 18-30 %, 34-46 %, 52-64 % y); the header and banner do not scroll, so a hover preview cannot move all of them'
     $summary.scroll_wholesale_diff = Compare-BpThumb -A $thumbBeforeAll -B $thumbAfter
     Write-BpLog ("scroll finished: {0} wheel events, motion {1}/{2} samples ({3}), continuous={4}" -f $posted, $moved, $samples.Count, $ratio, $summary.scroll_continuous)
     @($samples) | Export-Csv -LiteralPath (Join-Path $dataDir 'scroll-motion.csv') -NoTypeInformation -Encoding utf8
