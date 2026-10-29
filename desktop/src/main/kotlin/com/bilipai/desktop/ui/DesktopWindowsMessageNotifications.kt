@@ -21,11 +21,7 @@ internal class DesktopWindowsMessageNotifications(
         com.bilipai.desktop.integration.DesktopToastNotifications,
 ) : AutoCloseable {
     /** The account this presentation belongs to; cleanup must target it even after a switch. */
-    private val accountId: Long? = context.mid
-    private val group = "messages-$accountId"
-    private val generation = java.util.concurrent.atomic.AtomicInteger()
-    private val withdrawal = DesktopNotificationWithdrawal(
-        withdraw = { tag, target -> center.remove(tag, target) }).apply { bind(group) }
+    private val session = DesktopNotificationSession(context.mid, center)
     private val closed = AtomicBoolean()
     private var tray: TrayIcon? = null // EDT only; created solely after master is enabled.
     private val entries = DesktopMessageNotificationEntries()
@@ -64,7 +60,7 @@ internal class DesktopWindowsMessageNotifications(
         if (pending.isEmpty() && cancelled.isEmpty()) return@withContext
         // A refused withdrawal stays pending: the toast is still on screen, so its key must stay
         // active for the upstream checker and the next round retries it.
-        val stillOnScreen = withContext(Dispatchers.IO) { withdrawal.withdraw(cancelled) }
+        val stillOnScreen = withContext(Dispatchers.IO) { session.withdraw(cancelled) }
         entries.apply(pending, cancelled - stillOnScreen, pendingCounts)
         val visible = entries.snapshot()
         if (visible.isEmpty()) { removeTrayOnEdt(); return@withContext }
@@ -89,18 +85,10 @@ internal class DesktopWindowsMessageNotifications(
         for (item in pending) {
             currentCoroutineContext().ensureActive()
             if (!canPost()) return@withContext
-            val issuedIn = generation.get()
-            val delivered = withContext(Dispatchers.IO) {
-                runCatching { center.show(item.title, item.text,
-                    "account:${accountId}:${item.route}", item.key, group) }
-            }
-            if (closed.get() || generation.get() != issuedIn) {
-                // Retired while this toast was in flight: take it back instead of publishing the old account.
-                withContext(Dispatchers.IO) { withdrawal.withdraw(listOf(item.key)) }
-            }
-            if (delivered.isFailure) {
+            val delivered = withContext(Dispatchers.IO) { session.publish(item) }
+            if (!delivered) {
                 // The notification center is the requested surface; the balloon keeps the message visible when it is not.
-                System.err.println("Windows 通知中心提交失败，改用托盘气泡: ${delivered.exceptionOrNull()}")
+                System.err.println("Windows 通知中心提交失败，改用托盘气泡 tag=${item.key}")
                 icon.displayMessage(item.title, item.text, TrayIcon.MessageType.INFO)
             }
         }
@@ -110,15 +98,11 @@ internal class DesktopWindowsMessageNotifications(
 
     suspend fun clear() {
         withContext(Dispatchers.Main) { removeTrayOnEdt() }
-        withContext(Dispatchers.IO) {
-            runCatching { center.clear(group) }.onFailure {
-                System.err.println("通知中心整组清理失败 group=$group: ${it.javaClass.simpleName}: ${it.message}")
-            }
-        }
+        withContext(Dispatchers.IO) { session.clearAll() }
     }
 
     /** Keys the surface refused to withdraw; they stay active upstream until a retry succeeds. */
-    internal fun pendingWithdrawals(): Set<String> = withdrawal.pendingKeys()
+    internal fun pendingWithdrawals(): Set<String> = session.pendingWithdrawals()
     private fun removeTrayOnEdt() {
         check(EventQueue.isDispatchThread())
         tray?.let { SystemTray.getSystemTray().remove(it) }
@@ -127,15 +111,10 @@ internal class DesktopWindowsMessageNotifications(
     }
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
-        generation.incrementAndGet()
         val cleanup = { window.removeHierarchyListener(hierarchy); removeTrayOnEdt() }
         if (EventQueue.isDispatchThread()) cleanup() else EventQueue.invokeLater { cleanup() }
         // Account switch or window teardown: the group belongs to the account captured at construction,
         // which is the one whose toasts may still be on screen.
-        Thread({
-            runCatching { center.clear(group) }.onFailure {
-                System.err.println("通知中心整组清理失败 group=$group: ${it.javaClass.simpleName}: ${it.message}")
-            }
-        }, "BiliPai-notification-withdraw").apply { isDaemon = true }.start()
+        Thread({ session.retire() }, "BiliPai-notification-withdraw").apply { isDaemon = true }.start()
     }
 }
