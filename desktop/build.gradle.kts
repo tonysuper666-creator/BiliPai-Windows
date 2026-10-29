@@ -212,11 +212,6 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
     "core/player/waveform/AudioWaveformSource.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/player/waveform/WaveformAudioSink.kt" to "Media3/ExoPlayer 播放栈；桌面播放走 mpv（com.bilipai.desktop.player）",
     "core/store/AudioLibraryDatabase.kt" to "Room 数据库；桌面用 JSON 存储（DesktopBlockedUpStore、DesktopCommentFraudJsonDao 等）",
-    "core/theme/AppFontFileStore.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/theme/ScheduledDarkThemeObserver.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/theme/SeedWallpaperColorScheme.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/theme/SystemWallpaperSeed.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
-    "core/theme/WallpaperColorCompatibility.kt" to "Android 系统壁纸取色、定时深色（AlarmManager）与字体文件 ContentResolver",
     "core/ui/LottieComponents.kt" to "Lottie Android 渲染（桌面无此依赖）",
     "core/ui/MaidLottieAnimationSettingsHost.kt" to "Lottie Android 渲染（桌面无此依赖）",
     "core/ui/SystemBarCompat.kt" to "Android 系统栏、折叠屏、挖孔与画中画窗口",
@@ -258,6 +253,8 @@ val appCoreDesktopOwned: Map<String, String> = mapOf(
 val appCoreLaterSteps: Map<String, String> = mapOf(
     "core/plugin/" to "upstream moved the plugin contracts to plugin-sdk with a new identity model (capabilityManifest); " +
         "the desktop plugin platform and the legacy feature plugins move to it together",
+    "core/theme/" to "upstream theme code uses materialkolor 6 (com.materialkolor.material3); the legacy appearance settings copies " +
+        "and their producer use the 4.x API, and both versions cannot be on one classpath, so they move together",
 )
 val migratedAppCorePaths: Set<String> = appJavaRoot.resolve("com/android/purebilibili/core").walkTopDown()
     .filter { it.isFile && it.extension == "kt" }.map { it.relativeTo(appJavaRoot).invariantSeparatorsPath }
